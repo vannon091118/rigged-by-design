@@ -1,4 +1,3 @@
-// @loc-exception: Der Kessel haelt Rad, Kugel, Dolly und Beschriftung in einem Ticker; getrennt muessten Winkel und Kesselreihenfolge doppelt gepflegt werden.
 /** Europaeischer Kessel in Pixi: Rad, Kugel im Gegenlauf und Dolly auf der Gewinnzahl. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { ROULETTE_WHEEL, colourOf } from '../../core/games/roulette-table';

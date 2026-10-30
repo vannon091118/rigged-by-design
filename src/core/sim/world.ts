@@ -15,6 +15,11 @@ export function freeSeat(item: Furniture): boolean {
   return item.seats > item.occupants.length;
 }
 
+/** Spielplätze im Haus: eine Servicegröße, keine Sperre für neue Gäste. */
+export function seatCount(world: WorldState): number {
+  return world.furniture.reduce((sum, item) => sum + (item.gameId ? item.seats : 0), 0);
+}
+
 export function reserveSeat(world: WorldState, itemId: number, guestId: number): boolean {
   const item = furnitureById(world, itemId);
   if (!item || item.seats <= item.occupants.length || item.occupants.includes(guestId)) return false;

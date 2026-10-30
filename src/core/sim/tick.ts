@@ -2,17 +2,17 @@
 import type { Ledger } from '../economy/ledger';
 import { ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
+import { TICKS_PER_DAY, tickDemand } from './demand';
 import { maybeStartBrawl, tickDisputes } from './disputes';
 import { dirtyNear } from './emotion';
 import { tickPenaltyDays } from './penalty-pool';
 import { actAtTarget, becomeAngry, chooseActivity, moveGuest, payAndLeave, releaseAndChoose } from './guests';
 import { exchangeFiat, guestAccount, HAUSKONTO, pendingAccount, STAFF, UTILITIES } from './money';
 import { tickNeeds } from './needs';
-import { spawnChance, spawnGuest, reputation } from './spawn';
+import { reputation } from './spawn';
 import { CASHIER_WAIT, tickAgents } from './staff';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, furnitureById, sendGuest } from './world';
-
 
 /** Wechselt nur, wenn die Buchung vollstaendig gelingt; sonst bleibt das Fiat auf dem Gastkonto. */
 function arriveAtDesk(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest): boolean {
@@ -70,6 +70,11 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
     return;
   }
   if (guest.state === 'EXCHANGE') {
+    if (guest.queueIndex > 0) {
+      guest.patience = Math.max(0, guest.patience - 0.35);
+      guest.mood = Math.max(0, guest.mood - 0.05);
+      if (guest.patience <= 0) { payAndLeave(world, ledger, guest); return; }
+    }
     periodDelay(guest);
     if (guest.stateTicks < 2) return;
     arriveAtDesk(world, ledger, prng, guest);
@@ -123,7 +128,7 @@ function staffTick(world: WorldState, ledger: Ledger): void {
     const first = [...world.dirty][0];
     if (first !== undefined) world.dirty.delete(first);
   }
-  if (world.tick % 600 !== 0) return;
+  if (world.tick % TICKS_PER_DAY !== 0) return;
   world.day += 1;
   tickPenaltyDays(world);
   const wages = ((world.staff.guard ? world.prices.guardWage : 0)
@@ -165,14 +170,15 @@ function decay(world: WorldState): void {
       guest.patience = Math.min(100, guest.patience + 0.02);
     }
     if (guest.state === 'CHOOSE' || guest.state === 'WAIT') guest.mood = Math.max(0, guest.mood - 0.04);
-    // Wer schon geht, randaliert nicht mehr; sonst wechselt der Gast endlos zwischen LEAVE und ANGRY.
-    if (guest.mood < 20 && guest.state !== 'LEAVE') becomeAngry(world, guest);
+    // Wer schon geht oder ausgezahlt wird, randaliert nicht mehr; sonst dreht der Gast endlos zwischen ANGRY und CASHOUT.
+    if (guest.mood < 20 && guest.state !== 'LEAVE' && guest.state !== 'CASHOUT') {
+      becomeAngry(world, guest);
+    }
   }
 }
 
 export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   world.tick += 1;
-  if (prng.nextFloat() < spawnChance(world)) spawnGuest(world, prng, ledger);
   exchangeQueue(world);
   for (const guest of [...world.guests]) {
     if (!world.guests.includes(guest)) continue;
@@ -185,6 +191,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   world.reputation = Math.round(reputation(world));
   releaseOrphanSeats(world);
   staffTick(world, ledger);
+  // Nach dem Tageswechsel: Veranstaltungen duerfen die Tagesmeldung ueberschreiben.
+  tickDemand(world, ledger, prng);
   if (world.player.pathIndex < world.player.path.length) {
     world.player.position = { ...world.player.path[world.player.pathIndex]! };
     world.player.pathIndex += 1;

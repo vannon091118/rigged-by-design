@@ -23,5 +23,5 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4007 | Architektur | Dependency ohne Begruendung oder ohne reale Nutzung. | `docs/ARCHITECTURE.md` und Matrix synchronisieren. |
 | ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote, Rechte und Branch-Schutz pruefen. |
 | ERR-4011 | Lint | ESLint-Verstoss, der nicht automatisch behebbar ist. | Regelverstoss an der Ursache beheben. |
-| ERR-4012 | LOC-Guard | Datei ueberschreitet das LOC-Cap. | Verantwortung splitten oder begruendete Exception setzen. |
+| ERR-4012 | LOC-Guard | Datei ueberschreitet ihr LOC-Cap oder nutzt eine verbotene Ausnahme. | Verantwortung splitten und unter die Hot Zone ihrer Zustaendigkeit reduzieren; keine neuen Exceptions. |
 | ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. |

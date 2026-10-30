@@ -3,9 +3,11 @@ import type { Ledger } from '../core/economy/ledger';
 import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
 import { brawlWinChance } from '../core/sim/brawl-combat';
+import { demandBreakdown } from '../core/sim/demand';
 import { talkChance } from '../core/sim/charisma-talk';
-import { reputation, serviceCapacity } from '../core/sim/spawn';
+import { reputation } from '../core/sim/spawn';
 import type { WorldState } from '../core/sim/types';
+import { seatCount } from '../core/sim/world';
 import type { GameView } from './types';
 
 function worldSnapshot(world: WorldState) {
@@ -15,7 +17,8 @@ function worldSnapshot(world: WorldState) {
     zones: world.zones,
     furniture: world.furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: world.guests.map((guest) => ({ ...guest, path: [...guest.path] })),
-    capacity: serviceCapacity(world),
+    seats: seatCount(world),
+    demand: demandBreakdown(world),
     player: { ...world.player, position: { ...world.player.position }, path: [...world.player.path] },
     dirtyTiles: new Set(world.dirty),
     tick: world.tick,

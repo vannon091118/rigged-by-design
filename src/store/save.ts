@@ -1,6 +1,7 @@
 /** Save v8: Welt + Ledger-Log + Journal + PRNG. Nichts anderes besitzt Geld. */
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
+import { companyTier } from '../core/sim/progression';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
@@ -31,6 +32,10 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       tick: world.tick,
       day: world.day,
       nextGuestId: world.nextGuestId,
+      nextArrivalTick: world.nextArrivalTick,
+      satisfaction: world.satisfaction,
+      demandTier: world.demandTier,
+      demandEvent: world.demandEvent,
       nextFurnitureId: world.nextFurnitureId,
       guardsHired: world.guardsHired,
       crates: world.crates,
@@ -90,6 +95,8 @@ export function replaySave(raw: unknown): LoadedSave | null {
       ledger.transfer(entry.from, entry.to, entry.amount, entry.reason, entry.tick);
     }
     for (const claim of legacyFiat) admitFiat(ledger, claim.id, claim.amount, world.tick);
+    // Alte v8-Staende kennen die Nachfragestufe noch nicht: einmal aus dem Ledger nachziehen.
+    if (!saved.demandTier) world.demandTier = companyTier(world, ledger);
     if (!ledger.verifyLedgerIntegrity()) return null;
     return { world, ledger, prngState: saved.prngState ?? 1 };
   } catch {

@@ -20,6 +20,7 @@
 - `world.journal` ist ein typisiertes Ringpuffer-Ereignisprotokoll (maximal 240 Einträge). `settleMoneyJournal` kopiert jede neue Ledger-Zeile genau einmal als `MONEY`-Event; Geld bleibt ausschließlich im Ledger. Welt-Ereignisse tragen `cause` und `effect`.
 - `world.look` ist rein kosmetisch: Haut, Haare, Outfit und Accessoire. Es gibt keine Gameplay-, Preis- oder Geldwirkung.
 - Personalstatus (`task`, `blockedReason`) liegt am `StaffAgent`, nicht in der UI. Die Diagnose liest ihn nur.
+- Jede Datei traegt genau eine Zustaendigkeit und bekommt ihr Budget samt eigener Hot Zone aus `scripts/loc-budgets.mjs` (Legacy 350/200). Registries und State Machines sind Knoten mit genau einer Wahrheit, keine gespiegelten Zustandskopien. Schreibpfade laufen serialisiert ueber den Store, Engines bleiben reine Funktionen.
 
 ## Fehler-Governance
 
@@ -67,7 +68,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^5.7.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 1: `tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `eslint.config.mjs` |
 | vite | ^6.0.7 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 52: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/dice-bets.test.ts`<br>… (+46) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 53: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/dice-bets.test.ts`<br>… (+47) |
 <!-- DEP_MATRIX_END -->
 
 ## Delivery-Regel

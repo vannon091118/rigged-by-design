@@ -1,4 +1,3 @@
-// @loc-exception: Eine Slot-Buehne haelt Spielfeld, Walzenzustand, Auslauf-Tween, Effekte und die Risiko-Karte in einem Pixi-Ticker; getrennt waeren die Frame-Grenzen doppelt.
 /** Die Walzenbuehne: fuenf Walzen, echter Auslauf mit Bounce, Gewinnlinien und Muenzregen. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { GameResult } from '../../core/games/contracts';

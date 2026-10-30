@@ -1,4 +1,3 @@
-// @loc-exception: Der Automat haelt Paytable, fuenf Kartenplaetze, HOLD-Stempel und Trefferlicht in einem Ticker; getrennt muessten Kartenslots und Tabellenzeilen doppelt gefuehrt werden.
 /** Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { Card } from '../../core/rng/shoe';

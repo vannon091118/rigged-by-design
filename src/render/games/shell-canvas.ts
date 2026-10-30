@@ -1,4 +1,3 @@
-// @loc-exception: Die Buehne haelt Matte, Becher, Perle und die drei Phasen (zeigen, mischen, waehlen) in einem Ticker; getrennt muessten Positionen und Kugelbesitz doppelt gefuehrt werden.
 /** Huetchenspiel in Pixi: erst zeigt der Geber die Perle, dann mischt er, dann waehlt der Spieler. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { ShellMove } from '../../core/games/shell-round';

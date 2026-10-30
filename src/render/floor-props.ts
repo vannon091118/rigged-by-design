@@ -1,4 +1,3 @@
-// @loc-exception: Agenten, Kisten, Dispute und Geist teilen einen Snapshot-Durchlauf; getrennt waeren Sync-Reihenfolge und Overlays unsichtbar.
 /** Requisiten: Personal, Lieferkisten, Streitmarker und Platzierungs-Geist. Liest nur Snapshots. */
 import { Container, Graphics, Text } from 'pixi.js';
 import { canPlaceAt } from '../core/sim/grid-zones';

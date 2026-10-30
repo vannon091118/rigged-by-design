@@ -1,5 +1,6 @@
 /** Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. */
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
+import { FIRST_ARRIVAL_TICK } from './demand';
 import { defaultPlinkoConfig } from '../games/plinko-config';
 import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
@@ -47,6 +48,10 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     tick: 0,
     day: 1,
     nextGuestId: 1,
+    nextArrivalTick: FIRST_ARRIVAL_TICK,
+    satisfaction: 55,
+    demandTier: 'BUDE',
+    demandEvent: null,
     nextFurnitureId: 100,
     crates: [],
     agents: [],

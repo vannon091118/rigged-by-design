@@ -66,6 +66,7 @@ export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
             Geräte verschleißen. Unter 85 % Zustand lohnt die Reparatur, unter 18 % setzt sich niemand mehr hin.
             Jede Reparatur kostet 1 Ersatzteil und Geld – unabhängig davon, wie kaputt das Gerät ist.
           </p>
+          <p>{HELP.nachfrage}</p>
         </section>
 
         <section className="help-card">
@@ -85,7 +86,7 @@ export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
           <ol className="help-steps">
             <li><b>Bauen</b> öffnen und ein Spiel kaufen. Die Ware kommt als Kiste am Eingang an.</li>
             <li>Kiste <b>abholen</b>, tragen und auf eine freie Fläche klicken. Erst dann ist das Gerät spielbar.</li>
-            <li>Gäste kommen, wechseln an der Kasse und setzen Chips. Dein Hauskonto wächst.</li>
+            <li>Gäste kommen nach Nachfrage, wechseln an der Kasse und setzen Chips. Dein Hauskonto wächst.</li>
             <li><b>Offene Gewinne</b> im Gäste-Fenster auszahlen – sonst kommt der Gast nicht weiter.</li>
             <li>Mit dem Gewinn Bar, Ersatzteile und Personal finanzieren. Personal arbeitet, während du weg bist.</li>
           </ol>

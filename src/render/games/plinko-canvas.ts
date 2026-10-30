@@ -1,4 +1,3 @@
-// @loc-exception: Das Plinko-Brett haelt Brettgeometrie, Bahnwiedergabe, Trefferwellen, Taschen-Feedback und die Rahmenbeschriftung in einem Ticker; getrennt waeren Frame-Grenzen und Peg-Indizes doppelt.
 /** Das Plinko-Brett als Pixi-Buehne: Stifte, Deflektoren, Taschen und die echte Ballbahn. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { PegKind, PlinkoConfig, PlinkoDrop } from '../../core/games/plinko-config';

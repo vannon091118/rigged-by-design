@@ -24,6 +24,7 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
   const bars = view.furniture.filter((item) => item.kind === 'BAR');
   const capacity = 6 + 6 * view.barLevel;
   const broken = view.furniture.filter((item) => item.damaged || item.condition < 85 || item.clogged);
+  const occupied = view.furniture.reduce((sum, item) => sum + (item.gameId ? item.occupants.length : 0), 0);
   return (
     <PopupShell eyebrow="SYSTEMCHECK · EHRLICHE ZAHLEN" title="Prüfung" onClose={onClose} wide>
       <div className="diag-grid">
@@ -79,6 +80,28 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
             <li><strong>Ersatzteile {view.parts}</strong><span>{view.parts <= 0 ? 'Reparaturen blockiert' : `${broken.length} Geräte brauchen Pflege · 1 Teil pro Reparatur`}</span></li>
             <li><strong>{view.crates.length} Kisten</strong><span>{view.crates.filter((crate) => crate.carriedBy === null).length} warten am Eingang</span></li>
           </ul>
+        </section>
+
+        <section className="diag-card" aria-label="Nachfrage">
+          <header><h3>Nachfrage</h3><span className="pill">~{Math.round(view.demand.perDay)}/Tag</span></header>
+          <dl>
+            {view.demand.sources.map((source) => (
+              <div key={source.id}>
+                <dt>{source.label}</dt>
+                <dd>{source.perDay >= 0 ? '+' : ''}{source.perDay.toFixed(1)}</dd>
+              </div>
+            ))}
+            <div><dt>Nächster Gast</dt><dd>in {view.demand.nextArrivalIn} Ticks</dd></div>
+            <div><dt>Spielplätze</dt><dd>{occupied}/{view.seats} besetzt</dd></div>
+          </dl>
+          {view.demand.event && (
+            <p className="diag-note">
+              {view.demand.event.label} läuft noch {view.demand.event.ticksLeft} Ticks und bringt zusätzliche Gäste.
+            </p>
+          )}
+          <p className="diag-note">
+            Keine Obergrenze: Sitzplätze, Kasse und Wege entscheiden nur, wie gut der Betrieb den Andrang bedient.
+          </p>
         </section>
 
         <section className="diag-card" aria-label="Protokoll">

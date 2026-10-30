@@ -31,6 +31,12 @@ export function leave(world: WorldState, guest: Guest): void {
   else guest.path = [];
 }
 
+/** Zufriedenheit ist das tatsaechliche Ergebnis, nicht der Ruf am Schild. */
+function noteSatisfaction(world: WorldState, guest: Guest): void {
+  const score = Math.max(0, Math.min(100, guest.mood * 0.65 + guest.patience * 0.35));
+  world.satisfaction = Math.max(0, Math.min(100, world.satisfaction * 0.85 + score * 0.15));
+}
+
 /** Erst alle Ansprueche buchen, dann gehen: ein Fehlschlag laesst Gast und Guthaben stehen. */
 export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): void {
   try {
@@ -38,6 +44,7 @@ export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): vo
     const balance = ledger.getBalance(guestAccount(guest.id));
     if (balance > ZERO_VC) exchangeFromVc(ledger, guest.id, balance, world.tick);
     closeFiat(ledger, guest.id, world.tick);
+    noteSatisfaction(world, guest);
     world.guestsServed += 1;
     recordJournal(world, {
       kind: 'GUEST', subject: guest.name, cause: 'Besuch beendet', effect: 'Auszahlung abgeschlossen, Gast verlaesst den Floor.',

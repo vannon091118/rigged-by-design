@@ -1,4 +1,3 @@
-// @loc-exception: Der Tisch haelt Filz, Schuh, zwei Haende und die Aufdeck-Reihenfolge in einem Ticker; getrennt muessten Kartenplaetze und Handstaende doppelt gepflegt werden.
 /** Blackjack-Tisch in Pixi: Dealer oben, Spieler unten, Karten fliegen aus dem Schuh. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { Card } from '../../core/rng/shoe';

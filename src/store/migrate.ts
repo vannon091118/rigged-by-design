@@ -7,7 +7,10 @@ import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
 import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
-import type { ActivePenalty, CarpetId, Crate, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
+import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
+
+const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
+const DEMAND_EVENTS: ReadonlySet<string> = new Set(['NEON_NACHT', 'TURNIER_ABEND']);
 
 interface SavedEntry {
   readonly tick: number;
@@ -33,6 +36,10 @@ export interface SavedGame {
   readonly tick: number;
   readonly day: number;
   readonly nextGuestId: number;
+  readonly nextArrivalTick?: number;
+  readonly satisfaction?: number;
+  readonly demandTier?: DemandTier;
+  readonly demandEvent?: DemandEvent | null;
   readonly nextFurnitureId: number;
   readonly guardsHired: number;
   readonly crates?: Crate[];
@@ -112,6 +119,15 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.tick = saved.tick ?? 0;
   world.day = saved.day ?? 1;
   world.nextGuestId = saved.nextGuestId ?? 1;
+  const arrival = saved.nextArrivalTick;
+  world.nextArrivalTick = arrival !== undefined && Number.isFinite(arrival)
+    ? Math.max(world.tick + 1, Math.floor(arrival)) : world.tick + 8;
+  world.satisfaction = Number.isFinite(saved.satisfaction)
+    ? Math.min(100, Math.max(0, saved.satisfaction!)) : 55;
+  world.demandTier = saved.demandTier && DEMAND_TIERS.has(saved.demandTier) ? saved.demandTier : 'BUDE';
+  const event = saved.demandEvent;
+  world.demandEvent = event && DEMAND_EVENTS.has(event.kind) && Number.isFinite(event.untilTick)
+    && event.untilTick > world.tick ? { kind: event.kind, untilTick: Math.floor(event.untilTick) } : null;
   world.nextFurnitureId = saved.nextFurnitureId ?? 100;
   world.guardsHired = saved.guardsHired ?? 0;
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));

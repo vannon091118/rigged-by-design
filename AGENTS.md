@@ -22,7 +22,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run test` — Vitest run (CI alias `test:ci`).
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
-- `npm run check:loc` — LOC guard (200 LOC/file; 350 with `// @loc-exception:` on line 1, min 1 char reason).
+- `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
 - `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build).
 - `npm run test:perf` — feste Messläufe (not in verify:all). `npm run bench:lowend` pins the run to one core; `npm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
@@ -44,7 +44,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Pitfalls
 
 - Do not hand-edit generated files in `dist/`.
-- LOC guard fails the build; keep files under limits or add justified `// @loc-exception:`.
+- LOC guard fails the build; reduce below the Hot Zone of the file's responsibility instead of adding an exception. Each file has exactly one responsibility and one budget; legacy exceptions are migration debt and only shrink.
 - `test:perf` intentionally not in `verify:all`; don't gate on it on slow hardware.
 - Commit messages verified by `verify:commit-msg`; new error codes in `docs/ERROR_CATALOG.md`.
 - `verify-test-quality` requires `@test-target` and `@error-code` headers on `.test.ts` and `.test.tsx`; fixed numeric `new Prng(...)` seeds are rejected, use `randomSeed()`.

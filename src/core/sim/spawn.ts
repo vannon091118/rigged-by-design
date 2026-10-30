@@ -1,21 +1,15 @@
-/** Nachfrage: Gäste kommen nur, wenn der Laden sauber, heil und einladend wirkt. */
+/** Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. */
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { admitFiat } from './money';
-import { UNSAFE_REPUTATION_SPAWN_FACTOR, MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
+import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
 import { makeGuest, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, pathTo, spawnPoint } from './world';
 
-const MAX_GUESTS: Record<WorldState['template'], number> = { SMALL: 10, MEDIUM: 18, LARGE: 28 };
-
-function maxGuests(world: WorldState): number {
-  return MAX_GUESTS[world.template];
-}
-
-/** 0..1: Ordnung, Zustand und Attraktion bestimmen den Zulauf. */
+/** 0..100: Ordnung, Zustand und Attraktion speisen eine Nachfragequelle, keine Sperre. */
 export function reputation(world: WorldState): number {
   if (world.furniture.length === 0) return 0;
   const condition = world.furniture.reduce((sum, item) => sum + item.condition, 0) / world.furniture.length;
@@ -25,20 +19,8 @@ export function reputation(world: WorldState): number {
   return Math.max(0, Math.min(100, condition * 0.7 + staffBonus + attraction - dirtPenalty));
 }
 
-export function spawnChance(world: WorldState): number {
-  const base = 0.015 + (reputation(world) / 100) * 0.075;
-  const unsafe = world.activePenalties.some((penalty) => penalty.kind === 'UNSAFE_REPUTATION');
-  return unsafe ? base * UNSAFE_REPUTATION_SPAWN_FACTOR : base;
-}
-
-/** Ein Casino mit zwei Plaetzen zieht keine zehn Gaeste an; Sitzplaetze begrenzen den Andrang. */
-export function serviceCapacity(world: WorldState): number {
-  const seats = world.furniture.reduce((sum, item) => sum + (item.gameId ? item.seats : 0), 0);
-  return Math.min(maxGuests(world), 3 + seats * 2);
-}
-
+/** Keine Gaestezahl sperrt den Eingang; der Betrieb regelt den Andrang ueber Service und Laune. */
 export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest | null {
-  if (world.guests.length >= serviceCapacity(world)) return null;
   const id = world.nextGuestId++;
   const returning = pickReturningVisitor(world, id);
   const persona = returning ? returning.persona : randomPersona(prng, world.template);

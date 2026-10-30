@@ -1,6 +1,6 @@
 /** Was die UI sieht: Welt plus abgeleitete Ledger-Werte. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
-import type { ActivePenalty, Crate, Dispute, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
+import type { ActivePenalty, Crate, DemandSnapshot, Dispute, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
@@ -12,7 +12,9 @@ export interface GameView {
   readonly zones: readonly Zone[];
   readonly furniture: readonly Furniture[];
   readonly guests: readonly Guest[];
-  readonly capacity: number;
+  /** Spielplätze: Servicegröße, keine Obergrenze für Ankünfte. */
+  readonly seats: number;
+  readonly demand: DemandSnapshot;
   readonly player: Player;
   readonly dirtyTiles: ReadonlySet<number>;
   readonly tick: number;
