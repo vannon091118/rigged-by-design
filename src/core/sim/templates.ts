@@ -73,6 +73,10 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     totalPlinkoDrops: 0,
     addictionScore: 0,
     lastPlinko: null,
+    exclusionPact: null,
+    playerAddictionScore: 0,
+    brokenExclusionPacts: 0,
+    clarityBadge: false,
     lastEvent: template === 'SMALL' ? 'Kleine Bude eröffnet. Ein Automat steht gratis.' : 'Neues Haus eröffnet.',
     guardsHired: 0,
   };

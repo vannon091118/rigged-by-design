@@ -9,6 +9,9 @@ const EXTERNAL = 'EXTERNAL_WORLD';
 export const SHOP = 'SHOP';
 export const STAFF = 'STAFF';
 export const UTILITIES = 'UTILITIES';
+/** Arbeitsleistung finanziert den Disziplin-Bonus; PLAYER_CASH ist das ehrliche Gegenkonto. */
+export const EXTERNAL_WORK = 'EXTERNAL_WORK';
+export const PLAYER_CASH = 'PLAYER_CASH';
 /** Gebuchte Verbindlichkeit: offener Gewinn, den das Hauskonto gerade nicht deckt. */
 export const DEBT_ACCOUNT = 'HAUS_SCHULDEN';
 

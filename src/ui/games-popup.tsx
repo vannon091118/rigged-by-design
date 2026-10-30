@@ -6,12 +6,14 @@ import type { GameResult } from '../core/games/contracts';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { PopupShell } from './popup-shell';
+import { SelfExclusionPanel } from './self-exclusion-panel';
 
 interface Props {
   readonly view: GameView;
   readonly onClose: () => void;
   readonly onPlay: (rivalId: RivalId, machineIndex: number, betVC: number) => GameResult | null;
   readonly onTakeHome: () => void;
+  readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
 
 const BET_STEPS = [1, 2, 5, 10] as const;
@@ -20,7 +22,7 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onTakeHome }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: Props) {
   const states = rivalStates(view.tick);
   const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
   const [machineIndex, setMachineIndex] = useState(0);
@@ -80,6 +82,8 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome }: Props) {
           <button type="button" className="btn small ghost" onClick={() => setFull((value) => !value)}>{full ? 'FENSTER' : 'VOLLBILD'}</button>
         </div>
       </div>
+
+      <SelfExclusionPanel view={view} onExclusion={onExclusion} />
 
       <section className="rival-profile" aria-label={`Profil ${rival.name}`}>
         <div>

@@ -4,6 +4,7 @@ import type { GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
 import { fromVC, toVCString, type VaCoinMicro } from '../core/economy/vacoin';
 import { recordJournal } from '../core/sim/journal';
+import { recordExclusionPlay } from '../core/sim/self-exclusion-bet';
 import { visitRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 
@@ -27,6 +28,7 @@ export function visitRivalWithJournal(
   world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, betVC: number, prng: Prng,
 ): ForeignOutcome {
   const outcome = playRivalGame(ledger, rivalId, machineIndex, betVC, prng, world.tick);
+  recordExclusionPlay(world, fromVC(betVC), outcome.result.payout, world.tick);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Besuch im fremden Haus',
     effect: outcome.notice, refs: { rivalId },

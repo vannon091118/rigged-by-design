@@ -59,6 +59,10 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       totalPlinkoDrops: world.totalPlinkoDrops,
       addictionScore: world.addictionScore,
       lastPlinko: world.lastPlinko,
+      exclusionPact: world.exclusionPact,
+      playerAddictionScore: world.playerAddictionScore,
+      brokenExclusionPacts: world.brokenExclusionPacts,
+      clarityBadge: world.clarityBadge,
       entries: ledger.entries.map(({ tick, from, to, amount, reason }) => ({ tick, from, to, amount, reason })),
       prngState,
   };

@@ -1,7 +1,7 @@
 /** Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. */
 import type { Ledger } from '../core/economy/ledger';
 import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
-import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
+import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
 import { brawlWinChance } from '../core/sim/brawl-combat';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation, serviceCapacity } from '../core/sim/spawn';
@@ -41,6 +41,10 @@ function worldSnapshot(world: WorldState) {
     totalPlinkoDrops: world.totalPlinkoDrops,
     addictionScore: world.addictionScore,
     lastPlinko: world.lastPlinko,
+    exclusionPact: world.exclusionPact ? { ...world.exclusionPact } : null,
+    playerAddictionScore: world.playerAddictionScore,
+    brokenExclusionPacts: world.brokenExclusionPacts,
+    clarityBadge: world.clarityBadge,
   };
 }
 
@@ -61,6 +65,7 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     brawlChance: brawlWinChance(world),
     house: ledger.getBalance(HAUSKONTO),
     wallet: ledger.getBalance(PORTEMONNAIE),
+    playerCash: ledger.getBalance(PLAYER_CASH),
     desk: ledger.getBalance(WECHSELKASSE),
     pending,
     guestMoney,

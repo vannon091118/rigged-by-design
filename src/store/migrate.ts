@@ -5,6 +5,7 @@ import { reputation } from '../core/sim/spawn';
 import { newPlayerRpg } from '../core/sim/player-rpg';
 import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
 import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
+import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
 
@@ -60,6 +61,10 @@ export interface SavedGame {
   readonly totalPlinkoDrops?: number;
   readonly addictionScore?: number;
   readonly lastPlinko?: PlinkoDrop | null;
+  readonly exclusionPact?: ExclusionPact | null;
+  readonly playerAddictionScore?: number;
+  readonly brokenExclusionPacts?: number;
+  readonly clarityBadge?: boolean;
   readonly entries: readonly SavedEntry[];
   readonly prngState: number;
 }
@@ -158,6 +163,12 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.totalPlinkoDrops = Number.isSafeInteger(saved.totalPlinkoDrops) ? Math.max(0, saved.totalPlinkoDrops!) : 0;
   world.addictionScore = Number.isFinite(saved.addictionScore) ? Math.min(100, Math.max(0, saved.addictionScore!)) : 0;
   world.lastPlinko = saved.lastPlinko ?? null;
+  world.exclusionPact = saved.exclusionPact ? { ...saved.exclusionPact } : null;
+  world.playerAddictionScore = Number.isFinite(saved.playerAddictionScore)
+    ? Math.min(100, Math.max(0, saved.playerAddictionScore!)) : 0;
+  world.brokenExclusionPacts = Number.isSafeInteger(saved.brokenExclusionPacts)
+    ? Math.max(0, saved.brokenExclusionPacts!) : 0;
+  world.clarityBadge = saved.clarityBadge ?? false;
   world.lastEvent = saved.lastEvent ?? 'Spielstand geladen.';
   if (world.journal.length === 0) {
     recordJournal(world, {

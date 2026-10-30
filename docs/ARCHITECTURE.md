@@ -55,19 +55,19 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 1: `src/ui/__tests__/ui.test.tsx` |
 | @types/node | ^26.6.6 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 15: `scripts/autofix-0911.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/check-loc.mjs`<br>`scripts/ci-bump-version.mjs`<br>`scripts/lib/report.mjs`<br>`scripts/run-pipeline.mjs`<br>… (+9) |
-| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 12: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/store/use-world-store.ts`<br>`src/ui/diagnostics-popup.tsx`<br>`src/ui/games-popup.tsx`<br>… (+6) |
+| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 13: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/store/use-world-store.ts`<br>`src/ui/diagnostics-popup.tsx`<br>`src/ui/games-popup.tsx`<br>… (+7) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^4.3.4 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |
 | eslint | ^10.13.0 | Lint | Fail-Closed-Lint-Gate mit TypeScript-Parser und ungenutzten Symbolen. | 2: `eslint.config.mjs`<br>`package.json` |
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `eslint.config.mjs` |
 | jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 3: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/ui/__tests__/ui.test.tsx` |
 | pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 11: `src/render/comic-bubbles.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-perf.bench.ts`<br>`src/render/floor-props.ts`<br>`src/render/floor-stage.tsx`<br>`src/render/floor-touch.ts`<br>… (+5) |
-| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 12: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/store/use-world-store.ts`<br>`src/ui/diagnostics-popup.tsx`<br>`src/ui/games-popup.tsx`<br>… (+6) |
+| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 13: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/store/use-world-store.ts`<br>`src/ui/diagnostics-popup.tsx`<br>`src/ui/games-popup.tsx`<br>… (+7) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 1: `src/main.tsx` |
 | typescript | ^5.7.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 1: `tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `eslint.config.mjs` |
 | vite | ^6.0.7 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 41: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/plinko-sandbox.test.ts`<br>… (+35) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 42: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/plinko-sandbox.test.ts`<br>… (+36) |
 <!-- DEP_MATRIX_END -->
 
 ## Delivery-Regel

@@ -4,6 +4,7 @@ import type { ActivePenalty, Crate, Dispute, Guest, Player, PriceBook, StaffAgen
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
+import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 
 export interface GameView {
   readonly template: TemplateId;
@@ -33,6 +34,11 @@ export interface GameView {
   readonly totalPlinkoDrops: number;
   readonly addictionScore: number;
   readonly lastPlinko: PlinkoDrop | null;
+  readonly exclusionPact: ExclusionPact | null;
+  readonly playerAddictionScore: number;
+  readonly brokenExclusionPacts: number;
+  readonly clarityBadge: boolean;
+  readonly playerCash: VaCoinMicro;
   readonly parts: number;
   readonly guestsServed: number;
   readonly wallColor: string;

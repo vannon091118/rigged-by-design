@@ -5,6 +5,7 @@ import { fromVC, toVCString } from '../core/economy/vacoin';
 import type { GameResult } from '../core/games/contracts';
 import { deployGate, type GateResult } from '../core/games/plinko-sandbox';
 import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMode } from '../core/games/plinko-config';
+import { honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
 import { cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
 import { payGuest } from '../core/sim/service-actions';
 import { deployHeldCrate, movePlayer, pickupCrate, serveDesk, serveDrink, setNeonColor, setWallColor, storeHeldCrate, takeDrink, upgradeBar, upgradeWc } from '../core/sim/player';
@@ -274,7 +275,10 @@ class WorldStore {
     const item = this.#world.furniture.find((entry) => entry.id === itemId);
     if (!item) return null;
     const result = testSpin(item, this.#prng, this.#world);
-    if (item.gameId === 'PLINKO') { this.#notice = 'Plinko-Bahn gespielt.'; this.#emit(); }
+    if (item.gameId === 'PLINKO' || item.gameId === 'SLOT') {
+      this.#notice = item.gameId === 'SLOT' ? 'Slot-Telemetrie aktualisiert.' : 'Plinko-Bahn gespielt.';
+      this.#emit();
+    }
     return result;
   }
   deployPlinko(input: PlinkoConfig): GateResult {
@@ -297,6 +301,14 @@ class WorldStore {
       if (mode !== 'SINGLE' && plinkoProgress(this.#world.totalPlinkoDrops, this.#world.addictionScore, this.#world.plinko).rows < (mode === 'TWIN' ? 9 : 12)) throw new Error(`${mode} ist noch nicht freigeschaltet.`);
       this.#world.plinkoMode = mode;
       this.#notice = `Plinko-Modus: ${mode}.`;
+    });
+  }
+  exclusion(command: 'START' | 'HONOR', limitVC = 100): void {
+    this.#guard(() => {
+      const result = command === 'START'
+        ? startExclusionPact(this.#world, this.#ledger, fromVC(limitVC), this.#world.tick)
+        : honorExclusionPact(this.#world, this.#ledger, this.#world.tick);
+      this.#notice = result.notice;
     });
   }
   dismiss(): void {

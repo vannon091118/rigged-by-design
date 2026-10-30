@@ -83,7 +83,7 @@ describe('UI-Integration', () => {
   });
 
   it('zeigt echte Rivalenprofile statt hartkodierter Häuser', () => {
-    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onTakeHome={noop} />);
+    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onTakeHome={noop} onExclusion={noop} />);
     expect(screen.getByText(/Kalle/).textContent).toContain('Kalle');
     expect(screen.queryByText('Neon-Keller')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: /Goldene Hand/ }));

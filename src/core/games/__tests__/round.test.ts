@@ -20,9 +20,8 @@ const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLI
  * Seed nicht am Bandrand kippt; POKER braucht wegen Royal/Straight Flush mehr
  * Runden als die uebrigen Spiele.
  */
-const ROUNDS: Readonly<Record<GameId, number>> = {
-  SLOT: 200_000, BLACKJACK: 100_000, ROULETTE: 100_000,
-  SHELL: 100_000, DICE: 100_000, PLINKO: 5_000,
+const ROUNDS: Readonly<Record<GameId, number>> = {  // SHELL hat eine hohe Varianz (2,85x bei 1/3 Treffer); 300k haelt den 96-%-Rand stabil.
+  SLOT: 200_000, BLACKJACK: 100_000, ROULETTE: 100_000, SHELL: 300_000, DICE: 100_000, PLINKO: 5_000,
   POKER: 400_000,
 };
 

@@ -9,6 +9,7 @@ import type { GameView } from '../store/types';
 import { vc } from './format';
 import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
+import { SlotTelemetry } from './slot-telemetry';
 
 interface Props {
   readonly item: Furniture;
@@ -52,6 +53,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               <Stat label="BESTAND" value={`${item.stock}/${6 + 6 * view.barLevel}`} bad={item.stock === 0} />
             )}
           </div>
+          {item.gameId === 'SLOT' && <SlotTelemetry memory={item.slotMemory} />}
           {item.gameId === 'PLINKO' && (
             <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
           )}

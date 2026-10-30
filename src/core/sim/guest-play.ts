@@ -3,6 +3,7 @@ import type { Ledger } from '../economy/ledger';
 import { canAfford, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction } from '../games/contracts';
 import { playPlinkoRound } from '../games/plinko-sandbox';
+import { playSlotSession } from '../games/slot-session';
 import type { Prng } from '../rng/prng';
 import { clamp, releaseAndChoose } from './guest-core';
 import { chooseActivity } from './guest-choice';
@@ -26,9 +27,11 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   const effects = modEffects(item);
   const result = item.gameId === 'PLINKO'
     ? playPlinkoRound(world, prng, bet, effects.bonusBps)
-    : playAction({ game: item.gameId ?? 'SLOT', stake: bet, bonusBps: effects.bonusBps }, prng);
+    : item.gameId === 'SLOT'
+      ? playSlotSession(item, prng, bet, effects.bonusBps)
+      : playAction({ game: item.gameId ?? 'SLOT', stake: bet, bonusBps: effects.bonusBps }, prng);
   try {
-    placeBet(ledger, guest.id, bet, world.tick);
+    if (result.stake > ZERO_VC) placeBet(ledger, guest.id, result.stake, world.tick);
   } catch {
     releaseAndChoose(world, guest);
     guest.state = 'CASHOUT';

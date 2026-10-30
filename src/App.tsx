@@ -200,6 +200,7 @@ export default function App() {
           onClose={() => setPopup(null)}
           onPlay={(rivalId, machineIndex, betVC) => worldStore.playRival(rivalId, machineIndex, betVC)}
           onTakeHome={() => worldStore.takeHome(5)}
+          onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
         />
       )}
 

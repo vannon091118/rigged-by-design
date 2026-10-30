@@ -6,6 +6,8 @@ import type { PlayerRpgState } from './player-rpg';
 import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../games/plinko-config';
+import type { SlotMemory } from '../games/slot-transparency';
+import type { ExclusionPact } from './self-exclusion-bet';
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
 
@@ -54,6 +56,7 @@ export interface Furniture {
   mods: ModId[];
   reels: number;
   baseBet: VaCoinMicro;
+  slotMemory?: SlotMemory;
 }
 
 export interface Guest {
@@ -217,6 +220,10 @@ export interface WorldState {
   totalPlinkoDrops: number;
   addictionScore: number;
   lastPlinko: PlinkoDrop | null;
+  exclusionPact: ExclusionPact | null;
+  playerAddictionScore: number;
+  brokenExclusionPacts: number;
+  clarityBadge: boolean;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.
