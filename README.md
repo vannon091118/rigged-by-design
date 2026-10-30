@@ -5,152 +5,115 @@
 <h1 align="center">Rigged by Design</h1>
 
 <p align="center">
-  <strong>Dein Casino. Deine Gäste. Deine Regeln.</strong><br>
-  Vite · React 19 · TypeScript · PixiJS 8 · Vitest
+  <strong>Dein Casino. Deine Gäste. Deine Buchhaltung. Deine Schuld.</strong><br>
+  Ein Aufbauspiel über den einzigen Ort, an dem „Der Kunde ist König“ ein schlechtes Geschäftsmodell ist.
 </p>
 
-> „Der Hausvorteil ist kein Bug. Er ist das Produkt.“
+> „Der Hausvorteil ist kein Bug. Er ist die Geschäftsidee.“
 
-Kein Echtgeld. Keine echten Casinos. Nur fiktive VaCoins, simulierte Gäste und ein Haus, das jeden Tag Miete frisst.
+Willkommen in **Rigged by Design**, dem Casino-Simulator, in dem du nicht spielst. Du besitzt. Klingt erst einmal nach einem Upgrade. Ist es auch – bis dir auffällt, dass Besitz Miete, Löhne, kaputte Sofas und Gäste mit Meinungen bedeutet.
 
----
+Kein Echtgeld. Keine echten Casinos. Nur VaCoins, ein paar sehr entscheidungsfreudige Pixelmenschen und ein Haus, das jeden Tag ein bisschen mehr frisst.
 
-## Die Idee
+![Spielfeld mit Gästen, Räumen und HUD](docs/screenshots/v0.3.23/01-spielfeld-detail.png)
 
-Du startest mit **0,00 VC** und **einem gratis Automaten**. Gäste betreten dein Casino am Eingang, wechseln an der Kasse Fiat in Chips und suchen sich selbst einen Platz. Manche spielen, manche trinken, manche gehen aufs Klo – und alle entscheiden anhand von **Laune, Geduld, Sucht, Budget und Persona**, ob dein Angebot zu ihnen passt.
+## Die Idee (und warum sie ein Finanzamt braucht)
 
-Es gibt **ein Bild**: den Floor. Keine Tabs, keine Dashboard-Spalten. Bauen, Gäste, Personal, Preise und fremde Häuser öffnen als Popups; dahinter läuft die Simulation weiter.
+Du startest mit **0,00 VC** und **einem gratis Automaten**. Das ist keine Challenge, das ist eine Diagnose.
 
-Der Reiz ist nicht, Slot-Mathematik zu lernen. Der Reiz ist, **Mods, Spiele und Preise zu einer Kombination zu bauen**, die genau die Gäste anzieht, die bleiben und irgendwann süchtig werden. Und die, die nicht bleiben, werden wütend und beschädigen dein Mobiliar – es sei denn, du zahlst für einen Guard.
+Deine Gäste betreten das Casino am Eingang, wechseln an der Kasse Fiat in Chips und suchen sich selbst einen Platz. Manche spielen, manche trinken, manche gehen aufs Klo – und alle entscheiden anhand von **Laune, Geduld, Sucht, Budget und Persona**, ob dein Angebot zu ihnen passt. Du hast dagegen einen Ruf, eine Bar, die immer leer ist, und die vage Hoffnung, dass niemand das Sofa anfasst.
 
-Fremde Casinos sind der Ort, an dem **du Gast bist**. Dort spielst du mit deinem eigenen Portemonnaie gegen die Hausregeln anderer Besitzer.
+Es gibt genau **ein Bild**: den Floor. Keine Tabs, keine Dashboard-Spalten, keine Exceltabelle mit Glücksspiel-Ästhetik. Okay, doch: Die Buchhaltung gibt es auch. Aber sie versteckt sich hinter „Prüfung“, weil wir wissen, wie Menschen auf Buchhaltung reagieren.
 
-## Der Kreislauf
+Der Reiz ist nicht, Slot-Mathematik zu lernen. Der Reiz ist, **Mods, Spiele und Preise zu einer Kombination zu bauen**, die genau die Gäste anzieht, die bleiben, trinken und irgendwann süchtig werden – und nicht die, die wütend werden und dein Mobiliar beschädigen. Es sei denn, du zahlst für einen Türsteher. Der ist billiger als das Sofa. Meistens.
 
-1. **Gäste kommen.** Zulauf hängt an Ordnung, Zustand deiner Geräte, Personal und Attraktion – nicht an einem Timer.
-2. **Wechselkasse.** Jeder Gast bringt Fiat mit. Erst am Schalter wird daraus VC; es gibt keine zweite Geldwahrheit.
-3. **Angebot.** Gäste wählen nach Persona-Geschmack, Mindesteinsatz, Zustand und Mods. Volle Plätze bedeuten Warten oder Ausweichen.
-4. **Spiel.** Einsätze gehen ins Hauskonto, Gewinne warten als offene Auszahlung. Du zahlst an der Kasse aus.
-5. **Ausbau.** Vom Hauskonto kaufst du Spiele, Deko, Mods, Walzen, Personal, Reinigung und Reparaturen.
-6. **Zustand.** Dreck und kaputte Geräte senken die Reputation. Weniger Zulauf, schlechtere Laune, mehr Wut.
-7. **Fremdes Haus.** Nimm Bargeld aus dem Hauskonto mit, setze es draußen und bring Gewinne zurück.
+Fremde Casinos sind der Ort, an dem **du Gast bist**. Dort spielst du mit deinem eigenen Portemonnaie gegen die Hausregeln anderer Besitzer. Endlich mal nicht verantwortlich. Nur zahlend.
 
-## Zwei Töpfe, eine Wahrheit
+## In sieben Schritten zum respektablen Etablissement
+
+1. **Bauen öffnen.** Der erste Automat steht gratis. „Gratis“ heißt hier: Du zahlst mit deiner Zeit.
+2. **Kiste abholen, tragen, aufstellen.** Ein Casino besteht zu achtzig Prozent aus Logistik und zu zwanzig Prozent aus Leuten, die glauben, es sei Glücksspiel.
+3. **Gäste kommen lassen.** Sie wechseln an der Wechselkasse Fiat in Chips. Geld wechselt die Form, nicht den Besitzer. Noch nicht.
+4. **Offene Gewinne auszahlen.** Nicht auszahlen spart Geld. Und kostet Gäste. Und Ruf. Und alles.
+5. **Preise, Mods und Bar einrichten.** Die Bar ist kein Service. Die Bar ist Klebstoff in Getränkeform.
+6. **Personal einstellen.** Es putzt, zapft und schlichtet, während du woanders bist. Das nennt man Vertrauen. Oder Lohnfortzahlung.
+7. **Fremdes Casino besuchen.** Dort bist du endlich Gast – also der, der zahlt. Der Kreis schließt sich. Leider mit deinem Geld.
+
+![Bauen: Spiele, Deko, Personal und Preise](docs/screenshots/v0.3.23/04-bauen.png)
+
+## Der Kreislauf des Geldes (es kreist selten zu dir zurück)
+
+Gäste kommen nicht wegen eines Timers, sondern wegen Ordnung, Zustand deiner Geräte, Personal und Attraktion. Sie setzen ein, gewinnen oder verlieren, und was sie gewinnen, wartet als **offene Auszahlung** an der Kasse. Du zahlst aus. Danach kaufst du Spiele, Deko, Mods, Walzen, Personal, Reinigung und Reparaturen. Der Rest ist Gewinn. Theoretisch.
+
+Praktisch ist der Rest meistens ein Sofa.
+
+## Die vier Töpfe (keiner davon ist ein Sparschwein)
 
 | Topf | Wofür |
 | --- | --- |
-| **Hauskonto** | Geschäftskonto. Alles, was das Casino kauft oder einnimmt, läuft hier durch. |
-| **Portemonnaie** | Dein persönliches Bargeld. Entsteht nur, wenn du vom Hauskonto abhebst, und wird nur in fremden Häusern verspielt. |
-| **Wechselkasse** | Der physische Schalter. Gäste wechseln hier Fiat in Chips und lassen sich Gewinne auszahlen. |
+| **Hauskonto** | Das Geld des Casinos. Es gehört dem Haus. Also dir. Also dem Finanzamt, das es nicht gibt. |
+| **Portemonnaie** | Dein privates Bargeld. Du kommst nur heran, indem du es dem Hauskonto wegnimmst. Der einzige Diebstahl, den dieses Spiel erlaubt. |
+| **Wechselkasse** | Hier wird Fiat zu Chips. Der Gast denkt, er tauscht Geld. Er tauscht die Illusion. |
+| **Offene Gewinne** | Geld, das Gäste gewonnen und noch nicht abgeholt haben. Es wartet. Es drückt. Es ist die ehrlichste Verbindlichkeit im Spiel. |
 
-Jede Buchung läuft über das Ledger. Es gibt kein `addVC` außerhalb einer Buchung, keinen direkten Sprung vom Portemonnaie in den Tresor und keine Geldquelle außerhalb von `EXTERNAL_WORLD`.
+Jeder VaCoin ist eine Buchung. Das ist der langweiligste Satz in dieser Beschreibung und der einzige, auf den wir wirklich stolz sind.
 
-Mitgebrachtes Fiat liegt ab dem Spawn als eigenes Konto (`FIAT_<id>`) im Ledger, nicht mehr im Gastobjekt. Eine Auszahlung wird nie still gekappt: Was das Hauskonto nicht deckt, steht als gebuchte Schuld auf `HAUS_SCHULDEN` und der Gast bekommt trotzdem seine volle Summe.
+## Die Spiele (alle fair, bis auf die, die es nicht sind)
 
-## Zufall
+Sieben Spiele, sieben Charaktere – und ein Testspin, der nichts kostet, weil der Betreiber nicht gegen sein eigenes Haus spielt. Am eigenen Automaten siehst du also nur zu. In fremden Häusern wird mit richtigem Portemonnaie-Geld gespielt.
 
-Alle Spiele ziehen über **[src/core/rng/weighted.ts](src/core/rng/weighted.ts)**: `buildDistribution` legt die Gewichte einmalig fest, `rollNumber` liefert Rohwert, wirksamen Wert, angewendeten Bias und die Chance genau dieses Werts — die Anzeige stammt aus derselben Verteilung, aus der gezogen wird. Der Bias ist hart begrenzt (`strengthBps` ≤ 9.000, Ziel höchstens 10,99-fach gewichtet, Deadzones sperren Werte); ein einzelner Wert kann nie zur sicheren Bank werden.
+- **Slot:** Fünf Walzen, drei Reihen, zehn Linien, BOOK als Wild und Scatter, Freispiele und eine Risiko-Karte nach jedem Gewinn. Der einzige Automat, bei dem du die Walzen sehen kannst, ohne dass jemand „nur noch ein Spin“ sagt.
+- **Blackjack:** Ziehen, halten, verdoppeln. Der Dealer zieht bis 17. Du bis zur Einsicht.
+- **Video Poker:** Fünf Karten, neun Zeilen, halten oder tauschen. Endlich ein Spiel für Menschen mit Entscheidungsschwäche.
+- **Roulette:** 37 Taschen, jeder Jeton eine echte Wette. Die Kugel lügt nicht. Der Rest schon.
+- **Plinko:** Ein Ball, viele Stifte, echte Physik. Das ist kein Glück, das ist Schwerkraft mit Selbstbewusstsein.
+- **Würfel:** Zwei faire Würfel, fünf Felder. Fair. Das ist der Running Gag dieses Casinos.
+- **Hütchenspiel:** Drei Becher, eine Perle. Du wählst, der Geber mischt, die Perle entscheidet. Wie im echten Leben, nur mit weniger Steuern.
 
-Karten laufen über den Schuh in **[src/core/rng/shoe.ts](src/core/rng/shoe.ts)**: Jede Ziehung entfernt die Karte, erst ein leerer Schuh wird neu gemischt. Deshalb kann ein Blatt keine Karte doppelt enthalten. Die Poker-Paytable ist auf die echten Fünf-Karten-Häufigkeiten aus 52 Karten geeicht und hält den RTP im 90–96-%-Band.
+![Blackjack mit offener Dealer-Karte und drei Aktionen](docs/screenshots/v0.3.23/06d-fremdes-casino-blackjack.png)
 
-## Spiele
+![Roulette mit Kessel, Setzfeld und platzierten Jetons](docs/screenshots/v0.3.23/06f-fremdes-casino-roulette.png)
 
-Sieben Spiele mit unterschiedlichen Charakteren: **Book-of-Ra-Slot, Plinko, Blackjack, Video Poker, Roulette, Hütchenspiel und Würfel**. Am eigenen Automaten gibt es nur den **kostenlosen Testspin** – der Betreiber spielt nicht gegen sein eigenes Haus. In fremden Häusern wird mit richtigem Portemonnaie-Geld gespielt, inklusive optionalem Vollbild.
+![Plinko-Brett mit gefallenem Ball und Fachquoten](docs/screenshots/v0.3.23/06g-fremdes-casino-plinko.png)
 
-Im Floor zeigt die Automatenanzeige bei Zoom, was der sitzende Gast gerade dreht. Im Popup siehst du den Testspin mit echten Walzen, Mods und Zustand.
+## Gäste (keine Statisten, leider)
 
-Die Grafik ist vollständig prozedural: blockige Pixel-Figuren auf einem festen Raster, ein Gelenk-Rig mit Idle-, Lauf-, Sitz-, Spiel-, Gewinn-, Verlust-, Trink-, Wut- und Trage-Zustand, Sprechblasen, Emotions-Sticker, Laufwege und Kamera-Zoom. Keine externen Bild-URLs, keine Asset-Pipeline.
+![Gäste-Fenster mit Laune, Geduld und Sucht](docs/screenshots/v0.3.23/05-gaeste.png)
 
-## Floor und Kamera
+Laune unter 40: gereizt. Geduld auf 0: der Gast geht. Sucht hoch: bleibt länger, verliert mehr. Und wenn die Bar leer ist, sinkt die Laune, als hätte jemand das Konzept „Gastfreundschaft“ gestrichen.
 
-Drei Hausgrößen als Vorlagen: **klein (30×30), mittel (60×60), groß (90×90)**. Jede Region ist 30×30 Kacheln. Die Minimap zeigt die Übersicht; ein Klick auf eine Zone zoomt hinein. Der Zoom folgt deinem Charakter, die Übersicht bleibt lesbar.
+Du kannst selbst bedienen: an die Bar gehen, einen Drink zapfen, ihn einem Gast bringen. Oder Personal einstellen und so tun, als hättest du alles im Griff. Beides ist gültig. Eines ist ehrlicher.
 
-Der Charakter läuft per **Point-and-Click** über das Grid. Du kannst Bedienung selbst machen: an die Bar gehen, einen Drink zapfen und ihn einem Gast bringen. Oder Personal einstellen, das sauber macht, hinter der Bar steht und Ärger verhindert.
-
-## Steuerung
+## Steuerung (Maus, Tasten, Hoffnung)
 
 | Ort | Aktion |
 | --- | --- |
 | **Floor** | Freie Fläche: Charakter läuft dorthin. Gast: Budget, Laune, Geduld, Sucht. Objekt: Zustand, Mods, Testspin. |
 | **Bauen** | Spiel oder Deko anklicken und auf den Floor setzen – oder direkt aus dem Panel ziehen. |
-| **HUD** | Hauskonto abheben, Gäste ansehen, fremdes Haus besuchen, putzen. |
-| **Minimap** | Zonen anklicken, zoomen, alles einpassen. |
-| **Popup** | `Escape` oder Klick auf den Hintergrund schließt. Die Simulation läuft weiter. |
-| **Tastatur** | Pfeile oder WASD laufen ein Feld; `Enter` stellt eine getragene Möbelkiste am Spieler ab oder lädt Getränke/Teile ab. |
-| **Protokoll** | Jedes Ereignis nennt Zeit, Akteur, Ursache und Folge; Filter für Geld, Gäste, Personal, Lager und Rivalen. |
+| **Mausrad** | Zoomen. Die Übersicht bleibt lesbar, die Details werden teurer. |
+| **Pfeile / WASD** | Laufen. Ein Feld pro Schritt, wie im echten Leben, nur ohne Parkplatzsuche. |
+| **Enter** | Getragene Kiste abstellen oder Getränke und Ersatzteile abladen. |
+| **Escape** | Fenster schließen. Die Simulation läuft weiter; sie wartet nicht auf dich. |
 
-## Architektur
+## Warum „Rigged by Design“?
 
-```text
-src/
-  core/
-    economy/       Ledger, VaCoin als ganzzahlige Mikro-Einheiten
-    rng/           deterministischer Mulberry32
-    sim/           Welt, Templates, Pfade, Gäste, Angebot, Mods, Tick, Aktionen
-    games/         kompakte Runden für alle sieben Spiele
-  store/           ein Besitzer für Welt, Ledger, PRNG, Uhr und Save
-  render/          Pixi: Floor, Kamera, Möbel, Figuren, Dreck
-  ui/              HUD, Minimap und Popups
-  styles/          Tokens, App, Popups
-scripts/           LOC-Guard
-.github/           CI
-```
+Weil „Casino-Simulator“ nach Software klingt und „Rigged by Design“ nach einer Produkthaftungsklage. Wir nehmen beides.
 
-Die Regeln:
+Der Name ist Programm: Das Haus ist manipuliert, die Gäste sind simuliert, und du bist der einzige echte Fehler im System.
 
-1. **200 LOC pro `.ts`/`.tsx`-Datei.** Renderer und der zentrale Store dürfen 350 LOC haben, aber nur mit begründetem `// @loc-exception:` in Zeile 1. `scripts/check-loc.mjs` bricht sonst ab.
-2. **`src/core/` bleibt headless.** Simulation und Geld müssen ohne Browser testbar sein.
-3. **Ein Besitzer pro Zustand.** `world-store` hält Welt, Ledger und PRNG; UI-Zustand wie offene Popups lebt in React.
-4. **Geld ist ganzzahlig.** 1 VC = 10.000 Mikro-Einheiten, keine Floats.
-5. **Jede Buchung ist eine Ledger-Zeile.** Käufe, Einsätze, Gewinne, Löhne, Miete und Auszahlungen.
+## Was du nicht erwarten solltest (eine Liste, die wir ernst meinen)
 
-## Start
+- **Kein Echtgeld, keine Einzahlung, kein Gewinn.** VaCoins sind fiktiv. Deine Entscheidungen sind es nicht.
+- **Kein Multiplayer, keine Accounts.** Dein Fortschritt bleibt auf deinem Gerät. Wie deine Motivation, wenn die Bar zum dritten Mal leer ist.
+- **Keine vollständigen Tisch-Engines.** Kein Split, keine Versicherung, keine Side Pots. Wir sind ein Aufbauspiel, kein Turnier. Das nennen wir „fokussiert“.
+- **Keine moralische Erlösung.** Der Hausvorteil bleibt. Auch für dich.
 
-Voraussetzung: Node 22 und npm.
-
-```bash
-npm ci
-npm run dev
-```
-
-Der Dev-Server läuft auf [http://localhost:3000](http://localhost:3000). Ein frischer Stand beginnt mit 0 VC und einem Gratis-Automaten. Der aktuelle Save ist v8: v5, v6 und v7 werden beim Laden migriert und behalten Fiat, offene Gewinne, Journal und Look; v3/v4 werden verworfen.
-
-Alle Gates:
-
-```bash
-npm run verify:all
-```
-
-Die Fail-Closed-Pipeline führt Autofix (ESLint-Fix und Dependency-Matrix), LOC-Guard, Typecheck, Testvertrag, Dead-Export-Gate, `npm audit`, Vitest und Production-Build aus. Jede Fehlermeldung hat das Format `[IDX-XXXX] [ERR-YYYY] Komponente: Klartext`; neue Fehlerarten stehen in [docs/ERROR_CATALOG.md](docs/ERROR_CATALOG.md).
-
-**Delivery-Regel:** Nach jedem abgeschlossenen Arbeits-Turn wird auf `main` geliefert. Der verbindliche Weg ist `npm run turn:finish -- <pfade>` — Autofix, alle Gates, deutscher Steam-Developer-Notes-Commit ohne Drittanbieter-Trailer, Push auf `main`. Gestaged werden nur die genannten Pfade; ohne Argumente nur bereits verfolgte Änderungen, nie der ganze Arbeitsbaum. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` fällig. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
-
-**Geschwindigkeit getrennt:** `npm run test:perf` misst den Durchsatz der Spielrunden (frischer Seed pro Lauf, feste Rundenanzahl, ms/op). Der Benchmark gehört bewusst nicht zu `verify:all` und wird auf langsamer Hardware nicht rot.
-
-## Tests
-
-- **Ledger:** doppelte Buchführung, Unterdeckung, 400 zufällige Buchungen, Integrität, Checkpoint und strukturierte Diagnose.
-- **Protokoll:** jede Ledger-Zeile wird genau einmal kopiert, Welt-Ereignisse tragen Ursache und Folge, der Puffer bleibt bei 240 Einträgen.
-- **Spiele:** jedes Spiel deterministisch und gültig; Monte-Carlo sichert 90–96 % RTP und sichtbare Gewinnchancen; Testspin kostet kein Geld; fremde Runden buchen nur vom Portemonnaie.
-- **Welt:** Startzustand mit 0 VC und einem Gratis-Automaten; Spawn am Eingang; Max-Pool für Laune, Geduld und Sozialverhalten; Wechsel erst an der Kasse.
-- **Angebot:** Mods verändern Anziehung und Geduld; Persona-Geschmack verschiebt die Platzwahl.
-- **Simulation:** 700 Ticks ohne negatives Konto, ohne Ledger-Leck, mit Tageswechsel.
-- **Service:** Drink zapfen und am Gast abgeben; belegte Plätze werden nicht doppelt reserviert.
-- **UI und Fokus:** HUD-Alarm bei Ledger-Bruch, Fokusfalle und Fokus-Rückgabe im Popup, Protokollfilter, Charakter-Editor und echte Rivalenprofile (jsdom).
-- **Langzeit und Save:** 3.000 Ticks mit Invarianten (`npm run soak` für 100.000), Save-v8-Roundtrip mit deterministischer Fortsetzung.
-- **Rig:** Pose-Mathematik deterministisch, Sitzen/Gewinnen/Laufen unterscheidbar, Weltzustand wird korrekt auf Animationszustand abgebildet.
-- **Zufall in Tests:** Jeder Lauf zieht einen nicht vorab wählbaren Seed über `src/test/random-seed.ts`; feste Seed-Literale sind im Testvertrag verboten.
-- **Benchmarks:** `npm run test:perf` misst Spielrunden, Floor, Posen, Speicher und Save-Größe mit festen 5–20 Läufen; `npm run bench:lowend` pinnt den Lauf auf einen Kern.
-
-## Bekannte Grenzen
-
-- **Kein Multiplayer, keine Accounts, keine Cloud-Saves.** Der Stand lebt im Browser.
-- **Die Spiele sind kompakte Simulationen**, keine vollständigen Tisch-Engines mit Split, Double Down oder Side Pots. Das Angebot wächst über Maschinen, Mods und Preise.
-- **Kein Echtgeld.** VaCoins sind fiktiv; die Wirtschaft ist eine Satire auf Casino-Produkte.
-- **Der Save ist lokal.** Das Ereignisprotokoll ist auf die letzten 240 Einträge begrenzt; der Ledger führt einen Replay-Checkpoint, damit die Vollprüfung nicht bei jedem Tick über die ganze Historie läuft. Ein echtes Low-End-Gerät kann hier nur emuliert werden (ein Kern, siehe `bench:lowend`).
-
-## Ernst gemeint
+## Ernst gemeint (der einzige Abschnitt ohne Pointe)
 
 Dieses Spiel simuliert bewusst suchtfördernde Mechaniken: Near Misses, Gewinne, die wie Verluste aussehen, steigende Einsätze, Gäste mit Geduld und Sucht. Das ist Satire über Glücksspielprodukte, kein Glücksspielprodukt. Es gibt kein Echtgeld, keine Einzahlung und keinen Gewinn, der irgendwo ankommt.
 
-Wenn Glücksspiel für dich aufgehört hat, ein Spiel zu sein, ist die [BZgA](https://www.bzga.de/) ein besserer Ansprechpartner als dieses Repository.
+Wenn Glücksspiel für dich aufgehört hat, ein Spiel zu sein, ist die [BZgA](https://www.bzga.de/) ein besserer Ansprechpartner als dieses Repository. Das meinen wir ohne Ironie.
+
+## Schlusswort (mit Pointe)
+
+**Rigged by Design.** Das Haus gewinnt immer. Du bist das Haus. Viel Erfolg.
