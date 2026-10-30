@@ -8,6 +8,7 @@ import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { GameResult } from '../games/contracts';
 import type { Prng } from '../rng/prng';
 import { foreignRound } from './actions';
+import type { DiceBetKind } from '../games/dice-bets';
 import { PORTEMONNAIE } from './money';
 import { modEffects } from './offers';
 import type { GameId, ModId, PersonaId } from './types';
@@ -60,6 +61,7 @@ export const RIVALS: readonly RivalOperator[] = [
       machine('BLACKJACK', 'Blackjack am Samt', 0.25, ['VELVET']),
       machine('POKER', 'Poker mit Hausregel', 0.5, ['NEAR_MISS']),
       machine('SLOT', 'Münzautomat', 0.25, ['NEON', 'CHERRY']),
+      machine('DICE', 'Würfel am Samt', 0.25, ['VELVET']),
     ],
   },
   {
@@ -151,6 +153,7 @@ export function visitRival(
   stake: VaCoinMicro,
   prng: Prng,
   tick: number,
+  options: { readonly variant?: DiceBetKind; readonly captureTrack?: boolean } = {},
 ): RivalVisit {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
@@ -159,6 +162,6 @@ export function visitRival(
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
   if (stake <= ZERO_VC) throw new Error('Kein Einsatz.');
   const edgeBps = rivalEdge(rival, entry);
-  const result = foreignRound(ledger, entry.game, stake, prng, tick, edgeBps);
+  const result = foreignRound(ledger, entry.game, stake, prng, tick, edgeBps, options);
   return { result, machine: entry, rival: rivalState(rival, tick), edgeBps };
 }

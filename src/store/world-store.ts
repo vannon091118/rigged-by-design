@@ -19,6 +19,7 @@ import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
+import type { DiceBetKind } from '../core/games/dice-bets';
 import { riskRivalWin, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
@@ -235,8 +236,8 @@ class WorldStore {
     movePlayer(this.#world, point);
     this.#emit(false);
   }
-  playRival(rivalId: RivalId, machineIndex: number, betVC: number): GameResult | null {
-    const result = this.#foreign(() => visitRivalWithJournal(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng));
+  playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: { variant?: DiceBetKind; captureTrack?: boolean }): GameResult | null {
+    const result = this.#foreign(() => visitRivalWithJournal(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options));
     if (result) this.#emit(false);
     return result;
   }

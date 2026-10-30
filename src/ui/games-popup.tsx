@@ -3,18 +3,22 @@ import { useState } from 'react';
 import { HOUSE_FLOAT } from '../core/sim/money';
 import { RIVALS, rivalStates, type RivalId } from '../core/sim/rivals';
 import type { GameResult } from '../core/games/contracts';
+import type { DiceBetKind } from '../core/games/dice-bets';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand, houseEdgeText } from './glossary';
 import { PopupShell } from './popup-shell';
 import { SelfExclusionPanel } from './self-exclusion-panel';
-import { SlotPopup } from './slot-popup';
+import { TableLauncher } from './table-launcher';
 
 interface Props {
   readonly view: GameView;
   readonly onClose: () => void;
-  readonly onPlay: (rivalId: RivalId, machineIndex: number, betVC: number) => GameResult | null;
+  readonly onPlay: (
+    rivalId: RivalId, machineIndex: number, betVC: number,
+    options?: { variant?: DiceBetKind; captureTrack?: boolean },
+  ) => GameResult | null;
   readonly onRisk: (rivalId: RivalId, color: RiskColor, stakeVC: number) => RiskOutcome | null;
   readonly onTakeHome: () => void;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
@@ -123,10 +127,12 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
         ))}
       </div>
 
-      {machine.game === 'SLOT' ? (
-        <SlotPopup
-          title={machine.label}
-          subtitle={`${rival.name} · ${rival.operator}. Hausvorteil ${(rival.edgeBps / 100).toFixed(2)} %.`}
+      {machine.game === 'SLOT' || machine.game === 'PLINKO' || machine.game === 'DICE' ? (
+        <TableLauncher
+          game={machine.game}
+          label={machine.label}
+          houseName={rival.name}
+          operator={rival.operator}
           wallet={view.wallet}
           house={view.house}
           mods={machine.mods}
@@ -137,8 +143,8 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           onToggleFull={() => setFull((value) => !value)}
           onWithdraw={onTakeHome}
           canWithdraw={view.house > HOUSE_FLOAT}
-          onSpinFor={(betVC) => onPlay(rivalId, machineIndex, betVC)}
-          onGamble={(color, stakeVC) => onRisk(rivalId, color, stakeVC)}
+          onSpin={(betVC, options) => onPlay(rivalId, machineIndex, betVC, options)}
+          onRisk={machine.game === 'SLOT' ? (color, stakeVC) => onRisk(rivalId, color, stakeVC) : undefined}
         />
       ) : (
       <div className={`table-stage${full ? ' full' : ''}`}>

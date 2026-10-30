@@ -2,8 +2,12 @@
 import { mulVC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import type { GameId } from '../sim/types';
+import { DICE_BETS, type DiceBetKind } from './dice-bets';
 import type { SlotLineWin } from './engines/slot';
+import type { PlinkoDrop } from './plinko-config';
 import { playRound } from './round';
+
+const DICE_KINDS = new Set<string>(DICE_BETS.map((bet) => bet.id));
 
 const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 const MAX_ADJUST_BPS = 9_000;
@@ -16,6 +20,10 @@ interface GameAction {
   readonly houseEdgeBps?: number;
   /** Aufschlag der Maschine aus ihren Mods, z. B. CHERRY. */
   readonly bonusBps?: number;
+  /** Gewaehltes Wettfeld am Wuerfeltisch; ohne Angabe gilt "ueber 7". */
+  readonly variant?: DiceBetKind;
+  /** Plinko: die Physikbahn fuer die Buehne mitliefern. */
+  readonly captureTrack?: boolean;
 }
 
 export interface GameResult {
@@ -30,6 +38,10 @@ export interface GameResult {
   readonly grid?: readonly (readonly string[])[];
   readonly wins?: readonly SlotLineWin[];
   readonly books?: number;
+  /** Plinko: Taschen und Bahnen des gefallenen Balls. */
+  readonly drop?: PlinkoDrop;
+  /** Wuerfel: die beiden Augen des Wurfs. */
+  readonly dice?: readonly [number, number];
 }
 
 function assertAdjust(value: number | undefined, label: string): void {
@@ -51,7 +63,10 @@ export function playAction(action: GameAction, prng: Prng): GameResult {
   }
   assertAdjust(houseEdgeBps, 'houseEdgeBps');
   assertAdjust(bonusBps, 'bonusBps');
-  const roll = playRound(game, prng);
+  if (action.variant !== undefined && !DICE_KINDS.has(action.variant)) {
+    throw new Error(`Unbekanntes Wettfeld: ${String(action.variant)}`);
+  }
+  const roll = playRound(game, prng, { variant: action.variant, captureTrack: action.captureTrack });
   // Ein Verlust bleibt ein Verlust: Bonus und Hausvorteil greifen nur auf Gewinne.
   const multiplierBps = roll.multiplierBps > 0
     ? Math.max(0, roll.multiplierBps + (bonusBps ?? 0) - (houseEdgeBps ?? 0))
@@ -66,5 +81,7 @@ export function playAction(action: GameAction, prng: Prng): GameResult {
     grid: roll.grid,
     wins: roll.wins,
     books: roll.books,
+    drop: roll.drop,
+    dice: roll.dice,
   };
 }

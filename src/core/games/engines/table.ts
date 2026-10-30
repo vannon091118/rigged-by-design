@@ -1,10 +1,13 @@
 /** Tischspiele: Roulette mit voller Wettfläche, zwei Wuerfel, Huetchenspiel mit Serie. */
 import type { Prng } from '../../rng/prng';
+import { DICE_PAYOUTS, diceBetWins, type DiceBetKind } from '../dice-bets';
 
 interface TableOutcome {
   readonly multiplierBps: number;
   readonly label: string;
   readonly detail: readonly string[];
+  /** Wuerfel: die beiden Augen, damit die Buehne genau die zeigt. */
+  readonly dice?: readonly [number, number];
 }
 
 // ---------------------------------------------------------------- Roulette
@@ -65,27 +68,19 @@ export function spinRoulette(prng: Prng, bet: RouletteBet): TableOutcome & { rea
 
 // ---------------------------------------------------------------- Wuerfel
 
-type DiceBet = { readonly kind: 'OVER' } | { readonly kind: 'UNDER' }
-  | { readonly kind: 'SEVEN' } | { readonly kind: 'DOUBLES' };
-
-/** Trefferquoten je Wettart bei zwei fairen Wuerfeln (36 Kombinationen). */
-const DICE_PAYOUTS: Readonly<Record<DiceBet['kind'], number>> = {
-  OVER: 22_500, UNDER: 22_500, SEVEN: 56_000, DOUBLES: 56_000,
-};
+type DiceBet = { readonly kind: DiceBetKind };
 
 export function rollDice(prng: Prng, bet: DiceBet): TableOutcome {
   const a = prng.nextInt(1, 6);
   const b = prng.nextInt(1, 6);
   const sum = a + b;
-  const win = bet.kind === 'OVER' ? sum > 7
-    : bet.kind === 'UNDER' ? sum < 7
-      : bet.kind === 'SEVEN' ? sum === 7
-        : a === b;
+  const win = diceBetWins(bet.kind, a, b);
   const multiplierBps = win ? DICE_PAYOUTS[bet.kind] : 0;
   return {
     multiplierBps,
     label: `${a}+${b}=${sum} ${win ? 'gewinnt' : 'verliert'}`,
     detail: [`${a}`, `${b}`, `Satz: ${bet.kind}`],
+    dice: [a, b],
   };
 }
 
