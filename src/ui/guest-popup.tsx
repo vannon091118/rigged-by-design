@@ -1,8 +1,9 @@
-/** Ein Klick auf einen Gast: Sticker, Chips-Budget und drei Bauchgefühle statt Tabellen. */
+/** Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. */
 import { useEffect, useState } from 'react';
 import { dirtyNear, EMOTION_META, emotionOf } from '../core/sim/emotion';
 import type { GameView } from '../store/types';
 import { STATE_LABEL, vc } from './format';
+import { HELP } from './glossary';
 import { PopupShell } from './popup-shell';
 
 interface Props {
@@ -33,9 +34,9 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   return (
     <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide>
       <div className="cashier-strip">
-        <div><span>WECHSELKASSE</span><strong>{vc(view.desk, 2)}</strong></div>
-        <div><span>OFFENE GEWINNE</span><strong>{vc(view.pending, 2)}</strong></div>
-        <p>Geld wartet an der Kasse. Ein Klick auf eine Figur zeigt sofort ihr Budget.</p>
+        <div title={HELP.kasse}><span>WECHSELKASSE</span><strong>{vc(view.desk, 2)}</strong></div>
+        <div title={HELP.offen}><span>OFFENE GEWINNE</span><strong>{vc(view.pending, 2)}</strong></div>
+        <p>Geld wartet an der Wechselkasse. Ein Klick auf eine Figur zeigt Budget, Laune, Geduld und Sucht.</p>
       </div>
       {!guest ? (
         <p className="empty">Noch niemand da. Angebot und Ordnung entscheiden, wie schnell Gäste kommen.</p>
@@ -48,26 +49,40 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
               <span className={`persona persona-${guest.persona}`}>{PERSONA_LABEL[guest.persona] ?? guest.persona}</span>
               <small>{stateLabel}{meta.label !== stateLabel ? ` · ${meta.label}` : ''}</small>
             </div>
-            <div className="guest-budget-big">
+            <div className="guest-budget-big" title="Chips in der Hand, offene Gewinne und noch nicht gewechseltes Bargeld.">
               <span>BUDGET</span>
               <strong>{vc(money.wallet + money.pending + money.fiat, 2)}</strong>
-              <small>{money.pending > 0 ? `${vc(money.pending, 2)} Gewinn wartet` : money.fiat > 0 ? `${vc(money.fiat, 2)} Fiat` : 'in Chips'}</small>
+              <small>
+                {money.pending > 0 ? `${vc(money.pending, 2)} Gewinn – auszahlbar`
+                  : money.fiat > 0 ? `${vc(money.fiat, 2)} Bargeld – noch nicht gewechselt`
+                    : 'nur Chips'}
+              </small>
             </div>
           </div>
           <div className="guest-bars">
-            <Bar label="LAUNE" value={guest.mood} tone="mood" />
-            <Bar label="GEDULD" value={guest.patience} tone="patience" />
-            <Bar label="SUCHT" value={guest.addiction} tone="addiction" />
+            <Bar label="LAUNE" value={guest.mood} tone="mood" hint={HELP.laune} />
+            <Bar label="GEDULD" value={guest.patience} tone="patience" hint={HELP.geduld} />
+            <Bar label="SUCHT" value={guest.addiction} tone="addiction" hint={HELP.sucht} />
           </div>
+          <p className="hint">Laune unter 40: gereizt · Geduld 0: Gast geht · Sucht hoch: bleibt länger, verliert mehr.</p>
           {guest.intent && (
             <p className="guest-intent"><b>Warum:</b> {guest.intent}</p>
           )}
           <div className="guest-actions">
-            {view.player.carrying === 'DRINK' && <button type="button" className="btn small" onClick={() => onServe(guest.id)}>DRINK GEBEN</button>}
-            {money.pending > 0 && <button type="button" className="btn primary small" onClick={() => onPay(guest.id)}>AUSZAHLEN</button>}
-            <button type="button" className="btn small" onClick={() => onTalk(guest.id)}>CHARISMA: BESCHWATZEN (Erfolg {view.talkChances[guest.id] ?? 0} %)</button>
-            {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)}>SCHLICHTEN</button>}
-            {guest.disputeId !== null && !view.staff.guard && <button type="button" className="btn small alert" onClick={() => onFight(guest.disputeId!)}>SELBER KÄMPFEN ({view.brawlChance} %)</button>}
+            {view.player.carrying === 'DRINK' && (
+              <button type="button" className="btn small" onClick={() => onServe(guest.id)} title="Gibt den getragenen Drink aus. Hebt Laune und Geduld.">DRINK GEBEN</button>
+            )}
+            {money.pending > 0 && (
+              <button type="button" className="btn primary small" onClick={() => onPay(guest.id)} title="Bucht den Gewinn in Chips um – erst danach spielt der Gast weiter.">AUSZAHLEN</button>
+            )}
+            <button type="button" className="btn small" onClick={() => onTalk(guest.id)}
+              title="Erfolg: +25 Laune, +20 Geduld. Fehlschlag: beides sinkt und kann Streit auslösen. Danach rund 30 Sekunden Pause.">
+              BESCHWATZEN · {view.talkChances[guest.id] ?? 0} % Erfolg
+            </button>
+            {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)} title="Beendet den Streit friedlich.">SCHLICHTEN</button>}
+            {guest.disputeId !== null && !view.staff.guard && (
+              <button type="button" className="btn small alert" onClick={() => onFight(guest.disputeId!)} title="Risiko: Bei einem Fehlschlag sinkt dein Ruf und du verletzt dich.">SELBER KÄMPFEN · {view.brawlChance} %</button>
+            )}
           </div>
           <div className="guest-chips">
             {guests.map((entry) => {
@@ -88,11 +103,12 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   );
 }
 
-function Bar({ label, value, tone }: { label: string; value: number; tone: string }) {
+function Bar({ label, value, tone, hint }: { label: string; value: number; tone: string; hint: string }) {
   return (
-    <div className="stat-bar" title={label}>
+    <div className="stat-bar" title={hint}>
       <span>{label}</span>
       <div className="track"><i className={`fill ${tone}`} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} /></div>
+      <b>{Math.round(value)}</b>
     </div>
   );
 }

@@ -14,6 +14,9 @@ export function BuildCatalogCards(props: BuildCatalogCardsProps) {
     <div className="build-grid">
       {BUILD_DEFS.map((def) => {
         const poor = view.house < def.cost;
+        const facts = def.gameId
+          ? `${def.seats} Plätze · Einsatz ab ${vc(def.baseBet, 2)}`
+          : def.seats > 0 ? `${def.seats} Sitzplätze` : 'nur Optik und Ruf';
         return (
           <button
             key={def.id}
@@ -26,10 +29,13 @@ export function BuildCatalogCards(props: BuildCatalogCardsProps) {
             }}
             onClick={() => onBuy(def.id)}
             disabled={poor}
+            title={poor
+              ? `Hauskonto zu niedrig: ${vc(def.cost, 0)} nötig.`
+              : `${def.name} kaufen – kommt als Kiste am Eingang an.`}
           >
             <span className="build-icon">{def.gameId ? '▦' : '✿'}</span>
             <strong>{def.name}</strong>
-            <small>{def.description}</small>
+            <small>{def.description} {facts}</small>
             <b>{def.cost === 0 ? 'gratis' : vc(def.cost, 0)}</b>
           </button>
         );

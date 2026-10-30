@@ -5,6 +5,7 @@ import { RIVALS, rivalStates, type RivalId } from '../core/sim/rivals';
 import type { GameResult } from '../core/games/contracts';
 import type { GameView } from '../store/types';
 import { vc } from './format';
+import { attractionBand, houseEdgeText } from './glossary';
 import { PopupShell } from './popup-shell';
 import { SelfExclusionPanel } from './self-exclusion-panel';
 
@@ -71,14 +72,14 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
               onClick={() => selectRival(entry.id)}
             >
               <strong>{entry.name}</strong>
-              <span>Ruf {entry.reputation} · Security {entry.security} · ab {vc(entry.machines[0]!.baseBet, 2)}</span>
+              <span>Ruf {entry.reputation} % · Sicherheit {entry.security}/5 · ab {vc(entry.machines[0]!.baseBet, 2)}</span>
             </button>
           ))}
         </div>
-        <div className="foreign-wallet">
+        <div className="foreign-wallet" title="Dein privates Bargeld. Es gehört nicht dem Casino.">
           <span>PORTEMONNAIE</span>
           <strong>{vc(view.wallet, 2)}</strong>
-          <button type="button" className="btn small" onClick={onTakeHome} disabled={view.house <= HOUSE_FLOAT} title="Bis zu 5 VC; 5 VC bleiben als Betriebsreserve im Hauskonto.">ABHEBEN</button>
+          <button type="button" className="btn small" onClick={onTakeHome} disabled={view.house <= HOUSE_FLOAT} title="Holt bis zu 5 VC vom Hauskonto. 5 VC bleiben als Betriebsreserve.">ABHEBEN</button>
           <button type="button" className="btn small ghost" onClick={() => setFull((value) => !value)}>{full ? 'FENSTER' : 'VOLLBILD'}</button>
         </div>
       </div>
@@ -92,12 +93,16 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
           <p>{rival.style}</p>
         </div>
         <dl>
-          <div><dt>Ruf</dt><dd>{rival.reputation}</dd></div>
-          <div><dt>Security</dt><dd>{rival.security}</dd></div>
-          <div><dt>Hausvorteil</dt><dd>{(rival.edgeBps / 100).toFixed(2)} %</dd></div>
-          <div><dt>Anziehung</dt><dd>{rival.attractiveness}</dd></div>
+          <div title="Wie angesehen das Haus ist. Hoher Ruf zieht bessere Gäste an."><dt>Ruf</dt><dd>{rival.reputation} %</dd></div>
+          <div title="Security schlichtet Streit – hier zahlst du dafür, nicht der Betreiber."><dt>Sicherheit</dt><dd>{rival.security}/5</dd></div>
+          <div title="Anteil jedes Einsatzes, der im Schnitt beim Betreiber bleibt."><dt>Hausvorteil</dt><dd>{(rival.edgeBps / 100).toFixed(2)} %</dd></div>
+          <div title={`Rohwert ${rival.attractiveness}`}><dt>Anziehung</dt><dd>{attractionBand(rival.attractiveness)}</dd></div>
         </dl>
       </section>
+      <p className="hint">
+        {houseEdgeText(rival.edgeBps)} Er gehört dem Betreiber – dein Portemonnaie ist hier Gast.
+        Dieses Haus zieht vor allem {rival.personas.map(personaLabel).join(', ')} an.
+      </p>
 
       <div className="game-select">
         {rival.machines.map((entry, index) => (
@@ -106,6 +111,7 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
             type="button"
             className={`game-tab${machineIndex === index ? ' active' : ''}`}
             onClick={() => selectMachine(index)}
+            title="Gerät wählen. Der Mindesteinsatz steht in der zweiten Zeile."
           >
             <b>{entry.label.slice(0, 1)}</b>
             <strong>{entry.label}</strong>
@@ -113,10 +119,6 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
           </button>
         ))}
       </div>
-      <p className="hint">
-        Zieht Gäste mit {rival.attractiveness} Anziehung. Personas: {rival.personas.map(personaLabel).join(', ')}.
-        Der Hausvorteil gehört dem Betreiber; dein Portemonnaie ist hier Gast.
-      </p>
 
       <div className={`table-stage${full ? ' full' : ''}`}>
         <div className={`game-screen${spinning ? ' spinning' : ''}`}>
@@ -126,7 +128,7 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
               : <span className="screen-symbol muted">BEREIT</span>}
           </div>
           <div className={`screen-label${result && result.payout > 0 ? ' win' : ''}`}>
-            {spinning ? 'Das Rad dreht…' : result ? `${result.label}${result.payout > 0 ? ` · ${vc(result.payout, 2)}` : ''}` : 'Setze einen Einsatz.'}
+            {spinning ? 'Das Rad dreht…' : result ? `${result.label}${result.payout > 0 ? ` · ${vc(result.payout, 2)}` : ''}` : 'Setze einen Einsatz und drücke SPIELEN.'}
           </div>
         </div>
         <div className="table-controls">
@@ -138,7 +140,10 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
           <button type="button" className="btn primary big" disabled={spinning || cannotPay} onClick={play}>
             {cannotPay ? 'ZU WENIG BARGELD' : spinning ? 'SPIELT…' : `SPIELEN · ${betVC} VC`}
           </button>
-          <small>Gewinne gehen zurück ins Portemonnaie. Verluste bleiben hier. Mindesteinsatz {vc(machine.baseBet, 2)}.</small>
+          <small>
+            Gewinne gehen zurück ins Portemonnaie, Verluste bleiben im fremden Haus.
+            {cannotPay ? ' Hebe am Hauskonto ab, um weiterzuspielen.' : ` Mindesteinsatz ${vc(machine.baseBet, 2)}.`}
+          </small>
         </div>
       </div>
     </PopupShell>

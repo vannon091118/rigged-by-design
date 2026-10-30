@@ -43,7 +43,7 @@ describe('UI-Integration', () => {
       <Hud
         view={{ ...view(), ledgerOk: false }} onBuild={noop} onGuests={noop} onVisit={noop}
         onClean={noop} onOverview={noop} onJournal={noop} onDiagnostics={noop} onLook={noop}
-        onSkill={noop}
+        onSkill={noop} onHelp={noop}
       />,
     );
     expect(screen.getByRole('alert').textContent).toContain('Ledger-Prüfung fehlgeschlagen');

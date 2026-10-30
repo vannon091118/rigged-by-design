@@ -18,6 +18,7 @@ const TABS: readonly { id: JournalKind | 'ALL'; label: string }[] = [
   { id: 'STAFF', label: 'Personal' },
   { id: 'STOCK', label: 'Lager' },
   { id: 'RIVAL', label: 'Rivalen' },
+  { id: 'SYSTEM', label: 'System' },
 ];
 
 const KIND_LABEL: Record<JournalKind, string> = {
@@ -29,6 +30,9 @@ export function JournalPopup({ view, onClose, onGuest }: Props) {
   const events = [...journalEntries(view.journal, kind, 80)].reverse();
   return (
     <PopupShell eyebrow="NACHVOLLZIEHBAR" title="Ereignisprotokoll" onClose={onClose} wide>
+      <p className="hint">
+        Jede Zeile nennt Ursache und Folge. „Geld“ sind echte Buchungen, die übrigen Arten sind Entscheidungen und Zustände.
+      </p>
       <div className="journal-tabs" role="tablist" aria-label="Protokoll filtern">
         {TABS.map((tab) => (
           <button
@@ -54,7 +58,7 @@ export function JournalPopup({ view, onClose, onGuest }: Props) {
               <li key={event.id} className={`journal-row kind-${event.kind.toLowerCase()}`}>
                 <div className="journal-meta">
                   <span className="journal-kind">{KIND_LABEL[event.kind]}</span>
-                  <span>Tag {event.day} · Tick {event.tick}</span>
+                  <span>Tag {event.day} · Takt {event.tick}</span>
                   {event.amount !== undefined && <b>{vc(event.amount, 2)}</b>}
                 </div>
                 <strong>{event.subject}</strong>

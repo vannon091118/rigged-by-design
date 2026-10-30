@@ -6,6 +6,7 @@ import { BuildCatalogCards } from './build-catalog-cards';
 import { ColorRow, CrateList, DisputeList, StaffGrid, StaffStatus, TemplateGrid } from './build-panel-parts';
 import { barCapacityForLevel } from '../core/sim/deliveries';
 import { vc } from './format';
+import { HELP } from './glossary';
 
 interface Props {
   readonly view: GameView;
@@ -52,26 +53,32 @@ export function BuildPanel(props: Props) {
         <button type="button" className="popup-close" onClick={props.onClose} aria-label="Schließen">×</button>
       </header>
       <div className="build-scroll">
-        <p className="panel-note">Käufe kommen als Kiste am Eingang an. Abholen, tragen, aufstellen.</p>
+        <p className="panel-note">
+          Klick oder ziehen kauft. Die Ware kommt als Kiste am Eingang an: abholen, tragen, aufstellen.
+          Erst ein aufgestelltes Gerät bringt Gäste und Geld.
+        </p>
 
-        <h3>Spiele & Deko</h3>
+        <h3>Spiele &amp; Deko</h3>
         <BuildCatalogCards view={view} onBuy={props.onBuy} />
 
-        <h3>Lieferungen {view.crates.length > 0 ? `(${view.crates.length})` : ''}</h3>
+        <h3>Kisten am Eingang {view.crates.length > 0 ? `(${view.crates.length})` : ''}</h3>
         <CrateList view={view} carriedId={carriedId} onPickup={props.onPickup} onUnload={props.onUnload} />
         <DisputeList view={view} onCalm={props.onCalm} />
 
-        <h3>Haus</h3>
+        <h3>Hausgröße</h3>
         <TemplateGrid view={view} onTemplate={props.onTemplate} />
 
         <h3>Personal <small className="muted">· Löhne {vc(wages, 0)}/Tag</small></h3>
         <StaffGrid view={view} onHire={props.onHire} onFire={props.onFire} />
         <StaffStatus view={view} />
         <div className="ops-row">
-          <button type="button" className="btn" onClick={props.onServeDesk}>KASSE BEDIENEN</button>
+          <button type="button" className="btn" onClick={props.onServeDesk} title="Wechselt Bargeld in Chips und zahlt Gewinne aus.">KASSE BEDIENEN</button>
         </div>
 
-        <h3>Lager & Bar (Teile: {view.parts})</h3>
+        <h3>Bar, Lager &amp; Ersatzteile</h3>
+        <p className="panel-note" title={HELP.teile}>
+          Ersatzteile: <b>{view.parts}</b> · jede Reparatur kostet 1 Teil.
+        </p>
         {bars.length > 0 ? (
           <div className="stock-row">
             {bars.map((bar) => {
@@ -85,32 +92,35 @@ export function BuildPanel(props: Props) {
               );
             })}
           </div>
-        ) : <p className="panel-note">Keine Bar im Haus. Getränke brauchen einen Platz.</p>}
+        ) : <p className="panel-note">Keine Bar im Haus. Ohne Bar können Gäste nicht trinken und gehen früher.</p>}
         <div className="ops-row">
-          <button type="button" className="btn" onClick={() => props.onOrderDrinks(6)} disabled={view.house < view.prices.drinkCrateCost * 6}>
-            6 DRINKS {vc(view.prices.drinkCrateCost * 6, 1)}
+          <button type="button" className="btn" onClick={() => props.onOrderDrinks(6)} disabled={view.house < view.prices.drinkCrateCost * 6} title="Kommt als Kiste am Eingang an und muss zur Bar gebracht werden.">
+            6 GETRÄNKE {vc(view.prices.drinkCrateCost * 6, 1)}
           </button>
-          <button type="button" className="btn" onClick={() => props.onOrderParts(2)} disabled={view.house < view.prices.partCost * 2}>
+          <button type="button" className="btn" onClick={() => props.onOrderParts(2)} disabled={view.house < view.prices.partCost * 2} title="Ein Ersatzteil pro Reparatur.">
             2 ERSATZTEILE {vc(view.prices.partCost * 2, 1)}
           </button>
-          <button type="button" className="btn" onClick={props.onUpgradeBar} disabled={view.barLevel >= 3 || view.house < view.prices.barUpgrade}>
+          <button type="button" className="btn" onClick={props.onUpgradeBar} disabled={view.barLevel >= 3 || view.house < view.prices.barUpgrade} title="Mehr Getränkeplätze an der Bar.">
             BAR STUFE {view.barLevel}{view.barLevel < 3 ? ` · ${vc(view.prices.barUpgrade, 0)}` : ' · MAX'}
           </button>
-          <button type="button" className="btn" onClick={props.onUpgradeWc} disabled={view.wcLevel >= 3 || view.house < view.prices.wcUpgrade}>
+          <button type="button" className="btn" onClick={props.onUpgradeWc} disabled={view.wcLevel >= 3 || view.house < view.prices.wcUpgrade} title="Mehr Klos: weniger Warteschlange, weniger Unfälle.">
             WC STUFE {view.wcLevel}{view.wcLevel < 3 ? ` · ${vc(view.prices.wcUpgrade, 0)}` : ' · MAX'}
           </button>
         </div>
 
         <h3>Preise</h3>
+        <p className="panel-note">Der Drink-Preis zählt pro Getränk. Der Mindesteinsatz gilt an allen deinen Automaten und Tischen.</p>
         <div className="price-grid">
           <label>
-            <span>DRINK</span>
+            <span>DRINK (VC)</span>
             <input type="number" min="0" step="0.05" defaultValue={(view.prices.drinkPrice / 10_000).toFixed(2)}
+              title="Was ein Gast für ein Getränk zahlt."
               onBlur={(event) => props.onPrice('drinkPrice', Number(event.target.value))} />
           </label>
           <label>
-            <span>MINDESTEINSATZ</span>
+            <span>MINDESTEINSATZ (VC)</span>
             <input type="number" min="0" step="0.05" defaultValue={(view.prices.slotMinBet / 10_000).toFixed(2)}
+              title="Untere Grenze für alle Spiele. Höher = mehr Umsatz pro Spin, aber weniger Gäste."
               onBlur={(event) => props.onPrice('slotMinBet', Number(event.target.value))} />
           </label>
         </div>
@@ -154,7 +164,7 @@ export function BuildPanel(props: Props) {
               className="btn repair"
               onClick={() => props.onRepair(item.id)}
               disabled={view.house < view.prices.repairCost || view.parts <= 0}
-              title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen'}
+              title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen: 1 Ersatzteil'}
             >
               {item.label} reparieren · {vc(view.prices.repairCost, 0)}{item.clogged ? ' · VERSTOPFT' : ''}
             </button>

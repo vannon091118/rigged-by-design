@@ -1,15 +1,29 @@
 /** Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. */
 import { expansionCost, isExpansion } from '../core/sim/expansions';
+import { getBuildDef, type BuildId } from '../core/sim/offers';
 import { remodelRequirements } from '../core/sim/remodel';
 import type { StaffRole, TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { ROLE_LABEL, TASK_LABEL } from './staff-labels';
 
-function Staff(props: { label: string; note: string; wage: number; on: boolean; onHire: () => void; onFire: () => void }) {
+interface StaffOffer {
+  readonly label: string;
+  readonly note: string;
+  readonly wage: number;
+  readonly on: boolean;
+  readonly onHire: () => void;
+  readonly onFire: () => void;
+}
+
+function Staff(props: StaffOffer) {
   return (
     <div className={`staff${props.on ? ' on' : ''}`}>
-      <div><strong>{props.label}</strong><small>{props.note} · {vc(props.wage, 0)}/Tag</small></div>
+      <div>
+        <strong>{props.label}</strong>
+        <small>{props.note}</small>
+        <small>{vc(props.wage, 0)}/Tag</small>
+      </div>
       <button type="button" className={`btn small${props.on ? ' ghost' : ''}`} onClick={props.on ? props.onFire : props.onHire}>
         {props.on ? 'ENTLASSEN' : 'EINSTELLEN'}
       </button>
@@ -18,7 +32,7 @@ function Staff(props: { label: string; note: string; wage: number; on: boolean; 
 }
 
 const TEMPLATES: readonly { id: TemplateId; name: string; note: string }[] = [
-  { id: 'SMALL', name: 'Kleine Bude', note: '1 Saal, 1 Automat, alles überschaubar.' },
+  { id: 'SMALL', name: 'Kleine Bude', note: 'Ein Saal, ein Automat, alles überschaubar.' },
   { id: 'MEDIUM', name: 'Mittleres Haus', note: 'Mehr Tische, Bar, Klo, Platz für Personal.' },
   { id: 'LARGE', name: 'Großes Casino', note: 'Alle Spiele, Deko, Personal, volle Fläche.' },
 ];
@@ -45,7 +59,7 @@ export function TemplateGrid(props: { view: GameView; onTemplate: (id: TemplateI
           >
             <strong>{template.name}</strong>
             <span>{template.note}</span>
-            {req && <small>braucht Tag {req.day}, Ruf {req.reputation}, {req.served} Gäste</small>}
+            {req && <small>Freischaltung: Tag {req.day} · Ruf {req.reputation} % · {req.served} Gäste bedient</small>}
             <b>{current ? 'aktuell' : expandable ? `Ausbau ${vc(cost, 0)}` : 'kein Ausbau'}</b>
           </button>
         );
@@ -65,6 +79,14 @@ export function ColorRow(props: { colors: readonly string[]; active: string; onP
   );
 }
 
+function crateTitle(buildId: BuildId): string {
+  try {
+    return getBuildDef(buildId).name;
+  } catch {
+    return 'Unbekanntes Möbel';
+  }
+}
+
 export function CrateList(props: {
   view: GameView; carriedId: number | null; onPickup: (id: number) => void; onUnload: () => void;
 }) {
@@ -72,21 +94,21 @@ export function CrateList(props: {
   const label = (id: number): string => {
     const crate = view.crates.find((entry) => entry.id === id);
     if (!crate) return 'Kiste';
-    if (crate.payload.kind === 'FURNITURE') return `Möbel (${crate.payload.buildId})`;
+    if (crate.payload.kind === 'FURNITURE') return crateTitle(crate.payload.buildId);
     if (crate.payload.kind === 'DRINKS') return `${crate.payload.count} Getränke`;
     return `${crate.payload.count} Ersatzteile`;
   };
   const carrier = (crate: GameView['crates'][number]): string => {
-    if (crate.carriedBy === 'player') return 'getragen – abladen oder aufstellen';
+    if (crate.carriedBy === 'player') return 'trägst du – auf freie Fläche klicken';
     if (typeof crate.carriedBy === 'number') {
       const agent = view.agents.find((entry) => entry.id === crate.carriedBy);
-      return agent ? `unterwegs: ${ROLE_LABEL[agent.role]}` : 'unterwegs';
+      return agent ? `unterwegs mit ${ROLE_LABEL[agent.role]}` : 'unterwegs';
     }
-    return 'liegt am Eingang';
+    return 'wartet am Eingang';
   };
   return (
     <div className="ops-row">
-      {view.crates.length === 0 && <small className="muted">Keine Kisten am Eingang.</small>}
+      {view.crates.length === 0 && <small className="muted">Keine Kisten am Eingang. Bestellte Ware kommt hier an.</small>}
       {view.crates.map((crate) => (
         <div key={crate.id} className="staff">
           <div><strong>{label(crate.id)}</strong>
@@ -97,12 +119,12 @@ export function CrateList(props: {
         </div>
       ))}
       {props.carriedId !== null && (
-        <button type="button" className="btn primary" onClick={props.onUnload}>
-          ABLADEN (Bar oder Lager, je nach Kiste)
+        <button type="button" className="btn primary" onClick={props.onUnload} title="Getränke und Ersatzteile landen automatisch an Bar oder Lager.">
+          ABLADEN
         </button>
       )}
       {props.carriedId !== null && view.crates.some((c) => c.id === props.carriedId && c.payload.kind === 'FURNITURE') && (
-        <small className="muted">Möbelkiste: auf eine freie Floor-Fläche klicken.</small>
+        <small className="muted">Möbelkiste: auf eine freie Floor-Fläche klicken, um sie aufzustellen.</small>
       )}
     </div>
   );
@@ -113,10 +135,11 @@ export function DisputeList(props: { view: GameView; onCalm: (id: number) => voi
   return (
     <>
       <h3>Streit ({props.view.disputes.length})</h3>
+      <p className="panel-note">Streit kostet Ruf und Laune. Ein Türsteher löst ihn automatisch, sonst musst du selbst schlichten.</p>
       <div className="ops-row">
         {props.view.disputes.map((dispute) => (
           <button key={dispute.id} type="button" className="btn repair" onClick={() => props.onCalm(dispute.id)}>
-            SCHLICHTEN (Stufe {dispute.level})
+            SCHLICHTEN · Eskalation {dispute.level}
           </button>
         ))}
       </div>
@@ -143,11 +166,11 @@ export function StaffGrid(props: { view: GameView; onHire: (role: StaffRole) => 
   const { view } = props;
   return (
     <div className="staff-grid">
-      <Staff label="Guard" note="Schlichtet Streit. Tageslohn." wage={view.prices.guardWage} on={view.staff.guard} onHire={() => props.onHire('guard')} onFire={() => props.onFire('guard')} />
-      <Staff label="Reinigung" note="Putzt auf dem Floor. Tageslohn." wage={view.prices.staffWage} on={view.staff.cleaner} onHire={() => props.onHire('cleaner')} onFire={() => props.onFire('cleaner')} />
-      <Staff label="Barkeeper" note="Schnellerer Service. Tageslohn." wage={view.prices.staffWage} on={view.staff.bartender} onHire={() => props.onHire('bartender')} onFire={() => props.onFire('bartender')} />
-      <Staff label="Kassierer" note="Bedient Kasse sofort. Tageslohn." wage={view.prices.cashierWage} on={view.staff.cashier} onHire={() => props.onHire('cashier')} onFire={() => props.onFire('cashier')} />
-      <Staff label="Lagerträger" note="Trägt Kisten ein. Tageslohn." wage={view.prices.porterWage} on={view.staff.porter} onHire={() => props.onHire('porter')} onFire={() => props.onFire('porter')} />
+      <Staff label="Türsteher" note="Beendet Streit von selbst." wage={view.prices.guardWage} on={view.staff.guard} onHire={() => props.onHire('guard')} onFire={() => props.onFire('guard')} />
+      <Staff label="Reinigung" note="Putzt Flecken auf dem Floor weg." wage={view.prices.staffWage} on={view.staff.cleaner} onHire={() => props.onHire('cleaner')} onFire={() => props.onFire('cleaner')} />
+      <Staff label="Barkeeper" note="Zapft und serviert Getränke." wage={view.prices.staffWage} on={view.staff.bartender} onHire={() => props.onHire('bartender')} onFire={() => props.onFire('bartender')} />
+      <Staff label="Kassierer" note="Bedient die Kasse sofort." wage={view.prices.cashierWage} on={view.staff.cashier} onHire={() => props.onHire('cashier')} onFire={() => props.onFire('cashier')} />
+      <Staff label="Lagerträger" note="Bringt Kisten ins Lager." wage={view.prices.porterWage} on={view.staff.porter} onHire={() => props.onHire('porter')} onFire={() => props.onFire('porter')} />
     </div>
   );
 }

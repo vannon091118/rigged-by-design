@@ -10,6 +10,7 @@ import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { GamesPopup } from './ui/games-popup';
 import { GuestPopup } from './ui/guest-popup';
+import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';
 import { JournalPopup } from './ui/journal-popup';
 import { LookPopup } from './ui/look-popup';
@@ -22,6 +23,7 @@ type Popup =
   | { kind: 'journal' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
+  | { kind: 'help' }
   | null;
 
 function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
@@ -87,7 +89,7 @@ export default function App() {
   })();
 
   const buy = (id: BuildId): void => {
-    if (view.house < getBuildDef(id).cost) { setPlaceError('Das Hauskonto reicht nicht.'); return; }
+    if (view.house < getBuildDef(id).cost) { setPlaceError('Hauskonto zu niedrig – erst Geld verdienen, dann kaufen.'); return; }
     worldStore.buy(id);
     setPlaceError('');
   };
@@ -115,6 +117,7 @@ export default function App() {
         onDiagnostics={() => { setBuildOpen(false); setPopup({ kind: 'diagnostics' }); }}
         onLook={() => { setBuildOpen(false); setPopup({ kind: 'look' }); }}
         onSkill={(attribute) => worldStore.spendSkill(attribute)}
+        onHelp={() => { setBuildOpen(false); setPopup({ kind: 'help' }); }}
       />
 
       <main
@@ -139,18 +142,18 @@ export default function App() {
         />
 
         <div className="stage-legend">
-          <span><b>KLICK</b> Bereich zoomen</span>
-          <span><b>GAST</b> Budget</span>
-          <span><b>OBJEKT</b> Zustand</span>
-          <span><b>RAD</b> zoomen</span>
-          <span><b>PFEILE</b> laufen</span>
-          <span><b>ENTER</b> Kiste nutzen</span>
+          <span><b>KLICK</b> auf freie Fläche: hinlaufen</span>
+          <span><b>GAST</b> Budget, Laune, Geduld</span>
+          <span><b>OBJEKT</b> Zustand, Mods, Testspin</span>
+          <span><b>MAUSRAD</b> zoomen</span>
+          <span><b>PFEILE / WASD</b> laufen</span>
+          <span><b>ENTER</b> Kiste aufstellen</span>
         </div>
 
         {carryingCrate && (
           <div className="place-hint">
             <b>Kiste tragen</b>
-            <span>{placeError || 'Auf freie Fläche klicken oder mit den Pfeilen hingehen und Enter drücken.'}</span>
+            <span>{placeError || 'Auf eine freie Fläche klicken – oder hinlaufen und Enter drücken.'}</span>
           </div>
         )}
 
@@ -218,6 +221,10 @@ export default function App() {
 
       {popup?.kind === 'look' && (
         <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
+      )}
+
+      {popup?.kind === 'help' && (
+        <HelpPopup onClose={() => setPopup(null)} />
       )}
 
       {active && (

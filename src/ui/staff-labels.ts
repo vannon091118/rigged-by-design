@@ -2,7 +2,7 @@
 import type { StaffRole, StaffTask } from '../core/sim/types';
 
 export const ROLE_LABEL: Readonly<Record<StaffRole, string>> = {
-  guard: 'Guard', cleaner: 'Reinigung', bartender: 'Barkeeper', cashier: 'Kassierer', porter: 'Lagerträger',
+  guard: 'Türsteher', cleaner: 'Reinigung', bartender: 'Barkeeper', cashier: 'Kassierer', porter: 'Lagerträger',
 };
 
 export const TASK_LABEL: Readonly<Record<StaffTask, string>> = {

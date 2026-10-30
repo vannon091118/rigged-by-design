@@ -56,6 +56,8 @@ h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform
 .hud-money span { font-size: 8px; letter-spacing: 0.18em; color: var(--muted); }
 .hud-money strong { font-family: var(--mono); font-size: 30px; line-height: 1; color: var(--gold); text-shadow: 0 0 26px rgba(255, 209, 102, 0.35); }
 .hud-money small { font-size: 9px; color: var(--muted); }
+.term { border-bottom: 1px dotted var(--line-strong); cursor: help; }
+.help-btn { min-width: 30px; padding: 8px 9px; font-weight: 700; color: var(--gold); border-color: rgba(255, 209, 102, 0.55); }
 
 .hud-vitals { display: flex; gap: 8px; min-width: 0; }
 .vital {
