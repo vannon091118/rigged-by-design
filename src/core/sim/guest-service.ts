@@ -4,7 +4,7 @@ import { ZERO_VC } from '../economy/vacoin';
 import { recordJournal } from './journal';
 import { closeFiat, exchangeFromVc, guestAccount, payPending } from './money';
 import type { Furniture, Guest, WorldState } from './types';
-import { furnitureById, releaseSeat, sendGuest } from './world';
+import { doorPoint, furnitureById, releaseSeat, sendGuest } from './world';
 
 export function becomeAngry(world: WorldState, guest: Guest): void {
   if (guest.targetFurniture) releaseSeat(world, guest.targetFurniture, guest.id);
@@ -26,9 +26,7 @@ export function leave(world: WorldState, guest: Guest): void {
   guest.state = 'LEAVE';
   guest.stateTicks = 0;
   guest.intent = guest.intent ?? 'Besuch beendet: verlaesst das Casino.';
-  const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE');
-  if (entrance) sendGuest(world, guest, { x: entrance.x + 1, y: entrance.y + Math.floor(entrance.h / 2) });
-  else guest.path = [];
+  sendGuest(world, guest, doorPoint(world));
 }
 
 /** Zufriedenheit ist das tatsaechliche Ergebnis, nicht der Ruf am Schild. */

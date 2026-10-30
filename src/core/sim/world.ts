@@ -1,6 +1,6 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
 import { canPlaceAt } from './grid-zones';
-import { blockedTiles, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
+import { blockedTiles, approachPoint, findPath, isWalkable } from './pathfinding';
 import type { Furniture, Guest, Point, WorldState, Zone } from './types';
 
 export function zoneById(world: WorldState, id: string): Zone | null {
@@ -49,15 +49,29 @@ export function seatPoint(world: WorldState, item: Furniture, seat: number): Poi
 }
 
 export function pathTo(world: WorldState, from: Point, to: Point): Point[] {
-  return findPath(world.size, blockedTiles(world.size, world.furniture), from, to);
+  return findPath(world.size, guestBlocked(world), from, to);
 }
 
-export function spawnPoint(world: WorldState): Point {
+/** Tuer-Tile: liegt vor dem Eingang auf dem Aussenstreifen, nie im Gebaeude. */
+export function doorPoint(world: WorldState): Point {
   const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE') ?? world.zones[0]!;
-  return nearestWalkable(world.size, blockedTiles(world.size, world.furniture), {
-    x: entrance.x + 1,
+  return {
+    x: Math.max(0, entrance.x - 1),
     y: entrance.y + Math.floor(entrance.h / 2),
-  }) ?? { x: entrance.x + 1, y: entrance.y + 1 };
+  };
+}
+
+/** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur die Tuer bleibt als Durchgang offen. */
+function guestBlocked(world: WorldState): Set<number> {
+  const blocked = new Set(blockedTiles(world.size, world.furniture));
+  const door = doorPoint(world);
+  blocked.delete(door.y * world.size + door.x);
+  return blocked;
+}
+
+/** Gaeste erscheinen und verschwinden draussen vor der Tuer, gehen von dort durch den Eingang. */
+export function spawnPoint(world: WorldState): Point {
+  return doorPoint(world);
 }
 
 export function exchangePoint(world: WorldState): Point | null {

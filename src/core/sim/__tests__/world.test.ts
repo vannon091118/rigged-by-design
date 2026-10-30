@@ -13,7 +13,7 @@ import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import { makeGuest, randomPersona } from '../traits';
 import type { WorldState } from '../types';
-import { canPlace, exchangePoint, freeSeat, interactionPoint, spawnPoint } from '../world';
+import { canPlace, doorPoint, exchangePoint, freeSeat, interactionPoint, spawnPoint } from '../world';
 import { randomSeed } from '../../../test/random-seed';
 
 function setup(template: WorldState['template'] = 'SMALL') {
@@ -34,6 +34,12 @@ describe('Welt und Startzustand', () => {
       expect(world.furniture.some((item) => item.kind === kind)).toBe(true);
     }
   });
+  it('spawnt draussen vor der Tuer, nicht im Gebaeude', () => {
+    const { world, ledger, prng } = setup();
+    const guest = spawnGuest(world, prng, ledger)!;
+    const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE')!;
+    expect(guest.position.x).toBeLessThan(entrance.x);
+  });
   it('verteilt 200 Punkte auf Laune, Geduld und Sucht', () => {
     const prng = new Prng(randomSeed());
     for (let index = 0; index < 20; index += 1) {
@@ -50,14 +56,13 @@ describe('Welt und Startzustand', () => {
       expect(guest.sociability).toBeLessThanOrEqual(100);
     }
   });
-  it('spawnt am Eingang und wechselt nur an der Kasse Geld', () => {
+  it('spawnt vor der Tuer ausserhalb des Gebaeudes und wechselt nur an der Kasse Geld', () => {
     const { world, ledger, prng } = setup();
     const guest = spawnGuest(world, prng, ledger)!;
     const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE')!;
-    expect(guest.position.x).toBeGreaterThanOrEqual(entrance.x);
-    expect(guest.position.x).toBeLessThan(entrance.x + entrance.w);
-    expect(guest.position.y).toBeGreaterThanOrEqual(entrance.y);
-    expect(guest.position.y).toBeLessThan(entrance.y + entrance.h);
+    const door = doorPoint(world);
+    expect(guest.position).toEqual(door);
+    expect(door.x).toBeLessThan(entrance.x);
     expect(ledger.getBalance(guestAccount(guest.id))).toBe(0);
     expect(ledger.getBalance(fiatAccount(guest.id))).toBeGreaterThan(0);
     // Fokussiert auf den Wechsel am Schalter; die Weglaenge haengt von der
