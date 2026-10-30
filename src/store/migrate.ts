@@ -4,6 +4,7 @@ import { GAME_FOOTPRINT, SERVICE_FOOTPRINT } from '../core/sim/grid-zones';
 import { reputation } from '../core/sim/spawn';
 import { newPlayerRpg } from '../core/sim/player-rpg';
 import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
+import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
 
@@ -54,6 +55,11 @@ export interface SavedGame {
   readonly nextJournalId?: number;
   readonly journaledSeq?: number;
   readonly look?: PlayerLook;
+  readonly plinko?: PlinkoConfig;
+  readonly plinkoMode?: PlinkoMode;
+  readonly totalPlinkoDrops?: number;
+  readonly addictionScore?: number;
+  readonly lastPlinko?: PlinkoDrop | null;
   readonly entries: readonly SavedEntry[];
   readonly prngState: number;
 }
@@ -143,6 +149,15 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
     ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
   world.journaledSeq = saved.journaledSeq ?? saved.entries.length;
   world.look = normalizeLook(saved.look);
+  try {
+    world.plinko = normalizePlinkoConfig(saved.plinko);
+  } catch {
+    world.plinko = defaultPlinkoConfig();
+  }
+  world.plinkoMode = saved.plinkoMode === 'TWIN' || saved.plinkoMode === 'TRIPLE' ? saved.plinkoMode : 'SINGLE';
+  world.totalPlinkoDrops = Number.isSafeInteger(saved.totalPlinkoDrops) ? Math.max(0, saved.totalPlinkoDrops!) : 0;
+  world.addictionScore = Number.isFinite(saved.addictionScore) ? Math.min(100, Math.max(0, saved.addictionScore!)) : 0;
+  world.lastPlinko = saved.lastPlinko ?? null;
   world.lastEvent = saved.lastEvent ?? 'Spielstand geladen.';
   if (world.journal.length === 0) {
     recordJournal(world, {

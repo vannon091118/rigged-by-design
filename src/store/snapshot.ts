@@ -36,6 +36,11 @@ function worldSnapshot(world: WorldState) {
     activePenalties: world.activePenalties.map((penalty) => ({ ...penalty })),
     journal: world.journal.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
     look: world.look,
+    plinko: world.plinko,
+    plinkoMode: world.plinkoMode,
+    totalPlinkoDrops: world.totalPlinkoDrops,
+    addictionScore: world.addictionScore,
+    lastPlinko: world.lastPlinko,
   };
 }
 

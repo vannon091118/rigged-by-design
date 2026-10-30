@@ -1,5 +1,6 @@
 /** Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. */
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
+import { defaultPlinkoConfig } from '../games/plinko-config';
 import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
 import { DEFAULT_LOOK } from './player-look';
@@ -67,6 +68,11 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     nextJournalId: 1,
     journaledSeq: 0,
     look: DEFAULT_LOOK,
+    plinko: defaultPlinkoConfig(),
+    plinkoMode: 'SINGLE',
+    totalPlinkoDrops: 0,
+    addictionScore: 0,
+    lastPlinko: null,
     lastEvent: template === 'SMALL' ? 'Kleine Bude eröffnet. Ein Automat steht gratis.' : 'Neues Haus eröffnet.',
     guardsHired: 0,
   };

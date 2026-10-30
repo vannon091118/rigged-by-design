@@ -5,6 +5,7 @@ import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
+import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../games/plinko-config';
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
 
@@ -211,6 +212,11 @@ export interface WorldState {
   /** Naechste Ledger-Seq, die bereits als MONEY-Event kopiert wurde. */
   journaledSeq: number;
   look: PlayerLook;
+  plinko: PlinkoConfig;
+  plinkoMode: PlinkoMode;
+  totalPlinkoDrops: number;
+  addictionScore: number;
+  lastPlinko: PlinkoDrop | null;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

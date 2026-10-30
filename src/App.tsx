@@ -230,6 +230,8 @@ export default function App() {
           onAddReel={() => worldStore.addReel(active.id)}
           onBet={(value) => worldStore.setBet(active.id, value)}
           onTakeDrink={() => worldStore.takeDrink()}
+          onDeployPlinko={(config) => worldStore.deployPlinko(config)}
+          onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
         />
       )}
     </div>

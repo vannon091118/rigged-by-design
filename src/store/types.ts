@@ -3,6 +3,7 @@ import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { ActivePenalty, Crate, Dispute, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
+import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 
 export interface GameView {
   readonly template: TemplateId;
@@ -27,6 +28,11 @@ export interface GameView {
   readonly activePenalties: readonly ActivePenalty[];
   readonly journal: readonly JournalEvent[];
   readonly look: PlayerLook;
+  readonly plinko: PlinkoConfig;
+  readonly plinkoMode: PlinkoMode;
+  readonly totalPlinkoDrops: number;
+  readonly addictionScore: number;
+  readonly lastPlinko: PlinkoDrop | null;
   readonly parts: number;
   readonly guestsServed: number;
   readonly wallColor: string;

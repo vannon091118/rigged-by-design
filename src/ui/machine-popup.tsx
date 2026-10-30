@@ -1,10 +1,13 @@
 /** Automaten-Popup: Zustand, Mods, Walzen und ein kostenloser Testspin. */
 import { useState } from 'react';
 import type { GameResult } from '../core/games/contracts';
+import type { GateResult } from '../core/games/plinko-sandbox';
+import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
 import { MODS, attractionValue, getMod } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
+import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
 
 interface Props {
@@ -17,6 +20,8 @@ interface Props {
   readonly onAddReel: () => void;
   readonly onBet: (vcValue: number) => void;
   readonly onTakeDrink: () => void;
+  readonly onDeployPlinko: (config: PlinkoConfig) => GateResult;
+  readonly onPlinkoMode: (mode: PlinkoMode) => void;
 }
 
 const GAME_LABEL: Record<string, string> = {
@@ -24,7 +29,7 @@ const GAME_LABEL: Record<string, string> = {
   PLINKO: 'Plinko', SHELL: 'Hütchen', DICE: 'Würfel',
 };
 
-export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onTakeDrink }: Props) {
+export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onTakeDrink, onDeployPlinko, onPlinkoMode }: Props) {
   const [spinning, setSpinning] = useState(false);
   const [full, setFull] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);
@@ -47,6 +52,10 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               <Stat label="BESTAND" value={`${item.stock}/${6 + 6 * view.barLevel}`} bad={item.stock === 0} />
             )}
           </div>
+          {item.gameId === 'PLINKO' && (
+            <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
+          )}
+          {item.gameId !== 'PLINKO' && (
           <div className="slot-stage">
             <div className={`reel-window${spinning ? ' spinning' : ''}`}>
               {(result?.detail ?? ['?', '?', '?']).slice(0, 5).map((symbol, index) => (
@@ -61,6 +70,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               </button>
             </div>
           </div>
+          )}
           <div className="row-actions">
             <button
               type="button"

@@ -5,6 +5,7 @@ import { playBlackjack, playVideoPoker } from './engines/cards';
 import { playSlot } from './engines/slot';
 import { playShell, rollDice, spinRoulette } from './engines/table';
 import { createPlinkoBoard, PLINKO_POCKETS } from './plinko-board';
+import { plinkoPaytable } from './plinko-config';
 
 interface RoundResult {
   readonly game: GameId;
@@ -14,17 +15,18 @@ interface RoundResult {
 }
 
 /** Paytable auf die gemessene Fachverteilung des Boards geeicht (~93 % RTP). */
-const PLINKO_PAYOUT_BPS = [16_500, 15_200, 13_300, 0, 0, 11_600, 13_300, 15_200, 18_000] as const;
+const PLINKO_PAYOUT_BPS = plinkoPaytable(PLINKO_POCKETS);
 const plinkoBoard = createPlinkoBoard();
 
 function plinko(prng: Prng): RoundResult {
-  const drop = plinkoBoard.drop(prng);
-  const bps = PLINKO_PAYOUT_BPS[drop.pocket] ?? 0;
+  const drop = plinkoBoard.drop(prng, 'SINGLE', false);
+  const pocket = drop.pockets[0] ?? 0;
+  const bps = PLINKO_PAYOUT_BPS[pocket] ?? 0;
   return {
     game: 'PLINKO',
     multiplierBps: bps,
-    label: `Fach ${drop.pocket + 1} - ${(bps / 10_000).toFixed(2).replace('.', ',')}x`,
-    detail: ['●', `${drop.pocket + 1}/${PLINKO_POCKETS}`, `${drop.steps} Schritte`],
+    label: `Fach ${pocket + 1} - ${(bps / 10_000).toFixed(2).replace('.', ',')}x`,
+    detail: ['●', `${pocket + 1}/${PLINKO_POCKETS}`, `${drop.steps} Schritte`],
   };
 }
 

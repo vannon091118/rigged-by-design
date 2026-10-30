@@ -16,6 +16,7 @@ import { Prng } from '../../core/rng/prng';
 import { buildView } from '../snapshot';
 import { replaySave, toSavedGame } from '../save';
 import { randomSeed } from '../../test/random-seed';
+import { defaultPlinkoConfig, normalizePlinkoConfig } from '../../core/games/plinko-config';
 
 function fixture() {
   const world = createWorld('MEDIUM');
@@ -31,6 +32,13 @@ function fixture() {
     kind: 'SYSTEM', subject: 'Teststand', cause: 'Roundtrip', effect: 'Alles gespeichert.',
   });
   world.look = { skin: '#b97c4b', hair: '#d9b35c', outfit: '#ff2e88', accessory: 'GLASSES' };
+  world.plinko = normalizePlinkoConfig({
+    ...defaultPlinkoConfig(), pegs: [{ row: 1, column: 2, kind: 'MAGNET_PEG' }],
+  });
+  world.plinkoMode = 'TWIN';
+  world.totalPlinkoDrops = 42;
+  world.addictionScore = 12.5;
+  world.lastPlinko = { pockets: [0, 8], tracks: [[{ x: 50, y: 8 }], [{ x: 54, y: 8 }]], steps: 1 };
   return { world, ledger };
 }
 
@@ -46,6 +54,11 @@ describe('Save-/Load-Roundtrip v8', () => {
     expect(loaded!.world.journal.length).toBe(world.journal.length);
     expect(loaded!.world.nextJournalId).toBe(world.nextJournalId);
     expect(loaded!.world.agents[0]!.task).toBe(world.agents[0]!.task);
+    expect(loaded!.world.plinko).toEqual(world.plinko);
+    expect(loaded!.world.plinkoMode).toBe('TWIN');
+    expect(loaded!.world.totalPlinkoDrops).toBe(42);
+    expect(loaded!.world.addictionScore).toBe(12.5);
+    expect(loaded!.world.lastPlinko).toEqual(world.lastPlinko);
     expect(loaded!.ledger.diagnose().ok).toBe(true);
     expect(loaded!.ledger.entryCount).toBe(ledger.entryCount);
     expect(JSON.stringify(raw).length).toBeLessThan(2_000_000);

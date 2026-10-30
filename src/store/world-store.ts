@@ -3,6 +3,8 @@
 import { Ledger, type LedgerDiagnosis } from '../core/economy/ledger';
 import { fromVC, toVCString } from '../core/economy/vacoin';
 import type { GameResult } from '../core/games/contracts';
+import { deployGate, type GateResult } from '../core/games/plinko-sandbox';
+import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMode } from '../core/games/plinko-config';
 import { cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
 import { payGuest } from '../core/sim/service-actions';
 import { deployHeldCrate, movePlayer, pickupCrate, serveDesk, serveDrink, setNeonColor, setWallColor, storeHeldCrate, takeDrink, upgradeBar, upgradeWc } from '../core/sim/player';
@@ -93,11 +95,9 @@ class WorldStore {
   pickup(crateId: number): void {
     this.#event(() => pickupCrate(this.#world, crateId));
   }
-
   deploy(x: number, y: number): void {
     this.#event(() => deployHeldCrate(this.#world, x, y));
   }
-
   unloadHere(): void {
     this.#guard(() => {
       const pos = this.#world.player.position;
@@ -107,75 +107,63 @@ class WorldStore {
       this.#notice = this.#world.lastEvent;
     });
   }
-
   storeDeposit(x: number, y: number, barId?: number): void {
     this.#guard(() => {
       storeHeldCrate(this.#world, x, y, barId);
       this.#notice = this.#world.lastEvent;
     });
   }
-
   calm(disputeId: number): void {
     this.#guard(() => {
       if (!calmDispute(this.#world, disputeId)) throw new Error('Zu weit weg. Geh zum Streit.');
       this.#notice = this.#world.lastEvent;
     });
   }
-
   talk(guestId: number): void {
     this.#guard(() => { if (!talkToGuest(this.#world, this.#prng, guestId)) throw new Error('Gast gerade nicht ansprechbar.'); this.#notice = this.#world.lastEvent; });
   }
-
   fightBrawl(disputeId: number): void {
     this.#guard(() => { this.#notice = resolvePlayerBrawl(this.#world, this.#ledger, this.#prng, disputeId).outcome === 'NONE' ? 'Kein Streit mehr da.' : this.#world.lastEvent; });
   }
-
   spendSkill(attribute: RpgAttribute): void {
     this.#guard(() => { if (!spendPoint(this.#world.player.rpg, attribute)) throw new Error('Kein Skillpunkt frei.'); this.#notice = 'Skill verbessert.'; });
   }
-
   serveDesk(): void {
     this.#guard(() => {
       const served = serveDesk(this.#world, this.#ledger, this.#prng);
       this.#notice = served ? 'Gast gewechselt.' : 'Niemand wartet an der Kasse.';
     });
   }
-
   setWall(color: string): void {
     this.#guard(() => {
       setWallColor(this.#world, color);
       this.#notice = 'Wand gestrichen.';
     });
   }
-
   setNeon(color: string): void {
     this.#guard(() => {
       setNeonColor(this.#world, color);
       this.#notice = 'Neon neu gefärbt.';
     });
   }
-
   upgradeBar(): void {
     this.#guard(() => {
       upgradeBar(this.#world, this.#ledger);
       this.#notice = this.#world.lastEvent;
     });
   }
-
   upgradeWc(): void {
     this.#guard(() => {
       upgradeWc(this.#world, this.#ledger);
       this.#notice = this.#world.lastEvent;
     });
   }
-
   repair(itemId: number): void {
     this.#guard(() => {
       repair(this.#world, this.#ledger, itemId);
       this.#notice = 'Reparatur bezahlt.';
     });
   }
-
   clean(tile?: number): void {
     this.#guard(() => {
       if (tile === undefined) {
@@ -187,107 +175,88 @@ class WorldStore {
       }
     });
   }
-
   hire(role: StaffRole): void {
     this.#guard(() => {
       hireAgent(this.#world, this.#ledger, role);
       this.#notice = this.#world.lastEvent;
     });
   }
-
   fire(role: StaffRole): void {
     this.#guard(() => {
       fireAgent(this.#world, role);
       this.#notice = 'Personal entlassen.';
     });
   }
-
   setPrice(key: 'drinkPrice' | 'slotMinBet', vc: number): void {
     this.#guard(() => {
       setPrice(this.#world, key, fromVC(vc));
       this.#notice = 'Preis geändert.';
     });
   }
-
   setCarpet(carpet: CarpetId): void {
     setCarpet(this.#world, carpet);
     this.#notice = 'Teppich verlegt.';
     this.#emit();
   }
-
   installMod(itemId: number, mod: ModId): void {
     this.#guard(() => {
       installMod(this.#world, this.#ledger, itemId, mod);
       this.#notice = 'Mod verbaut.';
     });
   }
-
   addReel(itemId: number): void {
     this.#guard(() => {
       upgradeReels(this.#world, this.#ledger, itemId);
       this.#notice = 'Walze eingebaut.';
     });
   }
-
   setBet(itemId: number, vc: number): void {
     this.#guard(() => {
       setBaseBet(this.#world, itemId, fromVC(vc));
       this.#notice = 'Mindesteinsatz geändert.';
     });
   }
-
   takeHome(amountVC = 5): void {
     this.#guard(() => { this.#notice = takeHomeToWallet(this.#world, this.#ledger, amountVC); });
   }
-
   pay(guestId: number): void {
     this.#guard(() => {
       const paid = payGuest(this.#world, this.#ledger, guestId, this.#world.tick);
       this.#notice = paid > 0 ? `${toVCString(paid)} an Gast ausgezahlt.` : 'Keine offene Auszahlung.';
     });
   }
-
   takeDrink(): void {
     this.#event(() => takeDrink(this.#world));
   }
-
   serveDrink(guestId: number): void {
     this.#event(() => serveDrink(this.#world, this.#ledger, guestId));
   }
-
   moveTo(point: Point): void {
     movePlayer(this.#world, point);
     this.#emit(false);
   }
-
   playRival(rivalId: RivalId, machineIndex: number, betVC: number): GameResult | null {
     const result = this.#foreign(() => visitRivalWithJournal(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng));
     if (result) this.#emit(false);
     return result;
   }
-
   /** Volle Ledger-Pruefung nur auf Klick; der Tickpfad bleibt inkrementell. */
   auditLedger(): LedgerDiagnosis {
     return this.#ledger.diagnose();
   }
-
   setLook(patch: Partial<PlayerLook>): void {
     this.#guard(() => { this.#notice = saveLook(this.#world, patch); });
   }
-
   moveStep(dx: number, dy: number): void {
     stepPlayer(this.#world, dx, dy);
     this.#emit(false);
   }
-
   deployHere(): void {
     this.#guard(() => { this.#notice = deployAtPlayer(this.#world); });
   }
-
   useCarriedHere(): void {
     this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; });
   }
-
   /** Ein Pfad fuer alle fremden Haeuser: gleiche Notiz, gleiche Fehlerbehandlung. */
   #foreign(run: () => ForeignOutcome): GameResult | null {
     try {
@@ -301,24 +270,44 @@ class WorldStore {
       return null;
     }
   }
-
   spinTest(itemId: number): GameResult | null {
     const item = this.#world.furniture.find((entry) => entry.id === itemId);
     if (!item) return null;
-    return testSpin(item, this.#prng);
+    const result = testSpin(item, this.#prng, this.#world);
+    if (item.gameId === 'PLINKO') { this.#notice = 'Plinko-Bahn gespielt.'; this.#emit(); }
+    return result;
   }
-
+  deployPlinko(input: PlinkoConfig): GateResult {
+    try {
+      const config = normalizePlinkoConfig(input);
+      const gate = deployGate(config, plinkoProgress(this.#world.totalPlinkoDrops, this.#world.addictionScore, config).rows);
+      if (gate.ok) this.#world.plinko = config;
+      this.#notice = gate.reason;
+      this.#emit(gate.ok);
+      return gate;
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : 'Board ungueltig.';
+      this.#notice = reason;
+      this.#emit(false);
+      return { ok: false, measuredRtp: 0, reason };
+    }
+  }
+  setPlinkoMode(mode: PlinkoMode): void {
+    this.#guard(() => {
+      if (mode !== 'SINGLE' && plinkoProgress(this.#world.totalPlinkoDrops, this.#world.addictionScore, this.#world.plinko).rows < (mode === 'TWIN' ? 9 : 12)) throw new Error(`${mode} ist noch nicht freigeschaltet.`);
+      this.#world.plinkoMode = mode;
+      this.#notice = `Plinko-Modus: ${mode}.`;
+    });
+  }
   dismiss(): void {
     this.#notice = '';
     this.#emit(false);
   }
-
   #advance = (): void => {
     tickWorld(this.#world, this.#ledger, this.#prng);
     this.#savedTick += 1;
     this.#emit(this.#savedTick % 6 === 0);
   };
-
   /** Wie #guard, uebernimmt aber die Ereignismeldung der Welt. */
   #event(run: () => void): void {
     this.#guard(() => {
@@ -326,7 +315,6 @@ class WorldStore {
       this.#notice = this.#world.lastEvent;
     });
   }
-
   #guard(action: () => void): void {
     try {
       action();
@@ -336,7 +324,6 @@ class WorldStore {
       this.#emit(false);
     }
   }
-
   #emit(save = true): void {
     settleMoneyJournal(this.#world, this.#ledger);
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
@@ -344,5 +331,4 @@ class WorldStore {
     for (const listener of this.#listeners) listener();
   }
 }
-
 export const worldStore = new WorldStore();

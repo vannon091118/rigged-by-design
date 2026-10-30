@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameResult } from '../games/contracts';
+import { playPlinkoRound } from '../games/plinko-sandbox';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
@@ -96,7 +97,8 @@ export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro):
   item.baseBet = bet;
 }
 
-export function testSpin(item: Furniture, prng: Prng): GameResult {
+export function testSpin(item: Furniture, prng: Prng, world?: WorldState): GameResult {
+  if (item.gameId === 'PLINKO' && world) return playPlinkoRound(world, prng, ZERO_VC);
   return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, prng);
 }
 

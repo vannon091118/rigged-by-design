@@ -47,12 +47,14 @@ interface PhysicsOptions {
   readonly maxSteps?: number;
 }
 
+interface Attractor { readonly position: Vec2; readonly radius: number; readonly strength: number; }
 /** Fester Zeitschritt, deterministische Reihenfolge: Render-FPS aendert kein Ergebnis. */
 export class PhysicsWorld {
   readonly gravity: Vec2;
   readonly fixedDt: number;
   readonly maxSteps: number;
   readonly bodies: Body[] = [];
+  readonly attractors: Attractor[] = [];
   readonly #statics: Body[] = [];
   readonly #dynamics: Body[] = [];
   #accumulator = 0;
@@ -67,6 +69,19 @@ export class PhysicsWorld {
     this.bodies.push(body);
     (body.isStatic ? this.#statics : this.#dynamics).push(body);
     return body;
+  }
+
+  remove(body: Body): void {
+    const lists = [this.bodies, body.isStatic ? this.#statics : this.#dynamics];
+    for (const list of lists) {
+      const index = list.indexOf(body);
+      if (index >= 0) list.splice(index, 1);
+    }
+  }
+
+  addAttractor(attractor: Attractor): void {
+    if (!(attractor.radius > 0) || !(attractor.strength >= 0)) throw new Error('Physik: ungueltiger Attraktor');
+    this.attractors.push(attractor);
   }
 
   /** Fuehrt so viele feste Schritte aus, wie in `dt` passen. */
@@ -92,6 +107,17 @@ export class PhysicsWorld {
         x: body.velocity.x + this.gravity.x * this.fixedDt,
         y: body.velocity.y + this.gravity.y * this.fixedDt,
       };
+      for (const attractor of this.attractors) {
+        const dx = attractor.position.x - body.position.x;
+        const dy = attractor.position.y - body.position.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance <= EPS || distance > attractor.radius) continue;
+        const pull = attractor.strength * (1 - distance / attractor.radius);
+        body.velocity = {
+          x: body.velocity.x + (dx / distance) * pull * this.fixedDt,
+          y: body.velocity.y + (dy / distance) * pull * this.fixedDt,
+        };
+      }
       body.position = {
         x: body.position.x + body.velocity.x * this.fixedDt,
         y: body.position.y + body.velocity.y * this.fixedDt,
