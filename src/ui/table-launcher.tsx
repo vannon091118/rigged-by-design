@@ -7,7 +7,9 @@ import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { GameId, ModId } from '../core/sim/types';
 import { DicePopup } from './dice-popup';
 import { PlinkoPopup } from './plinko-popup';
+import { BlackjackPopup } from './games/blackjack-popup';
 import { RoulettePopup } from './roulette-popup';
+import { VideoPokerPopup } from './games/video-poker-popup';
 import { ShellPopup } from './shell-popup';
 import { SlotPopup } from './slot-popup';
 
@@ -28,6 +30,8 @@ interface Props {
   readonly canWithdraw: boolean;
   readonly onSpin: (betVC: number, options?: GameExtras) => GameResult | null;
   readonly onShellRound: () => ShellRound;
+  readonly onCardSeed: () => number;
+  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 
@@ -56,6 +60,28 @@ export function TableLauncher(props: Props) {
         config={defaultPlinkoConfig()}
         rows={8}
         onDrop={(betVC) => onSpin(betVC, { captureTrack: true })}
+      />
+    );
+  }
+  if (game === 'BLACKJACK') {
+    return (
+      <BlackjackPopup
+        {...common}
+        wallets={wallets}
+        subtitle={`${where} Zwei Karten, ein Dealer, du entscheidest.`}
+        seed={props.onCardSeed}
+        onSettle={props.onSettle}
+      />
+    );
+  }
+  if (game === 'POKER') {
+    return (
+      <VideoPokerPopup
+        {...common}
+        wallets={wallets}
+        subtitle={`${where} Neun Zeilen, fuenf Karten, du haeltst.`}
+        seed={props.onCardSeed}
+        onSettle={props.onSettle}
       />
     );
   }

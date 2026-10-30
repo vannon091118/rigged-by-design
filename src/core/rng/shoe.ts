@@ -8,7 +8,7 @@ export interface Card {
   readonly suit: CardSuit;
 }
 
-interface CardShoe {
+export interface CardShoe {
   readonly remaining: number;
   readonly reshuffles: number;
   draw(): Card;

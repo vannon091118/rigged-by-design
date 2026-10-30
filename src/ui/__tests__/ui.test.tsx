@@ -83,7 +83,7 @@ describe('UI-Integration', () => {
   });
 
   it('zeigt echte Rivalenprofile statt hartkodierter Häuser', () => {
-    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onRisk={() => null} onTakeHome={noop} onExclusion={noop} onShellRound={() => ({ cups: 3, ballCup: 0, moves: [] })} />);
+    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onRisk={() => null} onTakeHome={noop} onExclusion={noop} onShellRound={() => ({ cups: 3, ballCup: 0, moves: [] })} onCardSeed={() => 1} onSettleCard={() => null} />);
     const hafen = screen.getByLabelText('Profil Hafenklause');
     expect(within(hafen).getByText(/Kalle/).textContent).toContain('Kalle');
     expect(screen.queryByText('Neon-Keller')).toBeNull();

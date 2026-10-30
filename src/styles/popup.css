@@ -462,3 +462,10 @@
 .shell-console { display: grid; gap: 7px; }
 .rt-zero .rt-cell { font-size: 13px; font-weight: 700; display: grid; place-items: center; }
 .shell-picks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+
+/* Karten: Blackjack und Video Poker teilen sich die Buehnenhoehe. */
+.card-stage-live { position: relative; width: min(100%, 560px); margin: 0 auto; height: clamp(240px, 32vh, 320px); border-radius: 14px; border: 1px solid var(--line-strong); background: radial-gradient(circle at 50% 30%, #123a2c 0%, #050a08 78%); overflow: hidden; }
+.table-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.table-actions .btn { font-size: 10px; letter-spacing: 0.06em; }
+.hold-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.hold-row .chip { font-size: 9px; padding: 5px 2px; }
