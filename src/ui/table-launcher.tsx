@@ -1,18 +1,15 @@
 /** Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. */
-import type { GameResult } from '../core/games/contracts';
-import type { DiceBetKind } from '../core/games/dice-bets';
+import type { GameExtras, GameResult } from '../core/games/contracts';
 import { defaultPlinkoConfig } from '../core/games/plinko-config';
+import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { GameId, ModId } from '../core/sim/types';
 import { DicePopup } from './dice-popup';
 import { PlinkoPopup } from './plinko-popup';
+import { RoulettePopup } from './roulette-popup';
+import { ShellPopup } from './shell-popup';
 import { SlotPopup } from './slot-popup';
-
-interface SpinOptions {
-  readonly variant?: DiceBetKind;
-  readonly captureTrack?: boolean;
-}
 
 interface Props {
   readonly game: GameId;
@@ -29,7 +26,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw: () => void;
   readonly canWithdraw: boolean;
-  readonly onSpin: (betVC: number, options?: SpinOptions) => GameResult | null;
+  readonly onSpin: (betVC: number, options?: GameExtras) => GameResult | null;
+  readonly onShellRound: () => ShellRound;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 
@@ -58,6 +56,27 @@ export function TableLauncher(props: Props) {
         config={defaultPlinkoConfig()}
         rows={8}
         onDrop={(betVC) => onSpin(betVC, { captureTrack: true })}
+      />
+    );
+  }
+  if (game === 'ROULETTE') {
+    return (
+      <RoulettePopup
+        {...common}
+        wallets={wallets}
+        subtitle={`${where} Kessel mit 37 Taschen, Satz auf jedem Feld.`}
+        onSpin={(betVC, options) => onSpin(betVC, options)}
+      />
+    );
+  }
+  if (game === 'SHELL') {
+    return (
+      <ShellPopup
+        {...common}
+        wallets={wallets}
+        subtitle={`${where} Drei Becher, eine Perle, du waehlst.`}
+        onPrepare={() => props.onShellRound()}
+        onPickCup={(round, slot, betVC) => onSpin(betVC, { shell: { round, pick: slot } })}
       />
     );
   }

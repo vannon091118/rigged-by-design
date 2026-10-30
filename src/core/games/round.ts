@@ -5,12 +5,16 @@ import { playBlackjack, playVideoPoker } from './engines/cards';
 import { playSlot, type SlotLineWin } from './engines/slot';
 import { playShell, rollDice, spinRoulette } from './engines/table';
 import type { DiceBetKind } from './dice-bets';
+import { spinRouletteTable, type RouletteChip, type RouletteSpin } from './roulette-table';
+import { resolveShellPick, type ShellRound } from './shell-round';
 import { createPlinkoBoard, PLINKO_POCKETS } from './plinko-board';
 import { plinkoPaytable, type PlinkoDrop } from './plinko-config';
 
 interface RoundOptions {
   readonly variant?: DiceBetKind;
   readonly captureTrack?: boolean;
+  readonly roulette?: readonly RouletteChip[];
+  readonly shell?: { readonly round: ShellRound; readonly pick: number };
 }
 
 interface RoundResult {
@@ -24,6 +28,7 @@ interface RoundResult {
   readonly books?: number;
   readonly drop?: PlinkoDrop;
   readonly dice?: readonly [number, number];
+  readonly roulette?: RouletteSpin;
 }
 
 /** Paytable auf die gemessene Fachverteilung des Boards geeicht (~93 % RTP). */
@@ -48,11 +53,30 @@ export function playRound(game: GameId, prng: Prng, options: RoundOptions = {}):
   if (game === 'BLACKJACK') return { game, ...playBlackjack(prng) };
   if (game === 'POKER') return { game, ...playVideoPoker(prng) };
   if (game === 'ROULETTE') {
-    const outcome = spinRoulette(prng, { kind: 'RED' });
-    return { game, multiplierBps: outcome.multiplierBps, label: outcome.label, detail: outcome.detail };
+    if (!options.roulette?.length) {
+      const outcome = spinRoulette(prng, { kind: 'RED' });
+      return { game, multiplierBps: outcome.multiplierBps, label: outcome.label, detail: outcome.detail };
+    }
+    const spin = spinRouletteTable(prng, options.roulette);
+    return {
+      game,
+      multiplierBps: spin.multiplierBps,
+      label: `${spin.number} ${spin.colour}`,
+      detail: [String(spin.number), spin.colour, `${spin.hits.length} Treffer`],
+      roulette: spin,
+    };
   }
   if (game === 'PLINKO') return plinko(prng, options.captureTrack ?? false);
-  if (game === 'SHELL') return { game, ...playShell(prng) };
+  if (game === 'SHELL') {
+    if (!options.shell) return { game, ...playShell(prng) };
+    const pick = resolveShellPick(options.shell.round, options.shell.pick);
+    return {
+      game,
+      multiplierBps: pick.multiplierBps,
+      label: pick.label,
+      detail: [`Becher ${options.shell.pick + 1}`, pick.won ? 'Perle' : 'leer'],
+    };
+  }
   if (game === 'DICE') return { game, ...rollDice(prng, { kind: options.variant ?? 'OVER' }) };
   return { game: 'SLOT', ...playSlot(prng) };
 }

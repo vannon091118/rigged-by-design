@@ -1,10 +1,9 @@
 /** Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. */
 import type { Ledger } from '../core/economy/ledger';
-import type { GameResult } from '../core/games/contracts';
+import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
 import { fromVC, toVCString, type VaCoinMicro } from '../core/economy/vacoin';
 import { gambleRivalWin, type RiskColor, type RiskOutcome } from '../core/games/risk-card';
-import type { DiceBetKind } from '../core/games/dice-bets';
 import { recordJournal } from '../core/sim/journal';
 import { recordExclusionPlay } from '../core/sim/self-exclusion-bet';
 import { getRival, visitRival, type RivalId } from '../core/sim/rivals';
@@ -37,14 +36,9 @@ export function riskRivalWin(
 const payoutText = (payout: VaCoinMicro): string =>
   payout > 0 ? `${toVCString(payout)} zurück.` : 'Verloren.';
 
-interface PlayOptions {
-  readonly variant?: DiceBetKind;
-  readonly captureTrack?: boolean;
-}
-
 function playRivalGame(
   ledger: Ledger, rivalId: RivalId, machineIndex: number, betVC: number, prng: Prng, tick: number,
-  options: PlayOptions = {},
+  options: GameExtras = {},
 ): ForeignOutcome {
   const visit = visitRival(ledger, rivalId, machineIndex, fromVC(betVC), prng, tick, options);
   return { result: visit.result, notice: `${visit.rival.name} (${visit.machine.label}): ${payoutText(visit.result.payout)}` };
@@ -53,7 +47,7 @@ function playRivalGame(
 /** Besuch plus Journal: das fremde Haus ist ein System mit Zustand und Folge. */
 export function visitRivalWithJournal(
   world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, betVC: number, prng: Prng,
-  options: PlayOptions = {},
+  options: GameExtras = {},
 ): ForeignOutcome {
   const outcome = playRivalGame(ledger, rivalId, machineIndex, betVC, prng, world.tick, options);
   recordExclusionPlay(world, fromVC(betVC), outcome.result.payout, world.tick);

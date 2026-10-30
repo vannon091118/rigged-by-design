@@ -1,8 +1,7 @@
 /** Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. */
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
-import { playAction, type GameResult } from '../games/contracts';
-import type { DiceBetKind } from '../games/dice-bets';
+import { playAction, type GameExtras, type GameResult } from '../games/contracts';
 import { playPlinkoRound } from '../games/plinko-sandbox';
 import { playSlotSession } from '../games/slot-session';
 import type { Prng } from '../rng/prng';
@@ -112,7 +111,7 @@ export function foreignRound(
   prng: Prng,
   tick: number,
   houseEdgeBps = 250,
-  options: { readonly variant?: DiceBetKind; readonly captureTrack?: boolean } = {},
+  options: GameExtras = {},
 ): GameResult {
   if (ledger.getBalance(PORTEMONNAIE) < bet) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
   foreignBet(ledger, bet, tick);

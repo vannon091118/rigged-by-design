@@ -4,6 +4,7 @@ import { HOUSE_FLOAT } from '../core/sim/money';
 import { RIVALS, rivalStates, type RivalId } from '../core/sim/rivals';
 import type { GameResult } from '../core/games/contracts';
 import type { DiceBetKind } from '../core/games/dice-bets';
+import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { GameView } from '../store/types';
 import { vc } from './format';
@@ -21,6 +22,7 @@ interface Props {
   ) => GameResult | null;
   readonly onRisk: (rivalId: RivalId, color: RiskColor, stakeVC: number) => RiskOutcome | null;
   readonly onTakeHome: () => void;
+  readonly onShellRound: () => ShellRound;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
 
@@ -30,7 +32,7 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound }: Props) {
   const states = rivalStates(view.tick);
   const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
   const [machineIndex, setMachineIndex] = useState(0);
@@ -127,7 +129,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
         ))}
       </div>
 
-      {machine.game === 'SLOT' || machine.game === 'PLINKO' || machine.game === 'DICE' ? (
+      {machine.game === 'SLOT' || machine.game === 'PLINKO' || machine.game === 'DICE' || machine.game === 'ROULETTE' || machine.game === 'SHELL' ? (
         <TableLauncher
           game={machine.game}
           label={machine.label}
@@ -145,6 +147,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           canWithdraw={view.house > HOUSE_FLOAT}
           onSpin={(betVC, options) => onPlay(rivalId, machineIndex, betVC, options)}
           onRisk={machine.game === 'SLOT' ? (color, stakeVC) => onRisk(rivalId, color, stakeVC) : undefined}
+          onShellRound={onShellRound}
         />
       ) : (
       <div className={`table-stage${full ? ' full' : ''}`}>

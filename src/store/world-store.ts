@@ -2,7 +2,8 @@
 /** Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. */
 import { Ledger, type LedgerDiagnosis } from '../core/economy/ledger';
 import { fromVC, toVCString } from '../core/economy/vacoin';
-import type { GameResult } from '../core/games/contracts';
+import type { GameExtras, GameResult } from '../core/games/contracts';
+import { createShellRound, type ShellRound } from '../core/games/shell-round';
 import { deployGate, type GateResult } from '../core/games/plinko-sandbox';
 import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMode } from '../core/games/plinko-config';
 import { honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
@@ -19,7 +20,6 @@ import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
-import type { DiceBetKind } from '../core/games/dice-bets';
 import { riskRivalWin, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
@@ -236,7 +236,11 @@ class WorldStore {
     movePlayer(this.#world, point);
     this.#emit(false);
   }
-  playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: { variant?: DiceBetKind; captureTrack?: boolean }): GameResult | null {
+  /** Huetchen: die Runde steht vor der Wahl fest, gebucht wird erst der Griff. */
+  shellRound(cups = 3): ShellRound {
+    return createShellRound(this.#prng, cups);
+  }
+  playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null {
     const result = this.#foreign(() => visitRivalWithJournal(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options));
     if (result) this.#emit(false);
     return result;

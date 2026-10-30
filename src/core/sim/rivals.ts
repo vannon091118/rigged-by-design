@@ -5,10 +5,9 @@
  */
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
-import type { GameResult } from '../games/contracts';
+import type { GameExtras, GameResult } from '../games/contracts';
 import type { Prng } from '../rng/prng';
 import { foreignRound } from './actions';
-import type { DiceBetKind } from '../games/dice-bets';
 import { PORTEMONNAIE } from './money';
 import { modEffects } from './offers';
 import type { GameId, ModId, PersonaId } from './types';
@@ -153,7 +152,7 @@ export function visitRival(
   stake: VaCoinMicro,
   prng: Prng,
   tick: number,
-  options: { readonly variant?: DiceBetKind; readonly captureTrack?: boolean } = {},
+  options: GameExtras = {},
 ): RivalVisit {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
