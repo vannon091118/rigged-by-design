@@ -202,6 +202,7 @@ export default function App() {
           view={view}
           onClose={() => setPopup(null)}
           onPlay={(rivalId, machineIndex, betVC) => worldStore.playRival(rivalId, machineIndex, betVC)}
+          onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
           onTakeHome={() => worldStore.takeHome(5)}
           onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
         />

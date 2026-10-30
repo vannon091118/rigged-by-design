@@ -5,7 +5,7 @@
  *
  * UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile.
  */
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { recordJournal } from '../../core/sim/journal';
@@ -83,11 +83,12 @@ describe('UI-Integration', () => {
   });
 
   it('zeigt echte Rivalenprofile statt hartkodierter Häuser', () => {
-    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onTakeHome={noop} onExclusion={noop} />);
-    expect(screen.getByText(/Kalle/).textContent).toContain('Kalle');
+    render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onRisk={() => null} onTakeHome={noop} onExclusion={noop} />);
+    const hafen = screen.getByLabelText('Profil Hafenklause');
+    expect(within(hafen).getByText(/Kalle/).textContent).toContain('Kalle');
     expect(screen.queryByText('Neon-Keller')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: /Goldene Hand/ }));
-    expect(screen.getByText(/Marlene Vest/).textContent).toContain('Marlene Vest');
+    expect(within(screen.getByLabelText('Profil Goldene Hand')).getByText(/Marlene Vest/).textContent).toContain('Marlene Vest');
   });
 
   it('zeigt den Personalstatus mit Auftrag und Blockadegrund', () => {

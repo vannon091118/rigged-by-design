@@ -10,6 +10,7 @@ import { vc } from './format';
 import { attractionBand } from './glossary';
 import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
+import { SlotPopup } from './slot-popup';
 import { SlotTelemetry } from './slot-telemetry';
 
 interface Props {
@@ -60,7 +61,22 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
           {item.gameId === 'PLINKO' && (
             <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
           )}
-          {item.gameId !== 'PLINKO' && (
+          {item.gameId === 'SLOT' && (
+            <SlotPopup
+              title={item.label}
+              subtitle={`Zustand ${Math.round(item.condition)} % · Anziehung ${attractionBand(attraction)} · ${item.mods.length} Mods`}
+              wallet={view.playerCash}
+              house={view.house}
+              mods={item.mods.map((id) => getMod(id).name)}
+              pact="eigenes Haus"
+              bets={[]}
+              canPay
+              full={full}
+              onToggleFull={() => setFull((value) => !value)}
+              onSpinFor={() => onTest()}
+            />
+          )}
+          {item.gameId !== 'PLINKO' && item.gameId !== 'SLOT' && (
           <div className="slot-stage">
             <div className={`reel-window${spinning ? ' spinning' : ''}`}>
               {(result?.detail ?? ['?', '?', '?']).slice(0, 5).map((symbol, index) => (

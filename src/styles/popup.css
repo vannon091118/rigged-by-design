@@ -387,3 +387,25 @@
 .help-controls { list-style: none; padding-left: 0; }
 .help-controls kbd { display: inline-block; min-width: 60px; margin-right: 6px; padding: 1px 5px; border: 1px solid var(--line-strong); border-radius: 5px; background: #150e23; font-family: var(--mono); font-size: 9px; color: var(--neon); text-align: center; }
 @media (max-width: 720px) { .help-grid { grid-template-columns: 1fr; } }
+
+/* Casino-Fenster: Kopfzeile, Walzenbuehne, Wettkonsole, Risiko-Karte */
+.casino-head { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: #0a0614; }
+.casino-head-stat { display: grid; gap: 2px; min-width: 96px; padding-right: 10px; border-right: 1px solid var(--line); }
+.casino-head-stat:last-of-type { border-right: 0; }
+.casino-head-stat span { font-size: 7px; letter-spacing: 0.13em; color: var(--muted); }
+.casino-head-stat strong { font-family: var(--mono); font-size: 13px; color: var(--gold); }
+.casino-head-actions { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+.slot-window { display: grid; gap: 7px; }
+.slot-window-title { display: flex; align-items: baseline; gap: 10px; justify-content: space-between; flex-wrap: wrap; }
+.slot-window-title Span.eyebrow { font-size: 7px; letter-spacing: 0.14em; color: var(--muted); margin-right: 6px; }
+.slot-window-title strong { display: block; font-size: 14px; letter-spacing: 0.02em; }
+.slot-window-title p { margin: 0; font-size: 10px; color: var(--muted); }
+.slot-stage-live { position: relative; width: min(100%, 560px); margin: 0 auto; height: clamp(190px, 25vh, 290px); border-radius: 16px; border: 1px solid var(--line-strong); background: radial-gradient(circle at 50% 20%, #1a1030 0%, #08040f 72%); overflow: hidden; }
+.slot-narration { margin: 0; min-height: 16px; font-family: var(--mono); font-size: 11px; color: var(--neon); }
+.slot-console { display: grid; gap: 7px; }
+.slot-console-actions { display: flex; gap: 8px; align-items: center; }
+.slot-console-actions .btn.primary.big { flex: 1; }
+.risk-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding: 7px 9px; border: 1px dashed var(--gold); border-radius: 10px; background: #1a1206; }
+.risk-row-label { font-size: 9px; letter-spacing: 0.08em; color: var(--gold); }
+.risk-result { margin: 0; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.risk-result.win { color: var(--neon); }

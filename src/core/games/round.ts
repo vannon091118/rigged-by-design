@@ -2,7 +2,7 @@
 import type { GameId } from '../sim/types';
 import type { Prng } from '../rng/prng';
 import { playBlackjack, playVideoPoker } from './engines/cards';
-import { playSlot } from './engines/slot';
+import { playSlot, type SlotLineWin } from './engines/slot';
 import { playShell, rollDice, spinRoulette } from './engines/table';
 import { createPlinkoBoard, PLINKO_POCKETS } from './plinko-board';
 import { plinkoPaytable } from './plinko-config';
@@ -12,6 +12,10 @@ interface RoundResult {
   readonly multiplierBps: number;
   readonly label: string;
   readonly detail: readonly string[];
+  /** Nur fuer Spiele mit Gitter: vollstaendige Walzenlage fuer die Anzeige. */
+  readonly grid?: readonly (readonly string[])[];
+  readonly wins?: readonly SlotLineWin[];
+  readonly books?: number;
 }
 
 /** Paytable auf die gemessene Fachverteilung des Boards geeicht (~93 % RTP). */

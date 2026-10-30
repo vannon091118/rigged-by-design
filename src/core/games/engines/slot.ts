@@ -1,12 +1,24 @@
 /** Book-of-VaCoin: 5x3-Walzen, zehn Gewinnlinien, gewichtete Symbole, Freispiele. */
 import type { Prng } from '../../rng/prng';
 
+export interface SlotLineWin {
+  /** Index in `SLOT_LINES`. */
+  readonly line: number;
+  readonly symbol: string;
+  readonly count: number;
+  readonly bps: number;
+}
+
 interface SlotOutcome {
   readonly multiplierBps: number;
   readonly label: string;
   readonly detail: readonly string[];
   readonly symbols: readonly string[];
   readonly jackpot: boolean;
+  /** Volles 5x3-Gitter fuer die Anzeige: `grid[walze][reihe]`. */
+  readonly grid: readonly (readonly string[])[];
+  readonly wins: readonly SlotLineWin[];
+  readonly books: number;
 }
 
 interface SlotOptions {
@@ -41,11 +53,12 @@ const LINE_PAY: Readonly<Record<SymbolId, readonly [number, number, number]>> = 
 };
 
 /** Zehn Linien als Zeilenindex je Walze (0 = oben, 2 = unten). */
-const LINES: readonly (readonly number[])[] = [
+export const SLOT_LINES: readonly (readonly number[])[] = [
   [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [2, 2, 2, 2, 2], [0, 1, 2, 1, 0], [2, 1, 0, 1, 2],
   [0, 0, 1, 2, 2], [2, 2, 1, 0, 0], [1, 0, 0, 0, 1], [1, 2, 2, 2, 1], [0, 1, 1, 1, 0],
 ];
 
+const LINES = SLOT_LINES;
 const SLOT_LINE_COUNT = LINES.length;
 /** Skaliert die Paytable; auf 93 % RTP geeicht (siehe Test). */
 const PAY_SCALE = 29.6;
@@ -89,25 +102,29 @@ function forceNonLdw(reels: SymbolId[][]): void {
 }
 
 /** BOOK ist Wild; drei oder mehr BOOK irgendwo starten die Freispiele. */
-function lineWin(line: readonly SymbolId[]): number {
+function lineWin(line: readonly SymbolId[]): { symbol: SymbolId; count: number; bps: number } | null {
   const lead = line.find((symbol) => symbol !== 'BOOK') ?? 'BOOK';
   let run = 0;
   for (const symbol of line) {
     if (symbol === lead || symbol === 'BOOK') run += 1;
     else break;
   }
-  if (run < 3) return 0;
+  if (run < 3) return null;
   const pay = LINE_PAY[lead];
-  return Math.round(pay[run - 3]! * PAY_SCALE);
+  return { symbol: lead, count: run, bps: Math.round(pay[run - 3]! * PAY_SCALE) };
 }
 
-function evaluate(reels: readonly (readonly SymbolId[])[]): number {
+function evaluate(reels: readonly (readonly SymbolId[])[]): { total: number; wins: SlotLineWin[] } {
   let total = 0;
-  for (const line of LINES) {
+  const wins: SlotLineWin[] = [];
+  LINES.forEach((line, index) => {
     const symbols = line.map((row, reel) => reels[reel]![row]!);
-    total += lineWin(symbols);
-  }
-  return total;
+    const hit = lineWin(symbols);
+    if (!hit) return;
+    total += hit.bps;
+    wins.push({ line: index, symbol: hit.symbol, count: hit.count, bps: hit.bps });
+  });
+  return { total, wins };
 }
 
 function countBooks(reels: readonly (readonly SymbolId[])[]): number {
@@ -123,7 +140,7 @@ function countBooks(reels: readonly (readonly SymbolId[])[]): number {
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
   const reels = shiftReels(spinReels(prng, options.lowWinBias), options.offset ?? 0);
   if (options.forceWin) forceNonLdw(reels);
-  const lineBps = evaluate(reels);
+  const { total: lineBps, wins } = evaluate(reels);
   const books = countBooks(reels);
   let freeSpins = books >= 3 ? FREE_SPINS : 0;
   let rounds = 0;
@@ -132,7 +149,7 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
     freeSpins -= 1;
     rounds += 1;
     const extra = spinReels(prng);
-    freeBps += evaluate(extra);
+    freeBps += evaluate(extra).total;
     if (countBooks(extra) >= 3) freeSpins += FREE_SPINS;
   }
   // Je Linie gewonnen, aber auf den Gesamteinsatz normiert.
@@ -147,5 +164,8 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
     detail: [center.join(' | ')],
     symbols: center,
     jackpot: books >= 3,
+    grid: reels,
+    wins,
+    books,
   };
 }

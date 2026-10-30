@@ -3,16 +3,19 @@ import { useState } from 'react';
 import { HOUSE_FLOAT } from '../core/sim/money';
 import { RIVALS, rivalStates, type RivalId } from '../core/sim/rivals';
 import type { GameResult } from '../core/games/contracts';
+import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand, houseEdgeText } from './glossary';
 import { PopupShell } from './popup-shell';
 import { SelfExclusionPanel } from './self-exclusion-panel';
+import { SlotPopup } from './slot-popup';
 
 interface Props {
   readonly view: GameView;
   readonly onClose: () => void;
   readonly onPlay: (rivalId: RivalId, machineIndex: number, betVC: number) => GameResult | null;
+  readonly onRisk: (rivalId: RivalId, color: RiskColor, stakeVC: number) => RiskOutcome | null;
   readonly onTakeHome: () => void;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
@@ -23,7 +26,7 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion }: Props) {
   const states = rivalStates(view.tick);
   const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
   const [machineIndex, setMachineIndex] = useState(0);
@@ -120,6 +123,24 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
         ))}
       </div>
 
+      {machine.game === 'SLOT' ? (
+        <SlotPopup
+          title={machine.label}
+          subtitle={`${rival.name} · ${rival.operator}. Hausvorteil ${(rival.edgeBps / 100).toFixed(2)} %.`}
+          wallet={view.wallet}
+          house={view.house}
+          mods={machine.mods}
+          pact={view.exclusionPact ? `Limit ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt'}
+          bets={bets}
+          canPay={!cannotPay}
+          full={full}
+          onToggleFull={() => setFull((value) => !value)}
+          onWithdraw={onTakeHome}
+          canWithdraw={view.house > HOUSE_FLOAT}
+          onSpinFor={(betVC) => onPlay(rivalId, machineIndex, betVC)}
+          onGamble={(color, stakeVC) => onRisk(rivalId, color, stakeVC)}
+        />
+      ) : (
       <div className={`table-stage${full ? ' full' : ''}`}>
         <div className={`game-screen${spinning ? ' spinning' : ''}`}>
           <div className="screen-title">{machine.label}</div>
@@ -146,6 +167,7 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome, onExclusion }: P
           </small>
         </div>
       </div>
+      )}
     </PopupShell>
   );
 }

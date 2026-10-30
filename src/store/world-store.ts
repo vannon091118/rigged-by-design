@@ -18,7 +18,8 @@ import { fireAgent, hireAgent } from '../core/sim/staff';
 import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
-import { visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
+import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
+import { riskRivalWin, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, takeHomeToWallet, useCarriedAtPlayer } from './player-tools';
@@ -200,22 +201,20 @@ class WorldStore {
     this.#emit();
   }
   installMod(itemId: number, mod: ModId): void {
-    this.#guard(() => {
-      installMod(this.#world, this.#ledger, itemId, mod);
-      this.#notice = 'Mod verbaut.';
-    });
+    this.#guard(() => { installMod(this.#world, this.#ledger, itemId, mod); this.#notice = 'Mod verbaut.'; });
   }
   addReel(itemId: number): void {
-    this.#guard(() => {
-      upgradeReels(this.#world, this.#ledger, itemId);
-      this.#notice = 'Walze eingebaut.';
-    });
+    this.#guard(() => { upgradeReels(this.#world, this.#ledger, itemId); this.#notice = 'Walze eingebaut.'; });
   }
   setBet(itemId: number, vc: number): void {
-    this.#guard(() => {
-      setBaseBet(this.#world, itemId, fromVC(vc));
-      this.#notice = 'Mindesteinsatz geändert.';
-    });
+    this.#guard(() => { setBaseBet(this.#world, itemId, fromVC(vc)); this.#notice = 'Mindesteinsatz geändert.'; });
+  }
+  /** Risiko-Karte nach einem fremden Gewinn: verdoppeln oder zurueckbuchen. */
+  riskCard(rivalId: RivalId, color: RiskColor, stakeVC: number): RiskOutcome | null {
+    const booking = riskRivalWin(this.#world, this.#ledger, rivalId, fromVC(stakeVC), color, this.#prng);
+    this.#notice = booking.notice;
+    this.#emit(booking.outcome !== null);
+    return booking.outcome;
   }
   takeHome(amountVC = 5): void {
     this.#guard(() => { this.#notice = takeHomeToWallet(this.#world, this.#ledger, amountVC); });

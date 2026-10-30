@@ -2,6 +2,7 @@
 import { mulVC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import type { GameId } from '../sim/types';
+import type { SlotLineWin } from './engines/slot';
 import { playRound } from './round';
 
 const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
@@ -25,6 +26,10 @@ export interface GameResult {
   readonly multiplierBps: number;
   readonly label: string;
   readonly detail: readonly string[];
+  /** Slot-Anzeige: volles 5x3-Gitter, bezahlte Linien und Buch-Zaehler. */
+  readonly grid?: readonly (readonly string[])[];
+  readonly wins?: readonly SlotLineWin[];
+  readonly books?: number;
 }
 
 function assertAdjust(value: number | undefined, label: string): void {
@@ -58,5 +63,8 @@ export function playAction(action: GameAction, prng: Prng): GameResult {
     multiplierBps,
     label: roll.label,
     detail: roll.detail,
+    grid: roll.grid,
+    wins: roll.wins,
+    books: roll.books,
   };
 }

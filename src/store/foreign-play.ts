@@ -3,14 +3,34 @@ import type { Ledger } from '../core/economy/ledger';
 import type { GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
 import { fromVC, toVCString, type VaCoinMicro } from '../core/economy/vacoin';
+import { gambleRivalWin, type RiskColor, type RiskOutcome } from '../core/games/risk-card';
 import { recordJournal } from '../core/sim/journal';
 import { recordExclusionPlay } from '../core/sim/self-exclusion-bet';
-import { visitRival, type RivalId } from '../core/sim/rivals';
+import { getRival, visitRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 
 export interface ForeignOutcome {
   readonly result: GameResult;
   readonly notice: string;
+}
+
+interface RiskBooking {
+  readonly outcome: RiskOutcome | null;
+  readonly notice: string;
+}
+
+/** Risiko-Karte im fremden Haus: verdoppeln oder zurueckbuchen, beides im Journal. */
+export function riskRivalWin(
+  world: WorldState, ledger: Ledger, rivalId: RivalId, stake: VaCoinMicro, color: RiskColor, prng: Prng,
+): RiskBooking {
+  try {
+    const outcome = gambleRivalWin(ledger, stake, color, prng, world.tick);
+    const notice = `Risiko-Karte bei ${getRival(rivalId).name}: ${outcome.card} · ${outcome.won ? 'verdoppelt' : 'verloren'}.`;
+    recordJournal(world, { kind: 'RIVAL', subject: rivalId, cause: 'Risiko-Karte', effect: notice, refs: { rivalId } });
+    return { outcome, notice };
+  } catch (error) {
+    return { outcome: null, notice: error instanceof Error ? error.message : 'Risiko-Karte fehlgeschlagen.' };
+  }
 }
 
 const payoutText = (payout: VaCoinMicro): string =>
