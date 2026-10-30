@@ -4,6 +4,7 @@ import { remodelRequirements } from '../core/sim/remodel';
 import type { StaffRole, TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
+import { ROLE_LABEL, TASK_LABEL } from './staff-labels';
 
 function Staff(props: { label: string; note: string; wage: number; on: boolean; onHire: () => void; onFire: () => void }) {
   return (
@@ -75,13 +76,21 @@ export function CrateList(props: {
     if (crate.payload.kind === 'DRINKS') return `${crate.payload.count} Getränke`;
     return `${crate.payload.count} Ersatzteile`;
   };
+  const carrier = (crate: GameView['crates'][number]): string => {
+    if (crate.carriedBy === 'player') return 'getragen – abladen oder aufstellen';
+    if (typeof crate.carriedBy === 'number') {
+      const agent = view.agents.find((entry) => entry.id === crate.carriedBy);
+      return agent ? `unterwegs: ${ROLE_LABEL[agent.role]}` : 'unterwegs';
+    }
+    return 'liegt am Eingang';
+  };
   return (
     <div className="ops-row">
       {view.crates.length === 0 && <small className="muted">Keine Kisten am Eingang.</small>}
       {view.crates.map((crate) => (
         <div key={crate.id} className="staff">
           <div><strong>{label(crate.id)}</strong>
-            <small>{crate.carriedBy === 'player' ? 'getragen – abladen oder aufstellen' : 'liegt am Eingang'}</small></div>
+            <small>{carrier(crate)}</small></div>
           {crate.carriedBy === null && (
             <button type="button" className="btn small" onClick={() => props.onPickup(crate.id)}>ABHOLEN</button>
           )}
@@ -112,6 +121,21 @@ export function DisputeList(props: { view: GameView; onCalm: (id: number) => voi
         ))}
       </div>
     </>
+  );
+}
+
+export function StaffStatus(props: { view: GameView }) {
+  if (props.view.agents.length === 0) return null;
+  return (
+    <div className="staff-status-list">
+      {props.view.agents.map((agent) => (
+        <div key={agent.id} className="staff-status">
+          <strong>{ROLE_LABEL[agent.role]}</strong>
+          <span>{TASK_LABEL[agent.task] ?? agent.task}</span>
+          {agent.blockedReason && <small className="warn-text">{agent.blockedReason}</small>}
+        </div>
+      ))}
+    </div>
   );
 }
 

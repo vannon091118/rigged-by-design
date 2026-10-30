@@ -20,8 +20,9 @@ import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
 import type { Furniture, WorldState } from '../types';
 import { canPlace, exchangePoint } from '../world';
+import { randomSeed } from '../../../test/random-seed';
 
-function setup(seed = 0xd00d) {
+function setup(seed = randomSeed()) {
   const world = createWorld('SMALL');
   ensureStarter(world);
   const ledger = new Ledger();
@@ -144,8 +145,9 @@ describe('Personal', () => {
   });
 
   it('der Kassierer verkürzt die Auszahlungs-Wartezeit', () => {
-    const fast = setup(1);
-    const slow = setup(2);
+    const seed = randomSeed();
+    const fast = setup(seed);
+    const slow = setup(seed);
     const refs: { world: WorldState; id: number }[] = [];
     for (const { world, ledger, prng } of [fast, slow]) {
       const guest = spawnGuest(world, prng, ledger)!;

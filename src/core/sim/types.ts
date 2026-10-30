@@ -1,7 +1,10 @@
+// @loc-exception: Der serialisierbare Weltzustand ist eine einzige Typwahrheit; Aufteilen wuerde Saves und Hydration auseinanderziehen.
 /** Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. */
 import type { VaCoinMicro } from '../economy/vacoin';
 import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
+import type { JournalEvent } from './journal';
+import type { PlayerLook } from './player-look';
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
 
@@ -80,6 +83,8 @@ export interface Guest {
   dirtTimer: number;
   lastResult: string;
   spins: number;
+  /** Klartext-Grund der letzten Entscheidung; fehlt in alten Saves. */
+  intent?: string;
 }
 
 export interface Player {
@@ -132,6 +137,10 @@ export interface Crate {
   carriedBy: number | 'player' | null;
 }
 
+export type StaffTask =
+  | 'idle' | 'toCrate' | 'toBar' | 'toStorage' | 'toGuest' | 'toDispute'
+  | 'cleaning' | 'cashier' | 'patrol' | 'serve';
+
 export interface StaffAgent {
   id: number;
   role: StaffRole;
@@ -141,6 +150,9 @@ export interface StaffAgent {
   pathIndex: number;
   carryingCrate: number | null;
   workTicks: number;
+  /** Expliziter Auftrag statt aus dem Pfad geraten. */
+  task: StaffTask;
+  blockedReason: string;
 }
 
 export interface Dispute {
@@ -194,6 +206,11 @@ export interface WorldState {
   activePenalties: ActivePenalty[];
   visitors: Visitor[];
   nextVisitorId: number;
+  journal: JournalEvent[];
+  nextJournalId: number;
+  /** Naechste Ledger-Seq, die bereits als MONEY-Event kopiert wurde. */
+  journaledSeq: number;
+  look: PlayerLook;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

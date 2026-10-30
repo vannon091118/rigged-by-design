@@ -18,7 +18,7 @@ const report = (code, component, message) => {
 };
 
 const files = walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts'));
-const tests = files.filter((file) => file.endsWith('.test.ts'));
+const tests = files.filter((file) => /\.test\.tsx?$/.test(file));
 for (const file of tests) {
   const name = relative(ROOT, file);
   const text = readFileSync(file, 'utf8');
@@ -30,6 +30,10 @@ for (const file of tests) {
   if (!code) report('ERR-4001', name, '@error-code fehlt');
   else if (!codes.has(code)) report('ERR-4001', name, `Code nicht im Katalog: ${code}`);
   if (!/\bexpect\s*\(/.test(text)) report('ERR-4002', name, 'keine Assertion vorhanden');
+  // Jeder Lauf muss mit einem neuen, nicht vorab waehlbaren Seed starten.
+  if (/\bnew\s+Prng\s*\(\s*(?:0x[0-9a-f]+|\d[\d_]*)\s*\)/i.test(text)) {
+    report('ERR-4002', name, 'fester Seed im Test; randomSeed() verwenden');
+  }
   const forbidden = [
     [/toMatch(In)?Snapshot/, 'Snapshot-Test'],
     [/\.toBeDefined\s*\(/, 'nur Existenz (toBeDefined)'],

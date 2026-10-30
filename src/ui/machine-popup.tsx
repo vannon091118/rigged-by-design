@@ -43,6 +43,9 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             <Stat label="PLÄTZE" value={`${item.occupants.length}/${item.seats}`} />
             <Stat label="ANZIEHUNG" value={`${Math.round(attractionValue(item))}`} />
             <Stat label="MINDESTEINSATZ" value={vc(item.baseBet, 2)} />
+            {item.kind === 'BAR' && (
+              <Stat label="BESTAND" value={`${item.stock}/${6 + 6 * view.barLevel}`} bad={item.stock === 0} />
+            )}
           </div>
           <div className="slot-stage">
             <div className={`reel-window${spinning ? ' spinning' : ''}`}>
@@ -59,7 +62,13 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             </div>
           </div>
           <div className="row-actions">
-            <button type="button" className="btn" onClick={onRepair} disabled={(item.condition >= 100 && !item.damaged) || view.house < view.prices.repairCost}>REPARIEREN · {vc(view.prices.repairCost, 0)}</button>
+            <button
+              type="button"
+              className="btn"
+              onClick={onRepair}
+              disabled={(item.condition >= 100 && !item.damaged) || view.house < view.prices.repairCost || view.parts <= 0}
+              title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen'}
+            >REPARIEREN · {vc(view.prices.repairCost, 0)}</button>
             <button type="button" className="btn ghost" onClick={() => setFull((value) => !value)}>{full ? 'FENSTER' : 'VOLLBILD'}</button>
             {item.kind === 'SLOT' && (
               <button type="button" className="btn" onClick={onAddReel} disabled={item.reels >= 5 || view.house < (4 + item.reels * 2) * 10_000}>
@@ -80,7 +89,13 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             <Stat label="ZUSTAND" value={item.damaged ? 'DEFEKT' : `${Math.round(item.condition)}%`} bad={item.damaged || item.condition < 45} />
             <Stat label="PLÄTZE" value={`${item.occupants.length}/${item.seats}`} />
           </div>
-          <button type="button" className="btn" onClick={onRepair} disabled={(item.condition >= 100 && !item.damaged) || view.house < view.prices.repairCost}>REPARIEREN · {vc(view.prices.repairCost, 0)}</button>
+          <button
+            type="button"
+            className="btn"
+            onClick={onRepair}
+            disabled={(item.condition >= 100 && !item.damaged) || view.house < view.prices.repairCost || view.parts <= 0}
+            title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen'}
+          >REPARIEREN · {vc(view.prices.repairCost, 0)}</button>
           {item.kind === 'BAR' && <button type="button" className="btn primary" onClick={onTakeDrink}>DRINK ZAPFEN</button>}
         </div>
       )}

@@ -3,13 +3,13 @@
 import { spawnSync } from 'node:child_process';
 import { line, ROOT } from './lib/report.mjs';
 
+// Autofix ist zugleich das Lint- und Dependency-Gate: der zweite Durchlauf
+// derselben Pruefungen entfaellt. Bleibt ein Rest, ist das Autofix rot.
 const steps = [
-  ['lint', 'npm', ['run', 'lint'], 'ERR-4011'],
   ['check:loc', 'npm', ['run', 'check:loc'], 'ERR-4012'],
   ['typecheck', 'npm', ['run', 'typecheck'], 'ERR-1005'],
   ['test-quality', process.execPath, ['scripts/verify-test-quality.mjs'], 'ERR-4002'],
   ['dead-code', process.execPath, ['scripts/verify-dead-code.mjs'], 'ERR-4003'],
-  ['dependency-matrix', process.execPath, ['scripts/sync-dependency-matrix.mjs', '--check'], 'ERR-4013'],
   ['audit', 'npm', ['run', 'audit:gate'], 'ERR-4004'],
   ['tests', 'npm', ['run', 'test:ci'], 'ERR-2001'],
   ['build', 'npm', ['run', 'build'], 'ERR-1005'],

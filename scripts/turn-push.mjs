@@ -44,7 +44,8 @@ if (existsSync(notesPath)) {
   ].join('\n');
 }
 
-const messageFile = resolve(ROOT, '.git', 'TURN_COMMIT_MSG');
+const gitDir = git(['rev-parse', '--git-dir']);
+const messageFile = resolve(ROOT, gitDir, 'TURN_COMMIT_MSG');
 writeFileSync(messageFile, `${message}\n`);
 spawnSync(process.execPath, ['scripts/sanitize-commit.mjs', messageFile], { cwd: ROOT, stdio: 'inherit' });
 const gate = spawnSync(process.execPath, ['scripts/verify-commit-msg.mjs', messageFile], { cwd: ROOT, stdio: 'inherit' });

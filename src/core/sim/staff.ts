@@ -1,8 +1,10 @@
+// @loc-exception: Alle Rollen teilen den Agentenstatus und dieselbe Tick-Naht; getrennt waeren Aufgaben und Pfade inkonsistent.
 /** Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. */
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
 import { chooseActivity } from './guest-choice';
 import { depositCrate, takeCrate } from './deliveries';
+import { recordJournal } from './journal';
 import { exchangeFiat, HAUSKONTO, pendingAccount, STAFF } from './money';
 import type { Prng } from '../rng/prng';
 import type { StaffAgent, StaffRole, WorldState } from './types';
@@ -21,6 +23,12 @@ function wageFor(world: WorldState, role: StaffRole): VaCoinMicro {
 const dist = (ax: number, ay: number, bx: number, by: number): number =>
   Math.abs(ax - bx) + Math.abs(ay - by);
 
+/** Status ist Teil des Zustands, nicht eine Schaetzung der UI. */
+function setTask(agent: StaffAgent, task: StaffAgent['task'], blockedReason = ''): void {
+  agent.task = task;
+  agent.blockedReason = blockedReason;
+}
+
 /** Einstellen kostet einmalig einen Tagessatz und stellt den Agenten an den Eingang. */
 export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): StaffAgent {
   const existing = world.agents.find((agent) => agent.role === role);
@@ -31,11 +39,14 @@ export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): S
   const spawn = spawnPoint(world);
   const agent: StaffAgent = {
     id: world.nextAgentId++, role, x: spawn.x, y: spawn.y, path: [], pathIndex: 0,
-    carryingCrate: null, workTicks: 0,
+    carryingCrate: null, workTicks: 0, task: 'idle', blockedReason: '',
   };
   world.agents.push(agent);
   world.lastEvent = `${role === 'guard' ? 'Guard' : role === 'cleaner' ? 'Reinigungskraft'
     : role === 'bartender' ? 'Barkeeper' : role === 'cashier' ? 'Kassierer' : 'Lagerträger'} eingestellt.`;
+  recordJournal(world, {
+    kind: 'STAFF', subject: role, cause: 'Einstellung', effect: world.lastEvent, refs: { agentId: agent.id },
+  });
   return agent;
 }
 
@@ -48,6 +59,7 @@ export function fireAgent(world: WorldState, role: StaffRole): void {
     }
   }
   world.lastEvent = 'Personal entlassen.';
+  recordJournal(world, { kind: 'STAFF', subject: role, cause: 'Entlassung', effect: world.lastEvent });
 }
 
 /** Ein Feld pro Tick; alle sechs Ticks wird der Weg neu geplant. */
@@ -75,13 +87,14 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
     agent.carryingCrate = null;
     const job = world.crates.find((crate) =>
       crate.carriedBy === null && crate.payload.kind !== 'FURNITURE');
-    if (!job) return;
+    if (!job) { setTask(agent, 'idle', 'keine Kiste am Eingang'); return; }
     if (dist(agent.x, agent.y, job.x, job.y) <= 1) {
       takeCrate(world, job.id, agent.id);
       agent.carryingCrate = job.id;
       agent.path = [];
       agent.pathIndex = 0;
-    } else stepToward(world, agent, job.x, job.y);
+      setTask(agent, job.payload.kind === 'DRINKS' ? 'toBar' : 'toStorage');
+    } else { setTask(agent, 'toCrate'); stepToward(world, agent, job.x, job.y); }
     return;
   }
   if (held.payload.kind === 'DRINKS') {
@@ -90,15 +103,17 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
     for (const bar of bars) {
       if (bar.stock < (target?.stock ?? Number.MAX_SAFE_INTEGER)) target = bar;
     }
-    if (!target) return;
+    if (!target) { setTask(agent, 'idle', 'keine Bar vorhanden'); return; }
     if (dist(agent.x, agent.y, target.x, target.y) <= 3) {
       try {
         const done = depositCrate(world, held.id, agent.x, agent.y, target.id);
         if (done.emptied) agent.carryingCrate = null;
-      } catch { agent.path = []; agent.pathIndex = 0; }
+        setTask(agent, 'toBar');
+      } catch { setTask(agent, 'toBar', 'Bar voll'); agent.path = []; agent.pathIndex = 0; }
       return;
     }
     const spot = interactionPoint(world, target);
+    setTask(agent, 'toBar');
     if (spot) stepToward(world, agent, spot.x, spot.y);
     return;
   }
@@ -108,10 +123,12 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
     try {
       depositCrate(world, held.id, agent.x, agent.y);
       agent.carryingCrate = null;
-    } catch { /* Lager voll oder blockiert */ }
+      setTask(agent, 'toStorage');
+    } catch { setTask(agent, 'toStorage', 'Lager voll oder blockiert'); }
     return;
   }
   if (storage) {
+    setTask(agent, 'toStorage');
     const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture),
       { x: storage.x + Math.floor(storage.w / 2), y: storage.y + Math.floor(storage.h / 2) });
     if (spot) stepToward(world, agent, spot.x, spot.y);
@@ -120,9 +137,10 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
 
 function cashierTick(world: WorldState, ledger: Ledger, agent: StaffAgent, prng: Prng): void {
   const point = exchangePoint(world);
-  if (!point) return;
+  if (!point) { setTask(agent, 'idle', 'keine Wechselkasse'); return; }
   const near = dist(agent.x, agent.y, point.x, point.y) <= 8;
-  if (!near) { stepToward(world, agent, point.x, point.y); return; }
+  if (!near) { setTask(agent, 'toGuest', 'geht zur Kasse'); stepToward(world, agent, point.x, point.y); return; }
+  setTask(agent, 'cashier');
   for (const guest of world.guests) {
     if (guest.state === 'EXCHANGE' && guest.queueIndex === 0) {
       try {
@@ -142,12 +160,15 @@ function cashierTick(world: WorldState, ledger: Ledger, agent: StaffAgent, prng:
 function guardTick(world: WorldState, agent: StaffAgent, prng: Prng): void {
   const dispute = world.disputes[0];
   if (dispute) {
-    if (dist(agent.x, agent.y, dispute.x, dispute.y) > 7) stepToward(world, agent, dispute.x, dispute.y);
+    const far = dist(agent.x, agent.y, dispute.x, dispute.y) > 7;
+    setTask(agent, far ? 'toDispute' : 'serve');
+    if (far) stepToward(world, agent, dispute.x, dispute.y);
     else agent.workTicks += 1;
     return;
   }
   const angry = world.guests.find((guest) => guest.state === 'ANGRY');
-  if (angry) { stepToward(world, agent, angry.position.x, angry.position.y); return; }
+  if (angry) { setTask(agent, 'toGuest', 'beruhigt einen Gast'); stepToward(world, agent, angry.position.x, angry.position.y); return; }
+  setTask(agent, 'patrol');
   const gaming = world.zones.find((zone) => zone.kind === 'GAMING');
   if (agent.pathIndex >= agent.path.length && prng.nextFloat() < 0.2 && gaming) {
     const tx = gaming.x + 1 + Math.floor(prng.nextFloat() * Math.max(1, gaming.w - 2));
@@ -166,18 +187,24 @@ function guardTick(world: WorldState, agent: StaffAgent, prng: Prng): void {
 
 function cleanerTick(world: WorldState, agent: StaffAgent): void {
   const first = [...world.dirty][0];
-  if (first === undefined) return;
+  if (first === undefined) { setTask(agent, 'idle', 'nichts zu putzen'); return; }
   const tx = first % world.size;
   const ty = Math.floor(first / world.size);
+  setTask(agent, 'cleaning');
   if (dist(agent.x, agent.y, tx, ty) <= 1) { world.dirty.delete(first); return; }
   stepToward(world, agent, tx, ty);
 }
 
 function bartenderTick(world: WorldState, agent: StaffAgent): void {
   const bar = world.furniture.find((item) => item.kind === 'BAR');
-  if (!bar) return;
-  if (dist(agent.x, agent.y, bar.x, bar.y) <= 3) { agent.workTicks += 1; return; }
+  if (!bar) { setTask(agent, 'idle', 'keine Bar vorhanden'); return; }
+  if (dist(agent.x, agent.y, bar.x, bar.y) <= 3) {
+    setTask(agent, 'serve', bar.stock <= 0 ? 'Bar leer' : '');
+    agent.workTicks += 1;
+    return;
+  }
   const spot = interactionPoint(world, bar);
+  setTask(agent, 'toBar');
   if (spot) stepToward(world, agent, spot.x, spot.y);
 }
 

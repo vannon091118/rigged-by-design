@@ -90,12 +90,12 @@ const JACK_INDEX = RANK_ORDER.indexOf('J');
 type PokerHand = 'ROYAL' | 'STRAIGHT_FLUSH' | 'QUADS' | 'FULL_HOUSE' | 'FLUSH'
   | 'STRAIGHT' | 'TRIPS' | 'TWO_PAIR' | 'JACKS' | 'NOTHING';
 
-/** Jacks-or-Better 9/6 als Daten, in Basispunkten des Einsatzes. */
+/** Jacks-or-Better als Daten, in Basispunkten des Einsatzes. */
 const PAYTABLE: Readonly<Record<PokerHand, number>> = {
-  // Full House 9x und Flush 6x wie bei 9/6, die kleinen Raenge hauskalibriert,
-  // damit der RTP im 90-96-%-Band bleibt.
+  // Full House 9x und Flush 6x wie bei 9/6; die kleinen Raenge sind auf die
+  // einfache Hold-Strategie kalibriert und ergeben ~93 % RTP.
   ROYAL: 2_500_000, STRAIGHT_FLUSH: 500_000, QUADS: 250_000, FULL_HOUSE: 90_000,
-  FLUSH: 60_000, STRAIGHT: 40_000, TRIPS: 26_000, TWO_PAIR: 17_500, JACKS: 8_200, NOTHING: 0,
+  FLUSH: 60_000, STRAIGHT: 40_000, TRIPS: 26_500, TWO_PAIR: 18_000, JACKS: 9_600, NOTHING: 0,
 };
 
 function evaluatePokerHand(cards: readonly Card[]): { hand: PokerHand; bps: number } {

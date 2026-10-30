@@ -3,7 +3,8 @@ import { type BuildId } from '../core/sim/offers';
 import { CARPETS, type CarpetId, type StaffRole, type TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { BuildCatalogCards } from './build-catalog-cards';
-import { ColorRow, CrateList, DisputeList, StaffGrid, TemplateGrid } from './build-panel-parts';
+import { ColorRow, CrateList, DisputeList, StaffGrid, StaffStatus, TemplateGrid } from './build-panel-parts';
+import { barCapacityForLevel } from '../core/sim/deliveries';
 import { vc } from './format';
 
 interface Props {
@@ -38,6 +39,9 @@ export function BuildPanel(props: Props) {
     .sort((a, b) => a.condition - b.condition).slice(0, 4);
   const carrying = /^KRATE:(\d+)$/.exec(view.player.carrying);
   const carriedId = carrying ? Number(carrying[1]) : null;
+  const bars = view.furniture.filter((item) => item.kind === 'BAR');
+  const wages = (view.staff.guard ? view.prices.guardWage : 0) + (view.staff.cashier ? view.prices.cashierWage : 0)
+    + (view.staff.porter ? view.prices.porterWage : 0) + ((view.staff.cleaner ? 1 : 0) + (view.staff.bartender ? 1 : 0)) * view.prices.staffWage;
   return (
     <aside className="build-panel" aria-label="Bauen">
       <header className="build-head">
@@ -60,13 +64,28 @@ export function BuildPanel(props: Props) {
         <h3>Haus</h3>
         <TemplateGrid view={view} onTemplate={props.onTemplate} />
 
-        <h3>Personal</h3>
+        <h3>Personal <small className="muted">· Löhne {vc(wages, 0)}/Tag</small></h3>
         <StaffGrid view={view} onHire={props.onHire} onFire={props.onFire} />
+        <StaffStatus view={view} />
         <div className="ops-row">
           <button type="button" className="btn" onClick={props.onServeDesk}>KASSE BEDIENEN</button>
         </div>
 
         <h3>Lager & Bar (Teile: {view.parts})</h3>
+        {bars.length > 0 ? (
+          <div className="stock-row">
+            {bars.map((bar) => {
+              const capacity = barCapacityForLevel(view.barLevel);
+              const tone = bar.stock === 0 ? 'bad' : bar.stock < capacity / 3 ? 'warn' : 'ok';
+              return (
+                <div key={bar.id} className={`stock-chip ${tone}`}>
+                  <strong>Bar {bar.stock}/{capacity}</strong>
+                  <small>{bar.stock === 0 ? 'leer: Gäste verlieren Laune' : bar.stock < capacity / 3 ? 'fast leer: nachbestellen' : 'bestückt'}</small>
+                </div>
+              );
+            })}
+          </div>
+        ) : <p className="panel-note">Keine Bar im Haus. Getränke brauchen einen Platz.</p>}
         <div className="ops-row">
           <button type="button" className="btn" onClick={() => props.onOrderDrinks(6)} disabled={view.house < view.prices.drinkCrateCost * 6}>
             6 DRINKS {vc(view.prices.drinkCrateCost * 6, 1)}
@@ -129,7 +148,14 @@ export function BuildPanel(props: Props) {
             PUTZEN {view.dirtyTiles.size > 0 ? `(${view.dirtyTiles.size}) · ${vc(view.prices.cleaningCost * view.dirtyTiles.size, 2)}` : ''}
           </button>
           {broken.map((item) => (
-            <button key={item.id} type="button" className="btn repair" onClick={() => props.onRepair(item.id)} disabled={view.house < view.prices.repairCost || view.parts <= 0}>
+            <button
+              key={item.id}
+              type="button"
+              className="btn repair"
+              onClick={() => props.onRepair(item.id)}
+              disabled={view.house < view.prices.repairCost || view.parts <= 0}
+              title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen'}
+            >
               {item.label} reparieren · {vc(view.prices.repairCost, 0)}{item.clogged ? ' · VERSTOPFT' : ''}
             </button>
           ))}

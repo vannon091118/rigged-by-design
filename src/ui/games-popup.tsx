@@ -1,63 +1,75 @@
-/** Fremdes Haus: hier bist du Gast. Nur hier wird echtes Portemonnaie-Geld gesetzt. */
+/** Fremdes Haus: echte Rivalen mit Betreiber, Regeln, Maschinen und Hausvorteil. */
 import { useState } from 'react';
 import { HOUSE_FLOAT } from '../core/sim/money';
-import type { GameId } from '../core/sim/types';
-import type { GameView } from '../store/types';
+import { RIVALS, rivalStates, type RivalId } from '../core/sim/rivals';
 import type { GameResult } from '../core/games/contracts';
+import type { GameView } from '../store/types';
 import { vc } from './format';
 import { PopupShell } from './popup-shell';
 
 interface Props {
   readonly view: GameView;
   readonly onClose: () => void;
-  readonly onPlay: (game: GameId, bet: number, edge: number) => GameResult | null;
+  readonly onPlay: (rivalId: RivalId, machineIndex: number, betVC: number) => GameResult | null;
   readonly onTakeHome: () => void;
 }
 
-const GAMES: readonly { id: GameId; name: string; icon: string; note: string }[] = [
-  { id: 'SLOT', name: 'Book of Ra', icon: '▦', note: 'Walzen, Freispiele, ein Buch.' },
-  { id: 'PLINKO', name: 'Plinko', icon: '▽', note: 'Kugel fallen lassen, zittern.' },
-  { id: 'BLACKJACK', name: 'Blackjack', icon: '♠', note: 'Näher an 21 als das Haus.' },
-  { id: 'POKER', name: 'Video Poker', icon: '♦', note: 'Fünf Karten, eine Entscheidung.' },
-  { id: 'ROULETTE', name: 'Roulette', icon: '◉', note: 'Rot oder Schwarz. Zero lacht.' },
-  { id: 'SHELL', name: 'Hütchenspiel', icon: '⌂', note: 'Finde die Kugel. Viel Glück.' },
-  { id: 'DICE', name: 'Würfel', icon: '⚄', note: 'Über sieben gewinnt.' },
-];
+const BET_STEPS = [1, 2, 5, 10] as const;
 
-const HOUSES: readonly { id: string; name: string; edge: number; note: string }[] = [
-  { id: 'neon', name: 'Neon-Keller', edge: 180, note: 'Faire Quoten, laute Musik.' },
-  { id: 'harbor', name: 'Hafenkasino', edge: 280, note: 'Standard. Keiner mag dich hier.' },
-  { id: 'palace', name: 'Gold-Palast', edge: 420, note: 'Teure Einsätze, schlechte Quoten.' },
-];
-
-const BETS = [0.5, 1, 2, 5];
+const personaLabel = (id: string): string =>
+  id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
+    : id.charAt(0) + id.slice(1).toLowerCase();
 
 export function GamesPopup({ view, onClose, onPlay, onTakeHome }: Props) {
-  const [game, setGame] = useState<GameId>('SLOT');
-  const [house, setHouse] = useState(HOUSES[0]!);
-  const [bet, setBet] = useState(0.5);
+  const states = rivalStates(view.tick);
+  const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
+  const [machineIndex, setMachineIndex] = useState(0);
+  const [betVC, setBetVC] = useState(RIVALS[0]!.machines[0]!.baseBet / 10_000);
   const [full, setFull] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);
-  const selected = GAMES.find((entry) => entry.id === game)!;
-  const cannotPay = view.wallet < bet * 10_000;
+  const rival = states.find((entry) => entry.id === rivalId) ?? states[0]!;
+  const machine = rival.machines[machineIndex] ?? rival.machines[0]!;
+  const baseVC = machine.baseBet / 10_000;
+  const bets = BET_STEPS.map((step) => Number((baseVC * step).toFixed(2)));
+  const cannotPay = view.wallet < betVC * 10_000;
+
+  const selectRival = (id: RivalId): void => {
+    const next = states.find((entry) => entry.id === id)!;
+    setRivalId(id);
+    setMachineIndex(0);
+    setBetVC(next.machines[0]!.baseBet / 10_000);
+    setResult(null);
+  };
+
+  const selectMachine = (index: number): void => {
+    setMachineIndex(index);
+    setBetVC(rival.machines[index]!.baseBet / 10_000);
+    setResult(null);
+  };
 
   const play = (): void => {
     if (spinning || cannotPay) return;
     setSpinning(true);
     window.setTimeout(() => {
-      setResult(onPlay(game, bet, house.edge));
+      setResult(onPlay(rivalId, machineIndex, betVC));
       setSpinning(false);
     }, 520);
   };
 
   return (
-    <PopupShell eyebrow="DU BIST GAST" title={house.name} onClose={onClose} wide full={full}>
+    <PopupShell eyebrow="DU BIST GAST" title={rival.name} onClose={onClose} wide full={full}>
       <div className="foreign-top">
         <div className="house-tabs">
-          {HOUSES.map((entry) => (
-            <button key={entry.id} type="button" className={`house-tab${house.id === entry.id ? ' active' : ''}`} onClick={() => { setHouse(entry); setResult(null); }}>
-              <strong>{entry.name}</strong><span>{entry.note} · Hausvorteil {entry.edge / 100}%</span>
+          {states.map((entry) => (
+            <button
+              key={entry.id}
+              type="button"
+              className={`house-tab${entry.id === rivalId ? ' active' : ''}`}
+              onClick={() => selectRival(entry.id)}
+            >
+              <strong>{entry.name}</strong>
+              <span>Ruf {entry.reputation} · Security {entry.security} · ab {vc(entry.machines[0]!.baseBet, 2)}</span>
             </button>
           ))}
         </div>
@@ -69,19 +81,45 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome }: Props) {
         </div>
       </div>
 
+      <section className="rival-profile" aria-label={`Profil ${rival.name}`}>
+        <div>
+          <span className="eyebrow">BETREIBER</span>
+          <strong>{rival.operator}</strong>
+          <p>{rival.style}</p>
+        </div>
+        <dl>
+          <div><dt>Ruf</dt><dd>{rival.reputation}</dd></div>
+          <div><dt>Security</dt><dd>{rival.security}</dd></div>
+          <div><dt>Hausvorteil</dt><dd>{(rival.edgeBps / 100).toFixed(2)} %</dd></div>
+          <div><dt>Anziehung</dt><dd>{rival.attractiveness}</dd></div>
+        </dl>
+      </section>
+
       <div className="game-select">
-        {GAMES.map((entry) => (
-          <button key={entry.id} type="button" className={`game-tab${game === entry.id ? ' active' : ''}`} onClick={() => { setGame(entry.id); setResult(null); }}>
-            <b>{entry.icon}</b><strong>{entry.name}</strong><span>{entry.note}</span>
+        {rival.machines.map((entry, index) => (
+          <button
+            key={`${entry.game}-${index}`}
+            type="button"
+            className={`game-tab${machineIndex === index ? ' active' : ''}`}
+            onClick={() => selectMachine(index)}
+          >
+            <b>{entry.label.slice(0, 1)}</b>
+            <strong>{entry.label}</strong>
+            <span>{entry.game} · ab {vc(entry.baseBet, 2)}{entry.mods.length ? ` · ${entry.mods.length} Mods` : ''}</span>
           </button>
         ))}
       </div>
+      <p className="hint">
+        Zieht Gäste mit {rival.attractiveness} Anziehung. Personas: {rival.personas.map(personaLabel).join(', ')}.
+        Der Hausvorteil gehört dem Betreiber; dein Portemonnaie ist hier Gast.
+      </p>
 
       <div className={`table-stage${full ? ' full' : ''}`}>
         <div className={`game-screen${spinning ? ' spinning' : ''}`}>
-          <div className="screen-title">{selected.name}</div>
+          <div className="screen-title">{machine.label}</div>
           <div className="screen-result">
-            {result ? result.detail.slice(0, 5).map((part, index) => <span key={index} className="screen-symbol">{part}</span>) : <span className="screen-symbol muted">BEREIT</span>}
+            {result ? result.detail.slice(0, 5).map((part, index) => <span key={index} className="screen-symbol">{part}</span>)
+              : <span className="screen-symbol muted">BEREIT</span>}
           </div>
           <div className={`screen-label${result && result.payout > 0 ? ' win' : ''}`}>
             {spinning ? 'Das Rad dreht…' : result ? `${result.label}${result.payout > 0 ? ` · ${vc(result.payout, 2)}` : ''}` : 'Setze einen Einsatz.'}
@@ -89,14 +127,14 @@ export function GamesPopup({ view, onClose, onPlay, onTakeHome }: Props) {
         </div>
         <div className="table-controls">
           <div className="bet-row">
-            {BETS.map((value) => (
-              <button key={value} type="button" className={`chip${bet === value ? ' active' : ''}`} onClick={() => setBet(value)}>{value} VC</button>
+            {bets.map((value) => (
+              <button key={value} type="button" className={`chip${betVC === value ? ' active' : ''}`} onClick={() => setBetVC(value)}>{value} VC</button>
             ))}
           </div>
           <button type="button" className="btn primary big" disabled={spinning || cannotPay} onClick={play}>
-            {cannotPay ? 'ZU WENIG BARGELD' : spinning ? 'SPIELT…' : `SPIELEN · ${bet} VC`}
+            {cannotPay ? 'ZU WENIG BARGELD' : spinning ? 'SPIELT…' : `SPIELEN · ${betVC} VC`}
           </button>
-          <small>Gewinne gehen zurück ins Portemonnaie. Verluste bleiben hier.</small>
+          <small>Gewinne gehen zurück ins Portemonnaie. Verluste bleiben hier. Mindesteinsatz {vc(machine.baseBet, 2)}.</small>
         </div>
       </div>
     </PopupShell>

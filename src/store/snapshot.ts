@@ -34,6 +34,8 @@ function worldSnapshot(world: WorldState) {
     barLevel: world.barLevel,
     wcLevel: world.wcLevel,
     activePenalties: world.activePenalties.map((penalty) => ({ ...penalty })),
+    journal: world.journal.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
+    look: world.look,
   };
 }
 
@@ -60,6 +62,9 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     mood: world.guests.length ? Math.round(mood / world.guests.length) : 0,
     reputation: Math.round(reputation(world)),
     ledgerOk: ledger.verifyIncremental(),
+    ledgerEntries: ledger.entryCount,
+    ledgerLastSeq: ledger.entryCount - 1,
+    ledgerCirculating: ledger.circulating,
     notice,
   };
 }

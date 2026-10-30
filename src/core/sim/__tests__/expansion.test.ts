@@ -18,6 +18,7 @@ import { hireAgent } from '../staff';
 import { createWorld, ensureStarter } from '../templates';
 import type { WorldState } from '../types';
 import { loadWorld, saveWorld } from '../../../store/save';
+import { randomSeed } from '../../../test/random-seed';
 
 function house(template: 'SMALL' | 'MEDIUM' | 'LARGE' = 'SMALL', funding = 2000) {
   const world = createWorld(template);
@@ -39,7 +40,7 @@ function furnished() {
   buyCrate(world, ledger, 'SLOT');
   takeCrate(world, world.crates[0]!.id, 'player');
   hireAgent(world, ledger, 'cleaner');
-  const guest = spawnGuest(world, new Prng(0x5eed), ledger)!;
+  const guest = spawnGuest(world, new Prng(randomSeed()), ledger)!;
   ledger.transfer('EXTERNAL_WORLD', pendingAccount(guest.id), fromVC(2), 'test win', 0);
   ledger.transfer('EXTERNAL_WORLD', guestAccount(guest.id), fromVC(5), 'test chips', 0);
   return { world, ledger, guest };
@@ -151,7 +152,7 @@ describe('Ausbau und Spielstand', () => {
     remodel(world, ledger, 'MEDIUM', 5);
     world.dirty = new Set([1 * 60 + 2]);
     const ids = layout(world);
-    saveWorld(world, ledger, 7);
+    saveWorld(world, ledger, randomSeed());
 
     const loaded = loadWorld()!;
     expect(loaded.world.template).toBe('MEDIUM');

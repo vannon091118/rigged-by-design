@@ -59,6 +59,9 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
             <Bar label="GEDULD" value={guest.patience} tone="patience" />
             <Bar label="SUCHT" value={guest.addiction} tone="addiction" />
           </div>
+          {guest.intent && (
+            <p className="guest-intent"><b>Warum:</b> {guest.intent}</p>
+          )}
           <div className="guest-actions">
             {view.player.carrying === 'DRINK' && <button type="button" className="btn small" onClick={() => onServe(guest.id)}>DRINK GEBEN</button>}
             {money.pending > 0 && <button type="button" className="btn primary small" onClick={() => onPay(guest.id)}>AUSZAHLEN</button>}

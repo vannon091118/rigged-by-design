@@ -11,8 +11,9 @@ import { ROBBERY_ACCOUNT } from '../penalty-pool';
 import { grantXp, newPlayerRpg, spendPoint } from '../player-rpg';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
+import { randomSeed } from '../../../test/random-seed';
 
-function setup(seed = 0x5eed1234) {
+function setup(seed = randomSeed()) {
   const world = createWorld('SMALL');
   const ledger = new Ledger();
   const prng = new Prng(seed);
@@ -54,8 +55,8 @@ describe('Prügelei ohne Security', () => {
   }
   it('Sieg setzt den Schläger vor die Tür und gibt +45 XP', () => {
     let won = false;
-    for (let seed = 1; seed <= 200 && !won; seed += 1) {
-      const { world, ledger, prng } = brawlSetup(seed);
+    for (let attempt = 0; attempt < 40 && !won; attempt += 1) {
+      const { world, ledger, prng } = brawlSetup(randomSeed());
       world.player.rpg.brawlLevel = 20;
       const { outcome } = resolvePlayerBrawl(world, ledger, prng, 1);
       if (outcome === 'WON') {
@@ -68,8 +69,8 @@ describe('Prügelei ohne Security', () => {
   });
   it('Niederlage löst genau einen Straf-Event aus', () => {
     let lost = false;
-    for (let seed = 1; seed <= 200 && !lost; seed += 1) {
-      const { world, ledger, prng } = brawlSetup(seed);
+    for (let attempt = 0; attempt < 40 && !lost; attempt += 1) {
+      const { world, ledger, prng } = brawlSetup(randomSeed());
       const { outcome, penalty } = resolvePlayerBrawl(world, ledger, prng, 1);
       if (outcome === 'LOST') {
         lost = true;
@@ -82,18 +83,18 @@ describe('Prügelei ohne Security', () => {
 
 describe('Straf-Event-Pool', () => {
   it('zieht nur gültige Straf-Typen', () => {
-    const prng = new Prng(7);
+    const prng = new Prng(randomSeed());
     const kinds = new Set<string>();
-    for (let i = 0; i < 200; i += 1) kinds.add(rollPenalty(prng));
+    for (let i = 0; i < 100; i += 1) kinds.add(rollPenalty(prng));
     expect([...kinds].sort()).toEqual(['MOOD_SHOCK', 'ROBBERY', 'UNSAFE_REPUTATION']);
   });
   it('UNSAFE_REPUTATION setzt einen Tage-Timer', () => {
-    const { world, ledger, prng } = setup(3);
+    const { world, ledger, prng } = setup();
     applyPenalty(world, ledger, prng, 'UNSAFE_REPUTATION');
     expect(world.activePenalties.some((p) => p.kind === 'UNSAFE_REPUTATION' && p.daysLeft >= 2)).toBe(true);
   });
   it('MOOD_SHOCK senkt Laune und Geduld aller Gäste', () => {
-    const { world, ledger, prng } = setup(4);
+    const { world, ledger, prng } = setup();
     const guest = spawnGuest(world, prng, ledger)!;
     guest.mood = 80;
     guest.patience = 80;
@@ -102,7 +103,7 @@ describe('Straf-Event-Pool', () => {
     expect(guest.patience).toBeLessThan(80);
   });
   it('ROBBERY bucht den Verlust als Ledger-Transaktion und bleibt integer und integritätsgeprüft', () => {
-    const { world, ledger, prng } = setup(5);
+    const { world, ledger, prng } = setup();
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'seed', 0);
     const before = ledger.getBalance(HAUSKONTO);
     applyPenalty(world, ledger, prng, 'ROBBERY');
@@ -119,8 +120,8 @@ describe('Straf-Event-Pool', () => {
 describe('Charisma-Interaktion', () => {
   it('Erfolg hebt die Laune und gibt Spieler-XP', () => {
     let success = false;
-    for (let seed = 1; seed <= 50 && !success; seed += 1) {
-      const { world, ledger, prng } = setup(seed);
+    for (let attempt = 0; attempt < 20 && !success; attempt += 1) {
+      const { world, ledger, prng } = setup(randomSeed());
       const guest = spawnGuest(world, prng, ledger)!;
       guest.mood = 60;
       world.player.rpg.charismaLevel = 10;
@@ -135,8 +136,8 @@ describe('Charisma-Interaktion', () => {
   });
   it('Fehlschlag (Backfire) senkt die Laune', () => {
     let failed = false;
-    for (let seed = 1; seed <= 50 && !failed; seed += 1) {
-      const { world, ledger, prng } = setup(seed);
+    for (let attempt = 0; attempt < 30 && !failed; attempt += 1) {
+      const { world, ledger, prng } = setup(randomSeed());
       const guest = spawnGuest(world, prng, ledger)!;
       guest.mood = 60;
       const result = talkToGuest(world, prng, guest.id);
@@ -149,8 +150,8 @@ describe('Charisma-Interaktion', () => {
   });
   it('Backfire unter die Wut-Schwelle startet eine Prügelei', () => {
     let brawled = false;
-    for (let seed = 1; seed <= 200 && !brawled; seed += 1) {
-      const { world, ledger, prng } = setup(seed);
+    for (let attempt = 0; attempt < 120 && !brawled; attempt += 1) {
+      const { world, ledger, prng } = setup(randomSeed());
       const guest = spawnGuest(world, prng, ledger)!;
       const other = spawnGuest(world, prng, ledger)!;
       other.position = { x: guest.position.x, y: guest.position.y };

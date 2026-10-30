@@ -12,12 +12,13 @@ import { Prng } from '../../rng/prng';
 import { HAUSKONTO, playerTakeHome, PORTEMONNAIE } from '../money';
 import { BUILD_DEFS } from '../offers';
 import { getRival, RIVALS, rivalEdge, rivalState, rivalStates, visitRival } from '../rivals';
+import { randomSeed } from '../../../test/random-seed';
 
 function wallet(vc = 20) {
   const ledger = new Ledger();
   ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(vc), 'baukapital', 0);
   playerTakeHome(ledger, fromVC(vc / 2), 0);
-  return { ledger, prng: new Prng(0xbeefcafe) };
+  return { ledger, prng: new Prng(randomSeed()) };
 }
 
 describe('Fremde Casinos', () => {

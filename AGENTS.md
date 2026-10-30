@@ -15,7 +15,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Dev environment
 
 - Node 22, npm. `npm ci` then `npm run dev` (http://localhost:3000).
-- Save format v7; v5/v6 migrate (keep Fiat + open payouts), v3/v4 discarded.
+- Save format v8 (world + journal + look); v5/v6/v7 migrate (keep Fiat, open payouts, journal, look), v3/v4 discarded.
 
 ## Build & test
 
@@ -23,8 +23,9 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (200 LOC/file; 350 with `// @loc-exception:` on line 1, min 1 char reason).
-- `npm run verify:all` — fail-closed pipeline (autofix, lint, LOC, typecheck, test contract, dead-export, dep matrix, audit, vitest, build).
-- `npm run test:perf` — bench (not in verify:all).
+- `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build).
+- `npm run test:perf` — feste Messläufe (not in verify:all). `npm run bench:lowend` pins the run to one core; `npm run soak` runs 100.000 ticks.
+- UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
 - `npm run build` — Vite production build.
 
 ## Delivery
@@ -46,3 +47,5 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - LOC guard fails the build; keep files under limits or add justified `// @loc-exception:`.
 - `test:perf` intentionally not in `verify:all`; don't gate on it on slow hardware.
 - Commit messages verified by `verify:commit-msg`; new error codes in `docs/ERROR_CATALOG.md`.
+- `verify-test-quality` requires `@test-target` and `@error-code` headers on `.test.ts` and `.test.tsx`; fixed numeric `new Prng(...)` seeds are rejected, use `randomSeed()`.
+- Journal state lives in `WorldState`; UI only reads the snapshot and never maintains a second log.

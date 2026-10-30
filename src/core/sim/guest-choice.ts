@@ -20,6 +20,10 @@ export function startActivity(world: WorldState, guest: Guest, item: Furniture):
   guest.targetFurniture = item.id;
   guest.targetZone = item.zoneId;
   guest.state = item.kind === 'BAR' ? 'DRINK' : item.kind === 'TOILET' ? 'TOILET' : item.kind === 'DECOR' ? 'WAIT' : 'PLAY';
+  guest.intent = item.kind === 'BAR' ? 'Durst und Laune: geht zur Bar.'
+    : item.kind === 'TOILET' ? 'Blase voll oder Laune im Keller: geht zum WC.'
+      : item.kind === 'DECOR' ? 'Sucht Gesellschaft und einen ruhigen Platz.'
+        : `Spielt ${item.label}: Angebot passt zu Persona und Budget.`;
   guest.stateTicks = 0;
   if (item.gameId) {
     guest.mood = clamp(guest.mood + 2);
@@ -33,6 +37,7 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   const lounge = world.zones.find((zone) => zone.kind === 'LOUNGE') ?? world.zones.find((zone) => zone.kind === 'ENTRANCE');
   guest.state = 'WAIT';
   guest.stateTicks = 0;
+  guest.intent = 'Kein freier Platz: wartet und verliert Geduld.';
   guest.targetFurniture = 0;
   guest.patience = Math.max(0, guest.patience - 4);
   guest.mood = Math.max(0, guest.mood - 2);
@@ -63,6 +68,7 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
   refreshNeeds(guest);
   const wallet = ledger.getBalance(guestAccount(guest.id));
   if (wallet < world.prices.slotMinBet) {
+    guest.intent = 'Zu wenig Chips fuer den Mindesteinsatz: will auszahlen.';
     guest.state = 'CASHOUT';
     guest.stateTicks = 0;
     guest.path = [];

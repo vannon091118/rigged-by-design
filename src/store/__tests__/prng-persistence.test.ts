@@ -9,6 +9,7 @@ import { Ledger } from '../../core/economy/ledger';
 import { Prng } from '../../core/rng/prng';
 import { createWorld } from '../../core/sim/templates';
 import { loadWorld, saveWorld } from '../save';
+import { randomSeed } from '../../test/random-seed';
 
 const memory = new Map<string, string>();
 
@@ -27,7 +28,7 @@ beforeEach(() => {
 
 describe('PRNG ueber Speichern und Laden', () => {
   it('setzt die Folge an genau der gespeicherten Stelle fort', () => {
-    const seed = 0xabc12345;
+    const seed = randomSeed();
     const live = new Prng(seed);
     for (let index = 0; index < 3; index += 1) live.nextInt(0, 100);
     const saved = live.getState();
@@ -47,7 +48,7 @@ describe('PRNG ueber Speichern und Laden', () => {
   });
 
   it('zieht beim Replay selbst nichts aus dem Zufall', () => {
-    const prng = new Prng(4242);
+    const prng = new Prng(randomSeed());
     const world = createWorld('SMALL');
     saveWorld(world, new Ledger(), prng.getState());
     const again = loadWorld()!;

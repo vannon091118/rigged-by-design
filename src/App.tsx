@@ -1,3 +1,4 @@
+// @loc-exception: App verdrahtet Popups, Tastaturpfad und Floor in genau einem Zustandsbaum; getrennt waeren Fokus und Popup-Routing doppelt.
 import { useEffect, useRef, useState } from 'react';
 import { canPlaceAt } from './core/sim/grid-zones';
 import { getBuildDef, type BuildId } from './core/sim/offers';
@@ -6,18 +7,35 @@ import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import type { GameView } from './store/types';
 import { BuildPanel } from './ui/build-panel';
+import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { GamesPopup } from './ui/games-popup';
 import { GuestPopup } from './ui/guest-popup';
 import { Hud } from './ui/hud';
+import { JournalPopup } from './ui/journal-popup';
+import { LookPopup } from './ui/look-popup';
 import { MachinePopup } from './ui/machine-popup';
 
-type Popup = { kind: 'guests'; guestId: number | null } | { kind: 'machine'; itemId: number } | { kind: 'games' } | null;
+type Popup =
+  | { kind: 'guests'; guestId: number | null }
+  | { kind: 'machine'; itemId: number }
+  | { kind: 'games' }
+  | { kind: 'journal' }
+  | { kind: 'diagnostics' }
+  | { kind: 'look' }
+  | null;
 
 function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
   const def = getBuildDef(id);
   const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
   return canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
 }
+
+const MOVE_KEYS: Readonly<Record<string, readonly [number, number]>> = {
+  arrowup: [0, -1], w: [0, -1],
+  arrowdown: [0, 1], s: [0, 1],
+  arrowleft: [-1, 0], a: [-1, 0],
+  arrowright: [1, 0], d: [1, 0],
+};
 
 export default function App() {
   const view = useWorldStore();
@@ -34,12 +52,32 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
-      if (event.key !== 'Escape') return;
-      if (buildOpen) setBuildOpen(false);
+      if (event.key === 'Escape' && buildOpen) setBuildOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [buildOpen]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent): void => {
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
+      if (popup !== null || buildOpen) return;
+      const direction = MOVE_KEYS[event.key.toLowerCase()];
+      if (direction) {
+        event.preventDefault();
+        worldStore.moveStep(direction[0], direction[1]);
+        return;
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        worldStore.useCarriedHere();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [popup, buildOpen]);
 
   const carryingCrate = view.player.carrying.startsWith('KRATE:');
   const ghostId = (() => {
@@ -73,6 +111,9 @@ export default function App() {
         onVisit={() => { setBuildOpen(false); setPopup({ kind: 'games' }); }}
         onClean={() => worldStore.clean()}
         onOverview={() => stage.current?.fit()}
+        onJournal={() => { setBuildOpen(false); setPopup({ kind: 'journal' }); }}
+        onDiagnostics={() => { setBuildOpen(false); setPopup({ kind: 'diagnostics' }); }}
+        onLook={() => { setBuildOpen(false); setPopup({ kind: 'look' }); }}
         onSkill={(attribute) => worldStore.spendSkill(attribute)}
       />
 
@@ -102,16 +143,22 @@ export default function App() {
           <span><b>GAST</b> Budget</span>
           <span><b>OBJEKT</b> Zustand</span>
           <span><b>RAD</b> zoomen</span>
+          <span><b>PFEILE</b> laufen</span>
+          <span><b>ENTER</b> Kiste nutzen</span>
         </div>
 
         {carryingCrate && (
           <div className="place-hint">
             <b>Kiste tragen</b>
-            <span>{placeError || 'Auf freie Fläche klicken zum Aufstellen.'}</span>
+            <span>{placeError || 'Auf freie Fläche klicken oder mit den Pfeilen hingehen und Enter drücken.'}</span>
           </div>
         )}
 
-        {view.lastEvent && !view.notice && <div className="event-line">{view.lastEvent}</div>}
+        <div className="live-region" role="status" aria-live="polite">
+          {view.notice || view.lastEvent}
+        </div>
+
+        {view.lastEvent && !view.notice && <div className="event-line" aria-hidden="true">{view.lastEvent}</div>}
 
         {view.notice && (
           <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
@@ -151,9 +198,25 @@ export default function App() {
         <GamesPopup
           view={view}
           onClose={() => setPopup(null)}
-          onPlay={(game, bet, edge) => worldStore.playForeign(game, bet, edge)}
+          onPlay={(rivalId, machineIndex, betVC) => worldStore.playRival(rivalId, machineIndex, betVC)}
           onTakeHome={() => worldStore.takeHome(5)}
         />
+      )}
+
+      {popup?.kind === 'journal' && (
+        <JournalPopup
+          view={view}
+          onClose={() => setPopup(null)}
+          onGuest={(id) => setPopup({ kind: 'guests', guestId: id })}
+        />
+      )}
+
+      {popup?.kind === 'diagnostics' && (
+        <DiagnosticsPopup view={view} onClose={() => setPopup(null)} onAudit={() => worldStore.auditLedger()} />
+      )}
+
+      {popup?.kind === 'look' && (
+        <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
       )}
 
       {active && (

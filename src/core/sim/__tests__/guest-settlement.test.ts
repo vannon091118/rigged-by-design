@@ -13,15 +13,16 @@ import { fiatAccount, guestAccount, HAUSKONTO, pendingAccount } from '../money';
 import { remodel } from '../remodel';
 import { spawnGuest } from '../spawn';
 import { createWorld, ensureStarter } from '../templates';
+import { randomSeed } from '../../../test/random-seed';
 
 function setup() {
   const world = createWorld('SMALL');
   ensureStarter(world);
-  return { world, ledger: new Ledger(), prng: new Prng(0xabc12345) };
+  return { world, ledger: new Ledger(), prng: new Prng(randomSeed()) };
 }
 
 function fundedGuest(world = createWorld('SMALL'), ledger = new Ledger()) {
-  const guest = spawnGuest(world, new Prng(77), ledger)!;
+  const guest = spawnGuest(world, new Prng(randomSeed()), ledger)!;
   ledger.transfer('EXTERNAL_WORLD', guestAccount(guest.id), fromVC(5), 'test chips', 0);
   ledger.transfer('EXTERNAL_WORLD', pendingAccount(guest.id), fromVC(2), 'test win', 0);
   return { world, ledger, guest };

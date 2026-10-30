@@ -43,8 +43,8 @@ const LINES: readonly (readonly number[])[] = [
 ];
 
 const SLOT_LINE_COUNT = LINES.length;
-/** Skaliert die Paytable; auf 94 % RTP geeicht (siehe Test). */
-const PAY_SCALE = 29.9;
+/** Skaliert die Paytable; auf 93 % RTP geeicht (siehe Test). */
+const PAY_SCALE = 29.6;
 const FREE_SPINS = 10;
 const MAX_FREE_ROUNDS = 40;
 

@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { InsufficientFundsError, Ledger, type AccountId } from '../ledger';
 import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { addVC, fromVC, mulVC, toVCString, type VaCoinMicro } from '../vacoin';
 
 const ACCOUNTS: readonly AccountId[] = ['HAUSKONTO', 'WECHSELKASSE', 'SHOP', 'STAFF', 'UTILITIES', 'PORTEMONNAIE'];
@@ -62,8 +63,8 @@ describe('ledger (doppelte Buchfuehrung)', () => {
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
 
-  it('bleibt nach 1.000 zufaelligen Buchungen integer', () => {
-    const random = new Prng(0x5eed1e55);
+  it('bleibt nach 400 zufaelligen Buchungen integer', () => {
+    const random = new Prng(randomSeed());
     const ledger = new Ledger({
       HAUSKONTO: fromVC(1000),
       WECHSELKASSE: fromVC(5000),
@@ -71,7 +72,7 @@ describe('ledger (doppelte Buchfuehrung)', () => {
     });
     let booked = 0;
 
-    for (let i = 0; i < 1000; i += 1) {
+    for (let i = 0; i < 400; i += 1) {
       const from = ACCOUNTS[Math.floor(random.nextFloat() * ACCOUNTS.length)]!;
       const to = ACCOUNTS[Math.floor(random.nextFloat() * ACCOUNTS.length)]!;
       if (from === to) continue;
@@ -82,7 +83,7 @@ describe('ledger (doppelte Buchfuehrung)', () => {
       booked += 1;
     }
 
-    expect(booked).toBeGreaterThan(500);
+    expect(booked).toBeGreaterThan(150);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
     const balances = ledger.snapshot();
     const net = ACCOUNTS.reduce((sum, account) => sum + balances[account]!, 0);

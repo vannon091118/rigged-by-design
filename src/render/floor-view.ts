@@ -11,6 +11,8 @@ import { createFurnitureArt, type FurnitureArt } from './furniture-art';
 import { createGuestArt, type GuestArt } from './guest-art';
 import { isVisible, screenToTile, visibleRect } from './floor-math';
 import { FloorProps } from './floor-props';
+import { FloorTouch } from './floor-touch';
+import { actorStateFor } from './rig-pose';
 import { createSceneCache, type SceneCache } from './scene-cache';
 
 const STEP_MS = 520;
@@ -34,6 +36,7 @@ export class FloorView {
   readonly #seenGuests = new Set<number>();
   readonly #results = new Map<number, string>();
   readonly #cam = new FloorCamera();
+  readonly #touch: FloorTouch;
   #view: GameView;
   #lod = -1;
   #placing = false;
@@ -51,6 +54,7 @@ export class FloorView {
     this.#camera.on('pointertap', this.#tap);
     app.stage.addChild(this.#camera);
     app.canvas.addEventListener('wheel', this.#wheel, { passive: false });
+    this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size);
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
     this.#props = new FloorProps(
@@ -58,7 +62,7 @@ export class FloorView {
       this.#camera,
       this.#attachActor,
     );
-    this.#player = createGuestArt('STREET', 'DU', true, 0.4);
+    this.#player = createGuestArt('STREET', 'DU', true, 0.4, view.look);
     this.#attachActor(this.#player);
     app.ticker.add(this.#animate);
     this.update(view, true);
@@ -122,6 +126,7 @@ export class FloorView {
     this.#app.ticker.remove(this.#animate);
     this.#props.destroy({ props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers });
     this.#app.canvas.removeEventListener('wheel', this.#wheel);
+    this.#touch.destroy();
     this.#actors.clear();
     this.#furnitureArt.clear();
     this.#scene.destroy();
@@ -182,6 +187,10 @@ export class FloorView {
       art.root.alpha = guest.state === 'LEAVE' ? 0.45 : 0.72 + (guest.addiction / 100) * 0.28;
       art.setMood(guest.mood, guest.state === 'ANGRY' || guest.anger > 50, guest.addiction);
       art.setEmotion(emotionOf(guest, dirtyNear(view.dirtyTiles, view.size, guest.position.x, guest.position.y)));
+      art.setState(actorStateFor({
+        state: guest.state, pathLength: guest.path.length, pathIndex: guest.pathIndex,
+        lastResult: guest.lastResult,
+      }));
       art.setLod(this.#lod === 1);
     }
     for (const id of this.#actors.active.keys()) {
@@ -206,6 +215,11 @@ export class FloorView {
       this.#place(this.#player, px, py, now, 0);
     }
     this.#player.setEmotion(view.player.carrying === 'DRINK' ? 'DRINK' : 'NONE');
+    this.#player.setLook(view.look);
+    this.#player.setState(actorStateFor({
+      state: 'WAIT', pathLength: view.player.path.length, pathIndex: view.player.pathIndex,
+      carrying: view.player.carrying, isPlayer: true,
+    }));
     this.#player.setLod(this.#lod === 1);
   }
 
@@ -306,8 +320,10 @@ export class FloorView {
       this.#applyCamera();
     }
     for (const art of this.#actors.active.values()) {
+      art.animate(now);
       this.#walk(art, now, Math.sin(now / 280 + art.phase) * 0.3);
     }
+    this.#player.animate(now);
     this.#walk(this.#player, now, 0);
     this.#props.walk(now, STEP_MS);
   };

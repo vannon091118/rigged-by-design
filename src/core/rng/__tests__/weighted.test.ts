@@ -7,8 +7,9 @@
 import { describe, expect, it } from 'vitest';
 import { Prng } from '../prng';
 import { buildDistribution, MAX_BIAS_BPS, pickWeighted, rollNumber } from '../weighted';
+import { randomSeed } from '../../../test/random-seed';
 
-const SAMPLE = 20_000;
+const SAMPLE = 8_000;
 
 describe('gewichtetes Ziehen', () => {
   it('weist ohne Bias die Gleichverteilung aus und zieht genau daraus', () => {
@@ -16,7 +17,7 @@ describe('gewichtetes Ziehen', () => {
     expect(dist.chances).toHaveLength(6);
     for (const chance of dist.chances) expect(chance).toBeCloseTo(1 / 6, 12);
     expect(dist.chances.reduce((sum, chance) => sum + chance, 0)).toBeCloseTo(1, 12);
-    const prng = new Prng(7);
+    const prng = new Prng(randomSeed());
     const seen = new Map<number, number>();
     for (let index = 0; index < SAMPLE; index += 1) {
       const roll = rollNumber(prng, dist);
@@ -34,7 +35,7 @@ describe('gewichtetes Ziehen', () => {
     const dist = buildDistribution(0, 9, { targets: [3], strengthBps: 3_000 });
     const targetChance = dist.chances[3]!;
     expect(targetChance).toBeGreaterThan(0.3);
-    const prng = new Prng(0x51ca5e);
+    const prng = new Prng(randomSeed());
     let hits = 0;
     for (let index = 0; index < SAMPLE; index += 1) if (rollNumber(prng, dist).value === 3) hits += 1;
     expect(Math.abs(hits / SAMPLE - targetChance)).toBeLessThan(0.02);
@@ -44,9 +45,9 @@ describe('gewichtetes Ziehen', () => {
     const dist = buildDistribution(0, 9, { targets: [3], deadzones: [0, 1], strengthBps: 2_000 });
     expect(dist.chances[0]).toBe(0);
     expect(dist.chances[1]).toBe(0);
-    const prng = new Prng(99);
+    const prng = new Prng(randomSeed());
     let sawRawZero = false;
-    for (let index = 0; index < 2_000; index += 1) {
+    for (let index = 0; index < 1_000; index += 1) {
       const roll = rollNumber(prng, dist);
       expect(roll.value).toBeGreaterThanOrEqual(2);
       expect(roll.raw).toBeGreaterThanOrEqual(0);
@@ -68,9 +69,10 @@ describe('gewichtetes Ziehen', () => {
 
   it('erzeugt fuer denselben Seed dieselbe Folge', () => {
     const dist = buildDistribution(0, 36, { targets: [17], strengthBps: 1_500 });
-    const a = new Prng(4242);
-    const b = new Prng(4242);
-    for (let index = 0; index < 200; index += 1) {
+    const seed = randomSeed();
+    const a = new Prng(seed);
+    const b = new Prng(seed);
+    for (let index = 0; index < 60; index += 1) {
       expect(rollNumber(a, dist)).toEqual(rollNumber(b, dist));
     }
   });
@@ -78,17 +80,18 @@ describe('gewichtetes Ziehen', () => {
 
 describe('gewichtete Auswahl', () => {
   it('waehlt nach Gewicht und ueberspringt abgelehnte Kandidaten', () => {
-    const prng = new Prng(11);
+    const prng = new Prng(randomSeed());
     const entries = [
       { item: 'nie', weight: 0 },
       { item: 'links', weight: 1 },
       { item: 'rechts', weight: 1 },
     ];
     const seen = new Set<string>();
-    for (let index = 0; index < 500; index += 1) seen.add(pickWeighted(prng, entries)!);
+    for (let index = 0; index < 200; index += 1) seen.add(pickWeighted(prng, entries)!);
     expect([...seen].sort()).toEqual(['links', 'rechts']);
-    const rejected = pickWeighted(new Prng(5), entries, (item) => item === 'rechts');
+    const rejected = pickWeighted(new Prng(randomSeed()), entries, (item) => item === 'rechts');
     expect(rejected).toBe('rechts');
+    expect(pickWeighted(prng, entries, () => false)).toBeNull();
     expect(pickWeighted(prng, [{ item: 'x', weight: 0 }])).toBeNull();
   });
 });

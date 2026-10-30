@@ -103,6 +103,7 @@ interface RivalState {
   readonly security: number;
   readonly edgeBps: number;
   readonly attractiveness: number;
+  readonly personas: readonly PersonaId[];
   readonly machines: readonly RivalMachine[];
 }
 
@@ -120,7 +121,7 @@ export function rivalState(rival: RivalOperator, tick: number): RivalState {
   return {
     id: rival.id, name: rival.name, operator: rival.operator, style: rival.style,
     reputation, security: rival.security, edgeBps: rival.edgeBps,
-    attractiveness: Math.round(attractiveness), machines: rival.machines,
+    attractiveness: Math.round(attractiveness), personas: rival.personas, machines: rival.machines,
   };
 }
 

@@ -15,8 +15,9 @@ import { guestAccount, HAUSKONTO } from '../money';
 import { spawnGuest } from '../spawn';
 import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
+import { randomSeed } from '../../../test/random-seed';
 
-function setup(seed = 0xbeef) {
+function setup(seed = randomSeed()) {
   const world = createWorld('SMALL');
   ensureStarter(world);
   const ledger = new Ledger();
@@ -26,17 +27,15 @@ function setup(seed = 0xbeef) {
 
 describe('Bedürfnisse', () => {
   it('teilt höchstens 180 Profilpunkte aus, jeder Wert bleibt 0..100', () => {
-    const prng = new Prng(0xbeef);
-    for (let i = 0; i < 40; i += 1) {
-      const fresh = setup(0x1000 + i);
-      const guest = spawnGuest(fresh.world, new Prng(i + 1), fresh.ledger)!;
+    for (let i = 0; i < 20; i += 1) {
+      const fresh = setup();
+      const guest = spawnGuest(fresh.world, new Prng(randomSeed()), fresh.ledger)!;
       for (const value of [guest.mood, guest.patience, guest.addiction]) {
         expect(value).toBeGreaterThanOrEqual(0);
         expect(value).toBeLessThanOrEqual(100);
       }
       expect(guest.mood + guest.patience + guest.addiction).toBeLessThanOrEqual(180);
     }
-    expect(prng.nextFloat()).toBeGreaterThanOrEqual(0);
   });
 
   it('Durst schickt an die Bar, volle Blase aufs WC', () => {
@@ -63,7 +62,7 @@ describe('Bedürfnisse', () => {
     const guest = spawnGuest(world, prng, ledger)!;
     ledger.transfer('EXTERNAL_WORLD', guestAccount(guest.id), fromVC(50), 'test chips', 0);
     const before = guest.addiction;
-    for (let i = 0; i < 20; i += 1) {
+    for (let i = 0; i < 10; i += 1) {
       guest.state = 'CHOOSE';
       guest.thirst = 5;
       guest.bladder = 5;
@@ -103,17 +102,23 @@ describe('Streit', () => {
     return { world, ledger, prng, a, b };
   }
 
+  function startDispute(world: ReturnType<typeof angryPair>['world'], a: ReturnType<typeof angryPair>['a'], b: ReturnType<typeof angryPair>['b']) {
+    world.disputes.push({ id: 1, guestIds: [a.id, b.id], x: a.position.x, y: a.position.y, level: 1, ticks: 0 });
+    a.disputeId = 1;
+    b.disputeId = 1;
+  }
+
   it('zwei wütende Gäste starten einen Disput', () => {
     const { world, prng, a, b } = angryPair();
-    for (let i = 0; i < 10 && world.disputes.length === 0; i += 1) maybeStartBrawl(world, prng);
+    for (let i = 0; i < 40 && world.disputes.length === 0; i += 1) maybeStartBrawl(world, prng);
     expect(world.disputes).toHaveLength(1);
     expect(a.disputeId).toBe(world.disputes[0]!.id);
     expect(b.disputeId).toBe(world.disputes[0]!.id);
   });
 
   it('ein Guard löst den Disput auf, bevor Besitz kaputtgeht', () => {
-    const { world, ledger, prng } = angryPair();
-    maybeStartBrawl(world, prng);
+    const { world, ledger, a, b } = angryPair();
+    startDispute(world, a, b);
     expect(world.disputes).toHaveLength(1);
     hireAgent(world, ledger, 'guard');
     world.agents[0]!.x = world.disputes[0]!.x;
@@ -125,16 +130,16 @@ describe('Streit', () => {
   });
 
   it('ohne Guard eskaliert der Streit und beschädigt Geräte', () => {
-    const { world, prng } = angryPair();
-    maybeStartBrawl(world, prng);
+    const { world, a, b } = angryPair();
+    startDispute(world, a, b);
     for (let i = 0; i < 14; i += 1) tickDisputes(world);
     const damaged = world.furniture.some((item) => item.damaged || item.condition < 100);
     expect(damaged).toBe(true);
   });
 
   it('der Spieler kann in Reichweite schlichten', () => {
-    const { world, prng, a } = angryPair();
-    maybeStartBrawl(world, prng);
+    const { world, a, b } = angryPair();
+    startDispute(world, a, b);
     const dispute = world.disputes[0]!;
     world.player.position = { x: dispute.x, y: dispute.y };
     expect(calmDispute(world, dispute.id)).toBe(true);

@@ -48,6 +48,14 @@ export class FloorCamera {
     this.#target = this.#clamp(Math.max(this.#fit * 2.2, this.#fit * (size / REGION)));
   }
 
+  pinch(factor: number, worldX: number, worldY: number): void {
+    const next = this.#clamp(this.#target * factor);
+    this.#target = next;
+    const centered = next <= this.#fit * 1.01;
+    this.#targetFocus.x = centered ? 0.5 : Math.max(0, Math.min(1, worldX));
+    this.#targetFocus.y = centered ? 0.5 : Math.max(0, Math.min(1, worldY));
+  }
+
   wheel(worldX: number, worldY: number, deltaY: number): void {
     const next = this.#clamp(this.#target * (deltaY < 0 ? 1.14 : 0.88));
     this.#target = next;

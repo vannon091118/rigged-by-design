@@ -3,6 +3,8 @@ import { ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { GAME_FOOTPRINT, SERVICE_FOOTPRINT } from '../core/sim/grid-zones';
 import { reputation } from '../core/sim/spawn';
 import { newPlayerRpg } from '../core/sim/player-rpg';
+import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
+import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
 
 interface SavedEntry {
@@ -17,7 +19,7 @@ interface SavedEntry {
 type SavedGuest = Guest & { readonly fiat?: VaCoinMicro };
 
 export interface SavedGame {
-  readonly version: 5 | 6 | 7;
+  readonly version: 5 | 6 | 7 | 8;
   readonly template: TemplateId;
   readonly carpet: CarpetId;
   readonly furniture: Furniture[];
@@ -48,6 +50,10 @@ export interface SavedGame {
   readonly visitors?: Visitor[];
   readonly nextVisitorId?: number;
   readonly lastEvent: string;
+  readonly journal?: JournalEvent[];
+  readonly nextJournalId?: number;
+  readonly journaledSeq?: number;
+  readonly look?: PlayerLook;
   readonly entries: readonly SavedEntry[];
   readonly prngState: number;
 }
@@ -100,6 +106,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));
   world.agents = (saved.agents ?? []).map((agent) => ({
     ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null,
+    task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '',
   }));
   world.disputes = (saved.disputes ?? []).map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] }));
   world.parts = saved.parts ?? 2;
@@ -131,6 +138,17 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.activePenalties = (saved.activePenalties ?? []).map((penalty) => ({ ...penalty }));
   world.visitors = (saved.visitors ?? []).map((visitor) => ({ ...visitor }));
   world.nextVisitorId = saved.nextVisitorId ?? world.visitors.reduce((max, visitor) => Math.max(max, visitor.id + 1), 1);
+  world.journal = (saved.journal ?? []).map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
+  world.nextJournalId = saved.nextJournalId
+    ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
+  world.journaledSeq = saved.journaledSeq ?? saved.entries.length;
+  world.look = normalizeLook(saved.look);
   world.lastEvent = saved.lastEvent ?? 'Spielstand geladen.';
+  if (world.journal.length === 0) {
+    recordJournal(world, {
+      kind: 'SYSTEM', subject: 'Spielstand', cause: 'Save geladen',
+      effect: world.lastEvent,
+    });
+  }
   return legacyFiat;
 }

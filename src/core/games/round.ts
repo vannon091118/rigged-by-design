@@ -13,8 +13,8 @@ interface RoundResult {
   readonly detail: readonly string[];
 }
 
-/** Paytable auf die gemessene Fachverteilung des Boards geeicht. */
-const PLINKO_PAYOUT_BPS = [23_000, 26_000, 10_500, 0, 0, 0, 10_500, 26_000, 60_000] as const;
+/** Paytable auf die gemessene Fachverteilung des Boards geeicht (~93 % RTP). */
+const PLINKO_PAYOUT_BPS = [16_500, 15_200, 13_300, 0, 0, 11_600, 13_300, 15_200, 18_000] as const;
 const plinkoBoard = createPlinkoBoard();
 
 function plinko(prng: Prng): RoundResult {

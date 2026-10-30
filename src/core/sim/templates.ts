@@ -2,6 +2,7 @@
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
+import { DEFAULT_LOOK } from './player-look';
 import { BLUEPRINTS } from './house-presets';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
@@ -62,6 +63,10 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     activePenalties: [],
     visitors: [],
     nextVisitorId: 1,
+    journal: [],
+    nextJournalId: 1,
+    journaledSeq: 0,
+    look: DEFAULT_LOOK,
     lastEvent: template === 'SMALL' ? 'Kleine Bude eröffnet. Ein Automat steht gratis.' : 'Neues Haus eröffnet.',
     guardsHired: 0,
   };

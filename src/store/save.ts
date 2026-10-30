@@ -1,14 +1,15 @@
-/** Save v7: Welt + Ledger-Log + PRNG. Nichts anderes besitzt Geld. */
+/** Save v8: Welt + Ledger-Log + Journal + PRNG. Nichts anderes besitzt Geld. */
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
 
-const KEY = 'vcoin.casino.v7';
+const SAVE_VERSION = 8;
+const KEY = 'vcoin.casino.v8';
 /** v6 kennt weder Kisten noch Agenten; v5 trug das Fiat noch im Gastobjekt. */
-const LEGACY_KEY = 'vcoin.casino.v6';
-const OLD_KEYS = ['vcoin.casino.v3', 'vcoin.casino.v4', 'vcoin.casino.v5'];
+const LEGACY_KEYS = ['vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
+const OLD_KEYS = ['vcoin.casino.v3', 'vcoin.casino.v4'];
 
 interface LoadedSave {
   readonly world: WorldState;
@@ -16,10 +17,9 @@ interface LoadedSave {
   readonly prngState: number;
 }
 
-export function saveWorld(world: WorldState, ledger: Ledger, prngState: number): void {
-  try {
-    const save: SavedGame = {
-      version: 7,
+export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number): SavedGame {
+  return {
+      version: SAVE_VERSION,
       template: world.template,
       carpet: world.carpet,
       furniture: world.furniture,
@@ -50,10 +50,18 @@ export function saveWorld(world: WorldState, ledger: Ledger, prngState: number):
       visitors: world.visitors,
       nextVisitorId: world.nextVisitorId,
       lastEvent: world.lastEvent,
+      journal: world.journal,
+      nextJournalId: world.nextJournalId,
+      journaledSeq: world.journaledSeq,
+      look: world.look,
       entries: ledger.entries.map(({ tick, from, to, amount, reason }) => ({ tick, from, to, amount, reason })),
       prngState,
-    };
-    localStorage.setItem(KEY, JSON.stringify(save));
+  };
+}
+
+export function saveWorld(world: WorldState, ledger: Ledger, prngState: number): void {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(toSavedGame(world, ledger, prngState)));
   } catch { /* quota oder storage blocked */ }
 }
 
@@ -61,7 +69,7 @@ export function saveWorld(world: WorldState, ledger: Ledger, prngState: number):
 export function replaySave(raw: unknown): LoadedSave | null {
   try {
     const saved = raw as Partial<SavedGame> | null;
-    if (!saved || (saved.version !== 5 && saved.version !== 6 && saved.version !== 7)) return null;
+    if (!saved || ![5, 6, 7, 8].includes(saved.version ?? 0)) return null;
     if (!saved.template || !Array.isArray(saved.guests) || !Array.isArray(saved.furniture)) return null;
     const world = createWorld(saved.template, saved.carpet ?? 'VIOLET');
     const legacyFiat = hydrateWorld(world, saved as SavedGame);
@@ -82,7 +90,8 @@ export function replaySave(raw: unknown): LoadedSave | null {
 
 export function loadWorld(): LoadedSave | null {
   try {
-    const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
+    let raw = localStorage.getItem(KEY);
+    for (const key of LEGACY_KEYS) raw = raw ?? localStorage.getItem(key);
     if (!raw) return null;
     return replaySave(JSON.parse(raw));
   } catch {

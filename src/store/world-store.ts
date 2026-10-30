@@ -1,7 +1,7 @@
 // @loc-exception: Der eine Store buendelt alle Commands auf denselben Weltzustand; Aufteilen wuerde die Eigentumsgarantie verwischen.
 /** Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. */
-import { Ledger } from '../core/economy/ledger';
-import { fromVC, toVCString, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
+import { Ledger, type LedgerDiagnosis } from '../core/economy/ledger';
+import { fromVC, toVCString } from '../core/economy/vacoin';
 import type { GameResult } from '../core/games/contracts';
 import { cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
 import { payGuest } from '../core/sim/service-actions';
@@ -11,22 +11,22 @@ import { calmDispute } from '../core/sim/disputes';
 import { talkToGuest } from '../core/sim/charisma-talk';
 import { spendPoint, type RpgAttribute } from '../core/sim/player-rpg';
 import { resolvePlayerBrawl } from '../core/sim/brawl-combat';
-import { HAUSKONTO, HOUSE_FLOAT, playerTakeHome } from '../core/sim/money';
 import { fireAgent, hireAgent } from '../core/sim/staff';
 import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
-import { playForeignGame, playRivalGame, type ForeignOutcome } from './foreign-play';
+import { visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
+import { settleMoneyJournal } from '../core/sim/journal';
+import type { PlayerLook } from '../core/sim/player-look';
+import { deployAtPlayer, saveLook, stepPlayer, takeHomeToWallet, useCarriedAtPlayer } from './player-tools';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import { tickWorld } from '../core/sim/tick';
-import type { CarpetId, GameId, ModId, Point, StaffRole, TemplateId, WorldState } from '../core/sim/types';
+import type { CarpetId, ModId, Point, StaffRole, TemplateId, WorldState } from '../core/sim/types';
 import { Prng } from '../core/rng/prng';
 import { buildView } from './snapshot';
 import { clearOldSave, loadWorld, saveWorld } from './save';
 import type { GameView } from './types';
-
 const TICK_MS = 520;
-
 class WorldStore {
   #ledger = new Ledger();
   #prng = new Prng(Date.now() >>> 0); // @seed-initializer
@@ -36,7 +36,6 @@ class WorldStore {
   #listeners = new Set<() => void>();
   #timer: ReturnType<typeof setInterval> | null = null;
   #savedTick = 0;
-
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();
@@ -53,7 +52,6 @@ class WorldStore {
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
   }
-
   subscribe = (listener: () => void): (() => void) => {
     this.#listeners.add(listener);
     if (this.#timer === null) this.#timer = setInterval(this.#advance, TICK_MS);
@@ -65,9 +63,7 @@ class WorldStore {
       }
     };
   };
-
   getSnapshot = (): GameView => this.#view;
-
   newGame(template: TemplateId = 'SMALL'): void {
     this.#world = createWorld(template);
     this.#ledger = new Ledger();
@@ -75,7 +71,6 @@ class WorldStore {
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();
   }
-
   setTemplate(template: TemplateId): void {
     if (template === this.#world.template) return;
     try {
@@ -86,19 +81,15 @@ class WorldStore {
     }
     this.#emit();
   }
-
   buy(id: BuildId): void {
     this.#event(() => buyCrate(this.#world, this.#ledger, id));
   }
-
   orderDrinks(count: number): void {
     this.#event(() => orderDrinks(this.#world, this.#ledger, count));
   }
-
   orderParts(count: number): void {
     this.#event(() => orderParts(this.#world, this.#ledger, count));
   }
-
   pickup(crateId: number): void {
     this.#event(() => pickupCrate(this.#world, crateId));
   }
@@ -246,13 +237,7 @@ class WorldStore {
   }
 
   takeHome(amountVC = 5): void {
-    this.#guard(() => {
-      const available = (this.#ledger.getBalance(HAUSKONTO) - HOUSE_FLOAT) as VaCoinMicro;
-      const amount = Math.min(fromVC(amountVC), available) as VaCoinMicro;
-      if (amount <= ZERO_VC) throw new Error('5 VC bleiben als Betriebsreserve im Hauskonto.');
-      playerTakeHome(this.#ledger, amount, this.#world.tick);
-      this.#notice = `${toVCString(amount)} ins Portemonnaie.`;
-    });
+    this.#guard(() => { this.#notice = takeHomeToWallet(this.#world, this.#ledger, amountVC); });
   }
 
   pay(guestId: number): void {
@@ -275,12 +260,32 @@ class WorldStore {
     this.#emit(false);
   }
 
-  playForeign(game: GameId, betVC: number, houseEdgeBps = 250): GameResult | null {
-    return this.#foreign(() => playForeignGame(this.#ledger, game, betVC, this.#prng, this.#world.tick, houseEdgeBps));
+  playRival(rivalId: RivalId, machineIndex: number, betVC: number): GameResult | null {
+    const result = this.#foreign(() => visitRivalWithJournal(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng));
+    if (result) this.#emit(false);
+    return result;
   }
 
-  playRival(rivalId: RivalId, machineIndex: number, betVC: number): GameResult | null {
-    return this.#foreign(() => playRivalGame(this.#ledger, rivalId, machineIndex, betVC, this.#prng, this.#world.tick));
+  /** Volle Ledger-Pruefung nur auf Klick; der Tickpfad bleibt inkrementell. */
+  auditLedger(): LedgerDiagnosis {
+    return this.#ledger.diagnose();
+  }
+
+  setLook(patch: Partial<PlayerLook>): void {
+    this.#guard(() => { this.#notice = saveLook(this.#world, patch); });
+  }
+
+  moveStep(dx: number, dy: number): void {
+    stepPlayer(this.#world, dx, dy);
+    this.#emit(false);
+  }
+
+  deployHere(): void {
+    this.#guard(() => { this.#notice = deployAtPlayer(this.#world); });
+  }
+
+  useCarriedHere(): void {
+    this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; });
   }
 
   /** Ein Pfad fuer alle fremden Haeuser: gleiche Notiz, gleiche Fehlerbehandlung. */
@@ -333,6 +338,7 @@ class WorldStore {
   }
 
   #emit(save = true): void {
+    settleMoneyJournal(this.#world, this.#ledger);
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
     if (save) saveWorld(this.#world, this.#ledger, this.#prng.getState());
     for (const listener of this.#listeners) listener();

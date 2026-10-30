@@ -10,13 +10,16 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
     reporters: ['default', new GovernanceReporter()],
     testTimeout: 40_000,
     // Threads statt Prozess-Forks: sie sterben mit dem Runner, es bleiben keine
     // verwaisten Worker-Prozesse zurueck. Der Teardown wird hart begrenzt,
     // damit ein haengender Test den Lauf nicht blockiert.
     pool: 'threads',
+    // Testdateien teilen keine mutierenden Singletons; Worker-Reuse spart pro Lauf
+    // rund vier Sekunden Startzeit. Bei modulglobalem Zustand wieder anschalten.
+    isolate: false,
     teardownTimeout: 2_000,
     hookTimeout: 10_000,
     maxConcurrency: 8,

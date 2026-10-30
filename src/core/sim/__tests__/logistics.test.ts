@@ -9,11 +9,12 @@ import { getBuildDef } from '../offers';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import type { WorldState } from '../types';
+import { randomSeed } from '../../../test/random-seed';
 
 function setup(template: WorldState['template'] = 'SMALL') {
   const world = createWorld(template);
   const ledger = new Ledger();
-  return { world, ledger, prng: new Prng(0xabc12345) };
+  return { world, ledger, prng: new Prng(randomSeed()) };
 }
 
 describe('Lieferkette', () => {
@@ -57,7 +58,7 @@ describe('Lieferkette', () => {
     deployCrate(world, carried.id, spot.x, spot.y);
     expect(world.furniture.some((item) => item.x === spot.x && item.y === spot.y)).toBe(true);
     expect(world.crates).toHaveLength(0);
-    const guest = spawnGuest(world, new Prng(1), ledger);
+    const guest = spawnGuest(world, new Prng(randomSeed()), ledger);
     expect(guest).not.toBeNull();
   });
 });

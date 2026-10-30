@@ -22,6 +22,8 @@ const JUSTIFICATIONS = {
   '@eslint/js': ['Lint', 'Empfohlene ESLint-Basisregeln.'],
   'typescript-eslint': ['Lint', 'TypeScript-Parser und Regeln fuer das Lint-Gate.'],
   globals: ['Lint', 'Browser- und Node-Globals fuer die ESLint-Konfiguration.'],
+  jsdom: ['Test', 'DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser.'],
+  '@testing-library/react': ['Test', 'Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom.'],
 };
 
 const CATEGORY = (pkg) => JUSTIFICATIONS[pkg]?.[0] ?? 'Unbekannt';
@@ -55,6 +57,7 @@ for (const file of candidates) {
   if (/\bfrom\s+['"]react['"]|['"]react\/jsx-runtime['"]/.test(text) && usage.has('@types/react')) usage.get('@types/react').add(rel);
   if (/from\s+['"]react-dom(?:\/[^'"]*)?['"]/.test(text) && usage.has('@types/react-dom')) usage.get('@types/react-dom').add(rel);
   if (/['"]node:/.test(text) && usage.has('@types/node')) usage.get('@types/node').add(rel);
+  if (/jsdom/.test(text) && usage.has('jsdom')) usage.get('jsdom').add(rel);
 }
 const cli = (pkg) => {
   const scripts = JSON.stringify(packageJson.scripts ?? {});

@@ -59,7 +59,7 @@ Sieben Spiele mit unterschiedlichen Charakteren: **Book-of-Ra-Slot, Plinko, Blac
 
 Im Floor zeigt die Automatenanzeige bei Zoom, was der sitzende Gast gerade dreht. Im Popup siehst du den Testspin mit echten Walzen, Mods und Zustand.
 
-Die Grafik ist vollständig prozedural: South-Park-nahe Cutout-Figuren aus Pixi-Vektorteilen, Sprechblasen, Emotions-Sticker, Laufwege und Kamera-Zoom. Keine externen Bild-URLs, keine Asset-Pipeline.
+Die Grafik ist vollständig prozedural: blockige Pixel-Figuren auf einem festen Raster, ein Gelenk-Rig mit Idle-, Lauf-, Sitz-, Spiel-, Gewinn-, Verlust-, Trink-, Wut- und Trage-Zustand, Sprechblasen, Emotions-Sticker, Laufwege und Kamera-Zoom. Keine externen Bild-URLs, keine Asset-Pipeline.
 
 ## Floor und Kamera
 
@@ -76,6 +76,8 @@ Der Charakter läuft per **Point-and-Click** über das Grid. Du kannst Bedienung
 | **HUD** | Hauskonto abheben, Gäste ansehen, fremdes Haus besuchen, putzen. |
 | **Minimap** | Zonen anklicken, zoomen, alles einpassen. |
 | **Popup** | `Escape` oder Klick auf den Hintergrund schließt. Die Simulation läuft weiter. |
+| **Tastatur** | Pfeile oder WASD laufen ein Feld; `Enter` stellt eine getragene Möbelkiste am Spieler ab oder lädt Getränke/Teile ab. |
+| **Protokoll** | Jedes Ereignis nennt Zeit, Akteur, Ursache und Folge; Filter für Geld, Gäste, Personal, Lager und Rivalen. |
 
 ## Architektur
 
@@ -111,7 +113,7 @@ npm ci
 npm run dev
 ```
 
-Der Dev-Server läuft auf [http://localhost:3000](http://localhost:3000). Ein frischer Stand beginnt mit 0 VC und einem Gratis-Automaten. Der aktuelle Save ist v6: v5-Stände werden beim Laden migriert und behalten Fiat sowie offene Gewinne; v3/v4 werden verworfen.
+Der Dev-Server läuft auf [http://localhost:3000](http://localhost:3000). Ein frischer Stand beginnt mit 0 VC und einem Gratis-Automaten. Der aktuelle Save ist v8: v5, v6 und v7 werden beim Laden migriert und behalten Fiat, offene Gewinne, Journal und Look; v3/v4 werden verworfen.
 
 Alle Gates:
 
@@ -119,27 +121,33 @@ Alle Gates:
 npm run verify:all
 ```
 
-Die Fail-Closed-Pipeline führt Autofix, ESLint, LOC-Guard, Typecheck, Testvertrag, Dead-Export-Gate, Dependency-Matrix, `npm audit`, Vitest und Production-Build aus. Jede Fehlermeldung hat das Format `[IDX-XXXX] [ERR-YYYY] Komponente: Klartext`; neue Fehlerarten stehen in [docs/ERROR_CATALOG.md](docs/ERROR_CATALOG.md).
+Die Fail-Closed-Pipeline führt Autofix (ESLint-Fix und Dependency-Matrix), LOC-Guard, Typecheck, Testvertrag, Dead-Export-Gate, `npm audit`, Vitest und Production-Build aus. Jede Fehlermeldung hat das Format `[IDX-XXXX] [ERR-YYYY] Komponente: Klartext`; neue Fehlerarten stehen in [docs/ERROR_CATALOG.md](docs/ERROR_CATALOG.md).
 
 **Delivery-Regel:** Nach jedem abgeschlossenen Arbeits-Turn wird auf `main` geliefert. Der verbindliche Weg ist `npm run turn:finish -- <pfade>` — Autofix, alle Gates, deutscher Steam-Developer-Notes-Commit ohne Drittanbieter-Trailer, Push auf `main`. Gestaged werden nur die genannten Pfade; ohne Argumente nur bereits verfolgte Änderungen, nie der ganze Arbeitsbaum. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` fällig. Details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-**Geschwindigkeit getrennt:** `npm run test:perf` misst den Durchsatz der Spielrunden (fester Seed, feste Rundenanzahl, ms/op). Der Benchmark gehört bewusst nicht zu `verify:all` und wird auf langsamer Hardware nicht rot.
+**Geschwindigkeit getrennt:** `npm run test:perf` misst den Durchsatz der Spielrunden (frischer Seed pro Lauf, feste Rundenanzahl, ms/op). Der Benchmark gehört bewusst nicht zu `verify:all` und wird auf langsamer Hardware nicht rot.
 
 ## Tests
 
-- **Ledger:** doppelte Buchführung, Unterdeckung, 1.000 zufällige Buchungen, Integrität.
+- **Ledger:** doppelte Buchführung, Unterdeckung, 400 zufällige Buchungen, Integrität, Checkpoint und strukturierte Diagnose.
+- **Protokoll:** jede Ledger-Zeile wird genau einmal kopiert, Welt-Ereignisse tragen Ursache und Folge, der Puffer bleibt bei 240 Einträgen.
 - **Spiele:** jedes Spiel deterministisch und gültig; Monte-Carlo sichert 90–96 % RTP und sichtbare Gewinnchancen; Testspin kostet kein Geld; fremde Runden buchen nur vom Portemonnaie.
 - **Welt:** Startzustand mit 0 VC und einem Gratis-Automaten; Spawn am Eingang; Max-Pool für Laune, Geduld und Sozialverhalten; Wechsel erst an der Kasse.
 - **Angebot:** Mods verändern Anziehung und Geduld; Persona-Geschmack verschiebt die Platzwahl.
-- **Simulation:** 900 Ticks ohne negatives Konto, ohne Ledger-Leck, mit Tageswechsel.
+- **Simulation:** 700 Ticks ohne negatives Konto, ohne Ledger-Leck, mit Tageswechsel.
 - **Service:** Drink zapfen und am Gast abgeben; belegte Plätze werden nicht doppelt reserviert.
+- **UI und Fokus:** HUD-Alarm bei Ledger-Bruch, Fokusfalle und Fokus-Rückgabe im Popup, Protokollfilter, Charakter-Editor und echte Rivalenprofile (jsdom).
+- **Langzeit und Save:** 3.000 Ticks mit Invarianten (`npm run soak` für 100.000), Save-v8-Roundtrip mit deterministischer Fortsetzung.
+- **Rig:** Pose-Mathematik deterministisch, Sitzen/Gewinnen/Laufen unterscheidbar, Weltzustand wird korrekt auf Animationszustand abgebildet.
+- **Zufall in Tests:** Jeder Lauf zieht einen nicht vorab wählbaren Seed über `src/test/random-seed.ts`; feste Seed-Literale sind im Testvertrag verboten.
+- **Benchmarks:** `npm run test:perf` misst Spielrunden, Floor, Posen, Speicher und Save-Größe mit festen 5–20 Läufen; `npm run bench:lowend` pinnt den Lauf auf einen Kern.
 
 ## Bekannte Grenzen
 
 - **Kein Multiplayer, keine Accounts, keine Cloud-Saves.** Der Stand lebt im Browser.
 - **Die Spiele sind kompakte Simulationen**, keine vollständigen Tisch-Engines mit Split, Double Down oder Side Pots. Das Angebot wächst über Maschinen, Mods und Preise.
 - **Kein Echtgeld.** VaCoins sind fiktiv; die Wirtschaft ist eine Satire auf Casino-Produkte.
-- **Der Save ist lokal und wächst mit dem Ledger.** Für sehr lange Sitzungen ist noch kein Ledger-Checkpoint eingebaut.
+- **Der Save ist lokal.** Das Ereignisprotokoll ist auf die letzten 240 Einträge begrenzt; der Ledger führt einen Replay-Checkpoint, damit die Vollprüfung nicht bei jedem Tick über die ganze Historie läuft. Ein echtes Low-End-Gerät kann hier nur emuliert werden (ein Kern, siehe `bench:lowend`).
 
 ## Ernst gemeint
 

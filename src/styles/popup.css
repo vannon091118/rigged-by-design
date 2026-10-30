@@ -193,9 +193,124 @@
 .popup-full .game-screen { min-height: 52vh; }
 .popup-full .screen-symbol { min-width: 86px; min-height: 86px; font-size: 20px; }
 
+/* Ereignisprotokoll */
+.journal-tabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+.journal-tab {
+  border: 1px solid var(--line); border-radius: 999px; background: #140e24;
+  padding: 5px 10px; font-size: 10px; letter-spacing: 0.04em;
+}
+.journal-tab.active { border-color: var(--neon); color: #d9fff8; background: rgba(0, 255, 204, 0.07); }
+.journal-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.journal-row {
+  display: grid; gap: 3px; padding: 9px 11px; border: 1px solid var(--line);
+  border-left-width: 3px; border-radius: 10px; background: rgba(7, 4, 13, 0.62);
+}
+.journal-row.kind-money { border-left-color: var(--gold); }
+.journal-row.kind-guest { border-left-color: var(--neon); }
+.journal-row.kind-staff { border-left-color: #b06bff; }
+.journal-row.kind-stock { border-left-color: #ff8a5c; }
+.journal-row.kind-rival { border-left-color: var(--hot); }
+.journal-row.kind-system { border-left-color: var(--muted); }
+.journal-meta { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 9px; color: var(--muted); }
+.journal-meta b { margin-left: auto; font-family: var(--mono); color: var(--gold); }
+.journal-kind { font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--neon); }
+.journal-row strong { font-size: 12px; }
+.journal-row p { margin: 0; font-size: 10px; line-height: 1.45; color: #cbb8e0; }
+.journal-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-right: 4px; }
+.journal-row .btn { justify-self: start; margin-top: 3px; }
+
+/* Diagnose */
+.diag-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.diag-card {
+  display: grid; gap: 8px; align-content: start; padding: 12px;
+  border: 1px solid var(--line); border-radius: 12px; background: rgba(7, 4, 13, 0.62);
+}
+.diag-card.ok { border-color: rgba(0, 255, 204, 0.35); }
+.diag-card.bad { border-color: rgba(255, 107, 129, 0.6); }
+.diag-card header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.diag-card h3 { margin: 0; }
+.pill {
+  padding: 2px 7px; border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 9px; color: var(--muted); white-space: nowrap;
+}
+.pill.ok { border-color: rgba(0, 255, 204, 0.45); color: var(--neon); }
+.pill.bad { border-color: rgba(255, 107, 129, 0.6); color: var(--danger); }
+.diag-note { margin: 0; font-size: 10px; line-height: 1.5; color: var(--muted); }
+.diag-card dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; margin: 0; }
+.diag-card dl > div { display: grid; gap: 1px; }
+.diag-card dt { font-size: 8px; letter-spacing: 0.1em; color: var(--muted); }
+.diag-card dd { margin: 0; font-family: var(--mono); font-size: 12px; }
+.diag-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.diag-list li { display: flex; gap: 7px; align-items: baseline; flex-wrap: wrap; font-size: 10px; }
+.diag-list strong { color: #e8dcf8; }
+.diag-list span { color: var(--muted); }
+.diag-list small { font-size: 9px; }
+.diag-report { display: grid; gap: 2px; padding: 7px 9px; border-radius: 8px; background: #0b0715; border: 1px solid var(--line); }
+.diag-report strong { font-size: 11px; }
+.diag-report small, .diag-report p { margin: 0; font-size: 9px; line-height: 1.45; color: var(--muted); }
+.diag-report.ok { border-color: rgba(0, 255, 204, 0.4); }
+.diag-report.bad { border-color: rgba(255, 107, 129, 0.6); }
+.diag-report.bad strong { color: var(--danger); }
+
+/* Rivalenprofil */
+.rival-profile {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px;
+  margin: 10px 0; padding: 10px 12px; border: 1px solid var(--line-strong);
+  border-radius: 12px; background: radial-gradient(circle at 12% 20%, rgba(255, 46, 136, 0.09), transparent 60%), #0b0715;
+}
+.rival-profile strong { font-size: 13px; }
+.rival-profile p { margin: 3px 0 0; font-size: 10px; line-height: 1.5; color: var(--muted); }
+.rival-profile dl { display: grid; grid-template-columns: repeat(2, auto); gap: 4px 14px; margin: 0; align-content: center; }
+.rival-profile dl > div { display: grid; gap: 1px; }
+.rival-profile dt { font-size: 8px; letter-spacing: 0.1em; color: var(--muted); }
+.rival-profile dd { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--gold); }
+
+/* Charaktereditor */
+.look-layout { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 18px; align-items: start; }
+.look-preview {
+  position: relative; width: 140px; height: 196px; margin: 0 auto;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: radial-gradient(circle at 50% 40%, rgba(0, 255, 204, 0.08), transparent 65%), #0b0715;
+}
+.look-shadow { position: absolute; left: 30px; bottom: 14px; width: 80px; height: 8px; background: rgba(0, 0, 0, 0.45); }
+.look-head { position: absolute; left: 48px; top: 30px; width: 44px; height: 40px; }
+.look-hair { position: absolute; left: -4px; top: -7px; width: 52px; height: 15px; }
+.look-eye { position: absolute; top: 17px; width: 6px; height: 6px; background: #171020; }
+.look-eye.left { left: 10px; }
+.look-eye.right { right: 10px; }
+.look-glasses { position: absolute; left: 4px; top: 14px; width: 36px; height: 12px; border: 2px solid #1a1020; }
+.look-cap { position: absolute; left: -4px; top: -11px; width: 54px; height: 12px; }
+.look-body { position: absolute; left: 50px; top: 70px; width: 40px; height: 52px; }
+.look-arm { position: absolute; top: 72px; width: 10px; height: 44px; }
+.look-arm.left { left: 38px; }
+.look-arm.right { right: 38px; }
+.look-leg { position: absolute; bottom: 20px; width: 14px; height: 34px; background: #1c1226; }
+.look-leg.left { left: 48px; }
+.look-leg.right { right: 48px; }
+.look-chain { position: absolute; left: 12px; top: 6px; width: 16px; height: 3px; background: #ffd166; }
+.look-controls { display: grid; gap: 12px; }
+.look-row { display: grid; gap: 5px; }
+.look-row > span { font-size: 9px; letter-spacing: 0.14em; color: var(--muted); }
+.look-swatches { display: flex; gap: 7px; flex-wrap: wrap; }
+.look-swatch { width: 34px; height: 28px; border: 2px solid var(--line-strong); border-radius: 7px; }
+.look-swatch.active { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 209, 102, 0.3); }
+.look-options { display: flex; gap: 5px; flex-wrap: wrap; }
+
 @media (max-width: 960px) {
   .game-select { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .table-stage { grid-template-columns: 1fr; }
   .machine-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mod-grid { grid-template-columns: 1fr; }
+  .diag-grid { grid-template-columns: 1fr; }
+  .rival-profile { grid-template-columns: 1fr; }
+  .look-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .popup-backdrop { padding: 0; }
+  .popup { width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
+  .popup-full { width: 100%; height: 100dvh; max-height: 100dvh; }
+  .popup-head { padding: 12px 12px 9px; }
+  .popup-body { padding: 10px 12px 16px; }
+  .game-select { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .journal-meta { font-size: 9px; }
 }

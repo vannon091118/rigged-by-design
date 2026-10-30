@@ -2,12 +2,13 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
-import { VISITOR_CAP, recordVisitor } from '../visitors';
+import { pickReturningVisitor, VISITOR_CAP, recordVisitor } from '../visitors';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { replaySave } from '../../../store/save';
+import { randomSeed } from '../../../test/random-seed';
 
-function setup(seed = 0x7a11) {
+function setup(seed = randomSeed()) {
   const world = createWorld('SMALL');
   const ledger = new Ledger();
   const prng = new Prng(seed);
@@ -30,12 +31,15 @@ describe('Besucherprofile', () => {
     expect(first).not.toBeNull();
     const profileId = first!.visitorId;
     world.guests = [];
-    let returned = null;
-    for (let attempt = 0; attempt < 400 && !returned; attempt += 1) {
-      const guest = spawnGuest(world, prng, ledger);
-      if (guest && guest.visitorId === profileId) returned = guest;
-      world.guests = [];
+    // Die Rueckkehrer-Auswahl ist deterministisch aus der Gast-ID; einen
+    // passenden ID-Wert suchen, statt hunderte Zufallsgaeste zu spawnen.
+    let returningId = 0;
+    for (let id = 1; id <= 100 && returningId === 0; id += 1) {
+      if (pickReturningVisitor(world, id)?.id === profileId) returningId = id;
     }
+    expect(returningId).toBeGreaterThan(0);
+    world.nextGuestId = returningId;
+    const returned = spawnGuest(world, prng, ledger);
     expect(returned).not.toBeNull();
     expect(returned!.name).toBe(first!.name);
     expect(returned!.persona).toBe(first!.persona);

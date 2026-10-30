@@ -6,6 +6,7 @@
  * Bewusst nicht Teil von verify:all: misst Geschwindigkeit, wird nie rot.
  */
 import { test } from 'vitest';
+import { measure } from '../test/measure';
 import { Ledger } from '../core/economy/ledger';
 import { fromVC } from '../core/economy/vacoin';
 import { guestAccount, HAUSKONTO } from '../core/sim/money';
@@ -17,6 +18,7 @@ import { buildView } from './snapshot';
 
 const HISTORY = 5_000;
 const GUESTS = 200;
+const ITERATIONS = 20;
 
 function guest(id: number): Guest {
   return {
@@ -43,47 +45,37 @@ for (let index = 0; index < HISTORY; index += 1) {
 const dirty = new Set<number>();
 for (let index = 0; index < 500; index += 1) dirty.add((index * 37) % (world.size * world.size));
 
-const report = (label: string, ms: number, note: string): void => {
-  console.log(`${label.padEnd(26)} ${ms.toFixed(4)} ms/op  ${note}`);
-};
-
-test('Snapshot mit langer Ledger-Historie', { timeout: 600_000 }, async ({ bench }) => {
-  const view = await bench('buildView (200 Gaeste)', () => {
+test('Snapshot mit langer Ledger-Historie', { timeout: 60_000 }, () => {
+  measure('buildView', () => {
     buildView(world, ledger, 'test');
-  }).run();
-  report('buildView', view.period, `${GUESTS} Gaeste, ${HISTORY} Buchungen`);
+  }, { iterations: ITERATIONS, note: `${GUESTS} Gaeste, ${HISTORY} Buchungen` });
 });
 
-test('Ledger-Integritaetspruefung', { timeout: 600_000 }, async ({ bench }) => {
-  const full = await bench('verifyLedgerIntegrity()', () => {
+test('Ledger-Integritaetspruefung', { timeout: 60_000 }, () => {
+  measure('verify (voll)', () => {
     ledger.verifyLedgerIntegrity();
-  }).run();
-  report('verify (voll)', full.period, `${ledger.entries.length} Buchungen`);
+  }, { iterations: ITERATIONS, note: `${ledger.entries.length} Buchungen` });
 });
 
-test('Dreck in der Naehe', { timeout: 600_000 }, async ({ bench }) => {
-  const near = await bench('dirtyNear (Set)', () => {
+test('Dreck in der Naehe', { timeout: 60_000 }, () => {
+  measure('dirtyNear', () => {
     for (const entry of world.guests) {
       dirtyNear(dirty, world.size, entry.position.x, entry.position.y, 2);
     }
-  }).run();
-  report('dirtyNear', near.period, `${GUESTS} Gaeste, 500 Flecken`);
+  }, { iterations: ITERATIONS, note: `${GUESTS} Gaeste, 500 Flecken` });
 });
 
-test('Navigation', { timeout: 600_000 }, async ({ bench }) => {
-  const blocked = await bench('blockedTiles (90x90)', () => {
+test('Navigation', { timeout: 60_000 }, () => {
+  measure('blockedTiles', () => {
     blockedTiles(world.size, world.furniture);
-  }).run();
-  report('blockedTiles', blocked.period, `${world.furniture.length} Moebel, ${world.size}x${world.size}`);
+  }, { iterations: ITERATIONS, note: `${world.furniture.length} Moebel, ${world.size}x${world.size}` });
 
-  const path = await bench('findPath Ecke zu Ecke', () => {
+  measure('findPath', () => {
     findPath(world.size, blockedTiles(world.size, world.furniture), { x: 2, y: 2 }, { x: 87, y: 87 });
-  }).run();
-  report('findPath', path.period, '90x90, diagonal');
+  }, { iterations: 10, note: '90x90, diagonal' });
 
   const free = world.furniture[0]!;
-  const nearest = await bench('nearestWalkable (belegt)', () => {
+  measure('nearestWalkable', () => {
     nearestWalkable(world.size, blockedTiles(world.size, world.furniture), { x: free.x, y: free.y });
-  }).run();
-  report('nearestWalkable', nearest.period, 'Start auf einem Moebel');
+  }, { iterations: ITERATIONS, note: 'Start auf einem Moebel' });
 });

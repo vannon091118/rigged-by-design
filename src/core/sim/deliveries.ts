@@ -2,13 +2,15 @@
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
 import { clamp } from './guest-core';
+import { recordJournal } from './journal';
 import { HAUSKONTO, SHOP } from './money';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
 import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
 import { canPlace, furnitureById } from './world';
 
-const barCapacity = (world: WorldState): number => 6 + 6 * world.barLevel;
+export const barCapacityForLevel = (level: number): number => 6 + 6 * Math.max(1, level);
+const barCapacity = (world: WorldState): number => barCapacityForLevel(world.barLevel);
 
 function tileBlocked(world: WorldState, x: number, y: number): boolean {
   return world.furniture.some((item) => x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
@@ -39,6 +41,10 @@ function orderCrate(world: WorldState, ledger: Ledger, payload: CratePayload, co
   const crate: Crate = { id: world.nextCrateId++, payload, x: tile.x, y: tile.y, carriedBy: null };
   world.crates.push(crate);
   world.lastEvent = 'Lieferung am Eingang. Abholen und verteilen.';
+  recordJournal(world, {
+    kind: 'STOCK', subject: payload.kind, cause: `Bestellung (${reason})`, effect: world.lastEvent,
+    refs: { crateId: crate.id },
+  });
   return crate;
 }
 
@@ -93,6 +99,10 @@ export function deployCrate(world: WorldState, id: number, x: number, y: number,
   const item = placeFurniture(world, crate.payload.buildId, x, y);
   world.crates = world.crates.filter((entry) => entry.id !== id);
   world.lastEvent = `${item.label} aufgestellt.`;
+  recordJournal(world, {
+    kind: 'STOCK', subject: item.label, cause: 'Möbelkiste aufgestellt', effect: world.lastEvent,
+    refs: { furnitureId: item.id },
+  });
   return item;
 }
 
@@ -124,6 +134,10 @@ export function depositCrate(world: WorldState, id: number, x: number, y: number
     bar.stock += stored;
     crate.payload = { kind: 'DRINKS', count: crate.payload.count - stored };
     world.lastEvent = `Bar aufgefüllt (${bar.stock} Getränke).`;
+    recordJournal(world, {
+      kind: 'STOCK', subject: 'Getränke', cause: 'Kiste an der Bar abgeladen', effect: world.lastEvent,
+      refs: { furnitureId: bar.id, crateId: id },
+    });
     if (crate.payload.count <= 0) world.crates = world.crates.filter((entry) => entry.id !== id);
     return { stored, emptied: crate.payload.count <= 0 };
   }
@@ -131,6 +145,10 @@ export function depositCrate(world: WorldState, id: number, x: number, y: number
   world.parts += crate.payload.count;
   world.crates = world.crates.filter((entry) => entry.id !== id);
   world.lastEvent = `Ersatzteile eingelagert (${world.parts}).`;
+  recordJournal(world, {
+    kind: 'STOCK', subject: 'Ersatzteile', cause: 'Kiste im Lager abgeladen', effect: world.lastEvent,
+    refs: { crateId: id },
+  });
   return { stored: crate.payload.count, emptied: true };
 }
 

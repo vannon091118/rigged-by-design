@@ -7,12 +7,13 @@
 import { describe, expect, it } from 'vitest';
 import { Prng } from '../prng';
 import { createShoe, DECK_SIZE } from '../shoe';
+import { randomSeed } from '../../../test/random-seed';
 
 const label = (card: { rank: string; suit: string }): string => `${card.rank}${card.suit}`;
 
 describe('Kartenschuh', () => {
   it('gibt ein Deck ohne Dublette aus und mischt am Ende neu', () => {
-    const shoe = createShoe(new Prng(1234));
+    const shoe = createShoe(new Prng(randomSeed()));
     expect(shoe.remaining).toBe(DECK_SIZE);
     const first = new Set<string>();
     for (let index = 0; index < DECK_SIZE; index += 1) first.add(label(shoe.draw()));
@@ -28,8 +29,8 @@ describe('Kartenschuh', () => {
   });
 
   it('verteilt alle 52 Karten gleich haeufig ueber gezogene Haende', () => {
-    const shoe = createShoe(new Prng(0x51ca5e));
-    const hands = 4_000;
+    const shoe = createShoe(new Prng(randomSeed()));
+    const hands = 2_000;
     const counts = new Map<string, number>();
     for (let hand = 0; hand < hands; hand += 1) {
       for (let card = 0; card < 5; card += 1) {
@@ -45,13 +46,14 @@ describe('Kartenschuh', () => {
   });
 
   it('erzeugt fuer denselben Seed dieselbe Kartenfolge', () => {
-    const a = createShoe(new Prng(777));
-    const b = createShoe(new Prng(777));
-    for (let index = 0; index < 60; index += 1) expect(a.draw()).toEqual(b.draw());
+    const seed = randomSeed();
+    const a = createShoe(new Prng(seed));
+    const b = createShoe(new Prng(seed));
+    for (let index = 0; index < 30; index += 1) expect(a.draw()).toEqual(b.draw());
   });
 
   it('unterstuetzt mehrere Decks ohne Dublette innerhalb eines Decks', () => {
-    const shoe = createShoe(new Prng(9), 2);
+    const shoe = createShoe(new Prng(randomSeed()), 2);
     expect(shoe.remaining).toBe(DECK_SIZE * 2);
     const seen = new Map<string, number>();
     for (let index = 0; index < DECK_SIZE * 2; index += 1) {

@@ -16,11 +16,17 @@ const eslint = spawnSync(process.execPath, ['node_modules/eslint/bin/eslint.js',
   encoding: 'utf8',
 });
 if (eslint.status === 0) log('ESLint --fix ohne Restfehler');
-else log('ESLint --fix ausgefuehrt; unfixbare Reste bleiben fuer das Lint-Gate');
+else {
+  log('ESLint --fix ausgefuehrt; unfixbare Reste sind ein rotes Gate');
+  process.exitCode = 1;
+}
 
 const deps = spawnSync(process.execPath, ['scripts/sync-dependency-matrix.mjs'], { cwd: ROOT, encoding: 'utf8' });
 process.stdout.write(deps.stdout ?? '');
-if (deps.status !== 0) process.stderr.write(deps.stderr ?? '');
+if (deps.status !== 0) {
+  process.stderr.write(deps.stderr ?? '');
+  process.exitCode = 1;
+}
 
 const messageFile = resolve(ROOT, '.git', 'COMMIT_EDITMSG');
 if (existsSync(messageFile)) {

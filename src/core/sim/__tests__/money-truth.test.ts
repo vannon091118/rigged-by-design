@@ -15,9 +15,10 @@ import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import { exchangePoint } from '../world';
+import { randomSeed } from '../../../test/random-seed';
 
 function setup() {
-  return { world: createWorld('SMALL'), ledger: new Ledger(), prng: new Prng(0x51ca5e) };
+  return { world: createWorld('SMALL'), ledger: new Ledger(), prng: new Prng(randomSeed()) };
 }
 
 describe('Fiat am Spawn und an der Kasse', () => {
@@ -69,13 +70,14 @@ describe('Fiat am Spawn und an der Kasse', () => {
 describe('Auszahlung und Deckung', () => {
   it('zahlt einen Gewinn ueber dem Hausbestand voll aus und bucht die Differenz als Schuld', () => {
     const { world, ledger } = setup();
-    const guest = spawnGuest(world, new Prng(11), ledger)!;
+    const guest = spawnGuest(world, new Prng(randomSeed()), ledger)!;
     const slot = world.furniture.find((item) => item.kind === 'SLOT')!;
     const bet = (slot.baseBet > world.prices.slotMinBet ? slot.baseBet : world.prices.slotMinBet) as VaCoinMicro;
     ledger.transfer('EXTERNAL_WORLD', guestAccount(guest.id), bet, 'test chips', 0);
     let seed = 0;
     let win = 0;
-    for (let candidate = 1; candidate < 5000; candidate += 1) {
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      const candidate = randomSeed();
       const rolled = playRound('SLOT', new Prng(candidate));
       if (rolled.multiplierBps > 10_000) { seed = candidate; win = rolled.multiplierBps; break; }
     }

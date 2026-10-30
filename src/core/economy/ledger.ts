@@ -1,3 +1,4 @@
+// @loc-exception: Ledger, Diagnose und Checkpoint teilen eine Geldwahrheit; getrennt waere die Replay-Garantie zerrissen.
 /**
  * Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast
  * ein eigenes Wallet und eine eigene Auszahlung besitzt. Kein Geld entsteht
@@ -31,6 +32,22 @@ export class InsufficientFundsError extends LedgerError {
     );
     this.name = 'InsufficientFundsError';
   }
+}
+
+interface LedgerFailure {
+  readonly seq: number;
+  readonly reason: string;
+}
+
+export interface LedgerDiagnosis {
+  readonly ok: boolean;
+  readonly entries: number;
+  readonly lastSeq: number;
+  readonly lastTick: number;
+  readonly circulating: VaCoinMicro;
+  readonly liabilities: readonly AccountId[];
+  readonly checkpointSeq: number;
+  readonly failure: LedgerFailure | null;
 }
 
 export class Ledger {
@@ -83,6 +100,19 @@ export class Ledger {
 
   get entries(): readonly LedgerEntry[] {
     return Object.freeze([...this.#entries]);
+  }
+
+  /** Nur neue Zeilen kopieren; die UI muss nicht die ganze Historie anfassen. */
+  entriesSince(seq: number): readonly LedgerEntry[] {
+    return this.#entries.slice(Math.max(0, seq));
+  }
+
+  get entryCount(): number {
+    return this.#entries.length;
+  }
+
+  get liabilityAccounts(): readonly AccountId[] {
+    return [...this.#liabilities];
   }
 
   get circulating(): VaCoinMicro {
@@ -138,6 +168,38 @@ export class Ledger {
     if (!verifyBalanceSheet(replay, this.#balances, this.#liabilities)) return this.#dropCheckpoint();
     this.#advance(replay);
     return true;
+  }
+
+  /**
+   * Diagnose fuer die UI: voller Replay, aber nur auf ausdrueckliche Anforderung.
+   * Der Tickpfad nutzt weiterhin verifyIncremental().
+   */
+  diagnose(): LedgerDiagnosis {
+    const replay = new Map<AccountId, VaCoinMicro>();
+    let failure: LedgerFailure | null = null;
+    for (const entry of this.#entries) {
+      if (!applyEntry(replay, entry, this.#liabilities)) {
+        failure = { seq: entry.seq, reason: `Buchung ${entry.seq} ist nicht replaybar (Betrag, Konto oder Deckung).` };
+        break;
+      }
+    }
+    if (!failure && !verifyBalanceSheet(replay, this.#balances, this.#liabilities)) {
+      failure = {
+        seq: this.#entries[this.#entries.length - 1]?.seq ?? 0,
+        reason: 'Die Bilanz weicht vom Replay ab oder die Summe ist nicht null.',
+      };
+    }
+    const last = this.#entries[this.#entries.length - 1];
+    return {
+      ok: failure === null,
+      entries: this.#entries.length,
+      lastSeq: last?.seq ?? -1,
+      lastTick: last?.tick ?? 0,
+      circulating: this.circulating,
+      liabilities: [...this.#liabilities],
+      checkpointSeq: this.#replaySeq,
+      failure,
+    };
   }
 
   /**
