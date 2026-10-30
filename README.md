@@ -39,7 +39,7 @@ Fremde Casinos sind der Ort, an dem **du Gast bist**. Dort spielst du mit deinem
 6. **Personal einstellen.** Es putzt, zapft und schlichtet, während du woanders bist. Das nennt man Vertrauen. Oder Lohnfortzahlung.
 7. **Fremdes Casino besuchen.** Dort bist du endlich Gast – also der, der zahlt. Der Kreis schließt sich. Leider mit deinem Geld.
 
-![Bauen: Spiele, Deko, Personal und Preise](docs/screenshots/v0.3.23/04-bauen.png)
+![Bauen: Katalog mit Spielen, Deko und Preisen](docs/screenshots/v0.3.23/04-bauen.png)
 
 ## Der Kreislauf des Geldes (es kreist selten zu dir zurück)
 
