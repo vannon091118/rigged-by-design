@@ -56,7 +56,9 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          node scripts/verify-commit-msg.mjs --head
+          # Beim Pull Request ist HEAD der automatische Merge-Commit, der keine
+          # Notes traegt; der echte Commit-Text wird beim Push auf main geprueft.
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then node scripts/verify-commit-msg.mjs --head; fi
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
       # Rein lesend: der Lauf repariert nichts. Ein veralteter Baum wird rot.
