@@ -19,6 +19,8 @@ export function executeStep(step) {
       shell: command === 'npm' && process.platform === 'win32',
       // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze npm->vitest-Kette trifft.
       detached: process.platform !== 'win32',
+      // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
+      env: { ...process.env, ...(step.env ?? {}) },
     });
     let output = '';
     if (child.pid) {
@@ -57,7 +59,10 @@ export async function runGates(steps) {
   let index = 0;
   const worker = async () => {
     for (let step = queue.shift(); step; step = queue.shift()) {
-      const reused = step.cache && isCached(step.name, key) && (step.ready?.() ?? true);
+      // Der Cache-Key traegt das Profil mit: ein gruener Schnellauslauf der Suite darf
+      // den Vollauslauf mit RTP-, Balance- und Soak-Nachweisen niemals ersetzen.
+      const gateKey = `${key}\0${JSON.stringify(step.env ?? {})}`;
+      const reused = step.cache && isCached(step.name, gateKey) && (step.ready?.() ?? true);
       if (reused) {
         console.log(`[cached] ${step.name} uebersprungen, Baum unveraendert (${key.slice(0, 8)})`);
         continue;
@@ -74,7 +79,7 @@ export async function runGates(steps) {
         console.error(line(index, step.code, `pipeline/${step.name}`, 'Gate fehlgeschlagen; Details oben'));
         continue;
       }
-      if (step.cache) markCached(step.name, key);
+      if (step.cache) markCached(step.name, gateKey);
     }
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));

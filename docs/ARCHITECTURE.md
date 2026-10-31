@@ -35,6 +35,16 @@
 
 Ein fehlgeschlagenes Autofix zählt als rotes Gate und beendet die Pipeline mit Nicht-Null-Exit.
 
+Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
+
+| Profil | npm-Skript | Inhalt |
+| --- | --- | --- |
+| `quick` | `verify:quick` | Autofix, LOC, Typecheck, Testvertrag, Dead-Export, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `full` | `verify:all` | Alle acht Stufen. Unverändert das Tor vor jedem Commit. |
+| `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
+
+Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslauf der Suite darf den Vollauslauf nie ersetzen. `npm audit` läuft lokal nur bei einer Änderung an `package.json` oder `package-lock.json`, in CI und im Release-Profil immer — es ist das einzige Gate, das ausserhalb des Repos rot werden kann.
+
 `npm run verify:all` führt in dieser Reihenfolge aus:
 
 1. `autofix:0911` (ESLint-Fix und Dependency-Matrix; ein unfixbarer Rest ist rot)
@@ -45,6 +55,16 @@ Ein fehlgeschlagenes Autofix zählt als rotes Gate und beendet die Pipeline mit 
 6. `npm audit --audit-level=low` (`ERR-4004`)
 7. Vitest mit indizierten Testfällen
 8. Production-Build (`ERR-1005`)
+
+### Gemessene Wandzeit (31.10.2026, 6 Kerne, Cache geleert)
+
+- `verify:all` vor dem Umbau: **48,1 s** — Autofix 14,2 s sequenziell, danach kritische Pfad `tests` 33,6 s. Typecheck (23,6 s), Build (27,5 s) und Audit (5,0 s) liegen darunter und kosten keine Wandzeit, nur CPU.
+- Die Suite misst 72,5 s CPU über 56 Dateien, davon 52,2 s in vier Nachweisdateien (`round-rtp-high` 30,6 s, `soak` 12,4 s, `round-rtp-machines` 7,6 s, `slot-session-rtp` 1,6 s); die übrigen 52 Dateien brauchen zusammen 20,3 s.
+- ESLint-Cache (`--cache --cache-strategy content`, Konfigurations- und Lockfile-Hash als Sperrvorhang): 14,2 s → 2,6 s warm, unfixbare Reste bleiben auch mit warmem Cache rot.
+- Typecheck inkrementell (`tsconfig.tsbuildinfo`, ignoriert): 11,3 s → 6,0 s.
+- Ergebnis: `verify:quick` **17,4 s** kalt und **1,2 s** bei unverändertem Baum, `verify:all` danach unter 30 s, solange der Baum unverändert ist.
+- Der Gate-Cache liegt in `.verify-cache/` ausserhalb von `node_modules`, damit `npm ci` ihn nicht zerstört; die Workflows holen ihn über `actions/cache` wieder.
+- Nicht umgesetzt: weniger Gate-Worker. Bei 6 Kernen laufen etwa 4,3 Kerne parallel; Typecheck verlangsamt sich unter Last von 11,3 s auf 23,6 s, bleibt aber unter der Test-Gate und damit unter der kritischen Pfad. Runterdrehen würde Wandzeit kosten, deshalb bleibt `RBD_VERIFY_WORKERS` der einzige Hebel.
 
 ## Dependency-Begründungen
 

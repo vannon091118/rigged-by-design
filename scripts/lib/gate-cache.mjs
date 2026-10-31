@@ -5,7 +5,9 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
 
-const CACHE_DIR = join(ROOT, 'node_modules', '.cache', 'rbd-verify');
+// AussERhalb von node_modules: npm ci zerstoert jedes Mal node_modules und damit
+// jeden Gate-Cache, bevor die Pipeline überhaupt laeuft.
+const CACHE_DIR = join(ROOT, '.verify-cache');
 // Windows verbietet ':' im Dateinamen; 'check:loc' wuerde sonst als ADS landen.
 const entry = (name) => join(CACHE_DIR, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.json`);
 

@@ -11,5 +11,7 @@ capacitor.config.json
 docs/Chats/
 .rtk/
 .turn-notes.md
+.verify-cache/
+tsconfig.tsbuildinfo
 .shot-data/
 .git/TURN_COMMIT_MSG

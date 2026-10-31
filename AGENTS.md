@@ -23,7 +23,9 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
-- `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build). Autofix läuft zuerst und allein; danach laufen die unabhängigen Gates parallel, grüne Gates werden per Inhalts-Hash aus `node_modules/.cache/rbd-verify` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster.
+- `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build). Autofix läuft zuerst und allein; danach laufen die unabhängigen Gates parallel, grüne Gates werden per Inhalts-Hash aus `.verify-cache/` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster.
+- `npm run verify:quick` — Entwicklungsfeedback, gemessen 17,4 s kalt und 1,2 s bei unverändertem Baum: Autofix (ESLint-Cache), LOC, Typecheck, Testvertrag, Dead-Export und die schnelle Hälfte der Suite. **Kein Build, kein Audit und keine RTP-, Balance- und Soak-Nachweise** — deshalb nie als Ersatz vor einem Commit.
+- `npm run verify:release` — Freigabelauf für APK und Versionssprung: identisch mit `verify:all`, erzwingt aber `npm audit` unabhängig von der Änderung; CI setzt zusätzlich `RBD_VERIFY_AUDIT=1`.
 - `npm run test:perf` — feste Messläufe (not in verify:all). `npm run bench:lowend` pins the run to one core; `npm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
 - `npm run build` — Vite production build.
@@ -31,7 +33,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Delivery
 
 - After a turn: `npm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft `verify:all`, committet und pusht `main`. Pfade nur für einen bewusst verengten Commit: `npm run turn:finish -- <paths>`.
-- Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit; der Abschluss prüft alles.
+- Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit; der Abschluss prüft alles. Ausgenommen ist `npm run verify:quick`, der keine Freigabe ist und nichts committet.
 - If branch protection rejects direct push, push the working branch and open a focused PR to `main`.
 
 ## Conventions

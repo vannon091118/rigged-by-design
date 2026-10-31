@@ -23,6 +23,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Gate-Cache wiederherstellen
+        uses: actions/cache@v4
+        with:
+          path: .verify-cache
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'eslint.config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-rbd-verify-
+
       - name: Node 22 mit npm-Cache
         uses: actions/setup-node@v4
         with:
@@ -48,7 +56,7 @@ jobs:
         run: npm ci
 
       - name: Fail-Closed-Gates
-        run: npm run verify:all
+        run: npm run verify:release
 
       - name: Capacitor sync + Gradle assembleDebug
         run: npm run android:apk

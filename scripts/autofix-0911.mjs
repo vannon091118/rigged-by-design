@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /** Automatische ERR-0911-Kandidaten: Lint-Fix, Dependency-Matrix, Commit-Sanitizing. */
 import { spawnSync } from 'node:child_process';
-import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { autofixLine, ROOT } from './lib/report.mjs';
 
@@ -30,10 +31,53 @@ function pruneScreenshots() {
 
 pruneScreenshots();
 
-const eslint = spawnSync(process.execPath, ['node_modules/eslint/bin/eslint.js', '.', '--fix'], {
-  cwd: ROOT,
-  encoding: 'utf8',
-});
+/**
+ * Lint-Cache: unveraenderte Dateien werden nicht erneut geparst. Der Cache liegt ausserhalb
+ * von node_modules, weil npm ci jedes Mal node_modules neu aufbaut, und wird verworfen, sobald
+ * sich ESLint-Config oder Lockfile geaendert haben -- dann gilt alles als unveraendert.
+ */
+const CACHE_DIR = resolve(ROOT, '.verify-cache');
+const SCOPE_FILES = ['eslint.config.js', 'eslint.config.mjs', 'package-lock.json'];
+function lintScope() {
+  const hash = createHash('sha256');
+  for (const file of SCOPE_FILES) {
+    hash.update(`${file}\0`);
+    try {
+      hash.update(readFileSync(resolve(ROOT, file)));
+    } catch {
+      hash.update('fehlt');
+    }
+    hash.update('\0');
+  }
+  return hash.digest('hex');
+}
+mkdirSync(CACHE_DIR, { recursive: true });
+const scopeFile = join(CACHE_DIR, 'eslint-scope.json');
+const scope = lintScope();
+if (existsSync(scopeFile) && readFileSync(scopeFile, 'utf8') !== scope) {
+  rmSync(join(CACHE_DIR, 'eslint'), { recursive: true, force: true });
+  rmSync(join(CACHE_DIR, 'eslint.json'), { force: true });
+  log('Lint-Cache verworfen: ESLint-Config oder Lockfile geaendert');
+}
+
+const eslint = spawnSync(
+  process.execPath,
+  [
+    'node_modules/eslint/bin/eslint.js',
+    '.',
+    '--fix',
+    '--cache',
+    '--cache-location',
+    join(CACHE_DIR, 'eslint'),
+    '--cache-strategy',
+    'content',
+  ],
+  {
+    cwd: ROOT,
+    encoding: 'utf8',
+  },
+);
+writeFileSync(scopeFile, scope);
 if (eslint.status === 0) log('ESLint --fix ohne Restfehler');
 else {
   log('ESLint --fix ausgefuehrt; unfixbare Reste sind ein rotes Gate');

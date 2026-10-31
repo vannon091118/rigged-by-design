@@ -25,6 +25,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Der Gate-Cache liegt ausserhalb von node_modules, weil npm ci node_modules neu
+      # aufbaut. Der aussere Key darf grob sein: innen entscheidet der Inhalts-Hash des
+      # Arbeitsbaums, ob ein Gate wirklich gruen war.
+      - name: Gate-Cache wiederherstellen
+        uses: actions/cache@v4
+        with:
+          path: .verify-cache
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'eslint.config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-rbd-verify-
+
       - name: Node 22 mit npm-Cache
         uses: actions/setup-node@v4
         with:
@@ -42,4 +53,6 @@ jobs:
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
       - name: Autofix + alle Fail-Closed-Gates
+        env:
+          RBD_VERIFY_AUDIT: '1'
         run: npm run verify:all
