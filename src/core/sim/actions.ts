@@ -11,6 +11,7 @@ import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
 import type { CarpetId, Furniture, GameId, ModId, Point, WorldState } from './types';
 import { furnitureById } from './world';
 import { grantXp } from './player-rpg';
+import { normalizeSlotProfile, slotChances } from '../games/slot-profile';
 
 const XP_CLEAN_TILE = 10;
 
@@ -96,6 +97,18 @@ export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro):
   const item = furnitureById(world, itemId);
   if (!item || bet < ZERO_VC) return;
   item.baseBet = bet;
+}
+
+/**
+ * Regel-Editor am Automaten: ab dem naechsten Spin gelten die eingestellten
+ * Gewichte, das Auszahlungsprofil und die Regeln – dieselbe Engine liest sie.
+ */
+export function applySlotOdds(world: WorldState, itemId: number, raw: unknown): string {
+  const item = furnitureById(world, itemId);
+  if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Spielregeln.');
+  item.slotOdds = normalizeSlotProfile(raw);
+  const chances = slotChances(item.reels, item.slotOdds);
+  return `Regeln gesetzt: ${(chances.rtpBps / 100).toFixed(2)} % Quote bei ${item.reels} Walzen.`;
 }
 
 /**

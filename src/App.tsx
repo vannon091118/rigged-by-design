@@ -268,6 +268,7 @@ export default function App() {
           onMod={(id) => worldStore.installMod(active.id, id)}
           onAddReel={() => worldStore.addReel(active.id)}
           onBet={(value) => worldStore.setBet(active.id, value)}
+          onSlotOdds={(profile) => worldStore.setSlotOdds(active.id, profile)}
           onTakeDrink={() => worldStore.takeDrink()}
           onDeployPlinko={(config) => worldStore.deployPlinko(config)}
           onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}

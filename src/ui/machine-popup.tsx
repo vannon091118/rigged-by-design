@@ -5,12 +5,14 @@ import type { GateResult } from '../core/games/plinko-sandbox';
 import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
 import { MODS, attractionValue, getMod } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
+import type { SlotProfile } from '../core/games/slot-profile';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand } from './glossary';
 import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
 import { SlotPopup } from './games/slot-popup';
+import { SlotRulesEditor } from './slot-rules-editor';
 import { SlotTelemetry } from './slot-telemetry';
 
 interface Props {
@@ -22,6 +24,7 @@ interface Props {
   readonly onMod: (id: ModId) => void;
   readonly onAddReel: () => void;
   readonly onBet: (vcValue: number) => void;
+  readonly onSlotOdds: (profile: SlotProfile) => void;
   readonly onTakeDrink: () => void;
   readonly onDeployPlinko: (config: PlinkoConfig) => GateResult;
   readonly onPlinkoMode: (mode: PlinkoMode) => void;
@@ -32,7 +35,7 @@ const GAME_LABEL: Record<string, string> = {
   PLINKO: 'Plinko', SHELL: 'Hütchenspiel', DICE: 'Würfel',
 };
 
-export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onTakeDrink, onDeployPlinko, onPlinkoMode }: Props) {
+export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onSlotOdds, onTakeDrink, onDeployPlinko, onPlinkoMode }: Props) {
   const [spinning, setSpinning] = useState(false);
   const [full, setFull] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);
@@ -58,6 +61,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             )}
           </div>
           {item.gameId === 'SLOT' && <SlotTelemetry memory={item.slotMemory} />}
+          {item.gameId === 'SLOT' && <SlotRulesEditor item={item} onApply={onSlotOdds} />}
           {item.gameId === 'PLINKO' && (
             <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
           )}

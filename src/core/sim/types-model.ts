@@ -1,6 +1,7 @@
 /** Welttypen ohne den Weltzustand selbst; types.ts bleibt der oeffentliche Barrel. */
 import type { VaCoinMicro } from '../economy/vacoin';
 import type { SlotMemory } from '../games/slot-transparency';
+import type { SlotProfile } from '../games/slot-profile';
 import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 
@@ -64,6 +65,8 @@ export interface Furniture {
   reels: number;
   baseBet: VaCoinMicro;
   slotMemory?: SlotMemory;
+  /** Gewichte, Auszahlungsprofil und Regeln des Geräts; fehlt = Standardprofil. */
+  slotOdds?: SlotProfile;
 }
 
 export interface Guest {

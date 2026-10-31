@@ -7,7 +7,8 @@ import { createShellRound, type ShellRound } from '../core/games/shell-round';
 import { deployGate, type GateResult } from '../core/games/plinko-sandbox';
 import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMode } from '../core/games/plinko-config';
 import { honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
-import { cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
+import { applySlotOdds, cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
+import type { SlotProfile } from '../core/games/slot-profile';
 import { payGuest } from '../core/sim/service-actions';
 import { openHouse } from '../core/sim/money';
 import { deployHeldCrate, movePlayer, pickupCrate, serveDesk, serveDrink, setNeonColor, setWallColor, storeHeldCrate, takeDrink, upgradeBar, upgradeWc } from '../core/sim/player';
@@ -212,6 +213,7 @@ class WorldStore {
   setBet(itemId: number, vc: number): void {
     this.#guard(() => { setBaseBet(this.#world, itemId, fromVC(vc)); this.#notice = 'Mindesteinsatz geändert.'; });
   }
+  setSlotOdds(itemId: number, profile: SlotProfile): void { this.#guard(() => { this.#notice = applySlotOdds(this.#world, itemId, profile); }); }
   /** Risiko-Karte nach einem fremden Gewinn: verdoppeln oder zurueckbuchen. */
   riskCard(rivalId: RivalId, color: RiskColor, stakeVC: number): RiskOutcome | null {
     const booking = riskRivalWin(this.#world, this.#ledger, rivalId, fromVC(stakeVC), color, this.#prng);

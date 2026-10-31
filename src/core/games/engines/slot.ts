@@ -1,9 +1,10 @@
 /** Book-of-VaCoin: drei bis fuenf Walzen, gewichtete Symbole, Freispiele. */
 import type { Prng } from '../../rng/prng';
 import {
-  clampedReels, drawSymbol, FREE_SPINS, lineWin, slotPaylines, SLOT_ROWS, type SlotSymbol,
+  clampedReels, drawSymbol, FREE_SPINS, lineWin, slotPaylines, SLOT_ROWS, type SlotSymbol, type SlotWeights,
 } from './slot-paytable';
 import { payScaleFor } from './slot-odds';
+import { DEFAULT_SLOT_PROFILE, normalizeSlotProfile, type SlotProfile } from '../slot-profile';
 
 export { SLOT_LINES, SLOT_SYMBOLS } from './slot-paytable';
 export { slotJackpotInterval } from './slot-odds';
@@ -33,14 +34,16 @@ interface SlotOptions {
   readonly forceWin?: boolean;
   /** Walzenanzahl des Geraets; ohne Angabe gelten fuenf. */
   readonly reels?: number;
+  /** Gewichte, Auszahlungsprofil und Regeln des Geraets. */
+  readonly profile?: SlotProfile;
 }
 
 /** Entladung nach Drucklader: 1,48x auf den Gesamteinsatz, unabhaengig von der Paytable. */
 const FORCED_WIN_BPS = 14_800;
 const MAX_FREE_ROUNDS = 40;
 
-function spinReels(prng: Prng, reels: number): SlotSymbol[][] {
-  return Array.from({ length: reels }, () => Array.from({ length: SLOT_ROWS }, () => drawSymbol(prng)));
+function spinReels(prng: Prng, reels: number, weights: SlotWeights): SlotSymbol[][] {
+  return Array.from({ length: reels }, () => Array.from({ length: SLOT_ROWS }, () => drawSymbol(prng, weights)));
 }
 
 function shiftReels(reels: SlotSymbol[][], offset: number): SlotSymbol[][] {
@@ -68,12 +71,13 @@ function evaluate(
   reels: readonly (readonly SlotSymbol[])[],
   lines: readonly (readonly number[])[],
   scale: number,
+  wild: boolean,
 ): { total: number; wins: SlotLineWin[] } {
   let total = 0;
   const wins: SlotLineWin[] = [];
   lines.forEach((line, index) => {
     const symbols = line.map((row, reel) => reels[reel]![row]!);
-    const hit = lineWin(symbols, scale);
+    const hit = lineWin(symbols, scale, wild);
     if (!hit) return;
     total += hit.bps;
     wins.push({ line: index, symbol: hit.symbol, count: hit.count, bps: hit.bps });
@@ -84,26 +88,28 @@ function evaluate(
 /**
  * Eine Runde inklusive Freispielen. `multiplierBps` bezieht sich auf den
  * Gesamteinsatz (alle Linien), nicht auf eine einzelne Linie. Walzenanzahl,
- * Linien und Skalierung kommen alle aus derselben Paytable, deshalb bleibt
- * die Quote ueber alle Geraetegroessen gleich.
+ * Linien und Skalierung kommen alle aus derselben Konfiguration, deshalb bleibt
+ * die Quote ueber alle Geraetegroessen gleich – bis der Betreiber sie veraendert.
  */
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
+  const profile = normalizeSlotProfile(options.profile ?? DEFAULT_SLOT_PROFILE);
   const reelCount = clampedReels(options.reels ?? 5);
   const lines = slotPaylines(reelCount);
-  const scale = payScaleFor(reelCount);
-  const reels = shiftReels(spinReels(prng, reelCount), options.offset ?? 0);
+  const scale = payScaleFor(reelCount, profile.weights, profile.payScaleBps);
+  const wild = profile.rules.wildBooks;
+  const reels = shiftReels(spinReels(prng, reelCount, profile.weights), options.offset ?? 0);
   const forcedLine = options.forceWin ? forceNonLdw(reels) : -1;
-  const { total: lineBps, wins } = evaluate(reels, lines, scale);
+  const { total: lineBps, wins } = evaluate(reels, lines, scale, wild);
 
   const books = countBooks(reels);
-  let freeSpins = books >= 3 ? FREE_SPINS : 0;
+  let freeSpins = profile.rules.freeSpins && books >= 3 ? FREE_SPINS : 0;
   let rounds = 0;
   let freeBps = 0;
   while (freeSpins > 0 && rounds < MAX_FREE_ROUNDS) {
     freeSpins -= 1;
     rounds += 1;
-    const extra = spinReels(prng, reelCount);
-    freeBps += evaluate(extra, lines, scale).total;
+    const extra = spinReels(prng, reelCount, profile.weights);
+    freeBps += evaluate(extra, lines, scale, wild).total;
     if (countBooks(extra) >= 3) freeSpins += FREE_SPINS;
   }
   // Je Linie gewonnen, aber auf den Gesamteinsatz normiert.
@@ -120,7 +126,7 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
     label: label.replace('.', ','),
     detail: [center.join(' | ')],
     symbols: center,
-    jackpot: books >= 3,
+    jackpot: profile.rules.freeSpins && books >= 3,
     grid: reels,
     wins,
     books,
