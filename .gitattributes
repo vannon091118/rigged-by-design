@@ -1,0 +1,9 @@
+# Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git
+# beim Checkout sonst CRLF, der Arbeitsbaum gilt danach als geaendert und der
+# Inhalts-Hash des Gate-Caches passt nicht mehr. Nur generierte Dateien regeln,
+# keine globale Renormalisierung.
+docs/ARCHITECTURE.md text eol=lf
+
+# Binaerdateien nie umkodieren.
+*.png binary
+*.apk binary
