@@ -29,8 +29,10 @@ function sleeper(): { child: ChildProcess; pid: number } {
   return { child, pid };
 }
 
+// Unter paralleler Last braucht taskkill/PowerShell mehr als zwei Sekunden;
+// die Assertion bleibt, nur das Warten wird grosszuegiger.
 async function isDead(pid: number): Promise<boolean> {
-  for (let attempt = 0; attempt < 80; attempt += 1) {
+  for (let attempt = 0; attempt < 240; attempt += 1) {
     if (!isAlive(pid)) return true;
     await wait(25);
   }

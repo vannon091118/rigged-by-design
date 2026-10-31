@@ -1,6 +1,14 @@
-/** Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. */
+/**
+ * Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache.
+ *
+ * Die Konsole traegt das Ergebnis, nicht die Bleiwueste: jedes Gate schreibt sein
+ * vollstaendiges Log in den Berichtsordner, ausgegeben wird im Erfolgsfall eine
+ * Zeile und im Fehlerfall dessen Ende. `RBD_VERIFY_VERBOSE=1` gibt alles aus.
+ */
 import { spawn } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { availableParallelism } from 'node:os';
+import { join, relative } from 'node:path';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
 import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
@@ -8,6 +16,43 @@ import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './pro
 const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
 const running = new Set();
 const DEFAULT_GATE_TIMEOUT_MS = 15 * 60_000;
+const FAILURE_TAIL_LINES = 40;
+const VERBOSE = process.env.RBD_VERIFY_VERBOSE === '1';
+
+let reportDir;
+/**
+ * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
+ * Arbeitsbaum: Verify bleibt lesend, und das Gitignor hält ihn aus jedem Hash.
+ */
+function reports() {
+  if (reportDir !== undefined) return reportDir;
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'reports', stamp);
+  try {
+    mkdirSync(dir, { recursive: true });
+    reportDir = dir;
+  } catch {
+    reportDir = null;
+  }
+  return reportDir;
+}
+
+function saveLog(name, body) {
+  const dir = reports();
+  if (!dir) return null;
+  const file = join(dir, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.log`);
+  try {
+    writeFileSync(file, body);
+    return relative(ROOT, file).replaceAll('\\', '/');
+  } catch {
+    return null;
+  }
+}
+
+function tail(text, lines = FAILURE_TAIL_LINES) {
+  const all = text.trimEnd().split(/\r?\n/);
+  return all.length <= lines ? all.join('\n') : [...all.slice(0, 2), `… (${all.length - lines} Zeilen ausgelassen)`, ...all.slice(-lines)].join('\n');
+}
 
 /** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
 export function executeStep(step) {
@@ -93,11 +138,34 @@ process.on('exit', () => {
   for (const pid of running) killTree(pid);
 });
 
+/** Zusammenfassung als Markdown: eine Zeile je Gate, mit Pfad zum vollen Log. */
+function summarize(rows, failed) {
+  const dir = reports();
+  if (!dir || rows.length === 0) return;
+  const lines = [
+    '# Gate-Bericht',
+    '',
+    `Erstellt: ${new Date().toISOString()}`,
+    `Ergebnis: ${failed.length === 0 ? 'PASS' : `FAIL (${failed.join(', ')})`}`,
+    '',
+    '| Gate | Ergebnis | Dauer | Log |',
+    '| --- | --- | --- | --- |',
+    ...rows.map((row) => `| ${row.name} | ${row.status} | ${row.seconds}s | ${row.logPath ? `\`${row.logPath}\`` : '—'} |`),
+  ];
+  try {
+    writeFileSync(join(dir, 'summary.md'), `${lines.join('\n')}\n`);
+    console.log(`Gate-Bericht: ${relative(ROOT, dir).replaceAll('\\', '/')}/summary.md`);
+  } catch {
+    // Der Bericht ist Komfort; das Gate-Ergebnis haengt nicht daran.
+  }
+}
+
 /** Jede rote Gate bleibt rot; gruene Gates werden nur bei identischem Hash uebersprungen. */
 export async function runGates(steps) {
   const queue = [...steps];
   const key = treeKey();
   const failed = [];
+  const rows = [];
   let index = 0;
   const worker = async () => {
     for (let step = queue.shift(); step; step = queue.shift()) {
@@ -110,15 +178,23 @@ export async function runGates(steps) {
         continue;
       }
       const result = await executeStep(step);
-      if (result.output.trim()) {
-        const tail = result.output.endsWith('\n') ? '' : '\n';
-        process.stdout.write(`=== Gate: ${step.name} (${(result.ms / 1000).toFixed(1)}s) ===\n${result.output}${tail}`);
+      const seconds = (result.ms / 1000).toFixed(1);
+      const status = result.timedOut ? 'TIMEOUT' : result.status === 0 ? 'PASS' : 'FAIL';
+      const logPath = saveLog(
+        step.name,
+        `# ${step.name} ${status} (${seconds}s)\n# ${step.command} ${[step.script, ...(step.args ?? [])].join(' ')}\n\n${result.output}`,
+      );
+      rows.push({ name: step.name, status, seconds, logPath });
+      if (VERBOSE && result.output.trim()) {
+        const newline = result.output.endsWith('\n') ? '' : '\n';
+        process.stdout.write(`=== Gate: ${step.name} (${seconds}s) ===\n${result.output}${newline}`);
       }
       if (result.timedOut) {
         dropCached(step.name);
         failed.push(step.name);
         index += 1;
         const limit = result.timeoutMs >= 1000 ? `${(result.timeoutMs / 1000).toFixed(0)}s` : `${result.timeoutMs}ms`;
+        if (result.output.trim()) process.stderr.write(`${tail(result.output)}\n`);
         console.error(line(index, 'ERR-4014', `pipeline/${step.name}`, `Gate nach ${limit} hart beendet`));
         continue;
       }
@@ -126,12 +202,16 @@ export async function runGates(steps) {
         dropCached(step.name);
         failed.push(step.name);
         index += 1;
-        console.error(line(index, step.code, `pipeline/${step.name}`, 'Gate fehlgeschlagen; Details oben'));
+        if (result.output.trim()) process.stderr.write(`${tail(result.output)}\n`);
+        const where = logPath ? `; vollstaendiges Log: ${logPath}` : '';
+        console.error(line(index, step.code, `pipeline/${step.name}`, `Gate fehlgeschlagen${where}`));
         continue;
       }
+      console.log(`[gate] ${step.name}: PASS (${seconds}s)${logPath ? ` -> ${logPath}` : ''}`);
       if (step.cache) markCached(step.name, gateKey);
     }
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
+  summarize(rows, failed);
   return failed;
 }

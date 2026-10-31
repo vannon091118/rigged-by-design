@@ -6,28 +6,35 @@
  * wird der Prozessbaum beendet und der Lauf meldet 124 statt weiterzuwarten.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { executeStep, runGates } from '../../../../scripts/lib/gate-runner.mjs';
 import { releaseOwner } from '../../../../scripts/lib/process-sweep.mjs';
 
 const stateDir = mkdtempSync(join(tmpdir(), 'rbd-gate-timeout-'));
+const reportsDir = join(stateDir, 'reports');
 let holdPath = '';
 let quickPath = '';
+let failPath = '';
 
 beforeAll(() => {
   process.env.RBD_VERIFY_STATE = stateDir;
+  // Der Berichtsordner muss vor dem ersten runGates feststehen: er wird gemerkt.
+  process.env.RBD_VERIFY_REPORTS = reportsDir;
   holdPath = join(stateDir, 'hold.mjs');
   quickPath = join(stateDir, 'quick.mjs');
+  failPath = join(stateDir, 'fail.mjs');
   writeFileSync(holdPath, 'setTimeout(() => {}, 5000);\n');
   writeFileSync(quickPath, 'process.exit(0);\n');
+  writeFileSync(failPath, "console.error('boom'); process.exit(3);\n");
 });
 
 afterAll(() => {
   releaseOwner();
   rmSync(stateDir, { recursive: true, force: true });
   delete process.env.RBD_VERIFY_STATE;
+  delete process.env.RBD_VERIFY_REPORTS;
 });
 
 describe('Harte Gate-Timeouts', () => {
@@ -62,5 +69,18 @@ describe('Harte Gate-Timeouts', () => {
       timeoutMs: 100,
     }]);
     expect(failed).toContain('timeout-probe');
+  });
+
+  it('legt vollstaendige Logs und eine Zusammenfassung als Artefakt ab', async () => {
+    const failed = await runGates([{ name: 'artifact-probe', command: 'node', script: failPath, timeoutMs: 10_000 }]);
+    expect(failed).toContain('artifact-probe');
+
+    const log = readFileSync(join(reportsDir, 'artifact-probe.log'), 'utf8');
+    expect(log).toContain('FAIL');
+    expect(log).toContain('boom');
+
+    const summary = readFileSync(join(reportsDir, 'summary.md'), 'utf8');
+    expect(summary).toContain('artifact-probe');
+    expect(summary).toContain('FAIL (artifact-probe)');
   });
 });

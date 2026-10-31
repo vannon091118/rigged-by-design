@@ -78,6 +78,14 @@ if (deps.status !== 0) {
   process.exitCode = 1;
 }
 
+// Der Testkatalog ist ebenfalls abgeleitet: Fix schreibt ihn, Verify prueft ihn.
+const catalog = spawnSync(process.execPath, ['scripts/test-catalog.mjs'], { cwd: ROOT, encoding: 'utf8' });
+process.stdout.write(catalog.stdout ?? '');
+if (catalog.status !== 0) {
+  process.stderr.write(catalog.stderr ?? '');
+  process.exitCode = 1;
+}
+
 const messageFile = resolve(ROOT, '.git', 'COMMIT_EDITMSG');
 if (existsSync(messageFile)) {
   const sanitize = spawnSync(process.execPath, ['scripts/sanitize-commit.mjs', messageFile], { cwd: ROOT, encoding: 'utf8' });

@@ -48,7 +48,9 @@ interface WorkflowTrigger {
     readonly types?: readonly string[];
     readonly branches?: readonly string[];
   };
-  readonly workflow_dispatch?: unknown;
+  readonly workflow_dispatch?: {
+    readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
+  };
   readonly workflow_call?: {
     readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
   };
@@ -114,6 +116,22 @@ describe('Main-Gate', () => {
 
   it('startet den Verify-Workflow auch von Hand', () => {
     expect(workflow('ci-verify.yml').on?.workflow_dispatch).not.toBeUndefined();
+  });
+
+  it('delegiert die langen Nachweise an einen eigenen Workflow', () => {
+    const long = workflow('long-checks.yml');
+    expect(long.on?.workflow_dispatch?.inputs?.verify?.type).toBe('boolean');
+    expect(long.on?.workflow_dispatch?.inputs?.soak_ticks?.default).toBe('100000');
+    expect(long.on?.workflow_dispatch?.inputs?.balance_days?.default).toBe('40');
+    expect(long.permissions?.contents).toBe('read');
+    expect(stepWith(long, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
+
+    const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
+    expect(statistics?.run).toContain('poker-distribution.test.ts');
+    expect(statistics?.run).toContain('slot-session-rtp.test.ts');
+    expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe('${{ inputs.soak_ticks }}');
+    expect(stepWith(long, 'balance', 'balance-run.mjs')?.run).toContain('--days=${{ inputs.balance_days }}');
+    expect(stepWith(long, 'bench', 'npm run test:perf')?.run).toBe('npm run test:perf');
   });
 
   it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {

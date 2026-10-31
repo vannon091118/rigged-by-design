@@ -8,7 +8,11 @@ import { ROOT } from './report.mjs';
 // deshalb erst beim Zugriff aufgeloest, nicht beim Import.
 const stateDir = () => process.env.RBD_VERIFY_STATE ?? join(ROOT, 'node_modules', '.cache', 'rbd-verify');
 const stateFile = () => join(stateDir(), 'running.json');
-const IDENTITY_TIMEOUT_MS = 3_000;
+// Die Startzeit kommt unter Windows aus PowerShell. Unter paralleler Volllast
+// braucht ein PowerShell-Start gut eine Sekunde, auf einem belegten Rechner
+// auch mehr; ein zu knappes Limit macht die Identitaet unbekannt und damit
+// einen sonst eindeutigen Waisen nicht beendbar.
+const IDENTITY_TIMEOUT_MS = 15_000;
 
 let state = null;
 let passive = false;
