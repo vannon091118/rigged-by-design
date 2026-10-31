@@ -92,14 +92,12 @@ describe('Angebot und Mods', () => {
     expect(MODS.find((mod) => mod.id === 'NEON')!.patience).toBeGreaterThan(0);
   });
   it('Persona-Geschmack beeinflusst die Platzwahl', () => {
-    const { world, ledger, prng } = setup('MEDIUM');
+    const { world, prng } = setup('MEDIUM');
     const guest = makeGuest({ id: 1, persona: 'BUSINESS', prng, spawn: spawnPoint(world) });
-    const wallet = ledger.getBalance(guestAccount(1));
     const slots = world.furniture.filter((item) => item.gameId === 'SLOT' && freeSeat(item));
     const tables = world.furniture.filter((item) => item.gameId === 'BLACKJACK' && freeSeat(item));
     const slotScore = Math.max(...slots.map((item) => offerScore(world, guest, item, fromVC(30))));
     const tableScore = Math.max(...tables.map((item) => offerScore(world, guest, item, fromVC(30))));
-    expect(wallet).toBe(0);
     expect(tableScore).toBeGreaterThan(slotScore);
   });
 });

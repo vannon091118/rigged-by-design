@@ -46,7 +46,8 @@ function place(world: WorldState, id: BuildId, zoneId: string): void {
 }
 
 describe('Screenshot-Saat', () => {
-  it('schreibt eine eingerichtete Etage', () => {
+  // Werkzeug, kein Testfall: schreibt Dateien und laeuft nur auf Anforderung (RBD_SHOT=1).
+  it.skipIf(!process.env.RBD_SHOT)('schreibt eine eingerichtete Etage', () => {
     const world = createWorld('LARGE', 'VIOLET');
     const ledger = new Ledger();
     openHouse(ledger, 0);

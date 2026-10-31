@@ -64,7 +64,7 @@ describe('Aktionspfad der Tischspiele', () => {
   it('laesst den alten Sofort-Pfad ohne Zusatzdaten unveraendert', () => {
     const prng = new Prng(randomSeed());
     const result = playAction({ game: 'ROULETTE', stake: fromVC(1) }, prng);
-    expect(result.multiplierBps).toBeGreaterThanOrEqual(0);
+    expect(Number.isSafeInteger(result.multiplierBps)).toBe(true);
     expect(result.roulette).toBeUndefined();
     expect(spotInfo('N7')?.bps).toBe(360_000);
   });

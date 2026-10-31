@@ -83,7 +83,9 @@ describe('Bedürfnisse', () => {
     tickWorld(world, ledger, prng);
     expect(guest.bladder).toBeLessThan(100);
     expect(guest.mood).toBeLessThan(mood);
-    expect(world.dirty.size + world.guests.length).toBeGreaterThan(0);
+    // needs.ts legt bei voller Blase eine echte Dreckspur an (Blase zurueck auf 35, Laune -8).
+    expect(world.dirty.size).toBeGreaterThan(0);
+    expect(guest.bladder).toBe(35);
   });
 });
 

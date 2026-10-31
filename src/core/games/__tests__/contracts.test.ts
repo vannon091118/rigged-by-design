@@ -50,9 +50,9 @@ describe('Spiel-Vertrag', () => {
         const bonus = playAction({ game, stake: STAKE, bonusBps: 120 }, new Prng(seed));
         const edge = playAction({ game, stake: STAKE, houseEdgeBps: 250 }, new Prng(seed));
         expect(bonus.multiplierBps - plain.multiplierBps).toBeGreaterThanOrEqual(0);
-        expect(bonus.multiplierBps - plain.multiplierBps <= 120).toBe(true);
+        expect(bonus.multiplierBps - plain.multiplierBps).toBeLessThanOrEqual(120);
         expect(plain.multiplierBps - edge.multiplierBps).toBeGreaterThanOrEqual(0);
-        expect(plain.multiplierBps - edge.multiplierBps <= 250).toBe(true);
+        expect(plain.multiplierBps - edge.multiplierBps).toBeLessThanOrEqual(250);
         for (const result of [plain, bonus, edge]) {
           expect(result.payout).toBe(mulVC(result.stake, result.multiplierBps));
         }

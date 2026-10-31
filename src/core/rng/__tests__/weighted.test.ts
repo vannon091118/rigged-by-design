@@ -60,7 +60,8 @@ describe('gewichtetes Ziehen', () => {
   it('begrenzt den Bias: kein Wert wird zur sicheren Bank', () => {
     const dist = buildDistribution(0, 1, { targets: [0], strengthBps: MAX_BIAS_BPS });
     expect(dist.chances[0]).toBeLessThan(1);
-    expect(dist.chances[0]).toBeLessThanOrEqual(10.99 / 11.99);
+    // Bei 0..1 mit Ziel 0: Gewicht 1+bonus gegen 1, also exakt 10/11 bei MAX_BIAS_BPS.
+    expect(dist.chances[0]).toBeCloseTo((1 + MAX_BIAS_BPS / 1000) / (2 + MAX_BIAS_BPS / 1000), 12);
     expect(() => buildDistribution(0, 9, { targets: [3], strengthBps: MAX_BIAS_BPS + 1 })).toThrow();
     expect(() => buildDistribution(0, 9, { targets: [42], strengthBps: 100 })).toThrow();
     expect(() => buildDistribution(0, 9, { deadzones: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], strengthBps: 100 })).toThrow();
@@ -89,8 +90,9 @@ describe('gewichtete Auswahl', () => {
     const seen = new Set<string>();
     for (let index = 0; index < 200; index += 1) seen.add(pickWeighted(prng, entries)!);
     expect([...seen].sort()).toEqual(['links', 'rechts']);
-    const rejected = pickWeighted(new Prng(randomSeed()), entries, (item) => item === 'rechts');
-    expect(rejected).toBe('rechts');
+    // accept ist ein Filter: was nicht akzeptiert wird, wird uebersprungen.
+    const onlyRight = pickWeighted(new Prng(randomSeed()), entries, (item) => item !== 'links');
+    expect(onlyRight).toBe('rechts');
     expect(pickWeighted(prng, entries, () => false)).toBeNull();
     expect(pickWeighted(prng, [{ item: 'x', weight: 0 }])).toBeNull();
   });

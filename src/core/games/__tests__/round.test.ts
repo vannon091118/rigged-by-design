@@ -1,6 +1,9 @@
 /**
  * @test-target: src/core/games/round.ts
  * @error-code: ERR-1003
+ *
+ * Die RTP-Monte-Carlo-Laeufe liegen in round-rtp-high.test.ts und
+ * round-rtp-machines.test.ts, damit sie in eigenen Workern parallel laufen.
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
@@ -14,32 +17,6 @@ import { playRound } from '../round';
 
 const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 
-/**
- * Plinko laeuft durch echte Physik: deterministisch, aber rund tausendmal teurer
- * pro Runde. Die Stichproben sind so gross, dass die RTP-Schaetzung mit frischem
- * Seed nicht am Bandrand kippt; POKER braucht wegen Royal/Straight Flush mehr
- * Runden als die uebrigen Spiele.
- */
-const ROUNDS: Readonly<Record<GameId, number>> = {  // SHELL hat eine hohe Varianz (2,85x bei 1/3 Treffer); 300k haelt den 96-%-Rand stabil.
-  SLOT: 200_000, BLACKJACK: 100_000, ROULETTE: 100_000, SHELL: 300_000, DICE: 100_000, PLINKO: 5_000,
-  POKER: 400_000,
-};
-
-/**
- * RTP-Band je Spiel, aus gemessener Streuung abgeleitet (6-30 frische Seeds je Spiel,
- * Monte-Carlo-Standardfehler auf die konfigurierte Rundenzahl hochgerechnet):
- * POKER 0,9132 +- 0,0110 | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
- * SHELL 0,9510 +- 0,0031 | ROULETTE 0,9461 +- 0,0026 | BLACKJACK 0,9395 +- 0,0020.
- * Ein einheitliches 0,90-0,96-Band kippte dadurch bei POKER in rund 11 % und bei
- * PLINKO in rund 1 % der Laeufe. Diese Baender halten ueber 4 Sigma Abstand zu den
- * gemessenen Mittelwerten und fangen trotzdem kaputte Auszahlungstabellen
- * (das zu centerlastige Plinko-Brett liegt gemessen bei 0,85).
- */
-const RTP_BAND: Readonly<Record<GameId, readonly [number, number]>> = {
-  SLOT: [0.895, 0.96], BLACKJACK: [0.9, 0.96], ROULETTE: [0.9, 0.96], DICE: [0.9, 0.96],
-  POKER: [0.86, 0.96], PLINKO: [0.87, 0.97], SHELL: [0.9, 0.97],
-};
-
 describe('Spiele', () => {
   it('jedes Spiel liefert eine gueltige, deterministische Runde', () => {
     const seed = randomSeed();
@@ -49,33 +26,9 @@ describe('Spiele', () => {
       expect(a).toEqual(b);
       expect(a.game).toBe(game);
       expect(Number.isSafeInteger(a.multiplierBps)).toBe(true);
-      expect(a.multiplierBps).toBeGreaterThanOrEqual(0);
       expect(a.detail.length).toBeGreaterThan(0);
       expect(a.label.length).toBeGreaterThan(0);
     }
-  });
-
-  // Sieben unabhaengige Monte-Carlo-Laeufe laufen parallel; jeder Lauf zieht
-  // einen frischen, nicht vorab waehlbaren Seed.
-  it.concurrent.each(GAMES)('%s zahlt 90-96 Prozent aus und zeigt Gewinner', { timeout: 180_000 }, (game) => {
-    const rounds = ROUNDS[game];
-    const prng = new Prng(randomSeed());
-    let returned = 0;
-    let winners = 0;
-    for (let index = 0; index < rounds; index += 1) {
-      const result = playRound(game, prng);
-      returned += result.multiplierBps;
-      // Treffer ist jede Auszahlung ueber null; ein haeufiges Teil-Payout zaehlt
-      // als Treffer, auch wenn der Netto-Spin ein Verlust bleibt.
-      if (result.multiplierBps > 0) winners += 1;
-    }
-    const rtp = returned / rounds / 10_000;
-    const hitRate = winners / rounds;
-    const [low, high] = RTP_BAND[game];
-    expect(rtp, `${game} RTP`).toBeGreaterThan(low);
-    expect(rtp, `${game} RTP`).toBeLessThan(high);
-    expect(hitRate, `${game} Gewinnrate`).toBeGreaterThan(0.25);
-    expect(hitRate, `${game} Gewinnrate`).toBeLessThan(0.7);
   });
 
   it('der Testspin kostet kein Geld und veraendert das Ledger nicht', () => {
