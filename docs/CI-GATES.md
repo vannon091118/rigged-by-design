@@ -34,9 +34,16 @@ Pflichtstatus und der Commit kommt nicht durch den Merge.
 
 ## Ebene B: Ruleset fuer `main`
 
-Stand 31.10.2026 im Repository **nicht aktiv**: die GitHub-API meldet fuer
-`main` keine Branch-Protection und keine Rulesets. Bis das Ruleset aktiv ist,
-kann ein Direktpush auf `main` die Pflichtpruefung umgehen.
+Stand 31.10.2026 im Repository **aktiv**: `main` verlangt einen Pull Request
+und den Pflichtstatus **`Fail-Closed Gates`**, verbietet Force-Pushes und das
+Loeschen des Branches. Ein Direktpush endet deshalb mit `GH006`; dann den
+Arbeitsbranch pushen und einen fokussierten PR mergen.
+
+Der Merge-Commit wird von `verify-commit-msg --head` geprueft. Titel und Body
+muessen die exakten Ueberschriften `### Changes (Was ist neu)`,
+`### Technische Basis & Kausalität` und `### Ausblick (Nächste Schritte)`
+enthalten; ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot. Der
+PR-Body erfuellt diese Form, wenn er unveraendert als Merge-Text verwendet wird.
 
 Einmalig in GitHub setzen (Settings → Rules → New branch ruleset) oder per API:
 
