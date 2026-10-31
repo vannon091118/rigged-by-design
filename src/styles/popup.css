@@ -470,3 +470,12 @@
 .table-actions .btn { font-size: 10px; letter-spacing: 0.06em; }
 .hold-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
 .hold-row .chip { font-size: 9px; padding: 5px 2px; }
+
+.journal-search { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+.journal-search input { flex: 1; min-width: 0; }
+.sound-row { display: grid; grid-template-columns: 96px 1fr 56px; gap: 10px; align-items: center; margin: 8px 0; }
+.sound-row input[type='range'] { width: 100%; }
+.sound-actions { display: flex; gap: 8px; margin-top: 12px; }
+.journal-search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.journal-search-field span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.journal-search-field input { flex: 1; min-width: 0; }

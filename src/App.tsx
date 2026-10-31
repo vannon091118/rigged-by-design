@@ -14,8 +14,9 @@ import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';
 import { JournalPopup } from './ui/journal-popup';
 import { LookPopup } from './ui/look-popup';
+import { SoundPopup } from './ui/sound-popup';
 import { MachinePopup } from './ui/machine-popup';
-import { isMuted, playSfx, setMuted } from './render/sound-fx';
+import { isMuted, playSfx } from './render/sound-fx';
 
 type Popup =
   | { kind: 'guests'; guestId: number | null }
@@ -24,6 +25,7 @@ type Popup =
   | { kind: 'journal' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
+  | { kind: 'sound' }
   | { kind: 'help' }
   | null;
 
@@ -137,7 +139,7 @@ export default function App() {
         onLook={() => { setBuildOpen(false); setPopup({ kind: 'look' }); }}
         onSkill={(attribute) => worldStore.spendSkill(attribute)}
         muted={muted}
-        onToggleSound={() => { const next = !muted; setMuted(next); setMutedState(next); }}
+        onToggleSound={() => { setBuildOpen(false); setPopup({ kind: 'sound' }); }}
         onHelp={() => { setBuildOpen(false); setPopup({ kind: 'help' }); }}
       />
 
@@ -246,6 +248,10 @@ export default function App() {
 
       {popup?.kind === 'look' && (
         <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
+      )}
+
+      {popup?.kind === 'sound' && (
+        <SoundPopup onClose={() => { setPopup(null); setMutedState(isMuted()); }} />
       )}
 
       {popup?.kind === 'help' && (

@@ -33,13 +33,20 @@ interface JournalDraft {
   readonly refs?: JournalRefs;
 }
 
-/** Der Puffer bleibt klein, damit ein langer Save nicht mit dem Ledger waechst. */
+/** Der Puffer bleibt klein, damit die Anzeige nicht mit dem Ledger waechst. */
 const JOURNAL_LIMIT = 240;
+/**
+ * Das Archiv ist der dauerhafte Teil: es faengt jedes Ereignis auf, ueberlebt den Puffer
+ * und steht im Save. Die Grenze ist nur eine Speichergrenze, keine Sichtbarkeitsgrenze.
+ */
+const ARCHIVE_LIMIT = 2000;
 
 interface JournalHost {
   tick: number;
   day: number;
   journal: JournalEvent[];
+  /** Dauerhaftes Archiv; aeltere Staende kennen das Feld nicht und bekommen es beim Laden. */
+  archive: JournalEvent[];
   nextJournalId: number;
   lastEvent: string;
 }
@@ -55,6 +62,10 @@ export function recordJournal(world: JournalHost, draft: JournalDraft): JournalE
   world.journal.push(event);
   if (world.journal.length > JOURNAL_LIMIT) {
     world.journal.splice(0, world.journal.length - JOURNAL_LIMIT);
+  }
+  world.archive.push(event);
+  if (world.archive.length > ARCHIVE_LIMIT) {
+    world.archive.splice(0, world.archive.length - ARCHIVE_LIMIT);
   }
   if (draft.kind !== 'MONEY') world.lastEvent = draft.effect;
   return event;
@@ -95,6 +106,35 @@ export function journalEntries(
 ): readonly JournalEvent[] {
   const filtered = kind === 'ALL' ? events : events.filter((event) => event.kind === kind);
   return filtered.slice(-limit);
+}
+
+interface ArchiveFilter {
+  readonly kind?: JournalKind | 'ALL';
+  readonly day?: number;
+  readonly guestId?: number;
+  readonly text?: string;
+  readonly minAmount?: number;
+}
+
+/**
+ * Archiv-Abfrage fuer die UI: filtert nach Art, Tag, Gast, Betrag und Freitext und
+ * liefert das Neueste zuerst. Reihenfolge und Auswahl sind reine Funktionen des Archivs.
+ */
+export function archiveQuery(
+  events: readonly JournalEvent[],
+  filter: ArchiveFilter = {},
+  limit = 120,
+): readonly JournalEvent[] {
+  const needle = filter.text?.trim().toLowerCase() ?? '';
+  const matched = events.filter((event) => {
+    if (filter.kind && filter.kind !== 'ALL' && event.kind !== filter.kind) return false;
+    if (filter.day !== undefined && event.day !== filter.day) return false;
+    if (filter.guestId !== undefined && event.refs?.guestId !== filter.guestId) return false;
+    if (filter.minAmount !== undefined && Math.abs(event.amount ?? 0) < filter.minAmount) return false;
+    if (!needle) return true;
+    return `${event.subject} ${event.cause} ${event.effect}`.toLowerCase().includes(needle);
+  });
+  return matched.slice(-limit).reverse();
 }
 
 /** Zaehlt die Events je Art fuer die Diagnose. */

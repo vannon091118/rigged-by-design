@@ -6,8 +6,10 @@
  * Aufenthalt, Runden, Auslastung, Abbrueche, Rueckkehr, Laune/Ruf und die echten
  * Ledger-Kosten pro Spieltag. Standard: 40 Tage vom frischen Casino bis KONZERN.
  */
+import { writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { runBalance, type DayRow } from './balance-harness';
+import { balanceReport, balanceViolations } from './balance-report';
 
 const DAYS = Number(process.env.RBD_DAYS ?? 40);
 const SEED = Number(process.env.RBD_SEED ?? 12345);
@@ -35,6 +37,14 @@ describe('Betriebs-Messlauf', () => {
   it.skipIf(!process.env.RBD_BALANCE)('misst den Betrieb vom frischen Casino bis KONZERN', { timeout: 900_000 }, () => {
     const { rows } = runBalance(DAYS, SEED);
     expect(rows).toHaveLength(DAYS);
+    // Der Bericht entsteht zuerst: auch ein roter Lauf muss nachvollziehbar bleiben.
+    const report = process.env.RBD_BALANCE_OUT;
+    if (report) {
+      writeFileSync(report, balanceReport(rows, SEED));
+      console.log(`balance: Bericht geschrieben nach ${report}`);
+    }
+    const violations = balanceViolations(rows, DAYS);
+    expect(violations, violations.map((entry) => `Tag ${entry.day} ${entry.field}: ${entry.detail}`).join('\n')).toHaveLength(0);
     console.log(`seed=${SEED}\n${HEADER}`);
     for (const row of rows) console.log(line(row));
     console.log('phasen: stufe tage gaeste/min aktiv maxWartende wKasse wGeraet runden abbWarte chipsLeer netto/tag miete/tag loehne/tag');

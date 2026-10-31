@@ -100,7 +100,7 @@ export function Hud({
         <button type="button" className="btn ghost" onClick={onDiagnostics} title="Buchhaltung, Personal und Lager prüfen">PRÜFUNG</button>
         <button type="button" className="btn ghost" onClick={onLook} title="Aussehen deiner Spielfigur ändern">CHARAKTER</button>
         {onToggleSound && (
-          <button type="button" className="btn ghost" aria-pressed={muted} onClick={onToggleSound} title={muted ? 'Effekte wieder einschalten' : 'Alle Spieleffekte stummschalten'}>
+          <button type="button" className="btn ghost" aria-pressed={muted} onClick={onToggleSound} title={muted ? 'Sound ist stumm · Lautstärke und Kanäle öffnen' : 'Lautstärke und Kanäle einstellen'}>
             {muted ? 'STUMM' : 'SOUND'}
           </button>
         )}

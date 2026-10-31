@@ -1,6 +1,6 @@
-/** Ereignisprotokoll: was passiert ist, warum, und was daraus folgt. */
+/** Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. */
 import { useState } from 'react';
-import { journalEntries, type JournalKind } from '../core/sim/journal';
+import { archiveQuery, type JournalEvent, type JournalKind } from '../core/sim/journal';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { PopupShell } from './popup-shell';
@@ -27,12 +27,36 @@ const KIND_LABEL: Record<JournalKind, string> = {
 
 export function JournalPopup({ view, onClose, onGuest }: Props) {
   const [kind, setKind] = useState<JournalKind | 'ALL'>('ALL');
-  const events = [...journalEntries(view.journal, kind, 80)].reverse();
+  const [search, setSearch] = useState('');
+  const [archived, setArchived] = useState(false);
+  const source = archived ? view.archive : view.journal;
+  const events = archiveQuery(source, { kind, text: search }, 120) as readonly JournalEvent[];
   return (
     <PopupShell eyebrow="NACHVOLLZIEHBAR" title="Ereignisprotokoll" onClose={onClose} wide>
       <p className="hint">
-        Jede Zeile nennt Ursache und Folge. „Geld“ sind echte Buchungen, die übrigen Arten sind Entscheidungen und Zustände.
+        Jede Zeile nennt Ursache und Folge. „Geld“ sind echte Buchungen, die übrigen Arten sind Entscheidungen
+        und Zustände. Das Archiv behält alles, der Live-Puffer nur die letzten 240 Ereignisse.
       </p>
+      <div className="journal-search">
+        <label className="journal-search-field">
+          <span>Suche</span>
+          <input
+            type="search"
+            value={search}
+            aria-label="Im Protokoll suchen"
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
+        <button
+          type="button"
+          className={`btn tiny${archived ? ' primary' : ' ghost'}`}
+          aria-pressed={archived}
+          onClick={() => setArchived((next) => !next)}
+          title={archived ? 'Zurück zum Live-Puffer' : 'Alle Ereignisse aus dem Archiv zeigen'}
+        >
+          {archived ? `ARCHIV · ${view.archive.length}` : `LIVE · ${view.journal.length}`}
+        </button>
+      </div>
       <div className="journal-tabs" role="tablist" aria-label="Protokoll filtern">
         {TABS.map((tab) => (
           <button
@@ -48,7 +72,11 @@ export function JournalPopup({ view, onClose, onGuest }: Props) {
         ))}
       </div>
       {events.length === 0 ? (
-        <p className="empty">Noch keine Ereignisse. Sobald Geld, Gäste oder Personal etwas tun, steht es hier.</p>
+        <p className="empty">
+          {search
+            ? `Nichts gefunden für „${search}“.`
+            : 'Noch keine Ereignisse. Sobald Geld, Gäste oder Personal etwas tun, steht es hier.'}
+        </p>
       ) : (
         <ol className="journal-list">
           {events.map((event) => {

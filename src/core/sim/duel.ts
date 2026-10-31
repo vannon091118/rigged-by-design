@@ -31,6 +31,8 @@ interface DuelResult {
 }
 
 const XP_DUEL_WIN = 45;
+/** So lange bleibt die Kampf-Rueckmeldung an der Stelle des Streits sichtbar. */
+const FIGHT_FX_TICKS = 24;
 const MOOD_BONUS = 12;
 const MOOD_READY = 50;
 const CROWD_MAX = 5;
@@ -99,6 +101,7 @@ export function resolveDuel(world: WorldState, ledger: Ledger, prng: Prng, dispu
       guest.mood = Math.min(100, guest.mood + MOOD_BONUS);
     }
     grantXp(world.player.rpg, XP_DUEL_WIN + opponent.strength * 2);
+    world.fightFx = { x: dispute.x, y: dispute.y, untilTick: world.tick + FIGHT_FX_TICKS, won: true, rounds: fight.rounds };
     world.lastEvent = `Gewonnen gegen ${opponent.name} nach ${fight.rounds} Runden. Du hast noch ${world.player.rpg.hp} LP.`;
     recordJournal(world, {
       kind: 'GUEST', subject: `Duell gegen ${opponent.name}`,
@@ -108,6 +111,7 @@ export function resolveDuel(world: WorldState, ledger: Ledger, prng: Prng, dispu
     });
     return { outcome: 'WON', opponent, mugging: null, fight };
   }
+  world.fightFx = { x: dispute.x, y: dispute.y, untilTick: world.tick + FIGHT_FX_TICKS, won: false, rounds: fight.rounds };
   applyMoodShock(world);
   if (dispute.level >= 2) applyUnsafeReputation(world, 2 + (opponent.nerve > 6 ? 1 : 0));
   const mugging = simulateMugging(world, ledger, prng, opponent);

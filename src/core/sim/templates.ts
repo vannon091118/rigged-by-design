@@ -70,6 +70,8 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     visitors: [],
     nextVisitorId: 1,
     journal: [],
+    archive: [],
+    fightFx: null,
     nextJournalId: 1,
     journaledSeq: 0,
     look: DEFAULT_LOOK,

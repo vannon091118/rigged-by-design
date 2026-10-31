@@ -111,7 +111,10 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
               <li key={key}><strong>{KIND_LABEL[key] ?? key}</strong><span>{value} Ereignisse</span></li>
             ))}
           </ul>
-          <p className="diag-note">Der Puffer behält die letzten 240 Ereignisse; die Buchhaltung bleibt die vollständige Geldwahrheit.</p>
+          <p className="diag-note">
+            Der Live-Puffer behält die letzten 240 Ereignisse, das Archiv alle ({view.archive.length} gespeichert).
+            Die Buchhaltung bleibt die vollständige Geldwahrheit.
+          </p>
         </section>
       </div>
     </PopupShell>

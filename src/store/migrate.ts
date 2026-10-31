@@ -7,7 +7,7 @@ import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
 import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
-import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
+import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 const DEMAND_EVENTS: ReadonlySet<string> = new Set(['NEON_NACHT', 'TURNIER_ABEND']);
@@ -60,6 +60,8 @@ export interface SavedGame {
   readonly nextVisitorId?: number;
   readonly lastEvent: string;
   readonly journal?: JournalEvent[];
+  readonly archive?: JournalEvent[];
+  readonly fightFx?: FightFx | null;
   readonly nextJournalId?: number;
   readonly journaledSeq?: number;
   readonly look?: PlayerLook;
@@ -169,6 +171,11 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.nextJournalId = saved.nextJournalId
     ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
   world.journaledSeq = saved.journaledSeq ?? saved.entries.length;
+  // Aeltere Staende kennen kein Archiv: der vorhandene Puffer wird dann zum Startbestand.
+  world.archive = (saved.archive ?? world.journal).map((event) => ({
+    ...event, refs: event.refs ? { ...event.refs } : undefined,
+  }));
+  world.fightFx = saved.fightFx ?? null;
   world.look = normalizeLook(saved.look);
   try {
     world.plinko = normalizePlinkoConfig(saved.plinko);

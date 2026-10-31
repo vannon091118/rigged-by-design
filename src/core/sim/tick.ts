@@ -118,6 +118,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   tickDemand(world, ledger, prng);
   // Verletzung heilt und Lebenspunkte kehren zurueck – im Takt der Welt, nicht der Uhr.
   recoverPlayer(world.player.rpg, world.tick);
+  // Die Kampf-Rueckmeldung ist ein kurzer Nachhall, kein Zustand: sie laeuft mit dem Tick ab.
+  if (world.fightFx && world.tick > world.fightFx.untilTick) world.fightFx = null;
   // Speed-Stufen laufen mehr als einen Pfadschritt pro Tick.
   const steps = playerStepsPerTick(world.player.rpg);
   for (let step = 0; step < steps && world.player.pathIndex < world.player.path.length; step += 1) {

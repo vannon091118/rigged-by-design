@@ -2,7 +2,11 @@
 
 export type ActorState =
   | 'idle' | 'walk' | 'sit' | 'play' | 'win' | 'lose'
-  | 'drink' | 'angry' | 'carry';
+  | 'drink' | 'angry' | 'carry'
+  /** Verletzt: humpelt, Haende hoch, Gewicht auf eine Seite. */
+  | 'hurt'
+  /** Mitten im Handgemenge: breite Beine, Faeuste vorn. */
+  | 'fight';
 
 interface ActorPose {
   readonly bob: number;
@@ -63,6 +67,17 @@ export function poseFor(state: ActorState, nowMs: number, phase: number): ActorP
         bob: Math.abs(fast) * 0.9, lean: 0.04, headY: 0, headRot: 0,
         armL: 1.6, armR: 1.6, legL: -fast * 0.45, legR: fast * 0.45, hop: 0,
       };
+    case 'hurt':
+      // Ein Schritt weniger Schwung, dafuer sichtbares Hinken und eine Hand am Koerper.
+      return {
+        bob: Math.abs(wave) * 0.8, lean: 0.08 + fast * 0.03, headY: 0.6, headRot: 0.1,
+        armL: 1.7 + wave * 0.1, armR: -0.5, legL: fast * 0.24, legR: -fast * 0.24, hop: Math.abs(wave) * 0.5,
+      };
+    case 'fight':
+      return {
+        bob: Math.abs(fast) * 1.1, lean: -0.06 + fast * 0.04, headY: -0.3, headRot: fast * 0.08,
+        armL: -1.5 + fast * 0.5, armR: -1.5 - fast * 0.5, legL: 0.28, legR: -0.28, hop: Math.abs(fast) * 1.4,
+      };
     default:
       return {
         bob: wave * 0.35, lean: 0, headY: wave * 0.3, headRot: wave * 0.03,
@@ -78,6 +93,10 @@ interface ActorStateInput {
   readonly lastResult?: string;
   readonly carrying?: string;
   readonly isPlayer?: boolean;
+  /** Verletzt: der Spieler humpelt, auch wenn er steht. */
+  readonly injured?: boolean;
+  /** Gerade im Handgemenge. */
+  readonly fighting?: boolean;
 }
 
 const WIN = /gewinn|gewonnen|×|x\s*\d|win/i;
@@ -87,6 +106,8 @@ const LOSS = /nichts|leer|verlor|verloren|loss/i;
 export function actorStateFor(input: ActorStateInput): ActorState {
   const moving = input.pathIndex < input.pathLength;
   if (input.isPlayer) {
+    if (input.fighting) return 'fight';
+    if (input.injured) return 'hurt';
     if (input.carrying === 'DRINK' || input.carrying?.startsWith('KRATE:')) return 'carry';
     return moving ? 'walk' : 'idle';
   }

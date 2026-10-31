@@ -7,7 +7,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
-import { journalCounts, journalEntries, recordJournal, settleMoneyJournal } from '../journal';
+import { archiveQuery, journalCounts, journalEntries, recordJournal, settleMoneyJournal } from '../journal';
 import { orderDrinks } from '../deliveries';
 import { HAUSKONTO, PORTEMONNAIE } from '../money';
 import { hireAgent } from '../staff';
@@ -70,5 +70,25 @@ describe('Ereignisprotokoll', () => {
     expect(world.journal[0]!.subject).toBe('Ereignis 60');
     expect(world.journal[239]!.subject).toBe('Ereignis 299');
     expect(world.nextJournalId).toBe(301);
+  });
+
+  it('behält im Archiv dauerhaft mehr als der Puffer und lässt sich filtern', () => {
+    const world = createWorld('SMALL');
+    for (let index = 0; index < 300; index += 1) {
+      recordJournal(world, {
+        kind: index % 3 === 0 ? 'MONEY' : 'GUEST',
+        subject: `Eintrag ${index}`, cause: 'Test', effect: `Folge ${index}`,
+        amount: index, refs: { guestId: index % 5 },
+      });
+    }
+    expect(world.journal).toHaveLength(240);
+    expect(world.archive).toHaveLength(300);
+    expect(world.archive[0]!.subject).toBe('Eintrag 0');
+    const money = archiveQuery(world.archive, { kind: 'MONEY' });
+    expect(money).toHaveLength(100);
+    expect(money[0]!.id).toBeGreaterThan(money[1]!.id);
+    expect(archiveQuery(world.archive, { text: 'Eintrag 299' })).toHaveLength(1);
+    expect(archiveQuery(world.archive, { guestId: 4, kind: 'GUEST' }).every((event) => event.refs?.guestId === 4)).toBe(true);
+    expect(archiveQuery(world.archive, { minAmount: 250 })).toHaveLength(50);
   });
 });

@@ -177,6 +177,8 @@ export interface Dispute {
   ticks: number;
 }
 
+export type { FightFx } from './fight-fx';
+
 /** Ein wiedererkennbarer Besucher; bleibt ueber Besuche und Speicherstaende erhalten. */
 export interface Visitor {
   readonly id: number;

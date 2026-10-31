@@ -5,7 +5,7 @@ import type { PlayerLook } from './player-look';
 import type { ExclusionPact } from './self-exclusion-bet';
 import type {
   ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, Furniture, Guest, Player,
-  PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone,
+  PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
 } from './types-model';
 
 export type * from './types-model';
@@ -51,6 +51,8 @@ export interface WorldState {
   visitors: Visitor[];
   nextVisitorId: number;
   journal: JournalEvent[];
+  /** Dauerhaftes, filterbares Archiv jenseits des 240er-Puffers. */
+  archive: JournalEvent[];
   nextJournalId: number;
   /** Naechste Ledger-Seq, die bereits als MONEY-Event kopiert wurde. */
   journaledSeq: number;
@@ -61,6 +63,8 @@ export interface WorldState {
   addictionScore: number;
   lastPlinko: PlinkoDrop | null;
   exclusionPact: ExclusionPact | null;
+  /** Kurzlebige Kampf-Rueckmeldung fuer den Floor; null, wenn nichts passiert. */
+  fightFx: FightFx | null;
   playerAddictionScore: number;
   brokenExclusionPacts: number;
   clarityBadge: boolean;

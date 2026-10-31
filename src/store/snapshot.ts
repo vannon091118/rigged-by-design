@@ -39,6 +39,8 @@ function worldSnapshot(world: WorldState) {
     wcLevel: world.wcLevel,
     activePenalties: world.activePenalties.map((penalty) => ({ ...penalty })),
     journal: world.journal.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
+    archive: world.archive.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
+    fightFx: world.fightFx ? { ...world.fightFx } : null,
     look: world.look,
     plinko: world.plinko,
     plinkoMode: world.plinkoMode,

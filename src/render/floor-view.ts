@@ -1,6 +1,6 @@
 // @loc-exception: Kamera, LOD, Culling, gepoolte Figuren und Input teilen einen Pixi-Scene-Graph; getrennt waeren die Transform-Kopplungen unsichtbar.
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
-import { Application, Container, Rectangle, type FederatedPointerEvent } from 'pixi.js';
+import { Application, Container, Graphics, Rectangle, type FederatedPointerEvent } from 'pixi.js';
 import { dirtyNear, emotionOf } from '../core/sim/emotion';
 import { areaAt } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
@@ -13,6 +13,7 @@ import { isVisible, screenToTile, visibleRect } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
 import { actorStateFor } from './rig-pose';
+import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
 
 const STEP_MS = 520;
@@ -31,6 +32,7 @@ export class FloorView {
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
   readonly #player: GuestArt;
+  readonly #marker = new Graphics();
   readonly #furnitureArt = new Map<number, FurnitureArt>();
   readonly #seenFurniture = new Set<number>();
   readonly #seenGuests = new Set<number>();
@@ -63,6 +65,8 @@ export class FloorView {
       this.#attachActor,
     );
     this.#player = createGuestArt('STREET', 'DU', true, 0.4, view.look);
+    this.#player.root.addChild(this.#marker);
+    this.#marker.visible = false;
     this.#attachActor(this.#player);
     app.ticker.add(this.#animate);
     this.update(view, true);
@@ -216,10 +220,15 @@ export class FloorView {
     }
     this.#player.setEmotion(view.player.carrying === 'DRINK' ? 'DRINK' : 'NONE');
     this.#player.setLook(view.look);
+    const fx = view.fightFx && view.fightFx.untilTick >= view.tick ? view.fightFx : null;
+    const fighting = fx !== null
+      && Math.abs(fx.x - view.player.position.x) + Math.abs(fx.y - view.player.position.y) <= 2;
     this.#player.setState(actorStateFor({
       state: 'WAIT', pathLength: view.player.path.length, pathIndex: view.player.pathIndex,
       carrying: view.player.carrying, isPlayer: true,
+      injured: view.player.rpg.injuryTicks > 0, fighting,
     }));
+    drawPlayerMarker(this.#marker, { injured: view.player.rpg.injuryTicks > 0, fighting, won: view.fightFx?.won ?? false });
     this.#player.setLod(this.#lod === 1);
   }
 

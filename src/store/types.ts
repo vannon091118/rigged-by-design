@@ -1,6 +1,6 @@
 /** Was die UI sieht: Welt plus abgeleitete Ledger-Werte. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
-import type { ActivePenalty, Crate, DemandSnapshot, Dispute, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
+import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
@@ -36,6 +36,10 @@ export interface GameView {
   readonly disputeGuard: Readonly<Record<number, boolean>>;
   readonly activePenalties: readonly ActivePenalty[];
   readonly journal: readonly JournalEvent[];
+  /** Dauerhaftes Archiv jenseits des 240er-Puffers, filterbar. */
+  readonly archive: readonly JournalEvent[];
+  /** Kurzlebige Kampf-Rueckmeldung fuer den Floor. */
+  readonly fightFx: FightFx | null;
   readonly look: PlayerLook;
   readonly plinko: PlinkoConfig;
   readonly plinkoMode: PlinkoMode;

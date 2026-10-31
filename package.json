@@ -11,6 +11,7 @@
     "test:ci": "vitest run",
     "test:perf": "vitest bench --run",
     "soak": "RBD_SOAK_TICKS=100000 vitest run src/core/sim/__tests__/soak.test.ts",
+    "balance": "node scripts/balance-run.mjs",
     "bench:lowend": "node scripts/bench-lowend.mjs",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
