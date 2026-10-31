@@ -279,8 +279,25 @@ die sie nicht ersetzen kann.
 - ESLint 10.14 + `minimatch`-Override: bleibt eine nicht unterstützte Kombination, bis ESLint minimatch 11 erlaubt.
 - Android: `glob` 14 über `rimraf` 6 ist ungetestet; ein stiller Cleanup-Fehler würde alte Web-Assets in der APK lassen — deshalb Welle 0, Punkt 4 vor jedem Capacitor-Upgrade.
 
+### Umsetzungsstand (31.10.2026)
+
+| Punkt | Status | Nachweis |
+| --- | --- | --- |
+| Welle 0.1 eslint 10.14.0 | umgesetzt | `npm run lint` grün |
+| Welle 0.2 engines/packageManager | umgesetzt | `engines.node >=22.22.2`, `packageManager npm@12.2.1` |
+| Welle 0.3 Dev-Server nur localhost | umgesetzt | `vite.config.ts`: `host: RBD_DEV_HOST || 'localhost'` |
+| Welle 0.4 Android `cap add`/`cap sync` | lokal geprüft, Gradle-Nachweis via CI | `cap sync` mit `glob` 14 über `rimraf` 6 erfolgreich; `@capacitor/core` bleibt, weil `@capacitor/android` 8.6.0 es als Peer verlangt |
+| Welle 0.5 projectService | entfernt | Lint ohne Cache 25,1 s → 18,3 s, grün |
+| Welle 1.7 Vite | umgesetzt in zwei Schritten | Vite 7.3.7 mit plugin-react 5.2.0 geprüft; danach Vite 8.3.5 mit plugin-react 6.1.2; Build grün |
+| Welle 1.8 TypeScript | umgesetzt | TypeScript 6.0.3, Typecheck und Lint grün, typescript-eslint 8.72.1 unverändert |
+| Welle 1.9 manualChunks | nicht nötig | Projekt hat keine `manualChunks`-Konfiguration |
+| Welle 2 Lockfile | gemessen | 373 → 311 Lockfile-Einträge; Babel/esbuild-Einträge 51 → 3 (nur `@babel/code-frame`, `helper-validator-identifier`, `runtime`); `semver` oberste Ebene entfallen |
+
+Der Vite-8-Build meldet eine Warnung der nativen Config-Ladung zu einem extensionlosen Import (`vite.config.ts` und `src/core/governance/test-harness.ts`). Sie ist nicht blockierend und offen.
+
 ## 8. Offene Punkte
 
-- Ob `cap sync` ohne `@capacitor/core` läuft, ist nicht belegt (kein SDK lokal).
+- Der Android-Gradle-Build ist lokal nicht geprüft (kein Android-SDK); der Nachweis kommt aus `build-apk.yml` in CI.
+- Die Installationsgröße von `node_modules` wurde nach der Migration mit Datei-Summen gemessen: 234,6 MB. Der Audit-Wert 216,2 MB stammt aus einer anderen Messung; ein Vorher-Nachher-Vergleich unter gleicher Methode steht aus. Die erwartete Netto-Einsparung wurde damit nicht belegt.
 - Fixed-Versionen zu CVE-2026-112945/-112946/-112947 und CVE-2026-118662 (Vite, Okt. 2026) waren nicht bis zur Detailseite verifizierbar; sie ändern die Empfehlung nicht (Upgrade auf ≥ 7.3.2 / 8.0.5), aber die genaue Untergrenze muss beim Upgrade gegen `npm audit` und die Advisory-Seite geprüft werden.
 - `npm ci`-Dauer wurde nicht gemessen (hätte `node_modules` zerstört); die Installationskosten sind über Paketanzahl und Größe belegt, nicht über Zeit.

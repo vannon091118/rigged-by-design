@@ -17,6 +17,7 @@ import { LookPopup } from './ui/look-popup';
 import { SoundPopup } from './ui/sound-popup';
 import { MachinePopup } from './ui/machine-popup';
 import { isMuted, playSfx } from './render/sound-fx';
+import { armMusic, setMusicState } from './render/music';
 
 type Popup =
   | { kind: 'guests'; guestId: number | null }
@@ -72,6 +73,20 @@ export default function App() {
     if (view.disputes.length > disputes.current) playSfx('brawl');
     disputes.current = view.disputes.length;
   }, [view.disputes.length]);
+
+  // Musik folgt dem Fenster, nicht dem Klick: Floor, Fremdhaus, eigenes Gerät.
+  useEffect(() => {
+    if (popup?.kind === 'games') { setMusicState('GAMES'); return; }
+    if (popup?.kind === 'machine') {
+      const item = view.furniture.find((entry) => entry.id === popup.itemId);
+      setMusicState(item?.gameId === 'SLOT' ? 'SLOT' : 'GAMES');
+      return;
+    }
+    setMusicState('FLOOR');
+  }, [popup, view.furniture]);
+
+  // Der Browser laesst Ton erst nach einer Geste zu; bis dahin bleibt es still.
+  useEffect(() => armMusic(), []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
@@ -156,6 +171,7 @@ export default function App() {
           ref={stage}
           view={view}
           placing={ghostId}
+          paused={popup?.kind === 'games' || popup?.kind === 'machine'}
           onGuest={(id) => { setBuildOpen(false); setPopup({ kind: 'guests', guestId: id }); }}
           onFurniture={(id) => { setBuildOpen(false); setPopup({ kind: 'machine', itemId: id }); }}
           onEmpty={(x, y) => {

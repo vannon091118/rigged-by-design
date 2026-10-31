@@ -23,6 +23,18 @@ let context: AudioContext | null = null;
 let muted = false;
 const gains = new Map<SoundChannel, GainNode>();
 const settings: SoundSettings = { master: 1, channels: { ...DEFAULTS } };
+/** Wer auf Lautstaerkeaenderungen wartet, etwa die Musikschicht. */
+const listeners = new Set<() => void>();
+
+function notify(): void {
+  for (const listener of listeners) listener();
+}
+
+/** Anmeldung fuer alles, was den Master und die Stummschaltung mitlesen muss. */
+export function subscribeSoundSettings(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => { listeners.delete(listener); };
+}
 
 const clamp01 = (value: number): number => (Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0);
 
@@ -63,12 +75,14 @@ export function setMasterVolume(next: number): void {
   settings.master = clamp01(next);
   persist();
   applyGains();
+  notify();
 }
 
 export function setChannelVolume(channel: SoundChannel, next: number): void {
   settings.channels[channel] = clamp01(next);
   persist();
   applyGains();
+  notify();
 }
 
 export function isMuted(): boolean {
@@ -80,6 +94,7 @@ export function setMuted(next: boolean): void {
   muted = next;
   persist();
   applyGains();
+  notify();
 }
 
 function channelGain(ctx: AudioContext, channel: SoundChannel): GainNode {

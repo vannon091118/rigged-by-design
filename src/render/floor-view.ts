@@ -93,17 +93,19 @@ export class FloorView {
     this.#syncGuests(view);
     this.#syncPlayer(view);
     this.#updateLod();
-    if (this.#camDirty) this.#applyCamera();
-    else this.#cull();
+    if (this.#camDirty) this.#applyCamera(); else this.#cull();
   }
 
-  fit(): void {
-    this.#cam.overview();
-  }
+  fit(): void { this.#cam.overview(); }
 
   zoomToArea(x: number, y: number): void {
     const area = areaAt(this.#view.template, x, y);
     if (area) this.#cam.zoomToArea(area, this.#view.size);
+  }
+
+  /** Spiel-Fenster offen: der Floor-Ticker ruht, die Simulation laeuft im Store weiter. */
+  setRunning(running: boolean): void {
+    if (!this.#destroyed) this.#app.ticker[running ? 'start' : 'stop']();
   }
 
   setPlacing(buildId: string | null): void {
@@ -119,10 +121,8 @@ export class FloorView {
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
     const rect = this.#app.canvas.getBoundingClientRect();
-    return screenToTile(
-      clientX, clientY, rect, this.#app.screen.width,
-      this.#camera.x, this.#camera.y, this.#camera.scale.x, this.#view.size, TILE,
-    );
+    return screenToTile(clientX, clientY, rect, this.#app.screen.width,
+      this.#camera.x, this.#camera.y, this.#camera.scale.x, this.#view.size, TILE);
   }
 
   destroy(): void {

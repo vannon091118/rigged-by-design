@@ -1,5 +1,10 @@
-/** Slot-Symbole als gezeichnete Pixi-Grafik: Buch, Skarabaeus, Anch, Auge, Urne, Karten. */
-import { Container, Graphics, Text } from 'pixi.js';
+/**
+ * Slot-Symbole: das Pixel-Paket, wo es eines gibt, sonst die gezeichnete Grafik.
+ * Der Rueckfall ist kein Notbehelf, sondern der Grund, warum die Buehne auch
+ * ohne geladene Texturen vollstaendig aussieht.
+ */
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
+import { slotSymbolAsset, textureFor } from '../assets/textures';
 
 const GOLD = 0xffd166;
 const GOLD_DEEP = 0xb07a1f;
@@ -94,6 +99,14 @@ const LETTERS: Readonly<Record<string, number>> = { A: GOLD, K: TEAL, Q: PINK, J
 
 /** Zeichnet ein Symbol in der Kantenlaenge `size`; unbekannte Ids werden zum Buch. */
 export function drawSlotSymbol(id: string, size: number): Container {
+  const asset = slotSymbolAsset(id);
+  const texture = asset === null ? null : textureFor(asset);
+  if (texture) {
+    const sprite = new Sprite(texture);
+    sprite.width = size;
+    sprite.height = size;
+    return sprite;
+  }
   if (id === 'BOOK') return book(size);
   if (id === 'SCARAB') return scarab(size);
   if (id === 'ANKH') return ankh(size);

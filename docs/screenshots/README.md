@@ -4,7 +4,7 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 
 ## Ablage und Governance
 
-- Es gibt genau **einen** Bildsatz: `docs/screenshots/current/` (höchstens 12 Bilder).
+- Es gibt genau **einen** Bildsatz: `docs/screenshots/current/` (höchstens 16 Bilder).
 - Neue Aufnahmen ersetzen die alten im selben Ordner; es entstehen **keine** Versionsordner mehr.
 - Dateinamen: `<laufende Nummer>-<bereich>.png`, Unteransichten mit Buchstabe (`04b`, `06b`). Die Nummer folgt dem Weg durch das Spiel, nicht dem Aufnahmezeitpunkt.
 - Außerhalb von `current/` liegen keine Spielbilder; diese README ist der einzige gemeinsame Eintrag.
@@ -36,3 +36,21 @@ Was die Bilder gegenüber den entfernten Versionen zeigen:
 - Möbel werfen einen gerichteten Schatten nach unten rechts, Figuren stehen auf einem Kontaktschatten.
 - Laufwege zwischen den Räumen liegen bewusst dunkler als die Räume, damit der Saal als Bühne liest.
 - Panels nutzen dieselben Farbrollen und eine gemeinsame Typo-Hierarchie; bei mittleren Fensterbreiten bekommt die HUD-Aktionsleiste eine eigene Zeile statt rechts abgeschnitten zu werden.
+
+
+## Spielbühnen (`09` bis `15`)
+
+Aufgenommen am 31.10.2026 im Fremdhaus-Popup, also dort, wo die `TableLauncher` alle Spielbühnen rendert. Das Portemonnaie war bei der Aufnahme leer: die Bühnen zeigen den ungespielten Zustand, keine laufenden Walzen und keine gefallenen Bälle.
+
+| Datei | Spiel | Zeigt |
+| --- | --- | --- |
+| `09-slot-buehne.png` | Slot | Fünf Walzen mit den Pixel-Symbolen aus dem Asset-Paket: Buch, Skarabäus, Anch, Auge, Urne und die Bildkarten |
+| `10-huetchen-buehne.png` | Hütchenspiel | Drei Becher auf dem Filz, Perle noch verdeckt |
+| `11-blackjack-buehne.png` | Blackjack | Dealer-Hand, Spielerplatz und Shoe vor dem Austeilen |
+| `12-poker-buehne.png` | Poker | Fünf Board-Plätze und zwei eigene Karten |
+| `13-wuerfel-buehne.png` | Würfel | Beide Würfel und die fünf Wettfelder mit ihren Quoten |
+| `14-roulette-buehne.png` | Roulette | Kessel mit 37 Taschen und der Setzteppich |
+| `15-plinko-buehne.png` | Plinko | Acht Reihen Pegs, Bahn und die neun Taschen mit ihren Quoten |
+
+Video Poker fehlt in dieser Reihe, weil die Bühne im Spiel nicht erreichbar ist: Das Popup hängt allein an der `TableLauncher`, und kein fremdes Haus führt ein Video-Poker-Gerät. Am eigenen Gerät zeigt das Maschinen-Fenster nur den Testspin.
+
