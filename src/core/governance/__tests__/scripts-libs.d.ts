@@ -14,6 +14,17 @@ declare module '*/process-sweep.mjs' {
   export function releaseOwner(): void;
 }
 
+declare module '*/affected-tests.mjs' {
+  export interface AffectedSelection {
+    readonly tests: readonly string[];
+    readonly runAll: boolean;
+    readonly reason: string | null;
+  }
+  export function listTests(): string[];
+  export function selectAffectedTests(changedFiles: readonly string[]): AffectedSelection;
+  export function changedFiles(): string[];
+}
+
 declare module '*/pipeline-stop.mjs' {
   type StopOptions = { exit?: (code: number) => void; log?: (message: string) => void };
   export const EXIT_ABORTED: number;

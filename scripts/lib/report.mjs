@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /** Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';

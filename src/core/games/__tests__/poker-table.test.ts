@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 import { randomSeed } from '../../../test/random-seed';
 import { Prng } from '../../rng/prng';
 import type { Card } from '../../rng/shoe';
-import { createShoe } from '../../rng/shoe';
+import { createShoe, DECK_SIZE } from '../../rng/shoe';
 import { playRound } from '../round';
 import { bestHand, compareRank, handName } from '../poker-hand';
 import { settleShowdown } from '../poker-settle';
@@ -48,6 +48,14 @@ describe('Poker-Tisch', () => {
     const aceHigh = bestHand([card('9', '♠'), card('10', '♦'), card('J', '♣'), card('Q', '♥'), card('K', '♠')]);
     const kingHigh = bestHand([card('8', '♠'), card('9', '♦'), card('10', '♣'), card('J', '♥'), card('Q', '♠')]);
     expect(compareRank(aceHigh, kingHigh)).toBeGreaterThan(0);
+  });
+
+  it('teilt aus einem Schuh ohne doppelte Karte', () => {
+    const table = startHand(new Prng(randomSeed()), { stake: 10_000 });
+    const dealt = table.players.flatMap((entry) => entry.hole);
+    const labels = dealt.map((entry) => `${entry.rank}${entry.suit}`);
+    expect(new Set(labels).size).toBe(dealt.length);
+    expect(table.shoe.remaining).toBe(DECK_SIZE - dealt.length);
   });
 
   it('verteilt den Pot in Ebenen und laesst den Side Pot beim Hoechsteinsatz', () => {

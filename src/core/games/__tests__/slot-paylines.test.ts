@@ -80,7 +80,9 @@ describe('Slot-Gitter fuer die Anzeige', () => {
     }
   });
 
-  it('zahlt drei, vier und fuenf Walzen auf demselben Niveau', { timeout: 60_000 }, () => {
+  // Volllauf: Build und schwere RTP-Tests teilen die CPU; gemessen 72,7 s.
+  // Das Zeitbudget deckt diese Last, die RTP-Schwelle bleibt unveraendert.
+  it('zahlt drei, vier und fuenf Walzen auf demselben Niveau', { timeout: 120_000 }, () => {
     const measure = (reels: number): number => {
       const prng = new Prng(randomSeed());
       const rounds = 120_000;

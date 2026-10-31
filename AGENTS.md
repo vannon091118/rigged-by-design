@@ -20,6 +20,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Build & test
 
 - `npm run test` — Vitest run (CI alias `test:ci`).
+- `npm run test:affected` — nur Tests aus deklariertem Ziel, direktem Import und betroffenem Subsystem; Entwicklungsfeedback, kein Ersatz für `verify:all`.
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
@@ -53,5 +54,5 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - LOC guard fails the build; reduce below the Hot Zone of the file's responsibility instead of adding an exception. Each file has exactly one responsibility and one budget; legacy exceptions are migration debt and only shrink.
 - `test:perf` intentionally not in `verify:all`; don't gate on it on slow hardware.
 - Commit messages verified by `verify:commit-msg`; new error codes in `docs/ERROR_CATALOG.md`.
-- `verify-test-quality` requires `@test-target` and `@error-code` headers on `.test.ts` and `.test.tsx`; fixed numeric `new Prng(...)` seeds are rejected, use `randomSeed()`.
+- `verify-test-quality` requires `@test-target` and `@error-code` headers on `.test.ts` and `.test.tsx`; every `it`/`test` callback needs its own `expect`, and the file must import and use its declared target (directly or through a helper that imports it). Fixed numeric `new Prng(...)` seeds are rejected, use `randomSeed()`.
 - Journal state lives in `WorldState`; UI only reads the snapshot and never maintains a second log.

@@ -25,6 +25,7 @@ const JUSTIFICATIONS = {
   globals: ['Lint', 'Browser- und Node-Globals fuer die ESLint-Konfiguration.'],
   jsdom: ['Test', 'DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser.'],
   '@testing-library/react': ['Test', 'Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom.'],
+  yaml: ['Test', 'Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen.'],
   '@capacitor/core': ['Android', 'WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben.'],
   '@capacitor/cli': ['Android', 'Capacitor-CLI: erzeugt das Android-Projekt und synchronisiert Web-Build und Huelle.'],
   '@capacitor/android': ['Android', 'Native Android-Plattform, aus der Gradle Debug- und Release-APK baut.'],
