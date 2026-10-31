@@ -5,6 +5,7 @@ import { reputation } from '../core/sim/spawn';
 import { newPlayerRpg } from '../core/sim/player-rpg';
 import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
 import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
+import { migrateReels } from '../core/games/slot-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
@@ -99,7 +100,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
       clogged: item.clogged ?? false,
       occupants: [...(item.occupants ?? [])],
       mods: [...(item.mods ?? [])],
-      reels: item.reels ?? 3,
+      reels: item.gameId === 'SLOT' ? migrateReels(item.reels) : (item.reels ?? 3),
     };
   });
   const legacyFiat: { id: number; amount: VaCoinMicro }[] = [];

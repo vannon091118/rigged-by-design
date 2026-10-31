@@ -1,9 +1,10 @@
 /** Book-of-VaCoin: drei bis fuenf Walzen, Streifen oder Gewichte, drei Bewertungsmodelle. */
 import type { Prng } from '../../rng/prng';
-import { clampedReels, drawSymbol, slotPaylines, SLOT_ROWS, type SlotSymbol } from './slot-paytable';
+import { drawSymbol, type SlotSymbol } from './slot-paytable';
+import { assertSlotConfig, slotConfig, type SlotConfig } from '../slot-config';
 import { payScaleFor } from './slot-odds';
 import { evaluateGrid, type ModelContext, type ModelWin } from './slot-models';
-import { DEFAULT_SLOT_PROFILE, normalizeSlotProfile, type SlotProfile } from '../slot-profile';
+import type { SlotProfile } from '../slot-profile';
 
 export { SLOT_LINES, SLOT_SYMBOLS } from './slot-paytable';
 export { slotJackpotInterval } from './slot-odds';
@@ -37,6 +38,8 @@ interface SlotOptions {
   readonly reels?: number;
   /** Walzenstreifen, Gewichte, Modell und Regeln des Geraets. */
   readonly profile?: SlotProfile;
+  /** Die Konfiguration des Geräts; sie ersetzt die Einzelparameter. */
+  readonly config?: SlotConfig;
 }
 
 /** Entladung nach Drucklader: 1,48x auf den Gesamteinsatz, unabhaengig von der Paytable. */
@@ -48,27 +51,30 @@ function drawFromStrip(prng: Prng, strip: readonly SlotSymbol[]): SlotSymbol {
   return strip[prng.nextInt(0, strip.length - 1)]!;
 }
 
-function spinReels(prng: Prng, reels: number, profile: SlotProfile): SlotSymbol[][] {
-  return Array.from({ length: reels }, (_, reel) => {
+function spinReels(prng: Prng, config: SlotConfig): SlotSymbol[][] {
+  const { profile } = config;
+  return Array.from({ length: config.reels }, (_, reel) => {
     const strip = profile.reelStrips[reel] ?? profile.reelStrips[profile.reelStrips.length - 1];
-    return Array.from({ length: SLOT_ROWS }, () => (
+    return Array.from({ length: config.rows }, () => (
       strip && strip.length > 0 ? drawFromStrip(prng, strip) : drawSymbol(prng, profile.weights)
     ));
   });
 }
 
-function shiftReels(reels: SlotSymbol[][], offset: number): SlotSymbol[][] {
-  const shift = ((offset % SLOT_ROWS) + SLOT_ROWS) % SLOT_ROWS;
+function shiftReels(reels: SlotSymbol[][], config: SlotConfig, offset: number): SlotSymbol[][] {
+  const { rows } = config;
+  const shift = ((offset % rows) + rows) % rows;
   if (shift === 0) return reels;
-  return reels.map((reel) => Array.from({ length: SLOT_ROWS }, (_, row) => reel[(row + shift) % SLOT_ROWS]!));
+  return reels.map((reel) => Array.from({ length: rows }, (_, row) => reel[(row + shift) % rows]!));
 }
 
 /**
  * Setzt eine echte 3er-SCARAB-Linie auf Linie 0 und gibt sie zurueck: Diese Linie zahlt
  * als Entladung den festen Satz, nicht die Paytable (sonst waere sie zehnmal zu gross).
  */
-function forceNonLdw(reels: SlotSymbol[][]): number {
-  for (let reel = 0; reel < reels.length; reel += 1) reels[reel]![1] = reel < 3 ? 'SCARAB' : 'J';
+function forceNonLdw(reels: SlotSymbol[][], rows: number): number {
+  const center = Math.floor(rows / 2);
+  for (let reel = 0; reel < reels.length; reel += 1) reels[reel]![center] = reel < 3 ? 'SCARAB' : 'J';
   return 0;
 }
 
@@ -83,15 +89,19 @@ function countBooks(reels: readonly (readonly SlotSymbol[])[]): number {
  * Linien teilen durch ihre Anzahl, Ways und Cluster zaehlen bereits auf den Gesamteinsatz.
  */
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
-  const profile = normalizeSlotProfile(options.profile ?? DEFAULT_SLOT_PROFILE);
-  const reelCount = clampedReels(options.reels ?? 5);
-  const lines = slotPaylines(reelCount);
+  // Die Konfiguration ist die einzige Quelle: fehlt sie, baut die Engine sie
+  // aus den Einzelparametern – und weist alles Ungueltige ab.
+  const config = options.config ?? slotConfig({ reels: options.reels, profile: options.profile });
+  assertSlotConfig(config);
+  const profile = config.profile;
+  const reelCount = config.reels;
+  const lines = config.paylines;
   const wild = profile.wildMode === 'BOOK';
   const scale = payScaleFor(reelCount, profile.weights, {
     model: profile.model, volatility: profile.volatility, payScaleBps: profile.payScaleBps,
   });
   const context: ModelContext = {
-    reels: reelCount, rows: SLOT_ROWS, weights: profile.weights, wild, scale, volatility: profile.volatility,
+    reels: reelCount, rows: config.rows, weights: profile.weights, wild, scale, volatility: profile.volatility,
   };
   const bonusContext: ModelContext = {
     ...context, scale: scale * (profile.bonusPayScaleBps / 10_000),
@@ -99,8 +109,8 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
   const evaluate = (grid: readonly (readonly SlotSymbol[])[], ctx: ModelContext): { total: number; wins: ModelWin[] } =>
     evaluateGrid(profile.model, grid, lines, ctx);
 
-  const reels = shiftReels(spinReels(prng, reelCount, profile), options.offset ?? 0);
-  const forcedLine = options.forceWin ? forceNonLdw(reels) : -1;
+  const reels = shiftReels(spinReels(prng, config), config, options.offset ?? 0);
+  const forcedLine = options.forceWin ? forceNonLdw(reels, config.rows) : -1;
   const base = evaluate(reels, context);
 
   const books = countBooks(reels);
@@ -111,7 +121,7 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
   while (freeSpins > 0 && rounds < MAX_FREE_ROUNDS) {
     freeSpins -= 1;
     rounds += 1;
-    const extra = spinReels(prng, reelCount, profile);
+    const extra = spinReels(prng, config);
     // Die Bonus-Paytable ist eigen: sie skaliert die Gewinne der Freispiele,
     // der Multiplikator kommt obendrauf.
     bonusBps += evaluate(extra, bonusContext).total * profile.multiplier;

@@ -3,8 +3,8 @@ import { mulVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Furniture } from '../sim/types';
 import type { GameResult } from './contracts';
 import { playSlot } from './engines/slot';
+import { slotConfigOf } from './slot-config';
 import { createSlotMemory, prepareSlotSpin, recordSlotSpin, type SlotMemory } from './slot-transparency';
-import { normalizeSlotProfile } from './slot-profile';
 import type { Prng } from '../rng/prng';
 
 /** Ein echter Gast-Spin; der Testspin bleibt absichtlich ohne Gedaechtnis-Wirkung. */
@@ -21,7 +21,7 @@ export function playSlotSession(
   const bank = memory.bank ?? 0;
   // Ein Bonus kostet rund zwei Einsaetze; erst ab dieser Deckung darf die Maschine ihn geben.
   const plan = prepareSlotSpin(memory, bank >= reference * 3);
-  const outcome = playSlot(prng, { forceWin: plan.forceWin, reels: item.reels, profile: normalizeSlotProfile(item.slotOdds) });
+  const outcome = playSlot(prng, { forceWin: plan.forceWin, config: slotConfigOf(item) });
   const multiplierBps = outcome.multiplierBps > 0 ? Math.max(0, outcome.multiplierBps + bonusBps) : 0;
   // Was die Maschine einbehaelt, deckt spaetere Entladungen; sie zahlt nie mehr, als sie hat.
   const raw = mulVC(bet, multiplierBps);

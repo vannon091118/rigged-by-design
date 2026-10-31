@@ -3,14 +3,14 @@ import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
 import { playSandboxGame, sandboxSeed, testSandbox } from '../games/sandbox';
+import { isValidReels, MAX_REELS, slotConfig } from '../games/slot-config';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
-import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
-import type { CarpetId, Furniture, GameId, ModId, Point, WorldState } from './types';
+import type { CarpetId, Furniture, GameId, ModId, WorldState } from './types';
 import { furnitureById } from './world';
 import { grantXp } from './player-rpg';
-import { normalizeSlotProfile, slotChances } from '../games/slot-profile';
+import { slotChances } from '../games/slot-profile';
 
 const XP_CLEAN_TILE = 10;
 
@@ -26,13 +26,6 @@ export function settleGuests(world: WorldState, ledger: Ledger): void {
     closeFiat(ledger, guest.id, world.tick);
   }
   world.guests = [];
-}
-
-export function movePlayer(world: WorldState, target: Point): void {
-  const walkable = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), target);
-  if (!walkable) return;
-  world.player.path = findPath(world.size, blockedTiles(world.size, world.furniture), world.player.position, walkable);
-  world.player.pathIndex = 0;
 }
 
 export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void {
@@ -87,7 +80,8 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
 export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number): void {
   const item = furnitureById(world, itemId);
   if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Walzen.');
-  if (item.reels >= 5) throw new Error('Mehr Walzen passen nicht hinein.');
+  if (!isValidReels(item.reels)) throw new Error('Die Walzenzahl dieser Maschine ist ungueltig.');
+  if (item.reels >= MAX_REELS) throw new Error('Mehr Walzen passen nicht hinein.');
   ledger.transfer(HAUSKONTO, SHOP, fromVC(4 + item.reels * 2), 'walze erweitern', world.tick);
   item.reels += 1;
 }
@@ -105,9 +99,11 @@ export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro):
 export function applySlotOdds(world: WorldState, itemId: number, raw: unknown): string {
   const item = furnitureById(world, itemId);
   if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Spielregeln.');
-  item.slotOdds = normalizeSlotProfile(raw);
-  const chances = slotChances(item.reels, item.slotOdds);
-  return `Regeln gesetzt: ${(chances.rtpBps / 100).toFixed(2)} % Quote bei ${item.reels} Walzen.`;
+  // Dieselbe Konfiguration, die die Engine dreht, traegt auch die Quote.
+  const config = slotConfig({ reels: item.reels, profile: raw });
+  item.slotOdds = config.profile;
+  const chances = slotChances(config.reels, config.profile);
+  return `Regeln gesetzt: ${(chances.rtpBps / 100).toFixed(2)} % Quote bei ${config.reels} Walzen.`;
 }
 
 /**
