@@ -12,15 +12,16 @@ type Band = readonly [number, number];
 
 const ROUNDS: Readonly<Record<GameId, number>> = {
   SLOT: 200_000, BLACKJACK: 100_000, ROULETTE: 100_000, SHELL: 300_000, DICE: 100_000, PLINKO: 5_000,
-  // Tischpoker kostet rund 0,9 ms je Hand; 50k halten den Lauf unter dem Timeout
-  // und liefern fuer RTP und Netto-Trefferquote trotzdem enge Fehlerbaender.
+  // Tischpoker bleibt fuer Ad-hoc-Messungen messbar, ist aber kein RTP-Gate:
+  // Handverteilung und Kartenschuh pruefen poker-distribution.test.ts und
+  // poker-table.test.ts. 50k halten eine solche Messung unter dem Timeout.
   POKER: 50_000, VIDEO_POKER: 400_000,
 };
 
 /**
  * RTP-Band je Spiel, aus gemessener Streuung abgeleitet (6-30 frische Seeds je Spiel,
  * Monte-Carlo-Standardfehler auf die konfigurierte Rundenzahl hochgerechnet):
- * POKER 0,9169 (50k Haende) | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
+ * POKER 0,9169 (50k Haende, nur Ad-hoc) | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
  * VIDEO_POKER 0,9132 +- 0,0110: VIDEO_POKER ist der fruehere POKER-Wert, die Messung
  * lief weiter, nur der Name des Trägers wanderte um. Tischpoker spielt gegen Gaeste
  * und zahlt Restgeld zurueck; deshalb zaehlt dort nur ein Netto-Gewinn als Treffer.

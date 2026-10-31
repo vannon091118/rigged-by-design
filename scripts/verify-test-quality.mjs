@@ -8,7 +8,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { catalogCodes, fail, ROOT, walk } from './lib/report.mjs';
-import { forEachNode, lineOf, parse, ts } from './lib/ts-ast.mjs';
+import { forEachNode, lineOf, moduleSpecifiers, parse, resolveSpecifier, ts } from './lib/ts-ast.mjs';
 
 const SRC = resolve(ROOT, 'src');
 const codes = catalogCodes();
@@ -38,11 +38,30 @@ for (const file of tests) {
   let asserted = false;
   const isExpectCall = (node) => ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'expect';
   const isTrueLiteral = (node) => node && node.kind === ts.SyntaxKind.TrueKeyword;
+  const isTestCallback = (node) => {
+    if (!ts.isCallExpression(node)) return null;
+    const callback = node.arguments.at(-1);
+    if (!callback || (!ts.isArrowFunction(callback) && !ts.isFunctionExpression(callback))) return null;
+    const callee = node.expression;
+    const base = ts.isCallExpression(callee) ? callee.expression : callee;
+    if (ts.isIdentifier(base) && (base.text === 'it' || base.text === 'test')) return callback;
+    // it.each(...)(...), it.skipIf(...)(...) und weitere Varianten: der letzte
+    // Aufruf traegt den Test-Callback, der innere each-Aufruf nur die Daten.
+    if (ts.isPropertyAccessExpression(base) && ts.isIdentifier(base.expression)
+      && (base.expression.text === 'it' || base.expression.text === 'test')) return callback;
+    return null;
+  };
+  const testBlocks = [];
   forEachNode(source, (node) => {
     if (ts.isCallExpression(node)) {
       if (isExpectCall(node)) {
         asserted = true;
         if (node.arguments[0]?.kind === ts.SyntaxKind.TypeOfExpression) found.typeOf = true;
+      }
+      const callback = isTestCallback(node);
+      if (callback) {
+        const title = ts.isStringLiteralLike(node.arguments[0]) ? node.arguments[0].text : '<each>';
+        testBlocks.push({ node, callback, title });
       }
       if (!ts.isPropertyAccessExpression(node.expression)) return;
       const matcher = node.expression.name.text;
@@ -60,6 +79,54 @@ for (const file of tests) {
     }
   });
   if (!asserted) report('ERR-4002', name, 'keine Assertion vorhanden');
+
+  // Zielbezug: direkte Importe aus dem Ziel oder aus einem Helfermodul, das das
+  // Ziel importiert. Der Bezug wird pro Testfall geprueft, nicht nur irgendwo
+  // in der Datei; ein zufaelliges expect() ohne Zielnaehe reicht nicht.
+  const targetFile = target ? resolve(ROOT, target) : null;
+  const targetIsCode = Boolean(target && /\.(ts|tsx|js|mjs|cjs)$/.test(target));
+  const targetNames = new Set();
+  if (targetFile && targetIsCode) {
+    const normalizedTarget = targetFile.replaceAll('\\', '/');
+    const rootPrefix = resolve(ROOT).replaceAll('\\', '/');
+    forEachNode(source, (node) => {
+      if (!ts.isImportDeclaration(node) || !node.importClause || node.importClause.isTypeOnly) return;
+      const specifier = node.moduleSpecifier.text;
+      const resolved = resolveSpecifier(specifier, file);
+      const direct = resolved === normalizedTarget;
+      let viaHelper = false;
+      if (!direct && resolved && resolved.startsWith(rootPrefix) && !/\.test\.(ts|tsx)$/.test(resolved)) {
+        const helper = parse(resolved);
+        viaHelper = moduleSpecifiers(helper).some((spec) => resolveSpecifier(spec, resolved) === normalizedTarget);
+      }
+      if (!direct && !viaHelper) return;
+      const clause = node.importClause;
+      if (clause.name) targetNames.add(clause.name.text);
+      const bindings = clause.namedBindings;
+      if (bindings && ts.isNamespaceImport(bindings)) targetNames.add(bindings.name.text);
+      else if (bindings && ts.isNamedImports(bindings)) {
+        for (const element of bindings.elements) {
+          if (!element.isTypeOnly) targetNames.add((element.name ?? element.propertyName).text);
+        }
+      }
+    });
+  }
+  let fileUsesTarget = false;
+  const walkTargetUse = (node) => {
+    if (ts.isImportDeclaration(node)) return;
+    if (ts.isIdentifier(node) && targetNames.has(node.text)) fileUsesTarget = true;
+    ts.forEachChild(node, walkTargetUse);
+  };
+  ts.forEachChild(source, walkTargetUse);
+  const targetLinked = !targetIsCode || (targetNames.size > 0 && fileUsesTarget);
+  for (const block of testBlocks) {
+    let hasExpect = false;
+    forEachNode(block.callback, (node) => { if (isExpectCall(node)) hasExpect = true; });
+    if (!hasExpect) report('ERR-4002', name, `Testfall ohne Assertion: ${block.title}`);
+  }
+  if (targetIsCode && targetNames.size === 0) report('ERR-4002', name, `kein Import aus dem Ziel ${target}`);
+  else if (!targetLinked) report('ERR-4002', name, 'kein Testfall mit Assertion und Bezug zum Ziel');
+
   const ordered = [
     [found.seed, 'fester Seed im Test; randomSeed() verwenden'],
     [found.snapshot, 'Snapshot-Test'],

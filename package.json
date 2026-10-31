@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.54",
+  "version": "0.3.55",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:ci": "vitest run",
+    "test:affected": "node scripts/test-affected.mjs",
     "test:perf": "vitest bench --run",
     "soak": "RBD_SOAK_TICKS=100000 vitest run src/core/sim/__tests__/soak.test.ts",
     "balance": "node scripts/balance-run.mjs",
@@ -56,7 +57,8 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.72.1",
     "vite": "^6.0.7",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "yaml": "^2.9.1"
   },
   "overrides": {
     "glob": "^14.0.3",
