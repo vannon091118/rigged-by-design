@@ -27,7 +27,8 @@
     "sync:deps": "node scripts/sync-dependency-matrix.mjs",
     "autofix:0911": "node scripts/autofix-0911.mjs",
     "android:apk": "node scripts/prepare-android.mjs",
-    "turn:finish": "node scripts/turn-push.mjs"
+    "turn:finish": "node scripts/turn-push.mjs",
+    "turn:finish:full": "node scripts/turn-push.mjs --profile=full"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",

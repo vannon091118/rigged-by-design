@@ -12,13 +12,24 @@ const npmRun = (args) =>
 const TARGET_BRANCH = 'main';
 const MAX_PUSH_VERSUCHE = 3;
 
-const verify = npmRun(['run', 'verify:all']);
-if (verify.status !== 0) {
-  fail(1, 'ERR-4006', 'turn:finish', 'verify:all ist rot; kein Commit und kein Push');
+// Quick ist der Normalfall: die meisten Turns brauchen Build und RTP-Nachweise nicht.
+// Voll laeuft ueber `npm run turn:finish:full`; CI prueft jeden Push ohnehin vollstaendig.
+const args = process.argv.slice(2);
+const profileArg = args.find((value) => value.startsWith('--profile='));
+const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
+if (!['quick', 'full'].includes(PROFILE)) {
+  fail(1, 'ERR-4006', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind quick und full`);
   process.exit(1);
 }
+const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : 'verify:quick';
+const paths = args.filter((value) => !value.startsWith('--'));
+console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})`);
 
-const paths = process.argv.slice(2);
+const verify = npmRun(['run', VERIFY_SCRIPT]);
+if (verify.status !== 0) {
+  fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
+  process.exit(1);
+}
 if (paths.length > 0) git(['add', '--', ...paths]);
 else git(['add', '-A']);
 const staged = git(['diff', '--cached', '--name-only']);
@@ -107,8 +118,8 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
       break;
     }
     // Der neu aufgesetzte Baum enthaelt Remote-Arbeit und wurde noch nie geprueft.
-    if (npmRun(['run', 'verify:all']).status !== 0) {
-      fail(1, 'ERR-4006', 'turn:finish', 'verify:all nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal');
+    if (npmRun(['run', VERIFY_SCRIPT]).status !== 0) {
+      fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal`);
       process.exit(1);
     }
     if (paths.length > 0) git(['add', '--', ...paths]);
