@@ -55,7 +55,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
+          # Kein cache: gradle – das Android-Projekt existiert erst nach cap add,
+          # der Cache-Schlüssel-Suchlauf würde den Job sonst rot machen.
 
       - name: Android SDK
         uses: android-actions/setup-android@v3
