@@ -52,7 +52,7 @@ export function pathTo(world: WorldState, from: Point, to: Point): Point[] {
   return findPath(world.size, guestBlocked(world), from, to);
 }
 
-/** Tuer-Tile: liegt vor dem Eingang auf dem Aussenstreifen, nie im Gebaeude. */
+/** Tuertile: liegt vor dem Eingang auf dem Aussenstreifen, nie im Gebaeude. */
 export function doorPoint(world: WorldState): Point {
   const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE') ?? world.zones[0]!;
   return {
@@ -77,7 +77,7 @@ function entranceApron(world: WorldState): Point[] {
 }
 
 /** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur der Eingangsstreifen ist offen. */
-function guestBlocked(world: WorldState): Set<number> {
+export function guestBlocked(world: WorldState): Set<number> {
   const blocked = new Set(blockedTiles(world.size, world.furniture));
   for (const spot of entranceApron(world)) blocked.delete(spot.y * world.size + spot.x);
   return blocked;
@@ -114,22 +114,6 @@ export function entranceSpot(world: WorldState, guestId = 0): Point {
   return door;
 }
 
-/**
- * Eigener Warteplatz an der Kasse: die Schlange steht sichtbar hintereinander,
- * statt dass alle auf dem Bedienpunkt stapeln.
- */
-export function deskQueueSpot(world: WorldState, guest: Guest): Point {
-  const point = exchangePoint(world);
-  if (!point) return guest.position;
-  const index = Math.max(0, guest.queueIndex);
-  const blocked = guestBlocked(world);
-  for (let step = 0; step < 10; step += 1) {
-    const candidate = { x: point.x - (index + step), y: point.y };
-    if (isWalkable(world.size, blocked, candidate.x, candidate.y)) return candidate;
-  }
-  return point;
-}
-
 export function exchangePoint(world: WorldState): Point | null {
   const desk = world.furniture.find((item) => item.kind === 'EXCHANGE');
   return desk ? interactionPoint(world, desk) : null;
@@ -142,14 +126,6 @@ export function guestById(world: WorldState, id: number): Guest | null {
 export function sendGuest(world: WorldState, guest: Guest, target: Point): void {
   guest.path = pathTo(world, guest.position, target);
   guest.pathIndex = 0;
-}
-
-/** Schickt einen Gast auf seinen Platz in der Kassenschlange; nur bei geaendertem Ziel neu. */
-export function sendGuestToQueue(world: WorldState, guest: Guest): void {
-  const target = deskQueueSpot(world, guest);
-  const last = guest.path[guest.path.length - 1];
-  if (last && last.x === target.x && last.y === target.y) return;
-  sendGuest(world, guest, target);
 }
 
 export function canPlace(world: WorldState, x: number, y: number, w: number, h: number, needsAccess = true): boolean {

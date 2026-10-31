@@ -1,8 +1,15 @@
-/** Book-of-VaCoin: 5x3-Walzen, zehn Gewinnlinien, gewichtete Symbole, Freispiele. */
+/** Book-of-VaCoin: drei bis fuenf Walzen, gewichtete Symbole, Freispiele. */
 import type { Prng } from '../../rng/prng';
+import {
+  clampedReels, drawSymbol, FREE_SPINS, lineWin, slotPaylines, SLOT_ROWS, type SlotSymbol,
+} from './slot-paytable';
+import { payScaleFor } from './slot-odds';
+
+export { SLOT_LINES, SLOT_SYMBOLS } from './slot-paytable';
+export { slotJackpotInterval } from './slot-odds';
 
 export interface SlotLineWin {
-  /** Index in `SLOT_LINES`. */
+  /** Index in den Gewinnlinien dieses Geraets. */
   readonly line: number;
   readonly symbol: string;
   readonly count: number;
@@ -15,7 +22,7 @@ interface SlotOutcome {
   readonly detail: readonly string[];
   readonly symbols: readonly string[];
   readonly jackpot: boolean;
-  /** Volles 5x3-Gitter fuer die Anzeige: `grid[walze][reihe]`. */
+  /** Vollstaendiges Gitter fuer die Anzeige: `grid[walze][reihe]`. */
   readonly grid: readonly (readonly string[])[];
   readonly wins: readonly SlotLineWin[];
   readonly books: number;
@@ -24,100 +31,49 @@ interface SlotOutcome {
 interface SlotOptions {
   readonly offset?: number;
   readonly forceWin?: boolean;
+  /** Walzenanzahl des Geraets; ohne Angabe gelten fuenf. */
+  readonly reels?: number;
 }
 
-export const SLOT_SYMBOLS = ['BOOK', 'SCARAB', 'ANKH', 'EYE', 'URN', 'A', 'K', 'Q', 'J'] as const;
-type SymbolId = (typeof SLOT_SYMBOLS)[number];
-
-/** Gewicht je Symbol und Walze; BOOK und SCARAB sind selten, J am haeufigsten. */
-const WEIGHTS: Readonly<Record<SymbolId, number>> = {
-  BOOK: 2, SCARAB: 4, ANKH: 6, EYE: 8, URN: 10, A: 14, K: 18, Q: 22, J: 30,
-};
-
-/** Auszahlung in Basispunkten des Linieneinsatzes fuer 3 / 4 / 5 Treffer. */
-const LINE_PAY: Readonly<Record<SymbolId, readonly [number, number, number]>> = {
-  BOOK: [100_000, 1_000_000, 5_000_000],
-  SCARAB: [50_000, 250_000, 1_000_000],
-  ANKH: [20_000, 100_000, 400_000],
-  EYE: [15_000, 60_000, 250_000],
-  URN: [10_000, 40_000, 150_000],
-  A: [5_000, 20_000, 80_000],
-  K: [4_000, 15_000, 60_000],
-  Q: [3_000, 10_000, 50_000],
-  J: [2_000, 8_000, 40_000],
-};
-
-/** Zehn Linien als Zeilenindex je Walze (0 = oben, 2 = unten). */
-export const SLOT_LINES: readonly (readonly number[])[] = [
-  [1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [2, 2, 2, 2, 2], [0, 1, 2, 1, 0], [2, 1, 0, 1, 2],
-  [0, 0, 1, 2, 2], [2, 2, 1, 0, 0], [1, 0, 0, 0, 1], [1, 2, 2, 2, 1], [0, 1, 1, 1, 0],
-];
-
-const LINES = SLOT_LINES;
-const SLOT_LINE_COUNT = LINES.length;
-/** Skaliert die Paytable; auf 93 % RTP geeicht (siehe Test). */
-const PAY_SCALE = 29.6;
 /** Entladung nach Drucklader: 1,48x auf den Gesamteinsatz, unabhaengig von der Paytable. */
 const FORCED_WIN_BPS = 14_800;
-const FREE_SPINS = 10;
 const MAX_FREE_ROUNDS = 40;
-const WEIGHT_TOTAL = SLOT_SYMBOLS.reduce((sum, symbol) => sum + WEIGHTS[symbol], 0);
 
-/** 3+ BOOKs sind der Top-Treffer; der Erwartungswert kommt aus der Walzenmathematik. */
-function jackpotProbability(): number {
-  const p = WEIGHTS.BOOK / WEIGHT_TOTAL;
-  const q = 1 - p;
-  return 1 - q ** 15 - 15 * p * q ** 14 - 105 * p * p * q ** 13;
-}
-export const SLOT_JACKPOT_INTERVAL = Math.round(1 / jackpotProbability());
-
-function drawSymbol(prng: Prng, weights: Readonly<Record<SymbolId, number>>, total: number): SymbolId {
-  let roll = prng.nextFloat() * total;
-  for (const symbol of SLOT_SYMBOLS) {
-    roll -= weights[symbol];
-    if (roll < 0) return symbol;
-  }
-  return 'J';
+function spinReels(prng: Prng, reels: number): SlotSymbol[][] {
+  return Array.from({ length: reels }, () => Array.from({ length: SLOT_ROWS }, () => drawSymbol(prng)));
 }
 
-function spinReels(prng: Prng): SymbolId[][] {
-  return Array.from({ length: 5 }, () => Array.from({ length: 3 }, () => drawSymbol(prng, WEIGHTS, WEIGHT_TOTAL)));
-}
-
-function shiftReels(reels: SymbolId[][], offset: number): SymbolId[][] {
-  const shift = ((offset % 3) + 3) % 3;
+function shiftReels(reels: SlotSymbol[][], offset: number): SlotSymbol[][] {
+  const shift = ((offset % SLOT_ROWS) + SLOT_ROWS) % SLOT_ROWS;
   if (shift === 0) return reels;
-  return reels.map((reel) => Array.from({ length: 3 }, (_, row) => reel[(row + shift) % 3]!));
+  return reels.map((reel) => Array.from({ length: SLOT_ROWS }, (_, row) => reel[(row + shift) % SLOT_ROWS]!));
 }
 
 /**
  * Setzt eine echte 3er-SCARAB-Linie auf Linie 0 und gibt sie zurueck: Diese Linie zahlt
  * als Entladung den festen Satz, nicht die Paytable (sonst waere sie zehnmal zu gross).
  */
-function forceNonLdw(reels: SymbolId[][]): number {
-  for (let reel = 0; reel < 5; reel += 1) reels[reel]![1] = reel < 3 ? 'SCARAB' : 'J';
+function forceNonLdw(reels: SlotSymbol[][]): number {
+  for (let reel = 0; reel < reels.length; reel += 1) reels[reel]![1] = reel < 3 ? 'SCARAB' : 'J';
   return 0;
 }
 
-/** BOOK ist Wild; drei oder mehr BOOK irgendwo starten die Freispiele. */
-function lineWin(line: readonly SymbolId[]): { symbol: SymbolId; count: number; bps: number } | null {
-  const lead = line.find((symbol) => symbol !== 'BOOK') ?? 'BOOK';
-  let run = 0;
-  for (const symbol of line) {
-    if (symbol === lead || symbol === 'BOOK') run += 1;
-    else break;
-  }
-  if (run < 3) return null;
-  const pay = LINE_PAY[lead];
-  return { symbol: lead, count: run, bps: Math.round(pay[run - 3]! * PAY_SCALE) };
+function countBooks(reels: readonly (readonly SlotSymbol[])[]): number {
+  let books = 0;
+  for (const reel of reels) for (const symbol of reel) if (symbol === 'BOOK') books += 1;
+  return books;
 }
 
-function evaluate(reels: readonly (readonly SymbolId[])[]): { total: number; wins: SlotLineWin[] } {
+function evaluate(
+  reels: readonly (readonly SlotSymbol[])[],
+  lines: readonly (readonly number[])[],
+  scale: number,
+): { total: number; wins: SlotLineWin[] } {
   let total = 0;
   const wins: SlotLineWin[] = [];
-  LINES.forEach((line, index) => {
+  lines.forEach((line, index) => {
     const symbols = line.map((row, reel) => reels[reel]![row]!);
-    const hit = lineWin(symbols);
+    const hit = lineWin(symbols, scale);
     if (!hit) return;
     total += hit.bps;
     wins.push({ line: index, symbol: hit.symbol, count: hit.count, bps: hit.bps });
@@ -125,20 +81,19 @@ function evaluate(reels: readonly (readonly SymbolId[])[]): { total: number; win
   return { total, wins };
 }
 
-function countBooks(reels: readonly (readonly SymbolId[])[]): number {
-  let books = 0;
-  for (const reel of reels) for (const symbol of reel) if (symbol === 'BOOK') books += 1;
-  return books;
-}
-
 /**
  * Eine Runde inklusive Freispielen. `multiplierBps` bezieht sich auf den
- * Gesamteinsatz (alle Linien), nicht auf eine einzelne Linie.
+ * Gesamteinsatz (alle Linien), nicht auf eine einzelne Linie. Walzenanzahl,
+ * Linien und Skalierung kommen alle aus derselben Paytable, deshalb bleibt
+ * die Quote ueber alle Geraetegroessen gleich.
  */
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
-  const reels = shiftReels(spinReels(prng), options.offset ?? 0);
+  const reelCount = clampedReels(options.reels ?? 5);
+  const lines = slotPaylines(reelCount);
+  const scale = payScaleFor(reelCount);
+  const reels = shiftReels(spinReels(prng, reelCount), options.offset ?? 0);
   const forcedLine = options.forceWin ? forceNonLdw(reels) : -1;
-  const { total: lineBps, wins } = evaluate(reels);
+  const { total: lineBps, wins } = evaluate(reels, lines, scale);
 
   const books = countBooks(reels);
   let freeSpins = books >= 3 ? FREE_SPINS : 0;
@@ -147,14 +102,14 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
   while (freeSpins > 0 && rounds < MAX_FREE_ROUNDS) {
     freeSpins -= 1;
     rounds += 1;
-    const extra = spinReels(prng);
-    freeBps += evaluate(extra).total;
+    const extra = spinReels(prng, reelCount);
+    freeBps += evaluate(extra, lines, scale).total;
     if (countBooks(extra) >= 3) freeSpins += FREE_SPINS;
   }
   // Je Linie gewonnen, aber auf den Gesamteinsatz normiert.
   // Die Entladung zahlt ihren festen Satz, nicht die Paytable der erzwungenen Linie.
   const multiplierBps = forcedLine < 0
-    ? Math.round((lineBps + freeBps) / SLOT_LINE_COUNT)
+    ? Math.round((lineBps + freeBps) / lines.length)
     : FORCED_WIN_BPS;
   const label = multiplierBps === 0
     ? 'Niete'

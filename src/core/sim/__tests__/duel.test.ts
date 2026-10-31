@@ -6,6 +6,8 @@ import { Prng } from '../../rng/prng';
 import { duelPreview, resolveDuel } from '../duel';
 import { duelOpponent } from '../duel-opponent';
 import { simulateMugging } from '../mugging';
+import { isInjured, playerMaxHp } from '../player-rpg';
+import { hireAgent } from '../staff';
 import { HAUSKONTO } from '../money';
 import { ROBBERY_ACCOUNT } from '../penalty-pool';
 import { spawnGuest } from '../spawn';
@@ -46,11 +48,14 @@ describe('Duell mit Gegnerprofil', () => {
     const { world } = duelSetup();
     const dispute = world.disputes[0]!;
     const weak = duelPreview(world, dispute)!;
+    // Die Vorschau liest denselben Koerper wie der gefuehrte Kampf.
+    expect([weak.player.hp, weak.player.maxHp]).toEqual([world.player.rpg.hp, playerMaxHp(world.player.rpg)]);
     world.player.rpg.brawlLevel = 6;
     const strong = duelPreview(world, dispute)!;
     expect(strong.opponent).toEqual(weak.opponent);
     expect(strong.winChance).toBeGreaterThan(weak.winChance);
     expect(strong.winChance).toBeLessThanOrEqual(100);
+    expect(strong.player.maxHp).toBeGreaterThan(weak.player.maxHp);
   });
 
   it('Sieg räumt den Streit, gibt XP und entlässt die Beteiligten', () => {
@@ -94,7 +99,7 @@ describe('Duell mit Gegnerprofil', () => {
     const { world, ledger, prng } = duelSetup();
     const entries = ledger.entryCount;
     const result = resolveDuel(world, ledger, prng, 99);
-    expect(result).toEqual({ outcome: 'NONE', opponent: null, mugging: null });
+    expect(result).toEqual({ outcome: 'NONE', opponent: null, mugging: null, fight: null });
     expect(ledger.entryCount).toBe(entries);
   });
 
@@ -107,6 +112,37 @@ describe('Duell mit Gegnerprofil', () => {
     expect(resolveDuel(world, ledger, prng, 1).outcome).toBe('FAR');
     expect(world.disputes).toHaveLength(1);
     expect(ledger.entryCount).toBe(entries);
+  });
+
+  it('weicht einem Security aus, der am Streit steht', () => {
+    const { world, ledger, prng } = duelSetup();
+    const dispute = world.disputes[0]!;
+    const guard = hireAgent(world, ledger, 'guard');
+    guard.x = dispute.x;
+    guard.y = dispute.y;
+    const entries = ledger.entryCount;
+    expect(resolveDuel(world, ledger, prng, 1).outcome).toBe('GUARD');
+    expect(world.disputes).toHaveLength(1);
+    expect(ledger.entryCount).toBe(entries);
+
+    // Erst wenn der Security weg ist, greift der Spieler wieder selbst ein.
+    guard.x = world.size - 2;
+    guard.y = world.size - 2;
+    expect(['WON', 'LOST']).toContain(resolveDuel(world, ledger, prng, 1).outcome);
+    expect(world.disputes).toHaveLength(0);
+  });
+
+  it('eine Niederlage hinterlaesst Verletzung und weniger Lebenspunkte', () => {
+    let lost = false;
+    for (let attempt = 0; attempt < 60 && !lost; attempt += 1) {
+      const { world, ledger, prng } = duelSetup();
+      const result = resolveDuel(world, ledger, prng, 1);
+      if (result.outcome !== 'LOST') continue;
+      lost = true;
+      expect(result.fight!.rounds).toBeGreaterThan(0);
+      expect(isInjured(world.player.rpg) && world.player.rpg.hp < playerMaxHp(world.player.rpg)).toBe(true);
+    }
+    expect(lost).toBe(true);
   });
 });
 

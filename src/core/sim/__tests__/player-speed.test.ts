@@ -19,7 +19,10 @@ import { canPlace } from '../world';
 import { randomSeed } from '../../../test/random-seed';
 
 const rpg = (speedLevel: number): PlayerRpgState =>
-  ({ level: 1, xp: 0, unspentPoints: 0, speedLevel, charismaLevel: 0, brawlLevel: 0 });
+  ({
+    level: 1, xp: 0, unspentPoints: 0, speedLevel, charismaLevel: 0, brawlLevel: 0,
+    hp: 60, injuryTicks: 0,
+  });
 
 /** Freie Reihe suchen, damit der Pfad nicht durch Moebel oder Zonenrand laeuft. */
 function walkRow(steps: number): { world: WorldState; ledger: Ledger; prng: Prng } {

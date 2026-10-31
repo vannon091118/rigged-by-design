@@ -10,7 +10,7 @@ export interface SlotStageHandle {
   gamble: (card: RiskColor, won: boolean) => void;
 }
 
-export const SlotStage = forwardRef<SlotStageHandle, { readonly label: string }>(function SlotStage({ label }, ref) {
+export const SlotStage = forwardRef<SlotStageHandle, { readonly label: string; readonly reels?: number }>(function SlotStage({ label, reels = 5 }, ref) {
   const host = useRef<HTMLDivElement>(null);
   const stage = useRef<SlotCanvas | null>(null);
 
@@ -31,7 +31,7 @@ export const SlotStage = forwardRef<SlotStageHandle, { readonly label: string }>
       .then(() => {
         if (cancelled || !host.current) return;
         host.current.appendChild(app.canvas);
-        stage.current = new SlotCanvas(app);
+        stage.current = new SlotCanvas(app, reels);
         stage.current.layout();
       })
       .catch(() => { stage.current = null; });
@@ -48,7 +48,7 @@ export const SlotStage = forwardRef<SlotStageHandle, { readonly label: string }>
       stage.current = null;
       if (app.renderer) app.destroy(true);
     };
-  }, []);
+  }, [reels]);
 
   return <div className="slot-stage-live" ref={host} role="img" aria-label={label} />;
 });

@@ -133,7 +133,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));
   world.agents = (saved.agents ?? []).map((agent) => ({
     ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null,
-    task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '',
+    task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '', targetDisputeId: agent.targetDisputeId ?? null,
   }));
   world.disputes = (saved.disputes ?? []).map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] }));
   world.parts = saved.parts ?? 2;

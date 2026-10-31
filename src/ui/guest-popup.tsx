@@ -33,6 +33,8 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   const money = guest ? view.guestMoney[guest.id] ?? { wallet: 0, pending: 0, fiat: 0 } : { wallet: 0, pending: 0, fiat: 0 };
   const disputeId = guest?.disputeId ?? null;
   const duel = disputeId === null ? undefined : view.duels[disputeId];
+  // Ein Security vor Ort uebernimmt den Streit – dann greift der Spieler nicht mit.
+  const guardHolding = disputeId !== null && view.disputeGuard[disputeId] === true;
   const talkWait = guest ? view.talkReady[guest.id] ?? 0 : 0;
   return (
     <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide>
@@ -84,18 +86,31 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
                 : 'Erfolg: +25 Laune, +20 Geduld. Fehlschlag: beides sinkt und kann Streit auslösen. Danach rund 30 Sekunden Pause.'}>
               {talkWait > 0 ? `BESCHWATZEN · ${Math.ceil(talkWait * 0.52)} s` : `BESCHWATZEN · ${view.talkChances[guest.id] ?? 0} % Erfolg`}
             </button>
-            {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)} title="Beendet den Streit friedlich.">SCHLICHTEN</button>}
-            {duel && disputeId !== null && !view.disputeGuard[disputeId] && (
+            {guest.disputeId !== null && (
+              <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)}
+                disabled={guardHolding}
+                title={guardHolding
+                  ? 'Ein Security steht am Streit und bearbeitet ihn bereits – gleichzeitig darf niemand eingreifen.'
+                  : 'Beendet den Streit friedlich. Du musst dafür selbst am Streit stehen.'}>
+                SCHLICHTEN
+              </button>
+            )}
+            {duel && disputeId !== null && (
               <button type="button" className="btn small alert" onClick={() => onFight(disputeId)}
-                disabled={!duel.inRange}
-                title={`Duell gegen ${duel.opponent.name} (${duel.opponent.archetype}). Bei einer Niederlage drohen ein Überfall auf Kasse oder Brieftasche, ein Launenschock und bei eskaliertem Streit Rufschaden.`}>
-                {duel.inRange ? 'DUELL GEGEN' : 'ZU WEIT WEG ·'} {duel.opponent.name.split(' ')[0]!.toUpperCase()} · {duel.winChance} %
+                disabled={!duel.inRange || guardHolding}
+                title={guardHolding
+                  ? 'Der Security bearbeitet diesen Streit gerade. Sobald er fertig ist, kannst du eingreifen.'
+                  : !duel.inRange
+                    ? 'Du stehst zu weit weg vom Streit. Geh erst hin, dann kannst du fordern.'
+                    : `Duell gegen ${duel.opponent.name} (${duel.opponent.archetype}). Du kämpfst mit ${duel.player.hp} von ${duel.player.maxHp} Lebenspunkten. Bei einer Niederlage drohen Verletzung, ein Überfall auf Kasse oder Brieftasche, ein Launenschock und bei eskaliertem Streit Rufschaden.`}>
+                {guardHolding ? 'SECURITY VOR ORT ·' : duel.inRange ? 'DUELL GEGEN' : 'ZU WEIT WEG ·'} {duel.opponent.name.split(' ')[0]!.toUpperCase()} · {duel.winChance} %
               </button>
             )}
             {duel && (
               <span className="hint">
-                Gegner: {duel.opponent.archetype} · Kraft {duel.opponent.strength}/10 · Zähigkeit {duel.opponent.toughness}/10
-                {disputeId !== null && view.disputeGuard[disputeId] ? ' · ein Guard beendet den Streit' : ''}
+                Gegner: {duel.opponent.archetype} · Kraft {duel.opponent.strength}/10 · Zähigkeit {duel.opponent.toughness}/10 · LP {duel.opponentHp}
+                {' '}· Du {duel.player.hp}/{duel.player.maxHp} LP{duel.player.injured ? ' · verletzt' : ''}
+                {guardHolding ? ' · Security bearbeitet den Streit' : ''}
               </span>
             )}
           </div>

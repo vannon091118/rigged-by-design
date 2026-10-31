@@ -1,10 +1,15 @@
 /** Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. */
 import type { Prng } from '../rng/prng';
-import type { WorldState } from './types';
+import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
 
 const BRAWL_RANGE = 5;
-const GUARD_RANGE = 7;
+/**
+ * Ein Security bearbeitet einen Streit erst, wenn er tatsaechlich davorsteht.
+ * Weder die Einstellung noch die Distanz allein entscheiden, sondern die Frage,
+ * ob gerade jemand vor Ort ist – und nur das darf die Spieleroption sperren.
+ */
+export const GUARD_HANDLE_RANGE = 2;
 
 const dist = (ax: number, ay: number, bx: number, by: number): number =>
   Math.abs(ax - bx) + Math.abs(ay - by);
@@ -56,21 +61,42 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
 interface DisputeLike { readonly x: number; readonly y: number }
 
 /**
- * Greift hier wirklich ein Guard ein? Die Simulation beendet einen Streit nur
- * dann, und die UI darf die Spieleroption nur dann ausblenden.
+ * Arbeitet gerade ein Security an diesem Streit? Massgeblich ist, dass der
+ * Agent diesen Streit als Auftrag traegt und am Tatort steht – nicht, ob
+ * generell jemand eingestellt ist. Solange das nicht zutrifft, darf der
+ * Spieler selbst eingreifen.
  */
-export function guardResponding(world: WorldState, dispute: DisputeLike): boolean {
-  return world.agents.some((agent) =>
-    agent.role === 'guard' && dist(agent.x, agent.y, dispute.x, dispute.y) <= GUARD_RANGE);
+export function guardHandling(world: WorldState, dispute: DisputeLike & { readonly id?: number }): boolean {
+  return world.agents.some((agent) => {
+    if (agent.role !== 'guard') return false;
+    if (dist(agent.x, agent.y, dispute.x, dispute.y) > GUARD_HANDLE_RANGE) return false;
+    // Ein anderweitig beauftragter Zaehlt nicht: der bearbeitet woanders etwas.
+    return agent.targetDisputeId === null
+      || (dispute.id !== undefined && agent.targetDisputeId === dispute.id);
+  });
 }
 
-/** Eskalation beschädigt Geräte; ein Guard in der Nähe beendet den Disput sofort. */
-/** Die UI darf die Spieleroption nur ausblenden, wenn der Guard wirklich eingreift. */
+/** Der naechste Streit aus Sicht einer Position; ohne Streit gibt es keinen Posten. */
+export function nearestDispute(world: WorldState, from: Point): Dispute | null {
+  let best: Dispute | null = null;
+  let bestDistance = Number.POSITIVE_INFINITY;
+  for (const dispute of world.disputes) {
+    const distance = dist(from.x, from.y, dispute.x, dispute.y);
+    if (distance < bestDistance) { best = dispute; bestDistance = distance; }
+  }
+  return best;
+}
+
+/**
+ * Eskalation beschaedigt Gerate; ein Security, der am Tatort steht, beendet
+ * den Disput sofort. Ein naher, aber anderweitig beauftragter Streit zaehlt
+ * nicht – deshalb pruefen wir die Zuteilung und nicht nur die Distanz.
+ */
 export function tickDisputes(world: WorldState): void {
   for (const dispute of [...world.disputes]) {
     dispute.ticks += 1;
     dispute.level = dispute.ticks > 6 ? 2 : 1;
-    if (guardResponding(world, dispute)) { resolveDispute(world, dispute.id, true); continue; }
+    if (guardHandling(world, dispute)) { resolveDispute(world, dispute.id, true); continue; }
     dispute.guestIds = dispute.guestIds.filter((id) => {
       const guest = guestById(world, id);
       return guest !== null && guest.state === 'ANGRY';
@@ -98,10 +124,15 @@ export function tickDisputes(world: WorldState): void {
   }
 }
 
-/** Der Spieler schlichtet nur, was er körperlich erreicht. */
+/**
+ * Der Spieler schlichtet nur, was er koeperlich erreicht, und nie einen
+ * Streit, den ein Security gerade in Bearbeitung hat – sonst arbeiten beide
+ * gleichzeitig an derselben Sache.
+ */
 export function calmDispute(world: WorldState, id: number): boolean {
   const dispute = world.disputes.find((entry) => entry.id === id);
   if (!dispute) return false;
+  if (guardHandling(world, dispute)) throw new Error('Der Security ist bereits vor Ort und bearbeitet den Streit.');
   if (dist(world.player.position.x, world.player.position.y, dispute.x, dispute.y) > 4) return false;
   resolveDispute(world, id, true);
   return true;

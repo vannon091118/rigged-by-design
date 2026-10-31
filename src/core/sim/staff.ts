@@ -9,6 +9,7 @@ import { exchangeFiat, HAUSKONTO, pendingAccount, STAFF } from './money';
 import type { Prng } from '../rng/prng';
 import type { StaffAgent, StaffRole, WorldState } from './types';
 import { blockedTiles, nearestWalkable } from './pathfinding';
+import { GUARD_HANDLE_RANGE, nearestDispute } from './disputes';
 import { exchangePoint, interactionPoint, pathTo, spawnPoint } from './world';
 
 export const CASHIER_WAIT = 12;
@@ -39,7 +40,7 @@ export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): S
   const spawn = spawnPoint(world);
   const agent: StaffAgent = {
     id: world.nextAgentId++, role, x: spawn.x, y: spawn.y, path: [], pathIndex: 0,
-    carryingCrate: null, workTicks: 0, task: 'idle', blockedReason: '',
+    carryingCrate: null, workTicks: 0, task: 'idle', blockedReason: '', targetDisputeId: null,
   };
   world.agents.push(agent);
   world.lastEvent = `${role === 'guard' ? 'Guard' : role === 'cleaner' ? 'Reinigungskraft'
@@ -158,14 +159,22 @@ function cashierTick(world: WorldState, ledger: Ledger, agent: StaffAgent, prng:
 }
 
 function guardTick(world: WorldState, agent: StaffAgent, prng: Prng): void {
-  const dispute = world.disputes[0];
+  // Der naechste Streit, nicht der erste in der Liste – und nur sein Tatort zaehlt.
+  const dispute = nearestDispute(world, agent);
   if (dispute) {
-    const far = dist(agent.x, agent.y, dispute.x, dispute.y) > 7;
-    setTask(agent, far ? 'toDispute' : 'serve');
-    if (far) stepToward(world, agent, dispute.x, dispute.y);
-    else agent.workTicks += 1;
+    agent.targetDisputeId = dispute.id;
+    if (dist(agent.x, agent.y, dispute.x, dispute.y) <= GUARD_HANDLE_RANGE) {
+      setTask(agent, 'serve');
+      agent.workTicks += 1;
+      return;
+    }
+    setTask(agent, 'toDispute');
+    stepToward(world, agent, dispute.x, dispute.y);
+    // Ohne Weg ist der Posten nicht besetzt: die Spieleroption bleibt offen.
+    if (agent.path.length === 0) setTask(agent, 'toDispute', 'Streit nicht erreichbar');
     return;
   }
+  agent.targetDisputeId = null;
   const angry = world.guests.find((guest) => guest.state === 'ANGRY');
   if (angry) { setTask(agent, 'toGuest', 'beruhigt einen Gast'); stepToward(world, agent, angry.position.x, angry.position.y); return; }
   setTask(agent, 'patrol');

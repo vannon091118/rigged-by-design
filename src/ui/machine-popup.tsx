@@ -72,6 +72,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               bets={[]}
               canPay
               full={full}
+              reels={item.reels}
               onToggleFull={() => setFull((value) => !value)}
               onSpinFor={() => onTest()}
             />
@@ -107,7 +108,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
                 className="btn"
                 onClick={onAddReel}
                 disabled={item.reels >= 5 || view.house < reelCost}
-                title={item.reels >= 5 ? 'Maximal 5 Walzen' : `Kostet ${vc(reelCost, 0)}. Mehr Walzen = mehr Schauwert und Zulauf.`}
+                title={item.reels >= 5 ? 'Maximal 5 Walzen' : `Kostet ${vc(reelCost, 0)}. Mehr Walzen heißt mehr Gewinnlinien und Kombinationen bei gleicher Auszahlungsquote.`}
               >
                 WALZE ERWEITERN ({item.reels}/5 · {item.reels >= 5 ? 'MAX' : vc(reelCost, 0)})
               </button>

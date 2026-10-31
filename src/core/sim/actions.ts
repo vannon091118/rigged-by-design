@@ -2,9 +2,9 @@
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
-import { playPlinkoRound } from '../games/plinko-sandbox';
+import { playPlinkoTest } from '../games/plinko-sandbox';
 import { playSlotTest } from '../games/slot-session';
-import type { Prng } from '../rng/prng';
+import { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
 import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
@@ -98,11 +98,18 @@ export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro):
   item.baseBet = bet;
 }
 
+/**
+ * Ein kostenloser Testspin veraendert weder Welt noch Gerätegedächtnis: fuer
+ * jede Vorschau faellt ein eigener Seed aus Tick und Geraet an, und Plinko
+ * zaehlt dabei weder seine Drops noch die Suchtskala hoch.
+ */
 export function testSpin(item: Furniture, prng: Prng, world?: WorldState): GameResult {
-  if (item.gameId === 'PLINKO' && world) return playPlinkoRound(world, prng, ZERO_VC);
-  // Der Testspin rechnet auf einer Kopie und verbraucht keinen Welt-Zufall.
-  if (item.gameId === 'SLOT' && world) return playSlotTest(item, testSeed(world, item));
-  return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, prng);
+  if (!world) return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, prng);
+  const seed = testSeed(world, item);
+  if (item.gameId === 'PLINKO') return playPlinkoTest(world, seed);
+  if (item.gameId === 'SLOT') return playSlotTest(item, seed);
+  // Auch Tische drehen ihr eigenes Los: keine Vorschau zieht am Weltverlauf.
+  return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, new Prng(seed));
 }
 
 /** Eigener Seed aus Tick und Gerät: der Welt-PRNG bleibt für den Testspin unberührt. */

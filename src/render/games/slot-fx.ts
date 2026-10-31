@@ -8,10 +8,10 @@ const PALETTE = [0x00ffcc, 0xff2e88, 0xffd166, 0xb06bff, 0x6ee7ff] as const;
 const lineColor = (index: number): number => PALETTE[index % PALETTE.length]!;
 
 /** Zeichnet jede bezahlte Linie als Neon-Strahl durch die getroffenen Zellen. */
-export function drawPaylines(wins: readonly SlotLineWin[], cell: number, pad: number): Graphics {
+export function drawPaylines(wins: readonly SlotLineWin[], cell: number, pad: number, reels = 5): Graphics {
   const layer = new Graphics();
   wins.forEach((win, order) => {
-    const points = linePoints(paylineAt(win.line), cell, pad);
+    const points = linePoints(paylineAt(win.line, reels), cell, pad);
     const color = lineColor(order);
     const path = (width: number, alpha: number): void => {
       points.forEach((point, index) => {

@@ -9,7 +9,9 @@ import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import type { WorldState } from '../types';
-import { deskQueueSpot, doorPoint, entranceSpot, freeSeat, reserveSeat } from '../world';
+import { deskQueueSpot } from '../queue-spots';
+import { blockedTiles } from '../pathfinding';
+import { doorPoint, entranceSpot, freeSeat, reserveSeat, pathTo } from '../world';
 import { randomSeed } from '../../../test/random-seed';
 
 function setup(template: WorldState['template'] = 'SMALL') {
@@ -108,5 +110,40 @@ describe('Besucherfluss und Reservierungen', () => {
     expect(world.nextGuestId).toBeGreaterThan(before);
     for (let index = 0; index < 40; index += 1) spawnGuest(world, prng, ledger);
     expect(world.guests.length).toBeGreaterThan(80);
+  });
+
+  it('gibt auch einer langen Schlange eigenen erreichbaren Boden', () => {
+    const { world, ledger, prng } = setup('LARGE');
+    const guests = Array.from({ length: 60 }, () => spawnGuest(world, prng, ledger)!);
+    for (const guest of guests) guest.state = 'EXCHANGE';
+    exchangeQueue(world);
+    const spots = guests.map((guest) => deskQueueSpot(world, guest));
+    expect(new Set(spots.map((spot) => `${spot.x},${spot.y}`)).size).toBe(guests.length);
+
+    const blocked = blockedTiles(world.size, world.furniture);
+    const desk = world.furniture.find((item) => item.kind === 'EXCHANGE')!;
+    for (const spot of spots) {
+      expect(spot.x).toBeGreaterThanOrEqual(0);
+      expect(spot.y).toBeGreaterThanOrEqual(0);
+      expect(spot.x).toBeLessThan(world.size);
+      expect(spot.y).toBeLessThan(world.size);
+      expect(blocked.has(spot.y * world.size + spot.x)).toBe(false);
+      const onDesk = spot.x >= desk.x && spot.x < desk.x + desk.w && spot.y >= desk.y && spot.y < desk.y + desk.h;
+      expect(onDesk).toBe(false);
+    }
+    // Jeder Wartende kommt auch wirklich an seinen Fleck.
+    for (const guest of guests.slice(0, 12)) {
+      expect(pathTo(world, guest.position, deskQueueSpot(world, guest)).length).toBeGreaterThan(0);
+    }
+  });
+
+  it('laesst Wechsler und Auszahler nicht auf demselben Fleck stehen', () => {
+    const { world, ledger, prng } = setup('MEDIUM');
+    const guests = Array.from({ length: 6 }, () => spawnGuest(world, prng, ledger)!);
+    guests.forEach((guest, index) => { guest.state = index % 2 === 0 ? 'EXCHANGE' : 'CASHOUT'; });
+    exchangeQueue(world);
+    const spots = guests.map((guest) => deskQueueSpot(world, guest));
+    expect(new Set(spots.map((spot) => `${spot.x},${spot.y}`)).size).toBe(guests.length);
+    expect(Math.max(...guests.map((guest) => guest.queueIndex))).toBe(guests.length - 1);
   });
 });

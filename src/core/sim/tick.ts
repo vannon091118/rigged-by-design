@@ -8,11 +8,12 @@ import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose }
 import { guestAccount, pendingAccount } from './money';
 import { reputation } from './spawn';
 import { CASHIER_WAIT, tickAgents } from './staff';
-import { playerStepsPerTick } from './player-rpg';
+import { playerStepsPerTick, recoverPlayer } from './player-rpg';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
+import { sendGuestToQueue } from './queue-spots';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
 import type { Guest, WorldState } from './types';
-import { exchangePoint, furnitureById, sendGuest, sendGuestToQueue } from './world';
+import { exchangePoint, furnitureById, sendGuest } from './world';
 
 function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest): void {
   guest.stateTicks += 1;
@@ -115,6 +116,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   staffTick(world, ledger);
   // Nach dem Tageswechsel: Veranstaltungen duerfen die Tagesmeldung ueberschreiben.
   tickDemand(world, ledger, prng);
+  // Verletzung heilt und Lebenspunkte kehren zurueck – im Takt der Welt, nicht der Uhr.
+  recoverPlayer(world.player.rpg, world.tick);
   // Speed-Stufen laufen mehr als einen Pfadschritt pro Tick.
   const steps = playerStepsPerTick(world.player.rpg);
   for (let step = 0; step < steps && world.player.pathIndex < world.player.path.length; step += 1) {

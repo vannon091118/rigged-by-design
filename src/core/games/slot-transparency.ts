@@ -1,5 +1,5 @@
 /** Ehrliches Slot-Gedächtnis und der Drucklader; reine, serialisierbare Zustandslogik. */
-import { SLOT_JACKPOT_INTERVAL, SLOT_SYMBOLS } from './engines/slot';
+import { SLOT_SYMBOLS, slotJackpotInterval } from './engines/slot';
 
 const RECENT_LIMIT = 100;
 /** Ab dieser Ladung ist der naechste bezahlte Spin ein garantierter Treffer. */
@@ -23,12 +23,13 @@ interface SpinPlan {
   readonly forceWin: boolean;
 }
 
-export function createSlotMemory(): SlotMemory {
+export function createSlotMemory(reels = 5): SlotMemory {
+  const interval = slotJackpotInterval(reels);
   return {
     spinsToday: 0,
     spinsSinceLastJackpot: 0,
-    averageJackpotInterval: SLOT_JACKPOT_INTERVAL,
-    currentDrift: -SLOT_JACKPOT_INTERVAL,
+    averageJackpotInterval: interval,
+    currentDrift: -interval,
     recentSymbolHistogram: Object.fromEntries(SLOT_SYMBOLS.map((symbol) => [symbol, 0])),
     recentSpins: [],
     pressureLevel: 0,

@@ -149,4 +149,32 @@ describe('Streit', () => {
     expect(a.disputeId).toBeNull();
     expect(a.state).toBe('CHOOSE');
   });
+
+  it('nur der Security vor Ort nimmt dem Spieler den Streit ab', () => {
+    const { world, ledger, a, b } = angryPair();
+    startDispute(world, a, b);
+    hireAgent(world, ledger, 'guard');
+    const agent = world.agents[0]!;
+    const dispute = world.disputes[0]!;
+    world.player.position = { x: dispute.x, y: dispute.y };
+
+    // Fern genug: der Streit bleibt stehen und der Spieler darf selbst schlichten.
+    agent.x = world.size - 2;
+    agent.y = world.size - 2;
+    for (let i = 0; i < 8; i += 1) tickDisputes(world);
+    expect(world.disputes).toHaveLength(1);
+    expect(calmDispute(world, dispute.id)).toBe(true);
+    expect(world.disputes).toHaveLength(0);
+
+    // Am Tatort: jetzt arbeitet der Security allein, nicht parallel zum Spieler.
+    startDispute(world, a, b);
+    const held = world.disputes[0]!;
+    agent.x = held.x; agent.y = held.y;
+    world.player.position = { x: held.x, y: held.y };
+    a.state = 'ANGRY'; b.state = 'ANGRY';
+    expect(() => calmDispute(world, held.id)).toThrow(/Security/);
+    expect(world.disputes).toHaveLength(1);
+    tickDisputes(world);
+    expect(world.disputes).toHaveLength(0);
+  });
 });

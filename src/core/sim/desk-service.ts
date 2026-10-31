@@ -29,7 +29,11 @@ export function arriveAtDesk(world: WorldState, ledger: Ledger, prng: Prng, gues
   return true;
 }
 
-/** Weist jedem Gast in Warteschlange und Kasse eine eindeutige Position zu. */
+/**
+ * Weist jedem Gast an der Kasse eine eindeutige Position zu. Beide Gruppen
+ * zaehlen in derselben Rangfolge weiter: wer wechselt, steht vorn, wer seine
+ * Auszahlung abholt, dahinter. Zwei Gruppen auf demselben Fleck war der Fehler.
+ */
 export function exchangeQueue(world: WorldState): void {
   // Draussen und drinnen ist eine Schlange: wer zuerst da war, steht vorn.
   const queue = world.guests
@@ -37,5 +41,5 @@ export function exchangeQueue(world: WorldState): void {
     .sort((a, b) => a.id - b.id);
   queue.forEach((guest, index) => { guest.queueIndex = index; });
   const cashier = world.guests.filter((guest) => guest.state === 'CASHOUT').sort((a, b) => a.id - b.id);
-  cashier.forEach((guest, index) => { guest.queueIndex = index; });
+  cashier.forEach((guest, index) => { guest.queueIndex = queue.length + index; });
 }

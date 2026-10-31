@@ -13,14 +13,14 @@ export function playSlotSession(
   bet: VaCoinMicro,
   bonusBps = 0,
 ): GameResult {
-  if (!item.slotMemory) item.slotMemory = createSlotMemory();
+  if (!item.slotMemory) item.slotMemory = createSlotMemory(item.reels);
   const memory = item.slotMemory;
   // Nur was die Maschine einbehalten hat, kann sie als Bonus auszahlen.
   const reference = item.baseBet > ZERO_VC ? item.baseBet : bet;
   const bank = memory.bank ?? 0;
   // Ein Bonus kostet rund zwei Einsaetze; erst ab dieser Deckung darf die Maschine ihn geben.
   const plan = prepareSlotSpin(memory, bank >= reference * 3);
-  const outcome = playSlot(prng, { forceWin: plan.forceWin });
+  const outcome = playSlot(prng, { forceWin: plan.forceWin, reels: item.reels });
   const multiplierBps = outcome.multiplierBps > 0 ? Math.max(0, outcome.multiplierBps + bonusBps) : 0;
   // Was die Maschine einbehaelt, deckt spaetere Entladungen; sie zahlt nie mehr, als sie hat.
   const raw = mulVC(bet, multiplierBps);

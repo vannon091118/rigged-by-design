@@ -1,7 +1,10 @@
 /** Reine Geometrie und Tween-Kurven der Walzenanzeige; ohne Pixi damit testbar. */
-import { SLOT_LINES } from '../../core/games/engines/slot';
+import { slotPaylines } from '../../core/games/engines/slot-paytable';
 
-export const REEL_COUNT = 5;
+/** Fuenf Walzen sind das Standardgitter; Geraete drehen auch drei oder vier. */
+const DEFAULT_REELS = 5;
+
+export const REEL_COUNT = DEFAULT_REELS;
 export const ROW_COUNT = 3;
 
 export interface Point {
@@ -30,6 +33,7 @@ export function linePoints(line: readonly number[], cell: number, pad: number): 
   return line.map((row, reel) => cellCenter(reel, row, cell, pad));
 }
 
-export function paylineAt(index: number): readonly number[] {
-  return SLOT_LINES[index % SLOT_LINES.length]!;
+export function paylineAt(index: number, reels = DEFAULT_REELS): readonly number[] {
+  const lines = slotPaylines(reels);
+  return lines[index % lines.length]!;
 }

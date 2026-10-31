@@ -7,7 +7,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { mulVC, type VaCoinMicro } from '../../economy/vacoin';
-import { playRound } from '../../games/round';
+import { playSlot } from '../../games/engines/slot';
 import { Prng } from '../../rng/prng';
 import { actAtTarget } from '../guest-play';
 import { DEBT_ACCOUNT, fiatAccount, guestAccount, pendingAccount } from '../money';
@@ -78,7 +78,8 @@ describe('Auszahlung und Deckung', () => {
     let win = 0;
     for (let attempt = 0; attempt < 200; attempt += 1) {
       const candidate = randomSeed();
-      const rolled = playRound('SLOT', new Prng(candidate));
+      // Der Seed muss auf der Walzenzahl dieses Geraets gewinnen, nicht auf fuenf.
+      const rolled = playSlot(new Prng(candidate), { reels: slot.reels });
       if (rolled.multiplierBps > 10_000) { seed = candidate; win = rolled.multiplierBps; break; }
     }
     expect(win).toBeGreaterThan(10_000);

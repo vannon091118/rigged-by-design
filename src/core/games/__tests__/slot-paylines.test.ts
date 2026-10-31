@@ -8,6 +8,8 @@
 import { describe, expect, it } from 'vitest';
 import { Prng } from '../../rng/prng';
 import { SLOT_LINES, SLOT_SYMBOLS, playSlot } from '../engines/slot';
+import { slotPaylines } from '../engines/slot-paytable';
+import { payScaleFor } from '../engines/slot-odds';
 import { randomSeed } from '../../../test/random-seed';
 
 describe('Slot-Gitter fuer die Anzeige', () => {
@@ -58,5 +60,42 @@ describe('Slot-Gitter fuer die Anzeige', () => {
       expect(outcome.books).toBe(books);
       expect(outcome.jackpot).toBe(books >= 3);
     }
+  });
+
+  it('dreht genau die Walzen des Geraets und bezahlt dessen Linien', () => {
+    const prng = new Prng(randomSeed());
+    for (const reels of [3, 4, 5]) {
+      const outcome = playSlot(prng, { reels });
+      expect(outcome.grid).toHaveLength(reels);
+      const lines = slotPaylines(reels);
+      for (const win of outcome.wins) {
+        const line = lines[win.line]!;
+        expect(line).toHaveLength(reels);
+        expect(win.count).toBeLessThanOrEqual(reels);
+        const drawn = line.map((row, reel) => outcome.grid[reel]![row]!);
+        for (let index = 0; index < win.count; index += 1) {
+          expect(drawn[index] === win.symbol || drawn[index] === 'BOOK').toBe(true);
+        }
+      }
+    }
+  });
+
+  it('zahlt drei, vier und fuenf Walzen auf demselben Niveau', { timeout: 60_000 }, () => {
+    const measure = (reels: number): number => {
+      const prng = new Prng(randomSeed());
+      const rounds = 120_000;
+      let sum = 0;
+      for (let index = 0; index < rounds; index += 1) sum += playSlot(prng, { reels }).multiplierBps;
+      return sum / rounds / 10_000;
+    };
+    const three = measure(3);
+    const five = measure(5);
+    expect(five).toBeGreaterThan(0.85);
+    expect(five).toBeLessThan(1);
+    // Die Walzenzahl veraendert Kombinationen und Streuung, nicht den Hausvorteil.
+    const gap = Math.abs(three - five);
+    expect(gap, 'drei ' + three.toFixed(3) + ' gegen fuenf ' + five.toFixed(3)).toBeLessThan(0.05);
+    // Weniger Trefferkombinationen brauchen dafuer eine groessere Skalierung.
+    expect(payScaleFor(3)).toBeGreaterThan(payScaleFor(5));
   });
 });

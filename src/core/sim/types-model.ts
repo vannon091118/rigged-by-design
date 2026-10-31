@@ -164,6 +164,8 @@ export interface StaffAgent {
   /** Expliziter Auftrag statt aus dem Pfad geraten. */
   task: StaffTask;
   blockedReason: string;
+  /** Streit, den dieser Agent gerade als Auftrag traegt; ohne Streit null. */
+  targetDisputeId: number | null;
 }
 
 export interface Dispute {

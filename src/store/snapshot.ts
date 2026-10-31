@@ -4,7 +4,7 @@ import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
 import { duelPreview, type DuelPreview } from '../core/sim/duel';
 import { demandBreakdown } from '../core/sim/demand';
-import { guardResponding } from '../core/sim/disputes';
+import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
 import type { WorldState } from '../core/sim/types';
@@ -73,8 +73,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),
     // Restticks bis die Ansprache wieder frei ist; die UI zaehlt daraus die Sekunden.
     talkReady: Object.fromEntries(world.guests.map((guest) => [guest.id, Math.max(0, (guest.talkReadyTick ?? 0) - world.tick)])),
-    // Nur ein Guard in Reichweite beendet den Streit; die UI folgt derselben Aussage.
-    disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardResponding(world, dispute)])),
+    // Nur ein Security vor Ort beendet den Streit; die UI folgt derselben Aussage.
+    disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardHandling(world, dispute)])),
     duels,
     house: ledger.getBalance(HAUSKONTO),
     wallet: ledger.getBalance(PORTEMONNAIE),

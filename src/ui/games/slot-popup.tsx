@@ -19,6 +19,8 @@ interface Props {
   readonly bets: readonly number[];
   readonly canPay: boolean;
   readonly full: boolean;
+  /** Walzenanzahl des Geraets; die Buehne zeigt, was die Engine dreht. */
+  readonly reels?: number;
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
@@ -30,7 +32,7 @@ const stakeOf = (result: GameResult | null): number =>
   result ? Number((result.payout / 10_000).toFixed(2)) : 0;
 
 export function SlotPopup(props: Props) {
-  const { title, subtitle, bets, canPay, full, onSpinFor, onGamble } = props;
+  const { title, subtitle, bets, canPay, full, reels, onSpinFor, onGamble } = props;
   const stage = useRef<SlotStageHandle>(null);
   const [bet, setBet] = useState(bets[0] ?? 0);
   const [spinning, setSpinning] = useState(false);
@@ -94,7 +96,7 @@ export function SlotPopup(props: Props) {
         <p>{subtitle}</p>
       </div>
 
-      <SlotStage ref={stage} label={`Walzen von ${title}`} />
+      <SlotStage ref={stage} label={`Walzen von ${title}`} reels={reels} />
 
       <p className="slot-narration" aria-live="polite">
         {spinning
