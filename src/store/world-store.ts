@@ -31,7 +31,7 @@ import { tickWorld } from '../core/sim/tick';
 import type { CarpetId, ModId, Point, StaffRole, TemplateId, WorldState } from '../core/sim/types';
 import { Prng } from '../core/rng/prng';
 import { buildView } from './snapshot';
-import { clearOldSave, loadWorld, saveWorld } from './save';
+import { clearOldSave, loadWorld, SAVE_FAILED_NOTICE, saveWorld } from './save';
 import type { GameView } from './types';
 const TICK_MS = 520;
 class WorldStore {
@@ -342,8 +342,8 @@ class WorldStore {
   }
   #emit(save = true): void {
     settleMoneyJournal(this.#world, this.#ledger);
+    if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE;
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
-    if (save) saveWorld(this.#world, this.#ledger, this.#prng.getState());
     for (const listener of this.#listeners) listener();
   }
 }

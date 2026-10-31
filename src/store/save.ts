@@ -75,10 +75,16 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
   };
 }
 
-export function saveWorld(world: WorldState, ledger: Ledger, prngState: number): void {
+export const SAVE_FAILED_NOTICE = 'Speichern fehlgeschlagen: Browser-Speicher voll oder gesperrt. Fortschritt geht beim Neuladen verloren.';
+
+/** Gibt false zurueck, wenn der Browser den Stand nicht speichern konnte (z. B. Speicher voll). */
+export function saveWorld(world: WorldState, ledger: Ledger, prngState: number): boolean {
   try {
     localStorage.setItem(KEY, JSON.stringify(toSavedGame(world, ledger, prngState)));
-  } catch { /* quota oder storage blocked */ }
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /** Baut Welt und Ledger aus einem gespeicherten Stand; v5/v6 werden dabei gehoben. */
