@@ -37,6 +37,7 @@ interface WorkflowJob {
 interface WorkflowTrigger {
   readonly pull_request?: {
     readonly branches?: readonly string[];
+    readonly types?: readonly string[];
     readonly 'branches-ignore'?: unknown;
   };
   readonly push?: {
@@ -132,6 +133,22 @@ describe('Main-Gate', () => {
     expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe('${{ inputs.soak_ticks }}');
     expect(stepWith(long, 'balance', 'balance-run.mjs')?.run).toContain('--days=${{ inputs.balance_days }}');
     expect(stepWith(long, 'bench', 'npm run test:perf')?.run).toBe('npm run test:perf');
+  });
+
+  it('loescht Wegwerf-Branches nach einem Merge mit gruenen Gates', () => {
+    const cleanup = workflow('pr-cleanup.yml');
+    expect(cleanup.on?.pull_request?.types).toEqual(['closed']);
+    expect(cleanup.permissions?.contents).toBe('write');
+
+    const condition = cleanup.jobs?.['delete-branch']?.if ?? '';
+    expect(condition).toContain('github.event.pull_request.merged == true');
+    expect(condition).toContain("head.ref != 'main'");
+    expect(condition).toContain('head.repo.full_name == github.repository');
+    expect(condition).toContain('keep-branch');
+
+    const step = steps(cleanup, 'delete-branch')[0];
+    expect(step?.env?.BRANCH).toContain('head.ref');
+    expect(step?.run).toContain('gh api -X DELETE');
   });
 
   it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {

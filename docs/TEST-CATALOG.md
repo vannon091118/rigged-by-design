@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `npm run test:affected` an GitHub Actions (`npm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 84 Dateien — contract 50 · integration 15 · governance 8 · statistics 6 · performance 5.
+Summe: 85 Dateien — contract 50 · integration 15 · governance 9 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -39,6 +39,7 @@ Summe: 84 Dateien — contract 50 · integration 15 · governance 8 · statistic
 | `src/core/games/engines/__tests__/blackjack.test.ts` | games | contract | ja | `src/core/games/engines/blackjack.ts` |
 | `src/core/games/engines/__tests__/interactive-cards.test.ts` | games | contract | ja | `src/core/games/engines/interactive-cards.ts` |
 | `src/core/governance/__tests__/affected-tests.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
+| `src/core/governance/__tests__/branch-prune.test.ts` | pipeline | governance | ja | `scripts/lib/branch-prune.mjs` |
 | `src/core/governance/__tests__/ci-gates.test.ts` | ci | governance | ja | `.github/workflows/ci-verify.yml` |
 | `src/core/governance/__tests__/dependency-governance.test.ts` | governance | contract | ja | `src/core/governance/error-codes.ts` |
 | `src/core/governance/__tests__/gate-runner.test.ts` | pipeline | governance | ja | `scripts/lib/gate-runner.mjs` |
