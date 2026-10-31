@@ -5,6 +5,7 @@ import type { Prng } from '../rng/prng';
 import { buildDistribution, rollNumber } from '../rng/weighted';
 import { HAUSKONTO, PORTEMONNAIE } from './money';
 import { ROBBERY_ACCOUNT } from './penalty-pool';
+import { agentsInRange } from './staff-queries';
 import type { WorldState } from './types';
 
 /** Was der Überfall vom Gegner braucht; das Duell reicht sein Profil hierher. */
@@ -28,18 +29,12 @@ const AGENT_COVER = 8;
 const BASE_ESCAPE = 30;
 const NERVE_PER_POINT = 5;
 
-const distance = (ax: number, ay: number, bx: number, by: number): number =>
-  Math.abs(ax - bx) + Math.abs(ay - by);
-
 /** Ein Guard in Reichweite deckt die Kasse; andere Angestellte stören nur. */
 function coverAt(world: WorldState, x: number, y: number): number {
-  let cover = 0;
-  for (const agent of world.agents) {
-    const range = distance(agent.x, agent.y, x, y);
-    if (agent.role === 'guard' && range <= GUARD_COVER_RANGE) cover += GUARD_COVER;
-    else if (range <= 2) cover += AGENT_COVER;
-  }
-  return cover;
+  const point = { x, y };
+  const guards = agentsInRange(world, point, GUARD_COVER_RANGE, 'guard');
+  const others = agentsInRange(world, point, 2) - guards;
+  return guards * GUARD_COVER + Math.max(0, others) * AGENT_COVER;
 }
 
 /**

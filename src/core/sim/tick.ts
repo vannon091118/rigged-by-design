@@ -8,6 +8,7 @@ import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose }
 import { guestAccount, pendingAccount } from './money';
 import { reputation } from './spawn';
 import { CASHIER_WAIT, tickAgents } from './staff';
+import { hasActiveGuard } from './staff-queries';
 import { playerStepsPerTick, recoverPlayer } from './player-rpg';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { sendGuestToQueue } from './queue-spots';
@@ -21,7 +22,7 @@ function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
     // Randaliert wird am Angebot, nicht an Kasse, Lager oder Personalinfrastruktur.
     const candidates = world.furniture.filter((item) => item.gameId || item.kind === 'DECOR');
     const target = candidates[prng.nextInt(0, Math.max(0, candidates.length - 1))];
-    const guard = world.staff.guard;
+    const guard = hasActiveGuard(world);
     if (target && prng.nextFloat() < (guard ? 0.25 : 0.6)) {
       const damage = 4 + prng.nextInt(0, 10);
       target.condition = Math.max(0, target.condition - damage);

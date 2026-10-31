@@ -297,7 +297,7 @@ class WorldStore {
       const reason = error instanceof Error ? error.message : 'Board ungueltig.';
       this.#notice = reason;
       this.#emit(false);
-      return { ok: false, measuredRtp: 0, reason };
+      return { ok: false, measuredRtp: 0, reason, ciLow: 0, ciHigh: 0, samples: 0, seeds: 0 };
     }
   }
   setPlinkoMode(mode: PlinkoMode): void {

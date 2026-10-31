@@ -9,6 +9,7 @@ import { migrateReels } from '../core/games/slot-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
+import { repairGuardAgent, restoreStaff } from './migrate-staff';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 const DEMAND_EVENTS: ReadonlySet<string> = new Set(['NEON_NACHT', 'TURNIER_ABEND']);
@@ -118,7 +119,8 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) } };
   world.dirty = new Set(saved.dirty ?? []);
   world.prices = { ...world.prices, ...(saved.prices ?? {}) };
-  world.staff = { ...world.staff, ...(saved.staff ?? {}) };
+  // Der alte Guard lebte als Flag neben den Agenten: gelesen, nicht uebernommen.
+  const legacyGuardHired = restoreStaff(world, saved.staff);
   world.tick = saved.tick ?? 0;
   world.day = saved.day ?? 1;
   world.nextGuestId = saved.nextGuestId ?? 1;
@@ -148,6 +150,8 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.wcLevel = saved.wcLevel ?? 1;
   world.nextCrateId = saved.nextCrateId ?? world.crates.reduce((max, crate) => Math.max(max, crate.id + 1), 1);
   world.nextAgentId = saved.nextAgentId ?? world.agents.reduce((max, agent) => Math.max(max, agent.id + 1), 1);
+  // Was frueher als eingestellt galt, bleibt eingestellt: der Guard-Agent fehlt.
+  repairGuardAgent(world, legacyGuardHired);
   world.nextDisputeId = saved.nextDisputeId ?? world.disputes.reduce((max, dispute) => Math.max(max, dispute.id + 1), 1);
   const agentIds = new Set(world.agents.map((agent) => agent.id));
   for (const crate of world.crates) {

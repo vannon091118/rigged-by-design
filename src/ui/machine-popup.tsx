@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { GameResult } from '../core/games/contracts';
 import type { GateResult } from '../core/games/plinko-sandbox';
 import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
+import { MAX_REELS, reelUpgradeCost } from '../core/games/slot-config';
 import { MODS, attractionValue, getMod } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { SlotProfile } from '../core/games/slot-profile';
@@ -41,7 +42,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
   const [result, setResult] = useState<GameResult | null>(null);
   const isGame = Boolean(item.gameId);
   const attraction = Math.round(attractionValue(item));
-  const reelCost = (4 + item.reels * 2) * 10_000;
+  const reelCost = reelUpgradeCost(item.reels);
   const spin = (): void => {
     if (spinning || !isGame) return;
     setSpinning(true);
@@ -111,10 +112,10 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
                 type="button"
                 className="btn"
                 onClick={onAddReel}
-                disabled={item.reels >= 5 || view.house < reelCost}
-                title={item.reels >= 5 ? 'Maximal 5 Walzen' : `Kostet ${vc(reelCost, 0)}. Mehr Walzen heißt mehr Gewinnlinien und Kombinationen bei gleicher Auszahlungsquote.`}
+                disabled={item.reels >= MAX_REELS || view.house < reelCost}
+                title={item.reels >= MAX_REELS ? `Maximal ${MAX_REELS} Walzen` : `Kostet ${vc(reelCost, 0)}. Mehr Walzen heißt mehr Gewinnlinien und Kombinationen bei gleicher Auszahlungsquote.`}
               >
-                WALZE ERWEITERN ({item.reels}/5 · {item.reels >= 5 ? 'MAX' : vc(reelCost, 0)})
+                WALZE ERWEITERN ({item.reels}/{MAX_REELS} · {item.reels >= MAX_REELS ? 'MAX' : vc(reelCost, 0)})
               </button>
             )}
           </div>

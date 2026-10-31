@@ -43,7 +43,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     player: { position: { x: entrance ? entrance.x + 2 : 2, y: entrance ? entrance.y + 2 : 15 }, path: [], pathIndex: 0, carrying: '', rpg: newPlayerRpg() },
     dirty: new Set<number>(),
     prices: { ...PRICES },
-    staff: { guard: false, cleaner: false, bartender: false, cashier: false, porter: false },
+    staff: { cleaner: false, bartender: false, cashier: false, porter: false },
     carpet,
     tick: 0,
     day: 1,

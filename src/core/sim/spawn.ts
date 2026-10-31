@@ -6,6 +6,7 @@ import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
 import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
+import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
 
@@ -24,7 +25,7 @@ export function reputation(world: WorldState): number {
   const served = 22 * (1 - Math.exp(-world.guestsServed / 80));
   const experience = Math.max(-14, Math.min(14, (world.satisfaction - 55) * 0.35));
   const staff = (world.staff.cleaner ? 3 : 0) + (world.staff.bartender ? 3 : 0)
-    + (world.staff.cashier ? 2 : 0) + (world.staff.guard ? 2 : 0) + (world.staff.porter ? 1 : 0);
+    + (world.staff.cashier ? 2 : 0) + (hasStaff(world, 'guard') ? 2 : 0) + (world.staff.porter ? 1 : 0);
   const dirt = Math.min(10, world.dirty.size * 0.8);
   const attraction = Math.min(8, attractionOf(world) / 150);
   const value = 5 + served + condition * 15 * scale + (quality - 1) * 16 * scale

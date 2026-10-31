@@ -24,8 +24,8 @@ interface PegPhysics {
 }
 interface PlinkoProgress { readonly rows: number; readonly specials: number; }
 
-const PLINKO_BASE_ROWS = 8;
-const PLINKO_MAX_ROWS = 12;
+export const PLINKO_BASE_ROWS = 8;
+export const PLINKO_MAX_ROWS = 12;
 const PEG_COLUMNS = 8;
 
 export const PEG_PHYSICS: Readonly<Record<PegKind, PegPhysics>> = {

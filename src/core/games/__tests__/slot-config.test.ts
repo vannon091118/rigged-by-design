@@ -17,7 +17,7 @@ import type { Furniture } from '../../sim/types';
 import { playSlot } from '../engines/slot';
 import { slotPaylines, SLOT_SYMBOLS } from '../engines/slot-paytable';
 import { slotChances } from '../slot-profile';
-import { assertSlotConfig, MAX_REELS, migrateReels, MIN_REELS, ROWS, slotConfig, slotConfigOf, type SlotConfig } from '../slot-config';
+import { assertSlotConfig, MAX_REELS, migrateReels, MIN_REELS, reelUpgradeCost, ROWS, slotConfig, slotConfigOf, type SlotConfig } from '../slot-config';
 import { randomSeed } from '../../../test/random-seed';
 
 const prng = (): Prng => new Prng(randomSeed() || 1);
@@ -86,6 +86,37 @@ describe('Maschinenkonfiguration', () => {
     expect(chances.linesPerSpin).toBe(slotChances(config.reels, item.slotOdds).linesPerSpin);
     expect(playSlot(prng(), { config }).grid.length).toBe(config.reels);
     expect(slotConfig().reels).toBe(MAX_REELS);
+  });
+
+  it('verlangt für jede weitere Walze genau den einen Kostenwert', () => {
+    expect(reelUpgradeCost(MIN_REELS)).toBe(fromVC(4 + MIN_REELS * 2));
+    expect(reelUpgradeCost(MAX_REELS)).toBeGreaterThan(reelUpgradeCost(MIN_REELS));
+
+    const world = createWorld('SMALL');
+    const item = world.furniture.find((entry) => entry.gameId === 'SLOT')!;
+    const ledger = new Ledger({ [HAUSKONTO]: fromVC(100) });
+    item.reels = MIN_REELS;
+    const before = ledger.getBalance(HAUSKONTO);
+
+    upgradeReels(world, ledger, item.id);
+
+    expect(before - ledger.getBalance(HAUSKONTO)).toBe(reelUpgradeCost(MIN_REELS));
+  });
+
+  it('mehr Walzen bedeuten mehr Linien und häufigeren Bonus bei gleicher Quote', () => {
+    const three = slotChances(MIN_REELS, undefined);
+    const four = slotChances(MIN_REELS + 1, undefined);
+    const five = slotChances(MAX_REELS, undefined);
+
+    expect(three.rtpBps).toBe(four.rtpBps);
+    expect(four.rtpBps).toBe(five.rtpBps);
+    expect(five.rtpBps).toBeGreaterThanOrEqual(9_000);
+    expect(five.rtpBps).toBeLessThanOrEqual(9_600);
+    expect(three.linesPerSpin).toBeLessThan(four.linesPerSpin);
+    expect(four.linesPerSpin).toBeLessThan(five.linesPerSpin);
+    expect(three.bonusEvery).toBeGreaterThan(four.bonusEvery);
+    expect(four.bonusEvery).toBeGreaterThan(five.bonusEvery);
+    expect(slotPaylines(MAX_REELS).length).toBeGreaterThan(slotPaylines(MIN_REELS).length);
   });
 
   it('begrenzt alte Walzenzahlen beim Lesen statt sie verwerfen zu lassen', () => {

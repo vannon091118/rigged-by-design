@@ -14,6 +14,7 @@ import { companyStatus, isUnlocked } from '../progression';
 import { remodel, remodelRequirements } from '../remodel';
 import { reputation } from '../spawn';
 import { hireAgent } from '../staff';
+import { hasStaff } from '../staff-queries';
 import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
 import type { StaffRole, TemplateId, WorldState } from '../types';
@@ -90,7 +91,7 @@ function operate(world: WorldState, ledger: Ledger, tick: number): WorldState {
       return rank >= 2;
     };
     for (const role of roles) {
-      if (needed(role) && !world.staff[role]) doIt(() => hireAgent(world, ledger, role));
+      if (needed(role) && !hasStaff(world, role)) doIt(() => hireAgent(world, ledger, role));
     }
     const next = NEXT[world.template];
     const need = next ? remodelRequirements(next) : null;

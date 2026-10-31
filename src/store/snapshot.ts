@@ -7,9 +7,15 @@ import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
+import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
-import type { GameView } from './types';
+import type { GameView, StaffView } from './types';
+
+/** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
+function staffView(world: WorldState): StaffView {
+  return { ...world.staff, guard: hasStaff(world, 'guard') };
+}
 
 function worldSnapshot(world: WorldState) {
   return {
@@ -24,7 +30,9 @@ function worldSnapshot(world: WorldState) {
     dirtyTiles: new Set(world.dirty),
     tick: world.tick,
     day: world.day,
-    staff: { ...world.staff },
+    // Die UI sieht, ob ein Guard existiert – das leitet sich jetzt aus seinem
+    // Agenten ab, nicht aus einem eigenen Flag.
+    staff: staffView(world),
     prices: { ...world.prices },
     carpet: world.carpet,
     lastEvent: world.lastEvent,

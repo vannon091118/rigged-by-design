@@ -131,7 +131,6 @@ export interface PriceBook {
 }
 
 export interface StaffState {
-  guard: boolean;
   cleaner: boolean;
   bartender: boolean;
   cashier: boolean;

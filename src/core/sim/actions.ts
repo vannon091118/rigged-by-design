@@ -1,9 +1,9 @@
 /** Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. */
 import type { Ledger } from '../economy/ledger';
-import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
+import { ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
 import { playSandboxGame, sandboxSeed, testSandbox } from '../games/sandbox';
-import { isValidReels, MAX_REELS, slotConfig } from '../games/slot-config';
+import { isValidReels, MAX_REELS, reelUpgradeCost, slotConfig } from '../games/slot-config';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
@@ -82,7 +82,7 @@ export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number):
   if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Walzen.');
   if (!isValidReels(item.reels)) throw new Error('Die Walzenzahl dieser Maschine ist ungueltig.');
   if (item.reels >= MAX_REELS) throw new Error('Mehr Walzen passen nicht hinein.');
-  ledger.transfer(HAUSKONTO, SHOP, fromVC(4 + item.reels * 2), 'walze erweitern', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, reelUpgradeCost(item.reels), 'walze erweitern', world.tick);
   item.reels += 1;
 }
 

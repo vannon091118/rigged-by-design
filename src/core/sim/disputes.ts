@@ -1,5 +1,6 @@
 /** Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. */
 import type { Prng } from '../rng/prng';
+import { staffAgents } from './staff-queries';
 import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
 
@@ -67,8 +68,7 @@ interface DisputeLike { readonly x: number; readonly y: number }
  * Spieler selbst eingreifen.
  */
 export function guardHandling(world: WorldState, dispute: DisputeLike & { readonly id?: number }): boolean {
-  return world.agents.some((agent) => {
-    if (agent.role !== 'guard') return false;
+  return staffAgents(world, 'guard').some((agent) => {
     if (dist(agent.x, agent.y, dispute.x, dispute.y) > GUARD_HANDLE_RANGE) return false;
     // Ein anderweitig beauftragter Zaehlt nicht: der bearbeitet woanders etwas.
     return agent.targetDisputeId === null

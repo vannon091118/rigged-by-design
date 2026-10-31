@@ -33,10 +33,11 @@ function setTask(agent: StaffAgent, task: StaffAgent['task'], blockedReason = ''
 /** Einstellen kostet einmalig einen Tagessatz und stellt den Agenten an den Eingang. */
 export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): StaffAgent {
   const existing = world.agents.find((agent) => agent.role === role);
-  if (world.staff[role] && existing) return existing;
+  if (existing) return existing;
   ledger.transfer(HAUSKONTO, STAFF, wageFor(world, role), 'einstellung', world.tick);
-  world.staff[role] = true;
+  // Der Guard besitzt kein zweites Ja/Nein mehr: sein Agent ist die Anstellung.
   if (role === 'guard') world.guardsHired += 1;
+  else world.staff[role] = true;
   const spawn = spawnPoint(world);
   const agent: StaffAgent = {
     id: world.nextAgentId++, role, x: spawn.x, y: spawn.y, path: [], pathIndex: 0,
@@ -52,7 +53,7 @@ export function hireAgent(world: WorldState, ledger: Ledger, role: StaffRole): S
 }
 
 export function fireAgent(world: WorldState, role: StaffRole): void {
-  world.staff[role] = false;
+  if (role !== 'guard') world.staff[role] = false;
   world.agents = world.agents.filter((agent) => agent.role !== role);
   for (const crate of world.crates) {
     if (typeof crate.carriedBy === 'number' && !world.agents.some((agent) => agent.id === crate.carriedBy)) {

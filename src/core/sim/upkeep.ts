@@ -7,13 +7,14 @@ import { becomeAngry } from './guests';
 import { HAUSKONTO, payOrBorrow, STAFF, UTILITIES } from './money';
 import { tickNeeds } from './needs';
 import { tickPenaltyDays } from './penalty-pool';
+import { hasStaff } from './staff-queries';
 import type { WorldState } from './types';
 
 export function staffTick(world: WorldState, ledger: Ledger): void {
   if (world.tick % TICKS_PER_DAY !== 0) return;
   world.day += 1;
   tickPenaltyDays(world);
-  const wages = ((world.staff.guard ? world.prices.guardWage : 0)
+  const wages = ((hasStaff(world, 'guard') ? world.prices.guardWage : 0)
     + (world.staff.cleaner ? world.prices.staffWage : 0)
     + (world.staff.bartender ? world.prices.staffWage : 0)
     + (world.staff.cashier ? world.prices.cashierWage : 0)

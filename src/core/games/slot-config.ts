@@ -8,6 +8,7 @@
  */
 import { clampedReels, SLOT_SYMBOLS, slotPaylines, weightTotal, type SlotSymbol } from './engines/slot-paytable';
 import { DEFAULT_SLOT_PROFILE, normalizeSlotProfile, type SlotProfile } from './slot-profile';
+import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 
 /** Nur diese Walzenzahlen sind spielbar; alles andere ist ein Konfigurationsfehler. */
 export const MIN_REELS = 3;
@@ -47,6 +48,14 @@ export function migrateReels(value: unknown): number {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return MIN_REELS;
   return clampedReels(Math.round(parsed));
+}
+
+/**
+ * Kosten der nächsten Walze: die eine Quelle für die Buchung und für die
+ * Oberfläche. Was der Button zeigt, ist genau das, was das Ledger bucht.
+ */
+export function reelUpgradeCost(reels: number): VaCoinMicro {
+  return fromVC(4 + reels * 2);
 }
 
 export function assertSlotConfig(config: SlotConfig): void {

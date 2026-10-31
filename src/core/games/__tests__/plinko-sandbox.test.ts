@@ -123,4 +123,18 @@ describe('RTP-Gate', () => {
     expect(table).toHaveLength(9);
     expect(table[0]).toBeGreaterThan(table[4]!);
   });
+
+  it('belegt das Ergebnis mit mehreren Seeds und einem Konfidenzintervall', () => {
+    const gate = deployGate(defaultPlinkoConfig(), 8);
+
+    expect(gate.seeds).toBeGreaterThan(1);
+    expect(gate.samples % gate.seeds).toBe(0);
+    expect(gate.samples).toBeGreaterThanOrEqual(3_000);
+    expect(gate.ciLow).toBeLessThanOrEqual(gate.measuredRtp);
+    expect(gate.ciHigh).toBeGreaterThanOrEqual(gate.measuredRtp);
+    // Die Stichprobe muss eng genug sein, um ueber das Hausband entscheiden zu duerfen.
+    expect((gate.ciHigh - gate.ciLow) / 2).toBeLessThan(0.03);
+    expect(gate.reason).toContain('95 %-KI');
+    expect(gate.reason).toContain(`${gate.samples} Wuerfen`);
+  });
 });

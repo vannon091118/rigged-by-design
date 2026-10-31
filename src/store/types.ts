@@ -1,11 +1,23 @@
 /** Was die UI sieht: Welt plus abgeleitete Ledger-Werte. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
-import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
+import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
+
+/**
+ * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
+ * aus einem eigenen Flag, das danebenliegen kann.
+ */
+export interface StaffView {
+  readonly guard: boolean;
+  readonly cleaner: boolean;
+  readonly bartender: boolean;
+  readonly cashier: boolean;
+  readonly porter: boolean;
+}
 
 export interface GameView {
   readonly template: TemplateId;
@@ -20,7 +32,7 @@ export interface GameView {
   readonly dirtyTiles: ReadonlySet<number>;
   readonly tick: number;
   readonly day: number;
-  readonly staff: StaffState;
+  readonly staff: StaffView;
   readonly prices: PriceBook;
   readonly carpet: CarpetId;
   readonly lastEvent: string;
