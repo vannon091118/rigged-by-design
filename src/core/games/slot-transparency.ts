@@ -2,6 +2,8 @@
 import { SLOT_JACKPOT_INTERVAL, SLOT_SYMBOLS } from './engines/slot';
 
 const RECENT_LIMIT = 100;
+/** Ab dieser Ladung ist der naechste bezahlte Spin ein garantierter Treffer. */
+const CHARGE_LEVEL = 7;
 
 export interface SlotMemory {
   spinsToday: number;
@@ -11,14 +13,13 @@ export interface SlotMemory {
   recentSymbolHistogram: Record<string, number>;
   recentSpins: string[][];
   pressureLevel: number;
-  freeSpins: number;
-  freeOffset: number;
+  /** Volle Ladung: der naechste bezahlte Spin gewinnt garantiert. */
   chargeReady: boolean;
+  /** Einbehaltener Vorsprung der Maschine, aus dem die Entladung bezahlt wird. */
+  bank?: number;
 }
 
 interface SpinPlan {
-  readonly free: boolean;
-  readonly offset: number;
   readonly forceWin: boolean;
 }
 
@@ -31,9 +32,8 @@ export function createSlotMemory(): SlotMemory {
     recentSymbolHistogram: Object.fromEntries(SLOT_SYMBOLS.map((symbol) => [symbol, 0])),
     recentSpins: [],
     pressureLevel: 0,
-    freeSpins: 0,
-    freeOffset: 0,
     chargeReady: false,
+    bank: 0,
   };
 }
 
@@ -45,12 +45,6 @@ function addHistogram(memory: SlotMemory, symbols: readonly string[], delta: num
   for (const symbol of symbols) {
     memory.recentSymbolHistogram[symbol] = Math.max(0, (memory.recentSymbolHistogram[symbol] ?? 0) + delta);
   }
-}
-
-function resetPressure(memory: SlotMemory): void {
-  memory.pressureLevel = 0;
-  memory.freeSpins = 0;
-  memory.chargeReady = false;
 }
 
 /** Ein Spin wird immer zuerst ehrlich verbucht, erst danach greift die naechste Stufe. */
@@ -69,31 +63,25 @@ export function recordSlotSpin(
   addHistogram(memory, symbols, 1);
 
   if (jackpot || multiplierBps > 10_000) {
-    resetPressure(memory);
+    memory.pressureLevel = 0;
+    memory.chargeReady = false;
     return;
   }
-  memory.pressureLevel += 1;
-  if (memory.pressureLevel === 5) {
-    memory.freeSpins = 1;
-    memory.freeOffset = (memory.spinsToday % 3) + 1;
-  }
-  if (memory.pressureLevel >= 7) {
-    memory.pressureLevel = 7;
-    memory.freeSpins = 1;
-    memory.chargeReady = true;
-    memory.freeOffset = (memory.spinsToday % 2) + 1;
-  }
+  memory.pressureLevel = Math.min(CHARGE_LEVEL, memory.pressureLevel + 1);
+  // Volle Ladung heisst: der naechste bezahlte Spin gewinnt garantiert. Der Spin selbst
+  // bleibt bezahlt, damit die Entladung den Hausvorteil nicht aufzehrt.
+  if (memory.pressureLevel >= CHARGE_LEVEL) memory.chargeReady = true;
 }
 
-/** Verbraucht einen vorbereiteten Gratis-Spin bzw. die Entladung. */
-export function prepareSlotSpin(memory: SlotMemory): SpinPlan {
-  const free = memory.freeSpins > 0;
-  const offset = free ? memory.freeOffset : 0;
-  const forceWin = memory.chargeReady;
-  if (free) memory.freeSpins -= 1;
+/**
+ * Gibt die Entladung frei. Eine Maschine zahlt nur aus, was sie einbehalten hat:
+ * ohne Deckung im eigenen Polster bleibt der Lader geladen.
+ */
+export function prepareSlotSpin(memory: SlotMemory, fundable = true): SpinPlan {
+  const forceWin = memory.chargeReady && fundable;
   if (forceWin) {
     memory.chargeReady = false;
     memory.pressureLevel = 0;
   }
-  return { free, offset, forceWin };
+  return { forceWin };
 }

@@ -4,27 +4,40 @@ import type { Prng } from '../rng/prng';
 import { admitFiat } from './money';
 import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
-import { makeGuest, randomFiat, randomPersona } from './traits';
+import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
 import type { Guest, WorldState } from './types';
-import { exchangePoint, pathTo, spawnPoint } from './world';
+import { entranceSpot, exchangePoint, pathTo } from './world';
 
-/** 0..100: Ordnung, Zustand und Attraktion speisen eine Nachfragequelle, keine Sperre. */
+/**
+ * 0..100: Ruf entsteht aus dem, was Gaeste erlebt haben. Ein frischer Automat in gutem
+ * Zustand ist noch kein Ruf; erst bediente Gaeste, Ausstattung und Service bauen ihn auf.
+ * Das ist eine Nachfragequelle, keine Sperre.
+ */
 export function reputation(world: WorldState): number {
-  if (world.furniture.length === 0) return 0;
-  const condition = world.furniture.reduce((sum, item) => sum + item.condition, 0) / world.furniture.length;
-  const dirtPenalty = Math.min(40, world.dirty.size * 2.5);
-  const staffBonus = (world.staff.cleaner ? 6 : 0) + (world.staff.bartender ? 5 : 0) + (world.staff.guard ? 4 : 0);
-  const attraction = Math.min(30, attractionOf(world) / 260);
-  return Math.max(0, Math.min(100, condition * 0.7 + staffBonus + attraction - dirtPenalty));
+  const games = world.furniture.filter((item) => item.gameId);
+  if (games.length === 0) return 0;
+  const condition = games.reduce((sum, item) => sum + item.condition, 0) / games.length / 100;
+  const quality = games.reduce((sum, item) => sum + item.quality, 0) / games.length;
+  // Ein einzelner Automat traegt noch keinen Ruf; der Faktor waechst mit dem Angebot.
+  const scale = Math.min(1, games.length / 8);
+  const served = 22 * (1 - Math.exp(-world.guestsServed / 80));
+  const experience = Math.max(-14, Math.min(14, (world.satisfaction - 55) * 0.35));
+  const staff = (world.staff.cleaner ? 3 : 0) + (world.staff.bartender ? 3 : 0)
+    + (world.staff.cashier ? 2 : 0) + (world.staff.guard ? 2 : 0) + (world.staff.porter ? 1 : 0);
+  const dirt = Math.min(10, world.dirty.size * 0.8);
+  const attraction = Math.min(8, attractionOf(world) / 150);
+  const value = 5 + served + condition * 15 * scale + (quality - 1) * 16 * scale
+    + experience + staff + attraction - dirt;
+  return Math.max(0, Math.min(100, value));
 }
 
 /** Keine Gaestezahl sperrt den Eingang; der Betrieb regelt den Andrang ueber Service und Laune. */
 export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest | null {
   const id = world.nextGuestId++;
   const returning = pickReturningVisitor(world, id);
-  const persona = returning ? returning.persona : randomPersona(prng, world.template);
-  const spawn = spawnPoint(world);
+  const persona = returning ? returning.persona : randomPersona(prng, personaTier(world.demandTier));
+  const spawn = entranceSpot(world, id);
   const fiat = randomFiat(prng, world.template, persona);
   const made = makeGuest({ id, persona, prng, spawn });
   const guest: Guest = returning
@@ -41,7 +54,8 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   guest.targetZone = 'exchange';
   guest.path = pathTo(world, spawn, target);
   guest.pathIndex = 0;
-  guest.queueIndex = world.guests.filter((entry) => entry.state === 'EXCHANGE').length;
+  // Warteschlange an der Kasse: wer noch hereinkommt, reiht sich hinten ein.
+  guest.queueIndex = world.guests.filter((entry) => entry.state === 'EXCHANGE' || entry.state === 'ENTER').length;
   world.guests.push(guest);
   return guest;
 }

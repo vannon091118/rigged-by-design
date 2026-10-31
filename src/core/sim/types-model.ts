@@ -182,4 +182,6 @@ export interface Visitor {
   readonly persona: PersonaId;
   visits: number;
   lastSeenTick: number;
+  /** Erlebnis des letzten Besuchs, 0..100; fehlt in aelteren Staenden. */
+  experience?: number;
 }

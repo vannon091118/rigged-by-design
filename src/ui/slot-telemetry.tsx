@@ -31,7 +31,6 @@ export function SlotTelemetry({ memory }: { memory?: SlotMemory }) {
       <div className="slot-telemetry-foot">
         <span>LETZTE 100 SPINS</span>
         {symbols.map(([symbol, count]) => <b key={symbol}>{symbol} {count}</b>)}
-        {state.freeSpins > 0 && <em title="Der nächste Spin kostet nichts.">GRATIS-SPIN BEREIT</em>}
         {state.chargeReady && <em className="charged" title="Der nächste Spin gewinnt garantiert.">ENTLADUNG BEREIT</em>}
       </div>
     </section>

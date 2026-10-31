@@ -31,7 +31,10 @@ export function arriveAtDesk(world: WorldState, ledger: Ledger, prng: Prng, gues
 
 /** Weist jedem Gast in Warteschlange und Kasse eine eindeutige Position zu. */
 export function exchangeQueue(world: WorldState): void {
-  const queue = world.guests.filter((guest) => guest.state === 'EXCHANGE').sort((a, b) => a.id - b.id);
+  // Draussen und drinnen ist eine Schlange: wer zuerst da war, steht vorn.
+  const queue = world.guests
+    .filter((guest) => guest.state === 'EXCHANGE' || guest.state === 'ENTER')
+    .sort((a, b) => a.id - b.id);
   queue.forEach((guest, index) => { guest.queueIndex = index; });
   const cashier = world.guests.filter((guest) => guest.state === 'CASHOUT').sort((a, b) => a.id - b.id);
   cashier.forEach((guest, index) => { guest.queueIndex = index; });

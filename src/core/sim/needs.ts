@@ -36,9 +36,10 @@ export function refreshNeeds(guest: Guest): void {
 /** Durst und Blase steigen mit der Persona; eine volle Blase endet im Unfall statt im Nichts. */
 export function tickNeeds(world: WorldState, guest: Guest): void {
   const drinkRate = getPersona(guest.persona).drinkRate;
-  guest.thirst = clamp(guest.thirst + 0.6 + drinkRate);
+  // Durst steigt langsam: ein Drink ist eine Pause am Spiel, kein Dauerzustand.
+  guest.thirst = clamp(guest.thirst + 0.3 + drinkRate * 0.5);
   guest.bladder = clamp(guest.bladder + 0.5);
-  if (guest.thirst >= 100) guest.mood = Math.max(0, guest.mood - 1);
+  if (guest.thirst >= 100) guest.mood = Math.max(0, guest.mood - 0.3);
   if (guest.bladder >= 100) {
     guest.bladder = 35;
     guest.mood = Math.max(0, guest.mood - 8);

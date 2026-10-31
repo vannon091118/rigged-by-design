@@ -3,13 +3,13 @@ import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
 import { clamp } from './guest-core';
 import { recordJournal } from './journal';
-import { HAUSKONTO, SHOP } from './money';
+import { HAUSKONTO, payOrBorrow, SHOP } from './money';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
 import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
 import { canPlace, furnitureById } from './world';
 
-export const barCapacityForLevel = (level: number): number => 6 + 6 * Math.max(1, level);
+export const barCapacityForLevel = (level: number): number => 12 + 8 * Math.max(1, level);
 const barCapacity = (world: WorldState): number => barCapacityForLevel(world.barLevel);
 
 function tileBlocked(world: WorldState, x: number, y: number): boolean {
@@ -34,10 +34,14 @@ function freeCrateTile(world: WorldState): { x: number; y: number } | null {
   return null;
 }
 
-function orderCrate(world: WorldState, ledger: Ledger, payload: CratePayload, cost: VaCoinMicro, reason: string): Crate {
+function orderCrate(
+  world: WorldState, ledger: Ledger, payload: CratePayload, cost: VaCoinMicro, reason: string, onCredit = false,
+): Crate {
   const tile = freeCrateTile(world);
   if (!tile) throw new Error('Kein Platz für Lieferungen am Eingang.');
-  ledger.transfer(HAUSKONTO, SHOP, cost, reason, world.tick);
+  // Verbrauchsmaterial darf die Kasse ueberziehen; Moebel und Umbau nicht.
+  if (onCredit) payOrBorrow(ledger, SHOP, cost, reason, world.tick);
+  else ledger.transfer(HAUSKONTO, SHOP, cost, reason, world.tick);
   const crate: Crate = { id: world.nextCrateId++, payload, x: tile.x, y: tile.y, carriedBy: null };
   world.crates.push(crate);
   world.lastEvent = 'Lieferung am Eingang. Abholen und verteilen.';
@@ -58,13 +62,13 @@ export function buyCrate(world: WorldState, ledger: Ledger, buildId: BuildId): C
 export function orderDrinks(world: WorldState, ledger: Ledger, count: number): Crate {
   if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error('1 bis 12 Getränke pro Kiste.');
   return orderCrate(world, ledger, { kind: 'DRINKS', count },
-    (world.prices.drinkCrateCost * count) as VaCoinMicro, 'getraenkekiste');
+    (world.prices.drinkCrateCost * count) as VaCoinMicro, 'getraenkekiste', true);
 }
 
 export function orderParts(world: WorldState, ledger: Ledger, count: number): Crate {
   if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error('1 bis 12 Ersatzteile pro Kiste.');
   return orderCrate(world, ledger, { kind: 'PARTS', count },
-    (world.prices.partCost * count) as VaCoinMicro, 'ersatzteile');
+    (world.prices.partCost * count) as VaCoinMicro, 'ersatzteile', true);
 }
 
 /** Aufnehmen markiert die Kiste als getragen; sie liegt nicht mehr herum. */
@@ -155,8 +159,8 @@ export function depositCrate(world: WorldState, id: number, x: number, y: number
 /** Ein Drink an der Bar: Bestand runter, Durst weg, Laune rauf. Leerlauf verdirbt die Laune. */
 export function deliverDrink(world: WorldState, ledger: Ledger, guest: Guest, bar: Furniture): boolean {
   if (bar.stock <= 0) {
-    guest.mood = Math.max(0, guest.mood - 6);
-    guest.need = 'drink';
+    // Eine leere Bar ist Pech, kein Dauerzustand: kleiner Aerger, kein Nachfassen.
+    guest.mood = Math.max(0, guest.mood - 2);
     world.lastEvent = 'Die Bar ist leer.';
     return false;
   }

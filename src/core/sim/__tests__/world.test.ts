@@ -13,7 +13,9 @@ import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import { makeGuest, randomPersona } from '../traits';
 import type { WorldState } from '../types';
-import { canPlace, doorPoint, exchangePoint, freeSeat, interactionPoint, spawnPoint } from '../world';
+import {
+  canPlace, doorPoint, exchangePoint, freeSeat, interactionPoint, spawnPoint,
+} from '../world';
 import { randomSeed } from '../../../test/random-seed';
 
 function setup(template: WorldState['template'] = 'SMALL') {
@@ -44,7 +46,7 @@ describe('Welt und Startzustand', () => {
     const prng = new Prng(randomSeed());
     for (let index = 0; index < 20; index += 1) {
       const guest = makeGuest({
-        id: index + 1, persona: randomPersona(prng, 'SMALL'), prng,
+        id: index + 1, persona: randomPersona(prng, 1), prng,
         spawn: { x: 1, y: 1 },
       });
       for (const value of [guest.mood, guest.patience, guest.addiction]) {

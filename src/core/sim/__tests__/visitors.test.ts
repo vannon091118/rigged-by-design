@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
-import { pickReturningVisitor, VISITOR_CAP, recordVisitor } from '../visitors';
+import { pickReturningVisitor, returnChance, VISITOR_CAP, recordVisitor, noteExperience } from '../visitors';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { replaySave } from '../../../store/save';
@@ -55,6 +55,26 @@ describe('Besucherprofile', () => {
     expect(world.visitors.length).toBeLessThanOrEqual(VISITOR_CAP);
     expect(world.visitors.some((visitor) => visitor.name === `G${VISITOR_CAP + 9}`)).toBe(true);
     expect(world.visitors.some((visitor) => visitor.name === 'G0')).toBe(false);
+  });
+
+  it('kehrt nach schlechtem Erlebnis kaum zurueck und nach gutem oefter', () => {
+    const world = createWorld('SMALL');
+    const profile = recordVisitor(world, { name: 'Test Gast', persona: 'STREET', tick: 1 });
+    const countReturns = () => {
+      let count = 0;
+      for (let id = 1; id <= 2000; id += 1) {
+        if (pickReturningVisitor(world, id)) count += 1;
+      }
+      return count;
+    };
+    noteExperience(world, profile.id, 0);
+    expect(returnChance(profile)).toBe(0);
+    expect(countReturns()).toBe(0);
+    noteExperience(world, profile.id, 50);
+    const neutral = countReturns();
+    noteExperience(world, profile.id, 100);
+    expect(returnChance(profile)).toBeGreaterThan(25);
+    expect(countReturns()).toBeGreaterThan(neutral);
   });
 
   it('bleibt beim Laden erhalten; alte Staende starten ohne Profile', () => {

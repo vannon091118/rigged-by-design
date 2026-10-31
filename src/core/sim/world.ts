@@ -61,17 +61,73 @@ export function doorPoint(world: WorldState): Point {
   };
 }
 
-/** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur die Tuer bleibt als Durchgang offen. */
+/**
+ * Aussenstreifen vor der Tuer: die Tuer und je ein Tile weiter draussen nach
+ * oben und unten, damit nicht alle Ankoemmlinge auf derselben Kachel stehen.
+ */
+const APRON = 4;
+
+function entranceApron(world: WorldState): Point[] {
+  const door = doorPoint(world);
+  const spots: Point[] = [{ ...door }];
+  for (let step = 1; step <= APRON; step += 1) {
+    spots.push({ x: door.x, y: door.y + step }, { x: door.x, y: door.y - step });
+  }
+  return spots;
+}
+
+/** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur der Eingangsstreifen ist offen. */
 function guestBlocked(world: WorldState): Set<number> {
   const blocked = new Set(blockedTiles(world.size, world.furniture));
-  const door = doorPoint(world);
-  blocked.delete(door.y * world.size + door.x);
+  for (const spot of entranceApron(world)) blocked.delete(spot.y * world.size + spot.x);
   return blocked;
 }
 
 /** Gaeste erscheinen und verschwinden draussen vor der Tuer, gehen von dort durch den Eingang. */
 export function spawnPoint(world: WorldState): Point {
   return doorPoint(world);
+}
+
+/**
+ * Eigener Aussenplatz je Gast: niemand spawnt auf dem Tile eines anderen.
+ * Erst der Streifen draussen vor der Tuer, bei Andrang die Eingangshalle.
+ */
+export function entranceSpot(world: WorldState, guestId = 0): Point {
+  const door = doorPoint(world);
+  const taken = new Set(world.guests.map((guest) => guest.position.y * world.size + guest.position.x));
+  for (const spot of entranceApron(world)) {
+    if (spot.x < 0 || spot.y < 0 || spot.x >= world.size || spot.y >= world.size) continue;
+    if (taken.has(spot.y * world.size + spot.x)) continue;
+    return spot;
+  }
+  const blocked = blockedTiles(world.size, world.furniture);
+  const hall = world.zones.find((zone) => zone.kind === 'ENTRANCE');
+  if (hall) {
+    for (let y = hall.y; y < hall.y + hall.h; y += 1) {
+      for (let x = hall.x; x < hall.x + hall.w; x += 1) {
+        if (taken.has(y * world.size + x)) continue;
+        if (isWalkable(world.size, blocked, x, y)) return { x, y };
+      }
+    }
+  }
+  void guestId;
+  return door;
+}
+
+/**
+ * Eigener Warteplatz an der Kasse: die Schlange steht sichtbar hintereinander,
+ * statt dass alle auf dem Bedienpunkt stapeln.
+ */
+export function deskQueueSpot(world: WorldState, guest: Guest): Point {
+  const point = exchangePoint(world);
+  if (!point) return guest.position;
+  const index = Math.max(0, guest.queueIndex);
+  const blocked = guestBlocked(world);
+  for (let step = 0; step < 10; step += 1) {
+    const candidate = { x: point.x - (index + step), y: point.y };
+    if (isWalkable(world.size, blocked, candidate.x, candidate.y)) return candidate;
+  }
+  return point;
 }
 
 export function exchangePoint(world: WorldState): Point | null {
@@ -86,6 +142,14 @@ export function guestById(world: WorldState, id: number): Guest | null {
 export function sendGuest(world: WorldState, guest: Guest, target: Point): void {
   guest.path = pathTo(world, guest.position, target);
   guest.pathIndex = 0;
+}
+
+/** Schickt einen Gast auf seinen Platz in der Kassenschlange; nur bei geaendertem Ziel neu. */
+export function sendGuestToQueue(world: WorldState, guest: Guest): void {
+  const target = deskQueueSpot(world, guest);
+  const last = guest.path[guest.path.length - 1];
+  if (last && last.x === target.x && last.y === target.y) return;
+  sendGuest(world, guest, target);
 }
 
 export function canPlace(world: WorldState, x: number, y: number, w: number, h: number, needsAccess = true): boolean {

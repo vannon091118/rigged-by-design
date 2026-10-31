@@ -102,7 +102,7 @@ describe('Nachfragequellen', () => {
     world.tick = 100;
     expect(demandBreakdown(world).sources.some((source) => source.id === 'PEAK')).toBe(false);
     world.tick = 400;
-    expect(demandBreakdown(world).sources.find((source) => source.id === 'PEAK')!.perDay).toBe(5);
+    expect(demandBreakdown(world).sources.find((source) => source.id === 'PEAK')!.perDay).toBe(6);
   });
 
   it('beendet eine Veranstaltung am geplanten Tick und nimmt ihre Nachfrage wieder heraus', () => {

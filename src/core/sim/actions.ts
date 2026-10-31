@@ -5,7 +5,7 @@ import { playAction, type GameExtras, type GameResult } from '../games/contracts
 import { playPlinkoRound } from '../games/plinko-sandbox';
 import { playSlotSession } from '../games/slot-session';
 import type { Prng } from '../rng/prng';
-import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payPending, PORTEMONNAIE, SHOP } from './money';
+import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
 import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
 import type { CarpetId, Furniture, GameId, ModId, Point, WorldState } from './types';
@@ -56,7 +56,7 @@ export function repair(world: WorldState, ledger: Ledger, itemId: number): void 
   const item = furnitureById(world, itemId);
   if (!item || (item.condition >= 100 && !item.damaged && !item.clogged)) return;
   if (world.parts < 1) throw new Error('Keine Ersatzteile im Lager.');
-  ledger.transfer(HAUSKONTO, SHOP, world.prices.repairCost, 'reparatur', world.tick);
+  payOrBorrow(ledger, SHOP, world.prices.repairCost, 'reparatur', world.tick);
   world.parts -= 1;
   item.condition = 100;
   item.damaged = false;

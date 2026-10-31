@@ -33,13 +33,13 @@ const game = (
 };
 
 export const BUILD_DEFS: readonly BuildDef[] = [
-  game('SLOT', 'Rostiger 3-Walzen-Slot', 'SLOT', 8, 0.1, 1, 3, 'Ein Quadrat, eine Walze, ein Platz. Der Klassiker, der nie ganz sauber wird.'),
-  game('PLINKO', 'Plinko-Kabinett', 'SLOT', 16, 0.1, 1, 1, 'Kugeln fallen sichtbar. Gäste bleiben für den einen Tropfen Glück.'),
-  game('BLACKJACK', 'Blackjack-Tisch', 'TABLE', 24, 0.25, 2, 0, 'Vier Plätze, klare Regeln, hohe Nachfrage bei Business-Gästen.'),
-  game('POKER', 'Poker-Tisch', 'TABLE', 32, 0.5, 2, 0, 'Vier Plätze. Wer hier sitzt, will nicht nur spielen, sondern gewinnen.'),
-  game('ROULETTE', 'Roulette-Tisch', 'TABLE', 42, 0.5, 3, 0, 'Sechs Plätze am Rad. Zieht High Roller magisch an, teuer im Unterhalt.'),
-  game('SHELL', 'Hütchenspiel', 'TABLE', 14, 0.1, 1, 0, 'Ein Hütchen, ein Platz. Schnell, laut, ein bisschen unseriös.'),
-  game('DICE', 'Würfeltisch', 'TABLE', 20, 0.1, 1, 0, 'Zwei Plätze, ein Wurf. Einfach zu verstehen, schwer zu lassen.'),
+  game('SLOT', 'Rostiger 3-Walzen-Slot', 'SLOT', 8, 0.5, 1, 3, 'Ein Quadrat, eine Walze, ein Platz. Der Klassiker, der nie ganz sauber wird.'),
+  game('PLINKO', 'Plinko-Kabinett', 'SLOT', 16, 0.5, 1, 1, 'Kugeln fallen sichtbar. Gäste bleiben für den einen Tropfen Glück.'),
+  game('BLACKJACK', 'Blackjack-Tisch', 'TABLE', 24, 1, 2, 0, 'Vier Plätze, klare Regeln, hohe Nachfrage bei Business-Gästen.'),
+  game('POKER', 'Poker-Tisch', 'TABLE', 32, 2, 2, 0, 'Vier Plätze. Wer hier sitzt, will nicht nur spielen, sondern gewinnen.'),
+  game('ROULETTE', 'Roulette-Tisch', 'TABLE', 42, 2, 3, 0, 'Sechs Plätze am Rad. Zieht High Roller magisch an, teuer im Unterhalt.'),
+  game('SHELL', 'Hütchenspiel', 'TABLE', 14, 0.5, 1, 0, 'Ein Hütchen, ein Platz. Schnell, laut, ein bisschen unseriös.'),
+  game('DICE', 'Würfeltisch', 'TABLE', 20, 0.5, 1, 0, 'Zwei Plätze, ein Wurf. Einfach zu verstehen, schwer zu lassen.'),
   {
     id: 'PLANT', name: 'Grünpflanze', kind: 'DECOR', w: 1, h: 1, seats: 0, cost: fromVC(2),
     baseBet: fromVC(0), quality: 1, reels: 0, description: 'Macht den Raum weniger nach Lagerhalle.',

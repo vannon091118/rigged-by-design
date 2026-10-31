@@ -10,8 +10,8 @@ import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
   entryFee: fromVC(0),
-  drinkPrice: fromVC(0.4),
-  slotMinBet: fromVC(0.05),
+  drinkPrice: fromVC(1),
+  slotMinBet: fromVC(0.25),
   staffWage: fromVC(4),
   guardWage: fromVC(6),
   cashierWage: fromVC(5),
@@ -19,7 +19,7 @@ const PRICES: PriceBook = {
   cleaningCost: fromVC(0.8),
   repairCost: fromVC(2),
   partCost: fromVC(1.5),
-  drinkCrateCost: fromVC(0.6),
+  drinkCrateCost: fromVC(0.4),
   barUpgrade: fromVC(30),
   wcUpgrade: fromVC(15),
 };

@@ -3,7 +3,7 @@ import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { getPersona, personasForTier } from './personas';
-import type { Guest, PersonaId, Point, TemplateId } from './types';
+import type { DemandTier, Guest, PersonaId, Point, TemplateId } from './types';
 
 const NAMES = ['Kai', 'Rita', 'Bruno', 'Nadja', 'Otis', 'Mira', 'Falk', 'Sina', 'Timo', 'Lena', 'Emil', 'Jule', 'Mika'];
 const LAST_NAMES = ['Vogt', 'Berger', 'Kern', 'Roth', 'Adler', 'Busch', 'Dorn', 'Fink', 'Held', 'Kraus'];
@@ -18,14 +18,21 @@ function splitPool(prng: Prng, persona: PersonaId): [number, number, number] {
   return rollProfile(prng, getPersona(persona).addictionRate);
 }
 
-export function randomPersona(prng: Prng, template: TemplateId): PersonaId {
-  const pool = personasForTier(TIER[template]);
+/** Die Progression bestimmt, welche Gaeste kommen: Business und High Roller brauchen eine hoehere Stufe. */
+export function personaTier(tier: DemandTier): 1 | 2 | 3 {
+  if (tier === 'SAAL') return 2;
+  if (tier === 'KONZERN') return 3;
+  return 1;
+}
+
+export function randomPersona(prng: Prng, tier: 1 | 2 | 3): PersonaId {
+  const pool = personasForTier(tier);
   const picked = pickWeighted(prng, pool.map((persona) => ({ item: persona, weight: PERSONA_WEIGHT[persona.id] })));
   return picked?.id ?? pool[0]!.id;
 }
 
 export function randomFiat(prng: Prng, template: TemplateId, personaId: PersonaId): VaCoinMicro {
-  const base = TIER[template] === 1 ? 2 : TIER[template] === 2 ? 8 : 26;
+  const base = TIER[template] === 1 ? 9 : TIER[template] === 2 ? 18 : 34;
   const persona = getPersona(personaId);
   return fromVC(Math.max(1, Math.round(base * persona.budgetFactor * (0.7 + prng.nextFloat() * 0.9))));
 }

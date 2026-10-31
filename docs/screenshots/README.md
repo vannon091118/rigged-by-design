@@ -10,6 +10,25 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 - Neue Aufnahmen kommen in einen **neuen** Versionsordner. Alte Ordner bleiben stehen, damit Änderungen an der Oberfläche vergleichbar sind.
 - Außerhalb der Versionsordner liegen keine Spielbilder. `docs/screenshots/README.md` ist der einzige gemeinsame Eintrag.
 
+## v0.3.26 — Betriebszustände
+
+Aufgenommen am 31.10.2026 aus dem laufenden Spiel (Chromium, 1280 × 860).
+
+Diese acht Bilder sind keine Klickfolge durch die Oberfläche, sondern echte Simulationsstände: ein temporäres Skript hat `createWorld`/`tickWorld` aus `src/core/sim/` laufen lassen, den Stand als Save v8 über `toSavedGame` geschrieben und in den lokalen Speicher des Aufnahmebrowsers gelegt. Für die Aufnahme wurde die Spieluhr angehalten, damit der Schnappschuss genau den getickten Zustand zeigt. Das Skript und seine Spielstände sind nicht im Repository; die Bilder sind die einzige Ablage.
+
+| Datei | Zustand | Zeigt |
+| --- | --- | --- |
+| `10-besucherfluss-frisch.png` | SMALL, Tag 1, 2 Gäste, ~155 VC | Erste Ankömmlinge zwischen Eingang und Wechselkasse, ein Gast am Gratis-Slot, einer an der Bar; ruhiger Start ohne leeren Floor |
+| `11-besucherfluss-weg-zur-kasse.png` | SMALL, Tag 1, 7 Gäste | Drei Gäste laufen gestaffelt zur Kasse, einer wird gerade bedient, die übrigen verteilen sich auf Slot und Bar |
+| `12-kasse-mit-schlange.png` | SMALL, Tag 1, 10 Gäste, Kassierer | Wartende mit Wechsel-Blasen vor der Kasse, jeder auf einer eigenen Kachel; der Kassierer steht am Schalter |
+| `13-geraete-belegt-und-wartende.png` | MEDIUM, Tag 1, 18 Gäste | Mehrere belegte Automaten und Tische mit Gewinn-/Laune-Blasen, Wartende dazwischen, Schlange an der Kasse |
+| `14-bar-wc-personal.png` | MEDIUM, Tag 1, 11 Gäste, Kassierer/Barkeeper/Reinigung | Gast an der Bar, Gast am WC, Personal auf dem Weg, frische Schmutz-Kacheln im Floor |
+| `15-gast-verlaesst-das-casino.png` | SMALL, Tag 1, 2 Gäste | Auszahlung abgeschlossen: die Ereigniszeile meldet den Abgang, der Gast läuft über den Eingang hinaus |
+| `16-betrieb-dichter-floor.png` | MEDIUM, Tag 2, 10 Gäste, ~810 VC | Deutlich dichterer Floor als am Start: mehrere Geräte gleichzeitig belegt, Gäste an Kasse, Bar und Automaten |
+| `17-besucherwelle-konzern.png` | LARGE, Tag 1, Stufe KONZERN, Neon-Nacht, 58 Gäste | Besucherwelle: der ganze Floor ist gefüllt, Warteschlangen an der Kasse, Gäste an fast jedem Gerät |
+
+Beobachtungen: bei 1280 px überlappen HUD-Buttons und Werteblöcke weiterhin (bekannt seit v0.3.18). Auf einigen Aufnahmen ist oben links das Freebuff-Badge der Aufnahmeumgebung zu sehen; das ist kein Unterschied der Oberfläche.
+
 ## v0.3.23
 
 Release-Commit `a39bc2b` (Tag `v0.3.23`), aufgenommen am 30.10.2026.

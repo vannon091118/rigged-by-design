@@ -11,16 +11,17 @@ import { CASHIER_WAIT, tickAgents } from './staff';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
 import type { Guest, WorldState } from './types';
-import { exchangePoint, furnitureById, sendGuest } from './world';
+import { exchangePoint, furnitureById, sendGuest, sendGuestToQueue } from './world';
 
 function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest): void {
   guest.stateTicks += 1;
   if (guest.stateTicks === 1) {
-    const candidates = world.furniture.filter((item) => item.kind !== 'EXCHANGE');
+    // Randaliert wird am Angebot, nicht an Kasse, Lager oder Personalinfrastruktur.
+    const candidates = world.furniture.filter((item) => item.gameId || item.kind === 'DECOR');
     const target = candidates[prng.nextInt(0, Math.max(0, candidates.length - 1))];
     const guard = world.staff.guard;
-    if (target && prng.nextFloat() < (guard ? 0.16 : 0.72)) {
-      const damage = 8 + prng.nextInt(0, 24);
+    if (target && prng.nextFloat() < (guard ? 0.25 : 0.6)) {
+      const damage = 4 + prng.nextInt(0, 10);
       target.condition = Math.max(0, target.condition - damage);
       target.damaged = true;
       world.dirty.add((target.y + 1) * world.size + target.x + 1);
@@ -42,7 +43,7 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
   if (guest.state === 'ENTER') {
     const point = exchangePoint(world);
     if (!point) return;
-    if (guest.path.length === 0) sendGuest(world, guest, point);
+    sendGuestToQueue(world, guest);
     if (moveGuest(guest)) { guest.state = 'EXCHANGE'; guest.stateTicks = 0; }
     return;
   }
@@ -76,7 +77,7 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
   if (guest.state === 'CASHOUT') {
     const point = exchangePoint(world);
     if (!point) { payAndLeave(world, ledger, guest); return; }
-    if (guest.path.length === 0) sendGuest(world, guest, point);
+    sendGuestToQueue(world, guest);
     if (!moveGuest(guest)) return;
     const cashier = world.agents.find((agent) => agent.role === 'cashier');
     if (cashier && Math.abs(cashier.x - point.x) + Math.abs(cashier.y - point.y) <= 8) {

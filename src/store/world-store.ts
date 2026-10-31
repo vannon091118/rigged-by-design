@@ -9,6 +9,7 @@ import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMo
 import { honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
 import { cleanAll, cleanTile, installMod, repair, setBaseBet, setCarpet, setPrice, testSpin, upgradeReels } from '../core/sim/actions';
 import { payGuest } from '../core/sim/service-actions';
+import { openHouse } from '../core/sim/money';
 import { deployHeldCrate, movePlayer, pickupCrate, serveDesk, serveDrink, setNeonColor, setWallColor, storeHeldCrate, takeDrink, upgradeBar, upgradeWc } from '../core/sim/player';
 import { buyCrate, orderDrinks, orderParts } from '../core/sim/deliveries';
 import { calmDispute } from '../core/sim/disputes';
@@ -72,6 +73,7 @@ class WorldStore {
   newGame(template: TemplateId = 'SMALL'): void {
     this.#world = createWorld(template);
     this.#ledger = new Ledger();
+    openHouse(this.#ledger, 0);
     this.#prng = new Prng((Date.now() ^ 0x9e3779b9) >>> 0); // @seed-initializer
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();

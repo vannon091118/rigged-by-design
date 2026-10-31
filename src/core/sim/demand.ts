@@ -22,26 +22,26 @@ const PEAK_TO = 540;
 const EVENT_TICKS = 150;
 
 /** Balancierbare Nachfrage in Gaesten pro Tag; keine davon ist eine Obergrenze. */
-const BASE_PER_DAY = 4;
-const REPUTATION_PER_DAY = 8;
+const BASE_PER_DAY = 8;
+const REPUTATION_PER_DAY = 12;
 const SATISFACTION_PER_DAY = 8;
 const REGULAR_PER_DAY = 2;
 const REGULAR_CAP = 14;
-const ATTRACTION_PER_DAY = 8;
-const ATTRACTION_DIVISOR = 300;
-const PEAK_PER_DAY = 5;
+const ATTRACTION_PER_DAY = 10;
+const ATTRACTION_DIVISOR = 250;
+const PEAK_PER_DAY = 6;
 
 const TIER_ORDER: readonly DemandTier[] = ['BUDE', 'KASSE', 'SAAL', 'KONZERN'];
 const TIER_NAME: Readonly<Record<DemandTier, string>> = {
   BUDE: 'Hinterhof-Bude', KASSE: 'Bude mit Kasse', SAAL: 'Spielsaal', KONZERN: 'Konzern',
 };
 /** Jede erreichte Stufe schaltet Nachfrage hinzu; sie deckelt nichts. */
-const TIER_PER_DAY: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 6, SAAL: 14, KONZERN: 24 };
+const TIER_PER_DAY: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 8, SAAL: 12, KONZERN: 24 };
 const EVENT_CHANCE: Readonly<Record<DemandTier, number>> = { BUDE: 0, KASSE: 0.18, SAAL: 0.28, KONZERN: 0.36 };
 const EVENT_NAME: Readonly<Record<DemandEventKind, string>> = {
   NEON_NACHT: 'Neon-Nacht', TURNIER_ABEND: 'Turnierabend',
 };
-const EVENT_PER_DAY: Readonly<Record<DemandEventKind, number>> = { NEON_NACHT: 25, TURNIER_ABEND: 18 };
+const EVENT_PER_DAY: Readonly<Record<DemandEventKind, number>> = { NEON_NACHT: 20, TURNIER_ABEND: 16 };
 
 function isPeak(world: WorldState): boolean {
   const phase = world.tick % TICKS_PER_DAY;
@@ -126,6 +126,20 @@ function groupSize(world: WorldState, prng: Prng): number {
   return Math.min(4, size);
 }
 
+/**
+ * Erwartete Gruppengroesse aus denselben Wahrscheinlichkeiten wie groupSize: Der Andrang
+ * zaehlt Gaeste, nicht Gruppen, sonst kommen mehr Leute als geplant.
+ */
+function expectedGroupSize(world: WorldState): number {
+  const rank = tierRank(world.demandTier);
+  const p3 = 0.015 + rank * 0.02;
+  const p2 = 0.08 + rank * 0.05;
+  let mean = 1 + (p2 - p3) + 2 * p3;
+  if (isPeak(world)) mean += 0.1 + rank * 0.04;
+  if (world.demandEvent) mean += 0.55;
+  return mean;
+}
+
 /** Die hoechste erreichte Stufe bleibt fuer die Nachfrage freigeschaltet. */
 function advanceDemandTier(world: WorldState, ledger: Ledger): void {
   const reached = companyTier(world, ledger);
@@ -172,5 +186,6 @@ export function tickDemand(world: WorldState, ledger: Ledger, prng: Prng): void 
   const demand = demandBreakdown(world);
   const size = groupSize(world, prng);
   for (let index = 0; index < size; index += 1) spawnGuest(world, prng, ledger);
-  world.nextArrivalTick = world.tick + arrivalGap(prng, demand.perDay);
+  // Die Rate gilt fuer Gaeste; eine Gruppe kommt zusammen und verschiebt nur den Takt.
+  world.nextArrivalTick = world.tick + arrivalGap(prng, demand.perDay / expectedGroupSize(world));
 }

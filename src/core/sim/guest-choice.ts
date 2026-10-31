@@ -6,7 +6,6 @@ import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
 import { refreshNeeds } from './needs';
-import { becomeAngry } from './guest-service';
 import { guestAccount } from './money';
 import { offerScore } from './offers';
 import type { Furniture, Guest, WorldState } from './types';
@@ -39,8 +38,9 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   guest.stateTicks = 0;
   guest.intent = 'Kein freier Platz: wartet und verliert Geduld.';
   guest.targetFurniture = 0;
-  guest.patience = Math.max(0, guest.patience - 4);
-  guest.mood = Math.max(0, guest.mood - 2);
+  // Warten ist eine Entscheidung: es kostet Geduld, aber es soll sich lohnen koennen.
+  guest.patience = Math.max(0, guest.patience - 1.5);
+  guest.mood = Math.max(0, guest.mood - 0.5);
   const zone = lounge ? zoneById(world, lounge.id) : null;
   if (zone) {
     guest.targetZone = zone.id;
@@ -52,7 +52,13 @@ function waitForSpace(world: WorldState, guest: Guest): void {
     });
     if (spot) sendGuest(world, guest, spot);
   }
-  if (guest.patience <= 0) becomeAngry(world, guest);
+  if (guest.patience <= 0) {
+    // Wer keine Geduld mehr hat, entscheidet sich zu gehen, statt das Inventar zu zerlegen.
+    guest.state = 'CASHOUT';
+    guest.stateTicks = 0;
+    guest.path = [];
+    guest.intent = 'Geduld aufgebraucht: verlaesst enttaeuscht.';
+  }
 }
 
 function tryGame(world: WorldState, guest: Guest, wallet: VaCoinMicro, prng: Prng): boolean {
@@ -67,7 +73,11 @@ function tryGame(world: WorldState, guest: Guest, wallet: VaCoinMicro, prng: Prn
 export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, prng: Prng): void {
   refreshNeeds(guest);
   const wallet = ledger.getBalance(guestAccount(guest.id));
-  if (wallet < world.prices.slotMinBet) {
+  // Der billigste Einsatz entscheidet, ob sich Warten ueberhaupt lohnen kann.
+  const cheapest = world.furniture.reduce((min, item) => (item.gameId
+    ? Math.min(min, Math.max(world.prices.slotMinBet, item.baseBet)) : min), Number.POSITIVE_INFINITY);
+  const minBet = Number.isFinite(cheapest) ? cheapest : world.prices.slotMinBet;
+  if (wallet < minBet) {
     guest.intent = 'Zu wenig Chips fuer den Mindesteinsatz: will auszahlen.';
     guest.state = 'CASHOUT';
     guest.stateTicks = 0;

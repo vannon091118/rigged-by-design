@@ -49,22 +49,23 @@ describe('Drucklader', () => {
     expect(memory.pressureLevel).toBe(3);
     recordSlotSpin(memory, ['BOOK', 'BOOK', 'BOOK', 'BOOK', 'BOOK'], 120_000, true);
     expect(memory.pressureLevel).toBe(0);
-    expect(memory.freeSpins).toBe(0);
+    expect(memory.chargeReady).toBe(false);
   });
 
-  it('gibt bei Level 5 einen versetzten Gratis-Spin und bei Level 7 eine Entladung', () => {
+  it('gibt erst bei voller Ladung eine Entladung und nur mit Deckung im Polster', () => {
     const five = createSlotMemory();
     for (let spin = 0; spin < 5; spin += 1) recordSlotSpin(five, ['J', 'J', 'J', 'J', 'J'], 0, false);
-    const free = prepareSlotSpin(five);
-    expect(free.free).toBe(true);
-    expect(free.offset).toBeGreaterThan(0);
-    expect(free.forceWin).toBe(false);
+    expect(prepareSlotSpin(five).forceWin).toBe(false);
 
     const seven = createSlotMemory();
     for (let spin = 0; spin < 7; spin += 1) recordSlotSpin(seven, ['J', 'J', 'J', 'J', 'J'], 0, false);
-    const charge = prepareSlotSpin(seven);
-    expect(charge.free).toBe(true);
-    expect(charge.forceWin).toBe(true);
+    expect(seven.chargeReady).toBe(true);
+    expect(prepareSlotSpin(seven).forceWin).toBe(true);
+
+    const unfunded = createSlotMemory();
+    for (let spin = 0; spin < 7; spin += 1) recordSlotSpin(unfunded, ['J', 'J', 'J', 'J', 'J'], 0, false);
+    expect(prepareSlotSpin(unfunded, false).forceWin).toBe(false);
+    expect(unfunded.chargeReady).toBe(true);
   });
 
   it('erzwingt eine echte Non-LDW-Auszahlung oberhalb des Standardeinsatzes', () => {

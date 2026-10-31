@@ -191,8 +191,18 @@ function cleanerTick(world: WorldState, agent: StaffAgent): void {
   const tx = first % world.size;
   const ty = Math.floor(first / world.size);
   setTask(agent, 'cleaning');
-  if (dist(agent.x, agent.y, tx, ty) <= 1) { world.dirty.delete(first); return; }
+  if (dist(agent.x, agent.y, tx, ty) <= 1) {
+    // Am Ziel wird die naechste Umgebung mitgenommen, nicht nur eine Kachel.
+    for (const tile of [...world.dirty]) {
+      const x = tile % world.size;
+      const y = Math.floor(tile / world.size);
+      if (dist(x, y, tx, ty) <= 1) world.dirty.delete(tile);
+    }
+    return;
+  }
   stepToward(world, agent, tx, ty);
+  // Unerreichbarer Dreck darf die Reinigung nicht dauerhaft blockieren.
+  if (agent.path.length === 0) world.dirty.delete(first);
 }
 
 function bartenderTick(world: WorldState, agent: StaffAgent): void {

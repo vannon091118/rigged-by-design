@@ -81,7 +81,8 @@ describe('Lieferkette', () => {
     const mood = (guest.mood = 70);
     deliverDrink(world, ledger, guest, bar);
     expect(guest.mood).toBeLessThan(mood);
-    expect(guest.need).toBe('drink');
+    // Kein Nachfassen: der Gast laeuft nicht in eine Endlosschleife an der leeren Bar.
+    expect(guest.need).toBe('play');
   });
 
   it('eine Reparatur braucht Ersatzteile aus dem Lager', () => {
@@ -175,6 +176,35 @@ describe('Personal', () => {
     expect(fastTicks).toBeGreaterThanOrEqual(0);
     expect(slowTicks).toBeGreaterThanOrEqual(0);
     expect(fastTicks).toBeLessThan(slowTicks);
+  });
+
+  it('die Reinigungskraft entfernt Schmutz erst nach ihrer Ankunft', () => {
+    const { world, ledger, prng } = setup();
+    hireAgent(world, ledger, 'cleaner');
+    const cleaner = world.agents.find((agent) => agent.role === 'cleaner')!;
+    // Ein freies Feld weit weg vom Eingang: der Weg dauert messbar.
+    let spot: { x: number; y: number } | null = null;
+    for (let y = world.size - 2; y > 1 && !spot; y -= 1) {
+      for (let x = world.size - 2; x > 1 && !spot; x -= 1) {
+        if (canPlace(world, x, y, 1, 1, false)) spot = { x, y };
+      }
+    }
+    expect(spot).not.toBeNull();
+    const tile = spot!.y * world.size + spot!.x;
+    world.dirty.add(tile);
+    const startDist = Math.abs(cleaner.x - spot!.x) + Math.abs(cleaner.y - spot!.y);
+    expect(startDist).toBeGreaterThan(3);
+
+    let steps = 0;
+    while (world.dirty.has(tile) && steps < 600) {
+      tickAgents(world, ledger, prng);
+      steps += 1;
+      const near = Math.abs(cleaner.x - spot!.x) + Math.abs(cleaner.y - spot!.y) <= 1;
+      if (!near) expect(world.dirty.has(tile)).toBe(true);
+    }
+    expect(world.dirty.has(tile)).toBe(false);
+    expect(steps).toBeGreaterThan(1);
+    expect(Math.abs(cleaner.x - spot!.x) + Math.abs(cleaner.y - spot!.y)).toBeLessThanOrEqual(2);
   });
 });
 

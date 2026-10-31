@@ -24,7 +24,6 @@ interface SlotOutcome {
 interface SlotOptions {
   readonly offset?: number;
   readonly forceWin?: boolean;
-  readonly lowWinBias?: boolean;
 }
 
 export const SLOT_SYMBOLS = ['BOOK', 'SCARAB', 'ANKH', 'EYE', 'URN', 'A', 'K', 'Q', 'J'] as const;
@@ -33,10 +32,6 @@ type SymbolId = (typeof SLOT_SYMBOLS)[number];
 /** Gewicht je Symbol und Walze; BOOK und SCARAB sind selten, J am haeufigsten. */
 const WEIGHTS: Readonly<Record<SymbolId, number>> = {
   BOOK: 2, SCARAB: 4, ANKH: 6, EYE: 8, URN: 10, A: 14, K: 18, Q: 22, J: 30,
-};
-/** Bei Drucklevel 3 werden die kleinen Bilder etwas wahrscheinlicher. */
-const LOW_WEIGHTS: Readonly<Record<SymbolId, number>> = {
-  ...WEIGHTS, A: 18, K: 24, Q: 32, J: 44,
 };
 
 /** Auszahlung in Basispunkten des Linieneinsatzes fuer 3 / 4 / 5 Treffer. */
@@ -62,10 +57,11 @@ const LINES = SLOT_LINES;
 const SLOT_LINE_COUNT = LINES.length;
 /** Skaliert die Paytable; auf 93 % RTP geeicht (siehe Test). */
 const PAY_SCALE = 29.6;
+/** Entladung nach Drucklader: 1,48x auf den Gesamteinsatz, unabhaengig von der Paytable. */
+const FORCED_WIN_BPS = 14_800;
 const FREE_SPINS = 10;
 const MAX_FREE_ROUNDS = 40;
 const WEIGHT_TOTAL = SLOT_SYMBOLS.reduce((sum, symbol) => sum + WEIGHTS[symbol], 0);
-const LOW_WEIGHT_TOTAL = SLOT_SYMBOLS.reduce((sum, symbol) => sum + LOW_WEIGHTS[symbol], 0);
 
 /** 3+ BOOKs sind der Top-Treffer; der Erwartungswert kommt aus der Walzenmathematik. */
 function jackpotProbability(): number {
@@ -84,10 +80,8 @@ function drawSymbol(prng: Prng, weights: Readonly<Record<SymbolId, number>>, tot
   return 'J';
 }
 
-function spinReels(prng: Prng, lowWinBias = false): SymbolId[][] {
-  const weights = lowWinBias ? LOW_WEIGHTS : WEIGHTS;
-  const total = lowWinBias ? LOW_WEIGHT_TOTAL : WEIGHT_TOTAL;
-  return Array.from({ length: 5 }, () => Array.from({ length: 3 }, () => drawSymbol(prng, weights, total)));
+function spinReels(prng: Prng): SymbolId[][] {
+  return Array.from({ length: 5 }, () => Array.from({ length: 3 }, () => drawSymbol(prng, WEIGHTS, WEIGHT_TOTAL)));
 }
 
 function shiftReels(reels: SymbolId[][], offset: number): SymbolId[][] {
@@ -96,9 +90,13 @@ function shiftReels(reels: SymbolId[][], offset: number): SymbolId[][] {
   return reels.map((reel) => Array.from({ length: 3 }, (_, row) => reel[(row + shift) % 3]!));
 }
 
-/** Setzt eine echte 3er-SCARAB-Linie; 1,48x liegt sicher ueber dem Standardeinsatz. */
-function forceNonLdw(reels: SymbolId[][]): void {
+/**
+ * Setzt eine echte 3er-SCARAB-Linie auf Linie 0 und gibt sie zurueck: Diese Linie zahlt
+ * als Entladung den festen Satz, nicht die Paytable (sonst waere sie zehnmal zu gross).
+ */
+function forceNonLdw(reels: SymbolId[][]): number {
   for (let reel = 0; reel < 5; reel += 1) reels[reel]![1] = reel < 3 ? 'SCARAB' : 'J';
+  return 0;
 }
 
 /** BOOK ist Wild; drei oder mehr BOOK irgendwo starten die Freispiele. */
@@ -138,9 +136,10 @@ function countBooks(reels: readonly (readonly SymbolId[])[]): number {
  * Gesamteinsatz (alle Linien), nicht auf eine einzelne Linie.
  */
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
-  const reels = shiftReels(spinReels(prng, options.lowWinBias), options.offset ?? 0);
-  if (options.forceWin) forceNonLdw(reels);
+  const reels = shiftReels(spinReels(prng), options.offset ?? 0);
+  const forcedLine = options.forceWin ? forceNonLdw(reels) : -1;
   const { total: lineBps, wins } = evaluate(reels);
+
   const books = countBooks(reels);
   let freeSpins = books >= 3 ? FREE_SPINS : 0;
   let rounds = 0;
@@ -153,7 +152,10 @@ export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
     if (countBooks(extra) >= 3) freeSpins += FREE_SPINS;
   }
   // Je Linie gewonnen, aber auf den Gesamteinsatz normiert.
-  const multiplierBps = Math.round((lineBps + freeBps) / SLOT_LINE_COUNT);
+  // Die Entladung zahlt ihren festen Satz, nicht die Paytable der erzwungenen Linie.
+  const multiplierBps = forcedLine < 0
+    ? Math.round((lineBps + freeBps) / SLOT_LINE_COUNT)
+    : FORCED_WIN_BPS;
   const label = multiplierBps === 0
     ? 'Niete'
     : `${rounds > 0 ? `Freispiele (${rounds}) ` : ''}${(multiplierBps / 10_000).toFixed(2)}x`;

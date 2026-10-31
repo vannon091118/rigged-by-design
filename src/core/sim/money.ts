@@ -16,7 +16,14 @@ export const PLAYER_CASH = 'PLAYER_CASH';
 export const DEBT_ACCOUNT = 'HAUS_SCHULDEN';
 
 /** Betriebsreserve, die beim Abheben im Hauskonto bleibt. */
-export const HOUSE_FLOAT = fromVC(5);
+export const HOUSE_FLOAT = fromVC(25);
+/** Startkapital des Hauses: deckt Reparaturen und die erste Auszahlungswelle. */
+const STARTING_CAPITAL = fromVC(150);
+
+/** Der einzige Geldzufluss von aussen beim Start; jede weitere Zahl ist eine Buchung. */
+export function openHouse(ledger: Ledger, tick: number): void {
+  ledger.transfer(EXTERNAL, HAUSKONTO, STARTING_CAPITAL, 'startkapital', tick);
+}
 
 export const guestAccount = (id: number): string => `VISITOR_${id}`;
 export const pendingAccount = (id: number): string => `PENDING_${id}`;
@@ -69,6 +76,27 @@ export function payOut(ledger: Ledger, guestId: number, amount: VaCoinMicro, tic
   if (debt <= ZERO_VC) return;
   ledger.openLiability(DEBT_ACCOUNT);
   ledger.transfer(DEBT_ACCOUNT, pendingAccount(guestId), debt, `gast ${guestId} gewinn auf kredit`, tick);
+}
+
+/**
+ * Laufende Kosten, die die Kasse gerade nicht deckt, laufen als Verbindlichkeit weiter:
+ * Der Betrieb steht bei 0 Kapital still, aber er erstickt nicht an einer Reparatur.
+ */
+export function payOrBorrow(
+  ledger: Ledger,
+  account: string,
+  amount: VaCoinMicro,
+  reason: string,
+  tick: number,
+): void {
+  if (amount <= ZERO_VC) return;
+  const house = ledger.getBalance(HAUSKONTO);
+  const covered = (amount < house ? amount : house) as VaCoinMicro;
+  if (covered > ZERO_VC) ledger.transfer(HAUSKONTO, account, covered, reason, tick);
+  const open = (amount - covered) as VaCoinMicro;
+  if (open <= ZERO_VC) return;
+  ledger.openLiability(DEBT_ACCOUNT);
+  ledger.transfer(DEBT_ACCOUNT, account, open, `${reason} auf kredit`, tick);
 }
 
 export function payPending(ledger: Ledger, guestId: number, tick: number): VaCoinMicro {

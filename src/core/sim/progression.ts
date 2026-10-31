@@ -3,12 +3,13 @@
  * Jede Stufe nennt ihre echten Bedingungen mit Ist und Soll; nichts ist unsichtbar.
  */
 import type { Ledger } from '../economy/ledger';
+import { economyOf } from './economics';
 import { HAUSKONTO } from './money';
 import { BUILD_DEFS, type BuildId } from './offers';
 import type { WorldState } from './types';
 
 type CompanyTierId = 'BUDE' | 'KASSE' | 'SAAL' | 'KONZERN';
-type CompanyMetricId = 'day' | 'capital' | 'revenue' | 'reputation' | 'served' | 'games';
+type CompanyMetricId = 'day' | 'capital' | 'profit' | 'reputation' | 'served' | 'games';
 
 /** Nur fuer die Anzeige: Betraege in ganzen VC, nie als gespeicherter Geldwert. */
 const MICRO = 10_000;
@@ -51,26 +52,26 @@ const TIERS: readonly TierDef[] = [
     id: 'KASSE', name: 'Bude mit Kasse', note: 'Die Kasse klingelt, das Haus traegt sich selbst.',
     needs: [
       { id: 'day', label: 'Tage offen', need: 3 },
-      { id: 'revenue', label: 'Einnahmen (VC)', need: 20 },
+      { id: 'profit', label: 'Betriebsgewinn (VC)', need: 5 },
       { id: 'served', label: 'bediente Gäste', need: 15 },
     ],
   },
   {
     id: 'SAAL', name: 'Spielsaal', note: 'Mehrere Tische, eigener Ruf, echte Ausstattung.',
     needs: [
-      { id: 'reputation', label: 'Ruf', need: 45 },
-      { id: 'revenue', label: 'Einnahmen (VC)', need: 120 },
+      { id: 'reputation', label: 'Ruf', need: 50 },
+      { id: 'profit', label: 'Betriebsgewinn (VC)', need: 90 },
       { id: 'games', label: 'Spielgeräte', need: 6 },
-      { id: 'capital', label: 'Kapital (VC)', need: 60 },
+      { id: 'capital', label: 'Kapital (VC)', need: 150 },
     ],
   },
   {
     id: 'KONZERN', name: 'Konzern', note: 'Mehrere Säle, eigene Regeln, eigener Ruf.',
     needs: [
       { id: 'reputation', label: 'Ruf', need: 70 },
-      { id: 'revenue', label: 'Einnahmen (VC)', need: 400 },
+      { id: 'profit', label: 'Betriebsgewinn (VC)', need: 450 },
       { id: 'games', label: 'Spielgeräte', need: 12 },
-      { id: 'capital', label: 'Kapital (VC)', need: 300 },
+      { id: 'capital', label: 'Kapital (VC)', need: 700 },
     ],
   },
 ];
@@ -83,20 +84,11 @@ const BUILD_TIER: Readonly<Record<BuildId, CompanyTierId>> = {
   ROULETTE: 'KONZERN',
 };
 
-/** Einnahmen aus Gastbuchungen; Zuschuesse von aussen zaehlen nicht als Umsatz. */
-export function revenueOf(ledger: Ledger): number {
-  let total = 0;
-  for (const entry of ledger.entries) {
-    if (entry.to === HAUSKONTO && entry.from.startsWith('VISITOR_')) total += entry.amount;
-  }
-  return Math.floor(total / MICRO);
-}
-
 function valueOf(id: CompanyMetricId, world: WorldState, ledger: Ledger): number {
   switch (id) {
     case 'day': return world.day;
     case 'capital': return Math.floor(ledger.getBalance(HAUSKONTO) / MICRO);
-    case 'revenue': return revenueOf(ledger);
+    case 'profit': return economyOf(ledger).operatingProfit;
     case 'reputation': return Math.round(world.reputation);
     case 'served': return world.guestsServed;
     case 'games': return world.furniture.filter((item) => item.gameId).length;
@@ -116,12 +108,16 @@ function reached(tier: TierDef, world: WorldState, ledger: Ledger): boolean {
 const tierById = (id: CompanyTierId): TierDef => TIERS.find((tier) => tier.id === id)!;
 const order = (id: CompanyTierId): number => TIERS.findIndex((tier) => tier.id === id);
 
+/**
+ * Erreichte Stufe bleibt erreicht: Ein schlechter Tag nimmt keinem Haus den Namen.
+ * Die Nachfragestufe haelt die hoechste Stufe, damit beide Quellen dieselbe Wahrheit haben.
+ */
 export function companyTier(world: WorldState, ledger: Ledger): CompanyTierId {
   let current: CompanyTierId = 'BUDE';
   for (const tier of TIERS) {
     if (reached(tier, world, ledger)) current = tier.id;
   }
-  return current;
+  return order(world.demandTier) > order(current) ? world.demandTier : current;
 }
 
 export function companyStatus(world: WorldState, ledger: Ledger): CompanyStatus {
@@ -149,11 +145,16 @@ export function isUnlocked(world: WorldState, ledger: Ledger, buildId: BuildId):
   return order(BUILD_TIER[buildId]) <= order(companyTier(world, ledger));
 }
 
-/** Kaufbremse: die Sperre nennt Stufe und fehlende Bedingung statt nur "geht nicht". */
+/**
+ * Kaufbremse: die Sperre nennt die Stufe, die das Geraet verlangt, und genau deren
+ * offene Bedingungen mit Ist und Soll - nicht irgendeine naechste Stufe.
+ */
 export function assertUnlocked(world: WorldState, ledger: Ledger, buildId: BuildId): void {
   if (isUnlocked(world, ledger, buildId)) return;
-  const status = companyStatus(world, ledger);
-  const need = requiredTier(buildId);
-  const missing = status.open.map((metric) => `${metric.label} ${metric.current}/${metric.need}`).join(', ');
-  throw new Error(`${buildId} braucht Stufe ${tierById(need).name}. Noch offen: ${missing || 'weiter ausbauen'}.`);
+  const tier = tierById(requiredTier(buildId));
+  const missing = metricsFor(tier, world, ledger)
+    .filter((metric) => !metric.met)
+    .map((metric) => `${metric.label} ${metric.current}/${metric.need}`)
+    .join(', ');
+  throw new Error(`${buildId} braucht Stufe ${tier.name}. Noch offen: ${missing || 'weiter ausbauen'}.`);
 }

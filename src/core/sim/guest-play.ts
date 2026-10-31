@@ -48,16 +48,17 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   const push = payout === bet;
   const jackpot = payout > ZERO_VC && result.multiplierBps >= 10_000;
   guest.lastResult = jackpot ? 'JACKPOT!' : payout > ZERO_VC || !item.mods.includes('NEAR_MISS') ? result.label : 'FAST!';
-  guest.mood = clamp(guest.mood + (netWin ? 8 : push ? 0 : -2) + (effects.patience > 0 ? 1 : 0));
-  guest.patience = clamp(guest.patience - 1 + effects.patience);
+  // Ein Verlust aergert, aber er darf keinen Gast in dreissig Runden zum Raubtier machen.
+  guest.mood = clamp(guest.mood + (netWin ? 8 : push ? 0 : -0.5) + (effects.patience > 0 ? 1 : 0));
+  guest.patience = clamp(guest.patience - 0.35 + effects.patience);
   // Sucht entsteht nur am Spiel. Wer nie spielen kann, bleibt bei seinen Startpunkten stehen.
   const persona = getPersona(guest.persona);
   const flow = guest.mood >= 65 && guest.patience >= 50 ? 1.5 : 1;
   guest.addiction = clamp(guest.addiction + (netWin ? 4 : 1) * persona.addictionRate * flow + effects.addiction * 0.5);
   guest.spins += 1;
   guest.stateTicks += 1;
-  item.condition = Math.max(0, item.condition - 0.18);
-  if (prng.nextFloat() < 0.07) world.dirty.add((guest.position.y * world.size + guest.position.x) | 0);
+  item.condition = Math.max(0, item.condition - 0.08);
+  if (prng.nextFloat() < 0.012) world.dirty.add((guest.position.y * world.size + guest.position.x) | 0);
   if (guest.stateTicks >= 6 || guest.patience <= 0) {
     releaseAndChoose(world, guest);
     refreshNeeds(guest);
@@ -72,7 +73,7 @@ export function actAtTarget(world: WorldState, ledger: Ledger, prng: Prng, guest
       if (deliverDrink(world, ledger, guest, item)) {
         if (guest.spins > 0) guest.addiction = clamp(guest.addiction + 1.2 * getPersona(guest.persona).addictionRate);
         guest.dirtTimer += 1;
-        if (guest.dirtTimer > 4) { world.dirty.add((guest.position.y * world.size + guest.position.x) | 0); guest.dirtTimer = 0; }
+        if (guest.dirtTimer > 8) { world.dirty.add((guest.position.y * world.size + guest.position.x) | 0); guest.dirtTimer = 0; }
         const served = world.agents.some((agent) => agent.role === 'bartender'
           && Math.abs(agent.x - item.x) + Math.abs(agent.y - item.y) <= 4);
         if (served) guest.stateTicks += 2;
