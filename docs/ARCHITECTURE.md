@@ -27,34 +27,37 @@
 1. Jede Fehlermeldung hat das Format `[IDX-XXXX] [ERR-YYYY] Komponente: Klartext`.
 2. Neue Fehlerarten werden zuerst in `docs/ERROR_CATALOG.md` und `src/core/governance/error-codes.ts` registriert.
 3. `ERR-0000` ist ein unbekannter Fehler und blockiert den Build sofort (Fail-Closed).
-4. `ERR-0911` kennzeichnet automatisch reparierbare Verstöße. `scripts/run-pipeline.mjs` führt `npm run autofix:0911` vor den harten Gates aus.
+4. `ERR-0911` kennzeichnet automatisch reparierbare Verstöße. Repariert wird ausschließlich im Fix-Modus (`npm run fix`); jeder Verify-Lauf liest nur und macht einen veralteten Baum rot.
 5. Jede Testdatei deklariert `@test-target` und `@error-code`; der Reporter `src/core/governance/test-harness.ts` gibt jeden Testfall indiziert aus.
 6. Tests laufen im Thread-Pool (`pool: 'threads'`) mit harter Teardown-Grenze. Worker sind Threads im Runner-Prozess und sterben mit ihm, es bleiben also keine verwaisten Testprozesse zurueck; `testTimeout` und `teardownTimeout` beenden haengende Tests. Die sieben RTP-Monte-Carlo-Laeufe sind parallelisiert, ziehen pro Lauf frische Seeds und sind an die Tail-Verteilung angepasst: SLOT 200.000, POKER 400.000, PLINKO 5.000 Runden. Feste Seed-Literale lehnt `verify-test-quality` ab; die Seeds sind nicht per Env oder CLI waehlbar. Die Paytables sind auf ~93 % RTP kalibriert, damit das 90–96-%-Band auch mit frischen Seeds nicht zufaellig kippt.
 
 ## Pipeline
 
-Ein fehlgeschlagenes Autofix zählt als rotes Gate und beendet die Pipeline mit Nicht-Null-Exit.
+`verify` liest ausschließlich, `fix` ist der einzige schreibende Modus. Der Plan beider Modi steht in `scripts/lib/pipeline-plan.mjs`; kein Profil enthält einen Autofix-Schritt.
 
 Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | npm-Skript | Inhalt |
 | --- | --- | --- |
-| `quick` | `verify:quick` | Autofix, LOC, Typecheck, Testvertrag, Dead-Export, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
-| `full` | `verify:all` | Alle acht Stufen. Unverändert das Tor vor jedem Commit. |
+| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Dependency-Matrix, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `full` | `verify:all` | Alle neun Stufen inklusive Build und Audit. Unverändert das Tor vor jedem Commit. |
 | `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
 
 Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslauf der Suite darf den Vollauslauf nie ersetzen. `npm audit` läuft lokal nur bei einer Änderung an `package.json` oder `package-lock.json`, in CI und im Release-Profil immer — es ist das einzige Gate, das ausserhalb des Repos rot werden kann.
 
-`npm run verify:all` führt in dieser Reihenfolge aus:
+`npm run verify:all` führt in dieser Reihenfolge aus, jede Stufe nur lesend:
 
-1. `autofix:0911` (ESLint-Fix und Dependency-Matrix; ein unfixbarer Rest ist rot)
+1. ESLint ohne `--fix` (`ERR-4011`)
 2. LOC-Guard (`ERR-4012`)
 3. TypeScript (`ERR-1005`)
 4. Testqualität und Determinismus (`ERR-1001`, `ERR-4001`, `ERR-4002`, `ERR-3001`)
 5. Tote Exporte (`ERR-4003`)
-6. `npm audit --audit-level=low` (`ERR-4004`)
-7. Vitest mit indizierten Testfällen
-8. Production-Build (`ERR-1005`)
+6. Dependency-Matrix im `--check`-Modus (`ERR-4013`)
+7. `npm audit --audit-level=low` (`ERR-4004`)
+8. Vitest mit indizierten Testfällen
+9. Production-Build (`ERR-1005`)
+
+`npm run fix` repariert ESLint-Verstöße und die Dependency-Matrix und prüft danach dieselben Gates. Er nennt jede geänderte und jede gelöschte Datei; ein zweiter Lauf meldet „keine Änderung, Arbeitsbaum unverändert“. Das Main-Gate aus zwei Ebenen beschreibt `docs/CI-GATES.md`.
 
 ### Gemessene Wandzeit (31.10.2026, 6 Kerne, Cache geleert)
 
@@ -75,7 +78,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | --- | --- | --- | --- | --- |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^26.6.6 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 24: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/check-loc.mjs`<br>`scripts/ci-tag-release.mjs`<br>`scripts/lib/gate-cache.mjs`<br>… (+18) |
+| @types/node | ^26.6.6 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 25: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/check-loc.mjs`<br>`scripts/ci-tag-release.mjs`<br>`scripts/lib/gate-cache.mjs`<br>… (+19) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 29: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+23) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^4.3.4 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |
@@ -88,7 +91,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^5.7.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 1: `tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `eslint.config.mjs` |
 | vite | ^6.0.7 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 70: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/dice-bets.test.ts`<br>… (+64) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 73: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/dice-bets.test.ts`<br>… (+67) |
 <!-- DEP_MATRIX_END -->
 
 ## Delivery-Regel

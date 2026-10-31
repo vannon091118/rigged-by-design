@@ -20,3 +20,34 @@ declare module '*/pipeline-stop.mjs' {
   export function createStop(options?: StopOptions): (signal: string) => void;
   export function installStopHandlers(options?: StopOptions): (signal: string) => void;
 }
+
+declare module '*/pipeline-plan.mjs' {
+  export interface GateSpec {
+    readonly name: string;
+    readonly command: 'npm' | 'node';
+    readonly script: string;
+    readonly args?: readonly string[];
+    readonly code: string;
+    readonly cache?: boolean;
+  }
+  export const PROFILES: readonly string[];
+  export const GATES: Readonly<Record<string, GateSpec>>;
+  export const PROFILE_GATES: Readonly<Record<string, readonly string[]>>;
+  export function isProfile(value: string): boolean;
+  export function planGates(profile: string): string[] | null;
+  export function isFixMode(argv: readonly string[]): boolean;
+}
+
+declare module '*/tree-changes.mjs' {
+  export interface TreeChanges {
+    readonly added: readonly string[];
+    readonly modified: readonly string[];
+    readonly deleted: readonly string[];
+  }
+  export function parsePorcelain(text: string): Map<string, string>;
+  export function diffTree(
+    before: string | Map<string, string>,
+    after: string | Map<string, string>,
+  ): TreeChanges;
+  export function describeChanges(changes: TreeChanges): string[];
+}

@@ -1,11 +1,16 @@
 name: CI Verify
 
+# Ebene A des Main-Gates: jeder Push (auch auf `main`), jeder PR gegen `main`
+# und jeder manuelle Lauf gehen durch dieselben Fail-Closed-Gates. Der
+# Job-Name "Fail-Closed Gates" ist der Pflichtstatus, den das Ruleset aus
+# docs/CI-GATES.md verlangt.
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
   push:
-    branches-ignore: [main]
+    branches: ['**']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -52,7 +57,8 @@ jobs:
           node scripts/verify-commit-msg.mjs --head
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
-      - name: Autofix + alle Fail-Closed-Gates
+      # Rein lesend: der Lauf repariert nichts. Ein veralteter Baum wird rot.
+      - name: Alle Fail-Closed-Gates
         env:
           RBD_VERIFY_AUDIT: '1'
         run: npm run verify:all

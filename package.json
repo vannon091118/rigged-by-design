@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.44",
+  "version": "0.3.45",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,9 +16,12 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "check:loc": "node scripts/check-loc.mjs",
+    "verify": "node scripts/run-pipeline.mjs --profile=quick",
     "verify:all": "node scripts/run-pipeline.mjs --profile=full",
     "verify:quick": "node scripts/run-pipeline.mjs --profile=quick",
     "verify:release": "node scripts/run-pipeline.mjs --profile=release",
+    "fix": "node scripts/run-pipeline.mjs --fix --profile=quick",
+    "fix:all": "node scripts/run-pipeline.mjs --fix --profile=full",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "audit:gate": "npm audit --audit-level=low",

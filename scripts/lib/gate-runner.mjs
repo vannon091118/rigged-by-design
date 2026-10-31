@@ -12,7 +12,7 @@ const running = new Set();
 export function executeStep(step) {
   const started = Date.now();
   const command = step.command === 'npm' ? 'npm' : process.execPath;
-  const args = step.command === 'npm' ? ['run', step.script] : [step.script];
+  const args = step.command === 'npm' ? ['run', step.script] : [step.script, ...(step.args ?? [])];
   return new Promise((done) => {
     const child = spawn(command, args, {
       cwd: ROOT,

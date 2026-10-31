@@ -1,8 +1,14 @@
 #!/usr/bin/env node
-/** Automatische ERR-0911-Kandidaten: Lint-Fix, Dependency-Matrix, Commit-Sanitizing. */
+/**
+ * Sicherer Autofix (ERR-0911): Lint-Fix, Dependency-Matrix, Commit-Sanitizing.
+ *
+ * Nur ueber `npm run fix` bzw. `--fix` erreichbar. Der Aufrufer vergleicht den
+ * Arbeitsbaum vorher und nachher und protokolliert jede Aenderung; geloescht
+ * wird hier nichts. Ein veralteter Screenshot-Ordner bleibt stehen.
+ */
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { autofixLine, ROOT } from './lib/report.mjs';
 
@@ -11,25 +17,6 @@ const log = (message) => {
   index += 1;
   console.log(autofixLine(index, 'autofix', message));
 };
-
-/** Nur der aktuelle Bildsatz bleibt: alte Versionsordner sind reiner PNG-Binaer-Ballast. */
-function pruneScreenshots() {
-  const root = resolve(ROOT, 'docs', 'screenshots');
-  if (existsSync(root)) {
-    for (const entry of readdirSync(root, { withFileTypes: true })) {
-      if (!entry.isDirectory() || !/^v\d+\./.test(entry.name)) continue;
-      rmSync(join(root, entry.name), { recursive: true, force: true });
-      log(`veralteter Screenshot-Ordner entfernt: docs/screenshots/${entry.name}`);
-    }
-  }
-  const stray = resolve(ROOT, 'screenshots');
-  if (existsSync(stray)) {
-    rmSync(stray, { recursive: true, force: true });
-    log('Wurzel-screenshots/ entfernt');
-  }
-}
-
-pruneScreenshots();
 
 /**
  * Lint-Cache: unveraenderte Dateien werden nicht erneut geparst. Der Cache liegt ausserhalb
