@@ -1,24 +1,53 @@
 #!/usr/bin/env node
-/** Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Hashe-Cache. */
+/** Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. */
 import { spawn } from 'node:child_process';
 import { availableParallelism } from 'node:os';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
+import { killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
 const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
+const running = new Set();
 
 function execute(step) {
   const started = Date.now();
   const command = step.command === 'npm' ? 'npm' : process.execPath;
   const args = step.command === 'npm' ? ['run', step.script] : [step.script];
   return new Promise((done) => {
-    const child = spawn(command, args, { cwd: ROOT, shell: command === 'npm' && process.platform === 'win32' });
+    const child = spawn(command, args, {
+      cwd: ROOT,
+      shell: command === 'npm' && process.platform === 'win32',
+      // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze npm->vitest-Kette trifft.
+      detached: process.platform !== 'win32',
+    });
     let output = '';
+    if (child.pid) {
+      running.add(child.pid);
+      trackPid(step.name, child.pid);
+    }
     child.stdout.on('data', (chunk) => { output += chunk; });
     child.stderr.on('data', (chunk) => { output += chunk; });
-    child.on('close', (status) => done({ status, output, ms: Date.now() - started }));
+    child.on('close', (status) => {
+      if (child.pid) {
+        running.delete(child.pid);
+        untrackPid(child.pid);
+      }
+      done({ status, output, ms: Date.now() - started });
+    });
   });
 }
+
+/** Bricht alle laufenden Gates ab und uebergibt einen sauberen Registry-Stand. */
+export function abortGates() {
+  for (const pid of running) killTree(pid);
+  running.clear();
+  releaseOwner();
+}
+
+// Auch bei Absturz oder process.exit duerfen keine npm/vitest-Kinder ueberleben.
+process.on('exit', () => {
+  for (const pid of running) killTree(pid);
+});
 
 /** Jede rote Gate bleibt rot; gruene Gates werden nur bei identischem Hash uebersprungen. */
 export async function runGates(steps) {

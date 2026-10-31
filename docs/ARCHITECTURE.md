@@ -55,7 +55,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | --- | --- | --- | --- | --- |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^26.6.6 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 19: `scripts/autofix-0911.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/check-loc.mjs`<br>`scripts/ci-bump-version.mjs`<br>`scripts/lib/gate-cache.mjs`<br>`scripts/lib/gate-runner.mjs`<br>… (+13) |
+| @types/node | ^26.6.6 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 20: `scripts/autofix-0911.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/check-loc.mjs`<br>`scripts/ci-bump-version.mjs`<br>`scripts/lib/gate-cache.mjs`<br>`scripts/lib/gate-runner.mjs`<br>… (+14) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 27: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+21) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^4.3.4 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |

@@ -7,7 +7,8 @@ import { join } from 'node:path';
 import { ROOT } from './report.mjs';
 
 const CACHE_DIR = join(ROOT, 'node_modules', '.cache', 'rbd-verify');
-const entry = (name) => join(CACHE_DIR, `${name}.json`);
+// Windows verbietet ':' im Dateinamen; 'check:loc' wuerde sonst als ADS landen.
+const entry = (name) => join(CACHE_DIR, `${name.replace(/[^a-zA-Z0-9._-]/g, '-')}.json`);
 
 function fingerprint() {
   const files = execFileSync('git', ['ls-files', '-z', '-co', '--exclude-standard'], {

@@ -4,8 +4,9 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { line, ROOT } from './lib/report.mjs';
-import { runGates } from './lib/gate-runner.mjs';
+import { abortGates, runGates } from './lib/gate-runner.mjs';
 import { isCached, markCached, resetTreeKey, treeKey } from './lib/gate-cache.mjs';
+import { releaseOwner, sweepOrphans } from './lib/process-sweep.mjs';
 
 // Autofix ist zugleich das Lint- und Dependency-Gate: der zweite Durchlauf
 // derselben Pruefungen entfaellt. Bleibt ein Rest, ist das Autofix rot.
@@ -26,6 +27,16 @@ const steps = [
   },
 ];
 
+const stop = (signal) => {
+  abortGates();
+  console.error(`verify:all: ${signal} empfangen, laufende Gates beendet`);
+  process.exit(130);
+};
+process.once('SIGINT', () => stop('SIGINT'));
+process.once('SIGTERM', () => stop('SIGTERM'));
+
+sweepOrphans((message) => console.log(`verify:all: ${message}`));
+
 console.log('=== ERR-0911 Autofix ===');
 const before = treeKey();
 let failed = 0;
@@ -43,6 +54,7 @@ if (isCached('autofix', before)) {
 }
 
 const gateFailures = await runGates(steps);
+releaseOwner();
 const total = failed + gateFailures.length;
 if (total > 0) {
   console.error(`verify:all: ${total} Gate(s) rot`);
