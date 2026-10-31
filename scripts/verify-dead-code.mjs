@@ -10,13 +10,14 @@ import { relative, resolve } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 import { forEachNode, lineOf, parse, resolveSpecifier, ts } from './lib/ts-ast.mjs';
 
+const norm = (file) => file.replaceAll('\\', '/');
 const SRC = resolve(ROOT, 'src');
-const entry = resolve(SRC, 'main.tsx');
+const entry = norm(resolve(SRC, 'main.tsx'));
 const sources = [
-  ...walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts')),
-  ...['vite.config.ts', 'eslint.config.mjs'].map((file) => resolve(ROOT, file)).filter(existsSync),
+  ...walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts')).map(norm),
+  ...['vite.config.ts', 'eslint.config.mjs'].map((file) => resolve(ROOT, file)).filter(existsSync).map(norm),
 ];
-const consumers = [...sources, ...walk(resolve(ROOT, 'scripts'), (file) => /\.(m|c)?[jt]sx?$/.test(file))];
+const consumers = [...sources, ...walk(resolve(ROOT, 'scripts'), (file) => /\.(m|c)?[jt]sx?$/.test(file)).map(norm)];
 
 const exportsOf = new Map();
 const used = new Map();

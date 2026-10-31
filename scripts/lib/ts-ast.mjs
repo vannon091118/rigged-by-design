@@ -81,6 +81,7 @@ export function resolveSpecifier(specifier, fromFile) {
   const file = hit?.resolvedFileName
     ?? [base, `${base}.ts`, `${base}.tsx`, join(base, 'index.ts')].find(existsSync)
     ?? null;
-  resolutionCache.set(key, file);
-  return file;
+  const normalized = file === null ? null : file.replaceAll('\\', '/');
+  resolutionCache.set(key, normalized);
+  return normalized;
 }

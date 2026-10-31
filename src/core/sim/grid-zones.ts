@@ -53,6 +53,7 @@ export const GAME_FOOTPRINT: Readonly<Record<GameId, Footprint>> = {
   PLINKO: { w: 1, h: 1, seats: 1 },
   BLACKJACK: { w: 2, h: 2, seats: 4 },
   POKER: { w: 2, h: 2, seats: 4 },
+  VIDEO_POKER: { w: 1, h: 1, seats: 1 },
   ROULETTE: { w: 3, h: 2, seats: 6 },
   SHELL: { w: 1, h: 1, seats: 1 },
   DICE: { w: 2, h: 1, seats: 2 },

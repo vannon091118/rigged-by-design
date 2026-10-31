@@ -131,7 +131,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
         ))}
       </div>
 
-      {machine.game === 'SLOT' || machine.game === 'PLINKO' || machine.game === 'DICE' || machine.game === 'ROULETTE' || machine.game === 'SHELL' || machine.game === 'BLACKJACK' || machine.game === 'POKER' ? (
+      {machine.game === 'SLOT' || machine.game === 'PLINKO' || machine.game === 'DICE' || machine.game === 'ROULETTE' || machine.game === 'SHELL' || machine.game === 'BLACKJACK' || machine.game === 'POKER' || machine.game === 'VIDEO_POKER' ? (
         <TableLauncher
           key={`${rivalId}-${machineIndex}`}
           game={machine.game}

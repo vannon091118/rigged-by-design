@@ -8,6 +8,7 @@ import type { GameId, ModId } from '../core/sim/types';
 import { BlackjackPopup } from './games/blackjack-popup';
 import { DicePopup } from './games/dice-popup';
 import { PlinkoPopup } from './games/plinko-popup';
+import { PokerPopup } from './games/poker-popup';
 import { RoulettePopup } from './games/roulette-popup';
 import { ShellPopup } from './games/shell-popup';
 import { SlotPopup } from './games/slot-popup';
@@ -75,6 +76,17 @@ export function TableLauncher(props: Props) {
     );
   }
   if (game === 'POKER') {
+    return (
+      <PokerPopup
+        {...common}
+        wallets={wallets}
+        subtitle={`${where} Vier Spieler, ein Pot, du entscheidest an jedem Zug.`}
+        seed={props.onCardSeed}
+        onSettle={props.onSettle}
+      />
+    );
+  }
+  if (game === 'VIDEO_POKER') {
     return (
       <VideoPokerPopup
         {...common}
