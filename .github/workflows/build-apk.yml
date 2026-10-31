@@ -60,6 +60,11 @@ jobs:
 
       - name: Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # Der Action-Default nennt auch `tools`; Google liefert das Paket nicht
+          # mehr aus und sdkmanager bricht den Job ab. cmdline-tools und Lizenzen
+          # sind damit trotzdem eingerichtet.
+          packages: platform-tools
 
       - name: SDK-Plattform und Build-Tools
         run: |
