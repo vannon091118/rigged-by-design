@@ -1,115 +1,22 @@
 /**
  * Kartenrunden mit Spielerentscheidung: Blackjack Zug fuer Zug, Video Poker mit Hold.
  * Derselbe Schuh wie im schnellen Auto-Modus - nur ohne Grundstrategie.
+ *
+ * Blackjack selbst liegt in `blackjack.ts`; hier bleibt der Schuh und das Video Poker.
+ * Die Namen werden weitergegeben, damit Anzeige und Tests ihren Pfad behalten.
  */
 import { Prng } from '../../rng/prng';
 import { createShoe, type Card, type CardShoe } from '../../rng/shoe';
 
+export {
+  DEFAULT_BLACKJACK_RULES, doubleBlackjack, handTotal, hitBlackjack, insuranceBlackjack, isSoftHand,
+  normalizeBlackjackRules, splitBlackjack, standBlackjack, startBlackjack, surrenderBlackjack,
+  type BlackjackRound, type BlackjackRules,
+} from './blackjack';
+
 /** Eigener Schuh je Sitzung; der Seed kommt aus dem Welt-PRNG des Stores. */
 export function createCardShoe(seed: number, decks = 2): CardShoe {
   return createShoe(new Prng(seed >>> 0), decks);
-}
-
-function rankValue(rank: string): number {
-  if (rank === 'A') return 11;
-  if (rank === 'J' || rank === 'Q' || rank === 'K' || rank === '10') return 10;
-  return Number(rank);
-}
-
-export function handTotal(cards: readonly Card[]): number {
-  let sum = 0;
-  let aces = 0;
-  for (const card of cards) {
-    sum += rankValue(card.rank);
-    if (card.rank === 'A') aces += 1;
-  }
-  while (sum > 21 && aces > 0) { sum -= 10; aces -= 1; }
-  return sum;
-}
-
-/** Weich heisst: ein Ass zaehlt noch als 11. */
-export function isSoftHand(cards: readonly Card[]): boolean {
-  const hard = cards.reduce((sum, card) => sum + (card.rank === 'A' ? 1 : rankValue(card.rank)), 0);
-  return cards.some((card) => card.rank === 'A') && hard + 10 <= 21;
-}
-
-type BlackjackOutcome = 'BLACKJACK' | 'WIN' | 'PUSH' | 'LOSE' | 'BUST';
-const BLACKJACK_PAYS: Readonly<Record<'BLACKJACK' | 'WIN' | 'PUSH' | 'LOSE' | 'BUST', number>> = {
-  BLACKJACK: 25_000, WIN: 20_000, PUSH: 10_000, LOSE: 0, BUST: 0,
-};
-
-export interface BlackjackRound {
-  readonly player: readonly Card[];
-  readonly dealer: readonly Card[];
-  readonly units: 1 | 2;
-  readonly phase: 'PLAYER' | 'DONE';
-  readonly outcome: BlackjackOutcome | null;
-  /** Netto-Quote relativ zum Gesamteinsatz (auch nach Verdopplung). */
-  readonly multiplierBps: number;
-  readonly label: string;
-}
-
-const DEALER_STANDS_ON = 17;
-
-/** Dealer zieht, bis er 17 erreicht; weiche 17 wird gehalten (S17). */
-function dealerPlay(dealer: readonly Card[], shoe: CardShoe): Card[] {
-  const cards = [...dealer];
-  while (handTotal(cards) < DEALER_STANDS_ON) cards.push(shoe.draw());
-  return cards;
-}
-
-function settle(player: readonly Card[], dealer: readonly Card[], units: 1 | 2): BlackjackRound {
-  const playerTotal = handTotal(player);
-  const dealerTotal = handTotal(dealer);
-  const playerNatural = player.length === 2 && playerTotal === 21;
-  const dealerNatural = dealer.length === 2 && dealerTotal === 21;
-  const outcome: BlackjackOutcome = playerTotal > 21 ? 'BUST'
-    : playerNatural && dealerNatural ? 'PUSH'
-      : playerNatural ? 'BLACKJACK'
-        : dealerNatural ? 'LOSE'
-          : dealerTotal > 21 || playerTotal > dealerTotal ? 'WIN'
-            : playerTotal === dealerTotal ? 'PUSH' : 'LOSE';
-  const label = outcome === 'BUST' ? `Platzt mit ${playerTotal}`
-    : outcome === 'BLACKJACK' ? 'BLACKJACK!'
-      : outcome === 'PUSH' ? `Push ${playerTotal}`
-        : outcome === 'WIN' ? `Gewinnt ${playerTotal}:${dealerTotal}`
-          : `Verliert ${playerTotal}:${dealerTotal}`;
-  return {
-    player, dealer, units, phase: 'DONE', outcome,
-    multiplierBps: BLACKJACK_PAYS[outcome], label,
-  };
-}
-
-export function startBlackjack(shoe: CardShoe, units: 1 | 2 = 1): BlackjackRound {
-  const player = [shoe.draw(), shoe.draw()];
-  const dealer = [shoe.draw(), shoe.draw()];
-  const total = handTotal(player);
-  // Ein naturales Blatt wird sofort abgerechnet, sonst spielt der Spieler.
-  if (total === 21) return settle(player, dealer, units);
-  return { player, dealer, units, phase: 'PLAYER', outcome: null, multiplierBps: 0, label: `Deine ${total}` };
-}
-
-export function hitBlackjack(round: BlackjackRound, shoe: CardShoe): BlackjackRound {
-  if (round.phase !== 'PLAYER') throw new Error('Die Runde ist schon vorbei.');
-  const player = [...round.player, shoe.draw()];
-  const total = handTotal(player);
-  if (total > 21) return settle(player, round.dealer, round.units);
-  if (total === 21) return standBlackjack({ ...round, player }, shoe);
-  return { ...round, player, label: `Deine ${total}${isSoftHand(player) ? ' (weich)' : ''}` };
-}
-
-export function standBlackjack(round: BlackjackRound, shoe: CardShoe): BlackjackRound {
-  if (round.phase !== 'PLAYER') throw new Error('Die Runde ist schon vorbei.');
-  return settle(round.player, dealerPlay(round.dealer, shoe), round.units);
-}
-
-/** Verdoppeln: genau eine Karte, doppelter Einsatz, danach zieht der Dealer. */
-export function doubleBlackjack(round: BlackjackRound, shoe: CardShoe): BlackjackRound {
-  if (round.phase !== 'PLAYER' || round.player.length !== 2 || round.units !== 1) {
-    throw new Error('Verdoppeln geht nur mit zwei Karten und vor dem ersten Zug.');
-  }
-  const player = [...round.player, shoe.draw()];
-  return settle(player, dealerPlay(round.dealer, shoe), 2);
 }
 
 // ------------------------------------------------------------- Video Poker

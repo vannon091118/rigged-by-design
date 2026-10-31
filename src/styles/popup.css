@@ -485,3 +485,7 @@
 .slot-weights .plinko-field { gap: 2px; }
 .slot-weights small { opacity: .65; font-size: 10px; }
 .inline-check { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+
+.blackjack-hands { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.blackjack-rules { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; padding: 8px; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; }
+.blackjack-rules .bet-row { flex-wrap: wrap; }
