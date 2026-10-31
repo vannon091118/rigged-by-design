@@ -4,7 +4,7 @@ import type { GameResult } from '../core/games/contracts';
 import type { GateResult } from '../core/games/plinko-sandbox';
 import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
 import { MAX_REELS, reelUpgradeCost } from '../core/games/slot-config';
-import { MODS, attractionValue, getMod } from '../core/sim/offers';
+import { MODS, attractionValue, getMod, modAppliesTo } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { SlotProfile } from '../core/games/slot-profile';
 import type { GameView } from '../store/types';
@@ -152,7 +152,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             Werte wie <b>+260 Anziehung</b> sind Rohwerte: mehr ist besser.
           </p>
           <div className="mod-grid">
-            {MODS.filter((mod) => mod.id !== 'EXTRA_REEL' || item.gameId === 'SLOT').map((mod) => {
+            {MODS.filter((mod) => modAppliesTo(mod.id, item.gameId)).map((mod) => {
               const installed = item.mods.includes(mod.id);
               const blocked = installed || item.mods.length >= 3 || view.house < mod.cost;
               return (

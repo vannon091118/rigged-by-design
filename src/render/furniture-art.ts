@@ -1,5 +1,6 @@
 /** Moebel: statischer Korpus als GPU-Textur, nur Zustand und Sitze bleiben dynamisch. */
 import { Container, Graphics, Text } from 'pixi.js';
+import { gameOf, isCabinet } from '../core/sim/device';
 import type { Furniture } from '../core/sim/types';
 import { INK, LIGHT, ROLE, STROKE, floorText, furnitureTone } from './art-tokens';
 
@@ -94,7 +95,7 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   g.roundRect(2, 2, w - 4, h - 4, 4).fill({ color: 0x07040d, alpha: 0.28 });
   g.rect(3, 1, w - 6, 1).fill({ color: LIGHT.warm, alpha: 0.2 });
   g.rect(1, 3, 1, h - 6).fill({ color: LIGHT.warm, alpha: 0.1 });
-  if (item.kind === 'SLOT') drawSlot(g, w, h);
+  if (isCabinet(item)) drawSlot(g, w, h);
   else if (item.kind === 'TABLE') drawTable(g, w, h, item.seats);
   else if (item.kind === 'BAR') drawBar(g, w, h);
   else if (item.kind === 'TOILET') drawToilet(g, w, h, item.seats);
@@ -123,7 +124,7 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   occupied.visible = false;
 
   const status = new Graphics();
-  const screen = new Text({ text: item.kind === 'SLOT' ? 'BEREIT' : item.gameId ?? '', style: floorText.screen() });
+  const screen = new Text({ text: isCabinet(item) ? 'BEREIT' : gameOf(item) ?? '', style: floorText.screen() });
   screen.anchor.set(0.5, 0.5);
   screen.position.set(w / 2, h * 0.68);
   const label = new Text({ text: item.label, style: floorText.name() });

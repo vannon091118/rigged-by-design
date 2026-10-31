@@ -10,6 +10,7 @@ import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
+import { repairDeviceIdentity } from '../core/sim/device';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 const DEMAND_EVENTS: ReadonlySet<string> = new Set(['NEON_NACHT', 'TURNIER_ABEND']);
@@ -90,7 +91,9 @@ function footprintOf(item: Furniture): { w: number; h: number; seats: number } |
 
 /** Füllt alle Felder mit Defaults, heilt verwaiste Referenzen, sammelt altes Fiat. */
 export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: number; amount: VaCoinMicro }> {
-  world.furniture = saved.furniture.map((item) => {
+  world.furniture = saved.furniture.map((raw) => {
+    // Geräteidentität folgt dem Katalog, nicht dem gespeicherten Wunsch.
+    const item = { ...raw, ...repairDeviceIdentity(raw) };
     const fp = footprintOf(item);
     return {
       ...item,

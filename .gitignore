@@ -3,7 +3,6 @@ dist/
 coverage/
 artifacts/
 android/
-capacitor.config.json
 *.log
 .env
 .env.local

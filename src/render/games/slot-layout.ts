@@ -7,7 +7,8 @@ const DEFAULT_REELS = 5;
 export const REEL_COUNT = DEFAULT_REELS;
 export const ROW_COUNT = 3;
 
-export interface Point {
+/** Eigene Koordinate des Walzenfelds; nirgendwo importiert, also lokal. */
+interface Point {
   readonly x: number;
   readonly y: number;
 }

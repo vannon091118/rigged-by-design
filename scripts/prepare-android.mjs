@@ -1,56 +1,65 @@
 #!/usr/bin/env node
 /**
- * Capacitor-Android: Huelle um den Vite-Build, Debug-APK als Artefakt.
- * Das Android-SDK und Java 21 kommen aus dem CI-Image; lokal bricht der Lauf rot ab.
+ * Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante.
+ *
+ *   npm run android:apk         -> artifacts/rigged-by-design-debug.apk
+ *   npm run android:apk:release -> artifacts/rigged-by-design-release-unsigned.apk
+ *
+ * Die Konfiguration liegt versioniert in capacitor.config.json, die Pakete sind
+ * in package.json gepinnt – dieses Skript schreibt weder Manifest noch Lockfile
+ * und installiert nichts. Debug ist installierbar, Release kommt ohne
+ * Signatur heraus; das Signieren ist ein eigener Schritt.
+ * Android-SDK und Java 21 kommen aus dem CI-Image; lokal bricht der Lauf rot ab.
  */
-import { existsSync, mkdirSync, copyFileSync, writeFileSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
-const CAPACITOR = ['@capacitor/core@8', '@capacitor/cli@8', '@capacitor/android@8'];
-const APK_NAME = 'rigged-by-design-debug.apk';
+const release = process.argv.includes('--release');
+const stage = release ? 'release' : 'debug';
+/** Der Vertrag "fest verdrahtet": diese Pakete stehen gepinnt in package.json. */
+const CAPACITOR = ['@capacitor/core', '@capacitor/cli', '@capacitor/android'];
+const gradleTask = release ? 'assembleRelease' : 'assembleDebug';
+const gradleApk = release ? 'app-release-unsigned.apk' : 'app-debug.apk';
+const apkName = release ? 'rigged-by-design-release-unsigned.apk' : 'rigged-by-design-debug.apk';
 
-function run(command, args, cwd = ROOT) {
-  const result = spawnSync(command, args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
-  if (result.status !== 0) {
-    fail(1, 'ERR-4014', 'android', `${command} ${args.join(' ')} fehlgeschlagen`);
-    process.exit(1);
-  }
-}
-
-const dist = resolve(ROOT, 'dist', 'index.html');
-if (!existsSync(dist)) {
-  fail(1, 'ERR-4014', 'android', 'dist/index.html fehlt: zuerst npm run build bzw. verify:all');
+function abort(message) {
+  fail(1, 'ERR-4014', 'android', message);
   process.exit(1);
 }
 
-const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8'));
-writeFileSync(resolve(ROOT, 'capacitor.config.json'), `${JSON.stringify({
-  appId: 'de.riggedbydesign.casino',
-  appName: 'Rigged by Design',
-  webDir: 'dist',
-  server: { androidScheme: 'https' },
-  android: { allowMixedContent: false },
-}, null, 2)}\n`);
-console.log(`[IDX-0001] prepare-android: Huelle fuer ${pkg.name}@${pkg.version} konfiguriert`);
-
-if (!existsSync(resolve(ROOT, 'node_modules', '@capacitor', 'cli'))) {
-  console.log('[IDX-0001] prepare-android: Capacitor 8 wird ohne package.json-Aenderung installiert');
-  run('npm', ['install', '--no-save', '--no-audit', '--no-fund', ...CAPACITOR]);
+function run(command, args, cwd = ROOT) {
+  const result = spawnSync(command, args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
+  if (result.status !== 0) abort(`${command} ${args.join(' ')} fehlgeschlagen`);
 }
+
+if (!existsSync(resolve(ROOT, 'dist', 'index.html'))) {
+  abort('dist/index.html fehlt: zuerst npm run build bzw. verify:all');
+}
+const configPath = resolve(ROOT, 'capacitor.config.json');
+if (!existsSync(configPath)) {
+  abort('capacitor.config.json fehlt: die Huelle ist fest im Repo verdrahtet');
+}
+const config = JSON.parse(readFileSync(configPath, 'utf8'));
+if (config.webDir !== 'dist') abort(`capacitor.config.json: webDir muss dist sein, steht: ${config.webDir}`);
+if (!existsSync(resolve(ROOT, 'node_modules', '@capacitor', 'cli'))) {
+  abort('Capacitor fehlt in node_modules: npm ci ausfuehren, die Pakete sind gepinnt');
+}
+const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8'));
+for (const dep of CAPACITOR) {
+  if (!pkg.devDependencies?.[dep]) abort(`${dep} ist nicht in package.json gepinnt`);
+}
+console.log(`[IDX-0001] prepare-android: ${release ? 'Release (unsigned)' : 'Debug'} von ${pkg.name}@${pkg.version}`);
 
 if (!existsSync(resolve(ROOT, 'android'))) run('npx', ['cap', 'add', 'android']);
 run('npx', ['cap', 'sync', 'android']);
 
 const gradle = process.platform === 'win32' ? 'gradlew.bat' : './gradlew';
-run(gradle, ['assembleDebug', '--no-daemon'], resolve(ROOT, 'android'));
+run(gradle, [gradleTask, '--no-daemon'], resolve(ROOT, 'android'));
 
-const apk = resolve(ROOT, 'android', 'app', 'build', 'outputs', 'apk', 'debug', 'app-debug.apk');
-if (!existsSync(apk)) {
-  fail(1, 'ERR-4014', 'android', 'Gradle hat keine Debug-APK erzeugt');
-  process.exit(1);
-}
+const apk = resolve(ROOT, 'android', 'app', 'build', 'outputs', 'apk', stage, gradleApk);
+if (!existsSync(apk)) abort(`Gradle hat keine ${stage}-APK erzeugt: ${gradleApk}`);
 mkdirSync(resolve(ROOT, 'artifacts'), { recursive: true });
-copyFileSync(apk, resolve(ROOT, 'artifacts', APK_NAME));
-console.log(`[IDX-0001] prepare-android: artifacts/${APK_NAME} bereit`);
+copyFileSync(apk, resolve(ROOT, 'artifacts', apkName));
+console.log(`[IDX-0001] prepare-android: artifacts/${apkName} bereit`);

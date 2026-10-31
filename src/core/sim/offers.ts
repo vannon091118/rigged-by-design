@@ -51,8 +51,12 @@ export const BUILD_DEFS: readonly BuildDef[] = [
 ];
 
 const BUILD_INDEX = new Map(BUILD_DEFS.map((def) => [def.id, def]));
+/** Katalogeintrag ohne Ausnahme: unbekannte Id liefert null statt eines Wurfs. */
+export function buildDefOf(id: BuildId): BuildDef | null {
+  return BUILD_INDEX.get(id) ?? null;
+}
 export function getBuildDef(id: BuildId): BuildDef {
-  const def = BUILD_INDEX.get(id);
+  const def = buildDefOf(id);
   if (!def) throw new Error(`Unbekanntes Objekt: ${id}`);
   return def;
 }
@@ -104,15 +108,32 @@ export function getMod(id: ModId): ModDef {
   return mod;
 }
 
-export function modEffects(item: { readonly mods: readonly ModId[] }): {
+/** Einige Mods passen nur auf bestimmte Spieltypen; ohne Liste gilt er ueberall. */
+const MOD_GAMES: Partial<Record<ModId, readonly GameId[]>> = { EXTRA_REEL: ['SLOT'] };
+
+/** Die eine Ja/Nein-Frage: gilt dieser Mod auf diesem Spieltyp? */
+export function modAppliesTo(modId: ModId, game: GameId | undefined): boolean {
+  const allowed = MOD_GAMES[modId];
+  return allowed === undefined || (game !== undefined && allowed.includes(game));
+}
+
+interface ModEffects {
   attraction: number; patience: number; addiction: number; operating: VaCoinMicro; bonusBps: number;
-} {
+}
+
+/**
+ * Der gemeinsame Resolver fuer Mod-Wirkungen: eigenes Haus und fremde Hauser
+ * rechnen hier ueber denselben Weg – mit Spieltyp, damit eine Regel wie
+ * "die vierte Walze nur fuer Slots" nicht an zwei Stellen leben darf.
+ */
+export function resolveModEffects(game: GameId | undefined, mods: readonly ModId[]): ModEffects {
   let attraction = 0;
   let patience = 0;
   let addiction = 0;
   let operating = 0;
   let bonusBps = 0;
-  for (const id of item.mods) {
+  for (const id of mods) {
+    if (!modAppliesTo(id, game)) continue;
     const mod = getMod(id);
     attraction += mod.attraction;
     patience += mod.patience;
@@ -134,7 +155,7 @@ export function offerScore(world: WorldState, guest: Guest, item: Furniture, wal
   const persona = getPersona(guest.persona);
   const bet = Math.max(world.prices.slotMinBet, item.baseBet);
   if (bet > wallet) return 0;
-  const effects = modEffects(item);
+  const effects = resolveModEffects(item.gameId, item.mods);
   const taste = persona.taste[item.gameId] ?? 0;
   const priceFriction = bet > wallet * 0.25 ? (bet / Math.max(1, wallet)) * 900 : 0;
   const moodFactor = 0.55 + guest.mood / 140;
@@ -142,14 +163,14 @@ export function offerScore(world: WorldState, guest: Guest, item: Furniture, wal
 }
 
 export function attractionValue(item: Furniture): number {
-  return item.quality * 160 + modEffects(item).attraction + reelPull(item);
+  return item.quality * 160 + resolveModEffects(item.gameId, item.mods).attraction + reelPull(item);
 }
 
 export function attractionOf(world: WorldState): number {
   let total = 0;
   for (const item of world.furniture) {
     if (item.kind === 'DECOR') total += item.quality * 120;
-    else if (item.gameId) total += item.quality * 180 + modEffects(item).attraction + reelPull(item);
+    else if (item.gameId) total += item.quality * 180 + resolveModEffects(item.gameId, item.mods).attraction + reelPull(item);
   }
   return total;
 }

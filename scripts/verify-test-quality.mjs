@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 /**
- * Fail-Closed-Testvertrag: Header, echte Assertions, Determinismus und keine
- * Dummy-Werte in UI/Render. Jeder Verstoss bekommt eine IDX und einen ERR-Code.
+ * Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions,
+ * Determinismus und keine Dummy-Werte in UI/Render. Geprueft werden Knoten,
+ * keine Zeichensketten – ein Wort im Kommentar oder im String ist kein Test.
+ * Jeder Verstoss bekommt eine IDX und einen ERR-Code.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { catalogCodes, fail, ROOT, walk } from './lib/report.mjs';
+import { forEachNode, lineOf, parse, ts } from './lib/ts-ast.mjs';
 
 const SRC = resolve(ROOT, 'src');
 const codes = catalogCodes();
@@ -21,40 +24,69 @@ const files = walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d
 const tests = files.filter((file) => /\.test\.tsx?$/.test(file));
 for (const file of tests) {
   const name = relative(ROOT, file);
-  const text = readFileSync(file, 'utf8');
-  const header = text.slice(0, 800);
+  const source = parse(file);
+  const comments = ts.getLeadingCommentRanges(source.getFullText(), 0) ?? [];
+  const header = comments.map((range) => source.getFullText().slice(range.pos, range.end)).join('\n');
   const target = /@test-target:\s*([^\s|*]+)/.exec(header)?.[1];
   const code = /@error-code:\s*(ERR-\d{4})/.exec(header)?.[1];
   if (!target) report('ERR-4001', name, '@test-target fehlt');
   else if (!existsSync(resolve(ROOT, target))) report('ERR-4001', name, `Ziel existiert nicht: ${target}`);
   if (!code) report('ERR-4001', name, '@error-code fehlt');
   else if (!codes.has(code)) report('ERR-4001', name, `Code nicht im Katalog: ${code}`);
-  if (!/\bexpect\s*\(/.test(text)) report('ERR-4002', name, 'keine Assertion vorhanden');
-  // Jeder Lauf muss mit einem neuen, nicht vorab waehlbaren Seed starten.
-  if (/\bnew\s+Prng\s*\(\s*(?:0x[0-9a-f]+|\d[\d_]*)\s*\)/i.test(text)) {
-    report('ERR-4002', name, 'fester Seed im Test; randomSeed() verwenden');
-  }
-  const forbidden = [
-    [/toMatch(In)?Snapshot/, 'Snapshot-Test'],
-    [/\.toBeDefined\s*\(/, 'nur Existenz (toBeDefined)'],
-    [/\.toBeTruthy\s*\(/, 'nur Wahrheitswert (toBeTruthy)'],
-    [/expect\s*\(\s*typeof/, 'nur Typ-Existenz'],
-    [/expect\s*\(\s*true\s*\)\s*\.toBe\s*\(\s*true\s*\)/, 'Tautologie'],
+
+  const found = { seed: false, snapshot: false, defined: false, truthy: false, typeOf: false, tautology: false };
+  let asserted = false;
+  const isExpectCall = (node) => ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'expect';
+  const isTrueLiteral = (node) => node && node.kind === ts.SyntaxKind.TrueKeyword;
+  forEachNode(source, (node) => {
+    if (ts.isCallExpression(node)) {
+      if (isExpectCall(node)) {
+        asserted = true;
+        if (node.arguments[0]?.kind === ts.SyntaxKind.TypeOfExpression) found.typeOf = true;
+      }
+      if (!ts.isPropertyAccessExpression(node.expression)) return;
+      const matcher = node.expression.name.text;
+      if (matcher === 'toMatchSnapshot' || matcher === 'toMatchInlineSnapshot') found.snapshot = true;
+      else if (matcher === 'toBeDefined') found.defined = true;
+      else if (matcher === 'toBeTruthy') found.truthy = true;
+      else if (matcher === 'toBe' && isTrueLiteral(node.arguments[0])
+        && ts.isCallExpression(node.expression.expression) && isExpectCall(node.expression.expression)
+        && isTrueLiteral(node.expression.expression.arguments[0])) found.tautology = true;
+    } else if (ts.isNewExpression(node) && ts.isIdentifier(node.expression)
+      && node.expression.text.toLowerCase() === 'prng'
+      && node.arguments?.[0]?.kind === ts.SyntaxKind.NumericLiteral) {
+      // Jeder Lauf muss mit einem neuen, nicht vorab waehlbaren Seed starten.
+      found.seed = true;
+    }
+  });
+  if (!asserted) report('ERR-4002', name, 'keine Assertion vorhanden');
+  const ordered = [
+    [found.seed, 'fester Seed im Test; randomSeed() verwenden'],
+    [found.snapshot, 'Snapshot-Test'],
+    [found.defined, 'nur Existenz (toBeDefined)'],
+    [found.truthy, 'nur Wahrheitswert (toBeTruthy)'],
+    [found.typeOf, 'nur Typ-Existenz'],
+    [found.tautology, 'Tautologie'],
   ];
-  for (const [pattern, label] of forbidden) {
-    if (pattern.test(text)) report('ERR-4002', name, label);
-  }
+  for (const [hit, label] of ordered) if (hit) report('ERR-4002', name, label);
 }
 
 const deterministicRoots = [resolve(SRC, 'core'), resolve(SRC, 'store')];
+const RISKY = ['Math.random', 'Date.now', 'performance.now', 'crypto.getRandomValues'];
 for (const file of walk(resolve(SRC, 'core'), (entry) => entry.endsWith('.ts'))) checkDeterminism(file);
 for (const file of walk(resolve(SRC, 'store'), (entry) => entry.endsWith('.ts'))) checkDeterminism(file);
 function checkDeterminism(file) {
-  const lines = readFileSync(file, 'utf8').split(/\r?\n/);
-  lines.forEach((text, lineIndex) => {
-    if (text.includes('@seed-initializer')) return;
-    const match = /Math\.random|Date\.now|performance\.now|crypto\.getRandomValues/.exec(text);
-    if (match) report('ERR-1001', relative(ROOT, file), `Nicht-deterministisch: ${match[0]} in Zeile ${lineIndex + 1}`);
+  const source = parse(file);
+  const lines = source.getFullText().split(/\r?\n/);
+  const seen = new Set();
+  forEachNode(source, (node) => {
+    if (!ts.isPropertyAccessExpression(node)) return;
+    const text = node.getText(source);
+    if (!RISKY.some((risk) => text.endsWith(risk))) return;
+    const line = lineOf(source, node.getStart(source));
+    if (seen.has(line) || lines[line - 1]?.includes('@seed-initializer')) return;
+    seen.add(line);
+    report('ERR-1001', relative(ROOT, file), `Nicht-deterministisch: ${text} in Zeile ${line}`);
   });
 }
 

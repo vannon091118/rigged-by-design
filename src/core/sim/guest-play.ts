@@ -10,7 +10,7 @@ import { chooseActivity } from './guest-choice';
 import { deliverDrink, useToilet } from './deliveries';
 import { refreshNeeds } from './needs';
 import { guestAccount, HAUSKONTO, payOut, placeBet, SHOP } from './money';
-import { modEffects } from './offers';
+import { resolveModEffects } from './offers';
 import { getPersona } from './personas';
 import type { Furniture, Guest, WorldState } from './types';
 
@@ -24,7 +24,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
     guest.stateTicks = 0;
     return;
   }
-  const effects = modEffects(item);
+  const effects = resolveModEffects(item.gameId, item.mods);
   const result = item.gameId === 'PLINKO'
     ? playPlinkoRound(world, prng, bet, effects.bonusBps)
     : item.gameId === 'SLOT'

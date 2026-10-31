@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   apk:
-    name: Capacitor Debug-APK
+    name: Capacitor APKs (Debug + Release)
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -71,14 +71,24 @@ jobs:
       - name: Fail-Closed-Gates
         run: npm run verify:release
 
-      - name: Capacitor sync + Gradle assembleDebug
+      - name: Gradle assembleDebug (signierbare Debug-APK)
         run: npm run android:apk
 
-      - name: APK als Artefakt
+      - name: Gradle assembleRelease (Release-APK ohne Signatur)
+        run: npm run android:apk:release
+
+      - name: Debug-APK als Artefakt
         uses: actions/upload-artifact@v4
         with:
           name: rigged-by-design-debug-apk
           path: artifacts/rigged-by-design-debug.apk
+          if-no-files-found: error
+
+      - name: Release-APK als Artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: rigged-by-design-release-unsigned-apk
+          path: artifacts/rigged-by-design-release-unsigned.apk
           if-no-files-found: error
 
       - name: Release-Tag bestimmen
@@ -97,14 +107,17 @@ jobs:
           TAG: ${{ steps.release.outputs.tag }}
         run: |
           gh release view "$TAG" > /dev/null 2>&1 \
-            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute Debug-APK."
-          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk --clobber
+            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute APKs: Debug installierbar, Release ohne Signatur."
+          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk artifacts/rigged-by-design-release-unsigned.apk --clobber
 
-      - name: Artefakt am Release pruefen
+      - name: Artefakte am Release pruefen
         if: steps.release.outputs.tag != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.release.outputs.tag }}
         run: |
-          gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qx 'rigged-by-design-debug.apk' \
+          assets="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
+          echo "$assets" | grep -qx 'rigged-by-design-debug.apk' \
             || { echo "::error::Release $TAG enthaelt kein APK-Artefakt"; exit 1; }
+          echo "$assets" | grep -qx 'rigged-by-design-release-unsigned.apk' \
+            || { echo "::error::Release $TAG enthaelt keine Release-APK"; exit 1; }
