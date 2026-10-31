@@ -25,6 +25,21 @@ const ROUNDS: Readonly<Record<GameId, number>> = {  // SHELL hat eine hohe Varia
   POKER: 400_000,
 };
 
+/**
+ * RTP-Band je Spiel, aus gemessener Streuung abgeleitet (6-30 frische Seeds je Spiel,
+ * Monte-Carlo-Standardfehler auf die konfigurierte Rundenzahl hochgerechnet):
+ * POKER 0,9132 +- 0,0110 | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
+ * SHELL 0,9510 +- 0,0031 | ROULETTE 0,9461 +- 0,0026 | BLACKJACK 0,9395 +- 0,0020.
+ * Ein einheitliches 0,90-0,96-Band kippte dadurch bei POKER in rund 11 % und bei
+ * PLINKO in rund 1 % der Laeufe. Diese Baender halten ueber 4 Sigma Abstand zu den
+ * gemessenen Mittelwerten und fangen trotzdem kaputte Auszahlungstabellen
+ * (das zu centerlastige Plinko-Brett liegt gemessen bei 0,85).
+ */
+const RTP_BAND: Readonly<Record<GameId, readonly [number, number]>> = {
+  SLOT: [0.895, 0.96], BLACKJACK: [0.9, 0.96], ROULETTE: [0.9, 0.96], DICE: [0.9, 0.96],
+  POKER: [0.86, 0.96], PLINKO: [0.87, 0.97], SHELL: [0.9, 0.97],
+};
+
 describe('Spiele', () => {
   it('jedes Spiel liefert eine gueltige, deterministische Runde', () => {
     const seed = randomSeed();
@@ -56,8 +71,9 @@ describe('Spiele', () => {
     }
     const rtp = returned / rounds / 10_000;
     const hitRate = winners / rounds;
-    expect(rtp, `${game} RTP`).toBeGreaterThan(0.90);
-    expect(rtp, `${game} RTP`).toBeLessThan(0.96);
+    const [low, high] = RTP_BAND[game];
+    expect(rtp, `${game} RTP`).toBeGreaterThan(low);
+    expect(rtp, `${game} RTP`).toBeLessThan(high);
     expect(hitRate, `${game} Gewinnrate`).toBeGreaterThan(0.25);
     expect(hitRate, `${game} Gewinnrate`).toBeLessThan(0.7);
   });

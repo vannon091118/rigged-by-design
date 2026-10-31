@@ -42,7 +42,9 @@ export class GovernanceReporter implements Reporter {
       code = errorCodeFor(file);
       this.#codes.set(file, code);
     }
-    const state = testCase.result().state === 'passed' ? 'PASS' : 'FAIL';
-    emit(this.#index, code, testCase.module.relativeModuleId, `${testCase.fullName}: ${state}`);
+    // Ein uebersprungener Test ist kein Fehlschlag: er meldet SKIP statt FAIL.
+    const state = testCase.result().state;
+    const label = state === 'passed' ? 'PASS' : state === 'skipped' || state === 'pending' ? 'SKIP' : 'FAIL';
+    emit(this.#index, code, testCase.module.relativeModuleId, `${testCase.fullName}: ${label}`);
   }
 }

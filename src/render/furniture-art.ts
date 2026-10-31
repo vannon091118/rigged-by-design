@@ -101,7 +101,13 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   else if (item.kind === 'EXCHANGE') drawExchange(g, w, h);
   else if (item.kind === 'STORAGE') drawStorage(g, w, h);
   else if (item.kind === 'DECOR') drawDecor(g, w, h, item.label);
-  body.addChild(shadow, g);
+  // Lichtinsel unter wichtigen Objekten: das Geraet steht im Licht, nicht im Nichts.
+  const pool = new Graphics();
+  if (item.kind === 'EXCHANGE' || item.kind === 'BAR' || item.gameId) {
+    pool.ellipse(w / 2, h / 2, w * 0.9, h * 0.85).fill({ color: tone.edge, alpha: 0.045 });
+    pool.ellipse(w / 2, h / 2, w * 0.6, h * 0.55).fill({ color: LIGHT.warm, alpha: 0.04 });
+  }
+  body.addChild(pool, shadow, g);
   body.cacheAsTexture(true);
 
   // Uebersicht: dieselbe Formsprache als Block mit Lichtkante und Fuss.

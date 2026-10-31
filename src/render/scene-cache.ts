@@ -5,6 +5,7 @@ import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
 import { changedRegions, regionHash } from './floor-math';
+import { drawRoutes } from './floor-route';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
 const LABEL_COUNT = 10;
@@ -41,9 +42,23 @@ export function createSceneCache(): SceneCache {
 
   const floorChunks = new Map<string, { area: Area; g: Graphics; hash: number; baked: boolean }>();
   const dirtChunks = new Map<string, { g: Graphics; hash: number }>();
+  // Laufwege liegen ueber den Raum-Chunks, aber unter Dreck und Moebeln.
+  const routes = new Graphics();
+  routes.eventMode = 'none';
+  furniture.addChildAt(routes, 0);
+  let routesKey = '';
+  let routesBaked = false;
 
   const redrawRoom = (view: GameView): void => {
     const areas = areasFor(view.template);
+    const key = `${view.template}|${view.carpet}|${view.zones.length}`;
+    if (key !== routesKey) {
+      routesKey = key;
+      routes.clear();
+      drawRoutes(routes, view, TILE);
+      if (routesBaked) routes.updateCacheTexture();
+      else { routes.cacheAsTexture(true); routesBaked = true; }
+    }
     const prev = new Map<string, number>();
     for (const chunk of floorChunks.values()) prev.set(chunk.area.id, chunk.hash);
     const changed = new Set(changedRegions(view, areas, prev));

@@ -9,6 +9,7 @@ import { CARPETS } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { INK, LIGHT, materialFor, type FloorMaterial } from './art-tokens';
 import { drawSurface, drawWalkway } from './floor-surface';
+import { drawDressing } from './room-dressing';
 
 interface Rect { x: number; y: number; w: number; h: number }
 interface ZoneLike { id: string; kind: string; x: number; y: number; w: number; h: number; color: number }
@@ -143,6 +144,7 @@ function drawZoneFloor(g: Graphics, zone: ZoneLike, others: readonly ZoneLike[],
     top: iy === zone.y, bottom: ey === zone.y + zone.h,
     left: ix === zone.x, right: ex === zone.x + zone.w,
   });
+  drawDressing(g, mat, rect, zone, tile);
   for (const side of SIDES) {
     const door = doorSpan(zone, side, size);
     const spans = [...sharedSpans(zone, others, side), ...(door ? [door] : [])].sort((a, b) => a[0] - b[0]);

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /** Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. */
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';

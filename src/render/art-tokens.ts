@@ -33,6 +33,9 @@ export const LIGHT = {
 
 export const SHADOW = { soft: 0.16, base: 0.3, deep: 0.46 } as const;
 
+/** Laeufer zwischen den Raeumen: dunkler Wein, damit Wege ruhig bleiben und nicht leuchten. */
+export const RUNNER = { fill: 0x3d1830, edge: 0x8a4368, glow: 0xffd9a0 } as const;
+
 type FloorPattern = 'polished' | 'marble' | 'carpet' | 'planks' | 'tiles' | 'rug' | 'concrete';
 
 export interface FloorMaterial {

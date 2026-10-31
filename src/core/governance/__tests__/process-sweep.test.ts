@@ -1,0 +1,85 @@
+/**
+ * @test-target: scripts/lib/process-sweep.mjs
+ * @error-code: ERR-0911
+ *
+ * Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst
+ * bleiben nach Strg+C npm-/vitest-Waisen liegen, die die naechsten Gates bremsen.
+ */
+import { afterAll, describe, expect, it } from 'vitest';
+import { spawn, type ChildProcess } from 'node:child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { isAlive, killTracked, killTree, releaseOwner, sweepOrphans, trackPid } from '../../../../scripts/lib/process-sweep.mjs';
+import { createStop, EXIT_ABORTED } from '../../../../scripts/lib/pipeline-stop.mjs';
+
+const stateDir = mkdtempSync(join(tmpdir(), 'rbd-sweep-'));
+process.env.RBD_VERIFY_STATE = stateDir;
+const statePath = join(stateDir, 'running.json');
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function sleeper(): { child: ChildProcess; pid: number } {
+  const child = spawn(process.execPath, ['-e', 'setTimeout(() => {}, 60000)'], {
+    stdio: 'ignore',
+    detached: process.platform !== 'win32',
+  });
+  const pid = child.pid;
+  if (!pid) throw new Error('Kindprozess ohne PID gestartet');
+  return { child, pid };
+}
+
+async function isDead(pid: number): Promise<boolean> {
+  for (let attempt = 0; attempt < 80; attempt += 1) {
+    if (!isAlive(pid)) return true;
+    await wait(25);
+  }
+  return !isAlive(pid);
+}
+
+afterAll(() => {
+  releaseOwner();
+  rmSync(stateDir, { recursive: true, force: true });
+  delete process.env.RBD_VERIFY_STATE;
+});
+
+describe('Abbruchpfad', () => {
+  it('killTree beendet einen laufenden Prozess', async () => {
+    const { pid } = sleeper();
+    expect(isAlive(pid)).toBe(true);
+    expect(killTree(pid)).toBe(true);
+    expect(await isDead(pid)).toBe(true);
+  });
+
+  it('killTracked beendet alle registrierten Prozesse', async () => {
+    const first = sleeper();
+    const second = sleeper();
+    trackPid('tests', first.pid);
+    trackPid('build', second.pid);
+    expect(killTracked()).toBe(2);
+    expect(await isDead(first.pid)).toBe(true);
+    expect(await isDead(second.pid)).toBe(true);
+  });
+
+  it('sweepOrphans raeumt Waisen mit totem Besitzer ab', async () => {
+    const { pid } = sleeper();
+    writeFileSync(statePath, JSON.stringify({ owner: 999_999_999, pids: [{ gate: 'tests', pid, at: 0 }] }));
+    const killed = sweepOrphans();
+    expect(killed.map((entry) => entry.gate)).toEqual(['tests']);
+    expect(await isDead(pid)).toBe(true);
+    expect(JSON.parse(readFileSync(statePath, 'utf8')).owner).toBe(process.pid);
+  });
+
+  it('beendet bei SIGINT alles, raeumt die Registry und meldet 130', async () => {
+    const { pid } = sleeper();
+    trackPid('tests', pid);
+    const exitCodes: number[] = [];
+    const messages: string[] = [];
+    const stop = createStop({ exit: (code) => exitCodes.push(code), log: (message) => messages.push(message) });
+    stop('SIGINT');
+    expect(exitCodes).toEqual([EXIT_ABORTED]);
+    expect(messages[0]).toContain('SIGINT');
+    expect(await isDead(pid)).toBe(true);
+    expect(existsSync(statePath)).toBe(false);
+  });
+});

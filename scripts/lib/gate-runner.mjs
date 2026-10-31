@@ -1,15 +1,15 @@
-#!/usr/bin/env node
 /** Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. */
 import { spawn } from 'node:child_process';
 import { availableParallelism } from 'node:os';
 import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
-import { killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
+import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
 const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
 const running = new Set();
 
-function execute(step) {
+/** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
+export function executeStep(step) {
   const started = Date.now();
   const command = step.command === 'npm' ? 'npm' : process.execPath;
   const args = step.command === 'npm' ? ['run', step.script] : [step.script];
@@ -39,8 +39,8 @@ function execute(step) {
 
 /** Bricht alle laufenden Gates ab und uebergibt einen sauberen Registry-Stand. */
 export function abortGates() {
-  for (const pid of running) killTree(pid);
   running.clear();
+  killTracked();
   releaseOwner();
 }
 
@@ -62,7 +62,7 @@ export async function runGates(steps) {
         console.log(`[cached] ${step.name} uebersprungen, Baum unveraendert (${key.slice(0, 8)})`);
         continue;
       }
-      const result = await execute(step);
+      const result = await executeStep(step);
       if (result.output.trim()) {
         const tail = result.output.endsWith('\n') ? '' : '\n';
         process.stdout.write(`=== Gate: ${step.name} (${(result.ms / 1000).toFixed(1)}s) ===\n${result.output}${tail}`);

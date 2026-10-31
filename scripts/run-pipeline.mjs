@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /** Fail-Closed-Pipeline: Autofix zuerst (schreibt Dateien), danach alle unabhaengigen Gates parallel. */
-import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { line, ROOT } from './lib/report.mjs';
-import { abortGates, runGates } from './lib/gate-runner.mjs';
+import { executeStep, runGates } from './lib/gate-runner.mjs';
 import { isCached, markCached, resetTreeKey, treeKey } from './lib/gate-cache.mjs';
 import { releaseOwner, sweepOrphans } from './lib/process-sweep.mjs';
+import { installStopHandlers } from './lib/pipeline-stop.mjs';
 
 // Autofix ist zugleich das Lint- und Dependency-Gate: der zweite Durchlauf
 // derselben Pruefungen entfaellt. Bleibt ein Rest, ist das Autofix rot.
@@ -27,14 +27,7 @@ const steps = [
   },
 ];
 
-const stop = (signal) => {
-  abortGates();
-  console.error(`verify:all: ${signal} empfangen, laufende Gates beendet`);
-  process.exit(130);
-};
-process.once('SIGINT', () => stop('SIGINT'));
-process.once('SIGTERM', () => stop('SIGTERM'));
-
+installStopHandlers();
 sweepOrphans((message) => console.log(`verify:all: ${message}`));
 
 console.log('=== ERR-0911 Autofix ===');
@@ -43,7 +36,8 @@ let failed = 0;
 if (isCached('autofix', before)) {
   console.log(`[cached] autofix uebersprungen, Baum unveraendert (${before.slice(0, 8)})`);
 } else {
-  const autofix = spawnSync(process.execPath, ['scripts/autofix-0911.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  const autofix = await executeStep({ name: 'autofix', command: 'node', script: 'scripts/autofix-0911.mjs' });
+  if (autofix.output.trim()) process.stdout.write(autofix.output.endsWith('\n') ? autofix.output : `${autofix.output}\n`);
   resetTreeKey();
   if (autofix.status !== 0) {
     failed += 1;
