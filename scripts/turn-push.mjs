@@ -33,9 +33,16 @@ if (verify.status !== 0) {
 if (paths.length > 0) git(['add', '--', ...paths]);
 else git(['add', '-A']);
 const staged = git(['diff', '--cached', '--name-only']);
+// Ein früherer Lauf kann einen Commit erzeugt haben, der den Push nicht mehr geschafft hat.
+// Ohne diesen Zweig würde der nächste Lauf "keine Aenderungen" melden und den Commit
+// stillschweigend liegen lassen.
+const offen = Number(git(['rev-list', '--count', `origin/${TARGET_BRANCH}..HEAD`]));
 if (!staged) {
-  console.log('turn:finish: keine Aenderungen zu committen');
-  process.exit(0);
+  if (offen === 0) {
+    console.log('turn:finish: keine Aenderungen zu committen');
+    process.exit(0);
+  }
+  console.log(`turn:finish: ${offen} Commit(s) warten noch auf den Push; kein neuer Commit noetig`);
 }
 
 const files = staged.split(/\r?\n/).filter(Boolean);

@@ -11,7 +11,7 @@ import { PhysicsWorld } from '../../physics/world';
 import { createPlinkoBoard } from '../plinko-board';
 import {
   PEG_PHYSICS, defaultPlinkoConfig, normalizePlinkoConfig, plinkoPaytable,
-  plinkoProgress, type PlinkoConfig, type PlinkoPeg,
+  plinkoProgress, type PlinkoConfig, type PlinkoDrop, type PlinkoPeg,
 } from '../plinko-config';
 import { deployGate } from '../plinko-sandbox';
 import { Prng } from '../../rng/prng';
@@ -84,10 +84,17 @@ describe('Multi-Ball und Split', () => {
       ...defaultPlinkoConfig(),
       pegs: [{ row: 0, column: 4, kind: 'SPLIT_PEG' }],
     });
-    const board = createPlinkoBoard(config, 8);
-    const split = board.drop(new Prng(randomSeed()), 'TWIN');
-    expect(split.tracks.length).toBeGreaterThan(2);
-    expect(split.pockets.length).toBeGreaterThan(2);
+    // Ob der Ball den Split-Peg trifft, haengt am zufaelligen Startwurf. Statt auf einen
+    // gluecklichen Seed zu hoffen, suchen wir den Wurf, der die Vorbedingung erfuellt, und
+    // pruefen dann seine Folge -- sonst waere der Test bei einem Teil der Seeds rot.
+    let split: PlinkoDrop | null = null;
+    for (let attempt = 0; attempt < 40 && !split; attempt += 1) {
+      const drop = createPlinkoBoard(config, 8).drop(new Prng(randomSeed()), 'TWIN');
+      if (drop.tracks.length > 2) split = drop;
+    }
+    expect(split, 'kein Wurf traf den Split-Peg').not.toBeNull();
+    expect(split!.tracks.length).toBeGreaterThan(2);
+    expect(split!.pockets.length).toBe(split!.tracks.length);
   });
 
   it('liefert fuer denselben Seed dieselben Bahnen', () => {
