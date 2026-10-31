@@ -1,19 +1,54 @@
+/*
+ * Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in
+ * src/render/art-tokens.ts; aendert sich eine Bedeutung, aendert sie sich an
+ * beiden Stellen. Alte Namen bleiben als Alias, damit bestehende Regeln gelten.
+ */
 :root {
   color-scheme: dark;
+
+  /* Flaechen */
   --bg: #07050c;
   --bg-deep: #040208;
   --panel: #120b1d;
   --panel-2: #1a1028;
+  --panel-3: #211430;
   --line: #2b1b3c;
   --line-strong: #4a2f66;
   --text: #f1e9fb;
   --muted: #9c8bb4;
-  --neon: #00ffcc;
-  --hot: #ff2e88;
-  --gold: #ffd166;
-  --danger: #ff6b81;
+
+  /* Farbrollen: Casino, Service, Gast, Wert, Gefahr, Erfolg, Warnung */
+  --role-identity: #b06bff;
+  --role-service: #00ffcc;
+  --role-guest: #ff2e88;
+  --role-value: #ffd166;
+  --role-danger: #ff6b81;
+  --role-success: #2dd4a0;
+  --role-warning: #ff9a3d;
+  --neon: var(--role-service);
+  --hot: var(--role-guest);
+  --gold: var(--role-value);
+  --danger: var(--role-danger);
+
+  /* Tiefe: drei Stufen, keine zufaelligen Schatten */
+  --elev-1: 0 1px 0 rgba(255, 255, 255, 0.04), 0 6px 18px rgba(0, 0, 0, 0.38);
+  --elev-2: 0 18px 50px rgba(0, 0, 0, 0.5);
+  --elev-3: 0 30px 90px rgba(0, 0, 0, 0.66);
+  --inset-line: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  /* Typo-Skala */
+  --fs-hero: 30px;
+  --fs-title: 15px;
+  --fs-body: 12px;
+  --fs-meta: 10px;
+  --fs-label: 9px;
+  --fs-micro: 8px;
+  --lh-tight: 1.15;
+  --lh-body: 1.5;
+
   --radius: 14px;
   --radius-sm: 9px;
+  --radius-pill: 999px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sans: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
   font-family: var(--sans);

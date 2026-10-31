@@ -3,6 +3,7 @@ import { Container, Graphics, Text } from 'pixi.js';
 import { areasFor, type Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
+import { floorText } from './art-tokens';
 import { changedRegions, regionHash } from './floor-math';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
@@ -32,10 +33,7 @@ export function createSceneCache(): SceneCache {
 
   const labels: Text[] = [];
   for (let index = 0; index < LABEL_COUNT; index += 1) {
-    const label = new Text({
-      text: '',
-      style: { fontFamily: 'ui-monospace, monospace', fontSize: 9, fill: 0xd9cdf0, letterSpacing: 2 },
-    });
+    const label = new Text({ text: '', style: floorText.zone() });
     label.visible = false;
     labels.push(label);
     furniture.addChild(label);

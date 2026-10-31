@@ -4,6 +4,7 @@ import { canPlaceAt } from '../core/sim/grid-zones';
 import { getBuildDef } from '../core/sim/offers';
 import { TILE, type StaffRole } from '../core/sim/types';
 import type { GameView } from '../store/types';
+import { ROLE, STROKE, crateColor, floorText } from './art-tokens';
 import { isVisible, type ViewRect } from './floor-math';
 import { createGuestArt, type GuestArt } from './guest-art';
 
@@ -14,8 +15,6 @@ const AGENT_STYLE: Record<StaffRole, { persona: string; name: string }> = {
   cashier: { persona: 'BUSINESS', name: 'Kasse' },
   porter: { persona: 'STAMMGAST', name: 'Portier' },
 };
-
-const CRATE_COLOR: Record<string, number> = { FURNITURE: 0x8a6a3a, DRINKS: 0x2e8a6a, PARTS: 0x6a5a8a };
 
 interface Layers {
   readonly props: Container;
@@ -96,6 +95,10 @@ export class FloorProps {
       if (!art) {
         const style = AGENT_STYLE[agent.role];
         art = createGuestArt(style.persona, style.name, false, agent.id * 1.3);
+        // Bodenring in der Service-Farbe: Personal ist auf dichtem Floor sofort zuordenbar.
+        const ring = new Graphics()
+          .ellipse(0, 12, 9, 4).stroke({ width: STROKE.hair, color: ROLE.service, alpha: 0.55 });
+        art.root.addChildAt(ring, 0);
         art.root.position.set((agent.x + 0.5) * TILE, (agent.y + 0.8) * TILE);
         art.target.x = art.root.x;
         art.target.y = art.root.y;
@@ -136,12 +139,13 @@ export class FloorProps {
         const root = new Container();
         const g = new Graphics();
         const kind = crate.payload.kind;
-        g.roundRect(0, 0, TILE, TILE, 3).fill(0x2a1c10).stroke({ width: 2, color: CRATE_COLOR[kind] ?? 0x8a6a3a });
-        g.moveTo(0, TILE / 2).lineTo(TILE, TILE / 2).stroke({ width: 1, color: 0x8a6a3a });
-        g.moveTo(TILE / 2, 0).lineTo(TILE / 2, TILE).stroke({ width: 1, color: 0x8a6a3a });
+        const edge = crateColor(kind);
+        g.roundRect(0, 3, TILE, TILE, 3).fill({ color: 0x000000, alpha: 0.3 });
+        g.roundRect(0, 0, TILE, TILE, 3).fill(0x241a12).stroke({ width: STROKE.base, color: edge });
+        g.moveTo(2, TILE / 2).lineTo(TILE - 2, TILE / 2).stroke({ width: 1, color: edge, alpha: 0.7 });
         const tag = new Text({
           text: kind === 'FURNITURE' ? 'MÖBEL' : kind === 'DRINKS' ? 'GLAS' : 'TEILE',
-          style: { fontFamily: 'ui-monospace, monospace', fontSize: 6, fill: 0xffd9a0 },
+          style: floorText.crate(),
         });
         tag.anchor.set(0.5, 0.5);
         tag.position.set(TILE / 2, TILE / 2);
@@ -169,9 +173,9 @@ export class FloorProps {
       let marker = this.#disputes.get(dispute.id);
       if (!marker) {
         marker = new Graphics();
-        marker.circle(0, 0, TILE * (dispute.level > 1 ? 1.2 : 0.8)).stroke({ width: 3, color: 0xff4d5e });
-        marker.circle(0, 0, 4).fill(0xff4d5e);
-        marker.star(0, 0, 8, TILE * 0.7, TILE * 0.45).fill({ color: 0xffd23f, alpha: 0.6 });
+        marker.circle(0, 0, TILE * (dispute.level > 1 ? 1.2 : 0.8)).stroke({ width: STROKE.heavy, color: ROLE.danger });
+        marker.circle(0, 0, 4).fill(ROLE.danger);
+        marker.star(0, 0, 8, TILE * 0.7, TILE * 0.45).fill({ color: ROLE.value, alpha: 0.55 });
         marker.position.set((dispute.x + 0.5) * TILE, (dispute.y + 0.5) * TILE);
         this.#disputes.set(dispute.id, marker);
         this.#props.addChild(marker);
@@ -203,8 +207,8 @@ export class FloorProps {
       const ok = canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
       this.#ghost.clear();
       this.#ghost.roundRect(x * TILE, y * TILE, def.w * TILE, def.h * TILE, 4)
-        .fill({ color: ok ? 0x00ffcc : 0xff4d5e, alpha: 0.3 })
-        .stroke({ width: 2, color: ok ? 0x00ffcc : 0xff4d5e });
+        .fill({ color: ok ? ROLE.service : ROLE.danger, alpha: 0.28 })
+        .stroke({ width: STROKE.base, color: ok ? ROLE.service : ROLE.danger });
       this.#ghost.visible = true;
     } catch {
       this.#ghost.visible = false;

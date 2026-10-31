@@ -3,6 +3,7 @@
 import { Container, Graphics, Text } from 'pixi.js';
 import type { GuestEmotion } from '../core/sim/emotion';
 import type { PlayerLook } from '../core/sim/player-look';
+import { INK, ROLE, SHADOW, floorText } from './art-tokens';
 import { createComicBubble } from './comic-bubbles';
 import { poseFor, type ActorState } from './rig-pose';
 
@@ -50,7 +51,9 @@ export function createGuestArt(
   let accessory = look?.accessory ?? 'NONE';
   const root = new Container();
   const figure = new Container();
-  const shadow = new Graphics().rect(-10, 14, 20, 3).fill({ color: 0x000000, alpha: 0.42 });
+  const shadow = new Graphics()
+    .ellipse(0, 15, 11, 4).fill({ color: 0x000000, alpha: SHADOW.soft })
+    .rect(-9, 14, 18, 2.5).fill({ color: 0x000000, alpha: SHADOW.deep });
   const legs = new Graphics();
   const body = new Graphics();
   const armL = new Graphics();
@@ -76,10 +79,7 @@ export function createGuestArt(
   figure.addChild(shadow, legL, legR, body, armLPivot, armRPivot, head);
   const pin = new Graphics();
   pin.visible = false;
-  const nameplate = new Text({
-    text: isPlayer ? 'DU' : name,
-    style: { fontFamily: 'ui-monospace, monospace', fontSize: 7, fill: 0xcdbfd9, stroke: { color: 0x08040f, width: 2 } },
-  });
+  const nameplate = new Text({ text: isPlayer ? 'DU' : name, style: floorText.name() });
   nameplate.anchor.set(0.5, 0);
   nameplate.position.set(0, 18);
   root.addChild(pin, figure, nameplate);
@@ -102,9 +102,9 @@ export function createGuestArt(
     pin.clear();
     pin.rect(-3, 0, 6, 6).fill(color);
     pin.rect(-2, -4, 4, 4).fill(skin);
-    pin.rect(-2, -3, 1, 1).fill(0x1a1020);
-    pin.rect(1, -3, 1, 1).fill(0x1a1020);
-    if (isPlayer) pin.rect(-6, -6, 12, 14).stroke({ width: 1, color: 0xffffff, alpha: 0.95 });
+    pin.rect(-2, -3, 1, 1).fill(INK);
+    pin.rect(1, -3, 1, 1).fill(INK);
+    if (isPlayer) pin.rect(-6, -6, 12, 14).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
   };
 
   const paintHead = (): void => {

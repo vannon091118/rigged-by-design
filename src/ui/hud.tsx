@@ -55,7 +55,7 @@ export function Hud({
           <strong>{vc(view.pending, 2)}</strong>
           <small>{view.pending > 0 ? 'im Gäste-Fenster auszahlen' : 'nichts offen'}</small>
         </div>
-        <div className="vital" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe; Sitzplätze sind keine Obergrenze.">
+        <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe; Sitzplätze sind keine Obergrenze.">
           <span>GÄSTE</span>
           <strong>{view.guests.length}</strong>
           <small>
@@ -64,7 +64,7 @@ export function Hud({
               : view.guests.length ? `~${Math.round(view.demand.perDay)} Gäste/Tag · Laune ${MOOD_LABEL(mood)}` : `~${Math.round(view.demand.perDay)} Gäste/Tag`}
           </small>
         </div>
-        <div className={`vital${dirty > 0 ? ' warn' : ''}`} title={HELP.ruf}>
+        <div className={`vital rep${dirty > 0 ? ' warn' : ''}`} title={HELP.ruf}>
           <span>RUF</span>
           <strong>{view.reputation}<em>%</em></strong>
           <small>{dirty > 0 ? `${dirty} Flecken drücken den Ruf` : 'sauber'}</small>

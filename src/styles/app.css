@@ -17,7 +17,8 @@ button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: 0.42; }
 h2, h3 { margin: 0; }
-h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+h2 { font-size: var(--fs-title); letter-spacing: 0.02em; line-height: var(--lh-tight); }
+h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 
 .app {
   position: relative;
@@ -33,14 +34,25 @@ h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform
   position: relative;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-columns: auto auto minmax(0, 1fr) minmax(0, auto);
   align-items: center;
-  gap: 14px;
+  gap: 12px 14px;
   padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(26, 16, 40, 0.96), rgba(10, 6, 18, 0.98));
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--elev-2), var(--inset-line);
+}
+.hud-rpg {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: var(--fs-meta); color: var(--muted);
+}
+.hud-rpg > span { color: var(--role-identity); letter-spacing: 0.1em; }
+.hud-penalty {
+  grid-column: 1 / -1;
+  padding: 6px 10px; border: 1px solid rgba(255, 107, 129, 0.55); border-radius: var(--radius-sm);
+  background: rgba(255, 107, 129, 0.08); font-size: var(--fs-meta); color: var(--role-danger);
 }
 .hud-brand { display: flex; align-items: center; gap: 9px; }
 .hud-mark {
@@ -54,26 +66,33 @@ h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform
 
 .hud-money { display: grid; gap: 1px; padding-right: 14px; border-right: 1px solid var(--line); }
 .hud-money span { font-size: 8px; letter-spacing: 0.18em; color: var(--muted); }
-.hud-money strong { font-family: var(--mono); font-size: 30px; line-height: 1; color: var(--gold); text-shadow: 0 0 26px rgba(255, 209, 102, 0.35); }
+.hud-money strong { font-family: var(--mono); font-size: var(--fs-hero); line-height: 1; color: var(--role-value); text-shadow: 0 0 18px rgba(255, 209, 102, 0.22); }
 .hud-money small { font-size: 9px; color: var(--muted); }
 .term { border-bottom: 1px dotted var(--line-strong); cursor: help; }
 .help-btn { min-width: 30px; padding: 8px 9px; font-weight: 700; color: var(--gold); border-color: rgba(255, 209, 102, 0.55); }
 
-.hud-vitals { display: flex; gap: 8px; min-width: 0; }
-.vital {
-  min-width: 118px; padding: 7px 10px; display: grid; gap: 1px;
-  border: 1px solid var(--line); border-radius: 11px; background: rgba(8, 5, 15, 0.75);
+.hud-vitals {
+  display: flex; gap: 8px; min-width: 0;
+  overflow-x: auto; scrollbar-width: thin; scroll-snap-type: x proximity;
 }
-.vital span { font-size: 8px; letter-spacing: 0.16em; color: var(--muted); }
-.vital strong { font-family: var(--mono); font-size: 17px; }
-.vital strong em { font-size: 10px; color: var(--muted); font-style: normal; }
-.vital small { font-size: 8px; color: var(--muted); }
-.vital.hot { border-color: rgba(255, 209, 102, 0.6); }
-.vital.hot strong { color: var(--gold); }
-.vital.warn { border-color: rgba(255, 107, 129, 0.55); }
-.vital.warn strong { color: var(--danger); }
+.vital {
+  flex: 1 1 112px; min-width: 104px; scroll-snap-align: start;
+  padding: 7px 10px; display: grid; gap: 1px;
+  border: 1px solid var(--line); border-radius: 11px; background: rgba(8, 5, 15, 0.75);
+  box-shadow: var(--inset-line);
+}
+.vital span { font-size: var(--fs-micro); letter-spacing: 0.16em; color: var(--muted); }
+.vital strong { font-family: var(--mono); font-size: 17px; line-height: var(--lh-tight); }
+.vital strong em { font-size: var(--fs-meta); color: var(--muted); font-style: normal; }
+.vital small { font-size: var(--fs-micro); color: var(--muted); }
+.vital.guests strong { color: var(--role-guest); }
+.vital.rep strong { color: var(--role-identity); }
+.vital.hot { border-color: rgba(255, 209, 102, 0.55); }
+.vital.hot strong { color: var(--role-value); }
+.vital.warn { border-color: rgba(255, 107, 129, 0.5); }
+.vital.warn strong { color: var(--role-danger); }
 
-.hud-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.hud-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
 .btn {
   position: relative;
   border: 1px solid var(--line-strong);
@@ -157,7 +176,7 @@ h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform
   display: grid; grid-template-rows: auto minmax(0, 1fr);
   border: 1px solid var(--line-strong); border-radius: 16px;
   background: linear-gradient(180deg, #1a1029, #0c0716);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.66);
+  box-shadow: var(--elev-3);
   animation: panel-in 160ms ease;
 }
 @keyframes panel-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -242,6 +261,15 @@ h3 { margin: 14px 0 7px; font-size: 11px; letter-spacing: 0.16em; text-transform
   background: rgba(0, 255, 204, 0.05); font-size: 10px; line-height: 1.5; color: #bdeee6;
 }
 .guest-intent b { color: var(--neon); letter-spacing: 0.04em; }
+
+/* Zwischenbreiten: die Aktionsleiste bekommt eine eigene Zeile, statt rechts abgeschnitten zu werden. */
+@media (min-width: 1181px) and (max-width: 1400px) {
+  .hud { grid-template-columns: auto minmax(0, 1fr); }
+  .hud-brand { grid-column: 1; }
+  .hud-money { grid-column: 2; justify-items: start; padding-right: 0; border-right: 0; }
+  .hud-vitals { grid-column: 1 / -1; }
+  .hud-actions { grid-column: 1 / -1; justify-content: flex-start; }
+}
 
 @media (max-width: 1180px) {
   .hud { grid-template-columns: auto minmax(0, 1fr) auto; }

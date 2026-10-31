@@ -10,6 +10,32 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 - Neue Aufnahmen kommen in einen **neuen** Versionsordner. Alte Ordner bleiben stehen, damit Änderungen an der Oberfläche vergleichbar sind.
 - Außerhalb der Versionsordner liegen keine Spielbilder. `docs/screenshots/README.md` ist der einzige gemeinsame Eintrag.
 
+## v0.3.27 — Einheitliche Art Direction und gestaltete Etage
+
+Aufgenommen am 31.10.2026 aus dem laufenden Spiel (Chromium, Fenster 1248 × 900).
+
+Diese acht Bilder zeigen echte Simulationsstände, keine Mockups: ein temporäres Skript hat `createWorld`/`tickWorld` aus `src/core/sim/` laufen lassen, den Stand als Save v8 über `toSavedGame` geschrieben und in den lokalen Speicher des Aufnahmebrowsers gelegt. Das Skript und die Stände sind nicht im Repository.
+
+| Datei | Zustand | Zeigt |
+| --- | --- | --- |
+| `01-floor-uebersicht-frisch.png` | SMALL, Tag 1, 4 Gäste | Ganze Etage als Karte: Eingang, Wechselkasse, Spielsaal, Bar, Klo, Lounge und Lager als eigene Materialien, Wände mit Lichtkante und Türen, Deckenlampen je Raum |
+| `02-floor-detail-frisch.png` | SMALL, Tag 1, 6 Gäste | Detailstufe: Bar mit Theke, Klo mit Kabinen, Lager, Lounge mit Sofa und Pflanze, frischer Schmutz am Boden |
+| `03-floor-uebersicht-mittel.png` | MEDIUM, Tag 1, 11 Gäste | Größerer Saal mit Automaten, Tischen und Roullette, Personal unterwegs, Schlange an der Kasse |
+| `04-floor-detail-mittel.png` | MEDIUM, Tag 1, 14 Gäste | Detailstufe mit belegten Geräten, Wartenden, Bar, Klo und Lager; Türschwellen und Laufwege zwischen den Räumen |
+| `05-floor-uebersicht-konzern.png` | LARGE, Tag 5, Stufe KONZERN, 31 Gäste | Besucherwelle über die ganze Etage, Warteschlange an der Wechselkasse, Gäste an fast jedem Gerät |
+| `06-floor-detail-konzern.png` | LARGE, Tag 5, 30 Gäste | Spielsaal in der Detailstufe: mehrere Geräte gleichzeitig belegt, Gewinn- und Laune-Blasen, Personal im Raum |
+| `07-gaeste-panel.png` | MEDIUM, Tag 1 | Gäste-Fenster: Wechselkasse und offene Gewinne, gewählter Gast mit Laune, Geduld und Sucht, Gästeliste |
+| `08-bauen-panel.png` | MEDIUM, Tag 1 | Bauen-Fenster: Katalog mit Preisen, Plätzen und Mindesteinsätzen über dem laufenden Floor |
+
+Was sich gegenüber v0.3.26 sichtbar geändert hat:
+
+- Boden, Geräte, Figuren und Panels teilen eine Rollenpalette (`art-tokens.ts` / `tokens.css`): Casino, Personal, Gäste, Wert, Gefahr, Erfolg, Warnung.
+- Jeder Raum hat ein eigenes Bodenmaterial (Marmor an der Kasse, Teppich im Spielsaal, Dielen an der Bar, Fliesen im Klo, Läufer in der Lounge) mit Fugen, Sockel und Deckenlampen.
+- Wände haben Körper, Lichtkante und Eckpfeiler; Räume sind über Türen und Schwellen verbunden statt geschlossene Rechtecke zu sein.
+- Möbel werfen einen gerichteten Schatten nach unten rechts, Figuren stehen auf einem Kontaktschatten.
+- Laufwege zwischen den Räumen liegen bewusst dunkler als die Räume, damit der Saal als Bühne liest.
+- Panels nutzen dieselben Farbrollen und eine gemeinsame Typo-Hierarchie; bei mittleren Fensterbreiten bekommt die HUD-Aktionsleiste eine eigene Zeile statt rechts abgeschnitten zu werden.
+
 ## v0.3.26 — Betriebszustände
 
 Aufgenommen am 31.10.2026 aus dem laufenden Spiel (Chromium, 1280 × 860).
