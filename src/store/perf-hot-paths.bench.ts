@@ -14,6 +14,7 @@ import { dirtyNear } from '../core/sim/emotion';
 import { blockedTiles, findPath, nearestWalkable } from '../core/sim/pathfinding';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { Guest } from '../core/sim/types';
+import { recordJournal } from '../core/sim/journal';
 import { buildView } from './snapshot';
 
 const HISTORY = 5_000;
@@ -40,6 +41,9 @@ for (let index = 1; index <= GUESTS; index += 1) {
 }
 for (let index = 0; index < HISTORY; index += 1) {
   ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(0.0001), 'verlauf', 0);
+}
+for (let index = 0; index < 2000; index += 1) {
+  recordJournal(world, { kind: 'MONEY', subject: 'verlauf', cause: 'Messung', effect: `Ereignis ${index}`, refs: { guestId: 1 } });
 }
 
 const dirty = new Set<number>();

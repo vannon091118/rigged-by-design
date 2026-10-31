@@ -10,11 +10,24 @@ import { reputation } from '../core/sim/spawn';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
+import type { JournalEvent } from '../core/sim/journal';
 import type { GameView, StaffView } from './types';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
 function staffView(world: WorldState): StaffView {
   return { ...world.staff, guard: hasStaff(world, 'guard') };
+}
+
+/** Archiv nur kopieren, wenn es gewachsen oder verschoben wurde; Ereignisse sind danach unveraendert. */
+let archiveCache: { source: readonly unknown[]; length: number; lastId: number; copy: JournalEvent[] } | null = null;
+function archiveSnapshot(archive: JournalEvent[]): JournalEvent[] {
+  const lastId = archive.length ? archive[archive.length - 1]!.id : -1;
+  if (archiveCache && archiveCache.source === archive && archiveCache.length === archive.length && archiveCache.lastId === lastId) {
+    return archiveCache.copy;
+  }
+  const copy = archive.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
+  archiveCache = { source: archive, length: archive.length, lastId, copy };
+  return copy;
 }
 
 function worldSnapshot(world: WorldState) {
@@ -47,7 +60,7 @@ function worldSnapshot(world: WorldState) {
     wcLevel: world.wcLevel,
     activePenalties: world.activePenalties.map((penalty) => ({ ...penalty })),
     journal: world.journal.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
-    archive: world.archive.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined })),
+    archive: archiveSnapshot(world.archive),
     fightFx: world.fightFx ? { ...world.fightFx } : null,
     look: world.look,
     plinko: world.plinko,
