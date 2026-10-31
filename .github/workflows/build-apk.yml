@@ -14,6 +14,11 @@ on:
         description: 'Release-Tag, den der Aufrufer gebaut haben will'
         required: true
         type: string
+      skip_verify:
+        description: 'Aufrufer hat den Commit bereits durch CI Verify geprueft'
+        required: false
+        type: boolean
+        default: false
   push:
     tags: ['v*.*.*']
 
@@ -74,7 +79,12 @@ jobs:
       - name: Install (npm ci)
         run: npm ci
 
+      # Der Release ruft diesen Workflow erst nach erfolgreichem "CI Verify"
+      # auf und setzt skip_verify; eine zweite vollstaendige Suite waere reine
+      # Doppelarbeit. Manuelle Builds und manuell gepushte Tags pruefen weiterhin
+      # selbst, weil dort skip_verify fehlt beziehungsweise false ist.
       - name: Fail-Closed-Gates
+        if: ${{ !inputs.skip_verify }}
         run: npm run verify:release
 
       - name: Gradle assembleDebug (signierbare Debug-APK)

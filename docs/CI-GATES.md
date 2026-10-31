@@ -21,11 +21,14 @@ keine Screenshot-Ordner mehr auf.
 - `ci-verify.yml` laeuft auf jedem Push (`branches: ['**']`, also auch `main`),
   auf Pull Requests gegen `main` und ueber `workflow_dispatch`. Der Job heisst
   **`Fail-Closed Gates`**; dieser Name ist der Pflichtstatus aus Ebene B.
-- `auto-version-release.yml` hat keine Nachrichten-Bedingung mehr. Jeder Lauf
-  fuehrt `verify:release` aus, bevor `scripts/ci-tag-release.mjs` taggt; ein
-  rotes Gate verhindert Tag und Release.
-- Beide Workflows rufen nur lesende Profile auf. Der Release-Workflow baut
-  damit keinen Zustand, den er anschliessend prueft.
+- `auto-version-release.yml` startet per `workflow_run` erst nach einem
+  erfolgreichen `CI Verify`-Lauf auf `main`. Er taggt genau den geprueften
+  Commit und wiederholt die Suite nicht. Nur `workflow_dispatch` fuehrt
+  `verify:release` selbst aus, weil ein manueller Lauf keinen CI-Lauf hat.
+- Die automatischen Laeufe rufen nur lesende Profile auf; der Tag ist der
+  einzige externe Schreibvorgang. `build-apk.yml` ueberspringt die Suite nur,
+  wenn der Aufrufer `skip_verify: true` setzt; manuelle Laeufe und Tag-Pushes
+  pruefen weiterhin selbst.
 
 Grenze von Ebene A: Enthaelt eine Commit-Nachricht `[skip ci]` oder `[ci skip]`,
 startet GitHub **keinen** Workflow. Das laesst sich auf Workflow-Ebene nicht
@@ -86,11 +89,12 @@ Ein mit `GITHUB_TOKEN` gepushter Tag loest keinen Workflow aus. Deshalb ruft
 `auto-version-release.yml` den APK-Build nach dem Tag **explizit** auf:
 
 ```text
-Verify (verify:release) -> Tag + Release -> workflow_call build-apk.yml -> Release-Asset + Pruefung
+CI Verify (verify:all) -> Auto Version & Release (Tag) -> workflow_call build-apk.yml -> Release-Asset + Pruefung
 ```
 
-- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran.
-- Der zweite Trigger (`push: tags`) bleibt als Netz fuer manuell gepushte Tags.
+- `auto-version-release.yml` reagiert nur auf einen erfolgreichen `CI Verify`-Lauf mit `event == push` auf `main`; ein roter oder abgebrochener Verify-Lauf erreicht den Tag nicht.
+- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran. Mit `skip_verify: true` laeuft keine zweite `verify:release`-Suite, weil der Aufrufer den Commit bereits geprueft hat. Ohne den Input gilt weiterhin das volle Gate.
+- Der zweite Trigger (`push: tags`) bleibt als Netz fuer manuell gepushte Tags und prueft weiterhin selbst.
 - Der Job `apk` haengt mit `needs: release` am Release; ein roter APK-Build macht den Gesamtlauf sichtbar rot.
 - Ein bereits existierender Tag oder Release erzeugt kein zweites Release (`ci-tag-release.mjs` prueft zuerst).
 
@@ -115,7 +119,8 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | --- | --- |
 | Direkter Push auf `main` blockiert | Ebene B, `non_fast_forward` + `pull_request` |
 | `[skip ci]` umgeht die Pflichtpruefung nicht | Ebene B, `required_status_checks` |
-| Release ohne gruenes Verify verhindert | `auto-version-release.yml` Schritt „Alle Gates vor Release“ |
+| Release ohne gruenes Verify verhindert | `workflow_run.conclusion == 'success'` in `auto-version-release.yml`; manueller Lauf: `verify:release` |
+| Nur ein vollstaendiger Verify-Lauf pro `main`-Push | `CI Verify` -> `workflow_run` Release; `build-apk.yml` ueberspringt `verify:release` nur mit `skip_verify: true` |
 | PR ohne Pflichtstatus nicht mergebar | Ebene B, `required_status_checks` |
 | Verify veraendert keinen Arbeitsbaum | `npm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`) |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `npm run fix` |
