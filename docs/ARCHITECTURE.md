@@ -81,6 +81,8 @@ npm run turn:finish
 
 `turn:finish` führt Autofix und `verify:all` aus, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
+Der Remote läuft weiter, während lokal gearbeitet wird: der CI-Versionssprung (`chore(release): … [skip ci]`) hängt an jedem Push auf `main` und zieht den Remote nach, sobald die Release-Pipeline fertig ist. `turn:finish` holt deshalb vor dem Push `origin/main` nach, setzt lokal auf den Remote auf, prüft den entstandenen Baum mit einem zweiten `verify:all` und pusht erneut — höchstens dreimal. Erst wenn der Remote aktuell ist, der Push gelaufen ist und `main` dennoch abgelehnt wird, gilt es als Branch-Schutz und nicht als Rebase-Rückstand; ein Konflikt oder ein rotes Gate beim Nachziehen lässt den Commit lokal liegen, statt ihn ungeprüft zu verbreiten.
+
 Der Geschwindigkeits-Benchmark läuft separat über `npm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
 
 ## Floor-Rendering und Performance

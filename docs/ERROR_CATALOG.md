@@ -21,7 +21,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4005 | Commit | Drittanbieter-Trailer oder Tool-Werbung im Commit/PR-Body. | Trailer entfernen; `sanitize-commit` nutzen. |
 | ERR-4006 | Commit | Deutsche Developer Notes oder Pflichtsektionen fehlen. | Nachricht im Steam-Notes-Format neu schreiben. |
 | ERR-4007 | Architektur | Dependency ohne Begruendung oder ohne reale Nutzung. | `docs/ARCHITECTURE.md` und Matrix synchronisieren. |
-| ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote, Rechte und Branch-Schutz pruefen. |
+| ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote-Arbeit nachziehen und lokal neu aufsetzen; bleibt der Push bei aktuellem Remote abgelehnt, Rechte und Branch-Schutz pruefen. |
 | ERR-4011 | Lint | ESLint-Verstoss, der nicht automatisch behebbar ist. | Regelverstoss an der Ursache beheben. |
 | ERR-4012 | LOC-Guard | Datei ueberschreitet ihr LOC-Cap oder nutzt eine verbotene Ausnahme. | Verantwortung splitten und unter die Hot Zone ihrer Zustaendigkeit reduzieren; keine neuen Exceptions. |
 | ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. |
