@@ -1,0 +1,134 @@
+name: Long Checks
+
+# Lange Nachweise laufen nicht in der lokalen Schleife: RTP-Statistik, Poker-
+# Verteilung, Soak und Balance brauchen Minuten bis Stunden. `npm run ci:long`
+# startet diesen Workflow und liest Ergebnis, Logs und Artefakte von hier.
+on:
+  workflow_dispatch:
+    inputs:
+      verify:
+        description: 'Vollstaendige Fail-Closed-Gates mitlaufen lassen'
+        type: boolean
+        default: true
+      soak_ticks:
+        description: 'Ticks fuer den Soak-Lauf'
+        type: string
+        default: '100000'
+      balance_days:
+        description: 'Spieltage fuer den Balance-Lauf'
+        type: string
+        default: '40'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: long-checks-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Fail-Closed Gates
+    if: inputs.verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      - name: Alle Fail-Closed-Gates
+        env:
+          RBD_VERIFY_AUDIT: '1'
+        run: npm run verify:all
+
+  statistics:
+    name: Statistik (RTP und Kartenverteilung)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      # Diese Suiten sind Beweisklasse "statistics"; lokal laufen sie nie.
+      - name: Monte-Carlo-Nachweise
+        run: >-
+          npx vitest run
+          src/core/games/__tests__/round-rtp-high.test.ts
+          src/core/games/__tests__/round-rtp-machines.test.ts
+          src/core/games/__tests__/slot-session-rtp.test.ts
+          src/core/games/__tests__/poker-distribution.test.ts
+
+  soak:
+    name: Soak ${{ inputs.soak_ticks }} Ticks
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      - name: Langlauf
+        env:
+          RBD_SOAK_TICKS: ${{ inputs.soak_ticks }}
+        run: npx vitest run src/core/sim/__tests__/soak.test.ts
+
+  balance:
+    name: Balance ${{ inputs.balance_days }} Spieltage
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      - name: Betriebslauf
+        run: node scripts/balance-run.mjs --days=${{ inputs.balance_days }}
+      # Der Bericht ist der eigentliche Nachweis; er gehoert zum Lauf, nicht ins Log.
+      - name: Balance-Bericht als Artefakt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: balance-report
+          path: artifacts/
+          if-no-files-found: warn
+
+  bench:
+    name: Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci
+      - name: Messlaeufe
+        run: npm run test:perf

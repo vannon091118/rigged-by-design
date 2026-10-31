@@ -132,6 +132,18 @@ export const ERROR_CODES = {
     cause: 'Ein Gate ueberschreitet sein hartes Zeitlimit und wird beendet.',
     fix: 'Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben.',
   },
+  TEST_CATALOG: {
+    code: 'ERR-4015',
+    area: 'governance',
+    cause: 'Der Testkatalog ist nicht synchron zu den Testdateien.',
+    fix: 'catalog ausfuehren und die Einordnung im Diff pruefen.',
+  },
+  CI_DELEGATION: {
+    code: 'ERR-4016',
+    area: 'governance',
+    cause: 'Ein langer Nachweis konnte in GitHub Actions nicht laufen oder ist dort rot.',
+    fix: 'Lauf und Log pruefen; Ursache im Gate beheben.',
+  },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(

@@ -29,6 +29,10 @@ keine Screenshot-Ordner mehr auf.
   einzige externe Schreibvorgang. `build-apk.yml` ueberspringt die Suite nur,
   wenn der Aufrufer `skip_verify: true` setzt; manuelle Laeufe und Tag-Pushes
   pruefen weiterhin selbst.
+- `long-checks.yml` ist rein manuell (`workflow_dispatch`) und traegt die teuren
+  Nachweise: Statistik (RTP, Poker-Verteilung), Soak, Balance und Benchmarks.
+  `npm run ci:long` startet ihn, wartet auf das Ergebnis und laedt den
+  Balance-Bericht als Artefakt; lokal laufen diese Klassen nie mit.
 
 Grenze von Ebene A: Enthaelt eine Commit-Nachricht `[skip ci]` oder `[ci skip]`,
 startet GitHub **keinen** Workflow. Das laesst sich auf Workflow-Ebene nicht
@@ -122,6 +126,7 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | Release ohne gruenes Verify verhindert | `workflow_run.conclusion == 'success'` in `auto-version-release.yml`; manueller Lauf: `verify:release` |
 | Nur ein vollstaendiger Verify-Lauf pro `main`-Push | `CI Verify` -> `workflow_run` Release; `build-apk.yml` ueberspringt `verify:release` nur mit `skip_verify: true` |
 | PR ohne Pflichtstatus nicht mergebar | Ebene B, `required_status_checks` |
-| Verify veraendert keinen Arbeitsbaum | `npm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`) |
+| Verify veraendert keinen Arbeitsbaum | `npm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`); Berichte liegen im gitignorierten `.verify-cache/reports/` |
+| Lange Nachweise laufen nicht lokal | `npm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; `long-checks.yml` rechnet sie in CI |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `npm run fix` |
 | Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Inhalts-Hash; Fix-Lauf meldet „keine Aenderung“ |

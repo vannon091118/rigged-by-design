@@ -27,6 +27,27 @@ declare module '*/affected-tests.mjs' {
   export function changedFiles(): string[];
 }
 
+declare module '*/test-catalog.mjs' {
+  export const PROOF_CLASSES: readonly string[];
+  export const LONG_PROOF_CLASSES: readonly string[];
+  export const CATALOG_START: string;
+  export const CATALOG_END: string;
+  export interface CatalogEntry {
+    readonly file: string;
+    readonly target: string | null;
+    readonly system: string;
+    readonly proof: string;
+    readonly long: boolean;
+  }
+  export function testTargetOf(file: string): string | null;
+  export function systemOfTarget(target: string | null): string;
+  export function proofClassOf(file: string): string;
+  export function testFiles(): string[];
+  export function catalogEntries(files?: readonly string[]): CatalogEntry[];
+  export function partitionByProof(tests: readonly string[]): { fast: string[]; long: string[] };
+  export function renderCatalog(entries?: readonly CatalogEntry[]): string;
+}
+
 declare module '*/gate-runner.mjs' {
   export interface GateStep {
     readonly name: string;

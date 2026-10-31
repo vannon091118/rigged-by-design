@@ -78,8 +78,10 @@ export function resolveSpecifier(specifier, fromFile) {
   const { options } = compilerConfig();
   const hit = ts.resolveModuleName(specifier, fromFile, options, ts.sys).resolvedModule;
   const base = resolve(dirname(fromFile), specifier);
+  // Die Endungsliste deckt auch die Gate-Skripte ab: Tests importieren .mjs
+  // direkt, und ohne allowJs loest ts.resolveModuleName diese Kante nicht auf.
   const file = hit?.resolvedFileName
-    ?? [base, `${base}.ts`, `${base}.tsx`, join(base, 'index.ts')].find(existsSync)
+    ?? [base, `${base}.ts`, `${base}.tsx`, `${base}.mjs`, `${base}.js`, join(base, 'index.ts')].find(existsSync)
     ?? null;
   const normalized = file === null ? null : file.replaceAll('\\', '/');
   resolutionCache.set(key, normalized);
