@@ -70,6 +70,22 @@ describe('Poker-Tisch', () => {
     expect(settled.result?.label).toContain('Paar');
   });
 
+  it('bucht beim Mitgehen den offenen Einsatz und gibt die Strasse frei', () => {
+    const table: PokerTable = {
+      players: [
+        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 900, committed: 100, folded: false, allIn: false, acted: false },
+        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 300, folded: false, allIn: true, acted: true },
+      ],
+      board: [], shoe: createShoe(new Prng(randomSeed())),
+      pot: 400, stake: 1000, unit: 250, street: 'PREFLOP', toAct: 0, bet: 300, raises: 1, result: null,
+    };
+    const after = humanAct(table, 'CALL', new Prng(randomSeed()));
+    expect(after.players[0]?.committed).toBe(300);
+    expect(after.players[0]?.stack).toBe(700);
+    expect(after.street).toBe('FLOP');
+    expect(after.players[0]?.acted).toBe(false);
+  });
+
   it('gibt nach einem Fold nur das ungespielte Ruestgeld zurueck', () => {
     const stake = 10_000;
     const table = startHand(new Prng(randomSeed()), { stake });

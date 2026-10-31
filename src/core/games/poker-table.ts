@@ -75,11 +75,16 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
   const call = Math.max(0, table.bet - me.committed);
   const cap = me.committed + me.stack;
   // CHECK ohne Stehen geht als Call; eine Erhoehung wird begrenzt und kann leer laufen.
-  const target = action === 'CHECK' && call > 0 ? cap : action === 'RAISE'
-    ? (table.raises < MAX_RAISES
-      ? Math.max(Math.min(table.bet + table.unit, cap), Math.min(table.bet, cap))
-      : Math.min(table.bet, cap))
-    : me.committed;
+  const callTarget = Math.min(table.bet, cap);
+  const target = action === 'CHECK' && call > 0
+    ? callTarget
+    : action === 'CALL'
+      ? callTarget
+      : action === 'RAISE'
+        ? (table.raises < MAX_RAISES
+          ? Math.max(Math.min(table.bet + table.unit, cap), callTarget)
+          : callTarget)
+        : me.committed;
   if (action === 'FOLD') me.folded = true;
   else if (action === 'CHECK' && call === 0) me.acted = true;
   else {

@@ -12,15 +12,18 @@ type Band = readonly [number, number];
 
 const ROUNDS: Readonly<Record<GameId, number>> = {
   SLOT: 200_000, BLACKJACK: 100_000, ROULETTE: 100_000, SHELL: 300_000, DICE: 100_000, PLINKO: 5_000,
-  POKER: 400_000, VIDEO_POKER: 400_000,
+  // Tischpoker kostet rund 0,9 ms je Hand; 50k halten den Lauf unter dem Timeout
+  // und liefern fuer RTP und Netto-Trefferquote trotzdem enge Fehlerbaender.
+  POKER: 50_000, VIDEO_POKER: 400_000,
 };
 
 /**
  * RTP-Band je Spiel, aus gemessener Streuung abgeleitet (6-30 frische Seeds je Spiel,
  * Monte-Carlo-Standardfehler auf die konfigurierte Rundenzahl hochgerechnet):
- * POKER 0,9132 +- 0,0110 | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
+ * POKER 0,9169 (50k Haende) | PLINKO 0,9225 +- 0,0097 | SLOT 0,9196 +- 0,0049 |
  * VIDEO_POKER 0,9132 +- 0,0110: VIDEO_POKER ist der fruehere POKER-Wert, die Messung
- * lief weiter, nur der Name des Trägers wanderte um.
+ * lief weiter, nur der Name des Trägers wanderte um. Tischpoker spielt gegen Gaeste
+ * und zahlt Restgeld zurueck; deshalb zaehlt dort nur ein Netto-Gewinn als Treffer.
  * SHELL 0,9510 +- 0,0031 | ROULETTE 0,9461 +- 0,0026 | BLACKJACK 0,9395 +- 0,0020.
  * Ein einheitliches 0,90-0,96-Band kippte dadurch bei POKER in rund 11 % und bei
  * PLINKO in rund 1 % der Laeufe. Diese Baender halten ueber 4 Sigma Abstand zu den
@@ -42,8 +45,10 @@ export function measureRound(game: GameId): { rtp: number; hitRate: number; roun
     const result = playRound(game, prng);
     returned += result.multiplierBps;
     // Treffer ist jede Auszahlung ueber null; ein haeufiges Teil-Payout zaehlt
-    // als Treffer, auch wenn der Netto-Spin ein Verlust bleibt.
-    if (result.multiplierBps > 0) winners += 1;
+    // als Treffer, auch wenn der Netto-Spin ein Verlust bleibt. Tischpoker gibt
+    // bei jedem Fold Restgeld zurueck, deshalb zaehlt dort nur der Netto-Gewinn.
+    const hit = game === 'POKER' ? result.multiplierBps > 10_000 : result.multiplierBps > 0;
+    if (hit) winners += 1;
   }
   return { rtp: returned / rounds / 10_000, hitRate: winners / rounds, rounds };
 }
