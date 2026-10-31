@@ -3,8 +3,8 @@ import { mulVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Furniture } from '../sim/types';
 import type { GameResult } from './contracts';
 import { playSlot } from './engines/slot';
-import { createSlotMemory, prepareSlotSpin, recordSlotSpin } from './slot-transparency';
-import type { Prng } from '../rng/prng';
+import { createSlotMemory, prepareSlotSpin, recordSlotSpin, type SlotMemory } from './slot-transparency';
+import { Prng } from '../rng/prng';
 
 /** Ein echter Gast-Spin; der Testspin bleibt absichtlich ohne Gedaechtnis-Wirkung. */
 export function playSlotSession(
@@ -37,4 +37,22 @@ export function playSlotSession(
     label: `${prefix}${outcome.label}`,
     detail: outcome.detail,
   };
+}
+
+/** Kopie inklusive Histogramm und Verlauf; das echte Geraet bleibt unangetastet. */
+function cloneSlotMemory(memory: SlotMemory | undefined): SlotMemory {
+  const base = memory ?? createSlotMemory();
+  return {
+    ...base,
+    recentSymbolHistogram: { ...base.recentSymbolHistogram },
+    recentSpins: base.recentSpins.map((spin) => [...spin]),
+  };
+}
+
+/**
+ * Testspin: rechnet auf einer Kopie des Gedaechtnisses und mit eigenem Zufall.
+ * Damit veraendert eine kostenlose Vorschau weder Maschine noch Weltverlauf.
+ */
+export function playSlotTest(item: Furniture, seed: number): GameResult {
+  return playSlotSession({ ...item, slotMemory: cloneSlotMemory(item.slotMemory) }, new Prng(seed), ZERO_VC);
 }

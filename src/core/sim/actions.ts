@@ -3,7 +3,7 @@ import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
 import { playPlinkoRound } from '../games/plinko-sandbox';
-import { playSlotSession } from '../games/slot-session';
+import { playSlotTest } from '../games/slot-session';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
@@ -78,7 +78,7 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
   if (!item || !item.gameId) throw new Error('Kein Spielautomat.');
   if (item.mods.includes(modId)) throw new Error('Mod ist schon verbaut.');
   if (item.mods.length >= 3) throw new Error('Maximal drei Mods pro Automat.');
-  if (modId === 'EXTRA_REEL' && item.kind !== 'SLOT') throw new Error('Die vierte Walze passt nur in Slots.');
+  if (modId === 'EXTRA_REEL' && item.gameId !== 'SLOT') throw new Error('Die vierte Walze passt nur in Slots.');
   const mod = getMod(modId);
   ledger.transfer(HAUSKONTO, SHOP, mod.cost, `mod ${mod.name}`, world.tick);
   item.mods.push(modId);
@@ -86,7 +86,7 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
 
 export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number): void {
   const item = furnitureById(world, itemId);
-  if (!item || item.kind !== 'SLOT') throw new Error('Nur Slots haben Walzen.');
+  if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Walzen.');
   if (item.reels >= 5) throw new Error('Mehr Walzen passen nicht hinein.');
   ledger.transfer(HAUSKONTO, SHOP, fromVC(4 + item.reels * 2), 'walze erweitern', world.tick);
   item.reels += 1;
@@ -100,8 +100,14 @@ export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro):
 
 export function testSpin(item: Furniture, prng: Prng, world?: WorldState): GameResult {
   if (item.gameId === 'PLINKO' && world) return playPlinkoRound(world, prng, ZERO_VC);
-  if (item.gameId === 'SLOT' && world) return playSlotSession(item, prng, ZERO_VC);
+  // Der Testspin rechnet auf einer Kopie und verbraucht keinen Welt-Zufall.
+  if (item.gameId === 'SLOT' && world) return playSlotTest(item, testSeed(world, item));
   return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, prng);
+}
+
+/** Eigener Seed aus Tick und Gerät: der Welt-PRNG bleibt für den Testspin unberührt. */
+function testSeed(world: WorldState, item: Furniture): number {
+  return ((Math.imul(world.tick + 1, 0x9e3779b1) ^ Math.imul(item.id + 1, 0x85ebca6b)) >>> 0) || 1;
 }
 
 export function foreignRound(

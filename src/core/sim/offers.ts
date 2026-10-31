@@ -125,7 +125,7 @@ export function modEffects(item: { readonly mods: readonly ModId[] }): {
 
 /** Zusatzwalzen erhoehen den Schauwert und damit den Zulauf. */
 function reelPull(item: Furniture): number {
-  return item.kind === 'SLOT' ? Math.max(0, item.reels - 3) * 90 : 0;
+  return item.gameId === 'SLOT' ? Math.max(0, item.reels - 3) * 90 : 0;
 }
 
 /** 0 = unspielbar. Hoeher = attraktiver. Persona-Geschmack, Preis, Zustand und Mods zaehlen. */

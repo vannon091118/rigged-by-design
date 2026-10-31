@@ -33,6 +33,7 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   const money = guest ? view.guestMoney[guest.id] ?? { wallet: 0, pending: 0, fiat: 0 } : { wallet: 0, pending: 0, fiat: 0 };
   const disputeId = guest?.disputeId ?? null;
   const duel = disputeId === null ? undefined : view.duels[disputeId];
+  const talkWait = guest ? view.talkReady[guest.id] ?? 0 : 0;
   return (
     <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide>
       <div className="cashier-strip">
@@ -77,15 +78,18 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
             {money.pending > 0 && (
               <button type="button" className="btn primary small" onClick={() => onPay(guest.id)} title="Bucht den Gewinn in Chips um – erst danach spielt der Gast weiter.">AUSZAHLEN</button>
             )}
-            <button type="button" className="btn small" onClick={() => onTalk(guest.id)}
-              title="Erfolg: +25 Laune, +20 Geduld. Fehlschlag: beides sinkt und kann Streit auslösen. Danach rund 30 Sekunden Pause.">
-              BESCHWATZEN · {view.talkChances[guest.id] ?? 0} % Erfolg
+            <button type="button" className="btn small" onClick={() => onTalk(guest.id)} disabled={talkWait > 0}
+              title={talkWait > 0
+                ? `Noch ${Math.ceil(talkWait * 0.52)} s gesperrt. Erfolg: +25 Laune, +20 Geduld; Fehlschlag kann Streit auslösen.`
+                : 'Erfolg: +25 Laune, +20 Geduld. Fehlschlag: beides sinkt und kann Streit auslösen. Danach rund 30 Sekunden Pause.'}>
+              {talkWait > 0 ? `BESCHWATZEN · ${Math.ceil(talkWait * 0.52)} s` : `BESCHWATZEN · ${view.talkChances[guest.id] ?? 0} % Erfolg`}
             </button>
             {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)} title="Beendet den Streit friedlich.">SCHLICHTEN</button>}
             {duel && disputeId !== null && !view.disputeGuard[disputeId] && (
               <button type="button" className="btn small alert" onClick={() => onFight(disputeId)}
+                disabled={!duel.inRange}
                 title={`Duell gegen ${duel.opponent.name} (${duel.opponent.archetype}). Bei einer Niederlage drohen ein Überfall auf Kasse oder Brieftasche, ein Launenschock und bei eskaliertem Streit Rufschaden.`}>
-                DUELL GEGEN {duel.opponent.name.split(' ')[0]!.toUpperCase()} · {duel.winChance} %
+                {duel.inRange ? 'DUELL GEGEN' : 'ZU WEIT WEG ·'} {duel.opponent.name.split(' ')[0]!.toUpperCase()} · {duel.winChance} %
               </button>
             )}
             {duel && (

@@ -28,6 +28,8 @@ export interface GameView {
   readonly agents: readonly StaffAgent[];
   readonly disputes: readonly Dispute[];
   readonly talkChances: Readonly<Record<number, number>>;
+  /** Je Gast: Restticks bis zur naechsten Ansprache (0 = frei). */
+  readonly talkReady: Readonly<Record<number, number>>;
   /** Je Disput: Gegnerprofil und die daraus folgende Siegchance. */
   readonly duels: Readonly<Record<number, DuelPreview>>;
   /** Je Disput: greift ein Guard gerade wirklich ein (in Reichweite)? */

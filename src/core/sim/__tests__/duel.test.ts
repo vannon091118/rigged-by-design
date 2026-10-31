@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { duelOpponent, duelPreview, resolveDuel } from '../duel';
+import { duelPreview, resolveDuel } from '../duel';
+import { duelOpponent } from '../duel-opponent';
 import { simulateMugging } from '../mugging';
 import { HAUSKONTO } from '../money';
 import { ROBBERY_ACCOUNT } from '../penalty-pool';
@@ -94,6 +95,17 @@ describe('Duell mit Gegnerprofil', () => {
     const entries = ledger.entryCount;
     const result = resolveDuel(world, ledger, prng, 99);
     expect(result).toEqual({ outcome: 'NONE', opponent: null, mugging: null });
+    expect(ledger.entryCount).toBe(entries);
+  });
+
+  it('greift aus der Distanz nicht ein', () => {
+    const { world, ledger, prng } = duelSetup();
+    world.player.position = { x: world.size - 2, y: world.size - 2 };
+    const preview = duelPreview(world, world.disputes[0]!)!;
+    expect(preview.inRange).toBe(false);
+    const entries = ledger.entryCount;
+    expect(resolveDuel(world, ledger, prng, 1).outcome).toBe('FAR');
+    expect(world.disputes).toHaveLength(1);
     expect(ledger.entryCount).toBe(entries);
   });
 });

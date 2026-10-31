@@ -71,6 +71,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
   return {
     ...worldSnapshot(world),
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),
+    // Restticks bis die Ansprache wieder frei ist; die UI zaehlt daraus die Sekunden.
+    talkReady: Object.fromEntries(world.guests.map((guest) => [guest.id, Math.max(0, (guest.talkReadyTick ?? 0) - world.tick)])),
     // Nur ein Guard in Reichweite beendet den Streit; die UI folgt derselben Aussage.
     disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardResponding(world, dispute)])),
     duels,

@@ -101,7 +101,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               title={view.parts <= 0 ? 'Keine Ersatzteile im Lager' : view.house < view.prices.repairCost ? 'Hauskonto zu niedrig' : 'Reparatur buchen: 1 Ersatzteil'}
             >REPARIEREN · {vc(view.prices.repairCost, 0)}</button>
             <button type="button" className="btn ghost" onClick={() => setFull((value) => !value)}>{full ? 'FENSTER' : 'VOLLBILD'}</button>
-            {item.kind === 'SLOT' && (
+            {item.gameId === 'SLOT' && (
               <button
                 type="button"
                 className="btn"
@@ -146,7 +146,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             Werte wie <b>+260 Anziehung</b> sind Rohwerte: mehr ist besser.
           </p>
           <div className="mod-grid">
-            {MODS.filter((mod) => mod.id !== 'EXTRA_REEL' || item.kind === 'SLOT').map((mod) => {
+            {MODS.filter((mod) => mod.id !== 'EXTRA_REEL' || item.gameId === 'SLOT').map((mod) => {
               const installed = item.mods.includes(mod.id);
               const blocked = installed || item.mods.length >= 3 || view.house < mod.cost;
               return (

@@ -15,7 +15,7 @@ import { buyCrate, orderDrinks, orderParts } from '../core/sim/deliveries';
 import { calmDispute } from '../core/sim/disputes';
 import { talkToGuest } from '../core/sim/charisma-talk';
 import { spendPoint, type RpgAttribute } from '../core/sim/player-rpg';
-import { resolveDuel } from '../core/sim/duel';
+import { duelNotice, resolveDuel } from '../core/sim/duel';
 import { fireAgent, hireAgent } from '../core/sim/staff';
 import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
@@ -128,7 +128,7 @@ class WorldStore {
     this.#guard(() => { if (!talkToGuest(this.#world, this.#prng, guestId)) throw new Error('Gast gerade nicht ansprechbar.'); this.#notice = this.#world.lastEvent; });
   }
   fightBrawl(disputeId: number): void {
-    this.#guard(() => { this.#notice = resolveDuel(this.#world, this.#ledger, this.#prng, disputeId).outcome === 'NONE' ? 'Kein Streit mehr da.' : this.#world.lastEvent; });
+    this.#guard(() => { this.#notice = duelNotice(resolveDuel(this.#world, this.#ledger, this.#prng, disputeId), this.#world.lastEvent); });
   }
   spendSkill(attribute: RpgAttribute): void {
     this.#guard(() => { if (!spendPoint(this.#world.player.rpg, attribute)) throw new Error('Kein Skillpunkt frei.'); this.#notice = 'Skill verbessert.'; });
