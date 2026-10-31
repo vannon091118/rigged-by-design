@@ -84,7 +84,7 @@ Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cac
 
 ## Dependency-Begründungen
 
-Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung und mindestens eine reale Nutzung. Die folgende Matrix wird von `scripts/sync-dependency-matrix.mjs` aus `package.json` und den echten Imports erzeugt.
+Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung und mindestens eine reale Nutzung. Die folgende Matrix wird von `scripts/sync-dependency-matrix.mjs` aus `package.json` und den echten Imports erzeugt; sie belegt Nutzung, nicht Notwendigkeit. Die Bewertung mit Sicherheitslage, Konsolidierungsoptionen und Entscheidungen steht in `docs/DEPENDENCY-AUDIT.md` (Stand 31.10.2026).
 
 <!-- DEP_MATRIX_START -->
 | Paket | Version | Kategorie | Architektur-Begründung | Real genutzte Dateien (Anzahl & Pfade) |

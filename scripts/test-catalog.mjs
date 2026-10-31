@@ -30,7 +30,10 @@ const header = [
   '',
 ].join('\n');
 
-const current = existsSync(docPath) ? readFileSync(docPath, 'utf8') : '';
+// Git checkt auf Windows mit CRLF aus, der Generator schreibt LF. Ohne
+// Normalisierung meldet das Gate sonst bei jedem frischen Checkout faelschlich
+// "veraltet", obwohl der Inhalt identisch ist.
+const current = existsSync(docPath) ? readFileSync(docPath, 'utf8').replaceAll('\r\n', '\n') : '';
 const hasBlock = current.includes(CATALOG_START) && current.includes(CATALOG_END);
 const next = hasBlock
   ? current.replace(new RegExp(`${CATALOG_START}[\\s\\S]*?${CATALOG_END}`), block)
