@@ -29,6 +29,12 @@ keine Screenshot-Ordner mehr auf.
   einzige externe Schreibvorgang. `build-apk.yml` ueberspringt die Suite nur,
   wenn der Aufrufer `skip_verify: true` setzt; manuelle Laeufe und Tag-Pushes
   pruefen weiterhin selbst.
+- `pr-cleanup.yml` loescht nach einem Merge den Head-Branch am Remote. Weil der
+  Merge den Pflichtstatus **`Fail-Closed Gates`** voraussetzt, ist "gemergt"
+  hier immer "gemergt mit gruenen Gates". `main`, Fork-Branches und Pull
+  Requests mit dem Label `keep-branch` bleiben unberuehrt. Lokal raeumt
+  `npm run branches:prune` jeden nach `main` gemergten Branch ab; `turn:finish`
+  ruft das nach dem Push selbst auf. Offene Arbeit und `main` bleiben stehen.
 - `long-checks.yml` ist rein manuell (`workflow_dispatch`) und traegt die teuren
   Nachweise: Statistik (RTP, Poker-Verteilung), Soak, Balance und Benchmarks.
   `npm run ci:long` startet ihn, wartet auf das Ergebnis und laedt den
@@ -127,6 +133,7 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | Nur ein vollstaendiger Verify-Lauf pro `main`-Push | `CI Verify` -> `workflow_run` Release; `build-apk.yml` ueberspringt `verify:release` nur mit `skip_verify: true` |
 | PR ohne Pflichtstatus nicht mergebar | Ebene B, `required_status_checks` |
 | Verify veraendert keinen Arbeitsbaum | `npm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`); Berichte liegen im gitignorierten `.verify-cache/reports/` |
+| Wegwerf-Branches verschwinden nach dem Merge | `pr-cleanup.yml` (nur gemergt, nicht `main`, kein Fork, kein `keep-branch`); lokal `npm run branches:prune` |
 | Lange Nachweise laufen nicht lokal | `npm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; `long-checks.yml` rechnet sie in CI |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `npm run fix` |
 | Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Inhalts-Hash; Fix-Lauf meldet „keine Aenderung“ |

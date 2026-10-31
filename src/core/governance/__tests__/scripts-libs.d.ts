@@ -27,6 +27,20 @@ declare module '*/affected-tests.mjs' {
   export function changedFiles(): string[];
 }
 
+declare module '*/branch-prune.mjs' {
+  export const PROTECTED: readonly string[];
+  export interface BranchState {
+    readonly name: string;
+    readonly upstreamGone: boolean;
+    readonly merged?: boolean;
+  }
+  export function parseBranches(text: string): BranchState[];
+  export function prunable(
+    branches: readonly BranchState[],
+    options?: { protected?: readonly string[]; current?: string },
+  ): string[];
+}
+
 declare module '*/test-catalog.mjs' {
   export const PROOF_CLASSES: readonly string[];
   export const LONG_PROOF_CLASSES: readonly string[];

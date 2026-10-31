@@ -159,6 +159,15 @@ const neuAufsetzen = (anzahl) => {
 };
 
 /**
+ * Nach dem Push: lokal nur gemergte Wegwerf-Branches entfernen. Nie fatal —
+ * ein liegengebliebener Zweig darf den Turn nicht rot machen.
+ */
+const aufraeumen = () => {
+  const cleanup = spawnSync(process.execPath, ['scripts/branch-cleanup.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  if (cleanup.status !== 0) console.log('turn:finish: Branch-Aufraeumen uebersprungen');
+};
+
+/**
  * Pushen mit Nachziehen: Erst wenn der Remote aktuell ist, geprueft wurde und der Push
  * trotzdem abgelehnt wird, handelt es sich um Branch-Schutz und nicht um Rebase-Rueckstand.
  */
@@ -189,6 +198,7 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
   }
   if (gitRun(['push', 'origin', `HEAD:${TARGET_BRANCH}`]).status === 0) {
     console.log(`turn:finish: PASS, ${TARGET_BRANCH} gepusht`);
+    aufraeumen();
     process.exit(0);
   }
   const erneut = rueckstand();
@@ -209,5 +219,6 @@ if (pushBranch.status !== 0) {
   fail(1, 'ERR-4008', 'turn:finish', `Push auf ${TARGET_BRANCH} und auf den Arbeitsbranch fehlgeschlagen`);
   process.exit(1);
 }
+aufraeumen();
 fail(1, 'ERR-4008', 'turn:finish', `Direkter Push auf ${TARGET_BRANCH} abgelehnt; Branch gepusht. Fokussierter PR gegen ${TARGET_BRANCH} noetig`);
 process.exit(1);

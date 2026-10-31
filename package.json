@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.59",
+  "version": "0.3.60",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,7 @@
     "test:affected": "node scripts/test-affected.mjs",
     "catalog": "node scripts/test-catalog.mjs",
     "ci:long": "node scripts/ci-long-checks.mjs",
+    "branches:prune": "node scripts/branch-cleanup.mjs",
     "test:perf": "vitest bench --run",
     "soak": "RBD_SOAK_TICKS=100000 vitest run src/core/sim/__tests__/soak.test.ts",
     "balance": "node scripts/balance-run.mjs",

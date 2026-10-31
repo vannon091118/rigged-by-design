@@ -1,0 +1,37 @@
+name: PR Cleanup
+
+# Wegwerf-Branches verschwinden mit dem Merge. Der Merge setzt den gruenen
+# Pflichtstatus voraus, deshalb ist "merged" hier bereits "gemergt mit gruenen
+# Gates". `main` und Fork-Branches bleiben unberuehrt; das Label `keep-branch`
+# ist der bewusste Ausnahmefall.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  delete-branch:
+    name: Head-Branch loeschen
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref != 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      !contains(github.event.pull_request.labels.*.name, 'keep-branch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Branch am Remote entfernen
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Ein schon geloeschter Branch ist kein Fehler: der Zustand ist das Ziel.
+          if gh api "repos/$REPO/git/ref/heads/$BRANCH" > /dev/null 2>&1; then
+            gh api -X DELETE "repos/$REPO/git/refs/heads/$BRANCH"
+            echo "::notice::Branch $BRANCH geloescht"
+          else
+            echo "::notice::Branch $BRANCH existiert nicht mehr"
+          fi
