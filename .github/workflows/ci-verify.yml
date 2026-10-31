@@ -44,7 +44,9 @@ jobs:
       - name: Node 22 mit npm-Cache
         uses: actions/setup-node@v4
         with:
-          node-version: '22.12'
+          # Vollstaendige 22er-Linie, nicht der harte Minor: jsdom und eslint
+          # verlangen einen aktuellen 22er-Stand, sonst stirbt der Vitest-Worker.
+          node-version: '22'
           cache: npm
 
       - name: Install (npm ci)
