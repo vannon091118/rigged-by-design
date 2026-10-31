@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Turn-Abschluss: verify:all, deutscher Steam-Notes-Commit, Push nach main. */
+/** Turn-Abschluss: alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach main. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -15,7 +15,7 @@ if (verify.status !== 0) {
 
 const paths = process.argv.slice(2);
 if (paths.length > 0) git(['add', '--', ...paths]);
-else git(['add', '-u']);
+else git(['add', '-A']);
 const staged = git(['diff', '--cached', '--name-only']);
 if (!staged) {
   console.log('turn:finish: keine Aenderungen zu committen');
@@ -23,6 +23,7 @@ if (!staged) {
 }
 
 const files = staged.split(/\r?\n/).filter(Boolean);
+console.log(`turn:finish: ${files.length} Datei(en) gestaged`);
 const notesPath = resolve(ROOT, '.turn-notes.md');
 let message;
 if (existsSync(notesPath)) {

@@ -1,42 +1,51 @@
 #!/usr/bin/env node
-/** Fail-Closed-Pipeline: Autofix vor den harten Gates, jeder Fehler indiziert. */
+/** Fail-Closed-Pipeline: Autofix zuerst (schreibt Dateien), danach alle unabhaengigen Gates parallel. */
 import { spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { line, ROOT } from './lib/report.mjs';
+import { runGates } from './lib/gate-runner.mjs';
+import { isCached, markCached, resetTreeKey, treeKey } from './lib/gate-cache.mjs';
 
 // Autofix ist zugleich das Lint- und Dependency-Gate: der zweite Durchlauf
 // derselben Pruefungen entfaellt. Bleibt ein Rest, ist das Autofix rot.
 const steps = [
-  ['check:loc', 'npm', ['run', 'check:loc'], 'ERR-4012'],
-  ['typecheck', 'npm', ['run', 'typecheck'], 'ERR-1005'],
-  ['test-quality', process.execPath, ['scripts/verify-test-quality.mjs'], 'ERR-4002'],
-  ['dead-code', process.execPath, ['scripts/verify-dead-code.mjs'], 'ERR-4003'],
-  ['audit', 'npm', ['run', 'audit:gate'], 'ERR-4004'],
-  ['tests', 'npm', ['run', 'test:ci'], 'ERR-2001'],
-  ['build', 'npm', ['run', 'build'], 'ERR-1005'],
+  { name: 'check:loc', command: 'npm', script: 'check:loc', code: 'ERR-4012', cache: true },
+  { name: 'typecheck', command: 'npm', script: 'typecheck', code: 'ERR-1005', cache: true },
+  { name: 'test-quality', command: 'node', script: 'scripts/verify-test-quality.mjs', code: 'ERR-4002', cache: true },
+  { name: 'dead-code', command: 'node', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', cache: true },
+  { name: 'audit', command: 'npm', script: 'audit:gate', code: 'ERR-4004' },
+  { name: 'tests', command: 'npm', script: 'test:ci', code: 'ERR-2001', cache: true },
+  {
+    name: 'build',
+    command: 'npm',
+    script: 'build',
+    code: 'ERR-1005',
+    cache: true,
+    ready: () => existsSync(join(ROOT, 'dist', 'index.html')),
+  },
 ];
 
-let failed = 0;
-let index = 0;
-
 console.log('=== ERR-0911 Autofix ===');
-const autofix = spawnSync(process.execPath, ['scripts/autofix-0911.mjs'], { cwd: ROOT, stdio: 'inherit' });
-if (autofix.status !== 0) {
-  failed += 1;
-  index += 1;
-  console.error(line(index, 'ERR-0911', 'pipeline', 'Autofix konnte nicht vollstaendig laufen'));
-}
-for (const [name, command, args, code] of steps) {
-  console.log(`=== Gate: ${name} ===`);
-  const result = spawnSync(command, args, { cwd: ROOT, stdio: 'inherit', shell: command === 'npm' && process.platform === 'win32' });
-  if (result.status !== 0) {
+const before = treeKey();
+let failed = 0;
+if (isCached('autofix', before)) {
+  console.log(`[cached] autofix uebersprungen, Baum unveraendert (${before.slice(0, 8)})`);
+} else {
+  const autofix = spawnSync(process.execPath, ['scripts/autofix-0911.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  resetTreeKey();
+  if (autofix.status !== 0) {
     failed += 1;
-    index += 1;
-    console.error(line(index, code, `pipeline/${name}`, 'Gate fehlgeschlagen; Details oben'));
+    console.error(line(1, 'ERR-0911', 'pipeline', 'Autofix konnte nicht vollstaendig laufen'));
+  } else {
+    markCached('autofix', treeKey());
   }
 }
 
-if (failed > 0) {
-  console.error(`verify:all: ${failed} Gate(s) rot`);
+const gateFailures = await runGates(steps);
+const total = failed + gateFailures.length;
+if (total > 0) {
+  console.error(`verify:all: ${total} Gate(s) rot`);
   process.exit(1);
 }
 console.log('verify:all: PASS (alle Gates gruen)');

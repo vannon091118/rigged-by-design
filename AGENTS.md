@@ -23,14 +23,14 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
-- `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build).
+- `npm run verify:all` — fail-closed pipeline (autofix inkl. ESLint/Dependency-Matrix, LOC, typecheck, Testvertrag, Dead-Export, audit, vitest, build). Autofix läuft zuerst und allein; danach laufen die unabhängigen Gates parallel, grüne Gates werden per Inhalts-Hash aus `node_modules/.cache/rbd-verify` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu).
 - `npm run test:perf` — feste Messläufe (not in verify:all). `npm run bench:lowend` pins the run to one core; `npm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
 - `npm run build` — Vite production build.
 
 ## Delivery
 
-- After a turn: `npm run turn:finish -- <paths>` stages only named paths, runs gates, commits, pushes to `main`. Without args, only tracked changes (never whole tree).
+- After a turn: `npm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft `verify:all`, committet und pusht `main`. Pfade nur für einen bewusst verengten Commit: `npm run turn:finish -- <paths>`.
 - If branch protection rejects direct push, push the working branch and open a focused PR to `main`.
 
 ## Conventions

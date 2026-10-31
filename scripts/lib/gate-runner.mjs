@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+/** Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Hashe-Cache. */
+import { spawn } from 'node:child_process';
+import { availableParallelism } from 'node:os';
+import { line, ROOT } from './report.mjs';
+import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
+
+const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
+
+function execute(step) {
+  const started = Date.now();
+  const command = step.command === 'npm' ? 'npm' : process.execPath;
+  const args = step.command === 'npm' ? ['run', step.script] : [step.script];
+  return new Promise((done) => {
+    const child = spawn(command, args, { cwd: ROOT, shell: command === 'npm' && process.platform === 'win32' });
+    let output = '';
+    child.stdout.on('data', (chunk) => { output += chunk; });
+    child.stderr.on('data', (chunk) => { output += chunk; });
+    child.on('close', (status) => done({ status, output, ms: Date.now() - started }));
+  });
+}
+
+/** Jede rote Gate bleibt rot; gruene Gates werden nur bei identischem Hash uebersprungen. */
+export async function runGates(steps) {
+  const queue = [...steps];
+  const key = treeKey();
+  const failed = [];
+  let index = 0;
+  const worker = async () => {
+    for (let step = queue.shift(); step; step = queue.shift()) {
+      const reused = step.cache && isCached(step.name, key) && (step.ready?.() ?? true);
+      if (reused) {
+        console.log(`[cached] ${step.name} uebersprungen, Baum unveraendert (${key.slice(0, 8)})`);
+        continue;
+      }
+      const result = await execute(step);
+      if (result.output.trim()) {
+        const tail = result.output.endsWith('\n') ? '' : '\n';
+        process.stdout.write(`=== Gate: ${step.name} (${(result.ms / 1000).toFixed(1)}s) ===\n${result.output}${tail}`);
+      }
+      if (result.status !== 0) {
+        dropCached(step.name);
+        failed.push(step.name);
+        index += 1;
+        console.error(line(index, step.code, `pipeline/${step.name}`, 'Gate fehlgeschlagen; Details oben'));
+        continue;
+      }
+      if (step.cache) markCached(step.name, key);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
+  return failed;
+}
