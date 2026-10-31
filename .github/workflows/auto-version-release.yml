@@ -58,7 +58,11 @@ jobs:
       - name: Tag und Release erstellen (kein Commit, main bleibt stehen)
         id: tag
         env:
+          # gh liest GH_TOKEN; ci-tag-release.mjs waehlt die Eskalationsstufe
+          # ueber GITHUB_TOKEN. Beide muessen gesetzt sein, sonst sieht das
+          # Skript den Workflow-Token nicht und blockiert trotz Schreibrecht.
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: node scripts/ci-tag-release.mjs --github-output "$GITHUB_OUTPUT"
 
