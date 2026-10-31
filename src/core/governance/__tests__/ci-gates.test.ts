@@ -29,8 +29,9 @@ interface WorkflowJob {
   readonly uses?: string;
   readonly permissions?: Readonly<Record<string, string>>;
   readonly 'timeout-minutes'?: number;
+  readonly if?: string;
   readonly steps?: readonly WorkflowStep[];
-  readonly with?: Readonly<Record<string, string>>;
+  readonly with?: Readonly<Record<string, unknown>>;
 }
 
 interface WorkflowTrigger {
@@ -42,8 +43,15 @@ interface WorkflowTrigger {
     readonly branches?: readonly string[];
     readonly tags?: readonly string[];
   };
+  readonly workflow_run?: {
+    readonly workflows?: readonly string[];
+    readonly types?: readonly string[];
+    readonly branches?: readonly string[];
+  };
   readonly workflow_dispatch?: unknown;
-  readonly workflow_call?: unknown;
+  readonly workflow_call?: {
+    readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
+  };
 }
 
 interface Workflow {
@@ -72,17 +80,28 @@ describe('Main-Gate', () => {
     expect(ci.on?.push?.branches).toEqual(['**']);
     expect(ci.permissions?.contents).toBe('read');
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
+    expect(stepWith(ci, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
+    expect(stepWith(ci, 'verify', 'npm run verify:release')).toBeUndefined();
   });
 
-  it('prueft vor dem Tag und setzt beide Token-Namen fuer die Eskalation', () => {
+  it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
     const release = workflow('auto-version-release.yml');
-    expect(release.on?.push?.branches).toEqual(['main']);
+    expect(release.on?.workflow_run?.workflows).toEqual(['CI Verify']);
+    expect(release.on?.workflow_run?.types).toEqual(['completed']);
+    expect(release.on?.workflow_run?.branches).toEqual(['main']);
+    expect(release.on?.push).toBeUndefined();
     expect(release.permissions?.contents).toBe('write');
 
-    const verified = stepIndex(release, 'release', 'npm run verify:release');
+    const condition = release.jobs?.release?.if ?? '';
+    expect(condition).toContain("workflow_run.conclusion == 'success'");
+    expect(condition).toContain("workflow_run.event == 'push'");
+    expect(condition).toContain("workflow_run.head_branch == 'main'");
+
+    const verified = stepWith(release, 'release', 'npm run verify:release');
+    expect(verified?.if).toContain("github.event_name == 'workflow_dispatch'");
+    const verifyIndex = stepIndex(release, 'release', 'npm run verify:release');
     const tagged = stepIndex(release, 'release', 'ci-tag-release.mjs');
-    expect(verified).toBeGreaterThan(-1);
-    expect(tagged).toBeGreaterThan(verified);
+    expect(tagged).toBeGreaterThan(verifyIndex);
 
     const tagStep = stepWith(release, 'release', 'ci-tag-release.mjs');
     expect(tagStep?.if).toBeUndefined();
@@ -90,6 +109,7 @@ describe('Main-Gate', () => {
     expect(tagStep?.env?.GITHUB_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
     expect(tagStep?.env?.GH_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
     expect(tagStep?.env?.RELEASE_TOKEN).toBe('${{ secrets.RELEASE_TOKEN }}');
+    expect(tagStep?.env?.RELEASE_SHA).toContain('github.event.workflow_run.head_sha');
   });
 
   it('startet den Verify-Workflow auch von Hand', () => {
@@ -104,13 +124,17 @@ describe('Main-Gate', () => {
     expect(apkJob?.uses).toBe('./.github/workflows/build-apk.yml');
     expect(apkJob?.permissions?.contents).toBe('write');
     expect(apkJob?.with?.tag).toBe('${{ needs.release.outputs.tag }}');
+    expect(apkJob?.with?.skip_verify).toBe(true);
 
     const apk = workflow('build-apk.yml');
     expect(apk.on?.workflow_call).not.toBeUndefined();
+    expect(apk.on?.workflow_call?.inputs?.skip_verify?.type).toBe('boolean');
     expect(apk.on?.workflow_dispatch).not.toBeUndefined();
     expect(apk.on?.push?.tags).toEqual(['v*.*.*']);
     expect(apk.permissions?.contents).toBe('write');
     expect(apk.jobs?.apk?.['timeout-minutes']).toBe(40);
     expect(stepIndex(apk, 'apk', "grep -qx 'rigged-by-design-debug.apk'")).toBeGreaterThan(-1);
+    const apkGate = stepWith(apk, 'apk', 'npm run verify:release');
+    expect(apkGate?.if).toContain('inputs.skip_verify');
   });
 });

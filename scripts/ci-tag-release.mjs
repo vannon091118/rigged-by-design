@@ -30,7 +30,9 @@ if (outputAt >= 0 && process.argv[outputAt + 1]) {
 
 const repo = process.env.GITHUB_REPOSITORY
   ?? git(['remote', 'get-url', 'origin']).replace(/^.*github\.com[:/]/, '').replace(/\.git$/, '');
-const sha = process.env.GITHUB_SHA ?? git(['rev-parse', 'HEAD']);
+// workflow_run setzt GITHUB_SHA auf den Default-Branch, nicht auf den
+// getriggerten Commit. RELEASE_SHA benennt den geprueften Commit explizit.
+const sha = process.env.RELEASE_SHA ?? process.env.GITHUB_SHA ?? git(['rev-parse', 'HEAD']);
 
 const gh = (args, token) => {
   const result = spawnSync('gh', args, { cwd: ROOT, encoding: 'utf8', env: { ...process.env, GH_TOKEN: token } });

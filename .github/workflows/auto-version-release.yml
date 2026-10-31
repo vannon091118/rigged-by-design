@@ -1,18 +1,20 @@
 name: Auto Version & Release
 
-# Ebene A: kein Nachrichtenmuster schaltet die Pruefung ab. Der Job laeuft bei
-# jedem Push auf `main`; `verify:release` ist rein lesend und laeuft vor jedem
-# Tag. `[skip ci]` wird von GitHub selbst ausgewertet (dann startet gar kein
+# Ebene A: kein Nachrichtenmuster schaltet die Pruefung ab. Der Release startet
+# erst nach einem erfolgreichen Lauf von "CI Verify" fuer denselben main-Commit;
+# die vollstaendige Suite laeuft damit genau einmal. Dieser Workflow taggt nur
+# noch. `[skip ci]` wird von GitHub selbst ausgewertet (dann startet gar kein
 # Workflow) - diesen Skip schliesst erst Ebene B, das Main-Ruleset in
 # docs/CI-GATES.md, weil dort der fehlende Pflichtstatus den Merge blockiert.
 on:
-  push:
+  workflow_run:
+    workflows: ["CI Verify"]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: read
 
 concurrency:
   group: auto-version-main
@@ -21,6 +23,13 @@ concurrency:
 jobs:
   release:
     name: Bump, tag, release
+    # Nur der erfolgreiche Push-Lauf von CI Verify auf main darf taggen. Ein
+    # manueller Dispatch prueft weiterhin selbst, weil er keinen CI-Lauf hat.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -29,16 +38,9 @@ jobs:
       - name: Checkout (volle Historie)
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Gate-Cache wiederherstellen
-        uses: actions/cache@v4
-        with:
-          path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'eslint.config.js') }}
-          restore-keys: |
-            ${{ runner.os }}-rbd-verify-
 
       - name: Node 22 mit npm-Cache
         uses: actions/setup-node@v4
@@ -46,10 +48,14 @@ jobs:
           node-version: '22'
           cache: npm
 
-      - name: Install (npm ci)
+      # Nur der manuelle Pfad hat keinen vorgelagerten CI-Lauf. Der
+      # automatische Pfad taggt ausschliesslich den bereits geprueften Commit.
+      - name: Install (npm ci, nur manuell)
+        if: github.event_name == 'workflow_dispatch'
         run: npm ci
 
-      - name: Alle Gates vor Release
+      - name: Alle Gates vor manuellem Release
+        if: github.event_name == 'workflow_dispatch'
         run: npm run verify:release
 
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
@@ -64,6 +70,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          # workflow_run setzt GITHUB_SHA auf den Default-Branch. Der Tag muss
+          # aber genau den geprueften Commit treffen; RELEASE_SHA hat Vorrang.
+          RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
         run: node scripts/ci-tag-release.mjs --github-output "$GITHUB_OUTPUT"
 
   # Der Tag wird mit GITHUB_TOKEN gepusht; dessen Events starten keine
@@ -77,4 +86,5 @@ jobs:
     uses: ./.github/workflows/build-apk.yml
     with:
       tag: ${{ needs.release.outputs.tag }}
+      skip_verify: true
     secrets: inherit
