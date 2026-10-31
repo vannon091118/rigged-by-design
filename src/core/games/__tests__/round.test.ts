@@ -36,7 +36,7 @@ describe('Spiele', () => {
     const ledger = new Ledger();
     const slot = world.furniture.find((item) => item.kind === 'SLOT')!;
     const entries = ledger.entries.length;
-    const result = testSpin(slot, new Prng(randomSeed()));
+    const result = testSpin(slot, world);
     expect(result.game).toBe('SLOT');
     expect(ledger.entries.length).toBe(entries);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);

@@ -278,7 +278,7 @@ class WorldStore {
   spinTest(itemId: number): GameResult | null {
     const item = this.#world.furniture.find((entry) => entry.id === itemId);
     if (!item) return null;
-    const result = testSpin(item, this.#prng, this.#world);
+    const result = testSpin(item, this.#world);
     if (item.gameId === 'PLINKO' || item.gameId === 'SLOT') {
       this.#notice = item.gameId === 'SLOT' ? 'Slot-Telemetrie aktualisiert.' : 'Plinko-Bahn gespielt.';
       this.#emit();

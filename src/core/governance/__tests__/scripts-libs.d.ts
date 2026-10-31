@@ -38,6 +38,19 @@ declare module '*/pipeline-plan.mjs' {
   export function isFixMode(argv: readonly string[]): boolean;
 }
 
+declare module '*/release-escalation.mjs' {
+  export const LEVELS: readonly string[];
+  export const MAX_RETRIES: number;
+  export function classifyFailure(message: unknown): 'EXISTS' | 'PERMISSION' | 'TRANSIENT' | 'UNKNOWN';
+  export function escalate(
+    level: string,
+    kind: string,
+    options?: { hasElevatedToken?: boolean },
+  ): string;
+  export function tokenFor(level: string, env: Record<string, string | undefined>): string;
+  export function blockedReason(kind: string): string;
+}
+
 declare module '*/tree-changes.mjs' {
   export interface TreeChanges {
     readonly added: readonly string[];

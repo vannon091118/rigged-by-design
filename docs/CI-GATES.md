@@ -73,6 +73,35 @@ Einmalig in GitHub setzen (Settings → Rules → New branch ruleset) oder per A
 Damit gilt: Pull Request erforderlich, gruener Pflichtstatus aus dem richtigen
 Workflow, keine Force-Pushes, keine Branch-Loeschung, keine Direktpushes.
 
+## Release- und APK-Kette
+
+Ein mit `GITHUB_TOKEN` gepushter Tag loest keinen Workflow aus. Deshalb ruft
+`auto-version-release.yml` den APK-Build nach dem Tag **explizit** auf:
+
+```text
+Verify (verify:release) -> Tag + Release -> workflow_call build-apk.yml -> Release-Asset + Pruefung
+```
+
+- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran.
+- Der zweite Trigger (`push: tags`) bleibt als Netz fuer manuell gepushte Tags.
+- Der Job `apk` haengt mit `needs: release` am Release; ein roter APK-Build macht den Gesamtlauf sichtbar rot.
+- Ein bereits existierender Tag oder Release erzeugt kein zweites Release (`ci-tag-release.mjs` prueft zuerst).
+
+## Eskalation bei Umgebungsproblemen
+
+`scripts/ci-tag-release.mjs` scheitert nicht roh an einer 403, sondern geht die
+Leiter aus `scripts/lib/release-escalation.mjs` hoch:
+
+| Stufe | Verhalten |
+| --- | --- |
+| `WORKFLOW_TOKEN` | Standardlauf mit `GITHUB_TOKEN`; transiente Fehler werden bis zu dreimal wiederholt |
+| `RELEASE_TOKEN` | nur wenn das Repository-Secret gesetzt ist; uebernimmt bei Rechtefehlern |
+| `BLOCKED` | `::error::` plus Job-Summary mit der genauen Einstellung, die fehlt |
+
+Damit loesen sich Netzwerk- und Rechteprobleme entweder selbst oder der Lauf
+sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
+`contents:write` ist optional; ohne es bleibt die Anleitung im Log.
+
 ## Abnahme
 
 | Kriterium | Nachweis |

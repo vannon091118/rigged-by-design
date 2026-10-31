@@ -2,9 +2,8 @@
 import type { Ledger } from '../economy/ledger';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
-import { playPlinkoTest } from '../games/plinko-sandbox';
-import { playSlotTest } from '../games/slot-session';
-import { Prng } from '../rng/prng';
+import { playSandboxGame, sandboxSeed, testSandbox } from '../games/sandbox';
+import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod } from './offers';
 import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
@@ -112,24 +111,26 @@ export function applySlotOdds(world: WorldState, itemId: number, raw: unknown): 
 }
 
 /**
- * Ein kostenloser Testspin veraendert weder Welt noch Gerätegedächtnis: fuer
- * jede Vorschau faellt ein eigener Seed aus Tick und Geraet an, und Plinko
- * zaehlt dabei weder seine Drops noch die Suchtskala hoch.
+ * Ein kostenloser Testspin laeuft in der Sandbox: eigener Seed, nur lesende
+ * Welt, kein Ledger, kein Fortschritt, kein Welt-PRNG. Der Seed ist optional,
+ * damit derselbe Sandbox-Seed dasselbe Ergebnis liefert.
  */
-export function testSpin(item: Furniture, prng: Prng, world?: WorldState): GameResult {
-  if (!world) return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, prng);
-  const seed = testSeed(world, item);
-  if (item.gameId === 'PLINKO') return playPlinkoTest(world, seed);
-  if (item.gameId === 'SLOT') return playSlotTest(item, seed);
-  // Auch Tische drehen ihr eigenes Los: keine Vorschau zieht am Weltverlauf.
-  return playAction({ game: item.gameId ?? 'SLOT', stake: ZERO_VC }, new Prng(seed));
+export function testSpin(
+  item: Furniture,
+  world: WorldState,
+  seed: number = sandboxSeed(world, item),
+): GameResult {
+  return playSandboxGame(testSandbox(world, seed), item);
 }
 
-/** Eigener Seed aus Tick und Gerät: der Welt-PRNG bleibt für den Testspin unberührt. */
-function testSeed(world: WorldState, item: Furniture): number {
-  return ((Math.imul(world.tick + 1, 0x9e3779b1) ^ Math.imul(item.id + 1, 0x85ebca6b)) >>> 0) || 1;
-}
-
+/**
+ * Fremde Runde: erst vollstaendig pruefen und rechnen, dann buchen.
+ *
+ * Der Einsatz wird nicht mehr vor der Validierung abgebucht. Der PRNG laeuft
+ * auf einem Schnappschuss; erst wenn die Runde steht, wird der Zustand
+ * uebernommen und Einsatz plus Auszahlung werden gebucht. Ein Fehler in
+ * Pruefung, Option oder Rechnung hinterlaesst weder Geld noch Zufall.
+ */
 export function foreignRound(
   ledger: Ledger,
   game: GameId,
@@ -139,9 +140,27 @@ export function foreignRound(
   houseEdgeBps = 250,
   options: GameExtras = {},
 ): GameResult {
+  if (!Number.isSafeInteger(bet) || bet < ZERO_VC) {
+    throw new Error(`Einsatz ${String(bet)} ist keine gueltige Mikro-Summe`);
+  }
   if (ledger.getBalance(PORTEMONNAIE) < bet) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
-  foreignBet(ledger, bet, tick);
-  const result = playAction({ game, stake: bet, houseEdgeBps, ...options }, prng);
-  if (result.payout > 0) foreignWin(ledger, result.payout, tick);
+  if (!Number.isSafeInteger(tick) || tick < 0) throw new Error(`Tick ${String(tick)} ist ungueltig`);
+  const snapshot = prng.getState();
+  let result: GameResult;
+  try {
+    result = playAction({ game, stake: bet, houseEdgeBps, ...options }, prng);
+  } catch (error) {
+    prng.setState(snapshot);
+    throw error;
+  }
+  // Die Auszahlung kommt vom Haus-Konto und kann nicht an Deckung scheitern;
+  // Betrag und Tick sind oben geprueft. Ein Fehler hier rollt den Zufall zurueck.
+  try {
+    foreignBet(ledger, bet, tick);
+    if (result.payout > 0) foreignWin(ledger, result.payout, tick);
+  } catch (error) {
+    prng.setState(snapshot);
+    throw error;
+  }
   return result;
 }

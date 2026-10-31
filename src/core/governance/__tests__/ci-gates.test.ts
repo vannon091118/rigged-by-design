@@ -36,4 +36,15 @@ describe('Main-Gate', () => {
   it('startet den Verify-Workflow auch von Hand', () => {
     expect(workflow('ci-verify.yml')).toMatch(/workflow_dispatch:/);
   });
+
+  it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {
+    const release = workflow('auto-version-release.yml');
+    expect(release).toMatch(/uses: \.\/\.github\/workflows\/build-apk\.yml/);
+    expect(release).toMatch(/needs: release/);
+    expect(release).toMatch(/tag: \$\{\{ needs\.release\.outputs\.tag \}\}/);
+
+    const apk = workflow('build-apk.yml');
+    expect(apk).toMatch(/workflow_call:/);
+    expect(apk).toMatch(/grep -qx 'rigged-by-design-debug\.apk'/);
+  });
 });

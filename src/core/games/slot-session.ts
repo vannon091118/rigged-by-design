@@ -5,7 +5,7 @@ import type { GameResult } from './contracts';
 import { playSlot } from './engines/slot';
 import { createSlotMemory, prepareSlotSpin, recordSlotSpin, type SlotMemory } from './slot-transparency';
 import { normalizeSlotProfile } from './slot-profile';
-import { Prng } from '../rng/prng';
+import type { Prng } from '../rng/prng';
 
 /** Ein echter Gast-Spin; der Testspin bleibt absichtlich ohne Gedaechtnis-Wirkung. */
 export function playSlotSession(
@@ -54,6 +54,6 @@ function cloneSlotMemory(memory: SlotMemory | undefined): SlotMemory {
  * Testspin: rechnet auf einer Kopie des Gedaechtnisses und mit eigenem Zufall.
  * Damit veraendert eine kostenlose Vorschau weder Maschine noch Weltverlauf.
  */
-export function playSlotTest(item: Furniture, seed: number): GameResult {
-  return playSlotSession({ ...item, slotMemory: cloneSlotMemory(item.slotMemory) }, new Prng(seed), ZERO_VC);
+export function playSlotTest(item: Furniture, prng: Prng): GameResult {
+  return playSlotSession({ ...item, slotMemory: cloneSlotMemory(item.slotMemory) }, prng, ZERO_VC);
 }

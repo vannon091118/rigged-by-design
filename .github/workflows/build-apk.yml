@@ -2,6 +2,18 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release-Tag (leer = aktueller Branch, kein Release-Upload)'
+        required: false
+  # Der Release-Workflow ruft diesen Build direkt auf: ein mit GITHUB_TOKEN
+  # gepushter Tag loest keinen eigenen Workflow aus.
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Release-Tag, den der Aufrufer gebaut haben will'
+        required: true
+        type: string
   push:
     tags: ['v*.*.*']
 
@@ -9,7 +21,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: apk-${{ github.ref }}
+  group: apk-${{ inputs.tag || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -21,6 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag || github.ref }}
           fetch-depth: 0
 
       - name: Gate-Cache wiederherstellen
@@ -68,11 +81,30 @@ jobs:
           path: artifacts/rigged-by-design-debug.apk
           if-no-files-found: error
 
-      - name: APK als Release-Asset (nur Tags)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Release-Tag bestimmen
+        id: release
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          tag="$INPUT_TAG"
+          if [ -z "$tag" ] && [ "${GITHUB_REF_TYPE}" = "tag" ]; then tag="$GITHUB_REF_NAME"; fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: APK als Release-Asset
+        if: steps.release.outputs.tag != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
-          gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1 \
-            || gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes "Automatisch gebaute Debug-APK."
-          gh release upload "$GITHUB_REF_NAME" artifacts/rigged-by-design-debug.apk --clobber
+          gh release view "$TAG" > /dev/null 2>&1 \
+            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute Debug-APK."
+          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk --clobber
+
+      - name: Artefakt am Release pruefen
+        if: steps.release.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qx 'rigged-by-design-debug.apk' \
+            || { echo "::error::Release $TAG enthaelt kein APK-Artefakt"; exit 1; }

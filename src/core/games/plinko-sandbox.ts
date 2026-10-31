@@ -87,6 +87,6 @@ export function playPlinkoRound(
  * eigenem Zufall aus Tick und Geraet. Er zaehlt weder Drops noch Sucht und
  * laesst `lastPlinko` unberuehrt – die Vorschau veraendert nicht das Spiel.
  */
-export function playPlinkoTest(world: WorldState, seed: number): GameResult {
-  return plinkoResult(ZERO_VC, sandboxDrop(world, new Prng(seed), world.plinkoMode), world.plinko, 0);
+export function playPlinkoTest(world: WorldState, prng: Prng): GameResult {
+  return plinkoResult(ZERO_VC, sandboxDrop(world, prng, world.plinkoMode), world.plinko, 0);
 }
