@@ -4,9 +4,11 @@ declare module '*/process-sweep.mjs' {
     readonly gate: string;
     readonly pid: number;
     readonly at: number;
+    readonly start: string | null;
   }
   export function isAlive(pid: number): boolean;
-  export function killTree(pid: number): boolean;
+  export function processIdentity(pid: number): string | null;
+  export function killTree(pid: number, expectedStart?: string | null): boolean;
   export function killTracked(): number;
   export function trackPid(gate: string, pid: number): void;
   export function untrackPid(pid: number): void;
@@ -25,6 +27,26 @@ declare module '*/affected-tests.mjs' {
   export function changedFiles(): string[];
 }
 
+declare module '*/gate-runner.mjs' {
+  export interface GateStep {
+    readonly name: string;
+    readonly command: 'npm' | 'node';
+    readonly script: string;
+    readonly args?: readonly string[];
+    readonly env?: Readonly<Record<string, string>>;
+    readonly timeoutMs?: number;
+  }
+  export interface GateResult {
+    readonly status: number | null;
+    readonly output: string;
+    readonly ms: number;
+    readonly timedOut: boolean;
+    readonly timeoutMs: number;
+  }
+  export function executeStep(step: GateStep): Promise<GateResult>;
+  export function runGates(steps: readonly GateStep[]): Promise<string[]>;
+}
+
 declare module '*/pipeline-stop.mjs' {
   type StopOptions = { exit?: (code: number) => void; log?: (message: string) => void };
   export const EXIT_ABORTED: number;
@@ -40,6 +62,7 @@ declare module '*/pipeline-plan.mjs' {
     readonly args?: readonly string[];
     readonly code: string;
     readonly cache?: boolean;
+    readonly timeoutMs?: number;
   }
   export const PROFILES: readonly string[];
   export const GATES: Readonly<Record<string, GateSpec>>;

@@ -8,18 +8,20 @@
  */
 
 export const PROFILES = Object.freeze(['quick', 'full', 'release']);
+const MINUTE = 60_000;
 
 /** Jede Stufe ist rein lesend: pruefen, nicht reparieren. */
 export const GATES = Object.freeze({
-  lint: { name: 'lint', command: 'npm', script: 'lint', code: 'ERR-4011', cache: true },
-  'check:loc': { name: 'check:loc', command: 'npm', script: 'check:loc', code: 'ERR-4012', cache: true },
-  typecheck: { name: 'typecheck', command: 'npm', script: 'typecheck', code: 'ERR-1005', cache: true },
+  lint: { name: 'lint', command: 'npm', script: 'lint', code: 'ERR-4011', cache: true, timeoutMs: 2 * MINUTE },
+  'check:loc': { name: 'check:loc', command: 'npm', script: 'check:loc', code: 'ERR-4012', cache: true, timeoutMs: MINUTE },
+  typecheck: { name: 'typecheck', command: 'npm', script: 'typecheck', code: 'ERR-1005', cache: true, timeoutMs: 3 * MINUTE },
   'test-quality': {
     name: 'test-quality',
     command: 'node',
     script: 'scripts/verify-test-quality.mjs',
     code: 'ERR-4002',
     cache: true,
+    timeoutMs: 2 * MINUTE,
   },
   'dead-code': {
     name: 'dead-code',
@@ -27,6 +29,7 @@ export const GATES = Object.freeze({
     script: 'scripts/verify-dead-code.mjs',
     code: 'ERR-4003',
     cache: true,
+    timeoutMs: 2 * MINUTE,
   },
   // Die Matrix wird hier nur geprueft; geschrieben wird sie ausschliesslich im Fix-Modus.
   'deps-matrix': {
@@ -36,10 +39,11 @@ export const GATES = Object.freeze({
     args: ['--check'],
     code: 'ERR-4013',
     cache: true,
+    timeoutMs: 2 * MINUTE,
   },
-  audit: { name: 'audit', command: 'npm', script: 'audit:gate', code: 'ERR-4004' },
-  tests: { name: 'tests', command: 'npm', script: 'test:ci', code: 'ERR-2001', cache: true },
-  build: { name: 'build', command: 'npm', script: 'build', code: 'ERR-1005', cache: true },
+  audit: { name: 'audit', command: 'npm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
+  tests: { name: 'tests', command: 'npm', script: 'test:ci', code: 'ERR-2001', cache: true, timeoutMs: 15 * MINUTE },
+  build: { name: 'build', command: 'npm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
 const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'deps-matrix', 'tests'];
