@@ -45,12 +45,7 @@ jobs:
       - name: Alle Gates vor Release
         run: npm run verify:release
 
-      - name: Bot-Identitaet
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Version bumpen, taggen und Release erstellen
+      - name: Tag und Release erstellen (kein Commit, main bleibt stehen)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/ci-bump-version.mjs
+        run: node scripts/ci-tag-release.mjs

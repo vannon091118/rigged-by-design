@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /** Turn-Abschluss: alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach main. */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { bumpPatch } from './version-bump.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
@@ -25,13 +26,40 @@ const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : 'verify:quick';
 const paths = args.filter((value) => !value.startsWith('--'));
 console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})`);
 
+// Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
+const stage = () => {
+  if (paths.length > 0) git(['add', '--', ...paths, 'package.json', 'package-lock.json']);
+  else git(['add', '-A']);
+};
+
+// Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.
+const schmutz = git(['status', '--porcelain', ...(paths.length > 0 ? ['--', ...paths] : [])]);
+const offenVorab = Number(git(['rev-list', '--count', `origin/${TARGET_BRANCH}..HEAD`]));
+if (!schmutz && offenVorab === 0) {
+  console.log('turn:finish: keine Aenderungen zu committen');
+  process.exit(0);
+}
+// Die Version gehoert in den Commit, nicht in einen Nachlauf: so bleibt main nach dem Push stehen.
+// Ein zweiter Lauf nach rotem Gate darf nicht erneut bumpen, sonst springt die Version pro Versuch.
+if (schmutz) {
+  let headVersion = '';
+  try {
+    headVersion = JSON.parse(git(['show', 'HEAD:package.json'])).version ?? '';
+  } catch {
+    // Ohne package.json im HEAD wird gebumpt.
+  }
+  const treeVersion = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8')).version;
+  console.log(treeVersion === headVersion
+    ? `turn:finish: Version ${bumpPatch()} gebumpt`
+    : `turn:finish: Version ${treeVersion} bereits gebumpt (HEAD ${headVersion})`);
+}
+
 const verify = npmRun(['run', VERIFY_SCRIPT]);
 if (verify.status !== 0) {
   fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
   process.exit(1);
 }
-if (paths.length > 0) git(['add', '--', ...paths]);
-else git(['add', '-A']);
+stage();
 const staged = git(['diff', '--cached', '--name-only']);
 // Ein früherer Lauf kann einen Commit erzeugt haben, der den Push nicht mehr geschafft hat.
 // Ohne diesen Zweig würde der nächste Lauf "keine Aenderungen" melden und den Commit
@@ -78,15 +106,26 @@ if (gate.status !== 0) {
   process.exit(1);
 }
 
+// Zwei Commits mit demselben Titel sind fast immer eine liegengebliebene Notes-Datei.
+const titel = (readFileSync(messageFile, 'utf8').split('\n', 1)[0] ?? '').trim();
+if (titel && titel === git(['log', '-1', '--pretty=%s'])) {
+  fail(1, 'ERR-4006', 'turn:finish', `Titel "${titel}" ist identisch mit HEAD; neue .turn-notes.md schreiben`);
+  process.exit(1);
+}
+
 git(['commit', '-F', messageFile]);
+// Verbraucht: sonst traegt die naechste Runde denselben Text wieder ein.
+if (existsSync(notesPath)) {
+  rmSync(notesPath, { force: true });
+  console.log('turn:finish: .turn-notes.md verbraucht');
+}
 console.log(`turn:finish: Commit ${git(['rev-parse', '--short', 'HEAD'])} erstellt`);
 
 /**
  * Remote-Rueckstand zaehlen, oder null wenn der Remote nicht erreichbar ist.
  *
- * Der CI-Versionssprung (`chore(release): … [skip ci]`) laeuft nach jedem Push auf main und
- * zieht den Remote weiter, waehrend hier gearbeitet wird. Ohne dieses Nachziehen lehnt git den
- * Push mit "remote contains work that you do not have locally" ab.
+ * Seit die Version im Turn gebumpt wird, bewegt der Release-Workflow `main` nicht mehr.
+ * Das Nachziehen bleibt als Netz fuer den Fall, dass jemand anders auf main pusht.
  */
 const rueckstand = () => {
   if (gitRun(['fetch', 'origin']).status !== 0) return null;
@@ -129,8 +168,7 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
       fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal`);
       process.exit(1);
     }
-    if (paths.length > 0) git(['add', '--', ...paths]);
-    else git(['add', '-A']);
+    stage();
     if (git(['diff', '--cached', '--name-only'])) {
       git(['commit', '--amend', '--no-edit']);
       console.log(`turn:finish: nach dem Nachziehen amendiert: ${git(['rev-parse', '--short', 'HEAD'])}`);
