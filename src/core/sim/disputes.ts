@@ -53,14 +53,24 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
   }
 }
 
+interface DisputeLike { readonly x: number; readonly y: number }
+
+/**
+ * Greift hier wirklich ein Guard ein? Die Simulation beendet einen Streit nur
+ * dann, und die UI darf die Spieleroption nur dann ausblenden.
+ */
+export function guardResponding(world: WorldState, dispute: DisputeLike): boolean {
+  return world.agents.some((agent) =>
+    agent.role === 'guard' && dist(agent.x, agent.y, dispute.x, dispute.y) <= GUARD_RANGE);
+}
+
 /** Eskalation beschädigt Geräte; ein Guard in der Nähe beendet den Disput sofort. */
+/** Die UI darf die Spieleroption nur ausblenden, wenn der Guard wirklich eingreift. */
 export function tickDisputes(world: WorldState): void {
   for (const dispute of [...world.disputes]) {
     dispute.ticks += 1;
     dispute.level = dispute.ticks > 6 ? 2 : 1;
-    const guardNear = world.agents.some((agent) =>
-      agent.role === 'guard' && dist(agent.x, agent.y, dispute.x, dispute.y) <= GUARD_RANGE);
-    if (guardNear) { resolveDispute(world, dispute.id, true); continue; }
+    if (guardResponding(world, dispute)) { resolveDispute(world, dispute.id, true); continue; }
     dispute.guestIds = dispute.guestIds.filter((id) => {
       const guest = guestById(world, id);
       return guest !== null && guest.state === 'ANGRY';

@@ -8,6 +8,7 @@ import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose }
 import { guestAccount, pendingAccount } from './money';
 import { reputation } from './spawn';
 import { CASHIER_WAIT, tickAgents } from './staff';
+import { playerStepsPerTick } from './player-rpg';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
 import type { Guest, WorldState } from './types';
@@ -114,7 +115,9 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   staffTick(world, ledger);
   // Nach dem Tageswechsel: Veranstaltungen duerfen die Tagesmeldung ueberschreiben.
   tickDemand(world, ledger, prng);
-  if (world.player.pathIndex < world.player.path.length) {
+  // Speed-Stufen laufen mehr als einen Pfadschritt pro Tick.
+  const steps = playerStepsPerTick(world.player.rpg);
+  for (let step = 0; step < steps && world.player.pathIndex < world.player.path.length; step += 1) {
     world.player.position = { ...world.player.path[world.player.pathIndex]! };
     world.player.pathIndex += 1;
   }

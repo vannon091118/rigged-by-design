@@ -80,8 +80,11 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
               BESCHWATZEN · {view.talkChances[guest.id] ?? 0} % Erfolg
             </button>
             {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)} title="Beendet den Streit friedlich.">SCHLICHTEN</button>}
-            {guest.disputeId !== null && !view.staff.guard && (
-              <button type="button" className="btn small alert" onClick={() => onFight(guest.disputeId!)} title="Risiko: Bei einem Fehlschlag sinkt dein Ruf und du verletzt dich.">SELBER KÄMPFEN · {view.brawlChance} %</button>
+            {guest.disputeId !== null && !view.disputeGuard[guest.disputeId] && (
+              <button type="button" className="btn small alert" onClick={() => onFight(guest.disputeId!)} title="Risiko: Bei einem Fehlschlag drohen Rufschaden, ein Stimmungsschock bei allen Gästen oder ein Raub aus der Kasse.">SELBER KÄMPFEN · {view.brawlChance} %</button>
+            )}
+            {guest.disputeId !== null && view.disputeGuard[guest.disputeId] && (
+              <span className="hint">Ein Guard ist in Reichweite und beendet den Streit.</span>
             )}
           </div>
           <div className="guest-chips">

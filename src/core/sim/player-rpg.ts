@@ -12,6 +12,9 @@ export interface PlayerRpgState {
 }
 
 const XP_PER_LEVEL = 100;
+/** Ab diesen Stufen laeuft der Spieler einen Pfadschritt mehr pro Tick. */
+const SPEED_STEP_EVERY = 3;
+const MAX_PLAYER_STEPS = 3;
 
 export function newPlayerRpg(): PlayerRpgState {
   return { level: 1, xp: 0, unspentPoints: 0, speedLevel: 0, charismaLevel: 0, brawlLevel: 0 };
@@ -41,4 +44,12 @@ export function spendPoint(rpg: PlayerRpgState, attribute: RpgAttribute): boolea
   else if (attribute === 'charisma') rpg.charismaLevel += 1;
   else rpg.brawlLevel += 1;
   return true;
+}
+
+/**
+ * Pfadschritte, die der Spieler pro Tick laeuft. Speed ist damit eine echte
+ * Bewegungsgroesse und nicht nur ein gespeicherter Attributwert.
+ */
+export function playerStepsPerTick(rpg: PlayerRpgState): number {
+  return Math.min(MAX_PLAYER_STEPS, 1 + Math.floor(Math.max(0, rpg.speedLevel) / SPEED_STEP_EVERY));
 }

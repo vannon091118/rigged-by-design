@@ -28,6 +28,8 @@ export interface GameView {
   readonly disputes: readonly Dispute[];
   readonly talkChances: Readonly<Record<number, number>>;
   readonly brawlChance: number;
+  /** Je Disput: greift ein Guard gerade wirklich ein (in Reichweite)? */
+  readonly disputeGuard: Readonly<Record<number, boolean>>;
   readonly activePenalties: readonly ActivePenalty[];
   readonly journal: readonly JournalEvent[];
   readonly look: PlayerLook;

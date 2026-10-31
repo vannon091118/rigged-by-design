@@ -4,6 +4,7 @@ import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
 import { brawlWinChance } from '../core/sim/brawl-combat';
 import { demandBreakdown } from '../core/sim/demand';
+import { guardResponding } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
 import type { WorldState } from '../core/sim/types';
@@ -65,6 +66,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
   return {
     ...worldSnapshot(world),
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),
+    // Nur ein Guard in Reichweite beendet den Streit; die UI folgt derselben Aussage.
+    disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardResponding(world, dispute)])),
     brawlChance: brawlWinChance(world),
     house: ledger.getBalance(HAUSKONTO),
     wallet: ledger.getBalance(PORTEMONNAIE),

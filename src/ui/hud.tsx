@@ -112,7 +112,7 @@ export function Hud({
         <small>XP {rpg.xp}/{rpg.level * 100}</small>
         {rpg.unspentPoints > 0 && (
           <>
-            <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Schneller laufen">SPEED {rpg.speedLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Schneller laufen: ab Stufe 3 zwei Pfadschritte pro Tick, ab Stufe 6 drei.">SPEED {rpg.speedLevel}</button>
             <button type="button" className="btn warm" onClick={() => onSkill('charisma')} title="Bessere Chance beim Beschwatzen">CHARISMA {rpg.charismaLevel}</button>
             <button type="button" className="btn warm" onClick={() => onSkill('brawl')} title="Bessere Chance im Handgemenge">KAMPF {rpg.brawlLevel}</button>
           </>
