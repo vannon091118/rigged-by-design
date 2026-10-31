@@ -7,35 +7,77 @@ import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './pro
 
 const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
 const running = new Set();
+const DEFAULT_GATE_TIMEOUT_MS = 15 * 60_000;
 
 /** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
 export function executeStep(step) {
   const started = Date.now();
   const command = step.command === 'npm' ? 'npm' : process.execPath;
   const args = step.command === 'npm' ? ['run', step.script] : [step.script, ...(step.args ?? [])];
+  const timeoutMs = Number.isFinite(step.timeoutMs) && step.timeoutMs > 0 ? step.timeoutMs : DEFAULT_GATE_TIMEOUT_MS;
   return new Promise((done) => {
-    const child = spawn(command, args, {
-      cwd: ROOT,
-      shell: command === 'npm' && process.platform === 'win32',
-      // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze npm->vitest-Kette trifft.
-      detached: process.platform !== 'win32',
-      // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
-      env: { ...process.env, ...(step.env ?? {}) },
-    });
-    let output = '';
-    if (child.pid) {
-      running.add(child.pid);
-      trackPid(step.name, child.pid);
+    let child;
+    try {
+      child = spawn(command, args, {
+        cwd: ROOT,
+        shell: command === 'npm' && process.platform === 'win32',
+        // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze npm->vitest-Kette trifft.
+        detached: process.platform !== 'win32',
+        // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
+        env: { ...process.env, ...(step.env ?? {}) },
+      });
+    } catch (error) {
+      done({ status: null, output: String(error), ms: Date.now() - started, timedOut: false, timeoutMs });
+      return;
     }
-    child.stdout.on('data', (chunk) => { output += chunk; });
-    child.stderr.on('data', (chunk) => { output += chunk; });
-    child.on('close', (status) => {
+    let output = '';
+    let timedOut = false;
+    let settled = false;
+    let timer;
+    let forceTimer;
+    const finish = (status) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      clearTimeout(forceTimer);
       if (child.pid) {
         running.delete(child.pid);
         untrackPid(child.pid);
       }
-      done({ status, output, ms: Date.now() - started });
-    });
+      done({
+        status: timedOut ? 124 : status,
+        output,
+        ms: Date.now() - started,
+        timedOut,
+        timeoutMs,
+      });
+    };
+    // Das Limit wird direkt nach dem Spawn gesetzt; die Registry-Pflege folgt
+    // danach und darf den Timer nicht erst verzoegert aufziehen.
+    timer = setTimeout(() => {
+      timedOut = true;
+      if (child.pid) killTree(child.pid);
+      // Falls taskkill oder ein Prozess die Schliessung verzoegert, bleibt die
+      // Pipeline nicht am Gate haengen. Zweiter Kill fuer den Prozessbaum.
+      forceTimer = setTimeout(() => {
+        if (child.pid) killTree(child.pid);
+        finish(null);
+      }, 5_000);
+    }, timeoutMs);
+    if (child.pid) {
+      running.add(child.pid);
+      // Eine nicht schreibbare Registry darf das Gate nicht zum Absturz bringen;
+      // der Abbruchpfad findet den Prozess dann nur ueber die laufende Menge.
+      try {
+        trackPid(step.name, child.pid);
+      } catch {
+        // Registry ist Komfort, nicht die Pruefung selbst.
+      }
+    }
+    child.stdout.on('data', (chunk) => { output += chunk; });
+    child.stderr.on('data', (chunk) => { output += chunk; });
+    child.on('close', (status) => finish(status));
+    child.on('error', () => finish(null));
   });
 }
 
@@ -71,6 +113,14 @@ export async function runGates(steps) {
       if (result.output.trim()) {
         const tail = result.output.endsWith('\n') ? '' : '\n';
         process.stdout.write(`=== Gate: ${step.name} (${(result.ms / 1000).toFixed(1)}s) ===\n${result.output}${tail}`);
+      }
+      if (result.timedOut) {
+        dropCached(step.name);
+        failed.push(step.name);
+        index += 1;
+        const limit = result.timeoutMs >= 1000 ? `${(result.timeoutMs / 1000).toFixed(0)}s` : `${result.timeoutMs}ms`;
+        console.error(line(index, 'ERR-4014', `pipeline/${step.name}`, `Gate nach ${limit} hart beendet`));
+        continue;
       }
       if (result.status !== 0) {
         dropCached(step.name);

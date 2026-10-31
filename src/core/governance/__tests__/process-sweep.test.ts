@@ -10,7 +10,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { isAlive, killTracked, killTree, releaseOwner, sweepOrphans, trackPid } from '../../../../scripts/lib/process-sweep.mjs';
+import { isAlive, killTracked, killTree, processIdentity, releaseOwner, sweepOrphans, trackPid } from '../../../../scripts/lib/process-sweep.mjs';
 import { createStop, EXIT_ABORTED } from '../../../../scripts/lib/pipeline-stop.mjs';
 
 const stateDir = mkdtempSync(join(tmpdir(), 'rbd-sweep-'));
@@ -35,6 +35,15 @@ async function isDead(pid: number): Promise<boolean> {
     await wait(25);
   }
   return !isAlive(pid);
+}
+
+async function identityOf(pid: number): Promise<string | null> {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const start = processIdentity(pid);
+    if (start) return start;
+    await wait(25);
+  }
+  return null;
 }
 
 afterAll(() => {
@@ -63,11 +72,49 @@ describe('Abbruchpfad', () => {
 
   it('sweepOrphans raeumt Waisen mit totem Besitzer ab', async () => {
     const { pid } = sleeper();
-    writeFileSync(statePath, JSON.stringify({ owner: 999_999_999, pids: [{ gate: 'tests', pid, at: 0 }] }));
+    const start = await identityOf(pid);
+    expect(start).not.toBeNull();
+    writeFileSync(statePath, JSON.stringify({ owner: 999_999_999, pids: [{ gate: 'tests', pid, at: 0, start }] }));
     const killed = sweepOrphans();
     expect(killed.map((entry) => entry.gate)).toEqual(['tests']);
     expect(await isDead(pid)).toBe(true);
     expect(JSON.parse(readFileSync(statePath, 'utf8')).owner).toBe(process.pid);
+  });
+
+  it('erkennt eine wiederverwendete Besitzer-PID an der Startzeit', async () => {
+    const owner = sleeper();
+    const victim = sleeper();
+    try {
+      const ownerStart = await identityOf(owner.pid);
+      const victimStart = await identityOf(victim.pid);
+      expect(ownerStart).not.toBeNull();
+      expect(victimStart).not.toBeNull();
+      writeFileSync(statePath, JSON.stringify({
+        owner: owner.pid,
+        ownerStart: `${ownerStart}:fremde-startzeit`,
+        pids: [{ gate: 'tests', pid: victim.pid, at: 0, start: victimStart }],
+      }));
+      const killed = sweepOrphans();
+      expect(killed.map((entry) => entry.gate)).toEqual(['tests']);
+      expect(await isDead(victim.pid)).toBe(true);
+    } finally {
+      killTree(owner.pid);
+      killTree(victim.pid);
+    }
+  });
+
+  it('beendet keinen Prozess, dessen PID inzwischen eine andere Startzeit hat', async () => {
+    const { pid } = sleeper();
+    try {
+      const start = await identityOf(pid);
+      expect(start).not.toBeNull();
+      writeFileSync(statePath, JSON.stringify({ owner: 999_999_999, pids: [{ gate: 'tests', pid, at: 0, start: 'wiederverwendete-pid' }] }));
+      const killed = sweepOrphans();
+      expect(killed).toEqual([]);
+      expect(isAlive(pid)).toBe(true);
+    } finally {
+      killTree(pid);
+    }
   });
 
   it('beendet bei SIGINT alles, raeumt die Registry und meldet 130', async () => {

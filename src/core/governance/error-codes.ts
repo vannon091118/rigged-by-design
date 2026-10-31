@@ -126,6 +126,12 @@ export const ERROR_CODES = {
     cause: 'Dependency-Matrix ist nicht synchron zu Code und package.json.',
     fix: 'sync:deps ausfuehren und Begruendungen pruefen.',
   },
+  GATE_TIMEOUT: {
+    code: 'ERR-4014',
+    area: 'governance',
+    cause: 'Ein Gate ueberschreitet sein hartes Zeitlimit und wird beendet.',
+    fix: 'Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben.',
+  },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(

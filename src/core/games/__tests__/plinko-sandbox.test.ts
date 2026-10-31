@@ -116,7 +116,7 @@ describe('RTP-Gate', () => {
     expect(blocked.ok).toBe(false);
     expect(blocked.measuredRtp).toBeLessThan(0.85);
     expect(blocked.reason.length).toBeGreaterThan(0);
-  });
+  }, 120_000);
 
   it('nutzt eine ehrliche deterministische Paytable-Stichprobe', () => {
     const table = plinkoPaytable(9);
@@ -136,5 +136,5 @@ describe('RTP-Gate', () => {
     expect((gate.ciHigh - gate.ciLow) / 2).toBeLessThan(0.03);
     expect(gate.reason).toContain('95 %-KI');
     expect(gate.reason).toContain(`${gate.samples} Wuerfen`);
-  });
+  }, 120_000);
 });

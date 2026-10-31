@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Turn-Abschluss: alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach main. */
+/** Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach main. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
@@ -23,8 +23,9 @@ if (!['quick', 'full'].includes(PROFILE)) {
   process.exit(1);
 }
 const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : 'verify:quick';
+const AFFECTED = args.includes('--affected');
 const paths = args.filter((value) => !value.startsWith('--'));
-console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})`);
+console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + test:affected' : ''}`);
 
 // Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
 const stage = () => {
@@ -38,6 +39,17 @@ const offenVorab = Number(git(['rev-list', '--count', `origin/${TARGET_BRANCH}..
 if (!schmutz && offenVorab === 0) {
   console.log('turn:finish: keine Aenderungen zu committen');
   process.exit(0);
+}
+// Entwicklungsstufe vor dem Versions-Bump: Ein Bump aendert package.json und
+// wuerde die Auswahl auf alle Tests ausweiten. Der volle Verify-Lauf folgt
+// trotzdem unveraendert; affected verkuerzt full/release nicht.
+if (AFFECTED) {
+  console.log('turn:finish: Entwicklungsstufe test:affected');
+  const affected = npmRun(['run', 'test:affected']);
+  if (affected.status !== 0) {
+    fail(1, 'ERR-4006', 'turn:finish', 'test:affected ist rot; kein Commit und kein Push');
+    process.exit(1);
+  }
 }
 // Die Version gehoert in den Commit, nicht in einen Nachlauf: so bleibt main nach dem Push stehen.
 // Ein zweiter Lauf nach rotem Gate darf nicht erneut bumpen, sonst springt die Version pro Versuch.

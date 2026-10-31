@@ -40,6 +40,12 @@ describe('Pipeline-Modi', () => {
     expect(quick).toContain('deps-matrix');
   });
 
+  it('gibt jedem Gate ein hartes Zeitlimit', () => {
+    for (const [key, gate] of Object.entries(GATES)) {
+      expect(gate.timeoutMs, `${key} hat kein Timeout`).toBeGreaterThan(0);
+    }
+  });
+
   it('erkennt den Fix-Modus nur am expliziten Schalter', () => {
     expect(isProfile('quick')).toBe(true);
     expect(isProfile('--fix')).toBe(false);
