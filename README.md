@@ -15,7 +15,7 @@ Willkommen in **Rigged by Design**, dem Casino-Simulator, in dem du nicht spiels
 
 Kein Echtgeld. Keine echten Casinos. Nur VaCoins, ein paar sehr entscheidungsfreudige Pixelmenschen und ein Haus, das jeden Tag ein bisschen mehr frisst.
 
-![Spielfeld mit Gästen, Räumen und HUD](docs/screenshots/v0.3.23/01-spielfeld-detail.png)
+![Spielfeld mit Gästen, Räumen und HUD](docs/screenshots/current/02-floor-detail-frisch.png)
 
 ## Die Idee (und warum sie ein Finanzamt braucht)
 
@@ -39,7 +39,7 @@ Fremde Casinos sind der Ort, an dem **du Gast bist**. Dort spielst du mit deinem
 6. **Personal einstellen.** Es putzt, zapft und schlichtet, während du woanders bist. Das nennt man Vertrauen. Oder Lohnfortzahlung.
 7. **Fremdes Casino besuchen.** Dort bist du endlich Gast – also der, der zahlt. Der Kreis schließt sich. Leider mit deinem Geld.
 
-![Bauen: Katalog mit Spielen, Deko und Preisen](docs/screenshots/v0.3.23/04-bauen.png)
+![Bauen: Katalog mit Spielen, Deko und Preisen](docs/screenshots/current/08-bauen-panel.png)
 
 ## Der Kreislauf des Geldes (es kreist selten zu dir zurück)
 
@@ -60,25 +60,28 @@ Jeder VaCoin ist eine Buchung. Das ist der langweiligste Satz in dieser Beschrei
 
 ## Die Spiele (alle fair, bis auf die, die es nicht sind)
 
-Sieben Spiele, sieben Charaktere – und ein Testspin, der nichts kostet, weil der Betreiber nicht gegen sein eigenes Haus spielt. Am eigenen Automaten siehst du also nur zu. In fremden Häusern wird mit richtigem Portemonnaie-Geld gespielt.
+Acht Spiele – und ein Testspin, der nichts kostet, weil der Betreiber nicht gegen sein eigenes Haus spielt. Am eigenen Automaten siehst du also nur zu. In fremden Häusern wird mit richtigem Portemonnaie-Geld gespielt.
 
-- **Slot:** Fünf Walzen, drei Reihen, zehn Linien, BOOK als Wild und Scatter, Freispiele und eine Risiko-Karte nach jedem Gewinn. Der einzige Automat, bei dem du die Walzen sehen kannst, ohne dass jemand „nur noch ein Spin“ sagt.
-- **Blackjack:** Ziehen, halten, verdoppeln. Der Dealer zieht bis 17. Du bis zur Einsicht.
-- **Video Poker:** Fünf Karten, neun Zeilen, halten oder tauschen. Endlich ein Spiel für Menschen mit Entscheidungsschwäche.
+- **Slot:** Drei bis fünf Walzen, drei Reihen, zehn Linien, BOOK als Wild und Scatter, zehn Freispiele und eine Risiko-Karte nach jedem Gewinn. Der einzige Automat, bei dem du die Walzen sehen kannst, ohne dass jemand „nur noch ein Spin“ sagt.
+- **Blackjack:** Eine Tisch-Engine mit Regeln: ziehen, halten, verdoppeln, splitten, Versicherung gegen ein Ass und aufgeben. Der Dealer zieht bis 17, auf weiche 17 nur wenn die Tischregel es erlaubt. Du bis zur Einsicht.
+- **Poker:** Eigenständiges Tischpoker gegen drei Gäste. Setzrunden auf Preflop, Flop, Turn und River, drei Erhöhungen je Straße, Fold, All-in und Abrechnung über den Pot. Du entscheidest an jedem Zug selbst. Die Hausregel kassiert fünf Prozent vom Pot.
+- **Video Poker:** Der separate Fünf-Karten-Automat: neun Zeilen, halten oder tauschen, eigene Paytable. Nicht mit dem Tischpoker zu verwechseln – hier spielst du gegen die Auszahlungstabelle, nicht gegen Gäste.
 - **Roulette:** 37 Taschen, jeder Jeton eine echte Wette. Die Kugel lügt nicht. Der Rest schon.
 - **Plinko:** Ein Ball, viele Stifte, echte Physik. Das ist kein Glück, das ist Schwerkraft mit Selbstbewusstsein.
 - **Würfel:** Zwei faire Würfel, fünf Felder. Fair. Das ist der Running Gag dieses Casinos.
 - **Hütchenspiel:** Drei Becher, eine Perle. Du wählst, der Geber mischt, die Perle entscheidet. Wie im echten Leben, nur mit weniger Steuern.
 
-![Blackjack mit offener Dealer-Karte und drei Aktionen](docs/screenshots/v0.3.23/06d-fremdes-casino-blackjack.png)
+![Blackjack am Samt: Dealer, Shoe und der eigene Platz](docs/screenshots/current/11-blackjack-buehne.png)
 
-![Roulette mit Kessel, Setzfeld und platzierten Jetons](docs/screenshots/v0.3.23/06f-fremdes-casino-roulette.png)
+![Poker mit Board und eigenen Karten](docs/screenshots/current/12-poker-buehne.png)
 
-![Plinko-Brett mit gefallenem Ball und Fachquoten](docs/screenshots/v0.3.23/06g-fremdes-casino-plinko.png)
+![Roulette mit Kessel, Setzfeld und platzierten Jetons](docs/screenshots/current/14-roulette-buehne.png)
+
+![Plinko-Brett mit Bahn und Fachquoten](docs/screenshots/current/15-plinko-buehne.png)
 
 ## Gäste (keine Statisten, leider)
 
-![Gäste-Fenster mit Laune, Geduld und Sucht](docs/screenshots/v0.3.23/05-gaeste.png)
+![Gäste-Fenster mit Laune, Geduld und Sucht](docs/screenshots/current/07-gaeste-panel.png)
 
 Laune unter 40: gereizt. Geduld auf 0: der Gast geht. Sucht hoch: bleibt länger, verliert mehr. Und wenn die Bar leer ist, sinkt die Laune, als hätte jemand das Konzept „Gastfreundschaft“ gestrichen.
 
@@ -105,7 +108,7 @@ Der Name ist Programm: Das Haus ist manipuliert, die Gäste sind simuliert, und 
 
 - **Kein Echtgeld, keine Einzahlung, kein Gewinn.** VaCoins sind fiktiv. Deine Entscheidungen sind es nicht.
 - **Kein Multiplayer, keine Accounts.** Dein Fortschritt bleibt auf deinem Gerät. Wie deine Motivation, wenn die Bar zum dritten Mal leer ist.
-- **Keine vollständigen Tisch-Engines.** Kein Split, keine Versicherung, keine Side Pots. Wir sind ein Aufbauspiel, kein Turnier. Das nennen wir „fokussiert“.
+- **Keine Side Pots.** Am Pokertisch gibt es einen Pot; ein All-in deckelt den Einsatz, aber teilt den Pot nicht in Nebenpötze. Wir sind ein Aufbauspiel, kein Turnier. Das nennen wir „fokussiert“.
 - **Keine moralische Erlösung.** Der Hausvorteil bleibt. Auch für dich.
 
 ## Ernst gemeint (der einzige Abschnitt ohne Pointe)

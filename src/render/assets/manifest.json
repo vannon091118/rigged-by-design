@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "base": "/assets/casino/",
+  "slotSymbols": {
+    "BOOK": "symbols/book.png",
+    "SCARAB": "symbols/scarab.png",
+    "ANKH": "symbols/ankh.png",
+    "EYE": "symbols/eye-of-horus.png",
+    "URN": "symbols/urn.png",
+    "A": "symbols/rank-a.png",
+    "K": "symbols/rank-k.png",
+    "Q": "symbols/rank-q.png",
+    "J": "symbols/rank-j.png"
+  },
+  "music": {
+    "floor": "music/floor.ogg",
+    "games": "music/games.ogg",
+    "slot": "music/slot.ogg"
+  }
+}

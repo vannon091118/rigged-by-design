@@ -15,6 +15,7 @@ interface Props {
   readonly onGuest: (id: number) => void;
   readonly onFurniture: (id: number) => void;
   readonly onEmpty: (x: number, y: number) => void;
+  readonly paused?: boolean;
 }
 
 export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(props, ref) {
@@ -52,6 +53,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
         onEmpty: (x, y) => latest.current.onEmpty(x, y),
       });
       floor.current.setPlacing(latest.current.placing);
+      floor.current.setRunning(!latest.current.paused);
     });
 
     const observer = new ResizeObserver(() => {
@@ -78,6 +80,10 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
   useEffect(() => {
     floor.current?.setPlacing(props.placing);
   }, [props.placing]);
+
+  useEffect(() => {
+    floor.current?.setRunning(!props.paused);
+  }, [props.paused]);
 
   return <div className="floor-stage" ref={host} aria-label="Casino-Floor" />;
 });

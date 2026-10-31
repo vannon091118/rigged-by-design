@@ -47,6 +47,16 @@ describe('PRNG ueber Speichern und Laden', () => {
     expect([live.nextInt(0, 100), live.nextInt(0, 100), live.nextInt(0, 100)]).toEqual(expected);
   });
 
+  it('meldet false, wenn der Browser das Speichern verweigert', () => {
+    const storage = globalThis as unknown as { localStorage: Storage };
+    storage.localStorage = {
+      ...storage.localStorage,
+      setItem: () => { throw new Error('QuotaExceededError'); },
+    } as Storage;
+    const world = createWorld('SMALL');
+    expect(saveWorld(world, new Ledger(), randomSeed())).toBe(false);
+  });
+
   it('zieht beim Replay selbst nichts aus dem Zufall', () => {
     const prng = new Prng(randomSeed());
     const world = createWorld('SMALL');

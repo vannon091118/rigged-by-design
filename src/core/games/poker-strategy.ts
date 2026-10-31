@@ -22,6 +22,8 @@ function preflop(hole: readonly Card[]): number {
 
 /** 0..1: wie gut stehen die eigenen Karten gerade da. */
 export function strengthOf(hole: readonly Card[], board: readonly Card[]): number {
+  // Ohne zwei Karten gibt es keine Staerke: der Tisch vor dem Austeilen fragt trotzdem.
+  if (hole.length < 2) return 0;
   if (board.length === 0) return preflop(hole);
   const rank = bestHand([...hole, ...board]);
   const base = CAT_STRENGTH[rank.cat] ?? 0.1;

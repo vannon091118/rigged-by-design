@@ -6,8 +6,8 @@ import { strengthOf, type PokerAction } from '../../core/games/poker-strategy';
 import { humanAct, startHand, toCall } from '../../core/games/poker-table';
 import type { PokerTable } from '../../core/games/poker-types';
 import { Prng } from '../../core/rng/prng';
-import type { Card } from '../../core/rng/shoe';
 import { playSfx } from '../../render/sound-fx';
+import { PokerStage, type PokerStageHandle } from '../../render/games/poker-stage';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
 
@@ -31,11 +31,10 @@ const STREET_LABEL: Readonly<Record<PokerTable['street'], string>> = {
   PREFLOP: 'Vor dem Flop', FLOP: 'Flop', TURN: 'Turn', RIVER: 'River', SHOWDOWN: 'Showdown',
 };
 
-const cardLabel = (card: Card): string => `${card.rank}${card.suit}`;
-
 export function PokerPopup(props: Props) {
   const { bets } = props;
   const rng = useRef<Prng | null>(null);
+  const stage = useRef<PokerStageHandle>(null);
   const [bet, setBet] = useState(bets[0] ?? 1);
   const [table, setTable] = useState<PokerTable | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
@@ -49,6 +48,7 @@ export function PokerPopup(props: Props) {
 
   const commit = (next: PokerTable): void => {
     setTable(next);
+    stage.current?.render(next);
     playSfx('cardFlip');
     if (next.result) setResult(props.onSettle(bet, next.result.multiplierBps, next.result.label));
   };
@@ -95,32 +95,7 @@ export function PokerPopup(props: Props) {
         <p>{props.subtitle}</p>
       </div>
 
-      <div className="card-stage-live" aria-label="Poker-Tisch">
-        <div className="bet-row" aria-label="Gäste">
-          {table?.players.slice(1).map((player) => (
-            <span key={player.id} className={`chip${player.folded ? '' : ' active'}`}>
-              {player.id} · {player.folded ? 'raus' : `${Math.round(player.committed / 10_000)} VC`}
-            </span>
-          ))}
-          {table && !table.result && table.players.slice(1).map((player) => (
-            <span key={`${player.id}-hole`} className="chip">{player.folded ? '··' : '▮▮'}</span>
-          ))}
-        </div>
-        <div className="bet-row" aria-label="Gemeinsame Karten">
-          {(table?.board ?? []).map((card, index) => (
-            <span key={`${cardLabel(card)}-${index}`} className="chip">{cardLabel(card)}</span>
-          ))}
-          {table && table.board.length === 0 && <span className="chip">Board folgt</span>}
-        </div>
-        <div className="bet-row" aria-label="Deine Karten">
-          {human?.hole.map((card, index) => (
-            <span key={`${cardLabel(card)}-${index}`} className="chip active">{cardLabel(card)}</span>
-          ))}
-          {table?.result && table.players.slice(1).map((player) => (
-            <span key={`${player.id}-show`} className="chip">{player.folded ? 'raus' : player.hole.map(cardLabel).join(' ')}</span>
-          ))}
-        </div>
-      </div>
+      <PokerStage ref={stage} label={`Poker-Tisch ${props.title}`} />
       <p className="slot-narration" aria-live="polite">{narration()}</p>
 
       <div className="table-actions">

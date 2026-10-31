@@ -1,9 +1,10 @@
-/** Lautstaerke und Kanaele: Master plus Spiele, Kampf und Bedienung getrennt. */
+/** Lautstaerke, Kanaele und Musik: Master plus Spiele, Kampf, Bedienung getrennt. */
 import { useState } from 'react';
 import {
   SOUND_CHANNELS, isMuted, setChannelVolume, setMasterVolume, setMuted, soundSettings,
   type SoundChannel,
 } from '../render/sound-fx';
+import { musicVolume, setMusicVolume } from '../render/music';
 import { PopupShell } from './popup-shell';
 
 interface Props {
@@ -35,6 +36,15 @@ export function SoundPopup({ onClose }: Props) {
           onChange={(event) => { setMasterVolume(Number(event.target.value) / 100); refresh(); }}
         />
         <b>{percent(settings.master)}</b>
+      </label>
+      <label className="sound-row">
+        <span>Musik</span>
+        <input
+          type="range" min="0" max="100" step="1"
+          value={Math.round(musicVolume() * 100)}
+          onChange={(event) => { setMusicVolume(Number(event.target.value) / 100); refresh(); }}
+        />
+        <b>{percent(musicVolume())}</b>
       </label>
       {SOUND_CHANNELS.map((channel) => (
         <label key={channel.id} className="sound-row">

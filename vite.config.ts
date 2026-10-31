@@ -12,7 +12,9 @@ const quickExclude = ['**/round-rtp-*.test.ts', '**/soak.test.ts', '**/slot-sess
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0',
+    // Standard: nur loopback. 0.0.0.0 nur bewusst per RBD_DEV_HOST (z. B. Cloud-Preview);
+    // `vite preview` erbt diesen Wert, weil kein eigener preview.host gesetzt ist.
+    host: process.env.RBD_DEV_HOST || 'localhost',
     port: 3000,
   },
   test: {
