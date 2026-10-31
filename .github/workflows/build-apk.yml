@@ -87,6 +87,12 @@ jobs:
         if: ${{ !inputs.skip_verify }}
         run: npm run verify:release
 
+      # verify:release liefert den Production-Build mit. Auf dem skip_verify-Pfad
+      # fehlt er, deshalb wird er hier separat erzeugt.
+      - name: Production-Build (nur ohne vorgelagertes Verify)
+        if: ${{ inputs.skip_verify }}
+        run: npm run build
+
       - name: Gradle assembleDebug (signierbare Debug-APK)
         run: npm run android:apk
 

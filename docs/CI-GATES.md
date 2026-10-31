@@ -93,7 +93,7 @@ CI Verify (verify:all) -> Auto Version & Release (Tag) -> workflow_call build-ap
 ```
 
 - `auto-version-release.yml` reagiert nur auf einen erfolgreichen `CI Verify`-Lauf mit `event == push` auf `main`; ein roter oder abgebrochener Verify-Lauf erreicht den Tag nicht.
-- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran. Mit `skip_verify: true` laeuft keine zweite `verify:release`-Suite, weil der Aufrufer den Commit bereits geprueft hat. Ohne den Input gilt weiterhin das volle Gate.
+- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran. Mit `skip_verify: true` laeuft keine zweite `verify:release`-Suite, weil der Aufrufer den Commit bereits geprueft hat; der Production-Build fuer `dist/` wird dann separat ausgefuehrt. Ohne den Input gilt weiterhin das volle Gate.
 - Der zweite Trigger (`push: tags`) bleibt als Netz fuer manuell gepushte Tags und prueft weiterhin selbst.
 - Der Job `apk` haengt mit `needs: release` am Release; ein roter APK-Build macht den Gesamtlauf sichtbar rot.
 - Ein bereits existierender Tag oder Release erzeugt kein zweites Release (`ci-tag-release.mjs` prueft zuerst).

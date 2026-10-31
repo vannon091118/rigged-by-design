@@ -136,5 +136,7 @@ describe('Main-Gate', () => {
     expect(stepIndex(apk, 'apk', "grep -qx 'rigged-by-design-debug.apk'")).toBeGreaterThan(-1);
     const apkGate = stepWith(apk, 'apk', 'npm run verify:release');
     expect(apkGate?.if).toContain('inputs.skip_verify');
+    const apkBuild = stepWith(apk, 'apk', 'npm run build');
+    expect(apkBuild?.if).toContain('inputs.skip_verify');
   });
 });
