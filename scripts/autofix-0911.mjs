@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /** Automatische ERR-0911-Kandidaten: Lint-Fix, Dependency-Matrix, Commit-Sanitizing. */
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { autofixLine, ROOT } from './lib/report.mjs';
 
 let index = 0;
@@ -10,6 +10,25 @@ const log = (message) => {
   index += 1;
   console.log(autofixLine(index, 'autofix', message));
 };
+
+/** Nur der aktuelle Bildsatz bleibt: alte Versionsordner sind reiner PNG-Binaer-Ballast. */
+function pruneScreenshots() {
+  const root = resolve(ROOT, 'docs', 'screenshots');
+  if (existsSync(root)) {
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+      if (!entry.isDirectory() || !/^v\d+\./.test(entry.name)) continue;
+      rmSync(join(root, entry.name), { recursive: true, force: true });
+      log(`veralteter Screenshot-Ordner entfernt: docs/screenshots/${entry.name}`);
+    }
+  }
+  const stray = resolve(ROOT, 'screenshots');
+  if (existsSync(stray)) {
+    rmSync(stray, { recursive: true, force: true });
+    log('Wurzel-screenshots/ entfernt');
+  }
+}
+
+pruneScreenshots();
 
 const eslint = spawnSync(process.execPath, ['node_modules/eslint/bin/eslint.js', '.', '--fix'], {
   cwd: ROOT,

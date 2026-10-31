@@ -1,11 +1,12 @@
 /** Huetchen-Fenster: zeigen, mischen, dann waehlt der Spieler selbst einen Becher. */
 import { useRef, useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
-import type { ShellRound } from '../core/games/shell-round';
-import type { VaCoinMicro } from '../core/economy/vacoin';
-import { ShellStage, type ShellStageHandle } from '../render/games/shell-stage';
-import { CasinoWindowHeader } from './casino-window-header';
-import { vc } from './format';
+import type { GameResult } from '../../core/games/contracts';
+import type { ShellRound } from '../../core/games/shell-round';
+import type { VaCoinMicro } from '../../core/economy/vacoin';
+import { ShellStage, type ShellStageHandle } from '../../render/games/shell-stage';
+import { playSfx } from '../../render/sound-fx';
+import { CasinoWindowHeader } from '../casino-window-header';
+import { vc } from '../format';
 
 interface Props {
   readonly title: string;
@@ -40,6 +41,7 @@ export function ShellPopup(props: Props) {
     setRound(next);
     setResult(null);
     setPhase('SHUFFLE');
+    playSfx('cardFlip');
     stage.current?.begin(next.ballCup, next.moves, () => setPhase('PICK'));
   };
 
@@ -49,6 +51,7 @@ export function ShellPopup(props: Props) {
     if (!next) return;
     setResult(next);
     setPhase('REVEAL');
+    playSfx('cardFlip');
     stage.current?.reveal(slot, () => setPhase('IDLE'));
   };
 

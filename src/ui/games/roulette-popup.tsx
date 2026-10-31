@@ -1,12 +1,13 @@
 /** Roulette-Fenster: Kessel links, Setzfeld rechts, jeder Jeton ist eine echte Wette. */
 import { useRef, useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
-import { spotInfo, type RouletteChip } from '../core/games/roulette-table';
-import { fromVC, type VaCoinMicro } from '../core/economy/vacoin';
-import { RouletteStage, type RouletteStageHandle } from '../render/games/roulette-stage';
-import { vc } from './format';
-import { CasinoWindowHeader } from './casino-window-header';
-import { RouletteTableau } from './roulette-tableau';
+import type { GameResult } from '../../core/games/contracts';
+import { spotInfo, type RouletteChip } from '../../core/games/roulette-table';
+import { fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
+import { RouletteStage, type RouletteStageHandle } from '../../render/games/roulette-stage';
+import { playSfx } from '../../render/sound-fx';
+import { vc } from '../format';
+import { CasinoWindowHeader } from '../casino-window-header';
+import { RouletteTableau } from '../roulette-tableau';
 
 interface Props {
   readonly title: string;
@@ -56,6 +57,7 @@ export function RoulettePopup(props: Props) {
     setRunning(true);
     setChips({});
     const number = next.roulette?.number ?? 0;
+    playSfx('roulette');
     stage.current?.spin(number, () => setRunning(false));
   };
 

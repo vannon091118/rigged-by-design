@@ -24,6 +24,7 @@
     "verify:commit-msg": "node scripts/verify-commit-msg.mjs --head",
     "sync:deps": "node scripts/sync-dependency-matrix.mjs",
     "autofix:0911": "node scripts/autofix-0911.mjs",
+    "android:apk": "node scripts/prepare-android.mjs",
     "turn:finish": "node scripts/turn-push.mjs"
   },
   "dependencies": {
@@ -45,5 +46,8 @@
     "typescript-eslint": "^8.72.1",
     "vite": "^6.0.7",
     "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }

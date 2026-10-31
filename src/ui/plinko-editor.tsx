@@ -1,12 +1,12 @@
 /** Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { GameResult } from '../core/games/contracts';
 import type { GateResult } from '../core/games/plinko-sandbox';
 import {
   normalizePlinkoConfig, plinkoProgress, type PegKind, type PlinkoConfig, type PlinkoMode,
 } from '../core/games/plinko-config';
 import type { GameView } from '../store/types';
-import { PlinkoCanvas } from './plinko-canvas';
+import { PlinkoStage, type PlinkoStageHandle } from '../render/games/plinko-stage';
 
 interface Props {
   readonly view: GameView;
@@ -40,6 +40,7 @@ function widthsFor(count: number, center: number): number[] {
 }
 
 export function PlinkoEditor({ view, result, spinning, onSpin, onDeploy, onMode }: Props) {
+  const board = useRef<PlinkoStageHandle>(null);
   const [draft, setDraft] = useState<PlinkoConfig>(view.plinko);
   const [kind, setKind] = useState<PegKind>('BOUNCY_PEG');
   const [row, setRow] = useState(1);
@@ -47,6 +48,10 @@ export function PlinkoEditor({ view, result, spinning, onSpin, onDeploy, onMode 
   const [gate, setGate] = useState<GateResult | null>(null);
   const [error, setError] = useState('');
   useEffect(() => { setDraft(view.plinko); setGate(null); }, [view.plinko]);
+  // Der Editor zeigt dasselbe Pixi-Brett wie das Spiel, keinen zweiten Zeichenpfad.
+  useEffect(() => {
+    if (view.lastPlinko) board.current?.play(view.lastPlinko, () => {});
+  }, [view.lastPlinko]);
   const progress = plinkoProgress(view.totalPlinkoDrops, view.addictionScore, view.plinko);
   const sum = draft.pocketWidths.reduce((total, width) => total + width, 0);
   const specials = draft.pegs.filter((peg) => peg.kind !== 'NORMAL_PEG').length;
@@ -113,7 +118,7 @@ export function PlinkoEditor({ view, result, spinning, onSpin, onDeploy, onMode 
           ))}
         </div>
       </div>
-      <PlinkoCanvas config={view.plinko} rows={progress.rows} drop={view.lastPlinko} />
+      <PlinkoStage ref={board} config={view.plinko} rows={progress.rows} label="Plinko-Brett im Editor" />
       <div className="plinko-progress">
         <span>Reihe 8 ab 25 Würfen</span><span>Reihe 9 ab 75</span><span>Reihe 10 ab 200 + 3 Spezial-Pegs</span><span>Reihe 11 ab Sucht &gt; 40</span>
       </div>

@@ -7,6 +7,7 @@ import {
 import type { Card } from '../../core/rng/shoe';
 import { canAfford, fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
 import { VideoPokerStage, type VideoPokerStageHandle } from '../../render/games/video-poker-stage';
+import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
 
@@ -50,6 +51,7 @@ export function VideoPokerPopup(props: Props) {
     setHolds(NO_HOLDS);
     setResult(null);
     setPhase('HOLD');
+    playSfx('cardFlip');
     stage.current?.render(dealt, NO_HOLDS, null);
   };
 
@@ -58,6 +60,7 @@ export function VideoPokerPopup(props: Props) {
     const next = holdsRef.current.map((held, position) => (position === index ? !held : held));
     holdsRef.current = next;
     setHolds(next);
+    playSfx('cardFlip');
     stage.current?.render(hand, next, null);
   };
 
@@ -67,6 +70,7 @@ export function VideoPokerPopup(props: Props) {
     setHand(out.hand);
     setPhase('DONE');
     const evaluation = evaluateVideoPoker(out.hand);
+    playSfx('cardFlip');
     stage.current?.render(out.hand, holdsRef.current, evaluation.hand === 'NOTHING' ? null : evaluation.hand);
     setResult(props.onSettle(bet, out.bps, out.label));
   };

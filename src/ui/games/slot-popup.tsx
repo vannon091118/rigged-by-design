@@ -1,12 +1,13 @@
 /** Ein Slot-Fenster: Walzen, Wettkonsole und die Risiko-Karte nach jedem Gewinn. */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
-import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
-import type { VaCoinMicro } from '../core/economy/vacoin';
-import { SlotStage, type SlotStageHandle } from '../render/games/slot-stage';
-import { vc } from './format';
-import { BetConsole } from './bet-console';
-import { CasinoWindowHeader } from './casino-window-header';
+import type { GameResult } from '../../core/games/contracts';
+import type { RiskColor, RiskOutcome } from '../../core/games/risk-card';
+import type { VaCoinMicro } from '../../core/economy/vacoin';
+import { SlotStage, type SlotStageHandle } from '../../render/games/slot-stage';
+import { playSfx } from '../../render/sound-fx';
+import { vc } from '../format';
+import { BetConsole } from '../bet-console';
+import { CasinoWindowHeader } from '../casino-window-header';
 
 interface Props {
   readonly title: string;
@@ -49,6 +50,8 @@ export function SlotPopup(props: Props) {
       setResult(next);
       setSpinning(false);
       setSettled((value) => value + 1);
+      playSfx('reelStop');
+      if (next.payout > 0) playSfx('win');
     });
   }, [bet, blocked, onSpinFor, spinning]);
 
@@ -63,6 +66,7 @@ export function SlotPopup(props: Props) {
     const outcome = onGamble(color, stakeOf(result));
     if (!outcome) return;
     setRisk(outcome);
+    playSfx('cardFlip');
     stage.current?.gamble(outcome.card, outcome.won);
   };
 

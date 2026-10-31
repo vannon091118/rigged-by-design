@@ -10,7 +10,7 @@ import { vc } from './format';
 import { attractionBand } from './glossary';
 import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
-import { SlotPopup } from './slot-popup';
+import { SlotPopup } from './games/slot-popup';
 import { SlotTelemetry } from './slot-telemetry';
 
 interface Props {

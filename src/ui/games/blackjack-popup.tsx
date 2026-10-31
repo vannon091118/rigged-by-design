@@ -7,6 +7,7 @@ import {
 import type { CardShoe } from '../../core/rng/shoe';
 import { canAfford, fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
 import { BlackjackStage, type BlackjackStageHandle } from '../../render/games/blackjack-stage';
+import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
 
@@ -40,6 +41,7 @@ export function BlackjackPopup(props: Props) {
 
   const commit = (next: BlackjackRound): void => {
     setRound(next);
+    playSfx('cardFlip');
     stage.current?.render(next);
     if (next.phase === 'DONE') {
       setResult(props.onSettle(bet * next.units, next.multiplierBps, next.label));

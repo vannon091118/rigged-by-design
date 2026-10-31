@@ -1,12 +1,13 @@
 /** Plinko-Fenster: das Brett ist sofort da, jeder Abwurf zeigt die echte Physikbahn. */
 import { useRef, useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
-import type { PlinkoConfig } from '../core/games/plinko-config';
-import type { VaCoinMicro } from '../core/economy/vacoin';
-import { PlinkoStage, type PlinkoStageHandle } from '../render/games/plinko-stage';
-import { vc } from './format';
-import { BetConsole } from './bet-console';
-import { CasinoWindowHeader } from './casino-window-header';
+import type { GameResult } from '../../core/games/contracts';
+import type { PlinkoConfig } from '../../core/games/plinko-config';
+import type { VaCoinMicro } from '../../core/economy/vacoin';
+import { PlinkoStage, type PlinkoStageHandle } from '../../render/games/plinko-stage';
+import { playPinRun } from '../../render/sound-fx';
+import { vc } from '../format';
+import { BetConsole } from '../bet-console';
+import { CasinoWindowHeader } from '../casino-window-header';
 
 interface Props {
   readonly title: string;
@@ -39,7 +40,7 @@ export function PlinkoPopup(props: Props) {
     if (!next) return;
     setResult(next);
     setRunning(true);
-    if (next.drop) stage.current?.play(next.drop, () => setRunning(false));
+    if (next.drop) { playPinRun(6); stage.current?.play(next.drop, () => setRunning(false)); }
     else setRunning(false);
   };
 

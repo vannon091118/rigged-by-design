@@ -1,0 +1,70 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    name: Capacitor Debug-APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node 22 mit npm-Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12'
+          cache: npm
+
+      - name: Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: SDK-Plattform und Build-Tools
+        run: |
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Install (npm ci)
+        run: npm ci
+
+      - name: Fail-Closed-Gates
+        run: npm run verify:all
+
+      - name: Capacitor sync + Gradle assembleDebug
+        run: npm run android:apk
+
+      - name: APK als Artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: rigged-by-design-debug-apk
+          path: artifacts/rigged-by-design-debug.apk
+          if-no-files-found: error
+
+      - name: APK als Release-Asset (nur Tags)
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes "Automatisch gebaute Debug-APK."
+          gh release upload "$GITHUB_REF_NAME" artifacts/rigged-by-design-debug.apk --clobber

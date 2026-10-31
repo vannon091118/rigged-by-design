@@ -15,6 +15,7 @@ import { Hud } from './ui/hud';
 import { JournalPopup } from './ui/journal-popup';
 import { LookPopup } from './ui/look-popup';
 import { MachinePopup } from './ui/machine-popup';
+import { isMuted, playSfx, setMuted } from './render/sound-fx';
 
 type Popup =
   | { kind: 'guests'; guestId: number | null }
@@ -44,6 +45,7 @@ export default function App() {
   const [popup, setPopup] = useState<Popup>(null);
   const [buildOpen, setBuildOpen] = useState(false);
   const [placeError, setPlaceError] = useState('');
+  const [muted, setMutedState] = useState(isMuted);
   const stage = useRef<FloorHandle>(null);
 
   useEffect(() => {
@@ -51,6 +53,23 @@ export default function App() {
     const id = window.setTimeout(() => worldStore.dismiss(), 6500);
     return () => window.clearTimeout(id);
   }, [view.notice]);
+
+  // Kasse und Pruegelei sind Welt-Ereignisse: der Ton folgt dem Protokoll, nicht dem Klick.
+  const seenJournal = useRef(-1);
+  useEffect(() => {
+    const latest = view.journal[view.journal.length - 1];
+    if (!latest) return;
+    if (seenJournal.current < 0) { seenJournal.current = latest.id; return; }
+    const fresh = view.journal.filter((entry) => entry.id > seenJournal.current);
+    seenJournal.current = latest.id;
+    if (fresh.some((entry) => entry.kind === 'MONEY' && / (chips|fiat wechseln)$/.test(entry.subject))) playSfx('coin');
+  }, [view.journal]);
+
+  const disputes = useRef(view.disputes.length);
+  useEffect(() => {
+    if (view.disputes.length > disputes.current) playSfx('brawl');
+    disputes.current = view.disputes.length;
+  }, [view.disputes.length]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
@@ -117,6 +136,8 @@ export default function App() {
         onDiagnostics={() => { setBuildOpen(false); setPopup({ kind: 'diagnostics' }); }}
         onLook={() => { setBuildOpen(false); setPopup({ kind: 'look' }); }}
         onSkill={(attribute) => worldStore.spendSkill(attribute)}
+        muted={muted}
+        onToggleSound={() => { const next = !muted; setMuted(next); setMutedState(next); }}
         onHelp={() => { setBuildOpen(false); setPopup({ kind: 'help' }); }}
       />
 

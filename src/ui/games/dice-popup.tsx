@@ -1,12 +1,13 @@
 /** Wuerfel-Fenster: Wettfeld waehlen, Jetons setzen, Wurf zeigt die Augen des Kerns. */
 import { useRef, useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
-import { DICE_BETS, type DiceBetKind } from '../core/games/dice-bets';
-import type { VaCoinMicro } from '../core/economy/vacoin';
-import { DiceStage, type DiceStageHandle } from '../render/games/dice-stage';
-import { vc } from './format';
-import { BetConsole } from './bet-console';
-import { CasinoWindowHeader } from './casino-window-header';
+import type { GameResult } from '../../core/games/contracts';
+import { DICE_BETS, type DiceBetKind } from '../../core/games/dice-bets';
+import type { VaCoinMicro } from '../../core/economy/vacoin';
+import { DiceStage, type DiceStageHandle } from '../../render/games/dice-stage';
+import { playSfx } from '../../render/sound-fx';
+import { vc } from '../format';
+import { BetConsole } from '../bet-console';
+import { CasinoWindowHeader } from '../casino-window-header';
 
 interface Props {
   readonly title: string;
@@ -43,6 +44,7 @@ export function DicePopup(props: Props) {
     setResult(next);
     setRunning(true);
     const dice = next.dice ?? [1, 1];
+    playSfx('reelStop');
     stage.current?.roll(dice, next.multiplierBps > 0, () => setRunning(false));
   };
 

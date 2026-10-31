@@ -5,13 +5,13 @@ import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { GameId, ModId } from '../core/sim/types';
-import { DicePopup } from './dice-popup';
-import { PlinkoPopup } from './plinko-popup';
 import { BlackjackPopup } from './games/blackjack-popup';
-import { RoulettePopup } from './roulette-popup';
+import { DicePopup } from './games/dice-popup';
+import { PlinkoPopup } from './games/plinko-popup';
+import { RoulettePopup } from './games/roulette-popup';
+import { ShellPopup } from './games/shell-popup';
+import { SlotPopup } from './games/slot-popup';
 import { VideoPokerPopup } from './games/video-poker-popup';
-import { ShellPopup } from './shell-popup';
-import { SlotPopup } from './slot-popup';
 
 interface Props {
   readonly game: GameId;

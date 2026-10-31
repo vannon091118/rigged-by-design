@@ -23,6 +23,25 @@ function machine(): Furniture {
   };
 }
 
+function chargedMemory() {
+  return {
+    spinsToday: 0, spinsSinceLastJackpot: 0, averageJackpotInterval: 1000, currentDrift: -1000,
+    recentSymbolHistogram: {}, recentSpins: [], pressureLevel: 7, chargeReady: true, bank: 0,
+  };
+}
+
+/** Ein zufaelliger Start, dessen Spin kein Jackpot ist: nur der laesst die Ladung stehen. */
+function seedWithLoadedCharge(): number {
+  for (let attempt = 0; attempt < 500; attempt += 1) {
+    const seed = randomSeed();
+    const probe = machine();
+    probe.slotMemory = chargedMemory();
+    playSlotSession(probe, new Prng(seed), fromVC(0.5));
+    if (probe.slotMemory.chargeReady) return seed;
+  }
+  throw new Error('Kein ruhiger Seed ohne Jackpot gefunden.');
+}
+
 describe('Slot-Session', () => {
   it('zahlt ueber viele Spins weniger aus als eingenommen', { timeout: 120_000 }, () => {
     const prng = new Prng(randomSeed());
@@ -47,13 +66,10 @@ describe('Slot-Session', () => {
   });
 
   it('gibt eine Entladung nur aus einbehaltenem Polster', () => {
-    const prng = new Prng(randomSeed());
+    const prng = new Prng(seedWithLoadedCharge());
     const item = machine();
     const bet = fromVC(0.5);
-    const memory = item.slotMemory = {
-      spinsToday: 0, spinsSinceLastJackpot: 0, averageJackpotInterval: 1000, currentDrift: -1000,
-      recentSymbolHistogram: {}, recentSpins: [], pressureLevel: 7, chargeReady: true, bank: 0,
-    };
+    const memory = item.slotMemory = chargedMemory();
     const result = playSlotSession(item, prng, bet);
     expect(result.label.startsWith('ENTLADUNG')).toBe(false);
     expect(memory.chargeReady).toBe(true);

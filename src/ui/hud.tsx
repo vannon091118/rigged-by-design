@@ -15,6 +15,8 @@ interface HudProps {
   readonly onLook: () => void;
   readonly onSkill: (attribute: 'speed' | 'charisma' | 'brawl') => void;
   readonly onHelp: () => void;
+  readonly muted?: boolean;
+  readonly onToggleSound?: () => void;
 }
 
 const PENALTY_LABEL = (kind: string): string =>
@@ -24,6 +26,7 @@ const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 
 
 export function Hud({
   view, onBuild, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onSkill, onHelp,
+  muted = false, onToggleSound,
 }: HudProps) {
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
@@ -96,6 +99,11 @@ export function Hud({
         <button type="button" className="btn ghost" onClick={onJournal} title="Jede Buchung mit Ursache und Folge lesen">PROTOKOLL</button>
         <button type="button" className="btn ghost" onClick={onDiagnostics} title="Buchhaltung, Personal und Lager prüfen">PRÜFUNG</button>
         <button type="button" className="btn ghost" onClick={onLook} title="Aussehen deiner Spielfigur ändern">CHARAKTER</button>
+        {onToggleSound && (
+          <button type="button" className="btn ghost" aria-pressed={muted} onClick={onToggleSound} title={muted ? 'Effekte wieder einschalten' : 'Alle Spieleffekte stummschalten'}>
+            {muted ? 'STUMM' : 'SOUND'}
+          </button>
+        )}
         <button type="button" className="btn ghost help-btn" onClick={onHelp} aria-label="Hilfe: Spiel erklärt" title="Spiel erklärt: Geld, Gäste, Objekte, Steuerung">?</button>
       </div>
 
