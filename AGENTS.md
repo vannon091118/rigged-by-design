@@ -31,6 +31,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Delivery
 
 - After a turn: `npm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft `verify:all`, committet und pusht `main`. Pfade nur für einen bewusst verengten Commit: `npm run turn:finish -- <paths>`.
+- Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit; der Abschluss prüft alles.
 - If branch protection rejects direct push, push the working branch and open a focused PR to `main`.
 
 ## Conventions
