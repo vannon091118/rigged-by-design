@@ -32,7 +32,7 @@ interface Props {
 }
 
 const GAME_LABEL: Record<string, string> = {
-  SLOT: 'Slot', BLACKJACK: 'Blackjack', POKER: 'Poker', ROULETTE: 'Roulette',
+  SLOT: 'Slot', BLACKJACK: 'Blackjack', POKER: 'Poker', VIDEO_POKER: 'Video Poker', ROULETTE: 'Roulette',
   PLINKO: 'Plinko', SHELL: 'Hütchenspiel', DICE: 'Würfel',
 };
 

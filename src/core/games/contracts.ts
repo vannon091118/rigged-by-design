@@ -11,7 +11,7 @@ import { playRound } from './round';
 
 const DICE_KINDS = new Set<string>(DICE_BETS.map((bet) => bet.id));
 
-const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
+const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'VIDEO_POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 const MAX_ADJUST_BPS = 9_000;
 
 interface GameAction {

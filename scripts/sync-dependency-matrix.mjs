@@ -75,7 +75,7 @@ for (const pkg of Object.keys(packages)) cli(pkg);
 // Werkzeugpakete ohne Import: ihr Name steht im Build-Skript, das sie aufruft.
 // Die Matrix selbst rechtfertigt sich nicht – sie traegt nur die Begruendung.
 const buildScripts = new Map(candidates
-  .filter((file) => file.includes('/scripts/') && !file.endsWith('sync-dependency-matrix.mjs'))
+  .filter((file) => file.replaceAll('\\', '/').includes('/scripts/') && !file.endsWith('sync-dependency-matrix.mjs'))
   .map((file) => [file, readFileSync(file, 'utf8')]));
 for (const pkg of Object.keys(packages)) {
   if ((usage.get(pkg)?.size ?? 0) > 0) continue;

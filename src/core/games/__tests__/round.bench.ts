@@ -13,7 +13,7 @@ import { Prng } from '../../rng/prng';
 import type { GameId } from '../../sim/types';
 import { playRound } from '../round';
 
-const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
+const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'VIDEO_POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 const ROUNDS = 20_000;
 /** Plinko laeuft durch Physik und ist rund tausendmal teurer; 500 Drops reichen. */
 const PLINKO_ROUNDS = 500;

@@ -11,7 +11,7 @@ import { playAction } from '../contracts';
 import { randomSeed } from '../../../test/random-seed';
 import type { GameId } from '../../sim/types';
 
-const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
+const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'VIDEO_POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 const STAKE = fromVC(0.5);
 
 describe('Spiel-Vertrag', () => {

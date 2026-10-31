@@ -15,7 +15,7 @@ import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { playRound } from '../round';
 
-const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
+const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'VIDEO_POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
 
 describe('Spiele', () => {
   it('jedes Spiel liefert eine gueltige, deterministische Runde', () => {

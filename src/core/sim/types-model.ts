@@ -21,7 +21,7 @@ export interface DemandSnapshot {
 }
 
 type ZoneKind = 'ENTRANCE' | 'EXCHANGE' | 'GAMING' | 'BAR' | 'TOILET' | 'STORAGE' | 'LOUNGE' | 'EXPANSION';
-export type GameId = 'SLOT' | 'BLACKJACK' | 'POKER' | 'ROULETTE' | 'PLINKO' | 'SHELL' | 'DICE';
+export type GameId = 'SLOT' | 'BLACKJACK' | 'POKER' | 'VIDEO_POKER' | 'ROULETTE' | 'PLINKO' | 'SHELL' | 'DICE';
 type GuestState = 'ENTER' | 'EXCHANGE' | 'CHOOSE' | 'WAIT' | 'PLAY' | 'DRINK' | 'TOILET' | 'CASHOUT' | 'LEAVE' | 'ANGRY';
 type Need = 'play' | 'drink' | 'toilet' | 'social';
 export type PersonaId = 'LUMPEN' | 'STREET' | 'BUSINESS' | 'HIGH_ROLLER' | 'STAMMGAST';

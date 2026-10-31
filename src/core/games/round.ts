@@ -4,6 +4,7 @@ import type { Prng } from '../rng/prng';
 import { playBlackjack, playVideoPoker } from './engines/cards';
 import { playSlot, type SlotLineWin } from './engines/slot';
 import { playShell, rollDice, spinRoulette } from './engines/table';
+import { playPokerRound } from './poker-round';
 import type { DiceBetKind } from './dice-bets';
 import { spinRouletteTable, type RouletteChip, type RouletteSpin } from './roulette-table';
 import { resolveShellPick, type ShellRound } from './shell-round';
@@ -51,7 +52,9 @@ function plinko(prng: Prng, captureTrack = false): RoundResult {
 /** Standard-Satz je Spiel, solange der Spieler keine eigene Wettart waehlt. */
 export function playRound(game: GameId, prng: Prng, options: RoundOptions = {}): RoundResult {
   if (game === 'BLACKJACK') return { game, ...playBlackjack(prng) };
-  if (game === 'POKER') return { game, ...playVideoPoker(prng) };
+  // Der Tisch spielt Rundenpoker gegen Gaeste; Video Poker ist ein eigener Automat.
+  if (game === 'POKER') return { game, ...playPokerRound(prng) };
+  if (game === 'VIDEO_POKER') return { game, ...playVideoPoker(prng) };
   if (game === 'ROULETTE') {
     if (!options.roulette?.length) {
       const outcome = spinRoulette(prng, { kind: 'RED' });
