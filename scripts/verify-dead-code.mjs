@@ -1,68 +1,113 @@
 #!/usr/bin/env node
 /**
- * Fail-Closed Dead-Artifact-Gate: jeder Export in src/ muss in einem echten
- * Import oder Re-Export vorkommen. main.tsx ist der einzige Einstiegspunkt.
+ * Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber
+ * genau diese Datei importiert. Aufloesung ueber den Modulgraphen der
+ * tsconfig – Namensgleichheit in einer fremden Datei zaehlt nicht.
+ * main.tsx ist der einzige Einstiegspunkt.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
+import { forEachNode, lineOf, parse, resolveSpecifier, ts } from './lib/ts-ast.mjs';
 
 const SRC = resolve(ROOT, 'src');
-const files = walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts'));
-const extra = [resolve(ROOT, 'vite.config.ts')].filter((file) => {
-  try { readFileSync(file); return true; } catch { return false; }
-});
-const sources = [...files, ...extra];
-const exportsFound = [];
-const used = new Set();
-
-const exportPatterns = [
-  [/export\s+(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/g, true],
-  [/export\s+(?:const|let|var)\s+([A-Za-z_$][\w$]*)/g, true],
-  [/export\s+(?:class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/g, true],
+const entry = resolve(SRC, 'main.tsx');
+const sources = [
+  ...walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts')),
+  ...['vite.config.ts', 'eslint.config.mjs'].map((file) => resolve(ROOT, file)).filter(existsSync),
 ];
+const consumers = [...sources, ...walk(resolve(ROOT, 'scripts'), (file) => /\.(m|c)?[jt]sx?$/.test(file))];
 
-for (const file of sources) {
-  const text = readFileSync(file, 'utf8');
-  const lines = text.split(/\r?\n/);
-  for (const match of text.matchAll(/import\s+(?:type\s+)?\{([^}]+)\}\s*from/g)) {
-    for (const part of match[1].split(',')) {
-      const name = part.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]?.trim();
-      if (name) used.add(name);
-    }
+const exportsOf = new Map();
+const used = new Map();
+/** Dateien, deren Mitglieder nicht in Namensform vorliegen: Import verdeckt alles. */
+const unknown = new Set();
+const addUse = (file, name) => {
+  if (!used.has(file)) used.set(file, new Set());
+  used.get(file).add(name);
+};
+
+function addBinding(node, add) {
+  if (ts.isIdentifier(node)) add(node.text, node.getStart());
+  else if (ts.isObjectBindingPattern(node) || ts.isArrayBindingPattern(node)) {
+    for (const element of node.elements) if (ts.isBindingElement(element)) addBinding(element.name, add);
   }
-  for (const match of text.matchAll(/export\s*\{([^}]+)\}\s*from/g)) {
-    for (const part of match[1].split(',')) {
-      const name = part.trim().split(/\s+as\s+/)[0]?.trim();
-      if (name) used.add(name);
-    }
+}
+
+/** Benannte Exporte einer Datei: Name -> Zeile; Default-Exports sind kein benanntes Artefakt. */
+function collectExports(file) {
+  const source = parse(file);
+  const names = new Map();
+  const add = (name, pos) => names.set(name, lineOf(source, pos));
+  for (const statement of source.statements) {
+    const modifiers = ts.canHaveModifiers(statement) ? (ts.getModifiers(statement) ?? []) : [];
+    if (!modifiers.some((mod) => mod.kind === ts.SyntaxKind.ExportKeyword)) continue;
+    if (modifiers.some((mod) => mod.kind === ts.SyntaxKind.DefaultKeyword)) continue;
+    if (ts.isExportDeclaration(statement) && statement.moduleSpecifier) {
+      const target = resolveSpecifier(statement.moduleSpecifier.text, file);
+      const clause = statement.exportClause;
+      if (!clause) {
+        if (target) unknown.add(target);
+      } else if (ts.isNamespaceExport(clause)) {
+        add(clause.name.text, clause.name.getStart(source));
+      } else {
+        for (const element of clause.elements) {
+          add(element.name.text, element.name.getStart(source));
+          if (target) addUse(target, (element.propertyName ?? element.name).text);
+        }
+      }
+    } else if (ts.isExportDeclaration(statement)) {
+      const clause = statement.exportClause;
+      if (clause && ts.isNamespaceExport(clause)) add(clause.name.text, clause.name.getStart(source));
+      else if (clause) for (const element of clause.elements) add(element.name.text, element.name.getStart(source));
+    } else if (ts.isVariableStatement(statement)) {
+      for (const declaration of statement.declarationList.declarations) {
+        addBinding(declaration.name, (name, pos) => add(name, pos));
+      }
+    } else if (statement.name) add(statement.name.text, statement.name.getStart(source));
   }
-  lines.forEach((line, lineIndex) => {
-    for (const [pattern] of exportPatterns) {
-      for (const match of line.matchAll(pattern)) {
-        exportsFound.push({ name: match[1], file, line: lineIndex + 1 });
-      }
-    }
-    for (const match of line.matchAll(/export\s*\{([^}]+)\}/g)) {
-      for (const part of match[1].split(',')) {
-        const name = part.trim().split(/\s+as\s+/).pop()?.trim();
-        if (name) exportsFound.push({ name, file, line: lineIndex + 1 });
-      }
+  return names;
+}
+
+/** Jeder Import oder Re-Export in einer fremden Datei ist eine Nutzung des Ziels. */
+function collectUses(file) {
+  const source = parse(file);
+  forEachNode(source, (node) => {
+    if (ts.isImportDeclaration(node)) {
+      const target = resolveSpecifier(node.moduleSpecifier.text, file);
+      const clause = node.importClause;
+      if (!target || !clause?.namedBindings) return;
+      if (ts.isNamespaceImport(clause.namedBindings)) unknown.add(target);
+      else for (const element of clause.namedBindings.elements) addUse(target, (element.propertyName ?? element.name).text);
+    } else if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
+      const target = resolveSpecifier(node.moduleSpecifier.text, file);
+      const clause = node.exportClause;
+      if (!target) return;
+      if (!clause || ts.isNamespaceExport(clause)) unknown.add(target);
+      else for (const element of clause.elements) addUse(target, (element.propertyName ?? element.name).text);
     }
   });
 }
 
-// Default-Exports und der Einstiegspunkt sind keine benannten Artefakte.
-const entry = resolve(SRC, 'main.tsx');
-const dead = exportsFound.filter((item) => !used.has(item.name) && item.file !== entry);
+for (const file of sources) exportsOf.set(file, collectExports(file));
+for (const file of consumers) collectUses(file);
+
 let index = 0;
-for (const item of dead) {
-  index += 1;
-  fail(index, 'ERR-4003', relative(ROOT, item.file), `Export ${item.name} (Zeile ${item.line}) wird nirgendwo importiert`);
+let dead = 0;
+let total = 0;
+for (const file of sources) {
+  const hidden = file === entry || unknown.has(file);
+  for (const [name, line] of exportsOf.get(file) ?? []) {
+    total += 1;
+    if (hidden || used.get(file)?.has(name)) continue;
+    dead += 1;
+    index += 1;
+    fail(index, 'ERR-4003', relative(ROOT, file), `Export ${name} (Zeile ${line}) wird nirgendwo importiert`);
+  }
 }
 
-if (dead.length > 0) {
-  console.error(`verify-dead-code: ${dead.length} tote Exporte`);
+if (dead > 0) {
+  console.error(`verify-dead-code: ${dead} tote Exporte`);
   process.exit(1);
 }
-console.log(`verify-dead-code: PASS (${exportsFound.length} Exporte, ${sources.length} Dateien)`);
+console.log(`verify-dead-code: PASS (${total} Exporte, ${sources.length} Dateien)`);

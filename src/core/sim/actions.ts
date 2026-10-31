@@ -6,7 +6,7 @@ import { playSandboxGame, sandboxSeed, testSandbox } from '../games/sandbox';
 import { isValidReels, MAX_REELS, reelUpgradeCost, slotConfig } from '../games/slot-config';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
-import { getMod } from './offers';
+import { getMod, modAppliesTo } from './offers';
 import type { CarpetId, Furniture, GameId, ModId, WorldState } from './types';
 import { furnitureById } from './world';
 import { grantXp } from './player-rpg';
@@ -71,7 +71,9 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
   if (!item || !item.gameId) throw new Error('Kein Spielautomat.');
   if (item.mods.includes(modId)) throw new Error('Mod ist schon verbaut.');
   if (item.mods.length >= 3) throw new Error('Maximal drei Mods pro Automat.');
-  if (modId === 'EXTRA_REEL' && item.gameId !== 'SLOT') throw new Error('Die vierte Walze passt nur in Slots.');
+  if (!modAppliesTo(modId, item.gameId)) {
+    throw new Error(`${getMod(modId).name} passt nicht auf ${item.gameId ?? 'dieses Geraet'}.`);
+  }
   const mod = getMod(modId);
   ledger.transfer(HAUSKONTO, SHOP, mod.cost, `mod ${mod.name}`, world.tick);
   item.mods.push(modId);

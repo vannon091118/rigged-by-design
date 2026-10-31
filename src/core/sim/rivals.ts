@@ -9,7 +9,7 @@ import type { GameExtras, GameResult } from '../games/contracts';
 import type { Prng } from '../rng/prng';
 import { foreignRound } from './actions';
 import { PORTEMONNAIE } from './money';
-import { modEffects } from './offers';
+import { resolveModEffects } from './offers';
 import type { GameId, ModId, PersonaId } from './types';
 
 export type RivalId = 'HAFENKLAUSE' | 'GOLDENE_HAND' | 'NEBELPALAST';
@@ -118,7 +118,7 @@ export function rivalState(rival: RivalOperator, tick: number): RivalState {
     reputation = Math.max(5, Math.min(99, reputation));
   }
   const attractiveness = rival.machines.reduce((sum, entry) =>
-    sum + Math.round(entry.baseBet / 10_000) * 12 + Math.round(modEffects(entry).attraction / 10), 0);
+    sum + Math.round(entry.baseBet / 10_000) * 12 + Math.round(resolveModEffects(entry.game, entry.mods).attraction / 10), 0);
   return {
     id: rival.id, name: rival.name, operator: rival.operator, style: rival.style,
     reputation, security: rival.security, edgeBps: rival.edgeBps,
@@ -130,7 +130,7 @@ export const rivalStates = (tick: number): RivalState[] => RIVALS.map((rival) =>
 
 /** Effektiver Hausvorteil: Betreiber-Regel plus Mod-Aufschlag, nie unter null. */
 export function rivalEdge(rival: RivalOperator, entry: RivalMachine): number {
-  const bonus = modEffects(entry).bonusBps;
+  const bonus = resolveModEffects(entry.game, entry.mods).bonusBps;
   return Math.max(0, rival.edgeBps + bonus);
 }
 
