@@ -31,6 +31,8 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   const meta = EMOTION_META[emotion];
   const stateLabel = guest ? STATE_LABEL[guest.state] ?? guest.state : '';
   const money = guest ? view.guestMoney[guest.id] ?? { wallet: 0, pending: 0, fiat: 0 } : { wallet: 0, pending: 0, fiat: 0 };
+  const disputeId = guest?.disputeId ?? null;
+  const duel = disputeId === null ? undefined : view.duels[disputeId];
   return (
     <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide>
       <div className="cashier-strip">
@@ -80,11 +82,17 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
               BESCHWATZEN · {view.talkChances[guest.id] ?? 0} % Erfolg
             </button>
             {guest.disputeId !== null && <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)} title="Beendet den Streit friedlich.">SCHLICHTEN</button>}
-            {guest.disputeId !== null && !view.disputeGuard[guest.disputeId] && (
-              <button type="button" className="btn small alert" onClick={() => onFight(guest.disputeId!)} title="Risiko: Bei einem Fehlschlag drohen Rufschaden, ein Stimmungsschock bei allen Gästen oder ein Raub aus der Kasse.">SELBER KÄMPFEN · {view.brawlChance} %</button>
+            {duel && disputeId !== null && !view.disputeGuard[disputeId] && (
+              <button type="button" className="btn small alert" onClick={() => onFight(disputeId)}
+                title={`Duell gegen ${duel.opponent.name} (${duel.opponent.archetype}). Bei einer Niederlage drohen ein Überfall auf Kasse oder Brieftasche, ein Launenschock und bei eskaliertem Streit Rufschaden.`}>
+                DUELL GEGEN {duel.opponent.name.split(' ')[0]!.toUpperCase()} · {duel.winChance} %
+              </button>
             )}
-            {guest.disputeId !== null && view.disputeGuard[guest.disputeId] && (
-              <span className="hint">Ein Guard ist in Reichweite und beendet den Streit.</span>
+            {duel && (
+              <span className="hint">
+                Gegner: {duel.opponent.archetype} · Kraft {duel.opponent.strength}/10 · Zähigkeit {duel.opponent.toughness}/10
+                {disputeId !== null && view.disputeGuard[disputeId] ? ' · ein Guard beendet den Streit' : ''}
+              </span>
             )}
           </div>
           <div className="guest-chips">

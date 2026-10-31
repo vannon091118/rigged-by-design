@@ -5,6 +5,7 @@ import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
+import type { DuelPreview } from '../core/sim/duel';
 
 export interface GameView {
   readonly template: TemplateId;
@@ -27,7 +28,8 @@ export interface GameView {
   readonly agents: readonly StaffAgent[];
   readonly disputes: readonly Dispute[];
   readonly talkChances: Readonly<Record<number, number>>;
-  readonly brawlChance: number;
+  /** Je Disput: Gegnerprofil und die daraus folgende Siegchance. */
+  readonly duels: Readonly<Record<number, DuelPreview>>;
   /** Je Disput: greift ein Guard gerade wirklich ein (in Reichweite)? */
   readonly disputeGuard: Readonly<Record<number, boolean>>;
   readonly activePenalties: readonly ActivePenalty[];

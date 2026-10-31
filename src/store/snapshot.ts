@@ -2,7 +2,7 @@
 import type { Ledger } from '../core/economy/ledger';
 import { addVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { fiatAccount, guestAccount, pendingAccount, HAUSKONTO, PLAYER_CASH, PORTEMONNAIE, WECHSELKASSE } from '../core/sim/money';
-import { brawlWinChance } from '../core/sim/brawl-combat';
+import { duelPreview, type DuelPreview } from '../core/sim/duel';
 import { demandBreakdown } from '../core/sim/demand';
 import { guardResponding } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
@@ -55,6 +55,11 @@ function worldSnapshot(world: WorldState) {
 export function buildView(world: WorldState, ledger: Ledger, notice: string): GameView {
   let pending: VaCoinMicro = ZERO_VC;
   let mood = 0;
+  const duels: Record<number, DuelPreview> = {};
+  for (const dispute of world.disputes) {
+    const preview = duelPreview(world, dispute);
+    if (preview) duels[dispute.id] = preview;
+  }
   const guestMoney: Record<number, { wallet: VaCoinMicro; pending: VaCoinMicro; fiat: VaCoinMicro }> = {};
   for (const guest of world.guests) {
     const wallet = ledger.getBalance(guestAccount(guest.id));
@@ -68,7 +73,7 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),
     // Nur ein Guard in Reichweite beendet den Streit; die UI folgt derselben Aussage.
     disputeGuard: Object.fromEntries(world.disputes.map((dispute) => [dispute.id, guardResponding(world, dispute)])),
-    brawlChance: brawlWinChance(world),
+    duels,
     house: ledger.getBalance(HAUSKONTO),
     wallet: ledger.getBalance(PORTEMONNAIE),
     playerCash: ledger.getBalance(PLAYER_CASH),
