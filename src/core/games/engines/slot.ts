@@ -1,9 +1,8 @@
-/** Book-of-VaCoin: drei bis fuenf Walzen, gewichtete Symbole, Freispiele. */
+/** Book-of-VaCoin: drei bis fuenf Walzen, Streifen oder Gewichte, drei Bewertungsmodelle. */
 import type { Prng } from '../../rng/prng';
-import {
-  clampedReels, drawSymbol, FREE_SPINS, lineWin, slotPaylines, SLOT_ROWS, type SlotSymbol, type SlotWeights,
-} from './slot-paytable';
+import { clampedReels, drawSymbol, slotPaylines, SLOT_ROWS, type SlotSymbol } from './slot-paytable';
 import { payScaleFor } from './slot-odds';
+import { evaluateGrid, type ModelContext, type ModelWin } from './slot-models';
 import { DEFAULT_SLOT_PROFILE, normalizeSlotProfile, type SlotProfile } from '../slot-profile';
 
 export { SLOT_LINES, SLOT_SYMBOLS } from './slot-paytable';
@@ -27,6 +26,8 @@ interface SlotOutcome {
   readonly grid: readonly (readonly string[])[];
   readonly wins: readonly SlotLineWin[];
   readonly books: number;
+  /** Bonusspiel-Zustand: Runden, Multiplikator und Ertrag der Freispiele. */
+  readonly bonus?: { readonly rounds: number; readonly multiplier: number; readonly bps: number };
 }
 
 interface SlotOptions {
@@ -34,7 +35,7 @@ interface SlotOptions {
   readonly forceWin?: boolean;
   /** Walzenanzahl des Geraets; ohne Angabe gelten fuenf. */
   readonly reels?: number;
-  /** Gewichte, Auszahlungsprofil und Regeln des Geraets. */
+  /** Walzenstreifen, Gewichte, Modell und Regeln des Geraets. */
   readonly profile?: SlotProfile;
 }
 
@@ -42,8 +43,18 @@ interface SlotOptions {
 const FORCED_WIN_BPS = 14_800;
 const MAX_FREE_ROUNDS = 40;
 
-function spinReels(prng: Prng, reels: number, weights: SlotWeights): SlotSymbol[][] {
-  return Array.from({ length: reels }, () => Array.from({ length: SLOT_ROWS }, () => drawSymbol(prng, weights)));
+/** Ziehung aus dem Streifen: gleichverteilt ueber die eingetragene Symbolfolge. */
+function drawFromStrip(prng: Prng, strip: readonly SlotSymbol[]): SlotSymbol {
+  return strip[prng.nextInt(0, strip.length - 1)]!;
+}
+
+function spinReels(prng: Prng, reels: number, profile: SlotProfile): SlotSymbol[][] {
+  return Array.from({ length: reels }, (_, reel) => {
+    const strip = profile.reelStrips[reel] ?? profile.reelStrips[profile.reelStrips.length - 1];
+    return Array.from({ length: SLOT_ROWS }, () => (
+      strip && strip.length > 0 ? drawFromStrip(prng, strip) : drawSymbol(prng, profile.weights)
+    ));
+  });
 }
 
 function shiftReels(reels: SlotSymbol[][], offset: number): SlotSymbol[][] {
@@ -67,68 +78,63 @@ function countBooks(reels: readonly (readonly SlotSymbol[])[]): number {
   return books;
 }
 
-function evaluate(
-  reels: readonly (readonly SlotSymbol[])[],
-  lines: readonly (readonly number[])[],
-  scale: number,
-  wild: boolean,
-): { total: number; wins: SlotLineWin[] } {
-  let total = 0;
-  const wins: SlotLineWin[] = [];
-  lines.forEach((line, index) => {
-    const symbols = line.map((row, reel) => reels[reel]![row]!);
-    const hit = lineWin(symbols, scale, wild);
-    if (!hit) return;
-    total += hit.bps;
-    wins.push({ line: index, symbol: hit.symbol, count: hit.count, bps: hit.bps });
-  });
-  return { total, wins };
-}
-
 /**
- * Eine Runde inklusive Freispielen. `multiplierBps` bezieht sich auf den
- * Gesamteinsatz (alle Linien), nicht auf eine einzelne Linie. Walzenanzahl,
- * Linien und Skalierung kommen alle aus derselben Konfiguration, deshalb bleibt
- * die Quote ueber alle Geraetegroessen gleich – bis der Betreiber sie veraendert.
+ * Eine Runde inklusive Bonusspiel. `multiplierBps` bezieht sich auf den Gesamteinsatz:
+ * Linien teilen durch ihre Anzahl, Ways und Cluster zaehlen bereits auf den Gesamteinsatz.
  */
 export function playSlot(prng: Prng, options: SlotOptions = {}): SlotOutcome {
   const profile = normalizeSlotProfile(options.profile ?? DEFAULT_SLOT_PROFILE);
   const reelCount = clampedReels(options.reels ?? 5);
   const lines = slotPaylines(reelCount);
-  const scale = payScaleFor(reelCount, profile.weights, profile.payScaleBps);
-  const wild = profile.rules.wildBooks;
-  const reels = shiftReels(spinReels(prng, reelCount, profile.weights), options.offset ?? 0);
+  const wild = profile.wildMode === 'BOOK';
+  const scale = payScaleFor(reelCount, profile.weights, {
+    model: profile.model, volatility: profile.volatility, payScaleBps: profile.payScaleBps,
+  });
+  const context: ModelContext = {
+    reels: reelCount, rows: SLOT_ROWS, weights: profile.weights, wild, scale, volatility: profile.volatility,
+  };
+  const bonusContext: ModelContext = {
+    ...context, scale: scale * (profile.bonusPayScaleBps / 10_000),
+  };
+  const evaluate = (grid: readonly (readonly SlotSymbol[])[], ctx: ModelContext): { total: number; wins: ModelWin[] } =>
+    evaluateGrid(profile.model, grid, lines, ctx);
+
+  const reels = shiftReels(spinReels(prng, reelCount, profile), options.offset ?? 0);
   const forcedLine = options.forceWin ? forceNonLdw(reels) : -1;
-  const { total: lineBps, wins } = evaluate(reels, lines, scale, wild);
+  const base = evaluate(reels, context);
 
   const books = countBooks(reels);
-  let freeSpins = profile.rules.freeSpins && books >= 3 ? FREE_SPINS : 0;
+  const triggers = profile.scatter && profile.freeSpins > 0 && books >= 3;
+  let freeSpins = triggers ? profile.freeSpins : 0;
   let rounds = 0;
-  let freeBps = 0;
+  let bonusBps = 0;
   while (freeSpins > 0 && rounds < MAX_FREE_ROUNDS) {
     freeSpins -= 1;
     rounds += 1;
-    const extra = spinReels(prng, reelCount, profile.weights);
-    freeBps += evaluate(extra, lines, scale, wild).total;
-    if (countBooks(extra) >= 3) freeSpins += FREE_SPINS;
+    const extra = spinReels(prng, reelCount, profile);
+    // Die Bonus-Paytable ist eigen: sie skaliert die Gewinne der Freispiele,
+    // der Multiplikator kommt obendrauf.
+    bonusBps += evaluate(extra, bonusContext).total * profile.multiplier;
+    if (profile.scatter && countBooks(extra) >= 3) freeSpins += profile.freeSpins;
   }
-  // Je Linie gewonnen, aber auf den Gesamteinsatz normiert.
-  // Die Entladung zahlt ihren festen Satz, nicht die Paytable der erzwungenen Linie.
+
+  const totalBps = base.total + bonusBps;
   const multiplierBps = forcedLine < 0
-    ? Math.round((lineBps + freeBps) / lines.length)
+    ? Math.round(profile.model === 'LINES' ? totalBps / lines.length : totalBps)
     : FORCED_WIN_BPS;
   const label = multiplierBps === 0
     ? 'Niete'
-    : `${rounds > 0 ? `Freispiele (${rounds}) ` : ''}${(multiplierBps / 10_000).toFixed(2)}x`;
+    : `${rounds > 0 ? `Bonus (${rounds}${profile.multiplier > 1 ? ` ×${profile.multiplier}` : ''}) ` : ''}${(multiplierBps / 10_000).toFixed(2)}x`;
   const center = reels.map((reel) => reel[1]!);
   return {
     multiplierBps,
     label: label.replace('.', ','),
     detail: [center.join(' | ')],
     symbols: center,
-    jackpot: profile.rules.freeSpins && books >= 3,
+    jackpot: triggers,
     grid: reels,
-    wins,
+    wins: base.wins.map((win) => ({ ...win })),
     books,
+    ...(rounds > 0 ? { bonus: { rounds, multiplier: profile.multiplier, bps: Math.round(bonusBps) } } : {}),
   };
 }

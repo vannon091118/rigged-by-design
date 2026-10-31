@@ -1,16 +1,12 @@
 /**
  * Chancen-Kalibrierung des Slots: wie viel eine Walzenanzahl auszahlt.
  *
- * Alle Erwartungswerte werden exakt ueber alle Symbolfolgen einer Linie
- * ausgerechnet – mit derselben `lineWin`-Funktion, die die Engine benutzt.
- * Die Skalierung normalisiert drei, vier und fuenf Walzen auf denselben Ertrag;
- * was die Walzenzahl wirklich veraendert, sind Kombinationen, Trefferbild und
- * Streuung, nicht der Hausvorteil.
+ * Die Skalierung normalisiert jedes Bewertungsmodell auf denselben Ertrag bei
+ * fuenf Walzen. Was die Walzenzahl wirklich veraendert, sind Kombinationen,
+ * Trefferbild und Streuung – nicht der Hausvorteil.
  */
-import {
-  BASE_SCALE, clampedReels, FREE_SPINS, SLOT_ROWS, SLOT_SYMBOLS, WEIGHTS, lineWin, weightTotal,
-  type SlotSymbol, type SlotWeights,
-} from './slot-paytable';
+import { BASE_SCALE, clampedReels, FREE_SPINS, WEIGHTS, weightTotal, type SlotWeights } from './slot-paytable';
+import { modelExpectation, type PayModel, type Volatility } from './slot-models';
 
 function binom(n: number, k: number): number {
   let value = 1;
@@ -18,89 +14,50 @@ function binom(n: number, k: number): number {
   return value;
 }
 
-/** Chance, in einem vollstaendigen Gitter mindestens drei Buecher zu sehen. */
-export function triggerChance(reels: number, weights: SlotWeights = WEIGHTS): number {
+/** Chance, dass genug Scatter fuer den Bonus im Gitter liegen. */
+export function triggerChance(reels: number, weights: SlotWeights = WEIGHTS, need = 3): number {
   const total = weightTotal(weights);
   const p = total > 0 ? Math.max(0, weights.BOOK) / total : 0;
-  const cells = clampedReels(reels) * SLOT_ROWS;
+  const cells = clampedReels(reels) * 3;
   let below = 0;
-  for (let count = 0; count <= 2; count += 1) {
+  for (let count = 0; count < need; count += 1) {
     below += binom(cells, count) * p ** count * (1 - p) ** (cells - count);
   }
   return Math.max(1e-9, 1 - below);
 }
 
-/** Durchschnittliche Dreier bis zum naechsten Jackpot dieser Walzenanzahl. */
+/** Durchschnittliche Dreier bis zum naechsten Bonus dieser Walzenanzahl. */
 export function slotJackpotInterval(reels: number, weights: SlotWeights = WEIGHTS): number {
   return Math.round(1 / triggerChance(clampedReels(reels), weights));
 }
 
 /**
  * Erwartete Freispielzuege JE SPIN – nicht je Ausloesung. Die Ausloesung ist selten,
- * ihre Kette dagegen zehn Zuege lang; beides gehoert in dieselbe Zahl, sonst
- * zaehlt die Quote die Freispiele zehnmal.
+ * ihre Kette dagegen zehn Zuege lang; beides gehoert in dieselbe Zahl.
  */
-export function freeRounds(chance: number): number {
+export function freeRounds(chance: number, spins = FREE_SPINS): number {
   const trigger = Math.min(0.09, chance);
-  return (trigger * FREE_SPINS) / Math.max(1e-6, 1 - FREE_SPINS * trigger);
+  return (trigger * spins) / Math.max(1e-6, 1 - spins * trigger);
 }
 
-interface LineOdds {
-  /** Erwartungswert einer Linie in Basispunkten des Linieneinsatzes. */
-  readonly expectation: number;
-  /** Chance in Basispunkten, dass diese Linie ueberhaupt zahlt. */
-  readonly hitBps: number;
-}
-
-const LINE_CACHE = new Map<string, LineOdds>();
-
-function weightsKey(weights: SlotWeights): string {
-  return SLOT_SYMBOLS.map((symbol) => Math.max(0, weights[symbol])).join(',');
+interface ScaleOptions {
+  readonly model?: PayModel;
+  readonly volatility?: Volatility;
+  readonly payScaleBps?: number;
 }
 
 /**
- * Exakt ueber alle Symbolfolgen einer Linie. `scale` gehoert in den Cache-Schluessel,
- * weil die Engine jeden Liniengewinn auf ganze Basispunkte rundet.
+ * Skalierung einer Walzenanzahl: jedes Modell wird auf denselben Ertrag bei fuenf
+ * Walzen normalisiert; das Auszahlungsprofil ist danach ein reiner Faktor.
  */
-export function lineOdds(reels: number, weights: SlotWeights = WEIGHTS, wild = true, scale = 1): LineOdds {
-  const key = `${reels}:${wild ? 1 : 0}:${scale}:${weightsKey(weights)}`;
-  const cached = LINE_CACHE.get(key);
-  if (cached) return cached;
-  const total = weightTotal(weights);
-  const trail: SlotSymbol[] = new Array(reels);
-  let expectation = 0;
-  let hits = 0;
-  const walk = (index: number, prob: number): void => {
-    if (index === reels) {
-      const hit = lineWin(trail, scale, wild);
-      if (hit) {
-        expectation += prob * hit.bps;
-        hits += prob;
-      }
-      return;
-    }
-    for (const symbol of SLOT_SYMBOLS) {
-      const weight = Math.max(0, weights[symbol]);
-      if (weight <= 0) continue;
-      trail[index] = symbol;
-      walk(index + 1, (prob * weight) / total);
-    }
-  };
-  if (total > 0) walk(0, 1);
-  const result: LineOdds = { expectation, hitBps: hits * 10_000 };
-  LINE_CACHE.set(key, result);
-  return result;
-}
-
-/**
- * Skalierung einer Walzenanzahl: derselbe Ertrag wie bei fuenf Walzen.
- * Die Normalisierung rechnet immer mit Wild und Freispielen, damit der
- * Auszahlungsfaktor ein reines Walzenmaß bleibt; Regeln wirken darueber.
- */
-export function payScaleFor(reels: number, weights: SlotWeights = WEIGHTS, payScaleBps = 10_000): number {
+export function payScaleFor(reels: number, weights: SlotWeights = WEIGHTS, options: ScaleOptions = {}): number {
+  const model = options.model ?? 'LINES';
+  const volatility = options.volatility ?? 'MID';
+  const factor = (options.payScaleBps ?? 10_000) / 10_000;
   const clamped = clampedReels(reels);
-  const reference = lineOdds(5, weights, true, 1).expectation * (1 + freeRounds(triggerChance(5, weights)));
-  const target = lineOdds(clamped, weights, true, 1).expectation * (1 + freeRounds(triggerChance(clamped, weights)));
-  const scale = (reference * BASE_SCALE) / Math.max(1e-9, target);
-  return scale * (payScaleBps / 10_000);
+  // Anker ist das Linienmodell bei fuenf Walzen – darauf ist BASE_SCALE kalibriert.
+  // Die Freispiel-Faktoren stehen auf beiden Seiten, sonst zahlt jede Walzenzahl anders.
+  const anchor = modelExpectation('LINES', 5, weights, true, 'MID') * (1 + freeRounds(triggerChance(5, weights)));
+  const target = modelExpectation(model, clamped, weights, true, volatility) * (1 + freeRounds(triggerChance(clamped, weights)));
+  return ((anchor * BASE_SCALE) / Math.max(1e-9, target)) * factor;
 }

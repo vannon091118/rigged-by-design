@@ -19,7 +19,7 @@ export const WEIGHTS: SlotWeights = {
 };
 
 /** Auszahlung in Basispunkten des Linieneinsatzes fuer 3 / 4 / 5 Treffer. */
-const LINE_PAY: Readonly<Record<SlotSymbol, readonly [number, number, number]>> = {
+export const LINE_PAY: Readonly<Record<SlotSymbol, readonly [number, number, number]>> = {
   BOOK: [100_000, 1_000_000, 5_000_000],
   SCARAB: [50_000, 250_000, 1_000_000],
   ANKH: [20_000, 100_000, 400_000],
@@ -78,28 +78,4 @@ export function drawSymbol(prng: Prng, weights: SlotWeights = WEIGHTS): SlotSymb
     if (roll < 0) return symbol;
   }
   return 'J';
-}
-
-interface LineHit {
-  readonly symbol: SlotSymbol;
-  readonly count: number;
-  readonly bps: number;
-}
-
-/**
- * Buch ist Wild; der Lauf beginnt links und endet beim ersten Fremdsymbol.
- * Mit `wild = false` zaehlt BOOK nur als eigenes Symbol – eine echte Regel,
- * keine Anzeigevariante.
- */
-export function lineWin(line: readonly SlotSymbol[], scale: number, wild = true): LineHit | null {
-  const lead = line.find((symbol) => symbol !== 'BOOK') ?? 'BOOK';
-  let run = 0;
-  for (const symbol of line) {
-    const matches = symbol === lead || (wild && symbol === 'BOOK');
-    if (matches) run += 1;
-    else break;
-  }
-  if (run < 3 || run > 5) return null;
-  const pay = LINE_PAY[lead][run - 3]!;
-  return { symbol: lead, count: run, bps: Math.round(pay * scale) };
 }
