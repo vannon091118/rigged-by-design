@@ -111,12 +111,12 @@ function fadeTo(state: AudibleState): void {
   // Ohne Nutzergeste lehnt der Browser ab; das ist kein Fehler, nur Stille.
   void next.audio.play().catch(() => undefined);
 
-  const start = Date.now();
+  const start = performance.now();
   const from = previous.gain;
   active = nextIndex;
   stopFade();
   fadeTimer = setInterval(() => {
-    const progress = Math.min(1, (Date.now() - start) / FADE_MS);
+    const progress = Math.min(1, (performance.now() - start) / FADE_MS);
     next.gain = progress;
     previous.gain = from * (1 - progress);
     applyVolumes();

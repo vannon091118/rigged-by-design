@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:28 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -242,10 +242,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 970 |
-| Gelistete Dateien | 970 |
+| Getrackte Dateien | 971 |
+| Gelistete Dateien | 971 |
 | Getrackte Ordner | 65 |
-| Bereiche | (Wurzel) (12), .githooks (2), .github (6), docs (42), public (552), scripts (46), src (310) |
+| Bereiche | (Wurzel) (12), .githooks (2), .github (6), docs (42), public (552), scripts (46), src (311) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -310,7 +310,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/fx/` — 1 Datei(en)
 - `src/render/games/` — 24 Datei(en)
 - `src/store/` — 17 Datei(en)
-- `src/store/__tests__/` — 9 Datei(en)
+- `src/store/__tests__/` — 10 Datei(en)
 - `src/styles/` — 4 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 31 Datei(en)
@@ -329,22 +329,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 37 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 16 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 93 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 94 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
 - `capacitor.config.json` — { — gelesen: 11 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 200 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 37 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 38 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 178 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 210 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 25 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 106 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 26 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 107 Zeilen
 - `docs/assets/casino-pixel-asset-pack.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/event-narrative-engine-taskplan.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 687 Zeilen
@@ -374,7 +374,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
-- `eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 32 Zeilen
+- `eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 64 Zeilen
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
 - `opencode.json` — { — gelesen: 10 Zeilen
 - `package-lock.json` — { — generiert, 4540 Zeilen
@@ -1064,7 +1064,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/__tests__/weighted.test.ts` — Die ausgewiesene Chance stammt aus derselben Verteilung, aus der gezogen wird. — gelesen: 99 Zeilen
 - `src/core/rng/prng.ts` — Deterministischer Mulberry32-PRNG. Zustand ist ein uint32 und exakt wiederherstellbar. — gelesen: 56 Zeilen
 - `src/core/rng/shoe.ts` — Kartenschuh ohne Zuruecklegen: eine gezogene Karte verlaesst den Schuh wirklich. — gelesen: 51 Zeilen
-- `src/core/rng/streams.ts` — Zwei Stroeme, zwei Namespaces: Darstellung darf den Spielzustand nie bewegen. — gelesen: 26 Zeilen
+- `src/core/rng/streams.ts` — Zwei Stroeme, zwei Namespaces: Darstellung darf den Spielzustand nie bewegen. — gelesen: 34 Zeilen
 - `src/core/rng/weighted.ts` — Gewichtetes Zahlenziehen: Angezeigte Chance und Ziehung stammen aus derselben Verteilung. — gelesen: 126 Zeilen
 - `src/core/sim/__tests__/balance-harness.ts` — Betriebs-Messlauf: ein skriptierter Betreiber (bauen, einstellen, reparieren, ausbauen) — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/balance-metrics.ts` — Kennzahlen des Betriebs-Messlaufs: Was Gaeste erleben, je Spieltag gezaehlt. — gelesen: 174 Zeilen
@@ -1213,6 +1213,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veränderte backen neu. — gelesen: 158 Zeilen
 - `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 207 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
+- `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/prng-persistence.test.ts` — Der PRNG-Zustand setzt nach dem Laden die Folge exakt fort, ohne Doppelziehung. — gelesen: 70 Zeilen
 - `src/store/__tests__/rival-play-commands.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
 - `src/store/__tests__/save-device.test.ts` — Alte Speicherstaende koennen eine Geräteidentität tragen, die zum Spieltyp — gelesen: 71 Zeilen
@@ -1233,11 +1234,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/save.ts` — Save v8: Welt + Ledger-Log + Journal + PRNG. Nichts anderes besitzt Geld. — gelesen: 138 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
 - `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 127 Zeilen
-- `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 46 Zeilen
+- `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 47 Zeilen
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 101 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 150 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 160 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 161 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 317 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/popup.css` — .popup-backdrop { — gelesen: 532 Zeilen
@@ -1300,6 +1301,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T17 | **2026-11-01 10:49 UTC**: Determinismus: kein Math.random und keine Wanduhr im Spielzustand. Befund: `Date.now()`-Seeds in `world-store`, `new Date()` im Export, `Date.now()` im Musik-Fade. Behoben: `entropySeed()` als einziger Krypto-Eingang, Export-Stempel aus `world.day`/`world.tick`, ESLint-Verbot fuer `Math.random`/`Date.now`/`performance.now`/`new Date()` in `src/**` mit Render-Ausnahme fuers Pacing; neuer Replay-Test in `src/store/__tests__/determinism.test.ts`. Gelesen: `streams.ts`, `prng.ts`, `world-store.ts`, `transfer.ts`, `music.ts`, `eslint.config.mjs`, `envelope.ts`. v1.14. |
 | T16 | **2026-11-01 10:24 UTC**: Gameplay- und Darstellungs-RNG getrennt: Rollen am `Prng`, eigener Render-Strom, Guard an `tickWorld`/`playRound`, Tests fuer unbewegten Spielzustand. `Math.random()` aus Renderer und Sound entfernt. v1.13. |
 | T15 | **2026-11-01 10:00 UTC**: Auslieferung am Remote-HEAD geprüft; dabei die Selbstreferenz des Generators gefunden und behoben. Datei- und Ordner-Eintrag entfernt → `verify:docs` je Exit 1; danach SHA-256-gleich wiederhergestellt, Gate grün. v1.12. |
 | T14 | **2026-11-01 09:50 UTC**: Vollständige Inventur. `scripts/build-inventory.mjs` erzeugt §18 aus `git ls-files` (957 Dateien, 64 Ordner, eine Zeile je Pfad); `verify:docs` prüft Datei-, Ordner- und Zahlenabdeckung und wird bei Lücke rot — drei Rot-Tests belegt. Pre-Commit-Hook baut die Liste vor dem Marker. Changelog-Version auf `0.3.64` gezogen. Kein Vitest lokal. v1.11. |

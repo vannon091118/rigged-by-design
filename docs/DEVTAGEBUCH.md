@@ -10,6 +10,38 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Determinismus: kein Math.random und keine Wanduhr im Spielzustand
+
+**Ziel.** Kein `Math.random()` und keine vergleichbare Streuquelle im Spiel:
+gleicher Seed und gleiche Ticks muessen denselben Zustand und denselben Export
+ergeben.
+
+**Befund.** `Math.random()` war seit der RNG-Trennung aus Renderer und Sound
+verschwunden, aber drei Nebentueren blieben offen. `world-store` seedete den PRNG
+mit `Date.now()` (Feld-Initialisierung und `newGame`), `exportGameData` stempelte
+den Export mit `new Date().toISOString()`, und der Musik-Crossfade mass seine
+Fadezeit an `Date.now()`. Gleicher Stand ergab damit nicht zwingend dieselben
+Bytes.
+
+**Umsetzung.** `entropySeed()` in `src/core/rng/streams.ts` ist jetzt der einzige
+Entropie-Eingang (Krypto, ohne Fallback); `presentationSeed()` und beide
+Seed-Stellen im Store ziehen nur noch daraus. Der Export traegt `Tag X, Tick Y`
+aus der Welt statt eines Uhrzeitstempels. Der Musik-Fade nutzt `performance.now()`.
+`eslint.config.mjs` verbietet in `src/**` `Math.random`, `Date.now`,
+`performance.now` und `new Date()`; `src/render/**` darf `performance.now` fuer
+Pacing lesen, `src/core/rng/streams.ts` ist die einzige Ausnahme fuer die
+Krypto-Entropie. Neuer Test `src/store/__tests__/determinism.test.ts` faehrt zwei
+Laeufe mit demselben Seed und vergleicht den vollstaendigen Export.
+
+**Pruefungen.** `npm run lint` (neue Regel), ESLint-Probe per `--stdin` (vier
+Treffer in `src/core`, kein Treffer fuer `performance.now` in `src/render`),
+`tsc --noEmit`, `check:loc`, `verify:test-quality` (87 Testdateien),
+`verify:dead-code` (775 Exporte), `verify:tree`, `verify:redundancy`. Vitest lief
+nicht lokal; die neuen Tests und `verify:all` laufen in CI.
+
+**Offen.** Die Start-Entropie bleibt echt zufaellig: Determinismus heisst
+Wiederholbarkeit ab gespeichertem `prngState`, nicht ein fester Startseed.
+
 ## 2026-11-01 - RNG-Namespaces getrennt
 
 **Ziel.** Gameplay und Darstellung duerfen nie denselben Zufallsstrom ziehen; sonst
@@ -160,7 +192,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:28 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
