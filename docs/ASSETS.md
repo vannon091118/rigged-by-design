@@ -10,9 +10,9 @@ beides reproduziert. Die Beschreibung des Quellpakets liegt unter
 - Quelle: `casino_asset_sounds_prealpha.zip` mit `casino-pixel-assets/` und `sounds/`.
 - Bestand beim letzten Abgleich: **539 PNG**, **7 JSON**, **6 WAV**, rund 170 MB.
 - Die beiliegende README beschreibt Stil, Palette und Pixelmaße, nennt aber
-  **keine Lizenz und keinen Urheber**. Damit ist die Weitergabe nicht belegt.
-  Bis das geklärt ist, gilt: Das Paket ist kein freigegebenes Distributionsmaterial.
-  Vor einer Veröffentlichung außerhalb des Repositories muss die Herkunft geklärt sein.
+  **keine Lizenz und keinen Urheber**. Der Betreiber hat am 01.11.2026 bestätigt,
+  dass die Lizenzrechte bei ihm liegen; der schriftliche Nachweis wird im Repo
+  ergänzt. Bis dahin gilt: keine Weitergabe außerhalb des Repositories.
 
 ## Was im Repository liegt
 

@@ -7,6 +7,7 @@ import { vc } from './format';
 import { HELP } from './glossary';
 import { PopupShell } from './popup-shell';
 import { ROLE_LABEL, TASK_LABEL } from './staff-labels';
+import { TransferPanel } from './transfer-panel';
 
 interface Props {
   readonly view: GameView;
@@ -116,6 +117,7 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
             Die Buchhaltung bleibt die vollständige Geldwahrheit.
           </p>
         </section>
+        <TransferPanel />
       </div>
     </PopupShell>
   );

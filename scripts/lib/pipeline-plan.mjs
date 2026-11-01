@@ -31,23 +31,13 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: 2 * MINUTE,
   },
-  // Die Matrix wird hier nur geprueft; geschrieben wird sie ausschliesslich im Fix-Modus.
-  'deps-matrix': {
-    name: 'deps-matrix',
+  // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum. Matrix und Katalog
+  // werden nicht mehr gegated; der Pre-Commit-Hook schreibt sie.
+  docs: {
+    name: 'docs',
     command: 'node',
-    script: 'scripts/sync-dependency-matrix.mjs',
-    args: ['--check'],
-    code: 'ERR-4013',
-    cache: true,
-    timeoutMs: 2 * MINUTE,
-  },
-  // Der Testkatalog wird hier nur geprueft; geschrieben wird er im Fix-Modus.
-  catalog: {
-    name: 'catalog',
-    command: 'node',
-    script: 'scripts/test-catalog.mjs',
-    args: ['--check'],
-    code: 'ERR-4015',
+    script: 'scripts/verify-docs.mjs',
+    code: 'ERR-4017',
     cache: true,
     timeoutMs: MINUTE,
   },
@@ -57,7 +47,7 @@ export const GATES = Object.freeze({
   build: { name: 'build', command: 'npm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
-const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'deps-matrix', 'catalog', 'assets', 'tests'];
+const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'docs', 'assets', 'tests'];
 
 export const PROFILE_GATES = Object.freeze({
   quick: Object.freeze(QUICK),

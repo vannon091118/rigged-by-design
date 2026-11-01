@@ -1,0 +1,44 @@
+name: PR Escalation
+
+# Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlt die Pflichtstruktur,
+# hebt dieser Workflow sie in den PR-Body (Eskalation statt Blocker).
+on:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: pr-escalation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lift:
+    name: Commit-Body in PR-Body heben
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Body pruefen
+        id: body
+        run: |
+          if node scripts/verify-commit-msg.mjs --head > body-check.log 2>&1; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            cat body-check.log
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: PR-Body heben
+        if: steps.body.outputs.needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/lift-commit-body.mjs

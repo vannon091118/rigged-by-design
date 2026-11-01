@@ -28,3 +28,6 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. || ERR-4014 | Pipeline | Ein Gate ueberschreitet sein hartes Zeitlimit und wird samt Prozessbaum beendet. | Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben. |
 | ERR-4015 | Testkatalog | Testkatalog ist nicht synchron zu den Testdateien. | `npm run catalog` ausfuehren und die Einordnung im Diff pruefen. |
 | ERR-4016 | CI-Delegation | Ein langer Nachweis konnte nicht in GitHub Actions laufen oder ist dort rot. | Lauf und Log im Browser pruefen; Ursache im Gate beheben, nicht lokal nachbauen. |
+| ERR-4017 | Docs | Pflichtdokument, Marker oder Pflichtabschnitt fehlt. | `npm run docs:sync`; Struktur in `scripts/lib/doc-sync.mjs` ergaenzen. |
+| ERR-4018 | Governance | Repo-Hooks liessen sich nicht aktivieren. | `git config core.hooksPath .githooks` pruefen. |
+| ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |

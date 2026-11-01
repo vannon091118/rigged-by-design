@@ -150,6 +150,24 @@ export const ERROR_CODES = {
     cause: 'Ein langer Nachweis konnte in GitHub Actions nicht laufen oder ist dort rot.',
     fix: 'Lauf und Log pruefen; Ursache im Gate beheben.',
   },
+  DOC_GATE: {
+    code: 'ERR-4017',
+    area: 'docs',
+    cause: 'Pflichtdokument, Marker oder Pflichtabschnitt fehlt.',
+    fix: 'npm run docs:sync ausfuehren und die Struktur ergaenzen.',
+  },
+  HOOK_INSTALL: {
+    code: 'ERR-4018',
+    area: 'governance',
+    cause: 'Repo-Hooks liessen sich nicht aktivieren.',
+    fix: 'git config core.hooksPath .githooks pruefen.',
+  },
+  TRANSFER_INVALID: {
+    code: 'ERR-5001',
+    area: 'core',
+    cause: 'Importierter Spielstand ist beschaedigt oder fremd.',
+    fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.',
+  },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(
