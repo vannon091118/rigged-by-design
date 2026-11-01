@@ -1,11 +1,13 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->
+<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
+
+- Auslieferung ohne Handgriff: gruene Checks mergen automatisch, rote Staende liegen sichtbar auf `integration` und werden dort repariert.
 
 - Inventur ist abgeschlossen: §18 deckt alle getrackten Dateien und Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie.
 - Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `npm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.

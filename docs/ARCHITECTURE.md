@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->
+<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->
 
 ## Zustandsbesitz
 
@@ -162,6 +162,19 @@ npm run turn:finish
 Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 
 Der Geschwindigkeits-Benchmark läuft separat über `npm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
+
+## Auto-Promotion und Integrationsbranch
+
+Der Weg von einem Branch nach `main` ist ein Zustandsautomat mit genau einer
+Quelle: `.github/workflows/promote.yml` liest das Ergebnis von `CI Verify`.
+Gruen legt den PR an und mergt ihn, rot legt den Stand auf die permanente
+Branch `integration`. Der Zustand liegt im Branch und im Label
+(`integration/rot`, `integration/konflikt`), nie in der Warteschlange — GitHub
+haelt pro Concurrency-Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder
+Lauf den gesamten Rueckstand ab und ist idempotent. `scripts/promote.mjs` baut
+den Commit-Text selbst, damit die Pflichtsektionen auch nach einem
+`squash`-Merge stehen. Einzige Identitaetsquelle ist
+`scripts/lib/identity.mjs`; `.mailmap` fuehrt die History-Anzeige zusammen.
 
 ## Floor-Rendering und Performance
 

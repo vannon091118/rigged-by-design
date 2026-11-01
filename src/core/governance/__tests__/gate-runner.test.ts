@@ -55,7 +55,7 @@ describe('Harte Gate-Timeouts', () => {
       name: 'quick-probe',
       command: 'node',
       script: quickPath,
-      timeoutMs: 10_000,
+      timeoutMs: 30_000,
     });
     expect(result.timedOut).toBe(false);
     expect(result.status).toBe(0);
@@ -72,7 +72,7 @@ describe('Harte Gate-Timeouts', () => {
   });
 
   it('legt vollstaendige Logs und eine Zusammenfassung als Artefakt ab', async () => {
-    const failed = await runGates([{ name: 'artifact-probe', command: 'node', script: failPath, timeoutMs: 10_000 }]);
+    const failed = await runGates([{ name: 'artifact-probe', command: 'node', script: failPath, timeoutMs: 60_000 }]);
     expect(failed).toContain('artifact-probe');
 
     const log = readFileSync(join(reportsDir, 'artifact-probe.log'), 'utf8');

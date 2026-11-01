@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Auto-Promotion: gruene Checks mergen, rote Staende auf die Integrationsbranch
+
+**Ziel.** Der Weg von "Branch gepusht" bis "auf main" soll ohne Handgriff laufen: PR anlegen, Checks abwarten, bei Gruen mergen, bei Rot den Stand auf eine dauerhafte Integrationsbranch legen, damit dort repariert wird. Der Committer soll dabei immer der Eigentuemer sein, unabhaengig von Runner oder Sandbox.
+
+**Umsetzung.** `scripts/promote.mjs` reagiert auf genau ein CI-Ergebnis. Gruen: PR suchen, sonst mit Titel und Pflichtsektionen anlegen, dann mit `--squash --subject --body-file` mergen — der Commit-Text traegt die drei Sektionen, weil `verify-commit-msg --head` sonst auf `main` rot wuerde. Rot: Label `integration/rot` setzen, alle so markierten offenen Branches einsammeln, `integration` aus `origin/main` aufsetzen (oder fortschreiben), jeden Stand per `git merge --no-ff` komponieren und pushen. Die Concurrency-Gruppe `promote` laesst genau einen Schreiber zu; ein abgelehnter Push wird mit `fetch` und `reset --hard` neu aufgesetzt und erneut gemergt, was idempotent ist. Identitaet: `scripts/lib/identity.mjs` als einzige Quelle, in `turn-push.mjs` fest an den Commit gebunden, im Workflow per `git config` gesetzt, dazu `.mailmap` fuer die Anzeige der History.
+
+**Pruefungen.** `node --check scripts/promote.mjs` gruen; die beiden Patch-Ersetzungen in `promote.mjs` und `turn-push.mjs` je genau einmal angewandt (Skript bricht bei 0 oder 2 Treffern ab). `verify:quick` mit allen zehn Gates im Turn-Abschluss. Der erste `turn:finish`-Lauf war an `gate-runner.test.ts` rot (erwartete FAIL, bekam TIMEOUT bei paralleler Gate-Last); isoliert 4/4 gruen, danach der volle Lauf gruen — Lastkonkurrenz, kein Defekt am Stand; der Artefakt-Test der Gate-Auswertung laeuft jetzt mit 60 s Limit (30 s fuer die schnelle Probe), weil unter paralleler Gate-Last schon der Node-Start mehrere Sekunden braucht. Die Zusicherungen blieben unveraendert.
+
+**Offen.** Der Promote-Workflow laeuft zum ersten Mal in CI; ein echter Merge und eine echte Integration sind damit noch nicht belegt. Der Verified-Badge haengt an GitHub-seitigen Merges: entweder `RBD_PROMOTE_AUTO_MERGE=1` mit der Repo-Vorgabe "PR-Titel und -Beschreibung" fuer Squash, oder ein Signaturschluessel. Befund 3, 6 und 7 stehen unveraendert.
+
 ## 2026-11-01 - Doku-Konsolidierung: Sortierung, Namensgleichheit und Repo-Hygiene
 
 **Ziel.** Eine Doku, die man lesen kann, ohne zu raten: gleiche Namen, ein Ort pro Thema, keine Aussage, die einer anderen widerspricht. Dazu der lokale Repo-Zustand: Hooks aktiv, nichts Unsortiertes in der Wurzel.
@@ -388,7 +398,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

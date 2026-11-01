@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->
+<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.66] - 2026-11-01
+
+### Spiel
+
+- Keine sichtbare Aenderung: die Auslieferung wird automatisiert, Spiel, Save und Ledger bleiben unberuehrt.
+
+### Technik
+- Neu: `scripts/promote.mjs` und `.github/workflows/promote.yml`. Ein CI-Ergebnis entscheidet: gruen legt den PR an und mergt ihn mit den Pflichtsektionen, rot legt den Stand auf die permanente Branch `integration`, damit dort repariert wird.
+- Zwei parallele rote Staende werden komponiert statt verworfen. Die Wahrheit liegt im Branch und im Label `integration/rot`, nicht in der Warteschlange: GitHub haelt pro Concurrency-Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder Lauf den gesamten Rueckstand ab und ist idempotent. Ein Textkonflikt wird mit `integration/konflikt` gelabelt und bleibt beim Agenten; nichts wird erzwungen oder ueberschrieben.
+- Eine Identitaet fuer jeden Commit: `scripts/lib/identity.mjs` verdrahtet `Vannon <Schneider.felix1993@gmail.com>` in `turn:finish` und im Promote-Workflow, damit der Committer nicht davon abhaengt, welcher Runner oder welche Sandbox gerade committet. `.mailmap` fuehrt die Werkzeug-Namen der History auf denselben Eigentuemer.
+- Merge mit Verified-Badge ist opt-in (`RBD_PROMOTE_AUTO_MERGE=1`): dann mergt GitHub selbst und signiert, kann aber den Commit-Text nicht setzen. Ohne Opt-in mergt der Lauf explizit mit Subject und Body, damit `verify-commit-msg --head` auf `main` gruen bleibt.
+- Artefakt-Gate-Test entkoppelt: `gate-runner.test.ts` prueft Logs und Summary mit 60 s Limit statt 10 s. Unter paralleler Gate-Last braucht der Node-Start allein mehrere Sekunden, das Zeitlimit hat die Artefakt-Pruefung verfaelscht (TIMEOUT statt FAIL); die Zusicherungen selbst sind unveraendert.
 
 ## [0.3.65] - 2026-11-01
 

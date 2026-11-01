@@ -93,6 +93,37 @@ Einmalig in GitHub setzen (Settings → Rules → New branch ruleset) oder per A
 Damit gilt: Pull Request erforderlich, gruener Pflichtstatus aus dem richtigen
 Workflow, keine Force-Pushes, keine Branch-Loeschung, keine Direktpushes.
 
+## Auto-Promotion und Integrationsbranch
+
+`promote.yml` schliesst die Luecke zwischen "Branch gepusht" und "auf main".
+Der Workflow reagiert per `workflow_run` auf jedes abgeschlossene `CI Verify`
+und arbeitet ein Ergebnis aus:
+
+| CI-Ergebnis | Wirkung |
+| --- | --- |
+| success | PR wird angelegt (falls noetig) und mit `--squash --subject --body-file` gemergt; der Commit-Text traegt die drei Pflichtsektionen |
+| failure, timed_out, cancelled, startup_failure | Label `integration/rot`, Stand wird auf die permanente Branch `integration` gelegt |
+| `main` | keine Promotion, der Lauf endet sofort |
+
+**Zwei parallele rote Staende.** GitHub haelt pro Concurrency-Gruppe genau einen
+wartenden Lauf; ein dritter Aufruf verdraengt den zweiten. Deshalb liegt der
+Zustand nicht in der Warteschlange, sondern im Branch und im Label: jeder Lauf
+sammelt alle offenen PRs mit `integration/rot` und legt sie nacheinander auf
+`integration`. Die Gruppe `promote` laesst nur einen Schreiber zu, ein
+abgelehnter Push wird mit `fetch` und `reset --hard` neu aufgesetzt und erneut
+gemergt — der Merge eines bereits enthaltenen Branches meldet "Already up to
+date" und ist damit idempotent. Nichts wird verworfen, nichts force-gepusht.
+
+**Textkonflikt.** Kollidiert ein Stand mit `integration`, wird der Merge
+abgebrochen, der PR bekommt `integration/konflikt` und einen Kommentar; der
+Stand bleibt unveraendert. Aufloesen ist Agentenarbeit (`git merge
+origin/integration`), kein Automatismus — ein `-X theirs` wuerde Arbeit
+stillschweigend verlieren.
+
+**Gruene Integrationsbranch.** Ist die Reparatur auf `integration` gruen, laeuft
+`CI Verify` fuer diesen Branch, und derselbe Workflow legt den PR
+`integration` -> `main` an und mergt ihn. Damit ist der Rueckweg automatisch.
+
 ## Release- und APK-Kette
 
 Ein mit `GITHUB_TOKEN` gepushter Tag loest keinen Workflow aus. Deshalb ruft
