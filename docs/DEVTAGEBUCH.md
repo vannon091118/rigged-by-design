@@ -10,6 +10,27 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Merge ohne PR-Body macht main rot (Vorfall und Reparatur)
+
+**Ziel.** PR #32 mergen und `main` gruen halten.
+
+**Vorfall.** Der Merge lief ueber die GitHub-API mit `commit_title`, aber ohne
+`commit_message`. Der Merge-Commit `3c46ba6` trug damit nur den Klicktitel und
+keine Pflichtsektionen. `verify-commit-msg --head` prueft auf `main` genau diesen
+Commit und wurde rot: `[ERR-4006] Pflichtsektion fehlt: ### Changes (Was ist neu)`,
+`### Technische Basis & Kausalitaet`, `### Ausblick (Naechste Schritte)`. Der Job
+`Fail-Closed Gates` endete mit Exit 1; `Bump, tag, release` und der APK-Bau wurden
+deshalb uebersprungen (conclusion `skipped`).
+
+**Reparatur.** Kein Rewrite von `main`, kein Force-Push: Der Regeltext in
+`AGENTS.md` nennt jetzt die API-Falle ausdruecklich (PR-Body gehoert in
+`commit_message`), und dieser Doku-Commit traegt die drei Sektionen selbst. Damit
+prueft `verify-commit-msg --head` wieder einen konformen HEAD, und die
+Release-Kette laeuft erneut an.
+
+**Lehre.** Ein gruener PR ist kein gruener `main`: Die Commit-Nachricht des
+Merge-Commits ist Teil des Gates, nicht nur der PR-Body.
+
 ## 2026-11-01 - performance.now-Ausnahme auf Pacing verengt und als dicht belegt
 
 **Ziel.** Beweisen, dass die Render-Ausnahme genau Pacing erlaubt und nicht mehr:
@@ -321,7 +342,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:28 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:34 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

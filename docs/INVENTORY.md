@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:28 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 11:34 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -338,7 +338,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CHANGELOG.md` — Changelog — gelesen: 41 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 339 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 360 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -1301,6 +1301,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T21 | **2026-11-01 11:35 UTC**: Vorfall nach Merge #32: Der Merge-Commit `3c46ba6` trug nur den Klicktitel, `verify-commit-msg --head` wurde auf `main` rot (`ERR-4006`, drei Pflichtsektionen fehlten), `Bump, tag, release` und APK-Bau wurden uebersprungen. Reparatur ohne Rewrite: `AGENTS.md` nennt die API-Falle (PR-Body gehoert beim Connector-Merge in `commit_message`), DEVTAGEBUCH haelt den Vorfall fest, dieser Commit traegt die Sektionen selbst. Gelesen: `.github/workflows/ci-verify.yml` (Job-Log 124835402124), `scripts/verify-commit-msg.mjs`, `AGENTS.md`. v1.18. |
 | T20 | **2026-11-01 11:44 UTC**: `performance.now`-Ausnahme auf Pacing verengt und als dicht belegt. Gelesen: `eslint.config.mjs`, `src/render/floor-view.ts`, `src/render/floor-props.ts`, `src/render/music.ts`, `src/render/guest-art.ts`, `src/store/foreign-floor-commands.ts`, `src/store/world-store.ts`, `src/core/sim/player-jobs.ts`, `src/store/types.ts`, `scripts/verify-tree.mjs`. Befund: Ausnahme galt fuer ganz `src/render/**`, `Date()` ohne `new` und `performance.timeOrigin` waren ungesperrt. Behoben: drei Pacing-Dateien namentlich, Call-`Date` und `timeOrigin` als Selectoren. 24 Proben: nur `performance.now` in den drei Dateien (plus Alias/`globalThis`) gruen, alle anderen Quellen und jede vierte Render-Datei rot. Rot/Gruen: `Math.random` in `music.ts` + `Date.now` in `floor-view.ts` -> Lint Exit 1 (4 Fehler), nach Revert Exit 0; `performance.now` in `guest-art.ts` -> Exit 1. Datenfluss: Render importiert Store nur als `import type { GameView }`, `tick` waechst nur in `tick.ts`, kein Command nimmt Zeit ausser `buyBarCmd` mit `world.tick`. v1.17. |
 | T19 | **2026-11-01 11:15 UTC**: Determinismus-Sperre fail-closed gehaertet. Gelesen: `eslint.config.mjs`, `scripts/verify-test-quality.mjs`, `src/core/rng/streams.ts`, `src/store/world-store.ts`, `src/render/music.ts`, `src/render/floor-view.ts`, `src/render/floor-props.ts`, `scripts/lib/pipeline-plan.mjs`, `vite.config.ts`. Befund (20 Proben): sieben Bypaesse offen — `globalThis.Math.random`, `window.Math.random`, `new globalThis.Date`, `crypto.getRandomValues`, `crypto.randomUUID`, `eslint-disable`, pauschal freigestelltes `src/core/rng/streams.ts` und ungeschuetzte `scripts/**`. Behoben: Syntax-Selectoren fuer Namespace-/new-Umwege und Krypto, `noInlineConfig`, `streams.ts` nur noch Krypto-erlaubt, `scripts/**` per Default gesperrt mit sieben namentlichen Tooling-Ausnahmen, `@seed-initializer`-Ausnahme entfernt. Rot/Gruen: `Math.random` in `tick.ts` -> Lint Exit 1 (2 Fehler, Zeile 140), nach Revert Exit 0. v1.16. |
 | T18 | **2026-11-01 11:02 UTC**: Event-Engine-Taskplan adversarial gehaertet. Gelesen: `docs/event-narrative-engine-taskplan.md` (687 Zeilen, NAR-00 bis NAR-17), `src/core/sim/visitors.ts`, `src/core/economy/ledger.ts`, `src/core/sim/journal.ts`, `src/core/sim/demand.ts`, `src/store/save.ts`, `scripts/lib/pipeline-plan.mjs`, `scripts/loc-budgets.mjs`, `vite.config.ts`. Befunde: veraltete Gate-Liste, veralteter Pruefstand 708d31c, Reihenfolge NAR-12 vor NAR-13; 20 Angriffe, Systemmatrix ueber 20 Systeme und Definition of Done je Task ergaenzt, kein Task gestrichen. v1.15. |
