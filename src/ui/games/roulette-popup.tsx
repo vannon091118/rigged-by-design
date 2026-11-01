@@ -31,6 +31,7 @@ export function RoulettePopup(props: Props) {
   const [chips, setChips] = useState<Record<string, number>>({});
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);
+  const [lastBet, setLastBet] = useState<readonly RouletteChip[]>([]);
 
   const counts = Object.values(chips);
   // Einsatz in Mikro-Einheiten rechnen, damit Jetons und Einsatz exakt zusammenpassen.
@@ -43,7 +44,17 @@ export function RoulettePopup(props: Props) {
 
   const place = (spot: string): void => {
     if (blocked) return;
+    // Ein neuer Satz gehoert nicht zum alten Ergebnis; sonst wirkt der alte
+    // Verlust wie die Buchung des gerade gelegten Jetons.
+    setResult(null);
+    setLastBet([]);
     setChips((current) => ({ ...current, [spot]: (current[spot] ?? 0) + 1 }));
+  };
+
+  const chooseDenom = (value: number): void => {
+    setResult(null);
+    setLastBet([]);
+    setDenom(value);
   };
 
   const spin = (): void => {
@@ -53,6 +64,7 @@ export function RoulettePopup(props: Props) {
       .map(([spot, count]) => ({ spot, stake: (count * chipMicro) as VaCoinMicro }));
     const next = onSpin(total, { roulette: list });
     if (!next) return;
+    setLastBet(list);
     setResult(next);
     setRunning(true);
     setChips({});
@@ -61,9 +73,10 @@ export function RoulettePopup(props: Props) {
     stage.current?.spin(number, () => setRunning(false));
   };
 
-  // Nur die Feldnamen: der ausgezahlte Betrag steht schon im Kern-Ergebnis.
-  const hitText = (): string => (result?.roulette?.hits ?? [])
-    .map((hit) => spotInfo(hit.spot)?.label ?? hit.spot)
+  // Der Satz bleibt sichtbar, auch wenn kein Feld getroffen wurde; sonst ist
+  // bei einer Niete nicht mehr erkennbar, worauf gesetzt wurde.
+  const betText = (): string => lastBet
+    .map((chip) => spotInfo(chip.spot)?.label ?? chip.spot)
     .join(' · ');
 
   return (
@@ -93,8 +106,8 @@ export function RoulettePopup(props: Props) {
             {running
               ? 'Die Kugel laeuft und faellt in ihre Tasche.'
               : result
-                ? `${result.label}${result.payout > 0 ? ` · ${vc(result.payout, 2)}` : ' · alles verloren'}${
-                  result.roulette && result.roulette.hits.length > 0 ? ` (${hitText()})` : ''}`
+                ? `${result.label}${betText() ? ` · Satz ${betText()}` : ''}${
+                  result.payout > 0 ? ` · ${vc(result.payout, 2)}` : ' · alles verloren'}`
                 : 'Jeton waehlen, Feld anklicken, drehen. Mehrere Felder gleichzeitig sind erlaubt.'}
           </p>
         </div>
@@ -109,7 +122,7 @@ export function RoulettePopup(props: Props) {
                   type="button"
                   className={`chip${denom === value ? ' active' : ''}`}
                   disabled={running}
-                  onClick={() => setDenom(value)}
+                  onClick={() => chooseDenom(value)}
                   title={`Jeton zu ${value} VC`}
                 >
                   {value} VC
@@ -127,7 +140,7 @@ export function RoulettePopup(props: Props) {
               type="button"
               className="btn small ghost"
               disabled={running || counts.length === 0}
-              onClick={() => setChips({})}
+              onClick={() => { setChips({}); setResult(null); setLastBet([]); }}
             >
               FELDER LEEREN
             </button>

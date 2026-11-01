@@ -4,11 +4,10 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 
 ## Ablage und Governance
 
-- Es gibt genau **einen** Bildsatz: `docs/screenshots/current/` (höchstens 16 Bilder).
-- Neue Aufnahmen ersetzen die alten im selben Ordner; es entstehen **keine** Versionsordner mehr.
+- Kanonischer Spielsatz: `docs/screenshots/current/` (höchstens 16 Bilder).
+- Versionierte Vorher/Nachher-Belege: `docs/screenshots/comparison/`; die Version steht im Dateinamen (`v1`, `v2`), nicht in einem eigenen Ordner. `current/` bleibt der einzige fortlaufende Spielsatz.
 - Dateinamen: `<laufende Nummer>-<bereich>.png`, Unteransichten mit Buchstabe (`04b`, `06b`). Die Nummer folgt dem Weg durch das Spiel, nicht dem Aufnahmezeitpunkt.
-- Außerhalb von `current/` liegen keine Spielbilder; diese README ist der einzige gemeinsame Eintrag.
-- `scripts/autofix-0911.mjs` entfernt vor den Gates jeden veralteten `docs/screenshots/v*`-Ordner und ein altes Wurzel-`screenshots/`. Damit bleibt das Repository schlank; die Historie steckt in Git, nicht im Arbeitsbaum.
+- Außerhalb von `current/` und `comparison/` liegen keine Spielbilder; diese README ist der einzige gemeinsame Eintrag.
 - Die PNGs sind verlustfrei nachverdichtet (nur IDAT neu gepackt, Pixel unverändert). Vor dem Commit keine Screenshot-Werkzeuge mit Qualitätsverlust verwenden.
 
 ## Aktueller Satz — Einheitliche Art Direction und gestaltete Etage
@@ -37,6 +36,18 @@ Was die Bilder gegenüber den entfernten Versionen zeigen:
 - Laufwege zwischen den Räumen liegen bewusst dunkler als die Räume, damit der Saal als Bühne liest.
 - Panels nutzen dieselben Farbrollen und eine gemeinsame Typo-Hierarchie; bei mittleren Fensterbreiten bekommt die HUD-Aktionsleiste eine eigene Zeile statt rechts abgeschnitten zu werden.
 
+
+## Versionierter Asset-Vergleich — 01.11.2026
+
+Aufgenommen aus dem laufenden Spiel (Chromium, 1280 × 900) nach der Integration des vollständigen Pre-Alpha-Pakets. Die alten Aufnahmen bleiben unverändert in `current/`; die Belege liegen daneben in `comparison/`.
+
+| Datei | Version | Zeigt |
+| --- | --- | --- |
+| `01-floor-v1-vorher.png` | v1 | Der bisherige Floor aus `current/01-floor-uebersicht-frisch.png`, unverändert als Vergleichsbasis |
+| `02-floor-v2-nachher.png` | v2 | Derselbe Floor mit Geräte-, Tisch- und Deko-Texturen aus dem Paket |
+| `03-floor-v1-v2.png` | v1 → v2 | Beide Aufnahmen nebeneinander, links vorher, rechts nachher |
+| `04-asset-library-top-v2.png` | v2 | Asset-Bibliothek: Symbole, Maschinen, Deko und Plinko |
+| `05-animations-emitter-sounds-v2.png` | v2 | FX-Gruppen, drei Frame-Animationen, vier Emitter und sechs Tonspuren |
 
 ## Spielbühnen (`09` bis `15`)
 

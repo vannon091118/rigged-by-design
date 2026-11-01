@@ -14,6 +14,7 @@ interface HudProps {
   readonly onJournal: () => void;
   readonly onDiagnostics: () => void;
   readonly onLook: () => void;
+  readonly onAssets: () => void;
   readonly onSkill: (attribute: RpgAttribute) => void;
   readonly onHelp: () => void;
   readonly muted?: boolean;
@@ -26,7 +27,7 @@ const PENALTY_LABEL = (kind: string): string =>
 const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 'gemischt' : 'gereizt');
 
 export function Hud({
-  view, onBuild, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onSkill, onHelp,
+  view, onBuild, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onAssets, onSkill, onHelp,
   muted = false, onToggleSound,
 }: HudProps) {
   const rpg = view.player.rpg;
@@ -100,6 +101,7 @@ export function Hud({
         <button type="button" className="btn ghost" onClick={onJournal} title="Jede Buchung mit Ursache und Folge lesen">PROTOKOLL</button>
         <button type="button" className="btn ghost" onClick={onDiagnostics} title="Buchhaltung, Personal und Lager prüfen">PRÜFUNG</button>
         <button type="button" className="btn ghost" onClick={onLook} title="Aussehen deiner Spielfigur ändern">CHARAKTER</button>
+        <button type="button" className="btn ghost" onClick={onAssets} title="Alle Texturen, Animationen, Emitter und Tonspuren des Pakets ansehen">ASSETS</button>
         {onToggleSound && (
           <button type="button" className="btn ghost" aria-pressed={muted} onClick={onToggleSound} title={muted ? 'Sound ist stumm · Lautstärke und Kanäle öffnen' : 'Lautstärke und Kanäle einstellen'}>
             {muted ? 'STUMM' : 'SOUND'}

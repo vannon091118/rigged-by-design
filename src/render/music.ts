@@ -7,7 +7,7 @@
 import manifest from './assets/manifest.json';
 import { soundSettings, subscribeSoundSettings } from './sound-fx';
 
-type MusicState = 'SILENT' | 'FLOOR' | 'GAMES' | 'SLOT';
+type MusicState = 'SILENT' | 'FLOOR' | 'GAMES' | 'SLOT' | 'NIGHT' | 'MENU' | 'BACKGROUND';
 
 type AudibleState = Exclude<MusicState, 'SILENT'>;
 
@@ -20,6 +20,9 @@ const TRACKS: Readonly<Record<AudibleState, string>> = {
   FLOOR: `${manifest.base}${manifest.music.floor}`,
   GAMES: `${manifest.base}${manifest.music.games}`,
   SLOT: `${manifest.base}${manifest.music.slot}`,
+  NIGHT: `${manifest.base}${manifest.music.night}`,
+  MENU: `${manifest.base}${manifest.music.menu}`,
+  BACKGROUND: `${manifest.base}${manifest.music.background}`,
 };
 
 const clamp01 = (value: number): number => (Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0);

@@ -2,6 +2,7 @@
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { Card } from '../../core/rng/shoe';
 import type { PokerTable } from '../../core/games/poker-types';
+import { POKER_STYLES } from '../../core/games/poker-strategy';
 import { CARD_H, CARD_W, CardView } from './card-renderer';
 
 const W = 520;
@@ -134,7 +135,8 @@ export class PokerCanvas {
     this.#seatCards.forEach((cards, seat) => {
       const player = opponents[seat];
       this.#seats[seat]!.alpha = player?.folded ? 0.4 : 1;
-      this.#seatLabels[seat]!.text = player ? `${player.id} · ${player.folded ? 'raus' : vc(player.committed)}` : '';
+      const style = player?.style ? ` · ${POKER_STYLES[player.style].label}` : '';
+      this.#seatLabels[seat]!.text = player ? `${player.id}${style} · ${player.folded ? 'raus' : vc(player.committed)}` : '';
       cards.forEach((view, index) => {
         const card = player?.hole[index];
         if (!player || !card) {

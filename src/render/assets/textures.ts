@@ -10,7 +10,7 @@ import { Assets, Texture } from 'pixi.js';
 import manifest from './manifest.json';
 
 const BASE = manifest.base;
-const SLOT_SYMBOLS: Readonly<Record<string, string>> = manifest.slotSymbols;
+const SLOT_SYMBOLS: Readonly<Record<string, string>> = manifest.symbols;
 
 /** Einmal geladene Texturen; der Schluessel ist der vollstaendige Pfad. */
 const cache = new Map<string, Texture>();
@@ -59,4 +59,19 @@ async function preloadTextures(entries: Iterable<string>): Promise<void> {
 /** Was die Slot-Buehne braucht, bevor sie Walzen baut. */
 export async function preloadSlotSymbols(): Promise<void> {
   await preloadTextures(Object.values(SLOT_SYMBOLS));
+}
+
+/** Maschinen-Texturen als Backdrop vorladen. */
+export async function preloadMachineTextures(): Promise<void> {
+  await preloadTextures(Object.values(manifest.machines));
+}
+
+/** Deko-Texturen fuer den Boden; der Katalog laedt den Rest lazy. */
+export async function preloadDecorTextures(): Promise<void> {
+  await preloadTextures(Object.values(manifest.decor));
+}
+
+/** Pegs, Bumper und Auszahlungsfelder der Plinko-Buehne. */
+export async function preloadPlinkoTextures(): Promise<void> {
+  await preloadTextures(Object.values(manifest.plinko));
 }

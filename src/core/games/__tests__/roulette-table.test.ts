@@ -48,6 +48,16 @@ describe('Roulette-Tableau', () => {
     expect(colourOf(15)).toBe('schwarz');
   });
 
+  it('bucht die 31 als schwarze Zahl und zahlt nur Schwarz', () => {
+    const at31 = { nextInt: () => 31 } as unknown as Prng;
+    const red = spinRouletteTable(at31, [{ spot: 'RED', stake: fromVC(1) }]);
+    expect(red.hits).toHaveLength(0);
+    expect(red.multiplierBps).toBe(0);
+    const black = spinRouletteTable(at31, [{ spot: 'BLACK', stake: fromVC(1) }]);
+    expect(black.hits.map((hit) => hit.spot)).toEqual(['BLACK']);
+    expect(black.multiplierBps).toBe(19_500);
+  });
+
   it('rechnet mehrere Jetons einer Drehung gemeinsam ab', () => {
     const prng = new Prng(randomSeed());
     for (let round = 0; round < 120; round += 1) {

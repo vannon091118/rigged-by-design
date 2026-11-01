@@ -2,6 +2,7 @@
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { PegKind, PlinkoConfig, PlinkoDrop } from '../../core/games/plinko-config';
 import { plinkoPaytable } from '../../core/games/plinko-config';
+import { PEG_COLOR, payoutArt, pegArt } from './plinko-assets';
 
 const WIDTH = 100;
 const TOP = 8;
@@ -11,13 +12,7 @@ const BALL_RADIUS = 2.2;
 const PEG_COLUMNS = 8;
 const FLOOR_BASE = 120;
 
-const PEG_COLOR: Readonly<Record<PegKind, number>> = {
-  NORMAL_PEG: 0x6f5b8c,
-  BOUNCY_PEG: 0x54e0ff,
-  STICKY_PEG: 0xffd166,
-  MAGNET_PEG: 0xff2e88,
-  SPLIT_PEG: 0x8ff0c6,
-};
+
 
 interface Peg {
   readonly x: number;
@@ -94,11 +89,8 @@ export class PlinkoCanvas {
     frame.rect(WIDTH - 4, TOP, 0.7, this.#floorY - TOP).fill({ color: 0x3a2a5c, alpha: 0.8 });
     this.#board.addChild(frame);
     for (const peg of this.#pegs) {
-      const g = new Graphics();
       const radius = peg.kind === 'NORMAL_PEG' ? PEG_RADIUS : PEG_RADIUS * 1.5;
-      g.circle(peg.x, peg.y, radius).fill(PEG_COLOR[peg.kind]);
-      if (peg.kind !== 'NORMAL_PEG') g.circle(peg.x, peg.y, radius + 0.7).stroke({ width: 0.3, color: 0xffffff, alpha: 0.5 });
-      this.#board.addChild(g);
+      this.#board.addChild(pegArt(peg, radius));
     }
     for (const side of [12, WIDTH - 12]) {
       const wall = new Graphics().circle(side, this.#floorY - 12, 3.4).fill({ color: 0x54e0ff, alpha: 0.85 });
@@ -115,8 +107,10 @@ export class PlinkoCanvas {
       const tint = payBps === 0 ? 0x2a1030 : payBps >= 50_000 ? 0xffd166 : payBps >= 20_000 ? 0xff2e88 : 0x6f5b8c;
       const pocket = new Graphics()
         .roundRect(left + 0.6, this.#floorY, width - 1.2, 16, 1.8)
-        .fill({ color: tint, alpha: 0.32 })
+        .fill({ color: tint, alpha: 0.2 })
         .stroke({ width: 0.4, color: tint, alpha: 0.9 });
+      const payout = payoutArt(left, width, this.#floorY, payBps);
+      if (payout) this.#board.addChild(payout);
       // Die Buehne skaliert um Faktor 3: ohne eigene Aufloesung wird die kleine
       // Schrift beim Hochskalieren zu Brei. resolution rastert sie passend groß.
       const label = new Text({

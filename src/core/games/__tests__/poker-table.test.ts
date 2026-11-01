@@ -14,7 +14,8 @@ import { createShoe, DECK_SIZE } from '../../rng/shoe';
 import { playRound } from '../round';
 import { bestHand, compareRank, handName } from '../poker-hand';
 import { settleShowdown } from '../poker-settle';
-import { humanAct, startHand } from '../poker-table';
+import { humanAct, startHand, toCall } from '../poker-table';
+import { POKER_STYLES } from '../poker-strategy';
 import type { PokerPlayer, PokerTable } from '../poker-types';
 
 const card = (rank: string, suit: Card['suit']): Card => ({ rank, suit });
@@ -76,6 +77,31 @@ describe('Poker-Tisch', () => {
     expect(settled.result?.net).toBe(true);
     // Waere der Side Pot des Hoechsteinsatzes mitverteilt, stünde hier 14_700.
     expect(settled.result?.label).toContain('Paar');
+  });
+
+  it('gibt jedem Gast ein eigenes Profil und bucht je Spieler nur das Ante', () => {
+    const table = startHand(new Prng(randomSeed()), { stake: 10_000 });
+    expect(table.players.map((entry) => entry.style)).toEqual([undefined, 'FELS', 'BUCHHALTER', 'HAI']);
+    expect(table.players.map((entry) => entry.stack)).toEqual([7_500, 27_500, 17_500, 7_500]);
+    expect(table.players.every((entry) => entry.streetCommitted === 0)).toBe(true);
+    expect(table.pot).toBe(10_000);
+    expect(table.unit).toBe(2_500);
+  });
+
+  it('trennt den offenen Einsatz einer Strasse vom kumulierten Einsatz', () => {
+    const table = startHand(new Prng(randomSeed()), { stake: 10_000 });
+    expect(table.players[0]?.committed).toBe(2_500);
+    expect(toCall(table, table.players[0]!)).toBe(0);
+    const raised: PokerTable = { ...table, bet: 5_000 };
+    expect(toCall(raised, raised.players[0]!)).toBe(5_000);
+  });
+
+  it('staffelt die CPU-Profile nach Range, Aggression und Einsatzgroesse', () => {
+    expect(POKER_STYLES.FELS.raiseAt).toBeGreaterThan(POKER_STYLES.BUCHHALTER.raiseAt);
+    expect(POKER_STYLES.BUCHHALTER.raiseAt).toBeGreaterThan(POKER_STYLES.HAI.raiseAt);
+    expect(POKER_STYLES.FELS.callMargin).toBeGreaterThan(POKER_STYLES.BUCHHALTER.callMargin);
+    expect(POKER_STYLES.BUCHHALTER.callMargin).toBeGreaterThan(POKER_STYLES.HAI.callMargin);
+    expect(POKER_STYLES.FELS.sizing).toBeLessThan(POKER_STYLES.HAI.sizing);
   });
 
   it('bucht beim Mitgehen den offenen Einsatz und gibt die Strasse frei', () => {
