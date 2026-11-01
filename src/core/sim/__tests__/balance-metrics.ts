@@ -40,6 +40,7 @@ export interface DayRow {
   abBroke: number;
   abAngry: number;
   neverPlayed: number;
+  totalDepartures: number;
   returnRate: number;
   satisfaction: number;
   reputation: number;
@@ -162,6 +163,7 @@ export function summarize(
     abBroke: acc.abBroke,
     abAngry: acc.abAngry,
     neverPlayed: acc.neverPlayed,
+    totalDepartures: acc.departures.length,
     returnRate: visitors.length > 0 ? (100 * visitors.filter((v) => v.visits >= 2).length) / visitors.length : 0,
     satisfaction: world.satisfaction,
     reputation: reputation(world),

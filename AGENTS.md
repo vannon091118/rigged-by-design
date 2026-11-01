@@ -42,7 +42,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `npm run turn:finish -- --affected` fährt zuerst `test:affected` (Ziel, transitiver Importgraph, Subsystem, nur schnelle Beweisklassen) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor. Die Auswahl läuft vor dem Versions-Bump, damit `package.json` sie nicht auf alle Tests ausweitet.
-- If branch protection rejects direct push, push the working branch and open a focused PR to `main`. The merge commit is checked by `verify-commit-msg --head`: use the exact section headings (`### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII variants fail. Reusing the PR body as the merge message satisfies this.
+- If branch protection rejects direct push, push the working branch and open a focused PR to `main`. The merge commit is checked by `verify-commit-msg --head`: use the exact section headings (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII variants fail. Reusing the PR body as the merge message satisfies this.
 
 ## Conventions
 

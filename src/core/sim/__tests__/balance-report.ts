@@ -51,7 +51,9 @@ export function balanceViolations(rows: readonly DayRow[], days: number): readon
   }
   // Ueber den ganzen Lauf gilt: niemand geht, der nicht gekommen ist. Einzelne Tage
   // taugen nicht als Bezug, weil Gaeste ueber Nacht bleiben und erst spaeter gehen.
-  const departed = rows.reduce((sum, row) => sum + row.abWait + row.abBroke + row.abAngry + row.neverPlayed, 0);
+  // totalDepartures zaehlt jeden Abgang genau einmal (acc.departures.length), die
+  // Kategorien abWait/abBroke/abAngry/neverPlayed duerfen sich ueberlappen.
+  const departed = rows.reduce((sum, row) => sum + row.totalDepartures, 0);
   const arrived = rows.reduce((sum, row) => sum + row.arrivals, 0);
   if (departed > arrived) {
     found.push({ day: 0, field: 'abgaenge', detail: `${departed} Abgaenge bei ${arrived} Ankuenften im ganzen Lauf` });

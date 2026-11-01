@@ -60,37 +60,60 @@ export function visitRivalWithJournal(
 }
 
 /**
- * Kartenrunden entscheiden sich Zug fuer Zug im Fenster; gebucht wird erst das
- * Ergebnis. Einsatz und Auszahlung laufen trotzdem ueber denselben Ledger-Pfad.
+ * Kartenrunden entscheiden sich Zug fuer Zug im Fenster.
+ * Einsatz wird sofort beim Austeilen gebucht (bookCardStake),
+ * Auszahlung erst beim Rundenende (settleCardPayout).
  */
-function settleCardRound(
-  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
-  stake: VaCoinMicro, bps: number, label: string,
-): GameResult {
+function validateCardRound(
+  ledger: Ledger, rivalId: RivalId, machineIndex: number,
+  stake: VaCoinMicro,
+): { rival: ReturnType<typeof getRival>; entry: ReturnType<typeof getRival>['machines'][number]; edge: number; netBps: (bps: number) => number } {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
-  if (!Number.isSafeInteger(bps) || bps < 0) throw new Error(`Basisquote ${String(bps)} ist ungueltig.`);
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
   const edge = rivalEdge(rival, entry);
-  const netBps = bps > 0 ? Math.max(0, bps - edge) : 0;
+  const netBps = (bps: number) => bps > 0 ? Math.max(0, bps - edge) : 0;
+  return { rival, entry, edge, netBps };
+}
+
+/** Buchen des Einsatzes beim Austeilen. Gibt netBps zurueck, damit spaeter die Auszahlung berechnet werden kann. */
+export function bookCardStake(
+  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
+  stake: VaCoinMicro, bps: number,
+): { netBps: number; label: string } {
+  const { rival, entry, netBps } = validateCardRound(ledger, rivalId, machineIndex, stake);
   foreignBet(ledger, stake, world.tick);
+  recordJournal(world, {
+    kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
+    effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
+  });
+  return { netBps: netBps(bps), label: entry.label };
+}
+
+/** Buchen der Auszahlung beim Rundenende. */
+export function settleCardPayout(
+  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
+  stake: VaCoinMicro, netBps: number, label: string,
+): GameResult {
+  const { rival, entry } = validateCardRound(ledger, rivalId, machineIndex, stake);
   const payout = mulVC(stake, netBps);
   if (payout > 0) foreignWin(ledger, payout, world.tick);
   recordExclusionPlay(world, stake, payout, world.tick);
   recordJournal(world, {
-    kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde',
+    kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Auszahlung',
     effect: `${rival.name} (${entry.label}): ${label} · ${toVCString(payout)}`, refs: { rivalId },
   });
   return { game: entry.game, stake, payout, multiplierBps: netBps, label, detail: [label] };
 }
 
-/** Wickelt die Kartenbuchung in die Form, die der Store fuer #foreign erwartet. */
+/** Komplettbuchung (Legacy/Tests): Einsatz + Auszahlung in einem Schritt. */
 export function bookCardRound(
   world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
   stake: VaCoinMicro, bps: number, label: string,
 ): ForeignOutcome {
-  const result = settleCardRound(world, ledger, rivalId, machineIndex, stake, bps, label);
+  const { netBps } = bookCardStake(world, ledger, rivalId, machineIndex, stake, bps);
+  const result = settleCardPayout(world, ledger, rivalId, machineIndex, stake, netBps, label);
   return { result, notice: `Kartenrunde bei ${getRival(rivalId).name}: ${label}.` };
 }

@@ -244,7 +244,8 @@ export default function App() {
           onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
           onShellRound={() => worldStore.shellRound()}
           onCardSeed={() => worldStore.cardSeed()}
-          onSettleCard={(rivalId, machineIndex, stakeVC, bps, label) => worldStore.settleCard(rivalId, machineIndex, stakeVC, bps, label)}
+          onDealCard={(rivalId, machineIndex, stakeVC, bps) => worldStore.dealCard(rivalId, machineIndex, stakeVC, bps)}
+          onSettleCard={(rivalId, machineIndex, stakeVC, netBps, label) => worldStore.settleCard(rivalId, machineIndex, stakeVC, netBps, label)}
           onTakeHome={() => worldStore.takeHome(5)}
           onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
         />

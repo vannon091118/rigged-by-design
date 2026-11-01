@@ -32,7 +32,8 @@ interface Props {
   readonly onSpin: (betVC: number, options?: GameExtras) => GameResult | null;
   readonly onShellRound: () => ShellRound;
   readonly onCardSeed: () => number;
-  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number, bps: number) => { netBps: number; label: string } | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 
@@ -71,6 +72,7 @@ export function TableLauncher(props: Props) {
         wallets={wallets}
         subtitle={`${where} Zwei Karten, ein Dealer, du entscheidest.`}
         seed={props.onCardSeed}
+        onDeal={props.onDeal}
         onSettle={props.onSettle}
       />
     );
@@ -82,6 +84,7 @@ export function TableLauncher(props: Props) {
         wallets={wallets}
         subtitle={`${where} Vier Spieler, ein Pot, du entscheidest an jedem Zug.`}
         seed={props.onCardSeed}
+        onDeal={props.onDeal}
         onSettle={props.onSettle}
       />
     );
@@ -93,6 +96,7 @@ export function TableLauncher(props: Props) {
         wallets={wallets}
         subtitle={`${where} Neun Zeilen, fuenf Karten, du haeltst.`}
         seed={props.onCardSeed}
+        onDeal={props.onDeal}
         onSettle={props.onSettle}
       />
     );

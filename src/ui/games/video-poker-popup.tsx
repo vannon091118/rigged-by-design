@@ -24,7 +24,8 @@ interface Props {
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
   readonly seed: () => number;
-  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number, bps: number) => { netBps: number; label: string } | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
 }
 
 const NO_HOLDS = [false, false, false, false, false];
@@ -45,6 +46,8 @@ export function VideoPokerPopup(props: Props) {
   const deal = (): void => {
     if (phase === 'HOLD' || !canPay) return;
     shoe.current = createCardShoe(props.seed());
+    const dealResult = props.onDeal(bet, 10_000); // Video Poker: 100% basis
+    if (!dealResult) return;
     const dealt = dealVideoPoker(shoe.current);
     setHand(dealt);
     holdsRef.current = NO_HOLDS;

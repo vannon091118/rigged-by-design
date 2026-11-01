@@ -22,7 +22,7 @@ import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
-import { bookCardRound, riskRivalWin, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
+import { bookCardRound, bookCardStake, riskRivalWin, settleCardPayout, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, takeHomeToWallet, useCarriedAtPlayer } from './player-tools';
@@ -233,9 +233,33 @@ class WorldStore {
   takeDrink(): void { this.#event(() => takeDrink(this.#world)); }
   serveDrink(guestId: number): void { this.#event(() => serveDrink(this.#world, this.#ledger, guestId)); }
   moveTo(point: Point): void { movePlayer(this.#world, point); this.#emit(false); }
-  /** Kartenrunde: Schuh aus dem Welt-PRNG, gebucht wird erst das Ergebnis. */
+  /** Kartenrunde: Schuh aus dem Welt-PRNG. Einsatz wird beim Austeilen gebucht, Auszahlung beim Rundenende. */
   cardSeed(): number { return this.#prng.nextInt(1, 2_147_483_646); }
-  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number, label: string): GameResult | null {
+  /** Buchen des Einsatzes beim Austeilen. Liefert netBps fuer spaetere Auszahlung. */
+  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number): { netBps: number; label: string } | null {
+    try {
+      return bookCardStake(this.#world, this.#ledger, rivalId, machineIndex, fromVC(stakeVC), bps);
+    } catch (error) {
+      this.#notice = error instanceof Error ? error.message : 'Einsatzbuchung fehlgeschlagen.';
+      this.#emit(false);
+      return null;
+    }
+  }
+  /** Buchen der Auszahlung beim Rundenende. */
+  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null {
+    try {
+      const result = settleCardPayout(this.#world, this.#ledger, rivalId, machineIndex, fromVC(stakeVC), netBps, label);
+      this.#notice = `Kartenrunde Auszahlung: ${label}.`;
+      this.#emit();
+      return result;
+    } catch (error) {
+      this.#notice = error instanceof Error ? error.message : 'Auszahlungsbuchung fehlgeschlagen.';
+      this.#emit(false);
+      return null;
+    }
+  }
+  /** Komplettbuchung (Legacy/Tests): Einsatz + Auszahlung in einem Schritt. */
+  settleCardLegacy(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number, label: string): GameResult | null {
     return this.#foreign(() => bookCardRound(this.#world, this.#ledger, rivalId, machineIndex, fromVC(stakeVC), bps, label));
   }
   /** Huetchen: die Runde steht vor der Wahl fest, gebucht wird erst der Griff. */
