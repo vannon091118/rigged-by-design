@@ -153,9 +153,16 @@ function cashierTick(world: WorldState, ledger: Ledger, agent: StaffAgent, prng:
       }
       chooseActivity(world, guest, ledger, prng);
     }
-    if (guest.state === 'CASHOUT' && ledger.getBalance(pendingAccount(guest.id)) > 0) {
-      guest.stateTicks = Math.max(guest.stateTicks, CASHIER_WAIT);
-    }
+  }
+  // Das Kassierer-Boosting folgt derselben Schlange: nur der vorderste
+  // Auszahler wird sofort bedient, wer dahinter steht, wartet sichtbar
+  // an seinem Fleck, statt mitausgezahlt zu werden.
+  const cashouts = world.guests.filter((guest) => guest.state === 'CASHOUT');
+  const front = cashouts.length > 0
+    ? cashouts.reduce((lead, guest) => (guest.queueIndex < lead.queueIndex ? guest : lead))
+    : null;
+  if (front && ledger.getBalance(pendingAccount(front.id)) > 0) {
+    front.stateTicks = Math.max(front.stateTicks, CASHIER_WAIT);
   }
 }
 

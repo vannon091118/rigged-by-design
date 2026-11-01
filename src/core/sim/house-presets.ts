@@ -58,6 +58,12 @@ const LARGE_ZONES: readonly Zone[] = [
   zone('storage', 'Lager', 'STORAGE', 74, 58, 10, 24, 0x2a2a2a),
 ];
 
+/**
+ * Stufen-Korridor: eine Vorlage traegt nur Geraete, die unterhalb ihrer eigenen
+ * Ausbauvoraussetzung schon freigeschaltet sind (MEDIUM: KASSE-Klasse,
+ * LARGE: SAAL-Klasse). Sonst umgeht ein Umbau oder Start die Kauf-Sperren der
+ * Unternehmensstufen — genau der Widerspruch aus dem Main-Audit #19.
+ */
 export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: readonly Zone[]; furniture: () => Furniture[] }>> = {
   SMALL: {
     size: 30,
@@ -81,9 +87,9 @@ export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: read
       fixture(3, 'SLOT', 29, 8, 'gaming'),
       fixture(4, 'SLOT', 35, 8, 'gaming'),
       fixture(5, 'PLINKO', 41, 8, 'gaming'),
-      fixture(6, 'BLACKJACK', 23, 18, 'gaming'),
-      fixture(7, 'POKER', 30, 18, 'gaming'),
-      fixture(8, 'ROULETTE', 38, 18, 'gaming'),
+      fixture(6, 'VIDEO_POKER', 23, 18, 'gaming'),
+      fixture(7, 'PLINKO', 30, 18, 'gaming'),
+      fixture(8, 'SLOT', 38, 18, 'gaming'),
       fixture(9, 'SHELL', 30, 27, 'gaming'),
       fixture(10, 'DICE', 38, 27, 'gaming'),
       service(11, 'BAR', 'Theke', 22, 40, 'bar'),
@@ -105,7 +111,7 @@ export const BLUEPRINTS: Readonly<Record<TemplateId, { size: number; zones: read
       fixture(6, 'PLINKO', 59, 12, 'gaming'),
       fixture(7, 'BLACKJACK', 31, 22, 'gaming'),
       fixture(8, 'POKER', 39, 22, 'gaming'),
-      fixture(9, 'ROULETTE', 48, 22, 'gaming'),
+      fixture(9, 'VIDEO_POKER', 48, 22, 'gaming'),
       fixture(10, 'SHELL', 31, 32, 'gaming'),
       fixture(11, 'DICE', 38, 32, 'gaming'),
       fixture(12, 'SLOT', 48, 32, 'gaming'),

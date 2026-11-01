@@ -82,6 +82,15 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
     if (!point) { payAndLeave(world, ledger, guest); return; }
     sendGuestToQueue(world, guest);
     if (!moveGuest(guest)) return;
+    // Die Schlange gilt auch beim Auszahlen: nur der vorderste Gast wird bedient.
+    // Die Servicenuhr startet wie am Schalter erst, wenn der Gast vorne rueckt,
+    // sonst haette Warten die eigene Bedienzeit vorfinanziert.
+    if (guest.queueIndex > 0) {
+      guest.stateTicks = 0;
+      guest.patience = Math.max(0, guest.patience - 1);
+      if (guest.patience <= 0) payAndLeave(world, ledger, guest);
+      return;
+    }
     const cashier = world.agents.find((agent) => agent.role === 'cashier');
     if (cashier && Math.abs(cashier.x - point.x) + Math.abs(cashier.y - point.y) <= 8) {
       guest.stateTicks = Math.max(guest.stateTicks, CASHIER_WAIT);

@@ -1,6 +1,6 @@
 /** React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. */
 import { Application } from 'pixi.js';
-import { useEffect, useImperativeHandle, useRef, forwardRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState, forwardRef } from 'react';
 import type { GameView } from '../store/types';
 import { FloorView } from './floor-view';
 
@@ -23,6 +23,9 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
   const app = useRef<Application | null>(null);
   const floor = useRef<FloorView | null>(null);
   const latest = useRef(props);
+  // Scheitert die Buehnen-Init (kein WebGL/WebGPU), bleibt sichtbar, was fehlt:
+  // eine leere Flaeche ohne Rueckmeldung ist kein Zustand, der der Nutzer versteht.
+  const [stageError, setStageError] = useState<string | null>(null);
 
   latest.current = props;
 
@@ -54,6 +57,8 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       });
       floor.current.setPlacing(latest.current.placing);
       floor.current.setRunning(!latest.current.paused);
+    }).catch((error: unknown) => {
+      if (!cancelled) setStageError(error instanceof Error ? error.message : 'Initialisierung fehlgeschlagen.');
     });
 
     const observer = new ResizeObserver(() => {
@@ -85,5 +90,14 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     floor.current?.setRunning(!props.paused);
   }, [props.paused]);
 
-  return <div className="floor-stage" ref={host} aria-label="Casino-Floor" />;
+  return (
+    <div
+      className={stageError ? 'floor-stage floor-stage--failed' : 'floor-stage'}
+      ref={host}
+      aria-label="Casino-Floor"
+      role={stageError ? 'alert' : undefined}
+    >
+      {stageError ?? null}
+    </div>
+  );
 });

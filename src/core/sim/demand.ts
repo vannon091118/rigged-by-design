@@ -9,14 +9,13 @@ import { recordJournal } from './journal';
 import { attractionOf } from './offers';
 import { UNSAFE_REPUTATION_SPAWN_FACTOR } from './penalty-pool';
 import { companyTier } from './progression';
+import { rollGap } from './gap-schedule';
 import { reputation, spawnGuest } from './spawn';
 import type { DemandEventKind, DemandSnapshot, DemandSource, DemandTier, WorldState } from './types';
 
 export const TICKS_PER_DAY = 600;
 /** Der erste Gast steht nach sechs Sekunden vor der Tuer, egal wie der Wuerfel faellt. */
 export const FIRST_ARRIVAL_TICK = 12;
-const MIN_GAP = 4;
-const MAX_GAP = 90;
 const PEAK_FROM = 360;
 const PEAK_TO = 540;
 const EVENT_TICKS = 150;
@@ -106,12 +105,14 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
   };
 }
 
-/** Exponentialverteiltes Intervall: selten lange Pausen, nie ein minutenlanger Stillstand. */
+/**
+ * Eichfaehige Luecke: rollGap kalibriert das Klemmen nach, damit der
+ * Erwartungswert der real gespawnten Intervalle genau der angefragten Rate
+ * entspricht — der Clip bei 90 Ticks drueckt die beobachtete Rate nicht mehr
+ * ueber das Versprechen hinaus.
+ */
 function arrivalGap(prng: Prng, perDay: number): number {
-  const perTick = Math.max(1, perDay) / TICKS_PER_DAY;
-  const roll = Math.min(0.999, Math.max(0.001, prng.nextFloat()));
-  const gap = Math.round(-Math.log(1 - roll) / perTick);
-  return Math.min(MAX_GAP, Math.max(MIN_GAP, gap));
+  return rollGap(prng, TICKS_PER_DAY / Math.max(1, perDay));
 }
 
 /** Spaetere Stufen kommen in kleinen Gruppen; die Gruppengroesse ist ein Parameter, keine Grenze. */

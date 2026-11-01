@@ -136,6 +136,11 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .stage-wrap.is-placing { border-color: var(--neon); box-shadow: 0 0 0 1px rgba(0, 255, 204, 0.4), inset 0 0 120px rgba(0, 0, 0, 0.6); }
 .floor-stage { position: absolute; inset: 0; }
 .floor-stage canvas { display: block; width: 100% !important; height: 100% !important; }
+/* Buehnen-Ausfall: sichtbare Rueckmeldung statt leerer Flaeche. */
+.floor-stage--failed {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  color: var(--neon); font: 700 14px/1.5 system-ui; padding: 18px;
+}
 
 .stage-legend {
   position: absolute; top: 10px; left: 12px; z-index: 12; display: flex; gap: 8px; flex-wrap: wrap;

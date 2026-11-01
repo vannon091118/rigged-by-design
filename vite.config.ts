@@ -16,6 +16,16 @@ export default defineConfig({
     // `vite preview` erbt diesen Wert, weil kein eigener preview.host gesetzt ist.
     host: process.env.RBD_DEV_HOST || 'localhost',
     port: 3000,
+    // Ausschliesslich der Workspace wird bedient: die Positivliste steht im Code,
+    // statt sich auf den Vite-Default (Workspace-Erkennung) zu verlassen.
+    fs: { allow: ['.'] },
+  },
+  build: {
+    // Audit 31.10.: Hauptchunk 856 kB (274 kB gzip), Hauptanteil pixi.js. Pixi in einen
+    // eigenen, herabgestuften Ladeblock: Updates laden ihn aus dem Cache statt neu.
+    // Die Warnschwelle gilt danach fuer den App-Rest und bleibt unter 300 kB sichtbar.
+    chunkSizeWarningLimit: 300,
+    rollupOptions: { output: { manualChunks: { pixi: ['pixi.js'] } } },
   },
   test: {
     environment: 'node',

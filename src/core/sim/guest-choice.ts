@@ -1,14 +1,14 @@
 /** Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. */
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
-import { blockedTiles, nearestWalkable } from './pathfinding';
+import { blockedTiles, isWalkable, nearestWalkable } from './pathfinding';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
 import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
 import { offerScore } from './offers';
-import type { Furniture, Guest, WorldState } from './types';
+import type { Furniture, Guest, Point, WorldState } from './types';
 import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, zoneById } from './world';
 
 export function startActivity(world: WorldState, guest: Guest, item: Furniture): boolean {
@@ -44,13 +44,26 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   const zone = lounge ? zoneById(world, lounge.id) : null;
   if (zone) {
     guest.targetZone = zone.id;
-    // Wartende nicht auf einem Tile stapeln: jede ID bekommt ihren eigenen Platz in der Lounge.
-    const spanX = Math.max(1, zone.w - 2);
-    const spanY = Math.max(1, zone.h - 2);
-    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), {
-      x: zone.x + 1 + (guest.id % spanX), y: zone.y + 1 + ((guest.id * 3) % spanY),
-    });
-    if (spot) sendGuest(world, guest, spot);
+    // Warten ohne Stau: besetzt sind Kacheln, die andere Wartende treuhalten —
+    // ihre Position wie auch das Pfadende als Ziel — plus Moebel. Zwei Gaeste
+    // faellen dadurch nie denselben Fleck zu, auch nicht beim Aufholen.
+    const blocked = blockedTiles(world.size, world.furniture);
+    const taken = new Set<number>();
+    for (const other of world.guests) {
+      if (other.id === guest.id || other.state !== 'WAIT') continue;
+      taken.add(other.position.y * world.size + other.position.x);
+      const last = other.path[other.path.length - 1];
+      if (last) taken.add(last.y * world.size + last.x);
+    }
+    let spot: Point | null = null;
+    for (let y = zone.y + 1; y < zone.y + zone.h - 1 && !spot; y += 1) {
+      for (let x = zone.x + 1; x < zone.x + zone.w - 1 && !spot; x += 1) {
+        const tile = y * world.size + x;
+        if (!taken.has(tile) && isWalkable(world.size, blocked, x, y)) spot = { x, y };
+      }
+    }
+    const target = spot ?? nearestWalkable(world.size, blocked, { x: zone.x + 1, y: zone.y + 1 });
+    if (target) sendGuest(world, guest, target);
   }
   if (guest.patience <= 0) {
     // Wer keine Geduld mehr hat, entscheidet sich zu gehen, statt das Inventar zu zerlegen.
