@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->
+<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -10,7 +10,7 @@
 > | --- | --- |
 > | **Version** | **v1.20** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 21:05 UTC (T25 — Review-Nachlauf, fatale Promotion-Luecken)** |
+> | **Aktualisiert** | **2026-11-01 21:55 UTC (T26 — Config-Umzug nachgezogen)** |
 > | Branch | `main` (PR-Pflicht), Arbeitsbranch `docs/doku-konsolidierung-0365`, permanent `integration` |
 > | HEAD | `c4e6e3b` (Fast-Forward `ee882da → c4e6e3b`, 26 Commits, 76 Dateien) |
 > | Arbeitsbaum | sauber; Remote `vannon091118/rigged-by-design`; 983 getrackte Dateien, 67 Ordner |
@@ -243,10 +243,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 986 |
-| Gelistete Dateien | 986 |
+| Getrackte Dateien | 987 |
+| Gelistete Dateien | 987 |
 | Getrackte Ordner | 68 |
-| Bereiche | (Wurzel) (8), .githooks (2), .github (7), content (2), docs (43), public (552), scripts (48), src (324) |
+| Bereiche | (Wurzel) (8), .githooks (2), .github (7), content (2), docs (43), public (552), scripts (48), src (325) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -291,7 +291,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/` — 33 Datei(en)
 - `scripts/lib/` — 15 Datei(en)
 - `src/` — 2 Datei(en)
-- `src/Config/` — 4 Datei(en)
+- `src/Config/` — 5 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 3 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -343,10 +343,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 219 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 85 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 94 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 183 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 428 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 438 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
@@ -986,6 +986,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 98 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 54 Zeilen
 - `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 341 Zeilen
+- `src/Config/capacitor.config.json` — { — gelesen: 11 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
@@ -1320,6 +1321,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T26 | **2026-11-01 21:55 UTC**: Config-Umzug nachgezogen. Befund: `src/Config/capacitor.config.json` fehlte im Commit, weil `.gitignore` die Regel `capacitor.config.json` ungeankert fuehrte und damit auch die Quelle traf. Behoben: Regel auf `/capacitor.config.json` verankert (nur die Laufzeit-Kopie), Datei aus der History zurueck, `git check-ignore` als Probe. v1.23. |
 | T25 | **2026-11-01 21:05 UTC**: Review-Nachlauf: fatale Promotion-Luecken geschlossen. Merge nutzt `PROMOTE_TOKEN` oder stoesst `Auto Version & Release` an; `integration` in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt; `cancelled` ist kein Urteil; `gh pr update-branch` gegen den Strict-Policy-Deadlock; leerer PR-Body ist `ERR-4006`. Gelesen: alle sechs Workflows, `ci-tag-release.mjs`, `verify-commit-msg.mjs`, `branch-cleanup.mjs`, `lib/escalation.mjs`. v1.22. |
 | T24 | **2026-11-01 20:40 UTC**: Auto-Promotion und Integrationsbranch. Neu: `scripts/promote.mjs`, `.github/workflows/promote.yml`, `scripts/lib/identity.mjs`, `.mailmap`. Ein CI-Ergebnis entscheidet: gruen PR anlegen und mit Pflichtsektionen mergen, rot Label `integration/rot` und Stand auf die permanente Branch `integration`. Zwei parallele rote Staende werden komponiert (`git merge`), ein Textkonflikt bekommt `integration/konflikt`; kein force-Push, kein `-X theirs`. Identitaet `Vannon <Schneider.felix1993@gmail.com>` in `turn:finish` und im Workflow verdrahtet. Gelesen: `ci-verify.yml`, `pr-escalation.yml`, `auto-version-release.yml`, `pr-cleanup.yml`, `turn-push.mjs`, `.githooks/pre-commit`, `verify-tree.mjs`, `loc-budgets.mjs`, `docs/CI-GATES.md`, `docs/ESCALATION.md`. v1.21. |
 | T23 | **2026-11-01 19:50 UTC**: Doku-Konsolidierung, Sortierung und Repo-Hygiene. Umbenannt: `docs/event-narrative-engine-taskplan.md` → `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`, `docs/assets/casino-pixel-asset-pack.md` → `docs/CASINO-PIXEL-ASSET-PACK.md`; `docs/assets/` entfällt, 16 Doku-Dateien liegen flach. Widersprüche behoben: Save überall v9 (`vcoin.casino.v9`, Migration v5–v8), Narrative Engine als Stufe 1 statt „nicht gebaut", Gate-Zählung quick 10 / full 12 inkl. `assets`, `audit`, `build`. Fehlerkatalog repariert (verschmolzene ERR-4013/4014-Zeile) und aufsteigend sortiert. Hooks aktiviert (`core.hooksPath=.githooks`); das Doku-Gate ueberspringt Dotfiles in der Wurzel, weil `.turn-notes.md` den Turn-Abschluss sonst blockiert. Stand: `main` = `origin/main` = `c4e6e3b`, 983 Dateien, 67 Ordner. v1.20. |

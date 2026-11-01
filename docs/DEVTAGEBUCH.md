@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Config-Umzug nachgezogen: Capacitor-Datei wieder versioniert
+
+**Ziel.** Der Umzug nach `src/Config/` darf keine Datei verlieren; die Pruefung zeigte, dass `capacitor.config.json` durch eine ungeankerte Ignore-Regel nie im Commit landete.
+
+**Umsetzung.** `.gitignore` ignoriert nur noch die Laufzeit-Kopie in der Wurzel (`/capacitor.config.json`); `src/Config/capacitor.config.json` kommt aus der History zurueck. `prepare-android` kopiert sie waehrend des APK-Laufs und entfernt sie danach.
+
+**Pruefungen.** `git check-ignore` prueft die Regel, `verify:tree` und `verify:docs` laufen im Turn-Abschluss, `verify:quick` deckt den Commit ab.
+
+**Offen.** Der erste APK-Lauf mit der Kopie steht aus.
+
 ## 2026-11-01 - Review-Nachlauf: fatale Luecken der Promotion geschlossen
 
 **Ziel.** Die Review fand zwei Luecken, die die Kette stillschweigend wirkungslos machen: ein Merge mit `GITHUB_TOKEN` startet keinen Workflow (kein CI auf `main`, kein Tag, kein APK), und `pr-cleanup` loescht die permanente Branch `integration`. Beides behoben, dazu die Wettlauf-Raender.
@@ -410,7 +420,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
