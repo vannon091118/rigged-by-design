@@ -2,11 +2,11 @@
 import type { Ledger } from '../core/economy/ledger';
 import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
-import { fromVC, mulVC, toVCString, type VaCoinMicro } from '../core/economy/vacoin';
+import { fromVC, mulVC, toVCString, type VaCoinMicro, addVC, subVC, ZERO_VC } from '../core/economy/vacoin';
 import { gambleRivalWin, type RiskColor, type RiskOutcome } from '../core/games/risk-card';
 import { recordJournal } from '../core/sim/journal';
-import { recordExclusionPlay } from '../core/sim/self-exclusion-bet';
-import { foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
+import { recordExclusionPlay, EXCLUSION_PAUSE_TICKS } from '../core/sim/self-exclusion-bet';
+import { EXTERNAL, foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
 import { getRival, rivalEdge, visitRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 
@@ -89,6 +89,8 @@ export function dealCardOutcome(
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
     effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
   });
+  // Einsatz bereits beim Austeilen im Pakt registrieren (auch bei Abbruch vor der Abrechnung).
+  recordExclusionPlay(world, stake, ZERO_VC, world.tick);
   return { result: { seed: prng.nextInt(1, 2_147_483_646), netBps, label: entry.label }, notice: `Karten-Einsatz im ${rival.name} gebucht.` };
 }
 
@@ -102,10 +104,28 @@ export function settleCardOutcome(
   const stake = fromVC(stakeVC);
   const payout = mulVC(stake, netBps);
   if (payout > 0) foreignWin(ledger, payout, world.tick);
-  recordExclusionPlay(world, stake, payout, world.tick);
+  // Gewinn im Pakt aktualisieren (Einsatz wurde bereits beim Austeilen gebucht).
+  const pact = world.exclusionPact;
+  if (pact && pact.status === 'ACTIVE') {
+    pact.wins = addVC(pact.wins, payout);
+    pact.netLoss = Math.max(0, subVC(pact.bets, pact.wins)) as VaCoinMicro;
+    if (pact.netLoss >= pact.limit) {
+      pact.status = 'LIMIT_REACHED';
+      pact.thresholdTick = world.tick;
+      pact.pauseUntilTick = world.tick + EXCLUSION_PAUSE_TICKS;
+    }
+  }
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde',
     effect: `${rival.name} (${entry.label}): ${label} · ${toVCString(payout)}`, refs: { rivalId },
   });
   return { result: { game: entry.game, stake, payout, multiplierBps: netBps, label, detail: [label] }, notice: `Kartenrunde im ${rival.name}: ${label}.` };
+}
+
+/** Bucht einen zusätzlichen Einsatz (Double, Split, Versicherung, Side Bet). */
+export function additionalBet(world: WorldState, ledger: Ledger, amount: VaCoinMicro, tick: number): void {
+  if (amount <= ZERO_VC) return;
+  if (ledger.getBalance(PORTEMONNAIE) < amount) throw new Error('Nicht genug Bargeld für den zusätzlichen Einsatz.');
+  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, 'fremdes haus einsatz (zusatz)', tick);
+  recordJournal(world, { kind: 'RIVAL', subject: '', cause: 'Zusätzlicher Einsatz', effect: `${amount / 10_000} VC zusätzlich eingesetzt` });
 }

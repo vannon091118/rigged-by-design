@@ -9,7 +9,10 @@ export interface PokerPlayer {
   readonly hole: readonly Card[];
   /** Spielerobjekte werden pro Aktion neu erzeugt; nie wird ein geteiltes geaendert. */
   stack: number;
+  /** Kumulativer Einsatz ueber alle Strassen (fuer Pot und Side Pots). */
   committed: number;
+  /** Einsatz der aktuellen Strasse (fuer Call/Raise-Berechnung, wird pro Strasse zurueckgesetzt). */
+  streetCommitted: number;
   folded: boolean;
   allIn: boolean;
   acted: boolean;

@@ -34,6 +34,8 @@ interface Props {
   readonly onShellRound: () => ShellRound;
   readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
   readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
+  readonly onAdditionalBet?: (additionalVC: number) => void;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 
@@ -73,6 +75,7 @@ export function TableLauncher(props: Props) {
         subtitle={`${where} Zwei Karten, ein Dealer, du entscheidest.`}
         onDeal={props.onDeal}
         onSettle={props.onSettle}
+        onAdditionalBet={props.onAdditionalBet}
       />
     );
   }

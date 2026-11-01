@@ -18,6 +18,7 @@ export interface ExclusionPact {
 interface ExclusionResult { readonly ok: boolean; readonly reward: VaCoinMicro; readonly notice: string; }
 
 const EXCLUSION_PAUSE_TICKS = 8;
+export { EXCLUSION_PAUSE_TICKS };
 
 function clampScore(value: number): number {
   return Math.min(100, Math.max(0, value));

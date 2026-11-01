@@ -72,7 +72,7 @@ function finish(table: PokerTable, shares: readonly number[], pots: number): Pok
   const refund = Math.max(0, table.stake - human.committed);
   const payout = refund + (shares[0] ?? 0);
   const multiplierBps = Math.max(0, Math.round((payout / table.stake) * 10_000));
-  const rank = human.folded ? null : bestHand([...human.hole, ...table.board]);
+  const rank = human.folded || human.hole.length + table.board.length < 5 ? null : bestHand([...human.hole, ...table.board]);
   const net = payout > table.stake;
   const label = human.folded
     ? 'Aufgegeben'

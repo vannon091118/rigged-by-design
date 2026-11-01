@@ -20,7 +20,7 @@ import type { PokerPlayer, PokerTable } from '../poker-types';
 const card = (rank: string, suit: Card['suit']): Card => ({ rank, suit });
 
 const player = (id: string, committed: number, hole: readonly Card[], folded = false): PokerPlayer => ({
-  id, human: id === 'DU', hole, stack: 0, committed, folded, allIn: false, acted: true,
+  id, human: id === 'DU', hole, stack: 0, committed, streetCommitted: committed, folded, allIn: false, acted: true,
 });
 
 describe('Poker-Tisch', () => {
@@ -81,8 +81,8 @@ describe('Poker-Tisch', () => {
   it('bucht beim Mitgehen den offenen Einsatz und gibt die Strasse frei', () => {
     const table: PokerTable = {
       players: [
-        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 900, committed: 100, folded: false, allIn: false, acted: false },
-        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 300, folded: false, allIn: true, acted: true },
+        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 900, committed: 100, streetCommitted: 100, folded: false, allIn: false, acted: false },
+        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 300, streetCommitted: 300, folded: false, allIn: true, acted: true },
       ],
       board: [], shoe: createShoe(new Prng(randomSeed())),
       pot: 400, stake: 1000, unit: 250, street: 'PREFLOP', toAct: 0, bet: 300, raises: 1, result: null,
