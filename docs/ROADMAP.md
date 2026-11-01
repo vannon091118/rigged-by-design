@@ -1,18 +1,20 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->
+<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
 
+- README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet.
+
 - Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen.
 - Auslieferung ohne Handgriff: gruene Checks mergen automatisch, rote Staende liegen sichtbar auf `integration` und werden dort repariert.
 
 - Inventur ist abgeschlossen: §18 deckt alle getrackten Dateien und Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie.
-- Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `npm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
+- Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `pnpm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
 - Narrative Engine Stufe 1 ist umgesetzt (NAR-00 bis NAR-03): Vertrag, persistente Domaene mit Fact-Queue, Erinnerungen und Start-Pool, Save v9. Naechster Schnitt: NAR-04 Beziehungen, dann NAR-05 Trigger und NAR-06 Scheduler.

@@ -2,7 +2,7 @@
 /**
  * Redundanz-Gate: eine Wahrheit pro Sache.
  *
- * Geprueft werden byte-identische Quelldateien, doppelte npm-Kommandos und
+ * Geprueft werden byte-identische Quelldateien, doppelte pnpm-Kommandos und
  * doppelt eingetragene Fehlercodes. Inhaltliche Naehe bewertet niemand
  * mechanisch; hier zaehlt nur, was eindeutig doppelt ist.
  */

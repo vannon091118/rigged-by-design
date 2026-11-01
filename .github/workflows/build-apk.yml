@@ -45,15 +45,20 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'src/Config/eslint.config.mjs') }}
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
           restore-keys: |
             ${{ runner.os }}-rbd-verify-
 
-      - name: Node 22 mit npm-Cache
+      - name: pnpm installieren
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.4.1
+
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
       - name: Java 21
         uses: actions/setup-java@v4
@@ -76,8 +81,8 @@ jobs:
           yes | sdkmanager --licenses > /dev/null
           sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Install (npm ci)
-        run: npm ci
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
 
       # Der Release ruft diesen Workflow erst nach erfolgreichem "CI Verify"
       # auf und setzt skip_verify; eine zweite vollstaendige Suite waere reine
@@ -85,19 +90,19 @@ jobs:
       # selbst, weil dort skip_verify fehlt beziehungsweise false ist.
       - name: Fail-Closed-Gates
         if: ${{ !inputs.skip_verify }}
-        run: npm run verify:release
+        run: pnpm run verify:release
 
       # verify:release liefert den Production-Build mit. Auf dem skip_verify-Pfad
       # fehlt er, deshalb wird er hier separat erzeugt.
       - name: Production-Build (nur ohne vorgelagertes Verify)
         if: ${{ inputs.skip_verify }}
-        run: npm run build
+        run: pnpm run build
 
       - name: Gradle assembleDebug (signierbare Debug-APK)
-        run: npm run android:apk
+        run: pnpm run android:apk
 
       - name: Gradle assembleRelease (Release-APK ohne Signatur)
-        run: npm run android:apk:release
+        run: pnpm run android:apk:release
 
       - name: Debug-APK als Artefakt
         uses: actions/upload-artifact@v4

@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
 
-// AussERhalb von node_modules: npm ci zerstoert jedes Mal node_modules und damit
+// AussERhalb von node_modules: pnpm install --frozen-lockfile zerstoert jedes Mal node_modules und damit
 // jeden Gate-Cache, bevor die Pipeline überhaupt laeuft.
 const CACHE_DIR = join(ROOT, '.verify-cache');
 // Windows verbietet ':' im Dateinamen; 'check:loc' wuerde sonst als ADS landen.

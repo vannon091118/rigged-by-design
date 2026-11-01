@@ -2,8 +2,8 @@
 /**
  * Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante.
  *
- *   npm run android:apk         -> artifacts/rigged-by-design-debug.apk
- *   npm run android:apk:release -> artifacts/rigged-by-design-release-unsigned.apk
+ *   pnpm run android:apk         -> artifacts/rigged-by-design-debug.apk
+ *   pnpm run android:apk:release -> artifacts/rigged-by-design-release-unsigned.apk
  *
  * Die Konfiguration liegt versioniert in capacitor.config.json, die Pakete sind
  * in package.json gepinnt – dieses Skript schreibt weder Manifest noch Lockfile
@@ -35,7 +35,7 @@ function run(command, args, cwd = ROOT) {
 }
 
 if (!existsSync(resolve(ROOT, 'dist', 'index.html'))) {
-  abort('dist/index.html fehlt: zuerst npm run build bzw. verify:all');
+  abort('dist/index.html fehlt: zuerst pnpm run build bzw. verify:all');
 }
 const configPath = resolve(ROOT, 'src', 'Config', 'capacitor.config.json');
 if (!existsSync(configPath)) {
@@ -44,7 +44,7 @@ if (!existsSync(configPath)) {
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 if (config.webDir !== 'dist') abort(`capacitor.config.json: webDir muss dist sein, steht: ${config.webDir}`);
 if (!existsSync(resolve(ROOT, 'node_modules', '@capacitor', 'cli'))) {
-  abort('Capacitor fehlt in node_modules: npm ci ausfuehren, die Pakete sind gepinnt');
+  abort('Capacitor fehlt in node_modules: pnpm install ausfuehren, die Pakete sind gepinnt');
 }
 const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8'));
 for (const dep of CAPACITOR) {
@@ -56,8 +56,8 @@ console.log(`[IDX-0001] prepare-android: ${release ? 'Release (unsigned)' : 'Deb
 // liegt in src/Config, die Wurzel bekommt waehrend des Laufs eine Kopie.
 const rootConfig = resolve(ROOT, 'capacitor.config.json');
 copyFileSync(configPath, rootConfig);
-if (!existsSync(resolve(ROOT, 'android'))) run('npx', ['cap', 'add', 'android']);
-run('npx', ['cap', 'sync', 'android']);
+if (!existsSync(resolve(ROOT, 'android'))) run('pnpm', ['exec', 'cap', 'add', 'android']);
+run('pnpm', ['exec', 'cap', 'sync', 'android']);
 
 const gradle = process.platform === 'win32' ? 'gradlew.bat' : './gradlew';
 run(gradle, [gradleTask, '--no-daemon'], resolve(ROOT, 'android'));

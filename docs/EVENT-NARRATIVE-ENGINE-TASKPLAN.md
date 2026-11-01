@@ -145,9 +145,9 @@ Die Templates definieren den **mechanischen Rahmen**, nicht jeden fertigen Flie�
 - Keine festen numerischen PRNG-Seeds in Tests; `randomSeed()` verwenden.
 - Keine Snapshot-, reine `toBeDefined()`-/`toBeTruthy()`- oder Tautologie-Tests als Qualitätsnachweis.
 - Neue Fehlercodes zuerst in `src/core/governance/error-codes.ts` und `docs/ERROR_CATALOG.md` registrieren.
-- Neue Testdateien werden über `@test-target` und `scripts/lib/test-catalog.mjs` automatisch einem System/einer Beweisklasse zugeordnet. Danach `npm run catalog`; der Verify-Lauf prüft den generierten Katalog.
-- `verify` bleibt lesend. Reparaturen ausschließlich über `npm run fix`.
-- Während eines Agenten-Turns keine direkten `npm run test`, `npm run test:ci` oder `npm run verify:all`-Zwischenläufe. `npm run verify:quick` ist als Entwicklungsfeedback erlaubt. Der Testlauf gehört an das Ende des Turns.
+- Neue Testdateien werden über `@test-target` und `scripts/lib/test-catalog.mjs` automatisch einem System/einer Beweisklasse zugeordnet. Danach `pnpm run catalog`; der Verify-Lauf prüft den generierten Katalog.
+- `verify` bleibt lesend. Reparaturen ausschließlich über `pnpm run fix`.
+- Während eines Agenten-Turns keine direkten `pnpm run test`, `pnpm run test:ci` oder `pnpm run verify:all`-Zwischenläufe. `pnpm run verify:quick` ist als Entwicklungsfeedback erlaubt. Der Testlauf gehört an das Ende des Turns.
 
 ### Tatsächliche Pipeline (Code, nicht nur Dokumentation)
 
@@ -159,12 +159,12 @@ Die Templates definieren den **mechanischen Rahmen**, nicht jeden fertigen Flie�
 
 | Art des Tasks | Lokaler Nachweis am Turn-Ende | Vollständiger Nachweis |
 |---|---|---|
-| Reine Core-Module ohne Save-/RNG-/Ledger-Migration | `npm run verify:quick` oder `npm run turn:finish` | CI läuft weiterhin `verify:all` auf dem PR/Push |
-| Neue persistente World-/Save-Felder oder Migration | `npm run turn:finish:full` bzw. `npm run verify:all` am Task-Ende | Pflicht, weil Save-/Migration-Code geändert wird |
+| Reine Core-Module ohne Save-/RNG-/Ledger-Migration | `pnpm run verify:quick` oder `pnpm run turn:finish` | CI läuft weiterhin `verify:all` auf dem PR/Push |
+| Neue persistente World-/Save-Felder oder Migration | `pnpm run turn:finish:full` bzw. `pnpm run verify:all` am Task-Ende | Pflicht, weil Save-/Migration-Code geändert wird |
 | Command-Effekte mit Ledger, RNG oder Geld | Vollprofil, sobald Ledger-/RNG-/Save-Invarianten berührt werden | Pflicht, plus gezielte Ledger-Assertions |
 | Content-Assets/Compiler/Registry | `verify:quick`; Content-Validierung in bestehendem `assets`-Gate | `verify:all` in CI |
 | UI/Snapshot/Store-Integration ohne Persistenzänderung | `verify:quick` | CI `verify:all` |
-| Tick-Hotpath/Rivalenautonomie/Simulation über viele Tage | `verify:quick` je Task; kein lokaler Soak während der Arbeit | an Integrationsmeilensteinen `npm run ci:long` (Soak, Balance, Benchmarks) |
+| Tick-Hotpath/Rivalenautonomie/Simulation über viele Tage | `verify:quick` je Task; kein lokaler Soak während der Arbeit | an Integrationsmeilensteinen `pnpm run ci:long` (Soak, Balance, Benchmarks) |
 
 **Sequenzregel:** Die nachfolgenden NAR-Tasks sind voneinander abhängig und werden in dieser Reihenfolge umgesetzt. Ein Task wird abgeschlossen und sein Gate-Nachweis festgehalten, bevor der nächste startet. Die Pipeline selbst bleibt unverändert: kein neues paralleles Testframework und keine Abschwächung bestehender Gates. Der bestehende GitHub-Main-Schutz/PR-Weg bleibt maßgeblich; `AGENTS.md` und `docs/CI-GATES.md` beschreiben den Delivery-Pfad nicht ganz widerspruchsfrei.
 
@@ -397,7 +397,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Konflikte erkennen: gegensätzliche Sprecher, unpassende Persona, inkompatible Stimmung, widersprüchliche Story-Flags, unzulässige Command-Kombinationen.
 - Einen lesenden Check-Modus anbieten. Verify prüft Aktualität/Validität; nur ein expliziter Build-/Fix-Schritt darf abgeleitete Dateien schreiben.
 - Content-Validierung als Teil von `scripts/verify-assets.mjs` integrieren, damit das vorhandene Assets-Gate die Registry schützt.
-- Keine neue npm-Abhängigkeit einführen, solange TypeScript/Node-Bordmittel für die Schema-/DSL-Prüfung reichen.
+- Keine neue pnpm-Abhängigkeit einführen, solange TypeScript/Node-Bordmittel für die Schema-/DSL-Prüfung reichen.
 
 **Zielbereiche:** `scripts/compile-narrative-content.mjs`, `scripts/verify-narrative-content.mjs`, `scripts/verify-assets.mjs`, `src/content/narrative-registry.*` oder ein vergleichbarer generierter Datenimport.
 
@@ -521,13 +521,13 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Tick-Hotpath messen: Fact-Erzeugung nur bei Zustandsübergängen; Scheduler verarbeitet neue Facts und fällige Events, keine Vollsuche durch Registry/Archiv jedes Tick.
 - Save-Größe/Memory-Budget beobachten: keine unbeschränkte Fact-Historie, kein doppeltes Journal, keine vollständigen LLM-Kontexte im Save.
 - Niedrig-Hardware-Messung mit bestehendem `bench:lowend` nur an diesem Integrationsmeilenstein bzw. wenn Messungen nötig sind; Performance nicht durch schwächere Tests „lösen“.
-- Langlauf- und Balancenachweise in GitHub Actions über `npm run ci:long` ausführen, nicht in die lokale schnelle Schleife verschieben.
+- Langlauf- und Balancenachweise in GitHub Actions über `pnpm run ci:long` ausführen, nicht in die lokale schnelle Schleife verschieben.
 
 **Zielbereiche:** narrative/sim Tests, vorhandene Soak-/Balance-Harnesses, ggf. ein eng umrissener Narrative-Performance-Benchmark.
 
 **Nachweis:** Save-/Load-Replay deterministisch; keine Event-/Memory-Leaks über Langlauf; Wirtschaft und Nachfrage bleiben plausibel; CI-Soak/Balance/Benchmarks sind grün; dokumentierte Laufzeitdaten.
 
-**Gate:** `verify:quick` am Ende des Tasks, `verify:all`/CI auf dem PR und `npm run ci:long` für Langlauf/Balance/Benchmark-Nachweise.
+**Gate:** `verify:quick` am Ende des Tasks, `verify:all`/CI auf dem PR und `pnpm run ci:long` für Langlauf/Balance/Benchmark-Nachweise.
 
 ---
 
@@ -538,7 +538,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 **Arbeiten**
 - `docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, `AGENTS.md`, `docs/NARRATIVE-ENGINE.md` und ggf. `docs/ERROR_CATALOG.md` mit dem finalen Code synchronisieren.
 - Aktuelle Save-Version, Migrationen, Zustandsbesitz, Fact-/Memory-Limits, Event-Lifecycle, Command-DSL und Provider-Grenze dokumentieren.
-- Alle Testdateien über `npm run catalog` eintragen; generierte Katalogänderungen prüfen, nicht manuell pflegen.
+- Alle Testdateien über `pnpm run catalog` eintragen; generierte Katalogänderungen prüfen, nicht manuell pflegen.
 - Veraltete Beschreibungen zu `demandEvent` entfernen oder auf die neue gemeinsame Engine umstellen.
 - Agenten-Contribution-Workflow samt Turn-Manifest, Validator und Fehlerfällen dokumentieren.
 - Keine ungenutzten Exporte, doppelten Registries, parallel gepflegten Flags oder TODO-Placeholder hinterlassen.
@@ -717,7 +717,7 @@ falschen Dinge und hält einen roten Baum für grün.
 `entropySeed()` (`src/core/rng/streams.ts`), Pacing nur in `src/render/floor-view.ts`, `src/render/floor-props.ts` und `src/render/music.ts`.
 **Gegenmaßnahme.** Narrative Zufallsauswahl bekommt einen **eigenen persistenten
 Zustand** (kein Zugriff auf den Spiel-PRNG) und wird wie `presentation` als
-eigene Rolle geführt. Jeder Narrative-Task muss `npm run lint` ohne Ausnahme
+eigene Rolle geführt. Jeder Narrative-Task muss `pnpm run lint` ohne Ausnahme
 bestehen; neue Ausnahmen in `eslint.config.mjs` sind unzulässig.
 **Tasks.** NAR-01, NAR-06, NAR-11, NAR-12.
 
@@ -871,7 +871,7 @@ Tick, Messung mit 200 Gästen und 1.000 Facts, Benchmark an NAR-16.
 **Angriff.** NAR-13 verschiebt die Nachfragewirkung von `demandEvent` in aktive
 Event-Instanzen. Ein anderer Auswertungspunkt im Tick genügt, um Ankunftsraten
 und damit die Wirtschaft zu verschieben.
-**Gegenmaßnahme.** Vor der Migration ein Baseline-Lauf (`npm run balance`, 40
+**Gegenmaßnahme.** Vor der Migration ein Baseline-Lauf (`pnpm run balance`, 40
 Tage, fester dokumentierter Seed), danach derselbe Lauf; `perDay`, Gruppengröße
 und Event-Fenster müssen im Toleranzband identisch sein. Abweichung ist ein
 Befund, kein „neues Balancing“.

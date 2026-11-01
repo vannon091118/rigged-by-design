@@ -57,7 +57,7 @@ Jedes wichtige System muss **Zustand, Ursache und Konsequenz** zeigen:
 
 ## Prüfungen
 
-- `npm run verify:all` ist fail-closed und rein lesend: Lint, LOC, Typecheck, Testvertrag, tote Exporte, Doku-Gate, Tree-Gate, Redundanz-Gate, Asset-Manifest, Vitest, Audit und Build. Repariert wird ausschliesslich in `npm run fix`.
+- `pnpm run verify:all` ist fail-closed und rein lesend: Lint, LOC, Typecheck, Testvertrag, tote Exporte, Doku-Gate, Tree-Gate, Redundanz-Gate, Asset-Manifest, Vitest, Audit und Build. Repariert wird ausschliesslich in `pnpm run fix`.
 - Neue Tests: Protokoll, Ledger-Diagnose, Look, Rig, Save-v8-Roundtrip, UI/Fokus und Langlauf.
-- `npm run soak` für 100.000 Ticks; `npm run test:perf` für Spielrunden, Floor, Posen, Speicher und Save-Größe; `npm run bench:lowend` für das Ein-Kern-Profil.
+- `pnpm run soak` für 100.000 Ticks; `pnpm run test:perf` für Spielrunden, Floor, Posen, Speicher und Save-Größe; `pnpm run bench:lowend` für das Ein-Kern-Profil.
 - Grenze: Ein echtes schwaches Gerät und ein echter Browser können hier nicht zertifiziert werden. Die Emulation und die manuelle Gerätematrix stehen in `docs/ARCHITECTURE.md`.

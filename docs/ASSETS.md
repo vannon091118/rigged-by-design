@@ -32,7 +32,7 @@ WAV-Master werden nicht eingecheckt, sondern zu sechs OGG-Spuren encodiert.
 | `music/` | 6 OGG | 13,4 MB | sechs Tonspuren aus den WAV-Mastern |
 
 `src/render/assets/manifest.json` ist die einzige Quelle für IDs und Pfade. Es wird
-mit `npm run assets:manifest` aus dem öffentlichen Baum erzeugt und enthält:
+mit `pnpm run assets:manifest` aus dem öffentlichen Baum erzeugt und enthält:
 
 - `symbols` — 24 IDs; die Engine zieht neun davon (`SLOT_SYMBOLS` in
   `src/core/games/engines/slot-paytable.ts`), die übrigen 15 sind Asset-Bestand
@@ -93,7 +93,7 @@ Die WAV-Master bleiben **außerhalb** des Repositories; ausgeliefert wird nur Op
 
 ```bash
 npm rebuild ffmpeg-static      # einmalig, das Binary liegt in node_modules
-RBD_AUDIO_SOURCE=/pfad/zu/sounds npm run assets:audio
+RBD_AUDIO_SOURCE=/pfad/zu/sounds pnpm run assets:audio
 ```
 
 Gemessen mit `libopus`, 48 kHz, Stereo:

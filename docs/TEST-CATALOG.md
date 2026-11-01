@@ -1,12 +1,12 @@
 # Testkatalog
 
 Abgeleitet aus `@test-target` (System) und der Rolle der Datei (Beweisklasse).
-Der Katalog wird von `npm run catalog` geschrieben und von `npm run verify:all`
+Der Katalog wird von `pnpm run catalog` geschrieben und von `pnpm run verify:all`
 im `--check`-Modus geprueft: eine neue Testdatei ohne Eintrag macht den Lauf rot.
 
 Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
-delegiert `npm run test:affected` an GitHub Actions (`npm run ci:long`).
+delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
 Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statistics 6 · performance 5.
 

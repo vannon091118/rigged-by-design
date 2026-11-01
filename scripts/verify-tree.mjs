@@ -10,7 +10,7 @@ import { extname, join, relative, resolve, sep } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 
 const ROOT_FILES = new Set([
-  'package.json', 'package-lock.json', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
+  'package.json', 'pnpm-lock.yaml', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
 ]);
 const SRC_ROOT = new Set(['main.tsx', 'App.tsx', 'vite-env.d.ts']);
 
@@ -24,7 +24,7 @@ const AREAS = [
   { dir: 'src/styles', ext: ['.css'], note: 'Styles liegen gesammelt in src/styles' },
   { dir: 'src/test', ext: ['.ts'], note: 'Test-Helfer gehoeren unter src/test' },
   { dir: 'scripts', ext: ['.mjs', '.sh'], note: 'Werkzeuge sind ESM-Skripte, Bootstrap darf Shell sein' },
-  { dir: 'docs', ext: ['.md', '.svg', '.png', '.webp', '.json'], note: 'Doku enthaelt Text und Belege' },
+  { dir: 'docs', ext: ['.md', '.svg', '.png', '.jpg', '.webp', '.json'], note: 'Doku enthaelt Text und Belege' },
   { dir: 'content', ext: ['.json', '.md'], note: 'Content ist Daten und Text, kein Code' },
   { dir: '.github', ext: ['.yml', '.yaml', '.md'], note: 'Workflows sind YAML' },
   { dir: '.githooks', ext: [''], note: 'Hooks sind ausfuehrbare Shell-Dateien ohne Endung' },

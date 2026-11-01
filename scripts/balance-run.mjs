@@ -27,8 +27,8 @@ const report = join(artifacts, `balance-${seed}-${days}d.md`);
 
 console.log(`balance: ${days} Tage, Seed ${seed}, Bericht ${report}`);
 const run = spawnSync(
-  'npx',
-  ['vitest', 'run', '--config', 'src/Config/vite.config.ts', 'src/core/sim/__tests__/balance-operating.test.ts'],
+  'pnpm',
+  ['exec', 'vitest', 'run', '--config', 'src/Config/vite.config.ts', 'src/core/sim/__tests__/balance-operating.test.ts'],
   {
     cwd: ROOT,
     stdio: 'inherit',

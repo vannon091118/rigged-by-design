@@ -42,21 +42,26 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Node 22 mit npm-Cache
+      - name: pnpm installieren
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.4.1
+
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
       # Nur der manuelle Pfad hat keinen vorgelagerten CI-Lauf. Der
       # automatische Pfad taggt ausschliesslich den bereits geprueften Commit.
-      - name: Install (npm ci, nur manuell)
+      - name: Install (pnpm install --frozen-lockfile, nur manuell)
         if: github.event_name == 'workflow_dispatch'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Alle Gates vor manuellem Release
         if: github.event_name == 'workflow_dispatch'
-        run: npm run verify:release
+        run: pnpm run verify:release
 
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
       # sichtbarer Block mit Anleitung. Ein Tag, der schon existiert, erzeugt

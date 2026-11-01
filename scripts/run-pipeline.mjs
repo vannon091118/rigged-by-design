@@ -33,12 +33,12 @@ const LABEL = PROFILE === 'full' ? 'verify:all' : `verify:${PROFILE}`;
 const MODE = FIX ? 'fix' : 'verify';
 
 /**
- * npm audit ist das einzige Gate, das ausserhalb des Repos rot werden kann: es braucht die
+ * pnpm audit ist das einzige Gate, das ausserhalb des Repos rot werden kann: es braucht die
  * Registry. Deshalb laeuft es lokal nur bei einer Dependency-Aenderung, in CI und im
  * Release-Profil dagegen immer -- ueber RBD_VERIFY_AUDIT=1.
  */
 function depsChanged() {
-  const names = ['package.json', 'package-lock.json'];
+  const names = ['package.json', 'pnpm-lock.yaml'];
   const probes = [
     ['diff', '--name-only', 'HEAD'],
     ['diff', '--name-only', 'HEAD~1', 'HEAD'],
@@ -96,7 +96,7 @@ console.log(
 let failed = 0;
 if (FIX) failed += await runAutofix();
 else if (process.env.RBD_VERIFY_FIX === '1') {
-  fail(1, 'ERR-4006', 'pipeline', 'RBD_VERIFY_FIX ist abgeschafft; Reparaturen laufen ueber npm run fix');
+  fail(1, 'ERR-4006', 'pipeline', 'RBD_VERIFY_FIX ist abgeschafft; Reparaturen laufen ueber pnpm run fix');
   process.exit(1);
 }
 

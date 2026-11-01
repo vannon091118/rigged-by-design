@@ -132,7 +132,7 @@ describe('Main-Gate', () => {
     expect(statistics?.run).toContain('slot-session-rtp.test.ts');
     expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe('${{ inputs.soak_ticks }}');
     expect(stepWith(long, 'balance', 'balance-run.mjs')?.run).toContain('--days=${{ inputs.balance_days }}');
-    expect(stepWith(long, 'bench', 'npm run test:perf')?.run).toBe('npm run test:perf');
+    expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
   });
 
   it('loescht Wegwerf-Branches nach einem Merge mit gruenen Gates', () => {

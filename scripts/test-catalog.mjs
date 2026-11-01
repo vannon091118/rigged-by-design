@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Testkatalog schreiben (`npm run catalog`) oder pruefen (`--check`).
+ * Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`).
  *
  * Der Katalog ist eine abgeleitete Tabelle: System aus `@test-target`,
  * Beweisklasse aus der Rolle der Datei. `--check` schreibt nichts und wird rot,
@@ -21,12 +21,12 @@ const header = [
   '# Testkatalog',
   '',
   'Abgeleitet aus `@test-target` (System) und der Rolle der Datei (Beweisklasse).',
-  'Der Katalog wird von `npm run catalog` geschrieben und von `npm run verify:all`',
+  'Der Katalog wird von `pnpm run catalog` geschrieben und von `pnpm run verify:all`',
   'im `--check`-Modus geprueft: eine neue Testdatei ohne Eintrag macht den Lauf rot.',
   '',
   `Beweisklassen: ${['contract', 'integration', 'governance', 'statistics', 'performance'].join(', ')}.`,
   `Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; ${LONG_PROOF_CLASSES.join(' und ')}`,
-  'delegiert `npm run test:affected` an GitHub Actions (`npm run ci:long`).',
+  'delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).',
   '',
 ].join('\n');
 
@@ -47,7 +47,7 @@ if (next === current) {
   process.exit(0);
 }
 if (checkOnly) {
-  fail(1, 'ERR-4015', 'test-catalog', 'Katalog ist veraltet; npm run catalog ausfuehren');
+  fail(1, 'ERR-4015', 'test-catalog', 'Katalog ist veraltet; pnpm run catalog ausfuehren');
   process.exit(1);
 }
 mkdirSync(join(ROOT, 'docs'), { recursive: true });
