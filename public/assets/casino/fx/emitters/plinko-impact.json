@@ -1,0 +1,24 @@
+{
+  "id": "plinko-impact",
+  "textures": [
+    "impacts/plinko/peg-hit-01.png",
+    "particles/sparks/spark-01.png"
+  ],
+  "count": 8,
+  "lifetimeMs": [
+    180,
+    420
+  ],
+  "speed": [
+    0.08,
+    0.35
+  ],
+  "gravity": 0,
+  "scale": [
+    0.35,
+    0.8
+  ],
+  "fadeOut": true,
+  "pool": true,
+  "trigger": "peg-contact"
+}

@@ -6,6 +6,7 @@ import type { CarpetId, RivalId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import type { GameView } from './store/types';
+import { AssetLibraryPopup } from './ui/asset-library-popup';
 import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { ForeignFloorMap } from './ui/foreign-floor-map';
@@ -28,6 +29,7 @@ type Popup =
   | { kind: 'journal' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
+  | { kind: 'assets' }
   | { kind: 'sound' }
   | { kind: 'help' }
   | { kind: 'foreignMap' }
@@ -82,6 +84,15 @@ export default function App() {
   // Musik folgt dem Fenster, nicht dem Klick: Floor, Fremdhaus, eigenes Gerät.
   useEffect(() => {
     if (popup?.kind === 'games') { setMusicState('GAMES'); return; }
+    if (popup?.kind === 'foreignMap' || popup?.kind === 'foreignFloor') { setMusicState('NIGHT'); return; }
+    if (popup?.kind === 'help' || popup?.kind === 'look' || popup?.kind === 'sound' || popup?.kind === 'assets') {
+      setMusicState('MENU');
+      return;
+    }
+    if (popup?.kind === 'journal' || popup?.kind === 'diagnostics' || popup?.kind === 'guests') {
+      setMusicState('BACKGROUND');
+      return;
+    }
     if (popup?.kind === 'machine') {
       const item = view.furniture.find((entry) => entry.id === popup.itemId);
       setMusicState(item?.gameId === 'SLOT' ? 'SLOT' : 'GAMES');
@@ -156,6 +167,7 @@ export default function App() {
         onJournal={() => { setBuildOpen(false); setPopup({ kind: 'journal' }); }}
         onDiagnostics={() => { setBuildOpen(false); setPopup({ kind: 'diagnostics' }); }}
         onLook={() => { setBuildOpen(false); setPopup({ kind: 'look' }); }}
+        onAssets={() => { setBuildOpen(false); setPopup({ kind: 'assets' }); }}
         onSkill={(attribute) => worldStore.spendSkill(attribute)}
         muted={muted}
         onToggleSound={() => { setBuildOpen(false); setPopup({ kind: 'sound' }); }}
@@ -296,6 +308,10 @@ export default function App() {
 
       {popup?.kind === 'look' && (
         <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
+      )}
+
+      {popup?.kind === 'assets' && (
+        <AssetLibraryPopup onClose={() => setPopup(null)} />
       )}
 
       {popup?.kind === 'sound' && (

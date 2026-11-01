@@ -1,10 +1,7 @@
-/**
- * Slot-Symbole: das Pixel-Paket, wo es eines gibt, sonst die gezeichnete Grafik.
- * Der Rueckfall ist kein Notbehelf, sondern der Grund, warum die Buehne auch
- * ohne geladene Texturen vollstaendig aussieht.
- */
+/** Slot-Symbole: das Pixel-Paket, wo es eines gibt, sonst die gezeichnete Grafik. Der Rueckfall ist kein Notbehelf, sondern der Grund, warum die Buehne auch ohne geladene Texturen vollstaendig aussieht. */
 import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import { slotSymbolAsset, textureFor } from '../assets/textures';
+import { EXTRA_SYMBOLS } from './slot-symbols-extra';
 
 const GOLD = 0xffd166;
 const GOLD_DEEP = 0xb07a1f;
@@ -13,7 +10,7 @@ const VIOLET = 0x8b5cf6;
 const PINK = 0xff2e88;
 const INK = 0x120b1c;
 
-function plate(size: number, tint: number): Graphics {
+export function plate(size: number, tint: number): Graphics {
   const g = new Graphics();
   g.roundRect(size * 0.06, size * 0.06, size * 0.88, size * 0.88, size * 0.14).fill({ color: INK, alpha: 0.55 });
   g.roundRect(size * 0.06, size * 0.06, size * 0.88, size * 0.88, size * 0.14).stroke({ width: 2, color: tint, alpha: 0.45 });
@@ -112,6 +109,8 @@ export function drawSlotSymbol(id: string, size: number): Container {
   if (id === 'ANKH') return ankh(size);
   if (id === 'EYE') return eye(size);
   if (id === 'URN') return urn(size);
+  const extra = EXTRA_SYMBOLS[id];
+  if (extra) return extra(size);
   const tint = LETTERS[id];
   if (tint === undefined) return book(size);
   const root = new Container();

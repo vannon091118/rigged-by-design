@@ -1,7 +1,8 @@
 /** Moebel: statischer Korpus als GPU-Textur, nur Zustand und Sitze bleiben dynamisch. */
-import { Container, Graphics, Text } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import { gameOf, isCabinet } from '../core/sim/device';
 import type { Furniture } from '../core/sim/types';
+import { textureFor } from './assets/textures';
 import { INK, LIGHT, ROLE, STROKE, floorText, furnitureTone } from './art-tokens';
 
 export interface FurnitureArt {
@@ -66,6 +67,64 @@ function drawStorage(g: Graphics, w: number, h: number): void {
   }
 }
 
+/** Spieltyp zu Maschinen-Textur-Key im Manifest. */
+const MACHINE_TEXTURE: Readonly<Record<string, string>> = {
+  SLOT: 'machines/slot-cabinet.png',
+  PLINKO: 'machines/plinko-cabinet.png',
+  BLACKJACK: 'machines/blackjack-table.png',
+  POKER: 'machines/poker-table.png',
+  VIDEO_POKER: 'machines/video-poker-terminal.png',
+  ROULETTE: 'machines/roulette-table.png',
+  SHELL: 'machines/table-games/shell-game-cups-and-pearl.png',
+  DICE: 'machines/dice-table.png',
+};
+
+/** Service-Moebel, das keine eigene Spiel-ID hat. */
+const KIND_TEXTURE: Readonly<Record<string, string>> = {
+  BAR: 'decor/bar-back-shelf.png',
+  TOILET: 'machines/restroom-stall.png',
+  EXCHANGE: 'machines/cashier-counter.png',
+  STORAGE: 'machines/storage-shelves.png',
+};
+
+/** Deko-Textur nach Schlagwort im Label; der erste Treffer gewinnt. */
+const DECOR_TEXTURE: readonly (readonly [RegExp, string])[] = [
+  [/sofa|lounge/i, 'decor/lounge-sofa.png'],
+  [/sessel|armchair/i, 'decor/vip-armchair.png'],
+  [/palme|palm/i, 'decor/potted-palm.png'],
+  [/pflanze|planter|gr[üu]n/i, 'decor/planter-greenery.png'],
+  [/neon|tube|leucht/i, 'decor/neon-column.png'],
+  [/s[äa]ule|column/i, 'decor/casino-column.png'],
+  [/kronleuchter|chandelier/i, 'decor/chandelier.png'],
+  [/kandelaber|candelabra/i, 'decor/gold-candelabra.png'],
+  [/katze|cat/i, 'decor/egyptian-cat-statue.png'],
+  [/seil|rope/i, 'decor/velvet-rope-barrier.png'],
+  [/lampe|lamp|sconce/i, 'decor/pendant-lamp.png'],
+  [/zeitung|newspaper/i, 'decor/casino-newspaper.png'],
+  [/tisch|table|podium/i, 'decor/casino-side-table.png'],
+  [/bar|theke|counter/i, 'decor/bar-counter-stools.png'],
+  [/schild|sign/i, 'decor/casino-neon-sign.png'],
+];
+
+function decorTexture(label: string): string | null {
+  return DECOR_TEXTURE.find(([pattern]) => pattern.test(label))?.[1] ?? null;
+}
+
+/** Textur als Backdrop, falls geladen. Gibt null, wenn keine passt. */
+function backdropFor(item: Furniture, w: number, h: number): Sprite | null {
+  const key = item.gameId
+    ? MACHINE_TEXTURE[item.gameId]
+    : item.kind === 'DECOR' ? decorTexture(item.label) : KIND_TEXTURE[item.kind];
+  if (!key) return null;
+  const texture = textureFor(key);
+  if (!texture) return null;
+  const sprite = new Sprite(texture);
+  sprite.width = w;
+  sprite.height = h;
+  sprite.alpha = 0.92;
+  return sprite;
+}
+
 function drawDecor(g: Graphics, w: number, h: number, label: string): void {
   if (label.toLowerCase().includes('sofa')) {
     g.roundRect(2, h * 0.22, w - 4, h * 0.56, 6).fill(0x4a2040);
@@ -85,6 +144,7 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   const w = item.w * tile;
   const h = item.h * tile;
   const tone = furnitureTone(item.kind);
+  const backdrop = backdropFor(item, w, h);
   // Licht faellt von oben links: weicher Wurf nach unten rechts, harte Kontaktkante am Fuss.
   const shadow = new Graphics();
   shadow.roundRect(6, 9, w, h, 8).fill({ color: 0x000000, alpha: tone.shadow * 0.34 });
@@ -130,7 +190,9 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   const label = new Text({ text: item.label, style: floorText.name() });
   label.anchor.set(0.5, 0);
   label.position.set(w / 2, h + 2);
-  root.addChild(body, marker, occupied, status, screen, label);
+  // Textur ueber dem gezeichneten Korpus: sonst deckt die Fuellung den Backdrop zu.
+  const children: Array<Container | Sprite | null> = [body, backdrop, marker, occupied, status, screen, label];
+  root.addChild(...children.filter((c): c is Container | Sprite => c !== null));
 
   let lastBucket = -2;
   let lastOccupants = -1;

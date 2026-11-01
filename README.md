@@ -17,6 +17,16 @@ Kein Echtgeld. Keine echten Casinos. Nur VaCoins, ein paar sehr entscheidungsfre
 
 ![Spielfeld mit Gästen, Räumen und HUD](docs/screenshots/current/02-floor-detail-frisch.png)
 
+## Das Asset-Paket im Spiel (v2, 01.11.2026)
+
+![Vergleich der Etage vor und nach dem Paket](docs/screenshots/comparison/03-floor-v1-v2.png)
+
+Links der Stand ohne Paket, rechts derselbe Floor mit den Geräte-, Tisch- und Deko-Texturen. Das komplette Paket — 539 Texturen, drei Frame-Animationen, vier Emitter und sechs Tonspuren — liegt im Spiel hinter **ASSETS** im HUD.
+
+![Asset-Bibliothek mit Symbolen, Maschinen und Deko](docs/screenshots/comparison/04-asset-library-top-v2.png)
+
+Die Bibliothek zeigt jede Datei des Pakets, spielt die Frame-Animationen und Emitter ab und macht alle Tonspuren einzeln hörbar. Die Verdrahtung im Floor, in Plinko, in den Musikzuständen und die reproduzierbare Audio-Pipeline stehen in [`docs/ASSETS.md`](docs/ASSETS.md).
+
 ## Die Idee (und warum sie ein Finanzamt braucht)
 
 Du startest mit **0,00 VC** und **einem gratis Automaten**. Das ist keine Challenge, das ist eine Diagnose.

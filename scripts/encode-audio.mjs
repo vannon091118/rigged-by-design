@@ -22,6 +22,9 @@ const TARGET = join(ROOT, 'public/assets/casino/music');
 /** Was im Spiel gebraucht wird; alles andere bleibt Master und wird nicht ausgeliefert. */
 const TRACKS = [
   { id: 'floor', file: 'Atmosphäre_base.wav', bitrate: '96k' },
+  { id: 'night', file: 'Atmosphäre_night_Prototyp.wav', bitrate: '80k' },
+  { id: 'menu', file: 'Maintheme.wav', bitrate: '96k' },
+  { id: 'background', file: 'background_loop.wav', bitrate: '96k' },
   { id: 'games', file: 'atmosphäre_base_fullcasino.wav', bitrate: '80k' },
   { id: 'slot', file: 'Slot1.wav', bitrate: '80k' },
 ];

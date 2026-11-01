@@ -20,7 +20,9 @@ const SECTOR_COLOR: Readonly<Record<string, number>> = {
 /** Winkel der Sektormitte; 0 zeigt nach oben, im Uhrzeigersinn. */
 const sectorAngle = (number: number): number => {
   const index = ROULETTE_WHEEL.indexOf(number);
-  return (index < 0 ? 0 : index) * ANGLE + ANGLE / 2;
+  // Die Sektoren werden um index * ANGLE gezeichnet; Label, Kugel und Dolly
+  // muessen auf derselben Mitte landen, nicht auf der Sektorgrenze.
+  return (index < 0 ? 0 : index) * ANGLE;
 };
 
 export class RouletteCanvas {

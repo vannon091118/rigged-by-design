@@ -2,13 +2,15 @@
 import type { Prng } from '../rng/prng';
 import { createShoe, type Card, type CardShoe } from '../rng/shoe';
 import { endHand, settleShowdown } from './poker-settle';
-import { decideAction, strengthOf, type PokerAction } from './poker-strategy';
-import type { PokerHandOptions, PokerPlayer, PokerTable, PokerStreet } from './poker-types';
+import { decideCpuAction, strengthOf, type PokerAction } from './poker-strategy';
+import type { PokerHandOptions, PokerPlayer, PokerStyleId, PokerTable, PokerStreet } from './poker-types';
 
 /** Nach drei Erhoehungen in einer Strasse ist Schluss; all-in zählt nicht als Erhoehung. */
 const MAX_RAISES = 3;
 /** Gaststapel als Vielfaches des Buy-ins; unterschiedliche Stapel erzeugen Side Pots. */
 const CPU_STACKS = [3, 2, 1] as const;
+/** Jeder Gast spielt eine andere Range und Einsatzgroesse. */
+const CPU_STYLES: readonly PokerStyleId[] = ['FELS', 'BUCHHALTER', 'HAI'];
 const DEAL: Readonly<Record<PokerStreet, number>> = { PREFLOP: 3, FLOP: 1, TURN: 1, RIVER: 0, SHOWDOWN: 0 };
 const NEXT: Readonly<Record<PokerStreet, PokerStreet>> = {
   PREFLOP: 'FLOP', FLOP: 'TURN', TURN: 'RIVER', RIVER: 'SHOWDOWN', SHOWDOWN: 'SHOWDOWN',
@@ -29,7 +31,7 @@ export function startHand(prng: Prng, options: PokerHandOptions): PokerTable {
   const players: PokerPlayer[] = [
     { id: 'DU', human: true, hole: deal(), stack: stake - unit, committed: unit, streetCommitted: 0, folded: false, allIn: false, acted: false },
     ...CPU_STACKS.slice(0, opponents).map((factor, index) => ({
-      id: `GAST ${index + 1}`, human: false, hole: deal(),
+      id: `GAST ${index + 1}`, human: false, hole: deal(), style: CPU_STYLES[index],
       stack: stake * factor - unit, committed: unit, streetCommitted: 0, folded: false, allIn: false, acted: false,
     })),
   ];
@@ -41,9 +43,9 @@ export function startHand(prng: Prng, options: PokerHandOptions): PokerTable {
 }
 
 /** Die Person am Zug spielt ihre Aktion; danach laeuft der Tisch bis zur naechsten Person. */
-export function humanAct(table: PokerTable, action: PokerAction, prng: Prng): PokerTable {
+export function humanAct(table: PokerTable, action: PokerAction, prng: Prng, raiseTo?: number): PokerTable {
   if (table.result || table.toAct < 0 || !table.players[table.toAct]!.human) return table;
-  return tick(applyAction(table, table.toAct, action), prng);
+  return tick(applyAction(table, table.toAct, action, raiseTo), prng);
 }
 
 /** CPU-Zuege bis die Person am Zug ist oder die Hand fertig ist. */
@@ -56,8 +58,18 @@ function tick(table: PokerTable, prng: Prng): PokerTable {
     if (actor < 0) return current;
     const player = current.players[actor]!;
     if (player.human) return current;
-    const action = decideAction(strengthOf(player.hole, current.board), toCall(current, player), current.pot, prng);
-    current = applyAction(current, actor, action);
+    const decision = decideCpuAction(
+      strengthOf(player.hole, current.board),
+      toCall(current, player),
+      current.pot,
+      current.bet,
+      player.streetCommitted,
+      player.stack,
+      current.unit,
+      prng,
+      player.style ?? 'BUCHHALTER',
+    );
+    current = applyAction(current, actor, decision.action, decision.raiseTo);
   }
   return current;
 }
@@ -70,7 +82,7 @@ function commit(player: PokerPlayer, amount: number): void {
   if (player.stack === 0) player.allIn = true;
 }
 
-function applyAction(table: PokerTable, index: number, action: PokerAction): PokerTable {
+function applyAction(table: PokerTable, index: number, action: PokerAction, raiseTo?: number): PokerTable {
   const players = table.players.map((player) => ({ ...player }));
   const me = players[index]!;
   const call = Math.max(0, table.bet - me.streetCommitted);
@@ -83,7 +95,7 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
       ? callTarget
       : action === 'RAISE'
         ? (table.raises < MAX_RAISES
-          ? Math.max(Math.min(table.bet + table.unit, cap), callTarget)
+          ? Math.max(Math.min(raiseTo ?? table.bet + table.unit, cap), callTarget)
           : callTarget)
         : me.streetCommitted;
   if (action === 'FOLD') me.folded = true;
@@ -95,7 +107,8 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
   let bet = table.bet;
   let raises = table.raises;
   if (!me.folded && me.streetCommitted > bet) {
-    bet = me.committed;
+    // Der offene Einsatz gilt pro Strasse; committed enthaelt auch Vorstrassen.
+    bet = me.streetCommitted;
     raises += 1;
     // Eine Erhoehung oeffnet die Runde fuer alle anderen neu.
     for (const player of players) {

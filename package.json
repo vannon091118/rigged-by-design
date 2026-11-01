@@ -36,6 +36,8 @@
     "verify:test-quality": "node scripts/verify-test-quality.mjs",
     "verify:dead-code": "node scripts/verify-dead-code.mjs",
     "verify:assets": "node scripts/verify-assets.mjs",
+    "assets:manifest": "node scripts/build-asset-manifest.mjs",
+    "assets:audio": "node scripts/encode-audio.mjs",
     "verify:commit-msg": "node scripts/verify-commit-msg.mjs --head",
     "sync:deps": "node scripts/sync-dependency-matrix.mjs",
     "autofix:0911": "node scripts/autofix-0911.mjs",

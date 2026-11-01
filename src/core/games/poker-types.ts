@@ -3,10 +3,15 @@ import type { Card } from '../rng/shoe';
 
 export type PokerStreet = 'PREFLOP' | 'FLOP' | 'TURN' | 'RIVER' | 'SHOWDOWN';
 
+/** Drei Gegnertypen mit eigener Range, Aggression und Einsatzgroesse. */
+export type PokerStyleId = 'FELS' | 'HAI' | 'BUCHHALTER';
+
 export interface PokerPlayer {
   readonly id: string;
   readonly human: boolean;
   readonly hole: readonly Card[];
+  /** Nur Gäste tragen ein Profil; der Mensch entscheidet selbst. */
+  readonly style?: PokerStyleId;
   /** Spielerobjekte werden pro Aktion neu erzeugt; nie wird ein geteiltes geaendert. */
   stack: number;
   /** Kumulativer Einsatz ueber alle Strassen (fuer Pot und Side Pots). */
