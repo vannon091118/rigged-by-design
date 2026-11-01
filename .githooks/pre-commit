@@ -3,17 +3,17 @@
 # weil der Hook den Commit vorbereitet. Fehlt node_modules, wird uebersprungen.
 set -e
 if [ ! -d node_modules ]; then
-  echo "pre-commit: node_modules fehlt - Hook uebersprungen (npm ci)"
+  echo "pre-commit: node_modules fehlt - Hook uebersprungen (pnpm install --frozen-lockfile)"
   exit 0
 fi
 # Ein verschluckter Generatorfehler hinterlaesst ein veraltetes Artefakt, das
 # danach niemand mehr als veraltet erkennt. Deshalb blockiert er den Commit.
 if ! node scripts/sync-dependency-matrix.mjs >/dev/null 2>&1; then
-  echo "pre-commit: Dependency-Matrix nicht aktualisiert (ERR-0911) - Commit blockiert, npm run fix ausfuehren" >&2
+  echo "pre-commit: Dependency-Matrix nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
   exit 1
 fi
 if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
-  echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, npm run fix ausfuehren" >&2
+  echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
   exit 1
 fi
 node scripts/build-inventory.mjs

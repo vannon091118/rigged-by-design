@@ -4,7 +4,7 @@
  * beruehrt werden, und nur die schnellen Beweisklassen.
  *
  * Statistik- und Messlaeufe (RTP, Poker-Verteilung, Soak, Benchmarks) sind
- * keine lokale Schleife: sie laufen in GitHub Actions (`npm run ci:long`).
+ * keine lokale Schleife: sie laufen in GitHub Actions (`pnpm run ci:long`).
  * `--include-long` nimmt sie bewusst wieder mit.
  */
 import { spawnSync } from 'node:child_process';
@@ -31,7 +31,7 @@ console.log(`affected: ${tests.length} Testdatei(en)${selection.runAll ? ' (alle
 for (const test of tests) console.log(`  ${test}`);
 if (long.length > 0) {
   // Eine Ausgabe ist keine Delegation: die Liste wird abgelegt und der Bericht
-  // nennt den Nachweis als offen, bis `npm run ci:long` ihn erbracht hat.
+  // nennt den Nachweis als offen, bis `pnpm run ci:long` ihn erbracht hat.
   mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
   writeFileSync(
     join(ROOT, '.verify-cache', 'delegated.json'),
@@ -39,7 +39,7 @@ if (long.length > 0) {
   );
   console.log(`affected: ${long.length} lange Nachweis(e) NICHT lokal ausgefuehrt - Nachweis offen`);
   for (const test of long) console.log(`  ${test} [${proofClassOf(test)}]`);
-  console.log('affected: Delegation ausfuehren mit `npm run ci:long` (startet Actions und wartet auf das Ergebnis)');
+  console.log('affected: Delegation ausfuehren mit `pnpm run ci:long` (startet Actions und wartet auf das Ergebnis)');
 }
 if (argv.includes('--list')) process.exit(0);
 if (tests.length === 0) {

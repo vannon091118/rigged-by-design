@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->
+<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
 
 ## Zustandsbesitz
 
@@ -31,7 +31,7 @@
 1. Jede Fehlermeldung hat das Format `[IDX-XXXX] [ERR-YYYY] Komponente: Klartext`.
 2. Neue Fehlerarten werden zuerst in `docs/ERROR_CATALOG.md` und `src/core/governance/error-codes.ts` registriert.
 3. `ERR-0000` ist ein unbekannter Fehler und blockiert den Build sofort (Fail-Closed).
-4. `ERR-0911` kennzeichnet automatisch reparierbare Verstöße. Repariert wird ausschließlich im Fix-Modus (`npm run fix`); jeder Verify-Lauf liest nur und macht einen veralteten Baum rot.
+4. `ERR-0911` kennzeichnet automatisch reparierbare Verstöße. Repariert wird ausschließlich im Fix-Modus (`pnpm run fix`); jeder Verify-Lauf liest nur und macht einen veralteten Baum rot.
 5. Jede Testdatei deklariert `@test-target` und `@error-code`; der Reporter `src/core/governance/test-harness.ts` gibt jeden Testfall indiziert aus.
 6. Tests laufen im Thread-Pool (`pool: 'threads'`) mit harter Teardown-Grenze. Worker sind Threads im Runner-Prozess und sterben mit ihm, es bleiben also keine verwaisten Testprozesse zurueck; `testTimeout` und `teardownTimeout` beenden haengende Tests. Die sechs RTP-Monte-Carlo-Laeufe sind parallelisiert, ziehen pro Lauf frische Seeds und sind an die Tail-Verteilung angepasst: SLOT 200.000, SHELL 300.000, PLINKO 5.000 Runden. Tischpoker wird nicht ueber RTP bewertet, sondern ueber die 7-Karten-Handverteilung und den Kartenschuh (`poker-distribution.test.ts`, `poker-table.test.ts`). Feste Seed-Literale lehnt `verify-test-quality` ab; die Seeds sind nicht per Env oder CLI waehlbar. Die Paytables sind auf ~93 % RTP kalibriert, damit das 90–96-%-Band auch mit frischen Seeds nicht zufaellig kippt.
 
@@ -41,25 +41,25 @@
 
 Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
-| Profil | npm-Skript | Inhalt |
+| Profil | pnpm-Skript | Inhalt |
 | --- | --- | --- |
 | `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
-| `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
+| `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
-Zusätzlich wählt `npm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `npm run turn:finish -- --affected` fährt die Auswahl vor dem Versions-Bump als zusätzliche Entwicklungsstufe; danach läuft `verify:quick` beziehungsweise mit `:full` unverändert `verify:all`.
+Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish -- --affected` fährt die Auswahl vor dem Versions-Bump als zusätzliche Entwicklungsstufe; danach läuft `verify:quick` beziehungsweise mit `:full` unverändert `verify:all`.
 
 ## Testkatalog und Beweisklassen
 
-Jede Testdatei gehört genau einem System (`games`, `sim`, `economy`, `rng`, `physics`, `governance`, `render`, `ui`, `store`, `test-tools`, `pipeline`, `ci`) und genau einer Beweisklasse: `contract`, `integration`, `governance`, `statistics`, `performance`. Das System stammt aus dem deklarierten `@test-target`, die Beweisklasse aus der Rolle der Datei in `scripts/lib/test-catalog.mjs`. `docs/TEST-CATALOG.md` ist die abgeleitete Tabelle; `npm run catalog` schreibt sie, der Verify-Lauf prüft sie im `--check`-Modus (`ERR-4015`).
+Jede Testdatei gehört genau einem System (`games`, `sim`, `economy`, `rng`, `physics`, `governance`, `render`, `ui`, `store`, `test-tools`, `pipeline`, `ci`) und genau einer Beweisklasse: `contract`, `integration`, `governance`, `statistics`, `performance`. Das System stammt aus dem deklarierten `@test-target`, die Beweisklasse aus der Rolle der Datei in `scripts/lib/test-catalog.mjs`. `docs/TEST-CATALOG.md` ist die abgeleitete Tabelle; `pnpm run catalog` schreibt sie, der Verify-Lauf prüft sie im `--check`-Modus (`ERR-4015`).
 
-Lokal laufen nur `contract`, `integration` und `governance`. `statistics` (RTP, Poker-Verteilung, Soak, Balance) und `performance` (Benchmarks) delegiert `npm run test:affected` an CI; sie sind die teuren Nachweise, nicht die schnelle Schleife.
+Lokal laufen nur `contract`, `integration` und `governance`. `statistics` (RTP, Poker-Verteilung, Soak, Balance) und `performance` (Benchmarks) delegiert `pnpm run test:affected` an CI; sie sind die teuren Nachweise, nicht die schnelle Schleife.
 
 Jedes Gate hat ein hartes Zeitlimit aus `scripts/lib/pipeline-plan.mjs`. Läuft es ab, beendet `scripts/lib/gate-runner.mjs` den Prozessbaum und meldet `ERR-4014`, statt den Lauf offen zu halten. Verwaiste Prozesse werden nur beendet, wenn PID **und** Startzeit noch zum Registry-Eintrag passen; eine wiederverwendete PID bleibt unangetastet.
 
-Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslauf der Suite darf den Vollauslauf nie ersetzen. `npm audit` läuft lokal nur bei einer Änderung an `package.json` oder `package-lock.json`, in CI und im Release-Profil immer — es ist das einzige Gate, das ausserhalb des Repos rot werden kann.
+Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslauf der Suite darf den Vollauslauf nie ersetzen. `pnpm audit` läuft lokal nur bei einer Änderung an `package.json` oder `package-lock.json`, in CI und im Release-Profil immer — es ist das einzige Gate, das ausserhalb des Repos rot werden kann.
 
-`npm run verify:all` führt in dieser Reihenfolge aus, jede Stufe nur lesend:
+`pnpm run verify:all` führt in dieser Reihenfolge aus, jede Stufe nur lesend:
 
 1. ESLint ohne `--fix` (`ERR-4011`)
 2. LOC-Guard (`ERR-4012`)
@@ -71,12 +71,12 @@ Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslau
 8. Redundanz-Gate (`ERR-4020`)
 9. Asset-Manifest gegen `public/assets` (`ERR-4016`)
 10. Vitest mit indizierten Testfällen
-11. `npm audit --audit-level=low` (`ERR-4004`)
+11. `pnpm audit --audit-level=low` (`ERR-4004`)
 12. Production-Build (`ERR-1005`)
 
 Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab. Die Konsole nennt je Gate eine Zeile und im Fehlerfall dessen letzte 40 Zeilen; `RBD_VERIFY_VERBOSE=1` gibt die volle Ausgabe aus. Der Berichtsordner liegt im gitignorierten Cache, damit Verify weiterhin rein lesend bleibt.
 
-`npm run fix` repariert ESLint-Verstöße und die Dependency-Matrix und prüft danach dieselben Gates. Er nennt jede geänderte und jede gelöschte Datei; ein zweiter Lauf meldet „keine Änderung, Arbeitsbaum unverändert“. Das Main-Gate aus zwei Ebenen beschreibt `docs/CI-GATES.md`.
+`pnpm run fix` repariert ESLint-Verstöße und die Dependency-Matrix und prüft danach dieselben Gates. Er nennt jede geänderte und jede gelöschte Datei; ein zweiter Lauf meldet „keine Änderung, Arbeitsbaum unverändert“. Das Main-Gate aus zwei Ebenen beschreibt `docs/CI-GATES.md`.
 
 ### Gemessene Wandzeit (31.10.2026, 6 Kerne, Cache geleert)
 
@@ -85,7 +85,7 @@ Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cac
 - ESLint-Cache (`--cache --cache-strategy content`, Konfigurations- und Lockfile-Hash als Sperrvorhang): 14,2 s → 2,6 s warm, unfixbare Reste bleiben auch mit warmem Cache rot.
 - Typecheck inkrementell (`tsconfig.tsbuildinfo`, ignoriert): 11,3 s → 6,0 s.
 - Ergebnis: `verify:quick` **17,4 s** kalt und **1,2 s** bei unverändertem Baum, `verify:all` danach unter 30 s, solange der Baum unverändert ist.
-- Der Gate-Cache liegt in `.verify-cache/` ausserhalb von `node_modules`, damit `npm ci` ihn nicht zerstört; die Workflows holen ihn über `actions/cache` wieder.
+- Der Gate-Cache liegt in `.verify-cache/` ausserhalb von `node_modules`, damit `pnpm install --frozen-lockfile` ihn nicht zerstört; die Workflows holen ihn über `actions/cache` wieder.
 - Nicht umgesetzt: weniger Gate-Worker. Bei 6 Kernen laufen etwa 4,3 Kerne parallel; Typecheck verlangsamt sich unter Last von 11,3 s auf 23,6 s, bleibt aber unter der Test-Gate und damit unter der kritischen Pfad. Runterdrehen würde Wandzeit kosten, deshalb bleibt `RBD_VERIFY_WORKERS` der einzige Hebel.
 
 ## Dependency-Begründungen
@@ -115,7 +115,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
 | vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 100: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>… (+94) |
-| yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 1: `src/core/governance/__tests__/ci-gates.test.ts` |
+| yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 2: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts` |
 <!-- DEP_MATRIX_END -->
 
 ## Import und Export
@@ -143,10 +143,10 @@ Zwei mechanische Gates halten den Baum sauber, ohne Inhalt zu bewerten:
 | Gate | Code | Prueft |
 | --- | --- | --- |
 | `verify:tree` | `ERR-4019` | Wurzel-Whitelist, erlaubte Endungen je Ordner, Tests nur in `__tests__`, `src/core` ohne React/Pixi und ohne Importe nach aussen. |
-| `verify:redundancy` | `ERR-4020` | Byte-identische Quelldateien, doppelte npm-Kommandos, doppelt eingetragene Fehlercodes. Alias-Paare sind ausdruecklich erlaubt. |
+| `verify:redundancy` | `ERR-4020` | Byte-identische Quelldateien, doppelte pnpm-Kommandos, doppelt eingetragene Fehlercodes. Alias-Paare sind ausdruecklich erlaubt. |
 
 Regeln stehen als Tabelle in `scripts/verify-tree.mjs`; ein neuer Ordner braucht
-genau einen Eintrag. Doku-Eintraege erzeugt `npm run docs:stub -- "Titel"`
+genau einen Eintrag. Doku-Eintraege erzeugt `pnpm run docs:stub -- "Titel"`
 (`ERR-4021`), damit Changelog, Devtagebuch und Inventar nie ohne Datum bleiben.
 
 ## Delivery-Regel
@@ -154,14 +154,14 @@ genau einen Eintrag. Doku-Eintraege erzeugt `npm run docs:stub -- "Titel"`
 **Nach jedem abgeschlossenen Arbeits-Turn wird auf `main` geliefert.** Der verbindliche Weg ist:
 
 ```bash
-npm run turn:finish
+pnpm run turn:finish
 ```
 
-`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `npm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `pnpm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
 Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 
-Der Geschwindigkeits-Benchmark läuft separat über `npm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
+Der Geschwindigkeits-Benchmark läuft separat über `pnpm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
 
 ## Impact, Plan und Bericht
 
@@ -225,7 +225,7 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 
 ## Prüfungen und Grenzen
 
-- `soak.test.ts` läuft standardmäßig 3.000 Ticks und prüft alle 250 Ticks Ledger, Puffer, Gästezahl und Strafen. Der Seed ist frisch und nicht wählbar; `npm run soak` setzt nur die Tickzahl auf 100.000 für den langen Lauf.
+- `soak.test.ts` läuft standardmäßig 3.000 Ticks und prüft alle 250 Ticks Ledger, Puffer, Gästezahl und Strafen. Der Seed ist frisch und nicht wählbar; `pnpm run soak` setzt nur die Tickzahl auf 100.000 für den langen Lauf.
 - `save-roundtrip.test.ts` vergleicht zwei geladene Stände nach 120 weiteren Ticks inklusive Snapshot; der Save enthält Journal und Look.
 - `memory.bench.ts` misst Heap-Delta und Save-Bytes; `rig.bench.ts` misst Posen und Zustandsabbildung. Beide sind Benchmarks, keine Korrektheitsgates.
 - `bench:lowend` pinnt den Benchmark auf einen Kern. Das ist eine Emulation, kein Nachweis auf echter schwacher Hardware; die manuelle Gerätematrix bleibt offen.

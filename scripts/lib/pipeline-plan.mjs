@@ -12,9 +12,9 @@ const MINUTE = 60_000;
 
 /** Jede Stufe ist rein lesend: pruefen, nicht reparieren. */
 export const GATES = Object.freeze({
-  lint: { name: 'lint', command: 'npm', script: 'lint', code: 'ERR-4011', cache: true, timeoutMs: 2 * MINUTE },
-  'check:loc': { name: 'check:loc', command: 'npm', script: 'check:loc', code: 'ERR-4012', cache: true, timeoutMs: MINUTE },
-  typecheck: { name: 'typecheck', command: 'npm', script: 'typecheck', code: 'ERR-1005', cache: true, timeoutMs: 3 * MINUTE },
+  lint: { name: 'lint', command: 'pnpm', script: 'lint', code: 'ERR-4011', cache: true, timeoutMs: 2 * MINUTE },
+  'check:loc': { name: 'check:loc', command: 'pnpm', script: 'check:loc', code: 'ERR-4012', cache: true, timeoutMs: MINUTE },
+  typecheck: { name: 'typecheck', command: 'pnpm', script: 'typecheck', code: 'ERR-1005', cache: true, timeoutMs: 3 * MINUTE },
   'test-quality': {
     name: 'test-quality',
     command: 'node',
@@ -57,17 +57,17 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: MINUTE,
   },
-  assets: { name: 'assets', command: 'npm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
-  audit: { name: 'audit', command: 'npm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
-  tests: { name: 'tests', command: 'npm', script: 'test:ci', code: 'ERR-2001', cache: true, timeoutMs: 15 * MINUTE },
-  build: { name: 'build', command: 'npm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
+  assets: { name: 'assets', command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
+  audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
+  tests: { name: 'tests', command: 'pnpm', script: 'test:ci', code: 'ERR-2001', cache: true, timeoutMs: 15 * MINUTE },
+  build: { name: 'build', command: 'pnpm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
 const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'docs', 'tree', 'redundancy', 'assets', 'tests'];
 
 export const PROFILE_GATES = Object.freeze({
   quick: Object.freeze(QUICK),
-  // Voll und Release pruefen identisch; nur `verify:release` erzwingt npm audit zusaetzlich per Env.
+  // Voll und Release pruefen identisch; nur `verify:release` erzwingt pnpm audit zusaetzlich per Env.
   full: Object.freeze([...QUICK, 'audit', 'build']),
   release: Object.freeze([...QUICK, 'audit', 'build']),
 });

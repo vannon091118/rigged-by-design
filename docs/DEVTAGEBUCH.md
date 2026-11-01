@@ -10,7 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
-## 2026-11-01 - Cache bleibt gueltig, keine Pruefung faellt still aus
+## 2026-11-01 - Paketmanager von npm auf pnpm umgestellt
+
+**Ziel.** Den Paketmanager auf pnpm umstellen, damit `pnpm-lock.yaml` das Lockfile ist und `package-lock.json` nicht mehr getrackt wird.
+
+**Umsetzung.** `package.json` traegt `"packageManager": "pnpm@10.4.1"`; `package-lock.json` aus Git-Tracking entfernt (`git rm`), `pnpm-lock.yaml` bleibt trackt. `.npmrc` mit `allow-scripts=true` und `approved-builds=ffmpeg-static` beibehalten. Alle npm-Referenzen in Skripten (`scripts/*.mjs`, `scripts/lib/*.mjs`), GitHub Actions Workflows (`.github/workflows/*.yml`), `.githooks/pre-commit`, Pflichtdokumenten (`docs/*.md`) und `AGENTS.md` von `npm` auf `pnpm` umgestellt (`npm ci` → `pnpm install --frozen-lockfile`, `npm run` → `pnpm run`, `npm audit` → `pnpm audit`). `pnpm install` hat 293 Pakete installiert. Test `ci-gates.test.ts` erwartet `pnpm run test:perf` statt `npm run test:perf`.
+
+**Pruefungen.** `typecheck` Exit 0; `lint` ohne Fehler; `verify:quick`: alle Doku-Gates (docs, tree, redundancy, assets, dead-code) PASS, typecheck/lint/check-loc/test-quality PASS. Ein pre-existing Test in `process-sweep.test.ts` (Abbruchpfad, SIGINT) schlaegt unabhaengig von der Migration fehl.
+
+**Offen.** `verify:all` (inkl. Build, Audit, RTP/Balance/Soak) noch nicht lokal durchgelaufen; CI fuehrt es auf jedem Push aus.
+
 
 **Ziel.** Zwei Befunde aus dem ersten Lauf von `agent:verify` beheben: ein sauberer Baum uebersprang das Testgate, und kein Gate traf den Cache.
 
@@ -66,9 +75,9 @@ Dazu der Aufraeum-Umzug: die Werkzeug-Configs liegen jetzt in `src/Config/`, die
 
 **Ziel.** Eine Doku, die man lesen kann, ohne zu raten: gleiche Namen, ein Ort pro Thema, keine Aussage, die einer anderen widerspricht. Dazu der lokale Repo-Zustand: Hooks aktiv, nichts Unsortiertes in der Wurzel.
 
-**Umsetzung.** 16 Doku-Dateien liegen flach unter `docs/` und tragen Grossbuchstaben-Namen; `EVENT-NARRATIVE-ENGINE-TASKPLAN.md` und `CASINO-PIXEL-ASSET-PACK.md` ersetzen die beiden kebab-case-Ausreisser, `docs/assets/` entfaellt, `docs/ASSETS.md` verweist auf den neuen Pfad. Widersprueche korrigiert: Save v9 statt v8 in ARCHITECTURE und Inventar §8; "Narrative Engine ist noch nicht gebaut" ersetzt durch Stufe 1 gebaut / NAR-04+ nach Taskplan; Gate-Zaehlung und Gate-Reihenfolge in ARCHITECTURE, PRODUCT und AGENTS auf `scripts/lib/pipeline-plan.mjs` gezogen; Inventar-Kopf auf `main`/`c4e6e3b`/983 Dateien; §2, §3, §9–§13 auf Ist-Zahlen; Befund 5 und 42 als aufgeloest markiert, §17 auf umgesetzt. `docs/ERROR_CATALOG.md`: verschmolzene ERR-4013/ERR-4014-Zeile getrennt, Codes aufsteigend sortiert. Screenshot-README nennt wieder den echten Bestand. Repo-Hygiene: `npm run hooks:install` gesetzt (2 Hooks), Wurzel enthaelt nur `README.md` und `AGENTS.md` als Markdown. Beim Abschluss fiel der letzte Widerspruch auf: das Doku-Gate zaehlte `.turn-notes.md` als Wurzel-Doku und machte `turn:finish` rot, obwohl genau dieses Werkzeug die Datei anlegt; der Scan ueberspringt Dotfiles jetzt.
+**Umsetzung.** 16 Doku-Dateien liegen flach unter `docs/` und tragen Grossbuchstaben-Namen; `EVENT-NARRATIVE-ENGINE-TASKPLAN.md` und `CASINO-PIXEL-ASSET-PACK.md` ersetzen die beiden kebab-case-Ausreisser, `docs/assets/` entfaellt, `docs/ASSETS.md` verweist auf den neuen Pfad. Widersprueche korrigiert: Save v9 statt v8 in ARCHITECTURE und Inventar §8; "Narrative Engine ist noch nicht gebaut" ersetzt durch Stufe 1 gebaut / NAR-04+ nach Taskplan; Gate-Zaehlung und Gate-Reihenfolge in ARCHITECTURE, PRODUCT und AGENTS auf `scripts/lib/pipeline-plan.mjs` gezogen; Inventar-Kopf auf `main`/`c4e6e3b`/983 Dateien; §2, §3, §9–§13 auf Ist-Zahlen; Befund 5 und 42 als aufgeloest markiert, §17 auf umgesetzt. `docs/ERROR_CATALOG.md`: verschmolzene ERR-4013/ERR-4014-Zeile getrennt, Codes aufsteigend sortiert. Screenshot-README nennt wieder den echten Bestand. Repo-Hygiene: `pnpm run hooks:install` gesetzt (2 Hooks), Wurzel enthaelt nur `README.md` und `AGENTS.md` als Markdown. Beim Abschluss fiel der letzte Widerspruch auf: das Doku-Gate zaehlte `.turn-notes.md` als Wurzel-Doku und machte `turn:finish` rot, obwohl genau dieses Werkzeug die Datei anlegt; der Scan ueberspringt Dotfiles jetzt.
 
-**Pruefungen.** `npm run inventory:build` regeneriert §18 (983 Dateien, 67 Ordner); `verify:docs`, `verify:tree`, `verify:redundancy` und `check:loc` gruen; danach `npm run verify:quick` mit allen zehn Gates gruen und Exit 0. Pre-Commit-Hook schreibt Matrix, Katalog und Marker, `turn:finish` bumpt auf 0.3.65, committet und pusht.
+**Pruefungen.** `pnpm run inventory:build` regeneriert §18 (983 Dateien, 67 Ordner); `verify:docs`, `verify:tree`, `verify:redundancy` und `check:loc` gruen; danach `pnpm run verify:quick` mit allen zehn Gates gruen und Exit 0. Pre-Commit-Hook schreibt Matrix, Katalog und Marker, `turn:finish` bumpt auf 0.3.65, committet und pusht.
 
 **Offen.** Befund 3 (ERR-4016 fuer das Asset-Gate), 6 (`opencode.json` mit Windows-Pfad) und 7 (Audit-Drift 373/323) bleiben stehen; `verify:all` mit Build und Audit laeuft in CI. `W3Champions/logs` ist fremde lokale Logware, bleibt gitignoriert und unangetastet.
 
@@ -160,7 +169,7 @@ in `src/render/guest-art.ts`, `src/ui/Hud.tsx`, `src/core/sim/tick.ts` und in
 `scripts/**` (dort zusaetzlich `Date.now`, `new Date`, `Math.random`).
 
 **Rot/Gruen am echten Stand.** `Math.random()` an `src/render/music.ts` und
-`Date.now()` an `src/render/floor-view.ts` angehaengt: `npm run lint` Exit 1 mit
+`Date.now()` an `src/render/floor-view.ts` angehaengt: `pnpm run lint` Exit 1 mit
 vier Fehlern (`no-restricted-properties` und `no-restricted-syntax` je Quelle).
 Nach `git checkout --` beider Dateien: Exit 0. `performance.now()` in einer
 vierten Render-Datei (`guest-art.ts`): `npx eslint src/render/guest-art.ts` Exit 1,
@@ -212,9 +221,9 @@ duerfen weiterhin keinen Zufall ziehen. Die `@seed-initializer`-Ausnahme in
 `verify-test-quality` ist entfernt — sie war unbenutzt und damit nur eine Tuer.
 
 **Rot/Gruen-Beleg.** `export const __determinismProbe = Math.random();` an
-`src/core/sim/tick.ts` angehaengt: `npm run lint` endet mit Exit 1 und meldet
+`src/core/sim/tick.ts` angehaengt: `pnpm run lint` endet mit Exit 1 und meldet
 zwei Fehler in Zeile 140 (`no-restricted-properties` und `no-restricted-syntax`).
-Nach `git checkout -- src/core/sim/tick.ts`: `npm run lint` Exit 0.
+Nach `git checkout -- src/core/sim/tick.ts`: `pnpm run lint` Exit 0.
 
 **Pruefungen.** `lint`, `verify:test-quality` (87 Testdateien),
 `verify:tree`, `verify:redundancy`, `check:loc`, `tsc --noEmit`,
@@ -281,7 +290,7 @@ Pacing lesen, `src/core/rng/streams.ts` ist die einzige Ausnahme fuer die
 Krypto-Entropie. Neuer Test `src/store/__tests__/determinism.test.ts` faehrt zwei
 Laeufe mit demselben Seed und vergleicht den vollstaendigen Export.
 
-**Pruefungen.** `npm run lint` (neue Regel), ESLint-Probe per `--stdin` (vier
+**Pruefungen.** `pnpm run lint` (neue Regel), ESLint-Probe per `--stdin` (vier
 Treffer in `src/core`, kein Treffer fuer `performance.now` in `src/render`),
 `tsc --noEmit`, `check:loc`, `verify:test-quality` (87 Testdateien),
 `verify:dead-code` (775 Exporte), `verify:tree`, `verify:redundancy`. Vitest lief
@@ -331,7 +340,7 @@ Vitest lief nicht lokal; der Beweis bleibt `verify:all` in CI.
 ## 2026-11-01 - Inventar-Generator idempotent gemacht
 
 **Befund.** Bei der Verifikation der Auslieferung fiel auf: Nach einem testweise
-entfernten Eintrag stellte `npm run inventory:build` den Block nicht byte-identisch
+entfernten Eintrag stellte `pnpm run inventory:build` den Block nicht byte-identisch
 wieder her, der Arbeitsbaum blieb eine Zeile dirty. Ursache war der Selbsteintrag
 von `docs/INVENTORY.md`: Er beschrieb seine eigene Zeilenzahl, die der Generator
 beim Schreiben gerade veränderte — der Block hing damit von seinem eigenen
@@ -380,7 +389,7 @@ der Changelog, Devtagebuch und Inventar mechanisch anlegt.
 **Umsetzung.** `scripts/verify-tree.mjs` prueft Wurzel-Whitelist, erlaubte
 Endungen je Ordner, Testablage in `__tests__` und die Importrichtung von
 `src/core`. `scripts/verify-redundancy.mjs` vergleicht Dateiinhalte per
-SHA-256, npm-Kommandos und Fehlercodes; Alias-Paare sind ausdruecklich erlaubt.
+SHA-256, pnpm-Kommandos und Fehlercodes; Alias-Paare sind ausdruecklich erlaubt.
 `scripts/doc-stub.mjs` schreibt die drei Pflichteintraege mit Datum, Version
 und Uhrzeit. Beide Gates laufen im schnellen und im vollen Profil.
 
@@ -440,7 +449,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -30,27 +30,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Der Gate-Cache liegt ausserhalb von node_modules, weil npm ci node_modules neu
+      # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install --frozen-lockfile node_modules neu
       # aufbaut. Der aussere Key darf grob sein: innen entscheidet der Inhalts-Hash des
       # Arbeitsbaums, ob ein Gate wirklich gruen war.
       - name: Gate-Cache wiederherstellen
         uses: actions/cache@v4
         with:
           path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'src/Config/eslint.config.mjs') }}
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
           restore-keys: |
             ${{ runner.os }}-rbd-verify-
 
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           # Vollstaendige 22er-Linie, nicht der harte Minor: jsdom und eslint
           # verlangen einen aktuellen 22er-Stand, sonst stirbt der Vitest-Worker.
           node-version: '22'
-          cache: npm
+          cache: pnpm
 
-      - name: Install (npm ci)
-        run: npm ci
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
 
       - name: Commit- und PR-Notes-Gate
         env:
@@ -66,4 +66,4 @@ jobs:
       - name: Alle Fail-Closed-Gates
         env:
           RBD_VERIFY_AUDIT: '1'
-        run: npm run verify:all
+        run: pnpm run verify:all

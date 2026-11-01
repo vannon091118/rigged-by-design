@@ -106,7 +106,7 @@ export function impact(options = {}) {
     gates,
     open: [
       ...(selection.runAll ? [] : []),
-      ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; Delegation: npm run ci:long`] : []),
+      ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; Delegation: pnpm run ci:long`] : []),
     ],
   };
 }

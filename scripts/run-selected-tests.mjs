@@ -14,7 +14,7 @@ const files = (process.env.RBD_TEST_FILES ?? '')
   .filter(Boolean);
 const vitest = resolve(ROOT, 'node_modules', 'vitest', 'vitest.mjs');
 if (!vitest) {
-  console.error('run-selected-tests: vitest fehlt; npm ci ausfuehren');
+  console.error('run-selected-tests: vitest fehlt; pnpm install --frozen-lockfile ausfuehren');
   process.exit(1);
 }
 const result = spawnSync(

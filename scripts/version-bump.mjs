@@ -24,7 +24,7 @@ const writeJson = (file, data) => writeFileSync(file, `${JSON.stringify(data, nu
 
 /**
  * Bumpt die Patch-Version in `package.json` und an beiden Stellen der Lockfile.
- * Die Lockfile muss mit, sonst bricht `npm ci` in der CI an der Versionsdifferenz ab.
+ * Die Lockfile muss mit, sonst bricht `pnpm install --frozen-lockfile` in der CI an der Versionsdifferenz ab.
  */
 export function bumpPatch(root = ROOT) {
   const pkgPath = join(root, 'package.json');
@@ -34,10 +34,12 @@ export function bumpPatch(root = ROOT) {
   pkg.version = version;
   writeJson(pkgPath, pkg);
   try {
-    const lock = readJson(join(root, 'package-lock.json'));
+    const { parse, stringify } = await import('yaml');
+    const lockText = readFileSync(join(root, 'pnpm-lock.yaml'), 'utf8');
+    const lock = parse(lockText);
     lock.version = version;
     if (lock.packages?.['']) lock.packages[''].version = version;
-    writeJson(join(root, 'package-lock.json'), lock);
+    writeFileSync(join(root, 'pnpm-lock.yaml'), stringify(lock));
   } catch {
     // Ohne Lockfile bleibt es beim Bump der package.json.
   }

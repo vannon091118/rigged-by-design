@@ -17,5 +17,5 @@ if (argv.includes('--json')) {
   process.exit(0);
 }
 console.log(summarize(result));
-console.log('Naechster Schritt: npm run agent:verify (derselbe Plan, Cache wird wiederverwendet)');
+console.log('Naechster Schritt: pnpm run agent:verify (derselbe Plan, Cache wird wiederverwendet)');
 process.exit(0);

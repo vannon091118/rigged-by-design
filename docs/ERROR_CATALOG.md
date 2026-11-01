@@ -7,7 +7,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | Code | Komponente | Ursache | Loesung |
 | --- | --- | --- | --- |
 | ERR-0000 | Governance | Unbekannter Fehler ohne Registereintrag. | Neuen Code in beiden Registern nachtragen; Lauf wiederholen. |
-| ERR-0911 | Governance | Automatisch reparierbarer Verstoss (Format, Matrix, Trailer). | `npm run autofix:0911` ausfuehren; der Runner protokolliert den Eingriff. |
+| ERR-0911 | Governance | Automatisch reparierbarer Verstoss (Format, Matrix, Trailer). | `pnpm run autofix:0911` ausfuehren; der Runner protokolliert den Eingriff. |
 | ERR-1002 | Core / Geld | Ledger- oder VaCoin-Invariante verletzt. | Buchungspfad und Mikro-Geldarithmetik pruefen. |
 | ERR-1003 | Core / Spiele | RNG-, RTP- oder Determinismusbeweis fehlgeschlagen. | Seed, Paytable und Einsatzpfad des Spiels pruefen. |
 | ERR-1005 | Build | Typecheck oder Production-Build bricht ab. | Ersten Compilerfehler an der Ursache beheben. |
@@ -18,20 +18,20 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4001 | Testvertrag | `@test-target` oder `@error-code` fehlt/ist ungueltig. | Header mit existierendem Ziel und registriertem Code ergaenzen. |
 | ERR-4002 | Testqualitaet | Reiner Existenz-, Snapshot- oder Tautologie-Test. | Zustandstransformation oder numerische Invariante pruefen. |
 | ERR-4003 | Toter Code | Export wird nirgendwo importiert. | Export entfernen oder im echten Pfad verwenden. |
-| ERR-4004 | Dependencies | `npm audit` meldet mindestens eine Schwachstelle. | Paket aktualisieren; keine Ausnahmen. |
+| ERR-4004 | Dependencies | `pnpm audit` meldet mindestens eine Schwachstelle. | Paket aktualisieren; keine Ausnahmen. |
 | ERR-4005 | Commit | Drittanbieter-Trailer oder Tool-Werbung im Commit/PR-Body. | Trailer entfernen; `sanitize-commit` nutzen. |
 | ERR-4006 | Commit | Deutsche Developer Notes oder Pflichtsektionen fehlen. | Nachricht im Steam-Notes-Format neu schreiben. |
 | ERR-4007 | Architektur | Dependency ohne Begruendung oder ohne reale Nutzung. | `docs/ARCHITECTURE.md` und Matrix synchronisieren. |
 | ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote-Arbeit nachziehen und lokal neu aufsetzen; bleibt der Push bei aktuellem Remote abgelehnt, Rechte und Branch-Schutz pruefen. |
 | ERR-4011 | Lint | ESLint-Verstoss, der nicht automatisch behebbar ist. | Regelverstoss an der Ursache beheben. |
 | ERR-4012 | LOC-Guard | Datei ueberschreitet ihr LOC-Cap oder nutzt eine verbotene Ausnahme. | Verantwortung splitten und unter die Hot Zone ihrer Zustaendigkeit reduzieren; keine neuen Exceptions. |
-| ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. |
+| ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `pnpm run sync:deps` ausfuehren und Begruendungen pruefen. |
 | ERR-4014 | Pipeline | Ein Gate ueberschreitet sein hartes Zeitlimit und wird samt Prozessbaum beendet. | Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben. |
-| ERR-4015 | Testkatalog | Testkatalog ist nicht synchron zu den Testdateien. | `npm run catalog` ausfuehren und die Einordnung im Diff pruefen. |
+| ERR-4015 | Testkatalog | Testkatalog ist nicht synchron zu den Testdateien. | `pnpm run catalog` ausfuehren und die Einordnung im Diff pruefen. |
 | ERR-4016 | CI-Delegation | Ein langer Nachweis konnte nicht in GitHub Actions laufen oder ist dort rot. | Lauf und Log im Browser pruefen; Ursache im Gate beheben, nicht lokal nachbauen. |
-| ERR-4017 | Docs | Pflichtdokument, Marker oder Pflichtabschnitt fehlt. | `npm run docs:sync`; Struktur in `scripts/lib/doc-sync.mjs` ergaenzen. |
+| ERR-4017 | Docs | Pflichtdokument, Marker oder Pflichtabschnitt fehlt. | `pnpm run docs:sync`; Struktur in `scripts/lib/doc-sync.mjs` ergaenzen. |
 | ERR-4018 | Governance | Repo-Hooks liessen sich nicht aktivieren. | `git config core.hooksPath .githooks` pruefen. |
 | ERR-4019 | Governance / Tree | Datei liegt im falschen Ordner oder eine Schicht importiert nach aussen. | Datei verschieben; Import nach innen ziehen; Regel in `scripts/verify-tree.mjs` pruefen. |
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
-| ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `npm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
+| ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |

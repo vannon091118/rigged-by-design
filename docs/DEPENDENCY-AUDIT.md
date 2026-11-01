@@ -11,13 +11,13 @@ Umsetzungsreihenfolge in Abschnitt 7.
 Gemessen wurde lokal (Windows, Node 26.12.1, 373 installierte Pakete):
 
 - Imports über den TypeScript-AST aus `src/`, `scripts/`, `src/Config/vite.config.ts`, `src/Config/eslint.config.mjs`; keine Suche nach Namensgleichheit in Strings.
-- Bundlegröße aus einem frischen `npm run build` (17,7 s), Größen roh und gzip Level 9.
+- Bundlegröße aus einem frischen `pnpm run build` (17,7 s), Größen roh und gzip Level 9.
 - Lint-Zeit mit `eslint . --no-cache` gegen die echte Config und gegen eine Kopie ohne `projectService`.
 - Installationsgröße je Paket rekursiv aus `node_modules`.
 
 Grenzen, die dieser Bericht offenlegt statt verdeckt:
 
-- `npm audit` meldet **0 Schwachstellen**. Das ist kein Sicherheitsnachweis: die Advisory-Datenbank deckt nicht jede Linie ab, und mehrere der unten genannten Lücken haben für Vite 6 gar keine gepatchte Version.
+- `pnpm audit` meldet **0 Schwachstellen**. Das ist kein Sicherheitsnachweis: die Advisory-Datenbank deckt nicht jede Linie ab, und mehrere der unten genannten Lücken haben für Vite 6 gar keine gepatchte Version.
 - Einige Advisory-Details (Fixed-Versionen von CVE-2026-112945/-112946/-112947, CVE-2026-118662, `glob`-CLI GHSA-5j98-mcp5-4vw2) waren nicht bis zur Detailseite verifizierbar; sie sind als offen markiert.
 - Android-Verhalten (`cap sync`, Gradle) wurde nicht ausgeführt: lokal fehlt das SDK, der Nachweis läuft in CI.
 
@@ -47,10 +47,10 @@ Lizenzrisiko für die Distribution der Web-App oder der APK.
 | `pixi.js` | 8.22.0 | Runtime, Rendering | 34 Dateien, u. a. `src/render/floor-view.ts`, `src/render/comic-bubbles.ts` |
 | `react` | 19.3.1 | Runtime, UI | 30 Dateien, u. a. `src/App.tsx`, `src/render/floor-stage.tsx` |
 | `react-dom` | 19.3.1 | Runtime, Mount | 1 Datei: `src/main.tsx` |
-| `vite` | 6.4.5 | Build/Dev-Server | Konfiguration + `npm run dev`/`build` |
+| `vite` | 6.4.5 | Build/Dev-Server | Konfiguration + `pnpm run dev`/`build` |
 | `vitest` | 5.0.5 | Test | 87 Testdateien importieren `vitest` |
 | `typescript` | 5.9.3 | Typen/Build | `tsc --noEmit`, `scripts/lib/ts-ast.mjs` |
-| `eslint` | 10.13.0 | Lint | `src/Config/eslint.config.mjs`, `npm run lint` |
+| `eslint` | 10.13.0 | Lint | `src/Config/eslint.config.mjs`, `pnpm run lint` |
 | `typescript-eslint` | 8.72.1 | Lint (TS-Parser) | `src/Config/eslint.config.mjs` |
 | `@eslint/js` | 10.0.1 | Lint (Basisregeln) | `src/Config/eslint.config.mjs` |
 | `globals` | 16.5.0 | Lint (Globals) | `src/Config/eslint.config.mjs` |
@@ -103,7 +103,7 @@ Glob-Paket.
 | `jsdom` | 30.1.3 | Keine bekannten Advisories. | unauffällig |
 | `eslint` | 10.13.0 | CVE-2025-50537 wurde zurückgezogen (nur `RuleTester`); 10.14.0 hebt transitiv `minimatch` an. | Wartung, kein Risiko |
 
-`npm audit --audit-level=low` bleibt grün, obwohl Vite 6 ungepatchte Bypässe hat. Das
+`pnpm audit --audit-level=low` bleibt grün, obwohl Vite 6 ungepatchte Bypässe hat. Das
 ist der wichtigste Beleg dafür, dass ein grünes Audit-Gate kein Sicherheitsnachweis
 ist: der Advisory-Bereich endet bei den gepatchten Majors.
 
@@ -163,7 +163,7 @@ solange keine `recommendedTypeChecked`-Regeln laufen.
 | Vitest 5 behalten | jsdom nativ, `vi.*`-API vollständig, `@vitest-environment` pro Datei | Keine | **Behalten**; nach Vite 8 auf Peer-Kompatibilität erneut prüfen |
 | Oxlint + tsgolint statt ESLint | echte TS-Typen, 59/61 typbewusste Regeln, 12–18× schneller | verlangt TypeScript 7 (blockiert durch typescript-eslint), zusätzliches Go-Binary, `eslint-plugin-*`-Kompatibilität noch Alpha | **Prüfen, aber erst nach der TS-Frage** |
 | Biome statt ESLint | sehr schnell, Formatter + Linter in einem | eigene Inference statt TS-Compiler, ~75 % Recall bei Floating Promises, `no-unsafe-*` fehlt, keine ESLint-Plugins | **Nein** als Vollersatz; höchstens Formatter |
-| Bun als Paketmanager | schnellere Installation, `bun ci` fail-closed | neues Lockfile-Format, Downstream-Tools erwarten `package-lock.json` | **Nein** derzeit: CI, Actions-Cache und Gates hängen an npm |
+| Bun als Paketmanager | schnellere Installation, `bun ci` fail-closed | neues Lockfile-Format, Downstream-Tools erwarten `package-lock.json` | **Nein** derzeit: CI, Actions-Cache und Gates hängen an pnpm |
 | Bun als Testrunner | schneller Start | jsdom nicht offiziell (nur happy-dom), `vi.hoisted`/`importActual`/`stubEnv` fehlen, Mock-Leaks zwischen Dateien | **Nein**: 87 Testdateien, viele mit `vi`-Features |
 | `jsdom` → `happy-dom` | kleinere Installation | Fidelity-Verlust bei CSS/Layout; die zwei UI-Tests prüfen echte DOM-Semantik | **Nein, höchstens später messen** |
 
@@ -246,8 +246,8 @@ die sie nicht ersetzen kann.
 
 ### Welle 0 — sofort, risikoarm, ohne Funktionsverlust
 
-1. `eslint` 10.13.0 → 10.14.0 (`npm run lint` muss grün bleiben; der `minimatch`-Override bleibt bewusst bestehen).
-2. `engines: { "node": ">=22.22.2" }` und `packageManager: "npm@<lokale Version>"` in `package.json`, CI nutzt dieselbe Untergrenze.
+1. `eslint` 10.13.0 → 10.14.0 (`pnpm run lint` muss grün bleiben; der `minimatch`-Override bleibt bewusst bestehen).
+2. `engines: { "node": ">=22.22.2" }` und `packageManager: "pnpm@<lokale Version>"` in `package.json`, CI nutzt dieselbe Untergrenze.
 3. Dev-Server: `host` nur mit `RBD_DEV_HOST` öffnen, Standard `localhost`. Beseitigt die praktische Ausnutzbarkeit der Vite-Advisories.
 4. Android-CI-Lauf, der belegt, ob `cap sync` ohne `@capacitor/core` und mit `glob` 14 über `rimraf` 6 funktioniert. Ergebnis entscheidet über zwei Zeilen in `package.json`.
 5. `docs/ARCHITECTURE.md`-Matrix für `@capacitor/core` ehrlich stellen (kein Code-Import).
@@ -283,8 +283,8 @@ die sie nicht ersetzen kann.
 
 | Punkt | Status | Nachweis |
 | --- | --- | --- |
-| Welle 0.1 eslint 10.14.0 | umgesetzt | `npm run lint` grün |
-| Welle 0.2 engines/packageManager | umgesetzt | `engines.node >=22.22.2`, `packageManager npm@12.2.1` |
+| Welle 0.1 eslint 10.14.0 | umgesetzt | `pnpm run lint` grün |
+| Welle 0.2 engines/packageManager | umgesetzt | `engines.node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Welle 0.3 Dev-Server nur localhost | umgesetzt | `src/Config/vite.config.ts`: `host: RBD_DEV_HOST || 'localhost'` |
 | Welle 0.4 Android `cap add`/`cap sync` | lokal geprüft, Gradle-Nachweis via CI | `cap sync` mit `glob` 14 über `rimraf` 6 erfolgreich; `@capacitor/core` bleibt, weil `@capacitor/android` 8.6.0 es als Peer verlangt |
 | Welle 0.5 projectService | entfernt | Lint ohne Cache 25,1 s → 18,3 s, grün |
@@ -299,5 +299,5 @@ Der Vite-8-Build meldet eine Warnung der nativen Config-Ladung zu einem extensio
 
 - Der Android-Gradle-Build ist lokal nicht geprüft (kein Android-SDK); der Nachweis kommt aus `build-apk.yml` in CI.
 - Die Installationsgröße von `node_modules` wurde nach der Migration mit Datei-Summen gemessen: 234,6 MB. Der Audit-Wert 216,2 MB stammt aus einer anderen Messung; ein Vorher-Nachher-Vergleich unter gleicher Methode steht aus. Die erwartete Netto-Einsparung wurde damit nicht belegt.
-- Fixed-Versionen zu CVE-2026-112945/-112946/-112947 und CVE-2026-118662 (Vite, Okt. 2026) waren nicht bis zur Detailseite verifizierbar; sie ändern die Empfehlung nicht (Upgrade auf ≥ 7.3.2 / 8.0.5), aber die genaue Untergrenze muss beim Upgrade gegen `npm audit` und die Advisory-Seite geprüft werden.
-- `npm ci`-Dauer wurde nicht gemessen (hätte `node_modules` zerstört); die Installationskosten sind über Paketanzahl und Größe belegt, nicht über Zeit.
+- Fixed-Versionen zu CVE-2026-112945/-112946/-112947 und CVE-2026-118662 (Vite, Okt. 2026) waren nicht bis zur Detailseite verifizierbar; sie ändern die Empfehlung nicht (Upgrade auf ≥ 7.3.2 / 8.0.5), aber die genaue Untergrenze muss beim Upgrade gegen `pnpm audit` und die Advisory-Seite geprüft werden.
+- `pnpm install --frozen-lockfile`-Dauer wurde nicht gemessen (hätte `node_modules` zerstört); die Installationskosten sind über Paketanzahl und Größe belegt, nicht über Zeit.
