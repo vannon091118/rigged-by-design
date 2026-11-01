@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->
+<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.68] - 2026-11-01
+
+### Spiel
+
+- Keine sichtbare Aenderung: die Konfiguration liegt nur noch an einer Stelle.
+
+### Technik
+- `src/Config/capacitor.config.json` ist wieder versioniert: die Ignore-Regel griff ungeankert und schloss die Quelle mit ein. `.gitignore` ignoriert nur noch die Laufzeit-Kopie in der Wurzel (`/capacitor.config.json`); `prepare-android` legt sie dort an und raeumt sie ab.
 
 ## [0.3.67] - 2026-11-01
 
