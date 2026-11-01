@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 11:03 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -16,7 +16,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 ## Als Nächstes
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
-- Narrativ-Engine nach `docs/event-narrative-engine-taskplan.md`: NAR-00 Vertrag, NAR-01 Save v9, danach Facts und Gedaechtnis.
+- Narrativ-Engine nach dem adversarial gehaerteten `docs/event-narrative-engine-taskplan.md` (§9–§13): NAR-00 Vertrag, NAR-01 Save v9, danach Facts und Gedaechtnis; Reihenfolge bindend, insbesondere NAR-13 vor NAR-12.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später

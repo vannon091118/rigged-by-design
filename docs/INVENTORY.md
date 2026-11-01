@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 11:03 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -333,12 +333,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
 - `capacitor.config.json` — { — gelesen: 11 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 200 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 201 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 38 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 39 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 210 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 243 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -347,7 +347,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 107 Zeilen
 - `docs/assets/casino-pixel-asset-pack.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
-- `docs/event-narrative-engine-taskplan.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 687 Zeilen
+- `docs/event-narrative-engine-taskplan.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1022 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 79 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
@@ -1301,6 +1301,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T18 | **2026-11-01 11:02 UTC**: Event-Engine-Taskplan adversarial gehaertet. Gelesen: `docs/event-narrative-engine-taskplan.md` (687 Zeilen, NAR-00 bis NAR-17), `src/core/sim/visitors.ts`, `src/core/economy/ledger.ts`, `src/core/sim/journal.ts`, `src/core/sim/demand.ts`, `src/store/save.ts`, `scripts/lib/pipeline-plan.mjs`, `scripts/loc-budgets.mjs`, `vite.config.ts`. Befunde: veraltete Gate-Liste, veralteter Pruefstand 708d31c, Reihenfolge NAR-12 vor NAR-13; 20 Angriffe, Systemmatrix ueber 20 Systeme und Definition of Done je Task ergaenzt, kein Task gestrichen. v1.15. |
 | T17 | **2026-11-01 10:49 UTC**: Determinismus: kein Math.random und keine Wanduhr im Spielzustand. Befund: `Date.now()`-Seeds in `world-store`, `new Date()` im Export, `Date.now()` im Musik-Fade. Behoben: `entropySeed()` als einziger Krypto-Eingang, Export-Stempel aus `world.day`/`world.tick`, ESLint-Verbot fuer `Math.random`/`Date.now`/`performance.now`/`new Date()` in `src/**` mit Render-Ausnahme fuers Pacing; neuer Replay-Test in `src/store/__tests__/determinism.test.ts`. Gelesen: `streams.ts`, `prng.ts`, `world-store.ts`, `transfer.ts`, `music.ts`, `eslint.config.mjs`, `envelope.ts`. v1.14. |
 | T16 | **2026-11-01 10:24 UTC**: Gameplay- und Darstellungs-RNG getrennt: Rollen am `Prng`, eigener Render-Strom, Guard an `tickWorld`/`playRound`, Tests fuer unbewegten Spielzustand. `Math.random()` aus Renderer und Sound entfernt. v1.13. |
 | T15 | **2026-11-01 10:00 UTC**: Auslieferung am Remote-HEAD geprüft; dabei die Selbstreferenz des Generators gefunden und behoben. Datei- und Ordner-Eintrag entfernt → `verify:docs` je Exit 1; danach SHA-256-gleich wiederhergestellt, Gate grün. v1.12. |
