@@ -4,6 +4,7 @@ import type { SlotMemory } from '../games/slot-transparency';
 import type { SlotProfile } from '../games/slot-profile';
 import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
+import type { VisitorMemory } from './narrative/types';
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
 export type TemplateId = 'SMALL' | 'MEDIUM' | 'LARGE';
@@ -110,4 +111,6 @@ export type { FightFx } from './fight-fx';
 export interface Visitor {
   readonly id: number; readonly name: string; readonly persona: PersonaId;
   visits: number; lastSeenTick: number; experience?: number;
+  /** Strukturierte Erinnerungen aus abgeschlossenen Besuchen; begrenzt. */
+  memories?: VisitorMemory[];
 }

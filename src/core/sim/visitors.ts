@@ -1,5 +1,6 @@
 /** Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. */
 import type { PersonaId, Visitor, WorldState } from './types';
+import { memoryEffect } from './narrative/memory';
 
 export const VISITOR_CAP = 40;
 /** Rueckkehr-Chance (Prozent) bei neutralem Erlebnis (50). Gute Erlebnisse erhoehen sie, schlechte senken sie bis 0. */
@@ -17,6 +18,7 @@ export function recordVisitor(
     persona: input.persona,
     visits: 1,
     lastSeenTick: input.tick,
+    memories: [],
   };
   world.visitors.push(visitor);
   if (world.visitors.length > VISITOR_CAP) {
@@ -41,11 +43,14 @@ export function pickReturningVisitor(world: WorldState, guestId: number): Visito
   return visitor;
 }
 
-/** Erlebnis des letzten Besuchs (0..100) steuert die Rueckkehr; alte Staende zaehlen neutral. */
+/**
+ * Erlebnis des letzten Besuchs (0..100) steuert die Rueckkehr; alte Staende zaehlen neutral.
+ * Erinnerungen an fruehere Besuche verschieben die Chance zusaetzlich — ohne PRNG, aus dem Save.
+ */
 export function returnChance(visitor: Visitor): number {
   const experience = visitor.experience ?? NEUTRAL_EXPERIENCE;
-  const percent = (RETURN_PERCENT * experience) / NEUTRAL_EXPERIENCE;
-  return Math.max(0, Math.min(2 * RETURN_PERCENT, percent));
+  const percent = (RETURN_PERCENT * experience) / NEUTRAL_EXPERIENCE + memoryEffect(visitor).returnBonus;
+  return Math.max(0, Math.min(2 * RETURN_PERCENT + 12, percent));
 }
 
 /** Haelt das Erlebnis des letzten Besuchs fest, damit die Rueckkehr darauf reagiert. */

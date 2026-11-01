@@ -5,6 +5,7 @@ import { defaultPlinkoConfig } from '../games/plinko-config';
 import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
 import { DEFAULT_LOOK } from './player-look';
+import { createNarrativeState } from './narrative/state';
 import { BLUEPRINTS } from './house-presets';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
@@ -77,6 +78,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     activePenalties: [],
     visitors: [],
     nextVisitorId: 1,
+    narrative: createNarrativeState(),
     journal: [],
     archive: [],
     fightFx: null,

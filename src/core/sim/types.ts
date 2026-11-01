@@ -1,5 +1,6 @@
 /** Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. */
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../games/plinko-config';
+import type { NarrativeState } from './narrative/types';
 import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
 import type { ExclusionPact } from './self-exclusion-bet';
@@ -51,6 +52,8 @@ export interface WorldState {
   activePenalties: ActivePenalty[];
   visitors: Visitor[];
   nextVisitorId: number;
+  /** Persistente Narrative-Domaene: Fact-Queue, Kurzzeithistorie, Flags. */
+  narrative: NarrativeState;
   journal: JournalEvent[];
   /** Dauerhaftes, filterbares Archiv jenseits des 240er-Puffers. */
   archive: JournalEvent[];

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "roles": ["ERNaeHRER", "BEOBACHTER", "SKEPTIKER", "ERZAEHLER"],
+  "locales": ["de"],
+  "flags": {
+    "narrativ": "Beitrag gehoert zur Narrative Engine.",
+    "startpool": "Bezug auf die drei bekannten Figuren beim Spielstart.",
+    "eroeffnung": "Bezug auf den Beginn eines Laufs.",
+    "rita-kern": "Bezug auf die Figur Rita Kern.",
+    "rueckkehrer": "Bezug auf einen wiederkehrenden Stammgast.",
+    "verlust": "Bezug auf einen schlechten Besuch."
+  }
+}

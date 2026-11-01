@@ -1,0 +1,10 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-01T12:00Z-narrative-start",
+  "contributionId": "start-pool-opening-01",
+  "role": "ERNaeHRER",
+  "locale": "de",
+  "flags": ["narrativ", "startpool", "eroeffnung", "rita-kern"],
+  "text": "Rita Kern steht schon vor der Tür, als das Licht angeht. Sie kennt den Geruch von kaltem Neon und weiß, dass der erste Automat heute ihr gehört.",
+  "directives": []
+}

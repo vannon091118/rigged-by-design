@@ -1,4 +1,4 @@
-/** Save v8: Welt + Ledger-Log + Journal + PRNG. Nichts anderes besitzt Geld. */
+/** Save v9: Welt + Ledger-Log + Journal + PRNG + Narrative-Domaene. Nichts anderes besitzt Geld. */
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
 import { companyTier } from '../core/sim/progression';
@@ -6,10 +6,10 @@ import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
 
-const SAVE_VERSION = 8;
-const KEY = 'vcoin.casino.v8';
-/** v6 kennt weder Kisten noch Agenten; v5 trug das Fiat noch im Gastobjekt. */
-const LEGACY_KEYS = ['vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
+const SAVE_VERSION = 9;
+const KEY = 'vcoin.casino.v9';
+/** v8 kennt die Narrative-Domaene noch nicht; v6 weder Kisten noch Agenten; v5 trug das Fiat im Gastobjekt. */
+const LEGACY_KEYS = ['vcoin.casino.v8', 'vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
 const OLD_KEYS = ['vcoin.casino.v3', 'vcoin.casino.v4'];
 
 interface LoadedSave {
@@ -73,6 +73,7 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       foreignFloors: world.foreignFloors,
       nextForeignFloorId: world.nextForeignFloorId,
       activeForeignFloorId: world.activeForeignFloorId,
+      narrative: world.narrative,
       entries: ledger.entries.map(({ tick, from, to, amount, reason }) => ({ tick, from, to, amount, reason })),
       prngState,
   };
@@ -94,7 +95,7 @@ export function saveWorld(world: WorldState, ledger: Ledger, prngState: number):
 export function replaySave(raw: unknown): LoadedSave | null {
   try {
     const saved = raw as Partial<SavedGame> | null;
-    if (!saved || ![5, 6, 7, 8].includes(saved.version ?? 0)) return null;
+    if (!saved || ![5, 6, 7, 8, 9].includes(saved.version ?? 0)) return null;
     if (!saved.template || !Array.isArray(saved.guests) || !Array.isArray(saved.furniture)) return null;
     const world = createWorld(saved.template, saved.carpet ?? 'VIOLET');
     const legacyFiat = hydrateWorld(world, saved as SavedGame);

@@ -16,6 +16,7 @@ import { exportGameData, planImportData, type TransferReport } from './transfer'
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import { tickWorld } from '../core/sim/tick';
 import { settleMoneyJournal } from '../core/sim/journal';
+import { seedStartPool } from '../core/sim/narrative/state';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
 import type { CardDeal } from './foreign-play';
@@ -45,7 +46,8 @@ class WorldStore {
       this.#notice = 'Spielstand geladen.';
     } else {
       ensureStarter(this.#world);
-      openHouse(this.#ledger, 0);
+      // Startkapital und Start-Pool sind derselbe Beginn: das Geld ist ein Fact, die Figuren sind bekannt.
+      seedStartPool(this.#world, openHouse(this.#ledger, 0));
       this.#notice = hadOld ? 'Alter Spielstand verworfen. Neues Casino, 150 VC Startkapital.' : this.#notice;
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
@@ -65,7 +67,7 @@ class WorldStore {
   newGame(template: TemplateId = 'SMALL'): void {
     this.#world = createWorld(template);
     this.#ledger = new Ledger();
-    openHouse(this.#ledger, 0);
+    seedStartPool(this.#world, openHouse(this.#ledger, 0));
     this.#prng = new Prng(entropySeed());
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();
