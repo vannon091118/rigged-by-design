@@ -6,6 +6,7 @@ import type { GameResult } from '../core/games/contracts';
 import type { DiceBetKind } from '../core/games/dice-bets';
 import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
+import type { CardDeal } from '../store/foreign-play';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand, houseEdgeText } from './glossary';
@@ -23,8 +24,8 @@ interface Props {
   readonly onRisk: (rivalId: RivalId, color: RiskColor, stakeVC: number) => RiskOutcome | null;
   readonly onTakeHome: () => void;
   readonly onShellRound: () => ShellRound;
-  readonly onCardSeed: () => number;
-  readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDealCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number) => CardDeal | null;
+  readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string) => GameResult | null;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
 
@@ -34,7 +35,7 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onCardSeed, onSettleCard }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onDealCard, onSettleCard }: Props) {
   const states = rivalStates(view.tick);
   const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
   const [machineIndex, setMachineIndex] = useState(0);
@@ -151,8 +152,8 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           onSpin={(betVC, options) => onPlay(rivalId, machineIndex, betVC, options)}
           onRisk={machine.game === 'SLOT' ? (color, stakeVC) => onRisk(rivalId, color, stakeVC) : undefined}
           onShellRound={onShellRound}
-          onCardSeed={onCardSeed}
-          onSettle={(stakeVC, bps, label) => onSettleCard(rivalId, machineIndex, stakeVC, bps, label)}
+          onDeal={(stakeVC, bps) => onDealCard(rivalId, machineIndex, stakeVC, bps)}
+          onSettle={(stakeVC, netBps, label) => onSettleCard(rivalId, machineIndex, stakeVC, netBps, label)}
         />
       ) : (
       <div className={`table-stage${full ? ' full' : ''}`}>

@@ -22,7 +22,7 @@ import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
-import { bookCardRound, riskRivalWin, visitRivalWithJournal, type ForeignOutcome } from './foreign-play';
+import { dealCardOutcome, riskRivalWin, settleCardOutcome, visitRivalWithJournal, type CardDeal } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, takeHomeToWallet, useCarriedAtPlayer } from './player-tools';
@@ -233,11 +233,9 @@ class WorldStore {
   takeDrink(): void { this.#event(() => takeDrink(this.#world)); }
   serveDrink(guestId: number): void { this.#event(() => serveDrink(this.#world, this.#ledger, guestId)); }
   moveTo(point: Point): void { movePlayer(this.#world, point); this.#emit(false); }
-  /** Kartenrunde: Schuh aus dem Welt-PRNG, gebucht wird erst das Ergebnis. */
-  cardSeed(): number { return this.#prng.nextInt(1, 2_147_483_646); }
-  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number, label: string): GameResult | null {
-    return this.#foreign(() => bookCardRound(this.#world, this.#ledger, rivalId, machineIndex, fromVC(stakeVC), bps, label));
-  }
+  /** Karten: Einsatz und Schuh-Seed beim Austeilen, Auszahlung mit Hausquote am Rundenende. */
+  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number): CardDeal | null { return this.#foreign(() => dealCardOutcome(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC, bps)); }
+  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null { return this.#foreign(() => settleCardOutcome(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, netBps, label)); }
   /** Huetchen: die Runde steht vor der Wahl fest, gebucht wird erst der Griff. */
   shellRound(cups = 3): ShellRound { return createShellRound(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null {
@@ -262,8 +260,8 @@ class WorldStore {
   useCarriedHere(): void {
     this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; });
   }
-  /** Ein Pfad fuer alle fremden Haeuser: gleiche Notiz, gleiche Fehlerbehandlung. */
-  #foreign(run: () => ForeignOutcome): GameResult | null {
+  /** Ein Pfad fuer alle fremden Haeuser: gleiche Notiz, gleiche Fehlerbehandlung, jeder Rueckgabetyp. */
+  #foreign<T>(run: () => { result: T; notice: string }): T | null {
     try {
       const { result, notice } = run();
       this.#notice = notice;

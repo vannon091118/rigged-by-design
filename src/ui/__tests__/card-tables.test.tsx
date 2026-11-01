@@ -34,7 +34,7 @@ function table(walletVC: number, seed: number) {
       canPay
       full={false}
       onToggleFull={() => {}}
-      seed={() => seed}
+      onDeal={() => ({ seed, netBps: 10_000, label: 'Test' })}
       onSettle={() => null}
     />,
   );

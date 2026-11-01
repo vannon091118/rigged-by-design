@@ -10,7 +10,7 @@ import { foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
 import { getRival, rivalEdge, visitRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 
-export interface ForeignOutcome {
+interface ForeignOutcome {
   readonly result: GameResult;
   readonly notice: string;
 }
@@ -60,22 +60,46 @@ export function visitRivalWithJournal(
 }
 
 /**
- * Kartenrunden entscheiden sich Zug fuer Zug im Fenster; gebucht wird erst das
- * Ergebnis. Einsatz und Auszahlung laufen trotzdem ueber denselben Ledger-Pfad.
+ * Kartenrunden entscheiden sich Zug fuer Zug im Fenster: Der Einsatz wird beim
+ * Austeilen gebucht, die Auszahlung erst am Rundenende. Wer das Fenster vorher
+ * schliesst, hat trotzdem gespielt.
  */
-function settleCardRound(
-  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
-  stake: VaCoinMicro, bps: number, label: string,
-): GameResult {
+
+/** Alles, was ein Fenster nach dem Austeilen kennt: Schuh-Seed, Hausquote, Maschine. */
+export interface CardDeal {
+  readonly seed: number;
+  readonly netBps: number;
+  readonly label: string;
+}
+
+/** Einsatz beim Austeilen: Valide ist hier die Voraussetzung, nicht beim Auszahlen. */
+export function dealCardOutcome(
+  world: WorldState, ledger: Ledger, prng: Prng, rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number,
+): { result: CardDeal; notice: string } {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
-  if (!Number.isSafeInteger(bps) || bps < 0) throw new Error(`Basisquote ${String(bps)} ist ungueltig.`);
+  const stake = fromVC(stakeVC);
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
   const edge = rivalEdge(rival, entry);
   const netBps = bps > 0 ? Math.max(0, bps - edge) : 0;
   foreignBet(ledger, stake, world.tick);
+  recordJournal(world, {
+    kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
+    effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
+  });
+  return { result: { seed: prng.nextInt(1, 2_147_483_646), netBps, label: entry.label }, notice: `Karten-Einsatz im ${rival.name} gebucht.` };
+}
+
+/** Auszahlung am Rundenende: hier darf keine Bude mehr pruefen, der Einsatz ist weg. */
+export function settleCardOutcome(
+  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string,
+): ForeignOutcome {
+  const rival = getRival(rivalId);
+  const entry = rival.machines[machineIndex];
+  if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
+  const stake = fromVC(stakeVC);
   const payout = mulVC(stake, netBps);
   if (payout > 0) foreignWin(ledger, payout, world.tick);
   recordExclusionPlay(world, stake, payout, world.tick);
@@ -83,14 +107,5 @@ function settleCardRound(
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde',
     effect: `${rival.name} (${entry.label}): ${label} · ${toVCString(payout)}`, refs: { rivalId },
   });
-  return { game: entry.game, stake, payout, multiplierBps: netBps, label, detail: [label] };
-}
-
-/** Wickelt die Kartenbuchung in die Form, die der Store fuer #foreign erwartet. */
-export function bookCardRound(
-  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number,
-  stake: VaCoinMicro, bps: number, label: string,
-): ForeignOutcome {
-  const result = settleCardRound(world, ledger, rivalId, machineIndex, stake, bps, label);
-  return { result, notice: `Kartenrunde bei ${getRival(rivalId).name}: ${label}.` };
+  return { result: { game: entry.game, stake, payout, multiplierBps: netBps, label, detail: [label] }, notice: `Kartenrunde im ${rival.name}: ${label}.` };
 }

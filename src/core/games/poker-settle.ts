@@ -34,8 +34,10 @@ export function settleShowdown(table: PokerTable): PokerTable {
       shares[backIndex] = (shares[backIndex] ?? 0) + amount;
       continue;
     }
+    const isTopLevel = level === levels[levels.length - 1];
+    const singleEligible = eligible.length === 1 && isTopLevel;
     pots += 1;
-    const net = amount - rake(amount);
+    const net = singleEligible ? amount : amount - rake(amount);
     let best: HandRank | null = null;
     for (const player of eligible) {
       const rank = ranks[players.indexOf(player)]!;

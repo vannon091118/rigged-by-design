@@ -7,6 +7,7 @@ import {
 import type { Card } from '../../core/rng/shoe';
 import { canAfford, fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
 import { VideoPokerStage, type VideoPokerStageHandle } from '../../render/games/video-poker-stage';
+import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
@@ -23,8 +24,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly seed: () => number;
-  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
 }
 
 const NO_HOLDS = [false, false, false, false, false];
@@ -44,7 +45,9 @@ export function VideoPokerPopup(props: Props) {
 
   const deal = (): void => {
     if (phase === 'HOLD' || !canPay) return;
-    shoe.current = createCardShoe(props.seed());
+    const dealResult = props.onDeal(bet, 10_000); // Video Poker: 100% basis
+    if (!dealResult) return;
+    shoe.current = createCardShoe(dealResult.seed);
     const dealt = dealVideoPoker(shoe.current);
     setHand(dealt);
     holdsRef.current = NO_HOLDS;

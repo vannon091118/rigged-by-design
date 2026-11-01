@@ -10,6 +10,7 @@ import { createCardShoe } from '../../core/games/engines/interactive-cards';
 import type { CardShoe } from '../../core/rng/shoe';
 import { canAfford, fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
 import { BlackjackStage, type BlackjackStageHandle } from '../../render/games/blackjack-stage';
+import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
@@ -26,8 +27,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly seed: () => number;
-  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
 }
 
 const DECKS: readonly number[] = [1, 2, 4, 6];
@@ -40,11 +41,12 @@ export function BlackjackPopup(props: Props) {
   const [rules, setRules] = useState<BlackjackRules>(DEFAULT_BLACKJACK_RULES);
   const [round, setRound] = useState<BlackjackRound | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
-  const playing = round?.phase === 'PLAYER' && !round.insuranceOffered;
+  const roundActive = round?.phase === 'PLAYER'; // includes insurance phase
+  const playing = roundActive && !round?.insuranceOffered; // player may act only outside insurance
   const stake = fromVC(bet);
   const canPay = canAfford(props.wallets.wallet, stake);
   const canDouble = canAfford(props.wallets.wallet, fromVC(bet * 2));
-  const activeHand = round?.hands[round.active] ?? null;
+  const activeHand = round?.hands[round.active ?? 0] ?? null;
   const canSplit = Boolean(playing && rules.allowSplit && round && round.hands.length < rules.maxHands
     && activeHand && activeHand.cards.length === 2
     && handTotal([activeHand.cards[0]!]) === handTotal([activeHand.cards[1]!]));
@@ -60,7 +62,9 @@ export function BlackjackPopup(props: Props) {
 
   const deal = (): void => {
     if (playing || !canPay) return;
-    shoe.current = createCardShoe(props.seed(), rules.decks);
+    const dealResult = props.onDeal(bet * 1, rules.blackjackBps); // base bet, blackjack payout BPS
+    if (!dealResult) return;
+    shoe.current = createCardShoe(dealResult.seed, rules.decks);
     setResult(null);
     commit(startBlackjack(shoe.current, 1, rules, rules.sideBetBps > 0));
   };

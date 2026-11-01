@@ -42,5 +42,9 @@ if (!existsSync(report)) {
   process.exit(1);
 }
 const lines = readFileSync(report, 'utf8').split(/\r?\n/).length;
-console.log(`balance: PASS, ${lines} Zeilen Bericht in ${report}`);
+if (run.status === 0) {
+  console.log(`balance: PASS, ${lines} Zeilen Bericht in ${report}`);
+} else {
+  console.log(`balance: FAIL (Exit-Code ${run.status}), ${lines} Zeilen Bericht in ${report}`);
+}
 process.exit(run.status === 0 ? 0 : 1);

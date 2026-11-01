@@ -6,6 +6,7 @@ import { strengthOf, type PokerAction } from '../../core/games/poker-strategy';
 import { humanAct, startHand, toCall } from '../../core/games/poker-table';
 import type { PokerTable } from '../../core/games/poker-types';
 import { Prng } from '../../core/rng/prng';
+import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { PokerStage, type PokerStageHandle } from '../../render/games/poker-stage';
 import { CasinoWindowHeader } from '../casino-window-header';
@@ -23,8 +24,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly seed: () => number;
-  readonly onSettle: (stakeVC: number, bps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
 }
 
 const STREET_LABEL: Readonly<Record<PokerTable['street'], string>> = {
@@ -55,7 +56,9 @@ export function PokerPopup(props: Props) {
 
   const deal = (): void => {
     if (running || !canPay) return;
-    rng.current = new Prng(props.seed());
+    const dealResult = props.onDeal(bet, 10_000); // Poker: 100% basis, edge handled by settle
+    if (!dealResult) return;
+    rng.current = new Prng(dealResult.seed);
     setResult(null);
     commit(startHand(rng.current, { stake, opponents: 3 }));
   };
