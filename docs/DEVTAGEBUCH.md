@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Cache bleibt gueltig, keine Pruefung faellt still aus
+
+**Ziel.** Zwei Befunde aus dem ersten Lauf von `agent:verify` beheben: ein sauberer Baum uebersprang das Testgate, und kein Gate traf den Cache.
+
+**Umsetzung.** `agent-verify` setzt kein `skip` mehr, wenn der Diff keinen Testbezug hat — ohne Auswahl laeuft die Suite, und der Bericht nennt den Grund. `turn-push` ruft `doc-sync` jetzt vor `verify`; der Pre-Commit-Hook schrieb die Marker bisher danach und entwertete damit den Baum, der gerade geprueft wurde.
+
+**Pruefungen.** Zweiter Lauf auf demselben Baum: `agent:verify` meldet `0s` und `[cached]` fuer die betroffenen Gates. `turn:finish` faehrt `verify:quick` mit bereits gesetzten Markern.
+
+**Offen.** Der erste `--ci`-Lauf fuer die langen Nachweise steht aus.
+
 ## 2026-11-01 - Ein Prozess: Impact, Agentenkontext, Plan und Bericht
 
 **Ziel.** Eine Aenderung einmal analysieren, einmal planen, einmal passend pruefen und zentral berichten — ohne zweite Pipeline und ohne doppelte Testlaeufe.
@@ -430,7 +440,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.69 | 2026-11-01 21:13 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
