@@ -14,7 +14,7 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 
 Aufgenommen am 31.10.2026 aus dem laufenden Spiel (Chromium, Fenster 1248 × 900), Stand `v0.3.27`.
 
-Diese acht Bilder zeigen echte Simulationsstände, keine Mockups: ein temporäres Skript hat `createWorld`/`tickWorld` aus `src/core/sim/` laufen lassen, den Stand als Save v8 über `toSavedGame` geschrieben und in den lokalen Speicher des Aufnahmebrowsers gelegt. Das Skript und die Stände sind nicht im Repository.
+Die Bilder `01` bis `08` zeigen echte Simulationsstände, keine Mockups: ein temporäres Skript hat `createWorld`/`tickWorld` aus `src/core/sim/` laufen lassen, den Stand als damaligen Save v8 über `toSavedGame` geschrieben (heute v9) und in den lokalen Speicher des Aufnahmebrowsers gelegt. Das Skript und die Stände sind nicht im Repository.
 
 | Datei | Zustand | Zeigt |
 | --- | --- | --- |

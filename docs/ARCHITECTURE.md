@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:56 UTC -->
+<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->
 
 ## Zustandsbesitz
 
@@ -12,10 +12,10 @@
 - Fiat eines Gastes liegt ab dem Spawn auf `FIAT_<id>`, Chips auf `VISITOR_<id>`, offene Gewinne auf `PENDING_<id>`. Ein fehlgeschlagener Transfer lässt Gast und Guthaben stehen.
 - Auszahlungen werden nie gekappt: Das Hauskonto zahlt, so weit es reicht; der Rest wird als Verbindlichkeit auf `HAUS_SCHULDEN` gebucht (`openLiability`). Die Summe aller Konten bleibt null.
 - Der Umbau läuft über `src/core/sim/remodel.ts`: erst Deckung prüfen, dann alle Gastansprüche buchen, dann Geld buchen und das Haus tauschen.
-- Der Save ist v8. `replaySave` hebt v5-, v6- und v7-Stände an, behält Fiat, offene Gewinne, Journal und Look und setzt den PRNG an der gespeicherten Stelle fort.
+- Der Save ist v9 (`vcoin.casino.v9`). `replaySave` hebt v5-, v6-, v7- und v8-Stände an, behält Fiat, offene Gewinne, Journal, Look und Besuchererinnerungen und setzt den PRNG an der gespeicherten Stelle fort; v3 und v4 werden verworfen.
 - Narrative Engine (Stufe 1, `docs/NARRATIVE-ENGINE.md`): `WorldState.narrative` besitzt Fact-Queue (`pending`, 48), Kurzzeithistorie (`recent`, 120), `processedId`, `dropped` und Flags. Facts sind eine diskriminierte Union und entstehen nur an echten Uebergaengen (Spawn, Rueckkehr, Auszahlung, Spielstart); das Journal bleibt Spielerhistorie und ist kein Fact-Bus. `Visitor` traegt hoechstens sechs strukturierte Erinnerungen, `Guest` bleibt die temporaere Besuchsinstanz. Die Wirkung ist deterministisch aus dem Save berechnet: Rueckkehrchance und Spawn-Laune folgen `memoryEffect()`, ohne PRNG und ohne Uhr. Der Start-Pool (drei bekannte Figuren plus `START_POOL`-Fact mit Startkapital) entsteht nur beim neuen Spiel ueber `seedStartPool`. Save v9 persistiert den Narrativ-Zustand; v5–v8 werden auf leere Defaults normalisiert, kaputte Eintraege verworfen.
 - Zufall ist seedbar und läuft ausschließlich über `src/core/rng/`: `weighted.ts` zieht Zahlen aus einer Gewichtsverteilung, die ihre eigenen Chancen mitliefert (Bias ≤ 9.000 bps, Deadzones, nie 100 %); `shoe.ts` zieht Karten ohne Zurücklegen und mischt erst den leeren Schuh neu. Es gibt kein `Math.random()` im Spielpfad. Gameplay und Darstellung sind getrennte Stroeme: `presentation` versorgt Partikel und Sound (`src/render/rng.ts`), `gameplay` bewegt Welt und Spiele; `assertGameplayRng` weist fremde Stroeme an `tickWorld` und `playRound` ab. Der Darstellungsstrom liegt nie im Save. Echter Zufall existiert nur an einer Stelle: `entropySeed()` in `src/core/rng/streams.ts` zieht Krypto-Bits fuer einen neuen Lauf; danach ist alles geseedet. Wanduhr ist kein Spielzustand: ESLint verbietet `Math.random`, `Date.now`, `performance.now`, `new Date()` und Krypto-Zufall (`getRandomValues`, `randomUUID`) in `src/**` und `scripts/**`, einschliesslich `globalThis`/`window`-Umwegen, `new`-Umwegen und Aliasen; `eslint-disable` ist per `noInlineConfig` wirkungslos; `Date()` ohne `new` und `performance.timeOrigin` sind ebenfalls gesperrt. Ausnahmen stehen namentlich und begruendet in `eslint.config.mjs`: `performance.now` nur in `src/render/floor-view.ts`, `src/render/floor-props.ts` und `src/render/music.ts` (Pacing), Krypto nur in `src/core/rng/streams.ts`, Zeitstempel- und CI-Tooling; jede andere Datei unter `src/render/**` bleibt voll gesperrt. Der Wanduhr-Wert kann den Spielzustand nicht erreichen: `src/core` importiert nie aus `src/render`, `src/render` importiert aus `src/store` ausschliesslich `import type { GameView }` (readonly, kein Laufzeitbezug) und ruft keinen Store-Command, `tick`/`day` werden nur in `src/core/sim/tick.ts` fortgeschrieben, und kein Command nimmt einen Zeitparameter ausser `buyBarCmd`, dessen einziger Aufrufer `world-store` selbst `world.tick` uebergibt. Der Export stempelt `Tag X, Tick Y` aus der Welt, damit derselbe Stand dieselben Bytes ergibt.
-- Die Narrative Engine ist noch nicht gebaut. Verbindlich ist der adversarial gehaertete Taskplan `docs/event-narrative-engine-taskplan.md` (Stand 2026-11-01): eigener persistenter Narrativ-Zustand inklusive eigenem RNG-Zustand, Save v9, Facts statt Journal als Trigger-Feed, Commands nur allowlisted und atomar. Der Plan nennt 20 Angriffe mit Gegenmassnahmen und die Systemmatrix ueber alle beruehrten Systeme.
+- Die Narrative Engine ist in Stufe 1 gebaut (NAR-00 bis NAR-03). Fuer NAR-04 bis NAR-17 ist der adversarial gehaertete Taskplan `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` (Stand 2026-11-01) verbindlich: eigener persistenter Narrativ-Zustand, Facts statt Journal als Trigger-Feed, Commands nur allowlisted und atomar, Reihenfolge bindend (NAR-13 vor NAR-12). Der Plan nennt 20 Angriffe mit Gegenmassnahmen und die Systemmatrix ueber alle beruehrten Systeme.
 - Physik liegt in `src/core/physics/`: `body.ts` beschreibt Koerper (Position, Geschwindigkeit, Rotation, Winkelgeschwindigkeit, Masse, Traegheit, Reibung, Restitution, Form), `world.ts` simuliert mit festem Zeitschritt und aufgeloesten Impulsen. Kollisionen erzeugen ueber die Tangentialreibung echtes Drehmoment. Statische Koerper koennen rotieren und uebertragen ihre Oberflaechengeschwindigkeit; `trigger`-Zonen sind nicht solide und werden ueber `triggerHits` gelesen. Die Welt kennt weder Pixi noch DOM, und die Breitphase ist allokationsfrei.
 - Plinko ist kein Wuerfel mehr: `src/core/games/plinko-board.ts` baut das Board aus echten Pegs, Waenden und Deflektoren. Zufall steckt nur in der Startbedingung; welches Fach der Ball trifft, entscheiden danach ausschliesslich Kollisionen. Die Paytable ist auf die gemessene Fachverteilung geeicht.
 - Jedes Spiel hat seine eigene Engine unter `src/core/games/engines/`: `slot.ts` (3 bis 5 Walzen mit je drei Reihen aus `slot-config.ts`, Linien je Walzenzahl, gewichtete Symbole, BOOK als Wild und Scatter, Freispiele), `cards.ts` (Blackjack mit Ziehen/Verdoppeln und Dealer-Regel, Video Poker mit Hold/Draw und Paytable als Daten), `table.ts` (Roulette mit voller Wettfläche, zwei Würfel, Hütchenspiel mit Serie). `round.ts` ist nur noch der Dispatcher auf diese Engines.
@@ -43,8 +43,8 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | npm-Skript | Inhalt |
 | --- | --- | --- |
-| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
-| `full` | `verify:all` | Alle zehn Stufen inklusive Build und Audit. Unverändert das Tor vor jedem Commit. |
+| `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
 | `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
 
 Zusätzlich wählt `npm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `npm run turn:finish -- --affected` fährt die Auswahl vor dem Versions-Bump als zusätzliche Entwicklungsstufe; danach läuft `verify:quick` beziehungsweise mit `:full` unverändert `verify:all`.
@@ -67,10 +67,12 @@ Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslau
 4. Testqualität und Determinismus (`ERR-1001`, `ERR-4001`, `ERR-4002`, `ERR-3001`)
 5. Tote Exporte (`ERR-4003`)
 6. Doku-Gate inklusive Inventar-Abdeckung gegen `git ls-files` (`ERR-4017`)
-7. Tree- und Redundanz-Gate (`ERR-4019`, `ERR-4020`)
-8. `npm audit --audit-level=low` (`ERR-4004`)
-9. Vitest mit indizierten Testfällen
-10. Production-Build (`ERR-1005`)
+7. Tree-Gate (`ERR-4019`)
+8. Redundanz-Gate (`ERR-4020`)
+9. Asset-Manifest gegen `public/assets` (`ERR-4016`)
+10. Vitest mit indizierten Testfällen
+11. `npm audit --audit-level=low` (`ERR-4004`)
+12. Production-Build (`ERR-1005`)
 
 Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab. Die Konsole nennt je Gate eine Zeile und im Fehlerfall dessen letzte 40 Zeilen; `RBD_VERIFY_VERBOSE=1` gibt die volle Ausgabe aus. Der Berichtsordner liegt im gitignorierten Cache, damit Verify weiterhin rein lesend bleibt.
 
@@ -98,7 +100,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 46: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/build-inventory.mjs`<br>… (+40) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 47: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/build-inventory.mjs`<br>… (+41) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |
@@ -155,7 +157,7 @@ genau einen Eintrag. Doku-Eintraege erzeugt `npm run docs:stub -- "Titel"`
 npm run turn:finish
 ```
 
-`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `npm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle neun Stufen; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `npm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
 Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 

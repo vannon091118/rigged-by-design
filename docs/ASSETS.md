@@ -3,7 +3,7 @@
 Das Paket `casino_asset_sounds_prealpha` ist Ausgangsmaterial, kein Auftrag. Dieses
 Dokument sagt, was daraus im Repository liegt, wie es im Spiel ankommt und wie man
 beides reproduziert. Die Beschreibung des Quellpakets liegt unter
-`docs/assets/casino-pixel-asset-pack.md`.
+`docs/CASINO-PIXEL-ASSET-PACK.md`.
 
 ## Herkunft und Rechte
 

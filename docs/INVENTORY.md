@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:56 UTC -->
+<!-- rbd-doc: v0.3.65 | 2026-11-01 20:15 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,12 +8,12 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v1.10** |
+> | **Version** | **v1.20** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 09:35 UTC (T13 — Tree-Gate, Redundanz-Gate, Doc-Generierung, Workflow entdoppelt)** |
-> | Branch | `freebuff/9f1e857ba05731117031ec2a` |
-> | HEAD | `492ac3a` (Pull via Connector: `708d31c → 492ac3a`, 583 Dateien) |
-> | Arbeitsbaum | nur `docs/INVENTORY.md` untracked (dieses Artefakt); sonst sauber; Remote `vannon091118/rigged-by-design` |
+> | **Aktualisiert** | **2026-11-01 19:50 UTC (T23 — Doku-Konsolidierung, Sortierung, Namensgleichheit, Repo-Hygiene)** |
+> | Branch | `main` (einziger Branch, lokal wie am Remote) |
+> | HEAD | `c4e6e3b` (Fast-Forward `ee882da → c4e6e3b`, 26 Commits, 76 Dateien) |
+> | Arbeitsbaum | sauber; Remote `vannon091118/rigged-by-design`; 983 getrackte Dateien, 67 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
 
@@ -23,7 +23,7 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Casino-Aufbauspiel-Simulation (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.64 (`package.json`), Engine `node >=22.22.2`, `packageManager npm@12.2.1` |
+| Version | 0.3.65 (`package.json` nach diesem Commit), Engine `node >=22.22.2`, `packageManager npm@12.2.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -41,7 +41,7 @@
 | **Summe src** | **294** | **~28.758** | |
 | `scripts` + `scripts/lib` | 22 + 12 (.mjs) | — | Pipeline, Gates, Release, Android, Audio |
 | `.github/workflows` | 5 | — | ci-verify, auto-version-release, build-apk, long-checks, pr-cleanup |
-| `docs` | 7 .md + banner + 15 Screenshots | 914 (md) | ARCHITECTURE, PRODUCT, CI-GATES, DEPENDENCY-AUDIT, ERROR_CATALOG, TEST-CATALOG, ASSETS |
+| `docs` | 16 .md + `screenshots/README.md` + Banner + 25 Screenshots | — | 16 Doku-Dateien flach unter `docs/` (Grossbuchstaben-Namen), Belege in `screenshots/{current,comparison}` |
 | `public/assets/casino` | 9 Symbole + 3 Musik (Opus/OGG) | 8,7 MB | kuratierter Asset-Ausschnitt |
 
 Größte Dateien: `floor-view.ts` 349 · `App.tsx` 325 · `guest-art.ts` 315 · `plinko-canvas.ts` 259 · `ledger.ts` 249 · `shell-canvas.ts` 242 · `staff.ts` 240 · `migrate.ts` 217 · `floor-props.ts` 217 · `sound-fx.ts` 206.
@@ -51,7 +51,7 @@ Alle unter ihren LOC-Budgets (`scripts/loc-budgets.mjs`: Legacy-Cap 350 für 6 g
 
 - `src/store/world-store.ts` (143 Z.): einziger Besitzer von `WorldState`, `Ledger`, `Prng`, Tick-Timer (520 ms), Save. Commands sind dünne Delegationen an `*-commands`/`player-tools`. Snapshot-Verbraucher: React via `useSyncExternalStore`.
 - `src/store/snapshot.ts` (`buildView`) erzeugt `GameView` (deklariert in `store/types.ts`); UI/Renderer halten keinen eigenen Spielzustand — im Code nachgewiesen.
-- `src/core/` headless: kein DOM/Pixi-Import in `src/core` gefunden; `Math.random()` existiert im Spielpfad **nur** in `render/sound-fx.ts:151` (Weißraum-Erzeugung für Audio, nicht spielwirksam).
+- `src/core/` headless: kein DOM/Pixi-Import in `src/core`. Wanduhr und Zufall sind gesperrt: Darstellung zieht aus dem eigenen `presentation`-Strom (`src/render/rng.ts`), echter Zufall nur in `entropySeed()` (`src/core/rng/streams.ts`).
 - Eine Geldwahrheit: `Ledger` mit dynamischen Konten (`FIAT_<id>`, `VISITOR_<id>`, `PENDING_<id>`, `HAUS_SCHULDEN` als Verbindlichkeitskonto). `EXTERNAL_WORLD` ist die einzige Geldquelle (`MINTING_ACCOUNT`).
 - Zustandsfluss: Store → `buildView` → UI-Commands → Store-Methoden → `core/sim`-Funktionen → Ledger/Journal.
 
@@ -86,15 +86,15 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 
 ## 8. Save & Migration
 
-`store/save.ts` (vollständig): Version 8, Key `vcoin.casino.v8`; v5/v6/v7 via LEGACY_KEYS gehoben (Fiat, offene Gewinne, Journal, Look, PRNG-Position bleiben), v3/v4 verworfen. `migrate.ts` (vollständig): Hydration mit Default-Füllung, Heilung verwaister Referenzen (Kisten↔Agenten, Dispute↔Gäste), Geräteidentität aus Katalog, Personal-Migration (`migrate-staff.ts`: Guard-Flag → Agent).
+`store/save.ts` (vollständig): **Version 9**, Key `vcoin.casino.v9`; `LEGACY_KEYS` hebt v5–v8 (Fiat, offene Gewinne, Journal, Look, Besuchererinnerungen und PRNG-Position bleiben; v8 wird auf leere Narrativ-Defaults normalisiert), `OLD_KEYS` verwirft v3/v4. `migrate.ts` (vollständig): Hydration mit Default-Füllung, Heilung verwaister Referenzen (Kisten↔Agenten, Dispute↔Gäste), Geräteidentität aus Katalog, Personal-Migration (`migrate-staff.ts`: Guard-Flag → Agent).
 
 ## 9. Governance & Pipeline
 
-- Fehlerregister: `core/governance/error-codes.ts` (23 Codes, `ERR-0000` fail-closed) ↔ `docs/ERROR_CATALOG.md` — **synch** (Formatfehler siehe Befund 4).
-- Pipeline: `scripts/run-pipeline.mjs` + `lib/pipeline-plan.mjs` (vollständig). Profile: quick = 9 Gates (lint, loc, typecheck, test-quality, dead-code, deps-matrix, catalog, assets, tests), full/release = + audit + build = 11 Gates. Jedes Gate: harter Timeout, Inhalts-Hash-Cache, rein lesend; nur `fix` schreibt.
+- Fehlerregister: `core/governance/error-codes.ts` ↔ `docs/ERROR_CATALOG.md`, `ERR-0000` fail-closed; Codes aufsteigend sortiert, inklusive `ERR-4017`–`ERR-4021` und `ERR-5001` (Formatfehler aus Befund 4 in T23 behoben).
+- Pipeline: `scripts/run-pipeline.mjs` + `lib/pipeline-plan.mjs` (vollständig). Profile: quick = 10 Gates (lint, check:loc, typecheck, test-quality, dead-code, docs, tree, redundancy, assets, tests), full/release = zusätzlich audit und build = 12 Gates. Jedes Gate: harter Timeout, Inhalts-Hash-Cache, rein lesend; nur `fix` schreibt (ESLint `--fix`, Matrix, Katalog, Doku-Marker).
 - LOC-Guard: `scripts/loc-budgets.mjs` (vollständig) — Rollen-Budgets, 6 Legacy-Einträge (350/200), keine neuen `@loc-exception`.
 
-## 10. CI/CD (alle 5 Workflows vollständig gelesen)
+## 10. CI/CD (alle 6 Workflows vollständig gelesen)
 
 | Workflow | Trigger | Aufgabe |
 | --- | --- | --- |
@@ -103,20 +103,21 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 | `build-apk.yml` | workflow_call (Release mit `skip_verify`), dispatch, Tag-Push | Java 21, Android SDK 36, Debug + unsigned-Release-APK, Artefakt-Verifikation |
 | `long-checks.yml` | dispatch (`npm run ci:long`) | Statistik (4 RTP-Dateien), Soak (100k Ticks), Balance-Lauf + Artefakt, Benchmarks |
 | `pr-cleanup.yml` | PR closed (merged) | löscht Head-Branch (nicht main, nicht Fork, `keep-branch` schont) |
+| `pr-escalation.yml` | PR gegen main | hebt den Commit-Body in den PR-Body (`lift-commit-body.mjs`), damit fehlende Pflichtsektionen nicht blockieren |
 
 Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich, Pflichtstatus `Fail-Closed Gates`, kein Force-Push, keine Löschung.
 
 ## 11. Tests & Katalog
 
-85 `.test.ts(x)` + 5 `.bench.ts` = 90 — **exakt** die Katalogzahl aus `docs/TEST-CATALOG.md` (53 contract · 17 integration · 9 governance · 6 statistics · 5 performance). Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
+91 `.test.ts(x)` + 5 `.bench.ts` = 96; System und Beweisklasse je Datei erzeugt `npm run catalog` aus `@test-target` in `docs/TEST-CATALOG.md`. Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
 
 ## 12. Dependencies & Audit
 
-22 direkte Dependencies (3 Runtime: pixi.js, react, react-dom). `docs/DEPENDENCY-AUDIT.md` (Stand 31.10.2026): Umsetzungsstand **stimmt mit `package.json` überein** — engines/packageManager gesetzt, Dev-Server-Default `localhost` + `RBD_DEV_HOST`-Opt-in (in `vite.config.ts` bestätigt), Vite 8.3.5/plugin-react 6.1.2, TypeScript 6.0.3, `projectService` entfernt. Overrides: `glob ^14.0.3`, `minimatch ^11.0.1` (sicherheitsmotiviert).
+21 direkte Dependencies (3 Runtime: pixi.js, react, react-dom). `docs/DEPENDENCY-AUDIT.md` (Stand 31.10.2026): Umsetzungsstand **stimmt mit `package.json` überein** — engines/packageManager gesetzt, Dev-Server-Default `localhost` + `RBD_DEV_HOST`-Opt-in (in `vite.config.ts` bestätigt), Vite 8.3.5/plugin-react 6.1.2, TypeScript 6.0.3, `projectService` entfernt. Overrides: `glob ^14.0.3`, `minimatch ^11.0.1` (sicherheitsmotiviert).
 
 ## 13. Assets
 
-`docs/ASSETS.md`: kuratierter Ausschnitt (9 Symbole, 3 Opus-Tracks) unter `public/assets/casino/`; **Lizenz/Urheber des Quellpakets nicht belegt — vor externer Veröffentlichung zu klären**. WAV-Master außerhalb des Repos. `npm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
+`docs/ASSETS.md`: vollständiges Paket (539 PNG + 7 JSON, 6 OGG-Tonspuren) unter `public/assets/casino/`, Manifest `src/render/assets/manifest.json`; **Lizenz/Urheber des Quellpakets nicht belegt — vor externer Veröffentlichung zu klären**. WAV-Master außerhalb des Repos. `npm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
 
 ## 14. Befunde & Diskrepanzen (laufend gepflegt)
 
@@ -126,7 +127,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 2 | mittel | **aufgelöst**: Code bucht 150 VC Startkapital (`money.ts`: `STARTING_CAPITAL = fromVC(150)`, `openHouse()`), Store-Notice nennt 150 VC, README behauptet „Du startest mit 0,00 VC". Das Portemonnaie startet tatsächlich bei 0 — die README-Aussage ist ohne diese Unterscheidung falsch bzw. irreführend. | `sim/money.ts`; `world-store.ts`; README |
 | 3 | mittel | Gate `assets` meldet bei Fehler **ERR-4016** (definiert als „langer Nachweis in CI nicht gelaufen/rot") — mögliche Fehlzuordnung; kein eigener Assets-Code im Register. | `lib/pipeline-plan.mjs`; `error-codes.ts` |
 | 4 | niedrig | `docs/ERROR_CATALOG.md`: ERR-4013/ERR-4014-Zeile verschmolzen (`… pruefen. \|\| ERR-4014 …`) — kaputte Markdown-Tabellenzeile; zusätzlich CRLF (`.gitattributes` normalisiert nur ARCHITECTURE.md). | `docs/ERROR_CATALOG.md` |
-| 5 | niedrig | Stufenzählung uneinheitlich: ARCHITECTURE.md/CI-GATES.md „neun Stufen", Pipeline führt 11 Gates; AGENTS.md nennt das assets-Gate nicht. | `pipeline-plan.mjs` vs. Doku |
+| 5 | info | **aufgelöst (T23)**: ARCHITECTURE, PRODUCT, AGENTS und dieses Inventar nennen dieselbe Zählung — quick = 10 Gates, full/release = 12 (plus `audit`, `build`); das `assets`-Gate steht in allen drei Doku-Stellen. | `scripts/lib/pipeline-plan.mjs` |
 | 6 | niedrig | `opencode.json` enthält hartkodierten Windows-Pfad `C:\Users\vanno\rigged-by-design` — nicht portabel. | `opencode.json` |
 | 7 | niedrig | Dependency-Audit nennt 373→311 Lockfile-Einträge; Ist: 323 `node_modules/`-Einträge — Drift, Bericht nicht nachgezogen. | `package-lock.json` |
 | 8 | info | Kein einziger TODO/FIXME/HACK/XXX in `src/` und `scripts/` (0 Treffer). | grep |
@@ -163,10 +164,10 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 39 | mittel | **verify-assets: Duplikat-Prüfung entfernt**: Die Regel „Pfad mehrfach vergeben → Fail“ ist im Manifest-v3-Umbau entfallen (`referenced.add(file)` ohne Prüfung); dieselbe Datei kann jetzt mehreren IDs zugeordnet sein, ohne dass das Gate meckert. Möglicherweise bewusst (Katalog und Engine teilen Dateien), aber eine Registry-Lockerung gegenüber der alten Version. | `scripts/verify-assets.mjs` |
 | 40 | niedrig | **Slot-Symbol-Fallback-Keys decken sich nicht mit dem Manifest**: `slot-symbols-extra.ts` definiert gezeichnete Rückfälle unter `GRAPE/SEVEN/BELL/CLOVER/CROWN/STAR/DIAMOND/HORSESHOE/PLUM/WILD`; der Manifest-Generator erzeugt aus den Dateinamen dagegen `GRAPE_CLUSTER/LUCKY_SEVEN/GOLD_BELL/FOUR_LEAF_CLOVER/ROYAL_CROWN/GOLDEN_STAR/BLUE_DIAMOND/LUCKY_HORSESHOE/PURPLE_PLUM/WILD_CROWN`. Aktuell ohne Effekt (die Engine zieht nur `SLOT_SYMBOLS`, deren gezeichnete Rückfälle in `slot-symbols-art.ts` liegen); sobald aber ein EXTRA-Symbol auf die Walze landet, greift stillschweigend das Buch-Rückfallbild. | `src/render/games/slot-symbols-extra.ts`, `scripts/build-asset-manifest.mjs` |
 | 41 | niedrig | Hartkodierte Paketgröße „PAKET · 539 TEXTUREN“ im Kopf der Asset-Bibliothek, während der Zähler daneben dynamisch rechnet — bei Paketwachstum veraltet die Eyebrow-Zahl. | `src/ui/asset-library-popup.tsx` |
-| 42 | info | Doppelung: `ANALYSE-BERICHT-CASINO-FLOOR.md` (256 Zeilen) liegt identisch im Wurzelverzeichnis **und** unter `docs/` — die Projekt-Convention sammelt Doku unter `docs/`. | Wurzel + `docs/` |
+| 42 | info | **aufgelöst (T10)**: Das Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` ist gelöscht; es bleibt nur `docs/ANALYSE-BERICHT-CASINO-FLOOR.md`. | `docs/` |
 | 43 | info | **Asset-Pipeline jetzt vollständig (Pull-Batch)**: `scripts/build-asset-manifest.mjs` (neu, Manifest **v3**: ~539 Texturen in 8 Kategorien + Frame-Animationen + Emitter + 6 Musiktracks, Fail-Closed gegen fehlende Dateien), `verify-assets.mjs` auf v3 umgestellt, `main.tsx` preloaded ~1,3 MB (Symbole+Maschinen+Deko+Plinko), `music.ts` mit NIGHT/MENU/BACKGROUND, `App.tsx` ordnet Popups Musikstimmungen zu, Asset-Library-Popup (192 Zeilen) mit Animations-/Emitter-Previews. Konsistenz geprüft: alle ENGINE_SYMBOLS-Pfade (book/scarab/ankh/eye-of-horus/urn/rank-*) existieren im Paket. | `scripts/`, `src/render/`, `src/App.tsx` |
 | 44 | info | **Asset-Lizenz: Status im Pull bestätigt — weiterhin unbelegt.** `docs/ASSETS.md` (§ Herkunft und Rechte, unverändert geblieben): die beiliegende README nennt **keine Lizenz und keinen Urheber**, „das Paket ist kein freigegebenes Distributionsmaterial“; vor externer Veröffentlichung muss die Herkunft geklärt bleiben. Das Dokument ist dazu jetzt konsistent ehrlich (539 PNG/7 JSON/6 WAV, ~170 MB Quelle, 13,4 MB ausgeliefert). Offener Punkt 4 bleibt damit aktiv. | `docs/ASSETS.md` |
-| 45 | info | **Neues Doku-Double: `docs/event-narrative-engine-taskplan.md` (687 Zeilen)** — sequenzieller Plan NAR-00…NAR-16 für eine datengetriebene Narrative Engine: Typed Sim Facts, Charaktergedächtnis, Beziehungen, Event-Scheduler, Event-Command-DSL mit Allowlist, Content-Registry, LLM-Textadapter (nur Darstellungstext, Regeln bleiben deterministisch), **Save v9**, Migration der beiden bestehenden `demandEvent`s, autonome Rivalen. Basiert auf Stand `708d31c` (vor dem Pull; kleine Veraltungen z. B. Poker-Profile nicht reflektiert — irrelevant für den Plan). Zuständigkeit: künftige Turns, nicht Inventur. | `docs/event-narrative-engine-taskplan.md` |
+| 45 | info | **Doku-Double, in T23 einsortiert: `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` (1023 Zeilen)** — sequenzieller Plan NAR-00…NAR-16 für eine datengetriebene Narrative Engine: Typed Sim Facts, Charaktergedächtnis, Beziehungen, Event-Scheduler, Event-Command-DSL mit Allowlist, Content-Registry, LLM-Textadapter (nur Darstellungstext, Regeln bleiben deterministisch), **Save v9**, Migration der beiden bestehenden `demandEvent`s, autonome Rivalen. Basiert auf Stand `708d31c` (vor dem Pull; kleine Veraltungen z. B. Poker-Profile nicht reflektiert — irrelevant für den Plan). NAR-00 bis NAR-03 sind umgesetzt (Save v9). | `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` |
 | 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `npm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
 | 48 | info | **Doc-Gate + Hooks (T10):** `scripts/lib/doc-sync.mjs` führt sechs Pflichtdokumente mit Pflichtabschnitten und `rbd-doc`-Marker (Version + UTC); `verify:docs` ist Gate (`ERR-4017`), der Pre-Commit-Hook schreibt ihn. `deps-matrix` und `catalog` sind keine Gates mehr; Matrix, Katalog und Marker entstehen im Hook. Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` (identische MD5) gelöscht. | `scripts/lib/doc-sync.mjs`, `.githooks/`, `scripts/lib/pipeline-plan.mjs` |
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
@@ -200,8 +201,8 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | render (43 + **2 neu (plinko-assets, slot-symbols-extra)** + 5 Tests + 2 Benches + manifest v3 = 53 Dateien) | 🔶 6 größte bis letzte Zeile (T7) **+ plinko-assets, slot-symbols-extra, slot-canvas, card-renderer, alle 9 Stages, slot-fx/gamble/layout/reels/symbols-art, actor-pool, art-tokens, comic-bubbles, floor-camera/math/route/stage/surface, music, furniture-art (alt) bis letzte Zeile (T8)**; Änderungen an furniture-art/plinko-canvas/poker-/roulette-canvas/textures/music per Pull-Diff gelesen; Manifest v3 per Konsistenz-Grep geprüft (Engine-Symbole existieren) |
 | Tests (86 + BENCH 5; +3 Poker-/1 Roulette-Test im Pull) | 🔶 im Katalog erfasst (System/Beweisklasse/Ziel); neue Tests aus dem Pull per Diff gelesen (Poker-Profile, Street-Einsatz, 31-schwarz); Körper nicht gelesen |
 | Pull-Batch `708d31c→492ac3a` (583 Dateien) | ✅ Code-Diff vollständig gelesen (ohne Manifest); 4 neue Code-Dateien bis letzte Zeile; ~550 PNG/OGG strukturiert gezählt + Verzeichnisinventar; ENGINE_SYMBOLS-Konsistenz per Dateisystem-Test bestätigt; ASSETS.md, README, ARCHITECTURE, screenshots-README, Taskplan-Kopf/Struktur gelesen |
-| docs/event-narrative-engine-taskplan.md (687) | 🔶 Kopf + Zielarchitektur + Taskliste NAR-00…16 gelesen; Körper nicht zeilenweise |
-| docs/ANALYSE-BERICHT-CASINO-FLOOR.md (256, doppelt root+docs) | 🔶 Struktur erfasst (identische Doppelung, Befund 42); Inhalt nicht zeilenweise |
+| docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md (1023) | 🔶 Kopf + Zielarchitektur + Taskliste NAR-00…17 gelesen; Körper nicht zeilenweise |
+| docs/ANALYSE-BERICHT-CASINO-FLOOR.md (256) | 🔶 Struktur erfasst; Inhalt nicht zeilenweise |
 | src/test (2: measure.ts, random-seed.ts) | ✅ beide bis letzte Zeile (T6) |
 | index.css, styles, assets/manifest.json | 🔶 Struktur + Manifest vollständig |
 | Fehlerregister-Konsistenz | ✅ beide Register abgeglichen: exakt identische 23 Codes (T3 bestätigt) |
@@ -210,15 +211,15 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 
 1. **Befund 1 (spinTest-Doppelaufruf)**: Notice aus demselben Lauf nehmen (1-Zeilen-Fix in `world-store.ts`) — Code-Änderung, erfordert Freigabe.
 2. **Befund 2**: README-Formulierung „0,00 VC" präzisieren (Portemonnaie vs. 150 VC Startkapital auf dem Hauskonto) — Doku-Änderung, erfordert Freigabe.
-3. **Befund 3/4/5/6/7**: kleinere Doku-/Register-Korrekturen, je einzeln freizugeben.
+3. **Befund 3/6/7**: offen (ERR-4016-Zuordnung, Windows-Pfad in `opencode.json`, Audit-Drift). **Befund 4/5 erledigt (T23)**: Fehlerkatalog repariert und sortiert, Gate-Zählung vereinheitlicht.
 4. **Asset-Lizenz** (ASSETS.md): **vom Nutzer am 01.11.2026 bestätigt — „Lizenzen liegen bei mir".** Damit ist die Weitergabe geklärt; offen bleibt nur der Nachweis im Repo (Referenz/Datei zur Lizenz ergänzen), nicht mehr die Grundsatzfrage.
-5. Zeile-für-Zeile-Lesung: **mit T14 abgeschlossen.** §18 belegt jede getrackte Datei (957/957) einzeln; Text wurde gelesen, Binärdateien wurden an Signatur und Größe geprüft. Die Verlaufsmatrix in §15 bleibt als Historie stehen.
+5. Zeile-für-Zeile-Lesung: **mit T14 abgeschlossen.** §18 belegt jede getrackte Datei (983/983) einzeln; Text wurde gelesen, Binärdateien wurden an Signatur und Größe geprüft. Die Verlaufsmatrix in §15 bleibt als Historie stehen.
 6. **Befund 33 (Bar-Kapazitäts-Anzeige)**: drei UI-Dateien von der Sim-Funktion `barCapacityForLevel` auf `12 + 8·max(1, level)` umstellen — kleiner, klar abgegrenzter Fix, erfordert Freigabe.
 7. **Befund 34 (`Â·`-Mojibake in table-launcher)**: eine Zeile, rein kosmetisch — bei Freigabe mit Befund 33 zusammen reparierbar.
 
-## 17. Auftrag T9: Governance-, Eskalations- und Transfer-Ausbau (erfasst, noch nicht implementiert)
+## 17. Auftrag T9: Governance-, Eskalations- und Transfer-Ausbau (in T10 umgesetzt, hier als Nachweis)
 
-Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein Code geändert** — der Auftrag ist hier vollständig festgehalten, damit er turn-übergreifend nicht verloren geht; Umsetzung ab T10.
+Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein Code geändert** — der Auftrag ist hier vollständig festgehalten; alle sieben Punkte sind in T10 umgesetzt (Spalte Status).
 
 | # | Auftrag (Nutzerwortlaut sinngemäß) | Ziel im Repo | Status |
 | --- | --- | --- | --- |
@@ -244,7 +245,7 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 | --- | --- |
 | Getrackte Dateien | 983 |
 | Gelistete Dateien | 983 |
-| Getrackte Ordner | 68 |
+| Getrackte Ordner | 67 |
 | Bereiche | (Wurzel) (12), .githooks (2), .github (6), content (2), docs (43), public (552), scripts (46), src (320) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
@@ -256,8 +257,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 6 Datei(en)
 - `content/narrative/contributions/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
-- `docs/` — 16 Datei(en)
-- `docs/assets/` — 1 Datei(en)
+- `docs/` — 17 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 10 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -338,22 +338,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 202 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 204 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 44 Zeilen
+- `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 57 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 396 Zeilen
-- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 406 Zeilen
+- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
+- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 145 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 27 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 111 Zeilen
-- `docs/assets/casino-pixel-asset-pack.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
-- `docs/event-narrative-engine-taskplan.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 79 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
@@ -954,7 +954,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 23 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 174 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
-- `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 125 Zeilen
+- `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
 - `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 56 Zeilen
 - `scripts/lib/gate-cache.mjs` — Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. — gelesen: 61 Zeilen
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 217 Zeilen
@@ -1316,6 +1316,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T23 | **2026-11-01 19:50 UTC**: Doku-Konsolidierung, Sortierung und Repo-Hygiene. Umbenannt: `docs/event-narrative-engine-taskplan.md` → `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`, `docs/assets/casino-pixel-asset-pack.md` → `docs/CASINO-PIXEL-ASSET-PACK.md`; `docs/assets/` entfällt, 16 Doku-Dateien liegen flach. Widersprüche behoben: Save überall v9 (`vcoin.casino.v9`, Migration v5–v8), Narrative Engine als Stufe 1 statt „nicht gebaut", Gate-Zählung quick 10 / full 12 inkl. `assets`, `audit`, `build`. Fehlerkatalog repariert (verschmolzene ERR-4013/4014-Zeile) und aufsteigend sortiert. Hooks aktiviert (`core.hooksPath=.githooks`); das Doku-Gate ueberspringt Dotfiles in der Wurzel, weil `.turn-notes.md` den Turn-Abschluss sonst blockiert. Stand: `main` = `origin/main` = `c4e6e3b`, 983 Dateien, 67 Ordner. v1.20. |
 | T22 | **2026-11-01 12:05 UTC**: Narrative Engine Stufe 1 (NAR-00 bis NAR-03) umgesetzt. Neu: `src/core/sim/narrative/{types,facts,state,memory}.ts`, `docs/NARRATIVE-ENGINE.md`, `content/narrative/{contributions,vocabulary}`; `WorldState.narrative`, `Visitor.memories`, Facts an Spawn/Rueckkehr/Auszahlung, Start-Pool mit Startkapital-Fact, Save v9 mit Normalisierung aus v5–v8, Tree-Gate kennt `content/`. Wirkung: Rueckkehrchance ±Erinnerungsbonus (letzte doppelt, Deckel), Spawn-Laune von Stammgaesten, Pool-Rueckkehr ab Tick 0. Tests: `narrative-facts`, `narrative-memory`, `narrative-start-pool`, `narrative-save`. Offen: NAR-04 bis NAR-17. v1.19. |
 | T21 | **2026-11-01 11:35 UTC**: Vorfall nach Merge #32: Der Merge-Commit `3c46ba6` trug nur den Klicktitel, `verify-commit-msg --head` wurde auf `main` rot (`ERR-4006`, drei Pflichtsektionen fehlten), `Bump, tag, release` und APK-Bau wurden uebersprungen. Reparatur ohne Rewrite: `AGENTS.md` nennt die API-Falle (PR-Body gehoert beim Connector-Merge in `commit_message`), DEVTAGEBUCH haelt den Vorfall fest, dieser Commit traegt die Sektionen selbst. Gelesen: `.github/workflows/ci-verify.yml` (Job-Log 124835402124), `scripts/verify-commit-msg.mjs`, `AGENTS.md`. v1.18. |
 | T20 | **2026-11-01 11:44 UTC**: `performance.now`-Ausnahme auf Pacing verengt und als dicht belegt. Gelesen: `eslint.config.mjs`, `src/render/floor-view.ts`, `src/render/floor-props.ts`, `src/render/music.ts`, `src/render/guest-art.ts`, `src/store/foreign-floor-commands.ts`, `src/store/world-store.ts`, `src/core/sim/player-jobs.ts`, `src/store/types.ts`, `scripts/verify-tree.mjs`. Befund: Ausnahme galt fuer ganz `src/render/**`, `Date()` ohne `new` und `performance.timeOrigin` waren ungesperrt. Behoben: drei Pacing-Dateien namentlich, Call-`Date` und `timeOrigin` als Selectoren. 24 Proben: nur `performance.now` in den drei Dateien (plus Alias/`globalThis`) gruen, alle anderen Quellen und jede vierte Render-Datei rot. Rot/Gruen: `Math.random` in `music.ts` + `Date.now` in `floor-view.ts` -> Lint Exit 1 (4 Fehler), nach Revert Exit 0; `performance.now` in `guest-art.ts` -> Exit 1. Datenfluss: Render importiert Store nur als `import type { GameView }`, `tick` waechst nur in `tick.ts`, kein Command nimmt Zeit ausser `buyBarCmd` mit `world.tick`. v1.17. |
