@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:11 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:28 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -177,6 +177,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 55 | info | **Abdeckung ist Gate (T14):** `verify:docs` vergleicht den Inventarblock mit `git ls-files`, prüft Ordner und Abdeckungszahl. Rot-Tests belegt: fehlende Datei, fehlender Ordner und falsche Zahl brechen mit `ERR-4017` ab. Der Pre-Commit-Hook baut die Liste vor dem Marker. | `scripts/lib/doc-sync.mjs`, `.githooks/pre-commit` |
 | 56 | info | **Versions-Kohärenz (T14):** Der Changelog trug `[0.3.65]`, `package.json` und alle Marker aber `v0.3.64`. Abschnitt auf `[0.3.64]` gezogen; Version bleibt bis `turn:finish` unverändert. | `docs/CHANGELOG.md` |
 | 57 | info | **Generator war nicht idempotent (T15):** Der Eintrag für `docs/INVENTORY.md` enthielt seine eigene Zeilenzahl; nach einem Rot-Test schrieb der Generator eine um eins falsche Zahl und erreichte den Ausgangszustand nie wieder. Der Selbsteintrag trägt jetzt einen stabilen Status; zwei Läufe hintereinander ändern nichts (Hash gleich). | `scripts/build-inventory.mjs` |
+| 58 | info | **RNG-Namespaces (T16):** `Prng` traegt `gameplay` oder `presentation`; `src/render/rng.ts` haelt den einen Darstellungs-Strom fuer Partikel und Sound, `assertGameplayRng` weist ihn an `tickWorld` und `playRound` ab. Der Save traegt weiter nur den Gameplay-Zustand. | `src/core/rng/streams.ts`, `src/render/rng.ts` |
 
 ## 15. Lesedeckung (Verlauf; §18 ist die vollständige Abdeckung)
 
@@ -241,10 +242,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 967 |
-| Gelistete Dateien | 967 |
+| Getrackte Dateien | 970 |
+| Gelistete Dateien | 970 |
 | Getrackte Ordner | 65 |
-| Bereiche | (Wurzel) (12), .githooks (2), .github (6), docs (42), public (552), scripts (46), src (307) |
+| Bereiche | (Wurzel) (12), .githooks (2), .github (6), docs (42), public (552), scripts (46), src (310) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -299,11 +300,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/io/` — 3 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
 - `src/core/physics/__tests__/` — 1 Datei(en)
-- `src/core/rng/` — 3 Datei(en)
-- `src/core/rng/__tests__/` — 2 Datei(en)
+- `src/core/rng/` — 4 Datei(en)
+- `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 53 Datei(en)
 - `src/core/sim/__tests__/` — 34 Datei(en)
-- `src/render/` — 24 Datei(en)
+- `src/render/` — 25 Datei(en)
 - `src/render/__tests__/` — 5 Datei(en)
 - `src/render/assets/` — 3 Datei(en)
 - `src/render/fx/` — 1 Datei(en)
@@ -328,22 +329,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 37 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 16 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 92 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 93 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
 - `capacitor.config.json` — { — gelesen: 11 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 200 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 36 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 37 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 155 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 178 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 25 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 105 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 106 Zeilen
 - `docs/assets/casino-pixel-asset-pack.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/event-narrative-engine-taskplan.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 687 Zeilen
@@ -1031,7 +1032,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/poker-types.ts` — Gemeinsame Formen der Pokerrunde: Tisch, Spieler, Ergebnis. — gelesen: 56 Zeilen
 - `src/core/games/risk-card.ts` — Risiko-Karte nach einem Gewinn: eine Farbe, 50/50, gebucht in doppelter Buchfuehrung. — gelesen: 44 Zeilen
 - `src/core/games/roulette-table.ts` — Europaeisches Roulette-Tableau: mehrere Jetons gleichzeitig, eine Kugel. — gelesen: 128 Zeilen
-- `src/core/games/round.ts` — Dispatcher: jedes Spiel hat seine eigene Engine, alle liefern dieselbe Ergebnisform. — gelesen: 85 Zeilen
+- `src/core/games/round.ts` — Dispatcher: jedes Spiel hat seine eigene Engine, alle liefern dieselbe Ergebnisform. — gelesen: 87 Zeilen
 - `src/core/games/sandbox.ts` — Ein Regelsatz, zwei Ausfuehrungsmodi. — gelesen: 61 Zeilen
 - `src/core/games/shell-round.ts` — Huetchenspiel als interaktive Runde: erst mischen (Kern), dann waehlt der Spieler. — gelesen: 68 Zeilen
 - `src/core/games/slot-config.ts` — Maschinenkonfiguration: die eine Quelle der Spielparameter. — gelesen: 104 Zeilen
@@ -1059,9 +1060,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/geometry.ts` — Geometrie fuer Kollisionen: naechster Punkt, Punkt-in-Polygon, Kanten, Oberflaechengeschwindigkeit. — gelesen: 45 Zeilen
 - `src/core/physics/world.ts` — Deterministische 2D-Physik: fester Zeitschritt, Impulse, Drehmoment, kein Renderer. — gelesen: 189 Zeilen
 - `src/core/rng/__tests__/shoe.test.ts` — Ein Schuh gibt jede Karte genau einmal aus, bevor er neu mischt. — gelesen: 66 Zeilen
+- `src/core/rng/__tests__/streams.test.ts` — Gameplay- und Darstellungsstrom teilen keinen Zustand: Effekte duerfen den — gelesen: 46 Zeilen
 - `src/core/rng/__tests__/weighted.test.ts` — Die ausgewiesene Chance stammt aus derselben Verteilung, aus der gezogen wird. — gelesen: 99 Zeilen
-- `src/core/rng/prng.ts` — Deterministischer Mulberry32-PRNG. Zustand ist ein uint32 und exakt wiederherstellbar. — gelesen: 50 Zeilen
+- `src/core/rng/prng.ts` — Deterministischer Mulberry32-PRNG. Zustand ist ein uint32 und exakt wiederherstellbar. — gelesen: 56 Zeilen
 - `src/core/rng/shoe.ts` — Kartenschuh ohne Zuruecklegen: eine gezogene Karte verlaesst den Schuh wirklich. — gelesen: 51 Zeilen
+- `src/core/rng/streams.ts` — Zwei Stroeme, zwei Namespaces: Darstellung darf den Spielzustand nie bewegen. — gelesen: 26 Zeilen
 - `src/core/rng/weighted.ts` — Gewichtetes Zahlenziehen: Angezeigte Chance und Ziehung stammen aus derselben Verteilung. — gelesen: 126 Zeilen
 - `src/core/sim/__tests__/balance-harness.ts` — Betriebs-Messlauf: ein skriptierter Betreiber (bauen, einstellen, reparieren, ausbauen) — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/balance-metrics.ts` — Kennzahlen des Betriebs-Messlaufs: Was Gaeste erleben, je Spieltag gezaehlt. — gelesen: 174 Zeilen
@@ -1143,7 +1146,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 240 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 113 Zeilen
-- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 135 Zeilen
+- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 137 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 73 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 113 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 80 Zeilen
@@ -1173,7 +1176,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-touch.ts` — Zwei-Finger-Zoom auf dem Canvas; die Kamera bleibt die einzige Zoom-Wahrheit. — gelesen: 70 Zeilen
 - `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 349 Zeilen
 - `src/render/furniture-art.ts` — Moebel: statischer Korpus als GPU-Textur, nur Zustand und Sitze bleiben dynamisch. — gelesen: 260 Zeilen
-- `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 116 Zeilen
+- `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 117 Zeilen
 - `src/render/games/blackjack-canvas.ts` — Blackjack-Tisch in Pixi: Dealer oben, Spieler unten, Karten fliegen aus dem Schuh. — gelesen: 142 Zeilen
 - `src/render/games/blackjack-stage.tsx` — React-Bruecke zum Blackjack-Tisch; die Runde kommt aus dem Kern, hier nur die Karten. — gelesen: 53 Zeilen
 - `src/render/games/card-renderer.ts` — Eine Spielkarte in Pixi: Vorderseite, Rueckseite, 3D-Flip und Flug aus dem Schuh. — gelesen: 168 Zeilen
@@ -1204,10 +1207,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/player-marker.ts` — Zustandsmarker ueber dem Spieler: Verletzung und Handgemenge auf dem Floor. — gelesen: 26 Zeilen
 - `src/render/rig-pose.ts` — Reine Pose-Mathematik fuer das Pixel-Rig; ohne Pixi testbar. — gelesen: 131 Zeilen
 - `src/render/rig.bench.ts` — Rendering-nahe Posekosten; bewusst nicht Teil von verify:all. — gelesen: 28 Zeilen
+- `src/render/rng.ts` — Der eine Darstellungs-Strom: Partikel und Sound, nie der Spielzustand. — gelesen: 4 Zeilen
 - `src/render/room-art.ts` — Architektur: jede Zone bekommt Waende mit Lichtkante, Sockel, Ecken und — gelesen: 194 Zeilen
 - `src/render/room-dressing.ts` — Raumausstattung ueber dem Bodenbelag: das, was einen Raum wiedererkennbar macht, — gelesen: 71 Zeilen
 - `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veränderte backen neu. — gelesen: 158 Zeilen
-- `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 206 Zeilen
+- `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 207 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
 - `src/store/__tests__/prng-persistence.test.ts` — Der PRNG-Zustand setzt nach dem Laden die Folge exakt fort, ohne Doppelziehung. — gelesen: 70 Zeilen
 - `src/store/__tests__/rival-play-commands.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
@@ -1296,6 +1300,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T16 | **2026-11-01 10:24 UTC**: Gameplay- und Darstellungs-RNG getrennt: Rollen am `Prng`, eigener Render-Strom, Guard an `tickWorld`/`playRound`, Tests fuer unbewegten Spielzustand. `Math.random()` aus Renderer und Sound entfernt. v1.13. |
 | T15 | **2026-11-01 10:00 UTC**: Auslieferung am Remote-HEAD geprüft; dabei die Selbstreferenz des Generators gefunden und behoben. Datei- und Ordner-Eintrag entfernt → `verify:docs` je Exit 1; danach SHA-256-gleich wiederhergestellt, Gate grün. v1.12. |
 | T14 | **2026-11-01 09:50 UTC**: Vollständige Inventur. `scripts/build-inventory.mjs` erzeugt §18 aus `git ls-files` (957 Dateien, 64 Ordner, eine Zeile je Pfad); `verify:docs` prüft Datei-, Ordner- und Zahlenabdeckung und wird bei Lücke rot — drei Rot-Tests belegt. Pre-Commit-Hook baut die Liste vor dem Marker. Changelog-Version auf `0.3.64` gezogen. Kein Vitest lokal. v1.11. |
 | T13 | **2026-11-01 09:35 UTC**: Tree-Gate (`ERR-4019`), Redundanz-Gate (`ERR-4020`) und `docs:stub` (`ERR-4021`) umgesetzt; `src/index.css` nach `src/styles/` verschoben; `ci-verify` prüft den Commit-Body nur noch auf `main` (Feature-Branches über `pr-escalation`, keine Doppelarbeit); alle statischen Gates grün; CI zu `37affc5` bestätigt (Fail-Closed Gates und Commit-Body success). v1.10. |

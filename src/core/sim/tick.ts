@@ -2,6 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import { ZERO_VC } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
+import { assertGameplayRng } from '../rng/streams';
 import { tickDemand } from './demand';
 import { maybeStartBrawl, tickDisputes } from './disputes';
 import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose } from './guests';
@@ -103,6 +104,7 @@ function guestTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
 }
 
 export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
+  assertGameplayRng(prng);
   world.tick += 1;
   exchangeQueue(world);
   for (const guest of [...world.guests]) {

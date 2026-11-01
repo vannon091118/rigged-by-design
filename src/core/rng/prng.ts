@@ -1,11 +1,17 @@
 /** Deterministischer Mulberry32-PRNG. Zustand ist ein uint32 und exakt wiederherstellbar. */
+
+/** Zwei Namespaces: Spielzustand und Darstellung teilen nie denselben Strom. */
+type RngRole = 'gameplay' | 'presentation';
+
 export class Prng {
   readonly seed: number;
+  readonly role: RngRole;
   #state: number;
 
-  constructor(seed: number) {
+  constructor(seed: number, role: RngRole = 'gameplay') {
     if (!Number.isFinite(seed)) throw new Error(`Prng: Seed muss endlich sein, erhalten ${String(seed)}`);
     this.seed = Math.floor(seed) >>> 0;
+    this.role = role;
     this.#state = this.seed;
   }
 
