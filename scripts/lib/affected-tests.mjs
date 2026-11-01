@@ -88,7 +88,7 @@ function dependents(seeds, graph, reverse = reverseIndex(graph)) {
 }
 
 /** Grobes System, damit eine Aenderung ohne Graphtreffer noch Recall hat. */
-function subsystemOf(file) {
+export function subsystemOf(file) {
   for (const prefix of [
     'src/core/games', 'src/core/sim', 'src/core/economy', 'src/core/rng', 'src/core/governance',
     'src/render', 'src/ui', 'src/store', 'scripts', '.github',

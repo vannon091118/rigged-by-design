@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Ein Prozess: Impact, Agentenkontext, Plan und Bericht
+
+**Ziel.** Eine Aenderung einmal analysieren, einmal planen, einmal passend pruefen und zentral berichten — ohne zweite Pipeline und ohne doppelte Testlaeufe.
+
+**Umsetzung.** `scripts/lib/impact.mjs` fuehrt zusammen, was schon existiert: `changedFiles`, `selectAffectedTests` (Importgraph inklusive dynamischer Importe und Re-Exports), Testkatalog mit Beweisklassen, `pipeline-plan` und `gate-cache`. `agent-context.mjs` gibt daraus kompakt aus, was ein Agent braucht; `agent-verify.mjs` plant dieselben Gates ueber `runGates`, laesst bei Impact-Auswahl nur betroffene Tests laufen (ohne Cache), delegiert lange Nachweise per `--ci` an Actions und schreibt `.verify-cache/reports/<Zeit>/agent-summary.json`. `turn-push` ruft statt des zweiten Testlaufs den Kontext; `test:ci` laeuft ueber `run-selected-tests.mjs`, damit eine Auswahl ueberhaupt adressierbar ist. Der Pre-Commit-Hook bricht ab, wenn Matrix oder Katalog nicht geschrieben wurden.
+
+**Pruefungen.** `node --check` fuer alle geaenderten Skripte; `agent:context` nennt Systeme, Doku, Invarianten und die Delegationsgrenze; `verify:tree` PASS; `typecheck` Exit 0; neuer Nachweis `src/core/governance/__tests__/impact.test.ts` fuer Doku-ohne-Test, Config-alle-Tests, Graphtreffer und Proof-Trennung; `verify:quick` im Turn-Abschluss.
+
+**Offen.** `agent:verify` ersetzt `verify:quick` fuer den Commit nicht; die volle Suite und die Release-Gates bleiben in CI. Der erste `--ci`-Delegationslauf ist noch nicht ausgefuehrt.
+
 ## 2026-11-01 - Config-Umzug nachgezogen: Capacitor-Datei wieder versioniert
 
 **Ziel.** Der Umzug nach `src/Config/` darf keine Datei verlieren; die Pruefung zeigte, dass `capacitor.config.json` durch eine ungeankerte Ignore-Regel nie im Commit landete.
@@ -420,7 +430,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.69 | 2026-11-01 21:13 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

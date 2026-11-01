@@ -93,6 +93,25 @@ Einmalig in GitHub setzen (Settings → Rules → New branch ruleset) oder per A
 Damit gilt: Pull Request erforderlich, gruener Pflichtstatus aus dem richtigen
 Workflow, keine Force-Pushes, keine Branch-Loeschung, keine Direktpushes.
 
+## Ein Prozess: Impact, Plan, Bericht
+
+`agent:context` und `agent:verify` sind keine zweite Pipeline. Beide lesen
+`scripts/lib/impact.mjs`, das vorhandene Quellen zusammenfuehrt: `changedFiles`,
+den Importgraphen (`selectAffectedTests`), den Testkatalog mit Beweisklassen,
+`pipeline-plan` und `gate-cache`.
+
+| Schritt | Zuständig | Ergebnis |
+| --- | --- | --- |
+| Aenderungsstand + Impact | `scripts/lib/impact.mjs` | Dateien, Systeme, Invarianten, Doku-Bezuege, Testauswahl |
+| Agentenkontext | `scripts/agent-context.mjs` | kompakter Text oder JSON, keine Pruefung |
+| Pruefplan + Ausfuehrung | `scripts/agent-verify.mjs` -> `runGates` | gleiche Gates wie `pipeline-plan`, Cache wird genutzt |
+| Teilpruefung | Impact-Auswahl | `RBD_TEST_FILES` an `run-selected-tests.mjs`, Testgate ungecacht, Bericht `partial: true` |
+| Lange Nachweise | `--ci` -> `ci-long-checks.mjs` | Actions-Lauf, auf den gewartet wird; Ergebnis im Bericht |
+| Bericht | `.verify-cache/reports/<Zeit>/agent-summary.json` | `cached`, `executed`, `skipped`, `delegated` je Gate |
+
+Eine Auswahl ist nie ein Vollnachweis: `verify:quick` und `verify:all` bleiben
+die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
+
 ## Auto-Promotion und Integrationsbranch
 
 `promote.yml` schliesst die Luecke zwischen "Branch gepusht" und "auf main".
