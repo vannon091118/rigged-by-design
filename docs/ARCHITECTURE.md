@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:26 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->
 
 ## Zustandsbesitz
 

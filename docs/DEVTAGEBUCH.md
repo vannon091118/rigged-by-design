@@ -10,6 +10,23 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - CI-Befund behoben (T12)
+
+**Befund.** Lauf #110 (`CI Verify`, Commit `f2f46c7`) war rot: 438 Tests gruen,
+zwei rot. `src/core/governance/__tests__/pipeline-modes.test.ts` verlangte noch
+`GATES['deps-matrix'].args === ['--check']` und `quick` mit `deps-matrix`.
+
+**Ursache.** Der Gate-Plan wurde bewusst geaendert, der Testvertrag nicht
+mitgezogen. Der Test ist damit kein falscher Alarm, sondern eine echte
+Nachweispflicht.
+
+**Behebung.** Der Test prueft jetzt `GATES.docs` (Skript, keine Argumente) und
+`quick` mit `docs` sowie ohne `deps-matrix`/`catalog`; die Regel "kein Gate
+repariert" bleibt unveraendert. Kein Gate wurde wieder eingefuehrt.
+
+**Pruefungen.** ESLint, Doc-Gate, Typecheck lokal; der Beweis laeuft im
+naechsten `CI Verify`-Lauf.
+
 ## 2026-11-01 - Connector-Eskalation (T11)
 
 **Ziel.** Agenten ohne `gh`-Token sollen den PR-Body trotzdem heben koennen.
@@ -37,7 +54,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:26 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
