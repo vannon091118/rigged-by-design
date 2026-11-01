@@ -9,7 +9,7 @@ import { duelOpponent, inDuelRange, type DuelOpponent } from './duel-opponent';
 import { recordJournal } from './journal';
 import { describeMugging, simulateMugging, type MuggingResult } from './mugging';
 import { applyMoodShock, applyUnsafeReputation } from './penalty-pool';
-import { grantXp, isInjured } from './player-rpg';
+import { grantGlobalXp, isInjured } from './player-rpg';
 import type { Dispute, WorldState } from './types';
 import { guestById } from './world';
 
@@ -100,7 +100,7 @@ export function resolveDuel(world: WorldState, ledger: Ledger, prng: Prng, dispu
       if (dispute.guestIds.includes(guest.id)) continue;
       guest.mood = Math.min(100, guest.mood + MOOD_BONUS);
     }
-    grantXp(world.player.rpg, XP_DUEL_WIN + opponent.strength * 2);
+    grantGlobalXp(world.player.rpg, 'WIN_BRAWL', XP_DUEL_WIN + opponent.strength * 2);
     world.fightFx = { x: dispute.x, y: dispute.y, untilTick: world.tick + FIGHT_FX_TICKS, won: true, rounds: fight.rounds };
     world.lastEvent = `Gewonnen gegen ${opponent.name} nach ${fight.rounds} Runden. Du hast noch ${world.player.rpg.hp} LP.`;
     recordJournal(world, {

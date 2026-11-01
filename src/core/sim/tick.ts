@@ -13,6 +13,7 @@ import { playerStepsPerTick, recoverPlayer } from './player-rpg';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { sendGuestToQueue } from './queue-spots';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
+import { tickForeignFloor } from './foreign-floor-tick';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, furnitureById, sendGuest } from './world';
 
@@ -114,7 +115,11 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   decay(world);
   world.reputation = Math.round(reputation(world));
   releaseOrphanSeats(world);
-  staffTick(world, ledger);
+  staffTick(world, ledger, prng);
+  // Fremde Floors ticken mit (Job-Task-Fortschritt etc.)
+  for (const floor of world.foreignFloors) {
+    tickForeignFloor(world, floor, prng);
+  }
   // Nach dem Tageswechsel: Veranstaltungen duerfen die Tagesmeldung ueberschreiben.
   tickDemand(world, ledger, prng);
   // Verletzung heilt und Lebenspunkte kehren zurueck – im Takt der Welt, nicht der Uhr.

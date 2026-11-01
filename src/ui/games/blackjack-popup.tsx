@@ -2,8 +2,9 @@
 import { useRef, useState } from 'react';
 import type { GameResult } from '../../core/games/contracts';
 import {
-  DEFAULT_BLACKJACK_RULES, doubleBlackjack, handTotal, hitBlackjack, insuranceBlackjack,
+  DEFAULT_BLACKJACK_RULES, handTotal, hitBlackjack, insuranceBlackjack,
   normalizeBlackjackRules, splitBlackjack, standBlackjack, startBlackjack, surrenderBlackjack,
+  doubleBlackjack,
   type BlackjackRound, type BlackjackRules,
 } from '../../core/games/engines/blackjack';
 import { createCardShoe } from '../../core/games/engines/interactive-cards';
@@ -14,7 +15,8 @@ import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
-import { BlackjackRulesPanel } from './blackjack-rules-panel';
+import { BlackjackRulesEditor } from './blackjack-rules-editor';
+import { BlackjackTableActions } from './blackjack-table-actions';
 
 interface Props {
   readonly title: string;
@@ -28,10 +30,10 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly onDeal: (stakeVC: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
-  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
-  readonly onAdditionalBet: (additionalVC: number) => boolean;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
+  readonly onAdditionalBet?: (additionalVC: number) => void;
 }
 
 export function BlackjackPopup(props: Props) {
@@ -42,19 +44,16 @@ export function BlackjackPopup(props: Props) {
   const [rules, setRules] = useState<BlackjackRules>(DEFAULT_BLACKJACK_RULES);
   const [round, setRound] = useState<BlackjackRound | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
-  const roundActive = round?.phase === 'PLAYER'; // includes insurance phase
-  const playing = roundActive && !round?.insuranceOffered; // player may act only outside insurance
-  const sideBet = rules.sideBetBps > 0;
-  const dealStake = sideBet ? bet * 2 : bet;
-  const canPay = canAfford(props.wallets.wallet, fromVC(dealStake));
+  const [netBps, setNetBps] = useState<number>(10_000);
+  const roundActive = round?.phase === 'PLAYER';
+  const playing = roundActive && !round?.insuranceOffered;
+  const stake = fromVC(bet);
+  const canPay = canAfford(props.wallets.wallet, stake);
+  const canDouble = canAfford(props.wallets.wallet, stake);
   const activeHand = round?.hands[round.active ?? 0] ?? null;
-  const extraStake = bet * (activeHand?.units ?? 1);
-  // Der Grundeinsatz ist bereits gebucht; Double braucht nur noch einen weiteren Einsatz.
-  const canDouble = canAfford(props.wallets.wallet, fromVC(extraStake));
   const canSplit = Boolean(playing && rules.allowSplit && round && round.hands.length < rules.maxHands
     && activeHand && activeHand.cards.length === 2
-    && handTotal([activeHand.cards[0]!]) === handTotal([activeHand.cards[1]!])
-    && canAfford(props.wallets.wallet, fromVC(extraStake)));
+    && handTotal([activeHand.cards[0]!]) === handTotal([activeHand.cards[1]!]));
   const canSurrender = Boolean(playing && rules.allowSurrender && round && round.hands.length === 1
     && activeHand && activeHand.cards.length === 2);
 
@@ -62,16 +61,24 @@ export function BlackjackPopup(props: Props) {
     setRound(next);
     playSfx('cardFlip');
     stage.current?.render(next);
-    if (next.phase === 'DONE') setResult(props.onSettle(bet * next.units, next.multiplierBps, next.label));
+    if (next.phase === 'DONE') {
+      const edge = Math.max(0, rules.blackjackBps - netBps);
+      const adjusted = Math.max(0, next.multiplierBps - edge);
+      setResult(props.onSettle(bet * next.units, adjusted, next.label));
+    }
   };
 
   const deal = (): void => {
     if (playing || !canPay) return;
-    const dealResult = props.onDeal(dealStake);
+    const sideBet = rules.sideBetBps > 0;
+    const dealStake = sideBet ? bet * 2 : bet * 1;
+    const dealResult = props.onDeal(dealStake, rules.blackjackBps);
     if (!dealResult) return;
+    if (sideBet) props.onAdditionalBet?.(bet);
     shoe.current = createCardShoe(dealResult.seed, rules.decks);
+    setNetBps(dealResult.netBps);
     setResult(null);
-    commit(startBlackjack(shoe.current, 1, rules, sideBet));
+    commit(startBlackjack(shoe.current, 1, rules, true));
   };
 
   const act = (kind: 'HIT' | 'STAND' | 'DOUBLE' | 'SPLIT' | 'SURRENDER'): void => {
@@ -79,21 +86,19 @@ export function BlackjackPopup(props: Props) {
     if (kind === 'HIT') commit(hitBlackjack(round, shoe.current));
     else if (kind === 'STAND') commit(standBlackjack(round, shoe.current));
     else if (kind === 'DOUBLE') {
-      if (!props.onAdditionalBet(extraStake)) return;
       commit(doubleBlackjack(round, shoe.current));
+      props.onAdditionalBet?.(bet);
     } else if (kind === 'SPLIT') {
-      if (!props.onAdditionalBet(extraStake)) return;
       commit(splitBlackjack(round, shoe.current));
+      props.onAdditionalBet?.(bet);
     } else commit(surrenderBlackjack(round));
   };
 
   const insure = (take: boolean): void => {
     if (!round || !shoe.current) return;
-    if (take && !props.onAdditionalBet(bet / 2)) return;
     commit(insuranceBlackjack(round, shoe.current, take));
+    if (take) props.onAdditionalBet?.(Math.round(bet / 2));
   };
-
-  const setRule = (patch: Partial<BlackjackRules>): void => setRules((current) => normalizeBlackjackRules({ ...current, ...patch }));
 
   const narration = (): string => {
     if (round?.insuranceOffered) return 'Der Dealer zeigt ein Ass. Versicherung kostet den halben Einsatz und zahlt 2:1, wenn er Blackjack hat.';
@@ -136,24 +141,16 @@ export function BlackjackPopup(props: Props) {
         </div>
       )}
 
-      {round?.insuranceOffered ? (
-        <div className="table-actions">
-          <button type="button" className="btn primary" onClick={() => insure(true)}>VERSICHERUNG NEHMEN</button>
-          <button type="button" className="btn" onClick={() => insure(false)}>OHNE WEITER</button>
-        </div>
-      ) : (
-        <div className="table-actions">
-          <button type="button" className="btn primary" disabled={!playing} onClick={() => act('HIT')}>KARTE ZIEHEN</button>
-          <button type="button" className="btn" disabled={!playing} onClick={() => act('STAND')}>HALTEN</button>
-          <button type="button" className="btn" disabled={!playing || activeHand?.cards.length !== 2 || !canDouble}
-            onClick={() => act('DOUBLE')}
-            title="Doppelter Einsatz, genau eine Karte, danach zieht der Dealer.">VERDOPPELN</button>
-          <button type="button" className="btn" disabled={!canSplit} onClick={() => act('SPLIT')}
-            title="Zwei gleiche Ränge werden zu zwei Händen mit eigenem Einsatz.">SPLIT</button>
-          <button type="button" className="btn ghost" disabled={!canSurrender} onClick={() => act('SURRENDER')}
-            title="Halber Einsatz zurück, bevor die erste Karte fällt.">AUFGEBEN</button>
-        </div>
-      )}
+      <BlackjackTableActions
+        round={round}
+        activeHand={activeHand}
+        canDouble={canDouble}
+        canSplit={canSplit}
+        canSurrender={canSurrender}
+        playing={playing}
+        onAct={act}
+        onInsure={insure}
+      />
 
       <div className="bet-row">
         {bets.map((value) => (
@@ -163,10 +160,10 @@ export function BlackjackPopup(props: Props) {
         ))}
       </div>
 
-      <BlackjackRulesPanel rules={rules} disabled={Boolean(playing)} onChange={setRule} />
+      <BlackjackRulesEditor rules={rules} onChange={(patch) => setRules((current) => normalizeBlackjackRules({ ...current, ...patch }))} disabled={playing} />
 
       <button type="button" className="btn primary big" disabled={roundActive || !canPay} onClick={deal}>
-        {roundActive ? 'HAND LÄUFT' : canPay ? `AUSTEILEN · ${dealStake} VC` : 'ZU WENIG BARGELD'}
+        {roundActive ? 'HAND LÄUFT' : canPay ? `AUSTEILEN · ${bet} VC` : 'ZU WENIG BARGELD'}
       </button>
       <small className="hint">
         {rules.dealerHitsSoft17 ? 'H17: Der Dealer zieht auf weiche 17.' : 'S17: Der Dealer hält weiche 17.'}

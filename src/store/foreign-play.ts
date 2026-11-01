@@ -8,6 +8,7 @@ import { recordJournal } from '../core/sim/journal';
 import { recordExclusionPlay, recordExclusionWin } from '../core/sim/self-exclusion-bet';
 import { EXTERNAL, foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
 import { getRival, rivalEdge, visitRival, type RivalId } from '../core/sim/rivals';
+import { grantGlobalXp } from '../core/sim/player-rpg';
 import type { WorldState } from '../core/sim/types';
 
 interface ForeignOutcome {
@@ -28,6 +29,7 @@ export function riskRivalWin(
     const outcome = gambleRivalWin(ledger, stake, color, prng, world.tick);
     const notice = `Risiko-Karte bei ${getRival(rivalId).name}: ${outcome.card} · ${outcome.won ? 'verdoppelt' : 'verloren'}.`;
     recordJournal(world, { kind: 'RIVAL', subject: rivalId, cause: 'Risiko-Karte', effect: notice, refs: { rivalId } });
+    if (outcome.won) grantGlobalXp(world.player.rpg, 'RISK_CARD_WIN', 20);
     return { outcome, notice };
   } catch (error) {
     return { outcome: null, notice: error instanceof Error ? error.message : 'Risiko-Karte fehlgeschlagen.' };
@@ -56,6 +58,11 @@ export function visitRivalWithJournal(
     kind: 'RIVAL', subject: rivalId, cause: 'Besuch im fremden Haus',
     effect: outcome.notice, refs: { rivalId },
   });
+  // Globale XP für fremdes Spielen
+  grantGlobalXp(world.player.rpg, 'FOREIGN_PLAY', 5);
+  if (outcome.result.payout > outcome.result.stake * 10) {
+    grantGlobalXp(world.player.rpg, 'FOREIGN_JACKPOT', 50);
+  }
   return outcome;
 }
 

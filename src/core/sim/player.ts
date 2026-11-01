@@ -7,7 +7,7 @@ import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
 import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
 import type { Furniture, Point, WorldState } from './types';
 import { exchangePoint, guestById, interactionPoint } from './world';
-import { grantXp } from './player-rpg';
+import { grantGlobalXp } from './player-rpg';
 
 const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
@@ -46,7 +46,7 @@ export function serveDrink(world: WorldState, ledger: Ledger, guestId: number): 
   // Nur wer schon gespielt hat, koppelt den Drink an den Kick; sonst wird niemand vom Zuschauen süchtig.
   if (guest.spins > 0) guest.addiction = Math.min(100, guest.addiction + 2);
   world.player.carrying = '';
-  grantXp(world.player.rpg, XP_SERVE_GUEST);
+  grantGlobalXp(world.player.rpg, 'SERVE_DRINK', XP_SERVE_GUEST);
   world.lastEvent = `${guest.name} hat einen Drink bekommen.`;
 }
 
@@ -60,7 +60,7 @@ export function pickupCrate(world: WorldState, crateId: number): void {
   }
   takeCrate(world, crateId, 'player');
   world.player.carrying = `KRATE:${crateId}`;
-  grantXp(world.player.rpg, XP_OPEN_CRATE);
+  grantGlobalXp(world.player.rpg, 'CLEAN_FLOOR', XP_OPEN_CRATE);
 }
 
 function heldCrateId(world: WorldState): number {
@@ -98,6 +98,7 @@ export function upgradeBar(world: WorldState, ledger: Ledger): void {
   if (world.barLevel >= 3) throw new Error('Die Bar ist ausgebaut.');
   ledger.transfer(HAUSKONTO, SHOP, world.prices.barUpgrade, 'bar ausbauen', world.tick);
   world.barLevel += 1;
+  grantGlobalXp(world.player.rpg, 'REPAIR_MACHINE', 10);
   world.lastEvent = `Bar ausgebaut (Stufe ${world.barLevel}).`;
 }
 
@@ -105,6 +106,7 @@ export function upgradeWc(world: WorldState, ledger: Ledger): void {
   if (world.wcLevel >= 3) throw new Error('Das WC ist ausgebaut.');
   ledger.transfer(HAUSKONTO, SHOP, world.prices.wcUpgrade, 'wc ausbauen', world.tick);
   world.wcLevel += 1;
+  grantGlobalXp(world.player.rpg, 'REPAIR_MACHINE', 10);
   world.lastEvent = `WC ausgebaut (Stufe ${world.wcLevel}).`;
 }
 
@@ -123,5 +125,6 @@ export function serveDesk(world: WorldState, ledger: Ledger, prng: Prng): boolea
     return false;
   }
   chooseActivity(world, guest, ledger, prng);
+  grantGlobalXp(world.player.rpg, 'SERVE_DRINK', 5);
   return true;
 }
