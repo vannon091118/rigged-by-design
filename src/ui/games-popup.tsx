@@ -29,6 +29,7 @@ interface Props {
   /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
   readonly onAdditionalBet: (additionalVC: number) => boolean;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
+  readonly initialRivalId?: RivalId;
 }
 
 const BET_STEPS = [1, 2, 5, 10] as const;
@@ -37,11 +38,12 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onDealCard, onSettleCard, onAdditionalBet }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onDealCard, onSettleCard, onAdditionalBet, initialRivalId }: Props) {
   const states = rivalStates(view.tick);
-  const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
+  const startRival = states.find((entry) => entry.id === (initialRivalId ?? RIVALS[0]!.id)) ?? states[0]!;
+  const [rivalId, setRivalId] = useState<RivalId>(startRival.id);
   const [machineIndex, setMachineIndex] = useState(0);
-  const [betVC, setBetVC] = useState(RIVALS[0]!.machines[0]!.baseBet / 10_000);
+  const [betVC, setBetVC] = useState(startRival.machines[0]!.baseBet / 10_000);
   const [full, setFull] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);

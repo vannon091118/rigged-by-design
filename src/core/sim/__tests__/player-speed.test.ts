@@ -21,7 +21,8 @@ import { randomSeed } from '../../../test/random-seed';
 const rpg = (speedLevel: number): PlayerRpgState =>
   ({
     level: 1, xp: 0, unspentPoints: 0, speedLevel, charismaLevel: 0, brawlLevel: 0,
-    hp: 60, injuryTicks: 0,
+    perceptionLevel: 0, techniqueLevel: 0, enduranceLevel: 0, luckLevel: 0,
+    attributeXp: {}, hp: 60, injuryTicks: 0,
   });
 
 /** Freie Reihe suchen, damit der Pfad nicht durch Moebel oder Zonenrand laeuft. */

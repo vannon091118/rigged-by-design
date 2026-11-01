@@ -8,7 +8,7 @@ import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type Pli
 import { migrateReels } from '../core/games/slot-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
-import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState } from '../core/sim/types';
+import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
 
@@ -77,6 +77,9 @@ export interface SavedGame {
   readonly playerAddictionScore?: number;
   readonly brokenExclusionPacts?: number;
   readonly clarityBadge?: boolean;
+  readonly foreignFloors?: ForeignFloorState[];
+  readonly nextForeignFloorId?: number;
+  readonly activeForeignFloorId?: number | null;
   readonly entries: readonly SavedEntry[];
   readonly prngState: number;
 }
@@ -138,6 +141,9 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
     && event.untilTick > world.tick ? { kind: event.kind, untilTick: Math.floor(event.untilTick) } : null;
   world.nextFurnitureId = saved.nextFurnitureId ?? 100;
   world.guardsHired = saved.guardsHired ?? 0;
+  world.foreignFloors = saved.foreignFloors ?? [];
+  world.nextForeignFloorId = saved.nextForeignFloorId ?? 1;
+  world.activeForeignFloorId = saved.activeForeignFloorId ?? null;
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));
   world.agents = (saved.agents ?? []).map((agent) => ({
     ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null,

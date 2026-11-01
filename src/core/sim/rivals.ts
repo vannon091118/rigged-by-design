@@ -10,9 +10,9 @@ import type { Prng } from '../rng/prng';
 import { foreignRound } from './actions';
 import { PORTEMONNAIE } from './money';
 import { resolveModEffects } from './offers';
-import type { GameId, ModId, PersonaId } from './types';
+import type { GameId, ModId, PersonaId, RivalId, JobStationDef } from './types';
 
-export type RivalId = 'HAFENKLAUSE' | 'GOLDENE_HAND' | 'NEBELPALAST';
+export type { RivalId };
 
 interface RivalMachine {
   readonly game: GameId;
@@ -34,6 +34,8 @@ interface RivalOperator {
   readonly minBet: VaCoinMicro;
   readonly personas: readonly PersonaId[];
   readonly machines: readonly RivalMachine[];
+  /** Arbeitsplaetze auf diesem Floor, an denen der Spieler jobs annehmen kann. */
+  readonly jobStations: readonly JobStationDef[];
 }
 
 const machine = (game: GameId, label: string, betVC: number, mods: readonly ModId[] = []): RivalMachine =>
@@ -50,6 +52,10 @@ export const RIVALS: readonly RivalOperator[] = [
       machine('SLOT', 'Klappriger Automat', 0.1, ['CHERRY']),
       machine('SHELL', 'Hütchen an der Theke', 0.1),
     ],
+    jobStations: [
+      { id: 'PUTZ_1', jobId: 'CLEANER', x: 6, y: 6, w: 2, h: 1, label: 'Putzstation', description: 'Flecken entfernen, Gäste begrüßen. Trainiert: Wahrnehmung, Speed, Ausdauer.' },
+      { id: 'BAR_1', jobId: 'BARTENDER', x: 6, y: 16, w: 2, h: 1, label: 'Bar-Theke', description: 'Drinks zapfen, Streit schlichten. Trainiert: Charisma, Brawl, Wahrnehmung, Ausdauer.' },
+    ],
   },
   {
     id: 'GOLDENE_HAND', name: 'Goldene Hand', operator: 'Marlene Vest',
@@ -63,6 +69,9 @@ export const RIVALS: readonly RivalOperator[] = [
       machine('SLOT', 'Münzautomat', 0.25, ['NEON', 'CHERRY']),
       machine('DICE', 'Würfel am Samt', 0.25, ['VELVET']),
     ],
+    jobStations: [
+      { id: 'TISCH_1', jobId: 'CARD_DEALER', x: 10, y: 10, w: 1, h: 1, label: 'Kartentisch', description: 'Karten geben, Wetten managen. Trainiert: Technik, Speed, Glück, Wahrnehmung.' },
+    ],
   },
   {
     id: 'NEBELPALAST', name: 'Nebelpalast', operator: 'Das Konsortium',
@@ -73,6 +82,9 @@ export const RIVALS: readonly RivalOperator[] = [
       machine('ROULETTE', 'Roulette mit hohem Limit', 1, ['EXTRA_REEL']),
       machine('PLINKO', 'Plinko-Wand', 1, ['NEON', 'NEAR_MISS']),
       machine('POKER', 'Stille Pokerrunde', 1, ['VELVET']),
+    ],
+    jobStations: [
+      { id: 'WERKSTATT_1', jobId: 'MECHANIC', x: 15, y: 15, w: 2, h: 2, label: 'Werkstatt', description: 'Automaten reparieren, Hochspannung. Trainiert: Technik, Brawl, Ausdauer, Wahrnehmung.' },
     ],
   },
 ];
@@ -107,6 +119,7 @@ interface RivalState {
   readonly attractiveness: number;
   readonly personas: readonly PersonaId[];
   readonly machines: readonly RivalMachine[];
+  readonly jobStations: readonly JobStationDef[];
 }
 
 /** Ruf und Ausstattung driften langsam und reproduzierbar; kein Tickaufwand pro Haus. */
@@ -124,6 +137,7 @@ export function rivalState(rival: RivalOperator, tick: number): RivalState {
     id: rival.id, name: rival.name, operator: rival.operator, style: rival.style,
     reputation, security: rival.security, edgeBps: rival.edgeBps,
     attractiveness: Math.round(attractiveness), personas: rival.personas, machines: rival.machines,
+    jobStations: rival.jobStations,
   };
 }
 

@@ -72,6 +72,17 @@ function worldSnapshot(world: WorldState) {
     playerAddictionScore: world.playerAddictionScore,
     brokenExclusionPacts: world.brokenExclusionPacts,
     clarityBadge: world.clarityBadge,
+    currentForeignFloorId: world.activeForeignFloorId,
+    foreignFloors: world.foreignFloors.map((floor) => ({
+      id: floor.id,
+      rivalId: floor.rivalId,
+      size: floor.size,
+      jobStations: floor.jobStations,
+      playerPosition: floor.playerPosition,
+      day: floor.day,
+    })),
+    playerJob: world.player.job,
+    barPurchased: world.player.barPurchased,
   };
 }
 

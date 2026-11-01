@@ -6,6 +6,7 @@ import type { ExclusionPact } from './self-exclusion-bet';
 import type {
   ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, Furniture, Guest, Player,
   PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
+  ForeignFloorState,
 } from './types-model';
 
 export type * from './types-model';
@@ -68,6 +69,11 @@ export interface WorldState {
   playerAddictionScore: number;
   brokenExclusionPacts: number;
   clarityBadge: boolean;
+  /** Fremde Casinos als besuchbare Floors. */
+  foreignFloors: ForeignFloorState[];
+  nextForeignFloorId: number;
+  /** ID des fremden Floors auf dem der Spieler gerade ist (null = eigener Floor). */
+  activeForeignFloorId: number | null;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

@@ -8,9 +8,11 @@ import { HAUSKONTO, payOrBorrow, STAFF, UTILITIES } from './money';
 import { tickNeeds } from './needs';
 import { tickPenaltyDays } from './penalty-pool';
 import { hasStaff } from './staff-queries';
+import type { Prng } from '../rng/prng';
+import { processForeignFloorDaily } from './foreign-floor-tick';
 import type { WorldState } from './types';
 
-export function staffTick(world: WorldState, ledger: Ledger): void {
+export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (world.tick % TICKS_PER_DAY !== 0) return;
   world.day += 1;
   tickPenaltyDays(world);
@@ -25,6 +27,8 @@ export function staffTick(world: WorldState, ledger: Ledger): void {
   world.lastEvent = ledger.getBalance(HAUSKONTO) > ZERO_VC
     ? `Tag ${world.day}. Löhne und Miete bezahlt.`
     : `Tag ${world.day}. Löhne und Miete über Kredit bezahlt.`;
+  // Lohn für Spieler-Jobs auf fremden Floors
+  processForeignFloorDaily(world, ledger, prng, world.tick);
 }
 
 /** Alte Saves und abgebrochene Gastpfade duerfen keinen Sitz dauerhaft blockieren. */

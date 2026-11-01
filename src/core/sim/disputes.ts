@@ -1,6 +1,7 @@
 /** Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. */
 import type { Prng } from '../rng/prng';
 import { staffAgents } from './staff-queries';
+import { grantGlobalXp } from './player-rpg';
 import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
 
@@ -33,6 +34,7 @@ function resolveDispute(world: WorldState, id: number, calmed: boolean): void {
     }
   }
   world.lastEvent = calmed ? 'Der Streit wurde geschlichtet.' : 'Der Streit ist verraucht.';
+  if (calmed) grantGlobalXp(world.player.rpg, 'CALM_DISPUTE', 25);
 }
 
 /** Zwei wütende Gäste in Reichweite prügeln sich statt einzeln zu toben. */

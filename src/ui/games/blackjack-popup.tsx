@@ -2,8 +2,9 @@
 import { useRef, useState } from 'react';
 import type { GameResult } from '../../core/games/contracts';
 import {
-  DEFAULT_BLACKJACK_RULES, doubleBlackjack, handTotal, hitBlackjack, insuranceBlackjack,
+  DEFAULT_BLACKJACK_RULES, handTotal, hitBlackjack, insuranceBlackjack,
   normalizeBlackjackRules, splitBlackjack, standBlackjack, startBlackjack, surrenderBlackjack,
+  doubleBlackjack,
   type BlackjackRound, type BlackjackRules,
 } from '../../core/games/engines/blackjack';
 import { createCardShoe } from '../../core/games/engines/interactive-cards';
@@ -14,7 +15,8 @@ import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
-import { BlackjackRulesPanel } from './blackjack-rules-panel';
+import { BlackjackRulesEditor } from './blackjack-rules-editor';
+import { BlackjackTableActions } from './blackjack-table-actions';
 
 interface Props {
   readonly title: string;
@@ -93,7 +95,6 @@ export function BlackjackPopup(props: Props) {
     commit(insuranceBlackjack(round, shoe.current, take));
   };
 
-  const setRule = (patch: Partial<BlackjackRules>): void => setRules((current) => normalizeBlackjackRules({ ...current, ...patch }));
 
   const narration = (): string => {
     if (round?.insuranceOffered) return 'Der Dealer zeigt ein Ass. Versicherung kostet den halben Einsatz und zahlt 2:1, wenn er Blackjack hat.';
@@ -136,24 +137,16 @@ export function BlackjackPopup(props: Props) {
         </div>
       )}
 
-      {round?.insuranceOffered ? (
-        <div className="table-actions">
-          <button type="button" className="btn primary" onClick={() => insure(true)}>VERSICHERUNG NEHMEN</button>
-          <button type="button" className="btn" onClick={() => insure(false)}>OHNE WEITER</button>
-        </div>
-      ) : (
-        <div className="table-actions">
-          <button type="button" className="btn primary" disabled={!playing} onClick={() => act('HIT')}>KARTE ZIEHEN</button>
-          <button type="button" className="btn" disabled={!playing} onClick={() => act('STAND')}>HALTEN</button>
-          <button type="button" className="btn" disabled={!playing || activeHand?.cards.length !== 2 || !canDouble}
-            onClick={() => act('DOUBLE')}
-            title="Doppelter Einsatz, genau eine Karte, danach zieht der Dealer.">VERDOPPELN</button>
-          <button type="button" className="btn" disabled={!canSplit} onClick={() => act('SPLIT')}
-            title="Zwei gleiche Ränge werden zu zwei Händen mit eigenem Einsatz.">SPLIT</button>
-          <button type="button" className="btn ghost" disabled={!canSurrender} onClick={() => act('SURRENDER')}
-            title="Halber Einsatz zurück, bevor die erste Karte fällt.">AUFGEBEN</button>
-        </div>
-      )}
+      <BlackjackTableActions
+        round={round}
+        activeHand={activeHand}
+        canDouble={canDouble}
+        canSplit={canSplit}
+        canSurrender={canSurrender}
+        playing={playing}
+        onAct={act}
+        onInsure={insure}
+      />
 
       <div className="bet-row">
         {bets.map((value) => (
@@ -163,7 +156,7 @@ export function BlackjackPopup(props: Props) {
         ))}
       </div>
 
-      <BlackjackRulesPanel rules={rules} disabled={Boolean(playing)} onChange={setRule} />
+      <BlackjackRulesEditor rules={rules} onChange={(patch) => setRules((current) => normalizeBlackjackRules({ ...current, ...patch }))} disabled={playing} />
 
       <button type="button" className="btn primary big" disabled={roundActive || !canPay} onClick={deal}>
         {roundActive ? 'HAND LÄUFT' : canPay ? `AUSTEILEN · ${dealStake} VC` : 'ZU WENIG BARGELD'}

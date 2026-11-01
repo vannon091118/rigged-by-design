@@ -9,6 +9,8 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
+import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { TICKS_PER_DAY } from '../demand';
 import { HAUSKONTO } from '../money';
 import { hireAgent } from '../staff';
@@ -37,7 +39,7 @@ describe('Personalstatus aus den Agenten', () => {
       if (hire) hireAgent(worldOfRun, ledger, 'guard');
       worldOfRun.tick = TICKS_PER_DAY;
       const before = ledger.getBalance(HAUSKONTO);
-      staffTick(worldOfRun, ledger);
+      staffTick(worldOfRun, ledger, new Prng(randomSeed()));
       return before - ledger.getBalance(HAUSKONTO);
     };
     const guardWage = createWorld('SMALL').prices.guardWage;

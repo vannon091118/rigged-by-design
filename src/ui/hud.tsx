@@ -2,6 +2,7 @@
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { HELP } from './glossary';
+import type { RpgAttribute } from '../core/sim/player-rpg';
 
 interface HudProps {
   readonly view: GameView;
@@ -13,7 +14,7 @@ interface HudProps {
   readonly onJournal: () => void;
   readonly onDiagnostics: () => void;
   readonly onLook: () => void;
-  readonly onSkill: (attribute: 'speed' | 'charisma' | 'brawl') => void;
+  readonly onSkill: (attribute: RpgAttribute) => void;
   readonly onHelp: () => void;
   readonly muted?: boolean;
   readonly onToggleSound?: () => void;
@@ -112,12 +113,32 @@ export function Hud({
         <small>XP {rpg.xp}/{rpg.level * 100}</small>
         {rpg.unspentPoints > 0 && (
           <>
-            <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Schneller laufen: ab Stufe 3 zwei Pfadschritte pro Tick, ab Stufe 6 drei.">SPEED {rpg.speedLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('charisma')} title="Bessere Chance beim Beschwatzen">CHARISMA {rpg.charismaLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('brawl')} title="Bessere Chance im Handgemenge">KAMPF {rpg.brawlLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.">SPD {rpg.speedLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('charisma')} title="Charisma: bessere Talk-Chance, mehr Trinkgeld.">CHA {rpg.charismaLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('brawl')} title="Brawl: mehr HP, mehr Kampfschaden.">BRW {rpg.brawlLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('perception')} title="Wahrnehmung: bessere Queue-Position, Dreck/Streit früher sehen.">PER {rpg.perceptionLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('technique')} title="Technik: schnellere Reparatur, bessere Mods, genaue Deals.">TEC {rpg.techniqueLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('endurance')} title="Ausdauer: schnellere HP-Regeneration, kürzere Verletzungen.">END {rpg.enduranceLevel}</button>
+            <button type="button" className="btn warm" onClick={() => onSkill('luck')} title="Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.">LCK {rpg.luckLevel}</button>
           </>
         )}
       </div>
+
+      {view.playerJob && (
+        <div className="hud-job">
+          <span>Job: {view.playerJob.jobId}</span>
+          <span>Tag {view.playerJob.workDays}</span>
+        </div>
+      )}
+
+      {!view.barPurchased && (
+        <div className="hud-milestone">
+          <span>Bar-Kauf: {vc(view.wallet, 2)} / 50,00</span>
+          <div className="milestone-progress">
+            <div className="milestone-progress-fill" style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
+          </div>
+        </div>
+      )}
 
       {!view.ledgerOk && (
         <div className="hud-penalty" role="alert">

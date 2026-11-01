@@ -14,6 +14,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-2001 | Simulation | Welt-, Gast- oder Servicezustand verletzt eine Zusicherung. | Kausalitaet im betroffenen Zustandsautomaten korrigieren. |
 | ERR-2002 | Simulation / Grid | Bereichs-, Footprint- oder Zugangsregel verletzt. | `grid-zones` und Multi-Tile-Flaeche pruefen. |
 | ERR-3001 | Render / UI | Hartcodierter Dummy-Wert oder toter Platzhalter sichtbar. | An echtes Snapshot-Feld binden oder entfernen. |
+| ERR-3002 | Simulation / Bewegung | Zentrale Warteschlangen- oder Bewegungslogik verletzt. | `movement-queue` Invariante prüfen. |
 | ERR-4001 | Testvertrag | `@test-target` oder `@error-code` fehlt/ist ungueltig. | Header mit existierendem Ziel und registriertem Code ergaenzen. |
 | ERR-4002 | Testqualitaet | Reiner Existenz-, Snapshot- oder Tautologie-Test. | Zustandstransformation oder numerische Invariante pruefen. |
 | ERR-4003 | Toter Code | Export wird nirgendwo importiert. | Export entfernen oder im echten Pfad verwenden. |

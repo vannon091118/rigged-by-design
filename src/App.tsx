@@ -2,12 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { canPlaceAt } from './core/sim/grid-zones';
 import { getBuildDef, type BuildId } from './core/sim/offers';
-import type { CarpetId, TemplateId } from './core/sim/types';
+import type { CarpetId, RivalId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import type { GameView } from './store/types';
 import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
+import { ForeignFloorMap } from './ui/foreign-floor-map';
+import { ForeignFloorPopup } from './ui/foreign-floor-popup';
 import { GamesPopup } from './ui/games-popup';
 import { GuestPopup } from './ui/guest-popup';
 import { HelpPopup } from './ui/help-popup';
@@ -22,12 +24,15 @@ import { armMusic, setMusicState } from './render/music';
 type Popup =
   | { kind: 'guests'; guestId: number | null }
   | { kind: 'machine'; itemId: number }
-  | { kind: 'games' }
+  | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'journal' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
   | { kind: 'sound' }
   | { kind: 'help' }
+  | { kind: 'foreignMap' }
+  | { kind: 'foreignFloor' }
+  | { kind: 'jobContext'; stationId: string }
   | null;
 
 function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
@@ -91,8 +96,7 @@ export default function App() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if (event.key === 'Escape' && buildOpen) setBuildOpen(false);
-    };
-    window.addEventListener('keydown', onKey);
+    };    window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [buildOpen]);
 
@@ -146,7 +150,7 @@ export default function App() {
         view={view}
         onBuild={() => { setPopup(null); setBuildOpen((open) => !open); }}
         onGuests={() => { setBuildOpen(false); setPopup({ kind: 'guests', guestId: null }); }}
-        onVisit={() => { setBuildOpen(false); setPopup({ kind: 'games' }); }}
+        onVisit={() => { setBuildOpen(false); setPopup({ kind: 'foreignMap' }); }}
         onClean={() => worldStore.clean()}
         onOverview={() => stage.current?.fit()}
         onJournal={() => { setBuildOpen(false); setPopup({ kind: 'journal' }); }}
@@ -239,7 +243,8 @@ export default function App() {
       {popup?.kind === 'games' && (
         <GamesPopup
           view={view}
-          onClose={() => setPopup(null)}
+          initialRivalId={popup.rivalId}
+          onClose={() => setPopup(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
           onPlay={(rivalId, machineIndex, betVC, options) => worldStore.playRival(rivalId, machineIndex, betVC, options)}
           onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
           onShellRound={() => worldStore.shellRound()}
@@ -248,6 +253,32 @@ export default function App() {
           onAdditionalBet={(amountVC) => worldStore.additionalBet(amountVC)}
           onTakeHome={() => worldStore.takeHome(5)}
           onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
+        />
+      )}
+
+      {popup?.kind === 'foreignMap' && (
+        <ForeignFloorMap
+          view={{
+            currentForeignFloorId: view.currentForeignFloorId,
+            foreignFloors: view.foreignFloors,
+            wallet: view.wallet,
+          }}
+          onVisit={(rivalId) => {
+            setPopup(null);
+            worldStore.visitForeign(rivalId);
+            setPopup({ kind: 'foreignFloor' });
+          }}
+          onClose={() => setPopup(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
+        />
+      )}
+
+      {popup?.kind === 'foreignFloor' && (
+        <ForeignFloorPopup
+          key={view.currentForeignFloorId ?? 'none'}
+          view={view}
+          onClose={() => setPopup(null)}
+          onOpenMap={() => setPopup({ kind: 'foreignMap' })}
+          onOpenGames={(rivalId) => setPopup({ kind: 'games', rivalId })}
         />
       )}
 
@@ -273,9 +304,7 @@ export default function App() {
 
       {popup?.kind === 'help' && (
         <HelpPopup onClose={() => setPopup(null)} />
-      )}
-
-      {active && (
+      )}      {active && (
         <MachinePopup
           item={active}
           view={view}

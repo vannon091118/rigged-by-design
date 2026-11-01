@@ -60,6 +60,12 @@ export const ERROR_CODES = {
     cause: 'UI oder Renderer zeigt einen hartcodierten Dummy-Wert.',
     fix: 'Wert an ein echtes Snapshot-Feld binden oder entfernen.',
   },
+  MOVEMENT_QUEUE: {
+    code: 'ERR-3002',
+    area: 'sim',
+    cause: 'Zentrale Warteschlangen- oder Bewegungslogik verletzt.',
+    fix: 'movement-queue Invariante prüfen.',
+  },
   TEST_CONTRACT: {
     code: 'ERR-4001',
     area: 'governance',

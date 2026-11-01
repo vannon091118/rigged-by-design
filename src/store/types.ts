@@ -1,6 +1,6 @@
 /** Was die UI sieht: Welt plus abgeleitete Ledger-Werte. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
-import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId } from '../core/sim/types';
+import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId, PlayerJobState, RivalId } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
@@ -17,6 +17,15 @@ export interface StaffView {
   readonly bartender: boolean;
   readonly cashier: boolean;
   readonly porter: boolean;
+}
+
+interface ForeignFloorView {
+  readonly id: number;
+  readonly rivalId: RivalId;
+  readonly size: number;
+  readonly jobStations: readonly import('../core/sim/types').JobStationDef[];
+  readonly playerPosition: import('../core/sim/types').Point | null;
+  readonly day: number;
 }
 
 export interface GameView {
@@ -81,4 +90,12 @@ export interface GameView {
   readonly ledgerLastSeq: number;
   readonly ledgerCirculating: VaCoinMicro;
   readonly notice: string;
+  /** Aktiver Foreign Floor (null = eigener Floor). */
+  readonly currentForeignFloorId: number | null;
+  /** Verfuegbare fremde Floors fuer die UI. */
+  readonly foreignFloors: readonly ForeignFloorView[];
+  /** Aktueller Spieler-Job (null = kein Job). */
+  readonly playerJob: PlayerJobState | null;
+  /** Erste Bude gekauft (Meilenstein). */
+  readonly barPurchased: boolean;
 }

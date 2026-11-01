@@ -70,6 +70,9 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       playerAddictionScore: world.playerAddictionScore,
       brokenExclusionPacts: world.brokenExclusionPacts,
       clarityBadge: world.clarityBadge,
+      foreignFloors: world.foreignFloors,
+      nextForeignFloorId: world.nextForeignFloorId,
+      activeForeignFloorId: world.activeForeignFloorId,
       entries: ledger.entries.map(({ tick, from, to, amount, reason }) => ({ tick, from, to, amount, reason })),
       prngState,
   };

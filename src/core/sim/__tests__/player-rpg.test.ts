@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { talkToGuest } from '../charisma-talk';
-import { grantXp, newPlayerRpg, spendPoint } from '../player-rpg';
+import { grantGlobalXp, grantXp, newPlayerRpg, spendPoint } from '../player-rpg';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { randomSeed } from '../../../test/random-seed';
@@ -26,6 +26,12 @@ describe('Spieler-RPG: XP und Attribute', () => {
     grantXp(rpg, 10_000);
     expect(rpg.level).toBeGreaterThan(1);
     expect(rpg.unspentPoints).toBe(rpg.level - 1);
+  });
+  it('hebt Attribut-XP ohne Endlosschleife', () => {
+    const rpg = newPlayerRpg();
+    grantGlobalXp(rpg, 'JOB_CLEANER', 250);
+    expect(rpg.perceptionLevel).toBeGreaterThanOrEqual(1);
+    expect(rpg.attributeXp.perception ?? 0).toBeLessThan(100);
   });
   it('verteilt Punkte nur, wenn einer frei ist', () => {
     const rpg = newPlayerRpg();
