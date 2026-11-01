@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Tree-Gate, Redundanz-Gate und Doc-Generierung
+
+**Ziel.** Tree-Gate, Redundanz-Gate und Doc-Generierung
+
+**Umsetzung.** Offen.
+
+**Pruefungen.** Offen.
+
+**Offen.** Offen.
+
 ## 2026-11-01 - CI-Befund behoben (T12)
 
 **Befund.** Lauf #110 (`CI Verify`, Commit `f2f46c7`) war rot: 438 Tests gruen,
@@ -54,7 +64,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:35 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

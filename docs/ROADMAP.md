@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:35 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -10,6 +10,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Governance-Ausbau abschliessen: Hooks in jedem Klon aktivieren (`npm run hooks:install`), Doc-Gate in CI beobachten.
 - Inventur auf 100 Prozent bringen: restliche `render`-Dateien und Testkoerper lesen.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
+- Tree- und Redundanz-Gate im naechsten CI-Lauf beobachten; bei neuen Befunden die Regel tabelle ergaenzen, nicht umgehen.
 
 ## Als Nächstes
 

@@ -57,8 +57,9 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           # Beim Pull Request ist HEAD der automatische Merge-Commit, der keine
-          # Notes traegt; der echte Commit-Text wird beim Push auf main geprueft.
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then node scripts/verify-commit-msg.mjs --head; fi
+          # Notes traegt. Feature-Branches prueft `pr-escalation.yml`; hier wird
+          # nur noch der Push auf main geprueft, damit kein Lauf doppelt prueft.
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node scripts/verify-commit-msg.mjs --head; fi
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
       # Rein lesend: der Lauf repariert nichts. Ein veralteter Baum wird rot.

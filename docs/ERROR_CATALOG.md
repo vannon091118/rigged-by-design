@@ -31,3 +31,6 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4017 | Docs | Pflichtdokument, Marker oder Pflichtabschnitt fehlt. | `npm run docs:sync`; Struktur in `scripts/lib/doc-sync.mjs` ergaenzen. |
 | ERR-4018 | Governance | Repo-Hooks liessen sich nicht aktivieren. | `git config core.hooksPath .githooks` pruefen. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
+| ERR-4019 | Governance / Tree | Datei liegt im falschen Ordner oder eine Schicht importiert nach aussen. | Datei verschieben; Import nach innen ziehen; Regel in `scripts/verify-tree.mjs` pruefen. |
+| ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
+| ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `npm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |

@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:35 UTC -->
 
 ## Zustandsbesitz
 
@@ -96,7 +96,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 42: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/check-loc.mjs`<br>… (+36) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 45: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/check-loc.mjs`<br>… (+39) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |
@@ -131,6 +131,19 @@ angewendet (`AUTO_FIX`); `IGNORE` verfaellt (`LOCAL_GATE`). Der Import fuehrt
 immer zuerst einen Trockenlauf aus; erst ein Stand ohne Blocker ersetzt Welt,
 Ledger und PRNG. Save-Format bleibt v8, Migrationen liegen weiterhin allein in
 `src/store/migrate.ts`.
+
+## Baum- und Redundanz-Gate
+
+Zwei mechanische Gates halten den Baum sauber, ohne Inhalt zu bewerten:
+
+| Gate | Code | Prueft |
+| --- | --- | --- |
+| `verify:tree` | `ERR-4019` | Wurzel-Whitelist, erlaubte Endungen je Ordner, Tests nur in `__tests__`, `src/core` ohne React/Pixi und ohne Importe nach aussen. |
+| `verify:redundancy` | `ERR-4020` | Byte-identische Quelldateien, doppelte npm-Kommandos, doppelt eingetragene Fehlercodes. Alias-Paare sind ausdruecklich erlaubt. |
+
+Regeln stehen als Tabelle in `scripts/verify-tree.mjs`; ein neuer Ordner braucht
+genau einen Eintrag. Doku-Eintraege erzeugt `npm run docs:stub -- "Titel"`
+(`ERR-4021`), damit Changelog, Devtagebuch und Inventar nie ohne Datum bleiben.
 
 ## Delivery-Regel
 

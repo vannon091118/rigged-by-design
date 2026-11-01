@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadSlotSymbols } from './render/assets/textures';
-import './index.css';
+import './styles/index.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root-Element #root fehlt');

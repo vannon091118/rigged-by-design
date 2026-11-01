@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:27 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:35 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,9 +8,9 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v1.9** |
+> | **Version** | **v1.10** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 09:32 UTC (T12 — CI-Befund aus Lauf #110 behoben)** |
+> | **Aktualisiert** | **2026-11-01 09:35 UTC (T13 — Tree-Gate, Redundanz-Gate, Doc-Generierung, Workflow entdoppelt)** |
 > | Branch | `freebuff/9f1e857ba05731117031ec2a` |
 > | HEAD | `492ac3a` (Pull via Connector: `708d31c → 492ac3a`, 583 Dateien) |
 > | Arbeitsbaum | nur `docs/INVENTORY.md` untracked (dieses Artefakt); sonst sauber; Remote `vannon091118/rigged-by-design` |
@@ -170,7 +170,8 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `npm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
 | 48 | info | **Doc-Gate + Hooks (T10):** `scripts/lib/doc-sync.mjs` führt sechs Pflichtdokumente mit Pflichtabschnitten und `rbd-doc`-Marker (Version + UTC); `verify:docs` ist Gate (`ERR-4017`), der Pre-Commit-Hook schreibt ihn. `deps-matrix` und `catalog` sind keine Gates mehr; Matrix, Katalog und Marker entstehen im Hook. Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` (identische MD5) gelöscht. | `scripts/lib/doc-sync.mjs`, `.githooks/`, `scripts/lib/pipeline-plan.mjs` |
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
-| 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` || 50 | info | **Connector-Eskalation (T11):** `scripts/lift-commit-body.mjs --json` liefert den PR-Plan (`level: AGENT`, `channel: github-connector`, `branch`, `base`, `title`, `bodyFile`, `body`). CI nutzt weiter `gh`; ohne Token bleibt der Lauf grün und der Plan ist die Übergabe. Der Level kommt aus `scripts/lib/escalation.mjs` — keine zweite Leiter. | `scripts/lift-commit-body.mjs`, `docs/ESCALATION.md` || 51 | info | **CI-Lauf #110 rot, Ursache Testvertrag (T12):** `pipeline-modes.test.ts` erwartete noch `deps-matrix`; nach dem Gate-Umbau zwei rote Tests (438 grün, 2 rot). Test auf `docs`-Gate und Entfall von `deps-matrix`/`catalog` nachgezogen, Lesende-Vertrag unverändert. Beweis folgt im nächsten `CI Verify`-Lauf. | `src/core/governance/__tests__/pipeline-modes.test.ts` |
+| 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` || 50 | info | **Connector-Eskalation (T11):** `scripts/lift-commit-body.mjs --json` liefert den PR-Plan (`level: AGENT`, `channel: github-connector`, `branch`, `base`, `title`, `bodyFile`, `body`). CI nutzt weiter `gh`; ohne Token bleibt der Lauf grün und der Plan ist die Übergabe. Der Level kommt aus `scripts/lib/escalation.mjs` — keine zweite Leiter. | `scripts/lift-commit-body.mjs`, `docs/ESCALATION.md` || 51 | info | **CI-Lauf #110 rot, Ursache Testvertrag (T12):** `pipeline-modes.test.ts` erwartete noch `deps-matrix`; nach dem Gate-Umbau zwei rote Tests (438 grün, 2 rot). Test auf `docs`-Gate und Entfall von `deps-matrix`/`catalog` nachgezogen, Lesende-Vertrag unverändert. Beweis folgt im nächsten `CI Verify`-Lauf. | `src/core/governance/__tests__/pipeline-modes.test.ts` || 52 | info | **Tree-Gate (`ERR-4019`) beim ersten Lauf:** vier Befunde — `eslint.config.mjs` und `opencode.json` fehlten in der Wurzel-Whitelist, `src/index.css` lag neben `main.tsx` statt unter `src/styles/`, `scripts/init-github.sh` war als Bootstrap-Shell nicht erlaubt. Regeln korrigiert, CSS verschoben, Shell erlaubt. | `scripts/verify-tree.mjs`, `src/styles/index.css` |
+| 53 | info | **Redundanz-Gate (`ERR-4020`):** 363 Dateien, 45 Skripte und 29 Fehlercodes geprüft, keine echte Doppelung. Bewusste Alias-Paare (`test`/`test:ci`, `verify`/`verify:quick`) sind als Ausnahme dokumentiert; `docs:stub` (`ERR-4021`) erzeugt Pflichteinträge mechanisch. | `scripts/verify-redundancy.mjs`, `scripts/doc-stub.mjs` |
 
 ## 15. Lesedeckung (Ehrlichkeits-Matrix)
 
@@ -227,6 +228,7 @@ Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein C
 
 | Turn | Erledigt |
 | --- | --- |
+| T13 | **2026-11-01 09:35 UTC**: Tree-Gate (`ERR-4019`), Redundanz-Gate (`ERR-4020`) und `docs:stub` (`ERR-4021`) umgesetzt; `src/index.css` nach `src/styles/` verschoben; `ci-verify` prüft den Commit-Body nur noch auf `main` (Feature-Branches über `pr-escalation`, keine Doppelarbeit); alle statischen Gates grün. v1.10. |
 | T1 | Wurzel, Doku, Workflows, economy/rng/physics/governance, store komplett gelesen; Struktur aller Bereiche erfasst; Befunde 1–11 skizziert. |
 | T2 | Artefakt angelegt; money/templates/tick/actions vollständig gelesen; Startkapital-Frage aufgelöst (150 VC, Befund 2 aktualisiert); Deckung und Befundtabelle fortgeschrieben. |
 | T3 | Alle Exporte von core/games + engines extrahiert; alle 48 ui-, 50 render- und 34 scripts-Dateien per Kopf-/Größen-Extraktion erfasst; Manifest gelesen; Fehlerregister-Abgleich (identische 23 Codes); Befunde 12–14 ergänzt. |
