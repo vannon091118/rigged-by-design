@@ -1,4 +1,5 @@
 /** Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. */
+import { presentation } from './rng';
 type SfxKind = 'coin' | 'reelStop' | 'pinHit' | 'cardFlip' | 'roulette' | 'brawl' | 'win';
 
 /** Getrennte Kanaele: Spiele, Kampf und Bedienung lassen sich unabhaengig regeln. */
@@ -148,7 +149,7 @@ function noise(ctx: AudioContext, out: AudioNode, at: number, length: number, ga
   const frames = Math.max(1, Math.floor(ctx.sampleRate * length));
   const buffer = ctx.createBuffer(1, frames, ctx.sampleRate);
   const data = buffer.getChannelData(0);
-  for (let index = 0; index < frames; index += 1) data[index] = Math.random() * 2 - 1;
+  for (let index = 0; index < frames; index += 1) data[index] = presentation.nextFloat() * 2 - 1;
   const source = ctx.createBufferSource();
   const filter = ctx.createBiquadFilter();
   const amp = ctx.createGain();

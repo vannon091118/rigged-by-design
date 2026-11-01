@@ -2,6 +2,7 @@
 import { Container, Sprite, type Texture } from 'pixi.js';
 import manifest from '../assets/manifest.json';
 import { textureFor } from '../assets/textures';
+import { presentation } from '../rng';
 
 interface EmitterDef {
   readonly textures?: readonly string[];
@@ -37,7 +38,7 @@ interface Particle {
 const between = (range: readonly number[] | undefined, fallback: number): number => {
   const min = range?.[0] ?? fallback;
   const max = range?.[1] ?? min;
-  return min + Math.random() * (max - min);
+  return min + presentation.nextFloat() * (max - min);
 };
 
 export class Emitter {
@@ -62,7 +63,7 @@ export class Emitter {
       sprite.position.set(x, y);
       sprite.alpha = options.alpha ?? 1;
       sprite.tint = options.tint ?? 0xffffff;
-      sprite.rotation = Math.random() * Math.PI * 2;
+      sprite.rotation = presentation.nextFloat() * Math.PI * 2;
       let vx: number;
       let vy: number;
       if (def.speedX && def.speedY) {
@@ -70,7 +71,7 @@ export class Emitter {
         vy = between(def.speedY, 0);
       } else {
         const speed = between(def.speed, 0.3);
-        const angle = Math.random() * Math.PI * 2;
+        const angle = presentation.nextFloat() * Math.PI * 2;
         vx = Math.cos(angle) * speed;
         vy = Math.sin(angle) * speed;
       }
@@ -79,7 +80,7 @@ export class Emitter {
         sprite, vx, vy, age: 0,
         ttl: between(def.lifetimeMs, 600),
         gravity: def.gravity ?? 0,
-        spin: (Math.random() - 0.5) * 0.025,
+        spin: (presentation.nextFloat() - 0.5) * 0.025,
       });
     }
   }

@@ -1,6 +1,7 @@
 /** Dispatcher: jedes Spiel hat seine eigene Engine, alle liefern dieselbe Ergebnisform. */
 import type { GameId } from '../sim/types';
 import type { Prng } from '../rng/prng';
+import { assertGameplayRng } from '../rng/streams';
 import { playBlackjack, playVideoPoker } from './engines/cards';
 import { playSlot, type SlotLineWin } from './engines/slot';
 import { playShell, rollDice, spinRoulette } from './engines/table';
@@ -51,6 +52,7 @@ function plinko(prng: Prng, captureTrack = false): RoundResult {
 
 /** Standard-Satz je Spiel, solange der Spieler keine eigene Wettart waehlt. */
 export function playRound(game: GameId, prng: Prng, options: RoundOptions = {}): RoundResult {
+  assertGameplayRng(prng);
   if (game === 'BLACKJACK') return { game, ...playBlackjack(prng) };
   // Der Tisch spielt Rundenpoker gegen Gaeste; Video Poker ist ein eigener Automat.
   if (game === 'POKER') return { game, ...playPokerRound(prng) };

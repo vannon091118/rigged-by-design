@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:11 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:25 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -80,6 +80,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - One owner per state: `world-store` holds world/ledger/PRNG; UI state (popups) lives in React.
 - Money is integer micro-units; no floats; every transaction is a ledger line.
 - RNG via `src/core/rng/weighted.ts` (`buildDistribution`, `rollNumber`); cards via `src/core/rng/shoe.ts` (draw removes card; reshuffle only when empty).
+- Zwei RNG-Namespaces: Spielzustand (`gameplay`) und Darstellung (`presentation`) teilen nie einen Strom. Renderer/Sound ziehen aus `src/render/rng.ts`; `tickWorld`/`playRound` weisen fremde Stroeme ueber `assertGameplayRng` ab.
 - No `addVC` outside a booking; no money source except `EXTERNAL_WORLD`.
 
 ## Pitfalls
