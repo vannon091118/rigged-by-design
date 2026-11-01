@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:38 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:40 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -228,7 +228,7 @@ Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein C
 
 | Turn | Erledigt |
 | --- | --- |
-| T13 | **2026-11-01 09:35 UTC**: Tree-Gate (`ERR-4019`), Redundanz-Gate (`ERR-4020`) und `docs:stub` (`ERR-4021`) umgesetzt; `src/index.css` nach `src/styles/` verschoben; `ci-verify` prüft den Commit-Body nur noch auf `main` (Feature-Branches über `pr-escalation`, keine Doppelarbeit); alle statischen Gates grün. v1.10. |
+| T13 | **2026-11-01 09:35 UTC**: Tree-Gate (`ERR-4019`), Redundanz-Gate (`ERR-4020`) und `docs:stub` (`ERR-4021`) umgesetzt; `src/index.css` nach `src/styles/` verschoben; `ci-verify` prüft den Commit-Body nur noch auf `main` (Feature-Branches über `pr-escalation`, keine Doppelarbeit); alle statischen Gates grün; CI zu `37affc5` bestätigt (Fail-Closed Gates und Commit-Body success). v1.10. |
 | T1 | Wurzel, Doku, Workflows, economy/rng/physics/governance, store komplett gelesen; Struktur aller Bereiche erfasst; Befunde 1–11 skizziert. |
 | T2 | Artefakt angelegt; money/templates/tick/actions vollständig gelesen; Startkapital-Frage aufgelöst (150 VC, Befund 2 aktualisiert); Deckung und Befundtabelle fortgeschrieben. |
 | T3 | Alle Exporte von core/games + engines extrahiert; alle 48 ui-, 50 render- und 34 scripts-Dateien per Kopf-/Größen-Extraktion erfasst; Manifest gelesen; Fehlerregister-Abgleich (identische 23 Codes); Befunde 12–14 ergänzt. |

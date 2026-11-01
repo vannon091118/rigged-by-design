@@ -32,7 +32,7 @@ sind sie relativ (`./tokens.css`, `./app.css`, `./popup.css`).
 `tsc --noEmit` und `check:loc` lokal gruen. Vitest lief nicht lokal; der Beweis
 bleibt `verify:all` in CI.
 
-**Offen.** Der naechste CI-Lauf muss die neuen Gates bestaetigen.
+**Bestaetigt.** Der CI-Lauf zu `37affc5` ist gruen: „Fail-Closed Gates“ und „Commit-Body in PR-Body heben“ stehen auf success; Tree- und Redundanz-Gate laufen dort mit. Vitest und Build liefen ausschliesslich in CI.
 
 ## 2026-11-01 - CI-Befund behoben (T12)
 
@@ -78,7 +78,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:38 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:40 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
