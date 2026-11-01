@@ -34,7 +34,9 @@ if (PROFILE === 'quick' && tests && !state.tests.runAll && state.tests.selected.
   tests.cache = false;
 }
 if (PROFILE === 'quick' && tests && state.tests.selected.length === 0 && !state.tests.runAll && state.tests.long.length === 0) {
-  tests.skip = 'kein Testbezug im Impact';
+  // Nichts geaendert heisst nicht "nichts pruefen": eine Verifikation ohne
+  // Testlauf waere ein stiller Freischein. Ohne Auswahl laeuft die Suite.
+  state.open.push('kein Testbezug im Diff: die Suite laeuft vollstaendig');
 }
 
 // Keine Wanduhr: die Determinismus-Sperre gilt auch fuer Werkzeuge. Die

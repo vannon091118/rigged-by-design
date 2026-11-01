@@ -70,6 +70,10 @@ if (schmutz) {
     : `turn:finish: Version ${treeVersion} bereits gebumpt (HEAD ${headVersion})`);
 }
 
+// Marker VOR der Pruefung setzen: schreibt der Hook sie erst nach dem Verify,
+// aendert sich der Baum und damit jeder Cache-Schluessel bei jedem Commit.
+spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+
 const verify = npmRun(['run', VERIFY_SCRIPT]);
 if (verify.status !== 0) {
   fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);

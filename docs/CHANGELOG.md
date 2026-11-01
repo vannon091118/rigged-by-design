@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.69 | 2026-11-01 21:13 UTC -->
+<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.70] - 2026-11-01
+
+### Spiel
+
+- Keine sichtbare Aenderung: nur die Pruefkette und ihr Cache.
+
+### Technik
+- `agent:verify` laesst das Testgate nie mehr aus, nur weil der Diff keinen Testbezug hat; ohne Auswahl laeuft die Suite, der Bericht nennt den Grund.
+- `turn:finish` setzt die Doku-Marker vor `verify`. Der Pre-Commit-Hook schrieb sie danach und entwertete damit jeden Cache-Schluessel des gerade geprueften Baums; derselbe Baum trifft jetzt beim zweiten Lauf (`0s`, `[cached]` je Gate).
 
 ## [0.3.69] - 2026-11-01
 
