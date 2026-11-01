@@ -12,13 +12,25 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 ## 2026-11-01 - Tree-Gate, Redundanz-Gate und Doc-Generierung
 
-**Ziel.** Tree-Gate, Redundanz-Gate und Doc-Generierung
+**Ziel.** Jede Datei am richtigen Ort, keine doppelte Wahrheit und ein Befehl,
+der Changelog, Devtagebuch und Inventar mechanisch anlegt.
 
-**Umsetzung.** Offen.
+**Umsetzung.** `scripts/verify-tree.mjs` prueft Wurzel-Whitelist, erlaubte
+Endungen je Ordner, Testablage in `__tests__` und die Importrichtung von
+`src/core`. `scripts/verify-redundancy.mjs` vergleicht Dateiinhalte per
+SHA-256, npm-Kommandos und Fehlercodes; Alias-Paare sind ausdruecklich erlaubt.
+`scripts/doc-stub.mjs` schreibt die drei Pflichteintraege mit Datum, Version
+und Uhrzeit. Beide Gates laufen im schnellen und im vollen Profil.
 
-**Pruefungen.** Offen.
+**Befunde beim ersten Lauf.** `src/index.css` lag neben `main.tsx` und wanderte
+nach `src/styles/`; `eslint.config.mjs` und `opencode.json` fehlten in der
+Wurzel-Whitelist; `scripts/init-github.sh` ist als Bootstrap-Shell erlaubt.
 
-**Offen.** Offen.
+**Pruefungen.** `verify:tree`, `verify:redundancy`, `verify:docs`, ESLint,
+`tsc --noEmit` und `check:loc` lokal gruen. Vitest lief nicht lokal; der Beweis
+bleibt `verify:all` in CI.
+
+**Offen.** Der naechste CI-Lauf muss die neuen Gates bestaetigen.
 
 ## 2026-11-01 - CI-Befund behoben (T12)
 
