@@ -10,6 +10,65 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - performance.now-Ausnahme auf Pacing verengt und als dicht belegt
+
+**Ziel.** Beweisen, dass die Render-Ausnahme genau Pacing erlaubt und nicht mehr:
+kein pauschales Datei-Allow, keine mitfreigestellten Identifier, und kein Weg
+eines Wanduhr-Werts aus `src/render/**` in `src/core`, `src/store`, Composer/LLM
+(A-10), Content-Compiler (A-11) oder die kuenftige Narrative Engine.
+
+**Befund am Code.** `performance.now` kommt an genau fuenf Stellen vor, verteilt
+auf drei Dateien: `src/render/floor-view.ts` (3), `src/render/music.ts` (2),
+`src/render/floor-props.ts` (1). Die Sperre erlaubte sie trotzdem in **jeder**
+Datei unter `src/render/**` — breiter als der Zweck. Zwei Uhr-Quellen fehlten
+ausserdem komplett: `Date()` ohne `new` (liefert einen Wall-Clock-String) und
+`performance.timeOrigin` (Epoch-Zeitstempel).
+
+**Umsetzung.** `eslint.config.mjs` nennt die drei Pacing-Dateien jetzt namentlich;
+alle anderen Render-Dateien fallen unter die strenge `src/**`-Regel und sind voll
+gesperrt. `Date()` als Call (auch `globalThis.Date()`) und `performance.timeOrigin`
+sind als Syntax-Selectoren ergaenzt; die Render-Ausnahme filtert weiterhin nur
+`performance`-Selectoren heraus, `timeOrigin` bleibt also auch dort rot. Damit ist
+in den drei Dateien genau ein Identifier erlaubt: `performance.now`.
+
+**Proben (24, `npx eslint --stdin --stdin-filename <pfad>`).** Gruen nur:
+`performance.now` in den drei Pacing-Dateien, der Alias `const p = performance; p.now()`
+und `globalThis.performance.now()`. Rot in denselben Dateien: `Math.random`,
+`Date.now`, `new Date()`, `Date()`, `performance.timeOrigin`, `getRandomValues`,
+`randomUUID`, `globalThis.Math.random`, `window.Date.now`, `const { random } = Math`,
+`Math["random"]`, `Date["now"]`. Rot ausserhalb der drei Dateien: `performance.now`
+in `src/render/guest-art.ts`, `src/ui/Hud.tsx`, `src/core/sim/tick.ts` und in
+`scripts/**` (dort zusaetzlich `Date.now`, `new Date`, `Math.random`).
+
+**Rot/Gruen am echten Stand.** `Math.random()` an `src/render/music.ts` und
+`Date.now()` an `src/render/floor-view.ts` angehaengt: `npm run lint` Exit 1 mit
+vier Fehlern (`no-restricted-properties` und `no-restricted-syntax` je Quelle).
+Nach `git checkout --` beider Dateien: Exit 0. `performance.now()` in einer
+vierten Render-Datei (`guest-art.ts`): `npx eslint src/render/guest-art.ts` Exit 1,
+zwei Fehler — die Ausnahme ist also nicht datei-pauschal.
+
+**Datenfluss (gelesen, nicht geplant).** `src/core` und `src/store` importieren
+nichts aus `src/render` (0 Treffer, Tree-Gate erzwingt Core-Importe nur aus
+`src/core`). `src/render` importiert aus `src/store` ausschliesslich
+`import type { GameView }` (7 Treffer, alle type-only) und ruft keinen Command.
+`world.tick += 1` steht nur in `src/core/sim/tick.ts`; `tick`/`day` werden sonst
+nur beim Laden (`migrate.ts`) und fuer fremde Etagen (`foreign-floor-tick.ts`,
+`floor.day = world.day`) gesetzt. Kein Command nimmt `tick`/`day`/`time`; die
+einzige Ausnahme `buyBarCmd(world, ledger, tick)` wird ausschliesslich von
+`world-store` mit `this.#world.tick` aufgerufen und stempelt nur die Ledger-Zeile.
+Composer/LLM und Content-Compiler existieren noch nicht; `scripts/**` ist bereits
+gesperrt, damit sie die Uhr auch spaeter nicht lesen koennen.
+
+**Pruefungen.** `lint`, `verify:test-quality`, `verify:docs`, `verify:tree`,
+`verify:redundancy`, `check:loc`, `tsc --noEmit`, `inventory:build` lokal gruen;
+Vitest und `verify:all` laufen in CI.
+
+**Offen.** Innerhalb der drei Pacing-Dateien ist `performance.now` nicht auf eine
+Codezeile festnagelbar — ESLint sieht keinen Zweck, nur den Identifier; die
+Dateiliste ist die engste Grenze ohne neuen Produktivcode. `performance.timeOrigin`
+und `Date()` sind jetzt ueberall rot, `performance.mark/measure` bleiben erlaubt
+(reine Messmarken, kein lesbarer Uhrwert).
+
 ## 2026-11-01 - Determinismus-Sperre fail-closed gehaertet
 
 **Ziel.** Beweisen, dass die Sperre haelt — nicht nur, dass sie dokumentiert ist.
@@ -262,7 +321,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:16 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:28 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

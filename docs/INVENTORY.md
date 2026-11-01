@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:16 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 11:28 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -335,10 +335,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 201 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 40 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 41 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 139 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 280 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 339 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 36 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 67 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -374,7 +374,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
-- `eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 121 Zeilen
+- `eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
 - `opencode.json` — { — gelesen: 10 Zeilen
 - `package-lock.json` — { — generiert, 4540 Zeilen
@@ -1301,6 +1301,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T20 | **2026-11-01 11:44 UTC**: `performance.now`-Ausnahme auf Pacing verengt und als dicht belegt. Gelesen: `eslint.config.mjs`, `src/render/floor-view.ts`, `src/render/floor-props.ts`, `src/render/music.ts`, `src/render/guest-art.ts`, `src/store/foreign-floor-commands.ts`, `src/store/world-store.ts`, `src/core/sim/player-jobs.ts`, `src/store/types.ts`, `scripts/verify-tree.mjs`. Befund: Ausnahme galt fuer ganz `src/render/**`, `Date()` ohne `new` und `performance.timeOrigin` waren ungesperrt. Behoben: drei Pacing-Dateien namentlich, Call-`Date` und `timeOrigin` als Selectoren. 24 Proben: nur `performance.now` in den drei Dateien (plus Alias/`globalThis`) gruen, alle anderen Quellen und jede vierte Render-Datei rot. Rot/Gruen: `Math.random` in `music.ts` + `Date.now` in `floor-view.ts` -> Lint Exit 1 (4 Fehler), nach Revert Exit 0; `performance.now` in `guest-art.ts` -> Exit 1. Datenfluss: Render importiert Store nur als `import type { GameView }`, `tick` waechst nur in `tick.ts`, kein Command nimmt Zeit ausser `buyBarCmd` mit `world.tick`. v1.17. |
 | T19 | **2026-11-01 11:15 UTC**: Determinismus-Sperre fail-closed gehaertet. Gelesen: `eslint.config.mjs`, `scripts/verify-test-quality.mjs`, `src/core/rng/streams.ts`, `src/store/world-store.ts`, `src/render/music.ts`, `src/render/floor-view.ts`, `src/render/floor-props.ts`, `scripts/lib/pipeline-plan.mjs`, `vite.config.ts`. Befund (20 Proben): sieben Bypaesse offen — `globalThis.Math.random`, `window.Math.random`, `new globalThis.Date`, `crypto.getRandomValues`, `crypto.randomUUID`, `eslint-disable`, pauschal freigestelltes `src/core/rng/streams.ts` und ungeschuetzte `scripts/**`. Behoben: Syntax-Selectoren fuer Namespace-/new-Umwege und Krypto, `noInlineConfig`, `streams.ts` nur noch Krypto-erlaubt, `scripts/**` per Default gesperrt mit sieben namentlichen Tooling-Ausnahmen, `@seed-initializer`-Ausnahme entfernt. Rot/Gruen: `Math.random` in `tick.ts` -> Lint Exit 1 (2 Fehler, Zeile 140), nach Revert Exit 0. v1.16. |
 | T18 | **2026-11-01 11:02 UTC**: Event-Engine-Taskplan adversarial gehaertet. Gelesen: `docs/event-narrative-engine-taskplan.md` (687 Zeilen, NAR-00 bis NAR-17), `src/core/sim/visitors.ts`, `src/core/economy/ledger.ts`, `src/core/sim/journal.ts`, `src/core/sim/demand.ts`, `src/store/save.ts`, `scripts/lib/pipeline-plan.mjs`, `scripts/loc-budgets.mjs`, `vite.config.ts`. Befunde: veraltete Gate-Liste, veralteter Pruefstand 708d31c, Reihenfolge NAR-12 vor NAR-13; 20 Angriffe, Systemmatrix ueber 20 Systeme und Definition of Done je Task ergaenzt, kein Task gestrichen. v1.15. |
 | T17 | **2026-11-01 10:49 UTC**: Determinismus: kein Math.random und keine Wanduhr im Spielzustand. Befund: `Date.now()`-Seeds in `world-store`, `new Date()` im Export, `Date.now()` im Musik-Fade. Behoben: `entropySeed()` als einziger Krypto-Eingang, Export-Stempel aus `world.day`/`world.tick`, ESLint-Verbot fuer `Math.random`/`Date.now`/`performance.now`/`new Date()` in `src/**` mit Render-Ausnahme fuers Pacing; neuer Replay-Test in `src/store/__tests__/determinism.test.ts`. Gelesen: `streams.ts`, `prng.ts`, `world-store.ts`, `transfer.ts`, `music.ts`, `eslint.config.mjs`, `envelope.ts`. v1.14. |
