@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
+<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -17,7 +17,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Dev environment
 
 - Node 22, pnpm. `pnpm install --frozen-lockfile` then `pnpm run dev` (http://localhost:3000).
-- Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`), `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
+- Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`); pnpm-spezifische Dependency-Overrides liegen in `package.json` unter `pnpm.overrides`. `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v9 (world + journal + look + narrative); v5–v8 migrate (keep Fiat, open payouts, journal, look, visitor memories), v3/v4 discarded.
 
 ## Build & test
@@ -60,6 +60,8 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
 ## Pflichtdoku
+
+Die Wurzel-`README.md` ist der gemeinsame Einstieg für Spielende und Entwickler: erzählerisch im Ton, präzise beim aktuellen Funktionsstand und vollständig mit Setup, Architekturwegen, Prüfungen, Roadmap und FAQ. Sie ist keine verbindliche Regelquelle; Spielmechaniken stehen immer als heutiger Stand und verweisen auf Code sowie Verträge. Neue Bilder und Screenshots werden unter `docs/` abgelegt und in der README direkt verwendet.
 
 Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert, im selben Commit, mit Version und UTC-Zeitstempel im `rbd-doc`-Marker:
 

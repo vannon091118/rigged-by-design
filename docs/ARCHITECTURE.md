@@ -1,6 +1,10 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
+<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
+
+## README als Einstieg
+
+`README.md` ist die erzählerische Bühne und der Entwickler-Einstieg, nicht die Regelquelle. Spielmechaniken werden dort als gegenwärtiger Projektstand beschrieben; für verbindliche Details gelten Core-Code, Tests und die passenden Architekturverträge. Screenshots liegen unter `docs/screenshots/` und zeigen jeweils den belegten Stand. Roadmap-Punkte werden als Vorhaben formuliert, nicht als festgelegtes Enddesign.
 
 ## Zustandsbesitz
 

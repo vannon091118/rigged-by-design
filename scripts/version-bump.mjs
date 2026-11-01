@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse, stringify } from 'yaml';
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url));
 
@@ -34,7 +35,6 @@ export function bumpPatch(root = ROOT) {
   pkg.version = version;
   writeJson(pkgPath, pkg);
   try {
-    const { parse, stringify } = await import('yaml');
     const lockText = readFileSync(join(root, 'pnpm-lock.yaml'), 'utf8');
     const lock = parse(lockText);
     lock.version = version;

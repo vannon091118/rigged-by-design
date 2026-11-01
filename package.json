@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.70",
+  "version": "0.3.71",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -82,8 +82,10 @@
     "vitest": "^5.0.5",
     "yaml": "^2.9.1"
   },
-  "overrides": {
-    "glob": "^14.0.3",
-    "minimatch": "^11.0.1"
+  "pnpm": {
+    "overrides": {
+      "glob": "^14.0.3",
+      "minimatch": "^11.0.1"
+    }
   }
 }

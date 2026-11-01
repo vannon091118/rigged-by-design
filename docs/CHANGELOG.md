@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
+<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.71] - 2026-11-01
+
+### Spiel
+
+- README eröffnet die Spielwelt als satirisches Onboarding und markiert Umfang sowie Mechaniken als heutigen Stand; das Startkapital ist auf 150 VC plus Gratis-Automat korrigiert.
+- Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
+
+### Technik
+
+- README ergänzt aktuellen Screenshot- und Versionsvergleich, Developer-Setup, Architekturverträge, Prüfkommandos, Roadmap und FAQ.
+- CI-Jobs installieren die festgelegte pnpm-Version, bevor der Package-Cache und die Lockfile-Installation laufen. Der Versionsbump lädt YAML statisch; das Tree-Gate erlaubt JPEG-Belege unter docs.
+- pnpm-Overrides für `glob` und `minimatch` stehen im pnpm-spezifischen `pnpm.overrides`-Abschnitt; so werden die gepatchten Transitiven tatsächlich aufgelöst.
 
 ## [0.3.70] - 2026-11-01
 

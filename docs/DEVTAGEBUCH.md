@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - README-Onboarding und pnpm-CI nachgezogen
+
+**Ziel.** Ein gemeinsamer Einstieg soll die Spielwelt satirisch eröffnen und neue Entwickler ohne Suche durch Werkzeuge und Verträge führen. Das README beschreibt den heutigen Stand, ohne endgültige Vision oder unveränderliche Mechaniken zu behaupten.
+
+**Umsetzung.** README als längeres Onboarding neu geordnet: fiktionale Eröffnung, aktueller Spielstand, Screenshots und Versionsvergleich, Roadmap, Entwicklerstart, Zustandsverträge und FAQ. Das vom Nutzer gelieferte Pixel-Art-Banner ist als `docs/banner.jpg` eingebunden; drei eigene SVG-Trenner führen in Spielwelt, Werkstatt und Roadmap. Einen veralteten Startwert korrigiert: der Store vergibt 150 VC und den ersten Automaten kostenlos. PR #39 war konfliktfrei, seine CI scheiterte am fehlenden pnpm im Runner; alle acht betroffenen Workflow-Jobs installieren jetzt die deklarierte pnpm-Version vor Cache und Install-Schritten. Das Tree-Gate erlaubt JPEGs als Dokumentbeleg. Der erste Audit-Lauf fand die falsche npm-artige Override-Position; `pnpm.overrides` aktualisiert nun die gepatchten Versionen in der Lockfile.
+
+**Pruefungen.** GitHub-Compare meldete vor dem PR einen Commit Vorsprung und keinen Rückstand auf main. Die CI-Diagnose lokalisierte den Fehler beim pnpm-Aufruf; die Reparatur verwendet die offizielle pnpm Action. Der erste lokale `pnpm run verify:all` Lauf hatte einen Audit-Fehler wegen falsch platzierter npm-artiger Overrides und einen Windows-Timeout im Prozess-Sweep-Test. Nach dem pnpm-spezifischen `pnpm.overrides`-Abschnitt sind Audit und zehn weitere Gates grün. Im zweiten vollen Lauf bestehen weiter 467 Tests und 2 sind übersprungen; derselbe Windows-Prozess-Sweep-Test erwartet bei `killTracked()` zwei Treffer und erhält einen. Keine Änderung am Prozess-Sweep-Code, da Ursache anhand dieses Umgebungsbefunds nicht gesichert ist. Die Linux-CI bleibt für den Merge entscheidend.
+
+**Offen.** Lockfile aktualisieren, Pflichtpipeline ausführen, PR #39 aktualisieren und mergen. Anschließend lokale und entfernte WIP-Branches auf unintegrierte Arbeit prüfen.
+
 ## 2026-11-01 - Paketmanager von npm auf pnpm umgestellt
 
 **Ziel.** Den Paketmanager auf pnpm umstellen, damit `pnpm-lock.yaml` das Lockfile ist und `package-lock.json` nicht mehr getrackt wird.
@@ -449,7 +459,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

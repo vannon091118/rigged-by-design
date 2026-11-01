@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
+<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -10,10 +10,10 @@
 > | --- | --- |
 > | **Version** | **v1.20** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 21:55 UTC (T26 — Config-Umzug nachgezogen)** |
-> | Branch | `main` (PR-Pflicht), Arbeitsbranch `docs/doku-konsolidierung-0365`, permanent `integration` |
-> | HEAD | `c4e6e3b` (Fast-Forward `ee882da → c4e6e3b`, 26 Commits, 76 Dateien) |
-> | Arbeitsbaum | sauber; Remote `vannon091118/rigged-by-design`; 983 getrackte Dateien, 67 Ordner |
+> | **Aktualisiert** | **2026-11-01 23:18 UTC (T27 — README-Onboarding und pnpm-CI)** |
+> | Branch | `feat/pnpm-migration` (PR #39 gegen `main`), permanente Integrationsbranch `integration` |
+> | HEAD | `f012d32` (PR-Branch; dieser Turn ergänzt README, Bildbelege, CI-Fix und Dokuarbeit) |
+> | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 994 Dateien und 69 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
 
@@ -23,7 +23,7 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Casino-Aufbauspiel-Simulation (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.65 (`package.json` nach diesem Commit), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
+| Version | 0.3.71 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -41,7 +41,7 @@
 | **Summe src** | **294** | **~28.758** | |
 | `scripts` + `scripts/lib` | 22 + 12 (.mjs) | — | Pipeline, Gates, Release, Android, Audio |
 | `.github/workflows` | 6 | — | ci-verify, auto-version-release, build-apk, long-checks, pr-cleanup, promote |
-| `docs` | 16 .md + `screenshots/README.md` + Banner + 25 Screenshots | — | 16 Doku-Dateien flach unter `docs/` (Grossbuchstaben-Namen), Belege in `screenshots/{current,comparison}` |
+| `docs` | 16 .md + `screenshots/README.md` + 5 Bannerbilder + 25 Screenshots | — | 16 Doku-Dateien flach unter `docs/` (Grossbuchstaben-Namen), Hauptbanner `banner.jpg`, Trennbilder und Altbanner als SVG; Belege in `screenshots/{current,comparison}` |
 | `public/assets/casino` | 9 Symbole + 3 Musik (Opus/OGG) | 8,7 MB | kuratierter Asset-Ausschnitt |
 
 Größte Dateien: `floor-view.ts` 349 · `App.tsx` 325 · `guest-art.ts` 315 · `plinko-canvas.ts` 259 · `ledger.ts` 249 · `shell-canvas.ts` 242 · `staff.ts` 240 · `migrate.ts` 217 · `floor-props.ts` 217 · `sound-fx.ts` 206.
@@ -243,10 +243,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 994 |
-| Gelistete Dateien | 994 |
-| Getrackte Ordner | 69 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (2), docs (43), public (552), scripts (52), src (326) |
+| Getrackte Dateien | 999 |
+| Gelistete Dateien | 999 |
+| Getrackte Ordner | 70 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (3), docs (47), public (552), scripts (52), src (326) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -256,9 +256,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1 Datei(en)
+- `content/narrative/contributions/` — 2 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
-- `docs/` — 17 Datei(en)
+- `docs/` — 18 Datei(en)
+- `docs/banners/` — 3 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 10 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -327,10 +328,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlende Pflichtsektionen — gelesen: 14 Zeilen
 - `.githooks/pre-commit` — Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben, — gelesen: 28 Zeilen
-- `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 95 Zeilen
-- `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 145 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 69 Zeilen
-- `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 134 Zeilen
+- `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 100 Zeilen
+- `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 150 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 74 Zeilen
+- `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 159 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
@@ -338,27 +339,32 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 100 Zeilen
-- `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 102 Zeilen
+- `README.md` — Rigged by Design — gelesen: 250 Zeilen
+- `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 231 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 235 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 118 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 131 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 467 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 477 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 145 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 31 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 33 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 112 Zeilen
+- `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
+- `docs/banners/roadmap.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
+- `docs/banners/spielwelt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
+- `docs/banners/werkstatt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 79 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
@@ -386,8 +392,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
-- `package.json` — { — gelesen: 89 Zeilen
-- `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2843 Zeilen
+- `package.json` — { — gelesen: 91 Zeilen
+- `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2855 Zeilen
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -1329,6 +1335,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T27 | **2026-11-01 23:18 UTC**: README-Onboarding und Entwicklerstart neu geordnet; Startkapital gegen `world-store` geprüft; Nutzerbanner übernommen, drei SVG-Trenner erstellt; Tree-Gate um JPEG-Belege ergänzt; pnpm-Setup in acht CI-Jobs ergänzt und Syntaxfehler im Version-Bump behoben. PR #39 war zunächst konfliktfrei, aber CI rot (pnpm fehlte); neue Gates und Merge stehen noch aus. Nach dem Merge WIP-Branches lokal und remote prüfen. |
 | T26 | **2026-11-01 21:55 UTC**: Config-Umzug nachgezogen. Befund: `src/Config/capacitor.config.json` fehlte im Commit, weil `.gitignore` die Regel `capacitor.config.json` ungeankert fuehrte und damit auch die Quelle traf. Behoben: Regel auf `/capacitor.config.json` verankert (nur die Laufzeit-Kopie), Datei aus der History zurueck, `git check-ignore` als Probe. v1.23. |
 | T25 | **2026-11-01 21:05 UTC**: Review-Nachlauf: fatale Promotion-Luecken geschlossen. Merge nutzt `PROMOTE_TOKEN` oder stoesst `Auto Version & Release` an; `integration` in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt; `cancelled` ist kein Urteil; `gh pr update-branch` gegen den Strict-Policy-Deadlock; leerer PR-Body ist `ERR-4006`. Gelesen: alle sechs Workflows, `ci-tag-release.mjs`, `verify-commit-msg.mjs`, `branch-cleanup.mjs`, `lib/escalation.mjs`. v1.22. |
 | T24 | **2026-11-01 20:40 UTC**: Auto-Promotion und Integrationsbranch. Neu: `scripts/promote.mjs`, `.github/workflows/promote.yml`, `scripts/lib/identity.mjs`, `.mailmap`. Ein CI-Ergebnis entscheidet: gruen PR anlegen und mit Pflichtsektionen mergen, rot Label `integration/rot` und Stand auf die permanente Branch `integration`. Zwei parallele rote Staende werden komponiert (`git merge`), ein Textkonflikt bekommt `integration/konflikt`; kein force-Push, kein `-X theirs`. Identitaet `Vannon <Schneider.felix1993@gmail.com>` in `turn:finish` und im Workflow verdrahtet. Gelesen: `ci-verify.yml`, `pr-escalation.yml`, `auto-version-release.yml`, `pr-cleanup.yml`, `turn-push.mjs`, `.githooks/pre-commit`, `verify-tree.mjs`, `loc-budgets.mjs`, `docs/CI-GATES.md`, `docs/ESCALATION.md`. v1.21. |
