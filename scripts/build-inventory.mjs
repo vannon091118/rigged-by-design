@@ -43,6 +43,9 @@ function purposeOf(file, text) {
 }
 
 function describe(file) {
+  if (file === 'docs/INVENTORY.md') {
+    return { purpose: 'Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste', status: 'gepflegt: Marker und Abschnitt 18' };
+  }
   const size = statSync(join(ROOT, file)).size;
   const buffer = readFileSync(join(ROOT, file));
   if (!TEXT.test(file) && buffer.includes(0)) {

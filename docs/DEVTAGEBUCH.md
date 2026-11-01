@@ -10,6 +10,23 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Inventar-Generator idempotent gemacht
+
+**Befund.** Bei der Verifikation der Auslieferung fiel auf: Nach einem testweise
+entfernten Eintrag stellte `npm run inventory:build` den Block nicht byte-identisch
+wieder her, der Arbeitsbaum blieb eine Zeile dirty. Ursache war der Selbsteintrag
+von `docs/INVENTORY.md`: Er beschrieb seine eigene Zeilenzahl, die der Generator
+beim Schreiben gerade veränderte — der Block hing damit von seinem eigenen
+Vorzustand ab.
+
+**Umsetzung.** Der Selbsteintrag trägt jetzt einen stabilen Status („gepflegt:
+Marker und Abschnitt 18“) statt einer Zeilenzahl; alle anderen Einträge bleiben
+messbar. Zwei Generatorläufe hintereinander ergeben denselben Hash.
+
+**Prüfungen.** Datei-Eintrag entfernt → `verify:docs` Exit 1; Ordner-Eintrag
+entfernt → Exit 1; nach `inventory:build` ist die Datei SHA-256-gleich zum
+Ausgangsstand und das Gate grün. Vitest lief nicht lokal; der Beweis bleibt CI.
+
 ## 2026-11-01 - Vollständige Inventur mit erzwungener Abdeckung
 
 **Ziel.** Nicht die interessanten Stellen, sondern jede getrackte Datei: eine
@@ -105,7 +122,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:51 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:02 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
