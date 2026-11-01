@@ -44,11 +44,14 @@ if (!schmutz && offenVorab === 0) {
 // Entwicklungsstufe vor dem Versions-Bump: Ein Bump aendert package.json und
 // wuerde die Auswahl auf alle Tests ausweiten. Der volle Verify-Lauf folgt
 // trotzdem unveraendert; affected verkuerzt full/release nicht.
+// Der Impact ersetzt die doppelte Testausfuehrung: `verify:quick` startet die
+// Suite ohnehin, ein zweiter Lauf derselben Auswahl bringt keinen Nachweis.
+// `--affected` liefert jetzt den Kontext (ein Plan), nicht einen Testlauf.
 if (AFFECTED) {
-  console.log('turn:finish: Entwicklungsstufe test:affected');
-  const affected = npmRun(['run', 'test:affected']);
-  if (affected.status !== 0) {
-    fail(1, 'ERR-4006', 'turn:finish', 'test:affected ist rot; kein Commit und kein Push');
+  console.log('turn:finish: Entwicklungsstufe agent:context (ein Plan, keine zweite Testausfuehrung)');
+  const context = npmRun(['run', 'agent:context']);
+  if (context.status !== 0) {
+    fail(1, 'ERR-4006', 'turn:finish', 'agent:context ist rot; kein Commit und kein Push');
     process.exit(1);
   }
 }

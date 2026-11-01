@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->
+<!-- rbd-doc: v0.3.69 | 2026-11-01 21:13 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.69] - 2026-11-01
+
+### Spiel
+
+- Keine sichtbare Aenderung: Prozess und Nachweise werden zusammengefuehrt.
+
+### Technik
+- Neu: `npm run agent:context` (ein Aufruf fuer Aenderungen, Systeme, Invarianten, betroffene Tests, Gates und Cache-Stand) und `npm run agent:verify` (derselbe Impact-Plan, Gates ueber `runGates`, ein Bericht mit `cached`, `executed`, `skipped` und `delegated`). Beide nutzen `scripts/lib/impact.mjs`, das nur vorhandene Quellen zusammenfuehrt: `changedFiles`, Importgraph, Testkatalog, `pipeline-plan`, `gate-cache`.
+- Doppelte Testausfuehrung entfernt: `turn:finish -- --affected` startete `test:affected` und danach `verify:quick`, dessen Testgate die Suite erneut fuhr. Jetzt liefert `--affected` den Kontext; der Testlauf bleibt einmalig in der Pipeline.
+- Delegation ist keine Ausgabe mehr: `test:affected` legt lange Nachweise in `.verify-cache/delegated.json` ab und nennt sie offen; `agent:verify --ci` startet `ci:long`, wartet auf den Lauf und uebernimmt das Ergebnis.
+- Pre-Commit blockiert, wenn Dependency-Matrix oder Testkatalog nicht geschrieben werden konnten; ein verschluckter Generatorfehler hinterliess bisher ein stilles veraltetes Artefakt.
+- Teilpruefung bleibt Teilpruefung: laufen bei `agent:verify` nur betroffene Tests, steht `partial: true` im Bericht und das Testgate wird nicht gecacht.
 
 ## [0.3.68] - 2026-11-01
 

@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.68",
+  "version": "0.3.69",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -12,8 +12,10 @@
     "build": "vite build --config src/Config/vite.config.ts",
     "preview": "vite preview --config src/Config/vite.config.ts",
     "test": "vitest run --config src/Config/vite.config.ts",
-    "test:ci": "vitest run --config src/Config/vite.config.ts",
+    "test:ci": "node scripts/run-selected-tests.mjs",
     "test:affected": "node scripts/test-affected.mjs",
+    "agent:context": "node scripts/agent-context.mjs",
+    "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",
     "docs:sync": "node scripts/doc-sync.mjs",
     "verify:docs": "node scripts/verify-docs.mjs",

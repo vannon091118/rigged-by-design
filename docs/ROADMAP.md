@@ -1,12 +1,13 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.68 | 2026-11-01 20:56 UTC -->
+<!-- rbd-doc: v0.3.69 | 2026-11-01 21:13 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
 
+- Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen.
 - Auslieferung ohne Handgriff: gruene Checks mergen automatisch, rote Staende liegen sichtbar auf `integration` und werden dort repariert.
 
