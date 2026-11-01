@@ -10,6 +10,21 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Connector-Eskalation (T11)
+
+**Ziel.** Agenten ohne `gh`-Token sollen den PR-Body trotzdem heben koennen.
+
+**Umsetzung.** `scripts/lift-commit-body.mjs` kennt jetzt `--json` (und
+`--connector`): Der Plan enthaelt `level`, `channel: github-connector`, `branch`,
+`base`, `title`, `bodyFile` und `body`. CI nutzt weiter `gh`; scheitert das,
+bleibt der Lauf gruen und der Plan ist die Uebergabe. Der Level stammt aus
+`scripts/lib/escalation.mjs`, es entsteht keine zweite Klassifikation.
+
+**Pruefungen.** ESLint ueber `scripts/`, Doc-Gate, JSON-Ausgabe im Trockenlauf.
+
+**Offen.** Der Connector-Weg ist beschrieben, aber noch nicht in einem echten
+Agentenlauf benutzt.
+
 ## 2026-11-01 - Governance, Eskalation und Import/Export
 
 **Ziel.** Fehlschlaege sollen zuerst automatisch loesbar sein: reparieren, in CI
@@ -22,7 +37,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:23 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:26 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

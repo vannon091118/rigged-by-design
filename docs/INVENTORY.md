@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:23 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:26 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,9 +8,9 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v1.8** |
+> | **Version** | **v1.9** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 09:15 UTC (T10 — Auftrag T9 umgesetzt: Eskalation, Doc-Gate, Hooks, Import/Export)** |
+> | **Aktualisiert** | **2026-11-01 09:25 UTC (T11 — Connector als Eskalationsweg, Branch gepusht, CI-Lauf gestartet)** |
 > | Branch | `freebuff/9f1e857ba05731117031ec2a` |
 > | HEAD | `492ac3a` (Pull via Connector: `708d31c → 492ac3a`, 583 Dateien) |
 > | Arbeitsbaum | nur `docs/INVENTORY.md` untracked (dieses Artefakt); sonst sauber; Remote `vannon091118/rigged-by-design` |
@@ -170,7 +170,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `npm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
 | 48 | info | **Doc-Gate + Hooks (T10):** `scripts/lib/doc-sync.mjs` führt sechs Pflichtdokumente mit Pflichtabschnitten und `rbd-doc`-Marker (Version + UTC); `verify:docs` ist Gate (`ERR-4017`), der Pre-Commit-Hook schreibt ihn. `deps-matrix` und `catalog` sind keine Gates mehr; Matrix, Katalog und Marker entstehen im Hook. Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` (identische MD5) gelöscht. | `scripts/lib/doc-sync.mjs`, `.githooks/`, `scripts/lib/pipeline-plan.mjs` |
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
-| 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` |
+| 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` || 50 | info | **Connector-Eskalation (T11):** `scripts/lift-commit-body.mjs --json` liefert den PR-Plan (`level: AGENT`, `channel: github-connector`, `branch`, `base`, `title`, `bodyFile`, `body`). CI nutzt weiter `gh`; ohne Token bleibt der Lauf grün und der Plan ist die Übergabe. Der Level kommt aus `scripts/lib/escalation.mjs` — keine zweite Leiter. | `scripts/lift-commit-body.mjs`, `docs/ESCALATION.md` |
 
 ## 15. Lesedeckung (Ehrlichkeits-Matrix)
 
@@ -234,6 +234,7 @@ Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein C
 | T5 | **2026-11-01 ~08:22 UTC**: die letzten 13 core/sim-Dateien gelesen (pathfinding, player, player-jobs, player-look, player-rpg, progression, queue-spots, remodel, rivals, types, types-model, upkeep, world) — **core/sim vollständig**; Befund 18 aufgelöst, 21–25 ergänzt; v1.3. |
 | T6 | **2026-11-01 ~08:30 UTC**: alle übrigen 31 scripts-Dateien bis letzte Zeile gelesen — **scripts/scripts-lib vollständig (34/34)**; `src/test` vollständig (2/2); ui-/render-Zählung korrigiert (38 bzw. 43 produktive Dateien) mit Größen/Exporten/Scans; **Korrektur: das Befund-21–25-Segment aus T5 war nicht im File gelandet — hier als Befunde 21–32 neu geschrieben**; v1.4. |
 | T7 | **2026-11-01 ~08:38 UTC**: ui-Batches 2–4 (30 Dateien: alle games-Popups, Rules-Editor, BetConsole, Header, PopupShell, Formate/Labels, Help/Journal/Look/Sound/Exclusion, Foreign-Floor-Dateien, Tableau, Karten) bis letzte Zeile — **src/ui vollständig (38/38 produktiv)**; Befund 33 durch Gegenpr\u00fcfung `deliveries.ts:12` best\u00e4tigt, Befunde 34–36 erg\u00e4nzt; erster render-Batch (6 gr\u00f6\u00dfte Dateien) bis letzte Zeile; Git-Stand: `origin` = github.com/vannon091118/rigged-by-design, HEAD 708d31c, nur `docs/INVENTORY.md` untracked (kein lokaler `origin/main`-Ref zum Vergleich); v1.5. |
+| T11 | **2026-11-01 09:25 UTC**: Branch `freebuff/9f1e857ba05731117031ec2a` committet (`f2f46c7`, 32 Dateien) und via Connector gepusht; CI-Läufe `CI Verify` (#110) und `PR Escalation` gestartet. Connector-Eskalation implementiert (`lift-commit-body --json`), Doku nachgezogen. v1.9. |
 | T10 | **2026-11-01 09:15 UTC**: Auftrag T9 umgesetzt. Neue Module `src/core/io/{issues,envelope,repair}.ts`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` (Import/Export mit Reparaturplan); Eskalations-Leiter `scripts/lib/escalation.mjs` + `escalation:plan`; Doc-Gate `scripts/lib/doc-sync.mjs` + `verify:docs`; Hooks `.githooks/{pre-commit,commit-msg}` + `hooks:install`; PR-Eskalation `.github/workflows/pr-escalation.yml` + `lift-commit-body.mjs`; Pipeline-Gates `deps-matrix`/`catalog` durch `docs` ersetzt; Pflichtdoku Changelog/Devtagebuch/Roadmap/Escalation angelegt; Fehlercodes `ERR-4017/4018/5001`. Kein Vitest lokal. v1.8. |
 | T9 | **2026-11-01 09:00 UTC**: main-Stand geprüft (`492ac3a`, Arbeitsbaum bis auf dieses Artefakt sauber). **Neuen Nutzerauftrag vollständig als Abschnitt 17 erfasst** (Import/Export-Manager mit LOC-Cap, globale Eskalations-Stufen, Commit-Body→PR-Body via CI, Doc-Sync-Gate + Doku-Strukturvorgaben, Pflichtdoku nach jeder Änderung, Pre-Commit-Hook statt generierter Matrizen, keine Redundanz/keine lokalen eskalierbaren Tests). Asset-Lizenz vom Nutzer bestätigt (Punkt 4). Kein Code geändert. v1.7. |
 | T8 | **2026-11-01 ~08:52 UTC**: **Pull via Connector** `708d31c → 492ac3a` (583 Dateien, +3.119/−163 (583 Dateien)) eingearbeitet und ausgewertet: Asset-Paket (~550 PNG/OGG), Manifest v3 + Generator, Asset-Library, Poker-CPU-Profile + **Geldweg-Bugfix**, Roulette-Farbkorrektur, 3 neue Musiktracks; 22 weitere render-Dateien bis letzte Zeile gelesen; Befunde 37–46 (inkl. Lizenzstatus-Bestätigung, Taskplan-NAR-00…16, Versions-Bump fehlt beim Pull); Doku-Diffs (ASSETS/README/ARCHITECTURE/screenshots) gelesen; `docs/INVENTORY.md` bleibt durch den Pull unangetastet (nicht im Diff); v1.6. |

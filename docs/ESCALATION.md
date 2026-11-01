@@ -41,6 +41,23 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
   Body liegt in `.git/rbd-pr-body.md`.
 - **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `npm run fix`.
 
+## Connector als Eskalationsweg
+
+Wenn `gh` fehlt oder nicht angemeldet ist (typisch fuer Agenten ohne CLI-Token),
+bleibt der Lauf gruen und `scripts/lift-commit-body.mjs` gibt den Plan aus:
+
+```bash
+node scripts/lift-commit-body.mjs --json
+```
+
+Der Plan nennt `level`, `channel`, `branch`, `base`, `title`, `bodyFile` und
+`body`. Ein Agent mit GitHub-Connector legt damit den PR an oder aktualisiert
+seinen Body; der Connector ersetzt `gh`, nicht die Regel. Der Level kommt aus
+derselben Leiter (`AGENT`), es gibt keine zweite Klassifikation.
+
+Reihenfolge: CI mit `gh` versucht zuerst; scheitert das, uebernimmt der
+Connector. Beide Wege schreiben denselben Body aus derselben Datei.
+
 ## Nicht verhandelbar
 
 - Kein Gate schreibt im Verify-Lauf.

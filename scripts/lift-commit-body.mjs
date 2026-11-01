@@ -2,13 +2,14 @@
 /**
  * Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed.
  *
- * Fehlt die Developer-Notes-Struktur, wird sie aus Subject und Body gebaut.
- * Ohne `gh` oder ohne Anmeldung bleibt der Lauf gruen: der Body liegt dann in
- * `.git/rbd-pr-body.md`, und der Agent kann ihn beim naechsten PR setzen.
+ * Zwei Wege, ein Body: `gh` (CI, Token vorhanden) oder der GitHub-Connector
+ * (Agenten ohne CLI-Token). `--json` liefert den Plan maschinenlesbar; der Lauf
+ * bleibt gruen, weil die Eskalation die Entscheidung verschiebt, nicht blockiert.
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { describePlan, plan } from './lib/escalation.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const SECTIONS = Object.freeze([
@@ -16,15 +17,18 @@ const SECTIONS = Object.freeze([
   '### Technische Basis & Kausalität',
   '### Ausblick (Nächste Schritte)',
 ]);
-const dryRun = process.argv.includes('--dry-run');
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const asJson = args.includes('--json') || args.includes('--connector');
 const git = (argv) => execFileSync('git', argv, { cwd: ROOT, encoding: 'utf8' }).trim();
 
 function buildBody() {
   const subject = git(['log', '-1', '--pretty=%s']);
   const raw = git(['log', '-1', '--pretty=%b']);
-  const lines = raw.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const bullets = lines
-    .filter((line) => !line.startsWith('### '))
+  const bullets = raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('### '))
     .map((line) => line.replace(/^[-*]\s+/, ''))
     .slice(0, 12);
   return [
@@ -41,10 +45,19 @@ function buildBody() {
 }
 
 const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+const title = git(['log', '-1', '--pretty=%s']);
 const body = buildBody();
 // In einem Worktree ist `.git` eine Datei: das Verzeichnis kommt aus git selbst.
 const file = resolve(ROOT, git(['rev-parse', '--git-dir']), 'rbd-pr-body.md');
 writeFileSync(file, `${body}\n`);
+const escalation = plan('commit body pflichtsektion struktur fehlt');
+const connector = { level: escalation.level, channel: 'github-connector', branch, base: 'main', title, bodyFile: file, body };
+
+if (asJson) {
+  console.log(JSON.stringify(connector, null, 2));
+  process.exit(0);
+}
+
 console.log(`pr-escalation: Body aus ${branch} gebaut (${body.split('\n').length} Zeilen)`);
 if (dryRun) {
   console.log(body);
@@ -58,11 +71,14 @@ try {
     gh(['pr', 'edit', existing, '--body-file', file]);
     console.log(`pr-escalation: PR #${existing} aktualisiert`);
   } else {
-    gh(['pr', 'create', '--base', 'main', '--head', branch, '--title', git(['log', '-1', '--pretty=%s']), '--body-file', file]);
+    gh(['pr', 'create', '--base', 'main', '--head', branch, '--title', title, '--body-file', file]);
     console.log('pr-escalation: PR angelegt');
   }
 } catch (error) {
   const reason = error instanceof Error ? error.message.split('\n')[0] : 'Fehler';
-  console.log(`pr-escalation: gh nicht verfuegbar (${reason}); Body liegt in .git/rbd-pr-body.md`);
+  console.log(`pr-escalation: gh nicht verfuegbar (${reason})`);
+  console.log(describePlan(escalation));
+  console.log('  Connector-Plan: node scripts/lift-commit-body.mjs --json');
+  console.log(`  Body: ${file}`);
 }
 process.exit(0);
