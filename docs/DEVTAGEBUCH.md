@@ -10,6 +10,33 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Vollständige Inventur mit erzwungener Abdeckung
+
+**Ziel.** Nicht die interessanten Stellen, sondern jede getrackte Datei: eine
+Zeile je Pfad, ein Eintrag je Ordner, und eine Prüfung, die eine Lücke rot macht.
+
+**Umsetzung.** `scripts/build-inventory.mjs` liest `git ls-files`, öffnet jede
+Datei und schreibt den Block zwischen `inventory:start` und `inventory:end` in
+`docs/INVENTORY.md`. Textdateien liefern Zeilenzahl und Kopfkommentar,
+PNG-Dateien ihre IHDR-Maße, OGG-Dateien ihre Signatur; Sammelzeilen gibt es
+nicht. `verify:docs` vergleicht den Block mit dem Index, prüft die 64 Ordner
+und die Abdeckungszahl. Der Pre-Commit-Hook baut die Liste vor dem Marker, die
+Abdeckung kann also nicht stillschweigend veralten.
+
+**Befunde beim Bauen.** Shell-Hooks ohne Endung wurden zunächst als Binärdatei
+geführt — die Erkennung fragt jetzt nach NUL-Bytes statt nach der Endung. Der
+Changelog trug `[0.3.65]`, während `package.json` und alle Marker `0.3.64`
+sagten; die Überschrift ist auf `0.3.64` gezogen.
+
+**Prüfungen.** Drei Rot-Tests gegen das Gate: eine entfernte Datei, ein
+entfernter Ordner und eine falsche Abdeckungszahl brechen jeweils mit
+`ERR-4017` ab; danach ist der Lauf wieder grün. `verify:tree`,
+`verify:redundancy`, `check:loc`, ESLint und `tsc --noEmit` lokal grün. Vitest
+lief nicht lokal; der Beweis bleibt `verify:all` in CI.
+
+**Offen.** Der Lizenznachweis für die 552 Dateien unter `public/` liegt weiter
+beim Betreiber; inhaltlich geprüft sind Signatur und Größe, nicht die Rechte.
+
 ## 2026-11-01 - Tree-Gate, Redundanz-Gate und Doc-Generierung
 
 **Ziel.** Jede Datei am richtigen Ort, keine doppelte Wahrheit und ein Befehl,
@@ -78,7 +105,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:40 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:51 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

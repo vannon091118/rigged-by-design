@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 09:40 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 09:51 UTC -->
 
 ## Zustandsbesitz
 
@@ -41,7 +41,7 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | npm-Skript | Inhalt |
 | --- | --- | --- |
-| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Dependency-Matrix, Testkatalog, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Alle zehn Stufen inklusive Build und Audit. Unverändert das Tor vor jedem Commit. |
 | `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
 
@@ -64,8 +64,8 @@ Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslau
 3. TypeScript (`ERR-1005`)
 4. Testqualität und Determinismus (`ERR-1001`, `ERR-4001`, `ERR-4002`, `ERR-3001`)
 5. Tote Exporte (`ERR-4003`)
-6. Dependency-Matrix im `--check`-Modus (`ERR-4013`)
-7. Testkatalog im `--check`-Modus (`ERR-4015`)
+6. Doku-Gate inklusive Inventar-Abdeckung gegen `git ls-files` (`ERR-4017`)
+7. Tree- und Redundanz-Gate (`ERR-4019`, `ERR-4020`)
 8. `npm audit --audit-level=low` (`ERR-4004`)
 9. Vitest mit indizierten Testfällen
 10. Production-Build (`ERR-1005`)
@@ -96,7 +96,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 45: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/check-loc.mjs`<br>… (+39) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 46: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/build-inventory.mjs`<br>… (+40) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |

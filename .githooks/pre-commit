@@ -8,6 +8,7 @@ if [ ! -d node_modules ]; then
 fi
 node scripts/sync-dependency-matrix.mjs >/dev/null 2>&1 || echo "pre-commit: Matrix nicht aktualisiert (Eskalation AGENT)"
 node scripts/test-catalog.mjs >/dev/null 2>&1 || echo "pre-commit: Katalog nicht aktualisiert (Eskalation AGENT)"
+node scripts/build-inventory.mjs
 node scripts/doc-sync.mjs --staged
 node scripts/verify-docs.mjs
 if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then

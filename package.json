@@ -20,6 +20,7 @@
     "verify:tree": "node scripts/verify-tree.mjs",
     "verify:redundancy": "node scripts/verify-redundancy.mjs",
     "docs:stub": "node scripts/doc-stub.mjs",
+    "inventory:build": "node scripts/build-inventory.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",
     "escalation:plan": "node scripts/escalation-plan.mjs",
     "pr:lift": "node scripts/lift-commit-body.mjs",
