@@ -4,6 +4,7 @@ import type { GameResult } from '../../core/games/contracts';
 import type { RiskColor } from '../../core/games/risk-card';
 import { SLOT_SYMBOLS } from '../../core/games/engines/slot';
 import { clampedReels } from '../../core/games/engines/slot-paytable';
+import { Emitter } from '../fx/emitter';
 import { Coins, drawPaylines } from './slot-fx';
 import { GambleCard } from './slot-gamble';
 import { CELL, PAD, makeReel, repaint, type Reel } from './slot-reels';
@@ -22,6 +23,7 @@ export class SlotCanvas {
   readonly #stageW: number;
   readonly #lines = new Container();
   readonly #coins = new Coins();
+  readonly #fx = new Emitter();
   readonly #gamble: GambleCard;
   readonly #banner = new Text({
     text: 'FREISPIELE',
@@ -47,7 +49,7 @@ export class SlotCanvas {
       reel.strip.mask = mask;
       this.#reels.push(reel);
     }
-    this.#root.addChild(this.#lines, this.#coins.container);
+    this.#root.addChild(this.#lines, this.#coins.container, this.#fx.container);
     this.#banner.anchor.set(0.5);
     this.#banner.position.set(this.#stageW / 2, PAD + BAND_H / 2);
     this.#banner.alpha = 0;
@@ -83,6 +85,7 @@ export class SlotCanvas {
     this.#banner.alpha = 0;
     this.#lines.removeChildren().forEach((child) => child.destroy());
     this.#coins.clear();
+    this.#fx.clear();
     this.#reels.forEach((reel, index) => {
       reel.spinning = true;
       reel.stopping = false;
@@ -113,7 +116,12 @@ export class SlotCanvas {
     if (reelIndex === this.#reelCount - 1) {
       const wins = result.wins ?? [];
       if (wins.length) this.#lines.addChild(drawPaylines(wins, CELL, PAD, this.#reelCount));
-      if (result.payout > 0 || wins.length) this.#coins.burst(this.#stageW, 26);
+      if (result.payout > 0 || wins.length) {
+        this.#coins.burst(this.#stageW, 26);
+        this.#fx.burst('jackpot-burst', this.#stageW / 2, PAD + BAND_H / 2, { count: 20, size: 16 });
+      } else {
+        this.#fx.burst('coin-burst', this.#stageW / 2, PAD + BAND_H / 2, { count: 6, size: 14, tint: 0x6a5a82 });
+      }
       if ((result.books ?? 0) >= 3) {
         this.#bannerT = 0.001;
       }
@@ -154,6 +162,7 @@ export class SlotCanvas {
       }
     });
     this.#coins.update(dt);
+    this.#fx.update(dt);
     if (this.#bannerT > 0) {
       this.#bannerT += dt;
       this.#banner.alpha = Math.max(0, 1 - Math.abs(this.#bannerT - 500) / 500);
@@ -165,6 +174,7 @@ export class SlotCanvas {
   destroy(): void {
     this.#app.ticker.remove(this.#tick);
     this.#coins.clear();
+    this.#fx.destroy();
     this.#root.destroy({ children: true });
   }
 }

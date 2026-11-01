@@ -5,6 +5,7 @@ import type { GuestEmotion } from '../core/sim/emotion';
 import type { PlayerLook } from '../core/sim/player-look';
 import { INK, ROLE, SHADOW, floorText } from './art-tokens';
 import { createComicBubble } from './comic-bubbles';
+import { pixelHead } from './pixel-head';
 import { poseFor, type ActorState } from './rig-pose';
 
 const PERSONA_COLORS: Record<string, number> = {
@@ -42,7 +43,7 @@ const hash = (value: string): number => {
 };
 
 export function createGuestArt(
-  persona: string, name: string, isPlayer = false, phase = 0, look?: PlayerLook,
+  persona: string, name: string, isPlayer = false, phase = 0, look?: PlayerLook, portrait = false,
 ): GuestArt {
   const seed = hash(name || persona);
   let skin = isPlayer ? 0xf2d3b3 : SKINS[seed % SKINS.length]!;
@@ -76,6 +77,14 @@ export function createGuestArt(
   armRPivot.addChild(armR);
   head.position.set(0, -19);
   head.addChild(skull, face, hair);
+  const pixel = portrait ? pixelHead(seed, 13) : null;
+  if (pixel) {
+    pixel.position.set(0, 1);
+    head.addChild(pixel);
+    skull.visible = false;
+    face.visible = false;
+    hair.visible = false;
+  }
   figure.addChild(shadow, legL, legR, body, armLPivot, armRPivot, head);
   const pin = new Graphics();
   pin.visible = false;

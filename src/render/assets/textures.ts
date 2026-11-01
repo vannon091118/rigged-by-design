@@ -8,6 +8,7 @@
  */
 import { Assets, Texture } from 'pixi.js';
 import manifest from './manifest.json';
+import { RUNTIME_ART } from './keys';
 
 const BASE = manifest.base;
 const SLOT_SYMBOLS: Readonly<Record<string, string>> = manifest.symbols;
@@ -74,4 +75,9 @@ export async function preloadDecorTextures(): Promise<void> {
 /** Pegs, Bumper und Auszahlungsfelder der Plinko-Buehne. */
 export async function preloadPlinkoTextures(): Promise<void> {
   await preloadTextures(Object.values(manifest.plinko));
+}
+
+/** Figuren, Karten, Teppich und Partikel, die die Spielbuehnen sofort brauchen. */
+export async function preloadRuntimeArt(): Promise<void> {
+  await preloadTextures(RUNTIME_ART);
 }

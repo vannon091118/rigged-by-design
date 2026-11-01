@@ -7,6 +7,7 @@ import { RouletteStage, type RouletteStageHandle } from '../../render/games/roul
 import { playSfx } from '../../render/sound-fx';
 import { vc } from '../format';
 import { CasinoWindowHeader } from '../casino-window-header';
+import { UI_ICON } from '../icons';
 import { RouletteTableau } from '../roulette-tableau';
 
 interface Props {
@@ -70,7 +71,7 @@ export function RoulettePopup(props: Props) {
     setChips({});
     const number = next.roulette?.number ?? 0;
     playSfx('roulette');
-    stage.current?.spin(number, () => setRunning(false));
+    stage.current?.spin(number, () => setRunning(false), next.payout > 0);
   };
 
   // Der Satz bleibt sichtbar, auch wenn kein Feld getroffen wurde; sonst ist
@@ -97,6 +98,7 @@ export function RoulettePopup(props: Props) {
           <strong>{title}</strong>
         </div>
         <p>{props.subtitle}</p>
+        <img className="dealer-portrait" src={UI_ICON.croupier} alt="Croupier" />
       </div>
 
       <div className="roulette-layout">
@@ -130,7 +132,10 @@ export function RoulettePopup(props: Props) {
               ))}
             </div>
             <div className="roulette-total">
-              <span>{counts.reduce((sum, count) => sum + count, 0)} Jetons</span>
+              <span>
+                <img className="ui-icon" src={UI_ICON.chip} alt="" />
+                {counts.reduce((sum, count) => sum + count, 0)} Jetons
+              </span>
               <strong>{total} VC</strong>
             </div>
             <button type="button" className="btn primary big" disabled={blocked || total <= 0} onClick={spin}>

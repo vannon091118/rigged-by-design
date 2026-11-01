@@ -2,6 +2,7 @@
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import type { PegKind, PlinkoConfig, PlinkoDrop } from '../../core/games/plinko-config';
 import { plinkoPaytable } from '../../core/games/plinko-config';
+import { Emitter } from '../fx/emitter';
 import { PEG_COLOR, payoutArt, pegArt } from './plinko-assets';
 
 const WIDTH = 100;
@@ -11,8 +12,6 @@ const PEG_RADIUS = 1.8;
 const BALL_RADIUS = 2.2;
 const PEG_COLUMNS = 8;
 const FLOOR_BASE = 120;
-
-
 
 interface Peg {
   readonly x: number;
@@ -57,6 +56,7 @@ export class PlinkoCanvas {
   readonly #root = new Container();
   readonly #board = new Container();
   readonly #balls = new Container();
+  readonly #fx = new Emitter();
   readonly #waves: Wave[] = [];
   #pegs: Peg[] = [];
   #tracks: Ball[] = [];
@@ -71,7 +71,7 @@ export class PlinkoCanvas {
   constructor(app: Application) {
     this.#app = app;
     app.stage.addChild(this.#root);
-    this.#root.addChild(this.#board, this.#balls);
+    this.#root.addChild(this.#board, this.#balls, this.#fx.container);
     app.ticker.add(this.#tick);
     this.layout();
   }
@@ -157,6 +157,7 @@ export class PlinkoCanvas {
     this.#waves.length = 0;
     for (const flash of this.#flashes) flash.gfx.destroy();
     this.#flashes.length = 0;
+    this.#fx.clear();
     this.#onDone = null;
   }
 
@@ -177,6 +178,7 @@ export class PlinkoCanvas {
         if (!ball.landed) this.#land(ball);
       }
     }
+    this.#fx.update(dt);
     this.#updateWaves(dt);
     this.#updateFlashes(dt);
     if (!running && this.#tracks.length && this.#onDone && this.#elapsed > 0) {
@@ -202,6 +204,9 @@ export class PlinkoCanvas {
     ring.stroke({ width: 1, color: 0xffffff, alpha: 0.8 });
     this.#balls.addChild(ring);
     this.#waves.push({ gfx: ring, life: 1 });
+    const payBps = this.#pockets[ball.pocket] ?? 0;
+    this.#fx.burst('coin-burst', (edges.left + edges.right) / 2, this.#floorY + 6,
+      { count: payBps > 0 ? 12 : 6, size: payBps > 0 ? 12 : 14, tint: payBps > 0 ? 0xffffff : 0x6a5a82 });
   }
 
   /** Stiftkontakt: einmal pro Stift und Ball eine Schockwelle. */
@@ -215,6 +220,7 @@ export class PlinkoCanvas {
       ring.stroke({ width: 0.6, color: PEG_COLOR[peg.kind], alpha: 1 });
       this.#balls.addChild(ring);
       this.#waves.push({ gfx: ring, life: 1 });
+      this.#fx.burst('plinko-impact', peg.x, peg.y, { count: 2, size: 5 });
     });
   }
 

@@ -1,6 +1,7 @@
 /** Europaeischer Kessel in Pixi: Rad, Kugel im Gegenlauf und Dolly auf der Gewinnzahl. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
 import { ROULETTE_WHEEL, colourOf } from '../../core/games/roulette-table';
+import { Emitter } from '../fx/emitter';
 
 const SIZE = 300;
 const CENTER = SIZE / 2;
@@ -31,18 +32,20 @@ export class RouletteCanvas {
   readonly #wheel = new Container();
   readonly #ball = new Graphics();
   readonly #dolly = new Graphics();
+  readonly #fx = new Emitter();
   #onDone: (() => void) | null = null;
   #time = 0;
   #spinning = false;
   #target = 0;
   #wheelTurn = 0;
+  #won = false;
 
   constructor(app: Application) {
     this.#app = app;
     app.stage.addChild(this.#root);
     this.#root.addChild(this.#wheel);
     this.#buildWheel();
-    this.#root.addChild(this.#ball, this.#dolly);
+    this.#root.addChild(this.#ball, this.#dolly, this.#fx.container);
     this.#ball.visible = false;
     this.#dolly.visible = false;
     this.#drawDolly();
@@ -117,8 +120,10 @@ export class RouletteCanvas {
   }
 
   /** Dreht das Rad gegen den Uhrzeigersinn, die Kugel laeuft vorwaerts in ihre Tasche. */
-  spin(number: number, onDone: () => void): void {
+  spin(number: number, onDone: () => void, won = false): void {
     this.#onDone = onDone;
+    this.#won = won;
+    this.#fx.clear();
     this.#spinning = true;
     this.#time = 0;
     this.#target = sectorAngle(number);
@@ -128,8 +133,9 @@ export class RouletteCanvas {
   }
 
   #tick = (): void => {
-    if (!this.#spinning) return;
     const dt = Math.min(48, this.#app.ticker.deltaMS);
+    this.#fx.update(dt);
+    if (!this.#spinning) return;
     this.#time += dt;
     const t = Math.min(1, this.#time / 3200);
     const eased = 1 - (1 - t) ** 2.4;
@@ -158,6 +164,11 @@ export class RouletteCanvas {
     this.#ball.clear();
     this.#ball.circle(CENTER + Math.sin(landed) * BALL_REST, CENTER - Math.cos(landed) * BALL_REST, 4.4)
       .fill({ color: 0xf7f3ea });
+    this.#fx.burst(this.#won ? 'jackpot-burst' : 'coin-burst', CENTER, CENTER, {
+      count: this.#won ? 24 : 8,
+      size: this.#won ? 18 : 14,
+      tint: this.#won ? 0xffffff : 0x6a5a82,
+    });
     const done = this.#onDone;
     this.#onDone = null;
     done?.();
@@ -165,6 +176,7 @@ export class RouletteCanvas {
 
   destroy(): void {
     this.#app.ticker.remove(this.#tick);
+    this.#fx.destroy();
     this.#root.destroy({ children: true });
   }
 }
