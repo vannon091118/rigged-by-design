@@ -1,7 +1,7 @@
 /** Deterministischer Mulberry32-PRNG. Zustand ist ein uint32 und exakt wiederherstellbar. */
 
 /** Zwei Namespaces: Spielzustand und Darstellung teilen nie denselben Strom. */
-export type RngRole = 'gameplay' | 'presentation';
+type RngRole = 'gameplay' | 'presentation';
 
 export class Prng {
   readonly seed: number;
