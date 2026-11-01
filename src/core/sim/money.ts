@@ -6,6 +6,7 @@ export const HAUSKONTO = 'HAUSKONTO';
 export const PORTEMONNAIE = 'PORTEMONNAIE';
 export const WECHSELKASSE = 'WECHSELKASSE';
 const EXTERNAL = 'EXTERNAL_WORLD';
+export { EXTERNAL };
 export const SHOP = 'SHOP';
 export const STAFF = 'STAFF';
 export const UTILITIES = 'UTILITIES';

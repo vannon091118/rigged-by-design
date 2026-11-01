@@ -18,6 +18,7 @@ export interface ExclusionPact {
 interface ExclusionResult { readonly ok: boolean; readonly reward: VaCoinMicro; readonly notice: string; }
 
 const EXCLUSION_PAUSE_TICKS = 8;
+export { EXCLUSION_PAUSE_TICKS };
 
 function clampScore(value: number): number {
   return Math.min(100, Math.max(0, value));
@@ -60,6 +61,13 @@ export function recordExclusionPlay(
     return;
   }
   pact.bets = addVC(pact.bets, bet);
+  recordExclusionWin(world, payout, tick);
+}
+
+/** Nur die Auszahlung nachtragen; der Einsatz wurde beim Austeilen bereits gebucht. */
+export function recordExclusionWin(world: WorldState, payout: VaCoinMicro, tick: number): void {
+  const pact = world.exclusionPact;
+  if (!pact || pact.status !== 'ACTIVE') return;
   pact.wins = addVC(pact.wins, payout);
   pact.netLoss = Math.max(0, subVC(pact.bets, pact.wins)) as VaCoinMicro;
   if (pact.netLoss >= pact.limit) {

@@ -2,11 +2,11 @@
 import type { Ledger } from '../core/economy/ledger';
 import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
-import { fromVC, mulVC, toVCString, type VaCoinMicro } from '../core/economy/vacoin';
+import { addVC, fromVC, mulVC, subVC, toVCString, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { gambleRivalWin, type RiskColor, type RiskOutcome } from '../core/games/risk-card';
 import { recordJournal } from '../core/sim/journal';
-import { recordExclusionPlay } from '../core/sim/self-exclusion-bet';
-import { foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
+import { recordExclusionPlay, recordExclusionWin } from '../core/sim/self-exclusion-bet';
+import { EXTERNAL, foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
 import { getRival, rivalEdge, visitRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 
@@ -65,16 +65,15 @@ export function visitRivalWithJournal(
  * schliesst, hat trotzdem gespielt.
  */
 
-/** Alles, was ein Fenster nach dem Austeilen kennt: Schuh-Seed, Hausquote, Maschine. */
+/** Alles, was ein Fenster nach dem Austeilen kennt: Schuh-Seed und Maschine. */
 export interface CardDeal {
   readonly seed: number;
-  readonly netBps: number;
   readonly label: string;
 }
 
 /** Einsatz beim Austeilen: Valide ist hier die Voraussetzung, nicht beim Auszahlen. */
 export function dealCardOutcome(
-  world: WorldState, ledger: Ledger, prng: Prng, rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number,
+  world: WorldState, ledger: Ledger, prng: Prng, rivalId: RivalId, machineIndex: number, stakeVC: number,
 ): { result: CardDeal; notice: string } {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
@@ -82,30 +81,47 @@ export function dealCardOutcome(
   const stake = fromVC(stakeVC);
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
-  const edge = rivalEdge(rival, entry);
-  const netBps = bps > 0 ? Math.max(0, bps - edge) : 0;
   foreignBet(ledger, stake, world.tick);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
     effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
   });
-  return { result: { seed: prng.nextInt(1, 2_147_483_646), netBps, label: entry.label }, notice: `Karten-Einsatz im ${rival.name} gebucht.` };
+  // Einsatz bereits beim Austeilen im Pakt registrieren (auch bei Abbruch vor der Abrechnung).
+  recordExclusionPlay(world, stake, ZERO_VC, world.tick);
+  return { result: { seed: prng.nextInt(1, 2_147_483_646), label: entry.label }, notice: `Karten-Einsatz im ${rival.name} gebucht.` };
+}
+
+/** Hausvorteil nur auf den Gewinn: Einsatz und Refund bleiben unangetastet. */
+export function cardPayout(stake: VaCoinMicro, engineBps: number, edgeBps: number): VaCoinMicro {
+  const gross = mulVC(stake, engineBps);
+  if (gross <= stake) return gross;
+  return addVC(stake, mulVC(subVC(gross, stake), Math.max(0, 10_000 - edgeBps)));
 }
 
 /** Auszahlung am Rundenende: hier darf keine Bude mehr pruefen, der Einsatz ist weg. */
 export function settleCardOutcome(
-  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string,
+  world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, stakeVC: number, engineBps: number, label: string,
 ): ForeignOutcome {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
   const stake = fromVC(stakeVC);
-  const payout = mulVC(stake, netBps);
+  const payout = cardPayout(stake, engineBps, rivalEdge(rival, entry));
   if (payout > 0) foreignWin(ledger, payout, world.tick);
-  recordExclusionPlay(world, stake, payout, world.tick);
+  recordExclusionWin(world, payout, world.tick);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde',
     effect: `${rival.name} (${entry.label}): ${label} · ${toVCString(payout)}`, refs: { rivalId },
   });
-  return { result: { game: entry.game, stake, payout, multiplierBps: netBps, label, detail: [label] }, notice: `Kartenrunde im ${rival.name}: ${label}.` };
+  const multiplierBps = stake > 0 ? Math.round((payout / stake) * 10_000) : 0;
+  return { result: { game: entry.game, stake, payout, multiplierBps, label, detail: [label] }, notice: `Kartenrunde im ${rival.name}: ${label}.` };
+}
+
+/** Bucht einen zusätzlichen Einsatz (Double, Split, Versicherung). */
+export function additionalBet(world: WorldState, ledger: Ledger, amount: VaCoinMicro, tick: number): void {
+  if (amount <= ZERO_VC) return;
+  if (ledger.getBalance(PORTEMONNAIE) < amount) throw new Error('Nicht genug Bargeld für den zusätzlichen Einsatz.');
+  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, 'fremdes haus einsatz (zusatz)', tick);
+  recordExclusionPlay(world, amount, ZERO_VC, tick);
+  recordJournal(world, { kind: 'RIVAL', subject: '', cause: 'Zusätzlicher Einsatz', effect: `${amount / 10_000} VC zusätzlich eingesetzt` });
 }

@@ -15,7 +15,7 @@ const NEXT: Readonly<Record<PokerStreet, PokerStreet>> = {
 };
 
 export function toCall(table: PokerTable, player: PokerPlayer): number {
-  return Math.max(0, table.bet - player.committed);
+  return Math.max(0, table.bet - player.streetCommitted);
 }
 
 /** Neue Hand: Ante von jedem, zwei Karten je Spieler, der Spieler beginnt. */
@@ -27,10 +27,10 @@ export function startHand(prng: Prng, options: PokerHandOptions): PokerTable {
   const shoe: CardShoe = createShoe(prng);
   const deal = (): readonly Card[] => [shoe.draw(), shoe.draw()];
   const players: PokerPlayer[] = [
-    { id: 'DU', human: true, hole: deal(), stack: stake - unit, committed: unit, folded: false, allIn: false, acted: false },
+    { id: 'DU', human: true, hole: deal(), stack: stake - unit, committed: unit, streetCommitted: 0, folded: false, allIn: false, acted: false },
     ...CPU_STACKS.slice(0, opponents).map((factor, index) => ({
       id: `GAST ${index + 1}`, human: false, hole: deal(),
-      stack: stake * factor - unit, committed: unit, folded: false, allIn: false, acted: false,
+      stack: stake * factor - unit, committed: unit, streetCommitted: 0, folded: false, allIn: false, acted: false,
     })),
   ];
   const table: PokerTable = {
@@ -66,14 +66,15 @@ function commit(player: PokerPlayer, amount: number): void {
   const pay = Math.max(0, Math.min(amount, player.stack));
   player.stack -= pay;
   player.committed += pay;
+  player.streetCommitted += pay;
   if (player.stack === 0) player.allIn = true;
 }
 
 function applyAction(table: PokerTable, index: number, action: PokerAction): PokerTable {
   const players = table.players.map((player) => ({ ...player }));
   const me = players[index]!;
-  const call = Math.max(0, table.bet - me.committed);
-  const cap = me.committed + me.stack;
+  const call = Math.max(0, table.bet - me.streetCommitted);
+  const cap = me.streetCommitted + me.stack;
   // CHECK ohne Stehen geht als Call; eine Erhoehung wird begrenzt und kann leer laufen.
   const callTarget = Math.min(table.bet, cap);
   const target = action === 'CHECK' && call > 0
@@ -84,16 +85,16 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
         ? (table.raises < MAX_RAISES
           ? Math.max(Math.min(table.bet + table.unit, cap), callTarget)
           : callTarget)
-        : me.committed;
+        : me.streetCommitted;
   if (action === 'FOLD') me.folded = true;
   else if (action === 'CHECK' && call === 0) me.acted = true;
   else {
-    commit(me, Math.max(0, target - me.committed));
+    commit(me, Math.max(0, target - me.streetCommitted));
     me.acted = true;
   }
   let bet = table.bet;
   let raises = table.raises;
-  if (!me.folded && me.committed > bet) {
+  if (!me.folded && me.streetCommitted > bet) {
     bet = me.committed;
     raises += 1;
     // Eine Erhoehung oeffnet die Runde fuer alle anderen neu.
@@ -106,7 +107,7 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
 }
 
 function needsAction(table: PokerTable): boolean {
-  return table.players.some((player) => !player.folded && !player.allIn && (!player.acted || player.committed < table.bet));
+  return table.players.some((player) => !player.folded && !player.allIn && (!player.acted || player.streetCommitted < table.bet));
 }
 
 function nextActor(table: PokerTable, from: number): number {
@@ -114,7 +115,7 @@ function nextActor(table: PokerTable, from: number): number {
   for (let step = 1; step <= count; step += 1) {
     const index = (from + step + count) % count;
     const player = table.players[index]!;
-    if (!player.folded && !player.allIn && (!player.acted || player.committed < table.bet)) return index;
+    if (!player.folded && !player.allIn && (!player.acted || player.streetCommitted < table.bet)) return index;
   }
   return -1;
 }
@@ -135,7 +136,7 @@ function dealStreet(table: PokerTable): PokerTable {
   let board = table.board;
   for (let index = 0; index < DEAL[table.street]; index += 1) board = [...board, table.shoe.draw()];
   const street = NEXT[table.street];
-  const players = table.players.map((player) => ({ ...player, acted: false }));
+  const players = table.players.map((player) => ({ ...player, acted: false, streetCommitted: 0 }));
   const base: PokerTable = { ...table, board, players, street, bet: 0, raises: 0, toAct: -1 };
   if (street === 'SHOWDOWN') return settleShowdown(base);
   if (!players.some((player) => !player.folded && !player.allIn)) return dealStreet(base);

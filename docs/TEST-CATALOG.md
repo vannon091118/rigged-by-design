@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `npm run test:affected` an GitHub Actions (`npm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 85 Dateien — contract 50 · integration 15 · governance 9 · statistics 6 · performance 5.
+Summe: 86 Dateien — contract 50 · integration 16 · governance 9 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -86,6 +86,7 @@ Summe: 85 Dateien — contract 50 · integration 15 · governance 9 · statistic
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, CI | `src/render/floor-math.ts` |
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
+| `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/prng-persistence.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-device.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-migration.test.ts` | store | integration | ja | `src/store/save.ts` |

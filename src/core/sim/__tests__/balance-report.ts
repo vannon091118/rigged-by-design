@@ -67,7 +67,7 @@ export function balanceReport(rows: readonly DayRow[], seed: number): string {
   const rule = '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |';
   const body = rows.map((row) => `| ${row.day} | ${row.tier} | ${f(row.arrivals)} | ${row.active} | `
     + `${f(row.waitDesk, 0)} | ${f(row.waitDevice, 0)} | ${f(row.rounds)} | `
-    + `${row.abWait + row.abBroke + row.abAngry + row.neverPlayed} | `
+    + `${row.totalDepartures} | `
     + `${f(row.economy.operatingProfit)} | ${row.capital} |`);
   const phases = PHASES.map((tier) => {
     const phase = rows.filter((row) => row.tier === tier);

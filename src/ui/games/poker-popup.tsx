@@ -24,8 +24,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
 }
 
 const STREET_LABEL: Readonly<Record<PokerTable['street'], string>> = {
@@ -56,7 +56,7 @@ export function PokerPopup(props: Props) {
 
   const deal = (): void => {
     if (running || !canPay) return;
-    const dealResult = props.onDeal(bet, 10_000); // Poker: 100% basis, edge handled by settle
+    const dealResult = props.onDeal(bet);
     if (!dealResult) return;
     rng.current = new Prng(dealResult.seed);
     setResult(null);

@@ -20,7 +20,7 @@ import type { PokerPlayer, PokerTable } from '../poker-types';
 const card = (rank: string, suit: Card['suit']): Card => ({ rank, suit });
 
 const player = (id: string, committed: number, hole: readonly Card[], folded = false): PokerPlayer => ({
-  id, human: id === 'DU', hole, stack: 0, committed, folded, allIn: false, acted: true,
+  id, human: id === 'DU', hole, stack: 0, committed, streetCommitted: committed, folded, allIn: false, acted: true,
 });
 
 describe('Poker-Tisch', () => {
@@ -81,8 +81,8 @@ describe('Poker-Tisch', () => {
   it('bucht beim Mitgehen den offenen Einsatz und gibt die Strasse frei', () => {
     const table: PokerTable = {
       players: [
-        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 900, committed: 100, folded: false, allIn: false, acted: false },
-        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 300, folded: false, allIn: true, acted: true },
+        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 900, committed: 100, streetCommitted: 100, folded: false, allIn: false, acted: false },
+        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 300, streetCommitted: 300, folded: false, allIn: true, acted: true },
       ],
       board: [], shoe: createShoe(new Prng(randomSeed())),
       pot: 400, stake: 1000, unit: 250, street: 'PREFLOP', toAct: 0, bet: 300, raises: 1, result: null,
@@ -92,6 +92,22 @@ describe('Poker-Tisch', () => {
     expect(after.players[0]?.stack).toBe(700);
     expect(after.street).toBe('FLOP');
     expect(after.players[0]?.acted).toBe(false);
+  });
+
+  it('oeffnet nach einem Check auf einer spaeteren Strasse keine neue Setzrunde', () => {
+    const table: PokerTable = {
+      players: [
+        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 800, committed: 100, streetCommitted: 50, folded: false, allIn: false, acted: false },
+        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 100, streetCommitted: 50, folded: false, allIn: true, acted: true },
+      ],
+      board: [card('2', '♠'), card('3', '♥'), card('4', '♦'), card('5', '♣'), card('6', '♠')],
+      shoe: createShoe(new Prng(randomSeed())),
+      pot: 200, stake: 1_000, unit: 50, street: 'RIVER', toAct: 0, bet: 50, raises: 0, result: null,
+    };
+    const after = humanAct(table, 'CHECK', new Prng(randomSeed()));
+    expect(after.result).not.toBeNull();
+    expect(after.toAct).toBe(-1);
+    expect(after.pot).toBe(200);
   });
 
   it('gibt nach einem Fold nur das ungespielte Ruestgeld zurueck', () => {
