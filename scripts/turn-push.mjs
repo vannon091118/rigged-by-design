@@ -3,6 +3,7 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
+import { IDENTITY } from './lib/identity.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
@@ -125,7 +126,9 @@ if (titel && titel === git(['log', '-1', '--pretty=%s'])) {
   process.exit(1);
 }
 
-git(['commit', '-F', messageFile]);
+// Identitaet fest verdrahtet: Committer bleibt der Eigentuemer, egal welcher
+// Runner, welche Sandbox oder welches lokale `git config` gerade aktiv ist.
+git(['-c', `user.name=${IDENTITY.name}`, '-c', `user.email=${IDENTITY.email}`, 'commit', '-F', messageFile]);
 // Verbraucht: sonst traegt die naechste Runde denselben Text wieder ein.
 if (existsSync(notesPath)) {
   rmSync(notesPath, { force: true });

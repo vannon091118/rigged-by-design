@@ -114,6 +114,8 @@ export function verifyDocs() {
   }
   for (const entry of readdirSync(ROOT, { withFileTypes: true })) {
     if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    // Dotfiles (.turn-notes.md und Verwandte) sind Arbeitsdateien des Turns, keine Wurzel-Doku.
+    if (entry.name.startsWith('.')) continue;
     if (ROOT_DOCS.has(entry.name)) continue;
     problems.push(`${entry.name}: Markdown gehoert nicht in die Wurzel (nur README.md und AGENTS.md).`);
   }

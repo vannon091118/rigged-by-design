@@ -6,7 +6,7 @@
  * Upstream-Zustand wird deshalb nur noch angezeigt, nicht mehr verlangt:
  * gemergt heisst weg.
  */
-export const PROTECTED = Object.freeze(['main']);
+export const PROTECTED = Object.freeze(['main', 'integration']);
 
 /**
  * Liest `git for-each-ref --format='%(refname:short)%09%(upstream:track)'`.

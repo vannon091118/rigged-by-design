@@ -25,12 +25,13 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote-Arbeit nachziehen und lokal neu aufsetzen; bleibt der Push bei aktuellem Remote abgelehnt, Rechte und Branch-Schutz pruefen. |
 | ERR-4011 | Lint | ESLint-Verstoss, der nicht automatisch behebbar ist. | Regelverstoss an der Ursache beheben. |
 | ERR-4012 | LOC-Guard | Datei ueberschreitet ihr LOC-Cap oder nutzt eine verbotene Ausnahme. | Verantwortung splitten und unter die Hot Zone ihrer Zustaendigkeit reduzieren; keine neuen Exceptions. |
-| ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. || ERR-4014 | Pipeline | Ein Gate ueberschreitet sein hartes Zeitlimit und wird samt Prozessbaum beendet. | Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben. |
+| ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `npm run sync:deps` ausfuehren und Begruendungen pruefen. |
+| ERR-4014 | Pipeline | Ein Gate ueberschreitet sein hartes Zeitlimit und wird samt Prozessbaum beendet. | Ursache im Gate suchen; das Limit nur bewusst und begruendet anheben. |
 | ERR-4015 | Testkatalog | Testkatalog ist nicht synchron zu den Testdateien. | `npm run catalog` ausfuehren und die Einordnung im Diff pruefen. |
 | ERR-4016 | CI-Delegation | Ein langer Nachweis konnte nicht in GitHub Actions laufen oder ist dort rot. | Lauf und Log im Browser pruefen; Ursache im Gate beheben, nicht lokal nachbauen. |
 | ERR-4017 | Docs | Pflichtdokument, Marker oder Pflichtabschnitt fehlt. | `npm run docs:sync`; Struktur in `scripts/lib/doc-sync.mjs` ergaenzen. |
 | ERR-4018 | Governance | Repo-Hooks liessen sich nicht aktivieren. | `git config core.hooksPath .githooks` pruefen. |
-| ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 | ERR-4019 | Governance / Tree | Datei liegt im falschen Ordner oder eine Schicht importiert nach aussen. | Datei verschieben; Import nach innen ziehen; Regel in `scripts/verify-tree.mjs` pruefen. |
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `npm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
+| ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |

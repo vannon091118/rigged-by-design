@@ -1,0 +1,53 @@
+name: Promote
+
+# Ein Lauf pro CI-Ergebnis: gruen legt den PR an und mergt ihn, rot legt den
+# Stand auf die permanente Integrationsbranch, damit dort repariert wird.
+# Die Wahrheit liegt im Branch und in Labels, nicht in der Warteschlange:
+# GitHub haelt pro Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder
+# Lauf den gesamten Rueckstand ab und ist idempotent.
+on:
+  workflow_run:
+    workflows: ["CI Verify"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: promote
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Gruen mergen, rot integrieren
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout (volle Historie)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+          token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Identitaet auf den Eigentuemer setzen
+        run: |
+          git config user.name "Vannon"
+          git config user.email "Schneider.felix1993@gmail.com"
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Promote
+        env:
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+          PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}
+          EVENT: ${{ github.event.workflow_run.event || 'workflow_dispatch' }}
+        run: node scripts/promote.mjs

@@ -10,6 +10,38 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Review-Nachlauf: fatale Luecken der Promotion geschlossen
+
+**Ziel.** Die Review fand zwei Luecken, die die Kette stillschweigend wirkungslos machen: ein Merge mit `GITHUB_TOKEN` startet keinen Workflow (kein CI auf `main`, kein Tag, kein APK), und `pr-cleanup` loescht die permanente Branch `integration`. Beides behoben, dazu die Wettlauf-Raender.
+
+**Umsetzung.** `promote.mjs` waehlt `PROMOTE_TOKEN` als Merge-Token und stoesst ohne dieses Token `Auto Version & Release` an, das vor dem Tag `verify-commit-msg --head` ausfuehrt. `integration` ist in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt. `cancelled` ist kein Urteil, nur Push-Laeufe promoten, `gh pr update-branch` verhindert den Strict-Policy-Deadlock, der Integrations-Push wird begrenzt geschleift statt rekursiert. `verify-commit-msg --pr` weist einen leeren Body ab. Zusaetzlich kippte `narrative-start-pool` an einer Namenspruefung: `Rita Kern` ist eine moegliche Zufallskombination aus `NAMES` x `LAST_NAMES` in `src/core/sim/traits.ts`, die Zusicherung prueft jetzt das Profil (eine Visite, kein `START_POOL`-Fact) statt des Namens.
+
+Dazu der Aufraeum-Umzug: die Werkzeug-Configs liegen jetzt in `src/Config/`, die Wurzel traegt keine Kopien mehr. `tsconfig.json` bekam `../src` als Include, `vite.config.ts` importiert den Harness ueber `../core/...`, und jeder Aufrufer bindet seinen Pfad explizit — sonst findet `vite`, `vitest`, `tsc`, `eslint`, die Dependency-Matrix, der Dead-Code-Gate oder der Gate-Cache die Datei nicht mehr. Capacitor sucht seine Konfiguration ausschliesslich im Arbeitsverzeichnis; `prepare-android` kopiert sie kurzzeitig in die Wurzel und entfernt sie nach dem Gradle-Lauf. `.mailmap` bleibt in der Wurzel, weil Git nur dort liest.
+
+**Pruefungen.** `node --check` fuer beide Skripte; jede Ersetzung genau einmal angewandt (Skript bricht bei 0 oder 2 Treffern ab); `verify:quick` mit allen zehn Gates im Turn-Abschluss. Ein echter Merge in CI bleibt der offene Nachweis.
+
+**Offen.** `PROMOTE_TOKEN` ist nicht gesetzt, der Anstoss-Pfad ist der aktive. Ob GitHub den Squash-Commit mit eigenem Token als Push wertet, zeigt der erste Lauf. Befund 3, 6 und 7 unveraendert.
+
+## 2026-11-01 - Auto-Promotion: gruene Checks mergen, rote Staende auf die Integrationsbranch
+
+**Ziel.** Der Weg von "Branch gepusht" bis "auf main" soll ohne Handgriff laufen: PR anlegen, Checks abwarten, bei Gruen mergen, bei Rot den Stand auf eine dauerhafte Integrationsbranch legen, damit dort repariert wird. Der Committer soll dabei immer der Eigentuemer sein, unabhaengig von Runner oder Sandbox.
+
+**Umsetzung.** `scripts/promote.mjs` reagiert auf genau ein CI-Ergebnis. Gruen: PR suchen, sonst mit Titel und Pflichtsektionen anlegen, dann mit `--squash --subject --body-file` mergen — der Commit-Text traegt die drei Sektionen, weil `verify-commit-msg --head` sonst auf `main` rot wuerde. Rot: Label `integration/rot` setzen, alle so markierten offenen Branches einsammeln, `integration` aus `origin/main` aufsetzen (oder fortschreiben), jeden Stand per `git merge --no-ff` komponieren und pushen. Die Concurrency-Gruppe `promote` laesst genau einen Schreiber zu; ein abgelehnter Push wird mit `fetch` und `reset --hard` neu aufgesetzt und erneut gemergt, was idempotent ist. Identitaet: `scripts/lib/identity.mjs` als einzige Quelle, in `turn-push.mjs` fest an den Commit gebunden, im Workflow per `git config` gesetzt, dazu `.mailmap` fuer die Anzeige der History.
+
+**Pruefungen.** `node --check scripts/promote.mjs` gruen; die beiden Patch-Ersetzungen in `promote.mjs` und `turn-push.mjs` je genau einmal angewandt (Skript bricht bei 0 oder 2 Treffern ab). `verify:quick` mit allen zehn Gates im Turn-Abschluss. Der erste `turn:finish`-Lauf war an `gate-runner.test.ts` rot (erwartete FAIL, bekam TIMEOUT bei paralleler Gate-Last); isoliert 4/4 gruen, danach der volle Lauf gruen — Lastkonkurrenz, kein Defekt am Stand; der Artefakt-Test der Gate-Auswertung laeuft jetzt mit 60 s Limit (30 s fuer die schnelle Probe), weil unter paralleler Gate-Last schon der Node-Start mehrere Sekunden braucht. Die Zusicherungen blieben unveraendert.
+
+**Offen.** Der Promote-Workflow laeuft zum ersten Mal in CI; ein echter Merge und eine echte Integration sind damit noch nicht belegt. Der Verified-Badge haengt an GitHub-seitigen Merges: entweder `RBD_PROMOTE_AUTO_MERGE=1` mit der Repo-Vorgabe "PR-Titel und -Beschreibung" fuer Squash, oder ein Signaturschluessel. Befund 3, 6 und 7 stehen unveraendert.
+
+## 2026-11-01 - Doku-Konsolidierung: Sortierung, Namensgleichheit und Repo-Hygiene
+
+**Ziel.** Eine Doku, die man lesen kann, ohne zu raten: gleiche Namen, ein Ort pro Thema, keine Aussage, die einer anderen widerspricht. Dazu der lokale Repo-Zustand: Hooks aktiv, nichts Unsortiertes in der Wurzel.
+
+**Umsetzung.** 16 Doku-Dateien liegen flach unter `docs/` und tragen Grossbuchstaben-Namen; `EVENT-NARRATIVE-ENGINE-TASKPLAN.md` und `CASINO-PIXEL-ASSET-PACK.md` ersetzen die beiden kebab-case-Ausreisser, `docs/assets/` entfaellt, `docs/ASSETS.md` verweist auf den neuen Pfad. Widersprueche korrigiert: Save v9 statt v8 in ARCHITECTURE und Inventar §8; "Narrative Engine ist noch nicht gebaut" ersetzt durch Stufe 1 gebaut / NAR-04+ nach Taskplan; Gate-Zaehlung und Gate-Reihenfolge in ARCHITECTURE, PRODUCT und AGENTS auf `scripts/lib/pipeline-plan.mjs` gezogen; Inventar-Kopf auf `main`/`c4e6e3b`/983 Dateien; §2, §3, §9–§13 auf Ist-Zahlen; Befund 5 und 42 als aufgeloest markiert, §17 auf umgesetzt. `docs/ERROR_CATALOG.md`: verschmolzene ERR-4013/ERR-4014-Zeile getrennt, Codes aufsteigend sortiert. Screenshot-README nennt wieder den echten Bestand. Repo-Hygiene: `npm run hooks:install` gesetzt (2 Hooks), Wurzel enthaelt nur `README.md` und `AGENTS.md` als Markdown. Beim Abschluss fiel der letzte Widerspruch auf: das Doku-Gate zaehlte `.turn-notes.md` als Wurzel-Doku und machte `turn:finish` rot, obwohl genau dieses Werkzeug die Datei anlegt; der Scan ueberspringt Dotfiles jetzt.
+
+**Pruefungen.** `npm run inventory:build` regeneriert §18 (983 Dateien, 67 Ordner); `verify:docs`, `verify:tree`, `verify:redundancy` und `check:loc` gruen; danach `npm run verify:quick` mit allen zehn Gates gruen und Exit 0. Pre-Commit-Hook schreibt Matrix, Katalog und Marker, `turn:finish` bumpt auf 0.3.65, committet und pusht.
+
+**Offen.** Befund 3 (ERR-4016 fuer das Asset-Gate), 6 (`opencode.json` mit Windows-Pfad) und 7 (Audit-Drift 373/323) bleiben stehen; `verify:all` mit Build und Audit laeuft in CI. `W3Champions/logs` ist fremde lokale Logware, bleibt gitignoriert und unangetastet.
+
 ## 2026-11-01 - Narrative Engine Stufe 1: Facts, Gedaechtnis, Start-Pool (NAR-00 bis NAR-03)
 
 **Ziel.** Den Taskplan nicht nur beschreiben, sondern den ersten tragenden Schnitt
@@ -378,7 +410,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:56 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

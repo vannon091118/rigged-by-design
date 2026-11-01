@@ -40,6 +40,10 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
   legt den PR an oder aktualisiert ihn. Ohne `gh` bleibt der Lauf gruen und der
   Body liegt in `.git/rbd-pr-body.md`.
 - **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `npm run fix`.
+- **Promotion** (`promote.yml`) ist die Stufe danach: gruen mergt automatisch,
+  rot landet auf der permanenten Branch `integration` und wird dort repariert.
+  Ein Textkonflikt wird gelabelt (`integration/konflikt`), nicht erzwungen; die
+  Leiter bleibt damit auch beim Merge dieselbe.
 
 ## Connector als Eskalationsweg
 

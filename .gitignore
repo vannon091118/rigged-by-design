@@ -14,3 +14,8 @@ docs/Chats/
 tsconfig.tsbuildinfo
 .shot-data/
 .git/TURN_COMMIT_MSG
+
+# Werkzeug-Configs liegen in src/Config; die Wurzel bekommt nur Laufzeit-Kopien.
+capacitor.config.json
+src/Config/*.tsbuildinfo
+.freebuff/

@@ -47,11 +47,11 @@ const packages = {
 const candidates = walk(resolve(ROOT, 'src'), (file) => /\.(ts|tsx)$/.test(file));
 const scriptRoot = resolve(ROOT, 'scripts');
 if (existsSync(scriptRoot)) candidates.push(...walk(scriptRoot, (file) => /\.(mjs|js)$/.test(file)));
-for (const file of ['vite.config.ts', 'eslint.config.mjs']) {
+for (const file of ['src/Config/vite.config.ts', 'src/Config/eslint.config.mjs']) {
   const full = resolve(ROOT, file);
   if (existsSync(full)) candidates.push(full);
 }
-const configs = ['package.json', 'tsconfig.json'].map((file) => resolve(ROOT, file)).filter(existsSync);
+const configs = ['package.json', 'src/Config/tsconfig.json'].map((file) => resolve(ROOT, file)).filter(existsSync);
 
 const usage = new Map(Object.keys(packages).map((pkg) => [pkg, new Set()]));
 // Paketimporte kommen aus dem Modulgraphen; Konfigurationen nur aus ihren eigenen Regeln.
@@ -84,7 +84,7 @@ for (const pkg of Object.keys(packages)) {
   const hit = [...buildScripts].find(([, text]) => text.includes(pkg));
   if (hit) usage.get(pkg).add(relative(ROOT, hit[0]).replaceAll('\\', '/'));
 }
-if (usage.has('typescript') && existsSync(resolve(ROOT, 'tsconfig.json'))) usage.get('typescript').add('tsconfig.json');
+if (usage.has('typescript') && existsSync(resolve(ROOT, 'src/Config/tsconfig.json'))) usage.get('typescript').add('src/Config/tsconfig.json');
 
 let broken = 0;
 for (const [pkg, version] of Object.entries(packages)) {

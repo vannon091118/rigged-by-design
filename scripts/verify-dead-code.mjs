@@ -15,7 +15,7 @@ const SRC = resolve(ROOT, 'src');
 const entry = norm(resolve(SRC, 'main.tsx'));
 const sources = [
   ...walk(SRC, (file) => /\.(ts|tsx)$/.test(file) && !file.endsWith('.d.ts')).map(norm),
-  ...['vite.config.ts', 'eslint.config.mjs'].map((file) => resolve(ROOT, file)).filter(existsSync).map(norm),
+  ...['src/Config/vite.config.ts', 'src/Config/eslint.config.mjs'].map((file) => resolve(ROOT, file)).filter(existsSync).map(norm),
 ];
 const consumers = [...sources, ...walk(resolve(ROOT, 'scripts'), (file) => /\.(m|c)?[jt]sx?$/.test(file)).map(norm)];
 

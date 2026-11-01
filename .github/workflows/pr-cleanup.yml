@@ -17,6 +17,8 @@ jobs:
     if: >-
       github.event.pull_request.merged == true &&
       github.event.pull_request.head.ref != 'main' &&
+      github.event.pull_request.head.ref != 'integration' &&
+      !startsWith(github.event.pull_request.head.ref, 'integration/') &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       !contains(github.event.pull_request.labels.*.name, 'keep-branch')
     runs-on: ubuntu-latest

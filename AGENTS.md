@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:56 UTC -->
+<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -17,6 +17,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Dev environment
 
 - Node 22, npm. `npm ci` then `npm run dev` (http://localhost:3000).
+- Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die npm-Skripte binden sie explizit (`--config`, `-p`), `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v9 (world + journal + look + narrative); v5–v8 migrate (keep Fiat, open payouts, journal, look, visitor memories), v3/v4 discarded.
 
 ## Build & test
@@ -26,8 +27,8 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
-- `npm run verify:all` — fail-closed pipeline, **rein lesend** (Lint, LOC, typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate, audit, vitest, build). Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab; die Konsole zeigt eine Zeile je Gate und im Fehlerfall dessen Ende (`RBD_VERIFY_VERBOSE=1` gibt alles aus). Kein Gate schreibt Dateien; ein veralteter Baum wird rot, statt sich selbst zu reparieren. Die unabhängigen Gates laufen parallel, grüne Gates werden per Inhalts-Hash aus `.verify-cache/` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Jedes Gate hat ein hartes Zeitlimit (`ERR-4014`); nach Ablauf wird der Prozessbaum beendet. Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster, und nur wenn PID **und** Startzeit noch zum Registry-Eintrag passen.
-- `npm run verify` / `npm run verify:quick` — identisch und rein lesend: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate und die schnelle Hälfte der Suite. **Kein Build, kein Audit und keine RTP-, Balance- und Soak-Nachweise** — deshalb nie als Ersatz vor einem Commit.
+- `npm run verify:all` — fail-closed pipeline, **rein lesend** (Lint, LOC, typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate, Asset-Manifest, vitest, audit, build — zwölf Gates). Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab; die Konsole zeigt eine Zeile je Gate und im Fehlerfall dessen Ende (`RBD_VERIFY_VERBOSE=1` gibt alles aus). Kein Gate schreibt Dateien; ein veralteter Baum wird rot, statt sich selbst zu reparieren. Die unabhängigen Gates laufen parallel, grüne Gates werden per Inhalts-Hash aus `.verify-cache/` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Jedes Gate hat ein hartes Zeitlimit (`ERR-4014`); nach Ablauf wird der Prozessbaum beendet. Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster, und nur wenn PID **und** Startzeit noch zum Registry-Eintrag passen.
+- `npm run verify` / `npm run verify:quick` — identisch und rein lesend: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate, Asset-Manifest und die schnelle Hälfte der Suite. **Kein Build, kein Audit und keine RTP-, Balance- und Soak-Nachweise** — deshalb nie als Ersatz vor einem Commit.
 - `npm run catalog` — schreibt `docs/TEST-CATALOG.md` (System aus `@test-target`, Beweisklasse aus der Rolle der Datei). Kein Gate mehr: der Pre-Commit-Hook ruft es auf. `--check` bleibt für manuelle Läufe (`ERR-4015`).
 - `npm run docs:sync` — setzt Version und UTC-Zeitstempel als `rbd-doc`-Marker in die sechs Pflichtdokumente; `--staged` stagt sie. `npm run verify:docs` ist das Doku-Gate (Marker, Pflichtabschnitte, flacher Wurzelbaum, Inventar-Abdeckung gegen `git ls-files`, `ERR-4017`).
 - `npm run docs:stub -- "Titel"` — legt Changelog-Zeile, Devtagebuch-Eintrag und Inventar-Logzeile mit Datum, Version und Uhrzeit an (`ERR-4021`); Inhalte bleiben Platzhalter für den Agenten.
@@ -53,6 +54,8 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `npm run turn:finish -- --affected` fährt zuerst `test:affected` (Ziel, transitiver Importgraph, Subsystem, nur schnelle Beweisklassen) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor. Die Auswahl läuft vor dem Versions-Bump, damit `package.json` sie nicht auf alle Tests ausweitet.
 - If branch protection rejects direct push, push the working branch and open a focused PR to `main`. The merge commit is checked by `verify-commit-msg --head`: use the exact section headings (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII variants fail. Reusing the PR body as the merge message satisfies this. Beim Merge ueber Connector oder REST-API gehoert der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
+- **Automatische Promotion:** `promote.yml` legt den PR an und mergt ihn, sobald `CI Verify` gruen ist; ein roter Lauf legt den Stand auf die permanente Branch `integration` (Label `integration/rot`), damit dort repariert wird. Zwei parallele rote Staende werden gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
+- **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
 ## Pflichtdoku
 
@@ -70,7 +73,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - Der Marker wird **nicht von Hand** gepflegt: `npm run docs:sync`, der Pre-Commit-Hook oder `npm run fix` schreiben ihn.
 - Einträge entstehen mit `npm run docs:stub -- "Titel"`; der Agent füllt danach Ziel, Umsetzung, Prüfungen und Offenes. Kein Eintrag ohne Datum, keiner nachträglich ohne Änderung.
 - Strukturvorgaben stehen in `scripts/lib/doc-sync.mjs` (Pflichtabschnitte je Dokument); das Gate prüft sie, es repariert sie nicht.
-- Markdown gehört nur als `README.md` oder `AGENTS.md` in die Wurzel; alles andere lebt unter `docs/`. Keine Doppelungen zwischen Wurzel und `docs/`.
+- Markdown gehört nur als `README.md` oder `AGENTS.md` in die Wurzel; alles andere lebt unter `docs/`. Keine Doppelungen zwischen Wurzel und `docs/`. Dotfiles wie `.turn-notes.md` sind Arbeitsdateien des Turns und zählen nicht als Wurzel-Doku.
 - Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`) werden vom Hook geschrieben, nicht gegated und nie von Hand editiert.
 - Eskalationsregeln und die eine Leiter stehen in `docs/ESCALATION.md`; keine zweite Klassifikation anlegen.
 

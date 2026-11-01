@@ -10,7 +10,7 @@ Umsetzungsreihenfolge in Abschnitt 7.
 
 Gemessen wurde lokal (Windows, Node 26.12.1, 373 installierte Pakete):
 
-- Imports über den TypeScript-AST aus `src/`, `scripts/`, `vite.config.ts`, `eslint.config.mjs`; keine Suche nach Namensgleichheit in Strings.
+- Imports über den TypeScript-AST aus `src/`, `scripts/`, `src/Config/vite.config.ts`, `src/Config/eslint.config.mjs`; keine Suche nach Namensgleichheit in Strings.
 - Bundlegröße aus einem frischen `npm run build` (17,7 s), Größen roh und gzip Level 9.
 - Lint-Zeit mit `eslint . --no-cache` gegen die echte Config und gegen eine Kopie ohne `projectService`.
 - Installationsgröße je Paket rekursiv aus `node_modules`.
@@ -50,15 +50,15 @@ Lizenzrisiko für die Distribution der Web-App oder der APK.
 | `vite` | 6.4.5 | Build/Dev-Server | Konfiguration + `npm run dev`/`build` |
 | `vitest` | 5.0.5 | Test | 87 Testdateien importieren `vitest` |
 | `typescript` | 5.9.3 | Typen/Build | `tsc --noEmit`, `scripts/lib/ts-ast.mjs` |
-| `eslint` | 10.13.0 | Lint | `eslint.config.mjs`, `npm run lint` |
-| `typescript-eslint` | 8.72.1 | Lint (TS-Parser) | `eslint.config.mjs` |
-| `@eslint/js` | 10.0.1 | Lint (Basisregeln) | `eslint.config.mjs` |
-| `globals` | 16.5.0 | Lint (Globals) | `eslint.config.mjs` |
-| `@vitejs/plugin-react` | 4.7.0 | Build (Fast Refresh/JSX) | `vite.config.ts` |
+| `eslint` | 10.13.0 | Lint | `src/Config/eslint.config.mjs`, `npm run lint` |
+| `typescript-eslint` | 8.72.1 | Lint (TS-Parser) | `src/Config/eslint.config.mjs` |
+| `@eslint/js` | 10.0.1 | Lint (Basisregeln) | `src/Config/eslint.config.mjs` |
+| `globals` | 16.5.0 | Lint (Globals) | `src/Config/eslint.config.mjs` |
+| `@vitejs/plugin-react` | 4.7.0 | Build (Fast Refresh/JSX) | `src/Config/vite.config.ts` |
 | `jsdom` | 30.1.3 | Test-DOM | `@vitest-environment jsdom` in `src/ui/__tests__/ui.test.tsx` und `card-tables.test.tsx` |
 | `@testing-library/react` | 16.3.3 | Test-UI | dieselben zwei UI-Tests |
 | `yaml` | 2.9.1 | Test (Workflow-Struktur) | `src/core/governance/__tests__/ci-gates.test.ts` |
-| `@types/node` | 26.6.6 | Typen | `tsconfig.json` (`types`), Node-Builtins in `scripts/` |
+| `@types/node` | 26.6.6 | Typen | `src/Config/tsconfig.json` (`types`), Node-Builtins in `scripts/` |
 | `@types/react`, `@types/react-dom` | 19.x | Typen | implizit über React-Imports |
 | `@capacitor/cli` | 8.6.0 | Android-Build | `scripts/prepare-android.mjs` (`npx cap add/sync`) |
 | `@capacitor/android` | 8.6.0 | Android-Plattform | `cap add android`, Gradle |
@@ -109,7 +109,7 @@ ist: der Advisory-Bereich endet bei den gepatchten Majors.
 
 ### 2.2 Praktisch ausnutzbar: Dev-Server auf `0.0.0.0`
 
-`vite.config.ts` setzt `server.host: '0.0.0.0'`. Alle `server.fs`-Bypässe setzen
+`src/Config/vite.config.ts` setzt `server.host: '0.0.0.0'`. Alle `server.fs`-Bypässe setzen
 einen erreichbaren Dev-Server voraus. Auf einem Laptop im selben WLAN ist damit
 `.env`, `/proc/*/environ` oder jeder Pfad außerhalb `server.fs.allow` lesbar — genau
 die Dateien, die die Advisories beschreiben. Die Bindung ist für Cloud-Previews
@@ -285,7 +285,7 @@ die sie nicht ersetzen kann.
 | --- | --- | --- |
 | Welle 0.1 eslint 10.14.0 | umgesetzt | `npm run lint` grün |
 | Welle 0.2 engines/packageManager | umgesetzt | `engines.node >=22.22.2`, `packageManager npm@12.2.1` |
-| Welle 0.3 Dev-Server nur localhost | umgesetzt | `vite.config.ts`: `host: RBD_DEV_HOST || 'localhost'` |
+| Welle 0.3 Dev-Server nur localhost | umgesetzt | `src/Config/vite.config.ts`: `host: RBD_DEV_HOST || 'localhost'` |
 | Welle 0.4 Android `cap add`/`cap sync` | lokal geprüft, Gradle-Nachweis via CI | `cap sync` mit `glob` 14 über `rimraf` 6 erfolgreich; `@capacitor/core` bleibt, weil `@capacitor/android` 8.6.0 es als Peer verlangt |
 | Welle 0.5 projectService | entfernt | Lint ohne Cache 25,1 s → 18,3 s, grün |
 | Welle 1.7 Vite | umgesetzt in zwei Schritten | Vite 7.3.7 mit plugin-react 5.2.0 geprüft; danach Vite 8.3.5 mit plugin-react 6.1.2; Build grün |
@@ -293,7 +293,7 @@ die sie nicht ersetzen kann.
 | Welle 1.9 manualChunks | nicht nötig | Projekt hat keine `manualChunks`-Konfiguration |
 | Welle 2 Lockfile | gemessen | 373 → 311 Lockfile-Einträge; Babel/esbuild-Einträge 51 → 3 (nur `@babel/code-frame`, `helper-validator-identifier`, `runtime`); `semver` oberste Ebene entfallen |
 
-Der Vite-8-Build meldet eine Warnung der nativen Config-Ladung zu einem extensionlosen Import (`vite.config.ts` und `src/core/governance/test-harness.ts`). Sie ist nicht blockierend und offen.
+Der Vite-8-Build meldet eine Warnung der nativen Config-Ladung zu einem extensionlosen Import (`src/Config/vite.config.ts` und `src/core/governance/test-harness.ts`). Sie ist nicht blockierend und offen.
 
 ## 8. Offene Punkte
 

@@ -52,6 +52,10 @@ describe('Start-Pool der Narrative-Domaene', () => {
     const guest = spawnGuest(control, new Prng(randomSeed()), new Ledger());
     expect(control.visitors).toHaveLength(1);
     expect(guest!.visitorId).toBe(1);
-    expect(['Rita Kern', 'Boris Falk', 'Mira Sol']).not.toContain(guest!.name);
+    // Namen sind Darstellung und duerfen sich mit dem Start-Pool decken: "Rita
+    // Kern" ist eine moegliche Zufallskombination aus NAMES x LAST_NAMES. Die
+    // Zusicherung ist das neue Profil, nicht der Name.
+    expect(control.visitors[0].visits).toBe(1);
+    expect(control.narrative.pending.filter((fact) => fact.kind === 'START_POOL')).toHaveLength(0);
   });
 });

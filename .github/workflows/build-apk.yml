@@ -45,7 +45,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'eslint.config.js') }}
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('package-lock.json', 'src/Config/eslint.config.mjs') }}
           restore-keys: |
             ${{ runner.os }}-rbd-verify-
 
