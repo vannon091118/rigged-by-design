@@ -1,0 +1,14 @@
+#!/bin/sh
+# Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlende Pflichtsektionen
+# werden in CI in den PR-Body gehoben (pr-escalation.yml). Trailer werden
+# weiterhin bereinigt.
+set -e
+if [ ! -d node_modules ]; then exit 0; fi
+node scripts/sanitize-commit.mjs "$1" >/dev/null 2>&1 || true
+if node scripts/verify-commit-msg.mjs "$1" >/tmp/rbd-commit-msg.log 2>&1; then
+  exit 0
+fi
+echo "commit-msg: Pflichtsektionen fehlen - Eskalation statt Fail-Closed."
+grep -E "ERR-4006|ERR-4005" /tmp/rbd-commit-msg.log | head -3 | sed 's/^/  /'
+echo "  Naechster Schritt: CI hebt den Body in den PR-Body (pr-escalation.yml)."
+exit 0

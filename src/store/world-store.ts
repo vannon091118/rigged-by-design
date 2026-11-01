@@ -11,6 +11,7 @@ import type { RpgAttribute } from '../core/sim/player-rpg';
 import { Prng } from '../core/rng/prng';
 import { buildView } from './snapshot';
 import { clearOldSave, loadWorld, SAVE_FAILED_NOTICE, saveWorld } from './save';
+import { exportGameData, planImportData, type TransferReport } from './transfer';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import { tickWorld } from '../core/sim/tick';
 import { settleMoneyJournal } from '../core/sim/journal';
@@ -126,6 +127,22 @@ class WorldStore {
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) this.#emit(false); return result; }
   auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); }
+  exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); }
+  planImport(raw: string): TransferReport { return planImportData(raw).report; }
+  importGame(raw: string): TransferReport {
+    const { report, loaded } = planImportData(raw);
+    if (!loaded) {
+      this.#notice = report.issues[0]?.message ?? 'Import nicht moeglich.';
+      this.#emit(false);
+      return report;
+    }
+    this.#world = loaded.world;
+    this.#ledger = loaded.ledger;
+    this.#prng = new Prng(loaded.prngState);
+    this.#notice = 'Spielstand importiert.';
+    this.#emit();
+    return report;
+  }
   setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }); }
   moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); }
   deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); }

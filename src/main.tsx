@@ -4,7 +4,7 @@ import App from './App';
 import {
   preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadRuntimeArt, preloadSlotSymbols,
 } from './render/assets/textures';
-import './index.css';
+import './styles/index.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root-Element #root fehlt');

@@ -1,5 +1,7 @@
 # Architektur und Governance
 
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:11 UTC -->
+
 ## Zustandsbesitz
 
 - `src/store/world-store.ts` ist der einzige Besitzer von Welt, Ledger, PRNG und Save.
@@ -39,7 +41,7 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | npm-Skript | Inhalt |
 | --- | --- | --- |
-| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Dependency-Matrix, Testkatalog, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `quick` | `verify` / `verify:quick` | Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Alle zehn Stufen inklusive Build und Audit. Unverändert das Tor vor jedem Commit. |
 | `release` | `verify:release` | Wie `full`, erzwingt aber `npm audit` unabhängig von der Änderung. |
 
@@ -62,8 +64,8 @@ Der Cache-Schlüssel jedes Gates enthält sein Profil: ein grüner Schnellauslau
 3. TypeScript (`ERR-1005`)
 4. Testqualität und Determinismus (`ERR-1001`, `ERR-4001`, `ERR-4002`, `ERR-3001`)
 5. Tote Exporte (`ERR-4003`)
-6. Dependency-Matrix im `--check`-Modus (`ERR-4013`)
-7. Testkatalog im `--check`-Modus (`ERR-4015`)
+6. Doku-Gate inklusive Inventar-Abdeckung gegen `git ls-files` (`ERR-4017`)
+7. Tree- und Redundanz-Gate (`ERR-4019`, `ERR-4020`)
 8. `npm audit --audit-level=low` (`ERR-4004`)
 9. Vitest mit indizierten Testfällen
 10. Production-Build (`ERR-1005`)
@@ -94,8 +96,8 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 37: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/check-loc.mjs`<br>… (+31) |
-| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 35: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+29) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 46: `scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>`scripts/build-inventory.mjs`<br>… (+40) |
+| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 1: `src/main.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `vite.config.ts` |
 | eslint | ^10.14.0 | Lint | Fail-Closed-Lint-Gate mit TypeScript-Parser und ungenutzten Symbolen. | 2: `eslint.config.mjs`<br>`package.json` |
@@ -103,7 +105,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `eslint.config.mjs` |
 | jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 5: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
 | pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 42: `src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-carpet.ts`<br>`src/render/floor-perf.bench.ts`<br>`src/render/floor-props.ts`<br>… (+36) |
-| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 35: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+29) |
+| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 1: `src/main.tsx` |
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `eslint.config.mjs` |
@@ -111,6 +113,37 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 93: `package.json`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>`src/core/games/__tests__/dice-bets.test.ts`<br>… (+87) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 1: `src/core/governance/__tests__/ci-gates.test.ts` |
 <!-- DEP_MATRIX_END -->
+
+## Import und Export
+
+Der Transfer ist dreistufig und besitzt keine zweite Save-Wahrheit:
+
+| Modul | Verantwortung |
+| --- | --- |
+| `src/core/io/issues.ts` | Befund mit Stufe `FATAL`/`REPAIR`/`IGNORE` und Uebersetzung in die Eskalations-Leiter. |
+| `src/core/io/envelope.ts` | Umschlag (`kind`, `format`, `savedAt`, FNV-1a-Pruefsumme) bauen und pruefen. |
+| `src/core/io/repair.ts` | Nutzlast pruefen, fehlende Pflichtfelder ergaenzen, Blocker melden. |
+| `src/store/transfer.ts` | Export aus `toSavedGame`, Import-Plan ueber `replaySave`; liefert Befund und geladenen Stand. |
+| `src/ui/transfer-panel.tsx` | Oberflaeche im Pruefungs-Popup: exportieren, pruefen, importieren. |
+
+Regeln: `FATAL` blockiert und entspricht `BLOCKED`; `REPAIR` wird automatisch
+angewendet (`AUTO_FIX`); `IGNORE` verfaellt (`LOCAL_GATE`). Der Import fuehrt
+immer zuerst einen Trockenlauf aus; erst ein Stand ohne Blocker ersetzt Welt,
+Ledger und PRNG. Save-Format bleibt v8, Migrationen liegen weiterhin allein in
+`src/store/migrate.ts`.
+
+## Baum- und Redundanz-Gate
+
+Zwei mechanische Gates halten den Baum sauber, ohne Inhalt zu bewerten:
+
+| Gate | Code | Prueft |
+| --- | --- | --- |
+| `verify:tree` | `ERR-4019` | Wurzel-Whitelist, erlaubte Endungen je Ordner, Tests nur in `__tests__`, `src/core` ohne React/Pixi und ohne Importe nach aussen. |
+| `verify:redundancy` | `ERR-4020` | Byte-identische Quelldateien, doppelte npm-Kommandos, doppelt eingetragene Fehlercodes. Alias-Paare sind ausdruecklich erlaubt. |
+
+Regeln stehen als Tabelle in `scripts/verify-tree.mjs`; ein neuer Ordner braucht
+genau einen Eintrag. Doku-Eintraege erzeugt `npm run docs:stub -- "Titel"`
+(`ERR-4021`), damit Changelog, Devtagebuch und Inventar nie ohne Datum bleiben.
 
 ## Delivery-Regel
 

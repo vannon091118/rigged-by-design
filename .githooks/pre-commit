@@ -1,0 +1,20 @@
+#!/bin/sh
+# Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben,
+# weil der Hook den Commit vorbereitet. Fehlt node_modules, wird uebersprungen.
+set -e
+if [ ! -d node_modules ]; then
+  echo "pre-commit: node_modules fehlt - Hook uebersprungen (npm ci)"
+  exit 0
+fi
+node scripts/sync-dependency-matrix.mjs >/dev/null 2>&1 || echo "pre-commit: Matrix nicht aktualisiert (Eskalation AGENT)"
+node scripts/test-catalog.mjs >/dev/null 2>&1 || echo "pre-commit: Katalog nicht aktualisiert (Eskalation AGENT)"
+node scripts/build-inventory.mjs
+node scripts/doc-sync.mjs --staged
+node scripts/verify-docs.mjs
+if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then
+  tail -20 /tmp/rbd-loc.log
+  echo "pre-commit: LOC-Cap verletzt (Eskalation AGENT: Datei splitten)"
+  exit 1
+fi
+git add docs/TEST-CATALOG.md >/dev/null 2>&1 || true
+echo "pre-commit: Doku, Matrix und LOC geprueft"

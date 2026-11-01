@@ -78,11 +78,19 @@ if (deps.status !== 0) {
   process.exitCode = 1;
 }
 
-// Der Testkatalog ist ebenfalls abgeleitet: Fix schreibt ihn, Verify prueft ihn.
+// Der Testkatalog ist ebenfalls abgeleitet: der Pre-Commit-Hook schreibt ihn.
 const catalog = spawnSync(process.execPath, ['scripts/test-catalog.mjs'], { cwd: ROOT, encoding: 'utf8' });
 process.stdout.write(catalog.stdout ?? '');
 if (catalog.status !== 0) {
   process.stderr.write(catalog.stderr ?? '');
+  process.exitCode = 1;
+}
+
+// Pflichtdoku: Version und Zeitstempel werden bei jeder Reparatur mitgezogen.
+const docs = spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, encoding: 'utf8' });
+process.stdout.write(docs.stdout ?? '');
+if (docs.status !== 0) {
+  process.stderr.write(docs.stderr ?? '');
   process.exitCode = 1;
 }
 

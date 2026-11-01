@@ -1,4 +1,6 @@
 # Rigged by Design
+
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:11 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -24,9 +26,17 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `npm run typecheck` — `tsc --noEmit`.
 - `npm run lint` / `lint:fix` — ESLint.
 - `npm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
-- `npm run verify:all` — fail-closed pipeline, **rein lesend** (Lint, LOC, typecheck, Testvertrag, Dead-Export, Dependency-Matrix und Testkatalog je im `--check`-Modus, audit, vitest, build). Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab; die Konsole zeigt eine Zeile je Gate und im Fehlerfall dessen Ende (`RBD_VERIFY_VERBOSE=1` gibt alles aus). Kein Gate schreibt Dateien; ein veralteter Baum wird rot, statt sich selbst zu reparieren. Die unabhängigen Gates laufen parallel, grüne Gates werden per Inhalts-Hash aus `.verify-cache/` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Jedes Gate hat ein hartes Zeitlimit (`ERR-4014`); nach Ablauf wird der Prozessbaum beendet. Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster, und nur wenn PID **und** Startzeit noch zum Registry-Eintrag passen.
-- `npm run verify` / `npm run verify:quick` — identisch und rein lesend: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Dependency-Matrix, Testkatalog und die schnelle Hälfte der Suite. **Kein Build, kein Audit und keine RTP-, Balance- und Soak-Nachweise** — deshalb nie als Ersatz vor einem Commit.
-- `npm run catalog` — schreibt `docs/TEST-CATALOG.md` (System aus `@test-target`, Beweisklasse aus der Rolle der Datei); im Verify-Modus prüft dasselbe Skript mit `--check` und wird bei Abweichung rot (`ERR-4015`).
+- `npm run verify:all` — fail-closed pipeline, **rein lesend** (Lint, LOC, typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate, audit, vitest, build). Jedes Gate legt sein vollständiges Log und eine `summary.md` unter `.verify-cache/reports/<Zeitstempel>/` ab; die Konsole zeigt eine Zeile je Gate und im Fehlerfall dessen Ende (`RBD_VERIFY_VERBOSE=1` gibt alles aus). Kein Gate schreibt Dateien; ein veralteter Baum wird rot, statt sich selbst zu reparieren. Die unabhängigen Gates laufen parallel, grüne Gates werden per Inhalts-Hash aus `.verify-cache/` wiederverwendet (`RBD_VERIFY_NO_CACHE=1` erzwingt alles neu). Jedes Gate hat ein hartes Zeitlimit (`ERR-4014`); nach Ablauf wird der Prozessbaum beendet. Beim Start sterben verwaiste Gate-Prozesse abgebrochener Läufe, SIGINT/SIGTERM nimmt laufende Gates mit; beendet wird ausschließlich PID-genau über `taskkill /T` bzw. die Prozessgruppe, nie über Namensmuster, und nur wenn PID **und** Startzeit noch zum Registry-Eintrag passen.
+- `npm run verify` / `npm run verify:quick` — identisch und rein lesend: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate, Tree-Gate, Redundanz-Gate und die schnelle Hälfte der Suite. **Kein Build, kein Audit und keine RTP-, Balance- und Soak-Nachweise** — deshalb nie als Ersatz vor einem Commit.
+- `npm run catalog` — schreibt `docs/TEST-CATALOG.md` (System aus `@test-target`, Beweisklasse aus der Rolle der Datei). Kein Gate mehr: der Pre-Commit-Hook ruft es auf. `--check` bleibt für manuelle Läufe (`ERR-4015`).
+- `npm run docs:sync` — setzt Version und UTC-Zeitstempel als `rbd-doc`-Marker in die sechs Pflichtdokumente; `--staged` stagt sie. `npm run verify:docs` ist das Doku-Gate (Marker, Pflichtabschnitte, flacher Wurzelbaum, Inventar-Abdeckung gegen `git ls-files`, `ERR-4017`).
+- `npm run docs:stub -- "Titel"` — legt Changelog-Zeile, Devtagebuch-Eintrag und Inventar-Logzeile mit Datum, Version und Uhrzeit an (`ERR-4021`); Inhalte bleiben Platzhalter für den Agenten.
+- `npm run inventory:build` — schreibt Abschnitt 18 in `docs/INVENTORY.md`: eine Zeile je Pfad aus `git ls-files`, ein Eintrag je Ordner, Text gelesen, Binärsignaturen geprüft. Der Pre-Commit-Hook ruft ihn vor dem Marker; `verify:docs` wird rot, sobald eine Datei, ein Ordner oder die Abdeckungszahl fehlt.
+- `npm run verify:tree` — Tree-Gate (`ERR-4019`): Wurzel-Whitelist, erlaubte Endungen je Ordner, Tests nur in `__tests__`, Core ohne Browser-Importe und ohne Importe nach außen.
+- `npm run verify:redundancy` — Redundanz-Gate (`ERR-4020`): byte-identische Quelldateien, doppelte npm-Kommandos, doppelt eingetragene Fehlercodes.
+- `npm run hooks:install` — aktiviert `.githooks` als `core.hooksPath` (`ERR-4018`). Der Pre-Commit-Hook schreibt Matrix, Katalog und Doku-Marker und prüft danach Doku und LOC.
+- `npm run escalation:plan` — nennt zu einem Befund die Eskalationsstufe (`AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`); ohne Argument liest er die letzte Gate-Zusammenfassung.
+- `npm run pr:lift` — hebt den Commit-Body in den PR-Body; CI nutzt dasselbe Skript in `pr-escalation.yml`. Ohne `gh` gibt `node scripts/lift-commit-body.mjs --json` den Connector-Plan aus (`level`, `branch`, `base`, `title`, `bodyFile`, `body`); ein Agent mit GitHub-Connector legt damit den PR an oder aktualisiert den Body. Der Lauf bleibt gruen — Eskalation statt Fail-Closed.
 - `npm run ci:long` — startet `long-checks.yml` in GitHub Actions für Statistik, Soak, Balance und Benchmarks, wartet auf das Ergebnis und lädt den Balance-Bericht als Artefakt. Bevorzugt `gh`, sonst die REST-API mit `GH_TOKEN`; ein roter Lauf meldet `ERR-4016`.
 - `npm run branches:prune` — löscht lokal jeden nach `main` gemergten Branch außer `main` und dem aktuellen; offene, nicht gemergte Arbeit bleibt. `turn:finish` ruft das nach dem Push selbst auf, am Remote erledigt es `pr-cleanup.yml` nach jedem Merge; `--dry-run` zeigt die Kandidaten nur.
 - `npm run fix` — der einzige schreibende Modus: ESLint `--fix`, Dependency-Matrix und Testkatalog, danach dieselben Gates samt Protokoll jeder geänderten und gelöschten Datei. Idempotent: ein zweiter Lauf meldet „keine Änderung, Arbeitsbaum unverändert“.
@@ -43,6 +53,26 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von npm run test, npm run test:ci oder npm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `npm run turn:finish -- --affected` fährt zuerst `test:affected` (Ziel, transitiver Importgraph, Subsystem, nur schnelle Beweisklassen) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor. Die Auswahl läuft vor dem Versions-Bump, damit `package.json` sie nicht auf alle Tests ausweitet.
 - If branch protection rejects direct push, push the working branch and open a focused PR to `main`. The merge commit is checked by `verify-commit-msg --head`: use the exact section headings (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII variants fail. Reusing the PR body as the merge message satisfies this.
+
+## Pflichtdoku
+
+Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert, im selben Commit, mit Version und UTC-Zeitstempel im `rbd-doc`-Marker:
+
+| Dokument | Inhalt |
+| --- | --- |
+| `docs/INVENTORY.md` | Was existiert, was gelesen und geprüft wurde, offene Befunde. |
+| `docs/CHANGELOG.md` | Was sich je Version geändert hat (Spiel und Technik). |
+| `docs/DEVTAGEBUCH.md` | Warum, mit Prüfungen und offenen Enden. |
+| `docs/ARCHITECTURE.md` | Zustandsbesitz, Schichten, Pipeline, Begründungen. |
+| `docs/ROADMAP.md` | Jetzt, als Nächstes, später. |
+| `AGENTS.md` | Dieser Vertrag; Regeländerungen zuerst hier. |
+
+- Der Marker wird **nicht von Hand** gepflegt: `npm run docs:sync`, der Pre-Commit-Hook oder `npm run fix` schreiben ihn.
+- Einträge entstehen mit `npm run docs:stub -- "Titel"`; der Agent füllt danach Ziel, Umsetzung, Prüfungen und Offenes. Kein Eintrag ohne Datum, keiner nachträglich ohne Änderung.
+- Strukturvorgaben stehen in `scripts/lib/doc-sync.mjs` (Pflichtabschnitte je Dokument); das Gate prüft sie, es repariert sie nicht.
+- Markdown gehört nur als `README.md` oder `AGENTS.md` in die Wurzel; alles andere lebt unter `docs/`. Keine Doppelungen zwischen Wurzel und `docs/`.
+- Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`) werden vom Hook geschrieben, nicht gegated und nie von Hand editiert.
+- Eskalationsregeln und die eine Leiter stehen in `docs/ESCALATION.md`; keine zweite Klassifikation anlegen.
 
 ## Conventions
 
