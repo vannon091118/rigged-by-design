@@ -10,6 +10,39 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Event-Engine-Taskplan adversarial gehaertet
+
+**Ziel.** Den bestehenden 18-Task-Plan (NAR-00…NAR-17) gegen sich selbst
+pruefen: keine Annahme ungeprueft, kein Task gestrichen, jede Erkenntnis mit
+Gegenmassnahme und Systembezug.
+
+**Befund.** Drei Planfehler sind am Code belegbar. Erstens war die Gate-Liste in
+§3 veraltet: `deps-matrix` und `catalog` sind seit dem Hook-Umbau keine Gates
+mehr, `docs`, `tree` und `redundancy` fehlten. Zweitens kannte der Pruefstand
+`708d31c` die Determinismus-Sperre nicht, obwohl die Narrative Engine die
+wahrscheinlichste Stelle fuer neues `Math.random` ist. Drittens setzte die
+Reihenfolge NAR-12 (Tick-Integration) vor NAR-13 (Demand-Migration) und haette
+damit fuer die Dauer der Umsetzung zwei aktive Event-Wahrheiten erzeugt. Dazu
+kamen 17 weitere Angriffe, unter anderem Ledger-Index gegen Buchungs-`seq` beim
+Fact-Cursor, `VISITOR_CAP = 40` mit `splice(oldest)` gegen laufende Stories,
+halbe Beziehungskanten nach Archivierung, unbegrenzte Cooldowns, `FREEZE_TICK`
+ohne Einheit, halb angewendete Command-Batches, LLM-Injection und Bundle-Wachstum.
+
+**Umsetzung.** §9 (20 Angriffe mit Befund, Gegenmassnahme und Taskbezug), §10
+(Systemmatrix ueber 20 Systeme), §11 (korrigierte Reihenfolge: NAR-13 vor NAR-12,
+10 vor 11, 06 vor 07), §12 (Definition of Done je Task mit Pflicht-Gate) und §13
+(Aenderungsprotokoll) ergaenzt. Kopf auf `7cca88a` aktualisiert, die Gate-Liste in
+§3 an `scripts/lib/pipeline-plan.mjs` angeglichen, der Drift-Absatz praezisiert:
+`poker-distribution` laeuft im Quick-Profil, `balance-operating` ist ohne
+`RBD_BALANCE` inaktiv.
+
+**Pruefungen.** `verify:docs`, `verify:tree`, `verify:redundancy`, `check:loc`,
+`lint`, `typecheck` und `inventory:build` lokal; Vitest und `verify:all` laufen in
+CI. Kein Produktivcode geaendert.
+
+**Offen.** Der Plan bleibt ein Plan: keine NAR-Umsetzung, kein Save v9. Die
+Reihenfolgekorrektur bindet die Umsetzung, nicht rueckwirkend gemergte Arbeit.
+
 ## 2026-11-01 - Determinismus: kein Math.random und keine Wanduhr im Spielzustand
 
 **Ziel.** Kein `Math.random()` und keine vergleichbare Streuquelle im Spiel:
@@ -192,7 +225,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:03 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

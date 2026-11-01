@@ -1,7 +1,8 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** `main` · `708d31c744f8bb470d5a36ee923f60198248f057` · Version `0.3.64`  
+**Geprüfter Stand:** `main` · `7cca88a5bc658729868fa517dd694d847ab32961` · Version `0.3.64`  
+**Revision:** 2026-11-01 · adversariale Härtung (§9–§13), kein Task gestrichen  
 **Save-Format:** v8  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Das LLM formuliert ausschließlich Darstellungstext; Spielregeln und Effekte bleiben deterministisch und code-kontrolliert.
 
@@ -149,9 +150,9 @@ Die Templates definieren den **mechanischen Rahmen**, nicht jeden fertigen Flie�
 
 ### Tatsächliche Pipeline (Code, nicht nur Dokumentation)
 
-`pipeline-plan.mjs` definiert `quick` mit `lint`, `check:loc`, `typecheck`, `test-quality`, `dead-code`, `deps-matrix`, `catalog`, `assets` und `tests`. Der Test-Gate erhält `RBD_TEST_PROFILE=quick`; `vite.config.ts` schließt dabei `round-rtp-*`, `soak` und `slot-session-rtp` aus. `full`/`release` ergänzen Audit und Production-Build. `verify:all` bleibt der vollständige Nachweis; der Gate-Runner führt unabhängige Gates parallel aus und cached nur identische Bäume/Profile.
+`pipeline-plan.mjs` definiert `quick` mit `lint`, `check:loc`, `typecheck`, `test-quality`, `dead-code`, `docs`, `tree`, `redundancy`, `assets` und `tests`. `deps-matrix` und `catalog` sind keine Gates mehr; der Pre-Commit-Hook schreibt sie. Der Test-Gate erhält `RBD_TEST_PROFILE=quick`; `vite.config.ts` schließt dabei `round-rtp-*`, `soak` und `slot-session-rtp` aus. `full`/`release` ergänzen Audit und Production-Build. `verify:all` bleibt der vollständige Nachweis; der Gate-Runner führt unabhängige Gates parallel aus und cached nur identische Bäume/Profile.
 
-**Bestehende Drift, nicht stillschweigend Teil dieses Vorhabens:** `poker-distribution.test.ts` und `balance-operating.test.ts` sind im Testkatalog als `statistics` klassifiziert, fehlen aber in `vite.config.ts` in `quickExclude`; sie können deshalb trotz Quick-Profil lokal mitlaufen. `poker-distribution` läuft zusätzlich im Long-Checks-Workflow. Außerdem listet die Dokumentation den `assets`-Gate nicht überall so vollständig wie `pipeline-plan.mjs`. Das ist vor Projektbeginn als bestehende Gate-/Dokumentationsabweichung zu kennen; die Narrative-Tasks sollen sie nicht versehentlich vergrößern.
+**Bestehende Drift, nicht stillschweigend Teil dieses Vorhabens:** `poker-distribution.test.ts` ist im Testkatalog als `statistics` klassifiziert und läuft im Quick-Profil mit, weil `vite.config.ts` in `quickExclude` nur `round-rtp-*`, `soak` und `slot-session-rtp` führt und die Datei kein `skipIf` trägt; zusätzlich läuft sie im Long-Checks-Workflow. `balance-operating.test.ts` ist ohne `RBD_BALANCE` übersprungen und damit im Quick-Profil faktisch inaktiv. Außerdem listet die Dokumentation den `assets`-Gate nicht überall so vollständig wie `pipeline-plan.mjs`. Das ist vor Projektbeginn als bestehende Gate-/Dokumentationsabweichung zu kennen; die Narrative-Tasks sollen sie nicht versehentlich vergrößern.
 
 ### Gate-Zuordnung für diesen Taskplan
 
@@ -685,3 +686,337 @@ Die Engine ist als zusammenhängendes System fertig, wenn die folgenden Pfade ge
 - `src/core/sim/__tests__/visitors.test.ts`, `demand.test.ts`, `journal.test.ts`, `rivals.test.ts`, `src/store/__tests__/save-migration.test.ts`, `save-roundtrip.test.ts` – bestehende relevante Nachweise
 
 **Prüfgrenze dieses Plans:** Der Plan basiert auf dem aus GitHub gelesenen `main`-Commit oben. Es wurde dabei kein lokaler Checkout gebaut oder getestet; die Implementierungstasks müssen ihre jeweiligen Gate-Ergebnisse aus dem tatsächlichen Arbeitsbaum liefern.
+---
+
+## 9. Adversariale Prüfung (Stand 2026-11-01, `main` = `7cca88a`)
+
+Methode: Jede Annahme des Plans wird angegriffen, als wolle man die Umsetzung
+scheitern lassen. Ein Befund bleibt nur stehen, wenn er am echten Code belegbar
+ist. Kein Task aus §4 wird gestrichen; die Gegenmaßnahmen verschärfen oder
+ordnen ihn neu.
+
+### A-01 – Die Gate-Liste in §3 war veraltet
+
+**Angriff.** Wer sich auf die dort genannte Quick-Folge verlässt, prüft die
+falschen Dinge und hält einen roten Baum für grün.
+**Befund.** `scripts/lib/pipeline-plan.mjs` definiert
+`QUICK = [lint, check:loc, typecheck, test-quality, dead-code, docs, tree, redundancy, assets, tests]`.
+`deps-matrix` und `catalog` sind keine Gates mehr, sie laufen im Pre-Commit-Hook;
+`docs`, `tree` und `redundancy` fehlten in der alten Aufzählung.
+**Gegenmaßnahme.** §3 ist korrigiert. Verbindlich bleibt der Code, nicht das Dokument.
+**Tasks.** alle.
+
+### A-02 – Der Plan kannte die Determinismus-Regel noch nicht
+
+**Angriff.** Eine Narrative Engine ist die wahrscheinlichste Stelle, an der
+`Math.random()` oder ein Wall-Clock-Wert wieder in den Spielpfad kriecht
+(Textauswahl, Event-Priorität, Cooldowns).
+**Befund.** Seit `7cca88a` verbietet ESLint in `src/**` `Math.random`,
+`Date.now`, `performance.now` und `new Date()`; echter Zufall existiert nur in
+`entropySeed()` (`src/core/rng/streams.ts`), Pacing nur in `src/render/**`.
+**Gegenmaßnahme.** Narrative Zufallsauswahl bekommt einen **eigenen persistenten
+Zustand** (kein Zugriff auf den Spiel-PRNG) und wird wie `presentation` als
+eigene Rolle geführt. Jeder Narrative-Task muss `npm run lint` ohne Ausnahme
+bestehen; neue Ausnahmen in `eslint.config.mjs` sind unzulässig.
+**Tasks.** NAR-01, NAR-06, NAR-11, NAR-12.
+
+### A-03 – Zwei aktive Event-Wahrheiten während der Umsetzung
+
+**Angriff.** In der alten Reihenfolge integriert NAR-12 die Engine in den Tick,
+während `world.demandEvent` (NAR-13) noch existiert. Ein Save aus diesem
+Zwischenstand enthält zwei Scheduler-Zustände; Invariante 9 ist dann für Tage
+verletzt, nicht nur theoretisch.
+**Befund.** `DemandEvent { kind, untilTick }` ist heute die einzige aktive
+Event-Wahrheit (`src/core/sim/types-model.ts`, `demand.ts`).
+**Gegenmaßnahme.** NAR-13 wandert **vor** NAR-12 (siehe §11). Alternativ wird
+NAR-12 in 12a (Facts→Trigger→Scheduler ohne Tick-Einbau) und 12b (Tick-Einbau
+nach der Migration) geteilt. Kein Task entfällt.
+**Tasks.** NAR-12, NAR-13.
+
+### A-04 – Fact-Cursor und Ledger-Replay können auseinanderlaufen
+
+**Angriff.** Der Narrative-Fact-Cursor wird persistiert, der Ledger wird beim
+Laden aber neu aufgebaut. Zeigt der Cursor auf eine andere Stelle als vor dem
+Save, werden Buchungen doppelt oder gar nicht zu Facts.
+**Befund.** `ledger.entriesSince(seq)` ist ein **Index** in `#entries`, kein
+Ledger-`seq`-Wert; `seq` ist ein Feld der Buchung (`src/core/economy/ledger.ts`).
+**Gegenmaßnahme.** Persistiert wird der Ledger-`seq`-Wert der letzten
+verarbeiteten Buchung, nicht der Array-Index. Beim Laden wird per `seq` gesucht;
+fehlt er, wird fail-safe auf „nichts nachziehen“ entschieden. Nachweis: Save
+mitten in einer Buchungsserie → Load → exakt dieselben Facts, keine Duplikate.
+**Tasks.** NAR-02, NAR-12.
+
+### A-05 – Retention löscht aktive Figuren
+
+**Angriff.** `VISITOR_CAP = 40` und `splice(oldest)` entfernen den ältesten
+Besucher stumpf. Eine laufende Story verliert ihren Teilnehmer, Beziehungen und
+Event-Instanzen zeigen ins Leere.
+**Befund.** `src/core/sim/visitors.ts:4,22,27` – bestätigt.
+**Gegenmaßnahme.** Pinning-Menge aus aktiven Events, offenen Choices und
+Beziehungen; Eviction nur ohne Pin. Nach dem Laden prüft ein Referenz-Audit jede
+Visitor-ID; unauflösbare Referenzen brechen die konkrete Story fail-closed ab,
+nicht die Simulation. Nachweis mit 40 gepinnten Profilen.
+**Tasks.** NAR-03, NAR-04, NAR-06, NAR-16.
+
+### A-06 – Beziehungen überleben ihre Akteure halb
+
+**Angriff.** Eine Beziehung ist eine Kante zwischen zwei Profilen. Wird eine
+Seite archiviert, bleibt eine halbe Kante mit gültiger ID auf einen
+nicht mehr existierenden Charakter.
+**Gegenmaßnahme.** Kanonische, gerichtete Kante mit genau einem Besitzer;
+Archivierung erzeugt einen Tombstone mit stabiler ID; Queries liefern nur Kanten
+mit zwei lebenden oder tombstonierten Enden. Nachweis: Archivierung einer Seite
+entfernt keine Kante der anderen, macht sie aber als „inaktiv“ lesbar.
+**Tasks.** NAR-04, NAR-16.
+
+### A-07 – Cooldowns wachsen unbegrenzt
+
+**Angriff.** Cooldowns pro `(Visitor × Event × Scope)` wachsen mit Content und
+Besucherzahl; jeder Tick scannt sie. Das ist ein Speicher- und Tick-Leck, das
+erst nach Stunden Spielzeit sichtbar wird.
+**Gegenmaßnahme.** Cooldowns nur für **existierende** Visitor/Event-Paare,
+abgelaufene Einträge werden beim Zugriff verworfen, harte Obergrenze mit
+Budget-Assertion im Save-Test. Nachweis: 10.000 Ticks mit maximalem Andrang,
+Cooldown-Tabelle bleibt unter Budget.
+**Tasks.** NAR-06, NAR-16.
+
+### A-08 – `FREEZE_TICK` kann den Scheduler erstecken
+
+**Angriff.** Ein Content-Fragment darf `€FreezeTick:200` tragen. Ist die Einheit
+Sekunden statt Ticks oder der Scope global, steht die Simulation still – oder ein
+Event löst sich nie auf.
+**Befund.** Die Makros `€FreezeTick:200` und `€trigger Dialog '…'` sind im Plan
+erwähnt, ihre Semantik ist ausdrücklich offen (NAR-00).
+**Gegenmaßnahme.** Einheit ist **Tick**, Scope ist **nur die aktive
+Event-Instanz**, Dauer ist gedeckelt (Cap im Template, nicht im Text), Expiry
+läuft über den Scheduler. Parser lehnt Einheiten ohne Suffix ab. Test: Event mit
+Freeze löst sich garantiert auf; die Welt tickt weiter.
+**Tasks.** NAR-00, NAR-08, NAR-06.
+
+### A-09 – Command-Batches können halb angewendet werden
+
+**Angriff.** Preflight sagt „alles gültig“, der erste Ledger-Command gelingt, der
+zweite wirft (fehlende Deckung, unbekanntes Konto). Ergebnis: halber Effekt ohne
+Event-Fortschritt.
+**Gegenmaßnahme.** Effekte laufen in einer klaren Klammer: zuerst vollständige
+Validierung inklusive Ledger-Deckung, dann Anwendung; wirft ein Handler, wird der
+Event-Schritt nicht fortgeschrieben und der Vorzustand über einen Ledger-/
+Welt-Checkpoint wiederhergestellt. Nachweis: zweiter Command scheitert → keine
+Spur des ersten, Ledgerintegrität bleibt `true`.
+**Tasks.** NAR-08, NAR-12.
+
+### A-10 – LLM-Adapter als Einfallstor
+
+**Angriff.** Ein API-Key im Browser-Bundle, ein Netzwerkaufruf im Tick, eine
+verspätete Antwort, die ein beendetes Event überschreibt, oder Prompt-Injection
+über Gastnamen und Content-Fragmente.
+**Gegenmaßnahme.** Provider bleibt optional und außerhalb von `tickWorld`; Keys
+niemals im Client; Eingaben werden auf erlaubte Felder reduziert; Ausgaben werden
+als reiner Text validiert (Länge, keine IDs, keine `€`-Direktiven, keine Zahlen
+als Spielwirkung); Antwort trägt Event-ID **und** Revision und wird sonst
+verworfen. Ohne Provider ist der Registry-Composer vollständig. Keine neue
+Abhängigkeit ohne eigene Infrastrukturentscheidung.
+**Tasks.** NAR-11, NAR-12, NAR-17.
+
+### A-11 – Content-Compiler ist nicht automatisch deterministisch
+
+**Angriff.** Byte-identische Registry wird zugesagt, aber Dateisystem-Reihenfolge,
+`Date.now()` im Header oder unsortierte Map-Iteration machen den Build je nach
+Rechner unterschiedlich.
+**Gegenmaßnahme.** Sortierte Pfadliste, stabile IDs, keine Zeitstempel im
+Artefakt, Hash-Manifest, `--check` vergleicht Hashes statt Dateien zu schreiben.
+Nachweis: zweimaliger Lauf ohne Änderung erzeugt identische Bytes.
+**Tasks.** NAR-10, NAR-09.
+
+### A-12 – Die Registry bläht das Bundle
+
+**Angriff.** Alle Textfragmente landen im Client-Bundle; der Audit beklagt
+bereits 856 kB / 274 kB gzip im Hauptbundle.
+**Gegenmaßnahme.** Registry in Slot-/Locale-Chunks, Lazy-Import im Composer,
+Größenbudget je Registry-Datei im bestehenden `verify:assets` (kein neues Gate),
+Messung im Build und mit `bench:lowend`. Obergrenze wird im Task festgeschrieben.
+**Tasks.** NAR-10, NAR-11, NAR-16.
+
+### A-13 – Modulgröße gegen LOC-Budget
+
+**Angriff.** 18 Tasks erzeugen viele neue Dateien. Wer groß denkt, landet bei
+`visitors.ts`-ähnlichen Sammeldateien und rutscht in die Legacy-Ausnahmen.
+**Befund.** `src/core/**` hat 200 LOC Cap / 150 Hot Zone, Tests 240/180; neue
+`@loc-exception` sind verboten (`scripts/loc-budgets.mjs`).
+**Gegenmaßnahme.** Jeder Task nennt seine Zielmodule mit erwarteter Größe; ab
+120 LOC wird geteilt, nicht erweitert. `check:loc` ist Pflicht je Task.
+**Tasks.** alle.
+
+### A-14 – Narrative Tests verkommen zu Existenzprüfungen
+
+**Angriff.** `expect(event).toBeDefined()` ist schnell geschrieben und beweist
+nichts. `verify-test-quality` lehnt genau das ab, ebenso feste Seeds.
+**Gegenmaßnahme.** Jeder Task nennt eine **Zustandstransformation** oder
+Invariante als Nachweis: Fact → Event, Choice → Ledger-Zeile, Save → Replay.
+Wo Text im Spiel ist, wird die Mechanik geprüft, nicht die Formulierung.
+**Tasks.** alle.
+
+### A-15 – Tick-Budget kippt bei Vollscans
+
+**Angriff.** Trigger über alle Templates × alle Facts, Composer über alle
+Fragmente, Scheduler über alle Historien – pro Tick bei 520 ms Takt.
+**Gegenmaßnahme.** Index `Fact-Typ → Trigger`, Index `Slot/Flag → Fragmente`,
+Scheduler arbeitet nur fällige Einträge ab. Harte Obergrenze an Evaluierungen pro
+Tick, Messung mit 200 Gästen und 1.000 Facts, Benchmark an NAR-16.
+**Tasks.** NAR-05, NAR-06, NAR-11, NAR-16.
+
+### A-16 – Demand-Migration verändert stillschweigend die Balance
+
+**Angriff.** NAR-13 verschiebt die Nachfragewirkung von `demandEvent` in aktive
+Event-Instanzen. Ein anderer Auswertungspunkt im Tick genügt, um Ankunftsraten
+und damit die Wirtschaft zu verschieben.
+**Gegenmaßnahme.** Vor der Migration ein Baseline-Lauf (`npm run balance`, 40
+Tage, fester dokumentierter Seed), danach derselbe Lauf; `perDay`, Gruppengröße
+und Event-Fenster müssen im Toleranzband identisch sein. Abweichung ist ein
+Befund, kein „neues Balancing“.
+**Tasks.** NAR-13, NAR-16.
+
+### A-17 – UI-Race bei Choice-Klicks
+
+**Angriff.** Doppelklick, zwei Tabs oder ein Tick zwischen Anzeige und Klick
+führen zur doppelten Ausführung oder zu einem Effekt auf ein beendetes Event.
+**Gegenmaßnahme.** Choice-Command trägt `eventId`, `choiceId` und `revision`;
+der Store weist veraltete Revisionen und bereits aufgelöste Events idempotent ab.
+UI deaktiviert die Choices nach dem Klick sofort. Nachweis: doppelter Klick
+erzeugt genau eine Wirkung.
+**Tasks.** NAR-07, NAR-12, NAR-14.
+
+### A-18 – „Ein Beitrag pro Agenten-Turn“ passt nicht zum PR-Workflow
+
+**Angriff.** Der Plan verlangt pro Turn genau einen Textbeitrag, das Repo
+arbeitet aber in Commits und Pull Requests. Ohne Definition ist der Validator
+entweder trivial umgehbar oder blockiert reine Doku-Turns.
+**Gegenmaßnahme.** Turn = ein Pull Request (Turn-ID = Head-Commit-SHA des PRs).
+Beiträge liegen als Datei unter `content/narrative/contributions/`, das Manifest
+ordnet Turn-ID → Beitrag zu. Der Validator läuft im bestehenden Assets-Gate und
+akzeptiert explizit deklarierte Ausnahmen für reine Infrastruktur-PRs.
+**Tasks.** NAR-00, NAR-09, NAR-17.
+
+### A-19 – Save-Wachstum und Vorwärtskompatibilität
+
+**Angriff.** Facts, Memories, Beziehungen, Cooldowns und aktive Events wachsen
+mit der Spielzeit; `localStorage` liegt typisch bei 5 MB. Ein alter Client, der
+v9 lädt, darf nicht werfen.
+**Gegenmaßnahme.** Harte Budgets: Fact-Historie ≤ 200, Memories ≤ 20 pro Visitor,
+aktive Events ≤ 8, Beziehungen ≤ 200. Save-Test misst Bytes und schlägt über dem
+Budget fehl. Unbekannte Felder werden beim Laden ignoriert, nicht als Fehler
+behandelt; fehlende Narrative-Felder bekommen Defaults.
+**Tasks.** NAR-01, NAR-03, NAR-16.
+
+### A-20 – Rivalenautonomie gegen Determinismus und Fairness
+
+**Angriff.** Autonome Rivalen mit eigenem RNG und Zeitplan können den Spiel-PRNG
+verschieben, bei jedem Tick teuer simulieren oder undurchsichtige Strafen
+verteilen.
+**Gegenmaßnahme.** Eigener, persistierter Rivalen-RNG-Zustand; geplante Aktionen
+nur zu festen Ticks; jede Aktion erzeugt einen `RIVAL_ACTION`-Fact mit Ursache
+und sichtbarer Spur; Sabotage nur mit Gegenmaßnahme. Replay-Test: gleicher Save →
+gleiche Aktionen.
+**Tasks.** NAR-15, NAR-16.
+
+---
+
+## 10. Systemmatrix: alle Systeme, ein Vertrag
+
+Jede Zeile ist ein System, das die Engine berührt. Keine Zeile darf ohne
+Nachweis als „erledigt“ gelten.
+
+| System | Invariante | Tasks | Nachweis |
+|---|---|---|---|
+| Simulation / Tick | Tick bleibt begrenzt, Reihenfolge dokumentiert, keine Vollscans | 02, 05, 06, 12, 16 | Tick-Reihenfolge-Test, Benchmark, 10.000-Tick-Lauf |
+| Geld / Ledger | jede Wirkung ist eine Buchung, Integrität bleibt `true` | 08, 09, 12, 14 | Ledger-Assertions nach Choice-Commands, `verifyLedgerIntegrity()` |
+| Save / Migration | v5–v8 laden weiter, v9-Roundtrip verlustfrei, Budgets halten | 01, 03, 04, 06, 13, 15, 16 | Migrations-/Roundtrip-/Replay-Tests, Byte-Budget |
+| RNG / Determinismus | eigener Narrativ-Strom, kein Spiel-PRNG-Verbrauch, kein Wall-Clock | 01, 06, 11, 12, 15 | Replay-Test, `lint` (Sperrregel), Save-Fortsetzung |
+| Journal | bleibt Historie, nie Fact-Bus | 02, 12, 14 | getrennte Cursor, keine Doppel-Einträge |
+| Facts / Queue | eine ID, eine Verarbeitung, idempotent nach Load | 02, 04, 12 | Cursor-/Duplikat-Test über Save/Load |
+| Memory | strukturiert, begrenzt, referenziell sauber | 03, 16 | Retention-Test, Budget |
+| Relationships | kanonisch, gerichtet, überlebt Archivierung | 04, 06 | Kanten-Test nach Eviction |
+| Triggers | rein, erklärbar, ohne Side Effects | 05 | Operator-/Grenzwert-/Übergangstests |
+| Scheduler / Lifecycle | keine Doppelinstanz, faire Priorität, endliche Ketten | 06, 07 | Lifecycle- und Ketten-Tests |
+| Templates / Choices | Mechanik aus Code, Text aus Content | 07, 11, 14 | Manipulations- und Ablauf-Test |
+| Commands / DSL | allowlisted, validiert, atomar, idempotent | 08, 09, 17 | Parser-/Preflight-/Rollback-Test |
+| Content / Compiler | deterministisch, validiert, größenbegrenzt | 09, 10, 12 | Hash-Gleichheit, Assets-Gate, Budget |
+| Composer / LLM | optional, text-only, ausfallfest | 11 | Fallback-Test, Injection-Test |
+| UI / Snapshot | Projektion, keine zweite Wahrheit, stale-safe | 14, 17 | Klick-/Reload-/Doppelklick-Test |
+| Nachfrage | Wirkung identisch zu vorher | 13, 16 | Baseline-vs-Migrations-Vergleich |
+| Rivalen | deterministisch, begründet, sichtbar | 15, 16 | Replay-/Fairness-Test |
+| Performance | Tick- und Speicherbudget eingehalten | 16 | `ci:long`, `bench:lowend`, Soak |
+| Tests / Gates | keine Abschwächung, keine neuen parallelen Gates | alle | `verify:quick` je Task, CI `verify:all` |
+| Doku / Release | Doku = Code, Marker synchron, PR-Weg | 17 | `verify:docs`, Release-Lauf |
+
+---
+
+## 11. Korrigierte Reihenfolge
+
+Die Nummern bleiben unverändert (kein Schnitt), nur die Ausführungsreihenfolge
+wird dort korrigiert, wo der alte Plan eine Invariante zeitweise bricht:
+
+**00 → 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 13 → 12 → 14 → 15 → 16 → 17**
+
+Begründungen:
+
+- **13 vor 12:** Die Demand-Migration muss abgeschlossen sein, bevor der Tick die
+  gemeinsame Engine aufruft; sonst existieren zwei aktive Event-Wahrheiten
+  (A-03). NAR-13 ist ohne NAR-12 testbar, weil es nur Definitionen und
+  `demandBreakdown()` betrifft.
+- **10 vor 11:** Der Compiler erzeugt die Registry, die der Composer liest. Ein
+  Composer gegen eine handgebaute Testregistry wäre eine zweite Wahrheit.
+- **06 vor 07:** Lifecycle und Duplikatschutz stehen, bevor Templates Choices
+  anbieten; sonst werden abgelaufene Choices zum Normalfall.
+- **02 vor 03:** Facts sind der Rohstoff der Erinnerung. Umgekehrt müsste Memory
+  Facts erfinden.
+- **Jeder Zwischenstand bleibt speicherbar:** Nach jedem Full-Gate-Task ist der
+  Save v9 gültig, fehlende Felder werden normalisiert. Es gibt keinen Stand, der
+  nur mit einem bestimmten Content-Build lädt.
+
+---
+
+## 12. Definition of Done je Task
+
+Die folgende Tabelle ersetzt kein Gate, sondern legt fest, was ein Task
+zusätzlich zu „Gates grün“ vorweisen muss.
+
+| Task | DoD-Kern | Gate | Zusatznachweis |
+|---|---|---|---|
+| NAR-00 | Vertrag inkl. Nicht-Zielen, Makro-Semantik, Turn-Definition | quick | Review gegen §6, keine Codeänderung |
+| NAR-01 | narrative-State initialisiert, v9 Save, v5–v8 laden | full | Roundtrip + 100-Tick-Replay + Byte-Budget |
+| NAR-02 | Facts typisiert, idempotent, Ledger-Cursor per `seq` | quick/full | Save mitten in Queue, keine Duplikate |
+| NAR-03 | Visitor-Identität persistent, Memory strukturiert, Pinning | full | Rückkehrer erinnert sich nach Load |
+| NAR-04 | kanonische, gerichtete Beziehungen, Archiv-Tombstones | quick/full | Eviction-Test ohne halbe Kanten |
+| NAR-05 | reiner Evaluator, alle Operatoren, Erklärbarkeit | quick | Operator-/Grenzwert-/Übergangstests |
+| NAR-06 | Lifecycle endlich, Duplikatschutz, eigener RNG-Zustand | quick/full | Ketten- und Expiry-Test, kein Doppel-Event |
+| NAR-07 | stabile Choice-IDs, Revision, Nachvalidierung | quick | Manipulations-/Ablauf-Test |
+| NAR-08 | Parser, Allowlist, Preflight, atomare Anwendung | quick/full | Rollback-Test, Ledgerintegrität |
+| NAR-09 | Contribution-Schema, Vocabulary, Manifest | quick | Validator lehnt Duplikate/fehlende Turns ab |
+| NAR-10 | byte-identische Registry, `--check`, Budget | quick | zweimaliger Lauf, Hash-Vergleich |
+| NAR-11 | Fragmentauswahl, Fallback, text-only-Provider | quick | Ausfall- und Injection-Test |
+| NAR-13 | Demand-Wirkung identisch, keine zweite Wahrheit | full | Baseline-vs-Migration im Toleranzband |
+| NAR-12 | Fact→Event→Choice→Command→Fact, begrenzt, idempotent | full | Ende-zu-Ende-Test + Save/Load |
+| NAR-14 | read-only Projektion, stale-safe UI | quick | Klick, Reload, Doppelklick |
+| NAR-15 | geplante Rivalenaktionen, sichtbare Spuren | full | Replay + Fairness-Test |
+| NAR-16 | Budgets halten, keine Leaks | quick + `ci:long` | Soak, Balance, Benchmark, Save-Größe |
+| NAR-17 | Doku = Code, keine zweite Wahrheit, keine toten Exporte | quick + full | Docs-Gate, Dead-Code, Katalog |
+
+---
+
+## 13. Änderungsprotokoll dieser Planrevision
+
+Nichts gestrichen, nur geschärft:
+
+1. Prüfstand von `708d31c` auf `7cca88a` aktualisiert (Version `0.3.64`, Save v8).
+2. Gate-Liste in §3 an `scripts/lib/pipeline-plan.mjs` angeglichen
+   (`docs`, `tree`, `redundancy` ergänzt; `deps-matrix`/`catalog` als
+   Hook-Aufgaben statt Gates gekennzeichnet).
+3. Determinismus-Regel (ESLint-Sperre, `entropySeed()`) als verbindliche
+   Randbedingung für Narrative-Auswahl ergänzt.
+4. Reihenfolge korrigiert: NAR-13 vor NAR-12; Begründung in §11.
+5. 20 Angriffe mit Gegenmaßnahmen ergänzt (§9), darunter Ledger-Atomizität,
+   Visitor-Pinning, Cooldown-Budget, Freeze-Semantik, LLM-Injection,
+   Compiler-Determinismus, Bundle-Wachstum, UI-Race und Save-Budget.
+6. Systemmatrix über alle 20 Systeme ergänzt (§10).
+7. Definition of Done je Task mit Pflicht-Gate und Zusatznachweis ergänzt (§12).
