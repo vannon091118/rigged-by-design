@@ -3,7 +3,8 @@
 **Repository:** `vannon091118/rigged-by-design`  
 **Geprüfter Stand:** `main` · `7cca88a5bc658729868fa517dd694d847ab32961` · Version `0.3.64`  
 **Revision:** 2026-11-01 · adversariale Härtung (§9–§13), kein Task gestrichen  
-**Save-Format:** v8  
+**Umsetzungsstand:** NAR-00 bis NAR-03 umgesetzt (Vertrag, Save v9, Facts, Gedaechtnis, Start-Pool); NAR-04 bis NAR-17 offen  
+**Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Das LLM formuliert ausschließlich Darstellungstext; Spielregeln und Effekte bleiben deterministisch und code-kontrolliert.
 
 ---

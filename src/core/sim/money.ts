@@ -22,8 +22,9 @@ export const HOUSE_FLOAT = fromVC(25);
 const STARTING_CAPITAL = fromVC(150);
 
 /** Der einzige Geldzufluss von aussen beim Start; jede weitere Zahl ist eine Buchung. */
-export function openHouse(ledger: Ledger, tick: number): void {
+export function openHouse(ledger: Ledger, tick: number): VaCoinMicro {
   ledger.transfer(EXTERNAL, HAUSKONTO, STARTING_CAPITAL, 'startkapital', tick);
+  return STARTING_CAPITAL;
 }
 
 export const guestAccount = (id: number): string => `VISITOR_${id}`;

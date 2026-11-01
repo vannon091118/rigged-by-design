@@ -5,6 +5,8 @@ import { recordJournal } from './journal';
 import { closeFiat, exchangeFromVc, guestAccount, payPending } from './money';
 import type { Furniture, Guest, WorldState } from './types';
 import { noteExperience } from './visitors';
+import { emitFact } from './narrative/facts';
+import { processFacts, valenceOf } from './narrative/memory';
 import { doorPoint, furnitureById, releaseSeat, sendGuest } from './world';
 
 export function becomeAngry(world: WorldState, guest: Guest): void {
@@ -34,7 +36,14 @@ export function leave(world: WorldState, guest: Guest): void {
 function noteSatisfaction(world: WorldState, guest: Guest): void {
   const score = Math.max(0, Math.min(100, guest.mood * 0.65 + guest.patience * 0.35));
   world.satisfaction = Math.max(0, Math.min(100, world.satisfaction * 0.85 + score * 0.15));
-  if (guest.visitorId !== undefined) noteExperience(world, guest.visitorId, score);
+  if (guest.visitorId !== undefined) {
+    noteExperience(world, guest.visitorId, score);
+    emitFact(world, {
+      kind: 'VISIT_ENDED', visitorId: guest.visitorId, guestId: guest.id,
+      score: Math.round(score), valence: valenceOf(score),
+    });
+    processFacts(world);
+  }
 }
 
 /** Erst alle Ansprueche buchen, dann gehen: ein Fehlschlag laesst Gast und Guthaben stehen. */

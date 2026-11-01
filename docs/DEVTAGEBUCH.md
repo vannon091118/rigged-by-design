@@ -10,6 +10,42 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Narrative Engine Stufe 1: Facts, Gedaechtnis, Start-Pool (NAR-00 bis NAR-03)
+
+**Ziel.** Den Taskplan nicht nur beschreiben, sondern den ersten tragenden Schnitt
+umsetzen — mit belegter Wirkung im Spiel, inklusive Start-Pool.
+
+**Umsetzung.** Neuer Core-Bereich `src/core/sim/narrative/`: `types.ts` (Facts,
+Erinnerungen, Grenzen), `facts.ts` (ID-Vergabe, Queue mit Deckel, idempotenter Drain),
+`state.ts` (Startzustand, Start-Pool, sichere Normalisierung), `memory.ts`
+(Fact→Erinnerung, deterministische Wirkung). `WorldState.narrative` ist der einzige
+persistente Narrativ-Zustand; `Visitor.memories` haelt hoechstens sechs strukturierte
+Erinnerungen. Facts entstehen an echten Uebergaengen: Spawn (erster Besuch /
+Rueckkehr), Auszahlung (`VISIT_ENDED` aus `guest-service`) und neues Spiel
+(`START_POOL` mit Startkapital). Save v9 traegt alles, v5–v8 werden normalisiert.
+
+**Wirkung (nicht nur Speicherung).** `returnChance()` addiert den Erinnerungsbonus
+(+4 Prozent je gutem, -6 je schlechtem Besuch, letzte doppelt, gedeckelt),
+`spawnGuest()` gibt Rueckkehrern den Laune-Bonus mit. Konkret gemessen und in
+`narrative-memory.test.ts` festgeschrieben: neutral 25 Prozent Rueckkehr, nach einem
+guten Besuch 33, nach einem schlechten 13; die Spawn-Laune liegt genau um den
+Erinnerungsbonus hoeher als in der Kontrollwelt mit identischem Seed. `seedStartPool()` setzt drei
+bekannte Figuren und das Startkapital als Fact; die Rueckkehrer-Auswahl kann sie ab
+Tick 0 treffen. Damit aendert sich messbar, wer wiederkommt und wie er ankommt.
+
+**Nachweise (Vitest, am Turn-Ende).** `narrative-facts.test.ts` (IDs, einmalige
+Verarbeitung, Queue-Deckel 48/12, JSON-Roundtrip, unbekannte Referenz, Flags ohne
+Journal), `narrative-memory.test.ts` (Rueckkehr steigt/sinkt, letzte Erinnerung
+doppelt, Deckel 6, Spawn-Laune differiert zur Kontrollwelt um genau den Bonus),
+`narrative-start-pool.test.ts` (drei Figuren, Idempotenz, Rueckkehr ab Tick 0,
+Kontrollwelt ohne Pool legt neues Profil an), `narrative-save.test.ts` (v9-Roundtrip,
+v8-Defaults, zwei Welten nach 80 Ticks identisch).
+
+**Offen.** NAR-04 bis NAR-17 (Beziehungen, Trigger, Scheduler, Event-Templates,
+Command-DSL, Content-Compiler, Composer/LLM, UI, Rivalen, Soak) sind nicht umgesetzt.
+Der Start-Pool ist bewusst nur im Store-Pfad fuer neue Spiele aktiv, nicht in
+`createWorld()`, damit alte Saves ihre Besucherliste behalten.
+
 ## 2026-11-01 - Merge ohne PR-Body macht main rot (Vorfall und Reparatur)
 
 **Ziel.** PR #32 mergen und `main` gruen halten.
@@ -342,7 +378,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:34 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:56 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

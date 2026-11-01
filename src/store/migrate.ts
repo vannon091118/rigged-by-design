@@ -8,6 +8,8 @@ import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type Pli
 import { migrateReels } from '../core/games/slot-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
+import type { NarrativeState } from '../core/sim/narrative/types';
+import { hydrateNarrative } from './migrate-narrative';
 import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
@@ -27,7 +29,7 @@ interface SavedEntry {
 type SavedGuest = Guest & { readonly fiat?: VaCoinMicro };
 
 export interface SavedGame {
-  readonly version: 5 | 6 | 7 | 8;
+  readonly version: 5 | 6 | 7 | 8 | 9;
   readonly template: TemplateId;
   readonly carpet: CarpetId;
   readonly furniture: Furniture[];
@@ -61,6 +63,7 @@ export interface SavedGame {
   readonly activePenalties?: ActivePenalty[];
   readonly visitors?: Visitor[];
   readonly nextVisitorId?: number;
+  readonly narrative?: NarrativeState;
   readonly lastEvent: string;
   readonly journal?: JournalEvent[];
   readonly archive?: JournalEvent[];
@@ -179,8 +182,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
     }
   }
   world.activePenalties = (saved.activePenalties ?? []).map((penalty) => ({ ...penalty }));
-  world.visitors = (saved.visitors ?? []).map((visitor) => ({ ...visitor }));
-  world.nextVisitorId = saved.nextVisitorId ?? world.visitors.reduce((max, visitor) => Math.max(max, visitor.id + 1), 1);
+  hydrateNarrative(world, saved);
   world.journal = (saved.journal ?? []).map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
   world.nextJournalId = saved.nextJournalId
     ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);

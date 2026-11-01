@@ -6,6 +6,8 @@ import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
 import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
+import { emitFact } from './narrative/facts';
+import { memoryEffect, processFacts } from './narrative/memory';
 import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
@@ -42,15 +44,21 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   const fiat = randomFiat(prng, world.template, persona);
   const made = makeGuest({ id, persona, prng, spawn });
   const guest: Guest = returning
-    ? { ...made, name: returning.name, visitorId: returning.id }
+    ? { ...made, name: returning.name, visitorId: returning.id, mood: Math.max(0, Math.min(100, made.mood + memoryEffect(returning).moodBonus)) }
     : made;
   if (world.activePenalties.some((penalty) => penalty.kind === 'MOOD_SHOCK')) {
     guest.mood = Math.max(0, guest.mood - MOOD_SHOCK_NEWCOMER_MALUS);
   }
   const target = exchangePoint(world);
   if (!target) return null;
-  if (returning) markReturning(returning, world.tick);
-  else guest.visitorId = recordVisitor(world, { name: guest.name, persona, tick: world.tick }).id;
+  if (returning) {
+    markReturning(returning, world.tick);
+    emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: returning.id, visits: returning.visits });
+  } else {
+    guest.visitorId = recordVisitor(world, { name: guest.name, persona, tick: world.tick }).id;
+    emitFact(world, { kind: 'VISITOR_FIRST_SEEN', visitorId: guest.visitorId, persona });
+  }
+  processFacts(world);
   admitFiat(ledger, id, fiat, world.tick);
   guest.targetZone = 'exchange';
   guest.path = pathTo(world, spawn, target);
