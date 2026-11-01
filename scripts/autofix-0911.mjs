@@ -24,7 +24,7 @@ const log = (message) => {
  * sich ESLint-Config oder Lockfile geaendert haben -- dann gilt alles als unveraendert.
  */
 const CACHE_DIR = resolve(ROOT, '.verify-cache');
-const SCOPE_FILES = ['eslint.config.js', 'eslint.config.mjs', 'package-lock.json'];
+const SCOPE_FILES = ['src/Config/eslint.config.mjs', 'package-lock.json'];
 function lintScope() {
   const hash = createHash('sha256');
   for (const file of SCOPE_FILES) {

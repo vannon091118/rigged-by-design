@@ -61,6 +61,11 @@ jobs:
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
       # sichtbarer Block mit Anleitung. Ein Tag, der schon existiert, erzeugt
       # kein zweites Release.
+      # Der Merge kam ohne Push-Ereignis (GITHUB_TOKEN): dieses Gate prueft den
+      # Merge-Commit, bevor ein Tag entsteht.
+      - name: Commit-Text des geprueften Commits
+        run: node scripts/verify-commit-msg.mjs --head
+
       - name: Tag und Release erstellen (kein Commit, main bleibt stehen)
         id: tag
         env:

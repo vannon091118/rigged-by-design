@@ -17,8 +17,9 @@ let configCache;
 /** tsconfig.json als echte Compiler-Optionen; alle Aufloesungen laufen darueber. */
 export function compilerConfig() {
   if (configCache) return configCache;
-  const configPath = ts.findConfigFile(ROOT, ts.sys.fileExists, 'tsconfig.json');
-  if (!configPath) throw new Error('tsconfig.json nicht gefunden');
+  // Werkzeug-Configs liegen gesammelt in src/Config.
+  const configPath = ts.findConfigFile(resolve(ROOT, 'src', 'Config'), ts.sys.fileExists, 'tsconfig.json');
+  if (!configPath) throw new Error('src/Config/tsconfig.json nicht gefunden');
   const read = ts.readConfigFile(configPath, ts.sys.readFile);
   if (read.error) throw new Error(ts.flattenDiagnosticMessageText(read.error.messageText, ' '));
   const parsed = ts.parseJsonConfigFileContent(read.config, ts.sys, dirname(configPath));

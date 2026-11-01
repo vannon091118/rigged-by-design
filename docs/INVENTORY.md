@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->
+<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -10,7 +10,7 @@
 > | --- | --- |
 > | **Version** | **v1.20** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 20:40 UTC (T24 — Auto-Promotion und Integrationsbranch)** |
+> | **Aktualisiert** | **2026-11-01 21:05 UTC (T25 — Review-Nachlauf, fatale Promotion-Luecken)** |
 > | Branch | `main` (PR-Pflicht), Arbeitsbranch `docs/doku-konsolidierung-0365`, permanent `integration` |
 > | HEAD | `c4e6e3b` (Fast-Forward `ee882da → c4e6e3b`, 26 Commits, 76 Dateien) |
 > | Arbeitsbaum | sauber; Remote `vannon091118/rigged-by-design`; 983 getrackte Dateien, 67 Ordner |
@@ -243,16 +243,16 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 987 |
-| Gelistete Dateien | 987 |
-| Getrackte Ordner | 67 |
-| Bereiche | (Wurzel) (13), .githooks (2), .github (7), content (2), docs (43), public (552), scripts (48), src (320) |
+| Getrackte Dateien | 986 |
+| Gelistete Dateien | 986 |
+| Getrackte Ordner | 68 |
+| Bereiche | (Wurzel) (8), .githooks (2), .github (7), content (2), docs (43), public (552), scripts (48), src (324) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
-- `./` — 13 Datei(en)
+- `./` — 8 Datei(en)
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `content/narrative/contributions/` — 1 Datei(en)
@@ -291,6 +291,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/` — 33 Datei(en)
 - `scripts/lib/` — 15 Datei(en)
 - `src/` — 2 Datei(en)
+- `src/Config/` — 4 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 3 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -325,35 +326,34 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlende Pflichtsektionen — gelesen: 14 Zeilen
 - `.githooks/pre-commit` — Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben, — gelesen: 20 Zeilen
-- `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 90 Zeilen
+- `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 95 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 145 Zeilen
 - `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 69 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 134 Zeilen
-- `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 37 Zeilen
+- `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
-- `.github/workflows/promote.yml` — name: Promote — gelesen: 51 Zeilen
-- `.gitignore` — node_modules/ — gelesen: 16 Zeilen
+- `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
+- `.gitignore` — node_modules/ — gelesen: 21 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 97 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 98 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
-- `capacitor.config.json` — { — gelesen: 11 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 217 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 219 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 70 Zeilen
-- `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 170 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 85 Zeilen
+- `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 183 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 416 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 428 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 145 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 29 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 30 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 111 Zeilen
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 79 Zeilen
@@ -382,9 +382,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
-- `eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
-- `opencode.json` — { — gelesen: 10 Zeilen
 - `package-lock.json` — { — generiert, 4540 Zeilen
 - `package.json` — { — gelesen: 90 Zeilen
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
@@ -968,11 +966,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 40 Zeilen
 - `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 107 Zeilen
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
-- `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 89 Zeilen
+- `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
-- `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 65 Zeilen
-- `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 155 Zeilen
+- `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 70 Zeilen
+- `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 125 Zeilen
 - `scripts/sanitize-commit.mjs` — ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. — gelesen: 18 Zeilen
 - `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/ARCHITECTURE.md aus — gelesen: 138 Zeilen
@@ -980,14 +978,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`npm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
 - `scripts/turn-push.mjs` — Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach mai — gelesen: 227 Zeilen
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 88 Zeilen
-- `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 49 Zeilen
+- `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
-- `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 99 Zeilen
+- `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 98 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 54 Zeilen
 - `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 341 Zeilen
+- `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
+- `src/Config/opencode.json` — { — gelesen: 10 Zeilen
+- `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
+- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 37 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
@@ -1098,7 +1100,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/movement-queue.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 137 Zeilen
 - `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 77 Zeilen
-- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 57 Zeilen
+- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 61 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 107 Zeilen
 - `src/core/sim/__tests__/player-jobs.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 170 Zeilen
 - `src/core/sim/__tests__/player-rpg.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 93 Zeilen
@@ -1307,8 +1309,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/staff-labels.ts` — Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. — gelesen: 19 Zeilen
 - `src/ui/table-launcher.tsx` — Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. — gelesen: 145 Zeilen
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen
-- `tsconfig.json` — { — gelesen: 24 Zeilen
-- `vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 37 Zeilen
 
 ### 18.4 Mechanische Auffaelligkeiten
 
@@ -1320,6 +1320,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T25 | **2026-11-01 21:05 UTC**: Review-Nachlauf: fatale Promotion-Luecken geschlossen. Merge nutzt `PROMOTE_TOKEN` oder stoesst `Auto Version & Release` an; `integration` in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt; `cancelled` ist kein Urteil; `gh pr update-branch` gegen den Strict-Policy-Deadlock; leerer PR-Body ist `ERR-4006`. Gelesen: alle sechs Workflows, `ci-tag-release.mjs`, `verify-commit-msg.mjs`, `branch-cleanup.mjs`, `lib/escalation.mjs`. v1.22. |
 | T24 | **2026-11-01 20:40 UTC**: Auto-Promotion und Integrationsbranch. Neu: `scripts/promote.mjs`, `.github/workflows/promote.yml`, `scripts/lib/identity.mjs`, `.mailmap`. Ein CI-Ergebnis entscheidet: gruen PR anlegen und mit Pflichtsektionen mergen, rot Label `integration/rot` und Stand auf die permanente Branch `integration`. Zwei parallele rote Staende werden komponiert (`git merge`), ein Textkonflikt bekommt `integration/konflikt`; kein force-Push, kein `-X theirs`. Identitaet `Vannon <Schneider.felix1993@gmail.com>` in `turn:finish` und im Workflow verdrahtet. Gelesen: `ci-verify.yml`, `pr-escalation.yml`, `auto-version-release.yml`, `pr-cleanup.yml`, `turn-push.mjs`, `.githooks/pre-commit`, `verify-tree.mjs`, `loc-budgets.mjs`, `docs/CI-GATES.md`, `docs/ESCALATION.md`. v1.21. |
 | T23 | **2026-11-01 19:50 UTC**: Doku-Konsolidierung, Sortierung und Repo-Hygiene. Umbenannt: `docs/event-narrative-engine-taskplan.md` → `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`, `docs/assets/casino-pixel-asset-pack.md` → `docs/CASINO-PIXEL-ASSET-PACK.md`; `docs/assets/` entfällt, 16 Doku-Dateien liegen flach. Widersprüche behoben: Save überall v9 (`vcoin.casino.v9`, Migration v5–v8), Narrative Engine als Stufe 1 statt „nicht gebaut", Gate-Zählung quick 10 / full 12 inkl. `assets`, `audit`, `build`. Fehlerkatalog repariert (verschmolzene ERR-4013/4014-Zeile) und aufsteigend sortiert. Hooks aktiviert (`core.hooksPath=.githooks`); das Doku-Gate ueberspringt Dotfiles in der Wurzel, weil `.turn-notes.md` den Turn-Abschluss sonst blockiert. Stand: `main` = `origin/main` = `c4e6e3b`, 983 Dateien, 67 Ordner. v1.20. |
 | T22 | **2026-11-01 12:05 UTC**: Narrative Engine Stufe 1 (NAR-00 bis NAR-03) umgesetzt. Neu: `src/core/sim/narrative/{types,facts,state,memory}.ts`, `docs/NARRATIVE-ENGINE.md`, `content/narrative/{contributions,vocabulary}`; `WorldState.narrative`, `Visitor.memories`, Facts an Spawn/Rueckkehr/Auszahlung, Start-Pool mit Startkapital-Fact, Save v9 mit Normalisierung aus v5–v8, Tree-Gate kennt `content/`. Wirkung: Rueckkehrchance ±Erinnerungsbonus (letzte doppelt, Deckel), Spawn-Laune von Stammgaesten, Pool-Rueckkehr ab Tick 0. Tests: `narrative-facts`, `narrative-memory`, `narrative-start-pool`, `narrative-save`. Offen: NAR-04 bis NAR-17. v1.19. |

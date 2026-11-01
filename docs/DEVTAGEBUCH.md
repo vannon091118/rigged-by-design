@@ -10,6 +10,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Review-Nachlauf: fatale Luecken der Promotion geschlossen
+
+**Ziel.** Die Review fand zwei Luecken, die die Kette stillschweigend wirkungslos machen: ein Merge mit `GITHUB_TOKEN` startet keinen Workflow (kein CI auf `main`, kein Tag, kein APK), und `pr-cleanup` loescht die permanente Branch `integration`. Beides behoben, dazu die Wettlauf-Raender.
+
+**Umsetzung.** `promote.mjs` waehlt `PROMOTE_TOKEN` als Merge-Token und stoesst ohne dieses Token `Auto Version & Release` an, das vor dem Tag `verify-commit-msg --head` ausfuehrt. `integration` ist in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt. `cancelled` ist kein Urteil, nur Push-Laeufe promoten, `gh pr update-branch` verhindert den Strict-Policy-Deadlock, der Integrations-Push wird begrenzt geschleift statt rekursiert. `verify-commit-msg --pr` weist einen leeren Body ab. Zusaetzlich kippte `narrative-start-pool` an einer Namenspruefung: `Rita Kern` ist eine moegliche Zufallskombination aus `NAMES` x `LAST_NAMES` in `src/core/sim/traits.ts`, die Zusicherung prueft jetzt das Profil (eine Visite, kein `START_POOL`-Fact) statt des Namens.
+
+Dazu der Aufraeum-Umzug: die Werkzeug-Configs liegen jetzt in `src/Config/`, die Wurzel traegt keine Kopien mehr. `tsconfig.json` bekam `../src` als Include, `vite.config.ts` importiert den Harness ueber `../core/...`, und jeder Aufrufer bindet seinen Pfad explizit — sonst findet `vite`, `vitest`, `tsc`, `eslint`, die Dependency-Matrix, der Dead-Code-Gate oder der Gate-Cache die Datei nicht mehr. Capacitor sucht seine Konfiguration ausschliesslich im Arbeitsverzeichnis; `prepare-android` kopiert sie kurzzeitig in die Wurzel und entfernt sie nach dem Gradle-Lauf. `.mailmap` bleibt in der Wurzel, weil Git nur dort liest.
+
+**Pruefungen.** `node --check` fuer beide Skripte; jede Ersetzung genau einmal angewandt (Skript bricht bei 0 oder 2 Treffern ab); `verify:quick` mit allen zehn Gates im Turn-Abschluss. Ein echter Merge in CI bleibt der offene Nachweis.
+
+**Offen.** `PROMOTE_TOKEN` ist nicht gesetzt, der Anstoss-Pfad ist der aktive. Ob GitHub den Squash-Commit mit eigenem Token als Push wertet, zeigt der erste Lauf. Befund 3, 6 und 7 unveraendert.
+
 ## 2026-11-01 - Auto-Promotion: gruene Checks mergen, rote Staende auf die Integrationsbranch
 
 **Ziel.** Der Weg von "Branch gepusht" bis "auf main" soll ohne Handgriff laufen: PR anlegen, Checks abwarten, bei Gruen mergen, bei Rot den Stand auf eine dauerhafte Integrationsbranch legen, damit dort repariert wird. Der Committer soll dabei immer der Eigentuemer sein, unabhaengig von Runner oder Sandbox.
@@ -398,7 +410,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -22,6 +22,10 @@ const CONFLICT_LABEL = 'integration/konflikt';
 const branch = process.env.HEAD_BRANCH ?? '';
 const conclusion = process.env.CONCLUSION ?? '';
 const hasToken = Boolean(process.env.GH_TOKEN);
+const event = process.env.EVENT ?? '';
+// Ein Merge mit dem Workflow-Token startet keinen Workflow; das eigene Token
+// ist die Stufe, die CI, Tag und APK wieder in Gang setzt.
+const elevated = Boolean(process.env.PROMOTE_TOKEN);
 
 const run = (command, args) => {
   try {
@@ -95,7 +99,14 @@ function mergeGreen(number) {
     }
     warn(`Auto-Merge fuer #${number} nicht verfuegbar; expliziter Merge`);
   }
-  return gh(['pr', 'merge', number, '--squash', '--subject', subject(`origin/${branch}`), '--body-file', bodyFile]) !== null;
+  // Strict-Policy: sobald main sich bewegt, ist der Pflichtstatus veraltet.
+  if (gh(['pr', 'update-branch', number]) === null) log(`#${number}: kein Branch-Update noetig`);
+  const merged = gh(['pr', 'merge', number, '--squash', '--subject', subject(`origin/${branch}`), '--body-file', bodyFile]) !== null;
+  if (merged && !elevated) {
+    if (gh(['workflow', 'run', 'Auto Version & Release', '--ref', MAIN]) !== null) log('Release-Lauf ohne eigenes Token angestossen');
+    else warn('Merge ohne PROMOTE_TOKEN; Release-Lauf nicht angestossen');
+  }
+  return merged;
 }
 
 /** Alle offenen Staende, die als rot markiert sind - plus der aktuelle Lauf. */
@@ -106,7 +117,7 @@ function redBranches() {
 }
 
 /** Rot: Stand auf die Integrationsbranch legen; ein Konflikt wird nicht erzwungen. */
-function integrate(name) {
+function integrate(name, attempt = 0) {
   const number = openPr(name);
   const merged = git(['merge', '--no-ff', `origin/${name}`, '-m', `Integration: ${subject(`origin/${name}`)}`]);
   if (merged === null) {
@@ -125,7 +136,8 @@ function integrate(name) {
   // enthaltener Branch nur "Already up to date" meldet.
   git(['fetch', 'origin', `+refs/heads/${INTEGRATION}:refs/remotes/origin/${INTEGRATION}`]);
   git(['reset', '--hard', `origin/${INTEGRATION}`]);
-  integrate(name);
+  if (attempt < 2) integrate(name, attempt + 1);
+  else warn(`${name} liess sich nach drei Versuchen nicht auf ${INTEGRATION} legen`);
 }
 
 function promoteRed() {
@@ -141,13 +153,15 @@ function promoteRed() {
   }
 }
 
-if (!branch || branch === MAIN) {
+if (event && event !== 'push') {
+  log(`Ereignis ${event}: nur Push-Laeufe promoten`);
+} else if (!branch || branch === MAIN) {
   log('main wird nicht promotet');
 } else if (conclusion === 'success') {
   const number = ensurePr();
   if (!number) warn(`kein PR fuer ${branch}; Merge uebersprungen`);
   else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (Pflichtstatus noch nicht gruen?)`);
-} else if (['failure', 'timed_out', 'cancelled', 'startup_failure'].includes(conclusion)) {
+} else if (['failure', 'timed_out', 'startup_failure'].includes(conclusion)) {
   label(openPr(), RED_LABEL, 'Roter Stand, liegt auf der Integrationsbranch');
   promoteRed();
 } else {

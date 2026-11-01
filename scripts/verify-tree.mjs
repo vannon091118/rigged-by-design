@@ -10,14 +10,13 @@ import { extname, join, relative, resolve, sep } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 
 const ROOT_FILES = new Set([
-  'package.json', 'package-lock.json', 'tsconfig.json', 'vite.config.ts', 'eslint.config.js',
-  'eslint.config.mjs', 'opencode.json', 'index.html', 'capacitor.config.json', 'README.md',
-  'AGENTS.md', 'LICENSE',
+  'package.json', 'package-lock.json', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
 ]);
 const SRC_ROOT = new Set(['main.tsx', 'App.tsx', 'vite-env.d.ts']);
 
 /** Erlaubte Endungen je Bereich; `null` heisst: alles erlaubt. */
 const AREAS = [
+  { dir: 'src/Config', ext: ['.json', '.mjs', '.ts', '.tsbuildinfo'], note: 'Werkzeug-Configs liegen gesammelt in src/Config' },
   { dir: 'src/core', ext: ['.ts'], note: 'Core bleibt headless und ohne UI' },
   { dir: 'src/store', ext: ['.ts'], note: 'Store besitzt Zustand und Save' },
   { dir: 'src/ui', ext: ['.ts', '.tsx'], note: 'UI enthaelt Komponenten, keine Stylesheets' },

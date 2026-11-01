@@ -11,7 +11,7 @@
  * Signatur heraus; das Signieren ist ein eigener Schritt.
  * Android-SDK und Java 21 kommen aus dem CI-Image; lokal bricht der Lauf rot ab.
  */
-import { copyFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
@@ -37,9 +37,9 @@ function run(command, args, cwd = ROOT) {
 if (!existsSync(resolve(ROOT, 'dist', 'index.html'))) {
   abort('dist/index.html fehlt: zuerst npm run build bzw. verify:all');
 }
-const configPath = resolve(ROOT, 'capacitor.config.json');
+const configPath = resolve(ROOT, 'src', 'Config', 'capacitor.config.json');
 if (!existsSync(configPath)) {
-  abort('capacitor.config.json fehlt: die Huelle ist fest im Repo verdrahtet');
+  abort('src/Config/capacitor.config.json fehlt: die Huelle ist fest im Repo verdrahtet');
 }
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 if (config.webDir !== 'dist') abort(`capacitor.config.json: webDir muss dist sein, steht: ${config.webDir}`);
@@ -52,11 +52,16 @@ for (const dep of CAPACITOR) {
 }
 console.log(`[IDX-0001] prepare-android: ${release ? 'Release (unsigned)' : 'Debug'} von ${pkg.name}@${pkg.version}`);
 
+// Capacitor liest seine Konfiguration nur im Arbeitsverzeichnis: die Quelle
+// liegt in src/Config, die Wurzel bekommt waehrend des Laufs eine Kopie.
+const rootConfig = resolve(ROOT, 'capacitor.config.json');
+copyFileSync(configPath, rootConfig);
 if (!existsSync(resolve(ROOT, 'android'))) run('npx', ['cap', 'add', 'android']);
 run('npx', ['cap', 'sync', 'android']);
 
 const gradle = process.platform === 'win32' ? 'gradlew.bat' : './gradlew';
 run(gradle, [gradleTask, '--no-daemon'], resolve(ROOT, 'android'));
+rmSync(rootConfig, { force: true });
 
 const apk = resolve(ROOT, 'android', 'app', 'build', 'outputs', 'apk', stage, gradleApk);
 if (!existsSync(apk)) abort(`Gradle hat keine ${stage}-APK erzeugt: ${gradleApk}`);

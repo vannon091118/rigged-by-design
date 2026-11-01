@@ -120,6 +120,19 @@ Stand bleibt unveraendert. Aufloesen ist Agentenarbeit (`git merge
 origin/integration`), kein Automatismus — ein `-X theirs` wuerde Arbeit
 stillschweigend verlieren.
 
+**Token-Eskalation.** Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow; ohne
+Gegenmassnahme gaebe es weder `CI Verify` auf `main` noch Tag und APK. `promote`
+nutzt `PROMOTE_TOKEN`, wenn das Secret gesetzt ist, und stoesst sonst
+`Auto Version & Release` an, das den Commit-Text vor dem Tag selbst prueft.
+
+**Geschuetzte Branch.** `integration` ist keine Wegwerfbranch: `pr-cleanup.yml`
+und `scripts/lib/branch-prune.mjs` lassen sie stehen.
+
+**Urteil.** Rot ist nur `failure`, `timed_out` oder `startup_failure`. Ein
+`cancelled`-Lauf und der `pull_request`-Lauf des Merge-Refs sind kein Urteil
+ueber den Branch. Vor dem Merge laeuft `gh pr update-branch`, weil der
+Pflichtstatus unter `strict_required_status_checks_policy` sonst veraltet.
+
 **Gruene Integrationsbranch.** Ist die Reparatur auf `integration` gruen, laeuft
 `CI Verify` fuer diesen Branch, und derselbe Workflow legt den PR
 `integration` -> `main` an und mergt ihn. Damit ist der Rueckweg automatisch.

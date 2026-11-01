@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.66 | 2026-11-01 20:22 UTC -->
+<!-- rbd-doc: v0.3.67 | 2026-11-01 20:48 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,21 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.67] - 2026-11-01
+
+### Spiel
+
+- Keine sichtbare Aenderung: die Auslieferung wird belastbar, Spiel, Save und Ledger bleiben unberuehrt.
+
+### Technik
+- Merge ohne stille Kette: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt; sonst stoesst es nach dem Merge `Auto Version & Release` an, weil ein Merge mit `GITHUB_TOKEN` keinen Workflow startet und Tag und APK sonst ausfallen. Der Release prueft den Commit-Text vor dem Tag selbst.
+- `integration` ist geschuetzt: `pr-cleanup.yml` und `branch-prune.mjs` loeschen die permanente Branch nicht mehr nach dem Rueckweg nach `main`.
+- Urteil statt Rauschen: nur `failure`, `timed_out` und `startup_failure` gelten als rot; ein `cancelled`-Lauf schiebt keinen Zwischenstand auf `integration`. Nur Push-Laeufe promoten, der `pull_request`-Lauf des Merge-Refs ist kein Urteil.
+- Kein Merge-Deadlock: `gh pr update-branch` laeuft vor dem Merge, weil der Pflichtstatus unter `strict_required_status_checks_policy` sonst veraltet; der Integrationspfad schleift statt zu rekursieren.
+- Loch im PR-Gate geschlossen: ein leerer PR-Body bestand `verify-commit-msg --pr` ohne Fehlschlag; jetzt ist er `ERR-4006`.
+- Seedabhaengiger Test korrigiert: `narrative-start-pool` prueft jetzt das neue Profil (eine Visite, kein `START_POOL`-Fact) statt eines Namens. `Rita Kern` ist eine moegliche Zufallskombination aus `src/core/sim/traits.ts` (rund 0,8 % pro Ziehung) und liess den Lauf gelegentlich kippen.
+- Werkzeug-Configs liegen gesammelt in `src/Config/`: `tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json` und `opencode.json` gibt es nur noch dort. Alle Aufrufer zeigen auf den neuen Pfad (`vite`/`vitest` per `--config`, `tsc -p`, `eslint --config`, `hashFiles` im Gate-Cache, Dependency-Matrix, Dead-Code, Tree-Gate); Capacitor bekommt waehrend des APK-Laufs eine Kopie in die Wurzel, die danach wieder verschwindet. `.mailmap` bleibt in der Wurzel, weil Git sie nur dort liest.
 
 ## [0.3.66] - 2026-11-01
 

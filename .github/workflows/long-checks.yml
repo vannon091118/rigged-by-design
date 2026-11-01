@@ -66,7 +66,7 @@ jobs:
       # Diese Suiten sind Beweisklasse "statistics"; lokal laufen sie nie.
       - name: Monte-Carlo-Nachweise
         run: >-
-          npx vitest run
+          npx vitest run --config src/Config/vite.config.ts
           src/core/games/__tests__/round-rtp-high.test.ts
           src/core/games/__tests__/round-rtp-machines.test.ts
           src/core/games/__tests__/slot-session-rtp.test.ts
@@ -89,7 +89,7 @@ jobs:
       - name: Langlauf
         env:
           RBD_SOAK_TICKS: ${{ inputs.soak_ticks }}
-        run: npx vitest run src/core/sim/__tests__/soak.test.ts
+        run: npx vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/soak.test.ts
 
   balance:
     name: Balance ${{ inputs.balance_days }} Spieltage

@@ -1,6 +1,6 @@
 import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import { GovernanceReporter } from './src/core/governance/test-harness';
+import { GovernanceReporter } from '../core/governance/test-harness';
 
 // Messung 31.10.2026: RTP-, Balance- und Soak-Nachweise kosten 52,2 s von 72,5 s CPU-Zeit
 // der ganzen Suite und damit 15 s der 33,6 s Gate-Wandzeit. Das schnelle Profil laesst sie

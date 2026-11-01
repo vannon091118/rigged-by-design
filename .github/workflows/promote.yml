@@ -14,7 +14,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  actions: read
+  actions: write
 
 concurrency:
   group: promote
@@ -31,7 +31,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Identitaet auf den Eigentuemer setzen
         run: |
@@ -45,7 +45,9 @@ jobs:
 
       - name: Promote
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+          PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}
+          EVENT: ${{ github.event.workflow_run.event || 'workflow_dispatch' }}
         run: node scripts/promote.mjs

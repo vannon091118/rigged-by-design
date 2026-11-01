@@ -18,6 +18,11 @@ function readInput() {
   return file ? readFileSync(file, 'utf8') : '';
 }
 const text = readInput();
+// Ein leerer PR-Body bestand das Gate bisher ohne einen einzigen Fehlschlag.
+if (args.includes('--pr') && !text.trim()) {
+  fail(1, 'ERR-4006', 'verify-commit-msg', 'PR-Body fehlt; Pflichtsektionen nicht pruefbar');
+  process.exit(1);
+}
 
 let index = 0;
 let failures = 0;

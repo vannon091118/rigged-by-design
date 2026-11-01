@@ -39,5 +39,5 @@ if (tests.length === 0) {
 }
 
 const vitest = resolve(ROOT, 'node_modules', 'vitest', 'vitest.mjs');
-const result = spawnSync(process.execPath, [vitest, 'run', ...tests], { cwd: ROOT, stdio: 'inherit' });
+const result = spawnSync(process.execPath, [vitest, 'run', '--config', 'src/Config/vite.config.ts', ...tests], { cwd: ROOT, stdio: 'inherit' });
 process.exit(result.status ?? 1);
