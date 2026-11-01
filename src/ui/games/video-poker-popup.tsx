@@ -24,8 +24,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
 }
 
 const NO_HOLDS = [false, false, false, false, false];
@@ -41,15 +41,13 @@ export function VideoPokerPopup(props: Props) {
   const holdsRef = useRef<readonly boolean[]>(NO_HOLDS);
   const [phase, setPhase] = useState<'IDLE' | 'HOLD' | 'DONE'>('IDLE');
   const [result, setResult] = useState<GameResult | null>(null);
-  const [netBps, setNetBps] = useState<number>(10_000);
   const canPay = canAfford(props.wallets.wallet, fromVC(bet));
 
   const deal = (): void => {
     if (phase === 'HOLD' || !canPay) return;
-    const dealResult = props.onDeal(bet, 10_000); // Video Poker: 100% basis
+    const dealResult = props.onDeal(bet);
     if (!dealResult) return;
     shoe.current = createCardShoe(dealResult.seed);
-    setNetBps(dealResult.netBps);
     const dealt = dealVideoPoker(shoe.current);
     setHand(dealt);
     holdsRef.current = NO_HOLDS;
@@ -77,9 +75,7 @@ export function VideoPokerPopup(props: Props) {
     const evaluation = evaluateVideoPoker(out.hand);
     playSfx('cardFlip');
     stage.current?.render(out.hand, holdsRef.current, evaluation.hand === 'NOTHING' ? null : evaluation.hand);
-    const edge = Math.max(0, 10_000 - netBps);
-    const adjusted = Math.max(0, out.bps - edge);
-    setResult(props.onSettle(bet, adjusted, out.label));
+    setResult(props.onSettle(bet, out.bps, out.label));
   };
 
   const narration = (): string => {

@@ -24,10 +24,10 @@ interface Props {
   readonly onRisk: (rivalId: RivalId, color: RiskColor, stakeVC: number) => RiskOutcome | null;
   readonly onTakeHome: () => void;
   readonly onShellRound: () => ShellRound;
-  readonly onDealCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string) => GameResult | null;
-  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
-  readonly onAdditionalBet?: (additionalVC: number) => void;
+  readonly onDealCard: (rivalId: RivalId, machineIndex: number, stakeVC: number) => CardDeal | null;
+  readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, engineBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
+  readonly onAdditionalBet: (additionalVC: number) => boolean;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
 
@@ -154,8 +154,8 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           onSpin={(betVC, options) => onPlay(rivalId, machineIndex, betVC, options)}
           onRisk={machine.game === 'SLOT' ? (color, stakeVC) => onRisk(rivalId, color, stakeVC) : undefined}
           onShellRound={onShellRound}
-          onDeal={(stakeVC, bps) => onDealCard(rivalId, machineIndex, stakeVC, bps)}
-          onSettle={(stakeVC, netBps, label) => onSettleCard(rivalId, machineIndex, stakeVC, netBps, label)}
+          onDeal={(stakeVC) => onDealCard(rivalId, machineIndex, stakeVC)}
+          onSettle={(stakeVC, engineBps, label) => onSettleCard(rivalId, machineIndex, stakeVC, engineBps, label)}
           onAdditionalBet={onAdditionalBet}
         />
       ) : (

@@ -94,6 +94,22 @@ describe('Poker-Tisch', () => {
     expect(after.players[0]?.acted).toBe(false);
   });
 
+  it('oeffnet nach einem Check auf einer spaeteren Strasse keine neue Setzrunde', () => {
+    const table: PokerTable = {
+      players: [
+        { id: 'DU', human: true, hole: [card('A', '♠'), card('K', '♦')], stack: 800, committed: 100, streetCommitted: 50, folded: false, allIn: false, acted: false },
+        { id: 'GAST 1', human: false, hole: [card('Q', '♣'), card('J', '♣')], stack: 0, committed: 100, streetCommitted: 50, folded: false, allIn: true, acted: true },
+      ],
+      board: [card('2', '♠'), card('3', '♥'), card('4', '♦'), card('5', '♣'), card('6', '♠')],
+      shoe: createShoe(new Prng(randomSeed())),
+      pot: 200, stake: 1_000, unit: 50, street: 'RIVER', toAct: 0, bet: 50, raises: 0, result: null,
+    };
+    const after = humanAct(table, 'CHECK', new Prng(randomSeed()));
+    expect(after.result).not.toBeNull();
+    expect(after.toAct).toBe(-1);
+    expect(after.pot).toBe(200);
+  });
+
   it('gibt nach einem Fold nur das ungespielte Ruestgeld zurueck', () => {
     const stake = 10_000;
     const table = startHand(new Prng(randomSeed()), { stake });

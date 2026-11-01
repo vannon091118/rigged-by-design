@@ -94,7 +94,7 @@ function applyAction(table: PokerTable, index: number, action: PokerAction): Pok
   }
   let bet = table.bet;
   let raises = table.raises;
-  if (!me.folded && me.committed > bet) {
+  if (!me.folded && me.streetCommitted > bet) {
     bet = me.committed;
     raises += 1;
     // Eine Erhoehung oeffnet die Runde fuer alle anderen neu.

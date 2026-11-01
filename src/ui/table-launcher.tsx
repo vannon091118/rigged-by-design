@@ -32,10 +32,10 @@ interface Props {
   readonly canWithdraw: boolean;
   readonly onSpin: (betVC: number, options?: GameExtras) => GameResult | null;
   readonly onShellRound: () => ShellRound;
-  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
-  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
-  readonly onAdditionalBet?: (additionalVC: number) => void;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
+  readonly onAdditionalBet: (additionalVC: number) => boolean;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 

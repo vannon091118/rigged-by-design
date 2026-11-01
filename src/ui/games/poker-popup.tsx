@@ -24,8 +24,8 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
 }
 
 const STREET_LABEL: Readonly<Record<PokerTable['street'], string>> = {
@@ -39,7 +39,6 @@ export function PokerPopup(props: Props) {
   const [bet, setBet] = useState(bets[0] ?? 1);
   const [table, setTable] = useState<PokerTable | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
-  const [netBps, setNetBps] = useState<number>(10_000);
   const stake = fromVC(bet);
   const canPay = canAfford(props.wallets.wallet, stake);
   const human = table?.players[0] ?? null;
@@ -52,19 +51,14 @@ export function PokerPopup(props: Props) {
     setTable(next);
     stage.current?.render(next);
     playSfx('cardFlip');
-    if (next.result) {
-      const edge = Math.max(0, 10_000 - netBps);
-      const adjusted = Math.max(0, next.result.multiplierBps - edge);
-      setResult(props.onSettle(bet, adjusted, next.result.label));
-    }
+    if (next.result) setResult(props.onSettle(bet, next.result.multiplierBps, next.result.label));
   };
 
   const deal = (): void => {
     if (running || !canPay) return;
-    const dealResult = props.onDeal(bet, 10_000); // Poker: 100% basis, edge handled by settle
+    const dealResult = props.onDeal(bet);
     if (!dealResult) return;
     rng.current = new Prng(dealResult.seed);
-    setNetBps(dealResult.netBps);
     setResult(null);
     commit(startHand(rng.current, { stake, opponents: 3 }));
   };

@@ -14,6 +14,7 @@ import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
+import { BlackjackRulesPanel } from './blackjack-rules-panel';
 
 interface Props {
   readonly title: string;
@@ -27,13 +28,11 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
-  readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
-  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
-  readonly onAdditionalBet?: (additionalVC: number) => void;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
+  readonly onAdditionalBet: (additionalVC: number) => boolean;
 }
-
-const DECKS: readonly number[] = [1, 2, 4, 6];
 
 export function BlackjackPopup(props: Props) {
   const { bets } = props;
@@ -43,17 +42,19 @@ export function BlackjackPopup(props: Props) {
   const [rules, setRules] = useState<BlackjackRules>(DEFAULT_BLACKJACK_RULES);
   const [round, setRound] = useState<BlackjackRound | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
-  const [netBps, setNetBps] = useState<number>(10_000);
   const roundActive = round?.phase === 'PLAYER'; // includes insurance phase
   const playing = roundActive && !round?.insuranceOffered; // player may act only outside insurance
-  const stake = fromVC(bet);
-  const canPay = canAfford(props.wallets.wallet, stake);
-  // Der Grundeinsatz ist bereits gebucht; Double braucht nur noch einen weiteren Einsatz.
-  const canDouble = canAfford(props.wallets.wallet, stake);
+  const sideBet = rules.sideBetBps > 0;
+  const dealStake = sideBet ? bet * 2 : bet;
+  const canPay = canAfford(props.wallets.wallet, fromVC(dealStake));
   const activeHand = round?.hands[round.active ?? 0] ?? null;
+  const extraStake = bet * (activeHand?.units ?? 1);
+  // Der Grundeinsatz ist bereits gebucht; Double braucht nur noch einen weiteren Einsatz.
+  const canDouble = canAfford(props.wallets.wallet, fromVC(extraStake));
   const canSplit = Boolean(playing && rules.allowSplit && round && round.hands.length < rules.maxHands
     && activeHand && activeHand.cards.length === 2
-    && handTotal([activeHand.cards[0]!]) === handTotal([activeHand.cards[1]!]));
+    && handTotal([activeHand.cards[0]!]) === handTotal([activeHand.cards[1]!])
+    && canAfford(props.wallets.wallet, fromVC(extraStake)));
   const canSurrender = Boolean(playing && rules.allowSurrender && round && round.hands.length === 1
     && activeHand && activeHand.cards.length === 2);
 
@@ -61,24 +62,16 @@ export function BlackjackPopup(props: Props) {
     setRound(next);
     playSfx('cardFlip');
     stage.current?.render(next);
-    if (next.phase === 'DONE') {
-      const edge = Math.max(0, rules.blackjackBps - netBps);
-      const adjusted = Math.max(0, next.multiplierBps - edge);
-      setResult(props.onSettle(bet * next.units, adjusted, next.label));
-    }
+    if (next.phase === 'DONE') setResult(props.onSettle(bet * next.units, next.multiplierBps, next.label));
   };
 
   const deal = (): void => {
     if (playing || !canPay) return;
-    const sideBet = rules.sideBetBps > 0;
-    const dealStake = sideBet ? bet * 2 : bet * 1;
-    const dealResult = props.onDeal(dealStake, rules.blackjackBps);
+    const dealResult = props.onDeal(dealStake);
     if (!dealResult) return;
-    if (sideBet) props.onAdditionalBet?.(bet);
     shoe.current = createCardShoe(dealResult.seed, rules.decks);
-    setNetBps(dealResult.netBps);
     setResult(null);
-    commit(startBlackjack(shoe.current, 1, rules, true));
+    commit(startBlackjack(shoe.current, 1, rules, sideBet));
   };
 
   const act = (kind: 'HIT' | 'STAND' | 'DOUBLE' | 'SPLIT' | 'SURRENDER'): void => {
@@ -86,20 +79,18 @@ export function BlackjackPopup(props: Props) {
     if (kind === 'HIT') commit(hitBlackjack(round, shoe.current));
     else if (kind === 'STAND') commit(standBlackjack(round, shoe.current));
     else if (kind === 'DOUBLE') {
+      if (!props.onAdditionalBet(extraStake)) return;
       commit(doubleBlackjack(round, shoe.current));
-      props.onAdditionalBet?.(bet); // ein weiterer Einsatz für die verdoppelte Hand
-    }
-    else if (kind === 'SPLIT') {
+    } else if (kind === 'SPLIT') {
+      if (!props.onAdditionalBet(extraStake)) return;
       commit(splitBlackjack(round, shoe.current));
-      props.onAdditionalBet?.(bet); // ein weiterer Einsatz für die zweite Hand
-    }
-    else commit(surrenderBlackjack(round));
+    } else commit(surrenderBlackjack(round));
   };
 
   const insure = (take: boolean): void => {
     if (!round || !shoe.current) return;
+    if (take && !props.onAdditionalBet(bet / 2)) return;
     commit(insuranceBlackjack(round, shoe.current, take));
-    if (take) props.onAdditionalBet?.(Math.round(bet / 2)); // Versicherung: ein halber Einsatz
   };
 
   const setRule = (patch: Partial<BlackjackRules>): void => setRules((current) => normalizeBlackjackRules({ ...current, ...patch }));
@@ -172,39 +163,10 @@ export function BlackjackPopup(props: Props) {
         ))}
       </div>
 
-      <div className="blackjack-rules" aria-label="Tischregeln">
-        <span className="eyebrow">TISCHREGELN</span>
-        <div className="bet-row">
-          {DECKS.map((decks) => (
-            <button key={decks} type="button" className={`chip${rules.decks === decks ? ' active' : ''}`}
-              disabled={playing} onClick={() => setRule({ decks })}>{decks} Deck{decks > 1 ? 's' : ''}</button>
-          ))}
-        </div>
-        <div className="bet-row">
-          <button type="button" className={`chip${!rules.dealerHitsSoft17 ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ dealerHitsSoft17: false })} title="Dealer hält weiche 17.">S17</button>
-          <button type="button" className={`chip${rules.dealerHitsSoft17 ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ dealerHitsSoft17: true })} title="Dealer zieht auf weiche 17.">H17</button>
-          <button type="button" className={`chip${rules.blackjackBps === 25_000 ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ blackjackBps: 25_000 })}>Blackjack 3:2</button>
-          <button type="button" className={`chip${rules.blackjackBps === 22_000 ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ blackjackBps: 22_000 })}>6:5</button>
-        </div>
-        <div className="bet-row">
-          <button type="button" className={`chip${rules.allowSplit ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ allowSplit: !rules.allowSplit })}>Split</button>
-          <button type="button" className={`chip${rules.allowInsurance ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ allowInsurance: !rules.allowInsurance })}>Versicherung</button>
-          <button type="button" className={`chip${rules.allowSurrender ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ allowSurrender: !rules.allowSurrender })}>Aufgeben</button>
-          <button type="button" className={`chip${rules.sideBetBps > 0 ? ' active' : ''}`} disabled={playing}
-            onClick={() => setRule({ sideBetBps: rules.sideBetBps > 0 ? 0 : 120_000 })}
-            title="Paar-Wette: 1 Einheit extra, zahlt 11:1 auf ein Paar.">Paar-Wette</button>
-        </div>
-      </div>
+      <BlackjackRulesPanel rules={rules} disabled={Boolean(playing)} onChange={setRule} />
 
       <button type="button" className="btn primary big" disabled={roundActive || !canPay} onClick={deal}>
-        {roundActive ? 'HAND LÄUFT' : canPay ? `AUSTEILEN · ${bet} VC` : 'ZU WENIG BARGELD'}
+        {roundActive ? 'HAND LÄUFT' : canPay ? `AUSTEILEN · ${dealStake} VC` : 'ZU WENIG BARGELD'}
       </button>
       <small className="hint">
         {rules.dealerHitsSoft17 ? 'H17: Der Dealer zieht auf weiche 17.' : 'S17: Der Dealer hält weiche 17.'}

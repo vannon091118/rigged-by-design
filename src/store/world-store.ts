@@ -142,10 +142,7 @@ class WorldStore {
     });
   }
   setWall(color: string): void {
-    this.#guard(() => {
-      setWallColor(this.#world, color);
-      this.#notice = 'Wand gestrichen.';
-    });
+    this.#guard(() => { setWallColor(this.#world, color); this.#notice = 'Wand gestrichen.'; });
   }
   setNeon(color: string): void {
     this.#guard(() => {
@@ -195,10 +192,7 @@ class WorldStore {
     });
   }
   setPrice(key: 'drinkPrice' | 'slotMinBet', vc: number): void {
-    this.#guard(() => {
-      setPrice(this.#world, key, fromVC(vc));
-      this.#notice = 'Preis geändert.';
-    });
+    this.#guard(() => { setPrice(this.#world, key, fromVC(vc)); this.#notice = 'Preis geändert.'; });
   }
   setCarpet(carpet: CarpetId): void {
     setCarpet(this.#world, carpet);
@@ -235,18 +229,11 @@ class WorldStore {
   serveDrink(guestId: number): void { this.#event(() => serveDrink(this.#world, this.#ledger, guestId)); }
   moveTo(point: Point): void { movePlayer(this.#world, point); this.#emit(false); }
   /** Karten: Einsatz und Schuh-Seed beim Austeilen, Auszahlung mit Hausquote am Rundenende. */
-  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number): CardDeal | null { return this.#foreign(() => dealCardOutcome(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC, bps)); }
-  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null { return this.#foreign(() => settleCardOutcome(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, netBps, label)); }
-  /** Buchung eines zusätzlichen Einsatzes (Double, Split, Versicherung, Side Bet). */
-  additionalBet(amountVC: number): void {
-    try {
-      additionalBet(this.#world, this.#ledger, fromVC(amountVC), this.#world.tick);
-      this.#notice = 'Zusatz-Einsatz gebucht.';
-      this.#emit();
-    } catch (error) {
-      this.#notice = error instanceof Error ? error.message : 'Zusatz-Einsatz fehlgeschlagen.';
-      this.#emit(false);
-    }
+  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number): CardDeal | null { return this.#foreign(() => dealCardOutcome(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC)); }
+  settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, engineBps: number, label: string): GameResult | null { return this.#foreign(() => settleCardOutcome(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, engineBps, label)); }
+  /** Buchung eines zusätzlichen Einsatzes (Double, Split, Versicherung). */
+  additionalBet(amountVC: number): boolean {
+    return this.#foreign(() => { additionalBet(this.#world, this.#ledger, fromVC(amountVC), this.#world.tick); return { result: true, notice: 'Zusatz-Einsatz gebucht.' }; }) !== null;
   }
   /** Huetchen: die Runde steht vor der Wahl fest, gebucht wird erst der Griff. */
   shellRound(cups = 3): ShellRound { return createShellRound(this.#prng, cups); }
