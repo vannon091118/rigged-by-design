@@ -27,6 +27,18 @@ Links der Stand ohne Paket, rechts derselbe Floor mit den Geräte-, Tisch- und D
 
 Die Bibliothek zeigt jede Datei des Pakets, spielt die Frame-Animationen und Emitter ab und macht alle Tonspuren einzeln hörbar. Die Verdrahtung im Floor, in Plinko, in den Musikzuständen und die reproduzierbare Audio-Pipeline stehen in [`docs/ASSETS.md`](docs/ASSETS.md).
 
+### Welche Kategorie wo ingame steckt
+
+| Kategorie | Ort im Spiel |
+| --- | --- |
+| **Figuren** | Pixelköpfe für Gegner und Dealer am Poker-Tisch, Croupier im Roulette-Fenster, Personal auf dem Floor |
+| **UI-Icons** | Hauskonto, Gäste, Ruf, Schmutz-Warnung, Hilfe und Schließen in HUD und Popups; Geräte-Icons in der Spielauswahl |
+| **Environment** | Teppichmuster über den Zonen des Floors, Damast-Wallpaper in den Popup-Köpfen |
+| **FX-Texturen & Emitter** | `jackpot-burst` und `coin-burst` an Slot, Plinko, Roulette und Poker; `plinko-impact` bei jedem Stiftkontakt; der Münzregen nutzt die Coin-Sprites statt gezeichneter Kreise |
+| **Maschinen, Symbole, Deko** | Geräte und Tische auf dem Floor, Walzensymbole, Plinko-Pegs und Auszahlungsfelder, Deko-Texturen |
+
+![Poker mit Figuren, Kartenrücken und Dealer-Button aus dem Paket](docs/screenshots/comparison/17-poker-assets-ingame.png)
+
 ## Die Idee (und warum sie ein Finanzamt braucht)
 
 Du startest mit **0,00 VC** und **einem gratis Automaten**. Das ist keine Challenge, das ist eine Diagnose.

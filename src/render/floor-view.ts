@@ -51,7 +51,7 @@ export class FloorView {
     this.#view = view;
     this.#callbacks = callbacks;
     this.#scene = createSceneCache();
-    this.#camera.addChild(this.#scene.room, this.#scene.furniture, this.#scene.props, this.#scene.actors, this.#scene.stickers);
+    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.furniture, this.#scene.props, this.#scene.actors, this.#scene.stickers);
     this.#camera.eventMode = 'static';
     this.#camera.on('pointertap', this.#tap);
     app.stage.addChild(this.#camera);

@@ -2,6 +2,7 @@
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { HELP } from './glossary';
+import { UI_ICON } from './icons';
 import type { RpgAttribute } from '../core/sim/player-rpg';
 
 interface HudProps {
@@ -46,7 +47,7 @@ export function Hud({
       </div>
 
       <div className="hud-money" title={HELP.hauskonto}>
-        <span>HAUSKONTO</span>
+        <span><img className="ui-icon" src={UI_ICON.coin} alt="" />HAUSKONTO</span>
         <strong>{vc(view.house, view.house < 1000 * 10_000 ? 2 : 0)}</strong>
         <small>
           <span className="term" title={HELP.portemonnaie}>Portemonnaie {vc(view.wallet, 2)}</span>
@@ -61,7 +62,7 @@ export function Hud({
           <small>{view.pending > 0 ? 'im Gäste-Fenster auszahlen' : 'nichts offen'}</small>
         </div>
         <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe; Sitzplätze sind keine Obergrenze.">
-          <span>GÄSTE</span>
+          <span><img className="ui-icon" src={UI_ICON.guests} alt="" />GÄSTE</span>
           <strong>{view.guests.length}</strong>
           <small>
             {view.demand.event
@@ -70,9 +71,12 @@ export function Hud({
           </small>
         </div>
         <div className={`vital rep${dirty > 0 ? ' warn' : ''}`} title={HELP.ruf}>
-          <span>RUF</span>
+          <span><img className="ui-icon" src={UI_ICON.star} alt="" />RUF</span>
           <strong>{view.reputation}<em>%</em></strong>
-          <small>{dirty > 0 ? `${dirty} Flecken drücken den Ruf` : 'sauber'}</small>
+          <small>
+            <img className="ui-icon" src={dirty > 0 ? UI_ICON.warning : UI_ICON.check} alt="" />
+            {dirty > 0 ? `${dirty} Flecken drücken den Ruf` : 'sauber'}
+          </small>
         </div>
         <div className={`vital${bar && bar.stock === 0 ? ' warn' : ''}`} title={HELP.bar}>
           <span>BAR</span>
@@ -107,7 +111,9 @@ export function Hud({
             {muted ? 'STUMM' : 'SOUND'}
           </button>
         )}
-        <button type="button" className="btn ghost help-btn" onClick={onHelp} aria-label="Hilfe: Spiel erklärt" title="Spiel erklärt: Geld, Gäste, Objekte, Steuerung">?</button>
+        <button type="button" className="btn ghost help-btn" onClick={onHelp} aria-label="Hilfe: Spiel erklärt" title="Spiel erklärt: Geld, Gäste, Objekte, Steuerung">
+          <img className="ui-icon" src={UI_ICON.help} alt="" />
+        </button>
       </div>
 
       <div className="hud-rpg">

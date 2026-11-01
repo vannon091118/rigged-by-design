@@ -49,6 +49,18 @@ Aufgenommen aus dem laufenden Spiel (Chromium, 1280 × 900) nach der Integration
 | `04-asset-library-top-v2.png` | v2 | Asset-Bibliothek: Symbole, Maschinen, Deko und Plinko |
 | `05-animations-emitter-sounds-v2.png` | v2 | FX-Gruppen, drei Frame-Animationen, vier Emitter und sechs Tonspuren |
 
+## Asset-Kategorien in den Spielbühnen — 01.11.2026
+
+Aufgenommen im laufenden Fremdhaus-Popup nach echten Spielzügen: Slot verloren und gewonnen, Poker-Hand ausgeteilt, Roulette-Satz verloren, Plinko-Ball gelandet. Die Bilder zeigen die Renderer, nicht die Bibliothek.
+
+| Datei | Bühne | Zeigt |
+| --- | --- | --- |
+| `16-floor-assets-ingame.png` | Floor | Teppichmuster nur in Spielsaal und Lounge, Pixelköpfe beim Personal; Bar, Klo und Lager behalten ihr Material |
+| `17-poker-assets-ingame.png` | Poker | Fünf Figuren (drei Gegner, Held, Dealer), Kartenrücken mit Paket-Textur, Dealer-Button und Chip am Pot |
+| `18-roulette-assets-ingame.png` | Roulette | Croupier-Portrait im Fensterkopf, Chip-Icon am Jeton-Zähler, Paket-Wallpaper |
+| `19-plinko-assets-ingame.png` | Plinko | Vollständiges Brett mit Paket-Pegs und Auszahlungsfeldern nach einem echten Wurf |
+| `20-slot-assets-ingame.png` | Slot | Gewinn mit drei Linien; die Walzensymbole stammen aus dem Paket |
+
 ## Spielbühnen (`09` bis `15`)
 
 Aufgenommen am 31.10.2026 im Fremdhaus-Popup, also dort, wo die `TableLauncher` alle Spielbühnen rendert. Das Portemonnaie war bei der Aufnahme leer: die Bühnen zeigen den ungespielten Zustand, keine laufenden Walzen und keine gefallenen Bälle.

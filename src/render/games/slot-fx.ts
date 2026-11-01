@@ -1,6 +1,8 @@
 /** Effekte ueber den Walzen: Neon-Linien fuer Treffer und eine Muenzfontaene beim Gewinn. */
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import type { SlotLineWin } from '../../core/games/engines/slot';
+import { ASSET } from '../assets/keys';
+import { textureFor } from '../assets/textures';
 import { linePoints, paylineAt } from './slot-layout';
 
 const PALETTE = [0x00ffcc, 0xff2e88, 0xffd166, 0xb06bff, 0x6ee7ff] as const;
@@ -27,7 +29,7 @@ export function drawPaylines(wins: readonly SlotLineWin[], cell: number, pad: nu
 }
 
 interface Coin {
-  readonly gfx: Graphics;
+  readonly gfx: Sprite | Graphics;
   x: number;
   y: number;
   vx: number;
@@ -46,9 +48,17 @@ export class Coins {
       this.#seed = (this.#seed * 1103515245 + 12345) % 2147483648;
       const rand = this.#seed / 2147483648;
       const radius = 5 + Math.round(rand * 7);
-      const gfx = new Graphics();
-      gfx.circle(0, 0, radius).fill({ color: 0xffd166, alpha: 0.95 });
-      gfx.circle(0, 0, radius * 0.62).fill({ color: 0xb07a1f, alpha: 0.9 });
+      const texture = textureFor(ASSET.coinSpin);
+      const gfx = texture ? new Sprite(texture) : new Graphics();
+      if (texture) {
+        const sprite = gfx as Sprite;
+        sprite.anchor.set(0.5);
+        sprite.width = radius * 2;
+        sprite.height = radius * 2;
+      } else {
+        (gfx as Graphics).circle(0, 0, radius).fill({ color: 0xffd166, alpha: 0.95 });
+        (gfx as Graphics).circle(0, 0, radius * 0.62).fill({ color: 0xb07a1f, alpha: 0.9 });
+      }
       gfx.x = rand * width;
       gfx.y = -20 - index * 4;
       this.container.addChild(gfx);

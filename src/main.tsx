@@ -1,20 +1,24 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadSlotSymbols } from './render/assets/textures';
+import {
+  preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadRuntimeArt, preloadSlotSymbols,
+} from './render/assets/textures';
 import './index.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root-Element #root fehlt');
 
 /**
- * Symbole, Maschinen, Deko und Plinko-Texturen vor dem ersten Rendern holen.
- * Das sind rund 1,3 MB; die Buehne zeigt dadurch von der ersten Drehung an
- * die echten Bilder statt der gezeichneten Ersatzgrafik. Der grosse Rest
- * (Figuren, UI, FX) bleibt Sache der Asset-Bibliothek und laedt lazy.
+ * Symbole, Maschinen, Deko, Plinko, Figuren, Karten, Teppich und Partikel vor
+ * dem ersten Rendern holen. Die Buehnen zeigen dadurch sofort die echten Bilder
+ * statt der gezeichneten Ersatzgrafik; der grosse Rest bleibt Sache der
+ * Asset-Bibliothek und laedt lazy.
  */
 async function boot(): Promise<void> {
-  await Promise.all([preloadSlotSymbols(), preloadMachineTextures(), preloadDecorTextures(), preloadPlinkoTextures()]);
+  await Promise.all([
+    preloadSlotSymbols(), preloadMachineTextures(), preloadDecorTextures(), preloadPlinkoTextures(), preloadRuntimeArt(),
+  ]);
   createRoot(root!).render(
     <StrictMode>
       <App />

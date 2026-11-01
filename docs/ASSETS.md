@@ -53,10 +53,18 @@ mit `npm run assets:manifest` aus dem öffentlichen Baum erzeugt und enthält:
 - **Plinko:** Pegs, Bumper und Auszahlungsfelder nutzen die passenden Texturen
   (`src/render/games/plinko-canvas.ts`); die übrigen Varianten liegen im Katalog.
 - **Slot:** neun Engine-Symbole werden vorgeladen und auf den Walzen gezeichnet;
-  die 15 Zusatzsymbole und alle anderen Kategorien sind in der Bibliothek prüfbar.
-- **Animationen:** die drei Frame-Folgen laufen in der Bibliothek als echte
-  Bildfolge mit ihrer deklarierten fps; die vier Emitter werden dort als
-  Partikel-Vorschau mit ihren Texturen abgespielt.
+  der Münzregen nutzt die Coin-Sprites (`src/render/games/slot-fx.ts`), die
+  15 Zusatzsymbole liegen im Katalog.
+- **Figuren:** Pixelköpfe aus `characters/` ersetzen die gezeichneten Köpfe von
+  Personal auf dem Floor und von Gegnern/Dealer am Poker-Tisch; der Croupier
+  steht als Portrait im Roulette-Fenster (`src/render/pixel-head.ts`).
+- **UI & Environment:** HUD und Popups nutzen die Icons aus `ui/`; der
+  Damast liegt in den Popup-Köpfen, das Teppichmuster als maskierte Textur über
+  den Floor-Zonen (`src/render/floor-carpet.ts`).
+- **FX & Emitter:** `jackpot-burst`, `coin-burst` und `plinko-impact` laufen
+  an Slot, Plinko, Roulette und Poker (`src/render/fx/emitter.ts`); Verluste
+  nutzen denselben Coin-Emitter gedämpft. Die drei Frame-Folgen laufen weiterhin
+  als echte Bildfolge in der Bibliothek.
 - **Sound:** sechs Tonspuren sind Musikzuständen zugeordnet und in der Bibliothek
   einzeln abspielbar.
 - **Asset-Bibliothek:** `src/ui/asset-library-popup.tsx`, erreichbar über

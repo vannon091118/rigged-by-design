@@ -94,7 +94,7 @@ export class FloorProps {
       let art = this.#agents.get(agent.id);
       if (!art) {
         const style = AGENT_STYLE[agent.role];
-        art = createGuestArt(style.persona, style.name, false, agent.id * 1.3);
+        art = createGuestArt(style.persona, style.name, false, agent.id * 1.3, undefined, true);
         // Bodenring in der Service-Farbe: Personal ist auf dichtem Floor sofort zuordenbar.
         const ring = new Graphics()
           .ellipse(0, 12, 9, 4).stroke({ width: STROKE.hair, color: ROLE.service, alpha: 0.55 });

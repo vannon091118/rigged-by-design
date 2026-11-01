@@ -10,6 +10,7 @@ import type { CardDeal } from '../store/foreign-play';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand, houseEdgeText } from './glossary';
+import { GAME_ICON, UI_ICON } from './icons';
 import { PopupShell } from './popup-shell';
 import { SelfExclusionPanel } from './self-exclusion-panel';
 import { TableLauncher } from './table-launcher';
@@ -93,7 +94,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           ))}
         </div>
         <div className="foreign-wallet" title="Dein privates Bargeld. Es gehört nicht dem Casino.">
-          <span>PORTEMONNAIE</span>
+          <span><img className="ui-icon" src={UI_ICON.coin} alt="" />PORTEMONNAIE</span>
           <strong>{vc(view.wallet, 2)}</strong>
           <button type="button" className="btn small" onClick={onTakeHome} disabled={view.house <= HOUSE_FLOAT} title="Holt bis zu 5 VC vom Hauskonto. 5 VC bleiben als Betriebsreserve.">ABHEBEN</button>
           <button type="button" className="btn small ghost" onClick={() => setFull((value) => !value)}>{full ? 'FENSTER' : 'VOLLBILD'}</button>
@@ -129,7 +130,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
             onClick={() => selectMachine(index)}
             title="Gerät wählen. Der Mindesteinsatz steht in der zweiten Zeile."
           >
-            <b>{entry.label.slice(0, 1)}</b>
+            <img className="game-tab-icon" src={GAME_ICON[entry.game] ?? UI_ICON.coin} alt="" />
             <strong>{entry.label}</strong>
             <span>{entry.game} · ab {vc(entry.baseBet, 2)}{entry.mods.length ? ` · ${entry.mods.length} Mods` : ''}</span>
           </button>

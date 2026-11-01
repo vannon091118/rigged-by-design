@@ -310,3 +310,8 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Paket-Icons: pixelgenau, klein und ohne Rahmen, damit die Zahlen fuehren. */
+.ui-icon { width: 15px; height: 15px; object-fit: contain; image-rendering: pixelated; vertical-align: -3px; margin-right: 5px; }
+.help-btn .ui-icon { display: block; width: 14px; height: 14px; margin: 0; }
+.vital small .ui-icon { width: 12px; height: 12px; vertical-align: -2px; margin-right: 3px; }

@@ -1,6 +1,8 @@
 /** Eine Spielkarte in Pixi: Vorderseite, Rueckseite, 3D-Flip und Flug aus dem Schuh. */
-import { Container, Graphics, Text } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import type { Card } from '../../core/rng/shoe';
+import { ASSET } from '../assets/keys';
+import { textureFor } from '../assets/textures';
 
 export const CARD_W = 44;
 export const CARD_H = 64;
@@ -36,6 +38,7 @@ export class CardView {
   readonly view = new Container();
   readonly #face = new Graphics();
   readonly #back = new Graphics();
+  readonly #backSprite: Sprite | null;
   readonly #rank = new Text({
     text: '',
     style: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 13, fontWeight: '800', fill: INK },
@@ -57,6 +60,15 @@ export class CardView {
 
   constructor() {
     drawBack(this.#back);
+    const backTexture = textureFor(ASSET.cardBack);
+    this.#backSprite = backTexture ? new Sprite(backTexture) : null;
+    if (this.#backSprite) {
+      this.#backSprite.anchor.set(0.5);
+      this.#backSprite.width = CARD_W;
+      this.#backSprite.height = CARD_H;
+      this.#backSprite.visible = false;
+      this.view.addChild(this.#backSprite);
+    }
     this.#rank.anchor.set(0.5);
     this.#suit.anchor.set(0.5);
     this.#rank.position.set(-CARD_W / 2 + 9, -CARD_H / 2 + 10);
@@ -75,7 +87,8 @@ export class CardView {
     this.#face.visible = showFront;
     this.#rank.visible = showFront;
     this.#suit.visible = showFront;
-    this.#back.visible = !showFront;
+    this.#back.visible = !showFront && this.#backSprite === null;
+    if (this.#backSprite) this.#backSprite.visible = !showFront;
     if (!this.#card) return;
     const colour = RED_SUITS.has(this.#card.suit) ? 0xc42033 : INK;
     this.#rank.text = this.#card.rank;

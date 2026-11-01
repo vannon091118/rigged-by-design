@@ -1,8 +1,12 @@
 /** Poker-Tisch in Pixi: Filz, Gegner-Haende verdeckt, Board, Pot und deine Karten. */
-import { Application, Container, Graphics, Text } from 'pixi.js';
+import { Application, Container, Graphics, Sprite, Text } from 'pixi.js';
 import type { Card } from '../../core/rng/shoe';
 import type { PokerTable } from '../../core/games/poker-types';
 import { POKER_STYLES } from '../../core/games/poker-strategy';
+import { ASSET } from '../assets/keys';
+import { textureFor } from '../assets/textures';
+import { Emitter } from '../fx/emitter';
+import { dealerHead, pixelHead } from '../pixel-head';
 import { CARD_H, CARD_W, CardView } from './card-renderer';
 
 const W = 520;
@@ -44,6 +48,8 @@ export class PokerCanvas {
   readonly #board: CardView[] = [];
   readonly #hero: CardView[] = [];
   readonly #all: CardView[] = [];
+  readonly #fx = new Emitter();
+  #resultSeen = false;
 
   constructor(app: Application) {
     this.#app = app;
@@ -51,6 +57,7 @@ export class PokerCanvas {
     // Filz sofort zeichnen: ein leeres Graphics bringt den Pixi-Batcher zum Absturz.
     this.#drawFelt();
     this.#root.addChild(this.#felt);
+    this.#drawPieces();
 
     this.#pot.anchor.set(0.5);
     this.#pot.position.set(W / 2, 34);
@@ -96,6 +103,7 @@ export class PokerCanvas {
       this.#all.push(view);
     });
 
+    this.#root.addChild(this.#fx.container);
     this.render(null);
     app.ticker.add(this.#tick);
     this.layout();
@@ -106,6 +114,47 @@ export class PokerCanvas {
     const scale = Math.min(screen.width / (W + 8), screen.height / (H + 8));
     this.#root.scale.set(scale);
     this.#root.position.set((screen.width - W * scale) / 2, (screen.height - H * scale) / 2);
+  }
+
+  /** Dealer, Gegner-Portraits und Tischdeko aus dem Paket; die Karten bleiben gezeichnet. */
+  #drawPieces(): void {
+    const chip = textureFor(ASSET.chip);
+    if (chip) {
+      const sprite = new Sprite(chip);
+      sprite.anchor.set(0.5);
+      sprite.width = 14;
+      sprite.height = 13;
+      sprite.position.set(W / 2 - 34, 34);
+      this.#root.addChild(sprite);
+    }
+    const button = textureFor(ASSET.dealerButton);
+    if (button) {
+      const sprite = new Sprite(button);
+      sprite.anchor.set(0.5);
+      sprite.width = 18;
+      sprite.height = 16;
+      sprite.position.set(W / 2, 122);
+      this.#root.addChild(sprite);
+    }
+    SEAT_X.forEach((x, seat) => {
+      const head = pixelHead(seat * 2 + 1, 26);
+      if (!head) return;
+      head.position.set(x - 58, SEAT_Y + 12);
+      this.#root.addChild(head);
+    });
+    const hero = pixelHead(0, 26);
+    if (hero) {
+      hero.position.set(52, HERO_Y + 2);
+      this.#root.addChild(hero);
+    }
+    const dealer = dealerHead(26);
+    if (dealer) {
+      dealer.position.set(462, 74);
+      this.#root.addChild(dealer);
+      const name = label('DEALER', 7, 0xffd166);
+      name.position.set(462, 88);
+      this.#root.addChild(name);
+    }
   }
 
   #drawFelt(): void {
@@ -152,15 +201,28 @@ export class PokerCanvas {
       if (card) show(view, card, true);
       else view.view.visible = false;
     });
+
+    const result = table?.result ?? null;
+    if (!result) this.#resultSeen = false;
+    else if (!this.#resultSeen) {
+      this.#resultSeen = true;
+      this.#fx.burst(result.net ? 'jackpot-burst' : 'coin-burst', W / 2, 190, {
+        count: result.net ? 24 : 8,
+        size: result.net ? 16 : 14,
+        tint: result.net ? 0xffffff : 0x6a5a82,
+      });
+    }
   }
 
   #tick = (): void => {
     const dt = Math.min(48, this.#app.ticker.deltaMS);
+    this.#fx.update(dt);
     for (const view of this.#all) view.update(dt);
   };
 
   destroy(): void {
     this.#app.ticker.remove(this.#tick);
+    this.#fx.destroy();
     this.#root.destroy({ children: true });
   }
 }
