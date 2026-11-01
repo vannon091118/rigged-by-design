@@ -713,7 +713,7 @@ falschen Dinge und hält einen roten Baum für grün.
 (Textauswahl, Event-Priorität, Cooldowns).
 **Befund.** Seit `7cca88a` verbietet ESLint in `src/**` `Math.random`,
 `Date.now`, `performance.now` und `new Date()`; echter Zufall existiert nur in
-`entropySeed()` (`src/core/rng/streams.ts`), Pacing nur in `src/render/**`.
+`entropySeed()` (`src/core/rng/streams.ts`), Pacing nur in `src/render/floor-view.ts`, `src/render/floor-props.ts` und `src/render/music.ts`.
 **Gegenmaßnahme.** Narrative Zufallsauswahl bekommt einen **eigenen persistenten
 Zustand** (kein Zugriff auf den Spiel-PRNG) und wird wie `presentation` als
 eigene Rolle geführt. Jeder Narrative-Task muss `npm run lint` ohne Ausnahme

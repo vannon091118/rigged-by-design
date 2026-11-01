@@ -22,6 +22,9 @@ const direct = [
 const clockSyntax = [
   { selector: "NewExpression[callee.name='Date']", message: 'Determinismus: kein Datum aus der Uhr; Zeit kommt aus world.tick und world.day.' },
   { selector: "NewExpression[callee.property.name='Date']", message: 'Determinismus: kein Datum aus der Uhr, auch nicht ueber globalThis/window.' },
+  { selector: "CallExpression[callee.name='Date']", message: 'Determinismus: auch Date() ohne new liest die Uhr.' },
+  { selector: "CallExpression[callee.property.name='Date']", message: 'Determinismus: auch globalThis.Date() liest die Uhr.' },
+  { selector: "MemberExpression[property.name='timeOrigin']", message: 'Determinismus: performance.timeOrigin ist ein Epoch-Zeitstempel, keine Pacing-Groesse.' },
   { selector: "MemberExpression[object.name='Date'][property.name='now']", message: 'Determinismus: kein Wall-Clock-Seed (Date.now).' },
   { selector: "MemberExpression[object.property.name='Date'][property.name='now']", message: 'Determinismus: kein Wall-Clock-Seed (globalThis.Date.now).' },
   { selector: "MemberExpression[object.name='Math'][property.name='random']", message: 'Determinismus: kein Math.random.' },
@@ -74,7 +77,9 @@ export default defineConfig(
     rules: determinism,
   },
   {
-    files: ['src/render/**/*.ts', 'src/render/**/*.tsx'],
+    // Genau drei Pacing-Stellen duerfen performance.now lesen. Kein pauschales
+    // Render-Allow: jede andere Datei unter src/render/** bleibt voll gesperrt.
+    files: ['src/render/floor-view.ts', 'src/render/floor-props.ts', 'src/render/music.ts'],
     rules: {
       'no-restricted-properties': ['error', ...renderDirect],
       'no-restricted-syntax': ['error', ...renderSyntax],
