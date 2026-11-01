@@ -57,16 +57,16 @@ function tail(text, lines = FAILURE_TAIL_LINES) {
 /** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
 export function executeStep(step) {
   const started = Date.now();
-  const command = step.command === 'npm' ? 'npm' : process.execPath;
-  const args = step.command === 'npm' ? ['run', step.script] : [step.script, ...(step.args ?? [])];
+  const command = step.command === 'pnpm' ? 'pnpm' : process.execPath;
+  const args = step.command === 'pnpm' ? ['run', step.script] : [step.script, ...(step.args ?? [])];
   const timeoutMs = Number.isFinite(step.timeoutMs) && step.timeoutMs > 0 ? step.timeoutMs : DEFAULT_GATE_TIMEOUT_MS;
   return new Promise((done) => {
     let child;
     try {
       child = spawn(command, args, {
         cwd: ROOT,
-        shell: command === 'npm' && process.platform === 'win32',
-        // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze npm->vitest-Kette trifft.
+        shell: command === 'pnpm' && process.platform === 'win32',
+        // Eigene Prozessgruppe: damit SIGINT/SIGKILL die ganze pnpm->vitest-Kette trifft.
         detached: process.platform !== 'win32',
         // Profile geben Umgebungsvariablen weiter, etwa das schnelle Test-Profil.
         env: { ...process.env, ...(step.env ?? {}) },
@@ -133,7 +133,7 @@ export function abortGates() {
   releaseOwner();
 }
 
-// Auch bei Absturz oder process.exit duerfen keine npm/vitest-Kinder ueberleben.
+// Auch bei Absturz oder process.exit duerfen keine pnpm/vitest-Kinder ueberleben.
 process.on('exit', () => {
   for (const pid of running) killTree(pid);
 });

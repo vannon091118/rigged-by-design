@@ -14,8 +14,8 @@ if (canPin) console.log('Pinne den Lauf auf einen Kern (taskset -c 0).');
 else console.log('taskset fehlt: Volllast-Messung ohne Kern-Pinning.');
 
 const result = canPin
-  ? spawnSync('taskset', ['-c', '0', 'npx', 'vitest', 'bench', '--run', '--config', 'src/Config/vite.config.ts'], { stdio: 'inherit' })
-  : spawnSync('npx', ['vitest', 'bench', '--run', '--config', 'src/Config/vite.config.ts'], { stdio: 'inherit' });
+  ? spawnSync('taskset', ['-c', '0', 'pnpm', 'exec', 'vitest', 'bench', '--run', '--config', 'src/Config/vite.config.ts'], { stdio: 'inherit' })
+  : spawnSync('pnpm', ['exec', 'vitest', 'bench', '--run', '--config', 'src/Config/vite.config.ts'], { stdio: 'inherit' });
 
 if (result.error) {
   console.error(`Benchmark konnte nicht starten: ${result.error.message}`);

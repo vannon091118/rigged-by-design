@@ -1,7 +1,7 @@
 name: Long Checks
 
 # Lange Nachweise laufen nicht in der lokalen Schleife: RTP-Statistik, Poker-
-# Verteilung, Soak und Balance brauchen Minuten bis Stunden. `npm run ci:long`
+# Verteilung, Soak und Balance brauchen Minuten bis Stunden. `pnpm run ci:long`
 # startet diesen Workflow und liest Ergebnis, Logs und Artefakte von hier.
 on:
   workflow_dispatch:
@@ -37,17 +37,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - name: Install (npm ci)
-        run: npm ci
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
       - name: Alle Fail-Closed-Gates
         env:
           RBD_VERIFY_AUDIT: '1'
-        run: npm run verify:all
+        run: pnpm run verify:all
 
   statistics:
     name: Statistik (RTP und Kartenverteilung)
@@ -56,13 +56,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - name: Install (npm ci)
-        run: npm ci
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
       # Diese Suiten sind Beweisklasse "statistics"; lokal laufen sie nie.
       - name: Monte-Carlo-Nachweise
         run: >-
@@ -79,13 +79,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - name: Install (npm ci)
-        run: npm ci
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
       - name: Langlauf
         env:
           RBD_SOAK_TICKS: ${{ inputs.soak_ticks }}
@@ -98,13 +98,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - name: Install (npm ci)
-        run: npm ci
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
       - name: Betriebslauf
         run: node scripts/balance-run.mjs --days=${{ inputs.balance_days }}
       # Der Bericht ist der eigentliche Nachweis; er gehoert zum Lauf, nicht ins Log.
@@ -123,12 +123,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Node 22 mit npm-Cache
+      - name: Node 22 mit pnpm-Cache
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - name: Install (npm ci)
-        run: npm ci
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
       - name: Messlaeufe
-        run: npm run test:perf
+        run: pnpm run test:perf

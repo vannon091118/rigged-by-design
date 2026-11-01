@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.70 | 2026-11-01 21:25 UTC -->
+<!-- rbd-doc: v0.3.70 | 2026-11-01 22:58 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -23,7 +23,7 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Casino-Aufbauspiel-Simulation (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.65 (`package.json` nach diesem Commit), Engine `node >=22.22.2`, `packageManager npm@12.2.1` |
+| Version | 0.3.65 (`package.json` nach diesem Commit), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -101,7 +101,7 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 | `ci-verify.yml` | push (**), PR gegen main, dispatch | Job **„Fail-Closed Gates"** = Pflichtstatus; `verify:all` mit `RBD_VERIFY_AUDIT=1`; Commit-/PR-Notes-Gate |
 | `auto-version-release.yml` | workflow_run nach erfolgreichem CI Verify auf main (+dispatch) | taggt genau den geprüften Commit; Eskalationsleiter GITHUB_TOKEN→RELEASE_TOKEN→BLOCKED; kein Commit |
 | `build-apk.yml` | workflow_call (Release mit `skip_verify`), dispatch, Tag-Push | Java 21, Android SDK 36, Debug + unsigned-Release-APK, Artefakt-Verifikation |
-| `long-checks.yml` | dispatch (`npm run ci:long`) | Statistik (4 RTP-Dateien), Soak (100k Ticks), Balance-Lauf + Artefakt, Benchmarks |
+| `long-checks.yml` | dispatch (`pnpm run ci:long`) | Statistik (4 RTP-Dateien), Soak (100k Ticks), Balance-Lauf + Artefakt, Benchmarks |
 | `pr-cleanup.yml` | PR closed (merged) | löscht Head-Branch (nicht main, nicht Fork, `keep-branch` schont) |
 | `pr-escalation.yml` | PR gegen main | hebt den Commit-Body in den PR-Body (`lift-commit-body.mjs`), damit fehlende Pflichtsektionen nicht blockieren |
 
@@ -109,7 +109,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 
 ## 11. Tests & Katalog
 
-91 `.test.ts(x)` + 5 `.bench.ts` = 96; System und Beweisklasse je Datei erzeugt `npm run catalog` aus `@test-target` in `docs/TEST-CATALOG.md`. Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
+91 `.test.ts(x)` + 5 `.bench.ts` = 96; System und Beweisklasse je Datei erzeugt `pnpm run catalog` aus `@test-target` in `docs/TEST-CATALOG.md`. Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
 
 ## 12. Dependencies & Audit
 
@@ -117,7 +117,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 
 ## 13. Assets
 
-`docs/ASSETS.md`: vollständiges Paket (539 PNG + 7 JSON, 6 OGG-Tonspuren) unter `public/assets/casino/`, Manifest `src/render/assets/manifest.json`; **Lizenz/Urheber des Quellpakets nicht belegt — vor externer Veröffentlichung zu klären**. WAV-Master außerhalb des Repos. `npm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
+`docs/ASSETS.md`: vollständiges Paket (539 PNG + 7 JSON, 6 OGG-Tonspuren) unter `public/assets/casino/`, Manifest `src/render/assets/manifest.json`; **Lizenz/Urheber des Quellpakets nicht belegt — vor externer Veröffentlichung zu klären**. WAV-Master außerhalb des Repos. `pnpm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
 
 ## 14. Befunde & Diskrepanzen (laufend gepflegt)
 
@@ -151,7 +151,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 26 | info | Prozess-Absicherung: `process-sweep.mjs` beendet nur PID **plus Startzeit**-identifizierte Prozesse (Linux /proc-Feld 22, Windows PowerShell, ps-Fallback); läuft noch eine fremde Pipeline, wird die Registry passiv statt zu räumen. Nie nach Namensmuster. | `scripts/lib/process-sweep.mjs` |
 | 27 | info | Test-Auswahl mit Recall-Sicherung: `affected-tests.mjs` (rückwärtsgerichteter Importgraph + `@test-target` + Subsystem-Fallback; Konfig-Änderung → alle Tests); `statistics`/`performance` werden an CI delegiert (`ci-long-checks.mjs`: gh bevorzugt, REST-Fallback, Artifact-Download). | `scripts/lib/` |
 | 28 | info | Dependency-Matrix ist Fail-Closed: `sync-dependency-matrix.mjs` verlangt pro Package eine Architektur-Begründung (ERR-4007) **und** reale Nutzung aus dem Modulgraphen; schreibt die Live-Matrix in `docs/ARCHITECTURE.md`, `--check` meldet Verfall. | `scripts/sync-dependency-matrix.mjs` |
-| 29 | info | Versions-Konsistenz: `version-bump.mjs` bumppt package.json **und** beide Lockfile-Stellen (Root + `packages[""]`), sonst bricht `npm ci` in CI an der Differenz; `turn-push.mjs` überspringt den Bump bei bereits gebumptem Baum. | `scripts/version-bump.mjs`, `scripts/turn-push.mjs` |
+| 29 | info | Versions-Konsistenz: `version-bump.mjs` bumppt package.json **und** beide Lockfile-Stellen (Root + `packages[""]`), sonst bricht `pnpm install --frozen-lockfile` in CI an der Differenz; `turn-push.mjs` überspringt den Bump bei bereits gebumptem Baum. | `scripts/version-bump.mjs`, `scripts/turn-push.mjs` |
 | 30 | info | Release-Eskalationsleiter: `release-escalation.mjs` WORKFLOW_TOKEN → RELEASE_TOKEN → BLOCKED mit Klartext-Anleitung; transient/unknown → bis zu 3 Wiederholungen; „already exists“ → DONE. | `scripts/lib/release-escalation.mjs` |
 | 31 | info | Android-Vertragsprüfungen: `prepare-android.mjs` prüft `dist/index.html`, `capacitor.config.json` (webDir=dist) und gepinnte @capacitor-Pakete vor gradle; Debug installierbar, Release bewusst unsigned (Signieren ist eigener Schritt). | `scripts/prepare-android.mjs` |
 | 32 | info | `balance-run.mjs` validiert Tage (1–400) und Seed (SafeInteger), schreibt den Bericht nach `artifacts/` (gitignoriert) und verlangt dessen Existenz (sonst ERR-2001) — der Messlauf kann nicht still ohne Bericht bestehen. `src/test/random-seed.ts` zieht Seeds aus `node:crypto` ohne Env/CLI/Datei-Override. | `scripts/balance-run.mjs`, `src/test/` |
@@ -168,7 +168,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 43 | info | **Asset-Pipeline jetzt vollständig (Pull-Batch)**: `scripts/build-asset-manifest.mjs` (neu, Manifest **v3**: ~539 Texturen in 8 Kategorien + Frame-Animationen + Emitter + 6 Musiktracks, Fail-Closed gegen fehlende Dateien), `verify-assets.mjs` auf v3 umgestellt, `main.tsx` preloaded ~1,3 MB (Symbole+Maschinen+Deko+Plinko), `music.ts` mit NIGHT/MENU/BACKGROUND, `App.tsx` ordnet Popups Musikstimmungen zu, Asset-Library-Popup (192 Zeilen) mit Animations-/Emitter-Previews. Konsistenz geprüft: alle ENGINE_SYMBOLS-Pfade (book/scarab/ankh/eye-of-horus/urn/rank-*) existieren im Paket. | `scripts/`, `src/render/`, `src/App.tsx` |
 | 44 | info | **Asset-Lizenz: Status im Pull bestätigt — weiterhin unbelegt.** `docs/ASSETS.md` (§ Herkunft und Rechte, unverändert geblieben): die beiliegende README nennt **keine Lizenz und keinen Urheber**, „das Paket ist kein freigegebenes Distributionsmaterial“; vor externer Veröffentlichung muss die Herkunft geklärt bleiben. Das Dokument ist dazu jetzt konsistent ehrlich (539 PNG/7 JSON/6 WAV, ~170 MB Quelle, 13,4 MB ausgeliefert). Offener Punkt 4 bleibt damit aktiv. | `docs/ASSETS.md` |
 | 45 | info | **Doku-Double, in T23 einsortiert: `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` (1023 Zeilen)** — sequenzieller Plan NAR-00…NAR-16 für eine datengetriebene Narrative Engine: Typed Sim Facts, Charaktergedächtnis, Beziehungen, Event-Scheduler, Event-Command-DSL mit Allowlist, Content-Registry, LLM-Textadapter (nur Darstellungstext, Regeln bleiben deterministisch), **Save v9**, Migration der beiden bestehenden `demandEvent`s, autonome Rivalen. Basiert auf Stand `708d31c` (vor dem Pull; kleine Veraltungen z. B. Poker-Profile nicht reflektiert — irrelevant für den Plan). NAR-00 bis NAR-03 sind umgesetzt (Save v9). | `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` |
-| 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `npm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
+| 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `pnpm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
 | 48 | info | **Doc-Gate + Hooks (T10):** `scripts/lib/doc-sync.mjs` führt sechs Pflichtdokumente mit Pflichtabschnitten und `rbd-doc`-Marker (Version + UTC); `verify:docs` ist Gate (`ERR-4017`), der Pre-Commit-Hook schreibt ihn. `deps-matrix` und `catalog` sind keine Gates mehr; Matrix, Katalog und Marker entstehen im Hook. Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` (identische MD5) gelöscht. | `scripts/lib/doc-sync.mjs`, `.githooks/`, `scripts/lib/pipeline-plan.mjs` |
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
 | 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` |
@@ -228,7 +228,7 @@ Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein C
 | A3 | **Commit-Bodys nicht fail-closed**: Body wird via GitHub CI in den **PR-Body** gehoben | `.githooks/commit-msg` eskaliert statt zu blockieren; `.github/workflows/pr-escalation.yml` + `scripts/lift-commit-body.mjs` bauen/anlegen den PR-Body | ✅ umgesetzt (T10) |
 | A4 | **Doc-synchronisiertes Gate** + **Strukturvorgaben für Docs** + sauberer Tree | `scripts/lib/doc-sync.mjs` (Manifest, Marker, Pflichtabschnitte), Gate `verify:docs` (`ERR-4017`), Wurzel-Whitelist; Wurzel-Duplikat gelöscht | ✅ umgesetzt (T10) |
 | A5 | **Pflichtdoku nach JEDER Änderung/Analyse**: Inventar, Changelog, Devtagebuch, Architektur, `AGENTS.md`, Roadmap — mit Version und Timestamp | `docs/CHANGELOG.md`, `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md`, `docs/ESCALATION.md` angelegt; `## Pflichtdoku` in `AGENTS.md`; Marker-Pflicht im Gate | ✅ umgesetzt (T10) |
-| A6 | **Automatisch generierte Matrizen entfernen**; „die Idee korrekt automatisiert als Pre-Commit-Hook implementieren, wo es geht, Rest über AGENTS.md“ | Gates `deps-matrix`/`catalog` entfernt; `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker, prüft Doku + LOC; Aktivierung über `npm run hooks:install` | ✅ umgesetzt (T10) |
+| A6 | **Automatisch generierte Matrizen entfernen**; „die Idee korrekt automatisiert als Pre-Commit-Hook implementieren, wo es geht, Rest über AGENTS.md“ | Gates `deps-matrix`/`catalog` entfernt; `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker, prüft Doku + LOC; Aktivierung über `pnpm run hooks:install` | ✅ umgesetzt (T10) |
 | A7 | **Keine Redundanz**; **keine lokalen Tests, die im GitHub-Workflow eskaliert und gelöst werden können** | ein Ort pro Wahrheit (eine Leiter, ein Marker, ein Save-Pfad); Vitest lief in T10 **nicht** lokal, der Beweis bleibt `verify:all` in CI | ✅ umgesetzt (T10) |
 
 **Randbedingungen, die bei der Umsetzung gelten:** Fail-Closed bleibt für echte Regelverstöße (Geld, Ledger, Save-Integrität) bestehen — Eskalation gilt nur für behebbare/außerhalb-des-Scopes liegende Befunde. Kein Gate darf schreiben (bestehende Pipeline-Regel); Auto-Reparatur läuft ausschließlich im `--fix`-Modus oder im Pre-Commit-Hook. Jede neue Datei braucht genau eine Zuständigkeit und ein Budget.
@@ -243,18 +243,19 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 992 |
-| Gelistete Dateien | 992 |
-| Getrackte Ordner | 68 |
-| Bereiche | (Wurzel) (8), .githooks (2), .github (7), content (2), docs (43), public (552), scripts (52), src (326) |
+| Getrackte Dateien | 994 |
+| Gelistete Dateien | 994 |
+| Getrackte Ordner | 69 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (2), docs (43), public (552), scripts (52), src (326) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
-- `./` — 8 Datei(en)
+- `./` — 9 Datei(en)
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
+- `.kilo/plans/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
 - `docs/` — 17 Datei(en)
@@ -334,7 +335,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 21 Zeilen
+- `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
+- `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 100 Zeilen
 - `README.md` — Markdown-Dokument — gelesen: 144 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
@@ -343,10 +346,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 231 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 117 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 118 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 458 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 467 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
@@ -383,8 +386,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
-- `package-lock.json` — { — generiert, 4540 Zeilen
-- `package.json` — { — gelesen: 92 Zeilen
+- `package.json` — { — gelesen: 89 Zeilen
+- `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2843 Zeilen
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -979,7 +982,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/sanitize-commit.mjs` — ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. — gelesen: 18 Zeilen
 - `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/ARCHITECTURE.md aus — gelesen: 138 Zeilen
 - `scripts/test-affected.mjs` — Schneller Entwicklungsfeedback-Lauf: nur Tests, die vom aktuellen Diff — gelesen: 52 Zeilen
-- `scripts/test-catalog.mjs` — Testkatalog schreiben (`npm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
+- `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
 - `scripts/turn-push.mjs` — Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach mai — gelesen: 234 Zeilen
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 88 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
@@ -988,7 +991,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 98 Zeilen
-- `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 54 Zeilen
+- `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
 - `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 341 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 11 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen

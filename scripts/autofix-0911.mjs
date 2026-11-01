@@ -2,7 +2,7 @@
 /**
  * Sicherer Autofix (ERR-0911): Lint-Fix, Dependency-Matrix, Commit-Sanitizing.
  *
- * Nur ueber `npm run fix` bzw. `--fix` erreichbar. Der Aufrufer vergleicht den
+ * Nur ueber `pnpm run fix` bzw. `--fix` erreichbar. Der Aufrufer vergleicht den
  * Arbeitsbaum vorher und nachher und protokolliert jede Aenderung; geloescht
  * wird hier nichts. Ein veralteter Screenshot-Ordner bleibt stehen.
  */
@@ -20,7 +20,7 @@ const log = (message) => {
 
 /**
  * Lint-Cache: unveraenderte Dateien werden nicht erneut geparst. Der Cache liegt ausserhalb
- * von node_modules, weil npm ci jedes Mal node_modules neu aufbaut, und wird verworfen, sobald
+ * von node_modules, weil pnpm install --frozen-lockfile jedes Mal node_modules neu aufbaut, und wird verworfen, sobald
  * sich ESLint-Config oder Lockfile geaendert haben -- dann gilt alles als unveraendert.
  */
 const CACHE_DIR = resolve(ROOT, '.verify-cache');

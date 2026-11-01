@@ -13,7 +13,7 @@ const KINDS = Object.freeze({
   },
   AUTOFIXABLE: {
     level: 'AUTO_FIX',
-    action: 'npm run fix',
+    action: 'pnpm run fix',
     hint: 'Doku-Marker, Format, Matrix und Katalog werden automatisch geschrieben.',
   },
   TRANSIENT: {

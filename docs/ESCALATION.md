@@ -7,7 +7,7 @@ gilt fuer Pipeline, Hooks, CI und Import-Befunde.
 
 | Stufe | Bedeutung | Wer handelt |
 | --- | --- | --- |
-| `AUTO_FIX` | Automatisch reparierbar: Doku-Marker, Format, Matrix, Katalog. | `npm run fix` oder der Pre-Commit-Hook |
+| `AUTO_FIX` | Automatisch reparierbar: Doku-Marker, Format, Matrix, Katalog. | `pnpm run fix` oder der Pre-Commit-Hook |
 | `LOCAL_GATE` | Ausserhalb des Scopes: kein Blocker, wird verworfen. | niemand |
 | `REMOTE_CI` | Netz, Registry oder Runner: lokal nicht reproduzierbar. | CI erneut starten |
 | `AGENT` | Struktur, Sektion oder Zustaendigkeit fehlt. | Agent nach `AGENTS.md` |
@@ -26,7 +26,7 @@ Agent. `BLOCKED` wird nie automatisch uebersprungen.
 - "ausserhalb des Scopes" -> `LOCAL_GATE`.
 - Alles andere -> `AGENT` (Struktur).
 
-`npm run escalation:plan` liest den letzten Gate-Befund und nennt die Stufe.
+`pnpm run escalation:plan` liest den letzten Gate-Befund und nennt die Stufe.
 Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
 `REPAIR -> AUTO_FIX`, `IGNORE -> LOCAL_GATE`.
 
@@ -39,7 +39,7 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
 - **GitHub CI** (`pr-escalation.yml`) baut den PR-Body aus Subject und Body und
   legt den PR an oder aktualisiert ihn. Ohne `gh` bleibt der Lauf gruen und der
   Body liegt in `.git/rbd-pr-body.md`.
-- **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `npm run fix`.
+- **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `pnpm run fix`.
 - **Promotion** (`promote.yml`) ist die Stufe danach: gruen mergt automatisch,
   rot landet auf der permanenten Branch `integration` und wird dort repariert.
   Ein Textkonflikt wird gelabelt (`integration/konflikt`), nicht erzwungen; die

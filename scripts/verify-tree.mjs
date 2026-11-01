@@ -10,7 +10,7 @@ import { extname, join, relative, resolve, sep } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
 
 const ROOT_FILES = new Set([
-  'package.json', 'package-lock.json', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
+  'package.json', 'pnpm-lock.yaml', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
 ]);
 const SRC_ROOT = new Set(['main.tsx', 'App.tsx', 'vite-env.d.ts']);
 

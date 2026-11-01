@@ -10,12 +10,12 @@ import { fail, ROOT } from './lib/report.mjs';
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
 const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' });
 const npmRun = (args) =>
-  spawnSync('npm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
+  spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
 const TARGET_BRANCH = 'main';
 const MAX_PUSH_VERSUCHE = 3;
 
 // Quick ist der Normalfall: die meisten Turns brauchen Build und RTP-Nachweise nicht.
-// Voll laeuft ueber `npm run turn:finish:full`; CI prueft jeden Push ohnehin vollstaendig.
+// Voll laeuft ueber `pnpm run turn:finish:full`; CI prueft jeden Push ohnehin vollstaendig.
 const args = process.argv.slice(2);
 const profileArg = args.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
@@ -30,7 +30,7 @@ console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + t
 
 // Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
 const stage = () => {
-  if (paths.length > 0) git(['add', '--', ...paths, 'package.json', 'package-lock.json']);
+  if (paths.length > 0) git(['add', '--', ...paths, 'package.json', 'pnpm-lock.yaml']);
   else git(['add', '-A']);
 };
 

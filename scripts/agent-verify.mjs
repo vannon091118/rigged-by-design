@@ -86,7 +86,7 @@ if (AS_JSON) {
       `${Object.entries(counts).map(([key, value]) => `${value} ${key}`).join(', ')} · ${Math.round(durationMs / 1000)}s`,
   );
   if (subset.length > 0) console.log(`  Teilpruefung: ${subset.length} betroffene Testdatei(en), kein Vollnachweis`);
-  if (report.delegated.length > 0) console.log(`  Delegiert: ${report.delegated.length} lange Nachweis(e) — npm run agent:verify -- --ci`);
+  if (report.delegated.length > 0) console.log(`  Delegiert: ${report.delegated.length} lange Nachweis(e) — pnpm run agent:verify -- --ci`);
   console.log(`  Bericht: ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);
 }
 process.exit(failed.length === 0 ? 0 : 1);

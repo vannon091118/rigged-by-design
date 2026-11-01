@@ -32,7 +32,7 @@ const TRACKS = [
 const kb = (bytes) => `${(bytes / 1024).toFixed(0)} KB`;
 
 if (!ffmpegPath || !existsSync(ffmpegPath)) {
-  console.error('[audio] ffmpeg fehlt: npm rebuild ffmpeg-static');
+  console.error('[audio] ffmpeg fehlt: pnpm rebuild ffmpeg-static');
   process.exit(1);
 }
 if (!existsSync(SOURCE)) {

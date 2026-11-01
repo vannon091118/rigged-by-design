@@ -128,7 +128,7 @@ const next = doc.includes(start) && doc.includes(end)
 const checkOnly = process.argv.includes('--check');
 if (next !== doc) {
   if (checkOnly) {
-    fail(1, 'ERR-4013', 'sync-deps', 'Matrix ist veraltet; npm run sync:deps ausfuehren');
+    fail(1, 'ERR-4013', 'sync-deps', 'Matrix ist veraltet; pnpm run sync:deps ausfuehren');
     process.exit(1);
   }
   writeFileSync(docPath, next);
