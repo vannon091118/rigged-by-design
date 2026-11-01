@@ -47,8 +47,8 @@ export function ForeignFloorMap({ view, onVisit, onClose }: ForeignFloorMapProps
     <PopupShell eyebrow="ÜBERSICHTSKARTE" title="Fremde Casinos" onClose={onClose} wide={false}>
       <div className="foreign-floor-map">
         <p className="map-hint">
-          Wähle ein fremdes Casino zum Betreten. Dort kannst du Jobs annehmen
-          und arbeiten. Dein Portemonnaie: {vc(view.wallet, 2)}
+          Wähle ein fremdes Casino zum Betreten. Dort kannst du Jobs annehmen,
+          arbeiten und an den Maschinen spielen. Dein Portemonnaie: {vc(view.wallet, 2)}
         </p>
 
         <div className="rival-grid">

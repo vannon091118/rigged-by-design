@@ -36,7 +36,8 @@ export function JobContextMenu({
   const hasJob = playerJob !== null;
   const isOwnJob = hasJob && playerJob.jobId === station.jobId && playerJob.rivalId === rivalId;
 
-  const availableJobs: PlayerJobId[] = ['CLEANER', 'BARTENDER', 'CARD_DEALER', 'MECHANIC'];
+  // Eine Station bietet genau den Job, fuer den sie gebaut wurde.
+  const availableJobs: PlayerJobId[] = [station.jobId];
 
   return (
     <PopupShell eyebrow="ARBEIT" title={station.label} onClose={onClose} wide={false}>

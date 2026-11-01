@@ -1,7 +1,7 @@
 /** Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. */
 
 import { acceptJob, quitJob, requestJobTask, buyBar } from '../core/sim/player-jobs';
-import { getOrCreateForeignFloor, savePlayerToForeignFloor, loadPlayerFromForeignFloor } from '../core/sim/foreign-floor-tick';
+import { getOrCreateForeignFloor } from '../core/sim/foreign-floor-tick';
 import { getRival, type RivalId } from '../core/sim/rivals';
 import type { WorldState } from '../core/sim/types';
 import type { Ledger } from '../core/economy/ledger';
@@ -33,12 +33,9 @@ export function visitForeignCmd(world: WorldState, rivalId: RivalId): void {
     rival.jobStations,
   );
   world.activeForeignFloorId = floor.id;
-  savePlayerToForeignFloor(world, floor.id);
-  loadPlayerFromForeignFloor(world, floor.id);
 }
 
 export function leaveForeignCmd(world: WorldState): void {
   if (world.activeForeignFloorId === null) throw new Error('Du bist nicht in einem fremden Casino.');
-  savePlayerToForeignFloor(world, world.activeForeignFloorId);
   world.activeForeignFloorId = null;
 }

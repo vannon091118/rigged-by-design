@@ -18,14 +18,13 @@ export function tickForeignFloor(
   // Synchronisiere Tag mit Welt
   floor.day = world.day;
 
-  // Job-Task fortsetzen wenn Spieler auf diesem Floor arbeitet
+  // Nur der Floor, auf dem der Spieler steht und für den er arbeitet, treibt die Aufgabe.
+  if (world.activeForeignFloorId !== floor.id) return;
   const job = world.player.job;
-  if (job !== null && job.currentTask !== null) {
-    job.currentTask.ticksElapsed += 1;
-    if (job.currentTask.ticksElapsed >= job.currentTask.ticksTotal) {
-      // Task abgeschlossen
-      completeJobTask(world, prng);
-    }
+  if (job === null || job.rivalId !== floor.rivalId || job.currentTask === null) return;
+  job.currentTask.ticksElapsed += 1;
+  if (job.currentTask.ticksElapsed >= job.currentTask.ticksTotal) {
+    completeJobTask(world, prng);
   }
 }
 
@@ -34,13 +33,9 @@ export function processForeignFloorDaily(
   world: WorldState,
   ledger: Ledger,
   prng: Prng,
-  _tick: number,
+  tick: number,
 ): void {
-  for (const _floor of world.foreignFloors) {
-    if (world.player.job !== null) {
-      payDailyWage(world, ledger, prng, _tick);
-    }
-  }
+  payDailyWage(world, ledger, prng, tick);
 }
 
 /** Erstellt einen Foreign Floor State für einen Rivalen beim ersten Besuch. */
@@ -67,34 +62,6 @@ function createForeignFloor(
     day: world.day,
     lastPaidDay: world.day,
   };
-}
-
-/** Speichert den Spieler-Zustand auf dem aktuellen Foreign Floor vor dem Verlassen. */
-export function savePlayerToForeignFloor(
-  world: WorldState,
-  floorId: number,
-): void {
-  const floor = world.foreignFloors.find((f) => f.id === floorId);
-  if (!floor) return;
-  floor.playerPosition = { ...world.player.position };
-  floor.playerPath = [...world.player.path];
-  floor.playerPathIndex = world.player.pathIndex;
-  floor.playerCarrying = world.player.carrying;
-}
-
-/** Stellt den Spieler-Zustand von einem Foreign Floor wieder her beim Betreten. */
-export function loadPlayerFromForeignFloor(
-  world: WorldState,
-  floorId: number,
-): void {
-  const floor = world.foreignFloors.find((f) => f.id === floorId);
-  if (!floor) return;
-  if (floor.playerPosition) {
-    world.player.position = { ...floor.playerPosition };
-  }
-  world.player.path = [...floor.playerPath];
-  world.player.pathIndex = floor.playerPathIndex;
-  world.player.carrying = floor.playerCarrying;
 }
 
 /** Gibt den Foreign Floor für eine rivalId zurück, erstellt ihn falls nötig. */

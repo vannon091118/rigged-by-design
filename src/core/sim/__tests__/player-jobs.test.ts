@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { HAUSKONTO, PORTEMONNAIE } from '../money';
+import { EXTERNAL, HAUSKONTO, PORTEMONNAIE } from '../money';
 import { acceptJob, quitJob, requestJobTask, completeJobTask, payDailyWage, buyBar, BAR_PURCHASE_COST_VC, JOB_DEFS } from '../player-jobs';
 import { randomSeed } from '../../../test/random-seed';
 import { createWorld } from '../templates';
@@ -87,6 +87,14 @@ describe('Player-Jobs: Aufgaben', () => {
     expect(() => requestJobTask(world)).toThrow(/keinen Job/);
   });
 
+  it('vergibt XP erst bei Abschluss der Aufgabe', () => {
+    const { world } = setup();
+    acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
+    requestJobTask(world);
+    expect(world.player.rpg.xp).toBe(0);
+    completeJobTask(world, { nextFloat: () => 0.5 });
+    expect(world.player.rpg.xp).toBe(JOB_DEFS.CLEANER.baseXpPerTask);
+  });
   it('verweigert doppelte Aufgabe', () => {
     const { world } = setup();
     acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
@@ -108,6 +116,16 @@ describe('Player-Jobs: Lohn', () => {
     expect(ledger.getBalance(PORTEMONNAIE)).toBe(before + fromVC(3));
   });
 
+  it('bucht den Lohn aus der Aussenwelt, nicht aus dem Hauskonto', () => {
+    const { world, ledger, prng } = setup();
+    ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'test', 0);
+    acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
+    world.day += 1;
+    payDailyWage(world, ledger, prng, world.tick);
+    const entry = ledger.entries[ledger.entries.length - 1];
+    expect(entry?.from).toBe(EXTERNAL);
+    expect(entry?.to).toBe(PORTEMONNAIE);
+  });
   it('zahlt nicht zweimal am selben Tag', () => {
     const { world, ledger, prng } = setup();
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'test', 0);

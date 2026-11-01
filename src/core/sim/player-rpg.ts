@@ -43,14 +43,13 @@ export function grantGlobalXp(rpg: PlayerRpgState, sourceKey: string, amount: nu
   const weights = XP_SOURCE_WEIGHTS[sourceKey];
   if (weights) {
     for (const [attr, weight] of Object.entries(weights)) {
-      const attrXp = Math.round(totalXp * weight);
-      const current = rpg.attributeXp[attr as RpgAttribute] ?? 0;
-      const next = current + attrXp;
-      rpg.attributeXp[attr as RpgAttribute] = next;
+      const key = attr as RpgAttribute;
+      let next = (rpg.attributeXp[key] ?? 0) + Math.round(totalXp * weight);
       while (next >= ATTRIBUTE_XP_PER_LEVEL) {
-        rpg.attributeXp[attr as RpgAttribute]! -= ATTRIBUTE_XP_PER_LEVEL;
-        incrementAttribute(rpg, attr as RpgAttribute);
+        next -= ATTRIBUTE_XP_PER_LEVEL;
+        incrementAttribute(rpg, key);
       }
+      rpg.attributeXp[key] = next;
     }
   }
 }

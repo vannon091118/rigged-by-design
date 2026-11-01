@@ -116,9 +116,13 @@ class WorldStore {
   pay(guestId: number): void { this.#guard(() => { this.#notice = payCmd(this.#world, this.#ledger, guestId); }); }
   takeHome(amountVC = 5): void { this.#guard(() => { this.#notice = takeHomeCmd(this.#world, this.#ledger, amountVC); }); }
   riskCard(rivalId: RivalId, color: RiskColor, stakeVC: number): RiskOutcome | null { return riskCardCmd(this.#world, this.#ledger, rivalId, color, stakeVC, this.#prng); }
-  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number): CardDeal | null { return dealCardCmd(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC, bps); }
+  dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number): CardDeal | null { return dealCardCmd(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC); }
   settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null { return settleCardCmd(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, netBps, label); }
-  additionalBet(amountVC: number): void { try { additionalBetCmd(this.#world, this.#ledger, amountVC); this.#notice = 'Zusatz-Einsatz gebucht.'; this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Zusatz-Einsatz fehlgeschlagen.'; this.#emit(false); } }
+  additionalBet(amountVC: number): boolean {
+    let booked = false;
+    this.#guard(() => { additionalBetCmd(this.#world, this.#ledger, amountVC); this.#notice = 'Zusatz-Einsatz gebucht.'; booked = true; });
+    return booked;
+  }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) this.#emit(false); return result; }
   auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); }

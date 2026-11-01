@@ -1,7 +1,7 @@
 /** Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. */
 
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
-import { HAUSKONTO, PORTEMONNAIE, EXTERNAL } from './money';
+import { PORTEMONNAIE, EXTERNAL } from './money';
 import { getRival, type RivalId } from './rivals';
 import { grantGlobalXp, injuryDurationReduction } from './player-rpg';
 import { recordJournal } from './journal';
@@ -77,7 +77,7 @@ export function requestJobTask(world: WorldState): { started: boolean; queuePosi
       : job.jobId === 'CARD_DEALER' ? 'DEAL' : 'REPAIR',
     ticksElapsed: 0, ticksTotal: def.taskDurationTicks,
   };
-  grantGlobalXp(world.player.rpg, def.xpSourceKey, Math.floor(def.baseXpPerTask / 2));
+  // XP gibt es erst bei Abschluss, wie im Job-Menü angezeigt.
   return { started: true, queuePosition: -1 };
 }
 
@@ -108,7 +108,7 @@ export function payDailyWage(
   if (job.lastPaidDay >= world.day) return false;
   const def = JOB_DEFS[job.jobId];
   const wage = fromVC(def.dailyWageVC);
-  ledger.transfer(HAUSKONTO, PORTEMONNAIE, wage, `tageslohn ${def.id}`, tick);
+  ledger.transfer(EXTERNAL, PORTEMONNAIE, wage, `tageslohn ${def.id}`, tick);
   job.lastPaidDay = world.day;
   if (def.injuryChance > 0 && prng.nextFloat() < def.injuryChance) {
     const reduction = injuryDurationReduction(world.player.rpg);

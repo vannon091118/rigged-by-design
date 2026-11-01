@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `npm run test:affected` an GitHub Actions (`npm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 87 Dateien — contract 52 · integration 15 · governance 9 · statistics 6 · performance 5.
+Summe: 90 Dateien — contract 53 · integration 17 · governance 9 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -57,6 +57,7 @@ Summe: 87 Dateien — contract 52 · integration 15 · governance 9 · statistic
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
 | `src/core/sim/__tests__/duel.test.ts` | sim | contract | ja | `src/core/sim/duel.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
+| `src/core/sim/__tests__/foreign-floor-tick.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-tick.ts` |
 | `src/core/sim/__tests__/grid-zones.test.ts` | sim | contract | ja | `src/core/sim/grid-zones.ts` |
 | `src/core/sim/__tests__/guest-flow.test.ts` | sim | contract | ja | `src/core/sim/world.ts` |
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
@@ -88,7 +89,9 @@ Summe: 87 Dateien — contract 52 · integration 15 · governance 9 · statistic
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, CI | `src/render/floor-math.ts` |
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
+| `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/prng-persistence.test.ts` | store | integration | ja | `src/store/save.ts` |
+| `src/store/__tests__/rival-play-commands.test.ts` | store | integration | ja | `src/store/rival-play-commands.ts` |
 | `src/store/__tests__/save-device.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-migration.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-reels.test.ts` | store | integration | ja | `src/store/migrate.ts` |

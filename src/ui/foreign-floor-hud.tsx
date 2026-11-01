@@ -11,10 +11,13 @@ interface ForeignFloorHudProps {
   readonly onClose: () => void;
   readonly onLeaveFloor: () => void;
   readonly onOpenMap: () => void;
+  readonly onSelectStation: (stationId: string) => void;
+  readonly onOpenGames: () => void;
 }
 
-export function ForeignFloorHud({ view, onClose, onLeaveFloor, onOpenMap }: ForeignFloorHudProps) {
+export function ForeignFloorHud({ view, onClose, onLeaveFloor, onOpenMap, onSelectStation, onOpenGames }: ForeignFloorHudProps) {
   const job = view.playerJob;
+  const floor = view.foreignFloors.find((entry) => entry.id === view.currentForeignFloorId);
   const barProgress = Math.min(100, (view.wallet / 10_000) / 50 * 100); // 50 VC Ziel
 
   return (
@@ -56,7 +59,20 @@ export function ForeignFloorHud({ view, onClose, onLeaveFloor, onOpenMap }: Fore
         )}
       </div>
 
+      {floor && floor.jobStations.length > 0 && (
+        <div className="hud-stations">
+          {floor.jobStations.map((station) => (
+            <button key={station.id} type="button" className="btn" onClick={() => onSelectStation(station.id)}>
+              {station.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="hud-actions">
+        <button type="button" className="btn primary" onClick={onOpenGames} title="Spiele im Haus des Betreibers – dein Portemonnaie ist dort Gast.">
+          SPIELE
+        </button>
         <button type="button" className="btn ghost" onClick={onOpenMap}>
           KARTE
         </button>

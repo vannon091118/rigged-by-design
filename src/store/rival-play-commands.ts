@@ -28,10 +28,9 @@ export function dealCardCmd(
   rivalId: import('../core/sim/types').RivalId,
   machineIndex: number,
   stakeVC: number,
-  bps: number,
 ): CardDeal | null {
   try {
-    return dealCardOutcome(world, ledger, prng, rivalId, machineIndex, fromVC(stakeVC), bps).result;
+    return dealCardOutcome(world, ledger, prng, rivalId, machineIndex, stakeVC).result;
   } catch {
     return null;
   }
@@ -47,7 +46,7 @@ export function settleCardCmd(
   label: string,
 ): GameResult | null {
   try {
-    return settleCardOutcome(world, ledger, rivalId, machineIndex, fromVC(stakeVC), netBps, label).result;
+    return settleCardOutcome(world, ledger, rivalId, machineIndex, stakeVC, netBps, label).result;
   } catch {
     return null;
   }
@@ -70,7 +69,7 @@ export function playRivalCmd(
   prng: Prng,
   options: GameExtras = {},
 ): GameResult | null {
-  const result = visitRivalWithJournal(world, ledger, rivalId, machineIndex, fromVC(betVC), prng, options);
+  const result = visitRivalWithJournal(world, ledger, rivalId, machineIndex, betVC, prng, options);
   return result?.result ?? null;
 }
 

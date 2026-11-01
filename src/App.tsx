@@ -2,15 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { canPlaceAt } from './core/sim/grid-zones';
 import { getBuildDef, type BuildId } from './core/sim/offers';
-import type { CarpetId, TemplateId } from './core/sim/types';
+import type { CarpetId, RivalId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import type { GameView } from './store/types';
 import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { ForeignFloorMap } from './ui/foreign-floor-map';
-import { ForeignFloorHud } from './ui/foreign-floor-hud';
-import { JobContextMenu } from './ui/job-context-menu';
+import { ForeignFloorPopup } from './ui/foreign-floor-popup';
 import { GamesPopup } from './ui/games-popup';
 import { GuestPopup } from './ui/guest-popup';
 import { HelpPopup } from './ui/help-popup';
@@ -25,7 +24,7 @@ import { armMusic, setMusicState } from './render/music';
 type Popup =
   | { kind: 'guests'; guestId: number | null }
   | { kind: 'machine'; itemId: number }
-  | { kind: 'games' }
+  | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'journal' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
@@ -54,7 +53,6 @@ export default function App() {
   const [popup, setPopup] = useState<Popup>(null);
   const [buildOpen, setBuildOpen] = useState(false);
   const [placeError, setPlaceError] = useState('');
-  const [jobStation, setJobStation] = useState<string | null>(null);
   const [muted, setMutedState] = useState(isMuted);
   const stage = useRef<FloorHandle>(null);
 
@@ -245,7 +243,8 @@ export default function App() {
       {popup?.kind === 'games' && (
         <GamesPopup
           view={view}
-          onClose={() => setPopup(null)}
+          initialRivalId={popup.rivalId}
+          onClose={() => setPopup(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
           onPlay={(rivalId, machineIndex, betVC, options) => worldStore.playRival(rivalId, machineIndex, betVC, options)}
           onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
           onShellRound={() => worldStore.shellRound()}
@@ -269,44 +268,20 @@ export default function App() {
             worldStore.visitForeign(rivalId);
             setPopup({ kind: 'foreignFloor' });
           }}
-          onClose={() => setPopup(null)}
+          onClose={() => setPopup(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
         />
       )}
 
-
-      {popup?.kind === 'foreignFloor' && view.currentForeignFloorId !== null && (
-        <>
-          <ForeignFloorHud
-            view={view}
-            onClose={() => setPopup(null)}
-            onLeaveFloor={() => { worldStore.leaveForeign(); setPopup(null); }}
-            onOpenMap={() => setPopup({ kind: 'foreignMap' })}
-          />
-          {jobStation && (
-            <JobContextMenu
-              station={view.foreignFloors
-                .flatMap((f) => f.jobStations)
-                .find((s) => s.id === jobStation)!}
-              playerJob={view.playerJob}
-              rivalId={view.foreignFloors.find((f) => f.id === view.currentForeignFloorId)!.rivalId}
-              onClose={() => setJobStation(null)}
-              onAcceptJob={(jobId) => {
-                worldStore.acceptJob(view.foreignFloors.find((f) => f.id === view.currentForeignFloorId)!.rivalId, jobId);
-                setJobStation(null);
-              }}
-              onQuitJob={() => {
-                worldStore.quitJob();
-                setJobStation(null);
-              }}
-              onStartTask={() => {
-                worldStore.requestJobTask();
-                setJobStation(null);
-              }}
-              onLeaveFloor={() => { worldStore.leaveForeign(); setPopup(null); setJobStation(null); }}
-            />
-          )}
-        </>
+      {popup?.kind === 'foreignFloor' && (
+        <ForeignFloorPopup
+          key={view.currentForeignFloorId ?? 'none'}
+          view={view}
+          onClose={() => setPopup(null)}
+          onOpenMap={() => setPopup({ kind: 'foreignMap' })}
+          onOpenGames={(rivalId) => setPopup({ kind: 'games', rivalId })}
+        />
       )}
+
       {popup?.kind === 'journal' && (
         <JournalPopup
           view={view}
