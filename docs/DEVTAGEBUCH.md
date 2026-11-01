@@ -10,6 +10,21 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - main in den Inventar-Branch gemergt
+
+**Ziel.** PR #27 mergebar machen, ohne die Asset-Arbeit von `main` zu verlieren.
+
+**Umsetzung.** `main` (`ee882da`, drei Commits, +485 Zeilen in Renderer und UI)
+in den Branch gemergt. Zwei Konflikte: `src/main.tsx` (Runtime-Art-Preload von
+`main` plus `./styles/index.css` aus diesem Branch) und die generierte
+Dependency-Matrix in `docs/ARCHITECTURE.md` (Zaehlungen beider Seiten, danach
+vom Hook neu erzeugt).
+
+**Pruefungen.** `verify:docs` inklusive Inventar-Abdeckung, `verify:tree`,
+`verify:redundancy`, `check:loc`, ESLint und `tsc --noEmit` lokal gruen; die
+neuen Renderer-Dateien und fuenf Screenshots stehen im regenerierten Abschnitt 18.
+Vitest lief nicht lokal; der Beweis bleibt `verify:all` in CI.
+
 ## 2026-11-01 - Inventar-Generator idempotent gemacht
 
 **Befund.** Bei der Verifikation der Auslieferung fiel auf: Nach einem testweise
@@ -122,7 +137,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:02 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 10:11 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

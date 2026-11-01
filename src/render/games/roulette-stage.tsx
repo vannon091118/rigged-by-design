@@ -4,7 +4,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { RouletteCanvas } from './roulette-canvas';
 
 export interface RouletteStageHandle {
-  spin: (number: number, onDone: () => void) => void;
+  spin: (number: number, onDone: () => void, won?: boolean) => void;
 }
 
 export const RouletteStage = forwardRef<RouletteStageHandle, { readonly label: string }>(
@@ -13,7 +13,7 @@ export const RouletteStage = forwardRef<RouletteStageHandle, { readonly label: s
     const wheel = useRef<RouletteCanvas | null>(null);
 
     useImperativeHandle(ref, () => ({
-      spin: (number, onDone) => wheel.current?.spin(number, onDone),
+      spin: (number, onDone, won = false) => wheel.current?.spin(number, onDone, won),
     }), []);
 
     useEffect(() => {

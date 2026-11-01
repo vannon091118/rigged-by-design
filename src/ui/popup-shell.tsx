@@ -1,5 +1,6 @@
 /** Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. */
 import { useEffect, useRef, type ReactNode } from 'react';
+import { UI_ICON } from './icons';
 
 interface PopupShellProps {
   readonly eyebrow: string;
@@ -65,7 +66,9 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
             <span className="eyebrow">{eyebrow}</span>
             <h2>{title}</h2>
           </div>
-          <button type="button" className="popup-close" aria-label="Schließen" onClick={onClose}>×</button>
+          <button type="button" className="popup-close" aria-label="Schließen" onClick={onClose}>
+            <img className="ui-icon" src={UI_ICON.close} alt="" />
+          </button>
         </header>
         <div className="popup-body">{children}</div>
       </section>

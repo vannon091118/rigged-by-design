@@ -5,6 +5,7 @@ import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
 import { changedRegions, regionHash } from './floor-math';
+import { CarpetOverlay } from './floor-carpet';
 import { drawRoutes } from './floor-route';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
@@ -12,6 +13,7 @@ const LABEL_COUNT = 10;
 
 export interface SceneCache {
   readonly room: Container;
+  readonly carpet: Container;
   readonly furniture: Container;
   readonly props: Container;
   readonly actors: Container;
@@ -25,6 +27,7 @@ export interface SceneCache {
 
 export function createSceneCache(): SceneCache {
   const room = new Container();
+  const carpet = new CarpetOverlay();
   const furniture = new Container();
   const props = new Container();
   const dirtLayer = new Container();
@@ -62,6 +65,7 @@ export function createSceneCache(): SceneCache {
     const prev = new Map<string, number>();
     for (const chunk of floorChunks.values()) prev.set(chunk.area.id, chunk.hash);
     const changed = new Set(changedRegions(view, areas, prev));
+    carpet.update(view);
     for (const area of areas) {
       let chunk = floorChunks.get(area.id);
       if (!chunk) {
@@ -143,11 +147,12 @@ export function createSceneCache(): SceneCache {
     for (const chunk of dirtChunks.values()) chunk.g.destroy();
     dirtChunks.clear();
     room.destroy({ children: true });
+    carpet.destroy();
     furniture.destroy({ children: true });
     props.destroy({ children: true });
     actors.destroy({ children: true });
     stickers.destroy({ children: true });
   };
 
-  return { room, furniture, props, actors, stickers, labels, redrawRoom, redrawDirt, setLabels, destroy };
+  return { room, carpet: carpet.root, furniture, props, actors, stickers, labels, redrawRoom, redrawDirt, setLabels, destroy };
 }

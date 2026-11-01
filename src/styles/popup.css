@@ -27,7 +27,9 @@
 
 .popup-head {
   display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
-  padding: 14px 16px 11px; border-bottom: 1px solid var(--line); background: rgba(8, 5, 15, 0.52);
+  padding: 14px 16px 11px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(8, 5, 15, 0.94), rgba(8, 5, 15, 0.64)),
+    url('/assets/casino/environment/tiles/wallpaper-damask-plum.png') 0 0 / 220px repeat, #08050f;
 }
 .popup-head h2 { font-size: 19px; letter-spacing: 0.02em; line-height: var(--lh-tight); }
 .eyebrow { display: block; margin-bottom: 3px; font-size: var(--fs-micro); letter-spacing: 0.2em; color: var(--role-service); }
@@ -36,6 +38,7 @@
   background: #150d28; color: var(--text); font-size: 19px; line-height: 1;
 }
 .popup-close:hover { border-color: var(--hot); }
+.popup-close .ui-icon { width: 14px; height: 14px; margin: 0; }
 .popup-body { padding: 14px 16px 20px; overflow-y: auto; }
 .popup-body h3 { margin-top: 16px; }
 .hint { margin: 0 0 9px; font-size: 11px; line-height: var(--lh-body); color: var(--muted); }
@@ -165,6 +168,7 @@
 .game-tab { display: grid; gap: 1px; text-align: left; border: 1px solid var(--line); border-radius: 9px; background: #130e22; padding: 7px; }
 .game-tab.active { border-color: var(--gold); background: rgba(255, 209, 102, 0.06); }
 .game-tab b { color: var(--hot); font-size: 14px; }
+.game-tab-icon { width: 24px; height: 24px; object-fit: contain; image-rendering: pixelated; }
 .game-tab strong { font-size: 9px; }
 .game-tab span { display: none; }
 .table-stage { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr); gap: 12px; }
@@ -440,6 +444,7 @@
 .roulette-console { display: grid; gap: 7px; }
 .roulette-total { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; color: var(--muted); }
 .roulette-total strong { font-family: var(--mono); font-size: 14px; color: var(--gold); }
+.dealer-portrait { width: 44px; height: 44px; object-fit: contain; image-rendering: pixelated; margin-left: auto; }
 .rt-tableau { display: grid; gap: 3px; grid-template-columns: 34px minmax(0, 1fr) 40px;
   grid-template-areas: "zero numbers columns" "zero dozens dozens" "zero even even"; }
 .rt-zero { grid-area: zero; }
