@@ -25,6 +25,8 @@ und Uhrzeit. Beide Gates laufen im schnellen und im vollen Profil.
 **Befunde beim ersten Lauf.** `src/index.css` lag neben `main.tsx` und wanderte
 nach `src/styles/`; `eslint.config.mjs` und `opencode.json` fehlten in der
 Wurzel-Whitelist; `scripts/init-github.sh` ist als Bootstrap-Shell erlaubt.
+Der Umzug brach zunaechst die drei `@import`-Pfade; der CI-Build fand es, jetzt
+sind sie relativ (`./tokens.css`, `./app.css`, `./popup.css`).
 
 **Pruefungen.** `verify:tree`, `verify:redundancy`, `verify:docs`, ESLint,
 `tsc --noEmit` und `check:loc` lokal gruen. Vitest lief nicht lokal; der Beweis
@@ -76,7 +78,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:35 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 09:38 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
