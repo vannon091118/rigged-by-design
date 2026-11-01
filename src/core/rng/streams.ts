@@ -6,15 +6,23 @@ export function presentationRng(seed: number): Prng {
   return new Prng(seed, 'presentation');
 }
 
-/** Frischer Darstellungs-Seed aus Krypto; der Spielstrom bleibt unberuehrt. */
-export function presentationSeed(): number {
+/**
+ * Der eine Entropie-Eingang: echter Zufall nur beim Anlegen eines Laufs.
+ * Alles danach ist geseedet und aus dem gespeicherten Zustand wiederholbar.
+ */
+export function entropySeed(): number {
   const source = globalThis.crypto;
   if (!source || typeof source.getRandomValues !== 'function') {
-    throw new Error('RNG: crypto.getRandomValues fehlt; Darstellung braucht einen echten Seed.');
+    throw new Error('RNG: crypto.getRandomValues fehlt; ohne echten Seed startet kein Lauf.');
   }
   const buffer = new Uint32Array(1);
   source.getRandomValues(buffer);
   return buffer[0]!;
+}
+
+/** Frischer Darstellungs-Seed aus Krypto; der Spielstrom bleibt unberuehrt. */
+export function presentationSeed(): number {
+  return entropySeed();
 }
 
 /** Core-Grenze: nur ein Gameplay-Strom darf Welt oder Spiele bewegen. */

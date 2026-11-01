@@ -25,7 +25,8 @@ function summarize(issues: readonly TransferIssue[]): TransferReport {
   return { ok: !blocking(issues), issues, fatal: counts.fatal, repairs: counts.repair, ignored: counts.ignored };
 }
 
-export function exportGameData(world: WorldState, ledger: Ledger, prngState: number, savedAt = new Date().toISOString()): string {
+/** Der Stempel kommt aus der Welt, nicht aus der Uhr: derselbe Stand ergibt dieselben Bytes. */
+export function exportGameData(world: WorldState, ledger: Ledger, prngState: number, savedAt = `Tag ${world.day}, Tick ${world.tick}`): string {
   return JSON.stringify(buildEnvelope(toSavedGame(world, ledger, prngState), savedAt), null, 2);
 }
 

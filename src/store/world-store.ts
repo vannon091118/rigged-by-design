@@ -9,6 +9,7 @@ import type { BuildId } from '../core/sim/offers';
 import type { CarpetId, ModId, Point, StaffRole, TemplateId, WorldState, PlayerJobId, RivalId } from '../core/sim/types';
 import type { RpgAttribute } from '../core/sim/player-rpg';
 import { Prng } from '../core/rng/prng';
+import { entropySeed } from '../core/rng/streams';
 import { buildView } from './snapshot';
 import { clearOldSave, loadWorld, SAVE_FAILED_NOTICE, saveWorld } from './save';
 import { exportGameData, planImportData, type TransferReport } from './transfer';
@@ -27,7 +28,7 @@ import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd } from './
 const TICK_MS = 520;
 class WorldStore {
   #ledger = new Ledger();
-  #prng = new Prng(Date.now() >>> 0); // @seed-initializer
+  #prng = new Prng(entropySeed());
   #world: WorldState = createWorld('SMALL');
   #view: GameView;
   #notice = '150 VC Startkapital. Dein erster Automat steht gratis. Gäste kommen zum Eingang.';
@@ -65,7 +66,7 @@ class WorldStore {
     this.#world = createWorld(template);
     this.#ledger = new Ledger();
     openHouse(this.#ledger, 0);
-    this.#prng = new Prng((Date.now() ^ 0x9e3779b9) >>> 0); // @seed-initializer
+    this.#prng = new Prng(entropySeed());
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();
   }

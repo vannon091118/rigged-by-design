@@ -1,16 +1,17 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 10:28 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 10:50 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
 
-- Inventur ist abgeschlossen: §18 deckt 957/957 getrackte Dateien und 64 Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie. Naechster Schritt ist der PR nach `main`.
+- Inventur ist abgeschlossen: §18 deckt alle getrackten Dateien und Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie.
 - Hooks in jedem Klon aktivieren (`npm run hooks:install`); Doc-Gate und Abdeckung im CI beobachten.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
+- Determinismus haelt jetzt eine ESLint-Regel: kein `Math.random`, keine Wanduhr in `src/**`, echter Zufall nur via `entropySeed()`.
 
 ## Als Nächstes
 
