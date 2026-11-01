@@ -4,7 +4,8 @@
  * @error-code: ERR-1003
  *
  * Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden,
- * und Verdoppeln braucht Deckung fuer den doppelten Einsatz.
+ * und Verdoppeln braucht Deckung fuer einen zusätzlichen Einsatz, nachdem der
+ * Grundeinsatz bereits gebucht wurde.
  */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -48,10 +49,10 @@ describe('Blackjack-Fenster', () => {
     expect(deal.disabled).toBe(true);
   });
 
-  it('erlaubt Verdoppeln nur mit Deckung fuer den doppelten Einsatz', () => {
-    table(1.5, playerTurnSeed());
+  it('erlaubt Verdoppeln mit Deckung fuer einen zusätzlichen Einsatz', () => {
+    table(1.0, playerTurnSeed());
     fireEvent.click(screen.getByRole('button', { name: /AUSTEILEN/ }));
     const double = screen.getByRole('button', { name: 'VERDOPPELN' }) as HTMLButtonElement;
-    expect(double.disabled).toBe(true);
+    expect(double.disabled).toBe(false);
   });
 });

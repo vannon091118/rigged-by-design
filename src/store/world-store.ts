@@ -22,7 +22,7 @@ import type { BuildId } from '../core/sim/offers';
 import { remodel } from '../core/sim/remodel';
 import type { RivalId } from '../core/sim/rivals';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
-import { dealCardOutcome, riskRivalWin, settleCardOutcome, visitRivalWithJournal, type CardDeal } from './foreign-play';
+import { additionalBet, dealCardOutcome, riskRivalWin, settleCardOutcome, visitRivalWithJournal, type CardDeal } from './foreign-play';
 import { settleMoneyJournal } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, takeHomeToWallet, useCarriedAtPlayer } from './player-tools';
@@ -39,7 +39,7 @@ class WorldStore {
   #prng = new Prng(Date.now() >>> 0); // @seed-initializer
   #world: WorldState = createWorld('SMALL');
   #view: GameView;
-  #notice = '0,00 VC im Hauskonto. Dein erster Automat steht gratis. Gäste kommen zum Eingang.';
+  #notice = '150 VC Startkapital. Dein erster Automat steht gratis. Gäste kommen zum Eingang.';
   #listeners = new Set<() => void>();
   #timer: ReturnType<typeof setInterval> | null = null;
   #savedTick = 0;
@@ -53,8 +53,9 @@ class WorldStore {
       this.#notice = 'Spielstand geladen.';
     } else {
       ensureStarter(this.#world);
+      openHouse(this.#ledger, 0); // Frischstart == New Game: 150 VC Startkapital via EXTERNAL.
       this.#notice = hadOld
-        ? 'Alter Spielstand verworfen. Neues Casino, neuer Gratis-Automat.'
+        ? 'Alter Spielstand verworfen. Neues Casino, 150 VC Startkapital.'
         : this.#notice;
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
@@ -236,6 +237,17 @@ class WorldStore {
   /** Karten: Einsatz und Schuh-Seed beim Austeilen, Auszahlung mit Hausquote am Rundenende. */
   dealCard(rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number): CardDeal | null { return this.#foreign(() => dealCardOutcome(this.#world, this.#ledger, this.#prng, rivalId, machineIndex, stakeVC, bps)); }
   settleCard(rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string): GameResult | null { return this.#foreign(() => settleCardOutcome(this.#world, this.#ledger, rivalId, machineIndex, stakeVC, netBps, label)); }
+  /** Buchung eines zusätzlichen Einsatzes (Double, Split, Versicherung, Side Bet). */
+  additionalBet(amountVC: number): void {
+    try {
+      additionalBet(this.#world, this.#ledger, fromVC(amountVC), this.#world.tick);
+      this.#notice = 'Zusatz-Einsatz gebucht.';
+      this.#emit();
+    } catch (error) {
+      this.#notice = error instanceof Error ? error.message : 'Zusatz-Einsatz fehlgeschlagen.';
+      this.#emit(false);
+    }
+  }
   /** Huetchen: die Runde steht vor der Wahl fest, gebucht wird erst der Griff. */
   shellRound(cups = 3): ShellRound { return createShellRound(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null {

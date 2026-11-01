@@ -41,6 +41,7 @@ export function VideoPokerPopup(props: Props) {
   const holdsRef = useRef<readonly boolean[]>(NO_HOLDS);
   const [phase, setPhase] = useState<'IDLE' | 'HOLD' | 'DONE'>('IDLE');
   const [result, setResult] = useState<GameResult | null>(null);
+  const [netBps, setNetBps] = useState<number>(10_000);
   const canPay = canAfford(props.wallets.wallet, fromVC(bet));
 
   const deal = (): void => {
@@ -48,6 +49,7 @@ export function VideoPokerPopup(props: Props) {
     const dealResult = props.onDeal(bet, 10_000); // Video Poker: 100% basis
     if (!dealResult) return;
     shoe.current = createCardShoe(dealResult.seed);
+    setNetBps(dealResult.netBps);
     const dealt = dealVideoPoker(shoe.current);
     setHand(dealt);
     holdsRef.current = NO_HOLDS;
@@ -75,7 +77,9 @@ export function VideoPokerPopup(props: Props) {
     const evaluation = evaluateVideoPoker(out.hand);
     playSfx('cardFlip');
     stage.current?.render(out.hand, holdsRef.current, evaluation.hand === 'NOTHING' ? null : evaluation.hand);
-    setResult(props.onSettle(bet, out.bps, out.label));
+    const edge = Math.max(0, 10_000 - netBps);
+    const adjusted = Math.max(0, out.bps - edge);
+    setResult(props.onSettle(bet, adjusted, out.label));
   };
 
   const narration = (): string => {

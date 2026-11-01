@@ -59,6 +59,7 @@ export const RIVALS: readonly RivalOperator[] = [
     machines: [
       machine('BLACKJACK', 'Blackjack am Samt', 0.25, ['VELVET']),
       machine('POKER', 'Poker mit Hausregel', 0.5, ['NEAR_MISS']),
+      machine('VIDEO_POKER', 'Video Poker am Samt', 0.25, ['VELVET']),
       machine('SLOT', 'Münzautomat', 0.25, ['NEON', 'CHERRY']),
       machine('DICE', 'Würfel am Samt', 0.25, ['VELVET']),
     ],

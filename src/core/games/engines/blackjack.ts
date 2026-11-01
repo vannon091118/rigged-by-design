@@ -60,11 +60,19 @@ export function startBlackjack(
   const hand: BlackjackHand = { ...dealt, label: handLabel(dealt) };
   const sideBetPair = sideBet && rules.sideBetBps > 0 && sameRank(player[0]!, player[1]!);
   const base = build([hand], dealer, units + (sideBet ? 1 : 0), rules, { sideBet, sideBetPair });
+  // Ein Natural des Spielers beendet die Hand sofort; erst dann wird die Versicherung angeboten,
+  // damit bei Ablehnung automatisch abgerechnet werden kann (alle Hände sind done).
+  if (isNatural(player)) {
+    const baseDone = { ...base, hands: [{ ...hand, done: true }] };
+    if (rules.allowInsurance && dealer[0]!.rank === 'A') {
+      return { ...baseDone, insuranceOffered: true, label: 'Der Dealer zeigt ein Ass. Versicherung?' };
+    }
+    return advance(baseDone, shoe, rules);
+  }
   // Ein Ass beim Dealer ist die einzige Situation, die vor dem Spielzug geklaert wird.
   if (rules.allowInsurance && dealer[0]!.rank === 'A') {
     return { ...base, insuranceOffered: true, label: 'Der Dealer zeigt ein Ass. Versicherung?' };
   }
-  if (isNatural(player)) return advance({ ...base, hands: [{ ...hand, done: true }] }, shoe, rules);
   return base;
 }
 

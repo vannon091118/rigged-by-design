@@ -26,6 +26,8 @@ interface Props {
   readonly onShellRound: () => ShellRound;
   readonly onDealCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, bps: number) => CardDeal | null;
   readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, netBps: number, label: string) => GameResult | null;
+  /** Bucht einen weiteren Einsatz (Double, Split, Versicherung, Side Bet) im Ledger. */
+  readonly onAdditionalBet?: (additionalVC: number) => void;
   readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
 }
 
@@ -35,7 +37,7 @@ const personaLabel = (id: string): string =>
   id === 'HIGH_ROLLER' ? 'High Roller' : id === 'STAMMGAST' ? 'Stammgast'
     : id.charAt(0) + id.slice(1).toLowerCase();
 
-export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onDealCard, onSettleCard }: Props) {
+export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclusion, onShellRound, onDealCard, onSettleCard, onAdditionalBet }: Props) {
   const states = rivalStates(view.tick);
   const [rivalId, setRivalId] = useState<RivalId>(RIVALS[0]!.id);
   const [machineIndex, setMachineIndex] = useState(0);
@@ -154,6 +156,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           onShellRound={onShellRound}
           onDeal={(stakeVC, bps) => onDealCard(rivalId, machineIndex, stakeVC, bps)}
           onSettle={(stakeVC, netBps, label) => onSettleCard(rivalId, machineIndex, stakeVC, netBps, label)}
+          onAdditionalBet={onAdditionalBet}
         />
       ) : (
       <div className={`table-stage${full ? ' full' : ''}`}>

@@ -245,6 +245,7 @@ export default function App() {
           onShellRound={() => worldStore.shellRound()}
           onDealCard={(rivalId, machineIndex, stakeVC, bps) => worldStore.dealCard(rivalId, machineIndex, stakeVC, bps)}
           onSettleCard={(rivalId, machineIndex, stakeVC, netBps, label) => worldStore.settleCard(rivalId, machineIndex, stakeVC, netBps, label)}
+          onAdditionalBet={(amountVC) => worldStore.additionalBet(amountVC)}
           onTakeHome={() => worldStore.takeHome(5)}
           onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
         />
