@@ -51,12 +51,13 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: MINUTE,
   },
+  assets: { name: 'assets', command: 'npm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
   audit: { name: 'audit', command: 'npm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
   tests: { name: 'tests', command: 'npm', script: 'test:ci', code: 'ERR-2001', cache: true, timeoutMs: 15 * MINUTE },
   build: { name: 'build', command: 'npm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
-const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'deps-matrix', 'catalog', 'tests'];
+const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'deps-matrix', 'catalog', 'assets', 'tests'];
 
 export const PROFILE_GATES = Object.freeze({
   quick: Object.freeze(QUICK),

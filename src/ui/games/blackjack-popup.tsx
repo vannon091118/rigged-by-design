@@ -10,6 +10,7 @@ import { createCardShoe } from '../../core/games/engines/interactive-cards';
 import type { CardShoe } from '../../core/rng/shoe';
 import { canAfford, fromVC, type VaCoinMicro } from '../../core/economy/vacoin';
 import { BlackjackStage, type BlackjackStageHandle } from '../../render/games/blackjack-stage';
+import type { CardDeal } from '../../store/foreign-play';
 import { playSfx } from '../../render/sound-fx';
 import { CasinoWindowHeader } from '../casino-window-header';
 import { vc } from '../format';
@@ -26,8 +27,7 @@ interface Props {
   readonly onToggleFull: () => void;
   readonly onWithdraw?: () => void;
   readonly canWithdraw?: boolean;
-  readonly seed: () => number;
-  readonly onDeal: (stakeVC: number, bps: number) => { netBps: number; label: string } | null;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
   readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
 }
 
@@ -62,9 +62,9 @@ export function BlackjackPopup(props: Props) {
 
   const deal = (): void => {
     if (playing || !canPay) return;
-    shoe.current = createCardShoe(props.seed(), rules.decks);
     const dealResult = props.onDeal(bet * 1, rules.blackjackBps); // base bet, blackjack payout BPS
     if (!dealResult) return;
+    shoe.current = createCardShoe(dealResult.seed, rules.decks);
     setResult(null);
     commit(startBlackjack(shoe.current, 1, rules, rules.sideBetBps > 0));
   };

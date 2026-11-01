@@ -4,6 +4,7 @@ import { defaultPlinkoConfig } from '../core/games/plinko-config';
 import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { VaCoinMicro } from '../core/economy/vacoin';
+import type { CardDeal } from '../store/foreign-play';
 import type { GameId, ModId } from '../core/sim/types';
 import { BlackjackPopup } from './games/blackjack-popup';
 import { DicePopup } from './games/dice-popup';
@@ -31,8 +32,7 @@ interface Props {
   readonly canWithdraw: boolean;
   readonly onSpin: (betVC: number, options?: GameExtras) => GameResult | null;
   readonly onShellRound: () => ShellRound;
-  readonly onCardSeed: () => number;
-  readonly onDeal: (stakeVC: number, bps: number) => { netBps: number; label: string } | null;
+  readonly onDeal: (stakeVC: number, bps: number) => CardDeal | null;
   readonly onSettle: (stakeVC: number, netBps: number, label: string) => GameResult | null;
   readonly onRisk?: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
@@ -51,7 +51,7 @@ export function TableLauncher(props: Props) {
     onWithdraw: props.onWithdraw,
     canWithdraw: props.canWithdraw,
   };
-  const where = `${houseName} · ${operator}.`;
+  const where = `${houseName} Â· ${operator}.`;
 
   if (game === 'PLINKO') {
     return (
@@ -71,7 +71,6 @@ export function TableLauncher(props: Props) {
         {...common}
         wallets={wallets}
         subtitle={`${where} Zwei Karten, ein Dealer, du entscheidest.`}
-        seed={props.onCardSeed}
         onDeal={props.onDeal}
         onSettle={props.onSettle}
       />
@@ -83,7 +82,6 @@ export function TableLauncher(props: Props) {
         {...common}
         wallets={wallets}
         subtitle={`${where} Vier Spieler, ein Pot, du entscheidest an jedem Zug.`}
-        seed={props.onCardSeed}
         onDeal={props.onDeal}
         onSettle={props.onSettle}
       />
@@ -95,7 +93,6 @@ export function TableLauncher(props: Props) {
         {...common}
         wallets={wallets}
         subtitle={`${where} Neun Zeilen, fuenf Karten, du haeltst.`}
-        seed={props.onCardSeed}
         onDeal={props.onDeal}
         onSettle={props.onSettle}
       />

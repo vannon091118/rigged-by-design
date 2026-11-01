@@ -108,7 +108,7 @@ Der Name ist Programm: Das Haus ist manipuliert, die Gäste sind simuliert, und 
 
 - **Kein Echtgeld, keine Einzahlung, kein Gewinn.** VaCoins sind fiktiv. Deine Entscheidungen sind es nicht.
 - **Kein Multiplayer, keine Accounts.** Dein Fortschritt bleibt auf deinem Gerät. Wie deine Motivation, wenn die Bar zum dritten Mal leer ist.
-- **Keine Side Pots.** Am Pokertisch gibt es einen Pot; ein All-in deckelt den Einsatz, aber teilt den Pot nicht in Nebenpötze. Wir sind ein Aufbauspiel, kein Turnier. Das nennen wir „fokussiert“.
+- **Keine Side Pots.** Am Pokertisch gibt es Side Pots nur für ungerufene Einsätze: Wird der höchste Einsatz nicht gecallt, geht der Unterschied **vollständig ohne Rake** an den Setzer zurück. Ansonsten wird der Pot aufgeteilt und mit 5 % Hausanteil belastet. Wir nennen das „fokussiert“.
 - **Keine moralische Erlösung.** Der Hausvorteil bleibt. Auch für dich.
 
 ## Ernst gemeint (der einzige Abschnitt ohne Pointe)

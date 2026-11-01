@@ -243,7 +243,6 @@ export default function App() {
           onPlay={(rivalId, machineIndex, betVC, options) => worldStore.playRival(rivalId, machineIndex, betVC, options)}
           onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
           onShellRound={() => worldStore.shellRound()}
-          onCardSeed={() => worldStore.cardSeed()}
           onDealCard={(rivalId, machineIndex, stakeVC, bps) => worldStore.dealCard(rivalId, machineIndex, stakeVC, bps)}
           onSettleCard={(rivalId, machineIndex, stakeVC, netBps, label) => worldStore.settleCard(rivalId, machineIndex, stakeVC, netBps, label)}
           onTakeHome={() => worldStore.takeHome(5)}
