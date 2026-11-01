@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.64 | 2026-11-01 11:03 UTC -->
+<!-- rbd-doc: v0.3.64 | 2026-11-01 11:16 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -11,7 +11,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Hooks in jedem Klon aktivieren (`npm run hooks:install`); Doc-Gate und Abdeckung im CI beobachten.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
-- Determinismus haelt jetzt eine ESLint-Regel: kein `Math.random`, keine Wanduhr in `src/**`, echter Zufall nur via `entropySeed()`.
+- Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`, Ausnahmen namentlich in `eslint.config.mjs`.
 
 ## Als Nächstes
 
