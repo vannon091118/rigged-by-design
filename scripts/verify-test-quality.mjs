@@ -144,14 +144,14 @@ for (const file of walk(resolve(SRC, 'core'), (entry) => entry.endsWith('.ts')))
 for (const file of walk(resolve(SRC, 'store'), (entry) => entry.endsWith('.ts'))) checkDeterminism(file);
 function checkDeterminism(file) {
   const source = parse(file);
-  const lines = source.getFullText().split(/\r?\n/);
   const seen = new Set();
   forEachNode(source, (node) => {
     if (!ts.isPropertyAccessExpression(node)) return;
     const text = node.getText(source);
     if (!RISKY.some((risk) => text.endsWith(risk))) return;
     const line = lineOf(source, node.getStart(source));
-    if (seen.has(line) || lines[line - 1]?.includes('@seed-initializer')) return;
+    // Keine Kommentar-Ausnahme: eine Zufallsquelle bleibt eine Zufallsquelle.
+    if (seen.has(line)) return;
     seen.add(line);
     report('ERR-1001', relative(ROOT, file), `Nicht-deterministisch: ${text} in Zeile ${line}`);
   });

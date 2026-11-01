@@ -10,6 +10,43 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-01 - Determinismus-Sperre fail-closed gehaertet
+
+**Ziel.** Beweisen, dass die Sperre haelt — nicht nur, dass sie dokumentiert ist.
+
+**Befund (gemessen, 20 Proben gegen `npx eslint --stdin`).** Sieben Umwege kamen
+durch: `globalThis.Math.random` und `window.Math.random`, `new globalThis.Date()`,
+`crypto.getRandomValues` und `crypto.randomUUID` (standen nie in der Regelliste),
+`eslint-disable-next-line`, der pauschal freigestellte `src/core/rng/streams.ts`
+und **alle** `scripts/**`-Dateien — inklusive des kuenftigen Content-Compilers.
+Zusaetzlich hatte `verify-test-quality` eine stille Kommentar-Ausnahme
+(`@seed-initializer`), die eine Zufallsquelle in `src/core` und `src/store`
+durchgelassen haette.
+
+**Umsetzung.** `eslint.config.mjs` erfasst jetzt Namespace-Umwege
+(`globalThis`/`window`), `new`-Umwege, computed Zugriffe, Krypto-Selectoren fuer
+`getRandomValues`/`randomUUID` und `scripts/**` per Default. `linterOptions.noInlineConfig`
+schaltet `eslint-disable` global ab, damit kein Kommentar die Sperre aufhebt.
+`src/core/rng/streams.ts` verliert die Pauschal-Freistellung: dort ist nur noch
+Krypto erlaubt, `Math.random` und Uhr bleiben verboten. Sieben Tooling-Skripte
+(Zeitstempel, CI-Polling, Gate-Logs) sind namentlich und begruendet ausgenommen und
+duerfen weiterhin keinen Zufall ziehen. Die `@seed-initializer`-Ausnahme in
+`verify-test-quality` ist entfernt — sie war unbenutzt und damit nur eine Tuer.
+
+**Rot/Gruen-Beleg.** `export const __determinismProbe = Math.random();` an
+`src/core/sim/tick.ts` angehaengt: `npm run lint` endet mit Exit 1 und meldet
+zwei Fehler in Zeile 140 (`no-restricted-properties` und `no-restricted-syntax`).
+Nach `git checkout -- src/core/sim/tick.ts`: `npm run lint` Exit 0.
+
+**Pruefungen.** `lint`, `verify:test-quality` (87 Testdateien),
+`verify:tree`, `verify:redundancy`, `check:loc`, `tsc --noEmit`,
+`inventory:build` (971/971) lokal gruen; `verify:docs` im Commit-Hook. Vitest und
+`verify:all` laufen in CI.
+
+**Offen.** `performance.now()` bleibt in `src/render/**` fuer Bild-/Ton-Pacing
+erlaubt; dieser Wert beruehrt nie den Spielzustand. Kein neues Gate, keine neue
+Abhaengigkeit.
+
 ## 2026-11-01 - Event-Engine-Taskplan adversarial gehaertet
 
 **Ziel.** Den bestehenden 18-Task-Plan (NAR-00…NAR-17) gegen sich selbst
@@ -225,7 +262,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:03 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.64 | 2026-11-01 11:16 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
