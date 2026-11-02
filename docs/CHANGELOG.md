@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.74 | 2026-11-02 20:44 UTC -->
+<!-- rbd-doc: v0.3.74 | 2026-11-02 22:05 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,17 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.74] - 2026-11-02
+
+### Spiel
+
+- Keine spielbaren Aenderungen; umgebaut wird der Werkzeugkasten der Agenten.
+
+### Technik
+- `pnpm run agent:context` druckt eine feste Beschriftungsspalte mit einer Zeile je Feld (Aenderungen, Systeme, Tests, Gates, Doku, Invarianten, Offen) statt einer unstrukturierten Zeile.
+- `pnpm run agent:verify` zeigt eine Gate-Tabelle mit Status und Dauer; `--plan` nennt Plan und Cache-Stand, ohne ein Gate zu starten. Beide bleiben die einzige Analyse- und Pruefstrecke.
+- Das Tree-Gate verbietet Wegwerf-Dateien (`tmp-`, `temp-`, `scratch-`, `adhoc-`, `.tmp.`, `.bak`) und meldet sie als `ERR-4019`; die Regel steht in `AGENTS.md`.
 
 ## [0.3.73] - 2026-11-02
 

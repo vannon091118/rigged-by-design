@@ -20,6 +20,12 @@ const FAILURE_TAIL_LINES = 40;
 const VERBOSE = process.env.RBD_VERIFY_VERBOSE === '1';
 
 let reportDir;
+let lastRows = [];
+
+/** Die Zeilen des letzten Laufs: Name, Status, Dauer. Fuer Berichte, nicht fuer Entscheidungen. */
+export function lastGateRows() {
+  return lastRows.map((row) => ({ ...row }));
+}
 /**
  * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
  * Arbeitsbaum: Verify bleibt lesend, und das Gitignor hält ihn aus jedem Hash.
@@ -212,6 +218,7 @@ export async function runGates(steps) {
     }
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
+  lastRows = rows;
   summarize(rows, failed);
   return failed;
 }
