@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.75 | 2026-11-02 22:23 UTC -->
+<!-- rbd-doc: v0.3.75 | 2026-11-02 22:27 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,13 +11,6 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
-
-## [0.3.75] - 2026-11-02
-
-### Technik
-
-- Narrative Trigger Bedingungen: Reiner Evaluator fuer kombinierte Fact-, Erinnerungs-, Kassen-, Geraete-, Spieler-, Flag- und Zeitbedingungen; noch ohne Runtime-Anbindung.
-- Narrativ-Grundlagen und LLM-freier Eventplan: Start-Pool wird nicht doppelt gezaehlt; Save-Facts werden bei der Normalisierung nach IDs geordnet und auf Nutzdaten geprueft. Offene Meilensteine und der Ausschluss eines LLM im Spiel stehen im Architekturvertrag.
 
 ## [0.3.74] - 2026-11-02
 
@@ -30,6 +23,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - `pnpm run agent:verify` zeigt eine Gate-Tabelle mit Status und Dauer; `--plan` nennt Plan und Cache-Stand, ohne ein Gate zu starten. Beide bleiben die einzige Analyse- und Pruefstrecke.
 - Das Tree-Gate verbietet Wegwerf-Dateien (`tmp-`, `temp-`, `scratch-`, `adhoc-`, `.tmp.`, `.bak`) und meldet sie als `ERR-4019`; die Regel steht in `AGENTS.md`.
 - `agent:context --line` und `agent:verify --line` geben eine verdichtete Textzeile aus (Stand, Umfang, Gates). `agent:verify` druckt im Erfolgsfall keine Zeile je Gate mehr, sondern nur die Tabelle.
+- Suchwerkzeug: ripgrep liegt global im PATH, `rtk rg`/`rtk ls`/`rtk find`/`rtk read`/`rtk git` sind der Standard; `pnpm run agent:context` ist der primaere Kontextzugang (AGENTS.md, RTK-Block).
 
 ## [0.3.73] - 2026-11-02
 
