@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:39 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:43 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,12 +20,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
 
 ### Technik
-- Die Pity-Entladung addiert keinen zweiten Gewinn mehr: `settleSlotSpin` zahlt aus dem Polster, darf es überziehen und holt den Vorschuss aus späteren Gewinnen zurück. Die Maschine schüttet damit langfristig nicht mehr aus, als sie einbehält.
-- Wut kommt jetzt aus der Geduld, nicht aus der Laune: `decay` prüft `patience <= 0` vor dem Geduld-Tropfen. Die Mods mit Geduldswirkung (NEAR_MISS −7, FREE_DRINK +8) steuern damit wirklich, wer randaliert.
+- Der Tageslohn hängt an einer abgeschlossenen Schicht: `PlayerJobState.lastWorkDay` merkt sich den Tag der letzten Schicht, `payDailyWage` zahlt nur dafür und nie rückwirkend. Wer einen Job annimmt und nichts tut, bekommt weder Geld noch `workDays`-Zuwachs.
+- Die Pity-Entladung addiert keinen zweiten Gewinn mehr: `settleSlotSpin` zahlt aus dem Polster, darf es überziehen und holt den Vorschuss aus späteren Gewinnen zurück.
+- Wut kommt jetzt aus der Geduld, nicht aus der Laune: `decay` prüft `patience <= 0` vor dem Geduld-Tropfen; die Mods mit Geduldswirkung steuern damit wirklich, wer randaliert.
 - Sucht steuert den Einsatz (bis +50 %) und die Sitzungslänge (4 bis 9 Spins): `addictedStake` und `sessionSpins`.
 - `PLAYER_CASH` ist auszahlbar: `cashOutPlayerCash` bucht das Bonus-Guthaben ins Portemonnaie.
-- Der tote `social`-Bedürfniszweig ist entfernt; `Persona.patience` bleibt, weil sie seit dem letzten Commit tatsächlich gelesen wird.
-- Der Tageslohn hängt an einer abgeschlossenen Schicht: `PlayerJobState.lastWorkDay` merkt sich den Tag der letzten Schicht, `payDailyWage` zahlt nur dafür und nie rückwirkend. Wer einen Job annimmt und nichts tut, bekommt weder Geld noch `workDays`-Zuwachs.
+- Der tote `social`-Bedürfniszweig ist entfernt; `Persona.patience` bleibt, weil sie seit dem letzten Commit gelesen wird.
 - Die Persona-Geduld wirkt jetzt: sie geht als Gewicht in den 180-Punkte-Pool von `rollProfile` ein (68 High Roller bis 138 Stammgast), die Summe aus Laune, Geduld und Sucht bleibt exakt 180. Vorher war `Persona.patience` ein totes Feld, und der Stammgast startete wegen seiner hohen Suchtrate sogar ungeduldiger als der High Roller.
 - Der Synergie-Audit listet die verbleibenden Lücken in `docs/INVENTORY.md`: `PLAYER_CASH` ohne Ausgabepfad, VELVET und FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusätzliche Walze und ein Einsatz, der nie mit der Persona skaliert.
 - Alte Saves ohne `lastWorkDay` laden weiter und starten mit „noch keine Schicht"; vergangene Tage werden nicht nachgezahlt.

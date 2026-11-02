@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:39 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:43 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -241,12 +241,12 @@ Spielregel-Entscheidung, nicht nur eine Buchung.
 | Befund | Beleg | Status |
 | --- | --- | --- |
 | `Persona.patience` wurde nie gelesen; der Stammgast startete ungeduldiger als der High Roller | `traits.ts` zog Geduld zu gleichen Teilen, `personas.ts` lieferte den Wert umsonst | **gefixt**: `rollProfile` gewichtet mit `persona.patience / 100`, Summe bleibt 180 |
-| `PLAYER_CASH` hat keinen Ausgabepfad | nur Gutschrift in `self-exclusion-bet.ts`, Anzeige als BONUS-GUTHABEN | **gefixt**: `cashOutPlayerCash` bucht ins Portemonnaie |
+| `PLAYER_CASH` hat keinen Ausgabepfad | nur Gutschrift in `self-exclusion-bet.ts` | **gefixt**: `cashOutPlayerCash` |
 | `VELVET` verspricht „bessere Gäste", ändert aber nur Anziehung und Geduld | `offers.ts`, sonst nur Rivalen-Deko | offen |
 | `FREE_DRINK` verspricht „ein Drink pro Spin"; kein Drink wird gebucht | `offers.ts`, keine Buchung im Gastpfad | offen |
 | `EXTRA_REEL` („Vierte Walze") fügt keine Walze hinzu | `reelPull` liest `item.reels`, der Mod zählt nur 300 Anziehung | offen |
-| Der Einsatz skaliert nie mit dem Persona-Budget | `offerScore`: `max(slotMinBet, baseBet)`; Sucht skaliert jetzt, Persona-Budget nicht | teilweise: `addictedStake` |
-| `need = 'social'` wird nie gesetzt, der Branch bleibt tot | `guest-choice.ts` prüft, kein Schreiber | **entfernt**: Zweig und Typwert gelöscht |
+| Der Einsatz skaliert nie mit dem Persona-Budget | `offerScore`: `max(slotMinBet, baseBet)`, High Roller spielt nur länger | offen |
+| `need = 'social'` wird nie gesetzt, der Branch bleibt tot | `guest-choice.ts` prüfte, kein Schreiber | **entfernt** |
 
 
 ## 18. Vollstaendige Dateiliste (maschinell erzeugt)
@@ -373,7 +373,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CHANGELOG.md` — Changelog — gelesen: 154 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 538 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 539 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
@@ -1381,7 +1381,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
-| T33 | **2026-11-02 11:40 UTC**: Pity-Entladung als Vorschuss (`settleSlotSpin`, signierter Topf), Wut aus `patience` statt `mood`, Sucht an Einsatz (+50 %) und Sitzung (4..9 Spins), `PLAYER_CASH` via `cashOutPlayerCash` auszahlbar, `social` entfernt. Neue Tests: `pity-settlement`, `anger-patience`, `addiction-stake`, `player-cash` (13, 6 zuerst rot). v1.13. |
+| T33 | **2026-11-02 11:40 UTC**: Pity-Entladung als Vorschuss (`settleSlotSpin`, signierter Topf), Wut aus `patience`, Sucht an Einsatz (+50 %) und Sitzung (4..9 Spins), `PLAYER_CASH` auszahlbar, `social` entfernt. Neue Tests: `pity-settlement`, `anger-patience`, `addiction-stake`, `player-cash` (13, 6 zuerst rot). v1.13. |
 | T32 | **2026-11-02 11:30 UTC**: Synergie-Audit. `Persona.patience` war tot und verdrängte beim Stammgast die Geduld (51,1 gegen 63,9); `rollProfile` gewichtet sie jetzt, Summe bleibt 180. Offene Gaps mit Beleg in der Befundliste: `PLAYER_CASH`, `VELVET`, `FREE_DRINK`, `EXTRA_REEL`, Einsatzskalierung. Neuer Test `persona-patience` (2, 1 zuerst rot). v1.13. |
 | T31 | **2026-11-02 11:17 UTC**: Tageslohn haengt an Arbeit. `PlayerJobState.lastWorkDay` wird in `completeJobTask` gestempelt; `payDailyWage` zahlt nur die Schicht des Vortags und nie rueckwirkend. `hydrateWorld` setzt das Feld fuer Alt-Saves auf 0. Neue Tests: `player-wage-attendance` (8, 4 zuerst rot), `save-wage-field` (4, 2 zuerst rot); drei bestehende Lohntests legen jetzt eine Schicht vor. v1.13. |
 | T30 | **2026-11-02 11:08 UTC**: Sechs Verdrahtungsbefunde geschlossen. `muggingCoverPoint` misst die Deckung am Wechseltisch statt am Spieler; `disputeLevelForTicks` macht Stufe 2 innerhalb der fünf ANGRY-Ticks erreichbar; `guestsServed` zaehlt nur Gaeste mit Spin; `isJackpotLabel` verlangt 2,5x statt 1,0x; `decay` senkt `guest.anger`; HUD, Diagnose und Automaten-Popup lesen `barCapacityForLevel`. Neue Tests: `mugging-cover`, `guests-served`, `anger-decay`, `dispute-escalation`, `jackpot-label`, `bar-capacity` (12 gruen, 10 davon zuerst rot). v1.13. |

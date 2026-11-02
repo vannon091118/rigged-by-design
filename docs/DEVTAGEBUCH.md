@@ -12,13 +12,14 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 ## 2026-11-02 - Pity als Vorschuss, Wut aus Geduld, Sucht am Einsatz
 
-**Ziel.** Die fünf offenen Punkte aus dem Audit schließen: Pity-RTP, Wut-Auslöser, Suchtfolgen, tote Felder und das nicht auszahlbare Bonus-Guthaben.
+**Ziel.** Fünf offene Punkte schließen: Pity-RTP, Wut-Auslöser, Suchtfolgen, tote Felder und das nicht auszahlbare Bonus-Guthaben.
 
-**Umsetzung.** Die Entladung war ein zweiter Gewinn auf einem Polster, das schon aus Hausvorteil gefüllt war — deshalb stieg der gemessene RTP Richtung 100 %. `settleSlotSpin` führt den Topf jetzt signiert: eine Entladung darf ihn überziehen, der negative Stand ist ein Vorschuss und wird von späteren Gewinnen abgezogen, bis er zurückgeholt ist. Wut: `decay` löste sie bei `mood < 12` aus, obwohl der Journaltext „Geduld aufgebraucht" sagt und die Mods an der Geduld drehen; entschieden ist die Geduld, geprüft vor dem +0,02-Tropfen, damit die Null nicht sofort wieder überstrichen wird. Sucht: `addictedStake` hebt den Einsatz um bis zu 50 %, `sessionSpins` verlängert die Sitzung von vier auf neun Spins — Sucht wirkt damit auf Einsatz und Dauer, nicht nur auf Emojis. `social` ist aus dem Bedürfnis-Typ entfernt. `cashOutPlayerCash` macht das Bonus-Guthaben auszahlbar. `Persona.patience` bleibt: sie wird seit dem vorherigen Commit über `rollProfile` gelesen, ist also nicht mehr tot.
+**Umsetzung.** Die Entladung war ein zweiter Gewinn auf einem Polster, das schon aus Hausvorteil gefüllt war — deshalb stieg der gemessene RTP Richtung 100 %. `settleSlotSpin` führt den Topf jetzt signiert: eine Entladung darf ihn überziehen, der negative Stand ist ein Vorschuss und wird von späteren Gewinnen abgezogen. Wut löste `decay` bei `mood < 12` aus, obwohl Journal und Mods von Geduld sprechen; entschieden ist die Geduld, geprüft vor dem +0,02-Tropfen. `addictedStake` hebt den Einsatz um bis zu 50 %, `sessionSpins` verlängert die Sitzung von vier auf neun Spins. `social` ist aus dem Bedürfnis-Typ entfernt, `cashOutPlayerCash` macht das Bonus-Guthaben auszahlbar. `Persona.patience` bleibt, weil sie seit dem vorherigen Commit über `rollProfile` gelesen wird.
 
-**Pruefungen.** Fail-First mit zurückgerolltem `slot-transparency.ts` und `upkeep.ts`: sechs Tests rot (fehlender Export plus beide Wut-Fälle), danach 13/13 grün in vier Dateien, `typecheck` Exit 0. Die Wut-Prüfung lag zuerst hinter dem Geduld-Tropfen und war deshalb grün-los; der Zustand wird jetzt vor dem Tropfen festgehalten.
+**Pruefungen.** Fail-First mit zurückgerollten Dateien: sechs Tests rot (fehlender Export plus beide Wut-Fälle), danach 13/13 grün; `typecheck`, `lint`, `check:loc`, `verify:docs` je Exit 0, volle Suite grün.
 
-**Offen.** Die Sitzungslänge ist auf neun Spins gedeckelt und der Einsatz auf 50 % Aufschlag — beides bewusst begrenzt, damit die Kasse nicht in einem Abend leerräumt. HIGH_ROLLER spielt weiterhin nicht höher als der Mindesteinsatz des Geräts; das braucht eine Preisentscheidung.
+**Offen.** Einsatzaufschlag und Sitzungsdauer sind gedeckelt; HIGH_ROLLER spielt weiterhin nicht über den Mindestsatz des Geräts.
+
 
 ## 2026-11-02 - Synergie-Audit: tote Persona-Geduld und Mods ohne Wirkung
 
@@ -520,7 +521,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:39 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:43 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
