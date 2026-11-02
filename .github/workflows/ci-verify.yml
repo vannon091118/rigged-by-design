@@ -17,7 +17,11 @@ permissions:
 
 concurrency:
   group: ci-verify-${{ github.ref }}
-  cancel-in-progress: true
+  # Kein Abbruch: der Push- und der Pull-Request-Lauf desselben Commits
+  # landen in getrennten Gruppen, ein abgebrochener Lauf steht aber als
+  # "failure" am Head-SHA und blockiert den Pflichtstatus. Beide laufen
+  # deshalb zu Ende; die Inhalts-Hashes im Gate-Cache verhindern doppelte Arbeit.
+  cancel-in-progress: false
 
 jobs:
   verify:

@@ -11,6 +11,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
 
+
+## 2026-11-02 - Abgebrochener Parallel-Lauf blockierte den Pflichtstatus
+
+**Ziel.** PR #44 mergen, ohne einen Check zu umgehen.
+
+**Umsetzung.** Zwei Laeufe desselben Commits (Push und Pull Request) liefen parallel; der PR-Lauf wurde nach rund 15 Sekunden abgebrochen und steht als `failure` am Head-SHA, waehrend der Push-Lauf mit 12/12 Gates gruen durchlief. Der Branch-Schutz verlangt den Status „Fail-Closed Gates", also blockierte der Abbruch den Merge, nicht ein Gate-Fehler. `ci-verify.yml` laesst Laeufe jetzt zu Ende laufen (`cancel-in-progress: false`); das ist mehr CI, keine ausgelassene Pruefung, und der Gate-Cache verhindert doppelte Arbeit.
+
+**Pruefungen.** `verify:docs`, `check:loc`, `verify:tree`, `verify:redundancy`, `lint`, `typecheck` je Exit 0; die volle Suite lief auf demselben Baum 532/532 gruen.
+
+**Offen.** Ob GitHub den PR-Lauf weiterhin abbricht, zeigt erst der naechste Lauf; dann bleibt die Ursache ausserhalb des Repos zu klaeren.
+
+
 ## 2026-11-02 - Befundnotiz: drei Mods ohne Mechanik
 
 **Ziel.** Die zwei Audit-Luecken, die eine Spielregel brauchen (VELVET/FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusaetzliche Walze), so festhalten, dass sie nicht wieder zwischen Code und Doku verschwinden — ohne eine Regel zu erfinden.
@@ -533,7 +545,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:54 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:59 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
