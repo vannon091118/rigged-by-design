@@ -5,8 +5,9 @@ import { recordJournal } from './journal';
 import { closeFiat, exchangeFromVc, guestAccount, payPending } from './money';
 import type { Furniture, Guest, WorldState } from './types';
 import { noteExperience } from './visitors';
+import { processNarrativeBoundary } from './narrative/boundary';
 import { emitFact } from './narrative/facts';
-import { processFacts, valenceOf } from './narrative/memory';
+import { valenceOf } from './narrative/memory';
 import { doorPoint, furnitureById, releaseSeat, sendGuest } from './world';
 
 export function becomeAngry(world: WorldState, guest: Guest): void {
@@ -33,7 +34,7 @@ export function leave(world: WorldState, guest: Guest): void {
 }
 
 /** Zufriedenheit ist das tatsaechliche Ergebnis, nicht der Ruf am Schild. */
-function noteSatisfaction(world: WorldState, guest: Guest): void {
+function noteSatisfaction(world: WorldState, ledger: Ledger, guest: Guest): void {
   const score = Math.max(0, Math.min(100, guest.mood * 0.65 + guest.patience * 0.35));
   world.satisfaction = Math.max(0, Math.min(100, world.satisfaction * 0.85 + score * 0.15));
   if (guest.visitorId !== undefined) {
@@ -42,7 +43,7 @@ function noteSatisfaction(world: WorldState, guest: Guest): void {
       kind: 'VISIT_ENDED', visitorId: guest.visitorId, guestId: guest.id,
       score: Math.round(score), valence: valenceOf(score),
     });
-    processFacts(world);
+    processNarrativeBoundary(world, ledger);
   }
 }
 
@@ -53,7 +54,7 @@ export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): vo
     const balance = ledger.getBalance(guestAccount(guest.id));
     if (balance > ZERO_VC) exchangeFromVc(ledger, guest.id, balance, world.tick);
     closeFiat(ledger, guest.id, world.tick);
-    noteSatisfaction(world, guest);
+    noteSatisfaction(world, ledger, guest);
     // Wer den Floor nur durchquert hat, wurde nicht bedient; der Wert fuettert Ruf und KASSE-Stufe.
     if (guest.spins > 0) world.guestsServed += 1;
     recordJournal(world, {

@@ -11,6 +11,7 @@ import type { StaffAgent, StaffRole, WorldState } from './types';
 import { blockedTiles, nearestWalkable } from './pathfinding';
 import { GUARD_HANDLE_RANGE, nearestDispute } from './disputes';
 import { exchangePoint, interactionPoint, pathTo, spawnPoint } from './world';
+import { noteCashierService } from './desk-service';
 
 export const CASHIER_WAIT = 12;
 
@@ -147,6 +148,7 @@ function cashierTick(world: WorldState, ledger: Ledger, agent: StaffAgent, prng:
     if (guest.state === 'EXCHANGE' && guest.queueIndex === 0) {
       try {
         exchangeFiat(ledger, guest.id, world.tick);
+        noteCashierService(world, guest, agent);
       } catch {
         guest.patience = Math.max(0, guest.patience - 2);
         continue;

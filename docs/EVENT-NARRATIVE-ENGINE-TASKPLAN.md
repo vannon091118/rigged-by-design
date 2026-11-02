@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** `main` · `7cca88a5bc658729868fa517dd694d847ab32961` · Version `0.3.64`  
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.77`  
 **Revision:** 2026-11-02 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, vier Fact-Typen, begrenztes Besuchsgedächtnis, Start-Pool); deren Restanforderungen und NAR-04 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -223,6 +223,8 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Einen strukturierten, einmaligen Ereignisstrom für die Narrative Engine schaffen, ohne das Journal dafür umzubauen.
 
+**Teilstand:** Der Ledger-Cursor liegt als `narrative.ledgerSeq` (Ledger-`seq`, nicht Array-Index); `processNarrativeBoundary()` erzeugt Hauskonto-Schwellen-Facts und ist der einzige Drain. Weitere Fact-Kategorien fehlen.
+
 **Arbeiten**
 - Discriminated-Union-Vertrag für Facts definieren: stabile Fact-ID, `tick`, `day`, Typ, Subject-/Actor-Referenzen und typisierte Nutzdaten.
 - `emitFact()`/`enqueueFact()` und getrennte Funktionen zum Lesen/Bestätigen/Verwerfen implementieren.
@@ -266,6 +268,18 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Aus einzelnen Besucherprofilen ein soziales System machen, das spätere Ereignisse tragen kann.
 
+**Status:** erledigt (2026-11-02).
+
+**Gelieferte Quellen (echte Spielereignisse):**
+- `VISIT_ENDED` aus `guest-service.ts`: `visitor:<id> -> player` mit Trust/Sympathie; neutrale Besuche erzeugen keine Kante.
+- `VISITOR_CONFLICT` aus `maybeStartBrawl()` in `disputes.ts`: zwei gerichtete Besucherkanten; die angegriffene Seite verliert mehr Vertrauen und Konflikt steigt gewichtet mit der Eskalationsstufe.
+- `VISITOR_SERVICE` aus `arriveAtDesk()` und dem Kassen-Agenten in `desk-service.ts`/`staff.ts`: `visitor:<id> -> staff:<id>` nur bei anwesendem Kassierer; Selbstbedienung bleibt beziehungslos.
+- `RIVAL_ENCOUNTER` aus `settleCardOutcome()` und `visitRivalWithJournal()` in `store/foreign-play.ts`: `rival:<id> -> player` aus dem Nettofluss einer echten Karten- oder Maschinenabrechnung; ein neutraler Ausgang erzeugt keine Kante.
+
+**Nicht vorhanden, daher nicht simuliert:** Der Barkeeper hat noch kein individuelles Serviceereignis pro Gast (nur Präsenz und Arbeitsstatus); die Besucher→Personal-Kante läuft deshalb über die Kasse. Unterstützungs-/Versprechens-Facts und autonome Rivalenaktionen fehlen weiterhin (NAR-15). Die Rivale→Haus-Kante bildet den Spieler als Hausseite ab, nicht einen autonomen Rivalenzustand.
+
+**Persistenz:** Kanten sind gerichtet, auf 200 begrenzt, nach `updatedTick`/`from`/`to` kanonisch sortiert, Werte auf `-10..10` geklemmt und beim Laden dedupliziert. Visitor-Endpunkte pinnen ihre Profile; ein Save/Load-Roundtrip verändert weder Werte noch Reihenfolge.
+
 **Arbeiten**
 - Beziehungsmodell mit stabilen Akteurs-IDs und normalisierter Paarreferenz definieren.
 - Mindestens unterschiedliche Dimensionen abbilden, die nicht synonym sind (z. B. Vertrauen, Sympathie, Konflikt/Feindschaft, Einfluss). Skalen und Änderungen zentral konfigurieren.
@@ -274,11 +288,11 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Beziehungen können zu späteren Triggerbedingungen und Charakterreaktionen beitragen.
 - Begrenzung/Retention und Referenzbereinigung definieren, wenn Visitor-Profile archiviert werden.
 
-**Zielbereiche:** `src/core/sim/narrative/relationships/` mit getrennten `types`, `update`, `queries`.
+**Zielbereiche:** `src/core/sim/narrative/relationships.ts`, `relationship-apply.ts`, `fact-schema.ts`; Quellen in `disputes.ts`, `desk-service.ts` und `store/foreign-play.ts`.
 
-**Nachweis:** gleiche Faktenfolge erzeugt gleiche Beziehung; Beziehung ist nach Save/Load identisch; zwei Akteure können unterschiedliche, gerichtete Beziehungen besitzen, wenn die Domäne dies verlangt.
+**Nachweis:** gleiche Faktenfolge erzeugt gleiche Beziehung; Beziehungen sind nach Save/Load identisch; zwei Akteure besitzen unterschiedliche, gerichtete Kanten. 21 neue/angepasste Tests decken Streit, Kasse, Rivalenabrechnung, Schema ohne Pflicht-`visitorId`, neutrale/negative Fälle, Retention, Duplikatschutz und den gemischten Save-Roundtrip ab.
 
-**Gate:** `verify:quick`; bei Save-Schema-Änderung Full Gate.
+**Gate:** `verify:quick` und `verify:all` (Save-/Ledger-Nähe) grün.
 
 ---
 

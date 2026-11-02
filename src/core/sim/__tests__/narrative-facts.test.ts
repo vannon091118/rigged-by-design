@@ -1,9 +1,10 @@
 /** @test-target: src/core/sim/narrative/facts.ts | @error-code: ERR-2001 */
 import { describe, expect, it } from 'vitest';
+import { Ledger } from '../../economy/ledger';
 import { createWorld } from '../templates';
 import { recordVisitor } from '../visitors';
+import { processNarrativeBoundary } from '../narrative/boundary';
 import { drainFacts, emitFact, recentFacts } from '../narrative/facts';
-import { processFacts } from '../narrative/memory';
 import { NARRATIVE_LIMITS } from '../narrative/types';
 import { normalizeNarrativeState } from '../narrative/state';
 
@@ -63,10 +64,10 @@ describe('Narrative Facts', () => {
     world.narrative = normalizeNarrativeState(raw);
     expect(world.narrative.pending.map((fact) => fact.id)).toEqual([1, 2]);
     expect(world.narrative.factSeq).toBe(3);
-    processFacts(world);
+    processNarrativeBoundary(world, new Ledger());
     expect(world.narrative.flags.rueckkehrer).toBe(2);
     expect(world.narrative.processedId).toBe(2);
-    expect(processFacts(world)).toBe(0);
+    expect(processNarrativeBoundary(world, new Ledger())).toBe(0);
   });
 
   it('verwirft unvollstaendige Nutzdaten und bewahrt einen hohen Cursor', () => {
@@ -86,7 +87,7 @@ describe('Narrative Facts', () => {
   it('bricht bei unbekannter Besucherreferenz nicht und behaelt den Fact in der Historie', () => {
     const { world } = setup();
     emitFact(world, { kind: 'VISIT_ENDED', visitorId: 999, guestId: 5, score: 90, valence: 'GOOD' });
-    expect(processFacts(world)).toBe(0);
+    expect(processNarrativeBoundary(world, new Ledger())).toBe(0);
     expect(recentFacts(world, 'VISIT_ENDED')).toHaveLength(1);
     expect(world.visitors.every((entry) => (entry.memories ?? []).length === 0)).toBe(true);
   });
@@ -95,7 +96,7 @@ describe('Narrative Facts', () => {
     const { world, visitor } = setup();
     emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });
     emitFact(world, { kind: 'VISITOR_FIRST_SEEN', visitorId: visitor.id, persona: 'STREET' });
-    processFacts(world);
+    processNarrativeBoundary(world, new Ledger());
     expect(world.narrative.flags.rueckkehrer).toBe(1);
     expect(world.narrative.flags.neue_gaeste).toBe(1);
     expect(world.journal).toHaveLength(0);

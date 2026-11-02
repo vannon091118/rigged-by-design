@@ -5,6 +5,8 @@ import { grantGlobalXp } from './player-rpg';
 import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
 import { dirtyTileIndex } from './emotion';
+import { emitFact } from './narrative/facts';
+import { actorRefOfVisitor } from './narrative/relationships';
 
 const BRAWL_RANGE = 5;
 /**
@@ -56,6 +58,13 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
       level: 1,
       ticks: 0,
     });
+    if (guest.visitorId !== undefined && other.visitorId !== undefined && guest.visitorId !== other.visitorId) {
+      const initiator = actorRefOfVisitor(guest.visitorId);
+      emitFact(world, {
+        kind: 'VISITOR_CONFLICT', actorRefs: [initiator, actorRefOfVisitor(other.visitorId)],
+        initiator, severity: 1,
+      });
+    }
     guest.disputeId = id;
     other.disputeId = id;
     world.lastEvent = `${guest.name} und ${other.name} prügeln sich.`;
@@ -101,7 +110,19 @@ export const disputeLevelForTicks = (ticks: number): 1 | 2 => (ticks > 3 ? 2 : 1
 export function tickDisputes(world: WorldState): void {
   for (const dispute of [...world.disputes]) {
     dispute.ticks += 1;
-    dispute.level = disputeLevelForTicks(dispute.ticks);
+    const nextLevel = disputeLevelForTicks(dispute.ticks);
+    if (nextLevel === 2 && dispute.level < 2) {
+      const a = guestById(world, dispute.guestIds[0]!);
+      const b = guestById(world, dispute.guestIds[1]!);
+      if (a?.visitorId !== undefined && b?.visitorId !== undefined && a.visitorId !== b.visitorId) {
+        const initiator = actorRefOfVisitor(a.visitorId);
+        emitFact(world, {
+          kind: 'VISITOR_CONFLICT', actorRefs: [initiator, actorRefOfVisitor(b.visitorId)],
+          initiator, severity: 2,
+        });
+      }
+    }
+    dispute.level = nextLevel;
     if (guardHandling(world, dispute)) { resolveDispute(world, dispute.id, true); continue; }
     dispute.guestIds = dispute.guestIds.filter((id) => {
       const guest = guestById(world, id);

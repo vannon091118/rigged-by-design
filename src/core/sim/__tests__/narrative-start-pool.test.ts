@@ -5,7 +5,7 @@ import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { seedStartPool } from '../narrative/state';
-import { processFacts } from '../narrative/memory';
+import { processNarrativeBoundary } from '../narrative/boundary';
 import { pickReturningVisitor } from '../visitors';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
@@ -32,8 +32,8 @@ describe('Start-Pool der Narrative-Domaene', () => {
   it('zaehlt den Pool auch nach der Fact-Verarbeitung nur einmal', () => {
     const world = createWorld('SMALL');
     seedStartPool(world, fromVC(150));
-    processFacts(world);
-    processFacts(world);
+    processNarrativeBoundary(world, new Ledger());
+    processNarrativeBoundary(world, new Ledger());
     expect(world.narrative.flags.startpool).toBe(3);
     expect(world.narrative.recent).toHaveLength(3);
   });

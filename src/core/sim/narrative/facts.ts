@@ -1,13 +1,20 @@
 /** Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. */
 import type { VaCoinMicro } from '../../economy/vacoin';
-import type { PersonaId, WorldState } from '../types';
-import { NARRATIVE_LIMITS, type NarrativeFact } from './types';
+import type { PersonaId, RivalId, WorldState } from '../types';
+import {
+  NARRATIVE_LIMITS,
+  type ActorRef, type HouseBand, type NarrativeFact, type VisitorValence,
+} from './types';
 
 type FactDraft =
   | { readonly kind: 'START_POOL'; readonly visitorId: number; readonly capital: VaCoinMicro }
   | { readonly kind: 'VISITOR_FIRST_SEEN'; readonly visitorId: number; readonly persona: PersonaId }
   | { readonly kind: 'VISITOR_RETURNED'; readonly visitorId: number; readonly visits: number }
-  | { readonly kind: 'VISIT_ENDED'; readonly visitorId: number; readonly guestId: number; readonly score: number; readonly valence: 'GOOD' | 'NEUTRAL' | 'BAD' };
+  | { readonly kind: 'VISIT_ENDED'; readonly visitorId: number; readonly guestId: number; readonly score: number; readonly valence: VisitorValence }
+  | { readonly kind: 'HOUSE_BALANCE'; readonly balance: VaCoinMicro; readonly band: HouseBand }
+  | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
+  | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
+  | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro };
 
 /** Haengt einen Fact mit naechster ID, Tick und Tag an die Queue; aelteste fallen bei Ueberlauf. */
 export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
@@ -25,6 +32,7 @@ export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
 /**
  * Gibt alle noch nicht verarbeiteten Facts zurueck und leert die Queue.
  * Ein zweiter Aufruf liefert nichts: dieselbe ID wird nie doppelt verarbeitet.
+ * Nur `processNarrativeBoundary()` darf diese Funktion aufrufen.
  */
 export function drainFacts(world: WorldState): NarrativeFact[] {
   const state = world.narrative;

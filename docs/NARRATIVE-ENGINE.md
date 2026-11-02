@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
-Stand: 2026-11-02 · Save v9 · Grundlagen von NAR-00 bis NAR-03 vorhanden;
-Restanforderungen sowie NAR-04 bis NAR-17 offen. Verbindlich ist der Code.
+Stand: 2026-11-02 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -13,7 +13,7 @@ Zustandsuebergang; Text ist Darstellung; Geld bleibt im Ledger.
 Simulation / Store-Commands / Ledger / Rivalen
         │  emitFact (nur echte Uebergaenge)
         ▼
-  NarrativeState  ──pending──▶ processFacts ──▶ VisitorMemory / Flags / recentFacts
+  NarrativeState  ──pending──▶ processNarrativeBoundary ──▶ Memory / Relationships / recentFacts
         │                                            │
         └────────────── Trigger (NAR-05) ◀───────────┘
                              │
@@ -46,13 +46,19 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `recent` | verarbeitete Facts fuer kurze Ketten | 120 |
 | `processedId` | hoechste verarbeitete ID | verhindert Doppelverarbeitung |
 | `dropped` | verworfene Facts wegen Queue-Grenze | Diagnose, kein Trigger |
+| `ledgerSeq` | Ledger-`seq` der letzten verarbeiteten Buchung | `null` = noch kein Cursor; kein historisches Nachholen |
+| `houseBand` | zuletzt gemeldeter Hauskonto-Band | `LOW`/`OK`, verhindert Doppelfacts |
 | `demandEvent` | aktive Neon-Nacht oder Turnierabend | hoechstens eine Veranstaltung; Ablauf bisher in `demand.ts` |
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
+| `relationships` | gerichtete Kanten zwischen persistenten Akteuren | 200; Endpunkte pinnen Visitor-Profile |
 
 Facts sind eine diskriminierte Union mit `id`, `kind`, `tick`, `day` und typisierten
 Nutzdaten. Umgesetzt: `START_POOL`, `VISITOR_FIRST_SEEN`, `VISITOR_RETURNED`,
-`VISIT_ENDED`. Alle Felder sind JSON-serialisierbar; keine Funktionen, Maps, Sets
-oder UI-Objekte.
+`VISIT_ENDED`, `HOUSE_BALANCE`, `VISITOR_CONFLICT`, `VISITOR_SERVICE` und
+`RIVAL_ENCOUNTER`. Besucherbezogene Alt-Facts tragen `visitorId`; die neuen
+Beziehungs-Facts tragen stattdessen `actorRefs` (`visitor:<id>`, `staff:<id>`,
+`rival:<id>`, `player`) und werden beim Laden rollenspezifisch validiert. Alle
+Felder sind JSON-serialisierbar; keine Funktionen, Maps, Sets oder UI-Objekte.
 
 `Visitor.memories: VisitorMemory[]` speichert hoechstens sechs strukturierte
 Erinnerungen (`factId`, `tick`, `score`, `valence`). Eine Erinnerung ist eine
@@ -61,10 +67,12 @@ Bedeutung, keine kopierte Journal-Zeile.
 ## 4. Lebenszyklus und Idempotenz
 
 1. Die Simulation ruft `emitFact()` genau an der Ursache auf.
-2. `drainFacts()` liefert alle Facts mit `id > processedId` und leert die Queue.
-3. `processFacts()` schreibt Erinnerungen (einmal je `factId`), Zaehler und `recent`.
+2. `processNarrativeBoundary()` erzeugt zuerst Ledger-Schwellen-Facts
+   (`HOUSE_BALANCE`), drainiert dann alle Facts mit `id > processedId` und leert die Queue.
+3. Im selben Durchlauf schreibt der Boundary Erinnerungen (einmal je `factId`),
+   Zaehler, Beziehungen und `recent`; neue Facts bleiben fuer den naechsten Aufruf liegen.
 4. Ein erneuter Drain liefert nichts. Ein Save-/Load-Roundtrip setzt `processedId`
-   fort, damit kein Fact doppelt wirkt.
+   und `ledgerSeq` fort, damit kein Fact doppelt wirkt.
 
 Journal und Facts bleiben getrennt: Das Journal dokumentiert fuer den Spieler, Facts
 treiben Trigger und Gedaechtnis. Kein Journal-Eintrag ist Voraussetzung fuer einen Fact.
@@ -80,7 +88,16 @@ treiben Trigger und Gedaechtnis. Kein Journal-Eintrag ist Voraussetzung fuer ein
 `returnChance()` addiert den Rueckkehr-Bonus, `spawnGuest()` addiert den Laune-Bonus
 beim Rueckkehrer-Spawn. Damit aendert sich messbar, wer wiederkommt und wie er ankommt;
 die Tests `narrative-memory.test.ts` und `narrative-start-pool.test.ts` belegen die
-Differenz gegen eine Kontrollwelt mit identischem Seed.
+Differenz gegen eine Kontrollwelt mit identischem Seed. Ein guter oder schlechter
+Besuch verschiebt zusaetzlich die gerichtete Kante `visitor:<id> -> player` um Trust
+und Sympathie; neutrale Besuche erzeugen keine Kante. Seit NAR-04 speisen drei weitere
+echte Quellen das Modell: ein Streit (`VISITOR_CONFLICT`) erzeugt zwei gerichtete
+Besucherkanten, eine Kassenbedienung durch anwesendes Personal (`VISITOR_SERVICE`)
+erzeugt `visitor:<id> -> staff:<id>`, und die Abrechnung eines fremden Spiels
+(`RIVAL_ENCOUNTER`) erzeugt `rival:<id> -> player` aus dem Nettofluss. Selbstbedienung,
+neutrale Spiele und nicht anwesendes Personal erzeugen keine Kante. Die Endpunkte
+pinnen ihre Visitor-Profile gegen die Retention; Kanten sind kanonisch sortiert,
+gedeckelt, geklemmt und beim Laden dedupliziert.
 
 ## 6. Start-Pool
 
@@ -139,7 +156,7 @@ irgendein Command laeuft.
 
 ## 10. Persistenz
 
-Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
+Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
 und Erinnerungen verworfen, IDs monoton fortgeschrieben. Aktive Events, Choices,
 Fristen und Cooldowns kommen mit NAR-06/NAR-07 hinzu und muessen denselben Roundtrip

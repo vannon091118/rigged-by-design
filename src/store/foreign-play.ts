@@ -9,6 +9,8 @@ import { recordExclusionPlay, recordExclusionWin } from '../core/sim/self-exclus
 import { EXTERNAL, foreignBet, foreignWin, PORTEMONNAIE } from '../core/sim/money';
 import { getRival, rivalEdge, visitRival, type RivalId } from '../core/sim/rivals';
 import { grantGlobalXp } from '../core/sim/player-rpg';
+import { emitFact } from '../core/sim/narrative/facts';
+import { actorRefOfRival } from '../core/sim/narrative/relationships';
 import type { WorldState } from '../core/sim/types';
 
 interface ForeignOutcome {
@@ -53,6 +55,12 @@ export function visitRivalWithJournal(
   options: GameExtras = {},
 ): ForeignOutcome {
   const outcome = playRivalGame(ledger, rivalId, machineIndex, betVC, prng, world.tick, options);
+  const netToHouse = (outcome.result.payout - outcome.result.stake) as VaCoinMicro;
+  if (netToHouse !== 0) {
+    emitFact(world, {
+      kind: 'RIVAL_ENCOUNTER', actorRefs: [actorRefOfRival(rivalId), 'player'], rivalId, netToHouse,
+    });
+  }
   recordExclusionPlay(world, fromVC(betVC), outcome.result.payout, world.tick);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Besuch im fremden Haus',
@@ -115,6 +123,12 @@ export function settleCardOutcome(
   const stake = fromVC(stakeVC);
   const payout = cardPayout(stake, engineBps, rivalEdge(rival, entry));
   if (payout > 0) foreignWin(ledger, payout, world.tick);
+  const netToHouse = (payout - stake) as VaCoinMicro;
+  if (netToHouse !== 0) {
+    emitFact(world, {
+      kind: 'RIVAL_ENCOUNTER', actorRefs: [actorRefOfRival(rivalId), 'player'], rivalId, netToHouse,
+    });
+  }
   recordExclusionWin(world, payout, world.tick);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde',

@@ -2,9 +2,11 @@
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { Visitor, WorldState } from '../types';
 import { emitFact } from './facts';
+import { orderedFacts, safeInteger } from './fact-schema';
+import { normalizeRelationships } from './relationships';
 import {
-  NARRATIVE_FACT_KINDS, NARRATIVE_LIMITS, VISITOR_VALENCES,
-  type NarrativeFact, type NarrativeState, type VisitorMemory, type VisitorValence,
+  HOUSE_BANDS, NARRATIVE_LIMITS, VISITOR_VALENCES,
+  type HouseBand, type NarrativeState, type VisitorMemory, type VisitorValence,
 } from './types';
 
 /** Der Start-Pool: drei wiederkehrende Figuren, die ab Tick 0 im Casino bekannt sind. */
@@ -15,7 +17,10 @@ const START_ROSTER: ReadonlyArray<{ readonly name: string; readonly persona: Vis
 ];
 
 export function createNarrativeState(): NarrativeState {
-  return { factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0, demandEvent: null, flags: {} };
+  return {
+    factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0,
+    demandEvent: null, flags: {}, relationships: [], ledgerSeq: null, houseBand: 'OK',
+  };
 }
 
 /** Legt den Start-Pool an und bucht das Startkapital als narrativen Fact. Idempotent. */
@@ -62,6 +67,9 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.pending = pending.filter((fact) => fact.id > processedId).slice(-NARRATIVE_LIMITS.pending);
   state.recent = recent.filter((fact) => fact.id <= processedId).slice(-NARRATIVE_LIMITS.recent);
   state.dropped = Math.max(0, Math.floor(number(raw.dropped)));
+  state.ledgerSeq = safeInteger(raw.ledgerSeq, -1) ? raw.ledgerSeq : null;
+  state.houseBand = HOUSE_BANDS.includes(raw.houseBand as HouseBand) ? raw.houseBand as HouseBand : 'OK';
+  state.relationships = normalizeRelationships(raw.relationships);
   if (isRecord(raw.demandEvent) && (raw.demandEvent.kind === 'NEON_NACHT' || raw.demandEvent.kind === 'TURNIER_ABEND')
     && safeInteger(raw.demandEvent.untilTick, 0)) {
     state.demandEvent = { kind: raw.demandEvent.kind, untilTick: raw.demandEvent.untilTick };
@@ -78,30 +86,4 @@ export function normalizeMemories(raw: unknown): VisitorMemory[] {
   if (!Array.isArray(raw)) return [];
   return raw.map(sanitizeMemory).filter((entry): entry is VisitorMemory => entry !== null)
     .slice(-NARRATIVE_LIMITS.memories);
-}
-
-const safeInteger = (value: unknown, min: number): value is number =>
-  typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value < Number.MAX_SAFE_INTEGER;
-
-function orderedFacts(raw: unknown): NarrativeFact[] {
-  if (!Array.isArray(raw)) return [];
-  const byId = new Map<number, NarrativeFact>();
-  for (const fact of raw) {
-    if (isFact(fact) && !byId.has(fact.id)) byId.set(fact.id, fact);
-  }
-  return [...byId.values()].sort((a, b) => a.id - b.id);
-}
-
-function isFact(raw: unknown): raw is NarrativeFact {
-  if (!isRecord(raw)) return false;
-  const kind = raw.kind as NarrativeFact['kind'];
-  if (!safeInteger(raw.id, 1) || !NARRATIVE_FACT_KINDS.includes(kind)) return false;
-  if (!safeInteger(raw.tick, 0) || !safeInteger(raw.day, 0) || !safeInteger(raw.visitorId, 1)) return false;
-  if (kind === 'START_POOL') return safeInteger(raw.capital, 0);
-  if (kind === 'VISITOR_FIRST_SEEN') {
-    return typeof raw.persona === 'string' && ['LUMPEN', 'STREET', 'BUSINESS', 'HIGH_ROLLER', 'STAMMGAST'].includes(raw.persona);
-  }
-  if (kind === 'VISITOR_RETURNED') return safeInteger(raw.visits, 1);
-  return safeInteger(raw.guestId, 1) && VISITOR_VALENCES.includes(raw.valence as VisitorValence)
-    && typeof raw.score === 'number' && Number.isFinite(raw.score) && raw.score >= 0 && raw.score <= 100;
 }
