@@ -13,38 +13,11 @@ import { changedFiles, selectAffectedTests, subsystemOf } from './affected-tests
 import { isCached, treeKey } from './gate-cache.mjs';
 import { GATES, planGates } from './pipeline-plan.mjs';
 import { ROOT } from './report.mjs';
+import { IMPACT_AREAS } from './subsystems.mjs';
 import { partitionByProof, proofClassOf } from './test-catalog.mjs';
 
-/** Was eine Aenderung an Doku und Invarianten mitzieht. Erste Uebereinstimmung gilt. */
-const AREAS = Object.freeze([
-  {
-    prefix: 'src/core/economy',
-    docs: ['ARCHITECTURE', 'INVENTORY'],
-    invariants: ['Betraege sind ganzzahlige Mikro-Einheiten; jede Buchung ist eine Ledger-Zeile', 'keine Geldquelle ausser EXTERNAL_WORLD'],
-  },
-  {
-    prefix: 'src/core/rng',
-    docs: ['ARCHITECTURE', 'INVENTORY'],
-    invariants: ['kein Math.random/Date.now/new Date; Zufall nur aus dem geseedeten Prng', 'gameplay und presentation teilen nie einen Strom'],
-  },
-  {
-    prefix: 'src/core/sim/narrative',
-    docs: ['ARCHITECTURE', 'NARRATIVE-ENGINE', 'EVENT-NARRATIVE-ENGINE-TASKPLAN'],
-    invariants: ['WorldState.narrative ist der einzige persistente Narrativ-Zustand', 'Facts sind der Ereignisstrom, das Journal bleibt Spielerhistorie'],
-  },
-  {
-    prefix: 'src/store',
-    docs: ['ARCHITECTURE', 'INVENTORY'],
-    invariants: ['ein Eigentuemer pro Zustand: world, ledger, PRNG und Save liegen im world-store', 'Save-Migration nur vorwaerts, v3/v4 verworfen'],
-  },
-  { prefix: 'src/ui', docs: ['ARCHITECTURE', 'PRODUCT'], invariants: ['UI liest Snapshots und haelt keinen zweiten Spielzustand'] },
-  { prefix: 'src/render', docs: ['ARCHITECTURE', 'ASSETS'], invariants: ['Renderer zieht Zufall nur aus src/render/rng.ts'] },
-  { prefix: 'scripts', docs: ['CI-GATES', 'ESCALATION', 'ARCHITECTURE'], invariants: ['kein Gate schreibt im Verify-Lauf'] },
-  { prefix: '.github', docs: ['CI-GATES', 'ESCALATION'], invariants: ['der Pflichtstatus heisst Fail-Closed Gates'] },
-  { prefix: 'content', docs: ['NARRATIVE-ENGINE'], invariants: ['Texte sind Darstellung, nie Spielregel'] },
-  { prefix: 'src/Config', docs: ['AGENTS', 'ARCHITECTURE'], invariants: ['eine Config, ein Ort in src/Config'] },
-  { prefix: 'docs', docs: [], invariants: ['sechs Pflichtdokumente, Marker via docs:sync'] },
-]);
+/** Was eine Aenderung an Doku und Invarianten mitzieht; die Liste steht in scripts/lib/subsystems.mjs. */
+const AREAS = IMPACT_AREAS;
 
 const git = (args) => {
   try {

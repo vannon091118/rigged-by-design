@@ -1,5 +1,13 @@
 /** Import-Befunde: blockieren, automatisch reparieren oder ignorieren. */
-export type EscalationLevel = 'AUTO_FIX' | 'LOCAL_GATE' | 'REMOTE_CI' | 'AGENT' | 'BLOCKED';
+import { ERROR_CODES } from '../governance/error-codes';
+
+/**
+ * Die eine Leiter. `scripts/lib/escalation.mjs` liest dieselbe Liste aus
+ * `src/Config/escalation-levels.json`; ein Test haelt beide deckungsgleich.
+ */
+export const ESCALATION_LEVELS = ['AUTO_FIX', 'LOCAL_GATE', 'REMOTE_CI', 'AGENT', 'BLOCKED'] as const;
+
+export type EscalationLevel = (typeof ESCALATION_LEVELS)[number];
 
 type TransferIssueLevel = 'FATAL' | 'REPAIR' | 'IGNORE';
 
@@ -10,7 +18,7 @@ export interface TransferIssue {
   readonly message: string;
 }
 
-/** Dieselbe Leiter wie scripts/lib/escalation.mjs; hier nur die Uebersetzung. */
+/** Uebersetzung eines Import-Befunds in die Eskalationsstufe. */
 const ESCALATION: Record<TransferIssueLevel, EscalationLevel> = {
   FATAL: 'BLOCKED',
   REPAIR: 'AUTO_FIX',
@@ -22,7 +30,7 @@ export function escalationFor(level: TransferIssueLevel): EscalationLevel {
 }
 
 export function issue(level: TransferIssueLevel, path: string, message: string): TransferIssue {
-  return { code: 'ERR-5001', level, path, message };
+  return { code: ERROR_CODES.TRANSFER_INVALID.code, level, path, message };
 }
 
 export function countIssues(issues: readonly TransferIssue[]): { fatal: number; repair: number; ignored: number } {

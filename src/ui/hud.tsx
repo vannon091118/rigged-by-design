@@ -1,9 +1,10 @@
 /** HUD: Hauskonto, Gäste und die drei Dinge, die jetzt zählen – in Klartext. */
 import type { GameView } from '../store/types';
 import { vc } from './format';
-import { HELP } from './glossary';
+import { ACCOUNT_LABEL, HELP } from './glossary';
 import { UI_ICON } from './icons';
 import type { RpgAttribute } from '../core/sim/player-rpg';
+import { HAUSKONTO } from '../core/sim/money';
 
 interface HudProps {
   readonly view: GameView;
@@ -47,7 +48,7 @@ export function Hud({
       </div>
 
       <div className="hud-money" title={HELP.hauskonto}>
-        <span><img className="ui-icon" src={UI_ICON.coin} alt="" />HAUSKONTO</span>
+        <span><img className="ui-icon" src={UI_ICON.coin} alt="" />{ACCOUNT_LABEL[HAUSKONTO]}</span>
         <strong>{vc(view.house, view.house < 1000 * 10_000 ? 2 : 0)}</strong>
         <small>
           <span className="term" title={HELP.portemonnaie}>Portemonnaie {vc(view.wallet, 2)}</span>

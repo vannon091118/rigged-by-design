@@ -98,14 +98,21 @@ const PAYTABLE: Readonly<Record<PokerHand, number>> = {
   FLUSH: 60_000, STRAIGHT: 40_000, TRIPS: 26_500, TWO_PAIR: 18_000, JACKS: 9_600, NOTHING: 0,
 };
 
-function evaluatePokerHand(cards: readonly Card[]): { hand: PokerHand; bps: number } {
+export function evaluatePokerHand(cards: readonly Card[]): { hand: PokerHand; bps: number } {
   const ranks = cards.map((card) => RANK_ORDER.indexOf(card.rank)).sort((a, b) => a - b);
   const counts = new Map<number, number>();
   for (const rank of ranks) counts.set(rank, (counts.get(rank) ?? 0) + 1);
   const shape = [...counts.values()].sort((a, b) => b - a);
   const flush = new Set(cards.map((card) => card.suit)).size === 1;
-  const straight = ranks.every((rank, index) => index === 0 || rank === ranks[index - 1]! + 1);
-  const royal = straight && ranks[0] === RANK_ORDER.indexOf('10');
+  const straightHigh = ranks.every((rank, index) => index === 0 || rank === ranks[index - 1]! + 1);
+  // Ass zaehlt auch unten: A-2-3-4-5 ist eine Strasse, keine "nichts".
+  const wheel = ranks.length === 5
+    && ranks[0] === RANK_ORDER.indexOf('2') && ranks[1] === RANK_ORDER.indexOf('3')
+    && ranks[2] === RANK_ORDER.indexOf('4') && ranks[3] === RANK_ORDER.indexOf('5')
+    && ranks[4] === RANK_ORDER.indexOf('A');
+  const straight = straightHigh || wheel;
+  // Royal verlangt Farbe; eine farblose 10-bis-Ass-Strasse bleibt eine Strasse.
+  const royal = straightHigh && flush && ranks[0] === RANK_ORDER.indexOf('10');
   const hand: PokerHand = royal ? 'ROYAL'
     : straight && flush ? 'STRAIGHT_FLUSH'
       : shape[0] === 4 ? 'QUADS'

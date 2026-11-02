@@ -7,6 +7,7 @@ import { isValidReels, MAX_REELS, reelUpgradeCost, slotConfig } from '../games/s
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
 import { getMod, modAppliesTo } from './offers';
+import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import type { CarpetId, Furniture, GameId, ModId, WorldState } from './types';
 import { furnitureById } from './world';
 import { grantXp } from './player-rpg';
@@ -30,7 +31,7 @@ export function settleGuests(world: WorldState, ledger: Ledger): void {
 
 export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void {
   if (!world.dirty.has(tile)) return;
-  ledger.transfer(HAUSKONTO, SHOP, world.prices.cleaningCost, 'reinigung', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, world.prices.cleaningCost, TX_REASON.CLEANING, world.tick);
   world.dirty.delete(tile);
   grantXp(world.player.rpg, XP_CLEAN_TILE);
 }
@@ -38,7 +39,7 @@ export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void
 export function cleanAll(world: WorldState, ledger: Ledger): number {
   const count = world.dirty.size;
   if (count === 0) return 0;
-  ledger.transfer(HAUSKONTO, SHOP, (world.prices.cleaningCost * count) as VaCoinMicro, 'grossreinigung', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, (world.prices.cleaningCost * count) as VaCoinMicro, TX_REASON.DEEP_CLEANING, world.tick);
   world.dirty.clear();
   grantXp(world.player.rpg, XP_CLEAN_TILE * count);
   return count;
@@ -49,7 +50,7 @@ export function repair(world: WorldState, ledger: Ledger, itemId: number): void 
   const item = furnitureById(world, itemId);
   if (!item || (item.condition >= 100 && !item.damaged && !item.clogged)) return;
   if (world.parts < 1) throw new Error('Keine Ersatzteile im Lager.');
-  payOrBorrow(ledger, SHOP, world.prices.repairCost, 'reparatur', world.tick);
+  payOrBorrow(ledger, SHOP, world.prices.repairCost, TX_REASON.REPAIR, world.tick);
   world.parts -= 1;
   item.condition = 100;
   item.damaged = false;
@@ -75,7 +76,7 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
     throw new Error(`${getMod(modId).name} passt nicht auf ${item.gameId ?? 'dieses Geraet'}.`);
   }
   const mod = getMod(modId);
-  ledger.transfer(HAUSKONTO, SHOP, mod.cost, `mod ${mod.name}`, world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, mod.cost, `${TX_PREFIX.MOD_PURCHASE}${mod.name}`, world.tick);
   item.mods.push(modId);
 }
 
@@ -84,7 +85,7 @@ export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number):
   if (!item || item.gameId !== 'SLOT') throw new Error('Nur Slots haben Walzen.');
   if (!isValidReels(item.reels)) throw new Error('Die Walzenzahl dieser Maschine ist ungueltig.');
   if (item.reels >= MAX_REELS) throw new Error('Mehr Walzen passen nicht hinein.');
-  ledger.transfer(HAUSKONTO, SHOP, reelUpgradeCost(item.reels), 'walze erweitern', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, reelUpgradeCost(item.reels), TX_REASON.REEL_UPGRADE, world.tick);
   item.reels += 1;
 }
 

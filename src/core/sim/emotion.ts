@@ -23,6 +23,9 @@ export const EMOTION_META: Readonly<Record<GuestEmotion, EmotionMeta>> = {
 };
 
 /** Dreck in der Nähe färbt die Stimmung; direkte Mitgliedschaft statt Suche im Array. */
+/** Eine Kachel als Index im flachen Dreck-Set; Gegenstueck zu dirtyNear. */
+export const dirtyTileIndex = (size: number, x: number, y: number): number => y * size + x;
+
 export function dirtyNear(tiles: ReadonlySet<number>, size: number, x: number, y: number, radius = 2): boolean {
   for (let dy = -radius; dy <= radius; dy += 1) {
     for (let dx = -radius; dx <= radius; dx += 1) {

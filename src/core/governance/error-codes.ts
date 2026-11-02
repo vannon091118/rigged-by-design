@@ -14,6 +14,7 @@ interface ErrorDefinition {
 export const ERROR_CODES = {
   UNKNOWN: { code: 'ERR-0000', area: 'governance', cause: 'Ein Fehler besitzt noch keinen Eintrag im zentralen Register.', fix: 'Neuen ERR-Code in error-codes.ts und docs/ERROR_CATALOG.md eintragen.' },
   AUTOFIX: { code: 'ERR-0911', area: 'governance', cause: 'Ein Verstoss ist vollautomatisch reparierbar.', fix: 'autofix:0911 ausfuehren und den Lauf wiederholen.' },
+  DETERMINISM: { code: 'ERR-1001', area: 'governance', cause: 'Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/.', fix: 'Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick.' },
   LEDGER_PROOF: { code: 'ERR-1002', area: 'core', cause: 'Ledger- oder VaCoin-Invariante verletzt.', fix: 'Buchungspfad und Mikro-Geldarithmetik pruefen.' },
   GAME_PROOF: { code: 'ERR-1003', area: 'core', cause: 'RNG- oder RTP-Beweis fehlgeschlagen.', fix: 'Seed, Paytable und Einsatzpfad des Spiels pruefen.' },
   BUILD_FAILED: { code: 'ERR-1005', area: 'core', cause: 'Typecheck oder Production-Build bricht ab.', fix: 'Ersten Compilerfehler beheben, keine Fehler unterdruecken.' },

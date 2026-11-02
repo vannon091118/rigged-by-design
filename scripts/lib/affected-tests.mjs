@@ -12,6 +12,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { ROOT, walk } from './report.mjs';
+import { subsystemPrefixOf } from './subsystems.mjs';
 import { testTargetOf } from './test-catalog.mjs';
 import { moduleSpecifiers, parse, resolveSpecifier } from './ts-ast.mjs';
 
@@ -89,13 +90,7 @@ function dependents(seeds, graph, reverse = reverseIndex(graph)) {
 
 /** Grobes System, damit eine Aenderung ohne Graphtreffer noch Recall hat. */
 export function subsystemOf(file) {
-  for (const prefix of [
-    'src/core/games', 'src/core/sim', 'src/core/economy', 'src/core/rng', 'src/core/governance',
-    'src/render', 'src/ui', 'src/store', 'scripts', '.github',
-  ]) {
-    if (file === prefix || file.startsWith(`${prefix}/`)) return prefix;
-  }
-  return null;
+  return subsystemPrefixOf(file);
 }
 
 /**

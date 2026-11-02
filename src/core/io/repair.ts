@@ -1,7 +1,12 @@
 /** Repariert, was ohne Regelverstoss reparierbar ist; Blocker bleiben Blocker. */
 import { issue, type TransferIssue } from './issues';
 
-const SAVE_VERSIONS = new Set([5, 6, 7, 8]);
+/**
+ * Save-Versionen, die der Import kennt. Dieselbe Liste, die auch das Laden im
+ * Speicherpfad akzeptiert: eine Wahrheit, sonst prueft der Import Standes, die
+ * das Spiel selbst gerade geschrieben hat.
+ */
+export const SAVE_VERSIONS = new Set([5, 6, 7, 8, 9]);
 
 function number(value: unknown, fallback: number): number {
   return typeof value === 'number' && Number.isFinite(value) ? value : fallback;

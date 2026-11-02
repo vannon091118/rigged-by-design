@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 10:52 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
 
 ### Technik
+- Dreck landet wieder auf der Kachel, auf der er entsteht: `dirtyTileIndex` in `emotion.ts` ist das Gegenstueck zu `dirtyNear`; Randale und Streit schrieben bisher `(y+1)*size+x+1` und damit schraeg versetzt daneben.
+- Video Poker zahlt den Royal Flush nur noch in einer Farbe und erkennt das Wheel A-2-3-4-5 als Strasse; die interaktive Engine war schon richtig.
+- Die Dreckschicht liegt im Szenen-Cache jetzt zwischen Teppich und Moebeln statt als erstes Kind des Moebel-Containers.
+- Ein Ueberfall auf das Portemonnaie zaehlt im Wirtschaftsbericht als Verlust; `classify` stieg vorher beim Quellkonto aus, bevor der Ueberfallstopf erreicht war.
+- Ein Fehlerregister statt dreier Quellen: `scripts/lib/error-codes.mjs` liest `error-codes.ts`, das Gate-Format prueft nicht mehr das Markdown. `ERR-1001` (Determinismus) ist nachgetragen und wird nicht mehr als `ERR-0000` verschluckt.
+- Subsysteme, Ordnerregeln, Katalogsysteme und Impact-Doku stehen einmal in `scripts/lib/subsystems.mjs`; Tree-Gate, Testkatalog, betroffene Tests und `agent:context` lesen daraus.
+- Die Eskalationsleiter kommt aus `src/Config/escalation-levels.json`; TypeScript und `scripts/lib/escalation.mjs` teilen sie, ein Test haelt beide deckungsgleich.
+- `issues.ts` und `transfer.ts` buchen ihren Fehlercode ueber `ERROR_CODES.TRANSFER_INVALID` statt als Literal.
 
 - README ergänzt aktuellen Screenshot- und Versionsvergleich, Developer-Setup, Architekturverträge, Prüfkommandos, Roadmap und FAQ.
 - CI-Jobs installieren die festgelegte pnpm-Version, bevor der Package-Cache und die Lockfile-Installation laufen. Der Versionsbump lädt YAML statisch; das Tree-Gate erlaubt JPEG-Belege unter docs.

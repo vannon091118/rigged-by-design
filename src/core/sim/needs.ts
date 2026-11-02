@@ -3,6 +3,7 @@ import type { Prng } from '../rng/prng';
 import { getPersona } from './personas';
 import { clamp } from './guest-core';
 import type { Guest, WorldState } from './types';
+import { dirtyTileIndex } from './emotion';
 
 const MAX_PROFILE_POINTS = 180;
 
@@ -43,7 +44,7 @@ export function tickNeeds(world: WorldState, guest: Guest): void {
   if (guest.bladder >= 100) {
     guest.bladder = 35;
     guest.mood = Math.max(0, guest.mood - 8);
-    world.dirty.add((guest.position.y * world.size + guest.position.x) | 0);
+    world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y));
     world.lastEvent = `${guest.name} hatte einen Unfall.`;
   }
 }

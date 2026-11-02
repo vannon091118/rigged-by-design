@@ -3,8 +3,11 @@ import { ZERO_VC, type VaCoinMicro } from './vacoin';
 
 export type AccountId = string;
 
+/** Die Aussenwelt: hier entsteht Geld, hier verschwindet es. Eine Quelle fuer alle Schreibweisen. */
+export const MINTING_ACCOUNT = 'EXTERNAL_WORLD';
+
 export const BASE_ACCOUNTS = [
-  'EXTERNAL_WORLD',
+  MINTING_ACCOUNT,
   'WECHSELKASSE',
   'HAUSKONTO',
   'PORTEMONNAIE',
@@ -12,8 +15,6 @@ export const BASE_ACCOUNTS = [
   'STAFF',
   'UTILITIES',
 ] as const;
-
-export const MINTING_ACCOUNT = 'EXTERNAL_WORLD';
 
 export function isMintingAccount(account: AccountId): boolean {
   return account === MINTING_ACCOUNT;

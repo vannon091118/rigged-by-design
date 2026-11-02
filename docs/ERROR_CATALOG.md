@@ -8,6 +8,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | --- | --- | --- | --- |
 | ERR-0000 | Governance | Unbekannter Fehler ohne Registereintrag. | Neuen Code in beiden Registern nachtragen; Lauf wiederholen. |
 | ERR-0911 | Governance | Automatisch reparierbarer Verstoss (Format, Matrix, Trailer). | `pnpm run autofix:0911` ausfuehren; der Runner protokolliert den Eingriff. |
+| ERR-1001 | Governance / Determinismus | Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/. | Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick. |
 | ERR-1002 | Core / Geld | Ledger- oder VaCoin-Invariante verletzt. | Buchungspfad und Mikro-Geldarithmetik pruefen. |
 | ERR-1003 | Core / Spiele | RNG-, RTP- oder Determinismusbeweis fehlgeschlagen. | Seed, Paytable und Einsatzpfad des Spiels pruefen. |
 | ERR-1005 | Build | Typecheck oder Production-Build bricht ab. | Ersten Compilerfehler an der Ursache beheben. |

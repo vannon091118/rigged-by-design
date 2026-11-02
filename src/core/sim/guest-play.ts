@@ -11,8 +11,10 @@ import { deliverDrink, useToilet } from './deliveries';
 import { refreshNeeds } from './needs';
 import { guestAccount, HAUSKONTO, payOut, placeBet, SHOP } from './money';
 import { resolveModEffects } from './offers';
+import { TX_REASON } from './tx-reasons';
 import { getPersona } from './personas';
 import type { Furniture, Guest, WorldState } from './types';
+import { dirtyTileIndex } from './emotion';
 
 function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, item: Furniture): void {
   if (item.damaged) { releaseAndChoose(world, guest); return; }
@@ -42,7 +44,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   // Volle Auszahlung: fehlende Deckung wird als Schuld gebucht, nie still gekappt.
   if (payout > ZERO_VC) payOut(ledger, guest.id, payout, world.tick);
   if (effects.operating > ZERO_VC) {
-    try { ledger.transfer(HAUSKONTO, SHOP, effects.operating, 'mod betrieb', world.tick); } catch { /* Konto reicht nicht */ }
+    try { ledger.transfer(HAUSKONTO, SHOP, effects.operating, TX_REASON.MOD_OPERATING, world.tick); } catch { /* Konto reicht nicht */ }
   }
   const netWin = payout > bet;
   const push = payout === bet;
@@ -58,7 +60,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   guest.spins += 1;
   guest.stateTicks += 1;
   item.condition = Math.max(0, item.condition - 0.08);
-  if (prng.nextFloat() < 0.012) world.dirty.add((guest.position.y * world.size + guest.position.x) | 0);
+  if (prng.nextFloat() < 0.012) world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y));
   if (guest.stateTicks >= 6 || guest.patience <= 0) {
     releaseAndChoose(world, guest);
     refreshNeeds(guest);
@@ -73,7 +75,7 @@ export function actAtTarget(world: WorldState, ledger: Ledger, prng: Prng, guest
       if (deliverDrink(world, ledger, guest, item)) {
         if (guest.spins > 0) guest.addiction = clamp(guest.addiction + 1.2 * getPersona(guest.persona).addictionRate);
         guest.dirtTimer += 1;
-        if (guest.dirtTimer > 8) { world.dirty.add((guest.position.y * world.size + guest.position.x) | 0); guest.dirtTimer = 0; }
+        if (guest.dirtTimer > 8) { world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y)); guest.dirtTimer = 0; }
         const served = world.agents.some((agent) => agent.role === 'bartender'
           && Math.abs(agent.x - item.x) + Math.abs(agent.y - item.y) <= 4);
         if (served) guest.stateTicks += 2;
