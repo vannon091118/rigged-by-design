@@ -78,23 +78,46 @@ export function impact(options = {}) {
     },
     gates,
     open: [
-      ...(selection.runAll ? [] : []),
       ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; Delegation: pnpm run ci:long`] : []),
     ],
   };
 }
 
-/** Kompakte Textfassung: Einstiegspunkte statt ganzer Dokumente. */
+/**
+ * Kompakte Textfassung: feste Beschriftungsspalte, ein Feld je Zeile, nichts
+ * doppelt. Kurz genug fuer den Bildschirm, vollstaendig genug, dass keine
+ * Rueckfrage noetig ist.
+ */
 export function summarize(result) {
+  const label = (text) => text.padEnd(12);
+  const changed = result.changed.length === 0
+    ? 'keine'
+    : `${result.changed.length} (${result.changed.slice(0, 8).join(', ')}${result.changed.length > 8 ? `, +${result.changed.length - 8}` : ''})`;
+  const cached = result.gates.filter((gate) => gate.cached).length;
   const lines = [
-    `Impact ${result.version} · ${result.tree.branch}@${result.tree.head} · Baum ${result.tree.key}${result.tree.dirty ? ' (schmutzig)' : ''}`,
-    `Aenderungen: ${result.changed.length === 0 ? 'keine' : result.changed.slice(0, 12).join(', ')}${result.changed.length > 12 ? ` (+${result.changed.length - 12})` : ''}`,
-    `Systeme: ${result.systems.join(', ') || 'keine'}`,
-    `Tests: ${result.tests.runAll ? 'alle' : `${result.tests.selected.length} ausgewaehlt`}${result.tests.reason ? ` (${result.tests.reason})` : ''}`,
-    `Gates: ${result.gates.map((gate) => `${gate.name}${gate.cached ? '[cache]' : ''}`).join(' ')}`,
+    `Kontext ${result.version} · ${result.tree.branch}@${result.tree.head} · Baum ${result.tree.key} · ${result.tree.dirty ? 'schmutzig' : 'sauber'}`,
+    '',
+    `${label('Aenderungen')}${changed}`,
+    `${label('Systeme')}${result.systems.join(', ') || 'keine'}`,
+    `${label('Tests')}${result.tests.runAll ? 'vollstaendig' : `${result.tests.selected.length} ausgewaehlt`}${result.tests.reason ? ` · ${result.tests.reason}` : ''}`,
+    `${label('Gates')}${result.gates.length} · Cache ${cached}/${result.gates.length} · ${result.gates.map((gate) => gate.name).join(' ')}`,
   ];
-  if (result.docs.length > 0) lines.push(`Doku: docs/${result.docs.join('.md, docs/')}.md`);
-  if (result.invariants.length > 0) lines.push(`Invarianten: ${result.invariants.join(' | ')}`);
-  for (const entry of result.open) lines.push(`Offen: ${entry}`);
+  if (result.docs.length > 0) lines.push(`${label('Doku')}${result.docs.map((doc) => `docs/${doc}.md`).join(', ')}`);
+  if (result.invariants.length > 0) {
+    lines.push(`${label('Invarianten')}`);
+    for (const invariant of result.invariants) lines.push(`  · ${invariant}`);
+  }
+  for (const entry of result.open) lines.push(`${label('Offen')}${entry}`);
   return lines.join('\n');
+}
+
+/**
+ * Die verdichtete Textzeile: Status, Stand, Umfang in einer Zeile. Gedacht fuer
+ * Kopfzeilen und Protokolle, in denen jeder weitere Satz nur Tokens kostet.
+ */
+export function oneLineOf(result) {
+  const changed = result.changed.length === 0 ? '0 Aenderungen' : `${result.changed.length} Aenderung(en)`;
+  const cached = result.gates.filter((gate) => gate.cached).length;
+  const tests = result.tests.runAll ? 'Tests alle' : `Tests ${result.tests.selected.length}`;
+  return `context ${result.version} ${result.tree.branch}@${result.tree.head} ${result.tree.dirty ? 'schmutzig' : 'sauber'} · ${changed} · ${tests} · Gates ${result.gates.length} (Cache ${cached})`;
 }

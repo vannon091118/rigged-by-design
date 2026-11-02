@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.75 | 2026-11-02 22:21 UTC -->
+<!-- rbd-doc: v0.3.75 | 2026-11-02 22:23 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -93,6 +93,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 
 ## Pitfalls
 
+- Kein Wegwerf-Skript, keine Ad-hoc-Datei: Analyse laeuft ueber `pnpm run agent:context`, Pruefung ueber `pnpm run agent:verify` (`--plan` zeigt den Plan ohne Lauf), Suche ueber `rg`. Dateien mit `tmp-`, `temp-`, `scratch-`, `.tmp.` oder `.bak` sind verboten; das Tree-Gate macht sie mit `ERR-4019` rot.
 - Do not hand-edit generated files in `dist/`.
 - LOC guard fails the build; reduce below the Hot Zone of the file's responsibility instead of adding an exception. Each file has exactly one responsibility and one budget; legacy exceptions are migration debt and only shrink.
 - `test:perf` intentionally not in `verify:all`; don't gate on it on slow hardware.

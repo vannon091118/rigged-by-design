@@ -18,8 +18,16 @@ const running = new Set();
 const DEFAULT_GATE_TIMEOUT_MS = 15 * 60_000;
 const FAILURE_TAIL_LINES = 40;
 const VERBOSE = process.env.RBD_VERIFY_VERBOSE === '1';
+/** Verdichtet: keine Zeile je Gate, der Aufrufer druckt stattdessen die Tabelle. */
+const QUIET = process.env.RBD_VERIFY_QUIET === '1' && !VERBOSE;
 
 let reportDir;
+let lastRows = [];
+
+/** Die Zeilen des letzten Laufs: Name, Status, Dauer. Fuer Berichte, nicht fuer Entscheidungen. */
+export function lastGateRows() {
+  return lastRows.map((row) => ({ ...row }));
+}
 /**
  * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
  * Arbeitsbaum: Verify bleibt lesend, und das Gitignor hält ihn aus jedem Hash.
@@ -174,7 +182,7 @@ export async function runGates(steps) {
       const gateKey = `${key}\0${JSON.stringify(step.env ?? {})}`;
       const reused = step.cache && isCached(step.name, gateKey) && (step.ready?.() ?? true);
       if (reused) {
-        console.log(`[cached] ${step.name} uebersprungen, Baum unveraendert (${key.slice(0, 8)})`);
+        if (!QUIET) console.log(`[cached] ${step.name} uebersprungen, Baum unveraendert (${key.slice(0, 8)})`);
         continue;
       }
       const result = await executeStep(step);
@@ -207,11 +215,12 @@ export async function runGates(steps) {
         console.error(line(index, step.code, `pipeline/${step.name}`, `Gate fehlgeschlagen${where}`));
         continue;
       }
-      console.log(`[gate] ${step.name}: PASS (${seconds}s)${logPath ? ` -> ${logPath}` : ''}`);
+      if (!QUIET) console.log(`[gate] ${step.name}: PASS (${seconds}s)${logPath ? ` -> ${logPath}` : ''}`);
       if (step.cache) markCached(step.name, gateKey);
     }
   };
   await Promise.all(Array.from({ length: Math.min(MAX_WORKERS, queue.length) }, worker));
+  lastRows = rows;
   summarize(rows, failed);
   return failed;
 }

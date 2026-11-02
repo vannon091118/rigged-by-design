@@ -33,6 +33,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Offen.** Event-Scheduler, Beziehungen, Content-Compiler, Commands, UI und autonome Rivalen sind weiterhin nicht implementiert; keine Promotion ohne vollstaendigen Nachweis.
 
+## 2026-11-02 - Tooling-Ausgabe strukturiert, Wegwerf-Skripte verboten
+
+**Ziel.** Die Agent-Werkzeuge sollen ohne Rueckfrage lesbar sein: strukturiert, menschlich lesbar, token-optimiert. Ad-hoc-Skripte fuer jede Kleinigkeit sollen nicht mehr entstehen.
+
+**Umsetzung.** `summarize()` in `scripts/lib/impact.mjs` druckt eine feste Beschriftungsspalte mit einer Zeile je Feld. `scripts/agent-verify.mjs` zeigt eine Gate-Tabelle mit Status und Dauer aus `lastGateRows()` (`scripts/lib/gate-runner.mjs`) und kennt `--plan` fuer den Plan ohne Lauf. `scripts/verify-tree.mjs` meldet Wegwerf-Dateien als `ERR-4019`; die Regel steht in `AGENTS.md` unter Pitfalls.
+
+**Nachtrag.** `--line` verdichtet beide Werkzeuge auf eine Zeile; `RBD_VERIFY_QUIET=1` unterdrueckt die Zeile je Gate, damit neben der Tabelle keine zweite Ausgabe steht.
+
+**Pruefungen.** `node --check` fuer die vier Skripte, `pnpm run agent:context`, `pnpm run agent:verify -- --plan`, `pnpm run verify:tree`, `pnpm run verify:docs`, `pnpm run check:loc`.
+
+**Offen.** Die Testsuite lief in diesem Schritt nicht; der Nachweis gehoert in den Abschlusslauf und braucht vorher die Freigabe des Nutzers.
+
 ## 2026-11-02 - Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
 
 **Ziel.** Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
@@ -586,7 +598,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.75 | 2026-11-02 22:21 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.75 | 2026-11-02 22:23 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
