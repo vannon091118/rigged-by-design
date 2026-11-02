@@ -114,7 +114,7 @@ neueren Versionen; für eine reine Web-Auslieferung an Safari wäre AAC die sich
 ## Prüfung
 
 ```bash
-npm run verify:assets
+pnpm run verify:assets
 ```
 
 Das Skript prüft drei Dinge und wird rot, wenn eines nicht stimmt:
