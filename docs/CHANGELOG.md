@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.75 | 2026-11-02 22:29 UTC -->
+<!-- rbd-doc: v0.3.76 | 2026-11-02 22:37 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.76] - 2026-11-02
+
+### Technik
+
+- Narrative-Dokumentation nach Merge wiederherstellen: fehlende Eintraege zu Triggern, Save-Facts und offenen Meilensteinen ergaenzt; kein LLM im Spiel.
+
+## [0.3.75] - 2026-11-02
+
+### Technik
+
+- Narrative Trigger Bedingungen: Reiner Evaluator fuer kombinierte Fact-, Erinnerungs-, Kassen-, Geraete-, Spieler-, Flag- und Zeitbedingungen; noch ohne Runtime-Anbindung.
+- Narrativ-Grundlagen und LLM-freier Eventplan: Start-Pool wird nicht doppelt gezaehlt; Save-Facts werden bei der Normalisierung nach IDs geordnet und auf Nutzdaten geprueft. Offene Meilensteine und der Ausschluss eines LLM im Spiel stehen im Architekturvertrag.
 
 ## [0.3.74] - 2026-11-02
 
