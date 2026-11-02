@@ -21,7 +21,6 @@ export const ERROR_CODES = {
   WORLD_ASSERTION: { code: 'ERR-2001', area: 'sim', cause: 'Simulations- oder Weltzustand verletzt eine Zusicherung.', fix: 'Gast-, Platz- oder Geldpfad an der Ursache korrigieren.' },
   GRID_ASSERTION: { code: 'ERR-2002', area: 'sim', cause: 'Bereichs-, Footprint- oder Zugangsregel verletzt.', fix: 'grid-zones und Multi-Tile-Flaeche pruefen.' },
   DUMMY_UI: { code: 'ERR-3001', area: 'render', cause: 'UI oder Renderer zeigt einen hartcodierten Dummy-Wert.', fix: 'Wert an ein echtes Snapshot-Feld binden oder entfernen.' },
-  MOVEMENT_QUEUE: { code: 'ERR-3002', area: 'sim', cause: 'Zentrale Warteschlangen- oder Bewegungslogik verletzt.', fix: 'movement-queue Invariante pruefen.' },
   TEST_CONTRACT: { code: 'ERR-4001', area: 'governance', cause: 'Testvertrag (@test-target oder @error-code) fehlt oder ist ungueltig.', fix: 'Header mit existierendem Ziel und registriertem Code ergaenzen.' },
   FALSE_POSITIVE: { code: 'ERR-4002', area: 'governance', cause: 'Test prueft nur Existenz, Snapshot oder eine Tautologie.', fix: 'Echte Zustandstransformation oder numerische Invariante pruefen.' },
   DEAD_EXPORT: { code: 'ERR-4003', area: 'governance', cause: 'Ein Export wird nirgendwo importiert.', fix: 'Export entfernen oder im echten Pfad importieren.' },

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.73 | 2026-11-02 12:20 UTC -->
+<!-- rbd-doc: v0.3.74 | 2026-11-02 20:09 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -19,6 +19,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Keine spielbaren Aenderungen; der Sprung dient der Release-Konsistenz von `main`.
 
 ### Technik
+- Peer-Review Phase 6: Tick-Konstante zentral (`TICK_MS = 520`), `spinTest` ruft den Testspin nur einmal, das tote `movement-queue`-Modul ist entfernt, Texte korrigiert ("DER GEBER MISCHT", Mojibake), Asset-Zaehler aus den Daten, `opencode.json` mit relativem Pfad, `encode-audio` verlangt `RBD_AUDIO_SOURCE`.
 - Version 0.3.73: `main` trug nach dem Merge von PR #44 weiter 0.3.72, waehrend der Tag `v0.3.72` auf `7b50913` (PR #40) stand und der Release-Lauf nach einem API-Merge als `skipped` endete. Der Patch-Sprung macht den Tip release-faehig, ohne den bestehenden Tag zu verschieben.
 
 ## [0.3.71] - 2026-11-01

@@ -171,7 +171,7 @@ export class ShellCanvas {
         this.#cups[this.#ballCup]!.gfx.y = CUP_Y;
         this.#phase = 'SHUFFLE';
         this.#time = 0;
-        this.#caption.text = 'DERGEBER MISCHT';
+        this.#caption.text = 'DER GEBER MISCHT';
       }
       return;
     }

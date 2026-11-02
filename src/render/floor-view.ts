@@ -1,4 +1,5 @@
 // @loc-exception: Kamera, LOD, Culling, gepoolte Figuren und Input teilen einen Pixi-Scene-Graph; getrennt waeren die Transform-Kopplungen unsichtbar.
+import { TICK_MS } from '../core/sim/tick-timing';
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { Application, Container, Graphics, Rectangle, type FederatedPointerEvent } from 'pixi.js';
 import { dirtyNear, emotionOf } from '../core/sim/emotion';
@@ -16,7 +17,7 @@ import { actorStateFor } from './rig-pose';
 import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
 
-const STEP_MS = 520;
+const STEP_MS = TICK_MS;
 
 interface FloorCallbacks {
   readonly onGuest: (id: number) => void;

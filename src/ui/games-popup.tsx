@@ -9,6 +9,7 @@ import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { CardDeal } from '../store/foreign-play';
 import type { GameView } from '../store/types';
 import { vc } from './format';
+import { TICK_MS } from '../core/sim/tick-timing';
 import { attractionBand, houseEdgeText } from './glossary';
 import { GAME_ICON, UI_ICON } from './icons';
 import { PopupShell } from './popup-shell';
@@ -74,7 +75,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
     window.setTimeout(() => {
       setResult(onPlay(rivalId, machineIndex, betVC));
       setSpinning(false);
-    }, 520);
+    }, TICK_MS);
   };
 
   return (

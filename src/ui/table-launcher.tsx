@@ -53,7 +53,7 @@ export function TableLauncher(props: Props) {
     onWithdraw: props.onWithdraw,
     canWithdraw: props.canWithdraw,
   };
-  const where = `${houseName} Â· ${operator}.`;
+  const where = `${houseName} · ${operator}.`;
 
   if (game === 'PLINKO') {
     return (

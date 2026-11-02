@@ -4,6 +4,7 @@ import { dirtyNear, EMOTION_META, emotionOf } from '../core/sim/emotion';
 import type { GameView } from '../store/types';
 import { STATE_LABEL, vc } from './format';
 import { HELP } from './glossary';
+import { TICK_S } from '../core/sim/tick-timing';
 import { PopupShell } from './popup-shell';
 
 interface Props {
@@ -82,9 +83,9 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
             )}
             <button type="button" className="btn small" onClick={() => onTalk(guest.id)} disabled={talkWait > 0}
               title={talkWait > 0
-                ? `Noch ${Math.ceil(talkWait * 0.52)} s gesperrt. Erfolg: +25 Laune, +20 Geduld; Fehlschlag kann Streit auslösen.`
+                ? `Noch ${Math.ceil(talkWait * TICK_S)} s gesperrt. Erfolg: +25 Laune, +20 Geduld; Fehlschlag kann Streit auslösen.`
                 : 'Erfolg: +25 Laune, +20 Geduld. Fehlschlag: beides sinkt und kann Streit auslösen. Danach rund 30 Sekunden Pause.'}>
-              {talkWait > 0 ? `BESCHWATZEN · ${Math.ceil(talkWait * 0.52)} s` : `BESCHWATZEN · ${view.talkChances[guest.id] ?? 0} % Erfolg`}
+              {talkWait > 0 ? `BESCHWATZEN · ${Math.ceil(talkWait * TICK_S)} s` : `BESCHWATZEN · ${view.talkChances[guest.id] ?? 0} % Erfolg`}
             </button>
             {guest.disputeId !== null && (
               <button type="button" className="btn small" onClick={() => onCalm(guest.disputeId!)}
