@@ -56,6 +56,8 @@ export interface Guest {
 export interface PlayerJobState {
   readonly jobId: PlayerJobId; readonly rivalId: RivalId; readonly stationId: string;
   currentTask: PlayerJobTask | null; workDays: number; lastPaidDay: number;
+  /** Tag der zuletzt abgeschlossenen Schicht; 0 heisst: noch nie gearbeitet. */
+  lastWorkDay: number;
 }
 export interface PlayerJobTask {
   readonly stationId: string; readonly taskType: JobTaskType;

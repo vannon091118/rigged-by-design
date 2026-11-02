@@ -109,7 +109,9 @@ describe('Player-Jobs: Lohn', () => {
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'test', 0);
     const before = ledger.getBalance(PORTEMONNAIE);
     acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
-    // Tag vorrücken, damit Lohn fällig wird
+    requestJobTask(world);
+    completeJobTask(world, { nextFloat: () => 0.5 });
+    // Tag vorrücken, damit der Lohn der Schicht fällig wird
     world.day += 1;
     const paid = payDailyWage(world, ledger, prng, world.tick);
     expect(paid).toBe(true);
@@ -120,6 +122,8 @@ describe('Player-Jobs: Lohn', () => {
     const { world, ledger, prng } = setup();
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'test', 0);
     acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
+    requestJobTask(world);
+    completeJobTask(world, { nextFloat: () => 0.5 });
     world.day += 1;
     payDailyWage(world, ledger, prng, world.tick);
     const entry = ledger.entries[ledger.entries.length - 1];
@@ -130,6 +134,8 @@ describe('Player-Jobs: Lohn', () => {
     const { world, ledger, prng } = setup();
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'test', 0);
     acceptJob(world, 'HAFENKLAUSE', 'CLEANER');
+    requestJobTask(world);
+    completeJobTask(world, { nextFloat: () => 0.5 });
     world.day += 1;
     payDailyWage(world, ledger, prng, world.tick);
     const paid = payDailyWage(world, ledger, prng, world.tick);

@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-02 - Lohn nur für geleistete Schichten
+
+**Ziel.** Befund 2 schließen: `payDailyWage` zahlte weder Anwesenheit noch Arbeit, weshalb ein Spieler mit angenommenem Job fünf Tage lang 60 VC kassierte, ohne den Floor zu betreten — bezahlt aus `EXTERNAL`, also aus dem Nichts.
+
+**Umsetzung.** „Gearbeitet" heißt jetzt: mindestens eine abgeschlossene Schicht. `completeJobTask` stempelt dafür `lastWorkDay = world.day`; `payDailyWage` zahlt nur, wenn `lastWorkDay >= world.day - 1` gilt, also für die Schicht des Vortags am Tageswechsel (der Tag wird in `staffTick` vor dem Lohn hochgezählt). Damit gibt es höchstens einen Lohn pro Tag und keinen Cent für untätige Tage; `workDays` wuchs schon vorher nur in `completeJobTask` und bleibt bei Nichtstun stehen. Bodenaufenthalt ohne Schicht zählt bewusst nicht: die Schicht ist die Arbeit, die das Spiel bezahlt. Alt-Saves kennen `lastWorkDay` nicht; `hydrateWorld` setzt es auf 0 („noch keine Schicht"), was ohne Schicht nie einen Lohn freischaltet — keine Nachzahlung, kein Absturz, keine Versionserhöhung nötig, weil das Feld nur additiv ist.
+
+**Pruefungen.** Fail-First mit zurückgerolltem `player-jobs.ts` und `migrate.ts`: 6 von 12 neuen Tests rot (Nichtstun zahlt, Nachzahlung nach fünf Tagen, Alt-Save ohne anerkannte Schicht), die sechs grünen sind Gegenproben (Lohn nach Schicht, `workDays`-Zuwachs, Laden ohne Fehler). Danach 36/36 in vier Dateien grün, `typecheck` 0. Drei bestehende Lohntests in `player-jobs.test.ts` bauen jetzt die Schicht ein, die ihre Aussage voraussetzt; ihre Behauptung (Lohn, Buchungsquelle, kein Doppellohn) ist unverändert.
+
+**Offen.** Der Lohn gilt pro Schicht, nicht pro Stunde: zwei Schichten an einem Tag zahlen einen Tageslohn. Das ist die bestehende Lohnsemantik und wurde nicht angefasst. Weiterhin offen aus dem Audit: Pity-RTP, Schulden ohne Tilgung, tote `PLAYER_CASH`, wirkungslose Sucht, nie skalierender Einsatz.
+
 ## 2026-11-02 - Deckung an der Kasse, erreichbare Eskalation und gezählte Gäste
 
 **Ziel.** Sechs Befunde aus dem Audit schließen, die reine Verdrahtung sind und keine Balance-Entscheidung verlangen: Deckung am falschen Ort, unerreichbare Eskalation, Gästezählung ohne Spiel, JACKPOT ab 1,0x, stehenbleibende Wut und zwei verschiedene Bar-Kapazitäten.
@@ -489,7 +499,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:10 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

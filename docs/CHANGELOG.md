@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:10 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,8 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
 
 ### Technik
+- Der Tageslohn hängt an einer abgeschlossenen Schicht: `PlayerJobState.lastWorkDay` merkt sich den Tag der letzten Schicht, `payDailyWage` zahlt nur dafür und nie rückwirkend. Wer einen Job annimmt und nichts tut, bekommt weder Geld noch `workDays`-Zuwachs.
+- Alte Saves ohne `lastWorkDay` laden weiter und starten mit „noch keine Schicht"; vergangene Tage werden nicht nachgezahlt.
 - Der Überfall misst die Wachdeckung jetzt an der Kasse statt am Spieler: `muggingCoverPoint` liefert den Wechseltisch, an dem das Geld liegt; vorher schützte ein Wachmann am Klo die Kasse.
 - Die zweite Streitstufe ist erreichbar: `disputeLevelForTicks` kippt nach vier Ticks, vorher nach sechs — ANGRY dauert aber nur fünf, deshalb gab es nie Möbelschaden.
 - `guestsServed` zählt nur noch Gäste mit mindestens einem Spin; wer den Floor durchquert, hob bisher Ruf und KASSE-Stufe.
