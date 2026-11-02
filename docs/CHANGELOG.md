@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 12:03 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -29,10 +29,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Die Persona-Geduld wirkt jetzt: sie geht als Gewicht in den 180-Punkte-Pool von `rollProfile` ein (68 High Roller bis 138 Stammgast), die Summe aus Laune, Geduld und Sucht bleibt exakt 180. Vorher war `Persona.patience` ein totes Feld, und der Stammgast startete wegen seiner hohen Suchtrate sogar ungeduldiger als der High Roller.
 - Der Synergie-Audit listet die verbleibenden Lücken in `docs/INVENTORY.md`: `PLAYER_CASH` ohne Ausgabepfad, VELVET und FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusätzliche Walze und ein Einsatz, der nie mit der Persona skaliert.
 - Alte Saves ohne `lastWorkDay` laden weiter und starten mit „noch keine Schicht"; vergangene Tage werden nicht nachgezahlt.
-- `CI Verify` startet nur noch einen Lauf pro Commit: der Push deckt den Pull Request ab, der zusaetzliche PR-getriggerte Lauf entfaellt, weil er abgebrochen als `failure` am Head-SHA stand und den Pflichtstatus blockierte.
-
-- `CI Verify` bricht keinen Lauf mehr ab: ein abgebrochener Parallel-Lauf stand als `failure` am Head-SHA und blockierte den Pflichtstatus „Fail-Closed Gates", obwohl der Push-Lauf gruen war.
-
+- Der rote Pflichtstatus war der PR-getriggerte `CI Verify`-Lauf: er scheiterte am PR-Body-Gate, weil der PR-Body die Pflichtsektionen nicht trug; der Workflow bleibt unveraendert, der Body wird aus dem Commit-Body gehoben.
 - Drei Mods sind als offene Design-Entscheidung dokumentiert statt still wirkungslos zu bleiben: `VELVET` (bessere Gaeste), `FREE_DRINK` (Drink pro Spin) und `EXTRA_REEL` (vierte Walze) stehen mit Versprechen, Ist-Zustand und der jeweils noetigen Regelentscheidung in `docs/INVENTORY.md`.
 
 - Der Überfall misst die Wachdeckung jetzt an der Kasse statt am Spieler: `muggingCoverPoint` liefert den Wechseltisch, an dem das Geld liegt; vorher schützte ein Wachmann am Klo die Kasse.

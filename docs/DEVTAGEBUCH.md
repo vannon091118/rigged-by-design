@@ -12,15 +12,15 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-02 - Abgebrochener Parallel-Lauf blockierte den Pflichtstatus
+## 2026-11-02 - Roter Pflichtstatus war das PR-Body-Gate
 
 **Ziel.** PR #44 mergen, ohne einen Check zu umgehen.
 
-**Umsetzung.** Zwei Laeufe desselben Commits (Push und Pull Request) liefen parallel; der PR-Lauf wurde nach rund 15 Sekunden abgebrochen und steht als `failure` am Head-SHA, waehrend der Push-Lauf mit 12/12 Gates gruen durchlief. Der Branch-Schutz verlangt den Status „Fail-Closed Gates", also blockierte der Abbruch den Merge, nicht ein Gate-Fehler. `ci-verify.yml` laesst Laeufe jetzt zu Ende laufen (`cancel-in-progress: false`); das ist mehr CI, keine ausgelassene Pruefung, und der Gate-Cache verhindert doppelte Arbeit.
+**Umsetzung.** Zwei Laeufe pro Commit: der Push-Lauf bestand `verify:all` mit 12/12 Gates, der PR-getriggerte Lauf brach nach rund 15 Sekunden mit Exit 1 ab. Ein Test auf den Workflow-Dateien (`ci-gates.test.ts`) haelt fest, dass beide Trigger bleiben muessen, also lag der Fehler nicht im Workflow, sondern im PR-Body: das Gate `verify-commit-msg --pr` verlangt die drei Pflichtsektionen, und der Body trug sie nicht. Der Body wird deshalb aus dem Commit-Body gehoben; die Trigger und `cancel-in-progress` bleiben unveraendert.
 
-**Pruefungen.** `verify:docs`, `check:loc`, `verify:tree`, `verify:redundancy`, `lint`, `typecheck` je Exit 0; die volle Suite lief auf demselben Baum 532/532 gruen.
+**Pruefungen.** `RBD_VERIFY_AUDIT=1 RBD_VERIFY_NO_CACHE=1 pnpm run verify:all` deckte den eigentlichen Fehler auf: der Test `Main-Gate > prueft Pushes auf main und Pull Requests gegen main` fiel nach dem Trigger-Umbau rot — der Umbau wurde zurueckgenommen.
 
-**Offen.** Ob GitHub den PR-Lauf weiterhin abbricht, zeigt erst der naechste Lauf; dann bleibt die Ursache ausserhalb des Repos zu klaeren.
+**Offen.** Keine Code-Aenderung am CI-Workflow; das PR-Body-Gate bleibt scharf.
 
 
 ## 2026-11-02 - Befundnotiz: drei Mods ohne Mechanik
@@ -545,7 +545,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 12:03 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
