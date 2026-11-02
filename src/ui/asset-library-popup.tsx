@@ -110,7 +110,7 @@ export function AssetLibraryPopup({ onClose }: { readonly onClose: () => void })
     + Object.keys(manifest.fx).length;
 
   return (
-    <PopupShell eyebrow="PAKET · 539 TEXTUREN" title="Asset-Bibliothek" onClose={onClose} full>
+    <PopupShell eyebrow={`PAKET · ${imageCount} TEXTUREN`} title="Asset-Bibliothek" onClose={onClose} full>
       <p className="hint">
         {imageCount} Bilder, {Object.keys(manifest.animations).length} Frame-Animationen,
         {' '}{Object.keys(manifest.emitters).length} Emitter und {Object.keys(manifest.music).length} Tonspuren.

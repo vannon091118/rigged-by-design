@@ -26,7 +26,7 @@ import { riskCardCmd, dealCardCmd, settleCardCmd, additionalBetCmd, playRivalCmd
 import { buyCmd, orderDrinksCmd, orderPartsCmd, pickupCmd, deployCmd, unloadHereCmd, storeDepositCmd, calmCmd, talkCmd, fightBrawlCmd, spendSkillCmd, serveDeskCmd, setWallCmd, setNeonCmd, upgradeBarCmd, upgradeWcCmd, repairCmd, cleanCmd, hireCmd, fireCmd, setPriceCmd, setCarpetCmd, installModCmd, addReelCmd, setBetCmd, setSlotOddsCmd } from './venue-commands';
 import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd } from './game-commands';
-const TICK_MS = 520;
+import { TICK_MS } from '../core/sim/tick-timing';
 class WorldStore {
   #ledger = new Ledger();
   #prng = new Prng(entropySeed());
@@ -150,7 +150,7 @@ class WorldStore {
   moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); }
   deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); }
   useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
-  spinTest(itemId: number): GameResult | null { const { result } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = spinTestCmd(this.#world, itemId).notice; this.#emit(); } return result; }
+spinTest(itemId: number): GameResult | null { const { result, notice } = spinTestCmd(this.#world, itemId); if (result) { this.#notice = notice; this.#emit(); } return result; }
   deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); }
   setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); }
   exclusion(command: 'START' | 'HONOR', limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }

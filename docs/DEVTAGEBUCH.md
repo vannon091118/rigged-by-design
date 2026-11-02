@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-02 - Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
+
+**Ziel.** Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
+
+**Umsetzung.** Die Peer-Review-Befunde wurden gegen `main` (8d08640) verifiziert und umgesetzt. `TICK_MS = 520` steht jetzt einmal in `src/core/sim/tick-timing.ts`; `world-store`, `floor-view`, `games-popup`, `guest-popup` und `self-exclusion-panel` lesen daraus statt aus Literalen. `spinTest` ruft `spinTestCmd` nur noch einmal auf. Das tote `movement-queue`-Modul samt Test und ERR-3002 ist entfernt. Texte: "DER GEBER MISCHT" korrigiert, Mojibake in `table-launcher` entfernt, Asset-Zaehler aus `imageCount` berechnet. Portabilitaet: `src/Config/opencode.json` nutzt einen relativen Pfad, `scripts/encode-audio.mjs` bricht ohne `RBD_AUDIO_SOURCE` mit Hinweis ab. Befunde 33 und 37 waren auf `main` bereits behoben, 38 ist veraltet.
+
+**Pruefungen.** `pnpm run typecheck` und `pnpm run lint` exit 0. `pnpm run test`: 109 Dateien bestanden, 2 uebersprungen; 524 Tests bestanden (vorher 532, Differenz = entfernter movement-queue-Test). `pnpm run catalog` regeneriert `docs/TEST-CATALOG.md`.
+
+**Offen.** Spielregel-Entscheidungen bleiben beim Nutzer: VELVET, FREE_DRINK, EXTRA_REEL, Einsatzskalierung in `offerScore`, `payDailyWage`, Schuldentilgung, Pity-RTP (~99,15 %). `EXTRA_SYMBOLS`-Schluessel passen nicht zum Manifest (`GRAPE_CLUSTER`/`LUCKY_SEVEN` gegen `GRAPE`/`SEVEN`), visuelle Entscheidung. Befund 39 (doppelter Asset-Check) ist offen und ungeprueft.
+
 ## 2026-11-02 - Tip release-faehig machen (0.3.73)
 
 **Ziel.** Nicht nur der Merge-Commit, sondern die aktuelle Spitze von `main` soll gruen und release-konsistent sein.
@@ -556,7 +566,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.73 | 2026-11-02 12:20 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.74 | 2026-11-02 20:09 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

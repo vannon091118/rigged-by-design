@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import type { GameView } from '../store/types';
 import { vc } from './format';
+import { TICK_S } from '../core/sim/tick-timing';
 
 interface Props {
   readonly view: GameView;
@@ -39,7 +40,7 @@ export function SelfExclusionPanel({ view, onExclusion }: Props) {
           <p>
             Stopp bei <b>-{vc(pact.limit, 0)}</b> Netto-Verlust. Aktuell <b>-{vc(pact.netLoss, 2)}</b>.
             {pact.status === 'LIMIT_REACHED'
-              ? ` Grenze erreicht. Noch ${pauseLeft} Takte (≈ ${Math.ceil(pauseLeft * 0.52)} s) Pause, dann einhalten.`
+              ? ` Grenze erreicht. Noch ${pauseLeft} Takte (≈ ${Math.ceil(pauseLeft * TICK_S)} s) Pause, dann einhalten.`
               : ' Ein weiterer Spin nach der Grenze bricht den Pakt.'}
           </p>
           {pact.status === 'LIMIT_REACHED' && (

@@ -15,8 +15,11 @@ import { join, resolve } from 'node:path';
 import ffmpegPath from 'ffmpeg-static';
 
 const ROOT = resolve(import.meta.dirname, '..');
-const SOURCE = process.env.RBD_AUDIO_SOURCE
-  ?? 'C:/Users/vanno/Downloads/casino_asset_sounds_prealpha/sounds';
+const SOURCE = process.env.RBD_AUDIO_SOURCE;
+if (!SOURCE) {
+  console.error('RBD_AUDIO_SOURCE setzen: Pfad zum Ordner mit den Master-WAV-Dateien.');
+  process.exit(1);
+}
 const TARGET = join(ROOT, 'public/assets/casino/music');
 
 /** Was im Spiel gebraucht wird; alles andere bleibt Master und wird nicht ausgeliefert. */

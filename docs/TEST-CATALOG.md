@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statistics 6 · performance 5.
+Summe: 116 Dateien — contract 73 · integration 22 · governance 10 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -19,6 +19,7 @@ Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statisti
 | `src/core/games/__tests__/dice-bets.test.ts` | games | contract | ja | `src/core/games/dice-bets.ts` |
 | `src/core/games/__tests__/foreign-round-atomic.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
 | `src/core/games/__tests__/game-rounds.test.ts` | games | contract | ja | `src/core/games/contracts.ts` |
+| `src/core/games/__tests__/pity-settlement.test.ts` | games | contract | ja | `src/core/games/slot-transparency.ts` |
 | `src/core/games/__tests__/plinko-sandbox.test.ts` | games | contract | ja | `src/core/games/plinko-sandbox.ts` |
 | `src/core/games/__tests__/plinko-track.test.ts` | games | contract | ja | `src/core/games/contracts.ts` |
 | `src/core/games/__tests__/poker-distribution.test.ts` | games | statistics | nein, CI | `src/core/games/poker-hand.ts` |
@@ -36,6 +37,7 @@ Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statisti
 | `src/core/games/__tests__/slot-session-rtp.test.ts` | games | statistics | nein, CI | `src/core/games/slot-session.ts` |
 | `src/core/games/__tests__/slot-transparency.test.ts` | games | contract | ja | `src/core/games/slot-transparency.ts` |
 | `src/core/games/__tests__/test-spin.test.ts` | games | contract | ja | `src/core/games/sandbox.ts` |
+| `src/core/games/__tests__/video-poker-ranks.test.ts` | games | contract | ja | `src/core/games/engines/cards.ts` |
 | `src/core/games/engines/__tests__/blackjack.test.ts` | games | contract | ja | `src/core/games/engines/blackjack.ts` |
 | `src/core/games/engines/__tests__/interactive-cards.test.ts` | games | contract | ja | `src/core/games/engines/interactive-cards.ts` |
 | `src/core/governance/__tests__/affected-tests.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
@@ -49,40 +51,54 @@ Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statisti
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
 | `src/core/governance/__tests__/test-catalog.test.ts` | pipeline | governance | ja | `scripts/lib/test-catalog.mjs` |
 | `src/core/governance/__tests__/tree-changes.test.ts` | pipeline | governance | ja | `scripts/lib/tree-changes.mjs` |
+| `src/core/io/__tests__/escalation.test.ts` | other | contract | ja | `src/core/io/issues.ts` |
 | `src/core/physics/__tests__/physics.test.ts` | physics | contract | ja | `src/core/physics/world.ts` |
 | `src/core/rng/__tests__/shoe.test.ts` | rng | contract | ja | `src/core/rng/shoe.ts` |
 | `src/core/rng/__tests__/streams.test.ts` | rng | contract | ja | `src/core/rng/streams.ts` |
 | `src/core/rng/__tests__/weighted.test.ts` | rng | contract | ja | `src/core/rng/weighted.ts` |
+| `src/core/sim/__tests__/addiction-stake.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
+| `src/core/sim/__tests__/anger-decay.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
+| `src/core/sim/__tests__/anger-patience.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
+| `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
+| `src/core/sim/__tests__/dirty-index.test.ts` | sim | contract | ja | `src/core/sim/emotion.ts` |
+| `src/core/sim/__tests__/dispute-escalation.test.ts` | sim | contract | ja | `src/core/sim/disputes.ts` |
 | `src/core/sim/__tests__/duel.test.ts` | sim | contract | ja | `src/core/sim/duel.ts` |
+| `src/core/sim/__tests__/economy-losses.test.ts` | sim | contract | ja | `src/core/sim/economics.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
 | `src/core/sim/__tests__/foreign-floor-tick.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-tick.ts` |
 | `src/core/sim/__tests__/grid-zones.test.ts` | sim | contract | ja | `src/core/sim/grid-zones.ts` |
 | `src/core/sim/__tests__/guest-flow.test.ts` | sim | contract | ja | `src/core/sim/world.ts` |
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
+| `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
+| `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
 | `src/core/sim/__tests__/mod-guards.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
 | `src/core/sim/__tests__/mod-resolver.test.ts` | sim | contract | ja | `src/core/sim/offers.ts` |
 | `src/core/sim/__tests__/money-truth.test.ts` | sim | contract | ja | `src/core/sim/money.ts` |
-| `src/core/sim/__tests__/movement-queue.test.ts` | sim | contract | ja | `src/core/sim/movement-queue.ts` |
+| `src/core/sim/__tests__/mugging-cover.test.ts` | sim | contract | ja | `src/core/sim/mugging.ts` |
 | `src/core/sim/__tests__/narrative-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/__tests__/narrative-start-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/state.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
+| `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
+| `src/core/sim/__tests__/player-cash.test.ts` | sim | contract | ja | `src/core/sim/self-exclusion-bet.ts` |
 | `src/core/sim/__tests__/player-jobs.test.ts` | sim | contract | ja | `src/core/sim/player-jobs.ts` |
 | `src/core/sim/__tests__/player-rpg.test.ts` | sim | contract | ja | `src/core/sim/player-rpg.ts` |
 | `src/core/sim/__tests__/player-speed.test.ts` | sim | contract | ja | `src/core/sim/tick.ts` |
+| `src/core/sim/__tests__/player-wage-attendance.test.ts` | sim | contract | ja | `src/core/sim/player-jobs.ts` |
 | `src/core/sim/__tests__/progression.test.ts` | sim | contract | ja | `src/core/sim/progression.ts` |
 | `src/core/sim/__tests__/reputation.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/rivals.test.ts` | sim | contract | ja | `src/core/sim/rivals.ts` |
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
+| `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
 | `src/core/sim/__tests__/tycoon-needs.test.ts` | sim | contract | ja | `src/core/sim/needs.ts` |
 | `src/core/sim/__tests__/tycoon-ops.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/visitors.test.ts` | sim | contract | ja | `src/core/sim/visitors.ts` |
@@ -105,8 +121,11 @@ Summe: 97 Dateien — contract 57 · integration 19 · governance 10 · statisti
 | `src/store/__tests__/save-roundtrip.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-staff.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-v7.test.ts` | store | integration | ja | `src/store/save.ts` |
+| `src/store/__tests__/save-wage-field.test.ts` | store | integration | ja | `src/store/migrate.ts` |
+| `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/memory.bench.ts` | store | performance | nein, CI | `src/store/save.ts` |
 | `src/store/perf-hot-paths.bench.ts` | store | performance | nein, CI | `src/store/snapshot.ts` |
 | `src/ui/__tests__/card-tables.test.tsx` | ui | integration | ja | `src/ui/games/blackjack-popup.tsx` |
+| `src/ui/__tests__/casino-window-header.test.tsx` | ui | integration | ja | `src/ui/casino-window-header.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 <!-- TEST_CATALOG_END -->
