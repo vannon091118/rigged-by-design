@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:43 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:54 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -249,6 +249,20 @@ Spielregel-Entscheidung, nicht nur eine Buchung.
 | `need = 'social'` wird nie gesetzt, der Branch bleibt tot | `guest-choice.ts` prüfte, kein Schreiber | **entfernt** |
 
 
+
+## Offene Design-Entscheidungen: Mods ohne Mechanik (2026-11-02)
+
+Drei verkaufte Mods versprechen mehr, als der Code tut. Die Reparatur ist
+jeweils eine Spielregel, keine Buchung — deshalb steht sie hier statt im Code.
+
+| Mod | Was der Text verspricht | Was der Code tut | Benötigte Entscheidung |
+| --- | --- | --- | --- |
+| `VELVET` | „Bessere Gäste" | nur +220 Anziehung, −2 Geduld | Soll der Mod die Gästegüte (Budget/Persona-Gewicht) heben, oder wird der Text ehrlich? Eine Güte-Verschiebung ändert die Wirtschaftsrechnung des ganzen Abends. |
+| `FREE_DRINK` | „Ein Drink pro Spin" | nur +140 Anziehung, +8 Geduld, 0,03 VC Betrieb | Zahlt das Haus pro Spin einen echten Drink (Buchung `HAUSKONTO` → `SHOP`, Durst sinkt), oder bleibt es bei Geduld plus Betriebskosten? |
+| `EXTRA_REEL` | „Vierte Walze" | nur +300 Anziehung; Walzen kommen aus `item.reels` (kostenpflichtiges Upgrade) | Schenkt der Mod eine Walze (Preisgefüge zum `reelUpgradeCost` kippt), oder wird er zum Rabatt/ehrlichen Text? |
+
+Ohne diese drei Antworten bleibt der Shop an drei Stellen teurer als sein Effekt.
+
 ## 18. Vollstaendige Dateiliste (maschinell erzeugt)
 
 Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintrag je Ordner. Der Generator liest Textdateien und prueft Binaersignaturen; `verify:docs` vergleicht den Block mit dem Index.
@@ -370,10 +384,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 235 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 154 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 156 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 539 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 551 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen

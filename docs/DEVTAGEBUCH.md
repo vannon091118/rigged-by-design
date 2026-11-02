@@ -10,6 +10,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+
+## 2026-11-02 - Befundnotiz: drei Mods ohne Mechanik
+
+**Ziel.** Die zwei Audit-Luecken, die eine Spielregel brauchen (VELVET/FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusaetzliche Walze), so festhalten, dass sie nicht wieder zwischen Code und Doku verschwinden — ohne eine Regel zu erfinden.
+
+**Umsetzung.** `docs/INVENTORY.md` hat jetzt einen Abschnitt „Offene Design-Entscheidungen: Mods ohne Mechanik" mit einer Zeile je Mod: Versprechen, tatsaechlicher Effekt und die eine Frage, die der Nutzer beantworten muss. VELVET verspricht bessere Gaeste, liefert aber nur Anziehung und weniger Geduld; eine Guetev erschiebung wuerde die Wirtschaftsrechnung des Abends aendern. FREE_DRINK verspricht einen Drink pro Spin, liefert Geduld und Betriebskosten; offen ist, ob das Haus pro Spin wirklich bucht. EXTRA_REEL verspricht eine vierte Walze, die Walzenzahl kommt aber aus `item.reels`; offen ist, ob der Mod schenkt oder rabattiert. Keine dieser drei Fragen ist durch Umbuchung beantwortbar, deshalb bewusst keine Code-Aenderung.
+
+**Pruefungen.** `inventory:build` 1028/1028 Dateien, `docs:sync` sechs Marker, `typecheck`, `lint`, `check:loc`, `verify:docs`, `verify:dead-code`, `verify:test-quality`, `verify:tree`, `verify:redundancy`, `verify:assets`, `build` je Exit 0, volle Suite 532/532 gruen.
+
+**Offen.** Die drei Entscheidungen selbst; bis dahin bleibt der Shop an diesen Stellen teurer als sein Effekt.
+
+
 ## 2026-11-02 - Pity als Vorschuss, Wut aus Geduld, Sucht am Einsatz
 
 **Ziel.** Fünf offene Punkte schließen: Pity-RTP, Wut-Auslöser, Suchtfolgen, tote Felder und das nicht auszahlbare Bonus-Guthaben.
@@ -521,7 +533,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:43 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:54 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
