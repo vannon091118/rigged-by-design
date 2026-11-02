@@ -16,7 +16,7 @@ export interface ExclusionPact {
   thresholdTick: number;
   pauseUntilTick: number;
 }
-export interface ExclusionResult { readonly ok: boolean; readonly reward: VaCoinMicro; readonly notice: string; }
+interface ExclusionResult { readonly ok: boolean; readonly reward: VaCoinMicro; readonly notice: string; }
 
 const EXCLUSION_PAUSE_TICKS = 8;
 export { EXCLUSION_PAUSE_TICKS };
