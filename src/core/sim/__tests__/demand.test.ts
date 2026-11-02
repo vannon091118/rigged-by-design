@@ -47,6 +47,7 @@ describe('Ankunftsplanung', () => {
     ledger.transfer('EXTERNAL_WORLD', guestAccount(guest.id), fromVC(5), 'test chips', 0);
     guest.state = 'ANGRY';
     guest.stateTicks = 4;
+    guest.spins = 2;
     guest.mood = 0;
     guest.patience = 0;
     guest.position = { ...exchangePoint(world)! };

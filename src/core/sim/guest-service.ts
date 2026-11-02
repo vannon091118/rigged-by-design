@@ -54,7 +54,8 @@ export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): vo
     if (balance > ZERO_VC) exchangeFromVc(ledger, guest.id, balance, world.tick);
     closeFiat(ledger, guest.id, world.tick);
     noteSatisfaction(world, guest);
-    world.guestsServed += 1;
+    // Wer den Floor nur durchquert hat, wurde nicht bedient; der Wert fuettert Ruf und KASSE-Stufe.
+    if (guest.spins > 0) world.guestsServed += 1;
     recordJournal(world, {
       kind: 'GUEST', subject: guest.name, cause: 'Besuch beendet', effect: 'Auszahlung abgeschlossen, Gast verlaesst den Floor.',
       refs: { guestId: guest.id },

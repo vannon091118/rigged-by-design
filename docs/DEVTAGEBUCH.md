@@ -10,6 +10,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-02 - Deckung an der Kasse, erreichbare Eskalation und gezählte Gäste
+
+**Ziel.** Sechs Befunde aus dem Audit schließen, die reine Verdrahtung sind und keine Balance-Entscheidung verlangen: Deckung am falschen Ort, unerreichbare Eskalation, Gästezählung ohne Spiel, JACKPOT ab 1,0x, stehenbleibende Wut und zwei verschiedene Bar-Kapazitäten.
+
+**Umsetzung.** `simulateMugging` maß die Wachdeckung an `world.player.position`, obwohl der Kommentar die Kasse nennt und das Geld dort liegt; `muggingCoverPoint` liefert jetzt den Wechseltisch und fällt nur ohne Kasse auf den Spieler zurück. `tickDisputes` setzte Stufe 2 ab `ticks > 6`, während `angerTick` den ANGRY-Zustand nach fünf Ticks beendet — die Schlägerei war damit strukturell unerreichbar; `disputeLevelForTicks(ticks)` kippt nach vier Ticks und ist als reine Funktion geprüft. `guestsServed` wuchs bei jedem Auszahlen, auch ohne einen einzigen Spin; der Wert speist Ruf und KASSE-Stufe, also zählt jetzt nur `guest.spins > 0`. Das JACKPOT-Label hing an `multiplierBps >= 10_000`, also an einem Push; `isJackpotLabel` verlangt 2,5x. `decay` ließ `guest.anger` unangetastet, weshalb ein geschlichteter Gast bis zum Abgang wütend aussah; die Wut sinkt jetzt, solange der Gast nicht randaliert. Bar-Kapazität: `barCapacityForLevel` (12 + 8 × Level) stand im Core, während HUD, Diagnose und Automaten-Popup 6 + 6 × Level anzeigten — alle drei lesen jetzt den Core.
+
+**Pruefungen.** Fail-First mit zurückgerollten Fixes: 10 von 12 neuen Tests rot, die zwei grünen sind die Gegenproben (ANGRY behält seine Wut, Spin zählt weiter). Danach `pnpm exec vitest run` auf die sechs neuen Dateien 12/12 grün, `pnpm run typecheck` und `pnpm run lint` je Exit 0, Gesamtsuite 503 grün. `demand.test.ts` nutzte `guestsServed` als Stellvertreter für „ausgezahlt"; der Gast dort hat jetzt zwei Spins, damit die Auszahlungsprüfung unverändert bleibt und die neue Regel in `guests-served.test.ts` belegt ist.
+
+**Offen.** Die Balance-Befunde bleiben offen: Pity-Entladungen (99,15 % RTP am Startautomaten), Löhne ohne Anwesenheit (`payDailyWage` braucht dafür ein Tagesmerkmal im Save), Schulden ohne Tilgung, tote `PLAYER_CASH`, wirkungslose Sucht und der nie skalierende Einsatz. Sie brauchen Spielregel-Entscheidungen, keine Verdrahtung.
+
 ## 2026-11-02 - Dreck, Video Poker und Ueberfaelle an der Ursache
 
 **Ziel.** Die vier offenen Befunde schliessen: falsche Kacheladresse beim Dreck, falsche Video-Poker-Raenge, verdeckte Dreckschicht, verschluckte Ueberfallverluste.
@@ -479,7 +489,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 10:57 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:10 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

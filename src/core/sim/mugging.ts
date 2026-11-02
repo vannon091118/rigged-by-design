@@ -41,6 +41,15 @@ function coverAt(world: WorldState, x: number, y: number): number {
  * Erst wird ein Ziel gewählt, dann der Zugriff geprüft und zuletzt die Flucht;
  * nur eine gelungene Flucht bucht Geld, damit die Kasse nie doppelt zählt.
  */
+/**
+ * Die Deckung gilt der Kasse, nicht dem Spieler: gemessen wird am Wechseltisch,
+ * an dem das Geld liegt. Ohne Wechseltisch bleibt der Spieler der Bezugspunkt.
+ */
+export function muggingCoverPoint(world: WorldState): { x: number; y: number } {
+  const till = world.furniture.find((item) => item.kind === 'EXCHANGE');
+  return till ? { x: till.x, y: till.y } : world.player.position;
+}
+
 export function simulateMugging(
   world: WorldState,
   ledger: Ledger,
@@ -58,7 +67,8 @@ export function simulateMugging(
   const take = Math.floor((available * percent) / 100) as VaCoinMicro;
   if (take <= 0) return { attempted: true, stolen: 0 as VaCoinMicro, caught: false, target };
 
-  const cover = coverAt(world, world.player.position.x, world.player.position.y);
+  const coverPoint = muggingCoverPoint(world);
+  const cover = coverAt(world, coverPoint.x, coverPoint.y);
   const escape = Math.max(5, Math.min(95, BASE_ESCAPE + profile.nerve * NERVE_PER_POINT - cover));
   const caught = rollNumber(prng, buildDistribution(1, 100)).value > escape;
   if (caught) {

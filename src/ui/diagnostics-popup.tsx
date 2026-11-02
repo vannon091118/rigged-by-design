@@ -1,6 +1,7 @@
 /** Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. */
 import { useState } from 'react';
 import type { LedgerDiagnosis } from '../core/economy/ledger';
+import { barCapacityForLevel } from '../core/sim/deliveries';
 import { journalCounts } from '../core/sim/journal';
 import type { GameView } from '../store/types';
 import { vc } from './format';
@@ -23,7 +24,7 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
   const [report, setReport] = useState<LedgerDiagnosis | null>(null);
   const counts = journalCounts(view.journal);
   const bars = view.furniture.filter((item) => item.kind === 'BAR');
-  const capacity = 6 + 6 * view.barLevel;
+  const capacity = barCapacityForLevel(view.barLevel);
   const broken = view.furniture.filter((item) => item.damaged || item.condition < 85 || item.clogged);
   const occupied = view.furniture.reduce((sum, item) => sum + (item.gameId ? item.occupants.length : 0), 0);
   return (

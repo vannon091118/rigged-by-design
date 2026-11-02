@@ -48,7 +48,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   }
   const netWin = payout > bet;
   const push = payout === bet;
-  const jackpot = payout > ZERO_VC && result.multiplierBps >= 10_000;
+  const jackpot = payout > ZERO_VC && isJackpotLabel(result.multiplierBps);
   guest.lastResult = jackpot ? 'JACKPOT!' : payout > ZERO_VC || !item.mods.includes('NEAR_MISS') ? result.label : 'FAST!';
   // Ein Verlust aergert, aber er darf keinen Gast in dreissig Runden zum Raubtier machen.
   guest.mood = clamp(guest.mood + (netWin ? 8 : push ? 0 : -0.5) + (effects.patience > 0 ? 1 : 0));
@@ -67,6 +67,9 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
     if (guest.need === 'play' && guest.mood < 50) guest.need = 'drink';
   }
 }
+
+/** Erst ab 2,5x heisst es Jackpot; 1,0x ist ein Push und kein Rausch. */
+export const isJackpotLabel = (multiplierBps: number): boolean => multiplierBps >= 25_000;
 
 export function actAtTarget(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, item: Furniture): void {
   if (guest.state === 'PLAY') { playSpin(world, ledger, prng, guest, item); return; }

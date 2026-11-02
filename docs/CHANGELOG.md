@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 10:57 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:10 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
 
 ### Technik
+- Der Überfall misst die Wachdeckung jetzt an der Kasse statt am Spieler: `muggingCoverPoint` liefert den Wechseltisch, an dem das Geld liegt; vorher schützte ein Wachmann am Klo die Kasse.
+- Die zweite Streitstufe ist erreichbar: `disputeLevelForTicks` kippt nach vier Ticks, vorher nach sechs — ANGRY dauert aber nur fünf, deshalb gab es nie Möbelschaden.
+- `guestsServed` zählt nur noch Gäste mit mindestens einem Spin; wer den Floor durchquert, hob bisher Ruf und KASSE-Stufe.
+- „JACKPOT!" erscheint erst ab 2,5x; ein Push von 1,0x hieß bisher Jackpot und traf rund jeden fünften Slot-Spin.
+- Die Wut klingt nach dem Schlichten ab (`anger` sinkt um 0,5 pro Tick), statt bis zum Abgang das ANGRY-Emoji zu zeigen.
+- HUD, Diagnose und Automaten-Popup lesen die Bar-Kapazität aus `barCapacityForLevel`; die UI rechnete 6 + 6 × Level, der Core 12 + 8 × Level.
 - Dreck landet wieder auf der Kachel, auf der er entsteht: `dirtyTileIndex` in `emotion.ts` ist das Gegenstueck zu `dirtyNear`; Randale und Streit schrieben bisher `(y+1)*size+x+1` und damit schraeg versetzt daneben.
 - Video Poker zahlt den Royal Flush nur noch in einer Farbe und erkennt das Wheel A-2-3-4-5 als Strasse; die interaktive Engine war schon richtig.
 - Die Dreckschicht liegt im Szenen-Cache jetzt zwischen Teppich und Moebeln statt als erstes Kind des Moebel-Containers.

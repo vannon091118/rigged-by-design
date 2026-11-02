@@ -95,10 +95,13 @@ export function nearestDispute(world: WorldState, from: Point): Dispute | null {
  * den Disput sofort. Ein naher, aber anderweitig beauftragter Streit zaehlt
  * nicht – deshalb pruefen wir die Zuteilung und nicht nur die Distanz.
  */
+/** ANGRY haelt nur fuenf Ticks; die zweite Stufe muss in dieser Zeit erreichbar sein. */
+export const disputeLevelForTicks = (ticks: number): 1 | 2 => (ticks > 3 ? 2 : 1);
+
 export function tickDisputes(world: WorldState): void {
   for (const dispute of [...world.disputes]) {
     dispute.ticks += 1;
-    dispute.level = dispute.ticks > 6 ? 2 : 1;
+    dispute.level = disputeLevelForTicks(dispute.ticks);
     if (guardHandling(world, dispute)) { resolveDispute(world, dispute.id, true); continue; }
     dispute.guestIds = dispute.guestIds.filter((id) => {
       const guest = guestById(world, id);

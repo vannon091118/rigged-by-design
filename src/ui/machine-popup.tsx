@@ -4,6 +4,7 @@ import type { GameResult } from '../core/games/contracts';
 import type { GateResult } from '../core/games/plinko-sandbox';
 import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
 import { MAX_REELS, reelUpgradeCost } from '../core/games/slot-config';
+import { barCapacityForLevel } from '../core/sim/deliveries';
 import { MODS, attractionValue, getMod, modAppliesTo } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { SlotProfile } from '../core/games/slot-profile';
@@ -58,7 +59,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
             <Stat label="ANZIEHUNG" value={attractionBand(attraction)} hint={`Rohwert ${attraction}. Höher zieht mehr neue Gäste an.`} />
             <Stat label="EINSATZ AB" value={vc(item.baseBet, 2)} hint="Gilt der höhere Wert aus Gerät und globalem Mindesteinsatz." />
             {item.kind === 'BAR' && (
-              <Stat label="BESTAND" value={`${item.stock}/${6 + 6 * view.barLevel}`} bad={item.stock === 0} />
+              <Stat label="BESTAND" value={`${item.stock}/${barCapacityForLevel(view.barLevel)}`} bad={item.stock === 0} />
             )}
           </div>
           {item.gameId === 'SLOT' && <SlotTelemetry memory={item.slotMemory} />}
