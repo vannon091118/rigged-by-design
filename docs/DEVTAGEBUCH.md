@@ -19,6 +19,8 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Umsetzung.** `summarize()` in `scripts/lib/impact.mjs` druckt eine feste Beschriftungsspalte mit einer Zeile je Feld. `scripts/agent-verify.mjs` zeigt eine Gate-Tabelle mit Status und Dauer aus `lastGateRows()` (`scripts/lib/gate-runner.mjs`) und kennt `--plan` fuer den Plan ohne Lauf. `scripts/verify-tree.mjs` meldet Wegwerf-Dateien als `ERR-4019`; die Regel steht in `AGENTS.md` unter Pitfalls.
 
+**Nachtrag.** `--line` verdichtet beide Werkzeuge auf eine Zeile; `RBD_VERIFY_QUIET=1` unterdrueckt die Zeile je Gate, damit neben der Tabelle keine zweite Ausgabe steht.
+
 **Pruefungen.** `node --check` fuer die vier Skripte, `pnpm run agent:context`, `pnpm run agent:verify -- --plan`, `pnpm run verify:tree`, `pnpm run verify:docs`, `pnpm run check:loc`.
 
 **Offen.** Die Testsuite lief in diesem Schritt nicht; der Nachweis gehoert in den Abschlusslauf und braucht vorher die Freigabe des Nutzers.
@@ -576,7 +578,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.74 | 2026-11-02 22:08 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.74 | 2026-11-02 22:15 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
