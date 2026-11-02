@@ -5,6 +5,7 @@ import { ACCOUNT_LABEL, HELP } from './glossary';
 import { UI_ICON } from './icons';
 import type { RpgAttribute } from '../core/sim/player-rpg';
 import { HAUSKONTO } from '../core/sim/money';
+import { barCapacityForLevel } from '../core/sim/deliveries';
 
 interface HudProps {
   readonly view: GameView;
@@ -81,7 +82,7 @@ export function Hud({
         </div>
         <div className={`vital${bar && bar.stock === 0 ? ' warn' : ''}`} title={HELP.bar}>
           <span>BAR</span>
-          <strong>{bar ? bar.stock : 0}<em>/{6 + 6 * view.barLevel}</em></strong>
+          <strong>{bar ? bar.stock : 0}<em>/{barCapacityForLevel(view.barLevel)}</em></strong>
           <small>{bar ? (bar.stock === 0 ? 'leer – Laune sinkt' : `${view.parts} Ersatzteile im Lager`) : 'keine Bar'}</small>
         </div>
         {(view.crates.length > 0 || view.disputes.length > 0) && (

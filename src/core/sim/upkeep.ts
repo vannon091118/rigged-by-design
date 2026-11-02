@@ -45,6 +45,8 @@ export function decay(world: WorldState): void {
   const dirty = world.dirty;
   for (const guest of world.guests) {
     if (guest.state !== 'LEAVE') tickNeeds(world, guest);
+    // Wut klingt ab, sobald der Gast nicht mehr randaliert; sonst bleibt das ANGRY-Emoji bis zum Abgang.
+    if (guest.state !== 'ANGRY') guest.anger = Math.max(0, guest.anger - 0.5);
     if (guest.state === 'ANGRY') continue;
     const spotted = dirtyNear(dirty, world.size, guest.position.x, guest.position.y, 2);
     if (spotted) {
