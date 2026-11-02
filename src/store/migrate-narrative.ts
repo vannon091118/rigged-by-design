@@ -1,11 +1,12 @@
 /** Hydration der Narrative-Domaene und der Besucher-Erinnerungen beim Laden. */
 import { normalizeMemories, normalizeNarrativeState } from '../core/sim/narrative/state';
-import type { Visitor, WorldState } from '../core/sim/types';
+import type { DemandEvent, Visitor, WorldState } from '../core/sim/types';
 
 interface SavedNarrativeSlice {
   readonly visitors?: Visitor[];
   readonly nextVisitorId?: number;
   readonly narrative?: unknown;
+  readonly demandEvent?: DemandEvent | null;
 }
 
 /** Setzt Besucher inklusive Erinnerungen und den Narrativ-Zustand mit sicheren Defaults. */
@@ -16,4 +17,14 @@ export function hydrateNarrative(world: WorldState, saved: SavedNarrativeSlice):
     : { ...visitor, memories: normalizeMemories(visitor.memories) }));
   world.nextVisitorId = saved.nextVisitorId ?? world.visitors.reduce((max, visitor) => Math.max(max, visitor.id + 1), 1);
   world.narrative = normalizeNarrativeState(saved.narrative);
+  // V5–V9 speicherten Veranstaltungen bisher auf der Welt; nur bei fehlendem
+  // neuem Feld uebernehmen, damit bereits beendete Events nicht wiederkehren.
+  const raw = saved.narrative;
+  const hasCurrent = typeof raw === 'object' && raw !== null && Object.hasOwn(raw, 'demandEvent');
+  const legacy = saved.demandEvent;
+  if (!hasCurrent && legacy && (legacy.kind === 'NEON_NACHT' || legacy.kind === 'TURNIER_ABEND')
+    && Number.isSafeInteger(Math.floor(legacy.untilTick)) && legacy.untilTick > world.tick) {
+    world.narrative.demandEvent = { kind: legacy.kind, untilTick: Math.floor(legacy.untilTick) };
+  }
+  if (world.narrative.demandEvent && world.narrative.demandEvent.untilTick <= world.tick) world.narrative.demandEvent = null;
 }

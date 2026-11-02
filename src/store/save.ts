@@ -36,7 +36,6 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       nextArrivalTick: world.nextArrivalTick,
       satisfaction: world.satisfaction,
       demandTier: world.demandTier,
-      demandEvent: world.demandEvent,
       nextFurnitureId: world.nextFurnitureId,
       guardsHired: world.guardsHired,
       crates: world.crates,

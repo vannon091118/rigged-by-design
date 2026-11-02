@@ -78,11 +78,11 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
     { id: 'TIER', label: `Stufe ${TIER_NAME[world.demandTier]}`, perDay: TIER_PER_DAY[world.demandTier] },
   ];
   if (isPeak(world)) sources.push({ id: 'PEAK', label: 'Stoßzeit am Abend', perDay: PEAK_PER_DAY });
-  if (world.demandEvent) {
+  if (world.narrative.demandEvent) {
     sources.push({
       id: 'EVENT',
-      label: EVENT_NAME[world.demandEvent.kind],
-      perDay: EVENT_PER_DAY[world.demandEvent.kind],
+      label: EVENT_NAME[world.narrative.demandEvent.kind],
+      perDay: EVENT_PER_DAY[world.narrative.demandEvent.kind],
     });
   }
   let perDay = sources.reduce((sum, source) => sum + source.perDay, 0);
@@ -91,11 +91,11 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
     sources.push({ id: 'UNSAFE', label: 'Unsicherer Ruf', perDay: -malus });
     perDay -= malus;
   }
-  const event = world.demandEvent
+  const event = world.narrative.demandEvent
     ? {
-        kind: world.demandEvent.kind,
-        label: EVENT_NAME[world.demandEvent.kind],
-        ticksLeft: Math.max(0, world.demandEvent.untilTick - world.tick),
+        kind: world.narrative.demandEvent.kind,
+        label: EVENT_NAME[world.narrative.demandEvent.kind],
+        ticksLeft: Math.max(0, world.narrative.demandEvent.untilTick - world.tick),
       }
     : null;
   return {
@@ -122,7 +122,7 @@ function groupSize(world: WorldState, prng: Prng): number {
   if (roll < 0.015 + rank * 0.02) size = 3;
   else if (roll < 0.08 + rank * 0.05) size = 2;
   if (isPeak(world) && prng.nextFloat() < 0.1 + rank * 0.04) size += 1;
-  if (world.demandEvent && prng.nextFloat() < 0.55) size += 1;
+  if (world.narrative.demandEvent && prng.nextFloat() < 0.55) size += 1;
   return Math.min(4, size);
 }
 
@@ -136,7 +136,7 @@ function expectedGroupSize(world: WorldState): number {
   const p2 = 0.08 + rank * 0.05;
   let mean = 1 + (p2 - p3) + 2 * p3;
   if (isPeak(world)) mean += 0.1 + rank * 0.04;
-  if (world.demandEvent) mean += 0.55;
+  if (world.narrative.demandEvent) mean += 0.55;
   return mean;
 }
 
@@ -155,9 +155,9 @@ function advanceDemandTier(world: WorldState, ledger: Ledger): void {
 }
 
 function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
-  if (world.demandEvent && world.tick >= world.demandEvent.untilTick) {
-    const label = EVENT_NAME[world.demandEvent.kind];
-    world.demandEvent = null;
+  if (world.narrative.demandEvent && world.tick >= world.narrative.demandEvent.untilTick) {
+    const label = EVENT_NAME[world.narrative.demandEvent.kind];
+    world.narrative.demandEvent = null;
     world.lastEvent = `${label} ist vorbei. Der Andrang normalisiert sich.`;
     recordJournal(world, {
       kind: 'SYSTEM', subject: label, cause: 'Veranstaltung beendet', effect: world.lastEvent,
@@ -165,10 +165,10 @@ function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
   }
   if (world.tick % TICKS_PER_DAY !== 0) return;
   advanceDemandTier(world, ledger);
-  if (world.demandEvent || world.demandTier === 'BUDE') return;
+  if (world.narrative.demandEvent || world.demandTier === 'BUDE') return;
   if (prng.nextFloat() >= EVENT_CHANCE[world.demandTier]) return;
   const kind: DemandEventKind = prng.nextFloat() < 0.55 ? 'NEON_NACHT' : 'TURNIER_ABEND';
-  world.demandEvent = { kind, untilTick: world.tick + EVENT_TICKS };
+  world.narrative.demandEvent = { kind, untilTick: world.tick + EVENT_TICKS };
   // Die erste Welle steht sofort vor der Tuer, nicht erst nach dem naechsten Intervall.
   world.nextArrivalTick = Math.min(world.nextArrivalTick, world.tick + 1);
   world.lastEvent = kind === 'NEON_NACHT'

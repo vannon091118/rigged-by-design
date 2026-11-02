@@ -60,7 +60,6 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     nextArrivalTick: FIRST_ARRIVAL_TICK,
     satisfaction: 55,
     demandTier: 'BUDE',
-    demandEvent: null,
     nextFurnitureId: 100,
     crates: [],
     agents: [],

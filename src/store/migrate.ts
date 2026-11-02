@@ -16,7 +16,6 @@ import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
-const DEMAND_EVENTS: ReadonlySet<string> = new Set(['NEON_NACHT', 'TURNIER_ABEND']);
 
 interface SavedEntry {
   readonly tick: number;
@@ -140,9 +139,6 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.satisfaction = Number.isFinite(saved.satisfaction)
     ? Math.min(100, Math.max(0, saved.satisfaction!)) : 55;
   world.demandTier = saved.demandTier && DEMAND_TIERS.has(saved.demandTier) ? saved.demandTier : 'BUDE';
-  const event = saved.demandEvent;
-  world.demandEvent = event && DEMAND_EVENTS.has(event.kind) && Number.isFinite(event.untilTick)
-    && event.untilTick > world.tick ? { kind: event.kind, untilTick: Math.floor(event.untilTick) } : null;
   world.nextFurnitureId = saved.nextFurnitureId ?? 100;
   world.guardsHired = saved.guardsHired ?? 0;
   world.foreignFloors = saved.foreignFloors ?? [];

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.76 | 2026-11-02 22:37 UTC -->
+<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -28,7 +28,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 ## Als Nächstes
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: Ein reiner Bedingungsauswerter fuer ausgewaehlte Facts und Weltwerte existiert, ist aber noch nicht integriert. Offene Grundlagen abschliessen, dann Beziehungen, Trigger-Integration, Scheduler, Templates und Command-DSL. Content-Compiler und Composer sind geplant und sollen lokal ohne LLM laufen; Demand-Migration NAR-13 kommt vor der Tick-Integration NAR-12 und soll v5–v9-Saves bewahren.
+- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: Ein reiner Bedingungsauswerter fuer ausgewaehlte Facts und Weltwerte existiert, ist aber noch nicht integriert. Offene Grundlagen abschliessen, dann Beziehungen, Trigger-Integration, Scheduler, Templates und Command-DSL. Content-Compiler und Composer sind geplant und sollen lokal ohne LLM laufen; Der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen; NAR-13 bleibt bis zur Uebernahme des Lifecycles in die Event-Engine offen und kommt vor der Tick-Integration NAR-12.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später

@@ -452,6 +452,8 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Das alte `demandEvent`-System nicht als zweiten Scheduler behalten.
 
+**Teilstand:** Der aktive Zustand liegt in `world.narrative.demandEvent` und alte v5–v9-Saves werden beim Laden uebernommen. Auswahl und Lifecycle liegen weiterhin in `demand.ts`; die Migration in Event-Instanzen und damit NAR-13 sind noch nicht abgeschlossen.
+
 **Arbeiten**
 - `NEON_NACHT` und `TURNIER_ABEND` als datengetriebene Event-Definitionen in die neue Event Engine überführen.
 - Bestehende Nachfragewirkung aus `demandBreakdown()` als abgeleiteten Modifier aktiver kompatibler Event-Instanzen lesen lassen.

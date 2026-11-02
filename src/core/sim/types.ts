@@ -5,7 +5,7 @@ import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
 import type { ExclusionPact } from './self-exclusion-bet';
 import type {
-  ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, Furniture, Guest, Player,
+  ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Player,
   PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
   ForeignFloorState,
 } from './types-model';
@@ -32,7 +32,6 @@ export interface WorldState {
   satisfaction: number;
   /** Hoechste erreichte Unternehmensstufe fuer additive Nachfrage. */
   demandTier: DemandTier;
-  demandEvent: DemandEvent | null;
   nextFurnitureId: number;
   lastEvent: string;
   guardsHired: number;

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-02 - Nachfrageereignis auf Narrative-Zustand vorbereiten
+
+**Ziel.** Den Zustand der vorhandenen Nachfrageveranstaltungen fuer die spaetere Event-Engine vereinheitlichen, ohne die Nachfragebalance zu aendern.
+
+**Umsetzung.** Das aktive Event liegt in `narrative.demandEvent`. Alte v5–v9-Saves uebernehmen laufende Veranstaltungen, neue Saves enthalten keine zweite Kopie. Die bestehende Planung in `demand.ts` bleibt unveraendert.
+
+**Pruefungen.** `pnpm run typecheck` und `RBD_VERIFY_AUDIT=1 npx --yes pnpm@10.4.1 run verify:all` bestanden; das Full Gate umfasst Nachfrage-, Save-Migrations- und weitere Tests, Audit und Build.
+
+**Offen.** Es gibt noch keinen allgemeinen Scheduler, keine Dialoge oder Choice-Effekte und keine autonomen Rivalen. NAR-13 ist nur vorbereitet, nicht abgeschlossen.
+
 ## 2026-11-02 - Narrative-Dokumentation nach Merge wiederherstellen
 
 **Ziel.** Nach PR #52 verlorene Narrative-Dokumentation wiederherstellen, ohne die Engine als abgeschlossen darzustellen.
@@ -610,7 +620,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.76 | 2026-11-02 22:37 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
