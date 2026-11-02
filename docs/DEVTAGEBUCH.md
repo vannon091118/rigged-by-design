@@ -21,6 +21,8 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Nachtrag.** `--line` verdichtet beide Werkzeuge auf eine Zeile; `RBD_VERIFY_QUIET=1` unterdrueckt die Zeile je Gate, damit neben der Tabelle keine zweite Ausgabe steht.
 
+**Global.** `rtk rg` scheiterte mit `program not found`, weil ripgrep fehlte. ripgrep 15.2.0 liegt jetzt im PATH (`WindowsApps`), die rtk-Konfiguration ist gesichert (`config.toml.bak-2026-11-02`) und auf `max_width = 100`, hoehere Suchlimits und stillen Hook-Hinweis gesetzt. Damit sind `rtk ls/find/read/rg/git/pnpm` die Standardbefehle, `agent:context` bleibt der primaere Einstieg.
+
 **Pruefungen.** `node --check` fuer die vier Skripte, `pnpm run agent:context`, `pnpm run agent:verify -- --plan`, `pnpm run verify:tree`, `pnpm run verify:docs`, `pnpm run check:loc`.
 
 **Offen.** Die Testsuite lief in diesem Schritt nicht; der Nachweis gehoert in den Abschlusslauf und braucht vorher die Freigabe des Nutzers.
@@ -578,7 +580,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.74 | 2026-11-02 22:15 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.74 | 2026-11-02 22:21 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
