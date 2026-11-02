@@ -1,7 +1,6 @@
 /** Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. */
 import type { Visitor, WorldState } from '../types';
-import { drainFacts, pushRecent } from './facts';
-import { NARRATIVE_LIMITS, type VisitEndedFact, type VisitorMemory, type VisitorValence } from './types';
+import { NARRATIVE_LIMITS, type NarrativeFact, type VisitEndedFact, type VisitorMemory, type VisitorValence } from './types';
 
 const GOOD_RETURN = 4;
 const BAD_RETURN = -6;
@@ -28,17 +27,14 @@ function remember(world: WorldState, fact: VisitEndedFact): boolean {
   return true;
 }
 
-/** Verarbeitet die Queue: Erinnerungen schreiben, Zaehler fortschreiben. Gibt die Zahl neuer Erinnerungen zurueck. */
-export function processFacts(world: WorldState): number {
-  const fresh = drainFacts(world);
-  if (fresh.length === 0) return 0;
+/** Schreibt Erinnerungen und Zaehler; die Queue wird ausschliesslich im Boundary gedraint. */
+export function applyMemories(world: WorldState, fresh: readonly NarrativeFact[]): number {
   let applied = 0;
   for (const fact of fresh) {
     if (fact.kind === 'VISIT_ENDED' && remember(world, fact)) applied += 1;
     if (fact.kind === 'VISITOR_RETURNED') world.narrative.flags.rueckkehrer = (world.narrative.flags.rueckkehrer ?? 0) + 1;
     if (fact.kind === 'VISITOR_FIRST_SEEN') world.narrative.flags.neue_gaeste = (world.narrative.flags.neue_gaeste ?? 0) + 1;
   }
-  pushRecent(world, fresh);
   return applied;
 }
 

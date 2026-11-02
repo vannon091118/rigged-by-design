@@ -63,6 +63,26 @@ Naht. Ziehen per Touch ist nur im Code vorhanden, nicht auf einem echten Geraet 
 Klick in der Uebersicht zieht weiterhin heran statt zu laufen: bewusst, weil ein Klick ohne
 Rueckmeldung sonst nicht von einem Fehlklick zu unterscheiden waere.
 
+## 2026-11-02 - NAR-04: Beziehungen aus echten Quellen
+
+**Ziel.** NAR-04 vollstaendig schliessen: Beziehungen zwischen Besuchern, Haus, Personal und Rivalen aus echten Spielereignissen, kanonisch persistiert und ohne zweiten Fact-Drain.
+
+**Umsetzung.** `VISITOR_CONFLICT` entsteht in `maybeStartBrawl()` und erzeugt zwei gerichtete Besucherkanten; die angegriffene Seite verliert mehr Vertrauen. `VISITOR_SERVICE` entsteht nur bei anwesendem Kassierer in `arriveAtDesk()`/`cashierTick()` und erzeugt Besucher→Personal. `RIVAL_ENCOUNTER` entsteht bei `settleCardOutcome()` und `visitRivalWithJournal()` aus dem Nettofluss einer echten Abrechnung und erzeugt Rivale→Haus. Alle drei nutzen `actorRefs` statt Pflicht-`visitorId`; `fact-schema.ts` validiert sie beim Laden, `relationship-apply.ts` wendet sie an. Kanten sind auf 200 begrenzt, auf `-10..10` geklemmt, nach Tick und Akteurspaar sortiert und beim Laden dedupliziert. Der Barkeeper hat weiterhin kein individuelles Serviceereignis; diese Luecke wird nicht mit einer Attrappe geschlossen.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` und `check:loc` gruen. 21 gezielte Tests in fuenf Dateien gruen: Streit (drei), Kasse (zwei), Rivalenabrechnung (drei), Fact-Schema ohne `visitorId` (drei), Beziehungen/Save-Roundtrip (zehn). Der Rivalen-Test deckte zuerst einen Laufzeitfehler auf, weil `RIVAL_IDS` nur ueber `export type *` re-exportiert wurde; der Import kommt jetzt direkt aus `types-model.ts`. Der Personal-Test brauchte ein eroeffnetes Hauskonto fuer die Einstellung.
+
+**Offen.** Trigger-Integration (NAR-05), Scheduler/Templates (NAR-06/07), Demand-Migration (NAR-13), Commands, Content-Compiler, Composer, autonome Rivalen und Soak bleiben offen. Unterstuetzungs-/Versprechens-Facts haben noch keine echte Quelle; sie werden nicht simuliert.
+
+## 2026-11-02 - Ein Fact-Drain, Ledger-Cursor und Beziehungsgrundlage
+
+**Ziel.** Die offenen NAR-02/03-Reste schliessen, die vor NAR-04 blockieren: Fact-Referenzen ohne Pflicht-Visitor, ein Ledger-Cursor, ein einziger Consumer und referenzsichere Retention.
+
+**Umsetzung.** `processNarrativeBoundary()` ist jetzt der einzige Drain; er erzeugt zuerst Hauskonto-Schwellen (`HOUSE_BALANCE`), drainiert dann die Queue und verteilt an Erinnerungen und Beziehungen. Der Cursor liegt als Ledger-`seq` in `narrative.ledgerSeq`; der erste Lauf setzt ihn ohne historische Facts. `relationships.ts` fuehrt gerichtete Kanten zwischen persistenten Akteuren mit Trust, Sympathie, Konflikt und Einfluss; ein guter oder schlechter Besuch verschiebt `visitor:<id> -> player`, neutrale Besuche erzeugen keine Kante. Beziehungsendpunkte pinnen ihre Visitor-Profile; die Retention verdraengt nur ungepinnte bestehende Profile und laesst die Liste bei vollstaendig gepinnter Belegung bewusst ueber dem Cap.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck`, `lint`, `check:loc` und `verify:dead-code` gruen; Narrativ-, Visitor- und Save-Tests gruen. Der erste Retention-Test war rot, weil der neue Besucher sich selbst verdraengte; die Auswahl schliesst den neuen Datensatz jetzt aus.
+
+**Offen.** NAR-04 war zu diesem Zeitpunkt nur begonnen; der naechste Eintrag schliesst die weiteren Fact-Quellen ab. Trigger-Integration, Scheduler, Templates, Commands, Content-Compiler und Composer fehlen weiterhin. Die Demand-Migration (NAR-13) bleibt vor der Tick-Integration (NAR-12).
+
 ## 2026-11-02 - Nachfrageereignis auf Narrative-Zustand vorbereiten
 
 **Ziel.** Den Zustand der vorhandenen Nachfrageveranstaltungen fuer die spaetere Event-Engine vereinheitlichen, ohne die Nachfragebalance zu aendern.
@@ -670,7 +690,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

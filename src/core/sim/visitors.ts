@@ -1,6 +1,7 @@
 /** Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. */
 import type { PersonaId, Visitor, WorldState } from './types';
 import { memoryEffect } from './narrative/memory';
+import { pinnedVisitorIds } from './narrative/relationships';
 
 export const VISITOR_CAP = 40;
 /** Rueckkehr-Chance (Prozent) bei neutralem Erlebnis (50). Gute Erlebnisse erhoehen sie, schlechte senken sie bis 0. */
@@ -22,11 +23,16 @@ export function recordVisitor(
   };
   world.visitors.push(visitor);
   if (world.visitors.length > VISITOR_CAP) {
-    let oldest = 0;
-    for (let i = 1; i < world.visitors.length; i += 1) {
-      if (world.visitors[i]!.lastSeenTick < world.visitors[oldest]!.lastSeenTick) oldest = i;
+    // Aktive Beziehungen pinnen ihre Endpunkte; ohne freien Kandidaten bleibt die Liste
+    // bewusst ueber dem Cap, statt eine laufende Geschichte zu verlieren.
+    const pinned = pinnedVisitorIds(world);
+    let oldest = -1;
+    for (let i = 0; i < world.visitors.length; i += 1) {
+      // Der neue Besucher ist nie der Eviction-Kandidat; sonst verdraengt er sich selbst.
+      if (world.visitors[i]!.id === visitor.id || pinned.has(world.visitors[i]!.id)) continue;
+      if (oldest < 0 || world.visitors[i]!.lastSeenTick < world.visitors[oldest]!.lastSeenTick) oldest = i;
     }
-    world.visitors.splice(oldest, 1);
+    if (oldest >= 0) world.visitors.splice(oldest, 1);
   }
   return visitor;
 }

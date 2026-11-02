@@ -10,7 +10,8 @@ export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter'
 export type TemplateId = 'SMALL' | 'MEDIUM' | 'LARGE';
 export type DemandTier = 'BUDE' | 'KASSE' | 'SAAL' | 'KONZERN';
 export type DemandEventKind = 'NEON_NACHT' | 'TURNIER_ABEND';
-export type RivalId = 'HAFENKLAUSE' | 'GOLDENE_HAND' | 'NEBELPALAST';
+export const RIVAL_IDS = ['HAFENKLAUSE', 'GOLDENE_HAND', 'NEBELPALAST'] as const;
+export type RivalId = (typeof RIVAL_IDS)[number];
 export type PlayerJobId = 'CLEANER' | 'BARTENDER' | 'CARD_DEALER' | 'MECHANIC';
 export type JobTaskType = 'CLEAN' | 'SERVE' | 'DEAL' | 'REPAIR';
 

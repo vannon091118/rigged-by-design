@@ -107,6 +107,18 @@ export class Ledger {
     return this.#entries.slice(Math.max(0, seq));
   }
 
+  /** Buchungen nach dem gespeicherten `seq`; binaer gesucht, weil `seq` monoton ist. */
+  entriesAfterSeq(seq: number): readonly LedgerEntry[] {
+    let low = 0;
+    let high = this.#entries.length;
+    while (low < high) {
+      const mid = (low + high) >>> 1;
+      if (this.#entries[mid]!.seq <= seq) low = mid + 1;
+      else high = mid;
+    }
+    return this.#entries.slice(low);
+  }
+
   get entryCount(): number {
     return this.#entries.length;
   }

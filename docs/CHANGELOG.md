@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->
+<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -34,6 +34,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ### Technik
 
 - Nachfrageereignis auf Narrative-Zustand vorbereiten: laufende Neon- und Turnierabende liegen jetzt im narrativen Zustand; alte Saves werden beim Laden uebernommen. Auswahl und Ablauf bleiben vorerst in `demand.ts`.
+- Narrative-Grundlagen: `ledgerSeq`/`houseBand` und `HOUSE_BALANCE`-Facts leiten Hauskonto-Schwellen aus dem Ledger ab; `processNarrativeBoundary()` ist der einzige Fact-Drain. Gerichtete Beziehungen pinnen ihre Visitor-Profile, sodass die Retention keine laufende Beziehung mehr loescht. NAR-04 ist abgeschlossen: Streit, Kassenbedienung und Rivalenabrechnung erzeugen echte Besucher-Besucher-, Besucher-Personal- und Rivale-Haus-Kanten; die Persistenz ist kanonisch, geklemmt und save-roundtrip-fest.
 
 ## [0.3.76] - 2026-11-02
 

@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
+import { processNarrativeBoundary } from '../narrative/boundary';
 import { emitFact } from '../narrative/facts';
-import { memoryEffect, processFacts, valenceOf } from '../narrative/memory';
+import { memoryEffect, valenceOf } from '../narrative/memory';
 import { NARRATIVE_LIMITS } from '../narrative/types';
 import { createWorld } from '../templates';
 import { pickReturningVisitor, recordVisitor, returnChance } from '../visitors';
@@ -18,7 +19,7 @@ const withVisitor = () => {
 
 const endVisit = (world: ReturnType<typeof createWorld>, visitorId: number, score: number) => {
   emitFact(world, { kind: 'VISIT_ENDED', visitorId, guestId: 1, score, valence: valenceOf(score) });
-  processFacts(world);
+  processNarrativeBoundary(world, new Ledger());
 };
 
 describe('Charaktergedaechtnis', () => {

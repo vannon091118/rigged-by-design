@@ -23,7 +23,10 @@ export function evaluateTrigger(condition: TriggerCondition, world: WorldState, 
     case 'any': return condition.conditions.some((child) => evaluateTrigger(child, world, ledger, fact));
     case 'not': return !evaluateTrigger(condition.condition, world, ledger, fact);
     case 'fact': return fact.kind === condition.kind;
-    case 'visitor-memory': return world.visitors.find((visitor) => visitor.id === fact.visitorId)?.memories?.some((memory) => memory.valence === condition.valence) ?? false;
+    case 'visitor-memory': {
+      if (!('visitorId' in fact)) return false;
+      return world.visitors.find((visitor) => visitor.id === fact.visitorId)?.memories?.some((memory) => memory.valence === condition.valence) ?? false;
+    }
     case 'house-at-most': return Number.isSafeInteger(condition.amount) && condition.amount >= 0 && ledger.getBalance(HAUSKONTO) <= condition.amount;
     case 'damaged-device': return world.furniture.some((item) => Boolean(item.gameId) && item.damaged);
     case 'charisma-at-least': return Number.isSafeInteger(condition.level) && condition.level >= 0 && world.player.rpg.charismaLevel >= condition.level;
