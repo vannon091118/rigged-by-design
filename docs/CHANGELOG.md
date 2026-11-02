@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:28 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,8 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Das gelieferte Pixel-Art-Banner und drei neue SVG-Trenner führen durch Spielwelt, Werkstatt und Roadmap.
 
 ### Technik
+- Die Persona-Geduld wirkt jetzt: sie geht als Gewicht in den 180-Punkte-Pool von `rollProfile` ein (68 High Roller bis 138 Stammgast), die Summe aus Laune, Geduld und Sucht bleibt exakt 180. Vorher war `Persona.patience` ein totes Feld, und der Stammgast startete wegen seiner hohen Suchtrate sogar ungeduldiger als der High Roller.
+- Der Synergie-Audit listet die verbleibenden Lücken in `docs/INVENTORY.md`: `PLAYER_CASH` ohne Ausgabepfad, VELVET und FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusätzliche Walze und ein Einsatz, der nie mit der Persona skaliert.
 - Der Tageslohn hängt an einer abgeschlossenen Schicht: `PlayerJobState.lastWorkDay` merkt sich den Tag der letzten Schicht, `payDailyWage` zahlt nur dafür und nie rückwirkend. Wer einen Job annimmt und nichts tut, bekommt weder Geld noch `workDays`-Zuwachs.
 - Alte Saves ohne `lastWorkDay` laden weiter und starten mit „noch keine Schicht"; vergangene Tage werden nicht nachgezahlt.
 - Der Überfall misst die Wachdeckung jetzt an der Kasse statt am Spieler: `muggingCoverPoint` liefert den Wechseltisch, an dem das Geld liegt; vorher schützte ein Wachmann am Klo die Kasse.

@@ -1,11 +1,15 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:28 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
+
+- `PLAYER_CASH` braucht einen Ausgabepfad, sonst bleibt der Disziplin-Bonus eine Anzeige.
+- VELVET und FREE_DRINK muessen ihre Beschreibung einloesen (bessere Gaeste, Drink pro Spin) oder umformuliert werden; EXTRA_REEL sollte wirklich eine Walze sein.
+- Der Einsatz sollte mit dem Persona-Budget skalieren, damit High Roller nicht nur laenger, sondern hoeher spielt.
 
 - Offen aus dem Audit: Pity-Entladungen heben den RTP des Startautomaten auf 99,15 %, Schulden haben keinen Tilgungspfad, `PLAYER_CASH` keinen Ausgabepfad, die Sucht steuert nichts und der Einsatz skaliert nie mit der Persona.
 

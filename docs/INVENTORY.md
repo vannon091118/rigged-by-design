@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:28 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -233,6 +233,22 @@ Am **2026-11-01 09:00 UTC** vom Nutzer beauftragt. In diesem Turn wurde **kein C
 
 **Randbedingungen, die bei der Umsetzung gelten:** Fail-Closed bleibt für echte Regelverstöße (Geld, Ledger, Save-Integrität) bestehen — Eskalation gilt nur für behebbare/außerhalb-des-Scopes liegende Befunde. Kein Gate darf schreiben (bestehende Pipeline-Regel); Auto-Reparatur läuft ausschließlich im `--fix`-Modus oder im Pre-Commit-Hook. Jede neue Datei braucht genau eine Zuständigkeit und ein Budget.
 
+## Befunde: Synergie-Lücken (2026-11-02)
+
+Jeweils mit der Fundstelle, die die Lücke belegt. „Offen" heißt: braucht eine
+Spielregel-Entscheidung, nicht nur eine Buchung.
+
+| Befund | Beleg | Status |
+| --- | --- | --- |
+| `Persona.patience` wurde nie gelesen; der Stammgast startete ungeduldiger als der High Roller | `traits.ts` zog Geduld zu gleichen Teilen, `personas.ts` lieferte den Wert umsonst | **gefixt**: `rollProfile` gewichtet mit `persona.patience / 100`, Summe bleibt 180 |
+| `PLAYER_CASH` hat keinen Ausgabepfad | nur Gutschrift in `self-exclusion-bet.ts`, Anzeige als BONUS-GUTHABEN | offen |
+| `VELVET` verspricht „bessere Gäste", ändert aber nur Anziehung und Geduld | `offers.ts`, sonst nur Rivalen-Deko | offen |
+| `FREE_DRINK` verspricht „ein Drink pro Spin"; kein Drink wird gebucht | `offers.ts`, keine Buchung im Gastpfad | offen |
+| `EXTRA_REEL` („Vierte Walze") fügt keine Walze hinzu | `reelPull` liest `item.reels`, der Mod zählt nur 300 Anziehung | offen |
+| Der Einsatz skaliert nie mit dem Persona-Budget | `offerScore`: `max(slotMinBet, baseBet)`, High Roller spielt nur länger | offen |
+| `need = 'social'` wird nie gesetzt, der Branch bleibt tot | `guest-choice.ts` prüft, kein Schreiber | offen |
+
+
 ## 18. Vollstaendige Dateiliste (maschinell erzeugt)
 
 Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintrag je Ordner. Der Generator liest Textdateien und prueft Binaersignaturen; `verify:docs` vergleicht den Block mit dem Index.
@@ -243,10 +259,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1021 |
-| Gelistete Dateien | 1021 |
+| Getrackte Dateien | 1023 |
+| Gelistete Dateien | 1023 |
 | Getrackte Ordner | 71 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (6), docs (47), public (552), scripts (54), src (343) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (7), docs (47), public (552), scripts (54), src (344) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -256,7 +272,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 5 Datei(en)
+- `content/narrative/contributions/` — 6 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
 - `docs/` — 18 Datei(en)
 - `docs/banners/` — 3 Datei(en)
@@ -309,7 +325,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 54 Datei(en)
-- `src/core/sim/__tests__/` — 47 Datei(en)
+- `src/core/sim/__tests__/` — 48 Datei(en)
 - `src/core/sim/narrative/` — 4 Datei(en)
 - `src/render/` — 25 Datei(en)
 - `src/render/__tests__/` — 5 Datei(en)
@@ -346,23 +362,24 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-deckung-und-wut.json` — { — gelesen: 12 Zeilen
 - `content/narrative/contributions/2026-11-02-dreck-und-verluste.json` — { — gelesen: 10 Zeilen
+- `content/narrative/contributions/2026-11-02-geduld-und-versprechen.json` — { — gelesen: 12 Zeilen
 - `content/narrative/contributions/2026-11-02-schicht-und-lohn.json` — { — gelesen: 12 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 235 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 147 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 149 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 517 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 527 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 145 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 35 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 39 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 112 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
@@ -1134,6 +1151,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 61 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 107 Zeilen
+- `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/player-jobs.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 176 Zeilen
 - `src/core/sim/__tests__/player-rpg.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 93 Zeilen
 - `src/core/sim/__tests__/player-speed.test.ts` — Speed war einmal nur ein gespeicherter Attributwert. Dieser Test haelt fest, — gelesen: 67 Zeilen
@@ -1180,7 +1198,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 67 Zeilen
 - `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 91 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 72 Zeilen
-- `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 50 Zeilen
+- `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 177 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern. — gelesen: 184 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
@@ -1200,7 +1218,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 240 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 115 Zeilen
 - `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 138 Zeilen
-- `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 73 Zeilen
+- `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 74 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 118 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 83 Zeilen
@@ -1358,6 +1376,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T32 | **2026-11-02 11:25 UTC**: Synergie-Audit. `Persona.patience` war tot und verdrängte beim Stammgast die Geduld (52,9 gegen 64,7); `rollProfile` gewichtet sie jetzt, Summe bleibt 180. Offene Gaps mit Beleg in der Befundliste: `PLAYER_CASH`, `VELVET`, `FREE_DRINK`, `EXTRA_REEL`, Einsatzskalierung. Neuer Test `persona-patience` (2, 1 zuerst rot). v1.13. |
 | T31 | **2026-11-02 11:17 UTC**: Tageslohn haengt an Arbeit. `PlayerJobState.lastWorkDay` wird in `completeJobTask` gestempelt; `payDailyWage` zahlt nur die Schicht des Vortags und nie rueckwirkend. `hydrateWorld` setzt das Feld fuer Alt-Saves auf 0. Neue Tests: `player-wage-attendance` (8, 4 zuerst rot), `save-wage-field` (4, 2 zuerst rot); drei bestehende Lohntests legen jetzt eine Schicht vor. v1.13. |
 | T30 | **2026-11-02 11:08 UTC**: Sechs Verdrahtungsbefunde geschlossen. `muggingCoverPoint` misst die Deckung am Wechseltisch statt am Spieler; `disputeLevelForTicks` macht Stufe 2 innerhalb der fünf ANGRY-Ticks erreichbar; `guestsServed` zaehlt nur Gaeste mit Spin; `isJackpotLabel` verlangt 2,5x statt 1,0x; `decay` senkt `guest.anger`; HUD, Diagnose und Automaten-Popup lesen `barCapacityForLevel`. Neue Tests: `mugging-cover`, `guests-served`, `anger-decay`, `dispute-escalation`, `jackpot-label`, `bar-capacity` (12 gruen, 10 davon zuerst rot). v1.13. |
 | T29 | **2026-11-02 10:52 UTC**: Vier offene Befunde gefixt. `dirtyTileIndex` in `emotion.ts` als gemeinsame Kacheladresse fuer `tick`, `disputes`, `needs`, `guest-play` (vorher `(y+1)*size+x+1`); Royal Flush verlangt Farbe, Wheel ist Strasse in `engines/cards.ts`, `evaluatePokerHand` exportiert; Dreckschicht als eigenes `dirt`-Feld zwischen Teppich und Moebeln (`scene-cache.ts`, `floor-view.ts`); Ueberfallverluste vor dem Quellkonto-Filter in `economics.ts`. Neue Tests: `dirty-index`, `economy-losses`, `video-poker-ranks` (9 gruen, 8 davon zuerst rot). v1.13. |
