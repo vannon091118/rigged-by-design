@@ -100,7 +100,7 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
     if (bar && startActivity(world, guest, bar)) return;
   }
 
-  if (guest.need === 'social' || (guest.sociability > 72 && guest.mood < 50 && guest.addiction < 20)) {
+  if (guest.sociability > 72 && guest.mood < 50 && guest.addiction < 20) {
     const sofa = world.furniture.find((item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
     if (sofa && startActivity(world, guest, sofa)) return;
   }

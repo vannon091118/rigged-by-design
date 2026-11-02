@@ -45,6 +45,7 @@ export function decay(world: WorldState): void {
   const dirty = world.dirty;
   for (const guest of world.guests) {
     if (guest.state !== 'LEAVE') tickNeeds(world, guest);
+    const patienceSpent = guest.patience <= 0;
     // Wut klingt ab, sobald der Gast nicht mehr randaliert; sonst bleibt das ANGRY-Emoji bis zum Abgang.
     if (guest.state !== 'ANGRY') guest.anger = Math.max(0, guest.anger - 0.5);
     if (guest.state === 'ANGRY') continue;
@@ -58,7 +59,8 @@ export function decay(world: WorldState): void {
     }
     if (guest.state === 'CHOOSE' || guest.state === 'WAIT') guest.mood = Math.max(0, guest.mood - 0.04);
     // Wer schon geht oder ausgezahlt wird, randaliert nicht mehr; sonst dreht der Gast endlos zwischen ANGRY und CASHOUT.
-    if (guest.mood < 12 && guest.state !== 'LEAVE' && guest.state !== 'CASHOUT') {
+    // Die Geduld treibt die Wut: der Text sagt "Geduld aufgebraucht", also entscheidet auch die Geduld.
+    if (patienceSpent && guest.state !== 'LEAVE' && guest.state !== 'CASHOUT') {
       becomeAngry(world, guest);
     }
   }

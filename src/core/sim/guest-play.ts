@@ -16,10 +16,19 @@ import { getPersona } from './personas';
 import type { Furniture, Guest, WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
 
+/** Sucht erhoeht den Einsatz um bis zu 50 % und verlaengert die Sitzung; beides bleibt bezahlbar. */
+export function addictedStake(world: WorldState, item: Furniture, guest: Guest): VaCoinMicro {
+  const base = Math.max(world.prices.slotMinBet, item.baseBet);
+  return Math.round(base * (1 + guest.addiction / 200)) as VaCoinMicro;
+}
+
+/** Vier Spins ohne Sucht, bis zu neun mit voller Sucht. */
+export const sessionSpins = (addiction: number): number => 4 + Math.floor(addiction / 20);
+
 function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, item: Furniture): void {
   if (item.damaged) { releaseAndChoose(world, guest); return; }
   const wallet = ledger.getBalance(guestAccount(guest.id));
-  const bet = Math.min(wallet, Math.max(world.prices.slotMinBet, item.baseBet)) as VaCoinMicro;
+  const bet = Math.min(wallet, addictedStake(world, item, guest)) as VaCoinMicro;
   if (!canAfford(wallet, bet)) {
     releaseAndChoose(world, guest);
     guest.state = 'CASHOUT';
@@ -61,7 +70,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   guest.stateTicks += 1;
   item.condition = Math.max(0, item.condition - 0.08);
   if (prng.nextFloat() < 0.012) world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y));
-  if (guest.stateTicks >= 6 || guest.patience <= 0) {
+  if (guest.stateTicks >= sessionSpins(guest.addiction) || guest.patience <= 0) {
     releaseAndChoose(world, guest);
     refreshNeeds(guest);
     if (guest.need === 'play' && guest.mood < 50) guest.need = 'drink';
