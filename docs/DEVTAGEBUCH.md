@@ -10,6 +10,41 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+
+
+## 2026-11-02 - Roter Pflichtstatus war das PR-Body-Gate
+
+**Ziel.** PR #44 mergen, ohne einen Check zu umgehen.
+
+**Umsetzung.** Zwei Laeufe pro Commit: der Push-Lauf bestand `verify:all` mit 12/12 Gates, der PR-getriggerte Lauf brach nach rund 15 Sekunden mit Exit 1 ab. Ein Test auf den Workflow-Dateien (`ci-gates.test.ts`) haelt fest, dass beide Trigger bleiben muessen, also lag der Fehler nicht im Workflow, sondern im PR-Body: das Gate `verify-commit-msg --pr` verlangt die drei Pflichtsektionen, und der Body trug sie nicht. Der Body wird deshalb aus dem Commit-Body gehoben; die Trigger und `cancel-in-progress` bleiben unveraendert.
+
+**Pruefungen.** `RBD_VERIFY_AUDIT=1 RBD_VERIFY_NO_CACHE=1 pnpm run verify:all` deckte den eigentlichen Fehler auf: der Test `Main-Gate > prueft Pushes auf main und Pull Requests gegen main` fiel nach dem Trigger-Umbau rot — der Umbau wurde zurueckgenommen.
+
+**Offen.** Keine Code-Aenderung am CI-Workflow; das PR-Body-Gate bleibt scharf.
+
+
+## 2026-11-02 - Befundnotiz: drei Mods ohne Mechanik
+
+**Ziel.** Die zwei Audit-Luecken, die eine Spielregel brauchen (VELVET/FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusaetzliche Walze), so festhalten, dass sie nicht wieder zwischen Code und Doku verschwinden — ohne eine Regel zu erfinden.
+
+**Umsetzung.** `docs/INVENTORY.md` hat jetzt einen Abschnitt „Offene Design-Entscheidungen: Mods ohne Mechanik" mit einer Zeile je Mod: Versprechen, tatsaechlicher Effekt und die eine Frage, die der Nutzer beantworten muss. VELVET verspricht bessere Gaeste, liefert aber nur Anziehung und weniger Geduld; eine Guetev erschiebung wuerde die Wirtschaftsrechnung des Abends aendern. FREE_DRINK verspricht einen Drink pro Spin, liefert Geduld und Betriebskosten; offen ist, ob das Haus pro Spin wirklich bucht. EXTRA_REEL verspricht eine vierte Walze, die Walzenzahl kommt aber aus `item.reels`; offen ist, ob der Mod schenkt oder rabattiert. Keine dieser drei Fragen ist durch Umbuchung beantwortbar, deshalb bewusst keine Code-Aenderung.
+
+**Pruefungen.** `inventory:build` 1028/1028 Dateien, `docs:sync` sechs Marker, `typecheck`, `lint`, `check:loc`, `verify:docs`, `verify:dead-code`, `verify:test-quality`, `verify:tree`, `verify:redundancy`, `verify:assets`, `build` je Exit 0, volle Suite 532/532 gruen.
+
+**Offen.** Die drei Entscheidungen selbst; bis dahin bleibt der Shop an diesen Stellen teurer als sein Effekt.
+
+
+## 2026-11-02 - Pity als Vorschuss, Wut aus Geduld, Sucht am Einsatz
+
+**Ziel.** Fünf offene Punkte schließen: Pity-RTP, Wut-Auslöser, Suchtfolgen, tote Felder und das nicht auszahlbare Bonus-Guthaben.
+
+**Umsetzung.** Die Entladung war ein zweiter Gewinn auf einem Polster, das schon aus Hausvorteil gefüllt war — deshalb stieg der gemessene RTP Richtung 100 %. `settleSlotSpin` führt den Topf jetzt signiert: eine Entladung darf ihn überziehen, der negative Stand ist ein Vorschuss und wird von späteren Gewinnen abgezogen. Wut löste `decay` bei `mood < 12` aus, obwohl Journal und Mods von Geduld sprechen; entschieden ist die Geduld, geprüft vor dem +0,02-Tropfen. `addictedStake` hebt den Einsatz um bis zu 50 %, `sessionSpins` verlängert die Sitzung von vier auf neun Spins. `social` ist aus dem Bedürfnis-Typ entfernt, `cashOutPlayerCash` macht das Bonus-Guthaben auszahlbar. `Persona.patience` bleibt, weil sie seit dem vorherigen Commit über `rollProfile` gelesen wird.
+
+**Pruefungen.** Fail-First mit zurückgerollten Dateien: sechs Tests rot (fehlender Export plus beide Wut-Fälle), danach 13/13 grün; `typecheck`, `lint`, `check:loc`, `verify:docs` je Exit 0, volle Suite grün.
+
+**Offen.** Einsatzaufschlag und Sitzungsdauer sind gedeckelt; HIGH_ROLLER spielt weiterhin nicht über den Mindestsatz des Geräts.
+
+
 ## 2026-11-02 - Synergie-Audit: tote Persona-Geduld und Mods ohne Wirkung
 
 **Ziel.** Systematisch suchen, wo Mechaniken sich gegenseitig tragen sollten, es aber nicht tun: geschriebene Felder ohne Leser, verkaufte Mods ohne ihre beschriebene Wirkung und Personas, die nur als Gewicht auftauchen.
@@ -510,7 +545,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:32 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

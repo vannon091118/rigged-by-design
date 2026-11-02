@@ -1,13 +1,12 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:32 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
 
-- `PLAYER_CASH` braucht einen Ausgabepfad, sonst bleibt der Disziplin-Bonus eine Anzeige.
 - VELVET und FREE_DRINK muessen ihre Beschreibung einloesen (bessere Gaeste, Drink pro Spin) oder umformuliert werden; EXTRA_REEL sollte wirklich eine Walze sein.
 - Der Einsatz sollte mit dem Persona-Budget skalieren, damit High Roller nicht nur laenger, sondern hoeher spielt.
 

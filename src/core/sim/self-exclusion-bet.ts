@@ -1,7 +1,7 @@
 /** Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. */
 import type { Ledger } from '../economy/ledger';
 import { addVC, mulVC, subVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
-import { EXTERNAL, EXTERNAL_WORK, PLAYER_CASH } from './money';
+import { EXTERNAL, EXTERNAL_WORK, PLAYER_CASH, PORTEMONNAIE } from './money';
 import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 
@@ -76,6 +76,14 @@ export function recordExclusionWin(world: WorldState, payout: VaCoinMicro, tick:
     pact.thresholdTick = tick;
     pact.pauseUntilTick = tick + EXCLUSION_PAUSE_TICKS;
   }
+}
+
+/** Der Disziplin-Bonus ist echtes Guthaben: er laesst sich ins Portemonnaie auszahlen. */
+export function cashOutPlayerCash(world: WorldState, ledger: Ledger, tick: number): ExclusionResult {
+  const balance = ledger.getBalance(PLAYER_CASH);
+  if (balance <= 0) throw new Error('Kein Bonus-Guthaben zum Auszahlen.');
+  ledger.transfer(PLAYER_CASH, PORTEMONNAIE, balance, TX_REASON.PACT_BONUS, tick);
+  return { ok: true, reward: balance, notice: `Bonus ausgezahlt: +${(balance / 10_000).toFixed(2)} VC ins Portemonnaie.` };
 }
 
 /** Erst nach der vereinbarten Pause wird der Bonus gebucht; vorher ist es ein Wortbruch. */

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:32 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -21,9 +21,17 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ### Technik
 - Der Tageslohn hängt an einer abgeschlossenen Schicht: `PlayerJobState.lastWorkDay` merkt sich den Tag der letzten Schicht, `payDailyWage` zahlt nur dafür und nie rückwirkend. Wer einen Job annimmt und nichts tut, bekommt weder Geld noch `workDays`-Zuwachs.
+- Die Pity-Entladung addiert keinen zweiten Gewinn mehr: `settleSlotSpin` zahlt aus dem Polster, darf es überziehen und holt den Vorschuss aus späteren Gewinnen zurück.
+- Wut kommt jetzt aus der Geduld, nicht aus der Laune: `decay` prüft `patience <= 0` vor dem Geduld-Tropfen; die Mods mit Geduldswirkung steuern damit wirklich, wer randaliert.
+- Sucht steuert den Einsatz (bis +50 %) und die Sitzungslänge (4 bis 9 Spins): `addictedStake` und `sessionSpins`.
+- `PLAYER_CASH` ist auszahlbar: `cashOutPlayerCash` bucht das Bonus-Guthaben ins Portemonnaie.
+- Der tote `social`-Bedürfniszweig ist entfernt; `Persona.patience` bleibt, weil sie seit dem letzten Commit gelesen wird.
 - Die Persona-Geduld wirkt jetzt: sie geht als Gewicht in den 180-Punkte-Pool von `rollProfile` ein (68 High Roller bis 138 Stammgast), die Summe aus Laune, Geduld und Sucht bleibt exakt 180. Vorher war `Persona.patience` ein totes Feld, und der Stammgast startete wegen seiner hohen Suchtrate sogar ungeduldiger als der High Roller.
 - Der Synergie-Audit listet die verbleibenden Lücken in `docs/INVENTORY.md`: `PLAYER_CASH` ohne Ausgabepfad, VELVET und FREE_DRINK ohne ihre beschriebene Wirkung, EXTRA_REEL ohne zusätzliche Walze und ein Einsatz, der nie mit der Persona skaliert.
 - Alte Saves ohne `lastWorkDay` laden weiter und starten mit „noch keine Schicht"; vergangene Tage werden nicht nachgezahlt.
+- Der rote Pflichtstatus war der PR-getriggerte `CI Verify`-Lauf: er scheiterte am PR-Body-Gate, weil der PR-Body die Pflichtsektionen nicht trug; der Workflow bleibt unveraendert, der Body wird aus dem Commit-Body gehoben.
+- Drei Mods sind als offene Design-Entscheidung dokumentiert statt still wirkungslos zu bleiben: `VELVET` (bessere Gaeste), `FREE_DRINK` (Drink pro Spin) und `EXTRA_REEL` (vierte Walze) stehen mit Versprechen, Ist-Zustand und der jeweils noetigen Regelentscheidung in `docs/INVENTORY.md`.
+
 - Der Überfall misst die Wachdeckung jetzt an der Kasse statt am Spieler: `muggingCoverPoint` liefert den Wechseltisch, an dem das Geld liegt; vorher schützte ein Wachmann am Klo die Kasse.
 - Die zweite Streitstufe ist erreichbar: `disputeLevelForTicks` kippt nach vier Ticks, vorher nach sechs — ANGRY dauert aber nur fünf, deshalb gab es nie Möbelschaden.
 - `guestsServed` zählt nur noch Gäste mit mindestens einem Spin; wer den Floor durchquert, hob bisher Ruf und KASSE-Stufe.

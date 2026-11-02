@@ -1,5 +1,6 @@
 /** Ehrliches Slot-Gedächtnis und der Drucklader; reine, serialisierbare Zustandslogik. */
 import { SLOT_SYMBOLS, slotJackpotInterval } from './engines/slot';
+import type { VaCoinMicro } from '../economy/vacoin';
 
 const RECENT_LIMIT = 100;
 /** Ab dieser Ladung ist der naechste bezahlte Spin ein garantierter Treffer. */
@@ -46,6 +47,23 @@ function addHistogram(memory: SlotMemory, symbols: readonly string[], delta: num
   for (const symbol of symbols) {
     memory.recentSymbolHistogram[symbol] = Math.max(0, (memory.recentSymbolHistogram[symbol] ?? 0) + delta);
   }
+}
+
+/**
+ * Die Entladung addiert keinen zweiten Gewinn: sie zahlt aus dem Polster und
+ * darf es ueberziehen. Der Vorschuss wird von spaeteren Gewinnen abgezogen,
+ * damit die Maschine langfristig nicht mehr ausschuetet als sie einbehaelt.
+ */
+export function settleSlotSpin(
+  withheld: VaCoinMicro,
+  bet: VaCoinMicro,
+  raw: VaCoinMicro,
+  discharged: boolean,
+): { payout: VaCoinMicro; withheld: VaCoinMicro } {
+  const carried = (withheld + bet) as VaCoinMicro;
+  // Ein negativer Stand ist ein Vorschuss: er wird erst zurueckgeholt, bevor wieder voll gezahlt wird.
+  const payout = (discharged ? raw : Math.max(0, raw + Math.min(0, carried))) as VaCoinMicro;
+  return { payout, withheld: (carried - payout) as VaCoinMicro };
 }
 
 /** Ein Spin wird immer zuerst ehrlich verbucht, erst danach greift die naechste Stufe. */

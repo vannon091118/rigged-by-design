@@ -4,7 +4,7 @@ import type { Furniture } from '../sim/types';
 import type { GameResult } from './contracts';
 import { playSlot } from './engines/slot';
 import { slotConfigOf } from './slot-config';
-import { createSlotMemory, prepareSlotSpin, recordSlotSpin, type SlotMemory } from './slot-transparency';
+import { createSlotMemory, prepareSlotSpin, recordSlotSpin, settleSlotSpin, type SlotMemory } from './slot-transparency';
 import type { Prng } from '../rng/prng';
 
 /** Ein echter Gast-Spin; der Testspin bleibt absichtlich ohne Gedaechtnis-Wirkung. */
@@ -23,13 +23,13 @@ export function playSlotSession(
   const plan = prepareSlotSpin(memory, bank >= reference * 3);
   const outcome = playSlot(prng, { forceWin: plan.forceWin, config: slotConfigOf(item) });
   const multiplierBps = outcome.multiplierBps > 0 ? Math.max(0, outcome.multiplierBps + bonusBps) : 0;
-  // Was die Maschine einbehaelt, deckt spaetere Entladungen; sie zahlt nie mehr, als sie hat.
   const raw = mulVC(bet, multiplierBps);
-  const covered = Math.max(0, bank + bet) as VaCoinMicro;
-  const payout = plan.forceWin ? (Math.min(raw, covered) as VaCoinMicro) : raw;
+  // Entladung und normale Gewinne teilen sich denselben Topf: ein Vorschuss wird zurueckgeholt.
+  const settlement = settleSlotSpin(bank, bet, raw, plan.forceWin);
+  const payout = settlement.payout;
   const prefix = plan.forceWin ? 'ENTLADUNG · ' : '';
   recordSlotSpin(memory, outcome.symbols, outcome.multiplierBps, outcome.jackpot);
-  memory.bank = (memory.bank ?? 0) + bet - payout;
+  memory.bank = settlement.withheld;
   return {
     game: 'SLOT',
     stake: bet,
