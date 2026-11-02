@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.75 | 2026-11-02 22:29 UTC -->
+<!-- rbd-doc: v0.3.76 | 2026-11-02 22:37 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -105,4 +105,4 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - Commit messages verified by `verify:commit-msg`; new error codes in `docs/ERROR_CATALOG.md`.
 - `verify-test-quality` requires `@test-target` and `@error-code` headers on `.test.ts` and `.test.tsx`; every `it`/`test` callback needs its own `expect`, and the file must import and use its declared target (directly or through a helper that imports it). Fixed numeric `new Prng(...)` seeds are rejected, use `randomSeed()`.
 - Journal state lives in `WorldState`; UI only reads the snapshot and never maintains a second log.
-- Narrative: Vertrag in `docs/NARRATIVE-ENGINE.md`. Facts (`src/core/sim/narrative/`) sind der Ereignisstrom fuer Trigger und Gedaechtnis, das Journal bleibt Spielerhistorie. `WorldState.narrative` ist der einzige persistente Narrativ-Zustand (Save v9); `Guest` bleibt Besuch, `Visitor` bleibt Identitaet mit hoechstens sechs Erinnerungen. Der Start-Pool (drei bekannte Figuren + `START_POOL`-Fact mit Startkapital) entsteht nur beim neuen Spiel ueber `seedStartPool`, nie in `createWorld`. Jeder Agent liefert pro abgeschlossenem Turn genau einen Content-Beitrag unter `content/narrative/contributions/` (Schema und Makro-Semantik in `docs/NARRATIVE-ENGINE.md`, Flags aus `content/narrative/vocabulary/`); Texte sind Darstellung, nie Spielregel.
+- Narrative: Vertrag in `docs/NARRATIVE-ENGINE.md`. Facts (`src/core/sim/narrative/`) sind der Ereignisstrom fuer Trigger und Gedaechtnis, das Journal bleibt Spielerhistorie. `WorldState.narrative` ist der einzige persistente Narrativ-Zustand (Save v9); `Guest` bleibt Besuch, `Visitor` bleibt Identitaet mit hoechstens sechs Erinnerungen. Der Start-Pool (drei bekannte Figuren + `START_POOL`-Fact mit Startkapital) entsteht nur beim neuen Spiel ueber `seedStartPool`, nie in `createWorld`. Jeder Agent liefert pro abgeschlossenem Turn genau einen Content-Beitrag unter `content/narrative/contributions/` (Schema und Makro-Semantik in `docs/NARRATIVE-ENGINE.md`, Flags aus `content/narrative/vocabulary/`); Texte sind Darstellung, nie Spielregel. Im Spiel ist jede LLM- oder Provider-Anbindung ausgeschlossen; Agenten erstellen Beitraege nur bei der Repository-Arbeit. NAR-00 bis NAR-03 sind Grundlagen, nicht vollstaendig abgeschlossen; offene Restanforderungen stehen im Taskplan. Der reine Trigger-Evaluator ist noch nicht in die Simulation integriert.

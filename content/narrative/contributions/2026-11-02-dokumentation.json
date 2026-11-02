@@ -1,0 +1,10 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-02T22:35Z-narrative-dokumentation",
+  "contributionId": "ledger-pages-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
+  "directives": []
+}
