@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.74 | 2026-11-02 22:15 UTC -->
+<!-- rbd-doc: v0.3.74 | 2026-11-02 22:21 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -10,6 +10,11 @@ normally, and batch related commands into one call to avoid extra turns.
 Truncated results state their recovery path in their own output. Re-run a
 command as `rtk bypass <cmd>` only when its result is unusable: empty when
 output was clearly expected, contradicting its exit code, or garbled.
+
+Primaer ist `pnpm run agent:context` (verdichtet: `--line`); es ersetzt die
+Bestandsaufnahme aus Git, Importgraph, Katalog und Doku. Werkzeuge laufen
+ueber rtk: `rtk ls`, `rtk find`, `rtk read`, `rtk rg`, `rtk git`, `rtk pnpm`.
+Kein `ls`/`cat`/`grep`/`find` am Proxy vorbei, kein Wegwerf-Skript.
 <!-- /rtk-instructions -->
 
 Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are integer micro-units (1 VC = 10.000). Simulation is headless in `src/core/`; `world-store` owns world, ledger, PRNG, clock, save.

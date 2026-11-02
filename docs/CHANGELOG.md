@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.74 | 2026-11-02 22:15 UTC -->
+<!-- rbd-doc: v0.3.74 | 2026-11-02 22:21 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -23,6 +23,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - `pnpm run agent:verify` zeigt eine Gate-Tabelle mit Status und Dauer; `--plan` nennt Plan und Cache-Stand, ohne ein Gate zu starten. Beide bleiben die einzige Analyse- und Pruefstrecke.
 - Das Tree-Gate verbietet Wegwerf-Dateien (`tmp-`, `temp-`, `scratch-`, `adhoc-`, `.tmp.`, `.bak`) und meldet sie als `ERR-4019`; die Regel steht in `AGENTS.md`.
 - `agent:context --line` und `agent:verify --line` geben eine verdichtete Textzeile aus (Stand, Umfang, Gates). `agent:verify` druckt im Erfolgsfall keine Zeile je Gate mehr, sondern nur die Tabelle.
+- Suchwerkzeug: ripgrep liegt global im PATH, `rtk rg`/`rtk ls`/`rtk find`/`rtk read`/`rtk git` sind der Standard; `pnpm run agent:context` ist der primaere Kontextzugang (AGENTS.md, RTK-Block).
 
 ## [0.3.73] - 2026-11-02
 
