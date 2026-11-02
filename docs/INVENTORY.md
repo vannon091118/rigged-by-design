@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.74 | 2026-11-02 22:21 UTC -->
+<!-- rbd-doc: v0.3.75 | 2026-11-02 22:29 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1027 |
-| Gelistete Dateien | 1027 |
+| Getrackte Dateien | 1031 |
+| Gelistete Dateien | 1031 |
 | Getrackte Ordner | 71 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (8), docs (47), public (552), scripts (54), src (347) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (10), docs (47), public (552), scripts (54), src (349) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -286,7 +286,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 7 Datei(en)
+- `content/narrative/contributions/` — 9 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
 - `docs/` — 18 Datei(en)
 - `docs/banners/` — 3 Datei(en)
@@ -339,8 +339,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 54 Datei(en)
-- `src/core/sim/__tests__/` — 50 Datei(en)
-- `src/core/sim/narrative/` — 4 Datei(en)
+- `src/core/sim/__tests__/` — 51 Datei(en)
+- `src/core/sim/narrative/` — 5 Datei(en)
 - `src/render/` — 25 Datei(en)
 - `src/render/__tests__/` — 5 Datei(en)
 - `src/render/assets/` — 3 Datei(en)
@@ -377,7 +377,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-02-deckung-und-wut.json` — { — gelesen: 12 Zeilen
 - `content/narrative/contributions/2026-11-02-dreck-und-verluste.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-geduld-und-versprechen.json` — { — gelesen: 12 Zeilen
+- `content/narrative/contributions/2026-11-02-narrative-facts.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-schicht-und-lohn.json` — { — gelesen: 12 Zeilen
+- `content/narrative/contributions/2026-11-02-trigger-bedingungen.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json` — { — gelesen: 12 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
@@ -390,12 +392,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 598 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
-- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
+- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1012 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 145 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 38 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 131 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 132 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/roadmap.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
@@ -1164,9 +1166,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/mod-resolver.test.ts` — Mod-Wirkungen entstehen an genau einer Stelle: der gemeinsame Resolver — gelesen: 53 Zeilen
 - `src/core/sim/__tests__/money-truth.test.ts` — Fiat ist vom Spawn an ein gebuchtes Konto; Auszahlungen werden nie still gekappt. — gelesen: 95 Zeilen
 - `src/core/sim/__tests__/mugging-cover.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 20 Zeilen
-- `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
+- `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 103 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 77 Zeilen
-- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 61 Zeilen
+- `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 71 Zeilen
+- `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 62 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 107 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
@@ -1212,8 +1215,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 125 Zeilen
 - `src/core/sim/mugging.ts` — Simulierter Überfall nach einer verlorenen Prügelei: Ziel wählen, greifen, fliehen. — gelesen: 89 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 51 Zeilen
-- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 67 Zeilen
-- `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 91 Zeilen
+- `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 66 Zeilen
+- `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 103 Zeilen
+- `src/core/sim/narrative/triggers.ts` — Deklarative Bedingungen fuer Narrative-Facts; Evaluation liest nur Welt und Ledger. — gelesen: 33 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 72 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 177 Zeilen

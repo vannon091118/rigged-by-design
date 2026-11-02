@@ -5,6 +5,7 @@ import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { seedStartPool } from '../narrative/state';
+import { processFacts } from '../narrative/memory';
 import { pickReturningVisitor } from '../visitors';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
@@ -26,6 +27,15 @@ describe('Start-Pool der Narrative-Domaene', () => {
     expect(world.visitors).toHaveLength(3);
     expect(world.narrative.pending).toHaveLength(3);
     expect(world.narrative.factSeq).toBe(4);
+  });
+
+  it('zaehlt den Pool auch nach der Fact-Verarbeitung nur einmal', () => {
+    const world = createWorld('SMALL');
+    seedStartPool(world, fromVC(150));
+    processFacts(world);
+    processFacts(world);
+    expect(world.narrative.flags.startpool).toBe(3);
+    expect(world.narrative.recent).toHaveLength(3);
   });
 
   it('wirkt ab Tick 0: eine Figur aus dem Pool kehrt sofort als Stammgast zurueck', () => {

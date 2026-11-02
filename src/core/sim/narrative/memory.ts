@@ -37,7 +37,6 @@ export function processFacts(world: WorldState): number {
     if (fact.kind === 'VISIT_ENDED' && remember(world, fact)) applied += 1;
     if (fact.kind === 'VISITOR_RETURNED') world.narrative.flags.rueckkehrer = (world.narrative.flags.rueckkehrer ?? 0) + 1;
     if (fact.kind === 'VISITOR_FIRST_SEEN') world.narrative.flags.neue_gaeste = (world.narrative.flags.neue_gaeste ?? 0) + 1;
-    if (fact.kind === 'START_POOL') world.narrative.flags.startpool = (world.narrative.flags.startpool ?? 0) + 1;
   }
   pushRecent(world, fresh);
   return applied;

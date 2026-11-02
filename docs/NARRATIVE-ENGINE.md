@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
-Stand: 2026-11-01 · Version `0.3.64` · Save v9 · Status: NAR-00 bis NAR-03 umgesetzt,
-NAR-04 bis NAR-17 offen. Verbindlich ist der Code; dieses Dokument begruendet ihn.
+Stand: 2026-11-02 · Save v9 · Grundlagen von NAR-00 bis NAR-03 vorhanden;
+Restanforderungen sowie NAR-04 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -118,9 +118,9 @@ Regeln:
 
 ## 8. Makros (Semantik, nicht geraten)
 
-- `€FreezeTick:200` pausiert die **Simulation** fuer 200 Ticks, nicht die Anzeige:
-  `world.tick` steht still, Pacing und UI laufen weiter. Ein Freeze ist ein Zustand im
-  Narrative-State, kein Timer aus der Wanduhr; er ueberlebt Save/Load mit Restdauer.
+- `€FreezeTick:200` soll nur die aktive **Event-Instanz** fuer 200 fortschreitende
+  Welt-Ticks pausieren; die uebrige Simulation laeuft weiter. Die templategebundene
+  Obergrenze, Ablauf und Save-/Load-Fortsetzung sind vor Umsetzung zu pruefen.
 - `€trigger Dialog '(...)'` oeffnet einen Dialog mit dem genannten Choice-Satz. Der
   String ist eine ID aus dem Choice-Vertrag, kein ausfuehrbarer Code. Unbekannte IDs
   werden verworfen und als Fact `COMMAND_REJECTED` (NAR-08) sichtbar.
@@ -130,7 +130,7 @@ irgendein Command laeuft.
 
 ## 9. Nicht-Ziele
 
-- Kein LLM in `tickWorld`, kein Netzwerkaufruf im Tick, kein Provider-SDK in `src/core`.
+- Kein LLM, Modell-Provider oder Netzwerk-Textaufruf im Spiel, auch nicht ausserhalb des Ticks. Agenten koennen Content bei der Repository-Arbeit erstellen; die Laufzeit nutzt ausschliesslich lokale validierte Daten.
 - Keine Ausfuehrung von Code aus Texten; Commands sind deklarativ und allowlisted.
 - Kein Journal als Fact-Bus, keine zweite Event-Wahrheit neben `demandEvent`.
 - Keine Wanduhr und kein `Math.random` in Narrativ-Code (ESLint blockt beides).

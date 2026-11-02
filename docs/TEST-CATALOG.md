@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 116 Dateien — contract 73 · integration 22 · governance 10 · statistics 6 · performance 5.
+Summe: 117 Dateien — contract 74 · integration 22 · governance 10 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -85,6 +85,7 @@ Summe: 116 Dateien — contract 73 · integration 22 · governance 10 · statist
 | `src/core/sim/__tests__/narrative-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/__tests__/narrative-start-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/state.ts` |
+| `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
 | `src/core/sim/__tests__/player-cash.test.ts` | sim | contract | ja | `src/core/sim/self-exclusion-bet.ts` |
