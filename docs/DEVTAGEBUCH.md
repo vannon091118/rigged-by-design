@@ -12,6 +12,17 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-02 - Tip release-faehig machen (0.3.73)
+
+**Ziel.** Nicht nur der Merge-Commit, sondern die aktuelle Spitze von `main` soll gruen und release-konsistent sein.
+
+**Umsetzung.** `main` stand nach dem Merge weiter auf `ee39c83`; die Release-Automation committet bewusst nichts. Der Pflicht-Check war fuer genau diesen SHA per `workflow_dispatch` gruen, `verify:all` lief ohne Cache mit CI-Audit 12/12. Inkonsistent war nur das Release: `package.json` sagte 0.3.72, der Tag `v0.3.72` zeigt aber auf `7b50913` (PR #40), und der Release-Lauf nach dem API-Merge endete als `skipped`, weil er nur auf `push`-Workflow-Laeufe reagiert. Deshalb der Patch-Sprung auf 0.3.73: ein neuer Tag am Tip, ohne den bestehenden `v0.3.72` zu verschieben.
+
+**Pruefungen.** `version-bump` schreibt `package.json` und `Config`-Kennung; `verify:all` ohne Cache mit `RBD_VERIFY_AUDIT=1` auf dem Tip-Baum 12/12 gruen; Befundnotiz zu VELVET/FREE_DRINK/EXTRA_REEL ist in `docs/INVENTORY.md` vorhanden.
+
+**Offen.** Die drei Mod-Entscheidungen (Gaesteguete, Drink pro Spin, vierte Walze) bleiben beim Nutzer.
+
 ## 2026-11-02 - Roter Pflichtstatus war das PR-Body-Gate
 
 **Ziel.** PR #44 mergen, ohne einen Check zu umgehen.
@@ -545,7 +556,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.73 | 2026-11-02 12:20 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
