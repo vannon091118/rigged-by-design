@@ -1,6 +1,8 @@
 /** Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
+import { HAUSKONTO, PORTEMONNAIE } from '../core/sim/money';
 import { vc } from './format';
+import { ACCOUNT_LABEL } from './glossary';
 
 interface Props {
   readonly wallet: VaCoinMicro;
@@ -17,12 +19,12 @@ export function CasinoWindowHeader({ wallet, house, mods, pact, full, onToggleFu
   return (
     <div className="casino-head">
       <div className="casino-head-stat" title="Dein privates Bargeld. Einsaetze hier gehen davon ab.">
-        <span>PORTEMONNAIE</span>
+        <span>{ACCOUNT_LABEL[PORTEMONNAIE]}</span>
         <strong>{vc(wallet, 2)}</strong>
       </div>
       {house !== undefined && (
         <div className="casino-head-stat" title="Konto des Hauses. Abheben bucht Geld auf dein Portemonnaie.">
-          <span>HAUSKONTO</span>
+          <span>{ACCOUNT_LABEL[HAUSKONTO]}</span>
           <strong>{vc(house, 2)}</strong>
         </div>
       )}

@@ -5,6 +5,7 @@ import { deployCrate, depositCrate, takeCrate } from './deliveries';
 import { chooseActivity } from './guest-choice';
 import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
 import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
+import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
 import { exchangePoint, guestById, interactionPoint } from './world';
 import { grantGlobalXp } from './player-rpg';
@@ -38,7 +39,7 @@ export function serveDrink(world: WorldState, ledger: Ledger, guestId: number): 
   if (!near(world.player.position, guest.position, 3)) throw new Error('Geh erst zum Gast.');
   const price = world.prices.drinkPrice;
   if (ledger.getBalance(guestAccount(guest.id)) >= price) {
-    ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, `gast ${guest.id} drink`, world.tick);
+    ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, guestReason('DRINK', guest.id), world.tick);
   }
   guest.mood = Math.min(100, guest.mood + 13);
   guest.patience = Math.min(100, guest.patience + 12);
@@ -96,7 +97,7 @@ export function setNeonColor(world: WorldState, color: string): void {
 
 export function upgradeBar(world: WorldState, ledger: Ledger): void {
   if (world.barLevel >= 3) throw new Error('Die Bar ist ausgebaut.');
-  ledger.transfer(HAUSKONTO, SHOP, world.prices.barUpgrade, 'bar ausbauen', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, world.prices.barUpgrade, TX_REASON.BAR_UPGRADE, world.tick);
   world.barLevel += 1;
   grantGlobalXp(world.player.rpg, 'REPAIR_MACHINE', 10);
   world.lastEvent = `Bar ausgebaut (Stufe ${world.barLevel}).`;
@@ -104,7 +105,7 @@ export function upgradeBar(world: WorldState, ledger: Ledger): void {
 
 export function upgradeWc(world: WorldState, ledger: Ledger): void {
   if (world.wcLevel >= 3) throw new Error('Das WC ist ausgebaut.');
-  ledger.transfer(HAUSKONTO, SHOP, world.prices.wcUpgrade, 'wc ausbauen', world.tick);
+  ledger.transfer(HAUSKONTO, SHOP, world.prices.wcUpgrade, TX_REASON.WC_UPGRADE, world.tick);
   world.wcLevel += 1;
   grantGlobalXp(world.player.rpg, 'REPAIR_MACHINE', 10);
   world.lastEvent = `WC ausgebaut (Stufe ${world.wcLevel}).`;

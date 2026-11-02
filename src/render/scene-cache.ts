@@ -17,6 +17,7 @@ export interface SceneCache {
   readonly furniture: Container;
   readonly props: Container;
   readonly actors: Container;
+  readonly dirt: Container;
   readonly stickers: Container;
   readonly labels: readonly Text[];
   readonly redrawRoom: (view: GameView) => void;
@@ -31,7 +32,6 @@ export function createSceneCache(): SceneCache {
   const furniture = new Container();
   const props = new Container();
   const dirtLayer = new Container();
-  furniture.addChild(dirtLayer);
   const actors = new Container();
   const stickers = new Container();
 
@@ -154,5 +154,5 @@ export function createSceneCache(): SceneCache {
     stickers.destroy({ children: true });
   };
 
-  return { room, carpet: carpet.root, furniture, props, actors, stickers, labels, redrawRoom, redrawDirt, setLabels, destroy };
+  return { room, carpet: carpet.root, dirt: dirtLayer, furniture, props, actors, stickers, labels, redrawRoom, redrawDirt, setLabels, destroy };
 }

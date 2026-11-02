@@ -5,6 +5,7 @@
  * Speicher- und Save-Groesse: eine definierte 1000-Tick-Sitzung, kein Sample-Ring.
  * Bewusst nicht Teil von verify:all.
  */
+import { MINTING_ACCOUNT } from '../core/economy/ledger-integrity';
 import { test } from 'vitest';
 import { Ledger } from '../core/economy/ledger';
 import { fromVC } from '../core/economy/vacoin';
@@ -18,7 +19,7 @@ test('Speicher und Save-Groesse nach 1000 Ticks', { timeout: 60_000 }, () => {
   const world = createWorld('LARGE');
   ensureStarter(world);
   const ledger = new Ledger();
-  ledger.transfer('EXTERNAL_WORLD', 'HAUSKONTO', fromVC(10_000), 'speicher-test', 0);
+  ledger.transfer(MINTING_ACCOUNT, 'HAUSKONTO', fromVC(10_000), 'speicher-test', 0);
   const prng = new Prng(randomSeed());
   const before = process.memoryUsage().heapUsed;
   const start = process.hrtime.bigint();

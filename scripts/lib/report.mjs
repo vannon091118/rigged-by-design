@@ -1,16 +1,14 @@
 /** Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. */
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = fileURLToPath(new URL('../..', import.meta.url));
-const CATALOG = join(ROOT, 'docs', 'ERROR_CATALOG.md');
 
-export function catalogCodes() {
-  if (!existsSync(CATALOG)) return new Set();
-  const text = readFileSync(CATALOG, 'utf8');
-  return new Set([...text.matchAll(/ERR-\d{4}/g)].map((match) => match[0]));
-}
+/** Bekannte Codes kommen aus dem Register, nicht aus der Markdown-Tabelle. */
+import { catalogCodes } from './error-codes.mjs';
+
+export { catalogCodes };
 
 export function line(index, code, component, message) {
   const known = catalogCodes();

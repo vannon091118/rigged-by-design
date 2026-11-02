@@ -3,7 +3,12 @@
  * erst automatisch reparieren, dann in CI wiederholen, erst danach ein Agent.
  * Fail-Closed bleibt fuer Geld, Ledger, Save-Integritaet und Rechte.
  */
-export const LEVELS = Object.freeze(['AUTO_FIX', 'LOCAL_GATE', 'REMOTE_CI', 'AGENT', 'BLOCKED']);
+import { readFileSync } from 'node:fs';
+
+/** Die Leiter steht in src/Config/escalation-levels.json; issues.ts liest dieselbe Datei. */
+export const LEVELS = Object.freeze(
+  JSON.parse(readFileSync(new URL('../../src/Config/escalation-levels.json', import.meta.url), 'utf8')),
+);
 
 const KINDS = Object.freeze({
   BLOCKED: {

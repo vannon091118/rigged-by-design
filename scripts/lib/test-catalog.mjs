@@ -10,26 +10,15 @@ import { relative } from 'node:path';
 import { ts } from './ts-ast.mjs';
 import { parse } from './ts-ast.mjs';
 import { ROOT, walk } from './report.mjs';
+import { CATALOG_SYSTEMS } from './subsystems.mjs';
 
 /** Beweisklassen von schwach (Vertrag) nach teuer (Statistik, Messung). */
 export const PROOF_CLASSES = Object.freeze(['contract', 'integration', 'governance', 'statistics', 'performance']);
 /** Klassen, die lokal nicht laufen: sie brauchen Minuten und gehoeren in CI. */
 export const LONG_PROOF_CLASSES = Object.freeze(['statistics', 'performance']);
 
-const SYSTEMS = Object.freeze([
-  ['src/core/games', 'games'],
-  ['src/core/sim', 'sim'],
-  ['src/core/economy', 'economy'],
-  ['src/core/rng', 'rng'],
-  ['src/core/physics', 'physics'],
-  ['src/core/governance', 'governance'],
-  ['src/render', 'render'],
-  ['src/ui', 'ui'],
-  ['src/store', 'store'],
-  ['src/test', 'test-tools'],
-  ['scripts', 'pipeline'],
-  ['.github', 'ci'],
-]);
+/** Systeme je Prefix; die Tabelle steht in scripts/lib/subsystems.mjs. */
+const SYSTEMS = CATALOG_SYSTEMS;
 
 /** Statistik-Suiten: Sampling, RTP, Langlauf. Der Name entscheidet, nicht der Ordner. */
 const STATISTICS = /(^|\/)(round-rtp-[^/]*|slot-session-rtp|poker-distribution|soak|balance-operating)(\.test)?\.tsx?$/;

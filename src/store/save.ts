@@ -5,6 +5,7 @@ import { companyTier } from '../core/sim/progression';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
+import { SAVE_VERSIONS } from '../core/io/repair';
 
 const SAVE_VERSION = 9;
 const KEY = 'vcoin.casino.v9';
@@ -95,7 +96,7 @@ export function saveWorld(world: WorldState, ledger: Ledger, prngState: number):
 export function replaySave(raw: unknown): LoadedSave | null {
   try {
     const saved = raw as Partial<SavedGame> | null;
-    if (!saved || ![5, 6, 7, 8, 9].includes(saved.version ?? 0)) return null;
+    if (!saved || !SAVE_VERSIONS.has(saved.version ?? 0)) return null;
     if (!saved.template || !Array.isArray(saved.guests) || !Array.isArray(saved.furniture)) return null;
     const world = createWorld(saved.template, saved.carpet ?? 'VIOLET');
     const legacyFiat = hydrateWorld(world, saved as SavedGame);

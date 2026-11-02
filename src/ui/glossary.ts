@@ -1,4 +1,15 @@
 /** Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. */
+import { HAUSKONTO, PORTEMONNAIE } from '../core/sim/money';
+
+/**
+ * Anzeigenamen der Ledger-Konten. Die UI braucht Text, nicht die Kontonummer –
+ * deshalb steht die Zuordnung hier und nicht als Literal in jeder Kopfzeile.
+ */
+export const ACCOUNT_LABEL = {
+  [HAUSKONTO]: 'HAUSKONTO',
+  [PORTEMONNAIE]: 'PORTEMONNAIE',
+} as const;
+
 export const HELP = {
   hauskonto: 'Das Geld des Casinos. Einsätze kommen hier an, Auszahlungen, Löhne und Einkäufe gehen hier ab.',
   portemonnaie: 'Dein privates Bargeld. Damit spielst du in fremden Casinos und hebst Gewinne vom Hauskonto ab.',
@@ -15,6 +26,7 @@ export const HELP = {
   nachfrage: 'Gäste pro Tag aus Grundrauschen, Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe. Stoßzeiten und Veranstaltungen kommen obendrauf. Sitzplätze begrenzen niemanden; volle Plätze kosten nur Geduld.',
   hausvorteil: 'Hausvorteil: der Anteil jedes Einsatzes, der im Schnitt beim Betreiber bleibt. Der Rest geht als Gewinn zurück.',
   tick: 'Ein Takt ist ein Spielschritt von etwa einer halben Sekunde.',
+
 } as const;
 
 /** Anziehung ist ein Rohwert; für Spieler zählt die Größenordnung. */

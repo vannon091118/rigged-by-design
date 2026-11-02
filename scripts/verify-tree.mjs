@@ -8,27 +8,14 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { fail, ROOT, walk } from './lib/report.mjs';
+import { AREAS } from './lib/subsystems.mjs';
 
 const ROOT_FILES = new Set([
   'package.json', 'pnpm-lock.yaml', 'index.html', 'README.md', 'AGENTS.md', 'LICENSE',
 ]);
 const SRC_ROOT = new Set(['main.tsx', 'App.tsx', 'vite-env.d.ts']);
 
-/** Erlaubte Endungen je Bereich; `null` heisst: alles erlaubt. */
-const AREAS = [
-  { dir: 'src/Config', ext: ['.json', '.mjs', '.ts', '.tsbuildinfo'], note: 'Werkzeug-Configs liegen gesammelt in src/Config' },
-  { dir: 'src/core', ext: ['.ts'], note: 'Core bleibt headless und ohne UI' },
-  { dir: 'src/store', ext: ['.ts'], note: 'Store besitzt Zustand und Save' },
-  { dir: 'src/ui', ext: ['.ts', '.tsx'], note: 'UI enthaelt Komponenten, keine Stylesheets' },
-  { dir: 'src/render', ext: ['.ts', '.tsx', '.json'], note: 'Render enthaelt Pixi-Code und Manifeste' },
-  { dir: 'src/styles', ext: ['.css'], note: 'Styles liegen gesammelt in src/styles' },
-  { dir: 'src/test', ext: ['.ts'], note: 'Test-Helfer gehoeren unter src/test' },
-  { dir: 'scripts', ext: ['.mjs', '.sh'], note: 'Werkzeuge sind ESM-Skripte, Bootstrap darf Shell sein' },
-  { dir: 'docs', ext: ['.md', '.svg', '.png', '.jpg', '.webp', '.json'], note: 'Doku enthaelt Text und Belege' },
-  { dir: 'content', ext: ['.json', '.md'], note: 'Content ist Daten und Text, kein Code' },
-  { dir: '.github', ext: ['.yml', '.yaml', '.md'], note: 'Workflows sind YAML' },
-  { dir: '.githooks', ext: [''], note: 'Hooks sind ausfuehrbare Shell-Dateien ohne Endung' },
-];
+/** Ordnerregeln stehen in scripts/lib/subsystems.mjs; hier wird nur geprueft. */
 const CORE_FORBIDDEN = [/^react$/, /^react-dom/, /^pixi\.js$/, /^@testing-library/];
 
 const norm = (file) => file.split(sep).join('/');

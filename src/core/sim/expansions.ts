@@ -5,6 +5,7 @@ import { areasFor, type Area } from './grid-zones';
 import { BLUEPRINTS } from './house-presets';
 import { HAUSKONTO, SHOP } from './money';
 import { TEMPLATE_COST } from './templates';
+import { TX_PREFIX } from './tx-reasons';
 import type { TemplateId, WorldState, Zone } from './types';
 
 const ORDER: Readonly<Record<TemplateId, number>> = { SMALL: 0, MEDIUM: 1, LARGE: 2 };
@@ -87,7 +88,7 @@ export function expandHouse(world: WorldState, ledger: Ledger, target: TemplateI
   const fromSize = world.size;
   if (zones.length === 0) throw new Error('Diese Vorlage bringt keine neue Flaeche.');
   // Erst buchen: scheitert die Buchung, bleibt die Welt vollstaendig unveraendert.
-  if (cost > ZERO_VC) ledger.transfer(HAUSKONTO, SHOP, cost, `ausbau ${target}`, tick);
+  if (cost > ZERO_VC) ledger.transfer(HAUSKONTO, SHOP, cost, `${TX_PREFIX.EXPANSION}${target}`, tick);
   world.template = target;
   world.size = blueprint.size;
   world.zones = [...world.zones, ...zones];

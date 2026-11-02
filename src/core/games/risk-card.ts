@@ -2,7 +2,8 @@
 import type { Ledger } from '../economy/ledger';
 import { ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
-import { foreignWin } from '../sim/money';
+import { EXTERNAL, foreignWin, PORTEMONNAIE } from '../sim/money';
+import { TX_REASON } from '../sim/tx-reasons';
 
 export type RiskColor = 'ROT' | 'SCHWARZ';
 
@@ -14,9 +15,6 @@ export interface RiskOutcome {
   /** 2x Einsatz bei Treffer, sonst 0. */
   readonly payout: VaCoinMicro;
 }
-
-const PORTEMONNAIE = 'PORTEMONNAIE';
-const EXTERNAL_WORLD = 'EXTERNAL_WORLD';
 
 /** Eine Karte, zwei Farben, keine Serie: der Zug ist ein einzelner fairer Wurf. */
 export function drawRiskCard(prng: Prng): RiskColor {
@@ -39,6 +37,6 @@ export function gambleRivalWin(
   const card = drawRiskCard(prng);
   const won = card === choice;
   if (won) foreignWin(ledger, stake, tick);
-  else ledger.transfer(PORTEMONNAIE, EXTERNAL_WORLD, stake, 'risiko-karte verloren', tick);
+  else ledger.transfer(PORTEMONNAIE, EXTERNAL, stake, TX_REASON.RISK_CARD_LOST, tick);
   return { card, choice, won, stake, payout: won ? ((stake * 2) as VaCoinMicro) : ZERO_VC };
 }

@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 10:57 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -243,10 +243,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 999 |
-| Gelistete Dateien | 999 |
-| Getrackte Ordner | 70 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (3), docs (47), public (552), scripts (52), src (326) |
+| Getrackte Dateien | 1011 |
+| Gelistete Dateien | 1011 |
+| Getrackte Ordner | 71 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (4), docs (47), public (552), scripts (54), src (335) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -256,7 +256,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 2 Datei(en)
+- `content/narrative/contributions/` — 3 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
 - `docs/` — 18 Datei(en)
 - `docs/banners/` — 3 Datei(en)
@@ -291,24 +291,25 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 36 Datei(en)
-- `scripts/lib/` — 16 Datei(en)
+- `scripts/lib/` — 18 Datei(en)
 - `src/` — 2 Datei(en)
-- `src/Config/` — 5 Datei(en)
+- `src/Config/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 3 Datei(en)
 - `src/core/games/` — 20 Datei(en)
-- `src/core/games/__tests__/` — 22 Datei(en)
+- `src/core/games/__tests__/` — 23 Datei(en)
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
 - `src/core/governance/__tests__/` — 12 Datei(en)
 - `src/core/io/` — 3 Datei(en)
+- `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 53 Datei(en)
-- `src/core/sim/__tests__/` — 37 Datei(en)
+- `src/core/sim/` — 54 Datei(en)
+- `src/core/sim/__tests__/` — 40 Datei(en)
 - `src/core/sim/narrative/` — 4 Datei(en)
 - `src/render/` — 25 Datei(en)
 - `src/render/__tests__/` — 5 Datei(en)
@@ -316,11 +317,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/fx/` — 1 Datei(en)
 - `src/render/games/` — 24 Datei(en)
 - `src/store/` — 18 Datei(en)
-- `src/store/__tests__/` — 11 Datei(en)
+- `src/store/__tests__/` — 12 Datei(en)
 - `src/styles/` — 4 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 31 Datei(en)
-- `src/ui/__tests__/` — 2 Datei(en)
+- `src/ui/__tests__/` — 3 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -343,16 +344,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `README.md` — Rigged by Design — gelesen: 250 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
+- `content/narrative/contributions/2026-11-02-dreck-und-verluste.json` — { — gelesen: 10 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 235 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 131 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 139 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 477 Zeilen
-- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 497 Zeilen
+- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1023 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -393,7 +395,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
 - `package.json` — { — gelesen: 91 Zeilen
-- `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2855 Zeilen
+- `pnpm-lock.yaml` — lockfileVersion: "9.0" — gelesen: 2798 Zeilen
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -963,20 +965,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/escalation-plan.mjs` — Druckt die Eskalationsstufe zu einem Befund. Ohne Argument liest er die — gelesen: 35 Zeilen
 - `scripts/init-github.sh` — Initialisiert das Repo, setzt .gitignore, macht den ersten Commit und legt — gelesen: 47 Zeilen
 - `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 23 Zeilen
-- `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 174 Zeilen
+- `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 169 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
-- `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 56 Zeilen
+- `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
+- `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 61 Zeilen
 - `scripts/lib/gate-cache.mjs` — Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. — gelesen: 61 Zeilen
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 217 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
-- `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 127 Zeilen
+- `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 100 Zeilen
 - `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 88 Zeilen
 - `scripts/lib/pipeline-stop.mjs` — Abbruchpfad der Pipeline: Signale beenden alle Gates und hinterlassen keine Waisen. — gelesen: 22 Zeilen
 - `scripts/lib/process-sweep.mjs` — Verwaiste Gate-Prozesse: PID plus Startzeit, PID-genaues Beenden, nie nach Namensmuster. — gelesen: 188 Zeilen
 - `scripts/lib/release-escalation.mjs` — Eskalationsleiter fuer Umgebungsprobleme im Release. — gelesen: 56 Zeilen
-- `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 40 Zeilen
-- `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 107 Zeilen
+- `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 38 Zeilen
+- `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
+- `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 96 Zeilen
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
@@ -996,10 +1000,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
-- `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 98 Zeilen
+- `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 85 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
 - `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 341 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 11 Zeilen
+- `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
@@ -1007,7 +1012,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
-- `src/core/economy/ledger-integrity.ts` — Buchungspruefung als reine Funktionen: kein Geld, nur Nachvollziehbarkeit. — gelesen: 64 Zeilen
+- `src/core/economy/ledger-integrity.ts` — Buchungspruefung als reine Funktionen: kein Geld, nur Nachvollziehbarkeit. — gelesen: 65 Zeilen
 - `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 249 Zeilen
 - `src/core/economy/vacoin.ts` — VaCoin (VC) - Geld als ganzzahlige Mikro-Einheiten. — gelesen: 92 Zeilen
 - `src/core/games/__tests__/contracts.test.ts` — Eine Runde ist eine Aktion plus Result; die Auszahlung folgt vollstaendig aus beidem. — gelesen: 78 Zeilen
@@ -1032,6 +1037,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/__tests__/slot-session-rtp.test.ts` — Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen. — gelesen: 78 Zeilen
 - `src/core/games/__tests__/slot-transparency.test.ts` — Rot-Gruen-Beweis: ehrliche Slot-Historie, physikalische Druckstufen und — gelesen: 106 Zeilen
 - `src/core/games/__tests__/test-spin.test.ts` — Alle sieben Spiele laufen im Testmodus derselben Sandbox: eigener Seed, — gelesen: 69 Zeilen
+- `src/core/games/__tests__/video-poker-ranks.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 31 Zeilen
 - `src/core/games/contracts.ts` — Die Naht zwischen Spielregel, Geld und Anzeige: Aktion rein, Result raus. — gelesen: 112 Zeilen
 - `src/core/games/dice-bets.ts` — Die fuenf Wettfelder am Wuerfeltisch: Trefferregel, Auszahlung und ein einzelner Wurf. — gelesen: 55 Zeilen
 - `src/core/games/engines/__tests__/blackjack.test.ts` — Die Runde gehoert dem Spieler: Split, Versicherung, Aufgeben und die — gelesen: 110 Zeilen
@@ -1039,7 +1045,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/blackjack-rules.ts` — Tischregeln und Kartenarithmetik des Blackjacks: was erlaubt ist, was eine Hand — gelesen: 134 Zeilen
 - `src/core/games/engines/blackjack-settle.ts` — Dealerzug und Abrechnung: was jede Hand wert ist und wie die Runde endet. — gelesen: 80 Zeilen
 - `src/core/games/engines/blackjack.ts` — Blackjack mit echten Entscheidungen: Ziehen, Halten, Verdoppeln, Split, — gelesen: 160 Zeilen
-- `src/core/games/engines/cards.ts` — Karten-Engines: Blackjack mit echten Entscheidungen, Video Poker mit Hold/Draw. — gelesen: 143 Zeilen
+- `src/core/games/engines/cards.ts` — Karten-Engines: Blackjack mit echten Entscheidungen, Video Poker mit Hold/Draw. — gelesen: 150 Zeilen
 - `src/core/games/engines/interactive-cards.ts` — Kartenrunden mit Spielerentscheidung: Blackjack Zug fuer Zug, Video Poker mit Hold. — gelesen: 96 Zeilen
 - `src/core/games/engines/slot-models.ts` — Die drei Bewertungsmodelle des Slots: Linien, Ways und Cluster. — gelesen: 196 Zeilen
 - `src/core/games/engines/slot-odds.ts` — Chancen-Kalibrierung des Slots: wie viel eine Walzenanzahl auszahlt. — gelesen: 63 Zeilen
@@ -1056,7 +1062,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/poker-strategy.ts` — Spielerische Entscheidungen: Staerke aus den Karten, Aktion aus Staerke und Pot. — gelesen: 106 Zeilen
 - `src/core/games/poker-table.ts` — Rundenpoker am Tisch: vier Spieler, je Strasse eine Setzrunde, Pot für alle. — gelesen: 158 Zeilen
 - `src/core/games/poker-types.ts` — Gemeinsame Formen der Pokerrunde: Tisch, Spieler, Ergebnis. — gelesen: 56 Zeilen
-- `src/core/games/risk-card.ts` — Risiko-Karte nach einem Gewinn: eine Farbe, 50/50, gebucht in doppelter Buchfuehrung. — gelesen: 44 Zeilen
+- `src/core/games/risk-card.ts` — Risiko-Karte nach einem Gewinn: eine Farbe, 50/50, gebucht in doppelter Buchfuehrung. — gelesen: 42 Zeilen
 - `src/core/games/roulette-table.ts` — Europaeisches Roulette-Tableau: mehrere Jetons gleichzeitig, eine Kugel. — gelesen: 128 Zeilen
 - `src/core/games/round.ts` — Dispatcher: jedes Spiel hat seine eigene Engine, alle liefern dieselbe Ergebnisform. — gelesen: 87 Zeilen
 - `src/core/games/sandbox.ts` — Ein Regelsatz, zwei Ausfuehrungsmodi. — gelesen: 61 Zeilen
@@ -1077,11 +1083,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/scripts-libs.d.ts` — Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 68 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
-- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 58 Zeilen
+- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 59 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
+- `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
 - `src/core/io/envelope.ts` — Umschlag fuer Spielstand-Exporte: Art, Format, Pruefsumme, Nutzlast. — gelesen: 66 Zeilen
-- `src/core/io/issues.ts` — Import-Befunde: blockieren, automatisch reparieren oder ignorieren. — gelesen: 42 Zeilen
-- `src/core/io/repair.ts` — Repariert, was ohne Regelverstoss reparierbar ist; Blocker bleiben Blocker. — gelesen: 42 Zeilen
+- `src/core/io/issues.ts` — Import-Befunde: blockieren, automatisch reparieren oder ignorieren. — gelesen: 50 Zeilen
+- `src/core/io/repair.ts` — Repariert, was ohne Regelverstoss reparierbar ist; Blocker bleiben Blocker. — gelesen: 47 Zeilen
 - `src/core/physics/__tests__/physics.test.ts` — Fester Zeitschritt, echte Impulse: die Render-FPS darf den Ausgang nicht aendern. — gelesen: 124 Zeilen
 - `src/core/physics/body.ts` — Koerper der Headless-Physik: lokale Form, Welt-Transformation, Masse und Traegheit. — gelesen: 133 Zeilen
 - `src/core/physics/geometry.ts` — Geometrie fuer Kollisionen: naechster Punkt, Punkt-in-Polygon, Kanten, Oberflaechengeschwindigkeit. — gelesen: 45 Zeilen
@@ -1100,7 +1107,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 118 Zeilen
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
+- `src/core/sim/__tests__/dirty-index.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
+- `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
 - `src/core/sim/__tests__/foreign-floor-tick.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 52 Zeilen
 - `src/core/sim/__tests__/grid-zones.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 87 Zeilen
@@ -1126,42 +1135,43 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/shot-seed.test.ts` — Screenshot-Saat: eine eingerichtete Etage als Save-JSON ablegen, damit die — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/soak.test.ts` — Langlauf: Ledger bleibt integer und gedeckt, und der Betrieb steht ueber — gelesen: 110 Zeilen
 - `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 82 Zeilen
+- `src/core/sim/__tests__/tx-reasons.test.ts` — Jeder Grund, den ein Aufrufer bucht, muss in der Kennzahl landen, die er — gelesen: 81 Zeilen
 - `src/core/sim/__tests__/tycoon-needs.test.ts` — Bedürfnisse steuern Gastentscheidungen; Wut wird zum sichtbaren Streit mit Schaden. — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/tycoon-ops.test.ts` — Käufe kommen als Kiste, Personal arbeitet auf dem Floor, WC verstopft, Umbau braucht Ruf. — gelesen: 221 Zeilen
 - `src/core/sim/__tests__/visitors.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/sim/__tests__/world.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 201 Zeilen
-- `src/core/sim/actions.ts` — Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. — gelesen: 164 Zeilen
+- `src/core/sim/actions.ts` — Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. — gelesen: 165 Zeilen
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 53 Zeilen
-- `src/core/sim/deliveries.ts` — Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. — gelesen: 197 Zeilen
+- `src/core/sim/deliveries.ts` — Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. — gelesen: 198 Zeilen
 - `src/core/sim/demand.ts` — Nachfrage: Ankuenfte werden geplant statt pro Tick gewuerfelt. — gelesen: 191 Zeilen
 - `src/core/sim/desk-service.ts` — Kasse: Warteschlange, Bedienzeit und Wechsel von Fiat in Chips. — gelesen: 45 Zeilen
 - `src/core/sim/device.ts` — Geräteidentität und Spieltyp sind zwei verschiedene Fragen. — gelesen: 44 Zeilen
-- `src/core/sim/disputes.ts` — Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. — gelesen: 141 Zeilen
+- `src/core/sim/disputes.ts` — Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. — gelesen: 142 Zeilen
 - `src/core/sim/duel-opponent.ts` — Gegnerprofil eines Streits: abgeleitet, ohne PRNG, damit Vorschau und Kampf gleich sehen. — gelesen: 56 Zeilen
 - `src/core/sim/duel.ts` — Duell: ein echter Kampf mit Lebenspunkten gegen den Rädelsführer des Streits, inklusive Überfall-Folge. — gelesen: 126 Zeilen
-- `src/core/sim/economics.ts` — Wirtschaftliche Kennzahlen als reine Ableitung aus den Ledger-Buchungen. — gelesen: 119 Zeilen
-- `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 51 Zeilen
-- `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 97 Zeilen
+- `src/core/sim/economics.ts` — Wirtschaftliche Kennzahlen als reine Ableitung aus den Ledger-Buchungen. — gelesen: 121 Zeilen
+- `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 54 Zeilen
+- `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 98 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
 - `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 81 Zeilen
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 108 Zeilen
 - `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 118 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 21 Zeilen
-- `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 101 Zeilen
+- `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 103 Zeilen
 - `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 76 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 119 Zeilen
 - `src/core/sim/journal.ts` — Ereignisprotokoll: jeder wichtige Zustand mit Ursache, Wirkung und Akteur. — gelesen: 145 Zeilen
-- `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 123 Zeilen
+- `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 125 Zeilen
 - `src/core/sim/movement-queue.ts` — Zentrale Bewegungs- und Warteschlangen-Logik für alle Entitäten. — gelesen: 114 Zeilen
 - `src/core/sim/mugging.ts` — Simulierter Überfall nach einer verlorenen Prügelei: Ziel wählen, greifen, fliehen. — gelesen: 79 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 51 Zeilen
 - `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 67 Zeilen
 - `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 91 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 72 Zeilen
-- `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 49 Zeilen
+- `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 50 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 177 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern. — gelesen: 184 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
@@ -1169,19 +1179,20 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 134 Zeilen
 - `src/core/sim/player-look.ts` — Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. — gelesen: 56 Zeilen
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 117 Zeilen
-- `src/core/sim/player.ts` — Spieler-Commands: Laufen, Tragen, Zapfen, Kasse, Deko, Ausbau. Mit Weg und Reichweite. — gelesen: 130 Zeilen
+- `src/core/sim/player.ts` — Spieler-Commands: Laufen, Tragen, Zapfen, Kasse, Deko, Ausbau. Mit Weg und Reichweite. — gelesen: 131 Zeilen
 - `src/core/sim/progression.ts` — Unternehmensfortschritt: das Casino waechst, nicht der Charakter. — gelesen: 160 Zeilen
 - `src/core/sim/queue-spots.ts` — Kassenschlange: eindeutige, erreichbare Wartepositionen – auch bei grossem Andrang. — gelesen: 56 Zeilen
 - `src/core/sim/remodel.ts` — Umbau: Voraussetzungen und Deckung pruefen, dann das bestehende Haus erweitern. — gelesen: 30 Zeilen
 - `src/core/sim/rivals.ts` — Fremde Casinos: eigene Betreiber, eigene Maschinen, eigene Regeln. — gelesen: 181 Zeilen
-- `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 94 Zeilen
+- `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 95 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
 - `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 70 Zeilen
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 240 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 115 Zeilen
-- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 137 Zeilen
+- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 138 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 73 Zeilen
+- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 74 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 116 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 83 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 63 Zeilen
@@ -1257,20 +1268,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-roundtrip.test.ts` — Speichern, laden und danach exakt dieselbe Simulation fortsetzen. — gelesen: 84 Zeilen
 - `src/store/__tests__/save-staff.test.ts` — Alte Speicherstaende trugen den Guard als Flag neben den Agenten. Beim Laden — gelesen: 77 Zeilen
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
+- `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 41 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. — gelesen: 134 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 38 Zeilen
-- `src/store/memory.bench.ts` — Speicher- und Save-Groesse: eine definierte 1000-Tick-Sitzung, kein Sample-Ring. — gelesen: 32 Zeilen
+- `src/store/memory.bench.ts` — Speicher- und Save-Groesse: eine definierte 1000-Tick-Sitzung, kein Sample-Ring. — gelesen: 33 Zeilen
 - `src/store/migrate-narrative.ts` — Hydration der Narrative-Domaene und der Besucher-Erinnerungen beim Laden. — gelesen: 19 Zeilen
 - `src/store/migrate-staff.ts` — Personal-Migration alter Speicherstaende. — gelesen: 38 Zeilen
 - `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 219 Zeilen
-- `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 85 Zeilen
+- `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 86 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 47 Zeilen
 - `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
-- `src/store/save.ts` — Save v9: Welt + Ledger-Log + Journal + PRNG + Narrative-Domaene. Nichts anderes besitzt Geld. — gelesen: 139 Zeilen
+- `src/store/save.ts` — Save v9: Welt + Ledger-Log + Journal + PRNG + Narrative-Domaene. Nichts anderes besitzt Geld. — gelesen: 140 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
 - `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 127 Zeilen
-- `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 47 Zeilen
+- `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 101 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 150 Zeilen
@@ -1282,13 +1294,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
 - `src/ui/__tests__/card-tables.test.tsx` — Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden, — gelesen: 118 Zeilen
+- `src/ui/__tests__/casino-window-header.test.tsx` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 103 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 192 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. — gelesen: 176 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 177 Zeilen
-- `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 50 Zeilen
+- `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/diagnostics-popup.tsx` — Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. — gelesen: 124 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
 - `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 109 Zeilen
@@ -1305,10 +1318,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/games/shell-popup.tsx` — Huetchen-Fenster: zeigen, mischen, dann waehlt der Spieler selbst einen Becher. — gelesen: 129 Zeilen
 - `src/ui/games/slot-popup.tsx` — Ein Slot-Fenster: Walzen, Wettkonsole und die Risiko-Karte nach jedem Gewinn. — gelesen: 140 Zeilen
 - `src/ui/games/video-poker-popup.tsx` — Video Poker: fuenf Karten, Halten per Klick, Nachziehen, Auszahlung nach 9/6-Tabelle. — gelesen: 159 Zeilen
-- `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 32 Zeilen
+- `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 44 Zeilen
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 144 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 98 Zeilen
-- `src/ui/hud.tsx` — HUD: Hauskonto, Gäste und die drei Dinge, die jetzt zählen – in Klartext. — gelesen: 172 Zeilen
+- `src/ui/hud.tsx` — HUD: Hauskonto, Gäste und die drei Dinge, die jetzt zählen – in Klartext. — gelesen: 173 Zeilen
 - `src/ui/icons.ts` — Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. — gelesen: 27 Zeilen
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 107 Zeilen
@@ -1335,6 +1348,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T29 | **2026-11-02 10:52 UTC**: Vier offene Befunde gefixt. `dirtyTileIndex` in `emotion.ts` als gemeinsame Kacheladresse fuer `tick`, `disputes`, `needs`, `guest-play` (vorher `(y+1)*size+x+1`); Royal Flush verlangt Farbe, Wheel ist Strasse in `engines/cards.ts`, `evaluatePokerHand` exportiert; Dreckschicht als eigenes `dirt`-Feld zwischen Teppich und Moebeln (`scene-cache.ts`, `floor-view.ts`); Ueberfallverluste vor dem Quellkonto-Filter in `economics.ts`. Neue Tests: `dirty-index`, `economy-losses`, `video-poker-ranks` (9 gruen, 8 davon zuerst rot). v1.13. |
+| T28 | **2026-11-02 10:42 UTC**: Governance entdoppelt. Neu: `scripts/lib/error-codes.mjs` (liest `error-codes.ts`, 30 Codes), `scripts/lib/subsystems.mjs` (12 Ordnerregeln, 16 Subsysteme, 15 Katalogsysteme, 11 Impact-Bereiche), `src/Config/escalation-levels.json`, `src/core/io/__tests__/escalation.test.ts`. `ERR-1001` in `error-codes.ts` und `docs/ERROR_CATALOG.md` nachgetragen; `issues.ts`/`transfer.ts` nutzen `ERROR_CODES.TRANSFER_INVALID.code`; `report.mjs`, `verify-tree.mjs`, `test-catalog.mjs`, `affected-tests.mjs`, `impact.mjs`, `escalation.mjs` lesen die gemeinsamen Quellen. Offen: `verify-redundancy.mjs` parst den Katalog weiterhin selbst. v1.12. |
 | T27 | **2026-11-01 23:18 UTC**: README-Onboarding und Entwicklerstart neu geordnet; Startkapital gegen `world-store` geprüft; Nutzerbanner übernommen, drei SVG-Trenner erstellt; Tree-Gate um JPEG-Belege ergänzt; pnpm-Setup in acht CI-Jobs ergänzt und Syntaxfehler im Version-Bump behoben. PR #39 war zunächst konfliktfrei, aber CI rot (pnpm fehlte); neue Gates und Merge stehen noch aus. Nach dem Merge WIP-Branches lokal und remote prüfen. |
 | T26 | **2026-11-01 21:55 UTC**: Config-Umzug nachgezogen. Befund: `src/Config/capacitor.config.json` fehlte im Commit, weil `.gitignore` die Regel `capacitor.config.json` ungeankert fuehrte und damit auch die Quelle traf. Behoben: Regel auf `/capacitor.config.json` verankert (nur die Laufzeit-Kopie), Datei aus der History zurueck, `git check-ignore` als Probe. v1.23. |
 | T25 | **2026-11-01 21:05 UTC**: Review-Nachlauf: fatale Promotion-Luecken geschlossen. Merge nutzt `PROMOTE_TOKEN` oder stoesst `Auto Version & Release` an; `integration` in `pr-cleanup.yml` und `branch-prune.mjs` geschuetzt; `cancelled` ist kein Urteil; `gh pr update-branch` gegen den Strict-Policy-Deadlock; leerer PR-Body ist `ERR-4006`. Gelesen: alle sechs Workflows, `ci-tag-release.mjs`, `verify-commit-msg.mjs`, `branch-cleanup.mjs`, `lib/escalation.mjs`. v1.22. |

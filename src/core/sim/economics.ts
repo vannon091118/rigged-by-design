@@ -7,6 +7,7 @@ import type { Ledger } from '../economy/ledger';
 import type { LedgerEntry } from '../economy/ledger-integrity';
 import { HAUSKONTO, SHOP, STAFF, UTILITIES, DEBT_ACCOUNT } from './money';
 import { ROBBERY_ACCOUNT } from './penalty-pool';
+import { guestReasonKind, shopBucket } from './tx-reasons';
 
 export interface EconomySummary {
   /** Einsatzvolumen (Bruttospielumsatz): alles, was Gaeste ins Haus spielen. */
@@ -44,8 +45,6 @@ interface Totals {
 }
 
 const MICRO = 10_000;
-const OPERATING_SHOP = new Set(['reinigung', 'grossreinigung', 'reparatur', 'mod betrieb']);
-const GOODS_SHOP = new Set(['getraenkekiste', 'ersatzteile']);
 
 const cursors = new WeakMap<Ledger, { seq: number; totals: Totals }>();
 
@@ -58,9 +57,12 @@ function emptyTotals(): Totals {
 
 function classify(entry: LedgerEntry, t: Totals): void {
   const { from, to, amount, reason } = entry;
+  // Ein Ueberfall trifft die Kasse oder das Portemonnaie; beides ist ein Verlust.
+  if (to === ROBBERY_ACCOUNT) { t.losses += amount; return; }
   if (to === HAUSKONTO && from.startsWith('VISITOR_')) {
-    if (reason.endsWith(' einsatz')) t.stakeVolume += amount;
-    else if (reason.endsWith(' drink') || reason === 'getraenk') t.serviceRevenue += amount;
+    const kind = guestReasonKind(reason);
+    if (kind === 'STAKE') t.stakeVolume += amount;
+    else if (kind === 'DRINK') t.serviceRevenue += amount;
     return;
   }
   // Auszahlungen und laufende Kosten koennen aus der Kasse oder aus der Verbindlichkeit kommen.
@@ -73,10 +75,10 @@ function classify(entry: LedgerEntry, t: Totals): void {
   }
   if (to === STAFF) t.wages += amount;
   else if (to === UTILITIES) t.rent += amount;
-  else if (to === ROBBERY_ACCOUNT) t.losses += amount;
   else if (to === SHOP) {
-    if (OPERATING_SHOP.has(reason)) t.operatingRepairs += amount;
-    else if (GOODS_SHOP.has(reason)) t.goods += amount;
+    const bucket = shopBucket(reason);
+    if (bucket === 'operating') t.operatingRepairs += amount;
+    else if (bucket === 'goods') t.goods += amount;
     else t.investment += amount;
   }
   // Entnahmen an PORTEMONNAIE sind weder Kosten noch Ertrag.

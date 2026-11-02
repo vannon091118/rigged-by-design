@@ -1,4 +1,5 @@
 /** Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. */
+import { ERROR_CODES } from '../core/governance/error-codes';
 import { buildEnvelope, parseEnvelope, type TransferEnvelope } from '../core/io/envelope';
 import { blocking, countIssues, type TransferIssue } from '../core/io/issues';
 import { repairPayload } from '../core/io/repair';
@@ -40,7 +41,7 @@ export function planImportData(raw: string): { report: TransferReport; loaded: L
   if (blocking(issues)) return { report: summarize(issues), loaded: null };
   const loaded = replaySave(repaired.payload);
   if (!loaded) {
-    issues.push({ code: 'ERR-5001', level: 'FATAL', path: 'world', message: 'Welt oder Ledger liessen sich nicht wiederherstellen.' });
+    issues.push({ code: ERROR_CODES.TRANSFER_INVALID.code, level: 'FATAL', path: 'world', message: 'Welt oder Ledger liessen sich nicht wiederherstellen.' });
     return { report: summarize(issues), loaded: null };
   }
   return { report: summarize(issues), loaded };

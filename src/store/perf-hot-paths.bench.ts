@@ -5,6 +5,7 @@
  * Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor.
  * Bewusst nicht Teil von verify:all: misst Geschwindigkeit, wird nie rot.
  */
+import { MINTING_ACCOUNT } from '../core/economy/ledger-integrity';
 import { test } from 'vitest';
 import { measure } from '../test/measure';
 import { Ledger } from '../core/economy/ledger';
@@ -33,14 +34,14 @@ function guest(id: number): Guest {
 const world = createWorld('LARGE');
 ensureStarter(world);
 const ledger = new Ledger();
-ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(5000), 'start', 0);
+ledger.transfer(MINTING_ACCOUNT, HAUSKONTO, fromVC(5000), 'start', 0);
 for (let index = 1; index <= GUESTS; index += 1) {
   const entry = guest(index);
   world.guests.push(entry);
-  ledger.transfer('EXTERNAL_WORLD', guestAccount(entry.id), fromVC(2), 'chips', 0);
+  ledger.transfer(MINTING_ACCOUNT, guestAccount(entry.id), fromVC(2), 'chips', 0);
 }
 for (let index = 0; index < HISTORY; index += 1) {
-  ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(0.0001), 'verlauf', 0);
+  ledger.transfer(MINTING_ACCOUNT, HAUSKONTO, fromVC(0.0001), 'verlauf', 0);
 }
 for (let index = 0; index < 2000; index += 1) {
   recordJournal(world, { kind: 'MONEY', subject: 'verlauf', cause: 'Messung', effect: `Ereignis ${index}`, refs: { guestId: 1 } });

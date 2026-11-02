@@ -4,6 +4,7 @@ import type { VaCoinMicro } from '../economy/vacoin';
 import { clamp } from './guest-core';
 import { recordJournal } from './journal';
 import { HAUSKONTO, payOrBorrow, SHOP } from './money';
+import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
 import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
@@ -56,19 +57,19 @@ function orderCrate(
 export function buyCrate(world: WorldState, ledger: Ledger, buildId: BuildId): Crate {
   assertUnlocked(world, ledger, buildId);
   const def = getBuildDef(buildId);
-  return orderCrate(world, ledger, { kind: 'FURNITURE', buildId }, def.cost, `kauf ${def.name}`);
+  return orderCrate(world, ledger, { kind: 'FURNITURE', buildId }, def.cost, `${TX_PREFIX.BUILD_PURCHASE}${def.name}`);
 }
 
 export function orderDrinks(world: WorldState, ledger: Ledger, count: number): Crate {
   if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error('1 bis 12 Getränke pro Kiste.');
   return orderCrate(world, ledger, { kind: 'DRINKS', count },
-    (world.prices.drinkCrateCost * count) as VaCoinMicro, 'getraenkekiste', true);
+    (world.prices.drinkCrateCost * count) as VaCoinMicro, TX_REASON.DRINK_CRATE, true);
 }
 
 export function orderParts(world: WorldState, ledger: Ledger, count: number): Crate {
   if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error('1 bis 12 Ersatzteile pro Kiste.');
   return orderCrate(world, ledger, { kind: 'PARTS', count },
-    (world.prices.partCost * count) as VaCoinMicro, 'ersatzteile', true);
+    (world.prices.partCost * count) as VaCoinMicro, TX_REASON.SPARE_PARTS, true);
 }
 
 /** Aufnehmen markiert die Kiste als getragen; sie liegt nicht mehr herum. */
@@ -165,7 +166,7 @@ export function deliverDrink(world: WorldState, ledger: Ledger, guest: Guest, ba
     return false;
   }
   try {
-    ledger.transfer(`VISITOR_${guest.id}`, HAUSKONTO, world.prices.drinkPrice, 'getraenk', world.tick);
+    ledger.transfer(`VISITOR_${guest.id}`, HAUSKONTO, world.prices.drinkPrice, TX_REASON.DRINK_SALE, world.tick);
   } catch { return false; }
   bar.stock -= 1;
   guest.thirst = 0;

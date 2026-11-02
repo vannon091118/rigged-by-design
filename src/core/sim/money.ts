@@ -1,12 +1,14 @@
 /** Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. */
 import type { Ledger } from '../economy/ledger';
+import { MINTING_ACCOUNT } from '../economy/ledger-integrity';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
+import { guestReason, TX_REASON } from './tx-reasons';
 
 export const HAUSKONTO = 'HAUSKONTO';
 export const PORTEMONNAIE = 'PORTEMONNAIE';
 export const WECHSELKASSE = 'WECHSELKASSE';
-const EXTERNAL = 'EXTERNAL_WORLD';
-export { EXTERNAL };
+/** Aussenwelt-Konto; die Schreibweise kommt aus der Ledger-Pruefung, nicht von hier. */
+export const EXTERNAL = MINTING_ACCOUNT;
 export const SHOP = 'SHOP';
 export const STAFF = 'STAFF';
 export const UTILITIES = 'UTILITIES';
@@ -23,7 +25,7 @@ const STARTING_CAPITAL = fromVC(150);
 
 /** Der einzige Geldzufluss von aussen beim Start; jede weitere Zahl ist eine Buchung. */
 export function openHouse(ledger: Ledger, tick: number): VaCoinMicro {
-  ledger.transfer(EXTERNAL, HAUSKONTO, STARTING_CAPITAL, 'startkapital', tick);
+  ledger.transfer(EXTERNAL, HAUSKONTO, STARTING_CAPITAL, TX_REASON.START_CAPITAL, tick);
   return STARTING_CAPITAL;
 }
 
@@ -63,7 +65,7 @@ export function exchangeFromVc(ledger: Ledger, guestId: number, amount: VaCoinMi
 }
 
 export function placeBet(ledger: Ledger, guestId: number, amount: VaCoinMicro, tick: number): void {
-  ledger.transfer(guestAccount(guestId), HAUSKONTO, amount, `gast ${guestId} einsatz`, tick);
+  ledger.transfer(guestAccount(guestId), HAUSKONTO, amount, guestReason('STAKE', guestId), tick);
 }
 
 /** Volle Auszahlung: was das Hauskonto nicht deckt, wird als Schuld gebucht statt gekappt. */
@@ -110,14 +112,14 @@ export function payPending(ledger: Ledger, guestId: number, tick: number): VaCoi
 
 export function playerTakeHome(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
   if (amount <= ZERO_VC) return;
-  ledger.transfer(HAUSKONTO, PORTEMONNAIE, amount, 'betreiber entnahme', tick);
+  ledger.transfer(HAUSKONTO, PORTEMONNAIE, amount, TX_REASON.TAKE_HOME, tick);
 }
 
 export function foreignBet(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
-  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, 'fremdes haus einsatz', tick);
+  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, TX_REASON.FOREIGN_STAKE, tick);
 }
 
 export function foreignWin(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
   if (amount <= ZERO_VC) return;
-  ledger.transfer(EXTERNAL, PORTEMONNAIE, amount, 'fremdes haus gewinn', tick);
+  ledger.transfer(EXTERNAL, PORTEMONNAIE, amount, TX_REASON.FOREIGN_WIN, tick);
 }

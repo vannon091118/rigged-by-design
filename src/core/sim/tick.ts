@@ -17,6 +17,7 @@ import { decay, releaseOrphanSeats, staffTick } from './upkeep';
 import { tickForeignFloor } from './foreign-floor-tick';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, furnitureById, sendGuest } from './world';
+import { dirtyTileIndex } from './emotion';
 
 function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest): void {
   guest.stateTicks += 1;
@@ -29,7 +30,7 @@ function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest):
       const damage = 4 + prng.nextInt(0, 10);
       target.condition = Math.max(0, target.condition - damage);
       target.damaged = true;
-      world.dirty.add((target.y + 1) * world.size + target.x + 1);
+      world.dirty.add(dirtyTileIndex(world.size, target.x, target.y));
       world.lastEvent = `${guest.name} hat ${target.label} beschädigt.`;
     } else {
       world.lastEvent = guard ? 'Der Guard hat Schlimmeres verhindert.' : `${guest.name} tobt, aber nichts geht kaputt.`;

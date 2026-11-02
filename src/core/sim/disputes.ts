@@ -4,6 +4,7 @@ import { staffAgents } from './staff-queries';
 import { grantGlobalXp } from './player-rpg';
 import type { Dispute, Point, WorldState } from './types';
 import { furnitureById, guestById } from './world';
+import { dirtyTileIndex } from './emotion';
 
 const BRAWL_RANGE = 5;
 /**
@@ -119,7 +120,7 @@ export function tickDisputes(world: WorldState): void {
       if (live) {
         live.condition = Math.max(0, live.condition - 10);
         live.damaged = true;
-        world.dirty.add((live.y + 1) * world.size + live.x + 1);
+        world.dirty.add(dirtyTileIndex(world.size, live.x, live.y));
         world.lastEvent = `Im Streit ging ${live.label} zu Bruch.`;
       }
     }

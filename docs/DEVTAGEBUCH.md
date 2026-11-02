@@ -10,6 +10,26 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-02 - Dreck, Video Poker und Ueberfaelle an der Ursache
+
+**Ziel.** Die vier offenen Befunde schliessen: falsche Kacheladresse beim Dreck, falsche Video-Poker-Raenge, verdeckte Dreckschicht, verschluckte Ueberfallverluste.
+
+**Umsetzung.** Der Dreck-Schreiber und der Dreck-Leser waren sich uneinig: `dirtyNear` dekodiert `x = index % size`, `y = floor(index / size)`, waehrend `tick.ts` und `disputes.ts` `(y+1)*size+x+1` schrieben — jeder Randale- und Streitfleck lag eine Kachel schraeg daneben, teils ausserhalb des Bodens. Die Adresse steht jetzt einmal als `dirtyTileIndex(size, x, y)` in `emotion.ts`, direkt neben dem Leser; alle vier Schreiber (`tick`, `disputes`, `needs`, `guest-play`) nutzen sie. Video Poker: `royal` verlangte keine Farbe, jede 10-bis-Ass-Strasse zahlte 250x, und das Wheel A-2-3-4-5 wurde als `NOTHING` gewertet; beides folgt jetzt der interaktiven Engine (`straightHigh && flush`, zusaetzlich `wheel`). `evaluatePokerHand` ist dafuer exportiert. Die Dreckschicht war erstes Kind des Moebel-Containers und lag damit unter allen Moebeln; sie ist jetzt ein eigenes `dirt`-Feld im Szenen-Cache und wird in `floor-view` zwischen Teppich und Moebeln eingehaengt. Im Wirtschaftsbericht stieg `classify` bei `from !== HAUSKONTO` aus, bevor der Ueberfallstopf geprueft wurde — ein Ueberfall auf das Portemonnaie (`simulateMugging` waehlt das groessere der beiden Konten) verschwand lautlos. Die Pruefung steht jetzt vor dem Quellkonto-Filter.
+
+**Pruefungen.** Fail-First: `dirty-index.test.ts`, `economy-losses.test.ts` und `video-poker-ranks.test.ts` liefen zuerst mit 8 roten Tests (zwei fehlende Exporte, sechs falsche Ergebnisse), danach 9/9 gruen; der Hauskonto-Ueberfall war schon vorher gruen und bleibt die Baseline. `pnpm run typecheck` und `pnpm run lint` je Exit 0. Der volle `verify:all` folgt am Turn-Ende.
+
+**Offen.** Fuer die Schichtreihenfolge gibt es keinen Unit-Test — PixiJS laesst sich in jsdom nicht sinnvoll aufbauen; sie ist ueber Typecheck, Build und einen Screenshot am Dev-Server geprueft. `mugging.ts` selbst bleibt unveraendert: die Wahl zwischen Kasse und Brieftasche ist Spielregel.
+
+## 2026-11-02 - Governance-Quellen entdoppelt: ein Fehlerregister, eine Subsystemliste, eine Eskalationsleiter
+
+**Ziel.** Governance-Quellen entdoppelt: ein Fehlerregister, eine Subsystemliste, eine Eskalationsleiter
+
+**Umsetzung.** Vier Governance-Definitionen lagen mehrfach vor. `scripts/lib/error-codes.mjs` liest jetzt das Register `src/core/governance/error-codes.ts` selbst; `report.mjs` reicht `catalogCodes()` nur noch weiter, die Markdown-Tabelle ist Dokumentation statt Pruefgrundlage. Ursache des Umbaus war `ERR-1001`: `verify-test-quality.mjs` feuerte den Code, er stand in keinem Register, `line()` degradierte ihn still zu `ERR-0000` — der eine Zustand, der sofort blockiert. Der Code ist jetzt registriert. `issues.ts` und `transfer.ts` benutzen `ERROR_CODES.TRANSFER_INVALID.code`. `scripts/lib/subsystems.mjs` haelt Subsysteme (Prefix, Name, Katalogrolle, Impact-Doku, Invarianten) und die Ordnerregeln; Tree-Gate, Testkatalog, `subsystemOf` und die Impact-Bereiche leiten daraus ab. Die Eskalationsleiter steht als `src/Config/escalation-levels.json`; `escalation.mjs` liest die Datei, `issues.ts` traegt dieselbe Liste typisiert, ein Test vergleicht beide.
+
+**Pruefungen.** `node -e` gegen die neue Bruecke meldet 30 registrierte Codes und `ERR-1001` als bekannt; die Leiter liest `AUTO_FIX -> LOCAL_GATE -> REMOTE_CI -> AGENT -> BLOCKED`; das Tree-Gate laeuft direkt mit PASS. `vitest run` auf `escalation.test.ts`, `dependency-governance.test.ts` und `transfer.test.ts` ergibt 10 gruene Tests. Der volle Lauf steht am Turn-Ende.
+
+**Offen.** `verify-redundancy.mjs` liest `docs/ERROR_CATALOG.md` weiterhin direkt, um doppelte Eintraege zu finden — das gehoert zur Doku-Pruefung, nicht zur Codekenntnis, und bleibt bewusst so. Der TypeScript-Typ der Leiter kann aus JSON nicht abgeleitet werden; die Bindung leistet der Test, nicht der Compiler.
+
 ## 2026-11-01 - README-Onboarding und pnpm-CI nachgezogen
 
 **Ziel.** Ein gemeinsamer Einstieg soll die Spielwelt satirisch eröffnen und neue Entwickler ohne Suche durch Werkzeuge und Verträge führen. Das README beschreibt den heutigen Stand, ohne endgültige Vision oder unveränderliche Mechaniken zu behaupten.
@@ -459,7 +479,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.71 | 2026-11-01 23:38 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 10:57 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
