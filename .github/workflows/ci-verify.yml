@@ -5,9 +5,11 @@ name: CI Verify
 # Job-Name "Fail-Closed Gates" ist der Pflichtstatus, den das Ruleset aus
 # docs/CI-GATES.md verlangt.
 on:
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened]
+  # Ein Lauf pro Commit: der Push auf den Branch deckt den Pull Request ab
+  # (gleicher Head-SHA, gleiche zwoelf Gates). Ein zweiter, PR-getriggerter
+  # Lauf desselben Commits wurde von GitHub abgebrochen und stand als
+  # "failure" am Head-SHA, obwohl der Push-Lauf gruen war; er blockierte damit
+  # den Pflichtstatus. Feature-Branches prueft zusaetzlich pr-escalation.yml.
   push:
     branches: ['**']
   workflow_dispatch:
