@@ -2,10 +2,10 @@
 
 **Repository:** `vannon091118/rigged-by-design`  
 **Geprüfter Stand:** `main` · `7cca88a5bc658729868fa517dd694d847ab32961` · Version `0.3.64`  
-**Revision:** 2026-11-01 · adversariale Härtung (§9–§13), kein Task gestrichen  
-**Umsetzungsstand:** NAR-00 bis NAR-03 umgesetzt (Vertrag, Save v9, Facts, Gedaechtnis, Start-Pool); NAR-04 bis NAR-17 offen  
+**Revision:** 2026-11-02 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, vier Fact-Typen, begrenztes Besuchsgedächtnis, Start-Pool); deren Restanforderungen und NAR-04 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
-**Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Das LLM formuliert ausschließlich Darstellungstext; Spielregeln und Effekte bleiben deterministisch und code-kontrolliert.
+**Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
 ---
 
@@ -27,12 +27,14 @@
 
 ### Konkrete Lücken
 
-1. **Visitor ist noch kein fortbestehender Charakter.** `Visitor` speichert nur `id`, `name`, `persona`, `visits`, `lastSeenTick` und optional `experience`. Beim Rückkehr-Spawn werden die temporären Guest-Werte durch `makeGuest()` neu erzeugt. Es gibt keine persönlichen Erinnerungen, Präferenzen, Beziehungswerte oder erzählerischen Flags.
+Vor NAR-04 verbleiben aus NAR-02/NAR-03 insbesondere weitere Fact-Kategorien, ein eigener Ledger-Cursor, referenzsichere Visitor-Retention und Charaktermerkmale. Der ursprüngliche Ausgangsstand in diesem Abschnitt wurde an den vorhandenen Code angepasst; er ist kein Nachweis vollständiger Meilensteine.
+
+1. **Visitor ist eine persistente Identität mit begrenzten Erinnerungen**, aber noch kein vollständiger Charakter. Bis zu sechs Erinnerungen aus abgeschlossenen Besuchen beeinflussen Rückkehrchance und Spawn-Laune. Präferenzen, Beziehungswerte, Story-Pinning und weitere Fact-Kategorien fehlen.
 2. **Die Besucher-Registry ist auf 40 Einträge begrenzt und entfernt aktuell stumpf den ältesten `lastSeenTick`.** Eine spätere Story-Engine darf dadurch keine Figur verlieren, die noch in einer aktiven Geschichte oder Beziehung referenziert wird.
 3. **Das Journal ist kein vollständiger Simulations-Fact-Stream.** Einige Abläufe schreiben Journal-Einträge, andere setzen nur `world.lastEvent` oder verändern direkt Zustand. `settleMoneyJournal()` kopiert Ledger-Buchungen genau einmal ins Journal. Das Journal ist Spielerhistorie, kein hinreichender Trigger- oder Memory-Feed.
 4. **`demandEvent` ist ein zweites, kleines Event-System.** Es kann genau zwei Event-Arten starten/beenden und wirkt auf die Nachfrage. Die neue Engine darf nicht dauerhaft als paralleler zweiter Scheduler daneben existieren.
 5. **Rivalen handeln nicht autonom.** `rivals.ts` enthält statische Betreiberdefinitionen und berechnet Reputation aus `(Rivale, Tick)`. Foreign Floors simulieren vor allem den Spielerjob, keine eigenständige Rivalenstrategie.
-6. **Es gibt keine erkennbare Narrative Engine, Event-Template-Registry, Content-Registry, LLM-Anbindung oder Event-Command-DSL.** Die vorhandene `AGENTS.md` ist eine Entwicklungsanweisung, kein Content-Pool.
+6. **Es gibt eine Fact-/Memory-Grundlage und eine Content-Inbox**, aber noch keine Event-Template-Registry, nutzbare Content-Registry, Command-DSL oder einen Composer. Eine LLM-Anbindung im Spiel ist ausgeschlossen.
 7. **UI-Snapshots enthalten keine Visitor-Registry.** `GameView` zeigt aktuelle Gäste, Journal und Nachfrage, aber keine vollständigen persistenten Besucherprofile.
 
 ### Architekturgrenzen, die erhalten bleiben
@@ -78,7 +80,7 @@ Simulation / Store-Commands / Ledger / Rivalen
     + Command IDs              │
           │                    ▼
           │             Content Composer
-          │          Registry + optional LLM
+          │          lokale Registry
           │                    │
           └──────────┬─────────┘
                      ▼
@@ -106,10 +108,10 @@ Simulation / Store-Commands / Ledger / Rivalen
 | Relationships | Beziehungen zwischen persistenten Akteuren | Gästebeziehungen in UI-State halten |
 | Trigger Evaluator | Prüfen, welche Event-Definitionen zu Facts und Kontext passen | Weltzustand verändern oder Text generieren |
 | Scheduler | Reihenfolge, Priorität, Cooldowns, Duplikatschutz und Event-Lifecycle | Spielmechanik frei erfinden |
-| Event Templates | stabile Event-ID, Teilnehmer, Anforderungen, Choices und erlaubte Effekte definieren | LLM-Ausgaben als Spielregeln behandeln |
+| Event Templates | stabile Event-ID, Teilnehmer, Anforderungen, Choices und erlaubte Effekte definieren | Darstellungstext als Spielregeln behandeln |
 | Command Registry | erlaubte Aktionen, Parameterprüfung und Ausführung | beliebiges JavaScript aus Content ausführen |
 | Content Registry | Textfragmente, Rollen, semantische Flags, Herkunft und Makros | Spielmechanik oder Choice-Effekte besitzen |
-| Composer | passende Textfragmente wählen und optionale LLM-Formulierung liefern | Choice-IDs, Kosten, Effekte oder Trigger entscheiden |
+| Composer | passende lokale Textfragmente deterministisch wählen und zusammensetzen | Choice-IDs, Kosten, Effekte oder Trigger entscheiden |
 | Narrative UI | Events, Dialoge, Profile und Choices anzeigen | eigene Event-/Memory-Wahrheit halten |
 
 ### Datenfluss und Persistenz
@@ -166,7 +168,7 @@ Die Templates definieren den **mechanischen Rahmen**, nicht jeden fertigen Flie�
 | UI/Snapshot/Store-Integration ohne Persistenzänderung | `verify:quick` | CI `verify:all` |
 | Tick-Hotpath/Rivalenautonomie/Simulation über viele Tage | `verify:quick` je Task; kein lokaler Soak während der Arbeit | an Integrationsmeilensteinen `pnpm run ci:long` (Soak, Balance, Benchmarks) |
 
-**Sequenzregel:** Die nachfolgenden NAR-Tasks sind voneinander abhängig und werden in dieser Reihenfolge umgesetzt. Ein Task wird abgeschlossen und sein Gate-Nachweis festgehalten, bevor der nächste startet. Die Pipeline selbst bleibt unverändert: kein neues paralleles Testframework und keine Abschwächung bestehender Gates. Der bestehende GitHub-Main-Schutz/PR-Weg bleibt maßgeblich; `AGENTS.md` und `docs/CI-GATES.md` beschreiben den Delivery-Pfad nicht ganz widerspruchsfrei.
+**Sequenzregel:** Die nachfolgenden NAR-Tasks sind voneinander abhängig und werden in der korrigierten Reihenfolge aus §11 umgesetzt (insbesondere NAR-13 vor NAR-12). Ein Task wird abgeschlossen und sein Gate-Nachweis festgehalten, bevor der nächste startet. Die Pipeline selbst bleibt unverändert: kein neues paralleles Testframework und keine Abschwächung bestehender Gates. Der bestehende GitHub-Main-Schutz/PR-Weg bleibt maßgeblich; `AGENTS.md` und `docs/CI-GATES.md` beschreiben den Delivery-Pfad nicht ganz widerspruchsfrei.
 
 ---
 
@@ -176,7 +178,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 ### NAR-00 – Architekturvertrag und Content-Beitragsformat festlegen
 
-**Ziel:** Vor dem Code ein präzises gemeinsames Modell für Facts, Memory, Event-Lifecycle, Choices, Commands, Textbeiträge und LLM-Grenze festlegen.
+**Ziel:** Vor dem Code ein präzises gemeinsames Modell für Facts, Memory, Event-Lifecycle, Choices, Commands, Textbeiträge und die Grenze ohne LLM im Spiel festlegen.
 
 **Arbeiten**
 - `docs/NARRATIVE-ENGINE.md` als Architekturvertrag anlegen.
@@ -185,11 +187,11 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Textbeitrag als eigenständigen Datensatz definieren: `agentId`, `turnId`, `contributionId`, `role`, `locale`, semantische Flags, Text und optionale Direktiven.
 - `AGENTS.md` um die Pflicht ergänzen, dass jeder Agent pro abgeschlossenem Turn genau einen Textbaustein beiträgt. Solange die Runtime-Registry noch nicht verfügbar ist, landen Beiträge in einem klaren Inbox-/Contribution-Verzeichnis und werden nicht in Simulationscode oder `AGENTS.md` eingebettet.
 - Einen Turn-/Contribution-Nachweis vorsehen: eine Turn-ID hat genau einen Beitrag; doppelte oder fehlende Beiträge für registrierte Turns werden später durch den Validator gefunden.
-- Die Semantik der Beispielmakros `€FreezeTick:200` und `€trigger Dialog '(...)'` ausdrücklich festlegen. Insbesondere muss `FreezeTick` seine Einheit und seinen Wirkungsbereich erhalten (z. B. globale Simulationspause vs. zeitweilig eingefrorene Teilzustände); nicht anhand des Namens raten.
+- Die Semantik der Beispielmakros `€FreezeTick:200` und `€trigger Dialog '(...)'` ausdrücklich festlegen. `FreezeTick` betrifft nur die Event-Instanz und nutzt fortschreitende Welt-Ticks; Dauer, Obergrenze und Save-Verhalten sind vor der Umsetzung zu prüfen.
 
 **Zielbereiche:** `docs/NARRATIVE-ENGINE.md`, `AGENTS.md`, zunächst `content/narrative/contributions/`.
 
-**Nachweis:** Architekturdokument beschreibt alle Zustands- und Kontrollflüsse sowie explizite Nicht-Ziele: kein LLM in `tickWorld`, keine Ausführung von Code aus Texten, kein Journal als Fact-Bus.
+**Nachweis:** Architekturdokument beschreibt alle Zustands- und Kontrollflüsse sowie explizite Nicht-Ziele: kein LLM im Spiel, keine Ausführung von Code aus Texten, kein Journal als Fact-Bus.
 
 **Gate:** `verify:quick` am Turn-Ende. Noch keine Save-Migration.
 
@@ -329,7 +331,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 **Arbeiten**
 - Event-Template-Vertrag mit stabiler `eventId`, Kontext-/Teilnehmerauflösung, Content-Slots, Triggerbezug, Priorität und erlaubten Choices definieren.
 - Jede Choice hat stabile `choiceId`, Verfügbarkeitsbedingungen, optionale Kosten/Anforderungen, eine deklarative Effektliste und ein Ergebnis-/Folgeevent-Mapping.
-- Choice-ID und tatsächlicher Effekt stammen ausschließlich aus dem Template/Code-Vertrag. Text/LLM darf Choices nur beschreiben und Vorschauen formulieren.
+- Choice-ID und tatsächlicher Effekt stammen ausschließlich aus dem Template/Code-Vertrag. Text darf Choices nur beschreiben und Vorschauen formulieren.
 - Event-Instanz speichert die Template-Version/ID und den zur Anzeige angebotenen Choice-Satz, sodass ein später geänderter Content-Pool aktive Saves nicht unbemerkt umdeutet.
 - Choice-Validierung prüft beim Anklicken erneut, ob Event noch aktiv, Choice noch verfügbar und Kosten/Voraussetzungen noch gültig sind.
 
@@ -407,25 +409,21 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 ---
 
-### NAR-11 – Runtime Composer und LLM-Textadapter
+### NAR-11 – Lokaler Runtime Composer
 
-**Ziel:** Aus Template, Facts, Teilnehmern und Textfragmenten lebendige Darstellung bauen, ohne die Spielmechanik zu delegieren.
+**Ziel:** Templates, Facts und Teilnehmer mit passenden lokalen Textfragmenten zu Darstellung verbinden; keine LLM-Anbindung im Spiel.
 
 **Arbeiten**
-- Composer wählt kompatible Fragmente für Titel, Beschreibung, Dialog, Choice-Preview und Reaktionen anhand der registrierten semantischen Flags.
-- Komposition muss sprachlich/strukturell vollständige Ausgaben liefern; fehlende Slots bekommen passende Fallbacks statt leere UI oder kaputte Sätze.
-- Optionalen `NarrativeTextProvider` als austauschbaren Adapter definieren. Core ruft niemals einen Provider auf.
-- LLM-Eingabe enthält nur erlaubten Kontext und bereits festgelegte Choice-/Effektinformationen. Rückgabe wird als reiner Darstellungstext validiert.
-- LLM kann weder neue Choice-IDs noch Kosten, Zahlenwirkungen, Trigger, Command-Direktiven oder Teilnehmer festlegen. Commands stammen aus den validierten Templates/Registrydaten.
-- Asynchrone Textanfrage außerhalb von `tickWorld` und außerhalb des deterministischen Simulationspfads ausführen. Antwort muss gegen Event-ID/Revision geprüft werden, damit verspätete Antworten kein inzwischen beendetes Event überschreiben.
-- Lokaler Registry-Composer bleibt voll funktionsfähig, wenn kein LLM-Provider, keine Verbindung oder ein fehlerhafter Provider-Output existiert.
-- Keine API-Keys/Provider-Geheimnisse in Browser-Bundles und keine neue Provider-Abhängigkeit ohne separate Infrastrukturentscheidung.
+- Fragmente für Titel, Beschreibung, Dialog, Choice-Preview und Reaktionen aus der validierten Registry anhand von Slots, Flags und Kontext deterministisch wählen.
+- Für fehlende Slots lokale, kontextverträgliche Fallbacks bereitstellen; keine erfundenen Fakten, Choice-IDs, Kosten oder Wirkungen.
+- Textauswahl darf den Gameplay-PRNG nicht verbrauchen; bei Zufallsauswahl einen getrennten, reproduzierbaren Zustand verwenden.
+- Kein Provider-Vertrag, kein Modell-SDK, kein API-Key und keine Textanfrage zur Laufzeit. Agentenbeiträge werden ausschließlich während der Repository-Arbeit erstellt.
 
-**Zielbereiche:** `narrative/composer/`, `narrative/provider-contract.ts`, Store-seitiger Adapter, Konfigurationsassets.
+**Zielbereiche:** `narrative/composer/` und validierte Registrydaten.
 
-**Nachweis:** gleiche Eingabe mit lokalem Composer reproduzierbar; Provider-Ausfall fällt auf Registry-Text zurück; beliebige LLM-Choice-/Command-Versuche werden ignoriert/abgewiesen; verspätete Antwort kann kein anderes Event verändern.
+**Nachweis:** identische Eingaben liefern identische, vollständige Texte; inkompatible Fragmente und ungültige Direktiven werden abgewiesen; Textänderungen beeinflussen keine Spielmechanik.
 
-**Gate:** `verify:quick`; Dependency-Gate bleibt unverändert, solange keine Abhängigkeit ergänzt wird.
+**Gate:** `verify:quick`.
 
 ---
 
@@ -458,13 +456,13 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - `NEON_NACHT` und `TURNIER_ABEND` als datengetriebene Event-Definitionen in die neue Event Engine überführen.
 - Bestehende Nachfragewirkung aus `demandBreakdown()` als abgeleiteten Modifier aktiver kompatibler Event-Instanzen lesen lassen.
 - Bestehende `DemandSnapshot.event`-Anzeige aus dem aktiven Eventzustand ableiten; keine doppelte aktive Event-Wahrheit in `world.demandEvent` und `world.narrative`.
-- v8-Saves mit `demandEvent` bei der Migration in eine kompatible aktive Event-Instanz konvertieren oder – falls ein Zustand nicht valide konvertierbar ist – mit dokumentiertem, verlustarmem Default behandeln.
+- v5–v9-Saves mit `demandEvent` bei der Migration in eine kompatible aktive Event-Instanz konvertieren oder – falls ein Zustand nicht valide konvertierbar ist – mit dokumentiertem, verlustarmem Default behandeln.
 - Bisherige Ankunftsraten, Gruppengrößen, Zeitfenster und Demand-Modifikatoren erhalten; die narrative Engine darf die Nachfragebalance nicht beiläufig ändern.
 - Die beiden bisherigen Events werden nicht als starre Obergrenze für neue Events behandelt: weitere Eventarten kommen über Registry/Template/Trigger hinzu.
 
 **Zielbereiche:** `src/core/sim/demand.ts`, `types-model.ts`, `migrate.ts`, `narrative/events/`, Demand- und Save-Tests.
 
-**Nachweis:** identische Nachfragewirkung für alte Szenarien; aktive Neon-Nacht/Turnierabend übersteht v8→v9; kein paralleles `demandEvent`-Lifecycle-System; keine Duplicate-Spawns.
+**Nachweis:** identische Nachfragewirkung für alte Szenarien; aktive Neon-Nacht/Turnierabend übersteht die Migration bestehender v5–v9-Saves; kein paralleles `demandEvent`-Lifecycle-System; keine Duplicate-Spawns.
 
 **Gate:** **Full Gate verpflichtend** wegen Save-Migration und Simulations-/Demand-Verhalten.
 
@@ -519,7 +517,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Szenarien über viele Ticks/Tage mit Rückkehrern, Memory, Beziehungen, mehreren aktiven Stories, Choices, Rivalenaktionen und Save/Load abdecken.
 - Event-Wiederholungen, Cooldown-Explosion, unauflösbare Eventketten, verwaiste Teilnehmer, veraltete Choices, volle Memory-Grenzen und ungültigen Content prüfen.
 - Tick-Hotpath messen: Fact-Erzeugung nur bei Zustandsübergängen; Scheduler verarbeitet neue Facts und fällige Events, keine Vollsuche durch Registry/Archiv jedes Tick.
-- Save-Größe/Memory-Budget beobachten: keine unbeschränkte Fact-Historie, kein doppeltes Journal, keine vollständigen LLM-Kontexte im Save.
+- Save-Größe/Memory-Budget beobachten: keine unbeschränkte Fact-Historie, kein doppeltes Journal, keine vollständigen Textpools im Save.
 - Niedrig-Hardware-Messung mit bestehendem `bench:lowend` nur an diesem Integrationsmeilenstein bzw. wenn Messungen nötig sind; Performance nicht durch schwächere Tests „lösen“.
 - Langlauf- und Balancenachweise in GitHub Actions über `pnpm run ci:long` ausführen, nicht in die lokale schnelle Schleife verschieben.
 
@@ -537,7 +535,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Arbeiten**
 - `docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, `AGENTS.md`, `docs/NARRATIVE-ENGINE.md` und ggf. `docs/ERROR_CATALOG.md` mit dem finalen Code synchronisieren.
-- Aktuelle Save-Version, Migrationen, Zustandsbesitz, Fact-/Memory-Limits, Event-Lifecycle, Command-DSL und Provider-Grenze dokumentieren.
+- Aktuelle Save-Version, Migrationen, Zustandsbesitz, Fact-/Memory-Limits, Event-Lifecycle, Command-DSL und die Grenze ohne LLM im Spiel dokumentieren.
 - Alle Testdateien über `pnpm run catalog` eintragen; generierte Katalogänderungen prüfen, nicht manuell pflegen.
 - Veraltete Beschreibungen zu `demandEvent` entfernen oder auf die neue gemeinsame Engine umstellen.
 - Agenten-Contribution-Workflow samt Turn-Manifest, Validator und Fehlerfällen dokumentieren.
@@ -604,7 +602,6 @@ src/core/sim/narrative/
     types.ts
     select-fragments.ts
     compose.ts
-    provider-contract.ts
     fallback.ts
   runtime.ts                # Dünner Ablaufkoordinator
   process-boundary.ts       # Verarbeitung nach Tick/Store-Mutation
@@ -631,9 +628,9 @@ Nicht jede Datei muss von Anfang an angelegt werden. Die Aufteilung folgt den NA
 2. **Journal ist nicht Fact-Bus.** Das Journal dokumentiert; Facts treiben Trigger und Memory.
 3. **Visitor ist Identität, Guest ist Besuch.** Temporäre Werte werden nicht versehentlich zur dauerhaften Charakterwahrheit.
 4. **Keine Referenz darf eine Figur unbemerkt verlieren.** Retention berücksichtigt aktive Geschichten, Beziehungen und offene Entscheidungen.
-5. **Template bestimmt Mechanik, Content bestimmt Sprache.** Choice-IDs, Voraussetzungen, Kosten und Effekte sind nicht LLM-generiert.
+5. **Template bestimmt Mechanik, Content bestimmt Sprache.** Choice-IDs, Voraussetzungen, Kosten und Effekte stammen aus validierten Templates und Code.
 6. **Commands sind deklarativ und allowlisted.** Makros werden kompiliert und validiert; sichtbarer Text ist niemals ausführbarer Code.
-7. **LLM ist optional und außerhalb der Simulation.** Ausfall, Verzögerung oder Fantasieausgabe beeinflussen keine Spielregeln und blockieren keinen Tick.
+7. **Kein LLM im Spiel.** Agenten verfassen Beiträge nur bei der Repository-Arbeit; die Laufzeit nutzt ausschließlich lokale validierte Daten.
 8. **Kein gemeinsamer PRNG-Verbrauch.** Text-/Narrative-Auswahl darf den Spiel-RNG nicht verschieben.
 9. **Eine aktive Event-Wahrheit.** `demandEvent` wird in die Engine migriert; kein konkurrierender zweiter Scheduler.
 10. **Eine State-Wahrheit.** WorldStore besitzt persistenten Zustand; Snapshot/UI sind Projektionen und Command-Eingänge.
@@ -655,11 +652,11 @@ Die Engine ist als zusammenhängendes System fertig, wenn die folgenden Pfade ge
 - Scheduler verhindert Wiederholungen, priorisiert konkurrierende Ereignisse und verwaltet parallele/verkettete Geschichten.
 - Ein Event bekommt Teilnehmer und mehrere valide Choices. Text wird aus semantisch kompatiblen Agentenfragmenten zusammengesetzt.
 - Agentenbeiträge enthalten nachvollziehbare Flags und dürfen validierte `€...`-Direktiven tragen. Compiler extrahiert diese in eine Command-AST.
-- Eine Choice führt nur registrierte, vorgeprüfte Commands aus. Tatsächliche Effekte entsprechen dem Code-Template, nicht einer LLM-Behauptung.
+- Eine Choice führt nur registrierte, vorgeprüfte Commands aus. Tatsächliche Effekte entsprechen dem Code-Template, nicht einer Behauptung im Darstellungstext.
 - Die resultierende Weltveränderung erzeugt neue Facts und kann die Geschichte fortsetzen.
 - Rivalen können eigenständig kooperieren, konkurrieren, Gäste abwerben oder begründet sabotieren; dies beeinflusst denselben Fact-/Event-Fluss.
 - Ein Save mitten in einer Story lädt die gleiche Story mit denselben Teilnehmern, Fristen, Choices und Cooldowns wieder.
-- Ohne LLM-Provider funktioniert der gesamte Ablauf mit Registry-Fallback. Mit LLM werden nur Texte ergänzt.
+- Der gesamte Ablauf funktioniert ohne LLM, Provider oder Netzwerk-Textanfrage mit lokalen Registry-Daten.
 - Bestehende Demand- und Wirtschaftsbalance, Ledgerintegrität, deterministische Fortsetzung und Tick-Performance bleiben erhalten.
 - Quick-/Full-/Long-Gates sind grün; keine LOC-Ausnahme, kein abgeschwächtes Testniveau und kein unkontrollierter Gate-Umbau.
 
@@ -686,7 +683,7 @@ Die Engine ist als zusammenhängendes System fertig, wenn die folgenden Pfade ge
 - `src/ui/guest-popup.tsx`, `journal-popup.tsx` – bestehende Besucher-/Journaldarstellung
 - `src/core/sim/__tests__/visitors.test.ts`, `demand.test.ts`, `journal.test.ts`, `rivals.test.ts`, `src/store/__tests__/save-migration.test.ts`, `save-roundtrip.test.ts` – bestehende relevante Nachweise
 
-**Prüfgrenze dieses Plans:** Der Plan basiert auf dem aus GitHub gelesenen `main`-Commit oben. Es wurde dabei kein lokaler Checkout gebaut oder getestet; die Implementierungstasks müssen ihre jeweiligen Gate-Ergebnisse aus dem tatsächlichen Arbeitsbaum liefern.
+**Prüfgrenze dieses Plans:** Der ursprüngliche Plan basiert auf dem aus GitHub gelesenen `main`-Commit oben; der aktuelle Bestand und die noch offenen Grundlagen sind im Status dieses Dokuments ergänzt. Es wurde dabei kein lokaler Checkout gebaut oder getestet; die Implementierungstasks müssen ihre jeweiligen Gate-Ergebnisse aus dem tatsächlichen Arbeitsbaum liefern.
 ---
 
 ## 9. Adversariale Prüfung (Stand 2026-11-01, `main` = `7cca88a`)
@@ -786,11 +783,10 @@ Cooldown-Tabelle bleibt unter Budget.
 **Angriff.** Ein Content-Fragment darf `€FreezeTick:200` tragen. Ist die Einheit
 Sekunden statt Ticks oder der Scope global, steht die Simulation still – oder ein
 Event löst sich nie auf.
-**Befund.** Die Makros `€FreezeTick:200` und `€trigger Dialog '…'` sind im Plan
-erwähnt, ihre Semantik ist ausdrücklich offen (NAR-00).
+**Befund.** Der frühere globale Freeze-Vertrag widersprach diesem Abschnitt. Der Architekturvertrag legt jetzt den event-lokalen Scope fest; eine Umsetzung existiert noch nicht.
 **Gegenmaßnahme.** Einheit ist **Tick**, Scope ist **nur die aktive
 Event-Instanz**, Dauer ist gedeckelt (Cap im Template, nicht im Text), Expiry
-läuft über den Scheduler. Parser lehnt Einheiten ohne Suffix ab. Test: Event mit
+läuft über den Scheduler. Der Parser akzeptiert die dokumentierte Tick-Syntax und lehnt unbekannte Einheiten und Werte ausserhalb der Template-Grenze ab. Test: Event mit
 Freeze löst sich garantiert auf; die Welt tickt weiter.
 **Tasks.** NAR-00, NAR-08, NAR-06.
 
@@ -806,18 +802,11 @@ Welt-Checkpoint wiederhergestellt. Nachweis: zweiter Command scheitert → keine
 Spur des ersten, Ledgerintegrität bleibt `true`.
 **Tasks.** NAR-08, NAR-12.
 
-### A-10 – LLM-Adapter als Einfallstor
+### A-10 – Unkontrollierter Text als Einfallstor
 
-**Angriff.** Ein API-Key im Browser-Bundle, ein Netzwerkaufruf im Tick, eine
-verspätete Antwort, die ein beendetes Event überschreibt, oder Prompt-Injection
-über Gastnamen und Content-Fragmente.
-**Gegenmaßnahme.** Provider bleibt optional und außerhalb von `tickWorld`; Keys
-niemals im Client; Eingaben werden auf erlaubte Felder reduziert; Ausgaben werden
-als reiner Text validiert (Länge, keine IDs, keine `€`-Direktiven, keine Zahlen
-als Spielwirkung); Antwort trägt Event-ID **und** Revision und wird sonst
-verworfen. Ohne Provider ist der Registry-Composer vollständig. Keine neue
-Abhängigkeit ohne eigene Infrastrukturentscheidung.
-**Tasks.** NAR-11, NAR-12, NAR-17.
+**Angriff.** Ein Beitrag behauptet Spielwirkungen oder schleust nicht erlaubte Direktiven ein.
+**Gegenmaßnahme.** Kein LLM oder Provider im Spiel. Der Compiler validiert Beiträge und Direktiven; ausschließlich registrierte Templates und Commands bestimmen Effekte. Der lokale Composer behandelt Text nur als Darstellung.
+**Tasks.** NAR-08, NAR-10, NAR-11, NAR-17.
 
 ### A-11 – Content-Compiler ist nicht automatisch deterministisch
 
@@ -892,7 +881,7 @@ erzeugt genau eine Wirkung.
 **Angriff.** Der Plan verlangt pro Turn genau einen Textbeitrag, das Repo
 arbeitet aber in Commits und Pull Requests. Ohne Definition ist der Validator
 entweder trivial umgehbar oder blockiert reine Doku-Turns.
-**Gegenmaßnahme.** Turn = ein Pull Request (Turn-ID = Head-Commit-SHA des PRs).
+**Gegenmaßnahme.** Turn = ein registrierter Arbeitsauftrag mit vorab vergebener stabiler ID; ein Pull Request kann mehrere Turns enthalten. Eine Commit-SHA darf nicht als eigene im Commit gespeicherte Turn-ID dienen.
 Beiträge liegen als Datei unter `content/narrative/contributions/`, das Manifest
 ordnet Turn-ID → Beitrag zu. Der Validator läuft im bestehenden Assets-Gate und
 akzeptiert explizit deklarierte Ausnahmen für reine Infrastruktur-PRs.
@@ -942,7 +931,7 @@ Nachweis als „erledigt“ gelten.
 | Templates / Choices | Mechanik aus Code, Text aus Content | 07, 11, 14 | Manipulations- und Ablauf-Test |
 | Commands / DSL | allowlisted, validiert, atomar, idempotent | 08, 09, 17 | Parser-/Preflight-/Rollback-Test |
 | Content / Compiler | deterministisch, validiert, größenbegrenzt | 09, 10, 12 | Hash-Gleichheit, Assets-Gate, Budget |
-| Composer / LLM | optional, text-only, ausfallfest | 11 | Fallback-Test, Injection-Test |
+| Lokaler Composer | deterministisch, nur Darstellung, kein LLM | 11 | Kontext-, Fallback- und Mechanik-Isolationstest |
 | UI / Snapshot | Projektion, keine zweite Wahrheit, stale-safe | 14, 17 | Klick-/Reload-/Doppelklick-Test |
 | Nachfrage | Wirkung identisch zu vorher | 13, 16 | Baseline-vs-Migrations-Vergleich |
 | Rivalen | deterministisch, begründet, sichtbar | 15, 16 | Replay-/Fairness-Test |
@@ -987,7 +976,7 @@ zusätzlich zu „Gates grün“ vorweisen muss.
 | NAR-00 | Vertrag inkl. Nicht-Zielen, Makro-Semantik, Turn-Definition | quick | Review gegen §6, keine Codeänderung |
 | NAR-01 | narrative-State initialisiert, v9 Save, v5–v8 laden | full | Roundtrip + 100-Tick-Replay + Byte-Budget |
 | NAR-02 | Facts typisiert, idempotent, Ledger-Cursor per `seq` | quick/full | Save mitten in Queue, keine Duplikate |
-| NAR-03 | Visitor-Identität persistent, Memory strukturiert, Pinning | full | Rückkehrer erinnert sich nach Load |
+| NAR-03 | Visitor-Identität persistent, Memory strukturiert, Pinning | full | Rückkehrer erinnert sich nach Load; Pinning noch offen |
 | NAR-04 | kanonische, gerichtete Beziehungen, Archiv-Tombstones | quick/full | Eviction-Test ohne halbe Kanten |
 | NAR-05 | reiner Evaluator, alle Operatoren, Erklärbarkeit | quick | Operator-/Grenzwert-/Übergangstests |
 | NAR-06 | Lifecycle endlich, Duplikatschutz, eigener RNG-Zustand | quick/full | Ketten- und Expiry-Test, kein Doppel-Event |
@@ -995,7 +984,7 @@ zusätzlich zu „Gates grün“ vorweisen muss.
 | NAR-08 | Parser, Allowlist, Preflight, atomare Anwendung | quick/full | Rollback-Test, Ledgerintegrität |
 | NAR-09 | Contribution-Schema, Vocabulary, Manifest | quick | Validator lehnt Duplikate/fehlende Turns ab |
 | NAR-10 | byte-identische Registry, `--check`, Budget | quick | zweimaliger Lauf, Hash-Vergleich |
-| NAR-11 | Fragmentauswahl, Fallback, text-only-Provider | quick | Ausfall- und Injection-Test |
+| NAR-11 | lokale Fragmentauswahl und Fallback, kein Provider | quick | Kontext- und Mechanik-Isolationstest |
 | NAR-13 | Demand-Wirkung identisch, keine zweite Wahrheit | full | Baseline-vs-Migration im Toleranzband |
 | NAR-12 | Fact→Event→Choice→Command→Fact, begrenzt, idempotent | full | Ende-zu-Ende-Test + Save/Load |
 | NAR-14 | read-only Projektion, stale-safe UI | quick | Klick, Reload, Doppelklick |
@@ -1017,7 +1006,7 @@ Nichts gestrichen, nur geschärft:
    Randbedingung für Narrative-Auswahl ergänzt.
 4. Reihenfolge korrigiert: NAR-13 vor NAR-12; Begründung in §11.
 5. 20 Angriffe mit Gegenmaßnahmen ergänzt (§9), darunter Ledger-Atomizität,
-   Visitor-Pinning, Cooldown-Budget, Freeze-Semantik, LLM-Injection,
+   Visitor-Pinning, Cooldown-Budget, Freeze-Semantik, unzulässige Textdirektiven,
    Compiler-Determinismus, Bundle-Wachstum, UI-Race und Save-Budget.
 6. Systemmatrix über alle 20 Systeme ergänzt (§10).
 7. Definition of Done je Task mit Pflicht-Gate und Zusatznachweis ergänzt (§12).

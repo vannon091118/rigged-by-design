@@ -52,13 +52,15 @@ function sanitizeMemory(raw: unknown): VisitorMemory | null {
 export function normalizeNarrativeState(raw: unknown): NarrativeState {
   const state = createNarrativeState();
   if (!isRecord(raw)) return state;
-  const pending = Array.isArray(raw.pending) ? raw.pending.filter(isFact) : [];
-  const recent = Array.isArray(raw.recent) ? raw.recent.filter(isFact) : [];
-  state.pending = pending.slice(-NARRATIVE_LIMITS.pending);
-  state.recent = recent.slice(-NARRATIVE_LIMITS.recent);
-  const maxId = [...state.pending, ...state.recent].reduce((max, fact) => Math.max(max, fact.id), 0);
-  state.factSeq = Math.max(1, Math.floor(number(raw.factSeq, 1)), maxId + 1);
-  state.processedId = Math.min(Math.max(0, Math.floor(number(raw.processedId))), state.factSeq - 1);
+  const pending = orderedFacts(raw.pending);
+  const recent = orderedFacts(raw.recent);
+  const maxId = [...pending, ...recent].reduce((max, fact) => Math.max(max, fact.id), 0);
+  const nextId = safeInteger(raw.factSeq, 1) ? raw.factSeq : 1;
+  const processedId = safeInteger(raw.processedId, 0) ? raw.processedId : 0;
+  state.factSeq = Math.max(nextId, maxId + 1, processedId + 1);
+  state.processedId = processedId;
+  state.pending = pending.filter((fact) => fact.id > processedId).slice(-NARRATIVE_LIMITS.pending);
+  state.recent = recent.filter((fact) => fact.id <= processedId).slice(-NARRATIVE_LIMITS.recent);
   state.dropped = Math.max(0, Math.floor(number(raw.dropped)));
   if (isRecord(raw.flags)) {
     for (const [key, value] of Object.entries(raw.flags)) {
@@ -74,18 +76,28 @@ export function normalizeMemories(raw: unknown): VisitorMemory[] {
     .slice(-NARRATIVE_LIMITS.memories);
 }
 
+const safeInteger = (value: unknown, min: number): value is number =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value < Number.MAX_SAFE_INTEGER;
+
+function orderedFacts(raw: unknown): NarrativeFact[] {
+  if (!Array.isArray(raw)) return [];
+  const byId = new Map<number, NarrativeFact>();
+  for (const fact of raw) {
+    if (isFact(fact) && !byId.has(fact.id)) byId.set(fact.id, fact);
+  }
+  return [...byId.values()].sort((a, b) => a.id - b.id);
+}
+
 function isFact(raw: unknown): raw is NarrativeFact {
   if (!isRecord(raw)) return false;
-  const id = number(raw.id, -1);
   const kind = raw.kind as NarrativeFact['kind'];
-  if (!Number.isInteger(id) || id <= 0) return false;
-  if (!NARRATIVE_FACT_KINDS.includes(kind)) return false;
-  if (!Number.isFinite(raw.tick) || !Number.isFinite(raw.day)) return false;
-  if (!Number.isInteger(number(raw.visitorId, -1))) return false;
-  if (kind === 'VISIT_ENDED') {
-    return Number.isInteger(number(raw.guestId, -1))
-      && VISITOR_VALENCES.includes(raw.valence as VisitorValence)
-      && Number.isFinite(raw.score);
+  if (!safeInteger(raw.id, 1) || !NARRATIVE_FACT_KINDS.includes(kind)) return false;
+  if (!safeInteger(raw.tick, 0) || !safeInteger(raw.day, 0) || !safeInteger(raw.visitorId, 1)) return false;
+  if (kind === 'START_POOL') return safeInteger(raw.capital, 0);
+  if (kind === 'VISITOR_FIRST_SEEN') {
+    return typeof raw.persona === 'string' && ['LUMPEN', 'STREET', 'BUSINESS', 'HIGH_ROLLER', 'STAMMGAST'].includes(raw.persona);
   }
-  return true;
+  if (kind === 'VISITOR_RETURNED') return safeInteger(raw.visits, 1);
+  return safeInteger(raw.guestId, 1) && VISITOR_VALENCES.includes(raw.valence as VisitorValence)
+    && typeof raw.score === 'number' && Number.isFinite(raw.score) && raw.score >= 0 && raw.score <= 100;
 }

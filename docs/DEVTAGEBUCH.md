@@ -13,6 +13,26 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-02 - Narrative Trigger Bedingungen
+
+**Ziel.** Narrative Trigger Bedingungen.
+
+**Umsetzung.** Ein reiner Evaluator verknuepft ausgewaehlte bestehende Facts mit Erinnerung, Hauskonto, Geraetezustand, Charisma, Flags und Fact-Alter; AND, OR und NOT sind kombinierbar. Kein bestehender Simulationspfad wird damit veraendert.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run verify:all`: alle zwoelf Gates bestanden, einschliesslich Trigger-Tests. Der Runner meldete zusaetzlich `fatal: bad revision 'origin/main...HEAD'` bei der Git-Referenzabfrage; das Profil meldete dennoch PASS.
+
+**Offen.** Der Evaluator ist nicht an die Simulation angeschlossen. Weitere Facts, Ledger-Cursor, Beziehungen, Scheduler, Dialoge, Commands, Content-Compiler, Demand-Migration und Rivalen fehlen.
+
+## 2026-11-02 - Narrativ-Grundlagen und LLM-freier Eventplan
+
+**Ziel.** Narrativ-Grundlagen und LLM-freier Eventplan
+
+**Umsetzung.** Die Start-Pool-Facts zaehlen die bereits bei der Anlage gesetzte Poolgroesse nicht erneut. Die Save-Normalisierung prueft Fact-Nutzdaten, sortiert IDs und entfernt Duplikate; der Cursor bleibt auch bei unvollstaendigen Daten erhalten. Der Eventplan schliesst Provider und LLM im Spiel aus und kennzeichnet verbleibende Grundlagen sowie v5–v9-Demandmigration als offen.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run verify:all`: alle zwoelf Gates bestanden, einschliesslich Lint, Typecheck, Save-/Narrative-Tests und Build. Der Runner meldete zusaetzlich `fatal: bad revision 'origin/main...HEAD'` bei der Git-Referenzabfrage; das Gate-Profil meldete trotzdem PASS.
+
+**Offen.** Event-Scheduler, Beziehungen, Content-Compiler, Commands, UI und autonome Rivalen sind weiterhin nicht implementiert; keine Promotion ohne vollstaendigen Nachweis.
+
 ## 2026-11-02 - Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
 
 **Ziel.** Peer-Review Phase 6: Tick-Konstante, Testspin, Texte, Portabilitaet
@@ -566,7 +586,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.74 | 2026-11-02 20:44 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.75 | 2026-11-02 22:21 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -55,6 +55,34 @@ describe('Narrative Facts', () => {
     expect(restored).toEqual(world.narrative);
   });
 
+  it('normalisiert ungueltige, doppelte und unsortierte Facts vor der Verarbeitung', () => {
+    const { world, visitor } = setup();
+    const first = emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });
+    const second = emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 3 });
+    const raw = { ...world.narrative, pending: [second, first, first, { ...second, id: 3, visits: undefined }] };
+    world.narrative = normalizeNarrativeState(raw);
+    expect(world.narrative.pending.map((fact) => fact.id)).toEqual([1, 2]);
+    expect(world.narrative.factSeq).toBe(3);
+    processFacts(world);
+    expect(world.narrative.flags.rueckkehrer).toBe(2);
+    expect(world.narrative.processedId).toBe(2);
+    expect(processFacts(world)).toBe(0);
+  });
+
+  it('verwirft unvollstaendige Nutzdaten und bewahrt einen hohen Cursor', () => {
+    const normalized = normalizeNarrativeState({
+      factSeq: 1, processedId: 7,
+      pending: [
+        { id: 8, kind: 'START_POOL', tick: 0, day: 0, visitorId: 1 },
+        { id: 9, kind: 'VISITOR_FIRST_SEEN', tick: 0, day: 0, visitorId: 1, persona: 'UNKNOWN' },
+        { id: 10, kind: 'VISIT_ENDED', tick: 0, day: 0, visitorId: 1, guestId: 1, score: 101, valence: 'GOOD' },
+      ],
+    });
+    expect(normalized.pending).toEqual([]);
+    expect(normalized.processedId).toBe(7);
+    expect(normalized.factSeq).toBe(8);
+  });
+
   it('bricht bei unbekannter Besucherreferenz nicht und behaelt den Fact in der Historie', () => {
     const { world } = setup();
     emitFact(world, { kind: 'VISIT_ENDED', visitorId: 999, guestId: 5, score: 90, valence: 'GOOD' });
