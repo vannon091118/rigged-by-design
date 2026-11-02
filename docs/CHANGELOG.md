@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->
+<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,23 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.78] - 2026-11-02
+
+### Spiel
+
+- Die Etage liest als Gebaeude: jeder Raum bekommt eine Lichtpfuetze in sechzehn leisen Stufen, Deckenlampen und Wandkanten sind heller, Laufwege bleiben dunkel, sind aber nicht mehr schwarz.
+- Der Boden antwortet vor dem Klick: ein Zielraster zeigt die Kachel unter dem Zeiger und wechselt die Farbe (Service = laufen, Casino = im Ueberblick heranziehen).
+- Die Figur bleibt auffindbar: ein Ring am Boden, eine Punktspur entlang des Laufwegs, ein kurzer Puls am Klickziel.
+- Kamera: rechte oder mittlere Maustaste zieht das Bild, Mausrad und `+`/`-` zoomen, `0` springt zur Uebersicht; beim Laufen im Detail zieht die Kamera nach, sobald die Figur den inneren Rahmen verlaesst.
+- Kamera-Knoepfe unten rechts und eine Steuerleiste mit Tastenkuerzeln; im HUD ist das Barkauf-Ziel ein Chip in der RPG-Zeile (mit XP-Balken) statt einer leeren Leiste.
+
+### Technik
+- `src/render/floor-cues.ts` (neu): Zielraster, Spielerring, Laufwegspur und Klick-Puls als eine Darstellungsebene; liest nur Snapshots und kennt keine Spielregel.
+- `floor-camera.ts` um `pan`, `zoomStep` und `keepInView` erweitert; `floor-touch.ts` traegt jetzt Rad, Pinch und Ziehen (der Wheel-Handler ist aus `floor-view.ts` dorthin gezogen, Budget bleibt 349/350).
+- `floor-surface.ts`: `drawLightSpill` in sechzehn Stufen, Deckenlampen und Laufweg-Abdunklung nachgezogen; `room-art.ts` hebt die Wandlichtkante; `stage-controls.tsx` (neu) buendelt Steuerleiste und Kamera-Knoepfe; `app.css` bekommt Vignette, Rasterhintergrund, Tastenkuerzel-Chips und Zoom-Leiste.
+- Bildsprache dokumentiert: `docs/ART-DIRECTION.md` ("Neon Ledger") und `docs/banners/art-direction-neon-ledger.png` als Blatt.
+- Neuer Test `src/render/__tests__/floor-camera.test.ts`: Uebersicht mittig, Schwenk folgt dem Zeiger, Kante haelt, Nachziehen erst am Rahmen, Tasten-Zoom kehrt zurueck.
 
 ## [0.3.77] - 2026-11-02
 

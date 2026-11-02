@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 117 Dateien — contract 74 · integration 22 · governance 10 · statistics 6 · performance 5.
+Summe: 118 Dateien — contract 74 · integration 23 · governance 10 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -105,6 +105,7 @@ Summe: 117 Dateien — contract 74 · integration 22 · governance 10 · statist
 | `src/core/sim/__tests__/visitors.test.ts` | sim | contract | ja | `src/core/sim/visitors.ts` |
 | `src/core/sim/__tests__/world.test.ts` | sim | contract | ja | `src/core/sim/guests.ts` |
 | `src/render/__tests__/floor-cache.test.ts` | render | integration | ja | `src/render/floor-math.ts` |
+| `src/render/__tests__/floor-camera.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |

@@ -13,6 +13,56 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-02 - Optik und Steuerung: Lichtpfuetzen, Zielraster, Kamera folgt
+
+**Ziel.** Ohne eine neue Spielregel soll der Floor besser lesbar und besser steuerbar werden:
+Licht, das Raeume unterscheidet, Hinweise auf dem Boden statt in Panels, eine Kamera, die der
+Figur folgt, und ein HUD, das keine leere Zeile mehr mitzeigt.
+
+**Umsetzung.**
+
+- `floor-surface.ts`: Lichtpfuetzen in 16 Stufen (alpha 0,009 bis 0,02), hellere Deckenlampen
+  und Wandlichtkanten, Laufweg-Abdunklung von 0,34 auf 0,26. Die Stufen sind bewusst viele
+  und leise: drei deckende Ellipsen lasen im Browser als Radarringe und liefen ueber die Wand
+  hinaus; erst die vielen Stufen und die auf den Raum begrenzten Halbachsen ergaben Licht.
+- `src/render/floor-cues.ts` (neu): Zielraster unter dem Zeiger, Spielerring, Punktspur des
+  Laufwegs, Klick-Puls. Die Farbe zeigt die Folge: Service heisst laufen, Identity heisst
+  heranziehen. Nach einer Kamerafahrt wird das Raster ueber die letzte Zeigerposition neu
+  gesetzt, sonst zeigt es auf eine Kachel, die nicht mehr unter dem Zeiger liegt.
+- `floor-camera.ts`: `pan`, `zoomStep`, `keepInView`. Die Kamera zieht erst nach, wenn die
+  Figur den inneren Rahmen (55 Prozent der halben Sicht) verlaesst; in der Uebersicht und auf
+  dem Rueckweg dorthin bleibt sie mittig. Ohne die zweite Bedingung zog `keepInView` den
+  Fokus waehrend des Herauszoomens zur Figur und `0` landete neben der Mitte (camX 498 statt
+  385 bei 1582 Pixeln Breite).
+- `floor-touch.ts` traegt jetzt alle Zeigergesten (Rad, Pinch, Ziehen mit mittlerer oder
+  rechter Taste). Der Wheel-Handler ist aus `floor-view.ts` dorthin gewandert; das Budget der
+  Datei bleibt bei 349/350, weil die neue Ebene und der Handler zusammen mehr Zeilen brauchten
+  als der alte Wheel-Block.
+- `stage-controls.tsx` (neu) und `app.css`: Tastenkuerzel als kbd-Chips, Kamera-Knoepfe unten
+  rechts, Vignette und Rasterhintergrund auf der Buehne, Barkauf-Ziel als Chip in der
+  RPG-Zeile (die vorher eine leere Vollbreite-Leiste ohne jede CSS-Regel war), XP-Balken.
+- Bildsprache als Blatt: `docs/banners/art-direction-neon-ledger.png` und die Philosophie in
+  `docs/ART-DIRECTION.md`, damit die naechste Aenderung nicht neu geraten wird.
+
+**Pruefungen.** Browser ueber agent-browser (Chromium 156, 1600x1000 und 1000x720): Uebersicht
+mittig (camX 385 bei 1582 Pixeln Buehne), Rechtsziehen schwenkt mit dem Zeiger, Rad und `+`/`-`
+zoomen, `0` kehrt zur Uebersicht zurueck, WASD laeuft und die Kamera zieht nach (camX 125 auf
+-471), Zielraster wechselt die Farbe zwischen Detail und Uebersicht, Laufwegspur erscheint
+beim Klick. `pnpm run typecheck` gruen. `pnpm run verify:quick` war auf dem eigenen Stand gruen
+(zehn Gates, 520 Tests bestanden, 2 uebersprungen). Nach dem Rebase auf `origin/main` (PR #54) laufen
+lokal zwei load-empfindliche Nachweise in der vollen Parallelitaet in ihr Zeitlimit — `process-sweep`
+(Warten auf das Prozessende) und `slot-paylines` (RTP-Volllauf: 95 s allein gegen 120 s Budget);
+beide bestehen in Isolation (12 von 12). Sie beruehren weder Renderer noch Kamera. Den vollstaendigen
+Nachweis traegt wie vorgesehen CI (`verify:all`). Neuer Test `floor-camera.test.ts` mit sechs Faellen; drei
+davon waren zuerst rot, weil ich die Zugrichtung des Schwenks und die Lerp-Toleranz falsch
+angenommen hatte — die Kamera war richtig, die Erwartung nicht.
+
+**Offen.** Lichtpfuetze gilt je Zone und Chunk: eine Zone, die ueber eine Regionskante reicht,
+bekommt je Chunk eine eigene Pfuetze; bei sehr grossen Saelen entsteht dort eine sichtbare
+Naht. Ziehen per Touch ist nur im Code vorhanden, nicht auf einem echten Geraet geprueft. Der
+Klick in der Uebersicht zieht weiterhin heran statt zu laufen: bewusst, weil ein Klick ohne
+Rueckmeldung sonst nicht von einem Fehlklick zu unterscheiden waere.
+
 ## 2026-11-02 - Nachfrageereignis auf Narrative-Zustand vorbereiten
 
 **Ziel.** Den Zustand der vorhandenen Nachfrageveranstaltungen fuer die spaetere Event-Engine vereinheitlichen, ohne die Nachfragebalance zu aendern.
@@ -620,7 +670,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

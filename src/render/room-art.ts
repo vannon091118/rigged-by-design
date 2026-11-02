@@ -44,16 +44,16 @@ function drawWall(g: Graphics, zone: ZoneLike, side: Side, span: [number, number
     const x = side === 'left' ? zone.x * tile : (zone.x + zone.w) * tile - WALL;
     const lightEdge = side === 'left' ? x + WALL - 1 : x;
     g.rect(x, from, WALL, size).fill({ color: INK, alpha: 0.94 });
-    g.rect(lightEdge, from, 1, size).fill({ color: mat.light, alpha: 0.24 });
+    g.rect(lightEdge, from, 1, size).fill({ color: mat.light, alpha: 0.32 });
     g.rect(side === 'left' ? x + WALL : x - 2, from, 2, size).fill({ color: 0x000000, alpha: 0.32 });
-    g.rect(side === 'left' ? x : x + WALL - 2, from, 2, size).fill({ color: mat.accent, alpha: 0.12 });
+    g.rect(side === 'left' ? x : x + WALL - 2, from, 2, size).fill({ color: mat.accent, alpha: 0.16 });
   } else {
     const y = side === 'top' ? zone.y * tile : (zone.y + zone.h) * tile - WALL;
     const lightEdge = side === 'top' ? y + WALL - 1 : y;
     g.rect(from, y, size, WALL).fill({ color: INK, alpha: 0.94 });
-    g.rect(from, lightEdge, size, 1).fill({ color: mat.light, alpha: 0.24 });
+    g.rect(from, lightEdge, size, 1).fill({ color: mat.light, alpha: 0.32 });
     g.rect(from, side === 'top' ? y + WALL : y - 2, size, 2).fill({ color: 0x000000, alpha: 0.32 });
-    g.rect(from, side === 'top' ? y : y + WALL - 2, size, 2).fill({ color: mat.accent, alpha: 0.12 });
+    g.rect(from, side === 'top' ? y : y + WALL - 2, size, 2).fill({ color: mat.accent, alpha: 0.16 });
   }
 }
 

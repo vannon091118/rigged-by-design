@@ -19,6 +19,7 @@ import { JournalPopup } from './ui/journal-popup';
 import { LookPopup } from './ui/look-popup';
 import { SoundPopup } from './ui/sound-popup';
 import { MachinePopup } from './ui/machine-popup';
+import { StageControls } from './ui/stage-controls';
 import { isMuted, playSfx } from './render/sound-fx';
 import { armMusic, setMusicState } from './render/music';
 
@@ -126,7 +127,14 @@ export default function App() {
       if (event.key === 'Enter') {
         event.preventDefault();
         worldStore.useCarriedHere();
+        return;
       }
+      if (event.key === '+' || event.key === '=' || event.key === '-') {
+        event.preventDefault();
+        stage.current?.zoom(event.key === '-' ? 0.82 : 1.22);
+        return;
+      }
+      if (event.key === '0') { event.preventDefault(); stage.current?.fit(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -196,14 +204,7 @@ export default function App() {
           }}
         />
 
-        <div className="stage-legend">
-          <span><b>KLICK</b> auf freie Fläche: hinlaufen</span>
-          <span><b>GAST</b> Budget, Laune, Geduld</span>
-          <span><b>OBJEKT</b> Zustand, Mods, Testspin</span>
-          <span><b>MAUSRAD</b> zoomen</span>
-          <span><b>PFEILE / WASD</b> laufen</span>
-          <span><b>ENTER</b> Kiste aufstellen</span>
-        </div>
+        <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
 
         {carryingCrate && (
           <div className="place-hint">

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->
+<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -24,8 +24,12 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
 - Narrative-Grundlagen existieren: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9. NAR-02/03 sind noch nicht vollstaendig: weitere Facts, Ledger-Cursor, Charaktereigenschaften und referenzsichere Retention fehlen; danach folgen Beziehungen, Trigger und Scheduler.
 - Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
+- Optik und Steuerung sind einen Schritt weiter: Lichtpfuetzen und Wandkanten trennen die Raeume, Zielraster und Laufwegspur zeigen die Folge eines Klicks, die Kamera zieht am Bildrand nach, und das HUD traegt keine leere Zeile mehr. Bildsprache steht als `docs/ART-DIRECTION.md` mit Blatt daneben.
 
 ## Als Nächstes
+
+- Lichtpfuetze ueber Regionskanten zusammensetzen, damit grosse Saele keine Chunk-Naht im Licht zeigen; heute zeichnet jeder Chunk seine eigene Pfuetze.
+- Touch-Steuerung auf einem echten Geraet pruefen: Ziehen mit zwei Fingern ist im Code, aber nur Maus und Pinch sind belegt.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: Ein reiner Bedingungsauswerter fuer ausgewaehlte Facts und Weltwerte existiert, ist aber noch nicht integriert. Offene Grundlagen abschliessen, dann Beziehungen, Trigger-Integration, Scheduler, Templates und Command-DSL. Content-Compiler und Composer sind geplant und sollen lokal ohne LLM laufen; Der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen; NAR-13 bleibt bis zur Uebernahme des Lifecycles in die Event-Engine offen und kommt vor der Tick-Integration NAR-12.

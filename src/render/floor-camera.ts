@@ -64,6 +64,41 @@ export class FloorCamera {
     this.#targetFocus.y = centered ? 0.5 : Math.max(0, Math.min(1, worldY));
   }
 
+  /** Zoom fuer Tasten und Knoepfe: derselbe Weg wie das Rad, nur ohne Zeiger. */
+  zoomStep(factor: number): void {
+    this.#target = this.#clamp(this.#target * factor);
+    if (this.#target <= this.#fit * 1.01) {
+      this.#targetFocus.x = 0.5;
+      this.#targetFocus.y = 0.5;
+    }
+  }
+
+  /** Schwenk in normalisierten Weltanteilen: das Bild folgt dem Zeiger. */
+  pan(dx: number, dy: number): void {
+    this.#targetFocus.x = Math.max(0, Math.min(1, this.#targetFocus.x - dx));
+    this.#targetFocus.y = Math.max(0, Math.min(1, this.#targetFocus.y - dy));
+  }
+
+  /**
+   * Haelt die Figur im Bild, ohne jede Bewegung zur Kamerafahrt zu machen:
+   * erst wenn sie den inneren Rahmen verlaesst, zieht die Kamera nach.
+   */
+  keepInView(x: number, y: number, screenWidth: number, screenHeight: number, size: number): void {
+    // Uebersicht und Rueckweg dorthin bleiben mittig: dort ist ohnehin alles zu sehen.
+    if (this.#zoom <= this.#fit * 1.01 || this.#target <= this.#fit * 1.01) return;
+    const world = size * TILE;
+    const halfX = Math.min(0.5, screenWidth / (2 * world * this.#zoom)) * 0.55;
+    const halfY = Math.min(0.5, screenHeight / (2 * world * this.#zoom)) * 0.55;
+    const dx = x / world - this.#targetFocus.x;
+    const dy = y / world - this.#targetFocus.y;
+    if (dx > halfX) this.#targetFocus.x += dx - halfX;
+    else if (dx < -halfX) this.#targetFocus.x += dx + halfX;
+    if (dy > halfY) this.#targetFocus.y += dy - halfY;
+    else if (dy < -halfY) this.#targetFocus.y += dy + halfY;
+    this.#targetFocus.x = Math.max(0, Math.min(1, this.#targetFocus.x));
+    this.#targetFocus.y = Math.max(0, Math.min(1, this.#targetFocus.y));
+  }
+
   step(): boolean {
     let moving = false;
     if (Math.abs(this.#target - this.#zoom) > 0.0004) {

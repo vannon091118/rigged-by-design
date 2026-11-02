@@ -8,6 +8,7 @@ import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
 import { FloorCamera } from './floor-camera';
+import { FloorCues } from './floor-cues';
 import { createFurnitureArt, type FurnitureArt } from './furniture-art';
 import { createGuestArt, type GuestArt } from './guest-art';
 import { isVisible, screenToTile, visibleRect } from './floor-math';
@@ -40,6 +41,7 @@ export class FloorView {
   readonly #results = new Map<number, string>();
   readonly #cam = new FloorCamera();
   readonly #touch: FloorTouch;
+  readonly #cues: FloorCues;
   #view: GameView;
   #lod = -1;
   #placing = false;
@@ -52,11 +54,11 @@ export class FloorView {
     this.#view = view;
     this.#callbacks = callbacks;
     this.#scene = createSceneCache();
-    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#scene.actors, this.#scene.stickers);
+    this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY));
+    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers);
     this.#camera.eventMode = 'static';
     this.#camera.on('pointertap', this.#tap);
     app.stage.addChild(this.#camera);
-    app.canvas.addEventListener('wheel', this.#wheel, { passive: false });
     this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size);
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
@@ -93,11 +95,14 @@ export class FloorView {
     this.#syncFurniture(view);
     this.#syncGuests(view);
     this.#syncPlayer(view);
+    this.#cues.setPath(view.player.path, view.player.pathIndex);
     this.#updateLod();
     if (this.#camDirty) this.#applyCamera(); else this.#cull();
   }
 
   fit(): void { this.#cam.overview(); }
+
+  zoom(factor: number): void { this.#cam.zoomStep(factor); }
 
   zoomToArea(x: number, y: number): void {
     const area = areaAt(this.#view.template, x, y);
@@ -130,8 +135,8 @@ export class FloorView {
     this.#destroyed = true;
     this.#app.ticker.remove(this.#animate);
     this.#props.destroy({ props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers });
-    this.#app.canvas.removeEventListener('wheel', this.#wheel);
     this.#touch.destroy();
+    this.#cues.destroy();
     this.#actors.clear();
     this.#furnitureArt.clear();
     this.#scene.destroy();
@@ -247,6 +252,7 @@ export class FloorView {
     const lod = detail ? 1 : 0;
     if (lod === this.#lod) return;
     this.#lod = lod;
+    this.#cues.setMode(detail);
     this.#scene.setLabels(this.#view, detail);
     for (const art of this.#furnitureArt.values()) art.setDetail(detail);
     for (const art of this.#actors.active.values()) art.setLod(detail);
@@ -256,6 +262,7 @@ export class FloorView {
 
   #applyCamera(): void {
     this.#cam.apply(this.#camera, this.#app.screen.width, this.#app.screen.height, this.#view.size);
+    this.#cues.refresh();
     this.#camDirty = false;
     const pinScale = this.#lod === 0 ? 1 / Math.max(0.05, this.#camera.scale.x) : 1;
     for (const art of this.#actors.active.values()) art.root.scale.set(pinScale);
@@ -292,10 +299,12 @@ export class FloorView {
   }
 
   #tap = (event: FederatedPointerEvent): void => {
+    if (event.button !== 0) return;
     const point = event.getLocalPosition(this.#camera);
     const x = Math.floor(point.x / TILE);
     const y = Math.floor(point.y / TILE);
     if (x < 0 || y < 0 || x >= this.#view.size || y >= this.#view.size) return;
+    this.#cues.ping({ x, y });
     const guest = this.#view.guests
       .map((entry) => ({ entry, distance: Math.abs(entry.position.x - x) + Math.abs(entry.position.y - y) }))
       .filter((entry) => entry.distance <= 1)
@@ -309,21 +318,10 @@ export class FloorView {
     this.#callbacks.onEmpty(x, y);
   };
 
-  #wheel = (event: WheelEvent): void => {
-    event.preventDefault();
-    const rect = this.#app.canvas.getBoundingClientRect();
-    if (rect.width === 0) return;
-    const scaleFactor = rect.width / this.#app.screen.width;
-    const localX = (event.clientX - rect.left) / scaleFactor;
-    const localY = (event.clientY - rect.top) / scaleFactor;
-    const worldX = (localX - this.#camera.x) / this.#camera.scale.x / (this.#view.size * TILE);
-    const worldY = (localY - this.#camera.y) / this.#camera.scale.y / (this.#view.size * TILE);
-    this.#cam.wheel(worldX, worldY, event.deltaY);
-  };
-
   #animate = (): void => {
     if (this.#destroyed) return;
     const now = performance.now();
+    this.#cam.keepInView(this.#player.root.x, this.#player.root.y, this.#app.screen.width, this.#app.screen.height, this.#view.size);
     const moving = this.#cam.step();
     if (moving || this.#camDirty) {
       this.#updateLod();
@@ -335,6 +333,7 @@ export class FloorView {
     }
     this.#player.animate(now);
     this.#walk(this.#player, now, 0);
+    this.#cues.animate(now, this.#player.root);
     this.#props.walk(now, STEP_MS);
   };
 

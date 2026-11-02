@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.77 | 2026-11-02 22:58 UTC -->
+<!-- rbd-doc: v0.3.78 | 2026-11-02 23:37 UTC -->
 
 ## README als Einstieg
 
@@ -113,7 +113,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | ffmpeg-static | ^5.3.0 | Assets | Kodiert die WAV-Musikmaster zu Opus fuer die Auslieferung; reines Build-Werkzeug, nicht im Bundle. | 1: `scripts/encode-audio.mjs` |
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `src/Config/eslint.config.mjs` |
 | jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 5: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
-| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 42: `src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-carpet.ts`<br>`src/render/floor-perf.bench.ts`<br>`src/render/floor-props.ts`<br>… (+36) |
+| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 43: `src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-carpet.ts`<br>`src/render/floor-cues.ts`<br>`src/render/floor-perf.bench.ts`<br>… (+37) |
 | react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 36: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+30) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
@@ -202,6 +202,15 @@ Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chun
 Messung vom 30.10.2026 auf der Cloud-VM, für das Low-End-Profil mit `taskset -c 0` auf einen Kern gepinnt (Emulation, keine echte schwache Hardware): 9 Regions-Hashes 0,0008 ms, Neuzeichnen aller 9 Boden-Chunks 1,1685 ms (nur bei Template-/Teppichwechsel), Dreck in 9 Regionen mit 500 Tiles 0,8068 ms, Culling über 200 Entities 0,0026 ms. Dazu: 200 Rig-Posen 0,0128 ms, Snapshot mit 200 Gästen und 5.000 Buchungen 0,1047 ms, vollständige Ledger-Prüfung über 5.201 Buchungen 0,0042 ms. 1.000 Ticks messen 949,9 ms; der Save bleibt bei 115,2 KiB. Das Heap-Delta ist wegen GC nicht belastbar und wird nur als Rohwert geloggt. Steady-State pro Tick: Hash + Culling, keine Neuzeichnung.
 
 Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warmup und festen 5–20 Läufen statt der Tinybench-Stichprobe. PLINKO wird im Runden-Benchmark mit 500 Drops pro Operation gemessen; 20.000 Physik-Drops pro Operation waren der Grund für den alten Mehrminuten-Lauf. Der gesamte `test:perf`-Lauf bleibt damit im Bereich weniger Sekunden bis unter einer Minute. Die Zahlen schwanken mit CPU-Last und JIT; sie sind Indikatoren, kein Gate. Echte Geräte und ein echter Browser bleiben eine manuelle Abnahme.
+
+## Bodenhinweise, Kamera und Bildsprache
+
+- `src/render/floor-cues.ts` ist die einzige Ebene, die Steuerung sichtbar macht: Zielraster unter dem Zeiger, Ring am Figurenfuss, Punktspur des Laufwegs, Puls am Klickziel. Sie liest Snapshots und Pixelkoordinaten, kennt keine Regel und schreibt keinen Spielzustand. Die Farbe traegt die Folge: Service heisst laufen, Identity heisst heranziehen; die Kopplung sitzt in `setMode(detail)` und kommt aus dem LOD der Kamera.
+- Das Zielraster haengt am Zeiger, nicht am Bild: nach jeder Kamerafahrt setzt `refresh()` die Kachel ueber die letzte Zeigerposition neu, sonst zeigt es auf eine Kachel, die nicht mehr unter der Maus liegt.
+- `src/render/floor-camera.ts` ist weiterhin die einzige Kamera-Wahrheit und reine Mathematik: `pan` (normalisierte Weltanteile, geclampt auf 0..1), `zoomStep` (Tasten und Knoepfe) und `keepInView` (zieht nach, sobald die Figur 55 Prozent der halben Sicht verlaesst; in der Uebersicht und auf dem Rueckweg dorthin bleibt der Fokus mittig). `floor-touch.ts` uebersetzt Zeigergesten (Rad, Pinch, Ziehen mit mittlerer oder rechter Taste) in diese drei Aufrufe; `floor-view.ts` uebersetzt Tastatur und Ticker.
+- `src/ui/stage-controls.tsx` ist die einzige Bedienflaeche der Buehne: Tastenkuerzel als `kbd`-Chips und die Kamera-Knoepfe. Sie haelt keinen Zustand und ruft nur `zoom` und `fit` ueber das `FloorHandle`.
+- Bildsprache: `docs/ART-DIRECTION.md` beschreibt die Rollen, Lichtstufen und Strichbreiten als Haltung; das Blatt liegt als `docs/banners/art-direction-neon-ledger.png` daneben. Die Zahlen, die dort stehen, sind die aus `src/render/art-tokens.ts` und `src/styles/tokens.css`; aendert sich eine Rolle, aendert sie sich an beiden Stellen und in diesem Kapitel.
+- Licht ist Darstellung, kein Zustand: `drawLightSpill` in `src/render/floor-surface.ts` backt 16 Stufen in den Regions-Chunk und kostet im Standbild nichts. Die Halbachsen bleiben im Raum, damit kein Schein ueber die Wand laeuft.
 
 ## Ereignisprotokoll, Diagnose und Status
 

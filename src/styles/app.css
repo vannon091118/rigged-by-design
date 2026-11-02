@@ -49,6 +49,8 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   font-family: var(--mono); font-size: var(--fs-meta); color: var(--muted);
 }
 .hud-rpg > span { color: var(--role-identity); letter-spacing: 0.1em; }
+.rpg-bar { width: 120px; height: 4px; border-radius: var(--radius-pill); background: rgba(176, 107, 255, 0.16); overflow: hidden; }
+.rpg-bar > div { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, rgba(176, 107, 255, 0.45), var(--role-identity)); transition: width 220ms ease; }
 .hud-penalty {
   grid-column: 1 / -1;
   padding: 6px 10px; border: 1px solid rgba(255, 107, 129, 0.55); border-radius: var(--radius-sm);
@@ -122,6 +124,16 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   border-top: 1px solid var(--line); font-size: 10px; color: var(--gold); letter-spacing: 0.03em;
 }
 
+/* Barkauf-Ziel: ein Chip in der RPG-Zeile statt einer leeren Leiste. */
+.hud-milestone {
+  display: flex; align-items: center; gap: 8px; margin-left: auto;
+  padding: 4px 9px; border: 1px solid rgba(255, 209, 102, 0.3); border-radius: var(--radius-pill);
+  background: rgba(255, 209, 102, 0.06);
+  font-family: var(--mono); font-size: var(--fs-micro); letter-spacing: 0.08em; color: var(--gold);
+}
+.milestone-progress { width: 76px; height: 5px; border-radius: var(--radius-pill); background: rgba(255, 209, 102, 0.16); overflow: hidden; }
+.milestone-progress-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, rgba(255, 209, 102, 0.55), var(--gold)); transition: width 220ms ease; }
+
 /* ---------- Stage ---------- */
 .stage-wrap {
   position: relative;
@@ -130,22 +142,55 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
-  background: var(--bg-deep);
+  background:
+    radial-gradient(120% 90% at 50% -18%, rgba(176, 107, 255, 0.06), transparent 78%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.016) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.016) 0 1px, transparent 1px 46px),
+    var(--bg-deep);
   box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.6);
 }
 .stage-wrap.is-placing { border-color: var(--neon); box-shadow: 0 0 0 1px rgba(0, 255, 204, 0.4), inset 0 0 120px rgba(0, 0, 0, 0.6); }
+/* Vignette: der Saal steht im Licht, der Rand faellt ins Dunkel. Ueber dem Canvas, unter dem HUD. */
+.stage-wrap::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: radial-gradient(120% 88% at 50% 42%, transparent 52%, rgba(4, 2, 8, 0.58) 100%);
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.6);
+}
 .floor-stage { position: absolute; inset: 0; }
-.floor-stage canvas { display: block; width: 100% !important; height: 100% !important; }
+.floor-stage canvas { display: block; width: 100% !important; height: 100% !important; cursor: crosshair; }
 
 .stage-legend {
-  position: absolute; top: 10px; left: 12px; z-index: 12; display: flex; gap: 8px; flex-wrap: wrap;
+  position: absolute; top: 10px; left: 12px; z-index: 12; display: flex; gap: 6px; flex-wrap: wrap;
   pointer-events: none;
 }
 .stage-legend span {
-  padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px;
-  background: rgba(6, 4, 12, 0.72); font-size: 9px; letter-spacing: 0.06em; color: var(--muted);
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px 3px 4px;
+  border: 1px solid rgba(74, 47, 102, 0.55); border-radius: var(--radius-pill);
+  background: rgba(6, 4, 12, 0.66); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
 }
-.stage-legend b { color: var(--neon); }
+.stage-legend kbd {
+  padding: 2px 6px; border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 6px;
+  background: rgba(0, 255, 204, 0.07); color: #bff9ee;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.03em; text-transform: none;
+}
+
+/* Kamera-Knoepfe: eine Reihe, eine Aufgabe je Taste, kein Panel. */
+.stage-zoom {
+  position: absolute; right: 12px; bottom: 12px; z-index: 13;
+  display: flex; align-items: stretch; overflow: hidden;
+  border: 1px solid var(--line-strong); border-radius: 10px;
+  background: rgba(8, 5, 15, 0.86); box-shadow: var(--elev-1);
+}
+.zoom-btn {
+  min-width: 34px; height: 30px; border: 0; background: transparent;
+  color: #d9cdf0; font-family: var(--mono); font-size: 13px; line-height: 1;
+  transition: background 120ms ease, color 120ms ease;
+}
+.zoom-btn + .zoom-btn { border-left: 1px solid var(--line); }
+.zoom-btn:hover { background: rgba(0, 255, 204, 0.12); color: #e6fffa; }
+.zoom-btn:active { background: rgba(0, 255, 204, 0.2); }
+.zoom-btn.fit { font-size: 9px; letter-spacing: 0.12em; color: var(--gold); }
 
 .place-hint {
   position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 14;

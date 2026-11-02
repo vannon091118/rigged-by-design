@@ -6,6 +6,7 @@ import { FloorView } from './floor-view';
 
 export interface FloorHandle {
   fit: () => void;
+  zoom: (factor: number) => void;
   cellAt: (clientX: number, clientY: number) => { x: number; y: number } | null;
 }
 
@@ -28,6 +29,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
 
   useImperativeHandle(ref, () => ({
     fit: () => floor.current?.fit(),
+    zoom: (factor: number) => floor.current?.zoom(factor),
     cellAt: (clientX: number, clientY: number) => floor.current?.cellAt(clientX, clientY) ?? null,
   }), []);
 
