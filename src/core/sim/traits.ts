@@ -13,9 +13,10 @@ const PERSONA_WEIGHT: Record<PersonaId, number> = {
   LUMPEN: 4, STREET: 4, BUSINESS: 2, HIGH_ROLLER: 1, STAMMGAST: 3,
 };
 
-/** Ein 180-Punkte-Max-Pool; die Persona verschiebt den Suchtanteil. */
+/** Ein 180-Punkte-Max-Pool; Persona-Geduld und Suchtrate sind die Gewichte. */
 function splitPool(prng: Prng, persona: PersonaId): [number, number, number] {
-  return rollProfile(prng, getPersona(persona).addictionRate);
+  const profile = getPersona(persona);
+  return rollProfile(prng, profile.addictionRate, profile.patience / 100);
 }
 
 /** Die Progression bestimmt, welche Gaeste kommen: Business und High Roller brauchen eine hoehere Stufe. */

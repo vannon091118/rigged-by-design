@@ -8,9 +8,10 @@ import { dirtyTileIndex } from './emotion';
 const MAX_PROFILE_POINTS = 180;
 
 /** Verteilt exakt 180 Punkte auf Laune, Geduld und Sucht; jeder Wert bleibt 0..100. */
-export function rollProfile(prng: Prng, addictionRate: number): [number, number, number] {
+export function rollProfile(prng: Prng, addictionRate: number, patienceWeight = 1): [number, number, number] {
   const values = [0, 0, 0];
-  const weights = [1, 1, Math.max(0.2, Math.min(2, addictionRate))];
+  // Geduld (Persona 68..138) und Suchtneigung ziehen am selben 180-Punkte-Pool; die Summe bleibt konstant.
+  const weights = [1, Math.max(0.2, Math.min(2, patienceWeight)), Math.max(0.2, Math.min(2, addictionRate))];
   for (let i = 0; i < MAX_PROFILE_POINTS; i += 1) {
     const open = weights.map((weight, index) => (values[index]! >= 100 ? 0 : weight));
     const total = open[0]! + open[1]! + open[2]!;

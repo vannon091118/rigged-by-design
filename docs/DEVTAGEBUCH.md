@@ -10,6 +10,17 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
 - Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
 
+## 2026-11-02 - Synergie-Audit: tote Persona-Geduld und Mods ohne Wirkung
+
+**Ziel.** Systematisch suchen, wo Mechaniken sich gegenseitig tragen sollten, es aber nicht tun: geschriebene Felder ohne Leser, verkaufte Mods ohne ihre beschriebene Wirkung und Personas, die nur als Gewicht auftauchen.
+
+**Umsetzung.** Ein Befund war reine Verdrahtung: `Persona.patience` (68 bis 138) wurde nirgends gelesen, weil `makeGuest` die Geduld zu gleichen Teilen aus dem 180-Punkte-Pool zog — der Stammgast startete sogar ungeduldiger als der High Roller (51,1 gegen 63,9 im Messlauf), weil seine hohe Suchtrate den Geduldanteil verdrängte. `rollProfile` nimmt die Persona-Geduld jetzt als eigenes Gewicht (`patience / 100`) neben der Suchtrate; weil der Pool weiterhin exakt 180 Punkte verteilt, bleibt die Invariante aus `world.test.ts` und `tycoon-needs.test.ts` erhalten. Die übrigen Befunde stehen als Bericht in `docs/INVENTORY.md`, weil sie Spielregel-Entscheidungen brauchen: `VELVET` und `FREE_DRINK` versprechen bessere Gäste und einen Drink pro Spin, liefern aber nur Anziehung und Geduld; `EXTRA_REEL` erhöht nur die Anziehung, die Walzenzahl kommt aus dem separaten Upgrade; `PLAYER_CASH` wird nur gutgeschrieben (Pakt-Bonus) und als Anzeige gelesen; der Einsatz bleibt `max(minBet, baseBet)` und skaliert nie mit dem Persona-Budget.
+
+**Pruefungen.** Fail-First: `persona-patience.test.ts` lief auf dem Stand vor dem Commit rot (Stammgast 51,1 war nicht geduldiger als High Roller 63,9), nach dem Fix 2/2 grün, `typecheck` Exit 0. Der Befundbericht ist aus Greps belegt: `PLAYER_CASH` erscheint nur in `self-exclusion-bet.ts` als Ziel einer Buchung, `VELVET`/`FREE_DRINK` nur in `offers.ts` und der Rivalen-Deko, `reelPull` liest `item.reels` statt der Mods.
+
+**Offen.** Die vier verbleibenden Punkte sind bewusst nicht gefixt: sie ändern Spielregeln oder Preise (Gratis-Drink pro Spin, Samt-Gäste, vierte Walze als Mod, Ausgabe von `PLAYER_CASH`) und brauchen eine Entscheidung, keine Umbuchung.
+
+
 ## 2026-11-02 - Lohn nur für geleistete Schichten
 
 **Ziel.** Befund 2 schließen: `payDailyWage` zahlte weder Anwesenheit noch Arbeit, weshalb ein Spieler mit angenommenem Job fünf Tage lang 60 VC kassierte, ohne den Floor zu betreten — bezahlt aus `EXTERNAL`, also aus dem Nichts.
@@ -499,7 +510,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.72 | 2026-11-02 11:32 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
