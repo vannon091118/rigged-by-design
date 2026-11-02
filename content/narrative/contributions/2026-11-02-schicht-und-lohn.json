@@ -1,0 +1,12 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-02T11:18Z-schicht-lohn",
+  "contributionId": "shift-pay-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
+  "directives": []
+}

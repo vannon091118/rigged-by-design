@@ -11,6 +11,7 @@ import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { NarrativeState } from '../core/sim/narrative/types';
 import { hydrateNarrative } from './migrate-narrative';
 import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
+import { hydrateJobState } from '../core/sim/player-jobs';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
 
@@ -125,7 +126,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
       path: [...(guest.path ?? [])],
     };
   });
-  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) } };
+  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null };
   world.dirty = new Set(saved.dirty ?? []);
   world.prices = { ...world.prices, ...(saved.prices ?? {}) };
   // Der alte Guard lebte als Flag neben den Agenten: gelesen, nicht uebernommen.

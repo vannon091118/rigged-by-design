@@ -1,13 +1,13 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 11:10 UTC -->
+<!-- rbd-doc: v0.3.72 | 2026-11-02 11:19 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 ## Jetzt
 
-- Offen aus dem Audit: Pity-Entladungen heben den RTP des Startautomaten auf 99,15 %, Loehne zahlen ohne Anwesenheit, Schulden haben keinen Tilgungspfad, `PLAYER_CASH` keinen Ausgabepfad, die Sucht steuert nichts und der Einsatz skaliert nie mit der Persona.
+- Offen aus dem Audit: Pity-Entladungen heben den RTP des Startautomaten auf 99,15 %, Schulden haben keinen Tilgungspfad, `PLAYER_CASH` keinen Ausgabepfad, die Sucht steuert nichts und der Einsatz skaliert nie mit der Persona.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet.
 

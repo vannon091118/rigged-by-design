@@ -5,7 +5,7 @@ import { PORTEMONNAIE, EXTERNAL } from './money';
 import { getRival, type RivalId } from './rivals';
 import { grantGlobalXp, injuryDurationReduction } from './player-rpg';
 import { recordJournal } from './journal';
-import type { WorldState, PlayerJobId } from './types';
+import type { PlayerJobState, WorldState, PlayerJobId } from './types';
 
 const TICKS_PER_TASK = { CLEANER: 30, BARTENDER: 45, CARD_DEALER: 60, MECHANIC: 90 } as const;
 const QUEUE_CAPACITY = { CLEANER: 3, BARTENDER: 2, CARD_DEALER: 1, MECHANIC: 2 } as const;
@@ -54,7 +54,7 @@ export function acceptJob(world: WorldState, rivalId: RivalId, jobId: PlayerJobI
   const rival = getRival(rivalId);
   const station = rival.jobStations.find((s) => s.jobId === jobId);
   if (!station) throw new Error(`Keine Arbeitsstation für ${jobId} im ${rival.name} gefunden.`);
-  world.player.job = { jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day };
+  world.player.job = { jobId, rivalId, stationId: station.id, currentTask: null, workDays: 0, lastPaidDay: world.day, lastWorkDay: 0 };
   world.lastEvent = `Job angenommen: ${def.label} in ${rival.name}.`;
 }
 
@@ -94,7 +94,13 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
   }
   job.currentTask = null;
   job.workDays += 1;
+  job.lastWorkDay = world.day;
   world.lastEvent = `Schicht beendet: ${def.label}.`;
+}
+
+/** Saves vor der Anwesenheitsregel tragen kein `lastWorkDay`: ohne Schicht kein rueckwirkender Lohn. */
+export function hydrateJobState(job: PlayerJobState): PlayerJobState {
+  return { ...job, lastWorkDay: Number.isFinite(job.lastWorkDay) ? job.lastWorkDay : 0 };
 }
 
 export function payDailyWage(
@@ -106,6 +112,9 @@ export function payDailyWage(
   const job = world.player.job;
   if (job === null) return false;
   if (job.lastPaidDay >= world.day) return false;
+  // Lohn gibt es nur fuer eine abgeschlossene Schicht: der Tageslohn des Vortags wird
+  // am Tageswechsel ausgezahlt, wer nicht gearbeitet hat bekommt nichts und auch nichts nachtraeglich.
+  if (job.lastWorkDay < world.day - 1) return false;
   const def = JOB_DEFS[job.jobId];
   const wage = fromVC(def.dailyWageVC);
   ledger.transfer(EXTERNAL, PORTEMONNAIE, wage, `tageslohn ${def.id}`, tick);
