@@ -110,3 +110,14 @@ export function summarize(result) {
   for (const entry of result.open) lines.push(`${label('Offen')}${entry}`);
   return lines.join('\n');
 }
+
+/**
+ * Die verdichtete Textzeile: Status, Stand, Umfang in einer Zeile. Gedacht fuer
+ * Kopfzeilen und Protokolle, in denen jeder weitere Satz nur Tokens kostet.
+ */
+export function oneLineOf(result) {
+  const changed = result.changed.length === 0 ? '0 Aenderungen' : `${result.changed.length} Aenderung(en)`;
+  const cached = result.gates.filter((gate) => gate.cached).length;
+  const tests = result.tests.runAll ? 'Tests alle' : `Tests ${result.tests.selected.length}`;
+  return `context ${result.version} ${result.tree.branch}@${result.tree.head} ${result.tree.dirty ? 'schmutzig' : 'sauber'} · ${changed} · ${tests} · Gates ${result.gates.length} (Cache ${cached})`;
+}
