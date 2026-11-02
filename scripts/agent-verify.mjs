@@ -6,15 +6,15 @@
  *
  * `--profile=quick` laeuft die schnellen Gates und, wenn der Impact es erlaubt,
  * nur die betroffenen Tests. Diese Auswahl ist ausdruecklich Teilpruefung; der
- * Bericht nennt sie so. `--ci` delegiert die langen Nachweise an Actions und
- * wartet auf das Ergebnis.
+ * Bericht nennt sie so. `--ci` delegiert die langen Nachweise an Actions.
+ * `--plan` zeigt den Plan, ohne ein Gate zu starten.
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { impact } from './lib/impact.mjs';
 import { GATES, planGates } from './lib/pipeline-plan.mjs';
-import { runGates } from './lib/gate-runner.mjs';
+import { lastGateRows, runGates } from './lib/gate-runner.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -22,6 +22,7 @@ const profileArg = argv.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
 const CI = argv.includes('--ci');
 const AS_JSON = argv.includes('--json');
+const PLAN_ONLY = argv.includes('--plan');
 
 const state = impact({ profile: PROFILE });
 const steps = (planGates(PROFILE) ?? []).map((key) => ({ ...GATES[key] }));
@@ -37,6 +38,18 @@ if (PROFILE === 'quick' && tests && state.tests.selected.length === 0 && !state.
   // Nichts geaendert heisst nicht "nichts pruefen": eine Verifikation ohne
   // Testlauf waere ein stiller Freischein. Ohne Auswahl laeuft die Suite.
   state.open.push('kein Testbezug im Diff: die Suite laeuft vollstaendig');
+}
+
+const header = `Verify ${PROFILE} · ${state.version} · ${state.tree.branch}@${state.tree.head} · Baum ${state.tree.key}`;
+const width = Math.max(4, ...state.gates.map((gate) => gate.name.length));
+
+if (PLAN_ONLY) {
+  console.log(header);
+  console.log(`Plan       ${state.gates.length} Gates · Tests ${subset.length > 0 ? `${subset.length} ausgewaehlt` : 'vollstaendig'}`);
+  console.log('');
+  console.log(`${'Gate'.padEnd(width)}  ${'Cache'.padEnd(5)}  Code`);
+  for (const gate of state.gates) console.log(`${gate.name.padEnd(width)}  ${(gate.cached ? 'hit' : '-').padEnd(5)}  ${gate.code}`);
+  process.exit(0);
 }
 
 // Keine Wanduhr: die Determinismus-Sperre gilt auch fuer Werkzeuge. Die
@@ -77,16 +90,20 @@ if (CI && report.delegated.length > 0) {
 if (AS_JSON) {
   console.log(JSON.stringify(report, null, 2));
 } else {
-  const counts = report.gates.reduce((acc, gate) => {
-    acc[gate.result] = (acc[gate.result] ?? 0) + 1;
-    return acc;
-  }, {});
-  console.log(
-    `agent:verify ${PROFILE}: ${failed.length === 0 ? 'PASS' : 'ROT'} · ` +
-      `${Object.entries(counts).map(([key, value]) => `${value} ${key}`).join(', ')} · ${Math.round(durationMs / 1000)}s`,
-  );
-  if (subset.length > 0) console.log(`  Teilpruefung: ${subset.length} betroffene Testdatei(en), kein Vollnachweis`);
-  if (report.delegated.length > 0) console.log(`  Delegiert: ${report.delegated.length} lange Nachweis(e) — pnpm run agent:verify -- --ci`);
-  console.log(`  Bericht: ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);
+  const measured = new Map(lastGateRows().map((row) => [row.name, row]));
+  const table = report.gates.map((gate) => {
+    const row = measured.get(gate.name);
+    const status = row ? row.status : gate.result === 'cached' ? 'cache' : gate.result === 'skipped' ? 'skip' : '-';
+    return { name: gate.name, status, seconds: row ? row.seconds : '-' };
+  });
+  console.log(header);
+  console.log(`Ergebnis   ${failed.length === 0 ? 'PASS' : 'ROT'} · ${report.gates.length} Gates · ${(durationMs / 1000).toFixed(1)}s`);
+  console.log('');
+  console.log(`${'Gate'.padEnd(width)}  ${'Status'.padEnd(6)}  Dauer`);
+  for (const row of table) console.log(`${row.name.padEnd(width)}  ${row.status.padEnd(6)}  ${row.seconds}`);
+  if (subset.length > 0) console.log(`Teilpruefung  ${subset.length} betroffene Testdatei(en), kein Vollnachweis`);
+  if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — pnpm run agent:verify -- --ci`);
+  for (const entry of report.open) console.log(`Offen         ${entry}`);
+  console.log(`Bericht       ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);
 }
 process.exit(failed.length === 0 ? 0 : 1);

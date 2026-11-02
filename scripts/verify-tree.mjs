@@ -77,6 +77,22 @@ for (const file of filesUnder('.github/workflows')) {
   if (!/\.ya?ml$/.test(file)) flag(relative(ROOT, file), 'Workflow ist keine YAML-Datei.');
 }
 
+/**
+ * Wegwerf-Dateien sind kein Werkzeug: Analyse laeuft ueber `agent:context`,
+ * Pruefung ueber `agent:verify`. Ein Ad-hoc-Skript im Baum macht das Gate rot,
+ * damit es nicht zum Dauerzustand wird.
+ */
+const TEMP_NAME = /(^|[/\\])(tmp|temp|scratch|adhoc|oneoff|throwaway)[-_.]/i;
+const TEMP_EXT = /\.(tmp|bak|orig|rej)$/i;
+for (const dir of ['scripts', 'src', 'content', 'docs']) {
+  for (const file of filesUnder(dir)) {
+    const name = norm(relative(ROOT, file));
+    if (TEMP_NAME.test(name) || TEMP_EXT.test(name)) {
+      flag(name, 'Wegwerf-Datei: keine Ad-hoc-Skripte, nutze pnpm run agent:context bzw. pnpm run agent:verify.');
+    }
+  }
+}
+
 if (violations.length > 0) {
   violations.forEach((entry, index) => fail(index + 1, 'ERR-4019', entry.path, entry.message));
   console.error(`verify-tree: ${violations.length} Verstoss/Verstoesse`);
