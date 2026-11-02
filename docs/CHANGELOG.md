@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.72 | 2026-11-02 12:08 UTC -->
+<!-- rbd-doc: v0.3.73 | 2026-11-02 12:20 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.73] - 2026-11-02
+
+### Spiel
+
+- Keine spielbaren Aenderungen; der Sprung dient der Release-Konsistenz von `main`.
+
+### Technik
+- Version 0.3.73: `main` trug nach dem Merge von PR #44 weiter 0.3.72, waehrend der Tag `v0.3.72` auf `7b50913` (PR #40) stand und der Release-Lauf nach einem API-Merge als `skipped` endete. Der Patch-Sprung macht den Tip release-faehig, ohne den bestehenden Tag zu verschieben.
 
 ## [0.3.71] - 2026-11-01
 
