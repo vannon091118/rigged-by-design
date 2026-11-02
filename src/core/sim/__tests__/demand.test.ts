@@ -111,9 +111,9 @@ describe('Nachfragequellen', () => {
     world.demandTier = 'SAAL';
     world.tick = 700;
     world.nextArrivalTick = 10_000;
-    world.demandEvent = { kind: 'NEON_NACHT', untilTick: 700 };
+    world.narrative.demandEvent = { kind: 'NEON_NACHT', untilTick: 700 };
     tickDemand(world, ledger, prng);
-    expect(world.demandEvent).toBeNull();
+    expect(world.narrative.demandEvent).toBeNull();
     expect(demandBreakdown(world).sources.some((source) => source.id === 'EVENT')).toBe(false);
   });
 });

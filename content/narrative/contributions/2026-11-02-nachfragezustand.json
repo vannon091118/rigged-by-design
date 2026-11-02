@@ -1,0 +1,10 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-02T22:49Z-nachfragezustand",
+  "contributionId": "neon-abend-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita sah zur Neonreklame hinauf. Der Abend stand noch im Kalender, auch wenn das alte Buch ein neues Fach bekommen hatte.",
+  "directives": []
+}

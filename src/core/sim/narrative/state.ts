@@ -15,7 +15,7 @@ const START_ROSTER: ReadonlyArray<{ readonly name: string; readonly persona: Vis
 ];
 
 export function createNarrativeState(): NarrativeState {
-  return { factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0, flags: {} };
+  return { factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0, demandEvent: null, flags: {} };
 }
 
 /** Legt den Start-Pool an und bucht das Startkapital als narrativen Fact. Idempotent. */
@@ -62,6 +62,10 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.pending = pending.filter((fact) => fact.id > processedId).slice(-NARRATIVE_LIMITS.pending);
   state.recent = recent.filter((fact) => fact.id <= processedId).slice(-NARRATIVE_LIMITS.recent);
   state.dropped = Math.max(0, Math.floor(number(raw.dropped)));
+  if (isRecord(raw.demandEvent) && (raw.demandEvent.kind === 'NEON_NACHT' || raw.demandEvent.kind === 'TURNIER_ABEND')
+    && safeInteger(raw.demandEvent.untilTick, 0)) {
+    state.demandEvent = { kind: raw.demandEvent.kind, untilTick: raw.demandEvent.untilTick };
+  }
   if (isRecord(raw.flags)) {
     for (const [key, value] of Object.entries(raw.flags)) {
       if (Number.isFinite(value)) state.flags[key] = Number(value);

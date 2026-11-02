@@ -46,6 +46,7 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `recent` | verarbeitete Facts fuer kurze Ketten | 120 |
 | `processedId` | hoechste verarbeitete ID | verhindert Doppelverarbeitung |
 | `dropped` | verworfene Facts wegen Queue-Grenze | Diagnose, kein Trigger |
+| `demandEvent` | aktive Neon-Nacht oder Turnierabend | hoechstens eine Veranstaltung; Ablauf bisher in `demand.ts` |
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
 
 Facts sind eine diskriminierte Union mit `id`, `kind`, `tick`, `day` und typisierten
@@ -138,7 +139,7 @@ irgendein Command laeuft.
 
 ## 10. Persistenz
 
-Save v9 traegt `narrative` und die Erinnerungen der Visitor-Profile. v5–v8 bleiben
+Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
 und Erinnerungen verworfen, IDs monoton fortgeschrieben. Aktive Events, Choices,
 Fristen und Cooldowns kommen mit NAR-06/NAR-07 hinzu und muessen denselben Roundtrip

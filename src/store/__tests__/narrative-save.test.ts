@@ -4,6 +4,7 @@ import { Ledger } from '../../core/economy/ledger';
 import { openHouse } from '../../core/sim/money';
 import { createNarrativeState, seedStartPool } from '../../core/sim/narrative/state';
 import { tickWorld } from '../../core/sim/tick';
+import { demandBreakdown } from '../../core/sim/demand';
 import { createWorld, ensureStarter } from '../../core/sim/templates';
 import { Prng } from '../../core/rng/prng';
 import { randomSeed } from '../../test/random-seed';
@@ -40,6 +41,37 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     expect(loaded).not.toBeNull();
     expect(loaded!.world.narrative).toEqual(createNarrativeState());
     expect(loaded!.world.visitors.every((visitor) => (visitor.memories ?? []).length === 0)).toBe(true);
+  });
+
+  it('migriert aktive alte Nachfrageevents von v5 bis v9 in den narrativen Zustand', () => {
+    const { world, ledger } = fixture();
+    for (const version of [5, 6, 7, 8, 9]) {
+      for (const kind of ['NEON_NACHT', 'TURNIER_ABEND'] as const) {
+        const saved = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 7))) as Record<string, unknown>;
+        saved.version = version;
+        saved.demandEvent = { kind, untilTick: world.tick + 100 };
+        delete (saved.narrative as Record<string, unknown>).demandEvent;
+        const loaded = replaySave(saved);
+        expect(loaded).not.toBeNull();
+        expect(loaded!.world.narrative.demandEvent).toEqual({ kind, untilTick: world.tick + 100 });
+        expect(demandBreakdown(loaded!.world).event?.kind).toBe(kind);
+        expect(demandBreakdown(loaded!.world).sources.find((source) => source.id === 'EVENT')?.perDay)
+          .toBe(kind === 'NEON_NACHT' ? 20 : 16);
+        const nextSave = toSavedGame(loaded!.world, loaded!.ledger, 7);
+        expect(nextSave.demandEvent).toBeUndefined();
+        expect(replaySave(JSON.parse(JSON.stringify(nextSave)))!.world.narrative.demandEvent).toEqual({ kind, untilTick: world.tick + 100 });
+      }
+    }
+  });
+
+  it('erweckt abgelaufene und bereits migrierte Veranstaltungen nicht erneut', () => {
+    const { world, ledger } = fixture();
+    const saved = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 7))) as Record<string, unknown>;
+    saved.demandEvent = { kind: 'NEON_NACHT', untilTick: world.tick + 100 };
+    expect(replaySave(saved)!.world.narrative.demandEvent).toBeNull();
+    delete (saved.narrative as Record<string, unknown>).demandEvent;
+    saved.demandEvent = { kind: 'NEON_NACHT', untilTick: world.tick };
+    expect(replaySave(saved)!.world.narrative.demandEvent).toBeNull();
   });
 
   it('setzt zwei aus demselben Save geladene Welten inklusive Narrative identisch fort', () => {
