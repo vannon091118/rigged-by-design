@@ -121,6 +121,9 @@ export function Hud({
       <div className="hud-rpg">
         <span>LV {rpg.level}</span>
         <small>XP {rpg.xp}/{rpg.level * 100}</small>
+        <div className="rpg-bar" aria-hidden="true">
+          <div style={{ width: `${Math.min(100, (rpg.xp / (rpg.level * 100)) * 100)}%` }} />
+        </div>
         {rpg.unspentPoints > 0 && (
           <>
             <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.">SPD {rpg.speedLevel}</button>
@@ -132,21 +135,20 @@ export function Hud({
             <button type="button" className="btn warm" onClick={() => onSkill('luck')} title="Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.">LCK {rpg.luckLevel}</button>
           </>
         )}
+        {!view.barPurchased && (
+          <div className="hud-milestone" title={`Bargeld bis zum Barkauf: ${vc(view.wallet, 2)} von 50,00`}>
+            <span>BAR-KAUF {vc(view.wallet, 2)} / 50,00</span>
+            <div className="milestone-progress">
+              <div className="milestone-progress-fill" style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
+            </div>
+          </div>
+        )}
       </div>
 
       {view.playerJob && (
         <div className="hud-job">
           <span>Job: {view.playerJob.jobId}</span>
           <span>Tag {view.playerJob.workDays}</span>
-        </div>
-      )}
-
-      {!view.barPurchased && (
-        <div className="hud-milestone">
-          <span>Bar-Kauf: {vc(view.wallet, 2)} / 50,00</span>
-          <div className="milestone-progress">
-            <div className="milestone-progress-fill" style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
-          </div>
         </div>
       )}
 

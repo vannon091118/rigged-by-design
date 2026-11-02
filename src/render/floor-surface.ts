@@ -19,7 +19,7 @@ const speck = (x: number, y: number): number => Math.abs((Math.imul(x, 73856093)
  */
 export function drawWalkway(g: Graphics, base: number, r: Rect, tile: number): void {
   g.rect(r.x, r.y, r.w, r.h).fill(base);
-  g.rect(r.x, r.y, r.w, r.h).fill({ color: 0x000000, alpha: 0.34 });
+  g.rect(r.x, r.y, r.w, r.h).fill({ color: 0x000000, alpha: 0.26 });
   for (let x = Math.round(r.x); x < r.x + r.w; x += tile) g.rect(x, r.y, 1, r.h).fill({ color: 0xffffff, alpha: 0.035 });
   for (let y = Math.round(r.y); y < r.y + r.h; y += tile) g.rect(r.x, y, r.w, 1).fill({ color: 0x000000, alpha: 0.2 });
   for (let gy = Math.round(r.y) + tile; gy < r.y + r.h; gy += tile * 4) {
@@ -88,12 +88,28 @@ function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, ful
 /** Deckenlampen an der oberen Wand: ein Rhythmus aus Leuchten, kein flaechiger Glow. */
 function drawCeilingLight(g: Graphics, mat: FloorMaterial, r: Rect): void {
   // Nur an einer echten Zonenkante: sonst zieht eine Chunk-Grenze eine Scheinleuchte mitten in den Saal.
-  g.rect(r.x, r.y, r.w, 2).fill({ color: mat.light, alpha: 0.14 });
-  g.rect(r.x, r.y + 2, r.w, 10).fill({ color: mat.light, alpha: 0.032 });
-  g.rect(r.x, r.y + 12, r.w, 14).fill({ color: mat.light, alpha: 0.018 });
+  g.rect(r.x, r.y, r.w, 2).fill({ color: mat.light, alpha: 0.2 });
+  g.rect(r.x, r.y + 2, r.w, 10).fill({ color: mat.light, alpha: 0.05 });
+  g.rect(r.x, r.y + 12, r.w, 14).fill({ color: mat.light, alpha: 0.028 });
   for (let lx = r.x + 12; lx < r.x + r.w - 18; lx += 64) {
-    g.rect(lx, r.y + 2, 14, 2).fill({ color: mat.light, alpha: 0.5 });
-    g.rect(lx - 8, r.y + 3, 30, 13).fill({ color: mat.light, alpha: 0.04 });
+    g.rect(lx, r.y + 2, 14, 2).fill({ color: mat.light, alpha: 0.62 });
+    g.rect(lx - 8, r.y + 3, 30, 13).fill({ color: mat.light, alpha: 0.06 });
+  }
+}
+
+/**
+ * Lichtpfuetze: das Deckenlicht faellt in drei Stufen in den Saal. Die Stufen lesen
+ * als Abstand zur Lampe; eine einzige Flaeche wuerde den Teppich nur aufhellen.
+ */
+function drawLightSpill(g: Graphics, mat: FloorMaterial, r: Rect): void {
+  const intensity = mat.lightAlpha / 0.1;
+  // Viele leise Stufen statt weniger harter Ringe: der Rand der Lichtflaeche verschwindet.
+  const steps = 16;
+  for (let step = steps; step >= 1; step -= 1) {
+    const t = step / steps;
+    // Halbachsen bleiben im Raum: Licht auf dem Boden, kein Schein ueber die Wand hinaus.
+    g.ellipse(r.x + r.w / 2, r.y + r.h * 0.3, r.w * 0.48 * t, r.h * 0.28 * t)
+      .fill({ color: mat.light, alpha: 0.009 * intensity });
   }
 }
 
@@ -115,6 +131,7 @@ function drawInset(g: Graphics, r: Rect, edges: Edges): void {
 export function drawSurface(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges): void {
   g.rect(r.x, r.y, r.w, r.h).fill(mat.base);
   drawPattern(g, mat, r, tile, edges.top && edges.bottom && edges.left && edges.right);
+  if (edges.top) drawLightSpill(g, mat, r);
   if (edges.top) drawCeilingLight(g, mat, r);
   drawInset(g, r, edges);
 }

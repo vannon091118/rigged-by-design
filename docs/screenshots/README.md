@@ -61,6 +61,16 @@ Aufgenommen im laufenden Fremdhaus-Popup nach echten Spielzügen: Slot verloren 
 | `19-plinko-assets-ingame.png` | Plinko | Vollständiges Brett mit Paket-Pegs und Auszahlungsfeldern nach einem echten Wurf |
 | `20-slot-assets-ingame.png` | Slot | Gewinn mit drei Linien; die Walzensymbole stammen aus dem Paket |
 
+## Optik und Steuerung — v3 (02.11.2026)
+
+Aufgenommen aus dem laufenden Spiel (Chromium 156, Fenster 1500 × 940) nach dem Licht- und
+Steuerungsschnitt. Der Stand ist derselbe wie in `current/`, nur weitergezeichnet; die alten
+Aufnahmen bleiben als Vergleichsbasis unverändert.
+
+| Datei | Version | Zeigt |
+| --- | --- | --- |
+| `21-floor-v3-optik-steuerung.png` | v3 | Übersicht mit Lichtpfützen je Raum, hellerer Wandkante, Vignette und Rasterhintergrund auf der Bühne; links oben die Steuerleiste mit Tastenkuerzeln, unten rechts die Kamera-Knöpfe, im HUD das Barkauf-Ziel als Chip und der XP-Balken, in der Etage das violette Zielraster (Klick zieht heran) und der Spielerring |
+
 ## Spielbühnen (`09` bis `15`)
 
 Aufgenommen am 31.10.2026 im Fremdhaus-Popup, also dort, wo die `TableLauncher` alle Spielbühnen rendert. Das Portemonnaie war bei der Aufnahme leer: die Bühnen zeigen den ungespielten Zustand, keine laufenden Walzen und keine gefallenen Bälle.
