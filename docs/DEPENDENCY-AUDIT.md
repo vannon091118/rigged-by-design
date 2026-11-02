@@ -60,7 +60,7 @@ Lizenzrisiko für die Distribution der Web-App oder der APK.
 | `yaml` | 2.9.1 | Test (Workflow-Struktur) | `src/core/governance/__tests__/ci-gates.test.ts` |
 | `@types/node` | 26.6.6 | Typen | `src/Config/tsconfig.json` (`types`), Node-Builtins in `scripts/` |
 | `@types/react`, `@types/react-dom` | 19.x | Typen | implizit über React-Imports |
-| `@capacitor/cli` | 8.6.0 | Android-Build | `scripts/prepare-android.mjs` (`npx cap add/sync`) |
+| `@capacitor/cli` | 8.6.0 | Android-Build | `scripts/prepare-android.mjs` (`pnpm exec cap add/sync`) |
 | `@capacitor/android` | 8.6.0 | Android-Plattform | `cap add android`, Gradle |
 | `@capacitor/core` | 8.6.0 | Android-Bridge | **kein Import im Code**, nur als Peer der CLI gepinnt |
 
