@@ -19,6 +19,9 @@ const candidate = {
 const instance = {
   id: 3,
   eventId: 'VISITOR_EVENT',
+  templateId: 'VISITOR_EVENT',
+  templateVersion: 1,
+  offeredChoiceIds: ['ACCEPT'] as const,
   status: 'ACTIVE' as const,
   scope: 'VISITOR' as const,
   participants: ['visitor:2'] as const,
@@ -61,6 +64,17 @@ describe('Narrative Event Schema', () => {
     expect(state.rng.state).toBeGreaterThan(0);
   });
 
+  it('migriert alte Instanzen ohne Template-Metadaten fail-closed', () => {
+    const legacy = { ...instance } as Record<string, unknown>;
+    delete legacy.templateId;
+    delete legacy.templateVersion;
+    delete legacy.offeredChoiceIds;
+    const state = normalizeEventState({ eventSeq: 4, events: [legacy] });
+    expect(state.events[0]?.templateId).toBe('VISITOR_EVENT');
+    expect(state.events[0]?.templateVersion).toBe(1);
+    expect(state.events[0]?.offeredChoiceIds).toEqual([]);
+  });
+
   it('behaelt gueltige Instanzen und dedupliziert Cooldowns', () => {
     const state = normalizeEventState({
       eventSeq: 2,
@@ -95,5 +109,6 @@ describe('Narrative Event Schema', () => {
     expect(state.cooldowns).toEqual([]);
     expect(state.rng.seed).toBeGreaterThan(0);
     expect(state.rng.state).toBeLessThanOrEqual(0xffffffff);
+    expect(isEventInstance({ ...instance, offeredChoiceIds: ['ACCEPT', 'ACCEPT'] })).toBe(false);
   });
 });

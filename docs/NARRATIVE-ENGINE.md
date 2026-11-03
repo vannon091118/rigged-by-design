@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility). NAR-08 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -52,7 +52,7 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
 | `relationships` | gerichtete Kanten zwischen persistenten Akteuren | 200; Endpunkte pinnen Visitor-Profile |
 | `eventSeq` | naechste freie Event-Instanz-ID | monoton, nie wiederverwendet |
-| `events` | aktive und begrenzte abgeschlossene Event-Instanzen | 32 gesamt, 8 gleichzeitig live |
+| `events` | aktive und begrenzte abgeschlossene Event-Instanzen; traegt `templateId`, `templateVersion` und `offeredChoiceIds` | 32 gesamt, 8 gleichzeitig live; 8 Choices je Instanz |
 | `cooldowns` | Sperren je Event und Teilnehmerkombination | 64; `untilTick` in Welt-Ticks |
 | `rng` | eigener persistenter Narrativ-Zufallsstrom | Seed/State als uint32 |
 
@@ -191,6 +191,29 @@ am Event. Story-Flags und Memory-Referenzen werden weiterhin im Trigger-Context 
 Fairness-Ties verbraucht, nie der Gameplay-PRNG. `event-schema.ts` normalisiert alte
 oder manipulierte Daten fail-closed und begrenzt Instanzen, Cooldowns und RNG-Werte.
 
+### Event-Templates und Choices (NAR-07)
+
+`narrative/events/template-types.ts` definiert die mechanische Struktur: stabile
+`eventId`, Version, `triggerId`, Prioritaet, Scope, `participantRoles`, Content-Slots,
+erlaubte `choices`, Startschritt, Frist, Cooldown und Wiederholungsgrenze. Jede Choice
+traegt eine stabile `choiceId`, einen Label-Slot, Requirements, optionale VaCoin-Kosten,
+eine deklarative Effektliste sowie `outcomeId` und optionales `followUpEventId`. Texte
+liegen ausschliesslich in Content-Slots; sie aendern weder Choice-IDs noch Effekte.
+
+`events/template-schema.ts` validiert fail-closed: Scope und Rollen muessen passen,
+Choice-IDs und Label-Slots eindeutig sein, Requirements/Kosten/Effekte begrenzt und
+Akteursreferenzen gueltig. `events/definitions/` registriert `VISITOR_RETURN` und
+`VISITOR_CONFLICT`; `templateFor()` liefert nur gueltige Definitionen. `createEventCandidate()`
+loest die deklarierten Rollen eins zu eins gegen die Match-Teilnehmer auf und uebergibt
+Template-ID, Version und den angebotenen Choice-Satz an den Scheduler.
+
+`choices/contract.ts` bindet eine Choice an `eventId`, `templateId`, `templateVersion`
+und den persistierten `offeredChoiceIds`-Satz. Eine unbekannte, nicht angebotene oder
+versionsfremde Choice liefert `null`. `choices/eligibility.ts` prueft bei jedem Klick
+erneut Lifecycle, Ablauf, Requirements, Kosten und den gespeicherten Satz; die Funktion
+ist rein und veraendert weder Welt noch Ledger. Effekte werden in NAR-07 nur deklariert,
+nicht ausgefuehrt.
+
 ## 10. Makros (Semantik, nicht geraten)
 
 - `€FreezeTick:200` soll nur die aktive **Event-Instanz** fuer 200 fortschreitende
@@ -216,5 +239,7 @@ irgendein Command laeuft.
 Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
 und Erinnerungen verworfen, IDs monoton fortgeschrieben. Event-Instanzen, Cooldowns und der eigene Narrativ-RNG liegen seit NAR-06 in Save v9;
-fehlende Felder alter Staende werden auf leere Defaults normalisiert. Choices und ihre
-Verfuegbarkeit kommen mit NAR-07 hinzu und muessen denselben Roundtrip bestehen.
+seit NAR-07 tragen Instanzen zusaetzlich `templateId`, `templateVersion` und den
+angebotenen `offeredChoiceIds`-Satz. Fehlende Felder alter Staende werden auf `eventId`,
+Version 1 und einen leeren Satz normalisiert; solche Events bleiben fail-closed nicht
+ausfuehrbar, bis ein kompatibles Template mit gueltigen Choice-IDs vorliegt.

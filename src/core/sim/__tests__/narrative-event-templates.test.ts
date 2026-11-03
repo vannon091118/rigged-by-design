@@ -1,0 +1,59 @@
+/** @test-target: src/core/sim/narrative/scheduler.ts | @error-code: ERR-2001 */
+import { describe, expect, it } from 'vitest';
+import {
+  createEventCandidate, EVENT_TEMPLATES, isEventTemplate, resolveParticipants, templateFor,
+  type EventTemplate,
+} from '../narrative/scheduler';
+import type { TriggerMatch } from '../narrative/trigger-types';
+import type { ActorRef } from '../narrative/types';
+
+const match = (triggerId: string, participants: readonly ActorRef[]): TriggerMatch => ({
+  triggerId, matched: true, factId: 7, participants, reasons: ['TEST'],
+});
+
+describe('Narrative Event Templates', () => {
+  it('registriert stabile Event-IDs und Versionen', () => {
+    expect(EVENT_TEMPLATES.map((template) => `${template.eventId}@${template.version}`))
+      .toEqual(['VISITOR_RETURN@1', 'VISITOR_CONFLICT@1']);
+    expect(templateFor('VISITOR_RETURN')?.choices.map((choice) => choice.choiceId))
+      .toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
+    expect(templateFor('VISITOR_RETURN', 2)).toBeNull();
+  });
+
+  it('verwirft doppelte Choice-IDs, fremde Slots und falsche Rollen', () => {
+    const template = templateFor('VISITOR_RETURN', 1)!;
+    const duplicate: EventTemplate = { ...template, choices: [template.choices[0]!, template.choices[0]!] };
+    const missingSlot: EventTemplate = {
+      ...template,
+      choices: [{ ...template.choices[0]!, labelSlotId: 'MISSING_SLOT' }],
+    };
+    const wrongRole: EventTemplate = { ...template, participantRoles: ['staff'] };
+    const zeroCost: EventTemplate = {
+      ...template,
+      choices: [{ ...template.choices[0]!, costs: [{ kind: 'VACOIN', amount: 0 }] }],
+    };
+    expect(isEventTemplate(duplicate)).toBe(false);
+    expect(isEventTemplate(missingSlot)).toBe(false);
+    expect(isEventTemplate(wrongRole)).toBe(false);
+    expect(isEventTemplate(zeroCost)).toBe(false);
+    expect(isEventTemplate(template)).toBe(true);
+  });
+
+  it('loest Visitor- und Paar-Teilnehmer rollengenau auf', () => {
+    const visitor = createEventCandidate(templateFor('VISITOR_RETURN', 1)!, match('visitor-returned', ['visitor:4']));
+    expect(visitor?.participants).toEqual(['visitor:4']);
+    expect(visitor?.offeredChoiceIds).toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
+    expect(visitor?.templateVersion).toBe(1);
+    expect(resolveParticipants(['visitor', 'visitor'], ['visitor:2', 'visitor:1']))
+      .toEqual(['visitor:2', 'visitor:1']);
+    expect(resolveParticipants(['visitor', 'visitor'], ['visitor:1', 'visitor:1'])).toBeNull();
+  });
+
+  it('weist falsche Trigger und nicht passende Teilnehmer ab', () => {
+    const template = templateFor('VISITOR_RETURN', 1)!;
+    expect(createEventCandidate(template, match('other-trigger', ['visitor:4']))).toBeNull();
+    expect(createEventCandidate(template, match('visitor-returned', ['staff:1']))).toBeNull();
+    expect(createEventCandidate({ ...template, eventId: 'lowercase' }, match('visitor-returned', ['visitor:4'])))
+      .toBeNull();
+  });
+});

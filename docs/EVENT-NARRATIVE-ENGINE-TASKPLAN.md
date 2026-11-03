@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.80`<br>
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.81`<br>
 **Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -365,6 +365,16 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Mechanische Struktur testbar definieren, während Text und konkrete Formulierungen variabel bleiben.
 
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `events/template-types.ts`: stabile `eventId`, Version, Triggerbezug, Prioritaet, Scope, Rollen, Content-Slots, erlaubte Choices und Scheduling-Werte.
+- `events/template-schema.ts`: fail-closed Validierung von Templates, Choices, Requirements, Kosten, Effekten und persistierten Choice-Saetzen.
+- `events/definitions/`: die stabilen Templates `VISITOR_RETURN` und `VISITOR_CONFLICT`; `templateFor()` liefert nur gueltige Definitionen, optional versionsgenau.
+- `events/template-candidate.ts`: rollengenaue Teilnehmerauflösung aus einem Trigger-Match und Bau eines schedulerfaehigen Kandidaten.
+- `choices/contract.ts`: Choice-IDs und Effekte bleiben an Template-ID und Version gebunden; die Instanz speichert den angebotenen Satz.
+- `choices/eligibility.ts`: reine Klick-Pruefung fuer Lifecycle, Frist, Requirements, Kosten und den persistierten Choice-Satz.
+
 **Arbeiten**
 - Event-Template-Vertrag mit stabiler `eventId`, Kontext-/Teilnehmerauflösung, Content-Slots, Triggerbezug, Priorität und erlaubten Choices definieren.
 - Jede Choice hat stabile `choiceId`, Verfügbarkeitsbedingungen, optionale Kosten/Anforderungen, eine deklarative Effektliste und ein Ergebnis-/Folgeevent-Mapping.
@@ -374,9 +384,11 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Zielbereiche:** `narrative/events/template-types.ts`, `definitions/`, `choices/contract.ts`, `choices/eligibility.ts`.
 
-**Nachweis:** Choice-IDs sind stabil; manipulierte/unbekannte Choice-IDs werden abgewiesen; Textänderungen verändern keine mechanischen Effekte; abgelaufene Choices sind nicht ausführbar.
+**Nachweis:** Choice-IDs sind stabil; manipulierte/unbekannte Choice-IDs werden abgewiesen; Textänderungen verändern keine mechanischen Effekte; abgelaufene Choices sind nicht ausführbar. Event-Instanzen tragen `templateId`, `templateVersion` und `offeredChoiceIds`; alte Staende werden auf `eventId`, Version 1 und einen leeren Satz normalisiert und bleiben damit fail-closed nicht ausfuehrbar.
 
-**Gate:** `verify:quick`.
+**Nicht Teil:** Ausfuehrung der Effekte, Command-DSL (NAR-08), Content-Composer (NAR-11) und Tick-Orchestrierung (NAR-12).
+
+**Gate:** `verify:quick` und `verify:all` grün; die Save-Erweiterung ist additiv und full-gate-pflichtig.
 
 ---
 
@@ -1019,7 +1031,7 @@ zusätzlich zu „Gates grün“ vorweisen muss.
 | NAR-04 | kanonische, gerichtete Beziehungen, Archiv-Tombstones | quick/full | Eviction-Test ohne halbe Kanten |
 | NAR-05 | reiner Evaluator, alle Operatoren, Erklärbarkeit | quick | Operator-/Grenzwert-/Übergangstests |
 | NAR-06 | Lifecycle endlich, Duplikatschutz, eigener RNG-Zustand | quick/full | Ketten- und Expiry-Test, kein Doppel-Event |
-| NAR-07 | stabile Choice-IDs, Revision, Nachvalidierung | quick | Manipulations-/Ablauf-Test |
+| NAR-07 | stabile Choice-IDs, Revision, Nachvalidierung | quick/full | Manipulations-, Text-/Mechanik- und Ablauf-Test |
 | NAR-08 | Parser, Allowlist, Preflight, atomare Anwendung | quick/full | Rollback-Test, Ledgerintegrität |
 | NAR-09 | Contribution-Schema, Vocabulary, Manifest | quick | Validator lehnt Duplikate/fehlende Turns ab |
 | NAR-10 | byte-identische Registry, `--check`, Budget | quick | zweimaliger Lauf, Hash-Vergleich |

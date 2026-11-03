@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-07: Event-Templates und stabile Choice-Verträge
+
+**Ziel.** Mechanische Event-Struktur testbar machen, ohne Text und Formulierungen zu Spielregeln zu erheben: stabile Template- und Choice-IDs, rollengenaue Teilnehmer, deklarative Requirements/Kosten/Effekte, persistierte Choice-Saetze und eine erneute Pruefung beim Klick.
+
+**Umsetzung.** `events/template-types.ts` und `template-schema.ts` definieren und validieren Templates, Content-Slots, Choices, Requirements, Kosten und Effekte fail-closed. `events/definitions/` registriert `VISITOR_RETURN` und `VISITOR_CONFLICT`; `events/template-candidate.ts` loest Trigger-Teilnehmer rollengenau auf und baut den Scheduler-Kandidaten. `choices/contract.ts` bindet Choice-IDs an `eventId`, `templateId`, `templateVersion` und den persistierten `offeredChoiceIds`-Satz. `choices/eligibility.ts` prueft Lifecycle, Ablauf, Requirements und Kosten rein bei jedem Klick. Event-Instanzen tragen die neuen Metadaten additiv; alte Staende erhalten `eventId`, Version 1 und einen leeren Satz, bleiben also fail-closed nicht ausfuehrbar. Effekte werden noch nicht ausgefuehrt.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` und `check:loc` gruen. `verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die vollstaendige Suite meldete 598 bestandene und 2 uebersprungene Tests (600 gesamt). Die neuen Tests decken stabile IDs, doppelte/unbekannte Choices, Text-/Mechanik-Trennung, Fristen, Requirements, Kosten, persistierte Choice-Saetze und den Save-Roundtrip ab.
+
+**Offen.** Command-Ausfuehrung und Allowlist (NAR-08), Content-Composer (NAR-11), Tick-Orchestrierung (NAR-12) und Demand-Migration (NAR-13) bleiben offen. Die neuen Templates sind noch nicht in den Tick eingebunden.
+
 ## 2026-11-03 - NAR-06: Event-Scheduler, Lifecycle und eigener Narrativ-RNG
 
 **Ziel.** NAR-06 vollstaendig schliessen: Matches in persistente Event-Instanzen ueberfuehren, den Lifecycle zentral absichern, Cooldowns und Scopes trennen, Ereignisketten nur nach aufgeloesten Vorgaengern erlauben und die Auswahl deterministisch ohne den Gameplay-PRNG treffen.
@@ -710,7 +720,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.80 | 2026-11-03 00:25 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.81 | 2026-11-03 00:44 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
