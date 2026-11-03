@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -25,6 +25,10 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen. NAR-06 ist erledigt: Scheduler, Lifecycle, Cooldowns, persistente Instanzen und eigener Narrativ-RNG stehen. NAR-07 ist erledigt: stabile Templates, Choice-Vertrag, persistierte Choice-Saetze und Klick-Eligibility stehen. NAR-08 ist erledigt: Command-DSL, Allowlist, Preflight und die einmalige Ausfuehrung von Choice-Effekten stehen. NAR-09 ist erledigt: Beitraege tragen eine kontrollierte Klassifizierung, das Turn-Manifest ordnet jedem abgeschlossenen Turn genau einen Beitrag zu, und die Registry wird deterministisch im Assets-Gate geprueft. NAR-10 ist erledigt: Makros werden als typisierte ASTs validiert, Konflikte vor dem Schreiben erkannt und die Registry byte-identisch mit Inhalts-Hash erzeugt. NAR-11 ist erledigt: der Composer waehlt aus der laufzeitvalidierten Registry deterministisch Texte, filtert Locale/Kontext/Flags/Personas und liefert lokale Fallbacks. NAR-12 ist erledigt: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler einmal pro Tick und an jeder erfolgreichen Store-Mutationsgrenze; Choices laufen ueber `store/narrative-commands.ts`, und eine aufgeloeste Choice erzeugt den naechsten Fact (`EVENT_RESOLVED`). NAR-13 ist erledigt: Neon-Nacht und Turnierabend laufen als aktive GLOBAL-Instanzen der gemeinsamen Engine, `demand.ts` leitet Wirkung und Anzeige nur noch daraus ab, und v5–v9-Saves werden beim Laden konvertiert.
 - Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
 - Optik und Steuerung sind einen Schritt weiter: Lichtpfuetzen und Wandkanten trennen die Raeume, Zielraster und Laufwegspur zeigen die Folge eines Klicks, die Kamera zieht am Bildrand nach, und das HUD traegt keine leere Zeile mehr. Bildsprache steht als `docs/ART-DIRECTION.md` mit Blatt daneben.
+
+- CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
+- Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
+- Aufraeumen der alten Worktrees und Branches (`integration`, `pr-watcher-v2` ausgenommen) erst nach Freigabe, mit Bundle-Backup.
 
 ## Als Nächstes
 

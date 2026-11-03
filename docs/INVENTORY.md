@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -173,6 +173,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
 | 46 | info | `docs/ASSETS.md` und `README.md` aktualisiert: README zeigt jetzt Vorher/Nachher-Vergleichsbilder (`docs/screenshots/comparison/`), die Screenshots-README erlaubt dort versionierte Belege (v1/v2) neben dem kanonischen `current/`; `autofix-0911.mjs` räumt `comparison/` bewusst **nicht** mehr (Regel angepasst). Architektur-Matrix zählt die neuen Dateien (build-asset-manifest, plinko-assets, slot-symbols-extra, asset-library-popup) bereits mit. | `README.md`, `docs/screenshots/README.md` |
 | 50 | info | **Connector-Eskalation (T11):** `scripts/lift-commit-body.mjs --json` liefert den PR-Plan (`level: AGENT`, `channel: github-connector`, `branch`, `base`, `title`, `bodyFile`, `body`). CI nutzt weiter `gh`; ohne Token bleibt der Lauf grün und der Plan ist die Übergabe. Der Level kommt aus `scripts/lib/escalation.mjs` — keine zweite Leiter. | `scripts/lift-commit-body.mjs`, `docs/ESCALATION.md` || 51 | info | **CI-Lauf #110 rot, Ursache Testvertrag (T12):** `pipeline-modes.test.ts` erwartete noch `deps-matrix`; nach dem Gate-Umbau zwei rote Tests (438 grün, 2 rot). Test auf `docs`-Gate und Entfall von `deps-matrix`/`catalog` nachgezogen, Lesende-Vertrag unverändert. Beweis folgt im nächsten `CI Verify`-Lauf. | `src/core/governance/__tests__/pipeline-modes.test.ts` || 52 | info | **Tree-Gate (`ERR-4019`) beim ersten Lauf:** vier Befunde — `eslint.config.mjs` und `opencode.json` fehlten in der Wurzel-Whitelist, `src/index.css` lag neben `main.tsx` statt unter `src/styles/`, `scripts/init-github.sh` war als Bootstrap-Shell nicht erlaubt. Regeln korrigiert, CSS verschoben, Shell erlaubt. Der Umzug brach drei `@import`-Pfade; der CI-Build fand es, Pfade sind jetzt relativ. | `scripts/verify-tree.mjs`, `src/styles/index.css` |
+| 51 | info | **CI-Eskalation mit Code (T12):** `level` pro Code in `error-codes.ts`, `escalation.mjs` liest es zuerst; ERR-4023 (Direktpush auf `main` abgelehnt) und ERR-4024 (rotes lokales Gate) neu; PR-Watcher dedupliziert per Fingerprint und zaehlt nach (`findIssue`). Ruleset ungeprueft. | `src/core/governance/error-codes.ts`, `scripts/lib/escalation.mjs`, `scripts/pr-watcher.mjs`, `AGENTS.md`, `docs/GATE-ROOTCAUSE.md` |
 | 53 | info | **Redundanz-Gate (`ERR-4020`):** 363 Dateien, 45 Skripte und 29 Fehlercodes geprüft, keine echte Doppelung. Bewusste Alias-Paare (`test`/`test:ci`, `verify`/`verify:quick`) sind als Ausnahme dokumentiert; `docs:stub` (`ERR-4021`) erzeugt Pflichteinträge mechanisch. | `scripts/verify-redundancy.mjs`, `scripts/doc-stub.mjs` |
 | 54 | info | **Vollständige Inventur (T14):** `scripts/build-inventory.mjs` erzeugt Abschnitt 18 aus `git ls-files`; jede Textdatei wird gelesen (Zeilen, Kopfkommentar), jede Binärdatei an Signatur und Größe geprüft. Eine Zeile je Pfad, ein Eintrag je Ordner, keine Sammelzeile. Der Generator ist deterministisch; nur der Marker trägt die Zeit. | `scripts/build-inventory.mjs` |
 | 55 | info | **Abdeckung ist Gate (T14):** `verify:docs` vergleicht den Inventarblock mit `git ls-files`, prüft Ordner und Abdeckungszahl. Rot-Tests belegt: fehlende Datei, fehlender Ordner und falsche Zahl brechen mit `ERR-4017` ab. Der Pre-Commit-Hook baut die Liste vor dem Marker. | `scripts/lib/doc-sync.mjs`, `.githooks/pre-commit` |
@@ -273,10 +274,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1150 |
-| Gelistete Dateien | 1150 |
+| Getrackte Dateien | 1151 |
+| Gelistete Dateien | 1151 |
 | Getrackte Ordner | 80 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (26), docs (58), public (552), scripts (60), src (433) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (26), docs (59), public (552), scripts (60), src (433) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -291,7 +292,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 22 Datei(en)
+- `docs/` — 23 Datei(en)
 - `docs/banners/` — 4 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
@@ -410,24 +411,25 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 89 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 245 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 253 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 292 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 302 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 819 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 834 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
+- `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 18 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 366 Zeilen
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 42 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 46 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 154 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
@@ -1063,7 +1065,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
-- `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body. — gelesen: 325 Zeilen
+- `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body. — gelesen: 324 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 70 Zeilen
 - `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 125 Zeilen

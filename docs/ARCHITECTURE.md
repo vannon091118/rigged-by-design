@@ -1,10 +1,18 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
 
 ## README als Einstieg
 
 `README.md` ist die erzählerische Bühne und der Entwickler-Einstieg, nicht die Regelquelle. Spielmechaniken werden dort als gegenwärtiger Projektstand beschrieben; für verbindliche Details gelten Core-Code, Tests und die passenden Architekturverträge. Screenshots liegen unter `docs/screenshots/` und zeigen jeweils den belegten Stand. Roadmap-Punkte werden als Vorhaben formuliert, nicht als festgelegtes Enddesign.
+
+## CI-Eskalation
+
+- `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ERROR_CATALOG.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
+- `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
+- `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Lokal laeuft nichts davon.
+- Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
+- Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
 
 ## Zustandsbesitz
 
