@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.88] - 2026-11-03
+
+### Technik
+- CI-Eskalation: `src/core/governance/error-codes.ts` traegt pro Code ein Feld `level` (`AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT`, `BLOCKED`). `scripts/lib/escalation.mjs` liest die Stufe zuerst aus dem Code, Textmuster bleiben als Fallback.
+- ERR-4008 bleibt fuer den Push auf den Arbeitsbranch. Neu: ERR-4023 `DIRECT_PUSH_REJECTED` (abgelehnter Direktpush auf `main`, Stufe AGENT) und ERR-4024 `LOCAL_GATE_RED` (rotes lokales Gate in `turn:finish`, Stufe LOCAL_GATE). Register und `docs/ERROR_CATALOG.md` sind gleich.
+- PR-Watcher: Fingerprint aus Code und erster Fehlerzeile des Gate-Logs. Ein bekanntes Issue (offen oder geschlossen) bekommt den Kommentar "Vorgekommen: N mal, zuletzt <Run-Link>" und wird nicht wieder geoeffnet. Die Suche laeuft in einer Hilfsfunktion `findIssue`. Zaehlung nur in CI.
+- `.github/workflows/pr-watcher.yml` mit `actions: read`; der Watcher-Commit e7294f4 ist auf den Branch uebernommen.
+- AGENTS.md: Direktpush auf `main` ist durch das Ruleset gesperrt. Der Weg ist Arbeitsbranch, PR, Promotion. Die Rootcause-Analyse steht in `docs/GATE-ROOTCAUSE.md`; AGENTS.md verweist nur darauf. Neue Zeile zu Lokal vs. CI.
+- Ruleset-Pruefung (Schritt 0) nicht verifiziert: kein authentifizierter Zugriff per `gh`. Das Ergebnis steht im Audit, das Ruleset ist unveraendert.
 
 ## [0.3.87] - 2026-11-03
 

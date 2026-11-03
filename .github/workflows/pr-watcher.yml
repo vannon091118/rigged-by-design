@@ -1,0 +1,58 @@
+name: PR Watcher
+
+# Überwacht PRs und CI-Flows. Bei rotem Gate wird automatisch ein Issue
+# erstellt, das einem Agenten alle Infos liefert, um das Issue zu lösen
+# und den Merge durchzubekommen.
+on:
+  workflow_run:
+    workflows: ["CI Verify"]
+    types: [completed]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: pr-watcher-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  watch:
+    name: PR + CI überwachen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Issue bei rotem Gate erstellen
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        run: node scripts/pr-watcher.mjs
+
+      - name: PR-Body auf Pflichtsektionen prüfen
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/pr-watcher.mjs --pr-check

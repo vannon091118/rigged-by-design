@@ -20,7 +20,7 @@ const args = process.argv.slice(2);
 const profileArg = args.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
 if (!['quick', 'full'].includes(PROFILE)) {
-  fail(1, 'ERR-4006', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind quick und full`);
+  fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind quick und full`);
   process.exit(1);
 }
 const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : 'verify:quick';
@@ -51,7 +51,7 @@ if (AFFECTED) {
   console.log('turn:finish: Entwicklungsstufe agent:context (ein Plan, keine zweite Testausfuehrung)');
   const context = npmRun(['run', 'agent:context']);
   if (context.status !== 0) {
-    fail(1, 'ERR-4006', 'turn:finish', 'agent:context ist rot; kein Commit und kein Push');
+    fail(1, 'ERR-4024', 'turn:finish', 'agent:context ist rot; kein Commit und kein Push');
     process.exit(1);
   }
 }
@@ -76,7 +76,7 @@ spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignor
 
 const verify = npmRun(['run', VERIFY_SCRIPT]);
 if (verify.status !== 0) {
-  fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
+  fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
   process.exit(1);
 }
 stage();
@@ -196,7 +196,7 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
     }
     // Der neu aufgesetzte Baum enthaelt Remote-Arbeit und wurde noch nie geprueft.
     if (npmRun(['run', VERIFY_SCRIPT]).status !== 0) {
-      fail(1, 'ERR-4006', 'turn:finish', `${VERIFY_SCRIPT} nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal`);
+      fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal`);
       process.exit(1);
     }
     stage();
@@ -230,5 +230,5 @@ if (pushBranch.status !== 0) {
   process.exit(1);
 }
 aufraeumen();
-fail(1, 'ERR-4008', 'turn:finish', `Direkter Push auf ${TARGET_BRANCH} abgelehnt; Branch gepusht. Fokussierter PR gegen ${TARGET_BRANCH} noetig`);
+fail(1, 'ERR-4023', 'turn:finish', `Direkter Push auf ${TARGET_BRANCH} abgelehnt; Branch gepusht. Fokussierter PR gegen ${TARGET_BRANCH} noetig`);
 process.exit(1);

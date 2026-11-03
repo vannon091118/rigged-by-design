@@ -13,6 +13,21 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - CI-Eskalation: Code, Stufe, Haeufigkeit
+
+Ziel: Jeder CI-Fehler zeigt Code, Beschreibung, Fix und Haeufigkeit, mit dem bestehenden Gate-System und ohne zweites Register.
+
+Umsetzung:
+- Stufe pro Code im Register (`level`); `escalation.mjs` liest sie zuerst, Textmuster sind nur Fallback. Die Zuordnung ist eigene Einschaetzung des Agenten und nicht von einem Review bestaetigt.
+- ERR-4008 hatte zwei Bedeutungen. Push auf den Arbeitsbranch bleibt ERR-4008. Der abgelehnte Direktpush auf `main` bekommt ERR-4023, weil die Ursache eine andere ist (Ruleset, nicht Netz oder Branch). ERR-4006 bleibt Commit-Format und deckt Developer Notes wie Pflichtsektionen ab; beide Quellen nennen dieselbe Format-Ursache, deshalb kein eigener Code.
+- ERR-4024 fuer das rote lokale Gate in `turn:finish`.
+- PR-Watcher: Fingerprint-Dedupe mit Kommentar statt Neu-Issue; geschlossene Issues bleiben zu. Die beiden Suchen sind in `findIssue` zusammengefuehrt.
+- Commit e7294f4 (PR-Watcher) ist auf `origin/main` uebernommen, sodass `pr-watcher.yml` dort lauffaehig ist.
+
+Pruefungen (lokal, ohne Workflow-Lauf): YAML-Parse von `pr-watcher.yml`, `node --check` auf geaenderte Skripte, `verify:docs`, `verify-redundancy`, vitest `dependency-governance.test.ts` und `escalation.test.ts`.
+
+Offen: Ruleset ungeprueft (kein `gh`, kein authentifizierter Zugriff). Die Dedupe ist in CI noch nicht beobachtet. Schritt 7 (Aufraeumen) wartet auf Freigabe. Die Dateigroesse von `pr-watcher.mjs` (rund 325 Zeilen) liegt unter dem Cap; `scripts/` wird vom LOC-Gate nicht erfasst.
+
 ## 2026-11-03 - Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
 
 **Ziel.** Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
@@ -801,7 +816,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
