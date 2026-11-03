@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.80 | 2026-11-03 00:25 UTC -->
+<!-- rbd-doc: v0.3.81 | 2026-11-03 00:44 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.81] - 2026-11-03
+
+### Technik
+
+- NAR-07 abgeschlossen: `narrative/events/template-types.ts` und `template-schema.ts` definieren stabile Event-Templates mit Triggerbezug, Rollen, Content-Slots, Prioritaet und deklarativen Choices; `events/definitions/` registriert `VISITOR_RETURN` und `VISITOR_CONFLICT`.
+- Jede Choice traegt eine stabile `choiceId`, Requirements, optionale VaCoin-Kosten, eine deklarative Effektliste und ein Ergebnis-/Folgeevent-Mapping. Texte bleiben in Content-Slots und aendern keine Mechanik.
+- Event-Instanzen persistieren `templateId`, `templateVersion` und den angebotenen `offeredChoiceIds`-Satz. `choices/contract.ts` weist unbekannte, nicht angebotene oder versionsfremde Choices ab; `choices/eligibility.ts` prueft Lifecycle, Frist, Requirements und Kosten bei jedem Klick erneut, rein und fail-closed.
+- Alte Event-Instanzen ohne Template-Metadaten werden auf `eventId`, Version 1 und einen leeren Choice-Satz normalisiert. Die Erweiterung ist additiv in Save v9; neue Tests decken stabile IDs, manipulierte Choices, Text-/Mechanik-Trennung, Kosten, Fristen und den Save-Roundtrip ab.
 
 ## [0.3.80] - 2026-11-03
 

@@ -86,6 +86,9 @@ export function scheduleEvent(
   const instance: NarrativeEventInstance = {
     id: state.eventSeq,
     eventId: candidate.eventId,
+    templateId: candidate.templateId ?? candidate.eventId,
+    templateVersion: candidate.templateVersion ?? 1,
+    offeredChoiceIds: [...(candidate.offeredChoiceIds ?? [])],
     status: 'ELIGIBLE',
     scope: candidate.scope,
     participants: [...candidate.participants],

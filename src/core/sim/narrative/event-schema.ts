@@ -6,6 +6,7 @@ import {
   type NarrativeEventScope, type NarrativeEventStatus, type NarrativeRngState,
 } from './event-types';
 import { createNarrativeRng, DEFAULT_NARRATIVE_SEED } from './narrative-rng';
+import { isOfferedChoiceIds, normalizeOfferedChoiceIds } from './events/template-schema';
 import { NARRATIVE_LIMITS } from './types';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
@@ -37,12 +38,17 @@ export function isEventCandidate(raw: unknown): raw is EventCandidate {
   if (raw.cooldownTicks !== undefined && !isSafeInt(raw.cooldownTicks, 0)) return false;
   if (raw.maxOccurrences !== undefined && !isSafeInt(raw.maxOccurrences, 1)) return false;
   if (raw.step !== undefined && !isStep(raw.step)) return false;
+  if (raw.templateId !== undefined && !isText(raw.templateId, 64)) return false;
+  if (raw.templateVersion !== undefined && !isSafeInt(raw.templateVersion, 1, 1000)) return false;
+  if (raw.offeredChoiceIds !== undefined && !isOfferedChoiceIds(raw.offeredChoiceIds)) return false;
   return raw.chainFromEventId === undefined || raw.chainFromEventId === null || isSafeInt(raw.chainFromEventId, 1);
 }
 
 export function isEventInstance(raw: unknown): raw is NarrativeEventInstance {
   if (!isRecord(raw) || !isSafeInt(raw.id, 1) || !isText(raw.eventId, 64)
     || !isStatus(raw.status) || !isScope(raw.scope) || !validParticipants(raw.scope, raw.participants)) return false;
+  if (!isText(raw.templateId, 64) || !isSafeInt(raw.templateVersion, 1, 1000)
+    || !isOfferedChoiceIds(raw.offeredChoiceIds)) return false;
   if (!isSafeInt(raw.sourceFactId, 1) || !isSafeInt(raw.priority, 0, 1000)) return false;
   if (!isSafeInt(raw.startedTick, 0) || !isSafeInt(raw.updatedTick, 0) || !isSafeInt(raw.expiresTick, 0)) return false;
   if (raw.updatedTick < raw.startedTick || raw.expiresTick < raw.startedTick) return false;
@@ -55,8 +61,17 @@ function normalizeEvents(raw: unknown): NarrativeEventInstance[] {
   if (!Array.isArray(raw)) return [];
   const byId = new Map<number, NarrativeEventInstance>();
   for (const entry of raw) {
-    if (!isEventInstance(entry) || byId.has(entry.id)) continue;
-    byId.set(entry.id, { ...entry, participants: [...entry.participants] });
+    if (!isRecord(entry)) continue;
+    const templateId = isText(entry.templateId, 64) ? entry.templateId : entry.eventId;
+    const templateVersion = isSafeInt(entry.templateVersion, 1, 1000) ? entry.templateVersion : 1;
+    const offeredChoiceIds = normalizeOfferedChoiceIds(entry.offeredChoiceIds);
+    const normalized = { ...entry, templateId, templateVersion, offeredChoiceIds };
+    if (!isEventInstance(normalized) || byId.has(normalized.id)) continue;
+    byId.set(normalized.id, {
+      ...normalized,
+      participants: [...normalized.participants],
+      offeredChoiceIds: [...normalized.offeredChoiceIds],
+    });
   }
   const sorted = [...byId.values()].sort((a, b) => a.id - b.id);
   const live = sorted.filter((event) => event.status === 'OFFERED' || event.status === 'ACTIVE')

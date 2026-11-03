@@ -35,7 +35,8 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
   it('erhaelt Event-Instanzen, Cooldowns und Narrativ-RNG ueber JSON', () => {
     const { world, ledger } = fixture();
     const event = scheduleEvent(world, {
-      eventId: 'SAVE_EVENT', priority: 10, scope: 'GLOBAL', participants: [],
+      eventId: 'SAVE_EVENT', templateId: 'SAVE_TEMPLATE', templateVersion: 2,
+      offeredChoiceIds: ['KEEP'], priority: 10, scope: 'GLOBAL', participants: [],
       sourceFactId: 1, cooldownTicks: 4,
     }, 'ACTIVE', world.tick);
     expect(event).not.toBeNull();
@@ -44,6 +45,7 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     const loaded = replaySave(raw);
     expect(loaded).not.toBeNull();
     expect(loaded!.world.narrative).toEqual(world.narrative);
+    expect(loaded!.world.narrative.events[0]?.offeredChoiceIds).toEqual(['KEEP']);
   });
 
   it('laedt v8 ohne Narrative-Feld mit sicheren Defaults', () => {

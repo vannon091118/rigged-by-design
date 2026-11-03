@@ -13,6 +13,9 @@ export const NARRATIVE_EVENT_SCOPES: readonly NarrativeEventScope[] = ['GLOBAL',
 export interface NarrativeEventInstance {
   readonly id: number;
   readonly eventId: string;
+  readonly templateId: string;
+  readonly templateVersion: number;
+  readonly offeredChoiceIds: readonly string[];
   readonly status: NarrativeEventStatus;
   readonly scope: NarrativeEventScope;
   readonly participants: readonly ActorRef[];
@@ -45,6 +48,9 @@ export interface NarrativeRngState {
 /** Ein Kandidat kommt aus einem Trigger-Match; der Scheduler entscheidet ueber die Instanz. */
 export interface EventCandidate {
   readonly eventId: string;
+  readonly templateId?: string;
+  readonly templateVersion?: number;
+  readonly offeredChoiceIds?: readonly string[];
   readonly priority: number;
   readonly scope: NarrativeEventScope;
   readonly participants: readonly ActorRef[];
