@@ -4,11 +4,32 @@ Bilddokumentation der Spieler-Oberflächen, aufgenommen aus dem laufenden Spiel 
 
 ## Ablage und Governance
 
-- Kanonischer Spielsatz: `docs/screenshots/current/` (höchstens 16 Bilder).
-- Versionierte Vorher/Nachher-Belege: `docs/screenshots/comparison/`; die Version steht im Dateinamen (`v1`, `v2`), nicht in einem eigenen Ordner. `current/` bleibt der einzige fortlaufende Spielsatz.
+- `docs/screenshots/current/` ist der Satz bis `v0.3.27` (höchstens 16 Bilder) und bleibt unverändert als Vergleichsbasis.
+- Ab `v0.3.78` liegt jeder neue Spielsatz in `docs/screenshots/v<version>/`. Der Ordner ist der Stand, nicht ein Vergleich; ein älterer Satz wird nicht überschrieben, sondern liegt daneben.
+- Versionierte Vorher/Nachher-Belege bis `v3`: `docs/screenshots/comparison/`; dort steht die Version im Dateinamen (`v1`, `v2`).
 - Dateinamen: `<laufende Nummer>-<bereich>.png`, Unteransichten mit Buchstabe (`04b`, `06b`). Die Nummer folgt dem Weg durch das Spiel, nicht dem Aufnahmezeitpunkt.
-- Außerhalb von `current/` und `comparison/` liegen keine Spielbilder; diese README ist der einzige gemeinsame Eintrag.
+- Spielbilder liegen nur in `current/`, `v<version>/` und `comparison/`; diese README ist der einzige gemeinsame Eintrag.
 - Die PNGs sind verlustfrei nachverdichtet (nur IDAT neu gepackt, Pixel unverändert). Vor dem Commit keine Screenshot-Werkzeuge mit Qualitätsverlust verwenden.
+
+## Spielsatz v0.3.78 — Licht, Bodenhinweise und Kamera (02.11.2026)
+
+Aufgenommen aus dem laufenden Spiel (Chromium 156, Fenster 1280 × 860), Stand `v0.3.78`, Tag 1 eines
+frischen Laufs über den normalen Ladeweg — kein vorbereiteter Speicherstand. Der Vergleich gegen
+`current/` steht mit beiden Bildern nebeneinander in der Wurzel-`README.md`.
+
+| Datei | Zustand | Zeigt |
+| --- | --- | --- |
+| `01-floor-uebersicht.png` | SMALL, Tag 1, 8 Gäste | Ganze Etage in der Übersicht: Lichtpfütze je Raum, Deckenlampen, dunkle Laufwege dazwischen, Vignette und Raster auf der Bühne, darüber die Steuerleiste als Tastenfelder und unten rechts die Kamera-Knöpfe | 
+| `02-floor-detail.png` | SMALL, Tag 1, 9 Gäste | Detailstufe mit beschrifteten Räumen, Gästen an Automat und Theke und dem türkisen Zielraster unter dem Zeiger, das hier einen Laufweg ankündigt | 
+| `03-bauen-panel.png` | SMALL, Tag 1, 5 Gäste | Bauen-Fenster über dem laufenden Floor: Katalog mit Plätzen, Mindesteinsätzen und Preisen, dahinter beleuchtete Etage | 
+| `04-gaeste-panel.png` | SMALL, Tag 1, sechs Gäste in der Liste | Gäste-Fenster: Wechselkasse und offene Gewinne, gewählter Gast mit Laune, Geduld und Sucht, Gästezeile darunter | 
+| `05-hilfe-steuerung.png` | SMALL, Tag 1 | Hilfekarte „So funktioniert dein Casino“ mit der Steuerungsliste, inklusive Rechtsziehen zum Schwenken und `+`/`-`/`0` für Zoom und Übersicht | 
+
+Was dieser Satz gegenüber `current/` zeigt: Räume tragen Licht statt nur einer hellen Kante, der Boden
+antwortet mit Zielraster, Spielerring, Laufwegspur und Klick-Puls vor der Bewegung, die Legende ist zu
+Tastenfeldern geworden, und die Kamera hat eigene Knöpfe. Die Panels sind bis auf das HUD (Barkauf-Chip
+statt leerer Leiste, XP-Balken) unverändert; Gästezahl und Katalogumfang unterscheiden sich, weil es ein
+anderer Spielstand ist.
 
 ## Aktueller Satz — Einheitliche Art Direction und gestaltete Etage
 

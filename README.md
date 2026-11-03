@@ -75,11 +75,50 @@ Die Auswahl kann sich ändern. Die Dokumente [Produktstand](docs/PRODUCT.md), [A
 
 ### Bilder aus dem heutigen Betrieb
 
-![Casino-Floor mit Gästen, Räumen und HUD](docs/screenshots/current/02-floor-detail-frisch.png)
+![Casino-Floor mit Gästen, Räumen und HUD](docs/screenshots/v0.3.78/02-floor-detail.png)
+
+Stand `v0.3.78`, aufgenommen aus dem laufenden Spiel (Chromium, 1280 × 860). Die Etage hat denselben
+Grundriss wie in allen früheren Sätzen; neu ist, dass sie beleuchtet ist. Jeder Raum trägt eine
+Lichtpfütze, die Deckenlampen werfen einen Schein, die Laufwege dazwischen bleiben dunkel. Unter dem
+Zeiger steht ein Zielraster, am Fuß ein Spielerring, entlang des Wegs eine Punktspur.
 
 ![Vergleich derselben Etage vor und nach dem Asset-Paket](docs/screenshots/comparison/03-floor-v1-v2.png)
 
 Links steht die frühere Etage, rechts derselbe Stand mit dem aktuellen Geräte-, Tisch- und Deko-Paket.
+
+### Vorher und nachher, Bild für Bild
+
+Links der bisherige Satz aus `docs/screenshots/current/` (Stand `v0.3.27`), rechts der neue Satz aus
+`docs/screenshots/v0.3.78/`. Gleiche Etage, gleicher Ausschnitt, dazwischen der Licht- und
+Steuerungsschnitt.
+
+| Bisher (`v0.3.27`) | Jetzt (`v0.3.78`) |
+| --- | --- |
+| ![Etage in der Übersicht vorher](docs/screenshots/current/01-floor-uebersicht-frisch.png) | ![Etage in der Übersicht jetzt](docs/screenshots/v0.3.78/01-floor-uebersicht.png) |
+| ![Etage im Detail vorher](docs/screenshots/current/02-floor-detail-frisch.png) | ![Etage im Detail jetzt](docs/screenshots/v0.3.78/02-floor-detail.png) |
+| ![Bauen-Fenster vorher](docs/screenshots/current/08-bauen-panel.png) | ![Bauen-Fenster jetzt](docs/screenshots/v0.3.78/03-bauen-panel.png) |
+| ![Gäste-Fenster vorher](docs/screenshots/current/07-gaeste-panel.png) | ![Gäste-Fenster jetzt](docs/screenshots/v0.3.78/04-gaeste-panel.png) |
+
+Was der Vergleich zeigt:
+
+- **Licht statt Fläche.** Vorher lasen die Räume als schwarze Rechtecke mit heller Kante; jetzt liegt
+  in jedem Raum eine Lichtpfütze in 16 leisen Stufen, die Deckenlampen sind sichtbar, und die Bühne
+  bekommt Vignette und Raster, damit sie als beleuchteter Tisch im dunklen Raum steht statt als
+  schwebendes Feld.
+- **Der Boden antwortet vor dem Klick.** Zielraster unter dem Zeiger (violett, wenn der Klick
+  heranzieht; türkis, wenn die Figur läuft), Spielerring am Fuß, Punktspur des Laufwegs und ein kurzer
+  Puls am Ziel. Im alten Satz gab es keine Rückmeldung außer der Bewegung selbst.
+- **Steuerung ist sichtbar.** Statt einer Zeile Fließtext trägt die Leiste jetzt Tastenfelder
+  (`Klick`, `Rechts ziehen`, `Rad`, `WASD`, `Enter`, `Gast`), unten rechts stehen die Kamera-Knöpfe
+  `−` `FIT` `+`, und das HUD zeigt das Barkauf-Ziel als Chip und den XP-Balken statt einer leeren Leiste.
+- **Was der Vergleich nicht zeigt.** Die Gästezahl und der Katalogumfang unterscheiden sich, weil es
+  andere Spielstände sind: links vier bis dreizehn Gäste aus einem älteren Lauf, rechts neun aus einem
+  frischen. Der Gäste-Dialog ist deshalb nahezu unverändert — der Schnitt betrifft HUD, Boden und
+  Steuerung, nicht die Panels. Auch die Freebuff-Plakette oben links in den alten Bildern gehört zur
+  damaligen Aufnahmeumgebung, nicht zum Spiel.
+
+Die Hilfekarte im Spiel nennt dieselben Tasten und liegt als
+[`05-hilfe-steuerung.png`](docs/screenshots/v0.3.78/05-hilfe-steuerung.png) daneben.
 
 Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitter und sechs Tonspuren. Im Spiel findest du die Bibliothek unter **ASSETS**. Sie zeigt, was tatsächlich geladen ist – ein selten ehrlicher Blick hinter die Kulissen.
 
@@ -89,8 +128,8 @@ Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitt
 
 | Momentaufnahme | Screenshot |
 | --- | --- |
-| Geräte, Deko und Preise im Bau-Panel | ![Bauen-Panel](docs/screenshots/current/08-bauen-panel.png) |
-| Gäste mit Laune, Geduld und Besuchsstatus | ![Gäste-Fenster](docs/screenshots/current/07-gaeste-panel.png) |
+| Geräte, Deko und Preise im Bau-Panel | ![Bauen-Panel](docs/screenshots/v0.3.78/03-bauen-panel.png) |
+| Gäste mit Laune, Geduld und Besuchsstatus | ![Gäste-Fenster](docs/screenshots/v0.3.78/04-gaeste-panel.png) |
 | Blackjack-Tisch mit Dealer und Karten-Shoe | ![Blackjack](docs/screenshots/current/11-blackjack-buehne.png) |
 | Poker mit Board und eigenen Karten | ![Poker](docs/screenshots/current/12-poker-buehne.png) |
 | Roulette-Kessel und gesetzte Jetons | ![Roulette](docs/screenshots/current/14-roulette-buehne.png) |
