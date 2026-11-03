@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 06:05 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 20:34 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -51,6 +51,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `pnpm run verify:release` — Freigabelauf für APK und Versionssprung: identisch mit `verify:all`, erzwingt aber `pnpm audit` unabhängig von der Änderung; CI setzt zusätzlich `RBD_VERIFY_AUDIT=1`.
 - `pnpm run test:perf` — feste Messläufe (not in verify:all). `pnpm run bench:lowend` pins the run to one core; `pnpm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
+- Playwright E2E-Testkette unter `tests/` (modular, agenten-transparent, snapshot-basiert): `playwright.config.ts`, `fixtures/game.ts`, `pages/` (11 Page Objects), `helpers/` (Snapshots, GameFlow), 8 `.spec.ts` Dateien (balance, guests, machines, games, build, narrative, transfer, edge-cases). Ausführung: Dev-Server auf Port 3000 (`pnpm run dev`), dann `npx playwright test --project=chromium-headed --headed` (sichtbar) oder `powershell -File run-e2e.ps1`.
 - `pnpm run build` — Vite production build.
 
 ## Delivery

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 06:05 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 20:34 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,20 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.88] - 2026-11-03
+
+### Technik
+
+- Playwright E2E-Testkette in `tests/` angelegt (modular, agenten-transparent, snapshot-basiert):
+  - `playwright.config.ts` mit headed/headless Projekten, Screenshots/Videos/Traces bei Failure
+  - `fixtures/game.ts` — zentrale Fixtures mit allen Page Objects + Snapshot-Helfer + GameFlow
+  - `pages/` — 11 Page Objects für App, HUD, Floor, Gäste-, Automaten-, Rivalen-, Journal-, Diagnostik-, Bau-, Smartphone- und Transfer-Panels
+  - `helpers/snapshots.ts` — reproduzierbare Spielsituationen via LocalStorage (`saveSnapshot`/`setSnapshot`)
+  - `helpers/game-flow.ts` — mehrschrittige Spielabläufe (Slot spielen, Gäste bedienen, Bauen, Transfer Roundtrip)
+  - 8 Test-Dateien: `balance`, `guests`, `machines`, `games`, `build`, `narrative`, `transfer`, `edge-cases`
+  - Jeder Test mit `@test-target`, `@expected-behavior`, `@coverage`, `@missing-edge-case` Headern und GIVEN/WHEN/THEN-Struktur
+  - `tests/README.md` mit Laufanleitung und Konventionen
 
 ## [0.3.87] - 2026-11-03
 
