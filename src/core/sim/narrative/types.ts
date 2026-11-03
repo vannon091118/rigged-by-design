@@ -5,13 +5,15 @@ import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } fro
 
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
-  | 'HOUSE_BALANCE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER';
+  | 'HOUSE_BALANCE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
+  | 'COMMAND_REJECTED';
 export type VisitorValence = 'GOOD' | 'NEUTRAL' | 'BAD';
 export type HouseBand = 'LOW' | 'OK';
 
 export const NARRATIVE_FACT_KINDS: readonly NarrativeFactKind[] = [
   'START_POOL', 'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISIT_ENDED',
   'HOUSE_BALANCE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
+  'COMMAND_REJECTED',
 ];
 export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', 'BAD'];
 export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
@@ -101,9 +103,17 @@ interface RivalEncounterFact extends NarrativeFactBase {
   readonly netToHouse: VaCoinMicro;
 }
 
+/** Eine verworfene Direktive/Choice; nur Diagnose, nie eine Spielwirkung. */
+interface CommandRejectedFact extends NarrativeFactBase {
+  readonly kind: 'COMMAND_REJECTED';
+  readonly commandId: string;
+  readonly reason: string;
+}
+
 export type NarrativeFact =
   | StartPoolFact | VisitorFirstSeenFact | VisitorReturnedFact | VisitEndedFact
-  | HouseBalanceFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact;
+  | HouseBalanceFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
+  | CommandRejectedFact;
 
 /** Strukturierte Erinnerung, keine kopierte Journal-Zeile. */
 export interface VisitorMemory {

@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility). NAR-08 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung). NAR-09 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -58,8 +58,8 @@ Warteschlange und Besuchsstatus entstehen neu.
 
 Facts sind eine diskriminierte Union mit `id`, `kind`, `tick`, `day` und typisierten
 Nutzdaten. Umgesetzt: `START_POOL`, `VISITOR_FIRST_SEEN`, `VISITOR_RETURNED`,
-`VISIT_ENDED`, `HOUSE_BALANCE`, `VISITOR_CONFLICT`, `VISITOR_SERVICE` und
-`RIVAL_ENCOUNTER`. Besucherbezogene Alt-Facts tragen `visitorId`; die neuen
+`VISIT_ENDED`, `HOUSE_BALANCE`, `VISITOR_CONFLICT`, `VISITOR_SERVICE`,
+`RIVAL_ENCOUNTER` und `COMMAND_REJECTED` (Diagnose, keine Spielwirkung). Besucherbezogene Alt-Facts tragen `visitorId`; die neuen
 Beziehungs-Facts tragen stattdessen `actorRefs` (`visitor:<id>`, `staff:<id>`,
 `rival:<id>`, `player`) und werden beim Laden rollenspezifisch validiert. Alle
 Felder sind JSON-serialisierbar; keine Funktionen, Maps, Sets oder UI-Objekte.
@@ -214,17 +214,39 @@ erneut Lifecycle, Ablauf, Requirements, Kosten und den gespeicherten Satz; die F
 ist rein und veraendert weder Welt noch Ledger. Effekte werden in NAR-07 nur deklariert,
 nicht ausgefuehrt.
 
+### Commands und Allowlist (NAR-08)
+
+`narrative/commands/parse-directives.ts` uebersetzt begrenzte `€...`-Direktiven in ein
+AST aus Command-ID, positionalen und benannten Argumenten. Laenge, Anzahl, Quotes,
+doppelte Schluessel und unbekannte Formen werden fail-closed verworfen; Text wird nie
+als Code interpretiert. `registry.ts` ist die Allowlist der Command-IDs und Parameter:
+`SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK` und `TRIGGER_DIALOG`. Jede Spec traegt
+Familie, Handler-Vertrag und ein `executable`-Flag. `TRIGGER_DIALOG` ist parsebar, aber
+bis zur UI-Anbindung nicht ausfuehrbar.
+
+`validate.ts` kompiliert nur Registry-Treffer mit gueltigen Argumenten; ein Batch wird
+vollstaendig verworfen, sobald eine Direktive scheitert oder nicht in der uebergebenen
+Template-/Choice-Allowlist steht. `commandsForChoice()` uebersetzt die deklarierten
+Choice-Effekte in dieselbe typisierte Form. `preflight.ts` prueft zusaetzlich Event-
+Lifecycle, Frist, Requirements, Kosten, persistierten Choice-Satz und alle Zielakteure.
+`execute.ts` ist der einzige Schreibpfad: Es aktiviert ein `OFFERED`-Event, bucht
+VaCoin-Kosten ueber das bestehende Ledger gegen `EXTERNAL_WORLD`, wendet die Handler an
+und setzt `RESOLVED` mit der `outcomeId`. Ein zweiter Klick scheitert am Status und
+veraendert weder Flags noch Beziehungen noch Ledger. Abgelehnte Direktiven oder Choices
+erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
+
 ## 10. Makros (Semantik, nicht geraten)
 
-- `€FreezeTick:200` soll nur die aktive **Event-Instanz** fuer 200 fortschreitende
-  Welt-Ticks pausieren; die uebrige Simulation laeuft weiter. Die templategebundene
-  Obergrenze, Ablauf und Save-/Load-Fortsetzung sind vor Umsetzung zu pruefen.
-- `€trigger Dialog '(...)'` oeffnet einen Dialog mit dem genannten Choice-Satz. Der
-  String ist eine ID aus dem Choice-Vertrag, kein ausfuehrbarer Code. Unbekannte IDs
-  werden verworfen und als Fact `COMMAND_REJECTED` (NAR-08) sichtbar.
-
-Beide Makros sind bis NAR-08 nur Vertrag; der Compiler (NAR-10) validiert sie, bevor
-irgendein Command laeuft.
+- `€FreezeTick:200` verlaengert nur die Frist der aktiven **Event-Instanz** um 200
+  fortschreitende Welt-Ticks; die uebrige Simulation laeuft weiter. Der Handler ist auf
+  1..200 Ticks begrenzt und schreibt `expiresTick` in den Save.
+- `€trigger Dialog '(...)'` wird als `TRIGGER_DIALOG` geparst; der String ist eine ID
+  aus dem Choice-Vertrag, kein ausfuehrbarer Code. Der Handler bleibt bis zur
+  UI-/Runtime-Anbindung (NAR-14) fail-closed nicht ausfuehrbar.
+- Unbekannte Commands, ungueltige Parameter, nicht allowlistete IDs und fehlende
+  Zielakteure werden vor jeder Wirkung verworfen; die Ablehnung erscheint als
+  begrenzter Fact `COMMAND_REJECTED`. Der Compiler (NAR-10) validiert Direktiven, bevor
+  irgendein Command laeuft.
 
 ## 11. Nicht-Ziele
 
@@ -243,3 +265,6 @@ seit NAR-07 tragen Instanzen zusaetzlich `templateId`, `templateVersion` und den
 angebotenen `offeredChoiceIds`-Satz. Fehlende Felder alter Staende werden auf `eventId`,
 Version 1 und einen leeren Satz normalisiert; solche Events bleiben fail-closed nicht
 ausfuehrbar, bis ein kompatibles Template mit gueltigen Choice-IDs vorliegt.
+`COMMAND_REJECTED` ist ein normaler, begrenzter Fact in `pending`/`recent` und braucht
+kein neues Save-Feld; Event-Status und `resolution` bleiben die Wahrheit fuer
+Idempotenz.

@@ -40,6 +40,18 @@ describe('Narrative Fact-Schema', () => {
     ]);
   });
 
+  it('akzeptiert Befehlsablehnungen ohne visitorId und verwirft kaputte IDs', () => {
+    expect(isFact({
+      ...base, kind: 'COMMAND_REJECTED', commandId: 'VISITOR_RETURN', reason: 'CHOICE_NOT_OFFERED',
+    })).toBe(true);
+    expect(isFact({
+      ...base, kind: 'COMMAND_REJECTED', commandId: '', reason: 'CHOICE_NOT_OFFERED',
+    })).toBe(false);
+    expect(isFact({
+      ...base, kind: 'COMMAND_REJECTED', commandId: 'VISITOR_RETURN', reason: 'lowercase',
+    })).toBe(false);
+  });
+
   it('verwirft falsche Rollen, Selbstbezug und nicht passende Rivalenreferenzen', () => {
     expect(isFact({
       ...base, kind: 'VISITOR_CONFLICT',

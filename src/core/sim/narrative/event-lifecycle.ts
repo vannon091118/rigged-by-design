@@ -16,6 +16,7 @@ const ALLOWED: Record<NarrativeEventStatus, readonly NarrativeEventStatus[]> = {
 
 const TERMINAL: readonly NarrativeEventStatus[] = ['RESOLVED', 'EXPIRED', 'CANCELLED'];
 const STEP = /^[A-Z][A-Z0-9_]{0,31}$/;
+const MAX_FREEZE_TICKS = 200;
 const safeTick = (tick: number): number => (Number.isSafeInteger(tick) && tick >= 0 ? tick : 0);
 
 export const isTerminalEventStatus = (status: NarrativeEventStatus): boolean => TERMINAL.includes(status);
@@ -99,6 +100,19 @@ export function advanceEventStep(world: WorldState, eventId: number, step: strin
   const event = state.events[index];
   if (!event || !isLiveEventStatus(event.status)) return false;
   state.events[index] = { ...event, step, updatedTick: safeTick(tick) };
+  return true;
+}
+
+/** Verlaengert nur die Frist einer lebenden Instanz; der Rest der Simulation laeuft weiter. */
+export function freezeEvent(world: WorldState, eventId: number, ticks: number, tick: number): boolean {
+  if (!Number.isSafeInteger(ticks) || ticks <= 0 || ticks > MAX_FREEZE_TICKS) return false;
+  const state = world.narrative;
+  const index = state.events.findIndex((event) => event.id === eventId);
+  const event = state.events[index];
+  if (!event || !isLiveEventStatus(event.status)) return false;
+  const expiresTick = event.expiresTick + ticks;
+  if (!Number.isSafeInteger(expiresTick)) return false;
+  state.events[index] = { ...event, expiresTick, updatedTick: safeTick(tick) };
   return true;
 }
 

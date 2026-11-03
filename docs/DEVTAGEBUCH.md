@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-08: Command-DSL und Allowlist
+
+**Ziel.** Textbeitraege duerfen Commands deklarieren, aber niemals Code ausfuehren. Event-Templates bleiben die Allowlist; Parser, Preflight und Handler muessen fail-closed zusammenarbeiten, und eine Choice darf auch bei wiederholtem Klick nur einmal wirken.
+
+**Umsetzung.** `narrative/commands/` trennt typisierte AST-Typen, Registry, Parser, Validierung, Preflight und Ausfuehrung. Der Parser akzeptiert nur `€...`-Ausdruecke mit begrenzter Laenge, maximal acht Argumenten und bekannten Wertformen; `FreezeTick` und `trigger Dialog` werden auf stabile Command-IDs normalisiert. Die Registry allowlistet `SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK` und `TRIGGER_DIALOG`; der Dialog bleibt bis zur UI-Anbindung nicht ausfuehrbar. Choice-Effekte werden direkt in dieselbe AST-Form uebersetzt, Requirements, Kosten, Ziele und Event-Status vor jeder Mutation geprueft. Die Ausfuehrung aktiviert ein `OFFERED`-Event, bucht Kosten ueber das Ledger, wendet Effekte an und setzt `RESOLVED`; ein zweiter Klick scheitert am Lifecycle. Abgelehnte Commands landen als begrenzter `COMMAND_REJECTED`-Fact in der Narrativ-Historie.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` und `check:loc` gruen; `verify:quick` bestand nach der Exportbereinigung alle Gates, die Schnellsuite meldete 603 bestandene und 2 uebersprungene Tests. `verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die vollstaendige Suite meldete 613 bestandene und 2 uebersprungene Tests (615 gesamt). Die neuen Tests decken Parser-Grenzen, doppelte Argumente, unbekannte und nicht allowlistete Commands, Teilnehmerindizes, Kosten, Fristverlaengerung, die einmalige Ausfuehrung, Wiederholung und `COMMAND_REJECTED` ab.
+
+**Offen.** `TRIGGER_DIALOG` ist nur parsebar, nicht ausfuehrbar; die UI-/Runtime-Anbindung bleibt NAR-14. Trigger-Auswahl und Orchestrierung im Tick bleiben NAR-12, Content-Compiler und Composer NAR-09/NAR-11, die Demand-Migration NAR-13. Weitere Command-Familien folgen erst mit ihren echten Domaenen-Handlern.
+
 ## 2026-11-03 - NAR-07: Event-Templates und stabile Choice-Verträge
 
 **Ziel.** Mechanische Event-Struktur testbar machen, ohne Text und Formulierungen zu Spielregeln zu erheben: stabile Template- und Choice-IDs, rollengenaue Teilnehmer, deklarative Requirements/Kosten/Effekte, persistierte Choice-Saetze und eine erneute Pruefung beim Klick.
@@ -720,7 +730,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.81 | 2026-11-03 00:44 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

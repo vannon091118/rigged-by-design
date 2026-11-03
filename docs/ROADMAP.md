@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.81 | 2026-11-03 00:44 UTC -->
+<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -22,7 +22,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `pnpm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
-- Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen. NAR-06 ist erledigt: Scheduler, Lifecycle, Cooldowns, persistente Instanzen und eigener Narrativ-RNG stehen. NAR-07 ist erledigt: stabile Templates, Choice-Vertrag, persistierte Choice-Saetze und Klick-Eligibility stehen; die Trigger-Auswahl im Tick folgt mit NAR-12.
+- Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen. NAR-06 ist erledigt: Scheduler, Lifecycle, Cooldowns, persistente Instanzen und eigener Narrativ-RNG stehen. NAR-07 ist erledigt: stabile Templates, Choice-Vertrag, persistierte Choice-Saetze und Klick-Eligibility stehen. NAR-08 ist erledigt: Command-DSL, Allowlist, Preflight und die einmalige Ausfuehrung von Choice-Effekten stehen; die Trigger-Auswahl im Tick folgt mit NAR-12.
 - Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
 - Optik und Steuerung sind einen Schritt weiter: Lichtpfuetzen und Wandkanten trennen die Raeume, Zielraster und Laufwegspur zeigen die Folge eines Klicks, die Kamera zieht am Bildrand nach, und das HUD traegt keine leere Zeile mehr. Bildsprache steht als `docs/ART-DIRECTION.md` mit Blatt daneben.
 
@@ -32,7 +32,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Touch-Steuerung auf einem echten Geraet pruefen: Ziehen mit zwei Fingern ist im Code, aber nur Maus und Pinch sind belegt.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 (Beziehungen), NAR-05 (Trigger-Context, Evaluator, Schema), NAR-06 (Scheduler, Lifecycle, Cooldowns, eigener RNG) und NAR-07 (Templates, Choice-Vertrag, Eligibility) sind erledigt; die Trigger-Integration in den Tick bleibt NAR-12. Als Naechstes folgen Command-DSL (NAR-08) und die Demand-Migration (NAR-13) vor der Tick-Integration (NAR-12). Content-Compiler und Composer bleiben lokal ohne LLM; der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen.
+- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 (Beziehungen), NAR-05 (Trigger-Context, Evaluator, Schema), NAR-06 (Scheduler, Lifecycle, Cooldowns, eigener RNG), NAR-07 (Templates, Choice-Vertrag, Eligibility) und NAR-08 (Command-DSL, Allowlist, Preflight, Ausfuehrung) sind erledigt; die Trigger-Integration in den Tick bleibt NAR-12. Als Naechstes folgen Content-Registry/Compiler (NAR-09/NAR-10) und die Demand-Migration (NAR-13) vor der Tick-Integration (NAR-12). Content-Compiler und Composer bleiben lokal ohne LLM; der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später
