@@ -4,6 +4,7 @@
  * Fail-Closed bleibt fuer Geld, Ledger, Save-Integritaet und Rechte.
  */
 import { readFileSync } from 'node:fs';
+import { CATALOG } from './error-codes.mjs';
 
 /** Die Leiter steht in src/Config/escalation-levels.json; issues.ts liest dieselbe Datei. */
 export const LEVELS = Object.freeze(
@@ -51,9 +52,23 @@ export function classify(text) {
   return 'STRUCTURE';
 }
 
-export function plan(text) {
-  const kind = classify(text);
-  return { kind, ...KINDS[kind], reason: String(text ?? '').trim().slice(0, 160) };
+/** Stufe aus dem Register: der Code entscheidet, Textmuster nur als Fallback. */
+const KIND_BY_LEVEL = Object.freeze({
+  BLOCKED: 'BLOCKED',
+  AUTO_FIX: 'AUTOFIXABLE',
+  REMOTE_CI: 'TRANSIENT',
+  LOCAL_GATE: 'SCOPE',
+  AGENT: 'STRUCTURE',
+});
+
+export function kindForCode(code) {
+  const entry = CATALOG.get(code);
+  return entry ? KIND_BY_LEVEL[entry.level] : undefined;
+}
+
+export function plan(text, code) {
+  const kind = kindForCode(code) ?? classify(text);
+  return { kind, ...KINDS[kind], code: code ?? null, reason: String(text ?? '').trim().slice(0, 160) };
 }
 
 export function describePlan(entry) {

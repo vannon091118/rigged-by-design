@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1147 |
-| Gelistete Dateien | 1147 |
-| Getrackte Ordner | 79 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (26), docs (58), public (552), scripts (59), src (433) |
+| Getrackte Dateien | 1150 |
+| Gelistete Dateien | 1150 |
+| Getrackte Ordner | 80 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (26), docs (58), public (552), scripts (60), src (433) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -284,7 +284,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 - `./` — 9 Datei(en)
 - `.githooks/` — 2 Datei(en)
-- `.github/workflows/` — 7 Datei(en)
+- `.github/ISSUE_TEMPLATE/` — 1 Datei(en)
+- `.github/workflows/` — 8 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
 - `content/narrative/contributions/` — 22 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -323,7 +324,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 38 Datei(en)
+- `scripts/` — 39 Datei(en)
 - `scripts/lib/` — 21 Datei(en)
 - `src/` — 2 Datei(en)
 - `src/Config/` — 6 Datei(en)
@@ -367,18 +368,20 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlende Pflichtsektionen — gelesen: 14 Zeilen
 - `.githooks/pre-commit` — Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben, — gelesen: 28 Zeilen
+- `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 100 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 150 Zeilen
 - `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 74 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 159 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 44 Zeilen
+- `.github/workflows/pr-watcher.yml` — name: PR Watcher — gelesen: 58 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 22 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 126 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 128 Zeilen
 - `README.md` — Rigged by Design — gelesen: 289 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -415,7 +418,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 819 Zeilen
-- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
+- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -1041,7 +1044,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
 - `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
-- `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 61 Zeilen
+- `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 76 Zeilen
 - `scripts/lib/gate-cache.mjs` — Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. — gelesen: 61 Zeilen
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 226 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
@@ -1060,6 +1063,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
+- `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body. — gelesen: 325 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 70 Zeilen
 - `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 125 Zeilen
@@ -1162,7 +1166,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/scripts-libs.d.ts` — Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 68 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
-- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 59 Zeilen
+- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 61 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
 - `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
 - `src/core/io/envelope.ts` — Umschlag fuer Spielstand-Exporte: Art, Format, Pruefsumme, Nutzlast. — gelesen: 66 Zeilen

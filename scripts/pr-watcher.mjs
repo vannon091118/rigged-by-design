@@ -33,17 +33,48 @@ function api(method, path, body) {
   return fetch(url, opts);
 }
 
-async function listOpenIssues() {
-  const res = await api('GET', '/issues?state=open&labels=gate-failure');
-  return res.ok ? await res.json() : [];
+/** Fingerprint = Fehlercode + erste Fehlerzeile aus dem Gate-Log. */
+function fingerprintOf(code, firstLine) {
+  return `fp:${code}:${firstLine.trim().slice(0, 160)}`;
+}
+
+/** Sucht ein Issue mit gleichem Fingerprint, offen oder geschlossen. */
+async function findByFingerprint(fingerprint) {
+  const res = await api('GET', '/issues?state=all&labels=gate-failure&per_page=100');
+  if (!res.ok) return undefined;
+  const issues = await res.json();
+  return issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
+}
+
+/** Zählt Vorkommen über Kommentare "Vorgekommen: N mal" und hängt den neuen Lauf an. */
+async function recordRecurrence(issue, runUrl) {
+  const res = await api('GET', `/issues/${issue.number}/comments?per_page=100`);
+  const comments = res.ok ? await res.json() : [];
+  const counts = comments.map((c) => /Vorgekommen: (\d+) mal/.exec(c.body ?? '')).filter(Boolean);
+  const previous = counts.length > 0 ? Math.max(...counts.map((m) => Number(m[1]))) : 1;
+  const count = previous + 1;
+  await api('POST', `/issues/${issue.number}/comments`, {
+    body: `Vorgekommen: ${count} mal, zuletzt ${runUrl}`,
+  });
+  if (issue.state === 'closed') {
+    console.log(`Issue #${issue.number} bleibt geschlossen, Kommentar ergänzt (${count} mal).`);
+  } else {
+    console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
+  }
 }
 
 async function findExistingIssue(title) {
-  const issues = await listOpenIssues();
+  const res = await api('GET', '/issues?state=open&labels=gate-failure');
+  const issues = res.ok ? await res.json() : [];
   return issues.find((i) => i.title === title);
 }
 
-async function createIssue(title, body, labels) {
+async function createIssue(title, body, labels, fingerprint, runUrl) {
+  const known = await findByFingerprint(fingerprint);
+  if (known) {
+    await recordRecurrence(known, runUrl);
+    return known;
+  }
   const existing = await findExistingIssue(title);
   if (existing) {
     console.log(`Issue existiert bereits: #${existing.number}`);
@@ -51,7 +82,7 @@ async function createIssue(title, body, labels) {
   }
   const res = await api('POST', '/issues', {
     title,
-    body,
+    body: `${body}\n<!-- ${fingerprint} -->\n`,
     labels,
   });
   if (!res.ok) {
@@ -81,6 +112,22 @@ async function getFailedJobDetails(runId) {
     return `Job: ${j.name}\n${stepDetails}`;
   });
   return details.join('\n\n');
+}
+
+/** Erste Fehlerzeile mit ERR-Code aus den Job-Logs eines Runs; sonst ERR-0000. */
+async function firstGateError(runId) {
+  const jobs = await getWorkflowRunJobs(runId);
+  for (const job of jobs.filter((j) => j.conclusion === 'failure')) {
+    const res = await api('GET', `/actions/jobs/${job.id}/logs`);
+    if (!res.ok) continue;
+    const lines = (await res.text()).split(/\r?\n/);
+    const hit = lines.find((line) => /\[ERR-\d{4}\]/.test(line) || /\bERR-\d{4}\b/.test(line));
+    if (hit) {
+      const code = /ERR-\d{4}/.exec(hit)[0];
+      return { code, firstLine: hit.replace(/^.*?\d{4}-\d{2}-\d{2}T[^ ]+\s*/, '') };
+    }
+  }
+  return { code: 'ERR-0000', firstLine: 'Kein Fehlercode im Gate-Log gefunden' };
 }
 
 function gateFailureSections(body) {
@@ -132,8 +179,10 @@ async function handleWorkflowRun() {
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
 
   const jobDetails = await getFailedJobDetails(runId);
+  const { code, firstLine } = await firstGateError(runId);
+  const fingerprint = fingerprintOf(code, firstLine);
 
-  const title = `[GATE-RED] CI Verify auf ${runBranch}`;
+  const title = `[${code}] CI Verify: ${firstLine.trim().slice(0, 80)}`;
   const body = `## 🚨 CI Gate rot
 
 **Branch:** \`${runBranch}\`  
@@ -200,7 +249,7 @@ ${jobDetails}
 Sobald alle Gates grün sind und der PR gemergt wurde, dieses Issue als \`completed\` schließen.
 `;
 
-  await createIssue(title, body, ['gate-failure', 'agent-action']);
+  await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprint, runUrl);
 }
 
 async function handlePullRequest() {
@@ -230,7 +279,7 @@ Der PR hat keinen Body. Der PR-Body muss die drei Pflichtsektionen enthalten:
 
 Siehe AGENTS.md für die vollständigen Regeln.
 `;
-    await createIssue(title, body, ['gate-failure', 'agent-action']);
+    await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprintOf('PR-BODY', `PR #${prNumber}`), `https://github.com/${REPO}/pull/${prNumber}`);
     return;
   }
 
@@ -264,7 +313,7 @@ Der PR-Body muss alle drei Pflichtsektionen mit echtem Inhalt enthalten:
 
 Siehe AGENTS.md für die vollständigen Regeln.
 `;
-    await createIssue(title, body, ['gate-failure', 'agent-action']);
+    await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprintOf('PR-BODY', `PR #${prNumber}`), `https://github.com/${REPO}/pull/${prNumber}`);
   } else {
     console.log(`PR #${prNumber} Body PASS: alle Pflichtsektionen vorhanden.`);
   }

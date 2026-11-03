@@ -13,11 +13,11 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const SOURCE = join(ROOT, 'src', 'core', 'governance', 'error-codes.ts');
-const ENTRY = /code:\s*'(ERR-\d{4})'[^}]*?area:\s*'([^']*)'[^}]*?cause:\s*'([^']*)'[^}]*?fix:\s*'([^']*)'/g;
+const ENTRY = /code:\s*'(ERR-\d{4})'[^}]*?level:\s*'([A-Z_]+)'[^}]*?area:\s*'([^']*)'[^}]*?cause:\s*'([^']*)'[^}]*?fix:\s*'([^']*)'/g;
 
 function readRegistry() {
   const entries = [...readFileSync(SOURCE, 'utf8').matchAll(ENTRY)];
-  return entries.map(([, code, area, cause, fix]) => Object.freeze({ code, area, cause, fix }));
+  return entries.map(([, code, level, area, cause, fix]) => Object.freeze({ code, level, area, cause, fix }));
 }
 
 /** Register als Map: Code -> Definition. */

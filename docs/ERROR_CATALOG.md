@@ -22,7 +22,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4005 | Commit | Drittanbieter-Trailer oder Tool-Werbung im Commit/PR-Body. | Trailer entfernen; `sanitize-commit` nutzen. |
 | ERR-4006 | Commit | Deutsche Developer Notes oder Pflichtsektionen fehlen. | Nachricht im Steam-Notes-Format neu schreiben. |
 | ERR-4007 | Architektur | Dependency ohne Begruendung oder ohne reale Nutzung. | `docs/ARCHITECTURE.md` und Matrix synchronisieren. |
-| ERR-4008 | Delivery | Automatischer Push auf den aktuellen Branch scheitert. | Remote-Arbeit nachziehen und lokal neu aufsetzen; bleibt der Push bei aktuellem Remote abgelehnt, Rechte und Branch-Schutz pruefen. |
+| ERR-4008 | Delivery | Der automatische Push auf den Arbeitsbranch scheitert, auch nach dem Nachziehen von origin/main. | Remote-Arbeit nachziehen und lokal neu aufsetzen; bleibt der Push bei aktuellem Remote abgelehnt, Rechte und Branch-Schutz pruefen. |
 | ERR-4011 | Lint | ESLint-Verstoss, der nicht automatisch behebbar ist. | Regelverstoss an der Ursache beheben. |
 | ERR-4012 | LOC-Guard | Datei ueberschreitet ihr LOC-Cap oder nutzt eine verbotene Ausnahme. | Verantwortung splitten und unter die Hot Zone ihrer Zustaendigkeit reduzieren; keine neuen Exceptions. |
 | ERR-4013 | Architektur | Dependency-Matrix ist nicht synchron. | `pnpm run sync:deps` ausfuehren und Begruendungen pruefen. |
@@ -35,4 +35,6 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
+| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen und ueber das Gate promoten; kein Direktpush auf main. |
+| ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |

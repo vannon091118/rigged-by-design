@@ -60,7 +60,8 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von pnpm run test, pnpm run test:ci oder pnpm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
-- If branch protection rejects direct push, push the working branch and open a focused PR to `main`. The merge commit is checked by `verify-commit-msg --head`: use the exact section headings (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII variants fail. Reusing the PR body as the merge message satisfies this. Beim Merge ueber Connector oder REST-API gehoert der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
+- Direkter Push auf `main` ist durch das Ruleset gesperrt. Der einzige Weg: Arbeitsbranch pushen, fokussierten PR gegen `main` öffnen und über das Gate promoten. `turn:finish` pusht daher nur den Arbeitsbranch; ein abgelehnter Direktpush auf `main` meldet `ERR-4023`. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
+- **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
 - **Automatische Promotion:** `promote.yml` legt den PR an und mergt ihn, sobald `CI Verify` gruen ist; ein roter Lauf legt den Stand auf die permanente Branch `integration` (Label `integration/rot`), damit dort repariert wird. Zwei parallele rote Staende werden gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
@@ -110,22 +111,9 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - No `addVC` outside a booking; no money source except `EXTERNAL_WORLD`.
 - Determinismus: kein `Math.random()`, `Date.now()`, `performance.now()`, `new Date()` und keine Krypto-Zufallsquelle (`getRandomValues`, `randomUUID`) in `src/**` oder `scripts/**` — ESLint blockt direkte Zugriffe, `globalThis`/`window`-Umwege, `new`-Umwege und Aliase. `eslint-disable` ist per `noInlineConfig` global wirkungslos; `Date()` ohne `new` und `performance.timeOrigin` sind ebenfalls gesperrt. Ausnahmen stehen namentlich und begruendet in `eslint.config.mjs`: `performance.now` nur in `src/render/floor-view.ts`, `src/render/floor-props.ts` und `src/render/music.ts` (Pacing), Krypto nur in `src/core/rng/streams.ts`, Zeitstempel-/CI-Tooling. Jede andere Datei unter `src/render/**` ist voll gesperrt. Echter Zufall nur in `entropySeed()`; Exporte stempeln aus `world.day`/`world.tick`, nie aus der Uhr.
 
-## Gate Rootcause Analysis (konsolidiert)
+## Gate-Rootcause-Analyse
 
-Alle CI Gate-Fehler seit dem Merge von `fix/narrative-review-findings` (NAR-13) hatten dieselbe Rootcause:
-**Dateien wurden gelöscht, die noch von anderen Modulen importiert wurden, und neue Imports verwiesen auf nicht mehr existierende Module.**
-
-| Gate | Code | Datei | Ursache | Fix |
-|------|------|-------|---------|-----|
-| check:loc | ERR-4012 | `src/store/migrate.ts` | 221 LOC, Hot Zone für state-Dateien ist 165 | Auf 116 LOC reduziert (Kommentare entfernt, Zuweisungen kombiniert) |
-| verify:docs | ERR-4017 | `docs/INVENTORY.md` | Abdeckung 1140 ≠ 1149 getrackte Dateien (Merge hat Datei-Zählung verändert) | `inventory:build` neu generiert, 1147/1147 |
-| build | ERR-1005 | `src/core/sim/tick.ts` | Importierte aus gelöschten `character.ts`, `stain.ts`, `smartphone.ts` | `tick.ts` auf alten Stand zurückgesetzt |
-| build | ERR-1005 | `src/store/venue-commands.ts` | Importierte aus gelöschten `mop.ts`, `interaction.ts` | `mop.ts`, `interaction.ts` mit nur benötigten Exports wiederhergestellt |
-| dead-code | ERR-4003 | `src/core/sim/{character,interaction,mop,smartphone,stain}.ts` | Exports (`MOP_USES`, `manhattanDistance`, `getStainInfluence`, `tickStains` u.a.) nicht importiert | Dateien gelöscht oder auf nur genutzte Exports reduziert |
-| tests | ERR-2001 | `src/core/sim/{templates,disputes}.ts` | `Cannot find module './stain'` | `stain.ts` mit nur `spawnStain`/`removeStain` wiederhergestellt |
-| verify-commit-msg | ERR-4006 | Commit-Body | Pflichtsektionen ohne echten Inhalt (platzhalterartig) | Commit-Body mit vollständigen Inhalten in allen drei Sektionen |
-
-**Regel:** Vor jedem Löschen von Dateien aus `src/core/sim/` (oder jedem anderen Verzeichnis) muss ein Import-Grep über das gesamte Repository laufen (`rg <dateiname> src/`), um sicherzustellen, dass kein Modul das gelöschte Datei importiert. Niemals Module löschen, die noch referenziert werden. Falls ein Modul teilweise ungenutzte Exports hat, nur die genutzten Exports behalten statt das ganze Modul zu löschen.
+Die konsolidierte Tabelle bisheriger Gate-Fehler und ihrer Ursachen steht in `docs/GATE-ROOTCAUSE.md`. Die Löschregel (Import-Grep vor jedem Löschen) gilt weiterhin.
 
 ## Pitfalls
 
