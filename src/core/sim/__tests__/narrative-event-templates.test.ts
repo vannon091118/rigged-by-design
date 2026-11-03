@@ -14,10 +14,24 @@ const match = (triggerId: string, participants: readonly ActorRef[]): TriggerMat
 describe('Narrative Event Templates', () => {
   it('registriert stabile Event-IDs und Versionen', () => {
     expect(EVENT_TEMPLATES.map((template) => `${template.eventId}@${template.version}`))
-      .toEqual(['VISITOR_RETURN@1', 'VISITOR_CONFLICT@1']);
+      .toEqual([
+        'VISITOR_RETURN@1', 'VISITOR_CONFLICT@1', 'NEON_NACHT@1', 'TURNIER_ABEND@1',
+      ]);
     expect(templateFor('VISITOR_RETURN')?.choices.map((choice) => choice.choiceId))
       .toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
     expect(templateFor('VISITOR_RETURN', 2)).toBeNull();
+  });
+
+  it('haelt jede Event-ID ueber templateFor aufloesbar, auch fuer Engine-Demand', () => {
+    for (const template of EVENT_TEMPLATES) {
+      expect(templateFor(template.eventId, template.version)).toBe(template);
+    }
+    for (const eventId of ['NEON_NACHT', 'TURNIER_ABEND']) {
+      const template = templateFor(eventId);
+      expect(template?.triggerId).toBe('ENGINE_DEMAND');
+      expect(template?.choices).toEqual([]);
+      expect(template?.maxOccurrences).toBe(0);
+    }
   });
 
   it('verwirft doppelte Choice-IDs, fremde Slots und falsche Rollen', () => {

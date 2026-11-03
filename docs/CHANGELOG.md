@@ -15,6 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.87] - 2026-11-03
 
 ### Technik
+- Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
 - NAR-13 abgeschlossen: `events/demand-definitions.ts` beschreibt Neon-Nacht und Turnierabend als Daten (Nachfrage pro Tag, Laufzeit, Gruppenzuschlag, Starttext), `narrative/demand-events.ts` startet und beendet sie als aktive GLOBAL-Instanzen der gemeinsamen Event-Engine. `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen nur noch die aktive Instanz; `NarrativeState.demandEvent` ist entfernt.
 - v5–v9-Saves mit `demandEvent` (Weltfeld oder Narrativ-Slice) werden beim Laden in eine aktive Instanz mit Restlaufzeit konvertiert; abgelaufene Veranstaltungen verfallen, bestehende Instanzen verhindern Duplikate. Neue Saves enthalten nur noch `narrative.events`.
 - `sourceFactId: 0` ist fuer engine-erzeugte Events ohne ausloesenden Fact reserviert. Fuenf neue Tests decken Definitionen, Start/Duplikat, abgeleitete Anzeige und Fristablauf ab; `demand.test.ts` und `narrative-save.test.ts` pruefen die unveraenderte Wirkung und die Migration. Die Content-Registry waechst auf 22 Fragmente.

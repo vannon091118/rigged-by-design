@@ -68,8 +68,10 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(slot(withoutPersona, 'BODY').contributionId).toBeNull();
 
     const english = composeNarrative({ ...RETURN_REQUEST, locale: 'en' });
-    expect(english.slots.every((entry) => entry.fallback)).toBe(true);
-    expect(english.fallbacks).toHaveLength(english.slots.length);
+    expect(english.ok).toBe(false);
+    expect(english.slots).toEqual([]);
+    expect(english.issues[0]).toContain('Locale en hat keine Sicherheitscopy');
+    expect(english.locale).toBe('en');
   });
 
   it('weist ungueltige Direktiven zurueck, ohne das Fragment zu verwenden', () => {
@@ -145,5 +147,18 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(result.slots.map((entry) => entry.kind)).toEqual(['TITLE', 'BODY', 'CHOICE_LABEL', 'OUTCOME']);
     expect(result.slots.every((entry) => entry.fallback && entry.text.length > 0)).toBe(true);
     expect(result.slots.find((entry) => entry.kind === 'CHOICE_LABEL')?.text).toBe('Weiter');
+  });
+
+  it('signalisiert degraded, wenn alle Slots Fallback sind', () => {
+    const result = composeNarrative({
+      locale: 'de',
+      slots: [{ id: 'T', kind: 'TITLE' }, { id: 'B', kind: 'BODY' }],
+      contexts: ['kein-treffer'],
+    });
+    expect(result.ok).toBe(true);
+    expect(result.degraded).toBe(true);
+    expect(result.issues.length).toBeGreaterThan(0);
+    expect(result.fallbacks).toEqual(['T', 'B']);
+    expect(result.slots.every((entry) => entry.fallback)).toBe(true);
   });
 });

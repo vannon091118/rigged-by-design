@@ -6,8 +6,8 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { recordJournal } from './journal';
-import { activeDemandEvent, activeDemandKind, endDueDemandEvent, startDemandEvent } from './narrative/demand-events';
-import { demandDefinition, isDemandEventId } from './narrative/events/demand-definitions';
+import { activeDemand, startDemandEvent } from './narrative/demand-events';
+import { demandDefinition } from './narrative/events/demand-definitions';
 import { attractionOf } from './offers';
 import { UNSAFE_REPUTATION_SPAWN_FACTOR } from './penalty-pool';
 import { companyTier } from './progression';
@@ -75,13 +75,12 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
     { id: 'TIER', label: `Stufe ${TIER_NAME[world.demandTier]}`, perDay: TIER_PER_DAY[world.demandTier] },
   ];
   if (isPeak(world)) sources.push({ id: 'PEAK', label: 'Stoßzeit am Abend', perDay: PEAK_PER_DAY });
-  const active = activeDemandEvent(world);
-  const activeKind = active !== null && isDemandEventId(active.eventId) ? active.eventId : null;
-  if (activeKind) {
+  const active = activeDemand(world);
+  if (active) {
     sources.push({
       id: 'EVENT',
-      label: demandDefinition(activeKind).label,
-      perDay: demandDefinition(activeKind).perDay,
+      label: active.definition.label,
+      perDay: active.definition.perDay,
     });
   }
   let perDay = sources.reduce((sum, source) => sum + source.perDay, 0);
@@ -90,11 +89,11 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
     sources.push({ id: 'UNSAFE', label: 'Unsicherer Ruf', perDay: -malus });
     perDay -= malus;
   }
-  const event = active && activeKind
+  const event = active
     ? {
-        kind: activeKind,
-        label: demandDefinition(activeKind).label,
-        ticksLeft: Math.max(0, active.expiresTick - world.tick),
+        kind: active.event.eventId as DemandEventKind,
+        label: active.definition.label,
+        ticksLeft: Math.max(0, active.event.expiresTick - world.tick),
       }
     : null;
   return {
@@ -121,7 +120,8 @@ function groupSize(world: WorldState, prng: Prng): number {
   if (roll < 0.015 + rank * 0.02) size = 3;
   else if (roll < 0.08 + rank * 0.05) size = 2;
   if (isPeak(world) && prng.nextFloat() < 0.1 + rank * 0.04) size += 1;
-  if (activeDemandKind(world) && prng.nextFloat() < 0.55) size += 1;
+  const active = activeDemand(world);
+  if (active && prng.nextFloat() < active.definition.groupChance) size += 1;
   return Math.min(4, size);
 }
 
@@ -135,7 +135,8 @@ function expectedGroupSize(world: WorldState): number {
   const p2 = 0.08 + rank * 0.05;
   let mean = 1 + (p2 - p3) + 2 * p3;
   if (isPeak(world)) mean += 0.1 + rank * 0.04;
-  if (activeDemandKind(world)) mean += 0.55;
+  const active = activeDemand(world);
+  if (active) mean += active.definition.groupMean;
   return mean;
 }
 
@@ -154,17 +155,10 @@ function advanceDemandTier(world: WorldState, ledger: Ledger): void {
 }
 
 function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
-  const ended = endDueDemandEvent(world);
-  if (ended) {
-    const label = demandDefinition(ended).label;
-    world.lastEvent = `${label} ist vorbei. Der Andrang normalisiert sich.`;
-    recordJournal(world, {
-      kind: 'SYSTEM', subject: label, cause: 'Veranstaltung beendet', effect: world.lastEvent,
-    });
-  }
   if (world.tick % TICKS_PER_DAY !== 0) return;
   advanceDemandTier(world, ledger);
-  if (activeDemandEvent(world) || world.demandTier === 'BUDE') return;
+  // Der Scheduler und die Runtime beenden faellige Instanzen; hier wird nur gestartet.
+  if (activeDemand(world) || world.demandTier === 'BUDE') return;
   if (prng.nextFloat() >= EVENT_CHANCE[world.demandTier]) return;
   const kind: DemandEventKind = prng.nextFloat() < 0.55 ? 'NEON_NACHT' : 'TURNIER_ABEND';
   const definition = demandDefinition(kind);

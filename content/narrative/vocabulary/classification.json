@@ -29,6 +29,13 @@
     "rumor": ["warn"],
     "documentation": ["document"]
   },
+  "composerSlots": {
+    "TITLE": ["opening"],
+    "BODY": ["event-body", "description"],
+    "CHOICE_LABEL": ["choice-preview"],
+    "OUTCOME": ["reaction"]
+  },
+  "nonComposableSlots": ["memory", "rumor", "documentation"],
   "contexts": {
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",
     "return": "Wiederkehr eines persistenten Besuchers.",

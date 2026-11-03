@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
+
+**Ziel.** Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
+
+**Umsetzung.** Offen.
+
+**Pruefungen.** Offen.
+
+**Offen.** Offen.
+
 ## 2026-11-03 - NAR-13: DemandEvents in der gemeinsamen Engine
 
 **Ziel.** Den zweiten Scheduler in `demand.ts` aufloesen, ohne Ankunftsraten, Gruppengroessen oder Zeitfenster zu veraendern und ohne laufende Veranstaltungen aus v5–v9-Saves zu verlieren.

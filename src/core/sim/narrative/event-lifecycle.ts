@@ -116,12 +116,14 @@ export function freezeEvent(world: WorldState, eventId: number, ticks: number, t
   return true;
 }
 
-/** Beendet abgelaufene Instanzen; bereits terminale Events werden nie erneut bewegt. */
-export function expireDueEvents(world: WorldState, tick: number): number {
-  let expired = 0;
+/** Beendet abgelaufene Instanzen und liefert sie; terminale Events bleiben unberuehrt. */
+export function expireDueEvents(world: WorldState, tick: number): NarrativeEventInstance[] {
+  const expired: NarrativeEventInstance[] = [];
   for (const event of [...world.narrative.events]) {
-    if (isLiveEventStatus(event.status) && event.expiresTick <= tick
-      && transitionEvent(world, event.id, 'EXPIRED', tick, 'DEADLINE')) expired += 1;
+    if (!isLiveEventStatus(event.status) || event.expiresTick > tick) continue;
+    if (!transitionEvent(world, event.id, 'EXPIRED', tick, 'DEADLINE')) continue;
+    const next = world.narrative.events.find((entry) => entry.id === event.id);
+    if (next) expired.push(next);
   }
   return expired;
 }

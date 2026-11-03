@@ -12,6 +12,7 @@ import { createWorld, ensureStarter } from '../../core/sim/templates';
 import { Prng } from '../../core/rng/prng';
 import { randomSeed } from '../../test/random-seed';
 import { replaySave, toSavedGame } from '../save';
+import { hydrateNarrative, type MigrationReport } from '../migrate-narrative';
 
 function fixture() {
   const world = createWorld('MEDIUM');
@@ -111,6 +112,17 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     expect(migrated).not.toBeNull();
     expect(activeDemandEvent(migrated!.world)?.eventId).toBe('TURNIER_ABEND');
     expect(migrated!.world.narrative).not.toHaveProperty('demandEvent');
+  });
+
+  it('meldet in MigrationReport welche Legacy-Quelle uebernommen wurde', () => {
+    const freshWorld = createWorld('SMALL');
+    const report: MigrationReport = hydrateNarrative(freshWorld, {
+      demandEvent: { kind: 'NEON_NACHT', untilTick: freshWorld.tick + 100 },
+    });
+    expect(report.legacyKind).toBe('NEON_NACHT');
+    expect(report.demandStarted).toBe(true);
+    expect(report.untilTickClamped).toBe(false);
+    expect(report.conflictingLegacy).toBe(false);
   });
 
   it('setzt zwei aus demselben Save geladene Welten inklusive Narrative identisch fort', () => {

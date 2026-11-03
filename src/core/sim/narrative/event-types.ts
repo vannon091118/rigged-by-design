@@ -25,6 +25,7 @@ export interface NarrativeEventInstance {
   readonly updatedTick: number;
   readonly expiresTick: number;
   readonly step: string;
+  /** 0 heisst: unbegrenzt; der Cooldown reguliert dann den Abstand. */
   readonly maxOccurrences: number;
   readonly cooldownTicks: number;
   readonly chainFromEventId: number | null;
@@ -57,6 +58,7 @@ export interface EventCandidate {
   readonly sourceFactId: number;
   readonly expiresInTicks?: number;
   readonly cooldownTicks?: number;
+  /** 0 heisst: unbegrenzt; fehlt der Wert, gilt genau eine Wiederholung. */
   readonly maxOccurrences?: number;
   readonly chainFromEventId?: number | null;
   readonly step?: string;
