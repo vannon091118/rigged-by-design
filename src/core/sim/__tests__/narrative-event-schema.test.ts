@@ -43,6 +43,8 @@ describe('Narrative Event Schema', () => {
     expect(isEventInstance(instance)).toBe(true);
     expect(isEventCandidate({ ...candidate, scope: 'PAIR', participants: ['visitor:1', 'visitor:2'] })).toBe(true);
     expect(isEventCandidate({ ...candidate, scope: 'GLOBAL', participants: [] })).toBe(true);
+    // Engine-erzeugte Events (Tagesgrenze, Migration) haben keinen ausloesenden Fact.
+    expect(isEventCandidate({ ...candidate, sourceFactId: 0 })).toBe(true);
   });
 
   it('verwirft falsche Scopes, Teilnehmer, Schwellen und Schritte', () => {
@@ -50,7 +52,7 @@ describe('Narrative Event Schema', () => {
     expect(isEventCandidate({ ...candidate, participants: ['staff:1'] })).toBe(false);
     expect(isEventCandidate({ ...candidate, scope: 'PAIR', participants: ['visitor:2', 'visitor:2'] })).toBe(false);
     expect(isEventCandidate({ ...candidate, priority: -1 })).toBe(false);
-    expect(isEventCandidate({ ...candidate, sourceFactId: 0 })).toBe(false);
+    expect(isEventCandidate({ ...candidate, sourceFactId: -1 })).toBe(false);
     expect(isEventCandidate({ ...candidate, cooldownTicks: -1 })).toBe(false);
     expect(isEventCandidate({ ...candidate, maxOccurrences: 0 })).toBe(false);
     expect(isEventCandidate({ ...candidate, step: 'lower' })).toBe(false);

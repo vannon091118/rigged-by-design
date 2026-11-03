@@ -2,6 +2,8 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { openHouse } from '../../core/sim/money';
+import { activeDemandEvent } from '../../core/sim/narrative/demand-events';
+import { demandDefinition } from '../../core/sim/narrative/events/demand-definitions';
 import { createNarrativeState, seedStartPool } from '../../core/sim/narrative/state';
 import { scheduleEvent, transitionEvent } from '../../core/sim/narrative/scheduler';
 import { tickWorld } from '../../core/sim/tick';
@@ -61,7 +63,7 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     expect(loaded!.world.visitors.every((visitor) => (visitor.memories ?? []).length === 0)).toBe(true);
   });
 
-  it('migriert aktive alte Nachfrageevents von v5 bis v9 in den narrativen Zustand', () => {
+  it('migriert aktive alte Nachfrageevents von v5 bis v9 in Event-Instanzen', () => {
     const { world, ledger } = fixture();
     for (const version of [5, 6, 7, 8, 9]) {
       for (const kind of ['NEON_NACHT', 'TURNIER_ABEND'] as const) {
@@ -71,25 +73,44 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
         delete (saved.narrative as Record<string, unknown>).demandEvent;
         const loaded = replaySave(saved);
         expect(loaded).not.toBeNull();
-        expect(loaded!.world.narrative.demandEvent).toEqual({ kind, untilTick: world.tick + 100 });
-        expect(demandBreakdown(loaded!.world).event?.kind).toBe(kind);
+        const active = activeDemandEvent(loaded!.world);
+        expect(active?.eventId).toBe(kind);
+        expect(active?.status).toBe('ACTIVE');
+        expect(active?.scope).toBe('GLOBAL');
+        expect(active?.expiresTick).toBe(world.tick + 100);
+        expect(loaded!.world.narrative).not.toHaveProperty('demandEvent');
+        expect(demandBreakdown(loaded!.world).event).toEqual({
+          kind, label: demandDefinition(kind).label, ticksLeft: 100,
+        });
         expect(demandBreakdown(loaded!.world).sources.find((source) => source.id === 'EVENT')?.perDay)
-          .toBe(kind === 'NEON_NACHT' ? 20 : 16);
+          .toBe(demandDefinition(kind).perDay);
         const nextSave = toSavedGame(loaded!.world, loaded!.ledger, 7);
         expect(nextSave.demandEvent).toBeUndefined();
-        expect(replaySave(JSON.parse(JSON.stringify(nextSave)))!.world.narrative.demandEvent).toEqual({ kind, untilTick: world.tick + 100 });
+        expect(nextSave.narrative).not.toHaveProperty('demandEvent');
+        const nextNarrative = nextSave.narrative as unknown as { events: readonly { eventId: string }[] };
+        expect(nextNarrative.events.filter((event) => event.eventId === kind)).toHaveLength(1);
+        const reloaded = replaySave(JSON.parse(JSON.stringify(nextSave)));
+        expect(reloaded).not.toBeNull();
+        expect(reloaded!.world.narrative.events.filter((event) => event.eventId === kind
+          && (event.status === 'ACTIVE' || event.status === 'OFFERED'))).toHaveLength(1);
+        expect(activeDemandEvent(reloaded!.world)?.expiresTick).toBe(world.tick + 100);
       }
     }
   });
 
-  it('erweckt abgelaufene und bereits migrierte Veranstaltungen nicht erneut', () => {
+  it('erweckt abgelaufene Veranstaltungen nicht erneut', () => {
     const { world, ledger } = fixture();
     const saved = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 7))) as Record<string, unknown>;
-    saved.demandEvent = { kind: 'NEON_NACHT', untilTick: world.tick + 100 };
-    expect(replaySave(saved)!.world.narrative.demandEvent).toBeNull();
-    delete (saved.narrative as Record<string, unknown>).demandEvent;
     saved.demandEvent = { kind: 'NEON_NACHT', untilTick: world.tick };
-    expect(replaySave(saved)!.world.narrative.demandEvent).toBeNull();
+    const expired = replaySave(saved);
+    expect(expired).not.toBeNull();
+    expect(activeDemandEvent(expired!.world)).toBeNull();
+    const v9 = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 7))) as Record<string, unknown>;
+    (v9.narrative as Record<string, unknown>).demandEvent = { kind: 'TURNIER_ABEND', untilTick: world.tick + 50 };
+    const migrated = replaySave(v9);
+    expect(migrated).not.toBeNull();
+    expect(activeDemandEvent(migrated!.world)?.eventId).toBe('TURNIER_ABEND');
+    expect(migrated!.world.narrative).not.toHaveProperty('demandEvent');
   });
 
   it('setzt zwei aus demselben Save geladene Welten inklusive Narrative identisch fort', () => {

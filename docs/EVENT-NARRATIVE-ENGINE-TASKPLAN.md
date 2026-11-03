@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.85`<br>
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.87`<br>
 **Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry); NAR-10 erledigt (Compiler, Makro-AST, Konflikte, byte-identische Registry, `--check`); NAR-11 erledigt (Composer, deterministische Auswahl, Fallbacks, keine Provider); NAR-12 erledigt (Runtime, Tick-/Store-Integration, Command→Fact-Kreis); NAR-13 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry); NAR-10 erledigt (Compiler, Makro-AST, Konflikte, byte-identische Registry, `--check`); NAR-11 erledigt (Composer, deterministische Auswahl, Fallbacks, keine Provider); NAR-12 erledigt (Runtime, Tick-/Store-Integration, Command→Fact-Kreis); NAR-13 erledigt (Demand-Definitionen, aktive GLOBAL-Instanzen, v5–v9-Migration, eine Nachfragewahrheit); NAR-14 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -535,7 +535,14 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Das alte `demandEvent`-System nicht als zweiten Scheduler behalten.
 
-**Teilstand:** Der aktive Zustand liegt in `world.narrative.demandEvent` und alte v5–v9-Saves werden beim Laden uebernommen. Auswahl und Lifecycle liegen weiterhin in `demand.ts`; die Migration in Event-Instanzen und damit NAR-13 sind noch nicht abgeschlossen.
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `narrative/events/demand-definitions.ts` haelt Neon-Nacht und Turnierabend als Daten: `perDay` 20/16, `durationTicks` 150, Gruppenzuschlag 0,55, Starttext und endliche Wiederholungsgrenze.
+- `narrative/demand-events.ts` startet hoechstens eine aktive `GLOBAL`-Instanz ohne Choices und beendet sie am Fristtick ueber `transitionEvent` (`EXPIRED`, `DEMAND_ENDED`); `sourceFactId: 0` kennzeichnet engine-erzeugte Events ohne ausloesenden Fact.
+- `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen nur noch `activeDemandEvent()`/`activeDemandKind()`; `NarrativeState.demandEvent` und die Normalisierung sind entfernt.
+- `hydrateNarrative()` konvertiert `demandEvent` aus v5–v8 (Weltfeld) und v9 (Narrativ-Slice) in eine aktive Instanz mit Restlaufzeit `untilTick - world.tick`; abgelaufene verfallen, Duplikate verhindert `startDemandEvent()`.
+- Tests: `narrative-demand.test.ts` (Definitionen, Start, Duplikat, Anzeige, Frist), angepasste `demand.test.ts` und `narrative-save.test.ts` (v5–v9, kein Feld mehr im Save, Reload ohne Duplikat).
 
 **Arbeiten**
 - `NEON_NACHT` und `TURNIER_ABEND` als datengetriebene Event-Definitionen in die neue Event Engine überführen.
