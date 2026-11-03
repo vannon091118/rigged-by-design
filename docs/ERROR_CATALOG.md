@@ -34,5 +34,5 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4019 | Governance / Tree | Datei liegt im falschen Ordner oder eine Schicht importiert nach aussen. | Datei verschieben; Import nach innen ziehen; Regel in `scripts/verify-tree.mjs` pruefen. |
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
-| ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro oder Registry verletzt den NAR-09/NAR-10-Vertrag. | Feld, ID, Klassifizierung oder Makro korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
+| ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |

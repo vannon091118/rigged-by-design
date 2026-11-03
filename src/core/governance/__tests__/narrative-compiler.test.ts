@@ -17,7 +17,9 @@ import {
 import {
   buildCompiledRegistry,
   renderRegistry,
+  renderRuntimeRegistry,
   validateCompiledRegistry,
+  validateRuntimeRegistry,
 } from '../../../../scripts/lib/narrative-compiler.mjs';
 import { loadNarrativeContent } from '../../../../scripts/lib/narrative-content.mjs';
 
@@ -33,7 +35,9 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(report.registry.version).toBe(2);
     expect(report.registry.compiler).toBe('nar-10');
     expect(report.contentHash).toMatch(/^sha256:[a-f0-9]{64}$/);
-    expect(report.registry.fragments).toHaveLength(19);
+    expect(report.registry.fragments).toHaveLength(20);
+    expect(report.runtimeRegistryText).toContain('export const NARRATIVE_REGISTRY');
+    expect(validateRuntimeRegistry(report.runtimeRegistryText, report.compiled)).toEqual([]);
   });
 
   it('parst Makros zu typisierten AST-Daten ohne Roh-Makro in der Registry', () => {
@@ -86,6 +90,7 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     const reverse = buildCompiledRegistry([...report.contributions].reverse(), report.vocabulary);
     expect(forward.issues).toEqual([]);
     expect(renderRegistry(forward.document)).toBe(renderRegistry(reverse.document));
+    expect(renderRuntimeRegistry(forward.document)).toBe(renderRuntimeRegistry(reverse.document));
     expect(forward.document.contentHash).toBe(reverse.document.contentHash);
   });
 
@@ -139,6 +144,10 @@ describe('Narrative Content Compiler (NAR-10)', () => {
 
     const formatted = report.registryText.replace('"version": 2', '"version":  2');
     expect(messages(validateCompiledRegistry(report.registry, report.compiled, formatted)))
+      .toContain('byte-identisch');
+
+    const runtimeDrift = `${report.runtimeRegistryText}// drift\n`;
+    expect(messages(validateRuntimeRegistry(runtimeDrift, report.compiled)))
       .toContain('byte-identisch');
   });
 });
