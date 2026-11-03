@@ -48,11 +48,10 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `dropped` | verworfene Facts wegen Queue-Grenze | Diagnose, kein Trigger |
 | `ledgerSeq` | Ledger-`seq` der letzten verarbeiteten Buchung | `null` = noch kein Cursor; kein historisches Nachholen |
 | `houseBand` | zuletzt gemeldeter Hauskonto-Band | `LOW`/`OK`, verhindert Doppelfacts |
-| `demandEvent` | aktive Neon-Nacht oder Turnierabend | hoechstens eine Veranstaltung; Ablauf bisher in `demand.ts` |
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
 | `relationships` | gerichtete Kanten zwischen persistenten Akteuren | 200; Endpunkte pinnen Visitor-Profile |
 | `eventSeq` | naechste freie Event-Instanz-ID | monoton, nie wiederverwendet |
-| `events` | aktive und begrenzte abgeschlossene Event-Instanzen; traegt `templateId`, `templateVersion` und `offeredChoiceIds` | 32 gesamt, 8 gleichzeitig live; 8 Choices je Instanz |
+| `events` | aktive und begrenzte abgeschlossene Event-Instanzen; traegt `templateId`, `templateVersion` und `offeredChoiceIds`; hoechstens eine aktive Nachfrageveranstaltung (GLOBAL) | 32 gesamt, 8 gleichzeitig live; 8 Choices je Instanz |
 | `cooldowns` | Sperren je Event und Teilnehmerkombination | 64; `untilTick` in Welt-Ticks |
 | `rng` | eigener persistenter Narrativ-Zufallsstrom | Seed/State als uint32 |
 
@@ -313,13 +312,13 @@ erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
 
 - Kein LLM, Modell-Provider oder Netzwerk-Textaufruf im Spiel, auch nicht ausserhalb des Ticks. Agenten koennen Content bei der Repository-Arbeit erstellen; die Laufzeit nutzt ausschliesslich lokale validierte Daten.
 - Keine Ausfuehrung von Code aus Texten; Commands sind deklarativ und allowlisted.
-- Kein Journal als Fact-Bus, keine zweite Event-Wahrheit neben `demandEvent`.
+- Kein Journal als Fact-Bus, keine zweite Event-Wahrheit neben den persistenten Event-Instanzen.
 - Keine Wanduhr und kein `Math.random` in Narrativ-Code (ESLint blockt beides).
 - Keine unbegrenzten Pools: Facts, Historie, Erinnerungen und Events sind gedeckelt.
 
 ## 13. Persistenz
 
-Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
+Save v9 traegt `narrative`, darin die Event-Instanzen, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `demandEvent` (v5–v8 auf der Welt, v9 im Narrativ-Slice) werden beim Laden in eine aktive GLOBAL-Event-Instanz mit Restlaufzeit konvertiert; abgelaufene verfallen, eine bereits vorhandene Instanz gewinnt. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
 und Erinnerungen verworfen, IDs monoton fortgeschrieben. Event-Instanzen, Cooldowns und der eigene Narrativ-RNG liegen seit NAR-06 in Save v9;
 seit NAR-07 tragen Instanzen zusaetzlich `templateId`, `templateVersion` und den
@@ -349,3 +348,19 @@ erfolgreichen Command-Ausfuehrung sowie nach Neues Spiel, Import und Rivalenspie
 `guest-service.ts` emittieren nur noch; sie drainieren nicht selbst. `worldStore`
 bleibt der alleinige Besitzer von Welt, Ledger und PRNG; `src/core` importiert ihn nie,
 und `chooseNarrativeCmd()` bekommt Welt und Ledger explizit.
+
+## 15. Nachfrageveranstaltungen (NAR-13)
+
+`events/demand-definitions.ts` beschreibt Neon-Nacht und Turnierabend als reine Daten:
+20 beziehungsweise 16 Gaeste pro Tag, 150 Ticks Laufzeit, 0,55 Gruppen-/Erwartungszuschlag,
+Starttext und eine endliche Wiederholungsgrenze. `narrative/demand-events.ts` startet
+hoechstens eine davon als aktive `GLOBAL`-Instanz ohne Choices und beendet sie am
+Fristtick ueber `transitionEvent` (`EXPIRED`, `DEMAND_ENDED`). `sourceFactId: 0`
+kennzeichnet engine-erzeugte Events, die keinen ausloesenden Fact haben.
+
+`demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen ausschliesslich diese
+Instanz; die Anzeige liefert `expiresTick - tick` als Restlaufzeit. Es gibt kein
+`NarrativeState.demandEvent` mehr. `hydrateNarrative()` konvertiert das alte Feld aus
+v5–v8 (Weltfeld) und v9 (Narrativ-Slice) in eine aktive Instanz mit Restlaufzeit;
+abgelaufene Veranstaltungen verfallen, eine bereits vorhandene Instanz verhindert
+Duplikate.

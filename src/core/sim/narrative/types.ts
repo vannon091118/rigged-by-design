@@ -1,6 +1,6 @@
 /** Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. */
 import type { VaCoinMicro } from '../../economy/vacoin';
-import type { DemandEvent, PersonaId, RivalId } from '../types';
+import type { PersonaId, RivalId } from '../types';
 import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
 
 type NarrativeFactKind =
@@ -143,8 +143,6 @@ export interface NarrativeState {
   processedId: number;
   /** Wegen der Queue-Grenze verworfene Facts (Diagnose, kein Trigger). */
   dropped: number;
-  /** Aktive Nachfrageveranstaltung; zugleich einzige Laufzeitwahrheit fuer deren Wirkung. */
-  demandEvent: DemandEvent | null;
   /** Zaehler mit narrativer Bedeutung (Startkapital, Startpool, Rueckkehrer). */
   flags: Record<string, number>;
   /** Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. */
