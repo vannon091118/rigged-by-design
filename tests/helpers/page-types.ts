@@ -20,7 +20,7 @@ export interface FloorPage {
   closeBuild(): Promise<void>;
   overview(): Promise<void>;
   zoomIn(): Promise<void>;
-  zoomOut(): Promise<void>();
+  zoomOut(): Promise<void>;
 }
 
 export interface MachinePopup {

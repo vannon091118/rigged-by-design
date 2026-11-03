@@ -13,6 +13,6 @@ try {
     stdio: 'inherit',
     env: { ...process.env, E2E_PORT: port },
   });
-} catch (err) {
+} catch {
   process.exit(1);
 }
