@@ -5,6 +5,7 @@ import { drainFacts, pushRecent } from './facts';
 import { processLedgerFacts } from './ledger-facts';
 import { applyMemories } from './memory';
 import { applyRelationshipFacts } from './relationship-apply';
+import { maintainEvents } from './event-scheduler';
 
 /**
  * Verarbeitet hoechstens einen Durchlauf. Facts, die waehrend der Verarbeitung entstehen,
@@ -12,6 +13,8 @@ import { applyRelationshipFacts } from './relationship-apply';
  */
 export function processNarrativeBoundary(world: WorldState, ledger: Ledger): number {
   processLedgerFacts(world, ledger);
+  // Fristen und verwaiste Teilnehmer werden auch ohne neue Facts begrenzt aufgeraeumt.
+  maintainEvents(world);
   const fresh = drainFacts(world);
   if (fresh.length === 0) return 0;
   const applied = applyMemories(world, fresh);

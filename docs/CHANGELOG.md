@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->
+<!-- rbd-doc: v0.3.80 | 2026-11-03 00:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.80] - 2026-11-03
+
+### Technik
+
+- NAR-06 abgeschlossen: `narrative/event-types.ts`, `event-lifecycle.ts`, `event-scheduler.ts`, `event-schema.ts` und `narrative-rng.ts` bilden den persistenten Event-Scheduler. Instanzen tragen Event-ID, Status, Scope, Teilnehmer, Quelle, Prioritaet, Start-/Ablaufzeit, Schritt und Auflösung; maximal 32 Instanzen, 8 live und 64 Cooldowns bleiben erhalten.
+- Der Lifecycle `ELIGIBLE → OFFERED/ACTIVE → RESOLVED/EXPIRED/CANCELLED` wird zentral geprueft; terminale Events setzen einen Cooldown je Event-/Teilnehmerkombination. Der Scheduler waehlt nach Prioritaet und Fairness, verhindert Duplikate, begrenzt Arbeit und nutzt fuer Gleichstand einen eigenen persistenten Narrativ-RNG statt des Gameplay-PRNG.
+- `processNarrativeBoundary()` raeumt Fristen und verwaiste Visitor-/Personal-Endpunkte auf. Save v9 persistiert Events, Cooldowns und RNG additiv; alte Staende erhalten leere Defaults. `scheduler.ts` ist die Fassade; neue Tests decken Prioritaet, Determinismus, Scopes, Cooldowns, Ablauf, Stale-Cancel, Ketten, Historiengrenze und Save-Roundtrip ab.
 
 ## [0.3.79] - 2026-11-02
 

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { openHouse } from '../../core/sim/money';
 import { createNarrativeState, seedStartPool } from '../../core/sim/narrative/state';
+import { scheduleEvent, transitionEvent } from '../../core/sim/narrative/scheduler';
 import { tickWorld } from '../../core/sim/tick';
 import { demandBreakdown } from '../../core/sim/demand';
 import { createWorld, ensureStarter } from '../../core/sim/templates';
@@ -29,6 +30,20 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     expect(loaded!.world.narrative).toEqual(world.narrative);
     expect(loaded!.world.narrative.flags.startkapital).toBeGreaterThan(0);
     expect(loaded!.world.visitors).toEqual(world.visitors);
+  });
+
+  it('erhaelt Event-Instanzen, Cooldowns und Narrativ-RNG ueber JSON', () => {
+    const { world, ledger } = fixture();
+    const event = scheduleEvent(world, {
+      eventId: 'SAVE_EVENT', priority: 10, scope: 'GLOBAL', participants: [],
+      sourceFactId: 1, cooldownTicks: 4,
+    }, 'ACTIVE', world.tick);
+    expect(event).not.toBeNull();
+    expect(transitionEvent(world, event!.id, 'RESOLVED', world.tick, 'SAVED')).toBe(true);
+    const raw = JSON.parse(JSON.stringify(toSavedGame(world, ledger, randomSeed())));
+    const loaded = replaySave(raw);
+    expect(loaded).not.toBeNull();
+    expect(loaded!.world.narrative).toEqual(world.narrative);
   });
 
   it('laedt v8 ohne Narrative-Feld mit sicheren Defaults', () => {

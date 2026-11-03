@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-06: Event-Scheduler, Lifecycle und eigener Narrativ-RNG
+
+**Ziel.** NAR-06 vollstaendig schliessen: Matches in persistente Event-Instanzen ueberfuehren, den Lifecycle zentral absichern, Cooldowns und Scopes trennen, Ereignisketten nur nach aufgeloesten Vorgaengern erlauben und die Auswahl deterministisch ohne den Gameplay-PRNG treffen.
+
+**Umsetzung.** `event-types.ts` beschreibt Instanzen und Kandidaten; `event-lifecycle.ts` ist die einzige Statuswahrheit (`ELIGIBLE → OFFERED/ACTIVE → RESOLVED/EXPIRED/CANCELLED`), setzt Cooldowns je Event-/Teilnehmerkombination und begrenzt abgeschlossene Historie. `event-scheduler.ts` ordnet nach Prioritaet und Fairness, trennt `GLOBAL`/`VISITOR`/`PAIR`/`RIVAL`, verhindert Duplikate, begrenzt Arbeit und nutzt bei Gleichstand den eigenen persistenten Mulberry32-Strom aus `narrative-rng.ts`. `event-schema.ts` validiert und normalisiert alte oder manipulierte Daten fail-closed. Der Boundary ruft `maintainEvents()` auf und raeumt Fristen sowie verwaiste Visitor-/Personal-Endpunkte auch ohne neue Facts auf. Save v9 traegt die neuen Felder additiv; alte Staende erhalten leere Defaults.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` und `check:loc` gruen; `verify:quick` bestand alle zehn Gates, einschliesslich `dead-code`, `test-quality` und der vollstaendigen Testsuite. Die neuen Tests decken Prioritaet, RNG-Determinismus, Scopes, Duplikate, Cooldowns, Mehrfachausfuehrung, Ablauf, Stale-Cancel, Ketten, Schrittwechsel, Historiengrenze und Save-Roundtrip ab. `verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die vollstaendige Suite meldete 585 bestandene und 2 uebersprungene Tests.
+
+**Offen.** Die Trigger-Auswahl im Tick und der vollstaendige Orchestrator bleiben NAR-12; Event-Templates/Choices (NAR-07), Demand-Migration (NAR-13), Commands, Content-Compiler, Composer und autonome Rivalen sind weiterhin offen. `demandEvent` bleibt bis NAR-13 das bestehende Nachfragesystem.
+
 ## 2026-11-02 - NAR-05: Trigger-Context und Condition Evaluator
 
 **Ziel.** NAR-05 vollstaendig schliessen: ein deklarativer Trigger-Vertrag mit echtem Context, Beziehungs- und Zeitfensterabfragen, allen vorgesehenen Operatoren und einer fail-closed Schema-Validierung. Der Evaluator bleibt eine reine Funktion ohne Tick-Eingriff.
@@ -700,7 +710,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.80 | 2026-11-03 00:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -4,6 +4,8 @@ import type { Visitor, WorldState } from '../types';
 import { emitFact } from './facts';
 import { orderedFacts, safeInteger } from './fact-schema';
 import { normalizeRelationships } from './relationships';
+import { normalizeEventState } from './event-schema';
+import { createNarrativeRng } from './narrative-rng';
 import {
   HOUSE_BANDS, NARRATIVE_LIMITS, VISITOR_VALENCES,
   type HouseBand, type NarrativeState, type VisitorMemory, type VisitorValence,
@@ -20,6 +22,7 @@ export function createNarrativeState(): NarrativeState {
   return {
     factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0,
     demandEvent: null, flags: {}, relationships: [], ledgerSeq: null, houseBand: 'OK',
+    eventSeq: 1, events: [], cooldowns: [], rng: createNarrativeRng(),
   };
 }
 
@@ -79,6 +82,11 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
       if (Number.isFinite(value)) state.flags[key] = Number(value);
     }
   }
+  const events = normalizeEventState(raw);
+  state.eventSeq = events.eventSeq;
+  state.events = events.events;
+  state.cooldowns = events.cooldowns;
+  state.rng = events.rng;
   return state;
 }
 
