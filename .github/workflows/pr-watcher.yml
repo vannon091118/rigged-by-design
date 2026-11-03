@@ -1,8 +1,9 @@
 name: PR Watcher
 
-# Überwacht PRs und CI-Flows. Bei rotem Gate wird automatisch ein Issue
-# erstellt, das einem Agenten alle Infos liefert, um das Issue zu lösen
-# und den Merge durchzubekommen.
+# Letztes Gate-System: Überwacht CI-Verify und PRs gegen main.
+# Bei rotem Gate wird automatisch ein Issue mit Fehlercode, Beschreibung
+# und Häufigkeit erstellt. Lokal wird nur gezielt getestet; die CI ist die
+# vollständige Testkette auf Herz und Nieren.
 on:
   workflow_run:
     workflows: ["CI Verify"]
@@ -16,9 +17,10 @@ permissions:
   contents: read
   issues: write
   pull-requests: read
+  actions: read
 
 concurrency:
-  group: pr-watcher-${{ github.ref }}
+  group: pr-watcher-${{ github.event.workflow_run.id || github.ref }}
   cancel-in-progress: true
 
 jobs:

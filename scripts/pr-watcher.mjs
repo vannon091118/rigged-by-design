@@ -3,8 +3,12 @@
  * PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body.
  *
  * Aufruf durch .github/workflows/pr-watcher.yml.
- * Liefert einem Agenten alle Infos, um das Issue zu lösen und den Merge
- * durchzubekommen.
+ *
+ * Designprinzip:
+ * - Lokal wird nur getrennt und gezielt getestet (schnell, effizient).
+ * - GitHub CI ist das letzte Gate-System: prüft alles auf Herz und Nieren.
+ * - Bei rotem Gate wird ein Issue mit Fehlercode, Beschreibung und
+ *   Fehlerhäufigkeit erstellt, damit ein Agent das Issue direkt lösen kann.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -33,14 +37,23 @@ function api(method, path, body) {
   return fetch(url, opts);
 }
 
-async function listOpenIssues() {
-  const res = await api('GET', '/issues?state=open&labels=gate-failure');
+async function listOpenIssues(label) {
+  const q = label ? `?state=open&labels=${label}` : '?state=open';
+  const res = await api('GET', `/issues${q}`);
   return res.ok ? await res.json() : [];
 }
 
 async function findExistingIssue(title) {
-  const issues = await listOpenIssues();
+  const issues = await listOpenIssues('gate-failure');
   return issues.find((i) => i.title === title);
+}
+
+async function countSimilarIssues(titleKeyword) {
+  const issues = await listOpenIssues('gate-failure');
+  const closed = await api('GET', '/issues?state=closed&labels=gate-failure');
+  const closedList = closed.ok ? await closed.json() : [];
+  const all = [...issues, ...closedList];
+  return all.filter((i) => i.title.includes(titleKeyword)).length;
 }
 
 async function createIssue(title, body, labels) {
@@ -105,6 +118,16 @@ function gateFailureSections(body) {
   return { missing, empty };
 }
 
+function extractErrorCodes(text) {
+  const codes = [];
+  const errRegex = /(ERR-\d{4})/g;
+  let m;
+  while ((m = errRegex.exec(text)) !== null) {
+    if (!codes.includes(m[1])) codes.push(m[1]);
+  }
+  return codes;
+}
+
 async function main() {
   const eventName = process.env.GITHUB_EVENT_NAME;
 
@@ -132,15 +155,19 @@ async function handleWorkflowRun() {
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
 
   const jobDetails = await getFailedJobDetails(runId);
+  const errorCodes = extractErrorCodes(jobDetails);
+  const frequency = await countSimilarIssues(`[GATE-RED] CI Verify auf ${runBranch}`);
 
   const title = `[GATE-RED] CI Verify auf ${runBranch}`;
-  const body = `## 🚨 CI Gate rot
+  const body = `## 🚨 CI Gate rot – Letztes Gate-System hat versagt
 
 **Branch:** \`${runBranch}\`  
 **Commit:** \`${runCommit}\`  
 **CI Run:** <${runUrl}>  
 **Erkannt am:** ${new Date().toISOString()}  
-**Erkannt durch:** pr-watcher.yml
+**Erkannt durch:** pr-watcher.yml  
+**Fehlerhäufigkeit:** ${frequency}× ähnlicher Gate-Fehler bereits erfasst  
+**Fehlercodes:** ${errorCodes.length > 0 ? errorCodes.join(', ') : 'keineExtrahierbaren'}
 
 ## 📋 Was der Agent tun muss
 
@@ -150,16 +177,23 @@ async function handleWorkflowRun() {
    git pull origin ${runBranch}
    \`\`\`
 
-2. **Alle Gates lokal ausführen:**
+2. **Lokal gezielt testen** (nur das betroffene Gate, schnell und effizient):
    \`\`\`bash
    pnpm run verify:quick
-   # oder bei Bedarf:
+   # oder bei Bedarf nur das spezifische Gate:
+   pnpm run check:loc
+   pnpm run verify:docs
+   pnpm run lint
+   \`\`\`
+
+3. **CI ist das letzte Gate:** Alles auf Herz und Nieren prüfen:
+   \`\`\`bash
    pnpm run verify:all
    \`\`\`
 
-3. **Fehler beheben** bis alle Gates grün sind.
+4. **Fehler beheben** bis alle Gates grün sind.
 
-4. **Commit mit Pflichtsektionen erstellen:**
+5. **Commit mit Pflichtsektionen erstellen:**
    \`\`\`text
    <type>: <Kurzbeschreibung>
 
@@ -173,9 +207,9 @@ async function handleWorkflowRun() {
    ...
    \`\`\`
 
-5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
+6. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
 
-6. **Wenn alle Gates grün:** PR zu \`main\` erstellen und mergen (siehe AGENTS.md § PR+Merge-Pflicht).
+7. **Wenn alle Gates grün:** PR zu \`main\` erstellen und mergen (siehe AGENTS.md § PR+Merge-Pflicht).
 
 ## 🔍 Gate-Details
 
@@ -194,6 +228,7 @@ ${jobDetails}
 - **Issue vollständig lösen:** Nicht halbherzig beheben, alle Gates müssen grün sein.
 - **Nach jedem Turn/Phase/Slice-Abschluss:** Aufgezwungene PR+Merge-Pflicht.
 - **Commit-Body muss** die drei Pflichtsektionen enthalten (\`### Changes\`, \`### Technische Basis & Kausalität\`, \`### Ausblick\`).
+- **Lokal nur getrennt und gezielt testen** – die volle Testkette läuft in der CI.
 
 ## ✅ Issue schließen
 
@@ -204,7 +239,7 @@ Sobald alle Gates grün sind und der PR gemergt wurde, dieses Issue als \`comple
 }
 
 async function handlePullRequest() {
-  const prNumber = process.env.PR_NUMBER;
+  const prNumber = process.env.PR_NUMBER ?? 'unbekannt';
   const prBody = process.env.PR_BODY ?? '';
 
   if (!prBody.trim()) {
@@ -213,7 +248,8 @@ async function handlePullRequest() {
 
 **PR:** #${prNumber}  
 **URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-**Erkannt am:** ${new Date().toISOString()}
+**Erkannt am:** ${new Date().toISOString()}  
+**Erkannt durch:** pr-watcher.yml
 
 Der PR hat keinen Body. Der PR-Body muss die drei Pflichtsektionen enthalten:
 
@@ -243,7 +279,8 @@ Siehe AGENTS.md für die vollständigen Regeln.
 
 **PR:** #${prNumber}  
 **URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-**Erkannt am:** ${new Date().toISOString()}
+**Erkannt am:** ${new Date().toISOString()}  
+**Erkannt durch:** pr-watcher.yml
 
 Folgende Pflichtsektionen fehlen oder sind ohne echten Inhalt:
 
