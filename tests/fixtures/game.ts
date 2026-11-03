@@ -1,4 +1,4 @@
-import { test as base, type BrowserContext, type Page } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { AppPage } from '../pages/app.page';
 import { HudPage } from '../pages/hud.page';
 import { FloorPage } from '../pages/floor.page';
@@ -10,7 +10,7 @@ import { DiagnosticsPopupPage } from '../pages/diagnostics-popup.page';
 import { BuildPanelPage } from '../pages/build-panel.page';
 import { SmartphonePage } from '../pages/smartphone.page';
 import { TransferPage } from '../pages/transfer.page';
-import { setWorldSnapshot, loadWorldSnapshot, clearStorage, captureCurrentState } from '../helpers/snapshots';
+import { setWorldSnapshot, clearStorage, captureCurrentState } from '../helpers/snapshots';
 import { gameFlow } from '../helpers/game-flow';
 
 type GameFixtures = {
@@ -87,7 +87,7 @@ export const test = base.extend<GameFixtures>({
       await clearStorage(page);
     });
   },
-  flow: async ({}, use) => {
+  flow: async ({ _unused }, use) => {
     await use(gameFlow);
   },
 });

@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 20:36 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 20:39 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -1521,10 +1521,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `tests/balance.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 50 Zeilen
 - `tests/build.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 69 Zeilen
 - `tests/edge-cases.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 73 Zeilen
-- `tests/fixtures/game.ts` — import { test as base, type BrowserContext, type Page } from '@playwright/test'; — gelesen: 95 Zeilen
+- `tests/fixtures/game.ts` — import { test as base } from '@playwright/test'; — gelesen: 95 Zeilen
 - `tests/games.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 45 Zeilen
 - `tests/guests.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 78 Zeilen
-- `tests/helpers/game-flow.ts` — import { Page } from '@playwright/test'; — gelesen: 224 Zeilen
+- `tests/helpers/game-flow.ts` — import { — gelesen: 223 Zeilen
 - `tests/helpers/page-types.ts` — Minimale Page-Objekt-Typen für E2E-Test-Helfer. — gelesen: 78 Zeilen
 - `tests/helpers/snapshots.ts` — import { Page } from '@playwright/test'; — gelesen: 74 Zeilen
 - `tests/helpers/store-helpers.ts` — import { Page } from '@playwright/test'; — gelesen: 52 Zeilen

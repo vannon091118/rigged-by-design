@@ -9,7 +9,7 @@ import { test, expect } from './fixtures/game';
 
 test.describe('Geld & Ledger — echte Use Cases (Multi-Step)', () => {
 
-  test('Neues Spiel → 150 VC Startkapital auf Hauskonto → HUD zeigt 150.0000', async ({ app, hud }) => {
+  test('Neues Spiel → 150 VC Startkapital auf Hauskonto → HUD zeigt 150.0000', async ({ _app, hud }) => {
     await hud.expectHouseMoney('150.0000');
   });
 
@@ -22,7 +22,7 @@ test.describe('Geld & Ledger — echte Use Cases (Multi-Step)', () => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('HUD zeigt Tag, Ruf und alle Geldkonten gleichzeitig', async ({ app, hud }) => {
+  test('HUD zeigt Tag, Ruf und alle Geldkonten gleichzeitig', async ({ _app, hud }) => {
     await expect(hud.dayDisplay).toBeVisible();
     await hud.expectReputation(/^\d+%$/);
     await expect(hud.walletMoney).toBeVisible();

@@ -11,7 +11,7 @@ export interface FloorPage {
   right(): Promise<void>;
   left(): Promise<void>;
   up(): Promise<void>;
-  down(): Promise<void>();
+  down(): Promise<void>;
   page: {
     keyboard: { press(key: string): void };
     waitForTimeout(ms: number): Promise<void>;

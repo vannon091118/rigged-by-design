@@ -1,4 +1,3 @@
-import { Page } from '@playwright/test';
 import {
   FloorPage,
   Hud,
@@ -149,12 +148,12 @@ export const gameFlow = {
     hud,
     buildPanel,
     floor,
-    buildId,
+    _buildId,
   }: {
     hud: Hud;
     buildPanel: BuildPanel;
     floor: FloorPage;
-    buildId: string;
+    _buildId: string;
   }) {
     // Build-Panel öffnen (über Tastatur 'b' oder UI)
     await hud.page.keyboard.press('b');

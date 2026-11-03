@@ -10,17 +10,17 @@ import { test, expect } from './fixtures/game';
 
 test.describe('Edge Cases — Grenzwerte (Boundary Values)', () => {
 
-  test('Einsatz 0 wird abgelehnt', async ({ app, hud, floor }) => {
+  test('Einsatz 0 wird abgelehnt', async ({ app, _hud, floor }) => {
     await floor.waitForReady();
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Einsatz = gesamtes Saldo (Maximum)', async ({ app, hud, floor }) => {
+  test('Einsatz = gesamtes Saldo (Maximum)', async ({ app, _hud, floor }) => {
     await floor.waitForReady();
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Einsatz > Saldo wird abgelehnt', async ({ app, hud, floor }) => {
+  test('Einsatz > Saldo wird abgelehnt', async ({ app, _hud, floor }) => {
     await floor.waitForReady();
     await expect(app.appRoot).toBeVisible();
   });

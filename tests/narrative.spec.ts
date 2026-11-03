@@ -34,7 +34,7 @@ test.describe('Narrativ-Engine — echte Use Cases (Multi-Step)', () => {
 
 test.describe('Narrativ-Engine — Edge Cases (Grenzfälle)', () => {
 
-  test('Event mit fehlendem Teilnehmer → graceful Behandlung', async ({ _app, hud }) => {
+  test('Event mit fehlendem Teilnehmer → graceful Behandlung', async ({ _app, _hud }) => {
     await expect(app.appRoot).toBeVisible();
   });
 

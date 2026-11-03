@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 20:36 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 20:39 UTC -->
 
 ## README als Einstieg
 
@@ -104,7 +104,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/cli | ^8.6.0 | Android | Capacitor-CLI: erzeugt das Android-Projekt und synchronisiert Web-Build und Huelle. | 1: `scripts/prepare-android.mjs` |
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
-| @playwright/test | ^1.64.1 | Test | Playwright-Test-Runner fuer E2E-Tests gegen den laufenden Dev-Server. | 16: `tests/fixtures/game.ts`<br>`tests/helpers/game-flow.ts`<br>`tests/helpers/snapshots.ts`<br>`tests/helpers/store-helpers.ts`<br>`tests/pages/app.page.ts`<br>`tests/pages/build-panel.page.ts`<br>… (+10) |
+| @playwright/test | ^1.64.1 | Test | Playwright-Test-Runner fuer E2E-Tests gegen den laufenden Dev-Server. | 15: `tests/fixtures/game.ts`<br>`tests/helpers/snapshots.ts`<br>`tests/helpers/store-helpers.ts`<br>`tests/pages/app.page.ts`<br>`tests/pages/build-panel.page.ts`<br>`tests/pages/diagnostics-popup.page.ts`<br>… (+9) |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 2: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
 | @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 61: `scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>… (+55) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 37: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+31) |
