@@ -7,8 +7,8 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import {
-  RUNTIME_REGISTRY_PATH, buildCompiledRegistry, validateCompiledRegistry,
-  validateRuntimeRegistry,
+  COMPOSER_SLOT_KINDS, RUNTIME_REGISTRY_PATH, SLOT_MAP_PATH, buildCompiledRegistry,
+  validateCompiledRegistry, validateRuntimeRegistry, validateSlotMap,
 } from './narrative-compiler.mjs';
 import { MACRO_LIMITS } from './narrative-macros.mjs';
 
@@ -153,6 +153,48 @@ function loadVocabulary(root) {
     }
   }
 
+  // Jeder Vokabular-Slot gehoert genau einmal entweder in die Composer-Bruecke
+  // oder auf die explizite Nicht-komponierbar-Liste; nichts bleibt still liegen.
+  const composerSlots = classDoc.composerSlots;
+  const nonComposable = classDoc.nonComposableSlots;
+  const assigned = [];
+  if (!isRecord(composerSlots)) {
+    issues.push(issue(classResult.path, 'composerSlots fehlt oder ist ungueltig'));
+  } else {
+    for (const kind of COMPOSER_SLOT_KINDS) {
+      if (!has(composerSlots, kind)) {
+        issues.push(issue(classResult.path, `composerSlots fehlt fuer ${kind}`));
+        continue;
+      }
+      const slots = composerSlots[kind];
+      if (!stringArray(slots)) {
+        issues.push(issue(classResult.path, `composerSlots fuer ${kind} ist ungueltig`));
+        continue;
+      }
+      for (const slot of slots) {
+        if (!has(classDoc.slots ?? {}, slot)) issues.push(issue(classResult.path, `composerSlots nennt unbekannten Slot: ${slot}`));
+        assigned.push(slot);
+      }
+    }
+    for (const kind of Object.keys(composerSlots)) {
+      if (!COMPOSER_SLOT_KINDS.includes(kind)) issues.push(issue(classResult.path, `composerSlots nennt unbekannten Slot-Kind: ${kind}`));
+    }
+  }
+  if (!stringArray(nonComposable)) {
+    issues.push(issue(classResult.path, 'nonComposableSlots fehlt oder ist ungueltig'));
+  } else {
+    for (const slot of nonComposable) {
+      if (!has(classDoc.slots ?? {}, slot)) issues.push(issue(classResult.path, `nonComposableSlots nennt unbekannten Slot: ${slot}`));
+      assigned.push(slot);
+    }
+  }
+  const counts = new Map();
+  for (const slot of assigned) counts.set(slot, (counts.get(slot) ?? 0) + 1);
+  for (const slot of Object.keys(classDoc.slots ?? {})) {
+    const count = counts.get(slot) ?? 0;
+    if (count !== 1) issues.push(issue(classResult.path, `Slot ${slot} ist ${count}-mal zugeordnet, erwartet genau einmal`));
+  }
+
   const aliases = classDoc.personaAliases;
   if (!isRecord(aliases)) {
     issues.push(issue(classResult.path, 'personaAliases fehlt oder ist ungueltig'));
@@ -196,6 +238,8 @@ function loadVocabulary(root) {
       slots: classDoc.slots ?? {},
       functions: classDoc.functions ?? {},
       slotFunctions: classDoc.slotFunctions ?? {},
+      composerSlots: classDoc.composerSlots ?? {},
+      nonComposableSlots: classDoc.nonComposableSlots ?? [],
       contexts: classDoc.contexts ?? {},
       tones: classDoc.tones ?? {},
       moods: classDoc.moods ?? {},
@@ -395,15 +439,22 @@ export function loadNarrativeContent(root = resolve('.')) {
   const registryResult = readJson(root, 'content/narrative/registry/fragments.json');
   const issues = [...sources.issues];
   let runtimeRegistryText = null;
+  let slotMapText = null;
   try {
     runtimeRegistryText = readFileSync(join(root, RUNTIME_REGISTRY_PATH), 'utf8');
   } catch (error) {
     issues.push(issue(RUNTIME_REGISTRY_PATH, error instanceof Error ? error.message : String(error)));
   }
+  try {
+    slotMapText = readFileSync(join(root, SLOT_MAP_PATH), 'utf8');
+  } catch (error) {
+    issues.push(issue(SLOT_MAP_PATH, error instanceof Error ? error.message : String(error)));
+  }
   if (registryResult.error) issues.push(issue(registryResult.path, registryResult.error));
   else if (sources.issues.length === 0) {
     issues.push(...validateCompiledRegistry(registryResult.value, sources.compiled, registryResult.text));
     issues.push(...validateRuntimeRegistry(runtimeRegistryText, sources.compiled));
+    issues.push(...validateSlotMap(slotMapText, sources.vocabulary));
   }
   return {
     ...sources,

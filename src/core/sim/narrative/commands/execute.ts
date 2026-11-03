@@ -1,4 +1,4 @@
-/** Einziger Ausfuehrungspfad: Preflight, Kosten, Handler, RESOLVED. */
+/** Einziger Ausfuehrungspfad: Preflight, Handler, Kosten, RESOLVED. */
 import type { Ledger } from '../../../economy/ledger';
 import type { VaCoinMicro } from '../../../economy/vacoin';
 import { EXTERNAL, HAUSKONTO } from '../../money';
@@ -25,21 +25,28 @@ const shiftFor = (dimension: 'trust' | 'sympathy' | 'conflict' | 'influence', de
   }
 };
 
-function applyCommand(world: WorldState, eventId: number, command: NarrativeCommand): boolean {
+/**
+ * Totale Anwendung: `preflightChoice` hat Event, Status, Ticks und jeden
+ * Akteur bereits geprueft. Die Funktion kann deshalb nicht mehr scheitern und
+ * schreibt nur noch Wirkung, nie eine Ablehnung.
+ */
+function applyCommand(world: WorldState, eventId: number, command: NarrativeCommand): void {
   if (command.id === 'SET_FLAG') {
     const current = world.narrative.flags[command.flag] ?? 0;
     world.narrative.flags[command.flag] = Math.max(-1_000_000, Math.min(1_000_000, current + command.delta));
-    return true;
+    return;
   }
-  if (command.id === 'FREEZE_TICK') return freezeEvent(world, eventId, command.ticks, world.tick);
-  if (command.id !== 'ADJUST_RELATIONSHIP') return false;
+  if (command.id === 'FREEZE_TICK') {
+    freezeEvent(world, eventId, command.ticks, world.tick);
+    return;
+  }
+  if (command.id !== 'ADJUST_RELATIONSHIP') return;
   const event = world.narrative.events.find((entry) => entry.id === eventId);
-  if (!event) return false;
+  if (!event) return;
   const from = resolveActor(command.from, event.participants);
   const to = resolveActor(command.to, event.participants);
-  if (!from || !to || from === to) return false;
+  if (!from || !to || from === to) return;
   shift(world, from, to, shiftFor(command.dimension, command.delta), world.tick);
-  return true;
 }
 
 function rejected(
@@ -70,24 +77,34 @@ export function executeChoice(
   const preflight = preflightChoice(world, ledger, eventId, choiceId, templateOverride);
   if (!preflight.ok) return rejected(world, eventId, choiceId, null, preflight.rejections);
   const { event, choice, commands, cost } = preflight.plan;
+  // Sicherheitsnetz: Preflight und Handler sind total, aber falls die Buchung
+  // oder der Abschluss wider Erwarten scheitert, bleibt kein halber Zustand.
+  const snapshot = structuredClone(world.narrative);
+  const rollback = (rejections: ChoiceExecution['rejections']): ChoiceExecution => {
+    world.narrative = snapshot;
+    return rejected(world, eventId, choiceId, preflight.plan, rejections);
+  };
 
   if (event.status === 'OFFERED' && !transitionEvent(world, event.id, 'ACTIVE', world.tick)) {
-    return rejected(world, eventId, choiceId, preflight.plan, [{
+    return rollback([{
       commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aktivierung fehlgeschlagen.',
     }]);
   }
+  for (const command of commands) applyCommand(world, event.id, command);
   if (cost > 0) {
-    ledger.transfer(HAUSKONTO, EXTERNAL, cost as VaCoinMicro, `narrative ${event.eventId}/${choiceId}`, world.tick);
-  }
-  for (const command of commands) {
-    if (!applyCommand(world, event.id, command)) {
-      return rejected(world, eventId, choiceId, preflight.plan, [{
-        commandId: command.id, reason: 'INVALID_TARGET', detail: 'Handler hat abgewiesen.',
+    try {
+      ledger.transfer(HAUSKONTO, EXTERNAL, cost as VaCoinMicro, `narrative ${event.eventId}/${choiceId}`, world.tick);
+    } catch {
+      return rollback([{
+        commandId: choiceId, reason: 'INSUFFICIENT_FUNDS', detail: 'Kosten sind nicht gedeckt.',
       }]);
     }
   }
   if (!transitionEvent(world, event.id, 'RESOLVED', world.tick, choice.outcomeId)) {
-    return rejected(world, eventId, choiceId, preflight.plan, [{
+    if (cost > 0) {
+      ledger.transfer(EXTERNAL, HAUSKONTO, cost as VaCoinMicro, `narrative rollback ${event.eventId}/${choiceId}`, world.tick);
+    }
+    return rollback([{
       commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aufloesung fehlgeschlagen.',
     }]);
   }

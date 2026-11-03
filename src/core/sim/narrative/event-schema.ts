@@ -7,6 +7,8 @@ import {
 } from './event-types';
 import { createNarrativeRng, DEFAULT_NARRATIVE_SEED } from './narrative-rng';
 import { isOfferedChoiceIds, normalizeOfferedChoiceIds } from './events/template-schema';
+import { isDemandEventId } from './events/demand-definitions';
+import { isLiveEventStatus } from './event-lifecycle';
 import { NARRATIVE_LIMITS } from './types';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
@@ -37,7 +39,7 @@ export function isEventCandidate(raw: unknown): raw is EventCandidate {
   if (!isSafeInt(raw.priority, 0, 1000) || !isSafeInt(raw.sourceFactId, 0)) return false;
   if (raw.expiresInTicks !== undefined && !isSafeInt(raw.expiresInTicks, 0)) return false;
   if (raw.cooldownTicks !== undefined && !isSafeInt(raw.cooldownTicks, 0)) return false;
-  if (raw.maxOccurrences !== undefined && !isSafeInt(raw.maxOccurrences, 1)) return false;
+  if (raw.maxOccurrences !== undefined && !isSafeInt(raw.maxOccurrences, 0)) return false;
   if (raw.step !== undefined && !isStep(raw.step)) return false;
   if (raw.templateId !== undefined && !isText(raw.templateId, 64)) return false;
   if (raw.templateVersion !== undefined && !isSafeInt(raw.templateVersion, 1, 1000)) return false;
@@ -53,7 +55,7 @@ export function isEventInstance(raw: unknown): raw is NarrativeEventInstance {
   if (!isSafeInt(raw.sourceFactId, 0) || !isSafeInt(raw.priority, 0, 1000)) return false;
   if (!isSafeInt(raw.startedTick, 0) || !isSafeInt(raw.updatedTick, 0) || !isSafeInt(raw.expiresTick, 0)) return false;
   if (raw.updatedTick < raw.startedTick || raw.expiresTick < raw.startedTick) return false;
-  if (!isStep(raw.step) || !isSafeInt(raw.maxOccurrences, 1) || !isSafeInt(raw.cooldownTicks, 0)) return false;
+  if (!isStep(raw.step) || !isSafeInt(raw.maxOccurrences, 0) || !isSafeInt(raw.cooldownTicks, 0)) return false;
   if (raw.chainFromEventId !== null && !isSafeInt(raw.chainFromEventId, 1)) return false;
   return raw.resolution === null || isText(raw.resolution, 64);
 }
@@ -75,11 +77,24 @@ function normalizeEvents(raw: unknown): NarrativeEventInstance[] {
     });
   }
   const sorted = [...byId.values()].sort((a, b) => a.id - b.id);
-  const live = sorted.filter((event) => event.status === 'OFFERED' || event.status === 'ACTIVE')
+  // Eine lebende Instanz pro Demand-Familie: die neueste gewinnt, aeltere werden
+  // als DUPLICATE_SUPERSEDED geschlossen statt still weiterzulaufen.
+  const newestDemand = new Map<string, number>();
+  for (const event of sorted) {
+    if (isLiveEventStatus(event.status) && isDemandEventId(event.eventId)) {
+      newestDemand.set(event.eventId, event.id);
+    }
+  }
+  const live = sorted.filter((event) => isLiveEventStatus(event.status))
+    .map((event): NarrativeEventInstance => (
+      isDemandEventId(event.eventId) && newestDemand.get(event.eventId) !== event.id
+        ? { ...event, status: 'EXPIRED', resolution: 'DUPLICATE_SUPERSEDED' }
+        : event
+    ))
     .slice(-NARRATIVE_LIMITS.eventInstances);
   const historyLimit = Math.max(0, NARRATIVE_LIMITS.eventInstances - live.length);
   const history = historyLimit === 0 ? [] : sorted
-    .filter((event) => event.status !== 'OFFERED' && event.status !== 'ACTIVE')
+    .filter((event) => !isLiveEventStatus(event.status))
     .slice(-historyLimit);
   return [...live, ...history].sort((a, b) => a.id - b.id);
 }

@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.87 | 2026-11-03 03:17 UTC -->
+<!-- rbd-doc: v0.3.87 | 2026-11-03 06:20 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -83,7 +83,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - Einträge entstehen mit `pnpm run docs:stub -- "Titel"`; der Agent füllt danach Ziel, Umsetzung, Prüfungen und Offenes. Kein Eintrag ohne Datum, keiner nachträglich ohne Änderung.
 - Strukturvorgaben stehen in `scripts/lib/doc-sync.mjs` (Pflichtabschnitte je Dokument); das Gate prüft sie, es repariert sie nicht.
 - Markdown gehört nur als `README.md` oder `AGENTS.md` in die Wurzel; alles andere lebt unter `docs/`. Keine Doppelungen zwischen Wurzel und `docs/`. Dotfiles wie `.turn-notes.md` sind Arbeitsdateien des Turns und zählen nicht als Wurzel-Doku.
-- Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`) werden vom Hook geschrieben, nicht gegated und nie von Hand editiert.
+- Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`, `src/core/sim/narrative/composer/registry.generated.ts`, `src/core/sim/narrative/composer/slot-map.generated.ts`) werden vom Compiler/Hook geschrieben, nie von Hand editiert.
 - Eskalationsregeln und die eine Leiter stehen in `docs/ESCALATION.md`; keine zweite Klassifikation anlegen.
 
 ## Conventions

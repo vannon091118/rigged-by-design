@@ -9,8 +9,9 @@ import { migrateReels } from '../core/games/slot-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { NarrativeState } from '../core/sim/narrative/types';
-import { hydrateNarrative } from './migrate-narrative';
-import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
+import { hydrateNarrative, recordNarrativeMigration } from './migrate-narrative';
+import type { ActivePenalty, CarpetId, Crate, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
+import type { DemandEvent } from './legacy-demand';
 import { hydrateJobState } from '../core/sim/player-jobs';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
@@ -179,7 +180,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
     }
   }
   world.activePenalties = (saved.activePenalties ?? []).map((penalty) => ({ ...penalty }));
-  hydrateNarrative(world, saved);
+  const migration = hydrateNarrative(world, saved);
   world.journal = (saved.journal ?? []).map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
   world.nextJournalId = saved.nextJournalId
     ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
@@ -188,6 +189,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.archive = (saved.archive ?? world.journal).map((event) => ({
     ...event, refs: event.refs ? { ...event.refs } : undefined,
   }));
+  recordNarrativeMigration(world, migration);
   world.fightFx = saved.fightFx ?? null;
   world.look = normalizeLook(saved.look);
   try {

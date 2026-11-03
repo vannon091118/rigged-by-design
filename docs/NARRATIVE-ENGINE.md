@@ -183,7 +183,7 @@ Ein Beitrag ist ein JSON-Datensatz in `content/narrative/contributions/`:
 Template-Slots, Kontexte, benoetigte Flags, verfuegbare Personas und optionale
 Tonalitaet) und liefert pro Slot Text, Herkunft, Fallback-Markierung und die
 typisierten Direktiven. Die Auswahl mappt `TITLE` auf `opening`, `BODY` auf
-`description`/`event-body`/`dialog`, `CHOICE_LABEL` auf `choice-preview` und
+`description`/`event-body`/`memory`/`rumor`/`documentation` (`memory`, `rumor`, `documentation` explizit nicht-komponierbar; `dialog` entfernt), `CHOICE_LABEL` auf `choice-preview` und
 `OUTCOME` auf `reaction`.
 
 - Locale, Kontextschnitt, `requiredFlags` und Persona-Refs filtern fail-closed;
@@ -355,7 +355,7 @@ und `chooseNarrativeCmd()` bekommt Welt und Ledger explizit.
 20 beziehungsweise 16 Gaeste pro Tag, 150 Ticks Laufzeit, 0,55 Gruppen-/Erwartungszuschlag,
 Starttext und eine endliche Wiederholungsgrenze. `narrative/demand-events.ts` startet
 hoechstens eine davon als aktive `GLOBAL`-Instanz ohne Choices und beendet sie am
-Fristtick ueber `transitionEvent` (`EXPIRED`, `DEMAND_ENDED`). `sourceFactId: 0`
+Fristtick ueber `transitionEvent` (`EXPIRED`, `DEADLINE`). `sourceFactId: 0`
 kennzeichnet engine-erzeugte Events, die keinen ausloesenden Fact haben.
 
 `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen ausschliesslich diese

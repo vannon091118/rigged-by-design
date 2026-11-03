@@ -15,7 +15,6 @@ export type RivalId = (typeof RIVAL_IDS)[number];
 export type PlayerJobId = 'CLEANER' | 'BARTENDER' | 'CARD_DEALER' | 'MECHANIC';
 export type JobTaskType = 'CLEAN' | 'SERVE' | 'DEAL' | 'REPAIR';
 
-export interface DemandEvent { kind: DemandEventKind; untilTick: number; }
 export interface DemandSource { readonly id: string; readonly label: string; readonly perDay: number; }
 export interface DemandSnapshot {
   readonly perDay: number; readonly sources: readonly DemandSource[];

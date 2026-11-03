@@ -3,8 +3,8 @@ import { isActorRef } from '../relationships';
 import { NARRATIVE_EVENT_SCOPES, type NarrativeEventScope } from '../event-types';
 import type { ActorRole, RelationshipDimension } from '../trigger-types';
 import {
-  EVENT_TEMPLATE_LIMITS, type ChoiceActor, type ChoiceEffect, type ChoiceRequirement,
-  type ContentSlot, type ContentSlotKind, type EventChoice, type EventTemplate,
+  ENGINE_DEMAND_TRIGGER, EVENT_TEMPLATE_LIMITS, type ChoiceActor, type ChoiceEffect,
+  type ChoiceRequirement, type ContentSlot, type ContentSlotKind, type EventChoice, type EventTemplate,
 } from './template-types';
 
 const ACTOR_ROLES: readonly ActorRole[] = ['visitor', 'staff', 'rival', 'player'];
@@ -112,14 +112,16 @@ export function isEventTemplate(raw: unknown): raw is EventTemplate {
     || !raw.contentSlots.every(isContentSlot)) return false;
   const slotIds = raw.contentSlots.map((slot) => slot.id);
   if (new Set(slotIds).size !== slotIds.length) return false;
+  const engineDemand = raw.triggerId === ENGINE_DEMAND_TRIGGER;
   const labelIds = new Set(raw.contentSlots.filter((slot) => slot.kind === 'CHOICE_LABEL').map((slot) => slot.id));
-  if (!Array.isArray(raw.choices) || raw.choices.length === 0
-    || raw.choices.length > EVENT_TEMPLATE_LIMITS.choices
+  if (!Array.isArray(raw.choices) || raw.choices.length > EVENT_TEMPLATE_LIMITS.choices
+    || (!engineDemand && raw.choices.length === 0)
     || !raw.choices.every((choice) => isEventChoice(choice, raw.participantRoles.length, labelIds))) return false;
   const choiceIds = raw.choices.map((choice) => choice.choiceId);
   if (new Set(choiceIds).size !== choiceIds.length) return false;
   return isStep(raw.initialStep) && isSafeInt(raw.expiresInTicks, 0, 100_000)
-    && isSafeInt(raw.cooldownTicks, 0, 1_000_000) && isSafeInt(raw.maxOccurrences, 1, 100);
+    && isSafeInt(raw.cooldownTicks, 0, 1_000_000)
+    && isSafeInt(raw.maxOccurrences, engineDemand ? 0 : 1, 100);
 }
 
 export function isOfferedChoiceIds(raw: unknown): raw is readonly string[] {

@@ -50,7 +50,9 @@ export function canScheduleEvent(world: WorldState, candidate: EventCandidate, t
   const state = world.narrative;
   const at = safeTick(tick);
   if (activeCount(state) >= NARRATIVE_LIMITS.activeEvents) return false;
-  if (occurrenceCount(state, candidate) >= (candidate.maxOccurrences ?? 1)) return false;
+  const limit = candidate.maxOccurrences ?? 1;
+  // 0 bedeutet unbegrenzt; dann reguliert allein der Cooldown den Abstand.
+  if (limit > 0 && occurrenceCount(state, candidate) >= limit) return false;
   if (hasLiveDuplicate(state, candidate) || isCoolingDown(state, candidate, at)) return false;
   const chain = candidate.chainFromEventId;
   if (chain !== undefined && chain !== null) {
@@ -153,8 +155,13 @@ export function cancelStaleEvents(world: WorldState, tick = world.tick): number 
 }
 
 /** Ein Aufraeumlauf fuer den Boundary: Fristen und verwaiste Teilnehmer. */
-export function maintainEvents(world: WorldState, tick = world.tick): number {
-  return cancelStaleEvents(world, tick) + expireDueEvents(world, tick);
+export function maintainEvents(
+  world: WorldState,
+  tick = world.tick,
+): { readonly cancelled: number; readonly expired: readonly NarrativeEventInstance[] } {
+  const cancelled = cancelStaleEvents(world, tick);
+  const expired = expireDueEvents(world, tick);
+  return { cancelled, expired };
 }
 
 /** Eine Folgeinstanz ist nur nach einem aufgeloesten Vorgaenger erlaubt. */

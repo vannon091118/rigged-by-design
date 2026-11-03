@@ -56,9 +56,12 @@ export interface CompositionRejection {
 
 export interface ComposedNarrative {
   readonly ok: boolean;
+  readonly locale: string;
   readonly slots: readonly ComposedSlot[];
   /** Slot-IDs, fuer die kein passendes Fragment existierte. */
   readonly fallbacks: readonly string[];
+  /** Wahr, wenn kein einziger Slot aus der Registry kam; der Aufrufer soll es zeigen. */
+  readonly degraded: boolean;
   readonly issues: readonly string[];
   readonly rejected: readonly CompositionRejection[];
 }

@@ -98,8 +98,8 @@ class WorldStore {
   fightBrawl(disputeId: number): void { this.#guard(() => { this.#notice = fightBrawlCmd(this.#world, this.#ledger, this.#prng, disputeId); }); }
   spendSkill(attribute: RpgAttribute): void { this.#guard(() => { this.#notice = spendSkillCmd(this.#world, attribute); }); }
   serveDesk(): void { this.#guard(() => { this.#notice = serveDeskCmd(this.#world, this.#ledger, this.#prng); }); }
-  setWall(color: string): void { this.#guard(() => { this.#notice = setWallCmd(this.#world, color); }); }
-  setNeon(color: string): void { this.#guard(() => { this.#notice = setNeonCmd(this.#world, color); }); }
+  setWall(color: string): void { this.#guard(() => { this.#notice = setWallCmd(this.#world, color); }, false); }
+  setNeon(color: string): void { this.#guard(() => { this.#notice = setNeonCmd(this.#world, color); }, false); }
   upgradeBar(): void { this.#guard(() => { this.#notice = upgradeBarCmd(this.#world, this.#ledger); }); }
   upgradeWc(): void { this.#guard(() => { this.#notice = upgradeWcCmd(this.#world, this.#ledger); }); }
   repair(itemId: number): void { this.#guard(() => { this.#notice = repairCmd(this.#world, this.#ledger, itemId); }); }
@@ -107,7 +107,7 @@ class WorldStore {
   hire(role: StaffRole): void { this.#guard(() => { this.#notice = hireCmd(this.#world, this.#ledger, role); }); }
   fire(role: StaffRole): void { this.#guard(() => { this.#notice = fireCmd(this.#world, role); }); }
   setPrice(key: 'drinkPrice' | 'slotMinBet', vc: number): void { this.#guard(() => { this.#notice = setPriceCmd(this.#world, key, vc); }); }
-  setCarpet(carpet: CarpetId): void { this.#notice = setCarpetCmd(this.#world, carpet); this.#emit(); }
+  setCarpet(carpet: CarpetId): void { this.#guard(() => { this.#notice = setCarpetCmd(this.#world, carpet); }, false); }
   installMod(itemId: number, mod: ModId): void { this.#guard(() => { this.#notice = installModCmd(this.#world, this.#ledger, itemId, mod); }); }
   addReel(itemId: number): void { this.#guard(() => { this.#notice = addReelCmd(this.#world, this.#ledger, itemId); }); }
   setBet(itemId: number, vc: number): void { this.#guard(() => { this.#notice = setBetCmd(this.#world, itemId, vc); }); }
@@ -151,7 +151,7 @@ class WorldStore {
     this.#emit();
     return report;
   }
-  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }); }
+  setLook(patch: Partial<PlayerLook>): void { this.#guard(() => { this.#notice = saveLook(this.#world, patch); }, false); }
   moveStep(dx: number, dy: number): void { stepPlayer(this.#world, dx, dy); this.#emit(false); }
   deployHere(): void { this.#guard(() => { this.#notice = deployAtPlayer(this.#world); }); }
   useCarriedHere(): void { this.#guard(() => { this.#notice = useCarriedAtPlayer(this.#world) ?? this.#notice; }); }
@@ -172,7 +172,7 @@ spinTest(itemId: number): GameResult | null { const { result, notice } = spinTes
   dismiss(): void { this.#notice = ''; this.#emit(false); }
   #advance = (): void => { tickWorld(this.#world, this.#ledger, this.#prng); this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
-  #guard(action: () => void): void { try { action(); flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
+  #guard(action: () => void, flush = true): void { try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }
 }
 export const worldStore = new WorldStore();

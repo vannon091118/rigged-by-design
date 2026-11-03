@@ -16,6 +16,9 @@ export const EVENT_TEMPLATE_LIMITS = {
 
 export type ContentSlotKind = 'TITLE' | 'BODY' | 'CHOICE_LABEL' | 'OUTCOME';
 
+/** Reservierter Trigger fuer rein engine-seitig gestartete Events ohne Fact. */
+export const ENGINE_DEMAND_TRIGGER = 'ENGINE_DEMAND';
+
 export interface ContentSlot {
   readonly id: string;
   readonly kind: ContentSlotKind;

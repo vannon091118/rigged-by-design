@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 138 Dateien — contract 90 · integration 25 · governance 12 · statistics 6 · performance 5.
+Summe: 139 Dateien — contract 91 · integration 25 · governance 12 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -92,6 +92,7 @@ Summe: 138 Dateien — contract 90 · integration 25 · governance 12 · statist
 | `src/core/sim/__tests__/narrative-command-dsl.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/parse-directives.ts` |
 | `src/core/sim/__tests__/narrative-composer.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/__tests__/narrative-conflict-source.test.ts` | sim | contract | ja | `src/core/sim/disputes.ts` |
+| `src/core/sim/__tests__/narrative-demand.test.ts` | sim | contract | ja | `src/core/sim/narrative/demand-events.ts` |
 | `src/core/sim/__tests__/narrative-event-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/event-schema.ts` |
 | `src/core/sim/__tests__/narrative-event-templates.test.ts` | sim | contract | ja | `src/core/sim/narrative/scheduler.ts` |
 | `src/core/sim/__tests__/narrative-events.test.ts` | sim | contract | ja | `src/core/sim/narrative/scheduler.ts` |

@@ -1,27 +1,27 @@
 /** NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. */
 import type { ContentSlotKind } from '../events/template-types';
+import { COMPOSER_SLOT_SOURCES } from './slot-map.generated';
 import type { ComposeRequest, NarrativeFragment } from './types';
 
-/** Semantische Bruecke zwischen Template-Slots und der Content-Klassifizierung. */
-const SLOT_KIND_SOURCES: Readonly<Record<ContentSlotKind, readonly string[]>> = {
-  TITLE: ['opening'],
-  BODY: ['event-body', 'description', 'dialog'],
-  CHOICE_LABEL: ['choice-preview'],
-  OUTCOME: ['reaction'],
-};
-
-/** Kurze, kontextfreie Sicherheitscopy; keine Figuren, Fakten oder Mechanik. */
-const FALLBACKS: Readonly<Record<ContentSlotKind, string>> = {
-  TITLE: 'Ein Abend im Neonlicht',
-  BODY: 'Die Szene bleibt offen; das Haus wartet auf den naechsten Schritt.',
-  CHOICE_LABEL: 'Weiter',
-  OUTCOME: 'Der Abend nimmt seinen Lauf.',
+/**
+ * Kurze, kontextfreie Sicherheitscopy je Locale; keine Figuren, Fakten oder
+ * Mechanik. Eine unbekannte Locale hat bewusst keinen Fallback: der Composer
+ * meldet dann `ok: false`, statt deutsche Saetze als englische auszugeben.
+ */
+const FALLBACKS: Readonly<Record<string, Readonly<Record<ContentSlotKind, string>>>> = {
+  de: {
+    TITLE: 'Ein Abend im Neonlicht',
+    BODY: 'Die Szene bleibt offen; das Haus wartet auf den naechsten Schritt.',
+    CHOICE_LABEL: 'Weiter',
+    OUTCOME: 'Der Abend nimmt seinen Lauf.',
+  },
 };
 
 const compareId = (left: string, right: string): number => (left < right ? -1 : left > right ? 1 : 0);
 
-export function fallbackText(kind: ContentSlotKind): string {
-  return FALLBACKS[kind];
+/** `null` heisst: fuer diese Locale gibt es keine gepflegte Sicherheitscopy. */
+export function fallbackText(kind: ContentSlotKind, locale: string): string | null {
+  return FALLBACKS[locale]?.[kind] ?? null;
 }
 
 function scoreOf(fragment: NarrativeFragment, request: ComposeRequest): number {
@@ -46,7 +46,7 @@ export function selectFragment(
   request: ComposeRequest,
   kind: ContentSlotKind,
 ): NarrativeFragment | null {
-  const sources = SLOT_KIND_SOURCES[kind];
+  const sources = COMPOSER_SLOT_SOURCES[kind];
   const candidates = fragments
     .filter((fragment) => fragment.locale === request.locale && sources.includes(fragment.slot))
     .map((fragment) => ({ fragment, score: scoreOf(fragment, request) }))

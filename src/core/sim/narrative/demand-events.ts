@@ -1,51 +1,60 @@
 /** Bruecke zwischen Demand-Balance und gemeinsamer Event-Engine. */
 import type { DemandEventKind, WorldState } from '../types';
-import { isLiveEventStatus, transitionEvent } from './event-lifecycle';
+import { isLiveEventStatus } from './event-lifecycle';
 import { scheduleEvent } from './event-scheduler';
 import type { EventCandidate, NarrativeEventInstance } from './event-types';
-import { demandDefinition, isDemandEventId } from './events/demand-definitions';
+import { templateFor } from './events/definitions';
+import { demandDefinition, isDemandEventId, type DemandEventDefinition } from './events/demand-definitions';
 
 /** Engine-erzeugte Events ohne ausloesenden Fact (Tagesgrenze, Save-Migration). */
 const ENGINE_EVENT_SOURCE = 0;
 
+/** Liefert die laufende Veranstaltung samt ihrer Definition; null, wenn keine aktiv ist. */
+export function activeDemand(world: WorldState): {
+  readonly event: NarrativeEventInstance;
+  readonly kind: DemandEventKind;
+  readonly definition: DemandEventDefinition;
+} | null {
+  const event = world.narrative.events.find(
+    (entry) => isLiveEventStatus(entry.status) && isDemandEventId(entry.eventId),
+  );
+  return event && isDemandEventId(event.eventId)
+    ? { event, kind: event.eventId, definition: demandDefinition(event.eventId) }
+    : null;
+}
+
 export function activeDemandEvent(world: WorldState): NarrativeEventInstance | null {
-  return world.narrative.events.find((event) => isLiveEventStatus(event.status) && isDemandEventId(event.eventId)) ?? null;
+  return activeDemand(world)?.event ?? null;
 }
 
-export function activeDemandKind(world: WorldState): DemandEventKind | null {
-  const event = activeDemandEvent(world);
-  return event && isDemandEventId(event.eventId) ? event.eventId : null;
-}
-
-function demandCandidate(kind: DemandEventKind, expiresInTicks?: number): EventCandidate {
-  const definition = demandDefinition(kind);
+function demandCandidate(kind: DemandEventKind, expiresInTicks?: number): EventCandidate | null {
+  const template = templateFor(kind);
+  if (!template) return null;
   return {
-    eventId: definition.kind,
-    templateId: definition.kind,
-    templateVersion: 1,
+    eventId: template.eventId,
+    templateId: template.eventId,
+    templateVersion: template.version,
     offeredChoiceIds: [],
-    priority: 0,
-    scope: 'GLOBAL',
+    priority: template.priority,
+    scope: template.scope,
     participants: [],
     sourceFactId: ENGINE_EVENT_SOURCE,
-    expiresInTicks: expiresInTicks ?? definition.durationTicks,
-    cooldownTicks: 0,
-    maxOccurrences: definition.maxOccurrences,
-    step: 'START',
+    expiresInTicks: expiresInTicks ?? template.expiresInTicks,
+    cooldownTicks: template.cooldownTicks,
+    maxOccurrences: template.maxOccurrences,
+    step: template.initialStep,
   };
 }
 
-/** Startet hoechstens eine Veranstaltung; der Scheduler verhindert Live-Duplikate. */
+/**
+ * Startet hoechstens eine Veranstaltung. `normalizeEvents` haelt die Invariante
+ * „eine lebende Instanz pro Demand-Familie" bereits beim Laden; der Scheduler
+ * verhindert zusaetzlich Live-Duplikate und Cooldowns.
+ */
 export function startDemandEvent(
   world: WorldState, kind: DemandEventKind, expiresInTicks?: number,
 ): NarrativeEventInstance | null {
-  if (activeDemandEvent(world)) return null;
-  return scheduleEvent(world, demandCandidate(kind, expiresInTicks), 'ACTIVE', world.tick);
-}
-
-/** Beendet die laufende Veranstaltung an ihrem Fristtick; liefert die beendete Art. */
-export function endDueDemandEvent(world: WorldState): DemandEventKind | null {
-  const event = activeDemandEvent(world);
-  if (!event || event.expiresTick > world.tick || !isDemandEventId(event.eventId)) return null;
-  return transitionEvent(world, event.id, 'EXPIRED', world.tick, 'DEMAND_ENDED') ? event.eventId : null;
+  if (activeDemand(world)) return null;
+  const candidate = demandCandidate(kind, expiresInTicks);
+  return candidate ? scheduleEvent(world, candidate, 'ACTIVE', world.tick) : null;
 }
