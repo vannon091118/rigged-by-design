@@ -18,7 +18,7 @@ test.describe('Bauen & Verwalten — echte Use Cases (Multi-Step)', () => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Reinigen-Button im Build-Panel', async ({ app, _hud, buildPanel }) => {
+  test('Reinigen-Button im Build-Panel', async ({ app, buildPanel }) => {
     await app.pressKey('b');
     await buildPanel.page.waitForTimeout(500);
     await buildPanel.clickClean();
@@ -27,7 +27,7 @@ test.describe('Bauen & Verwalten — echte Use Cases (Multi-Step)', () => {
     await buildPanel.close();
   });
 
-  test('Personal einstellen/entlassen', async ({ app, _hud, buildPanel }) => {
+  test('Personal einstellen/entlassen', async ({ app, buildPanel }) => {
     await app.pressKey('b');
     await buildPanel.page.waitForTimeout(500);
     await buildPanel.clickHire();
@@ -37,7 +37,7 @@ test.describe('Bauen & Verwalten — echte Use Cases (Multi-Step)', () => {
     await buildPanel.close();
   });
 
-  test('Upgrade Bar und WC', async ({ app, _hud, buildPanel }) => {
+  test('Upgrade Bar und WC', async ({ app, buildPanel }) => {
     await app.pressKey('b');
     await buildPanel.page.waitForTimeout(500);
     await buildPanel.clickUpgradeBar();
@@ -51,7 +51,7 @@ test.describe('Bauen & Verwalten — echte Use Cases (Multi-Step)', () => {
 
 test.describe('Bauen & Verwalten — Edge Cases (Grenzfälle)', () => {
 
-  test('Bauen ohne ausreichendes Hauskonto', async ({ app, _hud, buildPanel }) => {
+  test('Bauen ohne ausreichendes Hauskonto', async ({ app, buildPanel }) => {
     await app.pressKey('b');
     await buildPanel.page.waitForTimeout(500);
     await buildPanel.clickBuy();

@@ -31,7 +31,7 @@ test.describe('Spielautomaten — echte Use Cases (Multi-Step)', () => {
     await machinePopup.close();
   });
 
-  test('Zustand und Plätze im Machine-Popup anzeigen', async ({ _app, floor, machinePopup }) => {
+  test('Zustand und Plätze im Machine-Popup anzeigen', async ({ floor, machinePopup }) => {
     await floor.clickFurnitureAt(450, 320);
     await machinePopup.isOpen();
     await machinePopup.expectCondition(/ZUSTAND/);

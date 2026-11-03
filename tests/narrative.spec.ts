@@ -21,7 +21,7 @@ test.describe('Narrativ-Engine — echte Use Cases (Multi-Step)', () => {
     await hud.expectHouseMoney(/^\d+\.\d{4}$/);
   });
 
-  test('Ledger-Integrität bleibt erhalten (Diagnostik-Audit)', async ({ _app, hud, diagnosticsPopup }) => {
+  test('Ledger-Integrität bleibt erhalten (Diagnostik-Audit)', async ({ hud, diagnosticsPopup }) => {
     await hud.clickDiagnostics();
     await diagnosticsPopup.isOpen();
     await diagnosticsPopup.clickAudit();
@@ -34,11 +34,11 @@ test.describe('Narrativ-Engine — echte Use Cases (Multi-Step)', () => {
 
 test.describe('Narrativ-Engine — Edge Cases (Grenzfälle)', () => {
 
-  test('Event mit fehlendem Teilnehmer → graceful Behandlung', async ({ _app, _hud }) => {
+  test('Event mit fehlendem Teilnehmer → graceful Behandlung', async ({ hud }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Cooldown-Ablauf blockiert erneutes Event', async ({ app, _hud }) => {
+  test('Cooldown-Ablauf blockiert erneutes Event', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 

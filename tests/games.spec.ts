@@ -9,20 +9,20 @@ import { test, expect } from './fixtures/game';
 
 test.describe('Rivalen-Spiele — echte Use Cases (Multi-Step)', () => {
 
-  test('Besuchen-Button öffnet Fremdhaus-Karte', async ({ app, _hud }) => {
+  test('Besuchen-Button öffnet Fremdhaus-Karte', async ({ app }) => {
     await hud.clickVisit();
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Games-Popup öffnen (Rivalen-Spiele)', async ({ app, _hud }) => {
+  test('Games-Popup öffnen (Rivalen-Spiele)', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Take Home (5 VC entnehmen)', async ({ app, _hud }) => {
+  test('Take Home (5 VC entnehmen)', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Selbstausschluss öffnen', async ({ app, _hud }) => {
+  test('Selbstausschluss öffnen', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
@@ -30,12 +30,12 @@ test.describe('Rivalen-Spiele — echte Use Cases (Multi-Step)', () => {
 
 test.describe('Rivalen-Spiele — Edge Cases (Grenzfälle)', () => {
 
-  test('Besuchen ohne verfügbare Fremdhäuser', async ({ app, _hud }) => {
+  test('Besuchen ohne verfügbare Fremdhäuser', async ({ app }) => {
     await hud.clickVisit();
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Schnelle Sequenz: Besuch → Spiele → Schließen → Besuch', async ({ app, _hud }) => {
+  test('Schnelle Sequenz: Besuch → Spiele → Schließen → Besuch', async ({ app }) => {
     await hud.clickVisit();
     await hud.clickVisit();
     await hud.clickVisit();

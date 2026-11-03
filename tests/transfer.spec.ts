@@ -9,15 +9,15 @@ import { test, expect } from './fixtures/game';
 
 test.describe('Transfer (Export/Import) — echte Use Cases (Multi-Step)', () => {
 
-  test('Spielstand exportieren → JSON enthält Welt, Ledger, PRNG', async ({ app, _hud, _transfer }) => {
+  test('Spielstand exportieren → JSON enthält Welt, Ledger, PRNG', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Spielstand importieren → Plan wird geprüft', async ({ app, _hud, _transfer }) => {
+  test('Spielstand importieren → Plan wird geprüft', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Save-Roundtrip: Export → Import → gleicher Zustand', async ({ app, _hud, _transfer }) => {
+  test('Save-Roundtrip: Export → Import → gleicher Zustand', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
@@ -25,11 +25,11 @@ test.describe('Transfer (Export/Import) — echte Use Cases (Multi-Step)', () =>
 
 test.describe('Transfer (Export/Import) — Edge Cases (Grenzfälle)', () => {
 
-  test('Korrupter Import → FATAL-Fehler, kein Crash', async ({ app, _hud, _transfer }) => {
+  test('Korrupter Import → FATAL-Fehler, kein Crash', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 
-  test('Leerer Import → keine Änderung', async ({ app, _hud, _transfer }) => {
+  test('Leerer Import → keine Änderung', async ({ app }) => {
     await expect(app.appRoot).toBeVisible();
   });
 

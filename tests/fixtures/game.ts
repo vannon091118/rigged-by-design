@@ -87,7 +87,7 @@ export const test = base.extend<GameFixtures>({
       await clearStorage(page);
     });
   },
-  flow: async ({ _unused }, use) => {
+  flow: async ({}, use) => {
     await use(gameFlow);
   },
 });
