@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-11: Lokaler Runtime Composer
+
+**Ziel.** Die validierte Registry zur Laufzeit mit Event-Template-Slots verbinden, ohne Textauswahl, Mechanik oder Gameplay-PRNG zu koppeln. Fehlende Slots brauchen lokale, kontextvertraegliche Fallbacks; kein Provider, kein API-Key, keine Textanfrage.
+
+**Umsetzung.** `src/core/sim/narrative/composer/` trennt den `ComposeRequest`-Vertrag, die fail-closed Laufzeitvalidierung, die deterministische Auswahl und die Fassade. `TITLE` mappt auf `opening`, `BODY` auf `description`/`event-body`/`dialog`, `CHOICE_LABEL` auf `choice-preview`, `OUTCOME` auf `reaction`. Locale, Kontextschnitt, `requiredFlags` und Persona-Refs filtern; der stabile Score gewinnt, Gleichstand nach `contributionId`. Es gibt keinen RNG-Import. Fehlende Slots bekommen kurze Fallbacks ohne Fakten, Choice-IDs, Kosten oder Wirkungen. Ungueltige Fragmente und Direktiven werden uebersprungen und im Ergebnis gemeldet; Direktiven bleiben reine AST-Daten. Der NAR-10-Compiler erzeugt zusaetzlich `registry.generated.ts`; `--check` und das Assets-Gate pruefen JSON und TypeScript byte-genau. Der neue Beitrag `runtime-composer-01` dokumentiert den Vertrag und bringt die Registry auf 20 Fragmente.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck`, `narrative:check` und die fokussierten Suiten fuer Composer, Compiler und Content waren gruen (29 Tests). `RBD_VERIFY_NO_CACHE=1 npx --yes pnpm@10.4.1 run verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die Suite meldete 642 bestandene und 2 uebersprungene Tests (644 gesamt), 129 Testdateien bestanden und 2 uebersprungen. Das Assets-Gate meldete 20 Beitraege, 20 Turns und 20 Registry-Fragmente. Bericht: `.verify-cache/reports/2026-11-03T02-13-45-619Z/summary.md`. Keine neue Abhaengigkeit.
+
+**Offen.** Der Composer ist noch nicht an Tick oder UI angeschlossen; die Trigger-Auswahl und Orchestrierung bleiben NAR-12, die Narrative UI NAR-14. `TRIGGER_DIALOG` bleibt bis dahin nicht ausfuehrbar.
+
 ## 2026-11-03 - NAR-10: Content-Compiler und Makro-Validierung
 
 **Ziel.** Die 19 Beitraege reproduzierbar in eine Runtime-Registry ueberfuehren: Makros als typisierte ASTs, Konflikte vor dem Schreiben erkennen, `--check` strikt lesend halten und dieselbe Inbox byte-identisch abbilden.
@@ -750,7 +760,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.84 | 2026-11-03 01:57 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.85 | 2026-11-03 02:15 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

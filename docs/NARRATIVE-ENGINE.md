@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry). NAR-10 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks). NAR-12 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -151,6 +151,9 @@ Ein Beitrag ist ein JSON-Datensatz in `content/narrative/contributions/`:
   `scripts/compile-narrative-content.mjs` schreibt sie nur mit `--write`;
   Default und `--check` vergleichen die exakten Bytes. Die Registry wird nicht
   von Hand gepflegt.
+- `src/core/sim/narrative/composer/registry.generated.ts` ist der typisierte
+  Core-Spiegel derselben Registry. Der Compiler schreibt ihn mit `--write`;
+  `--check` und das Assets-Gate vergleichen JSON und TypeScript byte-genau.
 - `scripts/lib/narrative-macros.mjs` validiert Makros gegen die NAR-08-Allowlist:
   exakte Argumente, stabile ActorRefs, kontrollierte Flags und hoechstens ein
   Singleton-Command pro Fragment. `scripts/lib/narrative-compiler.mjs` erkennt
@@ -167,7 +170,28 @@ Ein Beitrag ist ein JSON-Datensatz in `content/narrative/contributions/`:
   Simulationscode oder `AGENTS.md` eingebettet. Die Registry ist Daten, kein
   ausfuehrbarer Content.
 
-## 8. Trigger-Vertrag (NAR-05)
+## 8. Runtime Composer (NAR-11)
+
+`narrative/composer/index.ts` ist rein: Er nimmt `ComposeRequest` (Locale,
+Template-Slots, Kontexte, benoetigte Flags, verfuegbare Personas und optionale
+Tonalitaet) und liefert pro Slot Text, Herkunft, Fallback-Markierung und die
+typisierten Direktiven. Die Auswahl mappt `TITLE` auf `opening`, `BODY` auf
+`description`/`event-body`/`dialog`, `CHOICE_LABEL` auf `choice-preview` und
+`OUTCOME` auf `reaction`.
+
+- Locale, Kontextschnitt, `requiredFlags` und Persona-Refs filtern fail-closed;
+  der hoechste deterministische Score gewinnt, Gleichstand nach
+  `contributionId`. Kein RNG, keine Uhr, kein Netzwerk.
+- Fehlt ein Fragment, liefert der Composer kurze, kontextfreie Fallback-Texte.
+  Sie erfinden keine Figuren, Fakten, Choice-IDs, Kosten oder Effekte.
+- `isNarrativeFragment` prueft die generierte Registry auch zur Laufzeit;
+  ungueltige Fragmente und Direktiven werden uebersprungen und im Ergebnis
+  gemeldet. Direktiven werden nur weitergereicht, nie ausgefuehrt.
+- `registry.generated.ts` wird vom NAR-10-Compiler aus den validierten
+  Beitraegen erzeugt; `scripts/verify-assets.mjs` prueft JSON und TypeScript
+  byte-genau.
+
+## 9. Trigger-Vertrag (NAR-05)
 
 `narrative/trigger-types.ts` beschreibt den deklarativen Vertrag; `trigger-context.ts`
 baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Snapshot. Enthalten sind
@@ -191,7 +215,7 @@ Tiefe 12 und 64 Knoten sind die Grenze. Der Evaluator veraendert weder Welt noch
 Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Der Aufruf im Tick und Cooldowns
 bleiben NAR-06/NAR-12.
 
-## 9. Event-Scheduler und Lifecycle (NAR-06)
+## 10. Event-Scheduler und Lifecycle (NAR-06)
 
 `narrative/event-types.ts` beschreibt persistente Event-Instanzen und Kandidaten.
 Ein Kandidat traegt `eventId`, Prioritaet, Scope, Teilnehmer, `sourceFactId`, Frist,
@@ -264,7 +288,7 @@ und setzt `RESOLVED` mit der `outcomeId`. Ein zweiter Klick scheitert am Status 
 veraendert weder Flags noch Beziehungen noch Ledger. Abgelehnte Direktiven oder Choices
 erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
 
-## 10. Makros (Semantik, nicht geraten)
+## 11. Makros (Semantik, nicht geraten)
 
 - `€FreezeTick:200` verlaengert nur die Frist der aktiven **Event-Instanz** um 200
   fortschreitende Welt-Ticks; die uebrige Simulation laeuft weiter. Der Handler ist auf
@@ -277,7 +301,7 @@ erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
   begrenzter Fact `COMMAND_REJECTED`. Der Compiler (NAR-10) validiert Direktiven, bevor
   irgendein Command laeuft.
 
-## 11. Nicht-Ziele
+## 12. Nicht-Ziele
 
 - Kein LLM, Modell-Provider oder Netzwerk-Textaufruf im Spiel, auch nicht ausserhalb des Ticks. Agenten koennen Content bei der Repository-Arbeit erstellen; die Laufzeit nutzt ausschliesslich lokale validierte Daten.
 - Keine Ausfuehrung von Code aus Texten; Commands sind deklarativ und allowlisted.
@@ -285,7 +309,7 @@ erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
 - Keine Wanduhr und kein `Math.random` in Narrativ-Code (ESLint blockt beides).
 - Keine unbegrenzten Pools: Facts, Historie, Erinnerungen und Events sind gedeckelt.
 
-## 12. Persistenz
+## 13. Persistenz
 
 Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts

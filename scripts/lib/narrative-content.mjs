@@ -6,7 +6,10 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { buildCompiledRegistry, validateCompiledRegistry } from './narrative-compiler.mjs';
+import {
+  RUNTIME_REGISTRY_PATH, buildCompiledRegistry, validateCompiledRegistry,
+  validateRuntimeRegistry,
+} from './narrative-compiler.mjs';
 import { MACRO_LIMITS } from './narrative-macros.mjs';
 
 const CONTRIBUTION_FIELDS = [
@@ -391,9 +394,16 @@ export function loadNarrativeContent(root = resolve('.')) {
   const sources = loadNarrativeSources(root);
   const registryResult = readJson(root, 'content/narrative/registry/fragments.json');
   const issues = [...sources.issues];
+  let runtimeRegistryText = null;
+  try {
+    runtimeRegistryText = readFileSync(join(root, RUNTIME_REGISTRY_PATH), 'utf8');
+  } catch (error) {
+    issues.push(issue(RUNTIME_REGISTRY_PATH, error instanceof Error ? error.message : String(error)));
+  }
   if (registryResult.error) issues.push(issue(registryResult.path, registryResult.error));
   else if (sources.issues.length === 0) {
     issues.push(...validateCompiledRegistry(registryResult.value, sources.compiled, registryResult.text));
+    issues.push(...validateRuntimeRegistry(runtimeRegistryText, sources.compiled));
   }
   return {
     ...sources,
@@ -401,6 +411,7 @@ export function loadNarrativeContent(root = resolve('.')) {
     issues,
     registry: registryResult.value,
     registryText: registryResult.text ?? null,
+    runtimeRegistryText,
     contentHash: sources.compiled?.contentHash ?? null,
     contributionCount: sources.contributions.filter((entry) => entry.data).length,
     turnCount: Array.isArray(sources.manifest?.turns) ? sources.manifest.turns.length : 0,

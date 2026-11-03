@@ -86,7 +86,7 @@ for (const file of walk(assetRoot)) {
 const used = [...referenced].filter((file) => existsSync(join(assetRoot, file)));
 const bytes = used.reduce((sum, file) => sum + statSync(join(assetRoot, file)).size, 0);
 
-// NAR-09: Die Content-Registry ist Teil des bestehenden Assets-Gates.
+// NAR-09/NAR-11: JSON- und Runtime-Registry sind Teil des bestehenden Assets-Gates.
 const narrative = loadNarrativeContent(ROOT);
 if (!narrative.ok) {
   for (const problem of narrative.issues) fail(`[ERR-4022] ${problem.path}: ${problem.message}`);

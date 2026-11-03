@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.84`<br>
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.85`<br>
 **Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry); NAR-10 erledigt (Compiler, Makro-AST, Konflikte, byte-identische Registry, `--check`); NAR-11 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry); NAR-10 erledigt (Compiler, Makro-AST, Konflikte, byte-identische Registry, `--check`); NAR-11 erledigt (Composer, deterministische Auswahl, Fallbacks, keine Provider); NAR-12 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -34,7 +34,7 @@ Vor NAR-04 verbleiben aus NAR-02/NAR-03 insbesondere weitere Fact-Kategorien, ei
 3. **Das Journal ist kein vollständiger Simulations-Fact-Stream.** Einige Abläufe schreiben Journal-Einträge, andere setzen nur `world.lastEvent` oder verändern direkt Zustand. `settleMoneyJournal()` kopiert Ledger-Buchungen genau einmal ins Journal. Das Journal ist Spielerhistorie, kein hinreichender Trigger- oder Memory-Feed.
 4. **`demandEvent` ist ein zweites, kleines Event-System.** Es kann genau zwei Event-Arten starten/beenden und wirkt auf die Nachfrage. Die neue Engine darf nicht dauerhaft als paralleler zweiter Scheduler daneben existieren.
 5. **Rivalen handeln nicht autonom.** `rivals.ts` enthält statische Betreiberdefinitionen und berechnet Reputation aus `(Rivale, Tick)`. Foreign Floors simulieren vor allem den Spielerjob, keine eigenständige Rivalenstrategie.
-6. **Es gibt eine Fact-/Memory-Grundlage und eine Content-Inbox**, aber noch keine Event-Template-Registry, nutzbare Content-Registry, Command-DSL oder einen Composer. Eine LLM-Anbindung im Spiel ist ausgeschlossen.
+6. **Es gibt eine Fact-/Memory-Grundlage, eine Event-Template-Registry, eine validierte Content-Registry, die Command-DSL und einen lokalen Composer**; die Tick-Integration und UI bleiben offen. Eine LLM-Anbindung im Spiel ist ausgeschlossen.
 7. **UI-Snapshots enthalten keine Visitor-Registry.** `GameView` zeigt aktuelle Gäste, Journal und Nachfrage, aber keine vollständigen persistenten Besucherprofile.
 
 ### Architekturgrenzen, die erhalten bleiben
@@ -485,6 +485,14 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 ### NAR-11 – Lokaler Runtime Composer
 
 **Ziel:** Templates, Facts und Teilnehmer mit passenden lokalen Textfragmenten zu Darstellung verbinden; keine LLM-Anbindung im Spiel.
+
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `src/core/sim/narrative/composer/` trennt Vertrag, fail-closed Laufzeitvalidierung, deterministische Auswahl und die oeffentliche Fassade. `composeNarrative()` nimmt Locale, Template-Slots, Kontexte, benoetigte Flags und verfuegbare Personas und liefert pro Slot Text, Herkunft, Fallback-Markierung und typisierte Direktiven.
+- `TITLE` mappt auf `opening`, `BODY` auf `description`/`event-body`/`dialog`, `CHOICE_LABEL` auf `choice-preview`, `OUTCOME` auf `reaction`. Locale, Kontextschnitt, Flags und Persona-Refs filtern fail-closed; der stabile Score entscheidet, Gleichstand nach `contributionId`. Es gibt keinen RNG, keine Uhr und keinen Netzwerkpfad.
+- Fehlende Slots erhalten kurze, kontextfreie Fallbacks ohne Figuren, Fakten, Choice-IDs, Kosten oder Wirkungen. Ungueltige Fragmente und Direktiven werden uebersprungen und im Ergebnis gemeldet; Direktiven werden nie ausgefuehrt.
+- Der NAR-10-Compiler erzeugt zusaetzlich `src/core/sim/narrative/composer/registry.generated.ts` als typisierten Core-Spiegel. `--check` und das Assets-Gate vergleichen JSON und TypeScript byte-genau; die Laufzeit validiert die Fragmente erneut.
 
 **Arbeiten**
 - Fragmente für Titel, Beschreibung, Dialog, Choice-Preview und Reaktionen aus der validierten Registry anhand von Slots, Flags und Kontext deterministisch wählen.

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.84 | 2026-11-03 01:57 UTC -->
+<!-- rbd-doc: v0.3.85 | 2026-11-03 02:15 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.85] - 2026-11-03
+
+### Technik
+
+- NAR-11 abgeschlossen: `src/core/sim/narrative/composer/` verbindet Template-Slots mit der validierten Registry. Locale, Kontextschnitt, benoetigte Flags und Persona-Refs filtern fail-closed; der stabile Score entscheidet, Gleichstand nach `contributionId`. Kein Gameplay-PRNG, kein Netzwerk, kein Provider.
+- Fehlende Slots erhalten kurze lokale Fallbacks ohne Figuren, Fakten, Choice-IDs, Kosten oder Wirkungen. Ungueltige Fragmente und Direktiven werden gemeldet und uebersprungen; Direktiven werden nur als typisierte ASTs weitergereicht, nie ausgefuehrt.
+- Der NAR-10-Compiler erzeugt zusaetzlich `src/core/sim/narrative/composer/registry.generated.ts` als typisierten Core-Spiegel. `--check` und das Assets-Gate vergleichen JSON und TypeScript byte-genau; der NAR-11-Beitrag bringt die Registry auf 20 Fragmente. Neun fokussierte Composer-Tests decken Determinismus, Filter, Fallbacks, ungueltige Daten und Text-/Mechanik-Trennung ab.
 
 ## [0.3.84] - 2026-11-03
 
