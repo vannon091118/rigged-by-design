@@ -7,8 +7,6 @@
  * durchzubekommen.
  */
 
-import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
@@ -187,7 +185,6 @@ async function handleWorkflowRun() {
 **Branch:** \`${runBranch}\`  
 **Commit:** \`${runCommit}\`  
 **CI Run:** <${runUrl}>  
-**Erkannt am:** ${new Date().toISOString()}  
 **Erkannt durch:** pr-watcher.yml
 
 ## 📋 Was der Agent tun muss
@@ -261,7 +258,6 @@ async function handlePullRequest() {
 
 **PR:** #${prNumber}  
 **URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-**Erkannt am:** ${new Date().toISOString()}
 
 Der PR hat keinen Body. Der PR-Body muss die drei Pflichtsektionen enthalten:
 
@@ -282,7 +278,6 @@ Siehe AGENTS.md für die vollständigen Regeln.
     return;
   }
 
-  const lines = prBody.split(/\r?\n/);
   const { missing, empty } = gateFailureSections(prBody);
 
   if (missing.length > 0 || empty.length > 0) {
@@ -291,7 +286,6 @@ Siehe AGENTS.md für die vollständigen Regeln.
 
 **PR:** #${prNumber}  
 **URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-**Erkannt am:** ${new Date().toISOString()}
 
 Folgende Pflichtsektionen fehlen oder sind ohne echten Inhalt:
 
