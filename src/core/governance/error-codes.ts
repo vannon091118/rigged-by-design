@@ -4,8 +4,11 @@
  * @error-code: ERR-4001
  */
 
+type EscalationLevel = 'AUTO_FIX' | 'LOCAL_GATE' | 'REMOTE_CI' | 'AGENT' | 'BLOCKED';
+
 interface ErrorDefinition {
   readonly code: string;
+  readonly level: EscalationLevel;
   readonly area: 'governance' | 'core' | 'sim' | 'render' | 'docs';
   readonly cause: string;
   readonly fix: string;
