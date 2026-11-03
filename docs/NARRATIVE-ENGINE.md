@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-02 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -134,7 +134,31 @@ Regeln:
 - `flags` stammen aus `content/narrative/vocabulary/flags.json`.
 - `text` ist Darstellung. Er entscheidet nie ueber Choice-IDs, Kosten oder Effekte.
 
-## 8. Makros (Semantik, nicht geraten)
+## 8. Trigger-Vertrag (NAR-05)
+
+`narrative/trigger-types.ts` beschreibt den deklarativen Vertrag; `trigger-context.ts`
+baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Snapshot. Enthalten sind
+aktueller Fact plus `recent`-Historie, Tick/Tag, Flags, gerichtete Beziehungen,
+Visitor-Profile, Hauskonto/Band, Charisma, Ruf, Nachfragestufe, bediente Gaeste und
+Geraeteschaden. `actorRefsOfFact()` loest alte `visitorId`-Facts und neue
+`actorRefs`-Facts auf dieselbe Akteursliste.
+
+`trigger-evaluate.ts` ist rein: `all`/`any`/`not`, Fact-Typ, Besuchererinnerung,
+Hauskonto-Grenzen/Band, Geraeteschaden, Charisma, Ruf, Nachfragestufe, bediente Gaeste,
+Flags (Wert/Anwesenheit/Abwesenheit), Zeitfenster, `recent-fact`, Akteur/Rolle und
+Beziehungen (Trust/Sympathie/Konflikt/Einfluss). `evaluateTrigger()` liefert Match plus
+Begruendungen; `evaluateTriggerDefinition()` ergaenzt `triggerId`, `factId` und
+aufgeloeste Teilnehmer. Fehlende Beziehungen oder Besucherprofile sind ein
+Nicht-Match, kein Fehler.
+
+`trigger-schema.ts` validiert rekursiv und fail-closed: unbekannte Operatoren,
+ungueltige Fact-Arten/ActorRefs, Selbstkanten, negative oder unsichere Schwellen,
+ungueltige Band/Stufe/Rolle/Dimension und leere `all`/`any`-Listen werden verworfen;
+Tiefe 12 und 64 Knoten sind die Grenze. Der Evaluator veraendert weder Welt noch
+Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Der Aufruf im Tick und Cooldowns
+bleiben NAR-06/NAR-12.
+
+## 9. Makros (Semantik, nicht geraten)
 
 - `€FreezeTick:200` soll nur die aktive **Event-Instanz** fuer 200 fortschreitende
   Welt-Ticks pausieren; die uebrige Simulation laeuft weiter. Die templategebundene
@@ -146,7 +170,7 @@ Regeln:
 Beide Makros sind bis NAR-08 nur Vertrag; der Compiler (NAR-10) validiert sie, bevor
 irgendein Command laeuft.
 
-## 9. Nicht-Ziele
+## 10. Nicht-Ziele
 
 - Kein LLM, Modell-Provider oder Netzwerk-Textaufruf im Spiel, auch nicht ausserhalb des Ticks. Agenten koennen Content bei der Repository-Arbeit erstellen; die Laufzeit nutzt ausschliesslich lokale validierte Daten.
 - Keine Ausfuehrung von Code aus Texten; Commands sind deklarativ und allowlisted.
@@ -154,7 +178,7 @@ irgendein Command laeuft.
 - Keine Wanduhr und kein `Math.random` in Narrativ-Code (ESLint blockt beides).
 - Keine unbegrenzten Pools: Facts, Historie, Erinnerungen und Events sind gedeckelt.
 
-## 10. Persistenz
+## 11. Persistenz
 
 Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts

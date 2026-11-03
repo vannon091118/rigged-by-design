@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->
+<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1052 |
-| Gelistete Dateien | 1052 |
+| Getrackte Dateien | 1058 |
+| Gelistete Dateien | 1058 |
 | Getrackte Ordner | 71 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (14), docs (50), public (552), scripts (54), src (363) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (15), docs (50), public (552), scripts (54), src (368) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -286,7 +286,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 13 Datei(en)
+- `content/narrative/contributions/` — 14 Datei(en)
 - `content/narrative/vocabulary/` — 1 Datei(en)
 - `docs/` — 19 Datei(en)
 - `docs/banners/` — 4 Datei(en)
@@ -339,8 +339,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 54 Datei(en)
-- `src/core/sim/__tests__/` — 56 Datei(en)
-- `src/core/sim/narrative/` — 10 Datei(en)
+- `src/core/sim/__tests__/` — 57 Datei(en)
+- `src/core/sim/narrative/` — 14 Datei(en)
 - `src/render/` — 26 Datei(en)
 - `src/render/__tests__/` — 6 Datei(en)
 - `src/render/assets/` — 3 Datei(en)
@@ -381,6 +381,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-02-geduld-und-versprechen.json` — { — gelesen: 12 Zeilen
 - `content/narrative/contributions/2026-11-02-nachfragezustand.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-nar-04-beziehungsquellen.json` — { — gelesen: 10 Zeilen
+- `content/narrative/contributions/2026-11-02-nar-05-trigger-context.json` — { — gelesen: 13 Zeilen
 - `content/narrative/contributions/2026-11-02-narrative-facts.json` — { — gelesen: 10 Zeilen
 - `content/narrative/contributions/2026-11-02-schicht-und-lohn.json` — { — gelesen: 12 Zeilen
 - `content/narrative/contributions/2026-11-02-trigger-bedingungen.json` — { — gelesen: 10 Zeilen
@@ -391,18 +392,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 217 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 225 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 708 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 718 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
-- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1028 Zeilen
+- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1039 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 163 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 187 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 42 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 133 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 139 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1181,7 +1182,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 155 Zeilen
 - `src/core/sim/__tests__/narrative-staff-source.test.ts` — Die Kasse ist die reale Besucher-Personal-Begegnung: nur ein anwesender — gelesen: 59 Zeilen
 - `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 71 Zeilen
-- `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 62 Zeilen
+- `src/core/sim/__tests__/narrative-trigger-schema.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 77 Zeilen
+- `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 131 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 107 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
@@ -1234,7 +1236,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 65 Zeilen
 - `src/core/sim/narrative/relationships.ts` — Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. — gelesen: 113 Zeilen
 - `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 89 Zeilen
-- `src/core/sim/narrative/triggers.ts` — Deklarative Bedingungen fuer Narrative-Facts; Evaluation liest nur Welt und Ledger. — gelesen: 36 Zeilen
+- `src/core/sim/narrative/trigger-context.ts` — Baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Trigger-Context. — gelesen: 41 Zeilen
+- `src/core/sim/narrative/trigger-evaluate.ts` — Reine Auswertung von Trigger-Bedingungen; keine Welt-, Ledger- oder RNG-Mutation. — gelesen: 112 Zeilen
+- `src/core/sim/narrative/trigger-schema.ts` — Schema-Validierung fuer persistierbare Trigger-Definitionen; fail-closed. — gelesen: 103 Zeilen
+- `src/core/sim/narrative/trigger-types.ts` — Deklarative Trigger-Vertraege: Bedingungen, Context und erklaerte Treffer. — gelesen: 83 Zeilen
+- `src/core/sim/narrative/triggers.ts` — Oeffentliche Trigger-Fassade: Context, reine Auswertung und Schema-Validierung. — gelesen: 8 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 136 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 177 Zeilen
@@ -1419,6 +1425,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T42 | **2026-11-03 00:06 UTC**: NAR-05 abgeschlossen: `trigger-types.ts`, `trigger-context.ts`, `trigger-evaluate.ts` und `trigger-schema.ts` liefern Context, reine Auswertung aller Operatoren und fail-closed Schema-Validierung; `triggers.ts` bleibt Fassade. Alte `visitorId`-Facts und neue `actorRefs` werden einheitlich aufgeloest. Tests decken Operatoren, Grenzen, Historie, fehlende Referenzen und Unveraenderlichkeit ab. Tick-Anbindung und Cooldowns bleiben NAR-06/NAR-12. |
 | T41 | **2026-11-02 23:37 UTC**: NAR-04 abgeschlossen: Streit, Kassenbedienung und Rivalenabrechnung erzeugen gerichtete Besucher-Besucher-, Besucher-Personal- und Rivale-Haus-Kanten. Neue Facts nutzen `actorRefs` statt Pflicht-`visitorId`; Schema, Kanonisierung, Pinning und Save-Roundtrip sind getestet. Aufgabe und Trigger/Scheduler bleiben offen. |
 | T40 | **2026-11-02 23:20 UTC**: Optik und Steuerung. Neu: `src/render/floor-cues.ts` (Zielraster, Spielerring, Laufwegspur, Klick-Puls), `src/ui/stage-controls.tsx` (Steuerleiste mit Tastenkuerzeln, Kamera-Knoepfe), `src/render/__tests__/floor-camera.test.ts` (6 Faelle), `docs/ART-DIRECTION.md` und `docs/banners/art-direction-neon-ledger.png` (Bildsprache "Neon Ledger"). Geaendert: `floor-camera.ts` (+`pan`, `zoomStep`, `keepInView`), `floor-touch.ts` (Rad, Pinch, Ziehen; Wheel-Handler aus `floor-view.ts` uebernommen), `floor-view.ts` (Cues-Ebene, 349/350), `floor-surface.ts` (Lichtpfuetzen in 16 Stufen, Wandkanten, Laufweg), `floor-stage.tsx` (`zoom` im Handle), `App.tsx` (+/-/0 und Steuerleiste), `hud.tsx` (Barkauf-Chip, XP-Balken), `app.css` (Vignette, Raster, Zoom-Leiste, kbd-Chips). Geprueft: Browser 1600x1000 und 1000x720, typecheck, `verify:quick` auf eigenem Stand gruen (zehn Gates, 520 Tests); nach dem Rebase auf `origin/main` bestehen `process-sweep` und `slot-paylines` in Isolation (12/12), in der vollen Parallelitaet laufen sie unter Last ins Zeitlimit, CI traegt den vollen Nachweis. Offen: Lichtpfuetze je Chunk ohne Ueberlappung grosser Zonen, Touch-Pan ungeprueft. |
 | T39 | **2026-11-02 23:20 UTC**: Ein Fact-Drain, Ledger-Cursor und Beziehungsgrundlage.

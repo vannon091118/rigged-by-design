@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->
+<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -22,7 +22,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `pnpm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
 - Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
-- Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. Die Trigger-Integration fehlt; danach folgen Scheduler, Templates und Command-DSL.
+- Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v9 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen; die Runtime-Anbindung folgt mit Scheduler, Templates und Command-DSL.
 - Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
 - Optik und Steuerung sind einen Schritt weiter: Lichtpfuetzen und Wandkanten trennen die Raeume, Zielraster und Laufwegspur zeigen die Folge eines Klicks, die Kamera zieht am Bildrand nach, und das HUD traegt keine leere Zeile mehr. Bildsprache steht als `docs/ART-DIRECTION.md` mit Blatt daneben.
 
@@ -32,7 +32,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 - Touch-Steuerung auf einem echten Geraet pruefen: Ziehen mit zwei Fingern ist im Code, aber nur Maus und Pinch sind belegt.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: Der reine Bedingungsauswerter ist noch nicht integriert. NAR-04 (Beziehungen) ist erledigt; als Naechstes folgen Trigger-Integration (NAR-05), Scheduler/Templates (NAR-06/07) und die Demand-Migration (NAR-13) vor der Tick-Integration (NAR-12). Content-Compiler und Composer bleiben lokal ohne LLM; der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen.
+- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 (Beziehungen) und NAR-05 (Trigger-Context, Evaluator, Schema) sind erledigt; die Trigger-Integration in den Tick bleibt NAR-12. Als Naechstes folgen Scheduler/Templates (NAR-06/07) und die Demand-Migration (NAR-13) vor der Tick-Integration (NAR-12). Content-Compiler und Composer bleiben lokal ohne LLM; der aktive Nachfrageevent-Zustand wird aus v5–v9-Saves nach `narrative` uebernommen.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später

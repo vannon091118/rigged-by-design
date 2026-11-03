@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 124 Dateien — contract 79 · integration 24 · governance 10 · statistics 6 · performance 5.
+Summe: 125 Dateien — contract 80 · integration 24 · governance 10 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -90,6 +90,7 @@ Summe: 124 Dateien — contract 79 · integration 24 · governance 10 · statist
 | `src/core/sim/__tests__/narrative-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/relationships.ts` |
 | `src/core/sim/__tests__/narrative-staff-source.test.ts` | sim | contract | ja | `src/core/sim/desk-service.ts` |
 | `src/core/sim/__tests__/narrative-start-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/state.ts` |
+| `src/core/sim/__tests__/narrative-trigger-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/trigger-schema.ts` |
 | `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |

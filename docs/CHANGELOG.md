@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->
+<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.79] - 2026-11-02
+
+### Technik
+
+- NAR-05 abgeschlossen: `narrative/trigger-types.ts`, `trigger-context.ts`, `trigger-evaluate.ts` und `trigger-schema.ts` bilden den deklarativen Trigger-Vertrag. Der Context liest Fact-Historie, Flags, Beziehungen, Visitor-Profile, Hauskonto/Band, Charisma, Ruf, Nachfragestufe, bediente Gäste und Geräteschaden; alte `visitorId`-Facts und neue `actorRefs`-Facts werden einheitlich aufgelöst.
+- Der reine Evaluator kennt alle vorgesehenen Operatoren für Kombinationen, Facts, Erinnerungen, Hauskonto, Geräte, Charisma, Ruf, Nachfrage, Gäste, Flags, Zeitfenster, Akteure und Beziehungen; er liefert Match, Teilnehmer und Begründungen, ohne Welt, Ledger oder PRNG zu verändern. Das Schema verwirft unbekannte Operatoren, ungültige Refs, Selbstkanten, negative/unsichere Schwellen und leere Listen fail-closed.
+- `narrative/triggers.ts` ist jetzt eine Fassade; neun Tests in `narrative-triggers.test.ts` und `narrative-trigger-schema.test.ts` decken Operatoren, Grenzen, Historie, fehlende Referenzen und Unveränderlichkeit ab. Die Tick-Anbindung bleibt NAR-12.
 
 ## [0.3.78] - 2026-11-02
 
