@@ -19,13 +19,6 @@ import { tickForeignFloor } from './foreign-floor-tick';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, furnitureById, sendGuest } from './world';
 import { dirtyTileIndex } from './emotion';
-import { tickStains } from './stain';
-import { CharacterAction, canInteract, startMoveTo, getInteractionRadius, isCarrying, getCarriedItem } from './character';
-import { manhattanDistance } from './interaction';
-import { MOP_USES } from './mop';
-import type { Mop } from './mop';
-import { SmartphoneApp, SmartphoneState, createSmartphoneState, openSmartphone, closeSmartphone, selectApp, isAppAvailable } from './smartphone';
-import { Stain, getStainInfluence } from './stain';
 
 function angerTick(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest): void {
   guest.stateTicks += 1;
@@ -122,7 +115,6 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   }
   maybeStartBrawl(world, prng);
   tickDisputes(world);
-  tickStains(world);
   tickAgents(world, ledger, prng);
   decay(world);
   world.reputation = Math.round(reputation(world));
@@ -147,12 +139,3 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   // Ein Lauf pro Tick: alle Quellen haben Facts emittiert, jetzt Memory/Trigger/Scheduler.
   processNarrativeRuntime(world, ledger);
 }
-
-// Toten-Exporte als verwendet markieren, damit der Dead-Code-Gate grün bleibt
-// (diese Module sind Teil des Features, werden aber erst in späteren Phasen aktiv genutzt)
-void CharacterAction; void canInteract; void startMoveTo; void getInteractionRadius;
-void isCarrying; void getCarriedItem; void manhattanDistance; void MOP_USES;
-void SmartphoneApp; void SmartphoneState; void createSmartphoneState; void openSmartphone;
-void closeSmartphone; void selectApp; void isAppAvailable; void Stain; void getStainInfluence;
-const _mop: Mop = {} as Mop;
-void _mop;
