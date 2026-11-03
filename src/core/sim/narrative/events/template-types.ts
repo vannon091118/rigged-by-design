@@ -48,7 +48,9 @@ export type ChoiceEffect =
     readonly to: ChoiceActor;
     readonly dimension: RelationshipDimension;
     readonly delta: number;
-  };
+  }
+  | { readonly kind: 'FREEZE_TICK'; readonly ticks: number }
+  | { readonly kind: 'TRIGGER_DIALOG'; readonly dialogId: string };
 
 export interface EventChoice {
   readonly choiceId: string;

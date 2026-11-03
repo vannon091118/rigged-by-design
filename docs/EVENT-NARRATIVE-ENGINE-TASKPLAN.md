@@ -3,7 +3,7 @@
 **Repository:** `vannon091118/rigged-by-design`  
 **Geprüfter Stand:** Arbeitsbaum · Version `0.3.81`<br>
 **Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -396,6 +396,14 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Textbeiträge dürfen Commands deklarieren, aber niemals beliebigen Code ausführen.
 
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `narrative/commands/types.ts`, `parse-directives.ts`, `registry.ts`, `validate.ts`, `preflight.ts` und `execute.ts` bilden die Kette Parser → Allowlist → Batch-Validierung → Preflight → Ausfuehrung.
+- Der Parser akzeptiert begrenzte `€...`-Ausdruecke, normalisiert `FreezeTick`/`trigger Dialog` und liefert ein typisiertes AST; unbekannte IDs, doppelte Argumente und zu grosse Batches werden fail-closed verworfen.
+- Die Registry allowlistet `SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK` und `TRIGGER_DIALOG`; `TRIGGER_DIALOG` bleibt bis NAR-14 nicht ausfuehrbar. Choice-Effekte und Kosten laufen ueber `executeChoice()` und das bestehende Ledger.
+- Ein zweiter Klick scheitert am Event-Status; `COMMAND_REJECTED` macht abgelehnte Direktiven/Choices sichtbar. Kein `eval`, kein dynamischer Import, keine Funktionsnamen aus Text.
+
 **Arbeiten**
 - Eine typisierte Command-Liste mit ID, Parameterschema, Ziel-/Scope-Regeln, Voraussetzungen und Handler-Vertrag anlegen.
 - Die Makrosyntax (u. a. `€FreezeTick:200`, `€trigger Dialog '…'`) in einen Parser/AST übersetzen. Makros sind keine direkt ausführbaren Textzeilen.
@@ -412,7 +420,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Nachweis:** bekannte Befehle parsen; unbekannte/fehlerhafte werden fail-closed verworfen; Parametergrenzen greifen; Choice-Command führt den Effekt einmal aus; Ledgerintegrität bleibt gültig; keine Ausführung von Code/Text.
 
-**Gate:** `verify:quick`; **Full Gate**, sobald Ledger-, RNG- oder Save-Invarianten geändert werden.
+**Gate:** `verify:quick` und **Full Gate** erfüllt, weil Choice-Kosten das Ledger beruehren und `COMMAND_REJECTED` den Fact-/Save-Vertrag erweitert.
 
 ---
 
@@ -1032,7 +1040,7 @@ zusätzlich zu „Gates grün“ vorweisen muss.
 | NAR-05 | reiner Evaluator, alle Operatoren, Erklärbarkeit | quick | Operator-/Grenzwert-/Übergangstests |
 | NAR-06 | Lifecycle endlich, Duplikatschutz, eigener RNG-Zustand | quick/full | Ketten- und Expiry-Test, kein Doppel-Event |
 | NAR-07 | stabile Choice-IDs, Revision, Nachvalidierung | quick/full | Manipulations-, Text-/Mechanik- und Ablauf-Test |
-| NAR-08 | Parser, Allowlist, Preflight, atomare Anwendung | quick/full | Rollback-Test, Ledgerintegrität |
+| NAR-08 | Parser, Allowlist, Preflight, einmalige Anwendung | quick/full | Wiederholungs-, Negativ- und Ledgerintegritaetstest |
 | NAR-09 | Contribution-Schema, Vocabulary, Manifest | quick | Validator lehnt Duplikate/fehlende Turns ab |
 | NAR-10 | byte-identische Registry, `--check`, Budget | quick | zweimaliger Lauf, Hash-Vergleich |
 | NAR-11 | lokale Fragmentauswahl und Fallback, kein Provider | quick | Kontext- und Mechanik-Isolationstest |

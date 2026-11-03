@@ -14,7 +14,8 @@ type FactDraft =
   | { readonly kind: 'HOUSE_BALANCE'; readonly balance: VaCoinMicro; readonly band: HouseBand }
   | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
   | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
-  | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro };
+  | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro }
+  | { readonly kind: 'COMMAND_REJECTED'; readonly commandId: string; readonly reason: string };
 
 /** Haengt einen Fact mit naechster ID, Tick und Tag an die Queue; aelteste fallen bei Ueberlauf. */
 export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
@@ -27,6 +28,13 @@ export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
     world.narrative.dropped += overflow;
   }
   return fact;
+}
+
+/** Macht eine verworfene Direktive sichtbar, ohne den Weltzustand zu veraendern. */
+export function emitCommandRejected(world: WorldState, commandId: string, reason: string): NarrativeFact {
+  return emitFact(world, {
+    kind: 'COMMAND_REJECTED', commandId: commandId.slice(0, 64), reason: reason.slice(0, 64),
+  });
 }
 
 /**

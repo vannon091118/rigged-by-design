@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.81 | 2026-11-03 00:44 UTC -->
+<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.82] - 2026-11-03
+
+### Technik
+
+- NAR-08 abgeschlossen: `narrative/commands/` parst `€...`-Direktiven zu einem begrenzten AST, validiert IDs, Parameter und Teilnehmer gegen eine typisierte Registry und prueft jeden Batch vor der Ausfuehrung vollstaendig.
+- `SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK` und `TRIGGER_DIALOG` sind registriert; nur freigeschaltete Handler laufen. Choice-Effekte und deklarierte Kosten werden hoechstens einmal angewendet, die Event-Instanz wird `RESOLVED`, Wiederholungen und manipulierte IDs werden abgewiesen.
+- Abgelehnte Direktiven erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`. Kein `eval`, kein dynamischer Import und keine Funktionsnamen aus Text; die Template-/Choice-Allowlist bleibt die einzige Quelle fuer Spielwirkungen.
 
 ## [0.3.81] - 2026-11-03
 
