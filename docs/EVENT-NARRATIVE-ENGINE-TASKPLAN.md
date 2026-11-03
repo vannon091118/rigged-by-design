@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.79`<br>
-**Revision:** 2026-11-02 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, reiner Condition Evaluator, Schema); NAR-06 bis NAR-17 offen<br>
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.80`<br>
+**Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -331,6 +331,16 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Matches in verwaltete, fortlaufende Event-Instanzen überführen.
 
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `event-types.ts`: persistente Event-Instanzen mit `eventId`, Status, Scope, Teilnehmern, `sourceFactId`, Priorität, Start-/Ablaufzeit, Schritt, Wiederholungsgrenze, Cooldown, Vorgänger und Auflösung.
+- `event-lifecycle.ts`: zentrale State Machine `ELIGIBLE → OFFERED/ACTIVE → RESOLVED/EXPIRED/CANCELLED`, Cooldown-Anwendung, Schrittwechsel und Ablaufprüfung.
+- `event-scheduler.ts`: Priorität, Fairness über den ältesten letzten Einsatz, Scopes (`GLOBAL`, `VISITOR`, `PAIR`, `RIVAL`), Duplikatschutz pro Event-/Teilnehmerkombination, begrenzte Auswahl, Stale-Cancel und Ketten nur nach `RESOLVED`.
+- `event-schema.ts`: fail-closed Validierung und Normalisierung von Instanzen, Cooldowns und RNG; 32 Instanzen, 8 aktive Events und 64 Cooldowns sind die Grenzen.
+- `narrative-rng.ts`: eigener persistenter Mulberry32-Strom für Fairness-Ties; der Gameplay-PRNG wird nie gezogen.
+- `processNarrativeBoundary()` ruft `maintainEvents()` auf und räumt Fristen sowie verwaiste Visitor-/Personal-Endpunkte auch ohne neue Facts auf.
+
 **Arbeiten**
 - Scheduler mit Priorität, Fairness, Cooldown, einmaligen/mehrmaligen Auslösungen und getrennten Scopes (global, Visitor, Akteurspaar, Rivale) erstellen.
 - Event-Lifecycle als State Machine definieren, z. B. `eligible → offered/active → resolved/expired/cancelled`; gültige Übergänge zentral prüfen.
@@ -341,11 +351,13 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Event-Auswahl darf weder den globalen Spiel-PRNG verbrauchen noch per `Date.now()`/`Math.random()` erfolgen. Bei mechanischer Zufallsauswahl wird ein eigener persistenter Narrative-Zufallszustand verwendet.
 - Pro Tick/Boundary begrenzte Arbeit; keine Vollscans aller historischen Facts und aller Textbausteine in jedem 520-ms-Tick.
 
-**Zielbereiche:** `narrative/scheduler/`, `event-lifecycle.ts`, `cooldowns.ts`, `event-history.ts`.
+**Zielbereiche:** `src/core/sim/narrative/event-types.ts`, `event-lifecycle.ts`, `event-scheduler.ts`, `event-schema.ts`, `narrative-rng.ts`; `scheduler.ts` als Fassade.
 
-**Nachweis:** Prioritätsordnung, Cooldowns, Mehrfachaktivität, Ablauf, Abbruch, Folgeereignis und Save-/Load-Fortsetzung sind getestet; wiederholtes Auswerten desselben Facts erzeugt keine Doppelinstanz.
+**Nicht Teil:** Die Trigger-Auswahl im Tick und der vollständige Orchestrator bleiben NAR-12; NAR-06 liefert die getestete Scheduler- und Lifecycle-Schicht. `demandEvent` bleibt bis NAR-13 das bestehende Nachfragesystem.
 
-**Gate:** `verify:quick`; bei neuen persistierten Lifecycle-Feldern Full Gate.
+**Nachweis:** Prioritätsordnung, Fairness, Cooldowns, Mehrfachaktivität, Ablauf, Stale-Cancel, Folgeereignis, RNG-Determinismus, Historiengrenze und Save-/Load-Fortsetzung sind getestet; wiederholtes Auswerten desselben Kandidaten erzeugt keine Doppelinstanz. `verify:quick` und `verify:all` sind grün.
+
+**Gate:** Full Gate erfüllt, weil Event-Instanzen, Cooldowns und der Narrativ-RNG persistiert werden.
 
 ---
 

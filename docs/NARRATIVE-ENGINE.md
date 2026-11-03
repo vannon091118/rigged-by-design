@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
-Stand: 2026-11-02 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 bis NAR-17 offen. Verbindlich ist der Code.
+Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -51,6 +51,10 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `demandEvent` | aktive Neon-Nacht oder Turnierabend | hoechstens eine Veranstaltung; Ablauf bisher in `demand.ts` |
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
 | `relationships` | gerichtete Kanten zwischen persistenten Akteuren | 200; Endpunkte pinnen Visitor-Profile |
+| `eventSeq` | naechste freie Event-Instanz-ID | monoton, nie wiederverwendet |
+| `events` | aktive und begrenzte abgeschlossene Event-Instanzen | 32 gesamt, 8 gleichzeitig live |
+| `cooldowns` | Sperren je Event und Teilnehmerkombination | 64; `untilTick` in Welt-Ticks |
+| `rng` | eigener persistenter Narrativ-Zufallsstrom | Seed/State als uint32 |
 
 Facts sind eine diskriminierte Union mit `id`, `kind`, `tick`, `day` und typisierten
 Nutzdaten. Umgesetzt: `START_POOL`, `VISITOR_FIRST_SEEN`, `VISITOR_RETURNED`,
@@ -158,7 +162,36 @@ Tiefe 12 und 64 Knoten sind die Grenze. Der Evaluator veraendert weder Welt noch
 Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Der Aufruf im Tick und Cooldowns
 bleiben NAR-06/NAR-12.
 
-## 9. Makros (Semantik, nicht geraten)
+## 9. Event-Scheduler und Lifecycle (NAR-06)
+
+`narrative/event-types.ts` beschreibt persistente Event-Instanzen und Kandidaten.
+Ein Kandidat traegt `eventId`, Prioritaet, Scope, Teilnehmer, `sourceFactId`, Frist,
+Cooldown, maximale Ausfuehrungen, optionalen Vorgaenger und Schritt. Gueltige Scopes
+sind `GLOBAL` (keine Teilnehmer), `VISITOR` (genau ein `visitor:<id>`), `PAIR` (zwei
+verschiedene Akteure) und `RIVAL` (genau ein `rival:<id>`).
+
+`event-lifecycle.ts` ist die einzige Statuswahrheit:
+`ELIGIBLE → OFFERED/ACTIVE → RESOLVED/EXPIRED/CANCELLED`. Ungueltige Spruenge bleiben
+unveraendert. Beim terminalen Uebergang wird der Cooldown fuer genau diese
+Event-/Teilnehmerkombination gesetzt; `advanceEventStep()` aendert nur den Schritt.
+`expireDueEvents()` beendet Fristen, `cancelStaleEvents()` bricht Instanzen mit
+verschwundenem Visitor-/Personal-Endpunkt ab. `processNarrativeBoundary()` ruft
+`maintainEvents()` bei jedem Lauf auf, auch wenn keine neuen Facts anliegen.
+
+`event-scheduler.ts` waehlt hohe Prioritaet zuerst, dann den aeltesten letzten Einsatz
+und bei Gleichstand deterministisch aus dem eigenen Narrativ-RNG. Pro Aufruf entstehen
+hoechstens drei Instanzen; maximal acht sind gleichzeitig live. Ein Duplikat wird pro
+`eventId` + Scope + Teilnehmerkombination verhindert, auch bei umgekehrter Paar-Reihenfolge.
+`maxOccurrences` unterscheidet einmalige und wiederholte Events; `cooldownTicks` sperrt
+nach dem Abschluss. `chainEvent()` startet eine Folgeinstanz nur nach einem `RESOLVED`-
+Vorgaenger und speichert `chainFromEventId`; die Aufloesung bleibt als Choice-Ergebnis
+am Event. Story-Flags und Memory-Referenzen werden weiterhin im Trigger-Context geprueft.
+
+`narrative-rng.ts` ist ein eigener, persistenter Mulberry32-Strom. Er wird nur fuer
+Fairness-Ties verbraucht, nie der Gameplay-PRNG. `event-schema.ts` normalisiert alte
+oder manipulierte Daten fail-closed und begrenzt Instanzen, Cooldowns und RNG-Werte.
+
+## 10. Makros (Semantik, nicht geraten)
 
 - `€FreezeTick:200` soll nur die aktive **Event-Instanz** fuer 200 fortschreitende
   Welt-Ticks pausieren; die uebrige Simulation laeuft weiter. Die templategebundene
@@ -170,7 +203,7 @@ bleiben NAR-06/NAR-12.
 Beide Makros sind bis NAR-08 nur Vertrag; der Compiler (NAR-10) validiert sie, bevor
 irgendein Command laeuft.
 
-## 10. Nicht-Ziele
+## 11. Nicht-Ziele
 
 - Kein LLM, Modell-Provider oder Netzwerk-Textaufruf im Spiel, auch nicht ausserhalb des Ticks. Agenten koennen Content bei der Repository-Arbeit erstellen; die Laufzeit nutzt ausschliesslich lokale validierte Daten.
 - Keine Ausfuehrung von Code aus Texten; Commands sind deklarativ und allowlisted.
@@ -178,10 +211,10 @@ irgendein Command laeuft.
 - Keine Wanduhr und kein `Math.random` in Narrativ-Code (ESLint blockt beides).
 - Keine unbegrenzten Pools: Facts, Historie, Erinnerungen und Events sind gedeckelt.
 
-## 11. Persistenz
+## 12. Persistenz
 
 Save v9 traegt `narrative`, darin den laufenden Nachfrageevent, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `world.demandEvent` werden beim Laden in den narrativen Zustand uebernommen; die Planung bleibt bis NAR-13 in `demand.ts`. v5–v8 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
-und Erinnerungen verworfen, IDs monoton fortgeschrieben. Aktive Events, Choices,
-Fristen und Cooldowns kommen mit NAR-06/NAR-07 hinzu und muessen denselben Roundtrip
-bestehen.
+und Erinnerungen verworfen, IDs monoton fortgeschrieben. Event-Instanzen, Cooldowns und der eigene Narrativ-RNG liegen seit NAR-06 in Save v9;
+fehlende Felder alter Staende werden auf leere Defaults normalisiert. Choices und ihre
+Verfuegbarkeit kommen mit NAR-07 hinzu und muessen denselben Roundtrip bestehen.

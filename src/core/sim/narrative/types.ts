@@ -1,6 +1,7 @@
 /** Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. */
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { DemandEvent, PersonaId, RivalId } from '../types';
+import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
 
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
@@ -16,7 +17,10 @@ export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', '
 export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
 
 /** Begrenzungen: Facts, Historie, Erinnerungen und Beziehungen wachsen nicht unkontrolliert. */
-export const NARRATIVE_LIMITS = { pending: 48, recent: 120, memories: 6, startPool: 3, relationships: 200 } as const;
+export const NARRATIVE_LIMITS = {
+  pending: 48, recent: 120, memories: 6, startPool: 3, relationships: 200,
+  eventInstances: 32, activeEvents: 8, cooldowns: 64,
+} as const;
 
 /** Kanonische, persistente Akteursreferenz; Gäste werden über visitor:<id> geführt. */
 export type ActorRef = `visitor:${number}` | `staff:${number}` | `rival:${string}` | 'player';
@@ -133,4 +137,12 @@ export interface NarrativeState {
   ledgerSeq: number | null;
   /** Zuletzt gemeldeter Hauskonto-Band; verhindert doppelte Schwellen-Facts. */
   houseBand: HouseBand;
+  /** Naechste freie Event-Instanz-ID. */
+  eventSeq: number;
+  /** Aktive und begrenzte abgeschlossene Event-Instanzen. */
+  events: NarrativeEventInstance[];
+  /** Cooldowns je Event und Teilnehmerkombination. */
+  cooldowns: NarrativeCooldown[];
+  /** Eigener persistenter Narrativ-Zufallsstrom. */
+  rng: NarrativeRngState;
 }
