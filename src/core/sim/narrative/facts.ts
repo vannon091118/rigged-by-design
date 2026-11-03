@@ -15,7 +15,11 @@ type FactDraft =
   | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
   | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
   | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro }
-  | { readonly kind: 'COMMAND_REJECTED'; readonly commandId: string; readonly reason: string };
+  | { readonly kind: 'COMMAND_REJECTED'; readonly commandId: string; readonly reason: string }
+  | {
+    readonly kind: 'EVENT_RESOLVED'; readonly eventId: number; readonly eventKind: string;
+    readonly choiceId: string; readonly outcomeId: string;
+  };
 
 /** Haengt einen Fact mit naechster ID, Tick und Tag an die Queue; aelteste fallen bei Ueberlauf. */
 export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
@@ -40,7 +44,7 @@ export function emitCommandRejected(world: WorldState, commandId: string, reason
 /**
  * Gibt alle noch nicht verarbeiteten Facts zurueck und leert die Queue.
  * Ein zweiter Aufruf liefert nichts: dieselbe ID wird nie doppelt verarbeitet.
- * Nur `processNarrativeBoundary()` darf diese Funktion aufrufen.
+ * Nur `processNarrativeBoundaryDetailed()` (ueber die Runtime) darf diese Funktion aufrufen.
  */
 export function drainFacts(world: WorldState): NarrativeFact[] {
   const state = world.narrative;

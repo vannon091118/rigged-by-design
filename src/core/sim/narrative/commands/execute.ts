@@ -5,7 +5,7 @@ import { EXTERNAL, HAUSKONTO } from '../../money';
 import type { WorldState } from '../../types';
 import { freezeEvent, transitionEvent } from '../event-lifecycle';
 import type { ChoiceActor, EventTemplate } from '../events/template-types';
-import { emitCommandRejected } from '../facts';
+import { emitCommandRejected, emitFact } from '../facts';
 import { shift } from '../relationships';
 import type { ActorRef } from '../types';
 import { preflightChoice } from './preflight';
@@ -91,6 +91,12 @@ export function executeChoice(
       commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aufloesung fehlgeschlagen.',
     }]);
   }
+  // Der Command schliesst den Kreis: die Aufloesung ist selbst wieder ein Fact,
+  // den erst der naechste Flush verarbeitet - nie rekursiv im selben Aufruf.
+  emitFact(world, {
+    kind: 'EVENT_RESOLVED', eventId: event.id, eventKind: event.eventId,
+    choiceId, outcomeId: choice.outcomeId,
+  });
   const resolved = world.narrative.events.find((entry) => entry.id === event.id) ?? null;
   return { ok: true, event: resolved, commands, cost, rejections: [] };
 }

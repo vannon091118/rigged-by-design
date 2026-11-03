@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks). NAR-12 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -13,11 +13,11 @@ Zustandsuebergang; Text ist Darstellung; Geld bleibt im Ledger.
 Simulation / Store-Commands / Ledger / Rivalen
         │  emitFact (nur echte Uebergaenge)
         ▼
-  NarrativeState  ──pending──▶ processNarrativeBoundary ──▶ Memory / Relationships / recentFacts
-        │                                            │
-        └────────────── Trigger (NAR-05) ◀───────────┘
-                             │
-                        Scheduler (NAR-06)
+  NarrativeState  ──pending──▶ processNarrativeRuntime ──▶ Memory / Relationships / recentFacts
+        │                              │
+        │                              ├─▶ Trigger (NAR-05) ─▶ Scheduler (NAR-06) ─▶ Event/Choice
+        │                              └─▶ processNarrativeBoundaryDetailed (einziger Drain)
+        └──── neue Facts warten auf den naechsten Lauf ◀── Choice-Command (`EVENT_RESOLVED`)
                              │
                      Event + Choice-Vertrag (NAR-07)
                              │
@@ -59,7 +59,8 @@ Warteschlange und Besuchsstatus entstehen neu.
 Facts sind eine diskriminierte Union mit `id`, `kind`, `tick`, `day` und typisierten
 Nutzdaten. Umgesetzt: `START_POOL`, `VISITOR_FIRST_SEEN`, `VISITOR_RETURNED`,
 `VISIT_ENDED`, `HOUSE_BALANCE`, `VISITOR_CONFLICT`, `VISITOR_SERVICE`,
-`RIVAL_ENCOUNTER` und `COMMAND_REJECTED` (Diagnose, keine Spielwirkung). Besucherbezogene Alt-Facts tragen `visitorId`; die neuen
+`RIVAL_ENCOUNTER`, `COMMAND_REJECTED` (Diagnose, keine Spielwirkung) und
+`EVENT_RESOLVED` (eine aufgeloeste Choice). Besucherbezogene Alt-Facts tragen `visitorId`; die neuen
 Beziehungs-Facts tragen stattdessen `actorRefs` (`visitor:<id>`, `staff:<id>`,
 `rival:<id>`, `player`) und werden beim Laden rollenspezifisch validiert. Alle
 Felder sind JSON-serialisierbar; keine Funktionen, Maps, Sets oder UI-Objekte.
@@ -71,12 +72,19 @@ Bedeutung, keine kopierte Journal-Zeile.
 ## 4. Lebenszyklus und Idempotenz
 
 1. Die Simulation ruft `emitFact()` genau an der Ursache auf.
-2. `processNarrativeBoundary()` erzeugt zuerst Ledger-Schwellen-Facts
-   (`HOUSE_BALANCE`), drainiert dann alle Facts mit `id > processedId` und leert die Queue.
+2. `processNarrativeRuntime()` stoesst den einen Boundary an: zuerst entstehen
+   Ledger-Schwellen-Facts (`HOUSE_BALANCE`), dann werden alle Facts mit
+   `id > processedId` drainiert und die Queue geleert.
 3. Im selben Durchlauf schreibt der Boundary Erinnerungen (einmal je `factId`),
    Zaehler, Beziehungen und `recent`; neue Facts bleiben fuer den naechsten Aufruf liegen.
 4. Ein erneuter Drain liefert nichts. Ein Save-/Load-Roundtrip setzt `processedId`
    und `ledgerSeq` fort, damit kein Fact doppelt wirkt.
+5. Danach wertet `runtime.ts` die deklarativen Trigger aus, uebersetzt Treffer in
+   Template-Kandidaten und plant hoechstens drei neue Event-Instanzen. Die
+   Reihenfolge ist fest: Simulation → Facts → Memory/Relationships → Trigger →
+   Scheduler → Events/Choices → Journal/Snapshot.
+6. Eine aufgeloeste Choice emittiert `EVENT_RESOLVED`; dieser Fact wird erst im
+   naechsten Lauf verarbeitet. Kein Lauf rekursiert in seine eigenen Facts.
 
 Journal und Facts bleiben getrennt: Das Journal dokumentiert fuer den Spieler, Facts
 treiben Trigger und Gedaechtnis. Kein Journal-Eintrag ist Voraussetzung fuer einen Fact.
@@ -212,8 +220,8 @@ Nicht-Match, kein Fehler.
 ungueltige Fact-Arten/ActorRefs, Selbstkanten, negative oder unsichere Schwellen,
 ungueltige Band/Stufe/Rolle/Dimension und leere `all`/`any`-Listen werden verworfen;
 Tiefe 12 und 64 Knoten sind die Grenze. Der Evaluator veraendert weder Welt noch
-Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Der Aufruf im Tick und Cooldowns
-bleiben NAR-06/NAR-12.
+Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Seit NAR-12 ruft `narrative/runtime.ts` den
+Evaluator pro drainiertem Fact auf; Cooldowns bleiben Sache des Schedulers.
 
 ## 10. Event-Scheduler und Lifecycle (NAR-06)
 
@@ -228,7 +236,7 @@ verschiedene Akteure) und `RIVAL` (genau ein `rival:<id>`).
 unveraendert. Beim terminalen Uebergang wird der Cooldown fuer genau diese
 Event-/Teilnehmerkombination gesetzt; `advanceEventStep()` aendert nur den Schritt.
 `expireDueEvents()` beendet Fristen, `cancelStaleEvents()` bricht Instanzen mit
-verschwundenem Visitor-/Personal-Endpunkt ab. `processNarrativeBoundary()` ruft
+verschwundenem Visitor-/Personal-Endpunkt ab. `processNarrativeBoundaryDetailed()` ruft
 `maintainEvents()` bei jedem Lauf auf, auch wenn keine neuen Facts anliegen.
 
 `event-scheduler.ts` waehlt hohe Prioritaet zuerst, dann den aeltesten letzten Einsatz
@@ -320,4 +328,24 @@ Version 1 und einen leeren Satz normalisiert; solche Events bleiben fail-closed 
 ausfuehrbar, bis ein kompatibles Template mit gueltigen Choice-IDs vorliegt.
 `COMMAND_REJECTED` ist ein normaler, begrenzter Fact in `pending`/`recent` und braucht
 kein neues Save-Feld; Event-Status und `resolution` bleiben die Wahrheit fuer
-Idempotenz.
+Idempotenz. `EVENT_RESOLVED` traegt `eventId`, `eventKind`, `choiceId` und `outcomeId`,
+ist ebenfalls ein normaler Fact und wird beim Laden schema-validiert.
+
+## 14. Orchestrierung in Tick und WorldStore (NAR-12)
+
+`narrative/runtime.ts` ist die einzige Bruecke von Facts zu Events. Ein Lauf ist
+nicht rekursiv: `processNarrativeRuntime()` drainiert den Boundary hoechstens einmal,
+wertet fuer jeden drainierten Fact die Definitionen aus `events/trigger-definitions.ts`
+aus und sammelt Kandidaten. Nur Facts mit Template duerfen einen Event ausloesen;
+Diagnose- und Ledger-Facts bleiben wirkungslos. `scheduleCandidates()` plant hoechstens
+drei neue Instanzen pro Lauf und verhindert Live-Duplikate und Cooldowns wie bisher.
+Facts aus Choice-Effekten entstehen erst nach dem Drain und werden im naechsten Lauf
+verarbeitet.
+
+`tickWorld()` ruft die Runtime genau einmal am Ende. Ausserhalb des Ticks flusht
+`src/store/narrative-commands.ts` an den echten Mutationsgrenzen: nach jeder
+erfolgreichen Command-Ausfuehrung sowie nach Neues Spiel, Import und Rivalenspiel.
+`#emit()` bleibt Darstellung und Save und ist kein Gameplay-Handler. `spawn.ts` und
+`guest-service.ts` emittieren nur noch; sie drainieren nicht selbst. `worldStore`
+bleibt der alleinige Besitzer von Welt, Ledger und PRNG; `src/core` importiert ihn nie,
+und `chooseNarrativeCmd()` bekommt Welt und Ledger explizit.

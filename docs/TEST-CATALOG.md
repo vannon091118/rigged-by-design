@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 136 Dateien — contract 89 · integration 24 · governance 12 · statistics 6 · performance 5.
+Summe: 138 Dateien — contract 90 · integration 25 · governance 12 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -99,6 +99,7 @@ Summe: 136 Dateien — contract 89 · integration 24 · governance 12 · statist
 | `src/core/sim/__tests__/narrative-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/__tests__/narrative-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/relationships.ts` |
+| `src/core/sim/__tests__/narrative-runtime.test.ts` | sim | contract | ja | `src/core/sim/narrative/runtime.ts` |
 | `src/core/sim/__tests__/narrative-staff-source.test.ts` | sim | contract | ja | `src/core/sim/desk-service.ts` |
 | `src/core/sim/__tests__/narrative-start-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/state.ts` |
 | `src/core/sim/__tests__/narrative-trigger-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/trigger-schema.ts` |
@@ -131,6 +132,7 @@ Summe: 136 Dateien — contract 89 · integration 24 · governance 12 · statist
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
 | `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/determinism.test.ts` | store | integration | ja | `src/store/transfer.ts` |
+| `src/store/__tests__/narrative-commands.test.ts` | store | integration | ja | `src/store/narrative-commands.ts` |
 | `src/store/__tests__/narrative-rival-source.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/narrative-save.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/prng-persistence.test.ts` | store | integration | ja | `src/store/save.ts` |

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-12 Orchestrierung in Tick und WorldStore
+
+**Ziel.** Facts nicht mehr an einzelnen Quellen, sondern an den tatsaechlichen Mutationsgrenzen verarbeiten und den vollstaendigen Kreis Fact→Event→Choice→Command→Fact schliessen — im Tick und bei Store-Commands ausserhalb des Ticks.
+
+**Umsetzung.** `narrative/runtime.ts` ist der einzige Orchestrator. `processNarrativeRuntime()` ruft `processNarrativeBoundaryDetailed()` genau einmal, wertet danach pro drainiertem Fact die deklarativen Trigger aus `events/trigger-definitions.ts` aus und uebersetzt Treffer ueber die Template-Registry in Kandidaten; `scheduleCandidates()` begrenzt auf drei neue Instanzen und behaelt Dedupe, Cooldowns und Narrativ-RNG. Die Reihenfolge ist fest: Simulation → Facts → Memory/Relationships → Trigger → Scheduler → Events/Choices → Journal/Snapshot. `tickWorld()` ruft die Runtime am Tick-Ende. `src/store/narrative-commands.ts` liefert `flushNarrativeCmd()` und `chooseNarrativeCmd()`; `world-store.ts` flusht nach jeder erfolgreichen Command-Ausfuehrung, nach Neues Spiel, Import und Rivalenspiel — `#emit()` bleibt Darstellung und Save. `spawn.ts` und `guest-service.ts` drainieren nicht mehr selbst. Eine erfolgreiche Choice emittiert `EVENT_RESOLVED`, damit auch der Erfolgsfall einen Folgefakt hat; der naechste Flush verarbeitet ihn genau einmal, nie rekursiv. Das Schema validiert den neuen Fact, der Save-Roundtrip traegt ihn, und der Content-Beitrag bringt die Registry auf 21 Fragmente.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` war gruen; `verify:quick` bestand alle zehn Gates. `RBD_VERIFY_NO_CACHE=1 npx --yes pnpm@10.4.1 run verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die Suite meldete 652 bestandene und 2 uebersprungene Tests (654 gesamt), 131 Testdateien bestanden und 2 uebersprungen (133). Das Assets-Gate meldete 21 Beitraege, 21 Turns und 21 Registry-Fragmente bei 552 Dateien. Bericht: `.verify-cache/reports/2026-11-03T02-35-24-994Z/summary.md`. Keine neue Abhaengigkeit.
+
+**Offen.** Die Runtime verwirft Trigger-Treffer, die ueber die Drei-Event-Grenze hinausgehen; das ist bewusst begrenzt, aber noch nicht als eigener Diagnosezaehler sichtbar. `NARRATIVE-ENGINE.md` nennt die Runtime, die UI-Anbindung bleibt NAR-14, die Demand-Migration NAR-13.
+
 ## 2026-11-03 - NAR-11: Lokaler Runtime Composer
 
 **Ziel.** Die validierte Registry zur Laufzeit mit Event-Template-Slots verbinden, ohne Textauswahl, Mechanik oder Gameplay-PRNG zu koppeln. Fehlende Slots brauchen lokale, kontextvertraegliche Fallbacks; kein Provider, kein API-Key, keine Textanfrage.
@@ -760,7 +770,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.85 | 2026-11-03 02:15 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.86 | 2026-11-03 02:34 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

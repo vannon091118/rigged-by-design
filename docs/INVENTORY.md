@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.85 | 2026-11-03 02:15 UTC -->
+<!-- rbd-doc: v0.3.86 | 2026-11-03 02:34 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -399,8 +399,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-03-nar-09-content-registry.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-03-nar-10-content-compiler.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-03-nar-11-runtime-composer.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 515 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 85 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 540 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 89 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 82 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
@@ -408,18 +408,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 274 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 282 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 778 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 788 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
-- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1095 Zeilen
+- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1097 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 323 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 351 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 42 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 151 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 153 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1254,16 +1254,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 118 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 21 Zeilen
 - `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 115 Zeilen
-- `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 78 Zeilen
+- `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 76 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 119 Zeilen
 - `src/core/sim/journal.ts` — Ereignisprotokoll: jeder wichtige Zustand mit Ursache, Wirkung und Akteur. — gelesen: 145 Zeilen
 - `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 125 Zeilen
 - `src/core/sim/mugging.ts` — Simulierter Überfall nach einer verlorenen Prügelei: Ziel wählen, greifen, fliehen. — gelesen: 89 Zeilen
-- `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 24 Zeilen
+- `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 35 Zeilen
 - `src/core/sim/narrative/choices/contract.ts` — Choice-Vertrag: stabile IDs bleiben an Template-ID und Version gebunden. — gelesen: 21 Zeilen
 - `src/core/sim/narrative/choices/eligibility.ts` — Reine Choice-Eligibility: Lifecycle, Requirements und Kosten ohne Seiteneffekte. — gelesen: 86 Zeilen
-- `src/core/sim/narrative/commands/execute.ts` — Einziger Ausfuehrungspfad: Preflight, Kosten, Handler, RESOLVED. — gelesen: 96 Zeilen
+- `src/core/sim/narrative/commands/execute.ts` — Einziger Ausfuehrungspfad: Preflight, Kosten, Handler, RESOLVED. — gelesen: 102 Zeilen
 - `src/core/sim/narrative/commands/index.ts` — Oeffentliche Fassade der Event-Command-Schicht. — gelesen: 13 Zeilen
 - `src/core/sim/narrative/commands/parse-directives.ts` — Parser fuer €-Direktiven: erzeugt ein strikt begrenztes AST, nie Code. — gelesen: 123 Zeilen
 - `src/core/sim/narrative/commands/preflight.ts` — Vollstaendige Vorpruefung einer Choice, bevor irgendein Effekt geschrieben wird. — gelesen: 122 Zeilen
@@ -1271,7 +1271,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 97 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 81 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 25 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 26 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 70 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 57 Zeilen
 - `src/core/sim/narrative/composer/types.ts` — NAR-11: Der Composer verbindet Template-Slots mit lokalen Registry-Fragmenten. — gelesen: 64 Zeilen
@@ -1285,8 +1285,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/template-candidate.ts` — Uebersetzt einen Trigger-Match in einen begrenzten EventCandidate aus dem Template. — gelesen: 59 Zeilen
 - `src/core/sim/narrative/events/template-schema.ts` — Fail-closed Validierung fuer Event-Templates, Choices und ihre statischen Teile. — gelesen: 135 Zeilen
 - `src/core/sim/narrative/events/template-types.ts` — Deklarative Event-Templates und Choice-Vertraege; Darstellung bleibt ausserhalb. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 78 Zeilen
-- `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 67 Zeilen
+- `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 84 Zeilen
+- `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 62 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
@@ -1299,7 +1299,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/trigger-schema.ts` — Schema-Validierung fuer persistierbare Trigger-Definitionen; fail-closed. — gelesen: 103 Zeilen
 - `src/core/sim/narrative/trigger-types.ts` — Deklarative Trigger-Vertraege: Bedingungen, Context und erklaerte Treffer. — gelesen: 83 Zeilen
 - `src/core/sim/narrative/triggers.ts` — Oeffentliche Trigger-Fassade: Context, reine Auswertung und Schema-Validierung. — gelesen: 8 Zeilen
-- `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 158 Zeilen
+- `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 167 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 177 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern. — gelesen: 184 Zeilen
@@ -1315,12 +1315,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rivals.ts` — Fremde Casinos: eigene Betreiber, eigene Maschinen, eigene Regeln. — gelesen: 181 Zeilen
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 103 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
-- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 71 Zeilen
+- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 69 Zeilen
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 242 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 114 Zeilen
 - `src/core/sim/tick-timing.ts` — Eine Quelle fuer die Tick-Dauer: Simulation, Renderer und UI rechnen mit demselben Takt. — gelesen: 4 Zeilen
-- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 138 Zeilen
+- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 141 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 74 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 119 Zeilen
@@ -1420,7 +1420,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 101 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 150 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 163 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 178 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 362 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/popup.css` — .popup-backdrop { — gelesen: 532 Zeilen
@@ -1483,6 +1483,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T44 | **2026-11-03 02:32 UTC**: NAR-12 abgeschlossen: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler in einem Lauf; Tick und Store-Mutationsgrenzen rufen ihn. `EVENT_RESOLVED` schliesst den Command→Fact-Kreis; zwei neue Testdateien, 21 Registry-Fragmente. |
 | T43 | **2026-11-03 00:25 UTC**: NAR-06 abgeschlossen: `event-lifecycle.ts`, `event-scheduler.ts`, `event-schema.ts`, `event-types.ts` und `narrative-rng.ts` verwalten persistente Event-Instanzen mit Prioritaet, Fairness, Scopes, Cooldowns, Fristen, Stale-Cancel und eigenem Narrativ-RNG. Save v9 traegt die Felder additiv; Tests decken Lifecycle, Determinismus, Ketten, Historiengrenze und Roundtrip ab. Trigger-Auswahl im Tick bleibt NAR-12. |
 | T42 | **2026-11-03 00:06 UTC**: NAR-05 abgeschlossen: `trigger-types.ts`, `trigger-context.ts`, `trigger-evaluate.ts` und `trigger-schema.ts` liefern Context, reine Auswertung aller Operatoren und fail-closed Schema-Validierung; `triggers.ts` bleibt Fassade. Alte `visitorId`-Facts und neue `actorRefs` werden einheitlich aufgeloest. Tests decken Operatoren, Grenzen, Historie, fehlende Referenzen und Unveraenderlichkeit ab. Tick-Anbindung und Cooldowns bleiben NAR-06/NAR-12. |
 | T41 | **2026-11-02 23:37 UTC**: NAR-04 abgeschlossen: Streit, Kassenbedienung und Rivalenabrechnung erzeugen gerichtete Besucher-Besucher-, Besucher-Personal- und Rivale-Haus-Kanten. Neue Facts nutzen `actorRefs` statt Pflicht-`visitorId`; Schema, Kanonisierung, Pinning und Save-Roundtrip sind getestet. Aufgabe und Trigger/Scheduler bleiben offen. |
