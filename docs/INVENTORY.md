@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->
+<!-- rbd-doc: v0.3.83 | 2026-11-03 01:35 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1090 |
-| Gelistete Dateien | 1090 |
-| Getrackte Ordner | 75 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (18), docs (50), public (552), scripts (54), src (397) |
+| Getrackte Dateien | 1097 |
+| Gelistete Dateien | 1097 |
+| Getrackte Ordner | 77 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (22), docs (50), public (552), scripts (56), src (398) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -286,8 +286,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 17 Datei(en)
-- `content/narrative/vocabulary/` — 1 Datei(en)
+- `content/narrative/contributions/` — 18 Datei(en)
+- `content/narrative/registry/` — 1 Datei(en)
+- `content/narrative/turns/` — 1 Datei(en)
+- `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 19 Datei(en)
 - `docs/banners/` — 4 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
@@ -320,8 +322,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 36 Datei(en)
-- `scripts/lib/` — 18 Datei(en)
+- `scripts/` — 37 Datei(en)
+- `scripts/lib/` — 19 Datei(en)
 - `src/` — 2 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
@@ -331,7 +333,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 12 Datei(en)
+- `src/core/governance/__tests__/` — 13 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -376,41 +378,45 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 109 Zeilen
 - `README.md` — Rigged by Design — gelesen: 250 Zeilen
-- `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-deckung-und-wut.json` — { — gelesen: 12 Zeilen
-- `content/narrative/contributions/2026-11-02-dokumentation.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-dreck-und-verluste.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-geduld-und-versprechen.json` — { — gelesen: 12 Zeilen
-- `content/narrative/contributions/2026-11-02-nachfragezustand.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-nar-04-beziehungsquellen.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-nar-05-trigger-context.json` — { — gelesen: 13 Zeilen
-- `content/narrative/contributions/2026-11-02-narrative-facts.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-schicht-und-lohn.json` — { — gelesen: 12 Zeilen
-- `content/narrative/contributions/2026-11-02-trigger-bedingungen.json` — { — gelesen: 10 Zeilen
-- `content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json` — { — gelesen: 12 Zeilen
-- `content/narrative/contributions/2026-11-03-nar-06-event-scheduler.json` — { — gelesen: 13 Zeilen
-- `content/narrative/contributions/2026-11-03-nar-07-event-templates.json` — { — gelesen: 13 Zeilen
-- `content/narrative/contributions/2026-11-03-nar-08-command-dsl.json` — { — gelesen: 12 Zeilen
+- `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-deckung-und-wut.json` — { — gelesen: 19 Zeilen
+- `content/narrative/contributions/2026-11-02-dokumentation.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-dreck-und-verluste.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-geduld-und-versprechen.json` — { — gelesen: 19 Zeilen
+- `content/narrative/contributions/2026-11-02-nachfragezustand.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-nar-04-beziehungsquellen.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-nar-05-trigger-context.json` — { — gelesen: 20 Zeilen
+- `content/narrative/contributions/2026-11-02-narrative-facts.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-schicht-und-lohn.json` — { — gelesen: 19 Zeilen
+- `content/narrative/contributions/2026-11-02-trigger-bedingungen.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json` — { — gelesen: 19 Zeilen
+- `content/narrative/contributions/2026-11-03-nar-06-event-scheduler.json` — { — gelesen: 20 Zeilen
+- `content/narrative/contributions/2026-11-03-nar-07-event-templates.json` — { — gelesen: 20 Zeilen
+- `content/narrative/contributions/2026-11-03-nar-08-command-dsl.json` — { — gelesen: 19 Zeilen
+- `content/narrative/contributions/2026-11-03-nar-09-content-registry.json` — { — gelesen: 17 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 458 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 77 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 72 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 245 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 250 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 258 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 748 Zeilen
-- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 37 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 758 Zeilen
+- `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
-- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1071 Zeilen
+- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1079 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 270 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 292 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 42 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 148 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 149 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1007,6 +1013,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge aufraeumen. — gelesen: 43 Zeilen
 - `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 113 Zeilen
 - `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 128 Zeilen
+- `scripts/build-narrative-registry.mjs` — Build the NAR-09 registry from the validated contribution inbox. — gelesen: 29 Zeilen
 - `scripts/check-loc.mjs` — LOC-Guard fuer VaCoin Casino Roguelite. — gelesen: 102 Zeilen
 - `scripts/ci-long-checks.mjs` — Lange Nachweise ueber GitHub Actions statt auf der eigenen Maschine. — gelesen: 172 Zeilen
 - `scripts/ci-tag-release.mjs` — Tag und Release fuer die Version, die im gepushten Commit steht. — gelesen: 100 Zeilen
@@ -1025,6 +1032,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 226 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 123 Zeilen
+- `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 402 Zeilen
 - `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 88 Zeilen
 - `scripts/lib/pipeline-stop.mjs` — Abbruchpfad der Pipeline: Signale beenden alle Gates und hinterlassen keine Waisen. — gelesen: 22 Zeilen
 - `scripts/lib/process-sweep.mjs` — Verwaiste Gate-Prozesse: PID plus Startzeit, PID-genaues Beenden, nie nach Namensmuster. — gelesen: 188 Zeilen
@@ -1045,7 +1053,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/test-affected.mjs` — Schneller Entwicklungsfeedback-Lauf: nur Tests, die vom aktuellen Diff — gelesen: 52 Zeilen
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
 - `scripts/turn-push.mjs` — Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach mai — gelesen: 234 Zeilen
-- `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 88 Zeilen
+- `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 98 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
@@ -1129,13 +1137,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 77 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
+- `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 141 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 60 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/scripts-libs.d.ts` — Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). — gelesen: 135 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 68 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
-- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 58 Zeilen
+- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 59 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
 - `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
 - `src/core/io/envelope.ts` — Umschlag fuer Spielstand-Exporte: Art, Format, Pruefsumme, Nutzlast. — gelesen: 66 Zeilen

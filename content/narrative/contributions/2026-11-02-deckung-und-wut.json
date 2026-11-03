@@ -4,6 +4,13 @@
   "contributionId": "till-watch-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "reaction",
+  "function": "warn",
+  "contexts": ["conflict", "service"],
+  "tone": "sachlich",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ"
   ],

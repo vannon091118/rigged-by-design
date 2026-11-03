@@ -4,6 +4,13 @@
   "contributionId": "event-templates-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["templates"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ",
     "rueckkehrer"

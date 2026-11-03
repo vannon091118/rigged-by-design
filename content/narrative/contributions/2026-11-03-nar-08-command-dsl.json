@@ -4,6 +4,13 @@
   "contributionId": "command-dsl-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["commands"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
   "flags": [
     "narrativ"
   ],

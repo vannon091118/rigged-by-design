@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->
+<!-- rbd-doc: v0.3.83 | 2026-11-03 01:35 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.83] - 2026-11-03
+
+### Technik
+
+- NAR-09 abgeschlossen: Content-Beitraege tragen jetzt eine kontrollierte Klassifizierung aus Slot, Funktion, Kontexten, Ton, Stimmung, Beziehung und Persona-Bezug; Rollen, Locales und Flags bleiben in `content/narrative/vocabulary/flags.json`, die neuen Dimensionen in `classification.json`.
+- `content/narrative/turns/manifest.json` registriert jeden abgeschlossenen Agenten-Turn und ordnet ihm genau einen Beitrag zu. `content/narrative/registry/fragments.json` wird deterministisch aus den validierten Beitraegen erzeugt; `scripts/build-narrative-registry.mjs --write` schreibt sie, der Default ist ein lesender Check.
+- `scripts/lib/narrative-content.mjs` prueft Pflichtfelder, IDs, Vokabular, Dateinamen, Manifest und Registry fail-closed und ist in `scripts/verify-assets.mjs` eingehaengt. Neue Verstoesse melden `ERR-4022`; zehn neue Tests decken Schema, Duplikate, fehlende Turns und Registry-Drift ab.
 
 ## [0.3.82] - 2026-11-03
 

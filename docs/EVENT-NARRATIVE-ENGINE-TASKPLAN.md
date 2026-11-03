@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.81`<br>
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.83`<br>
 **Revision:** 2026-11-03 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, Condition Evaluator, Schema); NAR-06 erledigt (Scheduler, Lifecycle, Cooldowns, persistente Instanzen, eigener Narrativ-RNG); NAR-07 erledigt (Templates, Choice-Vertrag, persistierte Choice-Saetze, Eligibility); NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung); NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry); NAR-10 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -428,6 +428,14 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Einen wachsenden Textpool aufbauen, ohne Texte und Prompts in Simulationscode einzubetten.
 
+**Status:** erledigt (2026-11-03).
+
+**Geliefert:**
+- `content/narrative/vocabulary/flags.json` bleibt die Wahrheit fuer Rollen, Locales und semantische Flags; `classification.json` ergaenzt Slots, Funktionen, Slot-Funktions-Kompatibilitaet, Kontexte, Ton, Stimmung, Beziehung und Personas.
+- Alle Beitraege tragen Pflichtfelder, Herkunft und kontrollierte Klassifizierung; der neue Validator weist fehlende Felder, unbekannte Werte, doppelte IDs, falsche Dateinamen und fehlende Direktiven zurueck.
+- `content/narrative/turns/manifest.json` ordnet jedem abgeschlossenen Agenten-Turn genau einen Beitrag zu; doppelte oder fehlende Eintraege sind fail-closed.
+- `content/narrative/registry/fragments.json` ist die sortierte, abgeleitete Registry. `scripts/build-narrative-registry.mjs` erzeugt sie deterministisch, `scripts/lib/narrative-content.mjs` prueft sie, und `scripts/verify-assets.mjs` haengt die Pruefung in das bestehende Assets-Gate ein (`ERR-4022`).
+
 **Arbeiten**
 - Eigenständiges Content-Verzeichnis aufbauen, z. B. `content/narrative/contributions/`, `content/narrative/registry/` und separate Schema-/Vocabulary-Dateien.
 - Content-Fragmente bekommen mindestens stabile ID, `agentId`, `turnId`, Rolle/Slot, Sprache, Text, semantische Flags, erlaubte Kontextarten und optionale deklarative Commands.
@@ -441,7 +449,7 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Nachweis:** Schema weist fehlende Pflichtfelder, doppelte IDs, ungültige Flags, unbekannte Locale/Slots und fehlende Commands zurück; Turn-Manifest zählt exakt einen Beitrag pro registriertem Agent-Turn.
 
-**Gate:** `verify:quick`; neue Content-Validierung in das bestehende `verify:assets` einhängen, nicht einen parallelen Gate-Stack schaffen.
+**Gate:** `verify:quick` erfuellt; die Content-Validierung laeuft im bestehenden `verify:assets`, kein paralleler Gate-Stack.
 
 ---
 

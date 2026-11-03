@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-09: Content-Registry und Klassifizierung
+
+**Ziel.** Die vorhandene Content-Inbox in einen pruefbaren Textpool verwandeln: Jeder Beitrag bekommt eine kontrollierte Klassifizierung, jeder abgeschlossene Agenten-Turn genau einen Eintrag im Manifest, und die Runtime-Registry wird daraus reproduzierbar abgeleitet, ohne Texte in Simulationscode zu ziehen.
+
+**Umsetzung.** `content/narrative/vocabulary/classification.json` kontrolliert Slots, Funktionen, Slot-Funktions-Kompatibilitaet, Kontexte, Ton, Stimmung, Beziehung und Personas; Rollen, Locales und Flags bleiben in `flags.json`. Alle 18 Beitraege tragen jetzt diese Felder. `content/narrative/turns/manifest.json` ordnet 18 Turn-IDs genau je einem Beitrag zu. `content/narrative/registry/fragments.json` enthaelt die 18 sortierten Fragmente samt Herkunft, Text und Direktiven und wird von `scripts/build-narrative-registry.mjs` aus derselben Validierung erzeugt. `scripts/lib/narrative-content.mjs` prueft Schema, IDs, Dateinamen, Manifest und Registry; `scripts/verify-assets.mjs` ruft die Pruefung im bestehenden Gate auf. Kein neuer Gate-Stack, kein LLM im Spiel.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run verify:all` bestand alle zwoelf Gates inklusive Audit und Build; darin waren `typecheck`, `check:loc`, `verify:docs` und `verify:tree` PASS. Die vollstaendige Suite meldete 623 bestandene und 2 uebersprungene Tests (625 gesamt); 127 Testdateien bestanden, 2 wurden uebersprungen. Der Registry-Check und das Assets-Gate meldeten 18 Beitraege, 18 Turns und 18 sortierte Registry-Fragmente. Die zehn neuen Tests decken Schema, unbekannte Klassifizierungen, Slot-Funktions-Konflikte, Direktiven, doppelte IDs, Manifest-Luecken und Registry-Drift ab.
+
+**Offen.** NAR-10 baut den Compiler fuer Makro-AST, Konflikte und byte-identische Registry; NAR-11 den Composer. Die Registry enthaelt bewusst nur validierte Beitraege, noch keine Event-Template-Bindung oder Runtime-Auswahl.
+
 ## 2026-11-03 - NAR-08: Command-DSL und Allowlist
 
 **Ziel.** Textbeitraege duerfen Commands deklarieren, aber niemals Code ausfuehren. Event-Templates bleiben die Allowlist; Parser, Preflight und Handler muessen fail-closed zusammenarbeiten, und eine Choice darf auch bei wiederholtem Klick nur einmal wirken.
@@ -730,7 +740,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.82 | 2026-11-03 01:16 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.83 | 2026-11-03 01:35 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

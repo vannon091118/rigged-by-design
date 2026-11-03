@@ -4,6 +4,13 @@
   "contributionId": "neon-abend-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["demand"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
   "flags": ["narrativ", "rita-kern"],
   "text": "Rita sah zur Neonreklame hinauf. Der Abend stand noch im Kalender, auch wenn das alte Buch ein neues Fach bekommen hatte.",
   "directives": []

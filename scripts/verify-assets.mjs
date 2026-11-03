@@ -9,6 +9,7 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
+import { loadNarrativeContent } from './lib/narrative-content.mjs';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const MANIFEST = join(ROOT, 'src/render/assets/manifest.json');
@@ -84,5 +85,14 @@ for (const file of walk(assetRoot)) {
 
 const used = [...referenced].filter((file) => existsSync(join(assetRoot, file)));
 const bytes = used.reduce((sum, file) => sum + statSync(join(assetRoot, file)).size, 0);
+
+// NAR-09: Die Content-Registry ist Teil des bestehenden Assets-Gates.
+const narrative = loadNarrativeContent(ROOT);
+if (!narrative.ok) {
+  for (const problem of narrative.issues) fail(`[ERR-4022] ${problem.path}: ${problem.message}`);
+} else {
+  console.log(`[assets] ${narrative.contributionCount} Narrative-Beitraege, ${narrative.turnCount} Turns, ${narrative.registryCount} Registry-Fragmente`);
+}
+
 if (process.exitCode) process.exit(process.exitCode);
 console.log(`[assets] ${used.length} Datei(en), ${(bytes / 1024 / 1024).toFixed(1)} MB, alle Referenzen aufgeloest`);

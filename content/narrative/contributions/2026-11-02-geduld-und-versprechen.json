@@ -4,6 +4,13 @@
   "contributionId": "patience-gap-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "warn",
+  "contexts": ["loss", "service"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ"
   ],

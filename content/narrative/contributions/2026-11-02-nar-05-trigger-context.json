@@ -4,6 +4,13 @@
   "contributionId": "trigger-context-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["trigger", "facts", "return"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ",
     "rueckkehrer"
