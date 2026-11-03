@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 134 Dateien — contract 88 · integration 24 · governance 11 · statistics 6 · performance 5.
+Summe: 135 Dateien — contract 88 · integration 24 · governance 12 · statistics 6 · performance 5.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -46,6 +46,7 @@ Summe: 134 Dateien — contract 88 · integration 24 · governance 11 · statist
 | `src/core/governance/__tests__/dependency-governance.test.ts` | governance | contract | ja | `src/core/governance/error-codes.ts` |
 | `src/core/governance/__tests__/gate-runner.test.ts` | pipeline | governance | ja | `scripts/lib/gate-runner.mjs` |
 | `src/core/governance/__tests__/impact.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
+| `src/core/governance/__tests__/narrative-compiler.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-compiler.mjs` |
 | `src/core/governance/__tests__/narrative-content.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-content.mjs` |
 | `src/core/governance/__tests__/pipeline-modes.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/process-sweep.test.ts` | pipeline | governance | ja | `scripts/lib/process-sweep.mjs` |

@@ -6,6 +6,8 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
+import { buildCompiledRegistry, validateCompiledRegistry } from './narrative-compiler.mjs';
+import { MACRO_LIMITS } from './narrative-macros.mjs';
 
 const CONTRIBUTION_FIELDS = [
   'agentId', 'turnId', 'contributionId', 'role', 'locale', 'slot', 'function',
@@ -27,22 +29,22 @@ const LIMITS = {
   flags: 12,
   contexts: 8,
   personaRefs: 4,
-  directives: 8,
-  directive: 200,
+  directives: MACRO_LIMITS.directives,
+  directive: MACRO_LIMITS.directiveLength,
 };
 const SLUG = /^[a-z0-9][a-z0-9-]*$/;
 const TURN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z-[a-z0-9][a-z0-9-]*$/;
 const FILE = /^\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.json$/;
-const DIRECTIVE = /^€[^\r\n]{1,199}$/u;
+const DIRECTIVE = /^€[^\r\n]{1,239}$/u;
 
 const isRecord = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
 const has = (record, key) => Object.prototype.hasOwnProperty.call(record, key);
 const issue = (path, message) => ({ path, message });
-const list = (value) => (Array.isArray(value) ? value : []);
 
 function readJson(root, path) {
   try {
-    return { path, value: JSON.parse(readFileSync(join(root, path), 'utf8')) };
+    const text = readFileSync(join(root, path), 'utf8');
+    return { path, value: JSON.parse(text), text };
   } catch (error) {
     return { path, error: `${path}: ${error instanceof Error ? error.message : String(error)}` };
   }
@@ -99,6 +101,23 @@ function stringArray(value) {
     && new Set(value).size === value.length;
 }
 
+function pairList(value, allowed, key, path, issues) {
+  if (!Array.isArray(value)) {
+    issues.push(issue(path, `${key} fehlt oder ist keine Liste`));
+    return false;
+  }
+  const knownValue = (entry) => (Array.isArray(allowed) ? allowed.includes(entry) : has(allowed, entry));
+  let ok = true;
+  for (const pair of value) {
+    if (!Array.isArray(pair) || pair.length !== 2 || pair[0] === pair[1]
+      || !knownValue(pair[0]) || !knownValue(pair[1])) {
+      issues.push(issue(path, `${key} enthaelt ein ungueltiges Paar`));
+      ok = false;
+    }
+  }
+  return ok;
+}
+
 function loadVocabulary(root) {
   const flagsResult = readJson(root, 'content/narrative/vocabulary/flags.json');
   const classResult = readJson(root, 'content/narrative/vocabulary/classification.json');
@@ -131,6 +150,40 @@ function loadVocabulary(root) {
     }
   }
 
+  const aliases = classDoc.personaAliases;
+  if (!isRecord(aliases)) {
+    issues.push(issue(classResult.path, 'personaAliases fehlt oder ist ungueltig'));
+  } else {
+    const aliasOwners = new Map();
+    for (const persona of Object.keys(classDoc.personas ?? {})) {
+      if (!has(aliases, persona)) issues.push(issue(classResult.path, `personaAliases fehlt fuer ${persona}`));
+    }
+    for (const [persona, names] of Object.entries(aliases)) {
+      if (!has(classDoc.personas ?? {}, persona)) {
+        issues.push(issue(classResult.path, `personaAliases nennt unbekannte Persona: ${persona}`));
+      }
+      if (!stringArray(names)) {
+        issues.push(issue(classResult.path, `personaAliases fuer ${persona} ist ungueltig`));
+        continue;
+      }
+      for (const alias of names) {
+        const key = alias.toLocaleLowerCase('de');
+        const owner = aliasOwners.get(key);
+        if (owner && owner !== persona) issues.push(issue(classResult.path, `Alias ${alias} ist doppelt: ${owner}/${persona}`));
+        aliasOwners.set(key, persona);
+      }
+    }
+  }
+
+  const conflicts = classDoc.conflicts;
+  if (!isRecord(conflicts)) {
+    issues.push(issue(classResult.path, 'conflicts fehlt oder ist ungueltig'));
+  } else {
+    pairList(conflicts.rolePairs, flagsDoc.roles ?? [], 'conflicts.rolePairs', classResult.path, issues);
+    pairList(conflicts.moodPairs, classDoc.moods ?? {}, 'conflicts.moodPairs', classResult.path, issues);
+    pairList(conflicts.flagPairs, flagsDoc.flags ?? {}, 'conflicts.flagPairs', classResult.path, issues);
+  }
+
   return {
     issues,
     vocabulary: {
@@ -145,6 +198,8 @@ function loadVocabulary(root) {
       moods: classDoc.moods ?? {},
       relationships: classDoc.relationships ?? {},
       personas: classDoc.personas ?? {},
+      personaAliases: aliases ?? {},
+      conflicts: conflicts ?? {},
     },
   };
 }
@@ -184,6 +239,10 @@ export function validateContribution(data, vocabulary, sourcePath = '') {
     issues.push(issue(sourcePath, `function ${String(data.function)} passt nicht zu slot ${String(data.slot)}`));
   }
 
+  if (typeof data.text === 'string' && data.text.includes('€')) {
+    issues.push(issue(sourcePath, 'sichtbarer Text enthaelt ein €-Makro; Direktiven gehoeren in directives'));
+  }
+
   if (!Array.isArray(data.directives) || data.directives.length > LIMITS.directives) {
     issues.push(issue(sourcePath, `directives braucht 0..${LIMITS.directives} Eintraege`));
   } else {
@@ -202,47 +261,6 @@ export function validateContribution(data, vocabulary, sourcePath = '') {
     }
   }
   return issues;
-}
-
-export function buildRegistryEntry(sourcePath, data) {
-  return {
-    contributionId: data.contributionId,
-    turnId: data.turnId,
-    agentId: data.agentId,
-    role: data.role,
-    locale: data.locale,
-    slot: data.slot,
-    function: data.function,
-    contexts: list(data.contexts),
-    tone: data.tone,
-    mood: data.mood,
-    relationship: data.relationship,
-    personaRefs: list(data.personaRefs),
-    flags: list(data.flags),
-    text: data.text,
-    directives: list(data.directives),
-    source: sourcePath,
-  };
-}
-
-export function buildRegistry(contributions) {
-  return contributions
-    .filter((entry) => entry.data)
-    .map((entry) => buildRegistryEntry(entry.path, entry.data))
-    .sort((left, right) => (left.contributionId < right.contributionId ? -1 : left.contributionId > right.contributionId ? 1 : 0));
-}
-
-export function buildRegistryDocument(contributions) {
-  return { version: 1, fragments: buildRegistry(contributions) };
-}
-
-/** Stable key order for comparing checked-in JSON with generated JSON. */
-export function canonical(value) {
-  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
-  if (isRecord(value)) {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
-  }
-  return JSON.stringify(value);
 }
 
 function readContributions(root) {
@@ -313,32 +331,8 @@ function validateManifest(manifest, contributions) {
   return issues;
 }
 
-function validateRegistry(registry, contributions) {
-  const path = 'content/narrative/registry/fragments.json';
-  const issues = [];
-  if (!isRecord(registry) || registry.version !== 1 || !Array.isArray(registry.fragments)) {
-    issues.push(issue(path, 'Registry braucht version 1 und fragments[]'));
-    return issues;
-  }
-  const expected = buildRegistry(contributions);
-  const actual = registry.fragments;
-  if (canonical(actual) === canonical(expected)) return issues;
-
-  const expectedById = new Map(expected.map((entry) => [entry.contributionId, entry]));
-  const actualById = new Map(actual.filter(isRecord).map((entry) => [entry.contributionId, entry]));
-  for (const [id, entry] of expectedById) {
-    if (!actualById.has(id)) issues.push(issue(path, `Registry fehlt Beitrag ${id}`));
-    else if (canonical(actualById.get(id)) !== canonical(entry)) issues.push(issue(path, `Registry-Eintrag ${id} weicht vom Beitrag ab`));
-  }
-  for (const id of actualById.keys()) if (!expectedById.has(id)) issues.push(issue(path, `Registry enthaelt unbekannten Beitrag ${id}`));
-  const sortedActual = [...actual].sort((left, right) => String(left?.contributionId ?? '').localeCompare(String(right?.contributionId ?? '')));
-  if (canonical(sortedActual) === canonical(expected)) issues.push(issue(path, 'Registry ist nicht kanonisch sortiert'));
-  if (issues.length === 0) issues.push(issue(path, 'Registry ist nicht mit den Beitraegen synchron'));
-  return issues;
-}
-
-/** Validate schema, duplicate IDs and manifest; registry is optional here. */
-export function validateNarrativeData({ vocabulary, contributions, manifest, registry }) {
+/** Validate schema, duplicate IDs, manifest and compilation; registry is optional. */
+export function validateNarrativeData({ vocabulary, contributions, manifest, registry, registryText = null, compiled = null }) {
   const issues = [];
   for (const entry of contributions) {
     if (entry.data === null) continue;
@@ -359,7 +353,11 @@ export function validateNarrativeData({ vocabulary, contributions, manifest, reg
     }
   }
   issues.push(...validateManifest(manifest, contributions));
-  if (registry !== undefined) issues.push(...validateRegistry(registry, contributions));
+  const compilation = compiled ?? buildCompiledRegistry(contributions, vocabulary);
+  issues.push(...compilation.issues);
+  if (registry !== undefined) {
+    issues.push(...validateCompiledRegistry(registry, compilation.document, registryText));
+  }
   return issues;
 }
 
@@ -368,12 +366,16 @@ export function loadNarrativeSources(root = resolve('.')) {
   const readResult = readContributions(root);
   const manifestResult = readJson(root, 'content/narrative/turns/manifest.json');
   const issues = [...vocabularyResult.issues, ...readResult.issues, ...(manifestResult.error ? [issue(manifestResult.path, manifestResult.error)] : [])];
+  const compiled = buildCompiledRegistry(readResult.contributions, vocabularyResult.vocabulary);
   if (!manifestResult.error) {
     issues.push(...validateNarrativeData({
       vocabulary: vocabularyResult.vocabulary,
       contributions: readResult.contributions,
       manifest: manifestResult.value,
+      compiled,
     }));
+  } else {
+    issues.push(...compiled.issues);
   }
   return {
     ok: issues.length === 0,
@@ -381,6 +383,7 @@ export function loadNarrativeSources(root = resolve('.')) {
     vocabulary: vocabularyResult.vocabulary,
     contributions: readResult.contributions,
     manifest: manifestResult.value,
+    compiled: compiled.document,
   };
 }
 
@@ -389,12 +392,16 @@ export function loadNarrativeContent(root = resolve('.')) {
   const registryResult = readJson(root, 'content/narrative/registry/fragments.json');
   const issues = [...sources.issues];
   if (registryResult.error) issues.push(issue(registryResult.path, registryResult.error));
-  else if (sources.issues.length === 0) issues.push(...validateRegistry(registryResult.value, sources.contributions));
+  else if (sources.issues.length === 0) {
+    issues.push(...validateCompiledRegistry(registryResult.value, sources.compiled, registryResult.text));
+  }
   return {
     ...sources,
     ok: issues.length === 0,
     issues,
     registry: registryResult.value,
+    registryText: registryResult.text ?? null,
+    contentHash: sources.compiled?.contentHash ?? null,
     contributionCount: sources.contributions.filter((entry) => entry.data).length,
     turnCount: Array.isArray(sources.manifest?.turns) ? sources.manifest.turns.length : 0,
     registryCount: Array.isArray(registryResult.value?.fragments) ? registryResult.value.fragments.length : 0,

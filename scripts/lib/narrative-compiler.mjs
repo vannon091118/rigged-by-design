@@ -1,0 +1,218 @@
+/**
+ * NAR-10 deterministic content compiler.
+ *
+ * Contributions are the only source. The compiler validates macros, detects
+ * semantic conflicts, sorts fragments by contributionId and hashes the
+ * canonical fragment list. The generated JSON is an importable Vite/Runtime
+ * data asset; it is never hand-edited and contains no executable code.
+ */
+import { createHash } from 'node:crypto';
+import { compileMacroBatch } from './narrative-macros.mjs';
+
+export const REGISTRY_VERSION = 2;
+export const COMPILER_ID = 'nar-10';
+const REGISTRY_PATH = 'content/narrative/registry/fragments.json';
+
+const isRecord = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
+const list = (value) => (Array.isArray(value) ? value : []);
+const issue = (path, message) => ({ path, message });
+
+/** Stable key order for hashing and structural comparison. */
+export function canonical(value) {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
+  if (isRecord(value)) {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+export function contentHashOf(fragments) {
+  return `sha256:${createHash('sha256').update(canonical(fragments)).digest('hex')}`;
+}
+
+export function renderRegistry(document) {
+  return `${JSON.stringify(document, null, 2)}\n`;
+}
+
+function fragmentOf(entry, directives) {
+  const data = entry.data;
+  // Drop the parser's audit string: the registry carries typed AST data only.
+  const ast = directives.map((command) => {
+    const typed = { ...command };
+    delete typed.raw;
+    return typed;
+  });
+  return {
+    contributionId: data.contributionId,
+    turnId: data.turnId,
+    agentId: data.agentId,
+    role: data.role,
+    locale: data.locale,
+    slot: data.slot,
+    function: data.function,
+    contexts: list(data.contexts),
+    tone: data.tone,
+    mood: data.mood,
+    relationship: data.relationship,
+    personaRefs: list(data.personaRefs),
+    flags: list(data.flags),
+    text: data.text,
+    directives: ast,
+    source: entry.path,
+  };
+}
+
+function pairKey(left, right) {
+  return [left, right].sort().join('\u0000');
+}
+
+function pairSet(pairs) {
+  return new Set(list(pairs).map((pair) => pairKey(pair[0], pair[1])));
+}
+
+function hasPair(set, left, right) {
+  return set.has(pairKey(left, right));
+}
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+function mentionsAlias(text, alias) {
+  if (typeof text !== 'string' || typeof alias !== 'string' || alias.length === 0) return false;
+  return new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(alias)}(?![\\p{L}\\p{N}])`, 'u').test(text);
+}
+
+function conflictIssues(fragments, vocabulary) {
+  const issues = [];
+  const conflicts = vocabulary.conflicts ?? {};
+  const rolePairs = pairSet(conflicts.rolePairs);
+  const moodPairs = pairSet(conflicts.moodPairs);
+  const aliases = vocabulary.personaAliases ?? {};
+
+  for (const fragment of fragments) {
+    for (const pair of list(conflicts.flagPairs)) {
+      if (fragment.flags.includes(pair[0]) && fragment.flags.includes(pair[1])) {
+        issues.push(issue(fragment.source, `widerspruechliche Story-Flags: ${pair[0]} und ${pair[1]}`));
+      }
+    }
+    for (const [personaId, names] of Object.entries(aliases)) {
+      if (fragment.personaRefs.includes(personaId)) continue;
+      const mentioned = list(names).find((alias) => mentionsAlias(fragment.text, alias));
+      if (mentioned) {
+        issues.push(issue(
+          fragment.source,
+          `Text nennt ${mentioned}, aber personaRefs enthaelt ${personaId} nicht`,
+        ));
+      }
+    }
+  }
+
+  const groups = new Map();
+  for (const fragment of fragments) {
+    const key = [fragment.locale, fragment.slot, [...fragment.personaRefs].sort().join(',')].join('|');
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(fragment);
+  }
+  for (const group of groups.values()) {
+    for (let leftIndex = 0; leftIndex < group.length; leftIndex += 1) {
+      for (let rightIndex = leftIndex + 1; rightIndex < group.length; rightIndex += 1) {
+        const left = group[leftIndex];
+        const right = group[rightIndex];
+        if (!left.contexts.some((context) => right.contexts.includes(context))) continue;
+        if (hasPair(rolePairs, left.role, right.role)) {
+          issues.push(issue(
+            left.source,
+            `gegensaetzliche Sprecher ${left.role}/${right.role} im selben Scope (${left.contributionId}, ${right.contributionId})`,
+          ));
+        }
+        if (hasPair(moodPairs, left.mood, right.mood)) {
+          issues.push(issue(
+            left.source,
+            `inkompatible Stimmung ${left.mood}/${right.mood} im selben Scope (${left.contributionId}, ${right.contributionId})`,
+          ));
+        }
+      }
+    }
+  }
+  return issues;
+}
+
+/**
+ * Build the complete registry document. Any returned issue means the tree must
+ * not be written or accepted; conflicts are checked after sorting so reports
+ * are deterministic too.
+ */
+export function buildCompiledRegistry(contributions, vocabulary) {
+  const issues = [];
+  const fragments = [];
+  for (const entry of contributions) {
+    if (!entry?.data) continue;
+    if (typeof entry.data.text === 'string' && entry.data.text.includes('€')) {
+      issues.push(issue(entry.path, 'sichtbarer Text enthaelt ein €-Makro; Direktiven gehoeren in directives'));
+    }
+    const macros = compileMacroBatch(entry.data.directives, { flags: vocabulary.flags });
+    for (const macroIssue of macros.issues) {
+      issues.push(issue(entry.path, `Direktive ${macroIssue.code}: ${macroIssue.message}`));
+    }
+    fragments.push(fragmentOf(entry, macros.commands));
+  }
+  fragments.sort((left, right) => (
+    left.contributionId < right.contributionId ? -1 : left.contributionId > right.contributionId ? 1 : 0
+  ));
+  issues.push(...conflictIssues(fragments, vocabulary));
+  const document = {
+    version: REGISTRY_VERSION,
+    compiler: COMPILER_ID,
+    contentHash: contentHashOf(fragments),
+    fragments,
+  };
+  return { document, issues };
+}
+
+function registryDiff(actual, expected) {
+  const issues = [];
+  const expectedById = new Map(expected.map((entry) => [entry.contributionId, entry]));
+  const actualById = new Map(actual.filter(isRecord).map((entry) => [entry.contributionId, entry]));
+  for (const [id, entry] of expectedById) {
+    if (!actualById.has(id)) issues.push(`Registry fehlt Beitrag ${id}`);
+    else if (canonical(actualById.get(id)) !== canonical(entry)) {
+      issues.push(`Registry-Eintrag ${id} weicht vom Beitrag ab`);
+    }
+  }
+  for (const id of actualById.keys()) {
+    if (!expectedById.has(id)) issues.push(`Registry enthaelt unbekannten Beitrag ${id}`);
+  }
+  return issues;
+}
+
+/**
+ * Validate a parsed registry against the compiler result. Passing the raw text
+ * additionally enforces byte-identical output, so manual edits and formatting
+ * drift fail even when the parsed JSON would look equivalent.
+ */
+export function validateCompiledRegistry(registry, compiled, registryText = null) {
+  const issues = [];
+  if (!isRecord(registry) || registry.version !== REGISTRY_VERSION || !Array.isArray(registry.fragments)) {
+    issues.push(issue(REGISTRY_PATH, `Registry braucht version ${REGISTRY_VERSION} und fragments[]`));
+    return issues;
+  }
+  if (registry.compiler !== COMPILER_ID) {
+    issues.push(issue(REGISTRY_PATH, `Registry-Compiler muss ${COMPILER_ID} sein`));
+  }
+  if (registry.contentHash !== compiled.contentHash) {
+    issues.push(issue(REGISTRY_PATH, 'Registry-contentHash passt nicht zu den Fragmenten'));
+  }
+  if (canonical(registry.fragments) !== canonical(compiled.fragments)) {
+    const diff = registryDiff(registry.fragments, compiled.fragments);
+    if (diff.length > 0) {
+      for (const message of diff) issues.push(issue(REGISTRY_PATH, message));
+    } else {
+      issues.push(issue(REGISTRY_PATH, 'Registry ist nicht kanonisch sortiert'));
+    }
+  }
+  if (registryText !== null && registryText !== renderRegistry(compiled)) {
+    issues.push(issue(REGISTRY_PATH, 'Registry ist nicht byte-identisch zum Compiler-Ergebnis'));
+  }
+  return issues;
+}
+
+export { REGISTRY_PATH };

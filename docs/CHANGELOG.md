@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.83 | 2026-11-03 01:35 UTC -->
+<!-- rbd-doc: v0.3.84 | 2026-11-03 01:57 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.84] - 2026-11-03
+
+### Technik
+
+- NAR-10 abgeschlossen: `scripts/lib/narrative-macros.mjs` parst `€...`-Direktiven zu einem begrenzten AST, prueft Command-Allowlist, Argumente, ActorRefs, Flag-Vokabular und doppelte Singleton-Commands. `scripts/lib/narrative-compiler.mjs` erkennt Sprecher-, Persona-, Stimmungs-, Flag- und Command-Konflikte, sortiert Fragmente kanonisch und erzeugt eine Registry mit SHA-256-Inhalts-Hash.
+- `scripts/compile-narrative-content.mjs` schreibt nur mit `--write`; Default und `--check` vergleichen die exakten Bytes. `scripts/verify-narrative-content.mjs` ist der lesende Nachweis. Beide laufen ohne neue Abhaengigkeit; das bestehende `verify:assets` ruft denselben Validator auf.
+- `content/narrative/registry/fragments.json` ist jetzt Version 2, traegt typisierte AST-Daten statt Roh-Makros und wird aus 19 Beitraegen erzeugt. `classification.json` ergaenzt Persona-Aliase und datengetriebene Konfliktpaare; der neue NAR-10-Beitrag traegt eine validierte `FREEZE_TICK`-Direktive.
 
 ## [0.3.83] - 2026-11-03
 
