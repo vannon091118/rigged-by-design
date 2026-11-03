@@ -9,7 +9,7 @@ export type {
 } from './events/template-types';
 export { createNarrativeRng, narrativeIndex, nextNarrativeRandom } from './narrative-rng';
 export {
-  advanceEventStep, canTransitionEvent, eventOccurrenceKey, expireDueEvents,
+  advanceEventStep, canTransitionEvent, eventOccurrenceKey, expireDueEvents, freezeEvent,
   isLiveEventStatus, isTerminalEventStatus, transitionEvent,
 } from './event-lifecycle';
 export { isEventCandidate, isEventInstance, normalizeEventState } from './event-schema';
@@ -23,3 +23,7 @@ export {
 export { createEventCandidate, resolveParticipants } from './events/template-candidate';
 export { offerChoiceIds, resolveOfferedChoice } from './choices/contract';
 export { availableChoices, checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
+export {
+  COMMAND_LIMITS, COMMAND_SPECS, allowlistForChoice, commandSpec, compileDirectives,
+  executeChoice, parseDirective, parseDirectives, preflightChoice,
+} from './commands';

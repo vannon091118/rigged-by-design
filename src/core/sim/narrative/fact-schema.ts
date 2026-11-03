@@ -30,6 +30,10 @@ export function isFact(raw: unknown): raw is NarrativeFact {
   const kind = raw.kind as NarrativeFact['kind'];
   if (!safeInteger(raw.id, 1) || !NARRATIVE_FACT_KINDS.includes(kind)) return false;
   if (!safeInteger(raw.tick, 0) || !safeInteger(raw.day, 0)) return false;
+  if (kind === 'COMMAND_REJECTED') {
+    return typeof raw.commandId === 'string' && /^[A-Za-z][A-Za-z0-9_:-]{0,63}$/.test(raw.commandId)
+      && typeof raw.reason === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.reason);
+  }
   if (kind === 'HOUSE_BALANCE') {
     return Number.isSafeInteger(raw.balance) && HOUSE_BANDS.includes(raw.band as HouseBand);
   }
