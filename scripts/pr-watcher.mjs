@@ -38,12 +38,18 @@ function fingerprintOf(code, firstLine) {
   return `fp:${code}:${firstLine.trim().slice(0, 160)}`;
 }
 
-/** Sucht ein Issue mit gleichem Fingerprint, offen oder geschlossen. */
-async function findByFingerprint(fingerprint) {
+/**
+ * Einzige Issue-Suche: Fingerprint zuerst (offen oder geschlossen, dann nur Zaehlung),
+ * sonst Titel unter den offenen Issues.
+ */
+async function findIssue(fingerprint, title) {
   const res = await api('GET', '/issues?state=all&labels=gate-failure&per_page=100');
   if (!res.ok) return undefined;
   const issues = await res.json();
-  return issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
+  const byFingerprint = issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
+  if (byFingerprint) return { issue: byFingerprint, recurring: true };
+  const byTitle = issues.find((i) => i.state === 'open' && i.title === title);
+  return byTitle ? { issue: byTitle, recurring: false } : undefined;
 }
 
 /** Zählt Vorkommen über Kommentare "Vorgekommen: N mal" und hängt den neuen Lauf an. */
@@ -63,22 +69,15 @@ async function recordRecurrence(issue, runUrl) {
   }
 }
 
-async function findExistingIssue(title) {
-  const res = await api('GET', '/issues?state=open&labels=gate-failure');
-  const issues = res.ok ? await res.json() : [];
-  return issues.find((i) => i.title === title);
-}
-
 async function createIssue(title, body, labels, fingerprint, runUrl) {
-  const known = await findByFingerprint(fingerprint);
-  if (known) {
-    await recordRecurrence(known, runUrl);
-    return known;
+  const found = await findIssue(fingerprint, title);
+  if (found?.recurring) {
+    await recordRecurrence(found.issue, runUrl);
+    return found.issue;
   }
-  const existing = await findExistingIssue(title);
-  if (existing) {
-    console.log(`Issue existiert bereits: #${existing.number}`);
-    return existing;
+  if (found) {
+    console.log(`Issue existiert bereits: #${found.issue.number}`);
+    return found.issue;
   }
   const res = await api('POST', '/issues', {
     title,

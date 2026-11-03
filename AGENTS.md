@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -55,7 +55,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 
 ## Delivery
 
-- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:quick`**, committet und pusht `main`. Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab.
+- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:quick`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab.
 - **Quick ist der Normalfall, das volle Profil nur bei Bedarf.** `pnpm run turn:finish:full` nimmt denselben Weg mit `verify:all`. Voll ist Pflicht, wenn sich Abhängigkeiten ändern (`package.json`/`pnpm-lock.yaml` jenseits der Turn-Version), Geld-, Ledger-, RNG- oder Save-Migrationscode geändert wurde, ein Release, Tag oder APK entsteht (`verify:release`) oder CI auf demselben Stand schon rot war. Für UI, Text, Doku und Anzeige-Arbeit reicht quick.
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von pnpm run test, pnpm run test:ci oder pnpm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
@@ -72,9 +72,9 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - **Issue vollständig lösen:** Nicht halbherzig beheben — alle Gates müssen grün sein, bevor das Issue als `completed` geschlossen wird.
 - **Gates nicht separat verfolgen:** Es wird kein separater Gate-Status verfolgt. Der nächste Task nach jeder Arbeit ist immer wieder der Issue-Check. Ein rotes Gate führt automatisch zu einem Issue (via `pr-watcher.yml`), das dann gelöst werden muss.
 
-## Aufgezwungene PR+Merge-Pflicht nach jedem Abschluss
+## PR+Merge-Pflicht nach jedem Abschluss
 
-- **Nach jedem Turn / Phase / Slice / Arbeitsschritt:** Es muss eine PR erstellt und zu `main` gemergt werden. Keine Ausnahme.
+- **Nach jedem Turn / Phase / Slice / Arbeitsschritt:** Der einzige Weg nach `main` ist Arbeitsbranch, PR gegen `main` und Promotion über das Gate (`promote.yml`). Ein Direktpush auf `main` ist durch das Ruleset gesperrt; `turn:finish` pusht deshalb den Arbeitsbranch und meldet einen abgelehnten Direktpush als `ERR-4023`.
 - Der PR-Body muss die drei Pflichtsektionen enthalten (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`).
 - Der Merge-Text wird aus dem Commit-Body gebaut und trägt die Pflichtsektionen, sonst wäre `main` sofort rot (`ERR-4006`).
 - `verify:quick` muss vor dem Commit grün sein. `verify:all` läuft in CI nach dem Push.
@@ -113,7 +113,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 
 ## Gate-Rootcause-Analyse
 
-Die konsolidierte Tabelle bisheriger Gate-Fehler und ihrer Ursachen steht in `docs/GATE-ROOTCAUSE.md`. Die Löschregel (Import-Grep vor jedem Löschen) gilt weiterhin.
+Die konsolidierte Tabelle bisheriger Gate-Fehler und ihrer Ursachen steht in `docs/GATE-ROOTCAUSE.md`; sie ist kein Teil dieser Arbeitsregeln. Die Löschregel (Import-Grep vor jedem Löschen) gilt weiterhin.
 
 ## Pitfalls
 
