@@ -64,6 +64,20 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - **Automatische Promotion:** `promote.yml` legt den PR an und mergt ihn, sobald `CI Verify` gruen ist; ein roter Lauf legt den Stand auf die permanente Branch `integration` (Label `integration/rot`), damit dort repariert wird. Zwei parallele rote Staende werden gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
+## Issue-Check vor Arbeitsbeginn (obligatorisch)
+
+- **Vor Beginn jeder Arbeit:** Jeder Agent prüft zuerst GitHub Issues unter `https://github.com/vannon091118/rigged-by-design/issues`. Offene Issues mit dem Label `gate-failure` haben höchste Priorität und müssen **vollständig** gelöst werden, bevor neue Arbeit beginnt.
+- **Erster Task jedes Agents:** `gh issue list --label gate-failure --state open` (oder GitHub-Web-UI). Ein offenes `gate-failure`-Issue ist der alleinige Fokus, bis es geschlossen ist.
+- **Issue vollständig lösen:** Nicht halbherzig beheben — alle Gates müssen grün sein, bevor das Issue als `completed` geschlossen wird.
+- **Gates nicht separat verfolgen:** Es wird kein separater Gate-Status verfolgt. Der nächste Task nach jeder Arbeit ist immer wieder der Issue-Check. Ein rotes Gate führt automatisch zu einem Issue (via `pr-watcher.yml`), das dann gelöst werden muss.
+
+## Aufgezwungene PR+Merge-Pflicht nach jedem Abschluss
+
+- **Nach jedem Turn / Phase / Slice / Arbeitsschritt:** Es muss eine PR erstellt und zu `main` gemergt werden. Keine Ausnahme.
+- Der PR-Body muss die drei Pflichtsektionen enthalten (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`).
+- Der Merge-Text wird aus dem Commit-Body gebaut und trägt die Pflichtsektionen, sonst wäre `main` sofort rot (`ERR-4006`).
+- `verify:quick` muss vor dem Commit grün sein. `verify:all` läuft in CI nach dem Push.
+
 ## Pflichtdoku
 
 Die Wurzel-`README.md` ist der gemeinsame Einstieg für Spielende und Entwickler: erzählerisch im Ton, präzise beim aktuellen Funktionsstand und vollständig mit Setup, Architekturwegen, Prüfungen, Roadmap und FAQ. Sie ist keine verbindliche Regelquelle; Spielmechaniken stehen immer als heutiger Stand und verweisen auf Code sowie Verträge. Neue Bilder und Screenshots werden unter `docs/` abgelegt und in der README direkt verwendet.
