@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1109 |
-| Gelistete Dateien | 1109 |
+| Getrackte Dateien | 1115 |
+| Gelistete Dateien | 1115 |
 | Getrackte Ordner | 78 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (24), docs (50), public (552), scripts (59), src (405) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (25), docs (50), public (552), scripts (59), src (410) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -286,7 +286,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 2 Datei(en)
 - `.github/workflows/` — 7 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 20 Datei(en)
+- `content/narrative/contributions/` — 21 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -341,20 +341,20 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 54 Datei(en)
-- `src/core/sim/__tests__/` — 66 Datei(en)
-- `src/core/sim/narrative/` — 20 Datei(en)
+- `src/core/sim/__tests__/` — 67 Datei(en)
+- `src/core/sim/narrative/` — 21 Datei(en)
 - `src/core/sim/narrative/choices/` — 2 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 5 Datei(en)
-- `src/core/sim/narrative/events/` — 3 Datei(en)
+- `src/core/sim/narrative/events/` — 4 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 3 Datei(en)
 - `src/render/` — 26 Datei(en)
 - `src/render/__tests__/` — 6 Datei(en)
 - `src/render/assets/` — 3 Datei(en)
 - `src/render/fx/` — 1 Datei(en)
 - `src/render/games/` — 24 Datei(en)
-- `src/store/` — 18 Datei(en)
-- `src/store/__tests__/` — 14 Datei(en)
+- `src/store/` — 19 Datei(en)
+- `src/store/__tests__/` — 15 Datei(en)
 - `src/styles/` — 4 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 32 Datei(en)
@@ -399,6 +399,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-03-nar-09-content-registry.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-03-nar-10-content-compiler.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-03-nar-11-runtime-composer.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-03-nar-12-orchestration.json` — { — gelesen: 17 Zeilen
 - `content/narrative/registry/fragments.json` — { — gelesen: 540 Zeilen
 - `content/narrative/turns/manifest.json` — { — gelesen: 89 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 82 Zeilen
@@ -1212,6 +1213,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-facts.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 104 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 78 Zeilen
 - `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 155 Zeilen
+- `src/core/sim/__tests__/narrative-runtime.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/narrative-staff-source.test.ts` — Die Kasse ist die reale Besucher-Personal-Begegnung: nur ein anwesender — gelesen: 59 Zeilen
 - `src/core/sim/__tests__/narrative-start-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 71 Zeilen
 - `src/core/sim/__tests__/narrative-trigger-schema.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 77 Zeilen
@@ -1285,6 +1287,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/template-candidate.ts` — Uebersetzt einen Trigger-Match in einen begrenzten EventCandidate aus dem Template. — gelesen: 59 Zeilen
 - `src/core/sim/narrative/events/template-schema.ts` — Fail-closed Validierung fuer Event-Templates, Choices und ihre statischen Teile. — gelesen: 135 Zeilen
 - `src/core/sim/narrative/events/template-types.ts` — Deklarative Event-Templates und Choice-Vertraege; Darstellung bleibt ausserhalb. — gelesen: 103 Zeilen
+- `src/core/sim/narrative/events/trigger-definitions.ts` — Deklarative Trigger, die einen echten Fact in einen Event-Kandidaten uebersetzen. — gelesen: 13 Zeilen
 - `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 84 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
@@ -1292,6 +1295,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 65 Zeilen
 - `src/core/sim/narrative/relationships.ts` — Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. — gelesen: 113 Zeilen
+- `src/core/sim/narrative/runtime.ts` — Duenne Ablaufkoordination: Fact drainieren, Trigger auswerten, Kandidaten begrenzt planen. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/scheduler.ts` — Oeffentliche Fassade fuer Event-Scheduler, Templates, Choices und Narrativ-RNG. — gelesen: 29 Zeilen
 - `src/core/sim/narrative/state.ts` — Narrative-Domaene: Startzustand, Start-Pool beim neuen Spiel und sichere Normalisierung. — gelesen: 97 Zeilen
 - `src/core/sim/narrative/trigger-context.ts` — Baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Trigger-Context. — gelesen: 41 Zeilen
@@ -1391,6 +1395,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 207 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
+- `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
 - `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 51 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 109 Zeilen
 - `src/store/__tests__/prng-persistence.test.ts` — Der PRNG-Zustand setzt nach dem Laden die Folge exakt fort, ohne Doppelziehung. — gelesen: 70 Zeilen
@@ -1410,6 +1415,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/migrate-narrative.ts` — Hydration der Narrative-Domaene und der Besucher-Erinnerungen beim Laden. — gelesen: 30 Zeilen
 - `src/store/migrate-staff.ts` — Personal-Migration alter Speicherstaende. — gelesen: 38 Zeilen
 - `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 216 Zeilen
+- `src/store/narrative-commands.ts` — Store-Naht fuer Narrative: Choice ausfuehren und Facts an der Mutationsgrenze flushen. — gelesen: 21 Zeilen
 - `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 86 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 47 Zeilen
 - `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
