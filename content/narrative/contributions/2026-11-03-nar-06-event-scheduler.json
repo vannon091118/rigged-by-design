@@ -4,6 +4,13 @@
   "contributionId": "event-scheduler-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["scheduler"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ",
     "rueckkehrer"

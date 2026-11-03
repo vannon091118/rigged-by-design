@@ -4,6 +4,13 @@
   "contributionId": "floor-fleck-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["loss", "conflict"],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["rita-kern"],
   "flags": ["narrativ", "verlust"],
   "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
   "directives": []

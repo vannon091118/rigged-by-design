@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung). NAR-09 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry). NAR-10 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -111,32 +111,54 @@ Der Aufruf ist idempotent und laeuft nur im Store-Pfad fuer neue Spiele, nicht i
 `createWorld()`; alte Saves behalten ihre Besucherliste. Der Start-Pool wirkt ab Tick 0:
 Die deterministische Rueckkehrer-Auswahl kann sofort eine dieser Figuren treffen.
 
-## 7. Content-Beitrag (Inbox bis zur Registry, NAR-09)
+## 7. Content-Registry und Klassifizierung (NAR-09)
 
-Ein Beitrag ist ein JSON-Datensatz:
+Ein Beitrag ist ein JSON-Datensatz in `content/narrative/contributions/`:
 
 ```json
 {
   "agentId": "buffy",
-  "turnId": "2026-11-01T12:00Z-narrative-start",
-  "contributionId": "start-pool-opening-01",
-  "role": "ERNaeHRER",
+  "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
+  "contributionId": "content-registry-01",
+  "role": "BEOBACHTER",
   "locale": "de",
-  "flags": ["narrativ", "startpool", "eroeffnung", "rita-kern"],
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["content"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
   "text": "…",
   "directives": []
 }
 ```
 
-Regeln:
-
-- Ein Agent liefert pro abgeschlossenem Turn genau einen Beitrag.
-- `turnId` + `contributionId` sind eindeutig; doppelte oder fehlende Beitraege findet
-  der spaetere Validator (NAR-10).
+- Rollen, Locales und semantische Flags stehen in
+  `content/narrative/vocabulary/flags.json`. Slots, Funktionen,
+  Slot-Funktions-Kompatibilitaet, Kontexte, Ton, Stimmung, Beziehung und Personas
+  stehen in `content/narrative/vocabulary/classification.json`. Unbekannte Werte
+  sind kein Freitext, sondern ein Schemafehler.
+- `content/narrative/turns/manifest.json` registriert jeden abgeschlossenen
+  Agenten-Turn und verweist auf genau einen `contributionId`. Doppelte Turn- oder
+  Contribution-IDs, fehlende Beitraege und nicht registrierte Beitraege sind
+  fail-closed.
+- `content/narrative/registry/fragments.json` ist die abgeleitete, nach
+  `contributionId` sortierte Runtime-Registry. Sie traegt Text, Direktiven und
+  Herkunft (`source`), aber keine zusaetzliche Spielmechanik. Der Builder
+  `scripts/build-narrative-registry.mjs --write` schreibt sie; ohne `--write`
+  vergleicht er nur. Die Registry wird nicht von Hand gepflegt.
+- `scripts/lib/narrative-content.mjs` prueft Beitragsschema, Vokabular, IDs,
+  Dateinamen, Manifest und Registry. `scripts/verify-assets.mjs` ruft diese
+  Pruefung im bestehenden Assets-Gate auf (`ERR-4022`), damit kein paralleler
+  Gate-Stack entsteht.
+- `text` bleibt Darstellung. Direktiven sind deklarativ; ihre Allowlist und
+  Makro-Auswertung bleiben NAR-08/NAR-10 und entscheiden nie ueber Choice-IDs,
+  Kosten oder Effekte.
 - Beitraege liegen unter `content/narrative/contributions/` und werden nie in
-  Simulationscode oder `AGENTS.md` eingebettet.
-- `flags` stammen aus `content/narrative/vocabulary/flags.json`.
-- `text` ist Darstellung. Er entscheidet nie ueber Choice-IDs, Kosten oder Effekte.
+  Simulationscode oder `AGENTS.md` eingebettet. Die Registry ist Daten, kein
+  ausfuehrbarer Content.
 
 ## 8. Trigger-Vertrag (NAR-05)
 

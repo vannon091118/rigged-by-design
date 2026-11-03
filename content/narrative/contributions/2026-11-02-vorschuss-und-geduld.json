@@ -4,6 +4,13 @@
   "contributionId": "advance-anger-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "warn",
+  "contexts": ["loss", "service"],
+  "tone": "sachlich",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ"
   ],

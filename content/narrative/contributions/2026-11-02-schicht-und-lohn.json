@@ -4,6 +4,13 @@
   "contributionId": "shift-pay-01",
   "role": "BEOBACHTER",
   "locale": "de",
+  "slot": "description",
+  "function": "warn",
+  "contexts": ["service", "loss"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["rita-kern"],
   "flags": [
     "narrativ"
   ],

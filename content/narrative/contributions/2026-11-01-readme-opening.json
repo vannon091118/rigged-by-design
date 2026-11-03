@@ -4,6 +4,13 @@
   "contributionId": "opening-inheritance-01",
   "role": "ERZAEHLER",
   "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": ["start"],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
   "flags": ["narrativ", "eroeffnung"],
   "text": "Im Ordner des Nachlasses lag ein Kassenbon, der länger war als die Inventarliste. Rita nannte das keinen Schatz. Sie nannte es einen Anfang und fragte, ob der Gratis-Automat wenigstens selbst laufen könne.",
   "directives": []

@@ -4,6 +4,13 @@
   "contributionId": "nar-04-beziehungsquellen-01",
   "role": "ERZAEHLER",
   "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["conflict", "service"],
+  "tone": "sachlich",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
   "flags": ["narrativ", "verlust"],
   "text": "Zwei Gaeste stiessen an der Kasse zusammen, und fuer einen Moment stand nicht nur der Streit im Raum, sondern auch die Frage, wer wem danach noch in die Augen sehen wuerde. Der Kassierer schob die Muenzen ueber den Tresen, als haette er die Antwort schon gehoert.",
   "directives": []

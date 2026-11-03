@@ -1,0 +1,402 @@
+/**
+ * NAR-09 content contract: contributions, controlled vocabulary, turn manifest
+ * and the derived registry are one read-only validation unit. The registry
+ * builder uses the same normalisation as the verifier, so a green Assets gate
+ * means the checked-in registry is byte-for-byte explainable from the inbox.
+ */
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { join, relative, resolve } from 'node:path';
+
+const CONTRIBUTION_FIELDS = [
+  'agentId', 'turnId', 'contributionId', 'role', 'locale', 'slot', 'function',
+  'contexts', 'tone', 'mood', 'relationship', 'personaRefs', 'flags', 'text', 'directives',
+];
+const MANIFEST_FIELDS = ['turnId', 'contributionId'];
+const LIMITS = {
+  agentId: 32,
+  turnId: 96,
+  contributionId: 80,
+  role: 32,
+  locale: 8,
+  slot: 32,
+  function: 32,
+  tone: 32,
+  mood: 32,
+  relationship: 32,
+  text: 800,
+  flags: 12,
+  contexts: 8,
+  personaRefs: 4,
+  directives: 8,
+  directive: 200,
+};
+const SLUG = /^[a-z0-9][a-z0-9-]*$/;
+const TURN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z-[a-z0-9][a-z0-9-]*$/;
+const FILE = /^\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.json$/;
+const DIRECTIVE = /^€[^\r\n]{1,199}$/u;
+
+const isRecord = (value) => typeof value === 'object' && value !== null && !Array.isArray(value);
+const has = (record, key) => Object.prototype.hasOwnProperty.call(record, key);
+const issue = (path, message) => ({ path, message });
+const list = (value) => (Array.isArray(value) ? value : []);
+
+function readJson(root, path) {
+  try {
+    return { path, value: JSON.parse(readFileSync(join(root, path), 'utf8')) };
+  } catch (error) {
+    return { path, error: `${path}: ${error instanceof Error ? error.message : String(error)}` };
+  }
+}
+
+function stringField(data, key, path, issues) {
+  if (!has(data, key) || typeof data[key] !== 'string' || data[key].trim() === '') {
+    issues.push(issue(path, `${key} fehlt oder ist kein nicht-leerer String`));
+    return false;
+  }
+  if (data[key].length > LIMITS[key]) {
+    issues.push(issue(path, `${key} ist laenger als ${LIMITS[key]} Zeichen`));
+    return false;
+  }
+  return true;
+}
+
+function controlled(value, allowed, key, path, issues) {
+  const known = Array.isArray(allowed) ? allowed.includes(value) : has(allowed, value);
+  if (typeof value !== 'string' || !known) {
+    issues.push(issue(path, `${key} ist nicht im kontrollierten Vokabular: ${String(value)}`));
+    return false;
+  }
+  return true;
+}
+
+function controlledList(value, allowed, key, path, issues, { min = 1, max = 8 } = {}) {
+  if (!Array.isArray(value) || value.length < min || value.length > max) {
+    issues.push(issue(path, `${key} braucht ${min}..${max} Eintraege`));
+    return false;
+  }
+  if (new Set(value).size !== value.length) {
+    issues.push(issue(path, `${key} enthaelt Duplikate`));
+    return false;
+  }
+  let ok = true;
+  for (const entry of value) {
+    if (typeof entry !== 'string' || !has(allowed, entry)) {
+      issues.push(issue(path, `${key} enthaelt unbekannten Wert: ${String(entry)}`));
+      ok = false;
+    }
+  }
+  return ok;
+}
+
+function stringObject(value) {
+  return isRecord(value) && Object.keys(value).length > 0
+    && Object.values(value).every((entry) => typeof entry === 'string' && entry.trim() !== '');
+}
+
+function stringArray(value) {
+  return Array.isArray(value) && value.length > 0
+    && value.every((entry) => typeof entry === 'string' && entry.trim() !== '')
+    && new Set(value).size === value.length;
+}
+
+function loadVocabulary(root) {
+  const flagsResult = readJson(root, 'content/narrative/vocabulary/flags.json');
+  const classResult = readJson(root, 'content/narrative/vocabulary/classification.json');
+  const issues = [];
+  if (flagsResult.error) issues.push(issue(flagsResult.path, flagsResult.error));
+  if (classResult.error) issues.push(issue(classResult.path, classResult.error));
+  const flagsDoc = isRecord(flagsResult.value) ? flagsResult.value : {};
+  const classDoc = isRecord(classResult.value) ? classResult.value : {};
+
+  if (flagsDoc.version !== 1) issues.push(issue(flagsResult.path, 'version muss 1 sein'));
+  if (!stringArray(flagsDoc.roles)) issues.push(issue(flagsResult.path, 'roles fehlt oder ist ungueltig'));
+  if (!stringArray(flagsDoc.locales)) issues.push(issue(flagsResult.path, 'locales fehlt oder ist ungueltig'));
+  if (!stringObject(flagsDoc.flags)) issues.push(issue(flagsResult.path, 'flags fehlt oder ist ungueltig'));
+
+  if (classDoc.version !== 1) issues.push(issue(classResult.path, 'version muss 1 sein'));
+  const dimensions = ['slots', 'functions', 'contexts', 'tones', 'moods', 'relationships', 'personas'];
+  for (const dimension of dimensions) {
+    if (!stringObject(classDoc[dimension])) {
+      issues.push(issue(classResult.path, `${dimension} fehlt oder ist ungueltig`));
+    }
+  }
+  if (!isRecord(classDoc.slotFunctions)) {
+    issues.push(issue(classResult.path, 'slotFunctions fehlt'));
+  } else {
+    for (const [slot, functions] of Object.entries(classDoc.slotFunctions)) {
+      if (!has(classDoc.slots ?? {}, slot)) issues.push(issue(classResult.path, `slotFunctions nennt unbekannten Slot: ${slot}`));
+      if (!stringArray(functions) || functions.some((entry) => !has(classDoc.functions ?? {}, entry))) {
+        issues.push(issue(classResult.path, `slotFunctions fuer ${slot} ist ungueltig`));
+      }
+    }
+  }
+
+  return {
+    issues,
+    vocabulary: {
+      roles: flagsDoc.roles ?? [],
+      locales: flagsDoc.locales ?? [],
+      flags: flagsDoc.flags ?? {},
+      slots: classDoc.slots ?? {},
+      functions: classDoc.functions ?? {},
+      slotFunctions: classDoc.slotFunctions ?? {},
+      contexts: classDoc.contexts ?? {},
+      tones: classDoc.tones ?? {},
+      moods: classDoc.moods ?? {},
+      relationships: classDoc.relationships ?? {},
+      personas: classDoc.personas ?? {},
+    },
+  };
+}
+
+/** Validate one contribution; exported for focused schema tests. */
+export function validateContribution(data, vocabulary, sourcePath = '') {
+  const issues = [];
+  if (!isRecord(data)) {
+    issues.push(issue(sourcePath || 'contribution', 'Beitrag ist kein Objekt'));
+    return issues;
+  }
+  for (const key of Object.keys(data)) {
+    if (!CONTRIBUTION_FIELDS.includes(key)) issues.push(issue(sourcePath, `unbekanntes Feld: ${key}`));
+  }
+  for (const key of ['agentId', 'turnId', 'contributionId', 'role', 'locale', 'slot', 'function', 'tone', 'mood', 'relationship', 'text']) {
+    stringField(data, key, sourcePath, issues);
+  }
+
+  if (typeof data.agentId === 'string' && !SLUG.test(data.agentId)) issues.push(issue(sourcePath, 'agentId ist kein stabiler Slug'));
+  if (typeof data.turnId === 'string' && !TURN.test(data.turnId)) issues.push(issue(sourcePath, 'turnId hat nicht das Format YYYY-MM-DDTHH:MMZ-slug'));
+  if (typeof data.contributionId === 'string' && !SLUG.test(data.contributionId)) issues.push(issue(sourcePath, 'contributionId ist kein stabiler Slug'));
+
+  controlled(data.role, vocabulary.roles, 'role', sourcePath, issues);
+  controlled(data.locale, vocabulary.locales, 'locale', sourcePath, issues);
+  controlled(data.slot, vocabulary.slots, 'slot', sourcePath, issues);
+  controlled(data.function, vocabulary.functions, 'function', sourcePath, issues);
+  controlled(data.tone, vocabulary.tones, 'tone', sourcePath, issues);
+  controlled(data.mood, vocabulary.moods, 'mood', sourcePath, issues);
+  controlled(data.relationship, vocabulary.relationships, 'relationship', sourcePath, issues);
+  controlledList(data.contexts, vocabulary.contexts, 'contexts', sourcePath, issues, { min: 1, max: LIMITS.contexts });
+  controlledList(data.flags, vocabulary.flags, 'flags', sourcePath, issues, { min: 1, max: LIMITS.flags });
+  controlledList(data.personaRefs, vocabulary.personas, 'personaRefs', sourcePath, issues, { min: 0, max: LIMITS.personaRefs });
+  if (Array.isArray(data.flags) && !data.flags.includes('narrativ')) issues.push(issue(sourcePath, 'flags muss narrativ enthalten'));
+
+  const allowedFunctions = vocabulary.slotFunctions?.[data.slot];
+  if (Array.isArray(allowedFunctions) && !allowedFunctions.includes(data.function)) {
+    issues.push(issue(sourcePath, `function ${String(data.function)} passt nicht zu slot ${String(data.slot)}`));
+  }
+
+  if (!Array.isArray(data.directives) || data.directives.length > LIMITS.directives) {
+    issues.push(issue(sourcePath, `directives braucht 0..${LIMITS.directives} Eintraege`));
+  } else {
+    for (const directive of data.directives) {
+      if (typeof directive !== 'string' || !DIRECTIVE.test(directive) || directive.length > LIMITS.directive) {
+        issues.push(issue(sourcePath, `directive ist ungueltig: ${String(directive)}`));
+      }
+    }
+  }
+
+  if (sourcePath) {
+    const file = sourcePath.split('/').pop() ?? '';
+    if (!FILE.test(file)) issues.push(issue(sourcePath, 'Dateiname folgt nicht dem Content-Muster'));
+    else if (typeof data.turnId === 'string' && !data.turnId.startsWith(`${file.slice(0, 10)}T`)) {
+      issues.push(issue(sourcePath, 'turnId-Datum passt nicht zum Dateinamen'));
+    }
+  }
+  return issues;
+}
+
+export function buildRegistryEntry(sourcePath, data) {
+  return {
+    contributionId: data.contributionId,
+    turnId: data.turnId,
+    agentId: data.agentId,
+    role: data.role,
+    locale: data.locale,
+    slot: data.slot,
+    function: data.function,
+    contexts: list(data.contexts),
+    tone: data.tone,
+    mood: data.mood,
+    relationship: data.relationship,
+    personaRefs: list(data.personaRefs),
+    flags: list(data.flags),
+    text: data.text,
+    directives: list(data.directives),
+    source: sourcePath,
+  };
+}
+
+export function buildRegistry(contributions) {
+  return contributions
+    .filter((entry) => entry.data)
+    .map((entry) => buildRegistryEntry(entry.path, entry.data))
+    .sort((left, right) => (left.contributionId < right.contributionId ? -1 : left.contributionId > right.contributionId ? 1 : 0));
+}
+
+export function buildRegistryDocument(contributions) {
+  return { version: 1, fragments: buildRegistry(contributions) };
+}
+
+/** Stable key order for comparing checked-in JSON with generated JSON. */
+export function canonical(value) {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
+  if (isRecord(value)) {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function readContributions(root) {
+  const directory = join(root, 'content/narrative/contributions');
+  if (!existsSync(directory)) return { contributions: [], issues: [issue('content/narrative/contributions', 'Verzeichnis fehlt')] };
+  const issues = [];
+  const contributions = [];
+  for (const file of readdirSync(directory, { withFileTypes: true }).filter((entry) => entry.isFile() && entry.name.endsWith('.json')).sort((left, right) => left.name.localeCompare(right.name))) {
+    const path = relative(root, join(directory, file.name)).split(/[\\/]/).join('/');
+    try {
+      contributions.push({ path, data: JSON.parse(readFileSync(join(directory, file.name), 'utf8')) });
+    } catch (error) {
+      issues.push(issue(path, error instanceof Error ? error.message : String(error)));
+      contributions.push({ path, data: null });
+    }
+  }
+  return { contributions, issues };
+}
+
+function validateManifest(manifest, contributions) {
+  const path = 'content/narrative/turns/manifest.json';
+  const issues = [];
+  if (!isRecord(manifest) || manifest.version !== 1 || !Array.isArray(manifest.turns)) {
+    issues.push(issue(path, 'Manifest braucht version 1 und turns[]'));
+    return issues;
+  }
+  const turnIds = new Map();
+  const contributionIds = new Map();
+  const byTurn = new Map();
+  for (const entry of contributions) {
+    if (entry.data?.turnId) {
+      if (!byTurn.has(entry.data.turnId)) byTurn.set(entry.data.turnId, []);
+      byTurn.get(entry.data.turnId).push(entry);
+    }
+  }
+  for (const entry of manifest.turns) {
+    if (!isRecord(entry)) {
+      issues.push(issue(path, 'Manifest-Eintrag ist kein Objekt'));
+      continue;
+    }
+    for (const key of Object.keys(entry)) if (!MANIFEST_FIELDS.includes(key)) issues.push(issue(path, `unbekanntes Manifest-Feld: ${key}`));
+    for (const key of MANIFEST_FIELDS) {
+      if (typeof entry[key] !== 'string' || entry[key].trim() === '') issues.push(issue(path, `Manifest-Eintrag ohne ${key}`));
+    }
+    if (typeof entry.turnId === 'string' && !TURN.test(entry.turnId)) issues.push(issue(path, `ungueltige turnId: ${entry.turnId}`));
+    if (typeof entry.turnId === 'string') {
+      if (turnIds.has(entry.turnId)) issues.push(issue(path, `turnId doppelt registriert: ${entry.turnId}`));
+      turnIds.set(entry.turnId, (turnIds.get(entry.turnId) ?? 0) + 1);
+    }
+    if (typeof entry.contributionId === 'string') {
+      if (contributionIds.has(entry.contributionId)) issues.push(issue(path, `contributionId doppelt registriert: ${entry.contributionId}`));
+      contributionIds.set(entry.contributionId, (contributionIds.get(entry.contributionId) ?? 0) + 1);
+    }
+    if (typeof entry.turnId === 'string') {
+      const matches = byTurn.get(entry.turnId) ?? [];
+      if (matches.length !== 1) issues.push(issue(path, `registrierter Turn braucht genau einen Beitrag: ${entry.turnId} (${matches.length})`));
+      else if (matches[0].data.contributionId !== entry.contributionId) {
+        issues.push(issue(path, `Manifest verweist fuer ${entry.turnId} auf ${entry.contributionId}, Beitrag traegt ${matches[0].data.contributionId}`));
+      }
+    }
+  }
+  for (const entry of contributions) {
+    if (entry.data?.turnId && !turnIds.has(entry.data.turnId)) issues.push(issue(entry.path, `Beitrag ist nicht im Turn-Manifest registriert: ${entry.data.turnId}`));
+  }
+  if (manifest.turns.length !== contributions.length) {
+    issues.push(issue(path, `Manifest zaehlt ${manifest.turns.length} Turns, Inbox enthaelt ${contributions.length} Beitraege`));
+  }
+  return issues;
+}
+
+function validateRegistry(registry, contributions) {
+  const path = 'content/narrative/registry/fragments.json';
+  const issues = [];
+  if (!isRecord(registry) || registry.version !== 1 || !Array.isArray(registry.fragments)) {
+    issues.push(issue(path, 'Registry braucht version 1 und fragments[]'));
+    return issues;
+  }
+  const expected = buildRegistry(contributions);
+  const actual = registry.fragments;
+  if (canonical(actual) === canonical(expected)) return issues;
+
+  const expectedById = new Map(expected.map((entry) => [entry.contributionId, entry]));
+  const actualById = new Map(actual.filter(isRecord).map((entry) => [entry.contributionId, entry]));
+  for (const [id, entry] of expectedById) {
+    if (!actualById.has(id)) issues.push(issue(path, `Registry fehlt Beitrag ${id}`));
+    else if (canonical(actualById.get(id)) !== canonical(entry)) issues.push(issue(path, `Registry-Eintrag ${id} weicht vom Beitrag ab`));
+  }
+  for (const id of actualById.keys()) if (!expectedById.has(id)) issues.push(issue(path, `Registry enthaelt unbekannten Beitrag ${id}`));
+  const sortedActual = [...actual].sort((left, right) => String(left?.contributionId ?? '').localeCompare(String(right?.contributionId ?? '')));
+  if (canonical(sortedActual) === canonical(expected)) issues.push(issue(path, 'Registry ist nicht kanonisch sortiert'));
+  if (issues.length === 0) issues.push(issue(path, 'Registry ist nicht mit den Beitraegen synchron'));
+  return issues;
+}
+
+/** Validate schema, duplicate IDs and manifest; registry is optional here. */
+export function validateNarrativeData({ vocabulary, contributions, manifest, registry }) {
+  const issues = [];
+  for (const entry of contributions) {
+    if (entry.data === null) continue;
+    issues.push(...validateContribution(entry.data, vocabulary, entry.path));
+  }
+  const contributionIds = new Map();
+  const turnIds = new Map();
+  for (const entry of contributions) {
+    const id = entry.data?.contributionId;
+    const turn = entry.data?.turnId;
+    if (typeof id === 'string') {
+      if (contributionIds.has(id)) issues.push(issue(entry.path, `contributionId doppelt: ${id}`));
+      contributionIds.set(id, (contributionIds.get(id) ?? 0) + 1);
+    }
+    if (typeof turn === 'string') {
+      if (turnIds.has(turn)) issues.push(issue(entry.path, `turnId doppelt: ${turn}`));
+      turnIds.set(turn, (turnIds.get(turn) ?? 0) + 1);
+    }
+  }
+  issues.push(...validateManifest(manifest, contributions));
+  if (registry !== undefined) issues.push(...validateRegistry(registry, contributions));
+  return issues;
+}
+
+export function loadNarrativeSources(root = resolve('.')) {
+  const vocabularyResult = loadVocabulary(root);
+  const readResult = readContributions(root);
+  const manifestResult = readJson(root, 'content/narrative/turns/manifest.json');
+  const issues = [...vocabularyResult.issues, ...readResult.issues, ...(manifestResult.error ? [issue(manifestResult.path, manifestResult.error)] : [])];
+  if (!manifestResult.error) {
+    issues.push(...validateNarrativeData({
+      vocabulary: vocabularyResult.vocabulary,
+      contributions: readResult.contributions,
+      manifest: manifestResult.value,
+    }));
+  }
+  return {
+    ok: issues.length === 0,
+    issues,
+    vocabulary: vocabularyResult.vocabulary,
+    contributions: readResult.contributions,
+    manifest: manifestResult.value,
+  };
+}
+
+export function loadNarrativeContent(root = resolve('.')) {
+  const sources = loadNarrativeSources(root);
+  const registryResult = readJson(root, 'content/narrative/registry/fragments.json');
+  const issues = [...sources.issues];
+  if (registryResult.error) issues.push(issue(registryResult.path, registryResult.error));
+  else if (sources.issues.length === 0) issues.push(...validateRegistry(registryResult.value, sources.contributions));
+  return {
+    ...sources,
+    ok: issues.length === 0,
+    issues,
+    registry: registryResult.value,
+    contributionCount: sources.contributions.filter((entry) => entry.data).length,
+    turnCount: Array.isArray(sources.manifest?.turns) ? sources.manifest.turns.length : 0,
+    registryCount: Array.isArray(registryResult.value?.fragments) ? registryResult.value.fragments.length : 0,
+  };
+}

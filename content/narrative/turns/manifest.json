@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "turns": [
+    {
+      "turnId": "2026-11-01T12:00Z-narrative-start",
+      "contributionId": "start-pool-opening-01"
+    },
+    {
+      "turnId": "2026-11-01T23:10Z-readme-onboarding",
+      "contributionId": "opening-inheritance-01"
+    },
+    {
+      "turnId": "2026-11-02T10:55Z-dreck-poker-verluste",
+      "contributionId": "floor-fleck-01"
+    },
+    {
+      "turnId": "2026-11-02T11:08Z-deckung-wut",
+      "contributionId": "till-watch-01"
+    },
+    {
+      "turnId": "2026-11-02T11:18Z-schicht-lohn",
+      "contributionId": "shift-pay-01"
+    },
+    {
+      "turnId": "2026-11-02T11:26Z-synergie-audit",
+      "contributionId": "patience-gap-01"
+    },
+    {
+      "turnId": "2026-11-02T11:40Z-vorschuss-geduld",
+      "contributionId": "advance-anger-01"
+    },
+    {
+      "turnId": "2026-11-02T21:58Z-narrative-facts",
+      "contributionId": "memory-counts-01"
+    },
+    {
+      "turnId": "2026-11-02T22:16Z-narrative-trigger",
+      "contributionId": "returning-memory-01"
+    },
+    {
+      "turnId": "2026-11-02T22:35Z-narrative-dokumentation",
+      "contributionId": "ledger-pages-01"
+    },
+    {
+      "turnId": "2026-11-02T22:49Z-nachfragezustand",
+      "contributionId": "neon-abend-01"
+    },
+    {
+      "turnId": "2026-11-02T23:20Z-boundary-und-beziehungen",
+      "contributionId": "boundary-und-beziehungen-01"
+    },
+    {
+      "turnId": "2026-11-02T23:45Z-nar-04-beziehungsquellen",
+      "contributionId": "nar-04-beziehungsquellen-01"
+    },
+    {
+      "turnId": "2026-11-02T23:59Z-nar-05-trigger-context",
+      "contributionId": "trigger-context-01"
+    },
+    {
+      "turnId": "2026-11-03T00:25Z-nar-06-event-scheduler",
+      "contributionId": "event-scheduler-01"
+    },
+    {
+      "turnId": "2026-11-03T01:00Z-nar-07-event-templates",
+      "contributionId": "event-templates-01"
+    },
+    {
+      "turnId": "2026-11-03T01:20Z-nar-08-command-dsl",
+      "contributionId": "command-dsl-01"
+    },
+    {
+      "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
+      "contributionId": "content-registry-01"
+    }
+  ]
+}
