@@ -9,9 +9,8 @@
  */
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { buildCompiledRegistry, canonical } from '../../../../scripts/lib/narrative-compiler.mjs';
 import {
-  buildRegistryDocument,
-  canonical,
   loadNarrativeContent,
   validateContribution,
   validateNarrativeData,
@@ -124,7 +123,7 @@ describe('Narrative Content Registry (NAR-09)', () => {
   });
 
   it('baut die Registry deterministisch aus denselben Beitraegen', () => {
-    const document = buildRegistryDocument(report.contributions);
+    const document = buildCompiledRegistry(report.contributions, report.vocabulary).document;
     expect(document.fragments.length).toBe(report.registry.fragments.length);
     expect(canonical(document)).toBe(canonical(report.registry));
   });
@@ -134,7 +133,12 @@ describe('Narrative Content Registry (NAR-09)', () => {
       vocabulary: report.vocabulary,
       contributions: report.contributions,
       manifest: report.manifest,
-      registry: { version: 1, fragments: [] },
+      registry: {
+        version: 2,
+        compiler: 'nar-10',
+        contentHash: report.contentHash,
+        fragments: [],
+      },
     }));
     expect(text).toContain('Registry fehlt Beitrag');
   });

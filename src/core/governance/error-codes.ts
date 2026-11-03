@@ -40,7 +40,7 @@ export const ERROR_CODES = {
   TREE_GATE: { code: 'ERR-4019', area: 'governance', cause: 'Datei liegt im falschen Ordner oder eine Schicht importiert nach aussen.', fix: 'Datei verschieben; Import nach innen ziehen.' },
   REDUNDANCY_GATE: { code: 'ERR-4020', area: 'governance', cause: 'Datei, Kommando oder Fehlercode ist doppelt vorhanden.', fix: 'Eine Wahrheit behalten und die Kopie entfernen.' },
   DOC_STUB: { code: 'ERR-4021', area: 'docs', cause: 'Doc-Stub ohne brauchbaren Titel aufgerufen.', fix: 'npm run docs:stub -- "Titel" mit mindestens 8 Zeichen.' },
-  CONTENT_SCHEMA: { code: 'ERR-4022', area: 'governance', cause: 'Content-Beitrag, Vokabular, Turn-Manifest oder Registry verletzt den NAR-09-Vertrag.', fix: 'Feld, ID oder Klassifizierung korrigieren; Registry mit scripts/build-narrative-registry.mjs --write neu erzeugen.' },
+  CONTENT_SCHEMA: { code: 'ERR-4022', area: 'governance', cause: 'Content-Beitrag, Vokabular, Turn-Manifest, Makro oder Registry verletzt den NAR-09/NAR-10-Vertrag.', fix: 'Feld, ID, Klassifizierung oder Makro korrigieren; Registry mit pnpm run narrative:compile neu erzeugen.' },
   TRANSFER_INVALID: { code: 'ERR-5001', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 

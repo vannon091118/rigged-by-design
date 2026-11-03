@@ -145,17 +145,24 @@ Ein Beitrag ist ein JSON-Datensatz in `content/narrative/contributions/`:
   Contribution-IDs, fehlende Beitraege und nicht registrierte Beitraege sind
   fail-closed.
 - `content/narrative/registry/fragments.json` ist die abgeleitete, nach
-  `contributionId` sortierte Runtime-Registry. Sie traegt Text, Direktiven und
-  Herkunft (`source`), aber keine zusaetzliche Spielmechanik. Der Builder
-  `scripts/build-narrative-registry.mjs --write` schreibt sie; ohne `--write`
-  vergleicht er nur. Die Registry wird nicht von Hand gepflegt.
+  `contributionId` sortierte Runtime-Registry (Version 2). Sie traegt Text,
+  typisierte Direktiven-ASTs, Herkunft (`source`) und einen SHA-256-Hash ueber
+  die kanonische Fragmentliste, aber keine zusaetzliche Spielmechanik.
+  `scripts/compile-narrative-content.mjs` schreibt sie nur mit `--write`;
+  Default und `--check` vergleichen die exakten Bytes. Die Registry wird nicht
+  von Hand gepflegt.
+- `scripts/lib/narrative-macros.mjs` validiert Makros gegen die NAR-08-Allowlist:
+  exakte Argumente, stabile ActorRefs, kontrollierte Flags und hoechstens ein
+  Singleton-Command pro Fragment. `scripts/lib/narrative-compiler.mjs` erkennt
+  Konflikte ueber die Daten in `classification.json` und erzeugt die Registry.
 - `scripts/lib/narrative-content.mjs` prueft Beitragsschema, Vokabular, IDs,
-  Dateinamen, Manifest und Registry. `scripts/verify-assets.mjs` ruft diese
-  Pruefung im bestehenden Assets-Gate auf (`ERR-4022`), damit kein paralleler
-  Gate-Stack entsteht.
+  Dateinamen, Manifest, Makros und Registry. `scripts/verify-narrative-content.mjs`
+  ist der lesende Nachweis; `scripts/verify-assets.mjs` ruft denselben Validator
+  im bestehenden Assets-Gate auf (`ERR-4022`), damit kein paralleler Gate-Stack
+  entsteht.
 - `text` bleibt Darstellung. Direktiven sind deklarativ; ihre Allowlist und
-  Makro-Auswertung bleiben NAR-08/NAR-10 und entscheiden nie ueber Choice-IDs,
-  Kosten oder Effekte.
+  Makro-Auswertung bleiben NAR-08, ihre Compiler-Pruefung NAR-10, und beide
+  entscheiden nie ueber Choice-IDs, Kosten oder Effekte.
 - Beitraege liegen unter `content/narrative/contributions/` und werden nie in
   Simulationscode oder `AGENTS.md` eingebettet. Die Registry ist Daten, kein
   ausfuehrbarer Content.

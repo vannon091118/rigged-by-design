@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-10: Content-Compiler und Makro-Validierung
+
+**Ziel.** Die 19 Beitraege reproduzierbar in eine Runtime-Registry ueberfuehren: Makros als typisierte ASTs, Konflikte vor dem Schreiben erkennen, `--check` strikt lesend halten und dieselbe Inbox byte-identisch abbilden.
+
+**Umsetzung.** `scripts/lib/narrative-macros.mjs` spiegelt den NAR-08-Parser, prueft die Allowlist, exakte Argumentlisten, stabile ActorRefs, kontrollierte Flags und doppelte Singleton-Commands. `scripts/lib/narrative-compiler.mjs` baut die nach `contributionId` sortierte Registry, erkennt gegensaetzliche Sprecher, unpassende Persona-Nennungen, inkompatible Stimmung, widerspruechliche Story-Flags und unzulaessige Command-Kombinationen und hasht die kanonische Fragmentliste mit SHA-256. `scripts/compile-narrative-content.mjs` schreibt nur bei `--write`; sonst vergleicht es die exakten Bytes. `scripts/verify-narrative-content.mjs` und das bestehende Assets-Gate nutzen denselben Validator. Die Registry ist Version 2, enthaelt nur typisierte AST-Felder und keine Roh-Makros; der neue Beitrag `content-compiler-01` traegt `€FreezeTick:120` als valides Beispiel.
+
+**Pruefungen.** `typecheck`, `verify:assets` und `verify:test-quality` waren nach der Integration gruen. Der Compilerlauf erzeugte 19 Fragmente mit `sha256:4a71453595bac0634d08f90b188bc35034d9f8c4c2bdbb512badd57880c2316d`; `--check` schrieb keine Datei. Die Konfliktproben fuer Sprecher und Stimmung wurden direkt gegen `buildCompiledRegistry` geprueft; die neue Testdatei deckt zusaetzlich Makrogrenzen, Allowlist-Drift, Determinismus, Persona/Flags und Byte-Drift ab. Der vollstaendige `RBD_VERIFY_NO_CACHE=1 pnpm run verify:all` bestand alle zwoelf Gates inklusive Audit und Build; die Suite meldete 633 bestandene und 2 uebersprungene Tests (635 gesamt), 128 Testdateien bestanden und 2 uebersprungen. Bericht: `.verify-cache/reports/2026-11-03T01-56-26-127Z/summary.md`.
+
+**Offen.** NAR-11 baut den lokalen Composer; NAR-10 bindet noch keine Event-Template-Allowlist an die ASTs. Die Compiler-Pruefung ist bewusst strenger als der Runtime-Parser: Content darf nur ausfuehrbare Commands und stabile ActorRefs nennen.
+
 ## 2026-11-03 - NAR-09: Content-Registry und Klassifizierung
 
 **Ziel.** Die vorhandene Content-Inbox in einen pruefbaren Textpool verwandeln: Jeder Beitrag bekommt eine kontrollierte Klassifizierung, jeder abgeschlossene Agenten-Turn genau einen Eintrag im Manifest, und die Runtime-Registry wird daraus reproduzierbar abgeleitet, ohne Texte in Simulationscode zu ziehen.
@@ -740,7 +750,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.83 | 2026-11-03 01:35 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.84 | 2026-11-03 01:57 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

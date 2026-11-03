@@ -72,6 +72,10 @@
     {
       "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
       "contributionId": "content-registry-01"
+    },
+    {
+      "turnId": "2026-11-03T02:20Z-nar-10-content-compiler",
+      "contributionId": "content-compiler-01"
     }
   ]
 }

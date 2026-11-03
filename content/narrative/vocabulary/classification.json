@@ -68,5 +68,15 @@
     "rita-kern": "Die erste bekannte Figur des Start-Pools.",
     "boris-falk": "Eine bekannte Figur des Start-Pools.",
     "mira-sol": "Eine bekannte Figur des Start-Pools."
+  },
+  "personaAliases": {
+    "rita-kern": ["Rita Kern", "Rita"],
+    "boris-falk": ["Boris Falk", "Boris"],
+    "mira-sol": ["Mira Sol", "Mira"]
+  },
+  "conflicts": {
+    "rolePairs": [["ERZAEHLER", "SKEPTIKER"]],
+    "moodPairs": [["neutral", "angespannt"]],
+    "flagPairs": [["startpool", "rueckkehrer"]]
   }
 }
