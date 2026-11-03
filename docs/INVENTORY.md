@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 21:02 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -273,10 +273,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1147 |
-| Gelistete Dateien | 1147 |
-| Getrackte Ordner | 79 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (26), docs (58), public (552), scripts (59), src (433) |
+| Getrackte Dateien | 1176 |
+| Gelistete Dateien | 1176 |
+| Getrackte Ordner | 83 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (7), .kilo (1), content (26), docs (59), public (552), scripts (60), src (433), tests (27) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -290,7 +290,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 22 Datei(en)
+- `docs/` — 23 Datei(en)
 - `docs/banners/` — 4 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
@@ -323,7 +323,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 38 Datei(en)
+- `scripts/` — 39 Datei(en)
 - `scripts/lib/` — 21 Datei(en)
 - `src/` — 2 Datei(en)
 - `src/Config/` — 6 Datei(en)
@@ -361,6 +361,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/` — 38 Datei(en)
 - `src/ui/__tests__/` — 3 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
+- `tests/` — 11 Datei(en)
+- `tests/fixtures/` — 1 Datei(en)
+- `tests/helpers/` — 4 Datei(en)
+- `tests/pages/` — 11 Datei(en)
 
 ### 18.3 Dateien
 
@@ -378,7 +382,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 126 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 110 Zeilen
 - `README.md` — Rigged by Design — gelesen: 289 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -406,15 +410,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/turns/manifest.json` — { — gelesen: 93 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 89 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
+- `docs/AGENT_CONTEXT_PLAYWRIGHT.md` — Playwright E2E — Agenten-transparente, modulare, zustandsbasierte Test-Strategie — gelesen: 689 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 245 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 247 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 292 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 305 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 819 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 809 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 38 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -465,8 +470,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 166866 B
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `index.html` — <!doctype html> — gelesen: 12 Zeilen
-- `package.json` — { — gelesen: 93 Zeilen
-- `pnpm-lock.yaml` — lockfileVersion: "9.0" — gelesen: 2798 Zeilen
+- `package.json` — { — gelesen: 95 Zeilen
+- `pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 2886 Zeilen
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -1062,10 +1067,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 70 Zeilen
 - `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
+- `scripts/run-e2e.mjs` — E2E Test Runner – startet Playwright gegen den laufenden Dev-Server (localhost:3003). — gelesen: 18 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 125 Zeilen
 - `scripts/run-selected-tests.mjs` — Testkommando der Gates: ohne Auswahl laeuft die Suite des Profils, mit — gelesen: 25 Zeilen
 - `scripts/sanitize-commit.mjs` — ERR-0911: entfernt verbotene Trailer und Tool-Werbung aus einer Nachricht. — gelesen: 18 Zeilen
-- `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/ARCHITECTURE.md aus — gelesen: 138 Zeilen
+- `scripts/sync-dependency-matrix.mjs` — ERR-0911: erzeugt die Live-Dependency-Matrix in docs/ARCHITECTURE.md aus — gelesen: 143 Zeilen
 - `scripts/test-affected.mjs` — Schneller Entwicklungsfeedback-Lauf: nur Tests, die vom aktuellen Diff — gelesen: 52 Zeilen
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
 - `scripts/turn-push.mjs` — Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach mai — gelesen: 234 Zeilen
@@ -1511,6 +1517,33 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/stage-controls.tsx` — Buehnenrand: Steuerungshilfe als Tastenkuerzel und die Kamera-Knoepfe an einem Ort. — gelesen: 32 Zeilen
 - `src/ui/table-launcher.tsx` — Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. — gelesen: 145 Zeilen
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen
+- `tests/README.md` — Playwright E2E-Testkette — `tests/` — gelesen: 119 Zeilen
+- `tests/balance.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 50 Zeilen
+- `tests/build.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 69 Zeilen
+- `tests/edge-cases.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 73 Zeilen
+- `tests/fixtures/game.ts` — import { test as base } from '@playwright/test'; — gelesen: 95 Zeilen
+- `tests/games.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 45 Zeilen
+- `tests/guests.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 78 Zeilen
+- `tests/helpers/game-flow.ts` — import { — gelesen: 223 Zeilen
+- `tests/helpers/page-types.ts` — Minimale Page-Objekt-Typen für E2E-Test-Helfer. — gelesen: 78 Zeilen
+- `tests/helpers/snapshots.ts` — import { Page } from '@playwright/test'; — gelesen: 74 Zeilen
+- `tests/helpers/store-helpers.ts` — import { Page } from '@playwright/test'; — gelesen: 52 Zeilen
+- `tests/machines.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 70 Zeilen
+- `tests/narrative.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 45 Zeilen
+- `tests/pages/app.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 62 Zeilen
+- `tests/pages/build-panel.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 105 Zeilen
+- `tests/pages/diagnostics-popup.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 37 Zeilen
+- `tests/pages/floor.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 94 Zeilen
+- `tests/pages/games-popup.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 40 Zeilen
+- `tests/pages/guest-popup.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 86 Zeilen
+- `tests/pages/hud.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 119 Zeilen
+- `tests/pages/journal-popup.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 36 Zeilen
+- `tests/pages/machine-popup.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 83 Zeilen
+- `tests/pages/smartphone.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 25 Zeilen
+- `tests/pages/transfer.page.ts` — import { Page, type Locator, expect } from '@playwright/test'; — gelesen: 66 Zeilen
+- `tests/playwright.config.ts` — import { defineConfig, devices } from '@playwright/test'; — gelesen: 33 Zeilen
+- `tests/run-e2e.ps1` — E2E-Test-Runner: Startet den Dev-Server, führt Playwright-Tests aus, beendet den Server. — gelesen: 35 Zeilen
+- `tests/transfer.spec.ts` — import { test, expect } from './fixtures/game'; — gelesen: 36 Zeilen
 
 ### 18.4 Mechanische Auffaelligkeiten
 
@@ -1522,7 +1555,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
-| T45 | **2026-11-03 05:47 UTC**: Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku. |
 | T44 | **2026-11-03 02:32 UTC**: NAR-12 abgeschlossen: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler in einem Lauf; Tick und Store-Mutationsgrenzen rufen ihn. `EVENT_RESOLVED` schliesst den Command→Fact-Kreis; zwei neue Testdateien, 21 Registry-Fragmente. |
 | T43 | **2026-11-03 00:25 UTC**: NAR-06 abgeschlossen: `event-lifecycle.ts`, `event-scheduler.ts`, `event-schema.ts`, `event-types.ts` und `narrative-rng.ts` verwalten persistente Event-Instanzen mit Prioritaet, Fairness, Scopes, Cooldowns, Fristen, Stale-Cancel und eigenem Narrativ-RNG. Save v9 traegt die Felder additiv; Tests decken Lifecycle, Determinismus, Ketten, Historiengrenze und Roundtrip ab. Trigger-Auswahl im Tick bleibt NAR-12. |
 | T42 | **2026-11-03 00:06 UTC**: NAR-05 abgeschlossen: `trigger-types.ts`, `trigger-context.ts`, `trigger-evaluate.ts` und `trigger-schema.ts` liefern Context, reine Auswertung aller Operatoren und fail-closed Schema-Validierung; `triggers.ts` bleibt Fassade. Alte `visitorId`-Facts und neue `actorRefs` werden einheitlich aufgeloest. Tests decken Operatoren, Grenzen, Historie, fehlende Referenzen und Unveraenderlichkeit ab. Tick-Anbindung und Cooldowns bleiben NAR-06/NAR-12. |

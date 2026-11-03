@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 21:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,10 +12,23 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.88] - 2026-11-03
+
+### Technik
+
+- Playwright E2E-Testkette in `tests/` angelegt (modular, agenten-transparent, snapshot-basiert):
+  - `playwright.config.ts` mit headed/headless Projekten, Screenshots/Videos/Traces bei Failure
+  - `fixtures/game.ts` — zentrale Fixtures mit allen Page Objects + Snapshot-Helfer + GameFlow
+  - `pages/` — 11 Page Objects für App, HUD, Floor, Gäste-, Automaten-, Rivalen-, Journal-, Diagnostik-, Bau-, Smartphone- und Transfer-Panels
+  - `helpers/snapshots.ts` — reproduzierbare Spielsituationen via LocalStorage (`saveSnapshot`/`setSnapshot`)
+  - `helpers/game-flow.ts` — mehrschrittige Spielabläufe (Slot spielen, Gäste bedienen, Bauen, Transfer Roundtrip)
+  - 8 Test-Dateien: `balance`, `guests`, `machines`, `games`, `build`, `narrative`, `transfer`, `edge-cases`
+  - Jeder Test mit `@test-target`, `@expected-behavior`, `@coverage`, `@missing-edge-case` Headern und GIVEN/WHEN/THEN-Struktur
+  - `tests/README.md` mit Laufanleitung und Konventionen
+
 ## [0.3.87] - 2026-11-03
 
 ### Technik
-- Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
 - NAR-13 abgeschlossen: `events/demand-definitions.ts` beschreibt Neon-Nacht und Turnierabend als Daten (Nachfrage pro Tag, Laufzeit, Gruppenzuschlag, Starttext), `narrative/demand-events.ts` startet und beendet sie als aktive GLOBAL-Instanzen der gemeinsamen Event-Engine. `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen nur noch die aktive Instanz; `NarrativeState.demandEvent` ist entfernt.
 - v5–v9-Saves mit `demandEvent` (Weltfeld oder Narrativ-Slice) werden beim Laden in eine aktive Instanz mit Restlaufzeit konvertiert; abgelaufene Veranstaltungen verfallen, bestehende Instanzen verhindern Duplikate. Neue Saves enthalten nur noch `narrative.events`.
 - `sourceFactId: 0` ist fuer engine-erzeugte Events ohne ausloesenden Fact reserviert. Fuenf neue Tests decken Definitionen, Start/Duplikat, abgeleitete Anzeige und Fristablauf ab; `demand.test.ts` und `narrative-save.test.ts` pruefen die unveraenderte Wirkung und die Migration. Die Content-Registry waechst auf 22 Fragmente.

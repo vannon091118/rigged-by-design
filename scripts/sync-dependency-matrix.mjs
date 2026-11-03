@@ -30,6 +30,8 @@ const JUSTIFICATIONS = {
   '@capacitor/core': ['Android', 'WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben.'],
   '@capacitor/cli': ['Android', 'Capacitor-CLI: erzeugt das Android-Projekt und synchronisiert Web-Build und Huelle.'],
   '@capacitor/android': ['Android', 'Native Android-Plattform, aus der Gradle Debug- und Release-APK baut.'],
+  '@playwright/test': ['Test', 'Playwright-Test-Runner fuer E2E-Tests gegen den laufenden Dev-Server.'],
+  playwright: ['Test', 'Playwright-Browser-Binaries fuer E2E-Tests; startet Chromium gegen localhost:3003.'],
 };
 
 const CATEGORY = (pkg) => JUSTIFICATIONS[pkg]?.[0] ?? 'Unbekannt';
@@ -44,7 +46,10 @@ const packages = {
   ...(packageJson.dependencies ?? {}),
   ...(packageJson.devDependencies ?? {}),
 };
-const candidates = walk(resolve(ROOT, 'src'), (file) => /\.(ts|tsx)$/.test(file));
+const candidates = [
+  ...walk(resolve(ROOT, 'src'), (file) => /\.(ts|tsx)$/.test(file)),
+  ...walk(resolve(ROOT, 'tests'), (file) => /\.(ts|tsx)$/.test(file)),
+];
 const scriptRoot = resolve(ROOT, 'scripts');
 if (existsSync(scriptRoot)) candidates.push(...walk(scriptRoot, (file) => /\.(mjs|js)$/.test(file)));
 for (const file of ['src/Config/vite.config.ts', 'src/Config/eslint.config.mjs']) {

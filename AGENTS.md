@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 19:22 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-03 21:02 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -51,6 +51,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 - `pnpm run verify:release` — Freigabelauf für APK und Versionssprung: identisch mit `verify:all`, erzwingt aber `pnpm audit` unabhängig von der Änderung; CI setzt zusätzlich `RBD_VERIFY_AUDIT=1`.
 - `pnpm run test:perf` — feste Messläufe (not in verify:all). `pnpm run bench:lowend` pins the run to one core; `pnpm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
+- Playwright E2E-Testkette unter `tests/` (modular, agenten-transparent, snapshot-basiert): `playwright.config.ts`, `fixtures/game.ts`, `pages/` (11 Page Objects), `helpers/` (Snapshots, GameFlow), 8 `.spec.ts` Dateien (balance, guests, machines, games, build, narrative, transfer, edge-cases). Ausführung: Dev-Server auf Port 3000 (`pnpm run dev`), dann `npx playwright test --project=chromium-headed --headed` (sichtbar) oder `powershell -File run-e2e.ps1`.
 - `pnpm run build` — Vite production build.
 
 ## Delivery
@@ -83,7 +84,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - Einträge entstehen mit `pnpm run docs:stub -- "Titel"`; der Agent füllt danach Ziel, Umsetzung, Prüfungen und Offenes. Kein Eintrag ohne Datum, keiner nachträglich ohne Änderung.
 - Strukturvorgaben stehen in `scripts/lib/doc-sync.mjs` (Pflichtabschnitte je Dokument); das Gate prüft sie, es repariert sie nicht.
 - Markdown gehört nur als `README.md` oder `AGENTS.md` in die Wurzel; alles andere lebt unter `docs/`. Keine Doppelungen zwischen Wurzel und `docs/`. Dotfiles wie `.turn-notes.md` sind Arbeitsdateien des Turns und zählen nicht als Wurzel-Doku.
-- Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`, `src/core/sim/narrative/composer/registry.generated.ts`, `src/core/sim/narrative/composer/slot-map.generated.ts`) werden vom Compiler/Hook geschrieben, nie von Hand editiert.
+- Generierte Dateien (`docs/TEST-CATALOG.md`, Dependency-Matrix in `ARCHITECTURE.md`) werden vom Hook geschrieben, nicht gegated und nie von Hand editiert.
 - Eskalationsregeln und die eine Leiter stehen in `docs/ESCALATION.md`; keine zweite Klassifikation anlegen.
 
 ## Conventions
@@ -95,23 +96,6 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 - Zwei RNG-Namespaces: Spielzustand (`gameplay`) und Darstellung (`presentation`) teilen nie einen Strom. Renderer/Sound ziehen aus `src/render/rng.ts`; `tickWorld`/`playRound` weisen fremde Stroeme ueber `assertGameplayRng` ab.
 - No `addVC` outside a booking; no money source except `EXTERNAL_WORLD`.
 - Determinismus: kein `Math.random()`, `Date.now()`, `performance.now()`, `new Date()` und keine Krypto-Zufallsquelle (`getRandomValues`, `randomUUID`) in `src/**` oder `scripts/**` — ESLint blockt direkte Zugriffe, `globalThis`/`window`-Umwege, `new`-Umwege und Aliase. `eslint-disable` ist per `noInlineConfig` global wirkungslos; `Date()` ohne `new` und `performance.timeOrigin` sind ebenfalls gesperrt. Ausnahmen stehen namentlich und begruendet in `eslint.config.mjs`: `performance.now` nur in `src/render/floor-view.ts`, `src/render/floor-props.ts` und `src/render/music.ts` (Pacing), Krypto nur in `src/core/rng/streams.ts`, Zeitstempel-/CI-Tooling. Jede andere Datei unter `src/render/**` ist voll gesperrt. Echter Zufall nur in `entropySeed()`; Exporte stempeln aus `world.day`/`world.tick`, nie aus der Uhr.
-
-## Gate Rootcause Analysis (konsolidiert)
-
-Alle CI Gate-Fehler seit dem Merge von `fix/narrative-review-findings` (NAR-13) hatten dieselbe Rootcause:
-**Dateien wurden gelöscht, die noch von anderen Modulen importiert wurden, und neue Imports verwiesen auf nicht mehr existierende Module.**
-
-| Gate | Code | Datei | Ursache | Fix |
-|------|------|-------|---------|-----|
-| check:loc | ERR-4012 | `src/store/migrate.ts` | 221 LOC, Hot Zone für state-Dateien ist 165 | Auf 116 LOC reduziert (Kommentare entfernt, Zuweisungen kombiniert) |
-| verify:docs | ERR-4017 | `docs/INVENTORY.md` | Abdeckung 1140 ≠ 1149 getrackte Dateien (Merge hat Datei-Zählung verändert) | `inventory:build` neu generiert, 1147/1147 |
-| build | ERR-1005 | `src/core/sim/tick.ts` | Importierte aus gelöschten `character.ts`, `stain.ts`, `smartphone.ts` | `tick.ts` auf alten Stand zurückgesetzt |
-| build | ERR-1005 | `src/store/venue-commands.ts` | Importierte aus gelöschten `mop.ts`, `interaction.ts` | `mop.ts`, `interaction.ts` mit nur benötigten Exports wiederhergestellt |
-| dead-code | ERR-4003 | `src/core/sim/{character,interaction,mop,smartphone,stain}.ts` | Exports (`MOP_USES`, `manhattanDistance`, `getStainInfluence`, `tickStains` u.a.) nicht importiert | Dateien gelöscht oder auf nur genutzte Exports reduziert |
-| tests | ERR-2001 | `src/core/sim/{templates,disputes}.ts` | `Cannot find module './stain'` | `stain.ts` mit nur `spawnStain`/`removeStain` wiederhergestellt |
-| verify-commit-msg | ERR-4006 | Commit-Body | Pflichtsektionen ohne echten Inhalt (platzhalterartig) | Commit-Body mit vollständigen Inhalten in allen drei Sektionen |
-
-**Regel:** Vor jedem Löschen von Dateien aus `src/core/sim/` (oder jedem anderen Verzeichnis) muss ein Import-Grep über das gesamte Repository laufen (`rg <dateiname> src/`), um sicherzustellen, dass kein Modul das gelöschte Datei importiert. Niemals Module löschen, die noch referenziert werden. Falls ein Modul teilweise ungenutzte Exports hat, nur die genutzten Exports behalten statt das ganze Modul zu löschen.
 
 ## Pitfalls
 
