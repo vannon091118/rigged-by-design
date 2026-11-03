@@ -1,9 +1,9 @@
 # Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine
 
 **Repository:** `vannon091118/rigged-by-design`  
-**Geprüfter Stand:** Arbeitsbaum · Version `0.3.77`  
+**Geprüfter Stand:** Arbeitsbaum · Version `0.3.79`<br>
 **Revision:** 2026-11-02 · kein LLM im Spiel; Ist-Stand und offene Grundlagen präzisiert<br>
-**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 bis NAR-17 offen<br>
+**Umsetzungsstand:** Grundlagen von NAR-00 bis NAR-03 vorhanden (Save v9, Fact-Boundary, Ledger-Cursor, referenzsichere Retention); NAR-04 erledigt (Streit, Kassenbedienung, Rivalenabrechnung); NAR-05 erledigt (Trigger-Vertrag, Context, reiner Condition Evaluator, Schema); NAR-06 bis NAR-17 offen<br>
 **Save-Format:** v9 (v5–v8 ladbar)  
 **Ziel:** Eine modulare, datengetriebene Narrative Engine, die Spielzustände, Charaktergedächtnis, Besucherbeziehungen, Wirtschaft und autonome Rivalen zu fortlaufenden Geschichten verbindet. Content-Beiträge von Agenten werden semantisch klassifiziert, zur Laufzeit kombiniert und können validierte Event-Commands tragen. Agenten können bei der Repository-Arbeit Darstellungstext beisteuern. Im Spiel gibt es keine LLM-Anbindung, auch nicht optional; Textauswahl, Spielregeln und Effekte bleiben lokal, deterministisch und code-kontrolliert.
 
@@ -300,6 +300,15 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 
 **Ziel:** Beliebige sinnvolle Simulationskontexte auswerten, ohne pro Event neue Sonderlogik in `tick.ts` einzubauen.
 
+**Status:** erledigt (2026-11-02).
+
+**Geliefert:**
+- `trigger-types.ts`: deklarativer Vertrag für Context, Bedingungen, Definitionen und Match-Ergebnisse.
+- `trigger-context.ts`: unveränderlicher Snapshot aus Welt, Ledger und aktuellem Fact; Historie, Flags, Beziehungen, Visitor-Profile, Hauskonto/Band, Charisma, Ruf, Nachfragestufe, bediente Gäste und Geräteschaden. Alte `visitorId`-Facts und neue `actorRefs`-Facts werden auf dieselbe Akteursliste aufgelöst.
+- `trigger-evaluate.ts`: reine Auswertung für `all`/`any`/`not`, Fact-Typ, Besuchererinnerung, Hauskonto-Grenzen/Band, Geräteschaden, Charisma, Ruf, Nachfragestufe, bediente Gäste, Flags (Wert/Anwesenheit/Abwesenheit), Zeitfenster, `recent-fact`, Akteur/Rolle und Beziehungen (Trust/Sympathie/Konflikt/Einfluss); Match plus Begründungen und aufgelöste Teilnehmer.
+- `trigger-schema.ts`: rekursive, fail-closed Validierung mit maximal 64 Knoten und Tiefe 12; unbekannte Operatoren, ungültige Fact-Arten/ActorRefs, Selbstkanten, negative oder unsichere Schwellen und leere `all`/`any`-Listen werden verworfen.
+- `triggers.ts` bleibt die öffentliche Fassade, damit bestehende Importe stabil bleiben.
+
 **Arbeiten**
 - Trigger-Vertrag erstellen, der Facts, Akteure, Zeitfenster, Charakterwerte, Memory-Referenzen, Beziehungen, Unternehmens-/Casinozustand und wirtschaftliche Kennzahlen abfragen kann.
 - Bedingungen deklarativ und schema-validierbar ausdrücken (AND/OR, Vergleich, Fact-Typ, Schwellenübergang, Existenz/Abwesenheit eines Flags, Akteur-Selector, Historienfenster).
@@ -308,11 +317,13 @@ Jeder NAR-Punkt ist ein eigenständiger Agenten-Task/Turn. Pfade sind Zielmodule
 - Trigger dürfen nicht bloß `guest.mood < 20` bei jedem Tick auslösen. Schwellenübergänge und Fact-ID/Cooldown bilden die Wiederholungssperre.
 - Definitionen müssen neue Triggerquellen aufnehmen können, ohne den Evaluator umzuschreiben.
 
-**Zielbereiche:** `narrative/triggers/types.ts`, `predicates.ts`, `evaluate.ts`, `context.ts`.
+**Zielbereiche:** `src/core/sim/narrative/trigger-types.ts`, `trigger-context.ts`, `trigger-evaluate.ts`, `trigger-schema.ts`; `triggers.ts` als Fassade.
 
-**Nachweis:** Tests für alle Operatoren, Kombinationen, fehlende Referenzen, Grenzwerte, historische Bedingungen und Zustandsübergänge; identischer Input liefert identisches Ergebnis.
+**Nicht Teil:** Runtime-Aufruf im Tick, Cooldowns und Scheduler (NAR-06/NAR-12). Der Evaluator bleibt eine reine Funktion ohne Welt-, Ledger- oder PRNG-Mutation und ohne Netzwerk-/LLM-Aufruf.
 
-**Gate:** `verify:quick`.
+**Nachweis:** Tests für alle Operatoren, Kombinationen, fehlende Referenzen, Grenzwerte, historische Bedingungen und Zustandsübergänge; identischer Input liefert identisches Ergebnis. `narrative-triggers.test.ts` und `narrative-trigger-schema.test.ts` decken Context, Unveränderlichkeit, Match-Teilnehmer, alle Operatoren, fehlende Visitor-Profile und Schema-Negativfälle ab.
+
+**Gate:** `verify:quick` und `verify:all` grün.
 
 ---
 

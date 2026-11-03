@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-02 - NAR-05: Trigger-Context und Condition Evaluator
+
+**Ziel.** NAR-05 vollstaendig schliessen: ein deklarativer Trigger-Vertrag mit echtem Context, Beziehungs- und Zeitfensterabfragen, allen vorgesehenen Operatoren und einer fail-closed Schema-Validierung. Der Evaluator bleibt eine reine Funktion ohne Tick-Eingriff.
+
+**Umsetzung.** `trigger-types.ts` beschreibt Context, Bedingungen, Definitionen und Match-Ergebnisse. `trigger-context.ts` baut aus Welt, Ledger und aktuellem Fact einen unveraenderlichen Snapshot mit Fact-Historie, Flags, Beziehungen, Visitor-Profilen, Hauskonto/Band, Charisma, Ruf, Nachfragestufe, bedienten Gaesten und Geraeteschaden; `actorRefsOfFact()` vereinheitlicht alte `visitorId`-Facts und neue `actorRefs`. `trigger-evaluate.ts` wertet `all`/`any`/`not`, Facts, Erinnerungen, Hauskonto, Geraete, Charisma, Ruf, Nachfrage, Gaeste, Flags, Zeitfenster, `recent-fact`, Akteure und Beziehungen aus und liefert Begruendungen. `trigger-schema.ts` verwirft unbekannte Operatoren, ungueltige Refs, Selbstkanten, negative/unsichere Schwellen und leere Listen; 64 Knoten und Tiefe 12 sind die Grenze. `triggers.ts` bleibt die oeffentliche Fassade.
+
+**Pruefungen.** `npx --yes pnpm@10.4.1 run typecheck` gruen; die vollstaendige Suite lief mit 571 bestandenen und 2 uebersprungenen Tests. `verify:quick` bestand alle zehn Gates, `verify:all` alle zwoelf Gates inklusive Audit und Build. Die neuen Tests decken alle Operatoren, Grenzwerte, Historie, fehlende Visitor-Profile, Unveraenderlichkeit sowie Schema-Negativfaelle ab.
+
+**Offen.** Der Evaluator ist noch nicht in den Tick eingebunden; Aufrufstelle und Cooldowns bleiben NAR-06/NAR-12. Scheduler, Event-Templates, Commands, Content-Compiler, Composer, Demand-Migration und autonome Rivalen sind weiterhin offen.
+
 ## 2026-11-02 - Optik und Steuerung: Lichtpfuetzen, Zielraster, Kamera folgt
 
 **Ziel.** Ohne eine neue Spielregel soll der Floor besser lesbar und besser steuerbar werden:
@@ -690,7 +700,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.78 | 2026-11-02 23:50 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.79 | 2026-11-03 00:06 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

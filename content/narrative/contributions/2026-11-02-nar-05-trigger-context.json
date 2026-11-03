@@ -1,0 +1,13 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-02T23:59Z-nar-05-trigger-context",
+  "contributionId": "trigger-context-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Rita kam wieder, und das Haus erinnerte sich nicht an ihren Namen, sondern an den Streit an der Kasse und an das Vertrauen, das danach übrig blieb. Der neue Vertrag fragte nicht mehr jede Stimmung einzeln ab: Er las den letzten Fact, das Fenster davor, die gerichtete Kante und den Stand der Hauskasse zusammen. Erst die Erklärung machte aus einem Treffer eine Geschichte, die man prüfen konnte.",
+  "directives": []
+}
