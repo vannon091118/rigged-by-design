@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.86 | 2026-11-03 02:34 UTC -->
+<!-- rbd-doc: v0.3.87 | 2026-11-03 03:17 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.87] - 2026-11-03
+
+### Technik
+- NAR-13 abgeschlossen: `events/demand-definitions.ts` beschreibt Neon-Nacht und Turnierabend als Daten (Nachfrage pro Tag, Laufzeit, Gruppenzuschlag, Starttext), `narrative/demand-events.ts` startet und beendet sie als aktive GLOBAL-Instanzen der gemeinsamen Event-Engine. `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen nur noch die aktive Instanz; `NarrativeState.demandEvent` ist entfernt.
+- v5–v9-Saves mit `demandEvent` (Weltfeld oder Narrativ-Slice) werden beim Laden in eine aktive Instanz mit Restlaufzeit konvertiert; abgelaufene Veranstaltungen verfallen, bestehende Instanzen verhindern Duplikate. Neue Saves enthalten nur noch `narrative.events`.
+- `sourceFactId: 0` ist fuer engine-erzeugte Events ohne ausloesenden Fact reserviert. Fuenf neue Tests decken Definitionen, Start/Duplikat, abgeleitete Anzeige und Fristablauf ab; `demand.test.ts` und `narrative-save.test.ts` pruefen die unveraenderte Wirkung und die Migration. Die Content-Registry waechst auf 22 Fragmente.
 
 ## [0.3.86] - 2026-11-03
 

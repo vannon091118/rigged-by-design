@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - NAR-13: DemandEvents in der gemeinsamen Engine
+
+**Ziel.** Den zweiten Scheduler in `demand.ts` aufloesen, ohne Ankunftsraten, Gruppengroessen oder Zeitfenster zu veraendern und ohne laufende Veranstaltungen aus v5–v9-Saves zu verlieren.
+
+**Umsetzung.** Neon-Nacht und Turnierabend stehen jetzt als Daten in `narrative/events/demand-definitions.ts`; `narrative/demand-events.ts` startet hoechstens eine aktive GLOBAL-Instanz ohne Choices und beendet sie am Fristtick ueber `transitionEvent` (`EXPIRED`, `DEMAND_ENDED`). `demandBreakdown()`, `groupSize()` und `expectedGroupSize()` lesen nur noch die aktive Instanz; `NarrativeState.demandEvent` und seine Normalisierung sind entfernt. `sourceFactId: 0` ist fuer engine-erzeugte Events ohne ausloesenden Fact reserviert. `hydrateNarrative()` konvertiert das alte Feld aus v5–v8 und v9 in eine Instanz mit Restlaufzeit, abgelaufene Events verfallen.
+
+**Pruefungen.** `node_modules/.bin/tsc --noEmit -p src/Config/tsconfig.json` und 19 fokussierte Tests in `demand.test.ts`, `narrative-demand.test.ts` und `narrative-save.test.ts` sind grün. Die Save-Tests decken alle Versionen v5–v9, das fehlende Feld im neuen Save und den Reload ohne Duplikat ab. `RBD_VERIFY_NO_CACHE=1 RBD_VERIFY_AUDIT=1 CI=true node scripts/run-pipeline.mjs --profile=full` bestand alle zwoelf Gates inklusive Audit und Build; die Suite meldete 657 bestandene und 2 uebersprungene Tests (659 gesamt) in 132 bestandenen Testdateien. Bericht: `.verify-cache/reports/2026-11-03T03-16-02-160Z/summary.md`.
+
+**Offen.** Die Event-Instanzen teilen sich die begrenzte Historie mit den uebrigen narrativen Events; eine eigene Retention fuer Nachfrageevents ist nicht noetig, solange hoechstens eine pro Tag entsteht. Die UI-Anbindung bleibt NAR-14.
+
 ## 2026-11-03 - NAR-12 Orchestrierung in Tick und WorldStore
 
 **Ziel.** Facts nicht mehr an einzelnen Quellen, sondern an den tatsaechlichen Mutationsgrenzen verarbeiten und den vollstaendigen Kreis Fact→Event→Choice→Command→Fact schliessen — im Tick und bei Store-Commands ausserhalb des Ticks.
@@ -772,7 +782,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.86 | 2026-11-03 02:34 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.87 | 2026-11-03 03:17 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

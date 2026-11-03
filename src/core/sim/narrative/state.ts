@@ -21,7 +21,7 @@ const START_ROSTER: ReadonlyArray<{ readonly name: string; readonly persona: Vis
 export function createNarrativeState(): NarrativeState {
   return {
     factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0,
-    demandEvent: null, flags: {}, relationships: [], ledgerSeq: null, houseBand: 'OK',
+    flags: {}, relationships: [], ledgerSeq: null, houseBand: 'OK',
     eventSeq: 1, events: [], cooldowns: [], rng: createNarrativeRng(),
   };
 }
@@ -73,10 +73,6 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.ledgerSeq = safeInteger(raw.ledgerSeq, -1) ? raw.ledgerSeq : null;
   state.houseBand = HOUSE_BANDS.includes(raw.houseBand as HouseBand) ? raw.houseBand as HouseBand : 'OK';
   state.relationships = normalizeRelationships(raw.relationships);
-  if (isRecord(raw.demandEvent) && (raw.demandEvent.kind === 'NEON_NACHT' || raw.demandEvent.kind === 'TURNIER_ABEND')
-    && safeInteger(raw.demandEvent.untilTick, 0)) {
-    state.demandEvent = { kind: raw.demandEvent.kind, untilTick: raw.demandEvent.untilTick };
-  }
   if (isRecord(raw.flags)) {
     for (const [key, value] of Object.entries(raw.flags)) {
       if (Number.isFinite(value)) state.flags[key] = Number(value);

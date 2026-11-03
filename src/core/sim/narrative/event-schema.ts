@@ -30,10 +30,11 @@ function validParticipants(scope: NarrativeEventScope, raw: unknown): raw is rea
   return refs.length === 1 && refs[0]!.startsWith('rival:');
 }
 
+/** `sourceFactId: 0` ist fuer engine-erzeugte Events ohne ausloesenden Fact reserviert. */
 export function isEventCandidate(raw: unknown): raw is EventCandidate {
   if (!isRecord(raw) || !isText(raw.eventId, 64) || !isScope(raw.scope)
     || !validParticipants(raw.scope, raw.participants)) return false;
-  if (!isSafeInt(raw.priority, 0, 1000) || !isSafeInt(raw.sourceFactId, 1)) return false;
+  if (!isSafeInt(raw.priority, 0, 1000) || !isSafeInt(raw.sourceFactId, 0)) return false;
   if (raw.expiresInTicks !== undefined && !isSafeInt(raw.expiresInTicks, 0)) return false;
   if (raw.cooldownTicks !== undefined && !isSafeInt(raw.cooldownTicks, 0)) return false;
   if (raw.maxOccurrences !== undefined && !isSafeInt(raw.maxOccurrences, 1)) return false;
@@ -49,7 +50,7 @@ export function isEventInstance(raw: unknown): raw is NarrativeEventInstance {
     || !isStatus(raw.status) || !isScope(raw.scope) || !validParticipants(raw.scope, raw.participants)) return false;
   if (!isText(raw.templateId, 64) || !isSafeInt(raw.templateVersion, 1, 1000)
     || !isOfferedChoiceIds(raw.offeredChoiceIds)) return false;
-  if (!isSafeInt(raw.sourceFactId, 1) || !isSafeInt(raw.priority, 0, 1000)) return false;
+  if (!isSafeInt(raw.sourceFactId, 0) || !isSafeInt(raw.priority, 0, 1000)) return false;
   if (!isSafeInt(raw.startedTick, 0) || !isSafeInt(raw.updatedTick, 0) || !isSafeInt(raw.expiresTick, 0)) return false;
   if (raw.updatedTick < raw.startedTick || raw.expiresTick < raw.startedTick) return false;
   if (!isStep(raw.step) || !isSafeInt(raw.maxOccurrences, 1) || !isSafeInt(raw.cooldownTicks, 0)) return false;
