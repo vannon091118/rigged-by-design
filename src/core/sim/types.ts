@@ -5,8 +5,8 @@ import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
 import type { ExclusionPact } from './self-exclusion-bet';
 import type {
-  ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Player,
-  PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
+  ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Mop, Player,
+  PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, Zone, FightFx,
   ForeignFloorState,
 } from './types-model';
 
@@ -38,6 +38,8 @@ export interface WorldState {
   crates: Crate[];
   agents: StaffAgent[];
   disputes: Dispute[];
+  stains: Stain[];
+  mops: Mop[];
   parts: number;
   guestsServed: number;
   reputation: number;
@@ -48,6 +50,8 @@ export interface WorldState {
   nextCrateId: number;
   nextAgentId: number;
   nextDisputeId: number;
+  nextStainId: number;
+  nextMopId: number;
   activePenalties: ActivePenalty[];
   visitors: Visitor[];
   nextVisitorId: number;

@@ -7,6 +7,7 @@ import { furnitureById, guestById } from './world';
 import { dirtyTileIndex } from './emotion';
 import { emitFact } from './narrative/facts';
 import { actorRefOfVisitor } from './narrative/relationships';
+import { spawnStain } from './stain';
 
 const BRAWL_RANGE = 5;
 /**
@@ -146,6 +147,7 @@ export function tickDisputes(world: WorldState): void {
         live.damaged = true;
         world.dirty.add(dirtyTileIndex(world.size, live.x, live.y));
         world.lastEvent = `Im Streit ging ${live.label} zu Bruch.`;
+        spawnStain(world, live.x, live.y, 30);
       }
     }
   }

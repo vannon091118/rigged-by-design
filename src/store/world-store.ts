@@ -25,7 +25,7 @@ import type { CardDeal } from './foreign-play';
 import type { GameView } from './types';
 import { acceptJobCmd, quitJobCmd, requestJobTaskCmd, buyBarCmd, visitForeignCmd, leaveForeignCmd } from './foreign-floor-commands';
 import { riskCardCmd, dealCardCmd, settleCardCmd, additionalBetCmd, playRivalCmd, shellRoundCmd, takeHomeCmd } from './rival-play-commands';
-import { buyCmd, orderDrinksCmd, orderPartsCmd, pickupCmd, deployCmd, unloadHereCmd, storeDepositCmd, calmCmd, talkCmd, fightBrawlCmd, spendSkillCmd, serveDeskCmd, setWallCmd, setNeonCmd, upgradeBarCmd, upgradeWcCmd, repairCmd, cleanCmd, hireCmd, fireCmd, setPriceCmd, setCarpetCmd, installModCmd, addReelCmd, setBetCmd, setSlotOddsCmd } from './venue-commands';
+import { buyCmd, orderDrinksCmd, orderPartsCmd, pickupCmd, deployCmd, unloadHereCmd, storeDepositCmd, calmCmd, talkCmd, fightBrawlCmd, spendSkillCmd, serveDeskCmd, setWallCmd, setNeonCmd, upgradeBarCmd, upgradeWcCmd, repairCmd, cleanCmd, hireCmd, fireCmd, setPriceCmd, setCarpetCmd, installModCmd, addReelCmd, setBetCmd, setSlotOddsCmd, pickupMopCmd, dropMopCmd, cleanStainCmd, getMopAtToiletCmd } from './venue-commands';
 import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd } from './game-commands';
 import { TICK_MS } from '../core/sim/tick-timing';
@@ -112,6 +112,10 @@ class WorldStore {
   addReel(itemId: number): void { this.#guard(() => { this.#notice = addReelCmd(this.#world, this.#ledger, itemId); }); }
   setBet(itemId: number, vc: number): void { this.#guard(() => { this.#notice = setBetCmd(this.#world, itemId, vc); }); }
   setSlotOdds(itemId: number, profile: import('../core/games/slot-profile').SlotProfile): void { this.#guard(() => { this.#notice = setSlotOddsCmd(this.#world, itemId, profile); }); }
+  pickupMop(mopId: number): void { this.#guard(() => { this.#notice = pickupMopCmd(this.#world, mopId); }); }
+  dropMop(): void { this.#guard(() => { this.#notice = dropMopCmd(this.#world); }); }
+  cleanStain(stainId: number): void { this.#guard(() => { this.#notice = cleanStainCmd(this.#world, this.#ledger, stainId); }); }
+  getMopAtToilet(): void { this.#guard(() => { this.#notice = getMopAtToiletCmd(this.#world); }); }
   acceptJob(rivalId: RivalId, jobId: PlayerJobId): void { this.#guard(() => { acceptJobCmd(this.#world, rivalId, jobId); this.#notice = this.#world.lastEvent; }); }
   quitJob(): void { this.#guard(() => { quitJobCmd(this.#world); this.#notice = this.#world.lastEvent; }); }
   requestJobTask(): void { this.#guard(() => { const result = requestJobTaskCmd(this.#world); this.#notice = result.started ? 'Arbeit aufgenommen.' : `In Warteschlange (Position ${result.queuePosition + 1}).`; }); }

@@ -19,3 +19,4 @@ tsconfig.tsbuildinfo
 /capacitor.config.json
 src/Config/*.tsbuildinfo
 .freebuff/
+test-results/

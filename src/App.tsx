@@ -9,6 +9,7 @@ import type { GameView } from './store/types';
 import { AssetLibraryPopup } from './ui/asset-library-popup';
 import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
+import { Smartphone } from './ui/smartphone';
 import { ForeignFloorMap } from './ui/foreign-floor-map';
 import { ForeignFloorPopup } from './ui/foreign-floor-popup';
 import { GamesPopup } from './ui/games-popup';
@@ -22,6 +23,7 @@ import { MachinePopup } from './ui/machine-popup';
 import { StageControls } from './ui/stage-controls';
 import { isMuted, playSfx } from './render/sound-fx';
 import { armMusic, setMusicState } from './render/music';
+import { handleFloorInteract } from './render/floor-interact';
 
 type Popup =
   | { kind: 'guests'; guestId: number | null }
@@ -55,6 +57,7 @@ export default function App() {
   const view = useWorldStore();
   const [popup, setPopup] = useState<Popup>(null);
   const [buildOpen, setBuildOpen] = useState(false);
+  const [smartphoneOpen, setSmartphoneOpen] = useState(false);
   const [placeError, setPlaceError] = useState('');
   const [muted, setMutedState] = useState(isMuted);
   const stage = useRef<FloorHandle>(null);
@@ -167,7 +170,7 @@ export default function App() {
     <div className="app">
       <Hud
         view={view}
-        onBuild={() => { setPopup(null); setBuildOpen((open) => !open); }}
+        onSmartphone={() => { setPopup(null); setSmartphoneOpen((open) => !open); }}
         onGuests={() => { setBuildOpen(false); setPopup({ kind: 'guests', guestId: null }); }}
         onVisit={() => { setBuildOpen(false); setPopup({ kind: 'foreignMap' }); }}
         onClean={() => worldStore.clean()}
@@ -202,6 +205,7 @@ export default function App() {
             if (carryingCrate) { deployAt(x, y); return; }
             worldStore.moveTo({ x, y });
           }}
+          onInteract={handleFloorInteract}
         />
 
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
@@ -336,6 +340,10 @@ export default function App() {
           onDeployPlinko={(config) => worldStore.deployPlinko(config)}
           onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
         />
+      )}
+
+      {smartphoneOpen && (
+        <Smartphone view={view} onClose={() => setSmartphoneOpen(false)} />
       )}
     </div>
   );

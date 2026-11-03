@@ -10,10 +10,11 @@ import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { NarrativeState } from '../core/sim/narrative/types';
 import { hydrateNarrative } from './migrate-narrative';
-import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Player, PriceBook, StaffAgent, StaffState, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
+import type { ActivePenalty, CarpetId, Crate, DemandEvent, DemandTier, Dispute, FightFx, Furniture, Guest, Mop, Player, PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import { hydrateJobState } from '../core/sim/player-jobs';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
+import { hydrateStainsAndMops } from './migrate-stains';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 
@@ -83,6 +84,10 @@ export interface SavedGame {
   readonly foreignFloors?: ForeignFloorState[];
   readonly nextForeignFloorId?: number;
   readonly activeForeignFloorId?: number | null;
+  readonly stains?: Stain[];
+  readonly mops?: Mop[];
+  readonly nextStainId?: number;
+  readonly nextMopId?: number;
   readonly entries: readonly SavedEntry[];
   readonly prngState: number;
 }
@@ -128,7 +133,6 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null };
   world.dirty = new Set(saved.dirty ?? []);
   world.prices = { ...world.prices, ...(saved.prices ?? {}) };
-  // Der alte Guard lebte als Flag neben den Agenten: gelesen, nicht uebernommen.
   const legacyGuardHired = restoreStaff(world, saved.staff);
   world.tick = saved.tick ?? 0;
   world.day = saved.day ?? 1;
@@ -159,7 +163,6 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.wcLevel = saved.wcLevel ?? 1;
   world.nextCrateId = saved.nextCrateId ?? world.crates.reduce((max, crate) => Math.max(max, crate.id + 1), 1);
   world.nextAgentId = saved.nextAgentId ?? world.agents.reduce((max, agent) => Math.max(max, agent.id + 1), 1);
-  // Was frueher als eingestellt galt, bleibt eingestellt: der Guard-Agent fehlt.
   repairGuardAgent(world, legacyGuardHired);
   world.nextDisputeId = saved.nextDisputeId ?? world.disputes.reduce((max, dispute) => Math.max(max, dispute.id + 1), 1);
   const agentIds = new Set(world.agents.map((agent) => agent.id));
@@ -173,6 +176,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   const guestIds = new Set(world.guests.map((guest) => guest.id));
   for (const dispute of world.disputes) dispute.guestIds = dispute.guestIds.filter((id) => guestIds.has(id));
   world.disputes = world.disputes.filter((dispute) => dispute.guestIds.length >= 2);
+  hydrateStainsAndMops(world, saved);
   for (const guest of world.guests) {
     if (guest.disputeId !== null && !world.disputes.some((dispute) => dispute.id === guest.disputeId)) {
       guest.disputeId = null;
@@ -184,7 +188,6 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.nextJournalId = saved.nextJournalId
     ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
   world.journaledSeq = saved.journaledSeq ?? saved.entries.length;
-  // Aeltere Staende kennen kein Archiv: der vorhandene Puffer wird dann zum Startbestand.
   world.archive = (saved.archive ?? world.journal).map((event) => ({
     ...event, refs: event.refs ? { ...event.refs } : undefined,
   }));
