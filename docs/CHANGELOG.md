@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.85 | 2026-11-03 02:15 UTC -->
+<!-- rbd-doc: v0.3.86 | 2026-11-03 02:34 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.86] - 2026-11-03
+
+### Technik
+- NAR-12 abgeschlossen: `src/core/sim/narrative/runtime.ts` ist der einzige Orchestrator und verarbeitet in fester Reihenfolge Simulation → Facts → Memory/Relationships → Trigger → Scheduler → Events/Choices → Journal/Snapshot. `processNarrativeRuntime()` drainiert den Boundary genau einmal, wertet die deklarativen Trigger aus `events/trigger-definitions.ts` aus und plant ueber `scheduleCandidates()` hoechstens drei neue Event-Instanzen; neue Facts warten auf den naechsten Lauf.
+- `tickWorld()` ruft die Runtime am Tick-Ende. `src/store/narrative-commands.ts` liefert `flushNarrativeCmd()` und `chooseNarrativeCmd()`; `world-store.ts` flusht nach jeder erfolgreichen Command-Ausfuehrung sowie nach Neues Spiel, Import und Rivalenspiel, nicht in `#emit()`. `spawn.ts` und `guest-service.ts` drainieren nicht mehr selbst.
+- Eine erfolgreiche Choice emittiert den neuen Fact `EVENT_RESOLVED` (`eventId`, `eventKind`, `choiceId`, `outcomeId`); damit ist der Kreis Fact→Event→Choice→Command→Fact auch im Erfolgsfall geschlossen. Der Fact wird erst im naechsten Flush verarbeitet, nie rekursiv. Schema, Save-Roundtrip und die 21. Content-Registry sind nachgezogen.
+- Neue Tests: `narrative-runtime.test.ts` (Trigger→Scheduler, Tick-Anbindung, Drei-Event-Grenze, Idempotenz, Save-Roundtrip) und `narrative-commands.test.ts` (Store-Flush, Erfolgs- und Ablehnungspfad, wiederholter Klick). `narrative-save.test.ts` sucht sein `SAVE_EVENT` jetzt ueber die `eventId`, weil der Tick seit NAR-12 seedabhaengig echte Rueckkehrer-Events plant und `events[0]` nicht mehr stabil ist.
 
 ## [0.3.85] - 2026-11-03
 

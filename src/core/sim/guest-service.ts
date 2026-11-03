@@ -5,7 +5,6 @@ import { recordJournal } from './journal';
 import { closeFiat, exchangeFromVc, guestAccount, payPending } from './money';
 import type { Furniture, Guest, WorldState } from './types';
 import { noteExperience } from './visitors';
-import { processNarrativeBoundary } from './narrative/boundary';
 import { emitFact } from './narrative/facts';
 import { valenceOf } from './narrative/memory';
 import { doorPoint, furnitureById, releaseSeat, sendGuest } from './world';
@@ -43,7 +42,6 @@ function noteSatisfaction(world: WorldState, ledger: Ledger, guest: Guest): void
       kind: 'VISIT_ENDED', visitorId: guest.visitorId, guestId: guest.id,
       score: Math.round(score), valence: valenceOf(score),
     });
-    processNarrativeBoundary(world, ledger);
   }
 }
 

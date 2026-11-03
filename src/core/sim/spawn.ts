@@ -6,7 +6,6 @@ import { MOOD_SHOCK_NEWCOMER_MALUS } from './penalty-pool';
 import { attractionOf } from './offers';
 import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
-import { processNarrativeBoundary } from './narrative/boundary';
 import { emitFact } from './narrative/facts';
 import { memoryEffect } from './narrative/memory';
 import { hasStaff } from './staff-queries';
@@ -59,7 +58,6 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
     guest.visitorId = recordVisitor(world, { name: guest.name, persona, tick: world.tick }).id;
     emitFact(world, { kind: 'VISITOR_FIRST_SEEN', visitorId: guest.visitorId, persona });
   }
-  processNarrativeBoundary(world, ledger);
   admitFiat(ledger, id, fiat, world.tick);
   guest.targetZone = 'exchange';
   guest.path = pathTo(world, spawn, target);

@@ -17,6 +17,8 @@ import { createWorld, ensureStarter } from '../core/sim/templates';
 import { tickWorld } from '../core/sim/tick';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { seedStartPool } from '../core/sim/narrative/state';
+import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
+import { chooseNarrativeCmd, flushNarrativeCmd } from './narrative-commands';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
 import type { CardDeal } from './foreign-play';
@@ -48,6 +50,7 @@ class WorldStore {
       ensureStarter(this.#world);
       // Startkapital und Start-Pool sind derselbe Beginn: das Geld ist ein Fact, die Figuren sind bekannt.
       seedStartPool(this.#world, openHouse(this.#ledger, 0));
+      flushNarrativeCmd(this.#world, this.#ledger);
       this.#notice = hadOld ? 'Alter Spielstand verworfen. Neues Casino, 150 VC Startkapital.' : this.#notice;
     }
     this.#view = buildView(this.#world, this.#ledger, this.#notice);
@@ -68,6 +71,7 @@ class WorldStore {
     this.#world = createWorld(template);
     this.#ledger = new Ledger();
     seedStartPool(this.#world, openHouse(this.#ledger, 0));
+    flushNarrativeCmd(this.#world, this.#ledger);
     this.#prng = new Prng(entropySeed());
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();
@@ -128,7 +132,7 @@ class WorldStore {
     return booked;
   }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); }
-  playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) this.#emit(false); return result; }
+  playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) { flushNarrativeCmd(this.#world, this.#ledger); this.#emit(false); } return result; }
   auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); }
   exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); }
   planImport(raw: string): TransferReport { return planImportData(raw).report; }
@@ -142,6 +146,7 @@ class WorldStore {
     this.#world = loaded.world;
     this.#ledger = loaded.ledger;
     this.#prng = new Prng(loaded.prngState);
+    flushNarrativeCmd(this.#world, this.#ledger);
     this.#notice = 'Spielstand importiert.';
     this.#emit();
     return report;
@@ -154,10 +159,20 @@ spinTest(itemId: number): GameResult | null { const { result, notice } = spinTes
   deployPlinko(input: import('../core/games/plinko-config').PlinkoConfig): import('../core/games/plinko-sandbox').GateResult { return deployPlinkoCmd(this.#world, input); }
   setPlinkoMode(mode: import('../core/games/plinko-config').PlinkoMode): void { this.#guard(() => { this.#notice = setPlinkoModeCmd(this.#world, mode); }); }
   exclusion(command: 'START' | 'HONOR', limitVC = 100): void { this.#guard(() => { this.#notice = exclusionCmd(this.#world, this.#ledger, command, limitVC); }); }
+  chooseNarrative(eventId: number, choiceId: string): ChoiceExecution | null {
+    let result: ChoiceExecution | null = null;
+    this.#guard(() => {
+      result = chooseNarrativeCmd(this.#world, this.#ledger, eventId, choiceId);
+      this.#notice = result.ok
+        ? `Narrative Entscheidung: ${result.event?.resolution ?? 'aufgeloest'}.`
+        : result.rejections[0]?.detail ?? 'Narrative Entscheidung abgewiesen.';
+    });
+    return result;
+  }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
   #advance = (): void => { tickWorld(this.#world, this.#ledger, this.#prng); this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
-  #guard(action: () => void): void { try { action(); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
+  #guard(action: () => void): void { try { action(); flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }
 }
 export const worldStore = new WorldStore();

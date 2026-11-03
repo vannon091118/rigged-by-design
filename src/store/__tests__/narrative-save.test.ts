@@ -45,7 +45,8 @@ describe('Save v9 bewahrt die Narrative-Domaene', () => {
     const loaded = replaySave(raw);
     expect(loaded).not.toBeNull();
     expect(loaded!.world.narrative).toEqual(world.narrative);
-    expect(loaded!.world.narrative.events[0]?.offeredChoiceIds).toEqual(['KEEP']);
+    expect(loaded!.world.narrative.events.find((entry) => entry.eventId === 'SAVE_EVENT')?.offeredChoiceIds)
+      .toEqual(['KEEP']);
   });
 
   it('laedt v8 ohne Narrative-Feld mit sicheren Defaults', () => {

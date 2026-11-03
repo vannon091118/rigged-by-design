@@ -34,6 +34,12 @@ export function isFact(raw: unknown): raw is NarrativeFact {
     return typeof raw.commandId === 'string' && /^[A-Za-z][A-Za-z0-9_:-]{0,63}$/.test(raw.commandId)
       && typeof raw.reason === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.reason);
   }
+  if (kind === 'EVENT_RESOLVED') {
+    return safeInteger(raw.eventId, 1)
+      && typeof raw.eventKind === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.eventKind)
+      && typeof raw.choiceId === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.choiceId)
+      && typeof raw.outcomeId === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.outcomeId);
+  }
   if (kind === 'HOUSE_BALANCE') {
     return Number.isSafeInteger(raw.balance) && HOUSE_BANDS.includes(raw.band as HouseBand);
   }

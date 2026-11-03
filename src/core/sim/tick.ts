@@ -4,6 +4,7 @@ import { ZERO_VC } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { assertGameplayRng } from '../rng/streams';
 import { tickDemand } from './demand';
+import { processNarrativeRuntime } from './narrative/runtime';
 import { maybeStartBrawl, tickDisputes } from './disputes';
 import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose } from './guests';
 import { guestAccount, pendingAccount } from './money';
@@ -135,4 +136,6 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
     world.player.position = { ...world.player.path[world.player.pathIndex]! };
     world.player.pathIndex += 1;
   }
+  // Ein Lauf pro Tick: alle Quellen haben Facts emittiert, jetzt Memory/Trigger/Scheduler.
+  processNarrativeRuntime(world, ledger);
 }

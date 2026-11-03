@@ -6,14 +6,14 @@ import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } fro
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
   | 'HOUSE_BALANCE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
-  | 'COMMAND_REJECTED';
+  | 'COMMAND_REJECTED' | 'EVENT_RESOLVED';
 export type VisitorValence = 'GOOD' | 'NEUTRAL' | 'BAD';
 export type HouseBand = 'LOW' | 'OK';
 
 export const NARRATIVE_FACT_KINDS: readonly NarrativeFactKind[] = [
   'START_POOL', 'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISIT_ENDED',
   'HOUSE_BALANCE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
-  'COMMAND_REJECTED',
+  'COMMAND_REJECTED', 'EVENT_RESOLVED',
 ];
 export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', 'BAD'];
 export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
@@ -110,10 +110,19 @@ interface CommandRejectedFact extends NarrativeFactBase {
   readonly reason: string;
 }
 
+/** Eine erfolgreich aufgeloeste Choice; schliesst den Command-Fact-Kreis. */
+interface EventResolvedFact extends NarrativeFactBase {
+  readonly kind: 'EVENT_RESOLVED';
+  readonly eventId: number;
+  readonly eventKind: string;
+  readonly choiceId: string;
+  readonly outcomeId: string;
+}
+
 export type NarrativeFact =
   | StartPoolFact | VisitorFirstSeenFact | VisitorReturnedFact | VisitEndedFact
   | HouseBalanceFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
-  | CommandRejectedFact;
+  | CommandRejectedFact | EventResolvedFact;
 
 /** Strukturierte Erinnerung, keine kopierte Journal-Zeile. */
 export interface VisitorMemory {

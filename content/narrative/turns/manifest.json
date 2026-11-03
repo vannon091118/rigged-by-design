@@ -80,6 +80,10 @@
     {
       "turnId": "2026-11-03T02:30Z-nar-11-runtime-composer",
       "contributionId": "runtime-composer-01"
+    },
+    {
+      "turnId": "2026-11-03T03:15Z-nar-12-orchestration",
+      "contributionId": "nar-12-orchestration-01"
     }
   ]
 }
