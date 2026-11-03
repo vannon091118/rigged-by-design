@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.87 | 2026-11-03 03:17 UTC -->
+<!-- rbd-doc: v0.3.87 | 2026-11-03 05:08 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -93,6 +93,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Die Figur bleibt auffindbar: ein Ring am Boden, eine Punktspur entlang des Laufwegs, ein kurzer Puls am Klickziel.
 - Kamera: rechte oder mittlere Maustaste zieht das Bild, Mausrad und `+`/`-` zoomen, `0` springt zur Uebersicht; beim Laufen im Detail zieht die Kamera nach, sobald die Figur den inneren Rahmen verlaesst.
 - Kamera-Knoepfe unten rechts und eine Steuerleiste mit Tastenkuerzeln; im HUD ist das Barkauf-Ziel ein Chip in der RPG-Zeile (mit XP-Balken) statt einer leeren Leiste.
+- Die Hilfekarte im Spiel nennt die neuen Griffe: rechte Maustaste ziehen schwenkt, `+`/`-` zoomen, `0` oeffnet die Uebersicht.
 
 ### Technik
 - `src/render/floor-cues.ts` (neu): Zielraster, Spielerring, Laufwegspur und Klick-Puls als eine Darstellungsebene; liest nur Snapshots und kennt keine Spielregel.
@@ -100,6 +101,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - `floor-surface.ts`: `drawLightSpill` in sechzehn Stufen, Deckenlampen und Laufweg-Abdunklung nachgezogen; `room-art.ts` hebt die Wandlichtkante; `stage-controls.tsx` (neu) buendelt Steuerleiste und Kamera-Knoepfe; `app.css` bekommt Vignette, Rasterhintergrund, Tastenkuerzel-Chips und Zoom-Leiste.
 - Bildsprache dokumentiert: `docs/ART-DIRECTION.md` ("Neon Ledger") und `docs/banners/art-direction-neon-ledger.png` als Blatt.
 - Neuer Test `src/render/__tests__/floor-camera.test.ts`: Uebersicht mittig, Schwenk folgt dem Zeiger, Kante haelt, Nachziehen erst am Rahmen, Tasten-Zoom kehrt zurueck.
+- Neuer Bildsatz `docs/screenshots/v0.3.78/` (fuenf Bilder, 1280 x 860, Tag 1): Uebersicht, Detail, Bauen, Gaeste, Hilfe. Die Wurzel-README stellt ihn Bild fuer Bild gegen `current/` (v0.3.27); die Ablageregel in `docs/screenshots/README.md` kennt jetzt versionierte Spielsaetze statt nur `current/`.
 
 ## [0.3.77] - 2026-11-02
 

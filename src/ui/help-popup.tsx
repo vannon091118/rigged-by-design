@@ -76,6 +76,8 @@ export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
             <li><kbd>Klick</kbd> auf Gast oder Objekt: Details öffnen</li>
             <li><kbd>Pfeile</kbd> / <kbd>WASD</kbd>: laufen</li>
             <li><kbd>Mausrad</kbd>: zoomen</li>
+            <li><kbd>Rechte Maus</kbd> ziehen: schwenken</li>
+            <li><kbd>+</kbd> / <kbd>-</kbd>: zoomen, <kbd>0</kbd>: Übersicht</li>
             <li><kbd>Enter</kbd>: getragene Kiste nutzen</li>
             <li><kbd>Esc</kbd>: Fenster schließen</li>
           </ul>

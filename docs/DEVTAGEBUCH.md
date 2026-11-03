@@ -149,6 +149,15 @@ Nachweis traegt wie vorgesehen CI (`verify:all`). Neuer Test `floor-camera.test.
 davon waren zuerst rot, weil ich die Zugrichtung des Schwenks und die Lerp-Toleranz falsch
 angenommen hatte — die Kamera war richtig, die Erwartung nicht.
 
+**Bilder.** Der Belegsatz liegt neu in `docs/screenshots/v0.3.78/` (fuenf Bilder, 1280 x 860, Tag 1
+ueber den normalen Ladeweg statt eines vorbereiteten Speicherstands): Uebersicht, Detail, Bauen,
+Gaeste, Hilfe. Die Wurzel-README stellt vier davon Bild fuer Bild gegen `current/` (v0.3.27), gleiche
+Etage, gleicher Ausschnitt, und benennt auch, was der Vergleich nicht zeigt: Gaestezahl und
+Katalogumfang stammen aus anderen Spielstaenden, die Freebuff-Plakette der alten Aufnahmen aus der
+damaligen Umgebung. Beim Aufnehmen fiel auf, dass die Hilfekarte die neuen Griffe nicht nannte; sie
+listet jetzt Rechtsziehen, `+`/`-` und `0`. Die Ablageregel in `docs/screenshots/README.md` kennt
+versionierte Spielsaetze als eigenen Ordner; ein aelterer Satz wird nicht ueberschrieben.
+
 **Offen.** Lichtpfuetze gilt je Zone und Chunk: eine Zone, die ueber eine Regionskante reicht,
 bekommt je Chunk eine eigene Pfuetze; bei sehr grossen Saelen entsteht dort eine sichtbare
 Naht. Ziehen per Touch ist nur im Code vorhanden, nicht auf einem echten Geraet geprueft. Der
@@ -782,7 +791,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.87 | 2026-11-03 03:17 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.87 | 2026-11-03 05:08 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
