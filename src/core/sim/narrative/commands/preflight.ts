@@ -3,7 +3,7 @@ import type { Ledger } from '../../../economy/ledger';
 import { HAUSKONTO } from '../../money';
 import type { WorldState } from '../../types';
 import { checkChoiceSelection, choiceCostTotal } from '../choices/eligibility';
-import { canTransitionEvent } from '../event-lifecycle';
+import { canTransitionEvent, isLiveEventStatus } from '../event-lifecycle';
 import { templateFor } from '../events/definitions';
 import { isEventTemplate } from '../events/template-schema';
 import type { ChoiceActor, EventTemplate } from '../events/template-types';
@@ -43,8 +43,15 @@ function targetRejections(world: WorldState, event: ChoicePlan['event'], command
       continue;
     }
     if (command.id === 'FREEZE_TICK') {
-      if (command.ticks > COMMAND_LIMITS.freezeTicks) {
-        rejections.push(rejection(command.id, 'INVALID_ARGS', 'Freeze ueberschreitet das Limit.'));
+      if (command.ticks > COMMAND_LIMITS.freezeTicks || !isLiveEventStatus(event.status)
+        || !Number.isSafeInteger(event.expiresTick + command.ticks)) {
+        rejections.push(rejection(command.id, 'INVALID_ARGS', 'Freeze ist fuer dieses Event nicht ausfuehrbar.'));
+      }
+      continue;
+    }
+    if (command.id === 'SET_FLAG') {
+      if (!Number.isSafeInteger(command.delta) || command.delta === 0) {
+        rejections.push(rejection(command.id, 'INVALID_ARGS', 'Flag-Delta ist ungueltig.'));
       }
       continue;
     }

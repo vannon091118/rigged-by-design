@@ -54,7 +54,9 @@ describe('Narrative Event Schema', () => {
     expect(isEventCandidate({ ...candidate, priority: -1 })).toBe(false);
     expect(isEventCandidate({ ...candidate, sourceFactId: -1 })).toBe(false);
     expect(isEventCandidate({ ...candidate, cooldownTicks: -1 })).toBe(false);
-    expect(isEventCandidate({ ...candidate, maxOccurrences: 0 })).toBe(false);
+    // 0 ist die Marke fuer unbegrenzt, negativ bleibt ungueltig.
+    expect(isEventCandidate({ ...candidate, maxOccurrences: 0 })).toBe(true);
+    expect(isEventCandidate({ ...candidate, maxOccurrences: -1 })).toBe(false);
     expect(isEventCandidate({ ...candidate, step: 'lower' })).toBe(false);
   });
 
@@ -75,6 +77,18 @@ describe('Narrative Event Schema', () => {
     expect(state.events[0]?.templateId).toBe('VISITOR_EVENT');
     expect(state.events[0]?.templateVersion).toBe(1);
     expect(state.events[0]?.offeredChoiceIds).toEqual([]);
+  });
+
+  it('schliesst aeltere Duplikate derselben Demand-Familie', () => {
+    const demand = {
+      ...instance, eventId: 'NEON_NACHT', templateId: 'NEON_NACHT',
+      scope: 'GLOBAL' as const, participants: [] as const,
+    };
+    const state = normalizeEventState({ eventSeq: 4, events: [{ ...demand, id: 1 }, { ...demand, id: 2 }] });
+    expect(state.events.find((event) => event.id === 1)).toMatchObject({
+      status: 'EXPIRED', resolution: 'DUPLICATE_SUPERSEDED',
+    });
+    expect(state.events.find((event) => event.id === 2)?.status).toBe('ACTIVE');
   });
 
   it('behaelt gueltige Instanzen und dedupliziert Cooldowns', () => {

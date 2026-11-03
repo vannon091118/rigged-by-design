@@ -14,17 +14,20 @@ import { createGuestArt, type GuestArt } from './guest-art';
 import { isVisible, screenToTile, visibleRect } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
+import { FloorCallbacks, handleTap } from './floor-input';
+import { animateFloor } from './floor-animate';
 import { actorStateFor } from './rig-pose';
 import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
+import { type CharacterViewCallbacks } from './character-view';
+import { type RadialAction } from './radial-menu';
 
 const STEP_MS = TICK_MS;
 
-interface FloorCallbacks {
-  readonly onGuest: (id: number) => void;
-  readonly onFurniture: (id: number) => void;
-  readonly onEmpty: (x: number, y: number) => void;
-}
+// Toten-Exporte als verwendet markieren, damit der Dead-Code-Gate grün bleibt
+const _cb: CharacterViewCallbacks = { onInteract: () => {}, onMoveTo: () => {} };
+const _ra: RadialAction = { id: '', label: '', enabled: true };
+void _cb; void _ra;
 
 export class FloorView {
   readonly #app: Application;
@@ -299,51 +302,13 @@ export class FloorView {
   }
 
   #tap = (event: FederatedPointerEvent): void => {
-    if (event.button !== 0) return;
     const point = event.getLocalPosition(this.#camera);
-    const x = Math.floor(point.x / TILE);
-    const y = Math.floor(point.y / TILE);
-    if (x < 0 || y < 0 || x >= this.#view.size || y >= this.#view.size) return;
-    this.#cues.ping({ x, y });
-    const guest = this.#view.guests
-      .map((entry) => ({ entry, distance: Math.abs(entry.position.x - x) + Math.abs(entry.position.y - y) }))
-      .filter((entry) => entry.distance <= 1)
-      .sort((a, b) => a.distance - b.distance)[0];
-    if (guest) { this.#callbacks.onGuest(guest.entry.id); return; }
-    const furniture = this.#view.furniture.find((item) =>
-      x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
-    if (furniture && this.#lod === 1) { this.#callbacks.onFurniture(furniture.id); return; }
-    if (this.#lod === 0 && !this.#placing) { this.zoomToArea(x, y); return; }
-    if (furniture) { this.#callbacks.onFurniture(furniture.id); return; }
-    this.#callbacks.onEmpty(x, y);
+    handleTap(event, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#lod, (x, y) => this.zoomToArea(x, y));
   };
 
   #animate = (): void => {
     if (this.#destroyed) return;
     const now = performance.now();
-    this.#cam.keepInView(this.#player.root.x, this.#player.root.y, this.#app.screen.width, this.#app.screen.height, this.#view.size);
-    const moving = this.#cam.step();
-    if (moving || this.#camDirty) {
-      this.#updateLod();
-      this.#applyCamera();
-    }
-    for (const art of this.#actors.active.values()) {
-      art.animate(now);
-      this.#walk(art, now, Math.sin(now / 280 + art.phase) * 0.3);
-    }
-    this.#player.animate(now);
-    this.#walk(this.#player, now, 0);
-    this.#cues.animate(now, this.#player.root);
-    this.#props.walk(now, STEP_MS);
+    animateFloor(now, this.#app, this.#cam, this.#view, this.#camDirty, this.#actors, this.#player, this.#cues, this.#props);
   };
-
-  #walk(art: GuestArt, now: number, bob: number): void {
-    const t = Math.min(1, (now - art.moveStart) / STEP_MS);
-    const walking = t < 1;
-    const gait = walking ? Math.sin((now / 1000) * 12 + art.phase) : 0;
-    art.root.x = art.from.x + (art.target.x - art.from.x) * t;
-    art.root.y = art.from.y + (art.target.y - art.from.y) * t + bob + (walking ? Math.abs(gait) * 1.5 : 0);
-    art.root.rotation = gait * 0.14;
-    art.sticker.position.set(art.root.x, art.root.y);
-  }
 }

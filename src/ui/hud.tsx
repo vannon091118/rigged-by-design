@@ -9,7 +9,7 @@ import { barCapacityForLevel } from '../core/sim/deliveries';
 
 interface HudProps {
   readonly view: GameView;
-  readonly onBuild: () => void;
+  readonly onSmartphone: () => void;
   readonly onGuests: () => void;
   readonly onVisit: () => void;
   readonly onClean: () => void;
@@ -30,7 +30,7 @@ const PENALTY_LABEL = (kind: string): string =>
 const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 'gemischt' : 'gereizt');
 
 export function Hud({
-  view, onBuild, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onAssets, onSkill, onHelp,
+  view, onSmartphone, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onAssets, onSkill, onHelp,
   muted = false, onToggleSound,
 }: HudProps) {
   const rpg = view.player.rpg;
@@ -95,7 +95,7 @@ export function Hud({
       </div>
 
       <div className="hud-actions">
-        <button type="button" className="btn primary" onClick={onBuild} title="Spiele, Deko, Personal und Preise">BAUEN</button>
+        <button type="button" className="btn primary" onClick={onSmartphone} title="Smartphone: Bauen, Kaufen, Reisen, Putzen, Servieren">SMARTPHONE</button>
         <button type="button" className={`btn${view.pending > 0 ? ' alert' : ''}`} onClick={onGuests} title="Budget, Laune, Geduld und Sucht jedes Gastes">
           GÄSTE{view.pending > 0 ? <b className="badge">{view.guests.filter((g) => (view.guestMoney[g.id]?.pending ?? 0) > 0).length}</b> : null}
         </button>

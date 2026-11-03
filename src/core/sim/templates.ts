@@ -7,6 +7,7 @@ import { newPlayerRpg } from './player-rpg';
 import { DEFAULT_LOOK } from './player-look';
 import { createNarrativeState } from './narrative/state';
 import { BLUEPRINTS } from './house-presets';
+import { spawnStain } from './stain';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
@@ -35,7 +36,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
   const blueprint = BLUEPRINTS[template];
   if (!blueprint) throw new Error(`Unbekannte Vorlage: ${template}`);
   const entrance = blueprint.zones.find((zone) => zone.kind === 'ENTRANCE');
-  return {
+  const world: WorldState = {
     template,
     size: blueprint.size,
     zones: blueprint.zones,
@@ -64,6 +65,8 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     crates: [],
     agents: [],
     disputes: [],
+    stains: [],
+    mops: [],
     parts: 2,
     guestsServed: 0,
     reputation: 0,
@@ -74,6 +77,8 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     nextCrateId: 1,
     nextAgentId: 1,
     nextDisputeId: 1,
+    nextStainId: 1,
+    nextMopId: 1,
     activePenalties: [],
     visitors: [],
     nextVisitorId: 1,
@@ -99,6 +104,9 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     lastEvent: template === 'SMALL' ? 'Kleine Bude eröffnet. Ein Automat steht gratis.' : 'Neues Haus eröffnet.',
     guardsHired: 0,
   };
+  // Ein initialer Fleck macht den Putzen-Workflow sofort spielbar
+  spawnStain(world, 10, 10, 30);
+  return world;
 }
 
 /** Nach dem Laden: ein Casino ohne Spielgeraet bekommt seinen Gratis-Startautomaten zurueck. */

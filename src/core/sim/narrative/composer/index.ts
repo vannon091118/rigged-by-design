@@ -35,6 +35,8 @@ function validFragments(registry: readonly unknown[]): {
 /**
  * Setzt alle angefragten Slots zusammen. Fehlende Fragmente werden durch lokale,
  * generische Fallbacks ersetzt; Direktiven werden nur weitergereicht, nie ausgefuehrt.
+ * Eine Locale ohne gepflegte Sicherheitscopy wird abgelehnt, nie mit fremder
+ * Sprache aufgefuellt; sind alle Slots Fallback, ist das Ergebnis `degraded`.
  */
 export function composeNarrative(
   request: ComposeRequest,
@@ -43,9 +45,23 @@ export function composeNarrative(
   if (!isComposeRequest(request)) {
     return {
       ok: false,
+      locale: typeof request?.locale === 'string' ? request.locale : '',
       slots: [],
       fallbacks: [],
+      degraded: true,
       issues: ['ComposeRequest ist ungueltig'],
+      rejected: [],
+    };
+  }
+  const unsupported = request.slots.some((slot) => fallbackText(slot.kind, request.locale) === null);
+  if (unsupported) {
+    return {
+      ok: false,
+      locale: request.locale,
+      slots: [],
+      fallbacks: [],
+      degraded: true,
+      issues: [`Locale ${request.locale} hat keine Sicherheitscopy`],
       rejected: [],
     };
   }
@@ -56,7 +72,7 @@ export function composeNarrative(
       return {
         slotId: slot.id,
         kind: slot.kind,
-        text: fallbackText(slot.kind),
+        text: fallbackText(slot.kind, request.locale) ?? '',
         contributionId: null,
         fallback: true,
         directives: [],
@@ -71,11 +87,15 @@ export function composeNarrative(
       directives: fragment.directives,
     };
   });
+  const fallbacks = slots.filter((slot) => slot.fallback).map((slot) => slot.slotId);
+  const degraded = slots.length > 0 && fallbacks.length === slots.length;
   return {
     ok: true,
+    locale: request.locale,
     slots,
-    fallbacks: slots.filter((slot) => slot.fallback).map((slot) => slot.slotId),
-    issues: [],
+    fallbacks,
+    degraded,
+    issues: degraded ? ['Alle Slots sind Fallback; Registry, Locale und Personas pruefen.'] : [],
     rejected,
   };
 }

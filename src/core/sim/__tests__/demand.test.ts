@@ -9,9 +9,10 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { demandBreakdown, tickDemand } from '../demand';
+import { demandBreakdown } from '../demand';
 import { guestAccount } from '../money';
 import { activeDemandEvent, startDemandEvent } from '../narrative/demand-events';
+import { maintainEvents } from '../narrative/event-scheduler';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
@@ -108,7 +109,7 @@ describe('Nachfragequellen', () => {
   });
 
   it('beendet eine Veranstaltung am geplanten Tick und nimmt ihre Nachfrage wieder heraus', () => {
-    const { world, ledger, prng } = setup();
+    const { world } = setup();
     world.demandTier = 'SAAL';
     world.tick = 700;
     world.nextArrivalTick = 10_000;
@@ -116,7 +117,7 @@ describe('Nachfragequellen', () => {
     expect(demandBreakdown(world).sources.find((source) => source.id === 'EVENT')!.perDay).toBe(20);
     expect(demandBreakdown(world).event).toEqual({ kind: 'NEON_NACHT', label: 'Neon-Nacht', ticksLeft: 150 });
     world.tick = 850;
-    tickDemand(world, ledger, prng);
+    expect(maintainEvents(world).expired.map((event) => event.eventId)).toEqual(['NEON_NACHT']);
     expect(activeDemandEvent(world)).toBeNull();
     expect(demandBreakdown(world).sources.some((source) => source.id === 'EVENT')).toBe(false);
   });

@@ -41,6 +41,8 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       crates: world.crates,
       agents: world.agents,
       disputes: world.disputes,
+      stains: world.stains,
+      mops: world.mops,
       parts: world.parts,
       guestsServed: world.guestsServed,
       reputation: world.reputation,

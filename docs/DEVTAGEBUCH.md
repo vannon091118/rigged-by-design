@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-03 - Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
+
+**Ziel.** Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku
+
+**Umsetzung.** Offen.
+
+**Pruefungen.** Offen.
+
+**Offen.** Offen.
+
 ## 2026-11-03 - NAR-13: DemandEvents in der gemeinsamen Engine
 
 **Ziel.** Den zweiten Scheduler in `demand.ts` aufloesen, ohne Ankunftsraten, Gruppengroessen oder Zeitfenster zu veraendern und ohne laufende Veranstaltungen aus v5–v9-Saves zu verlieren.
@@ -791,7 +801,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.87 | 2026-11-03 05:08 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.88 | 2026-11-03 19:09 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

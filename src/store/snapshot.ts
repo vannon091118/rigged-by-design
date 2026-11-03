@@ -52,6 +52,8 @@ function worldSnapshot(world: WorldState) {
     crates: world.crates.map((crate) => ({ ...crate })),
     agents: world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
     disputes: world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
+    stains: world.stains.map((stain) => ({ ...stain })),
+    mops: world.mops.map((mop) => ({ ...mop })),
     parts: world.parts,
     guestsServed: world.guestsServed,
     wallColor: world.wallColor,

@@ -1,6 +1,6 @@
 /** Was die UI sieht: Welt plus abgeleitete Ledger-Werte. */
 import type { VaCoinMicro } from '../core/economy/vacoin';
-import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId, PlayerJobState, RivalId } from '../core/sim/types';
+import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId, PlayerJobState, RivalId, Mop, Stain } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
@@ -48,6 +48,8 @@ export interface GameView {
   readonly crates: readonly Crate[];
   readonly agents: readonly StaffAgent[];
   readonly disputes: readonly Dispute[];
+  readonly stains: readonly Stain[];
+  readonly mops: readonly Mop[];
   readonly talkChances: Readonly<Record<number, number>>;
   /** Je Gast: Restticks bis zur naechsten Ansprache (0 = frei). */
   readonly talkReady: Readonly<Record<number, number>>;
