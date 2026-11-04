@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 141 Dateien — contract 92 · integration 26 · governance 12 · statistics 6 · performance 5.
+Summe: 145 Dateien — contract 94 · integration 27 · governance 12 · statistics 6 · performance 6.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -98,6 +98,7 @@ Summe: 141 Dateien — contract 92 · integration 26 · governance 12 · statist
 | `src/core/sim/__tests__/narrative-events.test.ts` | sim | contract | ja | `src/core/sim/narrative/scheduler.ts` |
 | `src/core/sim/__tests__/narrative-fact-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/fact-schema.ts` |
 | `src/core/sim/__tests__/narrative-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
+| `src/core/sim/__tests__/narrative-longrun.test.ts` | sim | contract | ja | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/__tests__/narrative-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/relationships.ts` |
 | `src/core/sim/__tests__/narrative-runtime.test.ts` | sim | contract | ja | `src/core/sim/narrative/runtime.ts` |
@@ -114,6 +115,7 @@ Summe: 141 Dateien — contract 92 · integration 26 · governance 12 · statist
 | `src/core/sim/__tests__/player-wage-attendance.test.ts` | sim | contract | ja | `src/core/sim/player-jobs.ts` |
 | `src/core/sim/__tests__/progression.test.ts` | sim | contract | ja | `src/core/sim/progression.ts` |
 | `src/core/sim/__tests__/reputation.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
+| `src/core/sim/__tests__/rival-ai.test.ts` | sim | contract | ja | `src/core/sim/rival-ai/policy.ts` |
 | `src/core/sim/__tests__/rivals.test.ts` | sim | contract | ja | `src/core/sim/rivals.ts` |
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
@@ -142,12 +144,14 @@ Summe: 141 Dateien — contract 92 · integration 26 · governance 12 · statist
 | `src/store/__tests__/save-device.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-migration.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-reels.test.ts` | store | integration | ja | `src/store/migrate.ts` |
+| `src/store/__tests__/save-rivals.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-roundtrip.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-staff.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-v7.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-wage-field.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/transfer.test.ts` | store | integration | ja | `src/store/transfer.ts` |
 | `src/store/memory.bench.ts` | store | performance | nein, CI | `src/store/save.ts` |
+| `src/store/narrative.bench.ts` | sim | performance | nein, CI | `src/core/sim/narrative/runtime.ts` |
 | `src/store/perf-hot-paths.bench.ts` | store | performance | nein, CI | `src/store/snapshot.ts` |
 | `src/ui/__tests__/card-tables.test.tsx` | ui | integration | ja | `src/ui/games/blackjack-popup.tsx` |
 | `src/ui/__tests__/casino-window-header.test.tsx` | ui | integration | ja | `src/ui/casino-window-header.tsx` |
