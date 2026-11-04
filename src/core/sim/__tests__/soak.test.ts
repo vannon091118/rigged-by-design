@@ -27,7 +27,9 @@ describe('Langzeitsimulation', () => {
     ensureStarter(world);
     const ledger = new Ledger();
     ledger.transfer('EXTERNAL_WORLD', 'HAUSKONTO', fromVC(100_000), 'soak-kapital', 0);
-    const prng = new Prng(randomSeed());
+    const seed = randomSeed();
+    const prng = new Prng(seed);
+    console.log("soak seed=" + seed + " ticks=" + TICKS);
     for (let step = 1; step <= TICKS; step += 1) {
       tickWorld(world, ledger, prng);
       if (step % 250 === 0) {

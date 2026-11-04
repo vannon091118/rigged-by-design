@@ -20,12 +20,11 @@ import type { NarrativeFact } from '../narrative/types';
 import { hireAgent } from '../staff';
 import { createWorld, ensureStarter } from '../templates';
 import { tickWorld } from '../tick';
+import { randomSeed } from '../../../test/random-seed';
 import type { WorldState } from '../types';
 
 /** Budget fuer einen mehrtaegigen Spielstand: gemessen ~137 KiB nach einem Spieltag, ~337 KiB nach zwei. */
 const SAVE_BUDGET = 512 * 1024;
-/** Fester Seed: Budget und Replay muessen reproduzierbar sein, nicht vom Zufall abhaengen. */
-const SEED = 0x51ab3c7d;
 
 function boot(): { world: WorldState; ledger: Ledger; prng: Prng } {
   const world = createWorld('MEDIUM');
@@ -33,7 +32,7 @@ function boot(): { world: WorldState; ledger: Ledger; prng: Prng } {
   const ledger = new Ledger();
   ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(300), 'nar-16', 0);
   for (const role of ['cashier', 'cleaner', 'bartender'] as const) hireAgent(world, ledger, role);
-  return { world, ledger, prng: new Prng(SEED) };
+  return { world, ledger, prng: new Prng(randomSeed()) };
 }
 
 /** Alle Langzeitgrenzen an einer Stelle: kein Wachstum ohne Deckel. */
