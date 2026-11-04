@@ -67,7 +67,7 @@ export function composeNarrative(
   }
   const { fragments, rejected } = validFragments(registry);
   const slots: ComposedSlot[] = request.slots.map((slot) => {
-    const fragment = selectFragment(fragments, request, slot.kind);
+    const fragment = selectFragment(fragments, request, slot);
     if (!fragment) {
       return {
         slotId: slot.id,

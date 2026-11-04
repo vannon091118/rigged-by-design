@@ -64,6 +64,16 @@ describe('Narrative Event Templates', () => {
     expect(resolveParticipants(['visitor', 'visitor'], ['visitor:1', 'visitor:1'])).toBeNull();
   });
 
+  it('traegt die Slot-Zwecke der fuenf Templates', () => {
+    const purpose = (eventId: string, slotId: string) =>
+      templateFor(eventId)?.contentSlots.find((slot) => slot.id === slotId)?.requiredContexts;
+    expect(purpose('VISITOR_RETURN', 'CHOICE_WELCOME')).toEqual(['return', 'welcome']);
+    expect(purpose('VISITOR_RETURN', 'CHOICE_ASK')).toEqual(['return', 'ask']);
+    expect(purpose('VISITOR_CONFLICT', 'CHOICE_DEFUSE')).toEqual(['conflict', 'defuse']);
+    expect(purpose('RIVAL_MOVE', 'CHOICE_CONFRONT')).toEqual(['rival', 'confront']);
+    expect(purpose('NEON_NACHT', 'BODY')).toEqual(['demand']);
+  });
+
   it('weist falsche Trigger und nicht passende Teilnehmer ab', () => {
     const template = templateFor('VISITOR_RETURN', 1)!;
     expect(createEventCandidate(template, match('other-trigger', ['visitor:4']))).toBeNull();

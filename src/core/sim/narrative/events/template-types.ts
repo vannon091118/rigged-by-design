@@ -22,6 +22,12 @@ export const ENGINE_DEMAND_TRIGGER = 'ENGINE_DEMAND';
 export interface ContentSlot {
   readonly id: string;
   readonly kind: ContentSlotKind;
+  /**
+   * Semantische Zwecke dieses Slots (z. B. `welcome`, `aftermath`). Ein
+   * gewaehltes Fragment muss alle diese Kontexte tragen; `contexts` der
+   * Anfrage bewertet weiterhin nur Treffer.
+   */
+  readonly requiredContexts?: readonly string[];
 }
 
 /** Ein Akteur ist entweder fest im Template oder ein aufgeloester Teilnehmer. */

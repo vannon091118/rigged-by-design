@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
+<!-- rbd-doc: v0.3.99 | 2026-11-04 04:06 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -52,7 +52,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 bis NAR-17 sind erledigt (Beziehungen, Trigger, Scheduler, Templates, Choice-Vertrag, Command-DSL, Content-Schema, Compiler, Composer, Orchestrierung, Demand-Migration, Narrative UI, autonome Rivalen, Langzeit, Doku-Sync). Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. Naechster Schritt sind B2, der erste Content-Batch nach D1 und danach das Social-Plugin.
+- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 bis NAR-17 sind erledigt (Beziehungen, Trigger, Scheduler, Templates, Choice-Vertrag, Command-DSL, Content-Schema, Compiler, Composer, Orchestrierung, Demand-Migration, Narrative UI, autonome Rivalen, Langzeit, Doku-Sync). Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. B2 ist erledigt: `ContentSlot.requiredContexts` traegt den Slot-Zweck, `ComposeRequest.requiredContexts` gilt zusaetzlich fuer alle Slots, `contexts` bewertet nur Treffer, und der Gleichstand entscheidet per FNV-1a-Hash aus Szenen-ID und Slot-ID ohne RNG; das Vokabular kennt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` und `aftermath`. Naechster Schritt ist der erste Content-Batch nach D1 und danach das Social-Plugin.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später — Stadt und Release
