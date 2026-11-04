@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:16acdc062856da01a9cfb56f71062daa98e5b3791ebf922cef3fc233cdfac27f",
+  "contentHash": "sha256:ff8c001d163ca540a34a0ce6ca37a72b8e5fd45b8726b004c37846f97aa7a62e",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -728,6 +728,29 @@
       "text": "Wer entgegentritt, kauft Zeit: CONFRONT_RIVAL traegt jetzt die Domaenenwirkung COUNTER_RIVAL, der Preflight verlangt einen existierenden Rivalen, und execute.ts setzt counteredUntilTick als einzigen Schreibpfad. Die Politik schweigt fuer diesen Rivalen bis zum Tick - ohne neuen Fact, ohne zweite Wahrheit.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d2-counter-rival.json"
+    },
+    {
+      "contributionId": "d3-expiry-no-penalty-01",
+      "turnId": "2026-11-04T06:20Z-d3-expiry-no-penalty",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
     },
     {
       "contributionId": "event-scheduler-01",

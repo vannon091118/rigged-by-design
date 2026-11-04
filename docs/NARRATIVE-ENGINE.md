@@ -257,7 +257,11 @@ verschiedene Akteure) und `RIVAL` (genau ein `rival:<id>`).
 unveraendert. Beim terminalen Uebergang wird der Cooldown fuer genau diese
 Event-/Teilnehmerkombination gesetzt; `advanceEventStep()` aendert nur den Schritt.
 `expireDueEvents()` beendet Fristen, `cancelStaleEvents()` bricht Instanzen mit
-verschwundenem Visitor-/Personal-Endpunkt ab. `processNarrativeBoundaryDetailed()` ruft
+verschwundenem Visitor-/Personal-Endpunkt ab. Seit D3 gilt ausdruecklich: Es gibt
+keine globale Timeout-Strafe. `EXPIRED` ist nur ein Statuswechsel mit `DEADLINE`;
+Fristablauf aendert weder Flags noch Beziehungen noch Ledger-Zeilen und emittiert
+keinen Fact. Timeout-Effekte entstehen nur als expliziter Choice-Vertrag, falls
+sie spaeter noetig werden. `processNarrativeBoundaryDetailed()` ruft
 `maintainEvents()` bei jedem Lauf auf, auch wenn keine neuen Facts anliegen.
 
 `event-scheduler.ts` waehlt hohe Prioritaet zuerst, dann den aeltesten letzten Einsatz
