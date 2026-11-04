@@ -391,3 +391,28 @@ damit es keine zweite Wahrheit gibt.
   sich den Zug. Wer die Indizien liest, kennt Taeter, Ziel und Tick.
 - **Save v10**: `WorldState.rivals` liegt im Save; `SavedGame` akzeptiert v5–v10,
   `normalizeRivalMinds` fuellt fehlende Rivalen mit dem neutralen Startzustand auf.
+
+## NAR-16: Langzeitintegration und Messungen
+
+- `narrative-longrun.test.ts` faehrt zwei Spieltage mit Kasse, Reinigung und Bar
+  und prueft nach jedem Tag alle Deckel: 48 offene Facts, 120 Kurzzeit-Facts,
+  200 Beziehungen, 64 Cooldowns, 32 Szenen (8 gleichzeitig), 240 Journal- und
+  2000 Archivzeilen, 6 Memories je Gast, 6 Zuege und 4 Indizien je Rivale.
+  Zusaetzlich: kein Live-Event mit verwaistem Besucher, keine angebotene Choice
+  ausserhalb ihres Templates, Ledger integer.
+- Save/Replay: derselbe Stand plus derselbe PRNG-Zustand ergibt nach 200 weiteren
+  Ticks dieselben Werte fuer Tick, Tag, bediente Gaeste, Besucherzahl, Rivalen,
+  Ledger-Zeilen und Kurzzeitfenster.
+- Save-Budget: ~137 KiB nach einem Spieltag, ~337 KiB nach zwei (Testbudget
+  512 KiB, fester Seed). Kein Textpool
+  und keine doppelte Journal-Kopie im Save; das Archiv bleibt bei 2000 Zeilen.
+- Hotpath (`src/store/narrative.bench.ts`, AMD FX-6300, Volllast): `tickWorld` 0,62–1,31 ms
+  je Tick bei 23–26 Besuchern und 12–13 Szenen; `processNarrativeRuntime`
+  1,64–1,71 ms fuer 48 Facts. Facts entstehen nur bei Uebergaengen; hoechstens
+  eine Rivalenaktion je Rivale und 260 Ticks.
+- `bench:lowend`: unter Windows fehlt `taskset`, der Lauf ist eine Volllast-
+  Messung ohne Kern-Pinning. Der Runden-Benchmark hat ein Zeitbudget je Spiel,
+  damit langsame Hardware die Kennzahl ms/Runde liefert statt in den Timeout zu
+  laufen; die 60-s-Grenze war dort der einzige rote Punkt.
+- Lange Nachweise bleiben in Actions: `pnpm run ci:long` startet `long-checks.yml`
+  (verify:all, Statistik, Soak 100000 Ticks, Balance 40 Tage, Benchmarks).

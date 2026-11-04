@@ -96,6 +96,10 @@
     {
       "turnId": "2026-11-04T02:10Z-nar-15-autonome-rivalen",
       "contributionId": "nar-15-autonome-rivalen-01"
+    },
+    {
+      "turnId": "2026-11-04T03:20Z-nar-16-langzeitintegration",
+      "contributionId": "nar-16-langzeitintegration-01"
     }
   ]
 }
