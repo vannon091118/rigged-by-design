@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - A2: Contribution-Inbox fail-closed
+
+**Ziel.** A2 der Integritaets-Phase: Die Contribution-Inbox darf keine Eintraege still ignorieren. Bisher filterte `readContributions()` auf `isFile()` und `.json`; Unterordner, Symlinks, versteckte Dateien und Behelfsdateien verschwanden lautlos.
+
+**Umsetzung.** `scripts/lib/narrative-content.mjs` iteriert jetzt alle direkten Eintraege mit `withFileTypes` und meldet jeden unerlaubten Eintrag als Issue: Symlink, Unterordner, kein regulaere Datei, versteckter Name oder Dateiname ausserhalb des `<datum>-<turn>.json`-Musters. Nur sichtbare regulaere JSON-Dateien nach FILE-Muster werden geparst. Parsing, Schema, Manifest-1:1 und Registry-Hash sind unveraendert; die neue Pruefung dupliziert die Vollstaendigkeitspruefung nicht. Der Governance-Test legt ein temporaeres Inbox-Fixture mit allen Faellen an und prueft, dass die gueltigen Beitraege unveraendert bleiben.
+
+**Pruefungen.** Fokussierter Test `narrative-content.test.ts` (11/11) und danach `verify:quick` sowie `narrative:check`.
+
+**Offen.** A1 (Validator vor dem node_modules-Skip) und A3 (`test:affected` fuer Narrative-JSON) stehen noch aus; die Batch-Regel aus D1 bleibt bis zur Manifest-Erweiterung unveraendert bei genau einem Beitrag pro Turn.
+
 ## 2026-11-04 - Korrektur: E2E-Disposition vollstaendig
 
 **Ziel.** Die E2E-Korrektur des Eigentuemers aufnehmen: Die Disposition wirkt vollstaendig ueber den Gastpfad, nicht nur in `offerScore()`.
@@ -864,7 +874,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.92 | 2026-11-04 02:37 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

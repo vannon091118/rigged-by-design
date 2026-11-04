@@ -433,7 +433,11 @@ Jeder abgeschlossene Turn liefert genau einen Beitrag unter
 `tone`, `mood`, `relationship`, `personaRefs`, `flags`, `text` und `directives`.
 Die Klassifizierung stammt aus `content/narrative/vocabulary/classification.json`;
 `content/narrative/turns/manifest.json` bindet jeden Turn an genau eine
-`contributionId`. `pnpm run narrative:compile -- --write` erzeugt daraus
+`contributionId`. Das Inbox-Verzeichnis ist fail-closed: nur sichtbare
+`*.json`-Dateien nach `<datum>-<turn>.json` werden gelesen; Unterordner,
+Symlinks, versteckte Namen, `.md`/`.tmp`/`.bak` und anders benannte
+JSON-Dateien meldet das Assets-Gate als `ERR-4022`, statt sie zu ignorieren.
+Manifest-1:1 und Inhalts-Hash bleiben die alleinige Vollstaendigkeitspruefung. `pnpm run narrative:compile -- --write` erzeugt daraus
 `content/narrative/registry/fragments.json` und den Laufzeit-Spiegel
 `composer/registry.generated.ts`; `pnpm run narrative:check` vergleicht beide und
 meldet die Fragmentzahl samt Inhalts-Hash. Das Assets-Gate (`ERR-4022`) verwirft

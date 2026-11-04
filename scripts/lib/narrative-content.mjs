@@ -315,10 +315,25 @@ function readContributions(root) {
   if (!existsSync(directory)) return { contributions: [], issues: [issue('content/narrative/contributions', 'Verzeichnis fehlt')] };
   const issues = [];
   const contributions = [];
-  for (const file of readdirSync(directory, { withFileTypes: true }).filter((entry) => entry.isFile() && entry.name.endsWith('.json')).sort((left, right) => left.name.localeCompare(right.name))) {
-    const path = relative(root, join(directory, file.name)).split(/[\\/]/).join('/');
+  const entries = readdirSync(directory, { withFileTypes: true }).sort((left, right) => left.name.localeCompare(right.name));
+  for (const entry of entries) {
+    const path = relative(root, join(directory, entry.name)).split(/[\\/]/).join('/');
+    // Jeder direkte Eintrag ist entweder eine sichtbare Content-Datei nach FILE-Muster
+    // oder ein Befund. Unterordner, Symlinks, versteckte Namen und Behelfsdateien
+    // werden nicht still ignoriert; die Manifest-/Hash-Pruefung bleibt die einzige
+    // Vollstaendigkeitspruefung und wird hier nicht dupliziert.
+    const reason = entry.isSymbolicLink() ? 'Symlink'
+      : entry.isDirectory() ? 'Unterordner'
+        : !entry.isFile() ? 'kein regulaere Datei'
+          : entry.name.startsWith('.') ? 'versteckter Name'
+            : !FILE.test(entry.name) ? 'Dateiname folgt nicht dem Content-Muster'
+              : null;
+    if (reason !== null) {
+      issues.push(issue(path, `Nicht erlaubter Eintrag (${reason})`));
+      continue;
+    }
     try {
-      contributions.push({ path, data: JSON.parse(readFileSync(join(directory, file.name), 'utf8')) });
+      contributions.push({ path, data: JSON.parse(readFileSync(join(directory, entry.name), 'utf8')) });
     } catch (error) {
       issues.push(issue(path, error instanceof Error ? error.message : String(error)));
       contributions.push({ path, data: null });

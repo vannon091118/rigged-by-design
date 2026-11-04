@@ -7,11 +7,14 @@
  * nicht nur den Happy Path, sondern auch fehlende Felder, unbekannte Werte,
  * doppelte IDs und Registry-Drift.
  */
-import { resolve } from 'node:path';
+import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildCompiledRegistry, canonical } from '../../../../scripts/lib/narrative-compiler.mjs';
 import {
   loadNarrativeContent,
+  loadNarrativeSources,
   validateContribution,
   validateNarrativeData,
 } from '../../../../scripts/lib/narrative-content.mjs';
@@ -30,6 +33,38 @@ describe('Narrative Content Registry (NAR-09)', () => {
     expect(report.contributionCount).toBe(report.turnCount);
     expect(report.registryCount).toBe(report.contributionCount);
     expect(report.contributionCount).toBeGreaterThan(0);
+  });
+
+  it('meldet unerlaubte Eintraege in contributions statt sie zu ignorieren', () => {
+    const root = mkdtempSync(join(tmpdir(), 'rbd-narrative-entry-'));
+    try {
+      cpSync(join(ROOT, 'content/narrative'), join(root, 'content/narrative'), { recursive: true });
+      const inbox = join(root, 'content/narrative/contributions');
+      writeFileSync(join(inbox, 'notes.md'), '#');
+      writeFileSync(join(inbox, 'draft.tmp'), '');
+      writeFileSync(join(inbox, 'backup.bak'), '');
+      writeFileSync(join(inbox, '.hidden.json'), '{}');
+      writeFileSync(join(inbox, 'falsch.json'), '{}');
+      mkdirSync(join(inbox, 'unterordner'));
+      let linked = false;
+      try {
+        symlinkSync(join(inbox, first.path.split('/').pop() ?? ''), join(inbox, 'verknuepfung.json'));
+        linked = true;
+      } catch {
+        // Windows ohne Symlink-Recht: die uebrigen Eintraege decken den Pfad weiter ab.
+      }
+
+      const result = loadNarrativeSources(root);
+      const text = messages(result.issues);
+      expect(text).toContain('Nicht erlaubter Eintrag (Unterordner)');
+      expect(text).toContain('Nicht erlaubter Eintrag (versteckter Name)');
+      expect(text).toContain('Nicht erlaubter Eintrag (Dateiname folgt nicht dem Content-Muster)');
+      if (linked) expect(text).toContain('Nicht erlaubter Eintrag (Symlink)');
+      expect(result.contributions).toHaveLength(report.contributions.length);
+      expect(result.ok).toBe(false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it('weist fehlende Pflichtfelder und unbekannte Felder zurueck', () => {
