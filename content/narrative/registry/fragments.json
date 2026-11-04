@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8ea579b103a13da1636995a41d8e278422ab15b686c25bcf04531be9b9897135",
+  "contentHash": "sha256:d647383b49491af7d6e3d23942fae25648f0b7e8de7abcb5b58630c5ee477caf",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1200,6 +1200,29 @@
       "text": "Der Stammgast war der Ungeduldigste im Haus, obwohl auf seiner Karte 138 stand. Rita drehte die Karte um und fand die Zahl auf der Rückseite, wo niemand liest. Am Samtvorhang stand geschrieben, dass bessere Gäste kämen; es kamen dieselben, nur langsamer. Und die vierte Walze war ein Schild an einem Automaten, der weiterhin drei hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-geduld-und-versprechen.json"
+    },
+    {
+      "contributionId": "phase5-rival-integration-01",
+      "turnId": "2026-11-04T07:10Z-phase5-rival-integration",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
     },
     {
       "contributionId": "returning-memory-01",
