@@ -12,8 +12,8 @@ export const TURNIER_ABEND_TEMPLATE: EventTemplate = {
   scope: 'GLOBAL',
   participantRoles: [],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['demand'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['demand'] },
   ],
   choices: [],
   initialStep: 'START',

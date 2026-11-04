@@ -9,12 +9,12 @@ export const VISITOR_RETURN_TEMPLATE: EventTemplate = {
   scope: 'VISITOR',
   participantRoles: ['visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY' },
-    { id: 'CHOICE_WELCOME', kind: 'CHOICE_LABEL' },
-    { id: 'CHOICE_ASK', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_WELCOMED', kind: 'OUTCOME' },
-    { id: 'OUTCOME_ASKED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['return'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['return'] },
+    { id: 'CHOICE_WELCOME', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'welcome'] },
+    { id: 'CHOICE_ASK', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'ask'] },
+    { id: 'OUTCOME_WELCOMED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath'] },
+    { id: 'OUTCOME_ASKED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath'] },
   ],
   choices: [
     {
