@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - D1: Choice-Folgekette VISITOR_AFTERMATH
+
+**Ziel.** Eine beantwortete Frage darf nicht im Nichts enden: Wer nach dem letzten Besuch fragt, oeffnet ein Nachspiel mit denselben Beteiligten. Die Kette gehoert in die Runtime, nicht in einen zweiten Trigger - der Ausloeser ist die Aufloesung selbst.
+
+**Umsetzung.** `VISITOR_RETURN.ASK_ABOUT_LAST_VISIT` traegt `followUpEventId: VISITOR_AFTERMATH`; das neue Template (Scope VISITOR, eine Visitor-Rolle, Trigger `chain`, Konstante `FOLLOW_UP_TRIGGER`) bringt `TITLE`, `BODY`, ein Choice-Label und `OUTCOME` mit. `runtime.ts` loest bei `EVENT_RESOLVED` Vorgaenger-Instanz, Template und Choice zentral und fail-closed auf und gibt den Kandidaten mit den Vorgaenger-Teilnehmern und `chainFromEventId` in die Auswahl; `scheduleCandidates` prueft Cooldown, Limits, Kettenherkunft und RESOLVED-Status zentral. Vier Content-Beitraege (Titel, Body, Label, Outcome) mit je eigener Turn-ID, Registry auf 52 Fragmente.
+
+**Pruefungen.** `verify:quick` (zehn Gates) vor dem Commit. End-to-End: Choice ausfuehren, Runtime, Folge-Event OFFERED mit Kette; zweiter Lauf ohne Duplikat. C1-Vertragstest kennt `chain` als Ketten-Trigger ohne Fact-Definition; Template-Liste auf sechs Eintraege erweitert.
+
+**Offen.** Weitere Ketten (Rivale, Konflikt) folgen demselben Muster: erst Template, dann `followUpEventId` - nie ein Trigger ohne Szene.
+
 ## 2026-11-04 - C1: Trigger nur mit Template
 
 **Ziel.** Die Spec-Regel „nur triggern, wo ein Template mit Mehrwert existiert“ war bisher ein Kommentar ueber `EVENT_TRIGGER_DEFINITIONS`; ein Kommentar wird ueberlesen, ein Test nicht. Gleichzeitig duerfen Geraete, Lager und Personal nicht stillschweigend unter den Tisch fallen - sie bleiben als offene Punkte dokumentiert.
@@ -984,7 +994,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.103 | 2026-11-04 05:30 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.104 | 2026-11-04 05:44 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

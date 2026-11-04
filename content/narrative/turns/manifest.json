@@ -192,6 +192,22 @@
     {
       "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
       "contributionId": "c1-trigger-template-contract-01"
+    },
+    {
+      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
+      "contributionId": "d1-aftermath-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
+      "contributionId": "d1-aftermath-body-01"
+    },
+    {
+      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
+      "contributionId": "d1-aftermath-listen-01"
+    },
+    {
+      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
+      "contributionId": "d1-aftermath-outcome-01"
     }
   ]
 }

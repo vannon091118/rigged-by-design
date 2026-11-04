@@ -10,7 +10,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { EVENT_TEMPLATES } from '../narrative/events/definitions';
-import { ENGINE_DEMAND_TRIGGER } from '../narrative/events/template-types';
+import { ENGINE_DEMAND_TRIGGER, FOLLOW_UP_TRIGGER } from '../narrative/events/template-types';
 import { EVENT_TRIGGER_DEFINITIONS } from '../narrative/events/trigger-definitions';
 import { NARRATIVE_FACT_KINDS } from '../narrative/types';
 
@@ -25,7 +25,9 @@ describe('Trigger-Template-Vertrag (C1)', () => {
   });
 
   it('bindet jedes Fact-Template an genau eine Trigger-Definition', () => {
-    const factTemplates = EVENT_TEMPLATES.filter((template) => template.triggerId !== ENGINE_DEMAND_TRIGGER);
+    // Folge-Templates haengen an Ketten, nicht an Fact-Definitionen.
+    const factTemplates = EVENT_TEMPLATES.filter((template) => template.triggerId !== ENGINE_DEMAND_TRIGGER
+      && template.triggerId !== FOLLOW_UP_TRIGGER);
     expect(factTemplates.length).toBeGreaterThan(0);
     for (const template of factTemplates) {
       const definitions = EVENT_TRIGGER_DEFINITIONS.filter((definition) => definition.id === template.triggerId);
