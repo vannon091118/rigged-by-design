@@ -349,6 +349,14 @@ erfolgreichen Command-Ausfuehrung sowie nach Neues Spiel, Import und Rivalenspie
 bleibt der alleinige Besitzer von Welt, Ledger und PRNG; `src/core` importiert ihn nie,
 und `chooseNarrativeCmd()` bekommt Welt und Ledger explizit.
 
+Das Anzeigemodell (`narrative/view.ts`) bleibt eine reine Ableitung: `GameView.narrative`
+traegt aktive Szenen, Profile und seit dem Profil-/Historien-Anschluss die juengsten
+zwoelf abgeschlossenen Szenen als `history` (Status, Ausgang, Teilnehmer, Abschlusstakt).
+Profile umfassen Szenenteilnehmer, Figuren auf dem Floor, Figuren mit Beziehung oder
+Erinnerung; das Gast-Popup oeffnet ueber `onProfile(visitorId)` direkt das Profil, und
+der Journal-Tab „Geschichten“ rendert dieselbe Historie. Damit entsteht keine zweite
+Log-Wahrheit neben Journal und Event-Instanzen.
+
 ## 15. Nachfrageveranstaltungen (NAR-13)
 
 `events/demand-definitions.ts` beschreibt Neon-Nacht und Turnierabend als reine Daten:

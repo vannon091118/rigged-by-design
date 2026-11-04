@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.88 | 2026-11-04 01:24 UTC -->
+<!-- rbd-doc: v0.3.89 | 2026-11-04 02:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -15,6 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.88] - 2026-11-03
 
 ### Technik
+- Profilweg und Geschichten-Historie: `buildNarrativeView()` nimmt Gaeste auf dem Floor in die Besucherprofile auf und liefert die juengsten zwoelf abgeschlossenen Szenen als `history` (Status, Ausgang, Teilnehmer, Abschlusstakt). Das Gast-Popup oeffnet ueber `onProfile(visitorId)` direkt das Profil; `NarrativePopup` startet dafuer im Figuren-Tab. Das Journal hat den Tab „Geschichten“ und zeigt dieselbe Ableitung, keine zweite Log-Quelle.
 - NAR-17 abgeschlossen: `ARCHITECTURE.md`, `PRODUCT.md`, `AGENTS.md`, `NARRATIVE-ENGINE.md`, `ROADMAP.md` und der Taskplan nennen Save v10 (`vcoin.casino.v10`, Migration v5–v9) und den persistenten Rivalen-Zustand; `TRIGGER_DIALOG` ist als bis zur Dialogfuehrung nicht ausfuehrbar beschrieben. `demandEvent` erscheint nur noch als Migrationsfeld in `SavedGame`/`migrate-narrative.ts`. Testkatalog und Inventur sind regeneriert.
 - CI-Eskalation: `src/core/governance/error-codes.ts` traegt pro Code ein Feld `level` (`AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT`, `BLOCKED`). `scripts/lib/escalation.mjs` liest die Stufe zuerst aus dem Code, Textmuster bleiben als Fallback.
 - ERR-4008 bleibt fuer den Push auf den Arbeitsbranch. Neu: ERR-4023 `DIRECT_PUSH_REJECTED` (abgelehnter Direktpush auf `main`, Stufe AGENT) und ERR-4024 `LOCAL_GATE_RED` (rotes lokales Gate in `turn:finish`, Stufe LOCAL_GATE). Register und `docs/ERROR_CATALOG.md` sind gleich.

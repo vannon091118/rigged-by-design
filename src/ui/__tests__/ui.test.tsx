@@ -9,8 +9,12 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { recordJournal } from '../../core/sim/journal';
+import { transitionEvent } from '../../core/sim/narrative/event-lifecycle';
+import { emitFact } from '../../core/sim/narrative/facts';
+import { processNarrativeRuntime } from '../../core/sim/narrative/runtime';
 import type { StaffAgent } from '../../core/sim/types';
 import { createWorld } from '../../core/sim/templates';
+import { recordVisitor } from '../../core/sim/visitors';
 import { buildView } from '../../store/snapshot';
 import { StaffStatus } from '../build-panel-parts';
 import { GamesPopup } from '../games-popup';
@@ -33,6 +37,16 @@ function view() {
     kind: 'GUEST', subject: 'Gastentscheidung', cause: 'Durst', effect: 'Gast geht zur Bar.',
   });
   return buildView(world, new Ledger(), 'Hinweis');
+}
+
+function storyView() {
+  const world = createWorld('SMALL');
+  const ledger = new Ledger();
+  const visitor = recordVisitor(world, { name: 'Rita Kern', persona: 'STAMMGAST', tick: 0 });
+  emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: visitor.id, visits: 2 });
+  processNarrativeRuntime(world, ledger);
+  transitionEvent(world, world.narrative.events[0]!.id, 'CANCELLED', 12, 'MISSING_PARTICIPANT');
+  return buildView(world, ledger, 'Hinweis');
 }
 
 const noop = (): void => {};
@@ -73,6 +87,17 @@ describe('UI-Integration', () => {
     fireEvent.click(screen.getByRole('tab', { name: 'Geld' }));
     expect(screen.getByText('Testbuchung').textContent).toBe('Testbuchung');
     expect(screen.queryByText('Gastentscheidung')).toBeNull();
+  });
+
+  it('zeigt abgeschlossene Szenen im Geschichten-Tab des Journals', () => {
+    render(<JournalPopup view={storyView()} onClose={noop} onGuest={noop} />);
+
+    fireEvent.click(screen.getByRole('tab', { name: /Geschichten/ }));
+
+    expect(screen.getByText('abgebrochen').textContent).toBe('abgebrochen');
+    expect(screen.getByText(/Teilnehmer fehlt/).textContent).toContain('Teilnehmer fehlt');
+    expect(screen.getAllByText(/Rita Kern/).length).toBeGreaterThan(0);
+    expect(screen.queryByLabelText('Im Protokoll suchen')).toBeNull();
   });
 
   it('ändert den Look nur über erlaubte Optionen', () => {
