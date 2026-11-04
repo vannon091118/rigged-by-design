@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.92 | 2026-11-04 02:37 UTC -->
+<!-- rbd-doc: v0.3.93 | 2026-11-04 02:43 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.93] - 2026-11-04
+
+### Technik
+- A3: `.githooks/pre-commit` prueft den Narrative-Content vor dem `node_modules`-Fruehausstieg. Gestagte Narrative-Dateien mit unstaged Aenderungen blockieren mit `ERR-4022`, damit der Validator nie einen anderen Inhalt sieht als den Commit; ein Validatorfehler beendet den Hook mit `ERR-4022`. Kein Vitest, kein `verify:quick`; die restliche Hook-Reihenfolge bleibt.
 
 ## [0.3.92] - 2026-11-04
 

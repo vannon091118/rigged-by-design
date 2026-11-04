@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - A3: Narrative-Validator im Pre-Commit-Hook
+
+**Ziel.** A3: Der Narrative-Validator muss vor dem `node_modules`-Fruehausstieg laufen, und der Hook darf nie einen anderen Inhalt pruefen als den Commit.
+
+**Umsetzung.** `.githooks/pre-commit` ruft jetzt zuerst die gestagten Narrative-Pfade ab und blockiert mit `ERR-4022`, wenn eine davon im Arbeitsbaum noch unstaged veraendert ist (`git diff --quiet` schlaegt fehl). Danach laeuft `node scripts/verify-narrative-content.mjs` vor dem `node_modules`-Check; ein Fehler beendet den Hook mit `ERR-4022`. Die restliche Reihenfolge (Matrix, Katalog, Inventur, Doku-Sync, Doku-Gate, LOC) ist unveraendert. Kein Vitest und kein `verify:quick` im Hook.
+
+**Pruefungen.** `sh -n .githooks/pre-commit`; temporaeres Test-Repo: divergierende gestagte Datei blockiert mit der erwarteten Meldung, ein Stub-Validator laeuft ohne `node_modules` und blockiert mit `ERR-4022`. Im echten Baum `narrative:check` 26/26/26 und `verify:quick` gruen.
+
+**Offen.** A1 bleibt offen: Der Validator ist im Hook, aber die Inventur-/Validator-Reihenfolge vor dem Fruehausstieg ist nur fuer Narrative geprueft; die allgemeine Gate-Reihenfolge bleibt Aufgabe von A1.
+
 ## 2026-11-04 - A2: Contribution-Inbox fail-closed
 
 **Ziel.** A2 der Integritaets-Phase: Die Contribution-Inbox darf keine Eintraege still ignorieren. Bisher filterte `readContributions()` auf `isFile()` und `.json`; Unterordner, Symlinks, versteckte Dateien und Behelfsdateien verschwanden lautlos.
@@ -874,7 +884,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.92 | 2026-11-04 02:37 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.93 | 2026-11-04 02:43 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -2,6 +2,22 @@
 # Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben,
 # weil der Hook den Commit vorbereitet. Fehlt node_modules, wird uebersprungen.
 set -e
+# Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
+# Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
+# Commit. Dann blockiert der Hook, statt den Widerspruch zu uebersehen.
+git diff --cached --name-only -- content/narrative | while IFS= read -r path; do
+  [ -n "$path" ] || continue
+  if ! git diff --quiet -- "$path"; then
+    echo "pre-commit: $path ist gestaged, aber im Arbeitsbaum noch veraendert (ERR-4022) - Commit blockiert; erst stagen oder Aenderung verwerfen" >&2
+    exit 1
+  fi
+done
+# Der Content-Validator braucht keine node_modules und laeuft deshalb vor dem
+# Fruehausstieg. Er prueft Schema, Vokabular, Manifest und Registry-Bytes.
+if ! node scripts/verify-narrative-content.mjs; then
+  echo "pre-commit: Narrative-Content ungueltig (ERR-4022) - Commit blockiert" >&2
+  exit 1
+fi
 if [ ! -d node_modules ]; then
   echo "pre-commit: node_modules fehlt - Hook uebersprungen (pnpm install --frozen-lockfile)"
   exit 0
