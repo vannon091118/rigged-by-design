@@ -24,7 +24,7 @@ import { type RadialAction } from './radial-menu';
 
 const STEP_MS = TICK_MS;
 
-// Toten-Exporte als verwendet markieren, damit der Dead-Code-Gate grün bleibt
+// Toten-Exporte als verwendet markieren, damit der Dead-Code-Gate gruen bleibt
 const _cb: CharacterViewCallbacks = { onInteract: () => {}, onMoveTo: () => {} };
 const _ra: RadialAction = { id: '', label: '', enabled: true };
 void _cb; void _ra;
@@ -60,7 +60,8 @@ export class FloorView {
     this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY));
     this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers);
     this.#camera.eventMode = 'static';
-    this.#camera.on('pointertap', this.#tap);
+    this.#camera.interactive = true;
+    this.#camera.on('pointerdown', this.#tap);
     app.stage.addChild(this.#camera);
     this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size);
     this.#actors = new ActorPool(this.#attachActor);
@@ -303,7 +304,13 @@ export class FloorView {
 
   #tap = (event: FederatedPointerEvent): void => {
     const point = event.getLocalPosition(this.#camera);
-    handleTap(event, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#lod, (x, y) => this.zoomToArea(x, y));
+    // CharacterView.root haengt an app.stage (nicht am Camera-Container), daher
+    // globale Stage-Koordinaten fuer das Radial-Menue berechnen.
+    const globalPoint = this.#camera.toGlobal(point);
+    handleTap(event, point, this.#view, this.#cues, {
+      ...this.#callbacks,
+      onOpenMenu: (actions, _x, _y) => this.#callbacks.onOpenMenu(actions, globalPoint.x, globalPoint.y),
+    }, this.#placing, this.#lod, (x, y) => this.zoomToArea(x, y));
   };
 
   #animate = (): void => {
