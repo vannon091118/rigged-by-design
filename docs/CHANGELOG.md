@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.89 | 2026-11-04 02:06 UTC -->
+<!-- rbd-doc: v0.3.90 | 2026-11-04 02:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.90] - 2026-11-04
+
+### Technik
+- `docs/NARRATIVE-ENTSCHEIDUNGEN.md` beantwortet die fuenf offenen Punkte verbindlich: Content-Batch (mehrere Contributions pro Turn), sieben neue Kontexte, `COUNTER_RIVAL` mit Chain-Template statt zweitem Fact, E2 nur in `offerScore()` und unveraenderte Service-Schwellen in `chooseActivity()`. Die Umsetzung steht noch aus.
 
 ## [0.3.88] - 2026-11-03
 
