@@ -28,8 +28,8 @@ export interface NarrativeEventView {
   readonly expiresInTicks: number;
   readonly participants: readonly NarrativeParticipantView[];
   readonly choices: readonly NarrativeChoiceView[];
-  /** Wahr, wenn kein Slot aus der Registry kam und die neutrale Sicherheitscopy steht. */
-  readonly fallbackText: boolean;
+  /** Slot-IDs, die auf die neutrale Sicherheitscopy zurueckfallen; leer heisst vollstaendig. */
+  readonly fallbackSlots: readonly string[];
 }
 
 interface NarrativeRelationshipView {

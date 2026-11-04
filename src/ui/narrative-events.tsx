@@ -21,6 +21,10 @@ const STEP_LABEL: Record<string, string> = {
   RESOLVE: 'Abschluss',
 };
 
+/** Nur bekannte Slot-Rollen bekommen ein Wort; alle anderen stehen als ID. */
+const SLOT_LABEL: Record<string, string> = { TITLE: 'Titel', BODY: 'Text' };
+const slotLabel = (slotId: string): string => SLOT_LABEL[slotId] ?? slotId;
+
 interface Props {
   readonly narrative: NarrativeView;
   readonly onChoose: (eventId: number, choiceId: string) => void;
@@ -46,8 +50,10 @@ function Scene({ event, onChoose, onDismiss, onProfile }: { event: NarrativeEven
         </span>
       </header>
       <p className="narrative-body">{event.body}</p>
-      {event.fallbackText && (
-        <p className="hint bad">Für diese Szene fehlt passender Text; es wird die neutrale Sicherheitscopy gezeigt.</p>
+      {event.fallbackSlots.length > 0 && (
+        <p className="hint bad">
+          Ohne passenden Text: {event.fallbackSlots.map(slotLabel).join(', ')}. Es steht die neutrale Sicherheitscopy.
+        </p>
       )}
       {event.participants.length > 0 && (
         <div className="narrative-participants">

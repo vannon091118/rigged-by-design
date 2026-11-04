@@ -36,7 +36,8 @@ function validFragments(registry: readonly unknown[]): {
  * Setzt alle angefragten Slots zusammen. Fehlende Fragmente werden durch lokale,
  * generische Fallbacks ersetzt; Direktiven werden nur weitergereicht, nie ausgefuehrt.
  * Eine Locale ohne gepflegte Sicherheitscopy wird abgelehnt, nie mit fremder
- * Sprache aufgefuellt; sind alle Slots Fallback, ist das Ergebnis `degraded`.
+ * Sprache aufgefuellt. `degraded` ist wahr, sobald ein Slot Fallback ist;
+ * `issues` nennt dann genau diese Slot-IDs.
  */
 export function composeNarrative(
   request: ComposeRequest,
@@ -48,7 +49,7 @@ export function composeNarrative(
       locale: typeof request?.locale === 'string' ? request.locale : '',
       slots: [],
       fallbacks: [],
-      degraded: true,
+      degraded: false,
       issues: ['ComposeRequest ist ungueltig'],
       rejected: [],
     };
@@ -60,7 +61,7 @@ export function composeNarrative(
       locale: request.locale,
       slots: [],
       fallbacks: [],
-      degraded: true,
+      degraded: false,
       issues: [`Locale ${request.locale} hat keine Sicherheitscopy`],
       rejected: [],
     };
@@ -88,14 +89,14 @@ export function composeNarrative(
     };
   });
   const fallbacks = slots.filter((slot) => slot.fallback).map((slot) => slot.slotId);
-  const degraded = slots.length > 0 && fallbacks.length === slots.length;
+  const degraded = fallbacks.length > 0;
   return {
     ok: true,
     locale: request.locale,
     slots,
     fallbacks,
     degraded,
-    issues: degraded ? ['Alle Slots sind Fallback; Registry, Locale und Personas pruefen.'] : [],
+    issues: degraded ? [`Fallback fuer Slots: ${fallbacks.join(', ')}.`] : [],
     rejected,
   };
 }

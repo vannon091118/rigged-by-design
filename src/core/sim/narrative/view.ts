@@ -51,7 +51,8 @@ function composeEvent(
     locale: 'de', slots: template.contentSlots, eventInstanceId: event.id, ...context,
   };
   const composed = composeNarrative(request);
-  if (!composed.degraded || context.availablePersonas.length === 0) return composed;
+  const allFallback = composed.slots.length > 0 && composed.fallbacks.length === composed.slots.length;
+  if (!allFallback || context.availablePersonas.length === 0) return composed;
   return composeNarrative({ ...request, availablePersonas: [] });
 }
 
@@ -90,7 +91,7 @@ function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInsta
       ref, label: participantLabel(ref, world.visitors), visitorId: visitorIdOf(ref),
     })),
     choices,
-    fallbackText: composed.degraded,
+    fallbackSlots: composed.fallbacks,
   };
 }
 

@@ -200,6 +200,12 @@ typisierten Direktiven. Die Auswahl mappt `TITLE` auf `opening`, `BODY` auf
   `aftermath`).
 - Fehlt ein Fragment, liefert der Composer kurze, kontextfreie Fallback-Texte.
   Sie erfinden keine Figuren, Fakten, Choice-IDs, Kosten oder Effekte.
+- `fallbacks` nennt die betroffenen Slot-IDs, und `degraded` ist genau dann wahr,
+  wenn mindestens ein Slot Fallback ist; `issues` traegt dieselben IDs als Satz.
+  Nur wenn alle Slots Fallback sind, setzt der View die Szene einmal ohne
+  Persona-Einschraenkung zusammen. `NarrativeEventView.fallbackSlots` reicht die
+  Liste unveraendert an die UI, die jeden Slot beim Namen nennt, statt von
+  "Sicherheitscopy" im Ganzen zu sprechen.
 - `isNarrativeFragment` prueft die generierte Registry auch zur Laufzeit;
   ungueltige Fragmente und Direktiven werden uebersprungen und im Ergebnis
   gemeldet. Direktiven werden nur weitergereicht, nie ausgefuehrt.
