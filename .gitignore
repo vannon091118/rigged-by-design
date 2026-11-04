@@ -3,6 +3,7 @@ dist/
 coverage/
 artifacts/
 android/
+.pnpm-store/
 *.log
 .env
 .env.local

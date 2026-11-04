@@ -35,6 +35,13 @@ export function animateFloor(
     art.sticker.position.set(art.root.x, art.root.y);
   }
   player.animate(now);
+  const pt = Math.min(1, (now - player.moveStart) / TICK_MS);
+  const pwalking = pt < 1;
+  const pgait = pwalking ? Math.sin((now / 1000) * 12 + player.phase) * 0.3 : 0;
+  player.root.x = player.from.x + (player.target.x - player.from.x) * pt;
+  player.root.y = player.from.y + (player.target.y - player.from.y) * pt + pgait + (pwalking ? Math.abs(pgait) * 1.5 : 0);
+  player.root.rotation = pgait * 0.14;
+  player.sticker.position.set(player.root.x, player.root.y);
   cues.animate(now, player.root);
   props.walk(now, TICK_MS);
 }

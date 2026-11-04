@@ -34,6 +34,7 @@ export class FloorCues {
     this.#canvas = canvas;
     this.#cellAt = cellAt;
     this.root.eventMode = 'none';
+    this.root.interactiveChildren = false;
     this.root.addChild(this.#path, this.#ring, this.#reticle, this.#ping);
     this.#ring.ellipse(0, 13, 11.5, 4.9).stroke({ width: 1.6, color: ROLE.service, alpha: 0.4 });
     this.#ring.ellipse(0, 13, 6.6, 2.7).stroke({ width: 1, color: ROLE.service, alpha: 0.22 });
