@@ -34,6 +34,10 @@ function actorAlive(world: WorldState, ref: ActorRef): boolean {
   return ref.startsWith('rival:');
 }
 
+function rivalAlive(world: WorldState, ref: ActorRef): boolean {
+  return ref.startsWith('rival:') && world.rivals.some((mind) => `rival:${mind.rivalId}` === ref);
+}
+
 function targetRejections(world: WorldState, event: ChoicePlan['event'], commands: ChoicePlan['commands']): CommandRejection[] {
   const rejections: CommandRejection[] = [];
   for (const command of commands) {
@@ -52,6 +56,13 @@ function targetRejections(world: WorldState, event: ChoicePlan['event'], command
     if (command.id === 'SET_FLAG') {
       if (!Number.isSafeInteger(command.delta) || command.delta === 0) {
         rejections.push(rejection(command.id, 'INVALID_ARGS', 'Flag-Delta ist ungueltig.'));
+      }
+      continue;
+    }
+    if (command.id === 'COUNTER_RIVAL') {
+      const rival = resolveActor(command.rival, event.participants);
+      if (!rival || !rivalAlive(world, rival)) {
+        rejections.push(rejection(command.id, 'INVALID_TARGET', 'Rivale unbekannt oder nicht vorhanden.'));
       }
       continue;
     }

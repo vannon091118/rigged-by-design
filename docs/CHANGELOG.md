@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.104 | 2026-11-04 05:44 UTC -->
+<!-- rbd-doc: v0.3.105 | 2026-11-04 06:04 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.105] - 2026-11-04
+
+### Spiel
+- Wer einem Rivalen entgegentritt, verschafft dem Haus eine Atempause: Der Rivale bleibt danach 900 Ticks still, statt sofort den naechsten Zug zu planen.
+
+### Technik
+- D2: `ChoiceEffect` und `NarrativeCommand` kennen `COUNTER_RIVAL` (Familie `RIVAL`, Ziel `ChoiceActor`); Preflight verlangt einen existierenden `rival:`-Ref (`INVALID_TARGET` sonst), `execute.ts` setzt `counteredUntilTick = max(alt, tick + 900)` als einzigen Schreibpfad.
+- `RIVAL_MOVE.CONFRONT_RIVAL` traegt die Wirkung; Tests belegen Stillstand bis zum Tick und Preflight-Ablehnung unbekannter Rivalen. Kein neuer Fact in dieser Phase. Registry auf 53 Fragmente.
 
 ## [0.3.104] - 2026-11-04
 

@@ -6,6 +6,7 @@ import type { WorldState } from '../../types';
 import { freezeEvent, transitionEvent } from '../event-lifecycle';
 import type { ChoiceActor, EventTemplate } from '../events/template-types';
 import { emitCommandRejected, emitFact } from '../facts';
+import { RIVAL_AI_LIMITS } from '../../rival-ai/types';
 import { shift } from '../relationships';
 import type { ActorRef } from '../types';
 import { preflightChoice } from './preflight';
@@ -38,6 +39,13 @@ function applyCommand(world: WorldState, eventId: number, command: NarrativeComm
   }
   if (command.id === 'FREEZE_TICK') {
     freezeEvent(world, eventId, command.ticks, world.tick);
+    return;
+  }
+  if (command.id === 'COUNTER_RIVAL') {
+    const rival = resolveActor(command.rival, world.narrative.events.find((entry) => entry.id === eventId)?.participants ?? []);
+    const mind = world.rivals.find((entry) => `rival:${entry.rivalId}` === rival);
+    if (!mind) return;
+    mind.counteredUntilTick = Math.max(mind.counteredUntilTick, world.tick + RIVAL_AI_LIMITS.counteredTicks);
     return;
   }
   if (command.id !== 'ADJUST_RELATIONSHIP') return;

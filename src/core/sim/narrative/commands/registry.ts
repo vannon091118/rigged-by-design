@@ -71,11 +71,17 @@ const compileDialog = (directive: ParsedDirective): NarrativeCommand | null => {
   return dialogId && DIALOG.test(dialogId) ? { id: 'TRIGGER_DIALOG', dialogId } : null;
 };
 
+const compileCounter = (directive: ParsedDirective, participantCount: number): NarrativeCommand | null => {
+  const rival = actorOf(valueOf(directive, 'rival', 0), participantCount);
+  return rival ? { id: 'COUNTER_RIVAL', rival } : null;
+};
+
 export const COMMAND_SPECS: readonly CommandSpec[] = [
   { id: 'SET_FLAG', family: 'STORY', executable: true, compile: compileSetFlag },
   { id: 'ADJUST_RELATIONSHIP', family: 'RELATIONSHIP', executable: true, compile: compileRelationship },
   { id: 'FREEZE_TICK', family: 'EVENT', executable: true, compile: compileFreeze },
   { id: 'TRIGGER_DIALOG', family: 'DIALOG', executable: false, compile: compileDialog },
+  { id: 'COUNTER_RIVAL', family: 'RIVAL', executable: true, compile: compileCounter },
 ];
 
 export function commandSpec(id: string): CommandSpec | null {

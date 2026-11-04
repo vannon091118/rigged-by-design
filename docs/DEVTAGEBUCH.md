@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - D2: Domaenenwirkung COUNTER_RIVAL
+
+**Ziel.** Entgegentreten muss in der Domaene ankommen, nicht nur im Journal: Nach `CONFRONT_RIVAL` bleibt der Rivale 900 Ticks still. Die Wirkung gehoert als typisierter Effekt in den Choice-Vertrag, mit Preflight-Kontrolle und genau einem Schreibpfad.
+
+**Umsetzung.** `ChoiceEffect` und `NarrativeCommand` kennen `COUNTER_RIVAL` (Familie `RIVAL`, Ziel `ChoiceActor`, Registry erlaubt und ausfuehrbar); `preflight.ts` verlangt einen existierenden `rival:`-Ref und weist Unbekannte als `INVALID_TARGET` ab; `execute.ts` setzt `counteredUntilTick = max(alt, tick + counteredTicks)`; `RIVAL_MOVE.CONFRONT_RIVAL` traegt die Wirkung. Bewusst kein neuer Fact in dieser Phase - erst mit eigener Story in Phase 4.
+
+**Pruefungen.** `verify:quick` (zehn Gates) vor dem Commit. Neue Tests: Stillstand des Rivalen bis zum Tick ueber `decideRivalAction`, Preflight-Ablehnung eines unbekannten Rivalen ohne Weltmutation. Registry auf 53 Fragmente.
+
+**Offen.** Ein `RIVAL_COUNTERED`-Fact samt Trigger, Template und Content bleibt der Phase 4 vorbehalten; bis dahin ist die Kante Rivale->Haus plus Guard-Indiz die sichtbare Spur.
+
 ## 2026-11-04 - D1: Choice-Folgekette VISITOR_AFTERMATH
 
 **Ziel.** Eine beantwortete Frage darf nicht im Nichts enden: Wer nach dem letzten Besuch fragt, oeffnet ein Nachspiel mit denselben Beteiligten. Die Kette gehoert in die Runtime, nicht in einen zweiten Trigger - der Ausloeser ist die Aufloesung selbst.
@@ -994,7 +1004,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.104 | 2026-11-04 05:44 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.105 | 2026-11-04 06:04 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
