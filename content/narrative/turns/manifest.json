@@ -184,6 +184,10 @@
     {
       "turnId": "2026-11-04T06:20Z-b4-turnier-body",
       "contributionId": "b4-turnier-body-01"
+    },
+    {
+      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+      "contributionId": "c2-rival-action-trigger-01"
     }
   ]
 }

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - C2: Rivalenaktionen als Trigger-Bedingung
+
+**Ziel.** `PROBE` ist ein Blick von der Seite und soll keine Szene oeffnen; nur Rivalenhandlungen mit Folgen duerfen `RIVAL_MOVE` ausloesen. Die Entscheidung gehoert in den Trigger-Vertrag, nicht in eine stille Annahme des Evaluators.
+
+**Umsetzung.** `TriggerCondition` traegt `{ op: 'rival-action'; actions }` mit `RivalActionId[]`. Das Schema akzeptiert nur nicht-leere, duplikatfreie Listen aus `RIVAL_ACTION_IDS` (maximal fuenf); der Evaluator matcht ausschliesslich `RIVAL_ACTION`-Facts, deren Aktion in der Liste steht, und nennt die konkrete Aktion im Grund. `EVENT_TRIGGER_DEFINITIONS` ersetzt die pauschale `fact`-Bedingung durch TRADE_INFO, PRICE_MOVE, POACH_VISITOR und SABOTAGE; `PROBE` bleibt bewusst aussen vor und erzeugt nur ein Indiz.
+
+**Pruefungen.** `verify:quick` (zehn Gates) vor dem Commit. Neue Tests: Schema akzeptiert `PROBE` als gueltige Aktion, verwirft leere, doppelte und unbekannte Listen; der Evaluator filtert Sabotage gegen PROBE und gegen einen Nicht-Rivalen-Fact; der Ende-zu-Ende-Test zeigt, dass PROBE kein Event und SABOTAGE genau einen `RIVAL_MOVE` erzeugt. Content-Beitrag `c2-rival-action-trigger-01`, Registry auf 47 Fragmente (sha256:b3159d3c...).
+
+**Offen.** Weitere Rivalenaktionen bleiben schema-seitig erlaubt; wer sie als Event will, muss sie bewusst in die Trigger-Liste aufnehmen. Die naechsten Ketten C/D (Preis- und Gaestefolgen) bauen auf dem Fact auf, nicht auf einer zweiten Trigger-Wahrheit.
+
 ## 2026-11-04 - B4: Abdeckung ohne stillen Fallback
 
 **Ziel.** "Kein stiller Fallback" sollte nicht nur behauptet, sondern ueber alle stabilen Templates pruefbar sein. Gleichzeitig kollidiert ein solcher Batch mit der Regel "genau ein Content-Beitrag pro Turn".
@@ -964,7 +974,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.101 | 2026-11-04 04:57 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.102 | 2026-11-04 05:15 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -1,4 +1,5 @@
 /** Schema-Validierung fuer persistierbare Trigger-Definitionen; fail-closed. */
+import { RIVAL_ACTION_IDS, type RivalActionId } from '../rival-ai/types';
 import { isActorRef } from './relationships';
 import {
   HOUSE_BANDS, NARRATIVE_FACT_KINDS, VISITOR_VALENCES,
@@ -20,6 +21,8 @@ const isSafeInt = (value: unknown, min: number, max = Number.MAX_SAFE_INTEGER): 
   typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value <= max;
 const isFactKind = (value: unknown): value is NarrativeFact['kind'] =>
   typeof value === 'string' && (NARRATIVE_FACT_KINDS as readonly string[]).includes(value);
+const isRivalAction = (value: unknown): value is RivalActionId =>
+  typeof value === 'string' && (RIVAL_ACTION_IDS as readonly string[]).includes(value);
 const isValence = (value: unknown): value is VisitorValence =>
   typeof value === 'string' && (VISITOR_VALENCES as readonly string[]).includes(value);
 const isDemandTier = (value: unknown): value is DemandTier =>
@@ -45,6 +48,11 @@ function validCondition(raw: unknown, depth: number, budget: Budget): boolean {
       return validCondition(raw.condition, depth + 1, budget);
     case 'fact':
       return isFactKind(raw.kind);
+    case 'rival-action':
+      return Array.isArray(raw.actions) && raw.actions.length > 0
+        && raw.actions.length <= RIVAL_ACTION_IDS.length
+        && new Set(raw.actions).size === raw.actions.length
+        && raw.actions.every(isRivalAction);
     case 'visitor-memory':
       return isValence(raw.valence);
     case 'house-at-most':

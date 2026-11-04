@@ -120,6 +120,21 @@ describe('Narrative Trigger', () => {
     }
   });
 
+  it('filtert Rivalenhandlungen nach der erlaubten Aktionsliste', () => {
+    const { world, ledger, context } = fixture();
+    const sabotage = emitFact(world, {
+      kind: 'RIVAL_ACTION', actorRefs: ['rival:HAFENKLAUSE'], rivalId: 'HAFENKLAUSE',
+      action: 'SABOTAGE', evidence: true, machineId: null,
+    });
+    const sabotageContext = buildTriggerContext(world, ledger, sabotage);
+    expect(evaluateTrigger({ op: 'rival-action', actions: ['SABOTAGE'] }, sabotageContext).matched).toBe(true);
+    expect(evaluateTrigger({ op: 'rival-action', actions: ['PROBE'] }, sabotageContext).matched).toBe(false);
+    expect(evaluateTrigger({
+      op: 'rival-action', actions: ['TRADE_INFO', 'PRICE_MOVE', 'POACH_VISITOR', 'SABOTAGE'],
+    }, sabotageContext).matched).toBe(true);
+    expect(evaluateTrigger({ op: 'rival-action', actions: ['SABOTAGE'] }, context).matched).toBe(false);
+  });
+
   it('verwirft ungueltige Direktaufrufe und leere Kombinationen fail-closed', () => {
     const { context } = fixture();
     expect(evaluateTrigger({ op: 'all', conditions: [] }, context).matched).toBe(false);

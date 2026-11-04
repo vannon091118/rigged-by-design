@@ -230,14 +230,15 @@ Geraeteschaden. `actorRefsOfFact()` loest alte `visitorId`-Facts und neue
 
 `trigger-evaluate.ts` ist rein: `all`/`any`/`not`, Fact-Typ, Besuchererinnerung,
 Hauskonto-Grenzen/Band, Geraeteschaden, Charisma, Ruf, Nachfragestufe, bediente Gaeste,
-Flags (Wert/Anwesenheit/Abwesenheit), Zeitfenster, `recent-fact`, Akteur/Rolle und
+Flags (Wert/Anwesenheit/Abwesenheit), Zeitfenster, `recent-fact`, Akteur/Rolle,
+Rivalenaktion (`rival-action` mit nicht-leerer Aktionsliste) und
 Beziehungen (Trust/Sympathie/Konflikt/Einfluss). `evaluateTrigger()` liefert Match plus
 Begruendungen; `evaluateTriggerDefinition()` ergaenzt `triggerId`, `factId` und
 aufgeloeste Teilnehmer. Fehlende Beziehungen oder Besucherprofile sind ein
 Nicht-Match, kein Fehler.
 
 `trigger-schema.ts` validiert rekursiv und fail-closed: unbekannte Operatoren,
-ungueltige Fact-Arten/ActorRefs, Selbstkanten, negative oder unsichere Schwellen,
+ungueltige Fact-Arten/ActorRefs, unbekannte oder doppelte Rivalenaktionen, Selbstkanten, negative oder unsichere Schwellen,
 ungueltige Band/Stufe/Rolle/Dimension und leere `all`/`any`-Listen werden verworfen;
 Tiefe 12 und 64 Knoten sind die Grenze. Der Evaluator veraendert weder Welt noch
 Ledger, zieht keinen PRNG und ruft kein Netzwerk/LLM. Seit NAR-12 ruft `narrative/runtime.ts` den
@@ -435,8 +436,9 @@ damit es keine zweite Wahrheit gibt.
   fruehestens ab Tick 150; `counteredUntilTick` sperrt Gegenmassnahmen-Fenster.
 - **RIVAL_ACTION-Fact**: jede Aktion erzeugt genau einen Fact mit Rivale, Aktion,
   Indiz-Flag und Zielgeraet. Der Boundary wendet daraus die gerichtete Kante
-  Rivale → Haus an; der Trigger `rival-action` uebersetzt ihn in `RIVAL_MOVE`
-  (Choice `CONFRONT_RIVAL` oder `WATCH_THE_MOVE`).
+  Rivale → Haus an; der Trigger `rival-action` uebersetzt nur TRADE_INFO,
+  PRICE_MOVE, POACH_VISITOR und SABOTAGE in `RIVAL_MOVE` (Choice
+  `CONFRONT_RIVAL` oder `WATCH_THE_MOVE`). PROBE bleibt ein Indiz ohne Szene.
 - **Sabotage mit Indizien statt Zufallsmalus**: Ziel ist das beste unbeschaedigte
   Geraet (Gleichstand: kleinste ID), der Schaden ist fest (12), und jeder Versuch
   schreibt einen `RivalEvidence`-Eintrag mit Tick, Tag, Geraet, Blockade und Notiz.
