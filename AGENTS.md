@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.95 | 2026-11-04 03:12 UTC -->
+<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -28,7 +28,7 @@ Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are i
 ## Build & test
 
 - `pnpm run test` — Vitest run (CI alias `test:ci`).
-- `pnpm run test:affected` — nur Tests aus deklariertem Ziel, dem transitiven Importgraphen und dem betroffenen Subsystem, und nur die schnellen Beweisklassen. Statistik- und Messnachweise (RTP, Poker-Verteilung, Soak, Benchmarks) überspringt er und nennt sie; Entwicklungsfeedback, kein Ersatz für `verify:all`.
+- `pnpm run test:affected` — nur Tests aus deklariertem Ziel, dem transitiven Importgraphen und dem betroffenen Subsystem, und nur die schnellen Beweisklassen. Statistik- und Messnachweise (RTP, Poker-Verteilung, Soak, Benchmarks) überspringt er und nennt sie; Entwicklungsfeedback, kein Ersatz für `verify:all`. Jede JSON-Änderung unter `content/narrative/**` wählt ausschließlich `src/core/governance/__tests__/narrative-content.test.ts` und gilt als Codeänderung.
 - `pnpm run agent:context [--json]` — ein Aufruf für den Arbeitskontext: Änderungen, Systeme, Invarianten, betroffene Tests, Gate-Plan, Doku-Bezüge und Cache-Stand. Reine Anzeige, keine Prüfung, keine zweite Analyse.
 - `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` delegiert die langen Nachweise an Actions und wartet darauf. Kein Ersatz für `verify:all`.
 - `pnpm run typecheck` — `tsc --noEmit`.

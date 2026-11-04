@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.95 | 2026-11-04 03:12 UTC -->
+<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.96] - 2026-11-04
+
+### Technik
+- A3: `scripts/lib/affected-tests.mjs` erkennt jede JSON-Datei unter `content/narrative/**` ueber `NARRATIVE_DATA_RE`, setzt `codeChanged = true` und waehlt ausschliesslich `src/core/governance/__tests__/narrative-content.test.ts`. Content-Aenderungen laufen damit nicht mehr ins Leere und fallen nicht in den Subsystem-Fallback; ein Governance-Test deckt die exklusive Auswahl ab.
 
 ## [0.3.95] - 2026-11-04
 

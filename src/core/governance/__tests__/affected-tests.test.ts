@@ -47,6 +47,15 @@ describe('Betroffene Tests', () => {
     expect(result.tests).toEqual(all);
   });
 
+  it('waehlt bei Narrative-JSON nur den Governance-Test', () => {
+    const result = selectAffectedTests([
+      'content/narrative/contributions/2026-11-01-beispiel.json',
+      'content/narrative/turns/manifest.json',
+    ]);
+    expect(result.tests).toEqual(['src/core/governance/__tests__/narrative-content.test.ts']);
+    expect(result.runAll).toBe(false);
+  });
+
   it('laesst reine Doku ohne Testauswahl', () => {
     const result = selectAffectedTests(['docs/ARCHITECTURE.md']);
     expect(result.tests).toEqual([]);
