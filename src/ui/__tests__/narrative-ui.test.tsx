@@ -42,10 +42,7 @@ describe('Narrative UI (NAR-14)', () => {
 
     expect(screen.getByRole('article').className).toContain('narrative-card');
     expect(screen.getByTitle('Verbleibende Zeit bis die Szene verfaellt').textContent).toMatch(/^\d+ (s|min)$/);
-    const buttons = screen.getAllByRole('button', { name: /Weiter/ });
-    expect(buttons).toHaveLength(2);
-
-    fireEvent.click(buttons[0]!);
+    fireEvent.click(screen.getByRole('button', { name: 'Zurück an den Tresen winken.' }));
 
     expect(onChoose).toHaveBeenCalledWith(eventId, 'WELCOME_BACK');
   });
@@ -56,10 +53,9 @@ describe('Narrative UI (NAR-14)', () => {
     render(<NarrativePopup view={view} onClose={noop} onChoose={noop} onDismiss={noop} />);
 
     const hint = screen.getByText(/Ohne passenden Text/).textContent ?? '';
-    expect(hint).toContain('Titel');
-    expect(hint).toContain('Text');
-    expect(hint).toContain('CHOICE_WELCOME');
-    expect(hint).not.toContain('BODY');
+    expect(hint).toContain('OUTCOME_WELCOMED');
+    expect(hint).toContain('OUTCOME_ASKED');
+    expect(hint).not.toContain('Titel');
   });
 
   it('lässt eine gesperrte Choice nicht klicken und nennt den Grund', () => {
@@ -68,7 +64,7 @@ describe('Narrative UI (NAR-14)', () => {
 
     render(<NarrativePopup view={view} onClose={noop} onChoose={onChoose} onDismiss={noop} />);
 
-    const blocked = screen.getAllByRole('button', { name: /Weiter/ })[1] as HTMLButtonElement;
+    const blocked = screen.getByRole('button', { name: 'Nach dem letzten Abend fragen.' }) as HTMLButtonElement;
 
     expect(blocked.disabled).toBe(true);
     expect(screen.getByText(/Voraussetzung fehlt/).textContent).toContain('Voraussetzung fehlt');

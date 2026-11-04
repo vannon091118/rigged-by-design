@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:14Z-b4-rivale-body",
+  "contributionId": "b4-rivale-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "rival"
+  ],
+  "tone": "sachlich",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Er mustert die Geräte, als würde er ihren Preis schätzen, nicht ihren Zustand. Was er vorhat, steht nicht auf seinem Gesicht; nur die Reihenfolge seiner Blicke verrät, dass er schon entschieden hat.",
+  "directives": []
+}

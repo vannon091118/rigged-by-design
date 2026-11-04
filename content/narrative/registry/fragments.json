@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8bde0ad5a03fd55a6998c0bf2586f0a00298b066b58de82bef6240fc7987b89e",
+  "contentHash": "sha256:1fc8951bb58d82466fa8d138779874e7d6aec1707f6ae810dfa4eef18555f749",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -106,6 +106,368 @@
       "text": "Rita liess keine Luecke mehr unter dem Wort Sicherheitscopy verschwinden. Jede Karte nannte den Slot, der keinen Text gefunden hatte: den Titel, die Begruessung, den Ausgang. Ein fehlender Satz war kein Zustand des ganzen Abends mehr, sondern eine Stelle, die man nachtragen konnte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-b3-fallback-slots.json"
+    },
+    {
+      "contributionId": "b4-konflikt-body-01",
+      "turnId": "2026-11-04T06:10Z-b4-konflikt-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "conflict"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwischen den beiden ist der Platz enger geworden als der Raum. Eine Hand liegt auf dem Tresen, die andere schon halb erhoben; das Haus wartet, wer zuerst nachgibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-body.json"
+    },
+    {
+      "contributionId": "b4-konflikt-defuse-01",
+      "turnId": "2026-11-04T06:11Z-b4-konflikt-defuse",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "conflict",
+        "defuse"
+      ],
+      "tone": "warm",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Dazwischengehen und den Streit lösen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-defuse.json"
+    },
+    {
+      "contributionId": "b4-konflikt-escalate-01",
+      "turnId": "2026-11-04T06:12Z-b4-konflikt-escalate",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "conflict",
+        "escalate"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Den Streit offen zulassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-escalate.json"
+    },
+    {
+      "contributionId": "b4-konflikt-titel-01",
+      "turnId": "2026-11-04T06:09Z-b4-konflikt-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "conflict"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Stimmen, die nicht mehr leiser werden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-titel.json"
+    },
+    {
+      "contributionId": "b4-neon-body-01",
+      "turnId": "2026-11-04T06:18Z-b4-neon-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Draußen flackern die Schilder, drinnen wird es voller. Wer jetzt bedient, hält den Abend zusammen; wer zögert, verliert die nächste Runde Gäste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-neon-body.json"
+    },
+    {
+      "contributionId": "b4-neon-titel-01",
+      "turnId": "2026-11-04T06:17Z-b4-neon-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neon-Nacht: Das Licht zieht mehr Menschen an.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-neon-titel.json"
+    },
+    {
+      "contributionId": "b4-rivale-body-01",
+      "turnId": "2026-11-04T06:14Z-b4-rivale-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "rival"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er mustert die Geräte, als würde er ihren Preis schätzen, nicht ihren Zustand. Was er vorhat, steht nicht auf seinem Gesicht; nur die Reihenfolge seiner Blicke verrät, dass er schon entschieden hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-body.json"
+    },
+    {
+      "contributionId": "b4-rivale-confront-01",
+      "turnId": "2026-11-04T06:15Z-b4-rivale-confront",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "rival",
+        "confront"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ihn direkt auf seinen Plan ansprechen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-confront.json"
+    },
+    {
+      "contributionId": "b4-rivale-titel-01",
+      "turnId": "2026-11-04T06:13Z-b4-rivale-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "rival"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Rivale setzt seinen Becher zu laut ab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-titel.json"
+    },
+    {
+      "contributionId": "b4-rivale-watch-01",
+      "turnId": "2026-11-04T06:16Z-b4-rivale-watch",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "rival",
+        "watch"
+      ],
+      "tone": "sachlich",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Abwarten und seine Schritte beobachten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-watch.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-ask-01",
+      "turnId": "2026-11-04T06:08Z-b4-rueckkehr-ask",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "ask"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Nach dem letzten Abend fragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-ask.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-body-01",
+      "turnId": "2026-11-04T06:06Z-b4-rueckkehr-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Der Gast von damals steht wieder am Tresen, als wäre die Zeit dazwischen nur eine kurze Pause gewesen. Das Haus erinnert sich an den letzten Abend, und der Blick sagt, dass die Erinnerung geteilt wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-body.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-titel-01",
+      "turnId": "2026-11-04T06:05Z-b4-rueckkehr-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "return"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Die Tür geht auf, als hätte sie gewartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-titel.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-welcome-01",
+      "turnId": "2026-11-04T06:07Z-b4-rueckkehr-welcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Zurück an den Tresen winken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-welcome.json"
+    },
+    {
+      "contributionId": "b4-turnier-body-01",
+      "turnId": "2026-11-04T06:20Z-b4-turnier-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter dem Tresen werden die Stimmen lauter, als hätte jemand die Regeln verlesen. Das Haus hat mehr Durst als Hände, und der Abend fragt nicht, ob das passt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-turnier-body.json"
+    },
+    {
+      "contributionId": "b4-turnier-titel-01",
+      "turnId": "2026-11-04T06:19Z-b4-turnier-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Turnierabend: Die Tische füllen sich.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-turnier-titel.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:05Z-b4-rueckkehr-titel",
+  "contributionId": "b4-rueckkehr-titel-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "return"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Die Tür geht auf, als hätte sie gewartet.",
+  "directives": []
+}

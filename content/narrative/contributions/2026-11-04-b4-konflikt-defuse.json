@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:11Z-b4-konflikt-defuse",
+  "contributionId": "b4-konflikt-defuse-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "conflict",
+    "defuse"
+  ],
+  "tone": "warm",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Dazwischengehen und den Streit lösen.",
+  "directives": []
+}
