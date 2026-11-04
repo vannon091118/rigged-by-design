@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d647383b49491af7d6e3d23942fae25648f0b7e8de7abcb5b58630c5ee477caf",
+  "contentHash": "sha256:45ab7c08e37a02b186231b3c57ff47013642f2deb1b70f52a7982d6c5aa82758",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1378,6 +1378,98 @@
       "text": "Rita kam wieder, und das Haus erinnerte sich nicht an ihren Namen, sondern an den Streit an der Kasse und an das Vertrauen, das danach übrig blieb. Der neue Vertrag fragte nicht mehr jede Stimmung einzeln ab: Er las den letzten Fact, das Fenster davor, die gerichtete Kante und den Stand der Hauskasse zusammen. Erst die Erklärung machte aus einem Treffer eine Geschichte, die man prüfen konnte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-nar-05-trigger-context.json"
+    },
+    {
+      "contributionId": "warm-return-body-01",
+      "turnId": "2026-11-04T07:21Z-warm-return-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Haus erinnert sich an gute Abende, und heute erinnert es sich gern: Sein Platz ist frei, die Laune ist da, und irgendwer hat offenbar schon erzählt, dass er wiederkommt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-body.json"
+    },
+    {
+      "contributionId": "warm-return-choice-01",
+      "turnId": "2026-11-04T07:22Z-warm-return-choice",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ihn mit Namen begrüßen und den gewohnten Platz anbieten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-choice.json"
+    },
+    {
+      "contributionId": "warm-return-outcome-01",
+      "turnId": "2026-11-04T07:23Z-warm-return-outcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "return",
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er strahlt über das ganze Gesicht: Hier kennt man ihn noch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-outcome.json"
+    },
+    {
+      "contributionId": "warm-return-titel-01",
+      "turnId": "2026-11-04T07:20Z-warm-return-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-titel.json"
     }
   ]
 }

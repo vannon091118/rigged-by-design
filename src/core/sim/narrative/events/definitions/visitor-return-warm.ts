@@ -9,9 +9,9 @@ export const VISITOR_RETURN_WARM_TEMPLATE: EventTemplate = {
   scope: 'VISITOR',
   participantRoles: ['visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['return'] },
-    { id: 'BODY', kind: 'BODY', requiredContexts: ['return'] },
-    { id: 'CHOICE_WARM', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'welcome'] },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['return', 'warm'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['return', 'warm'] },
+    { id: 'CHOICE_WARM', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'warm'] },
     { id: 'OUTCOME_WARMED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath'] },
   ],
   choices: [

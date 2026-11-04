@@ -11,6 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { HAUSKONTO } from '../money';
+import { buildNarrativeView } from '../narrative/view';
 import { emitFact } from '../narrative/facts';
 import { executeChoice } from '../narrative/commands/execute';
 import { EVENT_TEMPLATES, templateFor } from '../narrative/events/definitions';
@@ -62,6 +63,20 @@ describe('Warme Rueckkehr als zweite Stufe (F)', () => {
 
     const cold = returnedWorld('BAD');
     expect(cold.result.scheduled.map((entry) => entry.eventId)).toEqual(['VISITOR_RETURN']);
+  });
+
+  it('spricht die warme Szene aus dem eigenen Textpool, nicht aus dem Basistopf', () => {
+    const { world, ledger, result } = returnedWorld('GOOD');
+    expect(result.scheduled.some((entry) => entry.eventId === 'VISITOR_RETURN_WARM')).toBe(true);
+    const view = buildNarrativeView(world, ledger);
+    const warm = view.events.find((entry) => entry.eventId === 'VISITOR_RETURN_WARM')!;
+    expect(warm.title).toBe('Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.');
+    expect(warm.body).toContain('erinnert es sich gern');
+    expect(warm.choices.map((choice) => choice.choiceId)).toEqual(['WARM_WELCOME']);
+    expect(warm.choices[0]?.label).toBe('Ihn mit Namen begrüßen und den gewohnten Platz anbieten.');
+    expect(warm.fallbackSlots).not.toContain('TITLE');
+    expect(warm.fallbackSlots).not.toContain('BODY');
+    expect(warm.fallbackSlots).not.toContain('CHOICE_WARM');
   });
 
   it('fuehrt den Langzeitpfad Kette -> Flag/Beziehung -> spaeteres Warm-Match ohne Campaign-State', () => {

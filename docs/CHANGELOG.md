@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.109 | 2026-11-04 07:06 UTC -->
+<!-- rbd-doc: v0.3.110 | 2026-11-04 07:20 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.110] - 2026-11-04
+
+### Spiel
+- Wer mit guten Abenden wiederkommt, wird jetzt mit eigenen Worten begruesst - die warme Szene spricht nicht mehr aus dem Basistopf.
+
+### Technik
+- Warmer Content-Batch: vier Beitraege (Titel, Text, Choice-Label, Outcome) im neuen `warm`-Kontext; `VISITOR_RETURN_WARM` verlangt ihn pro Slot, sodass die Auswahl deterministisch beim eigenen Textpool landet. Registry auf 61 Fragmente.
 
 ## [0.3.109] - 2026-11-04
 
