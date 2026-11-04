@@ -8,6 +8,7 @@ import { composeNarrative, type ComposedNarrative } from './composer';
 import { templateFor } from './events/definitions';
 import type { ContentSlotKind, EventTemplate } from './events/template-types';
 import { isLiveEventStatus, isTerminalEventStatus } from './event-lifecycle';
+import { rivalViews } from './rival-context';
 import type { NarrativeEventInstance } from './event-types';
 import type {
   NarrativeEventView, NarrativeHistoryView, NarrativeProfileView, NarrativeView,
@@ -171,5 +172,5 @@ export function buildNarrativeView(world: WorldState, ledger: Ledger): Narrative
     .slice(0, HISTORY_LIMIT)
     .map((event) => historyEntry(world, ledger, event))
     .filter((entry): entry is NarrativeHistoryView => entry !== null);
-  return { events, history, profiles: profiles(world, live) };
+  return { events, history, profiles: profiles(world, live), rivals: rivalViews(world) };
 }

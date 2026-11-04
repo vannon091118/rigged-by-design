@@ -1,5 +1,6 @@
 /** NAR-14: Datenvertraege des Anzeigemodells; der Builder lebt in `view.ts`. */
-import type { ActorRef } from '../types';
+import type { RivalActionRecord, RivalEvidence, RivalStance } from '../rival-ai/types';
+import type { ActorRef, RivalId } from '../types';
 import type { ChoiceBlockReason } from './events/template-types';
 import type { NarrativeEventStatus } from './event-types';
 import type { VisitorMemory } from './types';
@@ -63,9 +64,24 @@ export interface NarrativeProfileView {
   readonly stories: readonly string[];
 }
 
+export interface NarrativeRivalView {
+  readonly rivalId: RivalId;
+  readonly stance: RivalStance;
+  readonly capacity: number;
+  readonly goodwill: number;
+  /** true, solange die D2-Gegenmassnahme diesen Rivalen stillhaelt. */
+  readonly countered: boolean;
+  readonly counteredTicksLeft: number;
+  readonly nextActionTick: number;
+  readonly evidence: readonly RivalEvidence[];
+  readonly history: readonly RivalActionRecord[];
+}
+
 export interface NarrativeView {
   readonly events: readonly NarrativeEventView[];
   /** Abgeschlossene Szenen, neueste zuerst; nur die jüngsten bleiben sichtbar. */
   readonly history: readonly NarrativeHistoryView[];
   readonly profiles: readonly NarrativeProfileView[];
+  /** Eine Karte je Rivale in kanonischer Reihenfolge; reine Ableitung aus den Minds. */
+  readonly rivals: readonly NarrativeRivalView[];
 }

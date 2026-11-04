@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Phase 5: Rivalen-Integration und Nachweise
+
+**Ziel.** Die Rivalen-Domaene ins Anzeigemodell heben, ohne NAR-14-17 zu duplizieren: Minds, Indizien und `counteredUntilTick` sind die einzige Grundlage, alles andere waere eine zweite Wahrheit.
+
+**Umsetzung.** Neuer reiner Helper `narrative/rival-context.ts` mit `rivalViews()`: eine Karte je Rivale in kanonischer Reihenfolge (Haltung, Kapazitaet, Wohlwollen, Gegenmassnahme mit Restlaufzeit, naechster Zug, Historie, Indizien als Kopien, Anzeige auf die Rivalen-Limits gedeckelt). `NarrativeView` traegt `rivals`, `view.ts` waechst um zwei Zeilen und bleibt unter 200.
+
+**Pruefungen.** Neuer Test `narrative-rival-context.test.ts` (4/4 vorab gruen): Karten aus neutralen Minds, Gegenmassnahme mit Restlaufzeit und Ablauf, Kopien statt Referenzen, Limits, exakter Schluesselsatz, Anbindung in `buildNarrativeView`. `narrative:check`, `typecheck` und fokussierte Tests vorab gruen; `verify:quick` (zehn Gates) vor dem Commit, vollstaendig `verify:all` in CI. Registry auf 57 Fragmente.
+
+**Offen.** Die UI-Karte (Rivalen-Profil mit Historie und Indizien) fehlt weiter; das Modell liegt dafuer bereit. Ein Importfehler (`RIVAL_IDS` aus dem Typ-Barrel statt aus `types-model`) ist im fokussierten Test aufgefallen und behoben.
+
 ## 2026-11-04 - F: Warme Rueckkehr als zweite Stufe
 
 **Ziel.** Langzeit ohne Campaign-State: Der vorhandene Kettenbaustein (VISITOR_RETURN -> ASK -> VISITOR_AFTERMATH -> Flag/Beziehung) soll spaeter von allein in ein weiteres Match muenden. Zweite Stufe als Trigger-Variante mit eigenem Template, nur vorhandene Infrastruktur.
@@ -1034,7 +1044,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.108 | 2026-11-04 06:52 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.109 | 2026-11-04 07:06 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

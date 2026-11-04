@@ -472,6 +472,11 @@ damit es keine zweite Wahrheit gibt.
   sich den Zug. Wer die Indizien liest, kennt Taeter, Ziel und Tick.
 - **Save v10**: `WorldState.rivals` liegt im Save; `SavedGame` akzeptiert v5–v10,
   `normalizeRivalMinds` fuellt fehlende Rivalen mit dem neutralen Startzustand auf.
+- **Phase 5**: `narrative/rival-context.ts` liefert je Rivale eine Karte ins
+  Anzeigemodell - Haltung, Kapazitaet, Wohlwollen, Gegenmassnahmen-Fenster
+  (`counteredUntilTick`), naechster Zug, Historie (6) und Indizien (4) - rein
+  aus den Minds, ohne zweiten Zustand und ohne NAR-14-17-Duplikate; `view.ts`
+  bleibt durch den Helper unter 200 Zeilen.
 
 ## NAR-16: Langzeitintegration und Messungen
 

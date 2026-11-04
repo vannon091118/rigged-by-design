@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.108 | 2026-11-04 06:52 UTC -->
+<!-- rbd-doc: v0.3.109 | 2026-11-04 07:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.109] - 2026-11-04
+
+### Spiel
+- Keine sichtbare Aenderung: Die Rivalen-Karten liegen bereit - Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt aus dem Anzeigemodell lesen, ohne dass sich an den Regeln etwas aendert.
+
+### Technik
+- Phase 5: `narrative/rival-context.ts` leitet Rivalen-Karten rein aus Minds, Indizien und `counteredUntilTick` ab; `NarrativeView` traegt sie, `view.ts` bleibt unter 200 Zeilen, Testdateien unter 240. Registry auf 57 Fragmente.
 
 ## [0.3.108] - 2026-11-04
 
