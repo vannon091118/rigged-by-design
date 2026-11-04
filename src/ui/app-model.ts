@@ -10,6 +10,7 @@ export type Popup =
   | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'journal' }
   | { kind: 'narrative' }
+  | { kind: 'dialogue' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }
   | { kind: 'assets' }

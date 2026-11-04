@@ -17,6 +17,7 @@ import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';
 import { JournalPopup } from './ui/journal-popup';
 import { NarrativePopup } from './ui/narrative-popup';
+import { DialoguePopup } from './ui/dialogue-popup';
 import { LookPopup } from './ui/look-popup';
 import { SoundPopup } from './ui/sound-popup';
 import { MachinePopup } from './ui/machine-popup';
@@ -65,7 +66,7 @@ export default function App() {
       setMusicState('MENU');
       return;
     }
-    if (popup?.kind === 'journal' || popup?.kind === 'diagnostics' || popup?.kind === 'guests' || popup?.kind === 'narrative') {
+    if (popup?.kind === 'journal' || popup?.kind === 'diagnostics' || popup?.kind === 'guests' || popup?.kind === 'narrative' || popup?.kind === 'dialogue') {
       setMusicState('BACKGROUND');
       return;
     }
@@ -203,6 +204,9 @@ export default function App() {
           </button>
         )}
 
+        <button type="button" className="narrative-chip dialogue-chip" title="Comic-Dialog oeffnen"
+          onClick={() => { setBuildOpen(false); setPopup({ kind: 'dialogue' }); }}>DIALOG</button>
+
         {view.notice && (
           <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
         )}
@@ -294,6 +298,11 @@ export default function App() {
           onChoose={(eventId, choiceId) => worldStore.chooseNarrative(eventId, choiceId)}
           onDismiss={(eventId) => worldStore.dismissNarrative(eventId)}
         />
+      )}
+
+      {popup?.kind === 'dialogue' && (
+        <DialoguePopup onClose={() => setPopup(null)} onOpenGames={() => setPopup({ kind: 'games' })}
+          onOpenStaff={() => { setPopup(null); setBuildOpen(true); }} onOpenJournal={() => setPopup({ kind: 'journal' })} />
       )}
 
       {popup?.kind === 'diagnostics' && (

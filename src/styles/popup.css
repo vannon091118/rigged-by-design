@@ -560,3 +560,16 @@
 .profile-relations li { display: grid; gap: 2px; }
 .profile-relations b { font-size: 11px; }
 .profile-relations span { color: var(--muted); font-size: 9px; }
+
+.dialogue-chip { bottom: 46px; }
+.dialogue-popup .popup-body { display: grid; gap: 12px; }
+.comic-panel { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: start; }
+.dialogue-avatar { display: grid; place-items: center; width: 64px; height: 64px; border: 2px solid var(--role-identity); border-radius: 50%; background: #140e24; color: #e9d8ff; font-family: var(--mono); font-size: 16px; letter-spacing: .12em; }
+.dialogue-bubble { position: relative; min-height: 64px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 14px; background: #0b0715; padding: 12px 14px; }
+.dialogue-bubble::before { content: ''; position: absolute; left: -7px; top: 24px; width: 12px; height: 12px; border-left: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); background: #0b0715; transform: rotate(45deg); }
+.dialogue-speaker { display: block; color: var(--role-identity); font-family: var(--mono); font-size: 9px; letter-spacing: .18em; }
+.dialogue-run { margin: 6px 0 0; color: var(--text); font-size: 13px; line-height: 1.6; animation: dialogue-run 420ms ease-out both; }
+@keyframes dialogue-run { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .dialogue-run { animation: none; } }
+.dialogue-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.dialogue-links .btn { border-radius: 999px; }
