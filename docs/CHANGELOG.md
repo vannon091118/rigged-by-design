@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.102 | 2026-11-04 05:15 UTC -->
+<!-- rbd-doc: v0.3.103 | 2026-11-04 05:30 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.103] - 2026-11-04
+
+### Spiel
+- Keine sichtbare Aenderung: Dieser Slice sichert nur ab, dass jede Szene einen echten Ausloeser hat - kein neuer Fact, kein neuer Trigger ohne Template.
+
+### Technik
+- C1: `narrative-trigger-template-contract.test.ts` haelt die Spec-Regel als Vertrag fest - jede Trigger-Definition zeigt auf mindestens ein Template, jedes Fact-Template (ausser Demand) auf genau eine Definition, und `NARRATIVE_FACT_KINDS` bleibt bei den elf bekannten Kinds.
+- Geraete-, Lager- und Personal-Facts haben bewusst keine Fact-Kinds und bleiben dokumentiert offen. Content-Beitrag `c1-trigger-template-contract-01`, Registry auf 48 Fragmente.
 
 ## [0.3.102] - 2026-11-04
 

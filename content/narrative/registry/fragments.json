@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b3159d3cf8c8bf4503216489c7c6d7f48171bd2cdb97246b1df4173dbe97aeb9",
+  "contentHash": "sha256:71b5e6c7a31c735acdbc58c31e3ac620e45e0a3a9c1da4e546f63f6eb093a683",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -495,6 +495,29 @@
       "text": "Rita Kern blieb vor dem Buch stehen. Jemand hatte ihren letzten Besuch nicht nur gezaehlt, sondern aufgeschrieben, was er fuer sie bedeutet hatte. Sie wusste noch nicht, ob das Haus sich erinnerte, weil es wollte, oder weil es musste.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json"
+    },
+    {
+      "contributionId": "c1-trigger-template-contract-01",
+      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nur was eine Szene verdient, bekommt einen Trigger: Jede Definition in EVENT_TRIGGER_DEFINITIONS zeigt auf mindestens ein Template, jedes Fact-Template ist an genau eine Definition gebunden. Geraete, Lager und Personal haben bewusst keine Fact-Kinds - sie bleiben dokumentiert offen, statt als stille Trigger ohne Mehrwert zu enden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-c1-trigger-template-contract.json"
     },
     {
       "contributionId": "c2-rival-action-trigger-01",

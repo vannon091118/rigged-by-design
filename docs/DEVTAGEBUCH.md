@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - C1: Trigger nur mit Template
+
+**Ziel.** Die Spec-Regel „nur triggern, wo ein Template mit Mehrwert existiert“ war bisher ein Kommentar ueber `EVENT_TRIGGER_DEFINITIONS`; ein Kommentar wird ueberlesen, ein Test nicht. Gleichzeitig duerfen Geraete, Lager und Personal nicht stillschweigend unter den Tisch fallen - sie bleiben als offene Punkte dokumentiert.
+
+**Umsetzung.** Neuer Vertragstest mit drei Beweisen: jede Definition findet mindestens ein Template mit passender `triggerId`; jedes Fact-Template (Demand-Pfad `ENGINE_DEMAND` ausgenommen) ist an genau eine Definition gebunden; `NARRATIVE_FACT_KINDS` ist exakt die bekannte Elf - keine neuen Fact-Kinds in diesem Slice. Doku in NARRATIVE-ENGINE, ROADMAP und AGENTS nennt Geraete-, Lager- und Personal-Facts ausdruecklich als offen.
+
+**Pruefungen.** `verify:quick` (zehn Gates) vor dem Commit. Compiler-Test auf 48 Fragmente nachgezogen.
+
+**Offen.** Sobald ein Geraete-, Lager- oder Personal-Fact echten Mehrwert traegt, bekommt er zuerst ein Template und erst dann einen Trigger - in genau dieser Reihenfolge.
+
 ## 2026-11-04 - C2: Rivalenaktionen als Trigger-Bedingung
 
 **Ziel.** `PROBE` ist ein Blick von der Seite und soll keine Szene oeffnen; nur Rivalenhandlungen mit Folgen duerfen `RIVAL_MOVE` ausloesen. Die Entscheidung gehoert in den Trigger-Vertrag, nicht in eine stille Annahme des Evaluators.
@@ -974,7 +984,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.102 | 2026-11-04 05:15 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.103 | 2026-11-04 05:30 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
