@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:eb49b0961a187f2e990d852d585b7ade8fb97268318b9d74f129d0cb69509253",
+  "contentHash": "sha256:8fcbe71579d59a1608c47338fe56e563b2354507344957e9b95e82957bb789ed",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -330,6 +330,31 @@
       "text": "Rita hängte die alte Liste neben die neue und strich keine Zeile. Neon-Nacht, Turnierabend: zwei Namen, eine Tür. Statt sie ein zweites Mal zu öffnen, schrieb sie beide in das Buch, das ohnehin jede Veranstaltung führt, und ließ den alten Schlüssel fallen. Wer noch mit einem alten Stand kam, bekam seinen Abend zurück, nicht seine Gewohnheit. Die Nachfrage blieb, wie sie war; nur der Ort, an dem sie gezählt wurde, war jetzt derselbe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-13-demand-events.json"
+    },
+    {
+      "contributionId": "nar-14-narrative-ui-01",
+      "turnId": "2026-11-04T00:55Z-nar-14-narrative-ui",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita sah die Geschichten zum ersten Mal, statt sie nur zu verursachen. Die Szene stand als Karte im Licht: Titel, Text, Frist, und daneben die Wege, die wirklich offen waren. Ein Weg war grau und nannte seinen Grund, statt ihn zu verstecken; ein anderer liess sich schliessen, und die Geschichte verschwand mit ihrer Frist, nicht mit ihrem Gedaechtnis. Neben der Karte standen die Figuren: so oft da, so viel erinnert, so viel zwischen ihnen geschehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-nar-14-narrative-ui.json"
     },
     {
       "contributionId": "neon-abend-01",

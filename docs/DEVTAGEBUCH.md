@@ -38,6 +38,14 @@ Offen: Ruleset ungeprueft (kein `gh`, kein authentifizierter Zugriff). Die Dedup
 
 **Offen.** Offen.
 
+## 2026-11-04 - NAR-14: Narrative UI, Szenen und Profile
+
+**Umsetzung.** `src/core/sim/narrative/view.ts` ist die einzige Stelle, die aus `WorldState`, `Ledger` und dem Composer ein Anzeigemodell baut: Szenen mit Titel, Text, Frist, Teilnehmern und Choices (jede mit `available` und `reasons` aus `checkChoiceSelection`), dazu Profile mit Besuchen, Erinnerungen, gerichteten Beziehungen und laufenden Geschichten. `buildView()` haengt das Ergebnis als `GameView.narrative` an; React liest nur noch. `src/ui/narrative-*` bringt Szenen-Karten und Profilansicht, `App.tsx` oeffnet sie ueber einen Story-Chip auf dem Floor. `dismissNarrativeCmd()` lehnt eine Szene ueber `transitionEvent` ab (`CANCELLED` + Cooldown + Journal-Zeile) – kein zweiter Statuspfad, keine Schema-Aenderung.
+
+**Entscheidung.** Text kommt ausschliesslich aus der Registry; fehlt eine passende Persona, wird einmal ohne Persona-Einschraenkung zusammengesetzt und ein verbleibender Fallback im UI als Sicherheitscopy benannt, statt Text zu erfinden.
+
+**Offen.** `TRIGGER_DIALOG` bleibt bis zur Dialogfuehrung nicht ausfuehrbar; Profilnavigation aus dem Gast-Popup und die Event-Historie im Journal bleiben offen. NAR-15 bis NAR-17 sind nicht begonnen.
+
 ## 2026-11-03 - NAR-13: DemandEvents in der gemeinsamen Engine
 
 **Ziel.** Den zweiten Scheduler in `demand.ts` aufloesen, ohne Ankunftsraten, Gruppengroessen oder Zeitfenster zu veraendern und ohne laufende Veranstaltungen aus v5–v9-Saves zu verlieren.

@@ -11,6 +11,7 @@ import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
 import type { JournalEvent } from '../core/sim/journal';
+import { buildNarrativeView } from '../core/sim/narrative/view';
 import type { GameView, StaffView } from './types';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
@@ -106,6 +107,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
   }
   return {
     ...worldSnapshot(world),
+    // NAR-14: Szenen und Profile werden hier abgeleitet, nie in React nachgerechnet.
+    narrative: buildNarrativeView(world, ledger),
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),
     // Restticks bis die Ansprache wieder frei ist; die UI zaehlt daraus die Sekunden.
     talkReady: Object.fromEntries(world.guests.map((guest) => [guest.id, Math.max(0, (guest.talkReadyTick ?? 0) - world.tick)])),

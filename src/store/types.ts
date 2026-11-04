@@ -6,6 +6,7 @@ import type { PlayerLook } from '../core/sim/player-look';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
+import type { NarrativeView } from '../core/sim/narrative/view-types';
 
 /**
  * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
@@ -59,6 +60,8 @@ export interface GameView {
   readonly disputeGuard: Readonly<Record<number, boolean>>;
   readonly activePenalties: readonly ActivePenalty[];
   readonly journal: readonly JournalEvent[];
+  /** Aktive Szenen und Besucherprofile, bereits ausgewertet (NAR-14). */
+  readonly narrative: NarrativeView;
   /** Dauerhaftes Archiv jenseits des 240er-Puffers, filterbar. */
   readonly archive: readonly JournalEvent[];
   /** Kurzlebige Kampf-Rueckmeldung fuer den Floor. */
