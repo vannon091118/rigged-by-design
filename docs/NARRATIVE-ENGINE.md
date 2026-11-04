@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-04 · Save v10 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-17 erledigt. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-17 erledigt; B1 erledigt. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -356,6 +356,32 @@ Profile umfassen Szenenteilnehmer, Figuren auf dem Floor, Figuren mit Beziehung 
 Erinnerung; das Gast-Popup oeffnet ueber `onProfile(visitorId)` direkt das Profil, und
 der Journal-Tab „Geschichten“ rendert dieselbe Historie. Damit entsteht keine zweite
 Log-Wahrheit neben Journal und Event-Instanzen.
+
+## 14a. Szenen-Kontext (B1)
+
+`narrative/composition-context.ts` ist die einzige Ableitung des Composer-Kontexts.
+Sie liest `WorldState`, `Ledger`, die Event-Instanz und das Template, mutiert nichts und
+liefert `contexts`, `availablePersonas`, `relationship`, `mood` und `requiredFlags`.
+
+- **Kontext:** Der Fact mit `sourceFactId` aus `narrative.recent` gewinnt:
+  `VISITOR_RETURNED` → `return`, `VISIT_ENDED` → `loss` bei `BAD`, sonst `return`,
+  `VISITOR_CONFLICT` → `conflict`, `VISITOR_SERVICE` → `service`,
+  `RIVAL_ACTION`/`RIVAL_ENCOUNTER` → `rival`. Fehlt der Fact (auch bei
+  `sourceFactId: 0`), entscheidet `template.triggerId` und danach `template.eventId`;
+  Demand-Events werden zu `demand`.
+- **Personas:** nur aufgeloeste Visitor-Teilnehmer der Instanz, als Namens-Slugs;
+  fehlende oder doppelte Profile erzeugen keinen Eintrag.
+- **Beziehung und Stimmung:** der konkrete Fact hat Vorrang, danach die gerichtete
+  Kante (bei Paaren zwischen den Besuchern, sonst zum Haus) und zuletzt die letzte
+  Erinnerung des primaeren Visitors. Die Werte bleiben auf dem kontrollierten
+  Vokabular (`vertrauen`, `konflikt`, `distanz`, `neutral`; `neugierig`, `angespannt`,
+  `argwoehnisch`, `entschlossen`, `neutral`).
+- **Flags:** `requiredFlags` sammelt nur `flag-at-least`/`flag-present` aus den
+  Choice-Requirements des konkreten Templates, rekursiv durch `all`, und ist auf zwölf
+  Namen begrenzt. Welt-Flags werden nie pauschal uebergeben.
+
+`view.ts` baut die Anfrage nur noch aus diesem Ergebnis; der Ledger bleibt in der
+Signatur, weil der View ihn fuer Choices haelt, die Textwahl liest aber keine Geldwerte.
 
 ## 15. Nachfrageveranstaltungen (NAR-13)
 

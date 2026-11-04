@@ -3,9 +3,10 @@ import type { Ledger } from '../../economy/ledger';
 import { HAUSKONTO } from '../money';
 import type { ActorRef, Visitor, WorldState } from '../types';
 import { checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
+import { buildCompositionContext } from './composition-context';
 import { composeNarrative, type ComposedNarrative } from './composer';
 import { templateFor } from './events/definitions';
-import type { ContentSlotKind } from './events/template-types';
+import type { ContentSlotKind, EventTemplate } from './events/template-types';
 import { isLiveEventStatus, isTerminalEventStatus } from './event-lifecycle';
 import type { NarrativeEventInstance } from './event-types';
 import type {
@@ -16,9 +17,6 @@ import type {
 const PROFILE_LIMIT = 12;
 /** Die Historie ist ein Rueckblick, kein Archiv: nur die juengsten Abschluesse. */
 const HISTORY_LIMIT = 12;
-
-/** Persona-Refs der Registry sind Namens-Slugs, keine Persona-IDs. */
-const slug = (name: string): string => name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 const visitorIdOf = (ref: ActorRef): number | null => {
   const match = /^visitor:(\d+)$/.exec(ref);
@@ -37,33 +35,28 @@ function slotText(composed: ComposedNarrative, kind: ContentSlotKind): string {
   return composed.slots.find((slot) => slot.kind === kind)?.text ?? '';
 }
 
-/** Teilnehmer einer Instanz, aufgeloest gegen die vorhandenen Besucherprofile. */
-function participantsOf(world: WorldState, event: NarrativeEventInstance): Visitor[] {
-  return event.participants
-    .map(visitorIdOf)
-    .map((visitorId) => world.visitors.find((visitor) => visitor.id === visitorId))
-    .filter((visitor): visitor is Visitor => visitor !== undefined);
-}
-
 /**
- * Text kommt ausschliesslich aus der Registry. Reicht die Teilnehmer-Persona
- * nicht fuer ein Fragment, wird einmal ohne diese Einschraenkung zusammengesetzt;
- * bleibt es Fallback, sagt das Modell es (`fallbackText`) statt Text zu erfinden.
+ * Text kommt ausschliesslich aus der Registry. Der Kontext wird vollstaendig
+ * vom reinen Helper geliefert; reicht die Persona nicht, wird einmal ohne sie
+ * zusammengesetzt. Bleibt es Fallback, sagt das Modell es statt Text zu erfinden.
  */
 function composeEvent(
-  template: NonNullable<ReturnType<typeof templateFor>>,
-  participants: readonly Visitor[],
+  world: WorldState,
+  ledger: Ledger,
+  event: NarrativeEventInstance,
+  template: EventTemplate,
 ): ComposedNarrative {
-  const request = { locale: 'de', slots: template.contentSlots, availablePersonas: participants.map((visitor) => slug(visitor.name)) };
+  const context = buildCompositionContext(world, ledger, event, template);
+  const request = { locale: 'de', slots: template.contentSlots, ...context };
   const composed = composeNarrative(request);
-  if (!composed.degraded || request.availablePersonas.length === 0) return composed;
+  if (!composed.degraded || context.availablePersonas.length === 0) return composed;
   return composeNarrative({ ...request, availablePersonas: [] });
 }
 
 function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInstance): NarrativeEventView | null {
   const template = templateFor(event.eventId, event.templateVersion);
   if (!template) return null;
-  const composed = composeEvent(template, participantsOf(world, event));
+  const composed = composeEvent(world, ledger, event, template);
   const context = {
     tick: world.tick,
     flags: world.narrative.flags,
@@ -145,10 +138,10 @@ function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): N
 }
 
 /** Ein abgeschlossener Rueckblick: nur Titel, Ausgang und Teilnehmer, keine Choices. */
-function historyEntry(world: WorldState, event: NarrativeEventInstance): NarrativeHistoryView | null {
+function historyEntry(world: WorldState, ledger: Ledger, event: NarrativeEventInstance): NarrativeHistoryView | null {
   const template = templateFor(event.eventId, event.templateVersion);
   if (!template) return null;
-  const composed = composeEvent(template, participantsOf(world, event));
+  const composed = composeEvent(world, ledger, event, template);
   return {
     id: event.id,
     eventId: event.eventId,
@@ -173,7 +166,7 @@ export function buildNarrativeView(world: WorldState, ledger: Ledger): Narrative
     .filter((event) => isTerminalEventStatus(event.status))
     .sort((left, right) => right.updatedTick - left.updatedTick || right.id - left.id)
     .slice(0, HISTORY_LIMIT)
-    .map((event) => historyEntry(world, event))
+    .map((event) => historyEntry(world, ledger, event))
     .filter((entry): entry is NarrativeHistoryView => entry !== null);
   return { events, history, profiles: profiles(world, live) };
 }

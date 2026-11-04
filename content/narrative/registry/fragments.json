@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f7b696735f5095c06387209db00f0f749e48611c62c3f0deee08f62af485d67e",
+  "contentHash": "sha256:351e5cd6bc710c2dc0aae73cd077f60eb30984400780e64e24f73ca0c689d43f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -27,6 +27,33 @@
       "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
+    },
+    {
+      "contributionId": "b1-kontext-helper-01",
+      "turnId": "2026-11-04T03:35Z-b1-kontext-helper",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern",
+        "rueckkehrer"
+      ],
+      "text": "Rita sah die Szene nicht mehr aus allen Zahlen des Hauses zusammengesetzt, sondern aus dem einen Fact, der sie ausgeloest hatte: Rueckkehr, Streit, Service oder Rivale. Die Persona kam aus den Besuchern, die wirklich am Tisch standen; Beziehung und Stimmung aus dem Fact, der Erinnerung und der gerichteten Kante. Was das Template nicht verlangte, blieb draussen - kein Welt-Flag wurde zur Pflicht. Die Wahl des Textes und die Wahl der Szene blieben getrennt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b1-kontext-helper.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",
