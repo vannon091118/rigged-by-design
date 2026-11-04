@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.99 | 2026-11-04 04:06 UTC -->
+<!-- rbd-doc: v0.3.100 | 2026-11-04 04:39 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.100] - 2026-11-04
+
+### Spiel
+- Fehlt einer Szene ein Text, nennt sie jetzt die betroffenen Stellen (Titel, Begruessung, Ausgang) beim Namen, statt pauschal von "Sicherheitscopy" zu sprechen.
+
+### Technik
+- B3: `ComposedNarrative.degraded` folgt `fallbacks.length > 0`; `issues` traegt `Fallback fuer Slots: ...` mit den betroffenen IDs. `NarrativeEventView.fallbackText` weicht `fallbackSlots`; die UI listet die Slots ueber `SLOT_LABEL` oder ihre kanonische ID.
+- `view.ts` setzt nur noch dann ohne Persona-Einschraenkung neu zusammen, wenn alle Slots Fallback sind; ein Teil-Ergebnis mit gutem Body bleibt stehen.
+- Tests decken Teil- und Voll-Fallback, den fallback-freien Fall, die View-Liste und den UI-Hinweis ab. Content-Beitrag `b3-fallback-slots-01`, Registry auf 30 Fragmente (sha256:8bde0ad5...).
 
 ## [0.3.99] - 2026-11-04
 

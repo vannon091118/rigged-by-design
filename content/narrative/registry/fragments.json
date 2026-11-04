@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c18d9ccb9b5ba6e33390a1238bdb4a316c7040c299c3de3606194921b99c5f26",
+  "contentHash": "sha256:8bde0ad5a03fd55a6998c0bf2586f0a00298b066b58de82bef6240fc7987b89e",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -80,6 +80,32 @@
       "text": "Rita beschriftete die Karten nicht nach dem, was sie zeigten, sondern nach dem, wofuer sie dalagen. Willkommen hiess Willkommen, nicht Rueckkehr; ein Ausgang trug die Nachwirkung, nicht die Entscheidung. Der Text durfte weiter viele sein, aber keiner ohne den Zweck, den der Slot verlangte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-b2-slot-zwecke.json"
+    },
+    {
+      "contributionId": "b3-fallback-slots-01",
+      "turnId": "2026-11-04T05:20Z-b3-fallbacks",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess keine Luecke mehr unter dem Wort Sicherheitscopy verschwinden. Jede Karte nannte den Slot, der keinen Text gefunden hatte: den Titel, die Begruessung, den Ausgang. Ein fehlender Satz war kein Zustand des ganzen Abends mehr, sondern eine Stelle, die man nachtragen konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b3-fallback-slots.json"
     },
     {
       "contributionId": "boundary-und-beziehungen-01",
