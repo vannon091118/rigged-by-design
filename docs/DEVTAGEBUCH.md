@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Test: Vollstaendige Narrative-Fixture
+
+**Ziel.** Der bestehende Governance-Test soll nicht nur die Inbox, sondern eine vollstaendige Narrative-Fixture pruefen: `content/narrative/**` plus die generierten Bruecken `registry.generated.ts` und `slot-map.generated.ts`. Dabei muessen unregistrierte Beitraege, Schemafehler trotz Manifest und unerlaubte Eintraege fail-closed scheitern, waehrend der korrekt registrierte Bestand inklusive aller drei Render-Ausgaben besteht.
+
+**Umsetzung.** `src/core/governance/__tests__/narrative-content.test.ts` baut die Fixture unter `os.tmpdir()`: `content/narrative` wird rekursiv kopiert, `fragments.json` mit `renderRegistry`, die Runtime-Registry mit `renderRuntimeRegistry` und die Slot-Bruecke mit `renderSlotMap` geschrieben. Der PASS-Fall ruft `loadNarrativeContent()` und vergleicht Beitrags-, Turn- und Registry-Zahl sowie den Content-Hash mit dem echten Bestand. Der FEHLER-Fall legt nacheinander eine unregistrierte `2026-11-01-unregistriert.json`, eine registrierte Datei ohne `text`, dann `notizen.txt`, `notizen.md`, `draft.tmp`, `backup.bak`, `.versteckt.json` und einen Unterordner an; jede Variante wird frisch geladen und auf ihre spezifische Meldung geprueft. Ein `try/finally` mit `rmSync(..., { recursive: true, force: true })` raeumt jedes Fixture auf. Kein zweites Testfile; die Datei bleibt mit 224 Zeilen unter dem 240-Zeilen-Cap.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/narrative-content.test.ts --config src/Config/vite.config.ts`: 12/12 gruen in 267 ms. Danach `verify:quick` im selben Turn.
+
+**Offen.** Der Test deckt die Inbox- und Render-Bruecken ab, aber noch nicht die allgemeine Hook-Reihenfolge (A1). Symlinks werden nur geprueft, wenn die Plattform sie erlaubt; auf Windows ohne Symlink-Recht bleiben Unterordner, `.txt` und versteckte Datei als Nachweis.
+
 ## 2026-11-04 - A3: Narrative-Validator im Pre-Commit-Hook
 
 **Ziel.** A3: Der Narrative-Validator muss vor dem `node_modules`-Fruehausstieg laufen, und der Hook darf nie einen anderen Inhalt pruefen als den Commit.
@@ -884,7 +894,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.93 | 2026-11-04 02:43 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.94 | 2026-11-04 03:00 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -11,7 +11,13 @@ import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } fr
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { buildCompiledRegistry, canonical } from '../../../../scripts/lib/narrative-compiler.mjs';
+import {
+  buildCompiledRegistry,
+  canonical,
+  renderRegistry,
+  renderRuntimeRegistry,
+  renderSlotMap,
+} from '../../../../scripts/lib/narrative-compiler.mjs';
 import {
   loadNarrativeContent,
   loadNarrativeSources,
@@ -25,6 +31,17 @@ const first = report.contributions[0];
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const messages = (issues) => issues.map((entry) => entry.message).join(' | ');
 const schema = (data, path = first.path) => validateContribution(data, report.vocabulary, path);
+const fixture = () => {
+  const root = mkdtempSync(join(tmpdir(), 'rbd-narrative-fixture-'));
+  cpSync(join(ROOT, 'content/narrative'), join(root, 'content/narrative'), { recursive: true });
+  const document = buildCompiledRegistry(report.contributions, report.vocabulary).document;
+  const generated = join(root, 'src/core/sim/narrative/composer');
+  mkdirSync(generated, { recursive: true });
+  writeFileSync(join(root, 'content/narrative/registry/fragments.json'), renderRegistry(document));
+  writeFileSync(join(generated, 'registry.generated.ts'), renderRuntimeRegistry(document));
+  writeFileSync(join(generated, 'slot-map.generated.ts'), renderSlotMap(report.vocabulary));
+  return root;
+};
 
 describe('Narrative Content Registry (NAR-09)', () => {
   it('akzeptiert Inbox, Manifest und Registry als konsistenten Bestand', () => {
@@ -35,16 +52,44 @@ describe('Narrative Content Registry (NAR-09)', () => {
     expect(report.contributionCount).toBeGreaterThan(0);
   });
 
-  it('meldet unerlaubte Eintraege in contributions statt sie zu ignorieren', () => {
-    const root = mkdtempSync(join(tmpdir(), 'rbd-narrative-entry-'));
+  it('akzeptiert eine vollstaendige Temp-Fixture mit generierten Bruecken', () => {
+    const root = fixture();
     try {
-      cpSync(join(ROOT, 'content/narrative'), join(root, 'content/narrative'), { recursive: true });
-      const inbox = join(root, 'content/narrative/contributions');
-      writeFileSync(join(inbox, 'notes.md'), '#');
+      const result = loadNarrativeContent(root);
+      expect(result.ok).toBe(true);
+      expect(result.issues).toEqual([]);
+      expect(result.contributionCount).toBe(report.contributionCount);
+      expect(result.turnCount).toBe(report.turnCount);
+      expect(result.registryCount).toBe(report.registryCount);
+      expect(result.contentHash).toBe(report.contentHash);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('weist unregistrierte, schemafehlerhafte und unerlaubte Eintraege zurueck', () => {
+    const root = fixture();
+    const inbox = join(root, 'content/narrative/contributions');
+    try {
+      const unregistered = clone(first.data);
+      unregistered.turnId = '2026-11-01T00:00Z-unregistriert';
+      unregistered.contributionId = 'unregistriert';
+      writeFileSync(join(inbox, '2026-11-01-unregistriert.json'), JSON.stringify(unregistered));
+      expect(messages(loadNarrativeSources(root).issues)).toContain('nicht im Turn-Manifest registriert');
+      rmSync(join(inbox, '2026-11-01-unregistriert.json'));
+
+      const invalid = clone(first.data);
+      delete invalid.text;
+      writeFileSync(join(root, first.path), JSON.stringify(invalid));
+      expect(messages(loadNarrativeSources(root).issues))
+        .toContain('text fehlt oder ist kein nicht-leerer String');
+      writeFileSync(join(root, first.path), JSON.stringify(first.data));
+
+      writeFileSync(join(inbox, 'notizen.txt'), '');
+      writeFileSync(join(inbox, 'notizen.md'), '');
       writeFileSync(join(inbox, 'draft.tmp'), '');
       writeFileSync(join(inbox, 'backup.bak'), '');
-      writeFileSync(join(inbox, '.hidden.json'), '{}');
-      writeFileSync(join(inbox, 'falsch.json'), '{}');
+      writeFileSync(join(inbox, '.versteckt.json'), '{}');
       mkdirSync(join(inbox, 'unterordner'));
       let linked = false;
       try {
@@ -53,7 +98,6 @@ describe('Narrative Content Registry (NAR-09)', () => {
       } catch {
         // Windows ohne Symlink-Recht: die uebrigen Eintraege decken den Pfad weiter ab.
       }
-
       const result = loadNarrativeSources(root);
       const text = messages(result.issues);
       expect(text).toContain('Nicht erlaubter Eintrag (Unterordner)');

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.93 | 2026-11-04 02:43 UTC -->
+<!-- rbd-doc: v0.3.94 | 2026-11-04 03:00 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.94] - 2026-11-04
+
+### Technik
+- Governance-Test fuer NAR-09: Eine temporaere Fixture kopiert `content/narrative/**` und schreibt `registry.generated.ts`, `slot-map.generated.ts` sowie `fragments.json` ueber `renderRegistry`/`renderRuntimeRegistry`/`renderSlotMap`. Der gruene Pfad prueft alle Zaehler und den Content-Hash; derselbe Test belegt, dass eine unregistrierte JSON-Datei, ein fehlendes Pflichtfeld trotz Manifest sowie Unterordner, Behelfsdateien (`.txt`, `.md`, `.tmp`, `.bak`) und versteckte Dateien fail-closed mit `ERR-4022` scheitern. Weiterhin eine Testdatei, 224 Zeilen.
 
 ## [0.3.93] - 2026-11-04
 
