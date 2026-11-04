@@ -29,6 +29,8 @@ export function commandsForChoice(choice: EventChoice): NarrativeCommand[] {
         return { id: 'FREEZE_TICK', ticks: effect.ticks };
       case 'TRIGGER_DIALOG':
         return { id: 'TRIGGER_DIALOG', dialogId: effect.dialogId };
+      case 'COUNTER_RIVAL':
+        return { id: 'COUNTER_RIVAL', rival: effect.rival };
     }
   });
 }

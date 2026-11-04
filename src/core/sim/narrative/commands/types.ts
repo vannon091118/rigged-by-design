@@ -12,8 +12,9 @@ export const COMMAND_LIMITS = {
   flagAbsolute: 1_000_000,
 } as const;
 
-export type CommandId = 'SET_FLAG' | 'ADJUST_RELATIONSHIP' | 'FREEZE_TICK' | 'TRIGGER_DIALOG';
-export type CommandFamily = 'STORY' | 'RELATIONSHIP' | 'EVENT' | 'DIALOG';
+export type CommandId =
+  | 'SET_FLAG' | 'ADJUST_RELATIONSHIP' | 'FREEZE_TICK' | 'TRIGGER_DIALOG' | 'COUNTER_RIVAL';
+export type CommandFamily = 'STORY' | 'RELATIONSHIP' | 'EVENT' | 'DIALOG' | 'RIVAL';
 
 /** Die Registry ist die Allowlist; unbekannte IDs kommen hier nie an. */
 export type CommandRejectReason =
@@ -59,7 +60,8 @@ export type NarrativeCommand =
     readonly delta: number;
   }
   | { readonly id: 'FREEZE_TICK'; readonly ticks: number }
-  | { readonly id: 'TRIGGER_DIALOG'; readonly dialogId: string };
+  | { readonly id: 'TRIGGER_DIALOG'; readonly dialogId: string }
+  | { readonly id: 'COUNTER_RIVAL'; readonly rival: ChoiceActor };
 
 export interface CommandRejection {
   readonly commandId: string;

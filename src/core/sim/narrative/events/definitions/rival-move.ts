@@ -31,6 +31,7 @@ export const RIVAL_MOVE_TEMPLATE: EventTemplate = {
           delta: 2,
         },
         { kind: 'SET_FLAG', flag: 'rival_confrontations', delta: 1 },
+        { kind: 'COUNTER_RIVAL', rival: { participant: 0 } },
       ],
       outcomeId: 'CONFRONTED',
       followUpEventId: null,

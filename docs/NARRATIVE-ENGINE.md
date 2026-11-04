@@ -302,7 +302,7 @@ nicht ausgefuehrt.
 AST aus Command-ID, positionalen und benannten Argumenten. Laenge, Anzahl, Quotes,
 doppelte Schluessel und unbekannte Formen werden fail-closed verworfen; Text wird nie
 als Code interpretiert. `registry.ts` ist die Allowlist der Command-IDs und Parameter:
-`SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK` und `TRIGGER_DIALOG`. Jede Spec traegt
+`SET_FLAG`, `ADJUST_RELATIONSHIP`, `FREEZE_TICK`, `TRIGGER_DIALOG` und `COUNTER_RIVAL`. Jede Spec traegt
 Familie, Handler-Vertrag und ein `executable`-Flag. `TRIGGER_DIALOG` ist parsebar, aber
 bis zur UI-Anbindung nicht ausfuehrbar.
 
@@ -310,10 +310,14 @@ bis zur UI-Anbindung nicht ausfuehrbar.
 vollstaendig verworfen, sobald eine Direktive scheitert oder nicht in der uebergebenen
 Template-/Choice-Allowlist steht. `commandsForChoice()` uebersetzt die deklarierten
 Choice-Effekte in dieselbe typisierte Form. `preflight.ts` prueft zusaetzlich Event-
-Lifecycle, Frist, Requirements, Kosten, persistierten Choice-Satz und alle Zielakteure.
+Lifecycle, Frist, Requirements, Kosten, persistierten Choice-Satz und alle Zielakteure;
+`COUNTER_RIVAL` verlangt einen existierenden `rival:`-Ref, unbekannte Rivalen werden
+als `INVALID_TARGET` abgewiesen.
 `execute.ts` ist der einzige Schreibpfad: Es aktiviert ein `OFFERED`-Event, bucht
 VaCoin-Kosten ueber das bestehende Ledger gegen `EXTERNAL_WORLD`, wendet die Handler an
-und setzt `RESOLVED` mit der `outcomeId`. Ein zweiter Klick scheitert am Status und
+und setzt `RESOLVED` mit der `outcomeId`. `COUNTER_RIVAL` setzt als einziger
+Domaenen-Schreibpfad `counteredUntilTick = max(alt, tick + 900)`; die Politik
+liefert fuer diesen Rivalen bis dahin null. Ein zweiter Klick scheitert am Status und
 veraendert weder Flags noch Beziehungen noch Ledger. Abgelehnte Direktiven oder Choices
 erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
 

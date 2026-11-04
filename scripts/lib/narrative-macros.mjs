@@ -25,6 +25,7 @@ const ALIASES = Object.freeze({
   TRIGGERDIALOG: 'TRIGGER_DIALOG',
   SETFLAG: 'SET_FLAG',
   ADJUSTRELATIONSHIP: 'ADJUST_RELATIONSHIP',
+  COUNTERRIVAL: 'COUNTER_RIVAL',
 });
 
 const COMMAND_SPECS = Object.freeze({
@@ -32,6 +33,7 @@ const COMMAND_SPECS = Object.freeze({
   ADJUST_RELATIONSHIP: Object.freeze({ family: 'RELATIONSHIP', executable: true, singleton: false }),
   FREEZE_TICK: Object.freeze({ family: 'EVENT', executable: true, singleton: true }),
   TRIGGER_DIALOG: Object.freeze({ family: 'DIALOG', executable: false, singleton: true }),
+  COUNTER_RIVAL: Object.freeze({ family: 'RIVAL', executable: true, singleton: false }),
 });
 
 /** Allowlist metadata used by the compiler and by the drift test. */
@@ -190,6 +192,16 @@ function compileFreeze(directive) {
   return { ok: true, command: { id: 'FREEZE_TICK', ticks, raw: directive.raw } };
 }
 
+function compileCounter(directive) {
+  const args = argumentsAllowed(directive, ['rival'], 1);
+  if (args) return args;
+  const rival = valueOf(directive, 'rival', 0);
+  if (typeof rival !== 'string' || !ACTOR.test(rival) || !rival.startsWith('rival:')) {
+    return fail('INVALID_TARGET', 'COUNTER_RIVAL braucht einen stabilen Rivalen-Ref', directive.raw);
+  }
+  return { ok: true, command: { id: 'COUNTER_RIVAL', rival, raw: directive.raw } };
+}
+
 function compileDialog(directive) {
   const args = argumentsAllowed(directive, ['dialogId'], 1);
   if (args) return args;
@@ -215,6 +227,7 @@ export function compileMacro(raw, { flags = null } = {}) {
     case 'ADJUST_RELATIONSHIP': return compileRelationship(parsed.directive);
     case 'FREEZE_TICK': return compileFreeze(parsed.directive);
     case 'TRIGGER_DIALOG': return compileDialog(parsed.directive);
+    case 'COUNTER_RIVAL': return compileCounter(parsed.directive);
     default: return fail('UNKNOWN_COMMAND', `Unbekannter Command: ${commandId}`, parsed.directive.raw);
   }
 }

@@ -62,7 +62,8 @@ export type ChoiceEffect =
     readonly delta: number;
   }
   | { readonly kind: 'FREEZE_TICK'; readonly ticks: number }
-  | { readonly kind: 'TRIGGER_DIALOG'; readonly dialogId: string };
+  | { readonly kind: 'TRIGGER_DIALOG'; readonly dialogId: string }
+  | { readonly kind: 'COUNTER_RIVAL'; readonly rival: ChoiceActor };
 
 export interface EventChoice {
   readonly choiceId: string;
