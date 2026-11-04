@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ff8c001d163ca540a34a0ce6ca37a72b8e5fd45b8726b004c37846f97aa7a62e",
+  "contentHash": "sha256:7ee315e9a80fedc5dc00596d5664b94b4f1a7619ca2673efee41404a2bc794c7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -751,6 +751,29 @@
       "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "e2-visitor-disposition-01",
+      "turnId": "2026-11-04T06:35Z-e2-visitor-disposition",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man merkt es den Gaesten an, wo sie stehen: Wer gute Abende mit dem Haus verbindet, bestellt eher einen Drink, setzt sich eher dazu und waehlt mutiger. Wer einen schlechten Abend mit sich traegt, haelt Abstand und spielt verhaltener. Niemand wird bevorzugt oder bestraft - Geld, Platz und kaputte Geraete gelten fuer alle gleich; nur die Neigung verschiebt sich, messbar und begrenzt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-e2-visitor-disposition.json"
     },
     {
       "contributionId": "event-scheduler-01",

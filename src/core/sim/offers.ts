@@ -1,6 +1,7 @@
 /** Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. */
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { GAME_FOOTPRINT } from './grid-zones';
+import { dispositionOfGuest } from './narrative/disposition';
 import { getPersona } from './personas';
 import type { Furniture, GameId, Guest, ModId, WorldState } from './types';
 
@@ -160,7 +161,9 @@ export function offerScore(world: WorldState, guest: Guest, item: Furniture, wal
   const taste = persona.taste[item.gameId] ?? 0;
   const priceFriction = bet > wallet * 0.25 ? (bet / Math.max(1, wallet)) * 900 : 0;
   const moodFactor = 0.55 + guest.mood / 140;
-  return Math.max(1, Math.round((420 + item.quality * 160 + effects.attraction + taste + reelPull(item)) * moodFactor - priceFriction));
+  // E2E-Disposition: begrenzter Faktor ±20 %, ganzzahlig gerundet, nie null oder negativ.
+  const gameFactor = 1 + dispositionOfGuest(world, guest).gameBias;
+  return Math.max(1, Math.round((420 + item.quality * 160 + effects.attraction + taste + reelPull(item)) * moodFactor * gameFactor - priceFriction));
 }
 
 export function attractionValue(item: Furniture): number {
