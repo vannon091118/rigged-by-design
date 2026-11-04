@@ -31,6 +31,10 @@ export interface ComposeRequest {
   readonly locale: string;
   readonly slots: readonly ContentSlot[];
   readonly contexts?: readonly string[];
+  /** Harte Anforderung fuer jeden Slot; `contexts` bewertet nur Treffer. */
+  readonly requiredContexts?: readonly string[];
+  /** Nur fuer den stabilen Gleichstand unter gleich guten Fragmenten. */
+  readonly eventInstanceId?: number;
   readonly requiredFlags?: readonly string[];
   readonly availablePersonas?: readonly string[];
   readonly tone?: string;

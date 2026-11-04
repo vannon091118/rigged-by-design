@@ -9,12 +9,12 @@ export const RIVAL_MOVE_TEMPLATE: EventTemplate = {
   scope: 'RIVAL',
   participantRoles: ['rival'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY' },
-    { id: 'CHOICE_CONFRONT', kind: 'CHOICE_LABEL' },
-    { id: 'CHOICE_WATCH', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_CONFRONTED', kind: 'OUTCOME' },
-    { id: 'OUTCOME_WATCHED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['rival'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['rival'] },
+    { id: 'CHOICE_CONFRONT', kind: 'CHOICE_LABEL', requiredContexts: ['rival', 'confront'] },
+    { id: 'CHOICE_WATCH', kind: 'CHOICE_LABEL', requiredContexts: ['rival', 'watch'] },
+    { id: 'OUTCOME_CONFRONTED', kind: 'OUTCOME', requiredContexts: ['rival', 'aftermath'] },
+    { id: 'OUTCOME_WATCHED', kind: 'OUTCOME', requiredContexts: ['rival', 'aftermath'] },
   ],
   choices: [
     {

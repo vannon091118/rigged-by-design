@@ -47,7 +47,9 @@ function composeEvent(
   template: EventTemplate,
 ): ComposedNarrative {
   const context = buildCompositionContext(world, ledger, event, template);
-  const request = { locale: 'de', slots: template.contentSlots, ...context };
+  const request = {
+    locale: 'de', slots: template.contentSlots, eventInstanceId: event.id, ...context,
+  };
   const composed = composeNarrative(request);
   if (!composed.degraded || context.availablePersonas.length === 0) return composed;
   return composeNarrative({ ...request, availablePersonas: [] });
