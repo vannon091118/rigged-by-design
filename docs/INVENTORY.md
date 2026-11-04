@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
+<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -21,9 +21,9 @@
 
 | Feld | Wert |
 | --- | --- |
-| Projekt | „Rigged by Design" — Casino-Aufbauspiel-Simulation (Satire, kein Echtgeld) |
+| Projekt | „Rigged by Design" — Lebenssimulation; das Casino ist Start- und Testumgebung, nicht das Genre (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.71 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
+| Version | 0.3.98 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -274,10 +274,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1185 |
-| Gelistete Dateien | 1185 |
+| Getrackte Dateien | 1186 |
+| Gelistete Dateien | 1186 |
 | Getrackte Ordner | 83 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (31), docs (60), public (552), scripts (60), src (461) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (32), docs (60), public (552), scripts (60), src (461) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -288,7 +288,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 1 Datei(en)
 - `.github/workflows/` — 8 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 27 Datei(en)
+- `content/narrative/contributions/` — 28 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -386,7 +386,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 128 Zeilen
-- `README.md` — Rigged by Design — gelesen: 289 Zeilen
+- `README.md` — Rigged by Design — gelesen: 332 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 17 Zeilen
@@ -411,35 +411,36 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-03-nar-13-demand-events.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-04-b1-kontext-helper.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-04-journal-und-profilweg.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-04-lebenssim-vision.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-04-nar-14-narrative-ui.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-04-nar-15-autonome-rivalen.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-04-nar-16-langzeitintegration.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 694 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 113 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 720 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 117 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 90 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 255 Zeilen
-- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 264 Zeilen
+- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 60 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 345 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 355 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 942 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 952 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
 - `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 18 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 482 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 498 Zeilen
 - `docs/NARRATIVE-ENTSCHEIDUNGEN.md` — Narrative-Entscheidungen — gelesen: 211 Zeilen
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
-- `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 64 Zeilen
+- `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 133 Zeilen
 - `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 47 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 163 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 63 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 164 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1306,7 +1307,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 97 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 101 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 32 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 33 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 70 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 57 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -1565,6 +1566,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T56 | **2026-11-04 03:51 UTC**: Vision: Lebenssimulation statt Casino-Manager. `docs/PRODUCT.md` neu (Titel-Wortspiel, Casino als Testumgebung, bildhafter Pfad, Engine-Kern, MVP-/Optik-/Stadt-Grenze, NAR-Social-Plugin, Ledger-Ressourcen); README, ROADMAP, ARCHITECTURE, AGENTS, NARRATIVE-ENGINE (Abschnitt 18), ART-DIRECTION, INVENTORY und Asset-Pack eingeordnet; Save-Stand v10 korrigiert; Content-Beitrag und Registry auf 28 Fragmente. |
 | T55 | **2026-11-04 03:35 UTC**: B1: Kontext-Helper fuer Szenen. |
 | T54 | **2026-11-04 03:21 UTC**: A3: Narrative-JSON in test:affected. |
 | T53 | **2026-11-04 03:12 UTC**: A1: Inventur und Validatoren vor dem Fruehausstieg. |

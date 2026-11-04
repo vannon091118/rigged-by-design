@@ -1,10 +1,19 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
+<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
 
 ## README als Einstieg
 
 `README.md` ist die erzählerische Bühne und der Entwickler-Einstieg, nicht die Regelquelle. Spielmechaniken werden dort als gegenwärtiger Projektstand beschrieben; für verbindliche Details gelten Core-Code, Tests und die passenden Architekturverträge. Screenshots liegen unter `docs/screenshots/` und zeigen jeweils den belegten Stand. Roadmap-Punkte werden als Vorhaben formuliert, nicht als festgelegtes Enddesign.
+
+## Produktgrenze: ort-agnostischer Kern
+
+`docs/PRODUCT.md` beschreibt das Produkt als Lebenssimulation. Das Casino ist darin der Startpunkt und die Testumgebung, nicht das Genre. Fuer den Code heisst das:
+
+- `src/core/` kennt keine Casino-Sonderwahrheit. Welt, Ledger, Facts, Erinnerungen, gerichtete Beziehungen, Trigger und Event-Instanzen sind ortsunabhaengig; sie beschreiben Figuren, Geld und Folgen, nicht einen Saal.
+- Was heute casino-spezifisch ist (Spiele, Geraete, Kasse, Floor, Personal), bleibt ein Vertical Slice auf diesem Kern. Es ist Systembeweis und Detailvorgabe, kein Endziel.
+- Ein neuer Ort (Kneipe, Laden, Wohnung) liefert Inhalte, Figuren und eine duenne Anbindung an `world-store` und `GameView`. Er bringt keine zweite Engine und keinen zweiten Zustand mit.
+- Neue Ressourcen kommen als Ledger-Buchungen dazu: eine Ressource, eine Zeile, eine Ursache. Neue soziale Fakten laufen ueber das geplante Social-Plugin der Narrative Engine, nicht ueber eine zweite Log-Wahrheit.
 
 ## CI-Eskalation
 

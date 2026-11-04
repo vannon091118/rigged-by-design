@@ -480,3 +480,19 @@ unbekannte Slots oder Funktionen, doppelte IDs, fehlende Manifest-Eintraege,
 kaputte Makros und eine vom Compiler abweichende Registry. Texte sind Darstellung:
 kein Makro ersetzt eine Spielregel, und im Spiel gibt es keine LLM- oder
 Provider-Anbindung.
+
+## 18. Social-Plugin (Zielbild)
+
+Heute traegt die Engine Beziehungen zwischen Besuchern, Haus und Rivalen. Das
+Zielbild ist eine **Social-Komponente als Plugin**: dieselben Facts, Erinnerungen
+und gerichteten Kanten zwischen Figuren, die weder Gast noch Haus sind –
+Nachbarn, Kollegen, Freunde, Familienmitglieder. Das Plugin ergaenzt Aktuere und
+Fact-Quellen, nicht die Mechanik: `Visitor` bleibt die persistente Identitaet,
+`relationships` bleibt die einzige Kantenwahrheit, der Boundary bleibt der einzige
+Drain, und der Composer liest weiter nur Kontext, Persona, Beziehung und Stimmung.
+Ein neuer Ort liefert Fakten und Templates; er bringt keine zweite
+Erzaehlmaschine mit. Der Ledger wird parallel um **Ressourcen nach Bedarf**
+erweitert (Zeit, Ruf, Vorraete, Aufmerksamkeit); jede bleibt eine gebuchte Zeile,
+keine zweite Zahlenwahrheit. Das passt zur Produktgrenze in
+`docs/PRODUCT.md`: Das Casino ist Startpunkt und Testumgebung, die Stadt ist das
+Ziel.

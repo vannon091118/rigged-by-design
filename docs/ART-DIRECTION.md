@@ -4,6 +4,10 @@
 >
 > Dieses Dokument beschreibt eine Haltung, keine Vorlage. Es sagt, warum etwas leuchtet, und überlässt das
 > Wie dem, der es zeichnet.
+>
+> **Status: vorläufig.** Die heutige Low-End-Pixel-Optik ist ein plattformfreundlicher Machbarkeitsbeweis
+> und deutlich von der Vision entfernt. Sie ist nicht die endgültige Bildsprache; die Regeln unten gelten
+> für den heutigen Stand und werden mit der Stadt neu verhandelt.
 
 ## Das Manifest
 

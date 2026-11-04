@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
+<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -17,7 +17,7 @@ ueber rtk: `rtk ls`, `rtk find`, `rtk read`, `rtk rg`, `rtk git`, `rtk pnpm`.
 Kein `ls`/`cat`/`grep`/`find` am Proxy vorbei, kein Wegwerf-Skript.
 <!-- /rtk-instructions -->
 
-Vite + React 19 + TypeScript + PixiJS 8 casino sim. No real money; VaCoins are integer micro-units (1 VC = 10.000). Simulation is headless in `src/core/`; `world-store` owns world, ledger, PRNG, clock, save.
+Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start and test venue, not the genre (`docs/PRODUCT.md`); the core stays venue-agnostic so other places (pub, shop, flat, city) reuse world, ledger, facts and events. No real money; VaCoins are integer micro-units (1 VC = 10.000). Simulation is headless in `src/core/`; `world-store` owns world, ledger, PRNG, clock, save.
 
 ## Dev environment
 
