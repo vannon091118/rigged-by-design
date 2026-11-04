@@ -7,13 +7,17 @@ Der Eigentuemer hat sie am 2026-11-04 entschieden. Dieses Dokument ist die
 Referenz fuer die Umsetzung; es beschreibt **keinen bereits umgesetzten Code**.
 Bis zur Umsetzung bleiben `AGENTS.md`, Schema und Code unveraendert.
 
+**Korrektur vom 2026-11-04.** Die erste Fassung begrenzte E2 auf `offerScore()`
+und schloss Service-/Sozialschwellen aus. Der Eigentuemer hat mit „E2E
+vollstaendig“ korrigiert; D4 und D5 unten sind die gueltige Fassung.
+
 | Nr. | Frage | Entscheidung |
 | --- | --- | --- |
 | D1 | Content-Batch pro Turn | Ja, mehrere Contributions pro Turn |
 | D2 | Neue Kontexte | Ja, sieben Kontexte ergaenzen |
 | D3 | `COUNTER_RIVAL` | Effekt + Chain-Template, kein zweiter Fact |
-| D4 | E2-Reichweite | Nur Spielwahl (`offerScore`) |
-| D5 | Service-/Sozialschwellen in `chooseActivity` | Nein, unveraendert lassen |
+| D4 | E2E-Reichweite | Vollstaendig: Aktivitaet, Spielwahl, Rueckkehr |
+| D5 | Service-/Sozialschwellen in `chooseActivity` | Ja, begrenzt; harte Regeln bleiben vorrangig |
 
 ## D1: Mehrere Contributions pro Turn
 
@@ -115,56 +119,74 @@ Save-Roundtrip des Gegenmassnahmen-Fensters.
 zweiter Trigger und keine zweite Event-Historie. Entsteht spaeter eine weitere
 Gegenmassnahmen-Quelle, nutzt sie denselben Chain-Helfer statt eines Facts.
 
-## D4: Reichweite von E2
+## D4: E2E vollstaendig
 
 **Definition.** E1 ist die reine Ableitung der Disposition aus Persona,
-Erinnerungen und Beziehung. E2 ist ihre Anwendung auf die Spielwahl.
+Erinnerungen und Beziehung. E2E ist ihre Anwendung ueber den gesamten
+Gastpfad, nicht nur auf die Spielwahl.
 
-**Entscheidung.** E2 wirkt ausschliesslich in `offerScore()` — also bei der
-Frage, welches Spiel ein Gast als Naechstes waehlt.
+**Entscheidung.** Die Disposition wirkt an allen drei bestehenden
+Entscheidungspunkten:
 
-- Die Disposition ist ein begrenzter Faktor (Richtwert ±20 %), ganzzahlig
-  gerundet, nie null oder negativ. Sie kann ein Angebot abschwaechen, aber
-  nicht verbieten; das Veto bleibt `offerScore() === 0` aus Preis, Zustand
-  oder fehlendem Platz.
-- Quellen sind vorhandene Daten: Persona-Geschmack (`getPersona`),
-  gerichtete Beziehung `visitor -> player` bzw. `player -> visitor`
-  (`trust`, `sympathy`, `conflict`) und die vorhandenen
-  Besuchererinnerungen. Kein neuer persistenter Zustand.
-- Die Ableitung ist rein und deterministisch: kein RNG, kein Netzwerk, keine
-  Uhr, keine Mutation. Sie darf den Gameplay-RNG nicht ziehen.
-- `returnChance()` bleibt unveraendert; dort wirkt bereits `memoryEffect()`.
-  E2 dupliziert diese Wirkung nicht.
+1. **Aktivitaetswahl (`chooseActivity`)**: begrenzte Verschiebung der sozialen
+   Schwellen fuer Drink und Sofa um hoechstens ±8 Punkte. Kritische
+   Beduerfnisse (Toilette bei `need === 'toilet'` oder Geduld/Laune < 22), das
+   Wallet-Veto und die Platzpruefung bleiben unveraendert und haben Vorrang.
+2. **Spielwahl (`offerScore`)**: begrenzter Faktor ±20 %, ganzzahlig gerundet,
+   nie null oder negativ. Das Veto bleibt `offerScore() === 0` aus Preis,
+   Zustand oder fehlendem Platz.
+3. **Rueckkehr (`returnChance`)**: begrenzter Beziehungszuschlag von hoechstens
+   ±10 Prozentpunkten zusaetzlich zum vorhandenen `memoryEffect`; das Ergebnis
+   bleibt geklemmt.
 
-**Nicht in E2.** Preise, Auszahlungen, Servicegeschwindigkeit,
-Beduerfnis-Schwellen, Event-Planung und Texte. Die Disposition aendert keine
-Spielregel und keine Geldwirkung.
+**Eine Ableitung.** Alle drei Projektionen kommen aus derselben reinen Funktion
+und denselben Quellen: Persona-Geschmack (`getPersona`), gerichtete Beziehung
+`visitor -> player` bzw. `player -> visitor` (`trust`, `sympathy`, `conflict`)
+und die vorhandenen Besuchererinnerungen. Kein neuer persistenter Zustand,
+kein RNG, keine Uhr, keine Mutation.
 
-**Nachweis.** Bestehende Angebots-Tests um Determinismus, Grenzen und
-Nicht-Veto erweitern. Ohne Messung wird keine Balance-Aussage behauptet.
+**Vorrangregeln.** Die Disposition verschiebt nur vorhandene Entscheidungen;
+sie erzeugt keine neuen Pflichten und keine neuen Verbote. Kritische
+Beduerfnisse, fehlendes Geld, fehlender Platz und ein defektes Geraet bleiben
+harte Regeln.
 
-## D5: Keine Service-/Sozialschwellen in `chooseActivity`
+**Nicht in E2E.** Preise, Auszahlungen, Servicegeschwindigkeit, Ledger,
+Event-Planung, Spawn-Wahrscheinlichkeit und Texte. Die Disposition aendert
+keine Geldwirkung.
 
-**Entscheidung.** Nein. Die Schwellen in `chooseActivity()` bleiben
-unveraendert: Toilette bei Beduerfnis oder niedriger Geduld/Laune, Drink bei
-Beduerfnis, Laune, Geduld oder Sociability, Sofa bei hoher Sociability und
-mittlerer Laune.
+**Nachweis.** Ein Ende-zu-Ende-Test fuehrt einen Gast mit hoher und niedriger
+Disposition durch Aktivitaet, Spielwahl und Rueckkehr und prueft: gleiche
+harte Regeln, deterministische Abweichung, keine Grenzverletzung. Dazu die
+bestehenden Angebots- und Rueckkehr-Tests. Ohne Messung keine
+Balance-Aussage.
 
-**Begruendung.**
+## D5: Service-/Sozialschwellen: ja, begrenzt
 
-- Diese Schwellen sind Service- und Ueberlebensregeln. Sie gehoeren zu
-  Beduerfnissen, Geld und Geduld, nicht zur Narrativ-Disposition.
-- Eine Disposition, die entscheidet, ob jemand zur Toilette geht oder trinkt,
-  waere ein verstecktes Gameplay-Gate aus Text und Beziehungswerten. Das
-  verletzt „keine Gameplay-Wirkung aus Text“ und waere im Tick schwer
-  isolierbar zu testen.
-- Eine Regel, zwei Besitzer: `chooseActivity()` und `offerScore()` duerfen
-  nicht dieselbe Praeferenz unterschiedlich interpretieren.
+**Entscheidung.** Die sozialen Schwellen in `chooseActivity()` werden
+einbezogen, aber nur als begrenzte Verschiebung. Die kritischen Pfade bleiben
+unangetastet.
 
-**Folge.** Ein Gast mit schlechter Beziehung zum Haus bekommt weiterhin
-Service; er waehlt nur anders zwischen Spielen (D4). Soll sich das spaeter
-aendern, braucht es eine eigene Entscheidung mit Messung und einem benannten
-Andockpunkt — keine stillen Schwellen.
+- **Toilette:** `need === 'toilet'` oder `patience < 22`/`mood < 22` bleibt
+  absolut; die Disposition kann das WC nicht verhindern.
+- **Drink:** die sozialen Ausloeser (`mood < 44`, `patience < 38`,
+  `sociability > 68 && mood < 55`) verschieben sich um hoechstens ±8 Punkte.
+- **Sofa:** `sociability > 72 && mood < 50 && addiction < 20` verschiebt sich
+  im selben Fenster.
+- **Unveraendert:** Wallet-Veto, Mindesteinsatz, freie Plaetze, defekte
+  Geraete, Preise, Servicegeschwindigkeit und die Reihenfolge der Pruefungen.
+
+**Begruendung.** E2E vollstaendig heisst: Die Beziehung zum Haus ist auf dem
+ganzen Gastpfad sichtbar, nicht nur an der Spielauswahl. Die Verschiebung ist
+begrenzt und deterministisch, damit sie testbar bleibt; die harten Regeln
+bleiben Eigentum der Simulation.
+
+**Folge.** Ein Gast mit schlechter Beziehung trinkt oder setzt sich frueher
+oder spaeter, geht aber bei kritischem Beduerfnis weiter zur Toilette und
+zahlt weiter Preise. Die Schwelle ist eine Zahl im bestehenden Tick, kein
+neuer Zustand und kein neues Event.
+
+**Nicht.** Keine neuen Aktivitaeten, keine neuen Beduerfnisse, keine
+Beschleunigung der Bedienung, keine Aenderung an Ledger oder RNG.
 
 ## Umsetzungsreihenfolge
 
@@ -173,14 +195,16 @@ Andockpunkt — keine stillen Schwellen.
 2. D2 plus erster Content-Batch (D1) mit den neuen Kontexten.
 3. Composer-Kontext und Slot-Zweck; `PROBE`-Filter, Follow-up-Ketten und
    typisierte Domain-Effekte inklusive D3.
-4. E1/E2-Disposition in `offerScore()`; D5 bleibt unveraendert.
+4. E2E-Disposition in `chooseActivity()`, `offerScore()` und `returnChance()`;
+   harte Regeln und die D5-Grenzen bleiben vorrangig.
 5. Vertragsdoku (`NARRATIVE-ENGINE.md`, `AGENTS.md`, `ARCHITECTURE.md`)
    nachziehen, sobald der Code die Entscheidungen traegt.
 
 ## Offene Punkte
 
-- Die genauen Gewichte des Dispositions-Faktors brauchen eine Messung; der
-  Richtwert ±20 % ist eine Grenze, kein balancierter Wert.
+- Die genauen Verschiebungen (±8 Punkte Aktivitaet, ±20 % Angebot, ±10
+  Punkte Rueckkehr) brauchen eine Messung; sie sind Grenzen, keine
+  balancierten Werte.
 - Das Template `RIVAL_COUNTERED` braucht Autorentexte fuer seine Slots; bis
   dahin greift der ehrliche Fallback des Composer.
 - Die Chain-Kennung wird erst mit der Umsetzung als Konstante eingefuehrt; sie

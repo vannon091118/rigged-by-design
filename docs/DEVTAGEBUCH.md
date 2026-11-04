@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Korrektur: E2E-Disposition vollstaendig
+
+**Ziel.** Die E2E-Korrektur des Eigentuemers aufnehmen: Die Disposition wirkt vollstaendig ueber den Gastpfad, nicht nur in `offerScore()`.
+
+**Umsetzung.** `docs/NARRATIVE-ENTSCHEIDUNGEN.md` ist in D4 und D5 korrigiert. D4 beschreibt E2E jetzt an drei Punkten: begrenzte Verschiebung der sozialen Schwellen in `chooseActivity()` (±8 Punkte), begrenzter Faktor in `offerScore()` (±20 %) und begrenzter Beziehungszuschlag in `returnChance()` (±10 Prozentpunkte). D5 wurde von „nein“ auf „ja, begrenzt“ gedreht; kritische Toiletten-, Geld-, Platz- und Geraeteregeln bleiben vorrangig. Die Korrektur ist im Dokument selbst als solche markiert, damit die erste Fassung nicht nachtraeglich anders aussieht.
+
+**Pruefungen.** `node scripts/verify-docs.mjs`, `node scripts/verify-tree.mjs`, `node scripts/verify-redundancy.mjs` und `node scripts/verify-narrative-content.mjs`; danach `verify:quick` vor dem Commit.
+
+**Offen.** Noch kein Code: Die drei Projektionen und ihre Grenzen warten auf die Umsetzung. Die genauen Werte brauchen eine Messung; ein Ende-zu-Ende-Test fuer hohe und niedrige Disposition ist Teil des Nachweises.
+
 ## 2026-11-04 - Narrative-Entscheidungen zu Batch, Kontexten, Gegenmassnahme und Disposition
 
 **Ziel.** Die fuenf offenen Punkte der Narrativ-Spezifikation verbindlich beantworten, ohne Code umzubauen: Content-Batch, neue Kontexte, Gegenmassnahme, E2-Reichweite und Service-Schwellen.
@@ -854,7 +864,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.90 | 2026-11-04 02:25 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
