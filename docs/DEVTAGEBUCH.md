@@ -13,6 +13,23 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Kritische Simulations-Korrekturen (L1, L2, L6) + Dokumentation
+
+**Ziel.** Die im Analyse-Report 1 identifizierten kritischen Logik-Luecken schliessen: Doppelauszahlung in `settleGuests`, CASHOUT-Haenger in `payAndLeave`, stilles Loeschen von unreachable Dreck in `cleanerTick`. Ausserdem INVENTORY.md auf Code-Stand bringen und Doku-Marker erneuern.
+
+**Umsetzung.**
+- `src/core/sim/actions.ts:settleGuests`: iteriert über Kopie `[...world.guests]`, entfernt jeden Gast nach erfolgreicher Buchung aus `world.guests`. Damit ist die Abarbeitung idempotent: bricht Gast N ab, sind Gaeste 1..N-1 bereits entfernt und gebucht, keine Doppelauszahlung bei erneutem Versuch.
+- `src/core/sim/guest-service.ts:payAndLeave`: im Fehlerpfad wird der Gast auf `LEAVE` gesetzt (Pfad zur Tuer via `leave()`) statt ewig im Zustand `CASHOUT` zu verharren. Kein Geld wird vernichtet; Saldo bleibt auf `VISITOR_<id>` / `PENDING_<id>`.
+- `src/core/sim/staff.ts:cleanerTick`: unreachable Dreck wird nicht mehr still geloescht (`world.dirty.delete(first)` entfernt), stattdessen wird der Reiniger als `idle` mit `blockedReason = 'Dreck nicht erreichbar'` gemeldet.
+- `src/Config/eslint.config.mjs`: `plugins/**` zu ESLint-ignores hinzugefuegt (DSH-Host-Plugin, nicht Repo-Quelle; bereits gitignored).
+- `docs/INVENTORY.md`: Befunde 1, 18, 21, 33, 34 als geloest markiert (Code zeigt bereits gefixt); offene Punkte in §16 angepasst.
+- `docs/CHANGELOG.md`: Eintrag unter [0.3.111].
+
+**Pruefungen.** `pnpm run verify:quick` — alle 10 Gates gruen (lint, check:loc, typecheck, test-quality, dead-code, docs, tree, redundancy, assets, tests). Neuer Testfall in `guest-settlement.test.ts` belegt, dass kein Gast doppelt ausgezahlt wird.
+
+**Offen.** Schulden-Tilgungspfad (S1), Mods mit Mechanik (G1), Einsatz-Skalierung mit Persona-Budget (G2) sind Nutzerentscheidungen und stehen aus (siehe `docs/PLAN-LEAD-MERGE-KORRIGIERT.md`, Phase 1.3 / Phase 2).
+
+
 ## 2026-11-04 - Warmer Content-Batch
 
 **Ziel.** Die zweite Stufe bekommt eine eigene Stimme: Titel, Text, Choice-Label und Outcome fuer `VISITOR_RETURN_WARM` mit waermerem Ton, damit die Szene nicht mehr aus dem Basistopf spricht.
@@ -1054,7 +1071,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.111 | 2026-11-04 19:50 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.112 | 2026-11-04 21:48 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

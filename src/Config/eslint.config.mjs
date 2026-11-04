@@ -53,7 +53,7 @@ const determinism = {
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'docs/Chats/**'],
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'docs/Chats/**', 'plugins/**'],
   },
   {
     // Kein Kommentar darf eine Regel abschalten: die Sperre ist nicht wegredbar.

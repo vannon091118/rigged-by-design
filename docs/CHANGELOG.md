@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.111 | 2026-11-04 19:50 UTC -->
+<!-- rbd-doc: v0.3.112 | 2026-11-04 21:48 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,7 +12,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
-## [0.3.110] - 2026-11-04
+## [0.3.111] - 2026-11-04
+
+### Technik
+- `settleGuests` zahlt jeden Gast nur einmal: nach erfolgreicher Buchung wird der Gast aus der Liste entfernt, sodass ein Abbruch keine Doppelauszahlung verursacht (`L2`, hoch). Test in `guest-settlement.test.ts`.
+- `payAndLeave` laesst einen Gast bei nicht gedeckter Auszahlung den Floor verlassen (`LEAVE`) statt ewig im Zustand `CASHOUT` zu haengen (`L1`, mittel).
+- Reiniger loescht unreachable Dreck nicht mehr still, sondern meldet sich als blockiert (`L6`, niedrig).
+- ESLint ignoriert `plugins/` (DSH-Host-Plugin, nicht Repo-Quelle).
+- `INVENTORY.md` auf aktuellen Code-Stand: Befunde 1, 18, 21, 33, 34 als geloest markiert.
+
 
 ### Spiel
 - Wer mit guten Abenden wiederkommt, wird jetzt mit eigenen Worten begruesst - die warme Szene spricht nicht mehr aus dem Basistopf.
