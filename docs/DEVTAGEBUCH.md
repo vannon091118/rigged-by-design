@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - A3: Narrative-JSON in test:affected
+
+**Ziel.** A3: Aenderungen an Narrative-Content sollten den zustaendigen Governance-Test ausloesen. Bisher fiel eine reine JSON-Aenderung unter `content/narrative/**` durch alle Zweige: Sie ist kein Code, keine Testdatei und keine Konfiguration, also blieb die Auswahl leer.
+
+**Umsetzung.** `scripts/lib/affected-tests.mjs` traegt jetzt `NARRATIVE_DATA_RE = /^content\/narrative\/.*\.json$/` und die Konstante fuer den Governance-Test. Der neue Zweig liegt vor dem Code-Check, setzt `codeChanged = true` und fuegt ausschliesslich `src/core/governance/__tests__/narrative-content.test.ts` hinzu. Damit greift weder der Subsystem-Fallback noch die "kein direkter Treffer"-Regel; andere Aenderungen im selben Diff bleiben unberuehrt. `AGENTS.md` und `docs/NARRATIVE-ENGINE.md` nennen die Auswahl.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/affected-tests.test.ts --config src/Config/vite.config.ts`: 7/7 gruen. Der neue Fall uebergibt zwei Narrative-JSON-Pfade und prueft mit `toEqual`, dass nur der Governance-Test zurueckkommt und `runAll` false bleibt. Danach `verify:quick`.
+
+**Offen.** Der Zweig deckt nur JSON unter `content/narrative/**` ab; andere Content-Ordner bleiben bei der bisherigen Graphen-/Subsystemlogik. A3 ist damit fuer Narrative geschlossen.
+
 ## 2026-11-04 - A1: Inventur und Validatoren vor dem Fruehausstieg
 
 **Ziel.** A1: Die allgemeine Inventur-/Validator-Reihenfolge sollte nicht am `node_modules`-Fruehausstieg haengen. Bisher liefen nur der Narrative-Validator und der Divergenz-Guard davor; Inventur, Doku-Marker, Doku-Gate und LOC wurden in einem frischen Klon stillschweigend uebersprungen.
@@ -904,7 +914,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.95 | 2026-11-04 03:12 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

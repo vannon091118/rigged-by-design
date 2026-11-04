@@ -18,6 +18,8 @@ import { moduleSpecifiers, parse, resolveSpecifier } from './ts-ast.mjs';
 
 const TEST_RE = /\.test\.(ts|tsx)$/;
 const CODE_RE = /\.(ts|tsx|js|mjs|cjs)$/;
+const NARRATIVE_DATA_RE = /^content\/narrative\/.*\.json$/;
+const NARRATIVE_CONTENT_TEST = 'src/core/governance/__tests__/narrative-content.test.ts';
 const CONFIG_RE = /^(package(?:-lock)?\.json|tsconfig\.json|vite\.config\.ts|eslint\.config\.mjs)$/;
 const normalize = (file) => file.replaceAll('\\', '/');
 const relativeToRoot = (file) => normalize(relative(ROOT, resolve(file)));
@@ -124,6 +126,11 @@ export function selectAffectedTests(changedFiles) {
     if (file.startsWith('.github/')) {
       codeChanged = true;
       for (const test of all) if (targets.get(test)?.startsWith('.github/')) selected.add(test);
+      continue;
+    }
+    if (NARRATIVE_DATA_RE.test(file)) {
+      codeChanged = true;
+      selected.add(NARRATIVE_CONTENT_TEST);
       continue;
     }
     if (!CODE_RE.test(file)) continue;
