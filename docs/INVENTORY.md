@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.90 | 2026-11-04 02:25 UTC -->
+<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -422,10 +422,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 310 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 315 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 872 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 882 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -433,7 +433,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 443 Zeilen
-- `docs/NARRATIVE-ENTSCHEIDUNGEN.md` — Narrative-Entscheidungen — gelesen: 187 Zeilen
+- `docs/NARRATIVE-ENTSCHEIDUNGEN.md` — Narrative-Entscheidungen — gelesen: 211 Zeilen
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 64 Zeilen
 - `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
@@ -1562,6 +1562,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T49 | **2026-11-04 02:31 UTC**: Korrektur: E2E-Disposition vollstaendig. |
 | T48 | **2026-11-04 02:24 UTC**: Narrative-Entscheidungen zu Batch, Kontexten, Gegenmassnahme und Disposition. |
 | T47 | **2026-11-04 01:58 UTC**: Profilweg und Geschichten-Historie. `NarrativeView.history` (juengste 12 abgeschlossene Szenen) und Gaeste auf dem Floor in den Profilen; `GuestPopup` oeffnet ueber `onProfile(visitorId)` das Profil, `NarrativePopup` startet mit `initialVisitorId` im Figuren-Tab, das Journal zeigt die Historie im Tab „Geschichten“. Neu: `src/ui/journal-stories.tsx`, `src/ui/__tests__/guest-profile.test.tsx`, Content-Beitrag `2026-11-04-journal-und-profilweg.json`. Geprueft: `narrative:check`, `typecheck`, `verify:quick`. |
 | T46 | **2026-11-04 01:23 UTC**: NAR-17: Doku-, Katalog- und demandEvent-Sync mit Save v10. Save v10 und Rivalen-Domaene in ARCHITECTURE, AGENTS, PRODUCT, ROADMAP, NARRATIVE-ENGINE und Taskplan; `TRIGGER_DIALOG` und `demandEvent` nur noch als Migrationsfeld beschrieben; Katalog und Inventur regeneriert. |

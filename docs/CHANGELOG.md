@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.90 | 2026-11-04 02:25 UTC -->
+<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.91] - 2026-11-04
+
+### Technik
+- Korrektur der Narrativ-Entscheidungen: Die Disposition wirkt E2E vollstaendig statt nur in `offerScore()`. D4 umfasst jetzt Aktivitaetsschwellen (±8 Punkte), Spielwahl (±20 %) und Rueckkehr (±10 Prozentpunkte); D5 erlaubt die begrenzte Verschiebung der Service-/Sozialschwellen, waehrend kritische Beduerfnisse, Geld, Platz und Geraetezustand vorrangig bleiben. Noch kein Code.
 
 ## [0.3.90] - 2026-11-04
 
