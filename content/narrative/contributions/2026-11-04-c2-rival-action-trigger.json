@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+  "contributionId": "c2-rival-action-trigger-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "trigger",
+    "templates"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Blick von der Seite bleibt ein Blick: PROBE hinterlaesst ein Indiz, oeffnet aber keine Szene. Erst Handlungen mit Folgen - Informationshandel, Preiskampf, Gaesteabwerbung, Sabotage - werden zu einem RIVAL_MOVE, und die Aktionsliste ist Teil des Trigger-Vertrags statt einer stillen Annahme.",
+  "directives": []
+}

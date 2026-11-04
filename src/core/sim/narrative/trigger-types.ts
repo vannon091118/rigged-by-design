@@ -1,5 +1,6 @@
 /** Deklarative Trigger-Vertraege: Bedingungen, Context und erklaerte Treffer. */
 import type { VaCoinMicro } from '../../economy/vacoin';
+import type { RivalActionId } from '../rival-ai/types';
 import type { DemandTier } from '../types';
 import type {
   ActorRef, HouseBand, NarrativeFact, RelationshipEdge, Visitor, VisitorValence,
@@ -17,6 +18,7 @@ export type TriggerCondition =
   | { readonly op: 'any'; readonly conditions: readonly TriggerCondition[] }
   | { readonly op: 'not'; readonly condition: TriggerCondition }
   | { readonly op: 'fact'; readonly kind: NarrativeFact['kind'] }
+  | { readonly op: 'rival-action'; readonly actions: readonly RivalActionId[] }
   | { readonly op: 'visitor-memory'; readonly valence: VisitorValence }
   | { readonly op: 'house-at-most'; readonly amount: number }
   | { readonly op: 'house-at-least'; readonly amount: number }

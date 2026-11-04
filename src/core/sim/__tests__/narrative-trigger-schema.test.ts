@@ -40,6 +40,11 @@ describe('Trigger-Schema', () => {
     expect(isTriggerCondition({ op: 'fact', kind: 'UNKNOWN' })).toBe(false);
     expect(isTriggerCondition({ op: 'visitor-memory', valence: 'GREAT' })).toBe(false);
     expect(isTriggerCondition({ op: 'house-band', band: 'HIGH' })).toBe(false);
+    expect(isTriggerCondition({ op: 'rival-action', actions: ['SABOTAGE'] })).toBe(true);
+    expect(isTriggerCondition({ op: 'rival-action', actions: ['PROBE'] })).toBe(true);
+    expect(isTriggerCondition({ op: 'rival-action', actions: [] })).toBe(false);
+    expect(isTriggerCondition({ op: 'rival-action', actions: ['SABOTAGE', 'SABOTAGE'] })).toBe(false);
+    expect(isTriggerCondition({ op: 'rival-action', actions: ['UNKNOWN'] })).toBe(false);
   });
 
   it('verwirft negative, unsichere und ungueltige Schwellen sowie Refs', () => {

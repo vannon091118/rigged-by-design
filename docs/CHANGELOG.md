@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.101 | 2026-11-04 04:57 UTC -->
+<!-- rbd-doc: v0.3.102 | 2026-11-04 05:15 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.102] - 2026-11-04
+
+### Spiel
+- Rivalenhandlungen oeffnen nur noch dann eine Szene, wenn sie Folgen fuer den Abend haben: PROBE bleibt ein stilles Indiz, Sabotage, Informationshandel, Preiskampf und Gaesteabwerbung fuehren zu RIVAL_MOVE.
+
+### Technik
+- C2: `TriggerCondition` kennt `{ op: 'rival-action'; actions }`; das Schema verlangt eine nicht-leere, duplikatfreie Liste aus `RIVAL_ACTION_IDS`, der Evaluator matcht nur `RIVAL_ACTION`-Facts mit erlaubter Aktion.
+- `EVENT_TRIGGER_DEFINITIONS` bindet `rival-action` an TRADE_INFO, PRICE_MOVE, POACH_VISITOR und SABOTAGE; PROBE bleibt bewusst ohne Event. Tests decken Schema-Grenzen, Evaluator-Filter und den Ende-zu-Ende-Pfad PROBE/SABOTAGE ab. Registry auf 47 Fragmente.
 
 ## [0.3.101] - 2026-11-04
 

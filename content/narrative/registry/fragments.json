@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1fc8951bb58d82466fa8d138779874e7d6aec1707f6ae810dfa4eef18555f749",
+  "contentHash": "sha256:b3159d3cf8c8bf4503216489c7c6d7f48171bd2cdb97246b1df4173dbe97aeb9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -495,6 +495,29 @@
       "text": "Rita Kern blieb vor dem Buch stehen. Jemand hatte ihren letzten Besuch nicht nur gezaehlt, sondern aufgeschrieben, was er fuer sie bedeutet hatte. Sie wusste noch nicht, ob das Haus sich erinnerte, weil es wollte, oder weil es musste.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json"
+    },
+    {
+      "contributionId": "c2-rival-action-trigger-01",
+      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Blick von der Seite bleibt ein Blick: PROBE hinterlaesst ein Indiz, oeffnet aber keine Szene. Erst Handlungen mit Folgen - Informationshandel, Preiskampf, Gaesteabwerbung, Sabotage - werden zu einem RIVAL_MOVE, und die Aktionsliste ist Teil des Trigger-Vertrags statt einer stillen Annahme.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-c2-rival-action-trigger.json"
     },
     {
       "contributionId": "command-dsl-01",

@@ -7,8 +7,11 @@ import { isTriggerDefinition } from '../trigger-schema';
  * bewusst kleiner als der Fact-Vertrag; Diagnose- und Ledger-Facts bleiben hier
  * ohne Wirkung. Ungueltige Definitionen werden fail-closed verworfen.
  */
+/** PROBE bleibt bewusst aussen vor: Sie hinterlaesst ein Indiz, aber kein Event. */
+const RIVAL_EVENT_ACTIONS = ['TRADE_INFO', 'PRICE_MOVE', 'POACH_VISITOR', 'SABOTAGE'] as const;
+
 export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = [
   { id: 'visitor-returned', condition: { op: 'fact', kind: 'VISITOR_RETURNED' } },
   { id: 'visitor-conflict', condition: { op: 'fact', kind: 'VISITOR_CONFLICT' } },
-  { id: 'rival-action', condition: { op: 'fact', kind: 'RIVAL_ACTION' } },
+  { id: 'rival-action', condition: { op: 'rival-action', actions: RIVAL_EVENT_ACTIONS } },
 ].filter(isTriggerDefinition);

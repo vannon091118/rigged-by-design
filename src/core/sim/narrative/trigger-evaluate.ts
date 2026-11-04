@@ -56,6 +56,10 @@ export function evaluateTrigger(condition: TriggerCondition, context: TriggerCon
       return { matched: !child.matched, reasons: [`not(${child.reasons.join(' | ')})`] };
     }
     case 'fact': return result(context.fact.kind === condition.kind, `fact:${condition.kind}`);
+    case 'rival-action': {
+      const action = context.fact.kind === 'RIVAL_ACTION' ? context.fact.action : null;
+      return result(action !== null && condition.actions.includes(action), `rival-action:${action ?? 'kein-rival-action-fact'}`);
+    }
     case 'visitor-memory': {
       const visitor = visitorOfFact(context);
       const matched = visitor?.memories?.some((memory) => memory.valence === condition.valence) ?? false;
