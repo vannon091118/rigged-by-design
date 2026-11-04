@@ -7,7 +7,14 @@ import { GovernanceReporter } from '../core/governance/test-harness';
 // weg und ist damit Entwicklungsfeedback, kein Freigabenachweis: `verify:all` und
 // `verify:release` fahren sie immer mit.
 const quickProfile = process.env.RBD_TEST_PROFILE === 'quick';
-const quickExclude = ['**/round-rtp-*.test.ts', '**/soak.test.ts', '**/slot-session-rtp.test.ts'];
+const quickExclude = [
+  '**/round-rtp-*.test.ts',
+  '**/soak.test.ts',
+  '**/slot-session-rtp.test.ts',
+  '**/poker-distribution.test.ts',
+  '**/balance-operating.test.ts',
+  '**/*.bench.ts',
+];
 
 export default defineConfig({
   plugins: [react()],

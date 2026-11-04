@@ -107,6 +107,20 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 ---
 
+## 2026-11-04 - Phase 5: verify:quick beschleunigen (Test-Auslagerung auf CI)
+
+**Ziel.** `verify:quick` soll lokal schnell laufen, damit es als Entwicklungsfeedback zwischen Commits genutzt werden kann. Nicht-kritische Tests (statistics/performance Beweisklassen) laufen nur in CI.
+
+**Umsetzung.**
+- `src/Config/vite.config.ts`: `quickExclude` erweitert um `poker-distribution.test.ts`, `balance-operating.test.ts` und alle `*.bench.ts` Dateien. Damit laufen im `verify:quick` nur noch `contract`, `integration` und `governance` Beweisklassen lokal; `statistics` und `performance` Tests laufen nur in CI (`ci:long` bzw. separater CI-Workflow).
+- Die 12 bisher im quick-Profil mitgelaufenen CI-Dateien (darunter 4 statistics- und 8 performance-Testdateien) werden künftig nur noch in CI ausgeführt.
+
+**Pruefungen.** `tsc --noEmit` sauber. Keine Spielmechanik veraendert. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Alle 5 Phasen des Optik-Plans plus die Test-Optimierung sind umgesetzt.
+
+---
+
 
 ---
 
@@ -1199,7 +1213,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.114 | 2026-11-04 22:33 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

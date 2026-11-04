@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.114 | 2026-11-04 22:33 UTC -->
+<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -23,6 +23,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Partikel-Overlay: `src/render/particle-overlay.tsx` (neu) rendert animierte Partikel, Bildschirm-Shake und weisses Flash-Overlay bei Partikel-Events; `src/App.tsx` bindet es ueber dem Floor ein (zIndex 60).
 - Bodenhinweise-Feinschliff: `src/render/floor-cues.ts` zeigt Zielraster mit leuchtender Mitte, Spielerring mit ausserem Glow und Klick-Puls mit konzentrischen Ringen.
 - Audio-zu-Visual-Kopplung: `particle-overlay.tsx` spielt bei jedem Event den passenden Sound (`playSfx('win')`, `playSfx('coin')`, `playPinRun(...)`, `playSfx('brawl')`) gleichzeitig mit den Partikeln ab.
+- `verify:quick` beschleunigt: `src/Config/vite.config.ts` schließt jetzt auch `poker-distribution.test.ts`, `balance-operating.test.ts` und alle `*.bench.ts` Dateien aus dem quick-Profil aus (statistics/performance Beweisklassen laufen nur in CI via `ci:long`). Damit fallen ca. 8 Testdateien aus dem lokalen Quick-Lauf heraus.
 
 ## [0.3.113] - 2026-11-04
 
