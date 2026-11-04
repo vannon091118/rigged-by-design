@@ -9,12 +9,12 @@ export const VISITOR_CONFLICT_TEMPLATE: EventTemplate = {
   scope: 'PAIR',
   participantRoles: ['visitor', 'visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY' },
-    { id: 'CHOICE_DEFUSE', kind: 'CHOICE_LABEL' },
-    { id: 'CHOICE_ESCALATE', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_DEFUSED', kind: 'OUTCOME' },
-    { id: 'OUTCOME_ESCALATED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['conflict'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['conflict'] },
+    { id: 'CHOICE_DEFUSE', kind: 'CHOICE_LABEL', requiredContexts: ['conflict', 'defuse'] },
+    { id: 'CHOICE_ESCALATE', kind: 'CHOICE_LABEL', requiredContexts: ['conflict', 'escalate'] },
+    { id: 'OUTCOME_DEFUSED', kind: 'OUTCOME', requiredContexts: ['conflict', 'aftermath'] },
+    { id: 'OUTCOME_ESCALATED', kind: 'OUTCOME', requiredContexts: ['conflict', 'aftermath'] },
   ],
   choices: [
     {

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - B2: Slot-Zwecke im Composer
+
+**Ziel.** Der Composer soll nicht nur semantisch treffen, sondern den Zweck eines Slots kennen: eine Begruessung ist kein Rueckkehr-Text, ein Ausgang ist kein Entscheidungstext. B2 schliesst die zweite Composer-Luecke nach B1, ohne RNG und ohne neuen Zustand.
+
+**Umsetzung.** `ContentSlot` traegt optional `requiredContexts` (max. 4, Vokabular-Slugs, fail-closed in `template-schema.ts`). Die fuenf Templates tragen ihre Zwecke: `VISITOR_RETURN` (`return`, `welcome`, `ask`, `aftermath`), `VISITOR_CONFLICT` (`conflict`, `defuse`, `escalate`, `aftermath`), `RIVAL_MOVE` (`rival`, `confront`, `watch`, `aftermath`), `NEON_NACHT`/`TURNIER_ABEND` (`demand`). `ComposeRequest` bekommt `requiredContexts` und `eventInstanceId`; `selectFragment` nimmt jetzt den Slot, verlangt Request- und Slot-Kontexte hart und laesst `contexts` weiterhin nur den Score bewerten. Bei Gleichstand waehlt ein FNV-1a-Hash aus `eventInstanceId` und Slot-ID unter den besten Kandidaten; ohne Szenen-ID bleibt `contributionId` der stabile Schluessel. `view.ts` reicht `event.id` als Szenen-ID durch. Das Vokabular ergaenzt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` und `aftermath` (`rival` bestand bereits). Die Ausgaenge fallen mangels Nachwirkungs-Content zunaechst auf neutrale Fallbacks zurueck; das ist gewollt und der Content-Batch D1 fuellt sie.
+
+**Pruefungen.** `narrative:compile` (29 Fragmente, sha256:c18d9ccb...), Compiler-Test auf 29 gezogen, neue Composer-Tests fuer harte Slot-Zwecke, Nachwirkungs-Auswahl und Hash-Gleichstand; `verify:quick` (zehn Gates) vor dem Commit.
+
+**Offen.** Noch kein Fragment traegt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` oder `aftermath`; bis D1 bleiben diese Slots Fallback. Der Tie-Break veraendert die Auswahl nur bei Gleichstand und nur mit Szenen-ID.
+
 ## 2026-11-04 - Vision: Lebenssimulation statt Casino-Manager
 
 **Ziel.** Das Projekt nicht mehr als Casino-Manager beschreiben. Rigged by Design ist eine Lebenssimulation; das Casino ist Startpunkt und Testumgebung. Die vorhandene Engine muss als wiederverwendbarer, erweiterbarer Kern erklaert werden, auf dem alle kuenftigen Lebensbereiche aufsetzen.
@@ -934,7 +944,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.99 | 2026-11-04 04:06 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

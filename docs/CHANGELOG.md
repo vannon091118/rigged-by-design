@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
+<!-- rbd-doc: v0.3.99 | 2026-11-04 04:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.99] - 2026-11-04
+
+### Spiel
+- Szenen waehlen ihren Text jetzt nach dem Zweck des Slots: eine Begruessung verlangt `welcome`, eine Frage `ask`, ein Ausgang `aftermath`. Fehlt der passende Text, bleibt der neutrale Fallback statt eines beliebigen Satzes.
+
+### Technik
+- `ContentSlot.requiredContexts` (max. 4) validiert als Vokabular-Slugs; die fuenf Templates tragen ihre Slot-Zwecke (`CHOICE_WELCOME`/`CHOICE_ASK`, `DEFUSE`/`ESCALATE`, `CONFRONT`/`WATCH`, `TITLE`/`BODY`, Outcomes mit `aftermath`).
+- `ComposeRequest.requiredContexts` und `eventInstanceId`; `selectFragment` prueft Slot- und Request-Kontexte hart, `contexts` bewertet nur Treffer. Gleichstand entscheidet per FNV-1a-Hash aus Szenen-ID und Slot-ID, ohne RNG; ohne Szenen-ID bleibt `contributionId` der Schluessel.
+- Vokabular um `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch`, `aftermath` erweitert (`rival` bestand). Content-Beitrag, Manifest und Registry auf 29 Fragmente.
 
 ## [0.3.98] - 2026-11-04
 

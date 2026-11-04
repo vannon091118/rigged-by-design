@@ -58,7 +58,8 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     });
     expect(result.ok).toBe(true);
     expect(slot(result, 'BODY').contributionId).toBe('nar-04-beziehungsquellen-01');
-    expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBe('till-watch-01');
+    expect(slot(result, 'OUTCOME_DEFUSED').fallback).toBe(true);
+    expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBeNull();
     expect(slot(result, 'CHOICE_DEFUSE').fallback).toBe(true);
   });
 
@@ -160,5 +161,53 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(result.issues.length).toBeGreaterThan(0);
     expect(result.fallbacks).toEqual(['T', 'B']);
     expect(result.slots.every((entry) => entry.fallback)).toBe(true);
+  });
+
+  it('verlangt die Slot-Zwecke zusaetzlich zum bewertenden Kontext', () => {
+    const normal = composeNarrative(RETURN_REQUEST);
+    expect(slot(normal, 'BODY').contributionId).toBe('trigger-context-01');
+    expect(slot(normal, 'CHOICE_WELCOME').fallback).toBe(true);
+
+    const forced = composeNarrative({ ...RETURN_REQUEST, requiredContexts: ['welcome'] });
+    expect(slot(forced, 'BODY').fallback).toBe(true);
+    expect(slot(forced, 'BODY').contributionId).toBeNull();
+  });
+
+  it('waehlt einen Ausgang nur mit Nachwirkungs-Kontext', () => {
+    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'till-watch-01');
+    if (!baseline) throw new Error('Baseline-Fragment fehlt');
+    const aftermath = {
+      ...baseline,
+      contributionId: 'aftermath-test-01',
+      contexts: ['conflict', 'aftermath'],
+    };
+    const result = composeNarrative(
+      {
+        locale: 'de',
+        slots: [{ id: 'OUTCOME_DEFUSED', kind: 'OUTCOME', requiredContexts: ['conflict', 'aftermath'] }],
+        contexts: ['conflict'],
+        availablePersonas: ['rita-kern'],
+      },
+      [aftermath],
+    );
+    expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBe('aftermath-test-01');
+  });
+
+  it('entscheidet Gleichstand pro Szenen-ID stabil, aber nicht immer gleich', () => {
+    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
+    if (!baseline) throw new Error('Baseline-Fragment fehlt');
+    const left = { ...baseline, contributionId: 'tie-left-01' };
+    const right = { ...baseline, contributionId: 'tie-right-01' };
+    const request = { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] };
+    const forward = composeNarrative({ ...request, eventInstanceId: 7 }, [left, right]);
+    const reverse = composeNarrative({ ...request, eventInstanceId: 7 }, [right, left]);
+    expect(reverse).toEqual(forward);
+
+    const picked = new Set<string>();
+    for (let id = 1; id <= 20; id += 1) {
+      const chosen = slot(composeNarrative({ ...request, eventInstanceId: id }, [left, right]), 'BODY');
+      picked.add(chosen.contributionId ?? 'none');
+    }
+    expect(picked.size).toBeGreaterThan(1);
   });
 });

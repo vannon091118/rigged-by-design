@@ -61,6 +61,9 @@ export function isComposeRequest(raw: unknown): raw is ComposeRequest {
     ids.add(slot.id);
   }
   if (raw.contexts !== undefined && !isStringList(raw.contexts, LIMITS.contexts)) return false;
+  if (raw.requiredContexts !== undefined
+    && (!isStringList(raw.requiredContexts, LIMITS.contexts) || raw.requiredContexts.length === 0)) return false;
+  if (raw.eventInstanceId !== undefined && !isInt(raw.eventInstanceId, 0, 2_147_483_647)) return false;
   if (raw.requiredFlags !== undefined && !isStringList(raw.requiredFlags, LIMITS.flags)) return false;
   if (raw.availablePersonas !== undefined && !isStringList(raw.availablePersonas, LIMITS.personas)) return false;
   for (const key of ['tone', 'mood', 'relationship'] as const) {

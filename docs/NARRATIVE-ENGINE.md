@@ -189,6 +189,15 @@ typisierten Direktiven. Die Auswahl mappt `TITLE` auf `opening`, `BODY` auf
 - Locale, Kontextschnitt, `requiredFlags` und Persona-Refs filtern fail-closed;
   der hoechste deterministische Score gewinnt, Gleichstand nach
   `contributionId`. Kein RNG, keine Uhr, kein Netzwerk.
+- Jeder `ContentSlot` traegt optionale `requiredContexts` (Slot-Zweck, z. B.
+  `CHOICE_WELCOME` → `return`+`welcome`, `CHOICE_ASK` → `return`+`ask`,
+  `OUTCOME` → `*`+`aftermath`). `ComposeRequest.requiredContexts` gilt zusaetzlich
+  fuer alle Slots. Beide sind harte Filter, waehrend `contexts` weiterhin nur
+  Treffer bewertet. Bei gleichem Score entscheidet ohne RNG ein FNV-1a-Hash aus
+  `eventInstanceId` und Slot-ID; ohne Szenen-ID bleibt `contributionId` der
+  stabile Schluessel. Das Vokabular steht in `classification.json`
+  (`rival`, `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch`,
+  `aftermath`).
 - Fehlt ein Fragment, liefert der Composer kurze, kontextfreie Fallback-Texte.
   Sie erfinden keine Figuren, Fakten, Choice-IDs, Kosten oder Effekte.
 - `isNarrativeFragment` prueft die generierte Registry auch zur Laufzeit;

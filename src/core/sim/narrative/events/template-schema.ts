@@ -13,6 +13,8 @@ const DIMENSIONS: readonly RelationshipDimension[] = ['trust', 'sympathy', 'conf
 const ID = /^[A-Z][A-Z0-9_]{0,63}$/;
 const STEP = /^[A-Z][A-Z0-9_]{0,31}$/;
 const FLAG = /^[A-Za-z][A-Za-z0-9_]{0,31}$/;
+const CONTEXT = /^[a-z0-9][a-z0-9-]{0,31}$/;
+const SLOT_CONTEXTS = 4;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
 const isText = (value: unknown, max: number): value is string => typeof value === 'string' && value.length > 0 && value.length <= max;
@@ -32,7 +34,12 @@ const isStep = (value: unknown): value is string => typeof value === 'string' &&
 const isFlag = (value: unknown): value is string => typeof value === 'string' && FLAG.test(value);
 
 function isContentSlot(raw: unknown): raw is ContentSlot {
-  return isRecord(raw) && isChoiceId(raw.id) && isSlotKind(raw.kind);
+  if (!isRecord(raw) || !isChoiceId(raw.id) || !isSlotKind(raw.kind)) return false;
+  if (raw.requiredContexts === undefined) return true;
+  return Array.isArray(raw.requiredContexts)
+    && raw.requiredContexts.length > 0 && raw.requiredContexts.length <= SLOT_CONTEXTS
+    && raw.requiredContexts.every((entry) => typeof entry === 'string' && CONTEXT.test(entry))
+    && new Set(raw.requiredContexts).size === raw.requiredContexts.length;
 }
 
 function isChoiceActor(raw: unknown, participantCount: number): raw is ChoiceActor {
