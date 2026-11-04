@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->
+<!-- rbd-doc: v0.3.92 | 2026-11-04 02:37 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.92] - 2026-11-04
+
+### Technik
+- A2: `readContributions()` ist fail-closed. Unterordner, Symlinks, versteckte Namen, `.md`/`.tmp`/`.bak` und JSON-Dateien ausserhalb des Content-Musters werden als `ERR-4022` gemeldet statt ignoriert; nur sichtbare regulaere `<datum>-<turn>.json` werden geparst. Manifest-1:1 und Registry-Hash bleiben die alleinige Vollstaendigkeitspruefung. Ein Governance-Test deckt alle Eintragsarten mit einem temporaeren Inbox-Fixture ab; `docs/NARRATIVE-ENGINE.md` Abschnitt 17 ist nachgezogen.
 
 ## [0.3.91] - 2026-11-04
 

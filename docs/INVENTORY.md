@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.91 | 2026-11-04 02:31 UTC -->
+<!-- rbd-doc: v0.3.92 | 2026-11-04 02:37 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -422,17 +422,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 315 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 320 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 882 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 892 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
 - `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 18 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 443 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 447 Zeilen
 - `docs/NARRATIVE-ENTSCHEIDUNGEN.md` — Narrative-Entscheidungen — gelesen: 211 Zeilen
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 64 Zeilen
@@ -1060,7 +1060,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 123 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 266 Zeilen
-- `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 471 Zeilen
+- `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
 - `scripts/lib/narrative-macros.mjs` — NAR-10 compile-time macro parser and validator. — gelesen: 258 Zeilen
 - `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 88 Zeilen
 - `scripts/lib/pipeline-stop.mjs` — Abbruchpfad der Pipeline: Signale beenden alle Gates und hinterlassen keine Waisen. — gelesen: 22 Zeilen
@@ -1169,7 +1169,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 153 Zeilen
-- `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 145 Zeilen
+- `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 180 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 60 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
@@ -1562,6 +1562,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T50 | **2026-11-04 02:37 UTC**: A2: Contribution-Inbox fail-closed. |
 | T49 | **2026-11-04 02:31 UTC**: Korrektur: E2E-Disposition vollstaendig. |
 | T48 | **2026-11-04 02:24 UTC**: Narrative-Entscheidungen zu Batch, Kontexten, Gegenmassnahme und Disposition. |
 | T47 | **2026-11-04 01:58 UTC**: Profilweg und Geschichten-Historie. `NarrativeView.history` (juengste 12 abgeschlossene Szenen) und Gaeste auf dem Floor in den Profilen; `GuestPopup` oeffnet ueber `onProfile(visitorId)` das Profil, `NarrativePopup` startet mit `initialVisitorId` im Figuren-Tab, das Journal zeigt die Historie im Tab „Geschichten“. Neu: `src/ui/journal-stories.tsx`, `src/ui/__tests__/guest-profile.test.tsx`, Content-Beitrag `2026-11-04-journal-und-profilweg.json`. Geprueft: `narrative:check`, `typecheck`, `verify:quick`. |
