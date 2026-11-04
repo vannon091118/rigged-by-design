@@ -12,6 +12,18 @@ const RIVAL_EVENT_ACTIONS = ['TRADE_INFO', 'PRICE_MOVE', 'POACH_VISITOR', 'SABOT
 
 export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = [
   { id: 'visitor-returned', condition: { op: 'fact', kind: 'VISITOR_RETURNED' } },
+  // Zweite Stufe ohne Campaign-State: Wer Gutes mitbringt, bekommt eine eigene Szene.
+  // Nutzt nur die vorhandene Trigger-/Cooldown-Infrastruktur, keine Template-Requirements.
+  {
+    id: 'visitor-returned-warm',
+    condition: {
+      op: 'all',
+      conditions: [
+        { op: 'fact', kind: 'VISITOR_RETURNED' },
+        { op: 'visitor-memory', valence: 'GOOD' },
+      ],
+    },
+  },
   { id: 'visitor-conflict', condition: { op: 'fact', kind: 'VISITOR_CONFLICT' } },
   { id: 'rival-action', condition: { op: 'rival-action', actions: RIVAL_EVENT_ACTIONS } },
 ].filter(isTriggerDefinition);

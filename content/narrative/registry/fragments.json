@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7ee315e9a80fedc5dc00596d5664b94b4f1a7619ca2673efee41404a2bc794c7",
+  "contentHash": "sha256:8ea579b103a13da1636995a41d8e278422ab15b686c25bcf04531be9b9897135",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -824,6 +824,29 @@
       "text": "Rita sah zwei Türen, die sich fast glichen. Auf der einen stand ein Willkommen, auf der anderen eine Frage; hinter beiden lag dieselbe Mechanik. Das Haus konnte den Text ändern, ohne die Entscheidung zu verändern. Nur wer den gespeicherten Schlüssel besaß und die Bedingungen noch erfüllte, durfte die Klinke drücken. Alles andere blieb eine Beschreibung, kein Versprechen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-07-event-templates.json"
+    },
+    {
+      "contributionId": "f-warm-return-01",
+      "turnId": "2026-11-04T06:55Z-f-warm-return",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Manche Gaeste kommen nicht einfach wieder - sie kommen zurueck: Wer gute Abende mitbringt, bekommt neben der gewohnten Begruessung eine zweite, waermere Szene. Kein Zustaendlichkeitsbuch fuehrt darueber Buch, nur Erinnerung, Kante und ein Trigger, der beides liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-f-warm-return.json"
     },
     {
       "contributionId": "floor-fleck-01",

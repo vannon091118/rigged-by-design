@@ -16,7 +16,7 @@ describe('Narrative Event Templates', () => {
     expect(EVENT_TEMPLATES.map((template) => `${template.eventId}@${template.version}`))
       .toEqual([
         'VISITOR_RETURN@1', 'VISITOR_CONFLICT@1', 'NEON_NACHT@1', 'TURNIER_ABEND@1',
-        'RIVAL_MOVE@1', 'VISITOR_AFTERMATH@1',
+        'RIVAL_MOVE@1', 'VISITOR_AFTERMATH@1', 'VISITOR_RETURN_WARM@1',
       ]);
     expect(templateFor('VISITOR_RETURN')?.choices.map((choice) => choice.choiceId))
       .toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
