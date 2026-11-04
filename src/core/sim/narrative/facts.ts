@@ -1,6 +1,7 @@
 /** Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. */
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { PersonaId, RivalId, WorldState } from '../types';
+import type { RivalActionId } from '../rival-ai/types';
 import {
   NARRATIVE_LIMITS,
   type ActorRef, type HouseBand, type NarrativeFact, type VisitorValence,
@@ -15,6 +16,10 @@ type FactDraft =
   | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
   | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
   | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro }
+  | {
+    readonly kind: 'RIVAL_ACTION'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId;
+    readonly action: RivalActionId; readonly evidence: boolean; readonly machineId: number | null;
+  }
   | { readonly kind: 'COMMAND_REJECTED'; readonly commandId: string; readonly reason: string }
   | {
     readonly kind: 'EVENT_RESOLVED'; readonly eventId: number; readonly eventKind: string;

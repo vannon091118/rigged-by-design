@@ -1,19 +1,20 @@
 /** Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. */
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { PersonaId, RivalId } from '../types';
+import type { RivalActionId } from '../rival-ai/types';
 import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
 
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
   | 'HOUSE_BALANCE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
-  | 'COMMAND_REJECTED' | 'EVENT_RESOLVED';
+  | 'RIVAL_ACTION' | 'COMMAND_REJECTED' | 'EVENT_RESOLVED';
 export type VisitorValence = 'GOOD' | 'NEUTRAL' | 'BAD';
 export type HouseBand = 'LOW' | 'OK';
 
 export const NARRATIVE_FACT_KINDS: readonly NarrativeFactKind[] = [
   'START_POOL', 'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISIT_ENDED',
   'HOUSE_BALANCE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
-  'COMMAND_REJECTED', 'EVENT_RESOLVED',
+  'RIVAL_ACTION', 'COMMAND_REJECTED', 'EVENT_RESOLVED',
 ];
 export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', 'BAD'];
 export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
@@ -103,6 +104,18 @@ interface RivalEncounterFact extends NarrativeFactBase {
   readonly netToHouse: VaCoinMicro;
 }
 
+/** Eine ausgefuehrte Rivalenhandlung; das Indiz gehoert zum Fact, nicht zum Zufall. */
+interface RivalActionFact extends NarrativeFactBase {
+  readonly kind: 'RIVAL_ACTION';
+  /** Genau der handelnde Rivale; der Spieler ist Ziel, nicht Teilnehmer. */
+  readonly actorRefs: readonly ActorRef[];
+  readonly rivalId: RivalId;
+  readonly action: RivalActionId;
+  /** true nur bei Sabotage: die Handlung hinterlaesst ein pruefbares Indiz. */
+  readonly evidence: boolean;
+  readonly machineId: number | null;
+}
+
 /** Eine verworfene Direktive/Choice; nur Diagnose, nie eine Spielwirkung. */
 interface CommandRejectedFact extends NarrativeFactBase {
   readonly kind: 'COMMAND_REJECTED';
@@ -122,7 +135,7 @@ interface EventResolvedFact extends NarrativeFactBase {
 export type NarrativeFact =
   | StartPoolFact | VisitorFirstSeenFact | VisitorReturnedFact | VisitEndedFact
   | HouseBalanceFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
-  | CommandRejectedFact | EventResolvedFact;
+  | RivalActionFact | CommandRejectedFact | EventResolvedFact;
 
 /** Strukturierte Erinnerung, keine kopierte Journal-Zeile. */
 export interface VisitorMemory {

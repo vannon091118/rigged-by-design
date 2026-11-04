@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
 Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-17 offen. Verbindlich ist der Code.
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-15 erledigt, NAR-16 bis NAR-17 offen. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -364,3 +364,30 @@ Instanz; die Anzeige liefert `expiresTick - tick` als Restlaufzeit. Es gibt kein
 v5–v8 (Weltfeld) und v9 (Narrativ-Slice) in eine aktive Instanz mit Restlaufzeit;
 abgelaufene Veranstaltungen verfallen, eine bereits vorhandene Instanz verhindert
 Duplikate.
+
+## NAR-15: Autonome Rivalen
+
+Der Rivale denkt in einem eigenen, persistenten Zustand: `WorldState.rivals`
+haelt je Rivale Haltung, Handlungsfaehigkeit, Wohlwollen, naechsten Zug, Historie
+und Indizien. Ruf, Sicherheit und Attraktivitaet bleiben abgeleitet (`rivalState`),
+damit es keine zweite Wahrheit gibt.
+
+- **Reine Politik** (`rival-ai/policy.ts`): `decideRivalAction` liest nur Zahlen und
+  Flaggen und liefert eine Absicht. Kein PRNG, keine Mutation: gleiche Eingabe,
+  gleiche Absicht. Die Regeln greifen in fester Reihenfolge: Kraefte sammeln,
+  Informationshandel, Sabotage, Preiskampf, Gaeste abwerben, beobachten.
+- **Ein Zug je Rivale und Taktfenster** (`RIVAL_AI_LIMITS.cadence = 260`),
+  fruehestens ab Tick 150; `counteredUntilTick` sperrt Gegenmassnahmen-Fenster.
+- **RIVAL_ACTION-Fact**: jede Aktion erzeugt genau einen Fact mit Rivale, Aktion,
+  Indiz-Flag und Zielgeraet. Der Boundary wendet daraus die gerichtete Kante
+  Rivale → Haus an; der Trigger `rival-action` uebersetzt ihn in `RIVAL_MOVE`
+  (Choice `CONFRONT_RIVAL` oder `WATCH_THE_MOVE`).
+- **Sabotage mit Indizien statt Zufallsmalus**: Ziel ist das beste unbeschaedigte
+  Geraet (Gleichstand: kleinste ID), der Schaden ist fest (12), und jeder Versuch
+  schreibt einen `RivalEvidence`-Eintrag mit Tick, Tag, Geraet, Blockade und Notiz.
+  Ein Guard im Dienst verhindert den Schaden, nicht das Indiz.
+- **Gegenmassnahmen**: Guard verhindert Schaden, Reparatur stellt das Geraet wieder
+  her, `CONFRONT_RIVAL` verschaerft den Konflikt bewusst, `WATCH_THE_MOVE` merkt
+  sich den Zug. Wer die Indizien liest, kennt Taeter, Ziel und Tick.
+- **Save v10**: `WorldState.rivals` liegt im Save; `SavedGame` akzeptiert v5–v10,
+  `normalizeRivalMinds` fuellt fehlende Rivalen mit dem neutralen Startzustand auf.

@@ -9,6 +9,7 @@ import type {
   PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, Zone, FightFx,
   ForeignFloorState,
 } from './types-model';
+import type { RivalMindState } from './rival-ai/types';
 
 export type * from './types-model';
 
@@ -57,6 +58,8 @@ export interface WorldState {
   nextVisitorId: number;
   /** Persistente Narrative-Domaene: Fact-Queue, Kurzzeithistorie, Flags. */
   narrative: NarrativeState;
+  /** Persistenter Rivalen-Zustand; Ruf und Ausstattung bleiben daraus abgeleitet. */
+  rivals: RivalMindState[];
   journal: JournalEvent[];
   /** Dauerhaftes, filterbares Archiv jenseits des 240er-Puffers. */
   archive: JournalEvent[];

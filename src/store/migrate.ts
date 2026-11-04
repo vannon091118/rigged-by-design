@@ -10,6 +10,8 @@ import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import { recordJournal, type JournalEvent } from '../core/sim/journal';
 import type { NarrativeState } from '../core/sim/narrative/types';
 import { hydrateNarrative, recordNarrativeMigration } from './migrate-narrative';
+import type { RivalMindState } from '../core/sim/rival-ai/types';
+import { normalizeRivalMinds } from '../core/sim/rival-ai/minds';
 import type { ActivePenalty, CarpetId, Crate, DemandTier, Dispute, FightFx, Furniture, Guest, Mop, Player, PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, WorldState, ForeignFloorState } from '../core/sim/types';
 import type { DemandEvent } from './legacy-demand';
 import { hydrateJobState } from '../core/sim/player-jobs';
@@ -25,7 +27,7 @@ interface SavedEntry { readonly tick: number; readonly from: string; readonly to
 type SavedGuest = Guest & { readonly fiat?: VaCoinMicro };
 
 export interface SavedGame {
-  readonly version: 5 | 6 | 7 | 8 | 9; readonly template: TemplateId; readonly carpet: CarpetId;
+  readonly version: 5 | 6 | 7 | 8 | 9 | 10; readonly template: TemplateId; readonly carpet: CarpetId;
   readonly furniture: Furniture[]; readonly guests: SavedGuest[]; readonly player: Player;
   readonly dirty: number[]; readonly prices: PriceBook; readonly staff: StaffState;
   readonly tick: number; readonly day: number; readonly nextGuestId: number;
@@ -37,6 +39,7 @@ export interface SavedGame {
   readonly wcLevel?: number; readonly nextCrateId?: number; readonly nextAgentId?: number;
   readonly nextDisputeId?: number; readonly activePenalties?: ActivePenalty[];
   readonly visitors?: Visitor[]; readonly nextVisitorId?: number; readonly narrative?: NarrativeState;
+  readonly rivals?: RivalMindState[];
   readonly lastEvent: string; readonly journal?: JournalEvent[]; readonly archive?: JournalEvent[];
   readonly fightFx?: FightFx | null; readonly nextJournalId?: number; readonly journaledSeq?: number;
   readonly look?: PlayerLook; readonly plinko?: PlinkoConfig; readonly plinkoMode?: PlinkoMode;
@@ -95,6 +98,8 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   for (const guest of world.guests) if (guest.disputeId !== null && !world.disputes.some((dispute) => dispute.id === guest.disputeId)) guest.disputeId = null;
   world.activePenalties = (saved.activePenalties ?? []).map((penalty) => ({ ...penalty }));
   const migration = hydrateNarrative(world, saved);
+  // v9 kennt keine Rivalen-Zustaende; fehlende IDs bekommen den neutralen Startzustand.
+  world.rivals = normalizeRivalMinds(saved.rivals);
   world.journal = (saved.journal ?? []).map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
   world.nextJournalId = saved.nextJournalId ?? world.journal.reduce((max, event) => Math.max(max, event.id + 1), 1);
   world.journaledSeq = saved.journaledSeq ?? saved.entries.length;

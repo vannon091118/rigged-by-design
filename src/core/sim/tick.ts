@@ -16,6 +16,7 @@ import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { sendGuestToQueue } from './queue-spots';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
 import { tickForeignFloor } from './foreign-floor-tick';
+import { tickRivalMinds } from './rival-ai/tick';
 import type { Guest, WorldState } from './types';
 import { exchangePoint, furnitureById, sendGuest } from './world';
 import { dirtyTileIndex } from './emotion';
@@ -136,6 +137,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
     world.player.position = { ...world.player.path[world.player.pathIndex]! };
     world.player.pathIndex += 1;
   }
+  // Rivalen handeln vor der Runtime: ihre RIVAL_ACTION-Facts wirken im selben Tick.
+  tickRivalMinds(world);
   // Ein Lauf pro Tick: alle Quellen haben Facts emittiert, jetzt Memory/Trigger/Scheduler.
   processNarrativeRuntime(world, ledger);
 }

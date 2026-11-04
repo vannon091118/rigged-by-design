@@ -1,6 +1,7 @@
 /** Validierung und stabile Reihenfolge persistierter Narrative-Facts. */
 import { RIVAL_IDS, type RivalId } from '../types-model';
 import { isActorRef, isStaffRef, visitorIdOf } from './relationships';
+import { RIVAL_ACTION_IDS } from '../rival-ai/types';
 import {
   HOUSE_BANDS, NARRATIVE_FACT_KINDS, VISITOR_VALENCES,
   type ActorRef, type HouseBand, type NarrativeFact, type VisitorValence,
@@ -62,6 +63,13 @@ export function isFact(raw: unknown): raw is NarrativeFact {
     return isRivalId(raw.rivalId)
       && refs !== null && refs[0] === `rival:${raw.rivalId}` && refs[1] === 'player'
       && Number.isSafeInteger(raw.netToHouse);
+  }
+  if (kind === 'RIVAL_ACTION') {
+    const refs = actorRefs(raw.actorRefs, 1);
+    return isRivalId(raw.rivalId) && refs !== null && refs[0] === `rival:${raw.rivalId}`
+      && typeof raw.action === 'string' && (RIVAL_ACTION_IDS as readonly string[]).includes(raw.action)
+      && typeof raw.evidence === 'boolean'
+      && (raw.machineId === null || safeInteger(raw.machineId, 1));
   }
   if (!safeInteger(raw.visitorId, 1)) return false;
   if (kind === 'START_POOL') return safeInteger(raw.capital, 0);

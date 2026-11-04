@@ -51,6 +51,16 @@ export function applyRelationshipFacts(world: WorldState, facts: readonly Narrat
       applied += 1;
       continue;
     }
+    if (fact.kind === 'RIVAL_ACTION') {
+      const rivalRef = actorRefOfRival(fact.rivalId);
+      if (fact.actorRefs.length !== 1 || fact.actorRefs[0] !== rivalRef || fact.action === 'PROBE') continue;
+      // Die Richtung bleibt Rivale → Haus: das Haus ist Ziel, nicht Urheber.
+      shift(world, rivalRef, 'player', fact.action === 'SABOTAGE'
+        ? { conflict: 2, trust: -2 }
+        : fact.action === 'TRADE_INFO' ? { trust: 1, sympathy: 1 } : { conflict: 1, influence: 1 }, fact.tick);
+      applied += 1;
+      continue;
+    }
     if (fact.kind === 'RIVAL_ENCOUNTER') {
       if (fact.netToHouse === 0) continue;
       const rivalRef = actorRefOfRival(fact.rivalId);

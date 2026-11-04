@@ -10,4 +10,5 @@ import { isTriggerDefinition } from '../trigger-schema';
 export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = [
   { id: 'visitor-returned', condition: { op: 'fact', kind: 'VISITOR_RETURNED' } },
   { id: 'visitor-conflict', condition: { op: 'fact', kind: 'VISITOR_CONFLICT' } },
+  { id: 'rival-action', condition: { op: 'fact', kind: 'RIVAL_ACTION' } },
 ].filter(isTriggerDefinition);
