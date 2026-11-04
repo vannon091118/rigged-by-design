@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - D3: Fristablauf ohne Strafe
+
+**Ziel.** Ein Fristablauf darf nie heimlich bestrafen: Wer eine Szene verstreichen laesst, findet danach dieselbe Welt vor - gleiche Flags, gleiche Beziehungen, gleicher Ledger. Das war bisher Lesart des Codes, jetzt ist es ein Test.
+
+**Umsetzung.** Neuer Test `narrative-event-expiry.test.ts`: OFFERED- und ACTIVE-Instanz laufen ueber `maintainEvents` in `EXPIRED` mit `DEADLINE`; Flags, Beziehungen, Ledger-Zeilen und Fact-Queue bleiben byte-identisch unberuehrt. Keine Codeaenderung noetig - `transitionEvent` schreibt nur Status, Tick, Resolution, Cooldown und kuerzt die Historie.
+
+**Pruefungen.** `verify:quick` (zehn Gates) vor dem Commit. Registry auf 54 Fragmente.
+
+**Offen.** Sollte eine Szene kuenftig beim Verstreichen wirken (z.B. verpasste Chance), gehoert das als expliziter Choice-Effekt in den Template-Vertrag - nie als globale Regel.
+
 ## 2026-11-04 - D2: Domaenenwirkung COUNTER_RIVAL
 
 **Ziel.** Entgegentreten muss in der Domaene ankommen, nicht nur im Journal: Nach `CONFRONT_RIVAL` bleibt der Rivale 900 Ticks still. Die Wirkung gehoert als typisierter Effekt in den Choice-Vertrag, mit Preflight-Kontrolle und genau einem Schreibpfad.
@@ -1004,7 +1014,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.105 | 2026-11-04 06:04 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.106 | 2026-11-04 06:16 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

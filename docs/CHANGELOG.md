@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.105 | 2026-11-04 06:04 UTC -->
+<!-- rbd-doc: v0.3.106 | 2026-11-04 06:16 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.106] - 2026-11-04
+
+### Spiel
+- Keine sichtbare Aenderung: Wer eine Szene verstreichen laesst, wird dafuer auch weiterhin nicht bestraft - der Abend laeuft einfach weiter.
+
+### Technik
+- D3: `EXPIRED` bleibt ein reiner Statuswechsel mit `DEADLINE`; ein neuer Test sichert, dass der Fristablauf weder Flags noch Beziehungen noch Ledger-Zeilen aendert und keinen Fact emittiert. Timeout-Effekte nur als expliziter Template-Vertrag, falls spaeter noetig. Registry auf 54 Fragmente.
 
 ## [0.3.105] - 2026-11-04
 

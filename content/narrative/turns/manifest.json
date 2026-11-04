@@ -212,6 +212,10 @@
     {
       "turnId": "2026-11-04T06:05Z-d2-counter-rival",
       "contributionId": "d2-counter-rival-01"
+    },
+    {
+      "turnId": "2026-11-04T06:20Z-d3-expiry-no-penalty",
+      "contributionId": "d3-expiry-no-penalty-01"
     }
   ]
 }
