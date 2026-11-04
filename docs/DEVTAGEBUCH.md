@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - F: Warme Rueckkehr als zweite Stufe
+
+**Ziel.** Langzeit ohne Campaign-State: Der vorhandene Kettenbaustein (VISITOR_RETURN -> ASK -> VISITOR_AFTERMATH -> Flag/Beziehung) soll spaeter von allein in ein weiteres Match muenden. Zweite Stufe als Trigger-Variante mit eigenem Template, nur vorhandene Infrastruktur.
+
+**Umsetzung.** Neue Trigger-Definition `visitor-returned-warm` (`all` aus `VISITOR_RETURNED`-Fact und `visitor-memory GOOD`) plus eigenes Template `VISITOR_RETURN_WARM` (Scope VISITOR, Prioritaet 50, Choice `WARM_WELCOME` mit Trust+1, kein Follow-up). Die Basis bleibt unangetastet: Bei GOOD-Erinnerung entstehen beide Szenen, sonst nur die Basis. Slot-Kontexte spiegeln die Basis (Titel/Text nur `return`), damit die B4-Abdeckung ohne neue Texte haelt.
+
+**Pruefungen.** Neuer Test `narrative-warm-return.test.ts`: Definition plus Template-Vertrag, GOOD gegen BAD (zwei gegen eine Szene), und der volle Langzeitpfad (ASK-Flag, AFTERMATH-Trust, gute Erinnerung, spaeteres Warm-Match bei erhaltenem Flag und gewachsener Kante). `vitest` (3/3 plus Abdeckung) vorab gruen; `verify:quick` (zehn Gates) vor dem Commit. Registry auf 56 Fragmente.
+
+**Offen.** Die warme Szene nutzt vorerst den Textpool der Basis; ein eigener Ton (herzlicher, persoenlicher) waere ein Content-Batch, keine Mechanik. Ob die additive Doppel-Szene auf Dauer richtig fuelt, zeigt der Spielbetrieb - Cooldowns und `maxOccurrences` begrenzen sie bereits.
+
 ## 2026-11-04 - E2: Besucherdisposition ueber den Gastpfad
 
 **Ziel.** Eine einzige Ableitung aus Persona, Erinnerung und Kante, die an allen drei Entscheidungspunkten begrenzt wirkt - wie in D4/D5 entschieden, ohne neue Pflichten, ohne Geldwirkung.
@@ -1024,7 +1034,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.107 | 2026-11-04 06:34 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.108 | 2026-11-04 06:52 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

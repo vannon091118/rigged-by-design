@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.107 | 2026-11-04 06:34 UTC -->
+<!-- rbd-doc: v0.3.108 | 2026-11-04 06:52 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.108] - 2026-11-04
+
+### Spiel
+- Keine sichtbare Aenderung: Wer schon gute Abende mit dem Haus verbindet, wird beim Wiederkommen etwas waermer begruesst - eine zweite, kurze Szene neben der gewohnten.
+
+### Technik
+- F: Zweite Stufe `visitor-returned-warm` (`VISITOR_RETURNED`-Fact plus GOOD-Erinnerung) mit eigenem Template; Langzeitpfad Kette -> Flag/Beziehung -> spaeteres Warm-Match ohne Campaign-State, nur vorhandene Trigger-/Cooldown-Infrastruktur. Registry auf 56 Fragmente.
 
 ## [0.3.107] - 2026-11-04
 
