@@ -437,7 +437,11 @@ Die Klassifizierung stammt aus `content/narrative/vocabulary/classification.json
 `*.json`-Dateien nach `<datum>-<turn>.json` werden gelesen; Unterordner,
 Symlinks, versteckte Namen, `.md`/`.tmp`/`.bak` und anders benannte
 JSON-Dateien meldet das Assets-Gate als `ERR-4022`, statt sie zu ignorieren.
-Manifest-1:1 und Inhalts-Hash bleiben die alleinige Vollstaendigkeitspruefung. `pnpm run narrative:compile -- --write` erzeugt daraus
+Manifest-1:1 und Inhalts-Hash bleiben die alleinige Vollstaendigkeitspruefung.
+Der Pre-Commit-Hook ruft diesen Validator vor dem `node_modules`-Fruehausstieg
+auf; gestagte Narrative-Dateien, die im Arbeitsbaum noch unstaged veraendert
+sind, blockieren den Commit mit `ERR-4022`, damit nie ein anderer Inhalt
+geprueft wird als der Commit. `pnpm run narrative:compile -- --write` erzeugt daraus
 `content/narrative/registry/fragments.json` und den Laufzeit-Spiegel
 `composer/registry.generated.ts`; `pnpm run narrative:check` vergleicht beide und
 meldet die Fragmentzahl samt Inhalts-Hash. Das Assets-Gate (`ERR-4022`) verwirft
