@@ -3,10 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VaCoin Casino — Dein Floor</title>
+    <meta name="description" content="Rigged by Design — Lebenssimulation. Das Casino ist Start- und Testumgebung, kein Echtgeld. VaCoins als ganzzahlige Mikro-Einheiten." />
+    <title>Rigged by Design — Dein Floor</title>
+    <link rel="icon" type="image/png" href="/assets/casino/ui/coin.png" />
+    <style>
+      /* Ladebildschirm: sichtbar, bevor React mountet. Kein weisser Bildschirm. */
+      #rbd-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(900px 520px at 10% -10%, rgba(255, 46, 136, 0.14), transparent 62%),
+          radial-gradient(760px 460px at 100% 0%, rgba(0, 255, 204, 0.08), transparent 58%),
+          radial-gradient(1200px 800px at 50% 120%, rgba(120, 60, 200, 0.12), transparent 60%),
+          #07050c;
+        color: #f1e9fb;
+        font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      }
+      #rbd-loader .ld-text {
+        font-size: 14px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #00ffcc;
+        margin-bottom: 16px;
+      }
+      #rbd-loader .ld-bar {
+        width: 320px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      #rbd-loader .ld-bar > div {
+        height: 100%;
+        background: linear-gradient(90deg, rgba(176, 107, 255, 0.45), #b06bff);
+        border-radius: 999px;
+        width: 0%;
+        animation: rbd-load 2.4s ease-in-out infinite;
+      }
+      @keyframes rbd-load {
+        0%   { width: 0%; }
+        30%  { width: 45%; }
+        70%  { width: 75%; }
+        100% { width: 100%; }
+      }
+    </style>
   </head>
   <body>
+    <div id="rbd-loader">
+      <div class="ld-text" id="rbd-loader-text">Lade Neon-Kasino…</div>
+      <div class="ld-bar"><div></div></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div style="position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#07050c;color:#f1e9fb;font-family:sans-serif;padding:24px;">
+        JavaScript ist erforderlich. Bitte aktiviere JavaScript im Browser.
+      </div>
+    </noscript>
   </body>
 </html>

@@ -6,6 +6,7 @@ import { playSlot } from './engines/slot';
 import { slotConfigOf } from './slot-config';
 import { createSlotMemory, prepareSlotSpin, recordSlotSpin, settleSlotSpin, type SlotMemory } from './slot-transparency';
 import type { Prng } from '../rng/prng';
+import { emit } from '../sim/events';
 
 /** Ein echter Gast-Spin; der Testspin bleibt absichtlich ohne Gedaechtnis-Wirkung. */
 export function playSlotSession(
@@ -30,6 +31,17 @@ export function playSlotSession(
   const prefix = plan.forceWin ? 'ENTLADUNG · ' : '';
   recordSlotSpin(memory, outcome.symbols, outcome.multiplierBps, outcome.jackpot);
   memory.bank = settlement.withheld;
+  // Visuelle Ereignisse fuer die Render-Schicht (Partikel, Sound, Flash).
+  if (outcome.jackpot) {
+    emit('slot:jackpot', { itemId: item.id, stake: bet, payout, multiplierBps: outcome.multiplierBps });
+  }
+  if (plan.forceWin) {
+    emit('slot:chargeDischarge', { itemId: item.id, stake: bet, payout });
+  } else if (memory.chargeReady) {
+    emit('slot:chargeReady', { itemId: item.id });
+  } else {
+    emit('slot:spin', { itemId: item.id, stake: bet, multiplierBps: outcome.multiplierBps });
+  }
   return {
     game: 'SLOT',
     stake: bet,
