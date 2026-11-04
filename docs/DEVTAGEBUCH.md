@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Warmer Content-Batch
+
+**Ziel.** Die zweite Stufe bekommt eine eigene Stimme: Titel, Text, Choice-Label und Outcome fuer `VISITOR_RETURN_WARM` mit waermerem Ton, damit die Szene nicht mehr aus dem Basistopf spricht.
+
+**Umsetzung.** Vier Beitraege mit eigenem `warm`-Kontext im Vokabular (B2/D2-Praezedenz); das Template verlangt ihn pro Slot, sodass der Basistopf fail-closed herausfaellt und die Auswahl deterministisch beim eigenen Pool landet. Slot-Zwecke bleiben ehrlich: Titel/Text/Choice auf `return`+`warm`, Outcome auf `return`+`aftermath`.
+
+**Pruefungen.** Neuer Testfall in `narrative-warm-return.test.ts`: Die komponierte warme Szene traegt exakt die neuen Texte, Choice `WARM_WELCOME` inklusive, ohne Fallback auf Titel/Text/Label. `verify:quick` (zehn Gates) vor dem Commit. Registry auf 61 Fragmente.
+
+**Offen.** Persona-spezifische Begruessungen (mit Namen im Text) brauchen erst einen Composer, der Namen einsetzen darf; bis dahin bleibt der Text figuren-neutral.
+
 ## 2026-11-04 - Phase 5: Rivalen-Integration und Nachweise
 
 **Ziel.** Die Rivalen-Domaene ins Anzeigemodell heben, ohne NAR-14-17 zu duplizieren: Minds, Indizien und `counteredUntilTick` sind die einzige Grundlage, alles andere waere eine zweite Wahrheit.
@@ -1044,7 +1054,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.109 | 2026-11-04 07:06 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.110 | 2026-11-04 07:20 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

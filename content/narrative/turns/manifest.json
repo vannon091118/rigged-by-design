@@ -228,6 +228,22 @@
     {
       "turnId": "2026-11-04T07:10Z-phase5-rival-integration",
       "contributionId": "phase5-rival-integration-01"
+    },
+    {
+      "turnId": "2026-11-04T07:20Z-warm-return-titel",
+      "contributionId": "warm-return-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T07:21Z-warm-return-body",
+      "contributionId": "warm-return-body-01"
+    },
+    {
+      "turnId": "2026-11-04T07:22Z-warm-return-choice",
+      "contributionId": "warm-return-choice-01"
+    },
+    {
+      "turnId": "2026-11-04T07:23Z-warm-return-outcome",
+      "contributionId": "warm-return-outcome-01"
     }
   ]
 }
