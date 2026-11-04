@@ -6,6 +6,7 @@ import { getBuildDef } from './offers';
 import { newPlayerRpg } from './player-rpg';
 import { DEFAULT_LOOK } from './player-look';
 import { createNarrativeState } from './narrative/state';
+import { createRivalMinds } from './rival-ai/minds';
 import { BLUEPRINTS } from './house-presets';
 import { spawnStain } from './stain';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
@@ -83,6 +84,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     visitors: [],
     nextVisitorId: 1,
     narrative: createNarrativeState(),
+    rivals: createRivalMinds(),
     journal: [],
     archive: [],
     fightFx: null,
