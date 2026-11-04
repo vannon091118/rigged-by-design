@@ -35,7 +35,7 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(report.registry.version).toBe(2);
     expect(report.registry.compiler).toBe('nar-10');
     expect(report.contentHash).toMatch(/^sha256:[a-f0-9]{64}$/);
-    expect(report.registry.fragments).toHaveLength(47);
+    expect(report.registry.fragments).toHaveLength(48);
     expect(report.runtimeRegistryText).toContain('export const NARRATIVE_REGISTRY');
     expect(validateRuntimeRegistry(report.runtimeRegistryText, report.compiled)).toEqual([]);
   });

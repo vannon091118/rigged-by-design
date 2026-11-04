@@ -188,6 +188,10 @@
     {
       "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
       "contributionId": "c2-rival-action-trigger-01"
+    },
+    {
+      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
+      "contributionId": "c1-trigger-template-contract-01"
     }
   ]
 }

@@ -358,7 +358,11 @@ ist ebenfalls ein normaler Fact und wird beim Laden schema-validiert.
 nicht rekursiv: `processNarrativeRuntime()` drainiert den Boundary hoechstens einmal,
 wertet fuer jeden drainierten Fact die Definitionen aus `events/trigger-definitions.ts`
 aus und sammelt Kandidaten. Nur Facts mit Template duerfen einen Event ausloesen;
-Diagnose- und Ledger-Facts bleiben wirkungslos. `scheduleCandidates()` plant hoechstens
+Diagnose- und Ledger-Facts bleiben wirkungslos. Seit C1 haelt
+`narrative-trigger-template-contract.test.ts` diesen Vertrag fest: jede Definition
+findet mindestens ein Template, jedes Fact-Template genau eine Definition.
+Geraete-, Lager- und Personal-Facts haben bewusst keine Fact-Kinds und bleiben
+dokumentiert offen. `scheduleCandidates()` plant hoechstens
 drei neue Instanzen pro Lauf und verhindert Live-Duplikate und Cooldowns wie bisher.
 Facts aus Choice-Effekten entstehen erst nach dem Drain und werden im naechsten Lauf
 verarbeitet.
