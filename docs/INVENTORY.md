@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->
+<!-- rbd-doc: v0.3.88 | 2026-11-04 01:24 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -167,7 +167,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 42 | info | **aufgelöst (T10)**: Das Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` ist gelöscht; es bleibt nur `docs/ANALYSE-BERICHT-CASINO-FLOOR.md`. | `docs/` |
 | 43 | info | **Asset-Pipeline jetzt vollständig (Pull-Batch)**: `scripts/build-asset-manifest.mjs` (neu, Manifest **v3**: ~539 Texturen in 8 Kategorien + Frame-Animationen + Emitter + 6 Musiktracks, Fail-Closed gegen fehlende Dateien), `verify-assets.mjs` auf v3 umgestellt, `main.tsx` preloaded ~1,3 MB (Symbole+Maschinen+Deko+Plinko), `music.ts` mit NIGHT/MENU/BACKGROUND, `App.tsx` ordnet Popups Musikstimmungen zu, Asset-Library-Popup (192 Zeilen) mit Animations-/Emitter-Previews. Konsistenz geprüft: alle ENGINE_SYMBOLS-Pfade (book/scarab/ankh/eye-of-horus/urn/rank-*) existieren im Paket. | `scripts/`, `src/render/`, `src/App.tsx` |
 | 44 | info | **Asset-Lizenz: Status im Pull bestätigt — weiterhin unbelegt.** `docs/ASSETS.md` (§ Herkunft und Rechte, unverändert geblieben): die beiliegende README nennt **keine Lizenz und keinen Urheber**, „das Paket ist kein freigegebenes Distributionsmaterial“; vor externer Veröffentlichung muss die Herkunft geklärt bleiben. Das Dokument ist dazu jetzt konsistent ehrlich (539 PNG/7 JSON/6 WAV, ~170 MB Quelle, 13,4 MB ausgeliefert). Offener Punkt 4 bleibt damit aktiv. | `docs/ASSETS.md` |
-| 45 | info | **Doku-Double, in T23 einsortiert: `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` (1023 Zeilen)** — sequenzieller Plan NAR-00…NAR-16 für eine datengetriebene Narrative Engine: Typed Sim Facts, Charaktergedächtnis, Beziehungen, Event-Scheduler, Event-Command-DSL mit Allowlist, Content-Registry, lokaler deterministischer Textcomposer (kein LLM im Spiel), **Save v9**, Migration der beiden bestehenden `demandEvent`s, autonome Rivalen. Basiert auf Stand `708d31c` (vor dem Pull; kleine Veraltungen z. B. Poker-Profile nicht reflektiert — irrelevant für den Plan). Grundlagen von NAR-00 bis NAR-03 sind vorhanden (Save v9), aber nicht vollstaendig; Ledger-Facts und referenzsichere Retention fehlen weiterhin. | `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` |
+| 45 | info | **Doku-Double, in T23 einsortiert: `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` (1023 Zeilen)** — sequenzieller Plan NAR-00…NAR-17 für eine datengetriebene Narrative Engine: Typed Sim Facts, Charaktergedächtnis, Beziehungen, Event-Scheduler, Event-Command-DSL mit Allowlist, Content-Registry, lokaler deterministischer Textcomposer (kein LLM im Spiel), **Save v10**, Migration der beiden Nachfrageveranstaltungen, autonome Rivalen. Basiert auf Stand `708d31c` (vor dem Pull; kleine Veraltungen z. B. Poker-Profile nicht reflektiert — irrelevant für den Plan). Grundlagen von NAR-00 bis NAR-03 sind vorhanden (Save v9), aber nicht vollstaendig; Ledger-Facts und referenzsichere Retention fehlen weiterhin. | `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` |
 | 47 | info | **Eskalations-Leiter global (T10):** `scripts/lib/escalation.mjs` klassifiziert Befunde in `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; `pnpm run escalation:plan` nennt die Stufe. Fail-Closed bleibt für Geld/Ledger/RNG/Save. `release-escalation.mjs` bleibt unangetastet (Push-Token), damit keine zweite Leiter entsteht. | `scripts/lib/escalation.mjs`, `scripts/escalation-plan.mjs` |
 | 48 | info | **Doc-Gate + Hooks (T10):** `scripts/lib/doc-sync.mjs` führt sechs Pflichtdokumente mit Pflichtabschnitten und `rbd-doc`-Marker (Version + UTC); `verify:docs` ist Gate (`ERR-4017`), der Pre-Commit-Hook schreibt ihn. `deps-matrix` und `catalog` sind keine Gates mehr; Matrix, Katalog und Marker entstehen im Hook. Wurzel-Duplikat `ANALYSE-BERICHT-CASINO-FLOOR.md` (identische MD5) gelöscht. | `scripts/lib/doc-sync.mjs`, `.githooks/`, `scripts/lib/pipeline-plan.mjs` |
 | 49 | info | **Import/Export-Engine (T10):** `src/core/io/issues.ts` (42), `envelope.ts` (66), `repair.ts` (42), `src/store/transfer.ts` (46), `src/ui/transfer-panel.tsx` (49) — alle unter ihren LOC-Zonen; keine zweite Save-Wahrheit (`toSavedGame`/`replaySave`), Trockenlauf vor Anwendung, Prüfsumme FNV-1a. Panel sitzt im Prüfungs-Popup. | `src/core/io/`, `src/store/transfer.ts`, `src/ui/transfer-panel.tsx` |
@@ -416,23 +416,23 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 89 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 253 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 254 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 56 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 303 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 304 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 842 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 852 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
 - `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 18 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
-- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 418 Zeilen
+- `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 435 Zeilen
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
-- `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 63 Zeilen
+- `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 64 Zeilen
 - `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
 - `docs/ROADMAP.md` — Roadmap — gelesen: 46 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 160 Zeilen
@@ -1551,6 +1551,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T46 | **2026-11-04 01:23 UTC**: NAR-17: Doku-, Katalog- und demandEvent-Sync mit Save v10. Save v10 und Rivalen-Domaene in ARCHITECTURE, AGENTS, PRODUCT, ROADMAP, NARRATIVE-ENGINE und Taskplan; `TRIGGER_DIALOG` und `demandEvent` nur noch als Migrationsfeld beschrieben; Katalog und Inventur regeneriert. |
 | T45 | **2026-11-03 05:47 UTC**: Narrative-Review-Befunde S1 bis S16: Expiry, Demand, Slot-Map, Preflight, Locale, Migration, Duplikat, totale Ausfuehrung, ENGINE_DEMAND, maxOccurrences, legacy-Demand, guard-Flush, degraded, Doku. |
 | T44 | **2026-11-03 02:32 UTC**: NAR-12 abgeschlossen: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler in einem Lauf; Tick und Store-Mutationsgrenzen rufen ihn. `EVENT_RESOLVED` schliesst den Command→Fact-Kreis; zwei neue Testdateien, 21 Registry-Fragmente. |
 | T43 | **2026-11-03 00:25 UTC**: NAR-06 abgeschlossen: `event-lifecycle.ts`, `event-scheduler.ts`, `event-schema.ts`, `event-types.ts` und `narrative-rng.ts` verwalten persistente Event-Instanzen mit Prioritaet, Fairness, Scopes, Cooldowns, Fristen, Stale-Cancel und eigenem Narrativ-RNG. Save v9 traegt die Felder additiv; Tests decken Lifecycle, Determinismus, Ketten, Historiengrenze und Roundtrip ab. Trigger-Auswahl im Tick bleibt NAR-12. |

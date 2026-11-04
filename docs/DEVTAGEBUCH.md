@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - NAR-17: Doku-, Katalog- und demandEvent-Sync mit Save v10
+
+**Ziel.** Doku, Testkatalog und Content-Vertrag auf den tatsaechlichen Code heben: Save v10, Rivalen-Domaene, Langzeit-Nachweise und die verbliebenen `demandEvent`-Spuren.
+
+**Umsetzung.** `ARCHITECTURE.md`, `AGENTS.md`, `PRODUCT.md`, `ROADMAP.md`, `NARRATIVE-ENGINE.md` und der Taskplan nennen jetzt Save v10 (`vcoin.casino.v10`, Migration v5–v9) statt v9. Die Rivalen-Domaene ist als eigener Zustandsbesitz dokumentiert: `WorldState.rivals` mit Haltung, Handlungsfaehigkeit, Wohlwollen, naechstem Zug, Gegenmassnahmen-Fenster, Historie (6) und Indizien (4), reine Politik ohne PRNG, `RIVAL_ACTION`-Fact, Trigger `rival-action`, Template `RIVAL_MOVE` und die Kante Rivale→Haus aus dem Boundary. NAR-16 steht mit Zwei-Tage-Test, Save-Budget (gemessen 137 KiB je Tag, 337 KiB nach zwei), Hotpath-Messung und `ci:long` in den Vertraegen. `TRIGGER_DIALOG` ist ueberall als bis zur Dialogfuehrung nicht ausfuehrbar formuliert. `demandEvent` bleibt ausschliesslich als Migrationsfeld in `SavedGame`/`migrate-narrative.ts` fuer v5–v9 dokumentiert, `NarrativeState` kennt es nicht. Der Content-Workflow (Beitrag, Turn-Manifest, Compiler, Assets-Gate) ist als eigener Abschnitt 17 im Narrativ-Vertrag beschrieben. Testkatalog und Inventur sind regeneriert.
+
+**Pruefungen.** `pnpm run narrative:check`, `pnpm run catalog`, `pnpm run inventory:build` und `pnpm run verify:all` auf dem committeten Stand; dazu CI `Fail-Closed Gates` auf dem PR.
+
+**Offen.** `TRIGGER_DIALOG` wartet weiter auf eine Dialogfuehrung; die Rivalen-Profilkarte zeigt Historie und Indizien noch nicht, und ein Sieben-Tage-Langlauf bleibt ein eigener CI-Nachweis.
+
 ## 2026-11-03 - CI-Eskalation: Code, Stufe, Haeufigkeit
 
 Ziel: Jeder CI-Fehler zeigt Code, Beschreibung, Fix und Haeufigkeit, mit dem bestehenden Gate-System und ohne zweites Register.
@@ -824,7 +834,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.88 | 2026-11-03 22:18 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.88 | 2026-11-04 01:24 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -1,7 +1,7 @@
 # Narrative Engine — Architekturvertrag (NAR-00)
 
-Stand: 2026-11-03 · Save v9 · Grundlagen NAR-00 bis NAR-03 vorhanden;
-NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-15 erledigt, NAR-16 bis NAR-17 offen. Verbindlich ist der Code.
+Stand: 2026-11-04 · Save v10 · Grundlagen NAR-00 bis NAR-03 vorhanden;
+NAR-04 erledigt (Besucher↔Besucher, Besucher→Personal, Rivale→Haus), NAR-05 erledigt (Trigger-Context, Condition Evaluator, Schema), NAR-06 erledigt (Event-Scheduler, Lifecycle, persistente Instanzen, eigener Narrativ-RNG), NAR-07 erledigt (Event-Templates, stabile Choice-IDs, persistierte Choice-Saetze, Eligibility), NAR-08 erledigt (Command-DSL, Allowlist, Preflight, einmalige Ausfuehrung), NAR-09 erledigt (Contribution-Schema, kontrollierte Klassifizierung, Turn-Manifest, abgeleitete Registry), NAR-10 erledigt (Content-Compiler, byte-identische Registry), NAR-11 erledigt (lokaler Composer, Fallbacks), NAR-12 erledigt (Orchestrierung in Tick und WorldStore, Command→Fact-Kreis). NAR-13 bis NAR-17 erledigt. Verbindlich ist der Code.
 
 ## 1. Grundsatz
 
@@ -302,7 +302,7 @@ erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
   1..200 Ticks begrenzt und schreibt `expiresTick` in den Save.
 - `€trigger Dialog '(...)'` wird als `TRIGGER_DIALOG` geparst; der String ist eine ID
   aus dem Choice-Vertrag, kein ausfuehrbarer Code. Der Handler bleibt bis zur
-  UI-/Runtime-Anbindung (NAR-14) fail-closed nicht ausfuehrbar.
+  Dialogfuehrung fail-closed nicht ausfuehrbar.
 - Unbekannte Commands, ungueltige Parameter, nicht allowlistete IDs und fehlende
   Zielakteure werden vor jeder Wirkung verworfen; die Ablehnung erscheint als
   begrenzter Fact `COMMAND_REJECTED`. Der Compiler (NAR-10) validiert Direktiven, bevor
@@ -318,9 +318,9 @@ erzeugen den begrenzten Diagnose-Fact `COMMAND_REJECTED`.
 
 ## 13. Persistenz
 
-Save v9 traegt `narrative`, darin die Event-Instanzen, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile. Alte v5–v9-Staende mit `demandEvent` (v5–v8 auf der Welt, v9 im Narrativ-Slice) werden beim Laden in eine aktive GLOBAL-Event-Instanz mit Restlaufzeit konvertiert; abgelaufene verfallen, eine bereits vorhandene Instanz gewinnt. v5–v8 bleiben
+Save v10 traegt `narrative` und `rivals`. `narrative` enthaelt die Event-Instanzen, `ledgerSeq`, `houseBand`, die kanonisch sortierten gerichteten Beziehungen und die Erinnerungen der Visitor-Profile; `rivals` haelt je Rivale Haltung, Handlungsfaehigkeit, Wohlwollen, naechsten Zug, Gegenmassnahmen-Fenster, Historie (6) und Indizien (4). `demandEvent` existiert nur noch als Migrationsfeld in `SavedGame`/`migrate-narrative.ts` fuer v5–v9, nicht in `NarrativeState`. Alte v5–v9-Staende mit `demandEvent` (v5–v8 auf der Welt, v9 im Narrativ-Slice) werden beim Laden in eine aktive GLOBAL-Event-Instanz mit Restlaufzeit konvertiert; abgelaufene verfallen, eine bereits vorhandene Instanz gewinnt. v5–v9 bleiben
 ladbar: fehlende Narrative-Daten werden auf leere Defaults normalisiert, kaputte Facts
-und Erinnerungen verworfen, IDs monoton fortgeschrieben. Event-Instanzen, Cooldowns und der eigene Narrativ-RNG liegen seit NAR-06 in Save v9;
+und Erinnerungen verworfen, IDs monoton fortgeschrieben. Event-Instanzen, Cooldowns und der eigene Narrativ-RNG liegen seit NAR-06 in Save v9, seit NAR-15 kommen die Rivalen-Zustaende in Save v10 hinzu;
 seit NAR-07 tragen Instanzen zusaetzlich `templateId`, `templateVersion` und den
 angebotenen `offeredChoiceIds`-Satz. Fehlende Felder alter Staende werden auf `eventId`,
 Version 1 und einen leeren Satz normalisiert; solche Events bleiben fail-closed nicht
@@ -416,3 +416,20 @@ damit es keine zweite Wahrheit gibt.
   laufen; die 60-s-Grenze war dort der einzige rote Punkt.
 - Lange Nachweise bleiben in Actions: `pnpm run ci:long` startet `long-checks.yml`
   (verify:all, Statistik, Soak 100000 Ticks, Balance 40 Tage, Benchmarks).
+
+## 17. Agenten-Contributions: Workflow und Fehlerfaelle
+
+Jeder abgeschlossene Turn liefert genau einen Beitrag unter
+`content/narrative/contributions/<datum>-<turn>.json` mit den Feldern `agentId`,
+`turnId`, `contributionId`, `role`, `locale`, `slot`, `function`, `contexts`,
+`tone`, `mood`, `relationship`, `personaRefs`, `flags`, `text` und `directives`.
+Die Klassifizierung stammt aus `content/narrative/vocabulary/classification.json`;
+`content/narrative/turns/manifest.json` bindet jeden Turn an genau eine
+`contributionId`. `pnpm run narrative:compile -- --write` erzeugt daraus
+`content/narrative/registry/fragments.json` und den Laufzeit-Spiegel
+`composer/registry.generated.ts`; `pnpm run narrative:check` vergleicht beide und
+meldet die Fragmentzahl samt Inhalts-Hash. Das Assets-Gate (`ERR-4022`) verwirft
+unbekannte Slots oder Funktionen, doppelte IDs, fehlende Manifest-Eintraege,
+kaputte Makros und eine vom Compiler abweichende Registry. Texte sind Darstellung:
+kein Makro ersetzt eine Spielregel, und im Spiel gibt es keine LLM- oder
+Provider-Anbindung.
