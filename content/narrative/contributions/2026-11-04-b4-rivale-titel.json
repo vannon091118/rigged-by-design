@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:13Z-b4-rivale-titel",
+  "contributionId": "b4-rivale-titel-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "rival"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Rivale setzt seinen Becher zu laut ab.",
+  "directives": []
+}

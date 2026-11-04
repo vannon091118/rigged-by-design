@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - B4: Abdeckung ohne stillen Fallback
+
+**Ziel.** "Kein stiller Fallback" sollte nicht nur behauptet, sondern ueber alle stabilen Templates pruefbar sein. Gleichzeitig kollidiert ein solcher Batch mit der Regel "genau ein Content-Beitrag pro Turn".
+
+**Umsetzung.** AGENTS.md praezisiert: Ein abgestimmter Content-Batch gilt als ein Arbeitsschritt und darf mehrere Beitraege enthalten, solange jede Turn-ID genau einen Beitrag traegt und das Manifest jeden Turn einzeln registriert. Der Batch umfasst 16 Beitraege mit eigenen Turn-IDs: je `TITLE`, `BODY` und einem Label pro angebotener Choice fuer `VISITOR_RETURN`, `VISITOR_CONFLICT` und `RIVAL_MOVE` sowie `TITLE` und `BODY` fuer `NEON_NACHT` und `TURNIER_ABEND`. Rueckkehr-Fragmente tragen `startpool`, weil das Template diese Flag-Anforderung immer stellt; alle Texte nennen keine Persona und brauchen daher keine `personaRefs`. `narrative-coverage.test.ts` leitet Kontexte und Pflicht-Flags je Template aus den Slots beziehungsweise Choices ab und verlangt fuer alle Nicht-`OUTCOME`-Slots ein Fragment ohne Fallback; Outcomes bleiben bewusst offen.
+
+**Pruefungen.** `narrative:compile` schreibt 46 Fragmente. Der neue Abdeckungstest laeuft ueber alle fuenf Templates und enthaelt einen Negativfall mit unpassendem Kontext. Composer-, View- und UI-Tests wurden an die neue Wahrheit angepasst: das Konflikt-Label und die Rueckkehr-Szene sind keine Fallbacks mehr, der UI-Hinweis nennt nur noch die beiden Outcomes. `verify:quick` folgt vor dem Commit.
+
+**Offen.** Outcomes bleiben ohne Nachwirkungstext (Content-Batch D1). Die Rueckkehr-Texte sind bewusst figurunabhaengig; sobald Persona-spezifische Varianten dazukommen, entscheidet weiterhin der Score und bei Gleichstand der FNV-Hash.
+
 ## 2026-11-04 - B3: Fallback-Slots bei Namen nennen
 
 **Ziel.** `degraded` soll den Zustand nicht mehr am ganzen Abend festmachen: schon ein einzelner fehlender Slot ist ein Mangel. Die Szene soll sagen, welche Stellen betroffen sind, statt pauschal "Sicherheitscopy".
@@ -954,7 +964,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.100 | 2026-11-04 04:39 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.101 | 2026-11-04 04:57 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

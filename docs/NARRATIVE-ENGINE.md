@@ -206,6 +206,12 @@ typisierten Direktiven. Die Auswahl mappt `TITLE` auf `opening`, `BODY` auf
   Persona-Einschraenkung zusammen. `NarrativeEventView.fallbackSlots` reicht die
   Liste unveraendert an die UI, die jeden Slot beim Namen nennt, statt von
   "Sicherheitscopy" im Ganzen zu sprechen.
+- `narrative-coverage.test.ts` setzt jedes Template aus `EVENT_TEMPLATES` mit
+  seinen Slot-Zwecken und Pflicht-Flags zusammen und verlangt fuer `TITLE`,
+  `BODY` und jedes angebotene Choice-Label ein Fragment ohne Fallback.
+  `OUTCOME` bleibt bewusst aussen vor: Nachwirkungstexte sind der naechste
+  Content-Batch. Ein Batch ist ein Arbeitsschritt, aber jede Contribution traegt
+  ihre eigene Turn-ID; das Manifest registriert jeden Turn einzeln.
 - `isNarrativeFragment` prueft die generierte Registry auch zur Laufzeit;
   ungueltige Fragmente und Direktiven werden uebersprungen und im Ergebnis
   gemeldet. Direktiven werden nur weitergereicht, nie ausgefuehrt.

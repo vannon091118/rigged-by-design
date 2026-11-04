@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.100 | 2026-11-04 04:39 UTC -->
+<!-- rbd-doc: v0.3.101 | 2026-11-04 04:57 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.101] - 2026-11-04
+
+### Spiel
+- Rueckkehr, Streit, Rivale, Neon-Nacht und Turnierabend haben jetzt eigene Titel, Texte und Choice-Beschriftungen. Ausgaenge bleiben vorerst neutral, bis der naechste Content-Batch sie fuellt.
+
+### Technik
+- B4: 16 Beitraege in einem abgestimmten Batch (eigene Turn-ID je Beitrag) fuellen `TITLE`, `BODY` und jedes angebotene Choice-Label aller fuenf Templates; die Slot-Zwecke aus B2 werden hart erfuellt, und kein Fragment traegt widerspruechliche Flags.
+- `narrative-coverage.test.ts` setzt jedes Template aus `EVENT_TEMPLATES` zusammen und verlangt fuer alle Nicht-`OUTCOME`-Slots ein echtes Fragment; ein Negativfall belegt, dass fehlender Content weiterhin als Fallback gemeldet wird.
+- AGENTS.md praezisiert die Turn-Regel: ein abgestimmter Content-Batch gilt als ein Schritt, jede Turn-ID traegt aber genau einen Beitrag. Registry auf 46 Fragmente.
 
 ## [0.3.100] - 2026-11-04
 

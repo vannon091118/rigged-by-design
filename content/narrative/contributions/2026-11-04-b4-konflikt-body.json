@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:10Z-b4-konflikt-body",
+  "contributionId": "b4-konflikt-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "conflict"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwischen den beiden ist der Platz enger geworden als der Raum. Eine Hand liegt auf dem Tresen, die andere schon halb erhoben; das Haus wartet, wer zuerst nachgibt.",
+  "directives": []
+}

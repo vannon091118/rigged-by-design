@@ -62,7 +62,8 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(slot(result, 'BODY').contributionId).toBe('nar-04-beziehungsquellen-01');
     expect(slot(result, 'OUTCOME_DEFUSED').fallback).toBe(true);
     expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBeNull();
-    expect(slot(result, 'CHOICE_DEFUSE').fallback).toBe(true);
+    expect(slot(result, 'CHOICE_DEFUSE').fallback).toBe(false);
+    expect(slot(result, 'CHOICE_DEFUSE').contributionId).toBe('b4-konflikt-defuse-01');
   });
 
   it('verwirft Locale- und Persona-Inkompatibilitaeten fail-closed', () => {
