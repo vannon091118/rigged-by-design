@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.94 | 2026-11-04 03:00 UTC -->
+<!-- rbd-doc: v0.3.95 | 2026-11-04 03:12 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.95] - 2026-11-04
+
+### Technik
+- A1: Der Pre-Commit-Hook zieht `build-inventory`, `doc-sync --staged`, `verify-docs` und `check-loc` vor den `node_modules`-Fruehausstieg. Diese Schritte lesen nur Dateien und Git und blockieren den Commit jetzt auch in einem frischen Klon. Nur Dependency-Matrix und Testkatalog bleiben hinter dem Ausstieg, weil sie `typescript` aus `node_modules` laden. Ein temporaeres Hook-Repo belegt beide Reihenfolgen und den LOC-Blocks ohne `node_modules`.
 
 ## [0.3.94] - 2026-11-04
 

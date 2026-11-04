@@ -441,7 +441,9 @@ Manifest-1:1 und Inhalts-Hash bleiben die alleinige Vollstaendigkeitspruefung.
 Der Pre-Commit-Hook ruft diesen Validator vor dem `node_modules`-Fruehausstieg
 auf; gestagte Narrative-Dateien, die im Arbeitsbaum noch unstaged veraendert
 sind, blockieren den Commit mit `ERR-4022`, damit nie ein anderer Inhalt
-geprueft wird als der Commit. `pnpm run narrative:compile -- --write` erzeugt daraus
+geprueft wird als der Commit. Seit A1 laufen auch Inventur, Doku-Marker,
+Doku-Gate und LOC vor dem Fruehausstieg; nur Dependency-Matrix und Testkatalog,
+die `typescript` aus `node_modules` laden, bleiben dahinter. `pnpm run narrative:compile -- --write` erzeugt daraus
 `content/narrative/registry/fragments.json` und den Laufzeit-Spiegel
 `composer/registry.generated.ts`; `pnpm run narrative:check` vergleicht beide und
 meldet die Fragmentzahl samt Inhalts-Hash. Das Assets-Gate (`ERR-4022`) verwirft

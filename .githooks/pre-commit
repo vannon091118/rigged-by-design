@@ -1,6 +1,7 @@
 #!/bin/sh
 # Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben,
-# weil der Hook den Commit vorbereitet. Fehlt node_modules, wird uebersprungen.
+# weil der Hook den Commit vorbereitet. Fehlt node_modules, laufen nur Matrix
+# und Testkatalog nicht, weil sie typescript aus node_modules laden.
 set -e
 # Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
 # Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
@@ -18,8 +19,22 @@ if ! node scripts/verify-narrative-content.mjs; then
   echo "pre-commit: Narrative-Content ungueltig (ERR-4022) - Commit blockiert" >&2
   exit 1
 fi
+# Inventur, Doku-Marker, Doku-Gate und LOC lesen nur Dateien und Git; sie
+# brauchen keine node_modules. Deshalb laufen sie auch im Fruehausstieg, damit
+# ein frischer Klon nicht ungeprueft committet.
+inventory_docs_loc() {
+  node scripts/build-inventory.mjs
+  node scripts/doc-sync.mjs --staged
+  node scripts/verify-docs.mjs
+  if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then
+    tail -20 /tmp/rbd-loc.log
+    echo "pre-commit: LOC-Cap verletzt (Eskalation AGENT: Datei splitten)"
+    exit 1
+  fi
+}
 if [ ! -d node_modules ]; then
-  echo "pre-commit: node_modules fehlt - Hook uebersprungen (pnpm install --frozen-lockfile)"
+  inventory_docs_loc
+  echo "pre-commit: node_modules fehlt - Matrix und Katalog uebersprungen (pnpm install --frozen-lockfile)"
   exit 0
 fi
 # Ein verschluckter Generatorfehler hinterlaesst ein veraltetes Artefakt, das
@@ -32,13 +47,6 @@ if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
   echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
   exit 1
 fi
-node scripts/build-inventory.mjs
-node scripts/doc-sync.mjs --staged
-node scripts/verify-docs.mjs
-if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then
-  tail -20 /tmp/rbd-loc.log
-  echo "pre-commit: LOC-Cap verletzt (Eskalation AGENT: Datei splitten)"
-  exit 1
-fi
+inventory_docs_loc
 git add docs/TEST-CATALOG.md >/dev/null 2>&1 || true
 echo "pre-commit: Doku, Matrix und LOC geprueft"

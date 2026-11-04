@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - A1: Inventur und Validatoren vor dem Fruehausstieg
+
+**Ziel.** A1: Die allgemeine Inventur-/Validator-Reihenfolge sollte nicht am `node_modules`-Fruehausstieg haengen. Bisher liefen nur der Narrative-Validator und der Divergenz-Guard davor; Inventur, Doku-Marker, Doku-Gate und LOC wurden in einem frischen Klon stillschweigend uebersprungen.
+
+**Umsetzung.** `.githooks/pre-commit` buendelt `build-inventory`, `doc-sync --staged`, `verify-docs` und `check-loc` in `inventory_docs_loc()`. Die Funktion laeuft im Fruehausstieg und noch einmal nach Matrix und Testkatalog im normalen Pfad. Nur `sync-dependency-matrix` und `test-catalog` bleiben hinter dem Ausstieg, weil beide `typescript` aus `node_modules` importieren. Die Reihenfolge der uebrigen Schritte und der LOC-Fehlercode bleiben unveraendert; der Ausstieg meldet jetzt ausdruecklich, dass nur Matrix und Katalog uebersprungen wurden. `AGENTS.md` und `docs/NARRATIVE-ENGINE.md` nennen die neue Grenze.
+
+**Pruefungen.** `sh -n .githooks/pre-commit`. Ein temporaeres Git-Repo mit Stub-Skripten belegt ohne `node_modules` die Reihenfolge `build-inventory -> doc-sync -> verify-docs -> check-loc` und mit `node_modules` zusaetzlich `sync-dependency-matrix -> test-catalog` davor. Ein Stub mit LOC-Fehler blockiert den Commit auch ohne `node_modules`.
+
+**Offen.** Inventur-Aenderungen werden vom Hook weiterhin nicht gestagt; das war schon vor A1 so und bleibt ausserhalb dieses Slice. A2/A3 sind abgeschlossen, A1 damit ebenfalls. Der naechste Schritt ist D2 mit den neuen Kontexten, danach der erste Content-Batch.
+
 ## 2026-11-04 - Test: Vollstaendige Narrative-Fixture
 
 **Ziel.** Der bestehende Governance-Test soll nicht nur die Inbox, sondern eine vollstaendige Narrative-Fixture pruefen: `content/narrative/**` plus die generierten Bruecken `registry.generated.ts` und `slot-map.generated.ts`. Dabei muessen unregistrierte Beitraege, Schemafehler trotz Manifest und unerlaubte Eintraege fail-closed scheitern, waehrend der korrekt registrierte Bestand inklusive aller drei Render-Ausgaben besteht.
@@ -894,7 +904,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.94 | 2026-11-04 03:00 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.95 | 2026-11-04 03:12 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
