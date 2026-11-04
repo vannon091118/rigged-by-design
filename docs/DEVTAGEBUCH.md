@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - B3: Fallback-Slots bei Namen nennen
+
+**Ziel.** `degraded` soll den Zustand nicht mehr am ganzen Abend festmachen: schon ein einzelner fehlender Slot ist ein Mangel. Die Szene soll sagen, welche Stellen betroffen sind, statt pauschal "Sicherheitscopy".
+
+**Umsetzung.** `composeNarrative` leitet `degraded` jetzt direkt aus `fallbacks.length > 0` ab und schreibt die betroffenen Slot-IDs in `issues` (`Fallback fuer Slots: TITLE, CHOICE_WELCOME.`). Die beiden Ablehnungspfade (`ok: false`) tragen keine Slots und melden `degraded: false`; ihr Grund bleibt in `issues`. `NarrativeEventView` verliert das boolesche `fallbackText` und traegt `fallbackSlots`; die UI listet die IDs auf, `TITLE`/`BODY` als "Titel"/"Text", alles andere als kanonische ID. `view.ts` setzt nur noch dann ohne Persona-Einschraenkung neu zusammen, wenn wirklich alle Slots Fallback sind — sonst wuerde ein guter Body-Text durch die Persona-freie Variante verdraengt.
+
+**Pruefungen.** `pnpm run narrative:compile` schreibt 30 Fragmente (sha256:8bde0ad5...). Composer-Tests: Teil-Fallback, Voll-Fallback, fallback-freier Fall mit `degraded: false`, `issues` mit jeder ID. Der View-Test prueft die vollstaendige `fallbackSlots`-Liste der Szene, der UI-Test den konkreten Hinweistext; der erste Lauf war rot, weil die Szene ohne `startpool`-Flag tatsaechlich alle sechs Slots auf Fallback setzt — die Erwartung wurde an die belegte Wahrheit angepasst, nicht die Zusicherung entfernt. `verify:quick` bestand danach alle zehn Gates.
+
+**Offen.** Die Slot-Namen sind rohe IDs; sobald mehr Slots Inhalte bekommen, kann `SLOT_LABEL` wachsen. Der Content-Batch D1 fuellt weiterhin `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch`, `aftermath`.
+
 ## 2026-11-04 - B2: Slot-Zwecke im Composer
 
 **Ziel.** Der Composer soll nicht nur semantisch treffen, sondern den Zweck eines Slots kennen: eine Begruessung ist kein Rueckkehr-Text, ein Ausgang ist kein Entscheidungstext. B2 schliesst die zweite Composer-Luecke nach B1, ohne RNG und ohne neuen Zustand.
@@ -944,7 +954,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.99 | 2026-11-04 04:06 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.100 | 2026-11-04 04:39 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

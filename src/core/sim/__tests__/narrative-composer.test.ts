@@ -30,7 +30,9 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
   it('setzt alle Template-Slots vollstaendig zusammen und markiert Fallbacks', () => {
     const result = composeNarrative(RETURN_REQUEST);
     expect(result.ok).toBe(true);
-    expect(result.issues).toEqual([]);
+    expect(result.degraded).toBe(true);
+    expect(result.issues[0]).toContain('TITLE');
+    expect(result.issues[0]).toContain('CHOICE_WELCOME');
     expect(result.slots).toHaveLength(VISITOR_RETURN_TEMPLATE.contentSlots.length);
     expect(result.slots.every((entry) => entry.text.length > 0)).toBe(true);
     expect(slot(result, 'BODY').contributionId).toBe('trigger-context-01');
@@ -150,17 +152,36 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(result.slots.find((entry) => entry.kind === 'CHOICE_LABEL')?.text).toBe('Weiter');
   });
 
-  it('signalisiert degraded, wenn alle Slots Fallback sind', () => {
-    const result = composeNarrative({
+  it('signalisiert degraded, sobald ein Slot Fallback ist, und nennt die IDs', () => {
+    const partial = composeNarrative(RETURN_REQUEST);
+    expect(partial.degraded).toBe(true);
+    expect(partial.fallbacks.length).toBeGreaterThan(0);
+    expect(partial.fallbacks.length).toBeLessThan(partial.slots.length);
+    expect(partial.issues).toHaveLength(1);
+    for (const slotId of partial.fallbacks) expect(partial.issues[0]).toContain(slotId);
+
+    const all = composeNarrative({
       locale: 'de',
       slots: [{ id: 'T', kind: 'TITLE' }, { id: 'B', kind: 'BODY' }],
       contexts: ['kein-treffer'],
     });
-    expect(result.ok).toBe(true);
-    expect(result.degraded).toBe(true);
-    expect(result.issues.length).toBeGreaterThan(0);
-    expect(result.fallbacks).toEqual(['T', 'B']);
-    expect(result.slots.every((entry) => entry.fallback)).toBe(true);
+    expect(all.degraded).toBe(true);
+    expect(all.fallbacks).toEqual(['T', 'B']);
+    expect(all.issues[0]).toContain('T, B');
+    expect(all.slots.every((entry) => entry.fallback)).toBe(true);
+  });
+
+  it('bleibt ohne Fallback nicht degraded und meldet keine Issues', () => {
+    const result = composeNarrative({
+      locale: 'de',
+      slots: [{ id: 'B', kind: 'BODY' }],
+      contexts: ['return'],
+      requiredFlags: ['narrativ', 'rueckkehrer'],
+      availablePersonas: ['rita-kern'],
+    });
+    expect(result.fallbacks).toEqual([]);
+    expect(result.degraded).toBe(false);
+    expect(result.issues).toEqual([]);
   });
 
   it('verlangt die Slot-Zwecke zusaetzlich zum bewertenden Kontext', () => {

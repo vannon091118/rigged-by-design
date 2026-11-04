@@ -116,6 +116,10 @@
     {
       "turnId": "2026-11-04T04:45Z-b2-slot-zwecke",
       "contributionId": "b2-slot-zwecke-01"
+    },
+    {
+      "turnId": "2026-11-04T05:20Z-b3-fallbacks",
+      "contributionId": "b3-fallback-slots-01"
     }
   ]
 }

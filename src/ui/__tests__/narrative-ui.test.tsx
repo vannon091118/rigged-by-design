@@ -50,6 +50,18 @@ describe('Narrative UI (NAR-14)', () => {
     expect(onChoose).toHaveBeenCalledWith(eventId, 'WELCOME_BACK');
   });
 
+  it('nennt die Slots beim Namen, die auf die Sicherheitscopy zurueckfallen', () => {
+    const { view } = scene();
+
+    render(<NarrativePopup view={view} onClose={noop} onChoose={noop} onDismiss={noop} />);
+
+    const hint = screen.getByText(/Ohne passenden Text/).textContent ?? '';
+    expect(hint).toContain('Titel');
+    expect(hint).toContain('Text');
+    expect(hint).toContain('CHOICE_WELCOME');
+    expect(hint).not.toContain('BODY');
+  });
+
   it('lässt eine gesperrte Choice nicht klicken und nennt den Grund', () => {
     const { view } = scene();
     const onChoose = vi.fn();

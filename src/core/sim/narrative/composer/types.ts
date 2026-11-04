@@ -64,7 +64,7 @@ export interface ComposedNarrative {
   readonly slots: readonly ComposedSlot[];
   /** Slot-IDs, fuer die kein passendes Fragment existierte. */
   readonly fallbacks: readonly string[];
-  /** Wahr, wenn kein einziger Slot aus der Registry kam; der Aufrufer soll es zeigen. */
+  /** Wahr, sobald mindestens ein Slot Fallback ist; `issues` nennt die IDs. */
   readonly degraded: boolean;
   readonly issues: readonly string[];
   readonly rejected: readonly CompositionRejection[];
