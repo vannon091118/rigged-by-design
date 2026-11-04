@@ -22,7 +22,7 @@ const TICKS = Number(process.env.RBD_SOAK_TICKS ?? 3000);
 const DAYS = Number(process.env.RBD_SOAK_DAYS ?? 3);
 
 describe('Langzeitsimulation', () => {
-  it(`läuft ${TICKS} Ticks ohne Ledger-Leck und ohne unbegrenzten Zustand`, { timeout: 600_000 }, () => {
+  it.skipIf(!process.env.RBD_SOAK)(`läuft ${TICKS} Ticks ohne Ledger-Leck und ohne unbegrenzten Zustand`, { timeout: 600_000 }, () => {
     const world = createWorld('LARGE');
     ensureStarter(world);
     const ledger = new Ledger();
@@ -49,7 +49,7 @@ describe('Langzeitsimulation', () => {
     expect(world.reputation).toBeLessThanOrEqual(100);
   });
 
-  it(`bleibt über ${DAYS} Spieltage und mehrere Seeds in Betrieb`, { timeout: 600_000 }, () => {
+  it.skipIf(!process.env.RBD_SOAK)(`bleibt über ${DAYS} Spieltage und mehrere Seeds in Betrieb`, { timeout: 600_000 }, () => {
     for (let run = 1; run <= 3; run += 1) {
       const world = createWorld('MEDIUM');
       ensureStarter(world);

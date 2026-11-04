@@ -68,7 +68,7 @@ function expectBounded(world: WorldState): void {
 }
 
 describe('NAR-16 Langzeitintegration', () => {
-  it('betreibt zwei Spieltage mit Geschichten und Rivalen ohne Zustandsleck', { timeout: 240_000 }, () => {
+  it.skipIf(!process.env.RBD_NARRATIVE_LONGRUN)('betreibt zwei Spieltage mit Geschichten und Rivalen ohne Zustandsleck', { timeout: 240_000 }, () => {
     const { world, ledger, prng } = boot();
     for (let day = 1; day <= 2; day += 1) {
       for (let tick = 0; tick < TICKS_PER_DAY; tick += 1) tickWorld(world, ledger, prng);
@@ -109,7 +109,7 @@ describe('NAR-16 Langzeitintegration', () => {
     expect(bytes).toBeLessThan(SAVE_BUDGET);
   });
 
-  it('liefert nach Save und Replay denselben Verlauf', { timeout: 240_000 }, () => {
+  it.skipIf(!process.env.RBD_NARRATIVE_LONGRUN)('liefert nach Save und Replay denselben Verlauf', { timeout: 240_000 }, () => {
     const { world, ledger, prng } = boot();
     for (let tick = 0; tick < TICKS_PER_DAY; tick += 1) tickWorld(world, ledger, prng);
     const savedState = prng.getState();

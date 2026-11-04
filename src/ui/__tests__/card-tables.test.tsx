@@ -16,28 +16,44 @@ import { BlackjackPopup } from '../games/blackjack-popup';
 
 afterEach(cleanup);
 
+let cachedPlayerTurnSeed: number | null = null;
+let cachedNaturalSeed: number | null = null;
+let cachedInsuranceSeed: number | null = null;
+
 /** Erster Seed, bei dem der Spieler wirklich am Zug ist (kein Natural beim Geben). */
 function playerTurnSeed(): number {
+  if (cachedPlayerTurnSeed !== null) return cachedPlayerTurnSeed;
   for (let seed = 1; seed < 1_000; seed += 1) {
     const round = startBlackjack(createCardShoe(seed, DEFAULT_BLACKJACK_RULES.decks), 1, DEFAULT_BLACKJACK_RULES, false);
-    if (round.phase === 'PLAYER' && !round.insuranceOffered) return seed;
+    if (round.phase === 'PLAYER' && !round.insuranceOffered) {
+      cachedPlayerTurnSeed = seed;
+      return seed;
+    }
   }
   throw new Error('Kein Seed mit Spielerzug gefunden.');
 }
 
 /** Erster Seed, bei dem der Spieler sofort einen Natural hat und der Dealer kein Ass zeigt. */
 function naturalSeed(): number {
+  if (cachedNaturalSeed !== null) return cachedNaturalSeed;
   for (let seed = 1; seed < 5_000; seed += 1) {
     const round = startBlackjack(createCardShoe(seed, DEFAULT_BLACKJACK_RULES.decks), 1, DEFAULT_BLACKJACK_RULES, false);
-    if (round.phase === 'DONE' && round.outcome === 'BLACKJACK') return seed;
+    if (round.phase === 'DONE' && round.outcome === 'BLACKJACK') {
+      cachedNaturalSeed = seed;
+      return seed;
+    }
   }
   throw new Error('Kein Natural-Seed gefunden.');
 }
 
 /** Erster Seed, bei dem der Dealer ein Ass zeigt und Versicherung angeboten wird. */
 function insuranceSeed(): number {
+  if (cachedInsuranceSeed !== null) return cachedInsuranceSeed;
   for (let seed = 1; seed < 5_000; seed += 1) {
-    if (startBlackjack(createCardShoe(seed, DEFAULT_BLACKJACK_RULES.decks), 1, DEFAULT_BLACKJACK_RULES, false).insuranceOffered) return seed;
+    if (startBlackjack(createCardShoe(seed, DEFAULT_BLACKJACK_RULES.decks), 1, DEFAULT_BLACKJACK_RULES, false).insuranceOffered) {
+      cachedInsuranceSeed = seed;
+      return seed;
+    }
   }
   throw new Error('Kein Versicherungs-Seed gefunden.');
 }
