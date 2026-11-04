@@ -360,3 +360,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .ui-icon { width: 15px; height: 15px; object-fit: contain; image-rendering: pixelated; vertical-align: -3px; margin-right: 5px; }
 .help-btn .ui-icon { display: block; width: 14px; height: 14px; margin: 0; }
 .vital small .ui-icon { width: 12px; height: 12px; vertical-align: -2px; margin-right: 3px; }
+
+/* NAR-14: Einstieg in die Szenen direkt auf dem Floor */
+.narrative-chip { position: absolute; z-index: 16; bottom: 12px; left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
+.narrative-chip:hover { background: #1b0f3a; }

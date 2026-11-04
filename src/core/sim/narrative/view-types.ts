@@ -1,0 +1,57 @@
+/** NAR-14: Datenvertraege des Anzeigemodells; der Builder lebt in `view.ts`. */
+import type { ActorRef } from '../types';
+import type { ChoiceBlockReason } from './events/template-types';
+import type { NarrativeEventStatus } from './event-types';
+import type { VisitorMemory } from './types';
+
+interface NarrativeChoiceView {
+  readonly choiceId: string;
+  readonly label: string;
+  readonly available: boolean;
+  readonly reasons: readonly ChoiceBlockReason[];
+  readonly cost: number;
+}
+
+interface NarrativeParticipantView {
+  readonly ref: ActorRef;
+  readonly label: string;
+  readonly visitorId: number | null;
+}
+
+export interface NarrativeEventView {
+  readonly id: number;
+  readonly eventId: string;
+  readonly title: string;
+  readonly body: string;
+  readonly step: string;
+  readonly status: NarrativeEventStatus;
+  readonly expiresInTicks: number;
+  readonly participants: readonly NarrativeParticipantView[];
+  readonly choices: readonly NarrativeChoiceView[];
+  /** Wahr, wenn kein Slot aus der Registry kam und die neutrale Sicherheitscopy steht. */
+  readonly fallbackText: boolean;
+}
+
+interface NarrativeRelationshipView {
+  readonly to: ActorRef;
+  readonly trust: number;
+  readonly sympathy: number;
+  readonly conflict: number;
+  readonly influence: number;
+  readonly updatedTick: number;
+}
+
+export interface NarrativeProfileView {
+  readonly visitorId: number;
+  readonly name: string;
+  readonly persona: string;
+  readonly visits: number;
+  readonly memories: readonly VisitorMemory[];
+  readonly relationships: readonly NarrativeRelationshipView[];
+  readonly stories: readonly string[];
+}
+
+export interface NarrativeView {
+  readonly events: readonly NarrativeEventView[];
+  readonly profiles: readonly NarrativeProfileView[];
+}

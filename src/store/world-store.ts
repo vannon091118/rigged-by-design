@@ -18,7 +18,7 @@ import { tickWorld } from '../core/sim/tick';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { seedStartPool } from '../core/sim/narrative/state';
 import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
-import { chooseNarrativeCmd, flushNarrativeCmd } from './narrative-commands';
+import { chooseNarrativeCmd, dismissNarrativeCmd, flushNarrativeCmd } from './narrative-commands';
 import type { PlayerLook } from '../core/sim/player-look';
 import { deployAtPlayer, saveLook, stepPlayer, useCarriedAtPlayer } from './player-tools';
 import type { CardDeal } from './foreign-play';
@@ -172,6 +172,13 @@ spinTest(itemId: number): GameResult | null { const { result, notice } = spinTes
         : result.rejections[0]?.detail ?? 'Narrative Entscheidung abgewiesen.';
     });
     return result;
+  }
+  dismissNarrative(eventId: number): void {
+    this.#guard(() => {
+      this.#notice = dismissNarrativeCmd(this.#world, eventId)
+        ? 'Szene geschlossen. Die Geschichte kann nach ihrem Cooldown wiederkommen.'
+        : 'Diese Szene ist nicht mehr offen.';
+    });
   }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
   #advance = (): void => { tickWorld(this.#world, this.#ledger, this.#prng); this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };

@@ -1,11 +1,10 @@
 // @loc-exception: App verdrahtet Popups, Tastaturpfad und Floor in genau einem Zustandsbaum; getrennt waeren Fokus und Popup-Routing doppelt.
 import { useEffect, useRef, useState } from 'react';
-import { canPlaceAt } from './core/sim/grid-zones';
 import { getBuildDef, type BuildId } from './core/sim/offers';
-import type { CarpetId, RivalId, TemplateId } from './core/sim/types';
+import type { CarpetId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { useWorldStore, worldStore } from './store/use-world-store';
-import type { GameView } from './store/types';
+import { fits, MOVE_KEYS, type Popup } from './ui/app-model';
 import { AssetLibraryPopup } from './ui/asset-library-popup';
 import { BuildPanel } from './ui/build-panel';
 import { DiagnosticsPopup } from './ui/diagnostics-popup';
@@ -17,6 +16,7 @@ import { GuestPopup } from './ui/guest-popup';
 import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';
 import { JournalPopup } from './ui/journal-popup';
+import { NarrativePopup } from './ui/narrative-popup';
 import { LookPopup } from './ui/look-popup';
 import { SoundPopup } from './ui/sound-popup';
 import { MachinePopup } from './ui/machine-popup';
@@ -24,34 +24,6 @@ import { StageControls } from './ui/stage-controls';
 import { isMuted, playSfx } from './render/sound-fx';
 import { armMusic, setMusicState } from './render/music';
 import { handleFloorInteract } from './render/floor-interact';
-
-type Popup =
-  | { kind: 'guests'; guestId: number | null }
-  | { kind: 'machine'; itemId: number }
-  | { kind: 'games'; rivalId?: RivalId }
-  | { kind: 'journal' }
-  | { kind: 'diagnostics' }
-  | { kind: 'look' }
-  | { kind: 'assets' }
-  | { kind: 'sound' }
-  | { kind: 'help' }
-  | { kind: 'foreignMap' }
-  | { kind: 'foreignFloor' }
-  | { kind: 'jobContext'; stationId: string }
-  | null;
-
-function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
-  const def = getBuildDef(id);
-  const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
-  return canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
-}
-
-const MOVE_KEYS: Readonly<Record<string, readonly [number, number]>> = {
-  arrowup: [0, -1], w: [0, -1],
-  arrowdown: [0, 1], s: [0, 1],
-  arrowleft: [-1, 0], a: [-1, 0],
-  arrowright: [1, 0], d: [1, 0],
-};
 
 export default function App() {
   const view = useWorldStore();
@@ -93,7 +65,7 @@ export default function App() {
       setMusicState('MENU');
       return;
     }
-    if (popup?.kind === 'journal' || popup?.kind === 'diagnostics' || popup?.kind === 'guests') {
+    if (popup?.kind === 'journal' || popup?.kind === 'diagnostics' || popup?.kind === 'guests' || popup?.kind === 'narrative') {
       setMusicState('BACKGROUND');
       return;
     }
@@ -223,6 +195,14 @@ export default function App() {
 
         {view.lastEvent && !view.notice && <div className="event-line" aria-hidden="true">{view.lastEvent}</div>}
 
+        {view.narrative.events.length > 0 && (
+          <button type="button" className="narrative-chip"
+            onClick={() => { setBuildOpen(false); setPopup({ kind: 'narrative' }); }}
+            title="Aktive Szenen und Figuren öffnen">
+            STORY · {view.narrative.events.length}
+          </button>
+        )}
+
         {view.notice && (
           <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
         )}
@@ -304,6 +284,15 @@ export default function App() {
           view={view}
           onClose={() => setPopup(null)}
           onGuest={(id) => setPopup({ kind: 'guests', guestId: id })}
+        />
+      )}
+
+      {popup?.kind === 'narrative' && (
+        <NarrativePopup
+          view={view}
+          onClose={() => setPopup(null)}
+          onChoose={(eventId, choiceId) => worldStore.chooseNarrative(eventId, choiceId)}
+          onDismiss={(eventId) => worldStore.dismissNarrative(eventId)}
         />
       )}
 
