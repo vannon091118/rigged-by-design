@@ -9,6 +9,11 @@ import { GovernanceReporter } from '../core/governance/test-harness';
 const quickProfile = process.env.RBD_TEST_PROFILE === 'quick';
 const quickExclude = ['**/round-rtp-*.test.ts', '**/soak.test.ts', '**/slot-session-rtp.test.ts'];
 
+const moduleSep = '[\\/]';
+/** Paketpfad mit posix- oder Windows-Trenner; als String, damit ESLint keine Regex-Escapes prueft. */
+const vendorPath = (names: string): RegExp => new RegExp(`node_modules${moduleSep}(?:${names})${moduleSep}`);
+const VENDOR_REACT = vendorPath('react|react-dom|scheduler');
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -16,6 +21,23 @@ export default defineConfig({
     // `vite preview` erbt diesen Wert, weil kein eigener preview.host gesetzt ist.
     host: process.env.RBD_DEV_HOST || 'localhost',
     port: 3000,
+  },
+  build: {
+    // Rolldown-Aequivalent zu manualChunks. React bekommt einen eigenen,
+    // cachebaren Vendor-Chunk. Pixi bleibt absichtlich ungruppiert: ein
+    // Sammelchunk fuer das Paket zog dessen intern dynamisch geladene Teile ins
+    // Initial-Bundle (gemessen 1.301.681 B roh / 390.278 B gzip statt
+    // 1.246.800 B / 380.841 B). Die Spiel-Engines haengen am lazy geladenen
+    // GamesPopup (`src/ui/games-popup-lazy.tsx`) und laden erst beim Oeffnen.
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            { name: 'vendor-react', test: VENDOR_REACT, priority: 20 },
+          ],
+        },
+      },
+    },
   },
   test: {
     environment: 'node',

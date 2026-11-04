@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.102 | 2026-11-04 05:15 UTC -->
+<!-- rbd-doc: v0.3.103 | 2026-11-04 05:32 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.103] - 2026-11-04
+
+### Spiel
+- Die Auswaertsspiele (Blackjack, Roulette, Plinko, Video Poker, Huetchenspiel, Wuerfel) laden Tische und Engines erst beim Oeffnen; der Start laedt statt eines 1,04-MB-Bundles einen 756-kB-Haupt-Chunk.
+
+### Technik
+- Chunk-Splitting ueber Rolldowns `codeSplitting`: `vendor-react` wird ein eigener, cachebarer Vendor-Chunk; `GamesPopup` haengt per `React.lazy`/`Suspense` am neuen `src/ui/games-popup-lazy.tsx` und liegt nur noch als dynamischer Chunk im Netz.
+- Gemessen mit identischem Build: Initial-JS 1.313.412 B -> 1.246.800 B roh (-5,1 %) und 399.286 B -> 380.841 B gzip (-4,6 %); Haupt-Chunk 1.041.635 B -> 756.241 B (-27,3 %) bzw. 317.733 B -> 228.516 B gzip (-28,1 %).
+- Ein `vendor-pixi`-Sammelchunk wurde gebaut und verworfen: er zog Pixis intern dynamische Teile ins Initial-Bundle (1.301.681 B roh / 390.278 B gzip); die Begruendung steht mit Messwerten im Config-Kommentar.
 
 ## [0.3.102] - 2026-11-04
 
