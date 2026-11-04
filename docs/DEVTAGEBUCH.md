@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - B1: Kontext-Helper fuer Szenen
+
+**Ziel.** Der Szenen-Kontext sollte nicht mehr in `view.ts` aus verstreuten Feldern entstehen. Der neue reine Helper sollte Fact, Template, Teilnehmer, Erinnerungen und gerichtete Kante zusammenfuehren, ohne einen zweiten Zustand oder eine zweite Kontextdatenbank anzulegen.
+
+**Umsetzung.** `src/core/sim/narrative/composition-context.ts` liest `WorldState`, `Ledger`, Event und Template und liefert `contexts`, `availablePersonas`, `relationship`, `mood` und `requiredFlags`. Der Kontext kommt aus dem Fact mit `sourceFactId` in `narrative.recent`; fehlt er oder ist die ID 0, entscheidet `template.triggerId`, danach `template.eventId`. `VISITOR_RETURNED` wird zu `return`, `VISIT_ENDED` zu `loss` bei `BAD` und sonst `return`, `VISITOR_CONFLICT` zu `conflict`, `VISITOR_SERVICE` zu `service`, `RIVAL_ACTION`/`RIVAL_ENCOUNTER` zu `rival`; Demand-Events zu `demand`. Personas entstehen nur aus aufgeloesten Visitor-Teilnehmern. Beziehung und Stimmung folgen dem Fact, dann der gerichteten Kante (bei Paaren zwischen Besuchern) und zuletzt der letzten Erinnerung. `requiredFlags` sammelt ausschliesslich Flag-Requirements des konkreten Templates, nie Welt-Flags. `view.ts` baut die Composer-Anfrage nur noch aus diesem Ergebnis. `rival` ist im Vokabular ergaenzt; der Content-Beitrag `2026-11-04-b1-kontext-helper.json` haelt die Szene im Textbestand.
+
+**Pruefungen.** `pnpm run typecheck` und `pnpm run check:loc` sind gruen. Die sechs Helper-Tests decken Fact-Kontext, Template-Fallback, Valenz, Konflikt/Service/Rivale, Kante und Erinnerung ab; `verify:quick` bestand alle zehn Gates (Tests 31,1 s).
+
+**Offen.** B2 mit den sieben neuen Kontexten und der erste Content-Batch nach D1 stehen noch aus. Der Ledger bleibt Teil der Signatur, weil der View ihn fuer Choices haelt; die Textwahl liest keine Geldwerte. Es gibt keinen neuen Save-State.
+
 ## 2026-11-04 - A3: Narrative-JSON in test:affected
 
 **Ziel.** A3: Aenderungen an Narrative-Content sollten den zustaendigen Governance-Test ausloesen. Bisher fiel eine reine JSON-Aenderung unter `content/narrative/**` durch alle Zweige: Sie ist kein Code, keine Testdatei und keine Konfiguration, also blieb die Auswahl leer.
@@ -914,7 +924,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

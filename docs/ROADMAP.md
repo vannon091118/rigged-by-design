@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->
+<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -37,7 +37,7 @@ begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 (Beziehungen), NAR-05 (Trigger-Context, Evaluator, Schema), NAR-06 (Scheduler, Lifecycle, Cooldowns, eigener RNG), NAR-07 (Templates, Choice-Vertrag, Eligibility) und NAR-08 (Command-DSL, Allowlist, Preflight, Ausfuehrung) und NAR-09 (Content-Schema, Vokabular, Turn-Manifest, Registry) sind erledigt; NAR-10 (Content-Compiler), NAR-11 (lokaler Composer), NAR-12 (Orchestrierung in Tick und WorldStore) und NAR-13 (Demand-Migration) sind erledigt; NAR-14 (Narrative UI), NAR-15 (autonome Rivalen), NAR-16 (Langzeit/Performance) und NAR-17 (Doku-Sync) sind erledigt. Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen.
+- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 (Beziehungen), NAR-05 (Trigger-Context, Evaluator, Schema), NAR-06 (Scheduler, Lifecycle, Cooldowns, eigener RNG), NAR-07 (Templates, Choice-Vertrag, Eligibility) und NAR-08 (Command-DSL, Allowlist, Preflight, Ausfuehrung) und NAR-09 (Content-Schema, Vokabular, Turn-Manifest, Registry) sind erledigt; NAR-10 (Content-Compiler), NAR-11 (lokaler Composer), NAR-12 (Orchestrierung in Tick und WorldStore) und NAR-13 (Demand-Migration) sind erledigt; NAR-14 (Narrative UI), NAR-15 (autonome Rivalen), NAR-16 (Langzeit/Performance) und NAR-17 (Doku-Sync) sind erledigt. Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. Naechster Schritt sind B2 und der erste Content-Batch nach D1.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später

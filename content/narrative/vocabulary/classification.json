@@ -40,6 +40,7 @@
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",
     "return": "Wiederkehr eines persistenten Besuchers.",
     "conflict": "Streit, Konflikt oder angespannte Begegnung.",
+    "rival": "Begegnung oder Handlung eines Rivalen.",
     "service": "Bedienung an Kasse, Tresen oder Automaten.",
     "loss": "Verlust, Deckungslücke oder schlechter Besuch.",
     "demand": "Nachfrageevent oder Auslastung.",

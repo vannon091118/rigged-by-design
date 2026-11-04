@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T03:35Z-b1-kontext-helper",
+  "contributionId": "b1-kontext-helper-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["content", "facts"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern", "rueckkehrer"],
+  "text": "Rita sah die Szene nicht mehr aus allen Zahlen des Hauses zusammengesetzt, sondern aus dem einen Fact, der sie ausgeloest hatte: Rueckkehr, Streit, Service oder Rivale. Die Persona kam aus den Besuchern, die wirklich am Tisch standen; Beziehung und Stimmung aus dem Fact, der Erinnerung und der gerichteten Kante. Was das Template nicht verlangte, blieb draussen - kein Welt-Flag wurde zur Pflicht. Die Wahl des Textes und die Wahl der Szene blieben getrennt.",
+  "directives": []
+}

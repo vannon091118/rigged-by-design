@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.96 | 2026-11-04 03:21 UTC -->
+<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.97] - 2026-11-04
+
+### Technik
+- B1: `src/core/sim/narrative/composition-context.ts` leitet den Composer-Kontext rein aus `WorldState`, `Ledger`, Event und Template ab: Kontext aus dem ausloesenden Fact oder dem Template-Fallback, Personas aus den aufgeloesten Visitor-Teilnehmern, Beziehung und Stimmung aus Fact, Erinnerung und gerichteter Kante. `requiredFlags` stammt ausschliesslich aus den Template-Requirements; `view.ts` ruft nur noch diesen Helper auf. Rivale ist als eigener Kontext `rival` im Vokabular. Kein neuer Zustand, keine zweite Kontextdatenbank.
 
 ## [0.3.96] - 2026-11-04
 
