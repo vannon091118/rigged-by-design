@@ -44,7 +44,7 @@ export const VISITOR_RETURN_TEMPLATE: EventTemplate = {
       costs: [],
       effects: [{ kind: 'SET_FLAG', flag: 'asked_about_visit', delta: 1 }],
       outcomeId: 'ASKED',
-      followUpEventId: null,
+      followUpEventId: 'VISITOR_AFTERMATH',
     },
   ],
   initialStep: 'START',

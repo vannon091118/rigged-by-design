@@ -4,13 +4,15 @@ import { recordJournal } from '../journal';
 import type { DemandEventKind, WorldState } from '../types';
 import { processNarrativeBoundaryDetailed } from './boundary';
 import { demandDefinition, isDemandEventId } from './events/demand-definitions';
-import { EVENT_TEMPLATES } from './events/definitions';
+import { EVENT_TEMPLATES, templateFor } from './events/definitions';
 import { createEventCandidate } from './events/template-candidate';
 import { EVENT_TRIGGER_DEFINITIONS } from './events/trigger-definitions';
 import { scheduleCandidates } from './event-scheduler';
 import type { EventCandidate, NarrativeEventInstance } from './event-types';
 import { buildTriggerContext } from './trigger-context';
 import { evaluateTriggerDefinition } from './trigger-evaluate';
+import type { TriggerMatch } from './trigger-types';
+import type { NarrativeFact } from './types';
 
 export interface NarrativeRuntimeResult {
   /** Anzahl der in diesem Lauf drainierten Facts. */
@@ -46,6 +48,32 @@ function reportExpiredDemand(world: WorldState, expired: readonly NarrativeEvent
  * bereits drainierten Facts, plant hoechstens drei neue Instanzen und rekursiert
  * nie in neu erzeugte Facts; der naechste Tick/Command-Flush sieht sie.
  */
+/**
+ * Loest eine EVENT_RESOLVED-Kette zentral und fail-closed auf: Vorgaenger,
+ * Template und Choice muessen bekannt sein, sonst entsteht kein Kandidat.
+ * Der Lauf verarbeitet nur den bereits drainierten Fact - keine Rekursion.
+ */
+function followUpCandidate(world: WorldState, fact: NarrativeFact): EventCandidate | null {
+  if (fact.kind !== 'EVENT_RESOLVED') return null;
+  const prior = world.narrative.events.find((event) => event.id === fact.eventId);
+  if (!prior || prior.status !== 'RESOLVED') return null;
+  const template = templateFor(prior.templateId, prior.templateVersion) ?? templateFor(prior.templateId);
+  if (!template) return null;
+  const choice = template.choices.find((entry) => entry.choiceId === fact.choiceId);
+  const followUpId = choice?.followUpEventId;
+  if (!followUpId) return null;
+  const followTemplate = templateFor(followUpId);
+  if (!followTemplate) return null;
+  const match: TriggerMatch = {
+    triggerId: followTemplate.triggerId,
+    matched: true,
+    factId: fact.id,
+    participants: prior.participants,
+    reasons: [`chain:${prior.id}->${followUpId}`],
+  };
+  return createEventCandidate(followTemplate, match, prior.id);
+}
+
 export function processNarrativeRuntime(world: WorldState, ledger: Ledger): NarrativeRuntimeResult {
   const boundary = processNarrativeBoundaryDetailed(world, ledger);
   reportExpiredDemand(world, boundary.expired);
@@ -65,6 +93,8 @@ export function processNarrativeRuntime(world: WorldState, ledger: Ledger): Narr
         if (candidate) candidates.push(candidate);
       }
     }
+    const followUp = followUpCandidate(world, fact);
+    if (followUp) candidates.push(followUp);
   }
   const scheduled = scheduleCandidates(world, candidates, world.tick);
   return {

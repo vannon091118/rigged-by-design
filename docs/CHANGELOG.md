@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.103 | 2026-11-04 05:30 UTC -->
+<!-- rbd-doc: v0.3.104 | 2026-11-04 05:44 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.104] - 2026-11-04
+
+### Spiel
+- Wer einen Rueckkehrer nach seinem letzten Besuch fragt, bekommt jetzt ein Nachspiel: `VISITOR_AFTERMATH` setzt das Gespraech mit denselben Beteiligten fort, statt die Szene kommentarlos zu schliessen.
+
+### Technik
+- D1: `VISITOR_RETURN.ASK_ABOUT_LAST_VISIT` traegt `followUpEventId: 'VISITOR_AFTERMATH'`; neues Template (Scope VISITOR, eine Visitor-Rolle, Trigger `chain`) mit `TITLE`, `BODY`, Choice-Label und `OUTCOME`.
+- `runtime.ts` loest bei `EVENT_RESOLVED` Vorgaenger, Template und Choice zentral und fail-closed auf und gibt den Folge-Kandidaten mit `chainFromEventId` in die Auswahl; der Scheduler prueft Cooldown, Limits, Kettenherkunft und RESOLVED zentral. Keine Rekursion, kein Duplikat im zweiten Lauf. Registry auf 52 Fragmente.
 
 ## [0.3.103] - 2026-11-04
 

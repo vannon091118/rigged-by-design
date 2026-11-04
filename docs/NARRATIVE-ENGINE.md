@@ -365,7 +365,12 @@ Geraete-, Lager- und Personal-Facts haben bewusst keine Fact-Kinds und bleiben
 dokumentiert offen. `scheduleCandidates()` plant hoechstens
 drei neue Instanzen pro Lauf und verhindert Live-Duplikate und Cooldowns wie bisher.
 Facts aus Choice-Effekten entstehen erst nach dem Drain und werden im naechsten Lauf
-verarbeitet.
+verarbeitet. Seit D1 loest die Runtime `EVENT_RESOLVED` zusaetzlich als Kette auf:
+Vorgaenger, Template und Choice werden zentral und fail-closed geprueft, die
+`followUpEventId` der Choice laedt das Folgetemplate, und `createEventCandidate`
+erhaelt die Vorgaenger-Teilnehmer mit `chainFromEventId`. Der Scheduler prueft
+Cooldown, Limits, Kettenherkunft und RESOLVED-Status zentral; es gibt keine
+Rekursion, der zweite Lauf dupliziert nichts.
 
 `tickWorld()` ruft die Runtime genau einmal am Ende. Ausserhalb des Ticks flusht
 `src/store/narrative-commands.ts` an den echten Mutationsgrenzen: nach jeder

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:71b5e6c7a31c735acdbc58c31e3ac620e45e0a3a9c1da4e546f63f6eb093a683",
+  "contentHash": "sha256:258a3fb3f02e54485985231077e22fb11e638ffe3d1f95ddc81cca7c0bd1364f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -617,6 +617,94 @@
       "text": "Im Archiv lagen die Beiträge nicht als Haufen, sondern als Karten mit Herkunft, Rolle und erlaubtem Ort. Rita zog eine Karte heraus, auf der nur ein Satz stand; daneben lagen leere Felder für Ton, Stimmung und Beziehung. Erst als jedes Feld ausgefüllt war, durfte der Satz in den Saal. Was fehlte, blieb draußen, auch wenn es schön klang.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-09-content-registry.json"
+    },
+    {
+      "contributionId": "d1-aftermath-body-01",
+      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Leise, fast nebenbei, legt er nach, was beim letzten Mal unausgesprochen blieb: ein knapp gewonnener Abend, ein Platz, der ploetzlich frei war, und ein Blick zur Tuer, der mehr sagte als der Gewinn.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-body.json"
+    },
+    {
+      "contributionId": "d1-aftermath-listen-01",
+      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Weiter zuhoeren und vorsichtig nachhaken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-listen.json"
+    },
+    {
+      "contributionId": "d1-aftermath-outcome-01",
+      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er nickt, sichtlich erleichtert, dass ihm jemand wirklich zugehoert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-outcome.json"
+    },
+    {
+      "contributionId": "d1-aftermath-titel-01",
+      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er bleibt noch einen Moment stehen, als haette er erst jetzt wirklich angefangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-titel.json"
     },
     {
       "contributionId": "event-scheduler-01",

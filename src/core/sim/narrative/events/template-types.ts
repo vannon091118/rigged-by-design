@@ -19,6 +19,9 @@ export type ContentSlotKind = 'TITLE' | 'BODY' | 'CHOICE_LABEL' | 'OUTCOME';
 /** Reservierter Trigger fuer rein engine-seitig gestartete Events ohne Fact. */
 export const ENGINE_DEMAND_TRIGGER = 'ENGINE_DEMAND';
 
+/** Reservierter Trigger fuer Folge-Events aus einer aufgeloesten Choice ohne neuen Fact. */
+export const FOLLOW_UP_TRIGGER = 'chain';
+
 export interface ContentSlot {
   readonly id: string;
   readonly kind: ContentSlotKind;
