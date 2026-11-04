@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:351e5cd6bc710c2dc0aae73cd077f60eb30984400780e64e24f73ca0c689d43f",
+  "contentHash": "sha256:29552c65cfc0ed3aeb8015af46ef3228aad21a60968441d5cf25775733a437c6",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -260,6 +260,32 @@
       "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
+    },
+    {
+      "contributionId": "lebenssim-vision-01",
+      "turnId": "2026-11-04T04:10Z-lebenssim-vision",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita las die neue Fassung und fand dieselbe Kette wieder, die sie am Tresen erlebt hatte: Laune, Charisma, Erinnerung, Preis. Nur stand sie diesmal nicht als Regel des Hauses da, sondern als Leben, das schon vor dem ersten Gast angefangen hatte. Der Automat blieb stehen, wo er stand - als Testumgebung, nicht als Genre.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
     },
     {
       "contributionId": "ledger-pages-01",

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->
+<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.98] - 2026-11-04
+
+### Spiel
+- Die Doku beschreibt Rigged by Design als Lebenssimulation: Du startest mit Startguthaben, keinem Plan und einer Welt voller Moeglichkeiten. Das Casino ist Startpunkt und Testumgebung, nicht das Genre; vor einem Release soll eine bespielbare Stadt entstehen.
+
+### Technik
+- `docs/PRODUCT.md` neu als Vision (Titel-Wortspiel, bildhafter Pfad, Engine-Prinzip, MVP-Grenze, Stadt-Horizont, NAR-Social-Plugin, Ledger-Ressourcen).
+- README, ROADMAP, ARCHITECTURE, AGENTS, NARRATIVE-ENGINE, ART-DIRECTION, INVENTORY und Asset-Pack eingeordnet; der Save-Stand in der README von v9 auf v10 korrigiert.
+- Content-Beitrag `2026-11-04-lebenssim-vision.json`, Manifest und Registry auf 28 Fragmente; Compiler-Test entsprechend.
 
 ## [0.3.97] - 2026-11-04
 

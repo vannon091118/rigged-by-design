@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Vision: Lebenssimulation statt Casino-Manager
+
+**Ziel.** Das Projekt nicht mehr als Casino-Manager beschreiben. Rigged by Design ist eine Lebenssimulation; das Casino ist Startpunkt und Testumgebung. Die vorhandene Engine muss als wiederverwendbarer, erweiterbarer Kern erklaert werden, auf dem alle kuenftigen Lebensbereiche aufsetzen.
+
+**Umsetzung.** `docs/PRODUCT.md` neu geschrieben: Titel als Wortspiel, Casino als Testumgebung, der bildhaft erklaerte Pfad (TV -> Laune -> Charisma -> NPC-Erinnerung -> Doener -> Kleidung/Marken/Chef -> eigenes Casino), die Engine als Systemkern, MVP als Systembeweis und Detailvorgabe, Low-End-Optik ausdruecklich vorlaeufig, bespielbare Stadt als Release-Horizont, Social-Plugin der NAR Engine und Ledger-Ressourcen. README um Titel, Vision, Engine-Abschnitt, Herkunft des Casinos, Optik-Hinweis und FAQ erweitert; Save-Stand von v9 auf v10 korrigiert. ROADMAP auf Nordstern/Testumgebung/Lebenssysteme/Stadt umgestellt. ARCHITECTURE um die ort-agnostische Produktgrenze, AGENTS um die Rollenkorrektur, NARRATIVE-ENGINE um Abschnitt 18 (Social-Plugin), ART-DIRECTION und Asset-Pack um den Vorlaeufig-Status ergaenzt; INVENTORY-Projektzeile korrigiert. Content-Beitrag `2026-11-04-lebenssim-vision.json`, Manifest und Registry auf 28 Fragmente.
+
+**Pruefungen.** `narrative:compile` (28 Fragmente, Hash), Compiler-Test auf 28 gezogen, `verify:quick` (zehn Gates) vor dem Commit.
+
+**Offen.** Die Systemkette ist beschrieben, aber noch nicht als Lebenssystem implementiert; Laune/Charisma/Ressourcen und das Social-Plugin bleiben Roadmap. Die Optik bleibt vorlaeufig.
+
 ## 2026-11-04 - B1: Kontext-Helper fuer Szenen
 
 **Ziel.** Der Szenen-Kontext sollte nicht mehr in `view.ts` aus verstreuten Feldern entstehen. Der neue reine Helper sollte Fact, Template, Teilnehmer, Erinnerungen und gerichtete Kante zusammenfuehren, ohne einen zweiten Zustand oder eine zweite Kontextdatenbank anzulegen.
@@ -924,7 +934,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.97 | 2026-11-04 03:39 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.98 | 2026-11-04 03:52 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

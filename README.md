@@ -7,8 +7,8 @@
 <h1 align="center">Rigged by Design</h1>
 
 <p align="center">
-  <strong>Ein Casino-Simulator über Hausvorteile, Hausaufgaben und die erstaunliche Haltbarkeit eines kaputten Sofas.</strong><br>
-  Du führst das Haus. Das Haus führt Buch. Die Gäste führen sich selbst – meistens in die falsche Richtung.
+  <strong>Eine Lebenssimulation über Hausvorteile, Hausaufgaben und die erstaunliche Haltbarkeit eines kaputten Sofas.</strong><br>
+  Du startest mit einem Schlüssel, einem Startguthaben und keiner Ahnung. Der Rest ist Leben.
 </p>
 
 <p align="center">
@@ -22,9 +22,40 @@
 
 > „Der Hausvorteil ist kein Bug. Er ist die Geschäftsidee.“
 
-**Rigged by Design** ist eine satirische Aufbausimulation: Du richtest ein Casino ein, kümmerst dich um Gäste, Personal und laufende Kosten und darfst anschließend herausfinden, dass „Umsatz“ und „Geld auf dem Konto“ zwei verschiedene Erzählperspektiven sind.
+**Rigged by Design** ist eine satirische Lebenssimulation. Du startest mit einem Startguthaben, keinem Plan und einer Welt voller Möglichkeiten; du kümmerst dich um Geld, Laune, Leute und die Frage, wer hier eigentlich die Regeln geschrieben hat. Das Casino ist dabei der erste Raum, nicht das Genre.
 
 Das hier ist zugleich eine Einladung in die Spielwelt und die Werkbank für Entwicklerinnen und Entwickler. Was folgt, beschreibt den **heutigen Projektstand**. Mechaniken und Umfang dürfen sich mit dem Spiel verändern; für konkrete Regeln gelten Code, Tests und die verlinkten Architekturverträge.
+
+## Die Vision
+
+**Rigged by Design ist das Leben.** Der Titel ist ein Wortspiel, und er beschreibt zuerst nicht das Haus: Man sucht sich nicht aus, in welche Verhältnisse man geboren wird. Andere haben mit ihrem Leben vor dir schon angefangen – deine Eltern zum Beispiel – und ihre Entscheidungen sind die Bedingungen, unter denen deine stattfinden. Du erbst kein Vermögen, sondern einen Startpunkt: **150 VC Startkapital**, einen Schlüssel, einen Automaten und keinen Plan.
+
+Das **Casino ist dieser Startpunkt und ausdrücklich eine Testumgebung**. Es ist der erste Ort, an dem die Systeme beweisen, dass sie tragen: Gäste mit Laune, Geld, Erinnerung und Meinung; ein Ledger, das jede Folge bucht; eine Narrative Engine, die aus echten Übergängen Geschichten macht. Es ist nicht das Endziel und nicht die Kategorie des Spiels. „Sims“ kommt der Sache näher als „Casino-Manager“, trifft sie aber auch nicht: Es geht um ein Leben, das man führt, und um eine Welt, die schon vorher Regeln hatte.
+
+Der Pfad lässt sich bildhaft erklären – nicht wörtlich, sondern als Muster:
+
+- **Du siehst eine Serie im TV.** Sie hebt deine Laune und dein Intellekt.
+- **Die Werbung dazwischen** hebt deine Ausgabebereitschaft, nicht dein Konto.
+- **Laune und Intellekt verändern dein Charisma.** Charisma entscheidet, wie NPCs auf dich reagieren, was sie sich merken und was sie dir beim nächsten Mal vorhalten: dass du sie damals nach Geld für einen Döner gefragt hast.
+- **Heute hast du Geld.** Also kaufst du den Döner – und gibst deinen Freunden einen aus, weil guten Freunden gibt man einen Döner aus. Das fühlt sich richtig an, und das Spiel bucht es als Beziehung.
+- **Danach will dein Charakter neue Schuhe.** Die billigen drücken die Laune; die teuren kosten dreimal so viel und geben bei Leuten mit dem Trait „Konsument“ einen Charisma-Bonus. Marken und Preise sind Eigenschaften, keine Textzeilen.
+- **Dein Chef trägt diesen Trait auch.** Und du willst irgendwann dein eigenes Casino eröffnen, statt das von Willy Kleingeld zu putzen.
+
+Jeder Schritt liest Zustand, jeder Zustand hat eine Ursache, jede Ursache ist sichtbar. Dieselbe Kette muss später in einer Kneipe, in einem Tante-Emma-Laden oder auf der Straße funktionieren, ohne dass die Regel neu geschrieben wird.
+
+## Die Engine ist der Punkt
+
+Was heute existiert, ist kein Casino-Code mit Casino-Sonderfällen, sondern ein **wiederverwendbarer, erweiterbarer Systemkern**: ein Zustandsbesitzer für Welt, Ledger, PRNG, Uhr und Save; ein headless Kern ohne Browser; ein Ledger, in dem jede Folge eine Zeile ist; Facts und eine Narrative Engine, die Erinnerungen, Beziehungen, Trigger und Events aus echten Übergängen ableiten; eine Snapshot-Ansicht, die UI und Renderer teilen, ohne den Zustand zu kopieren; Inhalte als Daten statt als Sonderlogik.
+
+Ein neuer Ort bringt deshalb Inhalte, Figuren und höchstens eine dünne Anbindung mit – keine zweite Engine. Das ist die Bedingung dafür, dass aus einem Casino eine Stadt werden kann.
+
+## MVP, Optik und der Release-Horizont
+
+Der MVP ist ein **Systembeweis** und die **Vorgabe für Detailtiefe**: Er zeigt, wie tief ein Aspekt simuliert wird, wenn er fertig ist – nicht, wie viel Content am Ende existiert. Weitere Kontexte wie Kneipe, Tante-Emma-Laden oder Wohnung kommen laufend dazu.
+
+Die aktuelle Low-End-Optik ist **noch nicht final** und deutlich von der Vision entfernt. Der Preis wird von Anfang an bezahlt: Das Spiel muss auf vielen Plattformen laufen, auch auf schwachen Geräten. Die jetzige Pixel-Optik ist ein plattformfreundlicher Machbarkeitsbeweis, keine endgültige Bildsprache.
+
+**Vor einem Release soll eine bespielbare Stadt entstehen** – mehrere Orte, Wege dazwischen, Figuren mit eigenen Tagesabläufen, ein Charakter mit Laune, Ruf und Ressourcen. Kein größeres Casino.
 
 ---
 
@@ -37,6 +68,8 @@ Der Automat war offenbar sein Lieblingsprojekt. Das Guthaben darin ist es wenige
 Jetzt darfst du herausfinden, ob aus Neonlicht, einer Wechselkasse und etwas zu viel Optimismus ein Geschäft wird. Die Gäste kommen mit eigenem Budget, eigener Laune und eigenen Vorstellungen davon, wie lange ein Getränk dauern darf. Du kommst mit einem Schlüsselbund und dem Verdacht, dass dein Vater die Steuerordner absichtlich alphabetisch sortiert hat.
 
 Falls das Startkapital schneller verschwindet als der Nachlassordner: In den Casinos der Konkurrenz kannst du auch Schichten annehmen. Reinigung, Bar, Kartentisch oder Reparatur – der Kapitalismus bietet erstaunlich viele Wege, im selben Gebäude zu arbeiten, in dem man später wieder Geld ausgibt.
+
+Das ist der Startpunkt, nicht das Genre. Das Haus ist die Testumgebung, in der die Systeme zeigen, was sie können: Laune, Geld, Erinnerung, Ruf, Beziehung. Sobald sie tragen, tragen sie auch eine Kneipe, einen Laden oder eine Straße.
 
 <p align="center"><em>Die vierte Wand ist vorhanden. Sie steht nur auf der Kostenliste unter „Renovierung“.</em></p>
 
@@ -58,7 +91,7 @@ Der Floor ist die zentrale Bühne: Du bewegst dich darin, platzierst Geräte und
 
 ## Was heute auf dem Spielplan steht
 
-Die folgenden Systeme sind im gegenwärtigen Spielstand sichtbar. Das ist eine Momentaufnahme und keine Festschreibung dessen, was das Spiel später sein muss.
+Die folgenden Systeme sind im gegenwärtigen Spielstand sichtbar. Das Casino ist heute die einzige ausgebaute Umgebung – der Startpunkt und die Testumgebung. Das ist eine Momentaufnahme und keine Festschreibung dessen, was das Spiel später sein muss.
 
 | Bereich | Heute im Projekt |
 | --- | --- |
@@ -85,6 +118,8 @@ Zeiger steht ein Zielraster, am Fuß ein Spielerring, entlang des Wegs eine Punk
 ![Vergleich derselben Etage vor und nach dem Asset-Paket](docs/screenshots/comparison/03-floor-v1-v2.png)
 
 Links steht die frühere Etage, rechts derselbe Stand mit dem aktuellen Geräte-, Tisch- und Deko-Paket.
+
+Die Aufnahmen zeigen die **heutige, vorläufige** Optik. Sie ist bewusst plattformfreundlich und deutlich von der Bildsprache der Vision entfernt; sie belegt Machbarkeit, nicht den Endzustand.
 
 ### Vorher und nachher, Bild für Bild
 
@@ -169,7 +204,9 @@ Die README erzählt die Welt mit einem Augenzwinkern. Wenn du nachschlagen wills
 
 ### Die Erzählung ist ebenfalls im Bau
 
-Die Narrative Engine ist ein wachsender Teil des Projekts. Der aktuelle Vertrag beschreibt Facts als Ereignisse aus echten Zustandsübergängen; Texte stellen diese Ereignisse dar, sie erzeugen keine Spielregeln. `Guest` bezeichnet einen Besuch, `Visitor` die wiederkehrende Identität. Der persistente Narrativzustand liegt in `WorldState`; der Save-Stand ist v9 und Migrationen unterstützen v5 bis v8.
+Die Narrative Engine ist ein wachsender Teil des Projekts. Der aktuelle Vertrag beschreibt Facts als Ereignisse aus echten Zustandsübergängen; Texte stellen diese Ereignisse dar, sie erzeugen keine Spielregeln. `Guest` bezeichnet einen Besuch, `Visitor` die wiederkehrende Identität. Der persistente Narrativzustand liegt in `WorldState`; der Save-Stand ist v10 und Migrationen unterstützen v5 bis v9.
+
+Die Narrative Engine ist die erste soziale Schicht des Projekts. Als Nächstes bekommt sie eine **Social-Komponente als Plugin**, damit dieselben Facts, Erinnerungen und Beziehungen auch außerhalb eines Hauses tragen – zwischen Nachbarn, Kollegen und Freunden. Der Ledger wird parallel um **Ressourcen nach Bedarf** erweitert: Zeit, Ruf, Vorräte, Aufmerksamkeit. Jede bleibt eine gebuchte Zeile mit Ursache, keine zweite Zahlenwahrheit.
 
 Die Roadmap führt die nächsten Narrative-Schnitte einzeln auf. Deshalb versprechen Figuren, Erinnerungen oder künftige Ereignisse hier keine fertige Story-Kampagne. Selbst die vierte Wand braucht erst ein Ticket.
 
@@ -244,13 +281,19 @@ Die Roadmap beschreibt Absichten und Abhängigkeiten, keine Garantie für endgü
 
 | Horizont | Richtung laut aktuellem Plan |
 | --- | --- |
-| **Jetzt** | Eine gemeinsame Impact- und Gate-Auswertung, belastbare Dokumentation und sichtbare Prüfresultate |
-| **Als Nächstes** | Narrative Engine schrittweise erweitern: Beziehungen, Trigger, Scheduler und Event-Verträge |
-| **Später** | Autonome Rivalen, casinoübergreifende Aktionen und Langzeitnachweise für Narrative-Ereignisse |
+| **Jetzt** | Das Casino als Testumgebung schärfen: Systeme, Bedienung und Lügen des Hauses sichtbar und prüfbar machen |
+| **Als Nächstes** | Lebenssysteme aus dem Casino lösen: Laune, Charisma und Ressourcen verallgemeinern, Social-Plugin der Narrative Engine, erste weitere Orte |
+| **Später** | Eine bespielbare Stadt – der Release-Horizont, nicht ein größeres Casino |
 
 Der jeweils aktuelle Stand lebt in [`docs/ROADMAP.md`](docs/ROADMAP.md). Abgeschlossene Punkte wandern von dort in den Changelog; sie bleiben nicht als ewige Prophezeiung im README stehen.
 
 ## FAQ – bevor der Kassenschluss wieder verschoben wird
+
+<details>
+<summary><strong>Ist das ein Casino-Manager?</strong></summary>
+
+Nein. Das Casino ist der Startpunkt und die Testumgebung. Das Spiel ist eine Lebenssimulation: Du führst ein Leben in einer Welt, die schon vor dir Regeln hatte. Das Haus ist der erste Ort, an dem diese Regeln sichtbar werden – nicht das Genre.
+</details>
 
 <details>
 <summary><strong>Ist das echtes Glücksspiel?</strong></summary>
@@ -286,4 +329,4 @@ Ja. Lies zuerst `AGENTS.md`, prüfe den passenden Vertrag unter `docs/` und halt
 
 Das Spiel greift bewusst satirisch Mechaniken auf, die Glücksspiel attraktiv und riskant machen können: Near Misses, variable Einsätze und Gäste mit Suchtwerten. Es ist eine Simulation über solche Systeme, kein Glücksspielangebot. Falls Glücksspiel für dich aufgehört hat, ein Spiel zu sein, ist die [BZgA](https://www.bzga.de/) ein besserer Ansprechpartner als dieses Repository. Das meinen wir ohne Ironie.
 
-<p align="center"><strong>Rigged by Design.</strong><br>Das Haus gewinnt immer. Wer heute das Haus ist, darfst du herausfinden.</p>
+<p align="center"><strong>Rigged by Design.</strong><br>Das Spiel ist manipuliert. Das Leben auch. Wer die Regeln schreibt, darfst du herausfinden.</p>

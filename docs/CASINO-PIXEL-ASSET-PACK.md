@@ -1,6 +1,6 @@
 # Casino Pixel Asset Pack
 
-Transparent, standalone pixel-art PNG textures for a 2D casino-management game using PixiJS 8. Sprites share a bold comic outline and the project role palette (violet identity, cyan service, pink guest, gold value, red danger, green success, orange warning). Textures are nearest-neighbor scaled with hard alpha edges; load them individually with `Assets.load`.
+Transparent, standalone pixel-art PNG textures for the casino test venue of the 2D life simulation **Rigged by Design**, using PixiJS 8. The casino is where the systems are proven; it is not the genre. Sprites share a bold comic outline and the project role palette (violet identity, cyan service, pink guest, gold value, red danger, green success, orange warning). Textures are nearest-neighbor scaled with hard alpha edges; load them individually with `Assets.load`.
 
 ## Asset folders
 
