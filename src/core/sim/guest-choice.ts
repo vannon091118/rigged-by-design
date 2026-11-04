@@ -5,6 +5,7 @@ import { blockedTiles, nearestWalkable } from './pathfinding';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
+import { dispositionOfGuest, type VisitorDisposition } from './narrative/disposition';
 import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
 import { offerScore } from './offers';
@@ -93,14 +94,19 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
     if (toilet && startActivity(world, guest, toilet)) return;
   }
 
+  // E2E-Disposition: begrenzte Verschiebung der sozialen Schwellen um ±8 Punkte.
+  // Kritische Regeln (Toilette bei need/Geduld/Laune < 22, Wallet-Veto, Platz) bleiben vorrangig.
+  const disposition: VisitorDisposition = dispositionOfGuest(world, guest);
   const wantsDrink = wallet >= world.prices.drinkPrice
-    && (guest.need === 'drink' || guest.mood < 44 || guest.patience < 38 || (guest.sociability > 68 && guest.mood < 55));
+    && (guest.need === 'drink' || guest.mood < 44 + disposition.serviceBias
+      || guest.patience < 38 + disposition.serviceBias
+      || (guest.sociability > 68 && guest.mood < 55 + disposition.serviceBias));
   if (wantsDrink) {
     const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
     if (bar && startActivity(world, guest, bar)) return;
   }
 
-  if (guest.sociability > 72 && guest.mood < 50 && guest.addiction < 20) {
+  if (guest.sociability > 72 - disposition.socialBias && guest.mood < 50 + disposition.socialBias && guest.addiction < 20) {
     const sofa = world.furniture.find((item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
     if (sofa && startActivity(world, guest, sofa)) return;
   }

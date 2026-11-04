@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - E2: Besucherdisposition ueber den Gastpfad
+
+**Ziel.** Eine einzige Ableitung aus Persona, Erinnerung und Kante, die an allen drei Entscheidungspunkten begrenzt wirkt - wie in D4/D5 entschieden, ohne neue Pflichten, ohne Geldwirkung.
+
+**Umsetzung.** Neue reine Datei `narrative/disposition.ts` mit `visitorDisposition()` (Persona-Basis, `scoreMemories()` ueber hoechstens sechs Erinnerungen, Kante `visitor <-> player` aus Trust, Sympathie, Konflikt): `gameBias` (Faktor ±20 %), `serviceBias`/`socialBias` (Drink-/Sofa-Schwellen ±8 Punkte), `returnBias` (±10 Prozentpunkte zusaetzlich zu `memoryEffect()`). `memoryEffect()` ist duenne Fassade ohne zweite Gedaechtnislogik, `returnChance()` nimmt optionale Kanten, `pickReturningVisitor` reicht echte Kanten. Persona-Basis speist Spiel, Service und Soziales; die Rueckkehr bleibt Erinnerung plus Kante, damit alte Werte ohne Kanten bit-identisch bleiben.
+
+**Pruefungen.** Neuer E2E-Test `visitor-disposition.test.ts`: gleiche Persona, GOOD+Sympathie gegen BAD+Konflikt, gleiche Welt, gleicher Seed - verschiedene Gewichte, verschiedene Aktivitaet (Bar gegen Spiel, Sofa gegen Spiel), Rueckkehr 39 gegen 7, Veto bei kaputtem Geraet intakt, Roundtrip erhaelt den Unterschied. `vitest` (5/5) vorab gruen; `verify:quick` (zehn Gates) vor dem Commit. Registry auf 55 Fragmente.
+
+**Offen.** Die Persona-Basiswerte sind Startwerte, keine Messung; D4 verlangt die Messung vor jeder Balance-Aussage. Langzeitlaeufe (Soak) koennen durch echte Kanten leicht andere Rueckkehrzahlen zeigen - das ist beabsichtigte Wirkung, kein Rauschen.
+
 ## 2026-11-04 - D3: Fristablauf ohne Strafe
 
 **Ziel.** Ein Fristablauf darf nie heimlich bestrafen: Wer eine Szene verstreichen laesst, findet danach dieselbe Welt vor - gleiche Flags, gleiche Beziehungen, gleicher Ledger. Das war bisher Lesart des Codes, jetzt ist es ein Test.
@@ -1014,7 +1024,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.106 | 2026-11-04 06:16 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.107 | 2026-11-04 06:34 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

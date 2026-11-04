@@ -1,11 +1,7 @@
 /** Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. */
 import type { Visitor, WorldState } from '../types';
-import { NARRATIVE_LIMITS, type NarrativeFact, type VisitEndedFact, type VisitorMemory, type VisitorValence } from './types';
-
-const GOOD_RETURN = 4;
-const BAD_RETURN = -6;
-const GOOD_MOOD = 6;
-const BAD_MOOD = -4;
+import { scoreMemories, type MemoryScore } from './disposition';
+import { NARRATIVE_LIMITS, type NarrativeFact, type VisitEndedFact, type VisitorValence } from './types';
 
 /** Dieselbe Schwelle wie die Zufriedenheitsnotiz: 65+ ist ein guter Besuch, 35- ein schlechter. */
 export function valenceOf(score: number): VisitorValence {
@@ -38,25 +34,13 @@ export function applyMemories(world: WorldState, fresh: readonly NarrativeFact[]
   return applied;
 }
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
-
 /**
- * Wirkung der Erinnerungen: die letzte zaehlt doppelt, damit ein Praegendes den Ausschlag gibt.
- * Rein deterministisch aus gespeicherten Daten, ohne PRNG.
+ * Wirkung der Erinnerungen als duenne Fassade ueber `scoreMemories()` aus
+ * `disposition.ts`, damit es keine zweite Gedaechtnislogik gibt. Die Disposition
+ * nutzt dieselbe Wertung fuer Spiel-, Service- und Sozialneigung; die Rueckkehr
+ * behaelt zusaetzlich den Beziehungszuschlag aus `returnBias`.
  */
 export function memoryEffect(visitor: Visitor): { readonly returnBonus: number; readonly moodBonus: number } {
-  const memories: readonly VisitorMemory[] = visitor.memories ?? [];
-  let returnBonus = 0;
-  let moodBonus = 0;
-  for (const [index, memory] of memories.entries()) {
-    const weight = index === memories.length - 1 ? 2 : 1;
-    if (memory.valence === 'GOOD') {
-      returnBonus += GOOD_RETURN * weight;
-      moodBonus += GOOD_MOOD * weight;
-    } else if (memory.valence === 'BAD') {
-      returnBonus += BAD_RETURN * weight;
-      moodBonus += BAD_MOOD * weight;
-    }
-  }
-  return { returnBonus: clamp(returnBonus, -12, 12), moodBonus: clamp(moodBonus, -8, 10) };
+  const score: MemoryScore = scoreMemories(visitor.memories ?? []);
+  return { returnBonus: score.returnPoints, moodBonus: score.moodPoints };
 }

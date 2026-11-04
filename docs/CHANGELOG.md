@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.106 | 2026-11-04 06:16 UTC -->
+<!-- rbd-doc: v0.3.107 | 2026-11-04 06:34 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.107] - 2026-11-04
+
+### Spiel
+- Keine sichtbare Aenderung: Wer gern wiederkommt, spielt etwas mutiger und setzt sich eher dazu - wer vergrault wurde, zieht sich zurueck. Harte Regeln (Geld, Platz, kaputte Geraete) gelten fuer alle gleich.
+
+### Technik
+- E2: Neue reine Ableitung `narrative/disposition.ts` aus Persona, Erinnerung und Kante (`gameBias`, `serviceBias`, `socialBias`, `returnBias`); sie wirkt begrenzt in `offerScore()`, `chooseActivity()` und `returnChance()`, `memoryEffect()` bleibt duenne Fassade ohne zweite Gedaechtnislogik. E2E-Test mit hoher/niedriger Disposition, Registry auf 55 Fragmente.
 
 ## [0.3.106] - 2026-11-04
 

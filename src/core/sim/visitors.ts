@@ -1,6 +1,8 @@
 /** Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. */
 import type { PersonaId, Visitor, WorldState } from './types';
+import { visitorDisposition } from './narrative/disposition';
 import { memoryEffect } from './narrative/memory';
+import type { RelationshipEdge } from './narrative/types';
 import { pinnedVisitorIds } from './narrative/relationships';
 
 export const VISITOR_CAP = 40;
@@ -45,7 +47,7 @@ export function pickReturningVisitor(world: WorldState, guestId: number): Visito
   if (world.visitors.length === 0) return null;
   const hash = Math.imul(guestId, 2654435761) >>> 0;
   const visitor = world.visitors[(hash >>> 8) % world.visitors.length];
-  if (!visitor || hash % 100 >= returnChance(visitor)) return null;
+  if (!visitor || hash % 100 >= returnChance(visitor, world.narrative.relationships)) return null;
   return visitor;
 }
 
@@ -53,9 +55,11 @@ export function pickReturningVisitor(world: WorldState, guestId: number): Visito
  * Erlebnis des letzten Besuchs (0..100) steuert die Rueckkehr; alte Staende zaehlen neutral.
  * Erinnerungen an fruehere Besuche verschieben die Chance zusaetzlich — ohne PRNG, aus dem Save.
  */
-export function returnChance(visitor: Visitor): number {
+export function returnChance(visitor: Visitor, relationships: readonly RelationshipEdge[] = []): number {
   const experience = visitor.experience ?? NEUTRAL_EXPERIENCE;
-  const percent = (RETURN_PERCENT * experience) / NEUTRAL_EXPERIENCE + memoryEffect(visitor).returnBonus;
+  const percent = (RETURN_PERCENT * experience) / NEUTRAL_EXPERIENCE
+    + memoryEffect(visitor).returnBonus
+    + visitorDisposition(visitor, relationships).returnBias;
   return Math.max(0, Math.min(2 * RETURN_PERCENT + 12, percent));
 }
 

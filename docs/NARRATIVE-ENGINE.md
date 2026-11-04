@@ -90,14 +90,21 @@ treiben Trigger und Gedaechtnis. Kein Journal-Eintrag ist Voraussetzung fuer ein
 
 ## 5. Wirkung (belegt, nicht behauptet)
 
-`memoryEffect(visitor)` liest nur gespeicherte Daten, ohne PRNG:
+`narrative/disposition.ts` ist seit E2 die einzige Ableitung aus Persona-Basis,
+hoechstens sechs Erinnerungen und der Kante `visitor -> player` bzw.
+`player -> visitor`: `gameBias` (Faktor ±20 %), `serviceBias`/`socialBias`
+(Schwellen ±8 Punkte), `returnBias` (Beziehungszuschlag ±10 Prozentpunkte).
+`memoryEffect()` bleibt duenne Fassade ueber `scoreMemories()` und liest weiter
+nur gespeicherte Daten, ohne PRNG:
 
 - gute Erinnerung: `+4` Rueckkehr-Prozent und `+6` Laune je Gewicht,
 - schlechte Erinnerung: `-6` und `-4`,
 - die letzte Erinnerung zaehlt doppelt; Bonus gedeckelt auf `[-12, +12]` bzw. `[-8, +10]`.
 
-`returnChance()` addiert den Rueckkehr-Bonus, `spawnGuest()` addiert den Laune-Bonus
-beim Rueckkehrer-Spawn. Damit aendert sich messbar, wer wiederkommt und wie er ankommt;
+`returnChance()` addiert Rueckkehr-Bonus und Beziehungszuschlag, `offerScore()`
+multipliziert den begrenzten Spielfaktor, `chooseActivity()` verschiebt nur die
+sozialen Drink- und Sofa-Schwellen; Toilette, Geld, Platz und Geraetezustand
+bleiben harte Regeln. `spawnGuest()` addiert den Laune-Bonus Damit aendert sich messbar, wer wiederkommt und wie er ankommt;
 die Tests `narrative-memory.test.ts` und `narrative-start-pool.test.ts` belegen die
 Differenz gegen eine Kontrollwelt mit identischem Seed. Ein guter oder schlechter
 Besuch verschiebt zusaetzlich die gerichtete Kante `visitor:<id> -> player` um Trust
