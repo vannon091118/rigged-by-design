@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Narrative-Entscheidungen zu Batch, Kontexten, Gegenmassnahme und Disposition
+
+**Ziel.** Die fuenf offenen Punkte der Narrativ-Spezifikation verbindlich beantworten, ohne Code umzubauen: Content-Batch, neue Kontexte, Gegenmassnahme, E2-Reichweite und Service-Schwellen.
+
+**Umsetzung.** `docs/NARRATIVE-ENTSCHEIDUNGEN.md` haelt je Punkt Entscheidung, Begruendung, Grenzen und Umsetzungsfolge fest. Batch: mehrere Contributions pro Turn, aber weiterhin eine JSON-Datei je Beitrag und ein Manifest-Eintrag je Beitrag. Kontexte: `rival`, `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` kommen als Autorenvokabular dazu. Gegenmassnahme: `COUNTER_RIVAL` setzt nur `counteredUntilTick`; `RIVAL_COUNTERED` wird als Chain-Template an die aufgeloeste Choice gehaengt, ohne neuen Fact und ohne Fact-Trigger. E2 wirkt nur in `offerScore()`. `chooseActivity()` behaelt seine Service- und Sozialschwellen.
+
+**Pruefungen.** `node scripts/verify-docs.mjs`, `node scripts/verify-tree.mjs`, `node scripts/verify-redundancy.mjs` und `node scripts/verify-narrative-content.mjs` auf dem Dokumentstand; der volle Lauf bleibt CI.
+
+**Offen.** Die Entscheidungen sind noch nicht implementiert. Die genauen Dispositionsgewichte brauchen eine Messung; `RIVAL_COUNTERED` braucht Autorentexte. Die Chain-Kennung wird erst mit dem Runtime-Pfad eingefuehrt.
+
 ## 2026-11-04 - Profilweg und Geschichten-Historie
 
 **Ziel.** Die zwei offenen Andockpunkte der Narrativ-UI schliessen: vom Gast-Popup direkt in das Profil der Figur, und die abgeschlossenen Szenen im Journal sichtbar machen. Beides ohne neue Zustandswahrheit; der Dialog bleibt unveraendert.
@@ -844,7 +854,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.89 | 2026-11-04 02:06 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.90 | 2026-11-04 02:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
