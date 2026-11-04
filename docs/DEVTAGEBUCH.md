@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Profilweg und Geschichten-Historie
+
+**Ziel.** Die zwei offenen Andockpunkte der Narrativ-UI schliessen: vom Gast-Popup direkt in das Profil der Figur, und die abgeschlossenen Szenen im Journal sichtbar machen. Beides ohne neue Zustandswahrheit; der Dialog bleibt unveraendert.
+
+**Umsetzung.** `NarrativeView` traegt jetzt `history` (juengste zwoelf terminale Event-Instanzen, neueste zuerst) und `buildNarrativeView()` leitet sie rein aus `world.narrative.events` ab; nur Titel, Schritt, Status, Abschlusstakt, Ausgang und Teilnehmer, keine Choices. Profile umfassen zusaetzlich Figuren, die gerade als Gast auf dem Floor stehen (`Guest.visitorId`), damit der neue PROFIL-Knopf im Gast-Popup immer eine echte Kennung oeffnet. `NarrativePopup` startet mit `initialVisitorId` im Figuren-Tab und zeigt fuer eine unbekannte Figur kein fremdes Profil. Das Journal hat den Tab „Geschichten“ mit eigener Liste und blendet Suche/Archiv dort aus.
+
+**Pruefungen.** `pnpm run typecheck` und `pnpm run verify:quick` gruen; neue Tests decken Historie, Profilweg und Journal-Tab ab.
+
+**Offen.** Autorentexte fuer Dialoge brauchen einen Content-Slot; bis dahin bleibt die Sicherheitsfassung. Der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
+
 ## 2026-11-04 - NAR-17: Doku-, Katalog- und demandEvent-Sync mit Save v10
 
 **Ziel.** Doku, Testkatalog und Content-Vertrag auf den tatsaechlichen Code heben: Save v10, Rivalen-Domaene, Langzeit-Nachweise und die verbliebenen `demandEvent`-Spuren.
@@ -54,7 +64,7 @@ Offen: Ruleset ungeprueft (kein `gh`, kein authentifizierter Zugriff). Die Dedup
 
 **Entscheidung.** Text kommt ausschliesslich aus der Registry; fehlt eine passende Persona, wird einmal ohne Persona-Einschraenkung zusammengesetzt und ein verbleibender Fallback im UI als Sicherheitscopy benannt, statt Text zu erfinden.
 
-**Offen.** `TRIGGER_DIALOG` bleibt bis zur Dialogfuehrung nicht ausfuehrbar; Profilnavigation aus dem Gast-Popup und die Event-Historie im Journal bleiben offen. NAR-15 bis NAR-17 sind nicht begonnen.
+**Offen.** `TRIGGER_DIALOG` bleibt bis zur Dialogfuehrung nicht ausfuehrbar. Profilnavigation aus dem Gast-Popup und die Event-Historie im Journal sind seit T47 angebunden; NAR-15 bis NAR-17 sind inzwischen abgeschlossen.
 
 ## 2026-11-03 - NAR-13: DemandEvents in der gemeinsamen Engine
 
@@ -834,7 +844,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.88 | 2026-11-04 01:24 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.89 | 2026-11-04 02:06 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

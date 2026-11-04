@@ -41,6 +41,18 @@ interface NarrativeRelationshipView {
   readonly updatedTick: number;
 }
 
+export interface NarrativeHistoryView {
+  readonly id: number;
+  readonly eventId: string;
+  readonly title: string;
+  readonly step: string;
+  readonly status: NarrativeEventStatus;
+  /** Tick des Abschlusses, nicht des Starts. */
+  readonly tick: number;
+  readonly resolution: string | null;
+  readonly participants: readonly string[];
+}
+
 export interface NarrativeProfileView {
   readonly visitorId: number;
   readonly name: string;
@@ -53,5 +65,7 @@ export interface NarrativeProfileView {
 
 export interface NarrativeView {
   readonly events: readonly NarrativeEventView[];
+  /** Abgeschlossene Szenen, neueste zuerst; nur die jüngsten bleiben sichtbar. */
+  readonly history: readonly NarrativeHistoryView[];
   readonly profiles: readonly NarrativeProfileView[];
 }

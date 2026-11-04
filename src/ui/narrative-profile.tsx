@@ -24,9 +24,16 @@ interface Props {
 
 export function NarrativeProfile({ narrative, visitorId, onSelect }: Props) {
   const profile: NarrativeProfileView | null =
-    narrative.profiles.find((entry) => entry.visitorId === visitorId) ?? narrative.profiles[0] ?? null;
+    narrative.profiles.find((entry) => entry.visitorId === visitorId)
+      ?? (visitorId === null ? narrative.profiles[0] ?? null : null);
   if (!profile) {
-    return <p className="empty">Noch keine Profile. Bekannte Figuren entstehen beim neuen Spiel und bei jedem Besuch.</p>;
+    return (
+      <p className="empty">
+        {visitorId === null
+          ? 'Noch keine Profile. Bekannte Figuren entstehen beim neuen Spiel und bei jedem Besuch.'
+          : 'Zu dieser Figur liegt noch kein Profil vor.'}
+      </p>
+    );
   }
   return (
     <>

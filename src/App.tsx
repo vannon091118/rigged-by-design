@@ -238,7 +238,7 @@ export default function App() {
       )}
 
       {popup?.kind === 'guests' && (
-        <GuestPopup view={view} selectedId={popup.guestId} onClose={() => setPopup(null)} onPay={(id) => worldStore.pay(id)} onServe={(id) => worldStore.serveDrink(id)} onCalm={(id) => worldStore.calm(id)} onTalk={(id) => worldStore.talk(id)} onFight={(id) => worldStore.fightBrawl(id)} />
+        <GuestPopup view={view} selectedId={popup.guestId} onClose={() => setPopup(null)} onPay={(id) => worldStore.pay(id)} onServe={(id) => worldStore.serveDrink(id)} onCalm={(id) => worldStore.calm(id)} onTalk={(id) => worldStore.talk(id)} onFight={(id) => worldStore.fightBrawl(id)} onProfile={(visitorId) => setPopup({ kind: 'narrative', visitorId })} />
       )}
 
       {popup?.kind === 'games' && (
@@ -294,6 +294,7 @@ export default function App() {
       {popup?.kind === 'narrative' && (
         <NarrativePopup
           view={view}
+          initialVisitorId={popup.visitorId}
           onClose={() => setPopup(null)}
           onChoose={(eventId, choiceId) => worldStore.chooseNarrative(eventId, choiceId)}
           onDismiss={(eventId) => worldStore.dismissNarrative(eventId)}

@@ -9,7 +9,7 @@ export type Popup =
   | { kind: 'machine'; itemId: number }
   | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'journal' }
-  | { kind: 'narrative' }
+  | { kind: 'narrative'; visitorId?: number }
   | { kind: 'dialogue' }
   | { kind: 'diagnostics' }
   | { kind: 'look' }

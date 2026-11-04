@@ -6,12 +6,16 @@ import { checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
 import { composeNarrative, type ComposedNarrative } from './composer';
 import { templateFor } from './events/definitions';
 import type { ContentSlotKind } from './events/template-types';
-import { isLiveEventStatus } from './event-lifecycle';
+import { isLiveEventStatus, isTerminalEventStatus } from './event-lifecycle';
 import type { NarrativeEventInstance } from './event-types';
-import type { NarrativeEventView, NarrativeProfileView, NarrativeView } from './view-types';
+import type {
+  NarrativeEventView, NarrativeHistoryView, NarrativeProfileView, NarrativeView,
+} from './view-types';
 
 /** Grenze fuer die Anzeige: mehr Profile sind nicht lesbar und nicht noetig. */
 const PROFILE_LIMIT = 12;
+/** Die Historie ist ein Rueckblick, kein Archiv: nur die juengsten Abschluesse. */
+const HISTORY_LIMIT = 12;
 
 /** Persona-Refs der Registry sind Namens-Slugs, keine Persona-IDs. */
 const slug = (name: string): string => name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -33,6 +37,14 @@ function slotText(composed: ComposedNarrative, kind: ContentSlotKind): string {
   return composed.slots.find((slot) => slot.kind === kind)?.text ?? '';
 }
 
+/** Teilnehmer einer Instanz, aufgeloest gegen die vorhandenen Besucherprofile. */
+function participantsOf(world: WorldState, event: NarrativeEventInstance): Visitor[] {
+  return event.participants
+    .map(visitorIdOf)
+    .map((visitorId) => world.visitors.find((visitor) => visitor.id === visitorId))
+    .filter((visitor): visitor is Visitor => visitor !== undefined);
+}
+
 /**
  * Text kommt ausschliesslich aus der Registry. Reicht die Teilnehmer-Persona
  * nicht fuer ein Fragment, wird einmal ohne diese Einschraenkung zusammengesetzt;
@@ -51,11 +63,7 @@ function composeEvent(
 function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInstance): NarrativeEventView | null {
   const template = templateFor(event.eventId, event.templateVersion);
   if (!template) return null;
-  const participants = event.participants
-    .map(visitorIdOf)
-    .map((visitorId) => world.visitors.find((visitor) => visitor.id === visitorId))
-    .filter((visitor): visitor is Visitor => visitor !== undefined);
-  const composed = composeEvent(template, participants);
+  const composed = composeEvent(template, participantsOf(world, event));
   const context = {
     tick: world.tick,
     flags: world.narrative.flags,
@@ -91,9 +99,18 @@ function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInsta
   };
 }
 
-/** Profile: Figuren mit offener Szene zuerst, danach Figuren mit Beziehung oder Erinnerung. */
+/**
+ * Profile: Figuren mit offener Szene zuerst, dann Figuren auf dem Floor, danach
+ * Figuren mit Beziehung oder Erinnerung. So hat jeder Gast einen direkten Weg
+ * zu seiner Identitaet, ohne dass die UI selbst nach Besuchern sucht.
+ */
 function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): NarrativeProfileView[] {
   const inScene = new Set<number>();
+  const present = new Set(
+    world.guests
+      .map((guest) => guest.visitorId)
+      .filter((visitorId): visitorId is number => visitorId !== undefined),
+  );
   const stories = new Map<number, string[]>();
   for (const event of live) {
     for (const ref of event.participants) {
@@ -105,8 +122,11 @@ function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): N
   }
   const related = new Set(world.narrative.relationships.map((edge) => visitorIdOf(edge.from)));
   return [...world.visitors]
-    .filter((visitor) => inScene.has(visitor.id) || related.has(visitor.id) || visitor.memories.length > 0)
-    .sort((left, right) => Number(inScene.has(right.id)) - Number(inScene.has(left.id)) || left.id - right.id)
+    .filter((visitor) => inScene.has(visitor.id) || present.has(visitor.id) || related.has(visitor.id) || visitor.memories.length > 0)
+    .sort((left, right) =>
+      Number(inScene.has(right.id)) - Number(inScene.has(left.id))
+      || Number(present.has(right.id)) - Number(present.has(left.id))
+      || left.id - right.id)
     .slice(0, PROFILE_LIMIT)
     .map((visitor) => ({
       visitorId: visitor.id,
@@ -124,6 +144,23 @@ function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): N
     }));
 }
 
+/** Ein abgeschlossener Rueckblick: nur Titel, Ausgang und Teilnehmer, keine Choices. */
+function historyEntry(world: WorldState, event: NarrativeEventInstance): NarrativeHistoryView | null {
+  const template = templateFor(event.eventId, event.templateVersion);
+  if (!template) return null;
+  const composed = composeEvent(template, participantsOf(world, event));
+  return {
+    id: event.id,
+    eventId: event.eventId,
+    title: slotText(composed, 'TITLE') || event.eventId,
+    step: event.step,
+    status: event.status,
+    tick: event.updatedTick,
+    resolution: event.resolution,
+    participants: event.participants.map((ref) => participantLabel(ref, world.visitors)),
+  };
+}
+
 /** Aktive Szenen zuerst nach Starttick, dann nach ID: gleiche Welt, gleiche Reihenfolge. */
 export function buildNarrativeView(world: WorldState, ledger: Ledger): NarrativeView {
   const live = world.narrative.events
@@ -132,5 +169,11 @@ export function buildNarrativeView(world: WorldState, ledger: Ledger): Narrative
   const events = live
     .map((event) => eventView(world, ledger, event))
     .filter((view): view is NarrativeEventView => view !== null);
-  return { events, profiles: profiles(world, live) };
+  const history = world.narrative.events
+    .filter((event) => isTerminalEventStatus(event.status))
+    .sort((left, right) => right.updatedTick - left.updatedTick || right.id - left.id)
+    .slice(0, HISTORY_LIMIT)
+    .map((event) => historyEntry(world, event))
+    .filter((entry): entry is NarrativeHistoryView => entry !== null);
+  return { events, history, profiles: profiles(world, live) };
 }

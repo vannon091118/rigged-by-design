@@ -7,8 +7,12 @@
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../../economy/ledger';
+import { Prng } from '../../../rng/prng';
+import { randomSeed } from '../../../../test/random-seed';
+import { spawnGuest } from '../../spawn';
 import { createWorld } from '../../templates';
 import { recordVisitor } from '../../visitors';
+import { transitionEvent } from '../event-lifecycle';
 import { emitFact } from '../facts';
 import { processNarrativeRuntime } from '../runtime';
 import { buildNarrativeView } from '../view';
@@ -68,6 +72,36 @@ describe('Narrative View (NAR-14)', () => {
     expect(profile?.stories).toEqual(['VISITOR_RETURN']);
     expect(profile?.memories).toEqual([]);
     expect(profile?.relationships).toEqual([]);
+  });
+
+  it('nimmt Gaeste auf dem Floor in die Profile auf', () => {
+    const world = createWorld('SMALL');
+    const ledger = new Ledger();
+    const guest = spawnGuest(world, new Prng(randomSeed()), ledger)!;
+
+    const profile = buildNarrativeView(world, ledger).profiles
+      .find((entry) => entry.visitorId === guest.visitorId);
+
+    expect(profile?.name).toBe(guest.name);
+    expect(profile?.memories).toEqual([]);
+    expect(profile?.stories).toEqual([]);
+  });
+
+  it('fuehrt abgeschlossene Szenen als Historie mit Ausgang', () => {
+    const { world, ledger } = scene();
+    const event = world.narrative.events[0]!;
+    expect(buildNarrativeView(world, ledger).history).toHaveLength(0);
+
+    transitionEvent(world, event.id, 'CANCELLED', 42, 'MISSING_PARTICIPANT');
+    const history = buildNarrativeView(world, ledger).history;
+
+    expect(history).toHaveLength(1);
+    expect(history[0]).toMatchObject({
+      eventId: 'VISITOR_RETURN', status: 'CANCELLED', tick: 42, resolution: 'MISSING_PARTICIPANT',
+    });
+    expect(history[0]!.participants).toEqual(['Rita Kern']);
+    expect(history[0]!.title.length).toBeGreaterThan(0);
+    expect(buildNarrativeView(world, ledger).events).toHaveLength(0);
   });
 
   it('ist deterministisch: gleiche Welt, gleiches Modell', () => {

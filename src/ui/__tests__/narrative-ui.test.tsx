@@ -74,6 +74,25 @@ describe('Narrative UI (NAR-14)', () => {
     expect(onDismiss).toHaveBeenCalledWith(eventId);
   });
 
+  it('oeffnet aus einem Gast-Popup direkt das angeforderte Profil', () => {
+    const { view } = scene();
+    const visitorId = view.narrative.profiles[0]!.visitorId;
+
+    render(<NarrativePopup view={view} initialVisitorId={visitorId} onClose={noop} onChoose={noop} onDismiss={noop} />);
+
+    expect(screen.getByRole('tab', { name: /FIGUREN/ }).getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByRole('article', { name: 'Profil Rita Kern' }).textContent).toContain('Rita Kern');
+  });
+
+  it('zeigt fuer eine unbekannte Figur kein fremdes Profil', () => {
+    const { view } = scene();
+
+    render(<NarrativePopup view={view} initialVisitorId={999} onClose={noop} onChoose={noop} onDismiss={noop} />);
+
+    expect(screen.getByText('Zu dieser Figur liegt noch kein Profil vor.').textContent).toContain('kein Profil');
+    expect(screen.queryByRole('article', { name: 'Profil Rita Kern' })).toBeNull();
+  });
+
   it('zeigt im Figuren-Tab das Profil mit Besuchen und offener Geschichte', () => {
     const { view } = scene();
 

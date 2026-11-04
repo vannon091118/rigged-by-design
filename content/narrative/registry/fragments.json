@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2708d7a6f616cee9cc58a05f1fad863beb49c542a7859b840df1f7abd9a55112",
+  "contentHash": "sha256:f7b696735f5095c06387209db00f0f749e48611c62c3f0deee08f62af485d67e",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -206,6 +206,33 @@
       "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "journal-und-profilweg-01",
+      "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern",
+        "rueckkehrer"
+      ],
+      "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
     },
     {
       "contributionId": "ledger-pages-01",

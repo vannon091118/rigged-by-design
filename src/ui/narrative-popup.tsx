@@ -12,11 +12,13 @@ interface Props {
   readonly onClose: () => void;
   readonly onChoose: (eventId: number, choiceId: string) => void;
   readonly onDismiss: (eventId: number) => void;
+  /** Direkter Weg aus einem Gast-Popup: oeffnet sofort dieses Profil. */
+  readonly initialVisitorId?: number;
 }
 
-export function NarrativePopup({ view, onClose, onChoose, onDismiss }: Props) {
-  const [tab, setTab] = useState<Tab>('EVENTS');
-  const [visitorId, setVisitorId] = useState<number | null>(null);
+export function NarrativePopup({ view, onClose, onChoose, onDismiss, initialVisitorId }: Props) {
+  const [tab, setTab] = useState<Tab>(initialVisitorId === undefined ? 'EVENTS' : 'PROFILES');
+  const [visitorId, setVisitorId] = useState<number | null>(initialVisitorId ?? null);
   const openProfile = (id: number): void => { setVisitorId(id); setTab('PROFILES'); };
   const { events, profiles } = view.narrative;
   return (
