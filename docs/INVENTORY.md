@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.115 | 2026-11-05 04:28 UTC -->
+<!-- rbd-doc: v0.3.116 | 2026-11-05 04:33 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -460,10 +460,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 60 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 509 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 515 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1260 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1273 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -1550,7 +1550,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 189 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 420 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 576 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 579 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 55 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
@@ -1589,7 +1589,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 44 Zeilen
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 152 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 100 Zeilen
-- `src/ui/hud.tsx` — HUD: Marke, Geld und drei Kennzahlen. Der Werkzeugkasten lebt im Dock. — gelesen: 113 Zeilen
+- `src/ui/hud.tsx` — HUD: Marke, Geld und drei Kennzahlen. Der Werkzeugkasten lebt im Dock. — gelesen: 118 Zeilen
 - `src/ui/icons.ts` — Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. — gelesen: 27 Zeilen
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 117 Zeilen
@@ -1631,6 +1631,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 | Turn | Erledigt |
 | --- | --- |
 | T59 | **2026-11-05 04:26 UTC**: Dock statt Werkzeugwand. HUD 176 -> 113 (Marke, Geld, Gaeste, Ruf als Farbe); elf Aktionsknoepfe raus; neue `dock.tsx` (Bauen/Gaeste/Karte/Du, kontextuelles Putzen, Safe-Area), `popup-router.tsx` und `use-stage-keys.ts` aus App (348 -> 203), `workshop.tsx` buendelt journal/diagnostics/look/assets/sound/help/device; `Popup`-Union entsprechend verkleinert. |
+| T60 | **2026-11-05 04:33 UTC**: Popup-Blur raus. `.popup-backdrop` ohne `backdrop-filter`, radialer Verlauf plus `contain: paint`; `reel-roll` animiert nur `transform`/`opacity`. |
 | T58 | **2026-11-04 04:32 UTC**: B3: Fallback-Slots bei Namen nennen. |
 | T57 | **2026-11-04 04:05 UTC**: B2: Slot-Zwecke im Composer. `ContentSlot.requiredContexts`, `ComposeRequest.requiredContexts`/`eventInstanceId`, harte Kontextpruefung in `selectFragment`, FNV-1a-Gleichstand, fuenf Templates mit Slot-Zwecken, Vokabular um sieben Kontexte erweitert; Content-Beitrag und Registry auf 29 Fragmente. |
 | T56 | **2026-11-04 03:51 UTC**: Vision: Lebenssimulation statt Casino-Manager. `docs/PRODUCT.md` neu (Titel-Wortspiel, Casino als Testumgebung, bildhafter Pfad, Engine-Kern, MVP-/Optik-/Stadt-Grenze, NAR-Social-Plugin, Ledger-Ressourcen); README, ROADMAP, ARCHITECTURE, AGENTS, NARRATIVE-ENGINE (Abschnitt 18), ART-DIRECTION, INVENTORY und Asset-Pack eingeordnet; Save-Stand v10 korrigiert; Content-Beitrag und Registry auf 28 Fragmente. |

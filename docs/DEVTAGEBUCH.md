@@ -13,6 +13,19 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Popup-Blur raus: Verlauf statt Vollbild-Filter
+
+**Ziel.** Die zwei GPU-Kosten im Popup-Layer entfernen, ohne die Optik zu verschieben: kein `backdrop-filter` ueber dem ganzen Bildschirm, keine animierte Unschaerfe in den Walzen.
+
+**Umsetzung.**
+- `.popup-backdrop` verliert `backdrop-filter: blur(7px)`. Der Hintergrund ist jetzt ein radialer Verlauf (`rgba(4,2,9,0.6)` in der Mitte, `rgba(4,2,9,0.88)` am Rand) ueber `rgba(4,2,9,0.74)`: Mitte heller, Rand dunkler, das Panel hebt sich weiter ab.
+- Derselbe Block bekommt `contain: paint`; der Browser behandelt den Backdrop damit als eigenen Malbereich und muss Nachbarn nicht mitpruefen.
+- `@keyframes reel-roll` animiert nur noch `transform: translateY` und `opacity`. Das Zwischenbild der Walze ist ein Compositor-Schritt statt einer Filter-Neuberechnung pro Frame.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run verify:quick` mit Bericht, `pnpm run build`. Reine CSS-Aenderung: keine Spielmechanik, kein Ledger, kein RNG, kein Save-Format.
+
+**Offen.** Eine Klasse `.popup-scrim` gibt es nicht - der Backdrop heisst `.popup-backdrop`; `contain: paint` sitzt deshalb dort. Die Vignette auf `.stage-wrap` (`inset 0 0 120px`) bleibt und gehoert zur Lichtarbeit in Phase 1.
+
 ## 2026-11-05 - Dock statt Werkzeugwand: HUD, Router und Werkstatt
 
 **Ziel.** Phase 0 des 6-Phasen-Plans: aus dem Instrumentenbrett wird eine App mit drei Kennzahlen oben und vier Bereichen unten. Kein neues Asset, keine neue Mechanik.
@@ -1242,7 +1255,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.115 | 2026-11-05 04:28 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.116 | 2026-11-05 04:33 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

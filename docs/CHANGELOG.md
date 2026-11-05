@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.115 | 2026-11-05 04:28 UTC -->
+<!-- rbd-doc: v0.3.116 | 2026-11-05 04:33 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.116] - 2026-11-05
+
+### Technik
+- `src/styles/popup.css`: `backdrop-filter: blur(7px)` ist raus; der Backdrop nutzt einen radialen Verlauf ueber einer Alpha-Flaeche und `contain: paint`. Kein Vollbild-Blur mehr, gleiche Abdunklung.
+- `reel-roll` animiert nur noch `transform` und `opacity` statt `filter: blur`; die Walzen laufen ohne Filter-Neuberechnung pro Frame.
 
 ## [0.3.115] - 2026-11-05
 

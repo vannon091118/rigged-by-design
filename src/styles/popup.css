@@ -5,8 +5,11 @@
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(4, 2, 9, 0.74);
-  backdrop-filter: blur(7px);
+  /* Kein backdrop-filter: ein Vollbild-Blur kostet auf Low-End mehr, als er zeigt. */
+  background:
+    radial-gradient(120% 88% at 50% 38%, rgba(4, 2, 9, 0.6), rgba(4, 2, 9, 0.88) 74%),
+    rgba(4, 2, 9, 0.74);
+  contain: paint;
 }
 .popup {
   width: min(700px, 100%);
@@ -134,7 +137,7 @@
   border-radius: 6px; background: #100a1c; color: var(--gold);
   font-family: var(--mono); font-size: 13px; text-align: center; padding: 0 3px;
 }
-@keyframes reel-roll { 0% { filter: blur(0); transform: translateY(-2px); } 50% { filter: blur(1.4px); transform: translateY(2px); } 100% { filter: blur(0); transform: translateY(-2px); } }
+@keyframes reel-roll { 0% { transform: translateY(-2px); opacity: 0.82; } 50% { transform: translateY(2px); opacity: 1; } 100% { transform: translateY(-2px); opacity: 0.82; } }
 .spin-info { display: grid; gap: 5px; }
 .spin-info strong { font-size: 13px; }
 .spin-info strong.win { color: var(--gold); }
