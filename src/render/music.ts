@@ -166,9 +166,10 @@ export function armMusic(): () => void {
   if (typeof window === 'undefined' || unlockAttached) return () => undefined;
   unlockAttached = true;
   const unlock = (): void => {
-    if (!decks) { detach(); return; }
+    // Noch kein Deck/Track: Zuhoerer bleibt, der naechste Zustandswechsel holt es nach.
+    if (!decks) return;
     const deck = decks[active]!;
-    if (!deck.track) { detach(); return; }
+    if (!deck.track) return;
     void deck.audio.play().then(detach, () => undefined);
   };
   const detach = (): void => {

@@ -22,19 +22,36 @@ const hideLoader = (): void => { if (loaderEl) loaderEl.style.display = 'none'; 
  * Asset-Bibliothek und ladet lazy.
  */
 async function boot(): Promise<void> {
-  setLoaderText('Lade Neon-Kasino…');
-  await Promise.all([
-    preloadSlotSymbols(), preloadMachineTextures(), preloadDecorTextures(), preloadPlinkoTextures(), preloadRuntimeArt(),
-  ]);
-  setLoaderText('Baue Floor…');
-  await new Promise((resolve) => setTimeout(resolve, 250)); // kurzer sichtbarer Moment
-  setLoaderText('Bereit.');
-  createRoot(root!).render(
-    <StrictMode>
-      <App />
-    </StrictMode>,
-  );
-  hideLoader();
+  setLoaderText('Rigged by Design — startet…');
+  // Ein haengender Preload darf den Ladebildschirm nicht ewig stehen lassen.
+  setTimeout(() => {
+    if (loaderEl && loaderEl.style.display !== 'none') {
+      setLoaderText('Laden dauert lange — Seite neu laden (Strg+Shift+R).');
+    }
+  }, 20000);
+  try {
+    // Hoechstens vier Sekunden warten: ein haengender Preload darf den Start nie blockieren.
+    await Promise.race([
+      Promise.all([
+        preloadSlotSymbols(), preloadMachineTextures(), preloadDecorTextures(), preloadPlinkoTextures(), preloadRuntimeArt(),
+      ]),
+      new Promise((resolve) => setTimeout(resolve, 4000)),
+    ]);
+    setLoaderText('Baue Floor…');
+    await new Promise((resolve) => setTimeout(resolve, 250)); // kurzer sichtbarer Moment
+    setLoaderText('Bereit.');
+    createRoot(root!).render(
+      <StrictMode>
+        <App />
+      </StrictMode>,
+    );
+    hideLoader();
+  } catch (error) {
+    // Sichtbarer Fehler statt endlosem Ladebalken.
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('[boot]', error);
+    setLoaderText(`Start fehlgeschlagen: ${message}. Seite neu laden (Strg+Shift+R).`);
+  }
 }
 
 void boot();
