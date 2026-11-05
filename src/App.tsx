@@ -11,7 +11,7 @@ import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { Smartphone } from './ui/smartphone';
 import { ForeignFloorMap } from './ui/foreign-floor-map';
 import { ForeignFloorPopup } from './ui/foreign-floor-popup';
-import { GamesPopup } from './ui/games-popup';
+import { GamesPopup } from './ui/games-popup-lazy';
 import { GuestPopup } from './ui/guest-popup';
 import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';

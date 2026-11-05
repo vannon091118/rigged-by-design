@@ -93,6 +93,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Offen.** Sobald ein Geraete-, Lager- oder Personal-Fact echten Mehrwert traegt, bekommt er zuerst ein Template und erst dann einen Trigger - in genau dieser Reihenfolge.
 
+## 2026-11-04 - A: Chunk-Splitting fuer Spiele-Paket und React
+
+**Ziel.** Der Production-Build warnte vor einem 1,04-MB-Haupt-Chunk; PixiJS, React und die Spiel-Engines lagen in einem Bundle. Der erste Ladevorgang sollte kleiner werden, ohne den Floor spaeter zu zeichnen.
+
+**Umsetzung.** `src/ui/games-popup-lazy.tsx` laedt das Spiele-Paket per `React.lazy` mit `PopupShell` als Ladeplatzhalter; `App.tsx` tauscht nur den Import. `src/Config/vite.config.ts` setzt Rolldowns `codeSplitting` mit einer `vendor-react`-Gruppe. Ein `vendor-pixi`-Sammelchunk wurde gebaut, gemessen und verworfen: er vereinnahmte Pixis interne Lazy-Chunks und kostete 54.881 B roh mehr im Initial-Bundle als die gewaehlte Variante. Der Renderer bleibt ungruppiert und eager, weil der erste Frame ihn braucht.
+
+**Pruefungen.** Baseline und Aenderung mit demselben Build gemessen (statischer Importgraph ab Entry): Initial-JS 1.313.412 B / 399.286 B gzip -> 1.246.800 B / 380.841 B gzip; Haupt-Chunk 1.041.635 B / 317.733 B -> 756.241 B / 228.516 B gzip. `eslint` gruen, `tsc --noEmit` gruen, `check:loc` gruen (App 349/350), `verify:tree`, `verify:redundancy`, `verify:docs`, `verify:dead-code` gruen; `vitest` auf `card-tables` und `ui`: 12/12. Der Spiele-Chunk wird im gebauten Entry ausschliesslich dynamisch referenziert und steht nicht in `dist/index.html`.
+
+**Offen.** Der Haupt-Chunk liegt mit 756 kB weiter ueber dem 500-kB-Limit; weitere Lazy-Grenzen (Asset-Bibliothek, Diagnose, Fremd-Floor) und ein Browser-Smoke-Test des Ladeplatzhalters stehen aus.
+
 ## 2026-11-04 - C2: Rivalenaktionen als Trigger-Bedingung
 
 **Ziel.** `PROBE` ist ein Blick von der Seite und soll keine Szene oeffnen; nur Rivalenhandlungen mit Folgen duerfen `RIVAL_MOVE` ausloesen. Die Entscheidung gehoert in den Trigger-Vertrag, nicht in eine stille Annahme des Evaluators.
