@@ -418,3 +418,51 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 /* NAR-14: Einstieg in die Szenen direkt auf dem Floor */
 .narrative-chip { position: absolute; z-index: 16; bottom: 12px; left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
 .narrative-chip:hover { background: #1b0f3a; }
+
+
+/* Aktionskarte: Daumenzone, eine Empfehlung plus zwei Alternativen. */
+.action-card {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  z-index: 24;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.16));
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(22, 14, 38, 0.97), rgba(9, 6, 18, 0.98));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  contain: layout paint;
+}
+.action-card button {
+  font: inherit;
+  color: var(--ink, #f6f1ff);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.16));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.action-card button:disabled { opacity: 0.45; cursor: default; }
+.action-main {
+  grid-column: 1;
+  min-height: 46px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(180deg, rgba(255, 86, 168, 0.9), rgba(168, 33, 112, 0.9));
+  border-color: rgba(255, 170, 214, 0.7);
+}
+.action-alt { grid-column: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-alt button { min-height: 38px; font-size: 12px; }
+.action-close {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 46px;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-dim, #b9aed0);
+}

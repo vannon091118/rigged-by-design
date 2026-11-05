@@ -15,20 +15,14 @@ import { primeGuestShadow } from './guest-parts';
 import { isVisible, screenToTile, visibleRect } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { FloorCallbacks, handleTap } from './floor-input';
+import { FloorCallbacks, handleTap, screenPoint, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { actorStateFor } from './rig-pose';
 import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
-import { type CharacterViewCallbacks } from './character-view';
-import { type RadialAction } from './radial-menu';
+import { FloorFx } from './fx/floor-fx';
 
 const STEP_MS = TICK_MS;
-
-// Toten-Exporte als verwendet markieren, damit der Dead-Code-Gate gruen bleibt
-const _cb: CharacterViewCallbacks = { onInteract: () => {}, onMoveTo: () => {} };
-const _ra: RadialAction = { id: '', label: '', enabled: true };
-void _cb; void _ra;
 
 export class FloorView {
   readonly #app: Application;
@@ -46,6 +40,9 @@ export class FloorView {
   readonly #cam = new FloorCamera();
   readonly #touch: FloorTouch;
   readonly #cues: FloorCues;
+  readonly #fx: FloorFx;
+  readonly #camBase = { x: 0, y: 0 };
+  #flashId = -1;
   #view: GameView;
   #lod = -1;
   #placing = false;
@@ -60,13 +57,22 @@ export class FloorView {
     // Ein Schatten fuer alle Figuren, bevor der erste Gast gebaut wird.
     primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
-    this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY));
-    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers);
+    this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY), app.renderer);
+    // Partikel und Shake leben in Weltkoordinaten auf der Buehne, nicht in einem DOM-Overlay.
+    this.#fx = new FloorFx(() => {
+      const cell = this.#view.player.position;
+      return { x: (cell.x + 0.5) * TILE, y: (cell.y + 0.6) * TILE };
+    });
+    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers, this.#fx.root);
     this.#camera.eventMode = 'static';
     this.#camera.interactive = true;
     this.#camera.on('pointerdown', this.#tap);
     app.stage.addChild(this.#camera);
-    this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size);
+    this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size, (clientX, clientY) => {
+      const local = screenPoint(clientX, clientY, this.#app, this.#camera);
+      if (local) this.#act(0, local);
+    });
+    this.#fx.start();
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
     this.#props = new FloorProps(
@@ -144,6 +150,7 @@ export class FloorView {
     this.#props.destroy({ props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers });
     this.#touch.destroy();
     this.#cues.destroy();
+    this.#fx.destroy();
     this.#actors.clear();
     this.#furnitureArt.clear();
     this.#scene.destroy();
@@ -272,6 +279,8 @@ export class FloorView {
 
   #applyCamera(): void {
     this.#cam.apply(this.#camera, this.#app.screen.width, this.#app.screen.height, this.#view.size);
+    this.#camBase.x = this.#camera.position.x;
+    this.#camBase.y = this.#camera.position.y;
     this.#cues.refresh();
     this.#camDirty = false;
     const pinScale = this.#lod === 0 ? 1 / Math.max(0.05, this.#camera.scale.x) : 1;
@@ -309,19 +318,32 @@ export class FloorView {
   }
 
   #tap = (event: FederatedPointerEvent): void => {
-    const point = event.getLocalPosition(this.#camera);
-    // CharacterView.root haengt an app.stage (nicht am Camera-Container), daher
-    // globale Stage-Koordinaten fuer das Radial-Menue berechnen.
-    const globalPoint = this.#camera.toGlobal(point);
-    handleTap(event, point, this.#view, this.#cues, {
-      ...this.#callbacks,
-      onOpenMenu: (actions, _x, _y) => this.#callbacks.onOpenMenu(actions, globalPoint.x, globalPoint.y),
-    }, this.#placing, this.#lod, (x, y) => this.zoomToArea(x, y));
+    this.#act(event.button, event.getLocalPosition(this.#camera));
   };
+
+  #act(button: number, point: { x: number; y: number }): void {
+    if (this.#destroyed) return;
+    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#lod,
+      (x, y) => this.zoomToArea(x, y));
+    if (!hit) return;
+    if (hit.kind === 'furniture') {
+      this.#flashId = hit.id;
+      this.#furnitureArt.get(hit.id)?.flash(performance.now());
+    } else if (hit.kind === 'gesture') {
+      const art = this.#actors.get(hit.id);
+      art?.bump();
+      art?.tapRing();
+    }
+  }
 
   #animate = (): void => {
     if (this.#destroyed) return;
     const now = performance.now();
     animateFloor(now, this.#app, this.#cam, this.#view, this.#camDirty, this.#actors, this.#player, this.#cues, this.#props);
+    this.#fx.update(now);
+    // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
+    const offset = this.#fx.offset(now);
+    this.#camera.position.set(this.#camBase.x + offset.x, this.#camBase.y + offset.y);
+    this.#furnitureArt.get(this.#flashId)?.animate(now);
   };
 }

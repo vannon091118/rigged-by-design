@@ -30,6 +30,10 @@ export interface GuestArt {
   readonly setLod: (detail: boolean) => void;
   readonly setState: (state: ActorState) => void;
   readonly setLook: (look: PlayerLook) => void;
+  /** Kurzer Squash beim Antippen. */
+  readonly bump: () => void;
+  /** Ring am Fuss, der den Treffer zeigt. */
+  readonly tapRing: () => void;
   readonly animate: (nowMs: number) => void;
 }
 
@@ -43,6 +47,9 @@ export function createGuestArt(
   let accessory = look?.accessory ?? 'NONE';
   const root = new Container();
   const figure = new Container();
+  const tap = new Graphics();
+  tap.ellipse(0, 15, 13, 5.5).stroke({ width: 2, color: ROLE.service, alpha: 0.9 });
+  tap.visible = false;
   const shadow: Container = shadowSprite();
   const legs = new Graphics();
   const body = new Graphics();
@@ -86,7 +93,7 @@ export function createGuestArt(
     face.visible = false;
     hair.visible = false;
   }
-  figure.addChild(shadow, legL, legR, body, armLPivot, armRPivot, head);
+  figure.addChild(tap, shadow, legL, legR, body, armLPivot, armRPivot, head);
   const pin = new Graphics();
   pin.visible = false;
   const nameplate = new Text({ text: isPlayer ? 'DU' : name, style: floorText.name() });
@@ -108,6 +115,10 @@ export function createGuestArt(
   let currentLook = look ? `${look.skin}|${look.hair}|${look.outfit}|${look.accessory}` : '';
   let detail = true;
   let nameVisible = true;
+  let bumpQueued = false;
+  let bumpStart = -1000;
+  let tapQueued = false;
+  let tapStart = -1000;
 
   const paintPin = (color: number): void => {
     pin.clear();
@@ -292,7 +303,20 @@ export function createGuestArt(
     nameplate.visible = detail && next;
   };
   const setState = (next: ActorState): void => { currentState = next; };
+  const bump = (): void => { bumpQueued = true; };
+  const tapRing = (): void => { tapQueued = true; };
   const animate = (nowMs: number): void => {
+    if (bumpQueued) { bumpQueued = false; bumpStart = nowMs; }
+    const squash = nowMs - bumpStart;
+    const k = squash >= 0 && squash < 90 ? Math.sin((squash / 90) * Math.PI) : 0;
+    figure.scale.set(1 + k * 0.1, 1 - k * 0.14);
+    if (tapQueued) { tapQueued = false; tapStart = nowMs; }
+    const ring = nowMs - tapStart;
+    if (ring >= 0 && ring < 240) {
+      tap.visible = true;
+      tap.scale.set(0.6 + (ring / 240) * 1.2);
+      tap.alpha = 1 - ring / 240;
+    } else if (tap.visible) tap.visible = false;
     const pose = poseFor(currentState, nowMs, phase);
     figure.y = pose.bob;
     figure.rotation = pose.lean;
@@ -316,7 +340,7 @@ export function createGuestArt(
   animate(0);
   return {
     root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
-    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, animate,
+    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, bump, tapRing, animate,
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;
       if (key === currentLook) return;

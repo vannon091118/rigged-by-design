@@ -14,6 +14,18 @@ const atlas = new Map<string, Texture>();
 /** Anzahl gebackener Texturen; das Werkstatt-HUD zeigt sie an. */
 export const atlasTextureCount = (): number => atlas.size;
 
+/** Ein Glow-Ring fuer alle Objekte: bei Druck geht er kurz auf alpha 0.5. */
+let glow: Texture | null = null;
+export function glowTextureFor(renderer: Renderer): Texture {
+  if (glow) return glow;
+  const shape = new Graphics();
+  shape.roundRect(0, 0, 32, 32, 9).stroke({ width: 3, color: 0xffffff, alpha: 0.95 });
+  shape.roundRect(4, 4, 24, 24, 7).stroke({ width: 1, color: 0xffffff, alpha: 0.6 });
+  glow = renderer.generateTexture({ target: shape, resolution: 1 });
+  shape.destroy();
+  return glow;
+}
+
 /** Spieltyp zu Maschinen-Textur-Key im Manifest. */
 const MACHINE_TEXTURE: Readonly<Record<string, string>> = {
   SLOT: 'machines/slot-cabinet.png',

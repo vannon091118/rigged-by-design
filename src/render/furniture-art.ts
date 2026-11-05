@@ -3,12 +3,15 @@ import { Container, Graphics, Sprite, Text, type Renderer } from 'pixi.js';
 import { gameOf, isCabinet } from '../core/sim/device';
 import type { Furniture } from '../core/sim/types';
 import { ROLE, STROKE, floorText } from './art-tokens';
-import { atlasTextureFor } from './furniture-atlas';
+import { atlasTextureFor, glowTextureFor } from './furniture-atlas';
 
 export interface FurnitureArt {
   readonly root: Container;
   readonly setResult: (value: string) => void;
   readonly setDetail: (detail: boolean) => void;
+  /** Druck-Rueckmeldung: der Glow-Ring leuchtet 120 ms auf. */
+  readonly flash: (now: number) => void;
+  readonly animate: (now: number) => void;
   readonly refresh: (item: Furniture) => void;
 }
 
@@ -23,6 +26,13 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
   occupied.roundRect(-1, -1, w + 2, h + 2, 6).stroke({ width: STROKE.base, color: ROLE.service, alpha: 0.7 });
   occupied.visible = false;
 
+  const glow = new Sprite(glowTextureFor(renderer));
+  glow.width = w + 10;
+  glow.height = h + 10;
+  glow.position.set(-5, -5);
+  glow.alpha = 0;
+  glow.visible = false;
+
   const status = new Graphics();
   const screen = new Text({ text: isCabinet(item) ? 'BEREIT' : gameOf(item) ?? '', style: floorText.screen() });
   screen.anchor.set(0.5, 0.5);
@@ -30,7 +40,7 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
   const label = new Text({ text: item.label, style: floorText.name() });
   label.anchor.set(0.5, 0);
   label.position.set(w / 2, h + 2);
-  root.addChild(body, occupied, status, screen, label);
+  root.addChild(body, glow, occupied, status, screen, label);
 
   let lastBucket = -2;
   let lastOccupants = -1;
@@ -40,6 +50,15 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
   let shownResult = '';
   let detail = true;
   let wasOccupied = false;
+  let flashStart = -1;
+
+  const flash = (now: number): void => { flashStart = now; glow.visible = true; glow.alpha = 0.5; };
+  const animate = (now: number): void => {
+    if (flashStart < 0) return;
+    const t = now - flashStart;
+    if (t >= 120) { flashStart = -1; glow.visible = false; glow.alpha = 0; return; }
+    glow.alpha = 0.5 * (1 - t / 120);
+  };
 
   const refresh = (next: Furniture): void => {
     const occupiedNow = next.occupants.length > 0;
@@ -88,11 +107,14 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
       detail = next;
       // Uebersicht: dieselbe Silhouette, nur leiser und ohne Text.
       body.alpha = next ? 1 : 0.85;
+      glow.visible = next && flashStart >= 0;
       label.visible = next;
       screen.visible = next;
       status.visible = next;
       occupied.visible = next && wasOccupied;
     },
+    flash,
+    animate,
     refresh,
   };
 }

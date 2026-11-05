@@ -17,11 +17,14 @@ interface EmitterDef {
 
 const EMITTERS = manifest.emitters as unknown as Readonly<Record<string, EmitterDef>>;
 
+/** Obergrenze: mehr Sprites bringt kein Bild, nur Last. */
+const MAX_PARTICLES = 200;
+
 interface BurstOptions {
   readonly count?: number;
   readonly size?: number;
   readonly alpha?: number;
-  /** Gedämpfte Tönung fuer Verluste; ohne Angabe bleibt die Textur unverändert. */
+  /** Gedaempfte Toenung fuer Verluste; ohne Angabe bleibt die Textur unveraendert. */
   readonly tint?: number;
 }
 
@@ -43,20 +46,41 @@ const between = (range: readonly number[] | undefined, fallback: number): number
 
 export class Emitter {
   readonly container = new Container();
+  readonly #pool: Sprite[] = [];
   #particles: Particle[] = [];
+
+  /** Ein Sprite aus dem Pool; im Frame wird nie etwas zerstört. */
+  #acquire(texture: Texture): Sprite {
+    const sprite = this.#pool.pop();
+    if (!sprite) {
+      const fresh = new Sprite(texture);
+      fresh.anchor.set(0.5);
+      this.container.addChild(fresh);
+      return fresh;
+    }
+    sprite.texture = texture;
+    sprite.visible = true;
+    return sprite;
+  }
+
+  #release(sprite: Sprite): void {
+    sprite.visible = false;
+    this.#pool.push(sprite);
+  }
 
   burst(name: string, x: number, y: number, options: BurstOptions = {}): void {
     const def = EMITTERS[name];
     if (!def) return;
+    // Einmal je Burst aufloesen, nicht je Partikel.
     const available = (def.textures ?? [])
       .map((path) => textureFor(path))
       .filter((entry): entry is Texture => entry !== null);
     if (!available.length) return;
-    const count = Math.max(1, Math.min(options.count ?? def.count, 48));
+    const room = MAX_PARTICLES - this.#particles.length;
+    const count = Math.max(0, Math.min(options.count ?? def.count, 48, room));
     const size = options.size ?? 14;
     for (let index = 0; index < count; index += 1) {
-      const sprite = new Sprite(available[index % available.length]!);
-      sprite.anchor.set(0.5);
+      const sprite = this.#acquire(available[index % available.length]!);
       const scale = between(def.scale, 1) * size;
       sprite.width = scale;
       sprite.height = scale;
@@ -75,7 +99,6 @@ export class Emitter {
         vx = Math.cos(angle) * speed;
         vy = Math.sin(angle) * speed;
       }
-      this.container.addChild(sprite);
       this.#particles.push({
         sprite, vx, vy, age: 0,
         ttl: between(def.lifetimeMs, 600),
@@ -85,14 +108,14 @@ export class Emitter {
     }
   }
 
-  /** Bewege alle Partikel; tote Sprites werden sofort freigegeben. */
+  /** Bewege alle Partikel; tote Sprites wandern zurueck in den Pool. */
   update(deltaMS: number): void {
     if (!this.#particles.length) return;
     const keep: Particle[] = [];
     for (const particle of this.#particles) {
       particle.age += deltaMS;
       if (particle.age >= particle.ttl) {
-        particle.sprite.destroy();
+        this.#release(particle.sprite);
         continue;
       }
       particle.vy += particle.gravity * deltaMS;
@@ -106,12 +129,13 @@ export class Emitter {
   }
 
   clear(): void {
-    for (const particle of this.#particles) particle.sprite.destroy();
+    for (const particle of this.#particles) this.#release(particle.sprite);
     this.#particles = [];
   }
 
   destroy(): void {
     this.clear();
-    this.container.destroy({ children: false });
+    this.#pool.length = 0;
+    this.container.destroy({ children: true });
   }
 }

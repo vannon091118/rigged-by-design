@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.117 | 2026-11-05 04:45 UTC -->
+<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,21 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.118] - 2026-11-05
+
+### Spiel
+- Touch zuerst: Ein Finger zieht die Karte (ab 8 px), ein Tipp laesst die Figur laufen. Rechte Maustaste bleibt der Desktop-Weg, Pinch bleibt.
+- Ziele sind auch ohne Hover sichtbar: Das Zielraster erscheint schon beim Aufsetzen des Fingers und leuchtet 500 ms nach.
+- Die Aktionskarte ersetzt das Radialmenue: unten in der Daumenzone stehen eine grosse empfohlene Aktion, zwei Alternativen und ein X statt 28-px-Zielen.
+- Sofortiges Feedback: Figuren quetschen sich 90 ms beim Tipp, ein Ring oeffnet sich am Fuss, Objekte leuchten 120 ms ueber einem gebackenen Glow-Ring.
+
+### Technik
+- `floor-touch.ts`: Ein-Finger-Pan ab 8 px mit `pointerType !== 'mouse'`; der Tipp laeuft erst bei `pointerup`, damit ein Schwenk nicht zusaetzlich laeuft.
+- `floor-input.ts`: `handleTap(button, point, ...)` liefert `TapHit | null`; `onActions(actions)` ersetzt `onOpenMenu(actions, x, y)`, `screenPoint()` uebersetzt Touch-Pixel in Kamera-Koordinaten.
+- `fx/emitter.ts`: Sprite-Pool mit 200 Partikeln, `acquire`/`release`, `textureFor` einmal je Burst, kein `destroy` im Frame.
+- `fx/floor-fx.ts` haengt am Kamera-Container, rechnet in Weltkoordinaten und wird aus `animateFloor(now, ...)` geupdatet; der Screen-Shake verschiebt die Kamera statt eines Vollbild-div.
+- `floor-cues.ts` pingt mit drei gebackenen Ring-Sprites statt neun Shapes pro Frame. `radial-menu.ts`, `character-view.ts` und `particle-overlay.tsx` sind geloescht.
 
 ## [0.3.117] - 2026-11-05
 

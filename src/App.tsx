@@ -2,10 +2,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
+import type { MenuAction } from './render/floor-actions';
 import { handleFloorInteract } from './render/floor-interact';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { armMusic, setMusicState } from './render/music';
-import { ParticleOverlay } from './render/particle-overlay';
+import { ActionCard } from './ui/action-card';
 import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import { fits, type Popup } from './ui/app-model';
@@ -20,6 +21,7 @@ export default function App() {
   const view = useWorldStore();
   const [popup, setPopup] = useState<Popup>(null);
   const [buildOpen, setBuildOpen] = useState(false);
+  const [actions, setActions] = useState<MenuAction[]>([]);
   const [placeError, setPlaceError] = useState('');
   const stage = useRef<FloorHandle>(null);
 
@@ -96,6 +98,7 @@ export default function App() {
 
   const openPopup = (next: Popup): void => {
     setBuildOpen(false);
+    setActions([]);
     setPopup(next);
   };
 
@@ -124,9 +127,14 @@ export default function App() {
             worldStore.moveTo({ x, y });
           }}
           onInteract={handleFloorInteract}
+          onActions={setActions}
         />
 
-        <ParticleOverlay />
+        <ActionCard
+          actions={actions}
+          onPick={(action) => { handleFloorInteract(action.id, action.targetId); setActions([]); }}
+          onClose={() => setActions([])}
+        />
 
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
 

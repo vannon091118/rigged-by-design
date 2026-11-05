@@ -13,6 +13,27 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Touch zuerst, Antwort in einem Frame
+
+**Ziel.** Der Daumen soll ohne Hover ein Ziel sehen, ein Tipp soll laufen statt ein Menue zu oeffnen, und die Antwort auf den Tipp soll im naechsten Frame stehen.
+
+**Umsetzung.**
+- `floor-touch.ts`: Ein Finger schwenkt ab 8 px, aber nur bei `pointerType !== 'mouse'`; der Tipp wird erst bei `pointerup` ausgeloest, wenn die Schwelle nie erreicht wurde. Zwei Finger bleiben Pinch, Rechtsklick bleibt Desktop.
+- `floor-input.ts`: `handleTap` nimmt `button` und den Punkt und gibt `TapHit | null` zurueck; `onActions(actions)` ersetzt `onOpenMenu(actions, x, y)`. `screenPoint()` rechnet Bildschirmpixel in Kamera-Koordinaten, damit Touch und Maus denselben Pfad nehmen.
+- `floor-cues.ts`: Zielraster schon bei `pointerdown`, 500 ms Nachleuchten; der Ping besteht aus drei gebackenen Ring-Sprites, die skaliert werden.
+- `src/ui/action-card.tsx`: eine grosse Empfehlung, zwei Alternativen, ein X, unten in der Daumenzone; die Aktionen kommen unveraendert aus `floor-actions.ts`.
+- `guest-art.ts`: `bump()` (Squash 90 ms) und `tapRing()`; `furniture-atlas.ts` backt einen Glow-Ring, `furniture-art.ts` blendet ihn bei Druck 120 ms auf alpha 0.5.
+- `fx/emitter.ts`: Pool mit 200 Sprites, `acquire`/`release`, `textureFor` einmal je Burst, kein `destroy` im Frame. `fx/floor-fx.ts` haengt am Kamera-Container und rechnet in Weltkoordinaten; Shake verschiebt die Kamera.
+- Geloescht: `radial-menu.ts`, `character-view.ts`, `particle-overlay.tsx`.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run check:loc`, `pnpm run verify:quick` (10 Gates, 730 Tests) und `pnpm run bench:lowend` gruen. `rg "setInterval" src/render` findet nur noch `music.ts`. LOC: floor-view 349/350, guest-art 350/350, floor-cues 222/260, floor-input 75/260, floor-stage 95/260, fx/floor-fx 90/260, fx/emitter 141/260, action-card 44/200.
+Bench (ein Lauf, Low-End-Profil auf einen Kern gepinnt): hash 0,0821 / boden 6,5885 / dreck 2,0980 / cull 0,0376 ms. Die Werte schwanken wie zuvor; ein A/B gegen 0,3.117 wurde nicht im selben Lauf erhoben.
+
+**Offen.**
+- 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame sind hier nicht messbar: kein Browser, kein Geraet. Die Abnahme braucht ein echtes Touch-Geraet.
+- Der Pool deckelt bei 200 Partikeln; ob das bei neun Gaesten reicht, entscheidet die Geraetemessung.
+- Die Aktionskarte ist mit Maus und Tastatur nicht separat getestet; sie ist ein reines DOM-Element mit Fokusring.
+
 ## 2026-11-05 - Buehne: Atlas, Tapete und Tageszeit
 
 **Ziel.** Kein Farbquadrat mehr: der Korpus jeder Bauart kommt aus einer geteilten Textur, Raeume bekommen Tapete und drei Requisiten, und das Licht hat eine Tageszeit.
@@ -1278,7 +1299,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.117 | 2026-11-05 04:45 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

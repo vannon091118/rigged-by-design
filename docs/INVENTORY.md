@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.117 | 2026-11-05 04:45 UTC -->
+<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -274,10 +274,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1253 |
-| Gelistete Dateien | 1253 |
+| Getrackte Dateien | 1252 |
+| Gelistete Dateien | 1252 |
 | Getrackte Ordner | 83 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (65), docs (71), public (552), scripts (60), src (484) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (65), docs (71), public (552), scripts (60), src (483) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -354,16 +354,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 8 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
-- `src/render/` — 35 Datei(en)
+- `src/render/` — 32 Datei(en)
 - `src/render/__tests__/` — 6 Datei(en)
 - `src/render/assets/` — 3 Datei(en)
-- `src/render/fx/` — 1 Datei(en)
+- `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
 - `src/store/` — 22 Datei(en)
 - `src/store/__tests__/` — 16 Datei(en)
 - `src/styles/` — 4 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 49 Datei(en)
+- `src/ui/` — 50 Datei(en)
 - `src/ui/__tests__/` — 6 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -1138,7 +1138,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 101 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
-- `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 203 Zeilen
+- `src/App.tsx` — import { useEffect, useRef, useState } from 'react'; — gelesen: 211 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 11 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
@@ -1455,26 +1455,26 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 32 Zeilen
 - `src/render/assets/manifest.json` — { — generiert, 726 Zeilen
 - `src/render/assets/textures.ts` — Texturen aus dem Pixel-Paket: ein Cache, Nearest-Sampling und ein stiller — gelesen: 83 Zeilen
-- `src/render/character-view.ts` — Charakter-Rendering und Context-Radius-Menü. — gelesen: 61 Zeilen
 - `src/render/comic-bubbles.ts` — Kleine Comic-Sprechblase: eine Grafik statt eines Satzes, pro Figur gepoolt. — gelesen: 93 Zeilen
 - `src/render/floor-actions.ts` — Baut die Radial-Menu-Aktionen für ein geklicktes Objekt. — gelesen: 60 Zeilen
 - `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 47 Zeilen
 - `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen: Übersicht und 30x30-Bereich. Lerpt ohne Frame-Allokationen. — gelesen: 137 Zeilen
 - `src/render/floor-carpet.ts` — Bodentextur aus dem Paket: ein Teppichmuster ueber den Zonen, unter Moebeln und Figuren. — gelesen: 43 Zeilen
-- `src/render/floor-cues.ts` — Bodenhinweise: Spielerring, Zielraster, Laufweg und Klick-Puls in einer Ebene. — gelesen: 174 Zeilen
-- `src/render/floor-input.ts` — Floor-Input: Tap-Logik, baut Radial-Menü-Aktionen und ruft Callbacks. — gelesen: 59 Zeilen
+- `src/render/floor-cues.ts` — Bodenhinweise: Spielerring, Zielraster, Laufweg und Klick-Puls in einer Ebene. — gelesen: 222 Zeilen
+- `src/render/floor-input.ts` — Floor-Input: Tap-Logik, baut Aktionen und ruft Callbacks. — gelesen: 78 Zeilen
 - `src/render/floor-interact.ts` — Verarbeitet Radial-Menu-Aktionen vom Floor. — gelesen: 17 Zeilen
 - `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 94 Zeilen
 - `src/render/floor-perf.bench.ts` — Worst-Case: 90×90-Floor, 9 Regionen, 500 Dreck-Tiles, 200 Entities. — gelesen: 54 Zeilen
 - `src/render/floor-props.ts` — Requisiten: Personal, Lieferkisten, Streitmarker und Platzierungs-Geist. Liest nur Snapshots. — gelesen: 217 Zeilen
 - `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 84 Zeilen
-- `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 108 Zeilen
+- `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 95 Zeilen
 - `src/render/floor-surface.ts` — Bodenauftrag und Licht: Muster, Fugen, Deckenlampen und Kantentiefe je Raum. — gelesen: 178 Zeilen
-- `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Rad, Pinch und Ziehen; die Kamera bleibt die einzige Wahrheit. — gelesen: 119 Zeilen
-- `src/render/floor-view.ts` — import { TICK_MS } from '../core/sim/tick-timing'; — gelesen: 327 Zeilen
-- `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 98 Zeilen
-- `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 193 Zeilen
-- `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 117 Zeilen
+- `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 155 Zeilen
+- `src/render/floor-view.ts` — import { TICK_MS } from '../core/sim/tick-timing'; — gelesen: 349 Zeilen
+- `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 120 Zeilen
+- `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 205 Zeilen
+- `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 141 Zeilen
+- `src/render/fx/floor-fx.ts` — Partikel und Shake auf der Pixi-Buehne: Weltkoordinaten, ein Ticker, kein React. — gelesen: 90 Zeilen
 - `src/render/games/blackjack-canvas.ts` — Blackjack-Tisch in Pixi: Dealer oben, Spieler unten, Karten fliegen aus dem Schuh. — gelesen: 142 Zeilen
 - `src/render/games/blackjack-stage.tsx` — React-Bruecke zum Blackjack-Tisch; die Runde kommt aus dem Kern, hier nur die Karten. — gelesen: 53 Zeilen
 - `src/render/games/card-renderer.ts` — Eine Spielkarte in Pixi: Vorderseite, Rueckseite, 3D-Flip und Flug aus dem Schuh. — gelesen: 168 Zeilen
@@ -1499,13 +1499,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/slot-symbols-extra.ts` — Zusatz-Symbole aus dem Pre-Alpha Pixel-Paket: gezeichnete Fallbacks, wenn die Textur nicht geladen ist. — gelesen: 191 Zeilen
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
-- `src/render/guest-art.ts` — Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. — gelesen: 326 Zeilen
+- `src/render/guest-art.ts` — Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. — gelesen: 350 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
 - `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 184 Zeilen
-- `src/render/particle-overlay.tsx` — Partikel-Overlay: hoert auf Spielereignisse und zeichnet visuelle Effekte ueber dem Floor. — gelesen: 187 Zeilen
 - `src/render/pixel-head.ts` — Figuren aus dem Paket: ein Kopf-Sprite, das die gezeichnete Figur ersetzt, wenn es geladen ist. — gelesen: 29 Zeilen
 - `src/render/player-marker.ts` — Zustandsmarker ueber dem Spieler: Verletzung und Handgemenge auf dem Floor. — gelesen: 26 Zeilen
-- `src/render/radial-menu.ts` — Context-Radius-Menü (RadialMenu) als PixiJS-Komponente. — gelesen: 104 Zeilen
 - `src/render/rig-pose.ts` — Reine Pose-Mathematik fuer das Pixel-Rig; ohne Pixi testbar. — gelesen: 131 Zeilen
 - `src/render/rig.bench.ts` — Rendering-nahe Posekosten; bewusst nicht Teil von verify:all. — gelesen: 28 Zeilen
 - `src/render/rng.ts` — Der eine Darstellungs-Strom: Partikel und Sound, nie der Spielzustand. — gelesen: 4 Zeilen
@@ -1551,7 +1549,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 213 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 189 Zeilen
-- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 420 Zeilen
+- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 468 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/popup.css` — .popup-backdrop { — gelesen: 579 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 55 Zeilen
@@ -1563,6 +1561,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 122 Zeilen
+- `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
 - `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 33 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 192 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
@@ -1636,6 +1635,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 | T59 | **2026-11-05 04:26 UTC**: Dock statt Werkzeugwand. HUD 176 -> 113 (Marke, Geld, Gaeste, Ruf als Farbe); elf Aktionsknoepfe raus; neue `dock.tsx` (Bauen/Gaeste/Karte/Du, kontextuelles Putzen, Safe-Area), `popup-router.tsx` und `use-stage-keys.ts` aus App (348 -> 203), `workshop.tsx` buendelt journal/diagnostics/look/assets/sound/help/device; `Popup`-Union entsprechend verkleinert. |
 | T60 | **2026-11-05 04:33 UTC**: Popup-Blur raus. `.popup-backdrop` ohne `backdrop-filter`, radialer Verlauf plus `contain: paint`; `reel-roll` animiert nur `transform`/`opacity`. |
 | T61 | **2026-11-05 04:45 UTC**: Buehne. Neuer `furniture-atlas.ts` (RenderTexture je Bauart/Groesse, LOD-0 alpha 0.85), `guest-parts.ts` (Palette, Kopftexturen, gebackener Schatten), `core/sim/day-phase.ts`; `floor-surface` kachelt Boden/Tapete, `room-art` traegt Kontur und Schwelle, `room-dressing` setzt drei Requisiten je Zone, `scene-cache` backt je Tagesphase neu, `buildView` liefert `dayPhase`. |
+| T62 | **2026-11-05 04:57 UTC**: Touch zuerst. `floor-touch` schwenkt mit einem Finger ab 8 px und tippt erst bei `pointerup`; `floor-cues` zeigt das Raster bei `pointerdown` mit 500 ms Nachleuchten und pingt mit drei gebackenen Ringen; `ui/action-card` ersetzt das Radialmenue; `guest-art` quetscht 90 ms und zeichnet einen Tap-Ring; `furniture-atlas` backt den Glow-Ring; `fx/emitter` poolt 200 Sprites, `fx/floor-fx` rechnet in Weltkoordinaten und traegt den Shake. `radial-menu`, `character-view` und `particle-overlay` sind geloescht. |
 | T58 | **2026-11-04 04:32 UTC**: B3: Fallback-Slots bei Namen nennen. |
 | T57 | **2026-11-04 04:05 UTC**: B2: Slot-Zwecke im Composer. `ContentSlot.requiredContexts`, `ComposeRequest.requiredContexts`/`eventInstanceId`, harte Kontextpruefung in `selectFragment`, FNV-1a-Gleichstand, fuenf Templates mit Slot-Zwecken, Vokabular um sieben Kontexte erweitert; Content-Beitrag und Registry auf 29 Fragmente. |
 | T56 | **2026-11-04 03:51 UTC**: Vision: Lebenssimulation statt Casino-Manager. `docs/PRODUCT.md` neu (Titel-Wortspiel, Casino als Testumgebung, bildhafter Pfad, Engine-Kern, MVP-/Optik-/Stadt-Grenze, NAR-Social-Plugin, Ledger-Ressourcen); README, ROADMAP, ARCHITECTURE, AGENTS, NARRATIVE-ENGINE (Abschnitt 18), ART-DIRECTION, INVENTORY und Asset-Pack eingeordnet; Save-Stand v10 korrigiert; Content-Beitrag und Registry auf 28 Fragmente. |
