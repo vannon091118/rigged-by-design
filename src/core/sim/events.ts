@@ -10,13 +10,13 @@ type EventListener = (...args: unknown[]) => void;
 
 const listeners: Map<string, Set<EventListener>> = new Map();
 
-export function on(event: string, listener: EventListener): void {
-  if (!listeners.has(event)) listeners.set(event, new Set());
-  listeners.get(event)!.add(listener);
-}
-
-export function off(event: string, listener: EventListener): void {
-  listeners.get(event)?.delete(listener);
+export function on(event: string, listener: EventListener): () => void {
+  const bucket = listeners.get(event) ?? new Set<EventListener>();
+  listeners.set(event, bucket);
+  bucket.add(listener);
+  return () => {
+    bucket.delete(listener);
+  };
 }
 
 export function emit(event: string, ...args: unknown[]): void {
@@ -27,8 +27,4 @@ export function emit(event: string, ...args: unknown[]): void {
       // Ein fehlerhafter Listener darf den Spielbetrieb nicht unterbrechen.
     }
   });
-}
-
-export function listenerCount(event: string): number {
-  return listeners.get(event)?.size ?? 0;
 }

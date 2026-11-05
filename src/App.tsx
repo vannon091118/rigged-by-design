@@ -316,15 +316,12 @@ export default function App() {
       {popup?.kind === 'look' && (
         <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
       )}
-
       {popup?.kind === 'assets' && (
         <AssetLibraryPopup onClose={() => setPopup(null)} />
       )}
-
       {popup?.kind === 'sound' && (
         <SoundPopup onClose={() => { setPopup(null); setMutedState(isMuted()); }} />
       )}
-
       {popup?.kind === 'help' && (
         <HelpPopup onClose={() => setPopup(null)} />
       )}      {active && (
@@ -343,7 +340,6 @@ export default function App() {
           onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
         />
       )}
-
       {smartphoneOpen && (
         <Smartphone view={view} onClose={() => setSmartphoneOpen(false)} />
       )}

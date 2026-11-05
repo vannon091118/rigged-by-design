@@ -298,7 +298,6 @@ export function createGuestArt(
     bubble.set(kind);
     sticker.visible = detail && kind !== 'NONE';
   };
-
   const setLod = (next: boolean): void => {
     if (next === detail) return;
     detail = next;
@@ -309,15 +308,12 @@ export function createGuestArt(
     if (!next) bubble.container.visible = false;
     else { bubble.set(currentEmotion); bubble.container.visible = currentEmotion !== 'NONE'; }
   };
-
   const setName = (next: string): void => {
     if (next === currentName) return;
     currentName = next;
     nameplate.text = next.length > 16 ? `${next.slice(0, 15)}…` : next;
   };
-
   const setState = (next: ActorState): void => { currentState = next; };
-
   const animate = (nowMs: number): void => {
     const pose = poseFor(currentState, nowMs, phase);
     figure.y = pose.bob;
@@ -330,7 +326,6 @@ export function createGuestArt(
     legR.rotation = pose.legR;
     figure.y -= pose.hop;
   };
-
   paintLegs();
   paintArm(armL);
   paintArm(armR);
@@ -341,7 +336,6 @@ export function createGuestArt(
   setLod(true);
   setEmotion('NONE');
   animate(0);
-
   return {
     root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
     setEmotion, setMood, setPersona, setName, setLod, setState, animate,

@@ -3,6 +3,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { on } from '../core/sim/events';
+import { presentation } from './rng';
 import { playSfx, playPinRun } from './sound-fx';
 
 interface Particle {
@@ -17,6 +18,17 @@ interface Particle {
   size: number;
 }
 
+interface Burst {
+  readonly count: number;
+  readonly x: number;
+  readonly y: number;
+  readonly speedMin: number;
+  readonly speedMax: number;
+  readonly lifeMin: number;
+  readonly lifeMax: number;
+  readonly color: () => string;
+}
+
 export function ParticleOverlay(): JSX.Element {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [shake, setShake] = useState(0);
@@ -24,145 +36,84 @@ export function ParticleOverlay(): JSX.Element {
   const nextId = useRef(0);
 
   useEffect(() => {
-    const unsubscribers: (() => void)[] = [];
+    const spawn = ({ count, x, y, speedMin, speedMax, lifeMin, lifeMax, color }: Burst): void => {
+      const spawned: Particle[] = [];
+      for (let index = 0; index < count; index += 1) {
+        const angle = (index / count) * Math.PI * 2;
+        const speed = speedMin + presentation.nextFloat() * (speedMax - speedMin);
+        spawned.push({
+          id: nextId.current++,
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0,
+          maxLife: lifeMin + presentation.nextFloat() * (lifeMax - lifeMin),
+          color: color(),
+          size: 1 + presentation.nextFloat() * 3,
+        });
+      }
+      setParticles((prev) => [...prev, ...spawned]);
+    };
+    const center = (): { x: number; y: number } => ({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    });
 
-    unsubscribers.push(
-      on('slot:jackpot', ({ itemId, stake, payout, multiplierBps }: { itemId: number; stake: number; payout: number; multiplierBps: number }) => {
+    const unsubscribers = [
+      on('slot:jackpot', () => {
         playSfx('win');
         setShake(8);
         setFlash(1);
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        const spawned: Particle[] = [];
-        for (let i = 0; i < 30; i += 1) {
-          const angle = (i / 30) * Math.PI * 2;
-          const speed = 2 + Math.random() * 4;
-          spawned.push({
-            id: nextId.current++,
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 0,
-            maxLife: 60 + Math.random() * 40,
-            color: '#ffd700',
-            size: 2 + Math.random() * 3,
-          });
-        }
-        setParticles((prev) => [...prev, ...spawned]);
-      })
-    );
-
-    unsubscribers.push(
-      on('slot:chargeDischarge', ({ itemId, stake, payout }: { itemId: number; stake: number; payout: number }) => {
+        const { x, y } = center();
+        spawn({ count: 30, x, y, speedMin: 2, speedMax: 6, lifeMin: 60, lifeMax: 100, color: () => '#ffd700' });
+      }),
+      on('slot:chargeDischarge', () => {
         playSfx('coin');
         setShake(4);
         setFlash(1);
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        const spawned: Particle[] = [];
-        for (let i = 0; i < 15; i += 1) {
-          const angle = (i / 15) * Math.PI * 2;
-          const speed = 3 + Math.random() * 3;
-          spawned.push({
-            id: nextId.current++,
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 0,
-            maxLife: 40 + Math.random() * 20,
-            color: '#00ffff',
-            size: 1 + Math.random() * 2,
-          });
-        }
-        setParticles((prev) => [...prev, ...spawned]);
-      })
-    );
-
-    unsubscribers.push(
-      on('plinko:drop', ({ stake, payout, pockets, mode }: { stake: number; payout: number; pockets: number[]; mode: string }) => {
+        const { x, y } = center();
+        spawn({ count: 15, x, y, speedMin: 3, speedMax: 6, lifeMin: 40, lifeMax: 60, color: () => '#00ffff' });
+      }),
+      on('plinko:drop', ({ pockets }: { pockets: number[] }) => {
         playPinRun(pockets.length);
         setShake(6);
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 3;
-        const spawned: Particle[] = [];
-        for (let i = 0; i < 20; i += 1) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = 1 + Math.random() * 2;
-          spawned.push({
-            id: nextId.current++,
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 0,
-            maxLife: 50 + Math.random() * 30,
-            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-            size: 1 + Math.random() * 2,
-          });
-        }
-        setParticles((prev) => [...prev, ...spawned]);
-      })
-    );
-
-    unsubscribers.push(
-      on('dispute:start', ({ disputeId, guestIds, x, y }: { disputeId: number; guestIds: number[]; x: number; y: number }) => {
+        spawn({
+          count: 20,
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 3,
+          speedMin: 1,
+          speedMax: 3,
+          lifeMin: 50,
+          lifeMax: 80,
+          color: () => `hsl(${presentation.nextFloat() * 360}, 100%, 50%)`,
+        });
+      }),
+      on('dispute:start', ({ x, y }: { x: number; y: number }) => {
         playSfx('brawl');
         setShake(10);
         setFlash(1);
-        const cx = window.innerWidth / 2 + (x - 15) * 40;
-        const cy = window.innerHeight / 2 + (y - 15) * 40;
-        const spawned: Particle[] = [];
-        for (let i = 0; i < 25; i += 1) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = 1 + Math.random() * 3;
-          spawned.push({
-            id: nextId.current++,
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 0,
-            maxLife: 30 + Math.random() * 30,
-            color: '#ff4d4d',
-            size: 1 + Math.random() * 2,
-          });
-        }
-        setParticles((prev) => [...prev, ...spawned]);
-      })
-    );
-
-    unsubscribers.push(
-      on('money:bigPayout', ({ guestId, amount, covered, debt }: { guestId: number; amount: number; covered: number; debt: number }) => {
+        spawn({
+          count: 25,
+          x: window.innerWidth / 2 + (x - 15) * 40,
+          y: window.innerHeight / 2 + (y - 15) * 40,
+          speedMin: 1,
+          speedMax: 4,
+          lifeMin: 30,
+          lifeMax: 60,
+          color: () => '#ff4d4d',
+        });
+      }),
+      on('money:bigPayout', () => {
         playSfx('win');
         setShake(6);
         setFlash(1);
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        const spawned: Particle[] = [];
-        for (let i = 0; i < 40; i += 1) {
-          const angle = (i / 40) * Math.PI * 2;
-          const speed = 2 + Math.random() * 5;
-          spawned.push({
-            id: nextId.current++,
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 0,
-            maxLife: 70 + Math.random() * 50,
-            color: '#ffd700',
-            size: 2 + Math.random() * 4,
-          });
-        }
-        setParticles((prev) => [...prev, ...spawned]);
-      })
-    );
+        const { x, y } = center();
+        spawn({ count: 40, x, y, speedMin: 2, speedMax: 7, lifeMin: 70, lifeMax: 120, color: () => '#ffd700' });
+      }),
+    ];
 
-    return () => {
-      unsubscribers.forEach((unsub) => unsub());
-    };
+    return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
   }, []);
 
   useEffect(() => {
@@ -170,15 +121,15 @@ export function ParticleOverlay(): JSX.Element {
     const interval = setInterval(() => {
       setParticles((prev) =>
         prev
-          .map((p) => ({
-            ...p,
-            life: p.life + 1,
-            x: p.x + p.vx,
-            y: p.y + p.vy,
-            vx: p.vx * 0.95,
-            vy: p.vy * 0.95 + 0.1,
+          .map((particle) => ({
+            ...particle,
+            life: particle.life + 1,
+            x: particle.x + particle.vx,
+            y: particle.y + particle.vy,
+            vx: particle.vx * 0.95,
+            vy: particle.vy * 0.95 + 0.1,
           }))
-          .filter((p) => p.life < p.maxLife)
+          .filter((particle) => particle.life < particle.maxLife)
       );
     }, 16);
     return () => clearInterval(interval);
@@ -187,7 +138,7 @@ export function ParticleOverlay(): JSX.Element {
   useEffect(() => {
     if (shake <= 0) return;
     const interval = setInterval(() => {
-      setShake((s) => (s <= 1 ? 0 : s - 1));
+      setShake((value) => (value <= 1 ? 0 : value - 1));
     }, 16);
     return () => clearInterval(interval);
   }, [shake]);
@@ -195,10 +146,12 @@ export function ParticleOverlay(): JSX.Element {
   useEffect(() => {
     if (flash <= 0) return;
     const interval = setInterval(() => {
-      setFlash((f) => (f <= 1 ? 0 : f - 1));
+      setFlash((value) => (value <= 1 ? 0 : value - 1));
     }, 16);
     return () => clearInterval(interval);
   }, [flash]);
+
+  const jitter = (): number => presentation.nextFloat() * shake * 2 - shake;
 
   return (
     <div
@@ -208,23 +161,23 @@ export function ParticleOverlay(): JSX.Element {
         inset: 0,
         pointerEvents: 'none',
         zIndex: 60,
-        transform: shake > 0 ? `translate(${Math.random() * shake * 2 - shake}px, ${Math.random() * shake * 2 - shake}px)` : 'none',
+        transform: shake > 0 ? `translate(${jitter()}px, ${jitter()}px)` : 'none',
         opacity: flash > 0 ? 1 - flash * 0.15 : 1,
         transition: 'opacity 0.1s',
       }}
     >
-      {particles.map((p) => (
+      {particles.map((particle) => (
         <div
-          key={p.id}
+          key={particle.id}
           style={{
             position: 'absolute',
-            left: p.x,
-            top: p.y,
-            width: p.size,
-            height: p.size,
-            backgroundColor: p.color,
+            left: particle.x,
+            top: particle.y,
+            width: particle.size,
+            height: particle.size,
+            backgroundColor: particle.color,
             borderRadius: '50%',
-            opacity: 1 - p.life / p.maxLife,
+            opacity: 1 - particle.life / particle.maxLife,
             pointerEvents: 'none',
           }}
         />

@@ -52,14 +52,15 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
     if (!other) continue;
     if (!forced && prng.nextFloat() > 0.5) continue;
     const id = world.nextDisputeId++;
-    world.disputes.push({
+    const dispute = {
       id,
       guestIds: [guest.id, other.id],
       x: Math.round((guest.position.x + other.position.x) / 2),
       y: Math.round((guest.position.y + other.position.y) / 2),
       level: 1,
       ticks: 0,
-    });
+    };
+    world.disputes.push(dispute);
     if (guest.visitorId !== undefined && other.visitorId !== undefined && guest.visitorId !== other.visitorId) {
       const initiator = actorRefOfVisitor(guest.visitorId);
       emitFact(world, {
