@@ -58,3 +58,52 @@ Ergebnis ansieht.
 | Zielraster | Service = laufen, Identity = heranziehen | `floor-cues.ts` |
 | Bewegung | Easing, kein Nachfedern | `floor-camera.ts`, `floor-view.ts` |
 | Herkunft | keine Farbe ohne Rolle, kein Glanz ohne Grund | Review am Boden |
+
+## UI und Spiel als ein Bild
+
+Dieses Kapitel überträgt die Haltung auf die Bedienung. Der Floor ist die Bühne, die Menüs sind das
+Lichtpult: gleiche Palette, gleiche Tiefe, gleiche Typo, gleiche Kanten. Kein Fenster darf wie ein
+Fremdkörper über dem Spiel liegen.
+
+### Vier Ebenen, vier Aufgaben
+
+1. **Welt (Canvas):** Floor, Figuren, Licht. Keine UI-Texte außer Weltfeedback (Zielraster, Spur).
+2. **HUD (Rahmen):** Identität links, Geld und Ruf rechts, eine Zeile mit Aktionen. Ruhig und dunkel.
+3. **Fenster (`PopupShell`):** ein Rahmen für alles, was mehr als eine Entscheidung verlangt —
+   Smartphone-Menüs, Bauen, Gäste, Protokoll, Charakter, Assets, Ton.
+4. **Dialog:** die einzige Ebene, die die Welt abdunkelt und Fokus erzwingt.
+
+Immersion entsteht nicht durch mehr Effekte, sondern durch **weniger Bruchstellen**: gleicher Kopf,
+gleiche Dichte, gleiche Abstände, gleiche Bedeutung der Farben.
+
+### Menü-Regeln
+
+- **Ein Rahmen:** jedes Fenster nutzt `src/ui/popup-shell.tsx` (Backdrop, Kopf, Eyebrow, Titel,
+  Fokusfalle, Escape, Schließen). Kein Fenster baut einen eigenen Kopf.
+- **Ein Kopf:** Eyebrow = Bereich (`BAUEN`, `GÄSTE`), Titel = konkrete Sache, ein Schließen rechts.
+- **Eine Dichte:** Innenabstand `--space-4`, Listen mit `--space-2`, keine Sonderfälle.
+- **Eine Hierarchie:** höchstens drei Ebenen pro Fenster (Titel, Abschnitt, Zeile).
+- **Eine Skala:** Abstände nur aus `--space-1..5`, Fensterbreiten nur aus `--popup-width`,
+  `--popup-wide-width`, `--popup-full-width`, Radien nur aus `--popup-radius` / `--radius*`.
+- **Keine toten Enden:** jedes Fenster hat genau eine primäre Aktion und einen Weg zurück.
+
+Ausnahme: das Fremd-Floor-HUD (`foreign-floor-hud.tsx`) ist Welt, kein Fenster — es zeigt einen
+anderen Ort, statt eine Entscheidung zu verlangen.
+
+### Ton
+
+Musik folgt dem Fenster (Floor, Gäste, Spiel, Nacht, Menü), nicht dem Klick. Erst die Geste, dann der
+Ton; Autoplay wird abgewartet, nie erzwungen. Effekte haben Mindestabstände (`win` 500 ms, `coin`
+180 ms, `brawl` 900 ms), damit ein voller Floor keine Tonlawine wird. Stille bleibt ein gültiger
+Zustand, jeder Kanal ist einzeln regelbar.
+
+### Stufenplan
+
+| Stufe | Inhalt | Status |
+| --- | --- | --- |
+| M1 | Abstands- und Fenster-Tokens, Popup-CSS darauf umgestellt | erledigt |
+| M2 | Alle Menüs auf `PopupShell`, ein Kopf, eine Dichte | erledigt |
+| M3 | Screenshot-Satz `v0.3.114` als Referenz, README-Vergleich gegen `v0.3.27` | erledigt |
+| M4 | Smartphone als echte Gerätefläche (Rahmen, Statusleiste), Fensterübergänge und Floor-Feedback angleichen | offen |
+
+Abnahme pro Fenster: gleicher Kopf, gleiche Abstände, eine primäre Aktion, ein Weg zurück.

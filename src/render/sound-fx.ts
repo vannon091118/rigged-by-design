@@ -169,11 +169,20 @@ const CHANNEL_OF: Readonly<Record<SfxKind, SoundChannel>> = {
   cardFlip: 'ui', win: 'ui',
 };
 
+/** Mindestabstand pro Effekt: ein voller Floor darf keine Tonlawine ausloesen. */
+const lastPlayed = new Map<SfxKind, number>();
+const MIN_GAP_MS: Readonly<Partial<Record<SfxKind, number>>> = { win: 500, coin: 180, brawl: 900 };
+
 export function playSfx(kind: SfxKind): void {
   const wired = audio(CHANNEL_OF[kind]);
   if (!wired) return;
   const { ctx, out } = wired;
   const now = ctx.currentTime;
+  const gap = MIN_GAP_MS[kind];
+  if (gap !== undefined) {
+    if (now - (lastPlayed.get(kind) ?? -Infinity) < gap) return;
+    lastPlayed.set(kind, now);
+  }
   if (kind === 'coin') {
     tone(ctx, out, { at: now, hz: 1980, length: 0.1, type: 'triangle', gain: 0.06 });
     tone(ctx, out, { at: now + 0.05, hz: 2640, length: 0.12, type: 'triangle', gain: 0.05 });

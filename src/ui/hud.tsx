@@ -44,7 +44,7 @@ export function Hud({
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>
-          <small>DEIN CASINO · TAG {view.day}</small>
+          <small>DEIN FLOOR · TAG {view.day}</small>
         </div>
       </div>
 
