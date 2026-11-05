@@ -108,10 +108,10 @@ Die Auswahl kann sich ändern. Die Dokumente [Produktstand](docs/PRODUCT.md), [A
 
 ### Bilder aus dem heutigen Betrieb
 
-![Casino-Floor mit Gästen, Räumen und HUD](docs/screenshots/v0.3.78/02-floor-detail.png)
+![Floor mit Gästen, Räumen und HUD](docs/screenshots/v0.3.114/02-floor-detail.png)
 
-Stand `v0.3.78`, aufgenommen aus dem laufenden Spiel (Chromium, 1280 × 860). Die Etage hat denselben
-Grundriss wie in allen früheren Sätzen; neu ist, dass sie beleuchtet ist. Jeder Raum trägt eine
+Stand `v0.3.114`, aufgenommen aus dem Preview-Build (`vite preview`, Chromium). Die Etage hat denselben
+Grundriss wie in allen früheren Sätzen; neu ist die einheitliche Bildsprache von HUD, Fenstern und Floor. Jeder Raum trägt eine
 Lichtpfütze, die Deckenlampen werfen einen Schein, die Laufwege dazwischen bleiben dunkel. Unter dem
 Zeiger steht ein Zielraster, am Fuß ein Spielerring, entlang des Wegs eine Punktspur.
 
@@ -123,16 +123,16 @@ Die Aufnahmen zeigen die **heutige, vorläufige** Optik. Sie ist bewusst plattfo
 
 ### Vorher und nachher, Bild für Bild
 
-Links der bisherige Satz aus `docs/screenshots/current/` (Stand `v0.3.27`), rechts der neue Satz aus
-`docs/screenshots/v0.3.78/`. Gleiche Etage, gleicher Ausschnitt, dazwischen der Licht- und
-Steuerungsschnitt.
+Links der älteste Satz aus `docs/screenshots/current/` (Stand `v0.3.27`), rechts der neueste Satz aus
+`docs/screenshots/v0.3.114/`. Gleiche Etage, gleicher Ausschnitt, dazwischen Licht, Steuerung und die
+vereinheitlichte Fenster-Bildsprache.
 
-| Bisher (`v0.3.27`) | Jetzt (`v0.3.78`) |
+| Ältester Satz (`v0.3.27`) | Neuester Satz (`v0.3.114`) |
 | --- | --- |
-| ![Etage in der Übersicht vorher](docs/screenshots/current/01-floor-uebersicht-frisch.png) | ![Etage in der Übersicht jetzt](docs/screenshots/v0.3.78/01-floor-uebersicht.png) |
-| ![Etage im Detail vorher](docs/screenshots/current/02-floor-detail-frisch.png) | ![Etage im Detail jetzt](docs/screenshots/v0.3.78/02-floor-detail.png) |
-| ![Bauen-Fenster vorher](docs/screenshots/current/08-bauen-panel.png) | ![Bauen-Fenster jetzt](docs/screenshots/v0.3.78/03-bauen-panel.png) |
-| ![Gäste-Fenster vorher](docs/screenshots/current/07-gaeste-panel.png) | ![Gäste-Fenster jetzt](docs/screenshots/v0.3.78/04-gaeste-panel.png) |
+| ![Etage in der Übersicht vorher](docs/screenshots/current/01-floor-uebersicht-frisch.png) | ![Etage in der Übersicht jetzt](docs/screenshots/v0.3.114/01-floor-uebersicht.png) |
+| ![Etage im Detail vorher](docs/screenshots/current/02-floor-detail-frisch.png) | ![Etage im Detail jetzt](docs/screenshots/v0.3.114/02-floor-detail.png) |
+| ![Bauen-Fenster vorher](docs/screenshots/current/08-bauen-panel.png) | ![Bauen-Fenster jetzt](docs/screenshots/v0.3.114/03-bauen-panel.png) |
+| ![Gäste-Fenster vorher](docs/screenshots/current/07-gaeste-panel.png) | ![Gäste-Fenster jetzt](docs/screenshots/v0.3.114/04-gaeste-panel.png) |
 
 Was der Vergleich zeigt:
 
@@ -153,7 +153,7 @@ Was der Vergleich zeigt:
   damaligen Aufnahmeumgebung, nicht zum Spiel.
 
 Die Hilfekarte im Spiel nennt dieselben Tasten und liegt als
-[`05-hilfe-steuerung.png`](docs/screenshots/v0.3.78/05-hilfe-steuerung.png) daneben.
+[`05-hilfe-steuerung.png`](docs/screenshots/v0.3.114/05-hilfe-steuerung.png) daneben.
 
 Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitter und sechs Tonspuren. Im Spiel findest du die Bibliothek unter **ASSETS**. Sie zeigt, was tatsächlich geladen ist – ein selten ehrlicher Blick hinter die Kulissen.
 
@@ -163,14 +163,20 @@ Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitt
 
 | Momentaufnahme | Screenshot |
 | --- | --- |
-| Geräte, Deko und Preise im Bau-Panel | ![Bauen-Panel](docs/screenshots/v0.3.78/03-bauen-panel.png) |
-| Gäste mit Laune, Geduld und Besuchsstatus | ![Gäste-Fenster](docs/screenshots/v0.3.78/04-gaeste-panel.png) |
+| Geräte, Deko und Preise im Bau-Panel | ![Bauen-Panel](docs/screenshots/v0.3.114/03-bauen-panel.png) |
+| Gäste mit Laune, Geduld und Besuchsstatus | ![Gäste-Fenster](docs/screenshots/v0.3.114/04-gaeste-panel.png) |
+| Smartphone als ein Fenster für alle Aktionen | ![Smartphone](docs/screenshots/v0.3.114/06-smartphone.png) |
+| Dialog mit Besucherin am Tresen | ![Dialog](docs/screenshots/v0.3.114/07-dialog.png) |
+| Ton und Musik in einem Fenster | ![Sound](docs/screenshots/v0.3.114/08-sound.png) |
+| Charakterwerte und Skillpunkte | ![Charakter](docs/screenshots/v0.3.114/09-charakter.png) |
+| Asset-Bibliothek mit geladenen Texturen | ![Assets](docs/screenshots/v0.3.114/10-asset-bibliothek.png) |
+| Protokoll als Chronik des Abends | ![Protokoll](docs/screenshots/v0.3.114/11-protokoll.png) |
 | Blackjack-Tisch mit Dealer und Karten-Shoe | ![Blackjack](docs/screenshots/current/11-blackjack-buehne.png) |
 | Poker mit Board und eigenen Karten | ![Poker](docs/screenshots/current/12-poker-buehne.png) |
 | Roulette-Kessel und gesetzte Jetons | ![Roulette](docs/screenshots/current/14-roulette-buehne.png) |
 | Plinko-Brett mit Bahn und Fachquoten | ![Plinko](docs/screenshots/current/15-plinko-buehne.png) |
 
-Weitere Screenshots und Versionsvergleiche liegen in [`docs/screenshots/`](docs/screenshots/). Das Asset-Inventar und die technische Verdrahtung stehen in [`docs/ASSETS.md`](docs/ASSETS.md).
+Der komplette neueste Satz liegt in [`docs/screenshots/v0.3.114/`](docs/screenshots/v0.3.114/). Die Bildsprache und ihre Regeln stehen in [`docs/ART-DIRECTION.md`](docs/ART-DIRECTION.md). Das Asset-Inventar und die technische Verdrahtung stehen in [`docs/ASSETS.md`](docs/ASSETS.md).
 
 ## Wie das Haus Geld zählt
 
