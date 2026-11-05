@@ -2,8 +2,9 @@
  * Bodenauftrag und Licht: Muster, Fugen, Deckenlampen und Kantentiefe je Raum.
  * Architektur (Waende, Tueren, Zonen) bleibt in room-art; hier liegt nur die Flaeche.
  */
-import type { Graphics } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import type { FloorMaterial } from './art-tokens';
+import { textureFor } from './assets/textures';
 
 interface Rect { x: number; y: number; w: number; h: number }
 
@@ -127,11 +128,43 @@ function drawInset(g: Graphics, r: Rect, edges: Edges): void {
   }
 }
 
+/** Zone-Art zu Boden-Textur-Schluessel im Manifest. */
+const FLOOR_TEXTURE: Readonly<Record<string, string>> = {
+  GAMING: 'environment/tiles/casino-carpet-plum.png',
+  BAR: 'environment/tiles/casino-carpet-plum.png',
+  LOUNGE: 'environment/tiles/wallpaper-damask-plum.png',
+  STORAGE: 'environment/tiles/wallpaper-damask-plum.png',
+  EXCHANGE: 'environment/tiles/wallpaper-damask-plum.png',
+  TOILET: 'environment/tiles/wallpaper-damask-plum.png',
+  EXPANSION: 'environment/tiles/wallpaper-damask-plum.png',
+  ENTRANCE: 'environment/tiles/casino-carpet-plum.png',
+};
+
+/** Boden-Textur für einen Bodenbelag, falls im Manifest vorhanden. */
+function floorTextureFor(mat: FloorMaterial): string | null {
+  return FLOOR_TEXTURE[mat.pattern] ?? null;
+}
+
 /** Ein Bodenbelag: Material, Muster, Licht und Tiefe in einem Auftrag. */
-export function drawSurface(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges): void {
+export function drawSurface(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges, parent?: Container): void {
   g.rect(r.x, r.y, r.w, r.h).fill(mat.base);
   drawPattern(g, mat, r, tile, edges.top && edges.bottom && edges.left && edges.right);
   if (edges.top) drawLightSpill(g, mat, r);
   if (edges.top) drawCeilingLight(g, mat, r);
   drawInset(g, r, edges);
+
+  // Boden-Textur als Backdrop, falls im Manifest vorhanden. Wird über den
+  // gezeichneten Korpus gelegt, sodass Muster und Textur sich überlagern.
+  const texKey = floorTextureFor(mat);
+  if (texKey && parent) {
+    const tex = textureFor(texKey);
+    if (tex) {
+      const sprite = new Sprite(tex);
+      sprite.width = r.w;
+      sprite.height = r.h;
+      sprite.position.set(r.x, r.y);
+      sprite.alpha = 0.9;
+      parent.addChild(sprite);
+    }
+  }
 }

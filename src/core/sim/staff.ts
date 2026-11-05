@@ -213,8 +213,10 @@ function cleanerTick(world: WorldState, agent: StaffAgent): void {
     return;
   }
   stepToward(world, agent, tx, ty);
-  // Unerreichbarer Dreck darf die Reinigung nicht dauerhaft blockieren.
-  if (agent.path.length === 0) world.dirty.delete(first);
+  // Unerreichbarer Dreck wird nicht still geloescht; der Reiniger wird als
+  // blockiert gemeldet, damit der Dreck sichtbar bleibt und der Spieler
+  // den Zugang schaffen kann (z. B. Wand entfernen).
+  if (agent.path.length === 0) setTask(agent, 'idle', 'Dreck nicht erreichbar');
 }
 
 function bartenderTick(world: WorldState, agent: StaffAgent): void {

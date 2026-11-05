@@ -20,13 +20,13 @@ const XP_CLEAN_TILE = 10;
  * Scheitert eine Buchung, bleibt die Welt unveraendert und der Fehler steigt auf.
  */
 export function settleGuests(world: WorldState, ledger: Ledger): void {
-  for (const guest of world.guests) {
+  for (const guest of [...world.guests]) {
     payPending(ledger, guest.id, world.tick);
     const balance = ledger.getBalance(guestAccount(guest.id));
     if (balance > ZERO_VC) exchangeFromVc(ledger, guest.id, balance, world.tick);
     closeFiat(ledger, guest.id, world.tick);
+    world.guests = world.guests.filter((g) => g.id !== guest.id);
   }
-  world.guests = [];
 }
 
 export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void {

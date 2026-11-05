@@ -4,6 +4,7 @@ import { Prng } from '../rng/prng';
 import type { WorldState } from '../sim/types';
 import type { GameResult } from './contracts';
 import { createPlinkoBoard } from './plinko-board';
+import { emit } from '../sim/events';
 import {
   normalizePlinkoConfig, plinkoPaytable, plinkoProgress, pocketPayout,
   PLINKO_BASE_ROWS, PLINKO_MAX_ROWS,
@@ -148,6 +149,7 @@ export function playPlinkoRound(
   bonusBps = 0,
 ): GameResult {
   const drop = spinPlinkoSandbox(world, prng, world.plinkoMode);
+  emit('plinko:drop', { stake, payout: drop.pockets.reduce((sum, pocket) => sum + pocketPayout(world.plinko, pocket), 0), pockets: drop.pockets, mode: world.plinkoMode });
   return plinkoResult(stake, drop, world.plinko, bonusBps);
 }
 

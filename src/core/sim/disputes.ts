@@ -8,6 +8,7 @@ import { dirtyTileIndex } from './emotion';
 import { emitFact } from './narrative/facts';
 import { actorRefOfVisitor } from './narrative/relationships';
 import { spawnStain } from './stain';
+import { emit } from './events';
 
 const BRAWL_RANGE = 5;
 /**
@@ -69,6 +70,7 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
     guest.disputeId = id;
     other.disputeId = id;
     world.lastEvent = `${guest.name} und ${other.name} prügeln sich.`;
+    emit('dispute:start', { disputeId: id, guestIds: [guest.id, other.id], x: dispute.x, y: dispute.y });
   }
 }
 
@@ -148,6 +150,7 @@ export function tickDisputes(world: WorldState): void {
         world.dirty.add(dirtyTileIndex(world.size, live.x, live.y));
         world.lastEvent = `Im Streit ging ${live.label} zu Bruch.`;
         spawnStain(world, live.x, live.y, 30);
+        emit('dispute:sabotage', { disputeId: dispute.id, itemId: live.id, itemLabel: live.label, x: live.x, y: live.y });
       }
     }
   }

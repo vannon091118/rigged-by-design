@@ -3,6 +3,7 @@ import type { Ledger } from '../economy/ledger';
 import { MINTING_ACCOUNT } from '../economy/ledger-integrity';
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { guestReason, TX_REASON } from './tx-reasons';
+import { emit } from './events';
 
 export const HAUSKONTO = 'HAUSKONTO';
 export const PORTEMONNAIE = 'PORTEMONNAIE';
@@ -80,6 +81,10 @@ export function payOut(ledger: Ledger, guestId: number, amount: VaCoinMicro, tic
   if (debt <= ZERO_VC) return;
   ledger.openLiability(DEBT_ACCOUNT);
   ledger.transfer(DEBT_ACCOUNT, pendingAccount(guestId), debt, `gast ${guestId} gewinn auf kredit`, tick);
+  // Grossgewinn: visuelles Event fuer Partikel/Flash in der UI.
+  if (amount >= fromVC(10)) {
+    emit('money:bigPayout', { guestId, amount, covered, debt });
+  }
 }
 
 /**

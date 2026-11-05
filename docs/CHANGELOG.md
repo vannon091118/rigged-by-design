@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.111 | 2026-11-04 19:50 UTC -->
+<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,7 +12,33 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
-## [0.3.110] - 2026-11-04
+## [0.3.114] - 2026-11-04
+
+### Spiel
+- Ladebildschirm beim Kaltstart: animierter Fortschrittsbalken mit Text ("Lade Neon-Kasino…", "Baue Floor…", "Bereit.") statt weisser Seite, bis React gemountet hat (`index.html`, `src/main.tsx`).
+- Maschinen-Texturen sichtbar: `src/render/furniture-art.ts` Backdrop-Overlay (`textureFor` aus `manifest.json`) liegt jetzt uber dem gezeichneten Korpus, sodass Slot-, Tisch-, Bar- und andere Maschinen-Texturen aus dem Pixel-Paket sichtbar werden (statt nur gefarbter Rechtecke).
+- Boden-Texturen sichtbar: `src/render/floor-surface.ts` und `src/render/room-art.ts` legen Boden-Texturen aus `manifest.json` (`casino-carpet-plum.png`, `wallpaper-damask-plum.png`) als Sprite-Backdrop unter die gezeichneten Boden-Muster.
+- Gast-Kopf-Texturen sichtbar: `src/render/guest-art.ts` ladet Kopf-Texturen aus `manifest.json` (`characters/head-*.png`) basierend auf dem Gast-Seed und zeigt sie als Sprite statt nur gezeichneter Schaedel-Grafik an.
+- Partikel-Events: `src/core/sim/events.ts` (neu, headless Event-Emitter), `src/core/games/slot-session.ts` (`slot:jackpot`, `slot:chargeDischarge`, `slot:chargeReady`, `slot:spin`), `src/core/games/plinko-sandbox.ts` (`plinko:drop`), `src/core/sim/disputes.ts` (`dispute:start`, `dispute:sabotage`), `src/core/sim/money.ts` (`money:bigPayout` ab 10 VC) emittieren visuelle Ereignisse für die UI/Render-Schicht.
+- Partikel-Overlay: `src/render/particle-overlay.tsx` (neu) rendert animierte Partikel, Bildschirm-Shake und weisses Flash-Overlay bei Partikel-Events; `src/App.tsx` bindet es ueber dem Floor ein (zIndex 60).
+- Bodenhinweise-Feinschliff: `src/render/floor-cues.ts` zeigt Zielraster mit leuchtender Mitte, Spielerring mit ausserem Glow und Klick-Puls mit konzentrischen Ringen.
+- Audio-zu-Visual-Kopplung: `particle-overlay.tsx` spielt bei jedem Event den passenden Sound (`playSfx('win')`, `playSfx('coin')`, `playPinRun(...)`, `playSfx('brawl')`) gleichzeitig mit den Partikeln ab.
+- `verify:quick` beschleunigt: `src/Config/vite.config.ts` schließt jetzt auch `poker-distribution.test.ts`, `balance-operating.test.ts` und alle `*.bench.ts` Dateien aus dem quick-Profil aus (statistics/performance Beweisklassen laufen nur in CI via `ci:long`). Damit fallen ca. 8 Testdateien aus dem lokalen Quick-Lauf heraus.
+
+## [0.3.113] - 2026-11-04
+
+### Planung
+- `docs/PLAN-OPTIK-VISUELL.md` neu: 5-Phasen-Plan fuer visuelle Ueberarbeitung (Eintrag/Ladeerfahrung, Figuren & Boden nutzen vorhandene Textur-Pakete, Partikel & Animationen im Spielfluss, Game Feel & UI-Unterschiedlichkeit, Feinschliff der Bodenhinweise). Keine Code-Aenderung, reine Planung.
+
+## [0.3.111] - 2026-11-04
+
+### Technik
+- `settleGuests` zahlt jeden Gast nur einmal: nach erfolgreicher Buchung wird der Gast aus der Liste entfernt, sodass ein Abbruch keine Doppelauszahlung verursacht (`L2`, hoch). Test in `guest-settlement.test.ts`.
+- `payAndLeave` laesst einen Gast bei nicht gedeckter Auszahlung den Floor verlassen (`LEAVE`) statt ewig im Zustand `CASHOUT` zu haengen (`L1`, mittel).
+- Reiniger loescht unreachable Dreck nicht mehr still, sondern meldet sich als blockiert (`L6`, niedrig).
+- ESLint ignoriert `plugins/` (DSH-Host-Plugin, nicht Repo-Quelle).
+- `INVENTORY.md` auf aktuellen Code-Stand: Befunde 1, 18, 21, 33, 34 als geloest markiert.
+
 
 ### Spiel
 - Wer mit guten Abenden wiederkommt, wird jetzt mit eigenen Worten begruesst - die warme Szene spricht nicht mehr aus dem Basistopf.

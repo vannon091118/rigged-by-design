@@ -21,3 +21,6 @@ tsconfig.tsbuildinfo
 src/Config/*.tsbuildinfo
 .freebuff/
 test-results/
+
+# Lokal entwickelte DSH-Plugins (Bundle-Quellen im Workspace)
+plugins/

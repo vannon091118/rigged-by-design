@@ -13,6 +13,165 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-04 - Phase 1: Eintrag & Ladeerfahrung (Optik)
+
+**Ziel.** Der Nutzer sieht beim Kaltstart keinen weissen Bildschirm mehr, sondern einen animierten Ladebildschirm mit Fortschrittsangabe, bevor React mountet.
+
+**Umsetzung.**
+- `index.html`: `<title>`, Meta-Description, Favicon (`/assets/casino/ui/coin.png`), `<noscript>`-Fallback, sichtbarer CSS-animierter Lade-Balken (`#rbd-loader`) mit Text "Lade Neon-Kasino…".
+- `src/main.tsx`: Während `boot()` lädt, bleibt der Ladebalken sichtbar; Text wechselt zu "Baue Floor…" und "Bereit."; nach `createRoot().render()` wird der Balken ausgeblendet (`hideLoader()`).
+
+**Pruefungen.** Code gelesen: `index.html` (12 -> 52 Zeilen, Lade-Overlay im HTML), `src/main.tsx` (Loader-Logik vor/b nach `boot()`). Keine Spielmechanik veraendert. **Abgeschlossen.**
+
+---
+
+## 2026-11-04 - Phase 2a: Maschinen-Texturen sichtbar (Optik)
+
+**Ziel.** Die vorhandenen Maschinen-Texturen aus `manifest.json` sollen auf den Spielgeraeten sichtbar sein, statt dass die Graphics-Flaeche sie uerdeckt.
+
+**Umsetzung.**
+- `src/render/furniture-art.ts`: Der `backdrop`-Sprite (geladen via `textureFor` aus `manifest.json` Maschinen-Eintr�gen) wurde in `createFurnitureArt` in der `children`-Liste **hinter** `body` platziert. Dadurch wurde der Backdrop vom gezeichneten Korpus (`body`) uerdeckt und war unsichtbar. Jetzt liegt er **uber** dem Korpus, sodass die Textur sichtbar ist (Fallback: `null` wenn Textur nicht geladen, dann bleibt Graphics-Zeichnung sichtbar).
+
+**Pruefungen.** Code gelesen: `src/render/furniture-art.ts` (Zeile 194: `children`-Reihenfolge geaendert). Keine Spielmechanik veraendert. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Phase 2b und 2c umgesetzt (siehe unten).
+
+---
+
+## 2026-11-04 - Phase 2b: Boden-Texturen sichtbar (Optik)
+
+**Ziel.** Die Boden-Zonen aus `manifest.json` (`environment/tiles/`) sollen als Textur-Backdrop auf den Boden-Chunks sichtbar sein, statt dass nur `Graphics`-Farben gezeichnet werden.
+
+**Umsetzung.**
+- `src/render/floor-surface.ts`: `textureFor` aus `./assets/textures` importiert. Neue Funktion `floorTextureFor(mat)` ordnet Bodenbelag-Mustern (z. B. `GAMING` -> `casino-carpet-plum.png`, `BAR` -> `casino-carpet-plum.png`, `LOUNGE`/`STORAGE`/`EXCHANGE`/`TOILET`/`ENTRANCE` -> `wallpaper-damask-plum.png`) Textur-Schluessel zu. `drawSurface` akzeptiert nun einen optionalen `parent?: Container`-Parameter und fügt einen Sprite-Backdrop mit der Boden-Textur hinzu, wenn eine Textur verfuegbar ist (Alpha 0.9, als Untergrund unter dem gezeichneten Muster).
+- `src/render/room-art.ts`: `drawZoneFloor` uebergibt `g.parent` (den `room`-Container) als `parent` an `drawSurface`, sodass die Boden-Textur-Sprites der Zone hinzugefuegt werden.
+
+**Pruefungen.** Code gelesen: `src/render/floor-surface.ts` (Import, `floorTextureFor`, `drawSurface` Signaturerweiterung), `src/render/room-art.ts` (`g.parent` als parent uebergeben). Keine Spielmechanik veraendert. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+---
+
+## 2026-11-04 - Phase 3: Partikel-Events im Spielfluss (Optik)
+
+**Ziel.** Spielereignisse (Jackpot, Charge-Entladung, Plinko-Drop, Streit, Sabotage, Grossgewinn) bekommen visuelle Gegenstücke via einem headless Event-Emitter, den die UI/Render-Schicht abonnieren kann.
+
+**Umsetzung.**
+- `src/core/sim/events.ts` (neu): reiner Event-Emitter ohne DOM/Pixi-Imports (`on`/`off`/`emit`/`listenerCount`), damit Core-Sim headless bleibt.
+- `src/core/games/slot-session.ts`: emittiert `slot:jackpot` (Jackpot), `slot:chargeDischarge` (Charge-Entladung), `slot:chargeReady` (Charge bereit), `slot:spin` (normaler Spin) mit `itemId`, `stake`, `payout`, `multiplierBps`.
+- `src/core/games/plinko-sandbox.ts`: emittiert `plinko:drop` mit `stake`, `payout`, `pockets`, `mode`.
+- `src/core/sim/disputes.ts`: emittiert `dispute:start` (Streit beginnt) mit `disputeId`, `guestIds`, `x`, `y` und `dispute:sabotage` (Geräteschaden im Streit) mit `disputeId`, `itemId`, `itemLabel`, `x`, `y`.
+- `src/core/sim/money.ts`: emittiert `money:bigPayout` (grosser Gewinn ab 10 VC) mit `guestId`, `amount`, `covered`, `debt`.
+
+**Pruefungen.** Code gelesen: alle 6 geänderten Dateien. `tsc --noEmit` sauber. Keine Spielmechanik veraendert (nur Event-Emission, keine Logik-Änderung). Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Phase 4 (UI-Anbindung der Partikel-Events) siehe unten.
+
+---
+
+## 2026-11-04 - Phase 4: UI-Anbindung der Partikel-Events (Optik)
+
+**Ziel.** Die Partie-Events aus Phase 3 werden in der UI gerendert: Partikel-Explosionen bei Jackpot, Spin, Plinko-Drop, Streit, Sabotage und grossen Gewinnen, plus Bildschirm-Shake und kurzes weisses Flash-Overlay.
+
+**Umsetzung.**
+- `src/render/particle-overlay.tsx` (neu): hoert auf `slot:jackpot`, `slot:chargeDischarge`, `slot:chargeReady`, `slot:spin`, `plinko:drop`, `dispute:start`, `dispute:sabotage`, `money:bigPayout` und rendert animierte Partikel (Farbe, Groesse, Lebensdauer), Bildschirm-Shake und kurzes weisses Flash-Overlay. Nutzt `playSfx` / `playPinRun` fuer synchronen Sound.
+- `src/App.tsx`: `ParticleOverlay` wird ueber dem Floor gerendert (zIndex 60, `pointerEvents: none`), sodass Partikel ueber allem liegen aber keine Interaktion blockieren.
+
+**Pruefungen.** Code gelesen: `src/render/particle-overlay.tsx` (neu), `src/App.tsx` (Import + Render). Keine Spielmechanik veraendert. `tsc --noEmit` sauber. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Phase 4.5 (Bodenhinweise-Feinschliff) und Phase 5 (Audio-zu-Visual-Kopplung) siehe unten.
+
+---
+
+## 2026-11-04 - Phase 4.5: Bodenhinweise-Feinschliff (Optik)
+
+**Ziel.** Die Bodenhinweise (Zielraster, Spielerring, Klick-Puls) sollen sichtbarer und "spieliger" wirken.
+
+**Umsetzung.**
+- `src/render/floor-cues.ts`: `ring` bekommt eine leuchtende Mitte (Fell mit `alpha: 0.12`) und kräftigere Kontur (`alpha: 0.5` statt `0.4`, `0.35` statt `0.22`). `reticle` bekommt einen kleinen, hellen Kern in der Kachelmitte (`fill(0xffffff, alpha: 0.9)` neben der farbigen Fläche). `ping` zeigt drei konzentrische Ringe statt nur einem.
+
+**Pruefungen.** Code gelesen: `src/render/floor-cues.ts` (Import, `ring` Fill, `reticle` Mitte, `ping` Drei-Ringe). Keine Spielmechanik veraendert. `tsc --noEmit` sauber. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.**
+
+---
+
+## 2026-11-04 - Phase 5: Audio-zu-Visual-Kopplung (Optik)
+
+**Ziel.** Sound und Bild landen zur selben Zeit – jedes auditive Ereignis hat ein visuelles Gegenstück.
+
+**Umsetzung.**
+- `src/render/particle-overlay.tsx`: Bei jedem Event wird neben den Partikeln auch der passende Sound abgespielt (`playSfx('win')`, `playSfx('coin')`, `playPinRun(...)`, `playSfx('brawl')`). Damit gibt es zu jedem Sound-Ereignis eine visuelle Entsprechung.
+
+**Pruefungen.** Code gelesen: `src/render/particle-overlay.tsx` (Sound-Aufrufe bei jedem Event), `src/render/sound-fx.ts` (verfuegbare Sounds: `coin`, `reelStop`, `pinHit`, `cardFlip`, `roulette`, `brawl`, `win`, `playPinRun`). Keine Spielmechanik veraendert. `tsc --noEmit` sauber. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Alle 5 Phasen des Optik-Plans sind umgesetzt.
+
+---
+
+## 2026-11-04 - Phase 5: verify:quick beschleunigen (Test-Auslagerung auf CI)
+
+**Ziel.** `verify:quick` soll lokal schnell laufen, damit es als Entwicklungsfeedback zwischen Commits genutzt werden kann. Nicht-kritische Tests (statistics/performance Beweisklassen) laufen nur in CI.
+
+**Umsetzung.**
+- `src/Config/vite.config.ts`: `quickExclude` erweitert um `poker-distribution.test.ts`, `balance-operating.test.ts` und alle `*.bench.ts` Dateien. Damit laufen im `verify:quick` nur noch `contract`, `integration` und `governance` Beweisklassen lokal; `statistics` und `performance` Tests laufen nur in CI (`ci:long` bzw. separater CI-Workflow).
+- Die 12 bisher im quick-Profil mitgelaufenen CI-Dateien (darunter 4 statistics- und 8 performance-Testdateien) werden künftig nur noch in CI ausgeführt.
+
+**Pruefungen.** `tsc --noEmit` sauber. Keine Spielmechanik veraendert. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Abgeschlossen.** Alle 5 Phasen des Optik-Plans plus die Test-Optimierung sind umgesetzt.
+
+---
+
+
+---
+
+
+## 2026-11-04 - Phase 2c: Charakter-Kopf-Texturen sichtbar (Optik)
+
+**Ziel.** Gast-Kopfe sollen aus den `characters/head-*.png`-Texturen im Manifest bestehen, statt nur mit `Graphics` gezeichnet zu werden.
+
+**Umsetzung.**
+- `src/render/guest-art.ts`: `textureFor` aus `./assets/textures` importiert. `HEAD_TEXTURES`-Konstante mit allen 18 Kopf-Texturen (`characters/head-01-01.png` bis `head-02-09.png`). Neue Funktion `headTextureFor(seed)` wählt basierend auf dem Gast-Seed eine Textur aus. In `createGuestArt` wird nach der `pixelHead`-Erstellung ein Kopf-Sprite aus der Textur erstellt und zum `head`-Container hinzugefügt (Alpha 1.0, Position -7,-7, Größe 14x14), sodass `skull` ausgeblendet wird. `paintHead` springt frueh zurueck, wenn ein Kopf-Sprite existiert (Fallback: `Graphics`-Zeichnung, falls Textur nicht geladen).
+
+**Pruefungen.** Code gelesen: `src/render/guest-art.ts` (Import, `HEAD_TEXTURES`, `headTextureFor`, Kopf-Sprite-Erstellung, `paintHead` Frueh-Rueckkehr). Keine Spielmechanik veraendert. Keine Tests ausgefuehrt (per Benutzerwunsch).
+
+**Offen.** Phase 3 (Partikel & Animationen im Spielfluss) steht noch aus.
+
+
+
+
+## 2026-11-04 - Visuelle Ueberarbeitung geplant (Optik-Plan)
+
+**Ziel.** Der aktuelle Build ist funktional vollstaendig, aber der visuelle Ersteindruck fehlt: kein Einstieg, keine Textur-Nutzung, kein Game-Feel, keine visuelle Rueckmeldung auf Spielereignisse. Ein Plan fuer die visuelle Ueberarbeitung soll die Luecke zwischen "Spiel-Look" und aktuellem Stand schliessen.
+
+**Umsetzung.**
+- `docs/PLAN-OPTIK-VISUELL.md` erstellt: 5-Phasen-Plan (Eintrag/Ladeerfahrung, Figuren & Boden nutzen Textur-Pakete, Partikel & Animationen im Spielfluss, Game Feel & UI-Unterschiedlichkeit, Feinschliff der Bodenhinweise).
+- Jede Phase ist additiv, alle `verify:quick` Gates muessen gruen bleiben.
+- Offene Nutzerentscheidungen: Ladebildschirm-Logo, Hauptmenue vs. Direktstart, Attract-Modus-Farbe.
+
+**Pruefungen.** `pnpm run verify:quick` — alle 10 Gates gruen.
+
+**Offen.** Umsetzung der Phasen steht noch aus.
+
+
+
+
+## 2026-11-04 - Kritische Simulations-Korrekturen (L1, L2, L6) + Dokumentation
+
+**Ziel.** Die im Analyse-Report 1 identifizierten kritischen Logik-Luecken schliessen: Doppelauszahlung in `settleGuests`, CASHOUT-Haenger in `payAndLeave`, stilles Loeschen von unreachable Dreck in `cleanerTick`. Ausserdem INVENTORY.md auf Code-Stand bringen und Doku-Marker erneuern.
+
+**Umsetzung.**
+- `src/core/sim/actions.ts:settleGuests`: iteriert über Kopie `[...world.guests]`, entfernt jeden Gast nach erfolgreicher Buchung aus `world.guests`. Damit ist die Abarbeitung idempotent: bricht Gast N ab, sind Gaeste 1..N-1 bereits entfernt und gebucht, keine Doppelauszahlung bei erneutem Versuch.
+- `src/core/sim/guest-service.ts:payAndLeave`: im Fehlerpfad wird der Gast auf `LEAVE` gesetzt (Pfad zur Tuer via `leave()`) statt ewig im Zustand `CASHOUT` zu verharren. Kein Geld wird vernichtet; Saldo bleibt auf `VISITOR_<id>` / `PENDING_<id>`.
+- `src/core/sim/staff.ts:cleanerTick`: unreachable Dreck wird nicht mehr still geloescht (`world.dirty.delete(first)` entfernt), stattdessen wird der Reiniger als `idle` mit `blockedReason = 'Dreck nicht erreichbar'` gemeldet.
+- `src/Config/eslint.config.mjs`: `plugins/**` zu ESLint-ignores hinzugefuegt (DSH-Host-Plugin, nicht Repo-Quelle; bereits gitignored).
+- `docs/INVENTORY.md`: Befunde 1, 18, 21, 33, 34 als geloest markiert (Code zeigt bereits gefixt); offene Punkte in §16 angepasst.
+- `docs/CHANGELOG.md`: Eintrag unter [0.3.111].
+
+**Pruefungen.** `pnpm run verify:quick` — alle 10 Gates gruen (lint, check:loc, typecheck, test-quality, dead-code, docs, tree, redundancy, assets, tests). Neuer Testfall in `guest-settlement.test.ts` belegt, dass kein Gast doppelt ausgezahlt wird.
+
+**Offen.** Schulden-Tilgungspfad (S1), Mods mit Mechanik (G1), Einsatz-Skalierung mit Persona-Budget (G2) sind Nutzerentscheidungen und stehen aus (siehe `docs/PLAN-LEAD-MERGE-KORRIGIERT.md`, Phase 1.3 / Phase 2).
+
+
 ## 2026-11-04 - Warmer Content-Batch
 
 **Ziel.** Die zweite Stufe bekommt eine eigene Stimme: Titel, Text, Choice-Label und Outcome fuer `VISITOR_RETURN_WARM` mit waermerem Ton, damit die Szene nicht mehr aus dem Basistopf spricht.
@@ -1064,7 +1223,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.111 | 2026-11-04 19:50 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -6,7 +6,7 @@
  */
 import { describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../economy/ledger';
-import { fromVC } from '../../economy/vacoin';
+import { fromVC, type VaCoinMicro } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { settleGuests } from '../actions';
 import { fiatAccount, guestAccount, HAUSKONTO, pendingAccount } from '../money';
@@ -49,6 +49,37 @@ describe('Abrechnung', () => {
     expect(ledger.getBalance(guestAccount(guest.id))).toBe(0);
     expect(ledger.getBalance(pendingAccount(guest.id))).toBe(0);
     expect(ledger.getBalance(fiatAccount(guest.id))).toBe(0);
+    expect(ledger.verifyLedgerIntegrity()).toBe(true);
+  });
+
+  it('zahlt keinen Gast doppelt aus, wenn eine spaetere Buchung scheitert', () => {
+    const { world, ledger } = setup();
+    const g1 = spawnGuest(world, new Prng(randomSeed()), ledger)!;
+    const g2 = spawnGuest(world, new Prng(randomSeed()), ledger)!;
+    ledger.transfer('EXTERNAL_WORLD', guestAccount(g1.id), fromVC(5), 'chips g1', 0);
+    ledger.transfer('EXTERNAL_WORLD', pendingAccount(g1.id), fromVC(2), 'win g1', 0);
+    ledger.transfer('EXTERNAL_WORLD', guestAccount(g2.id), fromVC(5), 'chips g2', 0);
+    ledger.transfer('EXTERNAL_WORLD', pendingAccount(g2.id), fromVC(2), 'win g2', 0);
+    expect(world.guests).toHaveLength(2);
+
+    const originalTransfer = ledger.transfer.bind(ledger);
+    const transferSpy = vi.spyOn(ledger, 'transfer');
+    let calls = 0;
+    transferSpy.mockImplementation((from: string, to: string, amount: VaCoinMicro, reason: string, tick: number) => {
+      calls += 1;
+      // Gast 1 braucht 5 echte Buchungen (payPending 1x, exchangeFromVc 2x, closeFiat 2x),
+      // dann scheitert Gast 2 an seiner ersten Buchung.
+      if (calls > 5) throw new Error('Kasse klemmt');
+      return originalTransfer(from, to, amount, reason, tick);
+    });
+
+    expect(() => settleGuests(world, ledger)).toThrow();
+    transferSpy.mockRestore();
+
+    expect(world.guests.some((entry) => entry.id === g1.id)).toBe(false);
+    expect(ledger.getBalance(guestAccount(g1.id))).toBe(0);
+    expect(ledger.getBalance(pendingAccount(g1.id))).toBe(0);
+    expect(world.guests.some((entry) => entry.id === g2.id)).toBe(true);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
 });

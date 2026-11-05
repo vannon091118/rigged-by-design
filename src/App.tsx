@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
+import { ParticleOverlay } from './render/particle-overlay';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import { fits, MOVE_KEYS, type Popup } from './ui/app-model';
 import { AssetLibraryPopup } from './ui/asset-library-popup';
@@ -180,6 +181,8 @@ export default function App() {
           }}
           onInteract={handleFloorInteract}
         />
+
+        <ParticleOverlay />
 
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
 
