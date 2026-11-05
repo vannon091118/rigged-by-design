@@ -30,8 +30,11 @@ const EXTRA_EMITTERS: Readonly<Record<string, EmitterDef>> = {
   },
 };
 
-/** Obergrenze: mehr Sprites bringt kein Bild, nur Last. */
-const MAX_PARTICLES = 200;
+/** Obergrenze: mehr Sprites bringt kein Bild, nur Last; der Governor setzt sie. */
+let particleLimit = 200;
+export const setParticleLimit = (limit: number): void => {
+  particleLimit = Math.max(0, Math.floor(limit));
+};
 
 /** Wie viele Emitter gerade sichtbare Partikel halten (Werkstatt-HUD). */
 let activeEmitters = 0;
@@ -94,7 +97,7 @@ export class Emitter {
       .map((path) => textureFor(path))
       .filter((entry): entry is Texture => entry !== null);
     if (!available.length) return;
-    const room = MAX_PARTICLES - this.#particles.length;
+    const room = particleLimit - this.#particles.length;
     const count = Math.max(0, Math.min(options.count ?? def.count, 48, room));
     const size = options.size ?? 14;
     for (let index = 0; index < count; index += 1) {

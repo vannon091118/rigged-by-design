@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:51 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,23 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.120] - 2026-11-05
+
+### Spiel
+- Die Buehne laedt 153 Figuren-, Geraete-, Deko- und Umgebungsframes aus zwei fest gepackten Atlasseiten statt aus 153 Einzeldateien; der Einzeldatei-Fallback bleibt fuer fehlende Seiten.
+- Der Loader verschwindet erst nach dem ersten echten Pixi-Frame. Auf dem 4G-Pruefpfad (9 Mbit/s, 70 ms RTT, kalter Cache) standen 20 Requests und 2,51 s bis zum ersten Frame.
+- Der Performance-Governor schaltet nach zwei Sekunden anhaltender Abweichung zwischen hoch, mittel und niedrig: DPR 1,5/1,25/1,0, 60/60/30 fps, 200/120/60 Partikel und 6/4/0 Lichter.
+- Die mobile Huelle traegt `viewport-fit=cover`, Safe-Area-Variablen und einen Hochformat-Hinweis; die Android-Konfiguration pinnt die MainActivity auf Hochformat.
+- Haptik ohne neue Abhaengigkeit: 8 ms bei Klick, `[12, 40, 18]` beim Jackpot; bei `prefers-reduced-motion` bleibt das Geraet still.
+
+### Technik
+- `src/render/assets/atlas.ts`: `shelfPack` sortiert nach Hoehe, Breite und Pfad; der Produktionspfad registriert die Frames aus `manifest.atlas.pages`, der Laufzeitpfad packt die vier Ordner weiterhin selbst.
+- `scripts/lib/atlas-png.mjs` und `scripts/build-asset-manifest.mjs`: deterministischer 1024er-PNG-Atlas (8-Bit-RGBA, Shelf, Padding 0) mit zwei Seiten und Frame-Koordinaten im Manifest; keine neue Abhaengigkeit.
+- `textures.ts` liest zuerst den Atlas, dann die Einzeldatei. `main.tsx` wartet nur auf die Atlasseiten; Symbole und Plinko folgen nach dem ersten Frame im Leerlauf.
+- `perf-governor.ts` bekommt nur `deltaMS`, haelt die Stufe zwei Sekunden und steuert Renderer-DPR, `ticker.maxFPS`, Partikel- und Lichtbudget ueber `FloorView.setBudget`.
+- `music.ts` laedt und spielt erst nach einer Nutzergeste; der stille Vorlauf konkurriert nicht mehr mit dem ersten Frame.
+- `pnpm run android:apk` erzeugt eine signierte Debug-APK (`artifacts/rigged-by-design-debug.apk`, 21 MB, v2-Signatur, `screenOrientation=1`).
 
 ## [0.3.119] - 2026-11-05
 

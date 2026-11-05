@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import {
-  preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadRuntimeArt, preloadSlotSymbols,
+  preloadAtlas, preloadDecorTextures, preloadMachineTextures, preloadPlinkoTextures, preloadRuntimeArt, preloadSlotSymbols,
 } from './render/assets/textures';
 import './styles/index.css';
 
@@ -15,26 +15,29 @@ const loaderTextEl = document.getElementById('rbd-loader-text');
 const setLoaderText = (text: string): void => { if (loaderTextEl) loaderTextEl.textContent = text; };
 const hideLoader = (): void => { if (loaderEl) loaderEl.style.display = 'none'; };
 
-/**
- * Symbole, Maschinen, Deko, Plinko, Figuren, Karten, Teppich und Partikel vor
- * dem ersten Rendern holen. Die Buhnen zeigen dadurch sofort die echten Bilder
- * statt der gezeichneten Ersatzgrafik; der grosse Rest bleibt Sache der
- * Asset-Bibliothek und ladet lazy.
- */
+/** Der erste Frame braucht nur die gepackten Seiten, nicht 153 Einzeldateien. */
+let warming = false;
+function warmRemainingArt(): void {
+  if (warming) return;
+  warming = true;
+  // Nach dem ersten Frame; die Atlas-Figuren sind bereits da, Symbole und
+  // Plinko folgen im Leerlauf und blockieren den sichtbaren Floor nicht.
+  void Promise.all([
+    preloadSlotSymbols(), preloadPlinkoTextures(), preloadRuntimeArt(),
+    preloadMachineTextures(), preloadDecorTextures(),
+  ]);
+}
+
 async function boot(): Promise<void> {
   setLoaderText('Lade Neon-Kasino…');
-  await Promise.all([
-    preloadSlotSymbols(), preloadMachineTextures(), preloadDecorTextures(), preloadPlinkoTextures(), preloadRuntimeArt(),
-  ]);
+  await preloadAtlas();
   setLoaderText('Baue Floor…');
-  await new Promise((resolve) => setTimeout(resolve, 250)); // kurzer sichtbarer Moment
-  setLoaderText('Bereit.');
+  // hideLoader laeuft erst, wenn die Pixi-Buehne wirklich einen Frame gezeichnet hat.
   createRoot(root!).render(
     <StrictMode>
-      <App />
+      <App onFirstFrame={() => { hideLoader(); warmRemainingArt(); }} />
     </StrictMode>,
   );
-  hideLoader();
 }
 
 void boot();

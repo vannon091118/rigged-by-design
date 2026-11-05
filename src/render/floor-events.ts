@@ -3,6 +3,7 @@ import { on } from '../core/sim/events';
 import { TILE, type Furniture } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ROLE } from './art-tokens';
+import { jackpotHaptic } from './haptics';
 import type { FloorFx } from './fx/floor-fx';
 import { playPinRun, playSfx, type SfxKind } from './sound-fx';
 
@@ -15,12 +16,13 @@ interface Spec {
   readonly pins?: boolean;
   readonly light?: { readonly color: number; readonly radius: number; readonly ms: number };
   readonly shake?: number;
+  readonly haptic?: 'jackpot';
 }
 
 /** Acht Ereignisse, je eine Zeile: kein Ton ohne sichtbares Pendant. */
 const SPECS: Readonly<Record<string, Spec>> = {
   'slot:jackpot': {
-    burst: 'jackpot-burst', count: 30, size: 16, sfx: 'win', shake: 6,
+    burst: 'jackpot-burst', count: 30, size: 16, sfx: 'win', shake: 6, haptic: 'jackpot',
     light: { color: ROLE.value, radius: 96, ms: 620 },
   },
   'money:bigPayout': {
@@ -91,6 +93,7 @@ export class FloorEvents {
     }
     if (spec.light) this.#fx.flash(point.x, point.y, spec.light.color, spec.light.radius, spec.light.ms);
     if (spec.shake) this.#fx.shake(spec.shake);
+    if (spec.haptic) jackpotHaptic();
     if (spec.pins) playPinRun(7);
     else if (spec.sfx) playSfx(spec.sfx);
   }

@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:51 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -52,6 +52,8 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - `pnpm run test:perf` — feste Messläufe (not in verify:all). `pnpm run bench:lowend` pins the run to one core; `pnpm run soak` runs 100.000 ticks.
 - UI tests run in jsdom via `@testing-library/react`; the include pattern covers `.test.tsx`.
 - `pnpm run build` — Vite production build.
+- `pnpm run assets:manifest` schreibt neben `manifest.json` auch die zwei deterministischen Atlasseiten unter `public/assets/casino/atlas/`; die Seiten sind eingecheckt, `verify:assets` prueft Frame-Abdeckung und Grenzen. Der Browser-laedt im Produktionspfad nur diese Seiten, nicht die 153 Einzeldateien.
+- `pnpm run android:apk` braucht JDK 21 und Android SDK 36 (Build-Tools 36.0.0); ohne diese Werkzeuge bricht der Lauf bewusst mit `ERR-4014` ab.
 
 ## Delivery
 

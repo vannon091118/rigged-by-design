@@ -11,7 +11,7 @@
  * Signatur heraus; das Signieren ist ein eigener Schritt.
  * Android-SDK und Java 21 kommen aus dem CI-Image; lokal bricht der Lauf rot ab.
  */
-import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
@@ -43,6 +43,7 @@ if (!existsSync(configPath)) {
 }
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 if (config.webDir !== 'dist') abort(`capacitor.config.json: webDir muss dist sein, steht: ${config.webDir}`);
+if (config.android?.orientation !== 'portrait') abort('capacitor.config.json: android.orientation muss portrait sein');
 if (!existsSync(resolve(ROOT, 'node_modules', '@capacitor', 'cli'))) {
   abort('Capacitor fehlt in node_modules: pnpm install ausfuehren, die Pakete sind gepinnt');
 }
@@ -58,6 +59,25 @@ const rootConfig = resolve(ROOT, 'capacitor.config.json');
 copyFileSync(configPath, rootConfig);
 if (!existsSync(resolve(ROOT, 'android'))) run('pnpm', ['exec', 'cap', 'add', 'android']);
 run('pnpm', ['exec', 'cap', 'sync', 'android']);
+
+// Capacitor kennt keine Orientierung in seiner Config: der Wert wird beim Bau
+// in die generierte MainActivity geschrieben, nicht in den Quellbaum.
+const manifestPath = resolve(ROOT, 'android', 'app', 'src', 'main', 'AndroidManifest.xml');
+if (!existsSync(manifestPath)) abort('AndroidManifest.xml fehlt nach cap sync');
+let androidManifest = readFileSync(manifestPath, 'utf8');
+if (androidManifest.includes('android:screenOrientation=')) {
+  androidManifest = androidManifest.replace(/android:screenOrientation="[^"]*"/, 'android:screenOrientation="portrait"');
+} else {
+  androidManifest = androidManifest.replace(
+    /(<activity\b[^>]*android:name="[^"]*MainActivity"[^>]*?)(\/?>)/,
+    '$1 android:screenOrientation="portrait"$2',
+  );
+}
+if (!androidManifest.includes('android:screenOrientation="portrait"')) {
+  abort('AndroidManifest.xml: MainActivity nicht gefunden, Orientierung nicht gesetzt');
+}
+writeFileSync(manifestPath, androidManifest);
+console.log('[IDX-0001] prepare-android: MainActivity auf Hochformat gepinnt');
 
 const gradle = process.platform === 'win32' ? 'gradlew.bat' : './gradlew';
 run(gradle, [gradleTask, '--no-daemon'], resolve(ROOT, 'android'));

@@ -4,6 +4,7 @@ import { useEffect, useImperativeHandle, useRef, forwardRef } from 'react';
 import type { GameView } from '../store/types';
 import type { MenuAction } from './floor-actions';
 import { FloorView } from './floor-view';
+import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
 export interface FloorHandle {
   fit: () => void;
@@ -19,6 +20,7 @@ interface Props {
   readonly onEmpty: (x: number, y: number) => void;
   readonly onInteract: (actionId: string, targetId?: number) => void;
   readonly onActions: (actions: MenuAction[]) => void;
+  readonly onFirstFrame?: () => void;
   readonly paused?: boolean;
 }
 
@@ -38,6 +40,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
 
   useEffect(() => {
     let cancelled = false;
+    let govern: (() => void) | null = null;
     const element = host.current;
     if (!element) return;
     const instance = new Application();
@@ -46,7 +49,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       resizeTo: element,
       antialias: true,
       background: 0x07040f,
-      resolution: Math.min(2, window.devicePixelRatio || 1),
+      resolution: Math.min(PERF_TIERS.high.dpr, window.devicePixelRatio || 1),
       autoDensity: true,
     }).then(() => {
       if (cancelled || !host.current) return;
@@ -58,8 +61,28 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
         onEmpty: (x, y) => latest.current.onEmpty(x, y),
         onActions: (actions) => latest.current.onActions(actions),
       });
+      const governor = new PerfGovernor();
+      let tier: PerfTier = 'high';
+      const applyTier = (next: PerfTier): void => {
+        const budget = PERF_TIERS[next];
+        instance.ticker.maxFPS = budget.fps;
+        instance.renderer.resize(Math.max(1, element.clientWidth), Math.max(1, element.clientHeight),
+          Math.min(budget.dpr, window.devicePixelRatio || 1));
+        floor.current?.setBudget(budget.particles, budget.lights);
+      };
+      applyTier('high');
+      govern = () => {
+        const next = governor.update(instance.ticker.deltaMS);
+        if (next === tier) return;
+        tier = next;
+        applyTier(next);
+      };
+      instance.ticker.add(govern);
       floor.current.setPlacing(latest.current.placing);
       floor.current.setRunning(!latest.current.paused);
+      // Der Loader wartet auf diesen einen echten Renderer-Frame, nicht auf eine Uhr.
+      instance.renderer.render(instance.stage);
+      latest.current.onFirstFrame?.();
     });
 
     const observer = new ResizeObserver(() => {
@@ -72,6 +95,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     return () => {
       cancelled = true;
       observer.disconnect();
+      if (govern) instance.ticker.remove(govern);
       floor.current?.destroy();
       floor.current = null;
       if (instance.renderer) instance.destroy(true);

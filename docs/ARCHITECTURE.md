@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:51 UTC -->
 
 ## README als Einstieg
 
@@ -219,6 +219,10 @@ weil der Rueckweg nach `main` die Branch sonst mitnimmt. Einzige Identitaetsquel
 Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chunk backt nur neu, wenn sich sein Regions-Hash (`src/render/floor-math.ts`) ändert. Möbel stehen auf einer eigenen Ebene und backen den Boden nicht neu. Dreck wird pro Region invalidiert. Kamera, LOD, Culling und Koordinaten sind reine Mathe und getestet (`src/render/__tests__/floor-cache.test.ts`). Agenten, Kisten, Dispute und Platzierungs-Geist laufen auf der Requisiten-Ebene (`src/render/floor-props.ts`). Partikel und Shake liegen seit 0.3.118 auf der Buehne (`src/render/fx/floor-fx.ts`); der Emitter allokiert im Frame nichts und deckelt bei 200 Sprites.
 
 Seit 0.3.119 liegt die Ereignisantwort in genau einer Tabelle (`src/render/floor-events.ts`): eine Subscription auf `core/sim/events`, acht Zeilen, je Ereignis Burst, Ton, Licht, Shake und ein Anker aus dem Snapshot. `floor-fx.ts` kennt keine Ereignisse mehr, sondern nur noch `burst`, `flash` und `shake`; das Licht kommt aus einem Pool von hoechstens acht Graphics. Die Kasse ist ein eigenes Objekt (`src/render/floor-cash.ts`) an der Requisiten-Ebene: Chip-Stapel, warmes Pulslicht und gedrosseltes Klingeln, gespeist aus `pending` und `tick`, nie aus der Uhr.
+
+Seit 0.3.120 hat der Boden einen Produktionsatlas: `build-asset-manifest.mjs` packt die vier Ordner `characters`, `decor`, `environment` und `machines` mit demselben Shelf-Plan wie `atlas.ts` in zwei deterministische 1024er-Seiten. Der Laufzeitpfad registriert nur noch Seitenausschnitte; fehlt eine Seite, packt `atlas.ts` die Einzeldateien selbst. Damit bleiben die 153 Frames aus dem kritischen Pfad: der Browser misst 20 Requests und 2,51 s bis zum ersten Frame im 4G-Profil (9 Mbit/s, 70 ms RTT, kalter Cache). Der Loader haengt an `onFirstFrame` nach `renderer.render(stage)`, nicht an einem Timer.
+
+Der `PerfGovernor` ist reine Darstellung ohne Spielzustand: er bekommt `deltaMS`, fuehrt zwei Sekunden Abweichung und liefert eine von drei Stufen. `floor-stage.tsx` uebersetzt sie in Renderer-DPR, `ticker.maxFPS`, Partikel- und Lichtlimit. Mobile Sicherheitsabstaende kommen aus `--safe-*` in `tokens.css` und `viewport-fit=cover`; die Haptik bleibt bei reduzierter Bewegung still und braucht keine Capacitor-Abhaengigkeit.
 
 ### Ereignisse auf dem Boden (8 × 4)
 

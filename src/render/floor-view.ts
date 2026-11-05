@@ -113,8 +113,8 @@ export class FloorView {
   }
 
   fit(): void { this.#cam.overview(); }
-
   zoom(factor: number): void { this.#cam.zoomStep(factor); }
+  setBudget(particles: number, lights: number): void { this.#fx.setBudget(particles, lights); }
 
   zoomToArea(x: number, y: number): void {
     const area = areaAt(this.#view.template, x, y);

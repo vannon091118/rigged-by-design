@@ -1,9 +1,8 @@
 /** Partikel, Licht und Shake auf der Pixi-Buehne: Weltkoordinaten, ein Ticker, kein React. */
 import { Container, Graphics } from 'pixi.js';
-import { Emitter, type BurstOptions } from './emitter';
+import { Emitter, setParticleLimit, type BurstOptions } from './emitter';
 
 const SHAKE_MS = 220;
-const MAX_FLASHES = 8;
 
 interface Flash {
   readonly g: Graphics;
@@ -18,6 +17,7 @@ export class FloorFx {
   readonly #pool: Graphics[] = [];
   #shakeUntil = 0;
   #shakeAmp = 0;
+  #lightLimit = 6;
   #last = -1;
 
   constructor() {
@@ -31,7 +31,7 @@ export class FloorFx {
 
   /** Kurzes Licht an einem Weltpunkt; der Start faellt in den naechsten Frame. */
   flash(x: number, y: number, color: number, radius: number, ms: number): void {
-    if (ms <= 0 || this.#flashes.length >= MAX_FLASHES) return;
+    if (ms <= 0 || this.#flashes.length >= this.#lightLimit) return;
     const g = this.#pool.pop() ?? new Graphics();
     g.clear();
     g.circle(0, 0, radius).fill({ color, alpha: 0.16 });
@@ -42,6 +42,18 @@ export class FloorFx {
     g.visible = true;
     this.root.addChild(g);
     this.#flashes.push({ g, ms, start: -1 });
+  }
+
+  /** Budget des Performance-Governors: Partikel und gleichzeitige Lichter. */
+  setBudget(particles: number, lights: number): void {
+    setParticleLimit(particles);
+    this.#lightLimit = Math.max(0, lights);
+    while (this.#flashes.length > this.#lightLimit) {
+      const flash = this.#flashes.pop();
+      if (!flash) break;
+      flash.g.visible = false;
+      this.#pool.push(flash.g);
+    }
   }
 
   shake(strength: number): void {

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:45ab7c08e37a02b186231b3c57ff47013642f2deb1b70f52a7982d6c5aa82758",
+  "contentHash": "sha256:cf109327d6c644ca1b7cf23145678ff147d45b226b5264c1c501be9b667c9948",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1200,6 +1200,28 @@
       "text": "Der Stammgast war der Ungeduldigste im Haus, obwohl auf seiner Karte 138 stand. Rita drehte die Karte um und fand die Zahl auf der Rückseite, wo niemand liest. Am Samtvorhang stand geschrieben, dass bessere Gäste kämen; es kamen dieselben, nur langsamer. Und die vierte Walze war ein Schild an einem Automaten, der weiterhin drei hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-geduld-und-versprechen.json"
+    },
+    {
+      "contributionId": "phase4-huelle-atlas-01",
+      "turnId": "2026-11-05T05:45Z-huelle-atlas-budgets-apk",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Floor zieht seine 153 Figuren-, Geraete-, Deko- und Umgebungsframes jetzt aus zwei gepackten Atlasseiten. Der Loader wartet auf den ersten echten Renderer-Frame, nicht auf eine Uhr; auf dem Pruefpfad mit 9 Mbit/s blieben 20 Requests und 2,51 Sekunden. Die Huelle traegt Hochformat und Safe Areas, die Haptik bleibt bei reduzierter Bewegung still.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-05-huelle-atlas.json"
     },
     {
       "contributionId": "phase5-rival-integration-01",

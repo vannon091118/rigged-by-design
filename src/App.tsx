@@ -4,6 +4,7 @@ import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import type { MenuAction } from './render/floor-actions';
 import { handleFloorInteract } from './render/floor-interact';
+import { tapHaptic } from './render/haptics';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { armMusic, setMusicState } from './render/music';
 import { ActionCard } from './ui/action-card';
@@ -17,7 +18,11 @@ import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
 import { useStageKeys } from './ui/use-stage-keys';
 
-export default function App() {
+interface AppProps {
+  readonly onFirstFrame?: () => void;
+}
+
+export default function App({ onFirstFrame }: AppProps = {}) {
   const view = useWorldStore();
   const [popup, setPopup] = useState<Popup>(null);
   const [buildOpen, setBuildOpen] = useState(false);
@@ -67,6 +72,13 @@ export default function App() {
 
   // Der Browser laesst Ton erst nach einer Geste zu; bis dahin bleibt es still.
   useEffect(() => armMusic(), []);
+
+  // Kurze Haptik bei jedem Tipp; reduced motion schaltet sie in haptics.ts ab.
+  useEffect(() => {
+    const onPointerDown = (): void => tapHaptic();
+    window.addEventListener('pointerdown', onPointerDown, { capture: true, passive: true });
+    return () => window.removeEventListener('pointerdown', onPointerDown, true);
+  }, []);
 
   useStageKeys({
     enabled: popup === null && !buildOpen,
@@ -128,6 +140,7 @@ export default function App() {
           }}
           onInteract={handleFloorInteract}
           onActions={setActions}
+          onFirstFrame={onFirstFrame}
         />
 
         <ActionCard
@@ -206,6 +219,8 @@ export default function App() {
         onOpen={openPopup}
         onStaff={() => { setPopup(null); setBuildOpen(true); }}
       />
+
+      <div className="rotate-hint" role="note">Bitte das Gerät ins Hochformat drehen.</div>
     </div>
   );
 }

@@ -20,6 +20,7 @@ const moduleSep = '[\\/]';
 /** Paketpfad mit posix- oder Windows-Trenner; als String, damit ESLint keine Regex-Escapes prueft. */
 const vendorPath = (names: string): RegExp => new RegExp(`node_modules${moduleSep}(?:${names})${moduleSep}`);
 const VENDOR_REACT = vendorPath('react|react-dom|scheduler');
+const PREVIEW_HOST = process.env.RBD_PREVIEW_HOST;
 
 export default defineConfig({
   plugins: [react()],
@@ -28,6 +29,11 @@ export default defineConfig({
     // `vite preview` erbt diesen Wert, weil kein eigener preview.host gesetzt ist.
     host: process.env.RBD_DEV_HOST || 'localhost',
     port: 3000,
+  },
+  preview: {
+    port: 3000,
+    // Exakt der vom Cloud-Preview vergebene Host, nie eine pauschale Domain.
+    allowedHosts: PREVIEW_HOST ? [PREVIEW_HOST] : undefined,
   },
   build: {
     // Rolldown-Aequivalent zu manualChunks. React bekommt einen eigenen,

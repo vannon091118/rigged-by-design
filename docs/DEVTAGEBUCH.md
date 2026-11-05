@@ -13,6 +13,27 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Huelle: Atlas, Budgets, APK
+
+**Ziel.** Die Optik auf einem schwachen Androiden tragen, ohne sie zurueckzudrehen: die 153 Pixel-Frames in wenige Requests packen, die Last in drei Stufen regeln, den Loader an den ersten echten Renderer-Frame binden und eine installierbare APK bauen. Der 4G-Pruefpfad soll unter drei Sekunden und bei hoechstens 20 Requests liegen.
+
+**Umsetzung.**
+- `src/render/assets/atlas.ts`: `shelfPack` sortiert Hoehe, Breite und Pfad; der Produktionspfad laedt die zwei Seiten aus `manifest.atlas.pages` und registriert die Frames als Ausschnitte. Fehlt eine Seite, packt der Laufzeitpfad die vier Ordner weiterhin selbst; `textures.ts` faellt danach auf die Einzeldatei zurueck.
+- `scripts/lib/atlas-png.mjs`: eigener PNG-Codec (8-Bit-RGBA, Unfilter, CRC, zlib) ohne neue Abhaengigkeit. `scripts/build-asset-manifest.mjs` schreibt zwei deterministische 1024er-Seiten (Padding 0, 46 + 107 Frames) und die Koordinaten ins Manifest; `verify-assets.mjs` prueft Seiten, Grenzen, Abdeckung und Sortierung.
+- `src/render/perf-governor.ts`: reine Hysterese aus `deltaMS`, Wechsel erst nach 2.000 ms. `floor-stage.tsx` setzt daraus DPR, `ticker.maxFPS`, Partikel- und Lichtbudget; der erste Frame wird explizit gerendert, bevor `onFirstFrame` den Loader ausblendet.
+- `src/main.tsx`: wartet nur auf die Atlasseiten. Symbole, Plinko und Partikel folgen nach dem ersten Frame im Leerlauf. `music.ts` laedt erst nach einer Geste; der stille Vorlauf erzeugte sonst drei Audio-Requests und 650 KB konkurrierend mit dem ersten Frame.
+- Mobile Huelle: `index.html` mit `viewport-fit=cover`, `tokens.css` mit `--safe-*`, `app.css` mit Safe-Area-Padding und Hochformat-Hinweis, `capacitor.config.json` mit `android.orientation: portrait`; `prepare-android.mjs` pinnt zusaetzlich `screenOrientation=portrait` im generierten Manifest.
+- `src/render/haptics.ts`: `navigator.vibrate(8)` beim Zeigerdruck, `[12, 40, 18]` beim Jackpot, aus bei `prefers-reduced-motion`. Keine neue Abhaengigkeit.
+
+**Pruefungen.** `pnpm run assets:manifest`, `pnpm run verify:assets` (555 Referenzen, 15,6 MB), `pnpm run typecheck`, `pnpm run build` und `pnpm run check:loc` gruen. Browser-Messung gegen den Cloud-Preview mit kaltem Cache, 9 Mbit/s und 70 ms RTT: 20 Netzwerk-Requests, 2,51 s bis zum ersten Frame, 1,54 MB Transfer, keine Konsolen- oder Netzwerkfehler; Screenshot `artifacts/phase4-floor.png`.
+`pnpm run android:apk` baute mit JDK 21, SDK 36 und Build-Tools 36 erfolgreich `artifacts/rigged-by-design-debug.apk` (21 MB). `apksigner verify` bestaetigt die v2-Debug-Signatur; `aapt2 dump badging` nennt `de.riggedbydesign.casino`, `targetSdkVersion 36`; `aapt2 dump xmltree` bestaetigt `screenOrientation=1` (portrait).
+
+**Offen.**
+- Der gemessene 4G-Pfad ist 9 Mbit/s. Slow 4G mit 1,6 Mbit/s wurde nicht separat gemessen und wuerde wegen des 1,5-MB-Bundles nicht unter drei Sekunden bleiben; die Zielzahl gilt fuer das dokumentierte Profil.
+- Kein echtes 200-Euro-Geraet und kein `adb`: die APK ist signiert und manifestgeprueft, aber nicht auf Hardware installiert. Der Governor und die Haptik sind auf dem Geraet ungeprueft.
+- Die zwei HUD-Icons (`ui/coin.png`, `ui/guest-cyan.png`) sind noch eigene Requests; sie bleiben innerhalb der 20, sind aber der naechste offensichtliche Inline-Kandidat.
+- Offene `gate-failure`-Issues aus frueheren PRs bleiben ausserhalb dieses Slice.
+
 ## 2026-11-05 - Geld fühlt sich an
 
 **Ziel.** Geld und Streit sollen auf dem Boden ankommen: ein Jackpot muss platzen, eine Auszahlung an der Kasse klingeln, ein Streit rauchen, und die Laune braucht ein Gesicht statt einer Zahl. Kein Ton ohne sichtbares Pendant.
@@ -1319,7 +1340,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.120 | 2026-11-05 05:51 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
