@@ -60,6 +60,19 @@
   --game-cyan: #54e0ff;
   --game-cyan-soft: rgba(84, 224, 255, 0.14);
 
+  /* Abstand: eine Skala, kein Zahlenraten in Komponenten */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  /* Fenster: eine Breite je Zweck */
+  --popup-width: 700px;
+  --popup-wide-width: 980px;
+  --popup-full-width: 1320px;
+  --popup-radius: 18px;
+
   --radius: 14px;
   --radius-sm: 9px;
   --radius-pill: 999px;

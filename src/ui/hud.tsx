@@ -47,7 +47,7 @@ export function Hud({ view, onSkill }: HudProps) {
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>
-          <small>TAG {view.day} · DEIN CASINO</small>
+          <small>DEIN FLOOR · TAG {view.day}</small>
         </div>
       </div>
 

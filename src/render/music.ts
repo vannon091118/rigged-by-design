@@ -170,6 +170,7 @@ export function armMusic(): () => void {
   const unlock = (): void => {
     unlocked = true;
     detach();
+    // Erst jetzt darf geladen und gespielt werden; der aktuelle Zustand wird nachgeholt.
     if (current !== 'SILENT') fadeTo(current);
   };
   const detach = (): void => {

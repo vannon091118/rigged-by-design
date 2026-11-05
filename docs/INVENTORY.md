@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.120 | 2026-11-05 05:51 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -274,10 +274,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1263 |
-| Gelistete Dateien | 1263 |
-| Getrackte Ordner | 84 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (66), docs (71), public (554), scripts (61), src (490) |
+| Getrackte Dateien | 1274 |
+| Gelistete Dateien | 1274 |
+| Getrackte Ordner | 85 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (66), docs (82), public (554), scripts (61), src (490) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -297,6 +297,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
+- `docs/screenshots/v0.3.114/` — 11 Datei(en)
 - `docs/screenshots/v0.3.78/` — 5 Datei(en)
 - `public/assets/casino/atlas/` — 2 Datei(en)
 - `public/assets/casino/characters/` — 69 Datei(en)
@@ -387,7 +388,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 131 Zeilen
-- `README.md` — Rigged by Design — gelesen: 332 Zeilen
+- `README.md` — Rigged by Design — gelesen: 338 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 17 Zeilen
@@ -459,11 +460,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 286 Zeilen
-- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 60 Zeilen
+- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 572 Zeilen
-- `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 202 Zeilen
+- `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1358 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
@@ -520,6 +521,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
+- `docs/screenshots/v0.3.114/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1264x569, 142621 B
+- `docs/screenshots/v0.3.114/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1264x569, 169522 B
+- `docs/screenshots/v0.3.114/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 151350 B
+- `docs/screenshots/v0.3.114/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 146616 B
+- `docs/screenshots/v0.3.114/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1264x569, 151325 B
+- `docs/screenshots/v0.3.114/06-smartphone.png` — PNG-Textur — geprueft: PNG 1264x569, 152408 B
+- `docs/screenshots/v0.3.114/07-dialog.png` — PNG-Textur — geprueft: PNG 1264x569, 112442 B
+- `docs/screenshots/v0.3.114/08-sound.png` — PNG-Textur — geprueft: PNG 1264x569, 118344 B
+- `docs/screenshots/v0.3.114/09-charakter.png` — PNG-Textur — geprueft: PNG 1264x569, 125982 B
+- `docs/screenshots/v0.3.114/10-asset-bibliothek.png` — PNG-Textur — geprueft: PNG 1264x569, 288272 B
+- `docs/screenshots/v0.3.114/11-protokoll.png` — PNG-Textur — geprueft: PNG 1264x569, 136394 B
 - `docs/screenshots/v0.3.78/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1280x860, 215768 B
 - `docs/screenshots/v0.3.78/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1280x860, 300499 B
 - `docs/screenshots/v0.3.78/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 280808 B
@@ -1448,7 +1460,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 67 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 75 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 134 Zeilen
-- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 43 Zeilen
+- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 62 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
 - `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 82 Zeilen
 - `src/render/__tests__/floor-camera.test.ts` — Kamera: Uebersicht, Schwenk, Tasten-Zoom und Nachziehen am Bildrand sind reine Mathe. — gelesen: 100 Zeilen
@@ -1512,7 +1524,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/guest-art.ts` — Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. — gelesen: 346 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
-- `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 185 Zeilen
+- `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 186 Zeilen
 - `src/render/perf-governor.ts` — Drei Leistungsstufen mit Hysterese. Der Governor bekommt nur deltaMS; er — gelesen: 58 Zeilen
 - `src/render/pixel-head.ts` — Figuren aus dem Paket: ein Kopf-Sprite, das die gezeichnete Figur ersetzt, wenn es geladen ist. — gelesen: 29 Zeilen
 - `src/render/player-marker.ts` — Zustandsmarker ueber dem Spieler: Verletzung und Handgemenge auf dem Floor. — gelesen: 26 Zeilen
@@ -1522,7 +1534,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/room-art.ts` — Architektur: jede Zone bekommt Waende mit Lichtkante, Sockel, Ecken und — gelesen: 206 Zeilen
 - `src/render/room-dressing.ts` — Raumausstattung ueber dem Bodenbelag: das, was einen Raum wiedererkennbar macht, — gelesen: 109 Zeilen
 - `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 177 Zeilen
-- `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 207 Zeilen
+- `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 216 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
@@ -1563,8 +1575,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 189 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 479 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 597 Zeilen
-- `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 69 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 598 Zeilen
+- `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
 - `src/ui/__tests__/card-tables.test.tsx` — Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden, — gelesen: 134 Zeilen

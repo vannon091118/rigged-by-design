@@ -12,18 +12,18 @@
   contain: paint;
 }
 .popup {
-  width: min(700px, 100%);
+  width: min(var(--popup-width), 100%);
   max-height: min(94vh, 960px);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   border: 1px solid var(--line-strong);
-  border-radius: 18px;
+  border-radius: var(--popup-radius);
   background: linear-gradient(180deg, var(--panel-2), #0c0716);
   box-shadow: var(--elev-3), var(--inset-line);
   overflow: hidden;
   animation: popup-in 150ms ease;
 }
-.popup-wide { width: min(980px, 100%); }
+.popup-wide { width: min(var(--popup-wide-width), 100%); }
 
 /* Spiel-Identitaeten: eine Variable je Familie, kein Layout-Umbau. */
 .popup[data-game="SLOT"], .table-stage[data-game="SLOT"] { --game-accent: var(--game-hot); --game-wash: var(--game-hot-soft); }
@@ -42,7 +42,7 @@
   border-color: var(--game-accent);
   background: radial-gradient(circle at 50% 40%, var(--game-wash), transparent 62%), #05030a;
 }
-.popup-full { width: min(1320px, 98vw); max-height: 96vh; height: 96vh; }
+.popup-full { width: min(var(--popup-full-width), 98vw); max-height: 96vh; height: 96vh; }
 .popup-backdrop.is-full { padding: 8px; }
 @keyframes popup-in { from { transform: translateY(8px) scale(0.985); opacity: 0; } to { transform: none; opacity: 1; } }
 
@@ -61,7 +61,8 @@
 .popup-close:hover { border-color: var(--hot); }
 .popup-close .ui-icon { width: 14px; height: 14px; margin: 0; }
 .popup-body { padding: 14px 16px 20px; overflow-y: auto; }
-.popup-body h3 { margin-top: 16px; }
+.popup-body h3 { margin-top: var(--space-4); }
+.popup-body > :first-child { margin-top: 0; }
 .hint { margin: 0 0 9px; font-size: 11px; line-height: var(--lh-body); color: var(--muted); }
 .hint.ok { color: var(--role-success); }
 .hint.bad { color: var(--role-danger); }
