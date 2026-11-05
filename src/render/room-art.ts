@@ -143,7 +143,7 @@ function drawZoneFloor(g: Graphics, zone: ZoneLike, others: readonly ZoneLike[],
   drawSurface(g, mat, rect, tile, {
     top: iy === zone.y, bottom: ey === zone.y + zone.h,
     left: ix === zone.x, right: ex === zone.x + zone.w,
-  });
+  }, g.parent);
   drawDressing(g, mat, rect, zone, tile);
   for (const side of SIDES) {
     const door = doorSpan(zone, side, size);

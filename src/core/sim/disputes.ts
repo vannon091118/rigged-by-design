@@ -8,6 +8,7 @@ import { dirtyTileIndex } from './emotion';
 import { emitFact } from './narrative/facts';
 import { actorRefOfVisitor } from './narrative/relationships';
 import { spawnStain } from './stain';
+import { emit } from './events';
 
 const BRAWL_RANGE = 5;
 /**
@@ -51,14 +52,15 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
     if (!other) continue;
     if (!forced && prng.nextFloat() > 0.5) continue;
     const id = world.nextDisputeId++;
-    world.disputes.push({
+    const dispute = {
       id,
       guestIds: [guest.id, other.id],
       x: Math.round((guest.position.x + other.position.x) / 2),
       y: Math.round((guest.position.y + other.position.y) / 2),
       level: 1,
       ticks: 0,
-    });
+    };
+    world.disputes.push(dispute);
     if (guest.visitorId !== undefined && other.visitorId !== undefined && guest.visitorId !== other.visitorId) {
       const initiator = actorRefOfVisitor(guest.visitorId);
       emitFact(world, {
@@ -69,6 +71,7 @@ export function maybeStartBrawl(world: WorldState, prng: Prng, forced = false): 
     guest.disputeId = id;
     other.disputeId = id;
     world.lastEvent = `${guest.name} und ${other.name} prügeln sich.`;
+    emit('dispute:start', { disputeId: id, guestIds: [guest.id, other.id], x: dispute.x, y: dispute.y });
   }
 }
 
@@ -148,6 +151,7 @@ export function tickDisputes(world: WorldState): void {
         world.dirty.add(dirtyTileIndex(world.size, live.x, live.y));
         world.lastEvent = `Im Streit ging ${live.label} zu Bruch.`;
         spawnStain(world, live.x, live.y, 30);
+        emit('dispute:sabotage', { disputeId: dispute.id, itemId: live.id, itemLabel: live.label, x: live.x, y: live.y });
       }
     }
   }

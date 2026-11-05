@@ -60,12 +60,15 @@ export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): vo
       refs: { guestId: guest.id },
     });
   } catch {
-    guest.state = 'CASHOUT';
+    // Zahlung nicht gedeckt: Gast verlässt den Floor statt ewig in CASHOUT zu hängen.
+    // Kein Geld vernichtet – der Saldo bleibt auf VISITOR_<id> und PENDING_<id>.
+    guest.state = 'LEAVE';
     guest.stateTicks = 0;
     guest.path = [];
     guest.pathIndex = 0;
-    guest.intent = 'Auszahlung nicht gedeckt: wartet an der Kasse.';
-    world.lastEvent = `${guest.name} wartet auf die Auszahlung.`;
+    guest.targetFurniture = 0;
+    guest.intent = 'Auszahlung nicht gedeckt: verlässt den Floor.';
+    world.lastEvent = `${guest.name} kann nicht ausgezahlt werden und verlässt den Floor.`;
     return;
   }
   leave(world, guest);

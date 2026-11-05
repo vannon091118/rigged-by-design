@@ -36,8 +36,9 @@ export class FloorCues {
     this.root.eventMode = 'none';
     this.root.interactiveChildren = false;
     this.root.addChild(this.#path, this.#ring, this.#reticle, this.#ping);
-    this.#ring.ellipse(0, 13, 11.5, 4.9).stroke({ width: 1.6, color: ROLE.service, alpha: 0.4 });
-    this.#ring.ellipse(0, 13, 6.6, 2.7).stroke({ width: 1, color: ROLE.service, alpha: 0.22 });
+    this.#ring.ellipse(0, 13, 13, 5.6).fill({ color: ROLE.service, alpha: 0.12 });
+    this.#ring.ellipse(0, 13, 11.5, 4.9).stroke({ width: 1.6, color: ROLE.service, alpha: 0.5 });
+    this.#ring.ellipse(0, 13, 6.6, 2.7).stroke({ width: 1, color: ROLE.service, alpha: 0.35 });
     canvas.addEventListener('pointermove', this.#move);
     canvas.addEventListener('pointerleave', this.#leave);
   }
@@ -107,13 +108,16 @@ export class FloorCues {
     const color = this.#mode === 'walk' ? ROLE.service : ROLE.identity;
     const x = cell.x * TILE;
     const y = cell.y * TILE;
+    const cx = x + TILE / 2;
+    const cy = y + TILE / 2;
+    // Leuchtende Mitte: ein kleiner, heller Kern in der Kachelmitte.
+    g.circle(cx, cy, 2).fill({ color, alpha: 0.8 });
+    g.circle(cx, cy, 1).fill({ color: 0xffffff, alpha: 0.9 });
     g.moveTo(x, y + ARM).lineTo(x, y).lineTo(x + ARM, y);
     g.moveTo(x + TILE - ARM, y).lineTo(x + TILE, y).lineTo(x + TILE, y + ARM);
     g.moveTo(x + TILE, y + TILE - ARM).lineTo(x + TILE, y + TILE).lineTo(x + TILE - ARM, y + TILE);
     g.moveTo(x + ARM, y + TILE).lineTo(x, y + TILE).lineTo(x, y + TILE - ARM);
     g.stroke({ width: STROKE.base, color, alpha: 0.8 });
-    const cx = x + TILE / 2;
-    const cy = y + TILE / 2;
     if (this.#mode === 'zoom') {
       g.moveTo(cx - 4, cy).lineTo(cx + 4, cy);
       g.moveTo(cx, cy - 4).lineTo(cx, cy + 4);
@@ -140,9 +144,13 @@ export class FloorCues {
     const cx = (this.#pingAt.x + 0.5) * TILE;
     const cy = (this.#pingAt.y + 0.68) * TILE;
     const color = this.#mode === 'zoom' ? ROLE.identity : ROLE.service;
-    g.ellipse(cx, cy, 3 + ease * 15, (3 + ease * 15) * 0.46)
-      .stroke({ width: STROKE.base, color, alpha: (1 - t) * 0.65 });
-    g.circle(cx, cy, 1.8).fill({ color, alpha: (1 - t) * 0.85 });
+    // Drei konzentrische Ringe: ein wachsender, ein leicht verzögerter, ein kleiner Kern.
+    for (const ring of [0, 0.25, 0.5]) {
+      const r = (3 + ease * 20) * (1 - ring * 0.4);
+      const alpha = (1 - t) * (0.5 - ring * 0.15);
+      g.ellipse(cx, cy, r, r * 0.46).stroke({ width: STROKE.base, color, alpha });
+      g.circle(cx, cy, r * 0.25).fill({ color, alpha: (1 - t) * 0.6 });
+    }
   }
 
   #move = (event: PointerEvent): void => {

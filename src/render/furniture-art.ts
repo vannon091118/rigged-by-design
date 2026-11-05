@@ -191,7 +191,7 @@ export function createFurnitureArt(item: Furniture, tile: number): FurnitureArt 
   label.anchor.set(0.5, 0);
   label.position.set(w / 2, h + 2);
   // Textur ueber dem gezeichneten Korpus: sonst deckt die Fuellung den Backdrop zu.
-  const children: Array<Container | Sprite | null> = [body, backdrop, marker, occupied, status, screen, label];
+  const children: Array<Container | Sprite | null> = [body, marker, occupied, status, screen, label, backdrop];
   root.addChild(...children.filter((c): c is Container | Sprite => c !== null));
 
   let lastBucket = -2;

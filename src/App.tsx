@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
+import { ParticleOverlay } from './render/particle-overlay';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import { fits, MOVE_KEYS, type Popup } from './ui/app-model';
 import { AssetLibraryPopup } from './ui/asset-library-popup';
@@ -11,7 +12,7 @@ import { DiagnosticsPopup } from './ui/diagnostics-popup';
 import { Smartphone } from './ui/smartphone';
 import { ForeignFloorMap } from './ui/foreign-floor-map';
 import { ForeignFloorPopup } from './ui/foreign-floor-popup';
-import { GamesPopup } from './ui/games-popup';
+import { GamesPopup } from './ui/games-popup-lazy';
 import { GuestPopup } from './ui/guest-popup';
 import { HelpPopup } from './ui/help-popup';
 import { Hud } from './ui/hud';
@@ -181,6 +182,8 @@ export default function App() {
           onInteract={handleFloorInteract}
         />
 
+        <ParticleOverlay />
+
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
 
         {carryingCrate && (
@@ -313,15 +316,12 @@ export default function App() {
       {popup?.kind === 'look' && (
         <LookPopup view={view} onClose={() => setPopup(null)} onLook={(patch) => worldStore.setLook(patch)} />
       )}
-
       {popup?.kind === 'assets' && (
         <AssetLibraryPopup onClose={() => setPopup(null)} />
       )}
-
       {popup?.kind === 'sound' && (
         <SoundPopup onClose={() => { setPopup(null); setMutedState(isMuted()); }} />
       )}
-
       {popup?.kind === 'help' && (
         <HelpPopup onClose={() => setPopup(null)} />
       )}      {active && (
@@ -340,7 +340,6 @@ export default function App() {
           onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
         />
       )}
-
       {smartphoneOpen && (
         <Smartphone view={view} onClose={() => setSmartphoneOpen(false)} />
       )}

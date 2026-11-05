@@ -1,12 +1,13 @@
 // @loc-exception: Pixel-Rig, Gesicht, Outfit und Sticker teilen dieselbe Figur; getrennt waeren die Zustandswechsel unsichtbar.
 /** Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. */
-import { Container, Graphics, Text } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import type { GuestEmotion } from '../core/sim/emotion';
 import type { PlayerLook } from '../core/sim/player-look';
 import { INK, ROLE, SHADOW, floorText } from './art-tokens';
 import { createComicBubble } from './comic-bubbles';
 import { pixelHead } from './pixel-head';
 import { poseFor, type ActorState } from './rig-pose';
+import { textureFor } from './assets/textures';
 
 const PERSONA_COLORS: Record<string, number> = {
   LUMPEN: 0x8d99ae, STREET: 0x00c9a7, STAMMGAST: 0xb06bff, BUSINESS: 0xd6a84b, HIGH_ROLLER: 0xff2e88,
@@ -41,6 +42,22 @@ const hash = (value: string): number => {
   for (let index = 0; index < value.length; index += 1) result = (result * 31 + value.charCodeAt(index)) | 0;
   return Math.abs(result);
 };
+
+/** Kopf-Texturen aus dem Manifest, einem Gast nach seinem Seed zugeordnet. */
+const HEAD_TEXTURES: readonly string[] = [
+  'characters/head-01-01.png', 'characters/head-01-02.png', 'characters/head-01-03.png',
+  'characters/head-01-04.png', 'characters/head-01-05.png', 'characters/head-01-06.png',
+  'characters/head-01-07.png', 'characters/head-01-08.png', 'characters/head-01-09.png',
+  'characters/head-02-01.png', 'characters/head-02-02.png', 'characters/head-02-03.png',
+  'characters/head-02-04.png', 'characters/head-02-05.png', 'characters/head-02-06.png',
+  'characters/head-02-07.png', 'characters/head-02-08.png', 'characters/head-02-09.png',
+];
+
+/** Kopf-Textur für einen Gast, basierend auf seinem Seed. */
+function headTextureFor(seed: number): string | null {
+  const idx = Math.abs(seed) % HEAD_TEXTURES.length;
+  return HEAD_TEXTURES[idx] ?? null;
+}
 
 export function createGuestArt(
   persona: string, name: string, isPlayer = false, phase = 0, look?: PlayerLook, portrait = false,
@@ -85,6 +102,18 @@ export function createGuestArt(
     face.visible = false;
     hair.visible = false;
   }
+  const headTexKey = headTextureFor(seed);
+  const headTex = headTexKey ? textureFor(headTexKey) : null;
+  const headSprite = headTex ? new Sprite(headTex) : null;
+  if (headSprite) {
+    headSprite.width = 14;
+    headSprite.height = 14;
+    headSprite.position.set(-7, -7);
+    head.addChild(headSprite);
+    skull.visible = false;
+    face.visible = false;
+    hair.visible = false;
+  }
   figure.addChild(shadow, legL, legR, body, armLPivot, armRPivot, head);
   const pin = new Graphics();
   pin.visible = false;
@@ -117,6 +146,7 @@ export function createGuestArt(
   };
 
   const paintHead = (): void => {
+    if (headSprite) return;
     skull.clear();
     skull.rect(-5, -10, 10, 3).fill(skin);
     skull.rect(-7, -7, 14, 10).fill(skin);
@@ -268,7 +298,6 @@ export function createGuestArt(
     bubble.set(kind);
     sticker.visible = detail && kind !== 'NONE';
   };
-
   const setLod = (next: boolean): void => {
     if (next === detail) return;
     detail = next;
@@ -279,15 +308,12 @@ export function createGuestArt(
     if (!next) bubble.container.visible = false;
     else { bubble.set(currentEmotion); bubble.container.visible = currentEmotion !== 'NONE'; }
   };
-
   const setName = (next: string): void => {
     if (next === currentName) return;
     currentName = next;
     nameplate.text = next.length > 16 ? `${next.slice(0, 15)}…` : next;
   };
-
   const setState = (next: ActorState): void => { currentState = next; };
-
   const animate = (nowMs: number): void => {
     const pose = poseFor(currentState, nowMs, phase);
     figure.y = pose.bob;
@@ -300,7 +326,6 @@ export function createGuestArt(
     legR.rotation = pose.legR;
     figure.y -= pose.hop;
   };
-
   paintLegs();
   paintArm(armL);
   paintArm(armR);
@@ -311,7 +336,6 @@ export function createGuestArt(
   setLod(true);
   setEmotion('NONE');
   animate(0);
-
   return {
     root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
     setEmotion, setMood, setPersona, setName, setLod, setState, animate,
