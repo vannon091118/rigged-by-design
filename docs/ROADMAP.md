@@ -36,7 +36,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
 - Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
-- Aufraeumen der alten Worktrees und Branches (`integration`, `pr-watcher-v2` ausgenommen) erst nach Freigabe, mit Bundle-Backup.
+- Branch-Konsolidierung am 2026-11-05 abgeschlossen: `fix/bundle-splitting` und `fix/test-suite-optimization` nach `main` gemergt, die uebrigen offenen Branches waren patch-identisch; alle Branch-Refs lokal und auf GitHub geloescht.
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
