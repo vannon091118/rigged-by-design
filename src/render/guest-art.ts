@@ -4,7 +4,7 @@ import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import type { GuestEmotion } from '../core/sim/emotion';
 import type { PlayerLook } from '../core/sim/player-look';
 import { INK, ROLE, floorText } from './art-tokens';
-import { createComicBubble } from './comic-bubbles';
+import { createComicSticker } from './comic-bubbles';
 import { pixelHead } from './pixel-head';
 import { poseFor, type ActorState } from './rig-pose';
 import { textureFor } from './assets/textures';
@@ -100,10 +100,7 @@ export function createGuestArt(
   nameplate.anchor.set(0.5, 0);
   nameplate.position.set(0, 18);
   root.addChild(pin, figure, nameplate);
-  const sticker = new Container();
-  const bubble = createComicBubble();
-  sticker.addChild(bubble.container);
-  sticker.visible = false;
+  const sticker = createComicSticker();
   let currentPersona = '';
   let currentName = name;
   let currentMood = -1;
@@ -119,6 +116,7 @@ export function createGuestArt(
   let bumpStart = -1000;
   let tapQueued = false;
   let tapStart = -1000;
+  let moodLow = false;
 
   const paintPin = (color: number): void => {
     pin.clear();
@@ -266,31 +264,29 @@ export function createGuestArt(
     if (currentMood >= 0) setMood(currentMood, currentAngry, currentAddiction);
   };
 
+  /** Laune unter 40 bekommt eine Sprechblase statt einer Zahl. */
+  const applySticker = (): void => sticker.set(currentEmotion, moodLow, detail);
+
   const setMood = (mood: number, angry: boolean, addiction: number): void => {
     const kind: FaceKind = angry || mood < 25 ? 'angry' : addiction >= 60 && mood >= 40 ? 'greedy'
       : mood > 70 ? 'happy' : mood < 45 ? 'meh' : 'neutral';
     currentMood = mood;
     currentAngry = angry;
-    currentAddiction = addiction;
+    currentAddiction = addiction; moodLow = mood < 40;
+    applySticker();
     if (kind === currentFace) return;
     currentFace = kind;
     paintFace(kind);
   };
 
-  const setEmotion = (kind: GuestEmotion): void => {
-    currentEmotion = kind;
-    bubble.set(kind);
-    sticker.visible = detail && kind !== 'NONE';
-  };
+  const setEmotion = (kind: GuestEmotion): void => { currentEmotion = kind; applySticker(); };
   const setLod = (next: boolean): void => {
     if (next === detail) return;
     detail = next;
     figure.visible = next;
     pin.visible = !next;
     nameplate.visible = next && nameVisible;
-    sticker.visible = next && currentEmotion !== 'NONE';
-    if (!next) bubble.container.visible = false;
-    else { bubble.set(currentEmotion); bubble.container.visible = currentEmotion !== 'NONE'; }
+    applySticker();
   };
   const setName = (next: string): void => {
     if (next === currentName) return;
@@ -339,7 +335,7 @@ export function createGuestArt(
   setEmotion('NONE');
   animate(0);
   return {
-    root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
+    root, sticker: sticker.container, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
     setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, bump, tapRing, animate,
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;

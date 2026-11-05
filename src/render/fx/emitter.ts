@@ -16,11 +16,28 @@ interface EmitterDef {
 }
 
 const EMITTERS = manifest.emitters as unknown as Readonly<Record<string, EmitterDef>>;
+const ANIMATIONS = manifest.animations as unknown as Readonly<Record<string, { readonly frames: readonly string[] }>>;
+
+/** Animationen ohne Emitter-Definition, aber mit fertigen Frames (Rauch am Streit). */
+const EXTRA_EMITTERS: Readonly<Record<string, EmitterDef>> = {
+  'smoke-puff': {
+    textures: ANIMATIONS['smoke-puff']?.frames,
+    count: 16,
+    lifetimeMs: [520, 900],
+    speed: [0.08, 0.28],
+    speedY: [-0.35, -0.08],
+    scale: [0.9, 1.6],
+  },
+};
 
 /** Obergrenze: mehr Sprites bringt kein Bild, nur Last. */
 const MAX_PARTICLES = 200;
 
-interface BurstOptions {
+/** Wie viele Emitter gerade sichtbare Partikel halten (Werkstatt-HUD). */
+let activeEmitters = 0;
+export const activeEmitterCount = (): number => activeEmitters;
+
+export interface BurstOptions {
   readonly count?: number;
   readonly size?: number;
   readonly alpha?: number;
@@ -48,6 +65,7 @@ export class Emitter {
   readonly container = new Container();
   readonly #pool: Sprite[] = [];
   #particles: Particle[] = [];
+  #active = false;
 
   /** Ein Sprite aus dem Pool; im Frame wird nie etwas zerstört. */
   #acquire(texture: Texture): Sprite {
@@ -69,7 +87,7 @@ export class Emitter {
   }
 
   burst(name: string, x: number, y: number, options: BurstOptions = {}): void {
-    const def = EMITTERS[name];
+    const def = EMITTERS[name] ?? EXTRA_EMITTERS[name];
     if (!def) return;
     // Einmal je Burst aufloesen, nicht je Partikel.
     const available = (def.textures ?? [])
@@ -106,11 +124,18 @@ export class Emitter {
         spin: (presentation.nextFloat() - 0.5) * 0.025,
       });
     }
+    if (count > 0 && !this.#active) {
+      this.#active = true;
+      activeEmitters += 1;
+    }
   }
 
   /** Bewege alle Partikel; tote Sprites wandern zurueck in den Pool. */
   update(deltaMS: number): void {
-    if (!this.#particles.length) return;
+    if (!this.#particles.length) {
+      if (this.#active) { this.#active = false; activeEmitters -= 1; }
+      return;
+    }
     const keep: Particle[] = [];
     for (const particle of this.#particles) {
       particle.age += deltaMS;
@@ -126,11 +151,13 @@ export class Emitter {
       keep.push(particle);
     }
     this.#particles = keep;
+    if (!keep.length && this.#active) { this.#active = false; activeEmitters -= 1; }
   }
 
   clear(): void {
     for (const particle of this.#particles) this.#release(particle.sprite);
     this.#particles = [];
+    if (this.#active) { this.#active = false; activeEmitters -= 1; }
   }
 
   destroy(): void {

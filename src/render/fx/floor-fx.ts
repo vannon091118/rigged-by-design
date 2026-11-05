@@ -1,55 +1,47 @@
-/** Partikel und Shake auf der Pixi-Buehne: Weltkoordinaten, ein Ticker, kein React. */
-import { Container } from 'pixi.js';
-import { on } from '../../core/sim/events';
-import { TILE } from '../../core/sim/types';
-import { ROLE } from '../art-tokens';
-import { playPinRun, playSfx } from '../sound-fx';
-import { Emitter } from './emitter';
+/** Partikel, Licht und Shake auf der Pixi-Buehne: Weltkoordinaten, ein Ticker, kein React. */
+import { Container, Graphics } from 'pixi.js';
+import { Emitter, type BurstOptions } from './emitter';
 
 const SHAKE_MS = 220;
+const MAX_FLASHES = 8;
+
+interface Flash {
+  readonly g: Graphics;
+  readonly ms: number;
+  start: number;
+}
 
 export class FloorFx {
   readonly root = new Container();
   readonly #emitter = new Emitter();
-  readonly #locate: () => { x: number; y: number };
-  readonly #unsubscribe: (() => void)[] = [];
+  readonly #flashes: Flash[] = [];
+  readonly #pool: Graphics[] = [];
   #shakeUntil = 0;
   #shakeAmp = 0;
   #last = -1;
 
-  constructor(locate: () => { x: number; y: number }) {
-    this.#locate = locate;
+  constructor() {
     this.root.eventMode = 'none';
     this.root.addChild(this.#emitter.container);
   }
 
-  /** Meldet sich an die Spielereignisse; die Szene liefert nur die Position. */
-  start(): void {
-    this.#unsubscribe.push(
-      on('slot:jackpot', () => {
-        playSfx('win');
-        const p = this.#locate();
-        this.#emitter.burst('jackpot-burst', p.x, p.y, { count: 28, size: 16 });
-        this.shake(8);
-      }),
-      on('slot:chargeDischarge', () => {
-        playSfx('coin');
-        const p = this.#locate();
-        this.#emitter.burst('machine-sparks', p.x, p.y, { count: 14, size: 10 });
-        this.shake(4);
-      }),
-      on('plinko:drop', ({ pockets }: { pockets: number[] }) => {
-        playPinRun(pockets.length);
-        const p = this.#locate();
-        this.#emitter.burst('coin-burst', p.x, p.y, { count: 18, size: 12 });
-        this.shake(5);
-      }),
-      on('dispute:start', ({ x, y }: { x: number; y: number }) => {
-        playSfx('brawl');
-        this.#emitter.burst('coin-burst', (x + 0.5) * TILE, (y + 0.6) * TILE, { count: 20, size: 10, tint: ROLE.danger });
-        this.shake(10);
-      }),
-    );
+  burst(name: string, x: number, y: number, options: BurstOptions = {}): void {
+    this.#emitter.burst(name, x, y, options);
+  }
+
+  /** Kurzes Licht an einem Weltpunkt; der Start faellt in den naechsten Frame. */
+  flash(x: number, y: number, color: number, radius: number, ms: number): void {
+    if (ms <= 0 || this.#flashes.length >= MAX_FLASHES) return;
+    const g = this.#pool.pop() ?? new Graphics();
+    g.clear();
+    g.circle(0, 0, radius).fill({ color, alpha: 0.16 });
+    g.circle(0, 0, radius * 0.55).fill({ color, alpha: 0.22 });
+    g.circle(0, 0, radius).stroke({ width: 2, color, alpha: 0.45 });
+    g.position.set(x, y);
+    g.alpha = 1;
+    g.visible = true;
+    this.root.addChild(g);
+    this.#flashes.push({ g, ms, start: -1 });
   }
 
   shake(strength: number): void {
@@ -62,6 +54,18 @@ export class FloorFx {
     const delta = this.#last < 0 ? 16 : Math.min(80, now - this.#last);
     this.#last = now;
     this.#emitter.update(delta);
+    for (let index = this.#flashes.length - 1; index >= 0; index -= 1) {
+      const flash = this.#flashes[index]!;
+      if (flash.start < 0) flash.start = now;
+      const t = (now - flash.start) / flash.ms;
+      if (t >= 1) {
+        flash.g.visible = false;
+        this.#pool.push(flash.g);
+        this.#flashes.splice(index, 1);
+        continue;
+      }
+      flash.g.alpha = 1 - t;
+    }
   }
 
   /** Versatz fuer die Kamera; 0, wenn kein Shake laeuft. */
@@ -77,14 +81,24 @@ export class FloorFx {
 
   clear(): void {
     this.#emitter.clear();
+    this.#hideFlashes();
     this.#shakeAmp = 0;
     this.#shakeUntil = 0;
   }
 
   destroy(): void {
-    for (const unsubscribe of this.#unsubscribe) unsubscribe();
-    this.#unsubscribe.length = 0;
     this.#emitter.destroy();
+    this.#hideFlashes();
+    for (const g of this.#pool) g.destroy();
+    this.#pool.length = 0;
     this.root.destroy({ children: false });
+  }
+
+  #hideFlashes(): void {
+    for (const flash of this.#flashes) {
+      flash.g.visible = false;
+      this.#pool.push(flash.g);
+    }
+    this.#flashes.length = 0;
   }
 }

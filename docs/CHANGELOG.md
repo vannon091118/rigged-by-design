@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->
+<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,20 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.119] - 2026-11-05
+
+### Spiel
+- Geld bekommt Gewicht: Jackpot platzt in Gold und schuettelt 6 px, grosse Auszahlungen klingeln an der Kasse, Streit qualmt rot, Ladegeraete pulsieren.
+- Die Kasse ist ein Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch (1–6 Chips je 5 VC), darunter warmes Pulslicht; das Klingeln laeuft hoechstens alle 1,04 s.
+- Laune unter 40 zeigt eine Sprechblase „Hier stimmt was nicht“ statt einer Zahl.
+- Spielfenster tragen ihre Farbe: Slots Neon-Rot, Tische Samt-Violett, Plinko/Wuerfel/Huetchen/Video Poker Cyan.
+
+### Technik
+- `floor-events.ts`: eine Subscription, acht Ereignisse, je Burst/Ton/Licht/Shake und Anker aus `itemId`/`guestId`; `floor-fx.ts` ist nur noch Darstellung mit gepooltem Licht.
+- `floor-cash.ts`: Chips, Puls und tickgedrosseltes Klingeln; haengt an der Requisiten-Ebene und wird aus dem Snapshot gespeist.
+- `fx/emitter.ts`: `smoke-puff` aus den Animationsframes, `activeEmitterCount()` fuer die Werkstatt.
+- `comic-bubbles.ts`: `createComicSticker` kombiniert Icon und Satz; `popup-shell`/`table-stage` tragen `data-game`, `tokens.css` die drei Farbfamilien.
 
 ## [0.3.118] - 2026-11-05
 

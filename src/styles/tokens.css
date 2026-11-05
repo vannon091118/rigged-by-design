@@ -46,6 +46,14 @@
   --lh-tight: 1.15;
   --lh-body: 1.5;
 
+  /* Spiel-Identitaeten: Neon-Rot, Samt-Violett, Cyan. Nur Farbe, kein Layout. */
+  --game-hot: #ff2e88;
+  --game-hot-soft: rgba(255, 46, 136, 0.14);
+  --game-velvet: #b06bff;
+  --game-velvet-soft: rgba(176, 107, 255, 0.14);
+  --game-cyan: #54e0ff;
+  --game-cyan-soft: rgba(84, 224, 255, 0.14);
+
   --radius: 14px;
   --radius-sm: 9px;
   --radius-pill: 999px;

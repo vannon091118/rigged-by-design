@@ -50,7 +50,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
     window.setTimeout(() => { setResult(onTest()); setSpinning(false); }, 480);
   };
   return (
-    <PopupShell eyebrow={isGame ? GAME_LABEL[item.gameId ?? ''] ?? 'SPIEL' : 'DEKORATION'} title={item.label} onClose={onClose} wide full={full}>
+    <PopupShell eyebrow={isGame ? GAME_LABEL[item.gameId ?? ''] ?? 'SPIEL' : 'DEKORATION'} title={item.label} onClose={onClose} wide full={full} game={item.gameId}>
       {isGame ? (
         <>
           <div className="machine-stats">

@@ -13,6 +13,26 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Geld fühlt sich an
+
+**Ziel.** Geld und Streit sollen auf dem Boden ankommen: ein Jackpot muss platzen, eine Auszahlung an der Kasse klingeln, ein Streit rauchen, und die Laune braucht ein Gesicht statt einer Zahl. Kein Ton ohne sichtbares Pendant.
+
+**Umsetzung.**
+- `floor-events.ts`: eine Subscription auf `core/sim/events`, acht Zeilen mit Burst, Ton, Licht, Shake und Anker. Anker kommen aus `itemId` (Moebelmitte), `guestId`/`guestIds[0]` (Gastfuss), sonst aus `x`/`y` oder der Spielfigur.
+- `fx/floor-fx.ts`: nur noch Darstellung mit `burst`, `flash` und `shake`; Licht aus einem Pool von hoechstens acht Graphics, Start im naechsten Frame, kein `performance.now` ausserhalb der erlaubten Pacing-Dateien.
+- `fx/emitter.ts`: `smoke-puff` nutzt die vorhandenen Animationsframes, `activeEmitterCount()` zaehlt Emitter mit sichtbaren Partikeln fuer die Werkstatt.
+- `floor-cash.ts`: Chip-Stapel am EXCHANGE (1–6, je 5 VC), warmes Pulslicht, Klingeln nur bei neuem Tick und geradem Tick; `floor-props` synchronisiert Bestand und Position im Snapshot und pulsiert im Frame.
+- `comic-bubbles.ts`/`guest-art.ts`: `createComicSticker` zeigt bei `mood < 40` die Sprechblase „Hier stimmt was nicht“ statt der Emotionsblase.
+- `popup-shell`/`games-popup`: `data-game` am Rahmen und am Table-Stage; `tokens.css` traegt Neon-Rot, Samt-Violett und Cyan als reine CSS-Variablen, ohne Layout-Umbau.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run check:loc`, `pnpm run verify:quick` (10 Gates) und `pnpm run bench:lowend` gruen. LOC: floor-view 350/350, guest-art 346/350, floor-props 222/260, floor-events 128/260, floor-cash 68/260, emitter 168/260, comic-bubbles 127/260.
+Bench (ein Lauf, Low-End-Profil auf einen Kern gepinnt): hash 0,0827 / boden 7,2550 / dreck 2,2023 / cull 0,0361 ms. Die Werte schwanken wie zuvor; ein A/B gegen 0,3.118 wurde nicht im selben Lauf erhoben.
+
+**Offen.**
+- Kein Browser und kein Geraet in dieser Umgebung: Jackpot-Burst, Gold-Flash, 6-px-Shake, Klingeln, LED-Puls und die drei Spielfarben sind nur durch Code und CSS belegt, nicht gesehen oder gehoert.
+- 60 fps beim Jackpot mit neun Gaesten bleiben ungemessen; `bench:lowend` misst nur Boden, Culling und Snapshots.
+- Das Werkstatt-HUD zeigt `activeEmitterCount()`; dass bei einem echten Jackpot mindestens 1 erscheint, ist nicht interaktiv geprueft. Der Zaehler zaehlt Emitter, nicht Partikel, und faellt nach 0,85–1,5 s auf 0 zurueck.
+
 ## 2026-11-05 - Touch zuerst, Antwort in einem Frame
 
 **Ziel.** Der Daumen soll ohne Hover ein Ziel sehen, ein Tipp soll laufen statt ein Menue zu oeffnen, und die Antwort auf den Tipp soll im naechsten Frame stehen.
@@ -1299,7 +1319,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

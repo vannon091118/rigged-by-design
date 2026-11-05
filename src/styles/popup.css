@@ -24,6 +24,24 @@
   animation: popup-in 150ms ease;
 }
 .popup-wide { width: min(980px, 100%); }
+
+/* Spiel-Identitaeten: eine Variable je Familie, kein Layout-Umbau. */
+.popup[data-game="SLOT"], .table-stage[data-game="SLOT"] { --game-accent: var(--game-hot); --game-wash: var(--game-hot-soft); }
+.popup[data-game="BLACKJACK"], .table-stage[data-game="BLACKJACK"],
+.popup[data-game="POKER"], .table-stage[data-game="POKER"],
+.popup[data-game="ROULETTE"], .table-stage[data-game="ROULETTE"] { --game-accent: var(--game-velvet); --game-wash: var(--game-velvet-soft); }
+.popup[data-game="PLINKO"], .table-stage[data-game="PLINKO"],
+.popup[data-game="DICE"], .table-stage[data-game="DICE"],
+.popup[data-game="SHELL"], .table-stage[data-game="SHELL"],
+.popup[data-game="VIDEO_POKER"], .table-stage[data-game="VIDEO_POKER"] { --game-accent: var(--game-cyan); --game-wash: var(--game-cyan-soft); }
+.popup[data-game] .eyebrow { color: var(--game-accent); }
+.popup[data-game] .popup-head { border-bottom-color: var(--game-accent); }
+.popup[data-game] .popup-close:hover { border-color: var(--game-accent); }
+.popup[data-game] .slot-stage, .popup[data-game] .game-screen,
+.table-stage[data-game] .game-screen {
+  border-color: var(--game-accent);
+  background: radial-gradient(circle at 50% 40%, var(--game-wash), transparent 62%), #05030a;
+}
 .popup-full { width: min(1320px, 98vw); max-height: 96vh; height: 96vh; }
 .popup-backdrop.is-full { padding: 8px; }
 @keyframes popup-in { from { transform: translateY(8px) scale(0.985); opacity: 0; } to { transform: none; opacity: 1; } }

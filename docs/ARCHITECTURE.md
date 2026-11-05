@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.118 | 2026-11-05 04:57 UTC -->
+<!-- rbd-doc: v0.3.119 | 2026-11-05 05:11 UTC -->
 
 ## README als Einstieg
 
@@ -217,6 +217,23 @@ weil der Rueckweg nach `main` die Branch sonst mitnimmt. Einzige Identitaetsquel
 ## Floor-Rendering und Performance
 
 Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chunk backt nur neu, wenn sich sein Regions-Hash (`src/render/floor-math.ts`) ändert. Möbel stehen auf einer eigenen Ebene und backen den Boden nicht neu. Dreck wird pro Region invalidiert. Kamera, LOD, Culling und Koordinaten sind reine Mathe und getestet (`src/render/__tests__/floor-cache.test.ts`). Agenten, Kisten, Dispute und Platzierungs-Geist laufen auf der Requisiten-Ebene (`src/render/floor-props.ts`). Partikel und Shake liegen seit 0.3.118 auf der Buehne (`src/render/fx/floor-fx.ts`); der Emitter allokiert im Frame nichts und deckelt bei 200 Sprites.
+
+Seit 0.3.119 liegt die Ereignisantwort in genau einer Tabelle (`src/render/floor-events.ts`): eine Subscription auf `core/sim/events`, acht Zeilen, je Ereignis Burst, Ton, Licht, Shake und ein Anker aus dem Snapshot. `floor-fx.ts` kennt keine Ereignisse mehr, sondern nur noch `burst`, `flash` und `shake`; das Licht kommt aus einem Pool von hoechstens acht Graphics. Die Kasse ist ein eigenes Objekt (`src/render/floor-cash.ts`) an der Requisiten-Ebene: Chip-Stapel, warmes Pulslicht und gedrosseltes Klingeln, gespeist aus `pending` und `tick`, nie aus der Uhr.
+
+### Ereignisse auf dem Boden (8 × 4)
+
+| Ereignis | Partikel | Sound | Licht | Bewegung |
+| --- | --- | --- | --- | --- |
+| `slot:jackpot` | `jackpot-burst`, 30 | `win` | Gold, 620 ms, 96 px | Shake 6 px |
+| `money:bigPayout` | `coin-burst`, 22, an der Kasse | `coin` | Warm, 450 ms, 74 px | - |
+| `dispute:start` | `smoke-puff`, 16, am Gast | `brawl` | Rot, 700 ms, 86 px | Shake 10 px |
+| `slot:chargeReady` | - | `pinHit` | Service, 520 ms, 42 px | LED-Puls am Geraet |
+| `slot:chargeDischarge` | `machine-sparks`, 14 | `coin` | Warn, 360 ms, 52 px | Shake 4 px |
+| `slot:spin` | - | `reelStop` | Identity, 260 ms, 30 px | - |
+| `plinko:drop` | `plinko-impact`, 16 | `pinHit`-Serie (7 Pins) | Cyan, 380 ms, 48 px | Shake 5 px |
+| `dispute:sabotage` | `machine-sparks`, 16, rot | `brawl` | Rot, 420 ms, 60 px | Shake 6 px |
+
+Kein Ton ohne sichtbares Pendant: wo kein Burst liegt, traegt ein Licht oder ein Shake die Rueckmeldung. Der Anker kommt aus dem Snapshot, nicht aus der Bildmitte: `itemId` wird zur Mitte des Moebels, `guestId`/`guestIds[0]` zum Fuss des Gasts, `plinko:drop` zum Plinko-Brett, `money:bigPayout` zur Kasse; fehlt alles, faellt der Punkt auf die Spielfigur zurueck.
 
 Messung vom 30.10.2026 auf der Cloud-VM, für das Low-End-Profil mit `taskset -c 0` auf einen Kern gepinnt (Emulation, keine echte schwache Hardware): 9 Regions-Hashes 0,0008 ms, Neuzeichnen aller 9 Boden-Chunks 1,1685 ms (nur bei Template-/Teppichwechsel), Dreck in 9 Regionen mit 500 Tiles 0,8068 ms, Culling über 200 Entities 0,0026 ms. Dazu: 200 Rig-Posen 0,0128 ms, Snapshot mit 200 Gästen und 5.000 Buchungen 0,1047 ms, vollständige Ledger-Prüfung über 5.201 Buchungen 0,0042 ms. 1.000 Ticks messen 949,9 ms; der Save bleibt bei 115,2 KiB. Das Heap-Delta ist wegen GC nicht belastbar und wird nur als Rohwert geloggt. Steady-State pro Tick: Hash + Culling, keine Neuzeichnung.
 

@@ -21,6 +21,7 @@ import { actorStateFor } from './rig-pose';
 import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { FloorFx } from './fx/floor-fx';
+import { FloorEvents } from './floor-events';
 
 const STEP_MS = TICK_MS;
 
@@ -40,7 +41,7 @@ export class FloorView {
   readonly #cam = new FloorCamera();
   readonly #touch: FloorTouch;
   readonly #cues: FloorCues;
-  readonly #fx: FloorFx;
+  readonly #fx: FloorFx; readonly #events: FloorEvents;
   readonly #camBase = { x: 0, y: 0 };
   #flashId = -1;
   #view: GameView;
@@ -58,11 +59,9 @@ export class FloorView {
     primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
     this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY), app.renderer);
-    // Partikel und Shake leben in Weltkoordinaten auf der Buehne, nicht in einem DOM-Overlay.
-    this.#fx = new FloorFx(() => {
-      const cell = this.#view.player.position;
-      return { x: (cell.x + 0.5) * TILE, y: (cell.y + 0.6) * TILE };
-    });
+    // Partikel, Licht und Shake leben in Weltkoordinaten auf der Buehne.
+    this.#fx = new FloorFx();
+    this.#events = new FloorEvents(this.#fx, () => this.#view);
     this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers, this.#fx.root);
     this.#camera.eventMode = 'static';
     this.#camera.interactive = true;
@@ -72,7 +71,7 @@ export class FloorView {
       const local = screenPoint(clientX, clientY, this.#app, this.#camera);
       if (local) this.#act(0, local);
     });
-    this.#fx.start();
+    this.#events.start();
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
     this.#props = new FloorProps(
@@ -150,6 +149,7 @@ export class FloorView {
     this.#props.destroy({ props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers });
     this.#touch.destroy();
     this.#cues.destroy();
+    this.#events.stop();
     this.#fx.destroy();
     this.#actors.clear();
     this.#furnitureArt.clear();
@@ -298,6 +298,7 @@ export class FloorView {
       }
       this.#player.root.visible = true;
       this.#player.sticker.visible = false;
+      this.#props.update(this.#view, { x: 0, y: 0, w: this.#view.size * TILE, h: this.#view.size * TILE }, this.#lod);
       return;
     }
     const rect = visibleRect(this.#camera.x, this.#camera.y, this.#camera.scale.x, this.#app.screen.width, this.#app.screen.height);
