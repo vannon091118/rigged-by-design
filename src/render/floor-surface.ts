@@ -2,8 +2,8 @@
  * Bodenauftrag und Licht: Muster, Fugen, Deckenlampen und Kantentiefe je Raum.
  * Architektur (Waende, Tueren, Zonen) bleibt in room-art; hier liegt nur die Flaeche.
  */
-import { Container, Graphics, Sprite } from 'pixi.js';
-import type { FloorMaterial } from './art-tokens';
+import { Container, Graphics, TilingSprite } from 'pixi.js';
+import type { FloorMaterial, LightState } from './art-tokens';
 import { textureFor } from './assets/textures';
 
 interface Rect { x: number; y: number; w: number; h: number }
@@ -87,14 +87,15 @@ function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, ful
 }
 
 /** Deckenlampen an der oberen Wand: ein Rhythmus aus Leuchten, kein flaechiger Glow. */
-function drawCeilingLight(g: Graphics, mat: FloorMaterial, r: Rect): void {
+function drawCeilingLight(g: Graphics, r: Rect, light: LightState): void {
   // Nur an einer echten Zonenkante: sonst zieht eine Chunk-Grenze eine Scheinleuchte mitten in den Saal.
-  g.rect(r.x, r.y, r.w, 2).fill({ color: mat.light, alpha: 0.2 });
-  g.rect(r.x, r.y + 2, r.w, 10).fill({ color: mat.light, alpha: 0.05 });
-  g.rect(r.x, r.y + 12, r.w, 14).fill({ color: mat.light, alpha: 0.028 });
+  const k = light.intensity;
+  g.rect(r.x, r.y, r.w, 2).fill({ color: light.tint, alpha: 0.2 * k });
+  g.rect(r.x, r.y + 2, r.w, 10).fill({ color: light.tint, alpha: 0.05 * k });
+  g.rect(r.x, r.y + 12, r.w, 14).fill({ color: light.tint, alpha: 0.028 * k });
   for (let lx = r.x + 12; lx < r.x + r.w - 18; lx += 64) {
-    g.rect(lx, r.y + 2, 14, 2).fill({ color: mat.light, alpha: 0.62 });
-    g.rect(lx - 8, r.y + 3, 30, 13).fill({ color: mat.light, alpha: 0.06 });
+    g.rect(lx, r.y + 2, 14, 2).fill({ color: light.tint, alpha: 0.62 * k });
+    g.rect(lx - 8, r.y + 3, 30, 13).fill({ color: light.tint, alpha: 0.06 * k });
   }
 }
 
@@ -102,15 +103,15 @@ function drawCeilingLight(g: Graphics, mat: FloorMaterial, r: Rect): void {
  * Lichtpfuetze: das Deckenlicht faellt in drei Stufen in den Saal. Die Stufen lesen
  * als Abstand zur Lampe; eine einzige Flaeche wuerde den Teppich nur aufhellen.
  */
-function drawLightSpill(g: Graphics, mat: FloorMaterial, r: Rect): void {
-  const intensity = mat.lightAlpha / 0.1;
+function drawLightSpill(g: Graphics, mat: FloorMaterial, r: Rect, light: LightState): void {
+  const intensity = (mat.lightAlpha / 0.1) * light.intensity;
   // Viele leise Stufen statt weniger harter Ringe: der Rand der Lichtflaeche verschwindet.
   const steps = 16;
   for (let step = steps; step >= 1; step -= 1) {
     const t = step / steps;
     // Halbachsen bleiben im Raum: Licht auf dem Boden, kein Schein ueber die Wand hinaus.
     g.ellipse(r.x + r.w / 2, r.y + r.h * 0.3, r.w * 0.48 * t, r.h * 0.28 * t)
-      .fill({ color: mat.light, alpha: 0.009 * intensity });
+      .fill({ color: light.tint, alpha: 0.009 * intensity });
   }
 }
 
@@ -145,26 +146,33 @@ function floorTextureFor(mat: FloorMaterial): string | null {
   return FLOOR_TEXTURE[mat.pattern] ?? null;
 }
 
+/** Textur als Kachel: Boden und Tapete wiederholen sich, statt gestreckt zu werden. */
+export function addTiling(
+  parent: Container | null | undefined, key: string,
+  x: number, y: number, w: number, h: number, scale: number, alpha: number,
+): void {
+  if (!parent || w <= 0 || h <= 0) return;
+  const texture = textureFor(key);
+  if (!texture) return;
+  const tiling = new TilingSprite({ texture, width: w, height: h });
+  tiling.position.set(x, y);
+  tiling.tileScale.set(scale);
+  tiling.alpha = alpha;
+  parent.addChild(tiling);
+}
+
 /** Ein Bodenbelag: Material, Muster, Licht und Tiefe in einem Auftrag. */
-export function drawSurface(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges, parent?: Container): void {
+export function drawSurface(
+  g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges,
+  parent?: Container, light: LightState = { tint: mat.light, intensity: 1 },
+): void {
   g.rect(r.x, r.y, r.w, r.h).fill(mat.base);
   drawPattern(g, mat, r, tile, edges.top && edges.bottom && edges.left && edges.right);
-  if (edges.top) drawLightSpill(g, mat, r);
-  if (edges.top) drawCeilingLight(g, mat, r);
+  if (edges.top) drawLightSpill(g, mat, r, light);
+  if (edges.top) drawCeilingLight(g, r, light);
   drawInset(g, r, edges);
 
-  // Boden-Textur als Backdrop, falls im Manifest vorhanden. Wird über den
-  // gezeichneten Korpus gelegt, sodass Muster und Textur sich überlagern.
+  // Boden-Textur als Kachel ueber dem gezeichneten Muster: gleiche Flaeche, ruhigere Wiederholung.
   const texKey = floorTextureFor(mat);
-  if (texKey && parent) {
-    const tex = textureFor(texKey);
-    if (tex) {
-      const sprite = new Sprite(tex);
-      sprite.width = r.w;
-      sprite.height = r.h;
-      sprite.position.set(r.x, r.y);
-      sprite.alpha = 0.9;
-      parent.addChild(sprite);
-    }
-  }
+  if (texKey) addTiling(parent, texKey, r.x, r.y, r.w, r.h, 2, 0.9);
 }

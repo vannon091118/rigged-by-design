@@ -3,19 +3,13 @@
 import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import type { GuestEmotion } from '../core/sim/emotion';
 import type { PlayerLook } from '../core/sim/player-look';
-import { INK, ROLE, SHADOW, floorText } from './art-tokens';
+import { INK, ROLE, floorText } from './art-tokens';
 import { createComicBubble } from './comic-bubbles';
 import { pixelHead } from './pixel-head';
 import { poseFor, type ActorState } from './rig-pose';
 import { textureFor } from './assets/textures';
+import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS, hash, headTextureFor, shadowSprite } from './guest-parts';
 
-const PERSONA_COLORS: Record<string, number> = {
-  LUMPEN: 0x8d99ae, STREET: 0x00c9a7, STAMMGAST: 0xb06bff, BUSINESS: 0xd6a84b, HIGH_ROLLER: 0xff2e88,
-};
-const SKINS = [0xf2d3b3, 0xe0b48c, 0xb97c4b, 0x8a5a36, 0xd8a27a];
-const HAIRS = [0x2a1a14, 0x5a3a22, 0xd9b35c, 0x1a1020, 0x9a5a2a];
-const PANTS = 0x1c1226;
-const SHOES = 0x0c0814;
 type FaceKind = 'angry' | 'greedy' | 'happy' | 'meh' | 'neutral';
 
 const hex = (value: string): number => Number.parseInt(value.replace('#', ''), 16);
@@ -31,32 +25,12 @@ export interface GuestArt {
   readonly setMood: (mood: number, angry: boolean, addiction: number) => void;
   readonly setPersona: (persona: string) => void;
   readonly setName: (name: string) => void;
+  /** Namensschild nur fuer den Gast, der gerade dran ist. */
+  readonly setNameVisible: (visible: boolean) => void;
   readonly setLod: (detail: boolean) => void;
   readonly setState: (state: ActorState) => void;
   readonly setLook: (look: PlayerLook) => void;
   readonly animate: (nowMs: number) => void;
-}
-
-const hash = (value: string): number => {
-  let result = 0;
-  for (let index = 0; index < value.length; index += 1) result = (result * 31 + value.charCodeAt(index)) | 0;
-  return Math.abs(result);
-};
-
-/** Kopf-Texturen aus dem Manifest, einem Gast nach seinem Seed zugeordnet. */
-const HEAD_TEXTURES: readonly string[] = [
-  'characters/head-01-01.png', 'characters/head-01-02.png', 'characters/head-01-03.png',
-  'characters/head-01-04.png', 'characters/head-01-05.png', 'characters/head-01-06.png',
-  'characters/head-01-07.png', 'characters/head-01-08.png', 'characters/head-01-09.png',
-  'characters/head-02-01.png', 'characters/head-02-02.png', 'characters/head-02-03.png',
-  'characters/head-02-04.png', 'characters/head-02-05.png', 'characters/head-02-06.png',
-  'characters/head-02-07.png', 'characters/head-02-08.png', 'characters/head-02-09.png',
-];
-
-/** Kopf-Textur für einen Gast, basierend auf seinem Seed. */
-function headTextureFor(seed: number): string | null {
-  const idx = Math.abs(seed) % HEAD_TEXTURES.length;
-  return HEAD_TEXTURES[idx] ?? null;
 }
 
 export function createGuestArt(
@@ -69,9 +43,7 @@ export function createGuestArt(
   let accessory = look?.accessory ?? 'NONE';
   const root = new Container();
   const figure = new Container();
-  const shadow = new Graphics()
-    .ellipse(0, 15, 11, 4).fill({ color: 0x000000, alpha: SHADOW.soft })
-    .rect(-9, 14, 18, 2.5).fill({ color: 0x000000, alpha: SHADOW.deep });
+  const shadow: Container = shadowSprite();
   const legs = new Graphics();
   const body = new Graphics();
   const armL = new Graphics();
@@ -135,6 +107,7 @@ export function createGuestArt(
   let currentState: ActorState = 'idle';
   let currentLook = look ? `${look.skin}|${look.hair}|${look.outfit}|${look.accessory}` : '';
   let detail = true;
+  let nameVisible = true;
 
   const paintPin = (color: number): void => {
     pin.clear();
@@ -303,7 +276,7 @@ export function createGuestArt(
     detail = next;
     figure.visible = next;
     pin.visible = !next;
-    nameplate.visible = next;
+    nameplate.visible = next && nameVisible;
     sticker.visible = next && currentEmotion !== 'NONE';
     if (!next) bubble.container.visible = false;
     else { bubble.set(currentEmotion); bubble.container.visible = currentEmotion !== 'NONE'; }
@@ -312,6 +285,11 @@ export function createGuestArt(
     if (next === currentName) return;
     currentName = next;
     nameplate.text = next.length > 16 ? `${next.slice(0, 15)}…` : next;
+  };
+  const setNameVisible = (next: boolean): void => {
+    if (next === nameVisible) return;
+    nameVisible = next;
+    nameplate.visible = detail && next;
   };
   const setState = (next: ActorState): void => { currentState = next; };
   const animate = (nowMs: number): void => {
@@ -338,7 +316,7 @@ export function createGuestArt(
   animate(0);
   return {
     root, sticker, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
-    setEmotion, setMood, setPersona, setName, setLod, setState, animate,
+    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, animate,
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;
       if (key === currentLook) return;

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.116 | 2026-11-05 04:33 UTC -->
+<!-- rbd-doc: v0.3.117 | 2026-11-05 04:45 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,17 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.117] - 2026-11-05
+
+### Spiel
+- Jeder Raum ist texturiert: Boden und Waende kacheln, drei Requisiten je Zone (Bar, Kasse, Spielsaal, Lager) stehen fest im Chunk.
+- Tageszeit: Morgen, Abend und Nacht faerben das Licht; die Phase kommt aus dem Tick, nie aus der Uhr.
+
+### Technik
+- `furniture-atlas.ts` backt einen Korpus je Bauart und Groesse in eine RenderTexture; Instanzen zeichnen nur ein Sprite, LOD-0 dieselbe Silhouette mit alpha 0.85.
+- `floor-surface.ts` kachelt Boden und Wandtapete als TilingSprite (tileScale 2) statt als gestrecktes Sprite; `room-art.ts` traegt 2-px-Konturen und 6-px-Schwellen.
+- `guest-parts.ts`: Schatten und Kopftexturen einmal gebacken; nur der naechste Gast traegt ein Namensschild.
 
 ## [0.3.116] - 2026-11-05
 

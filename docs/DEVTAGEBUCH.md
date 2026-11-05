@@ -13,6 +13,29 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Buehne: Atlas, Tapete und Tageszeit
+
+**Ziel.** Kein Farbquadrat mehr: der Korpus jeder Bauart kommt aus einer geteilten Textur, Raeume bekommen Tapete und drei Requisiten, und das Licht hat eine Tageszeit.
+
+**Umsetzung.**
+- `src/render/furniture-atlas.ts`: `atlasTextureFor(renderer, item, tile)` backt Lichtinsel, Schatten und Korpus einmal je Bauart, Variante und Groesse (`${gameId|kind}:${w}x${h}`). Instanzen haengen nur ein Sprite an den Root; LOD-0 zeigt dasselbe Sprite mit alpha 0.85 und ohne Text, Screen und Status.
+- `src/render/floor-surface.ts`: `addTiling` legt Boden und Tapete als TilingSprite mit `tileScale 2` in die Deco-Ebene des Chunks, statt sie zu strecken. `drawSurface` nimmt `LightState` entgegen.
+- `src/render/room-art.ts`: Waende tragen Tapete als Kachel und eine 2-px-Kontur in `STROKE.base`, dunkler als der Inhalt; Durchgaenge bleiben 6-px-Schwellen.
+- `src/render/room-dressing.ts`: je Zone drei Requisiten aus dem Paket, deterministisch aus dem Zonenrechteck (Bar: Regal, Hocker, Neonschild; Kasse: Registrierkasse, Terminal, Wandleuchte; Saal: Saeule, Palme, Neonpilaster; Lager: Regal, Leuchte, Beistelltisch).
+- `src/core/sim/day-phase.ts`: `dayPhaseOf(tick)` schneidet den Tag in drei gleiche Abschnitte. `buildView` liefert `dayPhase`; `scene-cache` nimmt die Phase in den Chunk-Schluessel, ein Wechsel backt 9 Chunks einmal neu.
+- `src/render/art-tokens.ts`: `lightFor(zone, phase)` liefert Tint und Dosis; die drei Lichtrollen bleiben warm, cool und neon.
+- Nur der naechste Gast (kleinste ID) traegt ein Namensschild; der Schatten aller Figuren ist eine gebackene Ellipse aus `guest-parts.ts`.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `node scripts/check-loc.mjs` und `pnpm run verify:quick` gruen (10 Gates, 730 Tests). LOC: furniture-atlas 193/260, floor-surface 178/260, scene-cache 177/260, room-dressing 109/260, room-art 206/260, guest-art 326/350, floor-view 327/350.
+`pnpm run bench:lowend`, Baseline vor dem Umbau (5a080fb): hash 0,033 / boden 5,94 / dreck 1,49 / cull 0,036 ms. Danach drei Laeufe: boden 7,42 / 7,53 / 6,37, dreck 2,57 / 2,25 / 2,12, cull 0,035-0,054. Der Dreck-Pfad wurde nicht angefasst und stieg trotzdem um 45-70 Prozent: die Maschine driftet zwischen den Laeufen. Damit ist weder eine Regression noch Paritaet bewiesen.
+
+**Offen.**
+- Sauberer A/B-Nachweis fehlt; dafuer muesste die Baseline auf derselben Maschine im selben Lauf erhoben werden.
+- Die Texturanzahl im Werkstatt-HUD ist ein Momentwert beim Oeffnen, kein Live-Zaehler.
+- Es gibt nur eine Tapeten- und eine Bodentextur im Manifest; die uebrigen Muster bleiben gezeichnet.
+- Fuer den Lager-Spiegel gibt es kein Asset; dort steht eine Wandleuchte.
+- `floor-view.ts` und `guest-art.ts` liegen weiter in der Legacy-Hot-Zone (ueber 200); der naechste Schritt waere, Kamera/Culling und Rig zu trennen.
+
 ## 2026-11-05 - Popup-Blur raus: Verlauf statt Vollbild-Filter
 
 **Ziel.** Die zwei GPU-Kosten im Popup-Layer entfernen, ohne die Optik zu verschieben: kein `backdrop-filter` ueber dem ganzen Bildschirm, keine animierte Unschaerfe in den Walzen.
@@ -1255,7 +1278,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.116 | 2026-11-05 04:33 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.117 | 2026-11-05 04:45 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

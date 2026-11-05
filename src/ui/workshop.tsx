@@ -1,5 +1,6 @@
 /** Werkstatt: Charakter, Pruefung, Protokoll, Assets, Sound und Geraet hinter einer Tuer. */
 import { useState } from 'react';
+import { atlasTextureCount } from '../render/furniture-atlas';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { WorkshopTool } from './app-model';
@@ -45,7 +46,7 @@ export function WorkshopPopup({ view, tool, onClose, onGuest }: WorkshopProps) {
     <PopupShell eyebrow="DU & WERKSTATT" title="Alles hinter einer Tuer" onClose={onClose} wide>
       <p className="hint">
         Nichts davon gehoert auf den Floor. Charakter, Buchhaltung und Technik liegen hier – eine Tuer,
-        kein eigener Tab.
+        kein eigener Tab. Auf der Buehne liegen aktuell {atlasTextureCount()} gebackene Korpustexturen.
       </p>
       <div className="workshop-grid">
         {TOOLS.map((entry) => (

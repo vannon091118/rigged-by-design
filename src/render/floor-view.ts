@@ -11,6 +11,7 @@ import { FloorCamera } from './floor-camera';
 import { FloorCues } from './floor-cues';
 import { createFurnitureArt, type FurnitureArt } from './furniture-art';
 import { createGuestArt, type GuestArt } from './guest-art';
+import { primeGuestShadow } from './guest-parts';
 import { isVisible, screenToTile, visibleRect } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
@@ -56,6 +57,8 @@ export class FloorView {
     this.#app = app;
     this.#view = view;
     this.#callbacks = callbacks;
+    // Ein Schatten fuer alle Figuren, bevor der erste Gast gebaut wird.
+    primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
     this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY));
     this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers);
@@ -162,7 +165,7 @@ export class FloorView {
       this.#seenFurniture.add(item.id);
       let art = this.#furnitureArt.get(item.id);
       if (!art) {
-        art = createFurnitureArt(item, TILE);
+        art = createFurnitureArt(item, TILE, this.#app.renderer);
         this.#furnitureArt.set(item.id, art);
         this.#scene.furniture.addChild(art.root);
         if (this.#lod === 0) art.setDetail(false);
@@ -180,6 +183,8 @@ export class FloorView {
 
   #syncGuests(view: GameView): void {
     this.#seenGuests.clear();
+    // Nur der naechste Gast traegt ein Namensschild; der Rest bleibt Figur.
+    const focusId = view.guests.reduce<number | null>((min, guest) => (min === null || guest.id < min ? guest.id : min), null);
     for (const guest of view.guests) {
       this.#seenGuests.add(guest.id);
       let art = this.#actors.get(guest.id);
@@ -206,6 +211,7 @@ export class FloorView {
         lastResult: guest.lastResult,
       }));
       art.setLod(this.#lod === 1);
+      art.setNameVisible(guest.id === focusId);
     }
     for (const id of this.#actors.active.keys()) {
       if (!this.#seenGuests.has(id)) this.#actors.release(id);

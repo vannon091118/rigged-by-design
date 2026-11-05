@@ -1,4 +1,4 @@
-/** Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veränderte backen neu. */
+/** Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. */
 import { Container, Graphics, Text } from 'pixi.js';
 import { areasFor, type Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
@@ -26,6 +26,17 @@ export interface SceneCache {
   readonly destroy: () => void;
 }
 
+interface FloorChunk {
+  readonly area: Area;
+  /** Alles, was gebacken wird: Zeichnung plus Texturen. */
+  readonly root: Container;
+  readonly g: Graphics;
+  /** Kacheln und Requisiten; ueber der Zeichnung, aber im selben Cache. */
+  readonly deco: Container;
+  hash: number;
+  baked: boolean;
+}
+
 export function createSceneCache(): SceneCache {
   const room = new Container();
   const carpet = new CarpetOverlay();
@@ -43,7 +54,7 @@ export function createSceneCache(): SceneCache {
     furniture.addChild(label);
   }
 
-  const floorChunks = new Map<string, { area: Area; g: Graphics; hash: number; baked: boolean }>();
+  const floorChunks = new Map<string, FloorChunk>();
   const dirtChunks = new Map<string, { g: Graphics; hash: number }>();
   // Laufwege liegen ueber den Raum-Chunks, aber unter Dreck und Moebeln.
   const routes = new Graphics();
@@ -51,9 +62,12 @@ export function createSceneCache(): SceneCache {
   furniture.addChildAt(routes, 0);
   let routesKey = '';
   let routesBaked = false;
+  let phase = '';
 
   const redrawRoom = (view: GameView): void => {
     const areas = areasFor(view.template);
+    const phaseChanged = phase !== view.dayPhase;
+    phase = view.dayPhase;
     const key = `${view.template}|${view.carpet}|${view.zones.length}`;
     if (key !== routesKey) {
       routesKey = key;
@@ -64,31 +78,36 @@ export function createSceneCache(): SceneCache {
     }
     const prev = new Map<string, number>();
     for (const chunk of floorChunks.values()) prev.set(chunk.area.id, chunk.hash);
-    const changed = new Set(changedRegions(view, areas, prev));
+    // Ein Phasenwechsel backt jeden Chunk einmal neu, statt pro Frame zu rechnen.
+    const changed = phaseChanged ? new Set(areas.map((area) => area.id)) : new Set(changedRegions(view, areas, prev));
     carpet.update(view);
     for (const area of areas) {
       let chunk = floorChunks.get(area.id);
       if (!chunk) {
+        const root = new Container();
         const g = new Graphics();
-        room.addChild(g);
-        chunk = { area, g, hash: 0, baked: false };
+        const deco = new Container();
+        root.addChild(g, deco);
+        room.addChild(root);
+        chunk = { area, root, g, deco, hash: 0, baked: false };
         floorChunks.set(area.id, chunk);
       }
       if (!changed.has(area.id) && chunk.baked && chunk.area.w === area.w) continue;
       chunk.g.clear();
-      drawRegionFloor(chunk.g, view, area, TILE);
+      for (const child of chunk.deco.removeChildren()) child.destroy();
+      drawRegionFloor(chunk.g, view, area, TILE, chunk.deco);
       if (!chunk.baked) {
-        chunk.g.cacheAsTexture(true);
+        chunk.root.cacheAsTexture(true);
         chunk.baked = true;
       } else {
-        chunk.g.updateCacheTexture();
+        chunk.root.updateCacheTexture();
       }
       chunk.hash = regionHash(view, area);
     }
     for (const [id, chunk] of floorChunks) {
       if (areas.some((area) => area.id === id)) continue;
-      if (chunk.baked) chunk.g.cacheAsTexture(false);
-      chunk.g.destroy();
+      if (chunk.baked) chunk.root.cacheAsTexture(false);
+      chunk.root.destroy({ children: true });
       floorChunks.delete(id);
     }
   };
@@ -140,8 +159,8 @@ export function createSceneCache(): SceneCache {
 
   const destroy = (): void => {
     for (const chunk of floorChunks.values()) {
-      if (chunk.baked) chunk.g.cacheAsTexture(false);
-      chunk.g.destroy();
+      if (chunk.baked) chunk.root.cacheAsTexture(false);
+      chunk.root.destroy({ children: true });
     }
     floorChunks.clear();
     for (const chunk of dirtChunks.values()) chunk.g.destroy();
