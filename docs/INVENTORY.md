@@ -274,10 +274,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1246 |
-| Gelistete Dateien | 1246 |
-| Getrackte Ordner | 83 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (65), docs (71), public (552), scripts (60), src (477) |
+| Getrackte Dateien | 1257 |
+| Gelistete Dateien | 1257 |
+| Getrackte Ordner | 84 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (65), docs (82), public (552), scripts (60), src (477) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -297,6 +297,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
+- `docs/screenshots/v0.3.114/` — 11 Datei(en)
 - `docs/screenshots/v0.3.78/` — 5 Datei(en)
 - `public/assets/casino/characters/` — 69 Datei(en)
 - `public/assets/casino/decor/` — 28 Datei(en)
@@ -518,6 +519,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/current/13-wuerfel-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 190082 B
 - `docs/screenshots/current/14-roulette-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 222206 B
 - `docs/screenshots/current/15-plinko-buehne.png` — PNG-Textur — geprueft: PNG 1280x900, 186860 B
+- `docs/screenshots/v0.3.114/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1264x569, 142621 B
+- `docs/screenshots/v0.3.114/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1264x569, 169522 B
+- `docs/screenshots/v0.3.114/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 151350 B
+- `docs/screenshots/v0.3.114/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 146616 B
+- `docs/screenshots/v0.3.114/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1264x569, 151325 B
+- `docs/screenshots/v0.3.114/06-smartphone.png` — PNG-Textur — geprueft: PNG 1264x569, 152408 B
+- `docs/screenshots/v0.3.114/07-dialog.png` — PNG-Textur — geprueft: PNG 1264x569, 112442 B
+- `docs/screenshots/v0.3.114/08-sound.png` — PNG-Textur — geprueft: PNG 1264x569, 118344 B
+- `docs/screenshots/v0.3.114/09-charakter.png` — PNG-Textur — geprueft: PNG 1264x569, 125982 B
+- `docs/screenshots/v0.3.114/10-asset-bibliothek.png` — PNG-Textur — geprueft: PNG 1264x569, 288272 B
+- `docs/screenshots/v0.3.114/11-protokoll.png` — PNG-Textur — geprueft: PNG 1264x569, 136394 B
 - `docs/screenshots/v0.3.78/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1280x860, 215768 B
 - `docs/screenshots/v0.3.78/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1280x860, 300499 B
 - `docs/screenshots/v0.3.78/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 280808 B
