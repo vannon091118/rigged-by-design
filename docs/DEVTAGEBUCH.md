@@ -13,6 +13,25 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-05 - Dock statt Werkzeugwand: HUD, Router und Werkstatt
+
+**Ziel.** Phase 0 des 6-Phasen-Plans: aus dem Instrumentenbrett wird eine App mit drei Kennzahlen oben und vier Bereichen unten. Kein neues Asset, keine neue Mechanik.
+
+**Umsetzung.**
+- `src/App.tsx` 348 -> 203 Zeilen: Popup-Routing nach `src/ui/popup-router.tsx` (145), Tastenpfad nach `src/ui/use-stage-keys.ts` (48), Dock in `src/ui/dock.tsx` (59), Werkstatt in `src/ui/workshop.tsx` (60).
+- `src/ui/hud.tsx` 176 -> 113: Marke, Tag, Hauskonto/Portemonnaie/Kasse, Gaeste und Ruf. Ruf als Farbe und Wort, die Zahl bleibt im `title`; Skill-Punkte nur wenn offen; Balken-Leerstand und Ledger-Fehler sind Warnzeilen, keine Kacheln.
+- Elf HUD-Knoepfe entfernt. `GAESTE` gab es doppelt, `FREMDES CASINO` liegt unter `KARTE`, `UEBERSICHT` ist der FIT-Knopf, `PUTZEN` erscheint kontextuell im Dock mit Anzahl und Preis.
+- `Popup`-Union: `journal|diagnostics|look|assets|sound|help` werden zu `{ kind: 'workshop'; tool?: WorkshopTool }`. Die Werkstatt oeffnet die vorhandenen Fenster unveraendert; kein zweiter Zustand, keine Kopie.
+- Tasten-Legende aus `src/ui/stage-controls.tsx` entfernt. WASD/Enter/Rad wirken weiter, stehen aber nicht mehr im Bild.
+
+**Pruefungen.** `pnpm run typecheck` gruen; `pnpm run lint` gruen; `node scripts/check-loc.mjs` gruen (App 203/350, hud 113/200, popup-router 145/200, dock 59/200, workshop 60/200, use-stage-keys 48/200); `pnpm run verify:quick` mit Bericht. Keine Spielmechanik, kein Ledger, kein RNG und kein Save-Format angefasst.
+
+**Offen.**
+- `.hud-actions`, `.stage-legend` und die alten `.vital`-Varianten stehen noch als tote CSS-Regeln in `src/styles/app.css`; Phase 5 raeumt sie mit dem Werkstatt-Umbau ab.
+- `popup.css` traegt weiter `backdrop-filter: blur(7px)` und eine animierte `filter: blur`-Keyframe. Beides gehoert in Phase 0 des Plans, wurde hier aber bewusst nicht mitgeaendert, damit der Umbau nicht gleichzeitig die Optik verschiebt.
+- Fuer T59 gibt es keinen Content-Beitrag: reine UI-Arbeit ohne narrativen Text.
+- Die Werkstatt ist ein Raster mit sieben Zielen, kein fertiger Debug-Bildschirm; Phase 5 baut ihn aus.
+
 ## 2026-11-04 - Phase 1: Eintrag & Ladeerfahrung (Optik)
 
 **Ziel.** Der Nutzer sieht beim Kaltstart keinen weissen Bildschirm mehr, sondern einen animierten Ladebildschirm mit Fortschrittsangabe, bevor React mountet.
@@ -1223,7 +1242,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.115 | 2026-11-05 04:28 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

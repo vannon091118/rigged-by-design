@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
+<!-- rbd-doc: v0.3.115 | 2026-11-05 04:28 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,18 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.115] - 2026-11-05
+
+### Spiel
+- Aus dem Instrumentenbrett wird eine App: oben stehen nur noch Marke, Tag, Hauskonto und zwei Kennzahlen – Gäste und Ruf. Der Ruf zeigt Farbe und Wort (angesehen, solide, ramponiert) statt einer Prozentzahl.
+- Die elf Aktionsknöpfe der HUD-Leiste sind weg. Unten gibt es vier Bereiche: **Bauen · Gäste · Karte · Du**. Putzen erscheint nur noch, wenn es Dreck gibt – mit Anzahl und Preis.
+- Alles Technische liegt hinter einer Tür: Charakter, Protokoll, Prüfung, Assets, Sound, Gerät und Hilfe öffnen sich aus „Du“ in der Werkstatt. Die Tasten-Legende (WASD, Enter, Rad) ist aus dem Spielfluss verschwunden, die Tasten wirken weiter.
+
+### Technik
+- `src/App.tsx` 348 → 203 Zeilen: Popup-Routing nach `src/ui/popup-router.tsx`, Tastenpfad nach `src/ui/use-stage-keys.ts`, neue `src/ui/dock.tsx` und `src/ui/workshop.tsx`.
+- `Popup`-Union verkleinert: `journal`, `diagnostics`, `look`, `assets`, `sound`, `help` werden zu `{ kind: 'workshop'; tool?: WorkshopTool }`. Die Werkstatt reicht die vorhandenen Fenster unverändert weiter.
+- `src/ui/hud.tsx` 176 → 113 Zeilen; `src/ui/stage-controls.tsx` trägt nur noch die Kamera-Knöpfe. Keine Spielmechanik, kein Ledger, kein RNG und kein Save-Format angefasst.
 
 ## [0.3.114] - 2026-11-04
 

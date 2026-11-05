@@ -34,7 +34,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   position: relative;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) minmax(0, auto);
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: center;
   gap: 12px 14px;
   padding: 10px 14px;
@@ -133,6 +133,60 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 }
 .milestone-progress { width: 76px; height: 5px; border-radius: var(--radius-pill); background: rgba(255, 209, 102, 0.16); overflow: hidden; }
 .milestone-progress-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, rgba(255, 209, 102, 0.55), var(--gold)); transition: width 220ms ease; }
+
+/* Ruf als Farbe: der Punkt traegt die Aussage, das Wort erklaert sie. */
+.rep-dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 999px; background: var(--role-identity); box-shadow: 0 0 10px rgba(176, 107, 255, 0.5); }
+.vital.rep.ok strong { color: var(--role-success); }
+.vital.rep.ok .rep-dot { background: var(--role-success); box-shadow: 0 0 10px rgba(45, 212, 160, 0.5); }
+.vital.rep.warn strong { color: var(--role-danger); }
+.vital.rep.warn .rep-dot { background: var(--role-danger); box-shadow: 0 0 10px rgba(255, 107, 129, 0.5); }
+.vital.rep strong { font-size: 15px; letter-spacing: 0.01em; }
+
+/* Fortschritt zum ersten Barkauf: eine Linie, kein Panel. */
+.hud-goal { display: block; height: 3px; margin-top: 3px; border-radius: 999px; background: rgba(255, 209, 102, 0.16); overflow: hidden; }
+.hud-goal i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(255, 209, 102, 0.5), var(--gold)); transition: width 220ms ease; }
+
+/* Punkte nur, wenn welche da sind: eine Zeile, sieben Tasten, kein Panel. */
+.hud-skills { grid-column: 1 / -1; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid var(--line); }
+.hud-skills > span { margin-right: 4px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--gold); }
+
+.hud-penalty.warn { border-color: rgba(255, 209, 102, 0.55); background: rgba(255, 209, 102, 0.08); color: var(--gold); }
+
+/* ---------- Dock: vier Ecken statt elf Tabs ---------- */
+.dock {
+  position: relative; z-index: 22;
+  display: grid; gap: 5px;
+  padding: 5px 5px calc(5px + env(safe-area-inset-bottom, 0px));
+  border: 1px solid var(--line); border-radius: 16px;
+  background: linear-gradient(180deg, rgba(26, 16, 40, 0.96), rgba(10, 6, 18, 0.98));
+  box-shadow: var(--elev-2), var(--inset-line);
+}
+.dock-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.dock-tab {
+  min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid var(--line-strong); border-radius: 12px; background: #161029;
+  color: #ddcff2; font-size: 10px; letter-spacing: 0.14em;
+  transition: transform 70ms ease, border-color 120ms ease, background 120ms ease;
+}
+.dock-tab:hover { border-color: var(--neon); color: #e6fffa; }
+.dock-tab:active { transform: translateY(1px) scale(0.995); }
+.dock-utility {
+  justify-self: start; display: inline-flex; align-items: center; gap: 7px;
+  margin: 0 2px; padding: 5px 11px; min-height: 34px;
+  border: 1px solid rgba(255, 209, 102, 0.45); border-radius: 999px;
+  background: rgba(255, 209, 102, 0.08); color: #ffe9b0;
+  font-size: 9px; letter-spacing: 0.14em;
+}
+.dock-utility b { font-family: var(--mono); font-size: 11px; color: var(--gold); }
+.dock-utility small { font-size: 9px; letter-spacing: 0.02em; color: var(--muted); }
+.dock-utility.is-poor { opacity: 0.5; }
+
+/* Werkstatt-Raster: eine Tuer, sieben Ziele. */
+.workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px; }
+.workshop-tile { display: grid; gap: 3px; padding: 11px 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: #140f24; }
+.workshop-tile:hover { border-color: var(--neon); }
+.workshop-tile strong { font-size: 12px; }
+.workshop-tile small { font-size: 10px; line-height: 1.4; color: var(--muted); }
 
 /* ---------- Stage ---------- */
 .stage-wrap {
