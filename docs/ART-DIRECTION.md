@@ -107,3 +107,11 @@ Zustand, jeder Kanal ist einzeln regelbar.
 | M4 | Smartphone als echte Gerätefläche (Rahmen, Statusleiste), Fensterübergänge und Floor-Feedback angleichen | offen |
 
 Abnahme pro Fenster: gleicher Kopf, gleiche Abstände, eine primäre Aktion, ein Weg zurück.
+
+### So entsteht ein Screenshot-Satz
+
+- Bauen: `pnpm run build`, danach `pnpm exec vite preview --port 4173 --strictPort`.
+- Aufnehmen: Rundgang im Browser gegen `http://localhost:4173` (Floor, Smartphone, Fenster).
+- Ablegen: `docs/screenshots/v<version>/` mit sprechenden Namen (`01-floor-uebersicht.png` ...).
+- Verdrahten: README-Bild, Vergleichstabelle und Rundgang auf den neuen Satz zeigen lassen.
+- Pruefen: `pnpm run verify:all`, keine Konsolen- oder Seitenfehler, Bilder gegen die Beschriftung.

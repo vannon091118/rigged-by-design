@@ -200,3 +200,13 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | Lange Nachweise laufen nicht lokal | `ppnpm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; `long-checks.yml` rechnet sie in CI |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `pnpm run fix` |
 | Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Inhalts-Hash; Fix-Lauf meldet „keine Aenderung“ |
+
+### Pflichtsektionen: Punkte statt Fliesstext
+
+`scripts/verify-commit-msg.mjs` liest je Sektion nur Zeilen, die mit `- ` beginnen. Ein Absatz
+ohne Aufzaehlung gilt als leer, auch wenn er Inhalt hat. Das Gate meldet dann
+`[ERR-4006] Sektion ohne echten Inhalt: ### ...` und der Squash-Commit auf `main` wird rot.
+
+- Also jede der drei Sektionen mit mindestens einem Punkt `- ` fuellen.
+- Den Text vor dem Push pruefen: `node scripts/verify-commit-msg.mjs <datei>`.
+- Beim Squash-Merge denselben Text als Commit-Nachricht verwenden, nicht die PR-Zusammenfassung.
