@@ -1,6 +1,6 @@
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { TICK_MS } from '../core/sim/tick-timing';
-import { Application, Container, Graphics, Rectangle, type FederatedPointerEvent } from 'pixi.js';
+import { Application, Container, Graphics, Rectangle } from 'pixi.js';
 import { areaAt } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
@@ -62,7 +62,6 @@ export class FloorView {
       this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
     this.#camera.eventMode = 'static';
     this.#camera.interactive = true;
-    this.#camera.on('pointerdown', this.#tap);
     app.stage.addChild(this.#camera);
     this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size, (clientX, clientY) => {
       const local = screenPoint(clientX, clientY, this.#app, this.#camera);
@@ -186,10 +185,6 @@ export class FloorView {
     this.#entities.setPinScale(this.#lod, this.#camera.scale.x);
     this.#entities.cull(this.#view, this.#lod);
   }
-
-  #tap = (event: FederatedPointerEvent): void => {
-    this.#act(event.button, event.getLocalPosition(this.#camera));
-  };
 
   #act(button: number, point: { x: number; y: number }): void {
     if (this.#destroyed) return;

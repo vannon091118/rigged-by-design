@@ -7,6 +7,7 @@ import type { FloorCamera } from './floor-camera';
 const DRAG_THRESHOLD = 8;
 
 interface TouchState { readonly id: number; x: number; y: number; dragged: boolean }
+interface ClickState { readonly id: number; x: number; y: number; dragged: boolean }
 
 export class FloorTouch {
   readonly #app: Application;
@@ -18,6 +19,7 @@ export class FloorTouch {
   #span = 0;
   #pan: { id: number; x: number; y: number } | null = null;
   #touch: TouchState | null = null;
+  #click: ClickState | null = null;
 
   constructor(
     app: Application, camera: Container, cam: FloorCamera, size: () => number,
@@ -60,7 +62,12 @@ export class FloorTouch {
       this.#touch = { id: event.pointerId, x: event.clientX, y: event.clientY, dragged: false };
       return;
     }
-    // Mittlere und rechte Taste schwenken: die linke bleibt dem Laufen.
+    // Linksklick und Linksziehen bleiben ein Tap; erst ein Zug wird zum Schwenk.
+    if (event.button === 0) {
+      this.#click = { id: event.pointerId, x: event.clientX, y: event.clientY, dragged: false };
+      return;
+    }
+    // Mittlere und rechte Taste schwenken.
     if (event.button === 1 || event.button === 2) {
       this.#pan = { id: event.pointerId, x: event.clientX, y: event.clientY };
       this.#app.canvas.style.cursor = 'grabbing';
@@ -71,6 +78,13 @@ export class FloorTouch {
     if (!this.#pointers.has(event.pointerId)) return;
     this.#pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (this.#pan && this.#pan.id === event.pointerId) { this.#drag(event, this.#pan); return; }
+    const click = this.#click;
+    if (click && click.id === event.pointerId) {
+      if (!click.dragged && Math.hypot(event.clientX - click.x, event.clientY - click.y) >= DRAG_THRESHOLD) {
+        click.dragged = true;
+      }
+      return;
+    }
     const touch = this.#touch;
     if (touch && touch.id === event.pointerId) {
       if (!touch.dragged && Math.hypot(event.clientX - touch.x, event.clientY - touch.y) >= DRAG_THRESHOLD) {
@@ -105,6 +119,11 @@ export class FloorTouch {
       this.#pan = null;
       this.#app.canvas.style.cursor = '';
     }
+    const click = this.#click;
+    if (click && click.id === event.pointerId) {
+      this.#click = null;
+      if (!click.dragged) this.#onTap(event.clientX, event.clientY);
+    }
     const touch = this.#touch;
     if (touch && touch.id === event.pointerId) {
       this.#touch = null;
@@ -117,6 +136,7 @@ export class FloorTouch {
     if (this.#pointers.size < 2) this.#span = 0;
     if (this.#pan?.id === event.pointerId) { this.#pan = null; this.#app.canvas.style.cursor = ''; }
     if (this.#touch?.id === event.pointerId) this.#touch = null;
+    if (this.#click?.id === event.pointerId) this.#click = null;
   };
 
   /** Ziehen verschiebt das Bild unter dem Zeiger; die Figur bleibt stehen. */
