@@ -1,7 +1,7 @@
 /** React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. */
 import { Application } from 'pixi.js';
 import type { EditorCursor } from './editor-overlay';
-import { useEffect, useImperativeHandle, useRef, forwardRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import type { GameView } from '../store/types';
 import type { MenuAction } from './floor-actions';
 import { FloorView } from './floor-view';
@@ -31,6 +31,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
   const app = useRef<Application | null>(null);
   const floor = useRef<FloorView | null>(null);
   const latest = useRef(props);
+  const [initFailed, setInitFailed] = useState(false);
 
   latest.current = props;
 
@@ -86,6 +87,9 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       // Der Loader wartet auf diesen einen echten Renderer-Frame, nicht auf eine Uhr.
       instance.renderer.render(instance.stage);
       latest.current.onFirstFrame?.();
+    }).catch(() => {
+      // Kein stiller schwarzer Floor: die Bedienung bleibt ueber die Panels moeglich.
+      if (!cancelled) setInitFailed(true);
     });
 
     const observer = new ResizeObserver(() => {
@@ -118,5 +122,13 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     floor.current?.setRunning(!props.paused);
   }, [props.paused]);
 
-  return <div className="floor-stage" ref={host} aria-label="Casino-Floor" />;
+  return (
+    <div className="floor-stage" ref={host} aria-label="Casino-Floor">
+      {initFailed && (
+        <p className="floor-fallback" role="status">
+          Die Floor-Ansicht konnte nicht starten. Der Betrieb läuft weiter – alle Aktionen bleiben über die Panels erreichbar.
+        </p>
+      )}
+    </div>
+  );
 });

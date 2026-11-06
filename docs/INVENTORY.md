@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
+<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.143** |
+> | **Version** | **v0.3.144** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 21:30 UTC (T79 — PR #150 zusammengefuehrt)** |
-> | Branch | `fix/casino-phase-3-experience-redesign`, PR #150 |
-> | HEAD | `a4effb0` plus Merge von `main` (`a83efff`, 0.3.142) |
+> | **Aktualisiert** | **2026-11-06 21:45 UTC (T80 — Audit #19 und Branch-Hygiene)** |
+> | Branch | `feat/spatial-layout-editor` (auf `5ef2657`) |
+> | HEAD | `5ef2657` plus Audit-#19-Commit (0.3.144) |
 > | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -1736,6 +1736,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T80 | **2026-11-06 21:45 UTC**: Audit #19 geschlossen. `GameView.company` aus `companyStatus()`, Firmenstufe in HUD/Betriebspanel mit offenen Bedingungen; Pixi-Start-Fehler zeigt Fallback statt schwarzer Flaeche. Branch-Hygiene: `integration` = `main` (`5ef2657`), PR #142 geschlossen, drei gemergte Refs geloescht, `feat/spatial-layout-editor` als einziger Arbeitsbranch. Geprueft: typecheck, 19 UI-/Progressions-Tests, `verify:all` zwoelf Gates. |
 | T79 | **2026-11-06 21:30 UTC**: PR #150 (Floor als Spielwelt, GAST/BETRIEB) auf `main` (0.3.142) zusammengefuehrt. Perspektive als globale Rollenwahrheit, `MachineOperatorBody`/`MachinePlayLazy` und `PlinkoEditorLazy` im Operator-Koerper; Marke und `Ctrl+Shift+D` bleiben Werkstatt-Einstieg. Konflikte in sechs Code-Dateien, zwei Tests, Doku und Versionsdateien. |
 | T78 | **2026-11-06 21:25 UTC**: PR #160 (Buehne aus der Legacy-Hot-Zone) auf `main` (0.3.141) zusammengefuehrt. `floor-camera-rig.ts` (106 Zeilen) und die drei Guest-Dateien (128/139/112) loesen die Legacy-Ausnahmen in `guest-art.ts` und `floor-view.ts`; `loc-budgets.mjs` fuehrt beide Eintraege nicht mehr. Konflikte nur in Doku und Versionsdateien, Code konfliktfrei. |
 | T77 | **2026-11-06 21:20 UTC**: Perf-PR #161 auf `main` zusammengefuehrt. `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt; Konflikte nur in den sechs Pflichtdokumenten, Code und Assets konfliktfrei. WebP-Atlas 1.040.593 -> 384.234 B, Plinko-Buehne lazy (Initial-JS 1.186.336 -> 1.173.926 B), HUD-Icons als eigener 4.337-B-Chunk, Initialgraph 1.174.034 B/18 Chunks. |

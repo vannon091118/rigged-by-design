@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
+<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -18,7 +18,8 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
 - Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Die Pruefmatrix A1-A8 steht unten in „Offene Punkte“; A1 (Desktop-Grundbild) ist bestanden. Offen bleiben die visuelle Werkstattpruefung (A2-A5), die Touch-Geste auf Hardware (A6), der Slow-4G-Test (A7) und die APK-Installation (A8).
-- Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
+- Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet in der Warteschlange auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
+- Firmenstufe und Floor-Fallback sind sichtbar: HUD und Betriebspanel nennen die erreichte Stufe und die offenen Bedingungen der naechsten; ein fehlgeschlagener Pixi-Start zeigt einen bedienbaren Hinweis statt einer schwarzen Flaeche.
 - Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` (Funktion vorhanden, aber ohne Produktions-Aufrufer), Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen; Details unten.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Die Vision steht in `docs/PRODUCT.md`, das Casino darin als Start- und Testumgebung.
@@ -37,7 +38,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
 - Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
-- Branch-Konsolidierung vom 2026-11-05 ist ueberholt: `integration` steht nicht auf dem neuen `main`-Stand, und neben `feat/spatial-layout-editor` existieren weitere Remote-Refs; offene PRs und die gewuenschte Bereinigung stehen unten.
+- Branch-Hygiene steht: `integration` zeigt exakt `main` (`5ef2657`), PR #142 ist geschlossen, die drei gemergten Arbeits-Refs sind geloescht; `feat/spatial-layout-editor` ist der einzige aktive Arbeitsbranch.
 
 - Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
   (`docs/ASSET-SEMANTICS.md`) stehen. Als Nächstes die Deko-Rollen von den

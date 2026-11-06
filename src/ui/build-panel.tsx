@@ -55,6 +55,12 @@ export function BuildPanel(props: Props) {
       </header>
       <div className="build-scroll">
         <BuildOpsSummary view={view} />
+        <p className="panel-note company-status">
+          <b>{view.company.name}</b>
+          {view.company.next
+            ? ` · ${view.company.next.name}: ${view.company.open.map((metric) => `${metric.label} ${metric.current}/${metric.need}`).join(' · ') || 'alle Bedingungen erfüllt'}`
+            : ' · höchste Stufe erreicht'}
+        </p>
         <p className="panel-note">
           Klick oder ziehen kauft. Die Ware kommt als Kiste am Eingang an: abholen, tragen, aufstellen.
           Erst ein aufgestelltes Gerät bringt Gäste und Geld.

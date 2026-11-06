@@ -13,6 +13,32 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Audit #19: Firmenstufe sichtbar, Pixi-Fallback, Branch-Hygiene
+
+**Ziel.** Die zwei im Main-Audit noch offenen Befunde schliessen, ohne neue
+Spielmechanik: Firmenstufen waren nur im Code, nicht in der UI; ein
+fehlgeschlagener Pixi-Start liess den Floor schwarz.
+
+**Umsetzung.**
+
+- `CompanyStatus` ist exportiert, `GameView.company` wird in `buildView()` aus
+  `companyStatus()` abgeleitet. HUD und Betriebspanel zeigen die Stufe; das
+  Panel nennt die offenen Bedingungen der naechsten Stufe mit Ist/Soll.
+- `FloorStage` faengt die Rejection von `Application.init()` ab und rendert
+  einen Hinweis mit `role="status"`; die Panels bleiben bedienbar.
+- Branch-Hygiene: `integration` auf `5ef2657` gesetzt, drei gemergte
+  Remote-Branches nach Leer-Diff-Beleg geloescht, `feat/spatial-layout-editor`
+  neu auf `main` angelegt.
+
+**Pruefungen.** `pnpm typecheck` PASS; `progression.test.ts` 10/10 und
+`ui.test.tsx` 9/9 PASS; der zuvor sporadisch rote Kassierer-Test nach
+Fenstererweiterung auf 240 Ticks 5/5 PASS (Assertion unveraendert);
+`pnpm run verify:all` PASS mit allen zwoelf Gates
+(Bericht im Commit).
+
+**Bewusst nicht getan.** Keine neue Spielmechanik, kein Eingriff in Ledger, RNG
+oder Save; die sichtbare Browser-/APK-Abnahme bleibt beim Nutzer.
+
 ## 2026-11-06 - Floor-Spielwelt (PR #150) auf main zusammengefuehrt
 
 **Ziel.** PR #150 fuehrt GAST und BETRIEB als eine globale Perspektive ein und
@@ -1689,7 +1715,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

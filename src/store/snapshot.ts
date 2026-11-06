@@ -7,6 +7,7 @@ import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
+import { companyStatus } from '../core/sim/progression';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
@@ -127,6 +128,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     guestMoney,
     mood: world.guests.length ? Math.round(mood / world.guests.length) : 0,
     reputation: Math.round(reputation(world)),
+    // Dieselbe Stufe wie Nachfrage und Kaufsperre: eine Wahrheit, eine Anzeige.
+    company: companyStatus(world, ledger),
     ledgerOk: ledger.verifyIncremental(),
     ledgerEntries: ledger.entryCount,
     ledgerLastSeq: ledger.entryCount - 1,
