@@ -213,6 +213,96 @@ neue Dateien im Manifest an — nicht eine zweite ID im Katalog.
    pfadbasierte Suche findet sie nicht — der Katalog löst das über
    `manifestPath`.
 
+## Messung und Anker (Slice 2: `machines`, `decor`)
+
+Alle 82 Dateien dieser beiden Kategorien wurden geoeffnet und gemessen, nicht
+geschaetzt. Die Leinwand (`bounds`) ist die PNG-Groesse und stimmt bei allen 82
+mit dem Atlasrahmen ueberein. Der sichtbare Inhalt (`content`) ist die
+Alpha-Bounding-Box der Datei; `contentFill` nennt beide Achsen als Anteil. Drei
+Ankerbegriffe sind getrennt:
+
+| Feld | Bedeutung | Quelle |
+| --- | --- | --- |
+| `anchor` + `anchorKind` | Sprite-Pivot, den der Renderer setzt | Code (`furniture-atlas.ts`, `room-dressing.ts`, `poker-canvas.ts`) |
+| `ground` | Bodenanker am unteren Rand des **sichtbaren Inhalts** | Alpha-Bbox |
+| `top` | Oberkante des sichtbaren Inhalts (Aufhaenge- oder Auflagepunkt) | Alpha-Bbox |
+
+`ground: "none"` heisst: der Inhalt beruehrt die Unterkante nicht, es gibt im
+Bild keinen Bodenkontakt. Fuer Tischkarten und Chips sind `ground` und `top`
+beide `none`, weil sie auf einer Flaeche liegen statt zu stehen.
+
+### Ableitungsregeln (deterministisch)
+
+| Feld | Regel |
+| --- | --- |
+| `proportion` | Seitenverhaeltnis des Inhalts: `upright` ≤ 0.8, `wide` ≥ 1.25, sonst `square` |
+| `base` | `full-bleed` bei deckender Leinwand ohne Transparenz; `raised`, wenn der Inhalt mindestens 15 % Hoehe Abstand zur Unterkante hat; `flat-on-surface` fuer `machines/table-games/`; sonst `floor-contact` |
+| `ground` | `floor-contact`: `{x: Inhaltsmitte, y: Inhaltsunterkante}`; `full-bleed`: `{0.5, 1.0}`; `raised` und `flat-on-surface`: `"none"` |
+| `top` | `{x: Inhaltsmitte, y: Inhaltsoberkante}`; `flat-on-surface`: `"none"` |
+| `notes` | nur messbare Marker: deckende Leinwand, kein Bodenkontakt im Bild, Inhalt schmaler als 65 % der Leinwand, Inhalt flacher als 80 % der Hoehe |
+| `variants` | gleicher Namensstamm **und** identische Leinwand; reine Namensaehnlichkeit zaehlt nicht |
+
+### Verteilung
+
+| `base` | Assets | Bedeutung im Bild |
+| --- | ---: | --- |
+| `floor-contact` | 54 | Objekt steht auf, Inhalt endet knapp ueber der Unterkante (1–6 px Rand) |
+| `flat-on-surface` | 18 | Tischkarten, Chips, Roulette-Layout, Suit-Zeichen (3 davon mit Code-Bezug als explizite Sprites, 15 nur im Bestand) |
+| `full-bleed` | 7 | ohne Transparenz: zwei aegyptische Saeulen, `palm-neon`, `potted-palm-variant`, `potted-plant`, `small-podium`, `restroom-stall` |
+| `raised` | 3 | `wall-sconce` (19 % Abstand), `cocktail-glass` (17 %), `shot-glass` (18 %) |
+
+`proportion`: 50 `upright`, 25 `square`, 7 `wide`.
+
+### Grosse Objekte, Automaten, Saeulen
+
+- **Wide (7):** `blackjack-table` (140×94, Inhalt 116×87), `cash-register`
+  (80×64, 76×58), `coin-tray` (64×40, 60×30), `control-button-panel`
+  (128×48, 124×41), `display-bezel` (96×64, 82×60),
+  `roulette-betting-layout` (112×52) und `roulette-wheel` (88×61).
+- **Grosse Tische sind nicht automatisch `wide`.** Sie sind fast quadratisch im
+  Inhalt, weil Tischplatte und Kante die Hoehe fuellen: `dice-table` (168×68,
+  Inhalt 73×63, 44 % der Leinwandbreite), `roulette-table` (168×72, 81×66, 48 %),
+  `shell-game-table` (160×55, 54×51, 34 %), `poker-table` (145×97, 112×90, 77 %),
+  `blackjack-table` (140×94, 116×87, 83 %), `cashier-counter` (144×85, 82×79,
+  57 %). Bei den ersten vier steht die Notiz `schmaler Inhalt in breiter
+  Leinwand`: wer sie auf einen breiten Fussabdruck streckt, verbreitert die Luft
+  um das Objekt, nicht das Objekt.
+- **Automaten (`upright`, hoechste Saeulen der Kategorie):**
+  `slot-machine-front` (96×160), `video-poker-terminal` (100×160),
+  `slot-machine-compact` (108×156), `casino-kiosk` (100×148),
+  `slot-cabinet` (104×145), `storage-shelves` (100×139).
+- **Saeulen (`upright`, schmal):** `egyptian-column-tall` (45×112),
+  `neon-column` (40×112), `casino-column` (44×90), `egyptian-column-short`
+  (39×96). Die beiden aegyptischen Saeulen sind zwei Groessen desselben Motivs,
+  aber **keine** Varianten im Katalogsinn: unterschiedliche Leinwand.
+- **Mehrteilige Objekte:** `bar-counter-stools` zeigt drei Hocker, `restroom-stall`
+  mehrere Kabinen, `control-button-panel` eine Knopfreihe. Sie werden als ein
+  Sprite mit fester Groesse gezeichnet (`transform: fixed-size`, `baked:
+  room-chunk-cache`); die Aufteilung in Einzelteile passiert im Core
+  (Sitzplaetze, Kabinen), nicht in der Textur. Der Katalog speichert deshalb
+  keine Teileliste — und bewusst keine Zonenzuordnung.
+
+### Varianten
+
+14 Assets tragen verifizierte Varianten: `machines/bar-bottle-*` (4, gleiche
+32×64-Leinwand), `machines/chip-stack-*` (5, 32×40), drei
+`machines/table-games/chip-stack-*` (32×45) und zwei Suit-Zeichen (24×25).
+Alle anderen Namensfamilien unterscheiden sich in der Leinwand und bleiben
+eigene Assets.
+
+### Ausnahmen und Unbekanntes
+
+- 48 der 82 Assets haben keinen Renderer-Bezug. Sie tragen `transform:
+  library-only`, `anchor: "unknown"` und `anchorKind: "unknown"`; `content`,
+  `proportion`, `base`, `ground` und `top` sind trotzdem gemessen, weil sie rein
+  visuell sind.
+- Kein Maschinen- oder Deko-Asset ist als interaktiv markiert. Interaktion
+  haengt an `Furniture` und `GameView`; ein Stuhl, eine Saeule und ein Neon-Schild
+  bleiben damit dekorativ, auch wenn ihr Dateiname nach Objekt klingt.
+- Wo der Inhalt die Leinwand nicht ausfuellt, bleibt der Rand Teil der
+  Zeichenflaeche. `ground` und `top` beziehen sich deshalb auf den Inhalt, nicht
+  auf die Leinwandkante.
+
 ## Pflege
 
 - Der Katalog wird **nicht** von einem Skript im Verify-Lauf erzeugt und von

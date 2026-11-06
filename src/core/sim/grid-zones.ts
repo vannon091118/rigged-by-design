@@ -1,6 +1,9 @@
 /** 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. */
-import { blockedTiles, isWalkable } from './pathfinding';
-import { REGION, type Furniture, type GameId, type TemplateId, type Zone } from './types';
+import { layoutDoorTiles, navGrid, tileIndex } from './nav-grid';
+import type { LayoutState } from './layout-types';
+import { keepsServicesReachable } from './nav-reach';
+import { accessPointsFor } from './pathfinding';
+import { REGION, type Furniture, type GameId, type TemplateId } from './types';
 
 export { REGION };
 
@@ -67,6 +70,7 @@ export const SERVICE_FOOTPRINT: Readonly<Record<'EXCHANGE' | 'BAR' | 'TOILET' | 
   STORAGE: { w: 3, h: 3, seats: 0 },
 };
 
+/** Erster Zugang eines geplanten Footprints; die volle Liste liefert `accessPointsFor`. */
 export function accessPoint(
   size: number,
   furniture: readonly Furniture[],
@@ -74,22 +78,19 @@ export function accessPoint(
   y: number,
   w: number,
   h: number,
-  zones: readonly Zone[] = [],
+  layout?: LayoutState | null,
 ): { x: number; y: number } | null {
-  const blocked = blockedTiles(size, furniture, zones);
-  const candidates = [
-    { x: x + Math.floor(w / 2), y: y + h },
-    { x: x - 1, y: y + Math.floor(h / 2) },
-    { x: x + w, y: y + Math.floor(h / 2) },
-    { x: x + Math.floor(w / 2), y: y - 1 },
-  ];
-  return candidates.find((point) => isWalkable(size, blocked, point.x, point.y)) ?? null;
+  return accessPointsFor(navGrid(size, furniture, layout), x, y, w, h)[0] ?? null;
 }
 
 const inside = (point: { x: number; y: number }, x: number, y: number, w: number, h: number): boolean =>
   point.x >= x && point.x < x + w && point.y >= y && point.y < y + h;
 
-/** Volle Tile-Flaeche, keine Ueberlappung, mindestens ein freies Zugangs-Tile bei Sitzplaetzen. */
+/**
+ * Volle Tile-Flaeche, keine Ueberlappung, mindestens ein freies Zugangs-Tile
+ * mit offener Kante. Tueren duerfen nicht zugebaut werden, und keine
+ * Platzierung darf einen bisher erreichbaren Service abschneiden.
+ */
 export function canPlaceAt(
   size: number,
   furniture: readonly Furniture[],
@@ -99,12 +100,22 @@ export function canPlaceAt(
   w: number,
   h: number,
   needsAccess = true,
-  zones: readonly Zone[] = [],
+  layout: LayoutState | null = null,
 ): boolean {
   if (x < 1 || y < 1 || x + w > size - 1 || y + h > size - 1) return false;
+  if (layout && layoutDoorTiles(layout).some((tile) => inside(tile, x, y, w, h))) return false;
   if (blockers.some((point) => inside(point, x, y, w, h))) return false;
   if (furniture.some((item) => x < item.x + item.w && x + w > item.x && y < item.y + item.h && y + h > item.y)) {
     return false;
   }
-  return !needsAccess || accessPoint(size, furniture, x, y, w, h, zones) !== null;
+  if (!needsAccess) return true;
+  const nav = navGrid(size, furniture, layout);
+  if (accessPointsFor(nav, x, y, w, h).length === 0) return false;
+  const door = layout ? layoutDoorTiles(layout)[0] : undefined;
+  if (!door) return true;
+  const occupied: number[] = [];
+  for (let ty = y; ty < y + h; ty += 1) {
+    for (let tx = x; tx < x + w; tx += 1) occupied.push(tileIndex(size, tx, ty));
+  }
+  return keepsServicesReachable(nav, furniture, door, occupied);
 }

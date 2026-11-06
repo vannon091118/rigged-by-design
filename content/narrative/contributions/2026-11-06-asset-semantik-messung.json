@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
+  "contributionId": "asset-semantik-messung-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "content"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ich habe die Maschinen und die Deko einzeln aufgemacht und nachgesehen, statt ihren\nNamen zu glauben. Ein Roulette-Tisch ist breit, sein Bild aber fast quadratisch:\ndie halbe Leinwand ist Luft. Zwei Saeulen mit demselben Motiv sind zwei Saeulen,\nweil ihre Bilder verschieden gross sind. Ein Wandlicht hat keinen Boden unter\nsich, also bekommt es keinen Bodenanker. Das klingt nach Buchhaltung und ist\ngenau das Gegenteil: zum ersten Mal steht irgendwo, wo diese Dinge wirklich\naufhoeren und anfangen.",
+  "directives": []
+}

@@ -5,6 +5,10 @@ import type { SlotProfile } from '../games/slot-profile';
 import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 import type { VisitorMemory } from './narrative/types';
+import type { LayoutZone, ZoneKind } from './layout-types';
+
+/** Spielbedeutung einer Zone; der Layout-Vertrag ist ihre einzige Definition. */
+export type { ZoneKind };
 
 export type StaffRole = 'guard' | 'cleaner' | 'bartender' | 'cashier' | 'porter';
 export type TemplateId = 'SMALL' | 'MEDIUM' | 'LARGE';
@@ -22,7 +26,6 @@ export interface DemandSnapshot {
   readonly event: { readonly kind: DemandEventKind; readonly label: string; readonly ticksLeft: number } | null;
 }
 
-type ZoneKind = 'ENTRANCE' | 'EXCHANGE' | 'GAMING' | 'BAR' | 'TOILET' | 'STORAGE' | 'LOUNGE' | 'EXPANSION';
 export type GameId = 'SLOT' | 'BLACKJACK' | 'POKER' | 'VIDEO_POKER' | 'ROULETTE' | 'PLINKO' | 'SHELL' | 'DICE';
 type GuestState = 'ENTER' | 'EXCHANGE' | 'CHOOSE' | 'WAIT' | 'PLAY' | 'DRINK' | 'TOILET' | 'CASHOUT' | 'LEAVE' | 'ANGRY';
 type Need = 'play' | 'drink' | 'toilet';
@@ -31,10 +34,8 @@ export type CarpetId = 'VIOLET' | 'CRIMSON' | 'JADE' | 'GOLD';
 export type ModId = 'NEON' | 'NEAR_MISS' | 'CHERRY' | 'FREE_DRINK' | 'EXTRA_REEL' | 'VELVET';
 
 export interface Point { readonly x: number; readonly y: number; }
-export interface Zone {
-  readonly id: string; readonly name: string; readonly kind: ZoneKind;
-  readonly x: number; readonly y: number; readonly w: number; readonly h: number; readonly color: number;
-}
+/** Legacy-Sicht der semantischen Zone; die Wahrheit liegt in `LayoutState.zones`. */
+export type Zone = LayoutZone;
 export interface Furniture {
   readonly id: number;
   readonly kind: 'SLOT' | 'TABLE' | 'BAR' | 'TOILET' | 'EXCHANGE' | 'DECOR' | 'STORAGE' | 'JOB_STATION';

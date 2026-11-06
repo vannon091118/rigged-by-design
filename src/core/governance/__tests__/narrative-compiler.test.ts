@@ -35,9 +35,9 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(report.registry.version).toBe(2);
     expect(report.registry.compiler).toBe('nar-10');
     expect(report.contentHash).toMatch(/^sha256:[a-f0-9]{64}$/);
-    // Stand 2026-11-06: 63 Beitraege im kontrollierten Bestand; die Zahl haelt
+    // Stand 2026-11-06: 65 Beitraege im kontrollierten Bestand; die Zahl haelt
     // stillen Schwund fest und wird mit jedem neuen Beitrag mitgezogen.
-    expect(report.registry.fragments).toHaveLength(63);
+    expect(report.registry.fragments).toHaveLength(65);
     expect(report.runtimeRegistryText).toContain('export const NARRATIVE_REGISTRY');
     expect(validateRuntimeRegistry(report.runtimeRegistryText, report.compiled)).toEqual([]);
   });

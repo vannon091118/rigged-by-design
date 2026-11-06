@@ -1,4 +1,4 @@
-/** Save v10: Welt + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. */
+/** Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. */
 import { Ledger } from '../core/economy/ledger';
 import { admitFiat, DEBT_ACCOUNT } from '../core/sim/money';
 import { companyTier } from '../core/sim/progression';
@@ -7,10 +7,10 @@ import type { WorldState } from '../core/sim/types';
 import { hydrateWorld, type SavedGame } from './migrate';
 import { SAVE_VERSIONS } from '../core/io/repair';
 
-const SAVE_VERSION = 10;
-const KEY = 'vcoin.casino.v10';
-/** v9 kennt den Rivalen-Zustand nicht; v8 nicht die Narrative-Domaene; v5 trug das Fiat im Gastobjekt. */
-const LEGACY_KEYS = ['vcoin.casino.v9', 'vcoin.casino.v8', 'vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
+const SAVE_VERSION = 11;
+const KEY = 'vcoin.casino.v11';
+/** v10 kennt keinen Layout-Vertrag; v9 den Rivalen-Zustand nicht; v8 nicht die Narrative-Domaene; v5 trug das Fiat im Gastobjekt. */
+const LEGACY_KEYS = ['vcoin.casino.v10', 'vcoin.casino.v9', 'vcoin.casino.v8', 'vcoin.casino.v7', 'vcoin.casino.v6', 'vcoin.casino.v5'] as const;
 const OLD_KEYS = ['vcoin.casino.v3', 'vcoin.casino.v4'];
 
 interface LoadedSave {
@@ -24,6 +24,7 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       version: SAVE_VERSION,
       template: world.template,
       carpet: world.carpet,
+      layout: world.layout,
       furniture: world.furniture,
       guests: world.guests,
       player: world.player,

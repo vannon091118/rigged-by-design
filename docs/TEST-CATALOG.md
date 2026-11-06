@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statistics 6 · performance 6.
+Summe: 169 Dateien — contract 108 · integration 36 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -78,6 +78,8 @@ Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statist
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
 | `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
+| `src/core/sim/__tests__/layout-contract.test.ts` | sim | contract | ja | `src/core/sim/layout-derive.ts` |
+| `src/core/sim/__tests__/layout-json.test.ts` | sim | contract | ja | `src/core/sim/layout-json.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
 | `src/core/sim/__tests__/mod-guards.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
@@ -92,20 +94,29 @@ Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statist
 | `src/core/sim/__tests__/narrative-command-dsl.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/parse-directives.ts` |
 | `src/core/sim/__tests__/narrative-composer.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/__tests__/narrative-conflict-source.test.ts` | sim | contract | ja | `src/core/sim/disputes.ts` |
+| `src/core/sim/__tests__/narrative-counter-rival.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
+| `src/core/sim/__tests__/narrative-coverage.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/__tests__/narrative-demand.test.ts` | sim | contract | ja | `src/core/sim/narrative/demand-events.ts` |
+| `src/core/sim/__tests__/narrative-event-expiry.test.ts` | sim | contract | ja | `src/core/sim/narrative/event-scheduler.ts` |
 | `src/core/sim/__tests__/narrative-event-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/event-schema.ts` |
 | `src/core/sim/__tests__/narrative-event-templates.test.ts` | sim | contract | ja | `src/core/sim/narrative/scheduler.ts` |
 | `src/core/sim/__tests__/narrative-events.test.ts` | sim | contract | ja | `src/core/sim/narrative/scheduler.ts` |
 | `src/core/sim/__tests__/narrative-fact-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/fact-schema.ts` |
 | `src/core/sim/__tests__/narrative-facts.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
+| `src/core/sim/__tests__/narrative-followup-chain.test.ts` | sim | contract | ja | `src/core/sim/narrative/runtime.ts` |
 | `src/core/sim/__tests__/narrative-longrun.test.ts` | sim | contract | ja | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
 | `src/core/sim/__tests__/narrative-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/relationships.ts` |
+| `src/core/sim/__tests__/narrative-rival-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/rival-context.ts` |
+| `src/core/sim/__tests__/narrative-rival-trigger.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
 | `src/core/sim/__tests__/narrative-runtime.test.ts` | sim | contract | ja | `src/core/sim/narrative/runtime.ts` |
 | `src/core/sim/__tests__/narrative-staff-source.test.ts` | sim | contract | ja | `src/core/sim/desk-service.ts` |
 | `src/core/sim/__tests__/narrative-start-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/state.ts` |
 | `src/core/sim/__tests__/narrative-trigger-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/trigger-schema.ts` |
+| `src/core/sim/__tests__/narrative-trigger-template-contract.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
 | `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
+| `src/core/sim/__tests__/narrative-warm-return.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
+| `src/core/sim/__tests__/nav-edges.test.ts` | sim | contract | ja | `src/core/sim/nav-grid.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
 | `src/core/sim/__tests__/player-cash.test.ts` | sim | contract | ja | `src/core/sim/self-exclusion-bet.ts` |
@@ -123,17 +134,24 @@ Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statist
 | `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
 | `src/core/sim/__tests__/tycoon-needs.test.ts` | sim | contract | ja | `src/core/sim/needs.ts` |
 | `src/core/sim/__tests__/tycoon-ops.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
+| `src/core/sim/__tests__/visitor-disposition.test.ts` | sim | contract | ja | `src/core/sim/narrative/disposition.ts` |
 | `src/core/sim/__tests__/visitors.test.ts` | sim | contract | ja | `src/core/sim/visitors.ts` |
 | `src/core/sim/__tests__/world.test.ts` | sim | contract | ja | `src/core/sim/guests.ts` |
 | `src/core/sim/narrative/__tests__/composition-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/composition-context.ts` |
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
+| `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
+| `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
 | `src/render/__tests__/floor-cache.test.ts` | render | integration | ja | `src/render/floor-math.ts` |
 | `src/render/__tests__/floor-camera.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
+| `src/render/__tests__/floor-layout.test.ts` | render | integration | ja | `src/render/floor-material.ts` |
+| `src/render/__tests__/perf-governor.test.ts` | render | integration | ja | `src/render/perf-governor.ts` |
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
+| `src/render/assets/__tests__/asset-semantics.test.ts` | render | integration | ja | `src/render/assets/asset-semantics.json` |
+| `src/render/depth-perf.bench.ts` | render | performance | nein, CI | `src/render/depth.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, CI | `src/render/floor-math.ts` |
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
 | `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
@@ -144,6 +162,7 @@ Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statist
 | `src/store/__tests__/prng-persistence.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/rival-play-commands.test.ts` | store | integration | ja | `src/store/rival-play-commands.ts` |
 | `src/store/__tests__/save-device.test.ts` | store | integration | ja | `src/store/migrate.ts` |
+| `src/store/__tests__/save-layout.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-migration.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/save-reels.test.ts` | store | integration | ja | `src/store/migrate.ts` |
 | `src/store/__tests__/save-rivals.test.ts` | store | integration | ja | `src/store/migrate.ts` |
@@ -158,6 +177,7 @@ Summe: 149 Dateien — contract 96 · integration 29 · governance 12 · statist
 | `src/ui/__tests__/card-tables.test.tsx` | ui | integration | ja | `src/ui/games/blackjack-popup.tsx` |
 | `src/ui/__tests__/casino-window-header.test.tsx` | ui | integration | ja | `src/ui/casino-window-header.tsx` |
 | `src/ui/__tests__/dialogue-ui.test.tsx` | ui | integration | ja | `src/ui/dialogue-popup.tsx` |
+| `src/ui/__tests__/editor-gate.test.ts` | ui | integration | ja | `src/ui/editor-gate.ts` |
 | `src/ui/__tests__/guest-profile.test.tsx` | ui | integration | ja | `src/ui/guest-popup.tsx` |
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |

@@ -35,6 +35,8 @@ function archiveSnapshot(archive: JournalEvent[]): JournalEvent[] {
 function worldSnapshot(world: WorldState) {
   return {
     template: world.template,
+    // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
+    layout: world.layout,
     size: world.size,
     zones: world.zones,
     furniture: world.furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),

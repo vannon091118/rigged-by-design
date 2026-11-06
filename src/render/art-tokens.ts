@@ -70,9 +70,21 @@ export interface LightState {
   readonly intensity: number;
 }
 
+/** Lichtfarbe ist semantisch (Zone), nicht materiell (Boden): getrennte Vertraege. */
+const ZONE_LIGHT: Readonly<Record<string, number>> = {
+  ENTRANCE: LIGHT.cool,
+  EXCHANGE: LIGHT.warm,
+  GAMING: LIGHT.neon,
+  BAR: LIGHT.warm,
+  TOILET: LIGHT.cool,
+  LOUNGE: LIGHT.neon,
+  STORAGE: LIGHT.cool,
+  EXPANSION: LIGHT.cool,
+};
+
 /** Licht je Zone und Tageszeit: dieselben drei Rollen, nur anders dosiert. */
 export function lightFor(zone: string, phase: DayPhase): LightState {
-  const tint = materialFor(zone).light;
+  const tint = ZONE_LIGHT[zone] ?? LIGHT.cool;
   const intensity = phase === 'morning' ? 0.82 : phase === 'evening' ? 1 : 0.52;
   return { tint, intensity };
 }

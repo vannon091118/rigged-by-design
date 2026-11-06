@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
+<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -15,6 +15,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 ## Jetzt — die Testumgebung tragfaehig machen
 
+- Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
 - VELVET und FREE_DRINK muessen ihre Beschreibung einloesen (bessere Gaeste, Drink pro Spin) oder umformuliert werden; EXTRA_REEL sollte wirklich eine Walze sein.
 - Der Einsatz sollte mit dem Persona-Budget skalieren, damit High Roller nicht nur laenger, sondern hoeher spielt.
 
@@ -39,11 +40,12 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 - Branch-Konsolidierung am 2026-11-05 abgeschlossen: `fix/bundle-splitting` und `fix/test-suite-optimization` nach `main` gemergt, die uebrigen offenen Branches waren patch-identisch; alle Branch-Refs lokal und auf GitHub geloescht.
 
 - Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
-  (`docs/ASSET-SEMANTICS.md`) stehen. Als Naechstes die Deko-Rollen von den
-  Label-Regexen loesen und entscheiden, ob der Katalog ein Gate bekommt.
+  (`docs/ASSET-SEMANTICS.md`) stehen. Als Nächstes die Deko-Rollen von den
+  Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
+- Task 4/5 ist erledigt: Möbel, Figuren, Requisiten und Wandvorderseiten teilen eine Tiefenebene mit Fußanker, deterministischem Tie-Breaking und gezielter Sortierung. Als Nächstes folgt Task 5/5 (Entwicklungseditor hinter Build-Flag, Export/Import, Undo/Redo) und danach der PR.
 - **Charakterwerte verallgemeinern:** Laune, Charisma, Intellekt und Ausgabebereitschaft als Achsen der Spielfigur fuehren, nicht als Casino-Sonderfall. TV, Werbung und Marken wirken auf dieselben Werte wie Gäste-Laune und Persona.
 - **Ledger-Ressourcen:** Zeit, Ruf, Vorräte und Aufmerksamkeit als gebuchte Ressourcen nach Bedarf ergaenzen; eine Ressource, eine Zeile, eine Ursache. Geld bleibt die erste, nicht die einzige Wahrheit.
 - **Social-Plugin der Narrative Engine:** Facts, Erinnerungen und gerichtete Beziehungen ausserhalb von Gast/Haus tragen lassen (Nachbarn, Kollegen, Freunde); neue Facts und Templates, keine zweite Erzaehlmaschine.

@@ -22,7 +22,7 @@ export type Popup =
 export function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
   const def = getBuildDef(id);
   const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
-  return canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
+  return canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0, view.layout);
 }
 
 export const MOVE_KEYS: Readonly<Record<string, readonly [number, number]>> = {

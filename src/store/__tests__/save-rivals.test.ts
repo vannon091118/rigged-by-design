@@ -22,9 +22,9 @@ function snapshot(): Record<string, unknown> {
 }
 
 describe('Rivalen im Save', () => {
-  it('schreibt Version 10 und laedt Zustaende unveraendert zurueck', () => {
+  it('schreibt Version 11 und laedt Zustaende unveraendert zurueck', () => {
     const saved = snapshot();
-    expect(saved.version).toBe(10);
+    expect(saved.version).toBe(11);
     const loaded = replaySave(saved);
     expect(loaded).not.toBeNull();
     const rival = loaded!.world.rivals[0]!;

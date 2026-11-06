@@ -1,6 +1,7 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
 import { canPlaceAt } from './grid-zones';
-import { blockedTiles, approachPoint, findPath, isWalkable } from './pathfinding';
+import { navGrid, tileIndex, type NavGrid } from './nav-grid';
+import { accessPoints, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
 import type { Furniture, Guest, Point, WorldState, Zone } from './types';
 
 export function zoneById(world: WorldState, id: string): Zone | null {
@@ -32,24 +33,34 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
   if (item) item.occupants = item.occupants.filter((id) => id !== guestId);
 }
 
-export function interactionPoint(world: WorldState, item: Furniture): Point | null {
-  return approachPoint(world.size, blockedTiles(world.size, world.furniture, world.zones), item);
+/** Das eine Navigationsraster der Welt: Moebel, Wandkanten und Layout im Cache. */
+export function worldNav(world: WorldState): NavGrid {
+  return navGrid(world.size, world.furniture, world.layout);
+}
+
+/** Mehrere Zugaenge je Objekt; jeder liegt frei und teilt eine offene Kante mit ihm. */
+function interactionPoints(world: WorldState, item: Furniture): Point[] {
+  return accessPoints(worldNav(world), item);
+}
+
+/**
+ * Ein Zugang nach Wahl (z. B. je Sitz oder Gast), damit Bars und Tische nicht
+ * auf einen einzigen Punkt beschraenkt sind. Ohne Zugang greift die alte
+ * `approachPoint`-Regel als sicherer Fallback.
+ */
+export function interactionPoint(world: WorldState, item: Furniture, slot = 0): Point | null {
+  const points = interactionPoints(world, item);
+  if (points.length === 0) return approachPoint(worldNav(world), item);
+  return points[Math.abs(slot) % points.length]!;
 }
 
 /** Jeder Sitz bekommt ein eigenes Zugaengliches Tile; sonst stehen alle Gaeste auf demselben Punkt. */
 export function seatPoint(world: WorldState, item: Furniture, seat: number): Point | null {
-  const blocked = blockedTiles(world.size, world.furniture, world.zones);
-  const candidates: Point[] = [];
-  for (let x = item.x; x < item.x + item.w; x += 1) candidates.push({ x, y: item.y + item.h });
-  for (let y = item.y; y < item.y + item.h; y += 1) candidates.push({ x: item.x + item.w, y });
-  for (let x = item.x + item.w - 1; x >= item.x; x -= 1) candidates.push({ x, y: item.y - 1 });
-  for (let y = item.y + item.h - 1; y >= item.y; y -= 1) candidates.push({ x: item.x - 1, y });
-  const free = candidates.filter((point) => isWalkable(world.size, blocked, point.x, point.y));
-  return free[Math.abs(seat) % free.length] ?? approachPoint(world.size, blocked, item);
+  return interactionPoint(world, item, seat);
 }
 
 export function pathTo(world: WorldState, from: Point, to: Point): Point[] {
-  return findPath(world.size, guestBlocked(world), from, to);
+  return findPath(guestNav(world), from, to);
 }
 
 /** Tuertile: liegt vor dem Eingang auf dem Aussenstreifen, nie im Gebaeude. */
@@ -76,42 +87,47 @@ function entranceApron(world: WorldState): Point[] {
   return spots;
 }
 
-/** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur der Eingangsstreifen ist offen. */
-export function guestBlocked(world: WorldState): Set<number> {
-  const blocked = new Set(blockedTiles(world.size, world.furniture, world.zones));
-  for (const spot of entranceApron(world)) blocked.delete(spot.y * world.size + spot.x);
-  return blocked;
+/** Gaeste duerfen den Eingangsstreifen auch dann betreten, wenn dort etwas steht. */
+function guestNav(world: WorldState): NavGrid {
+  const nav = worldNav(world);
+  const blocked = new Set(nav.blocked);
+  for (const spot of entranceApron(world)) {
+    if (spot.x < 0 || spot.y < 0 || spot.x >= nav.size || spot.y >= nav.size) continue;
+    blocked.delete(tileIndex(nav.size, spot.x, spot.y));
+  }
+  return { size: nav.size, blocked, walls: nav.walls };
 }
 
-/** Gaeste erscheinen und verschwinden draussen vor der Tuer, gehen von dort durch den Eingang. */
+/** Gaeste erscheinen vor der Tuer und gehen von dort durch den Eingang. */
 export function spawnPoint(world: WorldState): Point {
-  return doorPoint(world);
+  const nav = worldNav(world);
+  const door = doorPoint(world);
+  return isWalkable(nav, door.x, door.y) ? door : nearestWalkable(nav, door) ?? door;
 }
 
 /**
- * Eigener Aussenplatz je Gast: niemand spawnt auf dem Tile eines anderen.
- * Erst der Streifen draussen vor der Tuer, bei Andrang die Eingangshalle.
+ * Eigener Aussenplatz je Gast: niemand spawnt auf dem Tile eines anderen und
+ * niemand in einem Moebel. Erst der Streifen an der Tuer, bei Andrang die Halle.
  */
 export function entranceSpot(world: WorldState, guestId = 0): Point {
-  const door = doorPoint(world);
+  const nav = worldNav(world);
   const taken = new Set(world.guests.map((guest) => guest.position.y * world.size + guest.position.x));
   for (const spot of entranceApron(world)) {
     if (spot.x < 0 || spot.y < 0 || spot.x >= world.size || spot.y >= world.size) continue;
-    if (taken.has(spot.y * world.size + spot.x)) continue;
+    if (taken.has(spot.y * world.size + spot.x) || !isWalkable(nav, spot.x, spot.y)) continue;
     return spot;
   }
-  const blocked = blockedTiles(world.size, world.furniture, world.zones);
   const hall = world.zones.find((zone) => zone.kind === 'ENTRANCE');
   if (hall) {
     for (let y = hall.y; y < hall.y + hall.h; y += 1) {
       for (let x = hall.x; x < hall.x + hall.w; x += 1) {
         if (taken.has(y * world.size + x)) continue;
-        if (isWalkable(world.size, blocked, x, y)) return { x, y };
+        if (isWalkable(nav, x, y)) return { x, y };
       }
     }
   }
   void guestId;
-  return door;
+  return spawnPoint(world);
 }
 
 export function exchangePoint(world: WorldState): Point | null {
@@ -123,12 +139,14 @@ export function guestById(world: WorldState, id: number): Guest | null {
   return world.guests.find((guest) => guest.id === id) ?? null;
 }
 
-export function sendGuest(world: WorldState, guest: Guest, target: Point): void {
+/** Schickt einen Gast auf ein Ziel; false, wenn es keinen Weg dorthin gibt. */
+export function sendGuest(world: WorldState, guest: Guest, target: Point): boolean {
   guest.path = pathTo(world, guest.position, target);
   guest.pathIndex = 0;
+  return guest.path.length > 0;
 }
 
 export function canPlace(world: WorldState, x: number, y: number, w: number, h: number, needsAccess = true): boolean {
   const blockers = [world.player.position, ...world.guests.map((guest) => guest.position)];
-  return canPlaceAt(world.size, world.furniture, blockers, x, y, w, h, needsAccess, world.zones);
+  return canPlaceAt(world.size, world.furniture, blockers, x, y, w, h, needsAccess, world.layout);
 }

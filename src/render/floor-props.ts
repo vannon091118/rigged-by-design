@@ -7,6 +7,7 @@ import type { GameView } from '../store/types';
 import { ROLE, STROKE, crateColor, floorText } from './art-tokens';
 import { isVisible, type ViewRect } from './floor-math';
 import { FloorCash } from './floor-cash';
+import type { DepthStage } from './depth';
 import { createGuestArt, type GuestArt } from './guest-art';
 
 const AGENT_STYLE: Record<StaffRole, { persona: string; name: string }> = {
@@ -18,9 +19,10 @@ const AGENT_STYLE: Record<StaffRole, { persona: string; name: string }> = {
 };
 
 interface Layers {
-  readonly props: Container;
-  readonly actors: Container;
+  readonly world: Container;
+  readonly overhead: Container;
   readonly stickers: Container;
+  readonly depth: DepthStage;
 }
 
 export class FloorProps {
@@ -30,7 +32,8 @@ export class FloorProps {
   readonly #ghost = new Graphics();
   readonly #cash = new FloorCash();
   readonly #onActors: (art: GuestArt) => void;
-  readonly #props: Container;
+  readonly #world: Container;
+  readonly #depth: DepthStage;
   #ghostId: string | null = null;
   #view: GameView | null = null;
 
@@ -39,8 +42,11 @@ export class FloorProps {
     camera: Container,
     onActors: (art: GuestArt) => void,
   ) {
-    this.#props = layers.props;
-    this.#props.addChild(this.#ghost, this.#cash.root);
+    this.#world = layers.world;
+    this.#depth = layers.depth;
+    // Der Platzierungs-Geist ist Bedienoberflaeche und liegt ueber der Welt.
+    layers.overhead.addChild(this.#ghost);
+    this.#world.addChild(this.#cash.root);
     this.#ghost.visible = false;
     this.#onActors = onActors;
     camera.on('pointermove', (event) => this.#hover(event.getLocalPosition(camera)));
@@ -54,6 +60,7 @@ export class FloorProps {
   update(view: GameView, rect: ViewRect, lod: number): void {
     this.#view = view;
     this.#cash.sync(view);
+    this.#depth.set(this.#cash.root, this.#cash.root.y, 'prop', 900);
     this.#syncAgents(view, rect, lod);
     this.#syncCrates(view, rect);
     this.#syncDisputes(view, rect);
@@ -78,7 +85,7 @@ export class FloorProps {
 
   destroy(layers: Layers): void {
     for (const art of this.#agents.values()) {
-      layers.actors.removeChild(art.root);
+      layers.world.removeChild(art.root);
       layers.stickers.removeChild(art.sticker);
       art.root.destroy({ children: true });
       art.sticker.destroy({ children: true });
@@ -121,6 +128,7 @@ export class FloorProps {
         art.target.y = ty;
         art.moveStart = performance.now();
       }
+      this.#depth.set(art.root, art.root.y, 'actor', agent.id);
       art.setMood(70, false, 0);
       art.setLod(lod === 1);
       const visible = isVisible(art.root.x, art.root.y, 0, 0, rect, 40);
@@ -158,10 +166,11 @@ export class FloorProps {
         root.position.set(crate.x * TILE, crate.y * TILE);
         entry = { root, hidden: false };
         this.#crates.set(crate.id, entry);
-        this.#props.addChild(root);
+        this.#world.addChild(root);
       }
       const hidden = crate.carriedBy !== null;
       entry.hidden = hidden;
+      this.#depth.set(entry.root, (crate.y + 1) * TILE, 'prop', crate.id);
       entry.root.visible = !hidden && isVisible(crate.x * TILE, crate.y * TILE, TILE, TILE, rect, 0);
     }
     for (const [id, entry] of this.#crates) {
@@ -183,9 +192,10 @@ export class FloorProps {
         marker.star(0, 0, 8, TILE * 0.7, TILE * 0.45).fill({ color: ROLE.value, alpha: 0.55 });
         marker.position.set((dispute.x + 0.5) * TILE, (dispute.y + 0.5) * TILE);
         this.#disputes.set(dispute.id, marker);
-        this.#props.addChild(marker);
+        this.#world.addChild(marker);
       }
       marker.visible = isVisible(dispute.x * TILE, dispute.y * TILE, TILE, TILE, rect, TILE);
+      this.#depth.set(marker, (dispute.y + 1) * TILE, 'prop', dispute.id);
     }
     for (const [id, marker] of this.#disputes) {
       if (seen.has(id)) continue;
@@ -209,7 +219,7 @@ export class FloorProps {
     try {
       const def = getBuildDef(this.#ghostId as never);
       const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
-      const ok = canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
+      const ok = canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0, view.layout);
       this.#ghost.clear();
       this.#ghost.roundRect(x * TILE, y * TILE, def.w * TILE, def.h * TILE, 4)
         .fill({ color: ok ? ROLE.service : ROLE.danger, alpha: 0.28 })

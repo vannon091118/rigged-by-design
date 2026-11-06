@@ -1,156 +1,59 @@
 /**
- * Architektur: jede Zone bekommt Waende mit Lichtkante, Sockel, Ecken und
- * Durchgaengen zu ihren Nachbarn. Alles statisch, damit die Chunk-Caches
- * weiter nur bei Strukturaenderungen neu backen.
+ * Raum: Bodenmaterial je Tile aus dem Layout, Waende und Tueren aus den
+ * Kanten, darueber nur Licht und Ausstattung der semantischen Zone. Alles
+ * statisch, damit die Chunk-Caches weiter nur bei Strukturaenderungen backen.
  */
 import type { Container, Graphics } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
-import { openingsOn } from '../core/sim/walls';
-import { CARPETS } from '../core/sim/types';
 import type { GameView } from '../store/types';
-import { INK, LIGHT, STROKE, lightFor, materialFor, type FloorMaterial, type LightState } from './art-tokens';
-import { addTiling, drawSurface, drawWalkway } from './floor-surface';
+import { INK, lightFor, materialFor } from './art-tokens';
+import { drawCeilingLight, drawLightSpill } from './floor-surface';
+import { drawFloorRegion } from './floor-material';
 import { drawDressing } from './room-dressing';
+import { WALL, drawDoors } from './wall-art';
 
 interface Rect { x: number; y: number; w: number; h: number }
-interface ZoneLike { id: string; kind: string; x: number; y: number; w: number; h: number; color: number }
-type Side = 'top' | 'bottom' | 'left' | 'right';
+interface ZoneLike { id: string; kind: string; x: number; y: number; w: number; h: number }
 
-const WALL = 6;
-const WALLPAPER = 'environment/tiles/wallpaper-damask-plum.png';
-const SIDES: readonly Side[] = ['top', 'bottom', 'left', 'right'];
-
-/** Eine Wand: Koerper, Lichtkante zur Zone, Schatten in den Raum und Sockelstreifen. */
-function drawWall(
-  g: Graphics, zone: ZoneLike, side: Side, span: [number, number],
-  mat: FloorMaterial, tile: number, deco?: Container,
-): void {
-  const vertical = side === 'left' || side === 'right';
-  const from = span[0] * tile;
-  const size = (span[1] - span[0]) * tile;
-  const band: Rect = vertical
-    ? { x: side === 'left' ? zone.x * tile : (zone.x + zone.w) * tile - WALL, y: from, w: WALL, h: size }
-    : { x: from, y: side === 'top' ? zone.y * tile : (zone.y + zone.h) * tile - WALL, w: size, h: WALL };
-  g.rect(band.x, band.y, band.w, band.h).fill({ color: INK, alpha: 0.94 });
-  // Tapete als Kachel: die Wand liest als Flaeche statt als schwarzer Balken.
-  addTiling(deco, WALLPAPER, band.x, band.y, band.w, band.h, 2, 0.24);
-  // Manifest-Regel: zwei Pixel Kontur, immer dunkler als der Inhalt.
-  g.rect(band.x + 1, band.y + 1, band.w - 2, band.h - 2)
-    .stroke({ width: STROKE.base, color: 0x05030a, alpha: 0.85 });
-  if (vertical) {
-    const lightEdge = side === 'left' ? band.x + WALL - 1 : band.x;
-    g.rect(lightEdge, from, 1, size).fill({ color: mat.light, alpha: 0.32 });
-    g.rect(side === 'left' ? band.x + WALL : band.x - 2, from, 2, size).fill({ color: 0x000000, alpha: 0.32 });
-  } else {
-    const lightEdge = side === 'top' ? band.y + WALL - 1 : band.y;
-    g.rect(from, lightEdge, size, 1).fill({ color: mat.light, alpha: 0.32 });
-    g.rect(from, side === 'top' ? band.y + WALL : band.y - 2, size, 2).fill({ color: 0x000000, alpha: 0.32 });
-  }
-}
-
-/** Eckpfeiler: ohne sie treffen sich zwei Waende nur mit einer Luecke. */
-function drawCorners(g: Graphics, zone: ZoneLike, tile: number): void {
-  const left = zone.x * tile;
-  const top = zone.y * tile;
-  const right = (zone.x + zone.w) * tile - WALL;
-  const bottom = (zone.y + zone.h) * tile - WALL;
-  for (const [cx, cy] of [[left, top], [right, top], [left, bottom], [right, bottom]]) {
-    g.rect(cx!, cy!, WALL, WALL).fill({ color: INK, alpha: 0.94 });
-  }
-}
-
-/** Schwelle im Durchgang: Bodenmaterial laeuft durch, zwei Kanten markieren die Tuer. */
-function drawThresholds(g: Graphics, zone: ZoneLike, openings: readonly [number, number][], side: Side, mat: FloorMaterial, tile: number): void {
-  {
-    for (const span of openings) {
-      const vertical = side === 'left' || side === 'right';
-      const from = span[0] * tile;
-      const size = (span[1] - span[0]) * tile;
-      if (vertical) {
-        const x = side === 'left' ? zone.x * tile : (zone.x + zone.w) * tile - WALL;
-        g.rect(x, from, WALL, size).fill({ color: mat.base, alpha: 0.97 });
-        g.rect(side === 'left' ? x + WALL - 2 : x, from, 2, size).fill({ color: 0x000000, alpha: 0.24 });
-        g.rect(side === 'left' ? x : x + WALL - 1, from, 1, size).fill({ color: mat.accent, alpha: 0.2 });
-      } else {
-        const y = side === 'top' ? zone.y * tile : (zone.y + zone.h) * tile - WALL;
-        g.rect(from, y, size, WALL).fill({ color: mat.base, alpha: 0.97 });
-        g.rect(from, side === 'top' ? y + WALL - 2 : y, size, 2).fill({ color: 0x000000, alpha: 0.24 });
-        g.rect(from, side === 'top' ? y : y + WALL - 1, size, 1).fill({ color: mat.accent, alpha: 0.2 });
-      }
-    }
-  }
-}
-
-/** Eingang: Matte, zwei Pfosten und ein heller Durchgang an der linken Wand. */
-function drawGate(g: Graphics, zone: ZoneLike, tile: number): void {
-  const midY = (zone.y + zone.h / 2) * tile;
-  const x = zone.x * tile;
-  const mat = materialFor('ENTRANCE');
-  g.rect(x, midY - tile, WALL, tile * 2).fill({ color: mat.light, alpha: 0.16 });
-  g.rect(x + WALL - 2, midY - tile, 2, tile * 2).fill({ color: LIGHT.neon, alpha: 0.45 });
-  g.roundRect(x + WALL, midY - tile * 0.7, tile * 3, tile * 1.4, 4)
-    .fill({ color: INK, alpha: 0.4 })
-    .stroke({ width: 1, color: mat.accent, alpha: 0.45 });
-  for (const offset of [-tile * 1.5, tile * 1.5]) g.rect(x + WALL, midY + offset, 4, 4).fill({ color: mat.accent, alpha: 0.5 });
-}
-
-function drawZoneFloor(
-  g: Graphics, zone: ZoneLike, others: readonly ZoneLike[], area: Area, tile: number, size: number,
-  deco: Container | undefined, light: LightState,
-): void {
+/** Zonenrechteck auf den Chunk beschnitten; `null`, wenn sie sich nicht treffen. */
+function clipZone(zone: ZoneLike, area: Area, tile: number): Rect | null {
   const ix = Math.max(zone.x, area.x);
   const iy = Math.max(zone.y, area.y);
   const ex = Math.min(zone.x + zone.w, area.x + area.w);
   const ey = Math.min(zone.y + zone.h, area.y + area.h);
-  if (ex <= ix || ey <= iy) return;
-  // Wandbreite nur an echten Zonenkanten abziehen; an Chunk-Grenzen 2 px ueberlappen,
-  // damit die Kante der Cache-Textur keine Naht in den Boden zeichnet.
-  const left = ix === zone.x ? WALL : -2;
-  const top = iy === zone.y ? WALL : -2;
-  const right = ex === zone.x + zone.w ? WALL : -2;
-  const bottom = ey === zone.y + zone.h ? WALL : -2;
-  const rect: Rect = {
-    x: ix * tile + left,
-    y: iy * tile + top,
-    w: (ex - ix) * tile - left - right,
-    h: (ey - iy) * tile - top - bottom,
+  if (ex <= ix || ey <= iy) return null;
+  return { x: ix * tile, y: iy * tile, w: (ex - ix) * tile, h: (ey - iy) * tile };
+}
+
+/**
+ * Licht und Ausstattung bleiben semantisch: die Zone bestimmt, wie ein Raum
+ * wirkt, nie welches Bodenmaterial er hat. Deshalb liegt diese Schicht ueber
+ * den Layout-Tiles und nicht in ihrer Aufloesung.
+ */
+function drawZoneOverlay(g: Graphics, zone: ZoneLike, area: Area, tile: number, phase: GameView['dayPhase'], deco?: Container): void {
+  if (!clipZone(zone, area, tile)) return;
+  const light = lightFor(zone.kind, phase);
+  // Lichtpfuetze einmal je Zone ueber die volle Flaeche; der Chunk-Cache
+  // beschneidet sie, statt sie pro Chunk neu zu zentrieren.
+  const full: Rect = {
+    x: zone.x * tile + WALL, y: zone.y * tile + WALL,
+    w: zone.w * tile - WALL * 2, h: zone.h * tile - WALL * 2,
   };
-  if (rect.w <= 0 || rect.h <= 0) return;
-  const mat = materialFor(zone.kind);
-  drawSurface(g, mat, rect, tile, {
-    top: iy === zone.y, bottom: ey === zone.y + zone.h,
-    left: ix === zone.x, right: ex === zone.x + zone.w,
-  }, deco, light);
-  drawDressing(g, mat, rect, zone, tile, deco, light);
-  for (const side of SIDES) {
-    // Wand- und Tuer-Regeln liegen im Sim (walls.ts); Malerei und Kollision teilen sie sich.
-    const spans = openingsOn(zone, others, side, size).sort((a, b) => a[0] - b[0]);
-    const whole: [number, number] = side === 'left' || side === 'right' ? [iy, ey] : [ix, ex];
-    const openings: [number, number][] = [];
-    let cursor = whole[0];
-    for (const span of spans) {
-      const clipped: [number, number] = [Math.max(span[0], whole[0]), Math.min(span[1], whole[1])];
-      if (clipped[1] <= clipped[0]) continue;
-      if (clipped[0] > cursor) drawWall(g, zone, side, [cursor, clipped[0]], mat, tile, deco);
-      openings.push(clipped);
-      cursor = Math.max(cursor, clipped[1]);
-    }
-    if (cursor < whole[1]) drawWall(g, zone, side, [cursor, whole[1]], mat, tile, deco);
-    drawThresholds(g, zone, openings, side, mat, tile);
-  }
-  drawCorners(g, zone, tile);
-  if (zone.kind === 'ENTRANCE') drawGate(g, zone, tile);
+  if (full.w <= 0 || full.h <= 0) return;
+  drawLightSpill(g, full, light, 0.08);
+  const originInChunk = zone.x >= area.x && zone.x < area.x + area.w
+    && zone.y >= area.y && zone.y < area.y + area.h;
+  if (!originInChunk) return;
+  drawCeilingLight(g, full, light);
+  drawDressing(g, materialFor(zone.kind), full, zone, tile, deco, light);
 }
 
 export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: number, deco?: Container): void {
-  const carpet = CARPETS[view.carpet] ?? CARPETS.VIOLET;
-  const ox = area.x * tile;
-  const oy = area.y * tile;
-  drawWalkway(g, carpet.color, { x: ox, y: oy, w: area.w * tile, h: area.h * tile }, tile);
-  const zones = view.zones as readonly ZoneLike[];
-  for (const zone of zones) {
-    drawZoneFloor(g, zone, zones, area, tile, view.size, deco, lightFor(zone.kind, view.dayPhase));
+  drawFloorRegion(g, view.layout, area, tile, deco);
+  for (const zone of view.zones as readonly ZoneLike[]) {
+    drawZoneOverlay(g, zone, area, tile, view.dayPhase, deco);
   }
+  drawDoors(g, { size: view.size, layout: view.layout }, area, tile);
   if (area.x === 0 && area.y === 0) {
     const size = view.size * tile;
     g.rect(0, 0, size, size).stroke({ width: 8, color: INK });

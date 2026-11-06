@@ -1,56 +1,20 @@
-/** A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern. */
-import type { Furniture, Point, Zone } from './types';
-import { zoneSignature, zoneWallTiles } from './walls';
+/** A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. */
+import { stepOpen, tileIndex, type NavGrid } from './nav-grid';
+import type { Furniture, Point } from './types';
 
-function tileIndex(size: number, x: number, y: number): number {
-  return y * size + x;
+export { blockedTiles } from './nav-grid';
+
+/** Ein Tile ist betretbar, wenn es im Raster liegt und kein Moebel traegt. */
+export function isWalkable(nav: NavGrid, x: number, y: number): boolean {
+  return x >= 0 && y >= 0 && x < nav.size && y < nav.size && !nav.blocked.has(tileIndex(nav.size, x, y));
 }
 
-/** Ein Muster, an dem sich der Nav-Cache wiedererkennt: Zahl, IDs und Positionen. */
-function structureKey(furniture: readonly Furniture[]): string {
-  let key = `${furniture.length}`;
-  for (const item of furniture) {
-    key += `|${item.id}:${item.x}:${item.y}:${item.w}:${item.h}`;
+/** Der Zugang muss frei UND ueber eine offene Kante mit dem Objekt verbunden sein. */
+function openToFootprint(nav: NavGrid, point: Point, x: number, y: number, w: number, h: number): boolean {
+  for (let ty = y; ty < y + h; ty += 1) {
+    for (let tx = x; tx < x + w; tx += 1) if (stepOpen(nav, point, { x: tx, y: ty })) return true;
   }
-  return key;
-}
-
-let cache: { size: number; key: string; tiles: Set<number> } | null = null;
-
-/**
- * Belegte Tiles: Brettrand, Moebel und die aus den Zonen abgeleiteten Wand-Ringe
- * (dieselben Durchgaenge wie die Wand-Malerei, siehe walls.ts). Das Raster wird
- * pro Aufbau gecacht, weil Bewegungen pro Tick mehrfach danach fragen; jede
- * Bau- oder Zonenaenderung erzeugt einen neuen Schluessel.
- * Der zurueckgegebene Set ist schreibgeschuetzt zu behandeln.
- */
-export function blockedTiles(size: number, furniture: readonly Furniture[], zones: readonly Zone[] = []): Set<number> {
-  const zonesKey = zones.length > 0 ? zoneSignature(zones) : '-';
-  const key = `${zonesKey}#${structureKey(furniture)}`;
-  if (cache && cache.size === size && cache.key === key) return cache.tiles;
-  const tiles = new Set<number>();
-  for (let i = 0; i < size; i += 1) {
-    tiles.add(tileIndex(size, i, 0));
-    tiles.add(tileIndex(size, i, size - 1));
-    tiles.add(tileIndex(size, 0, i));
-    tiles.add(tileIndex(size, size - 1, i));
-  }
-  for (const item of furniture) {
-    for (let y = item.y; y < item.y + item.h; y += 1) {
-      for (let x = item.x; x < item.x + item.w; x += 1) {
-        if (x >= 0 && y >= 0 && x < size && y < size) tiles.add(tileIndex(size, x, y));
-      }
-    }
-  }
-  for (const zone of zones) {
-    for (const tile of zoneWallTiles(zone, zones, size)) tiles.add(tile);
-  }
-  cache = { size, key, tiles };
-  return tiles;
-}
-
-export function isWalkable(size: number, blocked: Set<number>, x: number, y: number): boolean {
-  return x >= 0 && y >= 0 && x < size && y < size && !blocked.has(tileIndex(size, x, y));
+  return false;
 }
 
 const STEPS = [[0, -1], [1, 0], [0, 1], [-1, 0]] as const;
@@ -109,8 +73,9 @@ class TileHeap {
 }
 
 /** Gibt den Weg inklusive Ziel zurueck; [] wenn unerreichbar. */
-export function findPath(size: number, blocked: Set<number>, start: Point, goal: Point): Point[] {
-  if (!isWalkable(size, blocked, goal.x, goal.y) || !isWalkable(size, blocked, start.x, start.y)) return [];
+export function findPath(nav: NavGrid, start: Point, goal: Point): Point[] {
+  const size = nav.size;
+  if (!isWalkable(nav, goal.x, goal.y) || !isWalkable(nav, start.x, start.y)) return [];
   const total = size * size;
   const startIndex = tileIndex(size, start.x, start.y);
   const goalIndex = tileIndex(size, goal.x, goal.y);
@@ -140,7 +105,8 @@ export function findPath(size: number, blocked: Set<number>, start: Point, goal:
       const ny = cy + dy;
       if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
       const next = ny * size + nx;
-      if (blocked.has(next)) continue;
+      if (nav.blocked.has(next)) continue;
+      if (!stepOpen(nav, { x: cx, y: cy }, { x: nx, y: ny })) continue;
       if (gScore[next] !== -1 && gScore[next]! <= nextG) continue;
       gScore[next] = nextG;
       cameFrom[next] = current;
@@ -162,28 +128,60 @@ export function findPath(size: number, blocked: Set<number>, start: Point, goal:
   return path.reverse();
 }
 
-/** Freies Tile vor einem Objekt; Reihenfolge unten, links, rechts, oben. */
-export function approachPoint(size: number, blocked: Set<number>, item: Furniture): Point | null {
+/**
+ * Alle freien Zugaenge eines Footprints, deterministisch geordnet:
+ * unten links nach rechts, rechts oben nach unten, oben rechts nach links,
+ * links unten nach oben. Jeder Punkt liegt frei und teilt eine offene Kante
+ * mit dem Objekt.
+ */
+export function accessPointsFor(nav: NavGrid, x: number, y: number, w: number, h: number): Point[] {
+  const candidates: Point[] = [];
+  for (let px = x; px < x + w; px += 1) candidates.push({ x: px, y: y + h });
+  for (let py = y; py < y + h; py += 1) candidates.push({ x: x + w, y: py });
+  for (let px = x + w - 1; px >= x; px -= 1) candidates.push({ x: px, y: y - 1 });
+  for (let py = y + h - 1; py >= y; py -= 1) candidates.push({ x: x - 1, y: py });
+  const seen = new Set<number>();
+  return candidates.filter((point) => {
+    if (!isWalkable(nav, point.x, point.y)) return false;
+    const key = tileIndex(nav.size, point.x, point.y);
+    if (seen.has(key)) return false;
+    if (!openToFootprint(nav, point, x, y, w, h)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+export function accessPoints(nav: NavGrid, item: Furniture): Point[] {
+  return accessPointsFor(nav, item.x, item.y, item.w, item.h);
+}
+
+/**
+ * Bisheriger sicherer Fallback: ein Zugang vor dem Objekt, Reihenfolge unten,
+ * links, rechts, oben. Bleibt fuer Aufrufer, die nur einen Punkt brauchen.
+ */
+export function approachPoint(nav: NavGrid, item: Furniture): Point | null {
   const candidates: Point[] = [
     { x: item.x + Math.floor(item.w / 2), y: item.y + item.h },
     { x: item.x - 1, y: item.y + Math.floor(item.h / 2) },
     { x: item.x + item.w, y: item.y + Math.floor(item.h / 2) },
     { x: item.x + Math.floor(item.w / 2), y: item.y - 1 },
   ];
-  return candidates.find((point) => isWalkable(size, blocked, point.x, point.y)) ?? null;
+  const point = candidates.find((entry) => isWalkable(nav, entry.x, entry.y)
+    && openToFootprint(nav, entry, item.x, item.y, item.w, item.h));
+  return point ?? null;
 }
 
 /** Ringe von innen nach aussen: jedes Tile wird pro Radius genau einmal geprueft, nicht je Quadrat. */
-export function nearestWalkable(size: number, blocked: Set<number>, from: Point): Point | null {
-  if (isWalkable(size, blocked, from.x, from.y)) return from;
-  for (let radius = 1; radius < size; radius += 1) {
+export function nearestWalkable(nav: NavGrid, from: Point): Point | null {
+  if (isWalkable(nav, from.x, from.y)) return from;
+  for (let radius = 1; radius < nav.size; radius += 1) {
     for (let dy = -radius; dy <= radius; dy += 1) {
       const edgeRow = dy === -radius || dy === radius;
       for (let dx = -radius; dx <= radius; dx += 1) {
         if (!edgeRow && dx !== -radius && dx !== radius) continue;
         const x = from.x + dx;
         const y = from.y + dy;
-        if (isWalkable(size, blocked, x, y)) return { x, y };
+        if (isWalkable(nav, x, y)) return { x, y };
       }
     }
   }

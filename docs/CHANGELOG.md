@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
+<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,6 +12,21 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.127] - 2026-11-06
+
+### Technik
+- Branch-Konsolidierung: `main` (0.3.122), der konfliktbehaftete PR #142, der `integration`-Stand und der Asset-Semantik-Branch sind in `feat/spatial-layout-editor` zusammengeführt. Alle fünf Task-Commits und die zuvor offenen Branch-Stände liegen damit in einem PR gegen `main`.
+- Konfliktauflösung folgt der einen räumlichen Wahrheit: Navigation und Wandkollision laufen über `nav-grid.ts` und `layout.edges`; die zonenbasierten `walls.ts`-Dateien aus `main` und PR #142 sind entfernt.
+- `deliveries.ts` folgt nach dem Merge der `NavGrid`-Signatur (`worldNav`); ohne die Korrektur fand die Lieferkette kein freies Kisten-Tile mehr und 18 Tests fielen aus.
+- Doku und Narrative zusammengeführt: alle drei Beiträge vom 2026-11-06 stehen im Manifest, die Registry hat 65 Fragmente; Inventar 1327/1327.
+
+## [0.3.125] - 2026-11-06
+
+### Technik
+- Task 5/5 ist vorbereitet: `src/core/sim/layout-json.ts` exportiert und importiert das Layout als versioniertes Dokument (`rbd-layout`, Version 1) mit fester Feldreihenfolge. Der Import ist fail-closed und nutzt denselben `parseLayout()`-Vertrag wie ein Save.
+- `src/ui/editor-gate.ts` lässt den Editor nur in einem Build mit `VITE_RBD_EDITOR_MODE=1` und `?editor=1` zu; der Query-Parameter allein öffnet nichts.
+- Noch kein Editor, kein Store-Command und kein Undo/Redo: Diese Schritte folgen mit der Editor-Oberfläche.
+
 ## [0.3.122] - 2026-11-06
 
 ### Technik
@@ -22,10 +37,36 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ## [0.3.121] - 2026-11-06
 
+### Spiel
+- Waende, Tueren und Zonen haben eine eigene raeumliche Wahrheit im Spielstand. Ein ausgebautes Haus behaelt seine Erweiterungsflaechen jetzt auch nach Speichern und Laden; vorher gingen sie beim Replay verloren.
+- Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
+
 ### Technik
-- Inventur repariert: `docs/INVENTORY.md` deckt wieder jede getrackte Datei ab, `verify:docs` (`ERR-4017`) ist gruen. Die Ursache lag im Pre-Commit-Hook, der die Inventur nur schrieb, aber nicht stagte; er stagt sie jetzt selbst.
-- Review des Arbeitsbranch gegen den damaligen `origin/main` (34 Commits, 166 Dateien): eine Render-Regression (Maschinen-Textur ueber Status-Text) ist behoben, zwei Verhaltensbefunde bleiben offen (Reiniger-Zielauswahl, `chooseSpot` ohne Spezifikation).
-- `main` mit 0.3.120 (Huelle: Atlas, Governor, APK) in den Arbeitsbranch gemerged; Konflikte in Doku und Version zugunsten von `main`, Wandkollision (`src/core/sim/walls.ts`) und Inventur-Reparatur bleiben erhalten. Mit dem Huelle-Stand sind drei Review-Befunde ueberholt: Boden-Texturen haengen an der Chunk-`deco`-Ebene, `floor-events.ts` abonniert alle acht Ereignisse statt des geloeschten Partikel-Overlays, und der Backdrop-Sprite ist dem Atlas gewichen.
+- Inventur repariert: `docs/INVENTORY.md` deckt wieder jede getrackte Datei ab, `verify:docs` (`ERR-4017`) ist grün; der Pre-Commit-Hook stagt die Inventur jetzt selbst.
+- `main` mit 0.3.120 in den Arbeitsbranch gemerged; Konflikte in Doku und Version zugunsten von `main`, die Wandkollision bleibt erhalten.
+- Möbel, Figuren, Personal, Kisten, Streitmarker und Wandvorderseiten teilen jetzt eine Tiefenebene (Task 4/5): `src/render/depth.ts` sortiert ausschließlich nach Fußanker, dann Typ-Rang (Requisite, Möbel, Figur, Wand), dann stabiler ID.
+- Große Sprites werden nicht mehr über ihre Oberkante einsortiert; ein 4×2-Objekt liegt an seiner Unterkante. Der Spieler ist ID 0, Gäste und Personal behalten ihre IDs.
+- Vordergrundwände sind eigene Occlusion-Sprites in derselben sortierbaren Ebene: Figuren nördlich einer Wand liegen dahinter, Figuren südlich davor. Die Wandtexturen entstehen einmal je Ausrichtung und werden von allen Kanten geteilt.
+- Die Sortierung läuft nur, wenn sich ein Anker oder eine ID geändert hat; Standbilder kosten keine Sortierung. Chunk-Caches, Atlas und First-Frame-Handshake bleiben unverändert.
+- Neue Messung `depth-perf.bench.ts` auf derselben Szene: SMALL 0,062 ms, MEDIUM 0,028 ms, LARGE 0,081 ms je Neu-Sortierung (200 Figuren, 119–359 Wände).
+- Boden und Wände kommen jetzt vollständig aus dem Layout (Task 3/5): `src/render/floor-material.ts` löst jede `FloorMaterialId` in genau eine Darstellung, eine optionale Manifest-Textur und eine stabile Fallback-ID auf. CARPET nutzt `casino-carpet-plum.png`; WOOD, TILE, STONE, LINOLEUM und CONCRETE bleiben deterministisch prozedural, ohne erfundene Pfade.
+- Die alte Zonen-Materialtabelle ist entfernt: `floorTextureFor()` und `FLOOR_TEXTURE` ordneten Muster-Schlüssel (`carpet`, `planks`, `rug`) Wallpaper-Dateien zu und waren damit kein Materialvertrag. Materialatlas und Texturauflösung laufen weiter über `textureFor()` (Nearest-Sampling, Atlas-Fallback, stiller Rückfall).
+- Zonen bleiben semantisch: Lichtfarbe und Ausstattung hängen an `ZoneKind`, nicht am Boden. `lightFor()` hat eine eigene Zonen-Lichttabelle; die Teppichwahl maskiert nur noch CARPET-Tiles aus dem Layout statt ganzer Zonen.
+- Wände, Ecken, Anschlüsse und Türen entstehen aus `layout.edges`: Jede Kante gehört genau einer Kachel (H der südlichen, V der östlichen), das Band liegt vollständig darin, die Vorderseite sitzt an Süd-/Ostkante. DOOR bekommt Pfosten und Schwelle, OPENING nur die Schwelle; nur die Haustür auf dem Rand leuchtet.
+- Chunk-Invalidierung ist tile-genau: `regionHash` mischt Bodenmaterialien und Kanten des Chunks über einen WeakMap-Cache je Layout-Identität. Eine einzelne Tile- oder Kantenänderung backt nur den betroffenen 30×30-Chunk.
+- Kanten-Navigation (Task 2/5): `src/core/sim/nav-grid.ts` trennt belegte Möbel-Tiles von Wandkanten; nur `WALL` blockiert einen Übergang, `DOOR` und `OPENING` bleiben passierbar.
+- `blockedTiles()` sperrt keine Rand-Tiles mehr. Den Rand schließt die Randkante des Layouts; Gäste, Spieler und Staff können die Randkachel betreten, aber nicht hinaus, und niemand wird mehr durch eine unsichtbare Tile-Sperre vom Eingang ferngehalten.
+- A* prüft jeden Schritt über `stepOpen()` (`H` zwischen (x, y-1)/(x, y), `V` zwischen (x-1, y)/(x, y)); Diagonalen bleiben gesperrt, die Wegfindung deterministisch.
+- `accessPointsFor()` liefert alle freien Zugänge eines Footprints mit offener Kante zum Objekt; `interactionPoint(world, item, slot)` verteilt Sitzplätze, Staff und Gäste darauf, `approachPoint()` bleibt als sicherer Fallback in der alten Reihenfolge (unten, links, rechts, oben).
+- Platzierung: `canPlaceAt()` weist Tür-Tiles ab, verlangt mindestens einen Zugang mit offener Kante und prüft über `nav-reach.ts`, dass keine Platzierung einen bisher erreichbaren Service (EXCHANGE, BAR, TOILET, STORAGE, JOB_STATION) versiegelt.
+- Zielvalidierung: Reserviert ein Gast einen Platz ohne Weg, wird die Reservierung sofort freigegeben; Spawn- und Eingangsplatz prüfen Begehbarkeit statt nur der Koordinate.
+- Der Nav-Cache hängt an Brettgröße, Möbelstruktur und der Identität des unveränderlichen Layouts; jede Layout-Änderung erzwingt ein neues Raster, kein veralteter Pfad bleibt stehen.
+- Spatial Layout Contract (Task 1/5): `src/core/sim/layout-types.ts` trennt `ZoneKind` (Spielbedeutung), `FloorMaterialId` (Bodenoptik) und `LayoutEdge` (Wand, Tuer, Durchgang). `LayoutState` traegt `size`, genau ein Bodenmaterial pro Tile, semantische Zonen und Kanten mit stabilen IDs.
+- Eine Wahrheit: `WorldState.layout` ist kanonisch; `WorldState.size` und `WorldState.zones` sind daraus abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben. `GameView.layout` reicht denselben unveraenderlichen Plan an Renderer und Editor weiter.
+- Kanten sind eindeutig verankert (`H` zwischen (x, y-1) und (x, y), `V` zwischen (x-1, y) und (x, y)); je Koordinate existiert hoechstens eine Kante. Eine Wand mit Tuer-ID, eine doppelte Kante oder eine Tuer ohne ID wird fail-closed verworfen. Die Eingangstuer liegt auf derselben Kante wie `doorPoint()`.
+- `src/core/sim/layout-derive.ts` leitet den Plan deterministisch aus der Vorlage ab, vergibt Bodenmaterial je Zone, setzt vier Randwaende und oeffnet genau eine Eingangstuer. Beim Ausbau bleiben alte Tiles und Tueren erhalten, die alte Aussenwand verschwindet, neue Flaechen erben ihre Zone.
+- Save v11 (`vcoin.casino.v11`, `version: 11`): `SAVE_VERSIONS` und `SavedGame` kennen 5–11, `src/store/migrate-layout.ts` liest v11 fail-closed und leitet v5–v10 deterministisch aus dem Template ab. `replaySave`, `toSavedGame`, Export und Import tragen das Layout mit; Ledger, PRNG, Gaeste, Besucher, Narrative und Rivalen bleiben unveraendert.
+- Tests: `layout-contract.test.ts` und `save-layout.test.ts` decken alle Vorlagen, die vier Randrichtungen, Tuer, Bodenmaterial, Ausbau, ungueltige Dimensionen/IDs/Materialien/Referenzen, fehlenden Durchgang, v5–v10-Migration und Import-Ablehnung ab.
 
 ## [0.3.120] - 2026-11-05
 

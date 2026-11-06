@@ -1,42 +1,24 @@
 /**
- * Bodenauftrag und Licht: Muster, Fugen, Deckenlampen und Kantentiefe je Raum.
- * Architektur (Waende, Tueren, Zonen) bleibt in room-art; hier liegt nur die Flaeche.
+ * Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und
+ * Kantentiefe. Die Materialwahl kommt aus dem Layout; diese Datei kennt nur
+ * die Zeichenregeln und die eine Texturaufloesung (`addTiling`).
  */
-import { Container, Graphics, TilingSprite } from 'pixi.js';
+import { Graphics, TilingSprite, type Container } from 'pixi.js';
 import type { FloorMaterial, LightState } from './art-tokens';
 import { textureFor } from './assets/textures';
 
 interface Rect { x: number; y: number; w: number; h: number }
 
-/** Welche Kanten des Rechtecks echte Zonenkanten sind; Chunk-Grenzen duerfen keine Faelschung erzeugen. */
-interface Edges { readonly top: boolean; readonly right: boolean; readonly bottom: boolean; readonly left: boolean }
-
 /** Deterministischer Kleckse-Hash: gleiche Kachel, gleicher Fleck, kein Zufall im Cache. */
 const speck = (x: number, y: number): number => Math.abs((Math.imul(x, 73856093) ^ Math.imul(y, 19349663)) % 97);
 
-/**
- * Laufwege: dunkler Stein mit Fugen. Bewusst dunkler als jeder Raum, damit die
- * Raeume als Buehne lesen und die Wege dazwischen als Infrastruktur.
- */
-export function drawWalkway(g: Graphics, base: number, r: Rect, tile: number): void {
-  g.rect(r.x, r.y, r.w, r.h).fill(base);
-  g.rect(r.x, r.y, r.w, r.h).fill({ color: 0x000000, alpha: 0.26 });
-  for (let x = Math.round(r.x); x < r.x + r.w; x += tile) g.rect(x, r.y, 1, r.h).fill({ color: 0xffffff, alpha: 0.035 });
-  for (let y = Math.round(r.y); y < r.y + r.h; y += tile) g.rect(r.x, y, r.w, 1).fill({ color: 0x000000, alpha: 0.2 });
-  for (let gy = Math.round(r.y) + tile; gy < r.y + r.h; gy += tile * 4) {
-    for (let gx = Math.round(r.x) + tile; gx < r.x + r.w; gx += tile * 4) {
-      if (speck(gx, gy) % 3 !== 0) continue;
-      g.rect(gx + 4, gy + 6, 3, 1).fill({ color: 0xffffff, alpha: 0.05 });
-    }
-  }
-}
-
-function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, full: boolean): void {
+/** Muster eines Materials; `full` zeichnet die geschlossene Teppichfläche eines Raums. */
+export function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, full: boolean): void {
   const { x, y, w, h } = r;
   if (mat.pattern === 'polished') {
     for (let ly = Math.ceil(y / (tile * 2)) * tile * 2; ly < y + h; ly += tile * 2) g.rect(x, ly, w, 1).fill({ color: mat.grout, alpha: 0.55 });
     for (let lx = Math.ceil(x / (tile * 2)) * tile * 2; lx < x + w; lx += tile * 2) g.rect(lx, y, 1, h).fill({ color: mat.grout, alpha: 0.32 });
-    g.rect(x + tile, y + tile, w - tile * 2, 1).fill({ color: mat.light, alpha: 0.06 });
+    g.rect(x + tile, y + tile, Math.max(0, w - tile * 2), 1).fill({ color: mat.light, alpha: 0.06 });
   } else if (mat.pattern === 'marble') {
     for (let vein = 0; vein < 5; vein += 1) {
       const vy = y + h * (0.1 + vein * 0.19);
@@ -63,7 +45,7 @@ function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, ful
       }
     }
     g.rect(x, y + tile, w, 1).fill({ color: mat.light, alpha: 0.05 });
-  } else  if (mat.pattern === 'tiles') {
+  } else if (mat.pattern === 'tiles') {
     for (let ly = Math.ceil(y / tile) * tile; ly < y + h; ly += tile) g.rect(x, ly, w, 1).fill({ color: mat.grout, alpha: 0.55 });
     for (let lx = Math.ceil(x / tile) * tile; lx < x + w; lx += tile) g.rect(lx, y, 1, h).fill({ color: mat.grout, alpha: 0.55 });
     g.rect(x + tile + 2, y + tile + 2, 4, 1).fill({ color: mat.light, alpha: 0.08 });
@@ -86,9 +68,8 @@ function drawPattern(g: Graphics, mat: FloorMaterial, r: Rect, tile: number, ful
   }
 }
 
-/** Deckenlampen an der oberen Wand: ein Rhythmus aus Leuchten, kein flaechiger Glow. */
-function drawCeilingLight(g: Graphics, r: Rect, light: LightState): void {
-  // Nur an einer echten Zonenkante: sonst zieht eine Chunk-Grenze eine Scheinleuchte mitten in den Saal.
+/** Deckenlampen an der oberen Zonenkante: ein Rhythmus aus Leuchten, kein flaechiger Glow. */
+export function drawCeilingLight(g: Graphics, r: Rect, light: LightState): void {
   const k = light.intensity;
   g.rect(r.x, r.y, r.w, 2).fill({ color: light.tint, alpha: 0.2 * k });
   g.rect(r.x, r.y + 2, r.w, 10).fill({ color: light.tint, alpha: 0.05 * k });
@@ -99,80 +80,32 @@ function drawCeilingLight(g: Graphics, r: Rect, light: LightState): void {
   }
 }
 
-/**
- * Lichtpfuetze: das Deckenlicht faellt in drei Stufen in den Saal. Die Stufen lesen
- * als Abstand zur Lampe; eine einzige Flaeche wuerde den Teppich nur aufhellen.
- */
-function drawLightSpill(g: Graphics, mat: FloorMaterial, r: Rect, light: LightState): void {
-  const intensity = (mat.lightAlpha / 0.1) * light.intensity;
-  // Viele leise Stufen statt weniger harter Ringe: der Rand der Lichtflaeche verschwindet.
+/** Lichtpfuetze: das Deckenlicht faellt in vielen leisen Stufen in den Saal. */
+export function drawLightSpill(g: Graphics, r: Rect, light: LightState, lightAlpha: number): void {
+  const intensity = (lightAlpha / 0.1) * light.intensity;
   const steps = 16;
   for (let step = steps; step >= 1; step -= 1) {
     const t = step / steps;
-    // Halbachsen bleiben im Raum: Licht auf dem Boden, kein Schein ueber die Wand hinaus.
     g.ellipse(r.x + r.w / 2, r.y + r.h * 0.3, r.w * 0.48 * t, r.h * 0.28 * t)
       .fill({ color: light.tint, alpha: 0.009 * intensity });
   }
 }
 
-/** Kantentiefe: drei Stufen Schatten nach innen, damit der Raum einen Boden bekommt. */
-function drawInset(g: Graphics, r: Rect, edges: Edges): void {
-  const steps: readonly (readonly [number, number])[] = [[0, 0.09], [2, 0.05], [5, 0.03]];
-  for (const [inset, alpha] of steps) {
-    const w = r.w - inset * 2;
-    const h = r.h - inset * 2;
-    if (w <= 0 || h <= 0) continue;
-    if (edges.top) g.rect(r.x + inset, r.y + inset, w, 2).fill({ color: 0x000000, alpha });
-    if (edges.bottom) g.rect(r.x + inset, r.y + r.h - inset - 2, w, 2).fill({ color: 0x000000, alpha });
-    if (edges.left) g.rect(r.x + inset, r.y + inset, 2, h).fill({ color: 0x000000, alpha });
-    if (edges.right) g.rect(r.x + r.w - inset - 2, r.y + inset, 2, h).fill({ color: 0x000000, alpha });
-  }
-}
-
-/** Zone-Art zu Boden-Textur-Schluessel im Manifest. */
-const FLOOR_TEXTURE: Readonly<Record<string, string>> = {
-  GAMING: 'environment/tiles/casino-carpet-plum.png',
-  BAR: 'environment/tiles/casino-carpet-plum.png',
-  LOUNGE: 'environment/tiles/wallpaper-damask-plum.png',
-  STORAGE: 'environment/tiles/wallpaper-damask-plum.png',
-  EXCHANGE: 'environment/tiles/wallpaper-damask-plum.png',
-  TOILET: 'environment/tiles/wallpaper-damask-plum.png',
-  EXPANSION: 'environment/tiles/wallpaper-damask-plum.png',
-  ENTRANCE: 'environment/tiles/casino-carpet-plum.png',
-};
-
-/** Boden-Textur für einen Bodenbelag, falls im Manifest vorhanden. */
-function floorTextureFor(mat: FloorMaterial): string | null {
-  return FLOOR_TEXTURE[mat.pattern] ?? null;
-}
-
-/** Textur als Kachel: Boden und Tapete wiederholen sich, statt gestreckt zu werden. */
+/**
+ * Textur als Kachel ueber eine Flaeche. Gibt das Sprite zurueck, damit ein
+ * Material seine Kacheln maskieren kann; fehlt die Datei, bleibt es `null`.
+ */
 export function addTiling(
   parent: Container | null | undefined, key: string,
   x: number, y: number, w: number, h: number, scale: number, alpha: number,
-): void {
-  if (!parent || w <= 0 || h <= 0) return;
+): TilingSprite | null {
+  if (!parent || w <= 0 || h <= 0) return null;
   const texture = textureFor(key);
-  if (!texture) return;
+  if (!texture) return null;
   const tiling = new TilingSprite({ texture, width: w, height: h });
   tiling.position.set(x, y);
   tiling.tileScale.set(scale);
   tiling.alpha = alpha;
   parent.addChild(tiling);
-}
-
-/** Ein Bodenbelag: Material, Muster, Licht und Tiefe in einem Auftrag. */
-export function drawSurface(
-  g: Graphics, mat: FloorMaterial, r: Rect, tile: number, edges: Edges,
-  parent?: Container, light: LightState = { tint: mat.light, intensity: 1 },
-): void {
-  g.rect(r.x, r.y, r.w, r.h).fill(mat.base);
-  drawPattern(g, mat, r, tile, edges.top && edges.bottom && edges.left && edges.right);
-  if (edges.top) drawLightSpill(g, mat, r, light);
-  if (edges.top) drawCeilingLight(g, r, light);
-  drawInset(g, r, edges);
-
-  // Boden-Textur als Kachel ueber dem gezeichneten Muster: gleiche Flaeche, ruhigere Wiederholung.
-  const texKey = floorTextureFor(mat);
-  if (texKey) addTiling(parent, texKey, r.x, r.y, r.w, r.h, 2, 0.9);
+  return tiling;
 }

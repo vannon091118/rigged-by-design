@@ -250,8 +250,16 @@
       "contributionId": "phase4-huelle-atlas-01"
     },
     {
+      "turnId": "2026-11-06T02:46Z-spatial-layout-contract",
+      "contributionId": "spatial-layout-contract-01"
+    },
+    {
       "turnId": "2026-11-06T03:20Z-asset-semantik-katalog",
       "contributionId": "asset-semantik-01"
+    },
+    {
+      "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
+      "contributionId": "asset-semantik-messung-01"
     }
   ]
 }

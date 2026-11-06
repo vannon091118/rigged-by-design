@@ -3,6 +3,8 @@ import type { Ledger } from '../economy/ledger';
 import { canAfford, toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { areasFor, type Area } from './grid-zones';
 import { BLUEPRINTS } from './house-presets';
+import { applyLayout } from './layout';
+import { layoutWithZones } from './layout-derive';
 import { HAUSKONTO, SHOP } from './money';
 import { TEMPLATE_COST } from './templates';
 import { TX_PREFIX } from './tx-reasons';
@@ -84,14 +86,15 @@ export function expandHouse(world: WorldState, ledger: Ledger, target: TemplateI
   if (!canAfford(balance, cost)) {
     throw new Error(`Ausbau auf ${target} kostet ${toVCString(cost)}, im Hauskonto liegen ${toVCString(balance)}.`);
   }
-  const zones = expansionZones(world.template, target, blueprint.size, world.zones);
+  const zones = expansionZones(world.template, target, blueprint.size, world.layout.zones);
   const fromSize = world.size;
   if (zones.length === 0) throw new Error('Diese Vorlage bringt keine neue Flaeche.');
+  const next = layoutWithZones(world.layout, blueprint.size, zones);
   // Erst buchen: scheitert die Buchung, bleibt die Welt vollstaendig unveraendert.
   if (cost > ZERO_VC) ledger.transfer(HAUSKONTO, SHOP, cost, `${TX_PREFIX.EXPANSION}${target}`, tick);
   world.template = target;
-  world.size = blueprint.size;
-  world.zones = [...world.zones, ...zones];
+  // Layout ist die Wahrheit; `size` und `zones` folgen daraus.
+  applyLayout(world, next);
   world.dirty = remapDirtyTiles(world.dirty, fromSize, blueprint.size);
   world.lastEvent = `Ausbau auf ${blueprint.size}x${blueprint.size}: ${zones.length} neue Bauflaechen, Einrichtung und Personal bleiben.`;
   return world;
