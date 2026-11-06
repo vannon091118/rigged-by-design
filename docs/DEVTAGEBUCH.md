@@ -13,6 +13,36 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Typecheck repariert, Floor-Crash behoben, stale Fact-Verdrahtung entfernt
+
+**Ziel.** Die offenen Befunde aus dem letzten Review schliessen: der Floor blieb nach dem Laden bei "LADEN DAUERT LANGE" stehen, `pnpm run typecheck` war gruen ohne `src/` zu pruefen, und die Doku sollte den echten Stand tragen, bevor PR #152 gemerged wird.
+
+**Umsetzung.** Der Crash war ein fehlendes Feld, kein Pixi-Fehler: `SceneCache` deklarierte `dirt` nicht, `createSceneCache()` gab die gebaute `dirtLayer` nicht zurueck, und `floor-view.ts` uebergab deshalb `undefined` an `addChild`. Beides ist jetzt deklariert und verdrahtet. Der Typecheck hatte `"include": ["../src"]` in `src/Config/tsconfig.json`; relativ zur Config zeigte das auf `src/src`, also pruefte `tsc` praktisch nichts. `["..", "vite.config.ts"]` deckt `src/` und die Vite-Config ab. Danach wurden 87 echte Fehler sichtbar und behoben: Typ-Re-Exports (`Mop`, `Stain`, `Visitor`, `ActorRef`), optionale `memories`, `VaCoinMicro`-Casts an Geldgrenzen, `readonly unknown[]` in Trigger-Definitionen, `roleCount` im Template-Schema, `ViewRect` mit `left/top/right/bottom`, `GameView` statt `WorldState` in Floor-Eingabe/-Animation, `SPIEGEL` in der Bau-Tier-Zuordnung, Getter-Aufrufe des Layout-Verlaufs, nicht-null-gepruefte `find`-Ergebnisse und typisierte Test-Callbacks. `src/vite-env.d.ts` ist neu getrackt: `vite/client` plus `declare module '*.mjs'`, damit die Governance-Tests die Skript-Libs ohne `allowJs` importieren. Die beiden `VISITOR_SERVICE`-Emissionen in `serveDrinkCmd` und `talkCmd` sind entfernt: sie trugen `initiator`/`severity`, das Fact-Schema verlangt `service`/`valence`, und der einzige legitime Produzent ist `desk-service.ts` bei anwesendem Kassierer. Die Doppel-Emission war tote Verdrahtung, kein fehlendes Feld.
+
+**Pruefungen.** `pnpm run typecheck` Exit 0 mit 0 Fehlern (vorher 87 nach der Include-Korrektur). `pnpm run verify:quick` mit allen zehn Gates gruen, inklusive Tests, Lint, Dead-Code, Doku, Tree, Redundanz, Assets, LOC und Test-Qualitaet. `pnpm run inventory:build` meldet 1324/1324 Dateien und 86 Ordner. Der Floor laedt im laufenden Dev-Server wieder: HUD, Gaeste und die vier Tabs sind da; der Screenshot liegt unter `artifacts/floor-aktuell.png`.
+
+**Offen.** Die visuelle Abnahme bei 60 fps und Tap-to-Frame braucht ein echtes Touch-Geraet; im Cloud-Browser ist nur der Desktop-Pfad pruefbar. Die Issues #151/#153 gehoeren zu PR #150 und bleiben unberuehrt.
+
+## 2026-11-06 - CI-Runner und Action-Runtimes
+
+**Ziel.** Die zwei Annotationen aus PR #152 an der Ursache beheben: Actions, die noch Node 20 ansprechen, und der gleitende `ubuntu-latest`-Runner.
+
+**Umsetzung.** Alle acht Workflows pinnen `ubuntu-24.04`. `checkout` steigt auf v7, `setup-node` auf v7, `cache` auf v6, `upload-artifact` auf v7, `setup-java` auf v6 und `setup-android` auf v4; `pnpm/action-setup@v6` bleibt. Die ausdrueckliche `platform-tools`-Angabe bleibt, weil sie den Android-Build unabhaengig von Action-Defaults festhaelt.
+
+**Pruefungen.** Alle acht Workflow-Dateien werden mit PyYAML geparst. Der erste `verify:quick`-Lauf fand einen seed-abhaengigen FREE_DRINK-Test: Ein vom Generator beschaedigtes Geraet bricht vor dem Drink ab; das Fixture pinnt jetzt `damaged = false` und `condition = 100`. Der erste CI-Lauf zeigte danach die zweite Ursache: Bei leerem Hauskonto bucht `payOrBorrow` den Betriebsanteil als `mod betrieb auf kredit`, der Test verglich aber exakt auf `mod betrieb`. Er summiert jetzt beide Wege und prueft den exakten Mod-Betrag; 20 Seeds sind gruen. `verify:quick` wird vor dem Commit ausgefuehrt.
+
+**Offen.** `ubuntu-24.04` ist der bewusst konservative Pin; die Migration auf 26.04 bleibt ein eigener Schritt mit Android- und Gradle-Test. Die zwei offenen `gate-failure`-Issues #151 und #153 gehoeren zu PR #150; dessen neuester Lauf auf `a4effb0` ist gruen, die Issues wurden nicht angefasst.
+
+## 2026-11-06 - Phase 5/6: Werkstatt und Abschluss
+
+**Ziel.** Das Werkstatt-Raster mit sechs Zielen, ein unsichtbarer Einstieg und der Charaktereditor als Spiegel im Lager.
+
+**Umsetzung.** `workshop.tsx` haelt den einen Rahmen; `workshop-parts.tsx` traegt Rasterkarte, Steuerung und FPS. Die vier Popups exportieren ihre Inhalte als Panels ohne zweiten Shell. Der Einstieg zaehlt fuenf Tipps auf die Marke in `dock.tsx` und hoert auf `Strg+Shift+D`; ein sichtbarer Knopf existiert nicht. `SPIEGEL` ist ein neues `DECOR` in allen drei Blueprints und oeffnet den vorhandenen `LookPopup`; `WorkshopTool = 'look'` ist entfernt.
+
+**Pruefungen.** `typecheck`, `lint`, `check:loc`, `verify:docs`, die Inventur (1323/1323) und `verify:all` (12/12 Gates) sind gruen. Der PR gegen `main` folgt.
+
+**Offen.** Fuenf-Tipp-Geste und Spiegel sind nicht auf Hardware geprueft; die FPS-Karte misst den Browser-Frame-Takt, nicht die Pixi-Renderzeit. Der Spiegel wird prozedural gezeichnet, ohne eigenes Asset.
+
 ## 2026-11-06 - Phase 2: Betriebssimulation
 
 **Ziel.** Die Kette Nachfrage -> Ankunft -> Fiat/Chips -> Spiel -> Auszahlung -> Kosten -> Ruf sollte als tatsaechlicher Betriebskreislauf wirken. Personas mussten Einsatz und Spielwahl unterscheiden, Mods ihre Beschreibung einloesen, der Slot-RTP zur Anzeige passen und Schulden einen Tilgungspfad bekommen.
@@ -1482,7 +1512,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

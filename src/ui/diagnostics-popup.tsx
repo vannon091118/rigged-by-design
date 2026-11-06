@@ -6,13 +6,11 @@ import { journalCounts } from '../core/sim/journal';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { HELP } from './glossary';
-import { PopupShell } from './popup-shell';
 import { ROLE_LABEL, TASK_LABEL } from './staff-labels';
 import { TransferPanel } from './transfer-panel';
 
 interface Props {
   readonly view: GameView;
-  readonly onClose: () => void;
   readonly onAudit: () => LedgerDiagnosis;
 }
 
@@ -20,7 +18,7 @@ const KIND_LABEL: Record<string, string> = {
   MONEY: 'Geld', GUEST: 'Gäste', STAFF: 'Personal', STOCK: 'Lager', RIVAL: 'Rivalen', SYSTEM: 'System',
 };
 
-export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
+export function DiagnosticsPanel({ view, onAudit }: Pick<Props, 'view' | 'onAudit'>) {
   const [report, setReport] = useState<LedgerDiagnosis | null>(null);
   const counts = journalCounts(view.journal);
   const bars = view.furniture.filter((item) => item.kind === 'BAR');
@@ -28,8 +26,7 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
   const broken = view.furniture.filter((item) => item.damaged || item.condition < 85 || item.clogged);
   const occupied = view.furniture.reduce((sum, item) => sum + (item.gameId ? item.occupants.length : 0), 0);
   return (
-    <PopupShell eyebrow="SYSTEMCHECK · EHRLICHE ZAHLEN" title="Prüfung" onClose={onClose} wide>
-      <div className="diag-grid">
+    <div className="diag-grid">
         <section className={`diag-card${view.ledgerOk ? ' ok' : ' bad'}`} aria-label="Ledger">
           <header><h3>Buchhaltung</h3><span className={`pill${view.ledgerOk ? ' ok' : ' bad'}`}>{view.ledgerOk ? 'OK' : 'FEHLER'}</span></header>
           <p className="diag-note">
@@ -119,7 +116,6 @@ export function DiagnosticsPopup({ view, onClose, onAudit }: Props) {
           </p>
         </section>
         <TransferPanel />
-      </div>
-    </PopupShell>
+    </div>
   );
 }

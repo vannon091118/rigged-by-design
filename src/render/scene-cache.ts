@@ -15,6 +15,8 @@ const LABEL_COUNT = 10;
 export interface SceneCache {
   readonly room: Container;
   readonly carpet: Container;
+  /** Schmutzspuren; liegt ueber dem Boden und unter der Welt. */
+  readonly dirt: Container;
   /** Laufwege ueber dem Boden, unter der Welt. */
   readonly routes: Container;
   /** Gemeinsame Tiefenebene fuer Moebel, Figuren, Requisiten, Waende. */
@@ -176,7 +178,7 @@ export function createSceneCache(): SceneCache {
   };
 
   return {
-    room, carpet: carpet.root, routes, world: depth.root, depth, overhead, stickers, labels,
+    room, carpet: carpet.root, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
     redrawRoom, redrawDirt, setLabels, destroy,
   };
 }

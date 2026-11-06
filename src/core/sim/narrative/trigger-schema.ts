@@ -9,6 +9,8 @@ import type {
   ActorRole, DemandTier, RelationshipDimension, TriggerCondition, TriggerDefinition,
 } from './trigger-types';
 
+export type { TriggerCondition } from './trigger-types';
+
 const DEMAND_TIERS: readonly DemandTier[] = ['BUDE', 'KASSE', 'SAAL', 'KONZERN'];
 const ACTOR_ROLES: readonly ActorRole[] = ['visitor', 'staff', 'rival', 'player'];
 const DIMENSIONS: readonly RelationshipDimension[] = ['trust', 'sympathy', 'conflict', 'influence'];

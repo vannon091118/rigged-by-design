@@ -5,7 +5,7 @@ import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
 
-interface Stain {
+export interface Stain {
   readonly id: number;
   x: number;
   y: number;
@@ -35,7 +35,7 @@ export function spawnStain(world: WorldState, x: number, y: number, dirtValue: n
 export function removeStain(world: WorldState, ledger: Ledger, stainId: number): boolean {
   const index = world.stains.findIndex((s) => s.id === stainId);
   if (index === -1) return false;
-  const stain = world.stains[index];
+  const stain = world.stains[index]!;
   world.stains.splice(index, 1);
   ledger.transfer(HAUSKONTO, SHOP, world.prices.cleaningCost, TX_REASON.CLEANING, world.tick);
   world.lastEvent = `Fleck entfernt (Verschmutzung ${stain.dirtValue}).`;

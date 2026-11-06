@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
-import { fromVC } from '../../economy/vacoin';
+import { fromVC, type VaCoinMicro } from '../../economy/vacoin';
 import { processNarrativeBoundary } from '../narrative/boundary';
 import { emitFact } from '../narrative/facts';
 import {
@@ -125,7 +125,7 @@ describe('Narrative Beziehungen', () => {
       initiator: actorRefOfVisitor(second.id), severity: 1,
     });
     emitFact(world, {
-      kind: 'RIVAL_ENCOUNTER', actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 500,
+      kind: 'RIVAL_ENCOUNTER', actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 500 as VaCoinMicro,
     });
     processNarrativeBoundary(world, ledger);
     const restored = normalizeNarrativeState(JSON.parse(JSON.stringify(world.narrative)));

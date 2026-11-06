@@ -65,7 +65,7 @@ describe('Start-Pool der Narrative-Domaene', () => {
     // Namen sind Darstellung und duerfen sich mit dem Start-Pool decken: "Rita
     // Kern" ist eine moegliche Zufallskombination aus NAMES x LAST_NAMES. Die
     // Zusicherung ist das neue Profil, nicht der Name.
-    expect(control.visitors[0].visits).toBe(1);
+    expect(control.visitors[0]!.visits).toBe(1);
     expect(control.narrative.pending.filter((fact) => fact.kind === 'START_POOL')).toHaveLength(0);
   });
 });

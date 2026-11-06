@@ -1,6 +1,6 @@
 /** Floor-Animation: Tick, Kamera, Figuren-Animation. */
 import type { Application } from 'pixi.js';
-import type { WorldState } from '../core/sim/types';
+import type { GameView } from '../store/types';
 import { TICK_MS } from '../core/sim/tick-timing';
 import type { FloorCamera } from './floor-camera';
 import type { GuestArt } from './guest-art';
@@ -12,7 +12,7 @@ export function animateFloor(
   now: number,
   app: Application,
   cam: FloorCamera,
-  view: WorldState,
+  view: GameView,
   camDirty: boolean,
   actors: ActorPool,
   player: GuestArt,

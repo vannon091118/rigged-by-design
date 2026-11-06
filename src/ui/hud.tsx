@@ -10,6 +10,8 @@ import { UI_ICON } from './icons';
 interface HudProps {
   readonly view: GameView;
   readonly onSkill: (attribute: RpgAttribute) => void;
+  /** Versteckter Werkstatt-Einstieg: fuenf Tipps auf die Marke. */
+  readonly onBrandTap?: (timeStamp: number) => void;
 }
 
 const PENALTY_LABEL = (kind: string): string =>
@@ -33,7 +35,7 @@ const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
   ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
 ];
 
-export function Hud({ view, onSkill }: HudProps) {
+export function Hud({ view, onSkill, onBrandTap }: HudProps) {
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
   const bar = view.furniture.find((item) => item.kind === 'BAR');
@@ -43,7 +45,7 @@ export function Hud({ view, onSkill }: HudProps) {
   const mood = view.guests.length ? view.mood : 0;
   return (
     <header className="hud">
-      <div className="hud-brand">
+      <div className="hud-brand" onClick={(event) => onBrandTap?.(event.timeStamp)}>
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>

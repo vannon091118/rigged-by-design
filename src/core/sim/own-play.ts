@@ -25,11 +25,11 @@ const CARD_GAMES: ReadonlySet<string> = new Set(['BLACKJACK', 'POKER', 'VIDEO_PO
 export const isOwnCardGame = (game: string | undefined): boolean => game !== undefined && CARD_GAMES.has(game);
 
 /** Der effektive Mindesteinsatz: Gerät und globaler Boden, nie der kleinere Wert. */
-export function ownMinBet(world: WorldState, item: Furniture): VaCoinMicro {
+export function ownMinBet(world: Pick<WorldState, 'prices'>, item: Furniture): VaCoinMicro {
   return (item.baseBet > world.prices.slotMinBet ? item.baseBet : world.prices.slotMinBet) as VaCoinMicro;
 }
 
-export function ownBet(ledger: Ledger, amount: VaCoinMicro, tick: number, reason = TX_REASON.OWN_STAKE): void {
+export function ownBet(ledger: Ledger, amount: VaCoinMicro, tick: number, reason: string = TX_REASON.OWN_STAKE): void {
   if (!Number.isSafeInteger(amount) || amount <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   ledger.transfer(PORTEMONNAIE, HAUSKONTO, amount, reason, tick);
 }

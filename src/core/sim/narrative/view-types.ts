@@ -1,6 +1,7 @@
 /** NAR-14: Datenvertraege des Anzeigemodells; der Builder lebt in `view.ts`. */
 import type { RivalActionRecord, RivalEvidence, RivalStance } from '../rival-ai/types';
-import type { ActorRef, RivalId } from '../types';
+import type { RivalId } from '../types';
+import type { ActorRef } from './types';
 import type { ChoiceBlockReason } from './events/template-types';
 import type { NarrativeEventStatus } from './event-types';
 import type { VisitorMemory } from './types';

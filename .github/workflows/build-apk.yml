@@ -32,17 +32,17 @@ concurrency:
 jobs:
   apk:
     name: Capacitor APKs (Debug + Release)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ inputs.tag || github.ref }}
           fetch-depth: 0
 
       - name: Gate-Cache wiederherstellen
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .verify-cache
           key: ${{ runner.os }}-rbd-verify-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
@@ -55,13 +55,13 @@ jobs:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
 
       - name: Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '21'
@@ -69,11 +69,10 @@ jobs:
           # der Cache-Schlüssel-Suchlauf würde den Job sonst rot machen.
 
       - name: Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
         with:
-          # Der Action-Default nennt auch `tools`; Google liefert das Paket nicht
-          # mehr aus und sdkmanager bricht den Job ab. cmdline-tools und Lizenzen
-          # sind damit trotzdem eingerichtet.
+          # v4 nutzt Node 24 und installiert `platform-tools` bereits als
+          # Default; das alte `tools`-Paket wird nicht mehr angefordert.
           packages: platform-tools
 
       - name: SDK-Plattform und Build-Tools
@@ -105,14 +104,14 @@ jobs:
         run: pnpm run android:apk:release
 
       - name: Debug-APK als Artefakt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rigged-by-design-debug-apk
           path: artifacts/rigged-by-design-debug.apk
           if-no-files-found: error
 
       - name: Release-APK als Artefakt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rigged-by-design-release-unsigned-apk
           path: artifacts/rigged-by-design-release-unsigned.apk

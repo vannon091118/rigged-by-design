@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,39 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.135] - 2026-11-06
+
+### Spiel
+- Der Floor laedt wieder: Der Szenen-Cache gab die Schmutz-Ebene nicht zurueck, wodurch Pixi beim Aufbau mit `undefined` abbrach und der Ladebildschirm haengen blieb.
+
+### Technik
+- Der Typecheck prueft jetzt wirklich `src/`: `src/Config/tsconfig.json` zeigte mit `"../src"` auf `src/src`. Nach der Korrektur wurden 87 latente Typfehler behoben (Re-Exports, optionale Erinnerungen, VaCoinMicro-Grenzen, ViewRect, Floor-Signaturen, Test-Callbacks); `src/vite-env.d.ts` deklariert `vite/client` und die `.mjs`-Skriptimporte.
+- Die doppelte `VISITOR_SERVICE`-Emission in `serveDrinkCmd`/`talkCmd` ist entfernt; der Fact entsteht nur noch in `desk-service.ts` bei anwesendem Kassierer.
+- `pnpm run inventory:build` meldet 1324 Dateien und 86 Ordner.
+
+## [0.3.134] - 2026-11-06
+
+### Technik
+- Der FREE_DRINK-Test akzeptiert jetzt auch den Kreditweg des Betriebsanteils: Ist das Hauskonto nach einem Payout leer, bucht `payOrBorrow` `"mod betrieb auf kredit"`. Der Test summiert beide Buchungswege und prueft den exakten Mod-Betrag; die zuvor roten Seeds 9, 18 und 20 laufen.
+
+## [0.3.133] - 2026-11-06
+
+### Technik
+- GitHub Actions laufen jetzt auf Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`, `upload-artifact@v7`, `setup-java@v6` und `setup-android@v4`. Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die 26.04-Migration nicht unkontrolliert in den Build rutscht.
+- Der FREE_DRINK-Test pinnt Geraetezustand und Haltbarkeit; ein vom Generator beschaedigtes Geraet kann den Lauf nicht mehr seed-abhaengig rot machen.
+
+## [0.3.132] - 2026-11-06
+
+### Spiel
+- Die Werkstatt ist jetzt ein Raster mit sechs Bereichen: Prüfung, Protokoll, Assets, Sound, Steuerung und FPS. Sie öffnet sich nur noch über fünf Tipps auf die HUD-Marke oder `Strg+Shift+D`.
+- Der Charaktereditor liegt nicht mehr im Werkstatt-Menü: Ein Spiegel im Lager öffnet ihn über die Floor-Aktion „Spiegel“. Jede Hausvorlage bringt genau einen Spiegel mit.
+- Die FPS-Karte misst den Browser-Frame-Takt live; Steuerung und Hilfe bleiben als sekundäre Werkzeuge erreichbar.
+
+### Technik
+- `workshop.tsx` ist der einzige Rahmen; `workshop-parts.tsx` liefert Rasterkarte, Steuerung und FPS. `diagnostics`, `journal`, `asset-library` und `sound` exportieren wiederverwendbare Panels ohne zweiten Shell.
+- `SPIEGEL` ist ein `DECOR`-Katalogeintrag und wird in allen drei Blueprints in der Lagerzone platziert. `buildFurnitureActions` erkennt ihn am Label; der Look-Pfad läuft über `Popup = { kind: 'look' }`.
+- Unbekannte Deko teilt sich keine gebackene Atlastextur mehr; der Spiegel wird prozedural gezeichnet.
 
 ## [0.3.131] - 2026-11-06
 

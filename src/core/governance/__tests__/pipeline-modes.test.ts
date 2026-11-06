@@ -22,7 +22,7 @@ describe('Pipeline-Modi', () => {
   });
 
   it('gibt keinem Gate einen reparierenden Aufruf mit', () => {
-    for (const [key, gate] of Object.entries(GATES)) {
+    for (const [key, gate] of Object.entries(GATES) as [string, { script: string; args?: string[] }][]) {
       const call = [gate.script, ...(gate.args ?? [])].join(' ');
       expect(call, `${key} repariert statt zu pruefen`).not.toMatch(/--fix|--write|autofix/);
     }
@@ -45,7 +45,7 @@ describe('Pipeline-Modi', () => {
   });
 
   it('gibt jedem Gate ein hartes Zeitlimit', () => {
-    for (const [key, gate] of Object.entries(GATES)) {
+    for (const [key, gate] of Object.entries(GATES) as [string, { timeoutMs: number }][]) {
       expect(gate.timeoutMs, `${key} hat kein Timeout`).toBeGreaterThan(0);
     }
   });

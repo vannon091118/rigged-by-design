@@ -33,7 +33,7 @@ export function leave(world: WorldState, guest: Guest): void {
 }
 
 /** Zufriedenheit ist das tatsaechliche Ergebnis, nicht der Ruf am Schild. */
-function noteSatisfaction(world: WorldState, ledger: Ledger, guest: Guest): void {
+function noteSatisfaction(world: WorldState, _ledger: Ledger, guest: Guest): void {
   const score = Math.max(0, Math.min(100, guest.mood * 0.65 + guest.patience * 0.35));
   world.satisfaction = Math.max(0, Math.min(100, world.satisfaction * 0.85 + score * 0.15));
   if (guest.visitorId !== undefined) {

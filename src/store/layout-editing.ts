@@ -60,8 +60,8 @@ export class LayoutEditor {
     this.#deps.emit(true);
   }
 
-  canUndo(): boolean { return this.#history.canUndo(); }
-  canRedo(): boolean { return this.#history.canRedo(); }
+  canUndo(): boolean { return this.#history.canUndo; }
+  canRedo(): boolean { return this.#history.canRedo; }
 
   undo(): boolean {
     this.#stroke = null;

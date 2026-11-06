@@ -78,7 +78,8 @@ function backdropKey(item: Furniture): string | null {
 /** Schluessel: Bauart, Variante und Groesse. Sitze und Label aendern den Korpus. */
 function bodyKey(item: Furniture, w: number, h: number): string {
   const shape = item.gameId ?? item.kind;
-  const variant = item.kind === 'DECOR' ? decorTexture(item.label) ?? 'plain' : `${item.seats}`;
+  // Unbekannte Deko darf sich keine gebackene Textur mit einer anderen teilen.
+  const variant = item.kind === 'DECOR' ? decorTexture(item.label) ?? `plain:${item.label}` : `${item.seats}`;
   return `${shape}:${variant}:${w}x${h}`;
 }
 
@@ -138,6 +139,14 @@ function drawStorage(g: Graphics, w: number, h: number): void {
 }
 
 function drawDecor(g: Graphics, w: number, h: number, label: string): void {
+  if (/spiegel|mirror/i.test(label)) {
+    g.roundRect(w * 0.16, h * 0.06, w * 0.68, h * 0.86, 5).fill(0x2a1a3a).stroke({ width: 2, color: 0xffd166, alpha: 0.7 });
+    g.roundRect(w * 0.24, h * 0.14, w * 0.52, h * 0.7, 3).fill(0x162832).stroke({ width: 1, color: 0xbff6ff, alpha: 0.65 });
+    g.moveTo(w * 0.3, h * 0.7).lineTo(w * 0.52, h * 0.22).stroke({ width: 2, color: 0xffffff, alpha: 0.18 });
+    g.moveTo(w * 0.4, h * 0.74).lineTo(w * 0.62, h * 0.26).stroke({ width: 1, color: 0xffffff, alpha: 0.12 });
+    g.rect(w * 0.43, h * 0.92, w * 0.14, h * 0.08).fill(0x5a3a2a);
+    return;
+  }
   if (label.toLowerCase().includes('sofa')) {
     g.roundRect(2, h * 0.22, w - 4, h * 0.56, 6).fill(0x4a2040);
     g.roundRect(4, h * 0.34, w - 8, h * 0.34, 4).fill(0x74305e);

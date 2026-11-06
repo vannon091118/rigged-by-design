@@ -79,7 +79,7 @@ export function recordExclusionWin(world: WorldState, payout: VaCoinMicro, tick:
 }
 
 /** Der Disziplin-Bonus ist echtes Guthaben: er laesst sich ins Portemonnaie auszahlen. */
-export function cashOutPlayerCash(world: WorldState, ledger: Ledger, tick: number): ExclusionResult {
+export function cashOutPlayerCash(_world: WorldState, ledger: Ledger, tick: number): ExclusionResult {
   const balance = ledger.getBalance(PLAYER_CASH);
   if (balance <= 0) throw new Error('Kein Bonus-Guthaben zum Auszahlen.');
   ledger.transfer(PLAYER_CASH, PORTEMONNAIE, balance, TX_REASON.PACT_BONUS, tick);

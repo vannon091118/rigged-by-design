@@ -78,7 +78,7 @@ describe('Abbruchpfad', () => {
     expect(start).not.toBeNull();
     writeFileSync(statePath, JSON.stringify({ owner: 999_999_999, pids: [{ gate: 'tests', pid, at: 0, start }] }));
     const killed = sweepOrphans();
-    expect(killed.map((entry) => entry.gate)).toEqual(['tests']);
+    expect(killed.map((entry: { gate: string }) => entry.gate)).toEqual(['tests']);
     expect(await isDead(pid)).toBe(true);
     expect(JSON.parse(readFileSync(statePath, 'utf8')).owner).toBe(process.pid);
   });
@@ -97,7 +97,7 @@ describe('Abbruchpfad', () => {
         pids: [{ gate: 'tests', pid: victim.pid, at: 0, start: victimStart }],
       }));
       const killed = sweepOrphans();
-      expect(killed.map((entry) => entry.gate)).toEqual(['tests']);
+      expect(killed.map((entry: { gate: string }) => entry.gate)).toEqual(['tests']);
       expect(await isDead(victim.pid)).toBe(true);
     } finally {
       killTree(owner.pid);
@@ -124,7 +124,7 @@ describe('Abbruchpfad', () => {
     trackPid('tests', pid);
     const exitCodes: number[] = [];
     const messages: string[] = [];
-    const stop = createStop({ exit: (code) => exitCodes.push(code), log: (message) => messages.push(message) });
+    const stop = createStop({ exit: (code: number) => exitCodes.push(code), log: (message: string) => messages.push(message) });
     stop('SIGINT');
     expect(exitCodes).toEqual([EXIT_ABORTED]);
     expect(messages[0]).toContain('SIGINT');

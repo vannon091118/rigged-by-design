@@ -1,7 +1,8 @@
 /** NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. */
 import type { Ledger } from '../../economy/ledger';
 import { HAUSKONTO } from '../money';
-import type { ActorRef, Visitor, WorldState } from '../types';
+import type { Visitor, WorldState } from '../types';
+import type { ActorRef } from './types';
 import { checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
 import { buildCompositionContext } from './composition-context';
 import { composeNarrative, type ComposedNarrative } from './composer';
@@ -119,7 +120,7 @@ function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): N
   }
   const related = new Set(world.narrative.relationships.map((edge) => visitorIdOf(edge.from)));
   return [...world.visitors]
-    .filter((visitor) => inScene.has(visitor.id) || present.has(visitor.id) || related.has(visitor.id) || visitor.memories.length > 0)
+    .filter((visitor) => inScene.has(visitor.id) || present.has(visitor.id) || related.has(visitor.id) || (visitor.memories ?? []).length > 0)
     .sort((left, right) =>
       Number(inScene.has(right.id)) - Number(inScene.has(left.id))
       || Number(present.has(right.id)) - Number(present.has(left.id))
@@ -130,7 +131,7 @@ function profiles(world: WorldState, live: readonly NarrativeEventInstance[]): N
       name: visitor.name,
       persona: visitor.persona,
       visits: visitor.visits,
-      memories: visitor.memories.map((memory) => ({ ...memory })),
+      memories: (visitor.memories ?? []).map((memory) => ({ ...memory })),
       relationships: world.narrative.relationships
         .filter((edge) => edge.from === `visitor:${visitor.id}`)
         .map((edge) => ({

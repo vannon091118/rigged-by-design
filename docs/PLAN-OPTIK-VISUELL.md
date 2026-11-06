@@ -1,162 +1,119 @@
-# Plan: Visuelle Überarbeitung (Optik, "fühlt sich nach Spiel an")
+# Plan: Werkstatt und Abschluss
 
-**Status:** Umgesetzt (alle 5 Phasen)  
-**Datum:** 2026-11-04T23:33 UTC  
-**Zustand:** `typecheck` sauber, `verify:quick` alle 10 Gates grün (Version 0.3.114, nicht committet)  
-**Grundproblem:** Der aktuelle Build ist funktional vollständig, aber der visuelle Ersteindruck fehlt: kein Einstieg, keine Textur-Nutzung, kein Game-Feel, keine visuelle Rückmeldung auf Spielereignisse.  
-**Status aller Phasen:** Alle umgesetzt.
-
----
-
-## 1. Zielsetzung (Nordstern)
-
-Der Nutzer soll innerhalb der ersten 5 Sekunden erkennen: "Das ist ein Casino-Spiel."  
-Nicht: "Das ist eine Simulation mit einem leeren HTML-Gerüst."
-
-Alle visuelle Änderungen sind **additiv** – die vorhandene Spielmechanik, die Ledger-Logik und die Narrative-Engine bleiben unangetastet. Die Optik sitzt als Darstellungsschicht über dem existierenden `GameView`-Snapshot.
+**Status:** Phase 5/6 umgesetzt; Phase 6 offen
+**Datum:** 2026-11-06
+**Ersetzt:** den früheren 5-Phasen-Optikplan, gleicher Dateiname
+**Grundsatz:** keine zwölfte Doku. Dieser Plan bleibt der einzige Ort für den visuellen Abschluss.
 
 ---
 
-## 2. Aktueller Ist-Zustand (Belege aus Code)
+## 1. Ziel
 
-| Bereich | Ist | Problem |
-|---------|-----|---------|
-| Eintrag | `index.html` leer, `<div id="root"></div>`, kein Ladebildschirm, kein Favicon | Weißer Bildschirm bis React rendert |
-| Boot | `main.tsx` lädt Texturen asynchron, kein Lade-Zustand | Kein Fortschritt für den Nutzer |
-| Figuren | `guest-art.ts` malt mit `Graphics`-Primitiven | `manifest.json` hat Kopf/Arm/Bein/Torso-Texturen (unused) |
-| Boden | `floor-surface.ts` zeichnet prozedural mit `Graphics`-Rects | `environment/tiles/` (Teppich, Tapete) ungenutzt |
-| Partikel | Emitter definiert (coin-burst, jackpot-burst, machine-sparks, plinko-impact) | Nicht im Spielfluss eingebunden |
-| Animationen | coin-spin, explosion, smoke-puff definiert | Nicht integriert |
-| UI-Feedback | Kein Screen-Shake, kein Win-Flash, keine Popup-Transition | Ereignisse passieren still |
-| Spieler-Marker | Magenter Kreis (`character-view.ts:41`) | Kein Spiel-Marker |
-| Popups | Ein Shell-Rahmen für alle Spieltypen | Keine visuelle Unterscheidung |
+Der Floor ist spielbar, die Etage hat Licht und Textur, und die wichtigsten Fenster
+sind erreichbar. Was fehlt, ist ein ruhiger Abschluss: eine Werkstatt, die Technik
+und Buchhaltung bündelt, ohne den Floor mit Knöpfen zu verstopfen. Der
+Charaktereditor gehört dorthin, wo er erzählerisch hingehört: an einen Spiegel im
+Lager, nicht an einen Tab.
+
+Die Änderung bleibt Darstellung und Bedienung. Simulation, Ledger, RNG und
+Save-Format werden nicht angefasst.
 
 ---
 
-## 3. Plan: 5 Phasen (additiv, jede Phase separat verifizierbar)
+## 2. Sechs Phasen
 
-### Phase 1: Eintrag & Ladeerfahrung (keine Code-Änderung am Spiel)
-
-**Ziel:** Der Nutzer sieht sofort, dass ein Spiel lädt, nicht eine leere Seite.
-
-- `index.html`: `<title>`, Meta-Description, Favlink, noscript-Fallback, sichtbarer Lade-Balken im HTML (CSS-animiert, bevor React mountet)
-- `main.tsx`: Während `boot()` läuft, bleibt der HTML-Ladebalken sichtbar; erst nach `createRoot().render()` wird er ausgeblendet
-- Lade-Text: "Lade Neon-Kasino…", dann "Baue Floor…", dann "Bereit."
-
-**Exit-Kriterium:** Bei kaltem Start sieht der Nutzer nie einen weißen Bildschirm länger als 200 ms.
-
----
-
-### Phase 2: Figuren & Boden nutzen die vorhandenen Textur-Pakete
-
-**Ziel:** Die vorhandenen ~539 Texturen werden sichtbar.
-
-- `guest-art.ts`: Charakter-Teile (Kopf, Torso, Arme, Beine, Schuhe) aus `manifest.json` (`characters/`) laden und als Sprite-Container zusammenbauen statt pro Graphics-Rect zu malen. Fallback:Graphics bleibt, falls Textur fehlt (kein Wurf).
-- `floor-surface.ts`: Boden-Zonen nutzen `environment/tiles/casino-carpet-plum.png` und `wallpaper-damask-plum.png` als Textur-Tiling statt nur Farben.
-- `floor-view.ts`: Furniture-Art nutzt `machines/*`-Texturen (slot-cabinet, blackjack-table, poker-table, roulette-table, shell-game-table, dice-table, plinko-cabinet, bar-counter, cash-register) statt nur gefärbter Rechtecke.
-
-**Exit-Kriterium:** Jede Zone, jede Figur, jedes Gerät zeigt eine Textur aus dem Paket (oder fällt sichtbar auf Graphics zurück, wenn Datei fehlt).
+| Phase | Inhalt | Stand |
+| --- | --- | --- |
+| 1/6 | HUD, Dock und vier Hauptbereiche statt Werkzeugwand | umgesetzt |
+| 2/6 | Floor mit Texturen, Licht, Tiefe und Figuren | umgesetzt |
+| 3/6 | Ereignisse, Partikel, Sound und Game Feel | umgesetzt |
+| 4/6 | Mobile Hülle, Safe Areas, Performance-Governor, APK | umgesetzt |
+| 5/6 | Werkstatt-Raster, versteckter Einstieg und Spiegel | **umgesetzt in diesem Schritt** |
+| 6/6 | Abschluss: visuelle Abnahme, Gerätetest, Release | offen |
 
 ---
 
-### Phase 3: Partikel-Events im Spielfluss (umgesetzt)
+## 3. Phase 5 im Detail
 
-**Ziel:** Spielereignisse haben visuelle Gegenstücke via Headless Event-Emitter.
+### Werkstatt
 
-- `src/core/sim/events.ts` (neu): `on`/`off`/`emit`/`listenerCount`, keine Pixi/DOM-Imports.
-- `src/core/games/slot-session.ts`: `slot:jackpot`, `slot:chargeDischarge`, `slot:chargeReady`, `slot:spin`.
-- `src/core/games/plinko-sandbox.ts`: `plinko:drop`.
-- `src/core/sim/disputes.ts`: `dispute:start`, `dispute:sabotage`.
-- `src/core/sim/money.ts`: `money:bigPayout` (ab 10 VC).
+`src/ui/workshop.tsx` ist der Rahmen: eine `PopupShell`, ein Raster und genau ein
+aktiver Bereich. `src/ui/workshop-parts.tsx` liefert die Rasterkarte, die
+Steuerungsliste und die FPS-Messung.
 
-**Exit-Kriterium:** UI/Render-Schicht abonniert diese Events noch nicht – das ist Phase 4 (UI-Anbindung der Partikel).
+Das Raster hat sechs Ziele:
 
----
+1. **Prüfung** — Buchhaltung, Personal, Lager und Nachfrage
+2. **Protokoll** — Live-Puffer und Archiv mit Ursache und Folge
+3. **Assets** — Texturen, Frames, Emitter und Tonspuren
+4. **Sound** — Master, Musik und getrennte Kanäle
+5. **Steuerung** — Klick, Tastatur, Maus und Touch
+6. **FPS** — Browser-Frame-Takt im halben Sekundenfenster
 
+Die Inhalte von `diagnostics-popup`, `journal-popup`, `asset-library-popup` und
+`sound-popup` werden nicht neu geschrieben. Jede Datei exportiert jetzt ein
+`…Panel` ohne eigenen Rahmen; die nicht mehr erreichbaren alten Popup-Hüllen sind
+entfernt. Die Werkstatt setzt dieselben Panels in ihren einen Rahmen.
 
-### Phase 3 (ursprünglich): Partikel & Animationen im Spielfluss
+### Einstieg
 
-**Ziel:** Spielereignisse haben visuelle Gegenstücke.
+- **5× Tippen auf die Marke** im HUD; der Zähler liegt in `dock.tsx` (`useBrandTaps`).
+- **Strg+Shift+D** als Tastaturweg.
+- Kein sichtbarer Button, kein neuer Dock-Tab.
+- Die Marke bleibt auch auf schmalen Geräten sichtbar; unter 860 px nur noch als
+  `R`-Zeichen, damit der Touch-Einstieg nicht verschwindet.
 
-- `slot-transparency.ts` / `slot-session.ts`: Bei Jackpot oder "chargeReady"-Entladung → `jackpot-burst`-Emitter (Sparks + Glow), bei jedem Spin → `coin-burst`
-- `plinko-sandbox.ts`: Bei Peg-Kontakt → `plinko-impact`-Emitter
-- `guest-service.ts` / `disputes.ts`: Bei Streit-Start oder Wut → `smoke-puff`-Animation am Gast
-- `money.ts` / `actions.ts`: Bei großer Auszahlung → kurze Bildschirm-Flash-Overlay (CSS-Klasse auf `.stage-wrap`)
-- `sound-fx.ts` ist bereits vorhanden → Partikel und Sound synchron auslösen (gleicher Tick)
+### Charakter als Spiegel
 
-**Exit-Kriterium:** Gewinn, Jackpot, Streit, Maschinen-Schaden haben jeweils einen sichtbaren Partikel-Effekt.
+- `SPIEGEL` ist ein echtes `DECOR`-Objekt im Katalog.
+- Jede Hausvorlage stellt einen Spiegel in die Lagerzone; der Startbestand wächst
+  dadurch um genau ein Möbelstück.
+- Die Aktion `SPIEGEL` auf dem Floor öffnet den vorhandenen `LookPopup`.
+- Der Werkstatt-Tab „Charakter“ und `WorkshopTool = 'look'` fallen weg. Der
+  Charaktereditor ist nur noch über den Spiegel erreichbar.
+- Für den Spiegel gibt es kein neues Bild-Asset. Der Korpus wird wie die übrige
+  Deko prozedural gezeichnet; der stabile Label-Schlüssel verhindert, dass er sich
+  eine gebackene Textur mit einer Pflanze teilt.
 
----
+### FPS
 
-### Phase 4: Game Feel & UI-Unterschiedlichkeit
-
-**Ziel:** Das Spiel hat Rhythmus und jede Spielart sieht anders aus.
-
-- **Screen-Shake:** Bei großem Verlust oder Streit kurz das `.stage-wrap` oder den Pixi-Container rütteln (CSS-Animation + Pixi-Offset), danach zurück
-- **Win-Flash:** Bei Jackpot oder großem Multiplikator kurze goldene Überblendung über dem Floor
-- **Popup-Unterschiedlichkeit:** Slot-Popup bekommt dunkles Neon-Rot, Poker bekommt Samt-Violett, Plinko bekommt Cyan – über CSS-Klassen auf `.popup`, nicht über neuen Shell-Code
-- **Idle/Attract-Modus:** Nach 60 Sekunden ohne Interaktion langsames automatisches Zoomen über den Floor (Kamera schwenkt), HUD zeigt "Drücke eine Taste zum Starten" (optional, kein Spiel-Zustand)
-- **Spieler-Marker:** Statt magentem Kreis ein kleiner Charakter-Icon oder ein Leucht-Punkt in `ROLE.service`
-
-**Exit-Kriterium:** Jede Spielart (Slot, Poker, Roulette, Shell, Dice, Plinko, Blackjack, Video Poker) hat eine eigene visuelle Note; große Ereignisse rütteln/blitzen.
-
----
-
-### Phase 4.5: Feinschliff der Bodenhinweise (Cues)
-
-**Ziel:** Die bestehenden Cues wirken "spieliger".
-
-- `floor-cues.ts`: Zielraster (Reticle) bekommt eine leuchtende Mitte statt nur Eck-Linien; Spielerring bekommt einen leichten Außen-Glow; Klick-Puls bekommt eine nachhallende Welle (konzentrische Ringe) statt nur einer Ellipse
-- `floor-camera.ts`: Zoom-Übergänge bekommen eine leichte Easing-Kurve (aktuell linearer Faktor 0.22, ok, aber langsamer für "schweres" Gefühl bei großen Zooms)
+Die Anzeige misst echte `requestAnimationFrame`-Frames über 500 ms. Sie zeigt
+Ziel, Frame-Zeit und Fenster, aber keinen erfundenen Renderer-Tiefenwert. Der Wert
+ist ein Oberflächen-Indikator, kein Benchmark der Simulation.
 
 ---
 
-### Phase 5: Audio-zu-Visual-Kopplung (optional, wenn Sound da ist)
+## 4. Umsetzt / offen
 
-**Ziel:** Sound und Bild landen zur selben Zeit.
-
-- `sound-fx.ts` spielt bereits Töne (coin, brawl, roulette, cardFlip, reelStop, win). Diese Aufrufe werden um Partikel-Callbacks ergänzt: derselbe `playSfx('win')`-Aufruf löst auch den `jackpot-burst` aus.
-- `music.ts` hat 6 Tracks (floor, night, menu, background, games, slot) – Popup-Wechsel ändert bereits den Musik-Zustand, visuell könnte der Floor-Hintergrund langsam die Musik-Farbe annehmen (subtil).
-
-**Exit-Kriterium:** Kein Sound ohne visuelles Pendant.
-
----
-
-## 4. NICHT in diesem Plan (bewusst ausgelassen)
-
-- Keine neuen Spielmechaniken, keine Ledger-Änderungen, keine Narrative-Änderungen
-- Kein 3D, keine Shader (außer vorhandene Pixi-Filter), keine WebGL-Eigenentwicklung
-- Keine neuen Spieltypen
-- Keine Änderung der `verify`-Gates (alles bleibt fail-closed)
+| Punkt | Umgesetzt | Offen |
+| --- | --- | --- |
+| Sechs Werkstattziele | Ja | — |
+| Wiederverwendung der vier Popup-Inhalte | Ja, als Panels | — |
+| Versteckter Einstieg über Marke und Strg+Shift+D | Ja | Fünf-Tipp-Geste auf echtem Touch-Gerät nicht geprüft |
+| Charaktereditor über Spiegel im Lager | Ja | Spiegelgrafik ist prozedural, kein eigenes Asset |
+| Werkstatt-Tab „Charakter“ entfernt | Ja | — |
+| FPS-Anzeige | Ja, Browser-Frame-Takt | Kein Pixi-/GPU-Telemetriewert |
+| Gerät und Hilfe weiterhin erreichbar | Ja, als sekundäre Werkzeuge | — |
+| APK und realer Gerätetest | APK aus Phase 4 vorhanden | Nicht auf Hardware installiert |
+| Sichtprüfung der neuen Werkstatt | Nein | Braucht Browser oder Gerät |
+| `verify:all` | Ja, 12/12 Gates grün am 2026-11-06 | — |
 
 ---
 
-## 5. Verifikation nach jeder Phase
+## 5. Bewusst nicht enthalten
 
-Nach jeder Phase:
-1. `pnpm run verify:quick` – alle 10 Gates müssen grün bleiben
-2. `pnpm run check:loc` – keine Datei über ihr Hot-Zone-Budget
-3. Manuelle Sichtprüfung: `pnpm run dev` (http://localhost:3000), Start-Erfahrung, visueller Eindruck
-
----
-
-## 6. Exit-Kriterium Gesamtplan
-
-Der Nutzer öffnet die URL und sieht:
-1. Einen Ladebildschirm (nicht weiß)
-2. Einen Floor mit texturierten Zonen, bevölkerten Figuren, sichtbaren Geräten
-3. Ein HUD, das wie eine Spiel-HUD aussieht (Geld, Ruf, Bar, Skills)
-4. Bei jedem Klick auf "Spielen" oder "Drehen" eine visuelle Reaktion (Partikel, Sound, ggf. Shake)
-5. Popups, die sich nach Spieltyp unterscheiden
+- Keine neue Spielmechanik, keine Ledger-, RNG- oder Save-Änderung.
+- Keine zweite FPS-Simulation und keine neue Uhr.
+- Kein zweiter Charaktereditor und keine Kopie der vier Panels.
+- Keine zwölfte Dokumentation; dieser Plan ersetzt den alten.
+- Kein neues Bild-Asset für den Spiegel.
 
 ---
 
-## 7. Offene Entscheidungen (Nutzer)
+## 6. Exit-Kriterium
 
-- Soll der Ladebildschirm ein Logo haben? (Banner `docs/banner.jpg` oder `docs/banners/art-direction-neon-ledger.png` existieren bereits)
-- Soll es einen Hauptmenü-Bildschirm geben ("Neues Spiel / Laden") oder direkt in den Floor?
-- Welche Farbe soll der Attract-Modus haben (warm Bar / kalt Eingang / Neon Saal)?
-
----
-
-**Artifacts in dieser Sitzung:** Dieser Plan (kein Code noch). Nach Freigabe durch den Nutzer: Implementierung Phase für Phase mit `verify:quick` zwischen jeder Phase.
+Die Werkstatt öffnet sich ausschließlich über die Marke oder `Strg+Shift+D`, zeigt
+sechs ehrliche Bereiche, und der Charaktereditor ist vom Spiegel im Lager aus
+erreichbar. `typecheck`, `check:loc`, `verify:docs`, die fokussierten Tests und
+`verify:all` müssen grün sein. Die visuelle und haptische Abnahme auf einem echten
+Gerät bleibt Phase 6.

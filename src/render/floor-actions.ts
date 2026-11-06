@@ -1,9 +1,11 @@
 /** Baut die Radial-Menu-Aktionen für ein geklicktes Objekt. */
 import type { WorldState } from '../core/sim/types';
 
+type ActionWorld = Pick<WorldState, 'player'>;
+
 export type MenuAction = { id: string; label: string; enabled: boolean; targetId?: number };
 
-export function buildStainActions(world: WorldState, stain: { id: number; x: number; y: number }): MenuAction[] {
+export function buildStainActions(world: ActionWorld, stain: { id: number; x: number; y: number }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
   return [
     { id: 'CLEAN_STAIN', label: 'Reinigen', enabled: carryingMop, targetId: stain.id },
@@ -11,7 +13,7 @@ export function buildStainActions(world: WorldState, stain: { id: number; x: num
   ];
 }
 
-export function buildGuestActions(world: WorldState, guest: { id: number; disputeId: number | null; thirst: number }): MenuAction[] {
+export function buildGuestActions(world: ActionWorld, guest: { id: number; disputeId: number | null; thirst: number }): MenuAction[] {
   const carryingDrink = world.player.carrying === 'DRINK';
   const hasDispute = guest.disputeId !== null;
   return [
@@ -23,7 +25,7 @@ export function buildGuestActions(world: WorldState, guest: { id: number; disput
   ];
 }
 
-export function buildFurnitureActions(world: WorldState, item: { kind: string; stock: number; dirt: number }): MenuAction[] {
+export function buildFurnitureActions(world: ActionWorld, item: { kind: string; stock: number; dirt: number; label: string }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
   const carryingDrink = world.player.carrying === 'DRINK';
   const actions: MenuAction[] = [];
@@ -49,6 +51,8 @@ export function buildFurnitureActions(world: WorldState, item: { kind: string; s
   } else if (item.kind === 'EXCHANGE' || item.kind === 'DESK') {
     actions.push({ id: 'CALM_DISPUTE', label: 'Schlichten', enabled: true });
     actions.push({ id: 'FIGHT', label: 'Konfrontation', enabled: true });
+  } else if (item.kind === 'DECOR' && /spiegel|mirror/i.test(item.label)) {
+    actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true });
   }
 
   if (actions.length === 0) {

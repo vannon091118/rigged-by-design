@@ -28,9 +28,9 @@ import {
 const ROOT = resolve(process.cwd());
 const report = loadNarrativeContent(ROOT);
 const first = report.contributions[0];
-const clone = (value) => JSON.parse(JSON.stringify(value));
-const messages = (issues) => issues.map((entry) => entry.message).join(' | ');
-const schema = (data, path = first.path) => validateContribution(data, report.vocabulary, path);
+const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
+const messages = (issues: readonly { message: string }[]) => issues.map((entry) => entry.message).join(' | ');
+const schema = (data: unknown, path: string = first.path) => validateContribution(data, report.vocabulary, path);
 const fixture = () => {
   const root = mkdtempSync(join(tmpdir(), 'rbd-narrative-fixture-'));
   cpSync(join(ROOT, 'content/narrative'), join(root, 'content/narrative'), { recursive: true });

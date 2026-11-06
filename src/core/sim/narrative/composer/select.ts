@@ -67,7 +67,7 @@ export function selectFragment(
   request: ComposeRequest,
   slot: ContentSlot,
 ): NarrativeFragment | null {
-  const sources = COMPOSER_SLOT_SOURCES[slot.kind];
+  const sources = (COMPOSER_SLOT_SOURCES as Readonly<Record<string, readonly string[]>>)[slot.kind] ?? [];
   const candidates = fragments
     .filter((fragment) => fragment.locale === request.locale && sources.includes(fragment.slot))
     .map((fragment) => ({ fragment, score: scoreOf(fragment, request, slot.requiredContexts ?? []) }))

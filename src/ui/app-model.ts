@@ -5,7 +5,8 @@ import type { RivalId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 
 /** Alles Technische und Persoenliche liegt hinter einer Tuer, nicht in der Hauptleiste. */
-export type WorkshopTool = 'look' | 'journal' | 'diagnostics' | 'assets' | 'sound' | 'device' | 'help';
+export type WorkshopTool =
+  | 'journal' | 'diagnostics' | 'assets' | 'sound' | 'controls' | 'fps' | 'device' | 'help';
 
 export type Popup =
   | { kind: 'guests'; guestId: number | null }
@@ -14,6 +15,7 @@ export type Popup =
   | { kind: 'narrative'; visitorId?: number }
   | { kind: 'dialogue' }
   | { kind: 'workshop'; tool?: WorkshopTool }
+  | { kind: 'look' }
   | { kind: 'foreignMap' }
   | { kind: 'foreignFloor' }
   | { kind: 'jobContext'; stationId: string }

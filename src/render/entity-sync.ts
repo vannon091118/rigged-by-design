@@ -78,7 +78,7 @@ export class EntitySync {
       }
       this.#deps.player.root.visible = true;
       this.#deps.player.sticker.visible = false;
-      props.update(view, { x: 0, y: 0, w: view.size * TILE, h: view.size * TILE }, lod);
+      props.update(view, { left: 0, top: 0, right: view.size * TILE, bottom: view.size * TILE }, lod);
       return;
     }
     const { camera, screen } = this.#deps;
