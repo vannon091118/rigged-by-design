@@ -6,6 +6,12 @@
 :root {
   color-scheme: dark;
 
+  /* Notch und Systemleisten: eine Quelle fuer alle Hüllen. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
   /* Flaechen */
   --bg: #07050c;
   --bg-deep: #040208;
@@ -45,6 +51,14 @@
   --fs-micro: 8px;
   --lh-tight: 1.15;
   --lh-body: 1.5;
+
+  /* Spiel-Identitaeten: Neon-Rot, Samt-Violett, Cyan. Nur Farbe, kein Layout. */
+  --game-hot: #ff2e88;
+  --game-hot-soft: rgba(255, 46, 136, 0.14);
+  --game-velvet: #b06bff;
+  --game-velvet-soft: rgba(176, 107, 255, 0.14);
+  --game-cyan: #54e0ff;
+  --game-cyan-soft: rgba(84, 224, 255, 0.14);
 
   /* Abstand: eine Skala, kein Zahlenraten in Komponenten */
   --space-1: 4px;

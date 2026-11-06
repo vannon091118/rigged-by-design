@@ -4,18 +4,16 @@ import { getBuildDef, type BuildId } from '../core/sim/offers';
 import type { RivalId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 
+/** Alles Technische und Persoenliche liegt hinter einer Tuer, nicht in der Hauptleiste. */
+export type WorkshopTool = 'look' | 'journal' | 'diagnostics' | 'assets' | 'sound' | 'device' | 'help';
+
 export type Popup =
   | { kind: 'guests'; guestId: number | null }
   | { kind: 'machine'; itemId: number }
   | { kind: 'games'; rivalId?: RivalId }
-  | { kind: 'journal' }
   | { kind: 'narrative'; visitorId?: number }
   | { kind: 'dialogue' }
-  | { kind: 'diagnostics' }
-  | { kind: 'look' }
-  | { kind: 'assets' }
-  | { kind: 'sound' }
-  | { kind: 'help' }
+  | { kind: 'workshop'; tool?: WorkshopTool }
   | { kind: 'foreignMap' }
   | { kind: 'foreignFloor' }
   | { kind: 'jobContext'; stationId: string }

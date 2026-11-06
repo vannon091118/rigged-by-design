@@ -13,51 +13,146 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-06 - Review des Arbeitsbranch gegen origin/main
+## 2026-11-06 - Merge mit main (0.3.120) und Review-Abgleich
 
-**Ziel.** Den Arbeitsbranch `freebuff/a5c130b1adab60bfa53c958c` vor dem PR gegen `origin/main` (9655a75) zweiachsig pruefen: Standards (`AGENTS.md`, Architektur, Art-Direction) und Spezifikation (Taskplan, Narrative-Engine, Optik-Plan, Tagebuch-Ziele). Fester Punkt des Vergleichs ist `origin/main`; das lokale `main` (7d8904f) ist eine veraltete Nebenlinie und war als Basis unbrauchbar.
+**Ziel.** Den reparierten Arbeitsbranch auf den inzwischen weitergelaufenen `main`-Stand heben, ohne die Wandkollision oder die Inventur-Reparatur zu verlieren.
 
-**Umfang.** 34 Commits, 166 Dateien, +6.262/-410. Gelesen wurde der vollstaendige Produktions-Diff (69 Dateien ohne Tests, Screenshots und Content-JSON) plus Stichproben in `furniture-art`, `floor-surface`, `scene-cache`, `floor-view`, `floor-math`, `staff`, `guest-choice`, `events` und `walls.test`.
+**Umsetzung.** `main` (c460abb, 0.3.120) in den Arbeitsbranch gemerged. Neun Konflikte: Doku-Marker, `package.json`/`pnpm-lock.yaml` und `src/render/furniture-art.ts`. Doku und Version folgen `main` (0.3.120 -> 0.3.121 fuer diesen Merge), weil der Huelle-Stand die neuere Wahrheit ist; `furniture-art.ts` kommt komplett aus `main`, weil der Atlas die Backdrop-Sprite-Logik ersetzt hat. Danach Inventur neu gebaut, Marker gesetzt, `verify:quick` gefahren.
 
-**Umsetzung (ein Fix).** `src/render/furniture-art.ts`: Die Maschinen-Textur stand als letztes Kind und deckte damit Status-Text ("BEREIT"/Spielname) und Namensschild (Alpha 0,92). Sie liegt wieder direkt ueber dem gezeichneten Korpus und unter Markern, Status und Label — die Reihenfolge, die der Kommentar daneben behauptet.
+**Review-Abgleich nach dem Merge.** Drei Befunde aus dem Review sind mit dem Huelle-Stand ueberholt und damit geschlossen: Boden-Texturen haengen jetzt an der Chunk-`deco`-Ebene, die beim Neubacken geleert wird (`scene-cache.ts`); das Partikel-Overlay ist geloescht und `floor-events.ts` abonniert alle acht Ereignisse; die Maschinen-Textur deckt kein Label mehr, weil der Atlas den Sprite ersetzt. Offen bleiben: die Reiniger-Zielauswahl (`cleanerTick` nimmt immer die erste Kachel), `chooseSpot` ohne Spezifikation und die Prozess-Drift (fehlender Content-Beitrag fuer den Turn 2026-11-06, Changelog-Eintrag der Wandkollision unter `[0.3.114]`).
 
-**Befunde (offen, bewusst nicht in diesem Turn geaendert).**
-- `particle-overlay.tsx` abonniert 5 der 8 emittierten Events; `slot:chargeReady`, `slot:spin` und `dispute:sabotage` fehlen, obwohl der Tagebuch-Eintrag "Phase 4" alle acht als abonniert nennt. Entscheidung noetig: nachziehen oder den Anspruch korrigieren (ein Burst pro Spin ist eine Lautstaerke-Frage).
-- `floor-surface.ts` haengt Boden-Texturen als `Sprite` an `g.parent` (den `room`-Container), nicht an den Chunk. `chunk.g.clear()` entfernt sie nie, `chunk.g.destroy()` auch nicht: Bei jeder Zonen-Aenderung waechst die Zahl der Texturen, alte bleiben ueber dem neuen Boden liegen und umgehen den Chunk-Cache. Sauberer Fix braucht eine Entscheidung, wem die Textur gehoert (Chunk als Container statt `Graphics`).
-- `staff.ts` `cleanerTick` nimmt immer die erste Kachel aus `world.dirty`. Ist genau die unerreichbar (seit `walls.ts` leichter moeglich), steht der Reiniger dauerhaft und putzt nie wieder; vorher wurde die Kachel geloescht und es ging weiter.
-- `guest-choice.ts` fuehrt mit `chooseSpot` eine Naechste-freie-Station-Auswahl ein, die in keiner Spezifikation steht und die Gaesteverteilung veraendert (Scope-Zuwachs im E2-Slice).
-- `walls.ts` kommentiert, Eckkacheln seien offen, "sobald auf irgendeiner Seite eine Offnung sie deckt"; der Code blockt sie, solange nicht **beide** anliegenden Seiten offen sind.
-- Prozess: Der Turn vom 2026-11-06 hat keinen Content-Beitrag unter `content/narrative/contributions/` (AGENTS.md verlangt genau einen pro Turn), und der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` 0.3.115 trug.
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen; `pnpm run verify:quick` gruen in allen zehn Gates auf dem gemergten Baum (Wandkollision plus Huelle zusammen).
 
-**Pruefungen.** `pnpm run verify:quick` gruen in allen zehn Gates (vor dem Fix war nur `docs` rot). Die Render-Befunde sind am Code belegt, **nicht** im Browser gesehen: In dieser Umgebung laeuft kein Dev-Server, also keine Aussage ueber das tatsaechliche Bild.
-
-**Offen.** Die vier Verhaltens-Befunde oben; die beiden Prozess-Befunde (Beitrag, Versionsdrift).
+**Offen.** Die drei genannten Befunde; `pnpm run hooks:install` ist in diesem Klon weiterhin nicht aktiv.
 
 ## 2026-11-06 - Doku-Gate repariert: Inventur wird wieder mitgestagt
 
 **Ziel.** Das offene `gate-failure`-Issue #139 schliessen: `CI Verify` war rot mit `[ERR-4017] verify:docs: docs/INVENTORY.md: Abdeckungszahl 1257 passt nicht zu 1259 getrackten Dateien`. Die Ursache lag nicht in `walls.ts`, sondern im Zusammenspiel von Hook und Commit.
 
 **Umsetzung.**
-- `docs/INVENTORY.md` mit `node scripts/build-inventory.mjs` neu erzeugt: 1259/1259 Dateien, 84 Ordner; die beiden im letzten Turn neuen Pfade (`src/core/sim/walls.ts`, `src/core/sim/__tests__/walls.test.ts`) stehen jetzt im Block.
+- `docs/INVENTORY.md` mit `node scripts/build-inventory.mjs` neu erzeugt; die im Turn zuvor neuen Pfade (`src/core/sim/walls.ts`, `src/core/sim/__tests__/walls.test.ts`) stehen wieder im Block.
 - `.githooks/pre-commit` stagt die Inventur direkt nach dem Generator. Der Hook schrieb das Artefakt bisher nur in den Arbeitsbaum; gestagt wurde eine Liste, die den neuen Commit noch nicht kannte. Damit war der naechste Lauf zwangslaeufig rot.
 
-**Pruefungen.** `node scripts/verify-docs.mjs` gruen (vorher drei Befunde). `pnpm run verify:quick` gruen in allen zehn Gates; vor der Reparatur war `docs` das einzige rote Gate, die anderen neun waren bereits gruen.
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen (vorher drei Befunde). `pnpm run verify:quick` gruen in allen zehn Gates; vor der Reparatur war `docs` das einzige rote Gate.
 
-**Offen.** `pnpm run hooks:install` ist in diesem Klon nicht aktiv (`core.hooksPath` leer); der Fix wirkt in jedem Klon mit installierten Hooks. Der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` bereits `0.3.115` trug — der Versionsdrift bleibt als Befund stehen.
+**Offen.** Der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` bereits 0.3.115 trug — der Versionsdrift bleibt als Befund stehen.
 
-## 2026-11-06 - Wandkollision und Türen werden Sim-Daten
 
-**Ziel.** Charaktere dürfen nicht mehr durch gemalte Wände laufen; Türen statt lückenloser Raumgrenzen, eine Grundrissquelle gegen die Reibung bei neuen Räumen.
+
+**Ziel.** Die Optik auf einem schwachen Androiden tragen, ohne sie zurueckzudrehen: die 153 Pixel-Frames in wenige Requests packen, die Last in drei Stufen regeln, den Loader an den ersten echten Renderer-Frame binden und eine installierbare APK bauen. Der 4G-Pruefpfad soll unter drei Sekunden und bei hoechstens 20 Requests liegen.
 
 **Umsetzung.**
-- `src/core/sim/walls.ts` neu: aus den Zonen wird der Wandring abgeleitet — Nachbaröffnung bei aneinanderstossenden Zonen, zwei offene Kacheln als Innentür an der Seitenmitte, zwei offene Kacheln als Vordertür am Eingang. Dieselben Regeln wie die Wand-Malerei, eine Quelle.
-- `blockedTiles(size, furniture, zones)` blockt zusätzlich die Wandringe; der Cache-Schlüssel schliesst die Zonensignatur ein. `world.ts`, `player.ts`, `staff.ts`, `guest-choice.ts` und `grid-zones.ts` reichen die Zonen durch: Spieler, Gäste, Personal und Platzierung lesen dieselbe Kollision.
-- `room-art.ts` malt direkt aus den `walls.ts`-Öffnungen statt Render-Kopien von `sharedSpans`/`doorSpan`: Türen bekommen Boden mit Schwelle statt Wandstreifen, die Vordertür ist sichtbar offen.
-- Lieferkette: `freeCrateTile` legt Kisten nur auf begehbare Kacheln; Portier-Ablage und `depositCrate.inZone` teilen eine ±1-Randtoleranz.
+- `src/render/assets/atlas.ts`: `shelfPack` sortiert Hoehe, Breite und Pfad; der Produktionspfad laedt die zwei Seiten aus `manifest.atlas.pages` und registriert die Frames als Ausschnitte. Fehlt eine Seite, packt der Laufzeitpfad die vier Ordner weiterhin selbst; `textures.ts` faellt danach auf die Einzeldatei zurueck.
+- `scripts/lib/atlas-png.mjs`: eigener PNG-Codec (8-Bit-RGBA, Unfilter, CRC, zlib) ohne neue Abhaengigkeit. `scripts/build-asset-manifest.mjs` schreibt zwei deterministische 1024er-Seiten (Padding 0, 46 + 107 Frames) und die Koordinaten ins Manifest; `verify-assets.mjs` prueft Seiten, Grenzen, Abdeckung und Sortierung.
+- `src/render/perf-governor.ts`: reine Hysterese aus `deltaMS`, Wechsel erst nach 2.000 ms. `floor-stage.tsx` setzt daraus DPR, `ticker.maxFPS`, Partikel- und Lichtbudget; der erste Frame wird explizit gerendert, bevor `onFirstFrame` den Loader ausblendet.
+- `src/main.tsx`: wartet nur auf die Atlasseiten. Symbole, Plinko und Partikel folgen nach dem ersten Frame im Leerlauf. `music.ts` laedt erst nach einer Geste; der stille Vorlauf erzeugte sonst drei Audio-Requests und 650 KB konkurrierend mit dem ersten Frame.
+- Mobile Huelle: `index.html` mit `viewport-fit=cover`, `tokens.css` mit `--safe-*`, `app.css` mit Safe-Area-Padding und Hochformat-Hinweis, `capacitor.config.json` mit `android.orientation: portrait`; `prepare-android.mjs` pinnt zusaetzlich `screenOrientation=portrait` im generierten Manifest.
+- `src/render/haptics.ts`: `navigator.vibrate(8)` beim Zeigerdruck, `[12, 40, 18]` beim Jackpot, aus bei `prefers-reduced-motion`. Keine neue Abhaengigkeit.
 
-**Pruefungen.** `pnpm run typecheck` grün; `pnpm run verify:quick` grün in allen zehn Gates. `walls.test.ts` prüft Vordertür, Öffnungen, einen kachelfreien Weg von Tür zu Kasse und den Cache-Neuaufbau. Dev-Server gezeigt, nicht klickend verifiziert.
+**Pruefungen.** `pnpm run assets:manifest`, `pnpm run verify:assets` (555 Referenzen, 15,6 MB), `pnpm run typecheck`, `pnpm run build` und `pnpm run check:loc` gruen. Browser-Messung gegen den Cloud-Preview mit kaltem Cache, 9 Mbit/s und 70 ms RTT: 20 Netzwerk-Requests, 2,51 s bis zum ersten Frame, 1,54 MB Transfer, keine Konsolen- oder Netzwerkfehler; Screenshot `artifacts/phase4-floor.png`.
+`pnpm run android:apk` baute mit JDK 21, SDK 36 und Build-Tools 36 erfolgreich `artifacts/rigged-by-design-debug.apk` (21 MB). `apksigner verify` bestaetigt die v2-Debug-Signatur; `aapt2 dump badging` nennt `de.riggedbydesign.casino`, `targetSdkVersion 36`; `aapt2 dump xmltree` bestaetigt `screenOrientation=1` (portrait).
 
-**Offen.** Dreck-Quellen (fünf verstreute Add-Stellen, 1,2-%-Zufallsdreck beim Spielzug) mit Ursachen konsolidieren; NPC-Bedarfsblase springt erst beim Aktivitätswechsel um; Rezept für neue Räume in ARCHITECTURE ergänzen (offen, folgt im nächsten Slice).
+**Offen.**
+- Der gemessene 4G-Pfad ist 9 Mbit/s. Slow 4G mit 1,6 Mbit/s wurde nicht separat gemessen und wuerde wegen des 1,5-MB-Bundles nicht unter drei Sekunden bleiben; die Zielzahl gilt fuer das dokumentierte Profil.
+- Kein echtes 200-Euro-Geraet und kein `adb`: die APK ist signiert und manifestgeprueft, aber nicht auf Hardware installiert. Der Governor und die Haptik sind auf dem Geraet ungeprueft.
+- Die zwei HUD-Icons (`ui/coin.png`, `ui/guest-cyan.png`) sind noch eigene Requests; sie bleiben innerhalb der 20, sind aber der naechste offensichtliche Inline-Kandidat.
+- Offene `gate-failure`-Issues aus frueheren PRs bleiben ausserhalb dieses Slice.
+
+## 2026-11-05 - Geld fühlt sich an
+
+**Ziel.** Geld und Streit sollen auf dem Boden ankommen: ein Jackpot muss platzen, eine Auszahlung an der Kasse klingeln, ein Streit rauchen, und die Laune braucht ein Gesicht statt einer Zahl. Kein Ton ohne sichtbares Pendant.
+
+**Umsetzung.**
+- `floor-events.ts`: eine Subscription auf `core/sim/events`, acht Zeilen mit Burst, Ton, Licht, Shake und Anker. Anker kommen aus `itemId` (Moebelmitte), `guestId`/`guestIds[0]` (Gastfuss), sonst aus `x`/`y` oder der Spielfigur.
+- `fx/floor-fx.ts`: nur noch Darstellung mit `burst`, `flash` und `shake`; Licht aus einem Pool von hoechstens acht Graphics, Start im naechsten Frame, kein `performance.now` ausserhalb der erlaubten Pacing-Dateien.
+- `fx/emitter.ts`: `smoke-puff` nutzt die vorhandenen Animationsframes, `activeEmitterCount()` zaehlt Emitter mit sichtbaren Partikeln fuer die Werkstatt.
+- `floor-cash.ts`: Chip-Stapel am EXCHANGE (1–6, je 5 VC), warmes Pulslicht, Klingeln nur bei neuem Tick und geradem Tick; `floor-props` synchronisiert Bestand und Position im Snapshot und pulsiert im Frame.
+- `comic-bubbles.ts`/`guest-art.ts`: `createComicSticker` zeigt bei `mood < 40` die Sprechblase „Hier stimmt was nicht“ statt der Emotionsblase.
+- `popup-shell`/`games-popup`: `data-game` am Rahmen und am Table-Stage; `tokens.css` traegt Neon-Rot, Samt-Violett und Cyan als reine CSS-Variablen, ohne Layout-Umbau.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run check:loc`, `pnpm run verify:quick` (10 Gates) und `pnpm run bench:lowend` gruen. LOC: floor-view 350/350, guest-art 346/350, floor-props 222/260, floor-events 128/260, floor-cash 68/260, emitter 168/260, comic-bubbles 127/260.
+Bench (ein Lauf, Low-End-Profil auf einen Kern gepinnt): hash 0,0827 / boden 7,2550 / dreck 2,2023 / cull 0,0361 ms. Die Werte schwanken wie zuvor; ein A/B gegen 0,3.118 wurde nicht im selben Lauf erhoben.
+
+**Offen.**
+- Kein Browser und kein Geraet in dieser Umgebung: Jackpot-Burst, Gold-Flash, 6-px-Shake, Klingeln, LED-Puls und die drei Spielfarben sind nur durch Code und CSS belegt, nicht gesehen oder gehoert.
+- 60 fps beim Jackpot mit neun Gaesten bleiben ungemessen; `bench:lowend` misst nur Boden, Culling und Snapshots.
+- Das Werkstatt-HUD zeigt `activeEmitterCount()`; dass bei einem echten Jackpot mindestens 1 erscheint, ist nicht interaktiv geprueft. Der Zaehler zaehlt Emitter, nicht Partikel, und faellt nach 0,85–1,5 s auf 0 zurueck.
+
+## 2026-11-05 - Touch zuerst, Antwort in einem Frame
+
+**Ziel.** Der Daumen soll ohne Hover ein Ziel sehen, ein Tipp soll laufen statt ein Menue zu oeffnen, und die Antwort auf den Tipp soll im naechsten Frame stehen.
+
+**Umsetzung.**
+- `floor-touch.ts`: Ein Finger schwenkt ab 8 px, aber nur bei `pointerType !== 'mouse'`; der Tipp wird erst bei `pointerup` ausgeloest, wenn die Schwelle nie erreicht wurde. Zwei Finger bleiben Pinch, Rechtsklick bleibt Desktop.
+- `floor-input.ts`: `handleTap` nimmt `button` und den Punkt und gibt `TapHit | null` zurueck; `onActions(actions)` ersetzt `onOpenMenu(actions, x, y)`. `screenPoint()` rechnet Bildschirmpixel in Kamera-Koordinaten, damit Touch und Maus denselben Pfad nehmen.
+- `floor-cues.ts`: Zielraster schon bei `pointerdown`, 500 ms Nachleuchten; der Ping besteht aus drei gebackenen Ring-Sprites, die skaliert werden.
+- `src/ui/action-card.tsx`: eine grosse Empfehlung, zwei Alternativen, ein X, unten in der Daumenzone; die Aktionen kommen unveraendert aus `floor-actions.ts`.
+- `guest-art.ts`: `bump()` (Squash 90 ms) und `tapRing()`; `furniture-atlas.ts` backt einen Glow-Ring, `furniture-art.ts` blendet ihn bei Druck 120 ms auf alpha 0.5.
+- `fx/emitter.ts`: Pool mit 200 Sprites, `acquire`/`release`, `textureFor` einmal je Burst, kein `destroy` im Frame. `fx/floor-fx.ts` haengt am Kamera-Container und rechnet in Weltkoordinaten; Shake verschiebt die Kamera.
+- Geloescht: `radial-menu.ts`, `character-view.ts`, `particle-overlay.tsx`.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run check:loc`, `pnpm run verify:quick` (10 Gates, 730 Tests) und `pnpm run bench:lowend` gruen. `rg "setInterval" src/render` findet nur noch `music.ts`. LOC: floor-view 349/350, guest-art 350/350, floor-cues 222/260, floor-input 75/260, floor-stage 95/260, fx/floor-fx 90/260, fx/emitter 141/260, action-card 44/200.
+Bench (ein Lauf, Low-End-Profil auf einen Kern gepinnt): hash 0,0821 / boden 6,5885 / dreck 2,0980 / cull 0,0376 ms. Die Werte schwanken wie zuvor; ein A/B gegen 0,3.117 wurde nicht im selben Lauf erhoben.
+
+**Offen.**
+- 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame sind hier nicht messbar: kein Browser, kein Geraet. Die Abnahme braucht ein echtes Touch-Geraet.
+- Der Pool deckelt bei 200 Partikeln; ob das bei neun Gaesten reicht, entscheidet die Geraetemessung.
+- Die Aktionskarte ist mit Maus und Tastatur nicht separat getestet; sie ist ein reines DOM-Element mit Fokusring.
+
+## 2026-11-05 - Buehne: Atlas, Tapete und Tageszeit
+
+**Ziel.** Kein Farbquadrat mehr: der Korpus jeder Bauart kommt aus einer geteilten Textur, Raeume bekommen Tapete und drei Requisiten, und das Licht hat eine Tageszeit.
+
+**Umsetzung.**
+- `src/render/furniture-atlas.ts`: `atlasTextureFor(renderer, item, tile)` backt Lichtinsel, Schatten und Korpus einmal je Bauart, Variante und Groesse (`${gameId|kind}:${w}x${h}`). Instanzen haengen nur ein Sprite an den Root; LOD-0 zeigt dasselbe Sprite mit alpha 0.85 und ohne Text, Screen und Status.
+- `src/render/floor-surface.ts`: `addTiling` legt Boden und Tapete als TilingSprite mit `tileScale 2` in die Deco-Ebene des Chunks, statt sie zu strecken. `drawSurface` nimmt `LightState` entgegen.
+- `src/render/room-art.ts`: Waende tragen Tapete als Kachel und eine 2-px-Kontur in `STROKE.base`, dunkler als der Inhalt; Durchgaenge bleiben 6-px-Schwellen.
+- `src/render/room-dressing.ts`: je Zone drei Requisiten aus dem Paket, deterministisch aus dem Zonenrechteck (Bar: Regal, Hocker, Neonschild; Kasse: Registrierkasse, Terminal, Wandleuchte; Saal: Saeule, Palme, Neonpilaster; Lager: Regal, Leuchte, Beistelltisch).
+- `src/core/sim/day-phase.ts`: `dayPhaseOf(tick)` schneidet den Tag in drei gleiche Abschnitte. `buildView` liefert `dayPhase`; `scene-cache` nimmt die Phase in den Chunk-Schluessel, ein Wechsel backt 9 Chunks einmal neu.
+- `src/render/art-tokens.ts`: `lightFor(zone, phase)` liefert Tint und Dosis; die drei Lichtrollen bleiben warm, cool und neon.
+- Nur der naechste Gast (kleinste ID) traegt ein Namensschild; der Schatten aller Figuren ist eine gebackene Ellipse aus `guest-parts.ts`.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `node scripts/check-loc.mjs` und `pnpm run verify:quick` gruen (10 Gates, 730 Tests). LOC: furniture-atlas 193/260, floor-surface 178/260, scene-cache 177/260, room-dressing 109/260, room-art 206/260, guest-art 326/350, floor-view 327/350.
+`pnpm run bench:lowend`, Baseline vor dem Umbau (5a080fb): hash 0,033 / boden 5,94 / dreck 1,49 / cull 0,036 ms. Danach drei Laeufe: boden 7,42 / 7,53 / 6,37, dreck 2,57 / 2,25 / 2,12, cull 0,035-0,054. Der Dreck-Pfad wurde nicht angefasst und stieg trotzdem um 45-70 Prozent: die Maschine driftet zwischen den Laeufen. Damit ist weder eine Regression noch Paritaet bewiesen.
+
+**Offen.**
+- Sauberer A/B-Nachweis fehlt; dafuer muesste die Baseline auf derselben Maschine im selben Lauf erhoben werden.
+- Die Texturanzahl im Werkstatt-HUD ist ein Momentwert beim Oeffnen, kein Live-Zaehler.
+- Es gibt nur eine Tapeten- und eine Bodentextur im Manifest; die uebrigen Muster bleiben gezeichnet.
+- Fuer den Lager-Spiegel gibt es kein Asset; dort steht eine Wandleuchte.
+- `floor-view.ts` und `guest-art.ts` liegen weiter in der Legacy-Hot-Zone (ueber 200); der naechste Schritt waere, Kamera/Culling und Rig zu trennen.
+
+## 2026-11-05 - Popup-Blur raus: Verlauf statt Vollbild-Filter
+
+**Ziel.** Die zwei GPU-Kosten im Popup-Layer entfernen, ohne die Optik zu verschieben: kein `backdrop-filter` ueber dem ganzen Bildschirm, keine animierte Unschaerfe in den Walzen.
+
+**Umsetzung.**
+- `.popup-backdrop` verliert `backdrop-filter: blur(7px)`. Der Hintergrund ist jetzt ein radialer Verlauf (`rgba(4,2,9,0.6)` in der Mitte, `rgba(4,2,9,0.88)` am Rand) ueber `rgba(4,2,9,0.74)`: Mitte heller, Rand dunkler, das Panel hebt sich weiter ab.
+- Derselbe Block bekommt `contain: paint`; der Browser behandelt den Backdrop damit als eigenen Malbereich und muss Nachbarn nicht mitpruefen.
+- `@keyframes reel-roll` animiert nur noch `transform: translateY` und `opacity`. Das Zwischenbild der Walze ist ein Compositor-Schritt statt einer Filter-Neuberechnung pro Frame.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint`, `pnpm run verify:quick` mit Bericht, `pnpm run build`. Reine CSS-Aenderung: keine Spielmechanik, kein Ledger, kein RNG, kein Save-Format.
+
+**Offen.** Eine Klasse `.popup-scrim` gibt es nicht - der Backdrop heisst `.popup-backdrop`; `contain: paint` sitzt deshalb dort. Die Vignette auf `.stage-wrap` (`inset 0 0 120px`) bleibt und gehoert zur Lichtarbeit in Phase 1.
+
+## 2026-11-05 - Dock statt Werkzeugwand: HUD, Router und Werkstatt
+
+**Ziel.** Phase 0 des 6-Phasen-Plans: aus dem Instrumentenbrett wird eine App mit drei Kennzahlen oben und vier Bereichen unten. Kein neues Asset, keine neue Mechanik.
+
+**Umsetzung.**
+- `src/App.tsx` 348 -> 203 Zeilen: Popup-Routing nach `src/ui/popup-router.tsx` (145), Tastenpfad nach `src/ui/use-stage-keys.ts` (48), Dock in `src/ui/dock.tsx` (59), Werkstatt in `src/ui/workshop.tsx` (60).
+- `src/ui/hud.tsx` 176 -> 113: Marke, Tag, Hauskonto/Portemonnaie/Kasse, Gaeste und Ruf. Ruf als Farbe und Wort, die Zahl bleibt im `title`; Skill-Punkte nur wenn offen; Balken-Leerstand und Ledger-Fehler sind Warnzeilen, keine Kacheln.
+- Elf HUD-Knoepfe entfernt. `GAESTE` gab es doppelt, `FREMDES CASINO` liegt unter `KARTE`, `UEBERSICHT` ist der FIT-Knopf, `PUTZEN` erscheint kontextuell im Dock mit Anzahl und Preis.
+- `Popup`-Union: `journal|diagnostics|look|assets|sound|help` werden zu `{ kind: 'workshop'; tool?: WorkshopTool }`. Die Werkstatt oeffnet die vorhandenen Fenster unveraendert; kein zweiter Zustand, keine Kopie.
+- Tasten-Legende aus `src/ui/stage-controls.tsx` entfernt. WASD/Enter/Rad wirken weiter, stehen aber nicht mehr im Bild.
+
+**Pruefungen.** `pnpm run typecheck` gruen; `pnpm run lint` gruen; `node scripts/check-loc.mjs` gruen (App 203/350, hud 113/200, popup-router 145/200, dock 59/200, workshop 60/200, use-stage-keys 48/200); `pnpm run verify:quick` mit Bericht. Keine Spielmechanik, kein Ledger, kein RNG und kein Save-Format angefasst.
+
+**Offen.**
+- `.hud-actions`, `.stage-legend` und die alten `.vital`-Varianten stehen noch als tote CSS-Regeln in `src/styles/app.css`; Phase 5 raeumt sie mit dem Werkstatt-Umbau ab.
+- `popup.css` traegt weiter `backdrop-filter: blur(7px)` und eine animierte `filter: blur`-Keyframe. Beides gehoert in Phase 0 des Plans, wurde hier aber bewusst nicht mitgeaendert, damit der Umbau nicht gleichzeitig die Optik verschiebt.
+- Fuer T59 gibt es keinen Content-Beitrag: reine UI-Arbeit ohne narrativen Text.
+- Die Werkstatt ist ein Raster mit sieben Zielen, kein fertiger Debug-Bildschirm; Phase 5 baut ihn aus.
 
 ## 2026-11-04 - Phase 1: Eintrag & Ladeerfahrung (Optik)
 
@@ -1269,7 +1364,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.116 | 2026-11-06 02:17 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

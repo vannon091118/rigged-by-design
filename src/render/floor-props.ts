@@ -6,6 +6,7 @@ import { TILE, type StaffRole } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ROLE, STROKE, crateColor, floorText } from './art-tokens';
 import { isVisible, type ViewRect } from './floor-math';
+import { FloorCash } from './floor-cash';
 import { createGuestArt, type GuestArt } from './guest-art';
 
 const AGENT_STYLE: Record<StaffRole, { persona: string; name: string }> = {
@@ -27,6 +28,7 @@ export class FloorProps {
   readonly #crates = new Map<number, { root: Container; hidden: boolean }>();
   readonly #disputes = new Map<number, Graphics>();
   readonly #ghost = new Graphics();
+  readonly #cash = new FloorCash();
   readonly #onActors: (art: GuestArt) => void;
   readonly #props: Container;
   #ghostId: string | null = null;
@@ -38,7 +40,7 @@ export class FloorProps {
     onActors: (art: GuestArt) => void,
   ) {
     this.#props = layers.props;
-    this.#props.addChild(this.#ghost);
+    this.#props.addChild(this.#ghost, this.#cash.root);
     this.#ghost.visible = false;
     this.#onActors = onActors;
     camera.on('pointermove', (event) => this.#hover(event.getLocalPosition(camera)));
@@ -51,12 +53,14 @@ export class FloorProps {
 
   update(view: GameView, rect: ViewRect, lod: number): void {
     this.#view = view;
+    this.#cash.sync(view);
     this.#syncAgents(view, rect, lod);
     this.#syncCrates(view, rect);
     this.#syncDisputes(view, rect);
   }
 
   walk(now: number, stepMs: number): void {
+    this.#cash.pulse(now);
     for (const art of this.#agents.values()) {
       const t = Math.min(1, (now - art.moveStart) / stepMs);
       if (t >= 1) continue;
@@ -85,6 +89,7 @@ export class FloorProps {
     for (const marker of this.#disputes.values()) marker.destroy();
     this.#disputes.clear();
     this.#ghost.destroy();
+    this.#cash.destroy();
   }
 
   #syncAgents(view: GameView, rect: ViewRect, lod: number): void {

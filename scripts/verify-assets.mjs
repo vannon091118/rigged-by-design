@@ -38,6 +38,56 @@ if (!base.startsWith('/') || !base.endsWith('/')) fail(`base muss mit / beginnen
 const assetRoot = join(PUBLIC_DIR, base);
 const referenced = new Set();
 
+// Der Laufzeit-Atlas braucht eine deterministische, vollstaendige Frame-Liste.
+const atlas = manifest.atlas;
+if (!atlas) fail('atlas-Sektion fehlt');
+else {
+  const folders = ['characters', 'decor', 'environment', 'machines'];
+  if (!Array.isArray(atlas.order) || atlas.order.join(',') !== folders.join(',')) {
+    fail(`atlas.order muss ${folders.join(',')} sein`);
+  }
+  if (!(atlas.size > 0) || !(atlas.padding >= 0)) fail('atlas.size/padding ist ungueltig');
+  let frames = 0;
+  let pageFrames = 0;
+  const pagePaths = new Set();
+  if (atlas.pages !== undefined) {
+    if (!Array.isArray(atlas.pages) || atlas.pages.length === 0) fail('atlas.pages ist leer');
+    for (const [index, page] of (atlas.pages ?? []).entries()) {
+      if (!page || typeof page.source !== 'string') { fail(`atlas.pages[${index}] hat keine Quelle`); continue; }
+      const full = join(assetRoot, page.source);
+      if (!existsSync(full)) fail(`atlas.pages[${index}]: ${page.source} fehlt`);
+      else if (statSync(full).size > 2 * 1024 * 1024) fail(`atlas.pages[${index}] ist groesser als 2 MB`);
+      referenced.add(page.source);
+      if (!Array.isArray(page.frames) || page.frames.length === 0) { fail(`atlas.pages[${index}] hat keine Frames`); continue; }
+      for (const frame of page.frames) {
+        pageFrames += 1;
+        pagePaths.add(frame.path);
+        if (!folders.some((folder) => frame.path.startsWith(`${folder}/`))) fail(`atlas.pages[${index}]: ${frame.path} liegt in keinem Atlas-Ordner`);
+        if (frame.x < 0 || frame.y < 0 || frame.width <= 0 || frame.height <= 0
+          || frame.x + frame.width > atlas.size || frame.y + frame.height > atlas.size) {
+          fail(`atlas.pages[${index}]: ${frame.path} liegt ausserhalb der Seite`);
+        }
+      }
+    }
+    if (pageFrames !== atlas.frameCount) fail(`atlas.pages hat ${pageFrames} Frames, frameCount ist ${atlas.frameCount}`);
+  }
+  for (const folder of folders) {
+    const list = atlas.folders?.[folder];
+    if (!Array.isArray(list) || list.length === 0) { fail(`atlas.folders.${folder} ist leer`); continue; }
+    const sorted = [...list].sort();
+    if (list.some((file, index) => file !== sorted[index])) fail(`atlas.folders.${folder} ist nicht sortiert`);
+    for (const file of list) {
+      frames += 1;
+      if (!file.startsWith(`${folder}/`)) fail(`atlas.folders.${folder}: ${file} liegt nicht im Ordner`);
+      if (!existsSync(join(assetRoot, file))) fail(`atlas.folders.${folder}: ${file} fehlt`);
+      referenced.add(file);
+      if (atlas.pages !== undefined && !pagePaths.has(file)) fail(`atlas.pages: ${file} fehlt`);
+    }
+    if (new Set(list).size !== list.length) fail(`atlas.folders.${folder} enthaelt Duplikate`);
+  }
+  if (atlas.frameCount !== frames) fail(`atlas.frameCount ist ${atlas.frameCount}, gezaehlt ${frames}`);
+}
+
 /** Eine Referenz pruefen: Datei vorhanden, Groesse im Rahmen, als benutzt merken. */
 function check(label, id, file, maxBytes = 256 * 1024) {
   if (typeof file !== 'string' || file.length === 0) {

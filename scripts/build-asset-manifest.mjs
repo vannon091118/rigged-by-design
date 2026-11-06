@@ -6,11 +6,17 @@
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
+import { buildAtlasPages } from './lib/atlas-png.mjs';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const ASSET_ROOT = join(ROOT, 'public/assets/casino');
 const TARGET = join(ROOT, 'src/render/assets/manifest.json');
 const BASE = '/assets/casino/';
+const ATLAS_FOLDERS = ['characters', 'decor', 'environment', 'machines'];
+const ATLAS_SIZE = 1024;
+// 0 Padding: Nearest-Sampling braucht keinen Saum; zwei 512er-Kacheln passen
+// so nebeneinander, und der Produktionspfad bleibt bei zwei Atlasseiten.
+const ATLAS_PADDING = 0;
 
 const ENGINE_SYMBOLS = {
   BOOK: 'symbols/book.png',
@@ -41,13 +47,26 @@ function walk(dir, base = dir) {
   });
 }
 
-const all = walk(ASSET_ROOT);
+// Generierte Atlasseiten sind Ausgabe, keine Quelle; verify-assets prueft sie
+// separat ueber atlas.pages.
+const all = walk(ASSET_ROOT).filter((file) => !file.startsWith('atlas/')).sort();
 const png = all.filter((file) => file.endsWith('.png'));
 const json = all.filter((file) => file.endsWith('.json'));
 const ogg = all.filter((file) => file.endsWith('.ogg'));
 
 const byTop = (top) => png.filter((file) => file.startsWith(`${top}/`));
 const asMap = (top) => Object.fromEntries(byTop(top).map((file) => [file, file]));
+
+// Die Seiten werden aus denselben kuratierten Ordnern gebaut, die der
+// Laufzeit-Fallback packt. Damit liegt der Shelf-Plan einmal im Build fest und
+// die App laedt im Produktionspfad nur noch wenige Seiten statt 153 Bilder.
+const atlasPages = buildAtlasPages({
+  assetRoot: ASSET_ROOT,
+  files: ATLAS_FOLDERS.flatMap(byTop),
+  size: ATLAS_SIZE,
+  padding: ATLAS_PADDING,
+  outputDir: join(ASSET_ROOT, 'atlas'),
+});
 
 const symbols = { ...ENGINE_SYMBOLS };
 for (const file of byTop('symbols')) {
@@ -79,8 +98,16 @@ for (const file of json) {
 }
 
 const manifest = {
-  version: 3,
+  version: 4,
   base: BASE,
+  atlas: {
+    size: ATLAS_SIZE,
+    padding: ATLAS_PADDING,
+    order: ATLAS_FOLDERS,
+    frameCount: ATLAS_FOLDERS.reduce((sum, folder) => sum + byTop(folder).length, 0),
+    folders: Object.fromEntries(ATLAS_FOLDERS.map((folder) => [folder, byTop(folder)])),
+    pages: atlasPages,
+  },
   symbols,
   machines: asMap('machines'),
   decor: asMap('decor'),
@@ -105,6 +132,7 @@ const covered = new Set([
   ...Object.values(symbols), ...Object.values(manifest.machines), ...Object.values(manifest.decor),
   ...Object.values(manifest.plinko), ...Object.values(manifest.ui), ...Object.values(manifest.characters),
   ...Object.values(manifest.environment), ...Object.values(manifest.fx), ...Object.values(MUSIC),
+  ...atlasPages.map((page) => page.source),
   ...Object.values(animations).flatMap((entry) => [entry.source, ...entry.frames]),
   ...Object.values(emitters).flatMap((entry) => [entry.source, ...entry.textures]),
 ]);

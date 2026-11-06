@@ -1,3 +1,5 @@
+import type { DayPhase } from '../core/sim/day-phase';
+
 /**
  * Eine Bildsprache fuer Floor und UI: jede Farbe hat eine Bedeutung, jedes Material
  * eine Aufgabe. Pixi liest Zahlen, das CSS spiegelt dieselben Rollen als Hex.
@@ -60,6 +62,20 @@ const MATERIALS: Readonly<Record<string, FloorMaterial>> = {
 
 /** Unbekannte Zonen bekommen das Lager-Material: nie eine leere Flaeche. */
 export const materialFor = (kind: string): FloorMaterial => MATERIALS[kind] ?? MATERIALS.STORAGE!;
+
+export interface LightState {
+  /** Eine der drei Lichtrollen; keine vierte Farbe fuer die Tageszeit. */
+  readonly tint: number;
+  /** Dosis der Rolle: Morgen und Nacht sind leiser als der Abend. */
+  readonly intensity: number;
+}
+
+/** Licht je Zone und Tageszeit: dieselben drei Rollen, nur anders dosiert. */
+export function lightFor(zone: string, phase: DayPhase): LightState {
+  const tint = materialFor(zone).light;
+  const intensity = phase === 'morning' ? 0.82 : phase === 'evening' ? 1 : 0.52;
+  return { tint, intensity };
+}
 
 interface FurnitureTone {
   /** Koerperfarbe im Detail-LOD. */
