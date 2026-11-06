@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
+<!-- rbd-doc: v0.3.123 | 2026-11-06 03:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -19,6 +19,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
 
 ### Technik
+- Boden und Wände kommen jetzt vollständig aus dem Layout (Task 3/5): `src/render/floor-material.ts` löst jede `FloorMaterialId` in genau eine Darstellung, eine optionale Manifest-Textur und eine stabile Fallback-ID auf. CARPET nutzt `casino-carpet-plum.png`; WOOD, TILE, STONE, LINOLEUM und CONCRETE bleiben deterministisch prozedural, ohne erfundene Pfade.
+- Die alte Zonen-Materialtabelle ist entfernt: `floorTextureFor()` und `FLOOR_TEXTURE` ordneten Muster-Schlüssel (`carpet`, `planks`, `rug`) Wallpaper-Dateien zu und waren damit kein Materialvertrag. Materialatlas und Texturauflösung laufen weiter über `textureFor()` (Nearest-Sampling, Atlas-Fallback, stiller Rückfall).
+- Zonen bleiben semantisch: Lichtfarbe und Ausstattung hängen an `ZoneKind`, nicht am Boden. `lightFor()` hat eine eigene Zonen-Lichttabelle; die Teppichwahl maskiert nur noch CARPET-Tiles aus dem Layout statt ganzer Zonen.
+- Wände, Ecken, Anschlüsse und Türen entstehen aus `layout.edges`: Jede Kante gehört genau einer Kachel (H der südlichen, V der östlichen), das Band liegt vollständig darin, die Vorderseite sitzt an Süd-/Ostkante. DOOR bekommt Pfosten und Schwelle, OPENING nur die Schwelle; nur die Haustür auf dem Rand leuchtet.
+- Chunk-Invalidierung ist tile-genau: `regionHash` mischt Bodenmaterialien und Kanten des Chunks über einen WeakMap-Cache je Layout-Identität. Eine einzelne Tile- oder Kantenänderung backt nur den betroffenen 30×30-Chunk.
 - Kanten-Navigation (Task 2/5): `src/core/sim/nav-grid.ts` trennt belegte Möbel-Tiles von Wandkanten; nur `WALL` blockiert einen Übergang, `DOOR` und `OPENING` bleiben passierbar.
 - `blockedTiles()` sperrt keine Rand-Tiles mehr. Den Rand schließt die Randkante des Layouts; Gäste, Spieler und Staff können die Randkachel betreten, aber nicht hinaus, und niemand wird mehr durch eine unsichtbare Tile-Sperre vom Eingang ferngehalten.
 - A* prüft jeden Schritt über `stepOpen()` (`H` zwischen (x, y-1)/(x, y), `V` zwischen (x-1, y)/(x, y)); Diagonalen bleiben gesperrt, die Wegfindung deterministisch.

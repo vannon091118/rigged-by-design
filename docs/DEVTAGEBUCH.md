@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Bodenmaterialien und Wände aus dem Layout
+
+**Ziel.** Task 3/5: Der Floor sollte den gespeicherten Plan zeigen, nicht eine zweite, zonengefärbte Wahrheit. Bodenmaterial pro Tile, Wandkanten, Türen und Ecken mussten aus dem Layout kommen, ohne die Chunk-Caches, den Atlas und den First-Frame-Handshake zu verlassen.
+
+**Umsetzung.** `floor-material.ts` ist die einzige Materialauflösung: `FLOOR_ART` je `FloorMaterialId`, `floorTextureKey()` nur für Materialien mit echter Manifest-Textur, `FLOOR_FALLBACK_IDS` mit stabilen IDs für den prozeduralen Weg. Die fehlerhafte Musterzuordnung in `floor-surface.ts` (`FLOOR_TEXTURE`/`floorTextureFor`) ist entfernt; `drawPattern()` zeichnet nur noch Muster. `floorRuns()` bündelt gleiche Materialien zeilenweise, damit der Chunk wenige Füllungen braucht. CARPET bekommt ein maskiertes TilingSprite je Chunk, alle anderen Materialien bleiben prozedural. `wall-art.ts` besitzt die Besitzregel der Kanten (H → Südkachel, V → Ostkachel), Band, Vorderseite, Türpfosten und Schwellen; `room-art.ts` orchestriert nur noch Boden, Zonenlicht/-ausstattung und Wände. `floor-math.ts` hasht Boden und Kanten pro Chunk über eine WeakMap je Layout-Identität; damit backt eine Tile-Änderung genau einen Chunk neu.
+
+**Pruefungen.** `typecheck`, ESLint, LOC und Dead-Export grün. Neue `floor-layout.test.ts` (12 Tests) deckt Materialauflösung, stabile Fallback-IDs, fehlende Texturen, Tile-Läufe, Wandband/-vorderseite, Randkanten, Tür/Durchgang und chunk-genaue Invalidierung ab. Alle 9 Render-Testdateien (40 Tests) grün. Vergleichsmessung derselben LARGE-Szene (9 Chunks, 90×90): hash 0,049 → 0,077 ms, Boden 6,93 → 9,19 ms je Vollback, Dreck 1,65 → 1,35 ms, Culling unverändert; der Bodenaufbau läuft nur bei Invalidierung, nicht pro Frame.
+
+**Bewusst nicht getan.** Kein Editor, keine Occlusion-Schicht, keine zweite Texturauflösung, keine neuen Assets. Die Wandvorderseite liegt als reine Funktion (`wallFaceRect`) bereit; Task 4 sortiert danach und verdeckt damit Figuren.
+
 ## 2026-11-06 - Wände, Türen und Kanten-Navigation
 
 **Ziel.** Task 2/5: Waende, Tueren und Oeffnungen sollten echte raeumliche Bedeutung bekommen. Bisher blockierte `blockedTiles()` Moebel und den ganzen Rand, waehrend Wandkanten aus dem Layout gar nicht in die Navigation eingingen; `approachPoint()` lieferte genau einen Zugangspunkt, und die Platzierung kannte weder Tueren noch versiegelte Serviceobjekte.
@@ -1366,7 +1376,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.123 | 2026-11-06 03:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

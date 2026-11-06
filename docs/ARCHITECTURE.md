@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
+<!-- rbd-doc: v0.3.123 | 2026-11-06 03:25 UTC -->
 
 ## README als Einstieg
 
@@ -52,6 +52,8 @@
 - Jede Datei traegt genau eine Zustaendigkeit und bekommt ihr Budget samt eigener Hot Zone aus `scripts/loc-budgets.mjs` (Legacy 350/200). Registries und State Machines sind Knoten mit genau einer Wahrheit, keine gespiegelten Zustandskopien. Schreibpfade laufen serialisiert ueber den Store, Engines bleiben reine Funktionen.
 
 - Navigation: `src/core/sim/nav-grid.ts` baut ein `NavGrid` aus belegten Möbel-Tiles und den Wandkanten des Layouts. Nur `WALL` steht in `walls`; `DOOR` und `OPENING` fehlen dort und sind damit passierbar. `blockedTiles()` sperrt keine Rand-Tiles mehr, den Rand schließt die Randkante des Layouts. A* (`pathfinding.ts`) prüft jeden Schritt über `stepOpen()`; `accessPointsFor()` liefert alle freien Zugänge eines Footprints mit offener Kante zum Objekt, `approachPoint()` bleibt als Fallback in alter Reihenfolge. `nav-reach.ts` prüft Erreichbarkeit über offene Kanten und verhindert, dass eine Platzierung einen Service abschneidet; `canPlaceAt()` weist Tür-Tiles und versiegelnde Platzierungen ab. Der Cache hängt an Brettgröße, Möbelstruktur und der Identität des unveränderlichen Layouts, damit jede Layout-Änderung ein neues Raster erzwingt.
+
+- Boden und Wände: `src/render/floor-material.ts` ist die einzige Auflösung von `FloorMaterialId` zu Darstellung, Textur und stabiler Fallback-ID; nur CARPET hat eine echte Manifest-Textur, alle anderen Materialien bleiben prozedural. `src/render/wall-art.ts` leitet Band, Vorderseite, Pfosten und Schwelle aus `layout.edges` ab; jede Kante gehört genau einer Kachel, damit kein Chunk sie doppelt zeichnet. `regionHash` in `floor-math.ts` mischt Bodenmaterialien und Kanten eines Chunks und cached den Layout-Beitrag je Layout-Identität; eine Tile-Änderung invalidiert nur ihren 30×30-Chunk. Zonen liefern weiter Licht und Ausstattung, nie das Bodenmaterial.
 
 ## Fehler-Governance
 

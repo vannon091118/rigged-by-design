@@ -1,6 +1,11 @@
-/** Bodentextur aus dem Paket: ein Teppichmuster ueber den Zonen, unter Moebeln und Figuren. */
+/**
+ * Teppichwahl als feine Textur ueber den Tiles, deren Layout-Material CARPET
+ * ist. Die Maske kommt aus dem Layout, nicht aus Zonen: Bodenmaterial bleibt
+ * die Wahrheit, die Auswahl nur eine Darstellungsnuance.
+ */
 import { Container, Graphics, TilingSprite } from 'pixi.js';
 import { TILE } from '../core/sim/types';
+import type { LayoutState } from '../core/sim/layout-types';
 import type { GameView } from '../store/types';
 import { ASSET } from './assets/keys';
 import { textureFor } from './assets/textures';
@@ -9,7 +14,7 @@ export class CarpetOverlay {
   readonly root = new Container();
   readonly #mask = new Graphics();
   #sheet: TilingSprite | null = null;
-  #key = '';
+  #layout: LayoutState | null = null;
 
   update(view: GameView): void {
     const texture = textureFor(ASSET.carpet);
@@ -17,7 +22,7 @@ export class CarpetOverlay {
     const size = view.size * TILE;
     if (!this.#sheet) {
       this.#sheet = new TilingSprite({ texture, width: size, height: size });
-      this.#sheet.alpha = 0.18;
+      this.#sheet.alpha = 0.14;
       this.#sheet.tileScale.set(0.34);
       this.#sheet.mask = this.#mask;
       this.root.addChild(this.#mask, this.#sheet);
@@ -26,14 +31,15 @@ export class CarpetOverlay {
       this.#sheet.width = size;
       this.#sheet.height = size;
     }
-    const carpetZones = view.zones.filter((zone) => zone.kind === 'GAMING' || zone.kind === 'LOUNGE');
-    const zones = carpetZones.map((zone) => `${zone.id}:${zone.x},${zone.y},${zone.w},${zone.h}`).join('|');
-    const key = `${view.size}|${view.template}|${zones}`;
-    if (key === this.#key) return;
-    this.#key = key;
+    if (this.#layout === view.layout) return;
+    this.#layout = view.layout;
     this.#mask.clear();
-    for (const zone of carpetZones) {
-      this.#mask.rect(zone.x * TILE, zone.y * TILE, zone.w * TILE, zone.h * TILE).fill(0xffffff);
+    const layout = view.layout;
+    for (let y = 0; y < layout.size; y += 1) {
+      for (let x = 0; x < layout.size; x += 1) {
+        if (layout.floor[y * layout.size + x] !== 'CARPET') continue;
+        this.#mask.rect(x * TILE, y * TILE, TILE, TILE).fill(0xffffff);
+      }
     }
   }
 

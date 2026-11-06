@@ -19,6 +19,7 @@ const view = {
   size: world.size,
   template: world.template,
   carpet: world.carpet,
+  layout: world.layout,
   zones: world.zones,
   furniture: [],
   dirtyTiles: new Set(Array.from({ length: 500 }, (_, index) => (index * 37) % (world.size * world.size))),

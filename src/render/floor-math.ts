@@ -2,14 +2,68 @@
 import type { Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 
+interface RegionLayout {
+  readonly size: number;
+  readonly floor: readonly string[];
+  readonly edges: readonly { readonly axis: 'H' | 'V'; readonly x: number; readonly y: number; readonly kind: string }[];
+}
+
 interface RegionView {
   readonly size: number;
   readonly template: string;
   readonly carpet: string;
   readonly zones: readonly { id: string; kind: string; x: number; y: number; w: number; h: number; color: number }[];
+  /** Kanonisches Layout; fehlt es, bleibt der Hash bei der Legacy-Zonensicht. */
+  readonly layout?: RegionLayout;
 }
 
 const mix = (hash: number, value: number): number => Math.imul(hash ^ value, 16777619);
+
+/** Besitzregel der Wandkante: H gehoert der Sued-, V der Ostkachel. */
+export function wallOwnerTile(edge: { axis: 'H' | 'V'; x: number; y: number }, size: number): { x: number; y: number } {
+  return edge.axis === 'H'
+    ? { x: edge.x, y: Math.min(edge.y, size - 1) }
+    : { x: Math.min(edge.x, size - 1), y: edge.y };
+}
+
+function mixText(hash: number, text: string): number {
+  for (let index = 0; index < text.length; index += 1) hash = mix(hash, text.charCodeAt(index));
+  return hash;
+}
+
+/**
+ * Layout-Beitrag eines Chunks, einmal je Layout-Identitaet berechnet. Das
+ * Layout ist unveraenderlich; eine Tile- oder Kantenaenderung erzwingt ein
+ * neues Objekt und damit genau einen neuen Hash fuer die betroffenen Chunks.
+ */
+const layoutHashes = new WeakMap<RegionLayout, Map<string, number>>();
+
+function layoutHash(view: RegionView, area: Area): number {
+  const layout = view.layout;
+  if (!layout) return 0;
+  let perLayout = layoutHashes.get(layout);
+  if (!perLayout) { perLayout = new Map(); layoutHashes.set(layout, perLayout); }
+  const key = `${area.x}:${area.y}:${area.w}:${area.h}`;
+  const cached = perLayout.get(key);
+  if (cached !== undefined) return cached;
+  let hash = 2166136261;
+  const x1 = Math.min(layout.size, area.x + area.w);
+  const y1 = Math.min(layout.size, area.y + area.h);
+  for (let y = Math.max(0, area.y); y < y1; y += 1) {
+    for (let x = Math.max(0, area.x); x < x1; x += 1) {
+      hash = mixText(hash, layout.floor[y * layout.size + x] ?? '');
+    }
+  }
+  for (const edge of layout.edges) {
+    const owner = wallOwnerTile(edge, layout.size);
+    if (owner.x < area.x || owner.y < area.y || owner.x >= x1 || owner.y >= y1) continue;
+    hash = mixText(hash, edge.kind);
+    hash = mix(hash, edge.x);
+    hash = mix(hash, edge.y);
+  }
+  perLayout.set(key, hash | 0);
+  return hash | 0;
+}
 
 function zoneKey(zone: RegionView['zones'][number]): number {
   let hash = 2166136261;
@@ -35,6 +89,7 @@ export function regionHash(view: RegionView, area: Area): number {
     }
     hash = mix(hash, zoneKey(zone));
   }
+  hash = mix(hash, layoutHash(view, area));
   return hash | 0;
 }
 
