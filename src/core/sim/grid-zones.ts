@@ -1,6 +1,6 @@
 /** 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. */
 import { blockedTiles, isWalkable } from './pathfinding';
-import { REGION, type Furniture, type GameId, type TemplateId } from './types';
+import { REGION, type Furniture, type GameId, type TemplateId, type Zone } from './types';
 
 export { REGION };
 
@@ -74,8 +74,9 @@ export function accessPoint(
   y: number,
   w: number,
   h: number,
+  zones: readonly Zone[] = [],
 ): { x: number; y: number } | null {
-  const blocked = blockedTiles(size, furniture);
+  const blocked = blockedTiles(size, furniture, zones);
   const candidates = [
     { x: x + Math.floor(w / 2), y: y + h },
     { x: x - 1, y: y + Math.floor(h / 2) },
@@ -98,11 +99,12 @@ export function canPlaceAt(
   w: number,
   h: number,
   needsAccess = true,
+  zones: readonly Zone[] = [],
 ): boolean {
   if (x < 1 || y < 1 || x + w > size - 1 || y + h > size - 1) return false;
   if (blockers.some((point) => inside(point, x, y, w, h))) return false;
   if (furniture.some((item) => x < item.x + item.w && x + w > item.x && y < item.y + item.h && y + h > item.y)) {
     return false;
   }
-  return !needsAccess || accessPoint(size, furniture, x, y, w, h) !== null;
+  return !needsAccess || accessPoint(size, furniture, x, y, w, h, zones) !== null;
 }

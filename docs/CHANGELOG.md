@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
+<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.121] - 2026-11-06
+
+### Technik
+- Inventur repariert: `docs/INVENTORY.md` deckt wieder jede getrackte Datei ab, `verify:docs` (`ERR-4017`) ist gruen. Die Ursache lag im Pre-Commit-Hook, der die Inventur nur schrieb, aber nicht stagte; er stagt sie jetzt selbst.
+- Review des Arbeitsbranch gegen den damaligen `origin/main` (34 Commits, 166 Dateien): eine Render-Regression (Maschinen-Textur ueber Status-Text) ist behoben, zwei Verhaltensbefunde bleiben offen (Reiniger-Zielauswahl, `chooseSpot` ohne Spezifikation).
+- `main` mit 0.3.120 (Huelle: Atlas, Governor, APK) in den Arbeitsbranch gemerged; Konflikte in Doku und Version zugunsten von `main`, Wandkollision (`src/core/sim/walls.ts`) und Inventur-Reparatur bleiben erhalten. Mit dem Huelle-Stand sind drei Review-Befunde ueberholt: Boden-Texturen haengen an der Chunk-`deco`-Ebene, `floor-events.ts` abonniert alle acht Ereignisse statt des geloeschten Partikel-Overlays, und der Backdrop-Sprite ist dem Atlas gewichen.
 
 ## [0.3.120] - 2026-11-05
 

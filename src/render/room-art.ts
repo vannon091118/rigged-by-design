@@ -5,6 +5,7 @@
  */
 import type { Container, Graphics } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
+import { openingsOn } from '../core/sim/walls';
 import { CARPETS } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { INK, LIGHT, STROKE, lightFor, materialFor, type FloorMaterial, type LightState } from './art-tokens';
@@ -18,23 +19,6 @@ type Side = 'top' | 'bottom' | 'left' | 'right';
 const WALL = 6;
 const WALLPAPER = 'environment/tiles/wallpaper-damask-plum.png';
 const SIDES: readonly Side[] = ['top', 'bottom', 'left', 'right'];
-
-/** Durchgang zwischen zwei Zonen: die Wand wird dort unterbrochen, der Boden laeuft weiter. */
-function sharedSpans(zone: ZoneLike, others: readonly ZoneLike[], side: Side): [number, number][] {
-  const spans: [number, number][] = [];
-  for (const other of others) {
-    if (other.id === zone.id) continue;
-    const touching = side === 'left' ? other.x + other.w === zone.x
-      : side === 'right' ? zone.x + zone.w === other.x
-        : side === 'top' ? other.y + other.h === zone.y : zone.y + zone.h === other.y;
-    if (!touching) continue;
-    const a = side === 'left' || side === 'right' ? [Math.max(zone.y, other.y), Math.min(zone.y + zone.h, other.y + other.h)]
-      : [Math.max(zone.x, other.x), Math.min(zone.x + zone.w, other.x + other.w)];
-    if (a[1]! - a[0]! < 2) continue;
-    spans.push([a[0]!, a[1]!]);
-  }
-  return spans;
-}
 
 /** Eine Wand: Koerper, Lichtkante zur Zone, Schatten in den Raum und Sockelstreifen. */
 function drawWall(
@@ -62,23 +46,6 @@ function drawWall(
     g.rect(from, lightEdge, size, 1).fill({ color: mat.light, alpha: 0.32 });
     g.rect(from, side === 'top' ? band.y + WALL : band.y - 2, size, 2).fill({ color: 0x000000, alpha: 0.32 });
   }
-}
-
-/**
- * Tueren: wo zwei Zonen aneinanderstossen, ist der Durchgang offen; sonst bekommt jede
- * Innenwand eine Tuer zur Laufzone. Ohne sie waeren die Raeume geschlossene Kisten.
- */
-function doorSpan(zone: ZoneLike, side: Side, size: number): [number, number] | null {
-  if (zone.kind === 'ENTRANCE' && side === 'left') return null;
-  const exterior = side === 'left' ? zone.x === 0
-    : side === 'right' ? zone.x + zone.w >= size
-      : side === 'top' ? zone.y === 0 : zone.y + zone.h >= size;
-  if (exterior) return null;
-  const from = side === 'left' || side === 'right' ? zone.y : zone.x;
-  const length = side === 'left' || side === 'right' ? zone.h : zone.w;
-  if (length < 4) return null;
-  const start = from + Math.floor((length - 2) / 2);
-  return [start, start + 2];
 }
 
 /** Eckpfeiler: ohne sie treffen sich zwei Waende nur mit einer Luecke. */
@@ -156,8 +123,8 @@ function drawZoneFloor(
   }, deco, light);
   drawDressing(g, mat, rect, zone, tile, deco, light);
   for (const side of SIDES) {
-    const door = doorSpan(zone, side, size);
-    const spans = [...sharedSpans(zone, others, side), ...(door ? [door] : [])].sort((a, b) => a[0] - b[0]);
+    // Wand- und Tuer-Regeln liegen im Sim (walls.ts); Malerei und Kollision teilen sie sich.
+    const spans = openingsOn(zone, others, side, size).sort((a, b) => a[0] - b[0]);
     const whole: [number, number] = side === 'left' || side === 'right' ? [iy, ey] : [ix, ex];
     const openings: [number, number][] = [];
     let cursor = whole[0];

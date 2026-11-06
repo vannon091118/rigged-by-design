@@ -13,7 +13,31 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-05 - Huelle: Atlas, Budgets, APK
+## 2026-11-06 - Merge mit main (0.3.120) und Review-Abgleich
+
+**Ziel.** Den reparierten Arbeitsbranch auf den inzwischen weitergelaufenen `main`-Stand heben, ohne die Wandkollision oder die Inventur-Reparatur zu verlieren.
+
+**Umsetzung.** `main` (c460abb, 0.3.120) in den Arbeitsbranch gemerged. Neun Konflikte: Doku-Marker, `package.json`/`pnpm-lock.yaml` und `src/render/furniture-art.ts`. Doku und Version folgen `main` (0.3.120 -> 0.3.121 fuer diesen Merge), weil der Huelle-Stand die neuere Wahrheit ist; `furniture-art.ts` kommt komplett aus `main`, weil der Atlas die Backdrop-Sprite-Logik ersetzt hat. Danach Inventur neu gebaut, Marker gesetzt, `verify:quick` gefahren.
+
+**Review-Abgleich nach dem Merge.** Drei Befunde aus dem Review sind mit dem Huelle-Stand ueberholt und damit geschlossen: Boden-Texturen haengen jetzt an der Chunk-`deco`-Ebene, die beim Neubacken geleert wird (`scene-cache.ts`); das Partikel-Overlay ist geloescht und `floor-events.ts` abonniert alle acht Ereignisse; die Maschinen-Textur deckt kein Label mehr, weil der Atlas den Sprite ersetzt. Offen bleiben: die Reiniger-Zielauswahl (`cleanerTick` nimmt immer die erste Kachel), `chooseSpot` ohne Spezifikation und die Prozess-Drift (fehlender Content-Beitrag fuer den Turn 2026-11-06, Changelog-Eintrag der Wandkollision unter `[0.3.114]`).
+
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen; `pnpm run verify:quick` gruen in allen zehn Gates auf dem gemergten Baum (Wandkollision plus Huelle zusammen).
+
+**Offen.** Die drei genannten Befunde; `pnpm run hooks:install` ist in diesem Klon weiterhin nicht aktiv.
+
+## 2026-11-06 - Doku-Gate repariert: Inventur wird wieder mitgestagt
+
+**Ziel.** Das offene `gate-failure`-Issue #139 schliessen: `CI Verify` war rot mit `[ERR-4017] verify:docs: docs/INVENTORY.md: Abdeckungszahl 1257 passt nicht zu 1259 getrackten Dateien`. Die Ursache lag nicht in `walls.ts`, sondern im Zusammenspiel von Hook und Commit.
+
+**Umsetzung.**
+- `docs/INVENTORY.md` mit `node scripts/build-inventory.mjs` neu erzeugt; die im Turn zuvor neuen Pfade (`src/core/sim/walls.ts`, `src/core/sim/__tests__/walls.test.ts`) stehen wieder im Block.
+- `.githooks/pre-commit` stagt die Inventur direkt nach dem Generator. Der Hook schrieb das Artefakt bisher nur in den Arbeitsbaum; gestagt wurde eine Liste, die den neuen Commit noch nicht kannte. Damit war der naechste Lauf zwangslaeufig rot.
+
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen (vorher drei Befunde). `pnpm run verify:quick` gruen in allen zehn Gates; vor der Reparatur war `docs` das einzige rote Gate.
+
+**Offen.** Der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` bereits 0.3.115 trug — der Versionsdrift bleibt als Befund stehen.
+
+
 
 **Ziel.** Die Optik auf einem schwachen Androiden tragen, ohne sie zurueckzudrehen: die 153 Pixel-Frames in wenige Requests packen, die Last in drei Stufen regeln, den Loader an den ersten echten Renderer-Frame binden und eine installierbare APK bauen. Der 4G-Pruefpfad soll unter drei Sekunden und bei hoechstens 20 Requests liegen.
 
@@ -1340,7 +1364,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -14,9 +14,10 @@ const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
 
 export function movePlayer(world: WorldState, target: Point): void {
-  const walkable = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), target);
+  const blocked = blockedTiles(world.size, world.furniture, world.zones);
+  const walkable = nearestWalkable(world.size, blocked, target);
   if (!walkable) return;
-  world.player.path = findPath(world.size, blockedTiles(world.size, world.furniture), world.player.position, walkable);
+  world.player.path = findPath(world.size, blocked, world.player.position, walkable);
   world.player.pathIndex = 0;
 }
 

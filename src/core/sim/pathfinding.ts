@@ -1,5 +1,6 @@
 /** A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern. */
-import type { Furniture, Point } from './types';
+import type { Furniture, Point, Zone } from './types';
+import { zoneSignature, zoneWallTiles } from './walls';
 
 function tileIndex(size: number, x: number, y: number): number {
   return y * size + x;
@@ -17,12 +18,15 @@ function structureKey(furniture: readonly Furniture[]): string {
 let cache: { size: number; key: string; tiles: Set<number> } | null = null;
 
 /**
- * Belegte Tiles. Das Raster wird pro Aufbau gecacht, weil Bewegungen pro Tick
- * mehrfach danach fragen; jede Bauveraenderung erzeugt einen neuen Schluessel.
+ * Belegte Tiles: Brettrand, Moebel und die aus den Zonen abgeleiteten Wand-Ringe
+ * (dieselben Durchgaenge wie die Wand-Malerei, siehe walls.ts). Das Raster wird
+ * pro Aufbau gecacht, weil Bewegungen pro Tick mehrfach danach fragen; jede
+ * Bau- oder Zonenaenderung erzeugt einen neuen Schluessel.
  * Der zurueckgegebene Set ist schreibgeschuetzt zu behandeln.
  */
-export function blockedTiles(size: number, furniture: readonly Furniture[]): Set<number> {
-  const key = structureKey(furniture);
+export function blockedTiles(size: number, furniture: readonly Furniture[], zones: readonly Zone[] = []): Set<number> {
+  const zonesKey = zones.length > 0 ? zoneSignature(zones) : '-';
+  const key = `${zonesKey}#${structureKey(furniture)}`;
   if (cache && cache.size === size && cache.key === key) return cache.tiles;
   const tiles = new Set<number>();
   for (let i = 0; i < size; i += 1) {
@@ -37,6 +41,9 @@ export function blockedTiles(size: number, furniture: readonly Furniture[]): Set
         if (x >= 0 && y >= 0 && x < size && y < size) tiles.add(tileIndex(size, x, y));
       }
     }
+  }
+  for (const zone of zones) {
+    for (const tile of zoneWallTiles(zone, zones, size)) tiles.add(tile);
   }
   cache = { size, key, tiles };
   return tiles;
