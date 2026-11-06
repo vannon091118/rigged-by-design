@@ -13,6 +13,20 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Atlas als WebP und Plinko-Buehne aus dem Startgraph
+
+**Ziel.** Den ersten Frame unter Slow 4G (1,6 Mbit/s, 150 ms RTT) deutlich unter 12 s druecken: Atlas-Bytes und Initial-JS senken, ohne Spiel-, Ledger-, RNG- oder Save-Verhalten zu aendern.
+
+**Umsetzung.**
+- Atlas: `assets:manifest` schreibt beide Seiten als WebP-q95. Gemessen 1.040.593 -> 384.234 B (-63 %). Seite 0 hat 173.100 Farben, palettiertes PNG scheidet aus; adaptive PNG-Filter sparen nur rund 10 %. Lossless-WebP waere 660.484 B; q95 ist bei 2x-Crops visuell identisch zu q100/q90. Kodiert ueber das vorhandene `ffmpeg-static`, zwei Laeufe byte-identisch (sha256). Shelf-Plan, Seitenzahl und Frame-Koordinaten unveraendert.
+- Initial-JS: `PlinkoEditorLazy` laedt den Editor dynamisch; der 184.863-B-Chunk `plinko-stage` verlaesst den Modulpreload. Netto 1.186.336 -> 1.173.926 B (-12.410 B), weil Manifest, Texturen und Symbole startkritisch sind.
+- Der volle Popup-Lazy-Schnitt wurde gemessen (1.095.240 B, -91 KB), aber wegen 13 zusaetzlicher Requests und leerer Popup-Flaechen verworfen.
+- Kritischer Transfer (JS + CSS + Atlas) 2.285.353 -> 1.616.584 B (-29,3 %); im Byte-Modell bei 199 KB/s 11,48 -> 8,12 s.
+
+**Pruefungen.** `pnpm typecheck` Exit 0, `pnpm build` Exit 0, Initialgraph aus `dist/index.html` gegen `.perf-src` verglichen (16 -> 17 JS-Chunks), `pnpm assets:manifest` 554 Referenzen. `pnpm verify:quick` PASS.
+
+**Offen.** q95 ist verlustbehaftet, die Qualitaet ist ueber 2x-Crops belegt, nicht pixelgenau. Ein neuer Slow-4G-Browserlauf steht aus; die Zeit ist ein Byte-Modell auf dem dokumentierten Profil. Naechster Hebel: serverseitige Kompression und Initial-JS (Manifest/Registry), nicht der Atlas.
+
 ## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
 
 **Ziel.** Jackpot, Kassenklingeln, Mood-Bubble und Spielfarben im laufenden Browser pruefen und gefundene Abweichungen direkt beheben.
@@ -1547,7 +1561,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

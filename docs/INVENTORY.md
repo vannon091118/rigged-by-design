@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->
+<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -276,10 +276,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1325 |
-| Gelistete Dateien | 1325 |
+| Getrackte Dateien | 1327 |
+| Gelistete Dateien | 1327 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (537) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (62), src (538) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -330,7 +330,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 39 Datei(en)
-- `scripts/lib/` — 22 Datei(en)
+- `scripts/lib/` — 23 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
@@ -368,7 +368,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 57 Datei(en)
+- `src/ui/` — 58 Datei(en)
 - `src/ui/__tests__/` — 9 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -470,10 +470,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 724 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 731 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2909 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2919 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -547,8 +547,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 93 Zeilen
 - `pnpm-lock.yaml` — lockfileVersion: "9.0" — gelesen: 2798 Zeilen
-- `public/assets/casino/atlas/atlas-0.png` — PNG-Textur — geprueft: PNG 1024x1024, 789668 B
-- `public/assets/casino/atlas/atlas-1.png` — PNG-Textur — geprueft: PNG 1024x1024, 250925 B
+- `public/assets/casino/atlas/atlas-0.webp` — Binaerdatei — geprueft: Signatur, 308258 B
+- `public/assets/casino/atlas/atlas-1.webp` — Binaerdatei — geprueft: Signatur, 75976 B
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -1107,7 +1107,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/balance-run.mjs` — Balance-Spur: startet den 40-Tage-Messlauf als eigenen Prueflauf und legt den Bericht ab. — gelesen: 50 Zeilen
 - `scripts/bench-lowend.mjs` — Low-End-Profil: derselbe Benchmark, auf einen Kern gepinnt. — gelesen: 27 Zeilen
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge aufraeumen. — gelesen: 43 Zeilen
-- `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 141 Zeilen
+- `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 151 Zeilen
 - `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 128 Zeilen
 - `scripts/check-loc.mjs` — LOC-Guard fuer VaCoin Casino Roguelite. — gelesen: 102 Zeilen
 - `scripts/ci-long-checks.mjs` — Lange Nachweise ueber GitHub Actions statt auf der eigenen Maschine. — gelesen: 172 Zeilen
@@ -1121,6 +1121,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 23 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 176 Zeilen
 - `scripts/lib/atlas-png.mjs` — Deterministischer PNG-Atlas ohne neue Abhaengigkeit. — gelesen: 175 Zeilen
+- `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
 - `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
@@ -1677,6 +1678,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/narrative-events.tsx` — NAR-14: Aktive Szenen als Karten; Auswahl und Ablehnung laufen ueber Store-Commands. — gelesen: 113 Zeilen
 - `src/ui/narrative-popup.tsx` — NAR-14: Popup fuer aktive Szenen und Besucherprofile. — gelesen: 45 Zeilen
 - `src/ui/narrative-profile.tsx` — NAR-14: Besucherprofil aus dem Snapshot; Rechnungen bleiben im Core. — gelesen: 97 Zeilen
+- `src/ui/plinko-editor-lazy.tsx` — Chunk-Grenze fuer den Plinko-Editor: Der Editor zieht die 185-KB-Buehne — gelesen: 19 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
 - `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 163 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
@@ -1710,6 +1712,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T75 | **2026-11-06 19:54 UTC**: Atlas als WebP-q95 und Plinko-Buehne aus dem Startgraph; kritischer Transfer 2.285.353 -> 1.616.584 B, Byte-Modell 11,48 -> 8,12 s. |
 | T74 | **2026-11-06 19:14 UTC**: Phase-3-Effekte im Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, Kassen-Chips mit Coin-Sound, Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten geprueft. Korrigiert: `GamesPopup` gibt `machine.game` weiter; `FloorCash` liegt sichtbar vor dem Wechseltisch. Geprueft: Typecheck, UI-Test 8/8, Browser ohne Konsolenfehler; `verify:quick` alle zehn Gates gruen. |
 | T73 | **2026-11-06 18:33 UTC**: HUD-PNGs inline. `coin` und `guest-cyan` liegen als Data-URI in `src/ui/hud-icons.ts`; Slow 4G (1,6 Mbit/s, 150 ms, kalt) 24→22 Requests, erster Frame 12,16 s bei 2,42 MB. Geprueft: Build, Typecheck, beide Icons 32x32 ohne kaputte Bilder. |
 | T72 | **2026-11-06 07:30 UTC**: Typecheck und Floor-Crash. `SceneCache.dirt` deklariert und zurueckgegeben (Pixi-`addChild(undefined)` behoben); `src/Config/tsconfig.json` Include auf `..` korrigiert, danach 87 Typfehler behoben; `src/vite-env.d.ts` mit `vite/client` und `.mjs`-Deklaration; doppelte `VISITOR_SERVICE`-Emissionen aus den Store-Commands entfernt. Geprueft: `typecheck` 0 Fehler, `verify:quick` zehn Gates gruen, `inventory:build` 1324/1324. |

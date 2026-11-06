@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->
+<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.139] - 2026-11-06
+
+### Technik
+- Der Floor-Atlas liegt als WebP-q95 statt PNG: 1.040.593 B -> 384.234 B (-656.359 B, -63 %). Beide Seiten bleiben 1024er-Sheets mit demselben Shelf-Plan; `assets:manifest` kodiert sie über das vorhandene `ffmpeg-static`, zwei Läufe sind byte-identisch.
+- `PlinkoEditor` lädt dynamisch: Die 184.863-B-Bühne `plinko-stage` verlässt den Modulpreload des ersten Frames. Initial-JS 1.186.336 B -> 1.173.926 B (-12.410 B, -1 %); die geteilten Manifest- und Textur-Module bleiben startkritisch.
+- Kritischer Transfer (JS + CSS + Atlas) 2.285.353 B -> 1.616.584 B (-29,3 %). Im Byte-Modell bei 1,6 Mbit/s rund 8,1 s statt 11,5 s; der dokumentierte Browserlauf lag bei 12,16 s. Ein neuer Browserlauf steht aus.
 
 ## [0.3.138] - 2026-11-06
 
