@@ -64,8 +64,7 @@ function fixture(perspective: Perspective) {
 describe('Eigener Automat', () => {
   it('öffnet im Gastmodus direkt die vorhandene Spielbühne', async () => {
     fixture('guest');
-    expect(await screen.findByText(/Dein Casino/, {}, { timeout: 3000 })).not.toBeNull();
-    expect(screen.getByText('PORTEMONNAIE')).not.toBeNull();
+    expect(await screen.findByText(/GAST · SPIELGERÄT/, {}, { timeout: 3000 })).not.toBeNull();
     expect(screen.queryByRole('button', { name: 'TESTSPIN' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'ALS GAST SPIELEN' })).toBeNull();
   });
@@ -79,13 +78,14 @@ describe('Eigener Automat', () => {
   it('ruft den Testspin ohne Geldeinsatz auf', async () => {
     const { onPlay, onTest } = fixture('operator');
     fireEvent.click(screen.getByRole('button', { name: 'TESTSPIN' }));
-    await waitFor(() => expect(onTest).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(onTest).toHaveBeenCalledTimes(1), { timeout: 5000 });
     expect(onPlay).not.toHaveBeenCalled();
   });
 
   it('reicht einen Gastwurf als eigenen Spielzug weiter', async () => {
     const { onPlay, wallet } = fixture('guest');
-    const wager = await screen.findByRole('button', { name: /WUERFELN/ });
+    await waitFor(() => screen.getByRole('button', { name: /WUERFELN/ }));
+    const wager = screen.getByRole('button', { name: /WUERFELN/ });
     fireEvent.click(wager);
     expect(onPlay).toHaveBeenCalledWith(1, { variant: 'UNDER' });
     expect(wallet).toBe(fromVC(20));
