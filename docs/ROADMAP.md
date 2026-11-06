@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->
+<!-- rbd-doc: v0.3.139 | 2026-11-06 20:50 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -17,9 +17,9 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
-- Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Der Phase-6-Abnahmeplan mit Pruefmatrix A1-A8 steht in `docs/PLAN-OPTIK-VISUELL.md`; A1 (Desktop-Grundbild) ist bestanden. Offen bleiben die visuelle Werkstattpruefung, die Touch-Geste auf Hardware, der renderer-nahe FPS-Nachweis, der Slow-4G-Test und die APK-Installation.
+- Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Die Pruefmatrix A1-A8 steht unten in „Offene Punkte“; A1 (Desktop-Grundbild) ist bestanden. Offen bleiben die visuelle Werkstattpruefung (A2-A5), die Touch-Geste auf Hardware (A6), der Slow-4G-Test (A7) und die APK-Installation (A8).
 - Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
-- Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` ohne Ausgabepfad, Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen.
+- Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` (Funktion vorhanden, aber ohne Produktions-Aufrufer), Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen; Details unten.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Die Vision steht in `docs/PRODUCT.md`, das Casino darin als Start- und Testumgebung.
 
@@ -29,7 +29,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - Inventur ist abgeschlossen: §18 deckt alle getrackten Dateien und Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie.
 - Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `pnpm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
-- Befund 33 (Bar-Kapazitaet in drei UI-Dateien) und Befund 34 (`Â·`-Mojibake) nach Freigabe reparieren.
+- Befund 33 (Bar-Kapazitaet) und Befund 34 (`Â·`-Mojibake) sind erledigt; offene Kleinbefunde stehen in `docs/INVENTORY.md` §14/§16.
 - Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
 - Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v10 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen. NAR-06 ist erledigt: Scheduler, Lifecycle, Cooldowns, persistente Instanzen und eigener Narrativ-RNG stehen. NAR-07 ist erledigt: stabile Templates, Choice-Vertrag, persistierte Choice-Saetze und Klick-Eligibility stehen. NAR-08 ist erledigt: Command-DSL, Allowlist, Preflight und die einmalige Ausfuehrung von Choice-Effekten stehen. NAR-09 ist erledigt: Beitraege tragen eine kontrollierte Klassifizierung, das Turn-Manifest ordnet jedem abgeschlossenen Turn genau einen Beitrag zu, und die Registry wird deterministisch im Assets-Gate geprueft. NAR-10 ist erledigt: Makros werden als typisierte ASTs validiert, Konflikte vor dem Schreiben erkannt und die Registry byte-identisch mit Inhalts-Hash erzeugt. NAR-11 ist erledigt: der Composer waehlt aus der laufzeitvalidierten Registry deterministisch Texte, filtert Locale/Kontext/Flags/Personas und liefert lokale Fallbacks. NAR-12 ist erledigt: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler einmal pro Tick und an jeder erfolgreichen Store-Mutationsgrenze; Choices laufen ueber `store/narrative-commands.ts`, und eine aufgeloeste Choice erzeugt den naechsten Fact (`EVENT_RESOLVED`). NAR-13 ist erledigt: Neon-Nacht und Turnierabend laufen als aktive GLOBAL-Instanzen der gemeinsamen Engine, `demand.ts` leitet Wirkung und Anzeige nur noch daraus ab, und v5–v9-Saves werden beim Laden konvertiert. Profilweg und Szenen-Historie sind angebunden: Gaeste oeffnen ihr Profil direkt, das Journal zeigt abgeschlossene Geschichten mit Ausgang und Teilnehmern. Seit B3 nennt eine Szene ihre Fallback-Slots einzeln statt pauschal von Sicherheitscopy zu sprechen; `degraded` folgt `fallbacks.length > 0`. Seit B4 fuellt ein abgestimmter Content-Batch `TITLE`, `BODY` und jedes angebotene Choice-Label aller sechs Templates; `narrative-coverage.test.ts` haelt die Abdeckung fest, `OUTCOME` bleibt bewusst dem naechsten Batch vorbehalten. Seit C2 traegt `TriggerCondition` die Bedingung `rival-action` mit expliziter Aktionsliste; `EVENT_TRIGGER_DEFINITIONS` laesst nur TRADE_INFO, PRICE_MOVE, POACH_VISITOR und SABOTAGE als `RIVAL_MOVE`-Ausloeser zu, PROBE bleibt ein Indiz ohne Event. Seit C1 gilt die Spec-Regel als getesteter Vertrag: `EVENT_TRIGGER_DEFINITIONS` enthaelt nur Definitionen mit Template, jedes Fact-Template ist an genau eine Definition gebunden; in diesem Slice entstehen keine neuen Fact-Kinds, Geraete-, Lager- und Personal-Facts bleiben dokumentiert offen. Seit D1 fuehrt `VISITOR_RETURN.ASK_ABOUT_LAST_VISIT` ueber `followUpEventId` zu `VISITOR_AFTERMATH` (Scope VISITOR, Trigger `chain`); die Runtime baut die Kette aus dem drainierten `EVENT_RESOLVED`-Fact, der Scheduler haelt Cooldown, Limits, Kettenherkunft und RESOLVED zentral ein. Seit D2 traegt `RIVAL_MOVE.CONFRONT_RIVAL` die typisierte Domaenenwirkung `COUNTER_RIVAL`: Preflight verlangt einen existierenden `rival:`-Ref, `execute.ts` setzt `counteredUntilTick = max(alt, tick + 900)` als einzigen Schreibpfad; ein neuer Fact entsteht in dieser Phase bewusst nicht. Seit D3 bleibt `EXPIRED` ein reiner Statuswechsel mit `DEADLINE` ohne globale Timeout-Strafe: Fristablauf aendert weder Flags noch Beziehungen noch Ledger-Zeilen und emittiert keinen Fact; Timeout-Effekte gibt es nur als expliziten Template-Vertrag, falls sie spaeter noetig werden. Seit E2 wirkt die Disposition aus `narrative/disposition.ts` (Persona, Erinnerung, Kante) an allen drei Entscheidungspunkten: `offerScore()` (Faktor ±20 %), `chooseActivity()` (Drink-/Sofa-Schwellen ±8 Punkte) und `returnChance()` (Beziehungszuschlag ±10 Prozentpunkte zusaetzlich zu `memoryEffect()`); harte Regeln bleiben vorrangig. Seit Phase 5 liefert `narrative/rival-context.ts` Rivalen-Karten (Haltung, Kapazitaet, Wohlwollen, Gegenmassnahmen-Fenster, Historie, Indizien) rein aus den Minds ins Anzeigemodell, ohne NAR-14-17-Duplikate; `view.ts` bleibt unter 200 Zeilen, Testdateien unter 240. Seit F laeuft der Langzeitpfad ohne Campaign-State ueber den Kettenbaustein: `VISITOR_RETURN` fuehrt per ASK nach `VISITOR_AFTERMATH` und hinterlaesst Flag plus Beziehung; ein spaeterer `VISITOR_RETURNED`-Fact mit GOOD-Erinnerung matcht zusaetzlich die zweite Stufe `visitor-returned-warm` (`all` aus Fact und `visitor-memory`) mit eigenem Template - nur vorhandene Trigger-/Cooldown-Infrastruktur, keine Template-Requirements. Seit dem Warm-Batch traegt `VISITOR_RETURN_WARM` eigene Texte (Titel, Text, Choice-Label, Outcome) im neuen `warm`-Kontext, sodass die zweite Stufe nicht mehr aus dem Basistopf spricht.
 - Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
@@ -37,11 +37,78 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
 - Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
-- Branch-Konsolidierung am 2026-11-05 abgeschlossen: `fix/bundle-splitting` und `fix/test-suite-optimization` nach `main` gemergt, die uebrigen offenen Branches waren patch-identisch; alle Branch-Refs lokal und auf GitHub geloescht.
+- Branch-Konsolidierung vom 2026-11-05 ist ueberholt: `integration` steht nicht auf dem neuen `main`-Stand, und neben `feat/spatial-layout-editor` existieren weitere Remote-Refs; offene PRs und die gewuenschte Bereinigung stehen unten.
 
 - Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
   (`docs/ASSET-SEMANTICS.md`) stehen. Als Nächstes die Deko-Rollen von den
   Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
+
+## Offene Punkte (konsolidiert 2026-11-06)
+
+Diese Sektion ersetzt die frueheren Einzelberichte. Jeder Punkt nennt Status,
+Beleg und naechsten Pruefschritt. Geraeteabnahme bleibt zurueckgestellt, bis
+Spiel- und Sim-Inhalte am Desktop vollstaendig abgenommen sind.
+
+### Desktop-Abnahme (Phase 6, A1-A5)
+
+| ID | Pruefung | Stand | Naechster Schritt |
+| --- | --- | --- | --- |
+| A1 | Desktop-Grundbild: Start, HUD, Warnzeile, Toast, vier Tabs, Konsole ohne Fehler ausser Autoplay | bestanden am 2026-11-06, 1024x768 | - |
+| A2 | Werkstatt-Einstieg: genau 5x Marke und `Strg+Shift+D`, kein sichtbarer Knopf, ein Rahmen | offen | beide Wege im Browser oeffnen |
+| A3 | Sechs Ziele: Pruefung, Protokoll, Assets, Sound, Steuerung, FPS; vier Panels, kein Charakter-Tab | offen | Klickrunde durch alle sechs Ziele |
+| A4 | Spiegel: genau ein `SPIEGEL` in der Lagerzone, Aktion oeffnet den Look-Editor, Save/Load erhaelt ihn | offen | Browser + Save-Roundtrip |
+| A5 | FPS: echte `requestAnimationFrame`-Frames ueber 500 ms, keine GPU-Behauptung | offen | Panel + Gegenprobe |
+
+### Geraet und Release (A6-A8) - zurueckgestellt
+
+Die Punkte bleiben offen, werden aber erst nach vollstaendiger Desktop-Abnahme
+angegangen; der Nutzer testet privat auf einem echten Geraet.
+
+| ID | Pruefung | Stand |
+| --- | --- | --- |
+| A6 | Touch: Ein-Finger-Pan ab 8 px, Tap-to-Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gaesten | offen, braucht Hardware |
+| A7 | Huelle/Performance: Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste, Slow 4G, Atlas-Requests | teilweise: 9 Mbit/s 20 Requests/2,51 s; Slow 4G 22 Requests/12,16 s/2,42 MB; HUD-PNGs inline; WebP/Lazy in PR #161 |
+| A8 | Release: Debug- und Release-APK per `adb install`, `verify:all` 12/12, Tag und Notes, aktuelle Screenshots | offen |
+
+### Spiel und Simulation
+
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| `PLAYER_CASH` ohne Ausgabepfad | offen | `cashOutPlayerCash` steht in `self-exclusion-bet.ts:82`, hat aber keinen Produktions-Aufrufer; nur `player-cash.test.ts` ruft ihn. T33 belegt die Funktion, nicht den Anschluss. |
+| Einnahmen je Spieltyp | offen | Keine Kennzahl in `store`/`core`; der Ledger kennt Konten, nicht Spieltypen. |
+| Sucht-Folgen | Designentscheidung | `personaStake`/`addictedStake` skalieren Einsatz und Sitzung; eine eigene negative Folge ist nicht definiert. |
+| Archiv = Journal beim ersten Load | offen (niedrig) | `migrate.ts:112` setzt `saved.archive ?? world.journal`. |
+
+### Narrative
+
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| Registry 64 oder 65 | Entscheidung | 65 Beitraege, 65 Turns, 65 Fragmente, Hash `sha256:a9979c70...c46bd`; 64 ist Untergrenze, kein Inhalt wurde geloescht. |
+| `TRIGGER_DIALOG` | offen | `commands/registry.ts:83` fuehrt den Befehl mit `executable: false`; die Dialog-UI fehlt. |
+| Narrative Balance | offen | ±8 Punkte Aktivitaet, ±20 % Angebot und ±10 Punkte Rueckkehr sind Grenzen, keine gemessenen Werte. |
+
+### Optik, Performance und Editor
+
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| Wand-Occlusion visuell | offen | `WallOcclusion` und Depth-Tests stehen; es gibt keinen Browserbeleg mit einer Figur noerdlich und suedlich derselben Wand. |
+| Editor-Chunk im Produktionsbundle | bestanden (Produktionsbuild) | `rg` in `dist/assets` findet weder `layout-editor` noch `VITE_RBD_EDITOR_MODE`; die APK-Paketierung wurde nicht erneut geprueft. |
+| First Frame unter 3 s | offen | PR #161 ist offen; Initialgraph 1.174.034 B/18 Chunks, Byte-Modell 8,1 s. |
+| Slow-4G-Browserlauf | offen | Baseline 22 Requests/12,16 s/2,42 MB; WebP/Lazy sind in PR #161, ein neuer Browserlauf fehlt. |
+
+### Technik, Doku und Release
+
+- **Dependency-Audit:** Android-Gradle-Nachweis nur in CI; Installationsgroessen-Vergleich und Installationsdauer offen; CVE-Untergrenzen vor dem naechsten Upgrade gegen `pnpm audit` pruefen; Vite-Warnung zum extensionlosen Import offen.
+- **Asset-Lizenz:** Der Nutzer hat die Lizenz bestaetigt; der Nachweis im Repo fehlt weiterhin.
+- **Branch-Hygiene:** `integration` steht nicht auf dem neuen `main`-Stand; PR #142 ist bereits gemergt; offen sind #150, #160 und #161; neben `feat/spatial-layout-editor` existieren weitere Remote-Refs. Die Bereinigung wurde bewusst nicht ausgefuehrt, weil sie offene PRs beruehren wuerde.
+- **Ruleset/CI-Eskalation:** Ruleset-Stand ohne authentifizierten Zugriff unverifiziert; Watcher-Fingerprint und `promote.yml` nach dem naechsten echten Lauf pruefen.
+- **Asset-Semantik:** Deko-Rollen von den Label-Regexen loesen und entscheiden, ob der Katalog ein Gate bekommt.
+
+### Bewusst nicht in diesem Schritt
+
+- Keine Geraeteabnahme, keine APK-Installation und kein Release-Tag.
+- Keine Spiel-, Ledger-, RNG- oder Save-Aenderung.
+- Keine Branch-Loeschung, kein `integration`-Reset und kein Merge der offenen PRs #150/#160/#161.
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
@@ -56,11 +123,11 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 - Lichtpfuetze ueber Regionskanten zusammensetzen, damit grosse Saele keine Chunk-Naht im Licht zeigen; heute zeichnet jeder Chunk seine eigene Pfuetze.
 - Touch ist umgebaut (Ein-Finger-Pan ab 8 px, Tippen laeuft, Aktionskarte statt Radialmenue, Sofort-Feedback), aber nur im Code belegt: 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame brauchen die Abnahme auf einem echten Geraet.
 - Geld fuehlt sich an (Phase 3): acht Ereignisse mit Partikeln, Ton, Licht und Shake, Kassen-Chips, Laune-Sprechblase und Spiel-Identitaeten sind im Code und am 2026-11-06 im Desktop-Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, sichtbare Kassen-Chips mit Coin-Sound, die Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten sind belegt; Lautsprecher-/Gehoer-Pruefung, 60 fps und der Emitter-Zaehler im Werkstatt-HUD bleiben fuer das echte Geraet offen.
-- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die zwei HUD-PNGs sind inline, der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas schrumpfen. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
+- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne liegen in PR #161 (noch offen), der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
-- Narrativ-Engine nach `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md`: NAR-04 bis NAR-17 sind erledigt (Beziehungen, Trigger, Scheduler, Templates, Choice-Vertrag, Command-DSL, Content-Schema, Compiler, Composer, Orchestrierung, Demand-Migration, Narrative UI, autonome Rivalen, Langzeit, Doku-Sync). Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. B2 ist erledigt: `ContentSlot.requiredContexts` traegt den Slot-Zweck, `ComposeRequest.requiredContexts` gilt zusaetzlich fuer alle Slots, `contexts` bewertet nur Treffer, und der Gleichstand entscheidet per FNV-1a-Hash aus Szenen-ID und Slot-ID ohne RNG; das Vokabular kennt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` und `aftermath`. Naechster Schritt ist der erste Content-Batch nach D1 und danach das Social-Plugin.
+- Narrativ-Engine: NAR-04 bis NAR-17 sind erledigt (Beziehungen, Trigger, Scheduler, Templates, Choice-Vertrag, Command-DSL, Content-Schema, Compiler, Composer, Orchestrierung, Demand-Migration, Narrative UI, autonome Rivalen, Langzeit, Doku-Sync). Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. B2 ist erledigt: `ContentSlot.requiredContexts` traegt den Slot-Zweck, `ComposeRequest.requiredContexts` gilt zusaetzlich fuer alle Slots, `contexts` bewertet nur Treffer, und der Gleichstand entscheidet per FNV-1a-Hash aus Szenen-ID und Slot-ID ohne RNG; das Vokabular kennt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` und `aftermath`. Naechster Schritt ist der erste Content-Batch nach D1 und danach das Social-Plugin.
 - Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
 
 ## Später — Stadt und Release
