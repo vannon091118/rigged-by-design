@@ -35,9 +35,15 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(report.registry.version).toBe(2);
     expect(report.registry.compiler).toBe('nar-10');
     expect(report.contentHash).toMatch(/^sha256:[a-f0-9]{64}$/);
-    // Stand 2026-11-06: 65 Beitraege im kontrollierten Bestand; die Zahl haelt
-    // stillen Schwund fest und wird mit jedem neuen Beitrag mitgezogen.
-    expect(report.registry.fragments).toHaveLength(65);
+    // Die Registry folgt dem Manifest: jeder Turn traegt genau einen Beitrag.
+    // Ein hart kodierter Zaehler waere nach jedem Beitrag veraltet, deshalb
+    // haelt die Gleichung Manifest<->Registry die Vollstaendigkeit fest und
+    // die Untergrenze von 64 den stillen Schwund des Bestands.
+    expect(report.registry.fragments).toHaveLength(report.manifest.turns.length);
+    expect(report.registry.fragments.length).toBeGreaterThanOrEqual(64);
+    const registryIds = report.registry.fragments.map((entry: { contributionId: string }) => entry.contributionId).sort();
+    const manifestIds = report.manifest.turns.map((entry: { contributionId: string }) => entry.contributionId).sort();
+    expect(registryIds).toEqual(manifestIds);
     expect(report.runtimeRegistryText).toContain('export const NARRATIVE_REGISTRY');
     expect(validateRuntimeRegistry(report.runtimeRegistryText, report.compiled)).toEqual([]);
   });

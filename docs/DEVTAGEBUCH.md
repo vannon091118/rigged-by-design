@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Narrative Registry: Zaehler folgt dem Manifest
+
+**Ziel.** Der Auftrag nannte 64 Fragmente mit nachgezogenem Compiler-Test. Der Bestand stand beim Beginn dieser Runde bereits bei 65, weil die drei Beitraege vom 2026-11-06 aus den zusammengefuehrten Branches einzeln im Manifest registriert sind. Inhalt zu loeschen, nur um eine Zahl zu treffen, waere der falsche Weg.
+
+**Umsetzung.** `narrative-compiler.test.ts` prueft die Registry nicht mehr gegen die feste Zahl 65, sondern gegen die Turn-Zahl des Manifests und gegen die sortierte 1:1-Liste der `contributionId`s. Die 64 steht als eigene Untergrenze daneben. `manifest.json`, `scripts/lib/narrative-*`, `compile-narrative-content.mjs` und der Atlas sind bewusst unberuehrt.
+
+**Pruefungen.** `pnpm exec vitest run --config src/Config/vite.config.ts src/core/governance/__tests__/narrative-compiler.test.ts` gruen (10 Tests). `verify:test-quality` (169 Testdateien), `check:loc`, `verify:docs` und `verify:quick` sind gruen.
+
+**Offen.** Der Auftragswert 64 ist als Untergrenze festgehalten, nicht als exakter Bestand. Wer wieder auf einen exakten Zaehler will, braucht zuerst eine Entscheidung ueber die drei Beitraege vom 2026-11-06.
+
 ## 2026-11-06 - Phase 3: Floor als Spielwelt, GAST und BETRIEB als zwei Blicke
 
 **Ziel.** Der Floor sollte die zentrale Spielwelt werden und beide Rollen ohne Umweg bedienen: ein Gast tippt ein Gerät an und spielt, ein Betreiber tippt dasselbe Gerät an und sieht Zustand, Ursache, Reparatur und Mods. Vorher war die Rolle ein Schalter im Maschinenfenster, HUD und Dock zeigten beiden Rollen dasselbe, und der Floor reagierte nur halb auf Berührung.
@@ -1492,7 +1502,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

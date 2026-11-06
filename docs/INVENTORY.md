@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
+<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.132** |
+> | **Version** | **v0.3.133** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 (T72 — Phase 3 Erfahrungsredesign)** |
+> | **Aktualisiert** | **2026-11-06 (T73 — Registry-Zaehler folgt dem Manifest)** |
 > | Branch | `fix/casino-phase-3-experience-redesign` (Basis `4a4f093`), PR gegen `main` |
-> | HEAD | `4a4f093` plus dieser Doku-Commit (0.3.132) |
+> | HEAD | `1ba4ed3` plus dieser Doku-Commit (0.3.133) |
 > | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 1321 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -276,10 +276,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1321 |
-| Gelistete Dateien | 1321 |
-| Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (533) |
+| Getrackte Dateien | 1334 |
+| Gelistete Dateien | 1334 |
+| Getrackte Ordner | 87 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (91), public (554), scripts (61), src (538) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -300,6 +300,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
 - `docs/screenshots/v0.3.114/` — 11 Datei(en)
+- `docs/screenshots/v0.3.132/` — 8 Datei(en)
 - `docs/screenshots/v0.3.78/` — 5 Datei(en)
 - `public/assets/casino/atlas/` — 2 Datei(en)
 - `public/assets/casino/characters/` — 69 Datei(en)
@@ -368,8 +369,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 55 Datei(en)
-- `src/ui/__tests__/` — 9 Datei(en)
+- `src/ui/` — 59 Datei(en)
+- `src/ui/__tests__/` — 10 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -465,7 +466,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-REPORT-1-LOGIK-RACE.md` — Analyse-Report 1: Logik-Ketten, Race-Condition-Schutz und unlogisches Verhalten — gelesen: 241 Zeilen
 - `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 299 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 324 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 134 Zeilen
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
@@ -473,7 +474,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CHANGELOG.md` — Changelog — gelesen: 686 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2854 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2864 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -494,7 +495,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ROADMAP.md` — Roadmap — gelesen: 71 Zeilen
 - `docs/SKILL_LEAD_SUB_AGENT_LOOP.md` — Skill: Lead–Sub-Agent-Prüfschleife (`lead-sub-agent-loop`) — gelesen: 98 Zeilen
 - `docs/SKILL_PIPELINE_WORKFLOW.md` — Pipeline-Workflow-Skill: Lead-A-B-Lead-Loop — gelesen: 57 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 190 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 191 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -539,6 +540,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.114/09-charakter.png` — PNG-Textur — geprueft: PNG 1264x569, 125982 B
 - `docs/screenshots/v0.3.114/10-asset-bibliothek.png` — PNG-Textur — geprueft: PNG 1264x569, 288272 B
 - `docs/screenshots/v0.3.114/11-protokoll.png` — PNG-Textur — geprueft: PNG 1264x569, 136394 B
+- `docs/screenshots/v0.3.132/01-floor-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 283994 B
+- `docs/screenshots/v0.3.132/02-floor-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 341862 B
+- `docs/screenshots/v0.3.132/03-slot-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 355254 B
+- `docs/screenshots/v0.3.132/04-slot-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 300937 B
+- `docs/screenshots/v0.3.132/05-guests-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 348561 B
+- `docs/screenshots/v0.3.132/06-build-operator.png` — PNG-Textur — geprueft: PNG 1280x860, 410900 B
+- `docs/screenshots/v0.3.132/07-history-guest.png` — PNG-Textur — geprueft: PNG 1280x860, 326500 B
+- `docs/screenshots/v0.3.132/08-mobile-guest.png` — PNG-Textur — geprueft: PNG 390x844, 163477 B
 - `docs/screenshots/v0.3.78/01-floor-uebersicht.png` — PNG-Textur — geprueft: PNG 1280x860, 215768 B
 - `docs/screenshots/v0.3.78/02-floor-detail.png` — PNG-Textur — geprueft: PNG 1280x860, 300499 B
 - `docs/screenshots/v0.3.78/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1280x860, 280808 B
@@ -1238,7 +1247,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 77 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
-- `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 155 Zeilen
+- `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 161 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 224 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 60 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
@@ -1629,12 +1638,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/machine-play.test.tsx` — Der Betrieb behält den kostenlosen Diagnose-Testspin. Der Gast bekommt ohne — gelesen: 93 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
+- `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 129 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
 - `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 36 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 192 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
+- `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 33 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. — gelesen: 176 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 179 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
@@ -1643,6 +1654,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/dock.tsx` — Untere Leiste: vier Ecken je Perspektive. Alles andere lebt in der Werkstatt. — gelesen: 72 Zeilen
 - `src/ui/editor-gate.ts` — Editor-Freigabe: nur ein Build mit `RBD_EDITOR_MODE=1` und `?editor=1` — gelesen: 15 Zeilen
 - `src/ui/editor-tools.ts` — Reine Werkzeuglogik des Layout-Editors: Sie uebersetzt die gewaehlte Absicht — gelesen: 53 Zeilen
+- `src/ui/floor-role-bar.tsx` — Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. — gelesen: 17 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
 - `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 109 Zeilen
 - `src/ui/foreign-floor-popup.tsx` — Fenster auf einem fremden Floor: HUD plus Job-Menue an der gewaehlten Station. — gelesen: 54 Zeilen
@@ -1669,12 +1681,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/journal-stories.tsx` — Abgeschlossene Szenen als Rueckblick im Journal; nur Anzeige des Snapshots. — gelesen: 47 Zeilen
 - `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 170 Zeilen
 - `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 90 Zeilen
+- `src/ui/machine-operator.tsx` — Betriebskörper am Automaten: Zustand, Diagnose, Reparatur und Mods. — gelesen: 165 Zeilen
 - `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen
 - `src/ui/machine-play.tsx` — Eigene Spiele am Automaten: dieselben Tische wie im Fremdhaus, eigener Geldweg. — gelesen: 56 Zeilen
 - `src/ui/machine-popup.tsx` — Automaten-Popup: Gast spielt, Betrieb diagnostiziert. Eine globale Perspektive, kein interner Rollentoggle. — gelesen: 111 Zeilen
 - `src/ui/narrative-events.tsx` — NAR-14: Aktive Szenen als Karten; Auswahl und Ablehnung laufen ueber Store-Commands. — gelesen: 113 Zeilen
 - `src/ui/narrative-popup.tsx` — NAR-14: Popup fuer aktive Szenen und Besucherprofile. — gelesen: 45 Zeilen
 - `src/ui/narrative-profile.tsx` — NAR-14: Besucherprofil aus dem Snapshot; Rechnungen bleiben im Core. — gelesen: 97 Zeilen
+- `src/ui/perspective-switch.tsx` — Der eine Umschalter zwischen Spieler- und Betreiberblick. — gelesen: 33 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
 - `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 154 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
@@ -1706,6 +1720,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T73 | **2026-11-06**: Narrative Registry, Zaehler nachgezogen. `narrative-compiler.test.ts` leitet die Fragmentzahl aus `content/narrative/turns/manifest.json` ab, prueft die 1:1-Gleichung der `contributionId`s und haelt 64 als Untergrenze. Bestand: 65 Fragmente aus 65 Turns; kein Inhalt geloescht, `manifest.json`/Generator/Atlas unberuehrt. Geprueft: fokussierter Compiler-Test (10), `verify:test-quality`, `check:loc`, `verify:docs`, `verify:quick`. |
 | T72 | **2026-11-06**: Phase 3 Erfahrungsredesign. `Perspective` als reiner UI-Zustand, rollenabhängiges HUD/Dock, `MachinePopup` als Router mit `MachineOperatorBody` und durchgereichter `TableLauncher`-Bühne, `BuildOpsSummary`; dazu zwei unabhängige Floor-Fixes (`dirt`-Ebene im Szenen-Cache, Möbeltreffer und Linksklick im Tap-Pfad). Geprüft: `typecheck`, `lint`, `check:loc` gruen; acht echte Browserbelege unter `docs/screenshots/v0.3.132/`. |
 | T71 | **2026-11-06 05:37 UTC**: Phase 2 Betriebssimulation. Persona-Einsatz, VELVET-Gaesteguete, echter Free-Drink-Bestand, EXTRA_REEL-Walze, Mod-Deduplizierung, CASHOUT-Reihenfolge, Ankunftsrate ohne Deckel, Slot-Pity-Ausgleich und Schuldentilgung. Geprueft: `verify:quick`, 40-Tage-Balance, 60.000-Spin-RTP; vollstaendiger `verify:all`-Lauf gruen. |
 | T70 | **2026-11-06 04:58 UTC**: Eigener Gastmodus an allen acht Automaten. `core/sim/own-play.ts` und `store/own-play.ts` kapseln Einsatz, Gewinn, Schuld und Pending-Kartenrunden; `MachinePopup`/`MachinePlay` nutzen den vorhandenen `TableLauncher`. Geprüft: typecheck, ESLint, LOC; Core-, Store- und UI-Tests angelegt. |

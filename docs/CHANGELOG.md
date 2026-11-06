@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
+<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.133] - 2026-11-06
+
+### Technik
+- Der Compiler-Test der Narrative Registry zaehlt nicht mehr hart 65 Fragmente. Er leitet die Zahl aus `content/narrative/turns/manifest.json` ab und prueft die 1:1-Gleichung Manifest <-> Registry, sodass ein neuer Beitrag den Test nicht mehr veralten laesst.
+- Die Untergrenze von 64 Fragmenten bleibt als eigenes `expect` stehen: Sie haelt stillen Schwund des Bestands fest, ohne an eine feste Momentaufnahme gebunden zu sein.
+- Stand: 65 Fragmente aus 65 Turns. Die 64 aus dem Auftrag war beim Zusammenfuehren der drei Beitraege vom 2026-11-06 bereits ueberschritten; es wird kein Inhalt geloescht. `manifest.json`, der Generator und der Atlas bleiben unveraendert und sind die naechste Runde.
+
+### Spiel
+- Keine sichtbare Aenderung.
 
 ## [0.3.132] - 2026-11-06
 
