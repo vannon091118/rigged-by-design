@@ -1,7 +1,6 @@
 /** Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. */
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import manifest from '../render/assets/manifest.json';
-import { PopupShell } from './popup-shell';
 
 const BASE = manifest.base;
 
@@ -95,7 +94,7 @@ function EmitterPreview({ id, textures, count, lifetimeMs, source }: {
   );
 }
 
-export function AssetLibraryPopup({ onClose }: { readonly onClose: () => void }) {
+export function AssetLibraryPanel() {
   const fxGroups = useMemo(() => {
     const groups = new Map<string, [string, string][]>();
     for (const entry of Object.entries(manifest.fx)) {
@@ -110,7 +109,7 @@ export function AssetLibraryPopup({ onClose }: { readonly onClose: () => void })
     + Object.keys(manifest.fx).length;
 
   return (
-    <PopupShell eyebrow={`PAKET · ${imageCount} TEXTUREN`} title="Asset-Bibliothek" onClose={onClose} full>
+    <>
       <p className="hint">
         {imageCount} Bilder, {Object.keys(manifest.animations).length} Frame-Animationen,
         {' '}{Object.keys(manifest.emitters).length} Emitter und {Object.keys(manifest.music).length} Tonspuren.
@@ -187,6 +186,6 @@ export function AssetLibraryPopup({ onClose }: { readonly onClose: () => void })
           ))}
         </div>
       </section>
-    </PopupShell>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:27 UTC -->
 
 ## README als Einstieg
 
@@ -274,6 +274,7 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 - `Ledger.diagnose()` replayt alle Buchungen nur auf ausdrückliche Anforderung (Diagnose-Popup) und liefert Buchungszahl, letzte Seq/Tick, Umlauf, Verbindlichkeiten, Checkpoint und den ersten Bruch mit Grund. Der Tickpfad nutzt weiterhin `verifyIncremental()`.
 - Personalstatus ist explizit: `task` beschreibt den Auftrag, `blockedReason` den Grund (keine Bar, Lager voll, Bar leer). Die UI leitet keinen Status aus Pfaden ab.
 - Bar-Bestand, Ersatzteile und Kisten sind im Bau-Panel und in der Diagnose sichtbar; Reparaturen nennen „keine Ersatzteile“ oder „Hauskonto zu niedrig“ als Ursache.
+- Die Werkstatt ist ein Raster mit sechs Zielen, kein zweiter Zustandsbaum. `src/ui/workshop.tsx` hält nur den aktiven Bereich und den einen `PopupShell`; `src/ui/workshop-parts.tsx` liefert Rasterkarte, Steuerungsliste und die FPS-Messung. `diagnostics-popup`, `journal-popup`, `asset-library-popup` und `sound-popup` exportieren ihre Inhalte als Panels ohne Rahmen; die alten Popup-Hüllen bleiben für andere Aufrufer. Der Einstieg lebt in `dock.tsx` (`useBrandTaps`, fünf Tipps auf die Marke) und in `App.tsx` (`Strg+Shift+D`); es gibt keinen sichtbaren Werkstatt-Knopf. Der Charaktereditor ist ein `SPIEGEL`-`DECOR` in der Lagerzone; `buildFurnitureActions` erzeugt die Aktion, `Popup = { kind: 'look' }` öffnet den vorhandenen `LookPopup`. `WorkshopTool` kennt kein `look` mehr.
 - Rivalen haben genau eine Datenquelle: `src/core/sim/rivals.ts`. Das Fremdes-Haus-Popup liest `rivalStates(tick)` und spielt über `playRival`/`visitRivalWithJournal`; hartkodierte Häuser gibt es nicht mehr.
 
 ## Pixel-Rig, Animation und Charaktereditor

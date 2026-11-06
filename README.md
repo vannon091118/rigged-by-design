@@ -102,6 +102,8 @@ Die folgenden Systeme sind im gegenwärtigen Spielstand sichtbar. Das Casino ist
 | **Spiele** | Slot, Blackjack, Tischpoker, Video Poker, Roulette, Plinko, Würfel und Hütchenspiel |
 | **Fremde Häuser** | Der eigene Charakter kann als Gast an fremden Spielen teilnehmen |
 | **Aushilfsjobs** | Bei Rivalen lassen sich Aufgaben in Reinigung, Bar, Kartenspiel oder Reparatur übernehmen |
+| **Werkstatt** | Sechs Bereiche für Prüfung, Protokoll, Assets, Sound, Steuerung und FPS; Einstieg versteckt über die Marke oder `Strg+Shift+D` |
+| **Charakter** | Der Spiegel im Lager öffnet den Look-Editor; kein eigener Werkstatt-Tab |
 | **Spielstände** | Lokale Saves enthalten Welt, Journal, Look und Narrativzustand |
 
 Die Auswahl kann sich ändern. Die Dokumente [Produktstand](docs/PRODUCT.md), [Architektur](docs/ARCHITECTURE.md) und [Roadmap](docs/ROADMAP.md) halten den aktuellen Rahmen und die geplanten nächsten Schritte fest.

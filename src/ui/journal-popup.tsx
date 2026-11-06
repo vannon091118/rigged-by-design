@@ -29,7 +29,7 @@ const KIND_LABEL: Record<JournalKind, string> = {
   MONEY: 'Geld', GUEST: 'Gast', STAFF: 'Personal', STOCK: 'Lager', RIVAL: 'Rivale', SYSTEM: 'System',
 };
 
-export function JournalPopup({ view, onClose, onGuest }: Props) {
+export function JournalPanel({ view, onGuest }: Pick<Props, 'view' | 'onGuest'>) {
   const [kind, setKind] = useState<JournalTab>('ALL');
   const [search, setSearch] = useState('');
   const [archived, setArchived] = useState(false);
@@ -37,7 +37,7 @@ export function JournalPopup({ view, onClose, onGuest }: Props) {
   const source = archived ? view.archive : view.journal;
   const events = archiveQuery(source, { kind: stories ? 'ALL' : kind, text: search }, 120) as readonly JournalEvent[];
   return (
-    <PopupShell eyebrow="NACHVOLLZIEHBAR" title="Ereignisprotokoll" onClose={onClose} wide>
+    <>
       <p className="hint">
         Jede Zeile nennt Ursache und Folge. „Geld“ sind echte Buchungen, die übrigen Arten sind Entscheidungen
         und Zustände. „Geschichten“ zeigt abgeschlossene Szenen mit ihrem Ausgang. Das Archiv behält alles,
@@ -112,6 +112,14 @@ export function JournalPopup({ view, onClose, onGuest }: Props) {
           })}
         </ol>
       )}
+    </>
+  );
+}
+
+export function JournalPopup({ view, onClose, onGuest }: Props) {
+  return (
+    <PopupShell eyebrow="NACHVOLLZIEHBAR" title="Ereignisprotokoll" onClose={onClose} wide>
+      <JournalPanel view={view} onGuest={onGuest} />
     </PopupShell>
   );
 }

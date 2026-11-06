@@ -5,15 +5,10 @@ import {
   type SoundChannel,
 } from '../render/sound-fx';
 import { musicVolume, setMusicVolume } from '../render/music';
-import { PopupShell } from './popup-shell';
-
-interface Props {
-  readonly onClose: () => void;
-}
 
 const percent = (value: number): string => `${Math.round(value * 100)} %`;
 
-export function SoundPopup({ onClose }: Props) {
+export function SoundPanel() {
   const [settings, setSettings] = useState(soundSettings);
   const refresh = (): void => setSettings(soundSettings());
 
@@ -23,7 +18,7 @@ export function SoundPopup({ onClose }: Props) {
   };
 
   return (
-    <PopupShell eyebrow="GEHOER · GERAETEEINSTELLUNG" title="Sound" onClose={onClose}>
+    <>
       <p className="hint">
         Die Kanaele werden getrennt geregelt und im Browser gemerkt, nicht im Spielstand:
         es ist eine Geraeteeinstellung, kein Weltzustand.
@@ -79,6 +74,6 @@ export function SoundPopup({ onClose }: Props) {
           ZURÜCKSETZEN
         </button>
       </div>
-    </PopupShell>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:27 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,18 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.132] - 2026-11-06
+
+### Spiel
+- Die Werkstatt ist jetzt ein Raster mit sechs Bereichen: Prüfung, Protokoll, Assets, Sound, Steuerung und FPS. Sie öffnet sich nur noch über fünf Tipps auf die HUD-Marke oder `Strg+Shift+D`.
+- Der Charaktereditor liegt nicht mehr im Werkstatt-Menü: Ein Spiegel im Lager öffnet ihn über die Floor-Aktion „Spiegel“. Jede Hausvorlage bringt genau einen Spiegel mit.
+- Die FPS-Karte misst den Browser-Frame-Takt live; Steuerung und Hilfe bleiben als sekundäre Werkzeuge erreichbar.
+
+### Technik
+- `workshop.tsx` ist der einzige Rahmen; `workshop-parts.tsx` liefert Rasterkarte, Steuerung und FPS. `diagnostics`, `journal`, `asset-library` und `sound` exportieren wiederverwendbare Panels ohne zweiten Shell.
+- `SPIEGEL` ist ein `DECOR`-Katalogeintrag und wird in allen drei Blueprints in der Lagerzone platziert. `buildFurnitureActions` erkennt ihn am Label; der Look-Pfad läuft über `Popup = { kind: 'look' }`.
+- Unbekannte Deko teilt sich keine gebackene Atlastextur mehr; der Spiegel wird prozedural gezeichnet.
 
 ## [0.3.131] - 2026-11-06
 

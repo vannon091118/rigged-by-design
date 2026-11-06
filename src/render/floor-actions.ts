@@ -23,7 +23,7 @@ export function buildGuestActions(world: WorldState, guest: { id: number; disput
   ];
 }
 
-export function buildFurnitureActions(world: WorldState, item: { kind: string; stock: number; dirt: number }): MenuAction[] {
+export function buildFurnitureActions(world: WorldState, item: { kind: string; stock: number; dirt: number; label: string }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
   const carryingDrink = world.player.carrying === 'DRINK';
   const actions: MenuAction[] = [];
@@ -49,6 +49,8 @@ export function buildFurnitureActions(world: WorldState, item: { kind: string; s
   } else if (item.kind === 'EXCHANGE' || item.kind === 'DESK') {
     actions.push({ id: 'CALM_DISPUTE', label: 'Schlichten', enabled: true });
     actions.push({ id: 'FIGHT', label: 'Konfrontation', enabled: true });
+  } else if (item.kind === 'DECOR' && /spiegel|mirror/i.test(item.label)) {
+    actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true });
   }
 
   if (actions.length === 0) {

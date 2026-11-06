@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Phase 5/6: Werkstatt und Abschluss
+
+**Ziel.** Das Werkstatt-Raster mit sechs Zielen, ein unsichtbarer Einstieg und der Charaktereditor als Spiegel im Lager.
+
+**Umsetzung.** `workshop.tsx` haelt den einen Rahmen; `workshop-parts.tsx` traegt Rasterkarte, Steuerung und FPS. Die vier Popups exportieren ihre Inhalte als Panels ohne zweiten Shell. Der Einstieg zaehlt fuenf Tipps auf die Marke in `dock.tsx` und hoert auf `Strg+Shift+D`; ein sichtbarer Knopf existiert nicht. `SPIEGEL` ist ein neues `DECOR` in allen drei Blueprints und oeffnet den vorhandenen `LookPopup`; `WorkshopTool = 'look'` ist entfernt.
+
+**Pruefungen.** `typecheck`, `lint`, `check:loc`, `verify:docs`, die Inventur (1323/1323) und `verify:all` (12/12 Gates) sind gruen. Der PR gegen `main` folgt.
+
+**Offen.** Fuenf-Tipp-Geste und Spiegel sind nicht auf Hardware geprueft; die FPS-Karte misst den Browser-Frame-Takt, nicht die Pixi-Renderzeit. Der Spiegel wird prozedural gezeichnet, ohne eigenes Asset.
+
 ## 2026-11-06 - Phase 2: Betriebssimulation
 
 **Ziel.** Die Kette Nachfrage -> Ankunft -> Fiat/Chips -> Spiel -> Auszahlung -> Kosten -> Ruf sollte als tatsaechlicher Betriebskreislauf wirken. Personas mussten Einsatz und Spielwahl unterscheiden, Mods ihre Beschreibung einloesen, der Slot-RTP zur Anzeige passen und Schulden einen Tilgungspfad bekommen.
@@ -1482,7 +1492,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.132 | 2026-11-06 06:27 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
