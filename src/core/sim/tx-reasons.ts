@@ -12,6 +12,7 @@ export const TX_REASON = {
   DEEP_CLEANING: 'grossreinigung',
   REPAIR: 'reparatur',
   MOD_OPERATING: 'mod betrieb',
+  DEBT_REPAYMENT: 'schuldentilgung',
   DRINK_CRATE: 'getraenkekiste',
   SPARE_PARTS: 'ersatzteile',
   DRINK_SALE: 'getraenk',

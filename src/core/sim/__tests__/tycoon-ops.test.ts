@@ -163,7 +163,7 @@ describe('Personal', () => {
     let fastTicks = -1;
     let slowTicks = -1;
     const gone = (world: WorldState, id: number): boolean => !world.guests.some((entry) => entry.id === id);
-    for (let i = 0; i < 40; i += 1) {
+    for (let i = 0; i < 80; i += 1) {
       if (fastTicks < 0) {
         tickWorld(fast.world, fast.ledger, fast.prng);
         if (gone(fast.world, refs[0]!.id)) fastTicks = i;

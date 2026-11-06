@@ -56,6 +56,7 @@ export function repair(world: WorldState, ledger: Ledger, itemId: number): void 
   item.damaged = false;
   item.clogged = false;
   item.clog = 0;
+  world.lastEvent = `${item.label} repariert; ein Ersatzteil verbraucht.`;
 }
 
 export function setPrice(world: WorldState, key: 'drinkPrice' | 'slotMinBet', value: VaCoinMicro): void {
@@ -75,9 +76,19 @@ export function installMod(world: WorldState, ledger: Ledger, itemId: number, mo
   if (!modAppliesTo(modId, item.gameId)) {
     throw new Error(`${getMod(modId).name} passt nicht auf ${item.gameId ?? 'dieses Geraet'}.`);
   }
+  if (modId === 'EXTRA_REEL' && item.reels >= MAX_REELS) {
+    throw new Error('Die vierte Walze passt nicht mehr in dieses Geraet.');
+  }
   const mod = getMod(modId);
   ledger.transfer(HAUSKONTO, SHOP, mod.cost, `${TX_PREFIX.MOD_PURCHASE}${mod.name}`, world.tick);
   item.mods.push(modId);
+  if (modId === 'EXTRA_REEL') {
+    // Die Mod ist die Walze, keine zusaetzliche Anziehung: Engine und Quote
+    // lesen danach dieselbe neue Konfiguration.
+    item.reels += 1;
+    item.slotMemory = undefined;
+  }
+  world.lastEvent = `${mod.name} an ${item.label} verbaut.`;
 }
 
 export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number): void {
@@ -87,12 +98,14 @@ export function upgradeReels(world: WorldState, ledger: Ledger, itemId: number):
   if (item.reels >= MAX_REELS) throw new Error('Mehr Walzen passen nicht hinein.');
   ledger.transfer(HAUSKONTO, SHOP, reelUpgradeCost(item.reels), TX_REASON.REEL_UPGRADE, world.tick);
   item.reels += 1;
+  world.lastEvent = `${item.label} hat jetzt ${item.reels} Walzen.`;
 }
 
 export function setBaseBet(world: WorldState, itemId: number, bet: VaCoinMicro): void {
   const item = furnitureById(world, itemId);
   if (!item || bet < ZERO_VC) return;
   item.baseBet = bet;
+  world.lastEvent = `${item.label}: Mindesteinsatz ${(bet / 10_000).toFixed(2)} VC.`;
 }
 
 /**
@@ -106,7 +119,9 @@ export function applySlotOdds(world: WorldState, itemId: number, raw: unknown): 
   const config = slotConfig({ reels: item.reels, profile: raw });
   item.slotOdds = config.profile;
   const chances = slotChances(config.reels, config.profile);
-  return `Regeln gesetzt: ${(chances.rtpBps / 100).toFixed(2)} % Quote bei ${config.reels} Walzen.`;
+  const notice = `Regeln gesetzt: ${(chances.rtpBps / 100).toFixed(2)} % Quote bei ${config.reels} Walzen.`;
+  world.lastEvent = notice;
+  return notice;
 }
 
 /**

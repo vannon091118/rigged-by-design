@@ -4,7 +4,7 @@ import { ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import { TICKS_PER_DAY } from './demand';
 import { dirtyNear } from './emotion';
 import { becomeAngry } from './guests';
-import { HAUSKONTO, payOrBorrow, STAFF, UTILITIES } from './money';
+import { HAUSKONTO, payOrBorrow, repayDebt, STAFF, UTILITIES } from './money';
 import { tickNeeds } from './needs';
 import { tickPenaltyDays } from './penalty-pool';
 import { hasStaff } from './staff-queries';
@@ -24,8 +24,9 @@ export function staffTick(world: WorldState, ledger: Ledger, prng: Prng): void {
   const rent = (world.prices.cleaningCost * 2) as VaCoinMicro;
   if (wages > 0) payOrBorrow(ledger, STAFF, wages, 'personal', world.tick);
   payOrBorrow(ledger, UTILITIES, rent, 'miete und strom', world.tick);
+  const repaid = repayDebt(ledger, world.tick);
   world.lastEvent = ledger.getBalance(HAUSKONTO) > ZERO_VC
-    ? `Tag ${world.day}. Löhne und Miete bezahlt.`
+    ? `Tag ${world.day}. Löhne und Miete bezahlt${repaid > ZERO_VC ? ', Schulden getilgt' : ''}.`
     : `Tag ${world.day}. Löhne und Miete über Kredit bezahlt.`;
   // Lohn für Spieler-Jobs auf fremden Floors
   processForeignFloorDaily(world, ledger, prng, world.tick);

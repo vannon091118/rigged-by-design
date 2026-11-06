@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->
+<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.131] - 2026-11-06
+
+### Spiel
+- Persona-Budget skaliert jetzt den Einsatz: High Roller setzen bei genügend Chips höher, bleiben aber auf das Dreifache des Tisches und den verfügbaren Bestand begrenzt.
+- VELVET hebt die Persona-Stufe neuer Gäste um eins, FREE_DRINK serviert einen echten Drink aus dem Barbestand und bucht den Betriebsanteil nur bei Lieferung. EXTRA_REEL erhöht die Slot-Walzen tatsächlich und setzt das Gerätegedächtnis zurück.
+- Die Wechselkasse bedient Auszahlungen erst am Kopf der Schlange. Der Slot-Drucklader gleicht den Einsatz aus, statt einen zweiten Gewinn zu zahlen; die tatsächliche Session-Quote bleibt damit im angezeigten Band.
+- Das Haus tilgt HAUS_SCHULDEN im Tagesabschluss aus dem Überschuss über HOUSE_FLOAT. Reparatur, Mod-Einbau, Walzen-Upgrade und Mindesteinsatz nennen ihre letzte Wirkung sichtbar.
+
+### Technik
+- `personaStake` bündelt Budget, Sucht und Wallet-Deckel; `resolveModEffects` dedupliziert Mod-Ids und liefert `freeDrink`/`freeDrinkCost`; `guestTier` ist die einzige VELVET-Ableitung.
+- `repayDebt` nutzt das bestehende Hauskonto und die bestehende Verbindlichkeit, kein zweites Konto. `arrivalGap` folgt der Nachfrage ohne 90-Tick-Deckel.
+- Neue Regressionstests für Ankunftsrate, CASHOUT-Reihenfolge, Persona-Einsatz, Free-Drink-Bestand, VELVET-Stufe, EXTRA_REEL, Mod-Deduplizierung, Schuldentilgung und Slot-RTP (60.000 Spins, 90–96 %).
 
 ## [0.3.130] - 2026-11-06
 

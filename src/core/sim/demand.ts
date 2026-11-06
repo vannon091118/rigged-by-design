@@ -18,7 +18,6 @@ export const TICKS_PER_DAY = 600;
 /** Der erste Gast steht nach sechs Sekunden vor der Tuer, egal wie der Wuerfel faellt. */
 export const FIRST_ARRIVAL_TICK = 12;
 const MIN_GAP = 4;
-const MAX_GAP = 90;
 const PEAK_FROM = 360;
 const PEAK_TO = 540;
 
@@ -104,12 +103,12 @@ export function demandBreakdown(world: WorldState): DemandSnapshot {
   };
 }
 
-/** Exponentialverteiltes Intervall: selten lange Pausen, nie ein minutenlanger Stillstand. */
-function arrivalGap(prng: Prng, perDay: number): number {
+/** Exponentialverteiltes Intervall; die Stichprobe folgt der angezeigten Rate ohne Deckel. */
+export function arrivalGap(prng: Prng, perDay: number): number {
   const perTick = Math.max(1, perDay) / TICKS_PER_DAY;
   const roll = Math.min(0.999, Math.max(0.001, prng.nextFloat()));
   const gap = Math.round(-Math.log(1 - roll) / perTick);
-  return Math.min(MAX_GAP, Math.max(MIN_GAP, gap));
+  return Math.max(MIN_GAP, gap);
 }
 
 /** Spaetere Stufen kommen in kleinen Gruppen; die Gruppengroesse ist ein Parameter, keine Grenze. */

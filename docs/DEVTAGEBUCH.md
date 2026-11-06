@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Phase 2: Betriebssimulation
+
+**Ziel.** Die Kette Nachfrage -> Ankunft -> Fiat/Chips -> Spiel -> Auszahlung -> Kosten -> Ruf sollte als tatsaechlicher Betriebskreislauf wirken. Personas mussten Einsatz und Spielwahl unterscheiden, Mods ihre Beschreibung einloesen, der Slot-RTP zur Anzeige passen und Schulden einen Tilgungspfad bekommen.
+
+**Umsetzung.** `personaStake` skaliert den Einsatz mit `budgetFactor`, Sucht und Wallet, begrenzt auf das Dreifache des Tisches. `guestTier` hebt bei VELVET die Persona-Stufe neuer Gaeste. FREE_DRINK verbraucht echten Barbestand und bucht den Betriebsanteil nur bei tatsaechlicher Lieferung; EXTRA_REEL erhoeht `item.reels` und verwirft das Slot-Gedaechtnis. `resolveModEffects` zaehlt doppelte Mod-Ids einmal. CASHOUT prueft `queueIndex`; `arrivalGap` verliert den 90-Tick-Deckel. `repayDebt` tilgt HAUS_SCHULDEN nur oberhalb von HOUSE_FLOAT. Die Slot-Entladung zahlt 1,00x statt 1,48x, damit der Pity-Puffer den RTP nicht gegen 100 % hebt.
+
+**Pruefungen.** `pnpm run verify:quick` gruen (zehn Gates). `pnpm run balance` mit 40 Spieltagen, Seed 12345, gruen; Bericht unter `artifacts/balance-12345-40d.md`. Der fokussierte Slot-Test misst 60.000 Spins im Band 90-96 %. Der vollstaendige `verify:all`-Lauf ist mit allen zwoelf Gates gruen.
+
+**Offen.** Einnahmen werden weiterhin nur als Gesamtsumme gefuehrt, nicht je Spieltyp. `PLAYER_CASH` hat weiterhin keinen Ausgabepfad. Die sichtbare Browser-Abnahme der neuen Geraeteaktionen bleibt offen. Keine Phase 3 begonnen.
+
 ## 2026-11-06 - Eigener Gastmodus an allen acht Automaten
 
 **Ziel.** Der Betreiber soll sein eigenes Casino als Gast besuchen und alle acht Spiele mit seinem privaten PORTEMONNAIE spielen. Bisher war der eigene Automat nur Betreiberwerkzeug mit Testspin; Echtgeld-Runden liefen nur über fremde Häuser.
@@ -1472,7 +1482,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

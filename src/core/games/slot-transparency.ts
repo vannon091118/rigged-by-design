@@ -14,7 +14,7 @@ export interface SlotMemory {
   recentSymbolHistogram: Record<string, number>;
   recentSpins: string[][];
   pressureLevel: number;
-  /** Volle Ladung: der naechste bezahlte Spin gewinnt garantiert. */
+  /** Volle Ladung: der naechste bezahlte Spin gleicht den Einsatz aus. */
   chargeReady: boolean;
   /** Einbehaltener Vorsprung der Maschine, aus dem die Entladung bezahlt wird. */
   bank?: number;
@@ -87,8 +87,8 @@ export function recordSlotSpin(
     return;
   }
   memory.pressureLevel = Math.min(CHARGE_LEVEL, memory.pressureLevel + 1);
-  // Volle Ladung heisst: der naechste bezahlte Spin gewinnt garantiert. Der Spin selbst
-  // bleibt bezahlt, damit die Entladung den Hausvorteil nicht aufzehrt.
+  // Volle Ladung heisst: der naechste bezahlte Spin gleicht den Einsatz aus. Der Spin
+  // selbst bleibt bezahlt, damit die Entladung den Hausvorteil nicht aufzehrt.
   if (memory.pressureLevel >= CHARGE_LEVEL) memory.chargeReady = true;
 }
 

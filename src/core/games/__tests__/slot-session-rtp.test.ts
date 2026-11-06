@@ -60,9 +60,9 @@ describe('Slot-Session', () => {
     const rtp = payout / stake;
     expect(stake).toBe(spins * bet);
     expect(discharges, 'Entladungen kommen vor').toBeGreaterThan(0);
-    // Streuung durch Jackpots: der Vorteil muss klar bleiben, nicht exakt 93 %.
-    expect(rtp, 'RTP der Gast-Session').toBeGreaterThan(0.88);
-    expect(rtp, 'RTP der Gast-Session').toBeLessThan(1.02);
+    // 60.000 Spins halten die Streuung klein genug fuer ein echtes RTP-Band.
+    expect(rtp, 'RTP der Gast-Session').toBeGreaterThan(0.90);
+    expect(rtp, 'RTP der Gast-Session').toBeLessThan(0.96);
   });
 
   it('gibt eine Entladung nur aus einbehaltenem Polster', () => {
