@@ -13,32 +13,101 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-06 - HUD-Icons als eigener Start-Chunk
+## 2026-11-06 - Perf-PR #161 auf den main-Stand zusammengefuehrt
 
-**Ziel.** Die zwei HUD-Data-URIs aus dem geteilten Icons-Chunk loesen und als eigenen, kleinen Start-Chunk ausliefern; zugleich belegen, warum sie zuvor im Plinko-Chunk lagen.
-
-**Umsetzung.**
-- Vorbefund: Auf `origin/main` (vor PR #161) war `plinko-stage-E43JCS3D.js` 184.813 B gross, im Modulpreload und enthielt beide HUD-Data-URIs. Rolldown hatte den geteilten `icons`-Modul (HUD-Icons, Manifest, Glossary) und Pixis `emitter` dem dynamischen Plinko-Chunk zugeordnet; weil der Entry `icons` statisch importiert, blieb der Chunk startkritisch.
-- Mit der Lazy-Grenze aus PR #161 schrumpfte `plinko-stage` auf 6.275 B und verliess den Preload; die Data-URIs lagen nun im separaten `icons`-Chunk (68.043 B, initial).
-- Jetzt pinnt `codeSplitting.groups` in `src/Config/vite.config.ts` den `hud-icons`-Modul als eigenen Chunk: `hud-icons-BOMcIjGL.js` 4.337 B, vorgeladen; `icons` 63.767 B; `plinko-stage` 6.275 B ohne Data-URI. `UI_ICON.coin` bleibt die gemeinsame Quelle fuer HUD und `games-popup`, keine Duplizierung.
-
-**Pruefungen.** `pnpm build` Exit 0, `pnpm typecheck` Exit 0. Alter Stand in einem separaten Worktree aus `origin/main` gebaut und verglichen. Initialgraph 17 -> 18 Chunks, 1.173.926 -> 1.174.034 B (+108 B). `pnpm verify:quick` PASS.
-
-**Offen.** Der Gewinn ist strukturell und Cache-seitig, nicht bandwidth-seitig: +108 B und ein zusaetzlicher, vorgeladener Request. `emitter` traegt weiterhin Pixis 1x1-WHITE_PNG als Data-URI, nicht die HUD-Icons. Ein Slow-4G-Browserlauf steht aus.
-
-## 2026-11-06 - Atlas als WebP und Plinko-Buehne aus dem Startgraph
-
-**Ziel.** Den ersten Frame unter Slow 4G (1,6 Mbit/s, 150 ms RTT) deutlich unter 12 s druecken: Atlas-Bytes und Initial-JS senken, ohne Spiel-, Ledger-, RNG- oder Save-Verhalten zu aendern.
+**Ziel.** Der offene Perf-PR #161 (WebP-Atlas, lazy Plinko-Buehne, eigener
+HUD-Icon-Chunk) lag seit 20:35 auf einem aelteren `main`-Stand und war mit
+`integration/rot` und `integration/konflikt` markiert.
 
 **Umsetzung.**
-- Atlas: `assets:manifest` schreibt beide Seiten als WebP-q95. Gemessen 1.040.593 -> 384.234 B (-63 %). Seite 0 hat 173.100 Farben, palettiertes PNG scheidet aus; adaptive PNG-Filter sparen nur rund 10 %. Lossless-WebP waere 660.484 B; q95 ist bei 2x-Crops visuell identisch zu q100/q90. Kodiert ueber das vorhandene `ffmpeg-static`, zwei Laeufe byte-identisch (sha256). Shelf-Plan, Seitenzahl und Frame-Koordinaten unveraendert.
-- Initial-JS: `PlinkoEditorLazy` laedt den Editor dynamisch; der 184.863-B-Chunk `plinko-stage` verlaesst den Modulpreload. Netto 1.186.336 -> 1.173.926 B (-12.410 B), weil Manifest, Texturen und Symbole startkritisch sind.
-- Der volle Popup-Lazy-Schnitt wurde gemessen (1.095.240 B, -91 KB), aber wegen 13 zusaetzlicher Requests und leerer Popup-Flaechen verworfen.
-- Kritischer Transfer (JS + CSS + Atlas) 2.285.353 -> 1.616.584 B (-29,3 %); im Byte-Modell bei 199 KB/s 11,48 -> 8,12 s.
 
-**Pruefungen.** `pnpm typecheck` Exit 0, `pnpm build` Exit 0, Initialgraph aus `dist/index.html` gegen `.perf-src` verglichen (16 -> 17 JS-Chunks), `pnpm assets:manifest` 554 Referenzen. `pnpm verify:quick` PASS.
+- `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt. Konflikte gab es nur in
+  `AGENTS.md`, `CHANGELOG`, `ARCHITECTURE`, `DEVTAGEBUCH`, `INVENTORY` und
+  `ROADMAP` (Doku-Marker und Versionsstaende); dort gilt der `main`-Text, die
+  Perf-Nummern stehen als 0.3.141 im Changelog.
+- Code und Assets (Atlas-WebP, Manifest, `atlas-webp.mjs`, Vite-Chunking,
+  `plinko-editor-lazy`, `machine-popup`) haben konfliktfrei gemergt.
+- Version 0.3.141; Inventar und alle sechs Marker nachgezogen.
 
-**Offen.** q95 ist verlustbehaftet, die Qualitaet ist ueber 2x-Crops belegt, nicht pixelgenau. Ein neuer Slow-4G-Browserlauf steht aus; die Zeit ist ein Byte-Modell auf dem dokumentierten Profil. Naechster Hebel: serverseitige Kompression und Initial-JS (Manifest/Registry), nicht der Atlas.
+**Pruefungen.** `pnpm run verify:all` (Bericht oben im Commit), `verify:docs`
+und `verify-commit-msg --head` gruen; CI-Check `Fail-Closed Gates` auf dem
+PR-Branch gruen, danach Merge mit `commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an den Messwerten des PRs.
+
+## 2026-11-06 - Merge-Gate auf main reparieren
+
+**Ziel.** `main` war nach dem Merge von PR #163 rot: `Fail-Closed Gates` brach
+mit `ERR-4006` ab, `Bump, tag, release` und der APK-Bau wurden uebersprungen.
+
+**Ursache.** Der Merge wurde nur mit `commit_title` ausgefuehrt. GitHub schreibt
+dann den PR-Titel als Merge-Text; der vollstaendige PR-Body mit den drei
+Pflichtsektionen blieb im PR. `verify-commit-msg --head` prueft auf `main` aber
+den Merge-Commit. Reproduziert mit `git log -1 --format=%B 6f7a906` gegen
+`node scripts/verify-commit-msg.mjs`: drei Mal „Pflichtsektion fehlt“.
+
+**Umsetzung.**
+
+- `docs/GATE-ROOTCAUSE.md` traegt den Fall als eigene Tabelle plus Regel: Merge
+  ueber Connector oder REST-API immer mit `commit_message` = PR-Body.
+- Dieser Follow-up-PR startet von `main` und wird selbst mit dem vollstaendigen
+  PR-Body als Merge-Text gemergt; damit traegt der neue `main`-HEAD die
+  Sektionen.
+- Version 0.3.140; CHANGELOG, INVENTORY (T76) und ROADMAP nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS: zwoelf Gates gruen (Lint, LOC,
+Typecheck, Testvertrag, Dead-Export, Doku, Tree, Redundanz, Assets, Vitest,
+Audit, Build) im Bericht `2026-11-06T21-00-52-960Z`. `verify-commit-msg` gegen
+den alten Merge-Text meldet vorher drei fehlende Pflichtsektionen; der
+Merge-Aufruf dieses PRs setzt `commit_message` auf den PR-Body, danach wird der
+neue `main`-HEAD mit `Fail-Closed Gates` geprueft.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an `verify-commit-msg` selbst — der Fehler lag im Merge-Aufruf, nicht
+im Gate.
+
+## 2026-11-06 - Doku konsolidiert und offene Punkte ueberfuehrt
+
+**Ziel.** Die offenen Punkte aus Mission, Commits der letzten 48 Stunden und den
+frueheren Analyse-, Review- und Planberichten pruefen und die Doku auf die sechs
+Pflichtdokumente konsolidieren.
+
+**Umsetzung.**
+
+- Commits, PRs und Remote-Branches der letzten 48 Stunden geprueft. Task 5/5
+  (Commands, 30-Schritt-Undo/Redo, Editor-UI, Pixi-Auswahl, Export/Import,
+  Produktionsausschluss) steht; PR #142 ist bereits gemergt. Offen sind die PRs
+  #150, #160 und #161 sowie die Branch-Bereinigung.
+- L1 (CASHOUT-Haenger), L2 (Doppelauszahlung), S1 (Schuldentilgung),
+  VELVET, FREE_DRINK, EXTRA_REEL und die Persona-Einsatzskalierung im Code
+  belegt; Rivalenprofil ist in `games-popup.tsx` vorhanden. `PLAYER_CASH` bleibt
+  offen: `cashOutPlayerCash` existiert, hat aber keinen Produktions-Aufrufer.
+- Phase 6: A1 bestanden, A2-A5 offen; A6-A8 bleiben bis zur vollstaendigen
+  Desktop-Abnahme zurueckgestellt. Wand-Occlusion ist gebaut, aber nicht im
+  Browser belegt. Der Produktionsbuild enthaelt keinen Editor-Chunk.
+- 18 historische Berichte, Reviews, Plaene und Skill-Dokumente geloescht; ihre
+  offenen Punkte stehen in `ROADMAP.md` unter „Offene Punkte (konsolidiert
+  2026-11-06)“, die Pruefungen in `INVENTORY.md` §16a. Lebende Vertraege
+  (`PRODUCT`, `NARRATIVE-ENGINE`, `ART-DIRECTION`, `ASSETS`, `CI-GATES` usw.)
+  bleiben.
+- `INVENTORY.md` korrigiert: `PLAYER_CASH` ist wieder offen; Mods und
+  Persona-Einsatz sind als geloest markiert. `ARCHITECTURE.md` verweist nicht
+  mehr auf den geloeschten Taskplan.
+
+**Pruefungen.** `node scripts/verify-narrative-content.mjs` meldet 65 Beitraege,
+65 Turns und 65 Fragmente. `pnpm run verify:docs` PASS, `pnpm run verify:assets`
+PASS (554 Dateien, 15,6 MB), `pnpm run verify:quick` PASS (zehn Gates) und
+`pnpm run build` PASS. Der Produktionsbuild enthaelt weder `layout-editor` noch
+`VITE_RBD_EDITOR_MODE`.
+
+**Offen.** Geraeteabnahme, APK-Installation, Slow-4G-Browserlauf und
+Restfehler der Phase 6 gemaess Roadmap. Branch-Bereinigung und
+`integration`-Reset wurden bewusst nicht ausgefuehrt, weil sie offene PRs
+beruehren.
+
+**Bewusst nicht getan.** Keine Spiel-, Ledger-, RNG- oder Save-Aenderung, kein
+Merge der offenen PRs, keine Loeschung von Remote-Branches.
 
 ## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
 
@@ -1574,7 +1643,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

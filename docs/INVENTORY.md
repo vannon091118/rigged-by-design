@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->
+<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.136** |
+> | **Version** | **v0.3.141** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 18:33 UTC (T73 — HUD-PNGs inline)** |
-> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase6-docs` (HUD-Commit `756057c`), PR #158 |
-> | HEAD | `756057c` plus Merge von `main` (`438b0a7`, 0.3.136) |
+> | **Aktualisiert** | **2026-11-06 21:20 UTC (T77 — Perf-PR #161 zusammengefuehrt)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-perf-first-frame`, PR #161 |
+> | HEAD | `bb394a7` plus Merge von `main` (`b8a46be`, 0.3.140) |
 > | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -213,12 +213,36 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 ## 16. Offene Punkte / Nutzer-Entscheidungen
 
 1. **Befund 1 (spinTest-Doppelaufruf)**: **gelöst** — `spinTestCmd` ruft `testSpin` nur einmal auf. Notice und Resultat vom selben Lauf. Keine Änderung mehr nötig.
-2. **Befund 2**: README-Formulierung „0,00 VC" präzisieren (Portemonnaie vs. 150 VC Startkapital auf dem Hauskonto) — Doku-Änderung, erfordert Freigabe.
+2. **Befund 2**: erledigt; das README nennt 150 VC Startkapital auf dem Hauskonto und 0 im Portemonnaie.
 3. **Befund 3/6/7**: offen (ERR-4016-Zuordnung, Windows-Pfad in `opencode.json`, Audit-Drift). **Befund 4/5 erledigt (T23)**: Fehlerkatalog repariert und sortiert, Gate-Zählung vereinheitlicht.
 4. **Asset-Lizenz** (ASSETS.md): **vom Nutzer am 01.11.2026 bestätigt — „Lizenzen liegen bei mir".** Damit ist die Weitergabe geklärt; offen bleibt nur der Nachweis im Repo (Referenz/Datei zur Lizenz ergänzen), nicht mehr die Grundsatzfrage.
 5. Zeile-für-Zeile-Lesung: **mit T14 abgeschlossen.** §18 belegt jede getrackte Datei (983/983) einzeln; Text wurde gelesen, Binärdateien wurden an Signatur und Größe geprüft. Die Verlaufsmatrix in §15 bleibt als Historie stehen.
 6. **Befund 33 (Bar-Kapazitäts-Anzeige)**: **gelöst** — alle drei UI-Dateien nutzen bereits `barCapacityForLevel` aus `sim/deliveries.ts`. Keine Änderung mehr nötig.
 7. **Befund 34 (`Â·`-Mojibake in table-launcher)**: **gelöst** — korrektes `·` bereits im Code. Keine Änderung mehr nötig.
+
+## 16a. Doku-Konsolidierung (2026-11-06)
+
+18 historische Analyse-, Review-, Plan- und Skill-Dokumente sind geloescht,
+nachdem ihre offenen Punkte in die Pflichtdokumente ueberfuehrt wurden:
+
+`ANALYSE-BERICHT-CASINO-FLOOR.md`, `ANALYSE-REPORT-1-LOGIK-RACE.md`,
+`ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md`,
+`ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md`,
+`PEER-REVIEW-4bb980f-GESAMTBERICHT.md`, `PLAN-LEAD-MERGE.md`,
+`PLAN-LEAD-MERGE-KORRIGIERT.md`, `REVIEW-MIGRATIONS-PLAN.md`,
+`REVIEW-SUB-A-ADVERSARIAL.md`, `REVIEW-SUB-A-RECHECK.md`,
+`REVIEW-SUB-B-ADVERSARIAL.md`, `SKILL_LEAD_SUB_AGENT_LOOP.md`,
+`SKILL_PIPELINE_WORKFLOW.md`, `MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md`,
+`EVENT-NARRATIVE-ENGINE-TASKPLAN.md`, `NARRATIVE-ENTSCHEIDUNGEN.md`,
+`PLAN-OPTIK-VISUELL.md`, `DEPENDENCY-AUDIT.md`.
+
+Die offenen Punkte stehen in `docs/ROADMAP.md` unter „Offene Punkte
+(konsolidiert 2026-11-06)“; Entscheidungen und Vertraege in
+`docs/ARCHITECTURE.md` und `docs/NARRATIVE-ENGINE.md`; die Pruefungen in
+`docs/DEVTAGEBUCH.md`. Lebende Vertraege bleiben: `PRODUCT.md`,
+`NARRATIVE-ENGINE.md`, `ART-DIRECTION.md`, `ASSETS.md`, `ASSET-SEMANTICS.md`,
+`CI-GATES.md`, `ESCALATION.md`, `GATE-ROOTCAUSE.md`, `ERROR_CATALOG.md`,
+`TEST-CATALOG.md` und `CASINO-PIXEL-ASSET-PACK.md`.
 
 ## 17. Auftrag T9: Governance-, Eskalations- und Transfer-Ausbau (in T10 umgesetzt, hier als Nachweis)
 
@@ -244,11 +268,11 @@ Spielregel-Entscheidung, nicht nur eine Buchung.
 | Befund | Beleg | Status |
 | --- | --- | --- |
 | `Persona.patience` wurde nie gelesen; der Stammgast startete ungeduldiger als der High Roller | `traits.ts` zog Geduld zu gleichen Teilen, `personas.ts` lieferte den Wert umsonst | **gefixt**: `rollProfile` gewichtet mit `persona.patience / 100`, Summe bleibt 180 |
-| `PLAYER_CASH` hat keinen Ausgabepfad | nur Gutschrift in `self-exclusion-bet.ts` | **gefixt**: `cashOutPlayerCash` |
-| `VELVET` verspricht „bessere Gäste", ändert aber nur Anziehung und Geduld | `offers.ts`, sonst nur Rivalen-Deko | offen |
-| `FREE_DRINK` verspricht „ein Drink pro Spin"; kein Drink wird gebucht | `offers.ts`, keine Buchung im Gastpfad | offen |
-| `EXTRA_REEL` („Vierte Walze") fügt keine Walze hinzu | `reelPull` liest `item.reels`, der Mod zählt nur 300 Anziehung | offen |
-| Der Einsatz skaliert nie mit dem Persona-Budget | `offerScore`: `max(slotMinBet, baseBet)`, High Roller spielt nur länger | offen |
+| `PLAYER_CASH` hat keinen Ausgabepfad | `cashOutPlayerCash` existiert in `self-exclusion-bet.ts:82`, hat aber keinen Produktions-Aufrufer; nur `player-cash.test.ts` ruft ihn | **offen** (T75) |
+| `VELVET` verspricht „bessere Gäste", ändert aber nur Anziehung und Geduld | `offers.ts`, sonst nur Rivalen-Deko | **gelöst (Phase 2)**: `guestTier` hebt die Persona-Stufe neuer Gäste |
+| `FREE_DRINK` verspricht „ein Drink pro Spin"; kein Drink wird gebucht | `offers.ts`, keine Buchung im Gastpfad | **gelöst (Phase 2)**: `serveFreeDrink` verbraucht Barbestand, Betriebsanteil wird gebucht |
+| `EXTRA_REEL` („Vierte Walze") fügt keine Walze hinzu | `reelPull` liest `item.reels`, der Mod zählt nur 300 Anziehung | **gelöst (Phase 2)**: `installMod` erhöht `reels`, nur für SLOT erlaubt |
+| Der Einsatz skaliert nie mit dem Persona-Budget | `offerScore`: `max(slotMinBet, baseBet)`, High Roller spielt nur länger | **gelöst (Phase 2)**: `personaStake` kombiniert Tisch, Sucht, `budgetFactor` und Wallet-Anteil |
 | `need = 'social'` wird nie gesetzt, der Branch bleibt tot | `guest-choice.ts` prüfte, kein Schreiber | **entfernt** |
 
 
@@ -276,10 +300,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1327 |
-| Gelistete Dateien | 1327 |
+| Getrackte Dateien | 1309 |
+| Gelistete Dateien | 1309 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (62), src (538) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (65), public (554), scripts (62), src (538) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -294,7 +318,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 36 Datei(en)
+- `docs/` — 18 Datei(en)
 - `docs/banners/` — 4 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
@@ -461,39 +485,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/turns/manifest.json` — { — gelesen: 265 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
-- `docs/ANALYSE-REPORT-1-LOGIK-RACE.md` — Analyse-Report 1: Logik-Ketten, Race-Condition-Schutz und unlogisches Verhalten — gelesen: 241 Zeilen
-- `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
-- `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 300 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 731 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 745 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
-- `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2919 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3005 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
-- `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
-- `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 18 Zeilen
+- `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 26 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/MIGRATION-PLAN-CHARAKTER-STEUERUNG-2EECC42.md` — Migrationsplan: Charakter-Steuerung mit Interaktionsradius (Stand `2eecc42`) — gelesen: 198 Zeilen
 - `docs/NARRATIVE-ENGINE.md` — Narrative Engine — Architekturvertrag (NAR-00) — gelesen: 550 Zeilen
-- `docs/NARRATIVE-ENTSCHEIDUNGEN.md` — Narrative-Entscheidungen — gelesen: 211 Zeilen
-- `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
-- `docs/PLAN-LEAD-MERGE-KORRIGIERT.md` — LEAD-Plan (korrigiert nach SUB-A-Review) — gelesen: 135 Zeilen
-- `docs/PLAN-LEAD-MERGE.md` — LEAD-Plan: Zusammengeführter Sanierungs- und Aufbauplan — gelesen: 171 Zeilen
-- `docs/PLAN-OPTIK-VISUELL.md` — Plan: Werkstatt und Abschluss — gelesen: 158 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 133 Zeilen
-- `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
-- `docs/REVIEW-SUB-A-ADVERSARIAL.md` — SUB-A-Review: Adversarial Prüfung des LEAD-Plans — gelesen: 174 Zeilen
-- `docs/REVIEW-SUB-A-RECHECK.md` — SUB-A-Re-Prüfung: Korrigierter LEAD-Plan NOCHMAL gegen die Daten — gelesen: 88 Zeilen
-- `docs/REVIEW-SUB-B-ADVERSARIAL.md` — SUB-B-Review: Unabhängiges adversarial Review des korrigierten LEAD-Plans — gelesen: 123 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 71 Zeilen
-- `docs/SKILL_LEAD_SUB_AGENT_LOOP.md` — Skill: Lead–Sub-Agent-Prüfschleife (`lead-sub-agent-loop`) — gelesen: 98 Zeilen
-- `docs/SKILL_PIPELINE_WORKFLOW.md` — Pipeline-Workflow-Skill: Lead-A-B-Lead-Loop — gelesen: 57 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 138 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 190 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
@@ -1169,7 +1175,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
-- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 72 Zeilen
+- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
@@ -1629,7 +1635,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-gate.test.ts` — Editor-Freigabe: der Query-Parameter allein oeffnet nie einen Produktionsbuild. — gelesen: 31 Zeilen
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
-- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 87 Zeilen
+- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 88 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 135 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
@@ -1712,8 +1718,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
-| T76 | **2026-11-06 20:32 UTC**: HUD-Icons als eigener Start-Chunk. Auf `origin/main` lag der geteilte `icons`-Modul noch im 184.813-B-`plinko-stage`-Chunk; jetzt ist `hud-icons` ein eigener 4.337-B-Start-Chunk, `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy. Initialgraph 1.173.926 -> 1.174.034 B (+108 B, 18 Chunks). Geprueft: Build, Typecheck, Vergleichsbuild aus `origin/main`, `verify:quick`. |
-| T75 | **2026-11-06 19:54 UTC**: Atlas als WebP-q95 und Plinko-Buehne aus dem Startgraph; kritischer Transfer 2.285.353 -> 1.616.584 B, Byte-Modell 11,48 -> 8,12 s. |
+| T77 | **2026-11-06 21:20 UTC**: Perf-PR #161 auf `main` zusammengefuehrt. `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt; Konflikte nur in den sechs Pflichtdokumenten, Code und Assets konfliktfrei. WebP-Atlas 1.040.593 -> 384.234 B, Plinko-Buehne lazy (Initial-JS 1.186.336 -> 1.173.926 B), HUD-Icons als eigener 4.337-B-Chunk, Initialgraph 1.174.034 B/18 Chunks. |
+| T76 | **2026-11-06 21:00 UTC**: Merge-Gate auf `main` reparieren. Ursache: Der Merge von PR #163 lief nur mit `commit_title`; der Merge-Commit `6f7a906` trug keine Pflichtsektionen, `verify-commit-msg --head` war rot (`ERR-4006`), `Bump, tag, release` und der APK-Bau fielen aus. Fix: Follow-up-PR von `main`, dessen Merge `commit_message` = PR-Body traegt; `docs/GATE-ROOTCAUSE.md` haelt Fall und Regel fest. Geprueft: `pnpm run verify:all` mit zwoelf gruenen Gates, `verify-commit-msg` gegen den alten Merge-Text (drei Fehlbefunde) und gegen den Fix-Text. |
+| T75 | **2026-11-06 20:50 UTC**: Doku konsolidiert. Commits der letzten 48 Stunden, PRs und Altberichte geprueft; L1/L2/S1/Mods/Persona/Rivalenprofil im Code belegt, `PLAYER_CASH` ohne Produktions-Aufrufer und Umsatz-Kennzahl offen. 18 historische Berichte/Reviews/Plaene nach Ueberfuehrung in ROADMAP/INVENTORY/ARCHITECTURE/DEVTAGEBUCH geloescht. Geprueft: `verify:docs`, `verify:assets`, `verify:quick`, `build`, Produktionsbundle ohne Editor-Chunk, Narrative 65/65/65. |
 | T74 | **2026-11-06 19:14 UTC**: Phase-3-Effekte im Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, Kassen-Chips mit Coin-Sound, Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten geprueft. Korrigiert: `GamesPopup` gibt `machine.game` weiter; `FloorCash` liegt sichtbar vor dem Wechseltisch. Geprueft: Typecheck, UI-Test 8/8, Browser ohne Konsolenfehler; `verify:quick` alle zehn Gates gruen. |
 | T73 | **2026-11-06 18:33 UTC**: HUD-PNGs inline. `coin` und `guest-cyan` liegen als Data-URI in `src/ui/hud-icons.ts`; Slow 4G (1,6 Mbit/s, 150 ms, kalt) 24→22 Requests, erster Frame 12,16 s bei 2,42 MB. Geprueft: Build, Typecheck, beide Icons 32x32 ohne kaputte Bilder. |
 | T72 | **2026-11-06 07:30 UTC**: Typecheck und Floor-Crash. `SceneCache.dirt` deklariert und zurueckgegeben (Pixi-`addChild(undefined)` behoben); `src/Config/tsconfig.json` Include auf `..` korrigiert, danach 87 Typfehler behoben; `src/vite-env.d.ts` mit `vite/client` und `.mjs`-Deklaration; doppelte `VISITOR_SERVICE`-Emissionen aus den Store-Commands entfernt. Geprueft: `typecheck` 0 Fehler, `verify:quick` zehn Gates gruen, `inventory:build` 1324/1324. |

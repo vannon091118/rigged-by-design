@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->
+<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,17 +12,26 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.141] - 2026-11-06
+
+### Technik
+- Floor-Atlas auf WebP-q95 umgestellt: 1.040.593 B -> 384.234 B (-63 %), beide 1024er-Seiten mit unveraendertem Shelf-Plan und Frame-Koordinaten.
+- `PlinkoEditorLazy` schneidet die 184.863-B-Buehne aus dem Modulpreload; Initial-JS 1.186.336 -> 1.173.926 B.
+- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B); `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy ohne HUD-Data-URI.
+- Initialgraph nach beiden Schritten: 1.174.034 B in 18 Chunks (+108 B gegenueber 1.173.926 B, ein Chunk mehr).
+- PR #161 auf den aktuellen `main`-Stand zusammengefuehrt; Konflikte nur in den sechs Pflichtdokumenten, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
 ## [0.3.140] - 2026-11-06
 
 ### Technik
-- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B). Der geteilte `icons`-Chunk schrumpft von 68.043 auf 63.767 B; `plinko-stage` bleibt mit 6.275 B lazy und enthaelt keine HUD-Data-URI mehr. Initialgraph 1.173.926 -> 1.174.034 B (+108 B, ein Chunk mehr).
+- Merge-Gate auf `main` repariert: Der Merge von PR #163 lief nur mit `commit_title`, deshalb trug `6f7a906` keine Pflichtsektionen und `verify-commit-msg --head` wurde rot (`ERR-4006`); `Bump, tag, release` und der APK-Bau fielen aus. `docs/GATE-ROOTCAUSE.md` haelt den Fall und die Regel fest: `commit_message` traegt den PR-Body.
+- Keine Spiel-, Ledger-, RNG- oder Save-Aenderung.
 
 ## [0.3.139] - 2026-11-06
 
 ### Technik
-- Der Floor-Atlas liegt als WebP-q95 statt PNG: 1.040.593 B -> 384.234 B (-656.359 B, -63 %). Beide Seiten bleiben 1024er-Sheets mit demselben Shelf-Plan; `assets:manifest` kodiert sie über das vorhandene `ffmpeg-static`, zwei Läufe sind byte-identisch.
-- `PlinkoEditor` lädt dynamisch: Die 184.863-B-Bühne `plinko-stage` verlässt den Modulpreload des ersten Frames. Initial-JS 1.186.336 B -> 1.173.926 B (-12.410 B, -1 %); die geteilten Manifest- und Textur-Module bleiben startkritisch.
-- Kritischer Transfer (JS + CSS + Atlas) 2.285.353 B -> 1.616.584 B (-29,3 %). Im Byte-Modell bei 1,6 Mbit/s rund 8,1 s statt 11,5 s; der dokumentierte Browserlauf lag bei 12,16 s. Ein neuer Browserlauf steht aus.
+- Doku konsolidiert: 18 historische Analyse-, Review-, Plan- und Skill-Dokumente nach Ueberfuehrung ihrer offenen Punkte in `ROADMAP.md`, `INVENTORY.md`, `ARCHITECTURE.md` und `DEVTAGEBUCH.md` geloescht. `PLAYER_CASH` ist im Inventar wieder als offen belegt (Funktion ohne Produktions-Aufrufer).
 
 ## [0.3.138] - 2026-11-06
 
