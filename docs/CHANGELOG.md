@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.139 | 2026-11-06 20:50 UTC -->
+<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.140] - 2026-11-06
+
+### Technik
+- Merge-Gate auf `main` repariert: Der Merge von PR #163 lief nur mit `commit_title`, deshalb trug `6f7a906` keine Pflichtsektionen und `verify-commit-msg --head` wurde rot (`ERR-4006`); `Bump, tag, release` und der APK-Bau fielen aus. `docs/GATE-ROOTCAUSE.md` haelt den Fall und die Regel fest: `commit_message` traegt den PR-Body.
+- Keine Spiel-, Ledger-, RNG- oder Save-Aenderung.
 
 ## [0.3.139] - 2026-11-06
 
