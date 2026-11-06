@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.149 | 2026-11-06 23:51 UTC -->
+<!-- rbd-doc: v0.3.150 | 2026-11-06 23:59 UTC -->
 
 ## README als Einstieg
 
@@ -192,7 +192,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 181: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-atomicity.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>… (+175) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 182: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-atomicity.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>… (+176) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 2: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts` |
 <!-- DEP_MATRIX_END -->
 

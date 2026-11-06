@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.149 | 2026-11-06 23:51 UTC -->
+<!-- rbd-doc: v0.3.150 | 2026-11-06 23:59 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -116,10 +116,11 @@ Branch-Schutz (Ebene B, laut CI-Gates-Anhang in `docs/ARCHITECTURE.md` seit 31.1
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 178 Dateien — contract 112 · integration 41 · governance 12 · statistics 6 · performance 7.
+Summe: 179 Dateien — contract 113 · integration 41 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
+| `src/core/contracts/__tests__/actor-id.test.ts` | other | contract | ja | `src/core/contracts/actor-id.ts` |
 | `src/core/economy/__tests__/economy.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
 | `src/core/economy/__tests__/ledger-atomicity.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
 | `src/core/economy/__tests__/ledger-checkpoint.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
@@ -488,10 +489,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1322 |
-| Gelistete Dateien | 1322 |
-| Getrackte Ordner | 88 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (10), .kilo (1), .lane-claims (1), content (69), docs (63), public (554), scripts (65), src (548) |
+| Getrackte Dateien | 1326 |
+| Gelistete Dateien | 1326 |
+| Getrackte Ordner | 91 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (11), .kilo (1), .lane-claims (1), content (69), docs (64), public (554), scripts (65), src (550) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -499,7 +500,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 - `./` — 9 Datei(en)
 - `.githooks/` — 2 Datei(en)
-- `.github/ISSUE_TEMPLATE/` — 2 Datei(en)
+- `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 8 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
@@ -509,6 +510,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 8 Datei(en)
 - `docs/banners/` — 4 Datei(en)
+- `docs/contracts/` — 1 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -547,6 +549,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/` — 25 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
+- `src/core/contracts/` — 1 Datei(en)
+- `src/core/contracts/__tests__/` — 1 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -591,6 +595,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlende Pflichtsektionen — gelesen: 14 Zeilen
 - `.githooks/pre-commit` — Pflege vor jedem Commit. Verify-Gates bleiben lesend; hier wird geschrieben, — gelesen: 55 Zeilen
+- `.github/ISSUE_TEMPLATE/contract.md` — Markdown-Dokument — gelesen: 65 Zeilen
 - `.github/ISSUE_TEMPLATE/gate-failure.md` — Markdown-Dokument — gelesen: 73 Zeilen
 - `.github/ISSUE_TEMPLATE/lane.md` — Markdown-Dokument — gelesen: 60 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 100 Zeilen
@@ -603,7 +608,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 69 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 211 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 212 Zeilen
@@ -689,6 +694,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/banners/spielwelt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/banners/werkstatt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/capabilities.json` — { — gelesen: 143 Zeilen
+- `docs/contracts/actor-id.md` — Contract: actor-id v1.0 — gelesen: 54 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 131 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
@@ -1369,6 +1375,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
 - `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
+- `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
+- `src/core/contracts/actor-id.ts` — Contract: actor-id v1.0 — gelesen: 43 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-atomicity.test.ts` — Ledger-Transfer muss atomar sein: bei einem abgelehnten Buchung (z. B. — gelesen: 84 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
