@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.126 | 2026-11-06 03:47 UTC -->
+<!-- rbd-doc: v0.3.126 | 2026-11-06 03:48 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -529,7 +529,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.114/03-bauen-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 151350 B
 - `docs/screenshots/v0.3.114/04-gaeste-panel.png` — PNG-Textur — geprueft: PNG 1264x569, 146616 B
 - `docs/screenshots/v0.3.114/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1264x569, 151325 B
-- `docs/screenshots/v0.3.114/06-smartphone.png` — PNG-Textur — geprueft: PNG 1264x569, 152408 B
+- `docs/screenshots/v0.3.114/06-smartphone.png` — PNG-Textur — geprueft: PNG 1264x569, 156049 B
 - `docs/screenshots/v0.3.114/07-dialog.png` — PNG-Textur — geprueft: PNG 1264x569, 112442 B
 - `docs/screenshots/v0.3.114/08-sound.png` — PNG-Textur — geprueft: PNG 1264x569, 118344 B
 - `docs/screenshots/v0.3.114/09-charakter.png` — PNG-Textur — geprueft: PNG 1264x569, 125982 B
