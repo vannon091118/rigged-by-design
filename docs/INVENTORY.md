@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.147 | 2026-11-06 23:33 UTC -->
+<!-- rbd-doc: v0.3.148 | 2026-11-06 23:40 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -116,11 +116,12 @@ Branch-Schutz (Ebene B, laut CI-Gates-Anhang in `docs/ARCHITECTURE.md` seit 31.1
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 177 Dateien — contract 111 · integration 41 · governance 12 · statistics 6 · performance 7.
+Summe: 178 Dateien — contract 112 · integration 41 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
 | `src/core/economy/__tests__/economy.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
+| `src/core/economy/__tests__/ledger-atomicity.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
 | `src/core/economy/__tests__/ledger-checkpoint.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
 | `src/core/economy/__tests__/ledger-diagnose.test.ts` | economy | contract | ja | `src/core/economy/ledger.ts` |
 | `src/core/games/__tests__/contracts.test.ts` | games | contract | ja | `src/core/games/contracts.ts` |
@@ -487,10 +488,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1318 |
-| Gelistete Dateien | 1318 |
+| Getrackte Dateien | 1319 |
+| Gelistete Dateien | 1319 |
 | Getrackte Ordner | 88 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (10), .kilo (1), .lane-claims (1), content (69), docs (62), public (554), scripts (63), src (547) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (10), .kilo (1), .lane-claims (1), content (69), docs (62), public (554), scripts (63), src (548) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -547,7 +548,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
-- `src/core/economy/__tests__/` — 3 Datei(en)
+- `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 20 Datei(en)
 - `src/core/games/__tests__/` — 24 Datei(en)
 - `src/core/games/engines/` — 11 Datei(en)
@@ -602,7 +603,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 53 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 28 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 48 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 212 Zeilen
@@ -1366,10 +1367,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
 - `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
+- `src/core/economy/__tests__/ledger-atomicity.test.ts` — Ledger-Transfer muss atomar sein: bei einem abgelehnten Buchung (z. B. — gelesen: 84 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
 - `src/core/economy/ledger-integrity.ts` — Buchungspruefung als reine Funktionen: kein Geld, nur Nachvollziehbarkeit. — gelesen: 65 Zeilen
-- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 261 Zeilen
+- `src/core/economy/ledger.ts` — Doppelte Buchfuehrung fuer VaCoin. Konten sind dynamisch, damit jeder Gast — gelesen: 268 Zeilen
 - `src/core/economy/vacoin.ts` — VaCoin (VC) - Geld als ganzzahlige Mikro-Einheiten. — gelesen: 92 Zeilen
 - `src/core/games/__tests__/contracts.test.ts` — Eine Runde ist eine Aktion plus Result; die Auszahlung folgt vollstaendig aus beidem. — gelesen: 78 Zeilen
 - `src/core/games/__tests__/dice-bets.test.ts` — Jedes Wettfeld am Wuerfeltisch muss exakt sagen, wann es gewinnt, und seine — gelesen: 63 Zeilen

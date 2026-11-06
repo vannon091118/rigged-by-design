@@ -24,5 +24,25 @@
     "gateProfile": "quick",
     "status": "open",
     "createdAt": "5dc0161"
+  },
+  {
+    "id": "lane/integrity/03-ledger",
+    "owner": "Ledger-/Core-Owner",
+    "branch": "lane/integrity/03-ledger",
+    "baseSha": "ae24f61",
+    "pathAllowlist": [
+      "src/core/economy/ledger.ts",
+      "src/core/economy/ledger-integrity.ts",
+      "src/core/rng/weighted.ts",
+      "src/core/economy/__tests__/ledger-atomicity.test.ts",
+      "src/store/__tests__/transfer.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/02-governance"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "ae24f61"
   }
 ]
