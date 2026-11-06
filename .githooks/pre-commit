@@ -51,5 +51,5 @@ if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
   exit 1
 fi
 inventory_docs_loc
-git add docs/TEST-CATALOG.md >/dev/null 2>&1 || true
+git add docs/INVENTORY.md >/dev/null 2>&1 || true
 echo "pre-commit: Doku, Matrix und LOC geprueft"

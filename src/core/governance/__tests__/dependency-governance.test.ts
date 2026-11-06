@@ -68,8 +68,8 @@ describe('Dependency-Governance', () => {
 
   it('haelt Fehlerregister und Katalog deckungsgleich', () => {
     const tsCodes = new Set<string>(Object.values(ERROR_CODES).map((entry) => entry.code));
-    const catalog = readFileSync(resolve(ROOT, 'docs', 'ERROR_CATALOG.md'), 'utf8');
-    const catalogCodes = new Set([...catalog.matchAll(/ERR-\d{4}/g)].map((match) => match[0]));
+    const catalog = readFileSync(resolve(ROOT, 'docs', 'ARCHITECTURE.md'), 'utf8');
+    const catalogCodes = new Set([...catalog.matchAll(/^\|\s*(ERR-\d{4})\s*\|/gm)].map((match) => match[1] ?? ''));
     expect([...tsCodes].filter((code) => !catalogCodes.has(code))).toEqual([]);
     expect([...catalogCodes].filter((code) => !tsCodes.has(code))).toEqual([]);
   });

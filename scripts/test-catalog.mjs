@@ -11,7 +11,7 @@ import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 import { CATALOG_END, CATALOG_START, LONG_PROOF_CLASSES, catalogEntries, renderCatalog, testFiles } from './lib/test-catalog.mjs';
 
-const docPath = join(ROOT, 'docs', 'TEST-CATALOG.md');
+const docPath = join(ROOT, 'docs', 'INVENTORY.md');
 const checkOnly = process.argv.includes('--check');
 const files = testFiles();
 const entries = catalogEntries(files);
@@ -52,4 +52,4 @@ if (checkOnly) {
 }
 mkdirSync(join(ROOT, 'docs'), { recursive: true });
 writeFileSync(docPath, next);
-console.log('[IDX-0001] [ERR-0911-AUTOFIXED] test-catalog: docs/TEST-CATALOG.md aktualisiert');
+console.log('[IDX-0001] [ERR-0911-AUTOFIXED] test-catalog: docs/INVENTORY.md aktualisiert');

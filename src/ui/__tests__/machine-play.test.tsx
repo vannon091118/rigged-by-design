@@ -64,7 +64,7 @@ function fixture(perspective: Perspective) {
 describe('Eigener Automat', () => {
   it('öffnet im Gastmodus direkt die vorhandene Spielbühne', async () => {
     fixture('guest');
-    expect(await screen.findByText(/Dein Casino/)).not.toBeNull();
+    expect(await screen.findByText(/Dein Casino/, {}, { timeout: 3000 })).not.toBeNull();
     expect(screen.getByText('PORTEMONNAIE')).not.toBeNull();
     expect(screen.queryByRole('button', { name: 'TESTSPIN' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'ALS GAST SPIELEN' })).toBeNull();

@@ -15,7 +15,7 @@ interface ErrorDefinition {
 }
 
 export const ERROR_CODES = {
-  UNKNOWN: { code: 'ERR-0000', level: 'BLOCKED', area: 'governance', cause: 'Ein Fehler besitzt noch keinen Eintrag im zentralen Register.', fix: 'Neuen ERR-Code in error-codes.ts und docs/ERROR_CATALOG.md eintragen.' },
+  UNKNOWN: { code: 'ERR-0000', level: 'BLOCKED', area: 'governance', cause: 'Ein Fehler besitzt noch keinen Eintrag im zentralen Register.', fix: 'Neuen ERR-Code in error-codes.ts und im Fehlerregister in docs/ARCHITECTURE.md eintragen.' },
   AUTOFIX: { code: 'ERR-0911', level: 'AUTO_FIX', area: 'governance', cause: 'Ein Verstoss ist vollautomatisch reparierbar.', fix: 'autofix:0911 ausfuehren und den Lauf wiederholen.' },
   DETERMINISM: { code: 'ERR-1001', level: 'BLOCKED', area: 'governance', cause: 'Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/.', fix: 'Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick.' },
   LEDGER_PROOF: { code: 'ERR-1002', level: 'BLOCKED', area: 'core', cause: 'Ledger- oder VaCoin-Invariante verletzt.', fix: 'Buchungspfad und Mikro-Geldarithmetik pruefen.' },
