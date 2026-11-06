@@ -23,11 +23,11 @@ describe('Lieferkette', () => {
     ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(100), 'startguthaben fuer test', 0);
     const before = ledger.getBalance(HAUSKONTO);
     const crate = buyCrate(world, ledger, 'PLANT');
-    expect(world.furniture).toHaveLength(7);
+    expect(world.furniture).toHaveLength(8);
     expect(world.crates).toHaveLength(1);
     expect(ledger.getBalance(HAUSKONTO)).toBe(before - getBuildDef('PLANT').cost);
     expect(deployCrate(world, takeCrate(world, crate.id).id, 20, 12).kind).toBe('DECOR');
-    expect(world.furniture).toHaveLength(8);
+    expect(world.furniture).toHaveLength(9);
     expect(world.crates).toHaveLength(0);
     takeCrate(world, buyCrate(world, ledger, 'PLANT').id);
     const blocked = world.crates[world.crates.length - 1]!;
@@ -44,7 +44,7 @@ describe('Lieferkette', () => {
     expect(world.crates).toHaveLength(1);
     expect(world.crates[0]!.payload.kind).toBe('FURNITURE');
     expect(world.crates[0]!.carriedBy).toBe(null);
-    expect(world.furniture).toHaveLength(7);
+    expect(world.furniture).toHaveLength(8);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
 

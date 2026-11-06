@@ -13,25 +13,212 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-06 - Narrative Registry: Zaehler folgt dem Manifest
+## 2026-11-06 - Floor-Spielwelt (PR #150) auf main zusammengefuehrt
 
-**Ziel.** Der Auftrag nannte 64 Fragmente mit nachgezogenem Compiler-Test. Der Bestand stand beim Beginn dieser Runde bereits bei 65, weil die drei Beitraege vom 2026-11-06 aus den zusammengefuehrten Branches einzeln im Manifest registriert sind. Inhalt zu loeschen, nur um eine Zahl zu treffen, waere der falsche Weg.
+**Ziel.** PR #150 fuehrt GAST und BETRIEB als eine globale Perspektive ein und
+lag seit dem Morgen auf einem aelteren `main`.
 
-**Umsetzung.** `narrative-compiler.test.ts` prueft die Registry nicht mehr gegen die feste Zahl 65, sondern gegen die Turn-Zahl des Manifests und gegen die sortierte 1:1-Liste der `contributionId`s. Die 64 steht als eigene Untergrenze daneben. `manifest.json`, `scripts/lib/narrative-*`, `compile-narrative-content.mjs` und der Atlas sind bewusst unberuehrt.
+**Umsetzung.**
 
-**Pruefungen.** `pnpm exec vitest run --config src/Config/vite.config.ts src/core/governance/__tests__/narrative-compiler.test.ts` gruen (10 Tests). `verify:test-quality` (169 Testdateien), `check:loc`, `verify:docs` und `verify:quick` sind gruen.
+- `main` (`a83efff`, 0.3.142) in den PR-Branch gemergt; Code-Konflikte in
+  `App.tsx`, `dock.tsx`, `hud.tsx`, `machine-popup.tsx`, `app.css` und zwei
+  Tests von Hand zusammengefuehrt, `floor-view.ts` kommt aus dem neuen `main`.
+- Die Perspektive bleibt die einzige Rollenwahrheit: Marke und
+  `Ctrl+Shift+D` oeffnen die Werkstatt, `Hud`, `Dock` und `FloorRoleBar`
+  haengen an `perspective`.
+- `machine-operator.tsx` nutzt `PlinkoEditorLazy`, damit der Popup-Umbau die
+  Chunk-Grenze aus 0.3.141 nicht aufhebt.
+- Doku und Versionsdateien auf den `main`-Stand; Version 0.3.143, Inventar und
+  alle sechs Marker nachgezogen.
 
-**Offen.** Der Auftragswert 64 ist als Untergrenze festgehalten, nicht als exakter Bestand. Wer wieder auf einen exakten Zaehler will, braucht zuerst eine Entscheidung ueber die drei Beitraege vom 2026-11-06.
+**Pruefungen.** `pnpm run verify:all` PASS mit allen zwoelf Gates (Bericht im
+Commit), `verify:docs` und `verify-commit-msg --head` gruen; CI auf dem
+PR-Branch und Merge mit `commit_message` = PR-Body.
 
-## 2026-11-06 - Phase 3: Floor als Spielwelt, GAST und BETRIEB als zwei Blicke
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; die
+sichtbare Browser-Abnahme bleibt beim Nutzer.
 
-**Ziel.** Der Floor sollte die zentrale Spielwelt werden und beide Rollen ohne Umweg bedienen: ein Gast tippt ein Gerät an und spielt, ein Betreiber tippt dasselbe Gerät an und sieht Zustand, Ursache, Reparatur und Mods. Vorher war die Rolle ein Schalter im Maschinenfenster, HUD und Dock zeigten beiden Rollen dasselbe, und der Floor reagierte nur halb auf Berührung.
+## 2026-11-06 - Buehne aus der Legacy-Hot-Zone (PR #160) zusammengefuehrt
 
-**Umsetzung.** `Perspective` liegt als reiner UI-Zustand in `app-model.ts`; `App.tsx` setzt `data-perspective`, schliesst beim Rollenwechsel Popup und Baupanel und pausiert die Simulation nicht. `perspective-switch.tsx` sitzt im HUD, `floor-role-bar.tsx` sagt auf dem Floor, was der nächste Klick bewirkt. HUD und Dock zeigen je Perspektive nur ihre vier Bereiche. `machine-popup.tsx` ist zum Router geschrumpft; `machine-operator.tsx` behält Telemetrie, Regel-Editor, Reparatur, Walzen und Mods, die Gastrolle reicht die vorhandene `TableLauncher`-Bühne durch. `build-ops-summary.tsx` ersetzt die lange Betriebsliste durch vier Karten. Parallel zwei unabhängige Floor-Fehler: `scene-cache.ts` kannte keine `dirt`-Ebene, wodurch die Bühne bei „BAUE FLOOR…“ hing; `floor-input.ts` gab Möbel- und Gasttreffer nicht weiter und `floor-touch.ts` behandelte nur Ziehen, sodass Mausklicks nicht ankamen. Der alte Kamera-Pointerdown in `floor-view.ts` ist entfernt, Möbel haben Vorrang vor Gästen.
+**Ziel.** PR #160 loeste `floor-view.ts` und `guest-art.ts` aus den
+Legacy-LOC-Ausnahmen; er lag auf 0.3.138 und war nicht mergebar.
 
-**Pruefungen.** `pnpm run typecheck`, `pnpm run lint` und `pnpm run check:loc` grün nach den Floor-Fixes. Bildbelege sind echt: acht Aufnahmen aus dem laufenden Vite-Server (Chromium, 1280 × 860; mobil 390 × 844) unter `docs/screenshots/v0.3.132/`. Der Klick auf die Bar öffnete im Browser das Popup „Theke“, der Klick auf den Slot bei Tile (16,6) die Spielbühne; derselbe Automat zeigt in BETRIEB die Diagnose.
+**Umsetzung.**
 
-**Bewusst nicht getan.** Keine neue Renderer- oder Popup-Architektur, kein zweiter Game-State, keine zweite Palette, kein zusätzlicher Router. Die Perspektive ist Anzeige, nicht Simulation: Rollenwechsel pausiert nichts und ändert keine Ledger-Zeile. Phase 4 ist nicht begonnen.
+- `main` (`ea76e2c`, 0.3.141) in den PR-Branch gemergt; Konflikte nur in den
+  sechs Pflichtdokumenten, `package.json` und `pnpm-lock.yaml`
+  (Versionsstaende), jeweils auf den `main`-Stand aufgeloest.
+- Code konfliktfrei: `floor-camera-rig.ts`, `guest-rig/paint/head.ts`,
+  `animateFloor`-Signatur und `loc-budgets.mjs`.
+- Version 0.3.142; Inventar und alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS mit allen zwoelf Gates (Bericht im
+Commit), `verify:docs` und `verify-commit-msg --head` gruen; CI
+`Fail-Closed Gates` auf dem PR-Branch gruen, danach Merge mit
+`commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save.
+
+## 2026-11-06 - Perf-PR #161 auf den main-Stand zusammengefuehrt
+
+**Ziel.** Der offene Perf-PR #161 (WebP-Atlas, lazy Plinko-Buehne, eigener
+HUD-Icon-Chunk) lag seit 20:35 auf einem aelteren `main`-Stand und war mit
+`integration/rot` und `integration/konflikt` markiert.
+
+**Umsetzung.**
+
+- `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt. Konflikte gab es nur in
+  `AGENTS.md`, `CHANGELOG`, `ARCHITECTURE`, `DEVTAGEBUCH`, `INVENTORY` und
+  `ROADMAP` (Doku-Marker und Versionsstaende); dort gilt der `main`-Text, die
+  Perf-Nummern stehen als 0.3.141 im Changelog.
+- Code und Assets (Atlas-WebP, Manifest, `atlas-webp.mjs`, Vite-Chunking,
+  `plinko-editor-lazy`, `machine-popup`) haben konfliktfrei gemergt.
+- Version 0.3.141; Inventar und alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` (Bericht oben im Commit), `verify:docs`
+und `verify-commit-msg --head` gruen; CI-Check `Fail-Closed Gates` auf dem
+PR-Branch gruen, danach Merge mit `commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an den Messwerten des PRs.
+
+## 2026-11-06 - Merge-Gate auf main reparieren
+
+**Ziel.** `main` war nach dem Merge von PR #163 rot: `Fail-Closed Gates` brach
+mit `ERR-4006` ab, `Bump, tag, release` und der APK-Bau wurden uebersprungen.
+
+**Ursache.** Der Merge wurde nur mit `commit_title` ausgefuehrt. GitHub schreibt
+dann den PR-Titel als Merge-Text; der vollstaendige PR-Body mit den drei
+Pflichtsektionen blieb im PR. `verify-commit-msg --head` prueft auf `main` aber
+den Merge-Commit. Reproduziert mit `git log -1 --format=%B 6f7a906` gegen
+`node scripts/verify-commit-msg.mjs`: drei Mal „Pflichtsektion fehlt“.
+
+**Umsetzung.**
+
+- `docs/GATE-ROOTCAUSE.md` traegt den Fall als eigene Tabelle plus Regel: Merge
+  ueber Connector oder REST-API immer mit `commit_message` = PR-Body.
+- Dieser Follow-up-PR startet von `main` und wird selbst mit dem vollstaendigen
+  PR-Body als Merge-Text gemergt; damit traegt der neue `main`-HEAD die
+  Sektionen.
+- Version 0.3.140; CHANGELOG, INVENTORY (T76) und ROADMAP nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS: zwoelf Gates gruen (Lint, LOC,
+Typecheck, Testvertrag, Dead-Export, Doku, Tree, Redundanz, Assets, Vitest,
+Audit, Build) im Bericht `2026-11-06T21-00-52-960Z`. `verify-commit-msg` gegen
+den alten Merge-Text meldet vorher drei fehlende Pflichtsektionen; der
+Merge-Aufruf dieses PRs setzt `commit_message` auf den PR-Body, danach wird der
+neue `main`-HEAD mit `Fail-Closed Gates` geprueft.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an `verify-commit-msg` selbst — der Fehler lag im Merge-Aufruf, nicht
+im Gate.
+
+## 2026-11-06 - Doku konsolidiert und offene Punkte ueberfuehrt
+
+**Ziel.** Die offenen Punkte aus Mission, Commits der letzten 48 Stunden und den
+frueheren Analyse-, Review- und Planberichten pruefen und die Doku auf die sechs
+Pflichtdokumente konsolidieren.
+
+**Umsetzung.**
+
+- Commits, PRs und Remote-Branches der letzten 48 Stunden geprueft. Task 5/5
+  (Commands, 30-Schritt-Undo/Redo, Editor-UI, Pixi-Auswahl, Export/Import,
+  Produktionsausschluss) steht; PR #142 ist bereits gemergt. Offen sind die PRs
+  #150, #160 und #161 sowie die Branch-Bereinigung.
+- L1 (CASHOUT-Haenger), L2 (Doppelauszahlung), S1 (Schuldentilgung),
+  VELVET, FREE_DRINK, EXTRA_REEL und die Persona-Einsatzskalierung im Code
+  belegt; Rivalenprofil ist in `games-popup.tsx` vorhanden. `PLAYER_CASH` bleibt
+  offen: `cashOutPlayerCash` existiert, hat aber keinen Produktions-Aufrufer.
+- Phase 6: A1 bestanden, A2-A5 offen; A6-A8 bleiben bis zur vollstaendigen
+  Desktop-Abnahme zurueckgestellt. Wand-Occlusion ist gebaut, aber nicht im
+  Browser belegt. Der Produktionsbuild enthaelt keinen Editor-Chunk.
+- 18 historische Berichte, Reviews, Plaene und Skill-Dokumente geloescht; ihre
+  offenen Punkte stehen in `ROADMAP.md` unter „Offene Punkte (konsolidiert
+  2026-11-06)“, die Pruefungen in `INVENTORY.md` §16a. Lebende Vertraege
+  (`PRODUCT`, `NARRATIVE-ENGINE`, `ART-DIRECTION`, `ASSETS`, `CI-GATES` usw.)
+  bleiben.
+- `INVENTORY.md` korrigiert: `PLAYER_CASH` ist wieder offen; Mods und
+  Persona-Einsatz sind als geloest markiert. `ARCHITECTURE.md` verweist nicht
+  mehr auf den geloeschten Taskplan.
+
+**Pruefungen.** `node scripts/verify-narrative-content.mjs` meldet 65 Beitraege,
+65 Turns und 65 Fragmente. `pnpm run verify:docs` PASS, `pnpm run verify:assets`
+PASS (554 Dateien, 15,6 MB), `pnpm run verify:quick` PASS (zehn Gates) und
+`pnpm run build` PASS. Der Produktionsbuild enthaelt weder `layout-editor` noch
+`VITE_RBD_EDITOR_MODE`.
+
+**Offen.** Geraeteabnahme, APK-Installation, Slow-4G-Browserlauf und
+Restfehler der Phase 6 gemaess Roadmap. Branch-Bereinigung und
+`integration`-Reset wurden bewusst nicht ausgefuehrt, weil sie offene PRs
+beruehren.
+
+**Bewusst nicht getan.** Keine Spiel-, Ledger-, RNG- oder Save-Aenderung, kein
+Merge der offenen PRs, keine Loeschung von Remote-Branches.
+
+## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
+
+**Ziel.** Jackpot, Kassenklingeln, Mood-Bubble und Spielfarben im laufenden Browser pruefen und gefundene Abweichungen direkt beheben.
+
+**Umsetzung.**
+- Jackpot: `emit('slot:jackpot', ...)` ueber denselben Core-Event-Bus, den `slot-session` nutzt; goldener Burst, Flash und 6-px-Shake waren sichtbar, der Win-Sound lief ueber zwei neue Oszillatoren (2 -> 5). Screenshot `artifacts/phase3-jackpot.png`.
+- Kasse: kontrollierter Gast mit 25 VC offenem Gewinn; der `FloorCash`-Stapel zeigte fuenf Chips, spielte `coin` (2 Oszillatoren + 1 Buffer) und der `money:bigPayout`-Burst sass am Wechseltisch. Der Stapel lag jedoch hinter dem Tisch (`z=380640900` gegen `390001001`) und war unsichtbar. `FloorCash.sync()` gibt jetzt den Fussanker zurueck, `FloorProps` haengt den Stapel mit `furniture/999` daran; im Browser liegt er mit `z=390001999` vor dem Tisch und bleibt hinter Figuren. Screenshot `artifacts/phase3-cash-fixed.png`.
+- Mood-Bubble: kontrollierter Gast `Mira Test` mit `mood=20`; "Hier stimmt was nicht" ist im Detail-LOD lesbar, im Uebersichts-LOD absichtlich ausgeblendet. Keine Aenderung noetig. Screenshots `artifacts/phase3-mood-zoomed.png` und `artifacts/phase3-mood-bubble-zoom-closeup.png`.
+- Spielfarben: `GamesPopup` uebergab `machine.game` nicht an `PopupShell`, deshalb blieb `data-game=null` und das Eyebrow immer cyan. Mit `game={machine.game}` tragen alle acht Spiele ihre Familie: SLOT `#ff2e88`, BLACKJACK/POKER/ROULETTE `#b06bff`, PLINKO/DICE/SHELL/VIDEO_POKER `#54e0ff`; Eyebrow und `popup-head`-Kante stimmen. Screenshot `artifacts/phase3-games-after-slot.png`.
+- Regression: `src/ui/__tests__/ui.test.tsx` prueft am Rivalen-Dialog `data-game="SLOT"`.
+
+**Pruefungen.** Headless Chrome 1024x768 bei DPR 2 gegen den Dev-Server auf Port 3000: alle vier Effekte durchgespielt, keine Konsolen- oder Page-Fehler. `tsc --noEmit -p src/Config/tsconfig.json` Exit 0. `vitest run ... src/ui/__tests__/ui.test.tsx` 8/8 gruen. Turn-Gate: `pnpm run verify:quick` PASS (alle zehn Gates gruen).
+
+**Offen.** Die Abnahme lief headless im Desktop-Browser; Ton ist ueber die erzeugten Audio-Knoten belegt, nicht ueber Lautsprecher gehoert. 60 fps, Haptik und Touch bleiben fuer ein echtes Android-Geraet offen.
+
+## 2026-11-06 - HUD-PNGs inline: zwei Requests weniger im Kaltstart
+
+**Ziel.** Die zwei verbliebenen HUD-PNG-Requests (`ui/coin.png`, `ui/guest-cyan.png`) aus dem Kaltstart entfernen und den ersten Frame erneut unter Slow 4G messen, nicht nur unter dem bisherigen 9-Mbit/s-Profil.
+
+**Umsetzung.** `src/ui/hud-icons.ts` traegt beide 32x32-PNGs als Data-URI; `src/ui/icons.ts` verweist fuer `coin` und `guests` darauf. Die Originale bleiben unter `public/assets/casino/ui/` fuer Favicon, Manifest und Asset-Katalog. Keine Aenderung an Layout, Groesse oder Farbe der Icons.
+
+**Pruefungen.** `pnpm run build` gruen. Produktionsbuild kalt in Chrome for Testing 143 headless (1024x768), per CDP `Network.emulateNetworkConditions` auf 1,6 Mbit/s Download, 750 kbit/s Upload und 150 ms RTT gedrosselt, Cache aus. Baseline: 24 Requests, 12.185 ms, 2.421.929 B. Inline-HUD: 22 Requests, 12.162 ms, 2.422.440 B. Die zwei HUD-PNG-Requests fehlen; beide Icons rendern als 32x32-Data-URI, keine kaputten Bilder, keine Konsolenfehler. `pnpm run typecheck` gruen.
+
+**Offen.** Der erste Frame bleibt mit 12,16 s bandwidth-bound; 2,42 MB JS und Atlas dominieren, die beiden Icons machen nur rund 3,8 KB aus. Der naechste Hebel ist das Initial-JS/Atlas, nicht das HUD. Die Messung auf einem echten Android-Geraet bleibt offen.
+
+## 2026-11-06 - Phase-6-Abnahmeplan gegen den sichtbaren Stand
+
+**Ziel.** Der alte Abschnitt in `docs/PLAN-OPTIK-VISUELL.md` beschrieb Phase 5 als gerade umgesetzt und liess Phase 6 als blosses Exit-Kriterium stehen. Nach dem Floor-Fix sollte der Plan den tatsaechlich sichtbaren Stand aufnehmen und die Abnahme pruefbar machen.
+
+**Umsetzung.** Die Statuszeile und die Phasentabelle nennen Phase 6 jetzt als Abnahme; der Phase-5-Teil bleibt als Begruendung stehen. Der alte Abschnitt 6 ist durch einen Abnahmeplan ersetzt: Ausgangsbild der Desktop-Sichtpruefung (1024x768, Floor, HUD, Warnzeile, Toast, Kamera-FIT, `PUTZEN`, vier Tabs, Konsole nur Autoplay-Warnungen), Pruefmatrix A1-A8, Reihenfolge und Exit. A1 ist bestanden; A2-A8 decken Werkstatt-Einstieg, sechs Ziele, Spiegel, FPS, Touch, Huelle/Performance, Slow 4G, APK-Installation und Release ab. Die Matrix nennt bewusst den zentrierten FIT-Ausschnitt und die noch nicht geoeffnete Werkstatt statt einen gruenen Gesamteindruck.
+
+**Pruefungen.** `pnpm run verify:quick` (zehn Gates) und `pnpm run verify:docs` sind vor dem Commit gruen; der Floor-Grundstand ist mit `artifacts/floor-aktuell.png` belegt.
+
+**Offen.** A2-A8. Die Werkstatt, der Spiegel und die Touch-Pfade wurden noch nicht geoeffnet; 60 fps, Tap-to-Frame, Haptik und Slow 4G brauchen ein echtes Android-Geraet.
+
+## 2026-11-06 - Typecheck repariert, Floor-Crash behoben, stale Fact-Verdrahtung entfernt
+
+**Ziel.** Die offenen Befunde aus dem letzten Review schliessen: der Floor blieb nach dem Laden bei "LADEN DAUERT LANGE" stehen, `pnpm run typecheck` war gruen ohne `src/` zu pruefen, und die Doku sollte den echten Stand tragen, bevor PR #152 gemerged wird.
+
+**Umsetzung.** Der Crash war ein fehlendes Feld, kein Pixi-Fehler: `SceneCache` deklarierte `dirt` nicht, `createSceneCache()` gab die gebaute `dirtLayer` nicht zurueck, und `floor-view.ts` uebergab deshalb `undefined` an `addChild`. Beides ist jetzt deklariert und verdrahtet. Der Typecheck hatte `"include": ["../src"]` in `src/Config/tsconfig.json`; relativ zur Config zeigte das auf `src/src`, also pruefte `tsc` praktisch nichts. `["..", "vite.config.ts"]` deckt `src/` und die Vite-Config ab. Danach wurden 87 echte Fehler sichtbar und behoben: Typ-Re-Exports (`Mop`, `Stain`, `Visitor`, `ActorRef`), optionale `memories`, `VaCoinMicro`-Casts an Geldgrenzen, `readonly unknown[]` in Trigger-Definitionen, `roleCount` im Template-Schema, `ViewRect` mit `left/top/right/bottom`, `GameView` statt `WorldState` in Floor-Eingabe/-Animation, `SPIEGEL` in der Bau-Tier-Zuordnung, Getter-Aufrufe des Layout-Verlaufs, nicht-null-gepruefte `find`-Ergebnisse und typisierte Test-Callbacks. `src/vite-env.d.ts` ist neu getrackt: `vite/client` plus `declare module '*.mjs'`, damit die Governance-Tests die Skript-Libs ohne `allowJs` importieren. Die beiden `VISITOR_SERVICE`-Emissionen in `serveDrinkCmd` und `talkCmd` sind entfernt: sie trugen `initiator`/`severity`, das Fact-Schema verlangt `service`/`valence`, und der einzige legitime Produzent ist `desk-service.ts` bei anwesendem Kassierer. Die Doppel-Emission war tote Verdrahtung, kein fehlendes Feld.
+
+**Pruefungen.** `pnpm run typecheck` Exit 0 mit 0 Fehlern (vorher 87 nach der Include-Korrektur). `pnpm run verify:quick` mit allen zehn Gates gruen, inklusive Tests, Lint, Dead-Code, Doku, Tree, Redundanz, Assets, LOC und Test-Qualitaet. `pnpm run inventory:build` meldet 1324/1324 Dateien und 86 Ordner. Der Floor laedt im laufenden Dev-Server wieder: HUD, Gaeste und die vier Tabs sind da; der Screenshot liegt unter `artifacts/floor-aktuell.png`.
+
+**Offen.** Die visuelle Abnahme bei 60 fps und Tap-to-Frame braucht ein echtes Touch-Geraet; im Cloud-Browser ist nur der Desktop-Pfad pruefbar. Die Issues #151/#153 gehoeren zu PR #150 und bleiben unberuehrt.
+
+## 2026-11-06 - CI-Runner und Action-Runtimes
+
+**Ziel.** Die zwei Annotationen aus PR #152 an der Ursache beheben: Actions, die noch Node 20 ansprechen, und der gleitende `ubuntu-latest`-Runner.
+
+**Umsetzung.** Alle acht Workflows pinnen `ubuntu-24.04`. `checkout` steigt auf v7, `setup-node` auf v7, `cache` auf v6, `upload-artifact` auf v7, `setup-java` auf v6 und `setup-android` auf v4; `pnpm/action-setup@v6` bleibt. Die ausdrueckliche `platform-tools`-Angabe bleibt, weil sie den Android-Build unabhaengig von Action-Defaults festhaelt.
+
+**Pruefungen.** Alle acht Workflow-Dateien werden mit PyYAML geparst. Der erste `verify:quick`-Lauf fand einen seed-abhaengigen FREE_DRINK-Test: Ein vom Generator beschaedigtes Geraet bricht vor dem Drink ab; das Fixture pinnt jetzt `damaged = false` und `condition = 100`. Der erste CI-Lauf zeigte danach die zweite Ursache: Bei leerem Hauskonto bucht `payOrBorrow` den Betriebsanteil als `mod betrieb auf kredit`, der Test verglich aber exakt auf `mod betrieb`. Er summiert jetzt beide Wege und prueft den exakten Mod-Betrag; 20 Seeds sind gruen. `verify:quick` wird vor dem Commit ausgefuehrt.
+
+**Offen.** `ubuntu-24.04` ist der bewusst konservative Pin; die Migration auf 26.04 bleibt ein eigener Schritt mit Android- und Gradle-Test. Die zwei offenen `gate-failure`-Issues #151 und #153 gehoeren zu PR #150; dessen neuester Lauf auf `a4effb0` ist gruen, die Issues wurden nicht angefasst.
+
+## 2026-11-06 - Phase 5/6: Werkstatt und Abschluss
+
+**Ziel.** Das Werkstatt-Raster mit sechs Zielen, ein unsichtbarer Einstieg und der Charaktereditor als Spiegel im Lager.
+
+**Umsetzung.** `workshop.tsx` haelt den einen Rahmen; `workshop-parts.tsx` traegt Rasterkarte, Steuerung und FPS. Die vier Popups exportieren ihre Inhalte als Panels ohne zweiten Shell. Der Einstieg zaehlt fuenf Tipps auf die Marke in `dock.tsx` und hoert auf `Strg+Shift+D`; ein sichtbarer Knopf existiert nicht. `SPIEGEL` ist ein neues `DECOR` in allen drei Blueprints und oeffnet den vorhandenen `LookPopup`; `WorkshopTool = 'look'` ist entfernt.
+
+**Pruefungen.** `typecheck`, `lint`, `check:loc`, `verify:docs`, die Inventur (1323/1323) und `verify:all` (12/12 Gates) sind gruen. Der PR gegen `main` folgt.
+
+**Offen.** Fuenf-Tipp-Geste und Spiegel sind nicht auf Hardware geprueft; die FPS-Karte misst den Browser-Frame-Takt, nicht die Pixi-Renderzeit. Der Spiegel wird prozedural gezeichnet, ohne eigenes Asset.
 
 ## 2026-11-06 - Phase 2: Betriebssimulation
 
@@ -1502,7 +1689,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -12,7 +12,7 @@ import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
 import { fits, type Perspective, type Popup } from './ui/app-model';
 import { BuildPanel } from './ui/build-panel';
-import { Dock } from './ui/dock';
+import { Dock, useBrandTaps } from './ui/dock';
 import { FloorRoleBar } from './ui/floor-role-bar';
 import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
@@ -132,6 +132,19 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setActions([]);
     setPerspective(next);
   };
+  const onBrandTap = useBrandTaps(() => openPopup({ kind: 'workshop' }));
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent): void => {
+      if (!event.ctrlKey || !event.shiftKey || event.repeat || event.key.toLowerCase() !== 'd') return;
+      event.preventDefault();
+      setBuildOpen(false);
+      setActions([]);
+      setPopup({ kind: 'workshop' });
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   const closeEditor = (): void => {
     setEditorOpen(false);
@@ -143,7 +156,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
   return (
     <div className="app" data-perspective={perspective}>
-      <Hud view={view} perspective={perspective} onPerspective={changePerspective} onSkill={(attribute) => worldStore.spendSkill(attribute)} />
+      <Hud view={view} perspective={perspective} onPerspective={changePerspective} onSkill={(attribute) => worldStore.spendSkill(attribute)} onBrandTap={onBrandTap} />
 
       <main
         className={`stage-wrap${carryingCrate ? ' is-placing' : ''}`}
@@ -174,7 +187,11 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
         <ActionCard
           actions={actions}
-          onPick={(action) => { handleFloorInteract(action.id, action.targetId); setActions([]); }}
+          onPick={(action) => {
+            if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
+            handleFloorInteract(action.id, action.targetId);
+            setActions([]);
+          }}
           onClose={() => setActions([])}
         />
 

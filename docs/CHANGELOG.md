@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->
+<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,31 +12,106 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.143] - 2026-11-06
+
+### Features
+- Floor als Spielwelt: `data-perspective` am App-Rahmen, `FloorRoleBar`, `PerspectiveSwitch` und getrennte Docks fuer GAST und BETRIEB; das Automaten-Popup zeigt dem Gast direkt die Spielbuehne, dem Betrieb Diagnose, Reparatur, Mods und Walzen.
+- `MachineOperatorBody` und `MachinePlayLazy` trennen Betriebskoerper und Gasttisch; der interne BETREIBER/GAST-Toggle im Popup entfaellt.
+- Narrative-Registry leitet die Fragmentzahl aus `manifest.json` ab; der FREE_DRINK-Test prueft unabhaengig vom Geraetezustand.
+
+### Technik
+- PR #150 auf den `main`-Stand (0.3.142) zusammengefuehrt; Konflikte in `App.tsx`, `dock.tsx`, `hud.tsx`, `machine-popup.tsx`, `app.css`, zwei Tests, Doku und Versionsdateien.
+- Marke und `Ctrl+Shift+D` bleiben der versteckte Werkstatt-Einstieg; ein Klick auf die HUD-Marke zaehlt wieder fuenf Tipps.
+- `machine-operator.tsx` laedt den Plinko-Editor ueber `PlinkoEditorLazy`; die 185-KB-Buehne bleibt damit lazy wie seit 0.3.141.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+### Doku
+- `docs/PLAN-LEAD-MERGE*.md`, `docs/REVIEW-*.md` und `docs/SKILL_*.md` bleiben mit 0.3.140 in die Pflichtdoku ueberfuehrt und geloescht.
+
+## [0.3.142] - 2026-11-06
+
+### Technik
+- `floor-view.ts` gibt Kamera-Container, LOD-Stufe, Basisposition und `camDirty` an `floor-camera-rig.ts` ab; die Buehne orchestriert nur noch Ebenen, Update-Reihenfolge und Culling (219 auf 195 Zeilen).
+- `guest-art.ts` teilt sich in `guest-rig.ts` (Skelett, Gelenke, Pin, Namensschild, Squash, Tap-Ring), `guest-paint.ts` (Palette, Koerper, Arme, Beine, Pin) und `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur); die Fassade bleibt mit 105 statt 346 Zeilen.
+- `scripts/loc-budgets.mjs` fuehrt beide Legacy-Eintraege nicht mehr; der `@loc-exception`-Header in `guest-art.ts` ist geloescht.
+- `animateFloor` nimmt die Kamera-Buehne statt `cam` und `camDirty`.
+- PR #160 auf den `main`-Stand (0.3.141) zusammengefuehrt; Konflikte nur in Doku, `package.json` und `pnpm-lock.yaml`, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+## [0.3.141] - 2026-11-06
+
+### Technik
+- Floor-Atlas auf WebP-q95 umgestellt: 1.040.593 B -> 384.234 B (-63 %), beide 1024er-Seiten mit unveraendertem Shelf-Plan und Frame-Koordinaten.
+- `PlinkoEditorLazy` schneidet die 184.863-B-Buehne aus dem Modulpreload; Initial-JS 1.186.336 -> 1.173.926 B.
+- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B); `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy ohne HUD-Data-URI.
+- Initialgraph nach beiden Schritten: 1.174.034 B in 18 Chunks (+108 B gegenueber 1.173.926 B, ein Chunk mehr).
+- PR #161 auf den aktuellen `main`-Stand zusammengefuehrt; Konflikte nur in den sechs Pflichtdokumenten, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+## [0.3.140] - 2026-11-06
+
+### Technik
+- Merge-Gate auf `main` repariert: Der Merge von PR #163 lief nur mit `commit_title`, deshalb trug `6f7a906` keine Pflichtsektionen und `verify-commit-msg --head` wurde rot (`ERR-4006`); `Bump, tag, release` und der APK-Bau fielen aus. `docs/GATE-ROOTCAUSE.md` haelt den Fall und die Regel fest: `commit_message` traegt den PR-Body.
+- Keine Spiel-, Ledger-, RNG- oder Save-Aenderung.
+
+## [0.3.139] - 2026-11-06
+
+### Technik
+- Doku konsolidiert: 18 historische Analyse-, Review-, Plan- und Skill-Dokumente nach Ueberfuehrung ihrer offenen Punkte in `ROADMAP.md`, `INVENTORY.md`, `ARCHITECTURE.md` und `DEVTAGEBUCH.md` geloescht. `PLAYER_CASH` ist im Inventar wieder als offen belegt (Funktion ohne Produktions-Aufrufer).
+
+## [0.3.138] - 2026-11-06
+
+### Spiel
+- Offene Gewinne an der Wechselkasse liegen sichtbar vor dem Tisch: Der Chip-Stapel wird nicht mehr von der Tischgrafik verdeckt.
+- Das fremde Haus färbt sich nach dem aktiven Spiel: SLOT Neon-Rot, BLACKJACK/POKER/ROULETTE Samt-Violett, PLINKO/DICE/SHELL/VIDEO_POKER Cyan.
+
+### Technik
+- `GamesPopup` reicht `machine.game` an `PopupShell` weiter; damit trägt jeder Dialog sein `data-game`, und die bestehenden `--game-*`-Regeln greifen.
+- `FloorCash.sync()` liefert den Fußanker des Wechseltischs; `FloorProps` sortiert den Stapel am selben Anker als Requisite vor dem Tisch, aber hinter Figuren. Kein Save-, Ledger- oder RNG-Eingriff.
+
+## [0.3.137] - 2026-11-06
+
+### Technik
+- HUD-PNGs inline: zwei Requests weniger im Kaltstart. Die Icons `ui/coin.png` und `ui/guest-cyan.png` liegen als Data-URI in `src/ui/hud-icons.ts`; der kalte Slow-4G-Lauf (1,6 Mbit/s, 150 ms RTT) faellt von 24 auf 22 Requests. Der erste Frame bleibt mit 12,16 s bandwidth-bound (2,42 MB), weil die beiden Bilder nur rund 3,8 KB ausmachen. Keine sichtbare Aenderung.
+
+## [0.3.136] - 2026-11-06
+
+### Technik
+- Der Phase-6-Abnahmeplan ersetzt das alte Exit-Kriterium in `docs/PLAN-OPTIK-VISUELL.md`: Ausgangsbild der Desktop-Sichtpruefung, Pruefmatrix A1-A8 (Grundbild, Werkstatt-Einstieg, sechs Ziele, Spiegel, FPS, Touch, Huelle/Performance, Release), Reihenfolge und Exit. A1 ist bestanden, A2-A8 bleiben offen.
+- Keine Mechanik-, Ledger-, RNG- oder Save-Aenderung; die Doku-Aenderung laeuft mit `verify:quick`.
+
+## [0.3.135] - 2026-11-06
+
+### Spiel
+- Der Floor laedt wieder: Der Szenen-Cache gab die Schmutz-Ebene nicht zurueck, wodurch Pixi beim Aufbau mit `undefined` abbrach und der Ladebildschirm haengen blieb.
+
+### Technik
+- Der Typecheck prueft jetzt wirklich `src/`: `src/Config/tsconfig.json` zeigte mit `"../src"` auf `src/src`. Nach der Korrektur wurden 87 latente Typfehler behoben (Re-Exports, optionale Erinnerungen, VaCoinMicro-Grenzen, ViewRect, Floor-Signaturen, Test-Callbacks); `src/vite-env.d.ts` deklariert `vite/client` und die `.mjs`-Skriptimporte.
+- Die doppelte `VISITOR_SERVICE`-Emission in `serveDrinkCmd`/`talkCmd` ist entfernt; der Fact entsteht nur noch in `desk-service.ts` bei anwesendem Kassierer.
+- `pnpm run inventory:build` meldet 1324 Dateien und 86 Ordner.
+
+## [0.3.134] - 2026-11-06
+
+### Technik
+- Der FREE_DRINK-Test akzeptiert jetzt auch den Kreditweg des Betriebsanteils: Ist das Hauskonto nach einem Payout leer, bucht `payOrBorrow` `"mod betrieb auf kredit"`. Der Test summiert beide Buchungswege und prueft den exakten Mod-Betrag; die zuvor roten Seeds 9, 18 und 20 laufen.
+
 ## [0.3.133] - 2026-11-06
 
 ### Technik
-- Der Compiler-Test der Narrative Registry zaehlt nicht mehr hart 65 Fragmente. Er leitet die Zahl aus `content/narrative/turns/manifest.json` ab und prueft die 1:1-Gleichung Manifest <-> Registry, sodass ein neuer Beitrag den Test nicht mehr veralten laesst.
-- Die Untergrenze von 64 Fragmenten bleibt als eigenes `expect` stehen: Sie haelt stillen Schwund des Bestands fest, ohne an eine feste Momentaufnahme gebunden zu sein.
-- Stand: 65 Fragmente aus 65 Turns. Die 64 aus dem Auftrag war beim Zusammenfuehren der drei Beitraege vom 2026-11-06 bereits ueberschritten; es wird kein Inhalt geloescht. `manifest.json`, der Generator und der Atlas bleiben unveraendert und sind die naechste Runde.
-
-### Spiel
-- Keine sichtbare Aenderung.
+- GitHub Actions laufen jetzt auf Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`, `upload-artifact@v7`, `setup-java@v6` und `setup-android@v4`. Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die 26.04-Migration nicht unkontrolliert in den Build rutscht.
+- Der FREE_DRINK-Test pinnt Geraetezustand und Haltbarkeit; ein vom Generator beschaedigtes Geraet kann den Lauf nicht mehr seed-abhaengig rot machen.
 
 ## [0.3.132] - 2026-11-06
 
 ### Spiel
-- Der Floor hat zwei klar getrennte Blicke: **GAST** zeigt Portemonnaie, offene Gewinne, Spiele und den eigenen Verlauf, **BETRIEB** zeigt Hauskonto, Kasse, Gäste, Personal, Gerätezustand, Wartung und Preise. Der Umschalter sitzt oben im HUD und ändert nur die Anzeige; die Simulation läuft unverändert weiter.
-- Ein Klick auf ein Gerät führt im Gastmodus direkt in die Spielbühne (`DU · GAST`), im Betrieb in Zustand, Ursache, Reparatur, Walzen und Mods. Der lokale Rollenwechsel im Maschinenfenster entfällt, weil die Perspektive jetzt global gilt.
-- Möbel haben beim Antippen Vorrang vor Gästen: Ein besetzter Automat bleibt bedienbar. Linksklick und Tap laufen über denselben Pfad, ein zweiter Kamera-Handler ist weg.
-- Die Etage rendert wieder vollständig: Die fehlende Schmutz-Ebene im Szenen-Cache ließ den Floor bei „BAUE FLOOR…“ stehen.
+- Die Werkstatt ist jetzt ein Raster mit sechs Bereichen: Prüfung, Protokoll, Assets, Sound, Steuerung und FPS. Sie öffnet sich nur noch über fünf Tipps auf die HUD-Marke oder `Strg+Shift+D`.
+- Der Charaktereditor liegt nicht mehr im Werkstatt-Menü: Ein Spiegel im Lager öffnet ihn über die Floor-Aktion „Spiegel“. Jede Hausvorlage bringt genau einen Spiegel mit.
+- Die FPS-Karte misst den Browser-Frame-Takt live; Steuerung und Hilfe bleiben als sekundäre Werkzeuge erreichbar.
 
 ### Technik
-- `Perspective = 'guest' | 'operator'` lebt in `src/ui/app-model.ts`; `App.tsx` hält genau diesen UI-Zustand und setzt `data-perspective` am Wurzelelement. `Hud`, `Dock`, `MachinePopup` und `FloorRoleBar` lesen ihn, ohne einen zweiten Spielzustand zu führen.
-- `MachinePopup` ist jetzt ein Router: `MachineOperatorBody` (`src/ui/machine-operator.tsx`) trägt die Betriebsdiagnose, die Gastrolle rendert `MachinePlay` mit der vorhandenen `TableLauncher`-Bühne. Keine zweite Engine, keine zweite Palette.
-- `BuildOpsSummary` bündelt Hauskonto, Auslastung, Personal und Wartung im Betriebspanel; die Zahlwörter im HUD sagen „1 Spiel / 1 Platz“ statt der falschen Pluralform.
-- `src/render/floor-input.ts` liefert Treffer für Möbel und Gäste, `floor-touch.ts` behandelt Linksklick und Tap, `floor-view.ts` verliert den zweiten Kamera-Pointerdown-Pfad. `scene-cache.ts` zeichnet die `dirt`-Ebene.
-- Neue Screenshots unter `docs/screenshots/v0.3.132/` (acht echte Browseraufnahmen, 1280 × 860 und mobil 390 × 844).
-- Tests: `perspective-switch.test.tsx` neu; `machine-play.test.tsx`, `ui.test.tsx` und `bar-capacity.test.ts` folgen der Perspektive.
+- `workshop.tsx` ist der einzige Rahmen; `workshop-parts.tsx` liefert Rasterkarte, Steuerung und FPS. `diagnostics`, `journal`, `asset-library` und `sound` exportieren wiederverwendbare Panels ohne zweiten Shell.
+- `SPIEGEL` ist ein `DECOR`-Katalogeintrag und wird in allen drei Blueprints in der Lagerzone platziert. `buildFurnitureActions` erkennt ihn am Label; der Look-Pfad läuft über `Popup = { kind: 'look' }`.
+- Unbekannte Deko teilt sich keine gebackene Atlastextur mehr; der Spiegel wird prozedural gezeichnet.
 
 ## [0.3.131] - 2026-11-06
 

@@ -30,11 +30,11 @@ jobs:
   verify:
     name: Fail-Closed Gates
     if: inputs.verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: pnpm installieren
@@ -43,7 +43,7 @@ jobs:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
@@ -56,18 +56,18 @@ jobs:
 
   statistics:
     name: Statistik (RTP und Kartenverteilung)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
@@ -84,18 +84,18 @@ jobs:
 
   soak:
     name: Soak ${{ inputs.soak_ticks }} Ticks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
@@ -109,17 +109,17 @@ jobs:
 
   narrative-longrun:
     name: Narrative Longrun
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
@@ -132,18 +132,18 @@ jobs:
 
   balance:
     name: Balance ${{ inputs.balance_days }} Spieltage
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm
@@ -154,7 +154,7 @@ jobs:
       # Der Bericht ist der eigentliche Nachweis; er gehoert zum Lauf, nicht ins Log.
       - name: Balance-Bericht als Artefakt
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: balance-report
           path: artifacts/
@@ -162,18 +162,18 @@ jobs:
 
   bench:
     name: Benchmarks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: pnpm

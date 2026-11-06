@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.133 | 2026-11-06 06:29 UTC -->
+<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -105,6 +105,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 
 ## Conventions
 
+- Die Werkstatt bleibt ein Raster mit sechs Zielen; ihr Einstieg ist versteckt (fünf Tipps auf die Marke oder `Strg+Shift+D`), es gibt keinen sichtbaren Werkstatt-Knopf. `workshop.tsx` ist der einzige Rahmen, `workshop-parts.tsx` trägt Rasterkarte, Steuerung und FPS; die vier Popups liefern Panels ohne zweiten Shell. Der Charaktereditor hängt am `SPIEGEL`-`DECOR` im Lager, nicht an einem `WorkshopTool`.
 - `src/core/` must stay headless (no browser deps) and testable.
 - One owner per state: `world-store` holds world/ledger/PRNG; UI state (popups) lives in React.
 - Eigene Spielrunden laufen über `core/sim/own-play.ts` und die Fassade `store/own-play.ts`. Der Einsatz geht `PORTEMONNAIE` → `HAUSKONTO`, der Gewinn zurück; ungedeckte Gewinne buchen `HAUS_SCHULDEN`. Offene Kartenrunden hält nur die Store-Fassade; `TableLauncher` bleibt rollenunabhängig und wird nicht als zweite Engine kopiert.

@@ -1,8 +1,6 @@
 /** Floor-Animation: Tick, Kamera, Figuren-Animation. */
-import type { Application } from 'pixi.js';
-import type { WorldState } from '../core/sim/types';
 import { TICK_MS } from '../core/sim/tick-timing';
-import type { FloorCamera } from './floor-camera';
+import type { FloorCameraRig } from './floor-camera-rig';
 import type { GuestArt } from './guest-art';
 import { ActorPool } from './actor-pool';
 import { FloorProps } from './floor-props';
@@ -10,20 +8,13 @@ import { FloorCues } from './floor-cues';
 
 export function animateFloor(
   now: number,
-  app: Application,
-  cam: FloorCamera,
-  view: WorldState,
-  camDirty: boolean,
+  rig: FloorCameraRig,
   actors: ActorPool,
   player: GuestArt,
   cues: FloorCues,
   props: FloorProps,
 ): void {
-  cam.keepInView(player.root.x, player.root.y, app.screen.width, app.screen.height, view.size);
-  const moving = cam.step();
-  if (moving || camDirty) {
-    // Kamera-Update erfolgt extern über FloorView.applyCamera
-  }
+  rig.follow(player.root.x, player.root.y);
   for (const art of actors.active.values()) {
     art.animate(now);
     const t = Math.min(1, (now - art.moveStart) / TICK_MS);

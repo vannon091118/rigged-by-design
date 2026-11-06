@@ -8,7 +8,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
-import { fromVC } from '../../economy/vacoin';
+import { fromVC, type VaCoinMicro } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { TICKS_PER_DAY } from '../demand';
@@ -46,7 +46,7 @@ function expectBounded(world: WorldState): void {
   expect(state.events.filter((event) => isLiveEventStatus(event.status)).length).toBeLessThanOrEqual(8);
   expect(world.journal.length).toBeLessThanOrEqual(240);
   expect(world.archive.length).toBeLessThanOrEqual(2000);
-  for (const visitor of world.visitors) expect(visitor.memories.length).toBeLessThanOrEqual(6);
+  for (const visitor of world.visitors) expect((visitor.memories ?? []).length).toBeLessThanOrEqual(6);
   for (const mind of world.rivals) {
     expect(mind.history.length).toBeLessThanOrEqual(6);
     expect(mind.evidence.length).toBeLessThanOrEqual(4);
@@ -89,7 +89,7 @@ describe('NAR-16 Langzeitintegration', () => {
     }
     const grudge: NarrativeFact = {
       id: world.narrative.factSeq++, tick: world.tick, day: world.day, kind: 'RIVAL_ENCOUNTER',
-      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000,
+      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000 as VaCoinMicro,
     };
     pushRecent(world, [grudge]);
     for (let tick = 0; tick < 5; tick += 1) tickWorld(world, ledger, prng);

@@ -1,19 +1,18 @@
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { TICK_MS } from '../core/sim/tick-timing';
-import { Application, Container, Graphics, Rectangle } from 'pixi.js';
+import { Application, Graphics } from 'pixi.js';
 import { areaAt } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
 import { EntitySync } from './entity-sync';
-import { FloorCamera } from './floor-camera';
+import { FloorCameraRig } from './floor-camera-rig';
 import { FloorCues } from './floor-cues';
 import { createGuestArt, type GuestArt } from './guest-art';
 import { primeGuestShadow } from './guest-parts';
-import { screenToTile } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { FloorCallbacks, handleTap, screenPoint, type TapHit } from './floor-input';
+import { handleTap, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
@@ -21,30 +20,24 @@ import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
 import { EditorOverlay, type EditorCursor } from './editor-overlay';
 
-const STEP_MS = TICK_MS;
-
 export class FloorView {
   readonly #app: Application;
   readonly #callbacks: FloorCallbacks;
-  readonly #camera = new Container();
+  readonly #rig: FloorCameraRig;
   readonly #scene: SceneCache;
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
   readonly #walls = new WallOcclusion();
   readonly #player: GuestArt;
   readonly #marker = new Graphics();
-  readonly #cam = new FloorCamera();
   readonly #touch: FloorTouch;
   readonly #cues: FloorCues;
   readonly #fx: FloorFx; readonly #events: FloorEvents;
-  readonly #camBase = { x: 0, y: 0 };
   readonly #entities: EntitySync;
   readonly #editor = new EditorOverlay();
   #flashId = -1;
   #view: GameView;
-  #lod = -1;
   #placing = false;
-  #camDirty = true;
   #destroyed = false;
 
   constructor(app: Application, view: GameView, callbacks: FloorCallbacks) {
@@ -54,17 +47,24 @@ export class FloorView {
     // Ein Schatten fuer alle Figuren, bevor der erste Gast gebaut wird.
     primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
+    // Kamera-Buehne zuerst: Hinweise, Figuren und Effekte haengen an ihr.
+    this.#rig = new FloorCameraRig({
+      screen: app.screen,
+      canvas: () => app.canvas,
+      size: () => this.#view.size,
+      onDetail: (detail) => this.#detailChanged(detail),
+      onApplied: (lod, scale) => this.#cameraApplied(lod, scale),
+    });
     this.#cues = new FloorCues(app.canvas, (clientX, clientY) => this.cellAt(clientX, clientY), app.renderer);
     // Partikel, Licht und Shake leben in Weltkoordinaten auf der Buehne.
     this.#fx = new FloorFx();
     this.#events = new FloorEvents(this.#fx, () => this.#view);
-    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
+    this.#rig.root.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
       this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
-    this.#camera.eventMode = 'static';
-    this.#camera.interactive = true;
-    app.stage.addChild(this.#camera);
-    this.#touch = new FloorTouch(app, this.#camera, this.#cam, () => this.#view.size, (clientX, clientY) => {
-      const local = screenPoint(clientX, clientY, this.#app, this.#camera);
+    this.#rig.root.on('pointerdown', (event) => this.#act(event.button, event.getLocalPosition(this.#rig.root)));
+    app.stage.addChild(this.#rig.root);
+    this.#touch = new FloorTouch(app, this.#rig.root, this.#rig.cam, () => this.#view.size, (clientX, clientY) => {
+      const local = screenPoint(clientX, clientY, this.#app, this.#rig.root);
       if (local) this.#act(0, local);
     });
     this.#events.start();
@@ -72,7 +72,7 @@ export class FloorView {
     for (const art of this.#actors.all) this.#attachActor(art);
     this.#props = new FloorProps(
       { world: this.#scene.world, overhead: this.#scene.overhead, stickers: this.#scene.stickers, depth: this.#scene.depth },
-      this.#camera,
+      this.#rig.root,
       this.#attachActor,
     );
     this.#player = createGuestArt('STREET', 'DU', true, 0.4, view.look);
@@ -81,8 +81,8 @@ export class FloorView {
     this.#attachActor(this.#player);
     this.#entities = new EntitySync({
       renderer: app.renderer, scene: this.#scene, actors: this.#actors, player: this.#player,
-      marker: this.#marker, props: this.#props, camera: this.#camera, screen: app.screen,
-      stepMs: STEP_MS, lod: () => this.#lod, scale: () => this.#camera.scale.x,
+      marker: this.#marker, props: this.#props, camera: this.#rig.root, screen: app.screen,
+      stepMs: TICK_MS, lod: () => this.#rig.lod, scale: () => this.#rig.root.scale.x,
     });
     app.ticker.add(this.#animate);
     this.update(view, true);
@@ -94,33 +94,26 @@ export class FloorView {
     const templateChanged = force || view.size !== previous.size || view.template !== previous.template || view.carpet !== previous.carpet;
     this.#view = view;
     this.#scene.redrawRoom(view);
-    this.#scene.setLabels(view, this.#lod === 1);
+    this.#scene.setLabels(view, this.#rig.lod === 1);
     if (templateChanged) {
       if (view.template !== previous.template || view.size !== previous.size) this.#entities.resetFurniture();
-      this.#cam.resize(this.#app.screen.width, this.#app.screen.height, view.size, true);
-      this.#camera.hitArea = new Rectangle(0, 0, view.size * TILE, view.size * TILE);
-      this.#camDirty = true;
+      this.#rig.resetForLayout();
     }
     this.#scene.redrawDirt(view);
     this.#entities.sync(view, performance.now());
     this.#walls.sync(this.#app.renderer, { size: view.size, layout: view.layout }, TILE, this.#scene.depth);
     this.#scene.depth.flush();
     this.#cues.setPath(view.player.path, view.player.pathIndex);
-    this.#updateLod();
-    if (this.#camDirty) this.#applyCamera(); else this.#entities.cull(view, this.#lod);
+    this.#rig.updateLod();
+    if (this.#rig.dirty) this.#rig.apply(); else this.#entities.cull(view, this.#rig.lod);
   }
 
-  fit(): void { this.#cam.overview(); }
-  zoom(factor: number): void { this.#cam.zoomStep(factor); }
+  fit(): void { this.#rig.fit(); }
+  zoom(factor: number): void { this.#rig.zoom(factor); }
   setBudget(particles: number, lights: number): void { this.#fx.setBudget(particles, lights); }
 
   /** Editor-Auswahl liegt ueber der Welt, ist aber nie selbst klickbar. */
   setEditorCursor(cursor: EditorCursor | null): void { this.#editor.set(cursor); }
-
-  zoomToArea(x: number, y: number): void {
-    const area = areaAt(this.#view.template, x, y);
-    if (area) this.#cam.zoomToArea(area, this.#view.size);
-  }
 
   /** Spiel-Fenster offen: der Floor-Ticker ruht, die Simulation laeuft im Store weiter. */
   setRunning(running: boolean): void {
@@ -133,15 +126,11 @@ export class FloorView {
   }
 
   resize(): void {
-    this.#cam.resize(this.#app.screen.width, this.#app.screen.height, this.#view.size);
-    this.#updateLod();
-    this.#applyCamera();
+    this.#rig.resize();
   }
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
-    const rect = this.#app.canvas.getBoundingClientRect();
-    return screenToTile(clientX, clientY, rect, this.#app.screen.width,
-      this.#camera.x, this.#camera.y, this.#camera.scale.x, this.#view.size, TILE);
+    return this.#rig.cellAt(clientX, clientY);
   }
 
   destroy(): void {
@@ -157,7 +146,7 @@ export class FloorView {
     this.#actors.clear();
     this.#entities.clear();
     this.#scene.destroy();
-    this.#camera.destroy({ children: false });
+    this.#rig.destroy();
   }
 
   #attachActor = (art: GuestArt): void => {
@@ -165,31 +154,24 @@ export class FloorView {
     this.#scene.stickers.addChild(art.sticker);
   };
 
-  #updateLod(): void {
-    const detail = this.#cam.detail;
-    const lod = detail ? 1 : 0;
-    if (lod === this.#lod) return;
-    this.#lod = lod;
+  /** LOD-Wechsel: Hinweise, Beschriftungen und Figurendetail folgen der Stufe. */
+  #detailChanged(detail: boolean): void {
     this.#cues.setMode(detail);
     this.#scene.setLabels(this.#view, detail);
     this.#entities.setDetail(detail);
-    this.#camDirty = true;
   }
 
-  #applyCamera(): void {
-    this.#cam.apply(this.#camera, this.#app.screen.width, this.#app.screen.height, this.#view.size);
-    this.#camBase.x = this.#camera.position.x;
-    this.#camBase.y = this.#camera.position.y;
+  /** Nach dem Anwenden: Raster neu zielen, Pins skalieren, cullen. */
+  #cameraApplied(lod: number, scale: number): void {
     this.#cues.refresh();
-    this.#camDirty = false;
-    this.#entities.setPinScale(this.#lod, this.#camera.scale.x);
-    this.#entities.cull(this.#view, this.#lod);
+    this.#entities.setPinScale(lod, scale);
+    this.#entities.cull(this.#view, lod);
   }
 
   #act(button: number, point: { x: number; y: number }): void {
     if (this.#destroyed) return;
-    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#lod,
-      (x, y) => this.zoomToArea(x, y));
+    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#rig.lod,
+      (x, y) => { const area = areaAt(this.#view.template, x, y); if (area) this.#rig.cam.zoomToArea(area, this.#view.size); });
     if (!hit) return;
     if (hit.kind === 'furniture') {
       this.#flashId = hit.id;
@@ -204,11 +186,10 @@ export class FloorView {
   #animate = (): void => {
     if (this.#destroyed) return;
     const now = performance.now();
-    animateFloor(now, this.#app, this.#cam, this.#view, this.#camDirty, this.#actors, this.#player, this.#cues, this.#props);
+    animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props);
     this.#fx.update(now);
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
-    const offset = this.#fx.offset(now);
-    this.#camera.position.set(this.#camBase.x + offset.x, this.#camBase.y + offset.y);
+    this.#rig.shake(this.#fx.offset(now));
     this.#entities.furniture(this.#flashId)?.animate(now);
   };
 }

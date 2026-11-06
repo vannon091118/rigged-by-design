@@ -1,7 +1,7 @@
 /** Wischer-System. Headless, deterministisch, keine Browser-Abhängigkeiten. */
 import type { WorldState } from './types';
 
-interface Mop {
+export interface Mop {
   readonly id: number;
   x: number;
   y: number;

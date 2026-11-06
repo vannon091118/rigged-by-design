@@ -11,7 +11,7 @@ import type { Furniture, ModId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand } from './glossary';
-import { PlinkoEditor } from './plinko-editor';
+import { PlinkoEditorLazy } from './plinko-editor-lazy';
 import { SlotRulesEditor } from './slot-rules-editor';
 import { SlotTelemetry } from './slot-telemetry';
 
@@ -87,7 +87,7 @@ export function MachineOperatorBody(props: Props) {
       {item.gameId === 'SLOT' && <SlotTelemetry memory={item.slotMemory} />}
       {item.gameId === 'SLOT' && <SlotRulesEditor item={item} onApply={props.onSlotOdds} />}
       {item.gameId === 'PLINKO' && (
-        <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={props.onDeployPlinko} onMode={props.onPlinkoMode} />
+        <PlinkoEditorLazy view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={props.onDeployPlinko} onMode={props.onPlinkoMode} />
       )}
       {item.gameId !== 'PLINKO' && (
         <div className="slot-stage">

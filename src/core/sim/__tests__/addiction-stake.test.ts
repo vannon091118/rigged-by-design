@@ -5,6 +5,7 @@ import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { actAtTarget, addictedStake, personaStake, sessionSpins } from '../guest-play';
+import { getMod } from '../offers';
 import { guestAccount } from '../money';
 import { makeGuest } from '../traits';
 import { spawnGuest } from '../spawn';
@@ -73,7 +74,7 @@ describe('Mods zahlen sich in der Gastrunde aus', () => {
     const bar = world.furniture.find((item) => item.kind === 'BAR')!;
     bar.stock = 3;
     const slot = slotFor(world);
-    // Der Generator darf das Gerät beschaedigen; ein defektes Gerät bricht
+    // Der Generator darf das Geraet beschaedigen; ein defektes Geraet bricht
     // playSpin vor dem Drink ab und macht den Fall seed-abhaengig.
     slot.damaged = false;
     slot.condition = 100;
@@ -82,7 +83,8 @@ describe('Mods zahlen sich in der Gastrunde aus', () => {
     guest.stateTicks = 0;
     actAtTarget(world, ledger, new Prng(randomSeed()), guest, slot);
     expect(bar.stock).toBe(2);
-    expect(ledger.entries.some((entry) => entry.reason === TX_REASON.MOD_OPERATING)).toBe(true);
+    const operating = ledger.entries.filter((entry) => entry.reason.startsWith(TX_REASON.MOD_OPERATING));
+    expect(operating.reduce((sum, entry) => sum + entry.amount, 0)).toBe(getMod('FREE_DRINK').operating);
     expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
 

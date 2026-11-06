@@ -18,7 +18,7 @@ describe('Impact-Auswahl fuer Agenten und Gates', () => {
 
   it('findet ueber den Importgraphen mindestens einen Save-Test', () => {
     const selection = selectAffectedTests(['src/store/save.ts']);
-    expect(selection.tests.some((file) => file.includes('save'))).toBe(true);
+    expect(selection.tests.some((file: string) => file.includes('save'))).toBe(true);
   });
 
   it('trennt lange Nachweise von lokal laufbaren Tests', () => {

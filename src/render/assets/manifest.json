@@ -176,7 +176,7 @@
     },
     "pages": [
       {
-        "source": "atlas/atlas-0.png",
+        "source": "atlas/atlas-0.webp",
         "frames": [
           {
             "path": "environment/tiles/casino-carpet-plum.png",
@@ -503,7 +503,7 @@
         ]
       },
       {
-        "source": "atlas/atlas-1.png",
+        "source": "atlas/atlas-1.webp",
         "frames": [
           {
             "path": "machines/cocktail-glass.png",

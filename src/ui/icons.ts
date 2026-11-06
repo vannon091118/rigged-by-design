@@ -1,11 +1,12 @@
 /** Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. */
 import manifest from '../render/assets/manifest.json';
+import { HUD_ICON } from './hud-icons';
 
 const assetUrl = (relative: string): string => `${manifest.base}${relative}`;
 
 export const UI_ICON = {
-  coin: assetUrl('ui/coin.png'),
-  guests: assetUrl('ui/guest-cyan.png'),
+  coin: HUD_ICON.coin,
+  guests: HUD_ICON.guests,
   star: assetUrl('ui/loyalty-star.png'),
   warning: assetUrl('ui/warning.png'),
   check: assetUrl('ui/success-check.png'),

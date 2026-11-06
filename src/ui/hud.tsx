@@ -14,6 +14,8 @@ interface HudProps {
   readonly perspective: Perspective;
   readonly onPerspective: (next: Perspective) => void;
   readonly onSkill: (attribute: RpgAttribute) => void;
+  /** Versteckter Werkstatt-Einstieg: fuenf Tipps auf die Marke. */
+  readonly onBrandTap?: (timeStamp: number) => void;
 }
 
 const PENALTY_LABEL = (kind: string): string =>
@@ -37,7 +39,7 @@ const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
   ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
 ];
 
-export function Hud({ view, perspective, onPerspective, onSkill }: HudProps) {
+export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: HudProps) {
   const guest = perspective === 'guest';
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
@@ -52,8 +54,8 @@ export function Hud({ view, perspective, onPerspective, onSkill }: HudProps) {
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
   return (
-    <header className={`hud ${perspective}`}>
-      <div className="hud-brand">
+<header className={`hud ${perspective}`}>
+      <div className="hud-brand" onClick={(event) => onBrandTap?.(event.timeStamp)}>
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>

@@ -2,9 +2,13 @@
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { RivalActionId } from '../rival-ai/types';
 import type { DemandTier } from '../types';
+import type { Visitor } from '../types';
 import type {
-  ActorRef, HouseBand, NarrativeFact, RelationshipEdge, Visitor, VisitorValence,
+  ActorRef, HouseBand, NarrativeFact, RelationshipEdge, VisitorValence,
 } from './types';
+
+export type { ActorRef } from './types';
+export type { DemandTier } from '../types';
 
 export type ActorRole = 'visitor' | 'staff' | 'rival' | 'player';
 export type RelationshipDimension = 'trust' | 'sympathy' | 'conflict' | 'influence';

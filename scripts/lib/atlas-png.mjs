@@ -150,7 +150,7 @@ export function buildAtlasPages({ assetRoot, files, size, padding, outputDir }) 
   const pages = shelfPack(items, size, padding);
   mkdirSync(outputDir, { recursive: true });
   for (const old of existsSync(outputDir) ? readdirSync(outputDir) : []) {
-    if (/^atlas-\d+\.png$/.test(old)) rmSync(join(outputDir, old));
+    if (/^atlas-\d+\.(png|webp)$/.test(old)) rmSync(join(outputDir, old));
   }
   return pages.map((frames, index) => {
     const pixels = Buffer.alloc(size * size * 4);

@@ -43,7 +43,7 @@ function plan(
   capacityDelta: number,
   goodwillDelta: number,
   machineId: number | null = null,
-  pause = RIVAL_AI_LIMITS.cadence,
+  pause: number = RIVAL_AI_LIMITS.cadence,
 ): RivalActionPlan {
   return { action, stance, note, machineId, capacityDelta, goodwillDelta, nextActionTick: tick + pause };
 }

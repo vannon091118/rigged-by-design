@@ -5,7 +5,7 @@ import { dispositionOfGuest } from './narrative/disposition';
 import { getPersona } from './personas';
 import type { Furniture, GameId, Guest, ModId, WorldState } from './types';
 
-export type BuildId = GameId | 'PLANT' | 'SOFA';
+export type BuildId = GameId | 'PLANT' | 'SOFA' | 'SPIEGEL';
 
 interface BuildDef {
   readonly id: BuildId;
@@ -49,6 +49,10 @@ export const BUILD_DEFS: readonly BuildDef[] = [
   {
     id: 'SOFA', name: 'Samtsofa', kind: 'DECOR', w: 2, h: 1, seats: 2, cost: fromVC(8),
     baseBet: fromVC(0), quality: 2, reels: 0, description: 'Ein Platz zum Warten. Gäste bleiben länger, statt zu gehen.',
+  },
+  {
+    id: 'SPIEGEL', name: 'Spiegel', kind: 'DECOR', w: 1, h: 1, seats: 0, cost: fromVC(4),
+    baseBet: fromVC(0), quality: 1, reels: 0, description: 'Zeigt dein Aussehen und öffnet den Charaktereditor.',
   },
 ];
 

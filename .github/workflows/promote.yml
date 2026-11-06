@@ -23,11 +23,11 @@ concurrency:
 jobs:
   promote:
     name: Gruen mergen, rot integrieren
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout (volle Historie)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0
@@ -39,7 +39,7 @@ jobs:
           git config user.email "Schneider.felix1993@gmail.com"
 
       - name: Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 

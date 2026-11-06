@@ -89,7 +89,7 @@ function edgeRelationship(edge: RelationshipEdge | null): string | null {
 }
 
 function memoryRelationship(visitor: Visitor | null): string | null {
-  const memory = visitor?.memories.at(-1);
+  const memory = (visitor?.memories ?? []).at(-1);
   return memory?.valence === 'GOOD' ? 'vertrauen' : memory?.valence === 'BAD' ? 'konflikt' : null;
 }
 
@@ -111,7 +111,7 @@ function edgeMood(edge: RelationshipEdge | null): string | null {
 }
 
 function memoryMood(visitor: Visitor | null): string | null {
-  const memory = visitor?.memories.at(-1);
+  const memory = (visitor?.memories ?? []).at(-1);
   if (memory?.valence === 'GOOD') return 'neugierig';
   return memory?.valence === 'BAD' ? 'argwoehnisch' : memory?.valence === 'NEUTRAL' ? 'neutral' : null;
 }

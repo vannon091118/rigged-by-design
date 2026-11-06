@@ -19,12 +19,12 @@ export function playSlotSession(
   const memory = item.slotMemory;
   // Nur was die Maschine einbehalten hat, kann sie als Bonus auszahlen.
   const reference = item.baseBet > ZERO_VC ? item.baseBet : bet;
-  const bank = memory.bank ?? 0;
+  const bank = (memory.bank ?? 0) as VaCoinMicro;
   // Ein Bonus kostet rund zwei Einsaetze; erst ab dieser Deckung darf die Maschine ihn geben.
   const plan = prepareSlotSpin(memory, bank >= reference * 3);
   const outcome = playSlot(prng, { forceWin: plan.forceWin, config: slotConfigOf(item) });
   const multiplierBps = outcome.multiplierBps > 0 ? Math.max(0, outcome.multiplierBps + bonusBps) : 0;
-  const raw = mulVC(bet, multiplierBps);
+  const raw = mulVC(bet, multiplierBps) as VaCoinMicro;
   // Entladung und normale Gewinne teilen sich denselben Topf: ein Vorschuss wird zurueckgeholt.
   const settlement = settleSlotSpin(bank, bet, raw, plan.forceWin);
   const payout = settlement.payout;

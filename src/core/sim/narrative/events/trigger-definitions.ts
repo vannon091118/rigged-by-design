@@ -10,7 +10,7 @@ import { isTriggerDefinition } from '../trigger-schema';
 /** PROBE bleibt bewusst aussen vor: Sie hinterlaesst ein Indiz, aber kein Event. */
 const RIVAL_EVENT_ACTIONS = ['TRADE_INFO', 'PRICE_MOVE', 'POACH_VISITOR', 'SABOTAGE'] as const;
 
-export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = [
+const DEFINITIONS: readonly unknown[] = [
   { id: 'visitor-returned', condition: { op: 'fact', kind: 'VISITOR_RETURNED' } },
   // Zweite Stufe ohne Campaign-State: Wer Gutes mitbringt, bekommt eine eigene Szene.
   // Nutzt nur die vorhandene Trigger-/Cooldown-Infrastruktur, keine Template-Requirements.
@@ -26,4 +26,6 @@ export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = [
   },
   { id: 'visitor-conflict', condition: { op: 'fact', kind: 'VISITOR_CONFLICT' } },
   { id: 'rival-action', condition: { op: 'rival-action', actions: RIVAL_EVENT_ACTIONS } },
-].filter(isTriggerDefinition);
+];
+
+export const EVENT_TRIGGER_DEFINITIONS: readonly TriggerDefinition[] = DEFINITIONS.filter(isTriggerDefinition);

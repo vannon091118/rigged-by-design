@@ -22,6 +22,7 @@ import { Hud } from '../hud';
 import { JournalPopup } from '../journal-popup';
 import { LookPopup } from '../look-popup';
 import { PopupShell } from '../popup-shell';
+import { WorkshopPopup } from '../workshop';
 
 afterEach(() => {
   cleanup();
@@ -111,6 +112,7 @@ describe('UI-Integration', () => {
   it('zeigt echte Rivalenprofile statt hartkodierter Häuser', () => {
     render(<GamesPopup view={view()} onClose={noop} onPlay={() => null} onRisk={() => null} onTakeHome={noop} onExclusion={noop} onShellRound={() => ({ cups: 3, ballCup: 0, moves: [] })} onDealCard={() => ({ seed: 1, label: 'Test' })} onSettleCard={() => null} onAdditionalBet={() => true} />);
     const hafen = screen.getByLabelText('Profil Hafenklause');
+    expect(screen.getByRole('dialog').getAttribute('data-game')).toBe('SLOT');
     expect(within(hafen).getByText(/Kalle/).textContent).toContain('Kalle');
     expect(screen.queryByText('Neon-Keller')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: /Goldene Hand/ }));
@@ -125,5 +127,16 @@ describe('UI-Integration', () => {
     render(<StaffStatus view={{ ...view(), agents: [agent] }} />);
     expect(screen.getByText('bringt Ersatzteile').textContent).toBe('bringt Ersatzteile');
     expect(screen.getByText('Lager voll').textContent).toBe('Lager voll');
+  });
+
+  it('zeigt das Werkstatt-Raster mit sechs Bereichen und ohne Charakter-Tab', () => {
+    render(<WorkshopPopup view={view()} onClose={noop} onGuest={noop} />);
+    for (const label of ['Prüfung', 'Protokoll', 'Assets', 'Sound', 'Steuerung', 'FPS']) {
+      const button = screen.getByRole('button', { name: new RegExp(label) });
+      expect(button.textContent).toContain(label);
+    }
+    expect(screen.queryByRole('button', { name: /Charakter/ })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Prüfung/ }));
+    expect(screen.getByText('Buchhaltung').textContent).toBe('Buchhaltung');
   });
 });

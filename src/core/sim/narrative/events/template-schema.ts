@@ -122,9 +122,10 @@ export function isEventTemplate(raw: unknown): raw is EventTemplate {
   if (new Set(slotIds).size !== slotIds.length) return false;
   const engineDemand = raw.triggerId === ENGINE_DEMAND_TRIGGER;
   const labelIds = new Set(raw.contentSlots.filter((slot) => slot.kind === 'CHOICE_LABEL').map((slot) => slot.id));
+  const roleCount = Array.isArray(raw.participantRoles) ? raw.participantRoles.length : 0;
   if (!Array.isArray(raw.choices) || raw.choices.length > EVENT_TEMPLATE_LIMITS.choices
     || (!engineDemand && raw.choices.length === 0)
-    || !raw.choices.every((choice) => isEventChoice(choice, raw.participantRoles.length, labelIds))) return false;
+    || !raw.choices.every((choice) => isEventChoice(choice, roleCount, labelIds))) return false;
   const choiceIds = raw.choices.map((choice) => choice.choiceId);
   if (new Set(choiceIds).size !== choiceIds.length) return false;
   return isStep(raw.initialStep) && isSafeInt(raw.expiresInTicks, 0, 100_000)

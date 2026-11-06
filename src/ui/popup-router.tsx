@@ -7,6 +7,7 @@ import { ForeignFloorMap } from './foreign-floor-map';
 import { ForeignFloorPopup } from './foreign-floor-popup';
 import { GamesPopup } from './games-popup-lazy';
 import { GuestPopup } from './guest-popup';
+import { LookPopup } from './look-popup';
 import { MachinePopup } from './machine-popup';
 import { NarrativePopup } from './narrative-popup';
 import { WorkshopPopup } from './workshop';
@@ -135,6 +136,16 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
         onOpenGames={() => onOpen({ kind: 'games' })}
         onOpenStaff={onStaff}
         onOpenJournal={() => onOpen({ kind: 'workshop', tool: 'journal' })}
+      />
+    );
+  }
+
+  if (popup.kind === 'look') {
+    return (
+      <LookPopup
+        view={view}
+        onClose={onClose}
+        onLook={(patch) => worldStore.setLook(patch)}
       />
     );
   }

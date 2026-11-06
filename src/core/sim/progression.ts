@@ -78,7 +78,7 @@ const TIERS: readonly TierDef[] = [
 
 /** Welche Stufe ein Objekt freischaltet. Alles darunter bleibt sichtbar, aber gesperrt. */
 const BUILD_TIER: Readonly<Record<BuildId, CompanyTierId>> = {
-  SLOT: 'BUDE', SHELL: 'BUDE', PLANT: 'BUDE', SOFA: 'BUDE',
+  SLOT: 'BUDE', SHELL: 'BUDE', PLANT: 'BUDE', SOFA: 'BUDE', SPIEGEL: 'BUDE',
   PLINKO: 'KASSE', DICE: 'KASSE', VIDEO_POKER: 'KASSE',
   BLACKJACK: 'SAAL', POKER: 'SAAL',
   ROULETTE: 'KONZERN',

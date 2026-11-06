@@ -9,6 +9,7 @@ import { calmDispute } from '../core/sim/disputes';
 import { talkToGuest } from '../core/sim/charisma-talk';
 import { emitFact } from '../core/sim/narrative/facts';
 import { actorRefOfVisitor } from '../core/sim/narrative/relationships';
+import { guestById } from '../core/sim/world';
 import { consumeMopUse, dropMop, pickupMop, spawnMop } from '../core/sim/mop';
 import { removeStain } from '../core/sim/stain';
 import { isInRange, INTERACTION_RADII } from '../core/sim/interaction';
@@ -67,8 +68,6 @@ export function calmCmd(world: WorldState, disputeId: number): string {
 
 export function talkCmd(world: WorldState, prng: Prng, guestId: number): string {
   if (!talkToGuest(world, prng, guestId)) throw new Error('Gast gerade nicht ansprechbar.');
-  const g = guestById(world, guestId);
-  if (g?.visitorId) emitFact(world, { kind: 'VISITOR_SERVICE', actorRefs: [actorRefOfVisitor(g.visitorId)], initiator: actorRefOfVisitor(g.visitorId), severity: 1 });
   return world.lastEvent;
 }
 

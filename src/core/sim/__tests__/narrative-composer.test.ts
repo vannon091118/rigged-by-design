@@ -87,7 +87,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
       directives: [{ id: 'FREEZE_TICK', ticks: 999 }],
     };
     const result = composeNarrative(
-      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' }] },
+      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] },
       [invalid, ...NARRATIVE_REGISTRY],
     );
     expect(result.rejected).toContainEqual({
@@ -102,7 +102,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     if (!baseline) throw new Error('Baseline-Fragment fehlt');
     const invalid = { ...baseline, contributionId: 'invalid-text-01', text: '' };
     const result = composeNarrative(
-      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' }] },
+      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] },
       [invalid],
     );
     expect(result.rejected).toContainEqual({ contributionId: 'invalid-text-01', reason: 'INVALID_FRAGMENT' });
@@ -128,7 +128,7 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
       directives: [{ id: 'FREEZE_TICK', ticks: 12 }],
     };
     const changedText = { ...original, contributionId: 'directive-changed-01', text: 'Ein anderer Text.' };
-    const request = { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' }] };
+    const request = { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] };
     const first = composeNarrative(request, [original]);
     const second = composeNarrative(request, [changedText]);
     expect(slot(first, 'BODY').directives).toEqual([{ id: 'FREEZE_TICK', ticks: 12 }]);

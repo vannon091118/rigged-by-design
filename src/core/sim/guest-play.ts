@@ -30,7 +30,7 @@ function serveFreeDrink(world: WorldState, guest: Guest): boolean {
 
 /** Sucht erhoeht den Einsatz um bis zu 50 % und verlaengert die Sitzung; beides bleibt bezahlbar. */
 export function addictedStake(world: WorldState, item: Furniture, guest: Guest): VaCoinMicro {
-  const base = Math.max(world.prices.slotMinBet, item.baseBet);
+  const base = Math.max(world.prices.slotMinBet, item.baseBet) as VaCoinMicro;
   return Math.round(base * (1 + guest.addiction / 200)) as VaCoinMicro;
 }
 
@@ -40,7 +40,7 @@ export function addictedStake(world: WorldState, item: Furniture, guest: Guest):
  * ohne dass ein einzelner Spin die ganze Sitzung bezahlt.
  */
 export function personaStake(world: WorldState, item: Furniture, guest: Guest, wallet: VaCoinMicro): VaCoinMicro {
-  const base = Math.max(world.prices.slotMinBet, item.baseBet);
+  const base = Math.max(world.prices.slotMinBet, item.baseBet) as VaCoinMicro;
   if (!canAfford(wallet, base)) return ZERO_VC;
   const budget = Math.min(3, Math.max(1, getPersona(guest.persona).budgetFactor));
   const wanted = Math.round(addictedStake(world, item, guest) * budget);

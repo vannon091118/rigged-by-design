@@ -1,4 +1,5 @@
 /** Untere Leiste: vier Ecken je Perspektive. Alles andere lebt in der Werkstatt. */
+import { useCallback, useRef } from 'react';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
 import { vc } from './format';
@@ -10,6 +11,29 @@ interface DockProps {
   readonly onBuild: () => void;
   readonly onOpen: (popup: Popup) => void;
   readonly onClean: () => void;
+}
+
+const BRAND_TAP_TARGET = 5;
+const BRAND_TAP_WINDOW_MS = 1200;
+
+/**
+ * Der versteckte Einstieg gehoert zum Dock: fuenf Tipps auf die Marke, ohne
+ * sichtbaren Knopf. Der Zeitstempel kommt aus dem Klick, nicht aus einer Uhr.
+ */
+export function useBrandTaps(onOpen: () => void): (timeStamp: number) => void {
+  const taps = useRef(0);
+  const last = useRef(-Infinity);
+  const open = useRef(onOpen);
+  open.current = onOpen;
+  return useCallback((timeStamp: number) => {
+    if (timeStamp - last.current > BRAND_TAP_WINDOW_MS) taps.current = 0;
+    last.current = timeStamp;
+    taps.current += 1;
+    if (taps.current < BRAND_TAP_TARGET) return;
+    taps.current = 0;
+    last.current = -Infinity;
+    open.current();
+  }, []);
 }
 
 type TabId = 'play' | 'history' | 'rules' | 'build' | 'guests' | 'map' | 'self';
@@ -41,7 +65,7 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
     if (id === 'map') { onOpen({ kind: 'foreignMap' }); return; }
     if (id === 'history') { onOpen({ kind: 'workshop', tool: 'journal' }); return; }
     if (id === 'rules') { onOpen({ kind: 'workshop', tool: 'help' }); return; }
-    onOpen({ kind: 'workshop', tool: perspective === 'guest' ? 'look' : undefined });
+    onOpen(perspective === 'guest' ? { kind: 'look' } : { kind: 'workshop' });
   };
 
   return (

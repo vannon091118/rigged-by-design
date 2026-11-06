@@ -12,6 +12,7 @@ import { EVENT_TRIGGER_DEFINITIONS } from '../narrative/events/trigger-definitio
 import { processNarrativeRuntime } from '../narrative/runtime';
 import { tickRivalMinds } from '../rival-ai/tick';
 import { createWorld } from '../templates';
+import type { VaCoinMicro } from '../../economy/vacoin';
 
 function rivalWorld() {
   const world = createWorld('SMALL');
@@ -39,7 +40,7 @@ describe('Rivalen-Fact als Event-Trigger (C2)', () => {
     mind.goodwill = -30;
     world.narrative.recent.push({
       id: 1, tick: 390, day: 3, kind: 'RIVAL_ENCOUNTER',
-      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000,
+      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000 as VaCoinMicro,
     });
     const acted = tickRivalMinds(world);
     const result = processNarrativeRuntime(world, new Ledger());

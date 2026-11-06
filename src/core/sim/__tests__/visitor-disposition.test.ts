@@ -44,7 +44,7 @@ function setup() {
   return { world, ledger, good, bad, bar, slot, sofa };
 }
 
-function guestFor(world: WorldState, ledger: Ledger, id: number, visitorId: number, mood: number, sociability: number): Guest {
+function guestFor(_world: WorldState, ledger: Ledger, id: number, visitorId: number, mood: number, sociability: number): Guest {
   const guest = makeGuest({ id, persona: 'STAMMGAST', prng: new Prng(SEED), spawn: { x: 2, y: 13 } });
   guest.visitorId = visitorId;
   guest.mood = mood;

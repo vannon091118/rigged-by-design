@@ -16,3 +16,11 @@ Alle CI Gate-Fehler seit dem Merge von `fix/narrative-review-findings` (NAR-13) 
 | verify-commit-msg | ERR-4006 | Commit-Body | Pflichtsektionen ohne echten Inhalt (platzhalterartig) | Commit-Body mit vollständigen Inhalten in allen drei Sektionen |
 
 **Regel:** Vor jedem Löschen von Dateien aus `src/core/sim/` (oder jedem anderen Verzeichnis) muss ein Import-Grep über das gesamte Repository laufen (`rg <dateiname> src/`), um sicherzustellen, dass kein Modul das gelöschte Datei importiert. Niemals Module löschen, die noch referenziert werden. Falls ein Modul teilweise ungenutzte Exports hat, nur die genutzten Exports behalten statt das ganze Modul zu löschen.
+
+## ERR-4006 beim Merge eines gruenen PR
+
+| Gate | Code | Datei | Ursache | Fix |
+|------|------|-------|---------|-----|
+| verify-commit-msg | ERR-4006 | Merge-Commit `6f7a906` (PR #163) | Der Merge lief nur mit `commit_title`. GitHub schreibt dann den PR-Titel als Merge-Text; die drei Pflichtsektionen aus dem PR-Body fehlen, obwohl der PR selbst gruen war. `main` wurde rot, `Bump, tag, release` und der APK-Bau fielen aus. | Follow-up-PR von `main`, dessen Merge `commit_message` = vollstaendiger PR-Body traegt. |
+
+**Regel:** Beim Merge ueber Connector oder REST-API gehoert der PR-Body immer in `commit_message`. `commit_title` allein genuegt nicht, auch wenn alle PR-Checks gruen sind: `verify-commit-msg --head` prueft auf `main` den Merge-Commit, nicht den PR-Body. Vor dem Merge beide Felder setzen und danach den neuen `main`-HEAD samt `Fail-Closed Gates` pruefen.

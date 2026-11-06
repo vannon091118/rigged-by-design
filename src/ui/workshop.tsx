@@ -1,18 +1,19 @@
-/** Werkstatt: Charakter, Pruefung, Protokoll, Assets, Sound und Geraet hinter einer Tuer. */
+/** Werkstatt: sechs Bereiche in einem Raster, erreichbar nur ueber Marke oder Tastatur. */
 import { useState } from 'react';
 import { activeEmitterCount } from '../render/fx/emitter';
 import { atlasTextureCount } from '../render/furniture-atlas';
+import { isMuted } from '../render/sound-fx';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { WorkshopTool } from './app-model';
-import { AssetLibraryPopup } from './asset-library-popup';
-import { DiagnosticsPopup } from './diagnostics-popup';
+import { AssetLibraryPanel } from './asset-library-popup';
+import { DiagnosticsPanel } from './diagnostics-popup';
 import { HelpPopup } from './help-popup';
-import { JournalPopup } from './journal-popup';
-import { LookPopup } from './look-popup';
+import { JournalPanel } from './journal-popup';
 import { PopupShell } from './popup-shell';
 import { Smartphone } from './smartphone';
-import { SoundPopup } from './sound-popup';
+import { SoundPanel } from './sound-popup';
+import { ControlsPanel, FpsPanel, useFps, WorkshopBack, WorkshopTile } from './workshop-parts';
 
 interface WorkshopProps {
   readonly view: GameView;
@@ -21,43 +22,93 @@ interface WorkshopProps {
   readonly onGuest: (id: number) => void;
 }
 
-const TOOLS: readonly { readonly id: WorkshopTool; readonly label: string; readonly note: string }[] = [
-  { id: 'look', label: 'Charakter', note: 'Aussehen der Spielfigur, reine Optik' },
-  { id: 'journal', label: 'Protokoll', note: 'Jede Buchung mit Ursache und Folge' },
-  { id: 'diagnostics', label: 'Pruefung', note: 'Buchhaltung, Personal, Lager, Nachfrage' },
-  { id: 'assets', label: 'Assets', note: 'Alle Texturen, Emitter und Tonspuren' },
-  { id: 'sound', label: 'Sound', note: 'Kanaele, Lautstaerke, Stumm' },
-  { id: 'device', label: 'Geraet', note: 'Kaufen, servieren, putzen, reisen' },
-  { id: 'help', label: 'Hilfe', note: 'Geld, Gaeste, Objekte, Steuerung' },
-];
+const TITLE: Partial<Record<WorkshopTool, string>> = {
+  diagnostics: 'Prüfung',
+  journal: 'Protokoll',
+  assets: 'Assets',
+  sound: 'Sound',
+  controls: 'Steuerung',
+  fps: 'FPS',
+  device: 'Gerät',
+  help: 'Hilfe',
+};
 
 export function WorkshopPopup({ view, tool, onClose, onGuest }: WorkshopProps) {
   const [active, setActive] = useState<WorkshopTool | null>(tool ?? null);
+  const fps = useFps();
   const back = (): void => setActive(null);
 
-  if (active === 'look') return <LookPopup view={view} onClose={back} onLook={(patch) => worldStore.setLook(patch)} />;
-  if (active === 'journal') return <JournalPopup view={view} onClose={back} onGuest={onGuest} />;
-  if (active === 'diagnostics') return <DiagnosticsPopup view={view} onClose={back} onAudit={() => worldStore.auditLedger()} />;
-  if (active === 'assets') return <AssetLibraryPopup onClose={back} />;
-  if (active === 'sound') return <SoundPopup onClose={back} />;
-  if (active === 'help') return <HelpPopup onClose={back} />;
-  if (active === 'device') return <Smartphone view={view} onClose={back} />;
+  if (active === 'device') return <Smartphone view={view} onClose={onClose} />;
+  if (active === 'help') return <HelpPopup onClose={onClose} />;
 
   return (
-    <PopupShell eyebrow="DU & WERKSTATT" title="Alles hinter einer Tuer" onClose={onClose} wide>
-      <p className="hint">
-        Nichts davon gehoert auf den Floor. Charakter, Buchhaltung und Technik liegen hier – eine Tuer,
-        kein eigener Tab. Auf der Buehne liegen aktuell {atlasTextureCount()} gebackene Korpustexturen
-        und {activeEmitterCount()} aktive Emitter.
-      </p>
-      <div className="workshop-grid">
-        {TOOLS.map((entry) => (
-          <button key={entry.id} type="button" className="workshop-tile" onClick={() => setActive(entry.id)}>
-            <strong>{entry.label}</strong>
-            <small>{entry.note}</small>
-          </button>
-        ))}
-      </div>
+    <PopupShell
+      eyebrow={active ? 'WERKSTATT · EIN BEREICH' : 'DU & WERKSTATT'}
+      title={active ? TITLE[active] ?? 'Werkstatt' : 'Werkstatt'}
+      onClose={onClose}
+      wide={active === null || active === 'journal' || active === 'diagnostics' || active === 'assets'}
+      full={active === 'assets'}
+    >
+      {active !== null && <WorkshopBack onBack={back} />}
+
+      {active === 'journal' && <JournalPanel view={view} onGuest={onGuest} />}
+      {active === 'diagnostics' && <DiagnosticsPanel view={view} onAudit={() => worldStore.auditLedger()} />}
+      {active === 'assets' && <AssetLibraryPanel />}
+      {active === 'sound' && <SoundPanel />}
+      {active === 'controls' && <ControlsPanel />}
+      {active === 'fps' && <FpsPanel fps={fps} />}
+
+      {active === null && (
+        <>
+          <p className="hint">
+            Nichts davon gehört auf den Floor. Prüfung, Protokoll, Assets, Sound, Steuerung und
+            Bildrate liegen hinter einer Tür – eine Werkstatt, kein eigener Tab.
+          </p>
+          <div className="workshop-grid">
+            <WorkshopTile
+              index="01" label="Prüfung"
+              note="Buchhaltung, Personal, Lager und Nachfrage."
+              meta={view.ledgerOk ? 'Ledger OK' : 'Ledger-Fehler'}
+              onOpen={() => setActive('diagnostics')}
+            />
+            <WorkshopTile
+              index="02" label="Protokoll"
+              note="Jede Buchung mit Ursache und Folge."
+              meta={`${view.journal.length} live · ${view.archive.length} Archiv`}
+              onOpen={() => setActive('journal')}
+            />
+            <WorkshopTile
+              index="03" label="Assets"
+              note="Texturen, Frames, Emitter und Tonspuren."
+              meta={`${atlasTextureCount()} Korpustexturen · ${activeEmitterCount()} Emitter`}
+              onOpen={() => setActive('assets')}
+            />
+            <WorkshopTile
+              index="04" label="Sound"
+              note="Kanäle getrennt, Master und Stumm."
+              meta={isMuted() ? 'stumm' : 'an'}
+              onOpen={() => setActive('sound')}
+            />
+            <WorkshopTile
+              index="05" label="Steuerung"
+              note="Was Klick, Taste und Geste auslösen."
+              meta="Tastatur · Maus · Touch"
+              onOpen={() => setActive('controls')}
+            />
+            <WorkshopTile
+              index="06" label="FPS"
+              note="Live messen, ob das Bild mithält."
+              meta={`${fps > 0 ? fps : '—'} fps live`}
+              onOpen={() => setActive('fps')}
+            />
+          </div>
+          <div className="workshop-footer">
+            <span>Weitere Werkzeuge</span>
+            <button type="button" className="btn tiny ghost" onClick={() => setActive('device')}>GERÄT</button>
+            <button type="button" className="btn tiny ghost" onClick={() => setActive('help')}>HILFE</button>
+          </div>
+        </>
+      )}
     </PopupShell>
   );
 }

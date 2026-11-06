@@ -56,7 +56,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   padding: 6px 10px; border: 1px solid rgba(255, 107, 129, 0.55); border-radius: var(--radius-sm);
   background: rgba(255, 107, 129, 0.08); font-size: var(--fs-meta); color: var(--role-danger);
 }
-.hud-brand { display: flex; align-items: center; gap: 9px; }
+.hud-brand { display: flex; align-items: center; gap: 9px; cursor: default; user-select: none; -webkit-tap-highlight-color: transparent; }
 .hud-mark {
   width: 38px; height: 38px; display: grid; place-items: center;
   border: 1px solid rgba(255, 209, 102, 0.6); border-radius: 11px;
@@ -205,12 +205,37 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .dock-utility small { font-size: 9px; letter-spacing: 0.02em; color: var(--muted); }
 .dock-utility.is-poor { opacity: 0.5; }
 
-/* Werkstatt-Raster: eine Tuer, sieben Ziele. */
-.workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px; }
-.workshop-tile { display: grid; gap: 3px; padding: 11px 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: #140f24; }
+/* Werkstatt-Raster: eine Tuer, sechs Ziele. */
+.workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+.workshop-tile {
+  display: grid; gap: 4px; align-content: start; min-height: 128px; padding: 12px 13px;
+  text-align: left; border: 1px solid var(--line); border-radius: 12px;
+  background: linear-gradient(180deg, #171027, #100a1c);
+  transition: border-color 120ms ease, transform 70ms ease;
+}
 .workshop-tile:hover { border-color: var(--neon); }
-.workshop-tile strong { font-size: 12px; }
-.workshop-tile small { font-size: 10px; line-height: 1.4; color: var(--muted); }
+.workshop-tile:active { transform: translateY(1px); }
+.workshop-index { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; color: var(--role-service); }
+.workshop-tile strong { font-size: 14px; letter-spacing: 0.02em; }
+.workshop-tile small { font-size: 10px; line-height: 1.45; color: var(--muted); }
+.workshop-meta { margin-top: auto; font-family: var(--mono); font-size: 9px; font-style: normal; color: var(--gold); }
+.workshop-back { justify-self: start; margin-bottom: 10px; }
+.workshop-footer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 14px; padding-top: 9px; border-top: 1px solid var(--line); }
+.workshop-footer span { margin-right: auto; font-size: 9px; letter-spacing: 0.12em; color: var(--muted); }
+.workshop-controls .help-controls { margin: 0; }
+.fps-panel { display: grid; gap: 10px; max-width: 420px; }
+.fps-value { display: flex; align-items: baseline; gap: 7px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #0b0715; }
+.fps-value strong { font-family: var(--mono); font-size: 38px; line-height: 1; }
+.fps-value span { font-size: 10px; letter-spacing: 0.18em; color: var(--muted); }
+.fps-value.ok strong { color: var(--role-success); }
+.fps-value.warn strong { color: var(--gold); }
+.fps-value.bad strong { color: var(--role-danger); }
+.fps-track { height: 6px; overflow: hidden; border-radius: 999px; background: #1b1228; }
+.fps-track i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--role-danger), var(--gold), var(--role-success)); transition: width 400ms ease; }
+.fps-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0; }
+.fps-facts div { display: grid; gap: 2px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 9px; background: #0b0715; }
+.fps-facts dt { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); }
+.fps-facts dd { margin: 0; font-family: var(--mono); font-size: 13px; }
 
 /* ---------- Stage ---------- */
 .stage-wrap {
@@ -442,6 +467,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   .hud-money { grid-column: 1; grid-row: 1; border-right: 0; padding-right: 0; }
   .hud-money strong { font-size: 24px; }
   .hud-vitals { grid-column: 1 / -1; grid-row: 2; overflow-x: auto; padding-bottom: 2px; }
+  .hud-brand > div { display: none; }
   .vital { min-width: 104px; }
   .hud-rpg { grid-column: 1 / -1; grid-row: 3; }
   .stage-legend span:nth-child(n + 4) { display: none; }

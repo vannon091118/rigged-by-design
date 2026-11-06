@@ -84,7 +84,7 @@ export function MachinePopup(props: Props) {
 
   return (
     <PopupShell
-      eyebrow={`BETRIEB · ${gameLabel(item.gameId)}`}
+      eyebrow={`BETRIEB · ${gameLabel(item.gameId ?? null)}`}
       title={item.label}
       onClose={onClose}
       wide

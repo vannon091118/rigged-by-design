@@ -59,8 +59,9 @@ export class FloorProps {
 
   update(view: GameView, rect: ViewRect, lod: number): void {
     this.#view = view;
-    this.#cash.sync(view);
-    this.#depth.set(this.#cash.root, this.#cash.root.y, 'prop', 900);
+    const cashAnchor = this.#cash.sync(view);
+    // Am Fusspunkt des Tisches, aber nach ihm: die Chips liegen sichtbar auf der Platte, Gäste bleiben davor.
+    if (cashAnchor !== null) this.#depth.set(this.#cash.root, cashAnchor, 'furniture', 999);
     this.#syncAgents(view, rect, lod);
     this.#syncCrates(view, rect);
     this.#syncDisputes(view, rect);
