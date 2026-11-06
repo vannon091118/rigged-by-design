@@ -37,7 +37,7 @@ export const SUBSYSTEMS = Object.freeze([
     prefix: 'src/core/sim/narrative',
     name: 'narrative',
     catalog: false,
-    impactDocs: ['ARCHITECTURE', 'NARRATIVE-ENGINE', 'EVENT-NARRATIVE-ENGINE-TASKPLAN'],
+    impactDocs: ['ARCHITECTURE'],
     invariants: ['WorldState.narrative ist der einzige persistente Narrativ-Zustand', 'Facts sind der Ereignisstrom, das Journal bleibt Spielerhistorie'],
   },
   { prefix: 'src/core/games', name: 'games', invariants: [] },
@@ -59,13 +59,13 @@ export const SUBSYSTEMS = Object.freeze([
   {
     prefix: 'src/render',
     name: 'render',
-    impactDocs: ['ARCHITECTURE', 'ASSETS'],
+    impactDocs: ['ARCHITECTURE'],
     invariants: ['Renderer zieht Zufall nur aus src/render/rng.ts'],
   },
   {
     prefix: 'src/ui',
     name: 'ui',
-    impactDocs: ['ARCHITECTURE', 'PRODUCT'],
+    impactDocs: ['ARCHITECTURE', 'ROADMAP'],
     invariants: ['UI liest Snapshots und haelt keinen zweiten Spielzustand'],
   },
   {
@@ -78,16 +78,16 @@ export const SUBSYSTEMS = Object.freeze([
   {
     prefix: 'scripts',
     name: 'pipeline',
-    impactDocs: ['CI-GATES', 'ESCALATION', 'ARCHITECTURE'],
+    impactDocs: ['ARCHITECTURE', 'AGENTS'],
     invariants: ['kein Gate schreibt im Verify-Lauf'],
   },
   {
     prefix: '.github',
     name: 'ci',
-    impactDocs: ['CI-GATES', 'ESCALATION'],
+    impactDocs: ['ARCHITECTURE', 'AGENTS'],
     invariants: ['der Pflichtstatus heisst Fail-Closed Gates'],
   },
-  { prefix: 'content', name: 'content', impactDocs: ['NARRATIVE-ENGINE'], invariants: ['Texte sind Darstellung, nie Spielregel'] },
+  { prefix: 'content', name: 'content', impactDocs: ['ARCHITECTURE'], invariants: ['Texte sind Darstellung, nie Spielregel'] },
   {
     prefix: 'src/Config',
     name: 'config',

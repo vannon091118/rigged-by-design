@@ -2,7 +2,7 @@
  * Testkatalog: jede Testdatei gehoert genau einem System und genau einer
  * Beweisklasse. Der Katalog ist abgeleitet, nicht gepflegt: System aus dem
  * deklarierten @test-target, Beweisklasse aus der Rolle der Datei. Die
- * Zuordnung steht in `docs/TEST-CATALOG.md` und wird dort geprueft, damit eine
+ * Zuordnung steht in `docs/INVENTORY.md` und wird dort geprueft, damit eine
  * neue Testdatei nicht unbemerkt ohne Einordnung bleibt.
  */
 import { resolve } from 'node:path';

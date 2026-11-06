@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
+<!-- rbd-doc: v0.3.145 | 2026-11-06 22:05 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.145] - 2026-11-06
+
+### Technik
+- Doku konsolidiert: Die elf verbliebenen Referenzdokumente unter `docs/` wurden nach Ueberfuehrung ihrer Inhalte geloescht. `docs/ROADMAP.md` ist die einzige Stelle fuer offene Punkte; alle zuvor offenen Befunde stehen dort.
+- Fehlerregister nach `docs/ARCHITECTURE.md`, Testkatalog nach `docs/INVENTORY.md`, Eskalationsleiter nach `AGENTS.md`, Produktvertrag nach `docs/ROADMAP.md`. `verify-redundancy` und der Governance-Test lesen das Fehlerregister jetzt aus dem Architektur-Anhang; `pnpm run catalog` schreibt den Katalogblock in das Inventar.
+- Der UI-Test `machine-play` wartet unter paralleler Last bis zu 3 s auf die Spielbuehne; die Assertion bleibt unveraendert.
+- Keine Spiel-, Simulations-, Ledger-, RNG- oder Save-Aenderung.
 
 ## [0.3.144] - 2026-11-06
 

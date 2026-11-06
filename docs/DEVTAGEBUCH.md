@@ -1,5 +1,7 @@
 # Devtagebuch
 
+<!-- rbd-doc: v0.3.145 | 2026-11-06 22:05 UTC -->
+
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
@@ -8,10 +10,20 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 - Ein Eintrag pro Arbeitstag oder pro abgeschlossenem Auftrag, neuester oben.
 - Pruefungen werden woertlich benannt; "getestet" ohne Kommando ist kein Nachweis.
 - Begruendungen gehoeren hierher, nicht in Commit-Titel.
-- Offene Punkte bleiben stehen, bis sie erledigt oder verworfen sind.
+- Offene Punkte werden ausschließlich in `docs/ROADMAP.md` geführt; Offen-Abschnitte in älteren Einträgen sind historische Momentaufnahmen.
 
 
 
+
+## 2026-11-06 - Doku-Konsolidierung: elf Referenzdokumente in Pflichtdoku
+
+**Ziel.** Die Doku-Konsolidierung abschliessen, ohne Spiel- oder Sim-Features und ohne visuelle Browser-/APK-Abnahme. Jedes Dokument unter `docs/`, das nicht zu den Pflichtdokumenten gehoert, sollte nach Ueberfuehrung seiner gueltigen Inhalte geloescht werden; kein offener Punkt durfte nur in einer geloeschten Datei stehen.
+
+**Umsetzung.** Bildsprache, Assets, Asset-Semantik, Asset-Pack, CI-Gates, Fehlerregister, Gate-Rootcause und Narrativvertrag stehen als Anhaenge in `docs/ARCHITECTURE.md`. Der Produktvertrag steht in `docs/ROADMAP.md`, die Eskalationsleiter in `AGENTS.md`, der generierte Testkatalog als Block in `docs/INVENTORY.md`. Die technischen Leser wurden mitgezogen: `scripts/verify-redundancy.mjs`, `src/core/governance/__tests__/dependency-governance.test.ts`, `scripts/test-catalog.mjs`, der Pre-Commit-Hook und die Subsystem-Dokumentzuordnung. `docs/ROADMAP.md` fuehrt jetzt auch M4, die Geraete-/Lager-/Personal-Facts und die offenen Kleinbefunde aus der Inventur.
+
+**Pruefungen.** `pnpm run verify:docs`, `pnpm run verify:commit-msg` und `pnpm run verify:all` laufen auf dem finalen Baum; die Ergebnisse und die Bericht-ID stehen im Abschlussbericht. Zusaetzlich belegt eine Suche nach den elf Dateinamen, dass keine Quelle mehr existiert, und eine Suche nach den offenen Punkten, dass sie in `docs/ROADMAP.md` stehen. Der UI-Test `machine-play.test.tsx` bekommt fuer den Ladezustand unter paralleler Last 3 s statt des 1-s-Defaults; die Assertion bleibt unveraendert.
+
+**Offen.** Keine visuelle Browser- oder APK-Abnahme; der Nutzer testet auf seinem privaten Geraet. Alle offenen Punkte stehen ausschliesslich in `docs/ROADMAP.md`.
 
 ## 2026-11-06 - Audit #19: Firmenstufe sichtbar, Pixi-Fallback, Branch-Hygiene
 

@@ -49,13 +49,13 @@ for (const [command, names] of byCommand) {
   fail(problems, 'ERR-4020', 'package.json', `doppeltes Kommando fuer ${names.join(', ')}: ${command}`);
 }
 
-const catalog = readFileSync(`${ROOT}/docs/ERROR_CATALOG.md`, 'utf8');
-const codes = [...catalog.matchAll(/\|\s*(ERR-\d{4})\s*\|/g)].map((match) => match[1]);
+const catalog = readFileSync(`${ROOT}/docs/ARCHITECTURE.md`, 'utf8');
+const codes = [...catalog.matchAll(/^\|\s*(ERR-\d{4})\s*\|/gm)].map((match) => match[1]);
 const seen = new Set();
 for (const code of codes) {
   if (seen.has(code)) {
     problems += 1;
-    fail(problems, 'ERR-4020', 'docs/ERROR_CATALOG.md', `${code} ist mehrfach eingetragen.`);
+    fail(problems, 'ERR-4020', 'docs/ARCHITECTURE.md', `${code} ist mehrfach eingetragen.`);
   }
   seen.add(code);
 }

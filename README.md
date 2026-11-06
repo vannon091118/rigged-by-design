@@ -106,7 +106,7 @@ Die folgenden Systeme sind im gegenwärtigen Spielstand sichtbar. Das Casino ist
 | **Charakter** | Der Spiegel im Lager öffnet den Look-Editor; kein eigener Werkstatt-Tab |
 | **Spielstände** | Lokale Saves enthalten Welt, Journal, Look und Narrativzustand |
 
-Die Auswahl kann sich ändern. Die Dokumente [Produktstand](docs/PRODUCT.md), [Architektur](docs/ARCHITECTURE.md) und [Roadmap](docs/ROADMAP.md) halten den aktuellen Rahmen und die geplanten nächsten Schritte fest.
+Die Auswahl kann sich ändern. Die Dokumente [Produktvertrag](docs/ROADMAP.md), [Architektur](docs/ARCHITECTURE.md) und [Roadmap](docs/ROADMAP.md) halten den aktuellen Rahmen und die geplanten nächsten Schritte fest.
 
 ### Bilder aus dem heutigen Betrieb
 
@@ -178,7 +178,7 @@ Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitt
 | Roulette-Kessel und gesetzte Jetons | ![Roulette](docs/screenshots/current/14-roulette-buehne.png) |
 | Plinko-Brett mit Bahn und Fachquoten | ![Plinko](docs/screenshots/current/15-plinko-buehne.png) |
 
-Der komplette neueste Satz liegt in [`docs/screenshots/v0.3.114/`](docs/screenshots/v0.3.114/). Die Bildsprache und ihre Regeln stehen in [`docs/ART-DIRECTION.md`](docs/ART-DIRECTION.md). Das Asset-Inventar und die technische Verdrahtung stehen in [`docs/ASSETS.md`](docs/ASSETS.md).
+Der komplette neueste Satz liegt in [`docs/screenshots/v0.3.114/`](docs/screenshots/v0.3.114/). Die Bildsprache und ihre Regeln stehen in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Das Asset-Inventar und die technische Verdrahtung stehen in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Wie das Haus Geld zählt
 
@@ -201,13 +201,13 @@ Die README erzählt die Welt mit einem Augenzwinkern. Wenn du nachschlagen wills
 
 | Thema | Quelle |
 | --- | --- |
-| Umfang und Produktstand | [`docs/PRODUCT.md`](docs/PRODUCT.md) |
+| Umfang und Produktstand | [`docs/ROADMAP.md`](docs/ROADMAP.md) |
 | Systeme, Zustandsbesitz und Datenfluss | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Speicherstände und Migration | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), `src/store/save.ts` |
-| Narrativ-Facts, Gäste-Erinnerungen und Content-Vertrag | [`docs/NARRATIVE-ENGINE.md`](docs/NARRATIVE-ENGINE.md) |
+| Narrativ-Facts, Gäste-Erinnerungen und Content-Vertrag | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Geplante Arbeit | [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| Prüfungen und Eskalation | [`docs/CI-GATES.md`](docs/CI-GATES.md), [`docs/ESCALATION.md`](docs/ESCALATION.md) |
-| Fehlercodes | [`docs/ERROR_CATALOG.md`](docs/ERROR_CATALOG.md) |
+| Prüfungen und Eskalation | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`AGENTS.md`](AGENTS.md) |
+| Fehlercodes | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Änderungsverlauf und Inventur | [`docs/CHANGELOG.md`](docs/CHANGELOG.md), [`docs/DEVTAGEBUCH.md`](docs/DEVTAGEBUCH.md), [`docs/INVENTORY.md`](docs/INVENTORY.md) |
 
 ### Die Erzählung ist ebenfalls im Bau
@@ -247,7 +247,7 @@ pnpm run agent:context
 pnpm run agent:verify --profile=quick
 ```
 
-`pnpm run typecheck` prueft `src/` vollstaendig; die Konfiguration liegt in `src/Config/tsconfig.json`. `verify:quick` ist Entwicklungsfeedback mit zehn schnellen Gates. `verify:all` prüft alle zwölf Gates und ist vor Releases sowie bei Änderungen an Dependencies, Ledger, RNG oder Saves erforderlich. Lange Statistik- und Soak-Nachweise laufen in GitHub Actions; `pnpm run ci:long` stößt sie an und wartet auf das Ergebnis. Berichte liegen unter `.verify-cache/reports/`. Die [CI-Gate-Dokumentation](docs/CI-GATES.md) erklärt, welche Prüfung zu welcher Änderung gehört.
+`pnpm run typecheck` prueft `src/` vollstaendig; die Konfiguration liegt in `src/Config/tsconfig.json`. `verify:quick` ist Entwicklungsfeedback mit zehn schnellen Gates. `verify:all` prüft alle zwölf Gates und ist vor Releases sowie bei Änderungen an Dependencies, Ledger, RNG oder Saves erforderlich. Lange Statistik- und Soak-Nachweise laufen in GitHub Actions; `pnpm run ci:long` stößt sie an und wartet auf das Ergebnis. Berichte liegen unter `.verify-cache/reports/`. Die [CI-Gate-Dokumentation](docs/ARCHITECTURE.md) erklärt, welche Prüfung zu welcher Änderung gehört.
 
 Für den optionalen Android-Wrapper baut `pnpm run android:apk` eine Debug-APK; `pnpm run android:apk:release` legt eine nicht signierte Release-APK ab. Beide Varianten brauchen das Android-SDK.
 

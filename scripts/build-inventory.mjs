@@ -16,7 +16,7 @@ import { ROOT } from './lib/report.mjs';
 const START = '<!-- inventory:start -->';
 const END = '<!-- inventory:end -->';
 const TEXT = /\.(ts|tsx|mjs|js|css|md|json|yml|yaml|sh|html|svg)$/;
-const GENERATED = new Set(['package-lock.json', 'src/render/assets/manifest.json', 'docs/TEST-CATALOG.md']);
+const GENERATED = new Set(['package-lock.json', 'src/render/assets/manifest.json']);
 const RISKY = /^\s*(\/\/|\/\*|\*|#)\s*(TODO|FIXME|HACK|XXX|PLACEHOLDER)\b/m;
 
 const tracked = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
