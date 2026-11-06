@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->
+<!-- rbd-doc: v0.3.138 | 2026-11-06 19:39 UTC -->
 
 ## README als Einstieg
 
@@ -260,7 +260,7 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 
 - `src/render/floor-cues.ts` ist die einzige Ebene, die Steuerung sichtbar macht: Zielraster unter dem Zeiger, Ring am Figurenfuss, Punktspur des Laufwegs, Puls am Klickziel. Sie liest Snapshots und Pixelkoordinaten, kennt keine Regel und schreibt keinen Spielzustand. Die Farbe traegt die Folge: Service heisst laufen, Identity heisst heranziehen; die Kopplung sitzt in `setMode(detail)` und kommt aus dem LOD der Kamera. Seit 0.3.118 erscheint das Raster schon bei `pointerdown` und leuchtet 500 ms nach; der Ping besteht aus drei gebackenen Ring-Sprites statt neun Graphics pro Frame.
 - Das Zielraster haengt am Zeiger, nicht am Bild: nach jeder Kamerafahrt setzt `refresh()` die Kachel ueber die letzte Zeigerposition neu, sonst zeigt es auf eine Kachel, die nicht mehr unter der Maus liegt.
-- `src/render/floor-camera.ts` ist weiterhin die einzige Kamera-Wahrheit und reine Mathematik: `pan` (normalisierte Weltanteile, geclampt auf 0..1), `zoomStep` (Tasten und Knoepfe) und `keepInView` (zieht nach, sobald die Figur 55 Prozent der halben Sicht verlaesst; in der Uebersicht und auf dem Rueckweg dorthin bleibt der Fokus mittig). `floor-touch.ts` uebersetzt Zeigergesten in diese drei Aufrufe: Rad, Pinch, Ein-Finger-Pan ab 8 px bei Touch und Ziehen mit mittlerer oder rechter Taste; ein Tipp ohne Pan laeuft erst bei `pointerup`. `floor-view.ts` uebersetzt Tastatur und Ticker.
+- `src/render/floor-camera.ts` ist weiterhin die einzige Kamera-Wahrheit und reine Mathematik: `pan` (normalisierte Weltanteile, geclampt auf 0..1), `zoomStep` (Tasten und Knoepfe) und `keepInView` (zieht nach, sobald die Figur 55 Prozent der halben Sicht verlaesst; in der Uebersicht und auf dem Rueckweg dorthin bleibt der Fokus mittig). `floor-touch.ts` uebersetzt Zeigergesten in diese drei Aufrufe: Rad, Pinch, Ein-Finger-Pan ab 8 px bei Touch und Ziehen mit mittlerer oder rechter Taste; ein Tipp ohne Pan laeuft erst bei `pointerup`. `floor-camera-rig.ts` haelt dazu den Pixi-Container, die Basisposition, die LOD-Stufe und `camDirty`; `floor-view.ts` uebersetzt Tastatur und Ticker und reicht nur `fit`, `zoom`, `resize`, `follow` und `shake` an das Rig.
 - `src/ui/stage-controls.tsx` ist die einzige Bedienflaeche der Buehne: Tastenkuerzel als `kbd`-Chips und die Kamera-Knoepfe. Sie haelt keinen Zustand und ruft nur `zoom` und `fit` ueber das `FloorHandle`. Die Aktionsflaeche ist `src/ui/action-card.tsx`: eine grosse Empfehlung, zwei Alternativen, X, in der Daumenzone; sie rendert `MenuAction[]` aus `floor-actions.ts` und ruft `handleFloorInteract`, das frueherere Radialmenue ist mit `radial-menu.ts` und `character-view.ts` geloescht.
 - `src/render/fx/floor-fx.ts` liegt am Kamera-Container und rechnet in Weltkoordinaten: Geld platzt am Automaten, nicht in der Bildmitte. Der Emitter haelt einen Pool von 200 Sprites, `update` zerstört nichts, und der Screen-Shake verschiebt `camera.position` um einen Offset statt ein Vollbild-div zu transformieren.
 - Bildsprache: `docs/ART-DIRECTION.md` beschreibt die Rollen, Lichtstufen und Strichbreiten als Haltung; das Blatt liegt als `docs/banners/art-direction-neon-ledger.png` daneben. Die Zahlen, die dort stehen, sind die aus `src/render/art-tokens.ts` und `src/styles/tokens.css`; aendert sich eine Rolle, aendert sie sich an beiden Stellen und in diesem Kapitel.
@@ -279,9 +279,9 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 
 ## Pixel-Rig, Animation und Charaktereditor
 
-- `src/render/guest-art.ts` zeichnet blockige Figuren auf einem festen Pixel-Raster. Arme, Beine, Kopf und Körper sind getrennte Container mit Gelenk-Pivots.
+- `src/render/guest-art.ts` ist die Fassade der Pixelfigur und haelt Laune, Emotion, Sticker und den Look-Cache. Das Skelett mit Gelenk-Pivots, Pin, Namensschild, Squash und Tap-Ring liegt in `guest-rig.ts`; `guest-paint.ts` bemalt Koerper, Arme, Beine und Pin; `guest-head.ts` zeichnet Schaedel, Gesicht und Haar und setzt die Kopf-Textur. Alle Teile liegen auf demselben festen Pixel-Raster.
 - `src/render/rig-pose.ts` ist reine Mathematik: `poseFor(state, nowMs, phase)` liefert Bob, Lean, Kopfneigung, Arm- und Beinwinkel. `actorStateFor` bildet Weltzustände (`PLAY`, `DRINK`, `WAIT`, `ANGRY`, `LEAVE`, Tragen) auf `idle`, `walk`, `sit`, `play`, `win`, `lose`, `drink`, `angry`, `carry` ab. Beides ist ohne Pixi getestet (`rig.test.ts`).
-- Der Animationszustand kommt aus dem Snapshot; der Renderer hält keinen Spielzustand. `floor-view` ruft nur `setState` und `animate` auf.
+- Der Animationszustand kommt aus dem Snapshot; der Renderer hält keinen Spielzustand. `entity-sync` setzt nur `setState`, `floor-view` animiert ueber `animate`.
 - Der Charaktereditor schreibt `world.look` über `saveLook`/`applyLook`. Nur die angebotenen Paletten und Accessoires sind gültig; der Look hat keine Gameplay-Wirkung.
 - Der Editor nutzt eine HTML/CSS-Vorschau derselben Palette, damit die Vorschau ohne zweiten Pixi-Kontext auskommt.
 

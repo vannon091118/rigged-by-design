@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Buehne aus der Legacy-Hot-Zone
+
+**Ziel.** Die beiden letzten Render-Ausnahmen schliessen: Kamera, LOD und Culling aus `floor-view.ts` sowie das Pixel-Rig aus `guest-art.ts` in eigene Module trennen, ohne Verhalten zu aendern.
+
+**Umsetzung.** `FloorCameraRig` haelt Pixi-Container, `FloorCamera`, Basisposition fuer den Shake, LOD-Stufe und `camDirty`; `fit`, `zoom`, `resize`, `resetForLayout`, `updateLod`, `apply`, `follow`, `shake`, `cellAt` und `destroy` ersetzen die verstreuten Aufrufe, die Rueckrufe `onDetail` und `onApplied` lassen `FloorView` Hinweise, Beschriftungen, Pins und Culling steuern. `FloorView` bleibt Koordinator (Ebenen, Update-Reihenfolge, Hit-Test, Effekte); `animateFloor` nimmt das Rig statt `cam` und `camDirty`, die leere `if (moving || camDirty)`-Huelle entfaellt, `cam.step()` laeuft weiter pro Frame. Die Figur teilt sich in `guest-rig.ts` (Skelett, Gelenke, Pin, Namensschild, Squash, Tap-Ring), `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur) und `guest-paint.ts` (Palette, Persona-Farben, Koerper, Arme, Beine, Pin); `guest-art.ts` bleibt die Fassade mit Laune, Emotion, Sticker, Namensschild-Sichtbarkeit und Look-Cache. Der `@loc-exception`-Header und beide Legacy-Eintraege in `scripts/loc-budgets.mjs` sind entfernt.
+
+**Pruefungen.** `pnpm run typecheck` Exit 0, `pnpm run lint` Exit 0, `pnpm run check:loc` OK (floor-view 195/260, guest-art 105/260, floor-camera-rig 106, guest-rig 128, guest-paint 139, guest-head 112; keine Hot Zone), `verify:tree` PASS, `verify:dead-code` PASS (1196 Exporte, 529 Dateien), `pnpm run verify:quick` PASS (zehn Gates, Test-Gate gruen). Paritaet per Diff-Review: `updateLod` vor `apply`/`cull`, `cam.apply` -> Basisposition -> `cues.refresh` -> `setPinScale` -> `cull`, Malreihenfolge der Figurteile und alle Guards fuer Persona, Look, Laune und Namensschild unveraendert.
+
+**Offen.** Keine Browserabnahme in diesem Turn, weil die Kante nichts Sichtbares aendert; der naechste sichtbare Turn prueft Buehne und Figuren. `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` nennt noch Zeilennummern der alten `floor-view.ts` und bleibt als datierter Befund stehen.
+
 ## 2026-11-06 - HUD-PNGs inline: zwei Requests weniger im Kaltstart
 
 **Ziel.** Die zwei verbliebenen HUD-PNG-Requests (`ui/coin.png`, `ui/guest-cyan.png`) aus dem Kaltstart entfernen und den ersten Frame erneut unter Slow 4G messen, nicht nur unter dem bisherigen 9-Mbit/s-Profil.
@@ -1532,7 +1542,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.138 | 2026-11-06 19:39 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->
+<!-- rbd-doc: v0.3.138 | 2026-11-06 19:39 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,12 +8,12 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.136** |
+> | **Version** | **v0.3.137** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 18:33 UTC (T73 — HUD-PNGs inline)** |
-> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase6-docs` (HUD-Commit `756057c`), PR #158 |
-> | HEAD | `756057c` plus Merge von `main` (`438b0a7`, 0.3.136) |
-> | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
+> | **Aktualisiert** | **2026-11-06 19:35 UTC (T74 — Buehne aus der Legacy-Hot-Zone)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-stage-modules` (Refactor-Commit in diesem Turn) |
+> | HEAD | `8f89463` (main) plus Turn-Commit |
+> | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1329 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
 
@@ -23,7 +23,7 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Lebenssimulation; das Casino ist Start- und Testumgebung, nicht das Genre (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.136 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
+| Version | 0.3.137 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -44,8 +44,8 @@
 | `docs` | 16 .md + `screenshots/README.md` + 5 Bannerbilder + 25 Screenshots | — | 16 Doku-Dateien flach unter `docs/` (Grossbuchstaben-Namen), Hauptbanner `banner.jpg`, Trennbilder und Altbanner als SVG; Belege in `screenshots/{current,comparison}` |
 | `public/assets/casino` | 9 Symbole + 3 Musik (Opus/OGG) | 8,7 MB | kuratierter Asset-Ausschnitt |
 
-Größte Dateien: `floor-view.ts` 349 · `App.tsx` 325 · `guest-art.ts` 315 · `plinko-canvas.ts` 259 · `ledger.ts` 249 · `shell-canvas.ts` 242 · `staff.ts` 240 · `migrate.ts` 217 · `floor-props.ts` 217 · `sound-fx.ts` 206.
-Alle unter ihren LOC-Budgets (`scripts/loc-budgets.mjs`: Legacy-Cap 350 für 6 gelistete Dateien, sonst 200–260). **Keine Datei über Cap.**
+Größte Dateien: `App.tsx` 269 · `ledger.ts` 261 · `plinko-canvas.ts` 259 · `staff.ts` 244 · `shell-canvas.ts` 242 · `floor-props.ts` 232 · `poker-canvas.ts` 228 · `floor-cues.ts` 222 · `entity-sync.ts` 218 · `sound-fx.ts` 216.
+Alle unter ihren LOC-Budgets (`scripts/loc-budgets.mjs`: Legacy-Cap 350 für 4 gelistete Dateien, sonst 200–260). **Keine Datei über Cap.**
 
 ## 3. Architektur & Ownership (aus Code bestätigt)
 
@@ -159,7 +159,7 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 32 | info | `balance-run.mjs` validiert Tage (1–400) und Seed (SafeInteger), schreibt den Bericht nach `artifacts/` (gitignoriert) und verlangt dessen Existenz (sonst ERR-2001) — der Messlauf kann nicht still ohne Bericht bestehen. `src/test/random-seed.ts` zieht Seeds aus `node:crypto` ohne Env/CLI/Datei-Override. | `scripts/balance-run.mjs`, `src/test/` |
 | 33 | **hoch** | **gelöst**: Alle drei UI-Dateien nutzen bereits `barCapacityForLevel` aus `sim/deliveries.ts` (`12 + 8·max(1, level)`). Keine Hartkodierung mehr. | `src/ui/hud.tsx`, `src/ui/machine-popup.tsx`, `src/ui/diagnostics-popup.tsx` |
 | 34 | niedrig | **gelöst**: `table-launcher.tsx:56` verwendet bereits das korrekte Middle-Dot-Zeichen `·` (kein Mojibake `Â·` mehr). Einziger Treffer des Mojibake-Scans war bereits korrigiert. | `src/ui/table-launcher.tsx` |
-| 35 | info | Tick-Dauer 520 ms ist an vier Stellen kodiert: Kern-Tick, `floor-view.ts` (`STEP_MS = 520`), `guest-popup.tsx` und `self-exclusion-panel.tsx` (`× 0.52` Sekunden-Umrechnung). Aktuell konsistent, aber eine gemeinsame Konstante wäre robuster. | mehrere Dateien |
+| 35 | info | Tick-Dauer 520 ms ist an drei Stellen kodiert: Kern-Tick, `guest-popup.tsx` und `self-exclusion-panel.tsx` (`× 0.52` Sekunden-Umrechnung). `floor-view.ts` liest seit T74 `TICK_MS` direkt; der lokale `STEP_MS`-Alias ist entfallen. Aktuell konsistent, eine gemeinsame Konstante in der UI wäre robuster. | mehrere Dateien |
 | 36 | info | Spieltext-Typo: `shell-canvas.ts` schreibt „DERGEBER MISCHT“ (Leerzeichen fehlt) in der Shuffle-Phase. Daneben stilistische ASCII-Umschriften in Untertiteln („fuenf“, „Huetchen“, „Wuerfel“, „Erhoehungen“) neben echten Umlauten — Stil-Inkonsistenz, kein Logikfehler. | `src/render/games/shell-canvas.ts`, ui-Untertitel |
 | 37 | **hoch** | **gelöst (auf main bestätigt)**: `applyAction` nutzt `streetCommitted` statt kumuliertem `committed` für den offenen Einsatz pro Strasse; Roulette-Farbkorrektur (31 ist schwarz). Beide Geldwege per Test gesichert. | `src/core/games/poker-table.ts`, `roulette-table.test.ts` |
 | 38 | mittel | **Versions-Bump fehlte beim Pull-Batch**: Der Push `708d31c → 492ac3a` (583 Dateien, +3.119/−163) änderte `package.json` nur um zwei Skript-Zeilen (`assets:manifest`, `assets:audio`); die Version blieb **0.3.64**. `turn:finish` bumppt vor `verify` die Patch-Version — der Push scheint ohne diesen Pfad entstanden zu sein; ob `verify:quick` lief, ist aus dem Baum nicht belegbar (CI-Status liegt extern). | `package.json` |
@@ -276,10 +276,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1325 |
-| Gelistete Dateien | 1325 |
+| Getrackte Dateien | 1329 |
+| Gelistete Dateien | 1329 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (537) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (541) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -358,7 +358,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 8 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
-- `src/render/` — 43 Datei(en)
+- `src/render/` — 47 Datei(en)
 - `src/render/__tests__/` — 11 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
@@ -470,10 +470,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 714 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 715 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2894 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2904 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -1142,7 +1142,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
-- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
+- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 36 Zeilen
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body. — gelesen: 318 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 90 Zeilen
 - `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
@@ -1510,7 +1510,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/editor-overlay.ts` — Editor-Auswahl als reine Pixi-Darstellung: eine Zelle und optional ihre Kante. — gelesen: 50 Zeilen
 - `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 218 Zeilen
 - `src/render/floor-actions.ts` — Baut die Radial-Menu-Aktionen für ein geklicktes Objekt. — gelesen: 64 Zeilen
-- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 47 Zeilen
+- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 38 Zeilen
+- `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 106 Zeilen
 - `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen: Übersicht und 30x30-Bereich. Lerpt ohne Frame-Allokationen. — gelesen: 137 Zeilen
 - `src/render/floor-carpet.ts` — Teppichwahl als feine Textur ueber den Tiles, deren Layout-Material CARPET — gelesen: 49 Zeilen
 - `src/render/floor-cash.ts` — Kasse als Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch. — gelesen: 68 Zeilen
@@ -1526,7 +1527,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 122 Zeilen
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 111 Zeilen
 - `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 155 Zeilen
-- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 219 Zeilen
+- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 195 Zeilen
 - `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 120 Zeilen
 - `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 214 Zeilen
 - `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 171 Zeilen
@@ -1555,8 +1556,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/slot-symbols-extra.ts` — Zusatz-Symbole aus dem Pre-Alpha Pixel-Paket: gezeichnete Fallbacks, wenn die Textur nicht geladen ist. — gelesen: 191 Zeilen
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
-- `src/render/guest-art.ts` — Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. — gelesen: 346 Zeilen
+- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 105 Zeilen
+- `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 139 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
+- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. — gelesen: 128 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
 - `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 186 Zeilen
 - `src/render/perf-governor.ts` — Drei Leistungsstufen mit Hysterese. Der Governor bekommt nur deltaMS; er — gelesen: 58 Zeilen
@@ -1710,6 +1714,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T74 | **2026-11-06 19:35 UTC**: Buehne aus der Legacy-Hot-Zone. `floor-camera-rig.ts` traegt Container, LOD, Basisposition und Shake-Pfad; `floor-view.ts` faellt von 219 auf 195 Zeilen. `guest-rig.ts`, `guest-paint.ts` und `guest-head.ts` ersetzen den Rig in `guest-art.ts` (346 auf 105 Zeilen). Beide Legacy-Eintraege in `loc-budgets.mjs` und der `@loc-exception`-Header sind entfernt. Geprueft: typecheck, lint, check:loc (alle fuenf Dateien unter 200), verify:tree, verify:dead-code, verify:quick zehn Gates gruen. |
 | T73 | **2026-11-06 18:33 UTC**: HUD-PNGs inline. `coin` und `guest-cyan` liegen als Data-URI in `src/ui/hud-icons.ts`; Slow 4G (1,6 Mbit/s, 150 ms, kalt) 24→22 Requests, erster Frame 12,16 s bei 2,42 MB. Geprueft: Build, Typecheck, beide Icons 32x32 ohne kaputte Bilder. |
 | T72 | **2026-11-06 07:30 UTC**: Typecheck und Floor-Crash. `SceneCache.dirt` deklariert und zurueckgegeben (Pixi-`addChild(undefined)` behoben); `src/Config/tsconfig.json` Include auf `..` korrigiert, danach 87 Typfehler behoben; `src/vite-env.d.ts` mit `vite/client` und `.mjs`-Deklaration; doppelte `VISITOR_SERVICE`-Emissionen aus den Store-Commands entfernt. Geprueft: `typecheck` 0 Fehler, `verify:quick` zehn Gates gruen, `inventory:build` 1324/1324. |
 | T71 | **2026-11-06 05:37 UTC**: Phase 2 Betriebssimulation. Persona-Einsatz, VELVET-Gaesteguete, echter Free-Drink-Bestand, EXTRA_REEL-Walze, Mod-Deduplizierung, CASHOUT-Reihenfolge, Ankunftsrate ohne Deckel, Slot-Pity-Ausgleich und Schuldentilgung. Geprueft: `verify:quick`, 40-Tage-Balance, 60.000-Spin-RTP; vollstaendiger `verify:all`-Lauf gruen. |
