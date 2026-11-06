@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Task 5 vorbereitet: Layout-Dokument und Editor-Gate
+
+**Ziel.** Task 5/5 braucht zwei Fundamente, die unabhaengig von der Editor-Oberflaeche pruefbar sind: ein versioniertes Layout-Dokument fuer Export/Import und eine Freigabe, die einen Produktionsbuild ausschliesst.
+
+**Umsetzung.** `src/core/sim/layout-json.ts` schreibt `format: rbd-layout`, `version: 1` und ausschliesslich `size`, `floor`, `zones`, `edges` in fester Reihenfolge; der Import prueft Format, Version, fremde Felder und danach denselben `parseLayout()`-Vertrag wie ein Save. `src/ui/editor-gate.ts` oeffnet den Editor nur, wenn der Build `VITE_RBD_EDITOR_MODE=1` traegt **und** die URL `?editor=1` setzt; der Query-Parameter allein bleibt wirkungslos.
+
+**Pruefungen.** Neue `layout-json.test.ts` (5 Tests): runde Reise, deterministische Bytes, fremdes Format/fremde Version/fremdes Feld, kaputtes JSON ohne Wurf, durchgereichte Layoutbefunde. Neue `editor-gate.test.ts` (3 Tests): Flag plus Parameter, Parameter ohne Flag, Flag ohne Parameter. `typecheck` gruen.
+
+**Bewusst nicht getan.** Keine Editor-UI, kein Store-Command, kein Undo/Redo, kein Pinsel und keine PIXI-Anbindung; diese Schritte folgen in Task 5. Der Produktionsausschluss ist ueber das Gate vorbereitet, aber noch nicht am gebauten Bundle nachgewiesen.
+
 ## 2026-11-06 - Gemeinsame Tiefensortierung und Occlusion
 
 **Ziel.** Task 4/5: Figuren, Möbel, Requisiten und Wände lagen in getrennten Containern und wurden nie gegeneinander sortiert. Ein Gast konnte vor einer Wand stehen, die ihn verdecken müsste, und große Möbel wurden optisch an ihrer Oberkante einsortiert.
@@ -1386,7 +1396,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.124 | 2026-11-06 03:38 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.125 | 2026-11-06 03:41 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

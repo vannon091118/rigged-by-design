@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.124 | 2026-11-06 03:38 UTC -->
+<!-- rbd-doc: v0.3.125 | 2026-11-06 03:41 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.125] - 2026-11-06
+
+### Technik
+- Task 5/5 ist vorbereitet: `src/core/sim/layout-json.ts` exportiert und importiert das Layout als versioniertes Dokument (`rbd-layout`, Version 1) mit fester Feldreihenfolge. Der Import ist fail-closed und nutzt denselben `parseLayout()`-Vertrag wie ein Save.
+- `src/ui/editor-gate.ts` lässt den Editor nur in einem Build mit `VITE_RBD_EDITOR_MODE=1` und `?editor=1` zu; der Query-Parameter allein öffnet nichts.
+- Noch kein Editor, kein Store-Command und kein Undo/Redo: Diese Schritte folgen mit der Editor-Oberfläche.
 
 ## [0.3.121] - 2026-11-06
 
