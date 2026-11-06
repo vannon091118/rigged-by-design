@@ -13,6 +13,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Asset-Semantik: Bestandsaufnahme und Metadatenvertrag
+
+**Ziel.** Vor jeder Runtime-Arbeit klaeren, welche visuellen Assets es gibt, welche davon der Floor wirklich benutzt und welche Semantik ein Asset traegt. Der Katalog soll die Rolle beschreiben, ohne eine zweite Asset-Registry oder eine neue Pfadquelle zu werden.
+
+**Umsetzung.** `src/render/assets/asset-semantics.json` mit einem Eintrag je Manifest-Referenz: 539 Bilder plus 3 Animationen, 4 Emitter und 6 Tonspuren. Die Rollen stammen nicht aus Dateinamen, sondern aus den vorhandenen Zuordnungen im Code: `MACHINE_TEXTURE`/`KIND_TEXTURE`/`DECOR_TEXTURE` in `furniture-atlas.ts`, `DRESSING` in `room-dressing.ts`, `FLOOR_TEXTURE` in `floor-surface.ts`, `WALLPAPER` in `room-art.ts`, die Kopf-Listen in `guest-parts.ts` und `pixel-head.ts`, `PEG_TEXTURE`/`payoutArt` in `plinko-assets.ts`, `UI_ICON`/`GAME_ICON` in `icons.ts`, dazu `RUNTIME_ART`, `popup.css`, `slot-fx.ts`, `emitter.ts` und `music.ts`. Sichtbare Bounds kommen ausschliesslich aus den Atlasseiten; wo keine Seite existiert, steht `unknown`. Der Vertrag (Typen, Pflichtfelder, Enums, neun Layer) steht in `docs/ASSET-SEMANTICS.md`.
+
+**Befunde.** Interaktivitaet ist bei keinem Asset belegbar: Klicks haengen an Simulationsobjekten, nicht an Texturen, deshalb bleibt der Typ `interactive` leer und das Feld ueberall `unknown`. 444 Bilder haben keinen Code-Bezug. 23 Referenzen tragen mehrere Rollen (Kopf als Gast und Dealer, Maschine als Korpus und HUD-Icon, Damast als Boden, Wand und Popup-Hintergrund). Die Deko-Zuordnung laeuft ueber 17 Label-Regexe und ist damit an Anzeigetext gebunden. Walzensymbole sind ID-gebunden und ueber den Pfad nicht auffindbar.
+
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen; `pnpm run verify:quick` gruen in allen Gates. Der Katalog selbst hat kein Gate — er ist Dokumentation mit Datenform, kein Build-Artefakt.
+
+**Offen.** Deko-Rollen von Label-Regexen loesen; entscheiden, ob der Katalog spaeter von einem Gate gegen das Manifest geprueft wird. Beides ist bewusst nicht Teil dieses Tasks.
+
 ## 2026-11-06 - Merge mit main (0.3.120) und Review-Abgleich
 
 **Ziel.** Den reparierten Arbeitsbranch auf den inzwischen weitergelaufenen `main`-Stand heben, ohne die Wandkollision oder die Inventur-Reparatur zu verlieren.
@@ -1364,7 +1376,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

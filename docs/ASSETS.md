@@ -111,6 +111,17 @@ Gemessen mit `libopus`, 48 kHz, Stereo:
 OGG/Opus deckt Chromium, Firefox und die Android-WebView ab. Safari spielt es erst ab
 neueren Versionen; für eine reine Web-Auslieferung an Safari wäre AAC die sichere Wahl.
 
+## Semantik-Katalog
+
+Neben dem Manifest liegt `src/render/assets/asset-semantics.json`: eine
+Bestandsaufnahme mit einem Eintrag je Manifest-Referenz (552 Eintraege, davon
+539 Bilder) und den Feldern Typ, Rolle, Anchor, sichtbare Bounds,
+Tiefenklasse/Layer, Occlusion, LOD, Varianten und optionale Animationsreferenzen.
+Er fuehrt keine eigene ID und keinen Pfad, kein Renderer liest ihn, und
+`manifest.json` bleibt unveraendert. Der Metadatenvertrag samt Pflichtfeldern je
+Typ, den 15 bestehenden Render-Zuordnungen und den 23 Rollen-Dubletten steht in
+`docs/ASSET-SEMANTICS.md`.
+
 ## Prüfung
 
 ```bash
