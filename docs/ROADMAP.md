@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->
+<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -17,7 +17,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
-- Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Offen bleiben die visuelle Abnahme, die Touch-Geste auf Hardware und der renderer-nahe FPS-Nachweis.
+- Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Der Phase-6-Abnahmeplan mit Pruefmatrix A1-A8 steht in `docs/PLAN-OPTIK-VISUELL.md`; A1 (Desktop-Grundbild) ist bestanden. Offen bleiben die visuelle Werkstattpruefung, die Touch-Geste auf Hardware, der renderer-nahe FPS-Nachweis, der Slow-4G-Test und die APK-Installation.
 - Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
 - Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` ohne Ausgabepfad, Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen.
 

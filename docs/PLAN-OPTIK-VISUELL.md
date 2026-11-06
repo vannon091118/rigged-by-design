@@ -1,6 +1,6 @@
 # Plan: Werkstatt und Abschluss
 
-**Status:** Phase 5/6 umgesetzt; Phase 6 offen
+**Status:** Phase 5 umgesetzt; Phase 6 in Abnahme (Plan unten)
 **Datum:** 2026-11-06
 **Ersetzt:** den früheren 5-Phasen-Optikplan, gleicher Dateiname
 **Grundsatz:** keine zwölfte Doku. Dieser Plan bleibt der einzige Ort für den visuellen Abschluss.
@@ -29,7 +29,7 @@ Save-Format werden nicht angefasst.
 | 3/6 | Ereignisse, Partikel, Sound und Game Feel | umgesetzt |
 | 4/6 | Mobile Hülle, Safe Areas, Performance-Governor, APK | umgesetzt |
 | 5/6 | Werkstatt-Raster, versteckter Einstieg und Spiegel | **umgesetzt in diesem Schritt** |
-| 6/6 | Abschluss: visuelle Abnahme, Gerätetest, Release | offen |
+| 6/6 | Abschluss: visuelle Abnahme, Gerätetest, Release | **Abnahmeplan steht; A1 bestanden, A2–A8 offen** |
 
 ---
 
@@ -95,7 +95,7 @@ ist ein Oberflächen-Indikator, kein Benchmark der Simulation.
 | FPS-Anzeige | Ja, Browser-Frame-Takt | Kein Pixi-/GPU-Telemetriewert |
 | Gerät und Hilfe weiterhin erreichbar | Ja, als sekundäre Werkzeuge | — |
 | APK und realer Gerätetest | APK aus Phase 4 vorhanden | Nicht auf Hardware installiert |
-| Sichtprüfung der neuen Werkstatt | Nein | Braucht Browser oder Gerät |
+| Sichtprüfung des Floor-Grundbilds | Ja, 1024×768 am 2026-11-06 | Werkstatt, Spiegel und Touch noch nicht geöffnet |
 | `verify:all` | Ja, 12/12 Gates grün am 2026-11-06 | — |
 
 ---
@@ -110,10 +110,49 @@ ist ein Oberflächen-Indikator, kein Benchmark der Simulation.
 
 ---
 
-## 6. Exit-Kriterium
+## 6. Phase 6 — Abnahmeplan
 
-Die Werkstatt öffnet sich ausschließlich über die Marke oder `Strg+Shift+D`, zeigt
-sechs ehrliche Bereiche, und der Charaktereditor ist vom Spiegel im Lager aus
-erreichbar. `typecheck`, `check:loc`, `verify:docs`, die fokussierten Tests und
-`verify:all` müssen grün sein. Die visuelle und haptische Abnahme auf einem echten
-Gerät bleibt Phase 6.
+### 6.1 Ausgangsbild
+
+Am 2026-11-06 nach dem Szenen-Cache-Fix im Cloud-Browser bei 1024×768 geprüft:
+Der Floor rendert, HUD (Hauskonto, Gäste, Ruf), Warnzeile, Toast, Kamera-FIT,
+die Aktion `PUTZEN` und die vier Tabs `BAUEN`, `GÄSTE`, `KARTE` und `DU` sind
+da. Die Konsole zeigt nur die erwarteten Autoplay-Warnungen; der Ladebildschirm
+ist weg. Der Floor steht als zentrierter Ausschnitt im Canvas, nicht randfüllend.
+Werkstatt, Spiegel und Touch-Pfade wurden noch nicht geöffnet.
+
+### 6.2 Prüfmatrix
+
+| ID | Prüfung | Nachweis | Stand |
+| --- | --- | --- | --- |
+| A1 | **Desktop-Grundbild:** Start ohne Ladefehler, HUD, Warnzeile, Toast, vier Tabs; Konsole ohne Fehler außer Autoplay | Screenshot + Konsole | **bestanden** am 2026-11-06, 1024×768 |
+| A2 | **Werkstatt-Einstieg:** genau zwei Wege (5× Marke, `Strg+Shift+D`), kein sichtbarer Knopf, ein Rahmen | Screenshot beider Wege | offen |
+| A3 | **Sechs Ziele:** Prüfung, Protokoll, Assets, Sound, Steuerung, FPS; vier Panels ohne zweiten Shell; kein Charakter-Tab | Klickrunde | offen |
+| A4 | **Spiegel:** genau ein `SPIEGEL` in der Lagerzone, Aktion öffnet den Look-Editor, Save/Load erhält ihn | Browser + Save-Roundtrip | offen |
+| A5 | **FPS:** echte `requestAnimationFrame`-Frames über 500 ms; keine GPU-Behauptung | Panel + Gegenprobe | offen |
+| A6 | **Touch:** Ein-Finger-Pan ab 8 px, Tap-to-Frame in einem Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gästen | echtes Android-Gerät, Frame-Aufzeichnung | offen, braucht Hardware |
+| A7 | **Hülle und Performance:** Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste; Slow 4G (1,6 Mbit/s); Atlas-Requests | Gerät + Drosselung | teilweise: 9 Mbit/s mit 20 Requests/2,51 s gemessen, Debug-APK liegt vor |
+| A8 | **Release:** Debug- und Release-APK per `adb install`, `verify:all` 12/12 auf dem Tag-Commit, Tag und Notes, aktuelle Screenshots unter `docs/` | CI-Lauf + Gerät | offen |
+
+### 6.3 Reihenfolge
+
+1. **A1–A5 am Desktop.** Das ist ohne Hardware möglich und deckt Werkstatt,
+   Spiegel und FPS ab.
+2. **A6–A7 auf einem echten Android-Gerät.** Emulator zählt nicht als Nachweis
+   für Frame-Zeit, Gesten oder Haptik.
+3. **A8 erst danach.** Kein Release-Tag, solange eine Zeile offen ist.
+
+### 6.4 Exit
+
+Phase 6 ist abgeschlossen, wenn jede Zeile `bestanden` oder `bewusst verworfen`
+mit Grund ist, kein offenes `gate-failure`-Issue existiert und der Tag-Commit
+`verify:all` mit 12/12 trägt. Die alten Screenshots unter
+`docs/screenshots/current/` werden dabei durch Aufnahmen dieses Stands ersetzt;
+die Aufnahmen gehören in denselben Commit wie der Planabschluss.
+
+### 6.5 Bewusst nicht Teil von Phase 6
+
+- Keine neue Spielmechanik, keine Ledger-, RNG- oder Save-Änderung.
+- Keine GPU-Telemetrie und kein zweiter FPS-Zähler.
+- Kein neues Bild-Asset für den Spiegel.
+- Keine zwölfte Dokumentation; dieser Plan bleibt der einzige Ort.

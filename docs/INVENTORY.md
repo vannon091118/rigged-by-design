@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->
+<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.135** |
+> | **Version** | **v0.3.136** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 07:30 UTC (T72 — Typecheck, Floor-Crash, Fact-Verdrahtung)** |
-> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase5` (Basis `4a4f093`), PR #152 |
-> | HEAD | `186eb6e` plus dieser Doku-Commit (0.3.135) |
+> | **Aktualisiert** | **2026-11-06 16:58 UTC (T73 — Phase-6-Abnahmeplan)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase5` (HEAD `222fbf0`, squash-gemergt als `caeff41`), PR #152 |
+> | HEAD | `222fbf0` plus dieser Doku-Commit (0.3.136) |
 > | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 1324 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -23,7 +23,7 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Lebenssimulation; das Casino ist Start- und Testumgebung, nicht das Genre (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.135 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
+| Version | 0.3.136 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
@@ -470,10 +470,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 693 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 709 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2864 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2884 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -485,7 +485,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/PEER-REVIEW-4bb980f-GESAMTBERICHT.md` — Konsolidierter Peer-Review-Report — Commit `4bb980f` — gelesen: 80 Zeilen
 - `docs/PLAN-LEAD-MERGE-KORRIGIERT.md` — LEAD-Plan (korrigiert nach SUB-A-Review) — gelesen: 135 Zeilen
 - `docs/PLAN-LEAD-MERGE.md` — LEAD-Plan: Zusammengeführter Sanierungs- und Aufbauplan — gelesen: 171 Zeilen
-- `docs/PLAN-OPTIK-VISUELL.md` — Plan: Werkstatt und Abschluss — gelesen: 119 Zeilen
+- `docs/PLAN-OPTIK-VISUELL.md` — Plan: Werkstatt und Abschluss — gelesen: 158 Zeilen
 - `docs/PRODUCT.md` — Produkt: Rigged by Design — gelesen: 133 Zeilen
 - `docs/REVIEW-MIGRATIONS-PLAN.md` — Review-Report: Migrationsplan "Charakter-Steuerung mit Interaktionsradius" — gelesen: 222 Zeilen
 - `docs/REVIEW-SUB-A-ADVERSARIAL.md` — SUB-A-Review: Adversarial Prüfung des LEAD-Plans — gelesen: 174 Zeilen
