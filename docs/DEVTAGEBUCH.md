@@ -13,6 +13,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Maschinen und Deko wirklich messen statt annehmen
+
+**Ziel.** Der erste Slice hat 539 Assets mit Rollen versehen, aber die visuellen Felder kamen aus dem Atlas (nur 153 Frames) oder standen auf `unknown`. Fuer Maschinen und Deko sollte jede Datei selbst sprechen: Leinwand, sichtbarer Inhalt, Bodenkontakt, Aufhaengepunkt.
+
+**Umsetzung.** Alle 82 PNGs der Kategorien `machines` und `decor` geoeffnet, Alpha-Kanal gelesen und die Bounding-Box des sichtbaren Inhalts bestimmt. Atlasmasse und Dateimasse stimmen bei allen 82 ueberein; die Messung ist damit gegen den Build gegengeprueft. Neue Felder je Eintrag: `content`, `contentFill`, `proportion`, `base`, `ground`, `top`, `anchorKind`, `transform`, `baked`, `notes`. Die Regeln stehen im Katalog (`rules.derivation`) und in `docs/ASSET-SEMANTICS.md`; sie sind rein rechnerisch, ohne Sonderfalltabelle.
+
+**Befunde.** 54 Objekte haben Bodenkontakt, 7 sind deckend ohne Transparenz, 18 liegen auf einer Flaeche (Karten, Chips, Layouts) und 3 haben im Bild keinen Bodenkontakt (`wall-sconce`, `cocktail-glass`, `shot-glass`) — dort ist `ground` bewusst `none`, nicht geraten. Grosse Tische sind nicht `wide`, weil ihr Inhalt fast quadratisch ist; bei `dice-table`, `roulette-table`, `shell-game-table` und `cashier-counter` steht nur 34 bis 57 Prozent der Leinwandbreite im Bild, der Rest ist Luft. Genau das ist die Verzerrung, die beim Strecken auf einen breiten Fussabdruck entsteht. Varianten wurden auf gleiche Leinwand plus gleichen Stamm reduziert; die beiden aegyptischen Saeulen sind damit zwei Assets, keine Varianten.
+
+**Pruefungen.** Neuer Test mit fuenf Gruppen (Referenzen, Bounds und Anchors, doppelte IDs, Tiefenklassen, unvollstaendige Eintraege); `pnpm run verify:quick` gruen in allen Gates.
+
+**Offen.** Wie der Renderer mit den schmalen Inhalten umgeht (Letterboxing statt Strecken) ist eine Renderer-Entscheidung und nicht Teil dieses Slice. Die Kategorien `plinko`, `ui`, `characters`, `environment`, `fx` und die Symbole behalten die Felder aus Slice 1.
+
 ## 2026-11-06 - Asset-Semantik: Bestandsaufnahme und Metadatenvertrag
 
 **Ziel.** Vor jeder Runtime-Arbeit klaeren, welche visuellen Assets es gibt, welche davon der Floor wirklich benutzt und welche Semantik ein Asset traegt. Der Katalog soll die Rolle beschreiben, ohne eine zweite Asset-Registry oder eine neue Pfadquelle zu werden.
@@ -1376,7 +1388,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.123 | 2026-11-06 03:02 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

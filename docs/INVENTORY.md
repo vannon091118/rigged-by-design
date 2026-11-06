@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
+<!-- rbd-doc: v0.3.123 | 2026-11-06 03:02 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -188,6 +188,11 @@ Branch-Schutz (Ebene B, laut CI-GATES.md seit 31.10.2026 aktiv): PR erforderlich
 | 66 | mittel | **Interaktivitaet ist nirgends belegbar (2026-11-06, offen als Entscheidung):** Klicks haengen an `Furniture`/`GameView`, nicht an Texturen. Der Typ `interactive` ist deshalb leer und `interactive` steht ueberall auf `unknown`. Braucht eine Entscheidung, ob es je texturgebundene Trefferflaechen geben soll. | `src/render/assets/asset-semantics.json` |
 | 67 | mittel | **Deko-Zuordnung haengt an Label-Regexen (2026-11-06, offen):** `DECOR_TEXTURE` in `furniture-atlas.ts` waehlt 17 Muster gegen das Anzeige-Label; ein unbekanntes Label faellt auf den gezeichneten Korpus zurueck. Eine Umbenennung im UI aendert damit das Bild. | `src/render/furniture-atlas.ts` |
 | 68 | niedrig | **444 Bilder ohne Code-Bezug (2026-11-06, Bestand):** 418 ohne jede Referenz, 26 nur ueber die Asset-Bibliothek; im Katalog mit `evidence: "category"` markiert. Kein Aufraeumauftrag, aber auch kein Gate, das den Katalog gegen das Manifest prueft. | `src/render/assets/asset-semantics.json` |
+| 70 | info | **Maschinen und Deko vermessen (2026-11-06, erledigt):** 82 Assets mit `content`, `contentFill`, `proportion`, `base`, `ground`, `top`, `anchorKind`, `transform`, `baked` und `notes`; Regeln in `rules.derivation` und `docs/ASSET-SEMANTICS.md`. Atlas- und Dateimasse stimmen bei allen 82 ueberein. | `src/render/assets/asset-semantics.json`, `docs/ASSET-SEMANTICS.md` |
+| 71 | mittel | **Grosse Tische werden beim Strecken verzerrt (2026-11-06, offen):** `dice-table` (44 Prozent Leinwandbreite im Bild), `roulette-table` (48), `shell-game-table` (34) und `cashier-counter` (57) werden im Furniture-Korpus auf das Objekt gestreckt. Letterboxing oder eigener Pivot waere eine Renderer-Entscheidung. | `src/render/furniture-atlas.ts`, `src/render/assets/asset-semantics.json` |
+| 72 | info | **Drei Assets ohne Bodenkontakt im Bild (2026-11-06, gemessen):** `wall-sconce`, `cocktail-glass` und `shot-glass` enden 17 bis 19 Prozent ueber der Unterkante; `ground` steht deshalb auf `none`, `top` traegt den Aufhaengepunkt. | `src/render/assets/asset-semantics.json` |
+| 73 | info | **Varianten sind jetzt belegt (2026-11-06, erledigt):** 14 Assets mit identischer Leinwand und gleichem Stamm (Bar-Flaschen, Chip-Stapel, Tisch-Chips, Suit-Zeichen). Die beiden aegyptischen Saeulen bleiben zwei Assets, weil sich die Leinwand unterscheidet. | `src/render/assets/asset-semantics.json` |
+| 74 | info | **Katalog hat jetzt einen Test (2026-11-06, erledigt):** `src/render/assets/__tests__/asset-semantics.test.ts` prueft Referenzvollstaendigkeit, Bounds/Anchors, doppelte IDs, Tiefenklassen und unvollstaendige Eintraege. Kein Gate ruft ihn ausser der normalen Suite. | `src/render/assets/__tests__/asset-semantics.test.ts` |
 | 69 | niedrig | **Symbole sind ID-gebunden (2026-11-06, dokumentiert):** Nur 9 der 24 Symbole sind `SLOT_SYMBOLS`; die Textur kommt ueber `manifest.symbols[ID]`. Eine pfadbasierte Suche findet sie nicht, der Katalog fuehrt deshalb `manifestPath`. | `src/render/assets/asset-semantics.json`, `src/render/assets/textures.ts` |
 | 64 | niedrig | **Prozess-Drift (Review 2026-11-06, offen):** Der Turn vom 2026-11-06 hat keinen Content-Beitrag (AGENTS.md: genau einer pro Turn); der Changelog-Eintrag zur Wandkollision steht unter `[0.3.114]`. | `content/narrative/contributions/`, `docs/CHANGELOG.md` |
 | 58 | info | **RNG-Namespaces (T16):** `Prng` traegt `gameplay` oder `presentation`; `src/render/rng.ts` haelt den einen Darstellungs-Strom fuer Partikel und Sound, `assertGameplayRng` weist ihn an `tickWorld` und `playRound` ab. Der Save traegt weiter nur den Gameplay-Zustand. | `src/core/rng/streams.ts`, `src/render/rng.ts` |
@@ -285,10 +290,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1279 |
-| Gelistete Dateien | 1279 |
-| Getrackte Ordner | 85 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (67), docs (83), public (554), scripts (61), src (493) |
+| Getrackte Dateien | 1281 |
+| Gelistete Dateien | 1281 |
+| Getrackte Ordner | 86 |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (68), docs (83), public (554), scripts (61), src (494) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -299,7 +304,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 1 Datei(en)
 - `.github/workflows/` — 8 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
-- `content/narrative/contributions/` — 63 Datei(en)
+- `content/narrative/contributions/` — 64 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -370,6 +375,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/` — 36 Datei(en)
 - `src/render/__tests__/` — 8 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
+- `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
 - `src/store/` — 22 Datei(en)
@@ -462,9 +468,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-04-warm-return-outcome.json` — {"agentId":"buffy","turnId":"2026-11-04T07:23Z-warm-return-outcome","contributionId":"warm-return-outcome-01", — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-04-warm-return-titel.json` — {"agentId":"buffy","turnId":"2026-11-04T07:20Z-warm-return-titel","contributionId":"warm-return-titel-01","rol — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-05-huelle-atlas.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-06-asset-semantik-messung.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-asset-semantik.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 1497 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 257 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 1541 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 261 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
@@ -473,13 +480,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 300 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
-- `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 224 Zeilen
+- `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 587 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 597 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1394 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1406 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -1244,7 +1251,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 77 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
-- `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 153 Zeilen
+- `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 155 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 224 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 60 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
@@ -1393,7 +1400,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 102 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 67 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -1486,7 +1493,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/sound-fx.test.ts` — Lautstaerke und Kanaele sind Geraeteeinstellungen: sie muessen klemmbar, getrennt — gelesen: 33 Zeilen
 - `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 61 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 116 Zeilen
-- `src/render/assets/asset-semantics.json` — { — gelesen: 1246 Zeilen
+- `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 182 Zeilen
+- `src/render/assets/asset-semantics.json` — { — gelesen: 1312 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 32 Zeilen
 - `src/render/assets/manifest.json` — { — generiert, 1983 Zeilen

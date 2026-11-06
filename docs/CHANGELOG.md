@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
+<!-- rbd-doc: v0.3.123 | 2026-11-06 03:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.123] - 2026-11-06
+
+### Technik
+- 82 Maschinen- und Deko-Assets im Semantik-Katalog gemessen statt geschaetzt: Leinwand, sichtbarer Inhalt (Alpha-Bounding-Box), `contentFill`, `proportion`, `base`, Bodenanker (`ground`) und Inhaltsoberkante (`top`) je Eintrag.
+- Neue deterministische Regeln: `proportion` aus dem Inhaltsverhaeltnis (0.8 / 1.25), `base` aus Deckung und Abstand zur Unterkante (15 Prozent), `raised` ohne Bodenkontakt, `flat-on-surface` fuer Tischkarten; `notes` nur fuer messbare Marker.
+- Drei Ankerbegriffe getrennt: Sprite-Pivot (`anchor`/`anchorKind`), Bodenanker (`ground`) und Bildoberkante (`top`). Kein Gameplay-Footprint im Katalog.
+- Varianten nur noch belegt: gleicher Namensstamm **und** identische Leinwand (14 Assets, u. a. Bar-Flaschen, Chip-Stapel, Suit-Zeichen). Namensaehnlichkeit allein zaehlt nicht mehr.
+- Neuer Test `src/render/assets/__tests__/asset-semantics.test.ts` mit fuenf Gruppen: Referenzvollstaendigkeit, Bounds/Anchors, doppelte IDs, Tiefenklassen/Enums, fehlende und unvollstaendige Eintraege.
+- `manifest.json`, Generator und Atlas unveraendert; keine neuen Asset-IDs, keine Runtime-Integration.
 
 ## [0.3.122] - 2026-11-06
 
