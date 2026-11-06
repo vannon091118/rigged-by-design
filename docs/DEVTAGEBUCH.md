@@ -13,15 +13,137 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-## 2026-11-06 - Buehne aus der Legacy-Hot-Zone
+## 2026-11-06 - Buehne aus der Legacy-Hot-Zone (PR #160) zusammengefuehrt
 
-**Ziel.** Die beiden letzten Render-Ausnahmen schliessen: Kamera, LOD und Culling aus `floor-view.ts` sowie das Pixel-Rig aus `guest-art.ts` in eigene Module trennen, ohne Verhalten zu aendern.
+**Ziel.** PR #160 loeste `floor-view.ts` und `guest-art.ts` aus den
+Legacy-LOC-Ausnahmen; er lag auf 0.3.138 und war nicht mergebar.
 
-**Umsetzung.** `FloorCameraRig` haelt Pixi-Container, `FloorCamera`, Basisposition fuer den Shake, LOD-Stufe und `camDirty`; `fit`, `zoom`, `resize`, `resetForLayout`, `updateLod`, `apply`, `follow`, `shake`, `cellAt` und `destroy` ersetzen die verstreuten Aufrufe, die Rueckrufe `onDetail` und `onApplied` lassen `FloorView` Hinweise, Beschriftungen, Pins und Culling steuern. `FloorView` bleibt Koordinator (Ebenen, Update-Reihenfolge, Hit-Test, Effekte); `animateFloor` nimmt das Rig statt `cam` und `camDirty`, die leere `if (moving || camDirty)`-Huelle entfaellt, `cam.step()` laeuft weiter pro Frame. Die Figur teilt sich in `guest-rig.ts` (Skelett, Gelenke, Pin, Namensschild, Squash, Tap-Ring), `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur) und `guest-paint.ts` (Palette, Persona-Farben, Koerper, Arme, Beine, Pin); `guest-art.ts` bleibt die Fassade mit Laune, Emotion, Sticker, Namensschild-Sichtbarkeit und Look-Cache. Der `@loc-exception`-Header und beide Legacy-Eintraege in `scripts/loc-budgets.mjs` sind entfernt.
+**Umsetzung.**
 
-**Pruefungen.** `pnpm run typecheck` Exit 0, `pnpm run lint` Exit 0, `pnpm run check:loc` OK (floor-view 195/260, guest-art 105/260, floor-camera-rig 106, guest-rig 128, guest-paint 139, guest-head 112; keine Hot Zone), `verify:tree` PASS, `verify:dead-code` PASS (1196 Exporte, 529 Dateien), `pnpm run verify:quick` PASS (zehn Gates, Test-Gate gruen). Paritaet per Diff-Review: `updateLod` vor `apply`/`cull`, `cam.apply` -> Basisposition -> `cues.refresh` -> `setPinScale` -> `cull`, Malreihenfolge der Figurteile und alle Guards fuer Persona, Look, Laune und Namensschild unveraendert.
+- `main` (`ea76e2c`, 0.3.141) in den PR-Branch gemergt; Konflikte nur in den
+  sechs Pflichtdokumenten, `package.json` und `pnpm-lock.yaml`
+  (Versionsstaende), jeweils auf den `main`-Stand aufgeloest.
+- Code konfliktfrei: `floor-camera-rig.ts`, `guest-rig/paint/head.ts`,
+  `animateFloor`-Signatur und `loc-budgets.mjs`.
+- Version 0.3.142; Inventar und alle sechs Marker nachgezogen.
 
-**Offen.** Keine Browserabnahme in diesem Turn, weil die Kante nichts Sichtbares aendert; der naechste sichtbare Turn prueft Buehne und Figuren. `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` nennt noch Zeilennummern der alten `floor-view.ts` und bleibt als datierter Befund stehen.
+**Pruefungen.** `pnpm run verify:all` PASS mit allen zwoelf Gates (Bericht im
+Commit), `verify:docs` und `verify-commit-msg --head` gruen; CI
+`Fail-Closed Gates` auf dem PR-Branch gruen, danach Merge mit
+`commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save.
+
+## 2026-11-06 - Perf-PR #161 auf den main-Stand zusammengefuehrt
+
+**Ziel.** Der offene Perf-PR #161 (WebP-Atlas, lazy Plinko-Buehne, eigener
+HUD-Icon-Chunk) lag seit 20:35 auf einem aelteren `main`-Stand und war mit
+`integration/rot` und `integration/konflikt` markiert.
+
+**Umsetzung.**
+
+- `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt. Konflikte gab es nur in
+  `AGENTS.md`, `CHANGELOG`, `ARCHITECTURE`, `DEVTAGEBUCH`, `INVENTORY` und
+  `ROADMAP` (Doku-Marker und Versionsstaende); dort gilt der `main`-Text, die
+  Perf-Nummern stehen als 0.3.141 im Changelog.
+- Code und Assets (Atlas-WebP, Manifest, `atlas-webp.mjs`, Vite-Chunking,
+  `plinko-editor-lazy`, `machine-popup`) haben konfliktfrei gemergt.
+- Version 0.3.141; Inventar und alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` (Bericht oben im Commit), `verify:docs`
+und `verify-commit-msg --head` gruen; CI-Check `Fail-Closed Gates` auf dem
+PR-Branch gruen, danach Merge mit `commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an den Messwerten des PRs.
+
+## 2026-11-06 - Merge-Gate auf main reparieren
+
+**Ziel.** `main` war nach dem Merge von PR #163 rot: `Fail-Closed Gates` brach
+mit `ERR-4006` ab, `Bump, tag, release` und der APK-Bau wurden uebersprungen.
+
+**Ursache.** Der Merge wurde nur mit `commit_title` ausgefuehrt. GitHub schreibt
+dann den PR-Titel als Merge-Text; der vollstaendige PR-Body mit den drei
+Pflichtsektionen blieb im PR. `verify-commit-msg --head` prueft auf `main` aber
+den Merge-Commit. Reproduziert mit `git log -1 --format=%B 6f7a906` gegen
+`node scripts/verify-commit-msg.mjs`: drei Mal „Pflichtsektion fehlt“.
+
+**Umsetzung.**
+
+- `docs/GATE-ROOTCAUSE.md` traegt den Fall als eigene Tabelle plus Regel: Merge
+  ueber Connector oder REST-API immer mit `commit_message` = PR-Body.
+- Dieser Follow-up-PR startet von `main` und wird selbst mit dem vollstaendigen
+  PR-Body als Merge-Text gemergt; damit traegt der neue `main`-HEAD die
+  Sektionen.
+- Version 0.3.140; CHANGELOG, INVENTORY (T76) und ROADMAP nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS: zwoelf Gates gruen (Lint, LOC,
+Typecheck, Testvertrag, Dead-Export, Doku, Tree, Redundanz, Assets, Vitest,
+Audit, Build) im Bericht `2026-11-06T21-00-52-960Z`. `verify-commit-msg` gegen
+den alten Merge-Text meldet vorher drei fehlende Pflichtsektionen; der
+Merge-Aufruf dieses PRs setzt `commit_message` auf den PR-Body, danach wird der
+neue `main`-HEAD mit `Fail-Closed Gates` geprueft.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an `verify-commit-msg` selbst — der Fehler lag im Merge-Aufruf, nicht
+im Gate.
+
+## 2026-11-06 - Doku konsolidiert und offene Punkte ueberfuehrt
+
+**Ziel.** Die offenen Punkte aus Mission, Commits der letzten 48 Stunden und den
+frueheren Analyse-, Review- und Planberichten pruefen und die Doku auf die sechs
+Pflichtdokumente konsolidieren.
+
+**Umsetzung.**
+
+- Commits, PRs und Remote-Branches der letzten 48 Stunden geprueft. Task 5/5
+  (Commands, 30-Schritt-Undo/Redo, Editor-UI, Pixi-Auswahl, Export/Import,
+  Produktionsausschluss) steht; PR #142 ist bereits gemergt. Offen sind die PRs
+  #150, #160 und #161 sowie die Branch-Bereinigung.
+- L1 (CASHOUT-Haenger), L2 (Doppelauszahlung), S1 (Schuldentilgung),
+  VELVET, FREE_DRINK, EXTRA_REEL und die Persona-Einsatzskalierung im Code
+  belegt; Rivalenprofil ist in `games-popup.tsx` vorhanden. `PLAYER_CASH` bleibt
+  offen: `cashOutPlayerCash` existiert, hat aber keinen Produktions-Aufrufer.
+- Phase 6: A1 bestanden, A2-A5 offen; A6-A8 bleiben bis zur vollstaendigen
+  Desktop-Abnahme zurueckgestellt. Wand-Occlusion ist gebaut, aber nicht im
+  Browser belegt. Der Produktionsbuild enthaelt keinen Editor-Chunk.
+- 18 historische Berichte, Reviews, Plaene und Skill-Dokumente geloescht; ihre
+  offenen Punkte stehen in `ROADMAP.md` unter „Offene Punkte (konsolidiert
+  2026-11-06)“, die Pruefungen in `INVENTORY.md` §16a. Lebende Vertraege
+  (`PRODUCT`, `NARRATIVE-ENGINE`, `ART-DIRECTION`, `ASSETS`, `CI-GATES` usw.)
+  bleiben.
+- `INVENTORY.md` korrigiert: `PLAYER_CASH` ist wieder offen; Mods und
+  Persona-Einsatz sind als geloest markiert. `ARCHITECTURE.md` verweist nicht
+  mehr auf den geloeschten Taskplan.
+
+**Pruefungen.** `node scripts/verify-narrative-content.mjs` meldet 65 Beitraege,
+65 Turns und 65 Fragmente. `pnpm run verify:docs` PASS, `pnpm run verify:assets`
+PASS (554 Dateien, 15,6 MB), `pnpm run verify:quick` PASS (zehn Gates) und
+`pnpm run build` PASS. Der Produktionsbuild enthaelt weder `layout-editor` noch
+`VITE_RBD_EDITOR_MODE`.
+
+**Offen.** Geraeteabnahme, APK-Installation, Slow-4G-Browserlauf und
+Restfehler der Phase 6 gemaess Roadmap. Branch-Bereinigung und
+`integration`-Reset wurden bewusst nicht ausgefuehrt, weil sie offene PRs
+beruehren.
+
+**Bewusst nicht getan.** Keine Spiel-, Ledger-, RNG- oder Save-Aenderung, kein
+Merge der offenen PRs, keine Loeschung von Remote-Branches.
+
+## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
+
+**Ziel.** Jackpot, Kassenklingeln, Mood-Bubble und Spielfarben im laufenden Browser pruefen und gefundene Abweichungen direkt beheben.
+
+**Umsetzung.**
+- Jackpot: `emit('slot:jackpot', ...)` ueber denselben Core-Event-Bus, den `slot-session` nutzt; goldener Burst, Flash und 6-px-Shake waren sichtbar, der Win-Sound lief ueber zwei neue Oszillatoren (2 -> 5). Screenshot `artifacts/phase3-jackpot.png`.
+- Kasse: kontrollierter Gast mit 25 VC offenem Gewinn; der `FloorCash`-Stapel zeigte fuenf Chips, spielte `coin` (2 Oszillatoren + 1 Buffer) und der `money:bigPayout`-Burst sass am Wechseltisch. Der Stapel lag jedoch hinter dem Tisch (`z=380640900` gegen `390001001`) und war unsichtbar. `FloorCash.sync()` gibt jetzt den Fussanker zurueck, `FloorProps` haengt den Stapel mit `furniture/999` daran; im Browser liegt er mit `z=390001999` vor dem Tisch und bleibt hinter Figuren. Screenshot `artifacts/phase3-cash-fixed.png`.
+- Mood-Bubble: kontrollierter Gast `Mira Test` mit `mood=20`; "Hier stimmt was nicht" ist im Detail-LOD lesbar, im Uebersichts-LOD absichtlich ausgeblendet. Keine Aenderung noetig. Screenshots `artifacts/phase3-mood-zoomed.png` und `artifacts/phase3-mood-bubble-zoom-closeup.png`.
+- Spielfarben: `GamesPopup` uebergab `machine.game` nicht an `PopupShell`, deshalb blieb `data-game=null` und das Eyebrow immer cyan. Mit `game={machine.game}` tragen alle acht Spiele ihre Familie: SLOT `#ff2e88`, BLACKJACK/POKER/ROULETTE `#b06bff`, PLINKO/DICE/SHELL/VIDEO_POKER `#54e0ff`; Eyebrow und `popup-head`-Kante stimmen. Screenshot `artifacts/phase3-games-after-slot.png`.
+- Regression: `src/ui/__tests__/ui.test.tsx` prueft am Rivalen-Dialog `data-game="SLOT"`.
+
+**Pruefungen.** Headless Chrome 1024x768 bei DPR 2 gegen den Dev-Server auf Port 3000: alle vier Effekte durchgespielt, keine Konsolen- oder Page-Fehler. `tsc --noEmit -p src/Config/tsconfig.json` Exit 0. `vitest run ... src/ui/__tests__/ui.test.tsx` 8/8 gruen. Turn-Gate: `pnpm run verify:quick` PASS (alle zehn Gates gruen).
+
+**Offen.** Die Abnahme lief headless im Desktop-Browser; Ton ist ueber die erzeugten Audio-Knoten belegt, nicht ueber Lautsprecher gehoert. 60 fps, Haptik und Touch bleiben fuer ein echtes Android-Geraet offen.
 
 ## 2026-11-06 - HUD-PNGs inline: zwei Requests weniger im Kaltstart
 
@@ -1542,7 +1664,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.138 | 2026-11-06 19:39 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

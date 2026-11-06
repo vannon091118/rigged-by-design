@@ -47,6 +47,10 @@ export default defineConfig({
         codeSplitting: {
           groups: [
             { name: 'vendor-react', test: VENDOR_REACT, priority: 20 },
+            // Die HUD-Data-URIs bleiben in einem kleinen Start-Chunk. Ohne die
+            // Grenze zog Rolldown sie in den geteilten Icons-Chunk und zuvor
+            // in den 184.813-B-Plinko-Chunk, obwohl der HUD sie sofort braucht.
+            { name: 'hud-icons', test: /src[\\/]ui[\\/]hud-icons\.ts$/, priority: 10 },
           ],
         },
       },

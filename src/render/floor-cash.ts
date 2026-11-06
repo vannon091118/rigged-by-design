@@ -22,12 +22,12 @@ export class FloorCash {
     this.root.visible = false;
   }
 
-  /** Bestand, Position und Klingeln folgen dem Snapshot, nicht der Uhr. */
-  sync(view: GameView): void {
+  /** Bestand, Position und Klingeln folgen dem Snapshot, nicht der Uhr. Liefert den Fussanker des Tisches. */
+  sync(view: GameView): number | null {
     const desk = view.furniture.find((item) => item.kind === 'EXCHANGE');
     if (!desk) {
       this.root.visible = false;
-      return;
+      return null;
     }
     const count = view.pending > 0
       ? Math.min(MAX_CHIPS, Math.max(1, Math.ceil(view.pending / CHIP_VC)))
@@ -41,6 +41,7 @@ export class FloorCash {
       // Ein Klingeln pro zwei Ticks: hoechstens alle 1,04 s und nie doppelt je Snapshot.
       if (view.tick % 2 === 0) playSfx('coin');
     }
+    return (desk.y + desk.h) * TILE;
   }
 
   /** Warmes Pulslicht; reine Darstellung. */

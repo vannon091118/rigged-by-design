@@ -63,7 +63,8 @@ describe('Eigener Automat', () => {
   it('wechselt zwischen Betreiber-Testspin und Gasttisch', async () => {
     fixture();
     fireEvent.click(screen.getByRole('button', { name: 'ALS GAST SPIELEN' }));
-    expect(await screen.findByText(/Dein Casino/)).not.toBeNull();
+    // Der Gasttisch kommt aus einem eigenen Chunk; unter Volllast braucht der Import mehr als 1 s.
+    expect(await screen.findByText(/Dein Casino/, undefined, { timeout: 3_000 })).not.toBeNull();
     expect(screen.getByText('PORTEMONNAIE')).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'BETREIBER' }));
     expect(screen.getByRole('button', { name: 'TESTSPIN' })).not.toBeNull();

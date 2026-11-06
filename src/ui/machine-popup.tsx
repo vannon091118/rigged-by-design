@@ -15,7 +15,7 @@ import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand } from './glossary';
 import { MachinePlayLazy } from './machine-play-lazy';
-import { PlinkoEditor } from './plinko-editor';
+import { PlinkoEditorLazy } from './plinko-editor-lazy';
 import { PopupShell } from './popup-shell';
 import { SlotRulesEditor } from './slot-rules-editor';
 import { SlotTelemetry } from './slot-telemetry';
@@ -96,7 +96,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
           {item.gameId === 'SLOT' && <SlotTelemetry memory={item.slotMemory} />}
           {item.gameId === 'SLOT' && <SlotRulesEditor item={item} onApply={onSlotOdds} />}
           {item.gameId === 'PLINKO' && (
-            <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
+            <PlinkoEditorLazy view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
           )}
           {item.gameId !== 'PLINKO' && (
           <div className="slot-stage">

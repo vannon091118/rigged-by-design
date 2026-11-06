@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.138 | 2026-11-06 19:39 UTC -->
+<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,10 +12,50 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.142] - 2026-11-06
+
+### Technik
+- `floor-view.ts` gibt Kamera-Container, LOD-Stufe, Basisposition und `camDirty` an `floor-camera-rig.ts` ab; die Buehne orchestriert nur noch Ebenen, Update-Reihenfolge und Culling (219 auf 195 Zeilen).
+- `guest-art.ts` teilt sich in `guest-rig.ts` (Skelett, Gelenke, Pin, Namensschild, Squash, Tap-Ring), `guest-paint.ts` (Palette, Koerper, Arme, Beine, Pin) und `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur); die Fassade bleibt mit 105 statt 346 Zeilen.
+- `scripts/loc-budgets.mjs` fuehrt beide Legacy-Eintraege nicht mehr; der `@loc-exception`-Header in `guest-art.ts` ist geloescht.
+- `animateFloor` nimmt die Kamera-Buehne statt `cam` und `camDirty`.
+- PR #160 auf den `main`-Stand (0.3.141) zusammengefuehrt; Konflikte nur in Doku, `package.json` und `pnpm-lock.yaml`, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+## [0.3.141] - 2026-11-06
+
+### Technik
+- Floor-Atlas auf WebP-q95 umgestellt: 1.040.593 B -> 384.234 B (-63 %), beide 1024er-Seiten mit unveraendertem Shelf-Plan und Frame-Koordinaten.
+- `PlinkoEditorLazy` schneidet die 184.863-B-Buehne aus dem Modulpreload; Initial-JS 1.186.336 -> 1.173.926 B.
+- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B); `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy ohne HUD-Data-URI.
+- Initialgraph nach beiden Schritten: 1.174.034 B in 18 Chunks (+108 B gegenueber 1.173.926 B, ein Chunk mehr).
+- PR #161 auf den aktuellen `main`-Stand zusammengefuehrt; Konflikte nur in den sechs Pflichtdokumenten, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+## [0.3.140] - 2026-11-06
+
+### Technik
+- Merge-Gate auf `main` repariert: Der Merge von PR #163 lief nur mit `commit_title`, deshalb trug `6f7a906` keine Pflichtsektionen und `verify-commit-msg --head` wurde rot (`ERR-4006`); `Bump, tag, release` und der APK-Bau fielen aus. `docs/GATE-ROOTCAUSE.md` haelt den Fall und die Regel fest: `commit_message` traegt den PR-Body.
+- Keine Spiel-, Ledger-, RNG- oder Save-Aenderung.
+
+## [0.3.139] - 2026-11-06
+
+### Technik
+- Doku konsolidiert: 18 historische Analyse-, Review-, Plan- und Skill-Dokumente nach Ueberfuehrung ihrer offenen Punkte in `ROADMAP.md`, `INVENTORY.md`, `ARCHITECTURE.md` und `DEVTAGEBUCH.md` geloescht. `PLAYER_CASH` ist im Inventar wieder als offen belegt (Funktion ohne Produktions-Aufrufer).
+
+## [0.3.138] - 2026-11-06
+
+### Spiel
+- Offene Gewinne an der Wechselkasse liegen sichtbar vor dem Tisch: Der Chip-Stapel wird nicht mehr von der Tischgrafik verdeckt.
+- Das fremde Haus färbt sich nach dem aktiven Spiel: SLOT Neon-Rot, BLACKJACK/POKER/ROULETTE Samt-Violett, PLINKO/DICE/SHELL/VIDEO_POKER Cyan.
+
+### Technik
+- `GamesPopup` reicht `machine.game` an `PopupShell` weiter; damit trägt jeder Dialog sein `data-game`, und die bestehenden `--game-*`-Regeln greifen.
+- `FloorCash.sync()` liefert den Fußanker des Wechseltischs; `FloorProps` sortiert den Stapel am selben Anker als Requisite vor dem Tisch, aber hinter Figuren. Kein Save-, Ledger- oder RNG-Eingriff.
+
 ## [0.3.137] - 2026-11-06
 
 ### Technik
-- Buehne aus der Legacy-Hot-Zone: `floor-view.ts` gibt Kamera-Container, LOD-Stufe und Koordinaten an `floor-camera-rig.ts` ab (219 → 195 Zeilen); `animateFloor` bekommt das Rig statt `cam` und `camDirty`. `guest-art.ts` teilt sich in `guest-rig.ts` (Skelett, Squash, Tap-Ring), `guest-paint.ts` (Palette, Koerper, Arme, Beine, Pin) und `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur); die Fassade bleibt bei 105 statt 346 Zeilen. Beide Legacy-Eintraege in `scripts/loc-budgets.mjs` und der `@loc-exception`-Header sind entfernt. Keine Aenderung an Spiel, Ledger, RNG, Save oder Bild.
 - HUD-PNGs inline: zwei Requests weniger im Kaltstart. Die Icons `ui/coin.png` und `ui/guest-cyan.png` liegen als Data-URI in `src/ui/hud-icons.ts`; der kalte Slow-4G-Lauf (1,6 Mbit/s, 150 ms RTT) faellt von 24 auf 22 Requests. Der erste Frame bleibt mit 12,16 s bandwidth-bound (2,42 MB), weil die beiden Bilder nur rund 3,8 KB ausmachen. Keine sichtbare Aenderung.
 
 ## [0.3.136] - 2026-11-06
