@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
+<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.144] - 2026-11-06
+
+### Features
+- Die erreichte Firmenstufe ist sichtbar: HUD und Betriebspanel nennen Name und Stufe, das Panel zusaetzlich die offenen Bedingungen bis zur naechsten Stufe mit Ist und Soll. Die Anzeige ist reine Ableitung aus `companyStatus()`, keine zweite Wahrheit.
+
+### Technik
+- `GameView.company` traegt den abgeleiteten Firmenstatus; `FloorStage` faengt einen fehlgeschlagenen Pixi-Start ab und zeigt einen bedienbaren Hinweis statt einer schwarzen Flaeche.
+- `tycoon-ops.test.ts` beobachtet die Kassierer-Wartezeit 240 statt 80 Ticks; seed-abhaengig langsame Gaeste machten den Lauf sonst sporadisch rot, ohne dass eine Assertion abgeschwaecht wurde.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+### Doku
+- Audit #19 geschlossen: Firmenstufen-Anzeige und Pixi-Fallback nachgezogen, restliche Punkte mit Code-/Doku-Beleg im Issue kommentiert. `integration` steht auf `main`, PR #142 ist geschlossen, `feat/spatial-layout-editor` ist der einzige Arbeitsbranch.
 
 ## [0.3.143] - 2026-11-06
 

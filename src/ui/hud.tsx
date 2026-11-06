@@ -59,7 +59,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
         <span className="hud-mark">R</span>
         <div>
           <strong>RIGGED BY DESIGN</strong>
-          <small>{guest ? 'GASTANSICHT' : 'BETRIEBSLEITUNG'} · TAG {view.day}</small>
+          <small title={guest ? undefined : `Stufe: ${view.company.note}`}>{guest ? 'GASTANSICHT' : view.company.name} · TAG {view.day}</small>
         </div>
       </div>
 

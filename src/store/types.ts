@@ -9,6 +9,7 @@ import type { DuelPreview } from '../core/sim/duel';
 import type { NarrativeView } from '../core/sim/narrative/view-types';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { DayPhase } from '../core/sim/day-phase';
+import type { CompanyStatus } from '../core/sim/progression';
 
 /**
  * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
@@ -98,6 +99,8 @@ export interface GameView {
   readonly guestMoney: Readonly<Record<number, { readonly wallet: VaCoinMicro; readonly pending: VaCoinMicro; readonly fiat: VaCoinMicro }>>;
   readonly mood: number;
   readonly reputation: number;
+  /** Erreichte Firmenstufe mit offenen Bedingungen bis zur naechsten. */
+  readonly company: CompanyStatus;
   readonly ledgerOk: boolean;
   readonly ledgerEntries: number;
   readonly ledgerLastSeq: number;

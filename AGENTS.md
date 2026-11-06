@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
+<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -80,6 +80,8 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - Der PR-Body muss die drei Pflichtsektionen enthalten (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`).
 - Der Merge-Text wird aus dem Commit-Body gebaut und trägt die Pflichtsektionen, sonst wäre `main` sofort rot (`ERR-4006`).
 - `verify:quick` muss vor dem Commit grün sein. `verify:all` läuft in CI nach dem Push.
+
+Arbeitsbranch ist `feat/spatial-layout-editor`; `integration` folgt exakt `main`, PR #142 ist geschlossen. Der Audit #19 ist geschlossen: Firmenstufe in HUD und Betriebspanel sichtbar, Pixi-Fallback vorhanden.
 
 ## Pflichtdoku
 

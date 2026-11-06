@@ -22,7 +22,7 @@ interface CompanyMetric {
   readonly met: boolean;
 }
 
-interface CompanyStatus {
+export interface CompanyStatus {
   readonly tier: CompanyTierId;
   readonly name: string;
   readonly note: string;

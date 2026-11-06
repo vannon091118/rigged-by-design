@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
+<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->
 
 ## README als Einstieg
 
@@ -29,7 +29,7 @@ Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Comm
 
 - `src/store/world-store.ts` ist der einzige Besitzer von Welt, Ledger, PRNG und Save.
 - `src/core/` bleibt headless: Simulation, Geld und Spiele kennen weder DOM noch Pixi.
-- `src/render/` liest ausschließlich `GameView`-Snapshots; dort liegt kein Spielzustand.
+- `src/render/` liest ausschließlich `GameView`-Snapshots; dort liegt kein Spielzustand. `GameView.company` ist die einzige Firmenstufen-Sicht der UI und wird in `buildView()` aus `companyStatus()` abgeleitet; `FloorStage` faengt einen fehlgeschlagenen Pixi-Start ab und laesst die Panels bedienbar.
 - `src/ui/` liest denselben Snapshot und sendet nur Commands an den Store.
 - Geld existiert nur als Ledger-Buchung; VaCoins sind ganzzahlige Mikro-Einheiten.
 - Fiat eines Gastes liegt ab dem Spawn auf `FIAT_<id>`, Chips auf `VISITOR_<id>`, offene Gewinne auf `PENDING_<id>`. Ein fehlgeschlagener Transfer lässt Gast und Guthaben stehen.

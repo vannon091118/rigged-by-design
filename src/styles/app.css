@@ -262,6 +262,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 }
 .floor-stage { position: absolute; inset: 0; }
 .floor-stage canvas { display: block; width: 100% !important; height: 100% !important; cursor: crosshair; }
+.floor-fallback { position: absolute; inset: 0; margin: 0; display: grid; place-items: center; padding: 24px; text-align: center; font-size: 12px; line-height: 1.6; color: var(--muted); background: radial-gradient(circle at 50% 40%, #140a24, #07040f 70%); }
 
 .stage-legend {
   position: absolute; top: 10px; left: 12px; z-index: 12; display: flex; gap: 6px; flex-wrap: wrap;
