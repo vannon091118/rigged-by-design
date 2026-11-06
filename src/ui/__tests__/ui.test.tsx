@@ -54,9 +54,16 @@ const noop = (): void => {};
 
 describe('UI-Integration', () => {
   it('zeigt einen Ledger-Fehler als Alarm und nicht nur als Zahl', () => {
-    render(<Hud view={{ ...view(), ledgerOk: false }} onSkill={noop} />);
+    render(<Hud view={{ ...view(), ledgerOk: false }} perspective="operator" onPerspective={noop} onSkill={noop} />);
     expect(screen.getByRole('alert').textContent).toContain('Ledger-Prüfung fehlgeschlagen');
     expect(screen.getByRole('alert').textContent).toContain('Buchungen blockiert');
+  });
+
+  it('zeigt im Gastmodus das Portemonnaie und keine Betriebswerte', () => {
+    render(<Hud view={view()} perspective="guest" onPerspective={noop} onSkill={noop} />);
+    expect(screen.getByText('PORTEMONNAIE')).not.toBeNull();
+    expect(screen.queryByText('HAUSKONTO')).toBeNull();
+    expect(screen.queryByText('GERÄTE')).toBeNull();
   });
 
   it('setzt den Fokus in den Dialog und gibt ihn nach Escape frei', () => {

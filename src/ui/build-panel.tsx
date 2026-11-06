@@ -3,6 +3,7 @@ import { type BuildId } from '../core/sim/offers';
 import { CARPETS, type CarpetId, type StaffRole, type TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { BuildCatalogCards } from './build-catalog-cards';
+import { BuildOpsSummary } from './build-ops-summary';
 import { ColorRow, CrateList, DisputeList, StaffGrid, StaffStatus, TemplateGrid } from './build-panel-parts';
 import { barCapacityForLevel } from '../core/sim/deliveries';
 import { vc } from './format';
@@ -44,15 +45,16 @@ export function BuildPanel(props: Props) {
   const wages = (view.staff.guard ? view.prices.guardWage : 0) + (view.staff.cashier ? view.prices.cashierWage : 0)
     + (view.staff.porter ? view.prices.porterWage : 0) + ((view.staff.cleaner ? 1 : 0) + (view.staff.bartender ? 1 : 0)) * view.prices.staffWage;
   return (
-    <aside className="build-panel" aria-label="Bauen">
+    <aside className="build-panel" aria-label="Betrieb">
       <header className="build-head">
         <div>
-          <span className="eyebrow">DEIN ANGEBOT</span>
-          <h2>Bauen</h2>
+          <span className="eyebrow">BETRIEB · TAG {view.day}</span>
+          <h2>Betrieb</h2>
         </div>
         <button type="button" className="popup-close" onClick={props.onClose} aria-label="Schließen">×</button>
       </header>
       <div className="build-scroll">
+        <BuildOpsSummary view={view} />
         <p className="panel-note">
           Klick oder ziehen kauft. Die Ware kommt als Kiste am Eingang an: abholen, tragen, aufstellen.
           Erst ein aufgestelltes Gerät bringt Gäste und Geld.

@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 175 Dateien — contract 111 · integration 39 · governance 12 · statistics 6 · performance 7.
+Summe: 176 Dateien — contract 111 · integration 40 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -186,5 +186,6 @@ Summe: 175 Dateien — contract 111 · integration 39 · governance 12 · statis
 | `src/ui/__tests__/guest-profile.test.tsx` | ui | integration | ja | `src/ui/guest-popup.tsx` |
 | `src/ui/__tests__/machine-play.test.tsx` | ui | integration | ja | `src/ui/machine-popup.tsx` |
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
+| `src/ui/__tests__/perspective-switch.test.tsx` | ui | integration | ja | `src/ui/perspective-switch.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 <!-- TEST_CATALOG_END -->

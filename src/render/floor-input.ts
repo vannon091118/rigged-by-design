@@ -40,20 +40,22 @@ export function handleTap(
     return { kind: 'stain', id: stain.id };
   }
 
+  const furniture = view.furniture.find((item) =>
+    x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
+  if (furniture) {
+    callbacks.onActions(buildFurnitureActions(view, furniture));
+    callbacks.onFurniture(furniture.id);
+    return { kind: 'furniture', id: furniture.id };
+  }
+
   const guest = view.guests
     .map((entry) => ({ entry, distance: Math.abs(entry.position.x - x) + Math.abs(entry.position.y - y) }))
     .filter((entry) => entry.distance <= 1)
     .sort((a, b) => a.distance - b.distance)[0];
   if (guest) {
     callbacks.onActions(buildGuestActions(view, guest.entry));
+    callbacks.onGuest(guest.entry.id);
     return { kind: 'gesture', id: guest.entry.id };
-  }
-
-  const furniture = view.furniture.find((item) =>
-    x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
-  if (furniture) {
-    callbacks.onActions(buildFurnitureActions(view, furniture));
-    return { kind: 'furniture', id: furniture.id };
   }
 
   if (lod === 0 && !placing) { zoomToArea(x, y); return { kind: 'empty', id: 0 }; }

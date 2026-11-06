@@ -13,6 +13,31 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Floor-Spielwelt (PR #150) auf main zusammengefuehrt
+
+**Ziel.** PR #150 fuehrt GAST und BETRIEB als eine globale Perspektive ein und
+lag seit dem Morgen auf einem aelteren `main`.
+
+**Umsetzung.**
+
+- `main` (`a83efff`, 0.3.142) in den PR-Branch gemergt; Code-Konflikte in
+  `App.tsx`, `dock.tsx`, `hud.tsx`, `machine-popup.tsx`, `app.css` und zwei
+  Tests von Hand zusammengefuehrt, `floor-view.ts` kommt aus dem neuen `main`.
+- Die Perspektive bleibt die einzige Rollenwahrheit: Marke und
+  `Ctrl+Shift+D` oeffnen die Werkstatt, `Hud`, `Dock` und `FloorRoleBar`
+  haengen an `perspective`.
+- `machine-operator.tsx` nutzt `PlinkoEditorLazy`, damit der Popup-Umbau die
+  Chunk-Grenze aus 0.3.141 nicht aufhebt.
+- Doku und Versionsdateien auf den `main`-Stand; Version 0.3.143, Inventar und
+  alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS mit allen zwoelf Gates (Bericht im
+Commit), `verify:docs` und `verify-commit-msg --head` gruen; CI auf dem
+PR-Branch und Merge mit `commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; die
+sichtbare Browser-Abnahme bleibt beim Nutzer.
+
 ## 2026-11-06 - Buehne aus der Legacy-Hot-Zone (PR #160) zusammengefuehrt
 
 **Ziel.** PR #160 loeste `floor-view.ts` und `guest-art.ts` aus den
@@ -1664,7 +1689,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

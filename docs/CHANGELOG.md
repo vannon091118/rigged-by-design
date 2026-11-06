@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->
+<!-- rbd-doc: v0.3.143 | 2026-11-06 21:23 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,22 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.143] - 2026-11-06
+
+### Features
+- Floor als Spielwelt: `data-perspective` am App-Rahmen, `FloorRoleBar`, `PerspectiveSwitch` und getrennte Docks fuer GAST und BETRIEB; das Automaten-Popup zeigt dem Gast direkt die Spielbuehne, dem Betrieb Diagnose, Reparatur, Mods und Walzen.
+- `MachineOperatorBody` und `MachinePlayLazy` trennen Betriebskoerper und Gasttisch; der interne BETREIBER/GAST-Toggle im Popup entfaellt.
+- Narrative-Registry leitet die Fragmentzahl aus `manifest.json` ab; der FREE_DRINK-Test prueft unabhaengig vom Geraetezustand.
+
+### Technik
+- PR #150 auf den `main`-Stand (0.3.142) zusammengefuehrt; Konflikte in `App.tsx`, `dock.tsx`, `hud.tsx`, `machine-popup.tsx`, `app.css`, zwei Tests, Doku und Versionsdateien.
+- Marke und `Ctrl+Shift+D` bleiben der versteckte Werkstatt-Einstieg; ein Klick auf die HUD-Marke zaehlt wieder fuenf Tipps.
+- `machine-operator.tsx` laedt den Plinko-Editor ueber `PlinkoEditorLazy`; die 185-KB-Buehne bleibt damit lazy wie seit 0.3.141.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
+
+### Doku
+- `docs/PLAN-LEAD-MERGE*.md`, `docs/REVIEW-*.md` und `docs/SKILL_*.md` bleiben mit 0.3.140 in die Pflichtdoku ueberfuehrt und geloescht.
 
 ## [0.3.142] - 2026-11-06
 

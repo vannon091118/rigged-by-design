@@ -15,7 +15,7 @@ const LABEL_COUNT = 10;
 export interface SceneCache {
   readonly room: Container;
   readonly carpet: Container;
-  /** Schmutzspuren; liegt ueber dem Boden und unter der Welt. */
+  /** Dreck liegt ueber Boden und Teppich, aber unter Laufwegen und Welt. */
   readonly dirt: Container;
   /** Laufwege ueber dem Boden, unter der Welt. */
   readonly routes: Container;

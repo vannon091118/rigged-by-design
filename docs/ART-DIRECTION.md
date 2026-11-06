@@ -115,3 +115,20 @@ Abnahme pro Fenster: gleicher Kopf, gleiche Abstände, eine primäre Aktion, ein
 - Ablegen: `docs/screenshots/v<version>/` mit sprechenden Namen (`01-floor-uebersicht.png` ...).
 - Verdrahten: README-Bild, Vergleichstabelle und Rundgang auf den neuen Satz zeigen lassen.
 - Pruefen: `pnpm run verify:all`, keine Konsolen- oder Seitenfehler, Bilder gegen die Beschriftung.
+
+## Zwei Perspektiven, eine Bildsprache (v0.3.132)
+
+Der Umschalter GAST/BETRIEB färbt Akzente, nicht das Bild. Beide Blicke teilen dieselbe
+Palette, dieselbe Typo-Hierarchie und dieselbe Etage; nur die Rollenfarbe des HUD-Rahmens,
+der Rollenhinweis auf dem Floor (`floor-role-bar`) und die vier Bereiche im Dock wechseln.
+
+- **GAST** trägt den Cyan-Akzent. Das HUD zeigt Portemonnaie und offene Gewinne, der Floor
+  sagt „Gerät antippen und direkt spielen“, die Spielbühne trägt `DU · GAST`.
+- **BETRIEB** trägt den Magenta-Akzent. Das HUD zeigt Hauskonto, Kasse, Geräte und Ruf, der
+  Floor sagt „Gerät antippen für Zustand, Ursache, Reparatur und Mods“.
+- Die Perspektive ist ein Zustand der Oberfläche, kein zweiter Spielzustand. Es gibt keine
+  zweite Palette, keinen zweiten Router und keine zweite Bühne: `MachinePopup` verzweigt
+  zwischen `MachineOperatorBody` und der bestehenden `TableLauncher`-Bühne.
+- Neue Belege: `docs/screenshots/v0.3.132/` zeigt beide Floors, die Gastspielbühne, die
+  Betriebsdiagnose desselben Geräts, Gästeverwaltung, Betriebspanel, Verlauf und die mobile
+  Gastansicht.

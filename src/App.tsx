@@ -10,9 +10,10 @@ import { armMusic, setMusicState } from './render/music';
 import { ActionCard } from './ui/action-card';
 import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
-import { fits, type Popup } from './ui/app-model';
+import { fits, type Perspective, type Popup } from './ui/app-model';
 import { BuildPanel } from './ui/build-panel';
 import { Dock, useBrandTaps } from './ui/dock';
+import { FloorRoleBar } from './ui/floor-role-bar';
 import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
@@ -31,6 +32,7 @@ interface AppProps {
 export default function App({ onFirstFrame }: AppProps = {}) {
   const view = useWorldStore();
   const [popup, setPopup] = useState<Popup>(null);
+  const [perspective, setPerspective] = useState<Perspective>('operator');
   const [buildOpen, setBuildOpen] = useState(false);
   const [actions, setActions] = useState<MenuAction[]>([]);
   const [placeError, setPlaceError] = useState('');
@@ -102,12 +104,14 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   })();
 
   const buy = (id: BuildId): void => {
+    if (perspective === 'guest') return;
     if (view.house < getBuildDef(id).cost) { setPlaceError('Hauskonto zu niedrig – erst Geld verdienen, dann kaufen.'); return; }
     worldStore.buy(id);
     setPlaceError('');
   };
 
   const deployAt = (x: number, y: number): void => {
+    if (perspective === 'guest') return;
     const match = /^KRATE:(\d+)$/.exec(view.player.carrying);
     const crate = match ? view.crates.find((entry) => entry.id === Number(match[1])) : undefined;
     if (!crate || crate.payload.kind !== 'FURNITURE') return;
@@ -121,6 +125,13 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setPopup(next);
   };
 
+  const changePerspective = (next: Perspective): void => {
+    if (next === perspective) return;
+    setPopup(null);
+    setBuildOpen(false);
+    setActions([]);
+    setPerspective(next);
+  };
   const onBrandTap = useBrandTaps(() => openPopup({ kind: 'workshop' }));
 
   useEffect(() => {
@@ -144,8 +155,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   };
 
   return (
-    <div className="app">
-      <Hud view={view} onSkill={(attribute) => worldStore.spendSkill(attribute)} onBrandTap={onBrandTap} />
+    <div className="app" data-perspective={perspective}>
+      <Hud view={view} perspective={perspective} onPerspective={changePerspective} onSkill={(attribute) => worldStore.spendSkill(attribute)} onBrandTap={onBrandTap} />
 
       <main
         className={`stage-wrap${carryingCrate ? ' is-placing' : ''}`}
@@ -161,16 +172,18 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           view={view}
           placing={ghostId}
           paused={popup?.kind === 'games' || popup?.kind === 'machine'}
-          onGuest={(id) => openPopup({ kind: 'guests', guestId: id })}
+          onGuest={(id) => { if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id }); }}
           onFurniture={(id) => openPopup({ kind: 'machine', itemId: id })}
           onEmpty={(x, y) => {
             if (carryingCrate) { deployAt(x, y); return; }
             worldStore.moveTo({ x, y });
           }}
           onInteract={handleFloorInteract}
-          onActions={setActions}
+          onActions={(next) => setActions(perspective === 'operator' ? next : [])}
           onFirstFrame={onFirstFrame}
         />
+
+        <FloorRoleBar perspective={perspective} />
 
         <ActionCard
           actions={actions}
@@ -225,6 +238,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
       <Dock
         view={view}
+        perspective={perspective}
+        onPlay={() => { setPopup(null); setBuildOpen(false); setActions([]); stage.current?.fit(); }}
         onBuild={() => setBuildOpen((open) => !open)}
         onClean={() => worldStore.clean()}
         onOpen={openPopup}
@@ -257,6 +272,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
       <PopupRouter
         view={view}
+        perspective={perspective}
         popup={popup}
         onClose={() => setPopup(null)}
         onOpen={openPopup}
