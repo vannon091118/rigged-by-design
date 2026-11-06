@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
+<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->
 
 ## README als Einstieg
 
@@ -24,6 +24,8 @@
 - Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
 
 ## Zustandsbesitz
+
+Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Commands erzeugen ein neues, geprüftes Layout, `LayoutHistory` hält höchstens 30 Schritte, `world-store` bleibt der einzige Aufrufer von `applyLayout()`.
 
 - `src/store/world-store.ts` ist der einzige Besitzer von Welt, Ledger, PRNG und Save.
 - `src/core/` bleibt headless: Simulation, Geld und Spiele kennen weder DOM noch Pixi.

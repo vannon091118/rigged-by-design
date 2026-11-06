@@ -3,6 +3,9 @@ import { Ledger, type LedgerDiagnosis } from '../core/economy/ledger';
 import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
+import { applyLayout } from '../core/sim/layout';
+import type { LayoutCommand } from '../core/sim/layout-commands';
+import { LayoutEditor } from './layout-editing';
 import { openHouse } from '../core/sim/money';
 import { remodel } from '../core/sim/remodel';
 import type { BuildId } from '../core/sim/offers';
@@ -29,6 +32,7 @@ import { buyCmd, orderDrinksCmd, orderPartsCmd, pickupCmd, deployCmd, unloadHere
 import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd } from './game-commands';
 import { TICK_MS } from '../core/sim/tick-timing';
+
 class WorldStore {
   #ledger = new Ledger();
   #prng = new Prng(entropySeed());
@@ -38,6 +42,12 @@ class WorldStore {
   #listeners = new Set<() => void>();
   #timer: ReturnType<typeof setInterval> | null = null;
   #savedTick = 0;
+  readonly #layoutEditor = new LayoutEditor({
+    layout: () => this.#world.layout,
+    apply: (layout) => applyLayout(this.#world, layout),
+    emit: (save) => this.#emit(save),
+    notice: (text) => { this.#notice = text; },
+  });
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();
@@ -73,6 +83,7 @@ class WorldStore {
     seedStartPool(this.#world, openHouse(this.#ledger, 0));
     flushNarrativeCmd(this.#world, this.#ledger);
     this.#prng = new Prng(entropySeed());
+    this.#layoutEditor.reset();
     this.#notice = 'Neues Casino. Ein Automat steht gratis.';
     this.#emit();
   }
@@ -84,6 +95,7 @@ class WorldStore {
     } catch (error) {
       this.#notice = error instanceof Error ? error.message : 'Umbau fehlgeschlagen.';
     }
+    this.#layoutEditor.reset();
     this.#emit();
   }
   buy(id: BuildId): void { this.#event(() => buyCmd(this.#world, this.#ledger, id)); }
@@ -108,6 +120,11 @@ class WorldStore {
   fire(role: StaffRole): void { this.#guard(() => { this.#notice = fireCmd(this.#world, role); }); }
   setPrice(key: 'drinkPrice' | 'slotMinBet', vc: number): void { this.#guard(() => { this.#notice = setPriceCmd(this.#world, key, vc); }); }
   setCarpet(carpet: CarpetId): void { this.#guard(() => { this.#notice = setCarpetCmd(this.#world, carpet); }, false); }
+  beginLayoutStroke(label = 'Pinselstrich'): void { this.#layoutEditor.begin(label); }
+  paintLayout(command: LayoutCommand): boolean { return this.#layoutEditor.paint(command); }
+  endLayoutStroke(): void { this.#layoutEditor.end(); }
+  undoLayout(): boolean { return this.#layoutEditor.undo(); }
+  redoLayout(): boolean { return this.#layoutEditor.redo(); }
   installMod(itemId: number, mod: ModId): void { this.#guard(() => { this.#notice = installModCmd(this.#world, this.#ledger, itemId, mod); }); }
   addReel(itemId: number): void { this.#guard(() => { this.#notice = addReelCmd(this.#world, this.#ledger, itemId); }); }
   setBet(itemId: number, vc: number): void { this.#guard(() => { this.#notice = setBetCmd(this.#world, itemId, vc); }); }
@@ -152,6 +169,7 @@ class WorldStore {
     this.#prng = new Prng(loaded.prngState);
     flushNarrativeCmd(this.#world, this.#ledger);
     this.#notice = 'Spielstand importiert.';
+    this.#layoutEditor.reset();
     this.#emit();
     return report;
   }

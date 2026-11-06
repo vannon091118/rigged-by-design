@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
+<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -45,7 +45,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
-- Task 4/5 ist erledigt: Möbel, Figuren, Requisiten und Wandvorderseiten teilen eine Tiefenebene mit Fußanker, deterministischem Tie-Breaking und gezielter Sortierung. Als Nächstes folgt Task 5/5 (Entwicklungseditor hinter Build-Flag, Export/Import, Undo/Redo) und danach der PR.
+- Task 4/5 ist erledigt: Möbel, Figuren, Requisiten und Wandvorderseiten teilen eine Tiefenebene mit Fußanker, deterministischem Tie-Breaking und gezielter Sortierung. Task 5/5 läuft: Commands und 30-Schritt-Undo/Redo stehen (Phase 1); als Nächstes folgen Editor-UI, Pixi-Auswahl und der Produktionsausschluss.
 - **Charakterwerte verallgemeinern:** Laune, Charisma, Intellekt und Ausgabebereitschaft als Achsen der Spielfigur fuehren, nicht als Casino-Sonderfall. TV, Werbung und Marken wirken auf dieselben Werte wie Gäste-Laune und Persona.
 - **Ledger-Ressourcen:** Zeit, Ruf, Vorräte und Aufmerksamkeit als gebuchte Ressourcen nach Bedarf ergaenzen; eine Ressource, eine Zeile, eine Ursache. Geld bleibt die erste, nicht die einzige Wahrheit.
 - **Social-Plugin der Narrative Engine:** Facts, Erinnerungen und gerichtete Beziehungen ausserhalb von Gast/Haus tragen lassen (Nachbarn, Kollegen, Freunde); neue Facts und Templates, keine zweite Erzaehlmaschine.

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Task 5, Phase 1: Commands und Verlauf
+
+**Ziel.** Der Editor braucht eine typisierte Schreibspur und einen begrenzten Verlauf, bevor eine Oberfläche entsteht. Beides musste in den bestehenden Store-Vertrag passen, ohne Simulation, Ledger, RNG oder Save anzufassen.
+
+**Umsetzung.** `layout-commands.ts` modelliert `FLOOR` (Rechteck + Material) und `EDGES` (Zellen + Zustand). Jeder Command baut ein neues, eingefrorenes Layout und übergibt es `parseLayout()`; ungueltige Zwischenstände werden als `LayoutContractError` abgewiesen. Tür-IDs entstehen stabil aus der Kante, vorhandene IDs bleiben beim Übermalen. `layout-history.ts` hält `before`/`after`-Layouts, maximal 30 Schritte; `push` verwirft Redo, `undo`/`redo` tauschen nur Referenzen. `layout-editing.ts` gruppiert Pinselstriche: `begin` öffnet einen Schritt, `paint` schreibt ohne History-Eintrag, `end` schließt ihn. Der Store delegiert nur und ruft weiter `applyLayout()`; gespeichert wird pro Strich, nicht pro Tile.
+
+**Pruefungen.** Neue Tests: 7 für Commands (Rechteck, Ablehnungen, Kante, stabile Tür-ID, Entfernen, letzte Tür, deterministische Bytes), 5 für den Verlauf (30er-Deckel, Undo/Redo, Redo-Verwurf, Strich als Schritt, No-op). `typecheck`, ESLint und LOC grün; `world-store.ts` bleibt mit 207 Zeilen unter seiner Grenze.
+
+**Bewusst nicht getan.** Noch keine Editor-UI, keine Pixi-Auswahl und kein Tastatur-Shortcut; das ist Phase 2. Keine Änderung an `WorldState`, `applyLayout` oder Save v11.
+
 ## 2026-11-06 - Branch-Konsolidierung vor dem PR
 
 **Ziel.** Alle ahead-Commits auf `main` bringen und `feat/spatial-layout-editor` als einzigen aktiven Arbeitsbranch lassen. Der offene PR #142 war konfliktbehaftet, `integration` trug fünf eigene Commits, und der Asset-Branch hatte zwei Commits über `main`.
@@ -1442,7 +1452,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
