@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.133 | 2026-11-06 06:38 UTC -->
+<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.134] - 2026-11-06
+
+### Technik
+- Der FREE_DRINK-Test akzeptiert jetzt auch den Kreditweg des Betriebsanteils: Ist das Hauskonto nach einem Payout leer, bucht `payOrBorrow` `"mod betrieb auf kredit"`. Der Test summiert beide Buchungswege und prueft den exakten Mod-Betrag; die zuvor roten Seeds 9, 18 und 20 laufen.
 
 ## [0.3.133] - 2026-11-06
 

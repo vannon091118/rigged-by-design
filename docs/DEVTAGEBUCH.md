@@ -19,7 +19,7 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Umsetzung.** Alle acht Workflows pinnen `ubuntu-24.04`. `checkout` steigt auf v7, `setup-node` auf v7, `cache` auf v6, `upload-artifact` auf v7, `setup-java` auf v6 und `setup-android` auf v4; `pnpm/action-setup@v6` bleibt. Die ausdrueckliche `platform-tools`-Angabe bleibt, weil sie den Android-Build unabhaengig von Action-Defaults festhaelt.
 
-**Pruefungen.** Alle acht Workflow-Dateien werden mit PyYAML geparst. Der erste `verify:quick`-Lauf fand einen seed-abhaengigen FREE_DRINK-Test: Ein vom Generator beschaedigtes Geraet bricht vor dem Drink ab. Das Fixture pinnt jetzt `damaged = false` und `condition = 100`; der fokussierte Test lief dreimal gruen. `verify:quick` ist nach dem Fix gruen. Der neue CI-Lauf wird nach dem Push beobachtet.
+**Pruefungen.** Alle acht Workflow-Dateien werden mit PyYAML geparst. Der erste `verify:quick`-Lauf fand einen seed-abhaengigen FREE_DRINK-Test: Ein vom Generator beschaedigtes Geraet bricht vor dem Drink ab; das Fixture pinnt jetzt `damaged = false` und `condition = 100`. Der erste CI-Lauf zeigte danach die zweite Ursache: Bei leerem Hauskonto bucht `payOrBorrow` den Betriebsanteil als `mod betrieb auf kredit`, der Test verglich aber exakt auf `mod betrieb`. Er summiert jetzt beide Wege und prueft den exakten Mod-Betrag; 20 Seeds sind gruen. `verify:quick` wird vor dem Commit ausgefuehrt.
 
 **Offen.** `ubuntu-24.04` ist der bewusst konservative Pin; die Migration auf 26.04 bleibt ein eigener Schritt mit Android- und Gradle-Test. Die zwei offenen `gate-failure`-Issues #151 und #153 gehoeren zu PR #150; dessen neuester Lauf auf `a4effb0` ist gruen, die Issues wurden nicht angefasst.
 
@@ -1502,7 +1502,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.133 | 2026-11-06 06:38 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

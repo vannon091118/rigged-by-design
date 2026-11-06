@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.133 | 2026-11-06 06:38 UTC -->
+<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 

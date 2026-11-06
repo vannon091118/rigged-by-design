@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.133 | 2026-11-06 06:38 UTC -->
+<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
