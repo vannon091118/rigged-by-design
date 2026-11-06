@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->
+<!-- rbd-doc: v0.3.139 | 2026-11-06 20:50 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.139] - 2026-11-06
+
+### Technik
+- Doku konsolidiert: 18 historische Analyse-, Review-, Plan- und Skill-Dokumente nach Ueberfuehrung ihrer offenen Punkte in `ROADMAP.md`, `INVENTORY.md`, `ARCHITECTURE.md` und `DEVTAGEBUCH.md` geloescht. `PLAYER_CASH` ist im Inventar wieder als offen belegt (Funktion ohne Produktions-Aufrufer).
 
 ## [0.3.138] - 2026-11-06
 

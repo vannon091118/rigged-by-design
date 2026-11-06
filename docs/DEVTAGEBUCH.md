@@ -13,6 +13,48 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Doku konsolidiert und offene Punkte ueberfuehrt
+
+**Ziel.** Die offenen Punkte aus Mission, Commits der letzten 48 Stunden und den
+frueheren Analyse-, Review- und Planberichten pruefen und die Doku auf die sechs
+Pflichtdokumente konsolidieren.
+
+**Umsetzung.**
+
+- Commits, PRs und Remote-Branches der letzten 48 Stunden geprueft. Task 5/5
+  (Commands, 30-Schritt-Undo/Redo, Editor-UI, Pixi-Auswahl, Export/Import,
+  Produktionsausschluss) steht; PR #142 ist bereits gemergt. Offen sind die PRs
+  #150, #160 und #161 sowie die Branch-Bereinigung.
+- L1 (CASHOUT-Haenger), L2 (Doppelauszahlung), S1 (Schuldentilgung),
+  VELVET, FREE_DRINK, EXTRA_REEL und die Persona-Einsatzskalierung im Code
+  belegt; Rivalenprofil ist in `games-popup.tsx` vorhanden. `PLAYER_CASH` bleibt
+  offen: `cashOutPlayerCash` existiert, hat aber keinen Produktions-Aufrufer.
+- Phase 6: A1 bestanden, A2-A5 offen; A6-A8 bleiben bis zur vollstaendigen
+  Desktop-Abnahme zurueckgestellt. Wand-Occlusion ist gebaut, aber nicht im
+  Browser belegt. Der Produktionsbuild enthaelt keinen Editor-Chunk.
+- 18 historische Berichte, Reviews, Plaene und Skill-Dokumente geloescht; ihre
+  offenen Punkte stehen in `ROADMAP.md` unter „Offene Punkte (konsolidiert
+  2026-11-06)“, die Pruefungen in `INVENTORY.md` §16a. Lebende Vertraege
+  (`PRODUCT`, `NARRATIVE-ENGINE`, `ART-DIRECTION`, `ASSETS`, `CI-GATES` usw.)
+  bleiben.
+- `INVENTORY.md` korrigiert: `PLAYER_CASH` ist wieder offen; Mods und
+  Persona-Einsatz sind als geloest markiert. `ARCHITECTURE.md` verweist nicht
+  mehr auf den geloeschten Taskplan.
+
+**Pruefungen.** `node scripts/verify-narrative-content.mjs` meldet 65 Beitraege,
+65 Turns und 65 Fragmente. `pnpm run verify:docs` PASS, `pnpm run verify:assets`
+PASS (554 Dateien, 15,6 MB), `pnpm run verify:quick` PASS (zehn Gates) und
+`pnpm run build` PASS. Der Produktionsbuild enthaelt weder `layout-editor` noch
+`VITE_RBD_EDITOR_MODE`.
+
+**Offen.** Geraeteabnahme, APK-Installation, Slow-4G-Browserlauf und
+Restfehler der Phase 6 gemaess Roadmap. Branch-Bereinigung und
+`integration`-Reset wurden bewusst nicht ausgefuehrt, weil sie offene PRs
+beruehren.
+
+**Bewusst nicht getan.** Keine Spiel-, Ledger-, RNG- oder Save-Aenderung, kein
+Merge der offenen PRs, keine Loeschung von Remote-Branches.
+
 ## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
 
 **Ziel.** Jackpot, Kassenklingeln, Mood-Bubble und Spielfarben im laufenden Browser pruefen und gefundene Abweichungen direkt beheben.
@@ -1547,7 +1589,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.139 | 2026-11-06 20:50 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
