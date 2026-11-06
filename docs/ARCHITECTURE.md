@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->
+<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->
 
 ## README als Einstieg
 
@@ -233,7 +233,7 @@ Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chun
 
 Seit 0.3.119 liegt die Ereignisantwort in genau einer Tabelle (`src/render/floor-events.ts`): eine Subscription auf `core/sim/events`, acht Zeilen, je Ereignis Burst, Ton, Licht, Shake und ein Anker aus dem Snapshot. `floor-fx.ts` kennt keine Ereignisse mehr, sondern nur noch `burst`, `flash` und `shake`; das Licht kommt aus einem Pool von hoechstens acht Graphics. Die Kasse ist ein eigenes Objekt (`src/render/floor-cash.ts`) an der Requisiten-Ebene: Chip-Stapel, warmes Pulslicht und gedrosseltes Klingeln, gespeist aus `pending` und `tick`, nie aus der Uhr.
 
-Seit 0.3.120 hat der Boden einen Produktionsatlas: `build-asset-manifest.mjs` packt die vier Ordner `characters`, `decor`, `environment` und `machines` mit demselben Shelf-Plan wie `atlas.ts` in zwei deterministische 1024er-Seiten. Der Laufzeitpfad registriert nur noch Seitenausschnitte; fehlt eine Seite, packt `atlas.ts` die Einzeldateien selbst. Damit bleiben die 153 Frames aus dem kritischen Pfad: der Browser misst 20 Requests und 2,51 s bis zum ersten Frame im 4G-Profil (9 Mbit/s, 70 ms RTT, kalter Cache). Der Loader haengt an `onFirstFrame` nach `renderer.render(stage)`, nicht an einem Timer.
+Seit 0.3.120 hat der Boden einen Produktionsatlas: `build-asset-manifest.mjs` packt die vier Ordner `characters`, `decor`, `environment` und `machines` mit demselben Shelf-Plan wie `atlas.ts` in zwei deterministische 1024er-Seiten. Der Laufzeitpfad registriert nur noch Seitenausschnitte; fehlt eine Seite, packt `atlas.ts` die Einzeldateien selbst. Damit bleiben die 153 Frames aus dem kritischen Pfad. Im 4G-Profil (9 Mbit/s, 70 ms RTT, kalter Cache) waren es 20 Requests und 2,51 s bis zum ersten Frame. Seit 0.3.137 liegen die zwei HUD-PNGs `ui/coin.png` und `ui/guest-cyan.png` als Data-URI in `src/ui/hud-icons.ts`; im kalten Slow-4G-Lauf (1,6 Mbit/s, 750 kbit/s Upload, 150 ms RTT, 1024x768) faellt die Zahl von 24 auf 22 Requests. Der erste Frame bleibt mit 12,16 s bandwidth-bound (2,42 MB Transfer), weil die beiden Icons nur rund 3,8 KB ausmachen. Die 20er-Zahl und der 24er-Lauf sind unterschiedliche Profile und Instrumentierungen, kein direkter Regressionsvergleich. Der Loader haengt an `onFirstFrame` nach `renderer.render(stage)`, nicht an einem Timer.
 
 Der `PerfGovernor` ist reine Darstellung ohne Spielzustand: er bekommt `deltaMS`, fuehrt zwei Sekunden Abweichung und liefert eine von drei Stufen. `floor-stage.tsx` uebersetzt sie in Renderer-DPR, `ticker.maxFPS`, Partikel- und Lichtlimit. Mobile Sicherheitsabstaende kommen aus `--safe-*` in `tokens.css` und `viewport-fit=cover`; die Haptik bleibt bei reduzierter Bewegung still und braucht keine Capacitor-Abhaengigkeit.
 

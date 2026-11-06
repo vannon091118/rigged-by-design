@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->
+<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.137] - 2026-11-06
+
+### Technik
+- HUD-PNGs inline: zwei Requests weniger im Kaltstart. Die Icons `ui/coin.png` und `ui/guest-cyan.png` liegen als Data-URI in `src/ui/hud-icons.ts`; der kalte Slow-4G-Lauf (1,6 Mbit/s, 150 ms RTT) faellt von 24 auf 22 Requests. Der erste Frame bleibt mit 12,16 s bandwidth-bound (2,42 MB), weil die beiden Bilder nur rund 3,8 KB ausmachen. Keine sichtbare Aenderung.
 
 ## [0.3.136] - 2026-11-06
 
