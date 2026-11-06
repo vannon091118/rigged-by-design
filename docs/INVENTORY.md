@@ -10,10 +10,10 @@
 > | --- | --- |
 > | **Version** | **v0.3.136** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 16:58 UTC (T73 — Phase-6-Abnahmeplan)** |
-> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase5` (HEAD `222fbf0`, squash-gemergt als `caeff41`), PR #152 |
-> | HEAD | `222fbf0` plus dieser Doku-Commit (0.3.136) |
-> | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 1324 Dateien und 86 Ordner |
+> | **Aktualisiert** | **2026-11-06 18:33 UTC (T73 — HUD-PNGs inline)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-phase6-docs` (HUD-Commit `756057c`), PR #158 |
+> | HEAD | `756057c` plus Merge von `main` (`438b0a7`, 0.3.136) |
+> | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
 
