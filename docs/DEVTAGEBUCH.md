@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Phase-6-Abnahmeplan gegen den sichtbaren Stand
+
+**Ziel.** Der alte Abschnitt in `docs/PLAN-OPTIK-VISUELL.md` beschrieb Phase 5 als gerade umgesetzt und liess Phase 6 als blosses Exit-Kriterium stehen. Nach dem Floor-Fix sollte der Plan den tatsaechlich sichtbaren Stand aufnehmen und die Abnahme pruefbar machen.
+
+**Umsetzung.** Die Statuszeile und die Phasentabelle nennen Phase 6 jetzt als Abnahme; der Phase-5-Teil bleibt als Begruendung stehen. Der alte Abschnitt 6 ist durch einen Abnahmeplan ersetzt: Ausgangsbild der Desktop-Sichtpruefung (1024x768, Floor, HUD, Warnzeile, Toast, Kamera-FIT, `PUTZEN`, vier Tabs, Konsole nur Autoplay-Warnungen), Pruefmatrix A1-A8, Reihenfolge und Exit. A1 ist bestanden; A2-A8 decken Werkstatt-Einstieg, sechs Ziele, Spiegel, FPS, Touch, Huelle/Performance, Slow 4G, APK-Installation und Release ab. Die Matrix nennt bewusst den zentrierten FIT-Ausschnitt und die noch nicht geoeffnete Werkstatt statt einen gruenen Gesamteindruck.
+
+**Pruefungen.** `pnpm run verify:quick` (zehn Gates) und `pnpm run verify:docs` sind vor dem Commit gruen; der Floor-Grundstand ist mit `artifacts/floor-aktuell.png` belegt.
+
+**Offen.** A2-A8. Die Werkstatt, der Spiegel und die Touch-Pfade wurden noch nicht geoeffnet; 60 fps, Tap-to-Frame, Haptik und Slow 4G brauchen ein echtes Android-Geraet.
+
 ## 2026-11-06 - Typecheck repariert, Floor-Crash behoben, stale Fact-Verdrahtung entfernt
 
 **Ziel.** Die offenen Befunde aus dem letzten Review schliessen: der Floor blieb nach dem Laden bei "LADEN DAUERT LANGE" stehen, `pnpm run typecheck` war gruen ohne `src/` zu pruefen, und die Doku sollte den echten Stand tragen, bevor PR #152 gemerged wird.
@@ -1512,7 +1522,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
