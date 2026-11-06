@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.122] - 2026-11-06
+
+### Technik
+- Neuer Bestandskatalog `src/render/assets/asset-semantics.json`: 539 Bilder, 3 Animationen, 4 Emitter und 6 Tonspuren mit Rolle, Typ, Anchor, sichtbaren Bounds, Tiefenklasse, Occlusion, LOD, Varianten und optionalen Animationsreferenzen. Das Manifest bleibt die einzige Quelle fuer IDs und Pfade; der Katalog fuehrt nur Semantik.
+- `docs/ASSET-SEMANTICS.md` beschreibt den Metadatenvertrag: Pflicht- und optionale Felder je Asset-Typ, die neun Zeichenebenen aus `floor-view.ts`, 15 bestehende Render-Zuordnungen und 23 Rollen-Dubletten.
+- Befund: kein Asset ist belegbar interaktiv. `interactive` steht ueberall auf `unknown`, weil Interaktion an `Furniture`/`GameView` haengt und nicht an der Textur. 444 Bilder haben keinen Code-Bezug und sind mit `evidence: "category"` markiert.
+- Keine Runtime-Integration, keine Renderer- oder Core-Aenderung: kein Modul liest den Katalog, `manifest.json` bleibt unveraendert.
 
 ## [0.3.121] - 2026-11-06
 

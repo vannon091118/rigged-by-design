@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cf109327d6c644ca1b7cf23145678ff147d45b226b5264c1c501be9b667c9948",
+  "contentHash": "sha256:1a54131f74538e884e2ce95a3ce7fd5b32b5955e8e52c9814623a01a8a3d233b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -27,6 +27,28 @@
       "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
+    },
+    {
+      "contributionId": "asset-semantik-01",
+      "turnId": "2026-11-06T03:20Z-asset-semantik-katalog",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe den Bestand gezaehlt, nicht nur angesehen: 539 Bilder, 153 davon auf\nzwei Atlasseiten. 95 tragen eine Rolle, die im Code steht; 444 liegen nur da\nund warten. Kein einziges Bild klickt sich selbst. Was klickbar ist, sind\nGeraete und Fenster; die Textur ist nur das Gesicht davon. Wer also fragt,\nwas ein Bild bedeutet, bekommt im Katalog eine Antwort, die zwischen\nbelegtem Wissen und ehrlichem Unbekannt unterscheidet. Das ist unglamouroes\nund genau deshalb brauchbar: die naechste Schicht kann darauf bauen, ohne\nsich auf einen Dateinamen zu verlassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-asset-semantik.json"
     },
     {
       "contributionId": "b1-kontext-helper-01",

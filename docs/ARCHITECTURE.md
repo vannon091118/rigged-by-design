@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:26 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 02:44 UTC -->
 
 ## README als Einstieg
 
@@ -277,6 +277,20 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 - `PopupShell` setzt den Fokus auf das erste Bedienelement, hält `Tab` im Dialog und gibt den Fokus beim Schließen an das vorherige Element zurück.
 - Der Floor bleibt per Tastatur bedienbar: Pfeile/WASD laufen ein Feld, `Enter` stellt eine getragene Kiste am Spieler ab oder lädt Getränke/Teile ab. Die Maus-/Touch-Bedienung bleibt unverändert.
 - `aria-live` meldet Ereignisse, `role="alert"` meldet einen Ledger-Bruch, `:focus-visible` ist global sichtbar, `prefers-reduced-motion` reduziert Animationen. Unter 860 px wird das HUD zweizeilig und scrollbar, Popups werden unter 620 px zu Vollbild-Sheets, Pinch-Zoom läuft über `FloorTouch`.
+
+## Assets: Semantik-Katalog
+
+`src/render/assets/manifest.json` bleibt die einzige Quelle fuer Asset-IDs und
+Pfade. Daneben liegt `src/render/assets/asset-semantics.json` als reine
+Bestandsaufnahme: ein Eintrag je Manifest-Referenz mit Typ, Rolle, Anchor,
+sichtbaren Bounds, Tiefenklasse, Occlusion, LOD, Varianten und optionalen
+Animationsreferenzen. Der Katalog haelt keinen Zustand, wird von keinem Renderer
+gelesen und veraendert kein Bild; er beschreibt, was der Code heute bindet, und
+markiert alles andere als `unknown`. Der Vertrag samt Typen, Pflichtfeldern und
+den neun Zeichenebenen aus `floor-view.ts` steht in `docs/ASSET-SEMANTICS.md`,
+die Pipeline und Messwerte der Assets in `docs/ASSETS.md`. Sichtbare Bounds sind
+Bildmasse, keine Gameplay-Footprints; Sitze, Kollision und Zonen bleiben im
+Core.
 
 ## Prüfungen und Grenzen
 
