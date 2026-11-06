@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
+<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -15,6 +15,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 ## Jetzt — die Testumgebung tragfaehig machen
 
+- Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
 - VELVET und FREE_DRINK muessen ihre Beschreibung einloesen (bessere Gaeste, Drink pro Spin) oder umformuliert werden; EXTRA_REEL sollte wirklich eine Walze sein.
 - Der Einsatz sollte mit dem Persona-Budget skalieren, damit High Roller nicht nur laenger, sondern hoeher spielt.
 
@@ -40,6 +41,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
+- Task 2/5: Wände blockieren Zellübergänge an ihren Kanten statt ganzer Tiles, Türen und Öffnungen werden passierbar, A* und der Navigations-Cache prüfen Kanten; danach mehrere Zugangspunkte pro Möbel und Erreichbarkeitsprüfung für Serviceobjekte.
 - **Charakterwerte verallgemeinern:** Laune, Charisma, Intellekt und Ausgabebereitschaft als Achsen der Spielfigur fuehren, nicht als Casino-Sonderfall. TV, Werbung und Marken wirken auf dieselben Werte wie Gäste-Laune und Persona.
 - **Ledger-Ressourcen:** Zeit, Ruf, Vorräte und Aufmerksamkeit als gebuchte Ressourcen nach Bedarf ergaenzen; eine Ressource, eine Zeile, eine Ursache. Geld bleibt die erste, nicht die einzige Wahrheit.
 - **Social-Plugin der Narrative Engine:** Facts, Erinnerungen und gerichtete Beziehungen ausserhalb von Gast/Haus tragen lassen (Nachbarn, Kollegen, Freunde); neue Facts und Templates, keine zweite Erzaehlmaschine.

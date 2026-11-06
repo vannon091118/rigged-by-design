@@ -8,6 +8,7 @@ import { DEFAULT_LOOK } from './player-look';
 import { createNarrativeState } from './narrative/state';
 import { createRivalMinds } from './rival-ai/minds';
 import { BLUEPRINTS } from './house-presets';
+import { layoutFromTemplate, zonesFromLayout } from './layout-derive';
 import { spawnStain } from './stain';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
@@ -36,11 +37,13 @@ export const TEMPLATE_COST: Readonly<Record<TemplateId, VaCoinMicro>> = {
 export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): WorldState {
   const blueprint = BLUEPRINTS[template];
   if (!blueprint) throw new Error(`Unbekannte Vorlage: ${template}`);
-  const entrance = blueprint.zones.find((zone) => zone.kind === 'ENTRANCE');
+  const layout = layoutFromTemplate(template);
+  const entrance = layout.zones.find((zone) => zone.kind === 'ENTRANCE');
   const world: WorldState = {
     template,
-    size: blueprint.size,
-    zones: blueprint.zones,
+    layout,
+    size: layout.size,
+    zones: zonesFromLayout(layout),
     furniture: blueprint.furniture(),
     guests: [],
     player: {

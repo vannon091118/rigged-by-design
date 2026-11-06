@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
+<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,20 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.121] - 2026-11-06
+
+### Spiel
+- Waende, Tueren und Zonen haben eine eigene raeumliche Wahrheit im Spielstand. Ein ausgebautes Haus behaelt seine Erweiterungsflaechen jetzt auch nach Speichern und Laden; vorher gingen sie beim Replay verloren.
+- Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
+
+### Technik
+- Spatial Layout Contract (Task 1/5): `src/core/sim/layout-types.ts` trennt `ZoneKind` (Spielbedeutung), `FloorMaterialId` (Bodenoptik) und `LayoutEdge` (Wand, Tuer, Durchgang). `LayoutState` traegt `size`, genau ein Bodenmaterial pro Tile, semantische Zonen und Kanten mit stabilen IDs.
+- Eine Wahrheit: `WorldState.layout` ist kanonisch; `WorldState.size` und `WorldState.zones` sind daraus abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben. `GameView.layout` reicht denselben unveraenderlichen Plan an Renderer und Editor weiter.
+- Kanten sind eindeutig verankert (`H` zwischen (x, y-1) und (x, y), `V` zwischen (x-1, y) und (x, y)); je Koordinate existiert hoechstens eine Kante. Eine Wand mit Tuer-ID, eine doppelte Kante oder eine Tuer ohne ID wird fail-closed verworfen. Die Eingangstuer liegt auf derselben Kante wie `doorPoint()`.
+- `src/core/sim/layout-derive.ts` leitet den Plan deterministisch aus der Vorlage ab, vergibt Bodenmaterial je Zone, setzt vier Randwaende und oeffnet genau eine Eingangstuer. Beim Ausbau bleiben alte Tiles und Tueren erhalten, die alte Aussenwand verschwindet, neue Flaechen erben ihre Zone.
+- Save v11 (`vcoin.casino.v11`, `version: 11`): `SAVE_VERSIONS` und `SavedGame` kennen 5–11, `src/store/migrate-layout.ts` liest v11 fail-closed und leitet v5–v10 deterministisch aus dem Template ab. `replaySave`, `toSavedGame`, Export und Import tragen das Layout mit; Ledger, PRNG, Gaeste, Besucher, Narrative und Rivalen bleiben unveraendert.
+- Tests: `layout-contract.test.ts` und `save-layout.test.ts` decken alle Vorlagen, die vier Randrichtungen, Tuer, Bodenmaterial, Ausbau, ungueltige Dimensionen/IDs/Materialien/Referenzen, fehlenden Durchgang, v5–v10-Migration und Import-Ablehnung ab.
 
 ## [0.3.120] - 2026-11-05
 

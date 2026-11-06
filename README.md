@@ -210,7 +210,7 @@ Die README erzählt die Welt mit einem Augenzwinkern. Wenn du nachschlagen wills
 
 ### Die Erzählung ist ebenfalls im Bau
 
-Die Narrative Engine ist ein wachsender Teil des Projekts. Der aktuelle Vertrag beschreibt Facts als Ereignisse aus echten Zustandsübergängen; Texte stellen diese Ereignisse dar, sie erzeugen keine Spielregeln. `Guest` bezeichnet einen Besuch, `Visitor` die wiederkehrende Identität. Der persistente Narrativzustand liegt in `WorldState`; der Save-Stand ist v10 und Migrationen unterstützen v5 bis v9.
+Die Narrative Engine ist ein wachsender Teil des Projekts. Der aktuelle Vertrag beschreibt Facts als Ereignisse aus echten Zustandsübergängen; Texte stellen diese Ereignisse dar, sie erzeugen keine Spielregeln. `Guest` bezeichnet einen Besuch, `Visitor` die wiederkehrende Identität. Der persistente Narrativzustand liegt in `WorldState`; der Save-Stand ist v11 und Migrationen unterstützen v5 bis v10.
 
 Die Narrative Engine ist die erste soziale Schicht des Projekts. Als Nächstes bekommt sie eine **Social-Komponente als Plugin**, damit dieselben Facts, Erinnerungen und Beziehungen auch außerhalb eines Hauses tragen – zwischen Nachbarn, Kollegen und Freunden. Der Ledger wird parallel um **Ressourcen nach Bedarf** erweitert: Zeit, Ruf, Vorräte, Aufmerksamkeit. Jede bleibt eine gebuchte Zeile mit Ursache, keine zweite Zahlenwahrheit.
 

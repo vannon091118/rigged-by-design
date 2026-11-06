@@ -18,6 +18,8 @@ import { hydrateJobState } from '../core/sim/player-jobs';
 import { repairGuardAgent, restoreStaff } from './migrate-staff';
 import { repairDeviceIdentity } from '../core/sim/device';
 import { hydrateStainsAndMops } from './migrate-stains';
+import { hydrateLayout } from './migrate-layout';
+import type { LayoutState } from '../core/sim/layout-types';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 
@@ -27,7 +29,9 @@ interface SavedEntry { readonly tick: number; readonly from: string; readonly to
 type SavedGuest = Guest & { readonly fiat?: VaCoinMicro };
 
 export interface SavedGame {
-  readonly version: 5 | 6 | 7 | 8 | 9 | 10; readonly template: TemplateId; readonly carpet: CarpetId;
+  readonly version: 5 | 6 | 7 | 8 | 9 | 10 | 11; readonly template: TemplateId; readonly carpet: CarpetId;
+  /** Ab v11 der kanonische Layout-Vertrag; v5–v10 leiten ihn aus der Vorlage ab. */
+  readonly layout?: LayoutState;
   readonly furniture: Furniture[]; readonly guests: SavedGuest[]; readonly player: Player;
   readonly dirty: number[]; readonly prices: PriceBook; readonly staff: StaffState;
   readonly tick: number; readonly day: number; readonly nextGuestId: number;
@@ -60,6 +64,8 @@ function footprintOf(item: Furniture): { w: number; h: number; seats: number } |
 
 /** Füllt alle Felder mit Defaults, heilt verwaiste Referenzen, sammelt altes Fiat. */
 export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: number; amount: VaCoinMicro }> {
+  // Raum zuerst: Zonen, Groesse und Kanten stehen, bevor Objekte und Gaeste kommen.
+  hydrateLayout(world, saved);
   world.furniture = saved.furniture.map((raw) => {
     const item = { ...raw, ...repairDeviceIdentity(raw) }; const fp = footprintOf(item);
     return { ...item, w: fp?.w ?? item.w, h: fp?.h ?? item.h, seats: fp?.seats ?? item.seats, damaged: item.damaged ?? false, stock: item.stock ?? (item.kind === 'BAR' ? 4 : 0), clog: item.clog ?? 0, clogged: item.clogged ?? false, occupants: [...(item.occupants ?? [])], mods: [...(item.mods ?? [])], reels: item.gameId === 'SLOT' ? migrateReels(item.reels) : (item.reels ?? 3) };

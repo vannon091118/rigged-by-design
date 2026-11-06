@@ -7,6 +7,7 @@ import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
 import type { NarrativeView } from '../core/sim/narrative/view-types';
+import type { LayoutState } from '../core/sim/layout-types';
 import type { DayPhase } from '../core/sim/day-phase';
 
 /**
@@ -32,7 +33,11 @@ interface ForeignFloorView {
 
 export interface GameView {
   readonly template: TemplateId;
+  /** Kanonische raeumliche Wahrheit fuer Simulation, Renderer und Editor. */
+  readonly layout: LayoutState;
+  /** Abgeleitet aus `layout.size` (Legacy-Sicht). */
   readonly size: number;
+  /** Abgeleitet aus `layout.zones` (Legacy-Sicht). */
   readonly zones: readonly Zone[];
   readonly furniture: readonly Furniture[];
   readonly guests: readonly Guest[];

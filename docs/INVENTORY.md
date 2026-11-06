@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
+<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -387,7 +387,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 131 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 132 Zeilen
 - `README.md` — Rigged by Design — gelesen: 338 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -451,22 +451,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-04-warm-return-outcome.json` — {"agentId":"buffy","turnId":"2026-11-04T07:23Z-warm-return-outcome","contributionId":"warm-return-outcome-01", — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-04-warm-return-titel.json` — {"agentId":"buffy","turnId":"2026-11-04T07:20Z-warm-return-titel","contributionId":"warm-return-titel-01","rol — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-05-huelle-atlas.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 1497 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 253 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 1519 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 257 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ANALYSE-BERICHT-CASINO-FLOOR.md` — Analyse-Bericht: VaCoin Casino — Floor, Objekte, Aktionen, Reaktionen — gelesen: 256 Zeilen
 - `docs/ANALYSE-REPORT-1-LOGIK-RACE.md` — Analyse-Report 1: Logik-Ketten, Race-Condition-Schutz und unlogisches Verhalten — gelesen: 241 Zeilen
 - `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 286 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 287 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 130 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 572 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 586 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1358 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 1374 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -484,7 +484,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/REVIEW-SUB-A-ADVERSARIAL.md` — SUB-A-Review: Adversarial Prüfung des LEAD-Plans — gelesen: 174 Zeilen
 - `docs/REVIEW-SUB-A-RECHECK.md` — SUB-A-Re-Prüfung: Korrigierter LEAD-Plan NOCHMAL gegen die Daten — gelesen: 88 Zeilen
 - `docs/REVIEW-SUB-B-ADVERSARIAL.md` — SUB-B-Review: Unabhängiges adversarial Review des korrigierten LEAD-Plans — gelesen: 123 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 65 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 67 Zeilen
 - `docs/SKILL_LEAD_SUB_AGENT_LOOP.md` — Skill: Lead–Sub-Agent-Prüfschleife (`lead-sub-agent-loop`) — gelesen: 98 Zeilen
 - `docs/SKILL_PIPELINE_WORKFLOW.md` — Pipeline-Workflow-Skill: Lead-A-B-Lead-Loop — gelesen: 57 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 164 Zeilen
@@ -1350,7 +1350,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/economics.ts` — Wirtschaftliche Kennzahlen als reine Ableitung aus den Ledger-Buchungen. — gelesen: 121 Zeilen
 - `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 54 Zeilen
 - `src/core/sim/events.ts` — Einfacher Event-Emitter fuer die Visuellen-Effekte-Brücke. — gelesen: 30 Zeilen
-- `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 98 Zeilen
+- `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 101 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
 - `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 81 Zeilen
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 108 Zeilen
@@ -1379,7 +1379,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 102 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 67 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 68 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -1450,17 +1450,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 244 Zeilen
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen
-- `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 124 Zeilen
+- `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 127 Zeilen
 - `src/core/sim/tick-timing.ts` — Eine Quelle fuer die Tick-Dauer: Simulation, Renderer und UI rechnen mit demselben Takt. — gelesen: 4 Zeilen
 - `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 144 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 74 Zeilen
-- `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 118 Zeilen
-- `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 89 Zeilen
+- `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 119 Zeilen
+- `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 94 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 67 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 75 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 134 Zeilen
-- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 62 Zeilen
+- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 44 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
 - `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 82 Zeilen
 - `src/render/__tests__/floor-camera.test.ts` — Kamera: Uebersicht, Schwenk, Tasten-Zoom und Nachziehen am Bildrand sind reine Mathe. — gelesen: 100 Zeilen
@@ -1559,17 +1559,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/migrate-narrative.ts` — Hydration der Narrative-Domaene und der Besucher-Erinnerungen beim Laden. — gelesen: 102 Zeilen
 - `src/store/migrate-staff.ts` — Personal-Migration alter Speicherstaende. — gelesen: 38 Zeilen
 - `src/store/migrate-stains.ts` — Hydration von Flecken und Wischern für Save-Migration (v9). — gelesen: 10 Zeilen
-- `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 121 Zeilen
+- `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 127 Zeilen
 - `src/store/narrative-commands.ts` — Store-Naht fuer Narrative: Choice ausfuehren, Szene ablehnen und Facts flushen. — gelesen: 41 Zeilen
 - `src/store/narrative.bench.ts` — NAR-16: Narrative Hotpath. Gemessen wird ein realistischer Tick nach einem — gelesen: 53 Zeilen
 - `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 86 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 47 Zeilen
 - `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
-- `src/store/save.ts` — Save v10: Welt + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 142 Zeilen
+- `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 143 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 30 Zeilen
-- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 134 Zeilen
+- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 136 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
-- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 109 Zeilen
+- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 114 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 213 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 189 Zeilen
@@ -1656,6 +1656,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T65 | **2026-11-06 02:46 UTC**: Spatial Layout Contract und Save v11. Neu: `src/core/sim/layout-types.ts`, `layout-edges.ts`, `layout-validate.ts`, `layout-derive.ts`, `layout.ts`, `src/store/migrate-layout.ts`, `src/core/sim/__tests__/layout-contract.test.ts`, `src/store/__tests__/save-layout.test.ts`. `WorldState.layout` ist kanonisch, `size`/`zones` abgeleitet; Kanten sind je Achse und Ankerpunkt eindeutig, Türen mit stabilen IDs; Save v11 mit Migration v5–v10 und fail-closed Prüfung. Geprüft: `typecheck`, `check:loc`, `verify-test-quality`, `verify-tree`, 21/21 neue Tests. |
 | T64 | **2026-11-05 05:39 UTC**: Huelle: Atlas, Budgets, APK. Zwei deterministische Atlasseiten (153 Frames, PNG-Codec ohne Dependency), `PerfGovernor` mit 2-s-Hysterese, Safe-Area/Hochformat, First-Frame-Handshake, Haptik ohne Dependency und Musik erst nach Geste; 4G: 20 Requests, 2,51 s, APK 21 MB. |
 | T59 | **2026-11-05 04:26 UTC**: Dock statt Werkzeugwand. HUD 176 -> 113 (Marke, Geld, Gaeste, Ruf als Farbe); elf Aktionsknoepfe raus; neue `dock.tsx` (Bauen/Gaeste/Karte/Du, kontextuelles Putzen, Safe-Area), `popup-router.tsx` und `use-stage-keys.ts` aus App (348 -> 203), `workshop.tsx` buendelt journal/diagnostics/look/assets/sound/help/device; `Popup`-Union entsprechend verkleinert. |
 | T60 | **2026-11-05 04:33 UTC**: Popup-Blur raus. `.popup-backdrop` ohne `backdrop-filter`, radialer Verlauf plus `contain: paint`; `reel-roll` animiert nur `transform`/`opacity`. |

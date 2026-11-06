@@ -10,12 +10,17 @@ import type {
   ForeignFloorState,
 } from './types-model';
 import type { RivalMindState } from './rival-ai/types';
+import type { LayoutState } from './layout-types';
 
 export type * from './types-model';
 
 export interface WorldState {
   template: TemplateId;
+  /** Kanonische raeumliche Wahrheit: Dimension, Boden, Zonen und Wandkanten. */
+  layout: LayoutState;
+  /** Abgeleitet aus `layout.size`; nur ueber `applyLayout` schreiben. */
   size: number;
+  /** Abgeleitet aus `layout.zones`; Legacy-Sicht fuer Renderer, UI und Simulation. */
   zones: readonly Zone[];
   furniture: Furniture[];
   guests: Guest[];

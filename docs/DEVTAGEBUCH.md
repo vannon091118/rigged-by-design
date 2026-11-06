@@ -13,6 +13,22 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Spatial Layout Contract und Save v11
+
+**Ziel.** Task 1/5: Waende, Tueren und Zonen brauchen eine gemeinsame, ortsunabhaengige Wahrheit, bevor Navigation und Editor darauf aufsetzen. Bestehende Saves mussten ohne Datenverlust weiterlaufen, ungueltige Plaene durften nicht halb in die Welt kommen.
+
+**Ausgangsstand.** Der Auftrag nannte `c460abb` (0.3.120); `origin/main` stand bei `9655a75` (0.3.97) und ist ein Vorfahre davon. Der Branch `feat/spatial-layout-editor` setzt deshalb auf `c460abb` auf; der Save-/Layout-Code ist in beiden Staenden identisch.
+
+**Umsetzung.** Der Vertrag liegt in vier kleinen Core-Dateien: `layout-types.ts` (Typen und erlaubte Werte), `layout-edges.ts` (Kantenanker, Grenzen, kanonische Sortierung, `freezeLayout`), `layout-validate.ts` (fail-closed Parser) und `layout-derive.ts` (Vorlage, Boden, Legacy-Sicht, Ausbau). `layout.ts` ist der einzige Schreibpfad: `applyLayout()` setzt `world.layout` und zieht `size`/`zones` nach. `WorldState.layout` und `GameView.layout` tragen denselben unveraenderlichen Plan; Zonen sind nur noch Rechtecke, die Bodenoptik steht getrennt in `floor`, und Moebelwerte wie Stock, Zustand, Belegung, Mods und Besitz bleiben in `Furniture`. Jede Kante ist ueber Achse und Ankerpunkt eindeutig, `kind` ist ihr einziger Zustand; eine Wand mit Tuer-ID, doppelte Kanten und Tueren ohne ID werden abgewiesen. Die Eingangstuer sitzt auf der Kante, auf der `doorPoint()` den Gast absetzt. Ausbau behaelt alte Tiles und Tueren, entfernt die alte Aussenwand und laesst neue Flaechen ihre Zone erben. Save v11 (`vcoin.casino.v11`) speichert den Plan; `migrate-layout.ts` liest v11 fail-closed (inklusive Groessenabgleich mit dem Template) und leitet v5–v10 deterministisch aus der Vorlage ab.
+
+**Verbraucher.** `world.size`/`world.zones` werden in Simulation (`world.ts`, `staff.ts`, `deliveries.ts`, `guest-choice.ts`, `queue-spots.ts`, `expansions.ts`), Renderer (`room-art.ts`, `scene-cache.ts`, `floor-carpet.ts`, `floor-route.ts`, `floor-view.ts`) sowie Snapshot und UI gelesen. Sie bleiben als abgeleitete Sicht bestehen, damit weder Rendering noch Spielverhalten sich aendern; `expansions.ts` schreibt sie nicht mehr direkt.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run check:loc`, `verify-test-quality` und `verify-tree` sind gruen. `vitest run src/core/sim/__tests__/layout-contract.test.ts src/store/__tests__/save-layout.test.ts`: 21/21 gruen. Sie decken alle drei Vorlagen, die vier Randrichtungen, die Eingangstuer, ein Bodenmaterial pro Tile, Ausbau, doppelte und widerspruechliche Kanten, unbekannte Materialien und Groessen, doppelte Zonen, unaufloesbare Zonenreferenzen, fehlenden Durchgang, Roundtrip v11, v5–v10-Migration, Ledger/PRNG/Narrative nach Replay und die Ablehnung manipulierter Importe ab.
+
+**Bewusst nicht getan.** Kein Rendering, keine neue Pathfinding-Engine, keine Wirtschafts-, Ledger-, Narrativ- oder RNG-Aenderung. Die Navigation ignoriert Waende noch und blockiert wie bisher Rand-Tiles; Task 2/5 stellt A* auf passierbare Zellkanten um.
+
+**Offen.** Ein Innenraum ohne Tuer laesst sich im Vertrag nur als Ganzes ablehnen, nicht pro Zone; die Erreichbarkeitspruefung folgt mit Task 2. `foreignFloors` (Rivalenflaechen) bleiben ausserhalb des Layout-Vertrags.
+
 ## 2026-11-05 - Huelle: Atlas, Budgets, APK
 
 **Ziel.** Die Optik auf einem schwachen Androiden tragen, ohne sie zurueckzudrehen: die 153 Pixel-Frames in wenige Requests packen, die Last in drei Stufen regeln, den Loader an den ersten echten Renderer-Frame binden und eine installierbare APK bauen. Der 4G-Pruefpfad soll unter drei Sekunden und bei hoechstens 20 Requests liegen.
@@ -1340,7 +1356,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

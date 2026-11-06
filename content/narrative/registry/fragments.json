@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cf109327d6c644ca1b7cf23145678ff147d45b226b5264c1c501be9b667c9948",
+  "contentHash": "sha256:3c4fbe1be6208a8d1683b1d6c4ec0d9ed0318286fcabd06d4c592895d4e5a319",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1321,6 +1321,28 @@
       "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-schicht-und-lohn.json"
+    },
+    {
+      "contributionId": "spatial-layout-contract-01",
+      "turnId": "2026-11-06T02:46Z-spatial-layout-contract",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Wand ist kein Bild mehr, sondern eine Kante mit genau einem Zustand: Wand, Tuer oder Durchgang. Der Plan liegt als eine Wahrheit im Haus, und der Ausbau behaelt seine Tueroeffnung, statt sie hinter einer neuen Aussenwand zu vergessen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-layout-vertrag.json"
     },
     {
       "contributionId": "start-pool-opening-01",
