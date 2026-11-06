@@ -13,6 +13,37 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Merge-Gate auf main reparieren
+
+**Ziel.** `main` war nach dem Merge von PR #163 rot: `Fail-Closed Gates` brach
+mit `ERR-4006` ab, `Bump, tag, release` und der APK-Bau wurden uebersprungen.
+
+**Ursache.** Der Merge wurde nur mit `commit_title` ausgefuehrt. GitHub schreibt
+dann den PR-Titel als Merge-Text; der vollstaendige PR-Body mit den drei
+Pflichtsektionen blieb im PR. `verify-commit-msg --head` prueft auf `main` aber
+den Merge-Commit. Reproduziert mit `git log -1 --format=%B 6f7a906` gegen
+`node scripts/verify-commit-msg.mjs`: drei Mal „Pflichtsektion fehlt“.
+
+**Umsetzung.**
+
+- `docs/GATE-ROOTCAUSE.md` traegt den Fall als eigene Tabelle plus Regel: Merge
+  ueber Connector oder REST-API immer mit `commit_message` = PR-Body.
+- Dieser Follow-up-PR startet von `main` und wird selbst mit dem vollstaendigen
+  PR-Body als Merge-Text gemergt; damit traegt der neue `main`-HEAD die
+  Sektionen.
+- Version 0.3.140; CHANGELOG, INVENTORY (T76) und ROADMAP nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS: zwoelf Gates gruen (Lint, LOC,
+Typecheck, Testvertrag, Dead-Export, Doku, Tree, Redundanz, Assets, Vitest,
+Audit, Build) im Bericht `2026-11-06T21-00-52-960Z`. `verify-commit-msg` gegen
+den alten Merge-Text meldet vorher drei fehlende Pflichtsektionen; der
+Merge-Aufruf dieses PRs setzt `commit_message` auf den PR-Body, danach wird der
+neue `main`-HEAD mit `Fail-Closed Gates` geprueft.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an `verify-commit-msg` selbst — der Fehler lag im Merge-Aufruf, nicht
+im Gate.
+
 ## 2026-11-06 - Doku konsolidiert und offene Punkte ueberfuehrt
 
 **Ziel.** Die offenen Punkte aus Mission, Commits der letzten 48 Stunden und den
@@ -1589,7 +1620,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.139 | 2026-11-06 20:50 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
