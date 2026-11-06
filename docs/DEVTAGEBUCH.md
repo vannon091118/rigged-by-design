@@ -13,6 +13,20 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Wandkollision und Türen werden Sim-Daten
+
+**Ziel.** Charaktere dürfen nicht mehr durch gemalte Wände laufen; Türen statt lückenloser Raumgrenzen, eine Grundrissquelle gegen die Reibung bei neuen Räumen.
+
+**Umsetzung.**
+- `src/core/sim/walls.ts` neu: aus den Zonen wird der Wandring abgeleitet — Nachbaröffnung bei aneinanderstossenden Zonen, zwei offene Kacheln als Innentür an der Seitenmitte, zwei offene Kacheln als Vordertür am Eingang. Dieselben Regeln wie die Wand-Malerei, eine Quelle.
+- `blockedTiles(size, furniture, zones)` blockt zusätzlich die Wandringe; der Cache-Schlüssel schliesst die Zonensignatur ein. `world.ts`, `player.ts`, `staff.ts`, `guest-choice.ts` und `grid-zones.ts` reichen die Zonen durch: Spieler, Gäste, Personal und Platzierung lesen dieselbe Kollision.
+- `room-art.ts` malt direkt aus den `walls.ts`-Öffnungen statt Render-Kopien von `sharedSpans`/`doorSpan`: Türen bekommen Boden mit Schwelle statt Wandstreifen, die Vordertür ist sichtbar offen.
+- Lieferkette: `freeCrateTile` legt Kisten nur auf begehbare Kacheln; Portier-Ablage und `depositCrate.inZone` teilen eine ±1-Randtoleranz.
+
+**Pruefungen.** `pnpm run typecheck` grün; `pnpm run verify:quick` grün in allen zehn Gates. `walls.test.ts` prüft Vordertür, Öffnungen, einen kachelfreien Weg von Tür zu Kasse und den Cache-Neuaufbau. Dev-Server gezeigt, nicht klickend verifiziert.
+
+**Offen.** Dreck-Quellen (fünf verstreute Add-Stellen, 1,2-%-Zufallsdreck beim Spielzug) mit Ursachen konsolidieren; NPC-Bedarfsblase springt erst beim Aktivitätswechsel um; Rezept für neue Räume in ARCHITECTURE ergänzen (offen, folgt im nächsten Slice).
+
 ## 2026-11-04 - Phase 1: Eintrag & Ladeerfahrung (Optik)
 
 **Ziel.** Der Nutzer sieht beim Kaltstart keinen weissen Bildschirm mehr, sondern einen animierten Ladebildschirm mit Fortschrittsangabe, bevor React mountet.
@@ -1223,7 +1237,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.115 | 2026-11-06 02:02 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

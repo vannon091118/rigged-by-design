@@ -121,8 +121,9 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
     return;
   }
   const storage = world.zones.find((zone) => zone.id === 'storage');
-  if (storage && agent.x >= storage.x && agent.y >= storage.y
-    && agent.x < storage.x + storage.w && agent.y < storage.y + storage.h) {
+  // Ablage am bereinbaren Rand: die Zone ist zu, der Randkamentil gehoert dazu.
+  if (storage && agent.x >= storage.x - 1 && agent.y >= storage.y - 1
+    && agent.x <= storage.x + storage.w && agent.y <= storage.y + storage.h) {
     try {
       depositCrate(world, held.id, agent.x, agent.y);
       agent.carryingCrate = null;
@@ -132,7 +133,7 @@ function porterTick(world: WorldState, ledger: Ledger, agent: StaffAgent): void 
   }
   if (storage) {
     setTask(agent, 'toStorage');
-    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture),
+    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture, world.zones),
       { x: storage.x + Math.floor(storage.w / 2), y: storage.y + Math.floor(storage.h / 2) });
     if (spot) stepToward(world, agent, spot.x, spot.y);
   }

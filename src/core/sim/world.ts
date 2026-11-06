@@ -33,12 +33,12 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
 }
 
 export function interactionPoint(world: WorldState, item: Furniture): Point | null {
-  return approachPoint(world.size, blockedTiles(world.size, world.furniture), item);
+  return approachPoint(world.size, blockedTiles(world.size, world.furniture, world.zones), item);
 }
 
 /** Jeder Sitz bekommt ein eigenes Zugaengliches Tile; sonst stehen alle Gaeste auf demselben Punkt. */
 export function seatPoint(world: WorldState, item: Furniture, seat: number): Point | null {
-  const blocked = blockedTiles(world.size, world.furniture);
+  const blocked = blockedTiles(world.size, world.furniture, world.zones);
   const candidates: Point[] = [];
   for (let x = item.x; x < item.x + item.w; x += 1) candidates.push({ x, y: item.y + item.h });
   for (let y = item.y; y < item.y + item.h; y += 1) candidates.push({ x: item.x + item.w, y });
@@ -78,7 +78,7 @@ function entranceApron(world: WorldState): Point[] {
 
 /** Begehbare Tiles fuer Gaeste: die Aussenwand ist blockiert, nur der Eingangsstreifen ist offen. */
 export function guestBlocked(world: WorldState): Set<number> {
-  const blocked = new Set(blockedTiles(world.size, world.furniture));
+  const blocked = new Set(blockedTiles(world.size, world.furniture, world.zones));
   for (const spot of entranceApron(world)) blocked.delete(spot.y * world.size + spot.x);
   return blocked;
 }
@@ -100,7 +100,7 @@ export function entranceSpot(world: WorldState, guestId = 0): Point {
     if (taken.has(spot.y * world.size + spot.x)) continue;
     return spot;
   }
-  const blocked = blockedTiles(world.size, world.furniture);
+  const blocked = blockedTiles(world.size, world.furniture, world.zones);
   const hall = world.zones.find((zone) => zone.kind === 'ENTRANCE');
   if (hall) {
     for (let y = hall.y; y < hall.y + hall.h; y += 1) {
@@ -130,5 +130,5 @@ export function sendGuest(world: WorldState, guest: Guest, target: Point): void 
 
 export function canPlace(world: WorldState, x: number, y: number, w: number, h: number, needsAccess = true): boolean {
   const blockers = [world.player.position, ...world.guests.map((guest) => guest.position)];
-  return canPlaceAt(world.size, world.furniture, blockers, x, y, w, h, needsAccess);
+  return canPlaceAt(world.size, world.furniture, blockers, x, y, w, h, needsAccess, world.zones);
 }

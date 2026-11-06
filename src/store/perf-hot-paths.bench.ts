@@ -72,15 +72,15 @@ test('Dreck in der Naehe', { timeout: 60_000 }, () => {
 
 test('Navigation', { timeout: 60_000 }, () => {
   measure('blockedTiles', () => {
-    blockedTiles(world.size, world.furniture);
+    blockedTiles(world.size, world.furniture, world.zones);
   }, { iterations: ITERATIONS, note: `${world.furniture.length} Moebel, ${world.size}x${world.size}` });
 
   measure('findPath', () => {
-    findPath(world.size, blockedTiles(world.size, world.furniture), { x: 2, y: 2 }, { x: 87, y: 87 });
+    findPath(world.size, blockedTiles(world.size, world.furniture, world.zones), { x: 2, y: 2 }, { x: 87, y: 87 });
   }, { iterations: 10, note: '90x90, diagonal' });
 
   const free = world.furniture[0]!;
   measure('nearestWalkable', () => {
-    nearestWalkable(world.size, blockedTiles(world.size, world.furniture), { x: free.x, y: free.y });
+    nearestWalkable(world.size, blockedTiles(world.size, world.furniture, world.zones), { x: free.x, y: free.y });
   }, { iterations: ITERATIONS, note: 'Start auf einem Moebel' });
 });

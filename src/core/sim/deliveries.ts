@@ -7,29 +7,27 @@ import { HAUSKONTO, payOrBorrow, SHOP } from './money';
 import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
+import { blockedTiles, isWalkable } from './pathfinding';
 import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
 import { canPlace, furnitureById } from './world';
 
 export const barCapacityForLevel = (level: number): number => 12 + 8 * Math.max(1, level);
 const barCapacity = (world: WorldState): number => barCapacityForLevel(world.barLevel);
 
-function tileBlocked(world: WorldState, x: number, y: number): boolean {
-  return world.furniture.some((item) => x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
-}
-
-/** Erste freie Kachel in der Eingangszone, sonst irgendwo auf dem Floor. */
+/** Erste begehbare Kachel in der Eingangszone (Wandring zaehlt als belegt), sonst irgendwo auf dem Floor. */
 function freeCrateTile(world: WorldState): { x: number; y: number } | null {
+  const blocked = blockedTiles(world.size, world.furniture, world.zones);
   const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE') ?? world.zones[0];
   if (entrance) {
     for (let y = entrance.y; y < entrance.y + entrance.h; y += 1) {
       for (let x = entrance.x; x < entrance.x + entrance.w; x += 1) {
-        if (!tileBlocked(world, x, y)) return { x, y };
+        if (isWalkable(world.size, blocked, x, y)) return { x, y };
       }
     }
   }
   for (let y = 1; y < world.size; y += 1) {
     for (let x = 1; x < world.size; x += 1) {
-      if (!tileBlocked(world, x, y)) return { x, y };
+      if (isWalkable(world.size, blocked, x, y)) return { x, y };
     }
   }
   return null;
@@ -115,9 +113,11 @@ function near(ax: number, ay: number, bx: number, by: number, range: number): bo
   return Math.abs(ax - bx) + Math.abs(ay - by) <= range;
 }
 
+/** Im Gebiet oder direkt davor: der bebaute Rand ist Wand, das Abladen daneben zaehlt zu dem Gebiet. */
 function inZone(world: WorldState, zoneId: string, x: number, y: number): boolean {
   const zone = world.zones.find((entry) => entry.id === zoneId);
-  return zone !== undefined && x >= zone.x && y >= zone.y && x < zone.x + zone.w && y < zone.y + zone.h;
+  return zone !== undefined && x >= zone.x - 1 && y >= zone.y - 1
+    && x <= zone.x + zone.w && y <= zone.y + zone.h;
 }
 
 /**

@@ -35,7 +35,8 @@ describe('Fiat am Spawn und an der Kasse', () => {
     const guest = spawnGuest(world, prng, ledger)!;
     const fiat = ledger.getBalance(fiatAccount(guest.id));
     expect(fiat).toBeGreaterThan(0);
-    for (let step = 0; step < 20 && ledger.getBalance(fiatAccount(guest.id)) > 0; step += 1) {
+    // Der Weg fuehrt jetzt durch die Vordertuer: das Budget folgt der Geometrie, nicht der Skill.
+    for (let step = 0; step < 60 && ledger.getBalance(fiatAccount(guest.id)) > 0; step += 1) {
       tickWorld(world, ledger, prng);
     }
     expect(ledger.getBalance(fiatAccount(guest.id))).toBe(0);

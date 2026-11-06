@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
+<!-- rbd-doc: v0.3.115 | 2026-11-06 02:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -25,6 +25,9 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Audio-zu-Visual-Kopplung: `particle-overlay.tsx` spielt bei jedem Event den passenden Sound (`playSfx('win')`, `playSfx('coin')`, `playPinRun(...)`, `playSfx('brawl')`) gleichzeitig mit den Partikeln ab.
 - `verify:quick` beschleunigt: `src/Config/vite.config.ts` schließt jetzt auch `poker-distribution.test.ts`, `balance-operating.test.ts` und alle `*.bench.ts` Dateien aus dem quick-Profil aus (statistics/performance Beweisklassen laufen nur in CI via `ci:long`). Damit fallen ca. 8 Testdateien aus dem lokalen Quick-Lauf heraus.
 
+### Technik
+- Wandkollision und Türen werden Sim-Daten: neues `src/core/sim/walls.ts` leitet aus den Zonen den Wandring mit Nachbaröffnung, Innentür und Vordertür ab; Malerei (`room-art.ts`) und Kollision (`blockedTiles`) lesen dieselben Regeln — Spieler, Gäste und Personal laufen nicht mehr durch gemalte Wände. Lieferkisten landen nur auf begehbaren Kacheln, Portier-Ablage und `depositCrate` teilen sich eine ±1-Randtoleranz. Neuer Vertrags-Test `walls.test.ts` (ERR-2002).
+
 ## [0.3.113] - 2026-11-04
 
 ### Planung
@@ -32,7 +35,6 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ## [0.3.111] - 2026-11-04
 
-### Technik
 - `settleGuests` zahlt jeden Gast nur einmal: nach erfolgreicher Buchung wird der Gast aus der Liste entfernt, sodass ein Abbruch keine Doppelauszahlung verursacht (`L2`, hoch). Test in `guest-settlement.test.ts`.
 - `payAndLeave` laesst einen Gast bei nicht gedeckter Auszahlung den Floor verlassen (`LEAVE`) statt ewig im Zustand `CASHOUT` zu haengen (`L1`, mittel).
 - Reiniger loescht unreachable Dreck nicht mehr still, sondern meldet sich als blockiert (`L6`, niedrig).

@@ -12,6 +12,26 @@ import { offerScore } from './offers';
 import type { Furniture, Guest, WorldState } from './types';
 import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, zoneById } from './world';
 
+/**
+ * Freie Servicepunkte nach Distanz; Gleichstand loest sich deterministisch ueber
+ * die IDs. Damit verteilen sich Gaeste auf alle Baf und Klos statt auf dieselben 
+ * Abnehmer, und jeder Weg ist deutlich kuerzer als "erstes freies Objekt".
+ */
+function chooseSpot(world: WorldState, guest: Guest, matches: (item: Furniture) => boolean): Furniture | null {
+  let best: Furniture | null = null;
+  let bestScore = Number.POSITIVE_INFINITY;
+  for (const item of world.furniture) {
+    if (!matches(item)) continue;
+    const distance = Math.abs(item.x - guest.position.x) + Math.abs(item.y - guest.position.y);
+    const score = distance * 1024 + ((item.id * 31 + guest.id) % 1024);
+    if (score < bestScore) {
+      bestScore = score;
+      best = item;
+    }
+  }
+  return best;
+}
+
 export function startActivity(world: WorldState, guest: Guest, item: Furniture): boolean {
   if (item.damaged || !reserveSeat(world, item.id, guest.id)) return false;
   const seat = item.occupants.indexOf(guest.id);
@@ -48,7 +68,7 @@ function waitForSpace(world: WorldState, guest: Guest): void {
     // Wartende nicht auf einem Tile stapeln: jede ID bekommt ihren eigenen Platz in der Lounge.
     const spanX = Math.max(1, zone.w - 2);
     const spanY = Math.max(1, zone.h - 2);
-    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), {
+    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture, world.zones), {
       x: zone.x + 1 + (guest.id % spanX), y: zone.y + 1 + ((guest.id * 3) % spanY),
     });
     if (spot) sendGuest(world, guest, spot);
@@ -90,7 +110,7 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
 
   const wantsToilet = guest.need === 'toilet' || guest.patience < 22 || guest.mood < 22;
   if (wantsToilet) {
-    const toilet = world.furniture.find((item) => item.kind === 'TOILET' && !item.clogged && freeSeat(item));
+    const toilet = chooseSpot(world, guest, (item) => item.kind === 'TOILET' && !item.clogged && freeSeat(item));
     if (toilet && startActivity(world, guest, toilet)) return;
   }
 
@@ -102,23 +122,23 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
       || guest.patience < 38 + disposition.serviceBias
       || (guest.sociability > 68 && guest.mood < 55 + disposition.serviceBias));
   if (wantsDrink) {
-    const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
+    const bar = chooseSpot(world, guest, (item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
     if (bar && startActivity(world, guest, bar)) return;
   }
 
   if (guest.sociability > 72 - disposition.socialBias && guest.mood < 50 + disposition.socialBias && guest.addiction < 20) {
-    const sofa = world.furniture.find((item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
+    const sofa = chooseSpot(world, guest, (item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
     if (sofa && startActivity(world, guest, sofa)) return;
   }
 
   if (tryGame(world, guest, wallet, prng)) return;
 
   // Kein freier Spielplatz: erst Bar mit Bestand, dann Sofa, dann freies Klo, sonst warten.
-  const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
+  const bar = chooseSpot(world, guest, (item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
   if (bar && wallet >= world.prices.drinkPrice && startActivity(world, guest, bar)) return;
-  const sofa = world.furniture.find((item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
-  if (sofa && startActivity(world, guest, sofa)) return;
-  const toilet = world.furniture.find((item) => item.kind === 'TOILET' && !item.clogged && freeSeat(item));
+  const fallbackSofa = chooseSpot(world, guest, (item) => item.kind === 'DECOR' && item.seats > 0 && freeSeat(item));
+  if (fallbackSofa && startActivity(world, guest, fallbackSofa)) return;
+  const toilet = chooseSpot(world, guest, (item) => item.kind === 'TOILET' && !item.clogged && freeSeat(item));
   if (toilet && startActivity(world, guest, toilet)) return;
   waitForSpace(world, guest);
 }
