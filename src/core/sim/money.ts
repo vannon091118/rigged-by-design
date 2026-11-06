@@ -108,6 +108,21 @@ export function payOrBorrow(
   ledger.transfer(DEBT_ACCOUNT, account, open, `${reason} auf kredit`, tick);
 }
 
+/**
+ * Schuldentilgung aus der Betriebsreserve: Das Haus behaelt HOUSE_FLOAT in der
+ * Kasse und tilgt vom Ueberschuss. Es entsteht kein zweites Schuldenkonto; die
+ * bestehende Verbindlichkeit wird nur zurueckgefuehrt.
+ */
+export function repayDebt(ledger: Ledger, tick: number): VaCoinMicro {
+  if (!ledger.liabilityAccounts.includes(DEBT_ACCOUNT)) return ZERO_VC;
+  const owed = Math.max(0, -ledger.getBalance(DEBT_ACCOUNT));
+  const available = Math.max(0, ledger.getBalance(HAUSKONTO) - HOUSE_FLOAT);
+  const amount = Math.min(owed, available);
+  if (amount <= ZERO_VC) return ZERO_VC;
+  ledger.transfer(HAUSKONTO, DEBT_ACCOUNT, amount, TX_REASON.DEBT_REPAYMENT, tick);
+  return amount as VaCoinMicro;
+}
+
 export function payPending(ledger: Ledger, guestId: number, tick: number): VaCoinMicro {
   const amount = ledger.getBalance(pendingAccount(guestId));
   if (amount <= ZERO_VC) return ZERO_VC;

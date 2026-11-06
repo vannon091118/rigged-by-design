@@ -6,11 +6,11 @@
  */
 import { describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../economy/ledger';
-import { mulVC, type VaCoinMicro } from '../../economy/vacoin';
+import { fromVC, mulVC, type VaCoinMicro } from '../../economy/vacoin';
 import { playSlot } from '../../games/engines/slot';
 import { Prng } from '../../rng/prng';
 import { actAtTarget } from '../guest-play';
-import { DEBT_ACCOUNT, fiatAccount, guestAccount, pendingAccount } from '../money';
+import { DEBT_ACCOUNT, fiatAccount, guestAccount, HAUSKONTO, HOUSE_FLOAT, payOut, pendingAccount, repayDebt } from '../money';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
@@ -69,6 +69,18 @@ describe('Fiat am Spawn und an der Kasse', () => {
 });
 
 describe('Auszahlung und Deckung', () => {
+  it('tilgt Schulden nur aus dem Ueberschuss ueber der Betriebsreserve', () => {
+    const ledger = new Ledger({ [HAUSKONTO]: fromVC(30) });
+    payOut(ledger, 1, fromVC(100), 0);
+    expect(ledger.getBalance(HAUSKONTO)).toBe(0);
+    expect(ledger.getBalance(DEBT_ACCOUNT)).toBe(-fromVC(70));
+    ledger.transfer('EXTERNAL_WORLD', HAUSKONTO, fromVC(30), 'test hilfe', 1);
+    expect(repayDebt(ledger, 2)).toBe(fromVC(5));
+    expect(ledger.getBalance(HAUSKONTO)).toBe(HOUSE_FLOAT);
+    expect(ledger.getBalance(DEBT_ACCOUNT)).toBe(-fromVC(65));
+    expect(ledger.verifyLedgerIntegrity()).toBe(true);
+  });
+
   it('zahlt einen Gewinn ueber dem Hausbestand voll aus und bucht die Differenz als Schuld', () => {
     const { world, ledger } = setup();
     const guest = spawnGuest(world, new Prng(randomSeed()), ledger)!;
