@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.123 | 2026-11-06 03:25 UTC -->
+<!-- rbd-doc: v0.3.124 | 2026-11-06 03:38 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -19,6 +19,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
 
 ### Technik
+- Möbel, Figuren, Personal, Kisten, Streitmarker und Wandvorderseiten teilen jetzt eine Tiefenebene (Task 4/5): `src/render/depth.ts` sortiert ausschließlich nach Fußanker, dann Typ-Rang (Requisite, Möbel, Figur, Wand), dann stabiler ID.
+- Große Sprites werden nicht mehr über ihre Oberkante einsortiert; ein 4×2-Objekt liegt an seiner Unterkante. Der Spieler ist ID 0, Gäste und Personal behalten ihre IDs.
+- Vordergrundwände sind eigene Occlusion-Sprites in derselben sortierbaren Ebene: Figuren nördlich einer Wand liegen dahinter, Figuren südlich davor. Die Wandtexturen entstehen einmal je Ausrichtung und werden von allen Kanten geteilt.
+- Die Sortierung läuft nur, wenn sich ein Anker oder eine ID geändert hat; Standbilder kosten keine Sortierung. Chunk-Caches, Atlas und First-Frame-Handshake bleiben unverändert.
+- Neue Messung `depth-perf.bench.ts` auf derselben Szene: SMALL 0,062 ms, MEDIUM 0,028 ms, LARGE 0,081 ms je Neu-Sortierung (200 Figuren, 119–359 Wände).
 - Boden und Wände kommen jetzt vollständig aus dem Layout (Task 3/5): `src/render/floor-material.ts` löst jede `FloorMaterialId` in genau eine Darstellung, eine optionale Manifest-Textur und eine stabile Fallback-ID auf. CARPET nutzt `casino-carpet-plum.png`; WOOD, TILE, STONE, LINOLEUM und CONCRETE bleiben deterministisch prozedural, ohne erfundene Pfade.
 - Die alte Zonen-Materialtabelle ist entfernt: `floorTextureFor()` und `FLOOR_TEXTURE` ordneten Muster-Schlüssel (`carpet`, `planks`, `rug`) Wallpaper-Dateien zu und waren damit kein Materialvertrag. Materialatlas und Texturauflösung laufen weiter über `textureFor()` (Nearest-Sampling, Atlas-Fallback, stiller Rückfall).
 - Zonen bleiben semantisch: Lichtfarbe und Ausstattung hängen an `ZoneKind`, nicht am Boden. `lightFor()` hat eine eigene Zonen-Lichttabelle; die Teppichwahl maskiert nur noch CARPET-Tiles aus dem Layout statt ganzer Zonen.

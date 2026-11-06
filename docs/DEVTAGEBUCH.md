@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Gemeinsame Tiefensortierung und Occlusion
+
+**Ziel.** Task 4/5: Figuren, Möbel, Requisiten und Wände lagen in getrennten Containern und wurden nie gegeneinander sortiert. Ein Gast konnte vor einer Wand stehen, die ihn verdecken müsste, und große Möbel wurden optisch an ihrer Oberkante einsortiert.
+
+**Umsetzung.** `depth.ts` ist der gemeinsame Vertrag: `footAnchor()` liefert die Unterkante, `depthFor()` kombiniert Anker, Typ-Rang und stabile ID, `DepthStage` sortiert nur bei echter Änderung. `scene-cache.ts` führt statt vier Objekt-Containern eine sortierbare Welt-Ebene; Zonenlabels liegen darüber, Sticker und Cues bleiben eigene Ebenen. `FloorProps` hängt Kisten, Streitmarker und Kasse in dieselbe Ebene; der Platzierungs-Geist bleibt Bedienoberfläche über der Welt. Möbel-/Figuren-Sync und Culling liegen jetzt in `entity-sync.ts`, weil `floor-view.ts` sonst über sein LOC-Budget gewachsen wäre (359 → 213 Zeilen). `WallOcclusion` erzeugt je Ausrichtung eine geteilte Textur und setzt pro Wandkante ein Sprite mit Anker an der Süd-/Ostkante; `wall-art.ts` zeichnet nur noch Türschwellen in den Chunk.
+
+**Pruefungen.** `typecheck` und ESLint grün. Neue `depth.test.ts` (7 Tests): Fußanker, große Objekte, deterministisches Tie-Breaking, Wand vor/nach Figur, stabile Wand-IDs und Sortierung nur bei Änderung. Render-Suiten 47/47 grün. Messung auf derselben Szene: SMALL 0,062 ms, MEDIUM 0,028 ms, LARGE 0,081 ms je Neu-Sortierung.
+
+**Bewusst nicht getan.** Keine Änderung an Simulation, RNG, Gästen oder Footprints; Render-Anker sind reine Ableitungen. Keine neue Asset-Registry, keine zweite Szene. Die Sortierung nutzt die vorhandenen Wandtexturen aus dem Manifest.
+
 ## 2026-11-06 - Bodenmaterialien und Wände aus dem Layout
 
 **Ziel.** Task 3/5: Der Floor sollte den gespeicherten Plan zeigen, nicht eine zweite, zonengefärbte Wahrheit. Bodenmaterial pro Tile, Wandkanten, Türen und Ecken mussten aus dem Layout kommen, ohne die Chunk-Caches, den Atlas und den First-Frame-Handshake zu verlassen.
@@ -1376,7 +1386,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.123 | 2026-11-06 03:25 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.124 | 2026-11-06 03:38 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

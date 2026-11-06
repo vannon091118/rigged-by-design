@@ -4,6 +4,7 @@ import { areasFor, type Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
+import { DepthStage } from './depth';
 import { changedRegions, regionHash } from './floor-math';
 import { CarpetOverlay } from './floor-carpet';
 import { drawRoutes } from './floor-route';
@@ -14,10 +15,13 @@ const LABEL_COUNT = 10;
 export interface SceneCache {
   readonly room: Container;
   readonly carpet: Container;
-  readonly furniture: Container;
-  readonly props: Container;
-  readonly actors: Container;
-  readonly dirt: Container;
+  /** Laufwege ueber dem Boden, unter der Welt. */
+  readonly routes: Container;
+  /** Gemeinsame Tiefenebene fuer Moebel, Figuren, Requisiten, Waende. */
+  readonly world: Container;
+  readonly depth: DepthStage;
+  /** Zonenlabels ueber der Welt, aber ohne Tiefensortierung. */
+  readonly overhead: Container;
   readonly stickers: Container;
   readonly labels: readonly Text[];
   readonly redrawRoom: (view: GameView) => void;
@@ -40,10 +44,9 @@ interface FloorChunk {
 export function createSceneCache(): SceneCache {
   const room = new Container();
   const carpet = new CarpetOverlay();
-  const furniture = new Container();
-  const props = new Container();
+  const depth = new DepthStage();
+  const overhead = new Container();
   const dirtLayer = new Container();
-  const actors = new Container();
   const stickers = new Container();
 
   const labels: Text[] = [];
@@ -51,15 +54,14 @@ export function createSceneCache(): SceneCache {
     const label = new Text({ text: '', style: floorText.zone() });
     label.visible = false;
     labels.push(label);
-    furniture.addChild(label);
+    overhead.addChild(label);
   }
 
   const floorChunks = new Map<string, FloorChunk>();
   const dirtChunks = new Map<string, { g: Graphics; hash: number }>();
-  // Laufwege liegen ueber den Raum-Chunks, aber unter Dreck und Moebeln.
+  // Laufwege liegen ueber den Raum-Chunks, aber unter Dreck und Welt.
   const routes = new Graphics();
   routes.eventMode = 'none';
-  furniture.addChildAt(routes, 0);
   let routesKey = '';
   let routesBaked = false;
   let phase = '';
@@ -167,11 +169,14 @@ export function createSceneCache(): SceneCache {
     dirtChunks.clear();
     room.destroy({ children: true });
     carpet.destroy();
-    furniture.destroy({ children: true });
-    props.destroy({ children: true });
-    actors.destroy({ children: true });
+    routes.destroy();
+    depth.root.destroy({ children: true });
+    overhead.destroy({ children: true });
     stickers.destroy({ children: true });
   };
 
-  return { room, carpet: carpet.root, dirt: dirtLayer, furniture, props, actors, stickers, labels, redrawRoom, redrawDirt, setLabels, destroy };
+  return {
+    room, carpet: carpet.root, routes, world: depth.root, depth, overhead, stickers, labels,
+    redrawRoom, redrawDirt, setLabels, destroy,
+  };
 }

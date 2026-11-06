@@ -1,25 +1,22 @@
-// @loc-exception: Kamera, LOD, Culling, gepoolte Figuren und Input teilen einen Pixi-Scene-Graph; getrennt waeren die Transform-Kopplungen unsichtbar.
-import { TICK_MS } from '../core/sim/tick-timing';
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
+import { TICK_MS } from '../core/sim/tick-timing';
 import { Application, Container, Graphics, Rectangle, type FederatedPointerEvent } from 'pixi.js';
-import { dirtyNear, emotionOf } from '../core/sim/emotion';
 import { areaAt } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
+import { EntitySync } from './entity-sync';
 import { FloorCamera } from './floor-camera';
 import { FloorCues } from './floor-cues';
-import { createFurnitureArt, type FurnitureArt } from './furniture-art';
 import { createGuestArt, type GuestArt } from './guest-art';
 import { primeGuestShadow } from './guest-parts';
-import { isVisible, screenToTile, visibleRect } from './floor-math';
+import { screenToTile } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
 import { FloorCallbacks, handleTap, screenPoint, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
-import { actorStateFor } from './rig-pose';
-import { drawPlayerMarker } from './player-marker';
 import { createSceneCache, type SceneCache } from './scene-cache';
+import { WallOcclusion } from './wall-occlusion';
 import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
 
@@ -32,23 +29,20 @@ export class FloorView {
   readonly #scene: SceneCache;
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
+  readonly #walls = new WallOcclusion();
   readonly #player: GuestArt;
   readonly #marker = new Graphics();
-  readonly #furnitureArt = new Map<number, FurnitureArt>();
-  readonly #seenFurniture = new Set<number>();
-  readonly #seenGuests = new Set<number>();
-  readonly #results = new Map<number, string>();
   readonly #cam = new FloorCamera();
   readonly #touch: FloorTouch;
   readonly #cues: FloorCues;
   readonly #fx: FloorFx; readonly #events: FloorEvents;
   readonly #camBase = { x: 0, y: 0 };
+  readonly #entities: EntitySync;
   #flashId = -1;
   #view: GameView;
   #lod = -1;
   #placing = false;
   #camDirty = true;
-  #playerPlaced = false;
   #destroyed = false;
 
   constructor(app: Application, view: GameView, callbacks: FloorCallbacks) {
@@ -62,7 +56,8 @@ export class FloorView {
     // Partikel, Licht und Shake leben in Weltkoordinaten auf der Buehne.
     this.#fx = new FloorFx();
     this.#events = new FloorEvents(this.#fx, () => this.#view);
-    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.furniture, this.#scene.props, this.#cues.root, this.#scene.actors, this.#scene.stickers, this.#fx.root);
+    this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
+      this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root);
     this.#camera.eventMode = 'static';
     this.#camera.interactive = true;
     this.#camera.on('pointerdown', this.#tap);
@@ -75,7 +70,7 @@ export class FloorView {
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
     this.#props = new FloorProps(
-      { props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers },
+      { world: this.#scene.world, overhead: this.#scene.overhead, stickers: this.#scene.stickers, depth: this.#scene.depth },
       this.#camera,
       this.#attachActor,
     );
@@ -83,6 +78,11 @@ export class FloorView {
     this.#player.root.addChild(this.#marker);
     this.#marker.visible = false;
     this.#attachActor(this.#player);
+    this.#entities = new EntitySync({
+      renderer: app.renderer, scene: this.#scene, actors: this.#actors, player: this.#player,
+      marker: this.#marker, props: this.#props, camera: this.#camera, screen: app.screen,
+      stepMs: STEP_MS, lod: () => this.#lod, scale: () => this.#camera.scale.x,
+    });
     app.ticker.add(this.#animate);
     this.update(view, true);
   }
@@ -95,21 +95,18 @@ export class FloorView {
     this.#scene.redrawRoom(view);
     this.#scene.setLabels(view, this.#lod === 1);
     if (templateChanged) {
-      if (view.template !== previous.template || view.size !== previous.size) {
-        for (const art of this.#furnitureArt.values()) art.root.destroy({ children: true });
-        this.#furnitureArt.clear();
-      }
+      if (view.template !== previous.template || view.size !== previous.size) this.#entities.resetFurniture();
       this.#cam.resize(this.#app.screen.width, this.#app.screen.height, view.size, true);
       this.#camera.hitArea = new Rectangle(0, 0, view.size * TILE, view.size * TILE);
       this.#camDirty = true;
     }
     this.#scene.redrawDirt(view);
-    this.#syncFurniture(view);
-    this.#syncGuests(view);
-    this.#syncPlayer(view);
+    this.#entities.sync(view, performance.now());
+    this.#walls.sync(this.#app.renderer, { size: view.size, layout: view.layout }, TILE, this.#scene.depth);
+    this.#scene.depth.flush();
     this.#cues.setPath(view.player.path, view.player.pathIndex);
     this.#updateLod();
-    if (this.#camDirty) this.#applyCamera(); else this.#cull();
+    if (this.#camDirty) this.#applyCamera(); else this.#entities.cull(view, this.#lod);
   }
 
   fit(): void { this.#cam.overview(); }
@@ -146,123 +143,22 @@ export class FloorView {
   destroy(): void {
     this.#destroyed = true;
     this.#app.ticker.remove(this.#animate);
-    this.#props.destroy({ props: this.#scene.props, actors: this.#scene.actors, stickers: this.#scene.stickers });
+    this.#props.destroy({ world: this.#scene.world, overhead: this.#scene.overhead, stickers: this.#scene.stickers, depth: this.#scene.depth });
+    this.#walls.destroy();
     this.#touch.destroy();
     this.#cues.destroy();
     this.#events.stop();
     this.#fx.destroy();
     this.#actors.clear();
-    this.#furnitureArt.clear();
+    this.#entities.clear();
     this.#scene.destroy();
     this.#camera.destroy({ children: false });
   }
 
   #attachActor = (art: GuestArt): void => {
-    this.#scene.actors.addChild(art.root);
+    this.#scene.world.addChild(art.root);
     this.#scene.stickers.addChild(art.sticker);
   };
-
-  #syncFurniture(view: GameView): void {
-    this.#seenFurniture.clear();
-    this.#results.clear();
-    for (const guest of view.guests) {
-      if (guest.targetFurniture && guest.lastResult) this.#results.set(guest.targetFurniture, guest.lastResult);
-    }
-    for (const item of view.furniture) {
-      this.#seenFurniture.add(item.id);
-      let art = this.#furnitureArt.get(item.id);
-      if (!art) {
-        art = createFurnitureArt(item, TILE, this.#app.renderer);
-        this.#furnitureArt.set(item.id, art);
-        this.#scene.furniture.addChild(art.root);
-        if (this.#lod === 0) art.setDetail(false);
-      }
-      art.root.position.set(item.x * TILE, item.y * TILE);
-      art.refresh(item);
-      art.setResult(item.gameId ? this.#results.get(item.id) ?? 'BEREIT' : '');
-    }
-    for (const [id, art] of this.#furnitureArt) {
-      if (this.#seenFurniture.has(id)) continue;
-      art.root.destroy({ children: true });
-      this.#furnitureArt.delete(id);
-    }
-  }
-
-  #syncGuests(view: GameView): void {
-    this.#seenGuests.clear();
-    // Nur der naechste Gast traegt ein Namensschild; der Rest bleibt Figur.
-    const focusId = view.guests.reduce<number | null>((min, guest) => (min === null || guest.id < min ? guest.id : min), null);
-    for (const guest of view.guests) {
-      this.#seenGuests.add(guest.id);
-      let art = this.#actors.get(guest.id);
-      const now = performance.now();
-      if (!art) {
-        art = this.#actors.acquire(guest);
-        art.target.x = (guest.position.x + 0.5) * TILE;
-        art.target.y = (guest.position.y + 0.8) * TILE;
-        art.from.x = art.target.x;
-        art.from.y = art.target.y;
-        art.moveStart = now - STEP_MS;
-        art.root.position.set(art.target.x, art.target.y);
-        art.root.scale.set(this.#lod === 0 ? 1 / Math.max(0.05, this.#camera.scale.x) : 1);
-        art.sticker.position.set(art.target.x, art.target.y);
-      }
-      const queue = guest.state === 'EXCHANGE' || guest.state === 'CASHOUT' ? guest.queueIndex : 0;
-      const bob = Math.sin(now / 280 + art.phase) * 0.3;
-      this.#place(art, (guest.position.x + 0.5) * TILE + queue * 4, (guest.position.y + 0.8) * TILE - queue * 9, now, bob);
-      art.root.alpha = guest.state === 'LEAVE' ? 0.45 : 0.72 + (guest.addiction / 100) * 0.28;
-      art.setMood(guest.mood, guest.state === 'ANGRY' || guest.anger > 50, guest.addiction);
-      art.setEmotion(emotionOf(guest, dirtyNear(view.dirtyTiles, view.size, guest.position.x, guest.position.y)));
-      art.setState(actorStateFor({
-        state: guest.state, pathLength: guest.path.length, pathIndex: guest.pathIndex,
-        lastResult: guest.lastResult,
-      }));
-      art.setLod(this.#lod === 1);
-      art.setNameVisible(guest.id === focusId);
-    }
-    for (const id of this.#actors.active.keys()) {
-      if (!this.#seenGuests.has(id)) this.#actors.release(id);
-    }
-  }
-
-  #syncPlayer(view: GameView): void {
-    const px = (view.player.position.x + 0.5) * TILE;
-    const py = (view.player.position.y + 0.8) * TILE;
-    const now = performance.now();
-    if (!this.#playerPlaced) {
-      this.#playerPlaced = true;
-      this.#player.target.x = px;
-      this.#player.target.y = py;
-      this.#player.from.x = px;
-      this.#player.from.y = py;
-      this.#player.moveStart = now - STEP_MS;
-      this.#player.root.position.set(px, py);
-      this.#player.sticker.position.set(px, py);
-    } else {
-      this.#place(this.#player, px, py, now, 0);
-    }
-    this.#player.setEmotion(view.player.carrying === 'DRINK' ? 'DRINK' : 'NONE');
-    this.#player.setLook(view.look);
-    const fx = view.fightFx && view.fightFx.untilTick >= view.tick ? view.fightFx : null;
-    const fighting = fx !== null
-      && Math.abs(fx.x - view.player.position.x) + Math.abs(fx.y - view.player.position.y) <= 2;
-    this.#player.setState(actorStateFor({
-      state: 'WAIT', pathLength: view.player.path.length, pathIndex: view.player.pathIndex,
-      carrying: view.player.carrying, isPlayer: true,
-      injured: view.player.rpg.injuryTicks > 0, fighting,
-    }));
-    drawPlayerMarker(this.#marker, { injured: view.player.rpg.injuryTicks > 0, fighting, won: view.fightFx?.won ?? false });
-    this.#player.setLod(this.#lod === 1);
-  }
-
-  #place(art: GuestArt, x: number, y: number, now: number, bob: number): void {
-    if (art.target.x === x && art.target.y === y) return;
-    art.from.x = art.root.x;
-    art.from.y = art.root.y - bob;
-    art.target.x = x;
-    art.target.y = y;
-    art.moveStart = now;
-  }
 
   #updateLod(): void {
     const detail = this.#cam.detail;
@@ -271,9 +167,7 @@ export class FloorView {
     this.#lod = lod;
     this.#cues.setMode(detail);
     this.#scene.setLabels(this.#view, detail);
-    for (const art of this.#furnitureArt.values()) art.setDetail(detail);
-    for (const art of this.#actors.active.values()) art.setLod(detail);
-    this.#player.setLod(detail);
+    this.#entities.setDetail(detail);
     this.#camDirty = true;
   }
 
@@ -283,39 +177,8 @@ export class FloorView {
     this.#camBase.y = this.#camera.position.y;
     this.#cues.refresh();
     this.#camDirty = false;
-    const pinScale = this.#lod === 0 ? 1 / Math.max(0.05, this.#camera.scale.x) : 1;
-    for (const art of this.#actors.active.values()) art.root.scale.set(pinScale);
-    this.#player.root.scale.set(pinScale);
-    this.#cull();
-  }
-
-  #cull(): void {
-    if (this.#lod !== 1) {
-      for (const art of this.#furnitureArt.values()) art.root.visible = true;
-      for (const art of this.#actors.active.values()) {
-        art.root.visible = true;
-        art.sticker.visible = false;
-      }
-      this.#player.root.visible = true;
-      this.#player.sticker.visible = false;
-      this.#props.update(this.#view, { x: 0, y: 0, w: this.#view.size * TILE, h: this.#view.size * TILE }, this.#lod);
-      return;
-    }
-    const rect = visibleRect(this.#camera.x, this.#camera.y, this.#camera.scale.x, this.#app.screen.width, this.#app.screen.height);
-    for (const item of this.#view.furniture) {
-      const art = this.#furnitureArt.get(item.id);
-      if (!art) continue;
-      art.root.visible = isVisible(item.x * TILE, item.y * TILE, item.w * TILE, item.h * TILE, rect, 0);
-    }
-    for (const art of this.#actors.active.values()) {
-      const visible = isVisible(art.root.x, art.root.y, 0, 0, rect, 40);
-      art.root.visible = visible;
-      art.sticker.visible = visible;
-    }
-    const playerVisible = isVisible(this.#player.root.x, this.#player.root.y, 0, 0, rect, 40);
-    this.#player.root.visible = playerVisible;
-    this.#player.sticker.visible = playerVisible;
-    this.#props.update(this.#view, rect, this.#lod);
+    this.#entities.setPinScale(this.#lod, this.#camera.scale.x);
+    this.#entities.cull(this.#view, this.#lod);
   }
 
   #tap = (event: FederatedPointerEvent): void => {
@@ -329,7 +192,7 @@ export class FloorView {
     if (!hit) return;
     if (hit.kind === 'furniture') {
       this.#flashId = hit.id;
-      this.#furnitureArt.get(hit.id)?.flash(performance.now());
+      this.#entities.furniture(hit.id)?.flash(performance.now());
     } else if (hit.kind === 'gesture') {
       const art = this.#actors.get(hit.id);
       art?.bump();
@@ -345,6 +208,6 @@ export class FloorView {
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
     const offset = this.#fx.offset(now);
     this.#camera.position.set(this.#camBase.x + offset.x, this.#camBase.y + offset.y);
-    this.#furnitureArt.get(this.#flashId)?.animate(now);
+    this.#entities.furniture(this.#flashId)?.animate(now);
   };
 }

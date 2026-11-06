@@ -10,7 +10,7 @@ import { INK, lightFor, materialFor } from './art-tokens';
 import { drawCeilingLight, drawLightSpill } from './floor-surface';
 import { drawFloorRegion } from './floor-material';
 import { drawDressing } from './room-dressing';
-import { WALL, drawWalls } from './wall-art';
+import { WALL, drawDoors } from './wall-art';
 
 interface Rect { x: number; y: number; w: number; h: number }
 interface ZoneLike { id: string; kind: string; x: number; y: number; w: number; h: number }
@@ -53,7 +53,7 @@ export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: n
   for (const zone of view.zones as readonly ZoneLike[]) {
     drawZoneOverlay(g, zone, area, tile, view.dayPhase, deco);
   }
-  drawWalls(g, { size: view.size, layout: view.layout }, area, tile, deco);
+  drawDoors(g, { size: view.size, layout: view.layout }, area, tile);
   if (area.x === 0 && area.y === 0) {
     const size = view.size * tile;
     g.rect(0, 0, size, size).stroke({ width: 8, color: INK });
