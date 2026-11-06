@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c57b025f6d1aa523e965f74e0daee986c1de06a25b0f8348cb620d4033956fab",
+  "contentHash": "sha256:a9979c7000089d2f7baebc41ab5f39ec22c4b1023d00bf0afb8b691f7d1c46bd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -49,6 +49,28 @@
       "text": "Ich habe den Bestand gezaehlt, nicht nur angesehen: 539 Bilder, 153 davon auf\nzwei Atlasseiten. 95 tragen eine Rolle, die im Code steht; 444 liegen nur da\nund warten. Kein einziges Bild klickt sich selbst. Was klickbar ist, sind\nGeraete und Fenster; die Textur ist nur das Gesicht davon. Wer also fragt,\nwas ein Bild bedeutet, bekommt im Katalog eine Antwort, die zwischen\nbelegtem Wissen und ehrlichem Unbekannt unterscheidet. Das ist unglamouroes\nund genau deshalb brauchbar: die naechste Schicht kann darauf bauen, ohne\nsich auf einen Dateinamen zu verlassen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-06-asset-semantik.json"
+    },
+    {
+      "contributionId": "asset-semantik-messung-01",
+      "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe die Maschinen und die Deko einzeln aufgemacht und nachgesehen, statt ihren\nNamen zu glauben. Ein Roulette-Tisch ist breit, sein Bild aber fast quadratisch:\ndie halbe Leinwand ist Luft. Zwei Saeulen mit demselben Motiv sind zwei Saeulen,\nweil ihre Bilder verschieden gross sind. Ein Wandlicht hat keinen Boden unter\nsich, also bekommt es keinen Bodenanker. Das klingt nach Buchhaltung und ist\ngenau das Gegenteil: zum ersten Mal steht irgendwo, wo diese Dinge wirklich\naufhoeren und anfangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-asset-semantik-messung.json"
     },
     {
       "contributionId": "b1-kontext-helper-01",
