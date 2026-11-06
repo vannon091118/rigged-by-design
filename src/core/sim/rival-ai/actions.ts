@@ -19,7 +19,7 @@ const SABOTAGE_DAMAGE = 12;
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
 
-function recordEvidence(mind: RivalMindState, world: WorldState, entry: RivalEvidence): void {
+function recordEvidence(mind: RivalMindState, _world: WorldState, entry: RivalEvidence): void {
   mind.evidence.push(entry);
   const overflow = mind.evidence.length - RIVAL_AI_LIMITS.evidence;
   if (overflow > 0) mind.evidence.splice(0, overflow);
@@ -58,7 +58,7 @@ export function applyRivalAction(
 ): RivalActionRecord {
   const hit = plan.action === 'SABOTAGE' ? sabotage(world, plan.machineId) : null;
   const note = hit ? hit.note : plan.note;
-  if (plan.action === 'SABOTAGE' && hit?.machineId !== null) {
+  if (plan.action === 'SABOTAGE' && hit && hit.machineId !== null) {
     recordEvidence(mind, world, {
       action: 'SABOTAGE', tick: world.tick, day: world.day,
       machineId: hit.machineId, blocked: hit.blocked, note,

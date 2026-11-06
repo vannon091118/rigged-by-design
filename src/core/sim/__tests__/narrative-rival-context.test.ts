@@ -44,8 +44,7 @@ describe('Rivalen-Karten (Phase 5)', () => {
 
   it('zeigt Gegenmassnahme, Haltung, Indizien und Historie aus dem Mind', () => {
     const { world, mind } = sabotagedWorld();
-    const [first, ...rest] = rivalViews(world);
-    const card = [first, ...rest].find((view) => view.rivalId === mind.rivalId)!;
+    const card = rivalViews(world).find((view) => view?.rivalId === mind.rivalId)!;
     expect(card.stance).toBe('HOSTILE');
     expect(card.capacity).toBe(70);
     expect(card.goodwill).toBe(-20);

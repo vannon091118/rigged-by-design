@@ -5,14 +5,18 @@ import type { JournalEvent } from './journal';
 import type { PlayerLook } from './player-look';
 import type { ExclusionPact } from './self-exclusion-bet';
 import type {
-  ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Mop, Player,
-  PriceBook, StaffAgent, StaffState, Stain, TemplateId, Visitor, Zone, FightFx,
+  ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Player,
+  PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
   ForeignFloorState,
 } from './types-model';
+import type { Mop } from './mop';
+import type { Stain } from './stain';
 import type { RivalMindState } from './rival-ai/types';
 import type { LayoutState } from './layout-types';
 
 export type * from './types-model';
+export type { Mop } from './mop';
+export type { Stain } from './stain';
 
 export interface WorldState {
   template: TemplateId;

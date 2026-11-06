@@ -1,7 +1,7 @@
 /** Floor-Input: Tap-Logik, baut Aktionen und ruft Callbacks. */
 import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
-import type { WorldState } from '../core/sim/types';
+import type { GameView } from '../store/types';
 import { buildStainActions, buildGuestActions, buildFurnitureActions, type MenuAction } from './floor-actions';
 
 export interface FloorCallbacks {
@@ -21,7 +21,7 @@ export type TapHit =
 export function handleTap(
   button: number,
   point: { x: number; y: number },
-  view: WorldState,
+  view: GameView,
   cues: { ping: (p: { x: number; y: number }) => void },
   callbacks: FloorCallbacks,
   placing: boolean,

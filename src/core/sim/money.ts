@@ -119,7 +119,7 @@ export function repayDebt(ledger: Ledger, tick: number): VaCoinMicro {
   const available = Math.max(0, ledger.getBalance(HAUSKONTO) - HOUSE_FLOAT);
   const amount = Math.min(owed, available);
   if (amount <= ZERO_VC) return ZERO_VC;
-  ledger.transfer(HAUSKONTO, DEBT_ACCOUNT, amount, TX_REASON.DEBT_REPAYMENT, tick);
+  ledger.transfer(HAUSKONTO, DEBT_ACCOUNT, amount as VaCoinMicro, TX_REASON.DEBT_REPAYMENT, tick);
   return amount as VaCoinMicro;
 }
 

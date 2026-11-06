@@ -13,7 +13,7 @@ import { primeGuestShadow } from './guest-parts';
 import { screenToTile } from './floor-math';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { FloorCallbacks, handleTap, screenPoint, type TapHit } from './floor-input';
+import { handleTap, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';

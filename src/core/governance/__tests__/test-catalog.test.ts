@@ -39,8 +39,8 @@ describe('Testkatalog', () => {
   it('gibt jeder Testdatei genau eine Klasse und ein System', () => {
     const entries = catalogEntries();
     expect(entries.length).toBeGreaterThan(60);
-    expect(new Set(entries.map((entry) => entry.file)).size).toBe(entries.length);
-    for (const entry of entries) {
+    expect(new Set(entries.map((entry: { file: string }) => entry.file)).size).toBe(entries.length);
+    for (const entry of entries as { file: string; proof: string; system: string; long?: boolean }[]) {
       expect(PROOF_CLASSES, `${entry.file} ohne gueltige Klasse`).toContain(entry.proof);
       expect(entry.system, `${entry.file} ohne System`).not.toBe('unknown');
       expect(entry.long).toBe(LONG_PROOF_CLASSES.includes(entry.proof));

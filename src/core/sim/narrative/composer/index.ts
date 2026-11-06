@@ -3,7 +3,7 @@ import { NARRATIVE_REGISTRY } from './registry.generated';
 import { isComposeRequest, isNarrativeCommand, isNarrativeFragment } from './schema';
 import { fallbackText, selectFragment } from './select';
 import type {
-  ComposeRequest, ComposedNarrative, ComposedSlot, CompositionRejection, NarrativeFragment,
+  ComposedNarrative, ComposedSlot, CompositionRejection, NarrativeFragment,
 } from './types';
 
 export type {
@@ -40,13 +40,14 @@ function validFragments(registry: readonly unknown[]): {
  * `issues` nennt dann genau diese Slot-IDs.
  */
 export function composeNarrative(
-  request: ComposeRequest,
+  request: unknown,
   registry: readonly unknown[] = NARRATIVE_REGISTRY,
 ): ComposedNarrative {
   if (!isComposeRequest(request)) {
+    const rawLocale = (request as { readonly locale?: unknown } | null)?.locale;
     return {
       ok: false,
-      locale: typeof request?.locale === 'string' ? request.locale : '',
+      locale: typeof rawLocale === 'string' ? rawLocale : '',
       slots: [],
       fallbacks: [],
       degraded: false,

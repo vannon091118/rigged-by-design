@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Typecheck repariert, Floor-Crash behoben, stale Fact-Verdrahtung entfernt
+
+**Ziel.** Die offenen Befunde aus dem letzten Review schliessen: der Floor blieb nach dem Laden bei "LADEN DAUERT LANGE" stehen, `pnpm run typecheck` war gruen ohne `src/` zu pruefen, und die Doku sollte den echten Stand tragen, bevor PR #152 gemerged wird.
+
+**Umsetzung.** Der Crash war ein fehlendes Feld, kein Pixi-Fehler: `SceneCache` deklarierte `dirt` nicht, `createSceneCache()` gab die gebaute `dirtLayer` nicht zurueck, und `floor-view.ts` uebergab deshalb `undefined` an `addChild`. Beides ist jetzt deklariert und verdrahtet. Der Typecheck hatte `"include": ["../src"]` in `src/Config/tsconfig.json`; relativ zur Config zeigte das auf `src/src`, also pruefte `tsc` praktisch nichts. `["..", "vite.config.ts"]` deckt `src/` und die Vite-Config ab. Danach wurden 87 echte Fehler sichtbar und behoben: Typ-Re-Exports (`Mop`, `Stain`, `Visitor`, `ActorRef`), optionale `memories`, `VaCoinMicro`-Casts an Geldgrenzen, `readonly unknown[]` in Trigger-Definitionen, `roleCount` im Template-Schema, `ViewRect` mit `left/top/right/bottom`, `GameView` statt `WorldState` in Floor-Eingabe/-Animation, `SPIEGEL` in der Bau-Tier-Zuordnung, Getter-Aufrufe des Layout-Verlaufs, nicht-null-gepruefte `find`-Ergebnisse und typisierte Test-Callbacks. `src/vite-env.d.ts` ist neu getrackt: `vite/client` plus `declare module '*.mjs'`, damit die Governance-Tests die Skript-Libs ohne `allowJs` importieren. Die beiden `VISITOR_SERVICE`-Emissionen in `serveDrinkCmd` und `talkCmd` sind entfernt: sie trugen `initiator`/`severity`, das Fact-Schema verlangt `service`/`valence`, und der einzige legitime Produzent ist `desk-service.ts` bei anwesendem Kassierer. Die Doppel-Emission war tote Verdrahtung, kein fehlendes Feld.
+
+**Pruefungen.** `pnpm run typecheck` Exit 0 mit 0 Fehlern (vorher 87 nach der Include-Korrektur). `pnpm run verify:quick` mit allen zehn Gates gruen, inklusive Tests, Lint, Dead-Code, Doku, Tree, Redundanz, Assets, LOC und Test-Qualitaet. `pnpm run inventory:build` meldet 1324/1324 Dateien und 86 Ordner. Der Floor laedt im laufenden Dev-Server wieder: HUD, Gaeste und die vier Tabs sind da; der Screenshot liegt unter `artifacts/floor-aktuell.png`.
+
+**Offen.** Die visuelle Abnahme bei 60 fps und Tap-to-Frame braucht ein echtes Touch-Geraet; im Cloud-Browser ist nur der Desktop-Pfad pruefbar. Die Issues #151/#153 gehoeren zu PR #150 und bleiben unberuehrt.
+
 ## 2026-11-06 - CI-Runner und Action-Runtimes
 
 **Ziel.** Die zwei Annotationen aus PR #152 an der Ursache beheben: Actions, die noch Node 20 ansprechen, und der gleitende `ubuntu-latest`-Runner.
@@ -1502,7 +1512,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

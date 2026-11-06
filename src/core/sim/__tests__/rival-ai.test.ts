@@ -11,6 +11,7 @@ import { Ledger } from '../../economy/ledger';
 import { processNarrativeBoundary } from '../narrative/boundary';
 import { actorRefOfRival, relationshipBetween } from '../narrative/relationships';
 import { isFact } from '../narrative/fact-schema';
+import type { VaCoinMicro } from '../../economy/vacoin';
 import { EVENT_TEMPLATES, templateFor } from '../narrative/events/definitions';
 import { createEventCandidate } from '../narrative/events/template-candidate';
 import { applyRivalAction, sabotageTarget } from '../rival-ai/actions';
@@ -116,7 +117,7 @@ describe('Rivalen-Sabotage mit Indizien', () => {
     mind.nextActionTick = 0;
     world.narrative.recent.push({
       id: 1, tick: 390, day: 3, kind: 'RIVAL_ENCOUNTER',
-      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000,
+      actorRefs: ['rival:HAFENKLAUSE', 'player'], rivalId: 'HAFENKLAUSE', netToHouse: 5_000 as VaCoinMicro,
     });
     const acted = tickRivalMinds(world);
     expect(acted[0]?.action).toBe('SABOTAGE');

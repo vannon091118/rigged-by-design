@@ -25,9 +25,9 @@ import { loadNarrativeContent } from '../../../../scripts/lib/narrative-content.
 
 const ROOT = resolve(process.cwd());
 const report = loadNarrativeContent(ROOT);
-const clone = (value) => JSON.parse(JSON.stringify(value));
-const messages = (issues) => issues.map((entry) => entry.message).join(' | ');
-const firstById = (id) => report.contributions.find((entry) => entry.data.contributionId === id);
+const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
+const messages = (issues: readonly { message: string }[]) => issues.map((entry) => entry.message).join(' | ');
+const firstById = (id: string) => report.contributions.find((entry: { data: { contributionId: string } }) => entry.data.contributionId === id);
 
 describe('Narrative Content Compiler (NAR-10)', () => {
   it('akzeptiert den kontrollierten Bestand und liefert einen Inhalts-Hash', () => {
@@ -47,7 +47,7 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(parsed.ok).toBe(true);
     if (parsed.ok) expect(parsed.command).toMatchObject({ id: 'FREEZE_TICK', ticks: 120 });
 
-    const fragment = report.registry.fragments.find((entry) => entry.contributionId === 'content-compiler-01');
+    const fragment = report.registry.fragments.find((entry: { contributionId: string }) => entry.contributionId === 'content-compiler-01');
     expect(fragment?.directives).toEqual([{ id: 'FREEZE_TICK', ticks: 120 }]);
     expect(JSON.stringify(report.registry)).not.toContain('€');
   });
@@ -78,7 +78,7 @@ describe('Narrative Content Compiler (NAR-10)', () => {
   });
 
   it('spiegelt die NAR-08-Allowlist exakt', () => {
-    const compiler = Object.values(COMMAND_CONTRACTS)
+    const compiler = (Object.values(COMMAND_CONTRACTS) as { id: string; family: string; executable: boolean }[])
       .map(({ id, family, executable }) => ({ id, family, executable }))
       .sort((left, right) => left.id.localeCompare(right.id));
     const runtime = COMMAND_SPECS

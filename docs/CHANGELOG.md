@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.134 | 2026-11-06 06:45 UTC -->
+<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.135] - 2026-11-06
+
+### Spiel
+- Der Floor laedt wieder: Der Szenen-Cache gab die Schmutz-Ebene nicht zurueck, wodurch Pixi beim Aufbau mit `undefined` abbrach und der Ladebildschirm haengen blieb.
+
+### Technik
+- Der Typecheck prueft jetzt wirklich `src/`: `src/Config/tsconfig.json` zeigte mit `"../src"` auf `src/src`. Nach der Korrektur wurden 87 latente Typfehler behoben (Re-Exports, optionale Erinnerungen, VaCoinMicro-Grenzen, ViewRect, Floor-Signaturen, Test-Callbacks); `src/vite-env.d.ts` deklariert `vite/client` und die `.mjs`-Skriptimporte.
+- Die doppelte `VISITOR_SERVICE`-Emission in `serveDrinkCmd`/`talkCmd` ist entfernt; der Fact entsteht nur noch in `desk-service.ts` bei anwesendem Kassierer.
+- `pnpm run inventory:build` meldet 1324 Dateien und 86 Ordner.
 
 ## [0.3.134] - 2026-11-06
 

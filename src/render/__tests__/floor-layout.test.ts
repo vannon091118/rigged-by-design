@@ -109,7 +109,7 @@ describe('Wand- und Tuergeometrie', () => {
 
 describe('Chunk-Invalidierung', () => {
   const areas = areasFor('MEDIUM');
-  const zone = { id: 'gaming', kind: 'GAMING', x: 35, y: 5, w: 20, h: 20, color: 1 };
+  const zone = { id: 'gaming', kind: 'GAMING' as const, name: 'Gaming', x: 35, y: 5, w: 20, h: 20, color: 1 };
 
   it('backt bei einer einzelnen Tile-Aenderung nur den betroffenen Chunk neu', () => {
     const base = viewOf(layoutWith(() => undefined), [zone]);

@@ -159,7 +159,7 @@ describe('Composition Context (B1)', () => {
     const { world, ledger, visitor } = fixture();
     const fact = emitFact(world, { kind: 'VISITOR_FIRST_SEEN', visitorId: visitor.id, persona: 'STAMMGAST' });
     remember(world, fact);
-    visitor.memories.push({ factId: 1, tick: 0, score: 20, valence: 'BAD' });
+    (visitor.memories ??= []).push({ factId: 1, tick: 0, score: 20, valence: 'BAD' });
 
     const context = buildCompositionContext(
       world, ledger, eventFor('VISITOR_RETURN', fact.id, [actorRefOfVisitor(visitor.id)]), template('VISITOR_RETURN'),
