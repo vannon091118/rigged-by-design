@@ -15,6 +15,7 @@ import { GATES, planGates } from './pipeline-plan.mjs';
 import { ROOT } from './report.mjs';
 import { IMPACT_AREAS } from './subsystems.mjs';
 import { partitionByProof, proofClassOf } from './test-catalog.mjs';
+import { contextSummary } from './lane-claims.mjs';
 
 /** Was eine Aenderung an Doku und Invarianten mitzieht; die Liste steht in scripts/lib/subsystems.mjs. */
 const AREAS = IMPACT_AREAS;
@@ -76,6 +77,7 @@ export function impact(options = {}) {
       fast: split.fast,
       long: split.long.map((test) => ({ file: test, proof: proofClassOf(test) })),
     },
+    lanes: contextSummary(),
     gates,
     open: [
       ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; Delegation: pnpm run ci:long`] : []),

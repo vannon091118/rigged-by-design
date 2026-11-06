@@ -1,0 +1,28 @@
+[
+  {
+    "id": "lane/governance/02-governance",
+    "owner": "Integrator",
+    "branch": "lane/governance/02-governance",
+    "baseSha": "5dc0161",
+    "pathAllowlist": [
+      "scripts/lib/impact.mjs",
+      "scripts/lib/subsystems.mjs",
+      "scripts/lib/escalation.mjs",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/agent-context.mjs",
+      "scripts/agent-verify.mjs",
+      "scripts/run-pipeline.mjs",
+      "docs/ROADMAP.md",
+      ".githooks/",
+      "AGENTS.md",
+      ".github/ISSUE_TEMPLATE/lane.md"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/01-baseline"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "5dc0161"
+  }
+]
