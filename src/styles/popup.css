@@ -5,8 +5,11 @@
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(4, 2, 9, 0.74);
-  backdrop-filter: blur(7px);
+  /* Kein backdrop-filter: ein Vollbild-Blur kostet auf Low-End mehr, als er zeigt. */
+  background:
+    radial-gradient(120% 88% at 50% 38%, rgba(4, 2, 9, 0.6), rgba(4, 2, 9, 0.88) 74%),
+    rgba(4, 2, 9, 0.74);
+  contain: paint;
 }
 .popup {
   width: min(var(--popup-width), 100%);
@@ -21,6 +24,24 @@
   animation: popup-in 150ms ease;
 }
 .popup-wide { width: min(var(--popup-wide-width), 100%); }
+
+/* Spiel-Identitaeten: eine Variable je Familie, kein Layout-Umbau. */
+.popup[data-game="SLOT"], .table-stage[data-game="SLOT"] { --game-accent: var(--game-hot); --game-wash: var(--game-hot-soft); }
+.popup[data-game="BLACKJACK"], .table-stage[data-game="BLACKJACK"],
+.popup[data-game="POKER"], .table-stage[data-game="POKER"],
+.popup[data-game="ROULETTE"], .table-stage[data-game="ROULETTE"] { --game-accent: var(--game-velvet); --game-wash: var(--game-velvet-soft); }
+.popup[data-game="PLINKO"], .table-stage[data-game="PLINKO"],
+.popup[data-game="DICE"], .table-stage[data-game="DICE"],
+.popup[data-game="SHELL"], .table-stage[data-game="SHELL"],
+.popup[data-game="VIDEO_POKER"], .table-stage[data-game="VIDEO_POKER"] { --game-accent: var(--game-cyan); --game-wash: var(--game-cyan-soft); }
+.popup[data-game] .eyebrow { color: var(--game-accent); }
+.popup[data-game] .popup-head { border-bottom-color: var(--game-accent); }
+.popup[data-game] .popup-close:hover { border-color: var(--game-accent); }
+.popup[data-game] .slot-stage, .popup[data-game] .game-screen,
+.table-stage[data-game] .game-screen {
+  border-color: var(--game-accent);
+  background: radial-gradient(circle at 50% 40%, var(--game-wash), transparent 62%), #05030a;
+}
 .popup-full { width: min(var(--popup-full-width), 98vw); max-height: 96vh; height: 96vh; }
 .popup-backdrop.is-full { padding: 8px; }
 @keyframes popup-in { from { transform: translateY(8px) scale(0.985); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -135,7 +156,7 @@
   border-radius: 6px; background: #100a1c; color: var(--gold);
   font-family: var(--mono); font-size: 13px; text-align: center; padding: 0 3px;
 }
-@keyframes reel-roll { 0% { filter: blur(0); transform: translateY(-2px); } 50% { filter: blur(1.4px); transform: translateY(2px); } 100% { filter: blur(0); transform: translateY(-2px); } }
+@keyframes reel-roll { 0% { transform: translateY(-2px); opacity: 0.82; } 50% { transform: translateY(2px); opacity: 1; } 100% { transform: translateY(-2px); opacity: 0.82; } }
 .spin-info { display: grid; gap: 5px; }
 .spin-info strong { font-size: 13px; }
 .spin-info strong.win { color: var(--gold); }

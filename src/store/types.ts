@@ -7,6 +7,7 @@ import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
 import type { NarrativeView } from '../core/sim/narrative/view-types';
+import type { DayPhase } from '../core/sim/day-phase';
 
 /**
  * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
@@ -42,6 +43,8 @@ export interface GameView {
   readonly dirtyTiles: ReadonlySet<number>;
   readonly tick: number;
   readonly day: number;
+  /** Morgen, Abend oder Nacht; aus dem Tick, nie aus der Uhr. */
+  readonly dayPhase: DayPhase;
   readonly staff: StaffView;
   readonly prices: PriceBook;
   readonly carpet: CarpetId;

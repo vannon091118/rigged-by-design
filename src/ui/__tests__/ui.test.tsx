@@ -53,13 +53,7 @@ const noop = (): void => {};
 
 describe('UI-Integration', () => {
   it('zeigt einen Ledger-Fehler als Alarm und nicht nur als Zahl', () => {
-    render(
-      <Hud
-        view={{ ...view(), ledgerOk: false }} onBuild={noop} onGuests={noop} onVisit={noop}
-        onClean={noop} onOverview={noop} onJournal={noop} onDiagnostics={noop} onLook={noop}
-        onAssets={noop} onSkill={noop} onHelp={noop}
-      />,
-    );
+    render(<Hud view={{ ...view(), ledgerOk: false }} onSkill={noop} />);
     expect(screen.getByRole('alert').textContent).toContain('Ledger-Prüfung fehlgeschlagen');
     expect(screen.getByRole('alert').textContent).toContain('Buchungen blockiert');
   });

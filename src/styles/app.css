@@ -26,7 +26,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px;
+  padding: calc(8px + var(--safe-top)) calc(8px + var(--safe-right)) 8px calc(8px + var(--safe-left));
 }
 
 /* ---------- HUD ---------- */
@@ -34,7 +34,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   position: relative;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) minmax(0, auto);
+  grid-template-columns: auto auto minmax(0, 1fr);
   align-items: center;
   gap: 12px 14px;
   padding: 10px 14px;
@@ -133,6 +133,60 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 }
 .milestone-progress { width: 76px; height: 5px; border-radius: var(--radius-pill); background: rgba(255, 209, 102, 0.16); overflow: hidden; }
 .milestone-progress-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, rgba(255, 209, 102, 0.55), var(--gold)); transition: width 220ms ease; }
+
+/* Ruf als Farbe: der Punkt traegt die Aussage, das Wort erklaert sie. */
+.rep-dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 999px; background: var(--role-identity); box-shadow: 0 0 10px rgba(176, 107, 255, 0.5); }
+.vital.rep.ok strong { color: var(--role-success); }
+.vital.rep.ok .rep-dot { background: var(--role-success); box-shadow: 0 0 10px rgba(45, 212, 160, 0.5); }
+.vital.rep.warn strong { color: var(--role-danger); }
+.vital.rep.warn .rep-dot { background: var(--role-danger); box-shadow: 0 0 10px rgba(255, 107, 129, 0.5); }
+.vital.rep strong { font-size: 15px; letter-spacing: 0.01em; }
+
+/* Fortschritt zum ersten Barkauf: eine Linie, kein Panel. */
+.hud-goal { display: block; height: 3px; margin-top: 3px; border-radius: 999px; background: rgba(255, 209, 102, 0.16); overflow: hidden; }
+.hud-goal i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(255, 209, 102, 0.5), var(--gold)); transition: width 220ms ease; }
+
+/* Punkte nur, wenn welche da sind: eine Zeile, sieben Tasten, kein Panel. */
+.hud-skills { grid-column: 1 / -1; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid var(--line); }
+.hud-skills > span { margin-right: 4px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--gold); }
+
+.hud-penalty.warn { border-color: rgba(255, 209, 102, 0.55); background: rgba(255, 209, 102, 0.08); color: var(--gold); }
+
+/* ---------- Dock: vier Ecken statt elf Tabs ---------- */
+.dock {
+  position: relative; z-index: 22;
+  display: grid; gap: 5px;
+  padding: 5px 5px calc(5px + var(--safe-bottom));
+  border: 1px solid var(--line); border-radius: 16px;
+  background: linear-gradient(180deg, rgba(26, 16, 40, 0.96), rgba(10, 6, 18, 0.98));
+  box-shadow: var(--elev-2), var(--inset-line);
+}
+.dock-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.dock-tab {
+  min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid var(--line-strong); border-radius: 12px; background: #161029;
+  color: #ddcff2; font-size: 10px; letter-spacing: 0.14em;
+  transition: transform 70ms ease, border-color 120ms ease, background 120ms ease;
+}
+.dock-tab:hover { border-color: var(--neon); color: #e6fffa; }
+.dock-tab:active { transform: translateY(1px) scale(0.995); }
+.dock-utility {
+  justify-self: start; display: inline-flex; align-items: center; gap: 7px;
+  margin: 0 2px; padding: 5px 11px; min-height: 34px;
+  border: 1px solid rgba(255, 209, 102, 0.45); border-radius: 999px;
+  background: rgba(255, 209, 102, 0.08); color: #ffe9b0;
+  font-size: 9px; letter-spacing: 0.14em;
+}
+.dock-utility b { font-family: var(--mono); font-size: 11px; color: var(--gold); }
+.dock-utility small { font-size: 9px; letter-spacing: 0.02em; color: var(--muted); }
+.dock-utility.is-poor { opacity: 0.5; }
+
+/* Werkstatt-Raster: eine Tuer, sieben Ziele. */
+.workshop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 7px; }
+.workshop-tile { display: grid; gap: 3px; padding: 11px 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: #140f24; }
+.workshop-tile:hover { border-color: var(--neon); }
+.workshop-tile strong { font-size: 12px; }
+.workshop-tile small { font-size: 10px; line-height: 1.4; color: var(--muted); }
 
 /* ---------- Stage ---------- */
 .stage-wrap {
@@ -273,6 +327,17 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .ops-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .btn.repair { border-color: rgba(255, 107, 129, 0.6); }
 
+/* Hochformat-Hinweis: nur auf flachen Telefonen im Querformat, nie im Desktop-Fenster. */
+.rotate-hint { display: none; }
+@media (orientation: landscape) and (max-height: 560px) {
+  .rotate-hint {
+    position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center;
+    padding: max(24px, var(--safe-top)) max(24px, var(--safe-right)) max(24px, var(--safe-bottom)) max(24px, var(--safe-left));
+    background: rgba(4, 2, 8, 0.94); color: var(--text); text-align: center;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
+  }
+}
+
 /* ---------- Fokus, Live-Region, Touch ---------- */
 :focus-visible { outline: 2px solid var(--neon); outline-offset: 2px; }
 .live-region {
@@ -322,7 +387,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   .hud-money { padding-right: 10px; }
 }
 @media (max-width: 860px) {
-  .app { padding: 4px; gap: 4px; }
+  .app { padding: calc(4px + var(--safe-top)) calc(4px + var(--safe-right)) 4px calc(4px + var(--safe-left)); gap: 4px; }
   .hud { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; padding: 8px; }
   .hud-brand { display: none; }
   .hud-money { grid-column: 1; grid-row: 1; border-right: 0; padding-right: 0; }
@@ -364,3 +429,51 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 /* NAR-14: Einstieg in die Szenen direkt auf dem Floor */
 .narrative-chip { position: absolute; z-index: 16; bottom: 12px; left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
 .narrative-chip:hover { background: #1b0f3a; }
+
+
+/* Aktionskarte: Daumenzone, eine Empfehlung plus zwei Alternativen. */
+.action-card {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: calc(8px + var(--safe-bottom));
+  z-index: 24;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.16));
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(22, 14, 38, 0.97), rgba(9, 6, 18, 0.98));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  contain: layout paint;
+}
+.action-card button {
+  font: inherit;
+  color: var(--ink, #f6f1ff);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.16));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.action-card button:disabled { opacity: 0.45; cursor: default; }
+.action-main {
+  grid-column: 1;
+  min-height: 46px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(180deg, rgba(255, 86, 168, 0.9), rgba(168, 33, 112, 0.9));
+  border-color: rgba(255, 170, 214, 0.7);
+}
+.action-alt { grid-column: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.action-alt button { min-height: 38px; font-size: 12px; }
+.action-close {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 46px;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink-dim, #b9aed0);
+}

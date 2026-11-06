@@ -41,7 +41,8 @@ function loadVolume(): number {
 
 let volume = loadVolume();
 let current: MusicState = 'SILENT';
-/** Solange der Browser ohne Geste blockiert, holt die naechste Geste das ab. */
+/** Vor der ersten Geste wird weder geladen noch abgespielt. */
+let unlocked = false;
 let unlockAttached = false;
 
 interface Deck {
@@ -95,6 +96,7 @@ function stopFade(): void {
 
 /** Wechselt weich auf einen Track und gibt das alte Element danach frei. */
 function fadeTo(state: AudibleState): void {
+  if (!unlocked) return;
   const pair = decksFor();
   if (!pair) return;
   const url = TRACKS[state];
@@ -166,11 +168,10 @@ export function armMusic(): () => void {
   if (typeof window === 'undefined' || unlockAttached) return () => undefined;
   unlockAttached = true;
   const unlock = (): void => {
-    // Noch kein Deck/Track: Zuhoerer bleibt, der naechste Zustandswechsel holt es nach.
-    if (!decks) return;
-    const deck = decks[active]!;
-    if (!deck.track) return;
-    void deck.audio.play().then(detach, () => undefined);
+    unlocked = true;
+    detach();
+    // Erst jetzt darf geladen und gespielt werden; der aktuelle Zustand wird nachgeholt.
+    if (current !== 'SILENT') fadeTo(current);
   };
   const detach = (): void => {
     unlockAttached = false;

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,81 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.120] - 2026-11-05
+
+### Spiel
+- Die Buehne laedt 153 Figuren-, Geraete-, Deko- und Umgebungsframes aus zwei fest gepackten Atlasseiten statt aus 153 Einzeldateien; der Einzeldatei-Fallback bleibt fuer fehlende Seiten.
+- Der Loader verschwindet erst nach dem ersten echten Pixi-Frame. Auf dem 4G-Pruefpfad (9 Mbit/s, 70 ms RTT, kalter Cache) standen 20 Requests und 2,51 s bis zum ersten Frame.
+- Der Performance-Governor schaltet nach zwei Sekunden anhaltender Abweichung zwischen hoch, mittel und niedrig: DPR 1,5/1,25/1,0, 60/60/30 fps, 200/120/60 Partikel und 6/4/0 Lichter.
+- Die mobile Huelle traegt `viewport-fit=cover`, Safe-Area-Variablen und einen Hochformat-Hinweis; die Android-Konfiguration pinnt die MainActivity auf Hochformat.
+- Haptik ohne neue Abhaengigkeit: 8 ms bei Klick, `[12, 40, 18]` beim Jackpot; bei `prefers-reduced-motion` bleibt das Geraet still.
+
+### Technik
+- `src/render/assets/atlas.ts`: `shelfPack` sortiert nach Hoehe, Breite und Pfad; der Produktionspfad registriert die Frames aus `manifest.atlas.pages`, der Laufzeitpfad packt die vier Ordner weiterhin selbst.
+- `scripts/lib/atlas-png.mjs` und `scripts/build-asset-manifest.mjs`: deterministischer 1024er-PNG-Atlas (8-Bit-RGBA, Shelf, Padding 0) mit zwei Seiten und Frame-Koordinaten im Manifest; keine neue Abhaengigkeit.
+- `textures.ts` liest zuerst den Atlas, dann die Einzeldatei. `main.tsx` wartet nur auf die Atlasseiten; Symbole und Plinko folgen nach dem ersten Frame im Leerlauf.
+- `perf-governor.ts` bekommt nur `deltaMS`, haelt die Stufe zwei Sekunden und steuert Renderer-DPR, `ticker.maxFPS`, Partikel- und Lichtbudget ueber `FloorView.setBudget`.
+- `music.ts` laedt und spielt erst nach einer Nutzergeste; der stille Vorlauf konkurriert nicht mehr mit dem ersten Frame.
+- `pnpm run android:apk` erzeugt eine signierte Debug-APK (`artifacts/rigged-by-design-debug.apk`, 21 MB, v2-Signatur, `screenOrientation=1`).
+
+## [0.3.119] - 2026-11-05
+
+### Spiel
+- Geld bekommt Gewicht: Jackpot platzt in Gold und schuettelt 6 px, grosse Auszahlungen klingeln an der Kasse, Streit qualmt rot, Ladegeraete pulsieren.
+- Die Kasse ist ein Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch (1–6 Chips je 5 VC), darunter warmes Pulslicht; das Klingeln laeuft hoechstens alle 1,04 s.
+- Laune unter 40 zeigt eine Sprechblase „Hier stimmt was nicht“ statt einer Zahl.
+- Spielfenster tragen ihre Farbe: Slots Neon-Rot, Tische Samt-Violett, Plinko/Wuerfel/Huetchen/Video Poker Cyan.
+
+### Technik
+- `floor-events.ts`: eine Subscription, acht Ereignisse, je Burst/Ton/Licht/Shake und Anker aus `itemId`/`guestId`; `floor-fx.ts` ist nur noch Darstellung mit gepooltem Licht.
+- `floor-cash.ts`: Chips, Puls und tickgedrosseltes Klingeln; haengt an der Requisiten-Ebene und wird aus dem Snapshot gespeist.
+- `fx/emitter.ts`: `smoke-puff` aus den Animationsframes, `activeEmitterCount()` fuer die Werkstatt.
+- `comic-bubbles.ts`: `createComicSticker` kombiniert Icon und Satz; `popup-shell`/`table-stage` tragen `data-game`, `tokens.css` die drei Farbfamilien.
+
+## [0.3.118] - 2026-11-05
+
+### Spiel
+- Touch zuerst: Ein Finger zieht die Karte (ab 8 px), ein Tipp laesst die Figur laufen. Rechte Maustaste bleibt der Desktop-Weg, Pinch bleibt.
+- Ziele sind auch ohne Hover sichtbar: Das Zielraster erscheint schon beim Aufsetzen des Fingers und leuchtet 500 ms nach.
+- Die Aktionskarte ersetzt das Radialmenue: unten in der Daumenzone stehen eine grosse empfohlene Aktion, zwei Alternativen und ein X statt 28-px-Zielen.
+- Sofortiges Feedback: Figuren quetschen sich 90 ms beim Tipp, ein Ring oeffnet sich am Fuss, Objekte leuchten 120 ms ueber einem gebackenen Glow-Ring.
+
+### Technik
+- `floor-touch.ts`: Ein-Finger-Pan ab 8 px mit `pointerType !== 'mouse'`; der Tipp laeuft erst bei `pointerup`, damit ein Schwenk nicht zusaetzlich laeuft.
+- `floor-input.ts`: `handleTap(button, point, ...)` liefert `TapHit | null`; `onActions(actions)` ersetzt `onOpenMenu(actions, x, y)`, `screenPoint()` uebersetzt Touch-Pixel in Kamera-Koordinaten.
+- `fx/emitter.ts`: Sprite-Pool mit 200 Partikeln, `acquire`/`release`, `textureFor` einmal je Burst, kein `destroy` im Frame.
+- `fx/floor-fx.ts` haengt am Kamera-Container, rechnet in Weltkoordinaten und wird aus `animateFloor(now, ...)` geupdatet; der Screen-Shake verschiebt die Kamera statt eines Vollbild-div.
+- `floor-cues.ts` pingt mit drei gebackenen Ring-Sprites statt neun Shapes pro Frame. `radial-menu.ts`, `character-view.ts` und `particle-overlay.tsx` sind geloescht.
+
+## [0.3.117] - 2026-11-05
+
+### Spiel
+- Jeder Raum ist texturiert: Boden und Waende kacheln, drei Requisiten je Zone (Bar, Kasse, Spielsaal, Lager) stehen fest im Chunk.
+- Tageszeit: Morgen, Abend und Nacht faerben das Licht; die Phase kommt aus dem Tick, nie aus der Uhr.
+
+### Technik
+- `furniture-atlas.ts` backt einen Korpus je Bauart und Groesse in eine RenderTexture; Instanzen zeichnen nur ein Sprite, LOD-0 dieselbe Silhouette mit alpha 0.85.
+- `floor-surface.ts` kachelt Boden und Wandtapete als TilingSprite (tileScale 2) statt als gestrecktes Sprite; `room-art.ts` traegt 2-px-Konturen und 6-px-Schwellen.
+- `guest-parts.ts`: Schatten und Kopftexturen einmal gebacken; nur der naechste Gast traegt ein Namensschild.
+
+## [0.3.116] - 2026-11-05
+
+### Technik
+- `src/styles/popup.css`: `backdrop-filter: blur(7px)` ist raus; der Backdrop nutzt einen radialen Verlauf ueber einer Alpha-Flaeche und `contain: paint`. Kein Vollbild-Blur mehr, gleiche Abdunklung.
+- `reel-roll` animiert nur noch `transform` und `opacity` statt `filter: blur`; die Walzen laufen ohne Filter-Neuberechnung pro Frame.
+
+## [0.3.115] - 2026-11-05
+
+### Spiel
+- Aus dem Instrumentenbrett wird eine App: oben stehen nur noch Marke, Tag, Hauskonto und zwei Kennzahlen – Gäste und Ruf. Der Ruf zeigt Farbe und Wort (angesehen, solide, ramponiert) statt einer Prozentzahl.
+- Die elf Aktionsknöpfe der HUD-Leiste sind weg. Unten gibt es vier Bereiche: **Bauen · Gäste · Karte · Du**. Putzen erscheint nur noch, wenn es Dreck gibt – mit Anzahl und Preis.
+- Alles Technische liegt hinter einer Tür: Charakter, Protokoll, Prüfung, Assets, Sound, Gerät und Hilfe öffnen sich aus „Du“ in der Werkstatt. Die Tasten-Legende (WASD, Enter, Rad) ist aus dem Spielfluss verschwunden, die Tasten wirken weiter.
+
+### Technik
+- `src/App.tsx` 348 → 203 Zeilen: Popup-Routing nach `src/ui/popup-router.tsx`, Tastenpfad nach `src/ui/use-stage-keys.ts`, neue `src/ui/dock.tsx` und `src/ui/workshop.tsx`.
+- `Popup`-Union verkleinert: `journal`, `diagnostics`, `look`, `assets`, `sound`, `help` werden zu `{ kind: 'workshop'; tool?: WorkshopTool }`. Die Werkstatt reicht die vorhandenen Fenster unverändert weiter.
+- `src/ui/hud.tsx` 176 → 113 Zeilen; `src/ui/stage-controls.tsx` trägt nur noch die Kamera-Knöpfe. Keine Spielmechanik, kein Ledger, kein RNG und kein Save-Format angefasst.
 
 ## [0.3.114] - 2026-11-04
 

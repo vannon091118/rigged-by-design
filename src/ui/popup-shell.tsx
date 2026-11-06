@@ -10,11 +10,13 @@ interface PopupShellProps {
   readonly wide?: boolean;
   readonly full?: boolean;
   readonly className?: string;
+  /** Spieltyp fuer die Farbidentitaet; nur CSS-Variablen, kein Layout. */
+  readonly game?: string;
 }
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '' }: PopupShellProps) {
+export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '', game }: PopupShellProps) {
   const panel = useRef<HTMLElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -57,6 +59,7 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
         ref={panel}
         tabIndex={-1}
         className={`popup ${wide ? 'popup-wide' : ''} ${full ? 'popup-full' : ''} ${className}`.trim()}
+        data-game={game}
         role="dialog"
         aria-modal="true"
         aria-label={title}

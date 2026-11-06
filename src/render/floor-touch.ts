@@ -1,26 +1,37 @@
-/** Zeigergesten auf dem Canvas: Rad, Pinch und Ziehen; die Kamera bleibt die einzige Wahrheit. */
+/** Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. */
 import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { FloorCamera } from './floor-camera';
+
+/** Ab hier ist ein Fingerzug ein Schwenk und kein Tipp. */
+const DRAG_THRESHOLD = 8;
+
+interface TouchState { readonly id: number; x: number; y: number; dragged: boolean }
 
 export class FloorTouch {
   readonly #app: Application;
   readonly #camera: Container;
   readonly #cam: FloorCamera;
   readonly #size: () => number;
+  readonly #onTap: (clientX: number, clientY: number) => void;
   readonly #pointers = new Map<number, { x: number; y: number }>();
   #span = 0;
   #pan: { id: number; x: number; y: number } | null = null;
+  #touch: TouchState | null = null;
 
-  constructor(app: Application, camera: Container, cam: FloorCamera, size: () => number) {
+  constructor(
+    app: Application, camera: Container, cam: FloorCamera, size: () => number,
+    onTap: (clientX: number, clientY: number) => void,
+  ) {
     this.#app = app;
     this.#camera = camera;
     this.#cam = cam;
     this.#size = size;
+    this.#onTap = onTap;
     app.canvas.addEventListener('pointerdown', this.#down);
     app.canvas.addEventListener('pointermove', this.#move);
     app.canvas.addEventListener('pointerup', this.#up);
-    app.canvas.addEventListener('pointercancel', this.#up);
+    app.canvas.addEventListener('pointercancel', this.#cancel);
     app.canvas.addEventListener('wheel', this.#wheel, { passive: false });
     app.canvas.addEventListener('contextmenu', this.#menu);
   }
@@ -29,7 +40,7 @@ export class FloorTouch {
     this.#app.canvas.removeEventListener('pointerdown', this.#down);
     this.#app.canvas.removeEventListener('pointermove', this.#move);
     this.#app.canvas.removeEventListener('pointerup', this.#up);
-    this.#app.canvas.removeEventListener('pointercancel', this.#up);
+    this.#app.canvas.removeEventListener('pointercancel', this.#cancel);
     this.#app.canvas.removeEventListener('wheel', this.#wheel);
     this.#app.canvas.removeEventListener('contextmenu', this.#menu);
     this.#app.canvas.style.cursor = '';
@@ -41,6 +52,12 @@ export class FloorTouch {
     if (this.#pointers.size === 2) {
       this.#span = this.#distance();
       this.#pan = null;
+      this.#touch = null;
+      return;
+    }
+    // Finger: erst nach der Schwelle wird geschwenkt, vorher bleibt es ein Tipp.
+    if (event.pointerType !== 'mouse') {
+      this.#touch = { id: event.pointerId, x: event.clientX, y: event.clientY, dragged: false };
       return;
     }
     // Mittlere und rechte Taste schwenken: die linke bleibt dem Laufen.
@@ -53,7 +70,15 @@ export class FloorTouch {
   #move = (event: PointerEvent): void => {
     if (!this.#pointers.has(event.pointerId)) return;
     this.#pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    if (this.#pan && this.#pan.id === event.pointerId) { this.#drag(event); return; }
+    if (this.#pan && this.#pan.id === event.pointerId) { this.#drag(event, this.#pan); return; }
+    const touch = this.#touch;
+    if (touch && touch.id === event.pointerId) {
+      if (!touch.dragged && Math.hypot(event.clientX - touch.x, event.clientY - touch.y) >= DRAG_THRESHOLD) {
+        touch.dragged = true;
+      }
+      if (touch.dragged) this.#drag(event, touch);
+      return;
+    }
     if (this.#pointers.size !== 2) return;
     const span = this.#distance();
     if (this.#span <= 0) { this.#span = span; return; }
@@ -80,16 +105,27 @@ export class FloorTouch {
       this.#pan = null;
       this.#app.canvas.style.cursor = '';
     }
+    const touch = this.#touch;
+    if (touch && touch.id === event.pointerId) {
+      this.#touch = null;
+      if (!touch.dragged) this.#onTap(event.clientX, event.clientY);
+    }
+  };
+
+  #cancel = (event: PointerEvent): void => {
+    this.#pointers.delete(event.pointerId);
+    if (this.#pointers.size < 2) this.#span = 0;
+    if (this.#pan?.id === event.pointerId) { this.#pan = null; this.#app.canvas.style.cursor = ''; }
+    if (this.#touch?.id === event.pointerId) this.#touch = null;
   };
 
   /** Ziehen verschiebt das Bild unter dem Zeiger; die Figur bleibt stehen. */
-  #drag = (event: PointerEvent): void => {
-    const pan = this.#pan!;
-    const dx = event.clientX - pan.x;
-    const dy = event.clientY - pan.y;
+  #drag = (event: PointerEvent, state: { x: number; y: number }): void => {
+    const dx = event.clientX - state.x;
+    const dy = event.clientY - state.y;
     if (Math.abs(dx) + Math.abs(dy) < 1) return;
-    pan.x = event.clientX;
-    pan.y = event.clientY;
+    state.x = event.clientX;
+    state.y = event.clientY;
     const rect = this.#app.canvas.getBoundingClientRect();
     const world = this.#size() * TILE * this.#camera.scale.x;
     if (rect.width === 0 || world <= 0) return;

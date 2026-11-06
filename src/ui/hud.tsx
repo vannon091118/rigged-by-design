@@ -1,27 +1,15 @@
-/** HUD: Hauskonto, Gäste und die drei Dinge, die jetzt zählen – in Klartext. */
+/** HUD: Marke, Geld und drei Kennzahlen. Der Werkzeugkasten lebt im Dock. */
+import { barCapacityForLevel } from '../core/sim/deliveries';
+import { HAUSKONTO } from '../core/sim/money';
+import type { RpgAttribute } from '../core/sim/player-rpg';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { ACCOUNT_LABEL, HELP } from './glossary';
 import { UI_ICON } from './icons';
-import type { RpgAttribute } from '../core/sim/player-rpg';
-import { HAUSKONTO } from '../core/sim/money';
-import { barCapacityForLevel } from '../core/sim/deliveries';
 
 interface HudProps {
   readonly view: GameView;
-  readonly onSmartphone: () => void;
-  readonly onGuests: () => void;
-  readonly onVisit: () => void;
-  readonly onClean: () => void;
-  readonly onOverview: () => void;
-  readonly onJournal: () => void;
-  readonly onDiagnostics: () => void;
-  readonly onLook: () => void;
-  readonly onAssets: () => void;
   readonly onSkill: (attribute: RpgAttribute) => void;
-  readonly onHelp: () => void;
-  readonly muted?: boolean;
-  readonly onToggleSound?: () => void;
 }
 
 const PENALTY_LABEL = (kind: string): string =>
@@ -29,15 +17,30 @@ const PENALTY_LABEL = (kind: string): string =>
 
 const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 'gemischt' : 'gereizt');
 
-export function Hud({
-  view, onSmartphone, onGuests, onVisit, onClean, onOverview, onJournal, onDiagnostics, onLook, onAssets, onSkill, onHelp,
-  muted = false, onToggleSound,
-}: HudProps) {
+/** Ruf als Farbe und Wort: eine Prozentzahl sagt niemandem etwas. */
+const reputationOf = (value: number): { readonly label: string; readonly tone: string } =>
+  value >= 70 ? { label: 'angesehen', tone: 'ok' }
+    : value >= 40 ? { label: 'solide', tone: '' }
+      : { label: 'ramponiert', tone: 'warn' };
+
+const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
+  ['speed', 'SPD', 'Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.'],
+  ['charisma', 'CHA', 'Charisma: bessere Talk-Chance, mehr Trinkgeld.'],
+  ['brawl', 'BRW', 'Brawl: mehr HP, mehr Kampfschaden.'],
+  ['perception', 'PER', 'Wahrnehmung: bessere Queue-Position, Dreck früher sehen.'],
+  ['technique', 'TEC', 'Technik: schnellere Reparatur, bessere Mods.'],
+  ['endurance', 'END', 'Ausdauer: schnellere Regeneration, kürzere Verletzungen.'],
+  ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
+];
+
+export function Hud({ view, onSkill }: HudProps) {
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
+  const bar = view.furniture.find((item) => item.kind === 'BAR');
+  const barCapacity = barCapacityForLevel(view.barLevel);
+  const reputation = reputationOf(view.reputation);
   const startTip = view.house === 0 && view.guests.length === 0;
   const mood = view.guests.length ? view.mood : 0;
-  const bar = view.furniture.find((item) => item.kind === 'BAR');
   return (
     <header className="hud">
       <div className="hud-brand">
@@ -53,123 +56,62 @@ export function Hud({
         <strong>{vc(view.house, view.house < 1000 * 10_000 ? 2 : 0)}</strong>
         <small>
           <span className="term" title={HELP.portemonnaie}>Portemonnaie {vc(view.wallet, 2)}</span>
-          <span className="term" title={HELP.kasse}> · Wechselkasse {vc(view.desk, 2)}</span>
+          <span className="term" title={HELP.kasse}> · Kasse {vc(view.desk, 2)}</span>
         </small>
+        {!view.barPurchased && (
+          <span className="hud-goal" title={`Bargeld bis zum Barkauf: ${vc(view.wallet, 2)} von 50,00`}>
+            <i style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
+          </span>
+        )}
       </div>
 
       <div className="hud-vitals">
-        <div className={`vital${view.pending > 0 ? ' hot' : ''}`} title={HELP.offen}>
-          <span>OFFENE GEWINNE</span>
-          <strong>{vc(view.pending, 2)}</strong>
-          <small>{view.pending > 0 ? 'im Gäste-Fenster auszahlen' : 'nichts offen'}</small>
-        </div>
-        <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe; Sitzplätze sind keine Obergrenze.">
+        <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe.">
           <span><img className="ui-icon" src={UI_ICON.guests} alt="" />GÄSTE</span>
           <strong>{view.guests.length}</strong>
           <small>
             {view.demand.event
               ? `${view.demand.event.label} läuft`
-              : view.guests.length ? `~${Math.round(view.demand.perDay)} Gäste/Tag · Laune ${MOOD_LABEL(mood)}` : `~${Math.round(view.demand.perDay)} Gäste/Tag`}
+              : view.guests.length ? `~${Math.round(view.demand.perDay)}/Tag · Laune ${MOOD_LABEL(mood)}` : `~${Math.round(view.demand.perDay)}/Tag`}
           </small>
         </div>
-        <div className={`vital rep${dirty > 0 ? ' warn' : ''}`} title={HELP.ruf}>
-          <span><img className="ui-icon" src={UI_ICON.star} alt="" />RUF</span>
-          <strong>{view.reputation}<em>%</em></strong>
-          <small>
-            <img className="ui-icon" src={dirty > 0 ? UI_ICON.warning : UI_ICON.check} alt="" />
-            {dirty > 0 ? `${dirty} Flecken drücken den Ruf` : 'sauber'}
-          </small>
+        <div className={`vital rep ${reputation.tone}`} title={`${HELP.ruf} · ${view.reputation} %`}>
+          <span>RUF</span>
+          <strong><i className="rep-dot" aria-hidden="true" />{reputation.label}</strong>
+          <small>{dirty > 0 ? `${dirty} Flecken drücken den Ruf` : 'sauber'}</small>
         </div>
-        <div className={`vital${bar && bar.stock === 0 ? ' warn' : ''}`} title={HELP.bar}>
-          <span>BAR</span>
-          <strong>{bar ? bar.stock : 0}<em>/{barCapacityForLevel(view.barLevel)}</em></strong>
-          <small>{bar ? (bar.stock === 0 ? 'leer – Laune sinkt' : `${view.parts} Ersatzteile im Lager`) : 'keine Bar'}</small>
-        </div>
-        {(view.crates.length > 0 || view.disputes.length > 0) && (
-          <div className={`vital${view.disputes.length > 0 ? ' hot' : ''}`} title="Kisten warten am Eingang, Streit muss geschlichtet werden.">
-            <span>KISTEN / STREIT</span>
-            <strong>{view.crates.length}<em> / </em>{view.disputes.length}</strong>
-            <small>{view.disputes.length > 0 ? 'Streit eskaliert' : 'Ware abholen'}</small>
-          </div>
-        )}
       </div>
-
-      <div className="hud-actions">
-        <button type="button" className="btn primary" onClick={onSmartphone} title="Smartphone: Bauen, Kaufen, Reisen, Putzen, Servieren">SMARTPHONE</button>
-        <button type="button" className={`btn${view.pending > 0 ? ' alert' : ''}`} onClick={onGuests} title="Budget, Laune, Geduld und Sucht jedes Gastes">
-          GÄSTE{view.pending > 0 ? <b className="badge">{view.guests.filter((g) => (view.guestMoney[g.id]?.pending ?? 0) > 0).length}</b> : null}
-        </button>
-        <button type="button" className="btn" onClick={onVisit} title="Bei anderen Betreibern spielen – dein Portemonnaie ist dort Gast.">FREMDES CASINO</button>
-        <button type="button" className={`btn${dirty > 0 ? ' warm' : ''}`} onClick={onClean} disabled={dirty === 0 || view.house < view.prices.cleaningCost * dirty} title={dirty > 0 ? `Alles putzen für ${vc(view.prices.cleaningCost * dirty, 2)}` : 'Alles sauber'}>
-          PUTZEN{dirty > 0 ? <b className="badge">{dirty}</b> : null}
-        </button>
-        <button type="button" className="btn ghost" onClick={onOverview} title="Kamera auf das ganze Haus ziehen">ÜBERSICHT</button>
-        <button type="button" className="btn ghost" onClick={onJournal} title="Jede Buchung mit Ursache und Folge lesen">PROTOKOLL</button>
-        <button type="button" className="btn ghost" onClick={onDiagnostics} title="Buchhaltung, Personal und Lager prüfen">PRÜFUNG</button>
-        <button type="button" className="btn ghost" onClick={onLook} title="Aussehen deiner Spielfigur ändern">CHARAKTER</button>
-        <button type="button" className="btn ghost" onClick={onAssets} title="Alle Texturen, Animationen, Emitter und Tonspuren des Pakets ansehen">ASSETS</button>
-        {onToggleSound && (
-          <button type="button" className="btn ghost" aria-pressed={muted} onClick={onToggleSound} title={muted ? 'Sound ist stumm · Lautstärke und Kanäle öffnen' : 'Lautstärke und Kanäle einstellen'}>
-            {muted ? 'STUMM' : 'SOUND'}
-          </button>
-        )}
-        <button type="button" className="btn ghost help-btn" onClick={onHelp} aria-label="Hilfe: Spiel erklärt" title="Spiel erklärt: Geld, Gäste, Objekte, Steuerung">
-          <img className="ui-icon" src={UI_ICON.help} alt="" />
-        </button>
-      </div>
-
-      <div className="hud-rpg">
-        <span>LV {rpg.level}</span>
-        <small>XP {rpg.xp}/{rpg.level * 100}</small>
-        <div className="rpg-bar" aria-hidden="true">
-          <div style={{ width: `${Math.min(100, (rpg.xp / (rpg.level * 100)) * 100)}%` }} />
-        </div>
-        {rpg.unspentPoints > 0 && (
-          <>
-            <button type="button" className="btn warm" onClick={() => onSkill('speed')} title="Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.">SPD {rpg.speedLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('charisma')} title="Charisma: bessere Talk-Chance, mehr Trinkgeld.">CHA {rpg.charismaLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('brawl')} title="Brawl: mehr HP, mehr Kampfschaden.">BRW {rpg.brawlLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('perception')} title="Wahrnehmung: bessere Queue-Position, Dreck/Streit früher sehen.">PER {rpg.perceptionLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('technique')} title="Technik: schnellere Reparatur, bessere Mods, genaue Deals.">TEC {rpg.techniqueLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('endurance')} title="Ausdauer: schnellere HP-Regeneration, kürzere Verletzungen.">END {rpg.enduranceLevel}</button>
-            <button type="button" className="btn warm" onClick={() => onSkill('luck')} title="Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.">LCK {rpg.luckLevel}</button>
-          </>
-        )}
-        {!view.barPurchased && (
-          <div className="hud-milestone" title={`Bargeld bis zum Barkauf: ${vc(view.wallet, 2)} von 50,00`}>
-            <span>BAR-KAUF {vc(view.wallet, 2)} / 50,00</span>
-            <div className="milestone-progress">
-              <div className="milestone-progress-fill" style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {view.playerJob && (
-        <div className="hud-job">
-          <span>Job: {view.playerJob.jobId}</span>
-          <span>Tag {view.playerJob.workDays}</span>
-        </div>
-      )}
 
       {!view.ledgerOk && (
-        <div className="hud-penalty" role="alert">
-          Ledger-Prüfung fehlgeschlagen · Buchungen blockiert · Diagnose öffnen
+        <p className="hud-penalty" role="alert">Ledger-Prüfung fehlgeschlagen · Buchungen blockiert · Werkstatt öffnen</p>
+      )}
+      {bar && bar.stock < barCapacity / 3 && (
+        <p className="hud-penalty warn" role="status">
+          {bar.stock === 0 ? 'Bar leer' : 'Bar fast leer'} · {bar.stock}/{barCapacity}
+          {bar.stock === 0 ? ' · Gäste verlieren Laune' : ' · bald keine Drinks'}
+        </p>
+      )}
+      {view.activePenalties.map((penalty) => (
+        <p key={penalty.kind} className="hud-penalty" role="status">
+          {PENALTY_LABEL(penalty.kind)} · noch {penalty.daysLeft} Tag(e)
+        </p>
+      ))}
+
+      {rpg.unspentPoints > 0 && (
+        <div className="hud-skills">
+          <span>LV {rpg.level} · {rpg.unspentPoints} Punkte</span>
+          {SKILLS.map(([attribute, label, hint]) => (
+            <button key={attribute} type="button" className="btn tiny warm" title={hint} onClick={() => onSkill(attribute)}>
+              {label}+
+            </button>
+          ))}
         </div>
       )}
 
-      {view.activePenalties.map((penalty) => (
-        <div key={penalty.kind} className="hud-penalty" role="status">
-          {PENALTY_LABEL(penalty.kind)} · noch {penalty.daysLeft} Tag(e)
-        </div>
-      ))}
-
       {startTip && (
-        <div className="hud-tip">
-          <span>0 VC. Dein Automat steht gratis.</span>
-          <span>Gäste kommen zum Eingang, wechseln an der Kasse und spielen.</span>
-          <span>Öffne ? für Geld, Gäste und Steuerung.</span>
-        </div>
+        <p className="hud-tip">
+          0 VC. Dein Automat steht gratis – Gäste wechseln an der Kasse und spielen. Alles Weitere liegt im Dock.
+        </p>
       )}
     </header>
   );

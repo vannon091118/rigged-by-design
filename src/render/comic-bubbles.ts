@@ -1,5 +1,5 @@
 /** Kleine Comic-Sprechblase: eine Grafik statt eines Satzes, pro Figur gepoolt. */
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Text } from 'pixi.js';
 import type { GuestEmotion } from '../core/sim/emotion';
 
 interface ComicBubble {
@@ -57,7 +57,66 @@ function drawIcon(g: Graphics, kind: GuestEmotion): void {
   }
 }
 
-export function createComicBubble(): ComicBubble {
+/** Eine Sprechblase mit Satz statt Icon: die Laune bekommt eine Stimme. */
+interface ComicNote {
+  readonly container: Container;
+  readonly set: (text: string | null) => void;
+}
+
+function createComicNote(): ComicNote {
+  const container = new Container();
+  const bg = new Graphics();
+  const label = new Text({
+    text: '',
+    style: { fontFamily: 'ui-monospace, monospace', fontSize: 7, fill: INK },
+  });
+  label.anchor.set(0.5, 0.5);
+  label.position.set(0, -55);
+  container.addChild(bg, label);
+  container.visible = false;
+  let current: string | null = null;
+
+  const set = (text: string | null): void => {
+    if (text === current) return;
+    current = text;
+    bg.clear();
+    label.text = text ?? '';
+    container.visible = text !== null;
+    if (text === null) return;
+    const width = label.width + 12;
+    bg.roundRect(-width / 2, -64, width, 17, 6).fill(PAPER).stroke({ width: 1.2, color: INK });
+    bg.poly([-3, -47, 3, -47, 0, -40]).fill(PAPER).stroke({ width: 1, color: INK });
+  };
+
+  return { container, set };
+}
+
+/** Sticker einer Figur: Icon-Bubble oder Satz bei schlechter Laune. */
+interface ComicSticker {
+  readonly container: Container;
+  readonly set: (kind: GuestEmotion, lowMood: boolean, visible: boolean) => void;
+}
+
+export function createComicSticker(): ComicSticker {
+  const container = new Container();
+  const bubble = createComicBubble();
+  const note = createComicNote();
+  container.addChild(bubble.container, note.container);
+  container.visible = false;
+
+  const set = (kind: GuestEmotion, lowMood: boolean, visible: boolean): void => {
+    note.set(lowMood ? 'Hier stimmt was nicht' : null);
+    const show = visible && (lowMood || kind !== 'NONE');
+    container.visible = show;
+    note.container.visible = show && lowMood;
+    bubble.container.visible = show && !lowMood;
+    if (!lowMood) bubble.set(kind);
+  };
+
+  return { container, set };
+}
+
+function createComicBubble(): ComicBubble {
   const container = new Container();
   const bg = new Graphics();
   const icon = new Graphics();

@@ -7,6 +7,7 @@ import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
+import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
@@ -44,6 +45,7 @@ function worldSnapshot(world: WorldState) {
     dirtyTiles: new Set(world.dirty),
     tick: world.tick,
     day: world.day,
+    dayPhase: dayPhaseOf(world.tick),
     // Die UI sieht, ob ein Guard existiert – das leitet sich jetzt aus seinem
     // Agenten ab, nicht aus einem eigenen Flag.
     staff: staffView(world),

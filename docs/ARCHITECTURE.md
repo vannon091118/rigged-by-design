@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.114 | 2026-11-04 23:02 UTC -->
+<!-- rbd-doc: v0.3.120 | 2026-11-05 05:54 UTC -->
 
 ## README als Einstieg
 
@@ -125,20 +125,20 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 5: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/ui.test.tsx` |
 | @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 60: `scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>… (+54) |
-| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 39: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+33) |
+| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 42: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+36) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |
 | eslint | ^10.14.0 | Lint | Fail-Closed-Lint-Gate mit TypeScript-Parser und ungenutzten Symbolen. | 2: `package.json`<br>`src/Config/eslint.config.mjs` |
 | ffmpeg-static | ^5.3.0 | Assets | Kodiert die WAV-Musikmaster zu Opus fuer die Auslieferung; reines Build-Werkzeug, nicht im Bundle. | 1: `scripts/encode-audio.mjs` |
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `src/Config/eslint.config.mjs` |
 | jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 8: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>… (+2) |
-| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 47: `src/render/assets/textures.ts`<br>`src/render/character-view.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/floor-animate.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-carpet.ts`<br>… (+41) |
-| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 39: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+33) |
+| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 48: `src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/floor-animate.ts`<br>`src/render/floor-camera.ts`<br>`src/render/floor-carpet.ts`<br>`src/render/floor-cues.ts`<br>… (+42) |
+| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 42: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+36) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 152: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>… (+146) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 161: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/economy/__tests__/economy.test.ts`<br>`src/core/economy/__tests__/ledger-checkpoint.test.ts`<br>`src/core/economy/__tests__/ledger-diagnose.test.ts`<br>`src/core/games/__tests__/contracts.test.ts`<br>… (+155) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 2: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts` |
 <!-- DEP_MATRIX_END -->
 
@@ -216,7 +216,28 @@ weil der Rueckweg nach `main` die Branch sonst mitnimmt. Einzige Identitaetsquel
 
 ## Floor-Rendering und Performance
 
-Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chunk backt nur neu, wenn sich sein Regions-Hash (`src/render/floor-math.ts`) ändert. Möbel stehen auf einer eigenen Ebene und backen den Boden nicht neu. Dreck wird pro Region invalidiert. Kamera, LOD, Culling und Koordinaten sind reine Mathe und getestet (`src/render/__tests__/floor-cache.test.ts`). Agenten, Kisten, Dispute und Platzierungs-Geist laufen auf der Requisiten-Ebene (`src/render/floor-props.ts`).
+Der Boden liegt in 30×30-Regions-Chunks (`src/render/scene-cache.ts`); ein Chunk backt nur neu, wenn sich sein Regions-Hash (`src/render/floor-math.ts`) ändert. Möbel stehen auf einer eigenen Ebene und backen den Boden nicht neu. Dreck wird pro Region invalidiert. Kamera, LOD, Culling und Koordinaten sind reine Mathe und getestet (`src/render/__tests__/floor-cache.test.ts`). Agenten, Kisten, Dispute und Platzierungs-Geist laufen auf der Requisiten-Ebene (`src/render/floor-props.ts`). Partikel und Shake liegen seit 0.3.118 auf der Buehne (`src/render/fx/floor-fx.ts`); der Emitter allokiert im Frame nichts und deckelt bei 200 Sprites.
+
+Seit 0.3.119 liegt die Ereignisantwort in genau einer Tabelle (`src/render/floor-events.ts`): eine Subscription auf `core/sim/events`, acht Zeilen, je Ereignis Burst, Ton, Licht, Shake und ein Anker aus dem Snapshot. `floor-fx.ts` kennt keine Ereignisse mehr, sondern nur noch `burst`, `flash` und `shake`; das Licht kommt aus einem Pool von hoechstens acht Graphics. Die Kasse ist ein eigenes Objekt (`src/render/floor-cash.ts`) an der Requisiten-Ebene: Chip-Stapel, warmes Pulslicht und gedrosseltes Klingeln, gespeist aus `pending` und `tick`, nie aus der Uhr.
+
+Seit 0.3.120 hat der Boden einen Produktionsatlas: `build-asset-manifest.mjs` packt die vier Ordner `characters`, `decor`, `environment` und `machines` mit demselben Shelf-Plan wie `atlas.ts` in zwei deterministische 1024er-Seiten. Der Laufzeitpfad registriert nur noch Seitenausschnitte; fehlt eine Seite, packt `atlas.ts` die Einzeldateien selbst. Damit bleiben die 153 Frames aus dem kritischen Pfad: der Browser misst 20 Requests und 2,51 s bis zum ersten Frame im 4G-Profil (9 Mbit/s, 70 ms RTT, kalter Cache). Der Loader haengt an `onFirstFrame` nach `renderer.render(stage)`, nicht an einem Timer.
+
+Der `PerfGovernor` ist reine Darstellung ohne Spielzustand: er bekommt `deltaMS`, fuehrt zwei Sekunden Abweichung und liefert eine von drei Stufen. `floor-stage.tsx` uebersetzt sie in Renderer-DPR, `ticker.maxFPS`, Partikel- und Lichtlimit. Mobile Sicherheitsabstaende kommen aus `--safe-*` in `tokens.css` und `viewport-fit=cover`; die Haptik bleibt bei reduzierter Bewegung still und braucht keine Capacitor-Abhaengigkeit.
+
+### Ereignisse auf dem Boden (8 × 4)
+
+| Ereignis | Partikel | Sound | Licht | Bewegung |
+| --- | --- | --- | --- | --- |
+| `slot:jackpot` | `jackpot-burst`, 30 | `win` | Gold, 620 ms, 96 px | Shake 6 px |
+| `money:bigPayout` | `coin-burst`, 22, an der Kasse | `coin` | Warm, 450 ms, 74 px | - |
+| `dispute:start` | `smoke-puff`, 16, am Gast | `brawl` | Rot, 700 ms, 86 px | Shake 10 px |
+| `slot:chargeReady` | - | `pinHit` | Service, 520 ms, 42 px | LED-Puls am Geraet |
+| `slot:chargeDischarge` | `machine-sparks`, 14 | `coin` | Warn, 360 ms, 52 px | Shake 4 px |
+| `slot:spin` | - | `reelStop` | Identity, 260 ms, 30 px | - |
+| `plinko:drop` | `plinko-impact`, 16 | `pinHit`-Serie (7 Pins) | Cyan, 380 ms, 48 px | Shake 5 px |
+| `dispute:sabotage` | `machine-sparks`, 16, rot | `brawl` | Rot, 420 ms, 60 px | Shake 6 px |
+
+Kein Ton ohne sichtbares Pendant: wo kein Burst liegt, traegt ein Licht oder ein Shake die Rueckmeldung. Der Anker kommt aus dem Snapshot, nicht aus der Bildmitte: `itemId` wird zur Mitte des Moebels, `guestId`/`guestIds[0]` zum Fuss des Gasts, `plinko:drop` zum Plinko-Brett, `money:bigPayout` zur Kasse; fehlt alles, faellt der Punkt auf die Spielfigur zurueck.
 
 Messung vom 30.10.2026 auf der Cloud-VM, für das Low-End-Profil mit `taskset -c 0` auf einen Kern gepinnt (Emulation, keine echte schwache Hardware): 9 Regions-Hashes 0,0008 ms, Neuzeichnen aller 9 Boden-Chunks 1,1685 ms (nur bei Template-/Teppichwechsel), Dreck in 9 Regionen mit 500 Tiles 0,8068 ms, Culling über 200 Entities 0,0026 ms. Dazu: 200 Rig-Posen 0,0128 ms, Snapshot mit 200 Gästen und 5.000 Buchungen 0,1047 ms, vollständige Ledger-Prüfung über 5.201 Buchungen 0,0042 ms. 1.000 Ticks messen 949,9 ms; der Save bleibt bei 115,2 KiB. Das Heap-Delta ist wegen GC nicht belastbar und wird nur als Rohwert geloggt. Steady-State pro Tick: Hash + Culling, keine Neuzeichnung.
 
@@ -224,10 +245,11 @@ Die Messungen nutzen eine explizite Hilfe (`src/test/measure.ts`) mit einem Warm
 
 ## Bodenhinweise, Kamera und Bildsprache
 
-- `src/render/floor-cues.ts` ist die einzige Ebene, die Steuerung sichtbar macht: Zielraster unter dem Zeiger, Ring am Figurenfuss, Punktspur des Laufwegs, Puls am Klickziel. Sie liest Snapshots und Pixelkoordinaten, kennt keine Regel und schreibt keinen Spielzustand. Die Farbe traegt die Folge: Service heisst laufen, Identity heisst heranziehen; die Kopplung sitzt in `setMode(detail)` und kommt aus dem LOD der Kamera.
+- `src/render/floor-cues.ts` ist die einzige Ebene, die Steuerung sichtbar macht: Zielraster unter dem Zeiger, Ring am Figurenfuss, Punktspur des Laufwegs, Puls am Klickziel. Sie liest Snapshots und Pixelkoordinaten, kennt keine Regel und schreibt keinen Spielzustand. Die Farbe traegt die Folge: Service heisst laufen, Identity heisst heranziehen; die Kopplung sitzt in `setMode(detail)` und kommt aus dem LOD der Kamera. Seit 0.3.118 erscheint das Raster schon bei `pointerdown` und leuchtet 500 ms nach; der Ping besteht aus drei gebackenen Ring-Sprites statt neun Graphics pro Frame.
 - Das Zielraster haengt am Zeiger, nicht am Bild: nach jeder Kamerafahrt setzt `refresh()` die Kachel ueber die letzte Zeigerposition neu, sonst zeigt es auf eine Kachel, die nicht mehr unter der Maus liegt.
-- `src/render/floor-camera.ts` ist weiterhin die einzige Kamera-Wahrheit und reine Mathematik: `pan` (normalisierte Weltanteile, geclampt auf 0..1), `zoomStep` (Tasten und Knoepfe) und `keepInView` (zieht nach, sobald die Figur 55 Prozent der halben Sicht verlaesst; in der Uebersicht und auf dem Rueckweg dorthin bleibt der Fokus mittig). `floor-touch.ts` uebersetzt Zeigergesten (Rad, Pinch, Ziehen mit mittlerer oder rechter Taste) in diese drei Aufrufe; `floor-view.ts` uebersetzt Tastatur und Ticker.
-- `src/ui/stage-controls.tsx` ist die einzige Bedienflaeche der Buehne: Tastenkuerzel als `kbd`-Chips und die Kamera-Knoepfe. Sie haelt keinen Zustand und ruft nur `zoom` und `fit` ueber das `FloorHandle`.
+- `src/render/floor-camera.ts` ist weiterhin die einzige Kamera-Wahrheit und reine Mathematik: `pan` (normalisierte Weltanteile, geclampt auf 0..1), `zoomStep` (Tasten und Knoepfe) und `keepInView` (zieht nach, sobald die Figur 55 Prozent der halben Sicht verlaesst; in der Uebersicht und auf dem Rueckweg dorthin bleibt der Fokus mittig). `floor-touch.ts` uebersetzt Zeigergesten in diese drei Aufrufe: Rad, Pinch, Ein-Finger-Pan ab 8 px bei Touch und Ziehen mit mittlerer oder rechter Taste; ein Tipp ohne Pan laeuft erst bei `pointerup`. `floor-view.ts` uebersetzt Tastatur und Ticker.
+- `src/ui/stage-controls.tsx` ist die einzige Bedienflaeche der Buehne: Tastenkuerzel als `kbd`-Chips und die Kamera-Knoepfe. Sie haelt keinen Zustand und ruft nur `zoom` und `fit` ueber das `FloorHandle`. Die Aktionsflaeche ist `src/ui/action-card.tsx`: eine grosse Empfehlung, zwei Alternativen, X, in der Daumenzone; sie rendert `MenuAction[]` aus `floor-actions.ts` und ruft `handleFloorInteract`, das frueherere Radialmenue ist mit `radial-menu.ts` und `character-view.ts` geloescht.
+- `src/render/fx/floor-fx.ts` liegt am Kamera-Container und rechnet in Weltkoordinaten: Geld platzt am Automaten, nicht in der Bildmitte. Der Emitter haelt einen Pool von 200 Sprites, `update` zerstört nichts, und der Screen-Shake verschiebt `camera.position` um einen Offset statt ein Vollbild-div zu transformieren.
 - Bildsprache: `docs/ART-DIRECTION.md` beschreibt die Rollen, Lichtstufen und Strichbreiten als Haltung; das Blatt liegt als `docs/banners/art-direction-neon-ledger.png` daneben. Die Zahlen, die dort stehen, sind die aus `src/render/art-tokens.ts` und `src/styles/tokens.css`; aendert sich eine Rolle, aendert sie sich an beiden Stellen und in diesem Kapitel.
 - Licht ist Darstellung, kein Zustand: `drawLightSpill` in `src/render/floor-surface.ts` backt 16 Stufen in den Regions-Chunk und kostet im Standbild nichts. Die Halbachsen bleiben im Raum, damit kein Schein ueber die Wand laeuft.
 

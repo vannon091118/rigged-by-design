@@ -1,6 +1,6 @@
 /** Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. */
 import { presentation } from './rng';
-type SfxKind = 'coin' | 'reelStop' | 'pinHit' | 'cardFlip' | 'roulette' | 'brawl' | 'win';
+export type SfxKind = 'coin' | 'reelStop' | 'pinHit' | 'cardFlip' | 'roulette' | 'brawl' | 'win';
 
 /** Getrennte Kanaele: Spiele, Kampf und Bedienung lassen sich unabhaengig regeln. */
 export type SoundChannel = 'game' | 'combat' | 'ui';

@@ -163,7 +163,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
           onAdditionalBet={onAdditionalBet}
         />
       ) : (
-      <div className={`table-stage${full ? ' full' : ''}`}>
+      <div className={`table-stage${full ? ' full' : ''}`} data-game={machine.game}>
         <div className={`game-screen${spinning ? ' spinning' : ''}`}>
           <div className="screen-title">{machine.label}</div>
           <div className="screen-result">
