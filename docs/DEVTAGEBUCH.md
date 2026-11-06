@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Eigener Gastmodus an allen acht Automaten
+
+**Ziel.** Der Betreiber soll sein eigenes Casino als Gast besuchen und alle acht Spiele mit seinem privaten PORTEMONNAIE spielen. Bisher war der eigene Automat nur Betreiberwerkzeug mit Testspin; Echtgeld-Runden liefen nur über fremde Häuser.
+
+**Umsetzung.** `src/core/sim/own-play.ts` kapselt den eigenen Geldweg: Einsatz PORTEMONNAIE → HAUSKONTO, Gewinn HAUSKONTO → PORTEMONNAIE, ungedeckte Auszahlung über `openLiability(HAUS_SCHULDEN)`. SLOT nutzt `playSlotSession`, alle anderen Spiele `playAction`; Kartenrunden buchen den Einsatz beim Austeilen und zahlen erst beim Abrechnen. `store/own-play.ts` hält genau eine offene Kartenrunde je Gerät. `MachinePopup` schaltet Betreiber/Gast, `MachinePlay` reicht den vorhandenen `TableLauncher` weiter. Der Testspin bleibt ohne Ledger- und Gameplay-RNG-Wirkung.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint` und `pnpm run check:loc` grün. Core-, Store- und UI-Suiten sind angelegt; `pnpm run turn:finish:full` führt sie mit der vollständigen Suite aus.
+
+**Bewusst nicht getan.** Keine Phase 2, keine zweite Spiel-Engine, keine Änderung am Fremdhaus-Geldweg und keine neue Save-Version. Die sichtbare Browser-Abnahme bleibt offen.
+
 ## 2026-11-06 - Task 5, Phase 2: Editor-UI, Pixi-Auswahl und Export/Import
 
 **Ziel.** Den Command- und Verlaufskern aus Phase 1 bedienbar machen, ohne den Editor in Produktions- oder APK-Builds zu tragen.
@@ -1462,7 +1472,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

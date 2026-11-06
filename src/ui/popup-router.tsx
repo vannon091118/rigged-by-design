@@ -56,6 +56,13 @@ export function PopupRouter({ view, popup, onClose, onOpen, onStaff }: RouterPro
         onTakeDrink={() => worldStore.takeDrink()}
         onDeployPlinko={(config) => worldStore.deployPlinko(config)}
         onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
+        onWithdraw={() => worldStore.takeHome(5)}
+        onPlay={(betVC, options) => worldStore.own.spin(item.id, betVC, options)}
+        onDeal={(stakeVC) => worldStore.own.deal(item.id, stakeVC)}
+        onSettle={(stakeVC, engineBps, label) => worldStore.own.settle(item.id, stakeVC, engineBps, label)}
+        onAdditionalBet={(amountVC) => worldStore.own.additional(item.id, amountVC)}
+        onShellRound={() => worldStore.shellRound()}
+        onRisk={(color, stakeVC) => worldStore.own.risk(item.id, color, stakeVC)}
       />
     );
   }

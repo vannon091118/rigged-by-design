@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
+<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v1.20** |
+> | **Version** | **v0.3.130** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-01 23:18 UTC (T27 — README-Onboarding und pnpm-CI)** |
-> | Branch | `feat/pnpm-migration` (PR #39 gegen `main`), permanente Integrationsbranch `integration` |
-> | HEAD | `f012d32` (PR-Branch; dieser Turn ergänzt README, Bildbelege, CI-Fix und Dokuarbeit) |
+> | **Aktualisiert** | **2026-11-06 04:58 UTC (T70 — eigener Gastmodus)** |
+> | Branch | `fix/casino-phase-1-own-house-play` (Basis `5fba50f`), PR gegen `main` folgt |
+> | HEAD | `5fba50f` (Basis; dieser Turn ergänzt Own-Play, Tests und Doku) |
 > | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 994 Dateien und 69 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -63,6 +63,7 @@ Alle unter ihren LOC-Budgets (`scripts/loc-budgets.mjs`: Legacy-Cap 350 für 6 g
 | `economy/ledger.ts` | Doppelte Buchführung, `transfer` mit Prüfungen (Konto leer, Betrag>0, Deckung außer Mint/Liabilities), Checkpoint-Replay (`verifyIncremental` für den Tickpfad, `diagnose` voll auf Klick), `openLiability` |
 | `economy/ledger-integrity.ts` | `applyEntry`, `verifyBalanceSheet` (Summe aller Konten = 0), `BASE_ACCOUNTS` |
 | `sim/money.ts` | Konten-Konstanten; `STARTING_CAPITAL = fromVC(150)` gebucht via `openHouse()` (EXTERNAL→HAUSKONTO); `payOut`/`payOrBorrow` buchen Unterdeckung auf `HAUS_SCHULDEN` statt zu kappen; Wechselkasse Fiat↔Chips; `playerTakeHome`, `foreignBet/foreignWin` |
+| `sim/own-play.ts` | Eigener Gastgeldweg: `PORTEMONNAIE` → `HAUSKONTO`, Gewinn zurück, ungedeckter Rest auf `HAUS_SCHULDEN`; PRNG-Snapshot/Rollback, Kartenstart und -abrechnung, Risiko-Karte |
 
 Regeln aus AGENTS.md im Code nachgewiesen: kein `addVC` außerhalb von Buchungslogik (Verwender: ledger, foreign-play, snapshot, self-exclusion-bet — alle Buchungs-/Ableitungspfade); Auszahlungen nie gekappt (`openLiability(DEBT_ACCOUNT)`).
 
@@ -77,6 +78,7 @@ Regeln aus AGENTS.md im Code nachgewiesen: kein `addVC` außerhalb von Buchungsl
 
 Naht: `core/games/contracts.ts` (vollständig) — `playAction({game, stake, houseEdgeBps?, bonusBps?, variant?, captureTrack?, roulette?, shell?})`; prüft **vor** der Ziehung; `payout = mulVC(stake, multiplierBps)`; Bonus/Hausvorteil greifen nur auf Gewinnen; Bias ≤ 9.000 bps. Spiele: SLOT, BLACKJACK, POKER, VIDEO_POKER, ROULETTE, PLINKO, SHELL, DICE.
 Testspin: `sim/actions.ts testSpin()` — Sandbox mit eigenem Seed, **kein Ledger, kein Welt-PRNG** (nachgewiesen).
+Eigener Gastmodus: `core/sim/own-play.ts` und `store/own-play.ts` spielen alle acht Spiele über dieselben Engines; `MachinePopup` schaltet die Rolle, `MachinePlay` reicht den vorhandenen `TableLauncher` weiter. Die Store-Fassade hält die offene Kartenrunde je Gerät und verhindert doppelte Abrechnung.
 Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-Bühnen/Canvas.
 
 ## 7. Tick & Simulation (Kern gelesen)
@@ -274,10 +276,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1314 |
-| Gelistete Dateien | 1314 |
+| Getrackte Dateien | 1321 |
+| Gelistete Dateien | 1321 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (526) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (83), public (554), scripts (61), src (533) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -345,8 +347,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 69 Datei(en)
-- `src/core/sim/__tests__/` — 84 Datei(en)
+- `src/core/sim/` — 70 Datei(en)
+- `src/core/sim/__tests__/` — 85 Datei(en)
 - `src/core/sim/narrative/` — 27 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 3 Datei(en)
 - `src/core/sim/narrative/choices/` — 2 Datei(en)
@@ -362,12 +364,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
-- `src/store/` — 25 Datei(en)
-- `src/store/__tests__/` — 17 Datei(en)
+- `src/store/` — 26 Datei(en)
+- `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 53 Datei(en)
-- `src/ui/__tests__/` — 8 Datei(en)
+- `src/ui/` — 55 Datei(en)
+- `src/ui/__tests__/` — 9 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -388,7 +390,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 132 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 133 Zeilen
 - `README.md` — Rigged by Design — gelesen: 338 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -463,15 +465,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-REPORT-1-LOGIK-RACE.md` — Analyse-Report 1: Logik-Ketten, Race-Condition-Schutz und unlogisches Verhalten — gelesen: 241 Zeilen
 - `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 295 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 296 Zeilen
 - `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 646 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 657 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2824 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2834 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -489,10 +491,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/REVIEW-SUB-A-ADVERSARIAL.md` — SUB-A-Review: Adversarial Prüfung des LEAD-Plans — gelesen: 174 Zeilen
 - `docs/REVIEW-SUB-A-RECHECK.md` — SUB-A-Re-Prüfung: Korrigierter LEAD-Plan NOCHMAL gegen die Daten — gelesen: 88 Zeilen
 - `docs/REVIEW-SUB-B-ADVERSARIAL.md` — SUB-B-Review: Unabhängiges adversarial Review des korrigierten LEAD-Plans — gelesen: 123 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 71 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 72 Zeilen
 - `docs/SKILL_LEAD_SUB_AGENT_LOOP.md` — Skill: Lead–Sub-Agent-Prüfschleife (`lead-sub-agent-loop`) — gelesen: 98 Zeilen
 - `docs/SKILL_PIPELINE_WORKFLOW.md` — Pipeline-Workflow-Skill: Lead-A-B-Lead-Loop — gelesen: 57 Zeilen
-- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 186 Zeilen
+- `docs/TEST-CATALOG.md` — Testkatalog — generiert, 190 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1325,6 +1327,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
 - `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/nav-edges.test.ts` — Waende blockieren Kanten statt Tiles. Tueren und Durchgaenge bleiben — gelesen: 172 Zeilen
+- `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 152 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
@@ -1448,6 +1451,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 180 Zeilen
+- `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 176 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 189 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
@@ -1474,7 +1478,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/tick-timing.ts` — Eine Quelle fuer die Tick-Dauer: Simulation, Renderer und UI rechnen mit demselben Takt. — gelesen: 4 Zeilen
 - `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 144 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
-- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 74 Zeilen
+- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 77 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 119 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 94 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 67 Zeilen
@@ -1571,6 +1575,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
 - `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 51 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 143 Zeilen
+- `src/store/__tests__/own-play.test.ts` — Die Fassade haelt offene Kartenrunden genau einmal, blockiert Doppelbuchungen — gelesen: 81 Zeilen
 - `src/store/__tests__/prng-persistence.test.ts` — Der PRNG-Zustand setzt nach dem Laden die Folge exakt fort, ohne Doppelziehung. — gelesen: 70 Zeilen
 - `src/store/__tests__/rival-play-commands.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
 - `src/store/__tests__/save-device.test.ts` — Alte Speicherstaende koennen eine Geräteidentität tragen, die zum Spieltyp — gelesen: 71 Zeilen
@@ -1597,6 +1602,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 127 Zeilen
 - `src/store/narrative-commands.ts` — Store-Naht fuer Narrative: Choice ausfuehren, Szene ablehnen und Facts flushen. — gelesen: 41 Zeilen
 - `src/store/narrative.bench.ts` — NAR-16: Narrative Hotpath. Gemessen wird ein realistischer Tick nach einem — gelesen: 53 Zeilen
+- `src/store/own-play.ts` — Store-Fassade fuer eigene Spielrunden: Der Kern rechnet und bucht, die — gelesen: 105 Zeilen
 - `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 88 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 47 Zeilen
 - `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
@@ -1607,7 +1613,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 114 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 213 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 218 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 216 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 479 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
@@ -1621,6 +1627,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-gate.test.ts` — Editor-Freigabe: der Query-Parameter allein oeffnet nie einen Produktionsbuild. — gelesen: 31 Zeilen
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
+- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 87 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 122 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
@@ -1662,12 +1669,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/journal-stories.tsx` — Abgeschlossene Szenen als Rueckblick im Journal; nur Anzeige des Snapshots. — gelesen: 47 Zeilen
 - `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 170 Zeilen
 - `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 90 Zeilen
-- `src/ui/machine-popup.tsx` — Automaten-Popup: Zustand, Mods, Walzen und ein kostenloser Testspin. — gelesen: 182 Zeilen
+- `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen
+- `src/ui/machine-play.tsx` — Eigene Spiele am Automaten: dieselben Tische wie im Fremdhaus, eigener Geldweg. — gelesen: 56 Zeilen
+- `src/ui/machine-popup.tsx` — Automaten-Popup: Zustand, Mods, Walzen und ein kostenloser Testspin. — gelesen: 199 Zeilen
 - `src/ui/narrative-events.tsx` — NAR-14: Aktive Szenen als Karten; Auswahl und Ablehnung laufen ueber Store-Commands. — gelesen: 113 Zeilen
 - `src/ui/narrative-popup.tsx` — NAR-14: Popup fuer aktive Szenen und Besucherprofile. — gelesen: 45 Zeilen
 - `src/ui/narrative-profile.tsx` — NAR-14: Besucherprofil aus dem Snapshot; Rechnungen bleiben im Core. — gelesen: 97 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
-- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 145 Zeilen
+- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 152 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
 - `src/ui/roulette-tableau.tsx` — Das Setzfeld: jede Zelle ist ein Feld, jeder Klick legt einen Jeton dorthin. — gelesen: 65 Zeilen
 - `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 67 Zeilen
@@ -1697,6 +1706,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T70 | **2026-11-06 04:58 UTC**: Eigener Gastmodus an allen acht Automaten. `core/sim/own-play.ts` und `store/own-play.ts` kapseln Einsatz, Gewinn, Schuld und Pending-Kartenrunden; `MachinePopup`/`MachinePlay` nutzen den vorhandenen `TableLauncher`. Geprüft: typecheck, ESLint, LOC; Core-, Store- und UI-Tests angelegt. |
 | T69 | **2026-11-06 04:30 UTC**: Task 5, Phase 2: Editor-UI, Pixi-Auswahl und Export/Import. |
 | T68 | **2026-11-06 03:32 UTC**: Gemeinsame Tiefensortierung und Occlusion. Neu: `src/render/depth.ts`, `entity-sync.ts`, `wall-occlusion.ts`, `__tests__/depth.test.ts`, `depth-perf.bench.ts`. Eine sortierbare Welt-Ebene für Möbel, Figuren, Requisiten und Wandvorderseiten; Fußanker, Typ-Rang, stabile ID; Sortierung nur bei Änderung. Geprüft: `typecheck`, 7 neue Tiefen-Tests, 47 Render-Tests, Messung SMALL 0,062 / MEDIUM 0,028 / LARGE 0,081 ms. |
 | T67 | **2026-11-06 03:24 UTC**: Bodenmaterialien und Wände aus dem Layout. Neu: `src/render/floor-material.ts`, `wall-art.ts`, `__tests__/floor-layout.test.ts`. `FloorMaterialId` ist die einzige Materialauflösung (nur CARPET mit Manifest-Textur, stabile Fallback-IDs), `floor-surface.ts` verliert die falsche Muster-/Wallpaper-Zuordnung, Wände/Türen/Ecken kommen aus `layout.edges` mit einer Besitzregel je Kante, `regionHash` invalidiert tile-genau. Geprüft: `typecheck`, 12 neue Render-Tests, 40 Render-Tests gesamt, Bench-Vergleich 6,93 → 9,19 ms Vollback. |

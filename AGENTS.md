@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
+<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -107,6 +107,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 
 - `src/core/` must stay headless (no browser deps) and testable.
 - One owner per state: `world-store` holds world/ledger/PRNG; UI state (popups) lives in React.
+- Eigene Spielrunden laufen über `core/sim/own-play.ts` und die Fassade `store/own-play.ts`. Der Einsatz geht `PORTEMONNAIE` → `HAUSKONTO`, der Gewinn zurück; ungedeckte Gewinne buchen `HAUS_SCHULDEN`. Offene Kartenrunden hält nur die Store-Fassade; `TableLauncher` bleibt rollenunabhängig und wird nicht als zweite Engine kopiert.
 - Raum: `WorldState.layout` ist die einzige raeumliche Wahrheit (Dimension, Bodenmaterial je Tile, semantische Zonen, Wandkanten). `size` und `zones` sind abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben; `GameView.layout` reicht denselben unveraenderlichen Plan weiter. Navigation laeuft ueber `nav-grid.ts`: belegte Tiles plus Wandkanten, nur `WALL` blockiert einen Schritt (`stepOpen()`), `DOOR`/`OPENING` sind passierbar; der Rand ist eine Kante, keine Tile-Sperre. `accessPointsFor()` liefert mehrere Zugaenge je Objekt, `approachPoint()` bleibt Fallback, und `nav-reach.ts` verhindert versiegelte Serviceobjekte. Rendering: Boden kommt aus `layout.floor` über `floor-material.ts` (stabile Fallback-IDs, keine erfundenen Texturen, Zonen liefern nur Licht/Ausstattung), Waende/Tueren aus `layout.edges` über `wall-art.ts` (eine Kante, eine Besitzer-Kachel, Vorderseite an Sued/Ost); `regionHash` invalidiert nur den betroffenen 30×30-Chunk. Tiefe: `depth.ts` sortiert Möbel, Figuren, Requisiten und Wandvorderseiten in einer Ebene nach Fußanker, dann Typ-Rang und stabiler ID; Wandkanten sind Occlusion-Sprites, Türschwellen bleiben im Chunk; sortiert wird nur bei geänderter Tiefe.
 - Money is integer micro-units; no floats; every transaction is a ledger line.
 - RNG via `src/core/rng/weighted.ts` (`buildDistribution`, `rollNumber`); cards via `src/core/rng/shoe.ts` (draw removes card; reshuffle only when empty).
