@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.125 | 2026-11-06 03:41 UTC -->
+<!-- rbd-doc: v0.3.126 | 2026-11-06 03:47 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -38,6 +38,10 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 - CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
 - Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
 - Branch-Konsolidierung am 2026-11-05 abgeschlossen: `fix/bundle-splitting` und `fix/test-suite-optimization` nach `main` gemergt, die uebrigen offenen Branches waren patch-identisch; alle Branch-Refs lokal und auf GitHub geloescht.
+
+- Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
+  (`docs/ASSET-SEMANTICS.md`) stehen. Als Nächstes die Deko-Rollen von den
+  Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.125 | 2026-11-06 03:41 UTC -->
+<!-- rbd-doc: v0.3.126 | 2026-11-06 03:47 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -19,6 +19,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - `src/ui/editor-gate.ts` lässt den Editor nur in einem Build mit `VITE_RBD_EDITOR_MODE=1` und `?editor=1` zu; der Query-Parameter allein öffnet nichts.
 - Noch kein Editor, kein Store-Command und kein Undo/Redo: Diese Schritte folgen mit der Editor-Oberfläche.
 
+## [0.3.122] - 2026-11-06
+
+### Technik
+- Neuer Bestandskatalog `src/render/assets/asset-semantics.json`: 539 Bilder, 3 Animationen, 4 Emitter und 6 Tonspuren mit Rolle, Typ, Anchor, sichtbaren Bounds, Tiefenklasse, Occlusion, LOD, Varianten und optionalen Animationsreferenzen. Das Manifest bleibt die einzige Quelle fuer IDs und Pfade; der Katalog fuehrt nur Semantik.
+- `docs/ASSET-SEMANTICS.md` beschreibt den Metadatenvertrag: Pflicht- und optionale Felder je Asset-Typ, die neun Zeichenebenen aus `floor-view.ts`, 15 bestehende Render-Zuordnungen und 23 Rollen-Dubletten.
+- Befund: kein Asset ist belegbar interaktiv. `interactive` steht ueberall auf `unknown`, weil Interaktion an `Furniture`/`GameView` haengt und nicht an der Textur. 444 Bilder haben keinen Code-Bezug und sind mit `evidence: "category"` markiert.
+- Keine Runtime-Integration, keine Renderer- oder Core-Aenderung: kein Modul liest den Katalog, `manifest.json` bleibt unveraendert.
+
 ## [0.3.121] - 2026-11-06
 
 ### Spiel
@@ -26,6 +34,8 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
 
 ### Technik
+- Inventur repariert: `docs/INVENTORY.md` deckt wieder jede getrackte Datei ab, `verify:docs` (`ERR-4017`) ist grün; der Pre-Commit-Hook stagt die Inventur jetzt selbst.
+- `main` mit 0.3.120 in den Arbeitsbranch gemerged; Konflikte in Doku und Version zugunsten von `main`, die Wandkollision bleibt erhalten.
 - Möbel, Figuren, Personal, Kisten, Streitmarker und Wandvorderseiten teilen jetzt eine Tiefenebene (Task 4/5): `src/render/depth.ts` sortiert ausschließlich nach Fußanker, dann Typ-Rang (Requisite, Möbel, Figur, Wand), dann stabiler ID.
 - Große Sprites werden nicht mehr über ihre Oberkante einsortiert; ein 4×2-Objekt liegt an seiner Unterkante. Der Spieler ist ID 0, Gäste und Personal behalten ihre IDs.
 - Vordergrundwände sind eigene Occlusion-Sprites in derselben sortierbaren Ebene: Figuren nördlich einer Wand liegen dahinter, Figuren südlich davor. Die Wandtexturen entstehen einmal je Ausrichtung und werden von allen Kanten geteilt.
