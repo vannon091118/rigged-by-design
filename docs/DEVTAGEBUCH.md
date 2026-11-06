@@ -13,6 +13,27 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Buehne aus der Legacy-Hot-Zone (PR #160) zusammengefuehrt
+
+**Ziel.** PR #160 loeste `floor-view.ts` und `guest-art.ts` aus den
+Legacy-LOC-Ausnahmen; er lag auf 0.3.138 und war nicht mergebar.
+
+**Umsetzung.**
+
+- `main` (`ea76e2c`, 0.3.141) in den PR-Branch gemergt; Konflikte nur in den
+  sechs Pflichtdokumenten, `package.json` und `pnpm-lock.yaml`
+  (Versionsstaende), jeweils auf den `main`-Stand aufgeloest.
+- Code konfliktfrei: `floor-camera-rig.ts`, `guest-rig/paint/head.ts`,
+  `animateFloor`-Signatur und `loc-budgets.mjs`.
+- Version 0.3.142; Inventar und alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` PASS mit allen zwoelf Gates (Bericht im
+Commit), `verify:docs` und `verify-commit-msg --head` gruen; CI
+`Fail-Closed Gates` auf dem PR-Branch gruen, danach Merge mit
+`commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save.
+
 ## 2026-11-06 - Perf-PR #161 auf den main-Stand zusammengefuehrt
 
 **Ziel.** Der offene Perf-PR #161 (WebP-Atlas, lazy Plinko-Buehne, eigener
@@ -1643,7 +1664,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

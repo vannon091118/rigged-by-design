@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
+<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.142] - 2026-11-06
+
+### Technik
+- `floor-view.ts` gibt Kamera-Container, LOD-Stufe, Basisposition und `camDirty` an `floor-camera-rig.ts` ab; die Buehne orchestriert nur noch Ebenen, Update-Reihenfolge und Culling (219 auf 195 Zeilen).
+- `guest-art.ts` teilt sich in `guest-rig.ts` (Skelett, Gelenke, Pin, Namensschild, Squash, Tap-Ring), `guest-paint.ts` (Palette, Koerper, Arme, Beine, Pin) und `guest-head.ts` (Schaedel, Gesicht, Haar, Kopf-Textur); die Fassade bleibt mit 105 statt 346 Zeilen.
+- `scripts/loc-budgets.mjs` fuehrt beide Legacy-Eintraege nicht mehr; der `@loc-exception`-Header in `guest-art.ts` ist geloescht.
+- `animateFloor` nimmt die Kamera-Buehne statt `cam` und `camDirty`.
+- PR #160 auf den `main`-Stand (0.3.141) zusammengefuehrt; Konflikte nur in Doku, `package.json` und `pnpm-lock.yaml`, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
 
 ## [0.3.141] - 2026-11-06
 

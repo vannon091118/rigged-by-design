@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
+<!-- rbd-doc: v0.3.142 | 2026-11-06 21:18 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.141** |
+> | **Version** | **v0.3.142** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 21:20 UTC (T77 — Perf-PR #161 zusammengefuehrt)** |
-> | Branch | `freebuff/15a5daf4fe155ab8308cca39-perf-first-frame`, PR #161 |
-> | HEAD | `bb394a7` plus Merge von `main` (`b8a46be`, 0.3.140) |
+> | **Aktualisiert** | **2026-11-06 21:25 UTC (T78 — PR #160 zusammengefuehrt)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-stage-modules`, PR #160 |
+> | HEAD | `008412f` plus Merge von `main` (`ea76e2c`, 0.3.141) |
 > | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -300,10 +300,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1309 |
-| Gelistete Dateien | 1309 |
+| Getrackte Dateien | 1313 |
+| Gelistete Dateien | 1313 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (65), public (554), scripts (62), src (538) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (65), public (554), scripts (62), src (542) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -382,7 +382,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 8 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
-- `src/render/` — 43 Datei(en)
+- `src/render/` — 47 Datei(en)
 - `src/render/__tests__/` — 11 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
@@ -490,9 +490,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 745 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 755 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3005 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3026 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 26 Zeilen
@@ -1149,7 +1149,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt einen Commit-Body in den PR-Body: Eskalation statt Fail-Closed. — gelesen: 84 Zeilen
-- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 38 Zeilen
+- `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 36 Zeilen
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body. — gelesen: 318 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 90 Zeilen
 - `scripts/promote.mjs` — Promote: gruene Staende mergen, rote Staende auf die permanente — gelesen: 169 Zeilen
@@ -1517,7 +1517,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/editor-overlay.ts` — Editor-Auswahl als reine Pixi-Darstellung: eine Zelle und optional ihre Kante. — gelesen: 50 Zeilen
 - `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 218 Zeilen
 - `src/render/floor-actions.ts` — Baut die Radial-Menu-Aktionen für ein geklicktes Objekt. — gelesen: 64 Zeilen
-- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 47 Zeilen
+- `src/render/floor-animate.ts` — Floor-Animation: Tick, Kamera, Figuren-Animation. — gelesen: 38 Zeilen
+- `src/render/floor-camera-rig.ts` — Kamera-Buehne: der Pixi-Container, die Zoom-/Schwenk-Wahrheit und die LOD-Stufe. — gelesen: 106 Zeilen
 - `src/render/floor-camera.ts` — Kamera mit zwei Zoom-Stufen: Übersicht und 30x30-Bereich. Lerpt ohne Frame-Allokationen. — gelesen: 137 Zeilen
 - `src/render/floor-carpet.ts` — Teppichwahl als feine Textur ueber den Tiles, deren Layout-Material CARPET — gelesen: 49 Zeilen
 - `src/render/floor-cash.ts` — Kasse als Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch. — gelesen: 69 Zeilen
@@ -1533,7 +1534,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 122 Zeilen
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 111 Zeilen
 - `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 155 Zeilen
-- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 219 Zeilen
+- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 195 Zeilen
 - `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 120 Zeilen
 - `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 214 Zeilen
 - `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 171 Zeilen
@@ -1562,8 +1563,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/slot-symbols-extra.ts` — Zusatz-Symbole aus dem Pre-Alpha Pixel-Paket: gezeichnete Fallbacks, wenn die Textur nicht geladen ist. — gelesen: 191 Zeilen
 - `src/render/games/video-poker-canvas.ts` — Video Poker in Pixi: Paytable oben links, fuenf Karten, HOLD-Stempel, Trefferlicht. — gelesen: 146 Zeilen
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
-- `src/render/guest-art.ts` — Pixel-Raster statt Vektorglanz: blockige Figur, echte Gelenke, klare Zustaende. — gelesen: 346 Zeilen
+- `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 105 Zeilen
+- `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 139 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
+- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. — gelesen: 128 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
 - `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 186 Zeilen
 - `src/render/perf-governor.ts` — Drei Leistungsstufen mit Hysterese. Der Governor bekommt nur deltaMS; er — gelesen: 58 Zeilen
@@ -1718,6 +1722,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T78 | **2026-11-06 21:25 UTC**: PR #160 (Buehne aus der Legacy-Hot-Zone) auf `main` (0.3.141) zusammengefuehrt. `floor-camera-rig.ts` (106 Zeilen) und die drei Guest-Dateien (128/139/112) loesen die Legacy-Ausnahmen in `guest-art.ts` und `floor-view.ts`; `loc-budgets.mjs` fuehrt beide Eintraege nicht mehr. Konflikte nur in Doku und Versionsdateien, Code konfliktfrei. |
 | T77 | **2026-11-06 21:20 UTC**: Perf-PR #161 auf `main` zusammengefuehrt. `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt; Konflikte nur in den sechs Pflichtdokumenten, Code und Assets konfliktfrei. WebP-Atlas 1.040.593 -> 384.234 B, Plinko-Buehne lazy (Initial-JS 1.186.336 -> 1.173.926 B), HUD-Icons als eigener 4.337-B-Chunk, Initialgraph 1.174.034 B/18 Chunks. |
 | T76 | **2026-11-06 21:00 UTC**: Merge-Gate auf `main` reparieren. Ursache: Der Merge von PR #163 lief nur mit `commit_title`; der Merge-Commit `6f7a906` trug keine Pflichtsektionen, `verify-commit-msg --head` war rot (`ERR-4006`), `Bump, tag, release` und der APK-Bau fielen aus. Fix: Follow-up-PR von `main`, dessen Merge `commit_message` = PR-Body traegt; `docs/GATE-ROOTCAUSE.md` haelt Fall und Regel fest. Geprueft: `pnpm run verify:all` mit zwoelf gruenen Gates, `verify-commit-msg` gegen den alten Merge-Text (drei Fehlbefunde) und gegen den Fix-Text. |
 | T75 | **2026-11-06 20:50 UTC**: Doku konsolidiert. Commits der letzten 48 Stunden, PRs und Altberichte geprueft; L1/L2/S1/Mods/Persona/Rivalenprofil im Code belegt, `PLAYER_CASH` ohne Produktions-Aufrufer und Umsatz-Kennzahl offen. 18 historische Berichte/Reviews/Plaene nach Ueberfuehrung in ROADMAP/INVENTORY/ARCHITECTURE/DEVTAGEBUCH geloescht. Geprueft: `verify:docs`, `verify:assets`, `verify:quick`, `build`, Produktionsbundle ohne Editor-Chunk, Narrative 65/65/65. |

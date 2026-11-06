@@ -28,8 +28,6 @@ export const LEGACY_LOC = new Map([
   ['src/App.tsx', { cap: 350, hotZone: 200 }],
   ['src/core/economy/ledger.ts', { cap: 350, hotZone: 200 }],
   ['src/core/sim/staff.ts', { cap: 350, hotZone: 200 }],
-  ['src/render/floor-view.ts', { cap: 350, hotZone: 200 }],
-  ['src/render/guest-art.ts', { cap: 350, hotZone: 200 }],
   ['src/store/world-store.ts', { cap: 350, hotZone: 200 }],
 ]);
 
