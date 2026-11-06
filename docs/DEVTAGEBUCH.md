@@ -13,6 +13,29 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Perf-PR #161 auf den main-Stand zusammengefuehrt
+
+**Ziel.** Der offene Perf-PR #161 (WebP-Atlas, lazy Plinko-Buehne, eigener
+HUD-Icon-Chunk) lag seit 20:35 auf einem aelteren `main`-Stand und war mit
+`integration/rot` und `integration/konflikt` markiert.
+
+**Umsetzung.**
+
+- `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt. Konflikte gab es nur in
+  `AGENTS.md`, `CHANGELOG`, `ARCHITECTURE`, `DEVTAGEBUCH`, `INVENTORY` und
+  `ROADMAP` (Doku-Marker und Versionsstaende); dort gilt der `main`-Text, die
+  Perf-Nummern stehen als 0.3.141 im Changelog.
+- Code und Assets (Atlas-WebP, Manifest, `atlas-webp.mjs`, Vite-Chunking,
+  `plinko-editor-lazy`, `machine-popup`) haben konfliktfrei gemergt.
+- Version 0.3.141; Inventar und alle sechs Marker nachgezogen.
+
+**Pruefungen.** `pnpm run verify:all` (Bericht oben im Commit), `verify:docs`
+und `verify-commit-msg --head` gruen; CI-Check `Fail-Closed Gates` auf dem
+PR-Branch gruen, danach Merge mit `commit_message` = PR-Body.
+
+**Bewusst nicht getan.** Kein Eingriff in Spiel, Ledger, RNG oder Save; keine
+Aenderung an den Messwerten des PRs.
+
 ## 2026-11-06 - Merge-Gate auf main reparieren
 
 **Ziel.** `main` war nach dem Merge von PR #163 rot: `Fail-Closed Gates` brach
@@ -1620,7 +1643,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

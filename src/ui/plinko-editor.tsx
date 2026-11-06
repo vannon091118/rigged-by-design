@@ -39,7 +39,7 @@ function widthsFor(count: number, center: number): number[] {
   return widths;
 }
 
-export function PlinkoEditor({ view, result, spinning, onSpin, onDeploy, onMode }: Props) {
+export default function PlinkoEditor({ view, result, spinning, onSpin, onDeploy, onMode }: Props) {
   const board = useRef<PlinkoStageHandle>(null);
   const [draft, setDraft] = useState<PlinkoConfig>(view.plinko);
   const [kind, setKind] = useState<PegKind>('BOUNCY_PEG');

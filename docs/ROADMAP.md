@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->
+<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -67,7 +67,7 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | ID | Pruefung | Stand |
 | --- | --- | --- |
 | A6 | Touch: Ein-Finger-Pan ab 8 px, Tap-to-Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gaesten | offen, braucht Hardware |
-| A7 | Huelle/Performance: Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste, Slow 4G, Atlas-Requests | teilweise: 9 Mbit/s 20 Requests/2,51 s; Slow 4G 22 Requests/12,16 s/2,42 MB; HUD-PNGs inline; WebP/Lazy in PR #161 |
+| A7 | Huelle/Performance: Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste, Slow 4G, Atlas-Requests | teilweise: 9 Mbit/s 20 Requests/2,51 s; Slow 4G 22 Requests/12,16 s/2,42 MB; HUD-PNGs inline; WebP-Atlas und lazy Plinko-Buehne seit 0.3.141 auf main |
 | A8 | Release: Debug- und Release-APK per `adb install`, `verify:all` 12/12, Tag und Notes, aktuelle Screenshots | offen |
 
 ### Spiel und Simulation
@@ -93,7 +93,7 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | --- | --- | --- |
 | Wand-Occlusion visuell | offen | `WallOcclusion` und Depth-Tests stehen; es gibt keinen Browserbeleg mit einer Figur noerdlich und suedlich derselben Wand. |
 | Editor-Chunk im Produktionsbundle | bestanden (Produktionsbuild) | `rg` in `dist/assets` findet weder `layout-editor` noch `VITE_RBD_EDITOR_MODE`; die APK-Paketierung wurde nicht erneut geprueft. |
-| First Frame unter 3 s | offen | PR #161 ist offen; Initialgraph 1.174.034 B/18 Chunks, Byte-Modell 8,1 s. |
+| First Frame unter 3 s | offen | WebP-Atlas und lazy Plinko-Buehne sind seit 0.3.141 auf main; Initialgraph 1.174.034 B/18 Chunks, Byte-Modell 8,1 s. Echtes Slow 4G und ein Wert unter 3 s bleiben offen. |
 | Slow-4G-Browserlauf | offen | Baseline 22 Requests/12,16 s/2,42 MB; WebP/Lazy sind in PR #161, ein neuer Browserlauf fehlt. |
 
 ### Technik, Doku und Release
@@ -123,7 +123,7 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 - Lichtpfuetze ueber Regionskanten zusammensetzen, damit grosse Saele keine Chunk-Naht im Licht zeigen; heute zeichnet jeder Chunk seine eigene Pfuetze.
 - Touch ist umgebaut (Ein-Finger-Pan ab 8 px, Tippen laeuft, Aktionskarte statt Radialmenue, Sofort-Feedback), aber nur im Code belegt: 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame brauchen die Abnahme auf einem echten Geraet.
 - Geld fuehlt sich an (Phase 3): acht Ereignisse mit Partikeln, Ton, Licht und Shake, Kassen-Chips, Laune-Sprechblase und Spiel-Identitaeten sind im Code und am 2026-11-06 im Desktop-Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, sichtbare Kassen-Chips mit Coin-Sound, die Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten sind belegt; Lautsprecher-/Gehoer-Pruefung, 60 fps und der Emitter-Zaehler im Werkstatt-HUD bleiben fuer das echte Geraet offen.
-- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne liegen in PR #161 (noch offen), der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
+- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne sind seit 0.3.141 auf main, der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.

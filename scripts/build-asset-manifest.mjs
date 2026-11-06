@@ -4,9 +4,10 @@
  * `public/assets/casino/`. Die Datei ist eingecheckt, damit der Build ohne
  * Quellordner reproduzierbar bleibt; dieses Skript ist der Weg dorthin.
  */
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { buildAtlasPages } from './lib/atlas-png.mjs';
+import { encodeWebp } from './lib/atlas-webp.mjs';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const ASSET_ROOT = join(ROOT, 'public/assets/casino');
@@ -48,7 +49,8 @@ function walk(dir, base = dir) {
 }
 
 // Generierte Atlasseiten sind Ausgabe, keine Quelle; verify-assets prueft sie
-// separat ueber atlas.pages.
+// separat ueber atlas.pages. Die Seiten liegen als WebP, weil PNG fuer denselben
+// Sprite-Bestand rund 2,6x groesser ist.
 const all = walk(ASSET_ROOT).filter((file) => !file.startsWith('atlas/')).sort();
 const png = all.filter((file) => file.endsWith('.png'));
 const json = all.filter((file) => file.endsWith('.json'));
@@ -66,6 +68,14 @@ const atlasPages = buildAtlasPages({
   size: ATLAS_SIZE,
   padding: ATLAS_PADDING,
   outputDir: join(ASSET_ROOT, 'atlas'),
+}).map((page) => {
+  // 1.040.593 B PNG gegen 394.592 B WebP-q95; die Seiten sind der groesste
+  // Einzelposten vor dem ersten Frame. Der Laufzeitpfad laedt nur die URL.
+  const png = join(ASSET_ROOT, page.source);
+  const webp = png.replace(/\.png$/, '.webp');
+  encodeWebp(png, webp);
+  rmSync(png);
+  return { ...page, source: page.source.replace(/\.png$/, '.webp') };
 });
 
 const symbols = { ...ENGINE_SYMBOLS };

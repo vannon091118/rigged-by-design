@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->
+<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.140** |
+> | **Version** | **v0.3.141** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 21:00 UTC (T76 — Merge-Gate auf main reparieren)** |
-> | Branch | `fix/main-merge-message`, Follow-up-PR auf `main` (`6f7a906`) |
-> | HEAD | `6f7a906` (Merge PR #163) plus Fix-Commit dieses Turns |
+> | **Aktualisiert** | **2026-11-06 21:20 UTC (T77 — Perf-PR #161 zusammengefuehrt)** |
+> | Branch | `freebuff/15a5daf4fe155ab8308cca39-perf-first-frame`, PR #161 |
+> | HEAD | `bb394a7` plus Merge von `main` (`b8a46be`, 0.3.140) |
 > | Arbeitsbaum | Merge-Stand; Remote `vannon091118/rigged-by-design`; Inventur meldet 1325 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -300,10 +300,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1307 |
-| Gelistete Dateien | 1307 |
+| Getrackte Dateien | 1309 |
+| Gelistete Dateien | 1309 |
 | Getrackte Ordner | 86 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (65), public (554), scripts (61), src (537) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (9), .kilo (1), content (69), docs (65), public (554), scripts (62), src (538) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -354,7 +354,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 39 Datei(en)
-- `scripts/lib/` — 22 Datei(en)
+- `scripts/lib/` — 23 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
@@ -392,7 +392,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 57 Datei(en)
+- `src/ui/` — 58 Datei(en)
 - `src/ui/__tests__/` — 9 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -490,9 +490,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 735 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 745 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 216 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2975 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3005 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/GATE-ROOTCAUSE.md` — Gate-Rootcause-Analyse (konsolidiert) — gelesen: 26 Zeilen
@@ -553,8 +553,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 93 Zeilen
 - `pnpm-lock.yaml` — lockfileVersion: "9.0" — gelesen: 2798 Zeilen
-- `public/assets/casino/atlas/atlas-0.png` — PNG-Textur — geprueft: PNG 1024x1024, 789668 B
-- `public/assets/casino/atlas/atlas-1.png` — PNG-Textur — geprueft: PNG 1024x1024, 250925 B
+- `public/assets/casino/atlas/atlas-0.webp` — Binaerdatei — geprueft: Signatur, 308258 B
+- `public/assets/casino/atlas/atlas-1.webp` — Binaerdatei — geprueft: Signatur, 75976 B
 - `public/assets/casino/characters/arm-segment-01.png` — PNG-Textur — geprueft: PNG 14x28, 1079 B
 - `public/assets/casino/characters/arm-segment-02.png` — PNG-Textur — geprueft: PNG 13x28, 1040 B
 - `public/assets/casino/characters/arm-segment-03.png` — PNG-Textur — geprueft: PNG 11x28, 927 B
@@ -1113,7 +1113,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/balance-run.mjs` — Balance-Spur: startet den 40-Tage-Messlauf als eigenen Prueflauf und legt den Bericht ab. — gelesen: 50 Zeilen
 - `scripts/bench-lowend.mjs` — Low-End-Profil: derselbe Benchmark, auf einen Kern gepinnt. — gelesen: 27 Zeilen
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge aufraeumen. — gelesen: 43 Zeilen
-- `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 141 Zeilen
+- `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 151 Zeilen
 - `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 128 Zeilen
 - `scripts/check-loc.mjs` — LOC-Guard fuer VaCoin Casino Roguelite. — gelesen: 102 Zeilen
 - `scripts/ci-long-checks.mjs` — Lange Nachweise ueber GitHub Actions statt auf der eigenen Maschine. — gelesen: 172 Zeilen
@@ -1127,6 +1127,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/install-hooks.mjs` — Aktiviert die Repo-Hooks (core.hooksPath) und macht sie ausfuehrbar. — gelesen: 23 Zeilen
 - `scripts/lib/affected-tests.mjs` — Betroffene Tests: deklariertes @test-target, der echte Importgraph und das — gelesen: 176 Zeilen
 - `scripts/lib/atlas-png.mjs` — Deterministischer PNG-Atlas ohne neue Abhaengigkeit. — gelesen: 175 Zeilen
+- `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
 - `scripts/lib/error-codes.mjs` — Fehlercodes fuer die Gate-Skripte. — gelesen: 33 Zeilen
@@ -1174,7 +1175,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
-- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 72 Zeilen
+- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-checkpoint.test.ts` — Die volle Pruefung bleibt vollstaendig, die inkrementelle meldet denselben Zustand. — gelesen: 61 Zeilen
 - `src/core/economy/__tests__/ledger-diagnose.test.ts` — Diagnose muss Zustand, Buchungszahl und Bruchursache nachvollziehbar liefern. — gelesen: 51 Zeilen
@@ -1634,7 +1635,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-gate.test.ts` — Editor-Freigabe: der Query-Parameter allein oeffnet nie einen Produktionsbuild. — gelesen: 31 Zeilen
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
-- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 87 Zeilen
+- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 88 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 135 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
@@ -1683,6 +1684,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/narrative-events.tsx` — NAR-14: Aktive Szenen als Karten; Auswahl und Ablehnung laufen ueber Store-Commands. — gelesen: 113 Zeilen
 - `src/ui/narrative-popup.tsx` — NAR-14: Popup fuer aktive Szenen und Besucherprofile. — gelesen: 45 Zeilen
 - `src/ui/narrative-profile.tsx` — NAR-14: Besucherprofil aus dem Snapshot; Rechnungen bleiben im Core. — gelesen: 97 Zeilen
+- `src/ui/plinko-editor-lazy.tsx` — Chunk-Grenze fuer den Plinko-Editor: Der Editor zieht die 185-KB-Buehne — gelesen: 19 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
 - `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 163 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
@@ -1716,6 +1718,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T77 | **2026-11-06 21:20 UTC**: Perf-PR #161 auf `main` zusammengefuehrt. `main` (`b8a46be`, 0.3.140) in den PR-Branch gemergt; Konflikte nur in den sechs Pflichtdokumenten, Code und Assets konfliktfrei. WebP-Atlas 1.040.593 -> 384.234 B, Plinko-Buehne lazy (Initial-JS 1.186.336 -> 1.173.926 B), HUD-Icons als eigener 4.337-B-Chunk, Initialgraph 1.174.034 B/18 Chunks. |
 | T76 | **2026-11-06 21:00 UTC**: Merge-Gate auf `main` reparieren. Ursache: Der Merge von PR #163 lief nur mit `commit_title`; der Merge-Commit `6f7a906` trug keine Pflichtsektionen, `verify-commit-msg --head` war rot (`ERR-4006`), `Bump, tag, release` und der APK-Bau fielen aus. Fix: Follow-up-PR von `main`, dessen Merge `commit_message` = PR-Body traegt; `docs/GATE-ROOTCAUSE.md` haelt Fall und Regel fest. Geprueft: `pnpm run verify:all` mit zwoelf gruenen Gates, `verify-commit-msg` gegen den alten Merge-Text (drei Fehlbefunde) und gegen den Fix-Text. |
 | T75 | **2026-11-06 20:50 UTC**: Doku konsolidiert. Commits der letzten 48 Stunden, PRs und Altberichte geprueft; L1/L2/S1/Mods/Persona/Rivalenprofil im Code belegt, `PLAYER_CASH` ohne Produktions-Aufrufer und Umsatz-Kennzahl offen. 18 historische Berichte/Reviews/Plaene nach Ueberfuehrung in ROADMAP/INVENTORY/ARCHITECTURE/DEVTAGEBUCH geloescht. Geprueft: `verify:docs`, `verify:assets`, `verify:quick`, `build`, Produktionsbundle ohne Editor-Chunk, Narrative 65/65/65. |
 | T74 | **2026-11-06 19:14 UTC**: Phase-3-Effekte im Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, Kassen-Chips mit Coin-Sound, Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten geprueft. Korrigiert: `GamesPopup` gibt `machine.game` weiter; `FloorCash` liegt sichtbar vor dem Wechseltisch. Geprueft: Typecheck, UI-Test 8/8, Browser ohne Konsolenfehler; `verify:quick` alle zehn Gates gruen. |

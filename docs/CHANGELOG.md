@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.140 | 2026-11-06 21:01 UTC -->
+<!-- rbd-doc: v0.3.141 | 2026-11-06 21:15 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.141] - 2026-11-06
+
+### Technik
+- Floor-Atlas auf WebP-q95 umgestellt: 1.040.593 B -> 384.234 B (-63 %), beide 1024er-Seiten mit unveraendertem Shelf-Plan und Frame-Koordinaten.
+- `PlinkoEditorLazy` schneidet die 184.863-B-Buehne aus dem Modulpreload; Initial-JS 1.186.336 -> 1.173.926 B.
+- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B); `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy ohne HUD-Data-URI.
+- Initialgraph nach beiden Schritten: 1.174.034 B in 18 Chunks (+108 B gegenueber 1.173.926 B, ein Chunk mehr).
+- PR #161 auf den aktuellen `main`-Stand zusammengefuehrt; Konflikte nur in den sechs Pflichtdokumenten, Code konfliktfrei.
+- Keine Aenderung an Spiel, Ledger, RNG oder Save.
 
 ## [0.3.140] - 2026-11-06
 
