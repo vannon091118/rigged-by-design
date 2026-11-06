@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
+<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,17 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.130] - 2026-11-06
+
+### Spiel
+- Jedes eigene Spielgerät hat jetzt zwei Rollen: Betreiber mit dem kostenlosen TESTSPIN und Gast mit dem privaten PORTEMONNAIE. Der Gastmodus nutzt für SLOT, BLACKJACK, POKER, VIDEO_POKER, ROULETTE, PLINKO, SHELL und DICE dieselben Fenster und Engines wie das Fremdhaus.
+- Einsätze buchen PORTEMONNAIE → HAUSKONTO, Gewinne HAUSKONTO → PORTEMONNAIE. Reicht das Hauskonto nicht, wird der volle Gewinn über HAUS_SCHULDEN als Verbindlichkeit gebucht; nichts wird gekürzt.
+- Der Betreiber-Testspin bleibt kostenlos und ohne Ledger-, Welt- oder Gameplay-RNG-Wirkung. Eine offene Kartenrunde und ihre Abrechnung sind genau einmal buchbar.
+
+### Technik
+- `src/core/sim/own-play.ts` kapselt den eigenen Geldweg und den PRNG-Rollback; `src/store/own-play.ts` führt die Pending-Map je Gerät gegen Doppelabrechnung. `MachinePopup`, `MachinePlay` und `TableLauncher` trennen Rolle und Tisch, ohne eine zweite Spiel-Engine zu bauen.
+- Neue Tests: `src/core/sim/__tests__/own-play.test.ts` (alle acht Spiele, ungedeckte Gewinne, Testspin, fremder Geldweg), `src/store/__tests__/own-play.test.ts` (Doppelbuchung, Save/Load) und `src/ui/__tests__/machine-play.test.tsx` (Rollenwechsel, Testspin, Gastwurf).
 
 ## [0.3.129] - 2026-11-06
 

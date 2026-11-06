@@ -1,19 +1,22 @@
 /** Automaten-Popup: Zustand, Mods, Walzen und ein kostenloser Testspin. */
 import { useState } from 'react';
-import type { GameResult } from '../core/games/contracts';
+import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { GateResult } from '../core/games/plinko-sandbox';
 import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
+import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
+import type { ShellRound } from '../core/games/shell-round';
 import { MAX_REELS, reelUpgradeCost } from '../core/games/slot-config';
 import { barCapacityForLevel } from '../core/sim/deliveries';
 import { MODS, attractionValue, getMod, modAppliesTo } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { SlotProfile } from '../core/games/slot-profile';
+import type { CardDeal } from '../store/foreign-play';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand } from './glossary';
+import { MachinePlayLazy } from './machine-play-lazy';
 import { PlinkoEditor } from './plinko-editor';
 import { PopupShell } from './popup-shell';
-import { SlotPopup } from './games/slot-popup';
 import { SlotRulesEditor } from './slot-rules-editor';
 import { SlotTelemetry } from './slot-telemetry';
 
@@ -30,6 +33,13 @@ interface Props {
   readonly onTakeDrink: () => void;
   readonly onDeployPlinko: (config: PlinkoConfig) => GateResult;
   readonly onPlinkoMode: (mode: PlinkoMode) => void;
+  readonly onWithdraw: () => void;
+  readonly onPlay: (betVC: number, options?: GameExtras) => GameResult | null;
+  readonly onDeal: (stakeVC: number) => CardDeal | null;
+  readonly onSettle: (stakeVC: number, engineBps: number, label: string) => GameResult | null;
+  readonly onAdditionalBet: (amountVC: number) => boolean;
+  readonly onShellRound: () => ShellRound;
+  readonly onRisk: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
 }
 
 const GAME_LABEL: Record<string, string> = {
@@ -37,8 +47,9 @@ const GAME_LABEL: Record<string, string> = {
   PLINKO: 'Plinko', SHELL: 'Hütchenspiel', DICE: 'Würfel',
 };
 
-export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onSlotOdds, onTakeDrink, onDeployPlinko, onPlinkoMode }: Props) {
+export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onAddReel, onBet, onSlotOdds, onTakeDrink, onDeployPlinko, onPlinkoMode, onWithdraw, onPlay, onDeal, onSettle, onAdditionalBet, onShellRound, onRisk }: Props) {
   const [spinning, setSpinning] = useState(false);
+  const [guest, setGuest] = useState(false);
   const [full, setFull] = useState(false);
   const [result, setResult] = useState<GameResult | null>(null);
   const isGame = Boolean(item.gameId);
@@ -53,6 +64,26 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
     <PopupShell eyebrow={isGame ? GAME_LABEL[item.gameId ?? ''] ?? 'SPIEL' : 'DEKORATION'} title={item.label} onClose={onClose} wide full={full} game={item.gameId}>
       {isGame ? (
         <>
+          <div className="row-actions" role="group" aria-label="Spielmodus">
+            <button type="button" className={`btn${guest ? '' : ' primary'}`} onClick={() => setGuest(false)}>BETREIBER</button>
+            <button type="button" className={`btn${guest ? ' primary' : ''}`} onClick={() => setGuest(true)} disabled={item.damaged} title={item.damaged ? 'Erst reparieren.' : 'Mit deinem PORTEMONNAIE spielen.'}>ALS GAST SPIELEN</button>
+          </div>
+          {guest ? (
+            <MachinePlayLazy
+              item={item}
+              view={view}
+              full={full}
+              onToggleFull={() => setFull((value) => !value)}
+              onWithdraw={onWithdraw}
+              onPlay={onPlay}
+              onDeal={onDeal}
+              onSettle={onSettle}
+              onAdditionalBet={onAdditionalBet}
+              onShellRound={onShellRound}
+              onRisk={onRisk}
+            />
+          ) : (
+          <>
           <div className="machine-stats">
             <Stat label="ZUSTAND" value={item.damaged ? 'DEFEKT' : `${Math.round(item.condition)}%`} bad={item.damaged || item.condition < 45} hint="Unter 18 % setzt sich niemand mehr hin. Reparatur braucht 1 Ersatzteil." />
             <Stat label="PLÄTZE" value={`${item.occupants.length}/${item.seats}`} hint="Wie viele Gäste gleichzeitig spielen können." />
@@ -67,23 +98,7 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
           {item.gameId === 'PLINKO' && (
             <PlinkoEditor view={view} result={result} spinning={spinning} onSpin={spin} onDeploy={onDeployPlinko} onMode={onPlinkoMode} />
           )}
-          {item.gameId === 'SLOT' && (
-            <SlotPopup
-              title={item.label}
-              subtitle={`Zustand ${Math.round(item.condition)} % · Anziehung ${attractionBand(attraction)} · ${item.mods.length} Mods`}
-              wallet={view.playerCash}
-              house={view.house}
-              mods={item.mods.map((id) => getMod(id).name)}
-              pact="eigenes Haus"
-              bets={[]}
-              canPay
-              full={full}
-              reels={item.reels}
-              onToggleFull={() => setFull((value) => !value)}
-              onSpinFor={() => onTest()}
-            />
-          )}
-          {item.gameId !== 'PLINKO' && item.gameId !== 'SLOT' && (
+          {item.gameId !== 'PLINKO' && (
           <div className="slot-stage">
             <div className={`reel-window${spinning ? ' spinning' : ''}`}>
               {(result?.detail ?? ['?', '?', '?']).slice(0, 5).map((symbol, index) => (
@@ -126,6 +141,8 @@ export function MachinePopup({ item, view, onClose, onTest, onRepair, onMod, onA
               title="Gilt nur, wenn dieser Wert über dem globalen Mindesteinsatz liegt."
               onBlur={(event) => onBet(Number(event.target.value))} />
           </label>
+          </>
+          )}
         </>
       ) : (
         <div className="decor-info">

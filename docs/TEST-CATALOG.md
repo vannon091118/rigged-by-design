@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 171 Dateien — contract 110 · integration 36 · governance 12 · statistics 6 · performance 7.
+Summe: 175 Dateien — contract 111 · integration 39 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -119,6 +119,7 @@ Summe: 171 Dateien — contract 110 · integration 36 · governance 12 · statis
 | `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
 | `src/core/sim/__tests__/narrative-warm-return.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
 | `src/core/sim/__tests__/nav-edges.test.ts` | sim | contract | ja | `src/core/sim/nav-grid.ts` |
+| `src/core/sim/__tests__/own-play.test.ts` | sim | contract | ja | `src/core/sim/own-play.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
 | `src/core/sim/__tests__/player-cash.test.ts` | sim | contract | ja | `src/core/sim/self-exclusion-bet.ts` |
@@ -161,6 +162,7 @@ Summe: 171 Dateien — contract 110 · integration 36 · governance 12 · statis
 | `src/store/__tests__/narrative-commands.test.ts` | store | integration | ja | `src/store/narrative-commands.ts` |
 | `src/store/__tests__/narrative-rival-source.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/narrative-save.test.ts` | store | integration | ja | `src/store/save.ts` |
+| `src/store/__tests__/own-play.test.ts` | store | integration | ja | `src/store/own-play.ts` |
 | `src/store/__tests__/prng-persistence.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/store/__tests__/rival-play-commands.test.ts` | store | integration | ja | `src/store/rival-play-commands.ts` |
 | `src/store/__tests__/save-device.test.ts` | store | integration | ja | `src/store/migrate.ts` |
@@ -180,7 +182,9 @@ Summe: 171 Dateien — contract 110 · integration 36 · governance 12 · statis
 | `src/ui/__tests__/casino-window-header.test.tsx` | ui | integration | ja | `src/ui/casino-window-header.tsx` |
 | `src/ui/__tests__/dialogue-ui.test.tsx` | ui | integration | ja | `src/ui/dialogue-popup.tsx` |
 | `src/ui/__tests__/editor-gate.test.ts` | ui | integration | ja | `src/ui/editor-gate.ts` |
+| `src/ui/__tests__/editor-tools.test.ts` | ui | integration | ja | `src/ui/editor-tools.ts` |
 | `src/ui/__tests__/guest-profile.test.tsx` | ui | integration | ja | `src/ui/guest-popup.tsx` |
+| `src/ui/__tests__/machine-play.test.tsx` | ui | integration | ja | `src/ui/machine-popup.tsx` |
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 <!-- TEST_CATALOG_END -->

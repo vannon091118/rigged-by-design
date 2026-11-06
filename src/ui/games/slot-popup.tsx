@@ -132,7 +132,7 @@ export function SlotPopup(props: Props) {
         onSpin={runSpin}
         actionLabel={bets.length ? `SPIN · ${bet} VC` : 'TESTSPIN'}
         hint={bets.length
-          ? 'Gewinne gehen zurueck ins Portemonnaie, Verluste bleiben im fremden Haus. Nach jedem Gewinn entscheidet die Risiko-Karte.'
+          ? 'Gewinne gehen zurueck ins Portemonnaie, Verluste bleiben im Haus. Nach jedem Gewinn entscheidet die Risiko-Karte.'
           : 'Der Testspin kostet nichts und zahlt nichts aus. So sieht ein Gast diesen Automaten.'}
       />
     </section>

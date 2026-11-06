@@ -7,6 +7,7 @@ import { applyLayout } from '../core/sim/layout';
 import type { LayoutCommand } from '../core/sim/layout-commands';
 import { LayoutEditor } from './layout-editing';
 import { LayoutTransfer } from './layout-transfer';
+import { OwnPlay } from './own-play';
 import { openHouse } from '../core/sim/money';
 import { remodel } from '../core/sim/remodel';
 import type { BuildId } from '../core/sim/offers';
@@ -44,17 +45,14 @@ class WorldStore {
   #timer: ReturnType<typeof setInterval> | null = null;
   #savedTick = 0;
   readonly #layoutEditor = new LayoutEditor({
-    layout: () => this.#world.layout,
-    apply: (layout) => applyLayout(this.#world, layout),
-    emit: (save) => this.#emit(save),
-    notice: (text) => { this.#notice = text; },
+    layout: () => this.#world.layout, apply: (layout) => applyLayout(this.#world, layout),
+    emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; },
   });
   readonly #layoutTransfer = new LayoutTransfer(() => this.#world, {
-    apply: (layout) => applyLayout(this.#world, layout),
-    reset: () => this.#layoutEditor.reset(),
-    notice: (text) => { this.#notice = text; },
-    emit: (save) => this.#emit(save),
+    apply: (layout) => applyLayout(this.#world, layout), reset: () => this.#layoutEditor.reset(),
+    notice: (text) => { this.#notice = text; }, emit: (save) => this.#emit(save),
   });
+  readonly own = new OwnPlay({ world: () => this.#world, ledger: () => this.#ledger, prng: () => this.#prng, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();

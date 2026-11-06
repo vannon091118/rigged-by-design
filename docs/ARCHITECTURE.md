@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
+<!-- rbd-doc: v0.3.130 | 2026-11-06 05:07 UTC -->
 
 ## README als Einstieg
 
@@ -34,6 +34,7 @@ Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Comm
 - Geld existiert nur als Ledger-Buchung; VaCoins sind ganzzahlige Mikro-Einheiten.
 - Fiat eines Gastes liegt ab dem Spawn auf `FIAT_<id>`, Chips auf `VISITOR_<id>`, offene Gewinne auf `PENDING_<id>`. Ein fehlgeschlagener Transfer lässt Gast und Guthaben stehen.
 - Auszahlungen werden nie gekappt: Das Hauskonto zahlt, so weit es reicht; der Rest wird als Verbindlichkeit auf `HAUS_SCHULDEN` gebucht (`openLiability`). Die Summe aller Konten bleibt null.
+- Eigene Spielrunden laufen über `core/sim/own-play.ts` und die Store-Fassade `store/own-play.ts`: Der Einsatz geht von `PORTEMONNAIE` nach `HAUSKONTO`, der Gewinn zurück; `HAUS_SCHULDEN` deckt nur die Differenz. `store/own-play.ts` hält die offene Kartenrunde je Gerät, damit ein wiederholter Settle-Befehl nicht doppelt zahlt. `TableLauncher` bleibt rollenunabhängig; `MachinePlay` liefert nur den eigenen Geldweg, keine zweite Engine.
 - Der Umbau läuft über `src/core/sim/remodel.ts`: erst Deckung prüfen, dann alle Gastansprüche buchen, dann Geld buchen und das Haus tauschen.
 - Der Save ist v11 (`vcoin.casino.v11`). `replaySave` hebt v5- bis v10-Stände an, behält Fiat, offene Gewinne, Journal, Look, Besuchererinnerungen und Rivalen-Zustaende und setzt den PRNG an der gespeicherten Stelle fort; v5–v10 leiten das Layout deterministisch aus ihrer Vorlage ab, v3 und v4 werden verworfen.
 - Raum: `WorldState.layout` ist die einzige räumliche Wahrheit (Dimension, ein Bodenmaterial pro Tile, semantische Zonen, Wandkanten mit stabilen IDs). `size` und `zones` sind abgeleitete Legacy-Sichten für Renderer, UI und Simulation und werden ausschließlich über `applyLayout()` geschrieben. Jede Kante ist über Achse und Ankerpunkt eindeutig, `kind` (WALL/DOOR/OPENING) ist ihr einziger Zustand; der Parser in `layout-validate.ts` weist doppelte Kanten, Wände mit Tür-ID und Türen ohne ID fail-closed ab. Die Eingangstür liegt auf derselben Kante wie `doorPoint()`. `GameView.layout` reicht denselben unveränderlichen Plan an Renderer und Editor weiter; Möbelwerte wie Stock, Zustand, Belegung, Mods und Besitz bleiben in `Furniture` und sind kein Layout.
