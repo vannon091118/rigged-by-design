@@ -6,6 +6,7 @@ import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import { applyLayout } from '../core/sim/layout';
 import type { LayoutCommand } from '../core/sim/layout-commands';
 import { LayoutEditor } from './layout-editing';
+import { LayoutTransfer } from './layout-transfer';
 import { openHouse } from '../core/sim/money';
 import { remodel } from '../core/sim/remodel';
 import type { BuildId } from '../core/sim/offers';
@@ -47,6 +48,12 @@ class WorldStore {
     apply: (layout) => applyLayout(this.#world, layout),
     emit: (save) => this.#emit(save),
     notice: (text) => { this.#notice = text; },
+  });
+  readonly #layoutTransfer = new LayoutTransfer(() => this.#world, {
+    apply: (layout) => applyLayout(this.#world, layout),
+    reset: () => this.#layoutEditor.reset(),
+    notice: (text) => { this.#notice = text; },
+    emit: (save) => this.#emit(save),
   });
   constructor() {
     const hadOld = clearOldSave();
@@ -125,6 +132,10 @@ class WorldStore {
   endLayoutStroke(): void { this.#layoutEditor.end(); }
   undoLayout(): boolean { return this.#layoutEditor.undo(); }
   redoLayout(): boolean { return this.#layoutEditor.redo(); }
+  canUndoLayout(): boolean { return this.#layoutEditor.canUndo(); }
+  canRedoLayout(): boolean { return this.#layoutEditor.canRedo(); }
+  exportLayout(): string { return this.#layoutTransfer.export(); }
+  importLayout(text: string): { readonly ok: boolean; readonly issues: readonly string[] } { return this.#layoutTransfer.import(text); }
   installMod(itemId: number, mod: ModId): void { this.#guard(() => { this.#notice = installModCmd(this.#world, this.#ledger, itemId, mod); }); }
   addReel(itemId: number): void { this.#guard(() => { this.#notice = addReelCmd(this.#world, this.#ledger, itemId); }); }
   setBet(itemId: number, vc: number): void { this.#guard(() => { this.#notice = setBetCmd(this.#world, itemId, vc); }); }

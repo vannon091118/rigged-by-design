@@ -1,5 +1,6 @@
 /** React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. */
 import { Application } from 'pixi.js';
+import type { EditorCursor } from './editor-overlay';
 import { useEffect, useImperativeHandle, useRef, forwardRef } from 'react';
 import type { GameView } from '../store/types';
 import type { MenuAction } from './floor-actions';
@@ -10,6 +11,7 @@ export interface FloorHandle {
   fit: () => void;
   zoom: (factor: number) => void;
   cellAt: (clientX: number, clientY: number) => { x: number; y: number } | null;
+  setEditor: (cursor: EditorCursor | null) => void;
 }
 
 interface Props {
@@ -36,6 +38,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     fit: () => floor.current?.fit(),
     zoom: (factor: number) => floor.current?.zoom(factor),
     cellAt: (clientX: number, clientY: number) => floor.current?.cellAt(clientX, clientY) ?? null,
+    setEditor: (cursor: EditorCursor | null) => floor.current?.setEditorCursor(cursor),
   }), []);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->
+<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.129] - 2026-11-06
+
+### Technik
+- Editor-UI `src/ui/layout-editor.tsx`: Werkzeuge für Boden, Wand, Tür, Durchgang und Entfernen, Materialauswahl, Achsenwahl, Undo/Redo und ein sichtbarer Importfehler. Der Editor liegt als eigener Lazy-Chunk hinter `VITE_RBD_EDITOR_MODE=1` und `?editor=1`.
+- Pixi-Auswahl: `editor-overlay.ts` zeichnet die aktuelle Zelle und die gewählte Kante über der Welt, ohne selbst Klicks zu fangen; `FloorView` reicht nur den Cursor durch.
+- Ctrl+Z / Ctrl+Y (⌘ auf dem Mac) laufen über `editor-tools.ts`; Pinselstriche bleiben ein Verlaufsschritt, Escape schließt den Editor.
+- Export/Import: `world-store` exportiert das Layout über `layout-json.ts` und importiert es fail-closed inklusive Rastergrößen-Prüfung gegen die Vorlage.
+- Produktionsausschluss: `import.meta.env.DEV` plus das Flag entfernen den dynamischen Import; ein Build mit gesetztem Flag enthält weder Editor-Chunk noch Editor-CSS oder Editor-Strings.
+- Neue Tests: `editor-tools.test.ts` (5) und ein Produktionsfall in `editor-gate.test.ts`.
 
 ## [0.3.128] - 2026-11-06
 
