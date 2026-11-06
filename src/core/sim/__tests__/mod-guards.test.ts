@@ -6,6 +6,16 @@ import { installMod, upgradeReels } from '../actions';
 import { createWorld } from '../templates';
 
 describe('Gerätegrenzen zwischen Slot und Plinko', () => {
+  it('macht aus EXTRA_REEL eine echte vierte Walze', () => {
+    const world = createWorld('SMALL');
+    const ledger = new Ledger({ HAUSKONTO: fromVC(50) });
+    const slot = world.furniture.find((item) => item.gameId === 'SLOT')!;
+    expect(slot.reels).toBe(3);
+    installMod(world, ledger, slot.id, 'EXTRA_REEL');
+    expect(slot.reels).toBe(4);
+    expect(slot.mods).toContain('EXTRA_REEL');
+  });
+
   it('Walzen-Upgrade und vierte Walze gelten nur für Slots', () => {
     const world = createWorld('SMALL');
     const ledger = new Ledger({ HAUSKONTO: fromVC(50) });
