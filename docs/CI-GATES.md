@@ -39,6 +39,10 @@ keine Screenshot-Ordner mehr auf.
   Nachweise: Statistik (RTP, Poker-Verteilung), Soak, Balance und Benchmarks.
   `ppnpm run ci:long` startet ihn, wartet auf das Ergebnis und laedt den
   Balance-Bericht als Artefakt; lokal laufen diese Klassen nie mit.
+- Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die
+  26.04-Migration nicht ungeplant in den Build rutscht. Die Actions laufen auf
+  Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`,
+  `upload-artifact@v7`, `setup-java@v6` und `setup-android@v4`.
 
 Grenze von Ebene A: Enthaelt eine Commit-Nachricht `[skip ci]` oder `[ci skip]`,
 startet GitHub **keinen** Workflow. Das laesst sich auf Workflow-Ebene nicht

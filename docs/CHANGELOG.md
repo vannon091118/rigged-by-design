@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.132 | 2026-11-06 06:27 UTC -->
+<!-- rbd-doc: v0.3.133 | 2026-11-06 06:38 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.133] - 2026-11-06
+
+### Technik
+- GitHub Actions laufen jetzt auf Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`, `upload-artifact@v7`, `setup-java@v6` und `setup-android@v4`. Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die 26.04-Migration nicht unkontrolliert in den Build rutscht.
+- Der FREE_DRINK-Test pinnt Geraetezustand und Haltbarkeit; ein vom Generator beschaedigtes Geraet kann den Lauf nicht mehr seed-abhaengig rot machen.
 
 ## [0.3.132] - 2026-11-06
 

@@ -73,6 +73,10 @@ describe('Mods zahlen sich in der Gastrunde aus', () => {
     const bar = world.furniture.find((item) => item.kind === 'BAR')!;
     bar.stock = 3;
     const slot = slotFor(world);
+    // Der Generator darf das Geraet beschaedigen; ein defektes Geraet bricht
+    // playSpin vor dem Drink ab und macht den Fall seed-abhaengig.
+    slot.damaged = false;
+    slot.condition = 100;
     slot.mods.push('FREE_DRINK');
     guest.state = 'PLAY';
     guest.stateTicks = 0;
@@ -90,6 +94,8 @@ describe('Mods zahlen sich in der Gastrunde aus', () => {
     const bar = world.furniture.find((item) => item.kind === 'BAR')!;
     bar.stock = 0;
     const slot = slotFor(world);
+    slot.damaged = false;
+    slot.condition = 100;
     slot.mods.push('FREE_DRINK');
     guest.state = 'PLAY';
     guest.stateTicks = 0;
