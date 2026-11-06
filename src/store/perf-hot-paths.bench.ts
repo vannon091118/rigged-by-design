@@ -12,7 +12,8 @@ import { Ledger } from '../core/economy/ledger';
 import { fromVC } from '../core/economy/vacoin';
 import { guestAccount, HAUSKONTO } from '../core/sim/money';
 import { dirtyNear } from '../core/sim/emotion';
-import { blockedTiles, findPath, nearestWalkable } from '../core/sim/pathfinding';
+import { navGrid } from '../core/sim/nav-grid';
+import { findPath, nearestWalkable } from '../core/sim/pathfinding';
 import { createWorld, ensureStarter } from '../core/sim/templates';
 import type { Guest } from '../core/sim/types';
 import { recordJournal } from '../core/sim/journal';
@@ -71,16 +72,17 @@ test('Dreck in der Naehe', { timeout: 60_000 }, () => {
 });
 
 test('Navigation', { timeout: 60_000 }, () => {
-  measure('blockedTiles', () => {
-    blockedTiles(world.size, world.furniture);
+  const nav = navGrid(world.size, world.furniture, world.layout);
+  measure('navGrid', () => {
+    navGrid(world.size, world.furniture, world.layout);
   }, { iterations: ITERATIONS, note: `${world.furniture.length} Moebel, ${world.size}x${world.size}` });
 
   measure('findPath', () => {
-    findPath(world.size, blockedTiles(world.size, world.furniture), { x: 2, y: 2 }, { x: 87, y: 87 });
+    findPath(nav, { x: 2, y: 2 }, { x: 87, y: 87 });
   }, { iterations: 10, note: '90x90, diagonal' });
 
   const free = world.furniture[0]!;
   measure('nearestWalkable', () => {
-    nearestWalkable(world.size, blockedTiles(world.size, world.furniture), { x: free.x, y: free.y });
+    nearestWalkable(nav, { x: free.x, y: free.y });
   }, { iterations: ITERATIONS, note: 'Start auf einem Moebel' });
 });

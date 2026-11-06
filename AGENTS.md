@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -107,7 +107,7 @@ Nach **jeder** Änderung oder Analyse werden diese sechs Dokumente aktualisiert,
 
 - `src/core/` must stay headless (no browser deps) and testable.
 - One owner per state: `world-store` holds world/ledger/PRNG; UI state (popups) lives in React.
-- Raum: `WorldState.layout` ist die einzige raeumliche Wahrheit (Dimension, Bodenmaterial je Tile, semantische Zonen, Wandkanten). `size` und `zones` sind abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben; `GameView.layout` reicht denselben unveraenderlichen Plan weiter.
+- Raum: `WorldState.layout` ist die einzige raeumliche Wahrheit (Dimension, Bodenmaterial je Tile, semantische Zonen, Wandkanten). `size` und `zones` sind abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben; `GameView.layout` reicht denselben unveraenderlichen Plan weiter. Navigation laeuft ueber `nav-grid.ts`: belegte Tiles plus Wandkanten, nur `WALL` blockiert einen Schritt (`stepOpen()`), `DOOR`/`OPENING` sind passierbar; der Rand ist eine Kante, keine Tile-Sperre. `accessPointsFor()` liefert mehrere Zugaenge je Objekt, `approachPoint()` bleibt Fallback, und `nav-reach.ts` verhindert versiegelte Serviceobjekte.
 - Money is integer micro-units; no floats; every transaction is a ledger line.
 - RNG via `src/core/rng/weighted.ts` (`buildDistribution`, `rollNumber`); cards via `src/core/rng/shoe.ts` (draw removes card; reshuffle only when empty).
 - Zwei RNG-Namespaces: Spielzustand (`gameplay`) und Darstellung (`presentation`) teilen nie einen Strom. Renderer/Sound ziehen aus `src/render/rng.ts`; `tickWorld`/`playRound` weisen fremde Stroeme ueber `assertGameplayRng` ab.

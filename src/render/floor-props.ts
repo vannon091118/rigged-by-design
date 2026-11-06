@@ -209,7 +209,7 @@ export class FloorProps {
     try {
       const def = getBuildDef(this.#ghostId as never);
       const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
-      const ok = canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0);
+      const ok = canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0, view.layout);
       this.#ghost.clear();
       this.#ghost.roundRect(x * TILE, y * TILE, def.w * TILE, def.h * TILE, 4)
         .fill({ color: ok ? ROLE.service : ROLE.danger, alpha: 0.28 })

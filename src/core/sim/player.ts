@@ -4,19 +4,20 @@ import type { Prng } from '../rng/prng';
 import { deployCrate, depositCrate, takeCrate } from './deliveries';
 import { chooseActivity } from './guest-choice';
 import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
-import { blockedTiles, findPath, nearestWalkable } from './pathfinding';
+import { findPath, nearestWalkable } from './pathfinding';
 import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
-import { exchangePoint, guestById, interactionPoint } from './world';
+import { exchangePoint, guestById, interactionPoint, worldNav } from './world';
 import { grantGlobalXp } from './player-rpg';
 
 const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
 
 export function movePlayer(world: WorldState, target: Point): void {
-  const walkable = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), target);
+  const nav = worldNav(world);
+  const walkable = nearestWalkable(nav, target);
   if (!walkable) return;
-  world.player.path = findPath(world.size, blockedTiles(world.size, world.furniture), world.player.position, walkable);
+  world.player.path = findPath(nav, world.player.position, walkable);
   world.player.pathIndex = 0;
 }
 

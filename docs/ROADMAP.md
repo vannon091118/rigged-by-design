@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -41,7 +41,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 
-- Task 2/5: Wände blockieren Zellübergänge an ihren Kanten statt ganzer Tiles, Türen und Öffnungen werden passierbar, A* und der Navigations-Cache prüfen Kanten; danach mehrere Zugangspunkte pro Möbel und Erreichbarkeitsprüfung für Serviceobjekte.
+- Task 2/5 ist erledigt: Wände blockieren Zellübergänge an ihren Kanten, Türen und Öffnungen sind passierbar, A* und der Navigations-Cache prüfen Kanten, Möbel haben mehrere Zugänge, und die Platzierung verhindert versiegelte Serviceobjekte. Als Nächstes folgt Task 3/5 aus dem Spatial-Plan (Editor auf demselben Layout-Vertrag).
 - **Charakterwerte verallgemeinern:** Laune, Charisma, Intellekt und Ausgabebereitschaft als Achsen der Spielfigur fuehren, nicht als Casino-Sonderfall. TV, Werbung und Marken wirken auf dieselben Werte wie Gäste-Laune und Persona.
 - **Ledger-Ressourcen:** Zeit, Ruf, Vorräte und Aufmerksamkeit als gebuchte Ressourcen nach Bedarf ergaenzen; eine Ressource, eine Zeile, eine Ursache. Geld bleibt die erste, nicht die einzige Wahrheit.
 - **Social-Plugin der Narrative Engine:** Facts, Erinnerungen und gerichtete Beziehungen ausserhalb von Gast/Haus tragen lassen (Nachbarn, Kollegen, Freunde); neue Facts und Templates, keine zweite Erzaehlmaschine.

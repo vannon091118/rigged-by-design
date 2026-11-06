@@ -1,7 +1,7 @@
 /** Kassenschlange: eindeutige, erreichbare Wartepositionen – auch bei grossem Andrang. */
 import { isWalkable } from './pathfinding';
 import type { Guest, Point, WorldState } from './types';
-import { exchangePoint, guestBlocked, pathTo } from './world';
+import { exchangePoint, pathTo, worldNav } from './world';
 
 /**
  * Kandidatenpositionen als Ringe um den Schalter, innen nach aussen. Die Liste
@@ -11,7 +11,7 @@ import { exchangePoint, guestBlocked, pathTo } from './world';
  * wächst, bis jeder Rang seinen eigenen Platz hat.
  */
 function queueCandidates(world: WorldState, point: Point, limit: number): Point[] {
-  const blocked = guestBlocked(world);
+  const nav = worldNav(world);
   const spots: Point[] = [{ x: point.x, y: point.y }];
   const seen = new Set<number>([point.y * world.size + point.x]);
   for (let ring = 1; spots.length < limit && ring <= world.size; ring += 1) {
@@ -24,7 +24,7 @@ function queueCandidates(world: WorldState, point: Point, limit: number): Point[
         const y = point.y + dy;
         if (x < 0 || y < 0 || x >= world.size || y >= world.size) continue;
         const key = y * world.size + x;
-        if (seen.has(key) || !isWalkable(world.size, blocked, x, y)) continue;
+        if (seen.has(key) || !isWalkable(nav, x, y)) continue;
         seen.add(key);
         spots.push({ x, y });
       }

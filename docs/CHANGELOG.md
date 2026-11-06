@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -19,6 +19,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Keine sichtbare Aenderung: Boden, Zonenfarben und Darstellung bleiben unveraendert.
 
 ### Technik
+- Kanten-Navigation (Task 2/5): `src/core/sim/nav-grid.ts` trennt belegte Möbel-Tiles von Wandkanten; nur `WALL` blockiert einen Übergang, `DOOR` und `OPENING` bleiben passierbar.
+- `blockedTiles()` sperrt keine Rand-Tiles mehr. Den Rand schließt die Randkante des Layouts; Gäste, Spieler und Staff können die Randkachel betreten, aber nicht hinaus, und niemand wird mehr durch eine unsichtbare Tile-Sperre vom Eingang ferngehalten.
+- A* prüft jeden Schritt über `stepOpen()` (`H` zwischen (x, y-1)/(x, y), `V` zwischen (x-1, y)/(x, y)); Diagonalen bleiben gesperrt, die Wegfindung deterministisch.
+- `accessPointsFor()` liefert alle freien Zugänge eines Footprints mit offener Kante zum Objekt; `interactionPoint(world, item, slot)` verteilt Sitzplätze, Staff und Gäste darauf, `approachPoint()` bleibt als sicherer Fallback in der alten Reihenfolge (unten, links, rechts, oben).
+- Platzierung: `canPlaceAt()` weist Tür-Tiles ab, verlangt mindestens einen Zugang mit offener Kante und prüft über `nav-reach.ts`, dass keine Platzierung einen bisher erreichbaren Service (EXCHANGE, BAR, TOILET, STORAGE, JOB_STATION) versiegelt.
+- Zielvalidierung: Reserviert ein Gast einen Platz ohne Weg, wird die Reservierung sofort freigegeben; Spawn- und Eingangsplatz prüfen Begehbarkeit statt nur der Koordinate.
+- Der Nav-Cache hängt an Brettgröße, Möbelstruktur und der Identität des unveränderlichen Layouts; jede Layout-Änderung erzwingt ein neues Raster, kein veralteter Pfad bleibt stehen.
 - Spatial Layout Contract (Task 1/5): `src/core/sim/layout-types.ts` trennt `ZoneKind` (Spielbedeutung), `FloorMaterialId` (Bodenoptik) und `LayoutEdge` (Wand, Tuer, Durchgang). `LayoutState` traegt `size`, genau ein Bodenmaterial pro Tile, semantische Zonen und Kanten mit stabilen IDs.
 - Eine Wahrheit: `WorldState.layout` ist kanonisch; `WorldState.size` und `WorldState.zones` sind daraus abgeleitete Legacy-Sichten und werden nur ueber `applyLayout()` geschrieben. `GameView.layout` reicht denselben unveraenderlichen Plan an Renderer und Editor weiter.
 - Kanten sind eindeutig verankert (`H` zwischen (x, y-1) und (x, y), `V` zwischen (x-1, y) und (x, y)); je Koordinate existiert hoechstens eine Kante. Eine Wand mit Tuer-ID, eine doppelte Kante oder eine Tuer ohne ID wird fail-closed verworfen. Die Eingangstuer liegt auf derselben Kante wie `doorPoint()`.

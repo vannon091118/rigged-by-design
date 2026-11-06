@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Wände, Türen und Kanten-Navigation
+
+**Ziel.** Task 2/5: Waende, Tueren und Oeffnungen sollten echte raeumliche Bedeutung bekommen. Bisher blockierte `blockedTiles()` Moebel und den ganzen Rand, waehrend Wandkanten aus dem Layout gar nicht in die Navigation eingingen; `approachPoint()` lieferte genau einen Zugangspunkt, und die Platzierung kannte weder Tueren noch versiegelte Serviceobjekte.
+
+**Umsetzung.** `nav-grid.ts` baut ein `NavGrid` aus belegten Moebel-Tiles und den Wandkanten des Layouts. Nur `WALL` landet in `walls`; `DOOR` und `OPENING` fehlen dort und sind damit passierbar. Der Rand ist keine Tile-Sperre mehr, sondern die Randkante des Layouts. `pathfinding.ts` prueft jeden Schritt ueber `stepOpen()` und behandelt ein Tile nur noch als betretbar, wenn es im Raster liegt und kein Moebel traegt. `accessPointsFor()` sammelt alle freien Perimeter-Tiles mit offener Kante zum Footprint; `interactionPoint()` waehlt daraus nach Slot, `seatPoint()` verteilt Sitze, und `approachPoint()` bleibt als alter Fallback erhalten. `nav-reach.ts` flutet ueber offene Kanten und meldet Serviceobjekte ohne erreichbaren Zugang; `canPlaceAt()` weist Tuer-Tiles ab und verhindert, dass eine Platzierung einen zuvor erreichbaren Service abschneidet. `startActivity` gibt eine Reservierung zurueck, wenn der Weg zum Ziel leer bleibt, statt den Gast in eine Wand laufen zu lassen. Der Cache haengt an `size`, Möbelstruktur und Layout-Identitaet.
+
+**Pruefungen.** `typecheck` gruen. Neue `nav-edges.test.ts` (10 Tests) deckt alle vier Wandrichtungen, geschlossenen und erreichbaren Raum, Tuer und Durchgang, Cache-Invalidierung, mehrere Zugaenge samt Fallback, Service-Schutz, Tuer-Tile-Platzierung sowie Spieler-, Gast- und Staff-Navigation ab. `pathfinding.test.ts` auf `NavGrid` umgestellt; Sim- und Store-Suiten gruen (474 Tests, 6 uebersprungen).
+
+**Bewusst nicht getan.** Keine Rendering-, Wirtschafts-, Ledger-, Narrativ- oder RNG-Aenderung, keine neue Pathfinding-Engine. Der Editor und die visuelle Wanddarstellung bleiben Task 3/5; die Navigation ist die Wahrheit, die er spaeter bedienen muss.
+
 ## 2026-11-06 - Spatial Layout Contract und Save v11
 
 **Ziel.** Task 1/5: Waende, Tueren und Zonen brauchen eine gemeinsame, ortsunabhaengige Wahrheit, bevor Navigation und Editor darauf aufsetzen. Bestehende Saves mussten ohne Datenverlust weiterlaufen, ungueltige Plaene durften nicht halb in die Welt kommen.
@@ -1356,7 +1366,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

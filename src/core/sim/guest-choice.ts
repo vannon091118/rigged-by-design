@@ -1,7 +1,7 @@
 /** Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. */
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
-import { blockedTiles, nearestWalkable } from './pathfinding';
+import { nearestWalkable } from './pathfinding';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
@@ -10,7 +10,7 @@ import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
 import { offerScore } from './offers';
 import type { Furniture, Guest, WorldState } from './types';
-import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, zoneById } from './world';
+import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, worldNav, zoneById } from './world';
 
 export function startActivity(world: WorldState, guest: Guest, item: Furniture): boolean {
   if (item.damaged || !reserveSeat(world, item.id, guest.id)) return false;
@@ -29,7 +29,13 @@ export function startActivity(world: WorldState, guest: Guest, item: Furniture):
     guest.mood = clamp(guest.mood + 2);
     guest.patience = clamp(guest.patience + 2);
   }
-  sendGuest(world, guest, point);
+  // Zielvalidierung: ein reservierter Platz ohne Weg (z. B. hinter einer Wand)
+  // wird sofort freigegeben, statt den Gast in einen leeren Pfad laufen zu lassen.
+  if (!sendGuest(world, guest, point)) {
+    releaseSeat(world, item.id, guest.id);
+    guest.targetFurniture = 0;
+    return false;
+  }
   return true;
 }
 
@@ -48,7 +54,7 @@ function waitForSpace(world: WorldState, guest: Guest): void {
     // Wartende nicht auf einem Tile stapeln: jede ID bekommt ihren eigenen Platz in der Lounge.
     const spanX = Math.max(1, zone.w - 2);
     const spanY = Math.max(1, zone.h - 2);
-    const spot = nearestWalkable(world.size, blockedTiles(world.size, world.furniture), {
+    const spot = nearestWalkable(worldNav(world), {
       x: zone.x + 1 + (guest.id % spanX), y: zone.y + 1 + ((guest.id * 3) % spanY),
     });
     if (spot) sendGuest(world, guest, spot);

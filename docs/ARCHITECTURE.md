@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.121 | 2026-11-06 02:53 UTC -->
+<!-- rbd-doc: v0.3.122 | 2026-11-06 03:12 UTC -->
 
 ## README als Einstieg
 
@@ -50,6 +50,8 @@
 - `world.look` ist rein kosmetisch: Haut, Haare, Outfit und Accessoire. Es gibt keine Gameplay-, Preis- oder Geldwirkung.
 - Personalstatus (`task`, `blockedReason`) liegt am `StaffAgent`, nicht in der UI. Die Diagnose liest ihn nur.
 - Jede Datei traegt genau eine Zustaendigkeit und bekommt ihr Budget samt eigener Hot Zone aus `scripts/loc-budgets.mjs` (Legacy 350/200). Registries und State Machines sind Knoten mit genau einer Wahrheit, keine gespiegelten Zustandskopien. Schreibpfade laufen serialisiert ueber den Store, Engines bleiben reine Funktionen.
+
+- Navigation: `src/core/sim/nav-grid.ts` baut ein `NavGrid` aus belegten Möbel-Tiles und den Wandkanten des Layouts. Nur `WALL` steht in `walls`; `DOOR` und `OPENING` fehlen dort und sind damit passierbar. `blockedTiles()` sperrt keine Rand-Tiles mehr, den Rand schließt die Randkante des Layouts. A* (`pathfinding.ts`) prüft jeden Schritt über `stepOpen()`; `accessPointsFor()` liefert alle freien Zugänge eines Footprints mit offener Kante zum Objekt, `approachPoint()` bleibt als Fallback in alter Reihenfolge. `nav-reach.ts` prüft Erreichbarkeit über offene Kanten und verhindert, dass eine Platzierung einen Service abschneidet; `canPlaceAt()` weist Tür-Tiles und versiegelnde Platzierungen ab. Der Cache hängt an Brettgröße, Möbelstruktur und der Identität des unveränderlichen Layouts, damit jede Layout-Änderung ein neues Raster erzwingt.
 
 ## Fehler-Governance
 
