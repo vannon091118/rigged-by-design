@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->
+<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.138] - 2026-11-06
+
+### Spiel
+- Offene Gewinne an der Wechselkasse liegen sichtbar vor dem Tisch: Der Chip-Stapel wird nicht mehr von der Tischgrafik verdeckt.
+- Das fremde Haus färbt sich nach dem aktiven Spiel: SLOT Neon-Rot, BLACKJACK/POKER/ROULETTE Samt-Violett, PLINKO/DICE/SHELL/VIDEO_POKER Cyan.
+
+### Technik
+- `GamesPopup` reicht `machine.game` an `PopupShell` weiter; damit trägt jeder Dialog sein `data-game`, und die bestehenden `--game-*`-Regeln greifen.
+- `FloorCash.sync()` liefert den Fußanker des Wechseltischs; `FloorProps` sortiert den Stapel am selben Anker als Requisite vor dem Tisch, aber hinter Figuren. Kein Save-, Ledger- oder RNG-Eingriff.
 
 ## [0.3.137] - 2026-11-06
 

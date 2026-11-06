@@ -13,6 +13,21 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Phase-3-Effekte im Browser abgenommen
+
+**Ziel.** Jackpot, Kassenklingeln, Mood-Bubble und Spielfarben im laufenden Browser pruefen und gefundene Abweichungen direkt beheben.
+
+**Umsetzung.**
+- Jackpot: `emit('slot:jackpot', ...)` ueber denselben Core-Event-Bus, den `slot-session` nutzt; goldener Burst, Flash und 6-px-Shake waren sichtbar, der Win-Sound lief ueber zwei neue Oszillatoren (2 -> 5). Screenshot `artifacts/phase3-jackpot.png`.
+- Kasse: kontrollierter Gast mit 25 VC offenem Gewinn; der `FloorCash`-Stapel zeigte fuenf Chips, spielte `coin` (2 Oszillatoren + 1 Buffer) und der `money:bigPayout`-Burst sass am Wechseltisch. Der Stapel lag jedoch hinter dem Tisch (`z=380640900` gegen `390001001`) und war unsichtbar. `FloorCash.sync()` gibt jetzt den Fussanker zurueck, `FloorProps` haengt den Stapel mit `furniture/999` daran; im Browser liegt er mit `z=390001999` vor dem Tisch und bleibt hinter Figuren. Screenshot `artifacts/phase3-cash-fixed.png`.
+- Mood-Bubble: kontrollierter Gast `Mira Test` mit `mood=20`; "Hier stimmt was nicht" ist im Detail-LOD lesbar, im Uebersichts-LOD absichtlich ausgeblendet. Keine Aenderung noetig. Screenshots `artifacts/phase3-mood-zoomed.png` und `artifacts/phase3-mood-bubble-zoom-closeup.png`.
+- Spielfarben: `GamesPopup` uebergab `machine.game` nicht an `PopupShell`, deshalb blieb `data-game=null` und das Eyebrow immer cyan. Mit `game={machine.game}` tragen alle acht Spiele ihre Familie: SLOT `#ff2e88`, BLACKJACK/POKER/ROULETTE `#b06bff`, PLINKO/DICE/SHELL/VIDEO_POKER `#54e0ff`; Eyebrow und `popup-head`-Kante stimmen. Screenshot `artifacts/phase3-games-after-slot.png`.
+- Regression: `src/ui/__tests__/ui.test.tsx` prueft am Rivalen-Dialog `data-game="SLOT"`.
+
+**Pruefungen.** Headless Chrome 1024x768 bei DPR 2 gegen den Dev-Server auf Port 3000: alle vier Effekte durchgespielt, keine Konsolen- oder Page-Fehler. `tsc --noEmit -p src/Config/tsconfig.json` Exit 0. `vitest run ... src/ui/__tests__/ui.test.tsx` 8/8 gruen. Turn-Gate: `pnpm run verify:quick` PASS (alle zehn Gates gruen).
+
+**Offen.** Die Abnahme lief headless im Desktop-Browser; Ton ist ueber die erzeugten Audio-Knoten belegt, nicht ueber Lautsprecher gehoert. 60 fps, Haptik und Touch bleiben fuer ein echtes Android-Geraet offen.
+
 ## 2026-11-06 - HUD-PNGs inline: zwei Requests weniger im Kaltstart
 
 **Ziel.** Die zwei verbliebenen HUD-PNG-Requests (`ui/coin.png`, `ui/guest-cyan.png`) aus dem Kaltstart entfernen und den ersten Frame erneut unter Slow 4G messen, nicht nur unter dem bisherigen 9-Mbit/s-Profil.
@@ -1532,7 +1547,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.138 | 2026-11-06 19:18 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
