@@ -44,5 +44,26 @@
     "gateProfile": "quick",
     "status": "open",
     "createdAt": "ae24f61"
+  },
+  {
+    "id": "lane/capabilities/04-capabilities",
+    "owner": "Quality-/Capability-Owner",
+    "branch": "lane/capabilities/04-capabilities",
+    "baseSha": "ee952dc",
+    "pathAllowlist": [
+      "scripts/lib/capabilities.mjs",
+      "scripts/verify-capabilities.mjs",
+      "scripts/lib/pipeline-plan.mjs",
+      "capabilities.json",
+      "package.json"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/02-governance",
+      "lane/integrity/03-ledger"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "ee952dc"
   }
 ]
