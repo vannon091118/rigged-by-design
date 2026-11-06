@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.115 | 2026-11-06 02:02 UTC -->
+<!-- rbd-doc: v0.3.116 | 2026-11-06 02:17 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.116] - 2026-11-06
+
+### Technik
+- Inventur-Abdeckung repariert: `docs/INVENTORY.md` listet wieder jede getrackte Datei (1259/1259, inklusive `src/core/sim/walls.ts` und `walls.test.ts`), damit `verify:docs` (`ERR-4017`) nicht mehr an der Abdeckungszahl scheitert.
+- Ursache im Pre-Commit-Hook geschlossen: `.githooks/pre-commit` stagt die frisch erzeugte Inventur selbst (`git add docs/INVENTORY.md`). Bisher pruefte der Hook den Arbeitsbaum, waehrend der Commit die alte Liste trug.
+- Review gegen `origin/main`: Maschinen-Textur in `src/render/furniture-art.ts` liegt wieder unter Status-Text und Namensschild; sie hatte beide mit Alpha 0,92 verdeckt. Die uebrigen Review-Befunde stehen offen im Devtagebuch und in der Inventur (Befunde 60-64).
 
 ## [0.3.114] - 2026-11-04
 

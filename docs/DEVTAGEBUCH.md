@@ -13,6 +13,38 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Review des Arbeitsbranch gegen origin/main
+
+**Ziel.** Den Arbeitsbranch `freebuff/a5c130b1adab60bfa53c958c` vor dem PR gegen `origin/main` (9655a75) zweiachsig pruefen: Standards (`AGENTS.md`, Architektur, Art-Direction) und Spezifikation (Taskplan, Narrative-Engine, Optik-Plan, Tagebuch-Ziele). Fester Punkt des Vergleichs ist `origin/main`; das lokale `main` (7d8904f) ist eine veraltete Nebenlinie und war als Basis unbrauchbar.
+
+**Umfang.** 34 Commits, 166 Dateien, +6.262/-410. Gelesen wurde der vollstaendige Produktions-Diff (69 Dateien ohne Tests, Screenshots und Content-JSON) plus Stichproben in `furniture-art`, `floor-surface`, `scene-cache`, `floor-view`, `floor-math`, `staff`, `guest-choice`, `events` und `walls.test`.
+
+**Umsetzung (ein Fix).** `src/render/furniture-art.ts`: Die Maschinen-Textur stand als letztes Kind und deckte damit Status-Text ("BEREIT"/Spielname) und Namensschild (Alpha 0,92). Sie liegt wieder direkt ueber dem gezeichneten Korpus und unter Markern, Status und Label — die Reihenfolge, die der Kommentar daneben behauptet.
+
+**Befunde (offen, bewusst nicht in diesem Turn geaendert).**
+- `particle-overlay.tsx` abonniert 5 der 8 emittierten Events; `slot:chargeReady`, `slot:spin` und `dispute:sabotage` fehlen, obwohl der Tagebuch-Eintrag "Phase 4" alle acht als abonniert nennt. Entscheidung noetig: nachziehen oder den Anspruch korrigieren (ein Burst pro Spin ist eine Lautstaerke-Frage).
+- `floor-surface.ts` haengt Boden-Texturen als `Sprite` an `g.parent` (den `room`-Container), nicht an den Chunk. `chunk.g.clear()` entfernt sie nie, `chunk.g.destroy()` auch nicht: Bei jeder Zonen-Aenderung waechst die Zahl der Texturen, alte bleiben ueber dem neuen Boden liegen und umgehen den Chunk-Cache. Sauberer Fix braucht eine Entscheidung, wem die Textur gehoert (Chunk als Container statt `Graphics`).
+- `staff.ts` `cleanerTick` nimmt immer die erste Kachel aus `world.dirty`. Ist genau die unerreichbar (seit `walls.ts` leichter moeglich), steht der Reiniger dauerhaft und putzt nie wieder; vorher wurde die Kachel geloescht und es ging weiter.
+- `guest-choice.ts` fuehrt mit `chooseSpot` eine Naechste-freie-Station-Auswahl ein, die in keiner Spezifikation steht und die Gaesteverteilung veraendert (Scope-Zuwachs im E2-Slice).
+- `walls.ts` kommentiert, Eckkacheln seien offen, "sobald auf irgendeiner Seite eine Offnung sie deckt"; der Code blockt sie, solange nicht **beide** anliegenden Seiten offen sind.
+- Prozess: Der Turn vom 2026-11-06 hat keinen Content-Beitrag unter `content/narrative/contributions/` (AGENTS.md verlangt genau einen pro Turn), und der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` 0.3.115 trug.
+
+**Pruefungen.** `pnpm run verify:quick` gruen in allen zehn Gates (vor dem Fix war nur `docs` rot). Die Render-Befunde sind am Code belegt, **nicht** im Browser gesehen: In dieser Umgebung laeuft kein Dev-Server, also keine Aussage ueber das tatsaechliche Bild.
+
+**Offen.** Die vier Verhaltens-Befunde oben; die beiden Prozess-Befunde (Beitrag, Versionsdrift).
+
+## 2026-11-06 - Doku-Gate repariert: Inventur wird wieder mitgestagt
+
+**Ziel.** Das offene `gate-failure`-Issue #139 schliessen: `CI Verify` war rot mit `[ERR-4017] verify:docs: docs/INVENTORY.md: Abdeckungszahl 1257 passt nicht zu 1259 getrackten Dateien`. Die Ursache lag nicht in `walls.ts`, sondern im Zusammenspiel von Hook und Commit.
+
+**Umsetzung.**
+- `docs/INVENTORY.md` mit `node scripts/build-inventory.mjs` neu erzeugt: 1259/1259 Dateien, 84 Ordner; die beiden im letzten Turn neuen Pfade (`src/core/sim/walls.ts`, `src/core/sim/__tests__/walls.test.ts`) stehen jetzt im Block.
+- `.githooks/pre-commit` stagt die Inventur direkt nach dem Generator. Der Hook schrieb das Artefakt bisher nur in den Arbeitsbaum; gestagt wurde eine Liste, die den neuen Commit noch nicht kannte. Damit war der naechste Lauf zwangslaeufig rot.
+
+**Pruefungen.** `node scripts/verify-docs.mjs` gruen (vorher drei Befunde). `pnpm run verify:quick` gruen in allen zehn Gates; vor der Reparatur war `docs` das einzige rote Gate, die anderen neun waren bereits gruen.
+
+**Offen.** `pnpm run hooks:install` ist in diesem Klon nicht aktiv (`core.hooksPath` leer); der Fix wirkt in jedem Klon mit installierten Hooks. Der Changelog-Eintrag zur Wandkollision stand unter `[0.3.114]`, waehrend `package.json` bereits `0.3.115` trug — der Versionsdrift bleibt als Befund stehen.
+
 ## 2026-11-06 - Wandkollision und Türen werden Sim-Daten
 
 **Ziel.** Charaktere dürfen nicht mehr durch gemalte Wände laufen; Türen statt lückenloser Raumgrenzen, eine Grundrissquelle gegen die Reibung bei neuen Räumen.
@@ -1237,7 +1269,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.115 | 2026-11-06 02:02 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.116 | 2026-11-06 02:17 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

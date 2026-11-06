@@ -24,6 +24,9 @@ fi
 # ein frischer Klon nicht ungeprueft committet.
 inventory_docs_loc() {
   node scripts/build-inventory.mjs
+  # Die Inventur ist Pflichtdoku und Gate-Grundlage: ohne dieses Stagen pruefte
+  # der Hook einen anderen Stand als den Commit und der naechste Lauf war rot.
+  git add docs/INVENTORY.md >/dev/null 2>&1 || true
   node scripts/doc-sync.mjs --staged
   node scripts/verify-docs.mjs
   if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then
