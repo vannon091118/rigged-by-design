@@ -247,7 +247,7 @@ beide `none`, weil sie auf einer Flaeche liegen statt zu stehen.
 | `base` | Assets | Bedeutung im Bild |
 | --- | ---: | --- |
 | `floor-contact` | 54 | Objekt steht auf, Inhalt endet knapp ueber der Unterkante (1–6 px Rand) |
-| `flat-on-surface` | 18 | Tischkarten, Chips, Roulette-Layout, Suit-Zeichen |
+| `flat-on-surface` | 18 | Tischkarten, Chips, Roulette-Layout, Suit-Zeichen (3 davon mit Code-Bezug als explizite Sprites, 15 nur im Bestand) |
 | `full-bleed` | 7 | ohne Transparenz: zwei aegyptische Saeulen, `palm-neon`, `potted-palm-variant`, `potted-plant`, `small-podium`, `restroom-stall` |
 | `raised` | 3 | `wall-sconce` (19 % Abstand), `cocktail-glass` (17 %), `shot-glass` (18 %) |
 
@@ -292,7 +292,7 @@ eigene Assets.
 
 ### Ausnahmen und Unbekanntes
 
-- 34 der 82 Assets haben keinen Renderer-Bezug. Sie tragen `transform:
+- 48 der 82 Assets haben keinen Renderer-Bezug. Sie tragen `transform:
   library-only`, `anchor: "unknown"` und `anchorKind: "unknown"`; `content`,
   `proportion`, `base`, `ground` und `top` sind trotzdem gemessen, weil sie rein
   visuell sind.

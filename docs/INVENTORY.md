@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.123 | 2026-11-06 03:02 UTC -->
+<!-- rbd-doc: v0.3.123 | 2026-11-06 03:05 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -1494,7 +1494,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 61 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 116 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 182 Zeilen
-- `src/render/assets/asset-semantics.json` — { — gelesen: 1312 Zeilen
+- `src/render/assets/asset-semantics.json` — { — gelesen: 1313 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
 - `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 32 Zeilen
 - `src/render/assets/manifest.json` — { — generiert, 1983 Zeilen
