@@ -121,6 +121,10 @@ export function modAppliesTo(modId: ModId, game: GameId | undefined): boolean {
 
 interface ModEffects {
   attraction: number; patience: number; addiction: number; operating: VaCoinMicro; bonusBps: number;
+  /** FREE_DRINK liefert genau einen Drink je Spin, solange die Bar Bestand hat. */
+  freeDrink: boolean;
+  /** Der auf den Drink entfallende Betriebsanteil; wird nur bei Lieferung gebucht. */
+  freeDrinkCost: VaCoinMicro;
 }
 
 /**
@@ -134,7 +138,11 @@ export function resolveModEffects(game: GameId | undefined, mods: readonly ModId
   let addiction = 0;
   let operating = 0;
   let bonusBps = 0;
-  for (const id of mods) {
+  let freeDrink = false;
+  let freeDrinkCost = 0;
+  // Dieselbe Mod-Id darf ihre Wirkung nur einmal entfalten, auch wenn ein
+  // alter Spielstand sie doppelt im Gerät traegt.
+  for (const id of new Set(mods)) {
     if (!modAppliesTo(id, game)) continue;
     const mod = getMod(id);
     attraction += mod.attraction;
@@ -142,8 +150,12 @@ export function resolveModEffects(game: GameId | undefined, mods: readonly ModId
     addiction += mod.addiction;
     operating += mod.operating;
     bonusBps += mod.bonusBps;
+    if (id === 'FREE_DRINK') { freeDrink = true; freeDrinkCost += mod.operating; }
   }
-  return { attraction, patience, addiction, operating: operating as VaCoinMicro, bonusBps };
+  return {
+    attraction, patience, addiction, operating: operating as VaCoinMicro, bonusBps,
+    freeDrink, freeDrinkCost: freeDrinkCost as VaCoinMicro,
+  };
 }
 
 /** Zusatzwalzen erhoehen den Schauwert und damit den Zulauf. */

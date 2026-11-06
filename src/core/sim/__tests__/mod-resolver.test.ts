@@ -26,6 +26,11 @@ describe('Gemeinsamer Resolver für Mod-Wirkungen', () => {
     expect(resolveModEffects(undefined, ['NEON']).attraction).toBe(getMod('NEON').attraction);
   });
 
+  it('zaehlt dieselbe Mod-Id nur einmal', () => {
+    expect(resolveModEffects('SLOT', ['FREE_DRINK', 'FREE_DRINK']))
+      .toEqual(resolveModEffects('SLOT', ['FREE_DRINK']));
+  });
+
   it('summiert mehrere Mods über denselben Weg', () => {
     const effects = resolveModEffects('SLOT', ['NEON', 'CHERRY', 'EXTRA_REEL']);
     expect(effects.attraction).toBe(

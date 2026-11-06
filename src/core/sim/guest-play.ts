@@ -9,17 +9,44 @@ import { clamp, releaseAndChoose } from './guest-core';
 import { chooseActivity } from './guest-choice';
 import { deliverDrink, useToilet } from './deliveries';
 import { refreshNeeds } from './needs';
-import { guestAccount, HAUSKONTO, payOut, placeBet, SHOP } from './money';
+import { guestAccount, payOrBorrow, payOut, placeBet, SHOP } from './money';
 import { resolveModEffects } from './offers';
 import { TX_REASON } from './tx-reasons';
 import { getPersona } from './personas';
 import type { Furniture, Guest, WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
 
+/** Ein Free-Drink nimmt echten Barbestand; ohne Bestand gibt es keinen Schein-Drink. */
+function serveFreeDrink(world: WorldState, guest: Guest): boolean {
+  const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0);
+  if (!bar) return false;
+  bar.stock -= 1;
+  guest.thirst = 0;
+  guest.mood = clamp(guest.mood + 6);
+  guest.patience = clamp(guest.patience + 2);
+  world.lastEvent = `${guest.name} bekommt den Freidrink an der Bar.`;
+  return true;
+}
+
 /** Sucht erhoeht den Einsatz um bis zu 50 % und verlaengert die Sitzung; beides bleibt bezahlbar. */
 export function addictedStake(world: WorldState, item: Furniture, guest: Guest): VaCoinMicro {
   const base = Math.max(world.prices.slotMinBet, item.baseBet);
   return Math.round(base * (1 + guest.addiction / 200)) as VaCoinMicro;
+}
+
+/**
+ * Persona-Budget skaliert den Einsatz, aber nur bis zum Dreifachen des Tisches
+ * und nie ueber den verfuegbaren Chipbestand. High Roller spielt so hoeher,
+ * ohne dass ein einzelner Spin die ganze Sitzung bezahlt.
+ */
+export function personaStake(world: WorldState, item: Furniture, guest: Guest, wallet: VaCoinMicro): VaCoinMicro {
+  const base = Math.max(world.prices.slotMinBet, item.baseBet);
+  if (!canAfford(wallet, base)) return ZERO_VC;
+  const budget = Math.min(3, Math.max(1, getPersona(guest.persona).budgetFactor));
+  const wanted = Math.round(addictedStake(world, item, guest) * budget);
+  const walletShare = Math.floor(wallet * (0.05 + budget * 0.025));
+  const stake = Math.min(wanted, Math.round(base * 3), walletShare, wallet);
+  return (stake >= base ? stake : base) as VaCoinMicro;
 }
 
 /** Vier Spins ohne Sucht, bis zu neun mit voller Sucht. */
@@ -28,8 +55,8 @@ export const sessionSpins = (addiction: number): number => 4 + Math.floor(addict
 function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, item: Furniture): void {
   if (item.damaged) { releaseAndChoose(world, guest); return; }
   const wallet = ledger.getBalance(guestAccount(guest.id));
-  const bet = Math.min(wallet, addictedStake(world, item, guest)) as VaCoinMicro;
-  if (!canAfford(wallet, bet)) {
+  const bet = personaStake(world, item, guest, wallet);
+  if (bet <= ZERO_VC || !canAfford(wallet, bet)) {
     releaseAndChoose(world, guest);
     guest.state = 'CASHOUT';
     guest.stateTicks = 0;
@@ -52,9 +79,14 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   const payout = result.payout;
   // Volle Auszahlung: fehlende Deckung wird als Schuld gebucht, nie still gekappt.
   if (payout > ZERO_VC) payOut(ledger, guest.id, payout, world.tick);
-  if (effects.operating > ZERO_VC) {
-    try { ledger.transfer(HAUSKONTO, SHOP, effects.operating, TX_REASON.MOD_OPERATING, world.tick); } catch { /* Konto reicht nicht */ }
-  }
+  // Der Drink wird erst nach erfolgreich gebuchtem Einsatz serviert; ein
+  // abgelehnter Spin darf keinen Bestand verbrauchen.
+  const freeDrink = effects.freeDrink ? serveFreeDrink(world, guest) : false;
+  // FREE_DRINK kostet nur, wenn wirklich ein Drink im Bestand war. Der
+  // Betriebsaufwand wird als echte Verbindlichkeit gebucht, nie still verschluckt.
+  const drinkCost = freeDrink ? effects.freeDrinkCost : ZERO_VC;
+  const operating = (effects.operating - effects.freeDrinkCost + drinkCost) as VaCoinMicro;
+  if (operating > ZERO_VC) payOrBorrow(ledger, SHOP, operating, TX_REASON.MOD_OPERATING, world.tick);
   const netWin = payout > bet;
   const push = payout === bet;
   const jackpot = payout > ZERO_VC && isJackpotLabel(result.multiplierBps);

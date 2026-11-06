@@ -35,11 +35,21 @@ export function reputation(world: WorldState): number {
   return Math.max(0, Math.min(100, value));
 }
 
+/**
+ * VELVET ist kein reiner Anziehungswert: Samtverkleidung hebt die Gaestegüte
+ * um eine Persona-Stufe, hoechstens bis zur Konzern-Stufe. Der Resolver bleibt
+ * die eine Quelle fuer die Mod-Wirkung.
+ */
+export function guestTier(world: WorldState): 1 | 2 | 3 {
+  const velvet = world.furniture.some((item) => item.mods.includes('VELVET'));
+  return Math.min(3, personaTier(world.demandTier) + (velvet ? 1 : 0)) as 1 | 2 | 3;
+}
+
 /** Keine Gaestezahl sperrt den Eingang; der Betrieb regelt den Andrang ueber Service und Laune. */
 export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest | null {
   const id = world.nextGuestId++;
   const returning = pickReturningVisitor(world, id);
-  const persona = returning ? returning.persona : randomPersona(prng, personaTier(world.demandTier));
+  const persona = returning ? returning.persona : randomPersona(prng, guestTier(world));
   const spawn = entranceSpot(world, id);
   const fiat = randomFiat(prng, world.template, persona);
   const made = makeGuest({ id, persona, prng, spawn });

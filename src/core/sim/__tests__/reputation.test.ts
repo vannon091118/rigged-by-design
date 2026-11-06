@@ -8,7 +8,7 @@
 import { describe, expect, it } from 'vitest';
 import { fromVC } from '../../economy/vacoin';
 import { getBuildDef } from '../offers';
-import { reputation } from '../spawn';
+import { guestTier, reputation } from '../spawn';
 import { createWorld, ensureStarter } from '../templates';
 import type { WorldState } from '../types';
 
@@ -55,6 +55,17 @@ describe('Ruf', () => {
     const clean = reputation(world);
     for (let tile = 0; tile < 40; tile += 1) world.dirty.add(100 + tile);
     expect(reputation(world)).toBeLessThan(clean);
+  });
+
+  it('hebt VELVET die Gaestegüte um eine Persona-Stufe', () => {
+    const world = fresh();
+    expect(guestTier(world)).toBe(1);
+    world.furniture.find((item) => item.kind === 'SLOT')!.mods.push('VELVET');
+    expect(guestTier(world)).toBe(2);
+    world.demandTier = 'SAAL';
+    expect(guestTier(world)).toBe(3);
+    world.demandTier = 'KONZERN';
+    expect(guestTier(world)).toBe(3);
   });
 
   it('ist ohne Angebot null', () => {
