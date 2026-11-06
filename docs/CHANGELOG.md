@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.135 | 2026-11-06 07:25 UTC -->
+<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.136] - 2026-11-06
+
+### Technik
+- Der Phase-6-Abnahmeplan ersetzt das alte Exit-Kriterium in `docs/PLAN-OPTIK-VISUELL.md`: Ausgangsbild der Desktop-Sichtpruefung, Pruefmatrix A1-A8 (Grundbild, Werkstatt-Einstieg, sechs Ziele, Spiegel, FPS, Touch, Huelle/Performance, Release), Reihenfolge und Exit. A1 ist bestanden, A2-A8 bleiben offen.
+- Keine Mechanik-, Ledger-, RNG- oder Save-Aenderung; die Doku-Aenderung laeuft mit `verify:quick`.
 
 ## [0.3.135] - 2026-11-06
 
