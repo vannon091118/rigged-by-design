@@ -42,8 +42,12 @@ interface SlotOptions {
   readonly config?: SlotConfig;
 }
 
-/** Entladung nach Drucklader: 1,48x auf den Gesamteinsatz, unabhaengig von der Paytable. */
-const FORCED_WIN_BPS = 14_800;
+/**
+ * Entladung nach Drucklader: 1,00x auf den Gesamteinsatz. Der Ausgleich ist
+ * bewusst kein zusaetzlicher Gewinn; sonst wuerde der einbehaltene Pity-Puffer
+ * den langfristigen RTP ueber die angezeigte Quote heben.
+ */
+const FORCED_WIN_BPS = 10_000;
 const MAX_FREE_ROUNDS = 40;
 
 /** Ziehung aus dem Streifen: gleichverteilt ueber die eingetragene Symbolfolge. */
@@ -69,8 +73,8 @@ function shiftReels(reels: SlotSymbol[][], config: SlotConfig, offset: number): 
 }
 
 /**
- * Setzt eine echte 3er-SCARAB-Linie auf Linie 0 und gibt sie zurueck: Diese Linie zahlt
- * als Entladung den festen Satz, nicht die Paytable (sonst waere sie zehnmal zu gross).
+ * Setzt eine echte 3er-SCARAB-Linie auf Linie 0 und gibt sie zurueck: Diese Linie
+ * markiert den Ausgleich, nicht einen zweiten Paytable-Gewinn.
  */
 function forceNonLdw(reels: SlotSymbol[][], rows: number): number {
   const center = Math.floor(rows / 2);

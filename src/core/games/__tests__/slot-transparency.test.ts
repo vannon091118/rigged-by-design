@@ -68,9 +68,9 @@ describe('Drucklader', () => {
     expect(unfunded.chargeReady).toBe(true);
   });
 
-  it('erzwingt eine echte Non-LDW-Auszahlung oberhalb des Standardeinsatzes', () => {
+  it('erzwingt einen Ausgleich auf Standardeinsatz, keinen zweiten Gewinn', () => {
     const outcome = playSlot(new Prng(randomSeed()), { forceWin: true });
-    expect(outcome.multiplierBps).toBeGreaterThan(10_000);
+    expect(outcome.multiplierBps).toBe(10_000);
     expect(outcome.symbols).toHaveLength(5);
   });
 });
