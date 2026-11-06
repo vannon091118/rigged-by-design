@@ -1,5 +1,5 @@
 // @loc-exception: App verdrahtet Popups, Tastaturpfad und Floor in genau einem Zustandsbaum; getrennt waeren Fokus und Popup-Routing doppelt.
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import type { MenuAction } from './render/floor-actions';
@@ -17,6 +17,12 @@ import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
 import { useStageKeys } from './ui/use-stage-keys';
+import { editorEnabled } from './ui/editor-gate';
+
+// Produktionsbuilds ersetzen DEV mit false: der dynamische Import und damit
+// der Editor-Chunk verschwinden vollstaendig aus dem APK-/Web-Bundle.
+const EDITOR_BUILD = import.meta.env.DEV && import.meta.env.VITE_RBD_EDITOR_MODE === '1';
+const LayoutEditor = EDITOR_BUILD ? lazy(() => import('./ui/layout-editor')) : null;
 
 interface AppProps {
   readonly onFirstFrame?: () => void;
@@ -29,6 +35,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const [actions, setActions] = useState<MenuAction[]>([]);
   const [placeError, setPlaceError] = useState('');
   const stage = useRef<FloorHandle>(null);
+  const [editorOpen, setEditorOpen] = useState(() => editorEnabled(window.location.search));
 
   useEffect(() => {
     if (!view.notice) return;
@@ -81,7 +88,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   }, []);
 
   useStageKeys({
-    enabled: popup === null && !buildOpen,
+    enabled: popup === null && !buildOpen && !editorOpen,
     zoom: (factor) => stage.current?.zoom(factor),
     fit: () => stage.current?.fit(),
     onEscape: () => setBuildOpen(false),
@@ -112,6 +119,14 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setBuildOpen(false);
     setActions([]);
     setPopup(next);
+  };
+
+  const closeEditor = (): void => {
+    setEditorOpen(false);
+    stage.current?.setEditor(null);
+    const url = new URL(window.location.href);
+    url.searchParams.delete('editor');
+    window.history.replaceState(null, '', url);
   };
 
   return (
@@ -177,6 +192,16 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
         {view.notice && (
           <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
+        )}
+
+        {LayoutEditor && editorOpen && (
+          <Suspense fallback={null}>
+            <LayoutEditor
+              cellAt={(x, y) => stage.current?.cellAt(x, y) ?? null}
+              onCursor={(cursor) => stage.current?.setEditor(cursor)}
+              onClose={closeEditor}
+            />
+          </Suspense>
         )}
       </main>
 

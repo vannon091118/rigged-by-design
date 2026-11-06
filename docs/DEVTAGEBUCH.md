@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Task 5, Phase 2: Editor-UI, Pixi-Auswahl und Export/Import
+
+**Ziel.** Den Command- und Verlaufskern aus Phase 1 bedienbar machen, ohne den Editor in Produktions- oder APK-Builds zu tragen.
+
+**Umsetzung.** `layout-editor.tsx` bietet Werkzeug, Material, Kantenachse, Undo/Redo und Import/Export; `editor-tools.ts` baut Commands und erkennt Ctrl/Cmd+Z, Ctrl/Cmd+Y und Shift+Z. `editor-overlay.ts` zeichnet Zelle und Kante in Pixi, `FloorView` reicht nur den Cursor durch. Der Store exportiert über `layout-json.ts` und importiert fail-closed samt Rastergrößen-Prüfung gegen die Vorlage. Der Editor hängt an einem dynamischen Import mit `import.meta.env.DEV && VITE_RBD_EDITOR_MODE === '1'`; `?editor=1` öffnet ihn zusätzlich. Die Styles liegen in `layout-editor.css` und werden nur mit dem Lazy-Chunk geladen.
+
+**Pruefungen.** `typecheck` grün. Produktionsbuild mit absichtlich gesetztem `VITE_RBD_EDITOR_MODE=1`: kein Editor-Chunk, keine Editor-Strings, keine Editor-CSS-Regeln in `dist/`; ohne Flag ebenso. Neue `editor-tools.test.ts` (5) und ein Produktionsfall in `editor-gate.test.ts`.
+
+**Offen.** Der volle `verify:all`-Lauf bleibt der CI-Nachweis. Keine Änderung an Simulation, Ledger, RNG oder Save-Format; die Drink-Zahlungslogik bleibt unangetastet.
+
 ## 2026-11-06 - Task 5, Phase 1: Commands und Verlauf
 
 **Ziel.** Der Editor braucht eine typisierte Schreibspur und einen begrenzten Verlauf, bevor eine Oberfläche entsteht. Beides musste in den bestehenden Store-Vertrag passen, ohne Simulation, Ledger, RNG oder Save anzufassen.
@@ -1452,7 +1462,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

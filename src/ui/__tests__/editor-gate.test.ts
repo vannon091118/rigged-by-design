@@ -19,6 +19,10 @@ describe('Editor-Freigabe', () => {
     expect(editorEnabled('?editor=1', 'true')).toBe(false);
   });
 
+  it('bleibt im Produktionsbuild auch mit Flag und Query geschlossen', () => {
+    expect(editorEnabled('?editor=1', '1', false)).toBe(false);
+  });
+
   it('oeffnet nicht ohne Query-Parameter', () => {
     expect(editorEnabled('', '1')).toBe(false);
     expect(editorEnabled('?editor=0', '1')).toBe(false);

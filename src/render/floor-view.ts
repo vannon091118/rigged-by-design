@@ -19,6 +19,7 @@ import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
 import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
+import { EditorOverlay, type EditorCursor } from './editor-overlay';
 
 const STEP_MS = TICK_MS;
 
@@ -38,6 +39,7 @@ export class FloorView {
   readonly #fx: FloorFx; readonly #events: FloorEvents;
   readonly #camBase = { x: 0, y: 0 };
   readonly #entities: EntitySync;
+  readonly #editor = new EditorOverlay();
   #flashId = -1;
   #view: GameView;
   #lod = -1;
@@ -57,7 +59,7 @@ export class FloorView {
     this.#fx = new FloorFx();
     this.#events = new FloorEvents(this.#fx, () => this.#view);
     this.#camera.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
-      this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root);
+      this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
     this.#camera.eventMode = 'static';
     this.#camera.interactive = true;
     this.#camera.on('pointerdown', this.#tap);
@@ -113,6 +115,9 @@ export class FloorView {
   zoom(factor: number): void { this.#cam.zoomStep(factor); }
   setBudget(particles: number, lights: number): void { this.#fx.setBudget(particles, lights); }
 
+  /** Editor-Auswahl liegt ueber der Welt, ist aber nie selbst klickbar. */
+  setEditorCursor(cursor: EditorCursor | null): void { this.#editor.set(cursor); }
+
   zoomToArea(x: number, y: number): void {
     const area = areaAt(this.#view.template, x, y);
     if (area) this.#cam.zoomToArea(area, this.#view.size);
@@ -149,6 +154,7 @@ export class FloorView {
     this.#cues.destroy();
     this.#events.stop();
     this.#fx.destroy();
+    this.#editor.destroy();
     this.#actors.clear();
     this.#entities.clear();
     this.#scene.destroy();

@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->
+<!-- rbd-doc: v0.3.129 | 2026-11-06 04:30 UTC -->
 
 ## README als Einstieg
 
@@ -25,7 +25,7 @@
 
 ## Zustandsbesitz
 
-Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Commands erzeugen ein neues, geprüftes Layout, `LayoutHistory` hält höchstens 30 Schritte, `world-store` bleibt der einzige Aufrufer von `applyLayout()`.
+Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Commands erzeugen ein neues, geprüftes Layout, `LayoutHistory` hält höchstens 30 Schritte, `world-store` bleibt der einzige Aufrufer von `applyLayout()`. Die Oberfläche `src/ui/layout-editor.tsx` hält ausschließlich UI-Zustand und wird über einen statisch gegateten dynamischen Import (`import.meta.env.DEV` plus `VITE_RBD_EDITOR_MODE=1`) geladen; `?editor=1` öffnet sie zusätzlich. `src/render/editor-overlay.ts` ist reine Pixi-Darstellung der Auswahl, `FloorView` liest nur den Cursor. Export/Import laufen über `layout-json.ts`; der Store weist ein Layout ab, dessen Rastergröße nicht zur aktiven Vorlage passt.
 
 - `src/store/world-store.ts` ist der einzige Besitzer von Welt, Ledger, PRNG und Save.
 - `src/core/` bleibt headless: Simulation, Geld und Spiele kennen weder DOM noch Pixi.
