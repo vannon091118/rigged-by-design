@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->
+<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.140] - 2026-11-06
+
+### Technik
+- Die zwei HUD-Data-URIs liegen in einem eigenen, vorgeladenen `hud-icons`-Chunk (4.337 B). Der geteilte `icons`-Chunk schrumpft von 68.043 auf 63.767 B; `plinko-stage` bleibt mit 6.275 B lazy und enthaelt keine HUD-Data-URI mehr. Initialgraph 1.173.926 -> 1.174.034 B (+108 B, ein Chunk mehr).
 
 ## [0.3.139] - 2026-11-06
 

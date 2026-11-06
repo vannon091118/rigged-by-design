@@ -13,6 +13,19 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - HUD-Icons als eigener Start-Chunk
+
+**Ziel.** Die zwei HUD-Data-URIs aus dem geteilten Icons-Chunk loesen und als eigenen, kleinen Start-Chunk ausliefern; zugleich belegen, warum sie zuvor im Plinko-Chunk lagen.
+
+**Umsetzung.**
+- Vorbefund: Auf `origin/main` (vor PR #161) war `plinko-stage-E43JCS3D.js` 184.813 B gross, im Modulpreload und enthielt beide HUD-Data-URIs. Rolldown hatte den geteilten `icons`-Modul (HUD-Icons, Manifest, Glossary) und Pixis `emitter` dem dynamischen Plinko-Chunk zugeordnet; weil der Entry `icons` statisch importiert, blieb der Chunk startkritisch.
+- Mit der Lazy-Grenze aus PR #161 schrumpfte `plinko-stage` auf 6.275 B und verliess den Preload; die Data-URIs lagen nun im separaten `icons`-Chunk (68.043 B, initial).
+- Jetzt pinnt `codeSplitting.groups` in `src/Config/vite.config.ts` den `hud-icons`-Modul als eigenen Chunk: `hud-icons-BOMcIjGL.js` 4.337 B, vorgeladen; `icons` 63.767 B; `plinko-stage` 6.275 B ohne Data-URI. `UI_ICON.coin` bleibt die gemeinsame Quelle fuer HUD und `games-popup`, keine Duplizierung.
+
+**Pruefungen.** `pnpm build` Exit 0, `pnpm typecheck` Exit 0. Alter Stand in einem separaten Worktree aus `origin/main` gebaut und verglichen. Initialgraph 17 -> 18 Chunks, 1.173.926 -> 1.174.034 B (+108 B). `pnpm verify:quick` PASS.
+
+**Offen.** Der Gewinn ist strukturell und Cache-seitig, nicht bandwidth-seitig: +108 B und ein zusaetzlicher, vorgeladener Request. `emitter` traegt weiterhin Pixis 1x1-WHITE_PNG als Data-URI, nicht die HUD-Icons. Ein Slow-4G-Browserlauf steht aus.
+
 ## 2026-11-06 - Atlas als WebP und Plinko-Buehne aus dem Startgraph
 
 **Ziel.** Den ersten Frame unter Slow 4G (1,6 Mbit/s, 150 ms RTT) deutlich unter 12 s druecken: Atlas-Bytes und Initial-JS senken, ohne Spiel-, Ledger-, RNG- oder Save-Verhalten zu aendern.
@@ -1561,7 +1574,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

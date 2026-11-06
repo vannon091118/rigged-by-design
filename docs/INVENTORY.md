@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.139 | 2026-11-06 20:04 UTC -->
+<!-- rbd-doc: v0.3.140 | 2026-11-06 20:35 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -1712,6 +1712,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T76 | **2026-11-06 20:32 UTC**: HUD-Icons als eigener Start-Chunk. Auf `origin/main` lag der geteilte `icons`-Modul noch im 184.813-B-`plinko-stage`-Chunk; jetzt ist `hud-icons` ein eigener 4.337-B-Start-Chunk, `icons` 68.043 -> 63.767 B, `plinko-stage` 6.275 B lazy. Initialgraph 1.173.926 -> 1.174.034 B (+108 B, 18 Chunks). Geprueft: Build, Typecheck, Vergleichsbuild aus `origin/main`, `verify:quick`. |
 | T75 | **2026-11-06 19:54 UTC**: Atlas als WebP-q95 und Plinko-Buehne aus dem Startgraph; kritischer Transfer 2.285.353 -> 1.616.584 B, Byte-Modell 11,48 -> 8,12 s. |
 | T74 | **2026-11-06 19:14 UTC**: Phase-3-Effekte im Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, Kassen-Chips mit Coin-Sound, Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten geprueft. Korrigiert: `GamesPopup` gibt `machine.game` weiter; `FloorCash` liegt sichtbar vor dem Wechseltisch. Geprueft: Typecheck, UI-Test 8/8, Browser ohne Konsolenfehler; `verify:quick` alle zehn Gates gruen. |
 | T73 | **2026-11-06 18:33 UTC**: HUD-PNGs inline. `coin` und `guest-cyan` liegen als Data-URI in `src/ui/hud-icons.ts`; Slow 4G (1,6 Mbit/s, 150 ms, kalt) 24→22 Requests, erster Frame 12,16 s bei 2,42 MB. Geprueft: Build, Typecheck, beide Icons 32x32 ohne kaputte Bilder. |
