@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
-import { demandBreakdown } from '../demand';
+import { arrivalGap, demandBreakdown } from '../demand';
 import { guestAccount } from '../money';
 import { activeDemandEvent, startDemandEvent } from '../narrative/demand-events';
 import { maintainEvents } from '../narrative/event-scheduler';
@@ -98,6 +98,17 @@ describe('Nachfragequellen', () => {
     const unhappy = demandBreakdown(world).sources.find((source) => source.id === 'SATISFACTION')!.perDay;
     expect(happy).toBe(8);
     expect(unhappy).toBe(0);
+  });
+
+  it('folgt mit dem Ankunftsabstand der angezeigten Tagesrate', () => {
+    const prng = new Prng(randomSeed());
+    const gaps = Array.from({ length: 20_000 }, () => arrivalGap(prng, 8));
+    const mean = gaps.reduce((sum, gap) => sum + gap, 0) / gaps.length;
+    // Erwartungswert 75 Ticks; 20.000 Ziehungen machen die Prüfung stabil.
+    expect(mean).toBeGreaterThan(70);
+    expect(mean).toBeLessThan(80);
+    // Der alte Deckel bei 90 Ticks hätte die lange Pause abgeschnitten.
+    expect(Math.max(...gaps)).toBeGreaterThan(90);
   });
 
   it('legt in der Abendstoßzeit eine zusätzliche Quelle obendrauf', () => {

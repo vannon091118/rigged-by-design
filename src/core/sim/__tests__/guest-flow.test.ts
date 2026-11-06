@@ -1,17 +1,18 @@
 /** @test-target: src/core/sim/world.ts | @error-code: ERR-2001 */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
+import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { exchangeQueue } from '../desk-service';
 import { leave } from '../guests';
-import { guestAccount } from '../money';
+import { guestAccount, pendingAccount } from '../money';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { tickWorld } from '../tick';
 import type { WorldState } from '../types';
 import { deskQueueSpot } from '../queue-spots';
 import { blockedTiles } from '../pathfinding';
-import { doorPoint, entranceSpot, freeSeat, reserveSeat, pathTo } from '../world';
+import { doorPoint, entranceSpot, exchangePoint, freeSeat, reserveSeat, pathTo } from '../world';
 import { randomSeed } from '../../../test/random-seed';
 
 function setup(template: WorldState['template'] = 'SMALL') {
@@ -135,6 +136,27 @@ describe('Besucherfluss und Reservierungen', () => {
     for (const guest of guests.slice(0, 12)) {
       expect(pathTo(world, guest.position, deskQueueSpot(world, guest)).length).toBeGreaterThan(0);
     }
+  });
+
+  it('bedient CASHOUT erst am Kopf der Schlange', () => {
+    const { world, ledger, prng } = setup('MEDIUM');
+    const first = spawnGuest(world, prng, ledger)!;
+    const second = spawnGuest(world, prng, ledger)!;
+    const desk = exchangePoint(world)!;
+    for (const guest of [first, second]) {
+      ledger.transfer('EXTERNAL_WORLD', pendingAccount(guest.id), fromVC(2), 'test win', 0);
+      guest.state = 'CASHOUT';
+      guest.stateTicks = 12;
+      guest.patience = 100;
+      guest.position = { ...desk };
+      guest.path = [];
+    }
+    exchangeQueue(world);
+    second.position = { ...deskQueueSpot(world, second) };
+    tickWorld(world, ledger, prng);
+    expect(world.guests.some((guest) => guest.id === second.id)).toBe(true);
+    expect(ledger.getBalance(pendingAccount(second.id))).toBe(fromVC(2));
+    expect(ledger.verifyLedgerIntegrity()).toBe(true);
   });
 
   it('laesst Wechsler und Auszahler nicht auf demselben Fleck stehen', () => {
