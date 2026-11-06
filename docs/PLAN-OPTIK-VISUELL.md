@@ -131,7 +131,7 @@ Werkstatt, Spiegel und Touch-Pfade wurden noch nicht geöffnet.
 | A4 | **Spiegel:** genau ein `SPIEGEL` in der Lagerzone, Aktion öffnet den Look-Editor, Save/Load erhält ihn | Browser + Save-Roundtrip | offen |
 | A5 | **FPS:** echte `requestAnimationFrame`-Frames über 500 ms; keine GPU-Behauptung | Panel + Gegenprobe | offen |
 | A6 | **Touch:** Ein-Finger-Pan ab 8 px, Tap-to-Frame in einem Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gästen | echtes Android-Gerät, Frame-Aufzeichnung | offen, braucht Hardware |
-| A7 | **Hülle und Performance:** Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste; Slow 4G (1,6 Mbit/s); Atlas-Requests | Gerät + Drosselung | teilweise: 9 Mbit/s mit 20 Requests/2,51 s gemessen, Debug-APK liegt vor |
+| A7 | **Hülle und Performance:** Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste; Slow 4G (1,6 Mbit/s); Atlas-Requests | Gerät + Drosselung | teilweise: 9 Mbit/s mit 20 Requests/2,51 s; Slow 4G mit 22 Requests/12,16 s und 2,42 MB gemessen; HUD-PNGs inline; Debug-APK liegt vor |
 | A8 | **Release:** Debug- und Release-APK per `adb install`, `verify:all` 12/12 auf dem Tag-Commit, Tag und Notes, aktuelle Screenshots unter `docs/` | CI-Lauf + Gerät | offen |
 
 ### 6.3 Reihenfolge

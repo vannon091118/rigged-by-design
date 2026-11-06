@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - HUD-PNGs inline: zwei Requests weniger im Kaltstart
+
+**Ziel.** Die zwei verbliebenen HUD-PNG-Requests (`ui/coin.png`, `ui/guest-cyan.png`) aus dem Kaltstart entfernen und den ersten Frame erneut unter Slow 4G messen, nicht nur unter dem bisherigen 9-Mbit/s-Profil.
+
+**Umsetzung.** `src/ui/hud-icons.ts` traegt beide 32x32-PNGs als Data-URI; `src/ui/icons.ts` verweist fuer `coin` und `guests` darauf. Die Originale bleiben unter `public/assets/casino/ui/` fuer Favicon, Manifest und Asset-Katalog. Keine Aenderung an Layout, Groesse oder Farbe der Icons.
+
+**Pruefungen.** `pnpm run build` gruen. Produktionsbuild kalt in Chrome for Testing 143 headless (1024x768), per CDP `Network.emulateNetworkConditions` auf 1,6 Mbit/s Download, 750 kbit/s Upload und 150 ms RTT gedrosselt, Cache aus. Baseline: 24 Requests, 12.185 ms, 2.421.929 B. Inline-HUD: 22 Requests, 12.162 ms, 2.422.440 B. Die zwei HUD-PNG-Requests fehlen; beide Icons rendern als 32x32-Data-URI, keine kaputten Bilder, keine Konsolenfehler. `pnpm run typecheck` gruen.
+
+**Offen.** Der erste Frame bleibt mit 12,16 s bandwidth-bound; 2,42 MB JS und Atlas dominieren, die beiden Icons machen nur rund 3,8 KB aus. Der naechste Hebel ist das Initial-JS/Atlas, nicht das HUD. Die Messung auf einem echten Android-Geraet bleibt offen.
+
 ## 2026-11-06 - Phase-6-Abnahmeplan gegen den sichtbaren Stand
 
 **Ziel.** Der alte Abschnitt in `docs/PLAN-OPTIK-VISUELL.md` beschrieb Phase 5 als gerade umgesetzt und liess Phase 6 als blosses Exit-Kriterium stehen. Nach dem Floor-Fix sollte der Plan den tatsaechlich sichtbaren Stand aufnehmen und die Abnahme pruefbar machen.
@@ -1522,7 +1532,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.136 | 2026-11-06 17:00 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.137 | 2026-11-06 18:35 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.
