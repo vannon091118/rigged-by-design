@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,22 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.132] - 2026-11-06
+
+### Spiel
+- Der Floor hat zwei klar getrennte Blicke: **GAST** zeigt Portemonnaie, offene Gewinne, Spiele und den eigenen Verlauf, **BETRIEB** zeigt Hauskonto, Kasse, Gäste, Personal, Gerätezustand, Wartung und Preise. Der Umschalter sitzt oben im HUD und ändert nur die Anzeige; die Simulation läuft unverändert weiter.
+- Ein Klick auf ein Gerät führt im Gastmodus direkt in die Spielbühne (`DU · GAST`), im Betrieb in Zustand, Ursache, Reparatur, Walzen und Mods. Der lokale Rollenwechsel im Maschinenfenster entfällt, weil die Perspektive jetzt global gilt.
+- Möbel haben beim Antippen Vorrang vor Gästen: Ein besetzter Automat bleibt bedienbar. Linksklick und Tap laufen über denselben Pfad, ein zweiter Kamera-Handler ist weg.
+- Die Etage rendert wieder vollständig: Die fehlende Schmutz-Ebene im Szenen-Cache ließ den Floor bei „BAUE FLOOR…“ stehen.
+
+### Technik
+- `Perspective = 'guest' | 'operator'` lebt in `src/ui/app-model.ts`; `App.tsx` hält genau diesen UI-Zustand und setzt `data-perspective` am Wurzelelement. `Hud`, `Dock`, `MachinePopup` und `FloorRoleBar` lesen ihn, ohne einen zweiten Spielzustand zu führen.
+- `MachinePopup` ist jetzt ein Router: `MachineOperatorBody` (`src/ui/machine-operator.tsx`) trägt die Betriebsdiagnose, die Gastrolle rendert `MachinePlay` mit der vorhandenen `TableLauncher`-Bühne. Keine zweite Engine, keine zweite Palette.
+- `BuildOpsSummary` bündelt Hauskonto, Auslastung, Personal und Wartung im Betriebspanel; die Zahlwörter im HUD sagen „1 Spiel / 1 Platz“ statt der falschen Pluralform.
+- `src/render/floor-input.ts` liefert Treffer für Möbel und Gäste, `floor-touch.ts` behandelt Linksklick und Tap, `floor-view.ts` verliert den zweiten Kamera-Pointerdown-Pfad. `scene-cache.ts` zeichnet die `dirt`-Ebene.
+- Neue Screenshots unter `docs/screenshots/v0.3.132/` (acht echte Browseraufnahmen, 1280 × 860 und mobil 390 × 844).
+- Tests: `perspective-switch.test.tsx` neu; `machine-play.test.tsx`, `ui.test.tsx` und `bar-capacity.test.ts` folgen der Perspektive.
 
 ## [0.3.131] - 2026-11-06
 

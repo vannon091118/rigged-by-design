@@ -4,6 +4,9 @@ import { getBuildDef, type BuildId } from '../core/sim/offers';
 import type { RivalId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 
+/** Eine UI-Perspektive, kein zweiter Spielzustand: beide lesen denselben GameView. */
+export type Perspective = 'guest' | 'operator';
+
 /** Alles Technische und Persoenliche liegt hinter einer Tuer, nicht in der Hauptleiste. */
 export type WorkshopTool = 'look' | 'journal' | 'diagnostics' | 'assets' | 'sound' | 'device' | 'help';
 

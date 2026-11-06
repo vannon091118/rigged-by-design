@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { barCapacityForLevel } from '../deliveries';
 
-const UI_SOURCES = ['src/ui/hud.tsx', 'src/ui/diagnostics-popup.tsx', 'src/ui/machine-popup.tsx'];
+const UI_SOURCES = ['src/ui/hud.tsx', 'src/ui/diagnostics-popup.tsx', 'src/ui/machine-operator.tsx'];
 
 describe('Bar-Kapazität', () => {
   it('rechnet 12 + 8 Bestand pro Stufe', () => {

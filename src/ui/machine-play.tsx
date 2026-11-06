@@ -34,7 +34,7 @@ export default function MachinePlay(props: MachinePlayProps) {
       game={item.gameId ?? 'SLOT'}
       label={item.label}
       houseName="Dein Casino"
-      operator="DU · Betreiber"
+      operator="DU · GAST"
       wallet={props.view.wallet}
       house={props.view.house}
       mods={item.mods}

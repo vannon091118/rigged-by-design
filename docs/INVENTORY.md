@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -8,11 +8,11 @@
 >
 > | Versionierungs-Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.131** |
+> | **Version** | **v0.3.132** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 05:41 UTC (T71 — Phase 2 Betriebssimulation)** |
-> | Branch | `fix/casino-phase-2-operating-simulation` (Basis `cd8b193`), PR gegen `main` folgt |
-> | HEAD | `96951b5` plus dieser Doku-Commit (0.3.131) |
+> | **Aktualisiert** | **2026-11-06 (T72 — Phase 3 Erfahrungsredesign)** |
+> | Branch | `fix/casino-phase-3-experience-redesign` (Basis `4a4f093`), PR gegen `main` |
+> | HEAD | `4a4f093` plus dieser Doku-Commit (0.3.132) |
 > | Arbeitsbaum | in Arbeit; Remote `vannon091118/rigged-by-design`; Inventur meldet 1321 Dateien und 86 Ordner |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
@@ -466,14 +466,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ANALYSE-REPORT-2-SECURITY-EFFIZIENZ.md` — Analyse-Report 2: Security Suite — Geld, RNG, Save-Integrität — gelesen: 161 Zeilen
 - `docs/ANALYSE-REPORT-3-SPIELVERHALTEN-DUPELS-GAPS.md` — Analyse-Report 3: Spielverhalten, doppelter Bau, Gaps und Commit-Historie — gelesen: 209 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 299 Zeilen
-- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 117 Zeilen
+- `docs/ART-DIRECTION.md` — Neon Ledger — die Bildsprache des Floors — gelesen: 134 Zeilen
 - `docs/ASSET-SEMANTICS.md` — Asset-Semantik: Katalog und Metadatenvertrag — gelesen: 314 Zeilen
 - `docs/ASSETS.md` — Assets: Auswahl, Pipeline und Messwerte — gelesen: 141 Zeilen
 - `docs/CASINO-PIXEL-ASSET-PACK.md` — Casino Pixel Asset Pack — gelesen: 23 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 670 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 686 Zeilen
 - `docs/CI-GATES.md` — CI-Gates und Main-Schutz — gelesen: 212 Zeilen
 - `docs/DEPENDENCY-AUDIT.md` — Dependency-Audit (Stand 31.10.2026) — gelesen: 303 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2844 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2854 Zeilen
 - `docs/ERROR_CATALOG.md` — Fehlerkatalog — gelesen: 40 Zeilen
 - `docs/ESCALATION.md` — Eskalation statt Fail-Closed — gelesen: 71 Zeilen
 - `docs/EVENT-NARRATIVE-ENGINE-TASKPLAN.md` — Rigged by Design – sequenzieller Taskplan für die Dynamic Narrative Engine — gelesen: 1104 Zeilen
@@ -491,7 +491,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/REVIEW-SUB-A-ADVERSARIAL.md` — SUB-A-Review: Adversarial Prüfung des LEAD-Plans — gelesen: 174 Zeilen
 - `docs/REVIEW-SUB-A-RECHECK.md` — SUB-A-Re-Prüfung: Korrigierter LEAD-Plan NOCHMAL gegen die Daten — gelesen: 88 Zeilen
 - `docs/REVIEW-SUB-B-ADVERSARIAL.md` — SUB-B-Review: Unabhängiges adversarial Review des korrigierten LEAD-Plans — gelesen: 123 Zeilen
-- `docs/ROADMAP.md` — Roadmap — gelesen: 70 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 71 Zeilen
 - `docs/SKILL_LEAD_SUB_AGENT_LOOP.md` — Skill: Lead–Sub-Agent-Prüfschleife (`lead-sub-agent-loop`) — gelesen: 98 Zeilen
 - `docs/SKILL_PIPELINE_WORKFLOW.md` — Pipeline-Workflow-Skill: Lead-A-B-Lead-Loop — gelesen: 57 Zeilen
 - `docs/TEST-CATALOG.md` — Testkatalog — generiert, 190 Zeilen
@@ -501,7 +501,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/banners/roadmap.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/banners/spielwelt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/banners/werkstatt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
-- `docs/screenshots/README.md` — Screenshots — gelesen: 110 Zeilen
+- `docs/screenshots/README.md` — Screenshots — gelesen: 131 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
 - `docs/screenshots/comparison/02-floor-v2-nachher.png` — PNG-Textur — geprueft: PNG 1600x1125, 175643 B
 - `docs/screenshots/comparison/03-floor-v1-v2.png` — PNG-Textur — geprueft: PNG 2528x900, 311318 B
@@ -1162,7 +1162,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 101 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
-- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 251 Zeilen
+- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 268 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 12 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
@@ -1515,7 +1515,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-cash.ts` — Kasse als Objekt: offene Gewinne liegen als Chip-Stapel am Wechseltisch. — gelesen: 68 Zeilen
 - `src/render/floor-cues.ts` — Bodenhinweise: Spielerring, Zielraster, Laufweg und Klick-Puls in einer Ebene. — gelesen: 222 Zeilen
 - `src/render/floor-events.ts` — Die eine Tabelle: Ereignis -> Burst, Ton, Licht, Shake und Anker. — gelesen: 131 Zeilen
-- `src/render/floor-input.ts` — Floor-Input: Tap-Logik, baut Aktionen und ruft Callbacks. — gelesen: 78 Zeilen
+- `src/render/floor-input.ts` — Floor-Input: Tap-Logik, baut Aktionen und ruft Callbacks. — gelesen: 80 Zeilen
 - `src/render/floor-interact.ts` — Verarbeitet Radial-Menu-Aktionen vom Floor. — gelesen: 17 Zeilen
 - `src/render/floor-material.ts` — Bodenmaterialien aus dem Layout: pro `FloorMaterialId` genau eine — gelesen: 114 Zeilen
 - `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 149 Zeilen
@@ -1524,8 +1524,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 84 Zeilen
 - `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 122 Zeilen
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 111 Zeilen
-- `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 155 Zeilen
-- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 219 Zeilen
+- `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 175 Zeilen
+- `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 214 Zeilen
 - `src/render/furniture-art.ts` — Moebel: der Korpus kommt aus dem Atlas, nur Zustand und Sitze bleiben dynamisch. — gelesen: 120 Zeilen
 - `src/render/furniture-atlas.ts` — Ein Korpus je Bauart und Groesse als RenderTexture. Instanzen zeichnen danach — gelesen: 205 Zeilen
 - `src/render/fx/emitter.ts` — Partikel aus dem Paket: Gewinn- und Verlustmomente nutzen dieselben Emitter wie die Bibliothek. — gelesen: 171 Zeilen
@@ -1566,7 +1566,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/rng.ts` — Der eine Darstellungs-Strom: Partikel und Sound, nie der Spielzustand. — gelesen: 4 Zeilen
 - `src/render/room-art.ts` — Raum: Bodenmaterial je Tile aus dem Layout, Waende und Tueren aus den — gelesen: 76 Zeilen
 - `src/render/room-dressing.ts` — Raumausstattung ueber dem Bodenbelag: das, was einen Raum wiedererkennbar macht, — gelesen: 109 Zeilen
-- `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 182 Zeilen
+- `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 184 Zeilen
 - `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 216 Zeilen
 - `src/render/wall-art.ts` — Türschwellen aus den gespeicherten Kanten. Wandkoerper liegen bewusst nicht — gelesen: 95 Zeilen
 - `src/render/wall-occlusion.ts` — Vordergrund-Waende als eigene Occlusion-Schicht. Jede Wand ist ein Sprite in — gelesen: 66 Zeilen
@@ -1614,10 +1614,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 213 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 216 Zeilen
-- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 479 Zeilen
+- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 527 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 598 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 602 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
@@ -1627,20 +1627,20 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-gate.test.ts` — Editor-Freigabe: der Query-Parameter allein oeffnet nie einen Produktionsbuild. — gelesen: 31 Zeilen
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
-- `src/ui/__tests__/machine-play.test.tsx` — Der Automat behaelt den kostenlosen Betreiber-Testspin und oeffnet fuer den — gelesen: 87 Zeilen
+- `src/ui/__tests__/machine-play.test.tsx` — Der Betrieb behält den kostenlosen Diagnose-Testspin. Der Gast bekommt ohne — gelesen: 93 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
-- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 122 Zeilen
+- `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 129 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
-- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 33 Zeilen
+- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 36 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 192 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. — gelesen: 176 Zeilen
-- `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 177 Zeilen
+- `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 179 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/diagnostics-popup.tsx` — Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. — gelesen: 125 Zeilen
 - `src/ui/dialogue-popup.tsx` — Dialog: Comic-Dialog als reine Darstellung. — gelesen: 69 Zeilen
-- `src/ui/dock.tsx` — Untere Leiste: vier Ecken statt elf Tabs. Alles andere lebt in der Werkstatt. — gelesen: 59 Zeilen
+- `src/ui/dock.tsx` — Untere Leiste: vier Ecken je Perspektive. Alles andere lebt in der Werkstatt. — gelesen: 72 Zeilen
 - `src/ui/editor-gate.ts` — Editor-Freigabe: nur ein Build mit `RBD_EDITOR_MODE=1` und `?editor=1` — gelesen: 15 Zeilen
 - `src/ui/editor-tools.ts` — Reine Werkzeuglogik des Layout-Editors: Sie uebersetzt die gewaehlte Absicht — gelesen: 53 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
@@ -1662,7 +1662,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/glossary.ts` — Ein Ort für Begriffe, die der Spieler sieht: kurze Erklärung statt Branchenjargon. — gelesen: 44 Zeilen
 - `src/ui/guest-popup.tsx` — Ein Klick auf einen Gast: Sticker, Budget und drei Werte mit klarer Folge statt Tabellen. — gelesen: 152 Zeilen
 - `src/ui/help-popup.tsx` — Hilfe: Geldfluss, Gäste, Objekte und Steuerung in Klartext, erreichbar über das ? im HUD. — gelesen: 100 Zeilen
-- `src/ui/hud.tsx` — HUD: Marke, Geld und drei Kennzahlen. Der Werkzeugkasten lebt im Dock. — gelesen: 118 Zeilen
+- `src/ui/hud.tsx` — HUD: Marke, eine sichtbare Perspektive und nur die Zahlen, die zu ihr gehören. — gelesen: 158 Zeilen
 - `src/ui/icons.ts` — Icons aus dem Paket: ein Pfad-Helfer, damit UI und Renderer dieselbe Basis nutzen. — gelesen: 27 Zeilen
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 117 Zeilen
@@ -1671,12 +1671,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 90 Zeilen
 - `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen
 - `src/ui/machine-play.tsx` — Eigene Spiele am Automaten: dieselben Tische wie im Fremdhaus, eigener Geldweg. — gelesen: 56 Zeilen
-- `src/ui/machine-popup.tsx` — Automaten-Popup: Zustand, Mods, Walzen und ein kostenloser Testspin. — gelesen: 199 Zeilen
+- `src/ui/machine-popup.tsx` — Automaten-Popup: Gast spielt, Betrieb diagnostiziert. Eine globale Perspektive, kein interner Rollentoggle. — gelesen: 111 Zeilen
 - `src/ui/narrative-events.tsx` — NAR-14: Aktive Szenen als Karten; Auswahl und Ablehnung laufen ueber Store-Commands. — gelesen: 113 Zeilen
 - `src/ui/narrative-popup.tsx` — NAR-14: Popup fuer aktive Szenen und Besucherprofile. — gelesen: 45 Zeilen
 - `src/ui/narrative-profile.tsx` — NAR-14: Besucherprofil aus dem Snapshot; Rechnungen bleiben im Core. — gelesen: 97 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
-- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 152 Zeilen
+- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 154 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
 - `src/ui/roulette-tableau.tsx` — Das Setzfeld: jede Zelle ist ein Feld, jeder Klick legt einen Jeton dorthin. — gelesen: 65 Zeilen
 - `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 67 Zeilen
@@ -1706,6 +1706,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T72 | **2026-11-06**: Phase 3 Erfahrungsredesign. `Perspective` als reiner UI-Zustand, rollenabhängiges HUD/Dock, `MachinePopup` als Router mit `MachineOperatorBody` und durchgereichter `TableLauncher`-Bühne, `BuildOpsSummary`; dazu zwei unabhängige Floor-Fixes (`dirt`-Ebene im Szenen-Cache, Möbeltreffer und Linksklick im Tap-Pfad). Geprüft: `typecheck`, `lint`, `check:loc` gruen; acht echte Browserbelege unter `docs/screenshots/v0.3.132/`. |
 | T71 | **2026-11-06 05:37 UTC**: Phase 2 Betriebssimulation. Persona-Einsatz, VELVET-Gaesteguete, echter Free-Drink-Bestand, EXTRA_REEL-Walze, Mod-Deduplizierung, CASHOUT-Reihenfolge, Ankunftsrate ohne Deckel, Slot-Pity-Ausgleich und Schuldentilgung. Geprueft: `verify:quick`, 40-Tage-Balance, 60.000-Spin-RTP; vollstaendiger `verify:all`-Lauf gruen. |
 | T70 | **2026-11-06 04:58 UTC**: Eigener Gastmodus an allen acht Automaten. `core/sim/own-play.ts` und `store/own-play.ts` kapseln Einsatz, Gewinn, Schuld und Pending-Kartenrunden; `MachinePopup`/`MachinePlay` nutzen den vorhandenen `TableLauncher`. Geprüft: typecheck, ESLint, LOC; Core-, Store- und UI-Tests angelegt. |
 | T69 | **2026-11-06 04:30 UTC**: Task 5, Phase 2: Editor-UI, Pixi-Auswahl und Export/Import. |

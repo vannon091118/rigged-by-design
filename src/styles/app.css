@@ -34,7 +34,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   position: relative;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
+  grid-template-columns: auto auto auto minmax(0, 1fr);
   align-items: center;
   gap: 12px 14px;
   padding: 10px 14px;
@@ -66,6 +66,24 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .hud-brand strong { display: block; font-size: 12px; letter-spacing: 0.16em; color: #f8e9b8; }
 .hud-brand small { display: block; margin-top: 2px; font-size: 8px; letter-spacing: 0.14em; color: var(--muted); }
 
+/* Perspektive: eine Farbe je Blick, dieselbe Bedeutung wie auf dem Floor. */
+.app[data-perspective="guest"] { --perspective-accent: var(--role-guest); }
+.app[data-perspective="operator"] { --perspective-accent: var(--role-service); }
+.perspective-switch { display: grid; gap: 3px; align-content: center; }
+.perspective-switch > span { font-size: 7px; letter-spacing: 0.16em; color: var(--muted); }
+.perspective-switch > div { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: rgba(8, 5, 15, 0.8); }
+.perspective-switch button {
+  min-height: 28px; padding: 4px 9px; border: 1px solid transparent; border-radius: 7px;
+  background: transparent; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+}
+.perspective-switch button:hover { color: var(--text); }
+.perspective-switch button[aria-pressed="true"] { border-color: var(--perspective-accent); color: #fff; }
+.app[data-perspective="guest"] .perspective-switch button[aria-pressed="true"] { background: rgba(255, 46, 136, 0.12); }
+.app[data-perspective="operator"] .perspective-switch button[aria-pressed="true"] { background: rgba(0, 255, 204, 0.08); }
+.app[data-perspective="guest"] .hud { border-color: rgba(255, 46, 136, 0.35); }
+.app[data-perspective="operator"] .hud { border-color: rgba(0, 255, 204, 0.22); }
+.hud-money.guest > span { color: var(--role-guest); }
+
 .hud-money { display: grid; gap: 1px; padding-right: 14px; border-right: 1px solid var(--line); }
 .hud-money span { font-size: 8px; letter-spacing: 0.18em; color: var(--muted); }
 .hud-money strong { font-family: var(--mono); font-size: var(--fs-hero); line-height: 1; color: var(--role-value); text-shadow: 0 0 18px rgba(255, 209, 102, 0.22); }
@@ -88,6 +106,8 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .vital strong em { font-size: var(--fs-meta); color: var(--muted); font-style: normal; }
 .vital small { font-size: var(--fs-micro); color: var(--muted); }
 .vital.guests strong { color: var(--role-guest); }
+.vital.games strong { color: var(--role-guest); }
+.vital.devices strong { color: var(--role-service); }
 .vital.rep strong { color: var(--role-identity); }
 .vital.hot { border-color: rgba(255, 209, 102, 0.55); }
 .vital.hot strong { color: var(--role-value); }
@@ -161,6 +181,10 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   background: linear-gradient(180deg, rgba(26, 16, 40, 0.96), rgba(10, 6, 18, 0.98));
   box-shadow: var(--elev-2), var(--inset-line);
 }
+.app[data-perspective="guest"] .dock { border-color: rgba(255, 46, 136, 0.3); }
+.app[data-perspective="operator"] .dock { border-color: rgba(0, 255, 204, 0.18); }
+.app[data-perspective="guest"] .dock-tab:first-child { border-color: rgba(255, 46, 136, 0.5); color: #ffe0ec; }
+.app[data-perspective="operator"] .dock-tab:first-child { border-color: rgba(0, 255, 204, 0.38); color: #dcfff9; }
 .dock-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
 .dock-tab {
   min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -229,6 +253,20 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.03em; text-transform: none;
 }
 
+/* Der Floor nennt seine Perspektive, bevor der erste Klick passiert. */
+.floor-role-bar {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 12;
+  display: flex; align-items: center; gap: 8px; max-width: calc(100% - 220px);
+  padding: 5px 11px; border: 1px solid var(--line-strong); border-radius: 999px;
+  background: rgba(6, 4, 12, 0.82); pointer-events: none;
+  box-shadow: var(--inset-line);
+}
+.floor-role-bar::before { content: ''; width: 6px; height: 6px; flex: 0 0 auto; border-radius: 999px; background: var(--perspective-accent); box-shadow: 0 0 10px var(--perspective-accent); }
+.floor-role-bar b { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--perspective-accent); }
+.floor-role-bar span { font-size: 10px; color: #cfc3e6; }
+.app[data-perspective="guest"] .floor-role-bar { border-color: rgba(255, 46, 136, 0.35); }
+.app[data-perspective="operator"] .floor-role-bar { border-color: rgba(0, 255, 204, 0.3); }
+
 /* Kamera-Knoepfe: eine Reihe, eine Aufgabe je Taste, kein Panel. */
 .stage-zoom {
   position: absolute; right: 12px; bottom: 12px; z-index: 13;
@@ -281,6 +319,15 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 @keyframes panel-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .build-head { display: flex; justify-content: space-between; align-items: flex-start; padding: 14px 14px 10px; border-bottom: 1px solid var(--line); }
 .build-scroll { overflow-y: auto; padding: 10px 14px 20px; }
+
+.ops-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
+.ops-card { display: grid; gap: 1px; padding: 7px 8px; border: 1px solid var(--line); border-radius: 9px; background: rgba(7, 4, 13, 0.72); }
+.ops-card span { font-size: 7px; letter-spacing: 0.12em; color: var(--muted); }
+.ops-card strong { font-family: var(--mono); font-size: 14px; line-height: var(--lh-tight); color: var(--role-value); }
+.ops-card strong em { font-size: 9px; color: var(--muted); font-style: normal; }
+.ops-card small { overflow: hidden; font-size: 8px; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+.ops-card.bad { border-color: rgba(255, 107, 129, 0.6); }
+.ops-card.bad strong { color: var(--role-danger); }
 .panel-note { margin: 0 0 4px; font-size: 11px; line-height: 1.5; color: var(--muted); }
 
 .build-grid { display: grid; gap: 7px; }
@@ -374,29 +421,26 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 
 /* Zwischenbreiten: die Aktionsleiste bekommt eine eigene Zeile, statt rechts abgeschnitten zu werden. */
 @media (min-width: 1181px) and (max-width: 1400px) {
-  .hud { grid-template-columns: auto minmax(0, 1fr); }
+  .hud { grid-template-columns: auto auto minmax(0, 1fr); }
   .hud-brand { grid-column: 1; }
-  .hud-money { grid-column: 2; justify-items: start; padding-right: 0; border-right: 0; }
+  .perspective-switch { grid-column: 2; }
+  .hud-money { grid-column: 3; justify-items: start; padding-right: 0; border-right: 0; }
   .hud-vitals { grid-column: 1 / -1; }
-  .hud-actions { grid-column: 1 / -1; justify-content: flex-start; }
 }
 
 @media (max-width: 1180px) {
-  .hud { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .hud { grid-template-columns: auto auto minmax(0, 1fr); }
   .hud-brand { display: none; }
-  .hud-money { padding-right: 10px; }
+  .perspective-switch { grid-column: 1; }
+  .hud-money { grid-column: 2; padding-right: 10px; }
 }
 @media (max-width: 860px) {
   .app { padding: calc(4px + var(--safe-top)) calc(4px + var(--safe-right)) 4px calc(4px + var(--safe-left)); gap: 4px; }
   .hud { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; padding: 8px; }
   .hud-brand { display: none; }
+  .perspective-switch { grid-column: 2; grid-row: 1; align-self: start; }
   .hud-money { grid-column: 1; grid-row: 1; border-right: 0; padding-right: 0; }
   .hud-money strong { font-size: 24px; }
-  .hud-actions {
-    grid-column: 2; grid-row: 1; flex-wrap: nowrap; overflow-x: auto;
-    max-width: 56vw; justify-content: flex-start; padding-bottom: 2px;
-  }
-  .hud-actions .btn { white-space: nowrap; }
   .hud-vitals { grid-column: 1 / -1; grid-row: 2; overflow-x: auto; padding-bottom: 2px; }
   .vital { min-width: 104px; }
   .hud-rpg { grid-column: 1 / -1; grid-row: 3; }
@@ -408,8 +452,12 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   .vital small { font-size: 9px; }
 }
 @media (max-width: 620px) {
-  .hud-actions { max-width: 62vw; }
+  .perspective-switch > span { display: none; }
+  .perspective-switch button { min-height: 26px; padding: 3px 7px; font-size: 8px; }
   .vital { min-width: 96px; padding: 6px 8px; }
+  .floor-role-bar { top: 6px; max-width: calc(100% - 16px); gap: 5px; padding: 4px 8px; }
+  .floor-role-bar span { display: none; }
+  .ops-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stage-legend { display: none; }
   .build-panel { width: calc(100% - 12px); }
 }

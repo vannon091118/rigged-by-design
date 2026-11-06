@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Phase 3: Floor als Spielwelt, GAST und BETRIEB als zwei Blicke
+
+**Ziel.** Der Floor sollte die zentrale Spielwelt werden und beide Rollen ohne Umweg bedienen: ein Gast tippt ein Gerät an und spielt, ein Betreiber tippt dasselbe Gerät an und sieht Zustand, Ursache, Reparatur und Mods. Vorher war die Rolle ein Schalter im Maschinenfenster, HUD und Dock zeigten beiden Rollen dasselbe, und der Floor reagierte nur halb auf Berührung.
+
+**Umsetzung.** `Perspective` liegt als reiner UI-Zustand in `app-model.ts`; `App.tsx` setzt `data-perspective`, schliesst beim Rollenwechsel Popup und Baupanel und pausiert die Simulation nicht. `perspective-switch.tsx` sitzt im HUD, `floor-role-bar.tsx` sagt auf dem Floor, was der nächste Klick bewirkt. HUD und Dock zeigen je Perspektive nur ihre vier Bereiche. `machine-popup.tsx` ist zum Router geschrumpft; `machine-operator.tsx` behält Telemetrie, Regel-Editor, Reparatur, Walzen und Mods, die Gastrolle reicht die vorhandene `TableLauncher`-Bühne durch. `build-ops-summary.tsx` ersetzt die lange Betriebsliste durch vier Karten. Parallel zwei unabhängige Floor-Fehler: `scene-cache.ts` kannte keine `dirt`-Ebene, wodurch die Bühne bei „BAUE FLOOR…“ hing; `floor-input.ts` gab Möbel- und Gasttreffer nicht weiter und `floor-touch.ts` behandelte nur Ziehen, sodass Mausklicks nicht ankamen. Der alte Kamera-Pointerdown in `floor-view.ts` ist entfernt, Möbel haben Vorrang vor Gästen.
+
+**Pruefungen.** `pnpm run typecheck`, `pnpm run lint` und `pnpm run check:loc` grün nach den Floor-Fixes. Bildbelege sind echt: acht Aufnahmen aus dem laufenden Vite-Server (Chromium, 1280 × 860; mobil 390 × 844) unter `docs/screenshots/v0.3.132/`. Der Klick auf die Bar öffnete im Browser das Popup „Theke“, der Klick auf den Slot bei Tile (16,6) die Spielbühne; derselbe Automat zeigt in BETRIEB die Diagnose.
+
+**Bewusst nicht getan.** Keine neue Renderer- oder Popup-Architektur, kein zweiter Game-State, keine zweite Palette, kein zusätzlicher Router. Die Perspektive ist Anzeige, nicht Simulation: Rollenwechsel pausiert nichts und ändert keine Ledger-Zeile. Phase 4 ist nicht begonnen.
+
 ## 2026-11-06 - Phase 2: Betriebssimulation
 
 **Ziel.** Die Kette Nachfrage -> Ankunft -> Fiat/Chips -> Spiel -> Auszahlung -> Kosten -> Ruf sollte als tatsaechlicher Betriebskreislauf wirken. Personas mussten Einsatz und Spielwahl unterscheiden, Mods ihre Beschreibung einloesen, der Slot-RTP zur Anzeige passen und Schulden einen Tilgungspfad bekommen.
@@ -1482,7 +1492,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

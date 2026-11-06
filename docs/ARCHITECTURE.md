@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
 
 ## README als Einstieg
 
@@ -22,6 +22,31 @@
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
 - Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
+
+## Perspektive: GAST und BETRIEB als zwei Blicke auf einen Snapshot
+
+`Perspective = 'guest' | 'operator'` ist reiner UI-Zustand in `src/ui/app-model.ts`. `App.tsx`
+hält genau diesen Wert, setzt `data-perspective` am Wurzelelement und gibt ihn an `Hud`, `Dock`,
+`FloorRoleBar` und `MachinePopup` weiter. Es gibt keinen zweiten Spielzustand, keinen zweiten
+Store und keinen zweiten Router: Die Simulation läuft beim Umschalten unverändert weiter.
+
+- **Rollenentscheidung am Gerät.** `MachinePopup` ist ein Router. Im Betrieb rendert
+  `MachineOperatorBody` (`src/ui/machine-operator.tsx`) Zustand, Anziehung, Mindesteinsatz,
+  Slot-Telemetrie, Regel-Editor, Reparatur, Walzen-Upgrade und Mods; im Gastmodus rendert
+  `MachinePlay` die vorhandene `TableLauncher`-Bühne mit dem eigenen Geldweg. Der frühere
+  lokale Rollenschalter im Fenster entfällt, weil die Perspektive global gilt.
+- **Anzeige folgt der Rolle.** Das HUD zeigt Gast: Portemonnaie, offene Gewinne, Spiele;
+  Betrieb: Hauskonto, Kasse, Gäste, Personal, Gerätezustand, Ruf. Das Dock zeigt Gast:
+  `SPIELEN/VERLAUF/REGELN/DU`; Betrieb: `BETRIEB/GÄSTE/KARTE/DU`. Kaufen und Aufstellen sind
+  im Gastmodus gesperrt (`buy`/`deployAt` prüfen die Perspektive), ohne die Commands zu ändern.
+- **Floor-Treffer.** `src/render/floor-input.ts` gibt Möbel- und Gasttreffer an `App.tsx`
+  weiter, Möbel haben Vorrang, damit ein besetzter Automat bedienbar bleibt.
+  `floor-touch.ts` behandelt Linksklick und Tap auf demselben Pfad; der zweite
+  Kamera-`pointerdown` in `floor-view.ts` ist entfernt. Die Szenen-Cache-Ebenen in
+  `scene-cache.ts` kennen jetzt auch `dirt`.
+- **Darstellung, nicht Regel.** Die Perspektive färbt Akzente (`data-perspective`,
+  `perspective-switch`) und wechselt Copy, aber keine Mechanik: kein Ledger-Zugriff, kein
+  RNG, kein Save-Feld. Ein Rollenwechsel pausiert die Simulation nicht.
 
 ## Zustandsbesitz
 

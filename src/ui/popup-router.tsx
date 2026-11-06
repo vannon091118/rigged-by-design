@@ -1,7 +1,7 @@
 /** Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. */
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
-import type { Popup } from './app-model';
+import type { Perspective, Popup } from './app-model';
 import { DialoguePopup } from './dialogue-popup';
 import { ForeignFloorMap } from './foreign-floor-map';
 import { ForeignFloorPopup } from './foreign-floor-popup';
@@ -13,6 +13,7 @@ import { WorkshopPopup } from './workshop';
 
 interface RouterProps {
   readonly view: GameView;
+  readonly perspective: Perspective;
   readonly popup: Popup;
   readonly onClose: () => void;
   readonly onOpen: (popup: Popup) => void;
@@ -20,7 +21,7 @@ interface RouterProps {
   readonly onStaff: () => void;
 }
 
-export function PopupRouter({ view, popup, onClose, onOpen, onStaff }: RouterProps) {
+export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff }: RouterProps) {
   if (popup === null) return null;
 
   if (popup.kind === 'guests') {
@@ -46,6 +47,7 @@ export function PopupRouter({ view, popup, onClose, onOpen, onStaff }: RouterPro
       <MachinePopup
         item={item}
         view={view}
+        perspective={perspective}
         onClose={onClose}
         onTest={() => worldStore.spinTest(item.id)}
         onRepair={() => worldStore.repair(item.id)}

@@ -108,3 +108,24 @@ Aufgenommen am 31.10.2026 im Fremdhaus-Popup, also dort, wo die `TableLauncher` 
 
 Video Poker fehlt in dieser Reihe, weil die Bühne im Spiel nicht erreichbar ist: Das Popup hängt allein an der `TableLauncher`, und kein fremdes Haus führt ein Video-Poker-Gerät. Am eigenen Gerät zeigt das Maschinen-Fenster nur den Testspin.
 
+
+## Spielsatz v0.3.132 — GAST und BETRIEB als zwei Blicke (06.11.2026)
+
+Aufgenommen aus dem laufenden Spiel (Chromium, Fenster 1280 × 860; Bild `08` mobil 390 × 844),
+Stand `v0.3.132`, frischer Lauf über den normalen Ladeweg — kein vorbereiteter Speicherstand.
+Die Aufnahmen entstanden gegen den Vite-Dev-Server, nicht gegen einen Mockup-Satz.
+
+| Datei | Perspektive | Zeigt |
+| --- | --- | --- |
+| `01-floor-operator.png` | BETRIEB | Etage mit Gerät, Bar, Kasse, Lager und Gästen; HUD mit Hauskonto, Kasse und offenen Gewinnen, Rollenhinweis „Betriebsmodus“, Dock mit Betrieb, Gäste, Karte, Du, Putzen-Hinweis |
+| `02-floor-guest.png` | GAST | Dieselbe Etage mit Cyan-Akzent: HUD zeigt Portemonnaie und offene Gewinne, Dock nur Spielen, Verlauf, Regeln, Du |
+| `03-slot-guest.png` | GAST | Klick auf den Slot öffnet direkt die Spielbühne: Kopf „GAST · SPIELGERÄT“, Portemonnaie und Hauskonto, Walzen, Einsatzwahl und „ZU WENIG BARGELD“ (frischer Lauf ohne Wechselgeld) |
+| `04-slot-operator.png` | BETRIEB | Derselbe Automat als Betriebsdiagnose: Zustand, Plätze, Anziehung, Mindesteinsatz, Drucklader-Telemetrie, Regel-Editor, Mods |
+| `05-guests-operator.png` | BETRIEB | Gästeverwaltung mit Anwesenheit, Laune und offenen Beträgen |
+| `06-build-operator.png` | BETRIEB | Betriebspanel mit den vier Ops-Karten Hauskonto, Auslastung, Personal und Wartung über dem laufenden Floor |
+| `07-history-guest.png` | GAST | Verlauf aus Sicht des Gasts über den bestehenden Werkstatt-Einstieg |
+| `08-mobile-guest.png` | GAST | Hochformat 390 × 844: HUD bleibt zweizeilig lesbar, Perspektivschalter sitzt in der Kopfzeile, Floor und Dock bleiben bedienbar |
+
+Die Bilder belegen die Perspektive, nicht die Spielmechanik: Es gibt keine zweite Bühne,
+keine zweite Palette und keinen zweiten Spielzustand. Der Rollenwechsel ändert nur die
+Anzeige; die Simulation läuft weiter.

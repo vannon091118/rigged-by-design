@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.131 | 2026-11-06 05:41 UTC -->
+<!-- rbd-doc: v0.3.132 | 2026-11-06 06:24 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -18,7 +18,8 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
 - Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
-- Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` ohne Ausgabepfad, Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen.
+- Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` ohne Ausgabepfad und Einnahmen je Spieltyp als eigene Kennzahl.
+- Phase 3 stellt den Floor als zentrale Spielwelt auf: `Perspective` ist ein reiner UI-Zustand, GAST sieht Portemonnaie, Spiele und Verlauf, BETRIEB sieht Hauskonto, Gäste, Personal, Gerätezustand und Wartung. Ein Klick auf ein Gerät führt je Rolle in die Spielbühne oder in die Betriebsdiagnose; HUD und Dock tragen nur noch die vier Bereiche ihrer Perspektive. Die sichtbare Browser-Abnahme der Geräteaktionen ist mit `docs/screenshots/v0.3.132/` belegt.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Die Vision steht in `docs/PRODUCT.md`, das Casino darin als Start- und Testumgebung.
 
