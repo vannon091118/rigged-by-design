@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
+<!-- rbd-doc: v0.3.128 | 2026-11-06 04:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.128] - 2026-11-06
+
+### Technik
+- Typisierte Layout-Commands: `src/core/sim/layout-commands.ts` malt Bodenrechtecke und Rasterkanten (`WALL`, `DOOR`, `OPENING`, entfernen). Das Ergebnis ist wieder eingefroren und läuft durch denselben fail-closed `parseLayout()`-Vertrag wie ein Save; die letzte Tür lässt sich nicht zumauern.
+- 30-Schritt-Undo/Redo: `LayoutHistory` hält fertige Layouts, verwirft Redo bei neuer Arbeit und vergisst den ältesten Schritt. Ein Pinselstrich zählt als genau ein Schritt, egal wie viele Tiles er berührt.
+- Der Store bleibt der einzige Schreiber: `world-store` delegiert an `src/store/layout-editing.ts`; `applyLayout()` zieht `size`/`zones` weiter nach. Keine Änderung an Simulation, Ledger, RNG oder Save-Format.
+- Neue Tests: `layout-commands.test.ts` (7) und `layout-history.test.ts` (5).
 
 ## [0.3.127] - 2026-11-06
 
