@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.126 | 2026-11-06 03:49 UTC -->
+<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.127] - 2026-11-06
+
+### Technik
+- Branch-Konsolidierung: `main` (0.3.122), der konfliktbehaftete PR #142, der `integration`-Stand und der Asset-Semantik-Branch sind in `feat/spatial-layout-editor` zusammengeführt. Alle fünf Task-Commits und die zuvor offenen Branch-Stände liegen damit in einem PR gegen `main`.
+- Konfliktauflösung folgt der einen räumlichen Wahrheit: Navigation und Wandkollision laufen über `nav-grid.ts` und `layout.edges`; die zonenbasierten `walls.ts`-Dateien aus `main` und PR #142 sind entfernt.
+- `deliveries.ts` folgt nach dem Merge der `NavGrid`-Signatur (`worldNav`); ohne die Korrektur fand die Lieferkette kein freies Kisten-Tile mehr und 18 Tests fielen aus.
+- Doku und Narrative zusammengeführt: alle drei Beiträge vom 2026-11-06 stehen im Manifest, die Registry hat 65 Fragmente; Inventar 1327/1327.
 
 ## [0.3.125] - 2026-11-06
 

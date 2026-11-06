@@ -8,7 +8,7 @@ Beweisklassen: contract, integration, governance, statistics, performance.
 Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; statistics und performance
 delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).
 <!-- TEST_CATALOG_START -->
-Summe: 168 Dateien — contract 108 · integration 35 · governance 12 · statistics 6 · performance 7.
+Summe: 169 Dateien — contract 108 · integration 36 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -150,6 +150,7 @@ Summe: 168 Dateien — contract 108 · integration 35 · governance 12 · statis
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |
 | `src/render/__tests__/sound-fx.test.ts` | render | integration | ja | `src/render/sound-fx.ts` |
+| `src/render/assets/__tests__/asset-semantics.test.ts` | render | integration | ja | `src/render/assets/asset-semantics.json` |
 | `src/render/depth-perf.bench.ts` | render | performance | nein, CI | `src/render/depth.ts` |
 | `src/render/floor-perf.bench.ts` | render | performance | nein, CI | `src/render/floor-math.ts` |
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |

@@ -13,6 +13,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-06 - Branch-Konsolidierung vor dem PR
+
+**Ziel.** Alle ahead-Commits auf `main` bringen und `feat/spatial-layout-editor` als einzigen aktiven Arbeitsbranch lassen. Der offene PR #142 war konfliktbehaftet, `integration` trug fünf eigene Commits, und der Asset-Branch hatte zwei Commits über `main`.
+
+**Umsetzung.** `main` (467f694) in den Branch gemergt, danach PR #142 (ea81b21), `integration` (046bff1) und `feat/asset-semantics-catalog` (7763b84). Die Codekonflikte in `grid-zones`, `guest-choice`, `pathfinding`, `player`, `staff`, `world`, `room-art` und dem Hot-Path-Bench folgen dem Layout-Vertrag (`NavGrid` + `layout.edges`); `walls.ts` und sein Test sind endgültig entfernt. Doku wurde zusammengeführt statt überschrieben: Changelog behält 0.3.125, 0.3.122 und 0.3.121, das Devtagebuch beide Stränge, das Narrative-Manifest alle drei Beiträge (65 Fragmente).
+
+**Pruefungen.** `typecheck` nach jedem Merge, Inventar 1327/1327, Doku-Marker auf 0.3.127, `verify:quick` vor dem Push. Der volle Lauf inklusive Build und Audit bleibt CI.
+
+**Bewusst nicht getan.** Keine inhaltliche Neuentwicklung, kein Force-Push auf geschützte Branches. PR #142 wird nicht separat gemergt, sondern ist über diesen Branch abgedeckt; `integration` wird nach dem Merge auf `main` gesetzt.
+
 ## 2026-11-06 - Task 5 vorbereitet: Layout-Dokument und Editor-Gate
 
 **Ziel.** Task 5/5 braucht zwei Fundamente, die unabhaengig von der Editor-Oberflaeche pruefbar sind: ein versioniertes Layout-Dokument fuer Export/Import und eine Freigabe, die einen Produktionsbuild ausschliesst.
@@ -1432,7 +1442,7 @@ ein Doc-Gate mit Strukturvorgaben und ein sauberer Wurzelbaum.
   ueber Regeln (Ledger/Geld blockiert, Doku/Format automatisch, Netz transient,
   Scope lokal, Rest Agent).
 - `scripts/lib/doc-sync.mjs` plus `scripts/doc-sync.mjs`: Marker
-  `<!-- rbd-doc: v0.3.126 | 2026-11-06 03:49 UTC -->` in sechs Pflichtdokumenten;
+  `<!-- rbd-doc: v0.3.127 | 2026-11-06 03:49 UTC -->` in sechs Pflichtdokumenten;
   `verify:docs` prueft Marker, Pflichtabschnitte, Wurzel-Whitelist und Doppelungen.
 - `.githooks/pre-commit` schreibt Matrix, Katalog und Doku-Marker und prueft
   danach Doku und LOC; `.githooks/commit-msg` eskaliert statt zu blockieren.

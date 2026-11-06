@@ -7,27 +7,27 @@ import { HAUSKONTO, payOrBorrow, SHOP } from './money';
 import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
-import { blockedTiles, isWalkable } from './pathfinding';
+import { isWalkable } from './pathfinding';
 import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
-import { canPlace, furnitureById } from './world';
+import { canPlace, furnitureById, worldNav } from './world';
 
 export const barCapacityForLevel = (level: number): number => 12 + 8 * Math.max(1, level);
 const barCapacity = (world: WorldState): number => barCapacityForLevel(world.barLevel);
 
 /** Erste begehbare Kachel in der Eingangszone (Wandring zaehlt als belegt), sonst irgendwo auf dem Floor. */
 function freeCrateTile(world: WorldState): { x: number; y: number } | null {
-  const blocked = blockedTiles(world.size, world.furniture, world.zones);
+  const nav = worldNav(world);
   const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE') ?? world.zones[0];
   if (entrance) {
     for (let y = entrance.y; y < entrance.y + entrance.h; y += 1) {
       for (let x = entrance.x; x < entrance.x + entrance.w; x += 1) {
-        if (isWalkable(world.size, blocked, x, y)) return { x, y };
+        if (isWalkable(nav, x, y)) return { x, y };
       }
     }
   }
   for (let y = 1; y < world.size; y += 1) {
     for (let x = 1; x < world.size; x += 1) {
-      if (isWalkable(world.size, blocked, x, y)) return { x, y };
+      if (isWalkable(nav, x, y)) return { x, y };
     }
   }
   return null;
