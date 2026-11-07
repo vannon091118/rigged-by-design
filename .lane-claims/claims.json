@@ -907,5 +907,30 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "c84a1eb82b6cb973ae74cc6e5a181342cccdc6f2",
     "createdAt": "4e8c2d4b85c3bc39f0b720c56bc946352d236525"
+  },
+  {
+    "id": "lane/content/narrative",
+    "owner": "Sim-/Domain-Owner",
+    "branch": "lane/content/narrative",
+    "baseSha": "92c8f3ea376e08dde3319828e6808de370a6b95c",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "docs/ROADMAP.md",
+      "content/narrative/**",
+      "src/core/sim/narrative/composer/registry.generated.ts",
+      "src/core/sim/narrative/composer/slot-map.generated.ts",
+      "package.json",
+      "pnpm-lock.yaml"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "92c8f3ea376e08dde3319828e6808de370a6b95c"
   }
 ]
