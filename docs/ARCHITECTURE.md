@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.181 | 2026-11-07 13:58 UTC -->
+<!-- rbd-doc: v0.3.182 | 2026-11-07 14:41 UTC -->
 
 ## README als Einstieg
 
@@ -218,7 +218,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 199: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+193) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 200: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+194) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 3: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
 <!-- DEP_MATRIX_END -->
 
@@ -1307,7 +1307,7 @@ Warteschlange und Besuchsstatus entstehen neu.
 | `flags` | Zaehler mit narrativer Bedeutung | nur endliche Zahlen |
 | `relationships` | gerichtete Kanten zwischen persistenten Akteuren | 200; Endpunkte pinnen Visitor-Profile |
 | `eventSeq` | naechste freie Event-Instanz-ID | monoton, nie wiederverwendet |
-| `events` | aktive und begrenzte abgeschlossene Event-Instanzen; traegt `templateId`, `templateVersion` und `offeredChoiceIds`; hoechstens eine aktive Nachfrageveranstaltung (GLOBAL) | 32 gesamt, 8 gleichzeitig live; 8 Choices je Instanz |
+| `events` | aktive und begrenzte abgeschlossene Event-Instanzen; traegt `templateId`, `templateVersion` und `offeredChoiceIds`; hoechstens eine aktive Nachfrageveranstaltung (GLOBAL) | 32 gesamt, 8 gleichzeitig live; 16 Choices je Instanz |
 | `cooldowns` | Sperren je Event und Teilnehmerkombination | 64; `untilTick` in Welt-Ticks |
 | `rng` | eigener persistenter Narrativ-Zufallsstrom | Seed/State als uint32 |
 
@@ -1562,6 +1562,24 @@ versionsfremde Choice liefert `null`. `choices/eligibility.ts` prueft bei jedem 
 erneut Lifecycle, Ablauf, Requirements, Kosten und den gespeicherten Satz; die Funktion
 ist rein und veraendert weder Welt noch Ledger. Effekte werden in NAR-07 nur deklariert,
 nicht ausgefuehrt.
+
+#### Mehrbeatige Events (NAR-07-Erweiterung)
+
+`EventChoice.nextStep` (optional, `null` oder weggelassen bedeutet Aufloesung) traegt den
+naechsten Beat. `executeChoice()` ruft nach der Aktivierung `advanceEventStep()` auf,
+bevor Commands und Kosten wirken: Die Instanz bleibt `ACTIVE`, ihre Frist laeuft weiter,
+und es entsteht kein `EVENT_RESOLVED`-Fact. Scheitert der Wechsel, stellt der vorhandene
+Snapshot den Schritt zurueck; eine `nextStep`-Choice ist damit kein zweiter
+Aufloesungspfad, sondern ein reiner Schrittwechsel.
+
+`events/template-schema.ts` weist ein `nextStep`-Ziel ab, das keine Choice des Templates
+anbietet: entweder gilt eine Choice ohne `event-step` in jedem Beat, oder mindestens eine
+Choice haengt per `event-step` an genau diesem Ziel. `choices/steps.ts` liefert mit
+`choicesForStep()` den sichtbaren Satz eines Beats; `view.ts` zeigt nur diese IDs, sodass
+eine Option des naechsten Beats nicht als ausgegrauter Rest erscheint und bis zum Wechsel
+auch nicht ausfuehrbar ist. `EVENT_TEMPLATE_LIMITS` hebt die Grenzen auf 24 Content-Slots
+sowie 16 Choices und 16 persistierte Angebote; drei Beats mit je drei Optionen passen
+damit vollstaendig in ein Template.
 
 #### Commands und Allowlist (NAR-08)
 

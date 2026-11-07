@@ -4,6 +4,7 @@ import { HAUSKONTO } from '../money';
 import type { Visitor, WorldState } from '../types';
 import type { ActorRef } from './types';
 import { checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
+import { choicesForStep } from './choices/steps';
 import { buildCompositionContext } from './composition-context';
 import { composeNarrative, type ComposedNarrative } from './composer';
 import { templateFor } from './events/definitions';
@@ -69,7 +70,7 @@ function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInsta
     relationships: world.narrative.relationships,
     participants: event.participants,
   };
-  const choices = event.offeredChoiceIds.map((choiceId) => {
+  const choices = choicesForStep(template, event).map((choiceId) => {
     const evaluation = checkChoiceSelection(event, template, choiceId, context);
     const slot = evaluation.choice?.labelSlotId;
     const label = slot ? composed.slots.find((entry) => entry.slotId === slot)?.text ?? '' : '';

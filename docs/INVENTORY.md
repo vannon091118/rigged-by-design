@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.181 | 2026-11-07 13:58 UTC -->
+<!-- rbd-doc: v0.3.182 | 2026-11-07 14:41 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -116,7 +116,7 @@ Branch-Schutz (Ebene B, laut CI-Gates-Anhang in `docs/ARCHITECTURE.md` seit 31.1
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 196 Dateien — contract 118 · integration 41 · governance 23 · statistics 7 · performance 7.
+Summe: 197 Dateien — contract 119 · integration 41 · governance 23 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -235,6 +235,7 @@ Summe: 196 Dateien — contract 118 · integration 41 · governance 23 · statis
 | `src/core/sim/__tests__/narrative-followup-chain.test.ts` | sim | contract | ja | `src/core/sim/narrative/runtime.ts` |
 | `src/core/sim/__tests__/narrative-longrun.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/narrative-memory.test.ts` | sim | contract | ja | `src/core/sim/narrative/memory.ts` |
+| `src/core/sim/__tests__/narrative-multi-beat.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
 | `src/core/sim/__tests__/narrative-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/relationships.ts` |
 | `src/core/sim/__tests__/narrative-rival-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/rival-context.ts` |
 | `src/core/sim/__tests__/narrative-rival-trigger.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
@@ -506,10 +507,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1373 |
-| Gelistete Dateien | 1373 |
+| Getrackte Dateien | 1376 |
+| Gelistete Dateien | 1376 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (13), .kilo (1), .lane-claims (1), content (69), docs (70), public (554), scripts (80), src (574) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (13), .kilo (1), .lane-claims (1), content (70), docs (70), public (554), scripts (80), src (576) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -522,7 +523,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 8 Datei(en)
 - `.kilo/plans/` — 1 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `content/narrative/contributions/` — 65 Datei(en)
+- `content/narrative/contributions/` — 66 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -584,10 +585,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 70 Datei(en)
-- `src/core/sim/__tests__/` — 85 Datei(en)
+- `src/core/sim/__tests__/` — 86 Datei(en)
 - `src/core/sim/narrative/` — 27 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 3 Datei(en)
-- `src/core/sim/narrative/choices/` — 2 Datei(en)
+- `src/core/sim/narrative/choices/` — 3 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 6 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
@@ -628,7 +629,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 911 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 415 Zeilen
@@ -698,15 +699,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-06-asset-semantik-messung.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-asset-semantik.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-layout-vertrag.json` — { — gelesen: 17 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 1563 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 265 Zeilen
+- `content/narrative/contributions/2026-11-07-multi-beat-schritte.json` — { — gelesen: 17 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 1585 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 269 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 961 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3338 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1825 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 962 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3348 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 314 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 316 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1590,6 +1592,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-followup-chain.test.ts` — D1: Eine aufgeloeste Choice mit `followUpEventId` erzeugt im naechsten Lauf — gelesen: 61 Zeilen
 - `src/core/sim/__tests__/narrative-longrun.test.ts` — NAR-16: Mehr-Tage-Betrieb mit Geschichten, Rivalen und Save/Replay. Der Lauf — gelesen: 133 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 78 Zeilen
+- `src/core/sim/__tests__/narrative-multi-beat.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 175 Zeilen
 - `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 155 Zeilen
 - `src/core/sim/__tests__/narrative-rival-context.test.ts` — Phase 5: Rivalen-Karten leiten sich rein aus Minds, Indizien und — gelesen: 88 Zeilen
 - `src/core/sim/__tests__/narrative-rival-trigger.test.ts` — C2: Der `rival-action`-Trigger oeffnet nur fuer Handlungen mit Folgen ein — gelesen: 57 Zeilen
@@ -1666,7 +1669,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 38 Zeilen
 - `src/core/sim/narrative/choices/contract.ts` — Choice-Vertrag: stabile IDs bleiben an Template-ID und Version gebunden. — gelesen: 21 Zeilen
 - `src/core/sim/narrative/choices/eligibility.ts` — Reine Choice-Eligibility: Lifecycle, Requirements und Kosten ohne Seiteneffekte. — gelesen: 86 Zeilen
-- `src/core/sim/narrative/commands/execute.ts` — Einziger Ausfuehrungspfad: Preflight, Handler, Kosten, RESOLVED. — gelesen: 127 Zeilen
+- `src/core/sim/narrative/choices/steps.ts` — Schritt-Auswahl: welche angebotenen Choices gelten im aktuellen Beat? — gelesen: 26 Zeilen
+- `src/core/sim/narrative/commands/execute.ts` — Einziger Ausfuehrungspfad: Preflight, Handler, Kosten, RESOLVED. — gelesen: 139 Zeilen
 - `src/core/sim/narrative/commands/index.ts` — Oeffentliche Fassade der Event-Command-Schicht. — gelesen: 13 Zeilen
 - `src/core/sim/narrative/commands/parse-directives.ts` — Parser fuer €-Direktiven: erzeugt ein strikt begrenztes AST, nie Code. — gelesen: 123 Zeilen
 - `src/core/sim/narrative/commands/preflight.ts` — Vollstaendige Vorpruefung einer Choice, bevor irgendein Effekt geschrieben wird. — gelesen: 140 Zeilen
@@ -1674,7 +1678,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 70 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -1699,8 +1703,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/visitor-return.ts` — Stabile mechanische Definition fuer die Rueckkehr eines Besuchers. — gelesen: 54 Zeilen
 - `src/core/sim/narrative/events/demand-definitions.ts` — Datengetriebene Nachfrageveranstaltungen; Auswahl und Ankuendigung bleiben in `demand.ts`. — gelesen: 36 Zeilen
 - `src/core/sim/narrative/events/template-candidate.ts` — Uebersetzt einen Trigger-Match in einen begrenzten EventCandidate aus dem Template. — gelesen: 59 Zeilen
-- `src/core/sim/narrative/events/template-schema.ts` — Fail-closed Validierung fuer Event-Templates, Choices und ihre statischen Teile. — gelesen: 146 Zeilen
-- `src/core/sim/narrative/events/template-types.ts` — Deklarative Event-Templates und Choice-Vertraege; Darstellung bleibt ausserhalb. — gelesen: 116 Zeilen
+- `src/core/sim/narrative/events/template-schema.ts` — Fail-closed Validierung fuer Event-Templates, Choices und ihre statischen Teile. — gelesen: 166 Zeilen
+- `src/core/sim/narrative/events/template-types.ts` — Deklarative Event-Templates und Choice-Vertraege; Darstellung bleibt ausserhalb. — gelesen: 122 Zeilen
 - `src/core/sim/narrative/events/trigger-definitions.ts` — Deklarative Trigger, die einen echten Fact in einen Event-Kandidaten uebersetzen. — gelesen: 31 Zeilen
 - `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 92 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 76 Zeilen
@@ -1720,7 +1724,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/triggers.ts` — Oeffentliche Trigger-Fassade: Context, reine Auswertung und Schema-Validierung. — gelesen: 8 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 178 Zeilen
 - `src/core/sim/narrative/view-types.ts` — NAR-14: Datenvertraege des Anzeigemodells; der Builder lebt in `view.ts`. — gelesen: 88 Zeilen
-- `src/core/sim/narrative/view.ts` — NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. — gelesen: 177 Zeilen
+- `src/core/sim/narrative/view.ts` — NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. — gelesen: 178 Zeilen
 - `src/core/sim/nav-grid.ts` — Navigationsraster: belegte Tiles, Wandkanten und ein Cache fuer beides. — gelesen: 114 Zeilen
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
@@ -1994,6 +1998,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T87 | **2026-11-07 14:37 UTC**: Mehrbeatige Events: `nextStep` wechselt nach einer Wahl in den naechsten Beat, die Instanz bleibt live; `executeChoice` nutzt `advanceEventStep`, das Schema prueft erreichbare Ziele; Slots 12->24, Choices 8->16; die Anzeige blendet Choices fremder Beats aus. |
 | T86 | **2026-11-07 11:28 UTC**: Claim 27 nach dem Squash-Merge geschlossen. `reconcile-claims --apply` schreibt `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: cf76ea1`; Head `41fcada` und Merge teilen den Baum `7997502`. Geprueft: `main`-`CI Verify` auf `cf76ea1` erfolgreich (Run 42368226268), zweiter Reconcile-Lauf ohne Abweichung, `verify:claims`. |
 | T85 | **2026-11-07 11:22 UTC**: Issue-Reopen, Sweep-SHA und Promote-Ziel mit Tests belegt. `pr-watcher.mjs` ist mit injizierbarer API/Git testbar und startet die CLI nur beim Direktaufruf; `promote-guard.mjs` liefert die reine `--base main`-Suche und die Dispatch-Entscheidung. Geprueft: `pr-watcher.test.ts` 3/3, `promote-guard.test.ts` 9/9, `claim-evidence.test.ts` 11/11 (zusammen 23/23), `node --check`, `verify:light`, `verify:claims`. |
 | T84 | **2026-11-07 10:34 UTC**: Agenten-Isolation und Workflow-Härtung. `pretask` blockt geteilte Baeume mit `ERR-4019` (fremder offener Claim oder `--require-worktree`), `--json` nennt die Gruende; `turn:finish` staged weiter claim-begrenzt. `AGENTS.md` hat eine Testlinie. `long-checks.yml` nutzt `RBD_DAYS` statt Shell-Interpolation, alle Actions sind per 40-stelligem SHA gepinnt. Geprueft: 8/8 Isolations-, 4/4 Workflow-Tests, 6/6 ci-gates, `node --check`, `pretask --json`; volle Gates vor dem Commit: 186 Testdateien, 992 Tests bestanden, 6 uebersprungen, `verify:light`, Typecheck, Doku, Testqualitaet, Redundanz und LOC gruen. |

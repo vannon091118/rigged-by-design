@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a9979c7000089d2f7baebc41ab5f39ec22c4b1023d00bf0afb8b691f7d1c46bd",
+  "contentHash": "sha256:330eb175fb27dda4de9814291de7f1c49d8d04392160c64bf0c975c37114e1c7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1020,6 +1020,28 @@
       "text": "Rita strich die doppelte Zeile im alten Kassenbuch durch. Drei Namen, sagte sie, bleiben drei Namen, auch wenn man sie zweimal liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-narrative-facts.json"
+    },
+    {
+      "contributionId": "multi-beat-steps-01",
+      "turnId": "2026-11-07T14:37Z-multi-beat-schritte",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Besuch ist kein einzelner Klick mehr. Erst wird gefragt, dann geantwortet: Der Schritt wechselt, die Frist laeuft weiter, und was im ersten Beat gesagt wurde, entscheidet, welche Worte im zweiten ueberhaupt angeboten werden. Niemand sieht eine Option, die noch nicht dran ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-07-multi-beat-schritte.json"
     },
     {
       "contributionId": "nar-04-beziehungsquellen-01",

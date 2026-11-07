@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.181 | 2026-11-07 13:58 UTC -->
+<!-- rbd-doc: v0.3.182 | 2026-11-07 14:41 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Mehrbeatige Events: nextStep, Schrittwechsel und hoehere Limits
+
+**Ziel.** Mehrbeatige Events: `nextStep` an Choices, Schrittwechsel statt sofortiger Aufloesung, hoehere Slot- und Choice-Limits und eine Anzeige, die Optionen fremder Beats ausblendet.
+
+**Umsetzung.** `EventChoice` traegt optional `nextStep`. `executeChoice` ruft nach der Aktivierung `advanceEventStep` und laesst die Instanz live; der vorhandene Narrative-Snapshot deckt den Rollback. Das Schema prueft erreichbare Ziele, `choices/steps.ts` filtert das persistierte Angebot pro Beat, `view.ts` zeigt nur diesen Satz. Limits: 24 Content-Slots, 16 Choices, 16 angebotene Choices; die sieben bestehenden Templates bleiben einstufig.
+
+**Pruefungen.** `pnpm run typecheck`; `narrative-multi-beat.test.ts` (6), `narrative-choice-execution.test.ts` (6), `narrative-composer.test.ts` (14) und `narrative-coverage.test.ts` (2) gruen; `pnpm run verify:light` fuer Lint, LOC, Typen, Doku, Baum und Redundanz.
+
+**Offen.** Noch kein mehrbeatiger Content-Batch: die bestehenden Templates bleiben einstufig, ein 3x3-Template ist mit den neuen Limits moeglich. Die Outcome-Luecken bei `VISITOR_CONFLICT` und `RIVAL_MOVE` bleiben offen.
 
 ## 2026-11-07 - Entwicklungsbereitschaft: PR-Suite und Reparaturbeleg
 

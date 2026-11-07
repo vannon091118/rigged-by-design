@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.181 | 2026-11-07 13:58 UTC -->
+<!-- rbd-doc: v0.3.182 | 2026-11-07 14:41 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -169,6 +169,8 @@ Governance-Arbeit ist nur noch bei einem konkreten Defekt, einem realen
 Integritaetsfehler, messbarem Workflow-Zeitverlust oder nachweisbarer
 wiederkehrender Agentenarbeit zulaessig. Die Infrastruktur traegt das Spiel,
 nicht umgekehrt.
+
+- **Mehrbeatige Events.** Ein Besuch kann mehrere Beats tragen: `nextStep` wechselt den Schritt, ohne das Event aufzuloesen, und die Anzeige bietet pro Beat nur die dort gueltigen Optionen. Der naechste Content-Batch kann damit 3x3-Optionen in einem Template unterbringen.
 
 - Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 sind mit #196 auf `main` nachgewiesen. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Der fruehere CI-Form-Vergleich ist mit dem gemergten #221 entschieden; die Matrix bleibt die eine Form. Offene PRs aus diesem Vergleich gibt es nicht mehr.
 

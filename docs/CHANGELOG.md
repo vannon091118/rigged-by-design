@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.181 | 2026-11-07 13:58 UTC -->
+<!-- rbd-doc: v0.3.182 | 2026-11-07 14:41 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -15,6 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.181] - 2026-11-07
 
 ### Technik
+- **Mehrbeatige Events.** `EventChoice.nextStep` fuehrt nach einer Wahl in den naechsten Beat: `executeChoice` wechselt nur den Schritt, die Instanz bleibt `ACTIVE` und ihre Frist laeuft weiter; erst der letzte Beat emittiert `EVENT_RESOLVED`. Das Schema weist unerreichbare Ziele ab, `choices/steps.ts` blendet Optionen fremder Beats aus, und `EVENT_TEMPLATE_LIMITS` hebt die Grenzen auf 24 Slots sowie 16 Choices und 16 Angebote.
 - **PR-Regression bleibt vollstaendig.** `ci-verify.yml` setzt `full_tests=1` fuer jeden PR und fuer `main`; `ci-plan` behandelt das Profil `all` fail-closed und laesst leere, unbekannte oder Dependency-Diffs ebenfalls in die volle Suite laufen. `--impact=1` verengt nur Gates und lange Nachweise, nicht die schnelle Regression.
 - **Issue-Resolver braucht Reparaturbeleg.** `sweepGreenMain()` schliesst nur mit urspruenglichem Fingerprint, einer `<!-- repair: <sha> -->`-Marke und einem exakt gruenen Main-Commit; ein Ancestor-Commit allein reicht nicht. `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fehler weiterhin wieder.
 
