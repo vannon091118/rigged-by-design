@@ -1,0 +1,45 @@
+{
+  "name": "rigged-by-design",
+  "version": "0.3.183",
+  "description": "Life-sim domain engine with lane governance, capability contracts, and ActionSet UI contracts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "claim:register": "node scripts/claim-register.js",
+    "agent:pretask": "node scripts/agent-pretask.js",
+    "agent:context": "node scripts/agent-context.js",
+    "verify:light": "node scripts/verify-light.js",
+    "verify:capabilities": "node scripts/verify-capabilities.js",
+    "test": "node scripts/run-tests.js",
+    "vitest": "vitest run",
+    "lint": "echo \"lint: no-op (placeholder)\""
+  },
+  "lane": {
+    "domain": "fundament",
+    "task": "phase-0-foundation",
+    "branch": "lane/fundament/phase-0-foundation",
+    "pathAllowlist": [
+      "src/**",
+      "tests/**",
+      "docs/**",
+      ".lane-claims/**",
+      "package.json",
+      "scripts/**"
+    ],
+    "contractVersions": {
+      "actor-id": "1.0.0",
+      "world-time": "1.0.0",
+      "domain-event": "1.0.0",
+      "relationship": "1.0.0",
+      "factor": "1.0.0",
+      "save": "1.0.0"
+    },
+    "gateProfile": "phase-0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.9"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
+  }
+}

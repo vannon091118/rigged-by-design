@@ -1,0 +1,34 @@
+{
+  "id": "claim-019",
+  "domain": "casino-integration",
+  "task": "casino-social-integration",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/casino-integration.ts",
+    "src/core/social-view.ts",
+    "src/core/ego-network.ts",
+    "src/core/influence-inspector.ts",
+    "src/core/relationship-profile.ts",
+    "tests/core/casino-integration.test.ts",
+    "tests/core/social-view.test.ts"
+  ],
+  "contractVersions": { "casino": "1.0.0", "social": "1.0.0" },
+  "status": "open",
+  "gateProfile": "phase-6",
+  "writeScopes": [
+    "src/core/casino-integration.ts",
+    "src/core/social-view.ts",
+    "src/core/ego-network.ts",
+    "src/core/influence-inspector.ts",
+    "src/core/relationship-profile.ts",
+    "tests/core/casino-integration.test.ts",
+    "tests/core/social-view.test.ts"
+  ],
+  "dependencies": ["claim-012", "claim-013", "claim-014", "claim-015", "claim-016", "claim-017"],
+  "impact": {
+    "filesTouched": 7,
+    "testsAffected": 2,
+    "contractsAffected": 2
+  }
+}

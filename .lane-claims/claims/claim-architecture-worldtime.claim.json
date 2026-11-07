@@ -1,0 +1,32 @@
+{
+  "id": "claim-011",
+  "domain": "architecture",
+  "task": "worldtime-contract",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/sim/tick*.ts",
+    "src/core/sim/time*.ts",
+    "docs/ARCHITECTURE.md",
+    "scripts/lib/*time*.mjs"
+  ],
+  "contractVersions": { "world-time": "1.1.0" },
+  "status": "open",
+  "gateProfile": "phase-1",
+  "writeScopes": [
+    "src/core/sim/worldtime.ts",
+    "src/core/sim/calendar.ts",
+    "src/core/sim/time-domain.ts",
+    "src/core/sim/clock-adapter.ts",
+    "src/core/sim/domain-registry.ts",
+    "src/core/sim/role-manifest.ts",
+    "src/core/sim/content-package.ts",
+    "docs/adr/ADR-001-worldtime-architecture.md",
+    "docs/ownership-matrix.md"
+  ],
+  "impact": {
+    "filesTouched": 9,
+    "testsAffected": 8,
+    "contractsAffected": 1
+  }
+}

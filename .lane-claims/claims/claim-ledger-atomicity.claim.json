@@ -1,0 +1,17 @@
+{
+  "id": "claim-007",
+  "domain": "ledger",
+  "task": "ledger-atomicity-fix",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": ["src/core/ledger.ts", "tests/core/ledger.test.ts"],
+  "contractVersions": {},
+  "status": "open",
+  "gateProfile": "phase-0",
+  "writeScopes": ["src/core/ledger.ts", "tests/core/ledger.test.ts"],
+  "impact": {
+    "filesTouched": 2,
+    "testsAffected": 1,
+    "contractsAffected": 0
+  }
+}

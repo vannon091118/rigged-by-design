@@ -1,0 +1,30 @@
+{
+  "id": "claim-015",
+  "domain": "relationship-engine",
+  "task": "relationship-engine-decoupling",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/relationship-engine.ts",
+    "src/core/relationship-apply.ts",
+    "src/core/relationship.ts",
+    "tests/core/relationship-engine.test.ts",
+    "tests/core/relationship-apply.test.ts"
+  ],
+  "contractVersions": { "relationship": "2.0.0" },
+  "status": "open",
+  "gateProfile": "phase-3",
+  "writeScopes": [
+    "src/core/relationship-engine.ts",
+    "src/core/relationship-apply.ts",
+    "src/core/relationship.ts",
+    "tests/core/relationship-engine.test.ts",
+    "tests/core/relationship-apply.test.ts"
+  ],
+  "dependencies": ["claim-012", "claim-013"],
+  "impact": {
+    "filesTouched": 5,
+    "testsAffected": 2,
+    "contractsAffected": 1
+  }
+}

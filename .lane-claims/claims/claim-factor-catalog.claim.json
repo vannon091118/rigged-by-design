@@ -1,0 +1,28 @@
+{
+  "id": "claim-014",
+  "domain": "relationship-factors",
+  "task": "factor-catalog-normalization",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/factor-catalog.ts",
+    "src/core/factor-normalizer.ts",
+    "tests/core/factor-catalog.test.ts",
+    "tests/core/factor-normalizer.test.ts"
+  ],
+  "contractVersions": { "factor": "1.1.0", "relationship": "1.1.0" },
+  "status": "open",
+  "gateProfile": "phase-3",
+  "writeScopes": [
+    "src/core/factor-catalog.ts",
+    "src/core/factor-normalizer.ts",
+    "tests/core/factor-catalog.test.ts",
+    "tests/core/factor-normalizer.test.ts"
+  ],
+  "dependencies": ["claim-004", "claim-005"],
+  "impact": {
+    "filesTouched": 4,
+    "testsAffected": 2,
+    "contractsAffected": 2
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "claim-010",
+  "domain": "action-set",
+  "task": "actionset-contract",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": ["src/ui/action-card.tsx", "src/ui/floor-actions.ts", "src/ui/action-set-resolver.ts", "src/ui/job-context-menu.tsx"],
+  "contractVersions": { "action-set": "1.0.0" },
+  "status": "open",
+  "gateProfile": "phase-0",
+  "writeScopes": ["src/ui/action-card.tsx", "src/ui/floor-actions.ts", "src/ui/action-set-resolver.ts", "src/ui/job-context-menu.tsx"],
+  "impact": {
+    "filesTouched": 4,
+    "testsAffected": 0,
+    "contractsAffected": 1
+  }
+}

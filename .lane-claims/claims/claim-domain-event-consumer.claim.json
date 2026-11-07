@@ -1,0 +1,32 @@
+{
+  "id": "claim-013",
+  "domain": "domain-events",
+  "task": "domain-event-consumer-lifecycle",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/sim/event-bus.ts",
+    "src/core/sim/event-consumer.ts",
+    "src/core/sim/scheduler.ts",
+    "tests/core/sim/event-bus.test.ts",
+    "tests/core/sim/event-consumer.test.ts",
+    "tests/core/sim/scheduler.test.ts"
+  ],
+  "contractVersions": { "domain-event": "1.1.0" },
+  "status": "open",
+  "gateProfile": "phase-2",
+  "writeScopes": [
+    "src/core/sim/event-bus.ts",
+    "src/core/sim/event-consumer.ts",
+    "src/core/sim/scheduler.ts",
+    "tests/core/sim/event-bus.test.ts",
+    "tests/core/sim/event-consumer.test.ts",
+    "tests/core/sim/scheduler.test.ts"
+  ],
+  "dependencies": ["claim-003", "claim-011"],
+  "impact": {
+    "filesTouched": 6,
+    "testsAffected": 3,
+    "contractsAffected": 1
+  }
+}

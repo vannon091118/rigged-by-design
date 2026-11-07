@@ -1,0 +1,213 @@
+{
+  "schema": "lane-claims/v1",
+  "head": "c7ca328",
+  "version": "0.3.183",
+  "claims": [
+    {
+      "id": "claim-001",
+      "domain": "actor-id",
+      "task": "actor-id-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/actor-id.ts", "tests/core/actor-id.test.ts"],
+      "contractVersions": { "actor-id": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/actor-id.ts", "tests/core/actor-id.test.ts"]
+    },
+    {
+      "id": "claim-002",
+      "domain": "world-time",
+      "task": "world-time-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/world-time.ts", "tests/core/world-time.test.ts"],
+      "contractVersions": { "world-time": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/world-time.ts", "tests/core/world-time.test.ts"]
+    },
+    {
+      "id": "claim-003",
+      "domain": "domain-event",
+      "task": "domain-event-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/domain-event.ts", "tests/core/domain-event.test.ts"],
+      "contractVersions": { "domain-event": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/domain-event.ts", "tests/core/domain-event.test.ts"]
+    },
+    {
+      "id": "claim-004",
+      "domain": "relationship",
+      "task": "relationship-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/relationship.ts", "tests/core/relationship.test.ts"],
+      "contractVersions": { "relationship": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/relationship.ts", "tests/core/relationship.test.ts"]
+    },
+    {
+      "id": "claim-005",
+      "domain": "factor",
+      "task": "factor-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/factor.ts", "tests/core/factor.test.ts"],
+      "contractVersions": { "factor": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/factor.ts", "tests/core/factor.test.ts"]
+    },
+    {
+      "id": "claim-006",
+      "domain": "save",
+      "task": "save-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/save.ts", "tests/core/save.test.ts"],
+      "contractVersions": { "save": "1.0.0" },
+      "status": "merged",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/save.ts", "tests/core/save.test.ts"]
+    },
+    {
+      "id": "claim-007",
+      "domain": "ledger",
+      "task": "ledger-atomicity-fix",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/ledger.ts", "tests/core/ledger.test.ts"],
+      "contractVersions": {},
+      "status": "open",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/ledger.ts", "tests/core/ledger.test.ts"]
+    },
+    {
+      "id": "claim-008",
+      "domain": "rng",
+      "task": "weighted-bias-comment-fix",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/rng/weighted.ts"],
+      "contractVersions": {},
+      "status": "open",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/core/rng/weighted.ts"]
+    },
+    {
+      "id": "claim-009",
+      "domain": "capabilities",
+      "task": "capability-manifest",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["docs/capabilities.json", "scripts/verify-capabilities.js"],
+      "contractVersions": {},
+      "status": "open",
+      "gateProfile": "phase-0",
+      "writeScopes": ["docs/capabilities.json", "scripts/verify-capabilities.js"]
+    },
+    {
+      "id": "claim-010",
+      "domain": "action-set",
+      "task": "actionset-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/ui/action-card.tsx", "src/ui/floor-actions.ts", "src/ui/action-set-resolver.ts"],
+      "contractVersions": { "action-set": "1.0.0" },
+      "status": "open",
+      "gateProfile": "phase-0",
+      "writeScopes": ["src/ui/action-card.tsx", "src/ui/floor-actions.ts", "src/ui/action-set-resolver.ts"]
+    },
+    {
+      "id": "claim-011",
+      "domain": "architecture",
+      "task": "worldtime-contract",
+      "owner": "lead",
+      "baseSha": "c7ca328",
+      "pathAllowlist": ["src/core/sim/tick*.ts", "src/core/sim/time*.ts", "docs/ARCHITECTURE.md", "scripts/lib/*time*.mjs"],
+      "contractVersions": { "world-time": "1.1.0" },
+      "status": "open",
+      "gateProfile": "phase-1",
+      "writeScopes": ["src/core/sim/worldtime.ts", "src/core/sim/calendar.ts", "src/core/sim/time-domain.ts", "src/core/sim/clock-adapter.ts", "src/core/sim/domain-registry.ts", "src/core/sim/role-manifest.ts", "src/core/sim/content-package.ts", "docs/adr/ADR-001-worldtime-architecture.md", "docs/ownership-matrix.md"]
+    }
+  ],
+  "openClaims": [
+    {
+      "file": ".lane-claims/claims/claim-ledger-atomicity.claim.json",
+      "domain": "ledger",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-actionset-contract.claim.json",
+      "domain": "action-set",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-architecture-worldtime.claim.json",
+      "domain": "architecture",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-actor-registry.claim.json",
+      "domain": "actor-registry",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-domain-event-consumer.claim.json",
+      "domain": "domain-events",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-factor-catalog.claim.json",
+      "domain": "relationship-factors",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-relationship-engine.claim.json",
+      "domain": "relationship-engine",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-factor-catalog-expansion.claim.json",
+      "domain": "factor-catalog",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-narrative-phase4.claim.json",
+      "domain": "narrative",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-communication.claim.json",
+      "domain": "communication",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-casino-integration.claim.json",
+      "domain": "casino-integration",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-rooming-geometry.claim.json",
+      "domain": "rooming",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-rooming-roles.claim.json",
+      "domain": "rooming",
+      "status": "open"
+    },
+    {
+      "file": ".lane-claims/claims/claim-rooming-perception.claim.json",
+      "domain": "rooming",
+      "status": "open"
+    }
+  ],
+  "activeForHead": ["claim-007", "claim-010", "claim-011", "claim-012", "claim-013", "claim-014", "claim-015", "claim-016", "claim-017", "claim-018", "claim-019", "claim-020", "claim-021", "claim-022"],
+  "blockedReasons": []
+}

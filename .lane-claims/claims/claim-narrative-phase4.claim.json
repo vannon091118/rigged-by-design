@@ -1,0 +1,32 @@
+{
+  "id": "claim-017",
+  "domain": "narrative",
+  "task": "narrative-domain-neutral",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/narrative-engine.ts",
+    "src/core/narrative-memory.ts",
+    "src/core/narrative-compiler.ts",
+    "tests/core/narrative-engine.test.ts",
+    "tests/core/narrative-memory.test.ts",
+    "tests/core/narrative-compiler.test.ts"
+  ],
+  "contractVersions": { "narrative": "1.0.0" },
+  "status": "open",
+  "gateProfile": "phase-4",
+  "writeScopes": [
+    "src/core/narrative-engine.ts",
+    "src/core/narrative-memory.ts",
+    "src/core/narrative-compiler.ts",
+    "tests/core/narrative-engine.test.ts",
+    "tests/core/narrative-memory.test.ts",
+    "tests/core/narrative-compiler.test.ts"
+  ],
+  "dependencies": ["claim-012", "claim-013"],
+  "impact": {
+    "filesTouched": 6,
+    "testsAffected": 3,
+    "contractsAffected": 1
+  }
+}

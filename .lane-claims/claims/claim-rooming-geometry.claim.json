@@ -1,0 +1,37 @@
+{
+  "id": "claim-020",
+  "domain": "rooming",
+  "task": "geometry-build-mode",
+  "owner": "lead",
+  "baseSha": "c7ca328",
+  "pathAllowlist": [
+    "src/core/sim/layout*.ts",
+    "src/core/sim/room*.ts",
+    "src/render/wall*.ts",
+    "src/ui/layout-editor.tsx"
+  ],
+  "contractVersions": { "rooming.geometry": "1.0.0" },
+  "status": "open",
+  "gateProfile": "phase-7",
+  "writeScopes": [
+    "src/core/sim/layout/wall.ts",
+    "src/core/sim/layout/nav-grid.ts",
+    "src/core/sim/layout/layout-editor.ts",
+    "src/core/sim/layout/flood-fill.ts",
+    "src/core/sim/layout/layout-from-template.ts",
+    "src/core/sim/layout/room-id-stabilization.ts",
+    "src/core/sim/layout/wall-collision.ts",
+    "src/core/sim/layout/wall-navigation.ts",
+    "src/core/sim/layout/wall-occlusion.ts",
+    "src/core/sim/layout/door-passage.ts",
+    "src/render/wall/wall-renderer.ts",
+    "src/ui/layout-editor/layout-editor.tsx",
+    "tests/core/sim/layout/*.test.ts"
+  ],
+  "dependencies": ["claim-011"],
+  "impact": {
+    "filesTouched": 13,
+    "testsAffected": 6,
+    "contractsAffected": 3
+  }
+}
