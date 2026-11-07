@@ -335,7 +335,30 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
     "createdAt": "08561dfbc5b9494bf4cd568c8f07ae6f5fcb2298"
+  },
+  {
+    "id": "lane/actionset/0-6-actionset-v2",
+    "owner": "Interaction-Contract-Owner",
+    "branch": "lane/actionset/0-6-actionset-v2",
+    "baseSha": "d0c730cd59d6e822bba501a854b5f466c165876e",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "docs/contracts/actionset.md",
+      "src/core/contracts/actionset.ts",
+      "src/core/contracts/__tests__/actionset.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "actionset",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "d0c730cd59d6e822bba501a854b5f466c165876e"
   }
 ]
