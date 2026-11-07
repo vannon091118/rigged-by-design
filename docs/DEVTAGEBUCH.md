@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 05:44 UTC -->
+<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - P0: Abhängigkeiten nach finaler Inventur
+
+**Ziel.** Die lokale Hook-Generierung lief nach dem Commit und hat die Dependency-Matrix in `docs/ARCHITECTURE.md` mit den drei neuen Governance-Skripten ergänzt. Dieser dokumentarische Folge-Commit hält PR-Head und Pflichtdokumente synchron.
+
+**Umsetzung.** Die generierte Matrix wurde erneut über `inventory:build` erstellt. Keine Verhaltensänderung am P0-Lieferweg; der Arbeitsbranch bleibt auf dem normalen Commit-Pfad ohne Rebase.
+
+**Pruefungen.** `verify:light` und `test:affected` waren vor dem ersten Push grün (135 Tests, 3 übersprungen). PR #203 prüft den finalen Commit-Head in GitHub; der erste Dispatch-Lauf ist gestartet.
+
+**Offen.** Offen.
 
 ## 2026-11-07 - P0 workflow, escalation and branch cleanup
 

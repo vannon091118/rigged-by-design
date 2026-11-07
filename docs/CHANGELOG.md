@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 05:44 UTC -->
+<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,9 +12,10 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
-## [0.3.153] - 2026-11-07
+## [0.3.154] - 2026-11-07
 
 ### Technik
+- P0: Die Inventur und generierte Dependency-Matrix nach dem ersten Commit neu aufgebaut; die neuen CI-/Impact-Skripte sind darin vollständig erfasst.
 - Workflow-Stand konsolidiert: `turn:finish` pusht den Lane-Branch und hebt Commit-Bodies in einen PR. Die CI prueft nur betroffene schnelle Gates; APK-Build und Audit laufen nur bei passendem Impact. Statistik, Soak, Balance und Benchmarks bleiben nicht blockierende Advisory- bzw. Dispatch-Nachweise.
 - `promote` verarbeitet PRs aus einer geordneten Queue, verlangt den erfolgreichen Pflichtstatus fuer den aktuellen Head, prueft Lane-Owner und Abhaengigkeiten und merged mit dem PR-Body als Commit-Body. `integration` bleibt manueller Notausgang.
 - Main wird ohne Rebase in aktive Branches gemergt. Reine Marker-/Versions- und Inventurkonflikte werden mechanisch geloest; echte Codekonflikte erzeugen ein lane-spezifisches Issue und lassen den Branch unangetastet.
