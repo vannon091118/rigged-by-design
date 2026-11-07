@@ -16,6 +16,7 @@ import { impact } from './lib/impact.mjs';
 import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
 import { ROOT } from './lib/report.mjs';
+import { findCollisions, openClaims } from './lib/lane-claims.mjs';
 
 const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));
@@ -25,6 +26,24 @@ const AS_JSON = argv.includes('--json');
 const PLAN_ONLY = argv.includes('--plan');
 
 const state = impact({ profile: PROFILE });
+
+// Lane-Kollisionsprüfung: offene Claims dürfen sich nicht in Allowlists oder
+// schreibenden Contracts überschneiden. Vor jedem Gate-Lauf geprüft.
+const claims = openClaims();
+for (const claim of claims) {
+  const collisions = findCollisions(claim);
+  if (collisions.length > 0) {
+    console.error(`agent:verify: Lane-Kollision bei ${claim.id}`);
+    for (const c of collisions) {
+      console.error(`  gegen ${c.lane}: ${c.reason || 'Contract-Schreibkonflikt'}`);
+      if (c.contractConflict && c.contractConflict.length > 0) {
+        console.error(`  doppelte Schreiber: ${c.contractConflict.join(', ')}`);
+      }
+    }
+    process.exit(1);
+  }
+}
+
 const steps = (planGates(PROFILE) ?? []).map((key) => ({ ...GATES[key] }));
 const tests = steps.find((step) => step.name === 'tests');
 let subset = [];

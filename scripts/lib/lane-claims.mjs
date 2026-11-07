@@ -17,6 +17,27 @@ import { join } from 'node:path';
 const CLAIMS_DIR = join(process.cwd(), '.lane-claims');
 const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
 
+/**
+ * Globale Sperrliste: Diese Dateien dürfen von keiner Lane geschrieben werden.
+ * Sie werden zentral im Merge-/Promote-Schritt gepflegt, nie innerhalb einer Lane.
+ */
+export const FORBIDDEN_FOR_LANES = [
+  'AGENTS.md',
+  'docs/ARCHITECTURE.md',
+  'docs/CHANGELOG.md',
+  'docs/DEVTAGEBUCH.md',
+  'docs/INVENTORY.md',
+  'docs/ROADMAP.md',
+  'package.json',
+  'pnpm-lock.yaml',
+];
+
+/** Prüft, ob ein Pfad auf der globalen Sperrliste für Lanes steht. */
+export function isForbiddenForLanes(filePath) {
+  const normalized = String(filePath ?? '').replaceAll('\\', '/');
+  return FORBIDDEN_FOR_LANES.includes(normalized);
+}
+
 /** Ein einzelner Lane-Claim. */
 export class LaneClaim {
   /**
@@ -118,6 +139,8 @@ export function openClaims() {
 
 /** Validiert, ob ein Pfad durch einen offenen Claim abgedeckt ist. */
 export function pathAllowedForClaim(filePath, laneId) {
+  // Globale Sperrliste: keine Lane darf diese Metadaten schreiben.
+  if (isForbiddenForLanes(filePath)) return false;
   const claims = openClaims();
   const claim = claims.find((c) => c.id === laneId);
   if (!claim) return false;
