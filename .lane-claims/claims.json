@@ -62,6 +62,7 @@
       "package.json",
       "scripts/gate-matrix.mjs",
       "scripts/lib/dependency-change.mjs",
+      "scripts/lib/pipeline-plan.mjs",
       "scripts/run-pipeline.mjs",
       "src/core/governance/__tests__/ci-gates.test.ts"
     ],
