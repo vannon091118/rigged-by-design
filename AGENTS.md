@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 02:28 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:31 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -22,6 +22,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 ## Dev environment
 
 - Node 22, pnpm. `pnpm install --frozen-lockfile` then `pnpm run dev` (http://localhost:3000).
+- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (Issue-Check, offene Konflikte, Lane-Status). Lokal leicht pruefen: `pnpm run test:affected` oder `pnpm run verify:light`; die schwere Suite laeuft in GitHub Actions.
 - Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`); pnpm-spezifische Dependency-Overrides liegen in `package.json` unter `pnpm.overrides`. `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v11 (world + layout + journal + look + narrative + rivals); v5–v10 migrate (keep Fiat, open payouts, journal, look, visitor memories, rival state; v5–v10 derive the layout from their template), v3/v4 discarded.
 
@@ -29,6 +30,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 
 - `pnpm run test` — Vitest run (CI alias `test:ci`).
 - `pnpm run test:affected` — nur Tests aus deklariertem Ziel, dem transitiven Importgraphen und dem betroffenen Subsystem, und nur die schnellen Beweisklassen. Statistik- und Messnachweise (RTP, Poker-Verteilung, Soak, Benchmarks) überspringt er und nennt sie; Entwicklungsfeedback, kein Ersatz für `verify:all`. Jede JSON-Änderung unter `content/narrative/**` wählt ausschließlich `src/core/governance/__tests__/narrative-content.test.ts` und gilt als Codeänderung.
+- `pnpm run verify:light` — das lokale Turn-Gate: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit; schwere Nachweise laufen in `ci-verify.yml`.
 - `pnpm run agent:context [--json]` — ein Aufruf für den Arbeitskontext: Änderungen, Systeme, Invarianten, betroffene Tests, Gate-Plan, Doku-Bezüge und Cache-Stand. Reine Anzeige, keine Prüfung, keine zweite Analyse.
 - `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` delegiert die langen Nachweise an Actions und wartet darauf. Kein Ersatz für `verify:all`.
 - `pnpm run typecheck` — `tsc --noEmit`.
@@ -57,29 +59,108 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 
 ## Delivery
 
-- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:quick`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab.
-- **Quick ist der Normalfall, das volle Profil nur bei Bedarf.** `pnpm run turn:finish:full` nimmt denselben Weg mit `verify:all`. Voll ist Pflicht, wenn sich Abhängigkeiten ändern (`package.json`/`pnpm-lock.yaml` jenseits der Turn-Version), Geld-, Ledger-, RNG- oder Save-Migrationscode geändert wurde, ein Release, Tag oder APK entsteht (`verify:release`) oder CI auf demselben Stand schon rot war. Für UI, Text, Doku und Anzeige-Arbeit reicht quick.
+- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab.
+- **Light ist der Normalfall.** `turn:finish` prueft Lint, LOC, Typecheck, Doku, Tree und Redundanz; Tests, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von pnpm run test, pnpm run test:ci oder pnpm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
-- Direkter Push auf `main` ist durch das Ruleset gesperrt. Der einzige Weg: Arbeitsbranch pushen, fokussierten PR gegen `main` öffnen und über das Gate promoten. `turn:finish` pusht daher nur den Arbeitsbranch; ein abgelehnter Direktpush auf `main` meldet `ERR-4023`. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
+- Direkter Push auf `main` ist durch den Branch-Schutz gesperrt. `turn:finish` pusht ausschliesslich den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab. `promote` legt aus einem gruenen Feature-Push den PR an; das volle Gate laeuft im PR und erst dieser Lauf wird gemergt. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
 - **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
-- **Automatische Promotion:** `promote.yml` legt den PR an und mergt ihn, sobald `CI Verify` gruen ist; ein roter Lauf legt den Stand auf die permanente Branch `integration` (Label `integration/rot`), damit dort repariert wird. Zwei parallele rote Staende werden gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
+- **Automatische Promotion:** `promote.yml` legt nach einem gruenen Feature-Push den PR an und mergt erst den gruenen PR-Lauf. Ein roter Lauf wird Issue und Label (`integration/rot`); `integration` wird nur auf ausdrueckliche Anforderung (`workflow_dispatch` mit `integrate=true`) benutzt, nie automatisch. Zwei parallele rote Staende werden dort gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten — nur Marker- und Versionskonflikte loest `promote` selbst. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
-## Issue-Check vor Arbeitsbeginn (obligatorisch)
+## Kritikalitaet: was stoppt, was wird ein Issue
 
-- **Vor Beginn jeder Arbeit:** Jeder Agent prüft zuerst GitHub Issues unter `https://github.com/vannon091118/rigged-by-design/issues`. Offene Issues mit dem Label `gate-failure` haben höchste Priorität und müssen **vollständig** gelöst werden, bevor neue Arbeit beginnt.
-- **Erster Task jedes Agents:** `gh issue list --label gate-failure --state open` (oder GitHub-Web-UI). Ein offenes `gate-failure`-Issue ist der alleinige Fokus, bis es geschlossen ist.
-- **Issue vollständig lösen:** Nicht halbherzig beheben — alle Gates müssen grün sein, bevor das Issue als `completed` geschlossen wird.
-- **Gates nicht separat verfolgen:** Es wird kein separater Gate-Status verfolgt. Der nächste Task nach jeder Arbeit ist immer wieder der Issue-Check. Ein rotes Gate führt automatisch zu einem Issue (via `pr-watcher.yml`), das dann gelöst werden muss.
+Nur `BLOCKED` haelt an: Boot kaputt, Ledger-/Save-/RNG-Invariante verletzt,
+App startet nicht, Geldpfad inkonsistent, Build oder Typecheck so zerstoert,
+dass nichts mehr laeuft (`ERR-0000`, `ERR-1001`, `ERR-1002`, `ERR-1003`,
+`ERR-5001`).
+
+Alles andere - Balance, ein schiefer Test, ein Doku-Marker, ein Randfall -
+erzeugt ein Issue und die Arbeit geht weiter (`ERR-4026` und die `AGENT`-Stufe).
+Die CI darf dafuer lange dauern; sie ist die Werkstatt, nicht der Notarzt.
+Timeout, Abbruch und fluechtige Netzfehler sind `REMOTE_CI` (`ERR-4014`,
+`ERR-4016`): Lauf wiederholen, kein `BLOCKED`, kein Dump auf `integration`.
+
+## Pretask (obligatorisch, vor jeder neuen Arbeit)
+
+1. **Issue-Check:** `gh issue list --label gate-failure --state open` und
+   `--label remote-ci`. Ein offenes `gate-failure`-Issue ist der alleinige
+   Fokus, bis es geschlossen ist.
+2. **Offene Konflikte aufloesen:** bewusst liegengebliebene Konflikte werden am
+   Anfang des naechsten Tasks geloest, nicht am Ende aufgespart. `pnpm run
+   agent:pretask` meldet laufende Merges/Rebases, unmerged Pfade,
+   Konfliktmarker, Claim- und Kollisionslage; bei Startblockern endet er mit
+   Exit 1.
+3. **Erst danach** neue Arbeit beginnen.
+
+## Agenten-Verhalten
+
+- Ich (Main) arbeite. Ein Monitor-Sub beobachtet nur CI-Laeufe, offene Issues
+  und die Branch-Lage; er berichtet und aendert nichts. Er merged nichts,
+  schliesst keine Issues, pusht nichts und startet keine Reparatur.
+- Lokal nur leicht testen (`pnpm run test:affected`, gezielte Dateien,
+  `verify:light`). Kein `verify:all` waehrend der Arbeit; die volle Suite laeuft
+  in Actions.
+- Konflikte und Claims werden am Anfang aufgeloest, nicht am Ende.
+
+## Governance / Lanes
+
+- Die acht Meta-Dateien - `AGENTS.md`, `package.json`, `pnpm-lock.yaml`,
+  `docs/INVENTORY.md`, `docs/ARCHITECTURE.md`, `docs/CHANGELOG.md`,
+  `docs/DEVTAGEBUCH.md`, `docs/ROADMAP.md` - sind fuer Feature-Lanes gesperrt.
+  Erlaubt ist nur der mechanische Schreibpfad des Systems (Doku-Marker,
+  Versionszeile); jede inhaltliche Aenderung braucht einen Claim, der den Pfad
+  ausdruecklich fuehrt. Durchgesetzt wird das von
+  `scripts/verify-lane-claims.mjs`, nicht von der Doku.
+- Jeder Arbeitsbranch braucht einen Claim in `.lane-claims/claims.json` mit
+  Owner, Basis-SHA, Pfad-Allowlist und optionalen Contract-Writern. Pro
+  Contract-ID genau ein Writer; Read-only-Konsumenten duerfen parallel laufen.
+- Kollisionen (Pfad-Overlap oder zwei Writer auf derselben Contract-ID)
+  blockieren den Commit. `main` ist ausgenommen: dort gilt der Branch-Schutz
+  mit dem Pflichtstatus `Fail-Closed Gates`.
+- Owner sind fest und nicht frei waehlbar (`OWNERS` in
+  `scripts/lib/lane-claims.mjs`). Ein Claim ohne Roster-Owner wird abgelehnt;
+  das Branch-Schema ist `lane/<domäne>/<task>` (Legacy: `gov/`, `hygiene/`,
+  `fix/`). `CODEOWNERS` nennt zusaetzlich den Menschen fuer Meta-, Workflow- und
+  Governance-Pfade.
+- Die Claim-Pruefung laeuft zweistufig: lokal im Hook (gestagte Dateien) und in
+  CI fuer jeden PR (`verify-lane-claims --ci`, Diff gegen die Basis).
+  Cloud-Agenten ohne aktive Hooks sind damit nicht ungeprueft.
+- Der Pre-Commit-Hook ruft die Claim-Pruefung auch ohne `node_modules`; sie
+  liest nur Git. Ein Commit ohne Claim ist damit abgelehnt, nicht "nur
+  ungetestet". Hook-Abschaltung ist kein Weg: `pnpm run hooks:install` setzt
+  `core.hooksPath=.githooks`.
+- `BLOCKED` und die Eskalationsleiter bleiben unantastbar: eine Leiter, eine
+  Klassifikation, kein Loch und keine zweite Wahrheit.
+
+## CI ist die Werkstatt
+
+- Feature-Push: `verify:light` (schnelles Feedback). PR gegen `main`, Push auf
+  `main` und manuelle Laeufe: `verify:all`. Kein voller Lauf auf jedem
+  Feature-Push.
+- `pnpm audit` laeuft nur bei echter Dependency-Aenderung (der Turn-Versionbump
+  zaehlt nicht). APK und Release-Assets entstehen nur, wenn Code, Inhalt,
+  Assets oder Werkzeuge sich geaendert haben, nicht bei reiner Doku.
+- Ein Push auf einen Branch mit offenem PR startet kein zweites volles Gate:
+  der PR-Lauf ist die Wahrheit. Das war der groesste parallele Doppel-Lauf.
+- Ein rotes Lane-Gate bekommt ein `lane:<domäne>`-Label und blockiert nur diese
+  Lane und ihre Dependents; ein rotes main-Gate blockiert alle Promotions.
+- CI darf lange dauern. Timeout und Abbruch landen als `REMOTE_CI` und Issue,
+  nicht als `BLOCKED` und nicht auf `integration`.
+- Merge-Konflikte an generierten Meta-Dateien werden zugunsten der
+  Systemzeilen (Marker/Version) automatisch aufgeloest; ein echter
+  Code-Konflikt wird eskaliert (`integration/konflikt`) und bleibt beim Agenten.
+- Issues schliessen sich, wenn der Stand gruen auf `main` liegt:
+  `pr-watcher.yml --sweep-green` prueft per `git merge-base`, ob der gemeldete
+  Commit auf `main` liegt, und schliesst dann.
 
 ## PR+Merge-Pflicht nach jedem Abschluss
 
 - **Nach jedem Turn / Phase / Slice / Arbeitsschritt:** Der einzige Weg nach `main` ist Arbeitsbranch, PR gegen `main` und Promotion über das Gate (`promote.yml`). Ein Direktpush auf `main` ist durch das Ruleset gesperrt; `turn:finish` pusht deshalb den Arbeitsbranch und meldet einen abgelehnten Direktpush als `ERR-4023`.
 - Der PR-Body muss die drei Pflichtsektionen enthalten (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`).
 - Der Merge-Text wird aus dem Commit-Body gebaut und trägt die Pflichtsektionen, sonst wäre `main` sofort rot (`ERR-4006`).
-- `verify:quick` muss vor dem Commit grün sein. `verify:all` läuft in CI nach dem Push.
+- `verify:light` muss vor dem Commit gruen sein; `verify:all` laeuft in CI nach dem Push (PR und `main`).
 
 Arbeitsbranch ist `feat/spatial-layout-editor`; `integration` folgt exakt `main`, PR #142 ist geschlossen. Die Doku-Konsolidierung ist mit 0.3.145 abgeschlossen; unter `docs/` liegen nur die fünf Pflichtdokumente. Der Audit #19 ist geschlossen: Firmenstufe in HUD und Betriebspanel sichtbar, Pixi-Fallback vorhanden.
 
@@ -152,7 +233,7 @@ gilt fuer Pipeline, Hooks, CI und Import-Befunde.
 | `LOCAL_GATE` | Ausserhalb des Scopes: kein Blocker, wird verworfen. | niemand |
 | `REMOTE_CI` | Netz, Registry oder Runner: lokal nicht reproduzierbar. | CI erneut starten |
 | `AGENT` | Struktur, Sektion oder Zustaendigkeit fehlt. | Agent nach `AGENTS.md` |
-| `BLOCKED` | Geld, Ledger, RNG, Save-Integritaet oder Rechte. | Mensch, fail-closed |
+| `BLOCKED` | Nur echte Notfaelle: Boot kaputt, Ledger-/Save-/RNG-Invariante, App startet nicht, Geldpfad inkonsistent, Build/Typecheck so kaputt, dass nichts laeuft. | Mensch, fail-closed |
 
 Die Reihenfolge ist bindend: erst reparieren, dann wiederholen, erst danach ein
 Agent. `BLOCKED` wird nie automatisch uebersprungen.
@@ -161,9 +242,10 @@ Agent. `BLOCKED` wird nie automatisch uebersprungen.
 
 `scripts/lib/escalation.mjs` ordnet einen Befundtext einer Stufe zu:
 
-- Geld, Ledger, Buchung, VaCoin, RNG, PRNG, Save-Integritaet -> `BLOCKED`.
+- Ledger-/Save-/RNG-Invariante, Geldpfad, kaputter Start -> `BLOCKED`; der Code im Register entscheidet zuerst.
+- Balance, ein schiefer Test, ein Doku-Marker, ein Randfall -> `AGENT` und damit ein Issue; die Arbeit laeuft weiter.
 - `ERR-0911`, Doku-Marker, "nicht synchron", Matrix, Katalog -> `AUTO_FIX`.
-- `ECONN*`, Timeout, Rate Limit, 5xx, Registry -> `REMOTE_CI`.
+- `ECONN*`, Timeout, Zeitlimit, Abbruch, Runner, Rate Limit, 5xx, Registry -> `REMOTE_CI` (`ERR-4014`, `ERR-4016`): Lauf wiederholen, kein Blocker.
 - "ausserhalb des Scopes" -> `LOCAL_GATE`.
 - Alles andere -> `AGENT` (Struktur).
 
@@ -181,10 +263,11 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
   legt den PR an oder aktualisiert ihn. Ohne `gh` bleibt der Lauf gruen und der
   Body liegt in `.git/rbd-pr-body.md`.
 - **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `pnpm run fix`.
-- **Promotion** (`promote.yml`) ist die Stufe danach: gruen mergt automatisch,
-  rot landet auf der permanenten Branch `integration` und wird dort repariert.
-  Ein Textkonflikt wird gelabelt (`integration/konflikt`), nicht erzwungen; die
-  Leiter bleibt damit auch beim Merge dieselbe.
+- **Promotion** (`promote.yml`) ist die Stufe danach: gruen mergt den PR,
+  rot setzt Label und Issue. `integration` ist der letzte Notausgang und laeuft
+  nur auf ausdrueckliche Anforderung (`workflow_dispatch` mit `integrate=true`),
+  nie automatisch bei jedem roten Lauf. Ein Textkonflikt wird gelabelt
+  (`integration/konflikt`), nicht erzwungen.
 
 ### Connector als Eskalationsweg
 

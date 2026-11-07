@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 /**
- * PR Watcher – erstellt Issues bei rotem Gate oder fehlerhaftem PR-Body.
+ * PR Watcher – erstellt Issues bei rotem Gate, Timeout oder fehlerhaftem PR-Body
+ * und schliesst erledigte Issues, wenn `main` gruen ist.
  *
  * Aufruf durch .github/workflows/pr-watcher.yml.
- * Liefert einem Agenten alle Infos, um das Issue zu lösen und den Merge
+ * Liefert einem Agenten alle Infos, um das Issue zu loesen und den Merge
  * durchzubekommen.
  */
-
+import { execFileSync } from 'node:child_process';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
@@ -38,10 +39,10 @@ function fingerprintOf(code, firstLine) {
 
 /**
  * Einzige Issue-Suche: Fingerprint zuerst (offen oder geschlossen, dann nur Zaehlung),
- * sonst Titel unter den offenen Issues.
+ * sonst Titel unter den offenen Issues desselben Labels.
  */
-async function findIssue(fingerprint, title) {
-  const res = await api('GET', '/issues?state=all&labels=gate-failure&per_page=100');
+async function findIssue(fingerprint, title, label = 'gate-failure') {
+  const res = await api('GET', `/issues?state=all&labels=${label}&per_page=100`);
   if (!res.ok) return undefined;
   const issues = await res.json();
   const byFingerprint = issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
@@ -67,8 +68,8 @@ async function recordRecurrence(issue, runUrl) {
   }
 }
 
-async function createIssue(title, body, labels, fingerprint, runUrl) {
-  const found = await findIssue(fingerprint, title);
+async function createIssue(title, body, labels, fingerprint, runUrl, label = 'gate-failure') {
+  const found = await findIssue(fingerprint, title, label);
   if (found?.recurring) {
     await recordRecurrence(found.issue, runUrl);
     return found.issue;
@@ -111,20 +112,45 @@ async function getFailedJobDetails(runId) {
   return details.join('\n\n');
 }
 
-/** Erste Fehlerzeile mit ERR-Code aus den Job-Logs eines Runs; sonst ERR-0000. */
+/**
+ * Fehlercode aus einem Job-Log.
+ *
+ * Der Code darf nur aus einem tatsaechlich roten Befund stammen. Die alte
+ * Fassung nahm die erste Zeile mit irgendeinem ERR-Code - also auch eine
+ * PASS-Zeile eines erfolgreichen Tests. Genau so wurde aus einem
+ * Registerfehler ein RTP-Issue.
+ */
+function errorFromLog(text) {
+  const lines = text.split(/\r?\n/);
+  const isPass = (line) => /:\s*PASS\s*$/.test(line.trim());
+  const gateFailure = lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\].*Gate fehlgeschlagen/.test(line));
+  const candidate = gateFailure.length > 0
+    ? gateFailure[gateFailure.length - 1]
+    : lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\]/.test(line) && !isPass(line)).pop();
+  if (!candidate) return null;
+  const code = /(ERR-\d{4})/.exec(candidate)?.[1];
+  if (!code) return null;
+  const failedTest = lines
+    .map((line) => /(src\/[^\s:]+|scripts\/[^\s:]+)\.[cm]?[jt]sx?/.exec(line)?.[0])
+    .filter(Boolean)
+    .pop();
+  return {
+    code,
+    firstLine: candidate.trim().slice(0, 180),
+    failedTest: failedTest ?? null,
+  };
+}
+
+/** Fehlerzeile aus den Logs der fehlgeschlagenen Jobs; sonst ERR-0000. */
 async function firstGateError(runId) {
   const jobs = await getWorkflowRunJobs(runId);
   for (const job of jobs.filter((j) => j.conclusion === 'failure')) {
     const res = await api('GET', `/actions/jobs/${job.id}/logs`);
     if (!res.ok) continue;
-    const lines = (await res.text()).split(/\r?\n/);
-    const hit = lines.find((line) => /\[ERR-\d{4}\]/.test(line) || /\bERR-\d{4}\b/.test(line));
-    if (hit) {
-      const code = /ERR-\d{4}/.exec(hit)[0];
-      return { code, firstLine: hit.replace(/^.*?\d{4}-\d{2}-\d{2}T[^ ]+\s*/, '') };
-    }
+    const found = errorFromLog(await res.text());
+    if (found) return found;
   }
-  return { code: 'ERR-0000', firstLine: 'Kein Fehlercode im Gate-Log gefunden' };
+  return { code: 'ERR-0000', firstLine: 'Kein Fehlercode im Gate-Log gefunden', failedTest: null };
 }
 
 function gateFailureSections(body) {
@@ -149,12 +175,52 @@ function gateFailureSections(body) {
   return { missing, empty };
 }
 
+/**
+ * `main` ist gruen: Issues schliessen, deren Commit nachweislich auf main liegt.
+ * Der Nachweis ist `git merge-base --is-ancestor`, nicht ein Titelvergleich.
+ */
+async function sweepGreenMain() {
+  const res = await api('GET', '/issues?state=open&labels=gate-failure&per_page=100');
+  if (!res.ok) {
+    console.log(`Sweep uebersprungen: Issues nicht lesbar (${res.status}).`);
+    return;
+  }
+  const issues = await res.json();
+  let closed = 0;
+  for (const issue of issues) {
+    const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(issue.body ?? '');
+    if (!match) continue;
+    try {
+      execFileSync('git', ['merge-base', '--is-ancestor', match[1], 'origin/main'], { stdio: 'ignore' });
+    } catch {
+      continue; // Commit liegt nicht auf main: Issue bleibt offen.
+    }
+    await api('POST', `/issues/${issue.number}/comments`, {
+      body: `Der Stand \`${match[1]}\` liegt auf \`main\` und \`CI Verify\` ist gruen. Issue wird geschlossen.`,
+    });
+    const patch = await api('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
+    if (patch.ok) {
+      closed += 1;
+      console.log(`Issue #${issue.number} geschlossen (gruen auf main).`);
+    } else {
+      console.error(`Issue #${issue.number} konnte nicht geschlossen werden (${patch.status}).`);
+    }
+  }
+  console.log(`Sweep: ${closed} Issue(s) geschlossen.`);
+}
+
 async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--sweep-green')) {
+    await sweepGreenMain();
+    return;
+  }
+
   const eventName = process.env.GITHUB_EVENT_NAME;
 
   if (eventName === 'workflow_run') {
     await handleWorkflowRun();
-  } else if (eventName === 'pull_request') {
+  } else if (eventName === 'pull_request' || args.includes('--pr-check')) {
     await handlePullRequest();
   } else {
     console.log(`Unbekanntes Event: ${eventName}`);
@@ -168,6 +234,27 @@ async function handleWorkflowRun() {
   const runCommit = process.env.RUN_COMMIT;
   const runConclusion = process.env.RUN_CONCLUSION;
 
+  // Timeout, Abbruch und Startfehler sind REMOTE_CI: kein Blocker, kein
+  // Notfall, sondern ein Lauf, der wiederholt wird.
+  if (['timed_out', 'cancelled', 'startup_failure'].includes(runConclusion)) {
+    const title = `[REMOTE_CI] CI Verify ${runConclusion}: ${runBranch}`;
+    const body = `## ⏱️ CI ohne Ergebnis (REMOTE_CI)
+
+**Branch:** \`${runBranch}\`  
+**Commit:** \`${runCommit}\`  
+**CI Run:** <${runUrl}>  
+**Ergebnis:** \`${runConclusion}\`
+
+## Was zu tun ist
+
+1. Lauf erneut starten (\`gh run rerun ${runId}\` oder "Re-run jobs").
+2. Bleibt es beim Timeout, den Befund als \`REMOTE_CI\` (ERR-4014) behandeln und das Gate entlasten.
+3. Kein \`BLOCKED\`, kein Dump auf \`integration\`: die Arbeit laeuft weiter.
+`;
+    await createIssue(title, body, ['remote-ci'], fingerprintOf('REMOTE_CI', `${runConclusion}:${runBranch}`), runUrl, 'remote-ci');
+    return;
+  }
+
   if (runConclusion !== 'failure') {
     console.log('CI-Run nicht rot, kein Issue nötig.');
     return;
@@ -176,8 +263,18 @@ async function handleWorkflowRun() {
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
 
   const jobDetails = await getFailedJobDetails(runId);
-  const { code, firstLine } = await firstGateError(runId);
+  const { code, firstLine, failedTest } = await firstGateError(runId);
   const fingerprint = fingerprintOf(code, firstLine);
+
+  // Lane-Scope: ein rotes Lane-Gate blockiert nur diese Lane, nicht alle
+  // Promotions. Das Label macht den Scope in der Issue-Liste sichtbar.
+  const laneLabel = runBranch && runBranch.includes('/')
+    ? `lane:${runBranch.split('/').slice(0, 2).join('/')}`
+    : null;
+  if (laneLabel) {
+    await api('POST', '/labels', { name: laneLabel, color: '0e8a16', description: `Gate-Scope ${laneLabel}` });
+  }
+  const labels = ['gate-failure', 'agent-action', ...(laneLabel ? [laneLabel] : [])];
 
   const title = `[${code}] CI Verify: ${firstLine.trim().slice(0, 80)}`;
   const body = `## 🚨 CI Gate rot
@@ -185,7 +282,9 @@ async function handleWorkflowRun() {
 **Branch:** \`${runBranch}\`  
 **Commit:** \`${runCommit}\`  
 **CI Run:** <${runUrl}>  
-**Erkannt durch:** pr-watcher.yml
+**Betroffene Datei:** ${failedTest ? `\`${failedTest}\`` : 'nicht eindeutig - Log-Auszug unten'}  
+**Erkannt durch:** pr-watcher.yml  
+**Scope:** ${laneLabel ? `\`${laneLabel}\` - rotes Lane-Gate, nur diese Lane und ihre Dependents sind blockiert` : 'main/global'}
 
 ## 📋 Was der Agent tun muss
 
@@ -195,14 +294,13 @@ async function handleWorkflowRun() {
    git pull origin ${runBranch}
    \`\`\`
 
-2. **Alle Gates lokal ausführen:**
+2. **Nur den betroffenen Pfad lokal pruefen:**
    \`\`\`bash
-   pnpm run verify:quick
-   # oder bei Bedarf:
-   pnpm run verify:all
+   pnpm run test:affected
+   pnpm run verify:light
    \`\`\`
 
-3. **Fehler beheben** bis alle Gates grün sind.
+3. **Fehler beheben** bis die betroffenen Gates grün sind.
 
 4. **Commit mit Pflichtsektionen erstellen:**
    \`\`\`text
@@ -220,7 +318,7 @@ async function handleWorkflowRun() {
 
 5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
 
-6. **Wenn alle Gates grün:** PR zu \`main\` erstellen und mergen (siehe AGENTS.md § PR+Merge-Pflicht).
+6. **Wenn alle Gates grün:** PR zu \`main\` erstellen; Promote mergt ihn.
 
 ## 🔍 Gate-Details
 
@@ -235,17 +333,17 @@ ${jobDetails}
 
 ## 📎 Regeln (aus AGENTS.md)
 
-- **Vor Beginn jeder Arbeit:** GitHub Issues prüfen. Offene \`gate-failure\`-Issues haben höchste Priorität.
-- **Issue vollständig lösen:** Nicht halbherzig beheben, alle Gates müssen grün sein.
-- **Nach jedem Turn/Phase/Slice-Abschluss:** Aufgezwungene PR+Merge-Pflicht.
+- **Pretask zuerst:** \`pnpm run agent:pretask\`; offene \`gate-failure\`-Issues haben Vorrang.
+- **Nur echte Invarianten blockieren:** Balance, schiefe Tests und Randfaelle sind dieses Issue, kein \`BLOCKED\`.
+- **Lokal leicht pruefen** (\`test:affected\`, \`verify:light\`); die volle Suite laeuft in CI.
 - **Commit-Body muss** die drei Pflichtsektionen enthalten (\`### Changes\`, \`### Technische Basis & Kausalität\`, \`### Ausblick\`).
 
 ## ✅ Issue schließen
 
-Sobald alle Gates grün sind und der PR gemergt wurde, dieses Issue als \`completed\` schließen.
+Sobald der Stand grün auf \`main\` liegt, schliesst \`pr-watcher.yml --sweep-green\` dieses Issue automatisch.
 `;
 
-  await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprint, runUrl);
+  await createIssue(title, body, labels, fingerprint, runUrl);
 }
 
 async function handlePullRequest() {

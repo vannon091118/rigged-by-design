@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 02:28 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:31 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,20 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Governance: parallel arbeiten, ohne sich selbst auszubremsen
+
+**Ziel.** Der Ist-Zustand war widerspruechlich: 14 offene Branches, elf Claims ohne Pflege, ein `BLOCKED`, das jeden roten Test umfasste, und `verify:all` auf jedem Feature-Push. Die Governance sollte nur noch echte Notfaelle stoppen und den Rest als Issue abholen.
+
+**Umsetzung.** Neues Profil `light` (Lint, LOC, Typecheck, Doku, Tree, Redundanz) als Turn-Gate; `ci-verify.yml` waehlt `light` fuer Feature-Pushes und `all` fuer PR, `main` und manuelle Laeufe. `tests` meldet `ERR-4026` (AGENT) statt `ERR-2001` (BLOCKED); `escalation.mjs` verengt `BLOCKED` auf Invarianten und ordnet Timeout, Abbruch und Runner dem `REMOTE_CI` zu. `verify-lane-claims` sperrt die acht Meta-Dateien wirklich (nur Marker/Version sind Systempfad), nimmt `main` aus und laeuft ohne `node_modules`. `promote` mergt nur PR-Laeufe, Timeout wird `REMOTE_CI`, `integration` nur per Dispatch. `pr-watcher` legt `remote-ci`-Issues an und schliesst erledigte `gate-failure`-Issues, sobald der Commit auf `main` liegt. Neu: `agent:pretask` und `audit`-Relevanz ueber den echten Diff statt ueber den Versionsbump.
+
+**Pruefungen.** `node --check` fuer alle geaenderten Skripte, YAML-Parse aller Workflows, `pnpm run verify:docs`, `pnpm run verify:light`, `pnpm run agent:pretask` und ein Klassifikationstest fuer `escalation.plan`. Der Branch-Aufraeumen-Lauf loescht nur Branches, die bereits in `HEAD` enthalten sind.
+
+**Nachtrag (Luecken).** Beim Gegencheck gegen `phase-0-fundament.md` fielen drei Loecher auf, die im Hook allein nicht sichtbar waren: (1) Claims wurden nur lokal geprueft, Cloud-Agenten ohne Hooks schrieben ungeprueft - jetzt prueft `ci-verify.yml` fuer jeden PR denselben Claim gegen den Diff; (2) Owner waren frei waehlbar - jetzt fester Roster, Branch-Schema und `CODEOWNERS` fuer Meta/Workflows; (3) ein Push auf einen Branch mit offenem PR startete ein zweites volles Gate - der Push-Lauf endet jetzt nach dem PR-Check. Ausserdem: das rote Lane-Gate bekommt `lane:<domäne>` und blockiert nur diese Lane; PARKED hat einen Pflichtabschnitt in `ROADMAP.md`; `capabilities.json` lag in den Claims an einem Pfad, den es nicht gibt (jetzt `docs/capabilities.json`).
+
+**Zweite Pruefung (fremder Befund).** Drei Punkte waren tatsaechlich falsch diagnostiziert: (1) `firstGateError` nahm die erste Zeile mit irgendeinem ERR-Code, also auch eine PASS-Zeile; jetzt zaehlen nur Zeilen aus fehlgeschlagenen Gates, die betroffene Datei steht im Issue. (2) `loadClaims` machte aus einem kaputten Register eine leere Liste - fail-open; jetzt bricht die Pruefung mit `ERR-4019` ab, `saveClaims` schreibt atomar, und Pfad-Overlaps werden auf Praefix-Ebene verglichen. (3) `turn:finish` pushte nach `main`; jetzt pusht es nur den Arbeitsbranch, `promote` legt den PR an, gemergt wird der PR-Lauf. Nicht bestaetigt: der genannte Fehlschlag in `dependency-governance.test.ts` - der Test ist mit dem aktuellen Register gruen (4/4). `long-checks` startet `verify:all` nicht mehr per Default, und der Watcher nutzt eine run-basierte Concurrency-Gruppe.
+
+**Offen.** Die unmerged Lane-Branches (`domain-event`, `relationship`, `factor`, `save`, `hygiene/0.1-baseline`) und vier Stashes bleiben stehen; ihre Claims sind offen beziehungsweise in `ROADMAP.md` vermerkt. Ruleset, `PROMOTE_TOKEN` und die erste gruene `main`-Runde muessen im echten Lauf bestaetigt werden.
 
 ## 2026-11-06 - Doku-Konsolidierung: elf Referenzdokumente in Pflichtdoku
 

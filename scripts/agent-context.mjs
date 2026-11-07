@@ -7,6 +7,7 @@
  * Der Kontext ersetzt keine Codepruefung; er erspart die wiederholte
  * Bestandsaufnahme aus Git, Importgraph, Katalog und Doku.
  */
+import { execFileSync } from 'node:child_process';
 import { impact, oneLineOf, summarize } from './lib/impact.mjs';
 
 const argv = process.argv.slice(2);
@@ -54,5 +55,15 @@ if (result.lanes.parked.length > 0) {
     console.log(`  ${p.id} · Owner: ${p.owner}`);
   }
 }
+const hooksPath = (() => {
+  try {
+    return execFileSync('git', ['config', '--get', 'core.hooksPath'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return '';
+  }
+})();
+console.log('');
+console.log(`Hooks: core.hooksPath=${hooksPath || '(nicht gesetzt)'}${hooksPath === '.githooks' ? ' (aktiv)' : ' - pnpm run hooks:install'}`);
+console.log('Pretask: pnpm run agent:pretask (Issue-Check und offene Konflikte vor neuer Arbeit)');
 console.log('Naechster Schritt: pnpm run agent:verify (derselbe Plan, Cache wird wiederverwendet)');
 process.exit(0);

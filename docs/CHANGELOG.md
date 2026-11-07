@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 02:28 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:31 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,19 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.153] - 2026-11-07
+
+### Technik
+- Governance entschaerft und geschaerft zugleich: lokal laeuft `verify:light` (Lint, LOC, Typecheck, Doku, Tree, Redundanz), die volle Suite prueft der PR gegen `main` und der Push auf `main`. Feature-Pushes bekommen schnelles Feedback statt `verify:all`.
+- `BLOCKED` ist auf echte Notfaelle verengt (Boot, Ledger-/Save-/RNG-Invariante, Geldpfad, kaputter Build). Ein roter Test ist `ERR-4026` (AGENT) und wird ein Issue; Timeout und Abbruch sind `REMOTE_CI` (`ERR-4014`).
+- Die acht Meta-Dateien sind fuer Feature-Lanes gesperrt: `verify-lane-claims` laesst nur Doku-Marker und Versionszeile durch und laeuft jetzt auch ohne `node_modules`. `main` bleibt beim Branch-Schutz.
+- `promote` mergt nur noch PR-Laeufe; `integration` laeuft ausschliesslich auf Anforderung (`integrate=true`). `pr-watcher` trennt `remote-ci` von `gate-failure` und schliesst Issues, sobald der Stand gruen auf `main` liegt.
+- `pnpm audit` nur bei echter Dependency-Aenderung; APK und Release-Assets nur bei Code-, Inhalts- oder Asset-Aenderung. Neu: `pnpm run agent:pretask` (Issue-Check, Konflikte, Lane-Status).
+- Claims werden jetzt auch in CI geprueft (`verify-lane-claims --ci`, Diff gegen die Basis) - Cloud-Agenten ohne aktive Hooks fallen damit auf. Owner sind ein fester Roster, Branches folgen `lane/<domäne>/<task>`, `CODEOWNERS` nennt den Menschen fuer Meta und Workflows.
+- Ein Push auf einen Branch mit offenem PR startet kein zweites volles Gate mehr; der PR-Lauf ist die Wahrheit. Rote Lane-Gates bekommen `lane:<domäne>` und blockieren nur diese Lane. PARKED hat einen Pflichtabschnitt in `docs/ROADMAP.md`.
+- Der Watcher liest den Fehlercode nur noch aus roten Gate-Zeilen und nennt die betroffene Datei; PASS-Zeilen erfolgreicher Tests koennen kein Issue mehr erzeugen. Das Claim-Register ist fail-closed und wird atomar geschrieben; Praefix-Ueberschneidungen (`docs/**` vs `docs/CHANGELOG.md`) werden erkannt.
+- `turn:finish` pusht nur den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab; `promote` legt den PR nach gruenem Push an und mergt erst den PR-Lauf. `long-checks` laeuft nicht mehr standardmaessig mit `verify:all`; der Watcher bricht sich nicht mehr selbst ab.
 
 ## [0.3.145] - 2026-11-06
 
@@ -790,3 +803,4 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Inventar-Generator idempotent: der Selbsteintrag von `docs/INVENTORY.md` nennt keine eigene Zeilenzahl mehr; nach einem Rot-Test stellt `inventory:build` den Block byte-identisch wieder her.
 - `main` in den Inventar-Branch gemergt: Runtime-Art-Preload und die neuen Renderer-Dateien bleiben erhalten, `./styles/index.css` bleibt der einzige CSS-Einstieg; die Dependency-Matrix erzeugt der Hook neu.
 - RNG-Namespaces: `Prng` traegt `gameplay` oder `presentation`; Partikel und Sound nutzen den eigenen Darstellungs-Strom in `src/render/rng.ts`. `tickWorld` und `playRound` weisen fremde Stroeme mit `assertGameplayRng` ab (`ERR-1003` im Test).
+

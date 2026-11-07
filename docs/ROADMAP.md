@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 02:28 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:31 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -150,6 +150,18 @@ Dieselben Versprechen gelten für jede Figur außerhalb des Casinos: Ein Nachbar
 - Grenze: Ein echtes schwaches Gerät und ein echter Browser können hier nicht zertifiziert werden. Die Emulation und die manuelle Gerätematrix stehen in `docs/ARCHITECTURE.md`.
 
 ## Jetzt — die Testumgebung tragfaehig machen
+
+### PARKED (bewusst zurückgestellt)
+
+Jeder zurückgestellte Befund gehoert hierher, nicht in ein stilles
+`LOCAL_GATE`. Pflichtfelder: Owner, Auslöser (wann wird es wieder aufgenommen),
+nächster Schritt, Review-Bedingung.
+
+| Befund | Owner | Auslöser | Nächster Schritt |
+| --- | --- | --- | --- |
+| (keine offenen PARKED-Einträge) | — | — | — |
+
+- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt.
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
