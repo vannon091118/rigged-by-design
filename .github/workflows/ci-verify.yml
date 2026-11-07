@@ -365,6 +365,7 @@ jobs:
           RBD_TEST_FILES: ${{ matrix.file }}
           RBD_ROOT: ${{ steps.control.outputs.root }}
           RBD_NARRATIVE_LONGRUN: '1'
+          RBD_BALANCE: '1'
           RBD_SOAK: '1'
           RBD_SOAK_TICKS: '100000'
           RBD_REQUIRE_TESTS: '1'

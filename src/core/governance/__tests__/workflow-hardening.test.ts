@@ -140,6 +140,7 @@ describe('workflow hardening', () => {
     expect(run?.run).toContain('steps.control.outputs.scripts');
     expect(run?.env?.RBD_ROOT).toContain('steps.control.outputs.root');
     expect(run?.env?.RBD_REQUIRE_TESTS).toBe('1');
+    expect(run?.env?.RBD_BALANCE).toBe('1');
   });
 
   it('pflegt Action-Pins per Dependabot', () => {
