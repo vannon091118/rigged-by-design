@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
+<!-- rbd-doc: v0.3.180 | 2026-11-07 13:21 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Balance-Langlauf aktiviert
+
+**Ziel.** Der Main-Lauf `42376173298` hat den ersten echten Langlauf nach der neuen Skip-Sperre rot gemeldet: `balance-operating.test.ts` wurde ohne `RBD_BALANCE=1` uebersprungen, und `RBD_REQUIRE_TESTS=1` hat den Skip korrekt als fehlenden Nachweis behandelt. Der Test selbst war nicht rot; der Workflow hat seinen Aktivierungsschalter nicht gesetzt.
+
+**Umsetzung.** Der Long-Job setzt jetzt `RBD_BALANCE=1` neben `RBD_NARRATIVE_LONGRUN=1` und `RBD_SOAK=1`. `workflow-hardening.test.ts` prueft den Schalter strukturell, damit ein spaeterer Umbau ihn nicht wieder verliert. Kein Spielcode und keine Testlogik wurde geaendert.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/workflow-hardening.test.ts` -> 10/10 PASS. `RBD_TEST_FILES=src/core/sim/__tests__/balance-operating.test.ts RBD_REQUIRE_TESTS=1 RBD_BALANCE=1 node scripts/run-selected-tests.mjs` -> 1/1 PASS, 40 Tage, Seed 12345, 17,3 s. `pnpm run verify:claims` -> PASS.
+
+**Offen.** Der Folge-PR und der neue Main-Lauf muessen den Fix auf `main` belegen; danach Claim 22 nachziehen und Issue #196 aktualisieren.
 
 ## 2026-11-07 - Finaler Governance-Abschluss
 

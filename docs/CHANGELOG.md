@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
+<!-- rbd-doc: v0.3.180 | 2026-11-07 13:21 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.180] - 2026-11-07
+
+### Technik
+- **Balance-Langlauf wirklich aktiviert.** Der Long-Job in `ci-verify.yml` setzt jetzt `RBD_BALANCE=1`; ohne diesen Schalter wurde `balance-operating.test.ts` uebersprungen. Der Main-Lauf `42376173298` hat das korrekt als rotes Gate gemeldet, statt den Skip als PASS zu zaehlen.
+- **Workflow-Test haelt den Schalter fest.** `workflow-hardening.test.ts` prueft zusaetzlich, dass der lange Nachweis `RBD_BALANCE` setzt; der fokussierte Lauf ist 10/10 gruen. Der echte 40-Tage-Balance-Lauf ist 1/1 gruen (Seed 12345, 17,3 s).
 
 ## [0.3.179] - 2026-11-07
 
