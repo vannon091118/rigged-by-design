@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
 
 ## README als Einstieg
 
@@ -126,6 +126,12 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 | --- | --- | --- |
 | `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
+
+### Lokales Feedback und Staging-Scope
+
+`scripts/agent-feedback.mjs` ist die lokale Vorschau auf denselben Plan, den die CI faehrt: die Auswahl kommt aus `scripts/lib/affected-tests.mjs`, es gibt keinen zweiten Selektor. Ausgegeben wird eine Zeile (oder `--json`) mit geaenderten Dateien, betroffenen Tests, der Entscheidung "gezielt oder voller Lauf" und dem naechsten Befehl; ausgefuehrt wird nichts. `changedFiles()` liest dafuer auch unversionierte Pfade, weil ein neues Modul in keiner Diff-Quelle steht.
+
+`scripts/lib/staging-scope.mjs` beantwortet die Frage davor: welche geaenderten Pfade fuehrt der eigene Claim? `turn-push.mjs` prueft den Arbeitsbaum **vor** Versions-Bump und Staging und bricht mit `ERR-4019` ab, sobald ein Pfad ausserhalb der Allowlist liegt. Damit kann `git add -A` keine fremde Arbeit eines parallelen Agenten einsammeln. Die Pfadauslegung lebt einmal in `allowsPath()` (`scripts/lib/lane-claims.mjs`) und wird von Claim-Klasse, Staging-Scope und Tests gemeinsam benutzt.
 
 ### Gate-Matrix in CI
 

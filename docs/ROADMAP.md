@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -172,6 +172,7 @@ nächster Schritt, Review-Bedingung.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Der Produktvertrag steht oben in diesem Dokument, das Casino darin als Start- und Testumgebung.
 
+- Lokales Feedback und Staging-Scope stehen (Slice A): `agent:feedback` nennt aus dem echten Diff die betroffenen Tests und den naechsten sinnvollen Befehl, `turn-push.mjs` committet nur Pfade des eigenen Claims. Als Naechstes Slice B: vollstaendige Multi-Gate-Diagnose, begrenzter Retry vor dem Issue, Doku-Resolver fuer generierte Bereiche und eine beweissichere Claim-Reconciliation.
 - Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen. Der Merge-Text traegt die Pflichtsektionen: seit 0.3.140 haelt `docs/ARCHITECTURE.md` den `ERR-4006`-Fall des #163-Merges fest, Connector- und REST-Merges setzen `commit_message` mit dem PR-Body.
 - Auslieferung ohne Handgriff: gruene Checks mergen automatisch, rote Staende liegen sichtbar auf `integration` und werden dort repariert.

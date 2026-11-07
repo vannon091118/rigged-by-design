@@ -470,7 +470,36 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
     "createdAt": "f5f2ef9956480fb1dfb5642f694a568be7f478e5"
+  },
+  {
+    "id": "lane/governance/11-agent-feedback",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/11-agent-feedback",
+    "baseSha": "fb5ed49cd9edbb98b123938029f149642e490fbb",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/lib/affected-tests.mjs",
+      "scripts/lib/staging-scope.mjs",
+      "scripts/turn-push.mjs",
+      "scripts/agent-feedback.mjs",
+      "src/core/governance/__tests__/staging-scope.test.ts",
+      "src/core/governance/__tests__/scripts-libs.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "fb5ed49cd9edbb98b123938029f149642e490fbb"
   }
 ]

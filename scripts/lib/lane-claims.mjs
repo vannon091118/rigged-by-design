@@ -56,6 +56,25 @@ export function isForbiddenForLanes(filePath) {
   return META_FILES.includes(String(filePath ?? '').replaceAll('\\', '/'));
 }
 
+/**
+ * Prueft einen Pfad gegen eine Allowlist. Die eine Auslegung fuer Claim,
+ * Staging-Scope und Gate: exakter Pfad, Verzeichnis mit `/` am Ende und
+ * rekursiv mit `/**`. Ohne den Verzeichnis-Fall waere ein Eintrag wie
+ * `.githooks/` ein stilles Nichts - die Sperre saehe aus, als griffe sie.
+ */
+export function allowsPath(allowlist, filePath) {
+  const normalized = String(filePath ?? '').replaceAll('\\', '/');
+  return allowlist.some((pattern) => {
+    const clean = String(pattern ?? '').replaceAll('\\', '/');
+    if (clean.endsWith('/**')) {
+      const prefix = clean.slice(0, -3);
+      return normalized === prefix || normalized.startsWith(`${prefix}/`);
+    }
+    if (clean.endsWith('/')) return normalized.startsWith(clean);
+    return normalized === clean;
+  });
+}
+
 /** Branch-Schema fuer Arbeitslanes; Legacy-Prefixe bleiben erlaubt. */
 export const BRANCH_PATTERN = /^lane\/[a-z0-9-]+\/[a-z0-9-]+$/;
 export const LEGACY_PREFIXES = Object.freeze(['gov/', 'hygiene/', 'fix/']);
@@ -94,16 +113,7 @@ export class LaneClaim {
    * `.githooks/` ein stilles Nichts - die Sperre saehe aus, als griffe sie.
    */
   allowsPath(filePath) {
-    const normalized = String(filePath ?? '').replaceAll('\\', '/');
-    return this.pathAllowlist.some((pattern) => {
-      const clean = String(pattern ?? '').replaceAll('\\', '/');
-      if (clean.endsWith('/**')) {
-        const prefix = clean.slice(0, -3);
-        return normalized === prefix || normalized.startsWith(`${prefix}/`);
-      }
-      if (clean.endsWith('/')) return normalized.startsWith(clean);
-      return normalized === clean;
-    });
+    return allowsPath(this.pathAllowlist, filePath);
   }
 
   /** Gibt die Contract-IDs zurück, die diese Lane schreibt. */

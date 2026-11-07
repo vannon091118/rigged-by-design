@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Slice A: lokales Feedback und Staging-Isolation
+
+**Ziel.** Der Vertrag erlaubte `test:affected` waehrend der Arbeit und verbot gleichzeitig Zwischenlaeufe; ausserdem sammelte `turn-push.mjs` per `git add -A` jede Aenderung im Arbeitsbaum ein, auch fremde. Beides sollte eine Linie bekommen, ohne eine zweite Pipeline zu bauen.
+
+**Umsetzung.** `scripts/lib/staging-scope.mjs` entscheidet rein, welche geaenderten Pfade der eigene Claim fuehrt; `turn-push.mjs` prueft das vor dem Versions-Bump und bricht mit `ERR-4019` ab, wenn fremde Pfade im Baum liegen. Die Pfadauslegung wurde aus `LaneClaim` in die exportierte Funktion `allowsPath` gezogen, damit Claim-Gate, Staging und Test dieselbe Regel nutzen (`scripts/lib/lane-claims.mjs`). `scripts/agent-feedback.mjs` gibt eine Zeile plus `--json` aus; die Auswahl kommt aus `affected-tests.mjs`, es gibt keinen zweiten Selektor. Dabei fiel auf, dass `changedFiles()` unversionierte Dateien nicht las - genau der Fall "neues Modul" waere zu klein ausgewaehlt worden; die vierte Quelle `git ls-files --others --exclude-standard` schliesst das.
+
+**Pruefungen.** `staging-scope.test.ts` 4/4, `verify-test-quality` PASS (180 Testdateien), `pnpm run typecheck` PASS, `node scripts/agent-feedback.mjs` und `--json` gegen den echten Arbeitsbaum, `node --check` fuer beide Skripte.
+
+**Offen.** Die volle Abnahme bleibt der PR-Lauf; Slice B (Multi-Gate-Diagnose, Retry, Doku-Resolver, Claim-Evidenz) und Slice C (SemVer, Langlaeufe) stehen in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Bodies ohne Informationsverlust
 
