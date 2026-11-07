@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 06:33 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -161,7 +161,7 @@ nächster Schritt, Review-Bedingung.
 | --- | --- | --- | --- |
 | (keine offenen PARKED-Einträge) | — | — | — |
 
-- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt.
+- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Offen vor Phase 1: **eine** CI-Form waehlen - die Matrix aus 0.3.154 oder der impact-basierte `pull_request_target`-Entwurf aus PR #203 - und die andere schliessen; danach die verbliebenen PRs #200 und #201 entkollidieren (beide melden `mergeable: false`) und die 0.2-Lane am Remote loeschen.
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.

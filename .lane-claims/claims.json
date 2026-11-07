@@ -42,8 +42,34 @@
       "lane/governance/01-baseline"
     ],
     "gateProfile": "light",
-    "status": "open",
+    "status": "archived",
     "createdAt": "5dc0161"
+  },
+  {
+    "id": "lane/governance/04-granular-gates",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/04-granular-gates",
+    "baseSha": "1f5157b",
+    "pathAllowlist": [
+      ".github/workflows/",
+      ".lane-claims/claims.json",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "scripts/gate-matrix.mjs",
+      "scripts/lib/dependency-change.mjs",
+      "scripts/run-pipeline.mjs",
+      "src/core/governance/__tests__/ci-gates.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "1f5157b"
   },
   {
     "id": "lane/integrity/03-ledger",
