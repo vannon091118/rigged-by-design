@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.170 | 2026-11-07 10:57 UTC -->
+<!-- rbd-doc: v0.3.171 | 2026-11-07 11:08 UTC -->
 
 ## README als Einstieg
 
@@ -19,7 +19,7 @@
 
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
-- `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Lokal laeuft nichts davon.
+- `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
 - Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
@@ -131,7 +131,7 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 `scripts/lib/gate-diagnostics.mjs` ist die einzige Auswertung eines roten Laufs: es sammelt alle fehlgeschlagenen Jobs und Schritte, zieht den Fehlercode aus der letzten roten Log-Zeile (PASS-Zeilen zaehlen nicht) und gruppiert gleiche Codes zu einer Ursache. `pr-watcher.mjs` liest nur noch dieses Ergebnis; `firstGateError()` und die lokale Log-Heuristik sind entfallen. Vor dem Issue startet der Watcher ausschliesslich transiente Befunde einmal neu (`run_attempt < 2`), fachliche Fehler nie.
 
-`scripts/lib/claim-evidence.mjs` beantwortet die Frage, wann ein Claim `merged` werden darf: nur mit einem gemergten Pull Request fuer genau diesen Branch, einem Branch-Kopf, der auf `main` liegt, oder einem Commit auf `main`, dessen Baum mit dem Lane-Kopf identisch ist. Der dritte Beleg ist der Normalfall des Squash-Merges: der Branch ist danach geloescht, sein Inhalt steht als ein Commit auf `main` - `localMergeEvidence()` liest das aus `refs/heads`, `refs/remotes/origin` und `git log` ohne `gh`. `baseSha` ist bewusst kein Parameter - er liegt per Definition auf `main` und taugt nicht als Nachweis. `reconcile-claims.mjs` meldet unbelegte Faelle und schreibt nur mit `--apply`, dann mit `mergedEvidence` und `mergedSha`; `verify-lane-claims.mjs` laesst eine Kollision mit einer nachweislich gemergten Lane nicht mehr blockieren, und ohne Nachweis bleibt sie bestehen (fail-closed). Ein gemergter Claim fuehrt seinen eigenen Branch weiter (`selectClaim()`): so landet der Register-Nachtrag nach dem Merge, ohne einen neuen Claim zu erzeugen, der sofort wieder offen waere. Im CI-Modus prueft `verify-lane-claims.mjs` das Register zusaetzlich gegen die Basis und die erste Registrierung im PR: neue Pfade, ein neuer Owner, ein neuer Branch oder zusaetzliche Contract-Writer werden abgelehnt, fremde Claims und die Kontrollebene (`.github/`, `scripts/`, `src/Config/`) bleiben Governance- oder CI-Lanes vorbehalten.
+`scripts/lib/claim-evidence.mjs` beantwortet die Frage, wann ein Claim `merged` werden darf: nur mit einem gemergten Pull Request fuer genau diesen Branch, einem Branch-Kopf, der auf `main` liegt, oder einem Commit auf `main`, dessen Baum mit dem Lane-Kopf identisch ist. Der dritte Beleg ist der Normalfall des Squash-Merges: der Branch ist danach geloescht, sein Inhalt steht als ein Commit auf `main` - `localMergeEvidence()` liest das aus `refs/heads`, `refs/remotes/origin` und `git log` ohne `gh`. `baseSha` ist bewusst kein Parameter - er liegt per Definition auf `main` und taugt nicht als Nachweis. `reconcile-claims.mjs` meldet unbelegte Faelle und schreibt nur mit `--apply`, dann mit `mergedEvidence` und `mergedSha`; `verify-lane-claims.mjs` laesst eine Kollision mit einer nachweislich gemergten Lane nicht mehr blockieren, und ohne Nachweis bleibt sie bestehen (fail-closed). Ein gemergter Claim fuehrt seinen eigenen Branch weiter (`selectClaim()`): so landet der Register-Nachtrag nach dem Merge, ohne einen neuen Claim zu erzeugen, der sofort wieder offen waere. Seit 0.3.171 zaehlt der PR-Beleg nur bei Ziel `main`, eigenem Repository und exaktem `headRefOid`; mehrdeutige Branch-Namen werden verworfen. Im CI-Modus prueft `verify-lane-claims.mjs` das Register zusaetzlich gegen die Basis und die erste Registrierung im PR: neue Pfade, ein neuer Owner, ein neuer Branch oder zusaetzliche Contract-Writer werden abgelehnt, fremde Claims und die Kontrollebene (`.github/`, `scripts/`, `src/Config/`) bleiben Governance- oder CI-Lanes vorbehalten.
 
 ### Lokales Feedback und Staging-Scope
 

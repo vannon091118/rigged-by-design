@@ -54,6 +54,7 @@ for (const claim of claims.filter((entry) => entry.status === 'open')) {
     branchExists: sha !== null || local.headSha !== null,
     branchHeadOnMain: local.headOnMain,
     branchTreeOnMain: local.treeOnMain,
+    headSha: local.headSha,
     mergedPr,
   });
   if (evidence.status) {

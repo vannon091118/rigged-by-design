@@ -59,14 +59,23 @@ async function recordRecurrence(issue, runUrl) {
   const counts = comments.map((c) => /Vorgekommen: (\d+) mal/.exec(c.body ?? '')).filter(Boolean);
   const previous = counts.length > 0 ? Math.max(...counts.map((m) => Number(m[1]))) : 1;
   const count = previous + 1;
+  // Ein erneut aufgetretener Fehler ist wieder offen: ein Kommentar an einem
+  // geschlossenen Issue waere unsichtbar und wuerde den Blocker verschleiern.
+  if (issue.state === 'closed') {
+    const reopened = await api('PATCH', `/issues/${issue.number}`, {
+      state: 'open',
+      state_reason: 'reopened',
+    });
+    if (!reopened.ok) {
+      console.error(`Issue #${issue.number} konnte nicht wieder geoeffnet werden (${reopened.status}).`);
+      return;
+    }
+    console.log(`Issue #${issue.number} wieder geoeffnet (${count} mal).`);
+  }
   await api('POST', `/issues/${issue.number}/comments`, {
     body: `Vorgekommen: ${count} mal, zuletzt ${runUrl}`,
   });
-  if (issue.state === 'closed') {
-    console.log(`Issue #${issue.number} bleibt geschlossen, Kommentar ergänzt (${count} mal).`);
-  } else {
-    console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
-  }
+  if (issue.state !== 'closed') console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
 }
 
 async function createIssue(title, body, labels, fingerprint, runUrl, label = 'gate-failure') {
@@ -148,10 +157,27 @@ function gateFailureSections(body) {
 }
 
 /**
- * `main` ist gruen: Issues schliessen, deren Commit nachweislich auf main liegt.
- * Der Nachweis ist `git merge-base --is-ancestor`, nicht ein Titelvergleich.
+ * `main` ist gruen: Issues schliessen, deren Commit nachweislich auf dem
+ * exakten, erfolgreich geprueften Main-Commit liegt. `origin/main` allein
+ * reicht nicht: dort kann inzwischen ein neuer, noch ungepruefter Commit sein.
  */
 async function sweepGreenMain() {
+  const mainSha = process.env.MAIN_SHA ?? '';
+  if (!/^[0-9a-f]{40}$/.test(mainSha)) {
+    console.log('Sweep uebersprungen: kein exakter gruener Main-SHA.');
+    return;
+  }
+  let originMain;
+  try {
+    originMain = execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim();
+  } catch {
+    console.log('Sweep uebersprungen: origin/main nicht lesbar.');
+    return;
+  }
+  if (originMain !== mainSha) {
+    console.log(`Sweep uebersprungen: origin/main ${originMain.slice(0, 7)} ist nicht der gepruefte ${mainSha.slice(0, 7)}.`);
+    return;
+  }
   const res = await api('GET', '/issues?state=open&labels=gate-failure&per_page=100');
   if (!res.ok) {
     console.log(`Sweep uebersprungen: Issues nicht lesbar (${res.status}).`);
@@ -163,12 +189,12 @@ async function sweepGreenMain() {
     const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(issue.body ?? '');
     if (!match) continue;
     try {
-      execFileSync('git', ['merge-base', '--is-ancestor', match[1], 'origin/main'], { stdio: 'ignore' });
+      execFileSync('git', ['merge-base', '--is-ancestor', match[1], mainSha], { stdio: 'ignore' });
     } catch {
       continue; // Commit liegt nicht auf main: Issue bleibt offen.
     }
     await api('POST', `/issues/${issue.number}/comments`, {
-      body: `Der Stand \`${match[1]}\` liegt auf \`main\` und \`CI Verify\` ist gruen. Issue wird geschlossen.`,
+      body: `Der Stand \`${match[1]}\` liegt auf \`${mainSha}\` und \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
     });
     const patch = await api('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
     if (patch.ok) {

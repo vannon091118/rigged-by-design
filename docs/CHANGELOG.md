@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.170 | 2026-11-07 10:57 UTC -->
+<!-- rbd-doc: v0.3.171 | 2026-11-07 11:08 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.171] - 2026-11-07
+
+### Technik
+- **Claim-Merge nur mit Identitaet.** `mergedPullRequestIndex()` fragt Zielbranch, Head-SHA und Cross-Repository-Status mit ab. Ein PR-Beleg zaehlt nur noch fuer `main`, das eigene Repository und exakt den lokalen Claim-Kopf; zwei gemergte PRs mit demselben Branch-Namen werden beide verworfen. Ohne lokalen Kopf bleibt der Claim fail-closed.
+- **Promote bleibt auf main.** `openPr()` sucht nur noch PRs mit Basis `main`; ein PR nach `integration` kann nicht als Promotions-PR wiederverwendet werden. Die SHA- und Zielpruefung aus `promote-guard.mjs` bleibt davor unveraendert.
+- **Issue-Sweep am exakten Main-SHA.** `pr-watcher.mjs` schliesst Issues nur, wenn `origin/main` exakt dem erfolgreich geprueften `workflow_run.head_sha` entspricht und der gemeldete Commit darauf liegt. Ein erneut auftretender Fingerprint oeffnet ein geschlossenes Issue wieder, statt nur einen Kommentar zu hinterlassen.
+- Tests: `claim-evidence.test.ts` 11/11, darunter Zielbranch-, Fork-, Kurz-SHA- und Mehrdeutigkeitsfaelle; `node --check` fuer alle geaenderten Skripte.
 
 ## [0.3.169] - 2026-11-07
 

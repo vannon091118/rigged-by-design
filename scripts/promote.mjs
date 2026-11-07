@@ -149,10 +149,12 @@ function prInfo(number) {
 /**
  * `gh pr list --head` filtert nur nach Branch-Namen und kennt keinen Owner.
  * Ein Fork mit gleichem Branch-Namen darf deshalb nie als eigener PR gelten.
+ * `--base main` verhindert ausserdem, dass ein PR nach `integration` als
+ * Promotions-PR fuer `main` wiederverwendet wird.
  */
 function openPr(head = branch) {
   if (!head) return '';
-  const raw = gh(['pr', 'list', '--head', head, '--state', 'open', '--json', 'number', '--jq', '.[0].number']);
+  const raw = gh(['pr', 'list', '--base', MAIN, '--head', head, '--state', 'open', '--json', 'number', '--jq', '.[0].number']);
   if (!raw || !/^\d+$/.test(raw)) return '';
   return prInfo(raw)?.isCrossRepository === false ? raw : '';
 }
