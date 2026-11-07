@@ -10,10 +10,10 @@
 import type { ActorId } from './actor-id';
 
 export type EventId = string;
-export type PayloadVersion = number;
+type PayloadVersion = number;
 
 /** Eingabe für {@link createDomainEvent}. */
-export interface DomainEventInput<TPayload> {
+interface DomainEventInput<TPayload> {
   readonly eventType: string;
   /** Welt-Tick aus dem world-time Contract. */
   readonly tick: number;
@@ -42,7 +42,7 @@ export interface DomainEvent<TPayload = unknown> {
   readonly payload: TPayload;
 }
 
-export const EVENT_ID_SEPARATOR = ':' as const;
+const EVENT_ID_SEPARATOR = ':' as const;
 
 /**
  * Baut die stabile Event-ID `<eventType>:<tick>:<actorId>:<sequence>`.
