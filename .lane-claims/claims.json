@@ -413,10 +413,26 @@
     "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
   },
   {
+    "id": "lane/ci/promote-trusted-checkout",
+    "owner": "Governance-Owner",
+    "branch": "lane/ci/promote-trusted-checkout",
+    "baseSha": "dd872e29348e8ffb7522296a66ca05da9ee147fd",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/promote.yml",
+      "scripts/promote.mjs"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "merged",
+    "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
+  },
+  {
     "id": "lane/governance/09-claim-reconcile",
     "owner": "Governance-Owner",
     "branch": "lane/governance/09-claim-reconcile",
-    "baseSha": "f17d0e29e4e4aecb3e3368810686b54a7a3c7468",
+    "baseSha": "cda354dc04975d488a0ac27dc4c00402b56a1e74",
     "pathAllowlist": [
       ".lane-claims/claims.json"
     ],
@@ -424,6 +440,6 @@
     "dependencies": [],
     "gateProfile": "light",
     "status": "open",
-    "createdAt": "f17d0e29e4e4aecb3e3368810686b54a7a3c7468"
+    "createdAt": "cda354dc04975d488a0ac27dc4c00402b56a1e74"
   }
 ]
