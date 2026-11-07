@@ -1,0 +1,38 @@
+name: CI - verify:light, verify:capabilities, tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: agent:pretask (Lane-Governance Check)
+        run: node scripts/agent-pretask.js
+
+      - name: verify:light (All Source/Test File Gates)
+        run: node scripts/verify-light.js
+
+      - name: verify:capabilities (Capability Manifest Validation)
+        run: node scripts/verify-capabilities.js
+
+      - name: Run full test suite
+        run: npx vitest run
+
+      - name: narrative-compiler test (CRLF Fix)
+        run: npx vitest run src/core/governance/__tests__/narrative-compiler.test.ts
