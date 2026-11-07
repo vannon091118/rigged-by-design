@@ -10,6 +10,23 @@
 const FULL_SHA = /^[0-9a-f]{40}$/;
 
 /**
+ * PR-Suche fuer die Promotion. Der Zielbranch ist Teil der Identitaet: ein
+ * PR mit passendem Head aber Ziel `integration` ist keine Freigabe fuer main.
+ */
+export function promotionPrListArgs(head, base = 'main') {
+  return ['pr', 'list', '--base', base, '--head', head, '--state', 'open', '--json', 'number', '--jq', '.[0].number'];
+}
+
+/**
+ * Ein manueller Dispatch ist kein CI-Ergebnis. Er darf hoechstens pruefen oder
+ * den ausdruecklich angeforderten Notausgang waehlen, niemals einen Merge als
+ * Erfolg ausgeben.
+ */
+export function manualDispatchAction(mode = '') {
+  return mode === 'integrate' ? 'integrate' : 'inspect';
+}
+
+/**
  * @param {{
  *   event?: string,
  *   repo?: string,

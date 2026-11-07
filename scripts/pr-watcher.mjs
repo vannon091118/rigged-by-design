@@ -8,10 +8,13 @@
  * durchzubekommen.
  */
 import { execFileSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 import { diagnose } from './lib/gate-diagnostics.mjs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
+const defaultGit = (args) =>
+  execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
 
 const SECTIONS = [
   '### Changes (Was ist neu)',
@@ -53,8 +56,8 @@ async function findIssue(fingerprint, title, label = 'gate-failure') {
 }
 
 /** Zählt Vorkommen über Kommentare "Vorgekommen: N mal" und hängt den neuen Lauf an. */
-async function recordRecurrence(issue, runUrl) {
-  const res = await api('GET', `/issues/${issue.number}/comments?per_page=100`);
+async function recordRecurrence(issue, runUrl, { api: request = api } = {}) {
+  const res = await request('GET', `/issues/${issue.number}/comments?per_page=100`);
   const comments = res.ok ? await res.json() : [];
   const counts = comments.map((c) => /Vorgekommen: (\d+) mal/.exec(c.body ?? '')).filter(Boolean);
   const previous = counts.length > 0 ? Math.max(...counts.map((m) => Number(m[1]))) : 1;
@@ -62,7 +65,7 @@ async function recordRecurrence(issue, runUrl) {
   // Ein erneut aufgetretener Fehler ist wieder offen: ein Kommentar an einem
   // geschlossenen Issue waere unsichtbar und wuerde den Blocker verschleiern.
   if (issue.state === 'closed') {
-    const reopened = await api('PATCH', `/issues/${issue.number}`, {
+    const reopened = await request('PATCH', `/issues/${issue.number}`, {
       state: 'open',
       state_reason: 'reopened',
     });
@@ -72,7 +75,7 @@ async function recordRecurrence(issue, runUrl) {
     }
     console.log(`Issue #${issue.number} wieder geoeffnet (${count} mal).`);
   }
-  await api('POST', `/issues/${issue.number}/comments`, {
+  await request('POST', `/issues/${issue.number}/comments`, {
     body: `Vorgekommen: ${count} mal, zuletzt ${runUrl}`,
   });
   if (issue.state !== 'closed') console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
@@ -161,15 +164,14 @@ function gateFailureSections(body) {
  * exakten, erfolgreich geprueften Main-Commit liegt. `origin/main` allein
  * reicht nicht: dort kann inzwischen ein neuer, noch ungepruefter Commit sein.
  */
-async function sweepGreenMain() {
-  const mainSha = process.env.MAIN_SHA ?? '';
+async function sweepGreenMain({ api: request = api, git = defaultGit, mainSha = process.env.MAIN_SHA ?? '' } = {}) {
   if (!/^[0-9a-f]{40}$/.test(mainSha)) {
     console.log('Sweep uebersprungen: kein exakter gruener Main-SHA.');
     return;
   }
   let originMain;
   try {
-    originMain = execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim();
+    originMain = git(['rev-parse', 'origin/main']);
   } catch {
     console.log('Sweep uebersprungen: origin/main nicht lesbar.');
     return;
@@ -178,7 +180,7 @@ async function sweepGreenMain() {
     console.log(`Sweep uebersprungen: origin/main ${originMain.slice(0, 7)} ist nicht der gepruefte ${mainSha.slice(0, 7)}.`);
     return;
   }
-  const res = await api('GET', '/issues?state=open&labels=gate-failure&per_page=100');
+  const res = await request('GET', '/issues?state=open&labels=gate-failure&per_page=100');
   if (!res.ok) {
     console.log(`Sweep uebersprungen: Issues nicht lesbar (${res.status}).`);
     return;
@@ -189,14 +191,14 @@ async function sweepGreenMain() {
     const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(issue.body ?? '');
     if (!match) continue;
     try {
-      execFileSync('git', ['merge-base', '--is-ancestor', match[1], mainSha], { stdio: 'ignore' });
+      git(['merge-base', '--is-ancestor', match[1], mainSha]);
     } catch {
       continue; // Commit liegt nicht auf main: Issue bleibt offen.
     }
-    await api('POST', `/issues/${issue.number}/comments`, {
+    await request('POST', `/issues/${issue.number}/comments`, {
       body: `Der Stand \`${match[1]}\` liegt auf \`${mainSha}\` und \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
     });
-    const patch = await api('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
+    const patch = await request('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
     if (patch.ok) {
       closed += 1;
       console.log(`Issue #${issue.number} geschlossen (gruen auf main).`);
@@ -422,7 +424,12 @@ Siehe AGENTS.md für die vollständigen Regeln.
   }
 }
 
-main().catch((err) => {
-  console.error('pr-watcher Fehler:', err);
-  process.exit(1);
-});
+export { recordRecurrence, sweepGreenMain };
+
+const entrypoint = Boolean(process.argv[1]) && pathToFileURL(process.argv[1]).href === import.meta.url;
+if (entrypoint) {
+  main().catch((err) => {
+    console.error('pr-watcher Fehler:', err);
+    process.exit(1);
+  });
+}

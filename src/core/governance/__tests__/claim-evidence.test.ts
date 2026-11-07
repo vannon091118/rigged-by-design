@@ -54,6 +54,7 @@ describe('claim-evidence', () => {
       mergedPr: { number: 215, headRefOid: 'b'.repeat(40), mergeCommit: 'fb5ed49cd9ed' },
     });
     expect(result.status).toBeNull();
+    expect(result.evidence).toBe('none');
   });
 
   it('erkennt einen Branch-Kopf auf main als Beleg', () => {
@@ -132,17 +133,26 @@ describe('claim-evidence', () => {
   });
 
   it('verwirft mehrdeutige PRs mit demselben Branch-Namen', () => {
-    const entry = (number: number) => ({
+    const entry = (number: number, headRefOid = 'a'.repeat(40)) => ({
       baseRefName: 'main',
       headRefName: 'lane/wiederverwendet',
-      headRefOid: 'a'.repeat(40),
+      headRefOid,
       isCrossRepository: false,
       number,
       mergeCommit: { oid: 'b'.repeat(40) },
       url: `https://example.test/${number}`,
     });
-    const index = mergedPullRequestIndex({ gh: () => JSON.stringify([entry(1), entry(2)]) });
+    const index = mergedPullRequestIndex({
+      gh: () => JSON.stringify([entry(1), entry(2, 'c'.repeat(40))]),
+    });
     expect(index.size).toBe(0);
+    expect(
+      decideClaim({
+        branchExists: false,
+        headSha: 'a'.repeat(40),
+        mergedPr: index.get('lane/wiederverwendet') ?? null,
+      }).status,
+    ).toBeNull();
   });
 
   it('laesst einen laufenden Branch offen', () => {
