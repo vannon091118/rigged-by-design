@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 07:31 UTC -->
+<!-- rbd-doc: v0.3.155 | 2026-11-07 07:55 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Agentenverhalten: Pre-, Waehrend- und After-Task verbindlich
+
+**Ziel.** Agents sollen nicht ohne Plan loslegen und nicht jeden CI-Lauf abfragen. Vor dem CI-Umbau wird deshalb der Arbeitsablauf selbst verbindlich: Pre-Task, waehrend der Arbeit, After-Task, Polling-Grenzen und die Rolle des Monitors.
+
+**Umsetzung.** `AGENTS.md`: Pretask auf vier Schritte erweitert (Issue-Check, sauberer Arbeitsbaum, `agent:context`-Impact, Lane mit Claim), der Abschnitt `Agenten-Verhalten` enthaelt jetzt Waehrend-der-Arbeit, CI-Polling (hoechstens drei Abfragen mit wachsendem Abstand, nur der eigene Lauf), After-Task, Monitor (nur berichten) und Blocker-Uebergabe. Neu ist die Tabelle `Technische Durchsetzung`: sie nennt je Regel, ob `pretask.mjs`, der Pre-Commit-Claim-Check, `turn-push.mjs` (`ERR-4023`, `ERR-4024`, `ERR-4006`) oder `ci-verify.yml` sie erzwingt - und welche Regeln noch reines Verhalten sind. Keine neue Registry, keine zweite Eskalationsleiter.
+
+**Pruefungen.** `pnpm run verify:light` gruen (Lint, LOC, Typecheck, Doku, Tree, Redundanz); `verify-lane-claims --ci` claim-konform gegen `origin/main`; Doku-Marker und Inventur ueber `docs:sync` und `inventory:build` nachgezogen.
+
+**Offen.** Issue-Check, Impact-Pflicht, Polling-Grenzen und Monitor-Rolle sind nur Verhalten. Technische Durchsetzung folgt dort, wo sie ohne neue Wahrheit moeglich ist: Impact in der Gate-Matrix (Phase 1), Klassifikation und Retry im Watcher (Phase 3).
 
 ## 2026-11-07 - Gates granular: eine Matrix statt eines Monolithen
 

@@ -1,5 +1,27 @@
 [
   {
+    "id": "lane/governance/08-agent-behavior",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/08-agent-behavior",
+    "baseSha": "dd872e29348e8ffb7522296a66ca05da9ee147fd",
+    "pathAllowlist": [
+      "AGENTS.md",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      ".lane-claims/claims.json"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
+  },
+  {
     "id": "lane/governance/02-governance",
     "owner": "Governance-Owner",
     "branch": "gov/0.2-governance",
@@ -358,7 +380,7 @@
     ],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "d0c730cd59d6e822bba501a854b5f466c165876e"
   }
 ]

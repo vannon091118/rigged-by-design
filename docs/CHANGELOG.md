@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 07:31 UTC -->
+<!-- rbd-doc: v0.3.155 | 2026-11-07 07:55 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -15,6 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.154] - 2026-11-07
 
 ### Technik
+- **Agentenverhalten ist ein Vertrag.** Pre-Task (Issue, sauberer Zustand, `agent:context`-Impact, Lane mit Claim), waehrend der Arbeit nur gezielte Nachweise, After-Task ueber `turn:finish`; CI-Polling ist auf den eigenen Lauf begrenzt (hoechstens drei Abfragen mit wachsendem Abstand), der Monitor berichtet nur. Die Tabelle `Technische Durchsetzung` in `AGENTS.md` nennt, was bereits erzwungen ist und was noch Verhalten bleibt.
 - **Gates granular statt ein Monolith.** `scripts/gate-matrix.mjs` uebersetzt den Gate-Plan in eine GitHub-Matrix, `node scripts/run-pipeline.mjs --gate=<name>` faehrt genau ein Gate. `ci-verify.yml` hat je Gate einen eigenen Job und Status (`Gate lint`, `Gate typecheck`, ...), dazu eigene Jobs fuer Lane-Claims und Commit-/PR-Notes. Der Pflichtstatus `Fail-Closed Gates` ist nur das Aggregat.
 - Ein Gate ausserhalb des Profils bricht im `--gate`-Modus ab; eine leere Matrix ist ein Fehler. Kein gruener Status ohne Pruefung.
 - `scripts/lib/dependency-change.mjs` ist die einzige Wahrheit fuer Dependency-Aenderungen; `audit` steht nur dann in der Matrix, wenn es relevant ist.
