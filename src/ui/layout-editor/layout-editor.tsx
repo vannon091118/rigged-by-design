@@ -4,8 +4,9 @@
  * Erreichbar im normalen Gameplay (nicht nur hinter VITE_RBD_EDITOR_MODE).
  */
 
-import type { WallPlacement, WallType } from "../../../core/sim/layout/wall";
-import type { LayoutEditor, DEFAULT_LAYOUT_EDITOR_CONFIG } from "../../../core/sim/layout/layout-editor";
+import type { WallType } from "../../core/sim/layout/wall";
+import type { LayoutEditor } from "../../core/sim/layout/layout-editor";
+import { DEFAULT_LAYOUT_EDITOR_CONFIG } from "../../core/sim/layout/layout-editor";
 
 export interface LayoutEditorProps {
   readonly editor: LayoutEditor;
@@ -20,7 +21,7 @@ export interface WallPlacementTool {
 }
 
 export function LayoutEditorComponent(props: LayoutEditorProps): string {
-  const { editor, onWallPlaced, onWallRemoved, onModeChange } = props;
+  const { editor } = props;
 
   const walls = editor.listWalls();
   const revision = editor.getRevision();

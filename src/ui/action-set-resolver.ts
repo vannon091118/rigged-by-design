@@ -4,7 +4,7 @@
  * Phase 0.6: ActionSet as versioned UI/Domain contract.
  */
 
-import type { ActionSetEntry } from "./action-card";
+import type { ActionSetEntry } from "./action-set-entry";
 
 export interface ActionProvider {
   readonly domain: string;

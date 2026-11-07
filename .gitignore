@@ -1,5 +1,26 @@
 node_modules/
-.git/
-package-lock.json
+dist/
+coverage/
+artifacts/
+android/
+.pnpm-store/
 *.log
+.env
+.env.local
 .DS_Store
+docs/Chats/
+.rtk/
+.turn-notes.md
+.verify-cache/
+tsconfig.tsbuildinfo
+.shot-data/
+.git/TURN_COMMIT_MSG
+
+# Werkzeug-Configs liegen in src/Config; die Wurzel bekommt nur Laufzeit-Kopien.
+/capacitor.config.json
+src/Config/*.tsbuildinfo
+.freebuff/
+test-results/
+
+# Lokal entwickelte DSH-Plugins (Bundle-Quellen im Workspace)
+plugins/

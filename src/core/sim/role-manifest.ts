@@ -31,13 +31,21 @@ export class RoleManifest {
   private objectVectors = new Map<string, ObjectRoleVector>();
 
   registerRole(role: RoleDefinition): { ok: boolean; role?: RoleDefinition; error?: string } {
-    // Idempotent: return existing role instead of erroring on duplicate
-    if (this.roles.has(role.id)) {
-      const existing = this.roles.get(role.id)!;
-      return { ok: true, role: existing };
-    }
     if (!role.id || !role.domain || !role.version) {
       return { ok: false, error: "Role must have id, domain, and version" };
+    }
+    // Idempotent only for the identical definition. The same id with a
+    // different domain or version is contract drift, not a harmless retry.
+    const existing = this.roles.get(role.id);
+    if (existing) {
+      if (existing.domain !== role.domain || existing.version !== role.version) {
+        return {
+          ok: false,
+          role: existing,
+          error: `Role ${role.id} already registered as ${existing.domain}@${existing.version}; refusing ${role.domain}@${role.version}`,
+        };
+      }
+      return { ok: true, role: existing };
     }
     this.roles.set(role.id, role);
     return { ok: true, role };

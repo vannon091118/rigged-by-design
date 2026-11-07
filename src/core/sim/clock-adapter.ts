@@ -4,7 +4,7 @@
  */
 
 import type { WorldTime } from "./worldtime";
-import { TICK_MS, advanceTick, createWorldTime } from "./worldtime";
+import { advanceTick, createWorldTime } from "./worldtime";
 
 export interface ClockAdapterConfig {
   readonly hostTickMs: number;      // TICK_MS from host (default 520)
@@ -25,7 +25,9 @@ export function createClockAdapter(
   return {
     worldTime: createWorldTime(initialTick),
     hostTicksProcessed: 0,
-    lastHostMs: Date.now(),
+    // Host time is an input, never read from the wall clock: the adapter
+    // starts at the deterministic time implied by the initial tick.
+    lastHostMs: initialTick * config.hostTickMs,
     isPaused: false,
   };
 }

@@ -3,13 +3,13 @@
  * Shared ActionSet contract (Phase 0.6).
  */
 
-import type { ActionSetEntry } from "./action-card";
+import type { ActionSetEntry } from "./action-set-entry";
 
 export function DropdownSheet(props: {
   readonly actions: ActionSetEntry[];
   readonly onExecute: (actionId: string) => void;
 }): string {
-  const { actions, onExecute } = props;
+  const { actions } = props;
   if (actions.length < 7) {
     throw new Error("DropdownSheet is for 7+ entries; use RadialMenu for 6 or fewer");
   }

@@ -78,7 +78,8 @@ export function createWall(
   tick: number
 ): Wall {
   return {
-    id: `wall-${tick}-${Math.random().toString(36).slice(2, 7)}`,
+    // Placement-derived id: deterministic, no wall-clock or random source.
+    id: `wall-${tick}-${x}-${y}-${width}x${height}`,
     type,
     x,
     y,

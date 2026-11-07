@@ -5,7 +5,7 @@
  * die Vernichtung dauerhafter Identität.
  */
 
-import type { ActorPresence, PresenceState } from "./actor-registry";
+import type { ActorPresence, PresenceState, ActorRegistry } from "./actor-registry";
 import { actorRegistry } from "./actor-registry";
 
 export interface VisitorSnapshot {

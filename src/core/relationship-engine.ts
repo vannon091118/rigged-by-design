@@ -6,8 +6,7 @@
  */
 
 import type { WorldTime } from "./sim/worldtime";
-import type { Disposition, Relationship, Factor } from "./relationship";
-import { createRelationship, applyFactor as applySimpleFactor } from "./relationship";
+import type { Disposition } from "./relationship";
 
 /**
  * Die vier eigenständigen Beziehungs-Dimensionen mit klarer Eigentümerschaft.
@@ -111,9 +110,37 @@ export class RelationshipEngine {
       : [...existingEdges, edge];
 
     this.edges.set(edgeKey, nextEdges);
-    this.nextCommandId++;
 
     return { ok: true, edge };
+  }
+
+  /**
+   * Erzeugt ein Kommando mit deterministischer ID aus Weltzeit und
+   * engine-eigenem Zähler. Der Zähler gehört zum Engine-Zustand, nicht zum
+   * Modul: ein Reload mit demselben Save erzeugt dieselben IDs.
+   */
+  createCommand(
+    type: RelationshipCommand["type"],
+    fromActorId: string,
+    toActorId: string,
+    dimension: RelationshipDimension,
+    delta: number,
+    worldTime: WorldTime,
+    reason: string,
+    sourceEventId?: string
+  ): RelationshipCommand {
+    this.nextCommandId += 1;
+    return {
+      commandId: `cmd-${worldTime.tick}-${this.nextCommandId}`,
+      type,
+      fromActorId,
+      toActorId,
+      dimension,
+      delta,
+      worldTime,
+      sourceEventId,
+      reason,
+    };
   }
 
   /**
@@ -177,7 +204,6 @@ export class RelationshipEngine {
    * Gibt alle Outgoing-Edges eines Actors zurück (Perspektive: actorId -> andere).
    */
   getOutgoingEdges(actorId: string): RelationshipEdge[] {
-    const edges = this.edges.get(`${actorId}:*`);
     // Wildcard nicht direkt möglich, daher über alle keys filtern
     const result: RelationshipEdge[] = [];
     for (const [key, edgeList] of this.edges.entries()) {
@@ -209,7 +235,6 @@ export class RelationshipEngine {
    */
   getRelationshipView(actorId: string, otherActorId: string): RelationshipView {
     const outgoing = this.getEdgesForActor(actorId);
-    const incoming = this.getIncomingEdges(otherActorId);
 
     // Edges von actorId -> otherActorId
     const directEdges = outgoing.filter((e) => e.toActorId === otherActorId);
@@ -339,8 +364,6 @@ export function scoreToDisposition(score: number): Disposition {
 /**
  * Erstellt ein RelationshipCommand.
  */
-let _commandCounter = 0;
-
 export function createRelationshipCommand(
   type: RelationshipCommand["type"],
   fromActorId: string,
@@ -349,11 +372,11 @@ export function createRelationshipCommand(
   delta: number,
   worldTime: WorldTime,
   reason: string,
-  sourceEventId?: string
+  sourceEventId?: string,
+  sequence = 0
 ): RelationshipCommand {
-  _commandCounter++;
   return {
-    commandId: `cmd-${worldTime.tick}-${_commandCounter}`,
+    commandId: `cmd-${worldTime.tick}-${sequence}`,
     type,
     fromActorId,
     toActorId,

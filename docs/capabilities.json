@@ -1,367 +1,143 @@
 {
-  "schema": "capabilities/v1",
-  "version": "1.0.0",
-  "generated": "2026-11-07T21:00:00+01:00",
+  "version": 1,
+  "generated": "2026-11-06T23:45 UTC",
+  "description": "Capability-Inventar: beobachtete Spieler-/Simulationsfähigkeiten mit echten Verhaltenstests. Jede aktive Fähigkeit verweist auf mindestens einen ausgeführten Test. Fähigkeiten ohne verifizierte Tests sind als 'unverified' markiert und blockieren ihre Lane bis zur Prüfung. Löschung erfordert removedBecause, replacedBy, parityTestIds, Owner und ADR/Issue (Tombstone-Mechanismus).",
   "capabilities": [
     {
       "id": "walls.interior.collision",
-      "domain": "world.walls",
-      "status": "baseline-candidate",
-      "contract": "Interior wall collision detection for navigation",
-      "paths": ["src/core/world-time.ts", "tests/core/world-time.test.ts"],
-      "testIds": ["tests/core/world-time.test.ts"],
-      "evidence": "baseline candidate - implementation pending"
+      "domain": "raum",
+      "status": "unverified",
+      "description": "Innenwände erzeugen echte Kollisionsgrenzen im Produktionspfad; Gäste und Spieler können nicht durch Wände gehen.",
+      "paths": ["src/core/sim/layout.ts", "src/core/sim/nav-grid.ts", "src/core/sim/nav-reach.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Integrator",
+      "note": "Tests für nav-grid und physics fehlen noch; Lane blockiert bis zur Prüfung."
     },
     {
       "id": "walls.interior.navigation",
-      "domain": "world.walls",
-      "status": "baseline-candidate",
-      "contract": "Interior wall navigation pathfinding",
-      "paths": ["src/core/world-time.ts"],
-      "testIds": ["tests/core/world-time.test.ts"],
-      "evidence": "baseline candidate - implementation pending"
-    },
-    {
-      "id": "walls.template.interior",
-      "domain": "world.walls",
-      "status": "baseline-candidate",
-      "contract": "Interior wall template definitions",
-      "paths": ["src/core/world-time.ts"],
-      "testIds": ["tests/core/world-time.test.ts"],
-      "evidence": "baseline candidate - implementation pending"
+      "domain": "raum",
+      "status": "unverified",
+      "description": "Navigation respektiert Wandkanten; stepOpen() blockiert nur bei WALL, DOOR/OPENING sind passierbar.",
+      "paths": ["src/core/sim/nav-grid.ts", "src/core/sim/nav-reach.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Integrator",
+      "note": "Testdateien für nav-grid fehlen noch; Lane blockiert bis zur Prüfung."
     },
     {
       "id": "cards.flip.animated",
-      "domain": "ui.cards",
-      "status": "baseline-candidate",
-      "contract": "Animated card flip for dealing/revealing",
-      "paths": ["src/ui/action-card.tsx"],
-      "testIds": ["tests/core/actor-id.test.ts"],
-      "evidence": "baseline candidate - ActionCard provides flip target"
+      "domain": "karten",
+      "status": "unverified",
+      "description": "Karten werden mit Animation umgedreht (Flip-Effekt), nicht sofort offenbart.",
+      "paths": ["src/core/games/engines/cards.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "UI-Owner",
+      "note": "Testdatei card-flip.test.tsx fehlt noch."
     },
     {
       "id": "cards.deal.shoe-flight",
-      "domain": "ui.cards",
-      "status": "baseline-candidate",
-      "contract": "Shoe-flight card dealing animation",
-      "paths": ["src/ui/action-card.tsx", "src/ui/floor-actions.ts"],
-      "testIds": [],
-      "evidence": "baseline candidate - needs behavior test"
+      "domain": "karten",
+      "status": "active",
+      "description": "Karten werden aus dem Schuh (Shoe) dealt; draw entfernt die Karte, Reshuffle nur wenn leer.",
+      "paths": ["src/core/rng/shoe.ts", "src/core/games/engines/cards.ts"],
+      "testIds": ["src/core/rng/__tests__/shoe.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
     },
     {
       "id": "slots.reels.animated",
-      "domain": "ui.slots",
-      "status": "baseline-candidate",
-      "contract": "Animated slot reel spin",
-      "paths": [],
-      "testIds": [],
-      "evidence": "baseline candidate - implementation pending"
+      "domain": "slots",
+      "status": "active",
+      "description": "Slot-Walzen drehen sich animiert und zahlen Liniengewinne aus.",
+      "paths": ["src/core/games/engines/slot.ts", "src/core/games/engines/slot-paytable.ts"],
+      "testIds": ["src/core/games/__tests__/slot-paylines.test.ts", "src/core/games/__tests__/slot-profile.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
     },
     {
       "id": "slots.gamble.risk-card",
-      "domain": "ui.slots",
-      "status": "baseline-candidate",
-      "contract": "Risk-card gamble after slot win",
-      "paths": [],
+      "domain": "slots",
+      "status": "active",
+      "description": "Risikokarte (Gamble-Feature) nach Slot-Gewinn; Farbe wählen für Verdopplung.",
+      "paths": ["src/core/games/risk-card.ts"],
+      "testIds": ["src/core/games/__tests__/risk-card.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    },
+    {
+      "id": "actions.radial-menu",
+      "domain": "interaktion",
+      "status": "unverified",
+      "description": "Radialmenü für bis zu 6 verfügbare Aktionen, gerendert aus ActionSet-Daten.",
+      "paths": ["src/ui/action-card.tsx"],
       "testIds": [],
-      "evidence": "baseline candidate - implementation pending"
+      "browserEvidence": null,
+      "owner": "Interaction-Owner",
+      "note": "Testdatei action-card.test.tsx fehlt noch."
     },
     {
-      "id": "actionset.radial.menu",
-      "domain": "ui.action-set",
+      "id": "actions.dropdown-sheet",
+      "domain": "interaktion",
+      "status": "unverified",
+      "description": "Dropdown-Sheet ab 7 verfügbaren Aktionen, gerendert aus denselben ActionSet-Daten wie das Radialmenü.",
+      "paths": ["src/ui/action-card.tsx"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Interaction-Owner",
+      "note": "Testdatei action-sheet.test.tsx fehlt noch."
+    },
+    {
+      "id": "narrative.trigger-evaluate",
+      "domain": "narrative",
       "status": "active",
-      "contract": "Radial menu for up to 6 ActionSet entries",
-      "paths": ["src/ui/radial-menu.tsx", "src/ui/action-set-resolver.ts", "src/ui/job-context-menu.tsx"],
-      "testIds": ["tests/core/actor-id.test.ts"],
-      "evidence": "RadialMenu component renders <=6 entries, throws for 7+"
+      "description": "Deklarative Trigger-Evaluation mit Context, Beziehungs-/Zeitfensterabfragen; fail-closed Schema.",
+      "paths": ["src/core/sim/narrative/trigger-evaluate.ts", "src/core/sim/narrative/trigger-schema.ts"],
+      "testIds": ["src/core/governance/__tests__/narrative-compiler.test.ts"],
+      "browserEvidence": null,
+      "owner": "Narrative-Owner"
     },
     {
-      "id": "actionset.dropdown.sheet",
-      "domain": "ui.action-set",
+      "id": "narrative.event-scheduler",
+      "domain": "narrative",
       "status": "active",
-      "contract": "Dropdown sheet for 7+ ActionSet entries",
-      "paths": ["src/ui/dropdown-sheet.tsx", "src/ui/action-set-resolver.ts", "src/ui/job-context-menu.tsx"],
-      "testIds": ["tests/core/actor-id.test.ts"],
-      "evidence": "DropdownSheet component renders 7+ entries, throws for <7"
+      "description": "Persistente Event-Instanzen mit Priorität, Fairness, Scopes, Cooldowns, Fristen, Stale-Cancel.",
+      "paths": ["src/core/sim/narrative/event-scheduler.ts", "src/core/sim/narrative/event-lifecycle.ts"],
+      "testIds": ["src/core/sim/__tests__/narrative-event-expiry.test.ts", "src/core/sim/__tests__/narrative-demand.test.ts"],
+      "browserEvidence": null,
+      "owner": "Narrative-Owner"
     },
     {
-      "id": "actionset.resolver",
-      "domain": "ui.action-set",
+      "id": "ledger.transfer-atomic",
+      "domain": "wirtschaft",
       "status": "active",
-      "contract": "Central ActionSet resolver replacing If/Else branching",
-      "paths": ["src/ui/action-set-resolver.ts", "src/ui/floor-actions.ts"],
-      "testIds": ["tests/core/action-set-resolver.test.ts"],
-      "evidence": "Resolver registers providers and returns sorted entries"
+      "description": "Ledger-Transfer ist atomar: Quelle, Ziel, Entry-Count und Seq bleiben bei Fehler unverändert.",
+      "paths": ["src/core/economy/ledger.ts", "src/core/economy/ledger-integrity.ts"],
+      "testIds": ["src/core/economy/__tests__/ledger-atomicity.test.ts", "src/core/economy/__tests__/ledger-checkpoint.test.ts"],
+      "browserEvidence": null,
+      "owner": "Ledger-/Core-Owner"
     },
     {
-      "id": "actor-id.contract",
-      "domain": "core.identity",
-      "status": "merged",
-      "contract": "Stable opaque actor identifier (v1.0.0)",
-      "paths": ["src/core/actor-id.ts"],
-      "testIds": ["tests/core/actor-id.test.ts"],
-      "evidence": "createActorId, actorIdEquals, actorIdToString"
-    },
-    {
-      "id": "world-time.contract",
-      "domain": "core.time",
-      "status": "merged",
-      "contract": "Authoritative world time separated from Host Pacing/Wall Clock/Presentation Clock (v1.0.0)",
-      "paths": ["src/core/world-time.ts"],
-      "testIds": ["tests/core/world-time.test.ts"],
-      "evidence": "TICK_MS=520, TICKS_PER_DAY=600, createWorldTime, advanceTick"
-    },
-    {
-      "id": "domain-event.contract",
-      "domain": "core.events",
-      "status": "merged",
-      "contract": "Typed domain events with deadlines and pending caps (v1.0.0)",
-      "paths": ["src/core/domain-event.ts"],
-      "testIds": ["tests/core/domain-event.test.ts"],
-      "evidence": "createDomainEvent, isEventExpired, isEventResolved, DEFAULT_EVENT_CONTEXT"
-    },
-    {
-      "id": "relationship.contract",
-      "domain": "core.social",
-      "status": "merged",
-      "contract": "Visitor/guest/player relationship state with dispositions (v1.0.0)",
-      "paths": ["src/core/relationship.ts"],
-      "testIds": ["tests/core/relationship.test.ts"],
-      "evidence": "createRelationship, applyFactor, Disposition type"
-    },
-    {
-      "id": "factor.contract",
-      "domain": "core.modifiers",
-      "status": "merged",
-      "contract": "Multiplicative/additive factor modifiers (v1.0.0)",
-      "paths": ["src/core/factor.ts"],
-      "testIds": ["tests/core/factor.test.ts"],
-      "evidence": "applyFactor with add/multiply operations"
-    },
-    {
-      "id": "save.contract",
-      "domain": "core.persistence",
-      "status": "merged",
-      "contract": "Save/migration contract for world state (v1.0.0)",
-      "paths": ["src/core/save.ts"],
-      "testIds": ["tests/core/save.test.ts"],
-      "evidence": "createSaveState, migrateState"
-    },
-    {
-      "id": "ledger.atomicity",
-      "domain": "core.economy",
+      "id": "save.migration-v5-to-v11",
+      "domain": "speicher",
       "status": "active",
-      "contract": "Atomic ledger transfers with overflow/underflow protection",
-      "paths": ["src/core/ledger.ts"],
-      "testIds": ["tests/core/ledger.test.ts"],
-      "evidence": "transfer validates nextFrom/nextTo before mutation; diagnose()"
+      "description": "Save-Migration v5→v11 mit Roundtrip-Determinismus; v3/v4 verworfen.",
+      "paths": ["src/store/save.ts", "src/store/migrate.ts", "src/store/migrate-layout.ts", "src/store/migrate-narrative.ts"],
+      "testIds": ["src/store/__tests__/save-roundtrip.test.ts", "src/store/__tests__/save-migration.test.ts", "src/store/__tests__/save-v7.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
     },
     {
-      "id": "rng.weighted.bias",
-      "domain": "core.rng",
+      "id": "rng.two-namespaces",
+      "domain": "zufall",
       "status": "active",
-      "contract": "Weighted random selection with MAX_BIAS_BPS=1000 (10% max bias)",
-      "paths": ["src/core/rng/weighted.ts"],
-      "testIds": ["tests/core/rng/weighted.test.ts"],
-      "evidence": "selectWeighted, maxBiasMultiplier=1.10x (corrected from 10.99x)"
-    },
-    {
-      "id": "actor.registry",
-      "domain": "core.identity",
-      "status": "active",
-      "contract": "Stable Actor-IDs with presence separation (visitor vs guest), archive/restore lifecycle",
-      "paths": ["src/core/actor-registry.ts", "src/core/visitor-presence.ts"],
-      "testIds": ["tests/core/actor-registry.test.ts"],
-      "evidence": "ActorRegistry, VisitorRetention, enterAsGuest, leaveGuest, VISITOR_CAP hot-set"
-    },
-    {
-      "id": "event.consumer.lifecycle",
-      "domain": "core.events",
-      "status": "active",
-      "contract": "Idempotent event consumer with cursor, dedup, dead-letter queue, replay",
-      "paths": ["src/core/sim/event-consumer.ts", "src/core/sim/event-bus.ts"],
-      "testIds": ["tests/core/sim/event-consumer.test.ts"],
-      "evidence": "EventConsumer, isAlreadyProcessed, markProcessed, replayPending, retryDeadLetter"
-    },
-    {
-      "id": "scheduler.backlog",
-      "domain": "core.events",
-      "status": "active",
-      "contract": "Scheduler with MAX_CANDIDATES=64, MAX_NEW_EVENTS=3, priority ordering, safe compaction",
-      "paths": ["src/core/sim/scheduler.ts"],
-      "testIds": ["tests/core/sim/scheduler.test.ts"],
-      "evidence": "Scheduler, processTick, compactBacklog, isBackpressure, eviction"
-    },
-    {
-      "id": "factor.catalog",
-      "domain": "core.factors",
-      "status": "active",
-      "contract": "Factor catalog with social, economic, emotional, reputational, familial, professional, psychological, behavioral categories",
-      "paths": ["src/core/factor-catalog.ts", "src/core/factor-normalizer.ts"],
-      "testIds": ["tests/core/factor-catalog.test.ts", "tests/core/factor-normalizer.test.ts"],
-      "evidence": "FactorCatalog, normalizeSignal, calculateNetInfluence, applyFactorToRelationship"
-    },
-    {
-      "id": "factor.resolver",
-      "domain": "core.factors",
-      "status": "active",
-      "contract": "Normalization Resolver — pure translation functions per source, fixed-point contributions, explainable Contribution-Trace",
-      "paths": ["src/core/factor-resolver.ts"],
-      "testIds": ["tests/core/factor-resolver.test.ts"],
-      "evidence": "normalizeMood, normalizePatience, normalizeAddiction, normalizeRelationship, normalizeRPGValue, toContribution, aggregateContributions, PerceptionTranslator"
-    },
-    {
-      "id": "factor.policy",
-      "domain": "core.factors",
-      "status": "active",
-      "contract": "Weiche Simulationsentscheidungen auf Faktoren: Aktivitätswahl, Angebotsbewertung, Rückkehrwahrscheinlichkeit, Soziale Reaktion",
-      "paths": ["src/core/factor-policy.ts"],
-      "testIds": ["tests/core/factor-policy.test.ts"],
-      "evidence": "activityChoicePolicy, offerEvaluationPolicy, returnProbabilityPolicy, socialReactionPolicy, checkHardConditions"
-    },
-    {
-      "id": "relationship.engine",
-      "domain": "core.relationships",
-      "status": "active",
-      "contract": "Directed edges as independent perspectives (trust, sympathy, conflict, influence), no automatic symmetry, changes only via commands/events",
-      "paths": ["src/core/relationship-engine.ts", "src/core/relationship-apply.ts"],
-      "testIds": ["tests/core/relationship-engine.test.ts", "tests/core/relationship-apply.test.ts"],
-      "evidence": "RelationshipEngine, applyCommand, getRelationshipView, migrateLegacyRelationships, applyRelationshipEvent"
-    },
-    {
-      "id": "narrative.engine",
-      "domain": "core.narrative",
-      "status": "active",
-      "contract": "Domänenneutrale Narrative-Engine mit validierten, erweiterbaren Narrative- und Ereignis-Pools",
-      "paths": ["src/core/narrative-engine.ts"],
-      "testIds": ["tests/core/narrative-engine.test.ts"],
-      "evidence": "NarrativeEngine, selectNarrative, executeNarrative, registerPool, addNarrative"
-    },
-    {
-      "id": "narrative.memory",
-      "domain": "core.narrative",
-      "status": "active",
-      "contract": "Memory mit Relevanz, Vergessen und langfristiger Kontinuität; Kurzzeit/Langzeit-Archiv mit Verdichtung",
-      "paths": ["src/core/narrative-memory.ts"],
-      "testIds": ["tests/core/narrative-memory.test.ts"],
-      "evidence": "NarrativeMemory, createEntry, accessEntry, forget, compact, decayRelevance"
-    },
-    {
-      "id": "narrative.compiler",
-      "domain": "core.narrative",
-      "status": "active",
-      "contract": "Narrative-Compiler mit Validierung; EOL-Normalisierung behandelt \r\n, \r und \n",
-      "paths": ["src/core/narrative-compiler.ts"],
-      "testIds": ["tests/core/narrative-compiler.test.ts"],
-      "evidence": "NarrativeCompiler, compile, compileAll, normalizeEol, hasCRLF, hasLonelyCR"
-    },
-    {
-      "id": "communication.domain",
-      "domain": "core.communication",
-      "status": "active",
-      "contract": "Kommunikation als eigener Lebensbereich: Anrufe, Nachrichten, Kontakte, blockierte Kontakte",
-      "paths": ["src/core/communication.ts", "src/core/communication-view.ts"],
-      "testIds": ["tests/core/communication.test.ts"],
-      "evidence": "CommunicationDomain, startCall, answerCall, endCall, missCall, sendMessage, readMessage, NPCContactPlanner"
-    },
-    {
-      "id": "communication.npc-initiative",
-      "domain": "core.communication",
-      "status": "active",
-      "contract": "NPC-Kontaktplaner für NPC-initiierte Anrufe und Nachrichten mit Priorisierung",
-      "paths": ["src/core/communication.ts"],
-      "testIds": ["tests/core/communication.test.ts"],
-      "evidence": "NPCContactPlanner, planContact, getDuePlans, executePlan, 5 Szenarien A-E"
-    },
-    {
-      "id": "casino.integration",
-      "domain": "core.casino",
-      "status": "active",
-      "contract": "Casino als erste Domain an allgemeine Verträge angebunden: Spiel-Ergebnisse, Revenue Attribution, Player Cash, Production Cash-out",
-      "paths": ["src/core/casino-integration.ts"],
-      "testIds": ["tests/core/casino-integration.test.ts"],
-      "evidence": "CasinoIntegration, recordGameResult, cashOut, cashIn, getRevenueAttribution, getStats"
-    },
-    {
-      "id": "social.view",
-      "domain": "core.social",
-      "status": "active",
-      "contract": "Kombinierte soziale Darstellung: Ego-Netzwerk, Influence Inspector, Beziehungsprofil",
-      "paths": ["src/core/social-view.ts", "src/core/ego-network.ts", "src/core/influence-inspector.ts", "src/core/relationship-profile.ts"],
-      "testIds": ["tests/core/social-view.test.ts"],
-      "evidence": "SocialView, buildEgoNetwork, analyzeInfluence, buildRelationshipProfile, renderSocialOverview"
-    },
-    {
-      "id": "social.ego-network",
-      "domain": "core.social",
-      "status": "active",
-      "contract": "Ego-Netzwerk-Ansicht mit direkten und indirekten Verbindungen, Dispositionen und Statistiken",
-      "paths": ["src/core/ego-network.ts"],
-      "testIds": ["tests/core/social-view.test.ts"],
-      "evidence": "buildEgoNetworkView, renderEgoNetwork, EgoNetworkView"
-    },
-    {
-      "id": "social.influence-inspector",
-      "domain": "core.social",
-      "status": "active",
-      "contract": "Einfluss-Inspector für Faktor-Beiträge und Contribution-Traces",
-      "paths": ["src/core/influence-inspector.ts"],
-      "testIds": ["tests/core/social-view.test.ts"],
-      "evidence": "analyzeInfluence, renderInfluenceAnalysis, InfluenceAnalysis"
-    },
-    {
-      "id": "social.relationship-profile",
-      "domain": "core.social",
-      "status": "active",
-      "contract": "Beziehungsprofil mit allen vier Dimensionen (trust, sympathy, conflict, influence)",
-      "paths": ["src/core/relationship-profile.ts"],
-      "testIds": ["tests/core/social-view.test.ts"],
-      "evidence": "buildRelationshipProfile, renderRelationshipProfile, RelationshipProfile"
-    },
-    {
-      "id": "rooming.geometry",
-      "domain": "core.rooming",
-      "status": "active",
-      "contract": "Innenwände im Produktionsbuild: WALL blockiert Navigation/Kollision, DOOR durchgehend, OPENING verschmilzt Räume. Flood-Fill Regionenerkennung, deterministische RoomId-Stabilisierung.",
-      "paths": ["src/core/sim/layout/wall.ts", "src/core/sim/layout/nav-grid.ts", "src/core/sim/layout/layout-editor.ts", "src/core/sim/layout/layout-from-template.ts", "src/core/sim/layout/wall-collision.ts", "src/core/sim/layout/wall-navigation.ts", "src/core/sim/layout/wall-occlusion.ts", "src/core/sim/layout/door-passage.ts", "src/core/sim/layout/room-id-stabilization.ts", "src/render/wall/wall-renderer.ts"],
-      "testIds": ["tests/core/sim/layout/wall.test.ts", "tests/core/sim/layout/nav-grid.test.ts", "tests/core/sim/layout/layout-editor.test.ts", "tests/core/sim/layout/layout-from-template.test.ts", "tests/core/sim/layout/wall-collision.test.ts", "tests/core/sim/layout/wall-navigation.test.ts", "tests/core/sim/layout/wall-occlusion.test.ts", "tests/core/sim/layout/door-passage.test.ts", "tests/core/sim/layout/room-id-stabilization.test.ts"],
-      "evidence": "WALL/DOOR/OPENING semantics, flood-fill regions, room ID stabilization, collision/navigation/occlusion/door-passage"
-    },
-    {
-      "id": "rooming.roles",
-      "domain": "core.rooming",
-      "status": "active",
-      "contract": "Offener Objektrollen-Katalog: stabile namespaced RoleIds, roleWeightsBps pro Objektdefinition, fail-closed Validierung, Furniture.kind als Technikdiscriminator",
-      "paths": ["src/core/sim/room/role-registry.ts", "src/core/sim/room/role-definitions.ts", "src/core/sim/room/furniture-definition.ts"],
-      "testIds": ["tests/core/sim/room/role-registry.test.ts", "tests/core/sim/room/role-definitions.test.ts", "tests/core/sim/room/furniture-definition.test.ts"],
-      "evidence": "RoleRegistry, RoleDefinition, FurnitureDefinition, fail-closed validation, multi-role objects"
-    },
-    {
-      "id": "rooming.profile",
-      "domain": "core.rooming",
-      "status": "active",
-      "contract": "Abgeleitetes Raumprofil mit inkrementellem Cache: P[room][role] = Σ(weightBps × conditionFactor × capacityFactor), sublinearer Kapazitätsbeitrag, struktureller Cache-Schlüssel, invertierter Index role→room",
-      "paths": ["src/core/sim/room/room-profile.ts", "src/core/sim/room/room-cache.ts"],
-      "testIds": ["tests/core/sim/room/room-profile.test.ts", "tests/core/sim/room/room-cache.test.ts"],
-      "evidence": "RoomProfileCalculator, RoomCache, capacityFactor, conditionFactor, invertierter Index, Top-K-Raumsuchen"
-    },
-    {
-      "id": "rooming.perception",
-      "domain": "core.rooming",
-      "status": "active",
-      "contract": "Individuelle NPC-Wahrnehmung: Perceived(room, actor, context)[role] = RoomProfile(room)[role] × Interest(actor, role, context), deterministisch, nicht gespeichert",
-      "paths": ["src/core/sim/room/npc-perception.ts"],
-      "testIds": ["tests/core/sim/room/npc-perception.test.ts"],
-      "evidence": "NPCPerceptionResolver, perceiveRoom, perceiveRole, Interest-Translatoren, deterministische Wahrnehmung"
-    },
-    {
-      "id": "rooming.identity",
-      "domain": "core.rooming",
-      "status": "active",
-      "contract": "Öffentliche Identität mit Hysterese: deduplizierte Besucher-Evidenz, 20% Wechselmarge, Zugriffs-Policy (public/private/residents-only), Gebäude/Viertel-Aggregation",
-      "paths": ["src/core/sim/room/public-identity.ts", "src/core/sim/room/access-policy.ts"],
-      "testIds": ["tests/core/sim/room/public-identity.test.ts", "tests/core/sim/room/access-policy.test.ts"],
-      "evidence": "PublicIdentityEngine, AccessPolicyEngine, identifyRoom, recordVisitEvidence, applyDecay, canEnter"
+      "description": "Zwei getrennte RNG-Streams: gameplay (spielrelevant, gespeichert) und presentation (Darstellung, nie gespeichert).",
+      "paths": ["src/core/rng/streams.ts", "src/core/rng/prng.ts"],
+      "testIds": ["src/core/rng/__tests__/streams.test.ts", "src/store/__tests__/prng-persistence.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
     }
-  ]
+  ],
+  "tombstones": []
 }

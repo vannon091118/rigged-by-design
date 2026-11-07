@@ -4,8 +4,8 @@
  * Beziehungsprofil und visuelles System für Beziehungen/Einflüsse.
  */
 
-import type { WorldTime } from "./worldtime";
-import type { RelationshipEdge, RelationshipDimension } from "./relationship-engine";
+import type { WorldTime } from "./sim/worldtime";
+import type { RelationshipEdge } from "./relationship-engine";
 import type { FactorSnapshot } from "./factor-resolver";
 import type { NormalizationContext } from "./factor-resolver";
 import {

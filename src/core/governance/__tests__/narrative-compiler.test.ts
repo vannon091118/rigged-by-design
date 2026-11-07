@@ -1,174 +1,172 @@
 /**
- * Narrative Compiler Tests — Phase 4.2
- * Vitest-Tests für den Narrative-Compiler und die EOL-Normalisierung.
- * Pfad: src/core/governance/__tests__/narrative-compiler.test.ts
+ * @test-target: scripts/lib/narrative-compiler.mjs
+ * @error-code: ERR-4022
  *
- * Akzeptanzkriterium: pnpm run vitest run src/core/governance/__tests__/narrative-compiler.test.ts grün
+ * NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem
+ * Schreiben erkannt, und dieselbe Inbox erzeugt byte-identische Registry-Daten.
+ * Der Allowlist-Vergleich haelt den Compiler am NAR-08-Command-Vertrag.
  */
-
+import { resolve } from 'node:path';
+import { describe, expect, it } from 'vitest';
+import { COMMAND_SPECS } from '../../sim/narrative/commands/registry';
 import {
-  describe,
-  it,
-  expect,
-} from "vitest";
+  COMMAND_CONTRACTS,
+  compileMacro,
+  compileMacroBatch,
+} from '../../../../scripts/lib/narrative-macros.mjs';
 import {
-  narrativeCompiler,
-  normalizeEol,
-  hasCRLF,
-  hasLonelyCR,
-  detectEOLVariants,
-  type RawNarrativeTemplate,
-} from "../../../core/narrative-compiler.js";
+  buildCompiledRegistry,
+  renderRegistry,
+  renderRuntimeRegistry,
+  renderSlotMap,
+  validateCompiledRegistry,
+  validateRuntimeRegistry,
+  validateSlotMap,
+} from '../../../../scripts/lib/narrative-compiler.mjs';
+import { loadNarrativeContent } from '../../../../scripts/lib/narrative-content.mjs';
 
-describe("Narrative Compiler (Phase 4.2)", () => {
-  it("compiles a valid template", () => {
-    const template: RawNarrativeTemplate = {
-      id: "n-1",
-      title: "Test",
-      description: "A test narrative",
-      domain: "social",
-      version: "1.0.0",
-      conditions: [],
-      consequences: [],
-      weight: 5000,
-      cooldownTicks: 10,
-      tags: ["test"],
-    };
+const ROOT = resolve(process.cwd());
+const report = loadNarrativeContent(ROOT);
+const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
+const messages = (issues: readonly { message: string }[]) => issues.map((entry) => entry.message).join(' | ');
+const firstById = (id: string) => report.contributions.find((entry: { data: { contributionId: string } }) => entry.data.contributionId === id);
 
-    const result = narrativeCompiler.compile(template);
-    expect(result.errors).toHaveLength(0);
-    expect(result.narrative).toBeDefined();
-    expect(result.narrative!.id).toBe("n-1");
+describe('Narrative Content Compiler (NAR-10)', () => {
+  it('akzeptiert den kontrollierten Bestand und liefert einen Inhalts-Hash', () => {
+    expect(report.ok).toBe(true);
+    expect(report.registry.version).toBe(2);
+    expect(report.registry.compiler).toBe('nar-10');
+    expect(report.contentHash).toMatch(/^sha256:[a-f0-9]{64}$/);
+    // Die Registry folgt dem Manifest: jeder Turn traegt genau einen Beitrag.
+    // Ein hart kodierter Zaehler waere nach jedem Beitrag veraltet, deshalb
+    // haelt die Gleichung Manifest<->Registry die Vollstaendigkeit fest und
+    // die Untergrenze von 64 den stillen Schwund des Bestands.
+    expect(report.registry.fragments).toHaveLength(report.manifest.turns.length);
+    expect(report.registry.fragments.length).toBeGreaterThanOrEqual(64);
+    const registryIds = report.registry.fragments.map((entry: { contributionId: string }) => entry.contributionId).sort();
+    const manifestIds = report.manifest.turns.map((entry: { contributionId: string }) => entry.contributionId).sort();
+    expect(registryIds).toEqual(manifestIds);
+    expect(report.runtimeRegistryText).toContain('export const NARRATIVE_REGISTRY');
+    expect(validateRuntimeRegistry(report.runtimeRegistryText, report.compiled)).toEqual([]);
   });
 
-  it("rejects template with missing id", () => {
-    const template: RawNarrativeTemplate = {
-      id: "",
-      title: "Test",
-      description: "Desc",
-      domain: "social",
-      version: "1.0.0",
-      conditions: [],
-      consequences: [],
-      weight: 5000,
-      cooldownTicks: 10,
-      tags: [],
-    };
+  it('parst Makros zu typisierten AST-Daten ohne Roh-Makro in der Registry', () => {
+    const parsed = compileMacro('€FreezeTick:120');
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) expect(parsed.command).toMatchObject({ id: 'FREEZE_TICK', ticks: 120 });
 
-    const result = narrativeCompiler.compile(template);
-    expect(result.narrative).toBeNull();
-    expect(result.errors.some((e) => e.field === "id")).toBe(true);
+    const fragment = report.registry.fragments.find((entry: { contributionId: string }) => entry.contributionId === 'content-compiler-01');
+    expect(fragment?.directives).toEqual([{ id: 'FREEZE_TICK', ticks: 120 }]);
+    expect(JSON.stringify(report.registry)).not.toContain('€');
   });
 
-  it("rejects template with invalid weight", () => {
-    const template: RawNarrativeTemplate = {
-      id: "n-1",
-      title: "Test",
-      description: "Desc",
-      domain: "social",
-      version: "1.0.0",
-      conditions: [],
-      consequences: [],
-      weight: 15000, // > 10000
-      cooldownTicks: 10,
-      tags: [],
-    };
-
-    const result = narrativeCompiler.compile(template);
-    expect(result.narrative).toBeNull();
-    expect(result.errors.some((e) => e.field === "weight")).toBe(true);
+  it('weist ungueltige, unbekannte und nicht ausfuehrbare Makros zurueck', () => {
+    expect(compileMacro('FreezeTick:1').error?.code).toBe('MALFORMED');
+    expect(compileMacro('€FREEZE_TICK:201').error?.code).toBe('INVALID_ARGS');
+    expect(compileMacro('€FREEZE_TICK:1,2').error?.code).toBe('INVALID_ARGS');
+    expect(compileMacro('€UNKNOWN:1').error?.code).toBe('UNKNOWN_COMMAND');
+    expect(compileMacro('€TRIGGER_DIALOG:NAR_10').error?.code).toBe('COMMAND_NOT_EXECUTABLE');
   });
 
-  it("compiles multiple templates", () => {
-    const templates: RawNarrativeTemplate[] = [
-      {
-        id: "n-1",
-        title: "One",
-        description: "D1",
-        domain: "social",
-        version: "1.0.0",
-        conditions: [],
-        consequences: [],
-        weight: 5000,
-        cooldownTicks: 10,
-        tags: [],
-      },
-      {
-        id: "n-2",
-        title: "Two",
-        description: "D2",
-        domain: "work",
-        version: "1.0.0",
-        conditions: [],
-        consequences: [],
-        weight: 3000,
-        cooldownTicks: 5,
-        tags: [],
-      },
-    ];
-
-    const result = narrativeCompiler.compileAll(templates);
-    expect(result.compiled.length).toBe(2);
-    expect(result.errors).toHaveLength(0);
+  it('verlangt stabile ActorRefs und kontrollierte Flags', () => {
+    expect(compileMacro('€ADJUST_RELATIONSHIP from=@0 to=@1 dimension=trust delta=1').error?.code)
+      .toBe('INVALID_TARGET');
+    expect(compileMacro('€SET_FLAG:unbekannt,1', { flags: report.vocabulary.flags }).error?.code)
+      .toBe('UNKNOWN_FLAG');
+    expect(compileMacro(
+      '€ADJUST_RELATIONSHIP from=player to=staff:1 dimension=trust delta=1',
+      { flags: report.vocabulary.flags },
+    ).ok).toBe(true);
   });
 
-  it("compilation errors are tracked with exact field", () => {
-    const template: RawNarrativeTemplate = {
-      id: "",
-      title: "",
-      description: "",
-      domain: "",
-      version: "",
-      conditions: [],
-      consequences: [],
-      weight: -1,
-      cooldownTicks: -5,
-      tags: [],
-    };
-
-    const result = narrativeCompiler.compile(template);
-    expect(result.errors.length).toBeGreaterThan(0);
-  });
-});
-
-describe("EOL Normalization (CRLF Fix)", () => {
-  it("normalizes CRLF to LF", () => {
-    expect(normalizeEol("line1\r\nline2")).toBe("line1\nline2");
+  it('verwirft doppelte Singleton-Commands als unzulaessige Kombination', () => {
+    const batch = compileMacroBatch(['€FREEZE_TICK:10', '€FREEZE_TICK:20']);
+    expect(batch.commands).toEqual([]);
+    expect(batch.issues[0]?.code).toBe('COMMAND_CONFLICT');
   });
 
-  it("normalizes lonely CR to LF (THE FIX)", () => {
-    expect(normalizeEol("line1\rline2")).toBe("line1\nline2");
+  it('spiegelt die NAR-08-Allowlist exakt', () => {
+    const compiler = (Object.values(COMMAND_CONTRACTS) as { id: string; family: string; executable: boolean }[])
+      .map(({ id, family, executable }) => ({ id, family, executable }))
+      .sort((left, right) => left.id.localeCompare(right.id));
+    const runtime = COMMAND_SPECS
+      .map(({ id, family, executable }) => ({ id, family, executable }))
+      .sort((left, right) => left.id.localeCompare(right.id));
+    expect(compiler).toEqual(runtime);
   });
 
-  it("normalizes mixed EOLs", () => {
-    expect(normalizeEol("line1\r\nline2\rline3\nline4")).toBe(
-      "line1\nline2\nline3\nline4"
-    );
+  it('erzeugt aus derselben Inbox byte-identische Registry-Daten', () => {
+    const forward = buildCompiledRegistry(report.contributions, report.vocabulary);
+    const reverse = buildCompiledRegistry([...report.contributions].reverse(), report.vocabulary);
+    expect(forward.issues).toEqual([]);
+    expect(renderRegistry(forward.document)).toBe(renderRegistry(reverse.document));
+    expect(renderRuntimeRegistry(forward.document)).toBe(renderRuntimeRegistry(reverse.document));
+    expect(forward.document.contentHash).toBe(reverse.document.contentHash);
   });
 
-  it("leaves pure LF unchanged", () => {
-    expect(normalizeEol("line1\nline2")).toBe("line1\nline2");
+  it('erkennt gegensaetzliche Sprecher und inkompatible Stimmung', () => {
+    const speakerBase = clone(firstById('opening-inheritance-01'));
+    const speaker = clone(speakerBase);
+    speaker.path = 'content/narrative/contributions/2099-01-01-conflict-speaker.json';
+    speaker.data.contributionId = 'conflict-speaker';
+    speaker.data.turnId = '2099-01-01T00:00Z-conflict-speaker';
+    speaker.data.role = 'SKEPTIKER';
+    expect(messages(buildCompiledRegistry([speakerBase, speaker], report.vocabulary).issues))
+      .toContain('gegensaetzliche Sprecher');
+
+    const moodBase = clone(firstById('ledger-pages-01'));
+    const mood = clone(moodBase);
+    mood.path = 'content/narrative/contributions/2099-01-01-conflict-mood.json';
+    mood.data.contributionId = 'conflict-mood';
+    mood.data.turnId = '2099-01-01T00:00Z-conflict-mood';
+    mood.data.mood = 'angespannt';
+    expect(messages(buildCompiledRegistry([moodBase, mood], report.vocabulary).issues))
+      .toContain('inkompatible Stimmung');
   });
 
-  it("detects CRLF", () => {
-    expect(hasCRLF("line1\r\nline2")).toBe(true);
-    expect(hasCRLF("line1\nline2")).toBe(false);
+  it('erkennt widerspruechliche Flags, fehlende Persona-Refs und Makro-Konflikte', () => {
+    const flags = clone(firstById('start-pool-opening-01'));
+    flags.data.flags = ['narrativ', 'startpool', 'rueckkehrer'];
+    expect(messages(buildCompiledRegistry([flags], report.vocabulary).issues))
+      .toContain('widerspruechliche Story-Flags');
+
+    const persona = clone(firstById('opening-inheritance-01'));
+    persona.data.personaRefs = [];
+    expect(messages(buildCompiledRegistry([persona], report.vocabulary).issues))
+      .toContain('personaRefs enthaelt rita-kern nicht');
+
+    const commands = clone(firstById('content-compiler-01'));
+    commands.data.directives = ['€FREEZE_TICK:10', '€FREEZE_TICK:20'];
+    expect(messages(buildCompiledRegistry([commands], report.vocabulary).issues))
+      .toContain('COMMAND_CONFLICT');
   });
 
-  it("detects lonely CR", () => {
-    expect(hasLonelyCR("line1\rline2")).toBe(true);
-    expect(hasLonelyCR("line1\r\nline2")).toBe(false); // \r\n is not lonely
-    expect(hasLonelyCR("line1\nline2")).toBe(false);
+  it('erkennt Hash-, Struktur- und Byte-Drift der generierten Registry', () => {
+    const hashDrift = clone(report.registry);
+    hashDrift.contentHash = `sha256:${'0'.repeat(64)}`;
+    expect(messages(validateCompiledRegistry(hashDrift, report.compiled)))
+      .toContain('contentHash');
+
+    const textDrift = clone(report.registry);
+    textDrift.fragments[0].text = `${textDrift.fragments[0].text} geaendert`;
+    expect(messages(validateCompiledRegistry(textDrift, report.compiled)))
+      .toContain('weicht vom Beitrag ab');
+
+    const formatted = report.registryText.replace('"version": 2', '"version":  2');
+    expect(messages(validateCompiledRegistry(report.registry, report.compiled, formatted)))
+      .toContain('byte-identisch');
+
+    const runtimeDrift = `${report.runtimeRegistryText}// drift\n`;
+    expect(messages(validateRuntimeRegistry(runtimeDrift, report.compiled)))
+      .toContain('byte-identisch');
   });
 
-  it("detects all EOL variants", () => {
-    const variants = detectEOLVariants("line1\r\nline2\rline3\n");
-    expect(variants).toContain("CRLF (\\r\\n)");
-    expect(variants).toContain("Lonely CR (\\r)");
-    expect(variants).toContain("LF (\\n)");
-  });
-
-  it("empty string has no variants", () => {
-    expect(detectEOLVariants("")).toHaveLength(0);
+  it('akzeptiert CRLF-Auscheckungen, ohne echte Formatabweichungen zu verdecken', () => {
+    const crlf = (text: string) => text.replace(/\n/g, '\r\n');
+    expect(messages(validateCompiledRegistry(report.registry, report.compiled, crlf(report.registryText)))).toBe('');
+    expect(messages(validateRuntimeRegistry(crlf(report.runtimeRegistryText), report.compiled))).toBe('');
+    expect(messages(validateSlotMap(crlf(renderSlotMap(report.vocabulary)), report.vocabulary))).toBe('');
+    const realDrift = crlf(report.registryText).replace('"version": 2', '"version":  2');
+    expect(messages(validateCompiledRegistry(report.registry, report.compiled, realDrift))).toContain('byte-identisch');
   });
 });

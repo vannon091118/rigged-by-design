@@ -1,45 +1,103 @@
 {
   "name": "rigged-by-design",
-  "version": "0.3.183",
-  "description": "Life-sim domain engine with lane governance, capability contracts, and ActionSet UI contracts",
   "private": true,
+  "version": "0.3.183",
   "type": "module",
-  "scripts": {
-    "claim:register": "node scripts/claim-register.js",
-    "agent:pretask": "node scripts/agent-pretask.js",
-    "agent:context": "node scripts/agent-context.js",
-    "verify:light": "node scripts/verify-light.js",
-    "verify:capabilities": "node scripts/verify-capabilities.js",
-    "test": "node scripts/run-tests.js",
-    "vitest": "vitest run",
-    "lint": "echo \"lint: no-op (placeholder)\""
+  "engines": {
+    "node": ">=22.22.2"
   },
-  "lane": {
-    "domain": "fundament",
-    "task": "phase-0-foundation",
-    "branch": "lane/fundament/phase-0-foundation",
-    "pathAllowlist": [
-      "src/**",
-      "tests/**",
-      "docs/**",
-      ".lane-claims/**",
-      "package.json",
-      "scripts/**"
-    ],
-    "contractVersions": {
-      "actor-id": "1.0.0",
-      "world-time": "1.0.0",
-      "domain-event": "1.0.0",
-      "relationship": "1.0.0",
-      "factor": "1.0.0",
-      "save": "1.0.0"
-    },
-    "gateProfile": "phase-0"
+  "packageManager": "pnpm@10.4.1",
+  "scripts": {
+    "dev": "vite --config src/Config/vite.config.ts",
+    "build": "vite build --config src/Config/vite.config.ts",
+    "preview": "vite preview --config src/Config/vite.config.ts",
+    "test": "vitest run --config src/Config/vite.config.ts",
+    "test:ci": "node scripts/run-selected-tests.mjs",
+    "test:affected": "node scripts/test-affected.mjs",
+    "agent:context": "node scripts/agent-context.mjs",
+    "agent:feedback": "node scripts/agent-feedback.mjs",
+    "agent:pretask": "node scripts/pretask.mjs",
+    "claim:register": "node scripts/claim-register.mjs",
+    "verify:claims": "node scripts/verify-lane-claims.mjs",
+    "agent:verify": "node scripts/agent-verify.mjs",
+    "catalog": "node scripts/test-catalog.mjs",
+    "narrative:check": "node scripts/verify-narrative-content.mjs",
+    "narrative:compile": "node scripts/compile-narrative-content.mjs --write",
+    "docs:sync": "node scripts/doc-sync.mjs",
+    "verify:docs": "node scripts/verify-docs.mjs",
+    "verify:tree": "node scripts/verify-tree.mjs",
+    "verify:redundancy": "node scripts/verify-redundancy.mjs",
+    "verify:capabilities": "node scripts/verify-capabilities.mjs",
+    "docs:stub": "node scripts/doc-stub.mjs",
+    "inventory:build": "node scripts/build-inventory.mjs",
+    "hooks:install": "node scripts/install-hooks.mjs",
+    "escalation:plan": "node scripts/escalation-plan.mjs",
+    "pr:lift": "node scripts/lift-commit-body.mjs",
+    "ci:long": "node scripts/ci-long-checks.mjs",
+    "branches:prune": "node scripts/branch-cleanup.mjs",
+    "test:perf": "vitest bench --run --config src/Config/vite.config.ts",
+    "soak": "RBD_SOAK_TICKS=100000 vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/soak.test.ts",
+    "balance": "node scripts/balance-run.mjs",
+    "bench:lowend": "node scripts/bench-lowend.mjs",
+    "test:watch": "vitest --config src/Config/vite.config.ts",
+    "typecheck": "tsc --noEmit -p src/Config/tsconfig.json",
+    "check:loc": "node scripts/check-loc.mjs",
+    "verify": "node scripts/run-pipeline.mjs --profile=quick",
+    "verify:all": "node scripts/run-pipeline.mjs --profile=full",
+    "verify:quick": "node scripts/run-pipeline.mjs --profile=quick",
+    "verify:light": "node scripts/run-pipeline.mjs --profile=light",
+    "verify:dev": "node scripts/run-pipeline.mjs --profile=dev",
+    "verify:release": "node scripts/run-pipeline.mjs --profile=release",
+    "fix": "node scripts/run-pipeline.mjs --fix --profile=quick",
+    "fix:all": "node scripts/run-pipeline.mjs --fix --profile=full",
+    "lint": "eslint . --config src/Config/eslint.config.mjs",
+    "lint:fix": "eslint . --fix --config src/Config/eslint.config.mjs",
+    "audit:gate": "pnpm audit",
+    "verify:test-quality": "node scripts/verify-test-quality.mjs",
+    "verify:dead-code": "node scripts/verify-dead-code.mjs",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "assets:manifest": "node scripts/build-asset-manifest.mjs",
+    "assets:audio": "node scripts/encode-audio.mjs",
+    "verify:commit-msg": "node scripts/verify-commit-msg.mjs --head",
+    "sync:deps": "node scripts/sync-dependency-matrix.mjs",
+    "autofix:0911": "node scripts/autofix-0911.mjs",
+    "android:apk": "node scripts/prepare-android.mjs",
+    "android:apk:release": "node scripts/prepare-android.mjs --release",
+    "turn:finish": "node scripts/turn-push.mjs",
+    "turn:finish:full": "node scripts/turn-push.mjs --profile=full",
+    "task:pause": "node scripts/task-state.mjs pause",
+    "task:status": "node scripts/task-state.mjs status",
+    "task:complete": "node scripts/task-state.mjs complete"
+  },
+  "dependencies": {
+    "pixi.js": "^8.6.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "vitest": "^2.1.9"
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@eslint/js": "^10.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.14.0",
+    "ffmpeg-static": "^5.3.0",
+    "globals": "^16.5.0",
+    "jsdom": "^30.1.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "yaml": "^2.9.1"
   },
-  "allowScripts": {
-    "esbuild@0.21.5": true
+  "pnpm": {
+    "overrides": {
+      "glob": "^14.0.3",
+      "minimatch": "^11.0.1"
+    }
   }
 }

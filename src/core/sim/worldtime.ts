@@ -3,8 +3,11 @@
  * Phase 1.2: Integer-tick based, separated from Host Pacing / Wall Clock / Presentation Clock.
  */
 
-export const TICK_MS = 520;
-export const TICKS_PER_DAY = 600;
+import { TICK_MS, TICKS_PER_DAY } from "../contracts/world-time";
+
+// Single source: the contract owns the constants, this module only implements
+// the clock. Re-exported so no consumer needs a second definition.
+export { TICK_MS, TICKS_PER_DAY };
 export const MS_PER_DAY = TICK_MS * TICKS_PER_DAY; // 312000 ms
 
 export interface WorldTime {

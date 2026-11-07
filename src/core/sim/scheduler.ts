@@ -200,13 +200,11 @@ export class Scheduler {
    * Erhöht den Retry-Counter für ein Event im Backlog.
    */
   retryEvent(eventId: string): boolean {
-    const event = this.backlog.find((e) => e.eventId === eventId);
-    if (event) {
-      // eslint-disable-next-line no-param-reassign
-      event.retryCount++;
-      return true;
-    }
-    return false;
+    const index = this.backlog.findIndex((e) => e.eventId === eventId);
+    if (index < 0) return false;
+    const event = this.backlog[index]!;
+    this.backlog[index] = { ...event, retryCount: event.retryCount + 1 };
+    return true;
   }
 
   getStats(): SchedulerStats {

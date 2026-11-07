@@ -4,7 +4,7 @@
  * No more If/Else central branching; all actions come from registered providers.
  */
 
-import { resolveActionSet } from "./action-set-resolver";
+import { resolveActionSet, resolveActionById } from "./action-set-resolver";
 
 // Legacy If/Else central branching — REMOVED.
 // All floor actions are now resolved via ActionSet providers.

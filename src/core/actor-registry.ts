@@ -4,9 +4,6 @@
  * Trennt dauerhafte Personendaten von vorübergehender Präsenz, Rolle, Ort und Session.
  */
 
-import type { WorldTime } from "./sim/worldtime";
-import { createActorId, actorIdEquals, actorIdToString } from "./actor-id";
-
 export type ActorKind = "player" | "visitor" | "staff" | "rival" | "npc";
 
 export type PresenceState = "absent" | "present" | "guest" | "archived";
@@ -51,6 +48,7 @@ export class ActorRegistry {
   private identities = new Map<string, ActorIdentity>();
   private presences = new Map<string, ActorPresence>();
   private readonly config: ActorRegistryConfig;
+  private visitorSequence = 0;
 
   constructor(config: Partial<ActorRegistryConfig> = {}) {
     this.config = { ...DEFAULT_ACTOR_REGISTRY_CONFIG, ...config };
@@ -329,7 +327,10 @@ export class ActorRegistry {
     currentTick: number,
     metadata: Record<string, unknown> = {}
   ): { ok: boolean; actorId?: string; error?: string } {
-    const id = `visitor-${currentTick}-${Math.random().toString(36).slice(2, 7)}`;
+    // Deterministic per registry: the sequence, not a random source, makes
+    // the id unique. A reload with the same call order reproduces it.
+    this.visitorSequence += 1;
+    const id = `visitor-${currentTick}-${this.visitorSequence}`;
     const result = this.registerIdentity(id, "visitor", displayName, currentTick, metadata);
     if (!result.ok) return { ok: false, error: result.error };
     return { ok: true, actorId: id };

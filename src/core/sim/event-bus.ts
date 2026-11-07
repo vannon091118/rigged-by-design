@@ -14,7 +14,7 @@
  */
 
 import type { WorldTime } from "./worldtime";
-import { DomainEvent, EventType, DEFAULT_EVENT_CONTEXT, createDomainEvent, isEventExpired } from "../domain-event";
+import type { EventType } from "../domain-event";
 
 /**
  * Event-Hülle — die allgemeine Struktur jedes Domain-Events.
@@ -74,7 +74,7 @@ export function createEventEnvelope<E extends EventType>(
     payload,
     correlationId,
     causationId,
-    timestampMs: Date.now(),
+    timestampMs: worldTime.ms,
     kind,
   };
 }

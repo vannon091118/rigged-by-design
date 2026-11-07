@@ -1,28 +1,44 @@
-/**
- * ActionSet UI contract: a single action rendered as a card.
- * Part of the ActionSet contract (v1.0.0) — Phase 0.6.
- */
+/** Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. */
+import type { MenuAction } from '../render/floor-actions';
 
-export interface ActionSetEntry {
-  readonly id: string;
-  readonly label: string;
-  readonly icon?: string;
-  readonly category: "movement" | "interaction" | "social" | "economic" | "system";
-  readonly priority: number; // higher = shown first
-  readonly enabled: boolean;
-  readonly disableReason?: string; // machine-readable reason when disabled
+interface ActionCardProps {
+  readonly actions: readonly MenuAction[];
+  readonly onPick: (action: MenuAction) => void;
+  readonly onClose: () => void;
 }
 
-export interface ActionCardProps {
-  readonly action: ActionSetEntry;
-  readonly onExecute: (actionId: string) => void;
-}
+export function ActionCard({ actions, onPick, onClose }: ActionCardProps) {
+  const usable = actions.filter((action) => action.id !== 'CANCEL');
+  const main = usable[0];
+  if (!main) return null;
+  const enabled = usable.filter((action) => action.id !== main.id && action.enabled).slice(0, 2);
+  const alternatives = enabled.length > 0 ? enabled : usable.slice(1, 3);
 
-export function ActionCard(props: ActionCardProps): string {
-  const { action, onExecute } = props;
-  const disabled = !action.enabled;
-  const reason = action.disableReason ? ` (${action.disableReason})` : "";
-  return `<button${disabled ? " disabled" : ""} onclick="onExecute('${action.id}')" title="${action.label}${reason}">
-    ${action.icon ? `[${action.icon}]` : ""}${action.label}
-  </button>`;
+  return (
+    <div className="action-card" role="group" aria-label="Aktionen">
+      <button
+        type="button"
+        className="action-main"
+        disabled={!main.enabled}
+        onClick={() => onPick(main)}
+      >
+        {main.label}
+      </button>
+      <div className="action-alt">
+        {alternatives.map((action) => (
+          <button
+            key={action.id}
+            type="button"
+            disabled={!action.enabled}
+            onClick={() => onPick(action)}
+          >
+            {action.label}
+          </button>
+        ))}
+      </div>
+      <button type="button" className="action-close" aria-label="Schliessen" onClick={onClose}>
+        ×
+      </button>
+    </div>
+  );
 }

@@ -38,7 +38,7 @@ export function createAccount(id: string, initialBalance = 0): Account {
   return { id, balance: initialBalance, version: 0 };
 }
 
-export function deposit(ledger: LedgerState, accountId: string, amount: number): LedgerState {
+export function deposit(ledger: LedgerState, accountId: string, amount: number, tick = 0): LedgerState {
   const account = ledger.accounts.get(accountId);
   if (!account) throw new Error(`Account ${accountId} not found`);
   if (amount <= 0) throw new Error("Deposit amount must be positive");
@@ -54,11 +54,11 @@ export function deposit(ledger: LedgerState, accountId: string, amount: number):
   nextAccounts.set(accountId, nextAccount);
 
   const entry: LedgerEntry = {
-    id: `entry-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    id: `entry-${tick}-${ledger.entryCount + 1}`,
     accountId,
     amount,
     type: "adjustment",
-    timestamp: Date.now(),
+    timestamp: tick,
   };
 
   return {
@@ -72,7 +72,8 @@ export function transfer(
   ledger: LedgerState,
   fromId: string,
   toId: string,
-  amount: number
+  amount: number,
+  tick = 0
 ): { ledger: LedgerState; ok: boolean; reason?: string } {
   if (amount <= 0) {
     return { ledger, ok: false, reason: "Transfer amount must be positive" };
@@ -119,20 +120,19 @@ export function transfer(
   nextAccounts.set(fromId, nextFrom);
   nextAccounts.set(toId, nextTo);
 
-  const now = Date.now();
   const entryFrom: LedgerEntry = {
-    id: `entry-${now}-a`,
+    id: `entry-${tick}-${ledger.entryCount + 1}-a`,
     accountId: fromId,
     amount: -amount,
     type: "transfer",
-    timestamp: now,
+    timestamp: tick,
   };
   const entryTo: LedgerEntry = {
-    id: `entry-${now}-b`,
+    id: `entry-${tick}-${ledger.entryCount + 2}-b`,
     accountId: toId,
     amount,
     type: "transfer",
-    timestamp: now,
+    timestamp: tick,
   };
 
   return {
@@ -149,10 +149,11 @@ export function transferLiability(
   ledger: LedgerState,
   fromId: string,
   toId: string,
-  amount: number
+  amount: number,
+  tick = 0
 ): { ledger: LedgerState; ok: boolean; reason?: string } {
   // Liability transfers follow the same atomicity as normal transfers
-  return transfer(ledger, fromId, toId, amount);
+  return transfer(ledger, fromId, toId, amount, tick);
 }
 
 export function diagnose(ledger: LedgerState): {
