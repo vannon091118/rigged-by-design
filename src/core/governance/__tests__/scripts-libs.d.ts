@@ -120,6 +120,62 @@ declare module '*/release-escalation.mjs' {
   export function blockedReason(kind: string): string;
 }
 
+declare module '*/body-sync.mjs' {
+  export const AUTO_START: string;
+  export const AUTO_END: string;
+  export const REQUIRED_SECTIONS: readonly [string, string, string];
+  export interface DiffEntry {
+    readonly status: string;
+    readonly from: string | null;
+    readonly path: string;
+  }
+  export interface DiffGroups {
+    readonly runtime: readonly DiffEntry[];
+    readonly tests: readonly DiffEntry[];
+    readonly content: readonly DiffEntry[];
+    readonly docs: readonly DiffEntry[];
+    readonly governance: readonly DiffEntry[];
+    readonly tooling: readonly DiffEntry[];
+    readonly version: readonly DiffEntry[];
+    readonly uncertain: readonly DiffEntry[];
+  }
+  export interface MergeResult {
+    readonly ok: boolean;
+    readonly body: string;
+    readonly changed: boolean;
+    readonly reason: string | null;
+  }
+  export interface SplitResult {
+    readonly state: 'absent' | 'present' | 'invalid';
+    readonly outside: string;
+    readonly inner: string;
+    readonly reason: string | null;
+  }
+  export function parseNameStatus(text: string): DiffEntry[];
+  export function classifyPaths(entries: readonly DiffEntry[]): DiffGroups;
+  export function hasCodeChanges(groups: DiffGroups): boolean;
+  export function describeDiff(
+    entries: readonly DiffEntry[],
+    options?: { readonly groups?: DiffGroups },
+  ): string[];
+  export function diffSummary(entries: readonly DiffEntry[]): string;
+  export function splitAutomation(text: string): SplitResult;
+  export function mergeAutomation(existing: string, inner: string): MergeResult;
+  export function missingSections(text: string): string[];
+  export function evaluateNotes(text: string): {
+    readonly ok: boolean;
+    readonly reason: string | null;
+    readonly content: readonly string[];
+  };
+  export function describeAutomation(input?: {
+    readonly entries?: readonly DiffEntry[];
+    readonly outside?: string;
+    readonly commitText?: string;
+    readonly head?: string;
+    readonly base?: string;
+  }): string;
+}
+
 declare module '*/tree-changes.mjs' {
   export interface TreeChanges {
     readonly added: readonly string[];

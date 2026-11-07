@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 08:49 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.157] - 2026-11-07
+
+### Technik
+- **Bodies verlieren keine Inhalte mehr.** `scripts/lib/body-sync.mjs` ist die gemeinsame Wahrheit fuer Commit- und PR-Bodies: automatische Zusammenfassungen leben ausschliesslich zwischen `<!-- rbd:auto-body:start -->` und `<!-- rbd:auto-body:end -->`, alles ausserhalb bleibt unveraendert. Doppelte oder unbalancierte Marker brechen die Schreiboperation ab, statt zu raten.
+- **Der Diff ist die Wahrheit.** `turn-push.mjs` hat den generischen Commit-Fallback verloren: echte Codeaenderungen ohne inhaltliche `.turn-notes.md` brechen mit `ERR-4006` ab; reine Doku-, Governance- und Versionsaenderungen werden ehrlich als solche beschrieben. `lift-commit-body.mjs` und `promote.mjs` bewerten den vollstaendigen Diff von der Basis bis zum Head (alle Commits, Dateistatus, Runtime vor Doku) und ergaenzen nur fehlende Pflichtsektionen.
+- **Promotion erhaelt die PR-Beschreibung.** Der Merge-Text ist der vorhandene PR-Body plus Automationsbereich, nicht mehr der Body des letzten Commits. Laesst sich der Body nicht lesen oder die Markerlage nicht sicher bestimmen, wird nicht gemergt.
+- **PR-Escalation ist isoliert.** `.github/workflows/pr-escalation.yml` checkt `main` aus, holt den Push-Branch nur als Ref und fuehrt keinen fremden Code mit `pull-requests: write` aus.
+- `turn:finish` respektiert jetzt den eigenen Claim: Meta-Dateien bleiben im Commit, wenn die Lane den Pfad ausdruecklich fuehrt.
 
 ## [0.3.154] - 2026-11-07
 

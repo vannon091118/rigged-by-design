@@ -15,6 +15,12 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { IDENTITY } from './lib/identity.mjs';
+import {
+  describeAutomation,
+  mergeAutomation,
+  parseNameStatus,
+  splitAutomation,
+} from './lib/body-sync.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -62,27 +68,50 @@ function fetchHead() {
 const headRef = () => (git(['rev-parse', '--verify', `origin/${branch}`]) !== null ? `origin/${branch}` : 'HEAD');
 
 const subject = (ref) => git(['log', '-1', '--pretty=%s', ref]) ?? `Promotion ${ref}`;
-const SECTIONS = Object.freeze([
-  '### Changes (Was ist neu)',
-  '### Technische Basis & Kausalität',
-  '### Ausblick (Nächste Schritte)',
-]);
+/** Gemeinsame Basis mit main; null heisst: der Diff ist nicht bestimmbar. */
+function diffBase(ref) {
+  for (const candidate of ['origin/main', 'main', 'HEAD']) {
+    const base = git(['merge-base', candidate, ref]);
+    if (base) return base;
+  }
+  return null;
+}
+
+/** Alle Commits des PR, nicht nur der letzte. */
+function commitText(ref) {
+  const base = diffBase(ref);
+  return base ? git(['log', '--pretty=format:%s%n%b', `${base}..${ref}`]) ?? '' : '';
+}
 
 /**
- * Commit-Text mit Pflichtstruktur. Ein fremder Body ohne Sektionen wuerde
- * `verify-commit-msg --head` auf main rot machen; die Promotion baut ihn
- * deshalb selbst, statt sich auf den PR-Text zu verlassen.
+ * Merge-Text: vorhandener PR-Body plus abgegrenzter Automationsbereich.
+ *
+ * Der menschliche Text bleibt unveraendert; ergaenzt werden nur fehlende
+ * Pflichtsektionen und die Fakten des vollstaendigen Diffs. Ein Merge-Text aus
+ * dem letzten Commit-Body hat genau diese Details vorher weggeworfen.
  */
-function body(ref) {
-  const raw = git(['log', '-1', '--pretty=%b', ref]) ?? '';
-  if (raw.includes(SECTIONS[0]) && raw.includes(SECTIONS[2])) return raw;
-  const bullets = (git(['log', '-1', '--pretty=%B', ref]) ?? '')
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .slice(0, 10)
-    .map((line) => `- ${line.replace(/^[-*]\s+/, '')}`);
-  return [SECTIONS[0], ...bullets, '', SECTIONS[1], '- Automatisch aus dem CI-Ergebnis gehoben; Inhalt unveraendert.', '', SECTIONS[2], `- Promotion von \`${branch}\` nach \`${MAIN}\`.`, ''].join('\n');
+function mergeText(existing, ref) {
+  const base = diffBase(ref);
+  if (!base) return { ok: false, body: '', changed: false, reason: 'keine gemeinsame Basis mit main; Diff nicht bestimmbar' };
+  const entries = parseNameStatus(git(['diff', '--name-status', `${base}...${ref}`]) ?? '');
+  return mergeAutomation(
+    existing,
+    describeAutomation({
+      entries,
+      outside: splitAutomation(existing).outside,
+      commitText: commitText(ref),
+      base,
+      head: git(['rev-parse', ref]) ?? '',
+    }),
+  );
+}
+
+/** Body in eine temporaere Datei schreiben; `gh` liest nur Dateien, keine Argumente. */
+function writeBodyFile(text, name = 'pr-body.md') {
+  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
+  const file = join(dir, name);
+  writeFileSync(file, `${text}\n`);
+  return file;
 }
 
 function openPr(head = branch) {
@@ -98,14 +127,20 @@ function openPr(head = branch) {
  */
 function syncPrBody(number) {
   if (!number) return;
-  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']) ?? '';
-  if (SECTIONS.every((section) => current.includes(section))) return;
-  const ref = headRef();
-  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
-  const bodyFile = join(dir, 'pr-body.md');
-  writeFileSync(bodyFile, `${body(ref)}\n`);
+  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
+  if (current === null) {
+    warn(`PR #${number}: Body nicht lesbar; keine Schreiboperation`);
+    return;
+  }
+  const merged = mergeText(current, headRef());
+  if (!merged.ok) {
+    warn(`PR #${number}: ${merged.reason}; Body bleibt unveraendert`);
+    return;
+  }
+  if (!merged.changed) return;
+  const bodyFile = writeBodyFile(merged.body);
   if (gh(['pr', 'edit', number, '--body-file', bodyFile]) === null) warn(`PR #${number}: Body nicht aktualisiert`);
-  else log(`PR #${number}: Pflichtsektionen aus dem Commit ergaenzt`);
+  else log(`PR #${number}: Diff-Fakten im Automationsbereich ergaenzt`);
 }
 
 function label(number, name, note) {
@@ -118,19 +153,33 @@ function ensurePr() {
   const existing = openPr();
   if (existing) return existing;
   const ref = headRef();
-  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
-  const bodyFile = join(dir, 'pr-body.md');
-  writeFileSync(bodyFile, `${body(ref)}\n`);
+  const merged = mergeText('', ref);
+  if (!merged.ok) {
+    warn(`PR nicht angelegt: ${merged.reason}`);
+    return '';
+  }
+  const bodyFile = writeBodyFile(merged.body);
   if (gh(['pr', 'create', '--base', MAIN, '--head', branch, '--title', subject(ref), '--body-file', bodyFile]) === null) return '';
   return openPr();
 }
 
-/** Gruen: PR mit Commit-Text mergen, damit `verify-commit-msg --head` gruen bleibt. */
+/**
+ * Gruen: mit dem erhaltenen PR-Body mergen, damit `verify-commit-msg --head`
+ * gruen bleibt und die Beschreibung nicht auf den letzten Commit schrumpft.
+ */
 function mergeGreen(number) {
   const ref = headRef();
-  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
-  const bodyFile = join(dir, 'body.md');
-  writeFileSync(bodyFile, `${body(ref)}\n`);
+  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
+  if (current === null) {
+    warn(`PR #${number}: Body nicht lesbar; kein Merge mit geratenem Text`);
+    return false;
+  }
+  const composed = mergeText(current, ref);
+  if (!composed.ok) {
+    warn(`PR #${number}: ${composed.reason}; kein Merge`);
+    return false;
+  }
+  const bodyFile = writeBodyFile(composed.body, 'body.md');
   if (process.env.RBD_PROMOTE_AUTO_MERGE === '1') {
     // GitHub mergt selbst: der Commit ist signiert (Verified). Das setzt im
     // Repo die Squash-Vorgabe "PR-Titel und -Beschreibung" voraus, sonst fehlt

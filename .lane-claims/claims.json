@@ -439,7 +439,38 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
     "createdAt": "cda354dc04975d488a0ac27dc4c00402b56a1e74"
+  },
+  {
+    "id": "lane/governance/10-body-preservation",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/10-body-preservation",
+    "baseSha": "f5f2ef9956480fb1dfb5642f694a568be7f478e5",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/lib/body-sync.mjs",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/turn-push.mjs",
+      "scripts/lift-commit-body.mjs",
+      "scripts/promote.mjs",
+      "scripts/verify-lane-claims.mjs",
+      ".github/workflows/pr-escalation.yml",
+      "src/core/governance/__tests__/body-sync.test.ts",
+      "src/core/governance/__tests__/scripts-libs.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "f5f2ef9956480fb1dfb5642f694a568be7f478e5"
   }
 ]

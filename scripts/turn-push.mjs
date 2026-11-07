@@ -4,7 +4,15 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
-import { isForbiddenForLanes } from './lib/lane-claims.mjs';
+import { isForbiddenForLanes, openClaims } from './lib/lane-claims.mjs';
+import {
+  classifyPaths,
+  describeDiff,
+  evaluateNotes,
+  hasCodeChanges,
+  parseNameStatus,
+  REQUIRED_SECTIONS,
+} from './lib/body-sync.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
@@ -49,10 +57,15 @@ const stage = () => {
   // aus dem Index entfernt, sofern nicht explizit als --paths übergeben.
   if (paths.length === 0) {
     const staged = git(['diff', '--cached', '--name-only']);
+    // Ein Claim, der einen Meta-Pfad ausdruecklich fuehrt, ist die Ausnahme:
+    // sonst koennte keine Governance-Lane ihre eigene Doku committen, obwohl
+    // AGENTS.md genau diesen Weg verlangt.
+    const claim = openClaims().find((entry) => entry.branch === currentBranch);
     const forbidden = staged
       .split(/\r?\n/)
       .filter(Boolean)
-      .filter((file) => isForbiddenForLanes(file) && file !== 'package.json' && file !== 'pnpm-lock.yaml');
+      .filter((file) => isForbiddenForLanes(file) && file !== 'package.json' && file !== 'pnpm-lock.yaml')
+      .filter((file) => !(claim && claim.allowsPath(file)));
     if (forbidden.length > 0) {
       git(['reset', '--', ...forbidden]);
       console.log(`turn:finish: ${forbidden.length} Sperrlisten-Datei(en) vom Index entfernt: ${forbidden.join(', ')}`);
@@ -134,24 +147,38 @@ if (!staged) {
 
 const files = staged.split(/\r?\n/).filter(Boolean);
 console.log(`turn:finish: ${files.length} Datei(en) gestaged`);
+// Der Diff entscheidet, ob eine Vorlage ueberhaupt zulaessig ist. Die alte
+// generische Behauptung ("laeuft ueber den Store-Vertrag") war fuer jede
+// Aenderung falsch, die genau das nicht tut. Echte Codeaenderungen brauchen
+// inhaltliche Notes; reine Doku- und Versionsaenderungen werden ehrlich benannt.
+const entries = parseNameStatus(git(['diff', '--cached', '--name-status']));
+const groups = classifyPaths(entries);
 const notesPath = resolve(ROOT, '.turn-notes.md');
+const notes = existsSync(notesPath) ? readFileSync(notesPath, 'utf8') : '';
+const notesCheck = evaluateNotes(notes);
+if (!notesCheck.ok && hasCodeChanges(groups)) {
+  const code = [...groups.runtime, ...groups.tests, ...groups.content, ...groups.tooling]
+    .slice(0, 8)
+    .map((entry) => entry.path)
+    .join(', ');
+  fail(1, 'ERR-4006', 'turn:finish', `Codeaenderung ohne inhaltliche .turn-notes.md (${code}); kein irrefuehrender Commit`);
+  process.exit(1);
+}
 let message;
-if (existsSync(notesPath)) {
-  message = readFileSync(notesPath, 'utf8').trim();
+if (notesCheck.ok) {
+  message = notes.trim();
 } else {
-  const shown = files.slice(0, 8).map((file) => `- ${file} aktualisiert.`).join('\n');
-  const more = files.length > 8 ? `\n- Weitere ${files.length - 8} Dateien im selben Turn.` : '';
   message = [
-    `Turn: ${files.length} Dateien aktualisiert`,
+    `Doku/Governance: ${files.length} Datei(en) aktualisiert`,
     '',
-    '### Changes (Was ist neu)',
-    shown + more,
+    REQUIRED_SECTIONS[0],
+    ...describeDiff(entries, { groups }).map((line) => `- ${line}`),
     '',
-    '### Technische Basis & Kausalität',
-    '- Alle Änderungen laufen über den einen Store-, Ledger- und Snapshot-Vertrag; die Governance-Gates prüfen jede Stufe vor dem Commit.',
+    REQUIRED_SECTIONS[1],
+    '- Keine Runtime-, Test- oder Inhaltsaenderung im Diff; geaendert sind nur Dokumentation, Governance oder die Versionszeile.',
     '',
-    '### Ausblick (Nächste Schritte)',
-    '- Offene Spielsysteme und UI-Pfade nach den dokumentierten Prioritäten weiterführen.',
+    REQUIRED_SECTIONS[2],
+    '- Offene Punkte stehen in docs/ROADMAP.md; dieser Commit behauptet keine Spielaenderung.',
   ].join('\n');
 }
 

@@ -1,7 +1,13 @@
 name: PR Escalation
 
 # Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlt die Pflichtstruktur,
-# hebt dieser Workflow sie in den PR-Body (Eskalation statt Blocker).
+# ergaenzt dieser Workflow sie in einem abgegrenzten Automationsbereich.
+#
+# Schreibrechte und fremder Code gehoeren nicht zusammen. Der Workflow checkt
+# deshalb ausschliesslich `main` aus; der Push-Branch kommt als Ref dazu und
+# liefert nur Diff und Commit-Text. Vorher lief hier Code aus dem gepushten
+# Branch mit `pull-requests: write` - dieselbe Luecke, die `promote` schon
+# geschlossen hat.
 on:
   push:
     branches-ignore: [main]
@@ -16,29 +22,26 @@ concurrency:
 
 jobs:
   lift:
-    name: Commit-Body in PR-Body heben
+    name: Diff in den PR-Body heben
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - name: Checkout
+      - name: Checkout (vertrauenswuerdiges main)
         uses: actions/checkout@v7
         with:
+          ref: main
           fetch-depth: 0
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
           node-version: 22
-      - name: Body pruefen
-        id: body
-        run: |
-          if node scripts/verify-commit-msg.mjs --head > body-check.log 2>&1; then
-            echo "needed=false" >> "$GITHUB_OUTPUT"
-          else
-            cat body-check.log
-            echo "needed=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: PR-Body heben
-        if: steps.body.outputs.needed == 'true'
+      - name: Branch-Kopf als Daten holen
+        env:
+          HEAD_BRANCH: ${{ github.ref_name }}
+        run: git fetch --no-tags origin "+refs/heads/${HEAD_BRANCH}:refs/remotes/origin/${HEAD_BRANCH}"
+      - name: PR-Body abgleichen
         env:
           GH_TOKEN: ${{ github.token }}
+          HEAD_BRANCH: ${{ github.ref_name }}
+          HEAD_SHA: ${{ github.sha }}
         run: node scripts/lift-commit-body.mjs

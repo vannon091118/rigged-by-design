@@ -12,7 +12,14 @@
  * Exit 0 = OK, Exit 1 = Claim fehlt, Verletzung oder Kollision.
  */
 import { execFileSync } from 'node:child_process';
-import { loadClaimsStrict, findCollisions, OWNERS, BRANCH_PATTERN, LEGACY_PREFIXES } from './lib/lane-claims.mjs';
+import {
+  loadClaimsStrict,
+  findCollisions,
+  META_FILES,
+  OWNERS,
+  BRANCH_PATTERN,
+  LEGACY_PREFIXES,
+} from './lib/lane-claims.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -93,22 +100,8 @@ if (!BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.sta
   process.exit(1);
 }
 
-/**
- * Die acht Meta-Dateien. Sie sind für Feature-Lanes gesperrt: ein Agent darf
- * sie nicht inhaltlich schreiben. Das System schreibt nur Marker und Version
- * (Pre-Commit-Hook, doc-sync, version-bump); genau dieser Schreibpfad bleibt
- * erlaubt, damit ein Commit nicht an seiner eigenen Pflege scheitert.
- */
-const META_FILES = Object.freeze([
-  'AGENTS.md',
-  'docs/INVENTORY.md',
-  'docs/ARCHITECTURE.md',
-  'docs/CHANGELOG.md',
-  'docs/DEVTAGEBUCH.md',
-  'docs/ROADMAP.md',
-  'package.json',
-  'pnpm-lock.yaml',
-]);
+// Die acht Meta-Dateien kommen aus scripts/lib/lane-claims.mjs: eine Liste fuer
+// Gate und turn:finish, damit die Sperre nicht an zwei Stellen driftet.
 
 /** Hook-Dateien: sie gehören der Governance-Lane, nie einer Feature-Lane. */
 const HOOK_FILES = Object.freeze(['.githooks/pre-commit', '.githooks/commit-msg']);

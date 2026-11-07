@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 08:49 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -219,6 +219,14 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | A6 | Touch: Ein-Finger-Pan ab 8 px, Tap-to-Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gaesten | offen, braucht Hardware |
 | A7 | Huelle/Performance: Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste, Slow 4G, Atlas-Requests | teilweise: 9 Mbit/s 20 Requests/2,51 s; Slow 4G 22 Requests/12,16 s/2,42 MB; HUD-PNGs inline; WebP-Atlas und lazy Plinko-Buehne seit 0.3.141 auf main |
 | A8 | Release: Debug- und Release-APK per `adb install`, `verify:all` 12/12, Tag und Notes, aktuelle Screenshots | offen |
+
+### CI und Governance
+
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| Release-Plan im Runner | offen | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
+| Doku-Reconcile-Runner | offen | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
+| Issue-Resolver nach erneutem Gate | offen | `sweepGreenMain()` schliesst nur, wenn der gemeldete Commit auf `main` liegt. Naechster Schritt: Fingerprint plus erneut gruenes Gate auf dem neuen Stand, sonst Issue aktualisieren. |
 
 ### Spiel und Simulation
 

@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 08:49 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -59,14 +59,14 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 
 ## Delivery
 
-- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab.
+- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
 - **Light ist der Normalfall.** `turn:finish` prueft Lint, LOC, Typecheck, Doku, Tree und Redundanz; Tests, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von pnpm run test, pnpm run test:ci oder pnpm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
 - Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
 - Direkter Push auf `main` ist durch den Branch-Schutz gesperrt. `turn:finish` pusht ausschliesslich den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab. `promote` legt aus einem gruenen Feature-Push den PR an; das volle Gate laeuft im PR und erst dieser Lauf wird gemergt. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
 - **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
-- **Automatische Promotion:** `promote.yml` legt nach einem gruenen Feature-Push den PR an und mergt erst den gruenen PR-Lauf. Ein roter Lauf wird Issue und Label (`integration/rot`); `integration` wird nur auf ausdrueckliche Anforderung (`workflow_dispatch` mit `integrate=true`) benutzt, nie automatisch. Zwei parallele rote Staende werden dort gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten — nur Marker- und Versionskonflikte loest `promote` selbst. Der Merge-Text wird aus dem Commit-Body gebaut und traegt die Pflichtsektionen, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
+- **Automatische Promotion:** `promote.yml` legt nach einem gruenen Feature-Push den PR an und mergt erst den gruenen PR-Lauf. Ein roter Lauf wird Issue und Label (`integration/rot`); `integration` wird nur auf ausdrueckliche Anforderung (`workflow_dispatch` mit `integrate=true`) benutzt, nie automatisch. Zwei parallele rote Staende werden dort gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten — nur Marker- und Versionskonflikte loest `promote` selbst. Der Merge-Text ist der vorhandene PR-Body plus ein abgegrenzter Automationsbereich aus dem vollstaendigen Diff (`scripts/lib/body-sync.mjs`); fehlende Pflichtsektionen werden nur dort ergaenzt, vorhandene Beschreibungen nie ersetzt, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
 ## Kritikalitaet: was stoppt, was wird ein Issue
@@ -178,6 +178,7 @@ diese Punkte:
 | Lane-Claim, Owner, Allowlist, Kollisionen | `.githooks/pre-commit`, `verify-lane-claims --ci` im PR |
 | Kein Direktpush auf `main` | Branch-Schutz; `turn-push.mjs` bricht mit `ERR-4023` ab |
 | Pflichtabschnitte im Commit | `verify-commit-msg` in `turn-push.mjs` (`ERR-4006`) und in CI |
+| Erhalt vorhandener Bodies | `turn-push.mjs` bricht ohne inhaltliche `.turn-notes.md` ab (`ERR-4006`); `body-sync` schreibt nur den markierten Bereich |
 | `verify:light` vor dem Commit | `turn-push.mjs` (`ERR-4024`) |
 | Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
 | Gate-Matrix und Required Check | `ci-verify.yml` |
@@ -251,7 +252,7 @@ naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.
 
 - **Nach jedem Turn / Phase / Slice / Arbeitsschritt:** Der einzige Weg nach `main` ist Arbeitsbranch, PR gegen `main` und Promotion über das Gate (`promote.yml`). Ein Direktpush auf `main` ist durch das Ruleset gesperrt; `turn:finish` pusht deshalb den Arbeitsbranch und meldet einen abgelehnten Direktpush als `ERR-4023`.
 - Der PR-Body muss die drei Pflichtsektionen enthalten (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`).
-- Der Merge-Text wird aus dem Commit-Body gebaut und trägt die Pflichtsektionen, sonst wäre `main` sofort rot (`ERR-4006`).
+- Der Merge-Text ist der erhaltene PR-Body plus Automationsbereich aus dem vollständigen Diff; fehlende Pflichtsektionen ergänzt nur dieser Bereich, sonst wäre `main` sofort rot (`ERR-4006`).
 - `verify:light` muss vor dem Commit gruen sein; `verify:all` laeuft in CI nach dem Push (PR und `main`).
 
 Arbeitsbranch ist `feat/spatial-layout-editor`; `integration` folgt exakt `main`, PR #142 ist geschlossen. Die Doku-Konsolidierung ist mit 0.3.145 abgeschlossen; unter `docs/` liegen nur die fünf Pflichtdokumente. Der Audit #19 ist geschlossen: Firmenstufe in HUD und Betriebspanel sichtbar, Pixi-Fallback vorhanden.
@@ -351,9 +352,11 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
   lokales Gate, weil ein zu grosses Modul nicht automatisch splittbar ist.
 - **Commit-Msg** blockiert nicht mehr: fehlende Pflichtsektionen loesen
   `PR Escalation` aus.
-- **GitHub CI** (`pr-escalation.yml`) baut den PR-Body aus Subject und Body und
-  legt den PR an oder aktualisiert ihn. Ohne `gh` bleibt der Lauf gruen und der
-  Body liegt in `.git/rbd-pr-body.md`.
+- **GitHub CI** (`pr-escalation.yml`) checkt `main` aus und holt den
+  Push-Branch nur als Ref; fremder Code wird nie ausgefuehrt.
+  `scripts/lift-commit-body.mjs` ergaenzt den vollstaendigen Diff in einem
+  markierten Automationsbereich und laesst den vorhandenen PR-Body unveraendert.
+  Ohne `gh` bleibt der Lauf gruen und der Body liegt in `.git/rbd-pr-body.md`.
 - **Pipeline** hat kein schreibendes Gate; Reparaturen laufen ueber `pnpm run fix`.
 - **Promotion** (`promote.yml`) ist die Stufe danach: gruen mergt den PR,
   rot setzt Label und Issue. `integration` ist der letzte Notausgang und laeuft
