@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 06:00 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 06:03 UTC -->
 
 ## README als Einstieg
 
@@ -23,7 +23,7 @@
 
 Ein `workflow_dispatch` kann die Gates auf einem Commit pruefen, zaehlt aber nicht als Branch-Schutzstatus. Promotion wartet auf den gruenden `pull_request`-Check am aktuellen Head.
 
-`turn:finish` entfernt fuer Push und PR-Aktualisierung einen injizierten `GITHUB_TOKEN` aus der Kindprozess-Umgebung und verwendet den gespeicherten Benutzer-Token. So loesen lokale Commits die normalen Folge-Workflows aus.
+`turn:finish` entfernt fuer Push und PR-Aktualisierung einen injizierten `GITHUB_TOKEN` aus der Kindprozess-Umgebung und verwendet den gespeicherten Benutzer-Token. Der Push umgeht dafuer den globalen Credential Manager und nutzt `gh auth git-credential`. So loesen lokale Commits die normalen Folge-Workflows aus.
 
 Bei einem Main-Merge synchronisiert `branch-sync` aktive Lanes mit einem normalen Merge, nie mit Rebase oder Force-Push. Marker-/Versionskonflikte und die generierte Inventur haben deterministische Loesungen; Codekonflikte bleiben im Branch und erzeugen ein Issue mit Lane-Owner. Nicht betroffene Lanes laufen weiter. `integration` wird nur manuell angefordert.
 

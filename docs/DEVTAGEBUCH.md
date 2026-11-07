@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 06:00 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 06:03 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -19,7 +19,7 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Ziel.** Der Arbeitsbranch wurde mit einem injizierten `GITHUB_TOKEN` gepusht; der Push startete keine Folge-Workflows. Ein manueller Dispatch pruefte zwar den Head, erfuellte aber den Pflichtstatus nicht.
 
-**Umsetzung.** `turn-push.mjs` nimmt `GITHUB_TOKEN`/`GH_TOKEN` fuer die Delivery-Kindprozesse aus der Umgebung und fragt `gh auth token` aus dem gespeicherten Benutzerkonto ab. Push und PR-Body-Lift nutzen denselben Token. Wenn kein gespeicherter Token verfuegbar ist, bleibt der Push moeglich und der Lauf meldet die moeglicherweise unterdrueckten Folge-Workflows.
+**Umsetzung.** `turn-push.mjs` nimmt `GITHUB_TOKEN`/`GH_TOKEN` fuer die Delivery-Kindprozesse aus der Umgebung und fragt `gh auth token` aus dem gespeicherten Benutzerkonto ab. Fuer den Push setzt es explizit `gh auth git-credential` statt Windows Credential Manager; PR-Body-Lift nutzt denselben Token. Wenn kein gespeicherter Token verfuegbar ist, bleibt der Push moeglich und der Lauf meldet die moeglicherweise unterdrueckten Folge-Workflows.
 
 **Pruefungen.** `verify:light` und `test:affected` laufen vor dem Push; der Push muss den Standard-PR-Check auf dem neuen Head ausloesen.
 

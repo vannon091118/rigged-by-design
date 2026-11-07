@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 06:00 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 06:03 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.

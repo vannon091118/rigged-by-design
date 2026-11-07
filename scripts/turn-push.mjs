@@ -8,7 +8,13 @@ import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
-const gitRun = (args, env = process.env) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit', env });
+const gitRun = (args, env = process.env) => {
+  const useUserCredential = env !== process.env && Boolean(process.env.GITHUB_TOKEN || process.env.GH_TOKEN);
+  const deliveryArgs = useUserCredential
+    ? ['-c', 'credential.helper=', '-c', 'credential.helper=!gh auth git-credential', ...args]
+    : args;
+  return spawnSync('git', deliveryArgs, { cwd: ROOT, stdio: 'inherit', env });
+};
 const npmRun = (args) =>
   spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
 const TARGET_BRANCH = 'main';
