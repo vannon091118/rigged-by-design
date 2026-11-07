@@ -147,9 +147,15 @@ jobs:
             echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
             echo "impact=0" >> "$GITHUB_OUTPUT"
           fi
-          # Auf main bleibt die Gate-Auswahl impact-basiert; nur die Suite wird
-          # bei Runtime-/Testaenderungen vollstaendig. Reine Doku bleibt leicht.
-          echo "full_tests=$([ "$GITHUB_REF" = "refs/heads/main" ] && echo 1 || echo 0)" >> "$GITHUB_OUTPUT"
+          # PR und main bekommen die vollstaendige schnelle Regression; der
+          # Feature-Push bleibt light. `ci-plan` behandelt das Profil `all`
+          # zusaetzlich fail-closed, damit `--impact=1` die Suite nicht
+          # unbemerkt auf eine Teilmenge reduziert. Reine Doku bleibt leicht.
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "full_tests=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "full_tests=0" >> "$GITHUB_OUTPUT"
+          fi
 
       # Eine Quelle fuer den Gate-Plan: derselbe `pipeline-plan` wie `verify`,
       # jetzt mit dem echten Diff als Eingabe. `pnpm audit` steht nur in der

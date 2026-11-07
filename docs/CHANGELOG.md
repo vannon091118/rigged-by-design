@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.180 | 2026-11-07 13:40 UTC -->
+<!-- rbd-doc: v0.3.181 | 2026-11-07 13:49 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.181] - 2026-11-07
+
+### Technik
+- **PR-Regression bleibt vollstaendig.** `ci-verify.yml` setzt `full_tests=1` fuer jeden PR und fuer `main`; `ci-plan` behandelt das Profil `all` fail-closed und laesst leere, unbekannte oder Dependency-Diffs ebenfalls in die volle Suite laufen. `--impact=1` verengt nur Gates und lange Nachweise, nicht die schnelle Regression.
+- **Issue-Resolver braucht Reparaturbeleg.** `sweepGreenMain()` schliesst nur mit urspruenglichem Fingerprint, einer `<!-- repair: <sha> -->`-Marke und einem exakt gruenen Main-Commit; ein Ancestor-Commit allein reicht nicht. `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fehler weiterhin wieder.
 
 ## [0.3.180] - 2026-11-07
 

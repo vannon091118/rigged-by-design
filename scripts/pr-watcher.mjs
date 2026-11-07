@@ -22,6 +22,11 @@ const SECTIONS = [
   '### Ausblick (Nächste Schritte)',
 ];
 
+// Ein Ancestor-Commit allein ist kein Reparaturbeleg. Der Sweep verlangt den
+// urspruenglichen Fingerprint und eine explizite Repair-SHA im Issue-Body.
+const FINGERPRINT_MARKER = /<!--\s*fp:[^>]+-->/i;
+const REPAIR_MARKER = /<!--\s*repair:\s*([0-9a-f]{40})\s*-->/i;
+
 function api(method, path, body) {
   const url = `https://api.github.com/repos/${REPO}${path}`;
   const opts = {
@@ -188,15 +193,21 @@ async function sweepGreenMain({ api: request = api, git = defaultGit, mainSha = 
   const issues = await res.json();
   let closed = 0;
   for (const issue of issues) {
-    const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(issue.body ?? '');
-    if (!match) continue;
+    const body = issue.body ?? '';
+    const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(body);
+    const repair = REPAIR_MARKER.exec(body)?.[1] ?? null;
+    // Ohne Original-Fingerprint und ohne Repair-SHA bleibt das Issue offen,
+    // auch wenn der Befund- oder ein spaeterer Commit auf main liegt.
+    if (!match || !FINGERPRINT_MARKER.test(body) || !repair || repair === match[1]) continue;
     try {
       git(['merge-base', '--is-ancestor', match[1], mainSha]);
+      git(['merge-base', '--is-ancestor', match[1], repair]);
+      git(['merge-base', '--is-ancestor', repair, mainSha]);
     } catch {
-      continue; // Commit liegt nicht auf main: Issue bleibt offen.
+      continue; // Befund oder Reparatur liegt nicht auf main: Issue bleibt offen.
     }
     await request('POST', `/issues/${issue.number}/comments`, {
-      body: `Der Stand \`${match[1]}\` liegt auf \`${mainSha}\` und \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
+      body: `Urspruenglicher Befund \`${match[1]}\`, Reparatur \`${repair}\`: beide liegen auf \`${mainSha}\`; \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
     });
     const patch = await request('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
     if (patch.ok) {
@@ -354,7 +365,11 @@ ${diagnostics.report}
 
 ## ✅ Issue schließen
 
-Sobald der Stand grün auf \`main\` liegt, schliesst \`pr-watcher.yml --sweep-green\` dieses Issue automatisch.
+Nach der Reparatur die Fix-SHA in diesen Body eintragen:
+
+\`<!-- repair: <40-stellige-fix-sha> -->\`
+
+\`pr-watcher.yml --sweep-green\` schliesst nur, wenn der urspruengliche Fingerprint, die Reparatur-SHA und der exakt geprüfte gruene \`main\`-Commit zusammenpassen. Ein aelterer Commit allein schliesst nichts.
 `;
 
   await createIssue(title, body, labels, fingerprint, runUrl);

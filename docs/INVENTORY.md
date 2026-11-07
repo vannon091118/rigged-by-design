@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.180 | 2026-11-07 13:40 UTC -->
+<!-- rbd-doc: v0.3.181 | 2026-11-07 13:49 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -620,7 +620,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 149 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 534 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 540 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 211 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 47 Zeilen
@@ -631,7 +631,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 909 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 414 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 415 Zeilen
 - `README.md` — Rigged by Design — gelesen: 340 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -703,8 +703,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 955 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3328 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 961 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3338 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/ROADMAP.md` — Roadmap — gelesen: 314 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
@@ -1356,7 +1356,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
 - `scripts/lib/capabilities.mjs` — Capability-Manifest: Validierung und Gate-Logik für `verify:capabilities`. — gelesen: 247 Zeilen
-- `scripts/lib/ci-plan.mjs` — CI-Plan: der echte Diff entscheidet, welche Gates und Tests laufen. — gelesen: 218 Zeilen
+- `scripts/lib/ci-plan.mjs` — CI-Plan: der echte Diff entscheidet, welche Gates und Tests laufen. — gelesen: 233 Zeilen
 - `scripts/lib/claim-evidence.mjs` — Merge-Nachweis fuer Lane-Claims. — gelesen: 181 Zeilen
 - `scripts/lib/dependency-change.mjs` — Eine Wahrheit fuer eine kleine, aber teure Frage: haben sich Abhaengigkeiten — gelesen: 68 Zeilen
 - `scripts/lib/doc-sync.mjs` — Pflichtdoku: eine Liste, ein Marker, eine Pruefung. — gelesen: 127 Zeilen
@@ -1385,7 +1385,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/worktree-isolation.mjs` — Technische Worktree-Isolation fuer Agenten. — gelesen: 88 Zeilen
 - `scripts/lift-commit-body.mjs` — Hebt den vollstaendigen PR-Diff in einen abgegrenzten Automationsbereich. — gelesen: 141 Zeilen
 - `scripts/loc-budgets.mjs` — LOC-Budgets pro Zustaendigkeit. Eine Datei gehoert genau zu einer Rolle: — gelesen: 36 Zeilen
-- `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder fehlerhaftem PR-Body — gelesen: 435 Zeilen
+- `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder fehlerhaftem PR-Body — gelesen: 450 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 90 Zeilen
 - `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 236 Zeilen
 - `scripts/promote.mjs` — Promote: gruene PR-Staende mergen. Rot wird ein Issue, kein Dump auf — gelesen: 427 Zeilen
@@ -1498,7 +1498,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/body-sync.test.ts` — Body-Synchronisation darf vorhandene Inhalte nie ersetzen. Genau diese — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/branch-prune.test.ts` — Nach dem Merge mit gruenen Gates ist ein Wegwerf-Branch nur noch Arbeit, die — gelesen: 39 Zeilen
 - `src/core/governance/__tests__/ci-gates.test.ts` — Ebene A des Main-Gates: `main` ist kein Sonderfall mehr, und der — gelesen: 240 Zeilen
-- `src/core/governance/__tests__/ci-plan.test.ts` — Der CI-Plan ist die einzige Auswahl fuer Gates und Tests. Diese Datei belegt — gelesen: 55 Zeilen
+- `src/core/governance/__tests__/ci-plan.test.ts` — Der CI-Plan ist die einzige Auswahl fuer Gates und Tests. Diese Datei belegt — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/claim-evidence.test.ts` — Ein geloeschter Branch ist kein Merge-Nachweis. Genau dieser Fall steht — gelesen: 161 Zeilen
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 77 Zeilen
 - `src/core/governance/__tests__/gate-diagnostics.test.ts` — Ein roter Lauf kann mehrere unabhaengige Fehler enthalten. Diese Grenzen — gelesen: 83 Zeilen
@@ -1508,7 +1508,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 161 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 224 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 68 Zeilen
-- `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 93 Zeilen
+- `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 157 Zeilen
 - `src/core/governance/__tests__/pretask.test.ts` — Der echte `pretask`-Start in temporaeren Git-Repos. Die Isolation-Hilfe — gelesen: 173 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
 - `src/core/governance/__tests__/promote-guard.test.ts` — Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus — gelesen: 73 Zeilen

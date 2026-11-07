@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.180 | 2026-11-07 13:40 UTC -->
+<!-- rbd-doc: v0.3.181 | 2026-11-07 13:49 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -97,7 +97,7 @@ Timeout, Abbruch und fluechtige Netzfehler sind `REMOTE_CI` (`ERR-4014`,
 
 ## Pretask (obligatorisch, vor jeder neuen Arbeit)
 
-Vier Schritte, in dieser Reihenfolge. Kein Edit vor Schritt 4.
+Fünf Schritte, in dieser Reihenfolge. Kein Edit vor Schritt 4.
 
 1. **Issue-Check:** `gh issue list --label gate-failure --state open` und
    `--label remote-ci`. Ein offenes `gate-failure`-Issue ist der alleinige
@@ -198,6 +198,7 @@ diese Punkte:
 | Lokales Feedback | `pnpm run agent:feedback` auf demselben Selektor wie `test:affected` (kein zweiter Plan) |
 | Alle roten Gates eines Laufs | `pr-watcher.mjs` + `gate-diagnostics.mjs`: jeder fehlgeschlagene Job/Schritt, gruppiert nach Fehlercode |
 | Retry vor dem Issue | `pr-watcher.mjs` startet nur ausschliesslich transiente Befunde einmal neu (`run_attempt < 2`), fachliche Fehler nie |
+| Issue-Resolver | `pr-watcher.mjs --sweep-green` verlangt Original-Fingerprint, `<!-- repair: <sha> -->` und exakt gruenen Main; `recordRecurrence` oeffnet geschlossene Issues bei Rezidiv wieder |
 | Merge-Beleg statt Basis-SHA | `reconcile-claims.mjs` und `verify-lane-claims.mjs` über `claim-evidence.mjs`: gemergter PR, Branch-Kopf auf `main` oder baumgleicher Commit auf `main` aus der lokalen Historie (Squash-Merge, ohne `gh`); `baseSha` ist kein Nachweis |
 | Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
 | Gate-Matrix und Required Check | `ci-verify.yml` |
@@ -270,9 +271,9 @@ naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.
 - Merge-Konflikte an generierten Meta-Dateien werden zugunsten der
   Systemzeilen (Marker/Version) automatisch aufgeloest; ein echter
   Code-Konflikt wird eskaliert (`integration/konflikt`) und bleibt beim Agenten.
-- Issues schliessen sich, wenn der Stand gruen auf `main` liegt:
-  `pr-watcher.yml --sweep-green` prueft per `git merge-base`, ob der gemeldete
-  Commit auf `main` liegt, und schliesst dann.
+- Issues schliessen sich nur mit Reparaturbeleg: `pr-watcher.yml --sweep-green`
+  verlangt den urspruenglichen Fingerprint, eine `<!-- repair: <sha> -->`-Marke
+  und den exakt gruenen `main`-Commit; ein blosser Ancestor-Commit schliesst nichts.
 
 ## PR+Merge-Pflicht nach jedem Abschluss
 
@@ -281,7 +282,7 @@ naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.
 - Der Merge-Text ist der erhaltene PR-Body plus Automationsbereich aus dem vollständigen Diff; fehlende Pflichtsektionen ergänzt nur dieser Bereich, sonst wäre `main` sofort rot (`ERR-4006`).
 - `verify:light` muss vor dem Commit gruen sein; `verify:all` laeuft in CI nach dem Push (PR und `main`).
 
-Arbeitsbranch ist `feat/spatial-layout-editor`; `integration` folgt exakt `main`, PR #142 ist geschlossen. Die Doku-Konsolidierung ist mit 0.3.145 abgeschlossen; unter `docs/` liegen nur die fünf Pflichtdokumente. Der Audit #19 ist geschlossen: Firmenstufe in HUD und Betriebspanel sichtbar, Pixi-Fallback vorhanden.
+Arbeitsbranch ist der jeweilige Lane-Branch mit eigenem Claim und Worktree; `main` bleibt PR-Ziel. `integration` ist eingefroren, liegt auf `bac6d8a` und ist zusaetzlich als `archive/integration-2026-11-07` gesichert; PR #142 ist geschlossen. Unter `docs/` liegen die Pflichtdokumente und die dort dokumentierten Vertrags-/Capability-Dateien. Der Audit #19 ist geschlossen: Firmenstufe in HUD und Betriebspanel sichtbar, Pixi-Fallback vorhanden.
 
 ## Pflichtdoku
 

@@ -60,7 +60,10 @@ export function diffFiles(base, head) {
 /** Grobe Einordnung der geaenderten Pfade. */
 export function classifyChanged(changed, range = {}) {
   const files = [...new Set(changed ?? [])];
-  const manifest = dependencyChangedBetween(range.base, range.head);
+  // Ohne expliziten Vergleichsbereich ist der Manifest-Diff nicht lesbar;
+  // dann entscheidet die Pfadliste. `planForCI` uebergibt base/head immer dann,
+  // wenn es einen echten Git-Diff prueft; dort bleibt ein Lesefehler fail-closed.
+  const manifest = range.base && range.head ? dependencyChangedBetween(range.base, range.head) : false;
   return {
     files,
     empty: files.length === 0,
@@ -141,9 +144,10 @@ export function selectGates(changed, options = {}) {
 }
 
 /**
- * Testauswahl fuer den `tests`-Job. Volles Profil laesst `files` leer, damit
- * die Suite vollstaendig laeuft; der Impact-Pfad uebergibt genau die
- * betroffenen schnellen Nachweise als `RBD_TEST_FILES`.
+ * Testauswahl fuer den `tests`-Job. Volles Profil und Profil `all` lassen
+ * `files` leer, damit die Suite vollstaendig laeuft; der Impact-Pfad uebergibt
+ * genau die betroffenen schnellen Nachweise als `RBD_TEST_FILES`. Eine reine
+ * Doku-Aenderung bleibt der einzige bewusste Ausnahmefall.
  */
 export function selectTests(changed, options = {}) {
   const profile = options.profile ?? 'full';
@@ -156,15 +160,26 @@ export function selectTests(changed, options = {}) {
   if (!impact || profile === 'release') {
     return { files: [], long, runAll: true, reason: `vollstaendiges Profil ${profile}`, shards: [] };
   }
-  // Auf `main` bleibt die Gate-Auswahl impact-basiert, aber Runtime- und
-  // Testaenderungen bekommen die vollstaendige Suite. Eine reine Doku- oder
-  // Governance-Aenderung soll dagegen keinen Vollrausch ausloesen.
-  if (options.fullTests === true && (kind.product || kind.tests) && !kind.docsOnly) {
+  // Ein leerer oder unbekannter Diff ist kein Freischein: dann laeuft die
+  // vollstaendige Suite. Dependencies und Toolchain ziehen dieselbe Grenze.
+  if (kind.empty) {
+    return { files: [], long, runAll: true, reason: 'kein Diff bestimmbar: vollstaendige Suite', shards: [] };
+  }
+  if (kind.deps || kind.unknown.length > 0) {
+    return { files: [], long, runAll: true, reason: 'Dependencies oder unbekannte Pfade: vollstaendige Suite', shards: [] };
+  }
+  // Reine Doku/Governance bleibt bewusst ohne Testlauf; alles andere im
+  // Profil `all` ist die vollstaendige PR-Regression. `fullTests` deckt
+  // denselben Fall fuer Aufrufer ab, die das Profil nicht auf `all` abbilden.
+  if (kind.docsOnly) {
+    return { files: [], long: [], runAll: false, reason: 'nur Doku oder Governance: kein Testlauf', shards: [] };
+  }
+  if (profile === 'all' || options.fullTests === true) {
     return {
       files: [],
       long,
       runAll: true,
-      reason: 'Main-Regression: vollstaendige Suite fuer Runtime-/Testaenderungen',
+      reason: 'Vollstaendige Regression fuer PR/main',
       shards: [],
     };
   }
