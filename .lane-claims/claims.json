@@ -2,8 +2,8 @@
   {
     "id": "lane/governance/02-governance",
     "owner": "Integrator",
-    "branch": "lane/governance/02-governance",
-    "baseSha": "5dc0161",
+    "branch": "gov/0.2-governance",
+    "baseSha": "dc35b52",
     "pathAllowlist": [
       "scripts/lib/impact.mjs",
       "scripts/lib/subsystems.mjs",
@@ -12,10 +12,16 @@
       "scripts/agent-context.mjs",
       "scripts/agent-verify.mjs",
       "scripts/run-pipeline.mjs",
+      "scripts/turn-push.mjs",
+      "scripts/verify-lane-claims.mjs",
       "docs/ROADMAP.md",
       ".githooks/",
+      ".lane-claims/claims.json",
       "AGENTS.md",
-      ".github/ISSUE_TEMPLATE/lane.md"
+      ".github/ISSUE_TEMPLATE/lane.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "src/core/governance/error-codes.ts"
     ],
     "contracts": [],
     "dependencies": [
@@ -54,8 +60,7 @@
       "scripts/lib/capabilities.mjs",
       "scripts/verify-capabilities.mjs",
       "scripts/lib/pipeline-plan.mjs",
-      "capabilities.json",
-      "package.json"
+      "capabilities.json"
     ],
     "contracts": [],
     "dependencies": [
@@ -207,5 +212,29 @@
     "gateProfile": "quick",
     "status": "open",
     "createdAt": "9070cba"
+  },
+  {
+    "id": "lane/actionset/06-actionset",
+    "owner": "Integrator",
+    "branch": "lane/actionset/06-actionset",
+    "baseSha": "7cf5f84",
+    "pathAllowlist": [
+      "docs/contracts/actionset.md",
+      "src/core/contracts/actionset.ts",
+      "src/core/contracts/__tests__/actionset.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "actionset",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/save"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "7cf5f84"
   }
 ]

@@ -9,12 +9,13 @@
  * Bericht nennt sie so. `--ci` delegiert die langen Nachweise an Actions.
  * `--plan` zeigt den Plan, ohne ein Gate zu starten.
  */
-import { spawnSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { impact } from './lib/impact.mjs';
 import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
+import { openClaims } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -25,6 +26,22 @@ const AS_JSON = argv.includes('--json');
 const PLAN_ONLY = argv.includes('--plan');
 
 const state = impact({ profile: PROFILE });
+
+// Lane-Claim-Prüfung vor jedem Verify-Lauf: der aktive Branch muss einen
+// gültigen Claim haben, sonst wird nicht geprüft (fail-closed).
+const git = (args) => {
+  try {
+    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch { return ''; }
+};
+const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+const claims = openClaims();
+const claim = claims.find((c) => c.branch === branch);
+if (!claim && !PLAN_ONLY) {
+  console.error(`[ERR-4019] agent:verify: Branch '${branch}' hat keinen Lane-Claim in .lane-claims/claims.json`);
+  console.error('  Registriere den Claim zuerst (siehe AGENTS.md § Lane- und Konflikt-Governance).');
+  process.exit(1);
+}
 const steps = (planGates(PROFILE) ?? []).map((key) => ({ ...GATES[key] }));
 const tests = steps.find((step) => step.name === 'tests');
 let subset = [];

@@ -47,6 +47,7 @@ export const ERROR_CODES = {
   DIRECT_PUSH_REJECTED: { code: 'ERR-4023', level: 'AGENT', area: 'governance', cause: 'Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht.', fix: 'Fokussierten PR gegen main oeffnen und ueber das Gate promoten; kein Direktpush auf main.' },
   LOCAL_GATE_RED: { code: 'ERR-4024', level: 'LOCAL_GATE', area: 'governance', cause: 'Das lokale Gate (verify:quick oder verify:all) in turn:finish ist rot; kein Commit und kein Push.', fix: 'Den ersten Befund im Gate-Log beheben und turn:finish erneut ausfuehren.' },
   TRANSFER_INVALID: { code: 'ERR-5001', level: 'BLOCKED', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
+  CAPABILITY_GATE: { code: 'ERR-4025', level: 'AGENT', area: 'governance', cause: 'Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise.', fix: 'Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(Object.values(ERROR_CODES).map((entry) => [entry.code, entry]));

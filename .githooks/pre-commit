@@ -3,6 +3,12 @@
 # weil der Hook den Commit vorbereitet. Fehlt node_modules, laufen nur Matrix
 # und Testkatalog nicht, weil sie typescript aus node_modules laden.
 set -e
+# Lane-Claims durchsetzen: der aktuelle Branch muss einen Claim haben und
+# darf nur Dateien innerhalb seiner Allowlist schreiben. Kollisionen mit
+# anderen offenen Lanes blockieren den Commit.
+if [ -d node_modules ]; then
+  node scripts/verify-lane-claims.mjs || exit 1
+fi
 # Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
 # Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
 # Commit. Dann blockiert der Hook, statt den Widerspruch zu uebersehen.
