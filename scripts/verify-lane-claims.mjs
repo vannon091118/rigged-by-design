@@ -20,6 +20,7 @@ import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
   selectClaim,
+  botClaim,
   auditRegisterAgainstBase,
 } from './lib/lane-claims.mjs';
 import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
@@ -77,7 +78,9 @@ const claims = allClaims.filter((c) => c.status === 'open');
 // Ein gemergter Claim gilt fuer seinen eigenen Branch weiter: so landet der
 // Register-Nachtrag auf dem Branch der zuletzt gemergten Lane, ohne dass ein
 // neuer offener Claim mit bereits gemergtem PR entsteht.
-const claim = selectClaim(allClaims, branch);
+const laneClaim = selectClaim(allClaims, branch);
+const claim = laneClaim ?? botClaim(branch);
+const bot = laneClaim === null && claim !== null;
 
 /**
  * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz mit dem
@@ -96,12 +99,12 @@ if (!claim) {
 }
 
 /** Feste Owner: eine Lane ohne benannten Owner ist keine Lane. */
-if (!OWNERS.includes(claim.owner)) {
+if (!bot && !OWNERS.includes(claim.owner)) {
   console.error(`[ERR-4019] verify-lane-claims: Owner '${claim.owner}' ist nicht im festen Roster (${OWNERS.join(', ')}).`);
   process.exit(1);
 }
 
-if (!BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
+if (!bot && !BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
   console.error(`[ERR-4019] verify-lane-claims: Branch '${branch}' folgt nicht dem Schema lane/<domäne>/<task>.`);
   process.exit(1);
 }
@@ -284,7 +287,7 @@ if (violations.length > 0) {
 
 /** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
 const mergedIndex = mergedPullRequestIndex();
-const collisions = findCollisions(claim).filter((collision) => {
+const collisions = bot ? [] : findCollisions(claim).filter((collision) => {
   // Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
   // sondern ein veralteter Eintrag. `decideClaim` kennt beide Belege: den
   // gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der

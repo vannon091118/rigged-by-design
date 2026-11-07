@@ -94,6 +94,36 @@ export function allowsPath(allowlist, filePath) {
 export const BRANCH_PATTERN = /^lane\/[a-z0-9-]+\/[a-z0-9-]+$/;
 export const LEGACY_PREFIXES = Object.freeze(['gov/', 'hygiene/', 'fix/']);
 
+/**
+ * Eng begrenzte Bot-Ausnahme: Dependabot-PRs haben keinen Lane-Claim. Sie
+ * duerfen ausschliesslich Abhaengigkeitsartefakte anfassen - Manifest,
+ * Lockfile und gepinnte Workflow-Actions. Alles andere bleibt fail-closed.
+ */
+export const BOT_BRANCHES = Object.freeze([
+  { pattern: /^dependabot\//, allowlist: Object.freeze(['package.json', 'pnpm-lock.yaml', '.github/workflows/']) },
+]);
+
+/** Allowlist fuer einen Bot-Branch; `null` heisst: keine Ausnahme. */
+export function botAllowlist(branch) {
+  return BOT_BRANCHES.find((entry) => entry.pattern.test(String(branch ?? '')))?.allowlist ?? null;
+}
+
+/** Claim-freier Ersatz fuer einen Bot-Branch; `null` fuer normale Lanes. */
+export function botClaim(branch) {
+  const allowlist = botAllowlist(branch);
+  if (!allowlist) return null;
+  return new LaneClaim({
+    id: 'bot/dependabot',
+    owner: 'Integrator',
+    branch,
+    baseSha: '',
+    task: 'Dependabot-Update',
+    pathAllowlist: [...allowlist],
+    gateProfile: 'light',
+    status: 'open',
+  });
+}
+
 /** Ein einzelner Lane-Claim. */
 export class LaneClaim {
   /**

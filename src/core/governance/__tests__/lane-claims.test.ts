@@ -11,6 +11,8 @@ import { describe, expect, it } from 'vitest';
 import {
   auditClaimChange,
   auditRegisterAgainstBase,
+  botAllowlist,
+  botClaim,
   findCollisions,
   patternCoveredBy,
   selectClaim,
@@ -19,6 +21,24 @@ import {
 
 const open = { id: 'lane/x/offen', branch: 'lane/x/offen', status: 'open' };
 const merged = { id: 'lane/x/gemergt', branch: 'lane/x/gemergt', status: 'merged' };
+
+describe('bot branches', () => {
+  it('laesst Dependabot nur Abhaengigkeitsartefakte schreiben', () => {
+    const claim = botClaim('dependabot/npm_and_yarn/react-19');
+    expect(claim?.allowsPath('package.json')).toBe(true);
+    expect(claim?.allowsPath('pnpm-lock.yaml')).toBe(true);
+    expect(claim?.allowsPath('.github/workflows/ci-verify.yml')).toBe(true);
+    expect(claim?.allowsPath('src/core/economy.ts')).toBe(false);
+    expect(claim?.allowsPath('AGENTS.md')).toBe(false);
+    expect(claim?.allowsPath('scripts/promote.mjs')).toBe(false);
+  });
+
+  it('gibt normalen Lanes keine Bot-Ausnahme', () => {
+    expect(botAllowlist('lane/feature/demo')).toBeNull();
+    expect(botClaim('lane/feature/demo')).toBeNull();
+    expect(botClaim('dependabot-helper')).toBeNull();
+  });
+});
 
 describe('lane-claims claim selection', () => {
   it('waehlt den offenen Claim einer Lane', () => {

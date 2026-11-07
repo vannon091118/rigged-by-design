@@ -16,7 +16,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { allowsPath, findCollisions, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import { allowsPath, botClaim, findCollisions, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -85,7 +85,9 @@ try {
 }
 const claims = allClaims.filter((claim) => claim.status === 'open');
 // selectClaim fuehrt auch einen gemergten Claim auf seinem Branch weiter.
-const claim = selectClaim(allClaims, branch);
+const laneClaim = selectClaim(allClaims, branch);
+const claim = laneClaim ?? botClaim(branch);
+const botBranch = laneClaim === null && claim !== null;
 const base = mergeBase || claim?.baseSha || '';
 const claimInfo = claim
   ? {
@@ -125,7 +127,7 @@ if (!contextData || typeof contextData !== 'object') {
   blockers.push('[ERR-4019] Impact-Plan ist unvollstaendig: systems/tests fehlen');
 }
 
-if (claim && branch !== 'main') {
+if (claim && branch !== 'main' && !botBranch) {
   const collisions = findCollisions(claim, claims);
   if (collisions.length > 0) {
     blockers.push(
