@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:49 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -21,7 +21,7 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Umsetzung.** Neu ist `scripts/lib/body-sync.mjs` als gemeinsame Wahrheit: Markerbereich, Diff-Klassifikation (`parseNameStatus`, `classifyPaths`, `describeDiff`), Sektionspruefung (`missingSections`) und Notes-Pruefung (`evaluateNotes`). `turn-push.mjs` bricht bei Codeaenderungen ohne inhaltliche `.turn-notes.md` mit `ERR-4006` ab und beschreibt reine Doku-, Governance- und Versionsaenderungen ehrlich. `lift-commit-body.mjs` liest den vorhandenen PR-Body, haengt bei Bedarf einen Automationsbereich an und aktualisiert spaeter nur diesen; bei doppelten oder unbalancierten Markern faellt keine Schreiboperation. `promote.mjs` nimmt denselben Weg fuer den Merge-Text. `pr-escalation.yml` checkt `main` aus und behandelt den Push-Branch nur als Datenquelle. `turn-push` respektiert ausserdem den eigenen Claim, damit eine Governance-Lane ihre Doku ueberhaupt committen kann.
 
-**Pruefungen.** `node node_modules/vitest/vitest.mjs run --config src/Config/vite.config.ts src/core/governance/__tests__/body-sync.test.ts` (8/8 gruen, deckt Erhalt, fehlende Sektion, mehrere Commits, Doku gegen Runtime, Idempotenz, eigenen Bereich, Abbruch und fehlende Notes ab); `node scripts/verify-test-quality.mjs` PASS; `pnpm run typecheck` PASS; `pnpm run verify:light` PASS (Lint, LOC, Typecheck, Doku, Tree, Redundanz).
+**Pruefungen.** `node node_modules/vitest/vitest.mjs run --config src/Config/vite.config.ts src/core/governance/__tests__/body-sync.test.ts` (8/8 gruen, deckt Erhalt, fehlende Sektion, mehrere Commits, Doku gegen Runtime, Idempotenz, eigenen Bereich, Abbruch und fehlende Notes ab); `node scripts/verify-test-quality.mjs` PASS; `pnpm run typecheck` PASS; `pnpm run verify:light` PASS (Lint, LOC, Typecheck, Doku, Tree, Redundanz). Der CI-Job `Gate docs` fand danach eine veraltete Inventur (1353 statt 1355 Dateien), weil sie vor dem Staging erzeugt wurde; `inventory:build` hat sie nachgezogen.
 
 **Offen.** Der Merge-Text kann weiterhin nur so gut sein wie der PR-Body: die Automatik beschreibt Dateien und Status, keine Semantik. Symbol- und Aufruferanalysen bleiben Aufgabe der Notes. Release-Plan und Doku-Reconcile stehen in `docs/ROADMAP.md`.
 
