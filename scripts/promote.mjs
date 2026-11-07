@@ -73,6 +73,24 @@ function openPr(head = branch) {
   return raw && /^\d+$/.test(raw) ? raw : '';
 }
 
+/**
+ * Jeder Feature-Push haelt den PR-Body aktuell, ohne einen gepflegten Body zu
+ * ueberschreiben: nur wenn eine Pflichtsektion fehlt, wird der Body aus dem
+ * Commit gehoben. Das funktioniert auch bei ungueltiger Commit-Nachricht, weil
+ * `body()` die Pflichtstruktur selbst baut.
+ */
+function syncPrBody(number) {
+  if (!number) return;
+  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']) ?? '';
+  if (SECTIONS.every((section) => current.includes(section))) return;
+  const ref = git(['rev-parse', '--verify', `origin/${branch}`]) !== null ? `origin/${branch}` : 'HEAD';
+  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
+  const bodyFile = join(dir, 'pr-body.md');
+  writeFileSync(bodyFile, `${body(ref)}\n`);
+  if (gh(['pr', 'edit', number, '--body-file', bodyFile]) === null) warn(`PR #${number}: Body nicht aktualisiert`);
+  else log(`PR #${number}: Pflichtsektionen aus dem Commit ergaenzt`);
+}
+
 function label(number, name, note) {
   if (!number) return;
   gh(['label', 'create', name, '--color', 'd93f0b', '--description', note]);
@@ -211,7 +229,16 @@ function promoteRed() {
 }
 
 if (event === 'push' && branch && branch !== MAIN) {
-  log(`Feature-Push ${branch}: leichtes Gate, kein Merge - erst der PR gegen ${MAIN} entscheidet`);
+  // Jeder Feature-Push oeffnet oder aktualisiert den PR. Frueher endete der Lauf
+  // hier nach einer Logzeile; der PR entstand erst spaeter, und ohne PR lief das
+  // leichte Gate statt der vollen PR-Pruefung.
+  const number = ensurePr();
+  if (number) {
+    syncPrBody(number);
+    log(`Feature-Push ${branch}: PR #${number} bereit; die vollen Gates laufen im PR-Lauf`);
+  } else {
+    warn(`Feature-Push ${branch}: kein PR angelegt; der naechste Lauf prueft erneut`);
+  }
 } else if (!branch || branch === MAIN) {
   log('main wird nicht promotet');
 } else if (conclusion === 'success') {

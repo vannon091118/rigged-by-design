@@ -320,7 +320,22 @@
     ],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "b95b96e70213ce5cbf5581e89fd156476264d778"
+  },
+  {
+    "id": "lane/governance/07-promote-autopr",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/07-promote-autopr",
+    "baseSha": "08561dfbc5b9494bf4cd568c8f07ae6f5fcb2298",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/promote.mjs"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "08561dfbc5b9494bf4cd568c8f07ae6f5fcb2298"
   }
 ]
