@@ -36,7 +36,7 @@ export const MAINTENANCE_PATHS = Object.freeze([
   'scripts/',
 ]);
 
-/** True, wenn ueberhaupt etwas gestagt ist und jede Datei Pflege ist. */
+/** True, wenn die Pfadliste nicht leer ist und jede Datei Pflege ist. */
 export function isMaintenanceOnly(paths) {
   const files = [...new Set(paths ?? [])].filter(Boolean);
   if (files.length === 0) return false;
