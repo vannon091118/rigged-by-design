@@ -26,6 +26,8 @@ import {
   parseStatusPaths,
 } from './lib/worktree-isolation.mjs';
 import { ROOT } from './lib/report.mjs';
+import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
+import { classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
@@ -132,29 +134,7 @@ if (claim && branch !== 'main') {
   }
 }
 
-/** Issue-Scopes: main global, eigene Lane, Dependency, sonst Warnung. */
-function labelNames(issue) {
-  return (issue.labels ?? []).map((label) => typeof label === 'string' ? label : label?.name).filter(Boolean);
-}
-function scopeOf(issue) {
-  const names = labelNames(issue);
-  if (names.includes('scope:main') || names.includes('scope:global')) return { kind: 'main', lane: null };
-  const dependency = names.find((name) => name.startsWith('scope:dependency:') || name.startsWith('dependency:'));
-  if (dependency) return { kind: 'dependency', lane: dependency.replace(/^scope:dependency:|^dependency:/, '') };
-  const lane = names.find((name) => name.startsWith('scope:lane:'));
-  if (lane) return { kind: 'lane', lane: lane.slice('scope:lane:'.length) };
-  const legacyLane = names.find((name) => name.startsWith('lane:'));
-  if (legacyLane) return { kind: 'lane', lane: legacyLane.slice('lane:'.length) };
-  return { kind: 'none', lane: null };
-}
-function laneMatches(scopeLane, target) {
-  const left = String(scopeLane ?? '').replace(/\/+$/, '');
-  const right = String(target ?? '').replace(/\/+$/, '');
-  if (!left || !right) return false;
-  return left === right || right.startsWith(`${left}/`) || left.startsWith(`${right}/`);
-}
-const REPAIR_MARKER = /<!--\s*repair:\s*([0-9a-f]{40})\s*-->/i;
-
+/** Issue-Scopes kommen aus `issue-scope`; pretask formuliert nur den Befund. */
 function readIssues() {
   const issues = new Map();
   const errors = [];
@@ -182,40 +162,39 @@ function readIssues() {
 }
 
 function classifyIssue(issue) {
-  const labels = labelNames(issue);
-  const scope = scopeOf(issue);
-  const repairSha = String(issue.body ?? '').match(REPAIR_MARKER)?.[1] ?? null;
-  const result = { number: issue.number, title: issue.title, url: issue.url, labels, scope, repairSha };
-  if (labels.includes('remote-ci')) {
-    warnings.push(`Issue #${issue.number}: remote-ci blockiert nie`);
-    return { ...result, disposition: 'warning', reason: 'remote-ci' };
+  const decision = scopeDecision(issue, {
+    branch,
+    dependencies: claim?.dependencies ?? [],
+    isAncestor,
+  });
+  const result = {
+    number: issue.number,
+    title: issue.title,
+    url: issue.url,
+    labels: labelNames(issue),
+    scope: decision.scope,
+    repairSha: decision.repairSha,
+  };
+  if (decision.disposition === 'warning') {
+    if (decision.reason === 'remote-ci') {
+      warnings.push(`Issue #${issue.number}: remote-ci blockiert nie`);
+    } else if (decision.reason === 'repair-already-in-head') {
+      warnings.push(`Issue #${issue.number}: Repair-SHA ${decision.repairSha.slice(0, 7)} ist bereits Vorfahr von HEAD`);
+    } else if (decision.reason === 'no-scope') {
+      warnings.push(`Issue #${issue.number}: gate-failure ohne Scope-Label; nicht global blockieren`);
+    } else {
+      warnings.push(`Issue #${issue.number}: Scope ${decision.scope.lane || decision.scope.kind} betrifft diese Lane nicht`);
+    }
+    return { ...result, disposition: 'warning', reason: decision.reason };
   }
-  if (repairSha && isAncestor(repairSha)) {
-    warnings.push(`Issue #${issue.number}: Repair-SHA ${repairSha.slice(0, 7)} ist bereits Vorfahr von HEAD`);
-    return { ...result, disposition: 'warning', reason: 'repair-already-in-head' };
-  }
-  if (scope.kind === 'none') {
-    warnings.push(`Issue #${issue.number}: gate-failure ohne Scope-Label; nicht global blockieren`);
-    return { ...result, disposition: 'warning', reason: 'no-scope' };
-  }
-  if (scope.kind === 'main') {
+  if (decision.reason === 'scope-main') {
     blockers.push(`[ERR-4019] gate-failure #${issue.number} scope:main blockiert global`);
-    return { ...result, disposition: 'blocker', reason: 'scope-main' };
+  } else if (decision.reason === 'scope-lane') {
+    blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die eigene Lane (${decision.scope.lane})`);
+  } else {
+    blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die Dependency ${decision.scope.lane}`);
   }
-  if (scope.kind === 'lane' && claim && laneMatches(scope.lane, claim.branch)) {
-    blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die eigene Lane (${scope.lane})`);
-    return { ...result, disposition: 'blocker', reason: 'scope-lane' };
-  }
-  if (
-    scope.kind === 'dependency'
-    && claim
-    && (claim.dependencies ?? []).some((dependency) => laneMatches(scope.lane, dependency))
-  ) {
-    blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die Dependency ${scope.lane}`);
-    return { ...result, disposition: 'blocker', reason: 'scope-dependency' };
-  }
-  warnings.push(`Issue #${issue.number}: Scope ${scope.lane || scope.kind} betrifft diese Lane nicht`);
-  return { ...result, disposition: 'warning', reason: 'other-scope' };
+  return { ...result, disposition: 'blocker', reason: decision.reason };
 }
 
 const issueCheck = readIssues();
@@ -262,6 +241,24 @@ if (dirtyPaths.length > 0) {
 
 const dirtyOwnOnly = dirtyPaths.length > 0 && outsideClaim.length === 0 && foreignPaths.length === 0;
 let mode;
+let resumed = null;
+if (wantResume && blockers.length === 0) {
+  const decision = resumeDecision({
+    record: readAfterTask(),
+    branch,
+    claim,
+    isWorktree: linked,
+    dirtyPaths,
+  });
+  if (decision.ok) {
+    resumeTask({ record: readAfterTask(), branch, claim, isWorktree: linked, dirtyPaths });
+    resumed = decision.state;
+    if (resumed) notes.push(`Resume: Zustand ${resumed} wiederhergestellt.`);
+  } else {
+    blockers.push(`[ERR-4019] Resume nicht moeglich: ${decision.reasons.join('; ')}`);
+  }
+}
+
 if (blockers.length > 0) mode = 'BLOCKED';
 else if (branch === 'main') mode = 'GLOBAL';
 else if (head && base && head === base) mode = 'NOOP';
@@ -324,7 +321,8 @@ const contract = {
 };
 
 const claimState = claimRegisterError ? 'CLAIM_INVALID' : claim ? 'CLAIM_VALID' : 'CLAIM_MISSING';
-const state = blockers.length > 0 ? 'TASK_BLOCKED' : mode === 'NOOP' ? 'NOOP' : 'SCOPE_VALID';
+let state = blockers.length > 0 ? 'TASK_BLOCKED' : mode === 'NOOP' ? 'NOOP' : 'SCOPE_VALID';
+if (resumed) state = resumed;
 const checks = {
   bootstrap: true,
   claim: Boolean(claim),

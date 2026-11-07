@@ -80,35 +80,56 @@ else if (process.env.RBD_VERIFY_FIX === '1') {
   process.exit(1);
 }
 
+/**
+ * `--gate` wird vor jedem Filter gelesen. Die Pruefung gegen das Profil darf
+ * nicht davon abhaengen, ob ein spaeterer Schritt das Gate gerade entfernt hat:
+ * sonst meldet `--gate=audit` "nicht vorgesehen", statt Audit zu erzwingen.
+ */
 const gateArg = argv.find((value) => value.startsWith('--gate='));
-const ONLY = gateArg ? gateArg.slice('--gate='.length) : null;
+const gateAt = argv.indexOf('--gate');
+const gateNext = gateAt >= 0 ? argv[gateAt + 1] : undefined;
+const ONLY = gateArg
+  ? gateArg.slice('--gate='.length)
+  : gateNext && !gateNext.startsWith('--')
+    ? gateNext
+    : null;
+const PROFILE_GATES_LIST = planGates(PROFILE) ?? [];
+if (ONLY && !PROFILE_GATES_LIST.includes(ONLY)) {
+  fail(1, 'ERR-4011', 'pipeline', `Gate '${ONLY}' ist in ${LABEL} nicht vorgesehen (${PROFILE_GATES_LIST.join(', ')})`);
+  process.exit(1);
+}
 
-let selected = (planGates(PROFILE) ?? []).map((key) => {
+// Audit ist impact-, release- und explizit erzwungen. Ein Skip ist ein eigener,
+// ausgewiesener Zustand - kein gruenes Gate und kein stiller Erfolg.
+const FORCE_AUDIT = ONLY === 'audit' || PROFILE === 'release' || process.env.RBD_VERIFY_AUDIT === '1';
+let skippedAudit = false;
+let selected = PROFILE_GATES_LIST.map((key) => {
   const step = { ...GATES[key] };
   if (step.name === 'tests' && PROFILE === 'quick') step.env = { RBD_TEST_PROFILE: 'quick' };
   if (step.name === 'build') step.ready = () => existsSync(join(ROOT, 'dist', 'index.html'));
   return step;
 });
-if (PROFILE !== 'quick' && !auditRequired()) {
+if (!FORCE_AUDIT && !auditRequired()) {
   const at = selected.findIndex((step) => step.name === 'audit');
   if (at >= 0) {
     selected.splice(at, 1);
-    console.log('[skipped] audit: keine Dependency-Aenderung (in CI und release via RBD_VERIFY_AUDIT=1 erzwungen)');
+    skippedAudit = true;
+    console.log('[skip] audit: keine Dependency-Aenderung; der Skip ist kein Erfolg (RBD_VERIFY_AUDIT=1, --gate=audit oder release erzwingt ihn)');
   }
 }
 
 /**
  * Ein einzelnes Gate fuer die CI-Matrix: jeder Job traegt genau ein Gate, damit
- * ein roter Status den Schuldigen nennt. Ein Gate, das nicht zum Profil gehoert,
- * bricht ab - ein stiller Fehlschlag waere ein gruener Status ohne Pruefung.
+ * ein roter Status den Schuldigen nennt. Die Zugehoerigkeit wurde oben bereits
+ * gegen die unveraenderte Profil-Liste geprueft.
  */
 if (ONLY) {
-  if (!selected.some((step) => step.name === ONLY)) {
-    fail(1, 'ERR-4011', 'pipeline', `Gate '${ONLY}' ist in ${LABEL} nicht vorgesehen (${selected.map((step) => step.name).join(', ')})`);
-    process.exit(1);
-  }
   selected = selected.filter((step) => step.name === ONLY);
   console.log(`${LABEL}: nur Gate ${ONLY}`);
+}
+if (selected.length === 0) {
+  fail(1, 'ERR-4011', 'pipeline', 'kein Gate ausgewaehlt; ein uebersprungenes Gate ist kein Erfolg');
+  process.exit(1);
 }
 
 const gateFailures = await runGates(selected);
@@ -118,5 +139,6 @@ if (total > 0) {
   console.error(`${LABEL}: ${total} Gate(s) rot`);
   process.exit(1);
 }
-console.log(`${LABEL}: PASS (alle Gates gruen, ${MODE}-Modus)`);
+const skipNote = skippedAudit ? ', 1 uebersprungen: audit' : '';
+console.log(`${LABEL}: PASS (alle Gates gruen, ${MODE}-Modus${skipNote})`);
 process.exit(0);

@@ -1,11 +1,5 @@
-/** Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). */
 declare module '*/process-sweep.mjs' {
-  export interface TrackedProcess {
-    readonly gate: string;
-    readonly pid: number;
-    readonly at: number;
-    readonly start: string | null;
-  }
+  export interface TrackedProcess { readonly gate: string; readonly pid: number; readonly at: number; readonly start: string | null; }
   export function isAlive(pid: number): boolean;
   export function processIdentity(pid: number): string | null;
   export function killTree(pid: number, expectedStart?: string | null): boolean;
@@ -27,11 +21,7 @@ declare module '*/affected-tests.mjs' {
 }
 declare module '*/branch-prune.mjs' {
   export const PROTECTED: readonly string[];
-  export interface BranchState {
-    readonly name: string;
-    readonly upstreamGone: boolean;
-    readonly merged?: boolean;
-  }
+  export interface BranchState { readonly name: string; readonly upstreamGone: boolean; readonly merged?: boolean; }
   export function parseBranches(text: string): BranchState[];
   export function prunable(
     branches: readonly BranchState[],
@@ -95,7 +85,13 @@ declare module '*/pipeline-plan.mjs' {
   }
   export const PROFILES: readonly string[];
   export const GATES: Readonly<Record<string, GateSpec>>;
+  export const QUICK_GATES: readonly string[];
+  export const REQUIRED_CI_GATES: readonly string[];
+  export const LIGHT_GATES: readonly string[];
+  export const CI_STATES: readonly string[];
   export const PROFILE_GATES: Readonly<Record<string, readonly string[]>>;
+  export function gatesForState(state: string): string[] | null;
+  export function isCIState(value: string): boolean;
   export function isProfile(value: string): boolean;
   export function planGates(profile: string): string[] | null;
   export function isFixMode(argv: readonly string[]): boolean;
@@ -174,6 +170,11 @@ declare module '*/staging-scope.mjs' {
     readonly allowlist: readonly string[];
     readonly exempt?: readonly string[];
   }): { allowed: string[]; foreign: string[]; ok: boolean };
+  export function explicitScope(input: {
+    readonly paths: readonly string[];
+    readonly allowlist: readonly string[];
+    readonly exempt?: readonly string[];
+  }): { allowed: string[]; foreign: string[]; ok: boolean };
 }
 declare module '*/lane-claims.mjs' {
   export interface ClaimLike {
@@ -221,11 +222,7 @@ declare module '*/worktree-isolation.mjs' {
   export function assessIsolation(input?: { readonly required?: boolean; readonly isWorktree?: boolean; readonly dirtyPaths?: readonly string[]; readonly foreignPaths?: readonly string[]; readonly branch?: string }): { readonly code: string; readonly ok: boolean; readonly required: boolean; readonly isWorktree: boolean; readonly branch: string; readonly dirtyPaths: readonly string[]; readonly foreignPaths: readonly string[]; readonly reasons: readonly string[] };
 }
 declare module '*/tree-changes.mjs' {
-  export interface TreeChanges {
-    readonly added: readonly string[];
-    readonly modified: readonly string[];
-    readonly deleted: readonly string[];
-  }
+  export interface TreeChanges { readonly added: readonly string[]; readonly modified: readonly string[]; readonly deleted: readonly string[]; }
   export function parsePorcelain(text: string): Map<string, string>;
   export function diffTree(
     before: string | Map<string, string>,

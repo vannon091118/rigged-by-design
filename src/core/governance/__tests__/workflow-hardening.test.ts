@@ -143,6 +143,19 @@ describe('workflow hardening', () => {
     expect(run?.env?.RBD_BALANCE).toBe('1');
   });
 
+  it('haelt den Pflichtstatus in genau einem Workflow', () => {
+    // `Fail-Closed Gates` ist der geschuetzte Statusname aus Ebene B. Trüge ihn
+    // ein zweiter Workflow, gaebe es zwei Wahrheiten fuer denselben Status und
+    // ein gruener Lauf koennte den anderen verdecken.
+    const owners: string[] = [];
+    for (const file of workflowFiles()) {
+      for (const [id, job] of Object.entries(workflow(file).jobs ?? {})) {
+        if ((job as { name?: string } | null)?.name === 'Fail-Closed Gates') owners.push(`${file}:${id}`);
+      }
+    }
+    expect(owners).toEqual(['ci-verify.yml:verify']);
+  });
+
   it('pflegt Action-Pins per Dependabot', () => {
     const text = readFileSync(resolve(process.cwd(), '.github', 'dependabot.yml'), 'utf8');
     expect(text).toContain('package-ecosystem: "github-actions"');

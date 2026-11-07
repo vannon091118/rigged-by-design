@@ -4,10 +4,10 @@
  *
  * Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen
  * hier: eigener Pfad, fremder Pfad, Ausnahme fuer die Turn-Arbeitsdatei,
- * Verzeichnis- und rekursive Allowlist sowie die Trennung von erlaubt/fremd.
+ * Verzeichnis- und rekursive Allowlist sowie explizite Pfade gegen den Claim.
  */
 import { describe, expect, it } from 'vitest';
-import { TURN_EXEMPT, scopeChanges } from '../../../../scripts/lib/staging-scope.mjs';
+import { TURN_EXEMPT, explicitScope, scopeChanges } from '../../../../scripts/lib/staging-scope.mjs';
 
 const allowlist = ['scripts/turn-push.mjs', 'docs/', 'src/core/**'];
 
@@ -42,5 +42,33 @@ describe('staging-scope', () => {
       foreign: ['src/ui/x.ts'],
       ok: false,
     });
+  });
+});
+
+describe('staging-scope explizite Pfade', () => {
+  it('akzeptiert nur Pfade aus dem Claim', () => {
+    expect(explicitScope({ paths: ['docs/a.md', 'src/core/sim/tick.ts'], allowlist })).toEqual({
+      allowed: ['docs/a.md', 'src/core/sim/tick.ts'],
+      foreign: [],
+      ok: true,
+    });
+  });
+
+  it('bricht bei einem fremden expliziten Pfad ab', () => {
+    const scope = explicitScope({ paths: ['docs/a.md', 'src/ui/hud.tsx'], allowlist });
+    expect(scope.ok).toBe(false);
+    expect(scope.foreign).toEqual(['src/ui/hud.tsx']);
+    expect(scope.allowed).toEqual(['docs/a.md']);
+  });
+
+  it('weist absolute Pfade und Traversal ab', () => {
+    const scope = explicitScope({ paths: ['/etc/passwd', '../outside.ts', 'C:/temp/x.ts'], allowlist });
+    expect(scope.ok).toBe(false);
+    expect(scope.foreign).toEqual(['/etc/passwd', '../outside.ts', 'C:/temp/x.ts']);
+  });
+
+  it('entfernt Duplikate und die Turn-Arbeitsdatei', () => {
+    const scope = explicitScope({ paths: ['docs/a.md', 'docs/a.md', '.turn-notes.md'], allowlist });
+    expect(scope).toEqual({ allowed: ['docs/a.md'], foreign: [], ok: true });
   });
 });

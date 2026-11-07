@@ -155,3 +155,30 @@ describe('pr-watcher', () => {
     expect(apiCalls.filter(({ method }) => method === 'PATCH')).toEqual([]);
   });
 });
+
+describe('pr-watcher Head-SHA-Body', () => {
+  it('schliesst ein Issue auch mit dem neuen Head-SHA-Feld', async () => {
+    const mainSha = 'c'.repeat(40);
+    const headSha = 'a'.repeat(40);
+    const repair = 'd'.repeat(40);
+    const calls: ApiCall[] = [];
+    const api: WatcherApi = async (method, path, body) => {
+      calls.push({ method, path, ...(body === undefined ? {} : { body }) });
+      if (method === 'GET') {
+        return response([
+          {
+            number: 9,
+            body: `**Branch:** \`lane/x\`\n**Head-SHA:** \`${headSha}\`\n<!-- fp:ERR-4017:docs -->\n<!-- repair: ${repair} -->`,
+          },
+        ]);
+      }
+      return response({});
+    };
+    const git = (args: string[]) => (args[0] === 'rev-parse' ? mainSha : '');
+
+    await sweepGreenMain({ api, git, mainSha });
+
+    const closed = calls.find((call) => call.method === 'PATCH' && call.path === '/issues/9');
+    expect(closed?.body).toEqual({ state: 'closed', state_reason: 'completed' });
+  });
+});

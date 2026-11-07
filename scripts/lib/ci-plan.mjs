@@ -1,5 +1,5 @@
 /**
- * CI-Plan: der echte Diff entscheidet, welche Gates und Tests laufen.
+ * CI-Plan: der Event-Zustand entscheidet, welche Gates und Tests laufen.
  *
  * Die Analyse selbst liegt in `affected-tests.mjs` (Importgraph, Testziele),
  * `test-catalog.mjs` (Beweisklassen), `dependency-change.mjs` (Audit) und
@@ -7,23 +7,28 @@
  * erfindet keine Metadaten und keine zweite Impact-Wahrheit.
  *
  * Grundsaetze:
+ * - PR, MAIN und MANUAL tragen das zentrale Required-Set und die volle Suite.
+ * - LIGHT, NOOP und PR_HANDOFF brauchen weder Tests noch Long-Tests.
+ * - Impact ergaenzt nur Audit und die betroffenen Long-Tests, nie eine
+ *   verkuerzte schnelle Regression.
  * - Unbekannter oder nicht bestimmbarer Diff -> volles Profil (fail-closed).
- * - Reine Doku/Governance -> Doku-, Tree-, Redundanz- und LOC-Gate, kein
- *   Typecheck, kein Build, kein Testlauf, kein Audit.
- * - Dependencies, Lockfile oder Toolchain -> volles Profil inklusive Audit.
- * - Vom Diff betroffene Statistik-/Soak-Testdateien laufen als eigene
- *   Long-Matrix auf dem exakten Commit; Balance und Benchmarks bleiben
- *   Advisory und laufen im manuellen bzw. woechentlichen `long-checks.yml`.
  */
 import { execFileSync } from 'node:child_process';
 import { ROOT } from './report.mjs';
 import { selectAffectedTests } from './affected-tests.mjs';
 import { partitionByProof } from './test-catalog.mjs';
-import { GATES, planGates } from './pipeline-plan.mjs';
+import {
+  CI_STATES,
+  GATES,
+  REQUIRED_CI_GATES,
+  gatesForState,
+  isCIState,
+  planGates,
+} from './pipeline-plan.mjs';
 import { dependencyChangedBetween } from './dependency-change.mjs';
 
 const DOC = /^(AGENTS\.md|README\.md|docs\/|\.lane-claims\/|\.mailmap$)/;
-const CI = /^(\.github\/|scripts\/)/;
+const CI = /^(\\.github\/|scripts\/)/;
 // Nur echte Toolchain-Aenderungen; `package.json` entscheidet der Inhaltsdiff
 // (`dependencyChangedBetween`), damit der Turn-Versionsbump kein Vollprofil ausloest.
 const DEPS = /^src\/Config\/(tsconfig\.json|vite\.config\.ts|eslint\.config\.mjs|capacitor\.config\.json)$/;
@@ -31,7 +36,7 @@ const PRODUCT = /^(src\/|content\/|public\/|index\.html$|capacitor\.config\.json
 const CONTENT = /^(content\/|public\/)/;
 // Tests sind kein ausgeliefertes Produkt: sie brauchen die Suite, aber keinen
 // Build. Ein reiner Testfix darf keinen Android-Job rechtfertigen.
-const TEST_FILE = /((^|\/)__tests__\/|\.(test|spec|bench)\.[cm]?[jt]sx?$)/;
+const TEST_FILE = /((^|\/)__tests__\/|\\.(test|spec|bench)\\.[cm]?[jt]sx?$)/;
 
 /** Advisory-Nachweise: eigene Workflow-Jobs, nie Teil der Gate-Matrix. */
 export const ADVISORY_GATES = Object.freeze(['balance', 'bench']);
@@ -77,136 +82,148 @@ export function classifyChanged(changed, range = {}) {
   };
 }
 
+const stateName = (value) => {
+  const state = String(value ?? '').toUpperCase();
+  return isCIState(state) ? state : null;
+};
+
 /**
- * Gate-Auswahl. `full`/`release` bleiben vollstaendig; nur der PR-Pfad
- * (`impact: true`) darf verengen. Jede Verengung ist begruendet.
+ * Der Zustand ist die eine Entscheidung, aus der Gates, Tests und Aggregate
+ * abgeleitet werden. `NOOP` ist ein ausdruecklicher No-op, `UNKNOWN` der
+ * konservative Volllauf; beide werden nie stillschweigend zu LIGHT.
+ */
+export function stateFor(options = {}) {
+  const explicit = stateName(options.state);
+  if (explicit) return explicit;
+  if (options.noop === true) return 'NOOP';
+  if (options.handoff === true) return 'PR_HANDOFF';
+
+  const event = String(options.event ?? '').toLowerCase();
+  const ref = String(options.ref ?? options.branch ?? '');
+  const main = options.main === true || ref === 'main' || ref === 'refs/heads/main';
+  const changed = Array.isArray(options.changed) ? options.changed : null;
+
+  if (event === 'workflow_dispatch' || event === 'manual') return 'MANUAL';
+  if (event === 'pull_request' || event === 'pr') {
+    return changed && changed.length === 0 ? 'NOOP' : 'PR';
+  }
+  if (event === 'push' || event === 'push-main') {
+    if (!main) return 'LIGHT';
+    return changed && changed.length === 0 ? 'NOOP' : 'MAIN';
+  }
+  // Ohne belastbares Event bleibt es beim vollen Profil, nie bei einer leeren
+  // oder nur scheinbar leichten Matrix.
+  return 'UNKNOWN';
+}
+
+export { CI_STATES, REQUIRED_CI_GATES };
+
+const stateReason = (state) => ({
+  PR: 'PR: Required-Set und vollstaendige Suite',
+  MAIN: 'main: Required-Set und vollstaendige Suite',
+  MANUAL: 'manuell: Required-Set, Suite und Audit',
+  LIGHT: 'Feature-Push: Light-Gates ohne Suite',
+  NOOP: 'No-op: keine Gates, keine Tests',
+  PR_HANDOFF: 'PR-Handoff: der PR-Lauf prueft',
+  UNKNOWN: 'unbekannter Zustand: volles Profil',
+}[state] ?? `Zustand ${state}`);
+
+/** Ein explizit gepinntes Required-Set; leer heisst "nicht gepinnt". */
+const pinnedRequired = (options) =>
+  Array.isArray(options.required) && options.required.length > 0 ? [...options.required] : null;
+
+/**
+ * Gate-Auswahl. Die Required-Liste ist die Untergrenze; Impact darf nur Audit
+ * ergaenzen. Ein Zustand ohne Gates liefert bewusst eine leere Matrix - auch
+ * dann, wenn ein Required-Set gepinnt wurde: ein No-op verlangt nichts.
  */
 export function selectGates(changed, options = {}) {
-  const kind = classifyChanged(changed, options);
-  const profile = options.profile ?? 'full';
-  const impact = options.impact === true;
-
-  // `release` bleibt absichtlich vollstaendig; `full` darf bei aktivem Impact
-  // verengen, sonst waere die Matrix weiter nur ein Profil-Alias.
-  if (!impact || profile === 'release') {
-    return { kind, gates: planGates(profile) ?? planGates('full'), reason: `Profil ${profile}`, skipped: [] };
-  }
-  if (kind.empty || kind.deps || kind.unknown.length > 0) {
-    const reason = kind.empty
-      ? 'kein Diff bestimmbar: konservativ volles Profil'
-      : kind.deps
-        ? 'Dependencies, Lockfile oder Toolchain: volles Profil'
-        : `unbekannte Pfade (${kind.unknown.slice(0, 3).join(', ')}): konservativ volles Profil`;
-    return { kind, gates: planGates('full'), reason, skipped: [] };
-  }
-  if (kind.docsOnly) {
-    const gates = ['check:loc', 'docs', 'tree', 'redundancy'];
+  const files = [...(changed ?? [])];
+  const state = stateFor({ ...options, changed: files });
+  const kind = classifyChanged(files, options);
+  const stateGates = gatesForState(state) ?? planGates('full');
+  if (stateGates.length === 0) {
     return {
       kind,
-      gates,
-      reason: 'nur Doku oder Governance',
-      skipped: ['lint', 'typecheck', 'test-quality', 'dead-code', 'tests', 'assets', 'capabilities', 'build', 'audit']
-        .map((gate) => ({ gate, reason: 'von Doku nicht beruehrt' })),
+      state,
+      gates: [],
+      required: [],
+      reason: stateReason(state),
+      skipped: Object.keys(GATES).map((gate) => ({ gate, reason: 'Zustand ohne Gate-Lauf' })),
     };
   }
 
-  const selected = new Set(['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy']);
-  if (kind.ci || kind.product || kind.tests) {
-    for (const gate of ['test-quality', 'dead-code', 'tests']) selected.add(gate);
-  }
-  if (kind.ci || kind.product) selected.add('capabilities');
-  if (kind.product) selected.add('build');
-  if (kind.content) selected.add('assets');
-  if (kind.deps) selected.add('audit');
+  const required = pinnedRequired(options) ?? stateGates;
+  const selected = new Set(required);
+  if (state === 'MANUAL') selected.add('audit');
+  if ((state === 'PR' || state === 'MAIN') && options.impact === true && kind.deps) selected.add('audit');
 
-  // Nie ein Gate, das das Profil nicht kennt: `run-pipeline` wuerde sonst
-  // abbrechen und die Matrix waere ungueltig.
-  const allowed = new Set(planGates(profile) ?? planGates('full'));
-  const gates = [...selected].filter((key) => GATES[key] && allowed.has(key));
+  const gates = [...selected].filter((key) => GATES[key] && (required.includes(key) || key === 'audit'));
   const skipped = Object.keys(GATES)
-    .filter((key) => !selected.has(key))
+    .filter((key) => !gates.includes(key))
     .map((key) => ({
       gate: key,
-      reason: key === 'assets'
-        ? 'keine Aenderung an content/ oder public/'
-        : key === 'build'
-          ? 'kein Runtime-Code betroffen'
-          : key === 'audit'
-            ? 'keine Dependency-Aenderung'
-            : 'nicht betroffen',
+      reason: key === 'audit'
+        ? 'keine Dependency-Aenderung'
+        : key === 'build' && state === 'LIGHT'
+          ? 'kein Build im Light-Zustand'
+          : 'im Zustand nicht vorgesehen',
     }));
-  const reason = [
-    kind.product ? 'Runtime' : null,
-    kind.ci ? 'CI/Governance' : null,
-    kind.content ? 'Content/Assets' : null,
-  ].filter(Boolean).join(' + ') || 'Impact';
-  return { kind, gates, reason, skipped };
+  return {
+    kind,
+    state,
+    gates,
+    required: [...required],
+    reason: stateReason(state),
+    skipped,
+  };
 }
 
 /**
- * Testauswahl fuer den `tests`-Job. Volles Profil und Profil `all` lassen
- * `files` leer, damit die Suite vollstaendig laeuft; der Impact-Pfad uebergibt
- * genau die betroffenen schnellen Nachweise als `RBD_TEST_FILES`. Eine reine
- * Doku-Aenderung bleibt der einzige bewusste Ausnahmefall.
+ * Testauswahl: PR, MAIN und MANUAL fahren die vollstaendige Suite. LIGHT,
+ * NOOP und PR_HANDOFF fahren nie Tests; ein Zustand ohne `tests`-Gate darf
+ * niemals `runAll: true` melden. Der Impact waehlt nur die langen Nachweise.
  */
 export function selectTests(changed, options = {}) {
-  const profile = options.profile ?? 'full';
-  const impact = options.impact === true;
-  const files = changed ?? [];
-  const kind = classifyChanged(files, options);
+  const files = [...(changed ?? [])];
+  const state = stateFor({ ...options, changed: files });
+  const required = pinnedRequired(options) ?? gatesForState(state) ?? [];
+  if (!required.includes('tests')) {
+    return { files: [], long: [], runAll: false, reason: `${state}: kein tests-Gate`, shards: [] };
+  }
+
   const selection = selectAffectedTests(files);
   const split = partitionByProof(selection.tests ?? []);
   const long = [...new Set((split.long ?? []).map((entry) => (typeof entry === 'string' ? entry : entry.file)))].sort();
-  if (!impact || profile === 'release') {
-    return { files: [], long, runAll: true, reason: `vollstaendiges Profil ${profile}`, shards: [] };
+  const fullSuite = ['PR', 'MAIN', 'MANUAL', 'UNKNOWN'].includes(state);
+  if (!fullSuite) {
+    return { files: [], long: [], runAll: false, reason: `${state}: keine Tests`, shards: [] };
   }
-  // Ein leerer oder unbekannter Diff ist kein Freischein: dann laeuft die
-  // vollstaendige Suite. Dependencies und Toolchain ziehen dieselbe Grenze.
-  if (kind.empty) {
-    return { files: [], long, runAll: true, reason: 'kein Diff bestimmbar: vollstaendige Suite', shards: [] };
-  }
-  if (kind.deps || kind.unknown.length > 0) {
-    return { files: [], long, runAll: true, reason: 'Dependencies oder unbekannte Pfade: vollstaendige Suite', shards: [] };
-  }
-  // Reine Doku/Governance bleibt bewusst ohne Testlauf; alles andere im
-  // Profil `all` ist die vollstaendige PR-Regression. `fullTests` deckt
-  // denselben Fall fuer Aufrufer ab, die das Profil nicht auf `all` abbilden.
-  if (kind.docsOnly) {
-    return { files: [], long: [], runAll: false, reason: 'nur Doku oder Governance: kein Testlauf', shards: [] };
-  }
-  if (profile === 'all' || options.fullTests === true) {
-    return {
-      files: [],
-      long,
-      runAll: true,
-      reason: 'Vollstaendige Regression fuer PR/main',
-      shards: [],
-    };
-  }
-  const fast = [...new Set(split.fast ?? [])].sort();
-  const shardCount = fast.length > 12 ? Math.min(3, Math.ceil(fast.length / 8)) : 0;
-  const shards = shardCount > 0
-    ? Array.from({ length: shardCount }, (_, index) => ({
-      shard: index,
-      files: fast.filter((_, position) => position % shardCount === index),
-    }))
-    : [];
-  return { files: fast, long, runAll: selection.runAll === true, reason: selection.reason ?? 'Impact-Auswahl', shards };
+  return {
+    files: [],
+    long,
+    runAll: true,
+    reason: `vollstaendige Suite (${state})`,
+    shards: [],
+  };
 }
 
 /** Ein Plan aus bereits bekannten Aenderungen. */
 export function buildPlan(changed, options = {}) {
   const gates = selectGates(changed, options);
-  const tests = selectTests(changed, options);
+  const tests = selectTests(changed, { ...options, state: gates.state });
   return {
     changed: gates.kind.files,
+    state: gates.state,
     gates: gates.gates.map((key) => ({ gate: GATES[key].name })),
     gateKeys: gates.gates,
     reason: gates.reason,
     skipped: gates.skipped,
     tests,
     advisory: [...ADVISORY_GATES],
-    required: gates.gates,
+    required: gates.required,
+    run: gates.gates.length > 0,
+    noop: gates.state === 'NOOP',
   };
 }
 
@@ -221,6 +238,9 @@ export function planForCI(options = {}) {
 export function planReport(changed, plan) {
   return {
     changed,
+    state: plan.state,
+    run: plan.run,
+    noop: plan.noop,
     systems: [...new Set(changed.map((file) => file.split('/').slice(0, 2).join('/')))].slice(0, 12),
     reason: plan.reason,
     gates: plan.gateKeys,

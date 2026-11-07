@@ -66,6 +66,7 @@ declare module '*/ci-plan.mjs' {
   }
   export interface Plan {
     readonly changed: readonly string[];
+    readonly state: string;
     readonly gates: readonly { readonly gate: string }[];
     readonly gateKeys: readonly string[];
     readonly reason: string;
@@ -73,27 +74,42 @@ declare module '*/ci-plan.mjs' {
     readonly tests: TestSelection;
     readonly advisory: readonly string[];
     readonly required: readonly string[];
+    readonly run: boolean;
+    readonly noop: boolean;
   }
-  export function selectTests(
+  export interface PlanOptions {
+    readonly state?: string;
+    readonly event?: string;
+    readonly ref?: string;
+    readonly branch?: string;
+    readonly main?: boolean;
+    readonly noop?: boolean;
+    readonly handoff?: boolean;
+    readonly required?: readonly string[];
+    readonly changed?: readonly string[];
+    readonly profile?: string;
+    readonly impact?: boolean;
+    readonly fullTests?: boolean;
+    readonly base?: string;
+    readonly head?: string;
+  }
+  export const ADVISORY_GATES: readonly string[];
+  export const CI_STATES: readonly string[];
+  export const REQUIRED_CI_GATES: readonly string[];
+  export function stateFor(options?: PlanOptions): string;
+  export function selectGates(
     changed: readonly string[],
-    options?: {
-      readonly profile?: string;
-      readonly impact?: boolean;
-      readonly fullTests?: boolean;
-      readonly base?: string;
-      readonly head?: string;
-    },
-  ): TestSelection;
-  export function buildPlan(
-    changed: readonly string[],
-    options?: {
-      readonly profile?: string;
-      readonly impact?: boolean;
-      readonly fullTests?: boolean;
-      readonly base?: string;
-      readonly head?: string;
-    },
-  ): Plan;
+    options?: PlanOptions,
+  ): {
+    readonly kind: Record<string, unknown>;
+    readonly state: string;
+    readonly gates: readonly string[];
+    readonly required: readonly string[];
+    readonly reason: string;
+    readonly skipped: readonly { readonly gate: string; readonly reason: string }[];
+  };
+  export function selectTests(changed: readonly string[], options?: PlanOptions): TestSelection;
+  export function buildPlan(changed: readonly string[], options?: PlanOptions): Plan;
   export function planReport(
     changed: readonly string[],
     plan: Plan,

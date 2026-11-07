@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-/** Turn-Abschluss: optional affected-Tests, alles stagen, verify:all, deutscher Steam-Notes-Commit, Push nach main. */
+/** Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein Force-Push; der PR wird manuell gemergt. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
 import { claimForBranch } from './lib/lane-claims.mjs';
-import { scopeChanges } from './lib/staging-scope.mjs';
+import { explicitScope, scopeChanges } from './lib/staging-scope.mjs';
+import { afterTaskState, writeAfterTask } from './task-state.mjs';
 import {
   classifyPaths,
   describeDiff,
@@ -22,7 +23,6 @@ const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' })
 const npmRun = (args) =>
   spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
 const TARGET_BRANCH = 'main';
-const MAX_PUSH_VERSUCHE = 3;
 
 // Light ist der Normalfall: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate.
 // Tests, Build und Audit gehoeren nach GitHub Actions und laufen nicht in jedem
@@ -44,6 +44,7 @@ if (currentBranch === TARGET_BRANCH) {
   fail(1, 'ERR-4023', 'turn:finish', 'main ist PR-Ziel; auf einer Lane arbeiten (git switch -c lane/<domäne>/<task>)');
   process.exit(1);
 }
+const branchClaim = claimForBranch(currentBranch);
 const EXPLICIT_AFFECTED = args.includes('--affected');
 const SKIP_AFFECTED = args.includes('--no-affected') || PROFILE !== 'light';
 const paths = args.filter((value) => !value.startsWith('--'));
@@ -63,7 +64,7 @@ const changedPaths = () =>
 // Arbeitsbaum, auch wenn die Vorabpruefung sie nicht als fremd erkennt.
 const stage = () => {
   if (paths.length > 0) {
-    git(['add', '--', ...paths]);
+    git(['add', '-A', '--', ...paths]);
     return;
   }
   const claim = claimForBranch(currentBranch);
@@ -114,6 +115,19 @@ if (paths.length === 0 && schmutz) {
   console.log(`turn:finish: ${scope.allowed.length} Pfad(e) im Claim-Scope`);
 }
 
+if (paths.length > 0) {
+  if (!branchClaim) {
+    fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; explizite Pfade ohne Allowlist`);
+    process.exit(1);
+  }
+  const explicit = explicitScope({ paths, allowlist: branchClaim.pathAllowlist });
+  if (!explicit.ok) {
+    fail(1, 'ERR-4019', 'turn:finish', `Pfade ausserhalb des Claims: ${explicit.foreign.join(', ')}`);
+    process.exit(1);
+  }
+  console.log(`turn:finish: ${explicit.allowed.length} explizite Pfad(e) im Claim-Scope`);
+}
+
 // Entwicklungsstufe vor dem Versions-Bump: Ein Bump aendert package.json und
 // wuerde die Auswahl auf alle Tests ausweiten. Der volle Verify-Lauf folgt
 // trotzdem unveraendert; affected verkuerzt full/release nicht.
@@ -124,6 +138,7 @@ if (paths.length === 0 && schmutz) {
 if (EXPLICIT_AFFECTED) {
   console.log('turn:finish: --affected ist jetzt das Standardverhalten; --no-affected überspringt es');
 }
+let delegated = [];
 if (!SKIP_AFFECTED) {
   console.log('turn:finish: betroffene schnelle Tests vor dem Versions-Bump');
   // Eine alte Delegationsliste darf einen Turn ohne lange Nachweise nicht
@@ -134,7 +149,6 @@ if (!SKIP_AFFECTED) {
     fail(1, 'ERR-4026', 'turn:finish', 'betroffene Tests sind rot; kein Commit und kein Push');
     process.exit(1);
   }
-  let delegated = [];
   try {
     delegated = JSON.parse(readFileSync(resolve(ROOT, '.verify-cache', 'delegated.json'), 'utf8')).tests ?? [];
   } catch {
@@ -254,13 +268,28 @@ if (existsSync(notesPath)) {
   console.log('turn:finish: .turn-notes.md verbraucht');
 }
 console.log(`turn:finish: Commit ${git(['rev-parse', '--short', 'HEAD'])} erstellt`);
+const baseSha = (() => {
+  try {
+    return git(['merge-base', 'HEAD', `origin/${TARGET_BRANCH}`]);
+  } catch {
+    return branchClaim?.baseSha ?? '';
+  }
+})();
+const commitSha = git(['rev-parse', 'HEAD']);
+const afterTask = {
+  state: afterTaskState({ gateOk: true, pushed: false }),
+  branch: currentBranch,
+  head: commitSha,
+  base: baseSha,
+  claim: branchClaim ? { id: branchClaim.id, owner: branchClaim.owner, branch: branchClaim.branch } : null,
+  own: files,
+  foreign: [],
+  tests: { profile: PROFILE, script: VERIFY_SCRIPT, affected: !SKIP_AFFECTED, delegated },
+  gate: { ok: true, profile: PROFILE, script: VERIFY_SCRIPT },
+  next: [`git push -u origin ${currentBranch}`, `PR gegen ${TARGET_BRANCH} anlegen und manuell mergen`],
+};
+writeAfterTask(afterTask);
 
-/**
- * Remote-Rueckstand zaehlen, oder null wenn der Remote nicht erreichbar ist.
- *
- * Seit die Version im Turn gebumpt wird, bewegt der Release-Workflow `main` nicht mehr.
- * Das Nachziehen bleibt als Netz fuer den Fall, dass jemand anders auf main pusht.
- */
 const rueckstand = () => {
   if (gitRun(['fetch', 'origin']).status !== 0) return null;
   try {
@@ -269,78 +298,28 @@ const rueckstand = () => {
     return null;
   }
 };
-
-/** Lokal auf den Remote aufsetzen; bei Dreck im Arbeitsbaum stasht rebase selbst. */
-const neuAufsetzen = (anzahl) => {
-  console.log(`turn:finish: origin/${TARGET_BRANCH} ist um ${anzahl} Commit(s) voraus; ich setze lokal neu auf`);
-  const dreckig = git(['status', '--porcelain']);
-  const args = ['rebase', ...(dreckig ? ['--autostash'] : []), `origin/${TARGET_BRANCH}`];
-  if (gitRun(args).status === 0) return true;
-  gitRun(['rebase', '--abort']);
-  return false;
-};
-
-/**
- * Nach dem Push: lokal nur gemergte Wegwerf-Branches entfernen. Nie fatal —
- * ein liegengebliebener Zweig darf den Turn nicht rot machen.
- */
-const aufraeumen = () => {
-  const cleanup = spawnSync(process.execPath, ['scripts/branch-cleanup.mjs'], { cwd: ROOT, stdio: 'inherit' });
-  if (cleanup.status !== 0) console.log('turn:finish: Branch-Aufraeumen uebersprungen');
-};
-
-/**
- * Pushen mit Nachziehen: Erst wenn der Remote aktuell ist, geprueft wurde und der Push
- * trotzdem abgelehnt wird, handelt es sich um Branch-Schutz und nicht um Rebase-Rueckstand.
- */
-let branchSchutz = false;
-let grund = `Push auf ${TARGET_BRANCH} nicht moeglich`;
-for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
-  const rueck = rueckstand();
-  if (rueck === null) {
-    grund = `kein Zugriff auf origin/${TARGET_BRANCH}`;
-    break;
-  }
-  if (rueck > 0) {
-    if (!neuAufsetzen(rueck)) {
-      grund = `Merge-Konflikt beim Nachziehen von origin/${TARGET_BRANCH}`;
-      break;
-    }
-    // Der neu aufgesetzte Baum enthaelt Remote-Arbeit und wurde noch nie geprueft.
-    if (npmRun(['run', VERIFY_SCRIPT]).status !== 0) {
-      fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} nach dem Nachziehen ist rot; kein Push, der Commit bleibt lokal`);
-      process.exit(1);
-    }
-    stage();
-    if (git(['diff', '--cached', '--name-only'])) {
-      git(['commit', '--amend', '--no-edit']);
-      console.log(`turn:finish: nach dem Nachziehen amendiert: ${git(['rev-parse', '--short', 'HEAD'])}`);
-    }
-    continue;
-  }
-  if (gitRun(['push', '-u', 'origin', 'HEAD']).status === 0) {
-    console.log(`turn:finish: PASS, Arbeitsbranch ${currentBranch} gepusht (promote legt den PR gegen ${TARGET_BRANCH} an)`);
-    aufraeumen();
-    process.exit(0);
-  }
-  const erneut = rueckstand();
-  if (erneut !== null && erneut > 0) {
-    console.log(`turn:finish: origin/${TARGET_BRANCH} lief waehrend des Pushes weiter; neuer Versuch`);
-    continue;
-  }
-  branchSchutz = true;
-  break;
-}
-
-if (!branchSchutz) {
-  fail(1, 'ERR-4008', 'turn:finish', `${grund}; der Commit bleibt lokal liegen`);
+const rueck = rueckstand();
+if (rueck === null) {
+  fail(1, 'ERR-4008', 'turn:finish', `origin/${TARGET_BRANCH} nicht lesbar; kein Push ohne Vergleich`);
   process.exit(1);
 }
-const pushBranch = gitRun(['push', '-u', 'origin', 'HEAD']);
-if (pushBranch.status !== 0) {
-  fail(1, 'ERR-4008', 'turn:finish', `Push auf ${TARGET_BRANCH} und auf den Arbeitsbranch fehlgeschlagen`);
+if (rueck > 0) {
+  fail(1, 'ERR-4008', 'turn:finish', `origin/${TARGET_BRANCH} ist um ${rueck} Commit(s) voraus; manuell mergen (git fetch origin && git merge origin/${TARGET_BRANCH}), kein Auto-Rebase`);
   process.exit(1);
 }
-aufraeumen();
-fail(1, 'ERR-4023', 'turn:finish', `Direkter Push auf ${TARGET_BRANCH} abgelehnt; Branch gepusht. Fokussierter PR gegen ${TARGET_BRANCH} noetig`);
-process.exit(1);
+const push = gitRun(['push', '-u', 'origin', 'HEAD']);
+if (push.status !== 0) {
+  fail(1, 'ERR-4008', 'turn:finish', `Push auf ${currentBranch} fehlgeschlagen; kein Force-Push, der Commit bleibt lokal`);
+  process.exit(1);
+}
+writeAfterTask({
+  ...afterTask,
+  state: afterTaskState({ gateOk: true, pushed: true }),
+  next: [
+    `CI Verify auf ${commitSha.slice(0, 7)} beobachten`,
+    `PR gegen ${TARGET_BRANCH} anlegen und manuell mergen`,
+    'pnpm run task:complete --run <id> nach gruenem Lauf',
+  ],
+});
+console.log(`turn:finish: PASS, ${currentBranch} gepusht. Naechster Schritt: PR gegen ${TARGET_BRANCH} anlegen und manuell mergen; kein Auto-Merge.`);
+process.exit(0);

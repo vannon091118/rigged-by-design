@@ -4,10 +4,24 @@
  *
  * Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil
  * enthaelt deshalb einen schreibenden Schritt; `fix` ist der einzige Pfad,
- * der repariert, und jedes Gate traegt einen rein lesenden Aufruf.
+ * der repariert, und jedes Gate traegt einen rein lesenden Aufruf. Ausserdem
+ * liegt hier die eine Wahrheit fuer CI-Zustaende und das Required-Set.
  */
 import { describe, expect, it } from 'vitest';
-import { GATES, PROFILE_GATES, PROFILES, isFixMode, isProfile, planGates } from '../../../../scripts/lib/pipeline-plan.mjs';
+import {
+  CI_STATES,
+  GATES,
+  LIGHT_GATES,
+  PROFILE_GATES,
+  PROFILES,
+  QUICK_GATES,
+  REQUIRED_CI_GATES,
+  gatesForState,
+  isCIState,
+  isFixMode,
+  isProfile,
+  planGates,
+} from '../../../../scripts/lib/pipeline-plan.mjs';
 
 describe('Pipeline-Modi', () => {
   it('plant in jedem Profil ausschliesslich bekannte, lesende Gates', () => {
@@ -64,5 +78,35 @@ describe('Pipeline-Modi', () => {
     expect(planGates('unbekannt')).toBeNull();
     expect(isFixMode(['--profile=quick'])).toBe(false);
     expect(isFixMode(['--profile=quick', '--fix'])).toBe(true);
+  });
+});
+
+describe('CI-Gate-Wahrheit', () => {
+  it('baut das Required-Set aus QUICK plus build', () => {
+    expect(REQUIRED_CI_GATES).toEqual([...QUICK_GATES, 'build']);
+    // Jedes Required-Gate ist ein echtes Gate mit eigenem Namen, kein Tippfehler.
+    expect(REQUIRED_CI_GATES.map((key: string) => GATES[key]?.name)).toEqual([...REQUIRED_CI_GATES]);
+    expect(PROFILE_GATES.full).toEqual(expect.arrayContaining([...REQUIRED_CI_GATES, 'audit']));
+  });
+
+  it('ordnet jedem Zustand genau seine Gates zu', () => {
+    expect(CI_STATES).toEqual(['PR', 'MAIN', 'MANUAL', 'LIGHT', 'NOOP', 'PR_HANDOFF', 'UNKNOWN']);
+    for (const state of ['PR', 'MAIN', 'MANUAL']) {
+      expect(gatesForState(state)).toEqual([...REQUIRED_CI_GATES]);
+    }
+    expect(gatesForState('UNKNOWN')).toEqual([...REQUIRED_CI_GATES, 'audit']);
+    expect(gatesForState('LIGHT')).toEqual([...LIGHT_GATES]);
+    expect(gatesForState('NOOP')).toEqual([]);
+    expect(gatesForState('PR_HANDOFF')).toEqual([]);
+    expect(gatesForState('quatsch')).toBeNull();
+    // Ein unbekannter Zustand ist nie ein stiller Fallback auf ein Profil.
+    expect(gatesForState('')).toBeNull();
+  });
+
+  it('erkennt Zustaende unabhaengig von der Schreibweise, aber nicht beliebig', () => {
+    expect(isCIState('light')).toBe(true);
+    expect(isCIState('PR_HANDOFF')).toBe(true);
+    expect(isCIState('quatsch')).toBe(false);
+    expect(isCIState(undefined)).toBe(false);
   });
 });

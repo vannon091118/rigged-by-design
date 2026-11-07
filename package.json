@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.182",
+  "version": "0.3.183",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -64,7 +64,10 @@
     "android:apk": "node scripts/prepare-android.mjs",
     "android:apk:release": "node scripts/prepare-android.mjs --release",
     "turn:finish": "node scripts/turn-push.mjs",
-    "turn:finish:full": "node scripts/turn-push.mjs --profile=full"
+    "turn:finish:full": "node scripts/turn-push.mjs --profile=full",
+    "task:pause": "node scripts/task-state.mjs pause",
+    "task:status": "node scripts/task-state.mjs status",
+    "task:complete": "node scripts/task-state.mjs complete"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",

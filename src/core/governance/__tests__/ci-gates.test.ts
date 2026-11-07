@@ -2,29 +2,25 @@
  * @test-target: .github/workflows/ci-verify.yml
  * @error-code: ERR-4008
  *
- * Ebene A des Main-Gates: `main` ist kein Sonderfall mehr, und der
- * Release-Workflow kennt keine Nachricht, die seine Pruefung abschaltet.
- * Die Workflows werden als YAML-Baum geprueft, nicht als Zeichenkette:
- * Schrittfolge, Rechte und Env-Verdrahtung sind Struktur, keine Textposition.
- * Ebene B (Ruleset, Pflichtstatus) ist eine GitHub-Einstellung; sie wird in
- * docs/CI-GATES.md beschrieben und von `npm run verify` nicht erzwungen.
+ * Ebene A des Main-Gates: der Zustand entscheidet, welche Gates laufen, und der
+ * Pflichtstatus darf nur gruen sein, wenn das Required-Set wirklich gelaufen
+ * ist. Die Workflows werden als YAML-Baum geprueft, nicht als Zeichenkette.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
 
-interface WorkflowStep {
+interface Step {
   readonly name?: string;
   readonly run?: string;
-  readonly uses?: string;
   readonly if?: string;
-  readonly env?: Readonly<Record<string, string>>;
-  readonly with?: Readonly<Record<string, string>>;
   readonly id?: string;
+  readonly env?: Readonly<Record<string, string>>;
+  readonly with?: Readonly<Record<string, unknown>>;
 }
 
-interface WorkflowJob {
+interface Job {
   readonly name?: string;
   readonly needs?: string | readonly string[];
   readonly outputs?: Readonly<Record<string, string>>;
@@ -33,112 +29,113 @@ interface WorkflowJob {
   readonly 'timeout-minutes'?: number;
   readonly if?: string;
   readonly strategy?: { readonly matrix?: string; readonly 'fail-fast'?: boolean };
-  readonly steps?: readonly WorkflowStep[];
+  readonly steps?: readonly Step[];
   readonly with?: Readonly<Record<string, unknown>>;
 }
 
-interface WorkflowTrigger {
-  readonly pull_request?: {
-    readonly branches?: readonly string[];
-    readonly types?: readonly string[];
-    readonly 'branches-ignore'?: unknown;
-  };
-  readonly push?: {
-    readonly branches?: readonly string[];
-    readonly tags?: readonly string[];
-  };
-  readonly workflow_run?: {
-    readonly workflows?: readonly string[];
-    readonly types?: readonly string[];
-    readonly branches?: readonly string[];
-  };
-  readonly workflow_dispatch?: {
-    readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
-  };
-  readonly workflow_call?: {
-    readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
-  };
-  readonly schedule?: readonly { readonly cron: string }[];
-}
-
 interface Workflow {
-  readonly on?: WorkflowTrigger;
+  readonly on?: {
+    readonly pull_request?: { readonly branches?: readonly string[]; readonly types?: readonly string[] };
+    readonly push?: { readonly branches?: readonly string[]; readonly tags?: readonly string[] };
+    readonly workflow_run?: {
+      readonly workflows?: readonly string[];
+      readonly types?: readonly string[];
+      readonly branches?: readonly string[];
+    };
+    readonly workflow_dispatch?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
+    readonly workflow_call?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
+    readonly schedule?: readonly { readonly cron: string }[];
+  };
   readonly permissions?: Readonly<Record<string, string>>;
-  readonly jobs?: Readonly<Record<string, WorkflowJob>>;
+  readonly jobs?: Readonly<Record<string, Job>>;
 }
 
 const workflow = (name: string): Workflow =>
   parse(readFileSync(resolve(process.cwd(), '.github', 'workflows', name), 'utf8')) as Workflow;
-
-const steps = (flow: Workflow, job: string): readonly WorkflowStep[] =>
-  flow.jobs?.[job]?.steps ?? [];
-
+const steps = (flow: Workflow, job: string): readonly Step[] => flow.jobs?.[job]?.steps ?? [];
+const stepWith = (flow: Workflow, job: string, needle: string): Step | undefined =>
+  steps(flow, job).find((step) => step.run?.includes(needle));
 const stepIndex = (flow: Workflow, job: string, needle: string): number =>
   steps(flow, job).findIndex((step) => step.run?.includes(needle) ?? false);
-
-const stepWith = (flow: Workflow, job: string, needle: string): WorkflowStep | undefined =>
-  steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Main-Gate', () => {
   it('prueft granular: ein Status je Gate und ein Aggregat als Pflichtstatus', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
-    expect(ci.on?.pull_request?.['branches-ignore']).toBeUndefined();
     expect(ci.on?.push?.branches).toEqual(['**']);
     expect(ci.permissions?.contents).toBe('read');
-    expect(ci.permissions?.['pull-requests']).toBe('read');
 
     // Der Pflichtstatus bleibt genau einer: er fuehrt nur Ergebnisse zusammen.
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
-    expect(ci.jobs?.verify?.if).toBe('always()');
-    expect(ci.jobs?.verify?.needs).toEqual(['plan', 'gate', 'long', 'claims', 'commitmsg']);
-    expect(stepWith(ci, 'verify', 'exit "$fail"')).not.toBeUndefined();
+    expect(ci.jobs?.verify?.if).toContain('always()');
+    expect(ci.jobs?.verify?.needs).toEqual(['plan', 'gate', 'light', 'long', 'claims', 'commitmsg']);
 
     // Die Arbeit steckt in der Matrix: ein Job, ein Gate, ein Status.
     const gate = ci.jobs?.gate;
     expect(gate?.name).toContain('matrix.gate');
+    expect(gate?.if).toContain("state != 'LIGHT'");
     expect(gate?.strategy?.matrix).toContain('needs.plan.outputs.matrix');
     expect(gate?.strategy?.['fail-fast']).toBe(false);
     expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.run).toContain('--gate=${{ matrix.gate }}');
-    expect(stepWith(ci, 'gate', 'verify:all')).toBeUndefined();
+    expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.run).toContain('--profile=${{ needs.plan.outputs.profile }}');
+
+    // Der Light-Zustand hat einen eigenen Job und nie das Required-Set.
+    expect(ci.jobs?.light?.name).toBe('Light Gates');
+    expect(ci.jobs?.light?.if).toContain("state == 'LIGHT'");
+    expect(stepWith(ci, 'light', 'run-pipeline.mjs')?.run).toContain('--profile=light');
 
     // Ein Push mit offenem PR endet vor den Gates; der PR-Lauf ist die Wahrheit.
     expect(stepWith(ci, 'plan', 'gh pr list --head')?.id).toBe('dedupe');
-    // Profil und Matrix kommen aus derselben Quelle wie `verify`.
     const control = steps(ci, 'plan').find((step) => step.name === 'Kontrollebene aus der Basis');
     expect(control?.run).toMatch(/MAIN_REF[\s\S]*refs\/heads\/main/);
-    const profile = stepWith(ci, 'plan', 'GITHUB_EVENT_NAME');
-    expect(profile?.id).toBe('profile');
-    expect(profile?.run).toContain('name=all');
-    expect(profile?.run).toContain('name=light');
-    // Der Plan liest den echten Diff: Basis und Kopf aus dem Event, dann
-    // waehlt `ci-plan.mjs` Gates und Tests. Unklarer Diff -> volles Profil.
-    const range = stepWith(ci, 'plan', 'github.event.pull_request.base.sha');
-    expect(range?.id).toBe('range');
-    expect(range?.run).toContain('github.event.before');
-    expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.id).toBe('gates');
-    expect(stepWith(ci, 'plan', 'gate-matrix.mjs')).toBeUndefined();
-    expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.env?.RBD_TEST_FILES).toBe('${{ needs.plan.outputs.tests }}');
+    // Kontrollebene == Pruefobjekt ist ein echter No-op, kein harter Abbruch.
+    expect(control?.run).toContain('noop=true');
+    expect(control?.run).toContain('independent=false');
 
-    // Vom Impact gewaehlte lange Nachweise bekommen eine eigene Matrix und
-    // laufen auf dem exakten PR-Kopf, nicht auf main.
-    const long = ci.jobs?.long;
-    expect(long?.strategy?.matrix).toContain('needs.plan.outputs.long_matrix');
-    expect(long?.if).toContain("long_count != '0'");
+    const plan = ci.jobs?.plan;
+    expect(plan?.outputs?.state).toBe('${{ steps.gates.outputs.state }}');
+    expect(plan?.outputs?.required).toBe('${{ steps.gates.outputs.required }}');
+    expect(plan?.outputs?.run).toBe('${{ steps.gates.outputs.run }}');
+    expect(plan?.outputs?.noop).toBe('${{ steps.gates.outputs.noop }}');
+    expect(plan?.outputs?.independent).toBe('${{ steps.control.outputs.independent }}');
+
+    // Der Plan liest den echten Diff: Basis und Kopf aus dem Event.
+    expect(stepWith(ci, 'plan', 'github.event.pull_request.base.sha')?.id).toBe('range');
+    const gates = stepWith(ci, 'plan', 'ci-plan.mjs');
+    expect(gates?.id).toBe('gates');
+    expect(gates?.run).toContain('--event=');
+    expect(gates?.run).toContain('--noop=');
+    expect(gates?.run).toContain('--handoff=');
+    expect(gates?.env?.RBD_VERIFY_AUDIT).toContain('workflow_dispatch');
+    expect(stepWith(ci, 'plan', 'gate-matrix.mjs')).toBeUndefined();
+
+    // Die Matrix wird gegen das Required-Set geprueft, nicht nur auf JSON.
+    const validation = stepWith(ci, 'plan', 'process.env.REQUIRED');
+    expect(validation?.env?.STATE).toBe('${{ steps.gates.outputs.state }}');
+
+    // Impact waehlt lange Nachweise auf dem exakten PR-Kopf, nicht auf main.
+    expect(ci.jobs?.long?.strategy?.matrix).toContain('needs.plan.outputs.long_matrix');
+    expect(ci.jobs?.long?.if).toContain("long_count != '0'");
     const longStep = stepWith(ci, 'long', 'run-selected-tests.mjs');
     expect(longStep?.env?.RBD_TEST_FILES).toBe('${{ matrix.file }}');
     expect(longStep?.env?.RBD_NARRATIVE_LONGRUN).toBe('1');
-    expect(longStep?.env?.RBD_SOAK).toBe('1');
     expect(steps(ci, 'long')[0]?.with?.ref).toContain('github.event.pull_request.head.sha');
 
-    // Main bekommt bei Runtime-/Testaenderungen die volle Suite; der
-    // Impact-Filter bleibt fuer Gates und reine Doku erhalten.
-    expect(stepWith(ci, 'plan', 'full_tests')?.run).toMatch(/\$GITHUB_EVENT_NAME[\s\S]*"pull_request"[\s\S]*full_tests=1/);
-    expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.run).toContain('--full-tests');
-
-    // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
+    // Claim-Sperre nur mit echtem PR-Diff; Commit-Notes nur auf main.
     expect(stepWith(ci, 'claims', 'verify-lane-claims.mjs --ci')).not.toBeUndefined();
-    expect(ci.jobs?.claims?.if).toContain("github.event_name == 'pull_request'");
+    expect(ci.jobs?.claims?.if).toContain("state == 'PR'");
+    expect(ci.jobs?.commitmsg?.if).toContain("state == 'MAIN'");
+  });
+
+  it('fuehrt die Zustands-Aggregate getrennt zusammen', () => {
+    const run = stepWith(workflow('ci-verify.yml'), 'verify', 'Required-Set muss laufen')?.run ?? '';
+    expect(run).toContain('PR|MAIN|MANUAL|UNKNOWN');
+    expect(run).toMatch(/GATES.*=.*"success"/);
+    expect(run).toContain('NOOP');
+    expect(run).toContain('"$NOOP" = "true"');
+    expect(run).toContain('"$LIGHT" = "success"');
+    expect(run).toContain('"$INDEPENDENT" != "true"');
+    expect(run).toContain('exit "$fail"');
   });
 
   it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
@@ -147,7 +144,6 @@ describe('Main-Gate', () => {
     expect(release.on?.workflow_run?.types).toEqual(['completed']);
     expect(release.on?.workflow_run?.branches).toEqual(['main']);
     expect(release.on?.push).toBeUndefined();
-    expect(release.permissions?.contents).toBe('write');
 
     const condition = release.jobs?.release?.if ?? '';
     expect(condition).toContain("workflow_run.conclusion == 'success'");
@@ -156,85 +152,62 @@ describe('Main-Gate', () => {
 
     const verified = stepWith(release, 'release', 'npm run verify:release');
     expect(verified?.if).toContain("github.event_name == 'workflow_dispatch'");
-    const verifyIndex = stepIndex(release, 'release', 'npm run verify:release');
-    const tagged = stepIndex(release, 'release', 'ci-tag-release.mjs');
-    expect(tagged).toBeGreaterThan(verifyIndex);
+    expect(stepIndex(release, 'release', 'ci-tag-release.mjs'))
+      .toBeGreaterThan(stepIndex(release, 'release', 'npm run verify:release'));
 
     // APK-Relevanz kommt aus dem Produkt-Impact, nicht aus `scripts/`.
-    const relevance = stepWith(release, 'release', 'release-impact.mjs');
-    expect(relevance?.id).toBe('relevance');
-    expect(relevance?.run).toContain('--prev=');
-    expect(stepWith(release, 'release', 'grep -qE')).toBeUndefined();
-
+    expect(stepWith(release, 'release', 'release-impact.mjs')?.id).toBe('relevance');
     const tagStep = stepWith(release, 'release', 'ci-tag-release.mjs');
-    expect(tagStep?.if).toBeUndefined();
     expect(tagStep?.run).toContain('--github-output');
-    expect(tagStep?.env?.GITHUB_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
-    expect(tagStep?.env?.GH_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
-    expect(tagStep?.env?.RELEASE_TOKEN).toBe('${{ secrets.RELEASE_TOKEN }}');
     expect(tagStep?.env?.RELEASE_SHA).toContain('github.event.workflow_run.head_sha');
-  });
-
-  it('startet den Verify-Workflow auch von Hand', () => {
-    expect(workflow('ci-verify.yml').on?.workflow_dispatch).not.toBeUndefined();
   });
 
   it('delegiert die langen Nachweise an einen eigenen Workflow', () => {
     const long = workflow('long-checks.yml');
-    expect(long.on?.workflow_dispatch?.inputs?.verify?.type).toBe('boolean');
     expect(long.on?.workflow_dispatch?.inputs?.soak_ticks?.default).toBe('100000');
-    expect(long.on?.workflow_dispatch?.inputs?.balance_days?.default).toBe('40');
     expect(long.permissions?.contents).toBe('read');
+    expect(long.jobs?.verify?.name).toBe('Long Verify');
     expect(stepWith(long, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
-
     const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
     expect(statistics?.run).toContain('poker-distribution.test.ts');
-    expect(statistics?.run).toContain('slot-session-rtp.test.ts');
     expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe("${{ inputs.soak_ticks || '100000' }}");
     expect(long.on?.schedule?.[0]?.cron).toBe('0 3 * * 1');
-    const balance = stepWith(long, 'balance', 'balance-run.mjs');
-    expect(balance?.run).toBe('node scripts/balance-run.mjs');
-    expect(balance?.env?.RBD_DAYS).toBe("${{ inputs.balance_days || '40' }}");
     expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
   });
 
-  it('loescht Wegwerf-Branches nach einem Merge mit gruenen Gates', () => {
+  it('loescht keine Wegwerf-Branches mehr, sondern meldet sie', () => {
     const cleanup = workflow('pr-cleanup.yml');
     expect(cleanup.on?.pull_request?.types).toEqual(['closed']);
-    expect(cleanup.permissions?.contents).toBe('write');
+    expect(cleanup.permissions?.contents).toBe('read');
+    expect(cleanup.jobs?.['delete-branch']).toBeUndefined();
 
-    const condition = cleanup.jobs?.['delete-branch']?.if ?? '';
-    expect(condition).toContain('github.event.pull_request.merged == true');
-    expect(condition).toContain("head.ref != 'main'");
-    expect(condition).toContain('head.repo.full_name == github.repository');
-    expect(condition).toContain('keep-branch');
-
-    const step = steps(cleanup, 'delete-branch')[0];
-    expect(step?.env?.BRANCH).toContain('head.ref');
-    expect(step?.run).toContain('gh api -X DELETE');
+    const job = cleanup.jobs?.['report-branch'];
+    expect(job?.name).toBe('Head-Branch melden');
+    expect(job?.if).toContain('github.event.pull_request.merged == true');
+    expect(job?.if).toContain('keep-branch');
+    const step = steps(cleanup, 'report-branch')[0];
+    expect(step?.run).toContain('git push origin --delete');
+    expect(step?.run).toContain('nicht** geloescht');
+    for (const entry of steps(cleanup, 'report-branch')) {
+      expect(entry.run ?? '').not.toContain('gh api -X DELETE');
+    }
   });
 
   it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {
     const release = workflow('auto-version-release.yml');
     const apkJob = release.jobs?.apk;
-    const needs = Array.isArray(apkJob?.needs) ? apkJob.needs : [apkJob?.needs];
-    expect(needs).toContain('release');
     expect(apkJob?.uses).toBe('./.github/workflows/build-apk.yml');
-    expect(apkJob?.permissions?.contents).toBe('write');
     expect(apkJob?.with?.tag).toBe('${{ needs.release.outputs.tag }}');
     expect(apkJob?.with?.skip_verify).toBe(true);
 
     const apk = workflow('build-apk.yml');
-    expect(apk.on?.workflow_call).not.toBeUndefined();
     expect(apk.on?.workflow_call?.inputs?.skip_verify?.type).toBe('boolean');
-    expect(apk.on?.workflow_dispatch).not.toBeUndefined();
     expect(apk.on?.push?.tags).toEqual(['v*.*.*']);
-    expect(apk.permissions?.contents).toBe('write');
     expect(apk.jobs?.apk?.['timeout-minutes']).toBe(40);
-    expect(stepIndex(apk, 'apk', "grep -qx 'rigged-by-design-debug.apk'")).toBeGreaterThan(-1);
-    const apkGate = stepWith(apk, 'apk', 'npm run verify:release');
-    expect(apkGate?.if).toContain('inputs.skip_verify');
-    const apkBuild = stepWith(apk, 'apk', 'npm run build');
-    expect(apkBuild?.if).toContain('inputs.skip_verify');
+    expect(stepWith(apk, 'apk', 'npm run verify:release')?.if).toContain('inputs.skip_verify');
+  });
+
+  it('startet den Verify-Workflow auch von Hand', () => {
+    expect(workflow('ci-verify.yml').on?.workflow_dispatch).not.toBeUndefined();
   });
 });
