@@ -1,7 +1,7 @@
 /** Gewichtetes Zahlenziehen: Angezeigte Chance und Ziehung stammen aus derselben Verteilung. */
 import type { Prng } from './prng';
 
-/** Maximale Eingriffstaerke: das Zielgewicht steigt auf hoechstens das 10,99-fache. */
+/** Maximale Eingriffstaerke: das Zielgewicht steigt auf hoechstens das 10-fache. */
 export const MAX_BIAS_BPS = 9_000;
 
 interface NumberBias {

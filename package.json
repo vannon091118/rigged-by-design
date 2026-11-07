@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.145",
+  "version": "0.3.152",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -23,6 +23,7 @@
     "verify:docs": "node scripts/verify-docs.mjs",
     "verify:tree": "node scripts/verify-tree.mjs",
     "verify:redundancy": "node scripts/verify-redundancy.mjs",
+    "verify:capabilities": "node scripts/verify-capabilities.mjs",
     "docs:stub": "node scripts/doc-stub.mjs",
     "inventory:build": "node scripts/build-inventory.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",

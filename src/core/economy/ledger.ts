@@ -149,8 +149,15 @@ export class Ledger {
       throw new InsufficientFundsError(from, amount, available, reason);
     }
 
-    this.#balances.set(from, subVC(available, amount));
-    this.#balances.set(to, addVC(this.#balances.get(to) ?? ZERO_VC, amount));
+    // Beide neuen Salden vollstaendig berechnen und validieren, bevor irgendein
+    // Kontostand mutiert. addVC wirft bei Zielkonto-Overflow, subVC bei
+    // Quellkonto-Unterlauf - beides passiert hier, bevor ein Saldo geschrieben wird.
+    const newFrom = subVC(available, amount);
+    const currentTo = this.#balances.get(to) ?? ZERO_VC;
+    const newTo = addVC(currentTo, amount);
+
+    this.#balances.set(from, newFrom);
+    this.#balances.set(to, newTo);
 
     const entry: LedgerEntry = Object.freeze({
       seq: this.#seq,

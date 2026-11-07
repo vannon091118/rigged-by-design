@@ -1,0 +1,228 @@
+[
+  {
+    "id": "lane/governance/02-governance",
+    "owner": "Integrator",
+    "branch": "lane/governance/02-governance",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "scripts/lib/impact.mjs",
+      "scripts/lib/subsystems.mjs",
+      "scripts/lib/escalation.mjs",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/agent-context.mjs",
+      "scripts/agent-verify.mjs",
+      "scripts/run-pipeline.mjs",
+      "docs/ROADMAP.md",
+      ".githooks/",
+      "AGENTS.md",
+      ".github/ISSUE_TEMPLATE/lane.md"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/01-baseline"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/integrity/03-ledger",
+    "owner": "Ledger-/Core-Owner",
+    "branch": "lane/integrity/03-ledger",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "src/core/economy/ledger.ts",
+      "src/core/economy/ledger-integrity.ts",
+      "src/core/rng/weighted.ts",
+      "src/core/economy/__tests__/ledger-atomicity.test.ts",
+      "src/store/__tests__/transfer.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/02-governance"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/capabilities/04-capabilities",
+    "owner": "Quality-/Capability-Owner",
+    "branch": "lane/capabilities/04-capabilities",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "scripts/lib/capabilities.mjs",
+      "scripts/verify-capabilities.mjs",
+      "scripts/lib/pipeline-plan.mjs",
+      "capabilities.json",
+      "package.json"
+    ],
+    "contracts": [],
+    "dependencies": [
+      "lane/governance/02-governance",
+      "lane/integrity/03-ledger"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/actor-id",
+    "owner": "Integrator",
+    "branch": "lane/contracts/actor-id",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/actor-id.md",
+      "src/core/contracts/actor-id.ts",
+      "src/core/contracts/__tests__/actor-id.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "actor-id",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/world-time",
+    "owner": "Integrator",
+    "branch": "lane/contracts/world-time",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/world-time.md",
+      "src/core/contracts/world-time.ts",
+      "src/core/contracts/__tests__/world-time.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "world-time",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/actor-id"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/domain-event",
+    "owner": "Integrator",
+    "branch": "lane/contracts/domain-event",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/domain-event.md",
+      "src/core/contracts/domain-event.ts",
+      "src/core/contracts/__tests__/domain-event.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "domain-event",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/world-time"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/relationship",
+    "owner": "Integrator",
+    "branch": "lane/contracts/relationship",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/relationship.md",
+      "src/core/contracts/relationship.ts",
+      "src/core/contracts/__tests__/relationship.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "relationship",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/domain-event"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/factor",
+    "owner": "Integrator",
+    "branch": "lane/contracts/factor",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/factor.md",
+      "src/core/contracts/factor.ts",
+      "src/core/contracts/__tests__/factor.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "factor",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/relationship"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "lane/contracts/save",
+    "owner": "Integrator",
+    "branch": "lane/contracts/save",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "docs/contracts/save.md",
+      "src/core/contracts/save.ts",
+      "src/core/contracts/__tests__/save.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "save",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [
+      "lane/contracts/factor"
+    ],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  },
+  {
+    "id": "phase-0/fundament",
+    "owner": "Integrator",
+    "branch": "phase-0/fundament",
+    "baseSha": "15431378654dcf2e58eb8f542efe60b99b625213",
+    "pathAllowlist": [
+      "scripts/lib/lane-claims.mjs",
+      ".lane-claims/claims.json",
+      ".githooks/",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "15431378654dcf2e58eb8f542efe60b99b625213"
+  }
+]
