@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 19:26 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:33 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Mehrbeatige Events aus #243 gerettet
+
+**Ziel.** Die mehrbeatigen Narrative-Events aus dem konfliktbehafteten PR #243 auf dem aktuellen `main` retten, ohne den alten Branch zu rebasen und ohne Inhaltsarbeit zu überschreiben.
+
+**Umsetzung.** `EventChoice` traegt optional `nextStep`. `executeChoice` ruft nach der Aktivierung `advanceEventStep` und laesst die Instanz live; der vorhandene Snapshot deckt den Rollback. Das Schema prueft erreichbare Ziele, `choices/steps.ts` filtert das persistierte Angebot pro Beat, `view.ts` zeigt nur diesen Satz. Limits: 24 Content-Slots, 16 Choices, 16 angebotene Choices; die bestehenden Templates bleiben einstufig. Der Beitrag und die Registry sind deterministisch erzeugt.
+
+**Pruefungen.** `pnpm run typecheck`; `pnpm exec vitest run src/core/sim/__tests__/narrative-multi-beat.test.ts src/core/sim/__tests__/narrative-choice-execution.test.ts src/core/sim/__tests__/narrative-composer.test.ts src/core/sim/__tests__/narrative-coverage.test.ts`; `pnpm run narrative:check`; `pnpm run verify:light`; `pnpm run verify:claims`.
+
+**Offen.** Noch kein mehrbeatiger Content-Batch: die bestehenden Templates bleiben einstufig, ein 3x3-Template ist mit den neuen Limits moeglich. Die Outcome-Luecken bei `VISITOR_CONFLICT` und `RIVAL_MOVE` bleiben offen.
 
 ## 2026-11-07 - WIP-Konsolidierung vor dem Branch-Abbau
 

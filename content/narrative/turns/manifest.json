@@ -260,6 +260,10 @@
     {
       "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
       "contributionId": "asset-semantik-messung-01"
+    },
+    {
+      "turnId": "2026-11-07T14:37Z-multi-beat-schritte",
+      "contributionId": "multi-beat-steps-01"
     }
   ]
 }

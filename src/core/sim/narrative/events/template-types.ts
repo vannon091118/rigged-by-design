@@ -5,9 +5,9 @@ import type { ActorRef, RelationshipEdge } from '../types';
 
 /** Harte Grenzen fuer kompilierte Templates und persistierte Choice-Saetze. */
 export const EVENT_TEMPLATE_LIMITS = {
-  choices: 8,
-  contentSlots: 12,
-  offeredChoices: 8,
+  choices: 16,
+  contentSlots: 24,
+  offeredChoices: 16,
   requirements: 6,
   effects: 6,
   costs: 4,
@@ -74,6 +74,12 @@ export interface EventChoice {
   readonly effects: readonly ChoiceEffect[];
   readonly outcomeId: string;
   readonly followUpEventId: string | null;
+  /**
+   * Naechster Beat nach dieser Wahl; `null` oder weggelassen loest das Event
+   * auf. Ein Zielschritt muss im Template von mindestens einer dort
+   * angebotenen Choice erreichbar sein, sonst ist das Template ungueltig.
+   */
+  readonly nextStep?: string | null;
 }
 
 export interface EventTemplate {

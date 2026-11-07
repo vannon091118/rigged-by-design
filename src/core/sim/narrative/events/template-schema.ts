@@ -33,6 +33,16 @@ export const isChoiceId = (value: unknown): value is string => typeof value === 
 const isStep = (value: unknown): value is string => typeof value === 'string' && STEP.test(value);
 const isFlag = (value: unknown): value is string => typeof value === 'string' && FLAG.test(value);
 
+/** Sammelt die Schritte, an denen eine Choice per `event-step` haengt. */
+export function stepRequirements(requirements: readonly ChoiceRequirement[]): string[] {
+  const steps: string[] = [];
+  for (const requirement of requirements) {
+    if (requirement.op === 'event-step') steps.push(requirement.step);
+    else if (requirement.op === 'all') steps.push(...stepRequirements(requirement.requirements));
+  }
+  return steps;
+}
+
 function isContentSlot(raw: unknown): raw is ContentSlot {
   if (!isRecord(raw) || !isChoiceId(raw.id) || !isSlotKind(raw.kind)) return false;
   if (raw.requiredContexts === undefined) return true;
@@ -100,7 +110,8 @@ export function isEventChoice(raw: unknown, participantCount: number, labelSlotI
     || !raw.costs.every(isCost)) return false;
   if (!Array.isArray(raw.effects) || raw.effects.length > EVENT_TEMPLATE_LIMITS.effects
     || !raw.effects.every((entry) => isEffect(entry, participantCount))) return false;
-  return raw.followUpEventId === null || isChoiceId(raw.followUpEventId);
+  return (raw.followUpEventId === null || isChoiceId(raw.followUpEventId))
+    && (raw.nextStep === undefined || raw.nextStep === null || isStep(raw.nextStep));
 }
 
 function validRoles(scope: NarrativeEventScope, raw: unknown): raw is readonly ActorRole[] {
@@ -128,6 +139,15 @@ export function isEventTemplate(raw: unknown): raw is EventTemplate {
     || !raw.choices.every((choice) => isEventChoice(choice, roleCount, labelIds))) return false;
   const choiceIds = raw.choices.map((choice) => choice.choiceId);
   if (new Set(choiceIds).size !== choiceIds.length) return false;
+  // Ein Schrittwechsel braucht einen Anschluss: entweder bietet eine step-freie
+  // Choice ihn ueberall an, oder mindestens eine Choice haengt an genau diesem Schritt.
+  const stepFree = raw.choices.some((choice) => stepRequirements(choice.requirements).length === 0);
+  if (!stepFree) {
+    const reachable = new Set<string>(
+      raw.choices.flatMap((choice) => stepRequirements(choice.requirements)),
+    );
+    if (raw.choices.some((choice) => typeof choice.nextStep === 'string' && !reachable.has(choice.nextStep))) return false;
+  }
   return isStep(raw.initialStep) && isSafeInt(raw.expiresInTicks, 0, 100_000)
     && isSafeInt(raw.cooldownTicks, 0, 1_000_000)
     && isSafeInt(raw.maxOccurrences, engineDemand ? 0 : 1, 100);
