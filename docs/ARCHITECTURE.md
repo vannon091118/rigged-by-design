@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 06:35 UTC -->
 
 ## README als Einstieg
 
@@ -125,6 +125,10 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 | --- | --- | --- |
 | `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
+
+### Gate-Matrix in CI
+
+Der Gate-Plan ist die Wahrheit, nicht der Job: `node scripts/gate-matrix.mjs --profile=<profil>` gibt denselben Plan als GitHub-Matrix aus, `node scripts/run-pipeline.mjs --profile=<profil> --gate=<gate>` fährt darin genau ein Gate. `ci-verify.yml` hat deshalb einen Job je Gate (`Gate lint`, `Gate typecheck`, …), alle mit `fail-fast: false`, dazu eigene Jobs für Lane-Claims und Commit-/PR-Notes. Der Pflichtstatus `Fail-Closed Gates` ist ein Aggregat: `needs` auf alle Gate-Jobs, `if: always()`, prüft keine Datei selbst — grün heißt, jeder benötigte Job war `success` oder bewusst `skipped` (Dedupe: offener PR prüft vollständig). Ein unbekanntes Gate bricht ab, eine leere Matrix ist ein Fehler: keinen Status ohne Prüfung. `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Die Zeitlimits bleiben großzügig (30 Minuten je Job, hartes Gate-Limit in `scripts/lib/pipeline-plan.mjs`); ein Abbruch ist `REMOTE_CI` und wird wiederholt, nicht als roter Stand gewertet.
 | `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
 Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish -- --affected` fährt die Auswahl vor dem Versions-Bump als zusätzliche Entwicklungsstufe; danach läuft `verify:quick` beziehungsweise mit `:full` unverändert `verify:all`.

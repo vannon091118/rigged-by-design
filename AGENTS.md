@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 06:35 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -139,6 +139,16 @@ Timeout, Abbruch und fluechtige Netzfehler sind `REMOTE_CI` (`ERR-4014`,
 - Feature-Push: `verify:light` (schnelles Feedback). PR gegen `main`, Push auf
   `main` und manuelle Laeufe: `verify:all`. Kein voller Lauf auf jedem
   Feature-Push.
+- **Granulat statt Monolith:** `verify:all` ist der Gate-Plan, nicht der Job.
+  `node scripts/gate-matrix.mjs --profile=<profil>` uebersetzt ihn in eine
+  GitHub-Matrix; jedes Gate laeuft in einem eigenen Job mit eigenem Status,
+  `node scripts/run-pipeline.mjs --profile=<profil> --gate=<gate>` faehrt genau
+  eines. Ein Gate, das nicht zum Profil gehoert, bricht ab, statt still zu
+  bestehen. Der Pflichtstatus `Fail-Closed Gates` ist nur noch das Aggregat
+  dieser Jobs und prueft selbst nichts: gruen heisst, dass jedes Gate gruen war.
+  Damit gilt: ein gruener Lane-Lauf plus ein gruener eigenes Gate sagt "mein
+  Gate ist durch"; die CI prueft die uebrigen Gates weiter und promoted nur,
+  wenn sie alle gruen sind.
 - `pnpm audit` laeuft nur bei echter Dependency-Aenderung (der Turn-Versionbump
   zaehlt nicht). APK und Release-Assets entstehen nur, wenn Code, Inhalt,
   Assets oder Werkzeuge sich geaendert haben, nicht bei reiner Doku.

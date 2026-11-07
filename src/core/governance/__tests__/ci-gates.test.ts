@@ -31,6 +31,7 @@ interface WorkflowJob {
   readonly permissions?: Readonly<Record<string, string>>;
   readonly 'timeout-minutes'?: number;
   readonly if?: string;
+  readonly strategy?: { readonly matrix?: string; readonly 'fail-fast'?: boolean };
   readonly steps?: readonly WorkflowStep[];
   readonly with?: Readonly<Record<string, unknown>>;
 }
@@ -77,33 +78,41 @@ const stepWith = (flow: Workflow, job: string, needle: string): WorkflowStep | u
   steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Main-Gate', () => {
-  it('prueft Pushes auf main, Feature-Pushes leicht und Pull Requests gegen main voll', () => {
+  it('prueft granular: ein Status je Gate und ein Aggregat als Pflichtstatus', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
     expect(ci.on?.pull_request?.['branches-ignore']).toBeUndefined();
     expect(ci.on?.push?.branches).toEqual(['**']);
     expect(ci.permissions?.contents).toBe('read');
     expect(ci.permissions?.['pull-requests']).toBe('read');
+
+    // Der Pflichtstatus bleibt genau einer: er fuehrt nur Ergebnisse zusammen.
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
+    expect(ci.jobs?.verify?.if).toBe('always()');
+    expect(ci.jobs?.verify?.needs).toEqual(['plan', 'gate', 'claims', 'commitmsg']);
+    expect(stepWith(ci, 'verify', 'exit "$fail"')).not.toBeUndefined();
 
-    // Ein Push mit offenem PR endet vor dem Gate; der PR-Lauf ist die Wahrheit.
-    const dedupe = stepWith(ci, 'verify', 'gh pr list --head');
-    expect(dedupe?.id).toBe('dedupe');
+    // Die Arbeit steckt in der Matrix: ein Job, ein Gate, ein Status.
+    const gate = ci.jobs?.gate;
+    expect(gate?.name).toContain('matrix.gate');
+    expect(gate?.strategy?.matrix).toContain('needs.plan.outputs.matrix');
+    expect(gate?.strategy?.['fail-fast']).toBe(false);
+    expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.run).toContain('--gate=${{ matrix.gate }}');
+    expect(stepWith(ci, 'gate', 'verify:all')).toBeUndefined();
 
-    // Profilwahl statt eines zweiten vollen Laufs: Feature-Push ist light.
-    const profile = stepWith(ci, 'verify', 'GITHUB_EVENT_NAME');
+    // Ein Push mit offenem PR endet vor den Gates; der PR-Lauf ist die Wahrheit.
+    expect(stepWith(ci, 'plan', 'gh pr list --head')?.id).toBe('dedupe');
+
+    // Profil und Matrix kommen aus derselben Quelle wie `verify`.
+    const profile = stepWith(ci, 'plan', 'GITHUB_EVENT_NAME');
     expect(profile?.id).toBe('profile');
     expect(profile?.run).toContain('name=all');
     expect(profile?.run).toContain('name=light');
-
-    const gate = stepWith(ci, 'verify', 'pnpm run verify:${{ steps.profile.outputs.name }}');
-    expect(gate?.run).toContain('verify:${{ steps.profile.outputs.name }}');
-    expect(gate?.env?.RBD_VERIFY_AUDIT).toBeUndefined();
-    expect(stepWith(ci, 'verify', 'npm run verify:release')).toBeUndefined();
+    expect(stepWith(ci, 'plan', 'gate-matrix.mjs')?.id).toBe('gates');
 
     // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
-    const claims = stepWith(ci, 'verify', 'verify-lane-claims.mjs --ci');
-    expect(claims?.if).toContain("github.event_name == 'pull_request'");
+    expect(stepWith(ci, 'claims', 'verify-lane-claims.mjs --ci')).not.toBeUndefined();
+    expect(ci.jobs?.claims?.if).toContain("github.event_name == 'pull_request'");
   });
 
   it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
