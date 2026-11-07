@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.175",
+  "version": "0.3.176",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -45,6 +45,7 @@
     "verify:all": "node scripts/run-pipeline.mjs --profile=full",
     "verify:quick": "node scripts/run-pipeline.mjs --profile=quick",
     "verify:light": "node scripts/run-pipeline.mjs --profile=light",
+    "verify:dev": "node scripts/run-pipeline.mjs --profile=dev",
     "verify:release": "node scripts/run-pipeline.mjs --profile=release",
     "fix": "node scripts/run-pipeline.mjs --fix --profile=quick",
     "fix:all": "node scripts/run-pipeline.mjs --fix --profile=full",

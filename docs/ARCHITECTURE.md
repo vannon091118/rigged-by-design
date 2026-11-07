@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:57 UTC -->
+<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
 
 ## README als Einstieg
 
@@ -120,12 +120,15 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 
 `verify` liest ausschließlich, `fix` ist der einzige schreibende Modus. Der Plan beider Modi steht in `scripts/lib/pipeline-plan.mjs`; kein Profil enthält einen Autofix-Schritt.
 
-Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
+Es gibt fünf Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | pnpm-Skript | Inhalt |
 | --- | --- | --- |
+| `light` | `verify:light` | Sechs Gates: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit. |
+| `dev` | `verify:dev` | Light-Gates plus `affected`: die betroffenen schnellen Tests. Lange Nachweise bleiben im CI-Plan. |
 | `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
+| `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
 ### Fehlerdiagnose und Claim-Evidenz
 
@@ -147,9 +150,8 @@ Der Gate-Plan ist die Wahrheit, nicht der Job: `node scripts/gate-matrix.mjs --p
 
 Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` legt neben dem PR-Baum einen Worktree `.rbd-control` am Basis-Commit an (bei PRs `pull_request.base.sha`, bei Feature-Pushes `before`, auf `main` dem bereits vertrauenswuerdigen gepushten Commit, sonst `main`); `ci-plan.mjs`, `run-pipeline.mjs`, die Node-Gates und `verify-lane-claims.mjs` laufen aus diesem Checkout, waehrend `RBD_ROOT` auf den PR-Baum zeigt. `report.mjs` loest `ROOT` daraus auf, `gate-runner.mjs` nur die Node-Gates; `pnpm`-Gates (Lint, Typecheck, Tests) bleiben Produktcode des Pruefobjekts. Eine Aenderung an der Pruefsteuerung wirkt damit erst nach ihrem Merge auf `main`, nicht im eigenen PR. Kennt die Basis `RBD_ROOT` noch nicht (Bootstrap des Umbaus), erkennt der Lauf das an `scripts/lib/report.mjs` und faehrt mit den PR-Skripten weiter; der Uebergangsfall wird als Notice gemeldet und verschwindet mit dem Merge. `promote.mjs` bindet den Merge zusaetzlich an den exakt geprueften Kopf: `promote-guard.mjs` prueft Herkunfts-Repository, PR-Ziel und `headRefOid` gegen `workflow_run.head_sha`, `gh pr merge --match-head-commit` verhindert einen spaeten Push zwischen Pruefung und Merge. Ein manueller Dispatch hat keinen CI-Nachweis und kennt deshalb nur `inspect` oder `integrate`.
  `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Die Zeitlimits bleiben großzügig (30 Minuten je Job, hartes Gate-Limit in `scripts/lib/pipeline-plan.mjs`); ein Abbruch ist `REMOTE_CI` und wird wiederholt, nicht als roter Stand gewertet.
-| `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
-Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish` fährt die Auswahl jetzt standardmäßig vor dem Versions-Bump; danach läuft `verify:light`. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht.
+Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist im Profil `dev` das Gate `affected`: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish` fährt die Auswahl jetzt standardmäßig vor dem Versions-Bump; danach läuft `verify:light`. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht.
 
 ## Testkatalog und Beweisklassen
 

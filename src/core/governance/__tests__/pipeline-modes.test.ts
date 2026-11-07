@@ -31,6 +31,14 @@ describe('Pipeline-Modi', () => {
     expect(GATES.docs?.args ?? []).toEqual([]);
   });
 
+  it('verbindet im dev-Profil die Light-Gates mit den betroffenen Tests', () => {
+    expect(PROFILE_GATES.dev).toEqual([...PROFILE_GATES.light, 'affected']);
+    expect(planGates('dev')).toEqual(PROFILE_GATES.dev);
+    expect(PROFILE_GATES.dev).not.toContain('tests');
+    expect(GATES.affected?.script).toBe('scripts/test-affected.mjs');
+    expect(isProfile('dev')).toBe(true);
+  });
+
   it('prueft im vollen und im Release-Profil mehr als im kurzen Lauf', () => {
     const quick = PROFILE_GATES.quick ?? [];
     const full = PROFILE_GATES.full ?? [];

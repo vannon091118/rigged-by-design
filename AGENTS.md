@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:57 UTC -->
+<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -30,10 +30,11 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 
 - `pnpm run test` — Vitest run (CI alias `test:ci`).
 - `pnpm run test:affected` — nur Tests aus deklariertem Ziel, dem transitiven Importgraphen und dem betroffenen Subsystem, und nur die schnellen Beweisklassen. Statistik- und Messnachweise (RTP, Poker-Verteilung, Soak, Benchmarks) überspringt er und nennt sie; Entwicklungsfeedback, kein Ersatz für `verify:all`. Jede JSON-Änderung unter `content/narrative/**` wählt ausschließlich `src/core/governance/__tests__/narrative-content.test.ts` und gilt als Codeänderung.
+- `pnpm run verify:dev` — der lokale Entwicklungsabschluss: dieselben Light-Gates plus `test:affected` als eigenes Gate. Lange Nachweise bleiben im CI-Plan; `verify:all` bleibt der Vollnachweis.
 - `pnpm run verify:light` — das lokale Turn-Gate: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit; schwere Nachweise laufen in `ci-verify.yml`.
 - `pnpm run agent:context [--json]` — ein Aufruf für den Arbeitskontext: Änderungen, Systeme, Invarianten, betroffene Tests, Gate-Plan, Doku-Bezüge und Cache-Stand. Reine Anzeige, keine Prüfung, keine zweite Analyse.
 - `pnpm run agent:feedback [--json]` — eine Zeile aus dem echten Diff: geänderte Dateien, betroffene Tests, ob ein voller Lauf nötig ist und welcher Befehl als Nächstes sinnvoll ist. Derselbe Selektor wie `test:affected` und der CI-Plan; führt selbst nichts aus.
-- `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--dispatch-long] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` markiert die langen Nachweise als an den PR-Plan delegiert, ohne einen main-Dispatch zu starten. `--dispatch-long` startet `long-checks.yml` ausdrücklich für einen manuellen Vollnachweis. Kein Ersatz für `verify:all`.
+- `pnpm run agent:verify [--profile=dev|quick|full|release] [--ci] [--dispatch-long] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` markiert die langen Nachweise als an den PR-Plan delegiert, ohne einen main-Dispatch zu starten. `--dispatch-long` startet `long-checks.yml` ausdrücklich für einen manuellen Vollnachweis. Kein Ersatz für `verify:all`.
 - `pnpm run typecheck` — `tsc --noEmit`.
 - `pnpm run lint` / `lint:fix` — ESLint.
 - `pnpm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).

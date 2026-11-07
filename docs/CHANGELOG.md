@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:57 UTC -->
+<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.176] - 2026-11-07
+
+### Technik
+- **Lokales `dev`-Profil geschlossen.** `verify:dev` verbindet die Light-Gates mit `test:affected` als eigenem Gate; `agent:verify --profile=dev` und `run-pipeline --profile=dev` nutzen denselben Plan. Der Bericht markiert den Lauf als Teilprüfung und nennt die betroffenen sowie die an CI delegierten Tests.
+- Nachweise: `pipeline-modes.test.ts` 6/6; `verify:dev` 7/7 Gates, 181 Testdateien/1000 Tests (999 gruen, 1 bewusst uebersprungen); `verify:test-quality`, `verify:claims` und `verify:docs` gruen.
 
 ## [0.3.175] - 2026-11-07
 
