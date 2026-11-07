@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.177 | 2026-11-07 12:13 UTC -->
+<!-- rbd-doc: v0.3.178 | 2026-11-07 12:39 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.178] - 2026-11-07
+
+### Technik
+- **Langlauf folgt dem Prüfcommit.** `pnpm run ci:long` startet `long-checks.yml` standardmäßig auf dem aktuellen Branch und übergibt die exakte HEAD-SHA; alle Checkout-Schritte prüfen diese SHA aus. `--verify` bleibt die ausdrückliche Ausnahme, `verify:all` läuft nicht automatisch mit. `agent:verify --ci` startet diesen Langlauf für den aktuellen Commit und macht einen roten Lauf zum roten Verify-Ergebnis.
+- **Pretask blockt fehlende Voraussetzungen.** Ein offenes `gate-failure`-Issue, ein nicht leerer Arbeitsbaum, ein fehlender `agent:context`-Impact-Plan und eine Claim-Kollision enden mit `ERR-4019` vor dem ersten Edit. Der Issue-Check wird weiterhin automatisch aufgerufen; fehlt `gh`, nennt der Lauf den offenen Prüfpunkt statt ihn zu verschweigen.
+- Tests: `workflow-hardening.test.ts` 6/6, `worktree-isolation.test.ts` 8/8 und `pretask.test.ts` 3/3; 17/17 fokussierte Tests. Der Langlauf wird von `agent:verify --ci` mit `--no-verify` gestartet.
 
 ## [0.3.177] - 2026-11-07
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.177 | 2026-11-07 12:13 UTC -->
+<!-- rbd-doc: v0.3.178 | 2026-11-07 12:39 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -231,7 +231,7 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | Release-Plan im Runner | offen | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
 | Doku-Reconcile-Runner | offen | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
 | CI-Self-Repair | offen | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
-| Impact-gesteuerte Langlaeufe | erledigt | `ci-plan.mjs` exportiert `long_matrix`; `ci-verify.yml` startet die betroffenen Statistik-/Soak-Dateien als eigene Matrix auf dem exakten PR-Kopf und fuehrt den Long-Job im Pflichtstatus. `long-checks.yml` bleibt fuer den woechentlichen Vollauf. |
+| Impact-gesteuerte Langlaeufe | erledigt | `ci-plan.mjs` exportiert `long_matrix`; `ci-verify.yml` startet die betroffenen Statistik-/Soak-Dateien als eigene Matrix auf dem exakten PR-Kopf und fuehrt den Long-Job im Pflichtstatus. `agent:verify --ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; der Wochenlauf bleibt der systemweite Vollauf. |
 | Issue-Resolver nach erneutem Gate | teilweise | `sweepGreenMain()` schliesst nur, wenn `origin/main` exakt dem erfolgreich geprueften Main-SHA entspricht und der gemeldete Commit darauf liegt; ein erneut auftretender Fingerprint oeffnet ein geschlossenes Issue wieder. Offen: erneut gruenes Gate auf dem neuen Stand. |
 
 ### Spiel und Simulation

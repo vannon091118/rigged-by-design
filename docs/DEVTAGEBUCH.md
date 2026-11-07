@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.177 | 2026-11-07 12:13 UTC -->
+<!-- rbd-doc: v0.3.178 | 2026-11-07 12:39 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Langlauf und Pretask erzwungen
+
+**Ziel.** Zwei Zusagen aus dem Umbauplan waren auf `main` noch nicht belegt: `ci:long` defaultete auf `main`, `agent:verify --ci` startete keinen Lauf, und `pretask` meldete Issue-, Dirty- und Kontextbefunde nur als Notizen.
+
+**Umsetzung.** `ci-long-checks.mjs` leitet Branch und exakte SHA aus dem aktuellen Stand ab, übergibt `sha` an `long-checks.yml` und pinnt jeden Checkout auf diese SHA; `--verify` bleibt die einzige Volllauf-Ausnahme. `agent:verify --ci` ruft den Langlauf mit `--no-verify` auf und wertet einen roten Lauf als rotes Verify-Ergebnis. `pretask` blockt offene `gate-failure`-Issues, schmutzige Bäume, fehlenden `agent:context`-Plan und Claim-Kollisionen mit `ERR-4019`; fehlendes `gh` wird als offener Prüfpunkt genannt, nicht als stiller Erfolg.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/workflow-hardening.test.ts src/core/governance/__tests__/worktree-isolation.test.ts src/core/governance/__tests__/pretask.test.ts --reporter=verbose` -> 3 Dateien, 17/17 Tests; `node scripts/ci-long-checks.mjs --plan --ref lane/test/plan` -> `verify:false`, exakte SHA; `node --check` für die drei Skripte -> syntax=ok.
+
+**Offen.** Der echte Langlauf und der Main-Lauf auf dem Merge-Commit werden im Abschluss geprüft.
 
 ## 2026-11-07 - Claim 20 nach dem Merge geschlossen
 
