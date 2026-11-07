@@ -104,8 +104,9 @@ describe('Main-Gate', () => {
 
     // Ein Push mit offenem PR endet vor den Gates; der PR-Lauf ist die Wahrheit.
     expect(stepWith(ci, 'plan', 'gh pr list --head')?.id).toBe('dedupe');
-
     // Profil und Matrix kommen aus derselben Quelle wie `verify`.
+    const control = steps(ci, 'plan').find((step) => step.name === 'Kontrollebene aus der Basis');
+    expect(control?.run).toMatch(/MAIN_REF[\s\S]*refs\/heads\/main/);
     const profile = stepWith(ci, 'plan', 'GITHUB_EVENT_NAME');
     expect(profile?.id).toBe('profile');
     expect(profile?.run).toContain('name=all');

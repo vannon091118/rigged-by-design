@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:47 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:49 UTC -->
 
 ## README als Einstieg
 
@@ -145,7 +145,7 @@ Der Gate-Plan ist die Wahrheit, nicht der Job: `node scripts/gate-matrix.mjs --p
 
 ### Kontrollebene und Pruefobjekt
 
-Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` legt neben dem PR-Baum einen Worktree `.rbd-control` am Basis-Commit an (bei PRs `pull_request.base.sha`, bei Pushes `before`, sonst `main`); `ci-plan.mjs`, `run-pipeline.mjs`, die Node-Gates und `verify-lane-claims.mjs` laufen aus diesem Checkout, waehrend `RBD_ROOT` auf den PR-Baum zeigt. `report.mjs` loest `ROOT` daraus auf, `gate-runner.mjs` nur die Node-Gates; `pnpm`-Gates (Lint, Typecheck, Tests) bleiben Produktcode des Pruefobjekts. Eine Aenderung an der Pruefsteuerung wirkt damit erst nach ihrem Merge auf `main`, nicht im eigenen PR. Kennt die Basis `RBD_ROOT` noch nicht (Bootstrap des Umbaus), erkennt der Lauf das an `scripts/lib/report.mjs` und faehrt mit den PR-Skripten weiter; der Uebergangsfall wird als Notice gemeldet und verschwindet mit dem Merge. `promote.mjs` bindet den Merge zusaetzlich an den exakt geprueften Kopf: `promote-guard.mjs` prueft Herkunfts-Repository, PR-Ziel und `headRefOid` gegen `workflow_run.head_sha`, `gh pr merge --match-head-commit` verhindert einen spaeten Push zwischen Pruefung und Merge. Ein manueller Dispatch hat keinen CI-Nachweis und kennt deshalb nur `inspect` oder `integrate`.
+Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` legt neben dem PR-Baum einen Worktree `.rbd-control` am Basis-Commit an (bei PRs `pull_request.base.sha`, bei Feature-Pushes `before`, auf `main` dem bereits vertrauenswuerdigen gepushten Commit, sonst `main`); `ci-plan.mjs`, `run-pipeline.mjs`, die Node-Gates und `verify-lane-claims.mjs` laufen aus diesem Checkout, waehrend `RBD_ROOT` auf den PR-Baum zeigt. `report.mjs` loest `ROOT` daraus auf, `gate-runner.mjs` nur die Node-Gates; `pnpm`-Gates (Lint, Typecheck, Tests) bleiben Produktcode des Pruefobjekts. Eine Aenderung an der Pruefsteuerung wirkt damit erst nach ihrem Merge auf `main`, nicht im eigenen PR. Kennt die Basis `RBD_ROOT` noch nicht (Bootstrap des Umbaus), erkennt der Lauf das an `scripts/lib/report.mjs` und faehrt mit den PR-Skripten weiter; der Uebergangsfall wird als Notice gemeldet und verschwindet mit dem Merge. `promote.mjs` bindet den Merge zusaetzlich an den exakt geprueften Kopf: `promote-guard.mjs` prueft Herkunfts-Repository, PR-Ziel und `headRefOid` gegen `workflow_run.head_sha`, `gh pr merge --match-head-commit` verhindert einen spaeten Push zwischen Pruefung und Merge. Ein manueller Dispatch hat keinen CI-Nachweis und kennt deshalb nur `inspect` oder `integrate`.
  `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Die Zeitlimits bleiben großzügig (30 Minuten je Job, hartes Gate-Limit in `scripts/lib/pipeline-plan.mjs`); ein Abbruch ist `REMOTE_CI` und wird wiederholt, nicht als roter Stand gewertet.
 | `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
