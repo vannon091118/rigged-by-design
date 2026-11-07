@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 07:08 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 07:16 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -492,10 +492,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1343 |
-| Gelistete Dateien | 1343 |
+| Getrackte Dateien | 1346 |
+| Gelistete Dateien | 1346 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (68), public (554), scripts (69), src (558) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (69), public (554), scripts (69), src (560) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -514,7 +514,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 8 Datei(en)
 - `docs/banners/` — 4 Datei(en)
-- `docs/contracts/` — 5 Datei(en)
+- `docs/contracts/` — 6 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -553,8 +553,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/` — 26 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
-- `src/core/contracts/` — 5 Datei(en)
-- `src/core/contracts/__tests__/` — 5 Datei(en)
+- `src/core/contracts/` — 6 Datei(en)
+- `src/core/contracts/__tests__/` — 6 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -700,6 +700,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/banners/werkstatt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/capabilities.json` — { — gelesen: 143 Zeilen
 - `docs/contracts/actor-id.md` — Contract: actor-id v1.0 — gelesen: 54 Zeilen
+- `docs/contracts/domain-event.md` — Contract: domain-event v1.0 — gelesen: 86 Zeilen
 - `docs/contracts/factor.md` — Contract: factor v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/save.md` — Contract: save v1.0 — gelesen: 58 Zeilen
@@ -1389,11 +1390,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
 - `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
 - `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
+- `src/core/contracts/__tests__/domain-event.test.ts` — Contract domain-event v1.0: Event-Hülle mit Actor-/Zeit-Referenzen, Sequenz — gelesen: 115 Zeilen
 - `src/core/contracts/__tests__/factor.test.ts` — Contract factor v1.0: Factor-IDs, Kontext und Contribution-Trace. — gelesen: 73 Zeilen
 - `src/core/contracts/__tests__/relationship.test.ts` — Contract relationship v1.0: Gerichtete Relationship-IDs und erlaubte Änderungsbefehle. — gelesen: 86 Zeilen
 - `src/core/contracts/__tests__/save.test.ts` — Contract save v1.0: Save-Envelope, Versionierung und Migration. — gelesen: 85 Zeilen
 - `src/core/contracts/__tests__/world-time.test.ts` — Contract world-time v1.0: WorldTime, Calendar-Bezug und TimeDomain-Schlüssel. — gelesen: 71 Zeilen
 - `src/core/contracts/actor-id.ts` — Contract: actor-id v1.0 — gelesen: 43 Zeilen
+- `src/core/contracts/domain-event.ts` — Contract: domain-event v1.0 — gelesen: 99 Zeilen
 - `src/core/contracts/factor.ts` — Contract: factor v1.0 — gelesen: 62 Zeilen
 - `src/core/contracts/relationship.ts` — Contract: relationship v1.0 — gelesen: 62 Zeilen
 - `src/core/contracts/save.ts` — Contract: save v1.0 — gelesen: 54 Zeilen
