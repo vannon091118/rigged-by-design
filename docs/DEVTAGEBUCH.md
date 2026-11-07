@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.167 | 2026-11-07 10:13 UTC -->
+<!-- rbd-doc: v0.3.168 | 2026-11-07 10:21 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Die Squash-Nachricht ist Teil des Gates
+
+**Ziel.** Der main-Lauf nach #222 war rot, obwohl alle technischen Gates gruen waren: `Commit- und PR-Notes` las die Squash-Nachricht von ca5753e und fand die drei Pflichtsektionen nicht.
+
+**Umsetzung.** Der Squash-Commit wurde per API mit einer kurzen Bullet-Liste gesetzt; `verify-commit-msg --head` prueft auf main genau diesen Text. Der Nachtrag haelt die Regel fest: manuelle Squash-Merges uebernehmen den PR-Body unveraendert oder setzen `### Changes (Was ist neu)`, `### Technische Basis & Kausalität` und `### Ausblick (Nächste Schritte)`; eine Kurzfassung ist kein gueltiger Merge-Text. Der Baum von ca5753e bleibt inhaltlich unveraendert.
+
+**Pruefungen.** `node scripts/verify-commit-msg.mjs /tmp/main-msg.txt` reproduziert `ERR-4006` fuer ca5753e. Auf dem Baum sind `pnpm run typecheck`, `pnpm run verify:docs`, `pnpm test:ci` (180 Dateien, 980 Tests) und `verify-lane-claims --ci` gruen. Der neue Squash-Commit traegt die drei Sektionen; der naechste main-Lauf ist der Beleg.
+
+**Offen.** Self-Repair, impact-gesteuerte Langlaeufe, Worktree-Isolation, Shell-Injection und Action-Pinning stehen in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Vertrauensgrenzen: Pruefer, Claim und Merge sind derselbe Stand
 
