@@ -26,6 +26,7 @@ interface Job {
 }
 
 interface Workflow {
+  readonly permissions?: Readonly<Record<string, string>>;
   readonly on?: {
     readonly workflow_dispatch?: {
       readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
@@ -162,6 +163,12 @@ describe('workflow hardening', () => {
     expect(text).toContain('interval: "weekly"');
   });
 
+  it('gibt Auto-Resolve das Schreibrecht fuer Wiederholungen', () => {
+    const auto = workflow('auto-resolve.yml');
+    expect(auto.permissions?.issues).toBe('write');
+    expect(auto.permissions?.actions).toBe('write');
+  });
+
   it('validiert die Langlauf-Eingaben vor dem Dispatch', () => {
     const bad = spawnSync(process.execPath, [
       resolve(process.cwd(), 'scripts', 'ci-long-checks.mjs'),
@@ -171,10 +178,16 @@ describe('workflow hardening', () => {
     expect(bad.stderr).toContain('soak-ticks');
   });
 
-  it('haelt die Testlinie in AGENTS.md eindeutig', () => {
+  it('verweist fuer die Testlinie auf docs/TESTING.md', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
-    expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);
-    expect(agents).not.toContain('Keine lokalen Testlaeufe');
-    expect(agents).not.toContain('Nicht mitten im Turn: `pnpm run test`');
+    expect(agents).toContain('pnpm run agent:pretask --json');
+    expect(agents).toContain('docs/TESTING.md');
+    expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(0);
+    expect(agents.match(/^\d+\. \*\*/gm)?.length ?? 0).toBe(10);
+
+    const testing = readFileSync(resolve(process.cwd(), 'docs', 'TESTING.md'), 'utf8');
+    expect(testing.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);
+    expect(testing).not.toContain('Keine lokalen Testlaeufe');
+    expect(testing).not.toContain('Nicht mitten im Turn: `pnpm run test`');
   });
 });
