@@ -31,7 +31,9 @@ function actorAlive(world: WorldState, ref: ActorRef): boolean {
     const id = Number(ref.slice('staff:'.length));
     return world.agents.some((agent) => agent.id === id);
   }
-  return ref.startsWith('rival:');
+  // Ein Rivale ist nur lebendig, wenn der Weltzustand ihn kennt - nicht nur, weil
+  // die Referenz syntaktisch wie ein Rivale aussieht (dieselbe Regel wie COUNTER_RIVAL).
+  return rivalAlive(world, ref);
 }
 
 function rivalAlive(world: WorldState, ref: ActorRef): boolean {

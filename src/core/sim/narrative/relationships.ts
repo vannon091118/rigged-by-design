@@ -34,6 +34,8 @@ export function relationshipBetween(world: WorldState, from: ActorRef, to: Actor
 
 const clamp = (value: number): number => Math.max(DIMENSION_MIN, Math.min(DIMENSION_MAX, value));
 const finite = (value: unknown): number => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
+/** Der Writer prueft dieselbe Endlichkeit wie die Normalisierung: kein NaN im Zustand. */
+const delta = (value: unknown): number => finite(value);
 const safeTick = (value: unknown): number => {
   const tick = finite(value);
   return Number.isSafeInteger(tick) && tick >= 0 ? tick : 0;
@@ -50,26 +52,28 @@ const compareEdges = (a: RelationshipEdge, b: RelationshipEdge): number =>
 
 /** Genau eine Kante je Richtung; die Kante bleibt der einzige Besitzer der Werte. */
 export function shift(world: WorldState, from: ActorRef, to: ActorRef, changes: RelationshipShift, tick: number): void {
+  // Dieselbe Invariante wie normalizeRelationships: eine Kante hat zwei verschiedene Enden.
+  if (from === to) return;
   const key = relationshipKey(from, to);
   const list = world.narrative.relationships;
   const index = list.findIndex((edge) => relationshipKey(edge.from, edge.to) === key);
   if (index < 0) {
     list.push({
       from, to,
-      trust: clamp(changes.trust ?? 0),
-      sympathy: clamp(changes.sympathy ?? 0),
-      conflict: clamp(changes.conflict ?? 0),
-      influence: clamp(changes.influence ?? 0),
+      trust: clamp(delta(changes.trust)),
+      sympathy: clamp(delta(changes.sympathy)),
+      conflict: clamp(delta(changes.conflict)),
+      influence: clamp(delta(changes.influence)),
       updatedTick: safeTick(tick),
     });
   } else {
     const edge = list[index]!;
     list[index] = {
       ...edge,
-      trust: clamp(edge.trust + (changes.trust ?? 0)),
-      sympathy: clamp(edge.sympathy + (changes.sympathy ?? 0)),
-      conflict: clamp(edge.conflict + (changes.conflict ?? 0)),
-      influence: clamp(edge.influence + (changes.influence ?? 0)),
+      trust: clamp(edge.trust + delta(changes.trust)),
+      sympathy: clamp(edge.sympathy + delta(changes.sympathy)),
+      conflict: clamp(edge.conflict + delta(changes.conflict)),
+      influence: clamp(edge.influence + delta(changes.influence)),
       updatedTick: safeTick(tick),
     };
   }
