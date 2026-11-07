@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:29 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 23:40 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -101,6 +101,12 @@ Pflege, und ein einziger solcher Pfad hebt die Ausnahme fuer den ganzen Commit
 auf. Ein Doku-Commit neben einer Code-Aenderung braucht also weiterhin einen
 Baustein. Pool-Minimum, Doppelte und das 1500-Ziel pruefen in beiden Faellen
 unveraendert weiter, im Hook und im Assets-Gate.
+
+Ohne gestagte Dateien prueft das Gate den Commit selbst: die Pfadliste kommt
+dann aus `HEAD` gegen seine Eltern (bei einem Merge die Vereinigung ueber alle
+Eltern). Damit bleibt eine reine Message-Korrektur per `git commit --amend`
+moglich, ohne die Baustein-Pflicht zu umgehen; ein Content-Commit findet dort
+seinen eigenen Baustein wieder.
 
 ## Nachweise
 
