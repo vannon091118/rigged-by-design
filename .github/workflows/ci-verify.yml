@@ -41,6 +41,44 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
+      # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
+      # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
+      # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
+      - name: Kontrollebene aus der Basis
+        id: control
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+        run: |
+          set -euo pipefail
+          base="$BASE_SHA"
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin main
+            base="$(git rev-parse FETCH_HEAD)"
+          fi
+          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
+            exit 1
+          fi
+          dir=".rbd-control"
+          rm -rf "$dir"
+          git worktree add --detach "$dir" "$base"
+          echo "::notice::Kontrollebene aus ${base}"
+          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
       - name: pnpm installieren
         uses: pnpm/action-setup@v6
@@ -113,8 +151,10 @@ jobs:
         id: gates
         env:
           PROFILE: ${{ steps.profile.outputs.name }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
         run: |
-          node scripts/ci-plan.mjs \
+          node "${{ steps.control.outputs.scripts }}/ci-plan.mjs" \
             --base="${{ steps.range.outputs.base }}" \
             --head="${{ steps.range.outputs.head }}" \
             --profile="$PROFILE" \
@@ -159,6 +199,44 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
+      # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
+      # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
+      # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
+      - name: Kontrollebene aus der Basis
+        id: control
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+        run: |
+          set -euo pipefail
+          base="$BASE_SHA"
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin main
+            base="$(git rev-parse FETCH_HEAD)"
+          fi
+          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
+            exit 1
+          fi
+          dir=".rbd-control"
+          rm -rf "$dir"
+          git worktree add --detach "$dir" "$base"
+          echo "::notice::Kontrollebene aus ${base}"
+          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+
       # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install
       # --frozen-lockfile node_modules neu aufbaut. Innen entscheidet der
       # Inhalts-Hash des Arbeitsbaums, ob ein Gate wirklich gruen war.
@@ -194,7 +272,9 @@ jobs:
       - name: Gate ${{ matrix.gate }}
         env:
           RBD_TEST_FILES: ${{ needs.plan.outputs.tests }}
-        run: node scripts/run-pipeline.mjs --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
+        run: node "${{ steps.control.outputs.scripts }}/run-pipeline.mjs" --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
 
       - name: Gate-Protokoll bei Rot
         if: failure()
@@ -219,6 +299,44 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
+      # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
+      # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
+      # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
+      - name: Kontrollebene aus der Basis
+        id: control
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+        run: |
+          set -euo pipefail
+          base="$BASE_SHA"
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin main
+            base="$(git rev-parse FETCH_HEAD)"
+          fi
+          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
+            exit 1
+          fi
+          dir=".rbd-control"
+          rm -rf "$dir"
+          git worktree add --detach "$dir" "$base"
+          echo "::notice::Kontrollebene aus ${base}"
+          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
@@ -227,7 +345,12 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
           BASE_REF: origin/${{ github.base_ref }}
-        run: node scripts/verify-lane-claims.mjs --ci
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
+        run: |
+          set -euo pipefail
+          scripts="${{ steps.control.outputs.scripts }}"
+          node "$scripts"/verify-lane-claims.mjs --ci
 
   commitmsg:
     name: Commit- und PR-Notes
@@ -240,6 +363,44 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
+      # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
+      # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
+      # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
+      - name: Kontrollebene aus der Basis
+        id: control
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+        run: |
+          set -euo pipefail
+          base="$BASE_SHA"
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin main
+            base="$(git rev-parse FETCH_HEAD)"
+          fi
+          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
+            exit 1
+          fi
+          dir=".rbd-control"
+          rm -rf "$dir"
+          git worktree add --detach "$dir" "$base"
+          echo "::notice::Kontrollebene aus ${base}"
+          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
@@ -247,12 +408,14 @@ jobs:
       - name: Commit- und PR-Notes-Gate
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
         run: |
           # Beim Pull Request ist HEAD der automatische Merge-Commit, der keine
           # Notes traegt. Feature-Branches prueft `pr-escalation.yml`; hier wird
           # nur noch der Push auf main geprueft, damit kein Lauf doppelt prueft.
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node scripts/verify-commit-msg.mjs --head; fi
-          if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --head; fi
+          if [ -n "$PR_BODY" ]; then node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --pr; fi
 
   # Der Pflichtstatus bleibt genau einer. Er fuehrt nur Ergebnisse zusammen und
   # prueft selbst nichts; die Arbeit steht in den Gate-Jobs darueber.

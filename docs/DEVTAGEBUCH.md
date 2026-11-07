@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
+<!-- rbd-doc: v0.3.166 | 2026-11-07 10:10 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Vertrauensgrenzen: Pruefer, Claim und Merge sind derselbe Stand
+
+**Ziel.** Der Audit-Befund war nicht "zu wenig CI", sondern eine Asymmetrie: Die Gates waren granular, aber der PR kontrollierte Planer, Runner und Claim-Register mit, und `promote` merge den aktuellen Branch-Kopf statt des geprueften Commits.
+
+**Umsetzung.** `ci-verify.yml` legt einen Worktree `.rbd-control` am Basis-Commit an; Planer, Node-Gates, Claim- und Commit-Notes-Pruefung laufen von dort, `RBD_ROOT` zeigt auf den PR-Baum. `report.mjs` und `gate-runner.mjs` trennen dafuer Steuerung und Pruefobjekt, `pnpm`-Gates bleiben Produktcode. `promote.mjs` holt den Kopf per `workflow_run.head_sha`, `promote-guard.mjs` prueft Herkunft, Ziel und `headRefOid`, und `gh pr merge --match-head-commit` schliesst das Zeitfenster; der manuelle Dispatch hat keinen Erfolgspfad mehr. `verify-lane-claims.mjs` vergleicht das Register im CI-Modus mit der Basis und der ersten Registrierung im PR. `turn-push.mjs` staged nur Claim-Pfade plus Versionsdateien, kein `git add -A`.
+
+**Pruefungen.** `lane-claims.test.ts` 11/11, `promote-guard.test.ts` 7/7, `pnpm run typecheck`, `node --check` fuer alle geaenderten Skripte, YAML-Parse beider Workflows. Simulation der CI: `ci-plan.mjs`, `docs`- und `tree`-Gate aus dem `.rbd-control`-Worktree mit `RBD_ROOT` auf den PR-Baum, alle gruen; `verify-lane-claims --ci` gegen `origin/main` gruen, die Erweiterung der eigenen Allowlist wird nach dem ersten Commit als `ERR-4019` abgelehnt. Der echte PR-Lauf und der Merge-Commit folgen nach dem Push.
+
+**Offen.** Self-Repair mit begrenzten Versuchen, impact-gesteuerte Langlaeufe, Worktree-Isolation in `pretask`, Shell-Injection in `long-checks.yml` und Action-Pinning stehen in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Claim 14 und das Ende der Selbstreferenz
 

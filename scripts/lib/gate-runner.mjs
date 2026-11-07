@@ -16,6 +16,8 @@ import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './pro
 const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
 const running = new Set();
 const DEFAULT_GATE_TIMEOUT_MS = 15 * 60_000;
+/** Checkout der vertrauenswuerdigen Pruefsteuerung; leer heisst: eigener Baum. */
+const CONTROL_ROOT = process.env.RBD_CONTROL_ROOT ?? '';
 const FAILURE_TAIL_LINES = 40;
 const VERBOSE = process.env.RBD_VERIFY_VERBOSE === '1';
 /** Verdichtet: keine Zeile je Gate, der Aufrufer druckt stattdessen die Tabelle. */
@@ -66,7 +68,10 @@ function tail(text, lines = FAILURE_TAIL_LINES) {
 export function executeStep(step) {
   const started = Date.now();
   const command = step.command === 'pnpm' ? 'pnpm' : process.execPath;
-  const args = step.command === 'pnpm' ? ['run', step.script] : [step.script, ...(step.args ?? [])];
+  // Node-Gates kommen aus der Kontrollebene, wenn die CI sie getrennt
+  // auscheckt; `pnpm`-Gates bleiben Produktcode des Pruefobjekts.
+  const script = step.command === 'node' && CONTROL_ROOT ? join(CONTROL_ROOT, step.script) : step.script;
+  const args = step.command === 'pnpm' ? ['run', step.script] : [script, ...(step.args ?? [])];
   const timeoutMs = Number.isFinite(step.timeoutMs) && step.timeoutMs > 0 ? step.timeoutMs : DEFAULT_GATE_TIMEOUT_MS;
   return new Promise((done) => {
     let child;

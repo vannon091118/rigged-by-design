@@ -21,6 +21,7 @@ import {
   parseNameStatus,
   splitAutomation,
 } from './lib/body-sync.mjs';
+import { verifyPromotion } from './lib/promote-guard.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -31,6 +32,12 @@ const conclusion = process.env.CONCLUSION ?? '';
 const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
 const headSha = process.env.HEAD_SHA ?? '';
+const mode = process.env.MODE ?? '';
+const repo = process.env.GITHUB_REPOSITORY ?? '';
+const owner = repo.split('/')[0] ?? '';
+// Nur ein voller SHA ist die Identitaet, die die CI geprueft hat. Ein fehlender
+// oder kurzer Wert wird nie als "passt schon" behandelt.
+const FULL_SHA = /^[0-9a-f]{40}$/;
 // Ein Merge mit dem Workflow-Token startet keinen Workflow; das eigene Token
 // ist die Stufe, die CI, Tag und APK wieder in Gang setzt.
 const elevated = Boolean(process.env.PROMOTE_TOKEN);
@@ -57,15 +64,29 @@ const warn = (message) => console.log(`::warning::promote: ${message}`);
  * und Merge-Text aus seinen Commits stammen. Ausgefuehrt wird er nie - sonst
  * koennte ein fremder Branch die Promotion mit einem Schreibtoken veraendern.
  */
+let contentRef = 'HEAD';
 function fetchHead() {
   if (!branch || branch === MAIN) return;
+  // Zuerst den exakt geprueften Commit holen, nicht den aktuellen Branch-Kopf:
+  // zwischen CI-Lauf und Promote kann ein weiterer Push liegen.
+  if (FULL_SHA.test(headSha)) {
+    if (git(['fetch', 'origin', `+${headSha}:refs/rbd/promote-head`]) !== null) {
+      contentRef = 'refs/rbd/promote-head';
+      return;
+    }
+    warn(`geprueften Kopf ${headSha} nicht abrufbar; kein Merge auf Verdacht`);
+  }
   if (git(['fetch', 'origin', `+refs/heads/${branch}:refs/remotes/origin/${branch}`]) === null) {
     warn(`Kopf ${branch} nicht abrufbar; PR-Text bleibt beim lokalen Stand`);
+    return;
   }
+  contentRef = `origin/${branch}`;
 }
 
 /** Der Ref, aus dem PR-Titel und Merge-Text stammen; `HEAD` ist der Notausgang. */
-const headRef = () => (git(['rev-parse', '--verify', `origin/${branch}`]) !== null ? `origin/${branch}` : 'HEAD');
+const headRef = () => contentRef;
+/** True, wenn der geladene Ref wirklich der gepruefte Commit ist. */
+const exactHead = () => FULL_SHA.test(headSha) && git(['rev-parse', '--verify', 'refs/rbd/promote-head']) === headSha;
 
 const subject = (ref) => git(['log', '-1', '--pretty=%s', ref]) ?? `Promotion ${ref}`;
 /** Gemeinsame Basis mit main; null heisst: der Diff ist nicht bestimmbar. */
@@ -114,9 +135,48 @@ function writeBodyFile(text, name = 'pr-body.md') {
   return file;
 }
 
+function prInfo(number) {
+  if (!number) return null;
+  const raw = gh(['pr', 'view', String(number), '--json', 'state,isCrossRepository,headRefOid,baseRefName,headRepository']);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * `gh pr list --head` filtert nur nach Branch-Namen und kennt keinen Owner.
+ * Ein Fork mit gleichem Branch-Namen darf deshalb nie als eigener PR gelten.
+ */
 function openPr(head = branch) {
+  if (!head) return '';
   const raw = gh(['pr', 'list', '--head', head, '--state', 'open', '--json', 'number', '--jq', '.[0].number']);
-  return raw && /^\d+$/.test(raw) ? raw : '';
+  if (!raw || !/^\d+$/.test(raw)) return '';
+  return prInfo(raw)?.isCrossRepository === false ? raw : '';
+}
+
+/** PR-Status gegen den geprueften Commit und die eigene Herkunft pruefen. */
+function verifiedPr(number) {
+  const info = prInfo(number);
+  const check = verifyPromotion({
+    event,
+    repo,
+    headRepo: process.env.HEAD_REPO ?? '',
+    branch,
+    headSha,
+    pr: info,
+  });
+  if (!check.ok) {
+    warn(`PR #${number}: ${check.reason}; kein Merge`);
+    return null;
+  }
+  if (!exactHead()) {
+    warn(`PR #${number}: ${headSha} ist nicht als exakter Kopf geladen; kein Merge`);
+    return null;
+  }
+  return info;
 }
 
 /**
@@ -159,7 +219,8 @@ function ensurePr() {
     return '';
   }
   const bodyFile = writeBodyFile(merged.body);
-  if (gh(['pr', 'create', '--base', MAIN, '--head', branch, '--title', subject(ref), '--body-file', bodyFile]) === null) return '';
+  const headSpec = owner ? `${owner}:${branch}` : branch;
+  if (gh(['pr', 'create', '--base', MAIN, '--head', headSpec, '--title', subject(ref), '--body-file', bodyFile]) === null) return '';
   return openPr();
 }
 
@@ -168,6 +229,8 @@ function ensurePr() {
  * gruen bleibt und die Beschreibung nicht auf den letzten Commit schrumpft.
  */
 function mergeGreen(number) {
+  const info = verifiedPr(number);
+  if (!info) return false;
   const ref = headRef();
   const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
   if (current === null) {
@@ -184,15 +247,17 @@ function mergeGreen(number) {
     // GitHub mergt selbst: der Commit ist signiert (Verified). Das setzt im
     // Repo die Squash-Vorgabe "PR-Titel und -Beschreibung" voraus, sonst fehlt
     // main die Pflichtstruktur - deshalb nur mit ausdruecklichem Opt-in.
-    if (gh(['pr', 'merge', number, '--squash', '--auto']) !== null) {
-      log(`PR #${number} fuer den Merge vorgemerkt (Auto-Merge)`);
+    if (gh(['pr', 'merge', number, '--squash', '--auto', '--match-head-commit', headSha]) !== null) {
+      log(`PR #${number} fuer den Merge vorgemerkt (Auto-Merge, Kopf ${headSha.slice(0, 7)})`);
       return true;
     }
     warn(`Auto-Merge fuer #${number} nicht verfuegbar; expliziter Merge`);
   }
-  // Strict-Policy: sobald main sich bewegt, ist der Pflichtstatus veraltet.
-  if (gh(['pr', 'update-branch', number]) === null) log(`#${number}: kein Branch-Update noetig`);
-  const merged = gh(['pr', 'merge', number, '--squash', '--subject', subject(ref), '--body-file', bodyFile]) !== null;
+  // Kein `update-branch` vor dem Merge: es wuerde den geprueften Kopf
+  // verschieben. Ist der Branch hinter main, verweigert GitHub den Merge und
+  // der naechste CI-Lauf prueft den neuen Kopf.
+  const merged =
+    gh(['pr', 'merge', number, '--squash', '--match-head-commit', headSha, '--subject', subject(ref), '--body-file', bodyFile]) !== null;
   if (merged && !elevated) {
     if (gh(['workflow', 'run', 'Auto Version & Release', '--ref', MAIN]) !== null) log('Release-Lauf ohne eigenes Token angestossen');
     else warn('Merge ohne PROMOTE_TOKEN; Release-Lauf nicht angestossen');
@@ -299,7 +364,22 @@ function promoteRed() {
 fetchHead();
 log(`Lauf aus vertrauenswuerdigem ${MAIN}${headSha ? `; Kopf ${headSha}` : ''}${branch ? ` (${branch})` : ''}`);
 
-if (event === 'push' && branch && branch !== MAIN) {
+if (!event) {
+  // Ein manueller Dispatch bringt keinen CI-Nachweis mit. Er zeigt nur an
+  // oder oeffnet den ausdruecklichen Notausgang; `success` wird nie gesetzt.
+  if (mode === 'integrate') {
+    log('manuell: Notausgang integration angefordert');
+    promoteRed();
+  } else {
+    const number = process.env.PR_NUMBER ?? openPr();
+    const info = number ? prInfo(number) : null;
+    log(
+      info
+        ? `manuell: PR #${number} ${info.state}, Kopf ${String(info.headRefOid ?? '').slice(0, 7)}, Basis ${info.baseRefName}; kein Merge ohne gruenen PR-Lauf`
+        : 'manuell: keine Aktion (inspect); Merge nur aus einem gruenen PR-Lauf',
+    );
+  }
+} else if (event === 'push' && branch && branch !== MAIN) {
   // Jeder Feature-Push oeffnet oder aktualisiert den PR. Frueher endete der Lauf
   // hier nach einer Logzeile; der PR entstand erst spaeter, und ohne PR lief das
   // leichte Gate statt der vollen PR-Pruefung.

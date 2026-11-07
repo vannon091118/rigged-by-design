@@ -595,5 +595,38 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "893317c372f13bebbb040e62456fcbe54ecf8380",
     "createdAt": "e2869a1df794575f7c4c05a1ef570a21271db1d3"
+  },
+  {
+    "id": "lane/governance/15-ci-trust-boundaries",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/15-ci-trust-boundaries",
+    "baseSha": "4cd9bc00fef74f85e50a2363d9564d1dfc2ff384",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/ci-verify.yml",
+      ".github/workflows/promote.yml",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/lib/promote-guard.mjs",
+      "scripts/lib/gate-runner.mjs",
+      "scripts/lib/report.mjs",
+      "scripts/verify-lane-claims.mjs",
+      "scripts/promote.mjs",
+      "scripts/turn-push.mjs",
+      "src/core/governance/__tests__/lane-claims.test.ts",
+      "src/core/governance/__tests__/promote-guard.test.ts",
+      "src/core/governance/__tests__/scripts-libs.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open"
   }
 ]
