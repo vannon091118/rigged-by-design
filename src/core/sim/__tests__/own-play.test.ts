@@ -12,7 +12,7 @@ import { Prng } from '../../rng/prng';
 import { createShellRound, ballAfterMoves } from '../../games/shell-round';
 import { testSpin, foreignRound } from '../actions';
 import { DEBT_ACCOUNT, EXTERNAL, HAUSKONTO, PORTEMONNAIE } from '../money';
-import { isOwnCardGame, ownBet, ownCardDeal, ownCardSettle, ownRisk, ownWin, playOwnRound } from '../own-play';
+import { isOwnCardGame, ownBet, ownCardDeal, ownCardSettle, ownMaxBet, ownRisk, ownWin, playOwnRound } from '../own-play';
 import { createWorld } from '../templates';
 import { TX_REASON } from '../tx-reasons';
 import type { GameExtras, GameResult } from '../../games/contracts';
@@ -126,6 +126,16 @@ describe('Eigener Geldweg', () => {
     expect(ledger.getBalance(PORTEMONNAIE)).toBe(before + (risk.won ? fromVC(5) : -fromVC(5)));
     expect(risk.payout).toBe(risk.won ? fromVC(10) : 0);
     expect(ledger.diagnose().ok).toBe(true);
+  });
+
+  it('begrenzt den eigenen Einsatz auf das Zehnfache des Tisches', () => {
+    const { world, ledger, prng } = setup(50);
+    const item = machine(world, 'SLOT', 700);
+    expect(ownMaxBet(world, item)).toBe(fromVC(10));
+    const entries = ledger.entryCount;
+    expect(() => playOwnRound(world, ledger, item.id, 10.01, prng)).toThrow(/Obergrenze/);
+    expect(ledger.entryCount).toBe(entries);
+    expect(() => playOwnRound(world, ledger, item.id, 10, prng)).not.toThrow();
   });
 
   it('laesst den Testspin ohne Ledger- und RNG-Wirkung', () => {

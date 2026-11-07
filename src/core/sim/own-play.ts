@@ -29,6 +29,24 @@ export function ownMinBet(world: Pick<WorldState, 'prices'>, item: Furniture): V
   return (item.baseBet > world.prices.slotMinBet ? item.baseBet : world.prices.slotMinBet) as VaCoinMicro;
 }
 
+/** Ein eigener Einsatz darf hoechstens das Zehnfache des effektiven Mindesteinsatzes sein. */
+export const MAX_OWN_BET_MULTIPLE = 10;
+
+/**
+ * Obergrenze in Micro-VC, auf ganze Cent aufgerundet. Die UI rechnet ihre
+ * Bet-Stufen ebenfalls in Cent; so scheitert die hoechste Stufe nicht an
+ * einer Rundungsdifferenz.
+ */
+export function ownMaxBet(world: Pick<WorldState, 'prices'>, item: Furniture): VaCoinMicro {
+  const maxMicro = ownMinBet(world, item) * MAX_OWN_BET_MULTIPLE;
+  return (Math.ceil(maxMicro / 100) * 100) as VaCoinMicro;
+}
+
+function assertOwnBetLimit(world: Pick<WorldState, 'prices'>, item: Furniture, stake: VaCoinMicro): void {
+  const max = ownMaxBet(world, item);
+  if (stake > max) throw new Error(`Einsatz über der Obergrenze an ${item.label}: maximal ${(max / 10_000).toFixed(2)} VC.`);
+}
+
 export function ownBet(ledger: Ledger, amount: VaCoinMicro, tick: number, reason: string = TX_REASON.OWN_STAKE): void {
   if (!Number.isSafeInteger(amount) || amount <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   ledger.transfer(PORTEMONNAIE, HAUSKONTO, amount, reason, tick);
@@ -61,6 +79,7 @@ function stakeFor(world: WorldState, ledger: Ledger, item: Furniture, betVC: num
   if (!Number.isSafeInteger(stake) || stake <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   const min = ownMinBet(world, item);
   if (stake < min) throw new Error(`Mindesteinsatz an ${item.label}: ${min / 10_000} VC.`);
+  assertOwnBetLimit(world, item, stake);
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
   return stake;
 }

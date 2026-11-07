@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:26 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -14,7 +14,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ## [0.3.183] - 2026-11-07
 
+### Spiel
+- **Kisten laufen über den Floor.** Ein Klick auf eine Kiste lässt den Charakter hinlaufen und aufheben; ein Klick auf eine freie Fläche trägt eine Möbelkiste dorthin und stellt sie ab. Das Betriebspanel zeigt nur noch Status und Träger, die Abholen-/Entladen-Buttons entfallen. Enter bleibt die Tastenalternative.
+- **Klarere Rollenbezeichnung.** Umschalter und Floor-Leiste nennen den Operator jetzt `BETREIBER` statt `BETRIEB`; der Gastmodus bleibt unverändert. Die Rivalen-Karte öffnet beim Klick direkt das Casino und zeigt keine zweite Auswahl mehr.
+
 ### Technik
+- **WIP-Konsolidierung.** Die offene Kisten-, Einsatz- und Slot-Arbeit aus dem alten Interaktions-Worktree liegt jetzt auf aktuellem `main`: `useCrateActions` bündelt Floor-Klick, Wegfindung, Aufheben, Tragen und Abstellen, `build-crate-list.tsx` ist reine Anzeige. Eigene Einsätze sind auf das Zehnfache des effektiven Mindesteinsatzes begrenzt; die Slot-Entladung wird erst frei, wenn der Bankstand die tatsächliche Auszahlung aus Einsatz plus Bonus deckt.
 - **AGENTS.md ist ein Kurzvertrag.** Zehn unverhandelbare Regeln, Zustand, Befehle und eine Referenztabelle; Tiefenwissen liegt in `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/TESTING.md`, `docs/INDEX.md` und `docs/contracts/README.md`. Doppelte Gate-Listen entfallen.
 - **Doku-Drift bereinigt.** 12 Required-Gates plus optionales Audit, `capabilities` im schnellen Plan, Save v11, neun Workflows, klassischer Branch-Schutz mit `strict: false` und ohne Ruleset, `promote` deaktiviert und manueller Merge.
 - **Regressionen fuer den Arbeitsvertrag.** `destructive-commands.test.ts` verbietet `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D` in Produktionsskripten; Dependabot-Branches erhalten eine eng begrenzte Allowlist fuer Manifest, Lockfile und Workflow-Pins.

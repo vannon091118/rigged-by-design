@@ -15,9 +15,9 @@ describe('Perspektive', () => {
     render(<PerspectiveSwitch perspective="guest" onChange={onChange} />);
 
     expect(screen.getByRole('button', { name: 'GAST' }).getAttribute('aria-pressed')).toBe('true');
-    expect(screen.getByRole('button', { name: 'BETRIEB' }).getAttribute('aria-pressed')).toBe('false');
+    expect(screen.getByRole('button', { name: 'BETREIBER' }).getAttribute('aria-pressed')).toBe('false');
 
-    fireEvent.click(screen.getByRole('button', { name: 'BETRIEB' }));
+    fireEvent.click(screen.getByRole('button', { name: 'BETREIBER' }));
     expect(onChange).toHaveBeenCalledWith('operator');
   });
 });

@@ -87,8 +87,6 @@ function SmartphoneBuildPanel({ view, onClose }: { view: GameView; onClose: () =
       onCarpet={(id) => worldStore.setCarpet(id)}
       onRepair={(id) => worldStore.repair(id)}
       onClean={() => worldStore.clean()}
-      onPickup={(id) => worldStore.pickup(id)}
-      onUnload={() => worldStore.unloadHere()}
       onOrderDrinks={(count) => worldStore.orderDrinks(count)}
       onOrderParts={(count) => worldStore.orderParts(count)}
       onUpgradeBar={() => worldStore.upgradeBar()}

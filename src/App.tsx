@@ -10,13 +10,14 @@ import { armMusic, setMusicState } from './render/music';
 import { ActionCard } from './ui/action-card';
 import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
-import { fits, type Perspective, type Popup } from './ui/app-model';
+import { type Perspective, type Popup } from './ui/app-model';
 import { BuildPanel } from './ui/build-panel';
 import { Dock, useBrandTaps } from './ui/dock';
 import { FloorRoleBar } from './ui/floor-role-bar';
 import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
+import { useCrateActions } from './ui/use-crate-actions';
 import { useStageKeys } from './ui/use-stage-keys';
 import { editorEnabled } from './ui/editor-gate';
 
@@ -103,20 +104,18 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     return crate && crate.payload.kind === 'FURNITURE' ? crate.payload.buildId : null;
   })();
 
+  // Kistenklick und Enter laufen ueber denselben Hook: Ziel setzen, Charakter laufen lassen, zugreifen.
+  const crates = useCrateActions(view, {
+    canOperate: perspective === 'operator',
+    blocked: popup !== null || buildOpen || editorOpen,
+    onError: setPlaceError,
+  });
+
   const buy = (id: BuildId): void => {
     if (perspective === 'guest') return;
     if (view.house < getBuildDef(id).cost) { setPlaceError('Hauskonto zu niedrig – erst Geld verdienen, dann kaufen.'); return; }
     worldStore.buy(id);
     setPlaceError('');
-  };
-
-  const deployAt = (x: number, y: number): void => {
-    if (perspective === 'guest') return;
-    const match = /^KRATE:(\d+)$/.exec(view.player.carrying);
-    const crate = match ? view.crates.find((entry) => entry.id === Number(match[1])) : undefined;
-    if (!crate || crate.payload.kind !== 'FURNITURE') return;
-    if (!fits(view, crate.payload.buildId, x, y)) return;
-    worldStore.deploy(x, y);
   };
 
   const openPopup = (next: Popup): void => {
@@ -175,8 +174,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           onGuest={(id) => { if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id }); }}
           onFurniture={(id) => openPopup({ kind: 'machine', itemId: id })}
           onEmpty={(x, y) => {
-            if (carryingCrate) { deployAt(x, y); return; }
-            worldStore.moveTo({ x, y });
+            crates.tapFloor(x, y);
           }}
           onInteract={handleFloorInteract}
           onActions={(next) => setActions(perspective === 'operator' ? next : [])}
@@ -200,7 +198,9 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         {carryingCrate && (
           <div className="place-hint">
             <b>Kiste tragen</b>
-            <span>{placeError || 'Auf eine freie Fläche klicken – oder hinlaufen und Enter drücken.'}</span>
+            <span>{placeError || (crates.placeTarget
+              ? 'Der Charakter trägt sie zum markierten Feld.'
+              : 'Klick auf eine freie Fläche: der Charakter trägt sie hin. Enter stellt sie sofort am Feld ab.')}</span>
           </div>
         )}
 
@@ -257,8 +257,6 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           onCarpet={(id: CarpetId) => worldStore.setCarpet(id)}
           onRepair={(id) => worldStore.repair(id)}
           onClean={() => worldStore.clean()}
-          onPickup={(id) => worldStore.pickup(id)}
-          onUnload={() => worldStore.unloadHere()}
           onOrderDrinks={(count) => worldStore.orderDrinks(count)}
           onOrderParts={(count) => worldStore.orderParts(count)}
           onUpgradeBar={() => worldStore.upgradeBar()}

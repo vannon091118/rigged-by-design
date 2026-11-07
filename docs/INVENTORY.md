@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:26 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -515,10 +515,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1397 |
-| Gelistete Dateien | 1397 |
+| Getrackte Dateien | 1400 |
+| Gelistete Dateien | 1400 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (3), content (69), docs (77), public (554), scripts (86), src (583) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (4), content (69), docs (77), public (554), scripts (86), src (585) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -530,7 +530,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 2 Datei(en)
+- `.lane-claims/claims/` — 3 Datei(en)
 - `content/narrative/contributions/` — 65 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -613,7 +613,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 63 Datei(en)
+- `src/ui/` — 65 Datei(en)
 - `src/ui/__tests__/` — 10 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -639,6 +639,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -714,9 +715,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1812 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 971 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 976 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 111 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3350 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3360 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 81 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 63 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -1433,7 +1434,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 105 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
-- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 285 Zeilen
+- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 283 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 12 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
@@ -1481,7 +1482,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/__tests__/slot-config.test.ts` — Die Maschinenkonfiguration ist die eine Quelle der Spielparameter: die — gelesen: 129 Zeilen
 - `src/core/games/__tests__/slot-paylines.test.ts` — Das Gitter muss die Gewinnlinien exakt tragen: was die Anzeige als Treffer — gelesen: 103 Zeilen
 - `src/core/games/__tests__/slot-profile.test.ts` — Der Betreiber stellt Streifen, Gewichte, Bewertungsmodell, Volatilität und — gelesen: 124 Zeilen
-- `src/core/games/__tests__/slot-session-rtp.test.ts` — Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen. — gelesen: 79 Zeilen
+- `src/core/games/__tests__/slot-session-rtp.test.ts` — Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen. — gelesen: 100 Zeilen
 - `src/core/games/__tests__/slot-transparency.test.ts` — Rot-Gruen-Beweis: ehrliche Slot-Historie, physikalische Druckstufen und — gelesen: 106 Zeilen
 - `src/core/games/__tests__/test-spin.test.ts` — Alle sieben Spiele laufen im Testmodus derselben Sandbox: eigener Seed, — gelesen: 69 Zeilen
 - `src/core/games/__tests__/video-poker-ranks.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 31 Zeilen
@@ -1516,7 +1517,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/shell-round.ts` — Huetchenspiel als interaktive Runde: erst mischen (Kern), dann waehlt der Spieler. — gelesen: 68 Zeilen
 - `src/core/games/slot-config.ts` — Maschinenkonfiguration: die eine Quelle der Spielparameter. — gelesen: 104 Zeilen
 - `src/core/games/slot-profile.ts` — Konfigurierbare Spielmechanik des Slots: Gewichte, Bewertungsmodell, Volatilitaet, — gelesen: 152 Zeilen
-- `src/core/games/slot-session.ts` — Ein Slot-Spin mit Gedächtnis: Drucklader und Entladung werden hier tatsaechlich konsumiert. — gelesen: 71 Zeilen
+- `src/core/games/slot-session.ts` — Ein Slot-Spin mit Gedächtnis: Drucklader und Entladung werden hier tatsaechlich konsumiert. — gelesen: 72 Zeilen
 - `src/core/games/slot-transparency.ts` — Ehrliches Slot-Gedächtnis und der Drucklader; reine, serialisierbare Zustandslogik. — gelesen: 106 Zeilen
 - `src/core/governance/__tests__/affected-tests.test.ts` — Die Auswahl muss deklarierte Ziele, direkte Importe und das betroffene — gelesen: 70 Zeilen
 - `src/core/governance/__tests__/auto-resolve.test.ts` — Die Reihenfolge ist der Vertrag: NOOP/PR_HANDOFF erzeugen nichts, ein — gelesen: 149 Zeilen
@@ -1633,7 +1634,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
 - `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/nav-edges.test.ts` — Waende blockieren Kanten statt Tiles. Tueren und Durchgaenge bleiben — gelesen: 172 Zeilen
-- `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 152 Zeilen
+- `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 162 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
@@ -1757,7 +1758,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 196 Zeilen
-- `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 176 Zeilen
+- `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 195 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 189 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
@@ -1928,7 +1929,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 569 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 602 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 638 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
@@ -1947,9 +1948,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 191 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
+- `src/ui/build-crate-list.tsx` — Kisten im Betriebspanel: reine Statusanzeige. Aufheben und Abladen macht der Charakter auf dem Floor. — gelesen: 46 Zeilen
 - `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 33 Zeilen
-- `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. — gelesen: 176 Zeilen
-- `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 185 Zeilen
+- `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 124 Zeilen
+- `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/diagnostics-popup.tsx` — Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. — gelesen: 121 Zeilen
 - `src/ui/dialogue-popup.tsx` — Dialog: Comic-Dialog als reine Darstellung. — gelesen: 69 Zeilen
@@ -1958,7 +1960,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/editor-tools.ts` — Reine Werkzeuglogik des Layout-Editors: Sie uebersetzt die gewaehlte Absicht — gelesen: 53 Zeilen
 - `src/ui/floor-role-bar.tsx` — Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. — gelesen: 21 Zeilen
 - `src/ui/foreign-floor-hud.tsx` — Foreign Floor HUD: Anzeige auf fremden Floors. — gelesen: 88 Zeilen
-- `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 109 Zeilen
+- `src/ui/foreign-floor-map.tsx` — Foreign Floor Map: Übersichtskarte aller fremden Casinos. — gelesen: 97 Zeilen
 - `src/ui/foreign-floor-popup.tsx` — Fenster auf einem fremden Floor: HUD plus Job-Menue an der gewaehlten Station. — gelesen: 54 Zeilen
 - `src/ui/format.ts` — Kompakte Anzeige: VC ohne Zahlenrauschen. — gelesen: 19 Zeilen
 - `src/ui/games-popup-lazy.tsx` — Chunk-Grenze fuer das Spiel-Paket: Engines, Tische und Pixi-Buehnen der — gelesen: 26 Zeilen
@@ -2006,13 +2008,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/smartphone-clean.tsx` — Smartphone-App: CLEAN - Putzen — gelesen: 37 Zeilen
 - `src/ui/smartphone-serve.tsx` — Smartphone-App: SERVE - Getränke servieren — gelesen: 33 Zeilen
 - `src/ui/smartphone-travel.tsx` — Smartphone-App: TRAVEL - Casino-Wechsel — gelesen: 30 Zeilen
-- `src/ui/smartphone.tsx` — Smartphone: zentraler Zugangspunkt für alle Interaktionen. — gelesen: 102 Zeilen
+- `src/ui/smartphone.tsx` — Smartphone: zentraler Zugangspunkt für alle Interaktionen. — gelesen: 100 Zeilen
 - `src/ui/sound-popup.tsx` — Lautstaerke, Kanaele und Musik: Master plus Spiele, Kampf, Bedienung getrennt. — gelesen: 79 Zeilen
 - `src/ui/staff-labels.ts` — Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. — gelesen: 19 Zeilen
 - `src/ui/stage-controls.tsx` — Buehnenrand: nur die Kamera-Knoepfe. Tastenkuerzel stehen in der Werkstatt. — gelesen: 15 Zeilen
 - `src/ui/table-launcher.tsx` — Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. — gelesen: 145 Zeilen
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen
-- `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 48 Zeilen
+- `src/ui/use-crate-actions.ts` — Kisten am Floor: Ein Klick gibt das Ziel, der Charakter laeuft hin und hebt auf oder stellt ab. — gelesen: 101 Zeilen
+- `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 43 Zeilen
 - `src/ui/workshop-parts.tsx` — Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. — gelesen: 107 Zeilen
 - `src/ui/workshop.tsx` — Werkstatt: sechs Bereiche in einem Raster, erreichbar nur ueber Marke oder Tastatur. — gelesen: 114 Zeilen
 - `src/vite-env.d.ts` — / <reference types="vite/client" /> — gelesen: 3 Zeilen

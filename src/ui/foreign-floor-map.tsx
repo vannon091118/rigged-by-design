@@ -3,7 +3,6 @@
  * Klick auf eine Kachel betritt das jeweilige Casino.
  */
 
-import { useState } from 'react';
 import type { RivalId } from '../core/sim/types';
 import { RIVALS, rivalStates } from '../core/sim/rivals';
 import { vc } from './format';
@@ -41,7 +40,6 @@ const RIVAL_INFO: Record<RivalId, { label: string; color: string }> = {
 
 export function ForeignFloorMap({ view, onVisit, onClose }: ForeignFloorMapProps) {
   const states = rivalStates(0);
-  const [selectedRival, setSelectedRival] = useState<RivalId | null>(null);
 
   return (
     <PopupShell eyebrow="ÜBERSICHTSKARTE" title="Fremde Casinos" onClose={onClose} wide={false}>
@@ -64,10 +62,7 @@ export function ForeignFloorMap({ view, onVisit, onClose }: ForeignFloorMapProps
                 key={rival.id}
                 type="button"
                 className={`rival-card${isActive ? ' active' : ''}${!hasJobStations ? ' no-jobs' : ''}`}
-                onClick={() => {
-                  setSelectedRival(rival.id);
-                  onVisit(rival.id);
-                }}
+                onClick={() => onVisit(rival.id)}
                 disabled={isActive}
               >
                 <div className="rival-header" style={{ borderColor: RIVAL_INFO[rival.id].color }}>
@@ -96,13 +91,6 @@ export function ForeignFloorMap({ view, onVisit, onClose }: ForeignFloorMapProps
             );
           })}
         </div>
-
-        {selectedRival && (
-          <div className="selected-rival-info">
-            <strong>Gewählt: {RIVAL_INFO[selectedRival].label}</strong>
-            <span>Klicke auf „Betreten“ um das Casino zu besuchen.</span>
-          </div>
-        )}
       </div>
     </PopupShell>
   );

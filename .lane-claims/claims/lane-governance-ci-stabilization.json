@@ -4,6 +4,7 @@
   "branch": "lane/governance/ci-stabilization",
   "baseSha": "aaea62cb20afb1f6fd554cd8abf570ae691ab887",
   "task": "Agenten- und CI-Workflow stabilisieren, bevor Feature-Arbeit beginnt (Phase 1: Pretask, Resume, Claims)",
+  "goal": "Jeder Lauf startet mit Task-Vertrag, Claim, Modus und Scope-Blockern; fremde WIP bleibt unangetastet.",
   "pathAllowlist": [
     "AGENTS.md",
     "README.md",
@@ -19,7 +20,6 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "aaea62cb20afb1f6fd554cd8abf570ae691ab887",
-  "goal": "Jeder Lauf startet mit Task-Vertrag, Claim, Modus und Scope-Blockern; fremde WIP bleibt unangetastet."
+  "status": "archived",
+  "createdAt": "aaea62cb20afb1f6fd554cd8abf570ae691ab887"
 }

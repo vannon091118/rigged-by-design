@@ -4,10 +4,10 @@
  * @error-code: ERR-1003
  *
  * Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen.
- * Der Drucklader darf keine Auszahlung ueber dem Einbehaltenen erzeugen.
+ * Der Drucklader wird erst frei, wenn der Bankstand die tatsaechliche Auszahlung deckt.
  */
 import { describe, expect, it } from 'vitest';
-import { fromVC } from '../../economy/vacoin';
+import { addVC, fromVC, mulVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { getBuildDef } from '../../sim/offers';
@@ -24,10 +24,10 @@ function machine(): Furniture {
   };
 }
 
-function chargedMemory() {
+function chargedMemory(bank = 0) {
   return {
     spinsToday: 0, spinsSinceLastJackpot: 0, averageJackpotInterval: 1000, currentDrift: -1000,
-    recentSymbolHistogram: {}, recentSpins: [], pressureLevel: 7, chargeReady: true, bank: 0,
+    recentSymbolHistogram: {}, recentSpins: [], pressureLevel: 7, chargeReady: true, bank,
   };
 }
 
@@ -75,5 +75,26 @@ describe('Slot-Session', () => {
     expect(result.label.startsWith('ENTLADUNG')).toBe(false);
     expect(memory.chargeReady).toBe(true);
     expect(memory.bank).toBeGreaterThanOrEqual(0);
+  });
+
+  it('deckt die Entladung am tatsaechlichen Auszahlungsbetrag', () => {
+    const seed = seedWithLoadedCharge();
+    const bet = fromVC(0.5);
+    const bonus = 120;
+    const payout = addVC(bet, mulVC(bet, bonus));
+
+    const blocked = machine();
+    const blockedMemory = blocked.slotMemory = chargedMemory(payout - 1);
+    const first = playSlotSession(blocked, new Prng(seed), bet, bonus);
+    expect(first.label.startsWith('ENTLADUNG')).toBe(false);
+    expect(blockedMemory.chargeReady).toBe(true);
+
+    const covered = machine();
+    const coveredMemory = covered.slotMemory = chargedMemory(payout);
+    const second = playSlotSession(covered, new Prng(seed), bet, bonus);
+    expect(second.label.startsWith('ENTLADUNG')).toBe(true);
+    expect(second.payout).toBe(payout);
+    expect(coveredMemory.chargeReady).toBe(false);
+    expect(coveredMemory.bank).toBe(bet);
   });
 });
