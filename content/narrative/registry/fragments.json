@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:735ae953c28a6c018df4f87f6de978a4a9d276c7281de849337b8f257f3c4514",
+  "contentHash": "sha256:e8ac05de6b019f7a98b269bed3342a4c882b0fde30505346aa24034ecfdc91c9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2259,6 +2259,28 @@
       "source": "content/narrative/contributions/2026-11-08-pool-choice-preview-51.json"
     },
     {
+      "contributionId": "pool-choice-preview-52",
+      "turnId": "2026-11-08T00:20Z-pool-choice-preview-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "ask"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nimm den kleineren Tisch oder den laengeren Abend. Beide Wege zahlen sich anders aus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-choice-preview-52.json"
+    },
+    {
       "contributionId": "pool-description-11",
       "turnId": "2026-11-07T23:11Z-pool-description-11",
       "agentId": "buffy",
@@ -3161,6 +3183,28 @@
       "source": "content/narrative/contributions/2026-11-08-pool-description-51.json"
     },
     {
+      "contributionId": "pool-description-52",
+      "turnId": "2026-11-08T00:20Z-pool-description-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ueber der Theke haengt noch der Kranz vom letzten Fest. Niemand traut sich, ihn abzuhaengen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-description-52.json"
+    },
+    {
       "contributionId": "pool-documentation-27",
       "turnId": "2026-11-07T23:27Z-pool-documentation-27",
       "agentId": "buffy",
@@ -3709,6 +3753,28 @@
       "text": "Jede Regel nennt ihren Grund und ihren Pruefpfad. Wer sie liest, muss sie nicht raten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-documentation-51.json"
+    },
+    {
+      "contributionId": "pool-documentation-52",
+      "turnId": "2026-11-08T00:20Z-pool-documentation-52",
+      "agentId": "buffy",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Sektionskoepfe sind zeichengenau vorgegeben. Ein fehlender Umlaut ist ein roter Lauf, kein Formfehler.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-documentation-52.json"
     },
     {
       "contributionId": "pool-event-body-08",
@@ -4677,6 +4743,28 @@
       "text": "Der Vorhang schliesst zu spaet, das Licht bleibt kurz haengen. Danach fragt niemand mehr nach dem Ergebnis.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-event-body-51.json"
+    },
+    {
+      "contributionId": "pool-event-body-52",
+      "turnId": "2026-11-08T00:20Z-pool-event-body-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Stuhl kippt nach hinten, bleibt aber stehen. Der Abend nimmt das als Antwort und laeuft weiter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-event-body-52.json"
     },
     {
       "contributionId": "pool-memory-04",
@@ -5735,6 +5823,28 @@
       "source": "content/narrative/contributions/2026-11-08-pool-memory-51.json"
     },
     {
+      "contributionId": "pool-memory-52",
+      "turnId": "2026-11-08T00:20Z-pool-memory-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Damals war die Tuer noch gruen, jetzt ist sie es nicht mehr. Er erzaehlt es so, als waere nichts geschehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-memory-52.json"
+    },
+    {
       "contributionId": "pool-opening-10",
       "turnId": "2026-11-07T23:10Z-pool-opening-10",
       "agentId": "buffy",
@@ -6657,6 +6767,28 @@
       "text": "Draussen beginnt der Regen, drinnen zaehlt niemand die Stunden. Der Abend faengt ohne Ankuendigung an.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-opening-51.json"
+    },
+    {
+      "contributionId": "pool-opening-52",
+      "turnId": "2026-11-08T00:20Z-pool-opening-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "start"
+      ],
+      "tone": "warm",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Gast bringt den Regen mit und stellt die Schuhe neben die Tuer. Damit ist der Abend erklaert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-opening-52.json"
     },
     {
       "contributionId": "pool-reaction-04",
@@ -7713,6 +7845,28 @@
       "text": "Er sieht kurz auf die Uhr und nickt dann doch. Der Platz neben ihm bleibt bis zum Schluss frei.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-reaction-51.json"
+    },
+    {
+      "contributionId": "pool-reaction-52",
+      "turnId": "2026-11-08T00:20Z-pool-reaction-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sie schaut auf den Stapel und schiebt ihm den obersten Zettel hin. Der Rest bleibt vorerst liegen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-reaction-52.json"
     },
     {
       "contributionId": "pool-rumor-01",
@@ -8835,6 +8989,28 @@
       "text": "Im Hinterzimmer wird von einer neuen Schicht gesprochen. Wer zuerst fragt, bekommt die ehrliche Antwort.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-rumor-51.json"
+    },
+    {
+      "contributionId": "pool-rumor-52",
+      "turnId": "2026-11-08T00:20Z-pool-rumor-52",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "warm",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man sagt, der alte Aufseher kenne die Kreide noch. Wenn das stimmt, wird heute anders gespielt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-rumor-52.json"
     },
     {
       "contributionId": "returning-memory-01",

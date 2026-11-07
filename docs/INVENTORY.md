@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:00 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 23:08 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -515,10 +515,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1756 |
-| Gelistete Dateien | 1756 |
+| Getrackte Dateien | 1764 |
+| Gelistete Dateien | 1764 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (8), content (412), docs (77), public (554), scripts (88), src (592) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (8), content (420), docs (77), public (554), scripts (88), src (592) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -531,7 +531,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
 - `.lane-claims/claims/` — 7 Datei(en)
-- `content/narrative/contributions/` — 408 Datei(en)
+- `content/narrative/contributions/` — 416 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1050,20 +1050,28 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-07-pool-rumor-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-rumor-49","contributionId":"pool-rumor-49","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-rumor-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-rumor-50","contributionId":"pool-rumor-50","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-choice-preview-51","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-choice-preview-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-choice-preview-52","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-description-51","contributionId":"pool-description-51","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-description-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-description-52","contributionId":"pool-description-52","ro — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-documentation-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-documentation-51","contributionId":"pool-documentation-51" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-documentation-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-documentation-52","contributionId":"pool-documentation-52" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-event-body-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-event-body-51","contributionId":"pool-event-body-51","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-event-body-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-event-body-52","contributionId":"pool-event-body-52","role — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-memory-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-memory-51","contributionId":"pool-memory-51","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-memory-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-memory-52","contributionId":"pool-memory-52","role":"BEOBA — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-opening-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-opening-51","contributionId":"pool-opening-51","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-opening-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-opening-52","contributionId":"pool-opening-52","role":"BEO — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-reaction-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-reaction-51","contributionId":"pool-reaction-51","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-reaction-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-reaction-52","contributionId":"pool-reaction-52","role":"B — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 9109 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 1637 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 9285 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 1669 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 983 Zeilen
-- `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 113 Zeilen
+- `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 114 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3380 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 81 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 63 Zeilen
@@ -2063,7 +2071,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 107 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 109 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
