@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:21a5219cc01c81a5247038eb49e46e3ed8a727d15370900fa0f37f2ebeb03aec",
+  "contentHash": "sha256:735ae953c28a6c018df4f87f6de978a4a9d276c7281de849337b8f257f3c4514",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2237,6 +2237,28 @@
       "source": "content/narrative/contributions/2026-11-07-pool-choice-preview-50.json"
     },
     {
+      "contributionId": "pool-choice-preview-51",
+      "turnId": "2026-11-08T00:10Z-pool-choice-preview-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "ask"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Du kannst den Einsatz halbieren oder den Tisch wechseln. Beides aendert den Abend, nur anders.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-choice-preview-51.json"
+    },
+    {
       "contributionId": "pool-description-11",
       "turnId": "2026-11-07T23:11Z-pool-description-11",
       "agentId": "buffy",
@@ -3117,6 +3139,28 @@
       "source": "content/narrative/contributions/2026-11-07-pool-description-50.json"
     },
     {
+      "contributionId": "pool-description-51",
+      "turnId": "2026-11-08T00:10Z-pool-description-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Boden traegt noch die Kreide vom Vortag. Jemand hat die Linie absichtlich nicht weggewischt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-description-51.json"
+    },
+    {
       "contributionId": "pool-documentation-27",
       "turnId": "2026-11-07T23:27Z-pool-documentation-27",
       "agentId": "buffy",
@@ -3643,6 +3687,28 @@
       "text": "Die Klassifizierung nennt Slot, Funktion und Kontext. So bleibt Content pruefbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-50.json"
+    },
+    {
+      "contributionId": "pool-documentation-51",
+      "turnId": "2026-11-08T00:10Z-pool-documentation-51",
+      "agentId": "buffy",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jede Regel nennt ihren Grund und ihren Pruefpfad. Wer sie liest, muss sie nicht raten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-documentation-51.json"
     },
     {
       "contributionId": "pool-event-body-08",
@@ -4589,6 +4655,28 @@
       "text": "Zwei Stimmen sprechen gleichzeitig, dann schweigen beide. Was daraus wird, haengt an einer einzigen Antwort.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-50.json"
+    },
+    {
+      "contributionId": "pool-event-body-51",
+      "turnId": "2026-11-08T00:10Z-pool-event-body-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Vorhang schliesst zu spaet, das Licht bleibt kurz haengen. Danach fragt niemand mehr nach dem Ergebnis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-event-body-51.json"
     },
     {
       "contributionId": "pool-memory-04",
@@ -5625,6 +5713,28 @@
       "source": "content/narrative/contributions/2026-11-07-pool-memory-50.json"
     },
     {
+      "contributionId": "pool-memory-51",
+      "turnId": "2026-11-08T00:10Z-pool-memory-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "warm",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er hatte denselben Platz, dieselbe Bestellung und eine andere Geschichte. Diesmal erzaehlt er sie zu Ende.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-memory-51.json"
+    },
+    {
       "contributionId": "pool-opening-10",
       "turnId": "2026-11-07T23:10Z-pool-opening-10",
       "agentId": "buffy",
@@ -6525,6 +6635,28 @@
       "text": "Die Tuer faellt leiser ins Schloss als erwartet. Es gibt keinen Plan, nur einen Anfang.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-opening-50.json"
+    },
+    {
+      "contributionId": "pool-opening-51",
+      "turnId": "2026-11-08T00:10Z-pool-opening-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Draussen beginnt der Regen, drinnen zaehlt niemand die Stunden. Der Abend faengt ohne Ankuendigung an.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-opening-51.json"
     },
     {
       "contributionId": "pool-reaction-04",
@@ -7559,6 +7691,28 @@
       "text": "Sie nimmt den Zettel und faltet ihn zweimal. Der Rest liegt beim naechsten Besuch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-reaction-50.json"
+    },
+    {
+      "contributionId": "pool-reaction-51",
+      "turnId": "2026-11-08T00:10Z-pool-reaction-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er sieht kurz auf die Uhr und nickt dann doch. Der Platz neben ihm bleibt bis zum Schluss frei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-reaction-51.json"
     },
     {
       "contributionId": "pool-rumor-01",
@@ -8659,6 +8813,28 @@
       "text": "An der Theke heisst es, der Rivale suche Personal. Der Abend wird zeigen, was davon stimmt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-rumor-50.json"
+    },
+    {
+      "contributionId": "pool-rumor-51",
+      "turnId": "2026-11-08T00:10Z-pool-rumor-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "trocken",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Hinterzimmer wird von einer neuen Schicht gesprochen. Wer zuerst fragt, bekommt die ehrliche Antwort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-rumor-51.json"
     },
     {
       "contributionId": "returning-memory-01",
