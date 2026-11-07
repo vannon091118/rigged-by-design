@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
+<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -183,6 +183,9 @@ diese Punkte:
 | `verify:light` vor dem Commit | `turn-push.mjs` (`ERR-4024`) |
 | Fremde Pfade im Commit | `turn-push.mjs` prüft den Arbeitsbaum vor Bump und Staging gegen den Claim (`ERR-4019`) |
 | Lokales Feedback | `pnpm run agent:feedback` auf demselben Selektor wie `test:affected` (kein zweiter Plan) |
+| Alle roten Gates eines Laufs | `pr-watcher.mjs` + `gate-diagnostics.mjs`: jeder fehlgeschlagene Job/Schritt, gruppiert nach Fehlercode |
+| Retry vor dem Issue | `pr-watcher.mjs` startet nur ausschliesslich transiente Befunde einmal neu (`run_attempt < 2`), fachliche Fehler nie |
+| Merge-Beleg statt Basis-SHA | `reconcile-claims.mjs` und `verify-lane-claims.mjs` über `claim-evidence.mjs`: gemergter PR oder Branch-Kopf auf `main`; `baseSha` ist kein Nachweis |
 | Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
 | Gate-Matrix und Required Check | `ci-verify.yml` |
 | Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |

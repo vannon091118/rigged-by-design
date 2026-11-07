@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
+<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.159] - 2026-11-07
+
+### Technik
+- **Alle roten Gates statt des ersten.** `scripts/lib/gate-diagnostics.mjs` sammelt jeden fehlgeschlagenen Job und Schritt eines Laufs, liest je Befund den ersten echten Fehlercode (PASS-Zeilen zaehlen nicht) und gruppiert gleiche Codes als eine Ursache. `pr-watcher.mjs` legt damit ein Issue mit vollstaendiger Diagnose an, statt `firstGateError()` zu wiederholen.
+- **Begrenzter Retry vor dem Issue.** Sind ausschliesslich transiente Befunde (Netz, Runner, Rate Limit) rot und ist `run_attempt < 2`, startet der Watcher den Lauf genau einmal neu. Fachliche Fehler werden nie mit identischen Eingaben wiederholt; danach entsteht das Issue.
+- **Merge-Beleg statt Basis-SHA.** `scripts/lib/claim-evidence.mjs` entscheidet den Claim-Status aus einem gemergten PR oder einem Branch-Kopf auf `main`; `baseSha` kommt in der Signatur nicht mehr vor. `reconcile-claims.mjs` schreibt nur mit `--apply` und meldet unbelegte Faelle, `verify-lane-claims.mjs` behandelt eine nachweislich gemergte Lane nicht mehr als Kollision.
+- Neun Testfaelle in `gate-diagnostics.test.ts` und `claim-evidence.test.ts` decken mehrere rote Gates, Schritte, PASS-Zeilen, Gruppierung, den geloeschten Branch ohne Beleg und beide Belegarten ab.
 
 ## [0.3.158] - 2026-11-07
 

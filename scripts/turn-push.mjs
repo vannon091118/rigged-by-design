@@ -96,10 +96,14 @@ if (paths.length === 0 && schmutz) {
     fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; erst Claim eintragen, dann committen`);
     process.exit(1);
   }
+  // `git()` trimmt die Gesamtausgabe; die erste Zeile hat damit kein
+  // fuehrendes Leerzeichen mehr. `slice(2).trim()` liest beide Formen richtig,
+  // sonst verloere ein Pfad wie `.lane-claims/claims.json` seinen Punkt und
+  // gaelte als fremd.
   const changed = git(['status', '--porcelain'])
     .split(/\r?\n/)
     .filter(Boolean)
-    .map((line) => line.slice(3))
+    .map((line) => line.slice(2).trim())
     .map((path) => path.split(' -> ').pop());
   const scope = scopeChanges({ changed, allowlist: claim.pathAllowlist });
   if (!scope.ok) {
