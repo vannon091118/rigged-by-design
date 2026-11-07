@@ -17,6 +17,7 @@ import { emitFact } from '../narrative/facts';
 import { processNarrativeRuntime } from '../narrative/runtime';
 import { normalizeRelationships } from '../narrative/relationships';
 import { chooseNarrativeCmd, flushNarrativeCmd } from '../../../store/narrative-commands';
+import { randomSeed } from '../../../test/random-seed';
 
 describe('Phase 0 - Geld und Determinismus', () => {
   it('haelt die Bilanz ueber Einzahlung, Buchung und Schuld bei Null', () => {
@@ -39,8 +40,9 @@ describe('Phase 0 - Geld und Determinismus', () => {
   });
 
   it('ist aus demselben Seed reproduzierbar', () => {
-    const a = new Prng(7);
-    const b = new Prng(7);
+    const seed = randomSeed();
+    const a = new Prng(seed);
+    const b = new Prng(seed);
     expect([a.nextUint32(), a.nextUint32()]).toEqual([b.nextUint32(), b.nextUint32()]);
   });
 
@@ -61,7 +63,7 @@ describe('Phase 1 - eine autoritative Weltzeit', () => {
   it('zaehlt Tick und Tag genau einmal an der Tagesgrenze', () => {
     const world = createWorld('SMALL');
     const ledger = new Ledger();
-    const prng = new Prng(1);
+    const prng = new Prng(randomSeed());
     const startDay = world.day;
     for (let tick = 0; tick < TICKS_PER_DAY - 1; tick += 1) tickWorld(world, ledger, prng);
     expect(world.tick).toBe(TICKS_PER_DAY - 1);
