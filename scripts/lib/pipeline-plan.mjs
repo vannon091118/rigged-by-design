@@ -85,15 +85,58 @@ export const GATES = Object.freeze({
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy'];
 const DEV = [...LIGHT, 'affected'];
-const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'docs', 'tree', 'redundancy', 'assets', 'capabilities', 'tests'];
+// Quick ist die gemeinsame Basis fuer den Required-Set; Build kommt fuer CI
+// hinzu, Audit bleibt impact-/release-abhaengig.
+export const QUICK_GATES = Object.freeze([
+  'lint',
+  'check:loc',
+  'typecheck',
+  'test-quality',
+  'dead-code',
+  'docs',
+  'tree',
+  'redundancy',
+  'assets',
+  'capabilities',
+  'tests',
+]);
+export const REQUIRED_CI_GATES = Object.freeze([...QUICK_GATES, 'build']);
+export const LIGHT_GATES = Object.freeze(LIGHT);
+export const CI_STATES = Object.freeze([
+  'PR',
+  'MAIN',
+  'MANUAL',
+  'LIGHT',
+  'NOOP',
+  'PR_HANDOFF',
+  'UNKNOWN',
+]);
+/** Die Gates, die ein Zustand verlangt; `null` fuer einen unbekannten Zustand. */
+export function gatesForState(state) {
+  switch (String(state ?? '').toUpperCase()) {
+    case 'PR':
+    case 'MAIN':
+    case 'MANUAL':
+      return [...REQUIRED_CI_GATES];
+    case 'UNKNOWN':
+      return [...REQUIRED_CI_GATES, 'audit'];
+    case 'LIGHT':
+      return [...LIGHT_GATES];
+    case 'NOOP':
+    case 'PR_HANDOFF':
+      return [];
+    default:
+      return null;
+  }
+}
 
 export const PROFILE_GATES = Object.freeze({
-  light: Object.freeze(LIGHT),
+  light: LIGHT_GATES,
   dev: Object.freeze(DEV),
-  quick: Object.freeze(QUICK),
-  // Voll und Release pruefen identisch; nur `verify:release` erzwingt pnpm audit zusaetzlich per Env.
-  full: Object.freeze([...QUICK, 'audit', 'build']),
-  release: Object.freeze([...QUICK, 'audit', 'build']),
+  quick: QUICK_GATES,
+  // Voll und Release pruefen identisch; Release erzwingt Audit zusaetzlich per Env.
+  full: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
+  release: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
 });
 
 export function isProfile(value) {
@@ -105,6 +148,11 @@ export function planGates(profile) {
   const key = normalizeProfile(profile);
   if (!PROFILES.includes(key)) return null;
   return [...PROFILE_GATES[key]];
+}
+
+/** Ein Zustandsname oder `null`, nie ein stiller Fallback auf ein Profil. */
+export function isCIState(value) {
+  return CI_STATES.includes(String(value ?? '').toUpperCase());
 }
 
 /** `--fix` ist der einzige Schalter, der den Arbeitsbaum schreiben darf. */

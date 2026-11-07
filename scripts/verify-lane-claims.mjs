@@ -20,9 +20,10 @@ import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
   selectClaim,
+  botClaim,
   auditRegisterAgainstBase,
 } from './lib/lane-claims.mjs';
-import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -77,7 +78,9 @@ const claims = allClaims.filter((c) => c.status === 'open');
 // Ein gemergter Claim gilt fuer seinen eigenen Branch weiter: so landet der
 // Register-Nachtrag auf dem Branch der zuletzt gemergten Lane, ohne dass ein
 // neuer offener Claim mit bereits gemergtem PR entsteht.
-const claim = selectClaim(allClaims, branch);
+const laneClaim = selectClaim(allClaims, branch);
+const claim = laneClaim ?? botClaim(branch);
+const bot = laneClaim === null && claim !== null;
 
 /**
  * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz mit dem
@@ -90,18 +93,18 @@ if (branch === 'main') {
 }
 
 if (!claim) {
-  console.error(`[ERR-4019] verify-lane-claims: Kein Lane-Claim für Branch '${branch}' in .lane-claims/claims.json`);
-  console.error('  Erst einen Claim registrieren (scripts/lib/lane-claims.mjs, AGENTS.md § Governance / Lanes).');
+  console.error(`[ERR-4019] verify-lane-claims: Kein Lane-Claim für Branch '${branch}' in .lane-claims/`);
+  console.error('  Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).');
   process.exit(1);
 }
 
 /** Feste Owner: eine Lane ohne benannten Owner ist keine Lane. */
-if (!OWNERS.includes(claim.owner)) {
+if (!bot && !OWNERS.includes(claim.owner)) {
   console.error(`[ERR-4019] verify-lane-claims: Owner '${claim.owner}' ist nicht im festen Roster (${OWNERS.join(', ')}).`);
   process.exit(1);
 }
 
-if (!BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
+if (!bot && !BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
   console.error(`[ERR-4019] verify-lane-claims: Branch '${branch}' folgt nicht dem Schema lane/<domäne>/<task>.`);
   process.exit(1);
 }
@@ -114,7 +117,7 @@ if (claim.status === 'merged') {
 function firstTouchCommit(range) {
   try {
     return (
-      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims/claims.json'], {
+      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims'], {
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'ignore'],
       })
@@ -128,14 +131,31 @@ function firstTouchCommit(range) {
 
 /** Registerstand an einer Ref; `null` heisst: nicht lesbar (fail-closed). */
 function registerAt(ref) {
+  const entries = [];
   try {
     const data = JSON.parse(
       execFileSync('git', ['show', `${ref}:.lane-claims/claims.json`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
     );
-    return Array.isArray(data) ? data : null;
+    if (!Array.isArray(data)) return null;
+    entries.push(...data);
   } catch {
-    return null;
+    // Kein Legacy-Register an dieser Ref: Claim-Dateien koennen trotzdem existieren.
   }
+  try {
+    const names = execFileSync('git', ['ls-tree', '-r', '--name-only', ref, '--', '.lane-claims/claims'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).split(/\r?\n/).filter((name) => name.endsWith('.json'));
+    for (const name of names) {
+      const data = JSON.parse(
+        execFileSync('git', ['show', `${ref}:${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
+      );
+      entries.push(...(Array.isArray(data) ? data : [data]));
+    }
+  } catch {
+    // Kein Claim-Verzeichnis an dieser Ref.
+  }
+  return entries.length > 0 ? entries : null;
 }
 
 /**
@@ -154,7 +174,8 @@ if (CI) {
   const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
   const firstRegister = firstTouch ? registerAt(firstTouch) : null;
   const audit = auditRegisterAgainstBase({
-    baseClaims: firstRegister ?? baseRegister,
+    baseClaims: baseRegister,
+    registrationClaims: firstRegister ?? baseRegister,
     nextClaims: allClaims.map((entry) => entry.toJSON()),
     branch,
   });
@@ -264,9 +285,26 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
+/** Remote-Kopf: unterscheidet einen geloeschten von einem nur nicht ausgecheckten Branch. */
+function remoteHead(branch) {
+  try {
+    const out = git(['ls-remote', '--heads', 'origin', branch]);
+    return { known: true, sha: out.split(/\s+/)[0] || null };
+  } catch {
+    return { known: false, sha: null };
+  }
+}
+
 /** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
 const mergedIndex = mergedPullRequestIndex();
-const collisions = findCollisions(claim).filter((collision) => {
+const baseTip = (() => {
+  try {
+    return git(['rev-parse', BASE_REF]);
+  } catch {
+    return null;
+  }
+})();
+const collisions = bot ? [] : findCollisions(claim).filter((collision) => {
   // Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
   // sondern ein veralteter Eintrag. `decideClaim` kennt beide Belege: den
   // gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
@@ -274,13 +312,28 @@ const collisions = findCollisions(claim).filter((collision) => {
   // bleibt es fail-closed bei der Kollision.
   const other = claims.find((entry) => entry.id === collision.lane);
   if (!other) return true;
+  const pr = mergedIndex?.get(other.branch) ?? null;
   const local = localMergeEvidence({ branch: other.branch });
+  const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
+  const branchHead = local.headSha ?? remote.sha;
+  const branchExists = Boolean(branchHead);
+  const branchAtBase = local.atBase || Boolean(remote.sha && baseTip && remote.sha === baseTip);
+  // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
+  // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
+  const absenceKnown = !branchExists && remote.known;
+  const mergedOnMain = Boolean(
+    pr &&
+      (branchExists ? branchAtBase : absenceKnown) &&
+      commitOnMain({ sha: pr.mergeCommit ?? pr.headRefOid, baseRef: BASE_REF }),
+  );
   const evidence = decideClaim({
-    branchExists: true,
+    branchExists,
+    branchAtBase,
     branchHeadOnMain: local.headOnMain,
     branchTreeOnMain: local.treeOnMain,
-    headSha: local.headSha,
-    mergedPr: mergedIndex?.get(other.branch) ?? null,
+    headSha: branchHead,
+    mergedPr: pr,
+    mergedOnMain,
   });
   if (evidence.status === 'merged') {
     console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);

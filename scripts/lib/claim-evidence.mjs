@@ -6,8 +6,9 @@
  * genau diesen Branch existiert, der Branch-Kopf auf `main` liegt oder der
  * Lane-Baum mit einem Commit auf `main` identisch ist. Der dritte Fall ist der
  * Normalfall eines Squash-Merges: der Branch ist danach geloescht, sein Inhalt
- * steht als ein Commit auf `main`. Fehlt jeder Nachweis, bleibt der Claim
- * unveraendert - fail-closed statt geraten.
+ * steht als ein Commit auf `main`. Ein gemergter PR belegt den Claim auch bei
+ * geloeschtem Branch, wenn sein Merge-Commit auf `main` liegt; ein aktiver
+ * Branch mit eigenem, nicht gemergtem Kopf bleibt fail-closed.
  */
 import { execFileSync } from 'node:child_process';
 
@@ -70,12 +71,26 @@ function treeMatch(sha, baseRef, git) {
 }
 
 /**
+ * Liegt der Commit auf `main`? Ein Merge-Commit ist dort selbst dann, wenn er
+ * exakt der Basis-Kopf ist. Fuer Squash-Merges genuegt ein baumgleicher Commit.
+ */
+export function commitOnMain({ sha, baseRef = 'origin/main', git = defaultGit } = {}) {
+  if (!FULL_SHA.test(String(sha ?? ''))) return false;
+  try {
+    if (git(['rev-parse', baseRef]) === sha) return true;
+  } catch {
+    // Ohne Basis entscheidet der Vorfahr- oder Baum-Beleg.
+  }
+  return isAncestor(sha, baseRef, git) || Boolean(treeMatch(sha, baseRef, git));
+}
+
+/**
  * Lokale Evidenz zu einem Branch: Kopf, Kopf auf `main`, baumgleicher Commit
  * auf `main`. Braucht weder `gh` noch Netz, nur die lokale Historie.
  */
 export function localMergeEvidence({ branch, baseRef = 'origin/main', git = defaultGit } = {}) {
   const headSha = localHead(branch, git);
-  if (!headSha) return { headSha: null, headOnMain: false, treeOnMain: null };
+  if (!headSha) return { headSha: null, headOnMain: false, treeOnMain: null, atBase: false };
   // Ein frisch angelegter Branch steht auf der Basis: kein eigener Commit,
   // kein Merge. Ohne diese Grenze gaelte jede neue Lane sofort als gemergt,
   // weil Kopf und Basis identisch sind.
@@ -85,11 +100,12 @@ export function localMergeEvidence({ branch, baseRef = 'origin/main', git = defa
   } catch {
     // Ohne Basis bleibt die Gleichheit ungeprueft; der Baum-Beleg entscheidet.
   }
-  if (baseTip && headSha === baseTip) return { headSha, headOnMain: false, treeOnMain: null };
+  if (baseTip && headSha === baseTip) return { headSha, headOnMain: false, treeOnMain: null, atBase: true };
   return {
     headSha,
     headOnMain: isAncestor(headSha, baseRef, git),
     treeOnMain: treeMatch(headSha, baseRef, git),
+    atBase: false,
   };
 }
 
@@ -99,10 +115,12 @@ export function localMergeEvidence({ branch, baseRef = 'origin/main', git = defa
  */
 export function decideClaim({
   branchExists = false,
+  branchAtBase = false,
   branchHeadOnMain = false,
   branchTreeOnMain = null,
   headSha = null,
   mergedPr = null,
+  mergedOnMain = false,
 } = {}) {
   // Der PR-Beleg braucht die Identitaet des Heads, nicht nur den Branch-Namen:
   // Ein wiederverwendeter Branch darf nicht den Merge eines alten PRs erben.
@@ -117,6 +135,17 @@ export function decideClaim({
       status: 'merged',
       evidence: 'merged-pr',
       why: `PR #${mergedPr.number} ist gemergt${sha ? ` (${String(sha).slice(0, 7)})` : ''}`,
+    };
+  }
+  // Ein geloeschter Branch oder ein auf die Basis zurueckgesetzter Branch hat
+  // keinen eigenen Kopf mehr. Der gemergte PR plus Merge-Commit auf `main` ist
+  // dann der Beleg; ein aktiver Branch mit eigenem Kopf faellt nicht hierher.
+  if (mergedPr?.number && mergedOnMain && (!branchExists || branchAtBase)) {
+    const sha = mergedPr.mergeCommit ?? mergedPr.mergeCommitSha ?? '';
+    return {
+      status: 'merged',
+      evidence: 'merged-pr',
+      why: `PR #${mergedPr.number} ist gemergt${sha ? ` (${String(sha).slice(0, 7)})` : ''}; Branch ${branchExists ? 'steht auf der Basis' : 'ist geloescht'}`,
     };
   }
   if (branchExists && branchHeadOnMain) {

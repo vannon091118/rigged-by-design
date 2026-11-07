@@ -18,8 +18,10 @@ import {
   buildCompiledRegistry,
   renderRegistry,
   renderRuntimeRegistry,
+  renderSlotMap,
   validateCompiledRegistry,
   validateRuntimeRegistry,
+  validateSlotMap,
 } from '../../../../scripts/lib/narrative-compiler.mjs';
 import { loadNarrativeContent } from '../../../../scripts/lib/narrative-content.mjs';
 
@@ -157,5 +159,14 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     const runtimeDrift = `${report.runtimeRegistryText}// drift\n`;
     expect(messages(validateRuntimeRegistry(runtimeDrift, report.compiled)))
       .toContain('byte-identisch');
+  });
+
+  it('akzeptiert CRLF-Auscheckungen, ohne echte Formatabweichungen zu verdecken', () => {
+    const crlf = (text: string) => text.replace(/\n/g, '\r\n');
+    expect(messages(validateCompiledRegistry(report.registry, report.compiled, crlf(report.registryText)))).toBe('');
+    expect(messages(validateRuntimeRegistry(crlf(report.runtimeRegistryText), report.compiled))).toBe('');
+    expect(messages(validateSlotMap(crlf(renderSlotMap(report.vocabulary)), report.vocabulary))).toBe('');
+    const realDrift = crlf(report.registryText).replace('"version": 2', '"version":  2');
+    expect(messages(validateCompiledRegistry(report.registry, report.compiled, realDrift))).toContain('byte-identisch');
   });
 });

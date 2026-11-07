@@ -322,7 +322,7 @@ function resolveMetaConflicts() {
 }
 
 /** Rot: Stand auf die Integrationsbranch legen; ein Code-Konflikt wird nicht erzwungen. */
-function integrate(name, attempt = 0) {
+function integrate(name) {
   const number = openPr(name);
   let merged = git(['merge', '--no-ff', `origin/${name}`, '-m', `Integration: ${subject(`origin/${name}`)}`]);
   if (merged === null) {
@@ -345,9 +345,9 @@ function integrate(name, attempt = 0) {
   // Rueckstand: neu aufsetzen und erneut mergen. Idempotent, weil ein bereits
   // enthaltener Branch nur "Already up to date" meldet.
   git(['fetch', 'origin', `+refs/heads/${INTEGRATION}:refs/remotes/origin/${INTEGRATION}`]);
-  git(['reset', '--hard', `origin/${INTEGRATION}`]);
-  if (attempt < 2) integrate(name, attempt + 1);
-  else warn(`${name} liess sich nach drei Versuchen nicht auf ${INTEGRATION} legen`);
+  // Kein Reset auf den Remote-Stand: er wuerde fremde Aenderungen verwerfen.
+  warn(`${name}: Rueckstand nicht erzwungen; Integrationsbranch bleibt unveraendert`);
+
 }
 
 function promoteRed() {

@@ -3,14 +3,13 @@
  * @error-code: ERR-4019
  *
  * Der echte `pretask`-Start in temporaeren Git-Repos. Die Isolation-Hilfe
- * liefert den Fehlercode; die Fixtures pruefen die neuen Startblocker:
- * schmutziger Baum, offenes gate-failure-Issue und fehlender Impact-Plan.
+ * liefert den Fehlercode; die Fixtures pruefen die Startblocker.
  */
 import { spawnSync } from 'node:child_process';
-import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { delimiter, join, resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { join, resolve } from 'node:path';
+import { describe, expect, it as vitestIt } from 'vitest';
 import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
 
 interface PretaskPayload {
@@ -18,6 +17,9 @@ interface PretaskPayload {
   readonly isolation: { readonly required: boolean; readonly isWorktree: boolean; readonly reasons: readonly string[] };
   readonly blockers: readonly string[];
 }
+
+// Git-Worktrees brauchen auf Windows gelegentlich laenger als das Default-Limit.
+const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 15_000); };
 
 const git = (cwd: string, args: readonly string[]): string => {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
@@ -37,44 +39,56 @@ const fixture = (parent: string, name: string): string => {
   return dir;
 };
 
-const writeClaim = (dir: string, branch: string, allowlist: readonly string[]): void => {
+const writeClaim = (
+  dir: string,
+  branch: string,
+  allowlist: readonly string[],
+  dependencies: readonly string[] = [],
+): void => {
   mkdirSync(join(dir, '.lane-claims'), { recursive: true });
   writeFileSync(
     join(dir, '.lane-claims', 'claims.json'),
-    `${JSON.stringify([
-      {
-        id: 'lane/test/fixture',
-        owner: 'Governance-Owner',
-        branch,
-        baseSha: '0'.repeat(40),
-        pathAllowlist: allowlist,
-        contracts: [],
-        dependencies: [],
-        gateProfile: 'light',
-        status: 'open',
-        createdAt: '0'.repeat(40),
-      },
-    ], null, 2)}\n`,
+    `${JSON.stringify([{
+      id: 'lane/test/fixture',
+      owner: 'Governance-Owner',
+      branch,
+      baseSha: '0'.repeat(40),
+      task: 'Fixture-Aufgabe',
+      pathAllowlist: allowlist,
+      contracts: [],
+      dependencies,
+      gateProfile: 'light',
+      status: 'open',
+      createdAt: '0'.repeat(40),
+    }], null, 2)}\n`,
   );
 };
 
 const writeContextStub = (dir: string): void => {
   mkdirSync(join(dir, 'scripts'), { recursive: true });
-  writeFileSync(join(dir, 'scripts', 'agent-context.mjs'), "console.log('context fixture');\n");
+  writeFileSync(
+    join(dir, 'scripts', 'agent-context.mjs'),
+    "console.log(JSON.stringify({ systems: [], tests: { runAll: false, selected: [], fast: [], long: [] }, gates: [] }));\n",
+  );
 };
 
-/** Ein GH-Stub macht den Issue-Check ohne Login testbar. */
-const writeFakeGh = (parent: string): string => {
+/** Ein Node-GH-Stub macht den Issue-Check auf jeder Plattform testbar. */
+const writeFakeGh = (
+  parent: string,
+  labels: readonly string[] = ['scope:lane:lane/test/issue'],
+  body = '',
+): { script: string } => {
   const bin = join(parent, 'bin');
   mkdirSync(bin, { recursive: true });
-  const file = join(bin, 'gh');
-  writeFileSync(file, `#!/usr/bin/env node
-const args = process.argv.slice(2);
+  const script = join(bin, 'gh-fixture.mjs');
+  writeFileSync(script, `const args = process.argv.slice(2);
 const issue = process.env.FAKE_GH_OPEN === '1' && args.includes('gate-failure');
-console.log(JSON.stringify(issue ? [{ number: 99, title: 'fixture gate', url: 'https://example.invalid/99', labels: [] }] : []));
+console.log(JSON.stringify(issue ? [{ number: 99, title: 'fixture gate', url: 'https://example.invalid/99', body: ${JSON.stringify(body)}, labels: ${JSON.stringify(labels.map((name) => ({ name })))} }] : []));
 `);
+  const file = join(bin, 'gh');
+  writeFileSync(file, `#!/usr/bin/env node\n${readFileSync(script, 'utf8')}`);
   chmodSync(file, 0o755);
-  return bin;
+  return { script };
 };
 
 const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv = {}) =>
@@ -84,10 +98,15 @@ const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv
     env: { ...process.env, RBD_ROOT: cwd, ...env },
   });
 
-const cleanRepo = (parent: string, name: string, branch: string): string => {
+const cleanRepo = (
+  parent: string,
+  name: string,
+  branch: string,
+  dependencies: readonly string[] = [],
+): string => {
   const repo = fixture(parent, name);
   git(repo, ['checkout', '-q', '-b', branch]);
-  writeClaim(repo, branch, ['README.md']);
+  writeClaim(repo, branch, ['README.md'], dependencies);
   writeContextStub(repo);
   git(repo, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
   git(repo, ['commit', '-q', '-m', 'pretask fixture']);
@@ -108,7 +127,11 @@ describe('pretask start blockers', () => {
       const worktree = join(parent, 'dirty-worktree');
       git(main, ['worktree', 'add', '-q', '-b', 'lane/test/dirty', worktree, 'HEAD']);
       writeFileSync(join(worktree, 'dirty.ts'), 'export const dirty = 1;\n');
-      const result = runPretask(worktree, ['--json']);
+      const fake = writeFakeGh(parent);
+      const result = runPretask(worktree, ['--json'], {
+        RBD_GH_BIN: process.execPath,
+        RBD_GH_SCRIPT: fake.script,
+      });
       expect(result.status).toBe(1);
       expect(payloadOf(result.stdout).blockers.join('\n')).toContain('Arbeitsbaum nicht leer');
       expect(payloadOf(result.stdout).blockers.join('\n')).toContain(ISOLATION_CODE);
@@ -121,9 +144,10 @@ describe('pretask start blockers', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-issue-'));
     try {
       const repo = cleanRepo(parent, 'repo', 'lane/test/issue');
-      const bin = writeFakeGh(parent);
+      const fake = writeFakeGh(parent);
       const result = runPretask(repo, ['--json'], {
-        PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
+        RBD_GH_BIN: process.execPath,
+        RBD_GH_SCRIPT: fake.script,
         FAKE_GH_OPEN: '1',
       });
       expect(result.status).toBe(1);
@@ -141,9 +165,10 @@ describe('pretask start blockers', () => {
       writeClaim(repo, 'lane/test/context', ['README.md']);
       git(repo, ['add', '.lane-claims/claims.json']);
       git(repo, ['commit', '-q', '-m', 'claim without context']);
-      const bin = writeFakeGh(parent);
+      const fake = writeFakeGh(parent);
       const result = runPretask(repo, ['--json'], {
-        PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
+        RBD_GH_BIN: process.execPath,
+        RBD_GH_SCRIPT: fake.script,
       });
       expect(result.status).toBe(1);
       expect(payloadOf(result.stdout).blockers.join('\n')).toContain('Impact-Plan fehlt');
@@ -156,9 +181,10 @@ describe('pretask start blockers', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-shared-lane-'));
     try {
       const repo = cleanRepo(parent, 'repo', 'lane/test/shared');
-      const bin = writeFakeGh(parent);
+      const fake = writeFakeGh(parent);
       const result = runPretask(repo, ['--json'], {
-        PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
+        RBD_GH_BIN: process.execPath,
+        RBD_GH_SCRIPT: fake.script,
       });
       expect(result.status).toBe(1);
       const payload = payloadOf(result.stdout);

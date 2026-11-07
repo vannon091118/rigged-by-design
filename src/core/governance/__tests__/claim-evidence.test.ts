@@ -8,7 +8,7 @@
  * auf `main` macht den Claim `merged`.
  */
 import { describe, expect, it } from 'vitest';
-import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from '../../../../scripts/lib/claim-evidence.mjs';
+import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from '../../../../scripts/lib/claim-evidence.mjs';
 
 /** Git-Aufrufe als Tabelle: der Test braucht kein Repository, nur Antworten. */
 function fakeGit(answers: Record<string, string | Error>) {
@@ -57,6 +57,26 @@ describe('claim-evidence', () => {
     expect(result.evidence).toBe('none');
   });
 
+  it('belegt einen geloeschten Branch ueber den gemergten PR mit Merge-Commit auf main', () => {
+    const result = decideClaim({
+      branchExists: false,
+      mergedPr: { number: 242, headRefOid: 'e'.repeat(40), mergeCommit: 'a'.repeat(40) },
+      mergedOnMain: true,
+    });
+    expect({ status: result.status, evidence: result.evidence }).toEqual({ status: 'merged', evidence: 'merged-pr' });
+  });
+
+  it('laesst einen aktiven Branch trotz altem gemergtem PR nicht merged werden', () => {
+    const result = decideClaim({
+      branchExists: true,
+      branchAtBase: false,
+      headSha: 'c'.repeat(40),
+      mergedPr: { number: 242, headRefOid: 'e'.repeat(40), mergeCommit: 'a'.repeat(40) },
+      mergedOnMain: true,
+    });
+    expect(result.status).toBeNull();
+  });
+
   it('erkennt einen Branch-Kopf auf main als Beleg', () => {
     const result = decideClaim({ branchExists: true, branchHeadOnMain: true });
     expect({ status: result.status, evidence: result.evidence }).toEqual({ status: 'merged', evidence: 'branch-head-on-main' });
@@ -78,12 +98,21 @@ describe('claim-evidence', () => {
       headSha: 'head12',
       headOnMain: false,
       treeOnMain: 'a490d4a',
+      atBase: false,
     });
   });
 
   it('meldet ohne lokalen Branch keinen Baum-Beleg', () => {
     const local = localMergeEvidence({ branch: 'lane/governance/12-slice-b-diagnostics', git: fakeGit({}) });
     expect({ headSha: local.headSha, treeOnMain: local.treeOnMain }).toEqual({ headSha: null, treeOnMain: null });
+  });
+
+  it('belegt einen Commit auf main auch ohne Branch', () => {
+    const git = fakeGit({
+      'rev-parse origin/main': 'c'.repeat(40),
+      [`merge-base --is-ancestor ${'b'.repeat(40)} origin/main`]: '',
+    });
+    expect(commitOnMain({ sha: 'b'.repeat(40), git })).toBe(true);
   });
 
   it('filtert gemergte PRs nach main, eigenem Repo und vollem Kopf-SHA', () => {

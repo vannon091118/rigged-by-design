@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.182",
+  "version": "0.3.183",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -17,6 +17,7 @@
     "agent:context": "node scripts/agent-context.mjs",
     "agent:feedback": "node scripts/agent-feedback.mjs",
     "agent:pretask": "node scripts/pretask.mjs",
+    "claim:register": "node scripts/claim-register.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",
@@ -63,7 +64,10 @@
     "android:apk": "node scripts/prepare-android.mjs",
     "android:apk:release": "node scripts/prepare-android.mjs --release",
     "turn:finish": "node scripts/turn-push.mjs",
-    "turn:finish:full": "node scripts/turn-push.mjs --profile=full"
+    "turn:finish:full": "node scripts/turn-push.mjs --profile=full",
+    "task:pause": "node scripts/task-state.mjs pause",
+    "task:status": "node scripts/task-state.mjs status",
+    "task:complete": "node scripts/task-state.mjs complete"
   },
   "dependencies": {
     "pixi.js": "^8.6.6",

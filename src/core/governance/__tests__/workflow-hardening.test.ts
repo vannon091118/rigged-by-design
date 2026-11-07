@@ -22,10 +22,12 @@ interface Step {
 
 interface Job {
   readonly uses?: string;
+  readonly outputs?: Readonly<Record<string, string>>;
   readonly steps?: readonly Step[];
 }
 
 interface Workflow {
+  readonly permissions?: Readonly<Record<string, string>>;
   readonly on?: {
     readonly workflow_dispatch?: {
       readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
@@ -143,10 +145,29 @@ describe('workflow hardening', () => {
     expect(run?.env?.RBD_BALANCE).toBe('1');
   });
 
+  it('haelt den Pflichtstatus in genau einem Workflow', () => {
+    // `Fail-Closed Gates` ist der geschuetzte Statusname aus Ebene B. Trüge ihn
+    // ein zweiter Workflow, gaebe es zwei Wahrheiten fuer denselben Status und
+    // ein gruener Lauf koennte den anderen verdecken.
+    const owners: string[] = [];
+    for (const file of workflowFiles()) {
+      for (const [id, job] of Object.entries(workflow(file).jobs ?? {})) {
+        if ((job as { name?: string } | null)?.name === 'Fail-Closed Gates') owners.push(`${file}:${id}`);
+      }
+    }
+    expect(owners).toEqual(['ci-verify.yml:verify']);
+  });
+
   it('pflegt Action-Pins per Dependabot', () => {
     const text = readFileSync(resolve(process.cwd(), '.github', 'dependabot.yml'), 'utf8');
     expect(text).toContain('package-ecosystem: "github-actions"');
     expect(text).toContain('interval: "weekly"');
+  });
+
+  it('gibt Auto-Resolve das Schreibrecht fuer Wiederholungen', () => {
+    const auto = workflow('auto-resolve.yml');
+    expect(auto.permissions?.issues).toBe('write');
+    expect(auto.permissions?.actions).toBe('write');
   });
 
   it('validiert die Langlauf-Eingaben vor dem Dispatch', () => {
@@ -158,10 +179,50 @@ describe('workflow hardening', () => {
     expect(bad.stderr).toContain('soak-ticks');
   });
 
-  it('haelt die Testlinie in AGENTS.md eindeutig', () => {
+  it('kompatibilisiert Plan-Metadaten mit der Basis-Kontrollebene', () => {
+    const ci = workflow('ci-verify.yml');
+    const plan = ci.jobs?.plan;
+    const compat = plan?.steps?.find((step) => step.name === 'Plan-Metadaten kompatibilisieren');
+    expect(compat?.run).toContain('state=PR');
+    expect(compat?.run).toContain('required="$gates"');
+    expect(plan?.outputs?.state).toContain('steps.compat.outputs.state');
+    expect(plan?.outputs?.run).toContain('steps.compat.outputs.run');
+    expect(plan?.outputs?.required).toContain('steps.compat.outputs.required');
+    const validate = plan?.steps?.find((step) => step.name === 'Matrix validieren');
+    expect(validate?.env?.STATE).toContain('steps.compat.outputs.state');
+    expect(validate?.env?.REQUIRED).toContain('steps.compat.outputs.required');
+  });
+
+  it('kompatibilisiert Lane-Dateien fuer eine aeltere Claim-Kontrollebene', () => {
+    const ci = workflow('ci-verify.yml');
+    const claims = ci.jobs?.claims;
+    const compat = claims?.steps?.find((step) => step.name === 'Claim-Register fuer die Basis kompatibilisieren');
+    expect(compat?.run).toContain('CLAIM_ENTRIES_DIR');
+    expect(compat?.run).toContain('readdirSync');
+    expect(compat?.run).toContain('.lane-claims/claims.json');
+    expect(compat?.run).toContain('merged-pr');
+    expect(compat?.run).toContain('ls-remote');
+    expect(compat?.env?.GH_TOKEN).toContain('github.token');
+  });
+
+  it('gibt der Claim-Pruefung den GH-Token fuer Merge-Evidenz', () => {
+    const ci = workflow('ci-verify.yml');
+    const claim = ci.jobs?.claims?.steps?.find(
+      (step) => step.name === 'Lane-Claims (Allowlist, Owner, Kollisionen)',
+    );
+    expect(claim?.env?.GH_TOKEN).toContain('github.token');
+  });
+
+  it('verweist fuer die Testlinie auf docs/TESTING.md', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
-    expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);
-    expect(agents).not.toContain('Keine lokalen Testlaeufe');
-    expect(agents).not.toContain('Nicht mitten im Turn: `pnpm run test`');
+    expect(agents).toContain('pnpm run agent:pretask --json');
+    expect(agents).toContain('docs/TESTING.md');
+    expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(0);
+    expect(agents.match(/^\d+\. \*\*/gm)?.length ?? 0).toBe(10);
+
+    const testing = readFileSync(resolve(process.cwd(), 'docs', 'TESTING.md'), 'utf8');
+    expect(testing.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);
+    expect(testing).not.toContain('Keine lokalen Testlaeufe');
+    expect(testing).not.toContain('Nicht mitten im Turn: `pnpm run test`');
   });
 });

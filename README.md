@@ -206,7 +206,10 @@ Die README erzählt die Welt mit einem Augenzwinkern. Wenn du nachschlagen wills
 | Speicherstände und Migration | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), `src/store/save.ts` |
 | Narrativ-Facts, Gäste-Erinnerungen und Content-Vertrag | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Geplante Arbeit | [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| Prüfungen und Eskalation | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`AGENTS.md`](AGENTS.md) |
+| Arbeitsablauf, Resume und Abschluss | [`docs/WORKFLOW.md`](docs/WORKFLOW.md) |
+| Prüfungen, Gates und Branch-Schutz | [`docs/CI.md`](docs/CI.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) |
+| Testlinie und Testmatrix | [`docs/TESTING.md`](docs/TESTING.md) |
+| Doku-Landkarte | [`docs/INDEX.md`](docs/INDEX.md) |
 | Fehlercodes | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Änderungsverlauf und Inventur | [`docs/CHANGELOG.md`](docs/CHANGELOG.md), [`docs/DEVTAGEBUCH.md`](docs/DEVTAGEBUCH.md), [`docs/INVENTORY.md`](docs/INVENTORY.md) |
 
@@ -247,7 +250,7 @@ pnpm run agent:context
 pnpm run agent:verify --profile=quick
 ```
 
-`pnpm run typecheck` prueft `src/` vollstaendig; die Konfiguration liegt in `src/Config/tsconfig.json`. `verify:quick` ist Entwicklungsfeedback mit zehn schnellen Gates. `verify:all` prüft alle zwölf Gates und ist vor Releases sowie bei Änderungen an Dependencies, Ledger, RNG oder Saves erforderlich. Lange Statistik- und Soak-Nachweise laufen in GitHub Actions; `pnpm run ci:long` stößt sie an und wartet auf das Ergebnis. Berichte liegen unter `.verify-cache/reports/`. Die [CI-Gate-Dokumentation](docs/ARCHITECTURE.md) erklärt, welche Prüfung zu welcher Änderung gehört.
+`pnpm run typecheck` prueft `src/` vollstaendig; die Konfiguration liegt in `src/Config/tsconfig.json`. `verify:quick` ist Entwicklungsfeedback mit elf schnellen Gates. `verify:all` prüft zwölf Required-Gates plus optionalem Audit (dreizehn Läufe) und ist vor Releases sowie bei Änderungen an Dependencies, Ledger, RNG oder Saves erforderlich. Lange Statistik- und Soak-Nachweise laufen in GitHub Actions; `pnpm run ci:long` stößt sie an und wartet auf das Ergebnis. Berichte liegen unter `.verify-cache/reports/`. Die [CI-Gate-Dokumentation](docs/CI.md) erklärt, welche Prüfung zu welcher Änderung gehört.
 
 Für den optionalen Android-Wrapper baut `pnpm run android:apk` eine Debug-APK; `pnpm run android:apk:release` legt eine nicht signierte Release-APK ab. Beide Varianten brauchen das Android-SDK.
 
@@ -279,7 +282,7 @@ Ein paar Verträge, die das Repo vor dem Casino-Frühstück schützt:
 - **Karten:** ein gezogener Schuh-Kartenstapel verliert die gezogene Karte; neu gemischt wird erst, wenn er leer ist.
 - **Narrativ:** Facts folgen tatsächlichen Übergängen; Journal und Narrativzustand bleiben getrennt. Texte entscheiden nie über Kosten oder Effekte.
 
-Die Details und Ausnahmen stehen in [`AGENTS.md`](AGENTS.md) und den jeweiligen Dokumentverträgen. Wenn eine Pointe und ein Invariant kollidieren, gewinnt das Invariant. Es hat bessere Tests.
+Die Details und Ausnahmen stehen im [`docs/INDEX.md`](docs/INDEX.md), in [`AGENTS.md`](AGENTS.md) und den jeweiligen Dokumentverträgen. Wenn eine Pointe und ein Invariant kollidieren, gewinnt das Invariant. Es hat bessere Tests.
 
 ![Die nächste Runde](docs/banners/roadmap.svg)
 
@@ -330,7 +333,7 @@ In den verlinkten Verträgen und im Code. Die README soll den Einstieg erleichte
 <details>
 <summary><strong>Kann ich helfen?</strong></summary>
 
-Ja. Lies zuerst `AGENTS.md`, prüfe den passenden Vertrag unter `docs/` und halte Änderungen in einem eigenen Branch. Nach Änderungen werden die sechs Pflichtdokumente im selben Commit aktualisiert. Für Narrative liefert jeder abgeschlossene Turn genau einen Beitrag unter `content/narrative/contributions/`.
+Ja. Lies zuerst `AGENTS.md`, prüfe den passenden Vertrag unter `docs/` und halte Änderungen in einem eigenen Branch. Nach Änderungen werden die zwölf Pflichtdokumente im selben Commit aktualisiert; die Landkarte steht in [`docs/INDEX.md`](docs/INDEX.md). Für Narrative liefert jeder abgeschlossene Turn genau einen Beitrag unter `content/narrative/contributions/`.
 </details>
 
 ## Ein ernster Absatz, ohne Neonrahmen

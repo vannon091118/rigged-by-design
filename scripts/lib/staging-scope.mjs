@@ -12,6 +12,8 @@ import { allowsPath } from './lane-claims.mjs';
 /** Arbeitsdateien des Turns, die nie Inhalt des Commits sind. */
 export const TURN_EXEMPT = Object.freeze(['.turn-notes.md']);
 
+const normalize = (raw) => String(raw ?? '').replaceAll('\\', '/').trim();
+
 /**
  * Teilt die geaenderten Pfade in erlaubt und fremd.
  *
@@ -22,10 +24,30 @@ export function scopeChanges({ changed, allowlist, exempt = TURN_EXEMPT }) {
   const allowed = [];
   const foreign = [];
   for (const raw of changed) {
-    const file = String(raw ?? '').replaceAll('\\', '/').trim();
+    const file = normalize(raw);
     if (!file || exempt.includes(file)) continue;
     if (allowsPath(allowlist, file)) allowed.push(file);
     else foreign.push(file);
   }
   return { allowed, foreign, ok: foreign.length === 0 };
+}
+
+/**
+ * Explizit uebergebene Pfade werden genauso streng geprueft wie geaenderte:
+ * Sie muessen im Claim liegen. Zusaetzlich fallen absolute Pfade und `..`
+ * heraus - ein Staging-Befehl darf den Arbeitsbaum nicht verlassen.
+ */
+export function explicitScope({ paths, allowlist, exempt = TURN_EXEMPT }) {
+  const allowed = [];
+  const foreign = [];
+  for (const raw of paths ?? []) {
+    const file = normalize(raw);
+    if (!file || exempt.includes(file)) continue;
+    const unsafe = file.startsWith('/')
+      || /^[a-zA-Z]:\//.test(file)
+      || file.split('/').includes('..');
+    if (unsafe || !allowsPath(allowlist, file)) foreign.push(file);
+    else allowed.push(file);
+  }
+  return { allowed: [...new Set(allowed)], foreign: [...new Set(foreign)], ok: foreign.length === 0 };
 }
