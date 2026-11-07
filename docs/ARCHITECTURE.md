@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 03:39 UTC -->
+<!-- rbd-doc: v0.3.152 | 2026-11-07 03:40 UTC -->
 
 ## README als Einstieg
 

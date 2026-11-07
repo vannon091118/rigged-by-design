@@ -64,13 +64,13 @@ describe('Contract: actionset v1.0', () => {
     expect(() => createAction('x', 'Label', 'icon', '', 1, true)).toThrow();
   });
 
+  const registered: Action[] = [];
   const provider: ActionProvider = {
-    _actions: [] as Action[],
     registerAction(action: Action) {
-      this._actions.push(action);
+      registered.push(action);
     },
     getActions(): readonly Action[] {
-      return [...this._actions];
+      return [...registered];
     },
   };
 
