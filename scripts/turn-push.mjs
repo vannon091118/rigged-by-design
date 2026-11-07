@@ -4,7 +4,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
-import { claimForBranch, isForbiddenForLanes } from './lib/lane-claims.mjs';
+import { claimForBranch } from './lib/lane-claims.mjs';
 import { scopeChanges } from './lib/staging-scope.mjs';
 import {
   classifyPaths,
@@ -48,35 +48,35 @@ const AFFECTED = args.includes('--affected');
 const paths = args.filter((value) => !value.startsWith('--'));
 console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + test:affected' : ''}`);
 
-// Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
+/** Geaenderte Pfade; bei einem Rename beide Seiten. */
+const changedPaths = () =>
+  git(['status', '--porcelain'])
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .flatMap((line) => line.slice(2).trim().split(' -> '))
+    .map((entry) => entry.trim().replace(/^"(.*)"$/, '$1'))
+    .filter(Boolean);
+
+// Kein globales `git add -A`: der Index bekommt genau die Pfade des Claims
+// plus die Versionsdateien. Fremde WIP eines parallelen Agenten bleibt im
+// Arbeitsbaum, auch wenn die Vorabpruefung sie nicht als fremd erkennt.
 const stage = () => {
-  if (paths.length > 0) git(['add', '--', ...paths]);
-  else git(['add', '-A']);
-  // Globale Sperrliste: keine Lane (und kein turn:finish ohne explizite Pfade)
-  // darf die acht Metadaten-Dateien committieren. Sie werden zentral im
-  // Merge-/Promote-Schritt gepflegt. Nach `git add -A` werden sie wieder
-  // aus dem Index entfernt, sofern nicht explizit als --paths übergeben.
-  if (paths.length === 0) {
-    const staged = git(['diff', '--cached', '--name-only']);
-    // Ein Claim, der einen Meta-Pfad ausdruecklich fuehrt, ist die Ausnahme:
-    // sonst koennte keine Governance-Lane ihre eigene Doku committen, obwohl
-    // AGENTS.md genau diesen Weg verlangt.
-    const claim = claimForBranch(currentBranch);
-    const forbidden = staged
-      .split(/\r?\n/)
-      .filter(Boolean)
-      .filter((file) => isForbiddenForLanes(file) && file !== 'package.json' && file !== 'pnpm-lock.yaml')
-      .filter((file) => !(claim && claim.allowsPath(file)));
-    if (forbidden.length > 0) {
-      git(['reset', '--', ...forbidden]);
-      console.log(`turn:finish: ${forbidden.length} Sperrlisten-Datei(en) vom Index entfernt: ${forbidden.join(', ')}`);
-    }
-    // package.json und pnpm-lock.yaml gehoeren zum turn:finish-Versions-Bump und
-    // werden zentral gepflegt; sie bleiben im Index.
-    if (forbidden.length === 0 || staged.split(/\r?\n/).filter(Boolean).some((f) => f === 'package.json' || f === 'pnpm-lock.yaml')) {
-      git(['add', '--', 'package.json', 'pnpm-lock.yaml']);
-    }
+  if (paths.length > 0) {
+    git(['add', '--', ...paths]);
+    return;
   }
+  const claim = claimForBranch(currentBranch);
+  if (!claim) {
+    fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; kein Staging ohne Allowlist`);
+    process.exit(1);
+  }
+  const scope = scopeChanges({ changed: changedPaths(), allowlist: claim.pathAllowlist });
+  if (!scope.ok) {
+    fail(1, 'ERR-4019', 'turn:finish', `Pfade ausserhalb des Claims: ${scope.foreign.slice(0, 8).join(', ')}`);
+    process.exit(1);
+  }
+  const list = [...new Set([...scope.allowed, 'package.json', 'pnpm-lock.yaml'])];
+  git(['add', '-A', '--', ...list]);
 };
 
 // Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.

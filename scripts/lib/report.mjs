@@ -1,9 +1,12 @@
 /** Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. */
 import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const ROOT = fileURLToPath(new URL('../..', import.meta.url));
+// Die CI faehrt die Pruefsteuerung aus einem separaten Basis-Checkout und
+// richtet sie ueber `RBD_ROOT` auf den PR-Baum: der Code der Pruefung und das
+// Pruefobjekt bleiben damit getrennt. Ohne die Variable gilt das eigene Repo.
+export const ROOT = process.env.RBD_ROOT ? resolve(process.env.RBD_ROOT) : fileURLToPath(new URL('../..', import.meta.url));
 
 /** Bekannte Codes kommen aus dem Register, nicht aus der Markdown-Tabelle. */
 import { catalogCodes } from './error-codes.mjs';

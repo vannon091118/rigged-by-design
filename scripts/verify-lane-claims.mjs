@@ -20,6 +20,7 @@ import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
   selectClaim,
+  auditRegisterAgainstBase,
 } from './lib/lane-claims.mjs';
 import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
@@ -107,6 +108,63 @@ if (!BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.sta
 
 if (claim.status === 'merged') {
   console.log(`verify-lane-claims: '${claim.id}' ist gemergt; der Branch fuehrt unter derselben Allowlist weiter.`);
+}
+
+/** Erster Commit im Bereich, der das Register beruehrt; leer heisst: keiner. */
+function firstTouchCommit(range) {
+  try {
+    return (
+      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims/claims.json'], {
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      })
+        .split(/\r?\n/)
+        .find(Boolean) ?? ''
+    );
+  } catch {
+    return '';
+  }
+}
+
+/** Registerstand an einer Ref; `null` heisst: nicht lesbar (fail-closed). */
+function registerAt(ref) {
+  try {
+    const data = JSON.parse(
+      execFileSync('git', ['show', `${ref}:.lane-claims/claims.json`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
+    );
+    return Array.isArray(data) ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Die Basis ist die vertrauenswuerdige Wahrheit fuer die Allowlist. Zusaetzlich
+ * zaehlt die erste Beruehrung des Registers im PR als Registrierung: sonst
+ * koennte eine Lane ihren Claim mit jedem Push weiter ausdehnen, weil die
+ * Basis den Branch noch gar nicht kennt. Eine Selbsterweiterung ist damit
+ * selbst dann sichtbar, wenn sie ueber mehrere Commits verteilt wird.
+ */
+if (CI) {
+  const baseRegister = registerAt(BASE_REF);
+  if (!baseRegister) {
+    console.error(`[ERR-4019] verify-lane-claims: Claim-Register der Basis '${BASE_REF}' nicht lesbar; ohne Basis keine Freigabe.`);
+    process.exit(1);
+  }
+  const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
+  const firstRegister = firstTouch ? registerAt(firstTouch) : null;
+  const audit = auditRegisterAgainstBase({
+    baseClaims: firstRegister ?? baseRegister,
+    nextClaims: allClaims.map((entry) => entry.toJSON()),
+    branch,
+  });
+  if (!audit.ok) {
+    console.error(`[ERR-4019] verify-lane-claims: Claim-Register gegen die Basis veraendert (${branch}):`);
+    for (const entry of audit.violations) console.error(`  - ${entry}`);
+    console.error('  Eine Lane erweitert weder ihre eigene Allowlist noch fremde Claims; Registerpflege ist Governance.');
+    process.exit(1);
+  }
+  console.log('verify-lane-claims: Register gegen die Basis geprueft (keine Selbsterweiterung).');
 }
 
 // Die acht Meta-Dateien kommen aus scripts/lib/lane-claims.mjs: eine Liste fuer

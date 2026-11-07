@@ -193,6 +193,26 @@ declare module '*/lane-claims.mjs' {
   }
   export function selectClaim(claims: readonly ClaimLike[], branch: string): ClaimLike | null;
   export function claimForBranch(branch: string): ClaimLike | null;
+  export interface ClaimRecord {
+    readonly id: string; readonly branch: string; readonly owner?: string; readonly status: string;
+    readonly pathAllowlist?: readonly string[]; readonly contracts?: readonly { readonly id: string; readonly mode: string }[];
+    readonly dependencies?: readonly string[]; readonly gateProfile?: string; readonly baseSha?: string;
+    readonly mergedEvidence?: string | null; readonly mergedSha?: string | null;
+  }
+  export interface ClaimAudit { readonly ok: boolean; readonly violations: readonly string[] }
+  export const CONTROL_PLANE: readonly string[];
+  export function isControlPlanePattern(pattern: string): boolean;
+  export function patternCoveredBy(pattern: string, allowlist: readonly string[]): boolean;
+  export function auditClaimChange(previous: ClaimRecord | null, next: ClaimRecord | null): ClaimAudit;
+  export function auditRegisterAgainstBase(input: { readonly baseClaims?: readonly ClaimRecord[]; readonly nextClaims?: readonly ClaimRecord[]; readonly branch?: string }): ClaimAudit;
+}
+
+declare module '*/promote-guard.mjs' {
+  export interface PromotionInput {
+    readonly event?: string; readonly repo?: string; readonly headRepo?: string; readonly branch?: string; readonly headSha?: string;
+    readonly pr?: { readonly state?: string; readonly isCrossRepository?: boolean; readonly headRefOid?: string; readonly baseRefName?: string } | null;
+  }
+  export function verifyPromotion(input?: PromotionInput): { ok: boolean; reason: string };
 }
 
 declare module '*/tree-changes.mjs' {

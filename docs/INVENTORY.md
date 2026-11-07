@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
+<!-- rbd-doc: v0.3.164 | 2026-11-07 10:00 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -492,10 +492,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1364 |
-| Gelistete Dateien | 1364 |
+| Getrackte Dateien | 1366 |
+| Gelistete Dateien | 1366 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (70), public (554), scripts (78), src (568) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (70), public (554), scripts (79), src (569) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -550,7 +550,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
 - `scripts/` — 47 Datei(en)
-- `scripts/lib/` — 31 Datei(en)
+- `scripts/lib/` — 32 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/contracts/` — 7 Datei(en)
@@ -562,7 +562,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 20 Datei(en)
+- `src/core/governance/__tests__/` — 21 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -605,18 +605,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/lane.md` — Markdown-Dokument — gelesen: 60 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 149 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 282 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 390 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 184 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 47 Zeilen
 - `.github/workflows/pr-watcher.yml` — name: PR Watcher — gelesen: 67 Zeilen
-- `.github/workflows/promote.yml` — name: Promote — gelesen: 63 Zeilen
+- `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 599 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 632 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 396 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 400 Zeilen
 - `README.md` — Rigged by Design — gelesen: 340 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -687,11 +687,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/turns/manifest.json` — { — gelesen: 265 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1794 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 866 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3200 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1799 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 874 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3210 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 300 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 304 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1349,18 +1349,19 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/escalation.mjs` — Eine Leiter fuer jeden Fehlschlag, in fester Reihenfolge: — gelesen: 79 Zeilen
 - `scripts/lib/gate-cache.mjs` — Inhalts-Hash-Cache: identischer Arbeitsbaum -> gruenes Gate wird nicht erneut gerechnet. — gelesen: 61 Zeilen
 - `scripts/lib/gate-diagnostics.mjs` — Mehrfach-Diagnose eines roten CI-Laufs. — gelesen: 120 Zeilen
-- `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 226 Zeilen
+- `scripts/lib/gate-runner.mjs` — Fuehrt unabhaengige Gates parallel aus, puffert ihre Ausgabe und nutzt den Inhalts-Cache. — gelesen: 231 Zeilen
 - `scripts/lib/identity.mjs` — Eine Identitaet fuer jeden Commit: unabhaengig von Runner, Sandbox und — gelesen: 8 Zeilen
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 125 Zeilen
-- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 316 Zeilen
+- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 435 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 266 Zeilen
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
 - `scripts/lib/narrative-macros.mjs` — NAR-10 compile-time macro parser and validator. — gelesen: 271 Zeilen
 - `scripts/lib/pipeline-plan.mjs` — Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert. — gelesen: 108 Zeilen
 - `scripts/lib/pipeline-stop.mjs` — Abbruchpfad der Pipeline: Signale beenden alle Gates und hinterlassen keine Waisen. — gelesen: 22 Zeilen
 - `scripts/lib/process-sweep.mjs` — Verwaiste Gate-Prozesse: PID plus Startzeit, PID-genaues Beenden, nie nach Namensmuster. — gelesen: 188 Zeilen
+- `scripts/lib/promote-guard.mjs` — Promotion-Guard: Ein Merge darf nur den Commit treffen, den die CI geprueft — gelesen: 44 Zeilen
 - `scripts/lib/release-escalation.mjs` — Eskalationsleiter fuer Umgebungsprobleme im Release. — gelesen: 56 Zeilen
-- `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 38 Zeilen
+- `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 41 Zeilen
 - `scripts/lib/staging-scope.mjs` — Staging-Umfang: `git add -A` ist nur zulaessig, wenn jede Aenderung im — gelesen: 31 Zeilen
 - `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
 - `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 96 Zeilen
@@ -1371,7 +1372,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/pr-watcher.mjs` — PR Watcher – erstellt Issues bei rotem Gate, Timeout oder fehlerhaftem PR-Body — gelesen: 402 Zeilen
 - `scripts/prepare-android.mjs` — Capacitor-Android: Huelle um den Vite-Build, getrennt nach Variante. — gelesen: 90 Zeilen
 - `scripts/pretask.mjs` — Pretask: der Start jedes Laufs. — gelesen: 80 Zeilen
-- `scripts/promote.mjs` — Promote: gruene PR-Staende mergen. Rot wird ein Issue, kein Dump auf — gelesen: 344 Zeilen
+- `scripts/promote.mjs` — Promote: gruene PR-Staende mergen. Rot wird ein Issue, kein Dump auf — gelesen: 424 Zeilen
 - `scripts/reconcile-claims.mjs` — Claim-Reconciliation: Claims muessen zum tatsaechlichen Remote-Zustand passen. — gelesen: 110 Zeilen
 - `scripts/release-impact.mjs` — Release-Relevanz: braucht dieser Stand wirklich ein APK? — gelesen: 70 Zeilen
 - `scripts/run-pipeline.mjs` — Fail-Closed-Pipeline in zwei getrennten Modi. — gelesen: 121 Zeilen
@@ -1386,7 +1387,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
-- `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 260 Zeilen
+- `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 318 Zeilen
 - `scripts/verify-narrative-content.mjs` — NAR-10/NAR-11 read-only content verification. — gelesen: 21 Zeilen
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
@@ -1486,14 +1487,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/gate-diagnostics.test.ts` — Ein roter Lauf kann mehrere unabhaengige Fehler enthalten. Diese Grenzen — gelesen: 83 Zeilen
 - `src/core/governance/__tests__/gate-runner.test.ts` — Ein haengendes Gate darf den Lauf nicht offen halten: Nach dem harten Limit — gelesen: 86 Zeilen
 - `src/core/governance/__tests__/impact.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
-- `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 28 Zeilen
+- `src/core/governance/__tests__/lane-claims.test.ts` — Ein Claim ist der Vertrag einer Lane, kein Token pro Pull Request. Nach dem — gelesen: 108 Zeilen
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 161 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 224 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 60 Zeilen
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
+- `src/core/governance/__tests__/promote-guard.test.ts` — Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus — gelesen: 50 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/scripts-libs-ci.d.ts` — Deklarationen fuer die CI-Diagnose- und Claim-Evidenz-Bibliotheken. — gelesen: 57 Zeilen
-- `src/core/governance/__tests__/scripts-libs.d.ts` — Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). — gelesen: 210 Zeilen
+- `src/core/governance/__tests__/scripts-libs.d.ts` — Deklarationen fuer die JS-Bibliotheken unter scripts/lib (kein allowJs im Projekt). — gelesen: 230 Zeilen
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 46 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 68 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen

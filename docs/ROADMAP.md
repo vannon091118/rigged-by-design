@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
+<!-- rbd-doc: v0.3.164 | 2026-11-07 10:00 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -172,7 +172,7 @@ nächster Schritt, Review-Bedingung.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Der Produktvertrag steht oben in diesem Dokument, das Casino darin als Start- und Testumgebung.
 
-- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`), Claim 14 ebenfalls (`merged`, `branch-tree-on-main`, `893317c`); damit steht auf `main` kein offener Claim mehr, dessen PR gemergt ist. Als Naechstes Slice C: SemVer-Policy aus dem Diff im Runner und impact-basierte Langlaeufe statt reinem `workflow_dispatch`; der Doku-Resolver fuer generierte Bereiche bleibt offen. Offen bleibt ausserdem: ein Claim ohne lokalen Branch und ohne `gh` ist unbelegt und bleibt fail-closed - der Agent mit Connector traegt den Beleg dann manuell nach.
+- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`), Claim 14 ebenfalls (`merged`, `branch-tree-on-main`, `893317c`); damit steht auf `main` kein offener Claim mehr, dessen PR gemergt ist. Seit 0.3.164 liegen die drei P0-Vertrauensgrenzen: Die CI faehrt ihre Steuerung aus dem Basis-Commit, `promote` mergt nur den per SHA geprueften Kopf, und das Claim-Register wird gegen Basis und erste Registrierung geprueft. Als Naechstes Slice C: SemVer-Policy aus dem Diff im Runner und impact-basierte Langlaeufe statt reinem `workflow_dispatch`; der Doku-Resolver fuer generierte Bereiche bleibt offen. Offen bleibt ausserdem: ein Claim ohne lokalen Branch und ohne `gh` ist unbelegt und bleibt fail-closed - der Agent mit Connector traegt den Beleg dann manuell nach.
 - Lokales Feedback und Staging-Scope stehen (Slice A): `agent:feedback` nennt aus dem echten Diff die betroffenen Tests und den naechsten sinnvollen Befehl, `turn-push.mjs` committet nur Pfade des eigenen Claims.
 - Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen. Der Merge-Text traegt die Pflichtsektionen: seit 0.3.140 haelt `docs/ARCHITECTURE.md` den `ERR-4006`-Fall des #163-Merges fest, Connector- und REST-Merges setzen `commit_message` mit dem PR-Body.
@@ -228,6 +228,10 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | --- | --- | --- |
 | Release-Plan im Runner | offen | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
 | Doku-Reconcile-Runner | offen | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
+| CI-Self-Repair | offen | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
+| Impact-gesteuerte Langlaeufe | offen | `long-checks.yml` startet nur per `workflow_dispatch`; RNG-, Ledger- und Economy-Aenderungen loesen Statistik, Soak oder Balance nicht automatisch aus. |
+| Worktree-Isolation | teilweise | `turn:finish` staged nur Claim-Pfade; `pretask` liest `git worktree list` noch nicht und erzwingt keinen eigenen Worktree je Agent. |
+| Workflow-Haertung | offen | `long-checks.yml` setzt `inputs.balance_days` noch in die Shell-Zeile; Actions sind ueber Major-Tags statt Commit-SHAs gepinnt. |
 | Issue-Resolver nach erneutem Gate | offen | `sweepGreenMain()` schliesst nur, wenn der gemeldete Commit auf `main` liegt. Naechster Schritt: Fingerprint plus erneut gruenes Gate auf dem neuen Stand, sonst Issue aktualisieren. |
 
 ### Spiel und Simulation

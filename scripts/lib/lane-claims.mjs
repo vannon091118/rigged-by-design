@@ -284,6 +284,125 @@ export function contractWriterConflicts(contractId) {
   return writers.length > 1 ? writers : null;
 }
 
+/**
+ * Kontrollebene: Pfade, die die Pruefung selbst steuern. Eine Lane, die diese
+ * Pfade ohne Governance-Domaene fuehrt, schreibt an ihrem eigenen Pruefer.
+ */
+export const CONTROL_PLANE = Object.freeze(['.github', 'scripts', 'src/Config']);
+
+/** Lane-Domaenen, die die Kontrollebene fuehren duerfen. */
+const CONTROL_PLANE_LANE = /^(?:lane\/(?:governance|ci)\/|gov\/)/;
+
+/** Ein Muster der Allowlist, das die Kontrollebene beruehrt. */
+export function isControlPlanePattern(pattern) {
+  const prefix = patternPrefix(pattern);
+  return CONTROL_PLANE.some((area) => prefix === area || prefix.startsWith(`${area}/`));
+}
+
+/**
+ * True, wenn ein Muster vollstaendig von der bisherigen Allowlist gedeckt ist.
+ * `scripts/` deckt `scripts/promote.mjs`; `scripts/promote.mjs` deckt kein
+ * neues `scripts/*`. Genau diese Richtung ist die Selbsterweiterung.
+ */
+export function patternCoveredBy(pattern, allowlist) {
+  const prefix = patternPrefix(pattern);
+  return allowlist.some((entry) => {
+    const base = patternPrefix(entry);
+    return base === prefix || prefix.startsWith(`${base}/`);
+  });
+}
+
+/**
+ * Vergleich eines Claims mit seinem Stand aus der vertrauenswuerdigen Basis.
+ * Erlaubt sind Pfade, die die Basis schon deckt, und Statuswechsel nach vorn;
+ * verboten sind neue Pfade, ein neuer Owner, ein neuer Branch und zusaetzliche
+ * Contract-Writer. `previous === null` heisst: der Claim ist neu.
+ */
+export function auditClaimChange(previous, next) {
+  const violations = [];
+  if (!next) return { ok: false, violations: ['Claim fehlt im neuen Register'] };
+  const label = next.id;
+  if (!previous) {
+    if (!CONTROL_PLANE_LANE.test(next.id) && (next.pathAllowlist ?? []).some(isControlPlanePattern)) {
+      violations.push(`${label}: Kontrollebene (.github/, scripts/, src/Config/) nur fuer Governance- oder CI-Lanes`);
+    }
+    return { ok: violations.length === 0, violations };
+  }
+  if (previous.owner !== next.owner) violations.push(`${label}: Owner gewechselt (${previous.owner} -> ${next.owner})`);
+  if (previous.status === 'open' && previous.branch !== next.branch) {
+    violations.push(`${label}: Branch gewechselt (${previous.branch} -> ${next.branch})`);
+  }
+  if (previous.status === 'merged' && next.status === 'open') {
+    violations.push(`${label}: gemergter Claim wieder geoeffnet`);
+  }
+  for (const pattern of next.pathAllowlist ?? []) {
+    if (!patternCoveredBy(pattern, previous.pathAllowlist ?? [])) {
+      violations.push(`${label}: Allowlist erweitert (${pattern})`);
+    }
+  }
+  const before = new Set((previous.contracts ?? []).filter((c) => c.mode === 'write').map((c) => c.id));
+  for (const contract of next.contracts ?? []) {
+    if (contract.mode === 'write' && !before.has(contract.id)) {
+      violations.push(`${label}: Contract-Writer '${contract.id}' hinzugefuegt`);
+    }
+  }
+  return { ok: violations.length === 0, violations };
+}
+
+/** Vergleichbare Form eines Claims ohne Klassenzugehoerigkeit. */
+const claimFingerprint = (claim) =>
+  JSON.stringify({
+    owner: claim.owner,
+    branch: claim.branch,
+    baseSha: claim.baseSha,
+    pathAllowlist: claim.pathAllowlist ?? [],
+    contracts: claim.contracts ?? [],
+    dependencies: claim.dependencies ?? [],
+    gateProfile: claim.gateProfile,
+    status: claim.status,
+    mergedEvidence: claim.mergedEvidence ?? null,
+    mergedSha: claim.mergedSha ?? null,
+  });
+
+/**
+ * Register gegen den Basisstand pruefen: die eigene Lane darf ihren Claim
+ * nicht erweitern, und eine Feature-Lane fasst fremde Claims nicht an. Ein
+ * neu angelegter Claim ist erlaubt, solange er nicht die Kontrollebene ohne
+ * Governance-Domaene fuehrt.
+ */
+export function auditRegisterAgainstBase({ baseClaims = [], nextClaims = [], branch } = {}) {
+  const violations = [];
+  const own = selectClaim(nextClaims, branch);
+  // Ohne eigenen Claim entscheidet die bestehende Claim-Pruefung; hier gibt es
+  // dann nichts gegenzupruefen.
+  if (!own) return { ok: true, violations };
+  const governance = CONTROL_PLANE_LANE.test(own.id);
+  const baseById = new Map(baseClaims.map((claim) => [claim.id, claim]));
+
+  for (const claim of nextClaims) {
+    const before = baseById.get(claim.id);
+    if (claim.id === own.id) {
+      violations.push(...auditClaimChange(before ?? null, claim).violations);
+      continue;
+    }
+    if (!before) {
+      if (!governance) violations.push(`${claim.id}: neuer fremder Claim in einer Feature-Lane`);
+      continue;
+    }
+    violations.push(...auditClaimChange(before, claim).violations);
+    if (!governance && claimFingerprint(before) !== claimFingerprint(claim)) {
+      violations.push(`${claim.id}: fremder Claim veraendert (nur Governance)`);
+    }
+  }
+
+  for (const before of baseClaims) {
+    if (!nextClaims.some((claim) => claim.id === before.id) && !governance) {
+      violations.push(`${before.id}: Claim aus dem Register entfernt (nur Governance)`);
+    }
+  }
+  return { ok: violations.length === 0, violations };
+}
+
 /** Gibt eine maschinenlesbare Zusammenfassung für agent:context. */
 export function contextSummary() {
   const claims = openClaims();

@@ -10,10 +10,15 @@ on:
     types: [completed]
   workflow_dispatch:
     inputs:
-      integrate:
-        description: 'Rote Staende wirklich auf die Integrationsbranch legen (Notausgang)'
-        type: boolean
-        default: false
+      mode:
+        description: 'inspect = Status anzeigen; integrate = rote Staende auf integration (Notausgang)'
+        type: choice
+        options: [inspect, integrate]
+        default: inspect
+      pr:
+        description: 'PR-Nummer fuer die Anzeige (optional)'
+        type: string
+        required: false
 
 permissions:
   contents: write
@@ -55,9 +60,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
           PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
-          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
-          HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}
-          EVENT: ${{ github.event.workflow_run.event || 'workflow_dispatch' }}
-          INTEGRATE: ${{ inputs.integrate && '1' || '0' }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+          HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name || '' }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number || inputs.pr || '' }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}
+          EVENT: ${{ github.event.workflow_run.event || '' }}
+          MODE: ${{ inputs.mode || '' }}
+          INTEGRATE: ${{ inputs.mode == 'integrate' && '1' || '0' }}
         run: node scripts/promote.mjs

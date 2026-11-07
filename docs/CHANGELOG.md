@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
+<!-- rbd-doc: v0.3.164 | 2026-11-07 10:00 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.164] - 2026-11-07
+
+### Technik
+- **Vertrauensgrenzen der CI.** Planer, Node-Gates und Claim-Pruefung laufen aus einem Kontroll-Checkout des Basis-Commits (`.rbd-control`), waehrend `RBD_ROOT` auf den PR-Baum zeigt. Ein PR kann damit seine Gate-Auswahl und seinen Pruefer nicht mehr selbst umschreiben; Produktcode und Tests bleiben das Pruefobjekt.
+- **Promotion an den geprueften Commit gebunden.** `promote.mjs` laedt den Kopf exakt per SHA, prueft Herkunfts-Repository, PR-Ziel und Kopf ueber `promote-guard.mjs` und mergt mit `--match-head-commit`. Manueller Dispatch kennt nur `inspect` und `integrate`, nie ein vorausgesetztes `success`.
+- **Claim-Register gegen Selbsterweiterung.** `verify-lane-claims --ci` vergleicht den Claim mit der Basis und der ersten Registrierung im PR: neue Pfade, Owner, Branches oder Contract-Writer werden abgelehnt; fremde Claims und die Kontrollebene bleiben Governance-Lanes vorbehalten.
+- **Kein globales Staging mehr.** `turn:finish` setzt nur noch die Pfade des eigenen Claims plus `package.json`/`pnpm-lock.yaml` in den Index.
 
 ## [0.3.163] - 2026-11-07
 
