@@ -807,9 +807,9 @@
     "dependencies": [],
     "gateProfile": "light",
     "status": "merged",
-    "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d",
     "mergedEvidence": "branch-tree-on-main",
-    "mergedSha": "b308fed34988c5d3fdd13506047f8de01421128b"
+    "mergedSha": "b308fed34988c5d3fdd13506047f8de01421128b",
+    "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d"
   },
   {
     "id": "lane/governance/21-longrun-pretask",
@@ -837,7 +837,9 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "fd38734b297e20c4081a75f89d044a21b967c2b1",
     "createdAt": "8021964c806c9e6b65a78f5956f8d710c845fd6e"
   }
 ]
