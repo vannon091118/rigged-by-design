@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
+<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Slice B: Mehrfach-Diagnose, Retry und Claim-Evidenz
+
+**Ziel.** Ein roter Lauf sollte nicht nur den ersten Befund zeigen, transiente Infrastrukturfehler nicht sofort ein Issue erzeugen, und ein Claim durfte nicht deshalb als Kollision gelten, weil niemand das Register nach dem Merge nachgezogen hatte.
+
+**Umsetzung.** `scripts/lib/gate-diagnostics.mjs` ist die eine Auswertung eines roten Laufs: alle fehlgeschlagenen Jobs und Schritte, ein Befund je Schritt, Fehlercode aus der letzten roten Log-Zeile (PASS zaehlt nicht), Gruppierung gleicher Codes. `pr-watcher.mjs` hat `firstGateError()` und die eigene Log-Auswertung verloren und nutzt nur noch diese Diagnose; vor dem Issue startet es ausschliesslich transiente Befunde genau einmal neu (`run_attempt < 2`). `scripts/lib/claim-evidence.mjs` entscheidet `merged` aus einem gemergten PR oder einem Branch-Kopf auf `main`; der Basis-SHA ist aus der Signatur verschwunden, damit der alte Fehler nicht zurueckkehren kann. `reconcile-claims.mjs` ist darauf umgestellt und schreibt nur mit `--apply`; `verify-lane-claims.mjs` filtert Kollisionen, deren Lane nachweislich gemergt ist, und laesst sie ohne `gh` fail-closed stehen.
+
+**Pruefungen.** `gate-diagnostics.test.ts` 5/5, `claim-evidence.test.ts` 4/4, `node --check` fuer alle geaenderten Skripte, `reconcile-claims.mjs` und `verify-lane-claims.mjs` gegen das echte Register.
+
+**Offen.** Der Ende-zu-Ende-Abbruch der Staging-Isolation und der volle PR-Lauf stehen unten im Uebergabeabschnitt; Slice C (SemVer, Langlaeufe) bleibt offen.
 
 ## 2026-11-07 - Slice A: lokales Feedback und Staging-Isolation
 

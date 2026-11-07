@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
+<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
 
 ## README als Einstieg
 
@@ -126,6 +126,12 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 | --- | --- | --- |
 | `quick` | `verify` / `verify:quick` | Zehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
 | `full` | `verify:all` | Dieselben zehn Gates plus `audit` und `build`, also zwölf. Unverändert das Tor vor jedem Commit. |
+
+### Fehlerdiagnose und Claim-Evidenz
+
+`scripts/lib/gate-diagnostics.mjs` ist die einzige Auswertung eines roten Laufs: es sammelt alle fehlgeschlagenen Jobs und Schritte, zieht den Fehlercode aus der letzten roten Log-Zeile (PASS-Zeilen zaehlen nicht) und gruppiert gleiche Codes zu einer Ursache. `pr-watcher.mjs` liest nur noch dieses Ergebnis; `firstGateError()` und die lokale Log-Heuristik sind entfallen. Vor dem Issue startet der Watcher ausschliesslich transiente Befunde einmal neu (`run_attempt < 2`), fachliche Fehler nie.
+
+`scripts/lib/claim-evidence.mjs` beantwortet die Frage, wann ein Claim `merged` werden darf: nur mit einem gemergten Pull Request fuer genau diesen Branch oder einem Branch-Kopf, der auf `main` liegt. `baseSha` ist bewusst kein Parameter - er liegt per Definition auf `main` und taugt nicht als Nachweis. `reconcile-claims.mjs` meldet unbelegte Faelle und schreibt nur mit `--apply`; `verify-lane-claims.mjs` laesst eine Kollision mit einer nachweislich gemergten Lane nicht mehr blockieren, und ohne Nachweis bleibt sie bestehen (fail-closed).
 
 ### Lokales Feedback und Staging-Scope
 

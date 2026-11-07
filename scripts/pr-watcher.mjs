@@ -8,6 +8,7 @@
  * durchzubekommen.
  */
 import { execFileSync } from 'node:child_process';
+import { diagnose } from './lib/gate-diagnostics.mjs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
@@ -100,57 +101,28 @@ async function getWorkflowRunJobs(runId) {
   return data.jobs ?? [];
 }
 
-async function getFailedJobDetails(runId) {
+async function jobLogs(runId) {
   const jobs = await getWorkflowRunJobs(runId);
-  const failed = jobs.filter((j) => j.conclusion === 'failure');
-  if (failed.length === 0) return 'Kein spezifisch fehlgeschlagener Job gefunden.';
-  const details = failed.map((j) => {
-    const steps = (j.steps ?? []).filter((s) => s.conclusion === 'failure');
-    const stepDetails = steps.map((s) => `  - ${s.name}: ${s.conclusion}`).join('\n');
-    return `Job: ${j.name}\n${stepDetails}`;
-  });
-  return details.join('\n\n');
-}
-
-/**
- * Fehlercode aus einem Job-Log.
- *
- * Der Code darf nur aus einem tatsaechlich roten Befund stammen. Die alte
- * Fassung nahm die erste Zeile mit irgendeinem ERR-Code - also auch eine
- * PASS-Zeile eines erfolgreichen Tests. Genau so wurde aus einem
- * Registerfehler ein RTP-Issue.
- */
-function errorFromLog(text) {
-  const lines = text.split(/\r?\n/);
-  const isPass = (line) => /:\s*PASS\s*$/.test(line.trim());
-  const gateFailure = lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\].*Gate fehlgeschlagen/.test(line));
-  const candidate = gateFailure.length > 0
-    ? gateFailure[gateFailure.length - 1]
-    : lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\]/.test(line) && !isPass(line)).pop();
-  if (!candidate) return null;
-  const code = /(ERR-\d{4})/.exec(candidate)?.[1];
-  if (!code) return null;
-  const failedTest = lines
-    .map((line) => /(src\/[^\s:]+|scripts\/[^\s:]+)\.[cm]?[jt]sx?/.exec(line)?.[0])
-    .filter(Boolean)
-    .pop();
-  return {
-    code,
-    firstLine: candidate.trim().slice(0, 180),
-    failedTest: failedTest ?? null,
-  };
-}
-
-/** Fehlerzeile aus den Logs der fehlgeschlagenen Jobs; sonst ERR-0000. */
-async function firstGateError(runId) {
-  const jobs = await getWorkflowRunJobs(runId);
+  const logs = new Map();
   for (const job of jobs.filter((j) => j.conclusion === 'failure')) {
-    const res = await api('GET', `/actions/jobs/${job.id}/logs`);
-    if (!res.ok) continue;
-    const found = errorFromLog(await res.text());
-    if (found) return found;
+    const res = await api('GET', '/actions/jobs/' + job.id + '/logs');
+    if (res.ok) logs.set(job.id, await res.text());
   }
-  return { code: 'ERR-0000', firstLine: 'Kein Fehlercode im Gate-Log gefunden', failedTest: null };
+  return { jobs, logs };
+}
+
+/** Alle roten Gates eines Laufs - nicht nur der erste Befund. */
+async function collectRunFailure(runId) {
+  const { jobs, logs } = await jobLogs(runId);
+  return diagnose({ jobs, logs });
+}
+
+/** Wie oft der Lauf schon gelaufen ist; null, wenn nicht lesbar. */
+async function runAttempt(runId) {
+  const res = await api('GET', '/actions/runs/' + runId);
+  if (!res.ok) return null;
+  const data = await res.json();
+  return Number(data.run_attempt ?? 1);
 }
 
 function gateFailureSections(body) {
@@ -262,8 +234,22 @@ async function handleWorkflowRun() {
 
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
 
-  const jobDetails = await getFailedJobDetails(runId);
-  const { code, firstLine, failedTest } = await firstGateError(runId);
+  const diagnostics = await collectRunFailure(runId);
+  // Begrenzter Retry vor dem Issue: nur wenn jeder Befund transient ist
+  // (Netz, Runner, Rate Limit), und hoechstens einmal. Fachliche Fehler
+  // wiederholen sich mit identischen Eingaben und werden nicht erneut gestartet.
+  const attempt = await runAttempt(runId);
+  const transient = diagnostics.failures.length > 0
+    && diagnostics.failures.every((failure) => failure.level === 'REMOTE_CI');
+  if (transient && attempt !== null && attempt < 2) {
+    const rerun = await api('POST', '/actions/runs/' + runId + '/rerun', { enable_debug_logging: false });
+    console.log('Retry ' + (attempt + 1) + '/2 fuer ausschliesslich transiente Befunde (' + rerun.status + ').');
+    if (rerun.ok) return;
+  }
+  const primary = diagnostics.primary;
+  const code = primary.code;
+  const firstLine = primary.line;
+  const failedTest = primary.failedTest;
   const fingerprint = fingerprintOf(code, firstLine);
 
   // Lane-Scope: ein rotes Lane-Gate blockiert nur diese Lane, nicht alle
@@ -326,7 +312,7 @@ async function handleWorkflowRun() {
 <summary>Fehlgeschlagene Jobs / Schritte</summary>
 
 \`\`\`
-${jobDetails}
+${diagnostics.report}
 \`\`\`
 
 </details>

@@ -20,6 +20,7 @@ import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
 } from './lib/lane-claims.mjs';
+import { decideClaim, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -197,7 +198,21 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
-const collisions = findCollisions(claim);
+/** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
+const mergedIndex = mergedPullRequestIndex();
+const collisions = findCollisions(claim).filter((collision) => {
+  // Eine Lane, deren Arbeit nachweislich gemergt ist (gemergter PR fuer genau
+  // diesen Branch), ist keine Kollision mehr, sondern ein veralteter Eintrag.
+  // Ohne `gh` oder ohne Nachweis bleibt es fail-closed bei der Kollision.
+  const other = claims.find((entry) => entry.id === collision.lane);
+  const mergedPr = other ? mergedIndex?.get(other.branch) ?? null : null;
+  const evidence = decideClaim({ branchExists: true, mergedPr });
+  if (evidence.status === 'merged') {
+    console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
+    return false;
+  }
+  return true;
+});
 if (collisions.length > 0) {
   console.error(`[ERR-4019] verify-lane-claims: Lane-Kollisionen für '${branch}':`);
   for (const coll of collisions) {
