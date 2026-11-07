@@ -21,7 +21,11 @@ const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'rep
 // ausserhalb jeder Allowlist, und niemand saehe es.
 const CI = process.argv.includes('--ci');
 const BASE_REF = process.env.BASE_REF ?? 'origin/main';
-const RANGE = CI ? `${BASE_REF}...HEAD` : null;
+// Ohne HEAD_REF prueft der CI-Modus den ausgecheckten Stand. Fuer eine
+// Vorabpruefung aller Lanes von einem Branch aus laesst sich damit die
+// Remote-Ref der jeweiligen Lane als Diff-Kopf setzen.
+const HEAD_REF = process.env.HEAD_REF ?? 'HEAD';
+const RANGE = CI ? `${BASE_REF}...${HEAD_REF}` : null;
 
 // Ein Merge bringt fremde Arbeit mit. Bewertet wird nur, was der Branch
 // gegenueber der Basis wirklich selbst hinzufuegt - sonst wuerde jeder Merge
@@ -141,9 +145,18 @@ const staged = (DIFF_BASE
 // normaler Commit prueft ausschliesslich die eigene Arbeit.
 const mergedClaims = (CI || MERGING) ? allClaims.filter((c) => c.status === 'merged') : [];
 
+// Loeschungen fremder Lane-Dateien sind eine Uebergabe, kein Schreiben: die
+// Governance-Lane gibt zurueck, was eine andere Lane besitzt. Der Diff zeigt
+// nur die Loeschung; der Pfad bleibt der anderen Lane zugeordnet.
+const deletedFiles = new Set((DIFF_BASE
+  ? git(['diff', '--name-only', '--diff-filter=D', DIFF_BASE])
+  : git(['diff', '--cached', '--name-only', '--diff-filter=D'])
+).split(/\r?\n/).filter(Boolean));
+
 const violations = [];
 const allowedBySystem = [];
 const inherited = [];
+const handedOver = [];
 
 for (const file of staged) {
   if (HOOK_FILES.includes(file)) {
@@ -164,6 +177,13 @@ for (const file of staged) {
   if (mergedOwner) {
     inherited.push(`${file} <- ${mergedOwner.id}`);
     continue;
+  }
+  if (deletedFiles.has(file)) {
+    const owner = allClaims.find((c) => c !== claim && c.allowsPath(file));
+    if (owner) {
+      handedOver.push(`${file} -> ${owner.id}`);
+      continue;
+    }
   }
   violations.push(file);
 }
@@ -193,7 +213,13 @@ if (inherited.length > 0) {
   for (const entry of inherited) console.log(`  ${entry}`);
 }
 
+if (handedOver.length > 0) {
+  console.log(`verify-lane-claims: ${handedOver.length} Pfad(e) an die besitzende Lane zurueckgegeben:`);
+  for (const entry of handedOver) console.log(`  ${entry}`);
+}
+
 const systemNote = allowedBySystem.length > 0 ? `, davon ${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '';
 const scope = CI ? `CI-Diff ${RANGE}` : (MERGING ? `Merge-Diff ${DIFF_BASE}` : 'gestagte Dateien');
+console.log(`  Branch-Ref: ${CI ? HEAD_REF : 'HEAD'}`);
 console.log(`verify-lane-claims: Branch '${branch}' ist claim-konform (${staged.length} ${scope}${systemNote}).`);
 process.exit(0);

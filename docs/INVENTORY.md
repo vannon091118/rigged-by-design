@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:36 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:37 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -116,11 +116,10 @@ Branch-Schutz (Ebene B, laut CI-Gates-Anhang in `docs/ARCHITECTURE.md` seit 31.1
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 183 Dateien — contract 117 · integration 41 · governance 12 · statistics 6 · performance 7.
+Summe: 182 Dateien — contract 116 · integration 41 · governance 12 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
-| `src/core/contracts/__tests__/actionset.test.ts` | other | contract | ja | `src/core/contracts/actionset.ts` |
 | `src/core/contracts/__tests__/actor-id.test.ts` | other | contract | ja | `src/core/contracts/actor-id.ts` |
 | `src/core/contracts/__tests__/factor.test.ts` | other | contract | ja | `src/core/contracts/factor.ts` |
 | `src/core/contracts/__tests__/relationship.test.ts` | other | contract | ja | `src/core/contracts/relationship.ts` |
@@ -493,10 +492,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1341 |
-| Gelistete Dateien | 1341 |
+| Getrackte Dateien | 1338 |
+| Gelistete Dateien | 1338 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (68), public (554), scripts (67), src (558) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (67), public (554), scripts (67), src (556) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -515,7 +514,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 8 Datei(en)
 - `docs/banners/` — 4 Datei(en)
-- `docs/contracts/` — 5 Datei(en)
+- `docs/contracts/` — 4 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -554,8 +553,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/` — 25 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
-- `src/core/contracts/` — 5 Datei(en)
-- `src/core/contracts/__tests__/` — 5 Datei(en)
+- `src/core/contracts/` — 4 Datei(en)
+- `src/core/contracts/__tests__/` — 4 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -700,7 +699,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/banners/spielwelt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/banners/werkstatt.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" role="img" aria-labelledby="t d" shape-renderin — gelesen: 1 Zeilen
 - `docs/capabilities.json` — { — gelesen: 143 Zeilen
-- `docs/contracts/actionset.md` — Contract: actionset v1.0 — gelesen: 52 Zeilen
 - `docs/contracts/actor-id.md` — Contract: actor-id v1.0 — gelesen: 54 Zeilen
 - `docs/contracts/factor.md` — Contract: factor v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
@@ -1374,7 +1372,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
-- `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 204 Zeilen
+- `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 225 Zeilen
 - `scripts/verify-narrative-content.mjs` — NAR-10/NAR-11 read-only content verification. — gelesen: 21 Zeilen
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
@@ -1387,12 +1385,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
 - `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
-- `src/core/contracts/__tests__/actionset.test.ts` — Contract actionset v1.0: Domain-registrierter ActionSet-Vertrag. — gelesen: 103 Zeilen
 - `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
 - `src/core/contracts/__tests__/factor.test.ts` — Contract factor v1.0: Factor-IDs, Kontext und Contribution-Trace. — gelesen: 73 Zeilen
 - `src/core/contracts/__tests__/relationship.test.ts` — Contract relationship v1.0: Gerichtete Relationship-IDs und erlaubte Änderungsbefehle. — gelesen: 86 Zeilen
 - `src/core/contracts/__tests__/world-time.test.ts` — Contract world-time v1.0: WorldTime, Calendar-Bezug und TimeDomain-Schlüssel. — gelesen: 71 Zeilen
-- `src/core/contracts/actionset.ts` — Contract: actionset v1.0 — gelesen: 63 Zeilen
 - `src/core/contracts/actor-id.ts` — Contract: actor-id v1.0 — gelesen: 43 Zeilen
 - `src/core/contracts/factor.ts` — Contract: factor v1.0 — gelesen: 62 Zeilen
 - `src/core/contracts/relationship.ts` — Contract: relationship v1.0 — gelesen: 62 Zeilen
