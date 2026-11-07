@@ -69,7 +69,7 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
     "createdAt": "1f5157b"
   },
   {
@@ -250,7 +250,7 @@
       "lane/contracts/factor"
     ],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "superseded",
     "createdAt": "9070cba"
   },
   {
@@ -276,5 +276,28 @@
     "gateProfile": "quick",
     "status": "open",
     "createdAt": "7cf5f84"
+  },
+  {
+    "id": "lane/contracts/save-v2",
+    "owner": "Save-/Migrations-Owner",
+    "branch": "lane/contracts/save-v2",
+    "baseSha": "0b49dfc4c267efc99f8a1d5722182dff83f29a1f",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "docs/contracts/save.md",
+      "src/core/contracts/save.ts",
+      "src/core/contracts/__tests__/save.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "save",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "0b49dfc4c267efc99f8a1d5722182dff83f29a1f"
   }
 ]

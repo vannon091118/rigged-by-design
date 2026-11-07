@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.154 | 2026-11-07 06:35 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 06:56 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -492,10 +492,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1340 |
-| Gelistete Dateien | 1340 |
+| Getrackte Dateien | 1343 |
+| Gelistete Dateien | 1343 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (67), public (554), scripts (69), src (556) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (12), .kilo (1), .lane-claims (1), content (69), docs (68), public (554), scripts (69), src (558) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -514,7 +514,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 8 Datei(en)
 - `docs/banners/` — 4 Datei(en)
-- `docs/contracts/` — 4 Datei(en)
+- `docs/contracts/` — 5 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
 - `docs/screenshots/comparison/` — 11 Datei(en)
 - `docs/screenshots/current/` — 15 Datei(en)
@@ -553,8 +553,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/` — 26 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
-- `src/core/contracts/` — 4 Datei(en)
-- `src/core/contracts/__tests__/` — 4 Datei(en)
+- `src/core/contracts/` — 5 Datei(en)
+- `src/core/contracts/__tests__/` — 5 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 20 Datei(en)
@@ -613,7 +613,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 58 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 279 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 303 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 305 Zeilen
@@ -702,6 +702,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/contracts/actor-id.md` — Contract: actor-id v1.0 — gelesen: 54 Zeilen
 - `docs/contracts/factor.md` — Contract: factor v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
+- `docs/contracts/save.md` — Contract: save v1.0 — gelesen: 58 Zeilen
 - `docs/contracts/world-time.md` — Contract: world-time v1.0 — gelesen: 56 Zeilen
 - `docs/screenshots/README.md` — Screenshots — gelesen: 131 Zeilen
 - `docs/screenshots/comparison/01-floor-v1-vorher.png` — PNG-Textur — geprueft: PNG 1248x900, 99945 B
@@ -1390,10 +1391,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
 - `src/core/contracts/__tests__/factor.test.ts` — Contract factor v1.0: Factor-IDs, Kontext und Contribution-Trace. — gelesen: 73 Zeilen
 - `src/core/contracts/__tests__/relationship.test.ts` — Contract relationship v1.0: Gerichtete Relationship-IDs und erlaubte Änderungsbefehle. — gelesen: 86 Zeilen
+- `src/core/contracts/__tests__/save.test.ts` — Contract save v1.0: Save-Envelope, Versionierung und Migration. — gelesen: 85 Zeilen
 - `src/core/contracts/__tests__/world-time.test.ts` — Contract world-time v1.0: WorldTime, Calendar-Bezug und TimeDomain-Schlüssel. — gelesen: 71 Zeilen
 - `src/core/contracts/actor-id.ts` — Contract: actor-id v1.0 — gelesen: 43 Zeilen
 - `src/core/contracts/factor.ts` — Contract: factor v1.0 — gelesen: 62 Zeilen
 - `src/core/contracts/relationship.ts` — Contract: relationship v1.0 — gelesen: 62 Zeilen
+- `src/core/contracts/save.ts` — Contract: save v1.0 — gelesen: 54 Zeilen
 - `src/core/contracts/world-time.ts` — Contract: world-time v1.0 — gelesen: 37 Zeilen
 - `src/core/economy/__tests__/economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
 - `src/core/economy/__tests__/ledger-atomicity.test.ts` — Ledger-Transfer muss atomar sein: bei einem abgelehnten Buchung (z. B. — gelesen: 84 Zeilen
