@@ -17,6 +17,33 @@ export const normalizeText = (text) => String(text ?? '')
   .replace(/[^a-z0-9äöüß]+/g, ' ')
   .trim();
 
+/**
+ * Pflegepfade: Doku, Inventur, Claims, Kontrollebene und Werkzeuge.
+ *
+ * Ein Commit, der ausschliesslich diese Pfade anfasst, aendert weder Spielcode
+ * noch Content und braucht deshalb keinen neuen Textbaustein. Die Liste ist
+ * bewusst eng und wird als Praefix geprueft: `content/`, `src/`, `public/`,
+ * `index.html` und `package.json` sind nie Pflege. Es gilt alles-oder-nichts,
+ * ein einziger Pfad ausserhalb der Liste hebt die Ausnahme auf.
+ */
+export const MAINTENANCE_PATHS = Object.freeze([
+  'docs/',
+  'AGENTS.md',
+  'README.md',
+  '.lane-claims/',
+  '.github/',
+  '.githooks/',
+  'scripts/',
+]);
+
+/** True, wenn die Pfadliste nicht leer ist und jede Datei Pflege ist. */
+export function isMaintenanceOnly(paths) {
+  const files = [...new Set(paths ?? [])].filter(Boolean);
+  if (files.length === 0) return false;
+  return files.every((file) => MAINTENANCE_PATHS.some((entry) =>
+    (entry.endsWith('/') ? file.startsWith(entry) : file === entry)));
+}
+
 /** Slots des Vokabulars, die einen Pool bilden. */
 export function poolSlots(vocabulary) {
   return Object.keys(vocabulary?.slots ?? {}).sort();

@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:14 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 23:46 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -87,6 +87,26 @@ Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf au
 
 Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit: `### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`.
 Die Koepfe werden zeichengenau uebernommen, inklusive Umlaut in `Kausalität`; ein ASCII-Ersatz (`Kausalitaet`) laesst das Gate rot, obwohl alle Gates gruen waren.
+
+### Textbaustein-Pflicht: Grenze der Pflege-Ausnahme
+
+`verify:narrative-blocks --commit` verlangt fuer jeden Commit mindestens einen
+neuen, im Manifest registrierten und in der Registry verdrahteten Baustein.
+Ausgenommen sind nur Commits, deren gestagte Dateien **alle** unter `docs/`,
+`AGENTS.md`, `README.md`, `.lane-claims/`, `.github/`, `.githooks/` oder
+`scripts/` liegen. Die Grenze steht als `MAINTENANCE_PATHS` in
+`scripts/lib/narrative-blocks.mjs` und ist bewusst eng und alles-oder-nichts:
+`content/**`, `src/**`, `public/**`, `index.html` und `package.json` sind nie
+Pflege, und ein einziger solcher Pfad hebt die Ausnahme fuer den ganzen Commit
+auf. Ein Doku-Commit neben einer Code-Aenderung braucht also weiterhin einen
+Baustein. Pool-Minimum, Doppelte und das 1500-Ziel pruefen in beiden Faellen
+unveraendert weiter, im Hook und im Assets-Gate.
+
+Ohne gestagte Dateien prueft das Gate den Commit selbst: die Pfadliste kommt
+dann aus `HEAD` gegen seine Eltern (bei einem Merge die Vereinigung ueber alle
+Eltern). Damit bleibt eine reine Message-Korrektur per `git commit --amend`
+moglich, ohne die Baustein-Pflicht zu umgehen; ein Content-Commit findet dort
+seinen eigenen Baustein wieder.
 
 ## Nachweise
 

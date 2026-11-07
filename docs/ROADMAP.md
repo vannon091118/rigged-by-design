@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:14 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 23:46 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -162,13 +162,16 @@ nicht nur dokumentiert:
 | --- | --- | --- |
 | Mindestgroesse je Pool (Slot) | 50 Fragmente | `verify:narrative-blocks` und Assets-Gate |
 | Gesamtziel | 1500 Bausteine | Fortschritt im Gate-Bericht; Ueberschreiten ist ein Befund |
-| Pflicht pro Commit | mindestens ein neuer, verdrahteter Baustein | Pre-Commit-Hook (`--commit`) |
+| Pflicht pro Commit | mindestens ein neuer, verdrahteter Baustein; Ausnahme nur fuer reine Doku-/Inventur-/Tooling-Commits | Pre-Commit-Hook (`--commit`) |
 | Luecken-Regel | neue Bausteine nur in Pools unter 50 | `gapIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-07: **400/1500** Bausteine, alle acht Slots auf 50. Die naechsten
-Batches vertiefen Kontexte und Personas je Pool; sie fuellen keine Pools mehr
-auf, die schon an der Grenze liegen.
+Stand 2026-11-07: **416/1500** Bausteine, alle acht Slots auf **52**. Die
+Pool-Mindestgroesse ist erreicht und bleibt Untergrenze; der Weg zu 1500 geht
+ueber Kontexttiefe (Personas, Kontexte, Folgen) statt weiterer Auffuellung.
+Reine Doku-, Inventur- und Tooling-Commits sind von der Baustein-Pflicht
+ausgenommen (Grenze und Begruendung: `docs/CI.md`), Spiel- und Content-Commits
+nicht.
 
 ### Offene Stellen, kategorisiert (Stand 2026-11-07)
 
@@ -183,7 +186,7 @@ unten. Sie ersetzt verstreute Offen-Hinweise in Code-Kommentaren.
 - Sucht-Folgen sind eine offene Designentscheidung.
 
 **Narrative und Content**
-- 400/1500 Textbausteine; Pool-Minimum erreicht, Kontexttiefe offen.
+- 416/1500 Textbausteine (52 je Slot); Pool-Minimum erreicht, Kontexttiefe offen.
 - Narrative Balance ist begrenzt, nicht gemessen.
 - Geraete-, Lager- und Personal-Facts fehlen bewusst.
 
