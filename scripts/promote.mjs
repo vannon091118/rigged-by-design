@@ -24,6 +24,7 @@ const branch = process.env.HEAD_BRANCH ?? '';
 const conclusion = process.env.CONCLUSION ?? '';
 const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
+const headSha = process.env.HEAD_SHA ?? '';
 // Ein Merge mit dem Workflow-Token startet keinen Workflow; das eigene Token
 // ist die Stufe, die CI, Tag und APK wieder in Gang setzt.
 const elevated = Boolean(process.env.PROMOTE_TOKEN);
@@ -43,6 +44,22 @@ const git = (args) => run('git', args);
 const gh = (args) => (hasToken ? run('gh', args) : null);
 const log = (message) => console.log(`promote: ${message}`);
 const warn = (message) => console.log(`::warning::promote: ${message}`);
+
+/**
+ * Der Branch-Kopf ist Daten, kein Code. Der Workflow hat Schreibrechte und
+ * checkt deshalb nur `main` aus; der PR-Kopf kommt als Ref dazu, damit Titel
+ * und Merge-Text aus seinen Commits stammen. Ausgefuehrt wird er nie - sonst
+ * koennte ein fremder Branch die Promotion mit einem Schreibtoken veraendern.
+ */
+function fetchHead() {
+  if (!branch || branch === MAIN) return;
+  if (git(['fetch', 'origin', `+refs/heads/${branch}:refs/remotes/origin/${branch}`]) === null) {
+    warn(`Kopf ${branch} nicht abrufbar; PR-Text bleibt beim lokalen Stand`);
+  }
+}
+
+/** Der Ref, aus dem PR-Titel und Merge-Text stammen; `HEAD` ist der Notausgang. */
+const headRef = () => (git(['rev-parse', '--verify', `origin/${branch}`]) !== null ? `origin/${branch}` : 'HEAD');
 
 const subject = (ref) => git(['log', '-1', '--pretty=%s', ref]) ?? `Promotion ${ref}`;
 const SECTIONS = Object.freeze([
@@ -83,7 +100,7 @@ function syncPrBody(number) {
   if (!number) return;
   const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']) ?? '';
   if (SECTIONS.every((section) => current.includes(section))) return;
-  const ref = git(['rev-parse', '--verify', `origin/${branch}`]) !== null ? `origin/${branch}` : 'HEAD';
+  const ref = headRef();
   const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
   const bodyFile = join(dir, 'pr-body.md');
   writeFileSync(bodyFile, `${body(ref)}\n`);
@@ -100,18 +117,20 @@ function label(number, name, note) {
 function ensurePr() {
   const existing = openPr();
   if (existing) return existing;
+  const ref = headRef();
   const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
   const bodyFile = join(dir, 'pr-body.md');
-  writeFileSync(bodyFile, `${body(`origin/${branch}`)}\n`);
-  if (gh(['pr', 'create', '--base', MAIN, '--head', branch, '--title', subject(`origin/${branch}`), '--body-file', bodyFile]) === null) return '';
+  writeFileSync(bodyFile, `${body(ref)}\n`);
+  if (gh(['pr', 'create', '--base', MAIN, '--head', branch, '--title', subject(ref), '--body-file', bodyFile]) === null) return '';
   return openPr();
 }
 
 /** Gruen: PR mit Commit-Text mergen, damit `verify-commit-msg --head` gruen bleibt. */
 function mergeGreen(number) {
+  const ref = headRef();
   const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
   const bodyFile = join(dir, 'body.md');
-  writeFileSync(bodyFile, `${body(`origin/${branch}`)}\n`);
+  writeFileSync(bodyFile, `${body(ref)}\n`);
   if (process.env.RBD_PROMOTE_AUTO_MERGE === '1') {
     // GitHub mergt selbst: der Commit ist signiert (Verified). Das setzt im
     // Repo die Squash-Vorgabe "PR-Titel und -Beschreibung" voraus, sonst fehlt
@@ -124,7 +143,7 @@ function mergeGreen(number) {
   }
   // Strict-Policy: sobald main sich bewegt, ist der Pflichtstatus veraltet.
   if (gh(['pr', 'update-branch', number]) === null) log(`#${number}: kein Branch-Update noetig`);
-  const merged = gh(['pr', 'merge', number, '--squash', '--subject', subject(`origin/${branch}`), '--body-file', bodyFile]) !== null;
+  const merged = gh(['pr', 'merge', number, '--squash', '--subject', subject(ref), '--body-file', bodyFile]) !== null;
   if (merged && !elevated) {
     if (gh(['workflow', 'run', 'Auto Version & Release', '--ref', MAIN]) !== null) log('Release-Lauf ohne eigenes Token angestossen');
     else warn('Merge ohne PROMOTE_TOKEN; Release-Lauf nicht angestossen');
@@ -227,6 +246,9 @@ function promoteRed() {
     integrate(name);
   }
 }
+
+fetchHead();
+log(`Lauf aus vertrauenswuerdigem ${MAIN}${headSha ? `; Kopf ${headSha}` : ''}${branch ? ` (${branch})` : ''}`);
 
 if (event === 'push' && branch && branch !== MAIN) {
   // Jeder Feature-Push oeffnet oder aktualisiert den PR. Frueher endete der Lauf

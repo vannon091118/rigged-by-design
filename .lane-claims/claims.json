@@ -358,7 +358,23 @@
     ],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "d0c730cd59d6e822bba501a854b5f466c165876e"
+  },
+  {
+    "id": "lane/ci/promote-trusted-checkout",
+    "owner": "Governance-Owner",
+    "branch": "lane/ci/promote-trusted-checkout",
+    "baseSha": "dd872e29348e8ffb7522296a66ca05da9ee147fd",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/promote.yml",
+      "scripts/promote.mjs"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
   }
 ]
