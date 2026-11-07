@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
 
 ## README als Einstieg
 
@@ -20,6 +20,8 @@
 ### P0-Lieferweg
 
 `turn:finish` ist der lokale Einstieg: Pretask, `verify:light`, Commit und Push auf den Lane-Branch; danach werden Commit-Bodies in einen PR-Body mit den drei Pflichtsektionen gehoben. `CI Verify` ist der Pflichtstatus und laeuft nur fuer den PR-Head. `promote` scannt die offenen, geclaimten PRs in Abhaengigkeitsreihenfolge und merged hoechstens einen aktuellen, sauberen Head pro Lauf. Der Squash-Commit uebernimmt den PR-Body, damit `verify-commit-msg --head` auf `main` dieselbe Struktur sieht.
+
+Ein `workflow_dispatch` kann die Gates auf einem Commit pruefen, zaehlt aber nicht als Branch-Schutzstatus. Promotion wartet auf den gruenden `pull_request`-Check am aktuellen Head.
 
 Bei einem Main-Merge synchronisiert `branch-sync` aktive Lanes mit einem normalen Merge, nie mit Rebase oder Force-Push. Marker-/Versionskonflikte und die generierte Inventur haben deterministische Loesungen; Codekonflikte bleiben im Branch und erzeugen ein Issue mit Lane-Owner. Nicht betroffene Lanes laufen weiter. `integration` wird nur manuell angefordert.
 

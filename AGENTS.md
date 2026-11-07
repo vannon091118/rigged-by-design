@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -67,6 +67,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - Direkter Push auf `main` bleibt gesperrt. `promote` merged nur PRs mit erfolgreichem Pflichtstatus am aktuellen Head, aktivem Lane-Claim und erfuellten Abhaengigkeiten; Merge-Commit-Body ist der PR-Body mit den drei exakten Pflichtsektionen. Main wird in aktive Branches gemergt, nie rebased. Marker-/Versions-/Inventurkonflikte werden mechanisch geloest; Codekonflikte werden als Lane-Issue gemeldet.
 - **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
 - **Automatische Promotion:** Ein Lauf von `CI Verify` laesst `promote.yml` die geordnete PR-Queue erneut lesen. Es merged hoechstens einen PR mit aktuellem gruenem Pflichtstatus pro Main-Stand; danach synchronisiert `branch-sync.yml` aktive Lanes und CI prueft die neuen Heads. Rote oder konflikthafte Lanes bekommen Issues und halten unabhaengige Lanes nicht an. `integration` wird nur auf ausdrueckliche Anforderung benutzt. Ein `GITHUB_TOKEN`-Merge dispatcht Release, Branch-Sync und Issue-Sweep explizit.
+- Ein manuell dispatchter Verify-Lauf dokumentiert den Gate-Befund, ersetzt aber den vom Branch-Schutz erwarteten `pull_request`-Status nicht. Promotion ist nur erlaubt, wenn `Fail-Closed Gates` auf dem aktuellen PR-Head in den PR-Checks als gruen erscheint.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
 ## Kritikalitaet: was stoppt, was wird ein Issue

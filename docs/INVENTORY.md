@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -618,7 +618,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 353 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
-- `AGENTS.md` — Rigged by Design — gelesen: 294 Zeilen
+- `AGENTS.md` — Rigged by Design — gelesen: 295 Zeilen
 - `README.md` — Rigged by Design — gelesen: 340 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
@@ -689,11 +689,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/turns/manifest.json` — { — gelesen: 265 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1778 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 807 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3123 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1780 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 808 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3133 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 295 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 296 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
@@ -1951,6 +1951,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T83 | **2026-11-07 05:52 UTC**: Manueller Dispatch ist kein Branch-Schutzstatus; PR #203 braucht den `pull_request`-Check am aktuellen Head. |
 | T82 | **2026-11-07 05:46 UTC**: Dependency-Matrix nach Hook-Neugenerierung auf den finalen P0-Branchstand gebracht; PR #203 offen. |
 | T81 | **2026-11-07 05:28 UTC**: P0 workflow, escalation and branch cleanup. |
 | T80 | **2026-11-06 21:45 UTC**: Audit #19 geschlossen. `GameView.company` aus `companyStatus()`, Firmenstufe in HUD/Betriebspanel mit offenen Bedingungen; Pixi-Start-Fehler zeigt Fallback statt schwarzer Flaeche. Branch-Hygiene: `integration` = `main` (`5ef2657`), PR #142 geschlossen, drei gemergte Refs geloescht, `feat/spatial-layout-editor` als einziger Arbeitsbranch. Geprueft: typecheck, 19 UI-/Progressions-Tests, `verify:all` zwoelf Gates. |

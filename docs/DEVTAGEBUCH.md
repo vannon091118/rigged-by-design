@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 05:48 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - P0: PR-Pflichtstatus nachweisen
+
+**Ziel.** Ein manueller `workflow_dispatch`-Lauf war auf dem exakten PR-Head gruen, wurde von GitHub aber nicht als erforderlicher Branch-Schutzstatus anerkannt. Die Regel ist jetzt dokumentiert: nur der gruene PR-Check erlaubt Promotion.
+
+**Umsetzung.** AGENTS und Architektur halten fest, dass ein manueller Lauf Diagnose ist und der Pflichtstatus aus dem `pull_request`-Ereignis kommen muss. Derselbe PR wurde geschlossen und wieder geoeffnet; das loeste den erwarteten Check nicht aus. Als naechstes wird ein normaler Commit-Push den `synchronize`-Pfad ausloesen.
+
+**Pruefungen.** Der Dispatch `42344259145` war vollstaendig gruen, wurde vom Merge-Endpunkt aber mit `Required status check "Fail-Closed Gates" is expected` abgewiesen. Kein Branch-Schutz wurde umgangen.
+
+**Offen.** Offen.
 
 ## 2026-11-07 - P0: Abhängigkeiten nach finaler Inventur
 
