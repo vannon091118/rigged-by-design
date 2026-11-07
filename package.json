@@ -22,6 +22,7 @@
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",
     "narrative:check": "node scripts/verify-narrative-content.mjs",
+    "narrative:blocks": "node scripts/verify-narrative-blocks.mjs",
     "narrative:compile": "node scripts/compile-narrative-content.mjs --write",
     "docs:sync": "node scripts/doc-sync.mjs",
     "verify:docs": "node scripts/verify-docs.mjs",

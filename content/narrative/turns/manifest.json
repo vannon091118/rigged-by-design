@@ -94,16 +94,16 @@
       "contributionId": "nar-14-narrative-ui-01"
     },
     {
+      "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
+      "contributionId": "journal-und-profilweg-01"
+    },
+    {
       "turnId": "2026-11-04T02:10Z-nar-15-autonome-rivalen",
       "contributionId": "nar-15-autonome-rivalen-01"
     },
     {
       "turnId": "2026-11-04T03:20Z-nar-16-langzeitintegration",
       "contributionId": "nar-16-langzeitintegration-01"
-    },
-    {
-      "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
-      "contributionId": "journal-und-profilweg-01"
     },
     {
       "turnId": "2026-11-04T03:35Z-b1-kontext-helper",
@@ -122,8 +122,36 @@
       "contributionId": "b3-fallback-slots-01"
     },
     {
+      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+      "contributionId": "c2-rival-action-trigger-01"
+    },
+    {
+      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
+      "contributionId": "c1-trigger-template-contract-01"
+    },
+    {
+      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
+      "contributionId": "d1-aftermath-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
+      "contributionId": "d1-aftermath-body-01"
+    },
+    {
+      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
+      "contributionId": "d1-aftermath-listen-01"
+    },
+    {
+      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
+      "contributionId": "d1-aftermath-outcome-01"
+    },
+    {
       "turnId": "2026-11-04T06:05Z-b4-rueckkehr-titel",
       "contributionId": "b4-rueckkehr-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:05Z-d2-counter-rival",
+      "contributionId": "d2-counter-rival-01"
     },
     {
       "turnId": "2026-11-04T06:06Z-b4-rueckkehr-body",
@@ -186,34 +214,6 @@
       "contributionId": "b4-turnier-body-01"
     },
     {
-      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
-      "contributionId": "c2-rival-action-trigger-01"
-    },
-    {
-      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
-      "contributionId": "c1-trigger-template-contract-01"
-    },
-    {
-      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
-      "contributionId": "d1-aftermath-titel-01"
-    },
-    {
-      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
-      "contributionId": "d1-aftermath-body-01"
-    },
-    {
-      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
-      "contributionId": "d1-aftermath-listen-01"
-    },
-    {
-      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
-      "contributionId": "d1-aftermath-outcome-01"
-    },
-    {
-      "turnId": "2026-11-04T06:05Z-d2-counter-rival",
-      "contributionId": "d2-counter-rival-01"
-    },
-    {
       "turnId": "2026-11-04T06:20Z-d3-expiry-no-penalty",
       "contributionId": "d3-expiry-no-penalty-01"
     },
@@ -264,6 +264,1342 @@
     {
       "turnId": "2026-11-07T14:37Z-multi-beat-schritte",
       "contributionId": "multi-beat-steps-01"
+    },
+    {
+      "turnId": "2026-11-07T23:01Z-pool-rumor-01",
+      "contributionId": "pool-rumor-01"
+    },
+    {
+      "turnId": "2026-11-07T23:02Z-pool-rumor-02",
+      "contributionId": "pool-rumor-02"
+    },
+    {
+      "turnId": "2026-11-07T23:03Z-pool-rumor-03",
+      "contributionId": "pool-rumor-03"
+    },
+    {
+      "turnId": "2026-11-07T23:04Z-pool-memory-04",
+      "contributionId": "pool-memory-04"
+    },
+    {
+      "turnId": "2026-11-07T23:04Z-pool-reaction-04",
+      "contributionId": "pool-reaction-04"
+    },
+    {
+      "turnId": "2026-11-07T23:04Z-pool-rumor-04",
+      "contributionId": "pool-rumor-04"
+    },
+    {
+      "turnId": "2026-11-07T23:05Z-pool-memory-05",
+      "contributionId": "pool-memory-05"
+    },
+    {
+      "turnId": "2026-11-07T23:05Z-pool-reaction-05",
+      "contributionId": "pool-reaction-05"
+    },
+    {
+      "turnId": "2026-11-07T23:05Z-pool-rumor-05",
+      "contributionId": "pool-rumor-05"
+    },
+    {
+      "turnId": "2026-11-07T23:06Z-pool-memory-06",
+      "contributionId": "pool-memory-06"
+    },
+    {
+      "turnId": "2026-11-07T23:06Z-pool-reaction-06",
+      "contributionId": "pool-reaction-06"
+    },
+    {
+      "turnId": "2026-11-07T23:06Z-pool-rumor-06",
+      "contributionId": "pool-rumor-06"
+    },
+    {
+      "turnId": "2026-11-07T23:07Z-pool-memory-07",
+      "contributionId": "pool-memory-07"
+    },
+    {
+      "turnId": "2026-11-07T23:07Z-pool-reaction-07",
+      "contributionId": "pool-reaction-07"
+    },
+    {
+      "turnId": "2026-11-07T23:07Z-pool-rumor-07",
+      "contributionId": "pool-rumor-07"
+    },
+    {
+      "turnId": "2026-11-07T23:08Z-pool-event-body-08",
+      "contributionId": "pool-event-body-08"
+    },
+    {
+      "turnId": "2026-11-07T23:08Z-pool-memory-08",
+      "contributionId": "pool-memory-08"
+    },
+    {
+      "turnId": "2026-11-07T23:08Z-pool-reaction-08",
+      "contributionId": "pool-reaction-08"
+    },
+    {
+      "turnId": "2026-11-07T23:08Z-pool-rumor-08",
+      "contributionId": "pool-rumor-08"
+    },
+    {
+      "turnId": "2026-11-07T23:09Z-pool-choice-preview-09",
+      "contributionId": "pool-choice-preview-09"
+    },
+    {
+      "turnId": "2026-11-07T23:09Z-pool-event-body-09",
+      "contributionId": "pool-event-body-09"
+    },
+    {
+      "turnId": "2026-11-07T23:09Z-pool-memory-09",
+      "contributionId": "pool-memory-09"
+    },
+    {
+      "turnId": "2026-11-07T23:09Z-pool-reaction-09",
+      "contributionId": "pool-reaction-09"
+    },
+    {
+      "turnId": "2026-11-07T23:09Z-pool-rumor-09",
+      "contributionId": "pool-rumor-09"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-choice-preview-10",
+      "contributionId": "pool-choice-preview-10"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-event-body-10",
+      "contributionId": "pool-event-body-10"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-memory-10",
+      "contributionId": "pool-memory-10"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-opening-10",
+      "contributionId": "pool-opening-10"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-reaction-10",
+      "contributionId": "pool-reaction-10"
+    },
+    {
+      "turnId": "2026-11-07T23:10Z-pool-rumor-10",
+      "contributionId": "pool-rumor-10"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-choice-preview-11",
+      "contributionId": "pool-choice-preview-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-description-11",
+      "contributionId": "pool-description-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-event-body-11",
+      "contributionId": "pool-event-body-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-memory-11",
+      "contributionId": "pool-memory-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-opening-11",
+      "contributionId": "pool-opening-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-reaction-11",
+      "contributionId": "pool-reaction-11"
+    },
+    {
+      "turnId": "2026-11-07T23:11Z-pool-rumor-11",
+      "contributionId": "pool-rumor-11"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-choice-preview-12",
+      "contributionId": "pool-choice-preview-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-description-12",
+      "contributionId": "pool-description-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-event-body-12",
+      "contributionId": "pool-event-body-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-memory-12",
+      "contributionId": "pool-memory-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-opening-12",
+      "contributionId": "pool-opening-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-reaction-12",
+      "contributionId": "pool-reaction-12"
+    },
+    {
+      "turnId": "2026-11-07T23:12Z-pool-rumor-12",
+      "contributionId": "pool-rumor-12"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-choice-preview-13",
+      "contributionId": "pool-choice-preview-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-description-13",
+      "contributionId": "pool-description-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-event-body-13",
+      "contributionId": "pool-event-body-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-memory-13",
+      "contributionId": "pool-memory-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-opening-13",
+      "contributionId": "pool-opening-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-reaction-13",
+      "contributionId": "pool-reaction-13"
+    },
+    {
+      "turnId": "2026-11-07T23:13Z-pool-rumor-13",
+      "contributionId": "pool-rumor-13"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-choice-preview-14",
+      "contributionId": "pool-choice-preview-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-description-14",
+      "contributionId": "pool-description-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-event-body-14",
+      "contributionId": "pool-event-body-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-memory-14",
+      "contributionId": "pool-memory-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-opening-14",
+      "contributionId": "pool-opening-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-reaction-14",
+      "contributionId": "pool-reaction-14"
+    },
+    {
+      "turnId": "2026-11-07T23:14Z-pool-rumor-14",
+      "contributionId": "pool-rumor-14"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-choice-preview-15",
+      "contributionId": "pool-choice-preview-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-description-15",
+      "contributionId": "pool-description-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-event-body-15",
+      "contributionId": "pool-event-body-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-memory-15",
+      "contributionId": "pool-memory-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-opening-15",
+      "contributionId": "pool-opening-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-reaction-15",
+      "contributionId": "pool-reaction-15"
+    },
+    {
+      "turnId": "2026-11-07T23:15Z-pool-rumor-15",
+      "contributionId": "pool-rumor-15"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-choice-preview-16",
+      "contributionId": "pool-choice-preview-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-description-16",
+      "contributionId": "pool-description-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-event-body-16",
+      "contributionId": "pool-event-body-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-memory-16",
+      "contributionId": "pool-memory-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-opening-16",
+      "contributionId": "pool-opening-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-reaction-16",
+      "contributionId": "pool-reaction-16"
+    },
+    {
+      "turnId": "2026-11-07T23:16Z-pool-rumor-16",
+      "contributionId": "pool-rumor-16"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-choice-preview-17",
+      "contributionId": "pool-choice-preview-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-description-17",
+      "contributionId": "pool-description-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-event-body-17",
+      "contributionId": "pool-event-body-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-memory-17",
+      "contributionId": "pool-memory-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-opening-17",
+      "contributionId": "pool-opening-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-reaction-17",
+      "contributionId": "pool-reaction-17"
+    },
+    {
+      "turnId": "2026-11-07T23:17Z-pool-rumor-17",
+      "contributionId": "pool-rumor-17"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-choice-preview-18",
+      "contributionId": "pool-choice-preview-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-description-18",
+      "contributionId": "pool-description-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-event-body-18",
+      "contributionId": "pool-event-body-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-memory-18",
+      "contributionId": "pool-memory-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-opening-18",
+      "contributionId": "pool-opening-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-reaction-18",
+      "contributionId": "pool-reaction-18"
+    },
+    {
+      "turnId": "2026-11-07T23:18Z-pool-rumor-18",
+      "contributionId": "pool-rumor-18"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-choice-preview-19",
+      "contributionId": "pool-choice-preview-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-description-19",
+      "contributionId": "pool-description-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-event-body-19",
+      "contributionId": "pool-event-body-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-memory-19",
+      "contributionId": "pool-memory-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-opening-19",
+      "contributionId": "pool-opening-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-reaction-19",
+      "contributionId": "pool-reaction-19"
+    },
+    {
+      "turnId": "2026-11-07T23:19Z-pool-rumor-19",
+      "contributionId": "pool-rumor-19"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-choice-preview-20",
+      "contributionId": "pool-choice-preview-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-description-20",
+      "contributionId": "pool-description-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-event-body-20",
+      "contributionId": "pool-event-body-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-memory-20",
+      "contributionId": "pool-memory-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-opening-20",
+      "contributionId": "pool-opening-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-reaction-20",
+      "contributionId": "pool-reaction-20"
+    },
+    {
+      "turnId": "2026-11-07T23:20Z-pool-rumor-20",
+      "contributionId": "pool-rumor-20"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-choice-preview-21",
+      "contributionId": "pool-choice-preview-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-description-21",
+      "contributionId": "pool-description-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-event-body-21",
+      "contributionId": "pool-event-body-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-memory-21",
+      "contributionId": "pool-memory-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-opening-21",
+      "contributionId": "pool-opening-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-reaction-21",
+      "contributionId": "pool-reaction-21"
+    },
+    {
+      "turnId": "2026-11-07T23:21Z-pool-rumor-21",
+      "contributionId": "pool-rumor-21"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-choice-preview-22",
+      "contributionId": "pool-choice-preview-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-description-22",
+      "contributionId": "pool-description-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-event-body-22",
+      "contributionId": "pool-event-body-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-memory-22",
+      "contributionId": "pool-memory-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-opening-22",
+      "contributionId": "pool-opening-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-reaction-22",
+      "contributionId": "pool-reaction-22"
+    },
+    {
+      "turnId": "2026-11-07T23:22Z-pool-rumor-22",
+      "contributionId": "pool-rumor-22"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-choice-preview-23",
+      "contributionId": "pool-choice-preview-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-description-23",
+      "contributionId": "pool-description-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-event-body-23",
+      "contributionId": "pool-event-body-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-memory-23",
+      "contributionId": "pool-memory-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-opening-23",
+      "contributionId": "pool-opening-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-reaction-23",
+      "contributionId": "pool-reaction-23"
+    },
+    {
+      "turnId": "2026-11-07T23:23Z-pool-rumor-23",
+      "contributionId": "pool-rumor-23"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-choice-preview-24",
+      "contributionId": "pool-choice-preview-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-description-24",
+      "contributionId": "pool-description-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-event-body-24",
+      "contributionId": "pool-event-body-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-memory-24",
+      "contributionId": "pool-memory-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-opening-24",
+      "contributionId": "pool-opening-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-reaction-24",
+      "contributionId": "pool-reaction-24"
+    },
+    {
+      "turnId": "2026-11-07T23:24Z-pool-rumor-24",
+      "contributionId": "pool-rumor-24"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-choice-preview-25",
+      "contributionId": "pool-choice-preview-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-description-25",
+      "contributionId": "pool-description-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-event-body-25",
+      "contributionId": "pool-event-body-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-memory-25",
+      "contributionId": "pool-memory-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-opening-25",
+      "contributionId": "pool-opening-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-reaction-25",
+      "contributionId": "pool-reaction-25"
+    },
+    {
+      "turnId": "2026-11-07T23:25Z-pool-rumor-25",
+      "contributionId": "pool-rumor-25"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-choice-preview-26",
+      "contributionId": "pool-choice-preview-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-description-26",
+      "contributionId": "pool-description-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-event-body-26",
+      "contributionId": "pool-event-body-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-memory-26",
+      "contributionId": "pool-memory-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-opening-26",
+      "contributionId": "pool-opening-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-reaction-26",
+      "contributionId": "pool-reaction-26"
+    },
+    {
+      "turnId": "2026-11-07T23:26Z-pool-rumor-26",
+      "contributionId": "pool-rumor-26"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-choice-preview-27",
+      "contributionId": "pool-choice-preview-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-description-27",
+      "contributionId": "pool-description-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-documentation-27",
+      "contributionId": "pool-documentation-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-event-body-27",
+      "contributionId": "pool-event-body-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-memory-27",
+      "contributionId": "pool-memory-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-opening-27",
+      "contributionId": "pool-opening-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-reaction-27",
+      "contributionId": "pool-reaction-27"
+    },
+    {
+      "turnId": "2026-11-07T23:27Z-pool-rumor-27",
+      "contributionId": "pool-rumor-27"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-choice-preview-28",
+      "contributionId": "pool-choice-preview-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-description-28",
+      "contributionId": "pool-description-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-documentation-28",
+      "contributionId": "pool-documentation-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-event-body-28",
+      "contributionId": "pool-event-body-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-memory-28",
+      "contributionId": "pool-memory-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-opening-28",
+      "contributionId": "pool-opening-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-reaction-28",
+      "contributionId": "pool-reaction-28"
+    },
+    {
+      "turnId": "2026-11-07T23:28Z-pool-rumor-28",
+      "contributionId": "pool-rumor-28"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-choice-preview-29",
+      "contributionId": "pool-choice-preview-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-description-29",
+      "contributionId": "pool-description-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-documentation-29",
+      "contributionId": "pool-documentation-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-event-body-29",
+      "contributionId": "pool-event-body-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-memory-29",
+      "contributionId": "pool-memory-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-opening-29",
+      "contributionId": "pool-opening-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-reaction-29",
+      "contributionId": "pool-reaction-29"
+    },
+    {
+      "turnId": "2026-11-07T23:29Z-pool-rumor-29",
+      "contributionId": "pool-rumor-29"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-choice-preview-30",
+      "contributionId": "pool-choice-preview-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-description-30",
+      "contributionId": "pool-description-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-documentation-30",
+      "contributionId": "pool-documentation-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-event-body-30",
+      "contributionId": "pool-event-body-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-memory-30",
+      "contributionId": "pool-memory-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-opening-30",
+      "contributionId": "pool-opening-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-reaction-30",
+      "contributionId": "pool-reaction-30"
+    },
+    {
+      "turnId": "2026-11-07T23:30Z-pool-rumor-30",
+      "contributionId": "pool-rumor-30"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-choice-preview-31",
+      "contributionId": "pool-choice-preview-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-description-31",
+      "contributionId": "pool-description-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-documentation-31",
+      "contributionId": "pool-documentation-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-event-body-31",
+      "contributionId": "pool-event-body-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-memory-31",
+      "contributionId": "pool-memory-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-opening-31",
+      "contributionId": "pool-opening-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-reaction-31",
+      "contributionId": "pool-reaction-31"
+    },
+    {
+      "turnId": "2026-11-07T23:31Z-pool-rumor-31",
+      "contributionId": "pool-rumor-31"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-choice-preview-32",
+      "contributionId": "pool-choice-preview-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-description-32",
+      "contributionId": "pool-description-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-documentation-32",
+      "contributionId": "pool-documentation-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-event-body-32",
+      "contributionId": "pool-event-body-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-memory-32",
+      "contributionId": "pool-memory-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-opening-32",
+      "contributionId": "pool-opening-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-reaction-32",
+      "contributionId": "pool-reaction-32"
+    },
+    {
+      "turnId": "2026-11-07T23:32Z-pool-rumor-32",
+      "contributionId": "pool-rumor-32"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-choice-preview-33",
+      "contributionId": "pool-choice-preview-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-description-33",
+      "contributionId": "pool-description-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-documentation-33",
+      "contributionId": "pool-documentation-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-event-body-33",
+      "contributionId": "pool-event-body-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-memory-33",
+      "contributionId": "pool-memory-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-opening-33",
+      "contributionId": "pool-opening-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-reaction-33",
+      "contributionId": "pool-reaction-33"
+    },
+    {
+      "turnId": "2026-11-07T23:33Z-pool-rumor-33",
+      "contributionId": "pool-rumor-33"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-choice-preview-34",
+      "contributionId": "pool-choice-preview-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-description-34",
+      "contributionId": "pool-description-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-documentation-34",
+      "contributionId": "pool-documentation-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-event-body-34",
+      "contributionId": "pool-event-body-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-memory-34",
+      "contributionId": "pool-memory-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-opening-34",
+      "contributionId": "pool-opening-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-reaction-34",
+      "contributionId": "pool-reaction-34"
+    },
+    {
+      "turnId": "2026-11-07T23:34Z-pool-rumor-34",
+      "contributionId": "pool-rumor-34"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-choice-preview-35",
+      "contributionId": "pool-choice-preview-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-description-35",
+      "contributionId": "pool-description-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-documentation-35",
+      "contributionId": "pool-documentation-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-event-body-35",
+      "contributionId": "pool-event-body-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-memory-35",
+      "contributionId": "pool-memory-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-opening-35",
+      "contributionId": "pool-opening-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-reaction-35",
+      "contributionId": "pool-reaction-35"
+    },
+    {
+      "turnId": "2026-11-07T23:35Z-pool-rumor-35",
+      "contributionId": "pool-rumor-35"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-choice-preview-36",
+      "contributionId": "pool-choice-preview-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-description-36",
+      "contributionId": "pool-description-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-documentation-36",
+      "contributionId": "pool-documentation-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-event-body-36",
+      "contributionId": "pool-event-body-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-memory-36",
+      "contributionId": "pool-memory-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-opening-36",
+      "contributionId": "pool-opening-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-reaction-36",
+      "contributionId": "pool-reaction-36"
+    },
+    {
+      "turnId": "2026-11-07T23:36Z-pool-rumor-36",
+      "contributionId": "pool-rumor-36"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-choice-preview-37",
+      "contributionId": "pool-choice-preview-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-description-37",
+      "contributionId": "pool-description-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-documentation-37",
+      "contributionId": "pool-documentation-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-event-body-37",
+      "contributionId": "pool-event-body-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-memory-37",
+      "contributionId": "pool-memory-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-opening-37",
+      "contributionId": "pool-opening-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-reaction-37",
+      "contributionId": "pool-reaction-37"
+    },
+    {
+      "turnId": "2026-11-07T23:37Z-pool-rumor-37",
+      "contributionId": "pool-rumor-37"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-choice-preview-38",
+      "contributionId": "pool-choice-preview-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-description-38",
+      "contributionId": "pool-description-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-documentation-38",
+      "contributionId": "pool-documentation-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-event-body-38",
+      "contributionId": "pool-event-body-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-memory-38",
+      "contributionId": "pool-memory-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-opening-38",
+      "contributionId": "pool-opening-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-reaction-38",
+      "contributionId": "pool-reaction-38"
+    },
+    {
+      "turnId": "2026-11-07T23:38Z-pool-rumor-38",
+      "contributionId": "pool-rumor-38"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-choice-preview-39",
+      "contributionId": "pool-choice-preview-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-description-39",
+      "contributionId": "pool-description-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-documentation-39",
+      "contributionId": "pool-documentation-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-event-body-39",
+      "contributionId": "pool-event-body-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-memory-39",
+      "contributionId": "pool-memory-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-opening-39",
+      "contributionId": "pool-opening-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-reaction-39",
+      "contributionId": "pool-reaction-39"
+    },
+    {
+      "turnId": "2026-11-07T23:39Z-pool-rumor-39",
+      "contributionId": "pool-rumor-39"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-choice-preview-40",
+      "contributionId": "pool-choice-preview-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-description-40",
+      "contributionId": "pool-description-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-documentation-40",
+      "contributionId": "pool-documentation-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-event-body-40",
+      "contributionId": "pool-event-body-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-memory-40",
+      "contributionId": "pool-memory-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-opening-40",
+      "contributionId": "pool-opening-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-reaction-40",
+      "contributionId": "pool-reaction-40"
+    },
+    {
+      "turnId": "2026-11-07T23:40Z-pool-rumor-40",
+      "contributionId": "pool-rumor-40"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-choice-preview-41",
+      "contributionId": "pool-choice-preview-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-description-41",
+      "contributionId": "pool-description-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-documentation-41",
+      "contributionId": "pool-documentation-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-event-body-41",
+      "contributionId": "pool-event-body-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-memory-41",
+      "contributionId": "pool-memory-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-opening-41",
+      "contributionId": "pool-opening-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-reaction-41",
+      "contributionId": "pool-reaction-41"
+    },
+    {
+      "turnId": "2026-11-07T23:41Z-pool-rumor-41",
+      "contributionId": "pool-rumor-41"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-choice-preview-42",
+      "contributionId": "pool-choice-preview-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-description-42",
+      "contributionId": "pool-description-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-documentation-42",
+      "contributionId": "pool-documentation-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-event-body-42",
+      "contributionId": "pool-event-body-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-memory-42",
+      "contributionId": "pool-memory-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-opening-42",
+      "contributionId": "pool-opening-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-reaction-42",
+      "contributionId": "pool-reaction-42"
+    },
+    {
+      "turnId": "2026-11-07T23:42Z-pool-rumor-42",
+      "contributionId": "pool-rumor-42"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-choice-preview-43",
+      "contributionId": "pool-choice-preview-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-description-43",
+      "contributionId": "pool-description-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-documentation-43",
+      "contributionId": "pool-documentation-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-event-body-43",
+      "contributionId": "pool-event-body-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-memory-43",
+      "contributionId": "pool-memory-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-opening-43",
+      "contributionId": "pool-opening-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-reaction-43",
+      "contributionId": "pool-reaction-43"
+    },
+    {
+      "turnId": "2026-11-07T23:43Z-pool-rumor-43",
+      "contributionId": "pool-rumor-43"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-choice-preview-44",
+      "contributionId": "pool-choice-preview-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-description-44",
+      "contributionId": "pool-description-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-documentation-44",
+      "contributionId": "pool-documentation-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-event-body-44",
+      "contributionId": "pool-event-body-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-memory-44",
+      "contributionId": "pool-memory-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-opening-44",
+      "contributionId": "pool-opening-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-reaction-44",
+      "contributionId": "pool-reaction-44"
+    },
+    {
+      "turnId": "2026-11-07T23:44Z-pool-rumor-44",
+      "contributionId": "pool-rumor-44"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-choice-preview-45",
+      "contributionId": "pool-choice-preview-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-description-45",
+      "contributionId": "pool-description-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-documentation-45",
+      "contributionId": "pool-documentation-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-event-body-45",
+      "contributionId": "pool-event-body-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-memory-45",
+      "contributionId": "pool-memory-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-opening-45",
+      "contributionId": "pool-opening-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-reaction-45",
+      "contributionId": "pool-reaction-45"
+    },
+    {
+      "turnId": "2026-11-07T23:45Z-pool-rumor-45",
+      "contributionId": "pool-rumor-45"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-choice-preview-46",
+      "contributionId": "pool-choice-preview-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-description-46",
+      "contributionId": "pool-description-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-documentation-46",
+      "contributionId": "pool-documentation-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-event-body-46",
+      "contributionId": "pool-event-body-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-memory-46",
+      "contributionId": "pool-memory-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-opening-46",
+      "contributionId": "pool-opening-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-reaction-46",
+      "contributionId": "pool-reaction-46"
+    },
+    {
+      "turnId": "2026-11-07T23:46Z-pool-rumor-46",
+      "contributionId": "pool-rumor-46"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-choice-preview-47",
+      "contributionId": "pool-choice-preview-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-description-47",
+      "contributionId": "pool-description-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-documentation-47",
+      "contributionId": "pool-documentation-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-event-body-47",
+      "contributionId": "pool-event-body-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-memory-47",
+      "contributionId": "pool-memory-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-opening-47",
+      "contributionId": "pool-opening-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-reaction-47",
+      "contributionId": "pool-reaction-47"
+    },
+    {
+      "turnId": "2026-11-07T23:47Z-pool-rumor-47",
+      "contributionId": "pool-rumor-47"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-choice-preview-48",
+      "contributionId": "pool-choice-preview-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-description-48",
+      "contributionId": "pool-description-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-documentation-48",
+      "contributionId": "pool-documentation-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-event-body-48",
+      "contributionId": "pool-event-body-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-memory-48",
+      "contributionId": "pool-memory-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-opening-48",
+      "contributionId": "pool-opening-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-reaction-48",
+      "contributionId": "pool-reaction-48"
+    },
+    {
+      "turnId": "2026-11-07T23:48Z-pool-rumor-48",
+      "contributionId": "pool-rumor-48"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-choice-preview-49",
+      "contributionId": "pool-choice-preview-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-description-49",
+      "contributionId": "pool-description-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-documentation-49",
+      "contributionId": "pool-documentation-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-event-body-49",
+      "contributionId": "pool-event-body-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-memory-49",
+      "contributionId": "pool-memory-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-opening-49",
+      "contributionId": "pool-opening-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-reaction-49",
+      "contributionId": "pool-reaction-49"
+    },
+    {
+      "turnId": "2026-11-07T23:49Z-pool-rumor-49",
+      "contributionId": "pool-rumor-49"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-choice-preview-50",
+      "contributionId": "pool-choice-preview-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-description-50",
+      "contributionId": "pool-description-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-documentation-50",
+      "contributionId": "pool-documentation-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-event-body-50",
+      "contributionId": "pool-event-body-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-memory-50",
+      "contributionId": "pool-memory-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-opening-50",
+      "contributionId": "pool-opening-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-reaction-50",
+      "contributionId": "pool-reaction-50"
+    },
+    {
+      "turnId": "2026-11-07T23:50Z-pool-rumor-50",
+      "contributionId": "pool-rumor-50"
     }
   ]
 }

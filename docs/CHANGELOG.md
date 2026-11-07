@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 21:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 22:53 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.183] - 2026-11-07
+
+### Textbausteine
+- **Pools auf Mindestgroesse 50.** Acht Slots tragen je 50 gepruefte Fragmente; die Registry waechst von 66 auf 400 Bausteine (Ziel 1500). Jeder neue Text ist eindeutig, im Turn-Manifest registriert und in Registry sowie Laufzeit-Spiegel verdrahtet.
+- **Pflicht pro Commit ist gate-geprueft.** `verify:narrative-blocks` prueft Pool-Minimum, Duplikate, Verdrahtung und die Luecken-Regel; der Pre-Commit-Hook ruft es mit `--commit` auf und blockiert Commits ohne neuen, verdrahteten Baustein. Das bestehende Assets-Gate faehrt dieselbe Pruefung in CI, ohne eine zweite Gate-Landschaft.
 
 ## [0.3.183] - 2026-11-07
 

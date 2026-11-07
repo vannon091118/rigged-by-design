@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 21:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 22:53 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Textbaustein-Pools als Pflichtregel
+
+**Ziel.** Die Textbausteine von einem Nebenprodukt zu einer geprueften Regel machen: Mindestgroesse je Pool, Fortschritt zum Ziel 1500, und jeder Commit muss einen neuen, verdrahteten Baustein liefern, der eine Luecke schliesst.
+
+**Umsetzung.** `scripts/lib/narrative-blocks.mjs` traegt die Regel als reine Logik: Mindestgroesse 50 je Slot, Gesamtziel 1500, Duplikaterkennung ueber normalisierten Text und die Luecken-Regel (neue Beitraege nur in Pools unter der Mindestgroesse). `scripts/verify-narrative-blocks.mjs` liest die echte Content-Kette, prueft Manifest- und Registry-Verdrahtung und laeuft mit `--commit` im Pre-Commit-Hook. Das Assets-Gate ruft dieselbe Regel in CI auf; es gibt kein neues Gate und keine zweite Content-Wahrheit. Der Content-Batch fuellt alle acht Slots auf je 50 Fragmente (400 gesamt); der Laufzeit-Spiegel rendert vier Fragmente je Zeile, damit die generierte Datei unter dem Engine-Cap bleibt.
+
+**Pruefungen.** `node scripts/verify-narrative-content.mjs` PASS (400 Beitraege, 400 Turns, 400 Fragmente); `node scripts/verify-narrative-blocks.mjs` PASS (alle Pools 50); `node scripts/check-loc.mjs` PASS (`registry.generated.ts` 105/200 LOC).
+
+**Offen.** 400 von 1500 Bausteinen; die naechsten Batches muessen die Kontextabdeckung je Pool vertiefen, nicht nur die Zahl erhoehen. Offene Spiel- und Governance-Punkte stehen kategorisiert in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Mehrbeatige Events aus #243 gerettet
 
