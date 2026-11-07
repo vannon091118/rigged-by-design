@@ -1,19 +1,28 @@
 name: Auto Version & Release
 
-# Ebene A: kein Nachrichtenmuster schaltet die Pruefung ab. Der Release startet
-# erst nach einem erfolgreichen Lauf von "CI Verify" fuer denselben main-Commit;
-# die vollstaendige Suite laeuft damit genau einmal. Dieser Workflow taggt nur.
+# Ebene A: PR-Promotion prueft den exakten Head und uebergibt die Merge-SHA.
+# Der Release-Workflow taggt den geprueften Main-Stand und wiederholt die Suite
+# nicht. Ein manueller Lauf ohne Pruefbeleg fuehrt weiterhin verify:release aus.
 # APK und Release-Assets entstehen nur, wenn der Commit Code, Inhalte oder
 # Assets beruehrt - bei reiner Doku bleibt der Lauf beim Tag.
 on:
-  workflow_run:
-    workflows: ["CI Verify"]
-    types: [completed]
+  push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      verified_sha:
+        description: Squash-Commit aus der geprueften PR-Promotion
+        type: string
+        required: false
+      verified_head:
+        description: PR-Head mit erfolgreichem Pflicht-Gate
+        type: string
+        required: false
 
 permissions:
   contents: write
+  checks: read
+  actions: read
 
 concurrency:
   group: auto-version-main
@@ -26,19 +35,17 @@ jobs:
     # manueller Dispatch prueft weiterhin selbst, weil er keinen CI-Lauf hat.
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.event == 'push' &&
-       github.event.workflow_run.head_branch == 'main')
+      github.event_name == 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
-      apk: ${{ steps.relevance.outputs.apk }}
+      apk: ${{ steps.relevance.outputs.build }}
     steps:
       - name: Checkout (volle Historie)
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ inputs.verified_sha || github.sha }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,15 +60,24 @@ jobs:
           node-version: '22'
           cache: pnpm
 
-      # Nur der manuelle Pfad hat keinen vorgelagerten CI-Lauf. Der
-      # automatische Pfad taggt ausschliesslich den bereits geprueften Commit.
-      - name: Install (pnpm install --frozen-lockfile, nur manuell)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
       - name: Alle Gates vor manuellem Release
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && inputs.verified_sha == ''
         run: pnpm run verify:release
+
+      - name: Gepruefte Promotion-SHAs bestaetigen
+        if: github.event_name == 'workflow_dispatch' && inputs.verified_sha != ''
+        env:
+          EXPECTED_SHA: ${{ inputs.verified_sha }}
+          VERIFIED_HEAD: ${{ inputs.verified_head }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          gh api "repos/${GITHUB_REPOSITORY}/commits/${VERIFIED_HEAD}/check-runs" \
+            --jq '[.check_runs[] | select(.name == "Fail-Closed Gates" and .status == "completed")][ -1 ].conclusion' \
+            | grep -qx success
 
       # APK nur bei relevanter Aenderung: reine Doku, Governance-Texte und
       # Marker brauchen keinen Android-Bau.
@@ -72,14 +88,8 @@ jobs:
           if [ -z "$prev" ]; then
             echo "apk=true" >> "$GITHUB_OUTPUT"
             echo "::notice::kein Vorgaenger-Tag; APK wird gebaut"
-            exit 0
-          fi
-          if git diff --name-only "$prev" HEAD | grep -qE '^(src/|content/|public/|scripts/|index.html|package\.json|pnpm-lock\.yaml|src/Config/)'; then
-            echo "apk=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::Code/Inhalt geaendert; APK wird gebaut"
           else
-            echo "apk=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::nur Doku/Governance seit $prev; APK entfaellt"
+            node scripts/ci-impact.mjs --base="$prev"
           fi
 
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
@@ -101,7 +111,7 @@ jobs:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           # workflow_run setzt GITHUB_SHA auf den Default-Branch. Der Tag muss
           # aber genau den geprueften Commit treffen; RELEASE_SHA hat Vorrang.
-          RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          RELEASE_SHA: ${{ inputs.verified_sha || github.sha }}
         run: node scripts/ci-tag-release.mjs --github-output "$GITHUB_OUTPUT"
 
   # Der Tag wird mit GITHUB_TOKEN gepusht; dessen Events starten keine

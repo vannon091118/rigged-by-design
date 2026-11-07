@@ -24,13 +24,20 @@ const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
  */
 export const OWNERS = Object.freeze([
   'Integrator',
-  'Governance-Owner',
-  'Architektur-Owner',
-  'Ledger-/Core-Owner',
-  'Quality-/Capability-Owner',
-  'Interaction-Contract-Owner',
-  'Sim-/Domain-Owner',
-  'Save-/Migrations-Owner',
+  'P0-Workflow-Integrator',
+  'Governance-Legacy-Owner',
+  'Governance-Integrator',
+  'Phase0-Owner',
+  'Ledger-Contract-Writer',
+  'Capability-Owner',
+  'ActorId-Contract-Writer',
+  'WorldTime-Contract-Writer',
+  'DomainEvent-Contract-Writer',
+  'Relationship-Contract-Writer',
+  'Factor-Contract-Writer',
+  'Save-Contract-Writer',
+  'ActionSet-Contract-Writer',
+  'SpatialLayout-Owner',
   'Monitor',
 ]);
 
@@ -51,7 +58,7 @@ export class LaneClaim {
    * @param {string} gateProfile - 'quick' oder 'full'
    * @param {string} status - 'open' | 'merged' | 'archived' | 'parked'
    */
-  constructor({ id, owner, branch, baseSha, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open' }) {
+  constructor({ id, owner, branch, baseSha, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', workerId = null, branchStatus = null, syncStatus = 'current', syncNote = null, handoff = null }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
@@ -61,6 +68,11 @@ export class LaneClaim {
     this.dependencies = dependencies;
     this.gateProfile = gateProfile;
     this.status = status;
+    this.workerId = workerId;
+    this.branchStatus = branchStatus ?? (status === 'open' ? 'active' : status);
+    this.syncStatus = syncStatus;
+    this.syncNote = syncNote;
+    this.handoff = handoff;
     this.createdAt = baseSha;
   }
 
@@ -100,6 +112,11 @@ export class LaneClaim {
       dependencies: this.dependencies,
       gateProfile: this.gateProfile,
       status: this.status,
+      workerId: this.workerId,
+      branchStatus: this.branchStatus,
+      syncStatus: this.syncStatus,
+      syncNote: this.syncNote,
+      handoff: this.handoff,
       createdAt: this.createdAt,
     };
   }
@@ -156,7 +173,8 @@ export function removeClaim(id) {
 
 /** Gibt alle offenen Claims zurück. */
 export function openClaims() {
-  return loadClaims().filter((c) => c.status === 'open');
+  return loadClaims().filter((c) => ['open', 'active', 'sync-pending'].includes(c.status)
+    && !['parked', 'merged', 'archive', 'reserved', 'closing'].includes(c.branchStatus));
 }
 
 /** Validiert, ob ein Pfad durch einen offenen Claim abgedeckt ist. */
@@ -217,6 +235,11 @@ export function findCollisions(newClaim) {
   return collisions;
 }
 
+/** A stable owner key may write on only one active branch at a time. */
+export function findOwnerConflicts(newClaim) {
+  return openClaims().filter((entry) => entry.id !== newClaim.id && entry.owner === newClaim.owner);
+}
+
 /** Prüft, ob ein Contract-Id gleichzeitig von zwei offenen Lanes geschrieben wird. */
 export function contractWriterConflicts(contractId) {
   const claims = openClaims();
@@ -229,6 +252,7 @@ export function contextSummary() {
   const claims = openClaims();
   const parked = loadClaims().filter((c) => c.status === 'parked');
   const merged = loadClaims().filter((c) => c.status === 'merged');
+  const closing = loadClaims().filter((c) => c.branchStatus === 'closing');
 
   const allCollisions = [];
   for (const claim of claims) {
@@ -251,6 +275,7 @@ export function contextSummary() {
     })),
     parked: parked.map((c) => ({ id: c.id, owner: c.owner, reason: 'PARKED in ROADMAP.md' })),
     merged: merged.map((c) => ({ id: c.id, branch: c.branch })),
+    closing: closing.map((c) => ({ id: c.id, branch: c.branch, reason: 'finaler PR wird noch synchronisiert und geprueft' })),
     collisions: allCollisions,
   };
 }

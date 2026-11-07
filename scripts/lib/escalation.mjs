@@ -71,7 +71,9 @@ export function kindForCode(code) {
 
 export function plan(text, code) {
   const kind = kindForCode(code) ?? classify(text);
-  return { kind, ...KINDS[kind], code: code ?? null, reason: String(text ?? '').trim().slice(0, 160) };
+  const entry = CATALOG.get(code);
+  const scope = entry?.scope ?? (code === 'ERR-0000' || !entry ? 'triage' : kind === 'BLOCKED' ? 'lane' : kind === 'TRANSIENT' ? 'project' : 'advisory');
+  return { kind, ...KINDS[kind], scope, code: code ?? null, reason: String(text ?? '').trim().slice(0, 160) };
 }
 
 export function describePlan(entry) {

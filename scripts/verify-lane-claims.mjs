@@ -12,7 +12,7 @@
  * Exit 0 = OK, Exit 1 = Claim fehlt, Verletzung oder Kollision.
  */
 import { execFileSync } from 'node:child_process';
-import { loadClaimsStrict, findCollisions, OWNERS, BRANCH_PATTERN, LEGACY_PREFIXES } from './lib/lane-claims.mjs';
+import { loadClaimsStrict, findCollisions, findOwnerConflicts, OWNERS, BRANCH_PATTERN, LEGACY_PREFIXES } from './lib/lane-claims.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -63,8 +63,10 @@ for (const key of ['id', 'branch']) {
   }
 }
 
-const claims = allClaims.filter((c) => c.status === 'open');
-const claim = claims.find((c) => c.branch === branch);
+const claims = allClaims.filter((c) => ['open', 'active', 'sync-pending'].includes(c.status)
+  && !['parked', 'merged', 'archive', 'reserved', 'closing'].includes(c.branchStatus));
+const claim = claims.find((c) => c.branch === branch)
+  ?? allClaims.find((c) => c.branch === branch && c.branchStatus === 'closing' && ['open', 'active', 'sync-pending'].includes(c.status));
 
 /**
  * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz mit dem
@@ -85,6 +87,12 @@ if (!claim) {
 /** Feste Owner: eine Lane ohne benannten Owner ist keine Lane. */
 if (!OWNERS.includes(claim.owner)) {
   console.error(`[ERR-4019] verify-lane-claims: Owner '${claim.owner}' ist nicht im festen Roster (${OWNERS.join(', ')}).`);
+  process.exit(1);
+}
+
+const ownerConflicts = findOwnerConflicts(claim);
+if (ownerConflicts.length > 0) {
+  console.error(`[ERR-4019] verify-lane-claims: Owner '${claim.owner}' hat bereits aktive Schreib-Lane(s): ${ownerConflicts.map((entry) => entry.id).join(', ')}.`);
   process.exit(1);
 }
 

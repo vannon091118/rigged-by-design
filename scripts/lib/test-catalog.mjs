@@ -21,7 +21,7 @@ export const LONG_PROOF_CLASSES = Object.freeze(['statistics', 'performance']);
 const SYSTEMS = CATALOG_SYSTEMS;
 
 /** Statistik-Suiten: Sampling, RTP, Langlauf. Der Name entscheidet, nicht der Ordner. */
-const STATISTICS = /(^|\/)(round-rtp-[^/]*|slot-session-rtp|poker-distribution|soak|balance-operating)(\.test)?\.tsx?$/;
+const STATISTICS = /(^|\/)(round-rtp-[^/]*|slot-session-rtp|slot-paylines-rtp|poker-distribution|soak|balance-operating)(\.test)?\.tsx?$/;
 
 export const CATALOG_START = '<!-- TEST_CATALOG_START -->';
 export const CATALOG_END = '<!-- TEST_CATALOG_END -->';

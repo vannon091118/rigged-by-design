@@ -5,22 +5,25 @@
  */
 
 type EscalationLevel = 'AUTO_FIX' | 'LOCAL_GATE' | 'REMOTE_CI' | 'AGENT' | 'BLOCKED';
+type ErrorScope = 'lane' | 'project' | 'triage' | 'advisory';
 
 interface ErrorDefinition {
   readonly code: string;
   readonly level: EscalationLevel;
+  readonly scope?: ErrorScope;
   readonly area: 'governance' | 'core' | 'sim' | 'render' | 'docs';
   readonly cause: string;
   readonly fix: string;
 }
 
 export const ERROR_CODES = {
-  UNKNOWN: { code: 'ERR-0000', level: 'BLOCKED', area: 'governance', cause: 'Ein Fehler besitzt noch keinen Eintrag im zentralen Register.', fix: 'Neuen ERR-Code in error-codes.ts und im Fehlerregister in docs/ARCHITECTURE.md eintragen.' },
+  UNKNOWN: { code: 'ERR-0000', level: 'AGENT', scope: 'triage', area: 'governance', cause: 'Ein Fehler besitzt noch keinen Eintrag im zentralen Register.', fix: 'Fehler im Triage-Pool zuordnen und einen passenden Eintrag im zentralen Register ergaenzen.' },
   AUTOFIX: { code: 'ERR-0911', level: 'AUTO_FIX', area: 'governance', cause: 'Ein Verstoss ist vollautomatisch reparierbar.', fix: 'autofix:0911 ausfuehren und den Lauf wiederholen.' },
-  DETERMINISM: { code: 'ERR-1001', level: 'BLOCKED', area: 'governance', cause: 'Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/.', fix: 'Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick.' },
-  LEDGER_PROOF: { code: 'ERR-1002', level: 'BLOCKED', area: 'core', cause: 'Ledger- oder VaCoin-Invariante verletzt.', fix: 'Buchungspfad und Mikro-Geldarithmetik pruefen.' },
-  GAME_PROOF: { code: 'ERR-1003', level: 'BLOCKED', area: 'core', cause: 'RNG- oder RTP-Beweis fehlgeschlagen.', fix: 'Seed, Paytable und Einsatzpfad des Spiels pruefen.' },
-  BUILD_FAILED: { code: 'ERR-1005', level: 'AGENT', area: 'core', cause: 'Typecheck oder Production-Build bricht ab.', fix: 'Ersten Compilerfehler beheben, keine Fehler unterdruecken.' },
+  DETERMINISM: { code: 'ERR-1001', level: 'BLOCKED', scope: 'lane', area: 'governance', cause: 'Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/.', fix: 'Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick.' },
+  LEDGER_PROOF: { code: 'ERR-1002', level: 'BLOCKED', scope: 'lane', area: 'core', cause: 'Ledger- oder VaCoin-Invariante verletzt.', fix: 'Buchungspfad und Mikro-Geldarithmetik pruefen.' },
+  GAME_PROOF: { code: 'ERR-1003', level: 'BLOCKED', scope: 'lane', area: 'core', cause: 'Deterministischer Spiel-, Einsatz-, RNG- oder Auszahlungsvertrag verletzt; Langzeitstatistik ist ERR-4027.', fix: 'Betroffene Spiel-Lane anhalten und den deterministischen Vertrag pruefen.' },
+  PAYOUT_INVARIANT: { code: 'ERR-1004', level: 'BLOCKED', scope: 'lane', area: 'core', cause: 'Deterministische Auszahlung, Gewinnlinie oder Einsatzbuchung verletzt eine Spielinvariante.', fix: 'Betroffene Spiel- und Ledger-Lane anhalten und den deterministischen Auszahlungspfad pruefen.' },
+  BUILD_FAILED: { code: 'ERR-1005', level: 'AGENT', scope: 'lane', area: 'core', cause: 'Typecheck oder Production-Build bricht ab.', fix: 'Ersten Compilerfehler beheben, keine Fehler unterdruecken.' },
   WORLD_ASSERTION: { code: 'ERR-2001', level: 'BLOCKED', area: 'sim', cause: 'Simulations- oder Weltzustand verletzt eine Zusicherung.', fix: 'Gast-, Platz- oder Geldpfad an der Ursache korrigieren.' },
   GRID_ASSERTION: { code: 'ERR-2002', level: 'AGENT', area: 'sim', cause: 'Bereichs-, Footprint- oder Zugangsregel verletzt.', fix: 'grid-zones und Multi-Tile-Flaeche pruefen.' },
   DUMMY_UI: { code: 'ERR-3001', level: 'AGENT', area: 'render', cause: 'UI oder Renderer zeigt einen hartcodierten Dummy-Wert.', fix: 'Wert an ein echtes Snapshot-Feld binden oder entfernen.' },
@@ -46,9 +49,10 @@ export const ERROR_CODES = {
   CONTENT_SCHEMA: { code: 'ERR-4022', level: 'AGENT', area: 'governance', cause: 'Content-Beitrag, Vokabular, Turn-Manifest, Makro oder Registry verletzt den NAR-09/NAR-10-Vertrag.', fix: 'Feld, ID, Klassifizierung oder Makro korrigieren; Registry mit pnpm run narrative:compile neu erzeugen.' },
   DIRECT_PUSH_REJECTED: { code: 'ERR-4023', level: 'AGENT', area: 'governance', cause: 'Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht.', fix: 'Fokussierten PR gegen main oeffnen und ueber das Gate promoten; kein Direktpush auf main.' },
   LOCAL_GATE_RED: { code: 'ERR-4024', level: 'LOCAL_GATE', area: 'governance', cause: 'Das lokale Gate (verify:quick oder verify:all) in turn:finish ist rot; kein Commit und kein Push.', fix: 'Den ersten Befund im Gate-Log beheben und turn:finish erneut ausfuehren.' },
-  TRANSFER_INVALID: { code: 'ERR-5001', level: 'BLOCKED', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
+  TRANSFER_INVALID: { code: 'ERR-5001', level: 'BLOCKED', scope: 'lane', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
   CAPABILITY_GATE: { code: 'ERR-4025', level: 'AGENT', area: 'governance', cause: 'Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise.', fix: 'Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren.' },
-  TEST_RED: { code: 'ERR-4026', level: 'AGENT', area: 'governance', cause: 'Die Testsuite ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten.', fix: 'Befund als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt.' },
+  TEST_RED: { code: 'ERR-4026', level: 'AGENT', scope: 'advisory', area: 'governance', cause: 'Die Testsuite ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten.', fix: 'Befund als lane-scoped Issue abholen; unabhaengige Arbeit laeuft weiter.' },
+  STATISTICS_ADVISORY: { code: 'ERR-4027', level: 'AGENT', scope: 'advisory', area: 'governance', cause: 'Ein RTP-, Balance-, Soak- oder Verteilungsnachweis ist ausserhalb seines erwarteten Bands.', fix: 'Als Advisory-Issue in der betroffenen Lane verfolgen; kein erforderlicher Merge-Check.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(Object.values(ERROR_CODES).map((entry) => [entry.code, entry]));

@@ -15,7 +15,7 @@ import { join, relative } from 'node:path';
 import { impact } from './lib/impact.mjs';
 import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
-import { openClaims } from './lib/lane-claims.mjs';
+import { loadClaimsStrict } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -34,10 +34,12 @@ const git = (args) => {
     return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch { return ''; }
 };
-const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
-const claims = openClaims();
-const claim = claims.find((c) => c.branch === branch);
-if (!claim && !PLAN_ONLY) {
+const branch = process.env.BRANCH ?? git(['rev-parse', '--abbrev-ref', 'HEAD']);
+const claims = loadClaimsStrict();
+const claim = claims.find((c) => c.branch === branch
+  && ['open', 'active', 'sync-pending'].includes(c.status)
+  && (!['parked', 'merged', 'archive', 'reserved'].includes(c.branchStatus)));
+if (!claim && branch !== 'main' && !PLAN_ONLY) {
   console.error(`[ERR-4019] agent:verify: Branch '${branch}' hat keinen Lane-Claim in .lane-claims/claims.json`);
   console.error('  Registriere den Claim zuerst (siehe AGENTS.md § Lane- und Konflikt-Governance).');
   process.exit(1);
@@ -46,15 +48,22 @@ const steps = (planGates(PROFILE) ?? []).map((key) => ({ ...GATES[key] }));
 const tests = steps.find((step) => step.name === 'tests');
 let subset = [];
 if (PROFILE === 'quick' && tests && !state.tests.runAll && state.tests.selected.length > 0) {
-  subset = state.tests.selected;
-  tests.env = { ...(tests.env ?? {}), RBD_TEST_FILES: subset.join(',') };
-  // Eine Auswahl darf nie als Vollnachweis im Cache landen.
+  subset = state.tests.fast;
+  tests.env = { ...(tests.env ?? {}), RBD_TEST_PROFILE: 'quick', ...(subset.length > 0 ? { RBD_TEST_FILES: subset.join(',') } : {}) };
+  tests.skip = subset.length === 0;
   tests.cache = false;
 }
 if (PROFILE === 'quick' && tests && state.tests.selected.length === 0 && !state.tests.runAll && state.tests.long.length === 0) {
-  // Nichts geaendert heisst nicht "nichts pruefen": eine Verifikation ohne
-  // Testlauf waere ein stiller Freischein. Ohne Auswahl laeuft die Suite.
-  state.open.push('kein Testbezug im Diff: die Suite laeuft vollstaendig');
+  // Doku-, Governance- und Marker-Aenderungen ziehen keine Spieletests nach.
+  // Der Testvertrag bleibt als eigenes schnelles Gate aktiv.
+  tests.skip = true;
+  tests.cache = false;
+  state.open.push('keine betroffene Testdatei im Diff; Tests ausgelassen');
+}
+if (PROFILE === 'quick' && tests && state.tests.runAll) {
+  // Fallbacks bleiben konservativ: alle schnellen Beweisklassen, lange
+  // Statistik-/Messnachweise laufen parallel im Advisory-Workflow.
+  tests.env = { ...(tests.env ?? {}), RBD_TEST_PROFILE: 'quick' };
 }
 
 const header = `Verify ${PROFILE} · ${state.version} · ${state.tree.branch}@${state.tree.head} · Baum ${state.tree.key}`;

@@ -1,4 +1,4 @@
-/** @test-target: src/store/save.ts | @error-code: ERR-1003 */
+/** @test-target: src/store/save.ts | @error-code: ERR-5001 */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { openHouse } from '../../core/sim/money';

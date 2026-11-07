@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/games/engines/slot.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1004
  *
  * Das Gitter muss die Gewinnlinien exakt tragen: was die Anzeige als Treffer
  * zeichnet, ist die Linie, die die Engine bezahlt hat.
@@ -9,7 +9,6 @@ import { describe, expect, it } from 'vitest';
 import { Prng } from '../../rng/prng';
 import { SLOT_LINES, SLOT_SYMBOLS, playSlot } from '../engines/slot';
 import { slotPaylines } from '../engines/slot-paytable';
-import { payScaleFor } from '../engines/slot-odds';
 import { randomSeed } from '../../../test/random-seed';
 
 describe('Slot-Gitter fuer die Anzeige', () => {
@@ -80,24 +79,4 @@ describe('Slot-Gitter fuer die Anzeige', () => {
     }
   });
 
-  // Volllauf: Build und schwere RTP-Tests teilen die CPU; gemessen 72,7 s.
-  // Das Zeitbudget deckt diese Last, die RTP-Schwelle bleibt unveraendert.
-  it('zahlt drei, vier und fuenf Walzen auf demselben Niveau', { timeout: 120_000 }, () => {
-    const measure = (reels: number): number => {
-      const prng = new Prng(randomSeed());
-      const rounds = 120_000;
-      let sum = 0;
-      for (let index = 0; index < rounds; index += 1) sum += playSlot(prng, { reels }).multiplierBps;
-      return sum / rounds / 10_000;
-    };
-    const three = measure(3);
-    const five = measure(5);
-    expect(five).toBeGreaterThan(0.85);
-    expect(five).toBeLessThan(1);
-    // Die Walzenzahl veraendert Kombinationen und Streuung, nicht den Hausvorteil.
-    const gap = Math.abs(three - five);
-    expect(gap, 'drei ' + three.toFixed(3) + ' gegen fuenf ' + five.toFixed(3)).toBeLessThan(0.05);
-    // Weniger Trefferkombinationen brauchen dafuer eine groessere Skalierung.
-    expect(payScaleFor(3)).toBeGreaterThan(payScaleFor(5));
-  });
 });

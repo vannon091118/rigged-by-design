@@ -13,12 +13,12 @@ import { changedFiles, selectAffectedTests, subsystemOf } from './affected-tests
 import { isCached, treeKey } from './gate-cache.mjs';
 import { GATES, planGates } from './pipeline-plan.mjs';
 import { ROOT } from './report.mjs';
-import { IMPACT_AREAS } from './subsystems.mjs';
+import { SUBSYSTEMS } from './subsystems.mjs';
 import { partitionByProof, proofClassOf } from './test-catalog.mjs';
 import { contextSummary } from './lane-claims.mjs';
 
 /** Was eine Aenderung an Doku und Invarianten mitzieht; die Liste steht in scripts/lib/subsystems.mjs. */
-const AREAS = IMPACT_AREAS;
+const AREAS = SUBSYSTEMS;
 
 const git = (args) => {
   try {
@@ -29,6 +29,35 @@ const git = (args) => {
 };
 
 const areaFor = (file) => AREAS.find((area) => file === area.prefix || file.startsWith(`${area.prefix}/`)) ?? null;
+
+function dependenciesChanged(baseRef) {
+  const probes = [
+    ...(baseRef ? [['diff', '--unified=0', `${baseRef}...HEAD`, '--', 'package.json', 'pnpm-lock.yaml']] : []),
+    ['diff', '--unified=0', 'HEAD', '--', 'package.json', 'pnpm-lock.yaml'],
+    ['diff', '--unified=0', '--cached', '--', 'package.json', 'pnpm-lock.yaml'],
+  ];
+  for (const probe of probes) {
+    let output;
+    try {
+      output = execFileSync('git', probe, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    } catch {
+      return true;
+    }
+    const changed = output.split(/\r?\n/)
+      .filter((line) => /^[+-]/.test(line) && !/^\+\+\+|^---/.test(line))
+      .filter((line) => !/^[+-]\s*"version":/.test(line));
+    if (changed.length > 0) return true;
+  }
+  return false;
+}
+
+function needsAppBuild(files, dependencyChange) {
+  if (dependencyChange) return true;
+  return files.some((file) => {
+    if (/\/__tests__\/|\.(test|bench)\.(ts|tsx)$/.test(file)) return false;
+    return areaFor(file)?.appBuild === true;
+  });
+}
 
 function version() {
   try {
@@ -44,7 +73,8 @@ function version() {
  */
 export function impact(options = {}) {
   const profile = options.profile ?? 'quick';
-  const changed = changedFiles().sort();
+  const baseRef = options.baseRef ?? 'origin/main';
+  const changed = changedFiles(baseRef).sort();
   const selection = selectAffectedTests(changed);
   const split = partitionByProof(selection.tests);
   const gates = (planGates(profile) ?? []).map((key) => ({
@@ -54,8 +84,9 @@ export function impact(options = {}) {
     timeoutMs: GATES[key].timeoutMs,
   }));
   const areas = [...new Set(changed.map((file) => subsystemOf(file)).filter(Boolean))];
-  const docs = [...new Set(changed.flatMap((file) => areaFor(file)?.docs ?? []))].sort();
+  const docs = [...new Set(changed.flatMap((file) => areaFor(file)?.impactDocs ?? []))].sort();
   const invariants = [...new Set(changed.flatMap((file) => areaFor(file)?.invariants ?? []))];
+  const dependencyChange = dependenciesChanged(baseRef);
   const status = git(['status', '--porcelain']);
   return {
     version: version(),
@@ -76,6 +107,11 @@ export function impact(options = {}) {
       reason: selection.reason,
       fast: split.fast,
       long: split.long.map((test) => ({ file: test, proof: proofClassOf(test) })),
+    },
+    delivery: {
+      dependenciesChanged: dependencyChange,
+      build: needsAppBuild(changed, dependencyChange),
+      advisoryTests: split.long.map((test) => ({ file: test, proof: proofClassOf(test) })),
     },
     lanes: contextSummary(),
     gates,

@@ -1,0 +1,41 @@
+name: Branch Sync
+
+# Nach jedem Main-Merge werden alle aktiven, beanspruchten Lanes per Merge
+# nachgezogen. `integration` und geparkte WIP-Branches bleiben ausgenommen.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: branch-sync-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Aktive Lanes nachziehen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Alle aktiven Claims mit main synchronisieren
+        env:
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-lanes.mjs

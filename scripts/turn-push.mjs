@@ -4,7 +4,6 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
-import { isForbiddenForLanes } from './lib/lane-claims.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
@@ -43,26 +42,6 @@ console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + t
 const stage = () => {
   if (paths.length > 0) git(['add', '--', ...paths]);
   else git(['add', '-A']);
-  // Globale Sperrliste: keine Lane (und kein turn:finish ohne explizite Pfade)
-  // darf die acht Metadaten-Dateien committieren. Sie werden zentral im
-  // Merge-/Promote-Schritt gepflegt. Nach `git add -A` werden sie wieder
-  // aus dem Index entfernt, sofern nicht explizit als --paths übergeben.
-  if (paths.length === 0) {
-    const staged = git(['diff', '--cached', '--name-only']);
-    const forbidden = staged
-      .split(/\r?\n/)
-      .filter(Boolean)
-      .filter((file) => isForbiddenForLanes(file) && file !== 'package.json' && file !== 'pnpm-lock.yaml');
-    if (forbidden.length > 0) {
-      git(['reset', '--', ...forbidden]);
-      console.log(`turn:finish: ${forbidden.length} Sperrlisten-Datei(en) vom Index entfernt: ${forbidden.join(', ')}`);
-    }
-    // package.json und pnpm-lock.yaml gehoeren zum turn:finish-Versions-Bump und
-    // werden zentral gepflegt; sie bleiben im Index.
-    if (forbidden.length === 0 || staged.split(/\r?\n/).filter(Boolean).some((f) => f === 'package.json' || f === 'pnpm-lock.yaml')) {
-      git(['add', '--', 'package.json', 'pnpm-lock.yaml']);
-    }
-  }
 };
 
 // Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.
@@ -216,6 +195,12 @@ const aufraeumen = () => {
   if (cleanup.status !== 0) console.log('turn:finish: Branch-Aufraeumen uebersprungen');
 };
 
+/** PR nach dem Push direkt aus der lokalen, angemeldeten CLI anlegen/aktualisieren. */
+const prAnlegen = () => {
+  const lift = spawnSync(process.execPath, ['scripts/lift-commit-body.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  if (lift.status !== 0) console.log('turn:finish: PR-Body liegt als Connector-Plan vor; Arbeitsbranch bleibt gepusht');
+};
+
 /**
  * Pushen mit Nachziehen: Erst wenn der Remote aktuell ist, geprueft wurde und der Push
  * trotzdem abgelehnt wird, handelt es sich um Branch-Schutz und nicht um Rebase-Rueckstand.
@@ -246,7 +231,8 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
     continue;
   }
   if (gitRun(['push', '-u', 'origin', 'HEAD']).status === 0) {
-    console.log(`turn:finish: PASS, Arbeitsbranch ${currentBranch} gepusht (promote legt den PR gegen ${TARGET_BRANCH} an)`);
+    console.log(`turn:finish: PASS, Arbeitsbranch ${currentBranch} gepusht`);
+    prAnlegen();
     aufraeumen();
     process.exit(0);
   }
@@ -268,6 +254,7 @@ if (pushBranch.status !== 0) {
   fail(1, 'ERR-4008', 'turn:finish', `Push auf ${TARGET_BRANCH} und auf den Arbeitsbranch fehlgeschlagen`);
   process.exit(1);
 }
+prAnlegen();
 aufraeumen();
 fail(1, 'ERR-4023', 'turn:finish', `Direkter Push auf ${TARGET_BRANCH} abgelehnt; Branch gepusht. Fokussierter PR gegen ${TARGET_BRANCH} noetig`);
 process.exit(1);

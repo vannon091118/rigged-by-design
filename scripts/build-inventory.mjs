@@ -9,9 +9,11 @@
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { plan } from './lib/escalation.mjs';
-import { ROOT } from './lib/report.mjs';
+import { ROOT as REPOSITORY_ROOT } from './lib/report.mjs';
+
+const ROOT = resolve(process.env.RBD_INVENTORY_ROOT ?? REPOSITORY_ROOT);
 
 const START = '<!-- inventory:start -->';
 const END = '<!-- inventory:end -->';

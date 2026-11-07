@@ -39,6 +39,10 @@ interface WorkflowTrigger {
   readonly pull_request?: {
     readonly branches?: readonly string[];
     readonly types?: readonly string[];
+  };
+  readonly pull_request_target?: {
+    readonly branches?: readonly string[];
+    readonly types?: readonly string[];
     readonly 'branches-ignore'?: unknown;
   };
   readonly push?: {
@@ -77,47 +81,33 @@ const stepWith = (flow: Workflow, job: string, needle: string): WorkflowStep | u
   steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Main-Gate', () => {
-  it('prueft Pushes auf main, Feature-Pushes leicht und Pull Requests gegen main voll', () => {
+  it('prueft den PR-Head mit read-only Token und impact-basierten Gates', () => {
     const ci = workflow('ci-verify.yml');
-    expect(ci.on?.pull_request?.branches).toEqual(['main']);
-    expect(ci.on?.pull_request?.['branches-ignore']).toBeUndefined();
-    expect(ci.on?.push?.branches).toEqual(['**']);
+    expect(ci.on?.pull_request_target?.branches).toEqual(['main']);
+    expect(ci.on?.pull_request_target?.['branches-ignore']).toBeUndefined();
+    expect(ci.on?.push).toBeUndefined();
     expect(ci.permissions?.contents).toBe('read');
     expect(ci.permissions?.['pull-requests']).toBe('read');
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
-
-    // Ein Push mit offenem PR endet vor dem Gate; der PR-Lauf ist die Wahrheit.
-    const dedupe = stepWith(ci, 'verify', 'gh pr list --head');
-    expect(dedupe?.id).toBe('dedupe');
-
-    // Profilwahl statt eines zweiten vollen Laufs: Feature-Push ist light.
-    const profile = stepWith(ci, 'verify', 'GITHUB_EVENT_NAME');
-    expect(profile?.id).toBe('profile');
-    expect(profile?.run).toContain('name=all');
-    expect(profile?.run).toContain('name=light');
-
-    const gate = stepWith(ci, 'verify', 'pnpm run verify:${{ steps.profile.outputs.name }}');
-    expect(gate?.run).toContain('verify:${{ steps.profile.outputs.name }}');
-    expect(gate?.env?.RBD_VERIFY_AUDIT).toBeUndefined();
-    expect(stepWith(ci, 'verify', 'npm run verify:release')).toBeUndefined();
-
-    // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
+    const checkout = steps(ci, 'verify')[0];
+    expect(checkout?.with?.repository).toContain('head.repo.full_name');
+    expect(checkout?.with?.ref).toContain('head.sha');
+    expect(checkout?.with?.['persist-credentials']).toBe(false);
+    expect(stepWith(ci, 'verify', 'ci-impact.mjs')?.id).toBe('impact');
     const claims = stepWith(ci, 'verify', 'verify-lane-claims.mjs --ci');
-    expect(claims?.if).toContain("github.event_name == 'pull_request'");
+    expect(claims?.if).toContain('github.head_ref');
+    expect(stepWith(ci, 'verify', 'pnpm run build')?.if).toContain("steps.impact.outputs.build == 'true'");
+    expect(stepWith(ci, 'verify', 'pnpm run audit:gate')?.if).toContain("steps.impact.outputs.audit == 'true'");
   });
 
   it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
     const release = workflow('auto-version-release.yml');
-    expect(release.on?.workflow_run?.workflows).toEqual(['CI Verify']);
-    expect(release.on?.workflow_run?.types).toEqual(['completed']);
-    expect(release.on?.workflow_run?.branches).toEqual(['main']);
-    expect(release.on?.push).toBeUndefined();
+    expect(release.on?.push?.branches).toEqual(['main']);
+    expect(release.on?.workflow_run).toBeUndefined();
     expect(release.permissions?.contents).toBe('write');
 
     const condition = release.jobs?.release?.if ?? '';
-    expect(condition).toContain("workflow_run.conclusion == 'success'");
-    expect(condition).toContain("workflow_run.event == 'push'");
-    expect(condition).toContain("workflow_run.head_branch == 'main'");
+    expect(condition).toContain("github.event_name == 'push'");
 
     const verified = stepWith(release, 'release', 'npm run verify:release');
     expect(verified?.if).toContain("github.event_name == 'workflow_dispatch'");
@@ -131,7 +121,7 @@ describe('Main-Gate', () => {
     expect(tagStep?.env?.GITHUB_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
     expect(tagStep?.env?.GH_TOKEN).toBe('${{ secrets.GITHUB_TOKEN }}');
     expect(tagStep?.env?.RELEASE_TOKEN).toBe('${{ secrets.RELEASE_TOKEN }}');
-    expect(tagStep?.env?.RELEASE_SHA).toContain('github.event.workflow_run.head_sha');
+    expect(tagStep?.env?.RELEASE_SHA).toContain('inputs.verified_sha');
   });
 
   it('startet den Verify-Workflow auch von Hand', () => {
@@ -146,9 +136,9 @@ describe('Main-Gate', () => {
     expect(long.permissions?.contents).toBe('read');
     expect(stepWith(long, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
 
-    const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
-    expect(statistics?.run).toContain('poker-distribution.test.ts');
-    expect(statistics?.run).toContain('slot-session-rtp.test.ts');
+    expect(long.jobs?.advisory?.if).toContain('inputs.advisory');
+    const statistics = stepWith(long, 'statistics', '--proof=statistics');
+    expect(statistics?.run).toContain('--proof=statistics');
     expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe('${{ inputs.soak_ticks }}');
     expect(stepWith(long, 'balance', 'balance-run.mjs')?.run).toContain('--days=${{ inputs.balance_days }}');
     expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');

@@ -19,6 +19,7 @@ permissions:
   contents: write
   pull-requests: write
   actions: write
+  checks: read
 
 concurrency:
   group: promote
@@ -33,7 +34,8 @@ jobs:
       - name: Checkout (volle Historie)
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          # Dieses privilegierte Script muss aus main kommen, nie aus dem PR-Head.
+          ref: main
           fetch-depth: 0
           token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -50,6 +52,7 @@ jobs:
       - name: Promote
         env:
           GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
           PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}

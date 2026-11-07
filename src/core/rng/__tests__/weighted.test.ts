@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/rng/weighted.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1001
  *
  * Die ausgewiesene Chance stammt aus derselben Verteilung, aus der gezogen wird.
  */

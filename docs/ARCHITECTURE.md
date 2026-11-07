@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 05:44 UTC -->
 
 ## README als Einstieg
 
@@ -16,6 +16,14 @@
 - Neue Ressourcen kommen als Ledger-Buchungen dazu: eine Ressource, eine Zeile, eine Ursache. Neue soziale Fakten laufen ueber das geplante Social-Plugin der Narrative Engine, nicht ueber eine zweite Log-Wahrheit.
 
 ## CI-Eskalation
+
+### P0-Lieferweg
+
+`turn:finish` ist der lokale Einstieg: Pretask, `verify:light`, Commit und Push auf den Lane-Branch; danach werden Commit-Bodies in einen PR-Body mit den drei Pflichtsektionen gehoben. `CI Verify` ist der Pflichtstatus und laeuft nur fuer den PR-Head. `promote` scannt die offenen, geclaimten PRs in Abhaengigkeitsreihenfolge und merged hoechstens einen aktuellen, sauberen Head pro Lauf. Der Squash-Commit uebernimmt den PR-Body, damit `verify-commit-msg --head` auf `main` dieselbe Struktur sieht.
+
+Bei einem Main-Merge synchronisiert `branch-sync` aktive Lanes mit einem normalen Merge, nie mit Rebase oder Force-Push. Marker-/Versionskonflikte und die generierte Inventur haben deterministische Loesungen; Codekonflikte bleiben im Branch und erzeugen ein Issue mit Lane-Owner. Nicht betroffene Lanes laufen weiter. `integration` wird nur manuell angefordert.
+
+`ci-impact.mjs` speist Schnelltests, Build, Dependency-Audit und Advisory-Auswahl aus derselben Impact-/Testkatalog-Wahrheit. Doku-only baut keine APK. Statistik, Soak, Balance und Benchmarks koennen Issues erzeugen, halten aber keine unabhaengige Promotion an.
 
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
@@ -84,7 +92,8 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-0911 | Governance | Automatisch reparierbarer Verstoss (Format, Matrix, Trailer). | `pnpm run autofix:0911` ausfuehren; der Runner protokolliert den Eingriff. |
 | ERR-1001 | Governance / Determinismus | Zufalls- oder Zeitquelle ausserhalb des erlaubten RNG in core/ oder store/. | Quelle entfernen; Zufall nur ueber den geseedeten Prng, Zeit nur aus world.tick. |
 | ERR-1002 | Core / Geld | Ledger- oder VaCoin-Invariante verletzt. | Buchungspfad und Mikro-Geldarithmetik pruefen. |
-| ERR-1003 | Core / Spiele | RNG-, RTP- oder Determinismusbeweis fehlgeschlagen. | Seed, Paytable und Einsatzpfad des Spiels pruefen. |
+| ERR-1003 | Core / Spiele | Deterministischer Spiel-, Einsatz- oder RNG-Vertrag verletzt; Langzeitstatistik ist ERR-4027. | Betroffene Lane anhalten und den deterministischen Spielvertrag pruefen. |
+| ERR-1004 | Core / Auszahlung | Deterministische Auszahlung, Gewinnlinie oder Einsatzbuchung verletzt eine Spielinvariante. | Betroffene Spiel- und Ledger-Lane anhalten und den deterministischen Auszahlungspfad pruefen. |
 | ERR-1005 | Build | Typecheck oder Production-Build bricht ab. | Ersten Compilerfehler an der Ursache beheben. |
 | ERR-2001 | Simulation | Welt-, Gast- oder Servicezustand verletzt eine Zusicherung. | Kausalitaet im betroffenen Zustandsautomaten korrigieren. |
 | ERR-2002 | Simulation / Grid | Bereichs-, Footprint- oder Zugangsregel verletzt. | `grid-zones` und Multi-Tile-Flaeche pruefen. |
@@ -113,6 +122,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
+| ERR-4027 | Governance / Statistik | RTP-, Balance-, Soak- oder Verteilungsnachweis liegt ausserhalb seines Bands. | Advisory-Issue in der betroffenen Lane; kein erforderlicher Merge-Check. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 
 ## Pipeline
@@ -237,9 +247,9 @@ genau einen Eintrag. Doku-Eintraege erzeugt `pnpm run docs:stub -- "Titel"`
 pnpm run turn:finish
 ```
 
-`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `pnpm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` fuehrt lokal `verify:light` aus, erstellt einen formatierten Commit, pusht den Arbeitsbranch und hebt dessen Commit-Bodies in einen PR-Body. Auf `main` geht es ausschliesslich ueber den aktuellen PR-Pflichtstatus und `promote`. Ohne Argumente stagt `git add -A` alle nicht ignorierten Dateien; mit Pfaden wird der Commit bewusst verengt. `.turn-notes.md` wird nach dem Commit geloescht.
 
-Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
+Der Release-Workflow committet nicht: er taggt den geprueften Main-Stand und erstellt das Release, falls der Tag fehlt. APK-Bau und Audit laufen nur, wenn der zentrale Impact-Plan sie verlangt. Lane-Sync verwendet einen Merge von `main`; es rebased nicht und pusht nie mit Force.
 
 Der Geschwindigkeits-Benchmark läuft separat über `pnpm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
 
@@ -257,18 +267,15 @@ Nachweise werden nicht gedruckt, sondern uebergeben: `--ci` startet
 
 ## Auto-Promotion und Integrationsbranch
 
-Der Weg von einem Branch nach `main` ist ein Zustandsautomat mit genau einer
-Quelle: `.github/workflows/promote.yml` liest das Ergebnis von `CI Verify`.
-Gruen legt den PR an und mergt ihn, rot legt den Stand auf die permanente
-Branch `integration`. Der Zustand liegt im Branch und im Label
-(`integration/rot`, `integration/konflikt`), nie in der Warteschlange — GitHub
-haelt pro Concurrency-Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder
-Lauf den gesamten Rueckstand ab und ist idempotent. `scripts/promote.mjs` baut
-den Commit-Text selbst, damit die Pflichtsektionen auch nach einem
-`squash`-Merge stehen. Ein Merge mit dem Workflow-Token startet keinen Workflow: der Pfad stoesst deshalb
-den Release-Lauf an oder nutzt `PROMOTE_TOKEN`. `integration` ist geschuetzt,
-weil der Rueckweg nach `main` die Branch sonst mitnimmt. Einzige Identitaetsquelle ist
-`scripts/lib/identity.mjs`; `.mailmap` fuehrt die History-Anzeige zusammen.
+`promote.yml` liest nach einem erfolgreichen Pflichtstatus die offenen PRs neu ein.
+Es merged nur einen PR, wenn Head-SHA, Pflichtcheck, aktiver Lane-Claim,
+Abhaengigkeiten und sauberer Main-Stand zusammenpassen. Nach jedem Merge startet
+die Queue erneut; so wird immer nur der naechste Main-Stand geprueft. Rot erzeugt
+ein Issue und Label. `integration` bleibt ein manueller Notausgang. Der
+Squash-Commit verwendet den PR-Body mit den Pflichtsektionen. Ein Merge mit
+`GITHUB_TOKEN` dispatcht Release, Main-Sync und Issue-Sweep ausdruecklich.
+Einzige Identitaetsquelle bleibt `scripts/lib/identity.mjs`; `.mailmap` fuehrt
+die History-Anzeige zusammen.
 
 ## Floor-Rendering und Performance
 
@@ -1094,34 +1101,30 @@ die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
 ### Auto-Promotion und Integrationsbranch
 
 `promote.yml` schliesst die Luecke zwischen "Branch gepusht" und "auf main".
-Der Workflow reagiert per `workflow_run` auf jedes abgeschlossene `CI Verify`
-und arbeitet ein Ergebnis aus:
+Nach jedem abgeschlossenen `CI Verify` liest es alle PRs erneut ein und waehlt
+den naechsten gruenen, aktuellen und abhaengigkeitsbereiten Lane-Stand:
 
 | CI-Ergebnis | Wirkung |
 | --- | --- |
-| success | PR wird angelegt (falls noetig) und mit `--squash --subject --body-file` gemergt; der Commit-Text traegt die drei Pflichtsektionen |
-| failure, timed_out, cancelled, startup_failure | Label `integration/rot`, Stand wird auf die permanente Branch `integration` gelegt |
+| success | Maximal ein PR mit erfolgreichem Pflichtstatus am aktuellen Head wird per Squash gemergt; der PR-Body traegt die drei Pflichtsektionen |
+| failure | Lane-Issue und Label; unabhaengige PRs koennen weiterlaufen |
+| timed_out, cancelled, startup_failure | `REMOTE_CI`-Issue; kein `BLOCKED` und kein automatischer Integrations-Merge |
 | `main` | keine Promotion, der Lauf endet sofort |
 
 **Zwei parallele rote Staende.** GitHub haelt pro Concurrency-Gruppe genau einen
 wartenden Lauf; ein dritter Aufruf verdraengt den zweiten. Deshalb liegt der
-Zustand nicht in der Warteschlange, sondern im Branch und im Label: jeder Lauf
-sammelt alle offenen PRs mit `integration/rot` und legt sie nacheinander auf
-`integration`. Die Gruppe `promote` laesst nur einen Schreiber zu, ein
-abgelehnter Push wird mit `fetch` und `reset --hard` neu aufgesetzt und erneut
-gemergt — der Merge eines bereits enthaltenen Branches meldet "Already up to
-date" und ist damit idempotent. Nichts wird verworfen, nichts force-gepusht.
+Zustand in den Branches und Claims: jeder Lauf scannt die PR-Queue neu,
+merged hoechstens einen aktuellen Stand und wartet auf dessen Folgelauf. Die
+Gruppe `promote` laesst nur einen Schreiber zu. Ein Main-Rueckstand wird durch
+Merge-Sync nachgezogen; Force-Push und Rebase gibt es nicht.
 
-**Textkonflikt.** Kollidiert ein Stand mit `integration`, wird der Merge
-abgebrochen, der PR bekommt `integration/konflikt` und einen Kommentar; der
-Stand bleibt unveraendert. Aufloesen ist Agentenarbeit (`git merge
-origin/integration`), kein Automatismus — ein `-X theirs` wuerde Arbeit
-stillschweigend verlieren.
+**Textkonflikt.** Marker-/Versionszeilen und generierte Inventur werden
+mechanisch geloest. Ein Codekonflikt bricht den Merge ab und erzeugt ein
+Issue fuer den Lane-Owner; der Branch und seine Arbeit bleiben erhalten.
 
-**Token-Eskalation.** Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow; ohne
-Gegenmassnahme gaebe es weder `CI Verify` auf `main` noch Tag und APK. `promote`
-nutzt `PROMOTE_TOKEN`, wenn das Secret gesetzt ist, und stoesst sonst
-`Auto Version & Release` an, das den Commit-Text vor dem Tag selbst prueft.
+**Token-Eskalation.** Ein Merge mit `GITHUB_TOKEN` startet keine Folge-Workflows.
+`promote` dispatcht deshalb Release, Branch-Sync und Issue-Sweep; mit
+`PROMOTE_TOKEN` starten die normalen Push-Ereignisse.
 
 **Geschuetzte Branch.** `integration` ist keine Wegwerfbranch: `pr-cleanup.yml`
 und `scripts/lib/branch-prune.mjs` lassen sie stehen.

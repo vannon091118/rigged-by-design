@@ -1,14 +1,19 @@
 name: PR Escalation
 
-# Der Commit-Body ist kein Fail-Closed-Gate mehr: fehlt die Pflichtstruktur,
-# hebt dieser Workflow sie in den PR-Body (Eskalation statt Blocker).
+# Privilegierter PR-Schreiber: nur per Dispatch aus einem vertrauenswuerdigen
+# Workflow starten und immer den Code aus main ausfuehren.
 on:
-  push:
-    branches-ignore: [main]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Arbeitsbranch nach erfolgreichem Push
+        required: true
+        type: string
 
 permissions:
   contents: read
   pull-requests: write
+  actions: write
 
 concurrency:
   group: pr-escalation-${{ github.ref }}
@@ -20,25 +25,19 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - name: Checkout
+      - name: Vertrauenswuerdigen Helfer aus main auschecken
         uses: actions/checkout@v7
         with:
+          ref: main
           fetch-depth: 0
+          token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
           node-version: 22
-      - name: Body pruefen
-        id: body
-        run: |
-          if node scripts/verify-commit-msg.mjs --head > body-check.log 2>&1; then
-            echo "needed=false" >> "$GITHUB_OUTPUT"
-          else
-            cat body-check.log
-            echo "needed=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: PR-Body heben
-        if: steps.body.outputs.needed == 'true'
+      - name: PR anlegen oder Body aktualisieren
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || github.token }}
+          BRANCH: ${{ inputs.branch }}
+          RBD_DISPATCH_CI: ${{ secrets.PROMOTE_TOKEN == '' && '1' || '0' }}
         run: node scripts/lift-commit-body.mjs

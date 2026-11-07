@@ -14,12 +14,18 @@ const args = process.argv.slice(2);
 function readInput() {
   if (args.includes('--head')) return execFileSync('git', ['log', '-1', '--pretty=%B'], { encoding: 'utf8' });
   if (args.includes('--pr')) return process.env.PR_BODY ?? '';
+  if (args.includes('--pr-branch')) {
+    const branch = process.env.BRANCH;
+    if (!branch) return '';
+    const number = execFileSync('gh', ['pr', 'list', '--head', branch, '--base', 'main', '--state', 'open', '--json', 'number', '--jq', '.[0].number'], { encoding: 'utf8' }).trim();
+    return number ? execFileSync('gh', ['pr', 'view', number, '--json', 'body', '--jq', '.body'], { encoding: 'utf8' }) : '';
+  }
   const file = args.find((arg) => !arg.startsWith('--'));
   return file ? readFileSync(file, 'utf8') : '';
 }
 const text = readInput();
 // Ein leerer PR-Body bestand das Gate bisher ohne einen einzigen Fehlschlag.
-if (args.includes('--pr') && !text.trim()) {
+if ((args.includes('--pr') || args.includes('--pr-branch')) && !text.trim()) {
   fail(1, 'ERR-4006', 'verify-commit-msg', 'PR-Body fehlt; Pflichtsektionen nicht pruefbar');
   process.exit(1);
 }

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 05:44 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -149,7 +149,11 @@ Dieselben Versprechen gelten für jede Figur außerhalb des Casinos: Ein Nachbar
 - `pnpm run soak` für 100.000 Ticks; `pnpm run test:perf` für Spielrunden, Floor, Posen, Speicher und Save-Größe; `pnpm run bench:lowend` für das Ein-Kern-Profil.
 - Grenze: Ein echtes schwaches Gerät und ein echter Browser können hier nicht zertifiziert werden. Die Emulation und die manuelle Gerätematrix stehen in `docs/ARCHITECTURE.md`.
 
-## Jetzt — die Testumgebung tragfaehig machen
+## Jetzt — den P0-Lieferweg abschliessen
+
+- Den Workflow-PR mit den Pflicht-Gates auf `main` bringen und die aktiven Fremd-Lanes nacheinander synchronisieren und foerdern.
+- Uebernommene Branches nach erfolgreichem Merge automatisch entfernen; den divergenten `integration`-Notausgang unberuehrt lassen.
+- Nach P0 in der Cloud mit P1 fortfahren; geparkte oder gemischte Legacy-WIP erst nach Pfad-/Commit-Pruefung in eine saubere Lane ueberfuehren.
 
 ### PARKED (bewusst zurückgestellt)
 

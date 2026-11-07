@@ -5,12 +5,16 @@ name: PR Watcher
 # Blocker). Ist `main` gruen, werden erledigte gate-failure-Issues geschlossen.
 on:
   workflow_run:
-    workflows: ["CI Verify"]
+    workflows: ["CI Verify", "Long Checks"]
     types: [completed]
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
+    inputs:
+      sweep_green:
+        description: Issues schliessen, deren Commit nachweislich auf main liegt
+        type: boolean
+        default: false
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -33,6 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Node einrichten
@@ -49,19 +54,15 @@ jobs:
           RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
           RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
           RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_WORKFLOW: ${{ github.event.workflow_run.name }}
         run: node scripts/pr-watcher.mjs
 
       - name: Issues schliessen, wenn main gruen ist
-        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+        if: >-
+          (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') ||
+          (github.event_name == 'push' && github.ref_name == 'main') ||
+          (github.event_name == 'workflow_dispatch' && inputs.sweep_green)
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: node scripts/pr-watcher.mjs --sweep-green
-
-      - name: PR-Body auf Pflichtsektionen prüfen
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: node scripts/pr-watcher.mjs --pr-check

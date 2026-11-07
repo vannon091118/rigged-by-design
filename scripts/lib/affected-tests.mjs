@@ -157,9 +157,9 @@ export function selectAffectedTests(changedFiles) {
 }
 
 /** Geaenderte Pfade aus Branch, Index und Arbeitsbaum; Fehler werden bewusst verschluckt. */
-export function changedFiles() {
+export function changedFiles(baseRef = 'origin/main') {
   const commands = [
-    ['diff', '--name-only', '--diff-filter=ACMR', 'origin/main...HEAD'],
+    ...(baseRef ? [['diff', '--name-only', '--diff-filter=ACMR', `${baseRef}...HEAD`]] : []),
     ['diff', '--name-only', '--diff-filter=ACMR'],
     ['diff', '--name-only', '--cached', '--diff-filter=ACMR'],
   ];

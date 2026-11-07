@@ -1,7 +1,7 @@
 [
   {
     "id": "lane/governance/02-governance",
-    "owner": "Governance-Owner",
+    "owner": "Governance-Legacy-Owner",
     "branch": "gov/0.2-governance",
     "baseSha": "dc35b52",
     "pathAllowlist": [
@@ -42,12 +42,15 @@
       "lane/governance/01-baseline"
     ],
     "gateProfile": "light",
-    "status": "open",
+    "status": "parked",
+    "branchStatus": "parked",
+    "syncStatus": "pending",
+    "syncNote": "PR #199 wurde gemergt; Restdiff separat gegen main pruefen, keine Volluebernahme.",
     "createdAt": "5dc0161"
   },
   {
     "id": "lane/integrity/03-ledger",
-    "owner": "Ledger-/Core-Owner",
+    "owner": "Ledger-Contract-Writer",
     "branch": "lane/integrity/03-ledger",
     "baseSha": "ae24f61",
     "pathAllowlist": [
@@ -58,16 +61,17 @@
       "src/store/__tests__/transfer.test.ts"
     ],
     "contracts": [],
-    "dependencies": [
-      "lane/governance/02-governance"
-    ],
+    "dependencies": [],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
+    "branchStatus": "active",
+    "syncStatus": "pending",
+    "syncNote": "Remote-Branch ist nach main zurueck; PR #173 ist offen.",
     "createdAt": "ae24f61"
   },
   {
     "id": "lane/capabilities/04-capabilities",
-    "owner": "Quality-/Capability-Owner",
+    "owner": "Capability-Owner",
     "branch": "lane/capabilities/04-capabilities",
     "baseSha": "ee952dc",
     "pathAllowlist": [
@@ -81,12 +85,15 @@
       "lane/integrity/03-ledger"
     ],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "parked",
+    "branchStatus": "parked",
+    "syncStatus": "pending",
+    "syncNote": "Remote-Diff bleibt erhalten; vor Wiederaufnahme gegen main und aktuelle Claims abgleichen.",
     "createdAt": "ee952dc"
   },
   {
     "id": "lane/contracts/actor-id",
-    "owner": "Architektur-Owner",
+    "owner": "ActorId-Contract-Writer",
     "branch": "lane/contracts/actor-id",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -103,12 +110,14 @@
     ],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
+    "branchStatus": "active",
+    "syncStatus": "pending",
     "createdAt": "9070cba"
   },
   {
     "id": "lane/contracts/world-time",
-    "owner": "Architektur-Owner",
+    "owner": "WorldTime-Contract-Writer",
     "branch": "lane/contracts/world-time",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -127,12 +136,14 @@
       "lane/contracts/actor-id"
     ],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
+    "branchStatus": "active",
+    "syncStatus": "pending",
     "createdAt": "9070cba"
   },
   {
     "id": "lane/contracts/domain-event",
-    "owner": "Interaction-Contract-Owner",
+    "owner": "DomainEvent-Contract-Writer",
     "branch": "lane/contracts/domain-event",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -156,7 +167,7 @@
   },
   {
     "id": "lane/contracts/relationship",
-    "owner": "Sim-/Domain-Owner",
+    "owner": "Relationship-Contract-Writer",
     "branch": "lane/contracts/relationship",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -175,12 +186,14 @@
       "lane/contracts/domain-event"
     ],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
+    "branchStatus": "active",
+    "syncStatus": "pending",
     "createdAt": "9070cba"
   },
   {
     "id": "lane/contracts/factor",
-    "owner": "Sim-/Domain-Owner",
+    "owner": "Factor-Contract-Writer",
     "branch": "lane/contracts/factor",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -199,12 +212,15 @@
       "lane/contracts/relationship"
     ],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
+    "branchStatus": "active",
+    "syncStatus": "pending",
+    "syncNote": "Gate-Issue #188 auf aktuellem Head; ERR-4002 ist lane-scoped.",
     "createdAt": "9070cba"
   },
   {
     "id": "lane/contracts/save",
-    "owner": "Save-/Migrations-Owner",
+    "owner": "Save-Contract-Writer",
     "branch": "lane/contracts/save",
     "baseSha": "9070cba",
     "pathAllowlist": [
@@ -228,7 +244,7 @@
   },
   {
     "id": "lane/actionset/06-actionset",
-    "owner": "Interaction-Contract-Owner",
+    "owner": "ActionSet-Contract-Writer",
     "branch": "lane/actionset/06-actionset",
     "baseSha": "7cf5f84",
     "pathAllowlist": [
@@ -249,5 +265,89 @@
     "gateProfile": "quick",
     "status": "open",
     "createdAt": "7cf5f84"
+  },
+  {
+    "id": "lane/governance/03-p0-finalization",
+    "owner": "P0-Workflow-Integrator",
+    "branch": "lane/governance/03-p0-finalization",
+    "baseSha": "1f5157b84099c0a51d7166b2e329eb9bffceab34",
+    "pathAllowlist": [
+      "scripts/**",
+      ".github/workflows/",
+      ".lane-claims/claims.json",
+      "AGENTS.md",
+      "docs/INVENTORY.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ARCHITECTURE.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "src/core/governance/error-codes.ts",
+      "src/core/governance/__tests__/ci-gates.test.ts",
+      "src/core/games/__tests__/slot-paylines.test.ts",
+      "src/core/games/__tests__/slot-paylines-rtp.test.ts",
+      "src/Config/vite.config.ts",
+      "src/core/rng/__tests__/weighted.test.ts",
+      "src/core/rng/__tests__/streams.test.ts",
+      "src/core/rng/__tests__/shoe.test.ts",
+      "src/store/__tests__/determinism.test.ts",
+      "src/store/__tests__/card-payout.test.ts",
+      "src/store/__tests__/narrative-save.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "workerId": null,
+    "branchStatus": "closing",
+    "syncStatus": "current",
+    "handoff": null,
+    "status": "open",
+    "createdAt": "1f5157b"
+  },
+  {
+    "id": "lane/governance/02-branch-handoff",
+    "owner": "Governance-Legacy-Owner",
+    "branch": "lane/governance/02-governance",
+    "baseSha": "ae24f61",
+    "pathAllowlist": [".github/ISSUE_TEMPLATE/", ".lane-claims/claims.json", "AGENTS.md", "docs/INVENTORY.md", "docs/CHANGELOG.md", "docs/DEVTAGEBUCH.md", "docs/ARCHITECTURE.md", "docs/ROADMAP.md", "package.json", "pnpm-lock.yaml", "scripts/agent-context.mjs", "scripts/lib/impact.mjs", "scripts/lib/lane-claims.mjs", "src/ui/__tests__/machine-play.test.tsx"],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "branchStatus": "parked",
+    "syncStatus": "pending",
+    "handoff": { "summary": "WIP erhalten; gemeinsame Governance-Pfade sind fuer P0 reserviert. Nach P0 gegen main neu bewerten." },
+    "status": "parked",
+    "createdAt": "ae24f61"
+  },
+  {
+    "id": "lane/phase0/baseline-handoff",
+    "owner": "Phase0-Owner",
+    "branch": "phase-0/fundament",
+    "baseSha": "5dc0161",
+    "pathAllowlist": ["AGENTS.md", "docs/ARCHITECTURE.md", "docs/CHANGELOG.md", "docs/DEVTAGEBUCH.md", "docs/INVENTORY.md", "docs/ROADMAP.md", "package.json", "pnpm-lock.yaml", "src/ui/__tests__/machine-play.test.tsx"],
+    "contracts": [],
+    "dependencies": ["lane/governance/03-p0-finalization"],
+    "gateProfile": "light",
+    "branchStatus": "closing",
+    "syncStatus": "pending",
+    "handoff": { "summary": "PR #167 bleibt erhalten und wird nach P0 automatisch gegen main synchronisiert und geprueft." },
+    "status": "open",
+    "createdAt": "5dc0161"
+  },
+  {
+    "id": "reserved/integration",
+    "owner": "Integrator",
+    "branch": "integration",
+    "baseSha": "bac6d8a",
+    "pathAllowlist": [],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "full",
+    "branchStatus": "reserved",
+    "syncStatus": "excluded",
+    "handoff": { "summary": "Divergenter Notausgang; im normalen Workflow nicht verwenden oder synchronisieren." },
+    "status": "reserved",
+    "createdAt": "bac6d8a"
   }
 ]

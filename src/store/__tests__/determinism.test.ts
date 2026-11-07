@@ -1,6 +1,6 @@
 /**
  * @test-target: src/store/transfer.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1001
  *
  * Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand,
  * und der Export haengt an der Welt statt an der Wanduhr.

@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 05:44 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - P0 workflow, escalation and branch cleanup
+
+**Ziel.** Schnelle Iterationen und sichere, automatische PR-Promotion: ein nachvollziehbarer Pretask, aktuelle Lane-Claims, Impact-basierte CI und ein schlanker Remote-Branchbestand.
+
+**Umsetzung.** Pretask liest Issues, offene PRs, Konflikte und Main-Rueckstand. Promotion prueft den exakten PR-Head, Pflichtstatus, Owner und Abhaengigkeiten. Main wird per Merge in aktive Lanes nachgezogen; mechanische Doku-/Versionskonflikte werden geloest, echte Konflikte als Lane-Issue gemeldet. Reine Doku zieht keinen APK-Bau nach sich; lange Statistik-, Soak- und Balance-Nachweise blockieren die Promotion nicht. Integration bleibt manuell. Der leere Spatial-Branch wird erst nach erneutem Remote-SHA-/PR-Abgleich geloescht.
+
+**Pruefungen.** `agent:context --line`: 32 betroffene Testdateien, 11 Gates. `verify:light` grün. `test:affected`: 30 Dateien bestanden, 135 Tests bestanden, 2 lange Tests bewusst uebersprungen. GitHub-PR-Lauf folgt nach Push.
+
+**Offen.** Offen.
 
 ## 2026-11-07 - Governance: parallel arbeiten, ohne sich selbst auszubremsen
 

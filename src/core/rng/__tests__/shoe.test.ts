@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/rng/shoe.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1001
  *
  * Ein Schuh gibt jede Karte genau einmal aus, bevor er neu mischt.
  */

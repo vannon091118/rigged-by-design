@@ -1,6 +1,6 @@
 /**
  * @test-target: src/store/foreign-play.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1004
  *
  * Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz,
  * Push und ungespieltes Ruestgeld muessen unangetastet zurueckkommen.

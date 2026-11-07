@@ -4,6 +4,9 @@ name: Long Checks
 # Verteilung, Soak und Balance brauchen Minuten bis Stunden. `pnpm run ci:long`
 # startet diesen Workflow und liest Ergebnis, Logs und Artefakte von hier.
 on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
     inputs:
       verify:
@@ -19,18 +22,49 @@ on:
         description: 'Spieltage fuer den Balance-Lauf'
         type: string
         default: '40'
+      advisory:
+        description: 'Nur betroffene lange Nachweise ausfuehren'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: long-checks-${{ github.ref }}
-  cancel-in-progress: false
+  group: long-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  advisory:
+    name: Betroffene lange Tests (Advisory)
+    if: github.event_name == 'pull_request_target' || (github.event_name == 'workflow_dispatch' && inputs.advisory)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: pnpm installieren
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.4.1
+      - name: Node 22 mit pnpm-Cache
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Nur betroffene lange Nachweise ausfuehren
+        run: pnpm run test:ci -- --affected-long
+
   verify:
     name: Fail-Closed Gates
-    if: inputs.verify
+    if: github.event_name == 'workflow_dispatch' && inputs.verify && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -57,6 +91,7 @@ jobs:
 
   statistics:
     name: Statistik (RTP und Kartenverteilung)
+    if: github.event_name == 'workflow_dispatch' && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -74,17 +109,13 @@ jobs:
           cache: pnpm
       - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
-      # Diese Suiten sind Beweisklasse "statistics"; lokal laufen sie nie.
-      - name: Monte-Carlo-Nachweise
-        run: >-
-          pnpm exec vitest run --config src/Config/vite.config.ts
-          src/core/games/__tests__/round-rtp-high.test.ts
-          src/core/games/__tests__/round-rtp-machines.test.ts
-          src/core/games/__tests__/slot-session-rtp.test.ts
-          src/core/games/__tests__/poker-distribution.test.ts
+      # Die Beweisklasse kommt aus dem zentralen Testkatalog.
+      - name: Statistik-Nachweise
+        run: pnpm run test:ci -- --proof=statistics
 
   soak:
     name: Soak ${{ inputs.soak_ticks }} Ticks
+    if: github.event_name == 'workflow_dispatch' && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -110,6 +141,7 @@ jobs:
 
   narrative-longrun:
     name: Narrative Longrun
+    if: github.event_name == 'workflow_dispatch' && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -133,6 +165,7 @@ jobs:
 
   balance:
     name: Balance ${{ inputs.balance_days }} Spieltage
+    if: github.event_name == 'workflow_dispatch' && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -163,6 +196,7 @@ jobs:
 
   bench:
     name: Benchmarks
+    if: github.event_name == 'workflow_dispatch' && !inputs.advisory
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:

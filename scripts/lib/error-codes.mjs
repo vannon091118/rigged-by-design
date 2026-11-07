@@ -16,8 +16,14 @@ const SOURCE = join(ROOT, 'src', 'core', 'governance', 'error-codes.ts');
 const ENTRY = /code:\s*'(ERR-\d{4})'[^}]*?level:\s*'([A-Z_]+)'[^}]*?area:\s*'([^']*)'[^}]*?cause:\s*'([^']*)'[^}]*?fix:\s*'([^']*)'/g;
 
 function readRegistry() {
-  const entries = [...readFileSync(SOURCE, 'utf8').matchAll(ENTRY)];
-  return entries.map(([, code, level, area, cause, fix]) => Object.freeze({ code, level, area, cause, fix }));
+  const source = readFileSync(SOURCE, 'utf8');
+  const entries = [...source.matchAll(ENTRY)];
+  return entries.map(([, code, level, area, cause, fix]) => {
+    const line = source.split(/\r?\n/).find((entry) => entry.includes(`code: '${code}'`)) ?? '';
+    const scope = /scope:\s*'(lane|project|triage|advisory)'/.exec(line)?.[1]
+      ?? (level === 'BLOCKED' ? 'lane' : level === 'REMOTE_CI' ? 'project' : 'advisory');
+    return Object.freeze({ code, level, scope, area, cause, fix });
+  });
 }
 
 /** Register als Map: Code -> Definition. */

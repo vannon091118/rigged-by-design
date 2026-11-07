@@ -1,6 +1,6 @@
 /**
  * @test-target: src/core/rng/streams.ts
- * @error-code: ERR-1003
+ * @error-code: ERR-1001
  *
  * Gameplay- und Darstellungsstrom teilen keinen Zustand: Effekte duerfen den
  * naechsten Gegnerspawn nicht verschieben.

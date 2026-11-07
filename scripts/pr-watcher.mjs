@@ -8,6 +8,8 @@
  * durchzubekommen.
  */
 import { execFileSync } from 'node:child_process';
+import { CATALOG } from './lib/error-codes.mjs';
+import { loadClaims } from './lib/lane-claims.mjs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
@@ -41,8 +43,8 @@ function fingerprintOf(code, firstLine) {
  * Einzige Issue-Suche: Fingerprint zuerst (offen oder geschlossen, dann nur Zaehlung),
  * sonst Titel unter den offenen Issues desselben Labels.
  */
-async function findIssue(fingerprint, title, label = 'gate-failure') {
-  const res = await api('GET', `/issues?state=all&labels=${label}&per_page=100`);
+async function findIssue(fingerprint, title) {
+  const res = await api('GET', '/issues?state=all&per_page=100');
   if (!res.ok) return undefined;
   const issues = await res.json();
   const byFingerprint = issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
@@ -52,30 +54,34 @@ async function findIssue(fingerprint, title, label = 'gate-failure') {
 }
 
 /** Zählt Vorkommen über Kommentare "Vorgekommen: N mal" und hängt den neuen Lauf an. */
-async function recordRecurrence(issue, runUrl) {
+async function recordRecurrence(issue, runUrl, body, labels) {
   const res = await api('GET', `/issues/${issue.number}/comments?per_page=100`);
   const comments = res.ok ? await res.json() : [];
   const counts = comments.map((c) => /Vorgekommen: (\d+) mal/.exec(c.body ?? '')).filter(Boolean);
   const previous = counts.length > 0 ? Math.max(...counts.map((m) => Number(m[1]))) : 1;
   const count = previous + 1;
-  await api('POST', `/issues/${issue.number}/comments`, {
-    body: `Vorgekommen: ${count} mal, zuletzt ${runUrl}`,
-  });
+  await api('POST', `/issues/${issue.number}/comments`, { body: `Vorgekommen: ${count} mal, zuletzt ${runUrl}` });
   if (issue.state === 'closed') {
-    console.log(`Issue #${issue.number} bleibt geschlossen, Kommentar ergänzt (${count} mal).`);
+    await api('PATCH', `/issues/${issue.number}`, { state: 'open', state_reason: 'reopened', title: issue.title, body });
   } else {
-    console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
+    await api('PATCH', `/issues/${issue.number}`, { title: issue.title, body });
   }
+  if (labels?.length) await api('POST', `/issues/${issue.number}/labels`, { labels });
+  console.log(issue.state === 'closed'
+    ? `Issue #${issue.number} wegen erneutem Befund wieder geoeffnet (${count} mal).`
+    : `Issue #${issue.number} aktualisiert (${count} mal).`);
 }
 
-async function createIssue(title, body, labels, fingerprint, runUrl, label = 'gate-failure') {
-  const found = await findIssue(fingerprint, title, label);
+async function createIssue(title, body, labels, fingerprint, runUrl) {
+  const found = await findIssue(fingerprint, title);
   if (found?.recurring) {
-    await recordRecurrence(found.issue, runUrl);
+    await recordRecurrence(found.issue, runUrl, `${body}\n<!-- ${fingerprint} -->\n`, labels);
     return found.issue;
   }
   if (found) {
-    console.log(`Issue existiert bereits: #${found.issue.number}`);
+    await api('POST', `/issues/${found.issue.number}/comments`, { body: `Erneuter Befund auf ${runUrl}.\n\n${body}` });
+    if (labels?.length) await api('POST', `/issues/${found.issue.number}/labels`, { labels });
+    console.log(`Issue existiert bereits und wurde ergaenzt: #${found.issue.number}`);
     return found.issue;
   }
   const res = await api('POST', '/issues', {
@@ -122,22 +128,25 @@ async function getFailedJobDetails(runId) {
  */
 function errorFromLog(text) {
   const lines = text.split(/\r?\n/);
-  const isPass = (line) => /:\s*PASS\s*$/.test(line.trim());
-  const gateFailure = lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\].*Gate fehlgeschlagen/.test(line));
-  const candidate = gateFailure.length > 0
-    ? gateFailure[gateFailure.length - 1]
-    : lines.filter((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\]/.test(line) && !isPass(line)).pop();
-  if (!candidate) return null;
-  const code = /(ERR-\d{4})/.exec(candidate)?.[1];
+  const reporterFailure = lines.find((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\].*:\s*FAIL\s*$/.test(line.trim()));
+  if (reporterFailure) {
+    const code = /(ERR-\d{4})/.exec(reporterFailure)?.[1];
+    const failedTest = /((?:src|scripts)\/[^\s:]+?\.[cm]?[jt]sx?)(?=:)/.exec(reporterFailure)?.[1] ?? null;
+    if (code) return { code, firstLine: reporterFailure.trim().slice(0, 180), failedTest };
+  }
+  const vitestFailure = lines.find((line) => /^\s*FAIL\s+(?:src|scripts)\//.test(line));
+  const gateFailure = [...lines].reverse().find((line) => /\[IDX-\d{4}\] \[ERR-\d{4}\].*Gate fehlgeschlagen/.test(line));
+  if (!gateFailure && !vitestFailure) return null;
+  const gateName = /pipeline\/([^:]+):/.exec(gateFailure ?? '')?.[1];
+  const code = gateName === 'tests' && vitestFailure
+    ? 'ERR-4026'
+    : /(ERR-\d{4})/.exec(gateFailure ?? '')?.[1];
   if (!code) return null;
-  const failedTest = lines
-    .map((line) => /(src\/[^\s:]+|scripts\/[^\s:]+)\.[cm]?[jt]sx?/.exec(line)?.[0])
-    .filter(Boolean)
-    .pop();
+  const failedTest = /((?:src|scripts)\/[^\s:]+?\.[cm]?[jt]sx?)/.exec(vitestFailure ?? '')?.[1] ?? null;
   return {
     code,
-    firstLine: candidate.trim().slice(0, 180),
-    failedTest: failedTest ?? null,
+    firstLine: (reporterFailure ?? vitestFailure ?? gateFailure).trim().slice(0, 180),
+    failedTest,
   };
 }
 
@@ -233,11 +242,12 @@ async function handleWorkflowRun() {
   const runBranch = process.env.RUN_BRANCH;
   const runCommit = process.env.RUN_COMMIT;
   const runConclusion = process.env.RUN_CONCLUSION;
+  const workflowName = process.env.RUN_WORKFLOW ?? 'CI Verify';
 
   // Timeout, Abbruch und Startfehler sind REMOTE_CI: kein Blocker, kein
   // Notfall, sondern ein Lauf, der wiederholt wird.
   if (['timed_out', 'cancelled', 'startup_failure'].includes(runConclusion)) {
-    const title = `[REMOTE_CI] CI Verify ${runConclusion}: ${runBranch}`;
+    const title = `[REMOTE_CI] ${workflowName} ${runConclusion}: ${runBranch}`;
     const body = `## ⏱️ CI ohne Ergebnis (REMOTE_CI)
 
 **Branch:** \`${runBranch}\`  
@@ -251,7 +261,7 @@ async function handleWorkflowRun() {
 2. Bleibt es beim Timeout, den Befund als \`REMOTE_CI\` (ERR-4014) behandeln und das Gate entlasten.
 3. Kein \`BLOCKED\`, kein Dump auf \`integration\`: die Arbeit laeuft weiter.
 `;
-    await createIssue(title, body, ['remote-ci'], fingerprintOf('REMOTE_CI', `${runConclusion}:${runBranch}`), runUrl, 'remote-ci');
+    await createIssue(title, body, ['remote-ci'], fingerprintOf('REMOTE_CI', `${runConclusion}:${runBranch}`), runUrl);
     return;
   }
 
@@ -265,26 +275,37 @@ async function handleWorkflowRun() {
   const jobDetails = await getFailedJobDetails(runId);
   const { code, firstLine, failedTest } = await firstGateError(runId);
   const fingerprint = fingerprintOf(code, firstLine);
-
-  // Lane-Scope: ein rotes Lane-Gate blockiert nur diese Lane, nicht alle
-  // Promotions. Das Label macht den Scope in der Issue-Liste sichtbar.
-  const laneLabel = runBranch && runBranch.includes('/')
-    ? `lane:${runBranch.split('/').slice(0, 2).join('/')}`
-    : null;
-  if (laneLabel) {
-    await api('POST', '/labels', { name: laneLabel, color: '0e8a16', description: `Gate-Scope ${laneLabel}` });
+  const definition = CATALOG.get(code);
+  const claim = loadClaims().find((entry) => entry.branch === runBranch);
+  const laneLabel = claim ? `lane:${claim.id}` : null;
+  const advisory = workflowName === 'Long Checks' || definition?.scope === 'advisory' || definition?.scope === 'triage';
+  const critical = definition?.level === 'BLOCKED' && definition?.scope === 'lane';
+  const labels = [
+    ...(advisory ? ['advisory'] : ['gate-failure']),
+    'agent-action',
+    ...(critical ? ['blocked'] : []),
+    ...(laneLabel ? [laneLabel] : ['triage:unknown']),
+  ];
+  for (const label of labels) {
+    await api('POST', '/labels', {
+      name: label,
+      color: label === 'blocked' ? 'b60205' : label === 'advisory' ? 'fbca04' : label.startsWith('triage:') ? '5319e7' : '0e8a16',
+      description: `Issue-Scope ${label}`,
+    });
   }
-  const labels = ['gate-failure', 'agent-action', ...(laneLabel ? [laneLabel] : [])];
 
-  const title = `[${code}] CI Verify: ${firstLine.trim().slice(0, 80)}`;
-  const body = `## 🚨 CI Gate rot
+  const kind = advisory ? 'Advisory' : critical ? 'Lane-Blocker' : 'Gate-Befund';
+  const title = `[${kind} ${code}] ${workflowName}: ${firstLine.trim().slice(0, 80)}`;
+  const body = `## ${advisory ? '🟡 CI Advisory' : critical ? '🛑 Lane-Blocker' : '🚨 CI Gate rot'}
 
 **Branch:** \`${runBranch}\`  
 **Commit:** \`${runCommit}\`  
 **CI Run:** <${runUrl}>  
+**Error-Code:** \`${code}\` · ${definition?.level ?? 'AGENT'} / ${definition?.scope ?? 'triage'}
+**Owner:** ${claim ? `\`${claim.owner}\`` : 'nicht zugeordnet; Triage erforderlich'}
 **Betroffene Datei:** ${failedTest ? `\`${failedTest}\`` : 'nicht eindeutig - Log-Auszug unten'}  
 **Erkannt durch:** pr-watcher.yml  
-**Scope:** ${laneLabel ? `\`${laneLabel}\` - rotes Lane-Gate, nur diese Lane und ihre Dependents sind blockiert` : 'main/global'}
+**Scope:** ${laneLabel ? `\`${laneLabel}\`` : '`triage:unknown`'}${critical ? ' · nur diese Lane und ihre Dependents halten an' : advisory ? ' · nicht erforderlich fuer den Merge, unabhaengige Arbeit laeuft weiter' : ''}
 
 ## 📋 Was der Agent tun muss
 
@@ -318,7 +339,7 @@ async function handleWorkflowRun() {
 
 5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
 
-6. **Wenn alle Gates grün:** PR zu \`main\` erstellen; Promote mergt ihn.
+6. **Wenn alle erforderlichen Gates gruen:** der vorhandene PR wird von der Promotion-Queue verarbeitet.
 
 ## 🔍 Gate-Details
 
@@ -333,8 +354,8 @@ ${jobDetails}
 
 ## 📎 Regeln (aus AGENTS.md)
 
-- **Pretask zuerst:** \`pnpm run agent:pretask\`; offene \`gate-failure\`-Issues haben Vorrang.
-- **Nur echte Invarianten blockieren:** Balance, schiefe Tests und Randfaelle sind dieses Issue, kein \`BLOCKED\`.
+- **Pretask zuerst:** \`pnpm run agent:pretask\`; Issues werden nach Lane und Kritikalitaet priorisiert.
+- **Nur echte Invarianten blockieren:** Statistik/Balance ist Advisory, RNG-/Ledger-/Save- und deterministische Auszahlungspfadfehler blockieren die betroffene Lane.
 - **Lokal leicht pruefen** (\`test:affected\`, \`verify:light\`); die volle Suite laeuft in CI.
 - **Commit-Body muss** die drei Pflichtsektionen enthalten (\`### Changes\`, \`### Technische Basis & Kausalität\`, \`### Ausblick\`).
 

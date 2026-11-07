@@ -15,6 +15,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { IDENTITY } from './lib/identity.mjs';
+import { loadClaimsStrict } from './lib/lane-claims.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -23,7 +24,9 @@ const CONFLICT_LABEL = 'integration/konflikt';
 const branch = process.env.HEAD_BRANCH ?? '';
 const conclusion = process.env.CONCLUSION ?? '';
 const hasToken = Boolean(process.env.GH_TOKEN);
-const event = process.env.EVENT ?? '';
+const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN ?? '';
+const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
+const OWNER = REPO.split('/')[0];
 // Ein Merge mit dem Workflow-Token startet keinen Workflow; das eigene Token
 // ist die Stufe, die CI, Tag und APK wieder in Gang setzt.
 const elevated = Boolean(process.env.PROMOTE_TOKEN);
@@ -89,29 +92,136 @@ function ensurePr() {
   return openPr();
 }
 
-/** Gruen: PR mit Commit-Text mergen, damit `verify-commit-msg --head` gruen bleibt. */
-function mergeGreen(number) {
-  const dir = mkdtempSync(join(tmpdir(), 'rbd-promote-'));
-  const bodyFile = join(dir, 'body.md');
-  writeFileSync(bodyFile, `${body(`origin/${branch}`)}\n`);
-  if (process.env.RBD_PROMOTE_AUTO_MERGE === '1') {
-    // GitHub mergt selbst: der Commit ist signiert (Verified). Das setzt im
-    // Repo die Squash-Vorgabe "PR-Titel und -Beschreibung" voraus, sonst fehlt
-    // main die Pflichtstruktur - deshalb nur mit ausdruecklichem Opt-in.
-    if (gh(['pr', 'merge', number, '--squash', '--auto']) !== null) {
-      log(`PR #${number} fuer den Merge vorgemerkt (Auto-Merge)`);
-      return true;
+const runGhJson = (args) => {
+  const raw = gh(args);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+};
+
+function openPullRequests() {
+  return runGhJson(['pr', 'list', '--state', 'open', '--base', MAIN, '--limit', '100', '--json', 'number,title,body,headRefName,headRefOid,baseRefName,mergeStateStatus,isDraft,headRepositoryOwner']) ?? [];
+}
+
+function currentPullRequest(number) {
+  return runGhJson(['pr', 'view', String(number), '--json', 'number,title,body,headRefName,headRefOid,baseRefName,mergeStateStatus,isDraft,headRepositoryOwner']);
+}
+
+function hasRequiredCheck(sha) {
+  const result = runGhJson(['api', `repos/${REPO}/commits/${sha}/check-runs`]);
+  const checks = (result?.check_runs ?? []).filter((check) => check.name === 'Fail-Closed Gates' && check.status === 'completed');
+  checks.sort((a, b) => String(a.started_at).localeCompare(String(b.started_at)));
+  return checks.at(-1)?.conclusion === 'success';
+}
+
+function dependencyReady(claim, claims) {
+  for (const id of claim.dependencies ?? []) {
+    const dependency = claims.find((entry) => entry.id === id);
+    if (!dependency) return false;
+    if (dependency.status === 'merged' || dependency.branchStatus === 'merged') continue;
+    const merged = runGhJson(['pr', 'list', '--state', 'merged', '--head', `${OWNER}:${dependency.branch}`, '--limit', '1', '--json', 'number']);
+    if (!Array.isArray(merged) || merged.length === 0) return false;
+  }
+  return true;
+}
+
+function validBody(text) {
+  return SECTIONS.every((section) => String(text ?? '').includes(section));
+}
+
+function dispatch(workflow, fields = []) {
+  const args = ['workflow', 'run', workflow, '--ref', MAIN, ...fields.flatMap(([key, value]) => ['--field', `${key}=${value}`])];
+  if (gh(args) === null) warn(`${workflow}: Dispatch fehlgeschlagen`);
+  else log(`${workflow}: ohne PROMOTE_TOKEN explizit angestossen`);
+}
+
+async function mergePullRequest(pr) {
+  const current = currentPullRequest(pr.number);
+  if (!current || current.headRefOid !== pr.headRefOid) return 'head-moved';
+  if (current.baseRefName !== MAIN || current.isDraft) return 'not-ready';
+  if (current.mergeStateStatus === 'BEHIND' || current.mergeStateStatus === 'DIRTY') return 'needs-sync';
+  if (current.mergeStateStatus !== 'CLEAN') return 'not-ready';
+  if (!validBody(current.body)) return 'invalid-pr-body';
+  if (!hasRequiredCheck(current.headRefOid)) return 'check-pending';
+
+  const response = await fetch(`https://api.github.com/repos/${REPO}/pulls/${pr.number}/merge`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'rigged-by-design-promotion-queue',
+    },
+    body: JSON.stringify({
+      sha: current.headRefOid,
+      merge_method: 'squash',
+      commit_title: `${current.title} (#${pr.number})`,
+      commit_message: current.body,
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || result.merged !== true) {
+    warn(`PR #${pr.number}: GitHub lehnte den Merge ab (${result.message ?? response.status})`);
+    return 'merge-rejected';
+  }
+
+  log(`PR #${pr.number} (${current.headRefName}) mit Status am aktuellen Head gemergt: ${result.sha}`);
+  const deleted = gh(['api', '--method', 'DELETE', `repos/${REPO}/git/refs/heads/${current.headRefName}`]);
+  if (deleted === null) warn(`${current.headRefName}: Merge ist erfolgt; Remote-Branch konnte nicht geloescht werden`);
+  else log(`${current.headRefName}: gemergten Remote-Branch geloescht`);
+
+  if (!elevated) {
+    dispatch('auto-version-release.yml', [['verified_sha', result.sha], ['verified_head', current.headRefOid]]);
+    dispatch('branch-sync.yml');
+    dispatch('pr-watcher.yml', [['sweep_green', 'true']]);
+  }
+  return 'merged';
+}
+
+async function promoteQueue() {
+  let claims;
+  try {
+    claims = loadClaimsStrict();
+  } catch (error) {
+    warn(`Claim-Register unlesbar; Promotion fail-closed (${error instanceof Error ? error.message : 'unbekannt'})`);
+    return;
+  }
+  const active = claims.filter((claim) => ['open', 'active', 'sync-pending'].includes(claim.status)
+    && ['active', 'closing'].includes(claim.branchStatus ?? 'active')
+    && claim.branch !== MAIN && claim.branch !== INTEGRATION);
+  const owners = new Set();
+  for (const claim of active) {
+    if (owners.has(claim.owner)) {
+      warn(`Doppelter aktiver Owner ${claim.owner}; Promotion bleibt gesperrt`);
+      return;
     }
-    warn(`Auto-Merge fuer #${number} nicht verfuegbar; expliziter Merge`);
+    owners.add(claim.owner);
   }
-  // Strict-Policy: sobald main sich bewegt, ist der Pflichtstatus veraltet.
-  if (gh(['pr', 'update-branch', number]) === null) log(`#${number}: kein Branch-Update noetig`);
-  const merged = gh(['pr', 'merge', number, '--squash', '--subject', subject(`origin/${branch}`), '--body-file', bodyFile]) !== null;
-  if (merged && !elevated) {
-    if (gh(['workflow', 'run', 'Auto Version & Release', '--ref', MAIN]) !== null) log('Release-Lauf ohne eigenes Token angestossen');
-    else warn('Merge ohne PROMOTE_TOKEN; Release-Lauf nicht angestossen');
+
+  const prs = openPullRequests().sort((a, b) => a.number - b.number);
+  if (!Array.isArray(prs)) {
+    warn('Offene PRs konnten nicht gelesen werden');
+    return;
   }
-  return merged;
+  for (const pr of prs) {
+    const claim = active.find((entry) => entry.branch === pr.headRefName);
+    if (!claim || pr.baseRefName !== MAIN || pr.isDraft || pr.headRepositoryOwner?.login !== OWNER) continue;
+    if (!dependencyReady(claim, claims)) {
+      log(`PR #${pr.number}: wartet auf Lane-Abhaengigkeit`);
+      continue;
+    }
+    if (!hasRequiredCheck(pr.headRefOid)) continue;
+    const outcome = await mergePullRequest(pr);
+    if (outcome === 'needs-sync') {
+      dispatch('branch-sync.yml');
+      log(`PR #${pr.number}: Main-Sync vor Promotion eingeplant`);
+      continue;
+    }
+    if (outcome === 'merged') return;
+    if (outcome === 'invalid-pr-body') warn(`PR #${pr.number}: Pflichtsektionen im PR-Body fehlen`);
+    if (outcome === 'head-moved') log(`PR #${pr.number}: Head wurde waehrend der Pruefung bewegt; naechster Lauf prueft neu`);
+  }
+  log('Keine aktuelle, gruene und abhaengigkeitsbereite Lane zum Mergen gefunden');
 }
 
 /** Offene Staende, die als rot markiert sind - plus der aktuelle Lauf. */
@@ -210,22 +320,15 @@ function promoteRed() {
   }
 }
 
-if (event === 'push' && branch && branch !== MAIN) {
-  log(`Feature-Push ${branch}: leichtes Gate, kein Merge - erst der PR gegen ${MAIN} entscheidet`);
-} else if (!branch || branch === MAIN) {
-  log('main wird nicht promotet');
+if (!branch || branch === MAIN) {
+  log('main-Run: nur explizite Dispatches der Folge-Workflows');
 } else if (conclusion === 'success') {
-  if (event === 'push' && branch !== MAIN) {
-    // Gruener Feature-Push: PR anlegen, nicht mergen. Der PR-Lauf ist das volle
-    // Gate; erst danach entscheidet der naechste Promote-Lauf ueber den Merge.
+  if (!openPr(branch)) {
     const number = ensurePr();
-    if (number) log(`PR #${number} fuer ${branch} angelegt; das volle Gate laeuft im PR`);
-    else warn(`kein PR fuer ${branch}; Promote im PR-Lauf pruefen`);
-  } else {
-    const number = ensurePr();
-    if (!number) warn(`kein PR fuer ${branch}; Merge uebersprungen`);
-    else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (Pflichtstatus noch nicht gruen?)`);
+    if (number) log(`PR #${number} fuer ${branch} angelegt`);
+    else warn(`kein PR fuer ${branch}; Promotion uebersprungen`);
   }
+  await promoteQueue();
 } else if (REMOTE_CONCLUSIONS.has(conclusion)) {
   const number = openPr();
   if (number) {

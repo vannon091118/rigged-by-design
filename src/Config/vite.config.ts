@@ -2,20 +2,6 @@ import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { GovernanceReporter } from '../core/governance/test-harness';
 
-// Messung 31.10.2026: RTP-, Balance- und Soak-Nachweise kosten 52,2 s von 72,5 s CPU-Zeit
-// der ganzen Suite und damit 15 s der 33,6 s Gate-Wandzeit. Das schnelle Profil laesst sie
-// weg und ist damit Entwicklungsfeedback, kein Freigabenachweis: `verify:all` und
-// `verify:release` fahren sie immer mit.
-const quickProfile = process.env.RBD_TEST_PROFILE === 'quick';
-const quickExclude = [
-  '**/round-rtp-*.test.ts',
-  '**/soak.test.ts',
-  '**/slot-session-rtp.test.ts',
-  '**/poker-distribution.test.ts',
-  '**/balance-operating.test.ts',
-  '**/*.bench.ts',
-];
-
 const moduleSep = '[\\/]';
 /** Paketpfad mit posix- oder Windows-Trenner; als String, damit ESLint keine Regex-Escapes prueft. */
 const vendorPath = (names: string): RegExp => new RegExp(`node_modules${moduleSep}(?:${names})${moduleSep}`);
@@ -59,7 +45,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.{ts,tsx}'],
-    ...(quickProfile ? { exclude: [...configDefaults.exclude, ...quickExclude] } : {}),
+    exclude: configDefaults.exclude,
     reporters: ['default', new GovernanceReporter()],
     testTimeout: 40_000,
     // Threads statt Prozess-Forks: sie sterben mit dem Runner, es bleiben keine
