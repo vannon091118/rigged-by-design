@@ -409,7 +409,21 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
+  },
+  {
+    "id": "lane/governance/09-claim-reconcile",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/09-claim-reconcile",
+    "baseSha": "f17d0e29e4e4aecb3e3368810686b54a7a3c7468",
+    "pathAllowlist": [
+      ".lane-claims/claims.json"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "f17d0e29e4e4aecb3e3368810686b54a7a3c7468"
   }
 ]
