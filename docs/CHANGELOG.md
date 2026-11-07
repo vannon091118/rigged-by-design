@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
+<!-- rbd-doc: v0.3.160 | 2026-11-07 09:30 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.160] - 2026-11-07
+
+### Technik
+- **Merge-Beleg ohne `gh`.** `scripts/lib/claim-evidence.mjs` erkennt zusaetzlich einen baumgleichen Commit auf `main`: ein Squash-Merge hinterlaesst genau diesen Zustand, auch wenn der Branch am Remote geloescht ist. `localMergeEvidence()` liest Kopf, Vorfahrschaft und Baum aus der lokalen Historie; `decideClaim()` bleibt ohne `baseSha`.
+- **Register belegt statt geraten.** `reconcile-claims --apply` schreibt `mergedEvidence` und `mergedSha` in den Claim. Claim 12 steht damit als `merged` mit Beleg `branch-tree-on-main` auf `a490d4a`; `verify-lane-claims` meldet fuer dessen Pfade keine Kollision mehr.
+- Drei weitere Testfaelle in `claim-evidence.test.ts` decken den Baum-Beleg, die lokale Historie und den fehlenden Branch ab.
 
 ## [0.3.159] - 2026-11-07
 

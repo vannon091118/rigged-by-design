@@ -91,8 +91,10 @@ export class LaneClaim {
    * @param {string[]} dependencies - Andere Lane-IDs, die zuerst gemergt sein müssen
    * @param {string} gateProfile - 'quick' oder 'full'
    * @param {string} status - 'open' | 'merged' | 'archived' | 'parked'
+   * @param {string|null} mergedEvidence - Belegart des Merge-Nachweises
+   * @param {string|null} mergedSha - Commit, der den Beleg traegt
    */
-  constructor({ id, owner, branch, baseSha, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open' }) {
+  constructor({ id, owner, branch, baseSha, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
@@ -102,6 +104,8 @@ export class LaneClaim {
     this.dependencies = dependencies;
     this.gateProfile = gateProfile;
     this.status = status;
+    this.mergedEvidence = mergedEvidence;
+    this.mergedSha = mergedSha;
     this.createdAt = baseSha;
   }
 
@@ -132,6 +136,8 @@ export class LaneClaim {
       dependencies: this.dependencies,
       gateProfile: this.gateProfile,
       status: this.status,
+      ...(this.mergedEvidence ? { mergedEvidence: this.mergedEvidence } : {}),
+      ...(this.mergedSha ? { mergedSha: this.mergedSha } : {}),
       createdAt: this.createdAt,
     };
   }

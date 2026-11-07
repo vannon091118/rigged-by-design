@@ -20,7 +20,7 @@ import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
 } from './lib/lane-claims.mjs';
-import { decideClaim, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -201,12 +201,20 @@ if (violations.length > 0) {
 /** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
 const mergedIndex = mergedPullRequestIndex();
 const collisions = findCollisions(claim).filter((collision) => {
-  // Eine Lane, deren Arbeit nachweislich gemergt ist (gemergter PR fuer genau
-  // diesen Branch), ist keine Kollision mehr, sondern ein veralteter Eintrag.
-  // Ohne `gh` oder ohne Nachweis bleibt es fail-closed bei der Kollision.
+  // Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
+  // sondern ein veralteter Eintrag. `decideClaim` kennt beide Belege: den
+  // gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
+  // lokalen Historie (Squash-Merge, kein `gh` noetig). Ohne jeden Nachweis
+  // bleibt es fail-closed bei der Kollision.
   const other = claims.find((entry) => entry.id === collision.lane);
-  const mergedPr = other ? mergedIndex?.get(other.branch) ?? null : null;
-  const evidence = decideClaim({ branchExists: true, mergedPr });
+  if (!other) return true;
+  const local = localMergeEvidence({ branch: other.branch });
+  const evidence = decideClaim({
+    branchExists: true,
+    branchHeadOnMain: local.headOnMain,
+    branchTreeOnMain: local.treeOnMain,
+    mergedPr: mergedIndex?.get(other.branch) ?? null,
+  });
   if (evidence.status === 'merged') {
     console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
     return false;
