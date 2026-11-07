@@ -562,7 +562,31 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "e2869a1df794575f7c4c05a1ef570a21271db1d3",
     "createdAt": "a490d4ae72599efc7f9bc375cedc37f6d35a62f1"
+  },
+  {
+    "id": "lane/governance/14-claim-13-reconcile",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/14-claim-13-reconcile",
+    "baseSha": "e2869a1df794575f7c4c05a1ef570a21271db1d3",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "docs/INVENTORY.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "e2869a1df794575f7c4c05a1ef570a21271db1d3"
   }
 ]
