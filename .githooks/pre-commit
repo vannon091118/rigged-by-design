@@ -27,20 +27,6 @@ fi
 # Inventur, Doku-Marker, Doku-Gate und LOC lesen nur Dateien und Git; sie
 # brauchen keine node_modules. Deshalb laufen sie auch im Fruehausstieg, damit
 # ein frischer Klon nicht ungeprueft committet.
-# Meta-Pflege ist Sache der Governance-Lane. Eine Feature-Lane darf Inventur
-# und Doku-Marker nicht mitcommitten (sie sind gesperrt); ihre Pflege passiert
-# beim Promote auf main. Sonst waere jeder Feature-Commit automatisch rot.
-meta_allowed() {
-  node --input-type=module -e "
-    import { execSync } from 'node:child_process';
-    import { loadClaimsStrict } from './scripts/lib/lane-claims.mjs';
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-    let claim;
-    try { claim = loadClaimsStrict().find((c) => c.branch === branch); } catch { process.exit(1); }
-    process.exit(claim && claim.allowsPath('docs/INVENTORY.md') ? 0 : 1);
-  "
-}
-
 inventory_docs_loc() {
   node scripts/build-inventory.mjs
   # Die Inventur ist Pflichtdoku und Gate-Grundlage: ohne dieses Stagen pruefte
@@ -55,11 +41,7 @@ inventory_docs_loc() {
   fi
 }
 if [ ! -d node_modules ]; then
-  if meta_allowed; then
-    inventory_docs_loc
-  else
-    echo "pre-commit: Feature-Lane - Inventur und Doku-Marker bleiben zentral (promote regeneriert sie)"
-  fi
+  inventory_docs_loc
   echo "pre-commit: node_modules fehlt - Matrix und Katalog uebersprungen (pnpm install --frozen-lockfile)"
   exit 0
 fi
@@ -73,10 +55,6 @@ if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
   echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
   exit 1
 fi
-if meta_allowed; then
-  inventory_docs_loc
-  git add docs/INVENTORY.md >/dev/null 2>&1 || true
-  echo "pre-commit: Doku, Matrix und LOC geprueft"
-else
-  echo "pre-commit: Feature-Lane - Inventur und Doku-Marker bleiben zentral (promote regeneriert sie)"
-fi
+inventory_docs_loc
+git add docs/INVENTORY.md >/dev/null 2>&1 || true
+echo "pre-commit: Doku, Matrix und LOC geprueft"

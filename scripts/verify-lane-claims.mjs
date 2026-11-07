@@ -155,6 +155,7 @@ const deletedFiles = new Set((DIFF_BASE
 
 const violations = [];
 const allowedBySystem = [];
+const generatedMeta = [];
 const inherited = [];
 const handedOver = [];
 
@@ -164,6 +165,13 @@ for (const file of staged) {
     continue;
   }
   if (META_FILES.includes(file)) {
+    // Die Inventur ist ein Generator-Artefakt: der Pre-Commit-Hook schreibt sie
+    // deterministisch aus dem Baum, und `verify:docs` prueft sie gegen den Baum.
+    // Sie ist deshalb kein handgeschriebener Inhalt und fuer jede Lane erlaubt.
+    if (file === 'docs/INVENTORY.md') {
+      generatedMeta.push(file);
+      continue;
+    }
     if (claim.allowsPath(file)) continue;
     if (onlySystemLines(file)) {
       allowedBySystem.push(file);
@@ -218,7 +226,10 @@ if (handedOver.length > 0) {
   for (const entry of handedOver) console.log(`  ${entry}`);
 }
 
-const systemNote = allowedBySystem.length > 0 ? `, davon ${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '';
+const systemNote = [
+  allowedBySystem.length > 0 ? `${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '',
+  generatedMeta.length > 0 ? `${generatedMeta.length} generierte Inventur` : '',
+].filter(Boolean).join(', ').replace(/^/, ', davon ').replace(/^, davon $/, '');
 const scope = CI ? `CI-Diff ${RANGE}` : (MERGING ? `Merge-Diff ${DIFF_BASE}` : 'gestagte Dateien');
 console.log(`  Branch-Ref: ${CI ? HEAD_REF : 'HEAD'}`);
 console.log(`verify-lane-claims: Branch '${branch}' ist claim-konform (${staged.length} ${scope}${systemNote}).`);
