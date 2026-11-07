@@ -37,7 +37,7 @@ jobs:
       run: ${{ steps.dedupe.outputs.skip != 'true' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -81,12 +81,12 @@ jobs:
 
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
       - name: pnpm installieren
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
           cache: pnpm
@@ -173,7 +173,7 @@ jobs:
       # Klein und maschinenlesbar: welcher Diff, welche Gates, welche Tests,
       # was bewusst ausgelassen wurde. Kein Log-Friedhof, 7 Tage Retention.
       - name: CI-Plan-Artefakt
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: ci-plan
           path: .verify-cache/ci-plan.json
@@ -195,7 +195,7 @@ jobs:
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -241,7 +241,7 @@ jobs:
       # --frozen-lockfile node_modules neu aufbaut. Innen entscheidet der
       # Inhalts-Hash des Arbeitsbaums, ob ein Gate wirklich gruen war.
       - name: Gate-Cache wiederherstellen
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: .verify-cache
           key: ${{ runner.os }}-rbd-verify-${{ matrix.gate }}-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
@@ -250,12 +250,12 @@ jobs:
             ${{ runner.os }}-rbd-verify-
 
       - name: pnpm installieren
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           # Vollstaendige 22er-Linie, nicht der harte Minor: jsdom und eslint
           # verlangen einen aktuellen 22er-Stand, sonst stirbt der Vitest-Worker.
@@ -278,7 +278,7 @@ jobs:
 
       - name: Gate-Protokoll bei Rot
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: gate-log-${{ matrix.gate }}
           path: .verify-cache/reports/
@@ -296,7 +296,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -338,7 +338,7 @@ jobs:
           fi
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
       - name: Lane-Claims (Allowlist, Owner, Kollisionen)
@@ -360,7 +360,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -402,7 +402,7 @@ jobs:
           fi
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
       - name: Commit- und PR-Notes-Gate

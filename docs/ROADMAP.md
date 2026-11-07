@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.168 | 2026-11-07 10:21 UTC -->
+<!-- rbd-doc: v0.3.169 | 2026-11-07 10:39 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -194,6 +194,8 @@ nächster Schritt, Review-Bedingung.
   (`docs/ARCHITECTURE.md`) stehen. Als Nächstes die Deko-Rollen von den
   Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
 
+- Agenten-Isolation und Workflow-Haertung stehen seit 0.3.169: `pretask` blockt geteilte Baeume mit `ERR-4027` und `--json`, `AGENTS.md` hat eine Testlinie, `long-checks.yml` uebergibt `balance_days` ueber `RBD_DAYS`, und alle Workflow-Actions sind auf 40-stellige Commit-SHAs gepinnt. Offen bleiben nur die Punkte, die weiterhin in der Tabelle stehen.
+
 ## Offene Punkte (konsolidiert 2026-11-06)
 
 Diese Sektion ersetzt die frueheren Einzelberichte. Jeder Punkt nennt Status,
@@ -230,8 +232,6 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | Doku-Reconcile-Runner | offen | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
 | CI-Self-Repair | offen | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
 | Impact-gesteuerte Langlaeufe | offen | `long-checks.yml` startet nur per `workflow_dispatch`; RNG-, Ledger- und Economy-Aenderungen loesen Statistik, Soak oder Balance nicht automatisch aus. |
-| Worktree-Isolation | teilweise | `turn:finish` staged nur Claim-Pfade; `pretask` liest `git worktree list` noch nicht und erzwingt keinen eigenen Worktree je Agent. |
-| Workflow-Haertung | offen | `long-checks.yml` setzt `inputs.balance_days` noch in die Shell-Zeile; Actions sind ueber Major-Tags statt Commit-SHAs gepinnt. |
 | Issue-Resolver nach erneutem Gate | offen | `sweepGreenMain()` schliesst nur, wenn der gemeldete Commit auf `main` liegt. Naechster Schritt: Fingerprint plus erneut gruenes Gate auf dem neuen Stand, sonst Issue aktualisieren. |
 
 ### Spiel und Simulation

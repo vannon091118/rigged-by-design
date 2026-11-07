@@ -215,6 +215,15 @@ declare module '*/promote-guard.mjs' {
   export function verifyPromotion(input?: PromotionInput): { ok: boolean; reason: string };
 }
 
+declare module '*/worktree-isolation.mjs' {
+  export const ISOLATION_CODE: string;
+  export function isLinkedWorktree(gitDir: string, commonDir: string): boolean;
+  export function parseStatusPaths(text: string): string[];
+  export function isolationRequired(input?: { readonly explicit?: boolean; readonly claims?: readonly { readonly branch: string; readonly status: string; readonly pathAllowlist?: readonly string[] }[]; readonly branch?: string }): boolean;
+  export function foreignClaimPaths(input?: { readonly changed?: readonly string[]; readonly claims?: readonly { readonly branch: string; readonly status: string; readonly pathAllowlist?: readonly string[] }[]; readonly branch?: string }): string[];
+  export function assessIsolation(input?: { readonly required?: boolean; readonly isWorktree?: boolean; readonly dirtyPaths?: readonly string[]; readonly foreignPaths?: readonly string[]; readonly branch?: string }): { readonly code: string; readonly ok: boolean; readonly required: boolean; readonly isWorktree: boolean; readonly branch: string; readonly dirtyPaths: readonly string[]; readonly foreignPaths: readonly string[]; readonly reasons: readonly string[] };
+}
+
 declare module '*/tree-changes.mjs' {
   export interface TreeChanges {
     readonly added: readonly string[];
