@@ -18,7 +18,7 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
     "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
   },
   {
@@ -65,7 +65,7 @@
     ],
     "gateProfile": "light",
     "status": "archived",
-    "createdAt": "5dc0161"
+    "createdAt": "dc35b52"
   },
   {
     "id": "lane/governance/04-granular-gates",
@@ -382,5 +382,34 @@
     "gateProfile": "quick",
     "status": "merged",
     "createdAt": "d0c730cd59d6e822bba501a854b5f466c165876e"
+  },
+  {
+    "id": "lane/ci/impact-matrix",
+    "owner": "Governance-Owner",
+    "branch": "lane/ci/impact-matrix",
+    "baseSha": "dd872e29348e8ffb7522296a66ca05da9ee147fd",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/ci-verify.yml",
+      ".github/workflows/auto-version-release.yml",
+      "scripts/ci-plan.mjs",
+      "scripts/lib/ci-plan.mjs",
+      "scripts/release-impact.mjs",
+      "scripts/reconcile-claims.mjs",
+      "scripts/gate-matrix.mjs",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "package.json",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/ROADMAP.md",
+      "pnpm-lock.yaml"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "dd872e29348e8ffb7522296a66ca05da9ee147fd"
   }
 ]

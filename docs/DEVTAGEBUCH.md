@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 07:55 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -15,6 +15,23 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+## 2026-11-07 - CI-Plan erreicht die Gate-Jobs
+
+**Ziel.** Nach dem ersten Matrix-Umbau blieb der Plan-Job rot: die Gate-Matrix kam nie bei den Gate-Jobs an.
+
+**Umsetzung.** scripts/ci-plan.mjs akzeptiert Flags jetzt in beiden Schreibweisen; .github/workflows/ci-verify.yml uebergibt --github-output mit Gleichheitszeichen. Ursache war genau die Leerzeichen-Variante, die der Parser nicht las.
+
+**Pruefungen.** node scripts/ci-plan.mjs mit --github-output schreibt matrix, test_files und tests_json; verify:light gruen; Nachweis im naechsten PR-Lauf.
+
+## 2026-11-07 - Impact-Matrix: Gates folgen dem echten Diff
+
+**Ziel.** Die CI entschied bisher nur nach Profil (`light`/`full`), nicht nach dem, was ein Commit wirklich anfasst: eine Doku-Aenderung bekam dieselbe Matrix wie eine RNG-Aenderung, und der APK-Filter baute fuer jedes `scripts/`-Skript ein Android-Paket.
+
+**Umsetzung.** `scripts/lib/ci-plan.mjs` verbindet den vorhandenen Diff-/Importgraphen mit dem Gate-Plan: Doku und Claims laufen nur durch `check:loc`, `docs`, `tree`, `redundancy`; Runtime-Code aktiviert Test-, Dead-Code-, Capability- und Build-Gates; `content/`/`public/` zusaetzlich Assets; Dependencies, Toolchain oder unbekannte Pfade fallen auf das volle Profil zurueck. `ci-plan.mjs` schreibt Matrix, `RBD_TEST_FILES` und einen kleinen Planbericht (`GITHUB_STEP_SUMMARY` + Artefakt). `release-impact.mjs` prueft nur Produktpfade, `reconcile-claims.mjs` setzt Claims auf `merged`/`superseded`, wenn der Branch fehlt oder vollstaendig in `main` liegt.
+
+**Pruefungen.** `node scripts/ci-plan.mjs` gegen den echten Branch-Diff (Impact an/aus), `node scripts/reconcile-claims.mjs --apply`, `node scripts/release-impact.mjs`, danach `verify:light` und die PR-Gates in GitHub Actions.
+
+**Offen.** Nichts aus diesem Schnitt; die volle Testsuite laeuft weiterhin als ein Gate-Job, Sharding folgt erst mit belegbar vollstaendiger Dateiliste.
 ## 2026-11-07 - Agentenverhalten: Pre-, Waehrend- und After-Task verbindlich
 
 **Ziel.** Agents sollen nicht ohne Plan loslegen und nicht jeden CI-Lauf abfragen. Vor dem CI-Umbau wird deshalb der Arbeitsablauf selbst verbindlich: Pre-Task, waehrend der Arbeit, After-Task, Polling-Grenzen und die Rolle des Monitors.

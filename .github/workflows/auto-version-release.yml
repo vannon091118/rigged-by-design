@@ -63,24 +63,14 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: pnpm run verify:release
 
-      # APK nur bei relevanter Aenderung: reine Doku, Governance-Texte und
-      # Marker brauchen keinen Android-Bau.
+      # APK nur bei echter Produktwirkung. Der Filter fragt den Impact-Pfad
+      # (`release-impact.mjs`), nicht mehr das pauschale `scripts/`: eine
+      # CI-Skriptaenderung loest keinen Android-Bau mehr aus.
       - name: Relevanz fuer APK bestimmen
         id: relevance
         run: |
           prev="$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')"
-          if [ -z "$prev" ]; then
-            echo "apk=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::kein Vorgaenger-Tag; APK wird gebaut"
-            exit 0
-          fi
-          if git diff --name-only "$prev" HEAD | grep -qE '^(src/|content/|public/|scripts/|index.html|package\.json|pnpm-lock\.yaml|src/Config/)'; then
-            echo "apk=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::Code/Inhalt geaendert; APK wird gebaut"
-          else
-            echo "apk=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::nur Doku/Governance seit $prev; APK entfaellt"
-          fi
+          node scripts/release-impact.mjs --prev="$prev" --head=HEAD --github-output "$GITHUB_OUTPUT"
 
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
       # sichtbarer Block mit Anleitung. Ein Tag, der schon existiert, erzeugt
