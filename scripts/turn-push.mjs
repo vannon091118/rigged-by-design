@@ -30,7 +30,7 @@ console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + t
 
 // Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
 const stage = () => {
-  if (paths.length > 0) git(['add', '--', ...paths, 'package.json', 'pnpm-lock.yaml']);
+  if (paths.length > 0) git(['add', '--', ...paths]);
   else git(['add', '-A']);
 };
 
@@ -70,9 +70,17 @@ if (schmutz) {
     : `turn:finish: Version ${treeVersion} bereits gebumpt (HEAD ${headVersion})`);
 }
 
-// Marker VOR der Pruefung setzen: schreibt der Hook sie erst nach dem Verify,
-// aendert sich der Baum und damit jeder Cache-Schluessel bei jedem Commit.
-spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+// Marker und Inventar VOR der Pruefung setzen: der Docs-Gate prueft
+// INVENTORY-Abdeckung gegen git ls-files. Neue Dateien muessen dort schon
+// erfasst sein, sonst ist verify:docs rot, obwohl der Pre-Commit-Hook sie
+// erst spaeter schreiben wuerde.
+if (paths.length > 0) {
+  spawnSync(process.execPath, ['scripts/doc-sync.mjs', '--staged'], { cwd: ROOT, stdio: 'ignore' });
+  spawnSync(process.execPath, ['scripts/build-inventory.mjs'], { cwd: ROOT, stdio: 'ignore' });
+  git(['add', '--', 'docs/INVENTORY.md']);
+} else {
+  spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+}
 
 const verify = npmRun(['run', VERIFY_SCRIPT]);
 if (verify.status !== 0) {

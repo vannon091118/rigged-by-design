@@ -9,6 +9,7 @@
       "scripts/lib/subsystems.mjs",
       "scripts/lib/escalation.mjs",
       "scripts/lib/lane-claims.mjs",
+      "scripts/lib/pipeline-plan.mjs",
       "scripts/agent-context.mjs",
       "scripts/agent-verify.mjs",
       "scripts/run-pipeline.mjs",
@@ -59,7 +60,6 @@
     "pathAllowlist": [
       "scripts/lib/capabilities.mjs",
       "scripts/verify-capabilities.mjs",
-      "scripts/lib/pipeline-plan.mjs",
       "capabilities.json"
     ],
     "contracts": [],
