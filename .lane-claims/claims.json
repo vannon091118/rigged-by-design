@@ -932,5 +932,20 @@
     "gateProfile": "light",
     "status": "open",
     "createdAt": "92c8f3ea376e08dde3319828e6808de370a6b95c"
+  },
+  {
+    "id": "lane/interaction/foreign-map-pickup",
+    "owner": "Interaction-Contract-Owner",
+    "branch": "lane/interaction/foreign-map-pickup",
+    "baseSha": "aaea62cb20afb1f6fd554cd8abf570ae691ab887",
+    "pathAllowlist": [
+      "src/ui/**",
+      "src/styles/**"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "aaea62cb20afb1f6fd554cd8abf570ae691ab887"
   }
 ]
