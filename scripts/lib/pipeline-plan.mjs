@@ -8,6 +8,17 @@
  */
 
 export const PROFILES = Object.freeze(['light', 'quick', 'full', 'release']);
+
+/**
+ * `verify:all` heisst fuer Menschen "alles", als Profil heisst es `full`. Der
+ * Alias steht genau einmal hier: CI, Matrix und Pipeline lesen denselben Namen,
+ * statt je eigene Schreibweisen zu erfinden.
+ */
+export const PROFILE_ALIASES = Object.freeze({ all: 'full' });
+
+export function normalizeProfile(value) {
+  return PROFILE_ALIASES[value] ?? value;
+}
 const MINUTE = 60_000;
 
 /** Jede Stufe ist rein lesend: pruefen, nicht reparieren. */
@@ -81,13 +92,14 @@ export const PROFILE_GATES = Object.freeze({
 });
 
 export function isProfile(value) {
-  return PROFILES.includes(value);
+  return PROFILES.includes(normalizeProfile(value));
 }
 
 /** Der Gate-Plan eines Profils; `null` fuer ein unbekanntes Profil. */
 export function planGates(profile) {
-  if (!isProfile(profile)) return null;
-  return [...PROFILE_GATES[profile]];
+  const key = normalizeProfile(profile);
+  if (!PROFILES.includes(key)) return null;
+  return [...PROFILE_GATES[key]];
 }
 
 /** `--fix` ist der einzige Schalter, der den Arbeitsbaum schreiben darf. */

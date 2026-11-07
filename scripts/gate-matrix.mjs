@@ -13,14 +13,14 @@
  * Aufruf: `node scripts/gate-matrix.mjs --profile=all|light|quick|release`
  */
 import { auditRequired } from './lib/dependency-change.mjs';
-import { GATES, isProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
+import { GATES, isProfile, normalizeProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
 
 const arg = (name) => {
   const hit = process.argv.slice(2).find((value) => value.startsWith(`--${name}=`));
   return hit ? hit.slice(name.length + 3) : undefined;
 };
 
-const profile = arg('profile') ?? 'full';
+const profile = normalizeProfile(arg('profile') ?? 'full');
 if (!isProfile(profile)) {
   console.error(`gate-matrix: unbekanntes Profil '${profile}'; erlaubt sind ${PROFILES.join(', ')}`);
   process.exit(1);

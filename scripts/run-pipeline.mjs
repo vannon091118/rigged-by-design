@@ -16,7 +16,7 @@ import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 import { executeStep, runGates } from './lib/gate-runner.mjs';
 import { resetTreeKey } from './lib/gate-cache.mjs';
-import { GATES, isFixMode, isProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
+import { GATES, isFixMode, isProfile, normalizeProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
 import { auditRequired } from './lib/dependency-change.mjs';
 import { describeChanges, diffTree } from './lib/tree-changes.mjs';
 import { releaseOwner, sweepOrphans } from './lib/process-sweep.mjs';
@@ -24,7 +24,8 @@ import { installStopHandlers } from './lib/pipeline-stop.mjs';
 
 const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));
-const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'full';
+// `verify:all` und `--profile=all` sind derselbe Lauf wie `full`; die CI gibt `all` aus.
+const PROFILE = normalizeProfile(profileArg ? profileArg.slice('--profile='.length) : 'full');
 if (!isProfile(PROFILE)) {
   fail(1, 'ERR-4006', 'pipeline', `unbekanntes Profil ${PROFILE}; erlaubt sind ${PROFILES.join(', ')}`);
   process.exit(1);
