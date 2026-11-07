@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 06:00 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -12,9 +12,10 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
-## [0.3.155] - 2026-11-07
+## [0.3.156] - 2026-11-07
 
 ### Technik
+- `turn:finish` nutzt beim Push und PR-Update den gespeicherten gh-Benutzer-Token statt eines injizierten `GITHUB_TOKEN`, damit GitHub die normalen CI-Folgeereignisse ausfuehrt.
 - PR-Pflichtstatus explizit von manuellen Dispatch-Nachweisen unterschieden; Promotion verlangt den Check am aktuellen PR-Head.
 - P0: Die Inventur und generierte Dependency-Matrix nach dem ersten Commit neu aufgebaut; die neuen CI-/Impact-Skripte sind darin vollständig erfasst.
 - Workflow-Stand konsolidiert: `turn:finish` pusht den Lane-Branch und hebt Commit-Bodies in einen PR. Die CI prueft nur betroffene schnelle Gates; APK-Build und Audit laufen nur bei passendem Impact. Statistik, Soak, Balance und Benchmarks bleiben nicht blockierende Advisory- bzw. Dispatch-Nachweise.

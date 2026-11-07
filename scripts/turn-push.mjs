@@ -8,11 +8,33 @@ import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
-const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' });
+const gitRun = (args, env = process.env) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit', env });
 const npmRun = (args) =>
   spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
 const TARGET_BRANCH = 'main';
 const MAX_PUSH_VERSUCHE = 3;
+
+// GITHUB_TOKEN-authored pushes do not start follow-up Actions. When the desktop
+// injects that token, prefer the user's stored gh credential for delivery.
+const deliveryEnvironment = () => {
+  if (!process.env.GITHUB_TOKEN && !process.env.GH_TOKEN) return process.env;
+  const env = { ...process.env };
+  delete env.GITHUB_TOKEN;
+  delete env.GH_TOKEN;
+  try {
+    const token = execFileSync('gh', ['auth', 'token', '--hostname', 'github.com'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      env,
+    }).trim();
+    if (token) return { ...env, GH_TOKEN: token };
+  } catch {
+    // Keep delivery possible; the fallback is reported below.
+  }
+  console.log('turn:finish: Benutzer-Token nicht verfuegbar; GITHUB_TOKEN kann Folge-Workflows unterdruecken');
+  return process.env;
+};
+const DELIVERY_ENV = deliveryEnvironment();
 
 // Light ist der Normalfall: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate.
 // Tests, Build und Audit gehoeren nach GitHub Actions und laufen nicht in jedem
@@ -197,7 +219,11 @@ const aufraeumen = () => {
 
 /** PR nach dem Push direkt aus der lokalen, angemeldeten CLI anlegen/aktualisieren. */
 const prAnlegen = () => {
-  const lift = spawnSync(process.execPath, ['scripts/lift-commit-body.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  const lift = spawnSync(process.execPath, ['scripts/lift-commit-body.mjs'], {
+    cwd: ROOT,
+    stdio: 'inherit',
+    env: DELIVERY_ENV,
+  });
   if (lift.status !== 0) console.log('turn:finish: PR-Body liegt als Connector-Plan vor; Arbeitsbranch bleibt gepusht');
 };
 
@@ -230,7 +256,7 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
     }
     continue;
   }
-  if (gitRun(['push', '-u', 'origin', 'HEAD']).status === 0) {
+  if (gitRun(['push', '-u', 'origin', 'HEAD'], DELIVERY_ENV).status === 0) {
     console.log(`turn:finish: PASS, Arbeitsbranch ${currentBranch} gepusht`);
     prAnlegen();
     aufraeumen();
@@ -249,7 +275,7 @@ if (!branchSchutz) {
   fail(1, 'ERR-4008', 'turn:finish', `${grund}; der Commit bleibt lokal liegen`);
   process.exit(1);
 }
-const pushBranch = gitRun(['push', '-u', 'origin', 'HEAD']);
+const pushBranch = gitRun(['push', '-u', 'origin', 'HEAD'], DELIVERY_ENV);
 if (pushBranch.status !== 0) {
   fail(1, 'ERR-4008', 'turn:finish', `Push auf ${TARGET_BRANCH} und auf den Arbeitsbranch fehlgeschlagen`);
   process.exit(1);

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 05:53 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 06:00 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -152,7 +152,7 @@ Dieselben Versprechen gelten für jede Figur außerhalb des Casinos: Ein Nachbar
 ## Jetzt — den P0-Lieferweg abschliessen
 
 - Den Workflow-PR mit den Pflicht-Gates auf `main` bringen und die aktiven Fremd-Lanes nacheinander synchronisieren und foerdern.
-- Der manuelle CI-Dispatch ist gruen, erfuellt den Pflichtstatus nicht. Fuer #203 muss der normale `pull_request`-Check auf dem Head gruen werden.
+- `turn:finish` entfernt fuer Delivery den injizierten Token; #203 braucht auf dem neuen Head den normalen `pull_request`-Pflichtcheck.
 - Uebernommene Branches nach erfolgreichem Merge automatisch entfernen; den divergenten `integration`-Notausgang unberuehrt lassen.
 - Nach P0 in der Cloud mit P1 fortfahren; geparkte oder gemischte Legacy-WIP erst nach Pfad-/Commit-Pruefung in eine saubere Lane ueberfuehren.
 - PR #203 ist offen; `feat/spatial-layout-editor` wurde nach der Ahead/Behind- und PR-Pruefung geloescht (0 Commits voraus, 2 zurueck; keine offenen PRs).
