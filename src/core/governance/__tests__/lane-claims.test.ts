@@ -78,6 +78,18 @@ describe('claim register trust', () => {
     expect(auditClaimChange(null, governance).ok).toBe(true);
   });
 
+  it('prueft fremde Claims gegen die Basis, nicht gegen die eigene Registrierung', () => {
+    const foreign = makeClaim({ id: 'lane/other/demo', branch: 'lane/other/demo' });
+    const own = makeClaim();
+    const result = auditRegisterAgainstBase({
+      baseClaims: [foreign],
+      registrationClaims: [own],
+      nextClaims: [foreign, own],
+      branch: 'lane/feature/demo',
+    });
+    expect(result.ok).toBe(true);
+  });
+
   it('meldet fremde Claim-Aenderungen in einer Feature-Lane', () => {
     const foreign = makeClaim({ id: 'lane/other/demo', branch: 'lane/other/demo' });
     const changed = { ...foreign, pathAllowlist: ['src/core/**', 'scripts/promote.mjs'] };

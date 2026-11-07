@@ -11,11 +11,17 @@
  * Dependency-Lage maschinenlesbar aus.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CLAIMS_DIR = join(process.cwd(), '.lane-claims');
 const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
+// Neue Lanes schreiben je eine eigene Datei. Damit ist die Registrierung
+// serialisiert, ohne dass alle Agenten dieselbe JSON-Datei gleichzeitig
+// ueberschreiben. `claims.json` bleibt als Legacy-Bestand lesbar.
+const CLAIM_ENTRIES_DIR = join(CLAIMS_DIR, 'claims');
+export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
+export const COORDINATION_FILES = Object.freeze(['.lane-claims/claims.json']);
 
 /**
  * Fester Owner-Roster. Eine Lane ohne benannten Owner ist keine Lane: ohne
@@ -94,11 +100,12 @@ export class LaneClaim {
    * @param {string|null} mergedEvidence - Belegart des Merge-Nachweises
    * @param {string|null} mergedSha - Commit, der den Beleg traegt
    */
-  constructor({ id, owner, branch, baseSha, pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
+  constructor({ id, owner, branch, baseSha, task = '', pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
     this.baseSha = baseSha;
+    this.task = task;
     this.pathAllowlist = pathAllowlist;
     this.contracts = contracts;
     this.dependencies = dependencies;
@@ -131,6 +138,7 @@ export class LaneClaim {
       owner: this.owner,
       branch: this.branch,
       baseSha: this.baseSha,
+      ...(this.task ? { task: this.task } : {}),
       pathAllowlist: this.pathAllowlist,
       contracts: this.contracts,
       dependencies: this.dependencies,
@@ -144,15 +152,40 @@ export class LaneClaim {
 }
 
 /**
- * Laedt das Register streng. Eine fehlende, kaputte oder nicht-array-foermige
- * Registerdatei ist ein Fehler, kein leeres Register: fail-open hiesse, dass
- * ein beschaedigtes claims.json jedem Agenten freie Fahrt gibt.
+ * Laedt das Register streng: Legacy-Datei und Claim-Dateien werden vereinigt.
+ * Eine fehlende, kaputte oder nicht lesbare Registerdatei ist ein Fehler, kein
+ * leeres Register: fail-open hiesse, dass ein beschaedigtes claims.json jedem
+ * Agenten freie Fahrt gibt.
  */
+function readClaimEntries(file) {
+  const data = JSON.parse(readFileSync(file, 'utf8'));
+  const entries = Array.isArray(data) ? data : [data];
+  if (entries.some((entry) => !entry || typeof entry !== 'object' || Array.isArray(entry))) {
+    throw new Error(`Claim-Eintrag ist kein Objekt: ${file}`);
+  }
+  return entries;
+}
+
 export function loadClaimsStrict() {
-  if (!existsSync(CLAIMS_FILE)) throw new Error(`Claim-Register fehlt: ${CLAIMS_FILE}`);
-  const data = JSON.parse(readFileSync(CLAIMS_FILE, 'utf8'));
-  if (!Array.isArray(data)) throw new Error(`Claim-Register ist kein Array: ${CLAIMS_FILE}`);
-  return data.map((entry) => new LaneClaim(entry));
+  const files = [];
+  if (existsSync(CLAIMS_FILE)) files.push(CLAIMS_FILE);
+  if (existsSync(CLAIM_ENTRIES_DIR)) {
+    for (const name of readdirSync(CLAIM_ENTRIES_DIR).filter((entry) => entry.endsWith('.json')).sort()) {
+      files.push(join(CLAIM_ENTRIES_DIR, name));
+    }
+  }
+  if (files.length === 0) throw new Error(`Claim-Register fehlt: ${CLAIMS_DIR}`);
+
+  const byId = new Map();
+  for (const file of files) {
+    for (const entry of readClaimEntries(file)) {
+      if (byId.has(entry.id)) {
+        throw new Error(`Doppelter Claim '${entry.id}' in ${byId.get(entry.id).file} und ${file}`);
+      }
+      byId.set(entry.id, { entry, file });
+    }
+  }
+  return [...byId.values()].map(({ entry }) => new LaneClaim(entry));
 }
 
 /** Laedt alle Claims fuer Anzeige und Kontext; Fehler werden zu einer leeren Liste. */
@@ -164,13 +197,47 @@ export function loadClaims() {
   }
 }
 
-/** Speichert alle Claims im Register. */
+/** Datei je Claim-ID im neuen Register; Legacy-Claims haben keinen Eintrag. */
+function claimEntryFiles() {
+  const files = new Map();
+  if (!existsSync(CLAIM_ENTRIES_DIR)) return files;
+  for (const name of readdirSync(CLAIM_ENTRIES_DIR).filter((entry) => entry.endsWith('.json')).sort()) {
+    const file = join(CLAIM_ENTRIES_DIR, name);
+    for (const entry of readClaimEntries(file)) {
+      if (files.has(entry.id)) throw new Error(`Doppelter Claim '${entry.id}' in ${files.get(entry.id)} und ${file}`);
+      files.set(entry.id, file);
+    }
+  }
+  return files;
+}
+
+/** Atomar eine einzelne Claim-Datei schreiben. */
+function writeClaimFile(file, claim) {
+  mkdirSync(CLAIM_ENTRIES_DIR, { recursive: true });
+  const temp = `${file}.new`;
+  writeFileSync(temp, `${JSON.stringify(claim, null, 2)}\n`, 'utf8');
+  renameSync(temp, file);
+}
+
+/**
+ * Speichert Claims an ihrem angestammten Ort: Claim-Dateien bleiben Dateien,
+ * Legacy-Claims bleiben in claims.json. So erzeugt ein Reconcile-Lauf keine
+ * Doppel-Eintraege, die der strenge Loader ablehnen wuerde.
+ */
 export function saveClaims(claims) {
   mkdirSync(CLAIMS_DIR, { recursive: true });
+  const entryFiles = claimEntryFiles();
+  const legacy = [];
+  for (const claim of claims) {
+    const json = typeof claim.toJSON === 'function' ? claim.toJSON() : claim;
+    const file = entryFiles.get(json.id);
+    if (file) writeClaimFile(file, json);
+    else legacy.push(json);
+  }
   // Atomar: erst daneben schreiben, dann ersetzen. Ein paralleler Agent sieht
   // so entweder das alte oder das neue Register, nie eine halbe Datei.
   const temp = `${CLAIMS_FILE}.new`;
-  writeFileSync(temp, JSON.stringify(claims.map((c) => c.toJSON()), null, 2), 'utf8');
+  writeFileSync(temp, JSON.stringify(legacy, null, 2), 'utf8');
   renameSync(temp, CLAIMS_FILE);
 }
 
@@ -187,8 +254,10 @@ export function upsertClaim(claim) {
 /** Entfernt einen Claim (z. B. nach Merge oder Archive). */
 export function removeClaim(id) {
   const claims = loadClaims();
+  const entryFiles = claimEntryFiles();
   const filtered = claims.filter((c) => c.id !== id);
   saveClaims(filtered);
+  if (entryFiles.has(id)) unlinkSync(entryFiles.get(id));
   return filtered.length !== claims.length;
 }
 
@@ -246,18 +315,35 @@ export function patternsOverlap(a, b) {
 }
 
 /** Prüft, ob zwei Claims sich überschneiden (gleiche Pfade oder schreibende Contracts). */
-export function findCollisions(newClaim) {
-  const claims = openClaims();
+const isClaimEntryPattern = (pattern) => patternPrefix(pattern).startsWith(CLAIM_ENTRY_PREFIX);
+const isCoordinationPattern = (pattern) => {
+  const prefix = patternPrefix(pattern);
+  return COORDINATION_FILES.includes(prefix) || isClaimEntryPattern(prefix);
+};
+const isExactMetaPattern = (pattern) => META_FILES.includes(patternPrefix(pattern));
+
+/**
+ * Kollisionen sind Content-Kollisionen. Registerdateien und die gemeinsamen
+ * Meta-Dateien sind Koordinationspfade: sie werden von jeder Lane mechanisch
+ * beruehrt, duerfen aber keine Lane gegenseitig sperren. Echte Ueberschneidungen
+ * ausserhalb dieser Pfade bleiben Kollisionen.
+ */
+export function findCollisions(newClaim, candidates = openClaims()) {
   const collisions = [];
 
-  for (const existing of claims) {
+  for (const existing of candidates) {
     if (existing.id === newClaim.id) continue;
 
     // Pfad-Ueberschneidung auf Praefix-Ebene: `docs/**`, `docs/` und
     // `docs/CHANGELOG.md` muessen sich als Ueberschneidung erkennen, egal
-    // welche Schreibweise eine Lane gewaehlt hat.
+    // welche Schreibweise eine Lane gewaehlt hat. Koordinations- und exakte
+    // Meta-Pfade sind davon ausgenommen.
     const pathOverlap = newClaim.pathAllowlist.some((a) =>
-      existing.pathAllowlist.some((b) => patternsOverlap(a, b)),
+      existing.pathAllowlist.some((b) => {
+        if (isCoordinationPattern(a) || isCoordinationPattern(b)) return false;
+        if (isExactMetaPattern(a) || isExactMetaPattern(b)) return false;
+        return patternsOverlap(a, b);
+      }),
     );
 
     // Contract-Writer-Kollision: beide schreiben denselben Contract
@@ -355,6 +441,7 @@ const claimFingerprint = (claim) =>
     owner: claim.owner,
     branch: claim.branch,
     baseSha: claim.baseSha,
+    task: claim.task ?? '',
     pathAllowlist: claim.pathAllowlist ?? [],
     contracts: claim.contracts ?? [],
     dependencies: claim.dependencies ?? [],
@@ -370,7 +457,7 @@ const claimFingerprint = (claim) =>
  * neu angelegter Claim ist erlaubt, solange er nicht die Kontrollebene ohne
  * Governance-Domaene fuehrt.
  */
-export function auditRegisterAgainstBase({ baseClaims = [], nextClaims = [], branch } = {}) {
+export function auditRegisterAgainstBase({ baseClaims = [], registrationClaims = [], nextClaims = [], branch } = {}) {
   const violations = [];
   const own = selectClaim(nextClaims, branch);
   // Ohne eigenen Claim entscheidet die bestehende Claim-Pruefung; hier gibt es
@@ -378,11 +465,18 @@ export function auditRegisterAgainstBase({ baseClaims = [], nextClaims = [], bra
   if (!own) return { ok: true, violations };
   const governance = CONTROL_PLANE_LANE.test(own.id);
   const baseById = new Map(baseClaims.map((claim) => [claim.id, claim]));
+  // Die eigene Lane wird gegen ihre erste Registrierung geprueft, damit sie
+  // ihre Allowlist nicht ueber mehrere Commits erweitert. Fremde Claims werden
+  // immer gegen die vertrauenswuerdige Basis geprueft, nicht gegen den
+  // PR-Stand.
+  const registrationById = new Map((registrationClaims.length > 0 ? registrationClaims : baseClaims).map((claim) => [claim.id, claim]));
 
   for (const claim of nextClaims) {
-    const before = baseById.get(claim.id);
+    const before = claim.id === own.id
+      ? (registrationById.get(claim.id) ?? baseById.get(claim.id) ?? null)
+      : (baseById.get(claim.id) ?? null);
     if (claim.id === own.id) {
-      violations.push(...auditClaimChange(before ?? null, claim).violations);
+      violations.push(...auditClaimChange(before, claim).violations);
       continue;
     }
     if (!before) {

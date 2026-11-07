@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/ci-stabilization",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/ci-stabilization",
+  "baseSha": "aaea62cb20afb1f6fd554cd8abf570ae691ab887",
+  "task": "Agenten- und CI-Workflow stabilisieren, bevor Feature-Arbeit beginnt (Phase 0: Zustand und Lane)",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "README.md",
+    "docs/**",
+    "scripts/**",
+    ".github/workflows/**",
+    ".githooks/**",
+    "src/core/governance/__tests__/**",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-ci-stabilization.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "aaea62cb20afb1f6fd554cd8abf570ae691ab887"
+}

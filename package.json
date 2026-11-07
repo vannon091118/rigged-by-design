@@ -17,6 +17,7 @@
     "agent:context": "node scripts/agent-context.mjs",
     "agent:feedback": "node scripts/agent-feedback.mjs",
     "agent:pretask": "node scripts/pretask.mjs",
+    "claim:register": "node scripts/claim-register.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",

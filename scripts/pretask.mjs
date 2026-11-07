@@ -13,7 +13,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { allowsPath, findCollisions, openClaims } from './lib/lane-claims.mjs';
+import { allowsPath, findCollisions, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -101,8 +101,18 @@ const conflictMarkers = run(['grep', '-n', '-E', '^(<<<<<<<|>>>>>>>) ', '--', '.
 if (conflictMarkers) blockers.push(`Konfliktmarker im Baum:\n    ${conflictMarkers.split(/\r?\n/).slice(0, 8).join('\n    ')}`);
 
 /** 2. Lane-Claim und Kollisionen. */
-const claims = openClaims();
-const claim = claims.find((c) => c.branch === branch);
+let allClaims = [];
+let claimRegisterError = '';
+try {
+  allClaims = loadClaimsStrict();
+} catch (error) {
+  claimRegisterError = error instanceof Error ? error.message : 'unbekannter Fehler';
+}
+const claims = allClaims.filter((c) => c.status === 'open');
+const claim = selectClaim(allClaims, branch);
+if (claimRegisterError) {
+  blockers.push(`[ERR-4019] Claim-Register nicht lesbar: ${claimRegisterError}`);
+}
 const originMain = run(['rev-parse', '--verify', 'origin/main']);
 const base = (originMain && run(['merge-base', 'HEAD', originMain])) || claim?.baseSha || '';
 const claimInfo = claim
@@ -111,6 +121,7 @@ const claimInfo = claim
       owner: claim.owner,
       branch: claim.branch,
       baseSha: claim.baseSha,
+      task: claim.task || '',
       allowlist: claim.pathAllowlist.length,
       contracts: claim.writeContracts(),
     }
@@ -119,10 +130,10 @@ if (branch === 'main') {
   notes.push('main ist durch den Branch-Schutz gedeckt; keine Lane noetig.');
 } else if (!claim) {
   // Vor dem ersten Edit, nicht erst beim Commit: der Claim ist die Schreibgrenze.
-  blockers.push(`[ERR-4019] kein Lane-Claim fuer '${branch}'; zuerst in .lane-claims/claims.json registrieren`);
+  blockers.push(`[ERR-4019] kein Lane-Claim fuer '${branch}'; zuerst mit 'pnpm run claim:register' registrieren`);
 } else {
   notes.push(`Lane ${claim.id}: ${claim.pathAllowlist.length} Pfad(e), Contracts ${claim.writeContracts().join(', ') || '(keine)'}.`);
-  const collisions = findCollisions(claim);
+  const collisions = findCollisions(claim, claims);
   if (collisions.length > 0) {
     blockers.push(`[ERR-4019] Lane-Kollisionen: ${collisions.map((c) => `${c.lane} (${c.reason || 'Contract'})`).join('; ')}; erst Claim oder Pfade entzerren`);
   }
@@ -177,9 +188,19 @@ if (issues.checked) {
   notes.push(`Issue-Check nicht ausgefuehrt (gh fehlt oder ist nicht angemeldet): ${issues.errors.join(', ')}; Befehle stehen unten.`);
 }
 
+const state = blockers.length > 0 ? 'TASK_BLOCKED' : 'SCOPE_VALID';
+const checks = {
+  bootstrap: true,
+  claim: Boolean(claim),
+  scope: Boolean(claim) && blockers.length === 0,
+  isolation: isolation.ok,
+};
+
 if (asJson) {
   console.log(JSON.stringify({
     ok: blockers.length === 0,
+    state,
+    checks,
     branch,
     head,
     base,
@@ -231,6 +252,6 @@ if (!asJson) {
     console.log(context);
     console.log('');
   }
-  console.log('pretask: keine offenen Konflikte; neue Arbeit erlaubt.');
+  console.log(`pretask: ${state} - neue Arbeit erlaubt.`);
   console.log('  Arbeit: pnpm run turn:finish führt die betroffenen schnellen Tests aus; lange Nachweise übernimmt CI.');
 }

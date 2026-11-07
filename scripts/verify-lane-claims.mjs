@@ -90,8 +90,8 @@ if (branch === 'main') {
 }
 
 if (!claim) {
-  console.error(`[ERR-4019] verify-lane-claims: Kein Lane-Claim für Branch '${branch}' in .lane-claims/claims.json`);
-  console.error('  Erst einen Claim registrieren (scripts/lib/lane-claims.mjs, AGENTS.md § Governance / Lanes).');
+  console.error(`[ERR-4019] verify-lane-claims: Kein Lane-Claim für Branch '${branch}' in .lane-claims/`);
+  console.error('  Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).');
   process.exit(1);
 }
 
@@ -114,7 +114,7 @@ if (claim.status === 'merged') {
 function firstTouchCommit(range) {
   try {
     return (
-      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims/claims.json'], {
+      execFileSync('git', ['rev-list', '--reverse', range, '--', '.lane-claims'], {
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'ignore'],
       })
@@ -128,14 +128,31 @@ function firstTouchCommit(range) {
 
 /** Registerstand an einer Ref; `null` heisst: nicht lesbar (fail-closed). */
 function registerAt(ref) {
+  const entries = [];
   try {
     const data = JSON.parse(
       execFileSync('git', ['show', `${ref}:.lane-claims/claims.json`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
     );
-    return Array.isArray(data) ? data : null;
+    if (!Array.isArray(data)) return null;
+    entries.push(...data);
   } catch {
-    return null;
+    // Kein Legacy-Register an dieser Ref: Claim-Dateien koennen trotzdem existieren.
   }
+  try {
+    const names = execFileSync('git', ['ls-tree', '-r', '--name-only', ref, '--', '.lane-claims/claims'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).split(/\r?\n/).filter((name) => name.endsWith('.json'));
+    for (const name of names) {
+      const data = JSON.parse(
+        execFileSync('git', ['show', `${ref}:${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }),
+      );
+      entries.push(...(Array.isArray(data) ? data : [data]));
+    }
+  } catch {
+    // Kein Claim-Verzeichnis an dieser Ref.
+  }
+  return entries.length > 0 ? entries : null;
 }
 
 /**
@@ -154,7 +171,8 @@ if (CI) {
   const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
   const firstRegister = firstTouch ? registerAt(firstTouch) : null;
   const audit = auditRegisterAgainstBase({
-    baseClaims: firstRegister ?? baseRegister,
+    baseClaims: baseRegister,
+    registrationClaims: firstRegister ?? baseRegister,
     nextClaims: allClaims.map((entry) => entry.toJSON()),
     branch,
   });
