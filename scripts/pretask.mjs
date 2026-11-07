@@ -6,9 +6,9 @@
  * neue Arbeit. Der Lauf prueft nur und schreibt nichts; er macht sichtbar, was
  * vor dem ersten Edit zu klaeren ist.
  *
- * Exit 1 nur bei echten Startblockern: ungeloester Merge/Rebase, unmerged
- * Pfade oder Konfliktmarker im Baum. Ein offenes Issue ist Pflicht, aber kein
- * Blocker im Sinne der Leiter.
+ * Exit 1 bei Startblockern: ungeloester Merge/Rebase, unmerged Pfade,
+ * Konfliktmarker, ein offenes gate-failure-Issue, ein schmutziger Arbeitsbaum,
+ * ein fehlender Impact-Plan oder ein fehlender/kollidierender Lane-Claim.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -40,7 +40,7 @@ const asJson = argv.includes('--json');
 
 const branch = run(['rev-parse', '--abbrev-ref', 'HEAD']) || '(unbekannt)';
 
-/** Offene Fehler-Issues sind Pflichtkontext, aber kein technischer Startblocker. */
+/** Offene gate-failure-Issues werden unten zum Startblocker; remote-ci bleibt Kontext. */
 function readIssues() {
   const labels = ['gate-failure', 'remote-ci'];
   const issues = [];
@@ -60,15 +60,24 @@ function readIssues() {
 }
 
 const issues = readIssues();
+const openGateFailures = issues.issues.filter((issue) => issue.label === 'gate-failure');
+if (openGateFailures.length > 0) {
+  blockers.push(`[ERR-4019] offene gate-failure-Issues: ${openGateFailures.map((issue) => `#${issue.number}`).join(', ')}; erst schliessen oder den Auftrag ausdruecklich abgrenzen`);
+}
+
 let context = '';
+let contextError = '';
 try {
   context = execFileSync(process.execPath, ['scripts/agent-context.mjs', '--line'], {
     cwd: ROOT,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'ignore'],
   }).trim();
-} catch {
-  // Kontext ist ein Arbeitsbrief, kein Startblocker; die Pflichtpruefungen folgen.
+} catch (error) {
+  contextError = error instanceof Error ? error.message : 'unbekannter Fehler';
+}
+if (!context) {
+  blockers.push(`[ERR-4019] Impact-Plan fehlt: agent:context lieferte keine Ausgabe (${contextError || 'leer'}); erst den Arbeitsbrief erzeugen`);
 }
 
 /** 1. Bewusst offengelassene Konflikte: sie werden hier aufgeloest, nicht am Ende. */
@@ -95,7 +104,7 @@ if (branch === 'main') {
   notes.push(`Lane ${claim.id}: ${claim.pathAllowlist.length} Pfad(e), Contracts ${claim.writeContracts().join(', ') || '(keine)'}.`);
   const collisions = findCollisions(claim);
   if (collisions.length > 0) {
-    notes.push(`Kollisionen: ${collisions.map((c) => `${c.lane} (${c.reason || 'Contract'})`).join('; ')}`);
+    blockers.push(`[ERR-4019] Lane-Kollisionen: ${collisions.map((c) => `${c.lane} (${c.reason || 'Contract'})`).join('; ')}; erst Claim oder Pfade entzerren`);
   }
 }
 
@@ -107,7 +116,7 @@ if (branch === 'main') {
  */
 const dirtyPaths = parseStatusPaths(run(['status', '--porcelain=v1', '--untracked-files=all']));
 if (dirtyPaths.length > 0) {
-  notes.push(`Arbeitsbaum: ${dirtyPaths.length} offene(r) Pfad(e); eigene WIP bleibt erhalten.`);
+  blockers.push(`[ERR-4019] Arbeitsbaum nicht leer: ${dirtyPaths.slice(0, 8).join(', ')}${dirtyPaths.length > 8 ? ` und ${dirtyPaths.length - 8} weitere` : ''}; erst abschliessen oder bewusst fortsetzen, keine fremde WIP mitnehmen`);
 }
 if (claim && dirtyPaths.length > 0) {
   const outside = dirtyPaths.filter((path) =>

@@ -810,5 +810,34 @@
     "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d",
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "b308fed34988c5d3fdd13506047f8de01421128b"
+  },
+  {
+    "id": "lane/governance/21-longrun-pretask",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/21-longrun-pretask",
+    "baseSha": "8021964c806c9e6b65a78f5956f8d710c845fd6e",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/long-checks.yml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "scripts/agent-verify.mjs",
+      "scripts/ci-long-checks.mjs",
+      "scripts/pretask.mjs",
+      "src/core/governance/__tests__/workflow-hardening.test.ts",
+      "src/core/governance/__tests__/worktree-isolation.test.ts",
+      "src/core/governance/__tests__/pretask.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "8021964c806c9e6b65a78f5956f8d710c845fd6e"
   }
 ]

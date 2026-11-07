@@ -74,12 +74,18 @@ const writeClaim = (dir: string, branch: string, allowlist: readonly string[]): 
   );
 };
 
-const runPretask = (cwd: string, args: readonly string[]) =>
+const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv = {}) =>
   spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'pretask.mjs'), ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...process.env, RBD_ROOT: cwd },
+    env: { ...process.env, RBD_ROOT: cwd, ...env },
   });
+
+/** Der pretask-Start braucht einen Impact-Plan; in Fixtures ist das ein Stub. */
+const writeContextStub = (dir: string): void => {
+  mkdirSync(join(dir, 'scripts'), { recursive: true });
+  writeFileSync(join(dir, 'scripts', 'agent-context.mjs'), "console.log('context fixture');\n");
+};
 
 const payloadOf = (stdout: string): PretaskPayload => JSON.parse(stdout) as PretaskPayload;
 
@@ -188,7 +194,8 @@ describe('worktree-isolation', () => {
     try {
       const main = fixture(parent, 'main');
       writeClaim(main, 'lane/test/pass', ['README.md']);
-      git(main, ['add', '.lane-claims/claims.json']);
+      writeContextStub(main);
+      git(main, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
       git(main, ['commit', '-q', '-m', 'claim']);
       const worktree = join(parent, 'agent-worktree');
       git(main, ['worktree', 'add', '-q', '-b', 'lane/test/pass', worktree, 'HEAD']);
@@ -202,4 +209,5 @@ describe('worktree-isolation', () => {
       rmSync(parent, { recursive: true, force: true });
     }
   });
+
 });

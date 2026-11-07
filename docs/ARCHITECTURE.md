@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.177 | 2026-11-07 12:13 UTC -->
+<!-- rbd-doc: v0.3.178 | 2026-11-07 12:39 UTC -->
 
 ## README als Einstieg
 
@@ -21,7 +21,7 @@
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
-- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` dispatcht keinen main-Lauf mehr.
+- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` startet `ci-long-checks.mjs` auf dem aktuellen Branch und der exakten HEAD-SHA, ohne `verify:all` mitzuschleppen.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
 ## Zustandsbesitz
@@ -204,7 +204,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 7: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+1) |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 78: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>… (+72) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 79: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>… (+73) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 48: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+42) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |
@@ -218,7 +218,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 198: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+192) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 199: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+193) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 3: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
 <!-- DEP_MATRIX_END -->
 
@@ -277,7 +277,8 @@ das Profil vorsieht, und fuehrt ihn ueber `runGates` aus. Es gibt keine zweite
 Gate-Liste und keinen zweiten Importgraphen; die Auswahl betroffener Tests
 setzt nur `RBD_TEST_FILES`, das Testgate bleibt dabei ungecacht. Lange
 Nachweise werden nicht gedruckt, sondern uebergeben: `--ci` startet
-`ci-long-checks.mjs` und wartet auf das Ergebnis.
+`ci-long-checks.mjs` fuer den aktuellen Branch und die exakte HEAD-SHA und
+wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
 
 ## Auto-Promotion und Integrationsbranch
 
@@ -1113,7 +1114,7 @@ den Importgraphen (`selectAffectedTests`), den Testkatalog mit Beweisklassen,
 | Agentenkontext | `scripts/agent-context.mjs` | kompakter Text oder JSON, keine Pruefung |
 | Pruefplan + Ausfuehrung | `scripts/agent-verify.mjs` -> `runGates` | gleiche Gates wie `pipeline-plan`, Cache wird genutzt |
 | Teilpruefung | Impact-Auswahl | `RBD_TEST_FILES` an `run-selected-tests.mjs`, Testgate ungecacht, Bericht `partial: true` |
-| Lange Nachweise | CI-Plan -> `long`-Matrix | eigene Jobs auf dem exakten PR-Kopf; `--ci` markiert sie als delegiert, `--dispatch-long` startet den manuellen Vollauf |
+| Lange Nachweise | CI-Plan -> `long`-Matrix | eigene Jobs auf dem exakten PR-Kopf; `--ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; `--dispatch-long` bleibt Alias |
 | Bericht | `.verify-cache/reports/<Zeit>/agent-summary.json` | `cached`, `executed`, `skipped`, `delegated` je Gate |
 
 Eine Auswahl ist nie ein Vollnachweis: `verify:light` und `verify:all` bleiben
