@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.173 | 2026-11-07 11:24 UTC -->
+<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 27 nach dem Squash-Merge geschlossen
+
+**Ziel.** Claim 27 stand nach dem Squash-Merge von #228 noch auf `open`; ein offener Claim auf bereits gemergter Arbeit wuerde fremde Lanes blockieren.
+
+**Umsetzung.** `reconcile-claims --apply` schreibt Claim 27 (`lane/governance/18-watcher-promote-tests`) ueber den baumgleichen Merge-Commit `cf76ea1` auf `merged` (`mergedEvidence: branch-tree-on-main`, `mergedSha: cf76ea1`). Der getestete Head `41fcada` und der Merge teilen den Baum `7997502`. Kein Code und keine Tests geaendert; nur Register, Version und Pflichtdoku.
+
+**Pruefungen.** `reconcile-claims` meldet genau eine Aenderung; der zweite Lauf muss `keine Abweichung` melden. `pnpm run verify:claims` ist gruen. `CI Verify` auf `main` fuer `cf76ea1` ist erfolgreich (Run 42368226268).
+
+**Offen.** Keine offenen Punkte aus diesem Claim; die Roadmap bleibt unveraendert.
 
 ## 2026-11-07 - Issue-Reopen, Sweep-SHA und Promote-Ziel mit Tests belegt
 

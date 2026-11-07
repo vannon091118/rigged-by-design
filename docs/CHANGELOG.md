@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.173 | 2026-11-07 11:24 UTC -->
+<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.174] - 2026-11-07
+
+### Technik
+- **Claim 27 nachgezogen.** Nach dem Squash-Merge von #228 steht Claim 27 (`lane/governance/18-watcher-promote-tests`) auf `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: cf76ea1`. Der getestete Head `41fcada` und der Merge teilen den Baum `7997502`; `CI Verify` auf `cf76ea1` ist erfolgreich (Run 42368226268). Kein Code geaendert.
 
 ## [0.3.173] - 2026-11-07
 

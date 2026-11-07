@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.173 | 2026-11-07 11:24 UTC -->
+<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -625,7 +625,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 729 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 731 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 406 Zeilen
@@ -700,8 +700,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1799 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 907 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3258 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 912 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3268 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/ROADMAP.md` — Roadmap — gelesen: 304 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
@@ -1989,6 +1989,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
+| T86 | **2026-11-07 11:28 UTC**: Claim 27 nach dem Squash-Merge geschlossen. `reconcile-claims --apply` schreibt `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: cf76ea1`; Head `41fcada` und Merge teilen den Baum `7997502`. Geprueft: `main`-`CI Verify` auf `cf76ea1` erfolgreich (Run 42368226268), zweiter Reconcile-Lauf ohne Abweichung, `verify:claims`. |
 | T85 | **2026-11-07 11:22 UTC**: Issue-Reopen, Sweep-SHA und Promote-Ziel mit Tests belegt. `pr-watcher.mjs` ist mit injizierbarer API/Git testbar und startet die CLI nur beim Direktaufruf; `promote-guard.mjs` liefert die reine `--base main`-Suche und die Dispatch-Entscheidung. Geprueft: `pr-watcher.test.ts` 3/3, `promote-guard.test.ts` 9/9, `claim-evidence.test.ts` 11/11 (zusammen 23/23), `node --check`, `verify:light`, `verify:claims`. |
 | T84 | **2026-11-07 10:34 UTC**: Agenten-Isolation und Workflow-Härtung. `pretask` blockt geteilte Baeume mit `ERR-4019` (fremder offener Claim oder `--require-worktree`), `--json` nennt die Gruende; `turn:finish` staged weiter claim-begrenzt. `AGENTS.md` hat eine Testlinie. `long-checks.yml` nutzt `RBD_DAYS` statt Shell-Interpolation, alle Actions sind per 40-stelligem SHA gepinnt. Geprueft: 8/8 Isolations-, 4/4 Workflow-Tests, 6/6 ci-gates, `node --check`, `pretask --json`; volle Gates vor dem Commit: 186 Testdateien, 992 Tests bestanden, 6 uebersprungen, `verify:light`, Typecheck, Doku, Testqualitaet, Redundanz und LOC gruen. |
 | T83 | **2026-11-07 08:03 UTC**: Impact-Matrix: Gates folgen dem echten Diff. |
