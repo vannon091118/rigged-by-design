@@ -11,8 +11,8 @@ export const ACCOUNT_LABEL = {
 } as const;
 
 export const HELP = {
-  hauskonto: 'Das Geld des Casinos. Einsätze kommen hier an, Auszahlungen, Löhne und Einkäufe gehen hier ab.',
-  portemonnaie: 'Dein privates Bargeld. Damit spielst du in fremden Casinos und hebst Gewinne vom Hauskonto ab.',
+  hauskonto: 'Das Geld des Hauses. Einsätze kommen hier an, Auszahlungen, Löhne und Einkäufe gehen hier ab.',
+  portemonnaie: 'Dein privates Bargeld. Damit spielst du in fremden Häusern und hebst Gewinne vom Hauskonto ab.',
   kasse: 'Wechselkasse der Gäste: Bargeld wird zu Chips und wieder zurück. Kein Gewinn, nur Durchlauf.',
   offen: 'Gewinne, die Gäste erspielt haben, aber noch nicht abgeholt. Erst „Auszahlen“ macht daraus Chips.',
   ruf: 'Eine von mehreren Nachfragequellen. Steigt mit Sauberkeit und gutem Angebot, sinkt mit Dreck, Streit und kaputten Geräten.',
@@ -24,7 +24,7 @@ export const HELP = {
   sucht: 'Sucht: hoch heißt länger bleiben und mehr spielen – aber auch mehr Laune verlieren, wenn nichts kommt.',
   anziehung: 'Anziehung: wie attraktiv dein Angebot für neue Gäste ist. Eine von mehreren Nachfragequellen, keine Obergrenze.',
   nachfrage: 'Gäste pro Tag aus Grundrauschen, Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe. Stoßzeiten und Veranstaltungen kommen obendrauf. Sitzplätze begrenzen niemanden; volle Plätze kosten nur Geduld.',
-  hausvorteil: 'Hausvorteil: der Anteil jedes Einsatzes, der im Schnitt beim Betreiber bleibt. Der Rest geht als Gewinn zurück.',
+  hausvorteil: 'Hausvorteil: der Anteil jedes Einsatzes, der im Schnitt beim Haus bleibt. Der Rest geht als Gewinn zurück.',
   tick: 'Ein Takt ist ein Spielschritt von etwa einer halben Sekunde.',
 
 } as const;
