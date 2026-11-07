@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,38 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Phase 5: Doku-Vertrag und AGENTS-Kurzvertrag
+
+**Ziel.** `AGENTS.md` auf einen Einstieg kürzen, Tiefenwissen in eigenständige Referenzdokumente auslagern und den Doku-Drift bei Gates, Save-Version, Workflows und Branch-Schutz beseitigen. Die Governance-Testmatrix 1–17 und die Zusatzregressionen sollten belegbar werden, ohne die Gate-Liste an zwei Stellen zu führen.
+
+**Umsetzung.** `AGENTS.md` trägt jetzt den ersten Befehl, zehn unverhandelbare Regeln, Zustand, Befehle und eine Referenztabelle. Neu sind `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/TESTING.md`, `docs/INDEX.md` und `docs/contracts/README.md`; `scripts/lib/doc-sync.mjs` führt zwölf Pflichtdokumente mit Marker und Abschnitten. Die Doku nennt 12 Required-Gates plus optionales Audit, elf Gates im schnellen Plan inklusive `capabilities`, Save v11, neun Workflow-Dateien, den klassischen Branch-Schutz mit `strict: false` und ohne Ruleset sowie den deaktivierten `promote`-Pfad mit manuellem Merge. Der historische `pnpm-cutover-plan` wurde gelöscht. `destructive-commands.test.ts` scannt Produktionsskripte statisch gegen `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D`; der letzte `reset --hard` in `promote.mjs` ist entfernt. Dependabot-Branches erhalten über `botClaim()` eine eng begrenzte Allowlist für `package.json`, `pnpm-lock.yaml` und `.github/workflows/`.
+
+Der nach #242 offene Content-Claim war stale: Sein Branch ist geloescht, der PR gemergt. Die Claim-Evidenz belegt diesen Fall ueber den Merge-Commit auf `main`; der CI-Adapter materialisiert fuer die alte Kontrollebene nur den Status, die Content-Allowlist bleibt unveraendert.
+
+**Pruefungen.** Governance-Matrix mit 14 Dateien: 117/117 Tests PASS. `pnpm run verify:test-quality` PASS (195 Testdateien, 565 Dateien). `pnpm run verify:docs` PASS nach `docs:sync` (12 Marker). `node scripts/build-inventory.mjs` meldet 1396/1396 Dateien und 93 Ordner. `pnpm run verify:light` PASS mit sechs Gates (docs, check:loc, redundancy, tree, typecheck, lint). `node --check` für die fünf geänderten Skripte: syntax=ok.
+
+**Offen.** Der PR- und CI-Nachweis auf dem exakten Kopf steht aus; ohne ausdrücklichen Auftrag wurde nichts committet oder gepusht. `docs/RUNBOOK-AUTO-RESOLVE.md` bleibt als Arbeitsdatei ungetrackt und wird erst mit dem Commit Teil der Inventur.
+
+## 2026-11-07 - Entwicklungsbereitschaft: PR-Suite und Reparaturbeleg
+
+**Ziel.** Zwei verbleibende Luecken vor dem Governance-Freeze schliessen: Ein PR mit Profil `all` und `impact=1` durfte die schnelle Regression unbemerkt auf eine Teilmenge reduzieren; der Issue-Sweep schloss einen Befund allein, weil sein Commit ein Vorfahr des gruenen `main` war.
+
+**Umsetzung.** `ci-verify.yml` setzt `full_tests=1` fuer PRs und `main`; `ci-plan.mjs` behandelt das Profil `all` fail-closed, laesst leere, unbekannte und Dependency-Diffs die volle Suite fahren und nimmt reine Doku weiterhin aus. `sweepGreenMain()` verlangt jetzt den urspruenglichen Fingerprint, eine explizite `<!-- repair: <sha> -->`-Marke und die Reparatur-SHA auf dem exakt geprueften `main`; `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fehler wieder. Pretask und Doku wurden an den tatsaechlichen Lane-/Archivstand angepasst.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/ci-plan.test.ts src/core/governance/__tests__/ci-gates.test.ts src/core/governance/__tests__/pr-watcher.test.ts --reporter=dot` -> 3 Dateien, 19/19 PASS, 1,75 s. `node --check` fuer `ci-plan.mjs` und `pr-watcher.mjs` -> syntax=ok. Die vollstaendige lokale und CI-Abnahme steht im PR-Lauf.
+
+**Offen.** Der neue PR- und Main-Lauf muessen den Slice auf `main` belegen; danach bleibt die Governance eingefroren. `CI-Self-Repair` und der Doku-Reconcile-Runner bleiben PARKED, weil sie keinen konkreten Defekt beheben.
+
+## 2026-11-07 - Balance-Langlauf aktiviert
+
+**Ziel.** Der Main-Lauf `42376173298` hat den ersten echten Langlauf nach der neuen Skip-Sperre rot gemeldet: `balance-operating.test.ts` wurde ohne `RBD_BALANCE=1` uebersprungen, und `RBD_REQUIRE_TESTS=1` hat den Skip korrekt als fehlenden Nachweis behandelt. Der Test selbst war nicht rot; der Workflow hat seinen Aktivierungsschalter nicht gesetzt.
+
+**Umsetzung.** Der Long-Job setzt jetzt `RBD_BALANCE=1` neben `RBD_NARRATIVE_LONGRUN=1` und `RBD_SOAK=1`. `workflow-hardening.test.ts` prueft den Schalter strukturell, damit ein spaeterer Umbau ihn nicht wieder verliert. Kein Spielcode und keine Testlogik wurde geaendert.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/workflow-hardening.test.ts` -> 10/10 PASS. `RBD_TEST_FILES=src/core/sim/__tests__/balance-operating.test.ts RBD_REQUIRE_TESTS=1 RBD_BALANCE=1 node scripts/run-selected-tests.mjs` -> 1/1 PASS, 40 Tage, Seed 12345, 17,3 s. `pnpm run verify:claims` -> PASS.
+
+**Offen.** Der Folge-PR und der neue Main-Lauf muessen den Fix auf `main` belegen; danach Claim 22 nachziehen und Issue #196 aktualisieren.
 
 ## 2026-11-07 - Finaler Governance-Abschluss
 

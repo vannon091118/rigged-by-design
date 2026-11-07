@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,28 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.183] - 2026-11-07
+
+### Technik
+- **AGENTS.md ist ein Kurzvertrag.** Zehn unverhandelbare Regeln, Zustand, Befehle und eine Referenztabelle; Tiefenwissen liegt in `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/TESTING.md`, `docs/INDEX.md` und `docs/contracts/README.md`. Doppelte Gate-Listen entfallen.
+- **Doku-Drift bereinigt.** 12 Required-Gates plus optionales Audit, `capabilities` im schnellen Plan, Save v11, neun Workflows, klassischer Branch-Schutz mit `strict: false` und ohne Ruleset, `promote` deaktiviert und manueller Merge.
+- **Regressionen fuer den Arbeitsvertrag.** `destructive-commands.test.ts` verbietet `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D` in Produktionsskripten; Dependabot-Branches erhalten eine eng begrenzte Allowlist fuer Manifest, Lockfile und Workflow-Pins.
+
+- **Auto-Resolve-Retry freigeschaltet.** `auto-resolve.yml` hat `actions: write`; das Runbook beschreibt Aktivierung, Patch-/Push-Modus, Berechtigungen, Prüfungen und Rückrollung.
+- **Stale Claim belegt statt geraten.** Ein geloeschter Lane-Branch gilt nur dann als `merged`, wenn ein gemergter PR und dessen Merge-Commit auf `main` belegt sind; ein aktiver Branch mit eigenem Kopf bleibt fail-closed. Der CI-Adapter zieht den offenen Legacy-Claim aus #242 fuer die alte Kontrollebene nach, ohne die Content-Allowlist zu aendern.
+
+## [0.3.181] - 2026-11-07
+
+### Technik
+- **PR-Regression bleibt vollstaendig.** `ci-verify.yml` setzt `full_tests=1` fuer jeden PR und fuer `main`; `ci-plan` behandelt das Profil `all` fail-closed und laesst leere, unbekannte oder Dependency-Diffs ebenfalls in die volle Suite laufen. `--impact=1` verengt nur Gates und lange Nachweise, nicht die schnelle Regression.
+- **Issue-Resolver braucht Reparaturbeleg.** `sweepGreenMain()` schliesst nur mit urspruenglichem Fingerprint, einer `<!-- repair: <sha> -->`-Marke und einem exakt gruenen Main-Commit; ein Ancestor-Commit allein reicht nicht. `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fehler weiterhin wieder.
+
+## [0.3.180] - 2026-11-07
+
+### Technik
+- **Balance-Langlauf wirklich aktiviert.** Der Long-Job in `ci-verify.yml` setzt jetzt `RBD_BALANCE=1`; ohne diesen Schalter wurde `balance-operating.test.ts` uebersprungen. Der Main-Lauf `42376173298` hat das korrekt als rotes Gate gemeldet, statt den Skip als PASS zu zaehlen.
+- **Workflow-Test haelt den Schalter fest.** `workflow-hardening.test.ts` prueft zusaetzlich, dass der lange Nachweis `RBD_BALANCE` setzt; der fokussierte Lauf ist 10/10 gruen. Der echte 40-Tage-Balance-Lauf ist 1/1 gruen (Seed 12345, 17,3 s).
 
 ## [0.3.179] - 2026-11-07
 

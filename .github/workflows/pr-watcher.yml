@@ -49,6 +49,7 @@ jobs:
           RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
           RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
           RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RBD_AUTO_RESOLVE: ${{ vars.RBD_AUTO_RESOLVE || '0' }}
         run: node scripts/pr-watcher.mjs
 
       - name: Issues schliessen, wenn main gruen ist

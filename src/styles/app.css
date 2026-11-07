@@ -505,6 +505,21 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .narrative-chip { position: absolute; z-index: 16; bottom: 12px; left: 12px; border: 1px solid var(--role-identity); border-radius: 999px; background: #12082af0; padding: 7px 12px; color: #e9d8ff; font-size: 10px; letter-spacing: .08em; }
 .narrative-chip:hover { background: #1b0f3a; }
 
+/* Eröffnung: die erste Szene liegt über dem Floor, bis der Spieler sie schließt. */
+.opening-card {
+  position: absolute; z-index: 18; left: 50%; bottom: 58px; transform: translateX(-50%);
+  width: min(430px, calc(100% - 24px)); display: grid; gap: 8px; padding: 14px 16px;
+  border: 1px solid var(--role-identity); border-left: 3px solid var(--role-identity);
+  border-radius: 14px; background: linear-gradient(160deg, #160b2df2, #07040df2);
+  box-shadow: var(--elev-3), var(--inset-line); animation: opening-in 220ms ease-out both;
+}
+.opening-card h2 { margin: 0; font-size: 18px; letter-spacing: .01em; }
+.opening-card p { margin: 0; color: #d8c9ef; font-size: 12px; line-height: 1.6; }
+.opening-card .btn { justify-self: start; }
+@keyframes opening-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@media (prefers-reduced-motion: reduce) { .opening-card { animation: none; } }
+@media (max-width: 620px) { .opening-card { bottom: 54px; padding: 12px 13px; } .opening-card h2 { font-size: 16px; } }
+
 
 /* Aktionskarte: Daumenzone, eine Empfehlung plus zwei Alternativen. */
 .action-card {

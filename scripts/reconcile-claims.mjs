@@ -15,7 +15,7 @@
  * nur mit `--check` und offener Abweichung oder unbelegtem Befund.
  */
 import { execFileSync } from 'node:child_process';
-import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 import { loadClaimsStrict, saveClaims } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 
@@ -32,6 +32,9 @@ const git = (args) => {
   }
 };
 
+const gitStrict = (args) =>
+  execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
 const remoteHead = (branch) => {
   const out = git(['ls-remote', '--heads', 'origin', branch]);
   if (out === null) return { known: false, sha: null };
@@ -41,6 +44,7 @@ const remoteHead = (branch) => {
 
 const claims = loadClaimsStrict();
 const mergedIndex = mergedPullRequestIndex();
+const baseTip = git(['rev-parse', 'origin/main']);
 const changes = [];
 const unresolved = [];
 
@@ -50,17 +54,26 @@ for (const claim of claims.filter((entry) => entry.status === 'open')) {
   // schon geloescht ist - genau der Zustand nach einem Squash-Merge.
   const local = localMergeEvidence({ branch: claim.branch });
   const mergedPr = mergedIndex?.get(claim.branch) ?? null;
+  const branchAtBase = local.atBase || Boolean(sha && baseTip && sha === baseTip);
+  const branchExists = sha !== null || local.headSha !== null;
+  const mergedOnMain = Boolean(
+    mergedPr &&
+      (branchExists ? branchAtBase : known) &&
+      commitOnMain({ sha: mergedPr.mergeCommit ?? mergedPr.headRefOid, git: gitStrict }),
+  );
   const evidence = decideClaim({
-    branchExists: sha !== null || local.headSha !== null,
+    branchExists,
+    branchAtBase,
     branchHeadOnMain: local.headOnMain,
     branchTreeOnMain: local.treeOnMain,
-    headSha: local.headSha,
+    headSha: local.headSha ?? sha,
     mergedPr,
+    mergedOnMain,
   });
   if (evidence.status) {
     const shaForProof =
       evidence.evidence === 'merged-pr'
-        ? (mergedPr?.mergeCommit ?? null)
+        ? (mergedPr?.mergeCommit ?? mergedPr?.headRefOid ?? null)
         : evidence.evidence === 'branch-tree-on-main'
           ? local.treeOnMain
           : local.headSha;

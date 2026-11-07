@@ -10,7 +10,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it as vitestIt } from 'vitest';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -44,6 +44,8 @@ interface PretaskPayload {
   };
   readonly blockers: readonly string[];
 }
+
+const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 15_000); };
 
 const git = (cwd: string, args: readonly string[]): string => {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
@@ -94,7 +96,10 @@ const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv
 /** Der pretask-Start braucht einen Impact-Plan; in Fixtures ist das ein Stub. */
 const writeContextStub = (dir: string): void => {
   mkdirSync(join(dir, 'scripts'), { recursive: true });
-  writeFileSync(join(dir, 'scripts', 'agent-context.mjs'), "console.log('context fixture');\n");
+  writeFileSync(
+    join(dir, 'scripts', 'agent-context.mjs'),
+    "console.log(JSON.stringify({ systems: [], tests: { runAll: false, selected: [], fast: [], long: [] }, gates: [] }));\n",
+  );
 };
 
 const payloadOf = (stdout: string): PretaskPayload => JSON.parse(stdout) as PretaskPayload;

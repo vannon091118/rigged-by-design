@@ -16,9 +16,12 @@ import type { StaffAgent } from '../../core/sim/types';
 import { createWorld } from '../../core/sim/templates';
 import { recordVisitor } from '../../core/sim/visitors';
 import { buildView } from '../../store/snapshot';
+import { worldStore } from '../../store/use-world-store';
 import { StaffStatus } from '../build-panel-parts';
 import { GamesPopup } from '../games-popup';
+import { HelpPopup } from '../help-popup';
 import { Hud } from '../hud';
+import { OpeningCard, OpeningGate } from '../opening-card';
 import { JournalPopup } from '../journal-popup';
 import { LookPopup } from '../look-popup';
 import { PopupShell } from '../popup-shell';
@@ -53,6 +56,34 @@ function storyView() {
 const noop = (): void => {};
 
 describe('UI-Integration', () => {
+  it('zeigt die Rita-Eröffnung und schliesst sie', () => {
+    const onClose = vi.fn();
+    render(<OpeningCard onClose={onClose} />);
+
+    expect(screen.getByRole('heading', { name: 'Der erste Abend' }).textContent).toBe('Der erste Abend');
+    expect(screen.getByText(/Rita Kern steht schon vor der Tür/).textContent).toContain('Rita Kern');
+    fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('zeigt die Eröffnung nur im frischen Start und lässt sie schliessen', () => {
+    worldStore.newGame('SMALL');
+    render(<OpeningGate />);
+
+    expect(screen.getByLabelText('Eröffnung')).not.toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
+    expect(screen.queryByLabelText('Eröffnung')).toBeNull();
+  });
+
+  it('erklärt die Hilfe ohne Bank-Rolle', () => {
+    render(<HelpPopup onClose={noop} />);
+
+    expect(screen.getByRole('dialog', { name: 'So funktioniert dein Haus' })).not.toBeNull();
+    expect(screen.queryByText(/Du bist die Bank/)).toBeNull();
+    expect(screen.getByText(/Du erbst ein kleines Haus/)).not.toBeNull();
+  });
+
   it('zeigt einen Ledger-Fehler als Alarm und nicht nur als Zahl', () => {
     render(<Hud view={{ ...view(), ledgerOk: false }} perspective="operator" onPerspective={noop} onSkill={noop} />);
     expect(screen.getByRole('alert').textContent).toContain('Ledger-Prüfung fehlgeschlagen');

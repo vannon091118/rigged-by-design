@@ -50,7 +50,13 @@ export const DOC_SET = Object.freeze([
   { path: 'docs/DEVTAGEBUCH.md', title: 'Devtagebuch', sections: ['## Regeln', '## 2026-'] },
   { path: 'docs/ARCHITECTURE.md', title: 'Architektur', sections: ['## Zustandsbesitz', '## Pipeline', '## Delivery-Regel'] },
   { path: 'docs/ROADMAP.md', title: 'Roadmap', sections: ['## Jetzt', '## Als Nächstes', '## Später'] },
-  { path: 'AGENTS.md', title: 'Agentenvertrag', sections: ['## Build & test', '## Delivery', '## Pflichtdoku'] },
+  { path: 'docs/WORKFLOW.md', title: 'Workflow', sections: ['## Einstieg', '## Arbeitsablauf', '## Abschluss', '## Referenzen'] },
+  { path: 'docs/CI.md', title: 'CI', sections: ['## Required Gates', '## Zustände', '## Workflows', '## Nachweise'] },
+  { path: 'docs/GOVERNANCE.md', title: 'Governance', sections: ['## Rollen und Lanes', '## Claims', '## Eskalation', '## Branch-Schutz'] },
+  { path: 'docs/TESTING.md', title: 'Testing', sections: ['### Die eine Testlinie', '## Testmatrix', '## Zusatzregressionen'] },
+  { path: 'docs/INDEX.md', title: 'Doku-Index', sections: ['## Einstieg', '## Referenzen', '## Pflichtdokumente', '## Verträge'] },
+  { path: 'docs/contracts/README.md', title: 'Vertragsindex', sections: ['## Verträge', '## Schreibregeln'] },
+  { path: 'AGENTS.md', title: 'Agentenvertrag', sections: ['## Zehn unverhandelbare Regeln', '## Zustand', '## Befehle', '## Referenzen'] },
 ]);
 
 const MARKER = /<!-- rbd-doc: v([^ |]+) \| ([^>]+?) -->/;

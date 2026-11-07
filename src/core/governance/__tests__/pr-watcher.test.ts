@@ -3,8 +3,9 @@
  * @error-code: ERR-4019
  *
  * Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen.
- * Der Sweep darf nur schliessen, wenn `origin/main` exakt der erfolgreich
- * gepruefte Commit ist; ein Vorfahr in einer neueren origin/main reicht nicht.
+ * Der Sweep darf nur mit Original-Fingerprint und Repair-SHA schliessen; ein
+ * Vorfahr allein reicht nicht. `origin/main` muss exakt der erfolgreich
+ * gepruefte Commit sein.
  */
 import { describe, expect, it } from 'vitest';
 import { recordRecurrence, sweepGreenMain } from '../../../../scripts/pr-watcher.mjs';
@@ -62,7 +63,7 @@ describe('pr-watcher', () => {
     expect(gitCalls).toEqual([['rev-parse', 'origin/main']]);
   });
 
-  it('schliesst bei exakt geprueftem Main-SHA nur den Commit auf main', async () => {
+  it('schliesst nicht allein wegen eines Ancestor-Commits ohne Reparaturmarker', async () => {
     const mainSha = 'a'.repeat(40);
     const issueCommit = 'c'.repeat(40);
     const apiCalls: ApiCall[] = [];
@@ -70,7 +71,36 @@ describe('pr-watcher', () => {
     const api: WatcherApi = async (method, path, body) => {
       apiCalls.push({ method, path, ...(body === undefined ? {} : { body }) });
       if (method === 'GET') {
-        return response([{ number: 11, body: `**Commit:** \`${issueCommit}\`` }]);
+        return response([{ number: 11, body: `**Commit:** \`${issueCommit}\`\n<!-- fp:ERR-4026:test -->` }]);
+      }
+      return response({});
+    };
+    const git = (args: string[]) => {
+      gitCalls.push(args);
+      if (args[0] === 'rev-parse') return mainSha;
+      if (args[0] === 'merge-base') return '';
+      throw new Error(`unerwarteter git-Aufruf: ${args.join(' ')}`);
+    };
+
+    await sweepGreenMain({ api, git, mainSha });
+
+    expect(gitCalls).toEqual([['rev-parse', 'origin/main']]);
+    expect(apiCalls.filter(({ method }) => method === 'PATCH')).toEqual([]);
+  });
+
+  it('schliesst mit Fingerprint und Reparatur, die auf dem exakt gruenen Main liegen', async () => {
+    const mainSha = 'a'.repeat(40);
+    const issueCommit = 'c'.repeat(40);
+    const repair = 'd'.repeat(40);
+    const apiCalls: ApiCall[] = [];
+    const gitCalls: string[][] = [];
+    const api: WatcherApi = async (method, path, body) => {
+      apiCalls.push({ method, path, ...(body === undefined ? {} : { body }) });
+      if (method === 'GET') {
+        return response([{
+          number: 11,
+          body: `**Commit:** \`${issueCommit}\`\n<!-- fp:ERR-4026:test -->\n<!-- repair: ${repair} -->`,
+        }]);
       }
       return response({});
     };
@@ -84,10 +114,71 @@ describe('pr-watcher', () => {
     await sweepGreenMain({ api, git, mainSha });
 
     expect(gitCalls).toContainEqual(['merge-base', '--is-ancestor', issueCommit, mainSha]);
+    expect(gitCalls).toContainEqual(['merge-base', '--is-ancestor', issueCommit, repair]);
+    expect(gitCalls).toContainEqual(['merge-base', '--is-ancestor', repair, mainSha]);
     expect(apiCalls).toContainEqual({
       method: 'PATCH',
       path: '/issues/11',
       body: { state: 'closed', state_reason: 'completed' },
     });
+    expect(apiCalls.find(({ method }) => method === 'POST')?.body).toMatchObject({
+      body: expect.stringContaining('Reparatur'),
+    });
+  });
+
+  it('laesst den Issue offen, wenn die Reparatur-SHA nicht auf main liegt', async () => {
+    const mainSha = 'a'.repeat(40);
+    const issueCommit = 'c'.repeat(40);
+    const repair = 'd'.repeat(40);
+    const apiCalls: ApiCall[] = [];
+    const api: WatcherApi = async (method, path, body) => {
+      apiCalls.push({ method, path, ...(body === undefined ? {} : { body }) });
+      if (method === 'GET') {
+        return response([{
+          number: 11,
+          body: `**Commit:** \`${issueCommit}\`\n<!-- fp:ERR-4026:test -->\n<!-- repair: ${repair} -->`,
+        }]);
+      }
+      return response({});
+    };
+    const git = (args: string[]) => {
+      if (args[0] === 'rev-parse') return mainSha;
+      if (args[0] === 'merge-base' && args[2] === repair && args[3] === mainSha) {
+        throw new Error('Reparatur nicht auf main');
+      }
+      if (args[0] === 'merge-base') return '';
+      throw new Error(`unerwarteter git-Aufruf: ${args.join(' ')}`);
+    };
+
+    await sweepGreenMain({ api, git, mainSha });
+
+    expect(apiCalls.filter(({ method }) => method === 'PATCH')).toEqual([]);
+  });
+});
+
+describe('pr-watcher Head-SHA-Body', () => {
+  it('schliesst ein Issue auch mit dem neuen Head-SHA-Feld', async () => {
+    const mainSha = 'c'.repeat(40);
+    const headSha = 'a'.repeat(40);
+    const repair = 'd'.repeat(40);
+    const calls: ApiCall[] = [];
+    const api: WatcherApi = async (method, path, body) => {
+      calls.push({ method, path, ...(body === undefined ? {} : { body }) });
+      if (method === 'GET') {
+        return response([
+          {
+            number: 9,
+            body: `**Branch:** \`lane/x\`\n**Head-SHA:** \`${headSha}\`\n<!-- fp:ERR-4017:docs -->\n<!-- repair: ${repair} -->`,
+          },
+        ]);
+      }
+      return response({});
+    };
+    const git = (args: string[]) => (args[0] === 'rev-parse' ? mainSha : '');
+
+    await sweepGreenMain({ api, git, mainSha });
+
+    const closed = calls.find((call) => call.method === 'PATCH' && call.path === '/issues/9');
+    expect(closed?.body).toEqual({ state: 'closed', state_reason: 'completed' });
   });
 });

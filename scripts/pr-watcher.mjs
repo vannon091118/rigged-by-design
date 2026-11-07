@@ -10,6 +10,7 @@
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { diagnose } from './lib/gate-diagnostics.mjs';
+import { fingerprintOf, scopeLabel } from './lib/issue-scope.mjs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
@@ -21,6 +22,11 @@ const SECTIONS = [
   '### Technische Basis & Kausalität',
   '### Ausblick (Nächste Schritte)',
 ];
+
+// Ein Ancestor-Commit allein ist kein Reparaturbeleg. Der Sweep verlangt den
+// urspruenglichen Fingerprint und eine explizite Repair-SHA im Issue-Body.
+const FINGERPRINT_MARKER = /<!--\s*fp:[^>]+-->/i;
+const REPAIR_MARKER = /<!--\s*repair:\s*([0-9a-f]{40})\s*-->/i;
 
 function api(method, path, body) {
   const url = `https://api.github.com/repos/${REPO}${path}`;
@@ -36,17 +42,12 @@ function api(method, path, body) {
   return fetch(url, opts);
 }
 
-/** Fingerprint = Fehlercode + erste Fehlerzeile aus dem Gate-Log. */
-function fingerprintOf(code, firstLine) {
-  return `fp:${code}:${firstLine.trim().slice(0, 160)}`;
-}
-
 /**
  * Einzige Issue-Suche: Fingerprint zuerst (offen oder geschlossen, dann nur Zaehlung),
  * sonst Titel unter den offenen Issues desselben Labels.
  */
-async function findIssue(fingerprint, title, label = 'gate-failure') {
-  const res = await api('GET', `/issues?state=all&labels=${label}&per_page=100`);
+async function findIssue(fingerprint, title, label = 'gate-failure', request = api) {
+  const res = await request('GET', `/issues?state=all&labels=${label}&per_page=100`);
   if (!res.ok) return undefined;
   const issues = await res.json();
   const byFingerprint = issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
@@ -81,17 +82,30 @@ async function recordRecurrence(issue, runUrl, { api: request = api } = {}) {
   if (issue.state !== 'closed') console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
 }
 
-async function createIssue(title, body, labels, fingerprint, runUrl, label = 'gate-failure') {
-  const found = await findIssue(fingerprint, title, label);
+/**
+ * Dedupliziertes Issue: gleicher Fingerprint wird kommentiert bzw. wieder
+ * geoeffnet, ein neuer Befund angelegt. Dieselbe Funktion nutzt `auto-resolve`,
+ * damit es nur einen Issue-Vertrag gibt.
+ */
+export async function ensureIssue({
+  title,
+  body,
+  labels,
+  fingerprint,
+  runUrl,
+  label = 'gate-failure',
+  api: request = api,
+}) {
+  const found = await findIssue(fingerprint, title, label, request);
   if (found?.recurring) {
-    await recordRecurrence(found.issue, runUrl);
+    await recordRecurrence(found.issue, runUrl, { api: request });
     return found.issue;
   }
   if (found) {
     console.log(`Issue existiert bereits: #${found.issue.number}`);
     return found.issue;
   }
-  const res = await api('POST', '/issues', {
+  const res = await request('POST', '/issues', {
     title,
     body: `${body}\n<!-- ${fingerprint} -->\n`,
     labels,
@@ -104,6 +118,10 @@ async function createIssue(title, body, labels, fingerprint, runUrl, label = 'ga
   const issue = await res.json();
   console.log(`Issue erstellt: #${issue.number} ${issue.html_url}`);
   return issue;
+}
+
+async function createIssue(title, body, labels, fingerprint, runUrl, label = 'gate-failure') {
+  return ensureIssue({ title, body, labels, fingerprint, runUrl, label });
 }
 
 async function getWorkflowRunJobs(runId) {
@@ -188,15 +206,21 @@ async function sweepGreenMain({ api: request = api, git = defaultGit, mainSha = 
   const issues = await res.json();
   let closed = 0;
   for (const issue of issues) {
-    const match = /\*\*Commit:\*\*\s*`([0-9a-f]{7,40})`/.exec(issue.body ?? '');
-    if (!match) continue;
+    const body = issue.body ?? '';
+    const match = /\*\*(?:Head-SHA|Commit):\*\*\s*`([0-9a-f]{7,40})`/.exec(body);
+    const repair = REPAIR_MARKER.exec(body)?.[1] ?? null;
+    // Ohne Original-Fingerprint und ohne Repair-SHA bleibt das Issue offen,
+    // auch wenn der Befund- oder ein spaeterer Commit auf main liegt.
+    if (!match || !FINGERPRINT_MARKER.test(body) || !repair || repair === match[1]) continue;
     try {
       git(['merge-base', '--is-ancestor', match[1], mainSha]);
+      git(['merge-base', '--is-ancestor', match[1], repair]);
+      git(['merge-base', '--is-ancestor', repair, mainSha]);
     } catch {
-      continue; // Commit liegt nicht auf main: Issue bleibt offen.
+      continue; // Befund oder Reparatur liegt nicht auf main: Issue bleibt offen.
     }
     await request('POST', `/issues/${issue.number}/comments`, {
-      body: `Der Stand \`${match[1]}\` liegt auf \`${mainSha}\` und \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
+      body: `Urspruenglicher Befund \`${match[1]}\`, Reparatur \`${repair}\`: beide liegen auf \`${mainSha}\`; \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
     });
     const patch = await request('PATCH', `/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
     if (patch.ok) {
@@ -262,6 +286,14 @@ async function handleWorkflowRun() {
 
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
 
+  // Mit aktivem Auto-Resolve ist dieser Pfad still: Reparatur, Wiederholung
+  // und Eskalation laufen dort in einer Hand. Ohne den Schalter bleibt der
+  // Watcher der einzige Issue-Pfad.
+  if (process.env.RBD_AUTO_RESOLVE === '1') {
+    console.log('Auto-Resolve uebernimmt Reparatur und Eskalation; pr-watcher legt kein Gate-Issue an.');
+    return;
+  }
+
   const diagnostics = await collectRunFailure(runId);
   // Begrenzter Retry vor dem Issue: nur wenn jeder Befund transient ist
   // (Netz, Runner, Rate Limit), und hoechstens einmal. Fachliche Fehler
@@ -280,25 +312,22 @@ async function handleWorkflowRun() {
   const failedTest = primary.failedTest;
   const fingerprint = fingerprintOf(code, firstLine);
 
-  // Lane-Scope: ein rotes Lane-Gate blockiert nur diese Lane, nicht alle
-  // Promotions. Das Label macht den Scope in der Issue-Liste sichtbar.
-  const laneLabel = runBranch && runBranch.includes('/')
-    ? `lane:${runBranch.split('/').slice(0, 2).join('/')}`
-    : null;
-  if (laneLabel) {
-    await api('POST', '/labels', { name: laneLabel, color: '0e8a16', description: `Gate-Scope ${laneLabel}` });
+  // Scope: `main` blockiert global, eine Lane nur sich selbst. Das Label ist
+  // die eine Wahrheit, die `pretask` liest.
+  const scope = scopeLabel(runBranch);
+  if (scope) {
+    await api('POST', '/labels', { name: scope, color: '0e8a16', description: `Gate-Scope ${scope}` });
   }
-  const labels = ['gate-failure', 'agent-action', ...(laneLabel ? [laneLabel] : [])];
+  const labels = ['gate-failure', 'agent-action', ...(scope ? [scope] : [])];
 
   const title = `[${code}] CI Verify: ${firstLine.trim().slice(0, 80)}`;
   const body = `## 🚨 CI Gate rot
 
 **Branch:** \`${runBranch}\`  
-**Commit:** \`${runCommit}\`  
-**CI Run:** <${runUrl}>  
+**Head-SHA:** \`${runCommit}\`  \r\n**Gate:** \`${primary.step ?? primary.job ?? 'unbekannt'}\`  \r\n**Code:** \`${code}\`  \r\n**Fingerprint:** \`${fingerprint}\`  \r\n**Repair-Marker:** keiner  \r\n**CI Run:** <${runUrl}>  
 **Betroffene Datei:** ${failedTest ? `\`${failedTest}\`` : 'nicht eindeutig - Log-Auszug unten'}  
 **Erkannt durch:** pr-watcher.yml  
-**Scope:** ${laneLabel ? `\`${laneLabel}\` - rotes Lane-Gate, nur diese Lane und ihre Dependents sind blockiert` : 'main/global'}
+**Scope:** ${scope ? `\`${scope}\`` : 'ohne Scope - Warnung'}
 
 ## 📋 Was der Agent tun muss
 
@@ -332,7 +361,7 @@ async function handleWorkflowRun() {
 
 5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
 
-6. **Wenn alle Gates grün:** PR zu \`main\` erstellen; Promote mergt ihn.
+6. **Wenn alle Gates grün:** PR zu \`main\` erstellen und manuell mergen. \`promote\` ist deaktiviert und mergt nichts automatisch.
 
 ## 🔍 Gate-Details
 
@@ -354,7 +383,11 @@ ${diagnostics.report}
 
 ## ✅ Issue schließen
 
-Sobald der Stand grün auf \`main\` liegt, schliesst \`pr-watcher.yml --sweep-green\` dieses Issue automatisch.
+Nach der Reparatur die Fix-SHA in diesen Body eintragen:
+
+\`<!-- repair: <40-stellige-fix-sha> -->\`
+
+\`pr-watcher.yml --sweep-green\` schliesst nur, wenn der urspruengliche Fingerprint, die Reparatur-SHA und der exakt geprüfte gruene \`main\`-Commit zusammenpassen. Ein aelterer Commit allein schliesst nichts.
 `;
 
   await createIssue(title, body, labels, fingerprint, runUrl);
@@ -425,6 +458,7 @@ Siehe AGENTS.md für die vollständigen Regeln.
 }
 
 export { recordRecurrence, sweepGreenMain };
+export { fingerprintOf };
 
 const entrypoint = Boolean(process.argv[1]) && pathToFileURL(process.argv[1]).href === import.meta.url;
 if (entrypoint) {

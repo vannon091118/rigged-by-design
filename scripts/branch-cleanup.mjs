@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 /**
- * Lokale Wegwerf-Branches nach dem Merge aufraeumen.
+ * Lokale Wegwerf-Branches nach dem Merge melden.
  *
- * Der Workflow `.github/workflows/pr-cleanup.yml` loescht den Remote-Zweig nach
- * dem Merge; lokal bleibt er sonst liegen. Dieses Skript loescht nur, was
- * gemergt ist, kein Upstream mehr hat und nicht `main` oder der aktuelle Branch
- * ist. `--dry-run` zeigt die Kandidaten ohne zu loeschen.
+ * Das Skript loescht nichts von selbst: der Standard ist `--dry-run`. Erst
+ * `--apply` entfernt einen Branch, und zwar mit `git branch -d` - das verweigert
+ * jeden Zweig, der nicht sicher nach `main` gemergt ist. `main`, `integration`
+ * und der aktuelle Branch bleiben unberuehrt.
  */
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fail, ROOT } from './lib/report.mjs';
 import { parseBranches, prunable } from './lib/branch-prune.mjs';
 
+const argv = process.argv.slice(2);
+const apply = argv.includes('--apply');
+const dryRun = !apply || argv.includes('--dry-run');
+
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
-const dryRun = process.argv.includes('--dry-run');
 
 let merged = new Set();
 let refs = '';
@@ -34,10 +37,18 @@ if (targets.length === 0) {
 }
 for (const name of targets) {
   if (dryRun) {
-    console.log(`branches: wuerde loeschen ${name} (--dry-run)`);
+    console.log(`branches: wuerde loeschen ${name} (dry-run; Loeschen mit --apply)`);
     continue;
   }
-  // `-D` ist hier sicher: die Liste enthaelt ausschliesslich nach main gemergte Zweige.
-  execFileSync('git', ['branch', '-D', name], { cwd: ROOT, stdio: 'inherit' });
+  // `-d` statt `-D`: git verweigert selbst dann, wenn der Zweig entgegen der
+  // Kandidatenliste nicht sicher gemergt ist. Ein Refusal ist ein Befund, kein
+  // Grund, hart zu loeschen.
+  const result = spawnSync('git', ['branch', '-d', name], { cwd: ROOT, encoding: 'utf8' });
+  if (result.status === 0) {
+    console.log(`branches: geloescht ${name}`);
+    continue;
+  }
+  const reason = (result.stderr || result.stdout || '').trim().split(/\r?\n/)[0] ?? 'unbekannt';
+  console.log(`branches: ${name} bleibt (git branch -d verweigert: ${reason})`);
 }
-console.log(`branches: ${targets.length} Wegwerf-Branch(es)${dryRun ? ' gefunden' : ' geloescht'}`);
+console.log(`branches: ${targets.length} Wegwerf-Branch(es)${dryRun ? ' gefunden (dry-run)' : ' bearbeitet'}`);
