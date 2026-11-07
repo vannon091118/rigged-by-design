@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.171 | 2026-11-07 11:08 UTC -->
+<!-- rbd-doc: v0.3.172 | 2026-11-07 11:13 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,14 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 26 nach dem Squash-Merge geschlossen
+
+**Ziel.** Der Trust-Hardening-Slice ist auf `main`, aber Claim 26 stand dort noch auf `open`; ein offener Claim auf gemergter Arbeit wuerde fremde Lanes blockieren.
+
+**Umsetzung.** `reconcile-claims --apply` schreibt den Claim ueber den baumgleichen Commit `c43bbc9` auf `merged` (`branch-tree-on-main`). Kein Code geaendert; nur Register, Version und Pflichtdoku.
+
+**Pruefungen.** `reconcile-claims` meldet vor dem Schreiben genau eine Aenderung; der zweite Lauf muss `keine Abweichung` melden. `main`-CI auf `c43bbc9` ist gruen; der getestete Head `cfa404e` und `main` teilen den Baum `d7b64bb`.
 
 ## 2026-11-07 - Claim-Identitaet, Promote-Ziel und gruener Main-SHA
 
