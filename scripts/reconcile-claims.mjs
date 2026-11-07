@@ -4,18 +4,18 @@
  *
  * Ein Claim auf einen geloeschten Branch oder ein bereits gemergter Stand ist
  * keine Sperre, sondern eine Luege im Register. Der Merge-Nachweis kommt aus
- * `scripts/lib/claim-evidence.mjs`: ein Branch-Kopf auf `main` oder ein
- * gemergter Pull Request. Ein Basis-SHA ist **kein** Nachweis - er liegt per
- * Definition auf `main` und wuerde jeden geloeschten Branch als gemergt
- * ausgeben.
+ * `scripts/lib/claim-evidence.mjs`: gemergter PR, Branch-Kopf auf `main` oder
+ * ein baumgleicher Commit auf `main` aus der lokalen Historie. Ein Basis-SHA
+ * ist **kein** Nachweis - er liegt per Definition auf `main` und wuerde jeden
+ * geloeschten Branch als gemergt ausgeben.
  *
  * Aufruf: `node scripts/reconcile-claims.mjs [--apply] [--json] [--check]`
  * Ohne `--apply` wird nur berichtet; mit `--apply` wird das Register atomar
- * ueber `saveClaims` geschrieben. Exit 1 nur mit `--check` und offener
- * Abweichung oder unbelegtem Befund.
+ * ueber `saveClaims` geschrieben, inklusive Belegart und Beleg-Commit. Exit 1
+ * nur mit `--check` und offener Abweichung oder unbelegtem Befund.
  */
 import { execFileSync } from 'node:child_process';
-import { decideClaim, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 import { loadClaimsStrict, saveClaims } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 
@@ -39,31 +39,43 @@ const remoteHead = (branch) => {
   return { known: true, sha: sha || null };
 };
 
-const onMain = (sha) => sha !== null && git(['merge-base', '--is-ancestor', sha, 'origin/main']) !== null;
-
 const claims = loadClaimsStrict();
-const mergedPr = mergedPullRequestIndex();
+const mergedIndex = mergedPullRequestIndex();
 const changes = [];
 const unresolved = [];
 
 for (const claim of claims.filter((entry) => entry.status === 'open')) {
   const { known, sha } = remoteHead(claim.branch);
-  if (!known) {
-    unresolved.push({ id: claim.id, why: 'Remote nicht erreichbar' });
-    continue;
-  }
+  // Der lokale Beleg steht auch dann zur Verfuegung, wenn der Branch am Remote
+  // schon geloescht ist - genau der Zustand nach einem Squash-Merge.
+  const local = localMergeEvidence({ branch: claim.branch });
+  const mergedPr = mergedIndex?.get(claim.branch) ?? null;
   const evidence = decideClaim({
-    branchExists: sha !== null,
-    branchHeadOnMain: sha !== null && onMain(sha),
-    mergedPr: mergedPr?.get(claim.branch) ?? null,
+    branchExists: sha !== null || local.headSha !== null,
+    branchHeadOnMain: local.headOnMain,
+    branchTreeOnMain: local.treeOnMain,
+    mergedPr,
   });
   if (evidence.status) {
-    changes.push({ claim, status: evidence.status, why: evidence.why });
+    const shaForProof =
+      evidence.evidence === 'merged-pr'
+        ? (mergedPr?.mergeCommit ?? null)
+        : evidence.evidence === 'branch-tree-on-main'
+          ? local.treeOnMain
+          : local.headSha;
+    changes.push({
+      claim,
+      status: evidence.status,
+      why: evidence.why,
+      evidence: evidence.evidence,
+      sha: shaForProof ?? null,
+    });
     continue;
   }
-  // Ein geloeschter Branch ohne Beleg ist ein offener Befund, keine stille
-  // Einstufung: der Claim bleibt, wie er ist, und wird gemeldet.
-  if (sha === null) unresolved.push({ id: claim.id, why: evidence.why });
+  // Kein Beleg ist ein Befund, keine stille Einstufung: der Claim bleibt, wie
+  // er ist, und wird gemeldet.
+  if (!known) unresolved.push({ id: claim.id, why: 'Remote nicht erreichbar, kein lokaler Beleg' });
+  else if (sha === null && local.headSha === null) unresolved.push({ id: claim.id, why: evidence.why });
 }
 
 if (changes.length === 0 && unresolved.length === 0) {
@@ -74,11 +86,22 @@ if (changes.length === 0 && unresolved.length === 0) {
 for (const change of changes) {
   console.log(`${apply ? 'setze' : 'wuerde setzen'}: ${change.claim.id} -> ${change.status} (${change.why})`);
   change.claim.status = change.status;
+  change.claim.mergedEvidence = change.evidence;
+  change.claim.mergedSha = change.sha;
 }
 for (const entry of unresolved) console.log(`unbelegt: ${entry.id} (${entry.why})`);
 
 if (json) {
-  process.stdout.write(`${JSON.stringify({ changes: changes.map((c) => ({ id: c.claim.id, status: c.status, why: c.why })), unresolved }, null, 2)}\n`);
+  process.stdout.write(
+    `${JSON.stringify(
+      {
+        changes: changes.map((c) => ({ id: c.claim.id, status: c.status, evidence: c.evidence, sha: c.sha, why: c.why })),
+        unresolved,
+      },
+      null,
+      2,
+    )}\n`,
+  );
 }
 if (apply) {
   saveClaims(claims);

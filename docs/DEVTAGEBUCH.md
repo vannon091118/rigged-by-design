@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.159 | 2026-11-07 09:19 UTC -->
+<!-- rbd-doc: v0.3.160 | 2026-11-07 09:30 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 12: Merge-Beleg aus der lokalen Historie
+
+**Ziel.** Der reale Fall (Lane steht auf `open`, obwohl ihr PR gemergt ist) sollte als `merged` erkannt werden - ohne `gh` und ohne Basis-SHA.
+
+**Umsetzung.** `claim-evidence.mjs` liest den Lane-Kopf aus `refs/heads` beziehungsweise `refs/remotes/origin`, prueft `merge-base --is-ancestor` gegen `origin/main` und sucht einen Commit auf `main` mit demselben Baum. Ein Squash-Merge erzeugt genau diesen Zustand; der geloeschte Branch ist damit kein Hindernis. `reconcile-claims.mjs` schreibt Belegart und Beleg-Commit in den Claim, `verify-lane-claims.mjs` filtert Kollisionen ueber dasselbe `decideClaim`.
+
+**Pruefungen.** `reconcile-claims.mjs` auf dem echten Register: Claim 12 -> `merged` (`branch-tree-on-main`, `a490d4a`); `verify-lane-claims` meldet danach 0 Kollisionen. `claim-evidence.test.ts` 7/7, `pnpm run typecheck`, `pnpm run verify:light`, `verify-commit-msg` gruen.
+
+**Offen.** Ohne lokalen Branch und ohne `gh` bleibt ein Claim unbelegt und damit fail-closed; das steht in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Slice B: Mehrfach-Diagnose, Retry und Claim-Evidenz
 

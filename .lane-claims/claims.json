@@ -532,7 +532,37 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "a490d4ae72599efc7f9bc375cedc37f6d35a62f1",
     "createdAt": "d6c8ac89f2e65fafc00ae5a8ba1513998fd65016"
+  },
+  {
+    "id": "lane/governance/13-claim-merge-proof",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/13-claim-merge-proof",
+    "baseSha": "a490d4ae72599efc7f9bc375cedc37f6d35a62f1",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/lib/claim-evidence.mjs",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/reconcile-claims.mjs",
+      "scripts/verify-lane-claims.mjs",
+      "src/core/governance/__tests__/claim-evidence.test.ts",
+      "src/core/governance/__tests__/scripts-libs-ci.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "a490d4ae72599efc7f9bc375cedc37f6d35a62f1"
   }
 ]

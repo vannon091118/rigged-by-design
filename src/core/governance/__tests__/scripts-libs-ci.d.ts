@@ -31,14 +31,25 @@ declare module '*/gate-diagnostics.mjs' {
 declare module '*/claim-evidence.mjs' {
   export interface ClaimEvidence {
     readonly status: 'merged' | null;
-    readonly evidence: 'merged-pr' | 'branch-head-on-main' | 'none';
+    readonly evidence: 'merged-pr' | 'branch-head-on-main' | 'branch-tree-on-main' | 'none';
     readonly why: string;
+  }
+  export interface MergeEvidence {
+    readonly headSha: string | null;
+    readonly headOnMain: boolean;
+    readonly treeOnMain: string | null;
   }
   export function decideClaim(input?: {
     readonly branchExists?: boolean;
     readonly branchHeadOnMain?: boolean;
+    readonly branchTreeOnMain?: string | null;
     readonly mergedPr?: { number: number; mergeCommit?: string | null; mergeCommitSha?: string | null } | null;
   }): ClaimEvidence;
+  export function localMergeEvidence(input?: {
+    readonly branch: string;
+    readonly baseRef?: string;
+    readonly git?: (args: string[]) => string;
+  }): MergeEvidence;
   export function mergedPullRequestIndex(): Map<
     string,
     { number: number; mergeCommit: string | null; url: string | null }
