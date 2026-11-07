@@ -33,6 +33,7 @@ jobs:
     outputs:
       profile: ${{ steps.profile.outputs.name }}
       matrix: ${{ steps.gates.outputs.matrix }}
+      tests: ${{ steps.gates.outputs.test_files }}
       run: ${{ steps.dedupe.outputs.skip != 'true' }}
     steps:
       - name: Checkout
@@ -70,17 +71,51 @@ jobs:
             echo "::notice::Profil verify:light (Feature-Push); voll prueft der PR gegen main"
           fi
 
-      # Eine Quelle fuer den Gate-Plan: derselbe `pipeline-plan` wie `verify`.
-      # `pnpm audit` steht nur in der Matrix, wenn sich Abhaengigkeiten wirklich
-      # geaendert haben; der Turn-Versionsbump zaehlt nicht.
-      - name: Gate-Matrix bestimmen
+      # Der Diff, den dieser Lauf wirklich prueft: PR Base gegen Head, Push
+      # Before gegen Commit. Ohne belastbaren Bereich bleibt es beim vollen
+      # Profil (siehe ci-plan.mjs); ein leerer Plan wird nie still gruen.
+      - name: Basis und Kopf bestimmen
+        id: range
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+            echo "head=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+            echo "impact=1" >> "$GITHUB_OUTPUT"
+          elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+            echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+            echo "impact=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=" >> "$GITHUB_OUTPUT"
+            echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+            echo "impact=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Eine Quelle fuer den Gate-Plan: derselbe `pipeline-plan` wie `verify`,
+      # jetzt mit dem echten Diff als Eingabe. `pnpm audit` steht nur in der
+      # Matrix, wenn sich Abhaengigkeiten wirklich geaendert haben.
+      - name: Gate-Matrix aus Impact
         id: gates
         env:
           PROFILE: ${{ steps.profile.outputs.name }}
         run: |
-          matrix="$(node scripts/gate-matrix.mjs --profile="$PROFILE")"
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-          echo "::notice::Gate-Matrix: $(echo "$matrix" | tr -d '\n')"
+          node scripts/ci-plan.mjs \
+            --base="${{ steps.range.outputs.base }}" \
+            --head="${{ steps.range.outputs.head }}" \
+            --profile="$PROFILE" \
+            --impact="${{ steps.range.outputs.impact }}" \
+            --github-output "$GITHUB_OUTPUT"
+          echo "::notice::Gate-Matrix: ${{ steps.gates.outputs.matrix }}"
+
+      # Klein und maschinenlesbar: welcher Diff, welche Gates, welche Tests,
+      # was bewusst ausgelassen wurde. Kein Log-Friedhof, 7 Tage Retention.
+      - name: CI-Plan-Artefakt
+        uses: actions/upload-artifact@v7
+        with:
+          name: ci-plan
+          path: .verify-cache/ci-plan.json
+          if-no-files-found: ignore
+          retention-days: 7
 
   # Ein Job je Gate. `fail-fast: false` laesst die anderen Gates fertig laufen:
   # ein roter Lint soll den Testnachweis nicht abschneiden.
@@ -131,7 +166,11 @@ jobs:
 
       # Genau ein Gate, kein zweiter Lauf der ganzen Pipeline. Ist das Gate
       # nicht Teil des Profils, bricht der Schritt ab, statt still zu bestehen.
+      # `RBD_TEST_FILES` kommt aus dem Impact-Plan; ohne Auswahl (volles
+      # Profil, unklarer Diff) laeuft die Suite vollstaendig.
       - name: Gate ${{ matrix.gate }}
+        env:
+          RBD_TEST_FILES: ${{ needs.plan.outputs.tests }}
         run: node scripts/run-pipeline.mjs --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
 
       - name: Gate-Protokoll bei Rot

@@ -108,7 +108,14 @@ describe('Main-Gate', () => {
     expect(profile?.id).toBe('profile');
     expect(profile?.run).toContain('name=all');
     expect(profile?.run).toContain('name=light');
-    expect(stepWith(ci, 'plan', 'gate-matrix.mjs')?.id).toBe('gates');
+    // Der Plan liest den echten Diff: Basis und Kopf aus dem Event, dann
+    // waehlt `ci-plan.mjs` Gates und Tests. Unklarer Diff -> volles Profil.
+    const range = stepWith(ci, 'plan', 'github.event.pull_request.base.sha');
+    expect(range?.id).toBe('range');
+    expect(range?.run).toContain('github.event.before');
+    expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.id).toBe('gates');
+    expect(stepWith(ci, 'plan', 'gate-matrix.mjs')).toBeUndefined();
+    expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.env?.RBD_TEST_FILES).toBe('${{ needs.plan.outputs.tests }}');
 
     // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
     expect(stepWith(ci, 'claims', 'verify-lane-claims.mjs --ci')).not.toBeUndefined();
@@ -133,6 +140,12 @@ describe('Main-Gate', () => {
     const verifyIndex = stepIndex(release, 'release', 'npm run verify:release');
     const tagged = stepIndex(release, 'release', 'ci-tag-release.mjs');
     expect(tagged).toBeGreaterThan(verifyIndex);
+
+    // APK-Relevanz kommt aus dem Produkt-Impact, nicht aus `scripts/`.
+    const relevance = stepWith(release, 'release', 'release-impact.mjs');
+    expect(relevance?.id).toBe('relevance');
+    expect(relevance?.run).toContain('--prev=');
+    expect(stepWith(release, 'release', 'grep -qE')).toBeUndefined();
 
     const tagStep = stepWith(release, 'release', 'ci-tag-release.mjs');
     expect(tagStep?.if).toBeUndefined();

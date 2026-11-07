@@ -12,9 +12,13 @@ import { ROOT } from './report.mjs';
 
 const FILES = Object.freeze(['package.json', 'pnpm-lock.yaml']);
 
-/** Der Versionsbump ist keine Dependency-Aenderung. */
+/**
+ * Der Versionsbump ist keine Dependency-Aenderung. Er steht in `package.json`
+ * als `"version": ...` und in der Lockfile als YAML-Zeile `version: ...`;
+ * beide Schreibweisen zaehlen nicht.
+ */
 const isDependencyLine = (line) =>
-  /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line) && !/^[+-]\s*"version":/.test(line);
+  /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line) && !/^[+-]\s*"?version"?:/.test(line);
 
 const PROBES = Object.freeze([
   ['diff', '--unified=0', 'HEAD'],
@@ -22,8 +26,7 @@ const PROBES = Object.freeze([
   ['diff', '--unified=0', 'origin/main...HEAD'],
 ]);
 
-/**
- * `true`, sobald irgendein Vergleich echte Aenderungen an Manifest oder
+/** `true`, sobald irgendein Vergleich echte Aenderungen an Manifest oder
  * Lockfile zeigt. Ein nicht ausfuehrbarer Vergleich zaehlt als Aenderung:
  * Unklarheit heisst pruefen, nicht ueberspringen.
  */
@@ -43,4 +46,23 @@ export function dependencyChanged(probes = PROBES) {
 /** Erzwungen (`RBD_VERIFY_AUDIT=1`) oder echte Aenderung: das Audit-Gate laeuft. */
 export function auditRequired(env = process.env) {
   return env.RBD_VERIFY_AUDIT === '1' || dependencyChanged();
+}
+
+/**
+ * Dieselbe Regel fuer einen konkreten Diff (CI-Plan): Versionszeilen zaehlen
+ * nicht, alles andere an Manifest oder Lockfile schon. Ein Diff, der nicht
+ * lesbar ist, gilt als Aenderung.
+ */
+export function dependencyChangedBetween(base, head) {
+  if (!base || !head) return true;
+  let out;
+  try {
+    out = execFileSync('git', ['diff', '--unified=0', `${base}...${head}`, '--', ...FILES], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+  } catch {
+    return true;
+  }
+  return out.split(/\r?\n/).some(isDependencyLine);
 }
