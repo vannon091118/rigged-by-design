@@ -903,7 +903,9 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "c84a1eb82b6cb973ae74cc6e5a181342cccdc6f2",
     "createdAt": "4e8c2d4b85c3bc39f0b720c56bc946352d236525"
   }
 ]
