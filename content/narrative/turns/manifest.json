@@ -1632,6 +1632,38 @@
     {
       "turnId": "2026-11-08T00:10Z-pool-rumor-51",
       "contributionId": "pool-rumor-51"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-choice-preview-52",
+      "contributionId": "pool-choice-preview-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-description-52",
+      "contributionId": "pool-description-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-documentation-52",
+      "contributionId": "pool-documentation-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-event-body-52",
+      "contributionId": "pool-event-body-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-memory-52",
+      "contributionId": "pool-memory-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-opening-52",
+      "contributionId": "pool-opening-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-reaction-52",
+      "contributionId": "pool-reaction-52"
+    },
+    {
+      "turnId": "2026-11-08T00:20Z-pool-rumor-52",
+      "contributionId": "pool-rumor-52"
     }
   ]
 }

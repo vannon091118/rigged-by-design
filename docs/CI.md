@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:00 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 23:14 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -85,7 +85,8 @@ Stand 2026-11-07 liegen neun Workflow-Dateien in `.github/workflows/`:
 
 Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, manueller Merge. Ein Direktpush endet mit `GH006`; `turn-push.mjs` meldet `ERR-4023`.
 
-Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit (`Changes`, `Technische Basis & Kausalitaet`, `Ausblick`).
+Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit: `### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`.
+Die Koepfe werden zeichengenau uebernommen, inklusive Umlaut in `Kausalität`; ein ASCII-Ersatz (`Kausalitaet`) laesst das Gate rot, obwohl alle Gates gruen waren.
 
 ## Nachweise
 
