@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
+<!-- rbd-doc: v0.3.177 | 2026-11-07 12:12 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.177] - 2026-11-07
+
+### Technik
+- **Claim 20 nach dem Squash-Merge geschlossen.** `lane/governance/20-dev-profile` steht auf `merged`; Beleg ist `mergedEvidence: branch-tree-on-main` mit `mergedSha: b308fed`. Feature-PR #232 wurde als `b308fed` gemergt.
 
 ## [0.3.176] - 2026-11-07
 

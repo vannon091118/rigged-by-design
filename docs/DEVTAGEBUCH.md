@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
+<!-- rbd-doc: v0.3.177 | 2026-11-07 12:12 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 20 nach dem Merge geschlossen
+
+**Ziel.** Nach dem Squash-Merge von #232 darf Claim 20 nicht offen auf bereits gemergter Arbeit stehen bleiben.
+
+**Umsetzung.** `lane/governance/20-dev-profile` steht auf `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: b308fed`; der Feature-Merge `b308fed` traegt denselben Baum wie der geprüfte Lane-Kopf `6792545`. Version `0.3.177` und Pflichtdoku halten den Nachweis fest.
+
+**Pruefungen.** `pnpm run verify:claims` -> PASS; `pnpm run verify:light` -> PASS; `pnpm run verify:docs` -> PASS.
+
+**Offen.** Main-CI auf `b308fed` wird im Abschluss geprueft.
 
 ## 2026-11-07 - dev-Profil als lokaler Abschluss
 
