@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.164 | 2026-11-07 10:00 UTC -->
+<!-- rbd-doc: v0.3.165 | 2026-11-07 10:02 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.165] - 2026-11-07
+
+### Technik
+- **Bootstrap der Kontrollebene.** Kennt der Basis-Commit `RBD_ROOT` noch nicht (Stand vor 0.3.164), faehrt der Lauf seine Gates mit den PR-Skripten und meldet das; der erste Vertrauensgrenzen-PR blockiert damit nicht an seiner eigenen Einfuehrung. Ab dem Merge erkennt jeder Lauf die Basis und trennt Steuerung und Pruefobjekt.
 
 ## [0.3.164] - 2026-11-07
 

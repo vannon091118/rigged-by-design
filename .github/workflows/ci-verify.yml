@@ -65,6 +65,19 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
 
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
       - name: pnpm installieren
@@ -138,10 +151,10 @@ jobs:
         id: gates
         env:
           PROFILE: ${{ steps.profile.outputs.name }}
-          RBD_ROOT: ${{ github.workspace }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.path }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
         run: |
-          node "$RBD_CONTROL_ROOT/scripts/ci-plan.mjs" \
+          node "${{ steps.control.outputs.scripts }}/ci-plan.mjs" \
             --base="${{ steps.range.outputs.base }}" \
             --head="${{ steps.range.outputs.head }}" \
             --profile="$PROFILE" \
@@ -210,6 +223,19 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
 
       # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install
       # --frozen-lockfile node_modules neu aufbaut. Innen entscheidet der
@@ -246,9 +272,9 @@ jobs:
       - name: Gate ${{ matrix.gate }}
         env:
           RBD_TEST_FILES: ${{ needs.plan.outputs.tests }}
-          RBD_ROOT: ${{ github.workspace }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.path }}
-        run: node "$RBD_CONTROL_ROOT/scripts/run-pipeline.mjs" --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
+        run: node "${{ steps.control.outputs.scripts }}/run-pipeline.mjs" --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
 
       - name: Gate-Protokoll bei Rot
         if: failure()
@@ -298,6 +324,19 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
@@ -306,9 +345,9 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref }}
           BASE_REF: origin/${{ github.base_ref }}
-          RBD_ROOT: ${{ github.workspace }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.path }}
-        run: node "$RBD_CONTROL_ROOT/scripts/verify-lane-claims.mjs" --ci
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
+        run: node "${{ steps.control.outputs.scripts }}/verify-lane-claims.mjs" --ci
 
   commitmsg:
     name: Commit- und PR-Notes
@@ -346,6 +385,19 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
+          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
+          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
+          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
+          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
+            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
+            echo "control=" >> "$GITHUB_OUTPUT"
+          fi
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:
@@ -353,14 +405,14 @@ jobs:
       - name: Commit- und PR-Notes-Gate
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-          RBD_ROOT: ${{ github.workspace }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.path }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
         run: |
           # Beim Pull Request ist HEAD der automatische Merge-Commit, der keine
           # Notes traegt. Feature-Branches prueft `pr-escalation.yml`; hier wird
           # nur noch der Push auf main geprueft, damit kein Lauf doppelt prueft.
-          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node "$RBD_CONTROL_ROOT/scripts/verify-commit-msg.mjs" --head; fi
-          if [ -n "$PR_BODY" ]; then node "$RBD_CONTROL_ROOT/scripts/verify-commit-msg.mjs" --pr; fi
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --head; fi
+          if [ -n "$PR_BODY" ]; then node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --pr; fi
 
   # Der Pflichtstatus bleibt genau einer. Er fuehrt nur Ergebnisse zusammen und
   # prueft selbst nichts; die Arbeit steht in den Gate-Jobs darueber.
