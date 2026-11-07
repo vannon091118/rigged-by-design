@@ -34,7 +34,8 @@
       "src/ui/__tests__/machine-play.test.tsx",
       "package.json",
       "pnpm-lock.yaml",
-      "src/core/governance/error-codes.ts"
+      "src/core/governance/error-codes.ts",
+      "src/core/governance/__tests__/ci-gates.test.ts"
     ],
     "contracts": [],
     "dependencies": [

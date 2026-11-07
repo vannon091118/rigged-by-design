@@ -21,6 +21,7 @@ interface WorkflowStep {
   readonly if?: string;
   readonly env?: Readonly<Record<string, string>>;
   readonly with?: Readonly<Record<string, string>>;
+  readonly id?: string;
 }
 
 interface WorkflowJob {
@@ -76,15 +77,33 @@ const stepWith = (flow: Workflow, job: string, needle: string): WorkflowStep | u
   steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Main-Gate', () => {
-  it('prueft Pushes auf main und Pull Requests gegen main', () => {
+  it('prueft Pushes auf main, Feature-Pushes leicht und Pull Requests gegen main voll', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
     expect(ci.on?.pull_request?.['branches-ignore']).toBeUndefined();
     expect(ci.on?.push?.branches).toEqual(['**']);
     expect(ci.permissions?.contents).toBe('read');
+    expect(ci.permissions?.['pull-requests']).toBe('read');
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
-    expect(stepWith(ci, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
+
+    // Ein Push mit offenem PR endet vor dem Gate; der PR-Lauf ist die Wahrheit.
+    const dedupe = stepWith(ci, 'verify', 'gh pr list --head');
+    expect(dedupe?.id).toBe('dedupe');
+
+    // Profilwahl statt eines zweiten vollen Laufs: Feature-Push ist light.
+    const profile = stepWith(ci, 'verify', 'GITHUB_EVENT_NAME');
+    expect(profile?.id).toBe('profile');
+    expect(profile?.run).toContain('name=all');
+    expect(profile?.run).toContain('name=light');
+
+    const gate = stepWith(ci, 'verify', 'pnpm run verify:${{ steps.profile.outputs.name }}');
+    expect(gate?.run).toContain('verify:${{ steps.profile.outputs.name }}');
+    expect(gate?.env?.RBD_VERIFY_AUDIT).toBeUndefined();
     expect(stepWith(ci, 'verify', 'npm run verify:release')).toBeUndefined();
+
+    // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
+    const claims = stepWith(ci, 'verify', 'verify-lane-claims.mjs --ci');
+    expect(claims?.if).toContain("github.event_name == 'pull_request'");
   });
 
   it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
