@@ -5,7 +5,7 @@ import type { EventChoice, EventTemplate } from '../events/template-types';
 import { resolveOfferedChoice } from './contract';
 
 /** Ohne `event-step` gilt eine Choice in jedem Schritt. */
-export function choiceOfferedAtStep(choice: EventChoice, step: string): boolean {
+function choiceOfferedAtStep(choice: EventChoice, step: string): boolean {
   const steps = stepRequirements(choice.requirements);
   return steps.length === 0 || steps.includes(step);
 }
