@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/pr-251-repair",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/pr-251-repair",
+  "baseSha": "e930679a6f16fdea105e8f9d68a92f52c42a107d",
+  "task": "PR 251 adversarial repair",
+  "goal": "Regressionsfreiheit, echte Gates, korrekte Findings",
+  "pathAllowlist": [
+    "src/**",
+    "tests/**",
+    "scripts/**",
+    ".github/**",
+    ".lane-claims/**",
+    "docs/**",
+    "content/**",
+    "vitest.config.ts",
+    ".gitignore",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-pr-251-repair.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c7ca3286ddd6302c1783be55d9541a424a9eff3a"
+}
