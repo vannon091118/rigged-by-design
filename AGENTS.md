@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -32,6 +32,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - `pnpm run test:affected` — nur Tests aus deklariertem Ziel, dem transitiven Importgraphen und dem betroffenen Subsystem, und nur die schnellen Beweisklassen. Statistik- und Messnachweise (RTP, Poker-Verteilung, Soak, Benchmarks) überspringt er und nennt sie; Entwicklungsfeedback, kein Ersatz für `verify:all`. Jede JSON-Änderung unter `content/narrative/**` wählt ausschließlich `src/core/governance/__tests__/narrative-content.test.ts` und gilt als Codeänderung.
 - `pnpm run verify:light` — das lokale Turn-Gate: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit; schwere Nachweise laufen in `ci-verify.yml`.
 - `pnpm run agent:context [--json]` — ein Aufruf für den Arbeitskontext: Änderungen, Systeme, Invarianten, betroffene Tests, Gate-Plan, Doku-Bezüge und Cache-Stand. Reine Anzeige, keine Prüfung, keine zweite Analyse.
+- `pnpm run agent:feedback [--json]` — eine Zeile aus dem echten Diff: geänderte Dateien, betroffene Tests, ob ein voller Lauf nötig ist und welcher Befehl als Nächstes sinnvoll ist. Derselbe Selektor wie `test:affected` und der CI-Plan; führt selbst nichts aus.
 - `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` delegiert die langen Nachweise an Actions und wartet darauf. Kein Ersatz für `verify:all`.
 - `pnpm run typecheck` — `tsc --noEmit`.
 - `pnpm run lint` / `lint:fix` — ESLint.
@@ -62,7 +63,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
 - **Light ist der Normalfall.** `turn:finish` prueft Lint, LOC, Typecheck, Doku, Tree und Redundanz; Tests, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
-- Tests laufen ausschließlich am Ende eines Turns: keine Zwischenläufe von pnpm run test, pnpm run test:ci oder pnpm run verify:all während der Arbeit. `verify:quick` darf mittendrin laufen — er ist Entwicklungsfeedback, keine Freigabe, und committet nichts.
+- **Eine Testlinie:** Während der Arbeit sind `agent:feedback` (Plan, kein Lauf), Struktur-Checks, `verify:light` und `test:affected` für den betroffenen Bereich erlaubt. Nicht mitten im Turn: `pnpm run test`, `test:ci`, `verify:all`, Build und Audit — die gehören an das Turn-Ende oder nach GitHub Actions. `test:affected` ist gezieltes Feedback, kein Vollnachweis; wer ihn als Beleg nennt, nennt ihn beim Namen. `verify:quick` bleibt Entwicklungsfeedback und committet nichts.
 - Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
 - Direkter Push auf `main` ist durch den Branch-Schutz gesperrt. `turn:finish` pusht ausschliesslich den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab. `promote` legt aus einem gruenen Feature-Push den PR an; das volle Gate laeuft im PR und erst dieser Lauf wird gemergt. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
 - **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
@@ -180,6 +181,8 @@ diese Punkte:
 | Pflichtabschnitte im Commit | `verify-commit-msg` in `turn-push.mjs` (`ERR-4006`) und in CI |
 | Erhalt vorhandener Bodies | `turn-push.mjs` bricht ohne inhaltliche `.turn-notes.md` ab (`ERR-4006`); `body-sync` schreibt nur den markierten Bereich |
 | `verify:light` vor dem Commit | `turn-push.mjs` (`ERR-4024`) |
+| Fremde Pfade im Commit | `turn-push.mjs` prüft den Arbeitsbaum vor Bump und Staging gegen den Claim (`ERR-4019`) |
+| Lokales Feedback | `pnpm run agent:feedback` auf demselben Selektor wie `test:affected` (kein zweiter Plan) |
 | Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
 | Gate-Matrix und Required Check | `ci-verify.yml` |
 | Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |

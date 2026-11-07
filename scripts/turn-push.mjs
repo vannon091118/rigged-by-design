@@ -5,6 +5,7 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
 import { isForbiddenForLanes, openClaims } from './lib/lane-claims.mjs';
+import { scopeChanges } from './lib/staging-scope.mjs';
 import {
   classifyPaths,
   describeDiff,
@@ -85,6 +86,29 @@ if (!schmutz && offenVorab === 0) {
   console.log('turn:finish: keine Aenderungen zu committen');
   process.exit(0);
 }
+// Fremde Arbeit gehoert nicht in diesen Commit: Vor Bump und Staging wird der
+// Arbeitsbaum gegen den eigenen Claim geprueft. `git add -A` darf keine WIP
+// eines parallelen Agenten einsammeln; ein Pfad ausserhalb der Allowlist ist
+// ein Befund (ERR-4019), keine stille Mitnahme.
+if (paths.length === 0 && schmutz) {
+  const claim = openClaims().find((entry) => entry.branch === currentBranch);
+  if (!claim) {
+    fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; erst Claim eintragen, dann committen`);
+    process.exit(1);
+  }
+  const changed = git(['status', '--porcelain'])
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .map((line) => line.slice(3))
+    .map((path) => path.split(' -> ').pop());
+  const scope = scopeChanges({ changed, allowlist: claim.pathAllowlist });
+  if (!scope.ok) {
+    fail(1, 'ERR-4019', 'turn:finish', `Pfade ausserhalb des Claims: ${scope.foreign.slice(0, 8).join(', ')}; fremde Arbeit bleibt unangetastet`);
+    process.exit(1);
+  }
+  console.log(`turn:finish: ${scope.allowed.length} Pfad(e) im Claim-Scope`);
+}
+
 // Entwicklungsstufe vor dem Versions-Bump: Ein Bump aendert package.json und
 // wuerde die Auswahl auf alle Tests ausweiten. Der volle Verify-Lauf folgt
 // trotzdem unveraendert; affected verkuerzt full/release nicht.

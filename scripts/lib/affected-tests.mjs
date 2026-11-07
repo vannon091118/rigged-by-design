@@ -156,15 +156,22 @@ export function selectAffectedTests(changedFiles) {
   return { tests: runAll ? all : [...selected].sort(), runAll, reason: null };
 }
 
-/** Geaenderte Pfade aus Branch, Index und Arbeitsbaum; Fehler werden bewusst verschluckt. */
+/**
+ * Geaenderte Pfade aus Branch, Index, Arbeitsbaum und unversionierten Dateien;
+ * Fehler werden bewusst verschluckt. Neue Module sind der haeufigste Fall, in
+ * dem eine Auswahl zu klein ausfaellt - sie stehen in keiner Diff-Quelle,
+ * solange sie nicht gestaged sind.
+ */
 export function changedFiles() {
   const commands = [
     ['diff', '--name-only', '--diff-filter=ACMR', 'origin/main...HEAD'],
     ['diff', '--name-only', '--diff-filter=ACMR'],
     ['diff', '--name-only', '--cached', '--diff-filter=ACMR'],
+    ['ls-files', '--others', '--exclude-standard'],
   ];
   const found = new Set();
   for (const args of commands) {
+    // `ls-files --others` listet wie die Diff-Aufrufe nur Pfade, keine Statusspalten.
     try {
       const output = execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
       for (const line of output.split(/\r?\n/)) if (line.trim()) found.add(line.trim());

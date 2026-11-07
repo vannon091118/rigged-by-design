@@ -176,6 +176,15 @@ declare module '*/body-sync.mjs' {
   }): string;
 }
 
+declare module '*/staging-scope.mjs' {
+  export const TURN_EXEMPT: readonly string[];
+  export function scopeChanges(input: {
+    readonly changed: readonly string[];
+    readonly allowlist: readonly string[];
+    readonly exempt?: readonly string[];
+  }): { allowed: string[]; foreign: string[]; ok: boolean };
+}
+
 declare module '*/tree-changes.mjs' {
   export interface TreeChanges {
     readonly added: readonly string[];

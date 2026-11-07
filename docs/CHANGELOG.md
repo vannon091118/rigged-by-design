@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
+<!-- rbd-doc: v0.3.158 | 2026-11-07 09:06 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.158] - 2026-11-07
+
+### Technik
+- **Fremde Arbeit bleibt fremd.** `turn-push.mjs` prueft den Arbeitsbaum vor Versions-Bump und Staging gegen den eigenen Claim: liegt ein Pfad ausserhalb der Allowlist, bricht der Turn mit `ERR-4019` ab, statt ihn per `git add -A` mitzunehmen. Die Pfadauslegung kommt aus `lane-claims.mjs` (`allowsPath`), damit Claim-Gate und Staging dieselbe Regel benutzen.
+- **Lokales Feedback ohne zweiten Plan.** `pnpm run agent:feedback [--json]` nennt aus dem echten Diff die geaenderten Dateien, die betroffenen Tests, ob ein voller Lauf notwendig ist und welcher Befehl als Naechstes sinnvoll ist. Die Auswahl kommt unveraendert aus `affected-tests.mjs`.
+- **Neue Dateien zaehlen mit.** `changedFiles()` liest zusaetzlich unversionierte Pfade (`git ls-files --others`); vorher fehlten genau die neuen Module, und die Testauswahl konnte zu klein ausfallen.
+- **Eine Testlinie im Vertrag.** `AGENTS.md` widerspricht sich nicht mehr: waehrend der Arbeit sind `agent:feedback`, Struktur-Checks, `verify:light` und `test:affected` erlaubt; `test`, `test:ci`, `verify:all`, Build und Audit laufen am Turn-Ende oder in GitHub Actions.
 
 ## [0.3.157] - 2026-11-07
 
