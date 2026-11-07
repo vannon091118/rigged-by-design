@@ -178,7 +178,7 @@
       "lane/contracts/world-time"
     ],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "superseded",
     "createdAt": "9070cba"
   },
   {
@@ -274,7 +274,7 @@
       "lane/contracts/save"
     ],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "superseded",
     "createdAt": "7cf5f84"
   },
   {
@@ -297,7 +297,30 @@
     ],
     "dependencies": [],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "0b49dfc4c267efc99f8a1d5722182dff83f29a1f"
+  },
+  {
+    "id": "lane/contracts/domain-event-v3",
+    "owner": "Interaction-Contract-Owner",
+    "branch": "lane/contracts/domain-event-v3",
+    "baseSha": "b95b96e70213ce5cbf5581e89fd156476264d778",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "docs/contracts/domain-event.md",
+      "src/core/contracts/domain-event.ts",
+      "src/core/contracts/__tests__/domain-event.test.ts"
+    ],
+    "contracts": [
+      {
+        "id": "domain-event",
+        "version": "1.0",
+        "mode": "write"
+      }
+    ],
+    "dependencies": [],
+    "gateProfile": "quick",
+    "status": "open",
+    "createdAt": "b95b96e70213ce5cbf5581e89fd156476264d778"
   }
 ]
