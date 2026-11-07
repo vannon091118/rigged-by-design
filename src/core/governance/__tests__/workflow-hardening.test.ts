@@ -22,6 +22,7 @@ interface Step {
 
 interface Job {
   readonly uses?: string;
+  readonly outputs?: Readonly<Record<string, string>>;
   readonly steps?: readonly Step[];
 }
 
@@ -176,6 +177,20 @@ describe('workflow hardening', () => {
     ], { cwd: process.cwd(), encoding: 'utf8' });
     expect(bad.status).toBe(1);
     expect(bad.stderr).toContain('soak-ticks');
+  });
+
+  it('kompatibilisiert Plan-Metadaten mit der Basis-Kontrollebene', () => {
+    const ci = workflow('ci-verify.yml');
+    const plan = ci.jobs?.plan;
+    const compat = plan?.steps?.find((step) => step.name === 'Plan-Metadaten kompatibilisieren');
+    expect(compat?.run).toContain('state=PR');
+    expect(compat?.run).toContain('required="$gates"');
+    expect(plan?.outputs?.state).toContain('steps.compat.outputs.state');
+    expect(plan?.outputs?.run).toContain('steps.compat.outputs.run');
+    expect(plan?.outputs?.required).toContain('steps.compat.outputs.required');
+    const validate = plan?.steps?.find((step) => step.name === 'Matrix validieren');
+    expect(validate?.env?.STATE).toContain('steps.compat.outputs.state');
+    expect(validate?.env?.REQUIRED).toContain('steps.compat.outputs.required');
   });
 
   it('verweist fuer die Testlinie auf docs/TESTING.md', () => {

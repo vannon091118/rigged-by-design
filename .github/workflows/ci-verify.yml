@@ -31,12 +31,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
-      state: ${{ steps.gates.outputs.state }}
-      profile: ${{ steps.gates.outputs.profile }}
+      # Die Basis-Kontrollebene kann vor diesem Merge noch ohne die neuen
+      # Metadaten laufen; `compat` fuellt sie aus Matrix und Ereignis.
+      state: ${{ steps.compat.outputs.state }}
+      profile: ${{ steps.compat.outputs.profile }}
       matrix: ${{ steps.gates.outputs.matrix }}
-      required: ${{ steps.gates.outputs.required }}
-      run: ${{ steps.gates.outputs.run }}
-      noop: ${{ steps.gates.outputs.noop }}
+      required: ${{ steps.compat.outputs.required }}
+      run: ${{ steps.compat.outputs.run }}
+      noop: ${{ steps.compat.outputs.noop }}
       independent: ${{ steps.control.outputs.independent }}
       tests: ${{ steps.gates.outputs.test_files }}
       long_count: ${{ steps.gates.outputs.long_count || '0' }}
@@ -176,14 +178,80 @@ jobs:
             --handoff="$HANDOFF" \
             --github-output="$GITHUB_OUTPUT"
 
+      # Bootstrap-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
+      # diesem Merge kennt sie die neuen `state`/`required`-Outputs noch nicht.
+      # Die Gate-Auswahl bleibt der Basis-Script-Stand; nur die Metadaten
+      # werden aus Matrix und Ereignis abgeleitet. Nach dem Merge liefert die
+      # neue Kontrollebene die Werte selbst, der Fallback bleibt inert.
+      - name: Plan-Metadaten kompatibilisieren
+        id: compat
+        env:
+          EVENT: ${{ steps.range.outputs.event }}
+          REF: ${{ github.ref }}
+          STATE_IN: ${{ steps.gates.outputs.state }}
+          RUN_IN: ${{ steps.gates.outputs.run }}
+          NOOP_IN: ${{ steps.gates.outputs.noop }}
+          REQUIRED_IN: ${{ steps.gates.outputs.required }}
+          PROFILE_IN: ${{ steps.gates.outputs.profile }}
+          MATRIX: ${{ steps.gates.outputs.matrix }}
+        run: |
+          set -euo pipefail
+          state="$STATE_IN"
+          if [ -z "$state" ]; then
+            case "$EVENT" in
+              pull_request|pr) state=PR ;;
+              workflow_dispatch|manual) state=MANUAL ;;
+              push)
+                if [ "$REF" = "refs/heads/main" ]; then
+                  state=MAIN
+                else
+                  # Die alte Kontrollebene kennt LIGHT noch nicht und liefert
+                  # das volle Profil; UNKNOWN bleibt konservativ beim Full-Set.
+                  state=UNKNOWN
+                fi
+                ;;
+              *) state=UNKNOWN ;;
+            esac
+          fi
+          gates="$(node -e 'const m = JSON.parse(process.env.MATRIX || "{}"); process.stdout.write((m.include || []).map((entry) => entry.gate).filter(Boolean).join(","));')"
+          required="$REQUIRED_IN"
+          if [ -z "$required" ]; then required="$gates"; fi
+          profile="$PROFILE_IN"
+          if [ -z "$profile" ]; then
+            case "$state" in
+              LIGHT) profile=light ;;
+              NOOP|PR_HANDOFF) profile=none ;;
+              *) profile=full ;;
+            esac
+          fi
+          run="$RUN_IN"
+          if [ -z "$run" ]; then
+            if [ -n "$gates" ] && [ "$state" != "NOOP" ] && [ "$state" != "PR_HANDOFF" ]; then
+              run=true
+            else
+              run=false
+            fi
+          fi
+          noop="$NOOP_IN"
+          if [ -z "$noop" ]; then
+            if [ "$state" = "NOOP" ]; then noop=true; else noop=false; fi
+          fi
+          {
+            echo "state=$state"
+            echo "required=$required"
+            echo "profile=$profile"
+            echo "run=$run"
+            echo "noop=$noop"
+          } >> "$GITHUB_OUTPUT"
+
       # Eine leere Matrix ist nur in NOOP und PR_HANDOFF der Vertrag. In jedem
       # anderen Zustand muss das Required-Set vollstaendig in der Matrix stehen;
       # sonst waere ein Status gruen, ohne dass ein Gate gelaufen ist.
       - name: Matrix validieren
         env:
           MATRIX: ${{ steps.gates.outputs.matrix }}
-          REQUIRED: ${{ steps.gates.outputs.required }}
-          STATE: ${{ steps.gates.outputs.state }}
+          REQUIRED: ${{ steps.compat.outputs.required }}
+          STATE: ${{ steps.compat.outputs.state }}
         run: |
           echo "::notice::Zustand ${STATE}, Matrix-Laenge ${#MATRIX}"
           node -e 'const raw = process.env.MATRIX ?? ""; let m; try { m = JSON.parse(raw); } catch (error) { console.error("::error::Gate-Matrix ist kein JSON: " + error.message + " :: " + raw); process.exit(1); } const include = Array.isArray(m.include) ? m.include : null; if (!include) { console.error("::error::Gate-Matrix ohne include-Liste: " + raw); process.exit(1); } const state = process.env.STATE ?? ""; const required = (process.env.REQUIRED ?? "").split(",").filter(Boolean); const gates = include.map((entry) => entry.gate).filter(Boolean); const noop = state === "NOOP" || state === "PR_HANDOFF"; if (noop) { if (gates.length > 0) { console.error("::error::Zustand " + state + " darf keine Gates tragen: " + gates.join(", ")); process.exit(1); } console.log("Zustand " + state + ": leere Matrix ist der Vertrag."); process.exit(0); } if (gates.length === 0) { console.error("::error::Zustand " + state + " ohne Gate-Matrix"); process.exit(1); } const missing = required.filter((gate) => !gates.includes(gate)); if (missing.length > 0) { console.error("::error::Required-Gates fehlen in der Matrix: " + missing.join(", ")); process.exit(1); } console.log("Zustand " + state + ": " + gates.length + " Gate(s), required " + required.length + " vollstaendig.");'

@@ -93,10 +93,12 @@ describe('Main-Gate', () => {
     expect(control?.run).toContain('independent=false');
 
     const plan = ci.jobs?.plan;
-    expect(plan?.outputs?.state).toBe('${{ steps.gates.outputs.state }}');
-    expect(plan?.outputs?.required).toBe('${{ steps.gates.outputs.required }}');
-    expect(plan?.outputs?.run).toBe('${{ steps.gates.outputs.run }}');
-    expect(plan?.outputs?.noop).toBe('${{ steps.gates.outputs.noop }}');
+    // Die Basis-Kontrollebene liefert die Metadaten erst nach dem Merge;
+    // `compat` fuellt sie aus der Matrix, ohne die Gate-Auswahl zu ersetzen.
+    expect(plan?.outputs?.state).toBe('${{ steps.compat.outputs.state }}');
+    expect(plan?.outputs?.required).toBe('${{ steps.compat.outputs.required }}');
+    expect(plan?.outputs?.run).toBe('${{ steps.compat.outputs.run }}');
+    expect(plan?.outputs?.noop).toBe('${{ steps.compat.outputs.noop }}');
     expect(plan?.outputs?.independent).toBe('${{ steps.control.outputs.independent }}');
 
     // Der Plan liest den echten Diff: Basis und Kopf aus dem Event.
@@ -111,7 +113,8 @@ describe('Main-Gate', () => {
 
     // Die Matrix wird gegen das Required-Set geprueft, nicht nur auf JSON.
     const validation = stepWith(ci, 'plan', 'process.env.REQUIRED');
-    expect(validation?.env?.STATE).toBe('${{ steps.gates.outputs.state }}');
+    expect(validation?.env?.STATE).toBe('${{ steps.compat.outputs.state }}');
+    expect(validation?.env?.REQUIRED).toBe('${{ steps.compat.outputs.required }}');
 
     // Impact waehlt lange Nachweise auf dem exakten PR-Kopf, nicht auf main.
     expect(ci.jobs?.long?.strategy?.matrix).toContain('needs.plan.outputs.long_matrix');

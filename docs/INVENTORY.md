@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:09 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 18:17 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -630,7 +630,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/auto-resolve.yml` — name: Auto-Resolve — gelesen: 100 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 149 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 636 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 704 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 213 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 45 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 47 Zeilen
@@ -1521,7 +1521,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/auto-resolve.test.ts` — Die Reihenfolge ist der Vertrag: NOOP/PR_HANDOFF erzeugen nichts, ein — gelesen: 149 Zeilen
 - `src/core/governance/__tests__/body-sync.test.ts` — Body-Synchronisation darf vorhandene Inhalte nie ersetzen. Genau diese — gelesen: 107 Zeilen
 - `src/core/governance/__tests__/branch-prune.test.ts` — Nach dem Merge mit gruenen Gates ist ein Wegwerf-Branch nur noch Arbeit, die — gelesen: 39 Zeilen
-- `src/core/governance/__tests__/ci-gates.test.ts` — Ebene A des Main-Gates: der Zustand entscheidet, welche Gates laufen, und der — gelesen: 213 Zeilen
+- `src/core/governance/__tests__/ci-gates.test.ts` — Ebene A des Main-Gates: der Zustand entscheidet, welche Gates laufen, und der — gelesen: 216 Zeilen
 - `src/core/governance/__tests__/ci-plan.test.ts` — Der Zustand ist die eine Wahrheit: aus ihm folgen Required-Set, Gates und — gelesen: 109 Zeilen
 - `src/core/governance/__tests__/claim-evidence.test.ts` — Ein geloeschter Branch ist kein Merge-Nachweis. Genau dieser Fall steht — gelesen: 161 Zeilen
 - `src/core/governance/__tests__/dependency-governance.test.ts` — import { readFileSync, readdirSync } from 'node:fs'; — gelesen: 77 Zeilen
@@ -1548,7 +1548,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 74 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
-- `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 193 Zeilen
+- `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 208 Zeilen
 - `src/core/governance/__tests__/workflow-state.test.ts` — Nach dem Turn zaehlt nur ein belegter Zustand: TESTS_PASSED nach lokaler — gelesen: 195 Zeilen
 - `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 235 Zeilen
 - `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 66 Zeilen
