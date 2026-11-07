@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.160 | 2026-11-07 09:30 UTC -->
+<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 13 reconciled
+
+**Ziel.** Nach dem Merge von #218 stand Claim 13 im Register noch auf `open` - derselbe Fall wie zuvor bei Claim 12, eine Ebene weiter.
+
+**Umsetzung.** Nur der vorhandene Pfad: `reconcile-claims --apply` schreibt `merged`, `mergedEvidence: branch-tree-on-main` und `mergedSha: e2869a1`. Kein neues Modul, keine Codeaenderung; der lokale Branch-Kopf `3c42e94` traegt denselben Baum wie der Merge-Commit.
+
+**Pruefungen.** Vor dem Schreiben zeigte `verify-lane-claims` `Lane-Baum liegt auf main (e2869a1); als merged behandelt` bei 0 Kollisionen; danach `reconcile-claims: keine Abweichung`; das Register hat nur noch Claim 14 offen, dessen PR noch nicht gemergt ist. `claim-evidence.test.ts` 7/7, `pnpm run typecheck` gruen.
+
+**Offen.** Claim 14 wird nach dem Merge dieses PRs seinerseits vom naechsten Lauf erkannt; geschrieben wird der Status nur mit einem Commit. Das steht in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Claim 12: Merge-Beleg aus der lokalen Historie
 

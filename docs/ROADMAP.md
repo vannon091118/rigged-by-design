@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.160 | 2026-11-07 09:30 UTC -->
+<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -172,7 +172,7 @@ nächster Schritt, Review-Bedingung.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Der Produktvertrag steht oben in diesem Dokument, das Casino darin als Start- und Testumgebung.
 
-- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`). Als Naechstes Slice C: SemVer-Policy aus dem Diff im Runner und impact-basierte Langlaeufe statt reinem `workflow_dispatch`; der Doku-Resolver fuer generierte Bereiche bleibt offen. Offen bleibt ausserdem: ein Claim ohne lokalen Branch und ohne `gh` ist unbelegt und bleibt fail-closed - der Agent mit Connector traegt den Beleg dann manuell nach.
+- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`). Als Naechstes Slice C: SemVer-Policy aus dem Diff im Runner und impact-basierte Langlaeufe statt reinem `workflow_dispatch`; der Doku-Resolver fuer generierte Bereiche bleibt offen. Offen bleibt ausserdem: ein Claim ohne lokalen Branch und ohne `gh` ist unbelegt und bleibt fail-closed - der Agent mit Connector traegt den Beleg dann manuell nach.
 - Lokales Feedback und Staging-Scope stehen (Slice A): `agent:feedback` nennt aus dem echten Diff die betroffenen Tests und den naechsten sinnvollen Befehl, `turn-push.mjs` committet nur Pfade des eigenen Claims.
 - Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen. Der Merge-Text traegt die Pflichtsektionen: seit 0.3.140 haelt `docs/ARCHITECTURE.md` den `ERR-4006`-Fall des #163-Merges fest, Connector- und REST-Merges setzen `commit_message` mit dem PR-Body.

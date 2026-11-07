@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.160 | 2026-11-07 09:30 UTC -->
+<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.161] - 2026-11-07
+
+### Technik
+- **Register konsistent.** `reconcile-claims --apply` hat Claim 13 (PR #218) ueber den baumgleichen Commit `e2869a1` als `merged` geschrieben (`mergedEvidence: branch-tree-on-main`, `mergedSha: e2869a1df7945`). Claim 12 bleibt unveraendert `merged` mit seinem Beleg auf `a490d4a`.
+- Kein Code geaendert: der Nachweis lief ausschliesslich ueber `localMergeEvidence()` / `decideClaim()`; ein zweiter Lauf meldet `keine Abweichung`.
 
 ## [0.3.160] - 2026-11-07
 
