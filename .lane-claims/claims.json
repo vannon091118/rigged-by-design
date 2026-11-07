@@ -174,7 +174,7 @@
       "lane/contracts/domain-event"
     ],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "9070cba"
   },
   {
@@ -198,7 +198,7 @@
       "lane/contracts/relationship"
     ],
     "gateProfile": "quick",
-    "status": "open",
+    "status": "merged",
     "createdAt": "9070cba"
   },
   {
@@ -246,7 +246,7 @@
       "lane/contracts/save"
     ],
     "gateProfile": "quick",
-    "status": "merged",
+    "status": "open",
     "createdAt": "7cf5f84"
   }
 ]

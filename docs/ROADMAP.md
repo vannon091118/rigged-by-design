@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:34 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:36 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
