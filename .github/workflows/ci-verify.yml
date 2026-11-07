@@ -273,7 +273,10 @@ jobs:
         env:
           RBD_TEST_FILES: ${{ needs.plan.outputs.tests }}
           RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
+          # Die Testsuite ist Pruefobjekt: ihre Fixtures liegen absolut unter
+          # /tmp und duerfen nicht unter .rbd-control gehaengt werden. Nur die
+          # Node-Gates kommen aus der Kontrollebene.
+          RBD_CONTROL_ROOT: ${{ matrix.gate != 'tests' && steps.control.outputs.control || '' }}
         run: node "${{ steps.control.outputs.scripts }}/run-pipeline.mjs" --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
 
       - name: Gate-Protokoll bei Rot

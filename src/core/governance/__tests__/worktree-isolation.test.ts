@@ -1,6 +1,6 @@
 /**
  * @test-target: scripts/lib/worktree-isolation.mjs
- * @error-code: ERR-4027
+ * @error-code: ERR-4019
  *
  * Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim,
  * eigener Worktree) und der echte `pretask`-Aufruf in temporaeren Git-Repos.
@@ -148,7 +148,7 @@ describe('worktree-isolation', () => {
     ]);
   });
 
-  it('refuses a dirty shared pretask start with ERR-4027', () => {
+  it('refuses a dirty shared pretask start with ERR-4019', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-shared-'));
     try {
       const repo = fixture(parent, 'shared');

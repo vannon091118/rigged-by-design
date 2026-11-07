@@ -72,6 +72,12 @@ describe('workflow hardening', () => {
     expect(balance?.env?.RBD_DAYS).toBe('${{ inputs.balance_days }}');
   });
 
+  it('gibt der Testsuite keinen Kontroll-Root, den Node-Gates aber schon', () => {
+    const ci = workflow('ci-verify.yml');
+    const gateStep = stepWithRun(ci, 'run-pipeline.mjs');
+    expect(gateStep?.env?.RBD_CONTROL_ROOT).toContain("matrix.gate != 'tests'");
+  });
+
   it('haelt die Testlinie in AGENTS.md eindeutig', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
     expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);

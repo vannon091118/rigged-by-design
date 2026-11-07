@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.169 | 2026-11-07 10:39 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -198,7 +198,7 @@ diese Punkte:
 | Promotion nur auf den geprueften Commit | `promote-guard.mjs` prueft Herkunft, Ziel und Kopf-SHA; `gh pr merge --match-head-commit` verhindert einen spaeten Push |
 | Claim gegen Selbsterweiterung | `verify-lane-claims --ci` vergleicht mit Basis und erster Registrierung im PR; neue Pfade, Owner, Branches oder Writer werden abgelehnt |
 | Kein globales Staging | `turn-push.mjs` setzt nur Claim-Pfade plus Versionsdateien in den Index |
-| Arbeit nur im eigenen Worktree | `pretask.mjs` blockt geteilte Baeume mit `ERR-4027`, sobald ein fremder Claim offen ist oder `--require-worktree` gesetzt wird; `--json` liefert den Grund maschinenlesbar |
+| Arbeit nur im eigenen Worktree | `pretask.mjs` blockt geteilte Baeume mit `ERR-4019`, sobald ein fremder Claim offen ist oder `--require-worktree` gesetzt wird; `--json` liefert den Grund maschinenlesbar |
 | Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
 
 Eine fehlende Zeile in der rechten Spalte ist kein Freischein: sie ist der

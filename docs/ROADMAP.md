@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.169 | 2026-11-07 10:39 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -194,7 +194,7 @@ nächster Schritt, Review-Bedingung.
   (`docs/ARCHITECTURE.md`) stehen. Als Nächstes die Deko-Rollen von den
   Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
 
-- Agenten-Isolation und Workflow-Haertung stehen seit 0.3.169: `pretask` blockt geteilte Baeume mit `ERR-4027` und `--json`, `AGENTS.md` hat eine Testlinie, `long-checks.yml` uebergibt `balance_days` ueber `RBD_DAYS`, und alle Workflow-Actions sind auf 40-stellige Commit-SHAs gepinnt. Offen bleiben nur die Punkte, die weiterhin in der Tabelle stehen.
+- Agenten-Isolation und Workflow-Haertung stehen seit 0.3.169: `pretask` blockt geteilte Baeume mit `ERR-4019` und `--json`, `AGENTS.md` hat eine Testlinie, `long-checks.yml` uebergibt `balance_days` ueber `RBD_DAYS`, und alle Workflow-Actions sind auf 40-stellige Commit-SHAs gepinnt. Offen bleiben nur die Punkte, die weiterhin in der Tabelle stehen.
 
 ## Offene Punkte (konsolidiert 2026-11-06)
 

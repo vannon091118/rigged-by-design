@@ -49,7 +49,6 @@ export const ERROR_CODES = {
   TRANSFER_INVALID: { code: 'ERR-5001', level: 'BLOCKED', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
   CAPABILITY_GATE: { code: 'ERR-4025', level: 'AGENT', area: 'governance', cause: 'Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise.', fix: 'Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren.' },
   TEST_RED: { code: 'ERR-4026', level: 'AGENT', area: 'governance', cause: 'Die Testsuite ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten.', fix: 'Befund als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt.' },
-  WORKTREE_ISOLATION: { code: 'ERR-4027', level: 'AGENT', area: 'governance', cause: 'Ein Agent startet in einem geteilten Arbeitsbaum, obwohl Isolation gefordert ist oder ein fremder Claim Pfade im Baum haelt.', fix: 'Eigenen Git-Worktree anlegen und pretask dort erneut ausfuehren; fremde Arbeit nicht mitnehmen.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 
 const REGISTRY = new Map<string, ErrorDefinition>(Object.values(ERROR_CODES).map((entry) => [entry.code, entry]));

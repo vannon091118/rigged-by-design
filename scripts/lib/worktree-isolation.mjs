@@ -11,7 +11,7 @@ import { resolve } from 'node:path';
 import { allowsPath } from './lane-claims.mjs';
 
 /** Maschinenlesbarer Code fuer einen Start in einem geteilten Arbeitsbaum. */
-export const ISOLATION_CODE = 'ERR-4027';
+export const ISOLATION_CODE = 'ERR-4019';
 
 /** Ein verknuepfter Worktree hat ein eigenes Git-Dir, aber ein gemeinsames Common-Dir. */
 export function isLinkedWorktree(gitDir, commonDir) {

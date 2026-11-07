@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.169 | 2026-11-07 10:39 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -616,7 +616,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/lane.md` — Markdown-Dokument — gelesen: 60 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 149 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 445 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 448 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 186 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 39 Zeilen
 - `.github/workflows/pr-escalation.yml` — name: PR Escalation — gelesen: 47 Zeilen
@@ -698,7 +698,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/turns/manifest.json` — { — gelesen: 265 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1800 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1799 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 887 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3230 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
@@ -1511,9 +1511,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 46 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 68 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
-- `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 81 Zeilen
+- `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 87 Zeilen
 - `src/core/governance/__tests__/worktree-isolation.test.ts` — Zwei Ebenen: die reine Entscheidung (geteilter Baum, fremder Claim, — gelesen: 205 Zeilen
-- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 67 Zeilen
+- `src/core/governance/error-codes.ts` — Zentrales Fehlerregister. Jeder Gate-, Test- und Laufzeitfehler nennt hier — gelesen: 66 Zeilen
 - `src/core/governance/test-harness.ts` — Vitest-Reporter fuer den Fail-Closed-Testvertrag: jeder Testfall wird mit — gelesen: 50 Zeilen
 - `src/core/io/__tests__/escalation.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 27 Zeilen
 - `src/core/io/envelope.ts` — Umschlag fuer Spielstand-Exporte: Art, Format, Pruefsumme, Nutzlast. — gelesen: 66 Zeilen
@@ -1987,7 +1987,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 | Turn | Erledigt |
 | --- | --- |
-| T84 | **2026-11-07 10:34 UTC**: Agenten-Isolation und Workflow-Härtung. `pretask` blockt geteilte Baeume mit `ERR-4027` (fremder offener Claim oder `--require-worktree`), `--json` nennt die Gruende; `turn:finish` staged weiter claim-begrenzt. `AGENTS.md` hat eine Testlinie. `long-checks.yml` nutzt `RBD_DAYS` statt Shell-Interpolation, alle Actions sind per 40-stelligem SHA gepinnt. Geprueft: 8/8 Isolations-, 3/3 Workflow-Tests, 6/6 ci-gates, `node --check`, `pretask --json`; volle Gates vor dem Commit: 186 Testdateien, 991 Tests bestanden, 6 uebersprungen, `verify:light`, Typecheck, Doku, Testqualitaet, Redundanz und LOC gruen. |
+| T84 | **2026-11-07 10:34 UTC**: Agenten-Isolation und Workflow-Härtung. `pretask` blockt geteilte Baeume mit `ERR-4019` (fremder offener Claim oder `--require-worktree`), `--json` nennt die Gruende; `turn:finish` staged weiter claim-begrenzt. `AGENTS.md` hat eine Testlinie. `long-checks.yml` nutzt `RBD_DAYS` statt Shell-Interpolation, alle Actions sind per 40-stelligem SHA gepinnt. Geprueft: 8/8 Isolations-, 4/4 Workflow-Tests, 6/6 ci-gates, `node --check`, `pretask --json`; volle Gates vor dem Commit: 186 Testdateien, 992 Tests bestanden, 6 uebersprungen, `verify:light`, Typecheck, Doku, Testqualitaet, Redundanz und LOC gruen. |
 | T83 | **2026-11-07 08:03 UTC**: Impact-Matrix: Gates folgen dem echten Diff. |
 | T82 | **2026-11-07 07:55 UTC**: Agentenverhalten als Vertrag: Pretask (Issue, Zustand, Impact, Lane), gezielte Nachweise, After-Task, begrenztes CI-Polling, Monitor nur berichtend; Durchsetzungstabelle in `AGENTS.md`. Geprueft: `verify:light`, Claim-Check. |
 | T81 | **2026-11-07 06:31 UTC**: Gates granular: eine Matrix statt eines Monolithen. |
