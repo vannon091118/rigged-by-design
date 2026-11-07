@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:26 UTC -->
 
 ## README als Einstieg
 
@@ -38,7 +38,7 @@ Der Editor schreibt nur über `layout-commands.ts` und `layout-editing.ts`: Comm
 - Auszahlungen werden nie gekappt: Das Hauskonto zahlt, so weit es reicht; der Rest wird als Verbindlichkeit auf `HAUS_SCHULDEN` gebucht (`openLiability`). Die Summe aller Konten bleibt null. `repayDebt` führt die Verbindlichkeit im Tagesabschluss zurück, aber nur aus dem Überschuss über `HOUSE_FLOAT`; ein zweites Schulden- oder Reservekonto gibt es nicht.
 - Persona-Einsatz: `personaStake` ist die einzige Einsatzskalierung für Gastrunden. Sie kombiniert den Tisch-Mindesteinsatz, die Sucht, den `budgetFactor` der Persona und einen Wallet-Anteil; das Ergebnis ist auf das Dreifache des Tisches und den verfügbaren Chipbestand begrenzt. `addictedStake` bleibt die reine Suchtkomponente für bestehende Tests.
 - Mod-Wirkungen: `resolveModEffects` ist die gemeinsame Wahrheit für eigenes und fremdes Haus. Es dedupliziert Mod-Ids, liefert FREE_DRINK nur mit `freeDrink`/`freeDrinkCost` und lässt EXTRA_REEL ausschließlich auf SLOT zu. `installMod` erhöht bei EXTRA_REEL die Walzenzahl und löscht das Slot-Gedächtnis; `serveFreeDrink` verbraucht Barbestand. VELVET wirkt über `guestTier` auf die Persona-Stufe neuer Gäste, nicht als zweiter Attraktionswert.
-- Slot-Pity: Die Entladung ist ein Ausgleich auf den Einsatz (10.000 bps), kein zusätzlicher Paytable-Gewinn. Der einbehaltene Puffer bleibt Hausgewinn; die Session-Quote wird mit 60.000 Spins gegen das angezeigte 90–96-%-Band geprüft.
+- Slot-Pity: Die Entladung ist ein Ausgleich auf den Einsatz (10.000 bps), kein zusätzlicher Paytable-Gewinn. Sie wird erst frei, wenn der einbehaltene Bankstand die tatsächliche Auszahlung (`bet + Bonus`) deckt; eigene Einsätze sind auf das Zehnfache des effektiven Mindesteinsatzes begrenzt (`MAX_OWN_BET_MULTIPLE`). Der Puffer bleibt Hausgewinn; die Session-Quote wird mit 60.000 Spins gegen das angezeigte 90–96-%-Band geprüft.
 - Eigene Spielrunden laufen über `core/sim/own-play.ts` und die Store-Fassade `store/own-play.ts`: Der Einsatz geht von `PORTEMONNAIE` nach `HAUSKONTO`, der Gewinn zurück; `HAUS_SCHULDEN` deckt nur die Differenz. `store/own-play.ts` hält die offene Kartenrunde je Gerät, damit ein wiederholter Settle-Befehl nicht doppelt zahlt. `TableLauncher` bleibt rollenunabhängig; `MachinePlay` liefert nur den eigenen Geldweg, keine zweite Engine.
 - Der Umbau läuft über `src/core/sim/remodel.ts`: erst Deckung prüfen, dann alle Gastansprüche buchen, dann Geld buchen und das Haus tauschen.
 - Der Save ist v11 (`vcoin.casino.v11`). `replaySave` hebt v5- bis v10-Stände an, behält Fiat, offene Gewinne, Journal, Look, Besuchererinnerungen und Rivalen-Zustaende und setzt den PRNG an der gespeicherten Stelle fort; v5–v10 leiten das Layout deterministisch aus ihrer Vorlage ab, v3 und v4 werden verworfen.

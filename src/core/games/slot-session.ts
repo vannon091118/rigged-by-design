@@ -17,11 +17,12 @@ export function playSlotSession(
 ): GameResult {
   if (!item.slotMemory) item.slotMemory = createSlotMemory(item.reels);
   const memory = item.slotMemory;
-  // Nur was die Maschine einbehalten hat, kann sie als Bonus auszahlen.
-  const reference = item.baseBet > ZERO_VC ? item.baseBet : bet;
   const bank = (memory.bank ?? 0) as VaCoinMicro;
-  // Ein Bonus kostet rund zwei Einsaetze; erst ab dieser Deckung darf die Maschine ihn geben.
-  const plan = prepareSlotSpin(memory, bank >= reference * 3);
+  // Die Entladung ist erst frei, wenn der einbehaltene Bankstand die
+  // tatsaechliche Auszahlung dieses Einsatzes deckt. baseBet ist dafuer
+  // irrelevant; der Bonus skaliert mit dem echten Einsatz.
+  const forcedPayout = mulVC(bet, Math.max(0, 10_000 + bonusBps)) as VaCoinMicro;
+  const plan = prepareSlotSpin(memory, bank >= forcedPayout);
   const outcome = playSlot(prng, { forceWin: plan.forceWin, config: slotConfigOf(item) });
   const multiplierBps = outcome.multiplierBps > 0 ? Math.max(0, outcome.multiplierBps + bonusBps) : 0;
   const raw = mulVC(bet, multiplierBps) as VaCoinMicro;

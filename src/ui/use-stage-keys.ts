@@ -30,11 +30,6 @@ export function useStageKeys(options: StageKeyOptions): void {
         worldStore.moveStep(direction[0], direction[1]);
         return;
       }
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        worldStore.useCarriedHere();
-        return;
-      }
       if (event.key === '+' || event.key === '=' || event.key === '-') {
         event.preventDefault();
         latest.current.zoom(event.key === '-' ? 0.82 : 1.22);

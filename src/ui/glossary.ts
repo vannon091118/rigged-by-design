@@ -18,7 +18,7 @@ export const HELP = {
   ruf: 'Eine von mehreren Nachfragequellen. Steigt mit Sauberkeit und gutem Angebot, sinkt mit Dreck, Streit und kaputten Geräten.',
   bar: 'Getränkebestand. Eine leere Bar kostet Laune, und Gäste gehen früher.',
   teile: 'Ersatzteile. Jede Reparatur kostet genau 1 Teil, egal wie kaputt das Gerät ist.',
-  kiste: 'Bestellte Ware kommt als Kiste am Eingang an. Abholen, tragen, auf freie Fläche stellen.',
+  kiste: 'Bestellte Ware kommt als Kiste am Eingang an. Kiste anklicken: der Charakter laeuft hin und hebt sie auf. Auf freier Fläche klicken stellt sie ab.',
   laune: 'Laune: unter 40 wird der Gast gereizt, unter 25 randaliert er. Zureden oder ein Drink hilft.',
   geduld: 'Geduld: läuft beim Warten ab. Bei 0 verlässt der Gast das Haus, ohne zu spielen.',
   sucht: 'Sucht: hoch heißt länger bleiben und mehr spielen – aber auch mehr Laune verlieren, wenn nichts kommt.',

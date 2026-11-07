@@ -4,7 +4,7 @@ import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { ShellRound } from '../core/games/shell-round';
 import type { Furniture } from '../core/sim/types';
 import { HOUSE_FLOAT } from '../core/sim/money';
-import { ownMinBet } from '../core/sim/own-play';
+import { MAX_OWN_BET_MULTIPLE, ownMinBet } from '../core/sim/own-play';
 import type { CardDeal } from '../store/foreign-play';
 import type { GameView } from '../store/types';
 import { TableLauncher } from './table-launcher';
@@ -27,7 +27,7 @@ export default function MachinePlay(props: MachinePlayProps) {
   const item = props.item;
   const minVC = ownMinBet(props.view, item) / 10_000;
   const baseVC = Math.max(minVC, item.baseBet / 10_000);
-  const bets = [1, 2, 5, 10].map((step) => Number((baseVC * step).toFixed(2)));
+  const bets = [1, 2, 5, MAX_OWN_BET_MULTIPLE].map((step) => Number((baseVC * step).toFixed(2)));
   const pact = props.view.exclusionPact ? `Limit ${props.view.exclusionPact.limit / 10_000} VC` : 'kein Pakt';
   return (
     <TableLauncher

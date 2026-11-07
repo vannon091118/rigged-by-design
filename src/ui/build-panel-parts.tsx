@@ -1,6 +1,5 @@
-/** Bau-Sektionen: Personal, Hauswahl, Farben, Kisten, Streit. Reine Darstellung. */
+/** Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. */
 import { expansionCost, isExpansion } from '../core/sim/expansions';
-import { getBuildDef, type BuildId } from '../core/sim/offers';
 import { remodelRequirements } from '../core/sim/remodel';
 import type { StaffRole, TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
@@ -75,57 +74,6 @@ export function ColorRow(props: { colors: readonly string[]; active: string; onP
         <button key={color} type="button" className={`carpet${props.active === color ? ' active' : ''}`}
           style={{ background: color }} onClick={() => props.onPick(color)} aria-label={color} />
       ))}
-    </div>
-  );
-}
-
-function crateTitle(buildId: BuildId): string {
-  try {
-    return getBuildDef(buildId).name;
-  } catch {
-    return 'Unbekanntes Möbel';
-  }
-}
-
-export function CrateList(props: {
-  view: GameView; carriedId: number | null; onPickup: (id: number) => void; onUnload: () => void;
-}) {
-  const { view } = props;
-  const label = (id: number): string => {
-    const crate = view.crates.find((entry) => entry.id === id);
-    if (!crate) return 'Kiste';
-    if (crate.payload.kind === 'FURNITURE') return crateTitle(crate.payload.buildId);
-    if (crate.payload.kind === 'DRINKS') return `${crate.payload.count} Getränke`;
-    return `${crate.payload.count} Ersatzteile`;
-  };
-  const carrier = (crate: GameView['crates'][number]): string => {
-    if (crate.carriedBy === 'player') return 'trägst du – auf freie Fläche klicken';
-    if (typeof crate.carriedBy === 'number') {
-      const agent = view.agents.find((entry) => entry.id === crate.carriedBy);
-      return agent ? `unterwegs mit ${ROLE_LABEL[agent.role]}` : 'unterwegs';
-    }
-    return 'wartet am Eingang';
-  };
-  return (
-    <div className="ops-row">
-      {view.crates.length === 0 && <small className="muted">Keine Kisten am Eingang. Bestellte Ware kommt hier an.</small>}
-      {view.crates.map((crate) => (
-        <div key={crate.id} className="staff">
-          <div><strong>{label(crate.id)}</strong>
-            <small>{carrier(crate)}</small></div>
-          {crate.carriedBy === null && (
-            <button type="button" className="btn small" onClick={() => props.onPickup(crate.id)}>ABHOLEN</button>
-          )}
-        </div>
-      ))}
-      {props.carriedId !== null && (
-        <button type="button" className="btn primary" onClick={props.onUnload} title="Getränke und Ersatzteile landen automatisch an Bar oder Lager.">
-          ABLADEN
-        </button>
-      )}
-      {props.carriedId !== null && view.crates.some((c) => c.id === props.carriedId && c.payload.kind === 'FURNITURE') && (
-        <small className="muted">Möbelkiste: auf eine freie Floor-Fläche klicken, um sie aufzustellen.</small>
-      )}
     </div>
   );
 }

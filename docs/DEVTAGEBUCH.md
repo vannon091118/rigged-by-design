@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 19:04 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:26 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - WIP-Konsolidierung vor dem Branch-Abbau
+
+**Ziel.** Die uncommittete Arbeit aus dem alten Interaktions-Worktree auf den aktuellen `main` bringen, ohne die bereits gemergte Rita-Eröffnung zu überschreiben, und die dabei offenen Claims bereinigen.
+
+**Umsetzung.** Der Diff wurde auf einem frischen Governance-Branch von `c7ca328` angewendet. Enthalten sind die Floor-Kistenbedienung über `useCrateActions`, die reine Kistenanzeige im Betriebspanel, die Einsatzobergrenze `MAX_OWN_BET_MULTIPLE`, die Slot-Deckung an der tatsächlichen Auszahlung, die direkte Rivalen-Auswahl und die Bezeichnung `BETREIBER`. Die drei alten Claims `lane/interaction/opening-rita`, `lane/content/narrative` und `lane/governance/ci-stabilization` stehen jetzt auf `merged` beziehungsweise `archived`; der neue Claim `lane/governance/main-consolidation` deckt nur diesen Lauf. #246 wurde als ersetzt geschlossen, weil sein Merge-Notes-Fix mit `c7ca328` bereits auf `main` liegt.
+
+**Pruefungen.** `pnpm exec vitest run src/core/sim/__tests__/own-play.test.ts src/core/games/__tests__/slot-session-rtp.test.ts src/ui/__tests__/perspective-switch.test.tsx` -> 3 Dateien, 25/25 PASS. `pnpm run typecheck` -> PASS. `pnpm run verify:light` und `pnpm run verify:claims` folgen im selben Lauf.
+
+**Offen.** Der PR- und CI-Nachweis auf dem exakten Kopf steht aus. #243 wird nach diesem Merge auf einem neuen Branch von `main` gerettet; erst danach werden die Branch-Tips als Tags gesichert und die Remote-Branches bis auf `main` entfernt.
 
 ## 2026-11-07 - Phase 5: Doku-Vertrag und AGENTS-Kurzvertrag
 

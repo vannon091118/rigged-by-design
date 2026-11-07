@@ -4,7 +4,8 @@ import { CARPETS, type CarpetId, type StaffRole, type TemplateId } from '../core
 import type { GameView } from '../store/types';
 import { BuildCatalogCards } from './build-catalog-cards';
 import { BuildOpsSummary } from './build-ops-summary';
-import { ColorRow, CrateList, DisputeList, StaffGrid, StaffStatus, TemplateGrid } from './build-panel-parts';
+import { CrateList } from './build-crate-list';
+import { ColorRow, DisputeList, StaffGrid, StaffStatus, TemplateGrid } from './build-panel-parts';
 import { barCapacityForLevel } from '../core/sim/deliveries';
 import { vc } from './format';
 import { HELP } from './glossary';
@@ -20,8 +21,6 @@ interface Props {
   readonly onCarpet: (id: CarpetId) => void;
   readonly onRepair: (id: number) => void;
   readonly onClean: () => void;
-  readonly onPickup: (id: number) => void;
-  readonly onUnload: () => void;
   readonly onOrderDrinks: (count: number) => void;
   readonly onOrderParts: (count: number) => void;
   readonly onUpgradeBar: () => void;
@@ -39,8 +38,6 @@ export function BuildPanel(props: Props) {
   const { view } = props;
   const broken = view.furniture.filter((item) => item.condition < 85 || item.damaged || item.clogged)
     .sort((a, b) => a.condition - b.condition).slice(0, 4);
-  const carrying = /^KRATE:(\d+)$/.exec(view.player.carrying);
-  const carriedId = carrying ? Number(carrying[1]) : null;
   const bars = view.furniture.filter((item) => item.kind === 'BAR');
   const wages = (view.staff.guard ? view.prices.guardWage : 0) + (view.staff.cashier ? view.prices.cashierWage : 0)
     + (view.staff.porter ? view.prices.porterWage : 0) + ((view.staff.cleaner ? 1 : 0) + (view.staff.bartender ? 1 : 0)) * view.prices.staffWage;
@@ -62,15 +59,16 @@ export function BuildPanel(props: Props) {
             : ' · höchste Stufe erreicht'}
         </p>
         <p className="panel-note">
-          Klick oder ziehen kauft. Die Ware kommt als Kiste am Eingang an: abholen, tragen, aufstellen.
-          Erst ein aufgestelltes Gerät bringt Gäste und Geld.
+          Klick oder ziehen kauft. Die Ware kommt als Kiste am Eingang an: im Floor anklicken,
+          der Charakter läuft hin und hebt sie auf. Auf einer freien Fläche klicken: er trägt sie hin
+          und stellt sie ab. Erst ein aufgestelltes Gerät bringt Gäste und Geld.
         </p>
 
         <h3>Spiele &amp; Deko</h3>
         <BuildCatalogCards view={view} onBuy={props.onBuy} />
 
         <h3>Kisten am Eingang {view.crates.length > 0 ? `(${view.crates.length})` : ''}</h3>
-        <CrateList view={view} carriedId={carriedId} onPickup={props.onPickup} onUnload={props.onUnload} />
+        <CrateList view={view} />
         <DisputeList view={view} onCalm={props.onCalm} />
 
         <h3>Hausgröße</h3>

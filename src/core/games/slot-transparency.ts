@@ -93,8 +93,8 @@ export function recordSlotSpin(
 }
 
 /**
- * Gibt die Entladung frei. Eine Maschine zahlt nur aus, was sie einbehalten hat:
- * ohne Deckung im eigenen Polster bleibt der Lader geladen.
+ * Gibt die Entladung frei. Gedeckt sein muss die tatsächliche Auszahlung,
+ * nicht ein Vielfaches des baseBet; ohne Deckung bleibt der Lader geladen.
  */
 export function prepareSlotSpin(memory: SlotMemory, fundable = true): SpinPlan {
   const forceWin = memory.chargeReady && fundable;

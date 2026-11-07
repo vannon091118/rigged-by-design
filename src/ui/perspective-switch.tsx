@@ -8,7 +8,7 @@ interface Props {
 
 const OPTIONS: readonly { readonly id: Perspective; readonly label: string; readonly hint: string }[] = [
   { id: 'guest', label: 'GAST', hint: 'Portemonnaie, Einsätze, Regeln und eigene Spiele' },
-  { id: 'operator', label: 'BETRIEB', hint: 'Hauskonto, Gäste, Personal, Geräte und Wartung' },
+  { id: 'operator', label: 'BETREIBER', hint: 'Hauskonto, Gäste, Personal, Geräte und Wartung' },
 ];
 
 export function PerspectiveSwitch({ perspective, onChange }: Props) {

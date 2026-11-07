@@ -4,7 +4,7 @@ import { OpeningGate } from './opening-card';
 
 const COPY: Readonly<Record<Perspective, { readonly label: string; readonly text: string }>> = {
   guest: { label: 'GASTMODUS', text: 'Gerät antippen und direkt spielen. Dein Portemonnaie zählt.' },
-  operator: { label: 'BETRIEBSMODUS', text: 'Gerät antippen für Zustand, Ursache, Reparatur und Mods.' },
+  operator: { label: 'BETREIBERMODUS', text: 'Gerät antippen für Zustand, Ursache, Reparatur und Mods.' },
 };
 
 export function FloorRoleBar({ perspective }: { readonly perspective: Perspective }) {
