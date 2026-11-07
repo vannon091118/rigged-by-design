@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 21:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:33 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -515,10 +515,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1421 |
-| Gelistete Dateien | 1421 |
+| Getrackte Dateien | 1404 |
+| Gelistete Dateien | 1404 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (20), content (70), docs (77), public (554), scripts (86), src (589) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (5), content (70), docs (77), public (554), scripts (86), src (587) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -530,7 +530,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 19 Datei(en)
+- `.lane-claims/claims/` — 4 Datei(en)
 - `content/narrative/contributions/` — 66 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -595,8 +595,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/` — 70 Datei(en)
 - `src/core/sim/__tests__/` — 86 Datei(en)
 - `src/core/sim/narrative/` — 27 Datei(en)
-- `src/core/sim/narrative/__tests__/` — 4 Datei(en)
-- `src/core/sim/narrative/choices/` — 4 Datei(en)
+- `src/core/sim/narrative/__tests__/` — 3 Datei(en)
+- `src/core/sim/narrative/choices/` — 3 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 6 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
@@ -638,24 +638,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/claim-actionset-contract.claim.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/claim-actor-registry.claim.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/claim-architecture-worldtime.claim.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/claim-casino-integration.claim.json` — { — gelesen: 34 Zeilen
-- `.lane-claims/claims/claim-communication.claim.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/claims/claim-domain-event-consumer.claim.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/claim-factor-catalog-expansion.claim.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/claim-factor-catalog.claim.json` — { — gelesen: 28 Zeilen
-- `.lane-claims/claims/claim-ledger-atomicity.claim.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/claim-narrative-phase4.claim.json` — { — gelesen: 32 Zeilen
-- `.lane-claims/claims/claim-relationship-engine.claim.json` — { — gelesen: 30 Zeilen
-- `.lane-claims/claims/claim-rooming-geometry.claim.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/claim-rooming-perception.claim.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/claims/claim-rooming-roles.claim.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1711,14 +1696,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/money.ts` — Geldwege: jeder Cent ist eine Ledger-Buchung, nie ein direkter Zähler. — gelesen: 145 Zeilen
 - `src/core/sim/mop.ts` — Wischer-System. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 57 Zeilen
 - `src/core/sim/mugging.ts` — Simulierter Überfall nach einer verlorenen Prügelei: Ziel wählen, greifen, fliehen. — gelesen: 89 Zeilen
-- `src/core/sim/narrative/__tests__/beat-resolver.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 128 Zeilen
 - `src/core/sim/narrative/__tests__/composition-context.test.ts` — Der Helper liest ausschliesslich Welt, Fact, Event und Template; er mutiert — gelesen: 171 Zeilen
 - `src/core/sim/narrative/__tests__/dialogue.test.ts` — Dialoge sind Daten plus ein reiner Ablauf: gleicher Klick, gleiche Folgeseite. — gelesen: 60 Zeilen
 - `src/core/sim/narrative/__tests__/narrative-view.test.ts` — Das View-Modell leitet Szenen, Choices und Profile rein aus Welt, Ledger und — gelesen: 116 Zeilen
 - `src/core/sim/narrative/boundary.ts` — Einziger Verbraucher der Fact-Queue: Ledger-Facts erzeugen, einmal drainieren, anwenden. — gelesen: 38 Zeilen
 - `src/core/sim/narrative/choices/contract.ts` — Choice-Vertrag: stabile IDs bleiben an Template-ID und Version gebunden. — gelesen: 21 Zeilen
 - `src/core/sim/narrative/choices/eligibility.ts` — Reine Choice-Eligibility: Lifecycle, Requirements und Kosten ohne Seiteneffekte. — gelesen: 86 Zeilen
-- `src/core/sim/narrative/choices/resolver.ts` — Einziger Beat-Resolver: Beat-Filter, Eligibility und Kosten in einem Schritt. — gelesen: 62 Zeilen
 - `src/core/sim/narrative/choices/steps.ts` — Schritt-Auswahl: welche angebotenen Choices gelten im aktuellen Beat? — gelesen: 26 Zeilen
 - `src/core/sim/narrative/commands/execute.ts` — Einziger Ausfuehrungspfad: Preflight, Handler, Kosten, RESOLVED. — gelesen: 139 Zeilen
 - `src/core/sim/narrative/commands/index.ts` — Oeffentliche Fassade der Event-Command-Schicht. — gelesen: 13 Zeilen
@@ -1774,7 +1757,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/triggers.ts` — Oeffentliche Trigger-Fassade: Context, reine Auswertung und Schema-Validierung. — gelesen: 8 Zeilen
 - `src/core/sim/narrative/types.ts` — Narrative Datenvertraege: Facts, Erinnerungen und persistenter Zustand als reine JSON-Daten. — gelesen: 178 Zeilen
 - `src/core/sim/narrative/view-types.ts` — NAR-14: Datenvertraege des Anzeigemodells; der Builder lebt in `view.ts`. — gelesen: 88 Zeilen
-- `src/core/sim/narrative/view.ts` — NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. — gelesen: 168 Zeilen
+- `src/core/sim/narrative/view.ts` — NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. — gelesen: 178 Zeilen
 - `src/core/sim/nav-grid.ts` — Navigationsraster: belegte Tiles, Wandkanten und ein Cache fuer beides. — gelesen: 114 Zeilen
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
