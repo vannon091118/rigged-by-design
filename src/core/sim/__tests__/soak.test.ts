@@ -21,6 +21,12 @@ import { randomSeed } from '../../../test/random-seed';
 
 const TICKS = Number(process.env.RBD_SOAK_TICKS ?? 3000);
 const DAYS = Number(process.env.RBD_SOAK_DAYS ?? 3);
+if (!Number.isSafeInteger(TICKS) || TICKS < 1 || TICKS > 1_000_000) {
+  throw new Error(`RBD_SOAK_TICKS muss eine ganze Zahl zwischen 1 und 1000000 sein, erhielt '${process.env.RBD_SOAK_TICKS}'`);
+}
+if (!Number.isSafeInteger(DAYS) || DAYS < 1 || DAYS > 30) {
+  throw new Error(`RBD_SOAK_DAYS muss eine ganze Zahl zwischen 1 und 30 sein, erhielt '${process.env.RBD_SOAK_DAYS}'`);
+}
 
 describe('Langzeitsimulation', () => {
   it.skipIf(!process.env.RBD_SOAK)(`läuft ${TICKS} Ticks ohne Ledger-Leck und ohne unbegrenzten Zustand`, { timeout: 600_000 }, () => {

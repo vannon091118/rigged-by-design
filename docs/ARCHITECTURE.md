@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.178 | 2026-11-07 12:43 UTC -->
+<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
 
 ## README als Einstieg
 
@@ -21,7 +21,7 @@
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
-- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` startet `ci-long-checks.mjs` auf dem aktuellen Branch und der exakten HEAD-SHA, ohne `verify:all` mitzuschleppen.
+- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` startet `ci-long-checks.mjs` auf dem aktuellen Branch und der exakten HEAD-SHA, ohne `verify:all` mitzuschleppen. Die CI-Kontrollebene fuer PRs kommt aus der PR-Basis, fuer `main` aus dem gepushten Commit und fuer Feature-Pushes aus `main`; der Langlauf-Runner kommt aus diesem Checkout, waehrend `RBD_ROOT` den PR-Baum prueft. Eine Basis ohne `RBD_ROOT` bricht ab; `RBD_REQUIRE_TESTS=1` macht uebersprungene Langtests rot.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
 ## Zustandsbesitz

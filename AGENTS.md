@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.178 | 2026-11-07 12:43 UTC -->
+<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -22,7 +22,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 ## Dev environment
 
 - Node 22, pnpm. `pnpm install --frozen-lockfile` then `pnpm run dev` (http://localhost:3000).
-- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (fuehrt den Issue-Check aus, prueft offene Konflikte, Dirty-Status, Lane-Status, Isolation und den Arbeitsbrief). Ein offenes `gate-failure`-Issue, ein nicht leerer Arbeitsbaum, ein fehlender Impact-Plan und ein fehlender oder kollidierender Lane-Claim sind Startblocker; Nachweise richten sich nach der einen Testlinie in `Build & test`.
+- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (fuehrt den Issue-Check aus, prueft offene Konflikte, Dirty-Status, Lane-Status, Isolation und den Arbeitsbrief). Ein offenes `gate-failure`-Issue, ein nicht leerer Arbeitsbaum, ein fehlender Impact-Plan und ein fehlender oder kollidierender Lane-Claim sind Startblocker; jede Lane ausser `main` braucht einen verknuepften Worktree. Der Arbeitsbrief nennt Branch, HEAD, Basis, Worktree, Staging-/Untracked-Status und Claim; ein nicht ausfuehrbarer Issue-Check bleibt als `unknown` sichtbar, nie als Erfolg. Nachweise richten sich nach der einen Testlinie in `Build & test`.
 - Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`); pnpm-spezifische Dependency-Overrides liegen in `package.json` unter `pnpm.overrides`. `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v11 (world + layout + journal + look + narrative + rivals); v5–v10 migrate (keep Fiat, open payouts, journal, look, visitor memories, rival state; v5–v10 derive the layout from their template), v3/v4 discarded.
 
@@ -201,12 +201,12 @@ diese Punkte:
 | Merge-Beleg statt Basis-SHA | `reconcile-claims.mjs` und `verify-lane-claims.mjs` über `claim-evidence.mjs`: gemergter PR, Branch-Kopf auf `main` oder baumgleicher Commit auf `main` aus der lokalen Historie (Squash-Merge, ohne `gh`); `baseSha` ist kein Nachweis |
 | Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
 | Gate-Matrix und Required Check | `ci-verify.yml` |
-| Kontrollebene aus der Basis | `ci-verify.yml` legt `.rbd-control` am Basis-Commit an; Planer, Node-Gates und Claim-Pruefung laufen von dort mit `RBD_ROOT` auf den PR-Baum |
+| Kontrollebene aus der Basis | `ci-verify.yml` legt `.rbd-control` am PR-Basis- beziehungsweise `main`-Commit an; Planer, Node-Gates, Langlauf-Kommando und Claim-Pruefung laufen von dort mit `RBD_ROOT` auf den PR-Baum. Eine Basis ohne `RBD_ROOT` bricht ab; es gibt keinen Bootstrap-Fallback auf PR-Skripte. |
 | Promotion nur auf den geprueften Commit | `promote-guard.mjs` prueft Herkunft, Ziel und Kopf-SHA; `gh pr merge --match-head-commit` verhindert einen spaeten Push |
 | Claim gegen Selbsterweiterung | `verify-lane-claims --ci` vergleicht mit Basis und erster Registrierung im PR; neue Pfade, Owner, Branches oder Writer werden abgelehnt |
 | Kein globales Staging | `turn-push.mjs` setzt nur Claim-Pfade plus Versionsdateien in den Index |
-| Arbeit nur im eigenen Worktree | `pretask.mjs` blockt geteilte Baeume mit `ERR-4019`, sobald ein fremder Claim offen ist oder `--require-worktree` gesetzt wird; `--json` liefert den Grund maschinenlesbar |
-| Issue-Check, Dirty-Status, Impact-Plan, Claim | `pretask.mjs` ruft `gh issue list` und `agent:context` auf, prueft den Arbeitsbaum und blockt fehlende Voraussetzungen mit `ERR-4019` |
+| Arbeit nur im eigenen Worktree | `pretask.mjs` blockt jeden Nicht-`main`-Branch im geteilten Arbeitsbaum mit `ERR-4019`; ein verknuepfter Worktree ist Pflicht. Ein fremder offener Claim oder `--require-worktree` blockt zusaetzlich; `--json` liefert den Grund maschinenlesbar |
+| Issue-Check, Dirty-Status, Impact-Plan, Claim | `pretask.mjs` ruft `gh issue list` und `agent:context` auf, prueft den Arbeitsbaum und blockt fehlende Voraussetzungen mit `ERR-4019`; ohne `gh` meldet der Arbeitsbrief den Issue-Status als `unknown` |
 | Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
 
 Eine fehlende Zeile in der rechten Spalte ist kein Freischein: sie ist der
@@ -244,6 +244,7 @@ naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.
 
 ## CI ist die Werkstatt
 
+- Externe Actions sind auf volle Commit-SHAs gepinnt; `.github/dependabot.yml` aktualisiert die Pins woechentlich. Keine beweglichen Major-Tags.
 - Feature-Push: `verify:light` (schnelles Feedback). PR gegen `main`, Push auf
   `main` und manuelle Laeufe: `verify:all`. Kein voller Lauf auf jedem
   Feature-Push.
@@ -375,8 +376,7 @@ Die Import-Engine uebersetzt dieselbe Idee: `FATAL -> BLOCKED`,
 
 - **Pre-Commit** schreibt Doku-Marker, Matrix und Katalog; LOC bleibt ein
   lokales Gate, weil ein zu grosses Modul nicht automatisch splittbar ist.
-- **Commit-Msg** blockiert nicht mehr: fehlende Pflichtsektionen loesen
-  `PR Escalation` aus.
+- **Commit-Msg** blockiert den lokalen Abschluss (`ERR-4006`); fehlende Pflichtsektionen im PR-Body eskaliert `PR Escalation` zusaetzlich.
 - **GitHub CI** (`pr-escalation.yml`) checkt `main` aus und holt den
   Push-Branch nur als Ref; fremder Code wird nie ausgefuehrt.
   `scripts/lift-commit-body.mjs` ergaenzt den vollstaendigen Diff in einem

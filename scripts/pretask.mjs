@@ -39,6 +39,14 @@ const requireWorktree = argv.includes('--require-worktree') || process.env.RBD_R
 const asJson = argv.includes('--json');
 
 const branch = run(['rev-parse', '--abbrev-ref', 'HEAD']) || '(unbekannt)';
+const head = run(['rev-parse', 'HEAD']);
+const worktree = run(['rev-parse', '--show-toplevel']);
+const gitDir = run(['rev-parse', '--absolute-git-dir']);
+const commonDir = run(['rev-parse', '--path-format=absolute', '--git-common-dir']);
+const pathList = (text) => (text ? text.split(/\r?\n/).filter(Boolean) : []);
+const stagedPaths = pathList(run(['diff', '--cached', '--name-only']));
+const unstagedPaths = pathList(run(['diff', '--name-only']));
+const untrackedPaths = pathList(run(['ls-files', '--others', '--exclude-standard']));
 
 /** Offene gate-failure-Issues werden unten zum Startblocker; remote-ci bleibt Kontext. */
 function readIssues() {
@@ -56,7 +64,7 @@ function readIssues() {
       errors.push(label);
     }
   }
-  return { checked: errors.length === 0, issues, errors };
+  return { checked: errors.length === 0, status: errors.length === 0 ? 'checked' : 'unknown', issues, errors };
 }
 
 const issues = readIssues();
@@ -95,6 +103,18 @@ if (conflictMarkers) blockers.push(`Konfliktmarker im Baum:\n    ${conflictMarke
 /** 2. Lane-Claim und Kollisionen. */
 const claims = openClaims();
 const claim = claims.find((c) => c.branch === branch);
+const originMain = run(['rev-parse', '--verify', 'origin/main']);
+const base = (originMain && run(['merge-base', 'HEAD', originMain])) || claim?.baseSha || '';
+const claimInfo = claim
+  ? {
+      id: claim.id,
+      owner: claim.owner,
+      branch: claim.branch,
+      baseSha: claim.baseSha,
+      allowlist: claim.pathAllowlist.length,
+      contracts: claim.writeContracts(),
+    }
+  : null;
 if (branch === 'main') {
   notes.push('main ist durch den Branch-Schutz gedeckt; keine Lane noetig.');
 } else if (!claim) {
@@ -161,6 +181,12 @@ if (asJson) {
   console.log(JSON.stringify({
     ok: blockers.length === 0,
     branch,
+    head,
+    base,
+    worktree,
+    git: { dir: gitDir, commonDir },
+    status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
+    claim: claimInfo,
     issues,
     context,
     isolation,
@@ -196,6 +222,12 @@ if (!asJson) {
   console.log('');
   if (context) {
     console.log('=== Arbeitsbrief ===');
+    console.log(`  Branch: ${branch}`);
+    console.log(`  HEAD: ${head || '-'}`);
+    console.log(`  Basis: ${base || '-'}`);
+    console.log(`  Worktree: ${worktree || '-'} (linked=${isolation.isWorktree})`);
+    if (claimInfo) console.log(`  Claim: ${claimInfo.id} / ${claimInfo.owner} / ${claimInfo.allowlist} Pfad(e)`);
+    console.log(`  Status: staged=${stagedPaths.length} unstaged=${unstagedPaths.length} untracked=${untrackedPaths.length}`);
     console.log(context);
     console.log('');
   }

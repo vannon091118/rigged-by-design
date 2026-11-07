@@ -841,5 +841,38 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "fd38734b297e20c4081a75f89d044a21b967c2b1",
     "createdAt": "8021964c806c9e6b65a78f5956f8d710c845fd6e"
+  },
+  {
+    "id": "lane/governance/22-final-closure",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/22-final-closure",
+    "baseSha": "d794dca732898a932044c1ff2e05c951a5718b46",
+    "pathAllowlist": [
+      ".github/dependabot.yml",
+      ".github/workflows/ci-verify.yml",
+      ".github/workflows/long-checks.yml",
+      ".lane-claims/claims.json",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "scripts/ci-long-checks.mjs",
+      "scripts/lib/worktree-isolation.mjs",
+      "scripts/pretask.mjs",
+      "scripts/run-selected-tests.mjs",
+      "src/core/governance/__tests__/pretask.test.ts",
+      "src/core/governance/__tests__/workflow-hardening.test.ts",
+      "src/core/governance/__tests__/worktree-isolation.test.ts",
+      "src/core/sim/__tests__/soak.test.ts"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "d794dca732898a932044c1ff2e05c951a5718b46"
   }
 ]
