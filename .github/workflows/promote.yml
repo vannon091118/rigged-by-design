@@ -30,10 +30,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - name: Checkout (volle Historie)
+      # Schreibrechte und fremder Code gehoeren nicht zusammen. Dieser Lauf
+      # prueft nichts, er merged; deshalb wird ausschliesslich `main`
+      # ausgecheckt. Den geprueften Kopf holt `fetchHead()` in promote.mjs als
+      # Ref (nur fuer Titel und Merge-Text) - ausgefuehrt wird er nie.
+      - name: Checkout (vertrauenswuerdiges main)
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: main
           fetch-depth: 0
           token: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -52,6 +56,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
           PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}
           EVENT: ${{ github.event.workflow_run.event || 'workflow_dispatch' }}
           INTEGRATE: ${{ inputs.integrate && '1' || '0' }}
