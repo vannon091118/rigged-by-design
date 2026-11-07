@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:49 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:55 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -626,7 +626,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 26 Zeilen
 - `.kilo/plans/pnpm-cutover-plan.md` — Integrationsplan: npm → pnpm (Big-Bang-Cutover) — gelesen: 120 Zeilen
-- `.lane-claims/claims.json` — [ — gelesen: 784 Zeilen
+- `.lane-claims/claims.json` — [ — gelesen: 786 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 409 Zeilen
