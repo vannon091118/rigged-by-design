@@ -185,6 +185,16 @@ declare module '*/staging-scope.mjs' {
   }): { allowed: string[]; foreign: string[]; ok: boolean };
 }
 
+declare module '*/lane-claims.mjs' {
+  export interface ClaimLike {
+    readonly id: string;
+    readonly branch: string;
+    readonly status: string;
+  }
+  export function selectClaim(claims: readonly ClaimLike[], branch: string): ClaimLike | null;
+  export function claimForBranch(branch: string): ClaimLike | null;
+}
+
 declare module '*/tree-changes.mjs' {
   export interface TreeChanges {
     readonly added: readonly string[];

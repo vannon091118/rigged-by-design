@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
+<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,18 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.163] - 2026-11-07
+
+### Technik
+- **Inventur nachgezogen.** `docs/INVENTORY.md` fehlte `src/core/governance/__tests__/lane-claims.test.ts` (Abdeckung 1363 statt 1364), weil die Inventur vor dem Staging lief und die neue Datei noch untracked war. `verify:docs` ist wieder gruen.
+
+## [0.3.162] - 2026-11-07
+
+### Technik
+- **Claim 14 nachgezogen, Selbstreferenz geschlossen.** `reconcile-claims --apply` schreibt Claim 14 (PR #219) als `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: 893317c`. Danach bleibt kein offener Claim mit gemergtem PR im Register; ein frischer Lauf auf `main` meldet `keine Abweichung`.
+- **Ein gemergter Claim fuehrt seinen Branch weiter.** `selectClaim()` in `scripts/lib/lane-claims.mjs` waehlt erst den offenen, dann den gemergten Claim derselben Lane; `verify-lane-claims.mjs` und `turn-push.mjs` nutzen dieselbe Auswahl. Damit braucht der Register-Nachtrag auf dem Branch der zuletzt gemergten Lane keinen neuen Claim, der nach seinem Merge sofort wieder offen waere.
+- Drei Testfaelle in `lane-claims.test.ts` decken offene, gemergte und fehlende Claims ab.
 
 ## [0.3.161] - 2026-11-07
 
