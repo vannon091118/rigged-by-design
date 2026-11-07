@@ -631,5 +631,35 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "b2a664eebfd916a6d94c7b4d3de82c24f926e3ea",
     "createdAt": "4cd9bc00fef74f85e50a2363d9564d1dfc2ff384"
+  },
+  {
+    "id": "lane/governance/16-worktree-isolation",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/16-worktree-isolation",
+    "baseSha": "64daff4e968be07c445a27065016491ef03baaae",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/",
+      "AGENTS.md",
+      "scripts/pretask.mjs",
+      "scripts/lib/worktree-isolation.mjs",
+      "src/core/governance/__tests__/worktree-isolation.test.ts",
+      "src/core/governance/__tests__/workflow-hardening.test.ts",
+      "src/core/governance/__tests__/scripts-libs.d.ts",
+      "src/core/governance/__tests__/ci-gates.test.ts",
+      "src/core/governance/error-codes.ts",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "64daff4e968be07c445a27065016491ef03baaae"
   }
 ]

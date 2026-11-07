@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.168 | 2026-11-07 10:21 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Agenten-Isolation und Workflow-Härtung
+
+**Ziel.** Die verbliebenen Vertrauensluecken nach der Kontrollebene schliessen: Arbeit in einem geteilten Arbeitsbaum technisch blocken, die widerspruechliche Testregel auf eine Linie bringen, Eingaben und Actions in den Workflows haerten.
+
+**Umsetzung.** `scripts/lib/worktree-isolation.mjs` entscheidet die Isolation: ein verknuepfter Worktree passiert, ein geteilter Baum blockt, sobald ein fremder offener Claim existiert oder `--require-worktree`/`RBD_REQUIRE_WORKTREE=1` gesetzt ist. `pretask` liest dafuer `git status --porcelain --untracked-files=all` (sonst versteckt Git eine komplett neue Datei hinter `?? ordner/`), vergleicht die Pfade mit den offenen Claim-Allowlists und meldet mit `ERR-4019` die Gruende `shared-worktree`, `dirty-shared-tree` und `foreign-claim-paths`; `--json` macht den Befund maschinenlesbar. `turn:finish` bleibt beim Claim-begrenzten Staging. `long-checks.yml` uebergibt `balance_days` nur noch als `RBD_DAYS` an `balance-run.mjs`, das den Wert bereits auf 1 bis 400 validiert, statt ihn in die Shell-Zeile zu setzen. Alle Actions in allen Workflows tragen volle 40-stellige Commit-SHAs mit Versionskommentar. Der Testjob laeuft ohne `RBD_CONTROL_ROOT`, damit absolute Fixture-Pfade nicht unter `.rbd-control` landen; die Node-Gates behalten die Kontrollebene. `AGENTS.md` hat eine Testlinie: gezielte Nachweise waehrend der Arbeit, schwere Suite am Turn-Ende oder in CI; die absolute Sperre und die Doppelung sind entfernt.
+
+**Pruefungen.** `worktree-isolation.test.ts` 8/8 mit temporaeren Git-Repos: schmutziger geteilter Baum -> Exit 1/`ERR-4019`, fremde Claim-Datei ohne Zusatzflag -> Exit 1, sauberer verknuepfter Worktree -> Exit 0. `workflow-hardening.test.ts` 4/4 prueft alle `uses:`-Zeilen auf 40 Hex-Zeichen, das Fehlen von `${{` in jeder `run`-Zeile von `long-checks.yml` und die eine Testlinie in `AGENTS.md`; `ci-gates.test.ts` 6/6 ist an `RBD_DAYS` angepasst. Dazu `node --check` fuer die beiden geaenderten Skripte und `pretask --json` einmal normal und einmal mit `--require-worktree` im eigenen Worktree. Die vollen Gates sind vor dem Commit gruen: `pnpm run test:ci` mit 186 Testdateien, 992 bestandenen und 6 uebersprungenen Tests; `verify:light` mit allen sechs Gates, dazu `typecheck`, `verify:docs`, `verify:test-quality`, Redundanz und LOC.
+
+**Offen.** CI-Self-Repair, impact-gesteuerte Langlaeufe und die uebrigen Roadmap-Punkte bleiben offen; die Isolation ist nur fuer Agenten erzwungen, die `pretask` aufrufen, und der Issue-Check bleibt eine Pflicht aus dem Vertrag, kein technisches Gate.
 
 ## 2026-11-07 - Die Squash-Nachricht ist Teil des Gates
 

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.168 | 2026-11-07 10:21 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.169] - 2026-11-07
+
+### Technik
+- **Agenten-Isolation technisch durchgesetzt.** `pretask` blockt einen geteilten Arbeitsbaum mit `ERR-4019`, sobald ein fremder offener Claim existiert oder `--require-worktree` gesetzt ist; `--json` nennt `shared-worktree`, `dirty-shared-tree` und `foreign-claim-paths` maschinenlesbar. Ein eigener verknuepfter Worktree passiert, auch mit eigener Arbeit.
+- **Eine Testlinie.** `AGENTS.md` fuehrt die erlaubten gezielten Nachweise und die schwere Suite in genau einer Regel; die widersprechende absolute Sperre ist entfernt. `turn:finish` staged weiterhin nur Claim-Pfade.
+- **Workflow-Haertung.** `long-checks.yml` uebergibt `balance_days` nur noch ueber `RBD_DAYS` an `balance-run.mjs`, das den Wert validiert; keine `${{ inputs.* }}`-Interpolation in einer `run`-Zeile. Alle Actions in allen Workflows sind auf volle 40-stellige Commit-SHAs gepinnt. Der Testjob laeuft ohne `RBD_CONTROL_ROOT`, damit absolute Fixture-Pfade nicht unter `.rbd-control` landen; die Node-Gates behalten die Kontrollebene.
+- Tests: `worktree-isolation.test.ts` (8, inklusive echtem pretask-Refusal und Worktree-Pass), `workflow-hardening.test.ts` (4) und die angepasste Env-Erwartung in `ci-gates.test.ts`. Voller Lauf: 186 Testdateien, 992 Tests bestanden, 6 uebersprungen.
 
 ## [0.3.165] - 2026-11-07
 

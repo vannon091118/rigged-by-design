@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.168 | 2026-11-07 10:21 UTC -->
+<!-- rbd-doc: v0.3.170 | 2026-11-07 10:51 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -22,7 +22,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 ## Dev environment
 
 - Node 22, pnpm. `pnpm install --frozen-lockfile` then `pnpm run dev` (http://localhost:3000).
-- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (Issue-Check, offene Konflikte, Lane-Status). Lokal leicht pruefen: `pnpm run test:affected` oder `pnpm run verify:light`; die schwere Suite laeuft in GitHub Actions.
+- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (Issue-Check, offene Konflikte, Lane-Status, Isolation). Nachweise richten sich nach der einen Testlinie in `Build & test`.
 - Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`); pnpm-spezifische Dependency-Overrides liegen in `package.json` unter `pnpm.overrides`. `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v11 (world + layout + journal + look + narrative + rivals); v5–v10 migrate (keep Fiat, open payouts, journal, look, visitor memories, rival state; v5–v10 derive the layout from their template), v3/v4 discarded.
 
@@ -58,12 +58,21 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - `pnpm run assets:manifest` schreibt neben `manifest.json` auch die zwei deterministischen Atlasseiten unter `public/assets/casino/atlas/`; die Seiten sind eingecheckt, `verify:assets` prueft Frame-Abdeckung und Grenzen. Der Browser-laedt im Produktionspfad nur diese Seiten, nicht die 153 Einzeldateien.
 - `pnpm run android:apk` braucht JDK 21 und Android SDK 36 (Build-Tools 36.0.0); ohne diese Werkzeuge bricht der Lauf bewusst mit `ERR-4014` ab.
 
+### Die eine Testlinie
+
+Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien,
+`pnpm run test:affected` und `pnpm run verify:light`. Die schwere Suite
+(`pnpm run test`, `pnpm run test:ci`, `pnpm run verify:all`, Build und Audit)
+laeuft erst am Turn-Ende oder in GitHub Actions; `turn:finish` mit dem
+Light-Profil fuehrt sie nicht aus. `test:affected` ist gezieltes
+Entwicklungsfeedback und kein Vollnachweis.
+
 ## Delivery
 
-- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt global alle Änderungen (`git add -A`, respektiert `.gitignore`), läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
+- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt nur die Pfade des eigenen Claims plus Versionsdateien, läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
 - **Light ist der Normalfall.** `turn:finish` prueft Lint, LOC, Typecheck, Doku, Tree und Redundanz; Tests, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
-- **Eine Testlinie:** Während der Arbeit sind `agent:feedback` (Plan, kein Lauf), Struktur-Checks, `verify:light` und `test:affected` für den betroffenen Bereich erlaubt. Nicht mitten im Turn: `pnpm run test`, `test:ci`, `verify:all`, Build und Audit — die gehören an das Turn-Ende oder nach GitHub Actions. `test:affected` ist gezieltes Feedback, kein Vollnachweis; wer ihn als Beleg nennt, nennt ihn beim Namen. `verify:quick` bleibt Entwicklungsfeedback und committet nichts.
+- Es gilt die eine Testlinie in `Build & test`; sie ersetzt jede frühere Einzelregel.
 - Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
 - Direkter Push auf `main` ist durch den Branch-Schutz gesperrt. `turn:finish` pusht ausschliesslich den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab. `promote` legt aus einem gruenen Feature-Push den PR an; das volle Gate laeuft im PR und erst dieser Lauf wird gemergt. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
 - **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
@@ -93,8 +102,8 @@ Vier Schritte, in dieser Reihenfolge. Kein Edit vor Schritt 4.
    einen anderen Task.
 2. **Zustand pruefen:** `git status --porcelain` muss leer sein; fremde
    Aenderungen werden nicht mitgenommen. `pnpm run agent:pretask` meldet
-   laufende Merges/Rebases, unmerged Pfade, Konfliktmarker, Claim- und
-   Kollisionslage; bei Startblockern endet er mit Exit 1.
+   laufende Merges/Rebases, unmerged Pfade, Konfliktmarker, Claim-, Kollisions-
+   und Isolationslage; bei Startblockern endet er mit Exit 1.
 3. **Auswirkung bestimmen:** `pnpm run agent:context [--line]` nennt Systeme,
    Invarianten, betroffene Tests und den Gate-Plan. Ohne diesen Plan wird nicht
    gearbeitet; er entscheidet auch, welche Nachweise lokal sinnvoll sind.
@@ -112,10 +121,7 @@ keine Issues, pusht nichts und startet keine Reparatur.
 
 ### Waehrend der Arbeit
 
-- Nur gezielte Nachweise: `pnpm run test:affected`, einzelne Testdateien,
-  `pnpm run verify:light`. **Kein** `verify:all`, kein Dauerlauf von
-  `verify:quick`, kein Build, kein Audit und keine volle Suite lokal - die
-  gehoeren nach GitHub Actions.
+- Nachweise nach der einen Testlinie in `Build & test`; keine zweite Schwelle.
 - Ein Nachweis pro Frage. Derselbe Lauf wird nicht wiederholt, nur weil das
   Ergebnis unbequem ist.
 - Reparaturen laufen ueber `pnpm run fix` (der einzige schreibende Modus);
@@ -192,6 +198,7 @@ diese Punkte:
 | Promotion nur auf den geprueften Commit | `promote-guard.mjs` prueft Herkunft, Ziel und Kopf-SHA; `gh pr merge --match-head-commit` verhindert einen spaeten Push |
 | Claim gegen Selbsterweiterung | `verify-lane-claims --ci` vergleicht mit Basis und erster Registrierung im PR; neue Pfade, Owner, Branches oder Writer werden abgelehnt |
 | Kein globales Staging | `turn-push.mjs` setzt nur Claim-Pfade plus Versionsdateien in den Index |
+| Arbeit nur im eigenen Worktree | `pretask.mjs` blockt geteilte Baeume mit `ERR-4019`, sobald ein fremder Claim offen ist oder `--require-worktree` gesetzt wird; `--json` liefert den Grund maschinenlesbar |
 | Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
 
 Eine fehlende Zeile in der rechten Spalte ist kein Freischein: sie ist der
@@ -395,6 +402,5 @@ Connector. Beide Wege schreiben denselben Body aus derselben Datei.
 
 - Kein Gate schreibt im Verify-Lauf.
 - Keine Ausnahme fuer Geld-, Ledger- oder Save-Regeln.
-- Keine lokalen Testlaeufe waehrend der Arbeit; Tests laufen am Turn-Ende oder
-  in GitHub Actions.
+- Keine zweite Testregel: es gilt die eine Testlinie in `Build & test`.
 - Keine zweite Wahrheit: eine Leiter, ein Marker, eine Doku-Liste.
