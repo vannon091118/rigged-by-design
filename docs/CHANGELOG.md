@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.171 | 2026-11-07 11:08 UTC -->
+<!-- rbd-doc: v0.3.172 | 2026-11-07 11:13 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.172] - 2026-11-07
+
+### Technik
+- **Claim 26 nachgezogen.** Nach dem Squash-Merge von #226 steht Claim 26 (`lane/governance/17-trust-hardening`) auf `merged` mit `mergedEvidence: branch-tree-on-main` und `mergedSha: c43bbc9`. Der getestete Head `cfa404e` und der Merge teilen den Baum `d7b64bb`; der naechste Lauf meldet keine Abweichung.
 
 ## [0.3.171] - 2026-11-07
 

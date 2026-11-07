@@ -660,9 +660,9 @@
     "dependencies": [],
     "gateProfile": "light",
     "status": "merged",
-    "createdAt": "64daff4e968be07c445a27065016491ef03baaae",
     "mergedEvidence": "branch-tree-on-main",
-    "mergedSha": "a50bf7ee46356850d3e62bf1a387cec8e20da20a"
+    "mergedSha": "a50bf7ee46356850d3e62bf1a387cec8e20da20a",
+    "createdAt": "64daff4e968be07c445a27065016491ef03baaae"
   },
   {
     "id": "lane/governance/17-trust-hardening",
@@ -692,7 +692,9 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "c43bbc92b45015a64ec28d566a9d8fa61672d7ce",
     "createdAt": "4a06cb7a570eedefcb91ac56249451df982d7757"
   }
 ]
