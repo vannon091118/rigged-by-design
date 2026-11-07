@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.162 | 2026-11-07 09:43 UTC -->
+<!-- rbd-doc: v0.3.163 | 2026-11-07 09:45 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,11 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.163] - 2026-11-07
+
+### Technik
+- **Inventur nachgezogen.** `docs/INVENTORY.md` fehlte `src/core/governance/__tests__/lane-claims.test.ts` (Abdeckung 1363 statt 1364), weil die Inventur vor dem Staging lief und die neue Datei noch untracked war. `verify:docs` ist wieder gruen.
 
 ## [0.3.162] - 2026-11-07
 
