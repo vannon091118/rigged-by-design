@@ -17,7 +17,7 @@ import { checkChoiceSelection, choiceCostTotal } from './eligibility';
 import { choicesForStep } from './steps';
 
 /** Anzeigefertige Beat-Choice: Eligibility plus deklarierte Kosten. */
-export interface BeatChoice extends ChoiceEvaluation {
+interface BeatChoice extends ChoiceEvaluation {
   readonly cost: number;
 }
 
