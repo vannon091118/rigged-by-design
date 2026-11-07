@@ -8,7 +8,7 @@
  * auf `main` macht den Claim `merged`.
  */
 import { describe, expect, it } from 'vitest';
-import { decideClaim, localMergeEvidence } from '../../../../scripts/lib/claim-evidence.mjs';
+import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from '../../../../scripts/lib/claim-evidence.mjs';
 
 /** Git-Aufrufe als Tabelle: der Test braucht kein Repository, nur Antworten. */
 function fakeGit(answers: Record<string, string | Error>) {
@@ -29,9 +29,31 @@ describe('claim-evidence', () => {
     });
   });
 
-  it('erkennt einen gemergten Pull Request als Beleg', () => {
-    const result = decideClaim({ branchExists: false, mergedPr: { number: 215, mergeCommit: 'fb5ed49cd9ed' } });
+  it('erkennt einen gemergten Pull Request mit exaktem Kopf als Beleg', () => {
+    const headSha = 'a'.repeat(40);
+    const result = decideClaim({
+      branchExists: false,
+      headSha,
+      mergedPr: { number: 215, headRefOid: headSha, mergeCommit: 'fb5ed49cd9ed' },
+    });
     expect({ status: result.status, evidence: result.evidence }).toEqual({ status: 'merged', evidence: 'merged-pr' });
+  });
+
+  it('akzeptiert einen gemergten PR nicht ohne exakten Claim-Kopf', () => {
+    const result = decideClaim({
+      branchExists: false,
+      headSha: 'a'.repeat(40),
+      mergedPr: { number: 215, headRefOid: 'b'.repeat(40), mergeCommit: 'fb5ed49cd9ed' },
+    });
+    expect(result.status).toBeNull();
+  });
+
+  it('erfindet ohne lokalen Kopf keinen PR-Beleg', () => {
+    const result = decideClaim({
+      branchExists: false,
+      mergedPr: { number: 215, headRefOid: 'b'.repeat(40), mergeCommit: 'fb5ed49cd9ed' },
+    });
+    expect(result.status).toBeNull();
   });
 
   it('erkennt einen Branch-Kopf auf main als Beleg', () => {
@@ -61,6 +83,66 @@ describe('claim-evidence', () => {
   it('meldet ohne lokalen Branch keinen Baum-Beleg', () => {
     const local = localMergeEvidence({ branch: 'lane/governance/12-slice-b-diagnostics', git: fakeGit({}) });
     expect({ headSha: local.headSha, treeOnMain: local.treeOnMain }).toEqual({ headSha: null, treeOnMain: null });
+  });
+
+  it('filtert gemergte PRs nach main, eigenem Repo und vollem Kopf-SHA', () => {
+    const head = 'a'.repeat(40);
+    const index = mergedPullRequestIndex({
+      gh: () =>
+        JSON.stringify([
+          {
+            baseRefName: 'main',
+            headRefName: 'lane/ok',
+            headRefOid: head,
+            isCrossRepository: false,
+            number: 1,
+            mergeCommit: { oid: 'b'.repeat(40) },
+            url: 'https://example.test/1',
+          },
+          {
+            baseRefName: 'integration',
+            headRefName: 'lane/falsches-ziel',
+            headRefOid: head,
+            isCrossRepository: false,
+            number: 2,
+            mergeCommit: { oid: 'b'.repeat(40) },
+            url: 'https://example.test/2',
+          },
+          {
+            baseRefName: 'main',
+            headRefName: 'lane/fork',
+            headRefOid: head,
+            isCrossRepository: true,
+            number: 3,
+            mergeCommit: { oid: 'b'.repeat(40) },
+            url: 'https://example.test/3',
+          },
+          {
+            baseRefName: 'main',
+            headRefName: 'lane/kurzer-sha',
+            headRefOid: 'abc1234',
+            isCrossRepository: false,
+            number: 4,
+            mergeCommit: { oid: 'b'.repeat(40) },
+            url: 'https://example.test/4',
+          },
+        ]),
+    });
+    expect([...index.keys()]).toEqual(['lane/ok']);
+  });
+
+  it('verwirft mehrdeutige PRs mit demselben Branch-Namen', () => {
+    const entry = (number: number) => ({
+      baseRefName: 'main',
+      headRefName: 'lane/wiederverwendet',
+      headRefOid: 'a'.repeat(40),
+      isCrossRepository: false,
+      number,
+      mergeCommit: { oid: 'b'.repeat(40) },
+      url: `https://example.test/${number}`,
+    });
+    const index = mergedPullRequestIndex({ gh: () => JSON.stringify([entry(1), entry(2)]) });
+    expect(index.size).toBe(0);
   });
 
   it('laesst einen laufenden Branch offen', () => {

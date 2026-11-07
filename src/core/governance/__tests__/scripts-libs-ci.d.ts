@@ -43,15 +43,24 @@ declare module '*/claim-evidence.mjs' {
     readonly branchExists?: boolean;
     readonly branchHeadOnMain?: boolean;
     readonly branchTreeOnMain?: string | null;
-    readonly mergedPr?: { number: number; mergeCommit?: string | null; mergeCommitSha?: string | null } | null;
+    readonly headSha?: string | null;
+    readonly mergedPr?: {
+      number: number;
+      headRefOid?: string | null;
+      mergeCommit?: string | null;
+      mergeCommitSha?: string | null;
+    } | null;
   }): ClaimEvidence;
   export function localMergeEvidence(input?: {
     readonly branch: string;
     readonly baseRef?: string;
     readonly git?: (args: string[]) => string;
   }): MergeEvidence;
-  export function mergedPullRequestIndex(): Map<
+  export function mergedPullRequestIndex(input?: {
+    readonly gh?: (args: string[]) => string;
+    readonly baseRef?: string;
+  }): Map<
     string,
-    { number: number; mergeCommit: string | null; url: string | null }
+    { number: number; headRefOid: string; mergeCommit: string | null; url: string | null }
   > | null;
 }

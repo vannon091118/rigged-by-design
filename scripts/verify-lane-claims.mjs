@@ -279,6 +279,7 @@ const collisions = findCollisions(claim).filter((collision) => {
     branchExists: true,
     branchHeadOnMain: local.headOnMain,
     branchTreeOnMain: local.treeOnMain,
+    headSha: local.headSha,
     mergedPr: mergedIndex?.get(other.branch) ?? null,
   });
   if (evidence.status === 'merged') {

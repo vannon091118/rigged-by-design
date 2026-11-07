@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.170 | 2026-11-07 10:57 UTC -->
+<!-- rbd-doc: v0.3.171 | 2026-11-07 11:08 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim-Identitaet, Promote-Ziel und gruener Main-SHA
+
+**Ziel.** Der Re-Check traf drei verbleibende Vertrauensluecken: Der Merge-Nachweis indizierte nur nach Branch-Namen, die Promote-PR-Suche war nicht auf `main` begrenzt, und der Issue-Sweep schloss anhand von `origin/main` statt des exakt geprueften Main-Commits.
+
+**Umsetzung.** `scripts/lib/claim-evidence.mjs` fragt jetzt `baseRefName`, `headRefOid` und `isCrossRepository` ab, akzeptiert nur `main` aus dem eigenen Repository und vergleicht den PR-Kopf mit dem lokalen Claim-Kopf. Mehrdeutige Branch-Namen werden verworfen; ohne lokalen Kopf bleibt der Claim unbelegt. `reconcile-claims.mjs` und `verify-lane-claims.mjs` reichen den Kopf durch. `promote.mjs` sucht offene PRs nur noch mit `--base main`. `pr-watcher.mjs` oeffnet ein geschlossenes Issue bei erneuter Rekurrenz wieder und bindet den Sweep an `MAIN_SHA`; `origin/main` muss exakt dieser SHA sein, sonst wird nicht geschlossen.
+
+**Pruefungen.** `claim-evidence.test.ts` 11/11 mit exaktem Kopf, falschem Kopf, fehlendem Kopf, Zielbranch `integration`, Fork, Kurz-SHA und zwei PRs mit demselben Branch-Namen; `node --check` fuer alle geaenderten Skripte. Die leichte Linie ist mit allen sechs Gates gruen; der PR-Lauf folgt.
+
+**Offen.** Die Agent-ID-/Worktree-Zuordnung, impact-gesteuerte Langlaeufe und die SemVer-Policy aus dem Diff bleiben in `docs/ROADMAP.md` offen; dieser Slice behauptet keine vollstaendige Isolation.
 
 ## 2026-11-07 - Agenten-Isolation und Workflow-Härtung
 

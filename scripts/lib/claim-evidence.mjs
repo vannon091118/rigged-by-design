@@ -15,6 +15,12 @@ import { execFileSync } from 'node:child_process';
 const defaultGit = (args) =>
   execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
 
+/** Ein `gh`-Aufruf; Tests ersetzen ihn durch eine Tabelle. */
+const defaultGh = (args) =>
+  execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
+const FULL_SHA = /^[0-9a-f]{40}$/;
+
 /** Erste aufloesbare Ref eines Branches: lokal vor Remote-Tracking. */
 function localHead(branch, git) {
   for (const ref of [`refs/heads/${branch}`, `refs/remotes/origin/${branch}`]) {
@@ -95,9 +101,17 @@ export function decideClaim({
   branchExists = false,
   branchHeadOnMain = false,
   branchTreeOnMain = null,
+  headSha = null,
   mergedPr = null,
 } = {}) {
-  if (mergedPr && mergedPr.number) {
+  // Der PR-Beleg braucht die Identitaet des Heads, nicht nur den Branch-Namen:
+  // Ein wiederverwendeter Branch darf nicht den Merge eines alten PRs erben.
+  // Fehlt der lokale Kopf (Branch bereits geloescht), bleibt es fail-closed.
+  if (
+    mergedPr?.number &&
+    FULL_SHA.test(String(headSha ?? '')) &&
+    mergedPr.headRefOid === headSha
+  ) {
     const sha = mergedPr.mergeCommit ?? mergedPr.mergeCommitSha ?? '';
     return {
       status: 'merged',
@@ -125,18 +139,37 @@ export function decideClaim({
  * Gemergte Pull Requests je Head-Branch. Ohne `gh` oder ohne Token `null`:
  * dann gibt es keinen Nachweis, und niemand behauptet einen.
  */
-export function mergedPullRequestIndex() {
+export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}) {
   try {
-    const output = execFileSync(
-      'gh',
-      ['pr', 'list', '--state', 'merged', '--limit', '200', '--json', 'headRefName,number,mergeCommit,url'],
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-    );
+    const output = gh([
+      'pr',
+      'list',
+      '--state',
+      'merged',
+      '--limit',
+      '200',
+      '--json',
+      'baseRefName,headRefName,headRefOid,isCrossRepository,number,mergeCommit,url',
+    ]);
     const index = new Map();
+    const ambiguous = new Set();
     for (const entry of JSON.parse(output)) {
       if (!entry?.headRefName || !entry?.number) continue;
+      // Nur ein Merge nach `main` aus diesem Repository ist ein Claim-Beleg.
+      if (entry.baseRefName !== baseRef) continue;
+      if (entry.isCrossRepository !== false) continue;
+      if (!FULL_SHA.test(String(entry.headRefOid ?? ''))) continue;
+      // Zwei gemergte PRs mit demselben Branch-Namen sind keine Identitaet.
+      // Beide werden verworfen, statt willkuerlich den ersten zu nehmen.
+      if (ambiguous.has(entry.headRefName)) continue;
+      if (index.has(entry.headRefName)) {
+        index.delete(entry.headRefName);
+        ambiguous.add(entry.headRefName);
+        continue;
+      }
       index.set(entry.headRefName, {
         number: entry.number,
+        headRefOid: entry.headRefOid,
         mergeCommit: entry.mergeCommit?.oid ?? null,
         url: entry.url ?? null,
       });

@@ -663,5 +663,36 @@
     "createdAt": "64daff4e968be07c445a27065016491ef03baaae",
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "a50bf7ee46356850d3e62bf1a387cec8e20da20a"
+  },
+  {
+    "id": "lane/governance/17-trust-hardening",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/17-trust-hardening",
+    "baseSha": "4a06cb7a570eedefcb91ac56249451df982d7757",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/lib/claim-evidence.mjs",
+      "scripts/verify-lane-claims.mjs",
+      "scripts/reconcile-claims.mjs",
+      "scripts/promote.mjs",
+      "scripts/pr-watcher.mjs",
+      ".github/workflows/promote.yml",
+      ".github/workflows/pr-watcher.yml",
+      "src/core/governance/__tests__/claim-evidence.test.ts",
+      "src/core/governance/__tests__/scripts-libs-ci.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "4a06cb7a570eedefcb91ac56249451df982d7757"
   }
 ]
