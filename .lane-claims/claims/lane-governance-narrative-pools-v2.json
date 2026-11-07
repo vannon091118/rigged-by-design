@@ -1,9 +1,9 @@
 {
-  "id": "lane/governance/narrative-pools",
+  "id": "lane/governance/narrative-pools-v2",
   "owner": "Governance-Owner",
-  "branch": "lane/governance/narrative-pools",
+  "branch": "lane/governance/narrative-pools-v2",
   "baseSha": "bd3b3a2965cffe73c5f8e1d52a7a718dd819cdde",
-  "task": "Textbaustein-Pools: Pflichtregel, Content-Batch und Roadmap-Kategorisierung",
+  "task": "Merge-Commit-Regel und Textbausteine 52 je Pool",
   "goal": "Alle Textbaustein-Pools auf mindestens 50 Fragmente heben, die Pflicht pro Commit gate-pruefen und offene Stellen in die Roadmap ueberfuehren",
   "pathAllowlist": [
     "content/narrative/**",
