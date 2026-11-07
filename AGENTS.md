@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 21:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 22:48 UTC -->
 
 > **Erster Befehl:** `pnpm run agent:pretask --json`
 
@@ -13,7 +13,7 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in `src/**` und `scripts/**`; echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
-6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad.
+6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt (`verify:narrative-blocks`).
 7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` prüft die betroffenen schnellen Tests, die volle Suite läuft in CI. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
 9. **Lieferung nur über Branch und PR.** `turn:finish` committet und pusht den Arbeitsbranch; danach PR gegen `main` mit den drei Pflichtsektionen und **manueller Merge** nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.

@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/narrative-pools",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/narrative-pools",
+  "baseSha": "bd3b3a2965cffe73c5f8e1d52a7a718dd819cdde",
+  "task": "Textbaustein-Pools: Pflichtregel, Content-Batch und Roadmap-Kategorisierung",
+  "goal": "Alle Textbaustein-Pools auf mindestens 50 Fragmente heben, die Pflicht pro Commit gate-pruefen und offene Stellen in die Roadmap ueberfuehren",
+  "pathAllowlist": [
+    "content/narrative/**",
+    "scripts/**",
+    "package.json",
+    "docs/**",
+    "AGENTS.md",
+    ".githooks/pre-commit",
+    "src/core/sim/**",
+    ".lane-claims/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "bd3b3a2965cffe73c5f8e1d52a7a718dd819cdde"
+}

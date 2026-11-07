@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 21:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 22:48 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -150,6 +150,53 @@ Dieselben Versprechen gelten für jede Figur außerhalb des Casinos: Ein Nachbar
 - Grenze: Ein echtes schwaches Gerät und ein echter Browser können hier nicht zertifiziert werden. Die Emulation und die manuelle Gerätematrix stehen in `docs/ARCHITECTURE.md`.
 
 ## Jetzt — die Testumgebung tragfaehig machen
+
+### Textbausteine: Pflichtregel und Stand
+
+Die Textbausteine sind Inhalt, keine Mechanik: Sie liegen als JSON unter
+`content/narrative/contributions/`, werden im Turn-Manifest registriert und vom
+Compiler in Registry und Laufzeit-Spiegel verdrahtet. Die Regel ist gate-geprueft,
+nicht nur dokumentiert:
+
+| Regel | Grenze | Durchsetzung |
+| --- | --- | --- |
+| Mindestgroesse je Pool (Slot) | 50 Fragmente | `verify:narrative-blocks` und Assets-Gate |
+| Gesamtziel | 1500 Bausteine | Fortschritt im Gate-Bericht; Ueberschreiten ist ein Befund |
+| Pflicht pro Commit | mindestens ein neuer, verdrahteter Baustein | Pre-Commit-Hook (`--commit`) |
+| Luecken-Regel | neue Bausteine nur in Pools unter 50 | `gapIssues` im Gate |
+| Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
+
+Stand 2026-11-07: **400/1500** Bausteine, alle acht Slots auf 50. Die naechsten
+Batches vertiefen Kontexte und Personas je Pool; sie fuellen keine Pools mehr
+auf, die schon an der Grenze liegen.
+
+### Offene Stellen, kategorisiert (Stand 2026-11-07)
+
+Diese Liste ist der Einstieg; Details und Belege stehen in den Abschnitten
+unten. Sie ersetzt verstreute Offen-Hinweise in Code-Kommentaren.
+
+**Spiel und Simulation**
+- `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer.
+- Einnahmen je Spieltyp fehlen als Kennzahl; der Ledger kennt Konten, nicht Spieltypen.
+- `TRIGGER_DIALOG` ist nicht ausfuehrbar, weil die Dialog-UI fehlt.
+- Archiv wird beim ersten Load aus dem Journal gefuellt (niedrig).
+- Sucht-Folgen sind eine offene Designentscheidung.
+
+**Narrative und Content**
+- 400/1500 Textbausteine; Pool-Minimum erreicht, Kontexttiefe offen.
+- Narrative Balance ist begrenzt, nicht gemessen.
+- Geraete-, Lager- und Personal-Facts fehlen bewusst.
+
+**Optik, Performance und Abnahme**
+- Desktop A2-A5 und Geraete A6-A8 sind offen; Slow-4G und First Frame unter 3 s fehlen.
+- Wand-Occlusion hat Depth-Tests, aber keinen Browserbeleg.
+
+**Governance und CI**
+- `agent:pretask` meldet eine Lane-Kollision mit `lane/governance/pr-251-repair`
+  (ueberschneidende Allowlist), obwohl `verify:claims --ci` die Lane akzeptiert.
+- Release-Plan und Doku-Reconcile-Runner bleiben PARKED.
+
+## Testumgebung tragfaehig machen
 
 ### PARKED (bewusst zurückgestellt)
 

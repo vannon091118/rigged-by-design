@@ -24,6 +24,13 @@ if ! node scripts/verify-narrative-content.mjs; then
   echo "pre-commit: Narrative-Content ungueltig (ERR-4022) - Commit blockiert" >&2
   exit 1
 fi
+# Pflicht pro Commit: mindestens ein neuer Textbaustein, im Manifest
+# registriert und in der Registry verdrahtet, und nur in einem Pool, der die
+# Mindestgroesse noch nicht erreicht hat. Content ohne Verdrahtung blockiert.
+if ! node scripts/verify-narrative-blocks.mjs --commit; then
+  echo "pre-commit: Textbaustein-Pflicht verletzt (ERR-4022) - Commit blockiert" >&2
+  exit 1
+fi
 # Inventur, Doku-Marker, Doku-Gate und LOC lesen nur Dateien und Git; sie
 # brauchen keine node_modules. Deshalb laufen sie auch im Fruehausstieg, damit
 # ein frischer Klon nicht ungeprueft committet.
