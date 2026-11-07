@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:50 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:07 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -715,7 +715,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1812 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 971 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 111 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3350 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3362 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 81 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 63 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18

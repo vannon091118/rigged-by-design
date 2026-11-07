@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:50 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 19:07 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,18 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Merge-Notes nach #244 reparieren
+
+**Ziel.** Der Main-Lauf `42404114623` auf dem Merge-Commit `3d48d72` war rot, obwohl alle fachlichen Gates gruen waren: `Commit- und PR-Notes` fand die drei Pflichtsektionen nicht. PR #244 selbst war gruen; der Merge wurde ohne `commit_message` ausgefuehrt.
+
+**Ursache.** `gh pr merge 244 --merge` setzte nur den PR-Titel. GitHub schrieb damit `Merge pull request #244 ...` plus den Titel in den Merge-Commit; die drei Sektionen aus dem PR-Body blieben im PR. `verify-commit-msg --head` prueft auf `main` den Merge-Commit, deshalb `ERR-4006` und ein rotes `Fail-Closed Gates`.
+
+**Umsetzung.** Dieser Follow-up-Commit auf dem bestehenden Governance-Branch haelt den Vorfall und die Reparatur im Devtagebuch fest. Der PR wird mit `--body-file` gemergt; der neue Merge-Commit traegt den vollstaendigen PR-Body mit `### Changes (Was ist neu)`, `### Technische Basis & Kausalität` und `### Ausblick (Nächste Schritte)`. Kein Gate und keine Assertion wird abgeschwaecht.
+
+**Pruefungen.** `gh run view 42404114623` belegt: `Commit- und PR-Notes` failure; alle anderen Gate- und Long-Jobs success; `Fail-Closed Gates` failure mit `commitmsg: failure`, `claims: skipped`, `long: success`. `node scripts/verify-commit-msg.mjs` gegen den Merge-Text reproduziert `ERR-4006`; der neue PR- und Merge-Text wird vor dem Merge mit demselben Skript geprueft. `pnpm run verify:docs` und `pnpm run verify:claims` laufen auf dem Doku-Stand.
+
+**Offen.** Der neue Main-Lauf auf dem Reparatur-Merge ist der Abschlussbeleg; der rote Lauf `42404114623` bleibt als Vorfall in der Historie. Kein Spiel-, Ledger-, RNG- oder Save-Code geaendert.
 
 ## 2026-11-07 - Phase 5: Doku-Vertrag und AGENTS-Kurzvertrag
 
