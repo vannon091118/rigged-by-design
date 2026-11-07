@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/games/poker-hand.ts
+ * @proof-class: statistics
  * @error-code: ERR-1003
  *
  * Tischpoker wird nicht ueber ein allgemeines RTP-Band bewertet: Die relevante

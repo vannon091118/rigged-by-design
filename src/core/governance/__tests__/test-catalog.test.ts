@@ -30,6 +30,10 @@ describe('Testkatalog', () => {
     expect(proofClassOf('src/core/games/__tests__/round-rtp-high.test.ts')).toBe('statistics');
     expect(proofClassOf('src/core/games/__tests__/poker-distribution.test.ts')).toBe('statistics');
     expect(proofClassOf('src/core/sim/__tests__/soak.test.ts')).toBe('statistics');
+    // Der Narrative-Langlauf traegt keine Statistik im Namen, deklariert die
+    // Klasse aber selbst im Kopf. Eine Ableitung aus dem Dateinamen wuerde ihn
+    // faelschlich als schnellen Vertragstest behandeln.
+    expect(proofClassOf('src/core/sim/__tests__/narrative-longrun.test.ts')).toBe('statistics');
     expect(proofClassOf('src/store/memory.bench.ts')).toBe('performance');
     expect(proofClassOf('src/core/governance/__tests__/ci-gates.test.ts')).toBe('governance');
     expect(proofClassOf('src/ui/__tests__/ui.test.tsx')).toBe('integration');

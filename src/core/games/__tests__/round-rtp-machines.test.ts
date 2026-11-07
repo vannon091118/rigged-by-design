@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/games/round.ts
+ * @proof-class: statistics
  * @error-code: ERR-1003
  *
  * Zweite Datei für die günstigen Spiele: sie läuft in einem eigenen Worker

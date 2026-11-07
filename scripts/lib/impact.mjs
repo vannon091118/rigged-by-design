@@ -80,7 +80,7 @@ export function impact(options = {}) {
     lanes: contextSummary(),
     gates,
     open: [
-      ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; Delegation: pnpm run ci:long`] : []),
+      ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; der CI-Plan fuehrt sie auf dem PR-Commit aus`] : []),
     ],
   };
 }

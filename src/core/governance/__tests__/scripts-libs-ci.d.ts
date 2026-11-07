@@ -56,6 +56,50 @@ declare module '*/pr-watcher.mjs' {
   }): Promise<void>;
 }
 
+declare module '*/ci-plan.mjs' {
+  export interface TestSelection {
+    readonly files: readonly string[];
+    readonly long: readonly string[];
+    readonly runAll: boolean;
+    readonly reason: string;
+    readonly shards: readonly { readonly shard: number; readonly files: readonly string[] }[];
+  }
+  export interface Plan {
+    readonly changed: readonly string[];
+    readonly gates: readonly { readonly gate: string }[];
+    readonly gateKeys: readonly string[];
+    readonly reason: string;
+    readonly skipped: readonly { readonly gate: string; readonly reason: string }[];
+    readonly tests: TestSelection;
+    readonly advisory: readonly string[];
+    readonly required: readonly string[];
+  }
+  export function selectTests(
+    changed: readonly string[],
+    options?: {
+      readonly profile?: string;
+      readonly impact?: boolean;
+      readonly fullTests?: boolean;
+      readonly base?: string;
+      readonly head?: string;
+    },
+  ): TestSelection;
+  export function buildPlan(
+    changed: readonly string[],
+    options?: {
+      readonly profile?: string;
+      readonly impact?: boolean;
+      readonly fullTests?: boolean;
+      readonly base?: string;
+      readonly head?: string;
+    },
+  ): Plan;
+  export function planReport(
+    changed: readonly string[],
+    plan: Plan,
+  ): Record<string, unknown>;
+}
+
 declare module '*/claim-evidence.mjs' {
   export interface ClaimEvidence {
     readonly status: 'merged' | null;

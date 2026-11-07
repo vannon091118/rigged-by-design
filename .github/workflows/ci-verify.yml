@@ -34,6 +34,9 @@ jobs:
       profile: ${{ steps.profile.outputs.name }}
       matrix: ${{ steps.gates.outputs.matrix }}
       tests: ${{ steps.gates.outputs.test_files }}
+      long_count: ${{ steps.gates.outputs.long_count || '0' }}
+      long_matrix: ${{ steps.gates.outputs.long_matrix || '{"include":[{"file":""}]}' }}
+      long_tests: ${{ steps.gates.outputs.long_tests || '' }}
       run: ${{ steps.dedupe.outputs.skip != 'true' }}
     steps:
       - name: Checkout
@@ -143,6 +146,9 @@ jobs:
             echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
             echo "impact=0" >> "$GITHUB_OUTPUT"
           fi
+          # Auf main bleibt die Gate-Auswahl impact-basiert; nur die Suite wird
+          # bei Runtime-/Testaenderungen vollstaendig. Reine Doku bleibt leicht.
+          echo "full_tests=$([ "$GITHUB_REF" = "refs/heads/main" ] && echo 1 || echo 0)" >> "$GITHUB_OUTPUT"
 
       # Eine Quelle fuer den Gate-Plan: derselbe `pipeline-plan` wie `verify`,
       # jetzt mit dem echten Diff als Eingabe. `pnpm audit` steht nur in der
@@ -159,6 +165,7 @@ jobs:
             --head="${{ steps.range.outputs.head }}" \
             --profile="$PROFILE" \
             --impact="${{ steps.range.outputs.impact }}" \
+            --full-tests="${{ steps.range.outputs.full_tests }}" \
             --github-output="$GITHUB_OUTPUT"
 
       # Eine leere oder kaputte Matrix wuerde als "Gate: failure" ohne Job
@@ -287,6 +294,45 @@ jobs:
           path: .verify-cache/reports/
           if-no-files-found: ignore
           retention-days: 7
+
+  # Der Impact-Plan nennt die langen Testdateien bereits. Sie laufen als eigene
+  # Matrix auf dem exakten PR-Kopf; jede Datei bekommt einen sichtbaren Job.
+  # Die schweren Vollnachweise (Balance, Benchmarks) bleiben im manuellen bzw.
+  # woechentlichen `long-checks.yml`, damit ein PR nicht die ganze Nacht laeuft.
+  long:
+    name: Long ${{ matrix.file }}
+    needs: plan
+    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.long_count != '0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.plan.outputs.long_matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: pnpm installieren
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
+        with:
+          version: 10.4.1
+      - name: Node 22 mit pnpm-Cache
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
+      - name: Langen Nachweis ausfuehren
+        env:
+          RBD_TEST_FILES: ${{ matrix.file }}
+          RBD_NARRATIVE_LONGRUN: '1'
+          RBD_SOAK: '1'
+          RBD_SOAK_TICKS: '100000'
+        run: node scripts/run-selected-tests.mjs
 
   # Die Claim-Sperre greift auch dort, wo kein Hook laeuft: Cloud-Agenten und
   # GitHub-Codespaces haben `.githooks` nicht aktiv. Geprueft wird der PR-Diff
@@ -424,7 +470,7 @@ jobs:
   # prueft selbst nichts; die Arbeit steht in den Gate-Jobs darueber.
   verify:
     name: Fail-Closed Gates
-    needs: [plan, gate, claims, commitmsg]
+    needs: [plan, gate, long, claims, commitmsg]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -433,11 +479,12 @@ jobs:
         env:
           PLAN: ${{ needs.plan.result }}
           GATES: ${{ needs.gate.result }}
+          LONG: ${{ needs.long.result }}
           CLAIMS: ${{ needs.claims.result }}
           COMMITMSG: ${{ needs.commitmsg.result }}
         run: |
           fail=0
-          for entry in "plan:$PLAN" "gate:$GATES" "claims:$CLAIMS" "commitmsg:$COMMITMSG"; do
+          for entry in "plan:$PLAN" "gate:$GATES" "long:$LONG" "claims:$CLAIMS" "commitmsg:$COMMITMSG"; do
             name="${entry%%:*}"
             result="${entry#*:}"
             case "$result" in

@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/sim/tick.ts
+ * @proof-class: statistics
  * @error-code: ERR-2001
  *
  * Langlauf: Ledger bleibt integer und gedeckt, und der Betrieb steht ueber

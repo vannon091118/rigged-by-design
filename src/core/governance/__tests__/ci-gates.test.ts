@@ -27,6 +27,7 @@ interface WorkflowStep {
 interface WorkflowJob {
   readonly name?: string;
   readonly needs?: string | readonly string[];
+  readonly outputs?: Readonly<Record<string, string>>;
   readonly uses?: string;
   readonly permissions?: Readonly<Record<string, string>>;
   readonly 'timeout-minutes'?: number;
@@ -57,6 +58,7 @@ interface WorkflowTrigger {
   readonly workflow_call?: {
     readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
   };
+  readonly schedule?: readonly { readonly cron: string }[];
 }
 
 interface Workflow {
@@ -89,7 +91,7 @@ describe('Main-Gate', () => {
     // Der Pflichtstatus bleibt genau einer: er fuehrt nur Ergebnisse zusammen.
     expect(ci.jobs?.verify?.name).toBe('Fail-Closed Gates');
     expect(ci.jobs?.verify?.if).toBe('always()');
-    expect(ci.jobs?.verify?.needs).toEqual(['plan', 'gate', 'claims', 'commitmsg']);
+    expect(ci.jobs?.verify?.needs).toEqual(['plan', 'gate', 'long', 'claims', 'commitmsg']);
     expect(stepWith(ci, 'verify', 'exit "$fail"')).not.toBeUndefined();
 
     // Die Arbeit steckt in der Matrix: ein Job, ein Gate, ein Status.
@@ -116,6 +118,22 @@ describe('Main-Gate', () => {
     expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.id).toBe('gates');
     expect(stepWith(ci, 'plan', 'gate-matrix.mjs')).toBeUndefined();
     expect(stepWith(ci, 'gate', 'run-pipeline.mjs')?.env?.RBD_TEST_FILES).toBe('${{ needs.plan.outputs.tests }}');
+
+    // Vom Impact gewaehlte lange Nachweise bekommen eine eigene Matrix und
+    // laufen auf dem exakten PR-Kopf, nicht auf main.
+    const long = ci.jobs?.long;
+    expect(long?.strategy?.matrix).toContain('needs.plan.outputs.long_matrix');
+    expect(long?.if).toContain("long_count != '0'");
+    const longStep = stepWith(ci, 'long', 'run-selected-tests.mjs');
+    expect(longStep?.env?.RBD_TEST_FILES).toBe('${{ matrix.file }}');
+    expect(longStep?.env?.RBD_NARRATIVE_LONGRUN).toBe('1');
+    expect(longStep?.env?.RBD_SOAK).toBe('1');
+    expect(steps(ci, 'long')[0]?.with?.ref).toContain('github.event.pull_request.head.sha');
+
+    // Main bekommt bei Runtime-/Testaenderungen die volle Suite; der
+    // Impact-Filter bleibt fuer Gates und reine Doku erhalten.
+    expect(stepWith(ci, 'plan', 'full_tests')).not.toBeUndefined();
+    expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.run).toContain('--full-tests');
 
     // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.
     expect(stepWith(ci, 'claims', 'verify-lane-claims.mjs --ci')).not.toBeUndefined();
@@ -171,10 +189,11 @@ describe('Main-Gate', () => {
     const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
     expect(statistics?.run).toContain('poker-distribution.test.ts');
     expect(statistics?.run).toContain('slot-session-rtp.test.ts');
-    expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe('${{ inputs.soak_ticks }}');
+    expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe("${{ inputs.soak_ticks || '100000' }}");
+    expect(long.on?.schedule?.[0]?.cron).toBe('0 3 * * 1');
     const balance = stepWith(long, 'balance', 'balance-run.mjs');
     expect(balance?.run).toBe('node scripts/balance-run.mjs');
-    expect(balance?.env?.RBD_DAYS).toBe('${{ inputs.balance_days }}');
+    expect(balance?.env?.RBD_DAYS).toBe("${{ inputs.balance_days || '40' }}");
     expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
   });
 

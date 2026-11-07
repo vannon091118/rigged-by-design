@@ -13,7 +13,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { findCollisions, openClaims } from './lib/lane-claims.mjs';
+import { allowsPath, findCollisions, openClaims } from './lib/lane-claims.mjs';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -40,6 +40,37 @@ const asJson = argv.includes('--json');
 
 const branch = run(['rev-parse', '--abbrev-ref', 'HEAD']) || '(unbekannt)';
 
+/** Offene Fehler-Issues sind Pflichtkontext, aber kein technischer Startblocker. */
+function readIssues() {
+  const labels = ['gate-failure', 'remote-ci'];
+  const issues = [];
+  const errors = [];
+  for (const label of labels) {
+    try {
+      const output = execFileSync('gh', [
+        'issue', 'list', '--label', label, '--state', 'open',
+        '--json', 'number,title,url,labels', '--limit', '20',
+      ], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+      for (const issue of JSON.parse(output)) issues.push({ ...issue, label });
+    } catch {
+      errors.push(label);
+    }
+  }
+  return { checked: errors.length === 0, issues, errors };
+}
+
+const issues = readIssues();
+let context = '';
+try {
+  context = execFileSync(process.execPath, ['scripts/agent-context.mjs', '--line'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim();
+} catch {
+  // Kontext ist ein Arbeitsbrief, kein Startblocker; die Pflichtpruefungen folgen.
+}
+
 /** 1. Bewusst offengelassene Konflikte: sie werden hier aufgeloest, nicht am Ende. */
 for (const marker of ['MERGE_HEAD', 'rebase-merge', 'rebase-apply', 'CHERRY_PICK_HEAD']) {
   const path = run(['rev-parse', '--git-path', marker]);
@@ -58,7 +89,8 @@ const claim = claims.find((c) => c.branch === branch);
 if (branch === 'main') {
   notes.push('main ist durch den Branch-Schutz gedeckt; keine Lane noetig.');
 } else if (!claim) {
-  notes.push(`kein Lane-Claim fuer '${branch}' - verify-lane-claims blockiert den Commit.`);
+  // Vor dem ersten Edit, nicht erst beim Commit: der Claim ist die Schreibgrenze.
+  blockers.push(`[ERR-4019] kein Lane-Claim fuer '${branch}'; zuerst in .lane-claims/claims.json registrieren`);
 } else {
   notes.push(`Lane ${claim.id}: ${claim.pathAllowlist.length} Pfad(e), Contracts ${claim.writeContracts().join(', ') || '(keine)'}.`);
   const collisions = findCollisions(claim);
@@ -74,6 +106,18 @@ if (branch === 'main') {
  * ist normale Arbeit und kein Befund.
  */
 const dirtyPaths = parseStatusPaths(run(['status', '--porcelain=v1', '--untracked-files=all']));
+if (dirtyPaths.length > 0) {
+  notes.push(`Arbeitsbaum: ${dirtyPaths.length} offene(r) Pfad(e); eigene WIP bleibt erhalten.`);
+}
+if (claim && dirtyPaths.length > 0) {
+  const outside = dirtyPaths.filter((path) =>
+    path !== '.turn-notes.md'
+    && !path.startsWith('.verify-cache/')
+    && !allowsPath(claim.pathAllowlist, path));
+  if (outside.length > 0) {
+    notes.push(`WIP ausserhalb der Claim-Allowlist: ${outside.slice(0, 8).join(', ')}; turn:finish blockt.`);
+  }
+}
 const isolation = assessIsolation({
   required: isolationRequired({ explicit: requireWorktree, claims, branch }),
   isWorktree: isLinkedWorktree(
@@ -97,10 +141,19 @@ if (!isolation.ok) {
 const stashes = run(['stash', 'list']);
 if (stashes) notes.push(`${stashes.split(/\r?\n/).length} Stash(es) vorhanden: ${stashes.split(/\r?\n/)[0]}`);
 
+if (issues.checked) {
+  if (issues.issues.length === 0) notes.push('Issue-Check: keine offenen gate-failure- oder remote-ci-Issues.');
+  else for (const issue of issues.issues) notes.push(`Issue #${issue.number} [${issue.label}]: ${issue.title}`);
+} else {
+  notes.push(`Issue-Check nicht ausgefuehrt (gh fehlt oder ist nicht angemeldet): ${issues.errors.join(', ')}; Befehle stehen unten.`);
+}
+
 if (asJson) {
   console.log(JSON.stringify({
     ok: blockers.length === 0,
     branch,
+    issues,
+    context,
     isolation,
     blockers,
     notes,
@@ -109,8 +162,14 @@ if (asJson) {
   console.log(`pretask: Branch ${branch}`);
   console.log('');
   console.log('=== Issue-Check (Pflicht, erste Arbeit) ===');
-  console.log('  gh issue list --label gate-failure --state open');
-  console.log('  gh issue list --label remote-ci --state open');
+  if (!issues.checked) {
+    console.log('  gh issue list --label gate-failure --state open');
+    console.log('  gh issue list --label remote-ci --state open');
+  } else if (issues.issues.length === 0) {
+    console.log('  keine offenen gate-failure- oder remote-ci-Issues');
+  } else {
+    for (const issue of issues.issues) console.log(`  #${issue.number} [${issue.label}] ${issue.title} — ${issue.url}`);
+  }
   console.log('  Ein offenes gate-failure-Issue ist der alleinige Fokus, bis es geschlossen ist.');
   for (const note of notes) console.log(`  - ${note}`);
 }
@@ -126,6 +185,11 @@ if (blockers.length > 0) {
 
 if (!asJson) {
   console.log('');
+  if (context) {
+    console.log('=== Arbeitsbrief ===');
+    console.log(context);
+    console.log('');
+  }
   console.log('pretask: keine offenen Konflikte; neue Arbeit erlaubt.');
-  console.log('  Arbeit: pnpm run agent:context · lokal leicht: pnpm run test:affected / verify:light');
+  console.log('  Arbeit: pnpm run turn:finish führt die betroffenen schnellen Tests aus; lange Nachweise übernimmt CI.');
 }

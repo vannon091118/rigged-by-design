@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:47 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -22,7 +22,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 ## Dev environment
 
 - Node 22, pnpm. `pnpm install --frozen-lockfile` then `pnpm run dev` (http://localhost:3000).
-- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (Issue-Check, offene Konflikte, Lane-Status, Isolation). Nachweise richten sich nach der einen Testlinie in `Build & test`.
+- Vor jeder neuen Arbeit: `pnpm run agent:pretask` (fuehrt den Issue-Check aus, prueft offene Konflikte, Lane-Status, Isolation und den Arbeitsbrief). Ein fehlender Lane-Claim ist jetzt ein Startblocker; Nachweise richten sich nach der einen Testlinie in `Build & test`.
 - Werkzeug-Configs liegen gesammelt in `src/Config/` (`tsconfig.json`, `vite.config.ts`, `eslint.config.mjs`, `capacitor.config.json`, `opencode.json`). Die pnpm-Skripte binden sie explizit (`--config`, `-p`); pnpm-spezifische Dependency-Overrides liegen in `package.json` unter `pnpm.overrides`. `prepare-android` legt die Capacitor-Kopie nur waehrend des Laufs in die Wurzel, und `.mailmap` bleibt als Git-Sonderfall in der Wurzel — Git liest sie nur dort.
 - Save format v11 (world + layout + journal + look + narrative + rivals); v5–v10 migrate (keep Fiat, open payouts, journal, look, visitor memories, rival state; v5–v10 derive the layout from their template), v3/v4 discarded.
 
@@ -33,7 +33,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - `pnpm run verify:light` — das lokale Turn-Gate: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit; schwere Nachweise laufen in `ci-verify.yml`.
 - `pnpm run agent:context [--json]` — ein Aufruf für den Arbeitskontext: Änderungen, Systeme, Invarianten, betroffene Tests, Gate-Plan, Doku-Bezüge und Cache-Stand. Reine Anzeige, keine Prüfung, keine zweite Analyse.
 - `pnpm run agent:feedback [--json]` — eine Zeile aus dem echten Diff: geänderte Dateien, betroffene Tests, ob ein voller Lauf nötig ist und welcher Befehl als Nächstes sinnvoll ist. Derselbe Selektor wie `test:affected` und der CI-Plan; führt selbst nichts aus.
-- `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` delegiert die langen Nachweise an Actions und wartet darauf. Kein Ersatz für `verify:all`.
+- `pnpm run agent:verify [--profile=quick|full|release] [--ci] [--dispatch-long] [--json]` — derselbe Impact-Plan, Gates über `runGates` mit Cache, ein Bericht unter `.verify-cache/reports/<Zeit>/agent-summary.json`. Bei Impact-Auswahl laufen nur betroffene Tests und der Bericht sagt `partial`; `--ci` markiert die langen Nachweise als an den PR-Plan delegiert, ohne einen main-Dispatch zu starten. `--dispatch-long` startet `long-checks.yml` ausdrücklich für einen manuellen Vollnachweis. Kein Ersatz für `verify:all`.
 - `pnpm run typecheck` — `tsc --noEmit`.
 - `pnpm run lint` / `lint:fix` — ESLint.
 - `pnpm run check:loc` — LOC guard (Budget und Hot Zone pro Zuständigkeit in `scripts/loc-budgets.mjs`; Legacy 350/200 nur für gelistete Dateien, keine neuen `// @loc-exception:`).
@@ -48,7 +48,7 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 - `pnpm run hooks:install` — aktiviert `.githooks` als `core.hooksPath` (`ERR-4018`). Der Pre-Commit-Hook schreibt Matrix, Katalog und Doku-Marker und prüft danach Doku und LOC. Inventur, Doku-Marker, Doku-Gate und LOC laufen auch ohne `node_modules`; nur Matrix und Testkatalog brauchen die Abhängigkeiten.
 - `pnpm run escalation:plan` — nennt zu einem Befund die Eskalationsstufe (`AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`); ohne Argument liest er die letzte Gate-Zusammenfassung.
 - `pnpm run pr:lift` — hebt den Commit-Body in den PR-Body; CI nutzt dasselbe Skript in `pr-escalation.yml`. Ohne `gh` gibt `node scripts/lift-commit-body.mjs --json` den Connector-Plan aus (`level`, `branch`, `base`, `title`, `bodyFile`, `body`); ein Agent mit GitHub-Connector legt damit den PR an oder aktualisiert den Body. Der Lauf bleibt gruen — Eskalation statt Fail-Closed.
-- `pnpm run ci:long` — startet `long-checks.yml` in GitHub Actions für Statistik, Soak, Balance und Benchmarks, wartet auf das Ergebnis und lädt den Balance-Bericht als Artefakt. Bevorzugt `gh`, sonst die REST-API mit `GH_TOKEN`; ein roter Lauf meldet `ERR-4016`.
+- `pnpm run ci:long` — startet `long-checks.yml` in GitHub Actions für Statistik, Soak, Balance und Benchmarks, wartet auf das Ergebnis und lädt den Balance-Bericht als Artefakt. Standard sind nur die langen Nachweise; `--verify` fordert zusätzlich `verify:all` ausdrücklich an, `--ref <branch>` wählt den Branch. Bevorzugt `gh`, sonst die REST-API mit `GH_TOKEN`; ein roter Lauf meldet `ERR-4016`.
 - `pnpm run branches:prune` — löscht lokal jeden nach `main` gemergten Branch außer `main` und dem aktuellen; offene, nicht gemergte Arbeit bleibt. `turn:finish` ruft das nach dem Push selbst auf, am Remote erledigt es `pr-cleanup.yml` nach jedem Merge; `--dry-run` zeigt die Kandidaten nur.
 - `pnpm run fix` — der einzige schreibende Modus: ESLint `--fix`, Dependency-Matrix und Testkatalog, danach dieselben Gates samt Protokoll jeder geänderten und gelöschten Datei. Idempotent: ein zweiter Lauf meldet „keine Änderung, Arbeitsbaum unverändert“.
 - `pnpm run verify:release` — Freigabelauf für APK und Versionssprung: identisch mit `verify:all`, erzwingt aber `pnpm audit` unabhängig von der Änderung; CI setzt zusätzlich `RBD_VERIFY_AUDIT=1`.
@@ -61,21 +61,23 @@ Vite + React 19 + TypeScript + PixiJS 8 life simulation. The casino is the start
 ### Die eine Testlinie
 
 Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien,
-`pnpm run test:affected` und `pnpm run verify:light`. Die schwere Suite
-(`pnpm run test`, `pnpm run test:ci`, `pnpm run verify:all`, Build und Audit)
-laeuft erst am Turn-Ende oder in GitHub Actions; `turn:finish` mit dem
-Light-Profil fuehrt sie nicht aus. `test:affected` ist gezieltes
+`pnpm run test:affected` und `pnpm run verify:light`. Der lokale Abschluss
+`pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump, führt die
+betroffenen schnellen Tests aus und nennt die langen Nachweise als offen; die
+schwere Suite (`pnpm run test`, `pnpm run test:ci`, `pnpm run verify:all`,
+Build und Audit) läuft am Turn-Ende in GitHub Actions. `--no-affected` ist nur
+für reine Doku- oder Governance-Turns gedacht. `test:affected` bleibt gezieltes
 Entwicklungsfeedback und kein Vollnachweis.
 
 ## Delivery
 
-- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt nur die Pfade des eigenen Claims plus Versionsdateien, läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
-- **Light ist der Normalfall.** `turn:finish` prueft Lint, LOC, Typecheck, Doku, Tree und Redundanz; Tests, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
+- After a turn: `pnpm run turn:finish` (ohne Argumente) stagt nur die Pfade des eigenen Claims plus Versionsdateien, führt **vor dem Versions-Bump** die betroffenen schnellen Tests aus, läuft **`verify:light`**, committet und pusht den Arbeitsbranch (Direktpush auf `main` ist gesperrt, siehe unten). Weil `verify` nur liest, laufen Reparaturen vorher separat über `pnpm run fix`. Pfade nur für einen bewusst verengten Commit: `pnpm run turn:finish -- <paths>`. Vor `verify` wird die Patch-Version gebumpt (`scripts/version-bump.mjs`), damit der Commit sie trägt; `.turn-notes.md` wird nach dem Commit gelöscht, und ein Titel, der HEAD wiederholt, bricht mit `ERR-4006` ab. Fehlt die Datei bei einer Codeänderung, bricht `turn:finish` ebenfalls ab, statt eine generische Vorlage zu committen; reine Doku-, Governance- und Versionsänderungen werden ehrlich als solche beschrieben.
+- **Light ist der Normalfall.** `turn:finish` prueft die betroffenen schnellen Tests sowie Lint, LOC, Typecheck, Doku, Tree und Redundanz; die schwere Suite, Build und Audit gehoeren nicht in jeden Turn. `--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` (oder `turn:finish:full`) ist die lokale Ausnahme fuer Geld-, Ledger-, RNG- und Save-Migrationscode, Abhaengigkeiten jenseits der Turn-Version und Releases (`verify:release`).
 - Der vollständige Beweis bleibt verpflichtend, nur nicht auf dem Rechner: jeder Push auf `main` läuft in CI durch `verify:all`; `Auto Version & Release` startet erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Quick verschiebt die Prüfung nach CI, er spart sie nicht ein.
 - Es gilt die eine Testlinie in `Build & test`; sie ersetzt jede frühere Einzelregel.
-- Optional vor dem Commit: `pnpm run turn:finish -- --affected` ruft zuerst `agent:context` (derselbe Impact-Plan, keine zweite Testausführung) und danach unverändert `verify:quick`; mit `turn:finish:full -- --affected` bleibt `verify:all` das volle Tor.
+- Der Testlauf ist nicht mehr optional: `turn:finish` führt vor dem Versions-Bump `test:affected` aus. `--affected` bleibt als ausdrücklicher Alias erhalten; `--no-affected` überspringt ihn nur für reine Doku- oder Governance-Turns. `--profile=quick|full` führen ihre Tests im Verify-Profil aus, damit derselbe Nachweis nicht zweimal läuft.
 - Direkter Push auf `main` ist durch den Branch-Schutz gesperrt. `turn:finish` pusht ausschliesslich den Arbeitsbranch und bricht auf `main` mit `ERR-4023` ab. `promote` legt aus einem gruenen Feature-Push den PR an; das volle Gate laeuft im PR und erst dieser Lauf wird gemergt. Der Merge-Commit wird von `verify-commit-msg --head` geprüft: exakte Sektionsüberschriften (`### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`); ASCII-Varianten schlagen fehl. Den PR-Body als Merge-Text zu verwenden erfüllt das. Beim Merge über Connector oder REST-API gehört der PR-Body deshalb in `commit_message`; ein reiner Klicktitel macht `verify-commit-msg --head` auf `main` rot (`ERR-4006`) und stoppt `Bump, tag, release` sowie den APK-Bau.
-- **Lokal vs. CI:** Lokal laufen `verify` (Quick) und `test:affected`. `verify:all` und `ci:long` laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können.
+- **Lokal vs. CI:** Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests. `verify:all` und die langen Nachweise laufen in CI (`ci-verify.yml`, `long-checks.yml`), auch wenn sie lokal manuell gestartet werden können. Der PR-Plan startet die vom Impact gewählten langen Testdateien als eigene Matrix auf dem exakten Kopf; `agent:verify --ci` startet keinen main-Dispatch mehr.
 - **Automatische Promotion:** `promote.yml` legt nach einem gruenen Feature-Push den PR an und mergt erst den gruenen PR-Lauf. Ein roter Lauf wird Issue und Label (`integration/rot`); `integration` wird nur auf ausdrueckliche Anforderung (`workflow_dispatch` mit `integrate=true`) benutzt, nie automatisch. Zwei parallele rote Staende werden dort gemergt, nicht verworfen; ein Textkonflikt bekommt `integration/konflikt` und bleibt beim Agenten — nur Marker- und Versionskonflikte loest `promote` selbst. Der Merge-Text ist der vorhandene PR-Body plus ein abgegrenzter Automationsbereich aus dem vollstaendigen Diff (`scripts/lib/body-sync.mjs`); fehlende Pflichtsektionen werden nur dort ergaenzt, vorhandene Beschreibungen nie ersetzt, sonst waere `main` sofort rot. Verified-Badge nur mit `RBD_PROMOTE_AUTO_MERGE=1` und GitHub-seitigem Merge. Ein Merge mit `GITHUB_TOKEN` startet keinen Workflow: `promote` nutzt `PROMOTE_TOKEN`, wenn gesetzt, und stoesst sonst `Auto Version & Release` an — ohne diesen Anstoss gibt es weder CI auf `main` noch Tag und APK. `integration` ist geschuetzt und wird von `pr-cleanup` und `branches:prune` nicht geloescht. Seit 0.3.164 laedt `promote` den Kopf exakt per SHA, prueft Herkunfts-Repository, PR-Ziel und Kopf gegen `workflow_run.head_sha` (`scripts/lib/promote-guard.mjs`) und mergt mit `--match-head-commit`; ein manueller Dispatch kennt nur `inspect` oder `integrate` und setzt kein `success` voraus.
 - **Identitaet:** Jeder Commit traegt `Vannon <Schneider.felix1993@gmail.com>` aus `scripts/lib/identity.mjs`; `turn:finish` und `promote.yml` setzen sie selbst, `.mailmap` fuehrt die Werkzeug-Namen der History zusammen. Kein Runner und keine Sandbox aendert den Committer.
 
@@ -199,7 +201,8 @@ diese Punkte:
 | Claim gegen Selbsterweiterung | `verify-lane-claims --ci` vergleicht mit Basis und erster Registrierung im PR; neue Pfade, Owner, Branches oder Writer werden abgelehnt |
 | Kein globales Staging | `turn-push.mjs` setzt nur Claim-Pfade plus Versionsdateien in den Index |
 | Arbeit nur im eigenen Worktree | `pretask.mjs` blockt geteilte Baeume mit `ERR-4019`, sobald ein fremder Claim offen ist oder `--require-worktree` gesetzt wird; `--json` liefert den Grund maschinenlesbar |
-| Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
+| Issue-Check und Arbeitsbrief | `pretask.mjs` ruft `gh issue list` auf, zeigt den Impact-Kontext und blockt einen fehlenden Claim mit `ERR-4019` |
+| Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
 
 Eine fehlende Zeile in der rechten Spalte ist kein Freischein: sie ist der
 naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.

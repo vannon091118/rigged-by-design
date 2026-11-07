@@ -39,7 +39,7 @@ if (long.length > 0) {
   );
   console.log(`affected: ${long.length} lange Nachweis(e) NICHT lokal ausgefuehrt - Nachweis offen`);
   for (const test of long) console.log(`  ${test} [${proofClassOf(test)}]`);
-  console.log('affected: Delegation ausfuehren mit `pnpm run ci:long` (startet Actions und wartet auf das Ergebnis)');
+  console.log('affected: der CI-Plan fuehrt sie auf dem PR-Commit aus; manuell: `pnpm run ci:long` (startet Actions und wartet)');
 }
 if (argv.includes('--list')) process.exit(0);
 if (tests.length === 0) {

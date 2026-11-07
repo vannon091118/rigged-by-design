@@ -20,10 +20,13 @@ const arg = (name, fallback) => {
 };
 
 const inputs = {
-  verify: !argv.includes('--no-verify'),
+  // Lange Nachweise sind der Zweck dieses Laufs. Ein vollständiges verify:all
+  // ist die Ausnahme und muss ausdrücklich mit --verify angefordert werden.
+  verify: argv.includes('--verify') && !argv.includes('--no-verify'),
   soak_ticks: arg('soak-ticks', process.env.RBD_SOAK_TICKS ?? '100000'),
   balance_days: arg('balance-days', process.env.RBD_DAYS ?? '40'),
 };
+const ref = arg('ref', 'main');
 const timeoutMs = Number(arg('timeout-minutes', '90')) * 60_000;
 const startedAt = Date.now();
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
@@ -87,9 +90,9 @@ async function ghPath() {
     fail(1, 'ERR-4016', 'ci-long', 'kein GitHub-Remote gefunden; gh kann den Lauf nicht adressieren');
     process.exit(1);
   }
-  const args = ['workflow', 'run', WORKFLOW, '--ref', 'main'];
+  const args = ['workflow', 'run', WORKFLOW, '--ref', ref];
   for (const [key, value] of Object.entries(inputs)) args.push('-f', `${key}=${value}`);
-  console.log(`ci-long: starte ${slug} ${WORKFLOW} (${JSON.stringify(inputs)})`);
+  console.log(`ci-long: starte ${slug} ${WORKFLOW} auf ${ref} (${JSON.stringify(inputs)})`);
   execFileSync('gh', args, { cwd: ROOT, stdio: 'inherit' });
 
   const run = await waitForRun(() => {
@@ -130,9 +133,9 @@ async function restPath() {
   }
   await api(`/repos/${slug}/actions/workflows/${WORKFLOW}/dispatches`, auth, {
     method: 'POST',
-    body: JSON.stringify({ ref: 'main', inputs }),
+    body: JSON.stringify({ ref, inputs }),
   });
-  console.log(`ci-long: ${slug} ${WORKFLOW} gestartet (${JSON.stringify(inputs)})`);
+  console.log(`ci-long: ${slug} ${WORKFLOW} auf ${ref} gestartet (${JSON.stringify(inputs)})`);
 
   const run = await waitForRun(async () => {
     const list = await api(`/repos/${slug}/actions/workflows/${WORKFLOW}/runs?event=workflow_dispatch&per_page=10`, auth);

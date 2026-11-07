@@ -44,9 +44,10 @@ if (currentBranch === TARGET_BRANCH) {
   fail(1, 'ERR-4023', 'turn:finish', 'main ist PR-Ziel; auf einer Lane arbeiten (git switch -c lane/<domäne>/<task>)');
   process.exit(1);
 }
-const AFFECTED = args.includes('--affected');
+const EXPLICIT_AFFECTED = args.includes('--affected');
+const SKIP_AFFECTED = args.includes('--no-affected') || PROFILE !== 'light';
 const paths = args.filter((value) => !value.startsWith('--'));
-console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + test:affected' : ''}`);
+console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${SKIP_AFFECTED ? '' : ' + betroffene schnelle Tests'}`);
 
 /** Geaenderte Pfade; bei einem Rename beide Seiten. */
 const changedPaths = () =>
@@ -116,15 +117,32 @@ if (paths.length === 0 && schmutz) {
 // Entwicklungsstufe vor dem Versions-Bump: Ein Bump aendert package.json und
 // wuerde die Auswahl auf alle Tests ausweiten. Der volle Verify-Lauf folgt
 // trotzdem unveraendert; affected verkuerzt full/release nicht.
-// Der Impact ersetzt die doppelte Testausfuehrung: `verify:quick` startet die
-// Suite ohnehin, ein zweiter Lauf derselben Auswahl bringt keinen Nachweis.
-// `--affected` liefert jetzt den Kontext (ein Plan), nicht einen Testlauf.
-if (AFFECTED) {
-  console.log('turn:finish: Entwicklungsstufe agent:context (ein Plan, keine zweite Testausfuehrung)');
-  const context = npmRun(['run', 'agent:context']);
-  if (context.status !== 0) {
-    fail(1, 'ERR-4024', 'turn:finish', 'agent:context ist rot; kein Commit und kein Push');
+// Der lokale Abschluss führt die betroffenen schnellen Tests aus, BEVOR die
+// Version gebumpt wird. Danach würde package.json als geänderte Konfiguration
+// gelten und die Auswahl auf die ganze Suite ausweiten. quick/full führen ihre
+// Tests ohnehin im Verify-Profil aus; dort wäre ein zweiter Lauf Doppelarbeit.
+if (EXPLICIT_AFFECTED) {
+  console.log('turn:finish: --affected ist jetzt das Standardverhalten; --no-affected überspringt es');
+}
+if (!SKIP_AFFECTED) {
+  console.log('turn:finish: betroffene schnelle Tests vor dem Versions-Bump');
+  // Eine alte Delegationsliste darf einen Turn ohne lange Nachweise nicht
+  // faelschlich als "offen" melden.
+  rmSync(resolve(ROOT, '.verify-cache', 'delegated.json'), { force: true });
+  const affected = npmRun(['run', 'test:affected']);
+  if (affected.status !== 0) {
+    fail(1, 'ERR-4026', 'turn:finish', 'betroffene Tests sind rot; kein Commit und kein Push');
     process.exit(1);
+  }
+  let delegated = [];
+  try {
+    delegated = JSON.parse(readFileSync(resolve(ROOT, '.verify-cache', 'delegated.json'), 'utf8')).tests ?? [];
+  } catch {
+    // Keine lange Auswahl ist ein gültiger Zustand.
+  }
+  if (delegated.length > 0) {
+    console.log(`turn:finish: ${delegated.length} lange Nachweis(e) offen; CI führt sie auf dem PR-Commit aus`);
+    for (const test of delegated) console.log(`  offen: ${test}`);
   }
 }
 // Die Version gehoert in den Commit, nicht in einen Nachlauf: so bleibt main nach dem Push stehen.

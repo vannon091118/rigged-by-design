@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:47 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.175] - 2026-11-07
+
+### Technik
+- **Der lokale Abschluss prueft jetzt wirklich.** `turn:finish` ermittelt den Impact vor dem Versions-Bump und fuehrt die betroffenen schnellen Tests aus; `--no-affected` bleibt nur fuer reine Doku- und Governance-Turns. `--profile=quick|full` fuehren ihre Tests weiterhin im Verify-Profil aus, damit derselbe Nachweis nicht doppelt laeuft.
+- **Lange Nachweise sind Teil des CI-Plans.** `ci-plan.mjs` exportiert die vom Diff gewaehlten Statistik-/Mess-Testdateien, `ci-verify.yml` startet sie als eigene Matrix auf dem exakten PR-Kopf, und der Pflichtstatus fuehrt den Long-Job mit. `narrative-longrun` deklariert seine Beweisklasse jetzt selbst als `statistics`, statt als schneller Vertragstest zu gelten.
+- **Main und Wochenlauf.** Runtime- und Testaenderungen auf `main` erzwingen die vollstaendige Suite, waehrend die Gate-Auswahl impact-basiert bleibt; `long-checks.yml` laeuft zusaetzlich woechentlich. `ci:long` startet standardmaessig nur die langen Nachweise, `agent:verify --ci` startet keinen main-Dispatch mehr.
+- **Pretask als Arbeitsbrief.** `agent:pretask` ruft den Issue-Check selbst auf, zeigt den Impact-Kontext und blockt einen fehlenden Lane-Claim vor dem ersten Edit.
+- Tests: 28/28 in `ci-plan.test.ts` (5), `test-catalog.test.ts` (5), `affected-tests.test.ts` (8), `ci-gates.test.ts` (6) und `workflow-hardening.test.ts` (4); `pnpm run typecheck` gruen.
 
 ## [0.3.174] - 2026-11-07
 

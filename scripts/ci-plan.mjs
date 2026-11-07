@@ -33,10 +33,11 @@ const base = arg('base') ?? '';
 const head = arg('head') ?? '';
 const profile = arg('profile') ?? 'full';
 const impact = ['1', 'true'].includes(String(arg('impact') ?? '').toLowerCase());
+const fullTests = ['1', 'true'].includes(String(arg('full-tests') ?? '').toLowerCase());
 const outputFile = arg('github-output');
 const reportPath = resolve(ROOT, process.env.CI_PLAN_PATH ?? '.verify-cache/ci-plan.json');
 
-const result = planForCI({ base, head, profile, impact });
+const result = planForCI({ base, head, profile, impact, fullTests });
 // Ohne Diff bleibt es beim Profil des Laufs, nie bei einem einzelnen Gate.
 const fallback = planGates(profile) ?? planGates('full');
 const plan = result?.plan ?? {
@@ -52,6 +53,10 @@ const plan = result?.plan ?? {
 
 const matrix = JSON.stringify({ include: plan.gates });
 const testFiles = plan.tests.runAll ? '' : plan.tests.files.join(',');
+const longFiles = plan.tests.long ?? [];
+// Ein leerer `include`-Block ist fuer GitHub keine gueltige Matrix. Der
+// Sentinel haelt den Ausdruck parsebar; der Job selbst bleibt per `if` aus.
+const longMatrix = JSON.stringify({ include: (longFiles.length > 0 ? longFiles : ['']).map((file) => ({ file })) });
 const report = planReport(result?.changed ?? [], plan);
 
 if (plan.gates.length === 0) {
@@ -69,6 +74,7 @@ const lines = [
   `| Geaenderte Dateien | ${result?.changed.length ?? 0} |`,
   `| Gates (required) | ${plan.gateKeys.join(', ')} |`,
   `| Tests | ${plan.tests.runAll ? 'vollstaendig' : `${plan.tests.files.length} ausgewaehlt`} (${plan.tests.reason}) |`,
+  `| Lange Nachweise | ${longFiles.length > 0 ? longFiles.join(', ') : 'keine'} |`,
   `| Shards | ${plan.tests.shards.length || 1} |`,
   `| Advisory | ${plan.advisory.join(', ') || 'keine'} |`,
 ];
@@ -87,6 +93,9 @@ if (outputFile) {
   appendFileSync(outputFile, `matrix=${matrix}\n`);
   appendFileSync(outputFile, `test_files=${testFiles}\n`);
   appendFileSync(outputFile, `tests_json=${JSON.stringify(plan.tests)}\n`);
+  appendFileSync(outputFile, `long_count=${longFiles.length}\n`);
+  appendFileSync(outputFile, `long_matrix=${longMatrix}\n`);
+  appendFileSync(outputFile, `long_tests=${longFiles.join(',')}\n`);
   appendFileSync(outputFile, `plan_reason=${plan.reason}\n`);
 }
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
