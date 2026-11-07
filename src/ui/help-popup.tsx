@@ -17,14 +17,17 @@ const GUEST_STATS: readonly { name: string; text: string }[] = [
 
 export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
   return (
-    <PopupShell eyebrow="KURZ ERKLÄRT" title="So funktioniert dein Casino" onClose={onClose} wide>
+    <PopupShell eyebrow="DEIN ALLTAG" title="So funktioniert dein Haus" onClose={onClose} wide>
       <div className="help-grid">
         <section className="help-card">
-          <h3>Deine Rolle</h3>
+          <h3>Dein Anfang</h3>
           <p>
-            Du bist die Bank. Gäste wechseln Bargeld in Chips, spielen und verlieren im Schnitt.
-            Deine Aufgabe: Angebot bauen, Gäste halten, Gewinne auszahlen – und dabei zahlungsfähig bleiben.
-            Der Hausvorteil ist dein Einkommen, kein Unfall.
+            Du erbst ein kleines Haus, 150 VC und einen Gratis-Automaten. Rita und zwei weitere Menschen
+            stehen schon vor der Tür. Du entscheidest, was heute Abend läuft: Geräte, Bar, Personal, Preise.
+          </p>
+          <p>
+            Das Haus ist kein Geldautomat. Jeden Abend gehen Löhne, Reparaturen und Getränke ab; was übrig
+            bleibt, finanziert den nächsten. Achte auf die Menschen, nicht nur auf die Kasse.
           </p>
         </section>
 
@@ -84,13 +87,13 @@ export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
         </section>
 
         <section className="help-card">
-          <h3>Der erste Tag</h3>
+          <h3>Dein erster Abend</h3>
           <ol className="help-steps">
-            <li><b>Bauen</b> öffnen und ein Spiel kaufen. Die Ware kommt als Kiste am Eingang an.</li>
-            <li>Kiste <b>abholen</b>, tragen und auf eine freie Fläche klicken. Erst dann ist das Gerät spielbar.</li>
+            <li><b>Ankommen</b>: Rita und die anderen sind schon da. Der erste Automat steht gratis; öffne <b>BETRIEB</b> für alles Weitere.</li>
+            <li>Weitere Geräte kaufen: Die Ware kommt als Kiste am Eingang an. Kiste anklicken, dann auf eine freie Fläche klicken. Erst dann ist das Gerät spielbar.</li>
             <li>Gäste kommen nach Nachfrage, wechseln an der Kasse und setzen Chips. Dein Hauskonto wächst.</li>
             <li><b>Offene Gewinne</b> im Gäste-Fenster auszahlen – sonst kommt der Gast nicht weiter.</li>
-            <li>Mit dem Gewinn Bar, Ersatzteile und Personal finanzieren. Personal arbeitet, während du weg bist.</li>
+            <li>Mit dem Überschuss Bar, Ersatzteile und Personal finanzieren. Personal arbeitet, während du weg bist.</li>
           </ol>
           <p className="hint">{HELP.tick}</p>
         </section>

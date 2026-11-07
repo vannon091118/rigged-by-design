@@ -50,7 +50,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
   const broken = machines.filter((item) => item.damaged || item.condition < 85 || item.clogged).length;
   const occupied = machines.reduce((sum, item) => sum + item.occupants.length, 0);
   const waiting = view.guests.filter((entry) => (view.guestMoney[entry.id]?.pending ?? 0) > 0).length;
-  const startTip = view.house === 0 && view.guests.length === 0;
+  const startTip = view.day === 1 && view.guests.length === 0;
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
   return (
@@ -152,7 +152,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
 
       {!guest && startTip && (
         <p className="hud-tip">
-          0 VC. Dein Automat steht gratis – Gäste wechseln an der Kasse und spielen. Alles Weitere liegt im Dock.
+          Der Abend beginnt. Öffne BETRIEB für dein Angebot – Gäste kommen, sobald das Haus sie anzieht.
         </p>
       )}
     </header>
