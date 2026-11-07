@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
+<!-- rbd-doc: v0.3.157 | 2026-11-07 08:53 UTC -->
 
 ## README als Einstieg
 
@@ -22,6 +22,7 @@
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
 - Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
+- `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
 ## Zustandsbesitz
 
@@ -267,9 +268,11 @@ Gruen legt den PR an und mergt ihn, rot legt den Stand auf die permanente
 Branch `integration`. Der Zustand liegt im Branch und im Label
 (`integration/rot`, `integration/konflikt`), nie in der Warteschlange — GitHub
 haelt pro Concurrency-Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder
-Lauf den gesamten Rueckstand ab und ist idempotent. `scripts/promote.mjs` baut
-den Commit-Text selbst, damit die Pflichtsektionen auch nach einem
-`squash`-Merge stehen. Ein Merge mit dem Workflow-Token startet keinen Workflow: der Pfad stoesst deshalb
+Lauf den gesamten Rueckstand ab und ist idempotent. `scripts/promote.mjs`
+verwendet den vorhandenen PR-Body als Merge-Text und ergaenzt fehlende
+Pflichtsektionen ausschliesslich im markierten Automationsbereich, damit die
+Sektionen auch nach einem `squash`-Merge stehen und keine gepflegte
+Beschreibung verloren geht. Ein Merge mit dem Workflow-Token startet keinen Workflow: der Pfad stoesst deshalb
 den Release-Lauf an oder nutzt `PROMOTE_TOKEN`. `integration` ist geschuetzt,
 weil der Rueckweg nach `main` die Branch sonst mitnimmt. Einzige Identitaetsquelle ist
 `scripts/lib/identity.mjs`; `.mailmap` fuehrt die History-Anzeige zusammen.

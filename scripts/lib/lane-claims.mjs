@@ -34,6 +34,28 @@ export const OWNERS = Object.freeze([
   'Monitor',
 ]);
 
+/**
+ * Die acht Meta-Dateien. Feature-Lanes duerfen sie nicht inhaltlich schreiben;
+ * der mechanische Pfad (Doku-Marker, Versionszeile) bleibt erlaubt. Dieselbe
+ * Liste fuehrt `verify-lane-claims.mjs` und `turn-push.mjs` filtert damit den
+ * Index, damit ein globales `git add -A` keine Meta-Datei mitschleppt.
+ */
+export const META_FILES = Object.freeze([
+  'AGENTS.md',
+  'docs/INVENTORY.md',
+  'docs/ARCHITECTURE.md',
+  'docs/CHANGELOG.md',
+  'docs/DEVTAGEBUCH.md',
+  'docs/ROADMAP.md',
+  'package.json',
+  'pnpm-lock.yaml',
+]);
+
+/** True, wenn der Pfad zu den gesperrten Meta-Dateien gehoert. */
+export function isForbiddenForLanes(filePath) {
+  return META_FILES.includes(String(filePath ?? '').replaceAll('\\', '/'));
+}
+
 /** Branch-Schema fuer Arbeitslanes; Legacy-Prefixe bleiben erlaubt. */
 export const BRANCH_PATTERN = /^lane\/[a-z0-9-]+\/[a-z0-9-]+$/;
 export const LEGACY_PREFIXES = Object.freeze(['gov/', 'hygiene/', 'fix/']);
