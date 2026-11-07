@@ -3,7 +3,7 @@ import type { Ledger } from '../../../economy/ledger';
 import type { VaCoinMicro } from '../../../economy/vacoin';
 import { EXTERNAL, HAUSKONTO } from '../../money';
 import type { WorldState } from '../../types';
-import { freezeEvent, transitionEvent } from '../event-lifecycle';
+import { advanceEventStep, freezeEvent, transitionEvent } from '../event-lifecycle';
 import type { ChoiceActor, EventTemplate } from '../events/template-types';
 import { emitCommandRejected, emitFact } from '../facts';
 import { RIVAL_AI_LIMITS } from '../../rival-ai/types';
@@ -98,6 +98,14 @@ export function executeChoice(
       commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aktivierung fehlgeschlagen.',
     }]);
   }
+  // Ein Beat-Wechsel ist noch keine Aufloesung: die Instanz bleibt live und
+  // behaelt ihre Frist, nur der Schritt wandert. Der Rollback deckt ihn mit ab.
+  const nextStep = choice.nextStep ?? null;
+  if (nextStep !== null && !advanceEventStep(world, event.id, nextStep, world.tick)) {
+    return rollback([{
+      commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Schrittwechsel fehlgeschlagen.',
+    }]);
+  }
   for (const command of commands) applyCommand(world, event.id, command);
   if (cost > 0) {
     try {
@@ -107,6 +115,10 @@ export function executeChoice(
         commandId: choiceId, reason: 'INSUFFICIENT_FUNDS', detail: 'Kosten sind nicht gedeckt.',
       }]);
     }
+  }
+  if (nextStep !== null) {
+    const advanced = world.narrative.events.find((entry) => entry.id === event.id) ?? null;
+    return { ok: true, event: advanced, commands, cost, rejections: [] };
   }
   if (!transitionEvent(world, event.id, 'RESOLVED', world.tick, choice.outcomeId)) {
     if (cost > 0) {
