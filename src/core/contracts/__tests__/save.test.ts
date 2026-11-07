@@ -78,7 +78,7 @@ describe('Contract: save v1.0', () => {
     const v: SaveVersion = 1;
     const id: SaveId = 'save_type';
     const env: SaveEnvelope = { version: v, id, timestamp: 0, data: {} };
-    expect(env).toBeDefined();
+    expect(validateSaveEnvelope(env)).toBe(true);
     expect(env.version).toBe(v);
     expect(env.id).toBe(id);
   });
