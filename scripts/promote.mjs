@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /**
- * Promote: gruene Staende mergen, rote Staende auf die permanente
- * Integrationsbranch legen.
+ * Promote: gruene PR-Staende mergen. Rot wird ein Issue, kein Dump auf
+ * `integration`; Timeout und Abbruch sind REMOTE_CI und kein roter Stand.
  *
  * Ein Lauf pro CI-Ergebnis. Die Wahrheit liegt im Branch und in Labels, nie in
  * der Warteschlange: GitHub haelt pro Concurrency-Gruppe nur einen wartenden
- * Lauf, ein einzelner Lauf arbeitet deshalb den ganzen Rueckstand ab. Zwei
- * parallele rote Staende werden komponiert (git merge), nie verworfen; ein
- * Textkonflikt wird gelabelt und bleibt beim Agenten.
+ * Lauf, ein einzelner Lauf arbeitet deshalb den ganzen Rueckstand ab.
+ *
+ * `integration` ist der letzte Notausgang: sie laeuft nur, wenn ein Mensch sie
+ * ueber `workflow_dispatch` mit `integrate=true` anfordert.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { IDENTITY } from './lib/identity.mjs';
@@ -26,6 +27,10 @@ const event = process.env.EVENT ?? '';
 // Ein Merge mit dem Workflow-Token startet keinen Workflow; das eigene Token
 // ist die Stufe, die CI, Tag und APK wieder in Gang setzt.
 const elevated = Boolean(process.env.PROMOTE_TOKEN);
+// Notausgang nur auf Anforderung, nie automatisch bei jedem roten Lauf.
+const integrateRequested = ['1', 'true'].includes(String(process.env.INTEGRATE ?? '').toLowerCase());
+// Timeout, Abbruch und Startfehler sind REMOTE_CI: CI erneut starten, nicht integrieren.
+const REMOTE_CONCLUSIONS = new Set(['timed_out', 'cancelled', 'startup_failure']);
 
 const run = (command, args) => {
   try {
@@ -109,17 +114,69 @@ function mergeGreen(number) {
   return merged;
 }
 
-/** Alle offenen Staende, die als rot markiert sind - plus der aktuelle Lauf. */
+/** Offene Staende, die als rot markiert sind - plus der aktuelle Lauf. */
 function redBranches() {
   const raw = gh(['pr', 'list', '--label', RED_LABEL, '--state', 'open', '--json', 'headRefName', '--jq', '.[].headRefName']) ?? '';
   const fromLabel = raw.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   return [...new Set([...fromLabel, branch])].filter((name) => name && name !== MAIN);
 }
 
-/** Rot: Stand auf die Integrationsbranch legen; ein Konflikt wird nicht erzwungen. */
+/** Die acht Meta-Dateien: hier sind Konflikte meist nur Marker und Version. */
+const META_FILES = Object.freeze([
+  'AGENTS.md',
+  'docs/INVENTORY.md',
+  'docs/ARCHITECTURE.md',
+  'docs/CHANGELOG.md',
+  'docs/DEVTAGEBUCH.md',
+  'docs/ROADMAP.md',
+  'package.json',
+  'pnpm-lock.yaml',
+]);
+
+/** Eine Zeile, die das System schreibt, nicht ein Mensch. */
+const SYSTEM_LINE = /^(?:<!--\s*rbd-doc:.*-->|"version":\s*".*",?)$/;
+
+const conflicted = () => (git(['diff', '--name-only', '--diff-filter=U']) ?? '').split(/\r?\n/).filter(Boolean);
+
+/**
+ * Meta-Konflikte nur dann automatisch loesen, wenn jede Konfliktzeile eine
+ * Systemzeile ist (Doku-Marker oder Versionsnummer). Ein inhaltlicher Konflikt
+ * in derselben Datei bleibt beim Agenten - sonst wuerde still Inhalt verloren.
+ */
+function resolveMetaConflicts() {
+  for (const file of conflicted()) {
+    if (!META_FILES.includes(file)) continue;
+    let text;
+    try {
+      text = readFileSync(file, 'utf8');
+    } catch {
+      continue;
+    }
+    const blocks = [...text.matchAll(/^<{7}.*\n([\s\S]*?)^={7}.*\n([\s\S]*?)^>{7}.*$/gm)];
+    if (blocks.length === 0) continue;
+    const mechanical = blocks.every(([, ours, theirs]) =>
+      [...ours.split('\n'), ...theirs.split('\n')]
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .every((line) => SYSTEM_LINE.test(line)),
+    );
+    if (!mechanical) continue;
+    if (git(['checkout', '--ours', '--', file]) === null) continue;
+    git(['add', '--', file]);
+    log(`Meta-Konflikt in ${file} automatisch geloest (Marker/Version)`);
+  }
+  return conflicted();
+}
+
+/** Rot: Stand auf die Integrationsbranch legen; ein Code-Konflikt wird nicht erzwungen. */
 function integrate(name, attempt = 0) {
   const number = openPr(name);
-  const merged = git(['merge', '--no-ff', `origin/${name}`, '-m', `Integration: ${subject(`origin/${name}`)}`]);
+  let merged = git(['merge', '--no-ff', `origin/${name}`, '-m', `Integration: ${subject(`origin/${name}`)}`]);
+  if (merged === null) {
+    // Erst der mechanische Teil (Marker/Version), dann erst aufgeben.
+    const remaining = resolveMetaConflicts();
+    if (remaining.length === 0) merged = git(['commit', '--no-edit']);
+  }
   if (merged === null) {
     git(['merge', '--abort']);
     label(number, CONFLICT_LABEL, 'Textkonflikt mit der Integrationsbranch');
@@ -148,22 +205,42 @@ function promoteRed() {
   git(['config', 'user.name', IDENTITY.name]);
   git(['config', 'user.email', IDENTITY.email]);
   for (const name of redBranches()) {
-    git(['fetch', 'origin', `+refs/heads/${name}:refs/remotes/origin/${name}`]);
+    git(['fetch', `+refs/heads/${name}:refs/remotes/origin/${name}`]);
     integrate(name);
   }
 }
 
-if (event && event !== 'push') {
-  log(`Ereignis ${event}: nur Push-Laeufe promoten`);
+if (event === 'push' && branch && branch !== MAIN) {
+  log(`Feature-Push ${branch}: leichtes Gate, kein Merge - erst der PR gegen ${MAIN} entscheidet`);
 } else if (!branch || branch === MAIN) {
   log('main wird nicht promotet');
 } else if (conclusion === 'success') {
-  const number = ensurePr();
-  if (!number) warn(`kein PR fuer ${branch}; Merge uebersprungen`);
-  else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (Pflichtstatus noch nicht gruen?)`);
-} else if (['failure', 'timed_out', 'startup_failure'].includes(conclusion)) {
-  label(openPr(), RED_LABEL, 'Roter Stand, liegt auf der Integrationsbranch');
-  promoteRed();
+  if (event === 'push' && branch !== MAIN) {
+    // Gruener Feature-Push: PR anlegen, nicht mergen. Der PR-Lauf ist das volle
+    // Gate; erst danach entscheidet der naechste Promote-Lauf ueber den Merge.
+    const number = ensurePr();
+    if (number) log(`PR #${number} fuer ${branch} angelegt; das volle Gate laeuft im PR`);
+    else warn(`kein PR fuer ${branch}; Promote im PR-Lauf pruefen`);
+  } else {
+    const number = ensurePr();
+    if (!number) warn(`kein PR fuer ${branch}; Merge uebersprungen`);
+    else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (Pflichtstatus noch nicht gruen?)`);
+  }
+} else if (REMOTE_CONCLUSIONS.has(conclusion)) {
+  const number = openPr();
+  if (number) {
+    label(number, 'ci/remote', 'Timeout oder Abbruch: CI erneut starten (REMOTE_CI)');
+    gh(['pr', 'comment', number, '--body', `Der Lauf endete mit \`${conclusion}\`. Das ist REMOTE_CI (ERR-4014/ERR-4016): CI erneut starten. Kein \`BLOCKED\`, kein Dump auf \`${INTEGRATION}\`.`]);
+  }
+  log(`REMOTE_CI: ${conclusion} - kein roter Stand, kein Integrations-Dump`);
+} else if (conclusion === 'failure') {
+  const number = openPr();
+  if (number) label(number, RED_LABEL, 'Roter Stand: Issue und Label, Integration nur auf Anforderung');
+  if (integrateRequested) {
+    promoteRed();
+  } else {
+    log('rot: Issue und Label gesetzt; `integration` nur auf Anforderung (Dispatch mit integrate=true)');
+  }
 } else {
   log(`Ergebnis ${conclusion || 'unbekannt'}: nichts zu tun`);
 }

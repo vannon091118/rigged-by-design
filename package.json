@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.152",
+  "version": "0.3.154",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -15,6 +15,8 @@
     "test:ci": "node scripts/run-selected-tests.mjs",
     "test:affected": "node scripts/test-affected.mjs",
     "agent:context": "node scripts/agent-context.mjs",
+    "agent:pretask": "node scripts/pretask.mjs",
+    "verify:claims": "node scripts/verify-lane-claims.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",
     "narrative:check": "node scripts/verify-narrative-content.mjs",
@@ -41,6 +43,7 @@
     "verify": "node scripts/run-pipeline.mjs --profile=quick",
     "verify:all": "node scripts/run-pipeline.mjs --profile=full",
     "verify:quick": "node scripts/run-pipeline.mjs --profile=quick",
+    "verify:light": "node scripts/run-pipeline.mjs --profile=light",
     "verify:release": "node scripts/run-pipeline.mjs --profile=release",
     "fix": "node scripts/run-pipeline.mjs --fix --profile=quick",
     "fix:all": "node scripts/run-pipeline.mjs --fix --profile=full",

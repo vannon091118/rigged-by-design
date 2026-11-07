@@ -7,7 +7,18 @@
  * als roten Befund, statt sie vorher wegzuschreiben.
  */
 
-export const PROFILES = Object.freeze(['quick', 'full', 'release']);
+export const PROFILES = Object.freeze(['light', 'quick', 'full', 'release']);
+
+/**
+ * `verify:all` heisst fuer Menschen "alles", als Profil heisst es `full`. Der
+ * Alias steht genau einmal hier: CI, Matrix und Pipeline lesen denselben Namen,
+ * statt je eigene Schreibweisen zu erfinden.
+ */
+export const PROFILE_ALIASES = Object.freeze({ all: 'full' });
+
+export function normalizeProfile(value) {
+  return PROFILE_ALIASES[value] ?? value;
+}
 const MINUTE = 60_000;
 
 /** Jede Stufe ist rein lesend: pruefen, nicht reparieren. */
@@ -58,15 +69,22 @@ export const GATES = Object.freeze({
     timeoutMs: MINUTE,
   },
   assets: { name: 'assets', command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
-  capabilities: { name: 'capabilities', command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4022', cache: true, timeoutMs: MINUTE },
+  capabilities: { name: 'capabilities', command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', cache: true, timeoutMs: MINUTE },
   audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
-  tests: { name: 'tests', command: 'pnpm', script: 'test:ci', code: 'ERR-2001', cache: true, timeoutMs: 15 * MINUTE },
+  // Ein roter Test ist ein Befund, kein Notfall: ERR-4026 steht auf AGENT und
+  // wird als Issue abgeholt. Nur Geld-, Ledger-, RNG- und Save-Invarianten
+  // bleiben BLOCKED (ERR-1001/1002/1003/5001).
+  tests: { name: 'tests', command: 'pnpm', script: 'test:ci', code: 'ERR-4026', cache: true, timeoutMs: 15 * MINUTE },
   build: { name: 'build', command: 'pnpm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
+// Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
+// gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy'];
 const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'docs', 'tree', 'redundancy', 'assets', 'capabilities', 'tests'];
 
 export const PROFILE_GATES = Object.freeze({
+  light: Object.freeze(LIGHT),
   quick: Object.freeze(QUICK),
   // Voll und Release pruefen identisch; nur `verify:release` erzwingt pnpm audit zusaetzlich per Env.
   full: Object.freeze([...QUICK, 'audit', 'build']),
@@ -74,13 +92,14 @@ export const PROFILE_GATES = Object.freeze({
 });
 
 export function isProfile(value) {
-  return PROFILES.includes(value);
+  return PROFILES.includes(normalizeProfile(value));
 }
 
 /** Der Gate-Plan eines Profils; `null` fuer ein unbekanntes Profil. */
 export function planGates(profile) {
-  if (!isProfile(profile)) return null;
-  return [...PROFILE_GATES[profile]];
+  const key = normalizeProfile(profile);
+  if (!PROFILES.includes(key)) return null;
+  return [...PROFILE_GATES[key]];
 }
 
 /** `--fix` ist der einzige Schalter, der den Arbeitsbaum schreiben darf. */

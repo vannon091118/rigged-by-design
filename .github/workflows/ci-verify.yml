@@ -1,9 +1,14 @@
 name: CI Verify
 
-# Ebene A des Main-Gates: jeder Push (auch auf `main`), jeder PR gegen `main`
-# und jeder manuelle Lauf gehen durch dieselben Fail-Closed-Gates. Der
-# Job-Name "Fail-Closed Gates" ist der Pflichtstatus, den das Ruleset aus
-# docs/CI-GATES.md verlangt.
+# Ebene A des Main-Gates. "Fail-Closed Gates" ist der Pflichtstatus aus dem
+# Branch-Schutz von `main`; er bleibt ein Aggregat, waehrend jedes Gate in der
+# Matrix einen eigenen Status traegt. Ein roter Lauf nennt damit das Gate, das
+# rot ist, statt "irgendetwas in verify:all".
+#
+# Zwei Geschwindigkeiten: ein Feature-Push bekommt das leichte Gate (schnelles
+# Feedback, damit parallele Arbeit nicht wartet), PR gegen `main`, Push auf
+# `main` und manuelle Laeufe bekommen das volle Profil - aufgeteilt auf
+# unabhaengige Jobs, nicht als ein Monolith.
 on:
   pull_request:
     branches: [main]
@@ -14,31 +19,98 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ci-verify-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Fail-Closed Gates
+  plan:
+    name: Plan
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 10
+    outputs:
+      profile: ${{ steps.profile.outputs.name }}
+      matrix: ${{ steps.gates.outputs.matrix }}
+      run: ${{ steps.dedupe.outputs.skip != 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install --frozen-lockfile node_modules neu
-      # aufbaut. Der aussere Key darf grob sein: innen entscheidet der Inhalts-Hash des
-      # Arbeitsbaums, ob ein Gate wirklich gruen war.
+      # Kein zweiter voller Lauf fuer denselben Commit: sobald ein PR offen ist,
+      # ist der PR-Lauf die Wahrheit. Der Plan laeuft trotzdem weiter, damit die
+      # Matrix gueltig bleibt und der Aggregat-Status erscheint.
+      - name: Doppelten Lauf vermeiden
+        id: dedupe
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          number="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number' 2>/dev/null || true)"
+          if [ -n "$number" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::PR #$number existiert; der PR-Lauf prueft vollstaendig, dieser Push-Lauf endet hier."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Profil bestimmen
+        id: profile
+        run: |
+          # Leicht fuer Feature-Pushes, voll fuer alles, was nach main will oder auf main liegt.
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "name=all" >> "$GITHUB_OUTPUT"
+            echo "::notice::Profil verify:all (PR, main oder manuell)"
+          else
+            echo "name=light" >> "$GITHUB_OUTPUT"
+            echo "::notice::Profil verify:light (Feature-Push); voll prueft der PR gegen main"
+          fi
+
+      # Eine Quelle fuer den Gate-Plan: derselbe `pipeline-plan` wie `verify`.
+      # `pnpm audit` steht nur in der Matrix, wenn sich Abhaengigkeiten wirklich
+      # geaendert haben; der Turn-Versionsbump zaehlt nicht.
+      - name: Gate-Matrix bestimmen
+        id: gates
+        env:
+          PROFILE: ${{ steps.profile.outputs.name }}
+        run: |
+          matrix="$(node scripts/gate-matrix.mjs --profile="$PROFILE")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "::notice::Gate-Matrix: $(echo "$matrix" | tr -d '\n')"
+
+  # Ein Job je Gate. `fail-fast: false` laesst die anderen Gates fertig laufen:
+  # ein roter Lint soll den Testnachweis nicht abschneiden.
+  gate:
+    name: Gate ${{ matrix.gate }}
+    needs: plan
+    if: needs.plan.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    # Grosszuegig: die CI ist die Werkstatt. Ein Abbruch oder Timeout ist
+    # REMOTE_CI (Lauf wiederholen), kein roter Stand und kein BLOCKED.
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install
+      # --frozen-lockfile node_modules neu aufbaut. Innen entscheidet der
+      # Inhalts-Hash des Arbeitsbaums, ob ein Gate wirklich gruen war.
       - name: Gate-Cache wiederherstellen
         uses: actions/cache@v6
         with:
           path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
+          key: ${{ runner.os }}-rbd-verify-${{ matrix.gate }}-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
           restore-keys: |
+            ${{ runner.os }}-rbd-verify-${{ matrix.gate }}-
             ${{ runner.os }}-rbd-verify-
 
       - name: pnpm installieren
@@ -57,6 +129,59 @@ jobs:
       - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
+      # Genau ein Gate, kein zweiter Lauf der ganzen Pipeline. Ist das Gate
+      # nicht Teil des Profils, bricht der Schritt ab, statt still zu bestehen.
+      - name: Gate ${{ matrix.gate }}
+        run: node scripts/run-pipeline.mjs --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
+
+      - name: Gate-Protokoll bei Rot
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: gate-log-${{ matrix.gate }}
+          path: .verify-cache/reports/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # Die Claim-Sperre greift auch dort, wo kein Hook laeuft: Cloud-Agenten und
+  # GitHub-Codespaces haben `.githooks` nicht aktiv. Geprueft wird der PR-Diff
+  # gegen die Basis, inklusive Meta-Sperre und Kollisionen.
+  claims:
+    name: Lane Claims
+    needs: plan
+    if: github.event_name == 'pull_request' && needs.plan.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Node einrichten
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Lane-Claims (Allowlist, Owner, Kollisionen)
+        env:
+          BRANCH: ${{ github.head_ref }}
+          BASE_REF: origin/${{ github.base_ref }}
+        run: node scripts/verify-lane-claims.mjs --ci
+
+  commitmsg:
+    name: Commit- und PR-Notes
+    needs: plan
+    if: needs.plan.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Node einrichten
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
       - name: Commit- und PR-Notes-Gate
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -67,8 +192,29 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" != "pull_request" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then node scripts/verify-commit-msg.mjs --head; fi
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
-      # Rein lesend: der Lauf repariert nichts. Ein veralteter Baum wird rot.
-      - name: Alle Fail-Closed-Gates
+  # Der Pflichtstatus bleibt genau einer. Er fuehrt nur Ergebnisse zusammen und
+  # prueft selbst nichts; die Arbeit steht in den Gate-Jobs darueber.
+  verify:
+    name: Fail-Closed Gates
+    needs: [plan, gate, claims, commitmsg]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Gate-Ergebnisse zusammenfuehren
         env:
-          RBD_VERIFY_AUDIT: '1'
-        run: pnpm run verify:all
+          PLAN: ${{ needs.plan.result }}
+          GATES: ${{ needs.gate.result }}
+          CLAIMS: ${{ needs.claims.result }}
+          COMMITMSG: ${{ needs.commitmsg.result }}
+        run: |
+          fail=0
+          for entry in "plan:$PLAN" "gate:$GATES" "claims:$CLAIMS" "commitmsg:$COMMITMSG"; do
+            name="${entry%%:*}"
+            result="${entry#*:}"
+            case "$result" in
+              success|skipped) echo "::notice::$name: $result" ;;
+              *) echo "::error::$name: $result"; fail=1 ;;
+            esac
+          done
+          exit "$fail"

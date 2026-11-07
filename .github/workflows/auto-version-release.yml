@@ -2,10 +2,9 @@ name: Auto Version & Release
 
 # Ebene A: kein Nachrichtenmuster schaltet die Pruefung ab. Der Release startet
 # erst nach einem erfolgreichen Lauf von "CI Verify" fuer denselben main-Commit;
-# die vollstaendige Suite laeuft damit genau einmal. Dieser Workflow taggt nur
-# noch. `[skip ci]` wird von GitHub selbst ausgewertet (dann startet gar kein
-# Workflow) - diesen Skip schliesst erst Ebene B, das Main-Ruleset in
-# docs/CI-GATES.md, weil dort der fehlende Pflichtstatus den Merge blockiert.
+# die vollstaendige Suite laeuft damit genau einmal. Dieser Workflow taggt nur.
+# APK und Release-Assets entstehen nur, wenn der Commit Code, Inhalte oder
+# Assets beruehrt - bei reiner Doku bleibt der Lauf beim Tag.
 on:
   workflow_run:
     workflows: ["CI Verify"]
@@ -34,6 +33,7 @@ jobs:
     timeout-minutes: 20
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
+      apk: ${{ steps.relevance.outputs.apk }}
     steps:
       - name: Checkout (volle Historie)
         uses: actions/checkout@v7
@@ -63,6 +63,25 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: pnpm run verify:release
 
+      # APK nur bei relevanter Aenderung: reine Doku, Governance-Texte und
+      # Marker brauchen keinen Android-Bau.
+      - name: Relevanz fuer APK bestimmen
+        id: relevance
+        run: |
+          prev="$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')"
+          if [ -z "$prev" ]; then
+            echo "apk=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::kein Vorgaenger-Tag; APK wird gebaut"
+            exit 0
+          fi
+          if git diff --name-only "$prev" HEAD | grep -qE '^(src/|content/|public/|scripts/|index.html|package\.json|pnpm-lock\.yaml|src/Config/)'; then
+            echo "apk=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Code/Inhalt geaendert; APK wird gebaut"
+          else
+            echo "apk=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::nur Doku/Governance seit $prev; APK entfaellt"
+          fi
+
       # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
       # sichtbarer Block mit Anleitung. Ein Tag, der schon existiert, erzeugt
       # kein zweites Release.
@@ -91,6 +110,7 @@ jobs:
   apk:
     name: APK aus dem Release bauen
     needs: release
+    if: needs.release.outputs.tag != '' && needs.release.outputs.apk == 'true'
     permissions:
       contents: write
     uses: ./.github/workflows/build-apk.yml

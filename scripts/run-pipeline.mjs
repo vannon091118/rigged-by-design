@@ -7,7 +7,8 @@
  * fix     repariert alles Automatische (`--fix`) und protokolliert danach
  *         jede Aenderung und jede Loeschung im Arbeitsbaum.
  *
- * Drei Profile: quick (Entwicklungsfeedback), full (Integration), release.
+ * Vier Profile: light (Turn), quick (Entwicklungsfeedback), full (Integration),
+ * release (APK/Versionssprung). Schwere Nachweise gehoeren in die CI.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -15,14 +16,16 @@ import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 import { executeStep, runGates } from './lib/gate-runner.mjs';
 import { resetTreeKey } from './lib/gate-cache.mjs';
-import { GATES, isFixMode, isProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
+import { GATES, isFixMode, isProfile, normalizeProfile, planGates, PROFILES } from './lib/pipeline-plan.mjs';
+import { auditRequired } from './lib/dependency-change.mjs';
 import { describeChanges, diffTree } from './lib/tree-changes.mjs';
 import { releaseOwner, sweepOrphans } from './lib/process-sweep.mjs';
 import { installStopHandlers } from './lib/pipeline-stop.mjs';
 
 const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));
-const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'full';
+// `verify:all` und `--profile=all` sind derselbe Lauf wie `full`; die CI gibt `all` aus.
+const PROFILE = normalizeProfile(profileArg ? profileArg.slice('--profile='.length) : 'full');
 if (!isProfile(PROFILE)) {
   fail(1, 'ERR-4006', 'pipeline', `unbekanntes Profil ${PROFILE}; erlaubt sind ${PROFILES.join(', ')}`);
   process.exit(1);
@@ -31,30 +34,6 @@ const FIX = isFixMode(argv);
 // `verify:all` ist und bleibt das volle Profil; die kurzen Namen gelten nur fuer die neuen Profile.
 const LABEL = PROFILE === 'full' ? 'verify:all' : `verify:${PROFILE}`;
 const MODE = FIX ? 'fix' : 'verify';
-
-/**
- * pnpm audit ist das einzige Gate, das ausserhalb des Repos rot werden kann: es braucht die
- * Registry. Deshalb laeuft es lokal nur bei einer Dependency-Aenderung, in CI und im
- * Release-Profil dagegen immer -- ueber RBD_VERIFY_AUDIT=1.
- */
-function depsChanged() {
-  const names = ['package.json', 'pnpm-lock.yaml'];
-  const probes = [
-    ['diff', '--name-only', 'HEAD'],
-    ['diff', '--name-only', 'HEAD~1', 'HEAD'],
-    ['diff', '--name-only', 'origin/main...HEAD'],
-  ];
-  for (const probe of probes) {
-    let out;
-    try {
-      out = execFileSync('git', [...probe, '--', ...names], { cwd: ROOT, encoding: 'utf8' });
-    } catch {
-      return true; // Unklarheit heisst: Pruefung laeuft.
-    }
-    if (out.trim()) return true;
-  }
-  return false;
-}
 
 function readTreeStatus() {
   try {
@@ -100,18 +79,35 @@ else if (process.env.RBD_VERIFY_FIX === '1') {
   process.exit(1);
 }
 
-const selected = (planGates(PROFILE) ?? []).map((key) => {
+const gateArg = argv.find((value) => value.startsWith('--gate='));
+const ONLY = gateArg ? gateArg.slice('--gate='.length) : null;
+
+let selected = (planGates(PROFILE) ?? []).map((key) => {
   const step = { ...GATES[key] };
   if (step.name === 'tests' && PROFILE === 'quick') step.env = { RBD_TEST_PROFILE: 'quick' };
   if (step.name === 'build') step.ready = () => existsSync(join(ROOT, 'dist', 'index.html'));
   return step;
 });
-if (PROFILE !== 'quick' && process.env.RBD_VERIFY_AUDIT !== '1' && !depsChanged()) {
+if (PROFILE !== 'quick' && !auditRequired()) {
   const at = selected.findIndex((step) => step.name === 'audit');
   if (at >= 0) {
     selected.splice(at, 1);
     console.log('[skipped] audit: keine Dependency-Aenderung (in CI und release via RBD_VERIFY_AUDIT=1 erzwungen)');
   }
+}
+
+/**
+ * Ein einzelnes Gate fuer die CI-Matrix: jeder Job traegt genau ein Gate, damit
+ * ein roter Status den Schuldigen nennt. Ein Gate, das nicht zum Profil gehoert,
+ * bricht ab - ein stiller Fehlschlag waere ein gruener Status ohne Pruefung.
+ */
+if (ONLY) {
+  if (!selected.some((step) => step.name === ONLY)) {
+    fail(1, 'ERR-4011', 'pipeline', `Gate '${ONLY}' ist in ${LABEL} nicht vorgesehen (${selected.map((step) => step.name).join(', ')})`);
+    process.exit(1);
+  }
+  selected = selected.filter((step) => step.name === ONLY);
+  console.log(`${LABEL}: nur Gate ${ONLY}`);
 }
 
 const gateFailures = await runGates(selected);

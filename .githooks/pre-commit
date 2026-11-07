@@ -3,22 +3,11 @@
 # weil der Hook den Commit vorbereitet. Fehlt node_modules, laufen nur Matrix
 # und Testkatalog nicht, weil sie typescript aus node_modules laden.
 set -e
-# Lane-Isolation: Keine Lane darf die acht globalen Metadaten-Dateien schreiben.
-# Diese werden zentral im Merge-/Promote-Schritt gepflegt.
-if [ -d node_modules ]; then
-  node -e "
-    const { execSync } = require('child_process');
-    const { isForbiddenForLanes } = require('./scripts/lib/lane-claims.mjs');
-    const out = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim();
-    const files = out.split(/\\r?\\n/).filter(Boolean);
-    const forbidden = files.filter((f) => isForbiddenForLanes(f) && f !== 'package.json' && f !== 'pnpm-lock.yaml');
-    if (forbidden.length > 0) {
-      console.error('pre-commit: Folgende Dateien sind fuer Lanes gesperrt (ERR-LANE-FORBIDDEN):');
-      forbidden.forEach((f) => console.error('  ' + f));
-      process.exit(1);
-    }
-  " || exit 1
-fi
+# Lane-Claims durchsetzen: der aktuelle Branch muss einen Claim haben und
+# darf nur Dateien innerhalb seiner Allowlist schreiben. Kollisionen mit
+# anderen offenen Lanes blockieren den Commit. Das Skript liest nur Git und
+# laeuft deshalb auch ohne node_modules; nur so greift die Sperre wirklich.
+node scripts/verify-lane-claims.mjs || exit 1
 # Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
 # Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
 # Commit. Dann blockiert der Hook, statt den Widerspruch zu uebersehen.

@@ -35,14 +35,17 @@ const KINDS = Object.freeze({
   STRUCTURE: {
     level: 'AGENT',
     action: 'AGENTS.md befolgen',
-    hint: 'Struktur, Sektion oder Zustaendigkeit fehlt: Agent entscheidet.',
+    hint: 'Struktur, Sektion, Balance oder Randfall: als Issue abholen, die Arbeit laeuft weiter.'
   },
 });
 
 const RULES = Object.freeze([
-  { kind: 'BLOCKED', test: /ledger|vacoins?|save-?integrit|prng|\brng\b|geld|buchung|invariante/i },
+  // BLOCKED ist die Notarzt-Stufe, nicht die Werkstatt: nur echte
+  // Invarianten und ein kaputter Start. Balance, ein schiefer Test, ein
+  // Doku-Marker oder ein Randfall sind AGENT und werden ein Issue.
+  { kind: 'BLOCKED', test: /ledger-?invariante|save-?integrit|(prng|rng)-?invariante|invariante verletzt|geldpfad|boot kaputt|app startet nicht|startet nicht mehr/i },
   { kind: 'AUTOFIXABLE', test: /err-0911|doku-marker|rbd-doc|nicht synchron|veraltet|testkatalog|dependency-matrix|eslint --fix/i },
-  { kind: 'TRANSIENT', test: /econn|etimedout|enotfound|eai_again|rate limit|502|503|504|registry|network/i },
+  { kind: 'TRANSIENT', test: /econn|etimedout|enotfound|eai_again|rate limit|timeout|timed out|zeitlimit|cancel+ed|runner|flaky|sporadisch|502|503|504|registry|network/i },
   { kind: 'SCOPE', test: /ausserhalb des scopes|outside scope|not in scope|scope-fremd/i },
 ]);
 
