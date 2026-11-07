@@ -28,6 +28,34 @@ declare module '*/gate-diagnostics.mjs' {
   }): GateDiagnosis;
 }
 
+declare module '*/promote-guard.mjs' {
+  export function promotionPrListArgs(head: string, base?: string): string[];
+  export function manualDispatchAction(mode?: string): 'inspect' | 'integrate';
+}
+
+declare module '*/pr-watcher.mjs' {
+  export interface WatcherApiResponse {
+    readonly ok: boolean;
+    readonly status?: number;
+    json(): Promise<unknown>;
+  }
+  export type WatcherApi = (
+    method: string,
+    path: string,
+    body?: unknown,
+  ) => Promise<WatcherApiResponse>;
+  export function recordRecurrence(
+    issue: { readonly number: number; readonly state?: string },
+    runUrl: string,
+    deps?: { readonly api?: WatcherApi },
+  ): Promise<void>;
+  export function sweepGreenMain(deps?: {
+    readonly api?: WatcherApi;
+    readonly git?: (args: string[]) => string;
+    readonly mainSha?: string;
+  }): Promise<void>;
+}
+
 declare module '*/claim-evidence.mjs' {
   export interface ClaimEvidence {
     readonly status: 'merged' | null;

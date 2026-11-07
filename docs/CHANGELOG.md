@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.172 | 2026-11-07 11:13 UTC -->
+<!-- rbd-doc: v0.3.173 | 2026-11-07 11:24 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,13 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.173] - 2026-11-07
+
+### Technik
+- **Drei Fixes sind jetzt ausfuehrbar belegt.** `pr-watcher.test.ts` prueft, dass ein geschlossenes Issue bei erneutem Fehler zuerst per PATCH wieder geoeffnet und erst danach kommentiert wird. Derselbe Test verweigert den Sweep, wenn `origin/main` nicht exakt dem geprueften `MAIN_SHA` entspricht, und schliesst nur bei exakter Uebereinstimmung. `promote-guard.test.ts` belegt die Suche mit `--base main` und dass ein manueller Dispatch nie als Merge-Erfolg gilt; `claim-evidence.test.ts` verbindet einen mehrdeutigen Branch-Namen direkt mit `decideClaim()`.
+- **Testbarkeit ohne CLI-Seiteneffekt.** `pr-watcher.mjs` nimmt API und Git jetzt injizierbar entgegen, exportiert `recordRecurrence()` und `sweepGreenMain()` und startet `main()` nur noch beim direkten Aufruf. `promote-guard.mjs` liefert die reine PR-Suche und die Dispatch-Entscheidung, die `promote.mjs` verwendet.
+- Tests: 23/23 in `pr-watcher.test.ts` (3), `promote-guard.test.ts` (9) und `claim-evidence.test.ts` (11); `node --check` fuer die drei Skripte, `verify:light` und `verify:claims` gruen.
 
 ## [0.3.172] - 2026-11-07
 

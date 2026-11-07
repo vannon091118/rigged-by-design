@@ -21,7 +21,7 @@ import {
   parseNameStatus,
   splitAutomation,
 } from './lib/body-sync.mjs';
-import { verifyPromotion } from './lib/promote-guard.mjs';
+import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -154,7 +154,7 @@ function prInfo(number) {
  */
 function openPr(head = branch) {
   if (!head) return '';
-  const raw = gh(['pr', 'list', '--base', MAIN, '--head', head, '--state', 'open', '--json', 'number', '--jq', '.[0].number']);
+  const raw = gh(promotionPrListArgs(head, MAIN));
   if (!raw || !/^\d+$/.test(raw)) return '';
   return prInfo(raw)?.isCrossRepository === false ? raw : '';
 }
@@ -369,7 +369,8 @@ log(`Lauf aus vertrauenswuerdigem ${MAIN}${headSha ? `; Kopf ${headSha}` : ''}${
 if (!event) {
   // Ein manueller Dispatch bringt keinen CI-Nachweis mit. Er zeigt nur an
   // oder oeffnet den ausdruecklichen Notausgang; `success` wird nie gesetzt.
-  if (mode === 'integrate') {
+  const action = manualDispatchAction(mode);
+  if (action === 'integrate') {
     log('manuell: Notausgang integration angefordert');
     promoteRed();
   } else {

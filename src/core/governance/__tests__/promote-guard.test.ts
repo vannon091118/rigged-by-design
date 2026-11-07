@@ -6,7 +6,11 @@
  * dem eigenen Repository. Der Branch-Name allein ist keine Identitaet.
  */
 import { describe, expect, it } from 'vitest';
-import { verifyPromotion } from '../../../../scripts/lib/promote-guard.mjs';
+import {
+  manualDispatchAction,
+  promotionPrListArgs,
+  verifyPromotion,
+} from '../../../../scripts/lib/promote-guard.mjs';
 
 const SHA = 'a'.repeat(40);
 
@@ -34,13 +38,32 @@ describe('promote-guard', () => {
 
   it('lehnt einen Lauf ab, der nicht aus einem PR stammt', () => {
     expect(verifyPromotion({ ...valid, event: 'workflow_dispatch' }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, event: '' }).ok).toBe(false);
+  });
+
+  it('sucht Promotions-PRs nur gegen main', () => {
+    const args = promotionPrListArgs('lane/governance/beispiel');
+    expect(args.slice(0, 6)).toEqual([
+      'pr',
+      'list',
+      '--base',
+      'main',
+      '--head',
+      'lane/governance/beispiel',
+    ]);
+  });
+
+  it('behandelt einen manuellen Dispatch nie als Merge-Erfolg', () => {
+    expect(manualDispatchAction('')).toBe('inspect');
+    expect(manualDispatchAction('success')).toBe('inspect');
+    expect(manualDispatchAction('integrate')).toBe('integrate');
   });
 
   it('lehnt einen kurzen oder fehlenden SHA ab', () => {
     expect(verifyPromotion({ ...valid, headSha: 'abc1234' }).ok).toBe(false);
   });
 
-  it('lehnt einen PR gegen ein anderes Ziel als main ab', () => {
+  it('lehnt einen PR mit passendem Head aber Ziel integration ab', () => {
     expect(verifyPromotion({ ...valid, pr: { ...valid.pr, baseRefName: 'integration' } }).ok).toBe(false);
   });
 

@@ -696,5 +696,34 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "c43bbc92b45015a64ec28d566a9d8fa61672d7ce",
     "createdAt": "4a06cb7a570eedefcb91ac56249451df982d7757"
+  },
+  {
+    "id": "lane/governance/18-watcher-promote-tests",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/18-watcher-promote-tests",
+    "baseSha": "2df0755cfe577627a9a064357770a9706cd64c7f",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "scripts/pr-watcher.mjs",
+      "scripts/promote.mjs",
+      "scripts/lib/promote-guard.mjs",
+      "src/core/governance/__tests__/pr-watcher.test.ts",
+      "src/core/governance/__tests__/promote-guard.test.ts",
+      "src/core/governance/__tests__/claim-evidence.test.ts",
+      "src/core/governance/__tests__/scripts-libs-ci.d.ts",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "2df0755cfe577627a9a064357770a9706cd64c7f"
   }
 ]

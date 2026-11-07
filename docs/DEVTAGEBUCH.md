@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.172 | 2026-11-07 11:13 UTC -->
+<!-- rbd-doc: v0.3.173 | 2026-11-07 11:24 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Issue-Reopen, Sweep-SHA und Promote-Ziel mit Tests belegt
+
+**Ziel.** Die drei im letzten Slice behaupteten Verhaltensaenderungen sollten auf dem gemergten `main` nicht nur dokumentiert, sondern ausfuehrbar belegt werden: Issue-Reopen bei Rekurrenz, Sweep nur am exakten Main-SHA und Promote nur gegen `main` beziehungsweise aus einem PR-Lauf.
+
+**Umsetzung.** `pr-watcher.mjs` nimmt API und Git als Abhaengigkeiten entgegen, exportiert `recordRecurrence()` und `sweepGreenMain()` und fuehrt `main()` nur beim direkten CLI-Aufruf aus. Die neue `pr-watcher.test.ts` prueft die Reihenfolge GET -> PATCH (`state: open`, `state_reason: reopened`) -> Kommentar sowie den verweigerten Sweep bei abweichendem `origin/main`; ein positiver Fall belegt das Schliessen bei exaktem SHA. `promote-guard.mjs` enthaelt jetzt die reine PR-Suche `promotionPrListArgs(head, 'main')` und `manualDispatchAction(mode)`; `promote.mjs` verwendet beide, sodass `--base main` und der manuelle Pfad ohne Merge direkt geprueft werden. Die Claim-Pruefung wurde um den mehrdeutigen Branch-Namen ergaenzt, der ueber `decideClaim()` fail-closed bleibt. Kein Produktionsfehler trat auf; die vorhandenen Implementierungen bestanden die neuen Nachweise.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/pr-watcher.test.ts src/core/governance/__tests__/promote-guard.test.ts src/core/governance/__tests__/claim-evidence.test.ts --reporter=verbose` -> 3 Dateien, 23/23 Tests. `node --check` fuer `scripts/pr-watcher.mjs`, `scripts/promote.mjs` und `scripts/lib/promote-guard.mjs`; `git diff --check`; `pnpm run verify:light` mit allen sechs Gates; `pnpm run verify:claims` claim-konform.
+
+**Offen.** Der PR-Lauf und die `main`-CI auf dem Merge-Commit sind die verbleibenden Nachweise; der Claim wird nach dem Merge per `reconcile-claims --apply` auf `merged` nachgezogen.
 
 ## 2026-11-07 - Claim 26 nach dem Squash-Merge geschlossen
 
