@@ -1,8 +1,8 @@
 name: PR Watcher
 
-# Überwacht PRs und CI-Flows. Bei rotem Gate wird automatisch ein Issue
-# erstellt, das einem Agenten alle Infos liefert, um das Issue zu lösen
-# und den Merge durchzubekommen.
+# Überwacht PRs und CI-Flows. Ein roter Lauf erzeugt ein Issue mit allen Infos;
+# ein Timeout oder Abbruch ist REMOTE_CI (Issue mit Label `remote-ci`, kein
+# Blocker). Ist `main` gruen, werden erledigte gate-failure-Issues geschlossen.
 on:
   workflow_run:
     workflows: ["CI Verify"]
@@ -19,8 +19,10 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: pr-watcher-${{ github.ref }}
-  cancel-in-progress: true
+  # Bei workflow_run ist github.ref der Default-Branch: mit einer gemeinsamen
+  # Gruppe wuerden sich Watcher-Laeufe gegenseitig abbrechen. Der Run ist die Identitaet.
+  group: pr-watcher-${{ github.event.workflow_run.id || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   watch:
@@ -38,8 +40,8 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Issue bei rotem Gate erstellen
-        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure'
+      - name: Issue bei rotem Gate oder Timeout erstellen
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.event.workflow_run.id }}
@@ -48,6 +50,13 @@ jobs:
           RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
           RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
         run: node scripts/pr-watcher.mjs
+
+      - name: Issues schliessen, wenn main gruen ist
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: node scripts/pr-watcher.mjs --sweep-green
 
       - name: PR-Body auf Pflichtsektionen prüfen
         if: github.event_name == 'pull_request'

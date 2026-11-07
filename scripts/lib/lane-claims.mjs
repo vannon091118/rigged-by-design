@@ -11,32 +11,32 @@
  * Dependency-Lage maschinenlesbar aus.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CLAIMS_DIR = join(process.cwd(), '.lane-claims');
 const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
 
 /**
- * Globale Sperrliste: Diese Dateien dürfen von keiner Lane geschrieben werden.
- * Sie werden zentral im Merge-/Promote-Schritt gepflegt, nie innerhalb einer Lane.
+ * Fester Owner-Roster. Eine Lane ohne benannten Owner ist keine Lane: ohne
+ * diese Liste konnte jeder Agent einen Claim mit beliebigem Owner anlegen,
+ * und "wer darf das" war nirgends beantwortet.
  */
-export const FORBIDDEN_FOR_LANES = [
-  'AGENTS.md',
-  'docs/ARCHITECTURE.md',
-  'docs/CHANGELOG.md',
-  'docs/DEVTAGEBUCH.md',
-  'docs/INVENTORY.md',
-  'docs/ROADMAP.md',
-  'package.json',
-  'pnpm-lock.yaml',
-];
+export const OWNERS = Object.freeze([
+  'Integrator',
+  'Governance-Owner',
+  'Architektur-Owner',
+  'Ledger-/Core-Owner',
+  'Quality-/Capability-Owner',
+  'Interaction-Contract-Owner',
+  'Sim-/Domain-Owner',
+  'Save-/Migrations-Owner',
+  'Monitor',
+]);
 
-/** Prüft, ob ein Pfad auf der globalen Sperrliste für Lanes steht. */
-export function isForbiddenForLanes(filePath) {
-  const normalized = String(filePath ?? '').replaceAll('\\', '/');
-  return FORBIDDEN_FOR_LANES.includes(normalized);
-}
+/** Branch-Schema fuer Arbeitslanes; Legacy-Prefixe bleiben erlaubt. */
+export const BRANCH_PATTERN = /^lane\/[a-z0-9-]+\/[a-z0-9-]+$/;
+export const LEGACY_PREFIXES = Object.freeze(['gov/', 'hygiene/', 'fix/']);
 
 /** Ein einzelner Lane-Claim. */
 export class LaneClaim {
@@ -64,15 +64,23 @@ export class LaneClaim {
     this.createdAt = baseSha;
   }
 
-  /** Prüft, ob ein Pfad innerhalb der Allowlist liegt. */
+  /**
+   * Prüft, ob ein Pfad innerhalb der Allowlist liegt.
+   *
+   * Drei Schreibweisen: exakter Pfad, Verzeichnis mit `/` am Ende und
+   * rekursiv mit `/**`. Ohne den Verzeichnis-Fall waere ein Eintrag wie
+   * `.githooks/` ein stilles Nichts - die Sperre saehe aus, als griffe sie.
+   */
   allowsPath(filePath) {
     const normalized = String(filePath ?? '').replaceAll('\\', '/');
     return this.pathAllowlist.some((pattern) => {
-      if (pattern.endsWith('/**')) {
-        const prefix = pattern.slice(0, -3);
+      const clean = String(pattern ?? '').replaceAll('\\', '/');
+      if (clean.endsWith('/**')) {
+        const prefix = clean.slice(0, -3);
         return normalized === prefix || normalized.startsWith(`${prefix}/`);
       }
-      return normalized === pattern;
+      if (clean.endsWith('/')) return normalized.startsWith(clean);
+      return normalized === clean;
     });
   }
 
@@ -97,12 +105,22 @@ export class LaneClaim {
   }
 }
 
-/** Lädt alle Claims aus dem Register. */
+/**
+ * Laedt das Register streng. Eine fehlende, kaputte oder nicht-array-foermige
+ * Registerdatei ist ein Fehler, kein leeres Register: fail-open hiesse, dass
+ * ein beschaedigtes claims.json jedem Agenten freie Fahrt gibt.
+ */
+export function loadClaimsStrict() {
+  if (!existsSync(CLAIMS_FILE)) throw new Error(`Claim-Register fehlt: ${CLAIMS_FILE}`);
+  const data = JSON.parse(readFileSync(CLAIMS_FILE, 'utf8'));
+  if (!Array.isArray(data)) throw new Error(`Claim-Register ist kein Array: ${CLAIMS_FILE}`);
+  return data.map((entry) => new LaneClaim(entry));
+}
+
+/** Laedt alle Claims fuer Anzeige und Kontext; Fehler werden zu einer leeren Liste. */
 export function loadClaims() {
-  if (!existsSync(CLAIMS_FILE)) return [];
   try {
-    const data = JSON.parse(readFileSync(CLAIMS_FILE, 'utf8'));
-    return Array.isArray(data) ? data.map((entry) => new LaneClaim(entry)) : [];
+    return loadClaimsStrict();
   } catch {
     return [];
   }
@@ -111,7 +129,11 @@ export function loadClaims() {
 /** Speichert alle Claims im Register. */
 export function saveClaims(claims) {
   mkdirSync(CLAIMS_DIR, { recursive: true });
-  writeFileSync(CLAIMS_FILE, JSON.stringify(claims.map((c) => c.toJSON()), null, 2), 'utf8');
+  // Atomar: erst daneben schreiben, dann ersetzen. Ein paralleler Agent sieht
+  // so entweder das alte oder das neue Register, nie eine halbe Datei.
+  const temp = `${CLAIMS_FILE}.new`;
+  writeFileSync(temp, JSON.stringify(claims.map((c) => c.toJSON()), null, 2), 'utf8');
+  renameSync(temp, CLAIMS_FILE);
 }
 
 /** Fügt einen neuen Claim hinzu oder aktualisiert einen bestehenden. */
@@ -139,12 +161,28 @@ export function openClaims() {
 
 /** Validiert, ob ein Pfad durch einen offenen Claim abgedeckt ist. */
 export function pathAllowedForClaim(filePath, laneId) {
-  // Globale Sperrliste: keine Lane darf diese Metadaten schreiben.
-  if (isForbiddenForLanes(filePath)) return false;
   const claims = openClaims();
   const claim = claims.find((c) => c.id === laneId);
   if (!claim) return false;
   return claim.allowsPath(filePath);
+}
+
+/**
+ * Praefix eines Allowlist-Eintrags. `docs/**`, `docs/` und `docs` zeigen alle
+ * auf denselben Bereich; der Vergleich darf nicht an der Schreibweise haengen.
+ */
+export function patternPrefix(pattern) {
+  return String(pattern ?? '')
+    .replaceAll('\\', '/')
+    .replace(/\/\*\*$/, '')
+    .replace(/\/$/, '');
+}
+
+export function patternsOverlap(a, b) {
+  const pa = patternPrefix(a);
+  const pb = patternPrefix(b);
+  if (!pa || !pb) return false;
+  return pa === pb || pa.startsWith(`${pb}/`) || pb.startsWith(`${pa}/`);
 }
 
 /** Prüft, ob zwei Claims sich überschneiden (gleiche Pfade oder schreibende Contracts). */
@@ -155,9 +193,12 @@ export function findCollisions(newClaim) {
   for (const existing of claims) {
     if (existing.id === newClaim.id) continue;
 
-    // Pfad-Überschneidung: ein Pfad der neuen Lane liegt in der Allowlist der bestehenden
-    const pathOverlap = newClaim.pathAllowlist.some((p) => existing.allowsPath(p)) ||
-      existing.pathAllowlist.some((p) => newClaim.allowsPath(p));
+    // Pfad-Ueberschneidung auf Praefix-Ebene: `docs/**`, `docs/` und
+    // `docs/CHANGELOG.md` muessen sich als Ueberschneidung erkennen, egal
+    // welche Schreibweise eine Lane gewaehlt hat.
+    const pathOverlap = newClaim.pathAllowlist.some((a) =>
+      existing.pathAllowlist.some((b) => patternsOverlap(a, b)),
+    );
 
     // Contract-Writer-Kollision: beide schreiben denselben Contract
     const newWrites = new Set(newClaim.writeContracts());

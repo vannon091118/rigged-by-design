@@ -1,15 +1,19 @@
 name: Promote
 
-# Ein Lauf pro CI-Ergebnis: gruen legt den PR an und mergt ihn, rot legt den
-# Stand auf die permanente Integrationsbranch, damit dort repariert wird.
-# Die Wahrheit liegt im Branch und in Labels, nicht in der Warteschlange:
-# GitHub haelt pro Gruppe nur einen wartenden Lauf, deshalb arbeitet jeder
-# Lauf den gesamten Rueckstand ab und ist idempotent.
+# Ein Lauf pro CI-Ergebnis. Gruen heisst: der PR gegen `main` ist bereit und
+# wird gemergt. Rot heisst: Issue und Label, aber kein automatischer Dump auf
+# `integration` - die bleibt der letzte Notausgang und laeuft nur auf
+# ausdrueckliche Anforderung (`integrate=true`).
 on:
   workflow_run:
     workflows: ["CI Verify"]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      integrate:
+        description: 'Rote Staende wirklich auf die Integrationsbranch legen (Notausgang)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -22,7 +26,7 @@ concurrency:
 
 jobs:
   promote:
-    name: Gruen mergen, rot integrieren
+    name: Gruen mergen, rot als Issue
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -50,4 +54,5 @@ jobs:
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion || 'success' }}
           EVENT: ${{ github.event.workflow_run.event || 'workflow_dispatch' }}
+          INTEGRATE: ${{ inputs.integrate && '1' || '0' }}
         run: node scripts/promote.mjs

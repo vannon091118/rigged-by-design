@@ -7,9 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       verify:
-        description: 'Vollstaendige Fail-Closed-Gates mitlaufen lassen'
+        description: 'Vollstaendige Fail-Closed-Gates zusaetzlich mitlaufen lassen'
         type: boolean
-        default: true
+        # Der PR-Lauf prueft bereits; ein zweites verify:all hier waere Doppelarbeit.
+        default: false
       soak_ticks:
         description: 'Ticks fuer den Soak-Lauf'
         type: string

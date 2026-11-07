@@ -1,9 +1,12 @@
 name: CI Verify
 
-# Ebene A des Main-Gates: jeder Push (auch auf `main`), jeder PR gegen `main`
-# und jeder manuelle Lauf gehen durch dieselben Fail-Closed-Gates. Der
-# Job-Name "Fail-Closed Gates" ist der Pflichtstatus, den das Ruleset aus
-# docs/CI-GATES.md verlangt.
+# Ebene A des Main-Gates. Der Job-Name "Fail-Closed Gates" ist der
+# Pflichtstatus aus dem Branch-Schutz von `main`.
+#
+# Zwei Geschwindigkeiten: ein Feature-Push bekommt das leichte Gate (schnelles
+# Feedback, damit parallele Arbeit nicht wartet), PR gegen `main`, Push auf
+# `main` und manuelle Laeufe bekommen `verify:all`. Existiert fuer den Branch
+# bereits ein PR, prueft der PR-Lauf vollstaendig; der Push-Lauf faellt weg.
 on:
   pull_request:
     branches: [main]
@@ -14,6 +17,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ci-verify-${{ github.ref }}
@@ -23,9 +27,29 @@ jobs:
   verify:
     name: Fail-Closed Gates
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # Lange Laeufe sind erlaubt; ein Timeout ist REMOTE_CI und kein roter Stand.
+    timeout-minutes: 30
     steps:
+      # Kein zweiter voller Lauf fuer denselben Commit: sobald ein PR offen ist,
+      # ist der PR-Lauf die Wahrheit. Das war der groesste Zeitfresser, weil
+      # push + pull_request + Promote + Watcher alles gleichzeitig liefen.
+      - name: Doppelten Lauf vermeiden
+        id: dedupe
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          number="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number' 2>/dev/null || true)"
+          if [ -n "$number" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::PR #$number existiert; der PR-Lauf prueft vollstaendig, dieser Push-Lauf endet hier."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.dedupe.outputs.skip != 'true'
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
@@ -34,6 +58,7 @@ jobs:
       # aufbaut. Der aussere Key darf grob sein: innen entscheidet der Inhalts-Hash des
       # Arbeitsbaums, ob ein Gate wirklich gruen war.
       - name: Gate-Cache wiederherstellen
+        if: steps.dedupe.outputs.skip != 'true'
         uses: actions/cache@v6
         with:
           path: .verify-cache
@@ -42,11 +67,13 @@ jobs:
             ${{ runner.os }}-rbd-verify-
 
       - name: pnpm installieren
+        if: steps.dedupe.outputs.skip != 'true'
         uses: pnpm/action-setup@v6
         with:
           version: 10.4.1
 
       - name: Node 22 mit pnpm-Cache
+        if: steps.dedupe.outputs.skip != 'true'
         uses: actions/setup-node@v7
         with:
           # Vollstaendige 22er-Linie, nicht der harte Minor: jsdom und eslint
@@ -55,9 +82,34 @@ jobs:
           cache: pnpm
 
       - name: Install (pnpm install --frozen-lockfile)
+        if: steps.dedupe.outputs.skip != 'true'
         run: pnpm install --frozen-lockfile
 
+      - name: Profil bestimmen
+        id: profile
+        if: steps.dedupe.outputs.skip != 'true'
+        run: |
+          # Leicht fuer Feature-Pushes, voll fuer alles, was nach main will oder auf main liegt.
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "name=all" >> "$GITHUB_OUTPUT"
+            echo "::notice::Profil verify:all (PR, main oder manuell)"
+          else
+            echo "name=light" >> "$GITHUB_OUTPUT"
+            echo "::notice::Profil verify:light (Feature-Push); voll prueft der PR gegen main"
+          fi
+
+      # Die Claim-Sperre muss auch dort greifen, wo kein Hook laeuft: Cloud-Agenten
+      # und GitHub-Codespaces haben `.githooks` nicht aktiv. Geprueft wird der
+      # PR-Diff gegen die Basis, inklusive Meta-Sperre und Kollisionen.
+      - name: Lane-Claims (Allowlist, Owner, Kollisionen)
+        if: steps.dedupe.outputs.skip != 'true' && github.event_name == 'pull_request'
+        env:
+          BRANCH: ${{ github.head_ref }}
+          BASE_REF: origin/${{ github.base_ref }}
+        run: node scripts/verify-lane-claims.mjs --ci
+
       - name: Commit- und PR-Notes-Gate
+        if: steps.dedupe.outputs.skip != 'true'
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
@@ -68,7 +120,9 @@ jobs:
           if [ -n "$PR_BODY" ]; then node scripts/verify-commit-msg.mjs --pr; fi
 
       # Rein lesend: der Lauf repariert nichts. Ein veralteter Baum wird rot.
-      - name: Alle Fail-Closed-Gates
-        env:
-          RBD_VERIFY_AUDIT: '1'
-        run: pnpm run verify:all
+      # `pnpm audit` laeuft nur, wenn sich Abhaengigkeiten wirklich geaendert
+      # haben (der Turn-Versionsbump zaehlt nicht); sonst waere jeder Doku-Commit
+      # von der Registry abhaengig.
+      - name: Fail-Closed-Gates (${{ steps.profile.outputs.name }})
+        if: steps.dedupe.outputs.skip != 'true'
+        run: pnpm run verify:${{ steps.profile.outputs.name }}

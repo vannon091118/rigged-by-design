@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.152 | 2026-11-07 01:27 UTC -->
+<!-- rbd-doc: v0.3.153 | 2026-11-07 03:46 UTC -->
 
 ## README als Einstieg
 
@@ -111,6 +111,8 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
 | ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen und ueber das Gate promoten; kein Direktpush auf main. |
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
+| ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
+| ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 
 ## Pipeline
@@ -178,7 +180,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 7: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+1) |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 65: `scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>`scripts/build-asset-manifest.mjs`<br>… (+59) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 69: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>`scripts/branch-cleanup.mjs`<br>… (+63) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 48: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+42) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |

@@ -15,6 +15,9 @@ const ROOT_FILES = new Set([
 ]);
 const SRC_ROOT = new Set(['main.tsx', 'App.tsx', 'vite-env.d.ts']);
 
+/** GitHub verlangt diese Dateinamen woertlich; eine Endung ist dort nicht moeglich. */
+const CANONICAL = new Set(['.github/CODEOWNERS']);
+
 /** Ordnerregeln stehen in scripts/lib/subsystems.mjs; hier wird nur geprueft. */
 const CORE_FORBIDDEN = [/^react$/, /^react-dom/, /^pixi\.js$/, /^@testing-library/];
 
@@ -39,6 +42,7 @@ for (const entry of readdirSync(join(ROOT, 'src'), { withFileTypes: true })) {
 for (const area of AREAS) {
   for (const file of filesUnder(area.dir)) {
     const ext = extname(file);
+    if (CANONICAL.has(norm(relative(ROOT, file)))) continue;
     if (!area.ext.includes(ext)) {
       flag(relative(ROOT, file), `${ext || 'ohne Endung'} ist hier nicht erlaubt: ${area.note}.`);
       continue;

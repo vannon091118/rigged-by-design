@@ -7,7 +7,8 @@
  * fix     repariert alles Automatische (`--fix`) und protokolliert danach
  *         jede Aenderung und jede Loeschung im Arbeitsbaum.
  *
- * Drei Profile: quick (Entwicklungsfeedback), full (Integration), release.
+ * Vier Profile: light (Turn), quick (Entwicklungsfeedback), full (Integration),
+ * release (APK/Versionssprung). Schwere Nachweise gehoeren in die CI.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -40,9 +41,9 @@ const MODE = FIX ? 'fix' : 'verify';
 function depsChanged() {
   const names = ['package.json', 'pnpm-lock.yaml'];
   const probes = [
-    ['diff', '--name-only', 'HEAD'],
-    ['diff', '--name-only', 'HEAD~1', 'HEAD'],
-    ['diff', '--name-only', 'origin/main...HEAD'],
+    ['diff', '--unified=0', 'HEAD'],
+    ['diff', '--unified=0', 'HEAD~1', 'HEAD'],
+    ['diff', '--unified=0', 'origin/main...HEAD'],
   ];
   for (const probe of probes) {
     let out;
@@ -51,7 +52,12 @@ function depsChanged() {
     } catch {
       return true; // Unklarheit heisst: Pruefung laeuft.
     }
-    if (out.trim()) return true;
+    // Der Turn-Versionsbump aendert nur die version-Zeile; das ist keine
+    // Dependency-Aenderung und darf `pnpm audit` nicht in jeden Lauf ziehen.
+    const changed = out
+      .split(/\r?\n/)
+      .filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line) && !/^[+-]\s*"version":/.test(line));
+    if (changed.length > 0) return true;
   }
   return false;
 }

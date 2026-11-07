@@ -15,23 +15,33 @@ const npmRun = (args) =>
 const TARGET_BRANCH = 'main';
 const MAX_PUSH_VERSUCHE = 3;
 
-// Quick ist der Normalfall: die meisten Turns brauchen Build und RTP-Nachweise nicht.
-// Voll laeuft ueber `pnpm run turn:finish:full`; CI prueft jeden Push ohnehin vollstaendig.
+// Light ist der Normalfall: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate.
+// Tests, Build und Audit gehoeren nach GitHub Actions und laufen nicht in jedem
+// Turn. Breiter pruefen: `--profile=quick` (schnelle halbe Suite) oder
+// `--profile=full` (verify:all, lokal die Ausnahme).
 const args = process.argv.slice(2);
 const profileArg = args.find((value) => value.startsWith('--profile='));
-const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
-if (!['quick', 'full'].includes(PROFILE)) {
-  fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind quick und full`);
+const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'light';
+if (!['light', 'quick', 'full'].includes(PROFILE)) {
+  fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind light, quick und full`);
   process.exit(1);
 }
-const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : 'verify:quick';
+const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : `verify:${PROFILE}`;
+
+// main ist PR-Ziel, nie Agent-Arbeitsbranch. Ein Turn auf main bricht hier ab,
+// statt in den Branch-Schutz zu laufen und den Commit lokal liegen zu lassen.
+const currentBranch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
+if (currentBranch === TARGET_BRANCH) {
+  fail(1, 'ERR-4023', 'turn:finish', 'main ist PR-Ziel; auf einer Lane arbeiten (git switch -c lane/<domäne>/<task>)');
+  process.exit(1);
+}
 const AFFECTED = args.includes('--affected');
 const paths = args.filter((value) => !value.startsWith('--'));
 console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + test:affected' : ''}`);
 
 // Im verengten Modus muessen die Versionsdateien mit, sonst bliebe der Bump ungestaged.
 const stage = () => {
-  if (paths.length > 0) git(['add', '--', ...paths, 'package.json', 'pnpm-lock.yaml']);
+  if (paths.length > 0) git(['add', '--', ...paths]);
   else git(['add', '-A']);
   // Globale Sperrliste: keine Lane (und kein turn:finish ohne explizite Pfade)
   // darf die acht Metadaten-Dateien committieren. Sie werden zentral im
@@ -91,9 +101,17 @@ if (schmutz) {
     : `turn:finish: Version ${treeVersion} bereits gebumpt (HEAD ${headVersion})`);
 }
 
-// Marker VOR der Pruefung setzen: schreibt der Hook sie erst nach dem Verify,
-// aendert sich der Baum und damit jeder Cache-Schluessel bei jedem Commit.
-spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+// Marker und Inventar VOR der Pruefung setzen: der Docs-Gate prueft
+// INVENTORY-Abdeckung gegen git ls-files. Neue Dateien muessen dort schon
+// erfasst sein, sonst ist verify:docs rot, obwohl der Pre-Commit-Hook sie
+// erst spaeter schreiben wuerde.
+if (paths.length > 0) {
+  spawnSync(process.execPath, ['scripts/doc-sync.mjs', '--staged'], { cwd: ROOT, stdio: 'ignore' });
+  spawnSync(process.execPath, ['scripts/build-inventory.mjs'], { cwd: ROOT, stdio: 'ignore' });
+  git(['add', '--', 'docs/INVENTORY.md']);
+} else {
+  spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+}
 
 const verify = npmRun(['run', VERIFY_SCRIPT]);
 if (verify.status !== 0) {
@@ -227,8 +245,8 @@ for (let versuch = 1; versuch <= MAX_PUSH_VERSUCHE; versuch += 1) {
     }
     continue;
   }
-  if (gitRun(['push', 'origin', `HEAD:${TARGET_BRANCH}`]).status === 0) {
-    console.log(`turn:finish: PASS, ${TARGET_BRANCH} gepusht`);
+  if (gitRun(['push', '-u', 'origin', 'HEAD']).status === 0) {
+    console.log(`turn:finish: PASS, Arbeitsbranch ${currentBranch} gepusht (promote legt den PR gegen ${TARGET_BRANCH} an)`);
     aufraeumen();
     process.exit(0);
   }
