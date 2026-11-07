@@ -18,7 +18,7 @@ import { join, relative } from 'node:path';
 import { impact } from './lib/impact.mjs';
 import { GATES, planGates } from './lib/pipeline-plan.mjs';
 import { lastGateRows, runGates } from './lib/gate-runner.mjs';
-import { openClaims } from './lib/lane-claims.mjs';
+import { loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -39,11 +39,17 @@ const git = (args) => {
   } catch { return ''; }
 };
 const branch = git(['rev-parse', '--abbrev-ref', 'HEAD']);
-const claims = openClaims();
-const claim = claims.find((c) => c.branch === branch);
+let claims = [];
+try {
+  claims = loadClaimsStrict();
+} catch (error) {
+  console.error(`[ERR-4019] agent:verify: Claim-Register nicht lesbar (${error instanceof Error ? error.message : 'unbekannt'})`);
+  process.exit(1);
+}
+const claim = selectClaim(claims, branch);
 if (!claim && !PLAN_ONLY) {
-  console.error(`[ERR-4019] agent:verify: Branch '${branch}' hat keinen Lane-Claim in .lane-claims/claims.json`);
-  console.error('  Registriere den Claim zuerst (siehe AGENTS.md § Lane- und Konflikt-Governance).');
+  console.error(`[ERR-4019] agent:verify: Branch '${branch}' hat keinen Lane-Claim in .lane-claims/`);
+  console.error('  Registriere den Claim zuerst mit `pnpm run claim:register` (siehe AGENTS.md § Lane- und Konflikt-Governance).');
   process.exit(1);
 }
 const steps = (planGates(PROFILE) ?? []).map((key) => ({ ...GATES[key] }));

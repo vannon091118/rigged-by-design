@@ -13,6 +13,9 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, renameSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
+import { findClaimCollisions, patternPrefix, patternsOverlap } from './claim-collisions.mjs';
+
+export { patternPrefix, patternsOverlap };
 
 const CLAIMS_DIR = join(process.cwd(), '.lane-claims');
 const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
@@ -57,6 +60,12 @@ export const META_FILES = Object.freeze([
   'pnpm-lock.yaml',
 ]);
 
+/** Pfade, die jede Lane mechanisch aktualisieren darf (Version, Inventur). */
+export const MECHANICAL_FILES = Object.freeze(['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md']);
+
+/** Diese Dateien fuehrt nur die Governance-Lane inhaltlich. */
+export const GOVERNANCE_ONLY_FILES = Object.freeze(['AGENTS.md', 'docs/ARCHITECTURE.md', 'docs/ROADMAP.md']);
+
 /** True, wenn der Pfad zu den gesperrten Meta-Dateien gehoert. */
 export function isForbiddenForLanes(filePath) {
   return META_FILES.includes(String(filePath ?? '').replaceAll('\\', '/'));
@@ -100,12 +109,13 @@ export class LaneClaim {
    * @param {string|null} mergedEvidence - Belegart des Merge-Nachweises
    * @param {string|null} mergedSha - Commit, der den Beleg traegt
    */
-  constructor({ id, owner, branch, baseSha, task = '', pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
+  constructor({ id, owner, branch, baseSha, task = '', goal = '', pathAllowlist = [], contracts = [], dependencies = [], gateProfile = 'quick', status = 'open', mergedEvidence = null, mergedSha = null }) {
     this.id = id;
     this.owner = owner;
     this.branch = branch;
     this.baseSha = baseSha;
     this.task = task;
+    this.goal = goal;
     this.pathAllowlist = pathAllowlist;
     this.contracts = contracts;
     this.dependencies = dependencies;
@@ -139,6 +149,7 @@ export class LaneClaim {
       branch: this.branch,
       baseSha: this.baseSha,
       ...(this.task ? { task: this.task } : {}),
+      ...(this.goal ? { goal: this.goal } : {}),
       pathAllowlist: this.pathAllowlist,
       contracts: this.contracts,
       dependencies: this.dependencies,
@@ -296,71 +307,16 @@ export function pathAllowedForClaim(filePath, laneId) {
   return claim.allowsPath(filePath);
 }
 
-/**
- * Praefix eines Allowlist-Eintrags. `docs/**`, `docs/` und `docs` zeigen alle
- * auf denselben Bereich; der Vergleich darf nicht an der Schreibweise haengen.
- */
-export function patternPrefix(pattern) {
-  return String(pattern ?? '')
-    .replaceAll('\\', '/')
-    .replace(/\/\*\*$/, '')
-    .replace(/\/$/, '');
-}
-
-export function patternsOverlap(a, b) {
-  const pa = patternPrefix(a);
-  const pb = patternPrefix(b);
-  if (!pa || !pb) return false;
-  return pa === pb || pa.startsWith(`${pb}/`) || pb.startsWith(`${pa}/`);
-}
-
-/** Prüft, ob zwei Claims sich überschneiden (gleiche Pfade oder schreibende Contracts). */
-const isClaimEntryPattern = (pattern) => patternPrefix(pattern).startsWith(CLAIM_ENTRY_PREFIX);
-const isCoordinationPattern = (pattern) => {
-  const prefix = patternPrefix(pattern);
-  return COORDINATION_FILES.includes(prefix) || isClaimEntryPattern(prefix);
-};
-const isExactMetaPattern = (pattern) => META_FILES.includes(patternPrefix(pattern));
-
-/**
- * Kollisionen sind Content-Kollisionen. Registerdateien und die gemeinsamen
- * Meta-Dateien sind Koordinationspfade: sie werden von jeder Lane mechanisch
- * beruehrt, duerfen aber keine Lane gegenseitig sperren. Echte Ueberschneidungen
- * ausserhalb dieser Pfade bleiben Kollisionen.
- */
+/** Prueft, ob zwei Claims sich ueberschneiden (gleiche Pfade oder schreibende Contracts). */
 export function findCollisions(newClaim, candidates = openClaims()) {
-  const collisions = [];
-
-  for (const existing of candidates) {
-    if (existing.id === newClaim.id) continue;
-
-    // Pfad-Ueberschneidung auf Praefix-Ebene: `docs/**`, `docs/` und
-    // `docs/CHANGELOG.md` muessen sich als Ueberschneidung erkennen, egal
-    // welche Schreibweise eine Lane gewaehlt hat. Koordinations- und exakte
-    // Meta-Pfade sind davon ausgenommen.
-    const pathOverlap = newClaim.pathAllowlist.some((a) =>
-      existing.pathAllowlist.some((b) => {
-        if (isCoordinationPattern(a) || isCoordinationPattern(b)) return false;
-        if (isExactMetaPattern(a) || isExactMetaPattern(b)) return false;
-        return patternsOverlap(a, b);
-      }),
-    );
-
-    // Contract-Writer-Kollision: beide schreiben denselben Contract
-    const newWrites = new Set(newClaim.writeContracts());
-    const existingWrites = new Set(existing.writeContracts());
-    const contractConflict = [...newWrites].some((id) => existingWrites.has(id));
-
-    if (pathOverlap || contractConflict) {
-      collisions.push({
-        lane: existing.id,
-        reason: pathOverlap ? 'Pfad-Überschneidung in Allowlist' : '',
-        contractConflict: contractConflict ? [...newWrites].filter((id) => existingWrites.has(id)) : [],
-      });
-    }
-  }
-
-  return collisions;
+  return findClaimCollisions({
+    newClaim,
+    candidates,
+    metaFiles: META_FILES,
+    mechanicalFiles: MECHANICAL_FILES,
+    coordinationFiles: COORDINATION_FILES,
+    claimEntryPrefix: CLAIM_ENTRY_PREFIX,
+  });
 }
 
 /** Prüft, ob ein Contract-Id gleichzeitig von zwei offenen Lanes geschrieben wird. */
@@ -377,12 +333,56 @@ export function contractWriterConflicts(contractId) {
 export const CONTROL_PLANE = Object.freeze(['.github', 'scripts', 'src/Config']);
 
 /** Lane-Domaenen, die die Kontrollebene fuehren duerfen. */
+export const isGovernanceLane = (id) => /^(?:lane\/(?:governance|ci)\/|gov\/)/.test(String(id ?? ''));
 const CONTROL_PLANE_LANE = /^(?:lane\/(?:governance|ci)\/|gov\/)/;
 
 /** Ein Muster der Allowlist, das die Kontrollebene beruehrt. */
 export function isControlPlanePattern(pattern) {
   const prefix = patternPrefix(pattern);
   return CONTROL_PLANE.some((area) => prefix === area || prefix.startsWith(`${area}/`));
+}
+
+/**
+ * Prueft einen neu registrierten Claim. `legacy` laesst den historischen
+ * Bestand unangetastet; neue Claim-Dateien muessen den vollstaendigen Vertrag
+ * tragen. Die Kontrollebene und die inhaltlichen Meta-Dateien bleiben der
+ * Governance-Lane vorbehalten.
+ */
+export function validateNewClaim(claim, { legacy = false } = {}) {
+  const violations = [];
+  if (!claim || typeof claim !== 'object' || Array.isArray(claim)) {
+    return { ok: false, violations: ['Claim ist kein Objekt'] };
+  }
+  const label = String(claim.id ?? '(ohne id)');
+  if (!String(claim.id ?? '').trim()) violations.push('Claim-ID fehlt');
+  if (!OWNERS.includes(claim.owner)) violations.push(`${label}: Owner '${claim.owner ?? ''}' ist nicht im Roster`);
+  if (!claim.branch || (!BRANCH_PATTERN.test(claim.branch) && !LEGACY_PREFIXES.some((prefix) => claim.branch.startsWith(prefix)))) {
+    violations.push(`${label}: Branch '${claim.branch ?? ''}' folgt nicht dem Schema`);
+  }
+  if (!legacy && !/^[0-9a-f]{40}$/.test(String(claim.baseSha ?? ''))) {
+    violations.push(`${label}: baseSha ist kein vollstaendiger Commit`);
+  } else if (legacy && !/^[0-9a-f]{7,40}$/.test(String(claim.baseSha ?? ''))) {
+    violations.push(`${label}: baseSha ist kein Commit`);
+  }
+  const allowlist = Array.isArray(claim.pathAllowlist) ? claim.pathAllowlist : [];
+  if (allowlist.length === 0) violations.push(`${label}: Pfad-Allowlist ist leer`);
+  if (!['light', 'quick', 'full'].includes(claim.gateProfile)) violations.push(`${label}: gateProfile '${claim.gateProfile ?? ''}' ist unbekannt`);
+  if (!legacy) {
+    if (!String(claim.task ?? '').trim()) violations.push(`${label}: task fehlt`);
+    if (claim.goal !== undefined && typeof claim.goal !== 'string') violations.push(`${label}: goal ist kein Text`);
+    if (!isGovernanceLane(claim.id)) {
+      if (allowlist.some(isControlPlanePattern)) {
+        violations.push(`${label}: Kontrollebene (.github/, scripts/, src/Config/) nur fuer Governance- oder CI-Lanes`);
+      }
+      const forbidden = new Set([...GOVERNANCE_ONLY_FILES, ...META_FILES.filter((file) => !MECHANICAL_FILES.includes(file))]);
+      for (const file of forbidden) {
+        if (allowlist.some((pattern) => allowsPath([pattern], file))) {
+          violations.push(`${label}: Meta-Datei '${file}' nur fuer Governance-Lanes`);
+        }
+      }
+    }
+  }
+  return { ok: violations.length === 0, violations };
 }
 
 /**
@@ -408,12 +408,7 @@ export function auditClaimChange(previous, next) {
   const violations = [];
   if (!next) return { ok: false, violations: ['Claim fehlt im neuen Register'] };
   const label = next.id;
-  if (!previous) {
-    if (!CONTROL_PLANE_LANE.test(next.id) && (next.pathAllowlist ?? []).some(isControlPlanePattern)) {
-      violations.push(`${label}: Kontrollebene (.github/, scripts/, src/Config/) nur fuer Governance- oder CI-Lanes`);
-    }
-    return { ok: violations.length === 0, violations };
-  }
+  if (!previous) return validateNewClaim(next);
   if (previous.owner !== next.owner) violations.push(`${label}: Owner gewechselt (${previous.owner} -> ${next.owner})`);
   if (previous.status === 'open' && previous.branch !== next.branch) {
     violations.push(`${label}: Branch gewechselt (${previous.branch} -> ${next.branch})`);
@@ -442,6 +437,7 @@ const claimFingerprint = (claim) =>
     branch: claim.branch,
     baseSha: claim.baseSha,
     task: claim.task ?? '',
+    goal: claim.goal ?? '',
     pathAllowlist: claim.pathAllowlist ?? [],
     contracts: claim.contracts ?? [],
     dependencies: claim.dependencies ?? [],
@@ -455,7 +451,8 @@ const claimFingerprint = (claim) =>
  * Register gegen den Basisstand pruefen: die eigene Lane darf ihren Claim
  * nicht erweitern, und eine Feature-Lane fasst fremde Claims nicht an. Ein
  * neu angelegter Claim ist erlaubt, solange er nicht die Kontrollebene ohne
- * Governance-Domaene fuehrt.
+ * Governance-Domaene fuehrt. Governance darf fremde Claims nur im Status
+ * weiterziehen, nicht ihren Vertrag umschreiben.
  */
 export function auditRegisterAgainstBase({ baseClaims = [], registrationClaims = [], nextClaims = [], branch } = {}) {
   const violations = [];
@@ -480,12 +477,26 @@ export function auditRegisterAgainstBase({ baseClaims = [], registrationClaims =
       continue;
     }
     if (!before) {
-      if (!governance) violations.push(`${claim.id}: neuer fremder Claim in einer Feature-Lane`);
+      if (!governance) {
+        violations.push(`${claim.id}: neuer fremder Claim in einer Feature-Lane`);
+      } else {
+        violations.push(...validateNewClaim(claim).violations);
+      }
       continue;
     }
     violations.push(...auditClaimChange(before, claim).violations);
     if (!governance && claimFingerprint(before) !== claimFingerprint(claim)) {
       violations.push(`${claim.id}: fremder Claim veraendert (nur Governance)`);
+    } else if (governance) {
+      const statusOnly = {
+        ...before,
+        status: claim.status,
+        mergedEvidence: claim.mergedEvidence,
+        mergedSha: claim.mergedSha,
+      };
+      if (claimFingerprint(statusOnly) !== claimFingerprint(claim)) {
+        violations.push(`${claim.id}: Governance darf fremde Claims nur im Status aendern`);
+      }
     }
   }
 
@@ -517,6 +528,8 @@ export function contextSummary() {
       owner: c.owner,
       branch: c.branch,
       baseSha: c.baseSha,
+      task: c.task ?? '',
+      goal: c.goal ?? '',
       pathAllowlist: c.pathAllowlist,
       writeContracts: c.writeContracts(),
       dependencies: c.dependencies,
