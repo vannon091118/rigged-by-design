@@ -20,7 +20,20 @@ const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'rep
 // Modus waere die Claim-Sperre nur lokal: ein Cloud-Agent ohne Hooks schriebe
 // ausserhalb jeder Allowlist, und niemand saehe es.
 const CI = process.argv.includes('--ci');
-const RANGE = CI ? `${process.env.BASE_REF ?? 'origin/main'}...HEAD` : null;
+const BASE_REF = process.env.BASE_REF ?? 'origin/main';
+const RANGE = CI ? `${BASE_REF}...HEAD` : null;
+
+// Ein Merge bringt fremde Arbeit mit. Bewertet wird nur, was der Branch
+// gegenueber der Basis wirklich selbst hinzufuegt - sonst wuerde jeder Merge
+// von main als Lane-Verstoss gelten und liesse sich nie committen.
+const MERGING = (() => {
+  try {
+    return git(['rev-parse', '-q', '--verify', 'MERGE_HEAD']) !== '';
+  } catch {
+    return false;
+  }
+})();
+const DIFF_BASE = CI ? RANGE : (MERGING ? BASE_REF : null);
 
 const branch = process.env.BRANCH || (CI ? process.env.GITHUB_HEAD_REF : '') || git(['rev-parse', '--abbrev-ref', 'HEAD']);
 
@@ -102,8 +115,8 @@ const SYSTEM_LINE = /^[+-](<!--\s*rbd-doc:.*-->|"version":\s*".*",?|)\s*$/;
 function onlySystemLines(file) {
   let diff;
   try {
-    diff = RANGE
-      ? git(['diff', '--unified=0', RANGE, '--', file])
+    diff = DIFF_BASE
+      ? git(['diff', '--unified=0', DIFF_BASE, '--', file])
       : git(['diff', '--cached', '--unified=0', '--', file]);
   } catch {
     return false;
@@ -115,8 +128,8 @@ function onlySystemLines(file) {
   return changed.every((line) => SYSTEM_LINE.test(line));
 }
 
-const staged = (RANGE
-  ? git(['diff', '--name-only', '--diff-filter=ACMR', RANGE])
+const staged = (DIFF_BASE
+  ? git(['diff', '--name-only', '--diff-filter=ACMR', DIFF_BASE])
   : git(['diff', '--cached', '--name-only', '--diff-filter=ACMR'])
 ).split(/\r?\n/).filter(Boolean);
 
@@ -124,7 +137,9 @@ const staged = (RANGE
 // gemergten Lanes stammt. Deren Pfade sind gedeckt - aber nur durch Claims,
 // die wirklich als `merged` registriert sind. Ein Pfad ohne jeden Claim
 // bleibt eine Verletzung, auch in CI.
-const mergedClaims = CI ? allClaims.filter((c) => c.status === 'merged') : [];
+// CI und Merge pruefen einen Stand, der fremde Arbeit enthaelt; nur ein
+// normaler Commit prueft ausschliesslich die eigene Arbeit.
+const mergedClaims = (CI || MERGING) ? allClaims.filter((c) => c.status === 'merged') : [];
 
 const violations = [];
 const allowedBySystem = [];
@@ -179,6 +194,6 @@ if (inherited.length > 0) {
 }
 
 const systemNote = allowedBySystem.length > 0 ? `, davon ${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '';
-const scope = CI ? `CI-Diff ${RANGE}` : 'gestagte Dateien';
+const scope = CI ? `CI-Diff ${RANGE}` : (MERGING ? `Merge-Diff ${DIFF_BASE}` : 'gestagte Dateien');
 console.log(`verify-lane-claims: Branch '${branch}' ist claim-konform (${staged.length} ${scope}${systemNote}).`);
 process.exit(0);

@@ -4,6 +4,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
+import { isForbiddenForLanes } from './lib/lane-claims.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
@@ -42,6 +43,26 @@ console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${AFFECTED ? ' + t
 const stage = () => {
   if (paths.length > 0) git(['add', '--', ...paths]);
   else git(['add', '-A']);
+  // Globale Sperrliste: keine Lane (und kein turn:finish ohne explizite Pfade)
+  // darf die acht Metadaten-Dateien committieren. Sie werden zentral im
+  // Merge-/Promote-Schritt gepflegt. Nach `git add -A` werden sie wieder
+  // aus dem Index entfernt, sofern nicht explizit als --paths übergeben.
+  if (paths.length === 0) {
+    const staged = git(['diff', '--cached', '--name-only']);
+    const forbidden = staged
+      .split(/\r?\n/)
+      .filter(Boolean)
+      .filter((file) => isForbiddenForLanes(file) && file !== 'package.json' && file !== 'pnpm-lock.yaml');
+    if (forbidden.length > 0) {
+      git(['reset', '--', ...forbidden]);
+      console.log(`turn:finish: ${forbidden.length} Sperrlisten-Datei(en) vom Index entfernt: ${forbidden.join(', ')}`);
+    }
+    // package.json und pnpm-lock.yaml gehoeren zum turn:finish-Versions-Bump und
+    // werden zentral gepflegt; sie bleiben im Index.
+    if (forbidden.length === 0 || staged.split(/\r?\n/).filter(Boolean).some((f) => f === 'package.json' || f === 'pnpm-lock.yaml')) {
+      git(['add', '--', 'package.json', 'pnpm-lock.yaml']);
+    }
+  }
 };
 
 // Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.
