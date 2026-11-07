@@ -188,11 +188,14 @@ if (issues.checked) {
   notes.push(`Issue-Check nicht ausgefuehrt (gh fehlt oder ist nicht angemeldet): ${issues.errors.join(', ')}; Befehle stehen unten.`);
 }
 
+const claimState = claimRegisterError ? 'CLAIM_INVALID' : claim ? 'CLAIM_VALID' : 'CLAIM_MISSING';
 const state = blockers.length > 0 ? 'TASK_BLOCKED' : 'SCOPE_VALID';
 const checks = {
   bootstrap: true,
   claim: Boolean(claim),
+  claimState,
   scope: Boolean(claim) && blockers.length === 0,
+  scopeState: state,
   isolation: isolation.ok,
 };
 
@@ -200,6 +203,7 @@ if (asJson) {
   console.log(JSON.stringify({
     ok: blockers.length === 0,
     state,
+    claimState,
     checks,
     branch,
     head,
@@ -252,6 +256,6 @@ if (!asJson) {
     console.log(context);
     console.log('');
   }
-  console.log(`pretask: ${state} - neue Arbeit erlaubt.`);
+  console.log(`pretask: ${state} (${claimState}) - neue Arbeit erlaubt.`);
   console.log('  Arbeit: pnpm run turn:finish führt die betroffenen schnellen Tests aus; lange Nachweise übernimmt CI.');
 }
