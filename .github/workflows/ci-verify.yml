@@ -120,7 +120,15 @@ jobs:
             --profile="$PROFILE" \
             --impact="${{ steps.range.outputs.impact }}" \
             --github-output "$GITHUB_OUTPUT"
-          echo "::notice::Gate-Matrix: ${{ steps.gates.outputs.matrix }}"
+
+      # Eine leere oder kaputte Matrix wuerde als "Gate: failure" ohne Job
+      # enden. Hier wird sie stattdessen mit ihrem Inhalt benannt.
+      - name: Matrix validieren
+        env:
+          MATRIX: ${{ steps.gates.outputs.matrix }}
+        run: |
+          echo "::notice::Matrix-Laenge: ${#MATRIX}"
+          node -e 'const raw = process.env.MATRIX ?? ""; let m; try { m = JSON.parse(raw); } catch (error) { console.error(`::error::Gate-Matrix ist kein JSON: ${error.message} :: ${raw}`); process.exit(1); } const inc = m.include; if (!Array.isArray(inc) || inc.length === 0) { console.error(`::error::Gate-Matrix ist leer: ${raw || "<leer>"}`); process.exit(1); } console.log(`Gates: ${inc.map((entry) => entry.gate).join(", ")}`);'
 
       # Klein und maschinenlesbar: welcher Diff, welche Gates, welche Tests,
       # was bewusst ausgelassen wurde. Kein Log-Friedhof, 7 Tage Retention.
