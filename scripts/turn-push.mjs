@@ -4,7 +4,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
-import { isForbiddenForLanes, openClaims } from './lib/lane-claims.mjs';
+import { claimForBranch, isForbiddenForLanes } from './lib/lane-claims.mjs';
 import { scopeChanges } from './lib/staging-scope.mjs';
 import {
   classifyPaths,
@@ -61,7 +61,7 @@ const stage = () => {
     // Ein Claim, der einen Meta-Pfad ausdruecklich fuehrt, ist die Ausnahme:
     // sonst koennte keine Governance-Lane ihre eigene Doku committen, obwohl
     // AGENTS.md genau diesen Weg verlangt.
-    const claim = openClaims().find((entry) => entry.branch === currentBranch);
+    const claim = claimForBranch(currentBranch);
     const forbidden = staged
       .split(/\r?\n/)
       .filter(Boolean)
@@ -91,7 +91,7 @@ if (!schmutz && offenVorab === 0) {
 // eines parallelen Agenten einsammeln; ein Pfad ausserhalb der Allowlist ist
 // ein Befund (ERR-4019), keine stille Mitnahme.
 if (paths.length === 0 && schmutz) {
-  const claim = openClaims().find((entry) => entry.branch === currentBranch);
+  const claim = claimForBranch(currentBranch);
   if (!claim) {
     fail(1, 'ERR-4019', 'turn:finish', `kein Claim fuer '${currentBranch}'; erst Claim eintragen, dann committen`);
     process.exit(1);

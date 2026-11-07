@@ -19,6 +19,7 @@ import {
   OWNERS,
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
+  selectClaim,
 } from './lib/lane-claims.mjs';
 import { decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
@@ -72,7 +73,10 @@ for (const key of ['id', 'branch']) {
 }
 
 const claims = allClaims.filter((c) => c.status === 'open');
-const claim = claims.find((c) => c.branch === branch);
+// Ein gemergter Claim gilt fuer seinen eigenen Branch weiter: so landet der
+// Register-Nachtrag auf dem Branch der zuletzt gemergten Lane, ohne dass ein
+// neuer offener Claim mit bereits gemergtem PR entsteht.
+const claim = selectClaim(allClaims, branch);
 
 /**
  * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz mit dem
@@ -99,6 +103,10 @@ if (!OWNERS.includes(claim.owner)) {
 if (!BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
   console.error(`[ERR-4019] verify-lane-claims: Branch '${branch}' folgt nicht dem Schema lane/<domäne>/<task>.`);
   process.exit(1);
+}
+
+if (claim.status === 'merged') {
+  console.log(`verify-lane-claims: '${claim.id}' ist gemergt; der Branch fuehrt unter derselben Allowlist weiter.`);
 }
 
 // Die acht Meta-Dateien kommen aus scripts/lib/lane-claims.mjs: eine Liste fuer

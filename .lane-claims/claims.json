@@ -581,12 +581,19 @@
       "package.json",
       "pnpm-lock.yaml",
       "AGENTS.md",
-      "docs/ARCHITECTURE.md"
+      "docs/ARCHITECTURE.md",
+      "scripts/lib/lane-claims.mjs",
+      "scripts/turn-push.mjs",
+      "scripts/verify-lane-claims.mjs",
+      "src/core/governance/__tests__/lane-claims.test.ts",
+      "src/core/governance/__tests__/scripts-libs.d.ts"
     ],
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
+    "status": "merged",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "893317c372f13bebbb040e62456fcbe54ecf8380",
     "createdAt": "e2869a1df794575f7c4c05a1ef570a21271db1d3"
   }
 ]

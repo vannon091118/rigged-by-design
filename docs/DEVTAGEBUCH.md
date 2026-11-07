@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
+<!-- rbd-doc: v0.3.162 | 2026-11-07 09:43 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Claim 14 und das Ende der Selbstreferenz
+
+**Ziel.** Nach dem Merge von #219 stand Claim 14 offen; ein neuer Claim fuer den Nachtrag haette nach seinem eigenen Merge dasselbe Problem nur eine Ebene weitergeschoben.
+
+**Umsetzung.** Claim 14 ist ueber den baumgleichen Commit `893317c` als `merged` geschrieben. Fuer den Nachtrag auf demselben Branch waehlt `selectClaim()` erst den offenen, dann den gemergten Claim der Lane; `verify-lane-claims.mjs` und `turn-push.mjs` teilen diese Auswahl. Kein neues Modul, keine zweite Evidenzlogik.
+
+**Pruefungen.** `reconcile-claims` schreibt genau einen Claim; der zweite Lauf meldet `keine Abweichung`; `verify-lane-claims` meldet 0 Kollisionen und fuehrt den Branch unter dem gemergten Claim. `claim-evidence.test.ts` 7/7, `lane-claims.test.ts` 3/3, `pnpm run typecheck`, `pnpm run verify:light` und `verify-commit-msg` gruen.
+
+**Offen.** Keine offenen Registereintraege mehr auf `main`; Slice C und der Doku-Resolver bleiben in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Claim 13 reconciled
 

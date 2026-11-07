@@ -197,6 +197,28 @@ export function openClaims() {
   return loadClaims().filter((c) => c.status === 'open');
 }
 
+/**
+ * Der Vertrag einer Lane: erst der offene Claim, sonst ein bereits gemergter
+ * derselben Lane. Ein Nachtrag auf dem Branch einer gemergten Lane - etwa der
+ * Register-Status, der erst nach dem Merge belegbar ist - braucht keinen neuen
+ * Claim: der stuende nach seinem eigenen Merge sofort wieder als `open` im
+ * Register und schoebe die Selbstreferenz nur eine Ebene weiter. Die
+ * Allowlist des gemergten Claims gilt unveraendert weiter.
+ */
+export function selectClaim(claims, branch) {
+  const list = Array.isArray(claims) ? claims : [];
+  return (
+    list.find((entry) => entry.status === 'open' && entry.branch === branch) ??
+    list.find((entry) => entry.status === 'merged' && entry.branch === branch) ??
+    null
+  );
+}
+
+/** Liest das Register und waehlt den Claim fuer einen Branch; ohne Claim `null`. */
+export function claimForBranch(branch) {
+  return selectClaim(loadClaims(), branch);
+}
+
 /** Validiert, ob ein Pfad durch einen offenen Claim abgedeckt ist. */
 export function pathAllowedForClaim(filePath, laneId) {
   const claims = openClaims();

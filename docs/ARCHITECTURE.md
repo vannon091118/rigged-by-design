@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
+<!-- rbd-doc: v0.3.162 | 2026-11-07 09:43 UTC -->
 
 ## README als Einstieg
 
@@ -131,7 +131,7 @@ Es gibt drei Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 `scripts/lib/gate-diagnostics.mjs` ist die einzige Auswertung eines roten Laufs: es sammelt alle fehlgeschlagenen Jobs und Schritte, zieht den Fehlercode aus der letzten roten Log-Zeile (PASS-Zeilen zaehlen nicht) und gruppiert gleiche Codes zu einer Ursache. `pr-watcher.mjs` liest nur noch dieses Ergebnis; `firstGateError()` und die lokale Log-Heuristik sind entfallen. Vor dem Issue startet der Watcher ausschliesslich transiente Befunde einmal neu (`run_attempt < 2`), fachliche Fehler nie.
 
-`scripts/lib/claim-evidence.mjs` beantwortet die Frage, wann ein Claim `merged` werden darf: nur mit einem gemergten Pull Request fuer genau diesen Branch, einem Branch-Kopf, der auf `main` liegt, oder einem Commit auf `main`, dessen Baum mit dem Lane-Kopf identisch ist. Der dritte Beleg ist der Normalfall des Squash-Merges: der Branch ist danach geloescht, sein Inhalt steht als ein Commit auf `main` - `localMergeEvidence()` liest das aus `refs/heads`, `refs/remotes/origin` und `git log` ohne `gh`. `baseSha` ist bewusst kein Parameter - er liegt per Definition auf `main` und taugt nicht als Nachweis. `reconcile-claims.mjs` meldet unbelegte Faelle und schreibt nur mit `--apply`, dann mit `mergedEvidence` und `mergedSha`; `verify-lane-claims.mjs` laesst eine Kollision mit einer nachweislich gemergten Lane nicht mehr blockieren, und ohne Nachweis bleibt sie bestehen (fail-closed).
+`scripts/lib/claim-evidence.mjs` beantwortet die Frage, wann ein Claim `merged` werden darf: nur mit einem gemergten Pull Request fuer genau diesen Branch, einem Branch-Kopf, der auf `main` liegt, oder einem Commit auf `main`, dessen Baum mit dem Lane-Kopf identisch ist. Der dritte Beleg ist der Normalfall des Squash-Merges: der Branch ist danach geloescht, sein Inhalt steht als ein Commit auf `main` - `localMergeEvidence()` liest das aus `refs/heads`, `refs/remotes/origin` und `git log` ohne `gh`. `baseSha` ist bewusst kein Parameter - er liegt per Definition auf `main` und taugt nicht als Nachweis. `reconcile-claims.mjs` meldet unbelegte Faelle und schreibt nur mit `--apply`, dann mit `mergedEvidence` und `mergedSha`; `verify-lane-claims.mjs` laesst eine Kollision mit einer nachweislich gemergten Lane nicht mehr blockieren, und ohne Nachweis bleibt sie bestehen (fail-closed). Ein gemergter Claim fuehrt seinen eigenen Branch weiter (`selectClaim()`): so landet der Register-Nachtrag nach dem Merge, ohne einen neuen Claim zu erzeugen, der sofort wieder offen waere.
 
 ### Lokales Feedback und Staging-Scope
 

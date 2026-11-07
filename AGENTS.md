@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.161 | 2026-11-07 09:35 UTC -->
+<!-- rbd-doc: v0.3.162 | 2026-11-07 09:43 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -176,7 +176,7 @@ diese Punkte:
 | Regel | Durchsetzung |
 | --- | --- |
 | Startblocker (Merge/Rebase, unmerged Pfade, Konfliktmarker) | `pretask.mjs` Exit 1 |
-| Lane-Claim, Owner, Allowlist, Kollisionen | `.githooks/pre-commit`, `verify-lane-claims --ci` im PR |
+| Lane-Claim, Owner, Allowlist, Kollisionen | `.githooks/pre-commit`, `verify-lane-claims --ci` im PR; ein gemergter Claim führt seinen Branch für den Register-Nachtrag weiter (`selectClaim`) |
 | Kein Direktpush auf `main` | Branch-Schutz; `turn-push.mjs` bricht mit `ERR-4023` ab |
 | Pflichtabschnitte im Commit | `verify-commit-msg` in `turn-push.mjs` (`ERR-4006`) und in CI |
 | Erhalt vorhandener Bodies | `turn-push.mjs` bricht ohne inhaltliche `.turn-notes.md` ab (`ERR-4006`); `body-sync` schreibt nur den markierten Bereich |
