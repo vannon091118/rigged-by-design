@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/games/slot-session.ts
+ * @proof-class: statistics
  * @error-code: ERR-1003
  *
  * Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen.

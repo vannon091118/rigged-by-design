@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:49 UTC -->
 
 ## README als Einstieg
 
@@ -21,7 +21,7 @@
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
 - Direktpush auf `main` ist durch das Ruleset gesperrt: Weg ist Arbeitsbranch, PR, Promotion. `turn-push.mjs` meldet das als ERR-4023.
-- Lokal laufen `verify` (Quick) und `test:affected`; `verify:all` und `ci:long` laufen in CI.
+- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` dispatcht keinen main-Lauf mehr.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
 ## Zustandsbesitz
@@ -145,11 +145,11 @@ Der Gate-Plan ist die Wahrheit, nicht der Job: `node scripts/gate-matrix.mjs --p
 
 ### Kontrollebene und Pruefobjekt
 
-Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` legt neben dem PR-Baum einen Worktree `.rbd-control` am Basis-Commit an (bei PRs `pull_request.base.sha`, bei Pushes `before`, sonst `main`); `ci-plan.mjs`, `run-pipeline.mjs`, die Node-Gates und `verify-lane-claims.mjs` laufen aus diesem Checkout, waehrend `RBD_ROOT` auf den PR-Baum zeigt. `report.mjs` loest `ROOT` daraus auf, `gate-runner.mjs` nur die Node-Gates; `pnpm`-Gates (Lint, Typecheck, Tests) bleiben Produktcode des Pruefobjekts. Eine Aenderung an der Pruefsteuerung wirkt damit erst nach ihrem Merge auf `main`, nicht im eigenen PR. Kennt die Basis `RBD_ROOT` noch nicht (Bootstrap des Umbaus), erkennt der Lauf das an `scripts/lib/report.mjs` und faehrt mit den PR-Skripten weiter; der Uebergangsfall wird als Notice gemeldet und verschwindet mit dem Merge. `promote.mjs` bindet den Merge zusaetzlich an den exakt geprueften Kopf: `promote-guard.mjs` prueft Herkunfts-Repository, PR-Ziel und `headRefOid` gegen `workflow_run.head_sha`, `gh pr merge --match-head-commit` verhindert einen spaeten Push zwischen Pruefung und Merge. Ein manueller Dispatch hat keinen CI-Nachweis und kennt deshalb nur `inspect` oder `integrate`.
+Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` legt neben dem PR-Baum einen Worktree `.rbd-control` am Basis-Commit an (bei PRs `pull_request.base.sha`, bei Feature-Pushes `before`, auf `main` dem bereits vertrauenswuerdigen gepushten Commit, sonst `main`); `ci-plan.mjs`, `run-pipeline.mjs`, die Node-Gates und `verify-lane-claims.mjs` laufen aus diesem Checkout, waehrend `RBD_ROOT` auf den PR-Baum zeigt. `report.mjs` loest `ROOT` daraus auf, `gate-runner.mjs` nur die Node-Gates; `pnpm`-Gates (Lint, Typecheck, Tests) bleiben Produktcode des Pruefobjekts. Eine Aenderung an der Pruefsteuerung wirkt damit erst nach ihrem Merge auf `main`, nicht im eigenen PR. Kennt die Basis `RBD_ROOT` noch nicht (Bootstrap des Umbaus), erkennt der Lauf das an `scripts/lib/report.mjs` und faehrt mit den PR-Skripten weiter; der Uebergangsfall wird als Notice gemeldet und verschwindet mit dem Merge. `promote.mjs` bindet den Merge zusaetzlich an den exakt geprueften Kopf: `promote-guard.mjs` prueft Herkunfts-Repository, PR-Ziel und `headRefOid` gegen `workflow_run.head_sha`, `gh pr merge --match-head-commit` verhindert einen spaeten Push zwischen Pruefung und Merge. Ein manueller Dispatch hat keinen CI-Nachweis und kennt deshalb nur `inspect` oder `integrate`.
  `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Die Zeitlimits bleiben großzügig (30 Minuten je Job, hartes Gate-Limit in `scripts/lib/pipeline-plan.mjs`); ein Abbruch ist `REMOTE_CI` und wird wiederholt, nicht als roter Stand gewertet.
 | `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
-Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish -- --affected` fährt die Auswahl vor dem Versions-Bump als zusätzliche Entwicklungsstufe; danach läuft `verify:quick` beziehungsweise mit `:full` unverändert `verify:all`.
+Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist Entwicklungsfeedback und kein viertes Gate: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish` fährt die Auswahl jetzt standardmäßig vor dem Versions-Bump; danach läuft `verify:light`. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht.
 
 ## Testkatalog und Beweisklassen
 
@@ -216,7 +216,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 197: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+191) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 198: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+192) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 3: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
 <!-- DEP_MATRIX_END -->
 
@@ -259,7 +259,7 @@ genau einen Eintrag. Doku-Eintraege erzeugt `pnpm run docs:stub -- "Titel"`
 pnpm run turn:finish
 ```
 
-`turn:finish` führt Autofix und das Prüfprofil aus — im Normalfall `verify:quick`, über `pnpm run turn:finish:full` das volle `verify:all` —, erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht auf `main`. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `git add -A` alles, was `.gitignore` übrig lässt, also auch neue Dateien; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` führt die betroffenen schnellen Tests vor dem Versions-Bump und danach das lokale Prüfprofil `verify:light` aus; über `pnpm run turn:finish:full` läuft stattdessen das volle `verify:all`. Es erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht den Arbeitsbranch; ein Direktpush auf `main` bleibt gesperrt. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also alle zwölf Gates; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `turn:finish` nur die Pfade des eigenen Claims plus `package.json` und `pnpm-lock.yaml`; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Fremde WIP bleibt liegen. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
 Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 
@@ -1034,10 +1034,12 @@ keine Screenshot-Ordner mehr auf.
   Requests mit dem Label `keep-branch` bleiben unberuehrt. Lokal raeumt
   `pnpm run branches:prune` jeden nach `main` gemergten Branch ab; `turn:finish`
   ruft das nach dem Push selbst auf. Offene Arbeit und `main` bleiben stehen.
-- `long-checks.yml` ist rein manuell (`workflow_dispatch`) und traegt die teuren
-  Nachweise: Statistik (RTP, Poker-Verteilung), Soak, Balance und Benchmarks.
-  `ppnpm run ci:long` startet ihn, wartet auf das Ergebnis und laedt den
-  Balance-Bericht als Artefakt; lokal laufen diese Klassen nie mit.
+- `long-checks.yml` traegt den woechentlichen Vollauf und den manuellen Lauf
+  fuer Statistik (RTP, Poker-Verteilung), Soak, Balance und Benchmarks.
+  `pnpm run ci:long` startet ihn standardmaessig ohne `verify:all`; `--verify`
+  fordert die volle Suite ausdruecklich an, `--ref` waehlt den Branch. Die vom
+  Impact betroffenen Langlaufdateien startet `ci-verify.yml` als eigene Matrix
+  auf dem exakten PR-Kopf.
 - Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die
   26.04-Migration nicht ungeplant in den Build rutscht. Die Actions laufen auf
   Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`,
@@ -1109,11 +1111,13 @@ den Importgraphen (`selectAffectedTests`), den Testkatalog mit Beweisklassen,
 | Agentenkontext | `scripts/agent-context.mjs` | kompakter Text oder JSON, keine Pruefung |
 | Pruefplan + Ausfuehrung | `scripts/agent-verify.mjs` -> `runGates` | gleiche Gates wie `pipeline-plan`, Cache wird genutzt |
 | Teilpruefung | Impact-Auswahl | `RBD_TEST_FILES` an `run-selected-tests.mjs`, Testgate ungecacht, Bericht `partial: true` |
-| Lange Nachweise | `--ci` -> `ci-long-checks.mjs` | Actions-Lauf, auf den gewartet wird; Ergebnis im Bericht |
+| Lange Nachweise | CI-Plan -> `long`-Matrix | eigene Jobs auf dem exakten PR-Kopf; `--ci` markiert sie als delegiert, `--dispatch-long` startet den manuellen Vollauf |
 | Bericht | `.verify-cache/reports/<Zeit>/agent-summary.json` | `cached`, `executed`, `skipped`, `delegated` je Gate |
 
-Eine Auswahl ist nie ein Vollnachweis: `verify:quick` und `verify:all` bleiben
+Eine Auswahl ist nie ein Vollnachweis: `verify:light` und `verify:all` bleiben
 die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
+Lange Nachweise werden nicht lokal nachgebaut; der PR-Plan fuehrt sie auf dem
+exakten Commit, der Wochenlauf deckt die systemweiten Abweichungen ab.
 
 ### Auto-Promotion und Integrationsbranch
 
@@ -1200,7 +1204,7 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | PR ohne Pflichtstatus nicht mergebar | Ebene B, `required_status_checks` |
 | Verify veraendert keinen Arbeitsbaum | `pnpm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`); Berichte liegen im gitignorierten `.verify-cache/reports/` |
 | Wegwerf-Branches verschwinden nach dem Merge | `pr-cleanup.yml` (nur gemergt, nicht `main`, kein Fork, kein `keep-branch`); lokal `pnpm run branches:prune` |
-| Lange Nachweise laufen nicht lokal | `ppnpm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; `long-checks.yml` rechnet sie in CI |
+| Lange Nachweise laufen nicht lokal | `pnpm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; der CI-Plan startet die betroffenen Dateien als eigene Matrix, der Wochenlauf deckt den Rest ab |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `pnpm run fix` |
 | Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Inhalts-Hash; Fix-Lauf meldet „keine Aenderung“ |
 
@@ -1749,8 +1753,9 @@ damit es keine zweite Wahrheit gibt.
   Messung ohne Kern-Pinning. Der Runden-Benchmark hat ein Zeitbudget je Spiel,
   damit langsame Hardware die Kennzahl ms/Runde liefert statt in den Timeout zu
   laufen; die 60-s-Grenze war dort der einzige rote Punkt.
-- Lange Nachweise bleiben in Actions: `pnpm run ci:long` startet `long-checks.yml`
-  (verify:all, Statistik, Soak 100000 Ticks, Balance 40 Tage, Benchmarks).
+- Lange Nachweise bleiben in Actions: der CI-Plan startet die betroffenen
+  Statistik-/Soak-Dateien auf dem PR-Kopf; `long-checks.yml` deckt woechentlich
+  Statistik, Soak 100000 Ticks, Balance 40 Tage und Benchmarks ab.
 
 ### 17. Agenten-Contributions: Workflow und Fehlerfaelle
 

@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.174 | 2026-11-07 11:29 UTC -->
+<!-- rbd-doc: v0.3.175 | 2026-11-07 11:49 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Lokale Tests, lange Nachweise und Main-Regression verbunden
+
+**Ziel.** Der Audit hatte vier Luecken benannt: `turn:finish` prueft standardmaessig keine Tests, lange Nachweise bleiben manuell, `narrative-longrun` wird als schneller Test katalogisiert, und `pretask` fuehrt Issue-Check und Arbeitsbrief nicht selbst aus.
+
+**Umsetzung.** `turn-push.mjs` fuehrt vor dem Versions-Bump `test:affected` aus und nennt die langen Nachweise als offen; `--no-affected` ist der ausdrueckliche Ausstieg fuer reine Doku. `test-catalog.mjs` liest eine deklarierte `@proof-class` aus dem Kopfkommentar; der Narrative-Langlauf traegt `statistics`. `ci-plan.mjs` exportiert `long_count`, `long_matrix` und `long_tests`; `ci-verify.yml` startet daraus einen eigenen Matrix-Job auf dem PR-Kopf und fuehrt ihn im Pflichtstatus. Auf `main` bleibt die Gate-Auswahl impact-basiert, aber Runtime-/Testaenderungen erhalten die volle Suite. `long-checks.yml` hat einen woechentlichen Lauf; `ci:long` fordert `verify:all` nur noch mit `--verify` an. `agent:verify --ci` dispatcht nicht mehr auf `main`, sondern markiert die Nachweise als an den PR-Plan delegiert. `pretask.mjs` ruft `gh issue list` auf, gibt den Impact-Kontext aus und blockt einen fehlenden Claim mit `ERR-4019`.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/ci-plan.test.ts src/core/governance/__tests__/test-catalog.test.ts src/core/governance/__tests__/affected-tests.test.ts src/core/governance/__tests__/ci-gates.test.ts src/core/governance/__tests__/workflow-hardening.test.ts --reporter=verbose` -> 5 Dateien, 28/28 Tests; `pnpm run typecheck` gruen; `node --check` fuer die geaenderten Skripte; beide Workflows parsen als YAML.
+
+**Offen.** Der erste echte PR-Lauf muss den neuen Long-Job mit einem tatsaechlich betroffenen Nachweis zeigen; der lokale Rechner kann nur Matrix-Struktur und Auswahl belegen. Die woechentliche Schedule-Ausfuehrung ist nach dem Merge am ersten Montag zu beobachten.
 
 ## 2026-11-07 - Claim 27 nach dem Squash-Merge geschlossen
 

@@ -69,7 +69,7 @@ describe('workflow hardening', () => {
 
     const balance = stepWithRun(long, 'balance-run.mjs');
     expect(balance?.run).toBe('node scripts/balance-run.mjs');
-    expect(balance?.env?.RBD_DAYS).toBe('${{ inputs.balance_days }}');
+    expect(balance?.env?.RBD_DAYS).toBe("${{ inputs.balance_days || '40' }}");
   });
 
   it('gibt der Testsuite keinen Kontroll-Root, den Node-Gates aber schon', () => {

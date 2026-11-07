@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/sim/tick.ts
+ * @proof-class: statistics
  * @error-code: ERR-2001
  *
  * NAR-16: Mehr-Tage-Betrieb mit Geschichten, Rivalen und Save/Replay. Der Lauf

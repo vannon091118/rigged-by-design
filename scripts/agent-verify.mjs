@@ -22,6 +22,7 @@ const argv = process.argv.slice(2);
 const profileArg = argv.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'quick';
 const CI = argv.includes('--ci');
+const DISPATCH_LONG = argv.includes('--dispatch-long');
 const AS_JSON = argv.includes('--json');
 const PLAN_ONLY = argv.includes('--plan');
 
@@ -97,8 +98,16 @@ const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'repor
 mkdirSync(dir, { recursive: true });
 writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
 
+// `--ci` bedeutet: der PR-Plan übernimmt die langen Nachweise auf dem exakten
+// Commit. Ein main-Dispatch aus dem lokalen Turn wäre weder derselbe Commit
+// noch eine Delegation; der vollständige manuelle Lauf braucht --dispatch-long.
 if (CI && report.delegated.length > 0) {
-  console.log(`agent:verify: ${report.delegated.length} lange Nachweis(e) an Actions delegiert`);
+  report.ciLong = 'delegated-to-pr-plan';
+  report.open.push(...report.delegated.map((entry) => `lang: ${entry.file} (${entry.proof}) — CI-Plan auf dem PR-Commit`));
+  writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
+}
+if (DISPATCH_LONG && report.delegated.length > 0) {
+  console.log(`agent:verify: ${report.delegated.length} lange Nachweis(e) manuell an Actions delegiert`);
   const run = spawnSync(process.execPath, ['scripts/ci-long-checks.mjs'], { cwd: ROOT, stdio: 'inherit' });
   report.ciLong = run.status === 0 ? 'success' : 'failed';
   writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
@@ -119,7 +128,7 @@ if (AS_JSON) {
   console.log(`${'Gate'.padEnd(width)}  ${'Status'.padEnd(6)}  Dauer`);
   for (const row of table) console.log(`${row.name.padEnd(width)}  ${row.status.padEnd(6)}  ${row.seconds}`);
   if (subset.length > 0) console.log(`Teilpruefung  ${subset.length} betroffene Testdatei(en), kein Vollnachweis`);
-  if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — pnpm run agent:verify -- --ci`);
+  if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — CI-Plan auf dem PR-Commit; manuell: --dispatch-long`);
   for (const entry of report.open) console.log(`Offen         ${entry}`);
   console.log(`Bericht       ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);
 }

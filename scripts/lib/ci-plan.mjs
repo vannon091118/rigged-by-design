@@ -11,8 +11,9 @@
  * - Reine Doku/Governance -> Doku-, Tree-, Redundanz- und LOC-Gate, kein
  *   Typecheck, kein Build, kein Testlauf, kein Audit.
  * - Dependencies, Lockfile oder Toolchain -> volles Profil inklusive Audit.
- * - Statistik, Soak, Balance und Benchmarks sind Advisory und stehen nie in
- *   der Required-Matrix; sie laufen in `long-checks.yml`.
+ * - Vom Diff betroffene Statistik-/Soak-Testdateien laufen als eigene
+ *   Long-Matrix auf dem exakten Commit; Balance und Benchmarks bleiben
+ *   Advisory und laufen im manuellen bzw. woechentlichen `long-checks.yml`.
  */
 import { execFileSync } from 'node:child_process';
 import { ROOT } from './report.mjs';
@@ -32,8 +33,8 @@ const CONTENT = /^(content\/|public\/)/;
 // Build. Ein reiner Testfix darf keinen Android-Job rechtfertigen.
 const TEST_FILE = /((^|\/)__tests__\/|\.(test|spec|bench)\.[cm]?[jt]sx?$)/;
 
-/** Advisory-Nachweise: eigene Workflow-Jobs, nie Teil des Pflichtstatus. */
-export const ADVISORY_GATES = Object.freeze(['statistics', 'soak', 'narrative-longrun', 'balance', 'bench']);
+/** Advisory-Nachweise: eigene Workflow-Jobs, nie Teil der Gate-Matrix. */
+export const ADVISORY_GATES = Object.freeze(['balance', 'bench']);
 
 const git = (args) => {
   try {
@@ -147,21 +148,35 @@ export function selectGates(changed, options = {}) {
 export function selectTests(changed, options = {}) {
   const profile = options.profile ?? 'full';
   const impact = options.impact === true;
-  if (!impact || profile === 'release') {
-    return { files: [], runAll: true, reason: `vollstaendiges Profil ${profile}`, shards: [] };
-  }
-  const selection = selectAffectedTests(changed ?? []);
+  const files = changed ?? [];
+  const kind = classifyChanged(files, options);
+  const selection = selectAffectedTests(files);
   const split = partitionByProof(selection.tests ?? []);
-  const files = [...new Set(split.fast ?? [])].sort();
   const long = [...new Set((split.long ?? []).map((entry) => (typeof entry === 'string' ? entry : entry.file)))].sort();
-  const shardCount = files.length > 12 ? Math.min(3, Math.ceil(files.length / 8)) : 0;
+  if (!impact || profile === 'release') {
+    return { files: [], long, runAll: true, reason: `vollstaendiges Profil ${profile}`, shards: [] };
+  }
+  // Auf `main` bleibt die Gate-Auswahl impact-basiert, aber Runtime- und
+  // Testaenderungen bekommen die vollstaendige Suite. Eine reine Doku- oder
+  // Governance-Aenderung soll dagegen keinen Vollrausch ausloesen.
+  if (options.fullTests === true && (kind.product || kind.tests) && !kind.docsOnly) {
+    return {
+      files: [],
+      long,
+      runAll: true,
+      reason: 'Main-Regression: vollstaendige Suite fuer Runtime-/Testaenderungen',
+      shards: [],
+    };
+  }
+  const fast = [...new Set(split.fast ?? [])].sort();
+  const shardCount = fast.length > 12 ? Math.min(3, Math.ceil(fast.length / 8)) : 0;
   const shards = shardCount > 0
     ? Array.from({ length: shardCount }, (_, index) => ({
       shard: index,
-      files: files.filter((_, position) => position % shardCount === index),
+      files: fast.filter((_, position) => position % shardCount === index),
     }))
     : [];
-  return { files, long, runAll: selection.runAll === true, reason: selection.reason ?? 'Impact-Auswahl', shards };
+  return { files: fast, long, runAll: selection.runAll === true, reason: selection.reason ?? 'Impact-Auswahl', shards };
 }
 
 /** Ein Plan aus bereits bekannten Aenderungen. */

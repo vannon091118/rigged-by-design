@@ -26,12 +26,16 @@ const STATISTICS = /(^|\/)(round-rtp-[^/]*|slot-session-rtp|poker-distribution|s
 export const CATALOG_START = '<!-- TEST_CATALOG_START -->';
 export const CATALOG_END = '<!-- TEST_CATALOG_END -->';
 
-/** Testdatei aus dem Kopfkommentar; die Datei selbst entscheidet, was sie prueft. */
-export function testTargetOf(file) {
+/** Kopfkommentar einer Testdatei; `@test-target` und `@proof-class` stehen dort. */
+function headerOf(file) {
   const source = parse(resolve(ROOT, file));
   const comments = ts.getLeadingCommentRanges(source.getFullText(), 0) ?? [];
-  const header = comments.map((range) => source.getFullText().slice(range.pos, range.end)).join('\n');
-  return /@test-target:\s*([^\s|*]+)/.exec(header)?.[1] ?? null;
+  return comments.map((range) => source.getFullText().slice(range.pos, range.end)).join('\n');
+}
+
+/** Testdatei aus dem Kopfkommentar; die Datei selbst entscheidet, was sie prueft. */
+export function testTargetOf(file) {
+  return /@test-target:\s*([^\s|*]+)/.exec(headerOf(file))?.[1] ?? null;
 }
 
 export function systemOfTarget(target) {
@@ -43,6 +47,11 @@ export function systemOfTarget(target) {
 
 export function proofClassOf(file) {
   const normalized = file.replaceAll('\\', '/');
+  // Eine deklarierte Klasse steht ueber jeder Ableitung aus dem Dateinamen:
+  // der Narrative-Langlauf heisst nicht "soak", braucht aber dieselbe
+  // CI-Delegation wie die uebrigen teuren Nachweise.
+  const declared = /@proof-class:\s*([a-z-]+)/.exec(headerOf(normalized))?.[1];
+  if (PROOF_CLASSES.includes(declared)) return declared;
   if (normalized.endsWith('.bench.ts')) return 'performance';
   if (STATISTICS.test(normalized)) return 'statistics';
   const target = testTargetOf(normalized) ?? '';

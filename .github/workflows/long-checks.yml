@@ -4,6 +4,11 @@ name: Long Checks
 # Verteilung, Soak und Balance brauchen Minuten bis Stunden. `pnpm run ci:long`
 # startet diesen Workflow und liest Ergebnis, Logs und Artefakte von hier.
 on:
+  # Einmal pro Woche laufen alle langen Nachweise ohne Impact-Filter. Der
+  # PR-Pfad startet nur die vom Diff betroffenen Dateien in `ci-verify.yml`;
+  # dieser Lauf deckt die systemweiten statistischen Abweichungen ab.
+  schedule:
+    - cron: '0 3 * * 1'
   workflow_dispatch:
     inputs:
       verify:
@@ -84,7 +89,7 @@ jobs:
           src/core/games/__tests__/poker-distribution.test.ts
 
   soak:
-    name: Soak ${{ inputs.soak_ticks }} Ticks
+    name: Soak ${{ inputs.soak_ticks || '100000' }} Ticks
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -105,7 +110,7 @@ jobs:
       - name: Langlauf
         env:
           RBD_SOAK: '1'
-          RBD_SOAK_TICKS: ${{ inputs.soak_ticks }}
+          RBD_SOAK_TICKS: ${{ inputs.soak_ticks || '100000' }}
         run: pnpm exec vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/soak.test.ts
 
   narrative-longrun:
@@ -132,7 +137,7 @@ jobs:
         run: pnpm exec vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/narrative-longrun.test.ts
 
   balance:
-    name: Balance ${{ inputs.balance_days }} Spieltage
+    name: Balance ${{ inputs.balance_days || '40' }} Spieltage
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -152,7 +157,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Betriebslauf
         env:
-          RBD_DAYS: ${{ inputs.balance_days }}
+          RBD_DAYS: ${{ inputs.balance_days || '40' }}
         run: node scripts/balance-run.mjs
       # Der Bericht ist der eigentliche Nachweis; er gehoert zum Lauf, nicht ins Log.
       - name: Balance-Bericht als Artefakt

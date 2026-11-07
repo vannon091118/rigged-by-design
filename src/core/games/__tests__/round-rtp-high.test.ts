@@ -1,5 +1,6 @@
 /**
  * @test-target: src/core/games/round.ts
+ * @proof-class: statistics
  * @error-code: ERR-1003
  *
  * Eigene Datei statt einer Schleife in round.test.ts: Vitest verteilt Dateien

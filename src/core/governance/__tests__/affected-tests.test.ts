@@ -31,6 +31,12 @@ describe('Betroffene Tests', () => {
     expect(result.runAll).toBe(false);
   });
 
+  it('waehlt den Narrative-Langlauf bei einer Tick-Aenderung mit', () => {
+    const result = selectAffectedTests(['src/core/sim/tick.ts']);
+    expect(result.tests).toContain('src/core/sim/__tests__/narrative-longrun.test.ts');
+    expect(result.runAll).toBe(false);
+  });
+
   it('erreicht Tests ueber den Importgraphen statt nur direkte Importeure', () => {
     const result = selectAffectedTests(['src/core/rng/shoe.ts']);
     const deep = 'src/core/games/__tests__/round.test.ts';
