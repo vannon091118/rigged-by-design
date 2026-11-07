@@ -35,7 +35,7 @@ export function OpeningCard({ onClose }: { readonly onClose: () => void }) {
   );
 }
 
-/** Nur der frische Start zeigt die Szene; ein Tick-Ruecksprung oeffnet sie erneut. */
+/** Nur der frische Start zeigt die Szene; ein Tick-Rücksprung öffnet sie erneut. */
 function isFreshStart(view: GameView): boolean {
   return view.tick < OPENING_TICKS && view.guests.length === 0 && view.narrative.history.length === 0;
 }
