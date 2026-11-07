@@ -3,19 +3,6 @@
 # weil der Hook den Commit vorbereitet. Fehlt node_modules, laufen nur Matrix
 # und Testkatalog nicht, weil sie typescript aus node_modules laden.
 set -e
-
-# Matrix und Testkatalog sind zentrale Generator-Artefakte der Governance-Lane.
-# Eine Feature-Lane darf sie nicht mitschreiben; sie sind nicht gate-pflichtig.
-meta_allowed() {
-  node --input-type=module -e "
-    import { execSync } from 'node:child_process';
-    import { loadClaimsStrict } from './scripts/lib/lane-claims.mjs';
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-    let claim;
-    try { claim = loadClaimsStrict().find((c) => c.branch === branch); } catch { process.exit(1); }
-    process.exit(claim && claim.allowsPath('docs/ARCHITECTURE.md') ? 0 : 1);
-  "
-}
 # Lane-Claims durchsetzen: der aktuelle Branch muss einen Claim haben und
 # darf nur Dateien innerhalb seiner Allowlist schreiben. Kollisionen mit
 # anderen offenen Lanes blockieren den Commit. Das Skript liest nur Git und
@@ -60,17 +47,13 @@ if [ ! -d node_modules ]; then
 fi
 # Ein verschluckter Generatorfehler hinterlaesst ein veraltetes Artefakt, das
 # danach niemand mehr als veraltet erkennt. Deshalb blockiert er den Commit.
-if meta_allowed; then
-  if ! node scripts/sync-dependency-matrix.mjs >/dev/null 2>&1; then
-    echo "pre-commit: Dependency-Matrix nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
-    exit 1
-  fi
-  if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
-    echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
-    exit 1
-  fi
-else
-  echo "pre-commit: Feature-Lane - Matrix und Testkatalog bleiben zentral (Governance-Lane pflegt sie)"
+if ! node scripts/sync-dependency-matrix.mjs >/dev/null 2>&1; then
+  echo "pre-commit: Dependency-Matrix nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
+  exit 1
+fi
+if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
+  echo "pre-commit: Testkatalog nicht aktualisiert (ERR-0911) - Commit blockiert, pnpm run fix ausfuehren" >&2
+  exit 1
 fi
 inventory_docs_loc
 git add docs/INVENTORY.md >/dev/null 2>&1 || true

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:48 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 07:31 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.154] - 2026-11-07
+
+### Technik
+- **Gates granular statt ein Monolith.** `scripts/gate-matrix.mjs` uebersetzt den Gate-Plan in eine GitHub-Matrix, `node scripts/run-pipeline.mjs --gate=<name>` faehrt genau ein Gate. `ci-verify.yml` hat je Gate einen eigenen Job und Status (`Gate lint`, `Gate typecheck`, ...), dazu eigene Jobs fuer Lane-Claims und Commit-/PR-Notes. Der Pflichtstatus `Fail-Closed Gates` ist nur das Aggregat.
+- Ein Gate ausserhalb des Profils bricht im `--gate`-Modus ab; eine leere Matrix ist ein Fehler. Kein gruener Status ohne Pruefung.
+- `scripts/lib/dependency-change.mjs` ist die einzige Wahrheit fuer Dependency-Aenderungen; `audit` steht nur dann in der Matrix, wenn es relevant ist.
+- Lane 0.2 (`gov/0.2-governance`) ist im Claim-Register archiviert: ihr Inhalt liegt auf `main`, der Branch war eine zweite Wahrheit ueber denselben Pfaden.
 
 ## [0.3.153] - 2026-11-07
 

@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.153 | 2026-11-07 03:48 UTC -->
+<!-- rbd-doc: v0.3.154 | 2026-11-07 07:31 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Gates granular: eine Matrix statt eines Monolithen
+
+**Ziel.** Ein roter Lauf hiess bisher nur "`verify:all` ist rot": zwoelf Gates in einem Job, ein Status, keine Aussage darueber, welches Gate eine Lane gebrochen hat. Gewuenscht ist die granulate Form - ein Status je Gate, ein Aggregat als Pflichtstatus - und lokal bleibt alles leicht.
+
+**Umsetzung.** `scripts/gate-matrix.mjs` liest denselben Gate-Plan wie `verify` und gibt ihn als GitHub-Matrix aus; die CI hat daraus einen Job je Gate mit `fail-fast: false`. `run-pipeline --gate=<name>` faehrt genau eines und bricht bei einem Gate ab, das nicht zum Profil gehoert: ein stiller Fehlschlag waere ein gruener Status ohne Pruefung. `Fail-Closed Gates` bleibt Pflichtstatus und fuehrt nur noch Ergebnisse zusammen; Claims und Commit-/PR-Notes sind eigene Jobs. `scripts/lib/dependency-change.mjs` sammelt die Audit-Regel an einer Stelle. Die 0.2-Lane ist archiviert: `git diff origin/gov/0.2-governance origin/main` zeigt nur noch Marker- und Hook-Zeilen.
+
+**Pruefungen.** `check-loc`, `verify:tree`, `verify:redundancy`, `verify:docs`, `typecheck`, ESLint und `vitest run src/core/governance/__tests__/ci-gates.test.ts` (YAML-Baum: Matrix aus `needs.plan.outputs.matrix`, Aggregat mit `needs`/`always()`, Gate-Schritt mit `--gate=`).
+
+**Offen.** PR #203 traegt eine zweite CI-Form (`scripts/ci-impact.mjs`, `pull_request_target`, ein Job). Zwei Entwuerfe fuer denselben Workflow sind eine zweite Wahrheit; die Entscheidung steht in `docs/ROADMAP.md`.
 
 ## 2026-11-07 - Governance: parallel arbeiten, ohne sich selbst auszubremsen
 
