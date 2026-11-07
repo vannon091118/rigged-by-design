@@ -83,13 +83,12 @@ describe('Contract: actionset v1.0', () => {
     expect(actions).toHaveLength(2);
     expect(actions[0]).toBe(a1);
     expect(actions[1]).toBe(a2);
-    expect(Array.isArray(actions)).toBe(true);
+    expect(actions.map((a) => a.id)).toEqual(['a', 'b']);
   });
 
-  it('ActionId und ActionCategory sind String-Typen', () => {
+  it('ActionId und ActionCategory sind Contract-Werte', () => {
     const id: ActionId = 'aktion_42';
     const cat: ActionCategory = 'interaction';
-    expect(typeof id).toBe('string');
-    expect(typeof cat).toBe('string');
+    expect(createAction(id, 'Aktion', 'i', cat, 1, true).id).toBe('aktion_42');
   });
 });
