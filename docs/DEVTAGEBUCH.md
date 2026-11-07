@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:17 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 18:50 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -20,6 +20,8 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 **Ziel.** `AGENTS.md` auf einen Einstieg kürzen, Tiefenwissen in eigenständige Referenzdokumente auslagern und den Doku-Drift bei Gates, Save-Version, Workflows und Branch-Schutz beseitigen. Die Governance-Testmatrix 1–17 und die Zusatzregressionen sollten belegbar werden, ohne die Gate-Liste an zwei Stellen zu führen.
 
 **Umsetzung.** `AGENTS.md` trägt jetzt den ersten Befehl, zehn unverhandelbare Regeln, Zustand, Befehle und eine Referenztabelle. Neu sind `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/TESTING.md`, `docs/INDEX.md` und `docs/contracts/README.md`; `scripts/lib/doc-sync.mjs` führt zwölf Pflichtdokumente mit Marker und Abschnitten. Die Doku nennt 12 Required-Gates plus optionales Audit, elf Gates im schnellen Plan inklusive `capabilities`, Save v11, neun Workflow-Dateien, den klassischen Branch-Schutz mit `strict: false` und ohne Ruleset sowie den deaktivierten `promote`-Pfad mit manuellem Merge. Der historische `pnpm-cutover-plan` wurde gelöscht. `destructive-commands.test.ts` scannt Produktionsskripte statisch gegen `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D`; der letzte `reset --hard` in `promote.mjs` ist entfernt. Dependabot-Branches erhalten über `botClaim()` eine eng begrenzte Allowlist für `package.json`, `pnpm-lock.yaml` und `.github/workflows/`.
+
+Der nach #242 offene Content-Claim war stale: Sein Branch ist geloescht, der PR gemergt. Die Claim-Evidenz belegt diesen Fall ueber den Merge-Commit auf `main`; der CI-Adapter materialisiert fuer die alte Kontrollebene nur den Status, die Content-Allowlist bleibt unveraendert.
 
 **Pruefungen.** Governance-Matrix mit 14 Dateien: 117/117 Tests PASS. `pnpm run verify:test-quality` PASS (195 Testdateien, 565 Dateien). `pnpm run verify:docs` PASS nach `docs:sync` (12 Marker). `node scripts/build-inventory.mjs` meldet 1396/1396 Dateien und 93 Ordner. `pnpm run verify:light` PASS mit sechs Gates (docs, check:loc, redundancy, tree, typecheck, lint). `node --check` für die fünf geänderten Skripte: syntax=ok.
 

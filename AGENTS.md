@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:17 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 18:50 UTC -->
 
 > **Erster Befehl:** `pnpm run agent:pretask --json`
 
@@ -40,6 +40,21 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 | `pnpm run turn:finish` | Betroffene Tests, Versions-Bump, Light-Gate, Commit und Branch-Push. |
 | `pnpm run docs:sync` | Marker in allen Pflichtdokumenten aktualisieren. |
 | `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
+
+## Build & test
+
+- `pnpm run verify:light` für den schnellen Lauf; `pnpm run test:affected` für die vom Diff betroffenen Tests.
+- Die vollständige Testlinie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+
+## Delivery
+
+- Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
+- Merge manuell nach grünem `CI Verify`; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+
+## Pflichtdoku
+
+- Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md).
+- `pnpm run docs:sync` aktualisiert die Marker; generierte Blöcke bleiben unangetastet.
 
 ## Referenzen
 

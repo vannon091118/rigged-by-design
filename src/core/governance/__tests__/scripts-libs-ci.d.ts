@@ -126,9 +126,11 @@ declare module '*/claim-evidence.mjs' {
     readonly headSha: string | null;
     readonly headOnMain: boolean;
     readonly treeOnMain: string | null;
+    readonly atBase: boolean;
   }
   export function decideClaim(input?: {
     readonly branchExists?: boolean;
+    readonly branchAtBase?: boolean;
     readonly branchHeadOnMain?: boolean;
     readonly branchTreeOnMain?: string | null;
     readonly headSha?: string | null;
@@ -138,7 +140,13 @@ declare module '*/claim-evidence.mjs' {
       mergeCommit?: string | null;
       mergeCommitSha?: string | null;
     } | null;
+    readonly mergedOnMain?: boolean;
   }): ClaimEvidence;
+  export function commitOnMain(input?: {
+    readonly sha: string;
+    readonly baseRef?: string;
+    readonly git?: (args: string[]) => string;
+  }): boolean;
   export function localMergeEvidence(input?: {
     readonly branch: string;
     readonly baseRef?: string;

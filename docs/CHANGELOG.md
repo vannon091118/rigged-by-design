@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 18:17 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 18:50 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - **Regressionen fuer den Arbeitsvertrag.** `destructive-commands.test.ts` verbietet `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D` in Produktionsskripten; Dependabot-Branches erhalten eine eng begrenzte Allowlist fuer Manifest, Lockfile und Workflow-Pins.
 
 - **Auto-Resolve-Retry freigeschaltet.** `auto-resolve.yml` hat `actions: write`; das Runbook beschreibt Aktivierung, Patch-/Push-Modus, Berechtigungen, Prüfungen und Rückrollung.
+- **Stale Claim belegt statt geraten.** Ein geloeschter Lane-Branch gilt nur dann als `merged`, wenn ein gemergter PR und dessen Merge-Commit auf `main` belegt sind; ein aktiver Branch mit eigenem Kopf bleibt fail-closed. Der CI-Adapter zieht den offenen Legacy-Claim aus #242 fuer die alte Kontrollebene nach, ohne die Content-Allowlist zu aendern.
 
 ## [0.3.181] - 2026-11-07
 

@@ -193,6 +193,26 @@ describe('workflow hardening', () => {
     expect(validate?.env?.REQUIRED).toContain('steps.compat.outputs.required');
   });
 
+  it('kompatibilisiert Lane-Dateien fuer eine aeltere Claim-Kontrollebene', () => {
+    const ci = workflow('ci-verify.yml');
+    const claims = ci.jobs?.claims;
+    const compat = claims?.steps?.find((step) => step.name === 'Claim-Register fuer die Basis kompatibilisieren');
+    expect(compat?.run).toContain('CLAIM_ENTRIES_DIR');
+    expect(compat?.run).toContain('readdirSync');
+    expect(compat?.run).toContain('.lane-claims/claims.json');
+    expect(compat?.run).toContain('merged-pr');
+    expect(compat?.run).toContain('ls-remote');
+    expect(compat?.env?.GH_TOKEN).toContain('github.token');
+  });
+
+  it('gibt der Claim-Pruefung den GH-Token fuer Merge-Evidenz', () => {
+    const ci = workflow('ci-verify.yml');
+    const claim = ci.jobs?.claims?.steps?.find(
+      (step) => step.name === 'Lane-Claims (Allowlist, Owner, Kollisionen)',
+    );
+    expect(claim?.env?.GH_TOKEN).toContain('github.token');
+  });
+
   it('verweist fuer die Testlinie auf docs/TESTING.md', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
     expect(agents).toContain('pnpm run agent:pretask --json');

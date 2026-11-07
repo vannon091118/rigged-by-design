@@ -579,10 +579,129 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
+      # Bootstrap-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
+      # liest nur `.lane-claims/claims.json`; die Lane-Dateien kommen erst mit
+      # diesem PR. Der Adapter materialisiert sie nur fuer die alte Basis.
+      # Sobald die Basis `CLAIM_ENTRIES_DIR` kennt, bleibt der Schritt inert.
+      - name: Claim-Register fuer die Basis kompatibilisieren
+        env:
+          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
+          GH_TOKEN: ${{ github.token }}
+          BASE_REF: origin/${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          if grep -q "CLAIM_ENTRIES_DIR" "$CONTROL_SCRIPTS/lib/lane-claims.mjs"; then
+            echo "Basis kennt Lane-Claim-Dateien; keine Kompatibilisierung noetig."
+            exit 0
+          fi
+          node --input-type=module - <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+          const legacy = existsSync('.lane-claims/claims.json')
+            ? JSON.parse(readFileSync('.lane-claims/claims.json', 'utf8'))
+            : [];
+          const dir = '.lane-claims/claims';
+          const extra = existsSync(dir)
+            ? readdirSync(dir)
+                .filter((file) => file.endsWith('.json'))
+                .flatMap((file) => {
+                  const value = JSON.parse(readFileSync(`${dir}/${file}`, 'utf8'));
+                  return Array.isArray(value) ? value : [value];
+                })
+            : [];
+          const byId = new Map([...legacy, ...extra].map((claim) => [claim.id, claim]));
+
+          // Die alte Basis kennt weder Lane-Dateien noch Merge-Evidenz. Ein
+          // geloeschter Branch mit gemergtem PR und Merge-Commit auf main ist
+          // ein belegter Altclaim; ein aktiver Branch mit eigenem Kopf bleibt
+          // unangetastet. Die Allowlist wird nie veraendert.
+          const git = (args) =>
+            execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+          const baseRef = process.env.BASE_REF || 'origin/main';
+          const baseTip = (() => {
+            try {
+              return git(['rev-parse', baseRef]);
+            } catch {
+              return null;
+            }
+          })();
+          const onMain = (sha) => {
+            if (!/^[0-9a-f]{40}$/.test(String(sha ?? ''))) return false;
+            try {
+              git(['merge-base', '--is-ancestor', sha, baseRef]);
+              return true;
+            } catch {
+              return false;
+            }
+          };
+          const localHead = (branch) => {
+            for (const ref of [`refs/heads/${branch}`, `refs/remotes/origin/${branch}`]) {
+              try {
+                const sha = git(['rev-parse', '--verify', '--quiet', ref]);
+                if (sha) return sha;
+              } catch {
+                // Naechste Ref; ohne Kopf bleibt der Branch unbekannt.
+              }
+            }
+            return null;
+          };
+          const remoteHead = (branch) => {
+            try {
+              const out = git(['ls-remote', '--heads', 'origin', branch]);
+              return { known: true, sha: out.split(/\s+/)[0] || null };
+            } catch {
+              return { known: false, sha: null };
+            }
+          };
+          const mergedByBranch = new Map();
+          try {
+            const prs = JSON.parse(
+              execFileSync(
+                'gh',
+                ['pr', 'list', '--state', 'merged', '--base', 'main', '--limit', '200', '--json', 'baseRefName,headRefName,headRefOid,isCrossRepository,mergeCommit,number,url'],
+                { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+              ),
+            );
+            for (const pr of prs) {
+              if (!pr?.headRefName || !pr?.number) continue;
+              if (pr.baseRefName !== 'main' || pr.isCrossRepository !== false) continue;
+              if (!/^[0-9a-f]{40}$/.test(String(pr.headRefOid ?? ''))) continue;
+              if (!pr.mergeCommit?.oid) continue;
+              if (mergedByBranch.has(pr.headRefName)) {
+                mergedByBranch.set(pr.headRefName, null);
+                continue;
+              }
+              mergedByBranch.set(pr.headRefName, pr);
+            }
+          } catch (error) {
+            console.log(`::warning::Merged-PR-Beleg nicht lesbar: ${error instanceof Error ? error.message : 'unbekannt'}`);
+          }
+          for (const claim of byId.values()) {
+            if (claim.status !== 'open') continue;
+            const pr = mergedByBranch.get(claim.branch);
+            if (!pr) continue;
+            const mergeSha = pr.mergeCommit?.oid ?? null;
+            if (!onMain(mergeSha)) continue;
+            const local = localHead(claim.branch);
+            const remote = local ? { known: true, sha: null } : remoteHead(claim.branch);
+            const branchHead = local ?? remote.sha;
+            const branchAtBase = Boolean(branchHead && baseTip && branchHead === baseTip);
+            const absenceKnown = !branchHead && remote.known;
+            if (branchHead && !branchAtBase && !onMain(branchHead)) continue;
+            if (!branchHead && !absenceKnown) continue;
+            claim.status = 'merged';
+            claim.mergedEvidence = 'merged-pr';
+            claim.mergedSha = mergeSha;
+            console.log(`Claim ${claim.id}: PR #${pr.number} gemergt (${mergeSha.slice(0, 7)}); Status materialisiert.`);
+          }
+          writeFileSync('.lane-claims/claims.json', `${JSON.stringify([...byId.values()], null, 2)}\n`);
+          console.log(`Claim-Register kompatibilisiert: ${byId.size} Eintraege.`);
+          NODE
       - name: Lane-Claims (Allowlist, Owner, Kollisionen)
         env:
           BRANCH: ${{ github.head_ref }}
           BASE_REF: origin/${{ github.base_ref }}
+          GH_TOKEN: ${{ github.token }}
           RBD_ROOT: ${{ steps.control.outputs.root }}
           RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
         run: |
