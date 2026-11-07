@@ -19,8 +19,14 @@ import { planGates } from './lib/pipeline-plan.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const arg = (name) => {
-  const hit = process.argv.slice(2).find((value) => value.startsWith(`--${name}=`));
-  return hit ? hit.slice(name.length + 3) : undefined;
+  const args = process.argv.slice(2);
+  const hit = args.find((value) => value.startsWith(`--${name}=`));
+  if (hit) return hit.slice(name.length + 3);
+  // Auch die Schreibweise `--flag wert` akzeptieren: ein Leerzeichen statt `=`
+  // hat die Matrix schon einmal leer gelassen und den Plan-Job gekippt.
+  const index = args.indexOf(`--${name}`);
+  const next = index >= 0 ? args[index + 1] : undefined;
+  return next && !next.startsWith('--') ? next : undefined;
 };
 
 const base = arg('base') ?? '';

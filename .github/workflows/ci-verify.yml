@@ -119,7 +119,7 @@ jobs:
             --head="${{ steps.range.outputs.head }}" \
             --profile="$PROFILE" \
             --impact="${{ steps.range.outputs.impact }}" \
-            --github-output "$GITHUB_OUTPUT"
+            --github-output="$GITHUB_OUTPUT"
 
       # Eine leere oder kaputte Matrix wuerde als "Gate: failure" ohne Job
       # enden. Hier wird sie stattdessen mit ihrem Inhalt benannt.

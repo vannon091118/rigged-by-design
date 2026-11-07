@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.155 | 2026-11-07 08:06 UTC -->
+<!-- rbd-doc: v0.3.156 | 2026-11-07 08:22 UTC -->
 <!-- rtk-instructions v2 -->
 # Command output
 
@@ -84,25 +84,107 @@ Timeout, Abbruch und fluechtige Netzfehler sind `REMOTE_CI` (`ERR-4014`,
 
 ## Pretask (obligatorisch, vor jeder neuen Arbeit)
 
+Vier Schritte, in dieser Reihenfolge. Kein Edit vor Schritt 4.
+
 1. **Issue-Check:** `gh issue list --label gate-failure --state open` und
    `--label remote-ci`. Ein offenes `gate-failure`-Issue ist der alleinige
-   Fokus, bis es geschlossen ist.
-2. **Offene Konflikte aufloesen:** bewusst liegengebliebene Konflikte werden am
-   Anfang des naechsten Tasks geloest, nicht am Ende aufgespart. `pnpm run
-   agent:pretask` meldet laufende Merges/Rebases, unmerged Pfade,
-   Konfliktmarker, Claim- und Kollisionslage; bei Startblockern endet er mit
-   Exit 1.
-3. **Erst danach** neue Arbeit beginnen.
+   Fokus, bis es geschlossen ist - es sei denn, der Auftrag nennt ausdruecklich
+   einen anderen Task.
+2. **Zustand pruefen:** `git status --porcelain` muss leer sein; fremde
+   Aenderungen werden nicht mitgenommen. `pnpm run agent:pretask` meldet
+   laufende Merges/Rebases, unmerged Pfade, Konfliktmarker, Claim- und
+   Kollisionslage; bei Startblockern endet er mit Exit 1.
+3. **Auswirkung bestimmen:** `pnpm run agent:context [--line]` nennt Systeme,
+   Invarianten, betroffene Tests und den Gate-Plan. Ohne diesen Plan wird nicht
+   gearbeitet; er entscheidet auch, welche Nachweise lokal sinnvoll sind.
+4. **Lane und Basis:** Branch von aktuellem `origin/main` (oder den bestehenden
+   Task-Branch fortsetzen), Claim mit Owner, Basis-SHA und Pfad-Allowlist
+   eintragen. Ein neuer, unabhaengiger Task bekommt einen neuen Branch; keine
+   Sammelbranches, kein Direktpush auf `main`.
+5. **Erst danach** neue Arbeit beginnen.
 
 ## Agenten-Verhalten
 
-- Ich (Main) arbeite. Ein Monitor-Sub beobachtet nur CI-Laeufe, offene Issues
-  und die Branch-Lage; er berichtet und aendert nichts. Er merged nichts,
-  schliesst keine Issues, pusht nichts und startet keine Reparatur.
-- Lokal nur leicht testen (`pnpm run test:affected`, gezielte Dateien,
-  `verify:light`). Kein `verify:all` waehrend der Arbeit; die volle Suite laeuft
-  in Actions.
-- Konflikte und Claims werden am Anfang aufgeloest, nicht am Ende.
+Ich (Main) arbeite. Ein Monitor-Sub beobachtet nur CI-Laeufe, offene Issues und
+die Branch-Lage; er berichtet und aendert nichts. Er merged nichts, schliesst
+keine Issues, pusht nichts und startet keine Reparatur.
+
+### Waehrend der Arbeit
+
+- Nur gezielte Nachweise: `pnpm run test:affected`, einzelne Testdateien,
+  `pnpm run verify:light`. **Kein** `verify:all`, kein Dauerlauf von
+  `verify:quick`, kein Build, kein Audit und keine volle Suite lokal - die
+  gehoeren nach GitHub Actions.
+- Ein Nachweis pro Frage. Derselbe Lauf wird nicht wiederholt, nur weil das
+  Ergebnis unbequem ist.
+- Reparaturen laufen ueber `pnpm run fix` (der einzige schreibende Modus);
+  Verify-Gates bleiben lesend.
+- Konflikte und Claims werden am Anfang aufgeloest, nicht am Ende aufgespart.
+
+### CI-Polling: begrenzt, nicht im Kreis
+
+- Beobachtet wird ausschliesslich der eigene Commit beziehungsweise der eigene
+  PR-Lauf. Fremde Laeufe, alte Branches und die Gesamtliste sind kein
+  Arbeitsgegenstand.
+- Keine Polling-Schleifen. Ein Lauf wird mit wachsendem Abstand hoechstens
+  dreimal abgefragt (etwa nach 60 s, 180 s und 420 s); danach wird das Ergebnis
+  berichtet oder als `REMOTE_CI` markiert.
+- Ein einzelner `gh run watch` beziehungsweise `gh pr checks --watch` ist
+  erlaubt, solange er den eigenen Lauf adressiert und begrenzt ist.
+- Ein noch laufender Check ist kein Befund: nicht als rot und nicht als gruen
+  melden. Erst das abgeschlossene Ergebnis zaehlt.
+- Timeout, Abbruch und Netzfehler sind `REMOTE_CI` (`ERR-4014`, `ERR-4016`):
+  Lauf erneut starten, kein `BLOCKED`.
+
+### After-Task
+
+1. **Abschluss waehlen:** `pnpm run turn:finish` (light) ist der Normalfall;
+   `--profile=quick` fuer die schnelle halbe Suite, `--profile=full` nur fuer
+   Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases.
+2. **Belege dokumentieren:** was geprueft wurde, mit welchem Ergebnis, und was
+   nicht geprueft werden konnte. Ein gruener Lauf ohne genannten Befehl ist
+   keine Aussage.
+3. **Uebergabe:** PR-Body beziehungsweise Issue nennen Ergebnis, offene Punkte
+   und den naechsten Schritt. Der PR ist die Uebergabe, nicht ein Statusbericht
+   im Chat.
+4. **Aufraeumen:** gemergte Wegwerf-Branches verschwinden (PR-Cleanup,
+   `pnpm run branches:prune`); ein geschlossener, nicht gemergter PR wird nur
+   geloescht, wenn er nachweislich superseded ist und alle einzigartigen
+   Commits gesichert sind.
+
+### Monitor-Agent
+
+Der Monitor beobachtet CI-Laeufe, offene Issues und die Branch-Lage und
+berichtet. Er merged nichts, schliesst keine Issues, pusht nichts, startet
+keine Reparatur und legt keine Branches an. Seine Ausgabe ist ein Bericht mit
+Belegen (Run, Commit, Status), keine Aenderung.
+
+### Blocker und Uebergabe
+
+Nur `BLOCKED` haelt die Arbeit an (Boot, Ledger-/Save-/RNG-Invariante,
+Geldpfad, Rechte); die Leiter steht in `Eskalation statt Fail-Closed`. Alles
+andere - Balance, ein schiefer Test, ein Doku-Marker, ein Randfall - wird
+dokumentiert und, wenn CI es nicht selbst loest, als Issue uebergeben; die
+Arbeit laeuft weiter. Keine globalen Pausen wegen einzelner Lane-Befunde.
+
+### Technische Durchsetzung (Stand dieser Regeln)
+
+Die Regeln oben sind zunaechst Verhalten. Technisch erzwungen sind heute nur
+diese Punkte:
+
+| Regel | Durchsetzung |
+| --- | --- |
+| Startblocker (Merge/Rebase, unmerged Pfade, Konfliktmarker) | `pretask.mjs` Exit 1 |
+| Lane-Claim, Owner, Allowlist, Kollisionen | `.githooks/pre-commit`, `verify-lane-claims --ci` im PR |
+| Kein Direktpush auf `main` | Branch-Schutz; `turn-push.mjs` bricht mit `ERR-4023` ab |
+| Pflichtabschnitte im Commit | `verify-commit-msg` in `turn-push.mjs` (`ERR-4006`) und in CI |
+| `verify:light` vor dem Commit | `turn-push.mjs` (`ERR-4024`) |
+| Doku-Marker und Inventur | Pre-Commit-Hook, `verify:docs` in CI |
+| Gate-Matrix und Required Check | `ci-verify.yml` |
+| Issue-Check, Impact-Pflicht, Polling-Grenzen, Monitor-Rolle | **nicht erzwungen** - Verhalten nach diesem Vertrag |
+
+Eine fehlende Zeile in der rechten Spalte ist kein Freischein: sie ist der
+naechste Kandidat fuer eine technische Sperre, nicht fuer eine Ausnahme.
 
 ## Governance / Lanes
 
