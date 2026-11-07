@@ -118,6 +118,45 @@ describe('workflow hardening', () => {
     expect(gateStep?.env?.RBD_CONTROL_ROOT).toContain("matrix.gate != 'tests'");
   });
 
+  it('laesst keine Bootstrap-Ausnahme in der CI', () => {
+    const ci = workflow('ci-verify.yml');
+    const runs = runsOf(ci).join('\n');
+    expect(runs).not.toContain('Bootstrap');
+    expect(runs).not.toContain('scripts=$GITHUB_WORKSPACE/scripts');
+    expect(runs).toContain('kennt RBD_ROOT nicht');
+    const controls = jobs(ci)
+      .flatMap((job) => job.steps ?? [])
+      .filter((step) => step.name === 'Kontrollebene aus der Basis');
+    expect(controls.length).toBeGreaterThanOrEqual(5);
+    for (const step of controls) expect(step.env?.BASE_SHA).not.toContain('github.event.before');
+  });
+
+  it('fuehrt lange Tests mit der Kontrollebene aus', () => {
+    const ci = workflow('ci-verify.yml');
+    const long = ci.jobs?.long;
+    const control = long?.steps?.find((step) => step.name === 'Kontrollebene aus der Basis');
+    const run = long?.steps?.find((step) => step.name === 'Langen Nachweis ausfuehren');
+    expect(control?.name).toBe('Kontrollebene aus der Basis');
+    expect(run?.run).toContain('steps.control.outputs.scripts');
+    expect(run?.env?.RBD_ROOT).toContain('steps.control.outputs.root');
+    expect(run?.env?.RBD_REQUIRE_TESTS).toBe('1');
+  });
+
+  it('pflegt Action-Pins per Dependabot', () => {
+    const text = readFileSync(resolve(process.cwd(), '.github', 'dependabot.yml'), 'utf8');
+    expect(text).toContain('package-ecosystem: "github-actions"');
+    expect(text).toContain('interval: "weekly"');
+  });
+
+  it('validiert die Langlauf-Eingaben vor dem Dispatch', () => {
+    const bad = spawnSync(process.execPath, [
+      resolve(process.cwd(), 'scripts', 'ci-long-checks.mjs'),
+      '--plan', '--ref', 'lane/test/plan', '--soak-ticks', '0',
+    ], { cwd: process.cwd(), encoding: 'utf8' });
+    expect(bad.status).toBe(1);
+    expect(bad.stderr).toContain('soak-ticks');
+  });
+
   it('haelt die Testlinie in AGENTS.md eindeutig', () => {
     const agents = readFileSync(resolve(process.cwd(), 'AGENTS.md'), 'utf8');
     expect(agents.match(/### Die eine Testlinie/g)?.length ?? 0).toBe(1);

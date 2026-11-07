@@ -51,7 +51,7 @@ jobs:
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
           MAIN_REF: ${{ github.ref }}
         run: |
           set -euo pipefail
@@ -73,18 +73,14 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
-          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
-          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
-          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
-          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
-            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=" >> "$GITHUB_OUTPUT"
+          # Die Kontrollebene muss RBD_ROOT kennen. Ein stiller Fallback auf
+          # die PR-Skripte wuerde die Vertrauensgrenze umgehen.
+          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
+            exit 1
           fi
+          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
 
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
@@ -218,7 +214,7 @@ jobs:
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
           MAIN_REF: ${{ github.ref }}
         run: |
           set -euo pipefail
@@ -240,18 +236,14 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
-          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
-          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
-          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
-          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
-            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=" >> "$GITHUB_OUTPUT"
+          # Die Kontrollebene muss RBD_ROOT kennen. Ein stiller Fallback auf
+          # die PR-Skripte wuerde die Vertrauensgrenze umgehen.
+          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
+            exit 1
           fi
+          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
 
       # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install
@@ -325,6 +317,38 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      # Auch der lange Nachweis darf seinen Runner nicht aus dem PR nehmen.
+      # Die Testdateien bleiben der PR-Baum, das Testkommando kommt aus der Basis.
+      - name: Kontrollebene aus der Basis
+        id: control
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
+          MAIN_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          base="$BASE_SHA"
+          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin main
+            base="$(git rev-parse FETCH_HEAD)"
+          fi
+          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
+            exit 1
+          fi
+          dir=".rbd-control"
+          rm -rf "$dir"
+          git worktree add --detach "$dir" "$base"
+          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
+            exit 1
+          fi
+          echo "::notice::Kontrollebene aus ${base}"
+          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
+          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+
       - name: pnpm installieren
         uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
@@ -339,10 +363,12 @@ jobs:
       - name: Langen Nachweis ausfuehren
         env:
           RBD_TEST_FILES: ${{ matrix.file }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
           RBD_NARRATIVE_LONGRUN: '1'
           RBD_SOAK: '1'
           RBD_SOAK_TICKS: '100000'
-        run: node scripts/run-selected-tests.mjs
+          RBD_REQUIRE_TESTS: '1'
+        run: node "${{ steps.control.outputs.scripts }}/run-selected-tests.mjs"
 
   # Die Claim-Sperre greift auch dort, wo kein Hook laeuft: Cloud-Agenten und
   # GitHub-Codespaces haben `.githooks` nicht aktiv. Geprueft wird der PR-Diff
@@ -366,7 +392,7 @@ jobs:
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
           MAIN_REF: ${{ github.ref }}
         run: |
           set -euo pipefail
@@ -388,18 +414,14 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
-          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
-          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
-          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
-          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
-            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=" >> "$GITHUB_OUTPUT"
+          # Die Kontrollebene muss RBD_ROOT kennen. Ein stiller Fallback auf
+          # die PR-Skripte wuerde die Vertrauensgrenze umgehen.
+          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
+            exit 1
           fi
+          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
@@ -435,7 +457,7 @@ jobs:
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
           MAIN_REF: ${{ github.ref }}
         run: |
           set -euo pipefail
@@ -457,18 +479,14 @@ jobs:
           git worktree add --detach "$dir" "$base"
           echo "::notice::Kontrollebene aus ${base}"
           echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          # Bootstrap: Eine Basis vor 0.3.164 kennt `RBD_ROOT` noch nicht und
-          # wuerde die Gates im Kontroll-Checkout statt am PR-Baum fahren. Nur
-          # fuer genau diesen Uebergangsfall laufen die PR-Skripte; danach
-          # erkennt der Lauf die Basis und trennt Steuerung und Pruefobjekt.
-          if grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::Basis kennt RBD_ROOT noch nicht; Bootstrap mit den PR-Skripten."
-            echo "scripts=$GITHUB_WORKSPACE/scripts" >> "$GITHUB_OUTPUT"
-            echo "control=" >> "$GITHUB_OUTPUT"
+          # Die Kontrollebene muss RBD_ROOT kennen. Ein stiller Fallback auf
+          # die PR-Skripte wuerde die Vertrauensgrenze umgehen.
+          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
+            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
+            exit 1
           fi
+          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
+          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
       - name: Node einrichten
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7

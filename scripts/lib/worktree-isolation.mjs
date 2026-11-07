@@ -1,11 +1,11 @@
 /**
  * Technische Worktree-Isolation fuer Agenten.
  *
- * Ein geteilter Arbeitsbaum ist nur dann ein Startort, wenn keine Isolation
- * verlangt ist. Sobald ein anderer Agent einen offenen Claim fuehrt oder der
- * Aufruf sie explizit verlangt, blockiert `pretask` den Start; ein eigener
- * verknuepfter Worktree bleibt erlaubt. Die Entscheidung liegt hier und wird
- * von `pretask` nur noch mit Git-Zustand gefuettert, damit sie testbar bleibt.
+ * Ein geteilter Arbeitsbaum ist kein Startort fuer eine Lane. Jeder Branch
+ * ausser `main` braucht einen eigenen verknuepften Worktree; zusaetzlich
+ * blockiert ein fremder offener Claim oder ein explizites `--require-worktree`.
+ * Die Entscheidung liegt hier und wird von `pretask` nur noch mit
+ * Git-Zustand gefuettert, damit sie testbar bleibt.
  */
 import { resolve } from 'node:path';
 import { allowsPath } from './lane-claims.mjs';
@@ -35,12 +35,13 @@ export function parseStatusPaths(text) {
 }
 
 /**
- * Isolation ist gefordert, wenn der Aufrufer sie verlangt oder ein anderer
- * offener Claim existiert. Ein einzelner Agent im eigenen Worktree bleibt
- * damit ohne Zusatzflag arbeitsfaehig; parallele Agenten nicht.
+ * Isolation ist fuer jede Lane gefordert: ein Branch ausser `main` braucht
+ * einen eigenen Worktree, auch wenn gerade kein fremder Claim offen ist.
+ * `main` bleibt ausgenommen; dort blockiert nur ein fremder offener Claim.
  */
 export function isolationRequired({ explicit = false, claims = [], branch = '' } = {}) {
   if (explicit) return true;
+  if (branch !== 'main') return true;
   return claims.some((claim) => claim.status === 'open' && claim.branch !== branch);
 }
 

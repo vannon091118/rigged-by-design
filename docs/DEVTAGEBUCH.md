@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.178 | 2026-11-07 13:03 UTC -->
+<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Finaler Governance-Abschluss
+
+**Ziel.** Die letzten entwicklungsrelevanten Workflow-Luecken schliessen und die Governance danach einfrieren: kein Bootstrap-Fallback, keine ungeschuetzte Langlauf-Steuerung, kein geteilter Lane-Arbeitsbaum und keine ungepflegten Action-Pins.
+
+**Umsetzung.** `ci-verify.yml` holt die Kontrollebene fuer PRs aus der PR-Basis, fuer `main` aus dem gepushten Commit und fuer Feature-Pushes aus `main`; eine Basis ohne `RBD_ROOT` bricht ab. Der Long-Job nutzt denselben Kontroll-Checkout und startet `run-selected-tests.mjs` aus der Basis, waehrend die Testdateien aus dem PR-Baum kommen. `RBD_REQUIRE_TESTS=1` verhindert, dass ein uebersprungener Langlauf als PASS zaehlt. `ci:long` validiert Ticks und Balance-Tage vor dem Dispatch, `soak.test.ts` begrenzt dieselben Werte erneut, und `.github/dependabot.yml` pflegt die SHA-Pins. `pretask` liefert jetzt HEAD, Basis, Worktree, Staging-/Untracked-Status und Claim; `isolationRequired()` verlangt fuer jeden Nicht-`main`-Branch einen verknuepften Worktree. Der Issue-Status bleibt ohne `gh` als `unknown` sichtbar. Die bereits gemergte Trust-Boundary #221 und die Langlauf-/Pretask-Arbeit aus #234 bleiben unveraendert die Grundlage.
+
+**Pruefungen.** `pnpm exec vitest run ... workflow-hardening.test.ts worktree-isolation.test.ts pretask.test.ts` -> 3 Dateien, 22/22 Tests; `pnpm run typecheck` -> PASS; `RBD_TEST_FILES=src/core/sim/__tests__/soak.test.ts RBD_REQUIRE_TESTS=1 node scripts/run-selected-tests.mjs` ohne `RBD_SOAK` -> Exit 1 (zwei Tests uebersprungen, kein PASS); derselbe Runner mit einer ausgewaehlten schnellen Testdatei -> Exit 0; `node --check` fuer die vier geaenderten Skripte -> syntax=ok.
+
+**Offen.** Der PR-Lauf und der Main-Lauf auf dem Merge-Commit sind die verbleibenden Remote-Nachweise; Issue #196 wird nach belegtem P0-Abschluss aktualisiert und geschlossen. SemVer-Automatik, Doku-Reconcile und zusaetzliche Issue-Intelligenz bleiben PARKED.
 
 ## 2026-11-07 - Langlauf und Pretask erzwungen
 

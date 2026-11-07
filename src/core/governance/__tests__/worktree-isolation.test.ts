@@ -23,6 +23,16 @@ import {
 interface PretaskPayload {
   readonly ok: boolean;
   readonly branch: string;
+  readonly head: string;
+  readonly base: string;
+  readonly worktree: string;
+  readonly status: {
+    readonly staged: readonly string[];
+    readonly unstaged: readonly string[];
+    readonly untracked: readonly string[];
+  };
+  readonly claim: { readonly id: string; readonly owner: string } | null;
+  readonly issues: { readonly checked: boolean; readonly status: string };
   readonly isolation: {
     readonly code: string;
     readonly ok: boolean;
@@ -142,7 +152,9 @@ describe('worktree-isolation', () => {
     ];
     expect(isolationRequired({ claims, branch: 'lane/test/own' })).toBe(true);
     expect(isolationRequired({ explicit: true, claims: [], branch: 'lane/test/own' })).toBe(true);
-    expect(isolationRequired({ claims: claims.slice(1), branch: 'lane/test/own' })).toBe(false);
+    expect(isolationRequired({ claims: claims.slice(1), branch: 'lane/test/own' })).toBe(true);
+    expect(isolationRequired({ claims: [], branch: 'main' })).toBe(false);
+    expect(isolationRequired({ claims, branch: 'main' })).toBe(true);
   });
 
   it('liest auch umbenannte Pfade aus git status', () => {
@@ -203,6 +215,11 @@ describe('worktree-isolation', () => {
       expect(result.status).toBe(0);
       const payload = payloadOf(result.stdout);
       expect(payload.ok).toBe(true);
+      expect(payload.head).toMatch(/^[0-9a-f]{40}$/);
+      expect(payload.worktree).toContain('agent-worktree');
+      expect(payload.status).toEqual({ staged: [], unstaged: [], untracked: [] });
+      expect(payload.claim?.id).toBe('lane/test/fixture');
+      expect(['checked', 'unknown']).toContain(payload.issues.status);
       expect(payload.isolation.isWorktree).toBe(true);
       expect(payload.isolation.reasons).toEqual([]);
     } finally {

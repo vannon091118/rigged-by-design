@@ -15,6 +15,7 @@ import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
 
 interface PretaskPayload {
   readonly ok: boolean;
+  readonly isolation: { readonly required: boolean; readonly isWorktree: boolean; readonly reasons: readonly string[] };
   readonly blockers: readonly string[];
 }
 
@@ -146,6 +147,25 @@ describe('pretask start blockers', () => {
       });
       expect(result.status).toBe(1);
       expect(payloadOf(result.stdout).blockers.join('\n')).toContain('Impact-Plan fehlt');
+    } finally {
+      rmSync(parent, { recursive: true, force: true });
+    }
+  });
+
+  it('blockt eine saubere Lane im geteilten Arbeitsbaum', () => {
+    const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-shared-lane-'));
+    try {
+      const repo = cleanRepo(parent, 'repo', 'lane/test/shared');
+      const bin = writeFakeGh(parent);
+      const result = runPretask(repo, ['--json'], {
+        PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
+      });
+      expect(result.status).toBe(1);
+      const payload = payloadOf(result.stdout);
+      expect(payload.isolation.required).toBe(true);
+      expect(payload.isolation.isWorktree).toBe(false);
+      expect(payload.isolation.reasons).toContain('shared-worktree');
+      expect(payload.blockers.join('\n')).toContain(ISOLATION_CODE);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

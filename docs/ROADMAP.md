@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.178 | 2026-11-07 13:03 UTC -->
+<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -157,11 +157,21 @@ Jeder zurückgestellte Befund gehoert hierher, nicht in ein stilles
 `LOCAL_GATE`. Pflichtfelder: Owner, Auslöser (wann wird es wieder aufgenommen),
 nächster Schritt, Review-Bedingung.
 
-| Befund | Owner | Auslöser | Nächster Schritt |
-| --- | --- | --- | --- |
-| (keine offenen PARKED-Einträge) | — | — | — |
+| Befund | Owner | Auslöser | Nächster Schritt | Review-Bedingung |
+| --- | --- | --- | --- | --- |
+| SemVer-Entscheidungsmaschine | Governance-Owner | Release braucht eine Entscheidung ausserhalb des Patch-Bumps | Diff-Klassifikation als eigener idempotenter Job; `release-impact.mjs` bleibt die einzige Quelle | Review beim naechsten Release-PR |
+| Doku-Reconcile-Runner | Governance-Owner | generierte Doku driftet oder der Pre-Commit-Hook fehlt | begrenzter Reparaturlauf mit Pfad-Allowlist und Abbruch bei fremdem Head | Review, wenn `verify:docs` zweimal denselben Fehler meldet |
+| Issue-Fingerprint und Resolver | Governance-Owner | derselbe Gate-Fehler erzeugt wiederholt Issues | Fingerprint am Fehlercode und Resolver im bestehenden `pr-watcher` | Review nach drei Wiederholungen |
+| Weitere Governance-Reports ohne Handlung | Governance-Owner | ein Report liefert keine naechste Aktion | nicht bauen; die bestehende Diagnose nutzen | Review nur mit konkretem Defekt |
+| Automatische Reparatur fachlicher Spielcodefehler | Sim-/Domain-Owner | ein Spielcodefehler ist reproduziert | manuelle Reparatur; CI liefert nur die Diagnose | Review bei nachgewiesenem, wiederkehrendem Fehler |
 
-- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Offen vor Phase 1: **eine** CI-Form waehlen - die Matrix aus 0.3.154 oder der impact-basierte `pull_request_target`-Entwurf aus PR #203 - und die andere schliessen; danach die verbliebenen PRs #200 und #201 entkollidieren (beide melden `mergeable: false`) und die 0.2-Lane am Remote loeschen.
+Diese Punkte sind bewusst PARKED. Sie blockieren keine Spielentwicklung; neue
+Governance-Arbeit ist nur noch bei einem konkreten Defekt, einem realen
+Integritaetsfehler, messbarem Workflow-Zeitverlust oder nachweisbarer
+wiederkehrender Agentenarbeit zulaessig. Die Infrastruktur traegt das Spiel,
+nicht umgekehrt.
+
+- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Der fruehere CI-Form-Vergleich ist mit dem gemergten #221 entschieden; die Matrix bleibt die eine Form. Offene PRs aus diesem Vergleich gibt es nicht mehr.
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
@@ -172,7 +182,7 @@ nächster Schritt, Review-Bedingung.
 
 - README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Der Produktvertrag steht oben in diesem Dokument, das Casino darin als Start- und Testumgebung.
 
-- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`), Claim 14 ebenfalls (`merged`, `branch-tree-on-main`, `893317c`); damit steht auf `main` kein offener Claim mehr, dessen PR gemergt ist. Seit 0.3.164 liegen die drei P0-Vertrauensgrenzen: Die CI faehrt ihre Steuerung aus dem Basis-Commit, `promote` mergt nur den per SHA geprueften Kopf, und das Claim-Register wird gegen Basis und erste Registrierung geprueft. Seit 0.3.171 ist der PR-Beleg zusaetzlich an Ziel `main`, eigenes Repository und den exakten Head-SHA gebunden; mehrdeutige Branch-Namen werden verworfen, und der Issue-Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Offen bleiben die Agent-ID-/Worktree-Zuordnung und die SemVer-Policy. Slice C ist fuer die Langlaeufe umgesetzt: `ci-plan` waehlt betroffene Statistik-/Soak-Dateien, `ci-verify` faehrt sie als eigene Matrix auf dem PR-Kopf, und `long-checks.yml` hat einen woechentlichen Vollauf; der Doku-Resolver fuer generierte Bereiche bleibt offen. Offen bleibt ausserdem: ein Claim ohne lokalen Branch und ohne `gh` ist unbelegt und bleibt fail-closed - der Agent mit Connector traegt den Beleg dann manuell nach.
+- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`), Claim 14 ebenfalls (`merged`, `branch-tree-on-main`, `893317c`); damit steht auf `main` kein offener Claim mehr, dessen PR gemergt ist. Seit 0.3.164 liegen die drei P0-Vertrauensgrenzen: Die CI faehrt ihre Steuerung aus dem Basis-Commit, `promote` mergt nur den per SHA geprueften Kopf, und das Claim-Register wird gegen Basis und erste Registrierung geprueft. Seit 0.3.171 ist der PR-Beleg zusaetzlich an Ziel `main`, eigenes Repository und den exakten Head-SHA gebunden; mehrdeutige Branch-Namen werden verworfen, und der Issue-Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Agenten-Isolation und Worktree-Pflicht sind mit #224 und der Lane-Pretask-Regel geschlossen; Slice C ist fuer die Langlaeufe umgesetzt: `ci-plan` waehlt betroffene Statistik-/Soak-Dateien, `ci-verify` faehrt sie als eigene Matrix auf dem PR-Kopf mit Kontrollebene aus der Basis, und `long-checks.yml` hat einen woechentlichen Vollauf. Der Doku-Resolver fuer generierte Bereiche bleibt bewusst PARKED; ein Claim ohne lokalen Branch und ohne `gh` bleibt fail-closed und wird mit Connector manuell belegt. Der finale Abschluss friert die Governance ein: neue Governance nur nach den oben genannten Ausloesern, danach Spielentwicklung.
 - Lokales Feedback und Staging-Scope stehen (Slice A): `agent:feedback` nennt aus dem echten Diff die betroffenen Tests und den naechsten sinnvollen Befehl, `turn-push.mjs` committet nur Pfade des eigenen Claims.
 - Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
 - Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen. Der Merge-Text traegt die Pflichtsektionen: seit 0.3.140 haelt `docs/ARCHITECTURE.md` den `ERR-4006`-Fall des #163-Merges fest, Connector- und REST-Merges setzen `commit_message` mit dem PR-Body.
@@ -228,9 +238,9 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 
 | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- |
-| Release-Plan im Runner | offen | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
-| Doku-Reconcile-Runner | offen | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
-| CI-Self-Repair | offen | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
+| Release-Plan im Runner | PARKED | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
+| Doku-Reconcile-Runner | PARKED | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
+| CI-Self-Repair | PARKED | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
 | Impact-gesteuerte Langlaeufe | erledigt | `ci-plan.mjs` exportiert `long_matrix`; `ci-verify.yml` startet die betroffenen Statistik-/Soak-Dateien als eigene Matrix auf dem exakten PR-Kopf und fuehrt den Long-Job im Pflichtstatus. `agent:verify --ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; der Wochenlauf bleibt der systemweite Vollauf. |
 | Issue-Resolver nach erneutem Gate | teilweise | `sweepGreenMain()` schliesst nur, wenn `origin/main` exakt dem erfolgreich geprueften Main-SHA entspricht und der gemeldete Commit darauf liegt; ein erneut auftretender Fingerprint oeffnet ein geschlossenes Issue wieder. Offen: erneut gruenes Gate auf dem neuen Stand. |
 

@@ -26,6 +26,14 @@ const arg = (name, fallback) => {
 
 const timeoutMs = Number(arg('timeout-minutes', '90')) * 60_000;
 const startedAt = Date.now();
+const boundedInteger = (name, raw, min, max) => {
+  const value = Number(raw);
+  if (!Number.isSafeInteger(value) || value < min || value > max) {
+    fail(1, 'ERR-4016', 'ci-long', `${name} muss eine ganze Zahl zwischen ${min} und ${max} sein, erhielt '${raw}'`);
+    process.exit(1);
+  }
+  return value;
+};
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
 function gitOutput(args) {
@@ -58,6 +66,11 @@ const inputs = {
   balance_days: arg('balance-days', process.env.RBD_DAYS ?? '40'),
   sha,
 };
+// Workflow-Eingaben sind Strings. Die Grenzen stehen hier und in den
+// ausfuehrenden Skripten, damit weder Dispatch noch manueller Lauf eine
+// unsinnige Tick- oder Tageszahl startet.
+inputs.soak_ticks = String(boundedInteger('soak-ticks', inputs.soak_ticks, 1, 1_000_000));
+inputs.balance_days = String(boundedInteger('balance-days', inputs.balance_days, 1, 400));
 if (argv.includes('--plan')) {
   console.log(JSON.stringify({ workflow: WORKFLOW, ref, sha, inputs }, null, 2));
   process.exit(0);

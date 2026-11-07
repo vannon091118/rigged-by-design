@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.178 | 2026-11-07 13:03 UTC -->
+<!-- rbd-doc: v0.3.179 | 2026-11-07 13:12 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.179] - 2026-11-07
+
+### Technik
+- **Kein Bootstrap-Fallback mehr.** Die CI nimmt ihre Kontrollebene fuer PRs aus der PR-Basis und fuer Feature-Pushes aus `main`; eine Basis ohne `RBD_ROOT` bricht ab, statt PR-Skripte auszufuehren. Der Uebergangs-Bootstrap aus #221 ist damit entfernt.
+- **Lange Nachweise aus der Kontrollebene.** Der Long-Job in `ci-verify.yml` startet `run-selected-tests.mjs` aus `.rbd-control` und prueft den PR-Baum ueber `RBD_ROOT`. `RBD_REQUIRE_TESTS=1` macht einen uebersprungenen Pflichtnachweis rot; ein normaler Lauf bleibt gruen.
+- **Pretask-Arbeitsbrief und Worktree-Pflicht.** `agent:pretask` nennt HEAD, Basis, Worktree, Staging-/Untracked-Status und Claim; jede Lane ausser `main` braucht einen verknuepften Worktree. Ein fehlendes `gh` bleibt als `unknown` sichtbar.
+- **Eingaben und Action-Pins.** `ci:long` validiert Soak-Ticks (1-1.000.000) und Balance-Tage (1-400) vor dem Dispatch; `.github/dependabot.yml` pflegt die vollstaendig gepinnten Actions woechentlich.
+- Tests: 22/22 in `workflow-hardening.test.ts` (10), `worktree-isolation.test.ts` (8) und `pretask.test.ts` (4); `pnpm run typecheck` gruen; ein absichtlich uebersprungener Langlauf endet mit Exit 1, der normale ausgewaehlte Lauf mit Exit 0.
 
 ## [0.3.178] - 2026-11-07
 
