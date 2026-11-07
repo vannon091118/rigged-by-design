@@ -56,8 +56,9 @@ describe('Contract: actionset v1.0', () => {
   });
 
   it('lehnt nicht-ganzzahlige priority ab', () => {
-    const action = createAction('x', 'Label', 'icon', 'cat', 1.5, true) as Action;
-    expect(validateAction(action)).toBe(false);
+    expect(() => createAction('x', 'Label', 'icon', 'cat', 1.5, true)).toThrow();
+    const invalid = { ...createAction('x', 'Label', 'icon', 'cat', 1, true), priority: 1.5 } as Action;
+    expect(validateAction(invalid)).toBe(false);
   });
 
   it('lehnt leere category ab', () => {
