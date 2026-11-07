@@ -41,6 +41,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
+      - name: pnpm installieren
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.4.1
+
+      - name: Node 22 mit pnpm-Cache
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
+
       # Kein zweiter voller Lauf fuer denselben Commit: sobald ein PR offen ist,
       # ist der PR-Lauf die Wahrheit. Der Plan laeuft trotzdem weiter, damit die
       # Matrix gueltig bleibt und der Aggregat-Status erscheint.

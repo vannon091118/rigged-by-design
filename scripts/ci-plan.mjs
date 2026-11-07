@@ -14,7 +14,8 @@
  */
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { planForCI, planReport } from './lib/ci-plan.mjs';
+import { ADVISORY_GATES, planForCI, planReport } from './lib/ci-plan.mjs';
+import { planGates } from './lib/pipeline-plan.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const arg = (name) => {
@@ -30,15 +31,17 @@ const outputFile = arg('github-output');
 const reportPath = resolve(ROOT, process.env.CI_PLAN_PATH ?? '.verify-cache/ci-plan.json');
 
 const result = planForCI({ base, head, profile, impact });
+// Ohne Diff bleibt es beim Profil des Laufs, nie bei einem einzelnen Gate.
+const fallback = planGates(profile) ?? planGates('full');
 const plan = result?.plan ?? {
   changed: [],
-  gates: [{ gate: 'lint' }],
-  gateKeys: ['lint'],
+  gates: fallback.map((gate) => ({ gate })),
+  gateKeys: fallback,
   reason: 'Diff nicht bestimmbar oder ohne Basis: konservativ volles Profil',
   skipped: [],
-  tests: { files: [], runAll: true, reason: 'volles Profil', shards: [], long: [] },
-  advisory: [],
-  required: ['lint'],
+  tests: { files: [], runAll: true, reason: `vollstaendiges Profil ${profile}`, shards: [], long: [] },
+  advisory: [...ADVISORY_GATES],
+  required: fallback,
 };
 
 const matrix = JSON.stringify({ include: plan.gates });
