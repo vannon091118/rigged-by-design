@@ -1600,6 +1600,38 @@
     {
       "turnId": "2026-11-07T23:50Z-pool-rumor-50",
       "contributionId": "pool-rumor-50"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-choice-preview-51",
+      "contributionId": "pool-choice-preview-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-description-51",
+      "contributionId": "pool-description-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-documentation-51",
+      "contributionId": "pool-documentation-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-event-body-51",
+      "contributionId": "pool-event-body-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-memory-51",
+      "contributionId": "pool-memory-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-opening-51",
+      "contributionId": "pool-opening-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-reaction-51",
+      "contributionId": "pool-reaction-51"
+    },
+    {
+      "turnId": "2026-11-08T00:10Z-pool-rumor-51",
+      "contributionId": "pool-rumor-51"
     }
   ]
 }
