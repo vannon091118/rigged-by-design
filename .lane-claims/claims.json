@@ -806,7 +806,9 @@
     "contracts": [],
     "dependencies": [],
     "gateProfile": "light",
-    "status": "open",
-    "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d"
+    "status": "merged",
+    "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d",
+    "mergedEvidence": "branch-tree-on-main",
+    "mergedSha": "b308fed34988c5d3fdd13506047f8de01421128b"
   }
 ]
