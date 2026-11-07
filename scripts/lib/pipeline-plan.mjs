@@ -7,7 +7,7 @@
  * als roten Befund, statt sie vorher wegzuschreiben.
  */
 
-export const PROFILES = Object.freeze(['light', 'quick', 'full', 'release']);
+export const PROFILES = Object.freeze(['light', 'dev', 'quick', 'full', 'release']);
 
 /**
  * `verify:all` heisst fuer Menschen "alles", als Profil heisst es `full`. Der
@@ -75,16 +75,21 @@ export const GATES = Object.freeze({
   // wird als Issue abgeholt. Nur Geld-, Ledger-, RNG- und Save-Invarianten
   // bleiben BLOCKED (ERR-1001/1002/1003/5001).
   tests: { name: 'tests', command: 'pnpm', script: 'test:ci', code: 'ERR-4026', cache: true, timeoutMs: 15 * MINUTE },
+  // Derselbe Selektor wie `test:affected`, aber als Gate im gemeinsamen Plan.
+  // Der lokale dev-Abschluss soll nicht zwei getrennte Testkommandos brauchen.
+  affected: { name: 'affected', command: 'node', script: 'scripts/test-affected.mjs', code: 'ERR-4026', cache: true, timeoutMs: 15 * MINUTE },
   build: { name: 'build', command: 'pnpm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy'];
+const DEV = [...LIGHT, 'affected'];
 const QUICK = ['lint', 'check:loc', 'typecheck', 'test-quality', 'dead-code', 'docs', 'tree', 'redundancy', 'assets', 'capabilities', 'tests'];
 
 export const PROFILE_GATES = Object.freeze({
   light: Object.freeze(LIGHT),
+  dev: Object.freeze(DEV),
   quick: Object.freeze(QUICK),
   // Voll und Release pruefen identisch; nur `verify:release` erzwingt pnpm audit zusaetzlich per Env.
   full: Object.freeze([...QUICK, 'audit', 'build']),

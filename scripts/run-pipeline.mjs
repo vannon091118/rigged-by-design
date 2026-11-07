@@ -7,8 +7,9 @@
  * fix     repariert alles Automatische (`--fix`) und protokolliert danach
  *         jede Aenderung und jede Loeschung im Arbeitsbaum.
  *
- * Vier Profile: light (Turn), quick (Entwicklungsfeedback), full (Integration),
- * release (APK/Versionssprung). Schwere Nachweise gehoeren in die CI.
+ * Fuenf Profile: light (Struktur-Turn), dev (Struktur plus betroffene Tests),
+ * quick (Entwicklungsfeedback), full (Integration), release (APK/Versionssprung).
+ * Schwere Nachweise gehoeren in die CI.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';

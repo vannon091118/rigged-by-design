@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.175 | 2026-11-07 11:57 UTC -->
+<!-- rbd-doc: v0.3.176 | 2026-11-07 12:08 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - dev-Profil als lokaler Abschluss
+
+**Ziel.** Der Audit verlangte ein lokales Profil, das Strukturpruefungen und betroffene schnelle Tests in einem Lauf verbindet, ohne die schwere Suite lokal zu starten.
+
+**Umsetzung.** `pipeline-plan.mjs` kennt jetzt `dev` als eigenes Profil: dieselben Light-Gates wie `light`, plus das Gate `affected` auf `scripts/test-affected.mjs`. `agent:verify --profile=dev` und `run-pipeline --profile=dev` benutzen damit denselben Plan; `verify:dev` ist der kurze Aufruf. Der Agent-Bericht ist als Teilpruefung markiert und nennt die ausgewaehlten schnellen Tests sowie die an den CI-Plan delegierten langen Nachweise. `verify:light` bleibt der reine Struktur-Turn, `full`/`release` bleiben der Vollnachweis.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/pipeline-modes.test.ts` -> 6/6 Tests; `pnpm run verify:dev` -> 7/7 Gates, 181 Testdateien/1000 Tests (999 gruen, 1 bewusst uebersprungen); `pnpm run agent:verify --profile=dev --json` -> `partial: true`, 7 lange Nachweise an den CI-Plan delegiert; `pnpm run verify:test-quality`, `pnpm run verify:claims` und `pnpm run verify:docs` -> PASS.
+
+**Offen.** Der erste echte PR-Lauf muss das `dev`-Profil nicht ausfuehren; der Nachweis ist lokal und ueber die fokussierten Profiltests erbracht.
 
 ## 2026-11-07 - Lokale Tests, lange Nachweise und Main-Regression verbunden
 

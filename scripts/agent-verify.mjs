@@ -5,8 +5,10 @@
  * es gibt keine zweite Pipeline und keinen zweiten Gate-Plan.
  *
  * `--profile=quick` laeuft die schnellen Gates und, wenn der Impact es erlaubt,
- * nur die betroffenen Tests. Diese Auswahl ist ausdruecklich Teilpruefung; der
- * Bericht nennt sie so. `--ci` delegiert die langen Nachweise an Actions.
+ * nur die betroffenen Tests. `--profile=dev` tut dasselbe ohne die schweren
+ * Gates und ueber das eigene `affected`-Gate. Beide sind ausdruecklich
+ * Teilpruefung; der Bericht nennt sie so. `--ci` delegiert die langen
+ * Nachweise an Actions.
  * `--plan` zeigt den Plan, ohne ein Gate zu starten.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -63,7 +65,7 @@ const width = Math.max(4, ...state.gates.map((gate) => gate.name.length));
 
 if (PLAN_ONLY) {
   console.log(header);
-  console.log(`Plan       ${state.gates.length} Gates · Tests ${subset.length > 0 ? `${subset.length} ausgewaehlt` : 'vollstaendig'}`);
+  console.log(`Plan       ${state.gates.length} Gates · Tests ${PROFILE === 'dev' ? 'betroffen (affected)' : subset.length > 0 ? `${subset.length} ausgewaehlt` : 'vollstaendig'}`);
   console.log('');
   console.log(`${'Gate'.padEnd(width)}  ${'Cache'.padEnd(5)}  Code`);
   for (const gate of state.gates) console.log(`${gate.name.padEnd(width)}  ${(gate.cached ? 'hit' : '-').padEnd(5)}  ${gate.code}`);
@@ -78,20 +80,24 @@ const durationMs = Number(process.hrtime.bigint() - startedAt) / 1e6;
 
 const report = {
   profile: PROFILE,
-  partial: PROFILE === 'quick' && subset.length > 0,
+  partial: PROFILE === 'dev' || (PROFILE === 'quick' && subset.length > 0),
   version: state.version,
   tree: state.tree,
   changed: state.changed,
   systems: state.systems,
-  tests: { ...state.tests, executed: tests.skip ? [] : subset },
+  tests: { ...state.tests, executed: tests?.skip ? [] : PROFILE === 'dev' ? state.tests.fast : subset },
   gates: state.gates.map((gate) => ({
     ...gate,
-    result: failed.includes(gate.name) ? 'failed' : gate.cached ? 'cached' : tests.skip && gate.name === 'tests' ? 'skipped' : 'executed',
+    result: failed.includes(gate.name) ? 'failed' : gate.cached ? 'cached' : tests?.skip && gate.name === 'tests' ? 'skipped' : 'executed',
   })),
   delegated: state.tests.long,
   durationMs,
   failed,
-  open: [...state.open, ...(PROFILE === 'quick' ? ['Teilpruefung: die vollstaendige Suite und die Gates von full/release laufen in CI'] : [])],
+  open: [
+    ...state.open,
+    ...(PROFILE === 'dev' ? ['Teilpruefung: die vollstaendige Suite und die langen Nachweise laufen im CI-Plan'] : []),
+    ...(PROFILE === 'quick' ? ['Teilpruefung: die vollstaendige Suite und die Gates von full/release laufen in CI'] : []),
+  ],
 };
 
 const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'reports', 'agent');
@@ -127,7 +133,7 @@ if (AS_JSON) {
   console.log('');
   console.log(`${'Gate'.padEnd(width)}  ${'Status'.padEnd(6)}  Dauer`);
   for (const row of table) console.log(`${row.name.padEnd(width)}  ${row.status.padEnd(6)}  ${row.seconds}`);
-  if (subset.length > 0) console.log(`Teilpruefung  ${subset.length} betroffene Testdatei(en), kein Vollnachweis`);
+  if (PROFILE === 'dev' || subset.length > 0) console.log(`Teilpruefung  ${PROFILE === 'dev' ? 'betroffene schnelle Tests' : `${subset.length} betroffene Testdatei(en)`}, kein Vollnachweis`);
   if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — CI-Plan auf dem PR-Commit; manuell: --dispatch-long`);
   for (const entry of report.open) console.log(`Offen         ${entry}`);
   console.log(`Bericht       ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);

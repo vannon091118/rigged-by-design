@@ -782,5 +782,31 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "557a9d6f721b878ed030ed19bc4408891ad5aa91",
     "createdAt": "d7eb2b6eacb2bf8ebe7b4a602c9806044a80b4b9"
+  },
+  {
+    "id": "lane/governance/20-dev-profile",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/20-dev-profile",
+    "baseSha": "5d5603292b6c0df2743e8e5d9418102bbb48d67d",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      "AGENTS.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "scripts/lib/pipeline-plan.mjs",
+      "scripts/run-pipeline.mjs",
+      "scripts/agent-verify.mjs",
+      "src/core/governance/__tests__/pipeline-modes.test.ts",
+      "docs/INVENTORY.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/ROADMAP.md"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "5d5603292b6c0df2743e8e5d9418102bbb48d67d"
   }
 ]
