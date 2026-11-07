@@ -4,8 +4,10 @@
  *
  * Statistik, Soak, Balance und Benchmarks brauchen Minuten bis Stunden; die
  * lokale Schleife bleibt bei den schnellen Beweisklassen. Dieses Skript startet
- * `long-checks.yml` auf `main`, wartet auf das Ergebnis und laedt die Artefakte
- * (Balance-Bericht) herunter. Bevorzugt `gh`, sonst die REST-API.
+ * `long-checks.yml` auf dem aktuellen Branch und dem exakten Commit, wartet auf
+ * das Ergebnis und laedt die Artefakte (Balance-Bericht) herunter. Bevorzugt
+ * `gh`, sonst die REST-API. `--verify` ist die ausdrueckliche Ausnahme; ohne
+ * das Flag laufen nur die langen Nachweise.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
@@ -16,22 +18,15 @@ const WORKFLOW = 'long-checks.yml';
 const argv = process.argv.slice(2);
 const arg = (name, fallback) => {
   const hit = argv.find((value) => value.startsWith(`--${name}=`));
-  return hit ? hit.slice(name.length + 3) : fallback;
+  if (hit) return hit.slice(name.length + 3);
+  const index = argv.indexOf(`--${name}`);
+  const next = index >= 0 ? argv[index + 1] : '';
+  return next && !next.startsWith('--') ? next : fallback;
 };
 
-const inputs = {
-  // Lange Nachweise sind der Zweck dieses Laufs. Ein vollständiges verify:all
-  // ist die Ausnahme und muss ausdrücklich mit --verify angefordert werden.
-  verify: argv.includes('--verify') && !argv.includes('--no-verify'),
-  soak_ticks: arg('soak-ticks', process.env.RBD_SOAK_TICKS ?? '100000'),
-  balance_days: arg('balance-days', process.env.RBD_DAYS ?? '40'),
-};
-const ref = arg('ref', 'main');
 const timeoutMs = Number(arg('timeout-minutes', '90')) * 60_000;
 const startedAt = Date.now();
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
-
-const hasGh = spawnSync('gh', ['--version'], { stdio: 'ignore' }).status === 0;
 
 function gitOutput(args) {
   try {
@@ -40,6 +35,35 @@ function gitOutput(args) {
     return '';
   }
 }
+
+// Der Lauf gehoert auf den Stand, der geprueft werden soll, nicht pauschal auf
+// main. Der Branch waehlt das Workflow-File; die SHA pinnt den Checkout auch
+// dann, wenn sich der Branch waehrend des Laufs weiterbewegt.
+const branch = gitOutput(['rev-parse', '--abbrev-ref', 'HEAD']);
+const ref = arg('ref', process.env.GITHUB_HEAD_REF || (branch === 'HEAD' ? '' : branch));
+const sha = arg('sha', gitOutput(['rev-parse', 'HEAD']));
+if (!ref) {
+  fail(1, 'ERR-4016', 'ci-long', 'kein Arbeitsbranch erkannt; --ref <branch> angeben');
+  process.exit(1);
+}
+if (!/^[0-9a-f]{40}$/.test(sha)) {
+  fail(1, 'ERR-4016', 'ci-long', `ungueltige Commit-SHA '${sha}'; --sha <40-hex> angeben`);
+  process.exit(1);
+}
+const inputs = {
+  // Lange Nachweise sind der Zweck dieses Laufs. Ein vollständiges verify:all
+  // ist die Ausnahme und muss ausdrücklich mit --verify angefordert werden.
+  verify: argv.includes('--verify') && !argv.includes('--no-verify'),
+  soak_ticks: arg('soak-ticks', process.env.RBD_SOAK_TICKS ?? '100000'),
+  balance_days: arg('balance-days', process.env.RBD_DAYS ?? '40'),
+  sha,
+};
+if (argv.includes('--plan')) {
+  console.log(JSON.stringify({ workflow: WORKFLOW, ref, sha, inputs }, null, 2));
+  process.exit(0);
+}
+
+const hasGh = spawnSync('gh', ['--version'], { stdio: 'ignore' }).status === 0;
 
 function repoSlug() {
   const remote = gitOutput(['remote', 'get-url', 'origin']);
@@ -92,15 +116,15 @@ async function ghPath() {
   }
   const args = ['workflow', 'run', WORKFLOW, '--ref', ref];
   for (const [key, value] of Object.entries(inputs)) args.push('-f', `${key}=${value}`);
-  console.log(`ci-long: starte ${slug} ${WORKFLOW} auf ${ref} (${JSON.stringify(inputs)})`);
+  console.log(`ci-long: starte ${slug} ${WORKFLOW} auf ${ref}@${sha} (${JSON.stringify(inputs)})`);
   execFileSync('gh', args, { cwd: ROOT, stdio: 'inherit' });
 
   const run = await waitForRun(() => {
     const list = JSON.parse(execFileSync('gh', [
-      'run', 'list', '--workflow', WORKFLOW, '--limit', '5',
-      '--json', 'databaseId,createdAt,status,conclusion,url',
+      'run', 'list', '--workflow', WORKFLOW, '--limit', '10',
+      '--json', 'databaseId,createdAt,status,conclusion,url,headSha',
     ], { cwd: ROOT, encoding: 'utf8' }));
-    return list.find((entry) => Date.parse(entry.createdAt) >= startedAt - 60_000) ?? null;
+    return list.find((entry) => entry.headSha === sha && Date.parse(entry.createdAt) >= startedAt - 60_000) ?? null;
   }, 'ci-long');
   if (!run) {
     fail(1, 'ERR-4016', 'ci-long', 'der gestartete Lauf ist nicht auffindbar');
@@ -135,11 +159,11 @@ async function restPath() {
     method: 'POST',
     body: JSON.stringify({ ref, inputs }),
   });
-  console.log(`ci-long: ${slug} ${WORKFLOW} auf ${ref} gestartet (${JSON.stringify(inputs)})`);
+  console.log(`ci-long: ${slug} ${WORKFLOW} auf ${ref}@${sha} gestartet (${JSON.stringify(inputs)})`);
 
   const run = await waitForRun(async () => {
     const list = await api(`/repos/${slug}/actions/workflows/${WORKFLOW}/runs?event=workflow_dispatch&per_page=10`, auth);
-    return (list.workflow_runs ?? []).find((entry) => Date.parse(entry.created_at) >= startedAt - 60_000) ?? null;
+    return (list.workflow_runs ?? []).find((entry) => entry.head_sha === sha && Date.parse(entry.created_at) >= startedAt - 60_000) ?? null;
   }, 'ci-long');
   if (!run) {
     fail(1, 'ERR-4016', 'ci-long', 'der gestartete Lauf ist nicht auffindbar');

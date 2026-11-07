@@ -6,6 +6,7 @@
  * geprueft: keine ungepruefte Eingabe in einer Shell-Zeile und keine bewegliche
  * Action-Referenz. Die langen Nachweise bleiben sonst unveraendert.
  */
+import { spawnSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -16,6 +17,7 @@ interface Step {
   readonly run?: string;
   readonly uses?: string;
   readonly env?: Readonly<Record<string, string>>;
+  readonly with?: Readonly<Record<string, string>>;
 }
 
 interface Job {
@@ -24,6 +26,11 @@ interface Job {
 }
 
 interface Workflow {
+  readonly on?: {
+    readonly workflow_dispatch?: {
+      readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
+    };
+  };
   readonly jobs?: Readonly<Record<string, Job>>;
 }
 
@@ -70,6 +77,39 @@ describe('workflow hardening', () => {
     const balance = stepWithRun(long, 'balance-run.mjs');
     expect(balance?.run).toBe('node scripts/balance-run.mjs');
     expect(balance?.env?.RBD_DAYS).toBe("${{ inputs.balance_days || '40' }}");
+  });
+
+  it('pinnt den Langlauf auf den uebergebenen Commit', () => {
+    const long = workflow('long-checks.yml');
+    expect(long.on?.workflow_dispatch?.inputs?.sha?.type).toBe('string');
+    expect(long.on?.workflow_dispatch?.inputs?.sha?.default).toBe('');
+    const checkouts = jobs(long)
+      .flatMap((job) => job.steps ?? [])
+      .filter((step) => step.uses?.startsWith('actions/checkout@') ?? false);
+    expect(checkouts.length).toBe(6);
+    for (const step of checkouts) {
+      expect(step.with?.ref).toContain('inputs.sha');
+      expect(step.with?.['fetch-depth']).toBe(0);
+    }
+  });
+
+  it('plant den Langlauf ohne main-Zwang und ohne verify:all', () => {
+    const plan = spawnSync(process.execPath, [resolve(process.cwd(), 'scripts', 'ci-long-checks.mjs'), '--plan', '--ref', 'lane/test/plan'], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+    });
+    expect(plan.status).toBe(0);
+    const parsed = JSON.parse(plan.stdout) as {
+      workflow: string;
+      ref: string;
+      sha: string;
+      inputs: { verify: boolean; sha: string };
+    };
+    expect(parsed.workflow).toBe('long-checks.yml');
+    expect(parsed.ref).toBe('lane/test/plan');
+    expect(parsed.inputs.verify).toBe(false);
+    expect(parsed.sha).toBe(parsed.inputs.sha);
+    expect(parsed.sha).toMatch(/^[0-9a-f]{40}$/);
   });
 
   it('gibt der Testsuite keinen Kontroll-Root, den Node-Gates aber schon', () => {

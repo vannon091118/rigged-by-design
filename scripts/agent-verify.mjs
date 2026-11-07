@@ -7,8 +7,9 @@
  * `--profile=quick` laeuft die schnellen Gates und, wenn der Impact es erlaubt,
  * nur die betroffenen Tests. `--profile=dev` tut dasselbe ohne die schweren
  * Gates und ueber das eigene `affected`-Gate. Beide sind ausdruecklich
- * Teilpruefung; der Bericht nennt sie so. `--ci` delegiert die langen
- * Nachweise an Actions.
+ * Teilpruefung; der Bericht nennt sie so. `--ci` startet die langen
+ * Nachweise fuer den aktuellen Commit in Actions; `--no-verify` haelt die
+ * vollstaendige Suite aus diesem Lauf heraus.
  * `--plan` zeigt den Plan, ohne ein Gate zu starten.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -104,18 +105,15 @@ const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'repor
 mkdirSync(dir, { recursive: true });
 writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
 
-// `--ci` bedeutet: der PR-Plan übernimmt die langen Nachweise auf dem exakten
-// Commit. Ein main-Dispatch aus dem lokalen Turn wäre weder derselbe Commit
-// noch eine Delegation; der vollständige manuelle Lauf braucht --dispatch-long.
-if (CI && report.delegated.length > 0) {
-  report.ciLong = 'delegated-to-pr-plan';
-  report.open.push(...report.delegated.map((entry) => `lang: ${entry.file} (${entry.proof}) — CI-Plan auf dem PR-Commit`));
-  writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
-}
-if (DISPATCH_LONG && report.delegated.length > 0) {
-  console.log(`agent:verify: ${report.delegated.length} lange Nachweis(e) manuell an Actions delegiert`);
-  const run = spawnSync(process.execPath, ['scripts/ci-long-checks.mjs'], { cwd: ROOT, stdio: 'inherit' });
+// `--ci` und `--dispatch-long` starten den Langlauf ausdruecklich fuer den
+// aktuellen Commit. `--no-verify` haelt die volle Suite aus dem Lauf; die
+// schnellen Gates bleiben im PR-Plan. Ein roter Langlauf ist ein rotes
+// Verify-Ergebnis, kein blosser Berichtsvermerk.
+if (CI || DISPATCH_LONG) {
+  console.log(`agent:verify: starte Langlauf fuer ${report.tree.branch}@${report.tree.head} ohne verify:all`);
+  const run = spawnSync(process.execPath, ['scripts/ci-long-checks.mjs', '--no-verify'], { cwd: ROOT, stdio: 'inherit' });
   report.ciLong = run.status === 0 ? 'success' : 'failed';
+  if (run.status !== 0) report.open.push('Langlauf auf dem aktuellen Commit ist rot; Details im ci-long-Lauf');
   writeFileSync(join(dir, 'agent-summary.json'), `${JSON.stringify(report, null, 2)}\n`);
 }
 
@@ -134,8 +132,8 @@ if (AS_JSON) {
   console.log(`${'Gate'.padEnd(width)}  ${'Status'.padEnd(6)}  Dauer`);
   for (const row of table) console.log(`${row.name.padEnd(width)}  ${row.status.padEnd(6)}  ${row.seconds}`);
   if (PROFILE === 'dev' || subset.length > 0) console.log(`Teilpruefung  ${PROFILE === 'dev' ? 'betroffene schnelle Tests' : `${subset.length} betroffene Testdatei(en)`}, kein Vollnachweis`);
-  if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — CI-Plan auf dem PR-Commit; manuell: --dispatch-long`);
+  if (report.delegated.length > 0) console.log(`Delegiert     ${report.delegated.length} lange Nachweis(e) — im PR-Plan; --ci startet den Langlauf jetzt`);
   for (const entry of report.open) console.log(`Offen         ${entry}`);
   console.log(`Bericht       ${relative(ROOT, join(dir, 'agent-summary.json')).replaceAll('\\', '/')}`);
 }
-process.exit(failed.length === 0 ? 0 : 1);
+process.exit(failed.length === 0 && report.ciLong !== 'failed' ? 0 : 1);
