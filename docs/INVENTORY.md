@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 22:48 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 22:53 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -515,10 +515,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1411 |
-| Gelistete Dateien | 1411 |
+| Getrackte Dateien | 1748 |
+| Gelistete Dateien | 1748 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (7), content (70), docs (77), public (554), scripts (86), src (592) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (8), content (404), docs (77), public (554), scripts (88), src (592) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -530,8 +530,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 6 Datei(en)
-- `content/narrative/contributions/` — 66 Datei(en)
+- `.lane-claims/claims/` — 7 Datei(en)
+- `content/narrative/contributions/` — 400 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -572,8 +572,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/ui/` — 59 Datei(en)
 - `public/assets/casino/ui/emotions/` — 4 Datei(en)
 - `public/assets/casino/ui/skins/` — 7 Datei(en)
-- `scripts/` — 50 Datei(en)
-- `scripts/lib/` — 36 Datei(en)
+- `scripts/` — 51 Datei(en)
+- `scripts/lib/` — 37 Datei(en)
 - `src/` — 3 Datei(en)
 - `src/Config/` — 6 Datei(en)
 - `src/core/contracts/` — 7 Datei(en)
@@ -640,8 +640,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-governance-narrative-pools.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
@@ -714,6 +715,340 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-06-asset-semantik.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-06-layout-vertrag.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-07-multi-beat-schritte.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-choice-preview-09","contributionId":"pool-choice-preview-0 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-choice-preview-10","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-choice-preview-11","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-choice-preview-12","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-choice-preview-13","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-choice-preview-14","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-choice-preview-15","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-choice-preview-16","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-choice-preview-17","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-choice-preview-18","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-choice-preview-19","contributionId":"pool-choice-preview-1 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-choice-preview-20","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-choice-preview-21","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-choice-preview-22","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-choice-preview-23","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-choice-preview-24","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-choice-preview-25","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-choice-preview-26","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-choice-preview-27","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-choice-preview-28","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-choice-preview-29","contributionId":"pool-choice-preview-2 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-choice-preview-30","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-choice-preview-31","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-choice-preview-32","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-choice-preview-33","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-choice-preview-34","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-choice-preview-35","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-choice-preview-36","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-choice-preview-37","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-choice-preview-38","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-choice-preview-39","contributionId":"pool-choice-preview-3 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-choice-preview-40","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-choice-preview-41","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-choice-preview-42","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-choice-preview-43","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-choice-preview-44","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-choice-preview-45","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-choice-preview-46","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-choice-preview-47","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-choice-preview-48","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-choice-preview-49","contributionId":"pool-choice-preview-4 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-choice-preview-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-choice-preview-50","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-description-11","contributionId":"pool-description-11","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-description-12","contributionId":"pool-description-12","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-description-13","contributionId":"pool-description-13","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-description-14","contributionId":"pool-description-14","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-description-15","contributionId":"pool-description-15","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-description-16","contributionId":"pool-description-16","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-description-17","contributionId":"pool-description-17","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-description-18","contributionId":"pool-description-18","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-description-19","contributionId":"pool-description-19","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-description-20","contributionId":"pool-description-20","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-description-21","contributionId":"pool-description-21","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-description-22","contributionId":"pool-description-22","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-description-23","contributionId":"pool-description-23","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-description-24","contributionId":"pool-description-24","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-description-25","contributionId":"pool-description-25","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-description-26","contributionId":"pool-description-26","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-description-27","contributionId":"pool-description-27","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-description-28","contributionId":"pool-description-28","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-description-29","contributionId":"pool-description-29","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-description-30","contributionId":"pool-description-30","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-description-31","contributionId":"pool-description-31","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-description-32","contributionId":"pool-description-32","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-description-33","contributionId":"pool-description-33","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-description-34","contributionId":"pool-description-34","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-description-35","contributionId":"pool-description-35","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-description-36","contributionId":"pool-description-36","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-description-37","contributionId":"pool-description-37","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-description-38","contributionId":"pool-description-38","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-description-39","contributionId":"pool-description-39","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-description-40","contributionId":"pool-description-40","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-description-41","contributionId":"pool-description-41","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-description-42","contributionId":"pool-description-42","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-description-43","contributionId":"pool-description-43","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-description-44","contributionId":"pool-description-44","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-description-45","contributionId":"pool-description-45","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-description-46","contributionId":"pool-description-46","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-description-47","contributionId":"pool-description-47","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-description-48","contributionId":"pool-description-48","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-description-49","contributionId":"pool-description-49","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-description-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-description-50","contributionId":"pool-description-50","ro — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-documentation-27","contributionId":"pool-documentation-27" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-documentation-28","contributionId":"pool-documentation-28" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-documentation-29","contributionId":"pool-documentation-29" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-documentation-30","contributionId":"pool-documentation-30" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-documentation-31","contributionId":"pool-documentation-31" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-documentation-32","contributionId":"pool-documentation-32" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-documentation-33","contributionId":"pool-documentation-33" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-documentation-34","contributionId":"pool-documentation-34" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-documentation-35","contributionId":"pool-documentation-35" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-documentation-36","contributionId":"pool-documentation-36" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-documentation-37","contributionId":"pool-documentation-37" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-documentation-38","contributionId":"pool-documentation-38" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-documentation-39","contributionId":"pool-documentation-39" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-documentation-40","contributionId":"pool-documentation-40" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-documentation-41","contributionId":"pool-documentation-41" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-documentation-42","contributionId":"pool-documentation-42" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-documentation-43","contributionId":"pool-documentation-43" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-documentation-44","contributionId":"pool-documentation-44" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-documentation-45","contributionId":"pool-documentation-45" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-documentation-46","contributionId":"pool-documentation-46" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-documentation-47","contributionId":"pool-documentation-47" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-documentation-48","contributionId":"pool-documentation-48" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-documentation-49","contributionId":"pool-documentation-49" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-documentation-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-documentation-50","contributionId":"pool-documentation-50" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-event-body-08","contributionId":"pool-event-body-08","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-event-body-09","contributionId":"pool-event-body-09","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-event-body-10","contributionId":"pool-event-body-10","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-event-body-11","contributionId":"pool-event-body-11","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-event-body-12","contributionId":"pool-event-body-12","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-event-body-13","contributionId":"pool-event-body-13","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-event-body-14","contributionId":"pool-event-body-14","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-event-body-15","contributionId":"pool-event-body-15","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-event-body-16","contributionId":"pool-event-body-16","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-event-body-17","contributionId":"pool-event-body-17","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-event-body-18","contributionId":"pool-event-body-18","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-event-body-19","contributionId":"pool-event-body-19","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-event-body-20","contributionId":"pool-event-body-20","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-event-body-21","contributionId":"pool-event-body-21","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-event-body-22","contributionId":"pool-event-body-22","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-event-body-23","contributionId":"pool-event-body-23","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-event-body-24","contributionId":"pool-event-body-24","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-event-body-25","contributionId":"pool-event-body-25","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-event-body-26","contributionId":"pool-event-body-26","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-event-body-27","contributionId":"pool-event-body-27","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-event-body-28","contributionId":"pool-event-body-28","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-event-body-29","contributionId":"pool-event-body-29","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-event-body-30","contributionId":"pool-event-body-30","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-event-body-31","contributionId":"pool-event-body-31","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-event-body-32","contributionId":"pool-event-body-32","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-event-body-33","contributionId":"pool-event-body-33","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-event-body-34","contributionId":"pool-event-body-34","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-event-body-35","contributionId":"pool-event-body-35","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-event-body-36","contributionId":"pool-event-body-36","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-event-body-37","contributionId":"pool-event-body-37","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-event-body-38","contributionId":"pool-event-body-38","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-event-body-39","contributionId":"pool-event-body-39","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-event-body-40","contributionId":"pool-event-body-40","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-event-body-41","contributionId":"pool-event-body-41","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-event-body-42","contributionId":"pool-event-body-42","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-event-body-43","contributionId":"pool-event-body-43","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-event-body-44","contributionId":"pool-event-body-44","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-event-body-45","contributionId":"pool-event-body-45","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-event-body-46","contributionId":"pool-event-body-46","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-event-body-47","contributionId":"pool-event-body-47","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-event-body-48","contributionId":"pool-event-body-48","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-event-body-49","contributionId":"pool-event-body-49","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-event-body-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-event-body-50","contributionId":"pool-event-body-50","role — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-04.json` — {"agentId":"buffy","turnId":"2026-11-07T23:04Z-pool-memory-04","contributionId":"pool-memory-04","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-05.json` — {"agentId":"buffy","turnId":"2026-11-07T23:05Z-pool-memory-05","contributionId":"pool-memory-05","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-06.json` — {"agentId":"buffy","turnId":"2026-11-07T23:06Z-pool-memory-06","contributionId":"pool-memory-06","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-07.json` — {"agentId":"buffy","turnId":"2026-11-07T23:07Z-pool-memory-07","contributionId":"pool-memory-07","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-memory-08","contributionId":"pool-memory-08","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-memory-09","contributionId":"pool-memory-09","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-memory-10","contributionId":"pool-memory-10","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-memory-11","contributionId":"pool-memory-11","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-memory-12","contributionId":"pool-memory-12","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-memory-13","contributionId":"pool-memory-13","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-memory-14","contributionId":"pool-memory-14","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-memory-15","contributionId":"pool-memory-15","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-memory-16","contributionId":"pool-memory-16","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-memory-17","contributionId":"pool-memory-17","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-memory-18","contributionId":"pool-memory-18","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-memory-19","contributionId":"pool-memory-19","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-memory-20","contributionId":"pool-memory-20","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-memory-21","contributionId":"pool-memory-21","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-memory-22","contributionId":"pool-memory-22","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-memory-23","contributionId":"pool-memory-23","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-memory-24","contributionId":"pool-memory-24","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-memory-25","contributionId":"pool-memory-25","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-memory-26","contributionId":"pool-memory-26","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-memory-27","contributionId":"pool-memory-27","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-memory-28","contributionId":"pool-memory-28","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-memory-29","contributionId":"pool-memory-29","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-memory-30","contributionId":"pool-memory-30","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-memory-31","contributionId":"pool-memory-31","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-memory-32","contributionId":"pool-memory-32","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-memory-33","contributionId":"pool-memory-33","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-memory-34","contributionId":"pool-memory-34","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-memory-35","contributionId":"pool-memory-35","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-memory-36","contributionId":"pool-memory-36","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-memory-37","contributionId":"pool-memory-37","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-memory-38","contributionId":"pool-memory-38","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-memory-39","contributionId":"pool-memory-39","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-memory-40","contributionId":"pool-memory-40","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-memory-41","contributionId":"pool-memory-41","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-memory-42","contributionId":"pool-memory-42","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-memory-43","contributionId":"pool-memory-43","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-memory-44","contributionId":"pool-memory-44","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-memory-45","contributionId":"pool-memory-45","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-memory-46","contributionId":"pool-memory-46","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-memory-47","contributionId":"pool-memory-47","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-memory-48","contributionId":"pool-memory-48","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-memory-49","contributionId":"pool-memory-49","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-memory-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-memory-50","contributionId":"pool-memory-50","role":"BEOBA — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-opening-10","contributionId":"pool-opening-10","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-opening-11","contributionId":"pool-opening-11","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-opening-12","contributionId":"pool-opening-12","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-opening-13","contributionId":"pool-opening-13","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-opening-14","contributionId":"pool-opening-14","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-opening-15","contributionId":"pool-opening-15","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-opening-16","contributionId":"pool-opening-16","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-opening-17","contributionId":"pool-opening-17","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-opening-18","contributionId":"pool-opening-18","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-opening-19","contributionId":"pool-opening-19","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-opening-20","contributionId":"pool-opening-20","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-opening-21","contributionId":"pool-opening-21","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-opening-22","contributionId":"pool-opening-22","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-opening-23","contributionId":"pool-opening-23","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-opening-24","contributionId":"pool-opening-24","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-opening-25","contributionId":"pool-opening-25","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-opening-26","contributionId":"pool-opening-26","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-opening-27","contributionId":"pool-opening-27","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-opening-28","contributionId":"pool-opening-28","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-opening-29","contributionId":"pool-opening-29","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-opening-30","contributionId":"pool-opening-30","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-opening-31","contributionId":"pool-opening-31","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-opening-32","contributionId":"pool-opening-32","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-opening-33","contributionId":"pool-opening-33","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-opening-34","contributionId":"pool-opening-34","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-opening-35","contributionId":"pool-opening-35","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-opening-36","contributionId":"pool-opening-36","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-opening-37","contributionId":"pool-opening-37","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-opening-38","contributionId":"pool-opening-38","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-opening-39","contributionId":"pool-opening-39","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-opening-40","contributionId":"pool-opening-40","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-opening-41","contributionId":"pool-opening-41","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-opening-42","contributionId":"pool-opening-42","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-opening-43","contributionId":"pool-opening-43","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-opening-44","contributionId":"pool-opening-44","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-opening-45","contributionId":"pool-opening-45","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-opening-46","contributionId":"pool-opening-46","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-opening-47","contributionId":"pool-opening-47","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-opening-48","contributionId":"pool-opening-48","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-opening-49","contributionId":"pool-opening-49","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-opening-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-opening-50","contributionId":"pool-opening-50","role":"BEO — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-04.json` — {"agentId":"buffy","turnId":"2026-11-07T23:04Z-pool-reaction-04","contributionId":"pool-reaction-04","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-05.json` — {"agentId":"buffy","turnId":"2026-11-07T23:05Z-pool-reaction-05","contributionId":"pool-reaction-05","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-06.json` — {"agentId":"buffy","turnId":"2026-11-07T23:06Z-pool-reaction-06","contributionId":"pool-reaction-06","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-07.json` — {"agentId":"buffy","turnId":"2026-11-07T23:07Z-pool-reaction-07","contributionId":"pool-reaction-07","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-reaction-08","contributionId":"pool-reaction-08","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-reaction-09","contributionId":"pool-reaction-09","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-reaction-10","contributionId":"pool-reaction-10","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-reaction-11","contributionId":"pool-reaction-11","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-reaction-12","contributionId":"pool-reaction-12","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-reaction-13","contributionId":"pool-reaction-13","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-reaction-14","contributionId":"pool-reaction-14","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-reaction-15","contributionId":"pool-reaction-15","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-reaction-16","contributionId":"pool-reaction-16","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-reaction-17","contributionId":"pool-reaction-17","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-reaction-18","contributionId":"pool-reaction-18","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-reaction-19","contributionId":"pool-reaction-19","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-reaction-20","contributionId":"pool-reaction-20","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-reaction-21","contributionId":"pool-reaction-21","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-reaction-22","contributionId":"pool-reaction-22","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-reaction-23","contributionId":"pool-reaction-23","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-reaction-24","contributionId":"pool-reaction-24","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-reaction-25","contributionId":"pool-reaction-25","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-reaction-26","contributionId":"pool-reaction-26","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-reaction-27","contributionId":"pool-reaction-27","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-reaction-28","contributionId":"pool-reaction-28","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-reaction-29","contributionId":"pool-reaction-29","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-reaction-30","contributionId":"pool-reaction-30","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-reaction-31","contributionId":"pool-reaction-31","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-reaction-32","contributionId":"pool-reaction-32","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-reaction-33","contributionId":"pool-reaction-33","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-reaction-34","contributionId":"pool-reaction-34","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-reaction-35","contributionId":"pool-reaction-35","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-reaction-36","contributionId":"pool-reaction-36","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-reaction-37","contributionId":"pool-reaction-37","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-reaction-38","contributionId":"pool-reaction-38","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-reaction-39","contributionId":"pool-reaction-39","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-reaction-40","contributionId":"pool-reaction-40","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-reaction-41","contributionId":"pool-reaction-41","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-reaction-42","contributionId":"pool-reaction-42","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-reaction-43","contributionId":"pool-reaction-43","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-reaction-44","contributionId":"pool-reaction-44","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-reaction-45","contributionId":"pool-reaction-45","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-reaction-46","contributionId":"pool-reaction-46","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-reaction-47","contributionId":"pool-reaction-47","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-reaction-48","contributionId":"pool-reaction-48","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-reaction-49","contributionId":"pool-reaction-49","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-reaction-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-reaction-50","contributionId":"pool-reaction-50","role":"B — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-01.json` — {"agentId":"buffy","turnId":"2026-11-07T23:01Z-pool-rumor-01","contributionId":"pool-rumor-01","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-02.json` — {"agentId":"buffy","turnId":"2026-11-07T23:02Z-pool-rumor-02","contributionId":"pool-rumor-02","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-03.json` — {"agentId":"buffy","turnId":"2026-11-07T23:03Z-pool-rumor-03","contributionId":"pool-rumor-03","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-04.json` — {"agentId":"buffy","turnId":"2026-11-07T23:04Z-pool-rumor-04","contributionId":"pool-rumor-04","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-05.json` — {"agentId":"buffy","turnId":"2026-11-07T23:05Z-pool-rumor-05","contributionId":"pool-rumor-05","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-06.json` — {"agentId":"buffy","turnId":"2026-11-07T23:06Z-pool-rumor-06","contributionId":"pool-rumor-06","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-07.json` — {"agentId":"buffy","turnId":"2026-11-07T23:07Z-pool-rumor-07","contributionId":"pool-rumor-07","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-08.json` — {"agentId":"buffy","turnId":"2026-11-07T23:08Z-pool-rumor-08","contributionId":"pool-rumor-08","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-09.json` — {"agentId":"buffy","turnId":"2026-11-07T23:09Z-pool-rumor-09","contributionId":"pool-rumor-09","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-10.json` — {"agentId":"buffy","turnId":"2026-11-07T23:10Z-pool-rumor-10","contributionId":"pool-rumor-10","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-11.json` — {"agentId":"buffy","turnId":"2026-11-07T23:11Z-pool-rumor-11","contributionId":"pool-rumor-11","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-12.json` — {"agentId":"buffy","turnId":"2026-11-07T23:12Z-pool-rumor-12","contributionId":"pool-rumor-12","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-13.json` — {"agentId":"buffy","turnId":"2026-11-07T23:13Z-pool-rumor-13","contributionId":"pool-rumor-13","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-14.json` — {"agentId":"buffy","turnId":"2026-11-07T23:14Z-pool-rumor-14","contributionId":"pool-rumor-14","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-15.json` — {"agentId":"buffy","turnId":"2026-11-07T23:15Z-pool-rumor-15","contributionId":"pool-rumor-15","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-16.json` — {"agentId":"buffy","turnId":"2026-11-07T23:16Z-pool-rumor-16","contributionId":"pool-rumor-16","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-17.json` — {"agentId":"buffy","turnId":"2026-11-07T23:17Z-pool-rumor-17","contributionId":"pool-rumor-17","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-18.json` — {"agentId":"buffy","turnId":"2026-11-07T23:18Z-pool-rumor-18","contributionId":"pool-rumor-18","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-19.json` — {"agentId":"buffy","turnId":"2026-11-07T23:19Z-pool-rumor-19","contributionId":"pool-rumor-19","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-20.json` — {"agentId":"buffy","turnId":"2026-11-07T23:20Z-pool-rumor-20","contributionId":"pool-rumor-20","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-21.json` — {"agentId":"buffy","turnId":"2026-11-07T23:21Z-pool-rumor-21","contributionId":"pool-rumor-21","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-22.json` — {"agentId":"buffy","turnId":"2026-11-07T23:22Z-pool-rumor-22","contributionId":"pool-rumor-22","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-23.json` — {"agentId":"buffy","turnId":"2026-11-07T23:23Z-pool-rumor-23","contributionId":"pool-rumor-23","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-24.json` — {"agentId":"buffy","turnId":"2026-11-07T23:24Z-pool-rumor-24","contributionId":"pool-rumor-24","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-25.json` — {"agentId":"buffy","turnId":"2026-11-07T23:25Z-pool-rumor-25","contributionId":"pool-rumor-25","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-26.json` — {"agentId":"buffy","turnId":"2026-11-07T23:26Z-pool-rumor-26","contributionId":"pool-rumor-26","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-27.json` — {"agentId":"buffy","turnId":"2026-11-07T23:27Z-pool-rumor-27","contributionId":"pool-rumor-27","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-28.json` — {"agentId":"buffy","turnId":"2026-11-07T23:28Z-pool-rumor-28","contributionId":"pool-rumor-28","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-29.json` — {"agentId":"buffy","turnId":"2026-11-07T23:29Z-pool-rumor-29","contributionId":"pool-rumor-29","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-30.json` — {"agentId":"buffy","turnId":"2026-11-07T23:30Z-pool-rumor-30","contributionId":"pool-rumor-30","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-31.json` — {"agentId":"buffy","turnId":"2026-11-07T23:31Z-pool-rumor-31","contributionId":"pool-rumor-31","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-32.json` — {"agentId":"buffy","turnId":"2026-11-07T23:32Z-pool-rumor-32","contributionId":"pool-rumor-32","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-33.json` — {"agentId":"buffy","turnId":"2026-11-07T23:33Z-pool-rumor-33","contributionId":"pool-rumor-33","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-34.json` — {"agentId":"buffy","turnId":"2026-11-07T23:34Z-pool-rumor-34","contributionId":"pool-rumor-34","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-35.json` — {"agentId":"buffy","turnId":"2026-11-07T23:35Z-pool-rumor-35","contributionId":"pool-rumor-35","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-36.json` — {"agentId":"buffy","turnId":"2026-11-07T23:36Z-pool-rumor-36","contributionId":"pool-rumor-36","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-37.json` — {"agentId":"buffy","turnId":"2026-11-07T23:37Z-pool-rumor-37","contributionId":"pool-rumor-37","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-38.json` — {"agentId":"buffy","turnId":"2026-11-07T23:38Z-pool-rumor-38","contributionId":"pool-rumor-38","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-39.json` — {"agentId":"buffy","turnId":"2026-11-07T23:39Z-pool-rumor-39","contributionId":"pool-rumor-39","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-40.json` — {"agentId":"buffy","turnId":"2026-11-07T23:40Z-pool-rumor-40","contributionId":"pool-rumor-40","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-41.json` — {"agentId":"buffy","turnId":"2026-11-07T23:41Z-pool-rumor-41","contributionId":"pool-rumor-41","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-42.json` — {"agentId":"buffy","turnId":"2026-11-07T23:42Z-pool-rumor-42","contributionId":"pool-rumor-42","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-43.json` — {"agentId":"buffy","turnId":"2026-11-07T23:43Z-pool-rumor-43","contributionId":"pool-rumor-43","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-44.json` — {"agentId":"buffy","turnId":"2026-11-07T23:44Z-pool-rumor-44","contributionId":"pool-rumor-44","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-45.json` — {"agentId":"buffy","turnId":"2026-11-07T23:45Z-pool-rumor-45","contributionId":"pool-rumor-45","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-46.json` — {"agentId":"buffy","turnId":"2026-11-07T23:46Z-pool-rumor-46","contributionId":"pool-rumor-46","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-47.json` — {"agentId":"buffy","turnId":"2026-11-07T23:47Z-pool-rumor-47","contributionId":"pool-rumor-47","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-rumor-48","contributionId":"pool-rumor-48","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-rumor-49","contributionId":"pool-rumor-49","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-07-pool-rumor-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-rumor-50","contributionId":"pool-rumor-50","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/registry/fragments.json` — { — gelesen: 8933 Zeilen
 - `content/narrative/turns/manifest.json` — { — gelesen: 1605 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
@@ -1395,6 +1730,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 125 Zeilen
 - `scripts/lib/issue-scope.mjs` — Issue-Scope: ein Label, ein Body-Vertrag, eine Entscheidung. — gelesen: 178 Zeilen
 - `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 572 Zeilen
+- `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 79 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 277 Zeilen
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
 - `scripts/lib/narrative-macros.mjs` — NAR-10 compile-time macro parser and validator. — gelesen: 271 Zeilen
@@ -1433,6 +1769,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-dead-code.mjs` — Fail-Closed Dead-Artifact-Gate: ein Export ist tot, wenn ihn niemand ueber — gelesen: 114 Zeilen
 - `scripts/verify-docs.mjs` — Doc-Gate: Struktur, Marker und flacher Wurzelbaum; rot bei Abweichung. — gelesen: 14 Zeilen
 - `scripts/verify-lane-claims.mjs` — verify-lane-claims: Prüft, ob der aktuelle Branch einen Lane-Claim hat, — gelesen: 372 Zeilen
+- `scripts/verify-narrative-blocks.mjs` — Gate: Textbaustein-Pools und die Pflicht pro Commit. — gelesen: 56 Zeilen
 - `scripts/verify-narrative-content.mjs` — NAR-10/NAR-11 read-only content verification. — gelesen: 21 Zeilen
 - `scripts/verify-redundancy.mjs` — Redundanz-Gate: eine Wahrheit pro Sache. — gelesen: 67 Zeilen
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
