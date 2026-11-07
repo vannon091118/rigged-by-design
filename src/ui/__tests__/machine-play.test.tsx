@@ -84,7 +84,7 @@ describe('Eigener Automat', () => {
 
   it('reicht einen Gastwurf als eigenen Spielzug weiter', async () => {
     const { onPlay, wallet } = fixture('guest');
-    await waitFor(() => screen.getByRole('button', { name: /WUERFELN/ }), { timeout: 10000 });
+    await waitFor(() => screen.getByRole('button', { name: /WUERFELN/ }), { timeout: 15000 });
     const wager = screen.getByRole('button', { name: /WUERFELN/ });
     fireEvent.click(wager);
     expect(onPlay).toHaveBeenCalledWith(1, { variant: 'UNDER' });

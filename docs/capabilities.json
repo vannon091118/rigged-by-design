@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "generated": "2026-11-06T23:45 UTC",
+  "description": "Capability-Inventar: beobachtete Spieler-/Simulationsfähigkeiten mit echten Verhaltenstests. Jede aktive Fähigkeit verweist auf mindestens einen ausgeführten Test. Fähigkeiten ohne verifizierte Tests sind als 'unverified' markiert und blockieren ihre Lane bis zur Prüfung. Löschung erfordert removedBecause, replacedBy, parityTestIds, Owner und ADR/Issue (Tombstone-Mechanismus).",
+  "capabilities": [
+    {
+      "id": "walls.interior.collision",
+      "domain": "raum",
+      "status": "unverified",
+      "description": "Innenwände erzeugen echte Kollisionsgrenzen im Produktionspfad; Gäste und Spieler können nicht durch Wände gehen.",
+      "paths": ["src/core/sim/layout.ts", "src/core/sim/nav-grid.ts", "src/core/sim/nav-reach.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Integrator",
+      "note": "Tests für nav-grid und physics fehlen noch; Lane blockiert bis zur Prüfung."
+    },
+    {
+      "id": "walls.interior.navigation",
+      "domain": "raum",
+      "status": "unverified",
+      "description": "Navigation respektiert Wandkanten; stepOpen() blockiert nur bei WALL, DOOR/OPENING sind passierbar.",
+      "paths": ["src/core/sim/nav-grid.ts", "src/core/sim/nav-reach.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Integrator",
+      "note": "Testdateien für nav-grid fehlen noch; Lane blockiert bis zur Prüfung."
+    },
+    {
+      "id": "cards.flip.animated",
+      "domain": "karten",
+      "status": "unverified",
+      "description": "Karten werden mit Animation umgedreht (Flip-Effekt), nicht sofort offenbart.",
+      "paths": ["src/core/games/engines/cards.ts"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "UI-Owner",
+      "note": "Testdatei card-flip.test.tsx fehlt noch."
+    },
+    {
+      "id": "cards.deal.shoe-flight",
+      "domain": "karten",
+      "status": "active",
+      "description": "Karten werden aus dem Schuh (Shoe) dealt; draw entfernt die Karte, Reshuffle nur wenn leer.",
+      "paths": ["src/core/rng/shoe.ts", "src/core/games/engines/cards.ts"],
+      "testIds": ["src/core/rng/__tests__/shoe.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    },
+    {
+      "id": "slots.reels.animated",
+      "domain": "slots",
+      "status": "active",
+      "description": "Slot-Walzen drehen sich animiert und zahlen Liniengewinne aus.",
+      "paths": ["src/core/games/engines/slot.ts", "src/core/games/engines/slot-paytable.ts"],
+      "testIds": ["src/core/games/__tests__/slot-paylines.test.ts", "src/core/games/__tests__/slot-profile.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    },
+    {
+      "id": "slots.gamble.risk-card",
+      "domain": "slots",
+      "status": "active",
+      "description": "Risikokarte (Gamble-Feature) nach Slot-Gewinn; Farbe wählen für Verdopplung.",
+      "paths": ["src/core/games/risk-card.ts"],
+      "testIds": ["src/core/games/__tests__/risk-card.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    },
+    {
+      "id": "actions.radial-menu",
+      "domain": "interaktion",
+      "status": "unverified",
+      "description": "Radialmenü für bis zu 6 verfügbare Aktionen, gerendert aus ActionSet-Daten.",
+      "paths": ["src/ui/action-card.tsx"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Interaction-Owner",
+      "note": "Testdatei action-card.test.tsx fehlt noch."
+    },
+    {
+      "id": "actions.dropdown-sheet",
+      "domain": "interaktion",
+      "status": "unverified",
+      "description": "Dropdown-Sheet ab 7 verfügbaren Aktionen, gerendert aus denselben ActionSet-Daten wie das Radialmenü.",
+      "paths": ["src/ui/action-card.tsx"],
+      "testIds": [],
+      "browserEvidence": null,
+      "owner": "Interaction-Owner",
+      "note": "Testdatei action-sheet.test.tsx fehlt noch."
+    },
+    {
+      "id": "narrative.trigger-evaluate",
+      "domain": "narrative",
+      "status": "active",
+      "description": "Deklarative Trigger-Evaluation mit Context, Beziehungs-/Zeitfensterabfragen; fail-closed Schema.",
+      "paths": ["src/core/sim/narrative/trigger-evaluate.ts", "src/core/sim/narrative/trigger-schema.ts"],
+      "testIds": ["src/core/governance/__tests__/narrative-compiler.test.ts"],
+      "browserEvidence": null,
+      "owner": "Narrative-Owner"
+    },
+    {
+      "id": "narrative.event-scheduler",
+      "domain": "narrative",
+      "status": "active",
+      "description": "Persistente Event-Instanzen mit Priorität, Fairness, Scopes, Cooldowns, Fristen, Stale-Cancel.",
+      "paths": ["src/core/sim/narrative/event-scheduler.ts", "src/core/sim/narrative/event-lifecycle.ts"],
+      "testIds": ["src/core/sim/__tests__/narrative-event-expiry.test.ts", "src/core/sim/__tests__/narrative-demand.test.ts"],
+      "browserEvidence": null,
+      "owner": "Narrative-Owner"
+    },
+    {
+      "id": "ledger.transfer-atomic",
+      "domain": "wirtschaft",
+      "status": "active",
+      "description": "Ledger-Transfer ist atomar: Quelle, Ziel, Entry-Count und Seq bleiben bei Fehler unverändert.",
+      "paths": ["src/core/economy/ledger.ts", "src/core/economy/ledger-integrity.ts"],
+      "testIds": ["src/core/economy/__tests__/ledger-atomicity.test.ts", "src/core/economy/__tests__/ledger-checkpoint.test.ts"],
+      "browserEvidence": null,
+      "owner": "Ledger-/Core-Owner"
+    },
+    {
+      "id": "save.migration-v5-to-v11",
+      "domain": "speicher",
+      "status": "active",
+      "description": "Save-Migration v5→v11 mit Roundtrip-Determinismus; v3/v4 verworfen.",
+      "paths": ["src/store/save.ts", "src/store/migrate.ts", "src/store/migrate-layout.ts", "src/store/migrate-narrative.ts"],
+      "testIds": ["src/store/__tests__/save-roundtrip.test.ts", "src/store/__tests__/save-migration.test.ts", "src/store/__tests__/save-v7.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    },
+    {
+      "id": "rng.two-namespaces",
+      "domain": "zufall",
+      "status": "active",
+      "description": "Zwei getrennte RNG-Streams: gameplay (spielrelevant, gespeichert) und presentation (Darstellung, nie gespeichert).",
+      "paths": ["src/core/rng/streams.ts", "src/core/rng/prng.ts"],
+      "testIds": ["src/core/rng/__tests__/streams.test.ts", "src/store/__tests__/prng-persistence.test.ts"],
+      "browserEvidence": null,
+      "owner": "Core-Owner"
+    }
+  ],
+  "tombstones": []
+}
