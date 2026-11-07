@@ -1,0 +1,20 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-03T00:25Z-nar-06-event-scheduler",
+  "contributionId": "event-scheduler-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": ["scheduler"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Der Streit war vorbei, aber das Haus trug ihn weiter: als Frist, als Cooldown und als eine Instanz, die nach dem Auflösen nicht einfach verschwand. Rita sah, dass zwei Geschichten gleichzeitig laufen konnten, ohne sich gegenseitig zu überschreiben. Am Ende entschied nicht der Zufall des Automaten, sondern ein eigener, kleiner Strom, den man speichern und beim nächsten Besuch wieder aufnehmen konnte.",
+  "directives": []
+}

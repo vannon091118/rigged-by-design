@@ -1,0 +1,184 @@
+/** Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. */
+import { Container, Graphics, Text } from 'pixi.js';
+import { areasFor, type Area } from '../core/sim/grid-zones';
+import { TILE } from '../core/sim/types';
+import type { GameView } from '../store/types';
+import { floorText } from './art-tokens';
+import { DepthStage } from './depth';
+import { changedRegions, regionHash } from './floor-math';
+import { CarpetOverlay } from './floor-carpet';
+import { drawRoutes } from './floor-route';
+import { drawRegionDirt, drawRegionFloor } from './room-art';
+
+const LABEL_COUNT = 10;
+
+export interface SceneCache {
+  readonly room: Container;
+  readonly carpet: Container;
+  /** Dreck liegt ueber Boden und Teppich, aber unter Laufwegen und Welt. */
+  readonly dirt: Container;
+  /** Laufwege ueber dem Boden, unter der Welt. */
+  readonly routes: Container;
+  /** Gemeinsame Tiefenebene fuer Moebel, Figuren, Requisiten, Waende. */
+  readonly world: Container;
+  readonly depth: DepthStage;
+  /** Zonenlabels ueber der Welt, aber ohne Tiefensortierung. */
+  readonly overhead: Container;
+  readonly stickers: Container;
+  readonly labels: readonly Text[];
+  readonly redrawRoom: (view: GameView) => void;
+  readonly redrawDirt: (view: GameView) => void;
+  readonly setLabels: (view: GameView, detail: boolean) => void;
+  readonly destroy: () => void;
+}
+
+interface FloorChunk {
+  readonly area: Area;
+  /** Alles, was gebacken wird: Zeichnung plus Texturen. */
+  readonly root: Container;
+  readonly g: Graphics;
+  /** Kacheln und Requisiten; ueber der Zeichnung, aber im selben Cache. */
+  readonly deco: Container;
+  hash: number;
+  baked: boolean;
+}
+
+export function createSceneCache(): SceneCache {
+  const room = new Container();
+  const carpet = new CarpetOverlay();
+  const depth = new DepthStage();
+  const overhead = new Container();
+  const dirtLayer = new Container();
+  const stickers = new Container();
+
+  const labels: Text[] = [];
+  for (let index = 0; index < LABEL_COUNT; index += 1) {
+    const label = new Text({ text: '', style: floorText.zone() });
+    label.visible = false;
+    labels.push(label);
+    overhead.addChild(label);
+  }
+
+  const floorChunks = new Map<string, FloorChunk>();
+  const dirtChunks = new Map<string, { g: Graphics; hash: number }>();
+  // Laufwege liegen ueber den Raum-Chunks, aber unter Dreck und Welt.
+  const routes = new Graphics();
+  routes.eventMode = 'none';
+  let routesKey = '';
+  let routesBaked = false;
+  let phase = '';
+
+  const redrawRoom = (view: GameView): void => {
+    const areas = areasFor(view.template);
+    const phaseChanged = phase !== view.dayPhase;
+    phase = view.dayPhase;
+    const key = `${view.template}|${view.carpet}|${view.zones.length}`;
+    if (key !== routesKey) {
+      routesKey = key;
+      routes.clear();
+      drawRoutes(routes, view, TILE);
+      if (routesBaked) routes.updateCacheTexture();
+      else { routes.cacheAsTexture(true); routesBaked = true; }
+    }
+    const prev = new Map<string, number>();
+    for (const chunk of floorChunks.values()) prev.set(chunk.area.id, chunk.hash);
+    // Ein Phasenwechsel backt jeden Chunk einmal neu, statt pro Frame zu rechnen.
+    const changed = phaseChanged ? new Set(areas.map((area) => area.id)) : new Set(changedRegions(view, areas, prev));
+    carpet.update(view);
+    for (const area of areas) {
+      let chunk = floorChunks.get(area.id);
+      if (!chunk) {
+        const root = new Container();
+        const g = new Graphics();
+        const deco = new Container();
+        root.addChild(g, deco);
+        room.addChild(root);
+        chunk = { area, root, g, deco, hash: 0, baked: false };
+        floorChunks.set(area.id, chunk);
+      }
+      if (!changed.has(area.id) && chunk.baked && chunk.area.w === area.w) continue;
+      chunk.g.clear();
+      for (const child of chunk.deco.removeChildren()) child.destroy();
+      drawRegionFloor(chunk.g, view, area, TILE, chunk.deco);
+      if (!chunk.baked) {
+        chunk.root.cacheAsTexture(true);
+        chunk.baked = true;
+      } else {
+        chunk.root.updateCacheTexture();
+      }
+      chunk.hash = regionHash(view, area);
+    }
+    for (const [id, chunk] of floorChunks) {
+      if (areas.some((area) => area.id === id)) continue;
+      if (chunk.baked) chunk.root.cacheAsTexture(false);
+      chunk.root.destroy({ children: true });
+      floorChunks.delete(id);
+    }
+  };
+
+  const dirtHashFor = (view: GameView, area: Area): number => {
+    let hash = 0;
+    for (const index of view.dirtyTiles) {
+      const x = index % view.size;
+      const y = Math.floor(index / view.size);
+      if (x < area.x || y < area.y || x >= area.x + area.w || y >= area.y + area.h) continue;
+      hash = (Math.imul(hash, 31) + index) | 0;
+    }
+    return hash;
+  };
+
+  const redrawDirt = (view: GameView): void => {
+    const areas = areasFor(view.template);
+    for (const area of areas) {
+      const hash = dirtHashFor(view, area);
+      let chunk = dirtChunks.get(area.id);
+      if (!chunk) {
+        const g = new Graphics();
+        dirtLayer.addChild(g);
+        chunk = { g, hash: 0 };
+        dirtChunks.set(area.id, chunk);
+      }
+      if (chunk.hash === hash) continue;
+      chunk.g.clear();
+      drawRegionDirt(chunk.g, view, area, TILE);
+      chunk.hash = hash;
+    }
+    for (const [id, chunk] of dirtChunks) {
+      if (areas.some((area) => area.id === id)) continue;
+      chunk.g.destroy();
+      dirtChunks.delete(id);
+    }
+  };
+
+  const setLabels = (view: GameView, detail: boolean): void => {
+    view.zones.forEach((zone, index) => {
+      const label = labels[index];
+      if (!label) return;
+      label.text = zone.name.toUpperCase();
+      label.position.set(zone.x * TILE + 12, zone.y * TILE + 10);
+      label.visible = detail;
+    });
+    for (let index = view.zones.length; index < labels.length; index += 1) labels[index]!.visible = false;
+  };
+
+  const destroy = (): void => {
+    for (const chunk of floorChunks.values()) {
+      if (chunk.baked) chunk.root.cacheAsTexture(false);
+      chunk.root.destroy({ children: true });
+    }
+    floorChunks.clear();
+    for (const chunk of dirtChunks.values()) chunk.g.destroy();
+    dirtChunks.clear();
+    room.destroy({ children: true });
+    carpet.destroy();
+    routes.destroy();
+    depth.root.destroy({ children: true });
+    overhead.destroy({ children: true });
+    stickers.destroy({ children: true });
+  };
+
+  return {
+    room, carpet: carpet.root, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
+    redrawRoom, redrawDirt, setLabels, destroy,
+  };
+}

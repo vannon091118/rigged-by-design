@@ -1,0 +1,21 @@
+{
+  "id": "machine-sparks",
+  "texture": "particles/sparks/spark-01.png",
+  "count": 6,
+  "lifetimeMs": [
+    160,
+    360
+  ],
+  "speed": [
+    0.1,
+    0.4
+  ],
+  "gravity": 0.0004,
+  "scale": [
+    0.25,
+    0.55
+  ],
+  "fadeOut": true,
+  "pool": true,
+  "trigger": "machine-damaged"
+}

@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-02T23:20Z-boundary-und-beziehungen",
+  "contributionId": "boundary-und-beziehungen-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "memory",
+  "function": "remember",
+  "contexts": ["return", "facts"],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern", "rueckkehrer"],
+  "text": "Rita Kern blieb vor dem Buch stehen. Jemand hatte ihren letzten Besuch nicht nur gezaehlt, sondern aufgeschrieben, was er fuer sie bedeutet hatte. Sie wusste noch nicht, ob das Haus sich erinnerte, weil es wollte, oder weil es musste.",
+  "directives": []
+}

@@ -1,0 +1,13 @@
+{
+  "id": "explosion",
+  "frames": [
+    "impacts/explosion/explosion-01.png",
+    "impacts/explosion/explosion-02.png",
+    "impacts/explosion/explosion-03.png",
+    "impacts/explosion/explosion-04.png",
+    "impacts/explosion/explosion-05.png",
+    "impacts/explosion/explosion-06.png"
+  ],
+  "fps": 14,
+  "loop": false
+}

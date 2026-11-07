@@ -1,0 +1,76 @@
+/** Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. */
+import type { VaCoinMicro } from '../../economy/vacoin';
+import type { PersonaId, RivalId, WorldState } from '../types';
+import type { RivalActionId } from '../rival-ai/types';
+import {
+  NARRATIVE_LIMITS,
+  type ActorRef, type HouseBand, type NarrativeFact, type VisitorValence,
+} from './types';
+
+type FactDraft =
+  | { readonly kind: 'START_POOL'; readonly visitorId: number; readonly capital: VaCoinMicro }
+  | { readonly kind: 'VISITOR_FIRST_SEEN'; readonly visitorId: number; readonly persona: PersonaId }
+  | { readonly kind: 'VISITOR_RETURNED'; readonly visitorId: number; readonly visits: number }
+  | { readonly kind: 'VISIT_ENDED'; readonly visitorId: number; readonly guestId: number; readonly score: number; readonly valence: VisitorValence }
+  | { readonly kind: 'HOUSE_BALANCE'; readonly balance: VaCoinMicro; readonly band: HouseBand }
+  | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
+  | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
+  | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro }
+  | {
+    readonly kind: 'RIVAL_ACTION'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId;
+    readonly action: RivalActionId; readonly evidence: boolean; readonly machineId: number | null;
+  }
+  | { readonly kind: 'COMMAND_REJECTED'; readonly commandId: string; readonly reason: string }
+  | {
+    readonly kind: 'EVENT_RESOLVED'; readonly eventId: number; readonly eventKind: string;
+    readonly choiceId: string; readonly outcomeId: string;
+  };
+
+/** Haengt einen Fact mit naechster ID, Tick und Tag an die Queue; aelteste fallen bei Ueberlauf. */
+export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
+  const fact = { ...draft, id: world.narrative.factSeq, tick: world.tick, day: world.day } as NarrativeFact;
+  world.narrative.factSeq += 1;
+  world.narrative.pending.push(fact);
+  const overflow = world.narrative.pending.length - NARRATIVE_LIMITS.pending;
+  if (overflow > 0) {
+    world.narrative.pending.splice(0, overflow);
+    world.narrative.dropped += overflow;
+  }
+  return fact;
+}
+
+/** Macht eine verworfene Direktive sichtbar, ohne den Weltzustand zu veraendern. */
+export function emitCommandRejected(world: WorldState, commandId: string, reason: string): NarrativeFact {
+  return emitFact(world, {
+    kind: 'COMMAND_REJECTED', commandId: commandId.slice(0, 64), reason: reason.slice(0, 64),
+  });
+}
+
+/**
+ * Gibt alle noch nicht verarbeiteten Facts zurueck und leert die Queue.
+ * Ein zweiter Aufruf liefert nichts: dieselbe ID wird nie doppelt verarbeitet.
+ * Nur `processNarrativeBoundaryDetailed()` (ueber die Runtime) darf diese Funktion aufrufen.
+ */
+export function drainFacts(world: WorldState): NarrativeFact[] {
+  const state = world.narrative;
+  const fresh = state.pending.filter((fact) => fact.id > state.processedId);
+  state.pending = [];
+  const last = fresh[fresh.length - 1];
+  if (last) state.processedId = last.id;
+  return fresh;
+}
+
+/** Haelt die Kurzzeithistorie begrenzt und in ID-Reihenfolge. */
+export function pushRecent(world: WorldState, facts: readonly NarrativeFact[]): void {
+  const state = world.narrative;
+  for (const fact of facts) {
+    if (state.recent.some((entry) => entry.id === fact.id)) continue;
+    state.recent.push(fact);
+  }
+  const overflow = state.recent.length - NARRATIVE_LIMITS.recent;
+  if (overflow > 0) state.recent.splice(0, overflow);
+}
+
+export function recentFacts(world: WorldState, kind: NarrativeFact['kind']): readonly NarrativeFact[] {
+  return world.narrative.recent.filter((fact) => fact.kind === kind);
+}

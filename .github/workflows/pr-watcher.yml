@@ -1,0 +1,69 @@
+name: PR Watcher
+
+# Überwacht PRs und CI-Flows. Ein roter Lauf erzeugt ein Issue mit allen Infos;
+# ein Timeout oder Abbruch ist REMOTE_CI (Issue mit Label `remote-ci`, kein
+# Blocker). Ist `main` gruen, werden erledigte gate-failure-Issues geschlossen.
+on:
+  workflow_run:
+    workflows: ["CI Verify"]
+    types: [completed]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+  pull-requests: read
+
+concurrency:
+  # Bei workflow_run ist github.ref der Default-Branch: mit einer gemeinsamen
+  # Gruppe wuerden sich Watcher-Laeufe gegenseitig abbrechen. Der Run ist die Identitaet.
+  group: pr-watcher-${{ github.event.workflow_run.id || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: PR + CI überwachen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - name: Node einrichten
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+
+      - name: Issue bei rotem Gate oder Timeout erstellen
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RBD_AUTO_RESOLVE: ${{ vars.RBD_AUTO_RESOLVE || '0' }}
+        run: node scripts/pr-watcher.mjs
+
+      - name: Issues schliessen, wenn main gruen ist
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          MAIN_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: node scripts/pr-watcher.mjs --sweep-green
+
+      - name: PR-Body auf Pflichtsektionen prüfen
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/pr-watcher.mjs --pr-check

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:12Z-b4-konflikt-escalate",
+  "contributionId": "b4-konflikt-escalate-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "conflict",
+    "escalate"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Den Streit offen zulassen.",
+  "directives": []
+}

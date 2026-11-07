@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:18Z-b4-neon-body",
+  "contributionId": "b4-neon-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Draußen flackern die Schilder, drinnen wird es voller. Wer jetzt bedient, hält den Abend zusammen; wer zögert, verliert die nächste Runde Gäste.",
+  "directives": []
+}

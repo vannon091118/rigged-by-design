@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:06Z-b4-rueckkehr-body",
+  "contributionId": "b4-rueckkehr-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Der Gast von damals steht wieder am Tresen, als wäre die Zeit dazwischen nur eine kurze Pause gewesen. Das Haus erinnert sich an den letzten Abend, und der Blick sagt, dass die Erinnerung geteilt wird.",
+  "directives": []
+}

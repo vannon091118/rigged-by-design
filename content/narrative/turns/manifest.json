@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "turns": [
+    {
+      "turnId": "2026-11-01T12:00Z-narrative-start",
+      "contributionId": "start-pool-opening-01"
+    },
+    {
+      "turnId": "2026-11-01T23:10Z-readme-onboarding",
+      "contributionId": "opening-inheritance-01"
+    },
+    {
+      "turnId": "2026-11-02T10:55Z-dreck-poker-verluste",
+      "contributionId": "floor-fleck-01"
+    },
+    {
+      "turnId": "2026-11-02T11:08Z-deckung-wut",
+      "contributionId": "till-watch-01"
+    },
+    {
+      "turnId": "2026-11-02T11:18Z-schicht-lohn",
+      "contributionId": "shift-pay-01"
+    },
+    {
+      "turnId": "2026-11-02T11:26Z-synergie-audit",
+      "contributionId": "patience-gap-01"
+    },
+    {
+      "turnId": "2026-11-02T11:40Z-vorschuss-geduld",
+      "contributionId": "advance-anger-01"
+    },
+    {
+      "turnId": "2026-11-02T21:58Z-narrative-facts",
+      "contributionId": "memory-counts-01"
+    },
+    {
+      "turnId": "2026-11-02T22:16Z-narrative-trigger",
+      "contributionId": "returning-memory-01"
+    },
+    {
+      "turnId": "2026-11-02T22:35Z-narrative-dokumentation",
+      "contributionId": "ledger-pages-01"
+    },
+    {
+      "turnId": "2026-11-02T22:49Z-nachfragezustand",
+      "contributionId": "neon-abend-01"
+    },
+    {
+      "turnId": "2026-11-02T23:20Z-boundary-und-beziehungen",
+      "contributionId": "boundary-und-beziehungen-01"
+    },
+    {
+      "turnId": "2026-11-02T23:45Z-nar-04-beziehungsquellen",
+      "contributionId": "nar-04-beziehungsquellen-01"
+    },
+    {
+      "turnId": "2026-11-02T23:59Z-nar-05-trigger-context",
+      "contributionId": "trigger-context-01"
+    },
+    {
+      "turnId": "2026-11-03T00:25Z-nar-06-event-scheduler",
+      "contributionId": "event-scheduler-01"
+    },
+    {
+      "turnId": "2026-11-03T01:00Z-nar-07-event-templates",
+      "contributionId": "event-templates-01"
+    },
+    {
+      "turnId": "2026-11-03T01:20Z-nar-08-command-dsl",
+      "contributionId": "command-dsl-01"
+    },
+    {
+      "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
+      "contributionId": "content-registry-01"
+    },
+    {
+      "turnId": "2026-11-03T02:20Z-nar-10-content-compiler",
+      "contributionId": "content-compiler-01"
+    },
+    {
+      "turnId": "2026-11-03T02:30Z-nar-11-runtime-composer",
+      "contributionId": "runtime-composer-01"
+    },
+    {
+      "turnId": "2026-11-03T03:15Z-nar-12-orchestration",
+      "contributionId": "nar-12-orchestration-01"
+    },
+    {
+      "turnId": "2026-11-03T03:40Z-nar-13-demand-events",
+      "contributionId": "nar-13-demand-events-01"
+    },
+    {
+      "turnId": "2026-11-04T00:55Z-nar-14-narrative-ui",
+      "contributionId": "nar-14-narrative-ui-01"
+    },
+    {
+      "turnId": "2026-11-04T02:10Z-nar-15-autonome-rivalen",
+      "contributionId": "nar-15-autonome-rivalen-01"
+    },
+    {
+      "turnId": "2026-11-04T03:20Z-nar-16-langzeitintegration",
+      "contributionId": "nar-16-langzeitintegration-01"
+    },
+    {
+      "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
+      "contributionId": "journal-und-profilweg-01"
+    },
+    {
+      "turnId": "2026-11-04T03:35Z-b1-kontext-helper",
+      "contributionId": "b1-kontext-helper-01"
+    },
+    {
+      "turnId": "2026-11-04T04:10Z-lebenssim-vision",
+      "contributionId": "lebenssim-vision-01"
+    },
+    {
+      "turnId": "2026-11-04T04:45Z-b2-slot-zwecke",
+      "contributionId": "b2-slot-zwecke-01"
+    },
+    {
+      "turnId": "2026-11-04T05:20Z-b3-fallbacks",
+      "contributionId": "b3-fallback-slots-01"
+    },
+    {
+      "turnId": "2026-11-04T06:05Z-b4-rueckkehr-titel",
+      "contributionId": "b4-rueckkehr-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:06Z-b4-rueckkehr-body",
+      "contributionId": "b4-rueckkehr-body-01"
+    },
+    {
+      "turnId": "2026-11-04T06:07Z-b4-rueckkehr-welcome",
+      "contributionId": "b4-rueckkehr-welcome-01"
+    },
+    {
+      "turnId": "2026-11-04T06:08Z-b4-rueckkehr-ask",
+      "contributionId": "b4-rueckkehr-ask-01"
+    },
+    {
+      "turnId": "2026-11-04T06:09Z-b4-konflikt-titel",
+      "contributionId": "b4-konflikt-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:10Z-b4-konflikt-body",
+      "contributionId": "b4-konflikt-body-01"
+    },
+    {
+      "turnId": "2026-11-04T06:11Z-b4-konflikt-defuse",
+      "contributionId": "b4-konflikt-defuse-01"
+    },
+    {
+      "turnId": "2026-11-04T06:12Z-b4-konflikt-escalate",
+      "contributionId": "b4-konflikt-escalate-01"
+    },
+    {
+      "turnId": "2026-11-04T06:13Z-b4-rivale-titel",
+      "contributionId": "b4-rivale-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:14Z-b4-rivale-body",
+      "contributionId": "b4-rivale-body-01"
+    },
+    {
+      "turnId": "2026-11-04T06:15Z-b4-rivale-confront",
+      "contributionId": "b4-rivale-confront-01"
+    },
+    {
+      "turnId": "2026-11-04T06:16Z-b4-rivale-watch",
+      "contributionId": "b4-rivale-watch-01"
+    },
+    {
+      "turnId": "2026-11-04T06:17Z-b4-neon-titel",
+      "contributionId": "b4-neon-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:18Z-b4-neon-body",
+      "contributionId": "b4-neon-body-01"
+    },
+    {
+      "turnId": "2026-11-04T06:19Z-b4-turnier-titel",
+      "contributionId": "b4-turnier-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T06:20Z-b4-turnier-body",
+      "contributionId": "b4-turnier-body-01"
+    },
+    {
+      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+      "contributionId": "c2-rival-action-trigger-01"
+    },
+    {
+      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
+      "contributionId": "c1-trigger-template-contract-01"
+    },
+    {
+      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
+      "contributionId": "d1-aftermath-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
+      "contributionId": "d1-aftermath-body-01"
+    },
+    {
+      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
+      "contributionId": "d1-aftermath-listen-01"
+    },
+    {
+      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
+      "contributionId": "d1-aftermath-outcome-01"
+    },
+    {
+      "turnId": "2026-11-04T06:05Z-d2-counter-rival",
+      "contributionId": "d2-counter-rival-01"
+    },
+    {
+      "turnId": "2026-11-04T06:20Z-d3-expiry-no-penalty",
+      "contributionId": "d3-expiry-no-penalty-01"
+    },
+    {
+      "turnId": "2026-11-04T06:35Z-e2-visitor-disposition",
+      "contributionId": "e2-visitor-disposition-01"
+    },
+    {
+      "turnId": "2026-11-04T06:55Z-f-warm-return",
+      "contributionId": "f-warm-return-01"
+    },
+    {
+      "turnId": "2026-11-04T07:10Z-phase5-rival-integration",
+      "contributionId": "phase5-rival-integration-01"
+    },
+    {
+      "turnId": "2026-11-04T07:20Z-warm-return-titel",
+      "contributionId": "warm-return-titel-01"
+    },
+    {
+      "turnId": "2026-11-04T07:21Z-warm-return-body",
+      "contributionId": "warm-return-body-01"
+    },
+    {
+      "turnId": "2026-11-04T07:22Z-warm-return-choice",
+      "contributionId": "warm-return-choice-01"
+    },
+    {
+      "turnId": "2026-11-04T07:23Z-warm-return-outcome",
+      "contributionId": "warm-return-outcome-01"
+    },
+    {
+      "turnId": "2026-11-05T05:45Z-huelle-atlas-budgets-apk",
+      "contributionId": "phase4-huelle-atlas-01"
+    },
+    {
+      "turnId": "2026-11-06T02:46Z-spatial-layout-contract",
+      "contributionId": "spatial-layout-contract-01"
+    },
+    {
+      "turnId": "2026-11-06T03:20Z-asset-semantik-katalog",
+      "contributionId": "asset-semantik-01"
+    },
+    {
+      "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
+      "contributionId": "asset-semantik-messung-01"
+    },
+    {
+      "turnId": "2026-11-07T14:37Z-multi-beat-schritte",
+      "contributionId": "multi-beat-steps-01"
+    }
+  ]
+}

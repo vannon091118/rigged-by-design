@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:08Z-b4-rueckkehr-ask",
+  "contributionId": "b4-rueckkehr-ask-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "return",
+    "ask"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Nach dem letzten Abend fragen.",
+  "directives": []
+}

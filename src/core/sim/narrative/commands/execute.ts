@@ -1,0 +1,139 @@
+/** Einziger Ausfuehrungspfad: Preflight, Handler, Kosten, RESOLVED. */
+import type { Ledger } from '../../../economy/ledger';
+import type { VaCoinMicro } from '../../../economy/vacoin';
+import { EXTERNAL, HAUSKONTO } from '../../money';
+import type { WorldState } from '../../types';
+import { advanceEventStep, freezeEvent, transitionEvent } from '../event-lifecycle';
+import type { ChoiceActor, EventTemplate } from '../events/template-types';
+import { emitCommandRejected, emitFact } from '../facts';
+import { RIVAL_AI_LIMITS } from '../../rival-ai/types';
+import { shift } from '../relationships';
+import type { ActorRef } from '../types';
+import { preflightChoice } from './preflight';
+import type {
+  ChoiceExecution, ChoicePlan, CommandRejectReason, NarrativeCommand,
+} from './types';
+
+const resolveActor = (actor: ChoiceActor, participants: readonly ActorRef[]): ActorRef | null =>
+  typeof actor === 'string' ? actor : participants[actor.participant] ?? null;
+
+const shiftFor = (dimension: 'trust' | 'sympathy' | 'conflict' | 'influence', delta: number) => {
+  switch (dimension) {
+    case 'trust': return { trust: delta };
+    case 'sympathy': return { sympathy: delta };
+    case 'conflict': return { conflict: delta };
+    case 'influence': return { influence: delta };
+  }
+};
+
+/**
+ * Totale Anwendung: `preflightChoice` hat Event, Status, Ticks und jeden
+ * Akteur bereits geprueft. Die Funktion kann deshalb nicht mehr scheitern und
+ * schreibt nur noch Wirkung, nie eine Ablehnung.
+ */
+function applyCommand(world: WorldState, eventId: number, command: NarrativeCommand): void {
+  if (command.id === 'SET_FLAG') {
+    const current = world.narrative.flags[command.flag] ?? 0;
+    world.narrative.flags[command.flag] = Math.max(-1_000_000, Math.min(1_000_000, current + command.delta));
+    return;
+  }
+  if (command.id === 'FREEZE_TICK') {
+    freezeEvent(world, eventId, command.ticks, world.tick);
+    return;
+  }
+  if (command.id === 'COUNTER_RIVAL') {
+    const rival = resolveActor(command.rival, world.narrative.events.find((entry) => entry.id === eventId)?.participants ?? []);
+    const mind = world.rivals.find((entry) => `rival:${entry.rivalId}` === rival);
+    if (!mind) return;
+    mind.counteredUntilTick = Math.max(mind.counteredUntilTick, world.tick + RIVAL_AI_LIMITS.counteredTicks);
+    return;
+  }
+  if (command.id !== 'ADJUST_RELATIONSHIP') return;
+  const event = world.narrative.events.find((entry) => entry.id === eventId);
+  if (!event) return;
+  const from = resolveActor(command.from, event.participants);
+  const to = resolveActor(command.to, event.participants);
+  if (!from || !to || from === to) return;
+  shift(world, from, to, shiftFor(command.dimension, command.delta), world.tick);
+}
+
+function rejected(
+  world: WorldState,
+  eventId: number,
+  choiceId: string,
+  plan: ChoicePlan | null,
+  rejections: ChoiceExecution['rejections'],
+): ChoiceExecution {
+  const reason: CommandRejectReason = rejections[0]?.reason ?? 'INVALID_EVENT';
+  emitCommandRejected(world, choiceId, reason);
+  return {
+    ok: false,
+    event: plan?.event ?? world.narrative.events.find((entry) => entry.id === eventId) ?? null,
+    commands: plan?.commands ?? [],
+    cost: plan?.cost ?? 0,
+    rejections,
+  };
+}
+
+export function executeChoice(
+  world: WorldState,
+  ledger: Ledger,
+  eventId: number,
+  choiceId: string,
+  templateOverride?: EventTemplate,
+): ChoiceExecution {
+  const preflight = preflightChoice(world, ledger, eventId, choiceId, templateOverride);
+  if (!preflight.ok) return rejected(world, eventId, choiceId, null, preflight.rejections);
+  const { event, choice, commands, cost } = preflight.plan;
+  // Sicherheitsnetz: Preflight und Handler sind total, aber falls die Buchung
+  // oder der Abschluss wider Erwarten scheitert, bleibt kein halber Zustand.
+  const snapshot = structuredClone(world.narrative);
+  const rollback = (rejections: ChoiceExecution['rejections']): ChoiceExecution => {
+    world.narrative = snapshot;
+    return rejected(world, eventId, choiceId, preflight.plan, rejections);
+  };
+
+  if (event.status === 'OFFERED' && !transitionEvent(world, event.id, 'ACTIVE', world.tick)) {
+    return rollback([{
+      commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aktivierung fehlgeschlagen.',
+    }]);
+  }
+  // Ein Beat-Wechsel ist noch keine Aufloesung: die Instanz bleibt live und
+  // behaelt ihre Frist, nur der Schritt wandert. Der Rollback deckt ihn mit ab.
+  const nextStep = choice.nextStep ?? null;
+  if (nextStep !== null && !advanceEventStep(world, event.id, nextStep, world.tick)) {
+    return rollback([{
+      commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Schrittwechsel fehlgeschlagen.',
+    }]);
+  }
+  for (const command of commands) applyCommand(world, event.id, command);
+  if (cost > 0) {
+    try {
+      ledger.transfer(HAUSKONTO, EXTERNAL, cost as VaCoinMicro, `narrative ${event.eventId}/${choiceId}`, world.tick);
+    } catch {
+      return rollback([{
+        commandId: choiceId, reason: 'INSUFFICIENT_FUNDS', detail: 'Kosten sind nicht gedeckt.',
+      }]);
+    }
+  }
+  if (nextStep !== null) {
+    const advanced = world.narrative.events.find((entry) => entry.id === event.id) ?? null;
+    return { ok: true, event: advanced, commands, cost, rejections: [] };
+  }
+  if (!transitionEvent(world, event.id, 'RESOLVED', world.tick, choice.outcomeId)) {
+    if (cost > 0) {
+      ledger.transfer(EXTERNAL, HAUSKONTO, cost as VaCoinMicro, `narrative rollback ${event.eventId}/${choiceId}`, world.tick);
+    }
+    return rollback([{
+      commandId: choiceId, reason: 'EVENT_NOT_LIVE', detail: 'Aufloesung fehlgeschlagen.',
+    }]);
+  }
+  // Der Command schliesst den Kreis: die Aufloesung ist selbst wieder ein Fact,
+  // den erst der naechste Flush verarbeitet - nie rekursiv im selben Aufruf.
+  emitFact(world, {
+    kind: 'EVENT_RESOLVED', eventId: event.id, eventKind: event.eventId,
+    choiceId, outcomeId: choice.outcomeId,
+  });
+  const resolved = world.narrative.events.find((entry) => entry.id === event.id) ?? null;
+  return { ok: true, event: resolved, commands, cost, rejections: [] };
+}

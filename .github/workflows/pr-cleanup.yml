@@ -1,0 +1,45 @@
+name: PR Cleanup
+
+# Gemergte Wegwerf-Branches werden hier nur gemeldet, nicht geloescht. Das
+# Entfernen eines Remote-Zweigs ist eine sichtbare, nicht umkehrbare Aenderung;
+# sie gehoert zur bewussten Handlung des Eigentuemers. Dieser Workflow nennt den
+# Kandidaten und den Befehl, mehr nicht. `main`, `integration` und Branches mit
+# dem Label `keep-branch` bleiben unerwaehnt.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+
+jobs:
+  report-branch:
+    name: Head-Branch melden
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref != 'main' &&
+      github.event.pull_request.head.ref != 'integration' &&
+      !startsWith(github.event.pull_request.head.ref, 'integration/') &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      !contains(github.event.pull_request.labels.*.name, 'keep-branch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Aufraeum-Kandidat berichten
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          echo "::notice::PR #${NUMBER} ist gemergt; Branch '${BRANCH}' ist ein Loeschkandidat. Der Workflow loescht nichts."
+          {
+            echo "### Aufraeumen: \`${BRANCH}\`"
+            echo ""
+            echo "PR #${NUMBER} ist gemergt. Der Branch wurde **nicht** geloescht."
+            echo ""
+            echo "Manuell entfernen:"
+            echo ""
+            echo '```'
+            echo "git push origin --delete ${BRANCH}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

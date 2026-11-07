@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/narrative-rescue",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/narrative-rescue",
+  "baseSha": "2339eb5e335e184dec66149004aedd6fc96b5a53",
+  "task": "Mehrbeatige Narrative-Events aus #243 auf aktuellem main retten.",
+  "goal": "nextStep, Schrittwechsel, Beat-Filter und hoehere Template-Limits ohne alten Branch und ohne Inhaltskollision landen.",
+  "pathAllowlist": [
+    "src/core/sim/narrative/**",
+    "src/core/sim/__tests__/narrative-multi-beat.test.ts",
+    "content/narrative/**",
+    "docs/**",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-narrative-rescue.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "c7ca3286ddd6302c1783be55d9541a424a9eff3a",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "7ce3bf4e5b9b0df046ff6259d3fde544f4e6b476"
+}

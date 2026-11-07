@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:16Z-b4-rivale-watch",
+  "contributionId": "b4-rivale-watch-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "rival",
+    "watch"
+  ],
+  "tone": "sachlich",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Abwarten und seine Schritte beobachten.",
+  "directives": []
+}

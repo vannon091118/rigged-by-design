@@ -1,0 +1,100 @@
+name: Auto-Resolve
+
+# Ein roter CI-Lauf wird erst eingeordnet, dann repariert, erst danach Issue.
+# Der Schalter `RBD_AUTO_RESOLVE` ist eine Repository-Variable: ohne sie bleibt
+# dieser Workflow aus, und `pr-watcher` legt die Issues wie bisher an. Beide
+# lesen dieselbe Variable, damit nie zwei Stellen dieselbe Reparatur starten.
+on:
+  workflow_run:
+    workflows: ["CI Verify"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Commit, der geprueft werden soll'
+        type: string
+        required: true
+      branch:
+        description: 'Branch des Commits'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+  pull-requests: read
+
+concurrency:
+  group: auto-resolve-${{ github.event.workflow_run.id || inputs.sha }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    name: Befund einordnen und reparieren
+    # Nur bei aktivem Schalter und nur bei einem roten Lauf. Ein erfolgreicher
+    # Lauf braucht keine Reparatur.
+    if: >-
+      vars.RBD_AUTO_RESOLVE == '1' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'success')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      # Die Pruefsteuerung kommt aus `main`, nie aus dem Pruefobjekt. Der
+      # Worktree fuer die Reparatur wird erst im Skript aus dem exakten
+      # Kopf-Commit angelegt.
+      - name: Checkout (vertrauenswuerdiges main)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Node 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+
+      # Der Zustand steht im CI-Plan-Artefakt. Ohne ihn bleibt er leer und
+      # `planResolution` behandelt den Lauf als echten Gate-Fehler.
+      - name: Zustand aus dem CI-Plan
+        id: state
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          if [ -z "$RUN_ID" ]; then echo "state=" >> "$GITHUB_OUTPUT"; exit 0; fi
+          gh run download "$RUN_ID" -n ci-plan -D .ci-plan || true
+          if [ -f .ci-plan/ci-plan.json ]; then
+            node -e 'const fs = require("fs"); const p = JSON.parse(fs.readFileSync(".ci-plan/ci-plan.json", "utf8")); console.log("state=" + (p.state ?? ""));' >> "$GITHUB_OUTPUT"
+          else
+            echo "state=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Auto-Resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Ohne PAT startet ein Push keinen Workflow; dann bleibt es beim Patch.
+          AUTOFIX_TOKEN: ${{ secrets.AUTOFIX_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch || inputs.branch }}
+          RUN_COMMIT: ${{ github.event.workflow_run.head_sha || inputs.sha }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion || 'failure' }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
+          RUN_SAME_REPO: ${{ github.event.workflow_run.head_repository.full_name == github.repository || github.event_name == 'workflow_dispatch' }}
+          RUN_FORK: ${{ github.event.workflow_run.head_repository.fork }}
+          CI_STATE: ${{ steps.state.outputs.state }}
+        run: node scripts/auto-resolve.mjs
+
+      # Der Patch ist der ehrliche Ausgang ohne AUTOFIX_TOKEN: ein Pruefer hat
+      # ihn erzeugt, aber niemand behauptet, der Branch sei schon behoben.
+      - name: Patch als Artefakt
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: autofix-patch
+          path: artifacts/
+          if-no-files-found: ignore
+          retention-days: 7

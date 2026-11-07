@@ -1,0 +1,79 @@
+/** Gast verlässt den Floor, wird wütend und wird ausgezahlt. */
+import type { Ledger } from '../economy/ledger';
+import { ZERO_VC } from '../economy/vacoin';
+import { recordJournal } from './journal';
+import { closeFiat, exchangeFromVc, guestAccount, payPending } from './money';
+import type { Furniture, Guest, WorldState } from './types';
+import { noteExperience } from './visitors';
+import { emitFact } from './narrative/facts';
+import { valenceOf } from './narrative/memory';
+import { doorPoint, furnitureById, releaseSeat, sendGuest } from './world';
+
+export function becomeAngry(world: WorldState, guest: Guest): void {
+  if (guest.targetFurniture) releaseSeat(world, guest.targetFurniture, guest.id);
+  guest.state = 'ANGRY';
+  guest.stateTicks = 0;
+  guest.anger = 100;
+  guest.targetFurniture = 0;
+  guest.intent = 'Geduld aufgebraucht: randaliert.';
+  world.lastEvent = `${guest.name} ist wütend.`;
+  recordJournal(world, {
+    kind: 'GUEST', subject: guest.name, cause: 'Geduld aufgebraucht', effect: world.lastEvent,
+    refs: { guestId: guest.id },
+  });
+}
+
+export function leave(world: WorldState, guest: Guest): void {
+  if (guest.targetFurniture) releaseSeat(world, guest.targetFurniture, guest.id);
+  guest.targetFurniture = 0;
+  guest.state = 'LEAVE';
+  guest.stateTicks = 0;
+  guest.intent = guest.intent ?? 'Besuch beendet: verlaesst das Casino.';
+  sendGuest(world, guest, doorPoint(world));
+}
+
+/** Zufriedenheit ist das tatsaechliche Ergebnis, nicht der Ruf am Schild. */
+function noteSatisfaction(world: WorldState, _ledger: Ledger, guest: Guest): void {
+  const score = Math.max(0, Math.min(100, guest.mood * 0.65 + guest.patience * 0.35));
+  world.satisfaction = Math.max(0, Math.min(100, world.satisfaction * 0.85 + score * 0.15));
+  if (guest.visitorId !== undefined) {
+    noteExperience(world, guest.visitorId, score);
+    emitFact(world, {
+      kind: 'VISIT_ENDED', visitorId: guest.visitorId, guestId: guest.id,
+      score: Math.round(score), valence: valenceOf(score),
+    });
+  }
+}
+
+/** Erst alle Ansprueche buchen, dann gehen: ein Fehlschlag laesst Gast und Guthaben stehen. */
+export function payAndLeave(world: WorldState, ledger: Ledger, guest: Guest): void {
+  try {
+    payPending(ledger, guest.id, world.tick);
+    const balance = ledger.getBalance(guestAccount(guest.id));
+    if (balance > ZERO_VC) exchangeFromVc(ledger, guest.id, balance, world.tick);
+    closeFiat(ledger, guest.id, world.tick);
+    noteSatisfaction(world, ledger, guest);
+    // Wer den Floor nur durchquert hat, wurde nicht bedient; der Wert fuettert Ruf und KASSE-Stufe.
+    if (guest.spins > 0) world.guestsServed += 1;
+    recordJournal(world, {
+      kind: 'GUEST', subject: guest.name, cause: 'Besuch beendet', effect: 'Auszahlung abgeschlossen, Gast verlaesst den Floor.',
+      refs: { guestId: guest.id },
+    });
+  } catch {
+    // Zahlung nicht gedeckt: Gast verlässt den Floor statt ewig in CASHOUT zu hängen.
+    // Kein Geld vernichtet – der Saldo bleibt auf VISITOR_<id> und PENDING_<id>.
+    guest.state = 'LEAVE';
+    guest.stateTicks = 0;
+    guest.path = [];
+    guest.pathIndex = 0;
+    guest.targetFurniture = 0;
+    guest.intent = 'Auszahlung nicht gedeckt: verlässt den Floor.';
+    world.lastEvent = `${guest.name} kann nicht ausgezahlt werden und verlässt den Floor.`;
+    return;
+  }
+  leave(world, guest);
+}
+
+export function targetedFurniture(world: WorldState, guest: Guest): Furniture | null {
+  return furnitureById(world, guest.targetFurniture);
+}

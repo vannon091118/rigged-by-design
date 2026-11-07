@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-02T21:58Z-narrative-facts",
+  "contributionId": "memory-counts-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "memory",
+  "function": "remember",
+  "contexts": ["facts"],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rueckkehrer"],
+  "text": "Rita strich die doppelte Zeile im alten Kassenbuch durch. Drei Namen, sagte sie, bleiben drei Namen, auch wenn man sie zweimal liest.",
+  "directives": []
+}

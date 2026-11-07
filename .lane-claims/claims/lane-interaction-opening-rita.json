@@ -1,0 +1,17 @@
+{
+  "id": "lane/interaction/opening-rita",
+  "owner": "Interaction-Contract-Owner",
+  "branch": "lane/interaction/opening-rita",
+  "baseSha": "3d48d72350500151ffd60675e5f5f02eeb997126",
+  "task": "Rita-Eröffnung und Hilfe als erste Spielminute sichtbar machen; Hilfe ohne Bank-Rolle formulieren.",
+  "pathAllowlist": [
+    "src/ui/**",
+    "src/styles/**",
+    ".lane-claims/claims/lane-interaction-opening-rita.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "3d48d72350500151ffd60675e5f5f02eeb997126"
+}

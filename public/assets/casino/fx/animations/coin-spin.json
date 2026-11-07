@@ -1,0 +1,19 @@
+{
+  "id": "coin-spin",
+  "frames": [
+    "particles/coins/coin-spin-01.png",
+    "particles/coins/coin-spin-02.png",
+    "particles/coins/coin-spin-03.png",
+    "particles/coins/coin-spin-04.png",
+    "particles/coins/coin-spin-05.png",
+    "particles/coins/coin-spin-06.png",
+    "particles/coins/coin-spin-07.png",
+    "particles/coins/coin-spin-08.png",
+    "particles/coins/coin-spin-09.png",
+    "particles/coins/coin-spin-10.png",
+    "particles/coins/coin-spin-11.png",
+    "particles/coins/coin-spin-12.png"
+  ],
+  "fps": 18,
+  "loop": true
+}

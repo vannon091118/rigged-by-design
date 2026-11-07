@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/main-consolidation",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/main-consolidation",
+  "baseSha": "c7ca3286ddd6302c1783be55d9541a424a9eff3a",
+  "task": "WIP auf main landen, veraltete Claims schliessen und die Branch-Lage auf main konsolidieren.",
+  "goal": "Nur noch main als Remote-Branch; jede einzigartige Arbeit ist vorher gemergt oder als Tag gesichert.",
+  "pathAllowlist": [
+    "src/App.tsx",
+    "src/core/**",
+    "src/styles/**",
+    "src/ui/**",
+    "docs/**",
+    ".lane-claims/**",
+    ".lane-claims/claims/lane-governance-main-consolidation.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "c7ca3286ddd6302c1783be55d9541a424a9eff3a"
+}

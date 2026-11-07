@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "slots": {
+    "opening": "Einstieg in einen neuen Lauf oder eine neue Szene.",
+    "description": "Beschreibung eines Zustands, Ortes oder Vorgangs.",
+    "event-body": "Fließtext im Rumpf eines konkreten Events.",
+    "choice-preview": "Vorschau auf eine Choice, ohne deren Mechanik zu tragen.",
+    "reaction": "Reaktion auf einen unmittelbar vorausgegangenen Vorgang.",
+    "memory": "Erinnerungssatz aus einer früheren Begebenheit.",
+    "rumor": "Gerücht oder Warnung aus dem Haus.",
+    "documentation": "Dokumentation eines technischen Narrativ-Bausteins."
+  },
+  "functions": {
+    "establish": "Führt Figuren, Ort oder Ausgangslage ein.",
+    "describe": "Beschreibt einen beobachtbaren Zustand.",
+    "react": "Antwortet auf ein Ereignis.",
+    "remember": "Ruft eine frühere Begebenheit auf.",
+    "warn": "Macht auf eine Gefahr oder einen offenen Punkt aufmerksam.",
+    "offer": "Bereitet eine Auswahl vor, ohne sie zu entscheiden.",
+    "document": "Erklärt einen technischen oder inhaltlichen Vertrag."
+  },
+  "slotFunctions": {
+    "opening": ["establish", "describe"],
+    "description": ["describe", "warn", "document"],
+    "event-body": ["describe", "warn"],
+    "choice-preview": ["offer"],
+    "reaction": ["react", "warn"],
+    "memory": ["remember"],
+    "rumor": ["warn"],
+    "documentation": ["document"]
+  },
+  "composerSlots": {
+    "TITLE": ["opening"],
+    "BODY": ["event-body", "description"],
+    "CHOICE_LABEL": ["choice-preview"],
+    "OUTCOME": ["reaction"]
+  },
+  "nonComposableSlots": ["memory", "rumor", "documentation"],
+  "contexts": {
+    "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",
+    "return": "Wiederkehr eines persistenten Besuchers.",
+    "conflict": "Streit, Konflikt oder angespannte Begegnung.",
+    "rival": "Begegnung oder Handlung eines Rivalen.",
+    "welcome": "Begruessung einer bekannten Figur.",
+    "warm": "Herzliche zweite Stufe einer Rueckkehr bei guter Erinnerung.",
+    "ask": "Nachfragen bei einer Figur, ohne sie zu bedraengen.",
+    "defuse": "Einen Konflikt entschaerfen.",
+    "escalate": "Einen Konflikt verschaerfen.",
+    "confront": "Eine Figur direkt mit ihrer Handlung konfrontieren.",
+    "watch": "Abwarten und beobachten, statt einzugreifen.",
+    "aftermath": "Nachwirkung einer Entscheidung.",
+    "service": "Bedienung an Kasse, Tresen oder Automaten.",
+    "loss": "Verlust, Deckungslücke oder schlechter Besuch.",
+    "demand": "Nachfrageevent oder Auslastung.",
+    "facts": "Facts, Erinnerungen und Narrative-Historie.",
+    "trigger": "Trigger-Context oder Bedingungsauswertung.",
+    "scheduler": "Event-Scheduler, Lifecycle oder Cooldowns.",
+    "templates": "Event-Templates oder Choice-Verträge.",
+    "commands": "Command-DSL, Allowlist oder Ausführung.",
+    "documentation": "Dokumentation und Inventur.",
+    "content": "Content-Registry, Schema und Klassifizierung."
+  },
+  "tones": {
+    "trocken": "Knapp, beiläufig und ohne Pathos.",
+    "sachlich": "Beschreibend und ohne dramatische Aufladung.",
+    "warm": "Zugewandt, ohne die Mechanik zu verklären.",
+    "melancholisch": "Leise und nachklingend.",
+    "scharf": "Pointiert und konfrontativ."
+  },
+  "moods": {
+    "neutral": "Keine dominante emotionale Färbung.",
+    "neugierig": "Offen für das, was als Nächstes kommt.",
+    "angespannt": "Unter Druck, vor einer Entscheidung.",
+    "argwoehnisch": "Misstrauisch gegenüber dem offensichtlichen Zustand.",
+    "entschlossen": "Auf einen nächsten Schritt gerichtet."
+  },
+  "relationships": {
+    "neutral": "Keine besondere Beziehungslage.",
+    "vertrauen": "Eine positive, belastbare Verbindung.",
+    "konflikt": "Eine angespannte oder feindliche Verbindung.",
+    "distanz": "Höflich, aber ohne Nähe."
+  },
+  "personas": {
+    "rita-kern": "Die erste bekannte Figur des Start-Pools.",
+    "boris-falk": "Eine bekannte Figur des Start-Pools.",
+    "mira-sol": "Eine bekannte Figur des Start-Pools."
+  },
+  "personaAliases": {
+    "rita-kern": ["Rita Kern", "Rita"],
+    "boris-falk": ["Boris Falk", "Boris"],
+    "mira-sol": ["Mira Sol", "Mira"]
+  },
+  "conflicts": {
+    "rolePairs": [["ERZAEHLER", "SKEPTIKER"]],
+    "moodPairs": [["neutral", "angespannt"]],
+    "flagPairs": [["startpool", "rueckkehrer"]]
+  }
+}

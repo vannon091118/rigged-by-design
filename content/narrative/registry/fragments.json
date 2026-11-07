@@ -1,0 +1,1585 @@
+{
+  "version": 2,
+  "compiler": "nar-10",
+  "contentHash": "sha256:330eb175fb27dda4de9814291de7f1c49d8d04392160c64bf0c975c37114e1c7",
+  "fragments": [
+    {
+      "contributionId": "advance-anger-01",
+      "turnId": "2026-11-02T11:40Z-vorschuss-geduld",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "warn",
+      "contexts": [
+        "loss",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
+    },
+    {
+      "contributionId": "asset-semantik-01",
+      "turnId": "2026-11-06T03:20Z-asset-semantik-katalog",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe den Bestand gezaehlt, nicht nur angesehen: 539 Bilder, 153 davon auf\nzwei Atlasseiten. 95 tragen eine Rolle, die im Code steht; 444 liegen nur da\nund warten. Kein einziges Bild klickt sich selbst. Was klickbar ist, sind\nGeraete und Fenster; die Textur ist nur das Gesicht davon. Wer also fragt,\nwas ein Bild bedeutet, bekommt im Katalog eine Antwort, die zwischen\nbelegtem Wissen und ehrlichem Unbekannt unterscheidet. Das ist unglamouroes\nund genau deshalb brauchbar: die naechste Schicht kann darauf bauen, ohne\nsich auf einen Dateinamen zu verlassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-asset-semantik.json"
+    },
+    {
+      "contributionId": "asset-semantik-messung-01",
+      "turnId": "2026-11-06T04:05Z-maschinen-deko-vermessung",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe die Maschinen und die Deko einzeln aufgemacht und nachgesehen, statt ihren\nNamen zu glauben. Ein Roulette-Tisch ist breit, sein Bild aber fast quadratisch:\ndie halbe Leinwand ist Luft. Zwei Saeulen mit demselben Motiv sind zwei Saeulen,\nweil ihre Bilder verschieden gross sind. Ein Wandlicht hat keinen Boden unter\nsich, also bekommt es keinen Bodenanker. Das klingt nach Buchhaltung und ist\ngenau das Gegenteil: zum ersten Mal steht irgendwo, wo diese Dinge wirklich\naufhoeren und anfangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-asset-semantik-messung.json"
+    },
+    {
+      "contributionId": "b1-kontext-helper-01",
+      "turnId": "2026-11-04T03:35Z-b1-kontext-helper",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern",
+        "rueckkehrer"
+      ],
+      "text": "Rita sah die Szene nicht mehr aus allen Zahlen des Hauses zusammengesetzt, sondern aus dem einen Fact, der sie ausgeloest hatte: Rueckkehr, Streit, Service oder Rivale. Die Persona kam aus den Besuchern, die wirklich am Tisch standen; Beziehung und Stimmung aus dem Fact, der Erinnerung und der gerichteten Kante. Was das Template nicht verlangte, blieb draussen - kein Welt-Flag wurde zur Pflicht. Die Wahl des Textes und die Wahl der Szene blieben getrennt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b1-kontext-helper.json"
+    },
+    {
+      "contributionId": "b2-slot-zwecke-01",
+      "turnId": "2026-11-04T04:45Z-b2-slot-zwecke",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita beschriftete die Karten nicht nach dem, was sie zeigten, sondern nach dem, wofuer sie dalagen. Willkommen hiess Willkommen, nicht Rueckkehr; ein Ausgang trug die Nachwirkung, nicht die Entscheidung. Der Text durfte weiter viele sein, aber keiner ohne den Zweck, den der Slot verlangte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b2-slot-zwecke.json"
+    },
+    {
+      "contributionId": "b3-fallback-slots-01",
+      "turnId": "2026-11-04T05:20Z-b3-fallbacks",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess keine Luecke mehr unter dem Wort Sicherheitscopy verschwinden. Jede Karte nannte den Slot, der keinen Text gefunden hatte: den Titel, die Begruessung, den Ausgang. Ein fehlender Satz war kein Zustand des ganzen Abends mehr, sondern eine Stelle, die man nachtragen konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b3-fallback-slots.json"
+    },
+    {
+      "contributionId": "b4-konflikt-body-01",
+      "turnId": "2026-11-04T06:10Z-b4-konflikt-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "conflict"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwischen den beiden ist der Platz enger geworden als der Raum. Eine Hand liegt auf dem Tresen, die andere schon halb erhoben; das Haus wartet, wer zuerst nachgibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-body.json"
+    },
+    {
+      "contributionId": "b4-konflikt-defuse-01",
+      "turnId": "2026-11-04T06:11Z-b4-konflikt-defuse",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "conflict",
+        "defuse"
+      ],
+      "tone": "warm",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Dazwischengehen und den Streit lösen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-defuse.json"
+    },
+    {
+      "contributionId": "b4-konflikt-escalate-01",
+      "turnId": "2026-11-04T06:12Z-b4-konflikt-escalate",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "conflict",
+        "escalate"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Den Streit offen zulassen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-escalate.json"
+    },
+    {
+      "contributionId": "b4-konflikt-titel-01",
+      "turnId": "2026-11-04T06:09Z-b4-konflikt-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "conflict"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Stimmen, die nicht mehr leiser werden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-konflikt-titel.json"
+    },
+    {
+      "contributionId": "b4-neon-body-01",
+      "turnId": "2026-11-04T06:18Z-b4-neon-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Draußen flackern die Schilder, drinnen wird es voller. Wer jetzt bedient, hält den Abend zusammen; wer zögert, verliert die nächste Runde Gäste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-neon-body.json"
+    },
+    {
+      "contributionId": "b4-neon-titel-01",
+      "turnId": "2026-11-04T06:17Z-b4-neon-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neon-Nacht: Das Licht zieht mehr Menschen an.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-neon-titel.json"
+    },
+    {
+      "contributionId": "b4-rivale-body-01",
+      "turnId": "2026-11-04T06:14Z-b4-rivale-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "rival"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er mustert die Geräte, als würde er ihren Preis schätzen, nicht ihren Zustand. Was er vorhat, steht nicht auf seinem Gesicht; nur die Reihenfolge seiner Blicke verrät, dass er schon entschieden hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-body.json"
+    },
+    {
+      "contributionId": "b4-rivale-confront-01",
+      "turnId": "2026-11-04T06:15Z-b4-rivale-confront",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "rival",
+        "confront"
+      ],
+      "tone": "scharf",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ihn direkt auf seinen Plan ansprechen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-confront.json"
+    },
+    {
+      "contributionId": "b4-rivale-titel-01",
+      "turnId": "2026-11-04T06:13Z-b4-rivale-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "rival"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Rivale setzt seinen Becher zu laut ab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-titel.json"
+    },
+    {
+      "contributionId": "b4-rivale-watch-01",
+      "turnId": "2026-11-04T06:16Z-b4-rivale-watch",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "rival",
+        "watch"
+      ],
+      "tone": "sachlich",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Abwarten und seine Schritte beobachten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rivale-watch.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-ask-01",
+      "turnId": "2026-11-04T06:08Z-b4-rueckkehr-ask",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "ask"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Nach dem letzten Abend fragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-ask.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-body-01",
+      "turnId": "2026-11-04T06:06Z-b4-rueckkehr-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Der Gast von damals steht wieder am Tresen, als wäre die Zeit dazwischen nur eine kurze Pause gewesen. Das Haus erinnert sich an den letzten Abend, und der Blick sagt, dass die Erinnerung geteilt wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-body.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-titel-01",
+      "turnId": "2026-11-04T06:05Z-b4-rueckkehr-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "return"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Die Tür geht auf, als hätte sie gewartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-titel.json"
+    },
+    {
+      "contributionId": "b4-rueckkehr-welcome-01",
+      "turnId": "2026-11-04T06:07Z-b4-rueckkehr-welcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "startpool"
+      ],
+      "text": "Zurück an den Tresen winken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-rueckkehr-welcome.json"
+    },
+    {
+      "contributionId": "b4-turnier-body-01",
+      "turnId": "2026-11-04T06:20Z-b4-turnier-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hinter dem Tresen werden die Stimmen lauter, als hätte jemand die Regeln verlesen. Das Haus hat mehr Durst als Hände, und der Abend fragt nicht, ob das passt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-turnier-body.json"
+    },
+    {
+      "contributionId": "b4-turnier-titel-01",
+      "turnId": "2026-11-04T06:19Z-b4-turnier-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Turnierabend: Die Tische füllen sich.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-b4-turnier-titel.json"
+    },
+    {
+      "contributionId": "boundary-und-beziehungen-01",
+      "turnId": "2026-11-02T23:20Z-boundary-und-beziehungen",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern",
+        "rueckkehrer"
+      ],
+      "text": "Rita Kern blieb vor dem Buch stehen. Jemand hatte ihren letzten Besuch nicht nur gezaehlt, sondern aufgeschrieben, was er fuer sie bedeutet hatte. Sie wusste noch nicht, ob das Haus sich erinnerte, weil es wollte, oder weil es musste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json"
+    },
+    {
+      "contributionId": "c1-trigger-template-contract-01",
+      "turnId": "2026-11-04T05:35Z-c1-trigger-template-contract",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nur was eine Szene verdient, bekommt einen Trigger: Jede Definition in EVENT_TRIGGER_DEFINITIONS zeigt auf mindestens ein Template, jedes Fact-Template ist an genau eine Definition gebunden. Geraete, Lager und Personal haben bewusst keine Fact-Kinds - sie bleiben dokumentiert offen, statt als stille Trigger ohne Mehrwert zu enden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-c1-trigger-template-contract.json"
+    },
+    {
+      "contributionId": "c2-rival-action-trigger-01",
+      "turnId": "2026-11-04T05:25Z-c2-rival-action-trigger",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Blick von der Seite bleibt ein Blick: PROBE hinterlaesst ein Indiz, oeffnet aber keine Szene. Erst Handlungen mit Folgen - Informationshandel, Preiskampf, Gaesteabwerbung, Sabotage - werden zu einem RIVAL_MOVE, und die Aktionsliste ist Teil des Trigger-Vertrags statt einer stillen Annahme.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-c2-rival-action-trigger.json"
+    },
+    {
+      "contributionId": "command-dsl-01",
+      "turnId": "2026-11-03T01:20Z-nar-08-command-dsl",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Wörter standen vor der Tür, aber der Schlüssel lag nicht in ihnen. Wer einen Befehl aussprach, bekam nur dann eine Wirkung, wenn das Template ihn bereits genannt hatte; alles andere blieb ein Satz und wurde als abgelehnt vermerkt. Die Kasse hörte erst zu, nachdem die ganze Liste geprüft war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-08-command-dsl.json"
+    },
+    {
+      "contributionId": "content-compiler-01",
+      "turnId": "2026-11-03T02:20Z-nar-10-content-compiler",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte den ersten Befehl neben den Satz, nicht hinein. Der Compiler las ihn als eigene Karte, pruefte Nummer, Grenze und Ziel und liess den sichtbaren Text unberuehrt. Erst die Registry durfte den Befehl als Daten tragen; ausfuehren wuerde ihn spaeter nur ein Template, das ihn ausdruecklich erlaubt.",
+      "directives": [
+        {
+          "id": "FREEZE_TICK",
+          "ticks": 120
+        }
+      ],
+      "source": "content/narrative/contributions/2026-11-03-nar-10-content-compiler.json"
+    },
+    {
+      "contributionId": "content-registry-01",
+      "turnId": "2026-11-03T01:35Z-nar-09-content-registry",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Archiv lagen die Beiträge nicht als Haufen, sondern als Karten mit Herkunft, Rolle und erlaubtem Ort. Rita zog eine Karte heraus, auf der nur ein Satz stand; daneben lagen leere Felder für Ton, Stimmung und Beziehung. Erst als jedes Feld ausgefüllt war, durfte der Satz in den Saal. Was fehlte, blieb draußen, auch wenn es schön klang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-09-content-registry.json"
+    },
+    {
+      "contributionId": "d1-aftermath-body-01",
+      "turnId": "2026-11-04T05:41Z-d1-aftermath-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Leise, fast nebenbei, legt er nach, was beim letzten Mal unausgesprochen blieb: ein knapp gewonnener Abend, ein Platz, der ploetzlich frei war, und ein Blick zur Tuer, der mehr sagte als der Gewinn.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-body.json"
+    },
+    {
+      "contributionId": "d1-aftermath-listen-01",
+      "turnId": "2026-11-04T05:42Z-d1-aftermath-listen",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Weiter zuhoeren und vorsichtig nachhaken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-listen.json"
+    },
+    {
+      "contributionId": "d1-aftermath-outcome-01",
+      "turnId": "2026-11-04T05:43Z-d1-aftermath-outcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er nickt, sichtlich erleichtert, dass ihm jemand wirklich zugehoert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-outcome.json"
+    },
+    {
+      "contributionId": "d1-aftermath-titel-01",
+      "turnId": "2026-11-04T05:40Z-d1-aftermath-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er bleibt noch einen Moment stehen, als haette er erst jetzt wirklich angefangen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d1-aftermath-titel.json"
+    },
+    {
+      "contributionId": "d2-counter-rival-01",
+      "turnId": "2026-11-04T06:05Z-d2-counter-rival",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer entgegentritt, kauft Zeit: CONFRONT_RIVAL traegt jetzt die Domaenenwirkung COUNTER_RIVAL, der Preflight verlangt einen existierenden Rivalen, und execute.ts setzt counteredUntilTick als einzigen Schreibpfad. Die Politik schweigt fuer diesen Rivalen bis zum Tick - ohne neuen Fact, ohne zweite Wahrheit.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d2-counter-rival.json"
+    },
+    {
+      "contributionId": "d3-expiry-no-penalty-01",
+      "turnId": "2026-11-04T06:20Z-d3-expiry-no-penalty",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "e2-visitor-disposition-01",
+      "turnId": "2026-11-04T06:35Z-e2-visitor-disposition",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man merkt es den Gaesten an, wo sie stehen: Wer gute Abende mit dem Haus verbindet, bestellt eher einen Drink, setzt sich eher dazu und waehlt mutiger. Wer einen schlechten Abend mit sich traegt, haelt Abstand und spielt verhaltener. Niemand wird bevorzugt oder bestraft - Geld, Platz und kaputte Geraete gelten fuer alle gleich; nur die Neigung verschiebt sich, messbar und begrenzt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-e2-visitor-disposition.json"
+    },
+    {
+      "contributionId": "event-scheduler-01",
+      "turnId": "2026-11-03T00:25Z-nar-06-event-scheduler",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rueckkehrer"
+      ],
+      "text": "Der Streit war vorbei, aber das Haus trug ihn weiter: als Frist, als Cooldown und als eine Instanz, die nach dem Auflösen nicht einfach verschwand. Rita sah, dass zwei Geschichten gleichzeitig laufen konnten, ohne sich gegenseitig zu überschreiben. Am Ende entschied nicht der Zufall des Automaten, sondern ein eigener, kleiner Strom, den man speichern und beim nächsten Besuch wieder aufnehmen konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-06-event-scheduler.json"
+    },
+    {
+      "contributionId": "event-templates-01",
+      "turnId": "2026-11-03T01:00Z-nar-07-event-templates",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rueckkehrer"
+      ],
+      "text": "Rita sah zwei Türen, die sich fast glichen. Auf der einen stand ein Willkommen, auf der anderen eine Frage; hinter beiden lag dieselbe Mechanik. Das Haus konnte den Text ändern, ohne die Entscheidung zu verändern. Nur wer den gespeicherten Schlüssel besaß und die Bedingungen noch erfüllte, durfte die Klinke drücken. Alles andere blieb eine Beschreibung, kein Versprechen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-07-event-templates.json"
+    },
+    {
+      "contributionId": "f-warm-return-01",
+      "turnId": "2026-11-04T06:55Z-f-warm-return",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Manche Gaeste kommen nicht einfach wieder - sie kommen zurueck: Wer gute Abende mitbringt, bekommt neben der gewohnten Begruessung eine zweite, waermere Szene. Kein Zustaendlichkeitsbuch fuehrt darueber Buch, nur Erinnerung, Kante und ein Trigger, der beides liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-f-warm-return.json"
+    },
+    {
+      "contributionId": "floor-fleck-01",
+      "turnId": "2026-11-02T10:55Z-dreck-poker-verluste",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "loss",
+        "conflict"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "verlust"
+      ],
+      "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "journal-und-profilweg-01",
+      "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "facts"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern",
+        "rueckkehrer"
+      ],
+      "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
+    },
+    {
+      "contributionId": "lebenssim-vision-01",
+      "turnId": "2026-11-04T04:10Z-lebenssim-vision",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content",
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita las die neue Fassung und fand dieselbe Kette wieder, die sie am Tresen erlebt hatte: Laune, Charisma, Erinnerung, Preis. Nur stand sie diesmal nicht als Regel des Hauses da, sondern als Leben, das schon vor dem ersten Gast angefangen hatte. Der Automat blieb stehen, wo er stand - als Testumgebung, nicht als Genre.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
+    },
+    {
+      "contributionId": "ledger-pages-01",
+      "turnId": "2026-11-02T22:35Z-narrative-dokumentation",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-dokumentation.json"
+    },
+    {
+      "contributionId": "memory-counts-01",
+      "turnId": "2026-11-02T21:58Z-narrative-facts",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "facts"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rueckkehrer"
+      ],
+      "text": "Rita strich die doppelte Zeile im alten Kassenbuch durch. Drei Namen, sagte sie, bleiben drei Namen, auch wenn man sie zweimal liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-narrative-facts.json"
+    },
+    {
+      "contributionId": "multi-beat-steps-01",
+      "turnId": "2026-11-07T14:37Z-multi-beat-schritte",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Besuch ist kein einzelner Klick mehr. Erst wird gefragt, dann geantwortet: Der Schritt wechselt, die Frist laeuft weiter, und was im ersten Beat gesagt wurde, entscheidet, welche Worte im zweiten ueberhaupt angeboten werden. Niemand sieht eine Option, die noch nicht dran ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-07-multi-beat-schritte.json"
+    },
+    {
+      "contributionId": "nar-04-beziehungsquellen-01",
+      "turnId": "2026-11-02T23:45Z-nar-04-beziehungsquellen",
+      "agentId": "buffy",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "conflict",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ",
+        "verlust"
+      ],
+      "text": "Zwei Gaeste stiessen an der Kasse zusammen, und fuer einen Moment stand nicht nur der Streit im Raum, sondern auch die Frage, wer wem danach noch in die Augen sehen wuerde. Der Kassierer schob die Muenzen ueber den Tresen, als haette er die Antwort schon gehoert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-nar-04-beziehungsquellen.json"
+    },
+    {
+      "contributionId": "nar-12-orchestration-01",
+      "turnId": "2026-11-03T03:15Z-nar-12-orchestration",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte die Reihenfolge auf den Tresen, bevor der Abend begann: erst die Welt, dann die Spuren, dann die Fragen. Ein Gast, der zurückkam, hinterließ eine Zeile; aus der Zeile wurde eine Entscheidung; aus der Entscheidung wurde wieder eine Zeile. Sie strich den Satz durch, der behauptete, alles geschehe gleichzeitig, und schrieb darunter: eine Runde, ein Durchlauf, kein zweiter Blick zurück.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-12-orchestration.json"
+    },
+    {
+      "contributionId": "nar-13-demand-events-01",
+      "turnId": "2026-11-03T03:40Z-nar-13-demand-events",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hängte die alte Liste neben die neue und strich keine Zeile. Neon-Nacht, Turnierabend: zwei Namen, eine Tür. Statt sie ein zweites Mal zu öffnen, schrieb sie beide in das Buch, das ohnehin jede Veranstaltung führt, und ließ den alten Schlüssel fallen. Wer noch mit einem alten Stand kam, bekam seinen Abend zurück, nicht seine Gewohnheit. Die Nachfrage blieb, wie sie war; nur der Ort, an dem sie gezählt wurde, war jetzt derselbe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-13-demand-events.json"
+    },
+    {
+      "contributionId": "nar-14-narrative-ui-01",
+      "turnId": "2026-11-04T00:55Z-nar-14-narrative-ui",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita sah die Geschichten zum ersten Mal, statt sie nur zu verursachen. Die Szene stand als Karte im Licht: Titel, Text, Frist, und daneben die Wege, die wirklich offen waren. Ein Weg war grau und nannte seinen Grund, statt ihn zu verstecken; ein anderer liess sich schliessen, und die Geschichte verschwand mit ihrer Frist, nicht mit ihrem Gedaechtnis. Neben der Karte standen die Figuren: so oft da, so viel erinnert, so viel zwischen ihnen geschehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-nar-14-narrative-ui.json"
+    },
+    {
+      "contributionId": "nar-15-autonome-rivalen-01",
+      "turnId": "2026-11-04T02:10Z-nar-15-autonome-rivalen",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Die Rivalen bekamen ein Gedaechtnis fuer ihre eigenen Zuege. Der Automat am Fenster nahm zwoelf Schaden, und die Zeile darueber nannte den Rivalen, das Geraet und den Tick, damit niemand raten musste, woher der Kratzer kam. Der Guard verhinderte den Schaden, nicht den Eintrag. Wer die Indizien liest, weiss, wer zweimal kam, und kann beim naechsten Mal vorher etwas tun.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-nar-15-autonome-rivalen.json"
+    },
+    {
+      "contributionId": "nar-16-langzeitintegration-01",
+      "turnId": "2026-11-04T03:20Z-nar-16-langzeitintegration",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Zwei Spieltage lang sah Rita zu, wie das Haus Geschichten sammelte, ohne zu wachsen. Die Erinnerungen blieben sechs je Gast, die Szenen acht gleichzeitig, die Beziehungen zweihundert, und der Rivalen-Verlauf sechs Zuege. Nach jedem Tag wurde gespeichert, neu geladen und weitergespielt: derselbe Verlauf, dieselben Zahlen. Was blieb, war kein Berg, sondern ein Regal mit festen Faechern.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-nar-16-langzeitintegration.json"
+    },
+    {
+      "contributionId": "neon-abend-01",
+      "turnId": "2026-11-02T22:49Z-nachfragezustand",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita sah zur Neonreklame hinauf. Der Abend stand noch im Kalender, auch wenn das alte Buch ein neues Fach bekommen hatte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-nachfragezustand.json"
+    },
+    {
+      "contributionId": "opening-inheritance-01",
+      "turnId": "2026-11-01T23:10Z-readme-onboarding",
+      "agentId": "codex",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "start"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "eroeffnung"
+      ],
+      "text": "Im Ordner des Nachlasses lag ein Kassenbon, der länger war als die Inventarliste. Rita nannte das keinen Schatz. Sie nannte es einen Anfang und fragte, ob der Gratis-Automat wenigstens selbst laufen könne.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-01-readme-opening.json"
+    },
+    {
+      "contributionId": "patience-gap-01",
+      "turnId": "2026-11-02T11:26Z-synergie-audit",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "warn",
+      "contexts": [
+        "loss",
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Stammgast war der Ungeduldigste im Haus, obwohl auf seiner Karte 138 stand. Rita drehte die Karte um und fand die Zahl auf der Rückseite, wo niemand liest. Am Samtvorhang stand geschrieben, dass bessere Gäste kämen; es kamen dieselben, nur langsamer. Und die vierte Walze war ein Schild an einem Automaten, der weiterhin drei hatte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-geduld-und-versprechen.json"
+    },
+    {
+      "contributionId": "phase4-huelle-atlas-01",
+      "turnId": "2026-11-05T05:45Z-huelle-atlas-budgets-apk",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Floor zieht seine 153 Figuren-, Geraete-, Deko- und Umgebungsframes jetzt aus zwei gepackten Atlasseiten. Der Loader wartet auf den ersten echten Renderer-Frame, nicht auf eine Uhr; auf dem Pruefpfad mit 9 Mbit/s blieben 20 Requests und 2,51 Sekunden. Die Huelle traegt Hochformat und Safe Areas, die Haptik bleibt bei reduzierter Bewegung still.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-05-huelle-atlas.json"
+    },
+    {
+      "contributionId": "phase5-rival-integration-01",
+      "turnId": "2026-11-04T07:10Z-phase5-rival-integration",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "trigger",
+        "templates"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "returning-memory-01",
+      "turnId": "2026-11-02T22:16Z-narrative-trigger",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "trigger",
+        "return"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rueckkehrer"
+      ],
+      "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-trigger-bedingungen.json"
+    },
+    {
+      "contributionId": "runtime-composer-01",
+      "turnId": "2026-11-03T02:30Z-nar-11-runtime-composer",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess den Satz im Regal und oeffnete nur die Karte daneben: Sprache, Kontext, Flag und Persona mussten zusammenpassen, bevor ein Fragment in die Szene durfte. Fuer den leeren Rest lagen kurze neutrale Zeilen bereit; keine davon nannte eine Choice, einen Preis oder eine Wirkung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-03-nar-11-runtime-composer.json"
+    },
+    {
+      "contributionId": "shift-pay-01",
+      "turnId": "2026-11-02T11:18Z-schicht-lohn",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "warn",
+      "contexts": [
+        "service",
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-schicht-und-lohn.json"
+    },
+    {
+      "contributionId": "spatial-layout-contract-01",
+      "turnId": "2026-11-06T02:46Z-spatial-layout-contract",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Wand ist kein Bild mehr, sondern eine Kante mit genau einem Zustand: Wand, Tuer oder Durchgang. Der Plan liegt als eine Wahrheit im Haus, und der Ausbau behaelt seine Tueroeffnung, statt sie hinter einer neuen Aussenwand zu vergessen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-06-layout-vertrag.json"
+    },
+    {
+      "contributionId": "start-pool-opening-01",
+      "turnId": "2026-11-01T12:00Z-narrative-start",
+      "agentId": "buffy",
+      "role": "ERNaeHRER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "start"
+      ],
+      "tone": "warm",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "startpool",
+        "eroeffnung",
+        "rita-kern"
+      ],
+      "text": "Rita Kern steht schon vor der Tür, als das Licht angeht. Sie kennt den Geruch von kaltem Neon und weiß, dass der erste Automat heute ihr gehört.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-01-startpool-01.json"
+    },
+    {
+      "contributionId": "till-watch-01",
+      "turnId": "2026-11-02T11:08Z-deckung-wut",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "warn",
+      "contexts": [
+        "conflict",
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "angespannt",
+      "relationship": "konflikt",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wachmann stand am Klo und hielt die Kasse für gedeckt, weil er den Spieler im Blick hatte statt das Geld. Rita sagte, so habe noch nie jemand etwas verloren, was ihm gehörte. Am Abend brannte die zweite Runde eines Streits nicht, weil sie vorher zu Ende war, und ein Gast, der längst geschlichtet war, trug sein wütendes Gesicht bis zur Tür wie einen Regenschirm bei Sonne.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-deckung-und-wut.json"
+    },
+    {
+      "contributionId": "trigger-context-01",
+      "turnId": "2026-11-02T23:59Z-nar-05-trigger-context",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "trigger",
+        "facts",
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rueckkehrer"
+      ],
+      "text": "Rita kam wieder, und das Haus erinnerte sich nicht an ihren Namen, sondern an den Streit an der Kasse und an das Vertrauen, das danach übrig blieb. Der neue Vertrag fragte nicht mehr jede Stimmung einzeln ab: Er las den letzten Fact, das Fenster davor, die gerichtete Kante und den Stand der Hauskasse zusammen. Erst die Erklärung machte aus einem Treffer eine Geschichte, die man prüfen konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-02-nar-05-trigger-context.json"
+    },
+    {
+      "contributionId": "warm-return-body-01",
+      "turnId": "2026-11-04T07:21Z-warm-return-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Haus erinnert sich an gute Abende, und heute erinnert es sich gern: Sein Platz ist frei, die Laune ist da, und irgendwer hat offenbar schon erzählt, dass er wiederkommt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-body.json"
+    },
+    {
+      "contributionId": "warm-return-choice-01",
+      "turnId": "2026-11-04T07:22Z-warm-return-choice",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ihn mit Namen begrüßen und den gewohnten Platz anbieten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-choice.json"
+    },
+    {
+      "contributionId": "warm-return-outcome-01",
+      "turnId": "2026-11-04T07:23Z-warm-return-outcome",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "return",
+        "aftermath"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er strahlt über das ganze Gesicht: Hier kennt man ihn noch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-outcome.json"
+    },
+    {
+      "contributionId": "warm-return-titel-01",
+      "turnId": "2026-11-04T07:20Z-warm-return-titel",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "return",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-04-warm-return-titel.json"
+    }
+  ]
+}

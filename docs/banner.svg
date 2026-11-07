@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-labelledby="banner-title banner-desc">
+  <title id="banner-title">Rigged by Design – VaCoin Casino Roguelite</title>
+  <desc id="banner-desc">Neon banner with the words Rigged by Design, a glowing slot machine showing cherry, seven and diamond symbols, and a Near Miss badge.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07050d"/>
+      <stop offset="0.55" stop-color="#120a22"/>
+      <stop offset="1" stop-color="#1b092b"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.74" cy="0.42" r="0.52">
+      <stop offset="0" stop-color="#ff2d95" stop-opacity="0.28"/>
+      <stop offset="0.45" stop-color="#8b5cf6" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#07050d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="floorGlow" cx="0.5" cy="1" r="0.7">
+      <stop offset="0" stop-color="#00ffcc" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#00ffcc" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff7df"/>
+      <stop offset="0.38" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#d58a1f"/>
+    </linearGradient>
+    <linearGradient id="pinkTitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffb3d4"/>
+      <stop offset="0.5" stop-color="#ff2d95"/>
+      <stop offset="1" stop-color="#b34bff"/>
+    </linearGradient>
+    <linearGradient id="cyanLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00ffcc"/>
+      <stop offset="1" stop-color="#00ffcc" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cabinet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#24102f"/>
+      <stop offset="0.5" stop-color="#100a1b"/>
+      <stop offset="1" stop-color="#08050d"/>
+    </linearGradient>
+    <linearGradient id="reelGlass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d102d"/>
+      <stop offset="0.2" stop-color="#0b0612"/>
+      <stop offset="0.8" stop-color="#0b0612"/>
+      <stop offset="1" stop-color="#180c23"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff2d95" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ff2d95" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="#8b5cf6" stroke-opacity="0.13" stroke-width="1"/>
+    </pattern>
+    <filter id="glowPink" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowCyan" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowGold" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="textShadow" x="-20%" y="-30%" width="140%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="420" fill="url(#bg)"/>
+  <rect width="1280" height="420" fill="url(#halo)"/>
+  <path d="M 660 0 L 1280 0 L 1280 300 Z" fill="url(#beam)" opacity="0.55"/>
+  <rect x="600" width="680" height="420" fill="url(#grid)" opacity="0.7"/>
+  <rect width="1280" height="200" fill="url(#floorGlow)"/>
+
+  <g opacity="0.13" fill="none" stroke="#ffcc66">
+    <circle cx="1035" cy="224" r="232" stroke-width="1.5"/>
+    <circle cx="1035" cy="224" r="198" stroke-width="1" stroke-dasharray="3 11"/>
+    <text x="1035" y="300" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="220" font-weight="900" fill="none" stroke="#ffcc66" stroke-width="2">V</text>
+  </g>
+
+  <g opacity="0.14" stroke="#00ffcc" stroke-width="1" fill="none">
+    <path d="M 0 420 L 560 210"/>
+    <path d="M 120 420 L 600 210"/>
+    <path d="M 260 420 L 640 210"/>
+    <path d="M 400 420 L 680 210"/>
+    <path d="M 760 420 L 720 210"/>
+    <path d="M 900 420 L 760 210"/>
+    <path d="M 1040 420 L 800 210"/>
+    <path d="M 1180 420 L 840 210"/>
+    <path d="M 1280 390 L 880 210"/>
+  </g>
+
+  <path d="M 0 1 H 1280" stroke="url(#cyanLine)" stroke-width="1" opacity="0.55"/>
+  <path d="M 38 38 H 86 M 38 38 V 86" fill="none" stroke="#ff2d95" stroke-width="1.5" opacity="0.65"/>
+  <path d="M 1242 38 H 1194 M 1242 38 V 86" fill="none" stroke="#00ffcc" stroke-width="1.5" opacity="0.45"/>
+
+  <g font-family="'Courier New', monospace" fill="#8d7fa8">
+    <rect x="70" y="66" width="8" height="8" fill="#00ffcc"/>
+    <text x="90" y="75" font-size="12" letter-spacing="3.4" fill="#bfb2d6">VACOIN CASINO ROGUELITE</text>
+    <text x="90" y="96" font-size="10" letter-spacing="2.2" fill="#6f6188">BROWSER BUILD / SINGLE PLAYER / QUESTIONABLE DECISIONS</text>
+  </g>
+
+  <g filter="url(#textShadow)" font-family="Arial Black, Arial, sans-serif" font-weight="900">
+    <text x="70" y="174" font-size="96" letter-spacing="1" fill="url(#gold)" textLength="520" lengthAdjust="spacingAndGlyphs">RIGGED</text>
+    <text x="70" y="264" font-size="96" letter-spacing="1" fill="url(#pinkTitle)" textLength="610" lengthAdjust="spacingAndGlyphs">BY DESIGN</text>
+  </g>
+
+  <rect x="70" y="284" width="112" height="3" fill="url(#cyanLine)"/>
+  <text x="70" y="313" font-family="'Courier New', monospace" font-size="19" letter-spacing="0.2" fill="#d8cdea">Der Hausvorteil ist kein Bug. Er ist das Produkt.</text>
+
+  <g transform="translate(70 334)" font-family="'Courier New', monospace" font-size="10" letter-spacing="1.4">
+    <g>
+      <rect width="164" height="28" rx="14" fill="#0f0a1b" stroke="#3b2c58"/>
+      <circle cx="17" cy="14" r="3" fill="#00ffcc"/>
+      <text x="30" y="18" fill="#b9f8ea">DETERMINISTIC RNG</text>
+    </g>
+    <g transform="translate(178 0)">
+      <rect width="194" height="28" rx="14" fill="#0f0a1b" stroke="#3b2c58"/>
+      <circle cx="17" cy="14" r="3" fill="#ffcc66"/>
+      <text x="30" y="18" fill="#f4dfaf">DOUBLE-ENTRY LEDGER</text>
+    </g>
+    <g transform="translate(386 0)">
+      <rect width="154" height="28" rx="14" fill="#0f0a1b" stroke="#3b2c58"/>
+      <circle cx="17" cy="14" r="3" fill="#ff2d95"/>
+      <text x="30" y="18" fill="#ffb3d4">NO REAL MONEY</text>
+    </g>
+  </g>
+
+  <path d="M 70 384 H 610" stroke="#2c2440" stroke-width="1"/>
+  <text x="70" y="405" font-family="'Courier New', monospace" font-size="10" letter-spacing="1.2" fill="#6f6188">FIKTIVES GELD. ECHTE SCHLECHTE ENTSCHEIDUNGEN.</text>
+
+  <g transform="translate(812 30)">
+    <ellipse cx="178" cy="369" rx="168" ry="16" fill="#000000" opacity="0.55"/>
+
+    <g stroke="#ff2d95" stroke-width="2" filter="url(#glowPink)" fill="none" opacity="0.8">
+      <rect x="0" y="42" width="356" height="306" rx="26"/>
+    </g>
+    <rect x="0" y="42" width="356" height="306" rx="26" fill="url(#cabinet)" stroke="#5a2450" stroke-width="2"/>
+    <rect x="8" y="50" width="340" height="290" rx="21" fill="none" stroke="#3f2052" stroke-width="1"/>
+
+    <g fill="#ffcc66" opacity="0.85">
+      <circle cx="24" cy="60" r="2"/><circle cx="332" cy="60" r="2"/>
+      <circle cx="24" cy="330" r="2"/><circle cx="332" cy="330" r="2"/>
+    </g>
+
+    <g>
+      <rect x="32" y="62" width="292" height="48" rx="12" fill="#250b25" stroke="#ffcc66" stroke-width="1.4"/>
+      <path d="M 44 74 H 72 M 284 74 H 312" stroke="#ff2d95" stroke-width="2" opacity="0.7"/>
+      <text x="178" y="94" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="27" font-weight="900" letter-spacing="8" fill="url(#gold)">VACOIN</text>
+      <circle cx="50" cy="86" r="2.5" fill="#00ffcc" filter="url(#glowCyan)"/>
+      <circle cx="306" cy="86" r="2.5" fill="#00ffcc" filter="url(#glowCyan)"/>
+    </g>
+
+    <g fill="#ff2d95">
+      <circle cx="17" cy="128" r="3" filter="url(#glowPink)"/>
+      <circle cx="17" cy="150" r="3" opacity="0.5"/>
+      <circle cx="17" cy="172" r="3" opacity="0.5"/>
+      <circle cx="339" cy="128" r="3" filter="url(#glowPink)"/>
+      <circle cx="339" cy="150" r="3" opacity="0.5"/>
+      <circle cx="339" cy="172" r="3" opacity="0.5"/>
+    </g>
+
+    <rect x="28" y="124" width="300" height="164" rx="15" fill="#05040a" stroke="#4a3768" stroke-width="1.5"/>
+    <rect x="34" y="130" width="288" height="152" rx="11" fill="none" stroke="#241633" stroke-width="1"/>
+
+    <g>
+      <rect x="38" y="137" width="86" height="138" rx="9" fill="url(#reelGlass)" stroke="#4a3768"/>
+      <rect x="135" y="137" width="86" height="138" rx="9" fill="url(#reelGlass)" stroke="#4a3768"/>
+      <rect x="232" y="137" width="86" height="138" rx="9" fill="url(#reelGlass)" stroke="#4a3768"/>
+    </g>
+
+    <g>
+      <g filter="url(#glowPink)">
+        <circle cx="70" cy="213" r="14" fill="#ff0055"/>
+        <circle cx="86" cy="208" r="12" fill="#ff2d7a"/>
+      </g>
+      <path d="M 78 199 C 80 190 84 184 91 181" fill="none" stroke="#7bffb0" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 86 199 C 91 194 96 192 101 192" fill="none" stroke="#39d98a" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="101" cy="187" rx="10" ry="5" fill="#39d98a" transform="rotate(-28 101 187)"/>
+      <circle cx="65" cy="208" r="3" fill="#ff9ec7" opacity="0.9"/>
+    </g>
+
+    <g>
+      <text x="178" y="232" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="92" font-style="italic" font-weight="900" fill="#4a0029" transform="translate(5 5)">7</text>
+      <text x="178" y="232" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="92" font-style="italic" font-weight="900" fill="#ff2d95" stroke="#ffb000" stroke-width="1.5" filter="url(#glowPink)">7</text>
+    </g>
+
+    <g filter="url(#glowCyan)">
+      <path d="M 275 162 L 305 206 L 275 250 L 245 206 Z" fill="#00ffcc"/>
+      <path d="M 275 162 L 275 206 L 245 206 Z" fill="#8afff0" opacity="0.95"/>
+      <path d="M 275 162 L 305 206 L 275 206 Z" fill="#00c7a7"/>
+      <path d="M 275 206 L 305 206 L 275 250 Z" fill="#00a98f"/>
+      <path d="M 275 206 L 245 206 L 275 250 Z" fill="#5dffe0" opacity="0.75"/>
+    </g>
+    <circle cx="275" cy="206" r="3" fill="#ffffff" opacity="0.9"/>
+
+    <g opacity="0.65">
+      <path d="M 25 206 H 339" stroke="#ff2d95" stroke-width="2" filter="url(#glowPink)"/>
+      <path d="M 25 206 L 34 201 L 34 211 Z" fill="#ff2d95"/>
+      <path d="M 339 206 L 330 201 L 330 211 Z" fill="#ff2d95"/>
+    </g>
+
+    <g>
+      <rect x="112" y="294" width="132" height="27" rx="13.5" fill="#2a0717" stroke="#ff2d95" stroke-width="1.2"/>
+      <circle cx="126" cy="307.5" r="3" fill="#ff2d95" filter="url(#glowPink)"/>
+      <text x="186" y="311" text-anchor="middle" font-family="'Courier New', monospace" font-size="10" font-weight="bold" letter-spacing="2.2" fill="#ffb3d4">NEAR MISS</text>
+    </g>
+
+    <text x="178" y="338" text-anchor="middle" font-family="'Courier New', monospace" font-size="8" letter-spacing="2" fill="#6d5f85">CERTIFIED BY THE HOUSE</text>
+
+    <g>
+      <path d="M 356 198 L 385 175" stroke="#ffcc66" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="388" cy="172" r="10" fill="#ff2d95" stroke="#ffcc66" stroke-width="2" filter="url(#glowPink)"/>
+      <circle cx="386" cy="169" r="3" fill="#ffd9e8" opacity="0.9"/>
+    </g>
+
+    <rect x="72" y="352" width="212" height="13" rx="6.5" fill="#120a1d" stroke="#3a2b50"/>
+    <g fill="#ffcc66" filter="url(#glowGold)">
+      <ellipse cx="151" cy="356" rx="6" ry="4"/>
+      <ellipse cx="166" cy="354" rx="6" ry="4"/>
+      <ellipse cx="181" cy="357" rx="6" ry="4"/>
+    </g>
+
+    <g fill="#ffcc66" filter="url(#glowGold)" opacity="0.9">
+      <circle cx="36" cy="24" r="4"/>
+      <circle cx="330" cy="16" r="3"/>
+      <circle cx="372" cy="290" r="3.5"/>
+      <circle cx="8" cy="288" r="2.5"/>
+    </g>
+  </g>
+
+  <text x="1180" y="405" text-anchor="end" font-family="'Courier New', monospace" font-size="9" letter-spacing="2" fill="#6f6188">HOUSE EDGE INCLUDED.</text>
+</svg>

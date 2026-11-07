@@ -1,0 +1,29 @@
+{
+  "id": "jackpot-burst",
+  "textures": [
+    "particles/sparks/spark-01.png",
+    "particles/sparks/spark-02.png",
+    "particles/glow/glow-01.png"
+  ],
+  "count": 32,
+  "lifetimeMs": [
+    350,
+    900
+  ],
+  "speed": [
+    0.12,
+    0.75
+  ],
+  "gravity": 0.0003,
+  "scale": [
+    0.4,
+    1.2
+  ],
+  "fadeOut": true,
+  "pool": true,
+  "colorRoles": [
+    "value",
+    "identity",
+    "success"
+  ]
+}

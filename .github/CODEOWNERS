@@ -1,0 +1,12 @@
+# Feste Owner. Auch ohne Pflicht-Review macht diese Datei sichtbar, wer eine
+# Aenderung prueft; die Lane-Claims in .lane-claims/claims.json bleiben die
+# ausfuehrbare Wahrheit fuer Agenten-Parallelarbeit.
+/.github/            @vannon091118
+/.githooks/          @vannon091118
+/.lane-claims/       @vannon091118
+/AGENTS.md           @vannon091118
+/docs/               @vannon091118
+/package.json        @vannon091118
+/pnpm-lock.yaml      @vannon091118
+/scripts/            @vannon091118
+/src/core/governance/ @vannon091118

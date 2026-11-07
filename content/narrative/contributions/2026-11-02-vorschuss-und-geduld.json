@@ -1,0 +1,19 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-02T11:40Z-vorschuss-geduld",
+  "contributionId": "advance-anger-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "warn",
+  "contexts": ["loss", "service"],
+  "tone": "sachlich",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": ["rita-kern"],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
+  "directives": []
+}

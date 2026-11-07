@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-04T06:20Z-b4-turnier-body",
+  "contributionId": "b4-turnier-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Hinter dem Tresen werden die Stimmen lauter, als hätte jemand die Regeln verlesen. Das Haus hat mehr Durst als Hände, und der Abend fragt nicht, ob das passt.",
+  "directives": []
+}

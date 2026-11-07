@@ -1,0 +1,149 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release-Tag (leer = aktueller Branch, kein Release-Upload)'
+        required: false
+  # Der Release-Workflow ruft diesen Build direkt auf: ein mit GITHUB_TOKEN
+  # gepushter Tag loest keinen eigenen Workflow aus.
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Release-Tag, den der Aufrufer gebaut haben will'
+        required: true
+        type: string
+      skip_verify:
+        description: 'Aufrufer hat den Commit bereits durch CI Verify geprueft'
+        required: false
+        type: boolean
+        default: false
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-${{ inputs.tag || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    name: Capacitor APKs (Debug + Release)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Gate-Cache wiederherstellen
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .verify-cache
+          key: ${{ runner.os }}-rbd-verify-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
+          restore-keys: |
+            ${{ runner.os }}-rbd-verify-
+
+      - name: pnpm installieren
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
+        with:
+          version: 10.4.1
+
+      - name: Node 22 mit pnpm-Cache
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Java 21
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '21'
+          # Kein cache: gradle – das Android-Projekt existiert erst nach cap add,
+          # der Cache-Schlüssel-Suchlauf würde den Job sonst rot machen.
+
+      - name: Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4
+        with:
+          # v4 nutzt Node 24 und installiert `platform-tools` bereits als
+          # Default; das alte `tools`-Paket wird nicht mehr angefordert.
+          packages: platform-tools
+
+      - name: SDK-Plattform und Build-Tools
+        run: |
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
+
+      # Der Release ruft diesen Workflow erst nach erfolgreichem "CI Verify"
+      # auf und setzt skip_verify; eine zweite vollstaendige Suite waere reine
+      # Doppelarbeit. Manuelle Builds und manuell gepushte Tags pruefen weiterhin
+      # selbst, weil dort skip_verify fehlt beziehungsweise false ist.
+      - name: Fail-Closed-Gates
+        if: ${{ !inputs.skip_verify }}
+        run: pnpm run verify:release
+
+      # verify:release liefert den Production-Build mit. Auf dem skip_verify-Pfad
+      # fehlt er, deshalb wird er hier separat erzeugt.
+      - name: Production-Build (nur ohne vorgelagertes Verify)
+        if: ${{ inputs.skip_verify }}
+        run: pnpm run build
+
+      - name: Gradle assembleDebug (signierbare Debug-APK)
+        run: pnpm run android:apk
+
+      - name: Gradle assembleRelease (Release-APK ohne Signatur)
+        run: pnpm run android:apk:release
+
+      - name: Debug-APK als Artefakt
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: rigged-by-design-debug-apk
+          path: artifacts/rigged-by-design-debug.apk
+          if-no-files-found: error
+
+      - name: Release-APK als Artefakt
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: rigged-by-design-release-unsigned-apk
+          path: artifacts/rigged-by-design-release-unsigned.apk
+          if-no-files-found: error
+
+      - name: Release-Tag bestimmen
+        id: release
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          tag="$INPUT_TAG"
+          if [ -z "$tag" ] && [ "${GITHUB_REF_TYPE}" = "tag" ]; then tag="$GITHUB_REF_NAME"; fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: APK als Release-Asset
+        if: steps.release.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          gh release view "$TAG" > /dev/null 2>&1 \
+            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute APKs: Debug installierbar, Release ohne Signatur."
+          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk artifacts/rigged-by-design-release-unsigned.apk --clobber
+
+      - name: Artefakte am Release pruefen
+        if: steps.release.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          assets="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
+          echo "$assets" | grep -qx 'rigged-by-design-debug.apk' \
+            || { echo "::error::Release $TAG enthaelt kein APK-Artefakt"; exit 1; }
+          echo "$assets" | grep -qx 'rigged-by-design-release-unsigned.apk' \
+            || { echo "::error::Release $TAG enthaelt keine Release-APK"; exit 1; }

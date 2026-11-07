@@ -1,0 +1,29 @@
+{
+  "id": "coin-burst",
+  "texture": "particles/coins/coin-spin-01.png",
+  "count": 24,
+  "lifetimeMs": [
+    850,
+    1500
+  ],
+  "speedX": [
+    -0.28,
+    0.28
+  ],
+  "speedY": [
+    -0.85,
+    -0.3
+  ],
+  "gravity": 0.0012,
+  "rotationSpeed": [
+    -0.025,
+    0.025
+  ],
+  "scale": [
+    0.65,
+    1.0
+  ],
+  "fadeOut": true,
+  "blendMode": "normal",
+  "pool": true
+}

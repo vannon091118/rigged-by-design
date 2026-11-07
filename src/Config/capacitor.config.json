@@ -1,0 +1,12 @@
+{
+  "appId": "de.riggedbydesign.casino",
+  "appName": "Rigged by Design",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "orientation": "portrait"
+  }
+}

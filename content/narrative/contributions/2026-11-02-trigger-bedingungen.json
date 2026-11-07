@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-02T22:16Z-narrative-trigger",
+  "contributionId": "returning-memory-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "memory",
+  "function": "remember",
+  "contexts": ["trigger", "return"],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rueckkehrer"],
+  "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
+  "directives": []
+}

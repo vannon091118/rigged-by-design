@@ -1,0 +1,12 @@
+{
+  "id": "smoke-puff",
+  "frames": [
+    "particles/smoke/smoke-01.png",
+    "particles/smoke/smoke-02.png",
+    "particles/smoke/smoke-03.png",
+    "particles/smoke/smoke-04.png",
+    "particles/smoke/smoke-05.png"
+  ],
+  "fps": 10,
+  "loop": false
+}
