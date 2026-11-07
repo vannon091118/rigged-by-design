@@ -347,7 +347,10 @@ jobs:
           BASE_REF: origin/${{ github.base_ref }}
           RBD_ROOT: ${{ steps.control.outputs.root }}
           RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
-        run: node "${{ steps.control.outputs.scripts }}/verify-lane-claims.mjs" --ci
+        run: |
+          set -euo pipefail
+          scripts="${{ steps.control.outputs.scripts }}"
+          node "$scripts"/verify-lane-claims.mjs --ci
 
   commitmsg:
     name: Commit- und PR-Notes
