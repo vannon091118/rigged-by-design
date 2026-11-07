@@ -1,10 +1,8 @@
 /** NAR-14: Anzeigemodell fuer Szenen und Profile – reine Ableitung, keine zweite Wahrheit. */
 import type { Ledger } from '../../economy/ledger';
-import { HAUSKONTO } from '../money';
 import type { Visitor, WorldState } from '../types';
 import type { ActorRef } from './types';
-import { checkChoiceSelection, choiceCostTotal } from './choices/eligibility';
-import { choicesForStep } from './choices/steps';
+import { resolveBeatChoices } from './choices/resolver';
 import { buildCompositionContext } from './composition-context';
 import { composeNarrative, type ComposedNarrative } from './composer';
 import { templateFor } from './events/definitions';
@@ -63,23 +61,15 @@ function eventView(world: WorldState, ledger: Ledger, event: NarrativeEventInsta
   const template = templateFor(event.eventId, event.templateVersion);
   if (!template) return null;
   const composed = composeEvent(world, ledger, event, template);
-  const context = {
-    tick: world.tick,
-    flags: world.narrative.flags,
-    houseBalance: ledger.getBalance(HAUSKONTO),
-    relationships: world.narrative.relationships,
-    participants: event.participants,
-  };
-  const choices = choicesForStep(template, event).map((choiceId) => {
-    const evaluation = checkChoiceSelection(event, template, choiceId, context);
+  const choices = resolveBeatChoices(world, ledger, event, template).map((evaluation) => {
     const slot = evaluation.choice?.labelSlotId;
     const label = slot ? composed.slots.find((entry) => entry.slotId === slot)?.text ?? '' : '';
     return {
-      choiceId,
+      choiceId: evaluation.choiceId,
       label: label || 'Weiter',
       available: evaluation.available,
       reasons: evaluation.reasons,
-      cost: evaluation.choice ? choiceCostTotal(evaluation.choice) : 0,
+      cost: evaluation.cost,
     };
   });
   return {
