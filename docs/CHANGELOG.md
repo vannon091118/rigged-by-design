@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 17:18 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-07 18:07 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.183] - 2026-11-07
+
+### Technik
+- **AGENTS.md ist ein Kurzvertrag.** Zehn unverhandelbare Regeln, Zustand, Befehle und eine Referenztabelle; Tiefenwissen liegt in `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/TESTING.md`, `docs/INDEX.md` und `docs/contracts/README.md`. Doppelte Gate-Listen entfallen.
+- **Doku-Drift bereinigt.** 12 Required-Gates plus optionales Audit, `capabilities` im schnellen Plan, Save v11, neun Workflows, klassischer Branch-Schutz mit `strict: false` und ohne Ruleset, `promote` deaktiviert und manueller Merge.
+- **Regressionen fuer den Arbeitsvertrag.** `destructive-commands.test.ts` verbietet `reset --hard`, `clean -fd`, Stash-Mutation, Force-Push und `branch -D` in Produktionsskripten; Dependabot-Branches erhalten eine eng begrenzte Allowlist fuer Manifest, Lockfile und Workflow-Pins.
+
+- **Auto-Resolve-Retry freigeschaltet.** `auto-resolve.yml` hat `actions: write`; das Runbook beschreibt Aktivierung, Patch-/Push-Modus, Berechtigungen, Prüfungen und Rückrollung.
 
 ## [0.3.181] - 2026-11-07
 
