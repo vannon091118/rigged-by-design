@@ -47,6 +47,23 @@ describe('CI-Testplan', () => {
     expect(plan.long).toContain('src/core/sim/__tests__/narrative-longrun.test.ts');
   });
 
+  it('erzwingt im Profil all die vollstaendige Suite auch mit Impact', () => {
+    const plan = selectTests(['src/core/sim/tick.ts'], { profile: 'all', impact: true });
+    expect(plan.runAll).toBe(true);
+    expect(plan.files).toEqual([]);
+  });
+
+  it('vollzieht die PR-Regression fuer CI-Aenderungen vollstaendig', () => {
+    const plan = selectTests(['.github/workflows/ci-verify.yml'], { profile: 'full', impact: true, fullTests: true });
+    expect(plan.runAll).toBe(true);
+    expect(plan.files).toEqual([]);
+  });
+
+  it('faellt bei leerem oder unbekanntem Diff auf die vollstaendige Suite zurueck', () => {
+    expect(selectTests([], { profile: 'all', impact: true }).runAll).toBe(true);
+    expect(selectTests(['src/core/unbekannt.ts'], { profile: 'all', impact: true }).runAll).toBe(true);
+  });
+
   it('fuehrt den langen Nachweis im Gesamtplan mit', () => {
     const plan = buildPlan(['src/core/sim/tick.ts'], { profile: 'full', impact: true });
     expect(plan.tests.long).toContain('src/core/sim/__tests__/narrative-longrun.test.ts');

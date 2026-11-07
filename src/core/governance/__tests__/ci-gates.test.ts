@@ -133,7 +133,7 @@ describe('Main-Gate', () => {
 
     // Main bekommt bei Runtime-/Testaenderungen die volle Suite; der
     // Impact-Filter bleibt fuer Gates und reine Doku erhalten.
-    expect(stepWith(ci, 'plan', 'full_tests')).not.toBeUndefined();
+    expect(stepWith(ci, 'plan', 'full_tests')?.run).toMatch(/\$GITHUB_EVENT_NAME[\s\S]*"pull_request"[\s\S]*full_tests=1/);
     expect(stepWith(ci, 'plan', 'ci-plan.mjs')?.run).toContain('--full-tests');
 
     // Die Claim-Sperre greift auch ohne lokale Hooks, mindestens im PR-Lauf.

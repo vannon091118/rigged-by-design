@@ -876,5 +876,34 @@
     "mergedEvidence": "branch-tree-on-main",
     "mergedSha": "aafac0b74c2b06d04653793e07f1ef5cac3984ee",
     "createdAt": "d794dca732898a932044c1ff2e05c951a5718b46"
+  },
+  {
+    "id": "lane/governance/23-final-readiness",
+    "owner": "Governance-Owner",
+    "branch": "lane/governance/23-final-readiness",
+    "baseSha": "4e8c2d4b85c3bc39f0b720c56bc946352d236525",
+    "pathAllowlist": [
+      ".lane-claims/claims.json",
+      ".github/workflows/ci-verify.yml",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/CHANGELOG.md",
+      "docs/DEVTAGEBUCH.md",
+      "docs/INVENTORY.md",
+      "docs/ROADMAP.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "scripts/lib/ci-plan.mjs",
+      "scripts/pr-watcher.mjs",
+      "src/core/governance/__tests__/ci-gates.test.ts",
+      "src/core/governance/__tests__/ci-plan.test.ts",
+      "src/core/governance/__tests__/pr-watcher.test.ts",
+      "src/core/governance/__tests__/scripts-libs-ci.d.ts"
+    ],
+    "contracts": [],
+    "dependencies": [],
+    "gateProfile": "light",
+    "status": "open",
+    "createdAt": "4e8c2d4b85c3bc39f0b720c56bc946352d236525"
   }
 ]

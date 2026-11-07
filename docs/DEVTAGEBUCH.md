@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.180 | 2026-11-07 13:28 UTC -->
+<!-- rbd-doc: v0.3.181 | 2026-11-07 13:49 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,16 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-07 - Entwicklungsbereitschaft: PR-Suite und Reparaturbeleg
+
+**Ziel.** Zwei verbleibende Luecken vor dem Governance-Freeze schliessen: Ein PR mit Profil `all` und `impact=1` durfte die schnelle Regression unbemerkt auf eine Teilmenge reduzieren; der Issue-Sweep schloss einen Befund allein, weil sein Commit ein Vorfahr des gruenen `main` war.
+
+**Umsetzung.** `ci-verify.yml` setzt `full_tests=1` fuer PRs und `main`; `ci-plan.mjs` behandelt das Profil `all` fail-closed, laesst leere, unbekannte und Dependency-Diffs die volle Suite fahren und nimmt reine Doku weiterhin aus. `sweepGreenMain()` verlangt jetzt den urspruenglichen Fingerprint, eine explizite `<!-- repair: <sha> -->`-Marke und die Reparatur-SHA auf dem exakt geprueften `main`; `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fehler wieder. Pretask und Doku wurden an den tatsaechlichen Lane-/Archivstand angepasst.
+
+**Pruefungen.** `pnpm exec vitest run src/core/governance/__tests__/ci-plan.test.ts src/core/governance/__tests__/ci-gates.test.ts src/core/governance/__tests__/pr-watcher.test.ts --reporter=dot` -> 3 Dateien, 19/19 PASS, 1,75 s. `node --check` fuer `ci-plan.mjs` und `pr-watcher.mjs` -> syntax=ok. Die vollstaendige lokale und CI-Abnahme steht im PR-Lauf.
+
+**Offen.** Der neue PR- und Main-Lauf muessen den Slice auf `main` belegen; danach bleibt die Governance eingefroren. `CI-Self-Repair` und der Doku-Reconcile-Runner bleiben PARKED, weil sie keinen konkreten Defekt beheben.
 
 ## 2026-11-07 - Balance-Langlauf aktiviert
 

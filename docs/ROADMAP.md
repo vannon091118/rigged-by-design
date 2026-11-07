@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.180 | 2026-11-07 13:28 UTC -->
+<!-- rbd-doc: v0.3.181 | 2026-11-07 13:49 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -161,7 +161,6 @@ nächster Schritt, Review-Bedingung.
 | --- | --- | --- | --- | --- |
 | SemVer-Entscheidungsmaschine | Governance-Owner | Release braucht eine Entscheidung ausserhalb des Patch-Bumps | Diff-Klassifikation als eigener idempotenter Job; `release-impact.mjs` bleibt die einzige Quelle | Review beim naechsten Release-PR |
 | Doku-Reconcile-Runner | Governance-Owner | generierte Doku driftet oder der Pre-Commit-Hook fehlt | begrenzter Reparaturlauf mit Pfad-Allowlist und Abbruch bei fremdem Head | Review, wenn `verify:docs` zweimal denselben Fehler meldet |
-| Issue-Fingerprint und Resolver | Governance-Owner | derselbe Gate-Fehler erzeugt wiederholt Issues | Fingerprint am Fehlercode und Resolver im bestehenden `pr-watcher` | Review nach drei Wiederholungen |
 | Weitere Governance-Reports ohne Handlung | Governance-Owner | ein Report liefert keine naechste Aktion | nicht bauen; die bestehende Diagnose nutzen | Review nur mit konkretem Defekt |
 | Automatische Reparatur fachlicher Spielcodefehler | Sim-/Domain-Owner | ein Spielcodefehler ist reproduziert | manuelle Reparatur; CI liefert nur die Diagnose | Review bei nachgewiesenem, wiederkehrendem Fehler |
 
@@ -171,7 +170,7 @@ Integritaetsfehler, messbarem Workflow-Zeitverlust oder nachweisbarer
 wiederkehrender Agentenarbeit zulaessig. Die Infrastruktur traegt das Spiel,
 nicht umgekehrt.
 
-- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 gelten erst als freigegeben, wenn ihr Nachweis gruen auf `main` liegt. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Der fruehere CI-Form-Vergleich ist mit dem gemergten #221 entschieden; die Matrix bleibt die eine Form. Offene PRs aus diesem Vergleich gibt es nicht mehr.
+- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 sind mit #196 auf `main` nachgewiesen. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Der fruehere CI-Form-Vergleich ist mit dem gemergten #221 entschieden; die Matrix bleibt die eine Form. Offene PRs aus diesem Vergleich gibt es nicht mehr.
 
 - Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
 - Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
@@ -198,7 +197,7 @@ nicht umgekehrt.
 
 - CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
 - Ruleset-Stand unverifiziert (kein authentifizierter Zugriff): vor dem naechsten Eskalations-Arbeitspaket per API bestaetigen.
-- Branch-Hygiene steht: `main` und `integration` werden nach jedem Merge auf denselben Stand gesetzt; PR #142 ist geschlossen, die drei gemergten Arbeits-Refs sind geloescht; `feat/spatial-layout-editor` ist der einzige aktive Arbeitsbranch.
+- Branch-Hygiene steht: `main` ist PR-Ziel, jede Lane arbeitet auf ihrem eigenen Branch mit Claim und Worktree; `integration` liegt unveraendert auf `bac6d8a` und ist zusaetzlich als `archive/integration-2026-11-07` gesichert; PR #142 ist geschlossen.
 
 - Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
   (`docs/ARCHITECTURE.md`) stehen. Als Nächstes die Deko-Rollen von den
@@ -242,7 +241,8 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 | Doku-Reconcile-Runner | PARKED | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
 | CI-Self-Repair | PARKED | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
 | Impact-gesteuerte Langlaeufe | erledigt | `ci-plan.mjs` exportiert `long_matrix`; `ci-verify.yml` startet die betroffenen Statistik-/Soak-Dateien als eigene Matrix auf dem exakten PR-Kopf und fuehrt den Long-Job im Pflichtstatus. `agent:verify --ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; der Wochenlauf bleibt der systemweite Vollauf. |
-| Issue-Resolver nach erneutem Gate | teilweise | `sweepGreenMain()` schliesst nur, wenn `origin/main` exakt dem erfolgreich geprueften Main-SHA entspricht und der gemeldete Commit darauf liegt; ein erneut auftretender Fingerprint oeffnet ein geschlossenes Issue wieder. Offen: erneut gruenes Gate auf dem neuen Stand. |
+| PR-Regression | erledigt | `ci-verify.yml` setzt `full_tests=1` fuer PR und `main`; `ci-plan` laesst das Profil `all` nicht durch `impact=1` verkuerzen und faellt bei leerem oder unbekanntem Diff auf die volle Suite zurueck. |
+| Issue-Resolver nach erneutem Gate | erledigt | `sweepGreenMain()` verlangt den urspruenglichen Fingerprint, eine `<!-- repair: <sha> -->`-Marke und den exakt gruenen Main-Commit; ein Ancestor-Commit allein schliesst nichts. `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fingerprint wieder. |
 
 ### Spiel und Simulation
 
@@ -275,7 +275,7 @@ angegangen; der Nutzer testet privat auf einem echten Geraet.
 
 - **Dependency-Audit:** Android-Gradle-Nachweis nur in CI; Installationsgroessen-Vergleich und Installationsdauer offen; CVE-Untergrenzen vor dem naechsten Upgrade gegen `pnpm audit` pruefen; Vite-Warnung zum extensionlosen Import offen.
 - **Asset-Lizenz:** Der Nutzer hat die Lizenz bestaetigt; der Nachweis im Repo fehlt weiterhin.
-- **Branch-Hygiene:** `main` und `integration` folgen dem jeweils gemergten Stand; PR #142 ist geschlossen, die drei gemergten Arbeits-Refs sind geloescht. `feat/spatial-layout-editor` ist der einzige aktive Arbeitsbranch; ein Branch mit nicht integrierter Arbeit wird nicht geloescht.
+- **Branch-Hygiene:** `main` ist PR-Ziel; jede Lane arbeitet auf ihrem eigenen Branch mit Claim und Worktree. `integration` liegt unveraendert auf `bac6d8a` und ist zusaetzlich als `archive/integration-2026-11-07` gesichert; PR #142 ist geschlossen. Ein Branch mit nicht integrierter Arbeit wird nicht geloescht.
 - **Ruleset/CI-Eskalation:** Ruleset-Stand ohne authentifizierten Zugriff unverifiziert; Watcher-Fingerprint und `promote.yml` nach dem naechsten echten Lauf pruefen.
 - **Asset-Semantik:** Deko-Rollen von den Label-Regexen loesen und entscheiden, ob der Katalog ein Gate bekommt.
 - **Offene Kleinbefunde aus der Inventur (§14):** ERR-4016-Zuordnung klaeren; Windows-Pfad in `opencode.json` entfernen; Audit-Drift nachziehen; Duplikatpruefung in `verify-assets` entscheiden; Slot-Symbol-Fallback-Keys mit dem Manifest decken; Asset-Bibliothek-Zaehler dynamisch halten; Tick-Dauer als eine Konstante fuehren; Shell-Text-Typo korrigieren; Windows-Fallback in `encode-audio` dokumentiert lassen.
