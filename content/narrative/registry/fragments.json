@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3349d5b593856fb418ac95410226d1a64aa1973012dfbb53d8f9924c6588c9a7",
+  "contentHash": "sha256:e89cbc97a02c2ab6e5baedd46c7580bceecc0aeb423c797685bbf63312518e61",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -7053,6 +7053,3306 @@
       "text": "Der Stuhl kippt nach hinten, bleibt aber stehen. Der Abend nimmt das als Antwort und laeuft weiter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-event-body-52.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-01",
+      "turnId": "2026-11-08T05:40Z-pool-guest-voice-high-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Weg lohnt sich, und ich sage das nicht oft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-01.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-02",
+      "turnId": "2026-11-08T05:41Z-pool-guest-voice-high-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier geht man nicht einfach vorbei, hier bleibt man.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-02.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-03",
+      "turnId": "2026-11-08T05:42Z-pool-guest-voice-high-03",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab den Kollegen gesagt, hier muss man mal reinschauen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-03.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-04",
+      "turnId": "2026-11-08T05:43Z-pool-guest-voice-high-04",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat hier ist noch nie ausgefallen, wenn ich da war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-04.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-05",
+      "turnId": "2026-11-08T05:44Z-pool-guest-voice-high-05",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man kennt mich schon, und das gefaellt mir.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-05.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-06",
+      "turnId": "2026-11-08T05:45Z-pool-guest-voice-high-06",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe den Platz am Fenster, wie beim letzten Mal.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-06.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-07",
+      "turnId": "2026-11-08T05:46Z-pool-guest-voice-high-07",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Abend beginnt, wo er beim letzten Mal aufgehoert hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-07.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-08",
+      "turnId": "2026-11-08T05:47Z-pool-guest-voice-high-08",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bringe heute jemanden mit, der es sehen soll.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-08.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-09",
+      "turnId": "2026-11-08T05:48Z-pool-guest-voice-high-09",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Neonlicht und ein sauberer Tresen, so mag ich das.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-09.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-10",
+      "turnId": "2026-11-08T05:49Z-pool-guest-voice-high-10",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier wird notiert, nicht nur kassiert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-10.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-11",
+      "turnId": "2026-11-08T05:50Z-pool-guest-voice-high-11",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Chef schaut nach dem Gast, nicht nach der Uhr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-11.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-12",
+      "turnId": "2026-11-08T05:51Z-pool-guest-voice-high-12",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe schon besser gewonnen und schlechter gefeiert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-12.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-13",
+      "turnId": "2026-11-08T05:52Z-pool-guest-voice-high-13",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Mein Abend hat hier angefangen und bleibt hier.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-13.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-14",
+      "turnId": "2026-11-08T05:53Z-pool-guest-voice-high-14",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man wird begruesst, das ist selten in dieser Stadt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-14.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-15",
+      "turnId": "2026-11-08T05:54Z-pool-guest-voice-high-15",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Laden hat einen Ruf, und der stimmt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-15.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-16",
+      "turnId": "2026-11-08T05:55Z-pool-guest-voice-high-16",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab gesagt, es wird gut. Es wird gut.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-16.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-17",
+      "turnId": "2026-11-08T05:56Z-pool-guest-voice-high-17",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer hierhinkommt, kommt wieder, das ist die Regel.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-17.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-18",
+      "turnId": "2026-11-08T05:57Z-pool-guest-voice-high-18",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tresen kennt meinen Namen, das ist genug.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-18.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-19",
+      "turnId": "2026-11-08T05:58Z-pool-guest-voice-high-19",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Platz, ein Getraenk, ein Abend, der rund ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-19.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-20",
+      "turnId": "2026-11-08T05:59Z-pool-guest-voice-high-20",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Meine Tochter fragt, wann wir wieder hingehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-20.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-21",
+      "turnId": "2026-11-08T05:00Z-pool-guest-voice-high-21",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man wird hier nicht reich, aber man wird nicht allein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-21.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-22",
+      "turnId": "2026-11-08T05:01Z-pool-guest-voice-high-22",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich setze mehr, hier kann ich das.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-22.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-23",
+      "turnId": "2026-11-08T05:02Z-pool-guest-voice-high-23",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Abend hat Haltung, und die schmeckt man.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-23.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-24",
+      "turnId": "2026-11-08T05:03Z-pool-guest-voice-high-24",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Chef weiss noch, was ich beim letzten Mal getrunken habe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-24.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-25",
+      "turnId": "2026-11-08T05:04Z-pool-guest-voice-high-25",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn ich gewinne, kommt es hier wieder rein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-25.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-26",
+      "turnId": "2026-11-08T05:05Z-pool-guest-voice-high-26",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Raum ist alt, aber nicht heruntergekommen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-26.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-27",
+      "turnId": "2026-11-08T05:06Z-pool-guest-voice-high-27",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man steht gern an diesem Schalter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-27.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-28",
+      "turnId": "2026-11-08T05:07Z-pool-guest-voice-high-28",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Haus, das seinen Floor sauber haelt, ist ein gutes Haus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-28.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-29",
+      "turnId": "2026-11-08T05:08Z-pool-guest-voice-high-29",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bin kein Gast, ich bin Teil des Abends.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-29.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-30",
+      "turnId": "2026-11-08T05:09Z-pool-guest-voice-high-30",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat gibt mir etwas zurueck, nicht nur einen Chip.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-30.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-31",
+      "turnId": "2026-11-08T05:10Z-pool-guest-voice-high-31",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab schon drei Leute hierhergebracht, alle haben gespielt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-31.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-32",
+      "turnId": "2026-11-08T05:11Z-pool-guest-voice-high-32",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man faengt hier gut an und hoert gut auf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-32.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-33",
+      "turnId": "2026-11-08T05:12Z-pool-guest-voice-high-33",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stimmung traegt, auch wenn der Abend kippt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-33.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-34",
+      "turnId": "2026-11-08T05:13Z-pool-guest-voice-high-34",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier wird gearbeitet, und das merkt man an allem.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-34.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-35",
+      "turnId": "2026-11-08T05:14Z-pool-guest-voice-high-35",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab heute keinen Grund zu gehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-35.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-36",
+      "turnId": "2026-11-08T05:15Z-pool-guest-voice-high-36",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Blick von der Seite ist freundlich, nicht scharf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-36.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-37",
+      "turnId": "2026-11-08T05:16Z-pool-guest-voice-high-37",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Chef hat mich beim Namen genannt. So etwas vergisst man.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-37.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-38",
+      "turnId": "2026-11-08T05:17Z-pool-guest-voice-high-38",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Automaten sind in Schuss, die Kasse laeuft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-38.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-39",
+      "turnId": "2026-11-08T05:18Z-pool-guest-voice-high-39",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich nehme noch einen, weil hier sitzen etwas wert ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-39.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-40",
+      "turnId": "2026-11-08T05:19Z-pool-guest-voice-high-40",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Abend wie dieser ist der Grund, warum ich spiele.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-40.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-41",
+      "turnId": "2026-11-08T05:20Z-pool-guest-voice-high-41",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Laden hat Licht, aber keine Blendung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-41.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-42",
+      "turnId": "2026-11-08T05:21Z-pool-guest-voice-high-42",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man kann hier gross spielen, ohne dass es peinlich wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-42.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-43",
+      "turnId": "2026-11-08T05:22Z-pool-guest-voice-high-43",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich sag es nicht gern laut, aber hier gefaellt es mir.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-43.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-44",
+      "turnId": "2026-11-08T05:23Z-pool-guest-voice-high-44",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn jemand fragt, sage ich: der Laden mit dem Neon.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-44.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-45",
+      "turnId": "2026-11-08T05:24Z-pool-guest-voice-high-45",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tresen ist der beste Platz im Viertel.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-45.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-46",
+      "turnId": "2026-11-08T05:25Z-pool-guest-voice-high-46",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich komme wieder, das ist keine Frage.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-46.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-47",
+      "turnId": "2026-11-08T05:26Z-pool-guest-voice-high-47",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Haus merkt sich einen, und das ist kein Trick.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-47.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-48",
+      "turnId": "2026-11-08T05:27Z-pool-guest-voice-high-48",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "melancholisch",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier wird man nicht nur bedient, hier wird man erwartet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-48.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-49",
+      "turnId": "2026-11-08T05:28Z-pool-guest-voice-high-49",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe den Abend vorbereitet, noch bevor ich kam.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-49.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-high-50",
+      "turnId": "2026-11-08T05:29Z-pool-guest-voice-high-50",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende bleibt nur: das war ein Abend.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-high-50.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-01",
+      "turnId": "2026-11-08T05:00Z-pool-guest-voice-low-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier riecht es nach kaltem Fett, und niemand raeumt den Aschenbecher weg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-01.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-02",
+      "turnId": "2026-11-08T05:01Z-pool-guest-voice-low-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat steht schief, und keiner hier haelt das fuer ein Problem.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-02.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-03",
+      "turnId": "2026-11-08T05:02Z-pool-guest-voice-low-03",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab schon bessere Abende in einer Garage verbracht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-03.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-04",
+      "turnId": "2026-11-08T05:03Z-pool-guest-voice-low-04",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer hier bedient, schaut lieber auf die Kasse als auf den Gast.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-04.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-05",
+      "turnId": "2026-11-08T05:04Z-pool-guest-voice-low-05",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Mein Glas ist leer, seit ich reingekommen bin.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-05.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-06",
+      "turnId": "2026-11-08T05:05Z-pool-guest-voice-low-06",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Karten sind klebrig, und das bin ich eigentlich nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-06.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-07",
+      "turnId": "2026-11-08T05:06Z-pool-guest-voice-low-07",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zweimal wollte ich zahlen, zweimal war niemand da.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-07.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-08",
+      "turnId": "2026-11-08T05:07Z-pool-guest-voice-low-08",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "So wie der Boden aussieht, war hier lange keiner mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-08.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-09",
+      "turnId": "2026-11-08T05:08Z-pool-guest-voice-low-09",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich rede gegen eine Wand, die mir noch den Ruecken zudreht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-09.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-10",
+      "turnId": "2026-11-08T05:09Z-pool-guest-voice-low-10",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Licht flackert, und ich glaube nicht an Atmosphaere.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-10.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-11",
+      "turnId": "2026-11-08T05:10Z-pool-guest-voice-low-11",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn das die beste Stunde ist, will ich die schlechteste nicht sehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-11.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-12",
+      "turnId": "2026-11-08T05:11Z-pool-guest-voice-low-12",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Aschenbecher voller Kippen ist kein Empfang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-12.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-13",
+      "turnId": "2026-11-08T05:12Z-pool-guest-voice-low-13",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab kein Geld verloren, ich hab nur Zeit verloren.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-13.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-14",
+      "turnId": "2026-11-08T05:13Z-pool-guest-voice-low-14",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Schlange steht, und der Schalter bleibt zu.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-14.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-15",
+      "turnId": "2026-11-08T05:14Z-pool-guest-voice-low-15",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Was im Fenster haengt, ist Werbung fuer bessere Zeiten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-15.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-16",
+      "turnId": "2026-11-08T05:15Z-pool-guest-voice-low-16",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Mein Freund geht gleich, und ich gebe ihm recht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-16.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-17",
+      "turnId": "2026-11-08T05:16Z-pool-guest-voice-low-17",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man wird hier nicht schlecht behandelt, nur gar nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-17.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-18",
+      "turnId": "2026-11-08T05:17Z-pool-guest-voice-low-18",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kaffee ist kalt, aber die Rechnung ist warm.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-18.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-19",
+      "turnId": "2026-11-08T05:18Z-pool-guest-voice-low-19",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich warte, weil ich schon da bin. Das ist kein Grund.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-19.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-20",
+      "turnId": "2026-11-08T05:19Z-pool-guest-voice-low-20",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "So sieht ein Haus aus, das nicht zugehoert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-20.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-21",
+      "turnId": "2026-11-08T05:20Z-pool-guest-voice-low-21",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Apparat nimmt mein Geld und gibt kein Wort zurueck.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-21.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-22",
+      "turnId": "2026-11-08T05:21Z-pool-guest-voice-low-22",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab nichts erwartet und bin trotzdem enttaeuscht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-22.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-23",
+      "turnId": "2026-11-08T05:22Z-pool-guest-voice-low-23",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Kein Gruss, kein Blick, nur ein freier Platz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-23.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-24",
+      "turnId": "2026-11-08T05:23Z-pool-guest-voice-low-24",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn ich wiederkomme, dann nur um zu sehen, ob es schlimmer wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-24.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-25",
+      "turnId": "2026-11-08T05:24Z-pool-guest-voice-low-25",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Raum ist leer, und das liegt nicht an der Uhrzeit.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-25.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-26",
+      "turnId": "2026-11-08T05:25Z-pool-guest-voice-low-26",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich kenne den Weg hierher besser als den hinterm Tresen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-26.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-27",
+      "turnId": "2026-11-08T05:26Z-pool-guest-voice-low-27",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das ist kein Abend, das ist eine Wartezeit mit Automaten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-27.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-28",
+      "turnId": "2026-11-08T05:27Z-pool-guest-voice-low-28",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich will nicht mehr, ich will nur noch raus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-28.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-29",
+      "turnId": "2026-11-08T05:28Z-pool-guest-voice-low-29",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man riecht den Rauch bis zum Eingang, und der kommt nicht von mir.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-29.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-30",
+      "turnId": "2026-11-08T05:29Z-pool-guest-voice-low-30",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tresen klebt, und das Bier ist auch nicht besser.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-30.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-31",
+      "turnId": "2026-11-08T05:30Z-pool-guest-voice-low-31",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Haus, das sich nicht putzt, glaubt auch nicht an Gaeste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-31.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-32",
+      "turnId": "2026-11-08T05:31Z-pool-guest-voice-low-32",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Hier verliert man mehr Geduld als Geld.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-32.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-33",
+      "turnId": "2026-11-08T05:32Z-pool-guest-voice-low-33",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab zwei Automaten gesehen und drei Defekte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-33.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-34",
+      "turnId": "2026-11-08T05:33Z-pool-guest-voice-low-34",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Niemand fragt, wie der Abend war. Das ist die Antwort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-34.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-35",
+      "turnId": "2026-11-08T05:34Z-pool-guest-voice-low-35",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Chef schaut nur, wenn jemand Krach macht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-35.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-36",
+      "turnId": "2026-11-08T05:35Z-pool-guest-voice-low-36",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich nehme meine Jacke, bevor ich es mir anders ueberlege.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-36.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-37",
+      "turnId": "2026-11-08T05:36Z-pool-guest-voice-low-37",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wo drei Stuehle kaputt sind, sitzt man besser woanders.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-37.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-38",
+      "turnId": "2026-11-08T05:37Z-pool-guest-voice-low-38",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat ist heil, der Rest ists nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-38.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-39",
+      "turnId": "2026-11-08T05:38Z-pool-guest-voice-low-39",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab heute frei und vergeude ihn hier.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-39.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-40",
+      "turnId": "2026-11-08T05:39Z-pool-guest-voice-low-40",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Meine Laune war besser, als ich reingegangen bin.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-40.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-41",
+      "turnId": "2026-11-08T05:40Z-pool-guest-voice-low-41",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man wird nicht bedient, man wird abgefuellt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-41.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-42",
+      "turnId": "2026-11-08T05:41Z-pool-guest-voice-low-42",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Boden klebt, und das ist nur das Erste, was mir auffaellt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-42.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-43",
+      "turnId": "2026-11-08T05:42Z-pool-guest-voice-low-43",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich weiss jetzt, warum der Laden so leer ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-43.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-44",
+      "turnId": "2026-11-08T05:43Z-pool-guest-voice-low-44",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Es ist nicht billig, es ist nur guenstig ausgestattet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-44.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-45",
+      "turnId": "2026-11-08T05:44Z-pool-guest-voice-low-45",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Lichter kaputt und kein Ersatz in Sicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-45.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-46",
+      "turnId": "2026-11-08T05:45Z-pool-guest-voice-low-46",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer hier abends sitzt, sitzt fuer die Statistik.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-46.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-47",
+      "turnId": "2026-11-08T05:46Z-pool-guest-voice-low-47",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nur der Automat ist froehlich, und der lacht bekanntlich falsch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-47.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-48",
+      "turnId": "2026-11-08T05:47Z-pool-guest-voice-low-48",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "melancholisch",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich glaube, ich bestelle nichts mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-48.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-49",
+      "turnId": "2026-11-08T05:48Z-pool-guest-voice-low-49",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "So stand ich schon vor einer geschlossenen Kueche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-49.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-50",
+      "turnId": "2026-11-08T05:49Z-pool-guest-voice-low-50",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "scharf",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das Wasser steht, und das ist die einzige Runde heute.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-50.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-01",
+      "turnId": "2026-11-08T05:50Z-pool-guest-voice-mid-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich nehme noch einen, und diesmal darf er kalt sein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-01.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-02",
+      "turnId": "2026-11-08T05:51Z-pool-guest-voice-mid-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Platz am Fenster ist guenstig, ich bleib noch was.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-02.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-03",
+      "turnId": "2026-11-08T05:52Z-pool-guest-voice-mid-03",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bedienung ist freundlich, die Automaten sind in Ordnung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-03.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-04",
+      "turnId": "2026-11-08T05:53Z-pool-guest-voice-mid-04",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab noch zwanzig Chips, die muessen weg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-04.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-05",
+      "turnId": "2026-11-08T05:54Z-pool-guest-voice-mid-05",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Kein Grund zu feiern, aber auch keiner zu gehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-05.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-06",
+      "turnId": "2026-11-08T05:55Z-pool-guest-voice-mid-06",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Apparat isst langsam, das passt zu mir.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-06.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-07",
+      "turnId": "2026-11-08T05:56Z-pool-guest-voice-mid-07",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich warte kurz, dann spiele ich weiter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-07.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-08",
+      "turnId": "2026-11-08T05:57Z-pool-guest-voice-mid-08",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kollegen kommen spaeter, ich halte uns den Platz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-08.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-09",
+      "turnId": "2026-11-08T05:58Z-pool-guest-voice-mid-09",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Es ist okay hier, und das ist mehr, als ich erwartet hatte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-09.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-10",
+      "turnId": "2026-11-08T05:59Z-pool-guest-voice-mid-10",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Kaffee, ein Blick, ein paar Runden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-10.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-11",
+      "turnId": "2026-11-08T05:00Z-pool-guest-voice-mid-11",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab keinen Plan, aber ich hab Kleingeld.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-11.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-12",
+      "turnId": "2026-11-08T05:01Z-pool-guest-voice-mid-12",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn ich gewinne, bleibt es hier, wenn nicht, auch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-12.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-13",
+      "turnId": "2026-11-08T05:02Z-pool-guest-voice-mid-13",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Musik ist zu laut, aber der Tresen ist sauber.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-13.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-14",
+      "turnId": "2026-11-08T05:03Z-pool-guest-voice-mid-14",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Feierabend geht hier eben anders.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-14.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-15",
+      "turnId": "2026-11-08T05:04Z-pool-guest-voice-mid-15",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bleib, bis mein Glas leer ist, wie immer.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-15.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-16",
+      "turnId": "2026-11-08T05:05Z-pool-guest-voice-mid-16",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man kennt mich hier nicht, und das genuegt mir.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-16.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-17",
+      "turnId": "2026-11-08T05:06Z-pool-guest-voice-mid-17",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein paar Runden, dann gehe ich heim.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-17.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-18",
+      "turnId": "2026-11-08T05:07Z-pool-guest-voice-mid-18",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Abend ist nicht gut, aber er laeuft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-18.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-19",
+      "turnId": "2026-11-08T05:08Z-pool-guest-voice-mid-19",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Automaten laufen, die Bar hat Fusel, ich bin zufrieden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-19.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-20",
+      "turnId": "2026-11-08T05:09Z-pool-guest-voice-mid-20",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich habe schon schlimmere Montage erlebt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-20.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-21",
+      "turnId": "2026-11-08T05:10Z-pool-guest-voice-mid-21",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Rechnung stimmt, das ist mir heute genug.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-21.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-22",
+      "turnId": "2026-11-08T05:11Z-pool-guest-voice-mid-22",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich spiele klein, das reicht fuer die Stimmung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-22.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-23",
+      "turnId": "2026-11-08T05:12Z-pool-guest-voice-mid-23",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer nichts erwartet, wird selten enttaeuscht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-23.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-24",
+      "turnId": "2026-11-08T05:13Z-pool-guest-voice-mid-24",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich steuer das hier, bis der Bus faehrt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-24.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-25",
+      "turnId": "2026-11-08T05:14Z-pool-guest-voice-mid-25",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Kaffee und zwei Runden, so laeuft der Dienstag.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-25.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-26",
+      "turnId": "2026-11-08T05:15Z-pool-guest-voice-mid-26",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kassiererin traue ich zu, dass sie das kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-26.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-27",
+      "turnId": "2026-11-08T05:16Z-pool-guest-voice-mid-27",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bin kein Stammgast, aber kein Fremder mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-27.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-28",
+      "turnId": "2026-11-08T05:17Z-pool-guest-voice-mid-28",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Laden ist in Ordnung, nur der Fussboden nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-28.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-29",
+      "turnId": "2026-11-08T05:18Z-pool-guest-voice-mid-29",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bin hier, weil es hier hell ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-29.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-30",
+      "turnId": "2026-11-08T05:19Z-pool-guest-voice-mid-30",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Mein Nachbar meint, hier kann man sitzen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-30.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-31",
+      "turnId": "2026-11-08T05:20Z-pool-guest-voice-mid-31",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Spiel, zwei Getraenke, kein Drama.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-31.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-32",
+      "turnId": "2026-11-08T05:21Z-pool-guest-voice-mid-32",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich schau nur zu, ich spiele spaeter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-32.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-33",
+      "turnId": "2026-11-08T05:22Z-pool-guest-voice-mid-33",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Gut genug fuer einen Abend ohne Anspruch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-33.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-34",
+      "turnId": "2026-11-08T05:23Z-pool-guest-voice-mid-34",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat gibt zu viel zurueck, ich nehm es.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-34.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-35",
+      "turnId": "2026-11-08T05:24Z-pool-guest-voice-mid-35",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Zeit vergeht hier besser als in meiner Wohnung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-35.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-36",
+      "turnId": "2026-11-08T05:25Z-pool-guest-voice-mid-36",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kellner kennt meine Bestellung schon halb.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-36.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-37",
+      "turnId": "2026-11-08T05:26Z-pool-guest-voice-mid-37",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man kann hier sitzen, ohne angesprochen zu werden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-37.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-38",
+      "turnId": "2026-11-08T05:27Z-pool-guest-voice-mid-38",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hab nichts dabei, aber das stoert nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-38.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-39",
+      "turnId": "2026-11-08T05:28Z-pool-guest-voice-mid-39",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Laune ist mittel, das Bier ist kalt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-39.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-40",
+      "turnId": "2026-11-08T05:29Z-pool-guest-voice-mid-40",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich komme wieder, wenn ich wiederkomme. Heisst: vielleicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-40.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-41",
+      "turnId": "2026-11-08T05:30Z-pool-guest-voice-mid-41",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Eindruck war nicht gut, der zweite ist es.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-41.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-42",
+      "turnId": "2026-11-08T05:31Z-pool-guest-voice-mid-42",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Abend unter anderen, ohne Nachhall.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-42.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-43",
+      "turnId": "2026-11-08T05:32Z-pool-guest-voice-mid-43",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich spiele zwei Runden, dann ist gut.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-43.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-44",
+      "turnId": "2026-11-08T05:33Z-pool-guest-voice-mid-44",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tresen laeuft, die Kasse auch, so soll es sein.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-44.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-45",
+      "turnId": "2026-11-08T05:34Z-pool-guest-voice-mid-45",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich bin kein feiner Mensch, aber hier stoert das nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-45.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-46",
+      "turnId": "2026-11-08T05:35Z-pool-guest-voice-mid-46",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Kein Grund zu gehen, solange ich noch Chips habe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-46.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-47",
+      "turnId": "2026-11-08T05:36Z-pool-guest-voice-mid-47",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Raum ist ehrlich, und ehrlich ist genug.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-47.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-48",
+      "turnId": "2026-11-08T05:37Z-pool-guest-voice-mid-48",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ich hoere dem Automaten zu, das ist Unterhaltung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-48.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-49",
+      "turnId": "2026-11-08T05:38Z-pool-guest-voice-mid-49",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn es so bleibt, bleibe ich auch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-49.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-mid-50",
+      "turnId": "2026-11-08T05:39Z-pool-guest-voice-mid-50",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man kann hier verschwinden, ohne aufzufallen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-mid-50.json"
     },
     {
       "contributionId": "pool-memory-04",

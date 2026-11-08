@@ -9,6 +9,9 @@
     "memory": "Erinnerungssatz aus einer früheren Begebenheit.",
     "rumor": "Gerücht oder Warnung aus dem Haus.",
     "documentation": "Dokumentation eines technischen Narrativ-Bausteins.",
+    "guest-voice-low": "Gaststimme im Haus mit niedrigem Ruf: Distanz, Verlust, Unmut.",
+    "guest-voice-mid": "Gaststimme im Haus mit mittlerem Ruf: Alltag, Bedienung, kein Drama.",
+    "guest-voice-high": "Gaststimme im Haus mit hohem Ruf: Wiederkehr, Vertrauen, Empfehlung.",
     "city-scene": "Text aus der Stadt: Kiez, Markt, Wege und die zwei Progression-Zweige.",
     "city-night": "Nacht- und Tagesabschluss der Stadt: Ruhe, Rueckweg, naechster Morgen."
   },
@@ -51,6 +54,16 @@
     "documentation": [
       "document"
     ],
+    "guest-voice-low": [
+      "react",
+      "warn"
+    ],
+    "guest-voice-mid": [
+      "react"
+    ],
+    "guest-voice-high": [
+      "react"
+    ],
     "city-scene": [
       "describe",
       "establish",
@@ -84,7 +97,10 @@
     "rumor",
     "documentation",
     "city-scene",
-    "city-night"
+    "city-night",
+    "guest-voice-low",
+    "guest-voice-mid",
+    "guest-voice-high"
   ],
   "contexts": {
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",

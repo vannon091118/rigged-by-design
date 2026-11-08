@@ -35,15 +35,26 @@ export function addictedStake(world: WorldState, item: Furniture, guest: Guest):
 }
 
 /**
+ * Ruf wirkt auf die Slot-Nutzung: Ein Haus mit Standing wird mutiger bespielt,
+ * ein Haus ohne Standing vorsichtiger. Der Faktor ist auf 0,8..1,2 begrenzt,
+ * damit der Ruf eine Neigung verschiebt und nie den Einsatz diktiert.
+ */
+export function stakeConfidence(reputation: number): number {
+  const bounded = Math.max(0, Math.min(100, Number.isFinite(reputation) ? reputation : 0));
+  return 1 + (bounded - 50) / 250;
+}
+
+/**
  * Persona-Budget skaliert den Einsatz, aber nur bis zum Dreifachen des Tisches
  * und nie ueber den verfuegbaren Chipbestand. High Roller spielt so hoeher,
- * ohne dass ein einzelner Spin die ganze Sitzung bezahlt.
+ * ohne dass ein einzelner Spin die ganze Sitzung bezahlt. Der Ruf verschiebt
+ * die Neigung; Deckel und Chipbestand bleiben die harten Grenzen.
  */
 export function personaStake(world: WorldState, item: Furniture, guest: Guest, wallet: VaCoinMicro): VaCoinMicro {
   const base = Math.max(world.prices.slotMinBet, item.baseBet) as VaCoinMicro;
   if (!canAfford(wallet, base)) return ZERO_VC;
   const budget = Math.min(3, Math.max(1, getPersona(guest.persona).budgetFactor));
-  const wanted = Math.round(addictedStake(world, item, guest) * budget);
+  const wanted = Math.round(addictedStake(world, item, guest) * budget * stakeConfidence(world.reputation));
   const walletShare = Math.floor(wallet * (0.05 + budget * 0.025));
   const stake = Math.min(wanted, Math.round(base * 3), walletShare, wallet);
   return (stake >= base ? stake : base) as VaCoinMicro;

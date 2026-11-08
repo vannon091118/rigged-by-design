@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 02:18 UTC -->
+<!-- rbd-doc: v0.3.185 | 2026-11-08 02:36 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,32 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.185] - 2026-11-08
+
+### Spiel
+- **Stadt und Casino stehen in einer Codebasis.** Der Stadt-Vertikalschnitt (Kiez: Fremder zu Eingeweihter, Markt: Laufbursche zu Marktherr, Energie, "Tag beenden", Markt ab Kiez-Rang Stammgast) ist mit der Cleanup-Lane zusammengefuehrt; beide Content-Saetze liegen in einer Registry.
+
+### Textbausteine
+- **670/1500 Bausteine in 13 Pools.** Die Stadt-Pools `city-scene` und `city-night` (je 52) und die drei Ruf-Pools (je 50) sind gemeinsam registriert, kompiliert und verdrahtet; jede Pool-Mindestgroesse ist erreicht.
+
+### Technik
+- **Luecken-Regel repariert (#267).** `gapIssues` fuellt offene Pools zuerst; sind alle voll, darf jeder Pool wachsen. `shrinkIssues` verbietet geloeschte Beitraege und kleinere Pools. P-1 ist damit erledigt, nicht mehr freeze-blockiert.
+- **Integration beidseitig.** Doku-Konflikte wurden zugunsten des neueren `main`-Stands entschieden (der PR trug dort nur Marker und Inventur-Zahlen); der Content ist eine Vereinigung: 520 + 566 Turns ergeben 670 ohne Doppelzaehlung.
+
+## [0.3.184] - 2026-11-08
+
+### Spiel
+- **Der Ruf veraendert jetzt den Einsatz und die Sprache.** Gaeste setzen in einem Haus mit Standing bis zu 20 % mehr (Deckel: Dreifaches des Tisches, nie mehr als der Chipbestand) und sprechen je nach Rufband anders: 150 neue, eindeutige Saetze in drei Pools, deterministisch je Gast gewaehlt - derselbe Gast liest denselben Satz, ein anderer Gast einen anderen. Kein zweiter Erzaehlpfad, kein PRNG.
+
+### Textbausteine
+- **566/1500 Bausteine.** Drei neue Pools (`guest-voice-low|mid|high`) mit je 50 Fragmenten, im Manifest registriert und in Registry sowie Laufzeit-Spiegel verdrahtet; jeder Pool hat mit `narrative/guest-voice.ts` einen Leser im Spiel.
+- **Luecken-Regel dokumentiert, nicht umgangen.** Das Gate akzeptiert neue Bausteine nur in Pools unter 50; der Ausweg war ein neuer Pool mit Leser, die Korrektur der Regel steht als freeze-pflichtiger Punkt P-1 in der Roadmap.
+
+### Technik
+- **Offene Stellen sind ein Register.** Vier verstreute Offen-Listen der Roadmap sind zu einer kategorisierten Liste (A-E, plus PARKED) zusammengefuehrt; erledigte Punkte stehen im Changelog, jede Zeile nennt Beleg und naechsten Schritt.
+- **Datenstroeme geprueft:** Layout → `navGrid`/`pathTo` (P-9) und Ledger → `ledger-facts` (P-10) sind belegt; die Kette SlotMemory → Auszahlung → Ledger → `HOUSE_BALANCE` ist belegt, ein eigener Fact fuer die Entladung fehlt (P-11).
+- **Doku-Referenzen bereinigt:** Verweise auf die geloeschten `docs/PRODUCT.md` und `docs/ART-DIRECTION.md` entfernt.
 
 ## [0.3.183] - 2026-11-07
 
