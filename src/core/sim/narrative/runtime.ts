@@ -8,6 +8,8 @@ import { EVENT_TEMPLATES, templateFor } from './events/definitions';
 import { createEventCandidate } from './events/template-candidate';
 import { EVENT_TRIGGER_DEFINITIONS } from './events/trigger-definitions';
 import { scheduleCandidates } from './event-scheduler';
+import { maybeScheduleMainEvent } from './main-event-pool';
+import { INFLUENCE_CONFIG, type InfluenceConfig } from '../influence-config';
 import type { EventCandidate, NarrativeEventInstance } from './event-types';
 import { buildTriggerContext } from './trigger-context';
 import { evaluateTriggerDefinition } from './trigger-evaluate';
@@ -19,7 +21,7 @@ export interface NarrativeRuntimeResult {
   readonly processed: number;
   /** Davon mit einer Besucher-Erinnerung angewendet. */
   readonly applied: number;
-  /** In diesem Lauf neu angelegte Event-Instanzen, hoechstens drei. */
+  /** In diesem Lauf neu angelegte Event-Instanzen, hoechstens vier. */
   readonly scheduled: readonly NarrativeEventInstance[];
   /** In diesem Lauf abgelaufene Instanzen. */
   readonly expired: readonly NarrativeEventInstance[];
@@ -74,12 +76,11 @@ function followUpCandidate(world: WorldState, fact: NarrativeFact): EventCandida
   return createEventCandidate(followTemplate, match, prior.id);
 }
 
-export function processNarrativeRuntime(world: WorldState, ledger: Ledger): NarrativeRuntimeResult {
+export function processNarrativeRuntime(
+  world: WorldState, ledger: Ledger, influenceConfig: InfluenceConfig = INFLUENCE_CONFIG,
+): NarrativeRuntimeResult {
   const boundary = processNarrativeBoundaryDetailed(world, ledger);
   reportExpiredDemand(world, boundary.expired);
-  if (boundary.facts.length === 0) {
-    return { processed: 0, applied: 0, scheduled: [], expired: boundary.expired };
-  }
 
   const candidates: EventCandidate[] = [];
   for (const fact of boundary.facts) {
@@ -96,7 +97,9 @@ export function processNarrativeRuntime(world: WorldState, ledger: Ledger): Narr
     const followUp = followUpCandidate(world, fact);
     if (followUp) candidates.push(followUp);
   }
-  const scheduled = scheduleCandidates(world, candidates, world.tick);
+  const scheduled = boundary.facts.length === 0 ? [] : scheduleCandidates(world, candidates, world.tick);
+  const pooled = maybeScheduleMainEvent(world, influenceConfig);
+  if (pooled) scheduled.push(pooled);
   return {
     processed: boundary.facts.length,
     applied: boundary.applied,

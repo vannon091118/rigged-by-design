@@ -19,6 +19,9 @@ export type ContentSlotKind = 'TITLE' | 'BODY' | 'CHOICE_LABEL' | 'OUTCOME';
 /** Reservierter Trigger fuer rein engine-seitig gestartete Events ohne Fact. */
 export const ENGINE_DEMAND_TRIGGER = 'ENGINE_DEMAND';
 
+/** Reservierter Trigger fuer den gewichteten Main-Event-Pool ohne Fact. */
+export const ENGINE_POOL_TRIGGER = 'ENGINE_POOL';
+
 /** Reservierter Trigger fuer Folge-Events aus einer aufgeloesten Choice ohne neuen Fact. */
 export const FOLLOW_UP_TRIGGER = 'chain';
 

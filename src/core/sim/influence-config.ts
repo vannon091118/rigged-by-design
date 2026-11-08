@@ -3,6 +3,10 @@
  * Faktoren (trust, sympathy, conflict), damit sie ueber dieselbe Matrix
  * balancebar sind wie Laune, Geselligkeit, Durst und Gerede.
  */
+import { EVENT_POOL_CONFIG, validateEventPool, type EventPoolConfig } from './influence-event-pool';
+
+export type { EventPoolConfig, EventPoolEntry } from './influence-event-pool';
+
 export type InfluenceFactorId =
   | 'mood' | 'sociability' | 'thirst' | 'rumor' | 'trust' | 'sympathy' | 'conflict';
 
@@ -40,6 +44,7 @@ export interface InfluenceConfig {
   readonly factors: Readonly<Record<InfluenceFactorId, FactorRange>>;
   readonly contexts: Readonly<Record<string, InfluenceContext>>;
   readonly cross: readonly CrossEdge[];
+  readonly eventPool: EventPoolConfig;
 }
 
 export const FACTOR_IDS: readonly InfluenceFactorId[] = [
@@ -79,6 +84,31 @@ export const INFLUENCE_CONFIG: InfluenceConfig = {
       },
       threshold: 0.8,
     },
+    // Pool-Kontexte: Zuwendung oeffnet eine Szene, Konflikt schliesst sie.
+    'event-warm': {
+      label: 'Pool: Zuwendung',
+      weights: {
+        mood: 0.1, sociability: 0.2, thirst: 0, rumor: 0,
+        trust: 0.3, sympathy: 0.3, conflict: 0,
+      },
+      threshold: 0.45,
+    },
+    'event-tense': {
+      label: 'Pool: Spannung',
+      weights: {
+        mood: 0, sociability: 0.1, thirst: 0, rumor: 0,
+        trust: 0, sympathy: 0, conflict: 0.7,
+      },
+      threshold: 0.5,
+    },
+    'event-neutral': {
+      label: 'Pool: Alltag',
+      weights: {
+        mood: 0.2, sociability: 0.4, thirst: 0.2, rumor: 0.1,
+        trust: 0.05, sympathy: 0.05, conflict: 0,
+      },
+      threshold: 0.5,
+    },
   },
   cross: [
     // Durst drueckt die Laune, bevor die Bar ihn gewichtet.
@@ -89,8 +119,10 @@ export const INFLUENCE_CONFIG: InfluenceConfig = {
     { from: 'sociability', to: 'thirst', weight: -0.1 },
     // Vertrauen oeffnet, Konflikt schliesst: beides wirkt auf die Geselligkeit.
     { from: 'trust', to: 'sociability', weight: 0.15 },
+    { from: 'sympathy', to: 'sociability', weight: 0.1 },
     { from: 'conflict', to: 'sociability', weight: -0.25 },
   ],
+  eventPool: EVENT_POOL_CONFIG,
 };
 
 /** Prueft die Matrix fail-closed: eine unlesbare Config darf nie still weiterlaufen. */
@@ -127,4 +159,5 @@ export function validateInfluenceConfig(config: InfluenceConfig): void {
       throw new Error(`Einfluss-Matrix: Cross-Kante ${edge.from}->${edge.to} hat ein ungueltiges Gewicht.`);
     }
   }
+  validateEventPool(config.eventPool, config.contexts);
 }

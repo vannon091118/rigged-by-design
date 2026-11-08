@@ -3,7 +3,7 @@ import { isActorRef } from '../relationships';
 import { NARRATIVE_EVENT_SCOPES, type NarrativeEventScope } from '../event-types';
 import type { ActorRole, RelationshipDimension } from '../trigger-types';
 import {
-  ENGINE_DEMAND_TRIGGER, EVENT_TEMPLATE_LIMITS, type ChoiceActor, type ChoiceEffect,
+  ENGINE_DEMAND_TRIGGER, ENGINE_POOL_TRIGGER, EVENT_TEMPLATE_LIMITS, type ChoiceActor, type ChoiceEffect,
   type ChoiceRequirement, type ContentSlot, type ContentSlotKind, type EventChoice, type EventTemplate,
 } from './template-types';
 
@@ -132,6 +132,7 @@ export function isEventTemplate(raw: unknown): raw is EventTemplate {
   const slotIds = raw.contentSlots.map((slot) => slot.id);
   if (new Set(slotIds).size !== slotIds.length) return false;
   const engineDemand = raw.triggerId === ENGINE_DEMAND_TRIGGER;
+  const engineManaged = engineDemand || raw.triggerId === ENGINE_POOL_TRIGGER;
   const labelIds = new Set(raw.contentSlots.filter((slot) => slot.kind === 'CHOICE_LABEL').map((slot) => slot.id));
   const roleCount = Array.isArray(raw.participantRoles) ? raw.participantRoles.length : 0;
   if (!Array.isArray(raw.choices) || raw.choices.length > EVENT_TEMPLATE_LIMITS.choices
@@ -150,7 +151,7 @@ export function isEventTemplate(raw: unknown): raw is EventTemplate {
   }
   return isStep(raw.initialStep) && isSafeInt(raw.expiresInTicks, 0, 100_000)
     && isSafeInt(raw.cooldownTicks, 0, 1_000_000)
-    && isSafeInt(raw.maxOccurrences, engineDemand ? 0 : 1, 100);
+    && isSafeInt(raw.maxOccurrences, engineManaged ? 0 : 1, 100);
 }
 
 export function isOfferedChoiceIds(raw: unknown): raw is readonly string[] {
