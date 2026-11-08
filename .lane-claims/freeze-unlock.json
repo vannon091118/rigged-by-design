@@ -3,11 +3,12 @@
   "base": "b5a0c0dcf27cc37575f70ea0893dd22ed91c83fa",
   "paths": [
     ".githooks/pre-commit",
+    ".github/workflows/ci-verify.yml",
     "docs/GOVERNANCE.md",
     "scripts/freeze-unlock.mjs",
     "scripts/lib/governance-freeze.mjs",
     "scripts/verify-governance-freeze.mjs"
   ],
-  "token": "37fb3319d4f238b13263466f0ba92ca0d69f313f80d4f03c7e2961c2998d486b",
+  "token": "d63ee6ce0767df1b562b6cbf1a00074db54123bd8b8ec01858c541772edc9e90",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
