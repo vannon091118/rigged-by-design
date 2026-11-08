@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4a95ce425eb8eac05eae9065af69de17f99cdd3ca73712bea4c2d38a703ecc90",
+  "contentHash": "sha256:9b935bac41aa3167adbb7d4256d99a069a89c6af219a3949b80ecdec5fb098d9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3249,6 +3249,28 @@
       "text": "Der Gast bestellt dasselbe wie gestern und merkt, dass du es diesmal nicht aufschreiben musst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-guest-voice-mid-51.json"
+    },
+    {
+      "contributionId": "influence-matrix-01",
+      "turnId": "2026-11-08T04:30Z-influence-matrix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Bar zaehlt, wer dir zuhoert; am Automaten zaehlt nur, was ueber ihn geredet wird. Wer beides gleich behandelt, wundert sich, warum ein freundliches Wort keinen Einsatz ersetzt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-influence-matrix-01.json"
     },
     {
       "contributionId": "journal-und-profilweg-01",
