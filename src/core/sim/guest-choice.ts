@@ -9,6 +9,7 @@ import { dispositionOfGuest, type VisitorDisposition } from './narrative/disposi
 import { voiceLine } from './narrative/guest-voice';
 import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
+import { influenceScore } from './influence';
 import { offerScore } from './offers';
 import type { Furniture, Guest, WorldState } from './types';
 import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, worldNav, zoneById } from './world';
@@ -104,10 +105,15 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
   // E2E-Disposition: begrenzte Verschiebung der sozialen Schwellen um ±8 Punkte.
   // Kritische Regeln (Toilette bei need/Geduld/Laune < 22, Wallet-Veto, Platz) bleiben vorrangig.
   const disposition: VisitorDisposition = dispositionOfGuest(world, guest);
+  // Kontextabhaengiger Einfluss: Durst und Laune ziehen an der Bar, am Automaten nicht.
+  // Begrenzt auf wenige Punkte, damit die bestehenden Schwellen die Oberhand behalten.
+  const barPull = Math.round((influenceScore('bar', {
+    mood: guest.mood, sociability: guest.sociability, thirst: guest.thirst, rumor: 0,
+  }) - 0.5) * 16);
   const wantsDrink = wallet >= world.prices.drinkPrice
-    && (guest.need === 'drink' || guest.mood < 44 + disposition.serviceBias
-      || guest.patience < 38 + disposition.serviceBias
-      || (guest.sociability > 68 && guest.mood < 55 + disposition.serviceBias));
+    && (guest.need === 'drink' || guest.mood < 44 + disposition.serviceBias - barPull
+      || guest.patience < 38 + disposition.serviceBias - barPull
+      || (guest.sociability > 68 && guest.mood < 55 + disposition.serviceBias - barPull));
   if (wantsDrink) {
     const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0 && freeSeat(item));
     if (bar && startActivity(world, guest, bar)) return;
