@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4a95ce425eb8eac05eae9065af69de17f99cdd3ca73712bea4c2d38a703ecc90",
+  "contentHash": "sha256:9df74d930196ad69916568f0850d187813fd8fbdb555ecfcbb78b445825d09fd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3251,6 +3251,28 @@
       "source": "content/narrative/contributions/2026-11-08-guest-voice-mid-51.json"
     },
     {
+      "contributionId": "influence-matrix-01",
+      "turnId": "2026-11-08T04:30Z-influence-matrix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Bar zaehlt, wer dir zuhoert; am Automaten zaehlt nur, was ueber ihn geredet wird. Wer beides gleich behandelt, wundert sich, warum ein freundliches Wort keinen Einsatz ersetzt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-influence-matrix-01.json"
+    },
+    {
       "contributionId": "journal-und-profilweg-01",
       "turnId": "2026-11-04T02:00Z-journal-und-profilweg",
       "agentId": "buffy",
@@ -3327,6 +3349,28 @@
       "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dokumentation.json"
+    },
+    {
+      "contributionId": "loc-trim-01",
+      "turnId": "2026-11-08T04:50Z-loc-trim",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
     },
     {
       "contributionId": "memory-53",
