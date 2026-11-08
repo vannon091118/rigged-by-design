@@ -8,6 +8,7 @@ import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
 import { emitFact } from './narrative/facts';
 import { memoryEffect } from './narrative/memory';
+import { relationshipStanding } from './narrative/relationships';
 import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
@@ -30,8 +31,11 @@ export function reputation(world: WorldState): number {
     + (world.staff.cashier ? 2 : 0) + (hasStaff(world, 'guard') ? 2 : 0) + (world.staff.porter ? 1 : 0);
   const dirt = Math.min(10, world.dirty.size * 0.8);
   const attraction = Math.min(8, attractionOf(world) / 150);
+  // Beziehungen sind eine eigene Quelle: wer dem Haus vertraut, erzaehlt es
+  // weiter; wer im Konflikt steht, warnt davor. Der Anteil ist begrenzt.
+  const standing = relationshipStanding(world);
   const value = 5 + served + condition * 15 * scale + (quality - 1) * 16 * scale
-    + experience + staff + attraction - dirt;
+    + experience + staff + attraction - dirt + standing;
   return Math.max(0, Math.min(100, value));
 }
 

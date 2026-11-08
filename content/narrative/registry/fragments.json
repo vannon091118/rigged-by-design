@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:700283d54ec4cab27fb76421e921733a59d50160702feb871755c315cd531805",
+  "contentHash": "sha256:12a19344bdcd781df7bd307605be67bdf824ea576ff25b050428de7579a46a35",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -14687,6 +14687,28 @@
       "text": "Man sagt, der alte Aufseher kenne die Kreide noch. Wenn das stimmt, wird heute anders gespielt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-rumor-52.json"
+    },
+    {
+      "contributionId": "relationship-standing-01",
+      "turnId": "2026-11-08T03:55Z-relationship-standing",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man erzaehlt sich, dass ein Gast dem Haus seine Stimme geliehen hat. Ruf entsteht nicht am Automaten, sondern an den Leuten, die ihn weiterempfehlen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-relationship-standing-01.json"
     },
     {
       "contributionId": "returning-memory-01",
