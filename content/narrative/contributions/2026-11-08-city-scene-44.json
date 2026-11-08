@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:43Z-city-scene-44",
+  "contributionId": "city-scene-44",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Deine Energie ist fast aufgebraucht; die Strasse merkt es an deinem Schritt.",
+  "directives": []
+}

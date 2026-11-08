@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:39Z-city-scene-40",
+  "contributionId": "city-scene-40",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Markt wird nicht gefeilscht, sondern geprueft, wer zuerst nachgibt.",
+  "directives": []
+}

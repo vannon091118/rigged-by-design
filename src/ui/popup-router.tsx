@@ -2,6 +2,7 @@
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { Perspective, Popup } from './app-model';
+import { CityPopup } from './city-popup';
 import { DialoguePopup } from './dialogue-popup';
 import { ForeignFloorMap } from './foreign-floor-map';
 import { ForeignFloorPopup } from './foreign-floor-popup';
@@ -127,6 +128,10 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
         onOpenGames={(rivalId) => onOpen({ kind: 'games', rivalId })}
       />
     );
+  }
+
+  if (popup.kind === 'city') {
+    return <CityPopup city={view.city} onClose={onClose} />;
   }
 
   if (popup.kind === 'dialogue') {

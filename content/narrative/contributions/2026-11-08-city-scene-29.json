@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:28Z-city-scene-29",
+  "contributionId": "city-scene-29",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Du stellst dein Glas ab und merkst, dass es schon leer war.",
+  "directives": []
+}

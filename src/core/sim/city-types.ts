@@ -1,0 +1,72 @@
+/**
+ * Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik -
+ * damit Core, Store und UI dieselbe Form teilen, ohne Zyklen zu bauen.
+ */
+export type CityLocationId = 'CASINO' | 'KIEZ' | 'MARKT';
+export type CityBranchId = 'KIEZ' | 'MARKT';
+
+export interface CityState {
+  /** Wo der Charakter gerade steht. */
+  readonly location: CityLocationId;
+  /** Tag, fuer den die Energie gilt; ein neuer Tag fuellt sie auf. */
+  energyDay: number;
+  energy: number;
+  /** Fortschrittspunkte je Zweig, nie negativ. */
+  KIEZ: number;
+  MARKT: number;
+  /** Besuche je Ort, damit der Text nicht bei jedem Klick derselbe ist. */
+  visits: Readonly<Record<CityLocationId, number>>;
+  /** Letztes sichtbares Ergebnis der Stadt (Rang, Text, Wirkung). */
+  lastResult: string;
+  lastText: string;
+  /** Abgeschlossene Zweige; ein Abschluss bleibt bestehen. */
+  completed: readonly CityBranchId[];
+}
+
+export interface CityActionView {
+  readonly id: string;
+  readonly label: string;
+  readonly hint: string;
+  readonly energy: number;
+  readonly branch: CityBranchId;
+  readonly progress: number;
+  readonly enabled: boolean;
+  readonly blocked: string;
+}
+
+export interface CityBranchView {
+  readonly id: CityBranchId;
+  readonly name: string;
+  readonly tier: string;
+  readonly next: string | null;
+  readonly points: number;
+  readonly need: number;
+  readonly done: boolean;
+  readonly unlocked: boolean;
+}
+
+export interface CityView {
+  readonly location: CityLocationId;
+  readonly locationName: string;
+  readonly note: string;
+  readonly energy: number;
+  readonly energyMax: number;
+  readonly branches: readonly CityBranchView[];
+  readonly actions: readonly CityActionView[];
+  readonly locations: readonly { readonly id: CityLocationId; readonly name: string; readonly here: boolean; readonly locked: boolean }[];
+  readonly lastText: string;
+  readonly lastResult: string;
+  readonly completed: readonly CityBranchId[];
+}
+
+export interface ActionDef {
+  readonly id: string;
+  readonly location: CityLocationId;
+  readonly label: string;
+  readonly hint: string;
+  readonly energy: number;
+  readonly branch: CityBranchId;
+  readonly progress: number;
+  /** Ruf, den die Handlung dem Haus bringt (0..100-Skala). */
+  readonly reputation: number;
+}

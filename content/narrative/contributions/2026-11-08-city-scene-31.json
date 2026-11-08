@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:30Z-city-scene-31",
+  "contributionId": "city-scene-31",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "watch"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Lieferant nennt dir seinen Namen und vergisst ihn sofort wieder.",
+  "directives": []
+}

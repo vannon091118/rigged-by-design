@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:44Z-city-scene-45",
+  "contributionId": "city-scene-45",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Lieferant laesst dich den schweren Teil tragen und nennt es Vertrauen.",
+  "directives": []
+}

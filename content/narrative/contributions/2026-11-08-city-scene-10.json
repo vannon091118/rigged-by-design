@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:09Z-city-scene-10",
+  "contributionId": "city-scene-10",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Rueckweg bleibt der Laerm hinter dir, als haette ihn jemand leiser gedreht.",
+  "directives": []
+}

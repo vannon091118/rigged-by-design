@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:18Z-city-scene-19",
+  "contributionId": "city-scene-19",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Kiez fragt dich jemand nach deinem Namen. Er sagt seinen nicht.",
+  "directives": []
+}

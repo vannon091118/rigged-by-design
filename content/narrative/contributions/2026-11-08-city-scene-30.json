@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:29Z-city-scene-30",
+  "contributionId": "city-scene-30",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "ask"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Strasse hat heute zwei Gesichter: das eine kennt dich, das andere tut so.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:13Z-city-scene-14",
+  "contributionId": "city-scene-14",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "ask"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Kellner zaehlt die Glaeser zweimal. Beim zweiten Mal schaut er dich an.",
+  "directives": []
+}

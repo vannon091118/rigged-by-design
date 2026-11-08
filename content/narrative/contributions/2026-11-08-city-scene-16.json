@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:15Z-city-scene-16",
+  "contributionId": "city-scene-16",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Marktstand liegt eine Kette aus alten Muenzen; jede hat eine andere Geschichte und keinen Preis.",
+  "directives": []
+}

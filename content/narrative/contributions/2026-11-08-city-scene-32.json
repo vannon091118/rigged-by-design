@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:31Z-city-scene-32",
+  "contributionId": "city-scene-32",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Markt zahlt keine Loehne, nur Gelegenheiten. Die Rechnung kommt spaeter.",
+  "directives": []
+}

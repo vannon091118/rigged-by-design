@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 01:01 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 01:26 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -520,10 +520,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1771 |
-| Gelistete Dateien | 1771 |
+| Getrackte Dateien | 1829 |
+| Gelistete Dateien | 1829 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (12), content (420), docs (77), public (554), scripts (91), src (592) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (12), content (472), docs (77), public (554), scripts (91), src (598) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -536,7 +536,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 10 Datei(en)
-- `content/narrative/contributions/` — 416 Datei(en)
+- `content/narrative/contributions/` — 468 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -597,7 +597,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 70 Datei(en)
+- `src/core/sim/` — 74 Datei(en)
 - `src/core/sim/__tests__/` — 89 Datei(en)
 - `src/core/sim/narrative/` — 27 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 4 Datei(en)
@@ -614,11 +614,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
-- `src/store/` — 26 Datei(en)
+- `src/store/` — 27 Datei(en)
 - `src/store/__tests__/` — 18 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 65 Datei(en)
+- `src/ui/` — 66 Datei(en)
 - `src/ui/__tests__/` — 10 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -1058,6 +1058,58 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-07-pool-rumor-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-rumor-48","contributionId":"pool-rumor-48","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-rumor-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-rumor-49","contributionId":"pool-rumor-49","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-rumor-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-rumor-50","contributionId":"pool-rumor-50","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-04.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-05.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-06.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-07.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-08.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-09.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-10.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-11.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-12.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-13.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-14.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-15.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-16.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-17.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-18.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-19.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-20.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-21.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-22.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-23.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-24.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-25.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-26.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-27.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-28.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-29.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-30.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-31.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-32.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-33.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-34.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-35.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-36.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-37.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-38.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-39.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-40.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-41.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-42.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-43.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-44.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-45.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-46.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-47.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-48.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-49.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-50.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-51.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-scene-52.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-choice-preview-51","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-choice-preview-52","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-description-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-description-51","contributionId":"pool-description-51","ro — gelesen: 1 Zeilen
@@ -1074,9 +1126,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-reaction-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-reaction-52","contributionId":"pool-reaction-52","role":"B — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 9285 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 1669 Zeilen
-- `content/narrative/vocabulary/classification.json` — { — gelesen: 98 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 10429 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 1877 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 165 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 983 Zeilen
@@ -1803,13 +1855,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 105 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
-- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 283 Zeilen
+- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 286 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 12 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
 - `src/Config/eslint.config.mjs` — import js from '@eslint/js'; — gelesen: 126 Zeilen
 - `src/Config/opencode.json` — { — gelesen: 10 Zeilen
 - `src/Config/tsconfig.json` — { — gelesen: 24 Zeilen
-- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 76 Zeilen
+- `src/Config/vite.config.ts` — import { configDefaults, defineConfig } from 'vitest/config'; — gelesen: 79 Zeilen
 - `src/core/contracts/__tests__/actionset.test.ts` — Contract actionset v1.0: Domain-registrierter ActionSet-Vertrag. — gelesen: 95 Zeilen
 - `src/core/contracts/__tests__/actor-id.test.ts` — Contract actor-id v1.0: Dauerhafte Actor-ID und Referenzregeln. — gelesen: 57 Zeilen
 - `src/core/contracts/__tests__/domain-event.test.ts` — Contract domain-event v1.0: Event-Hülle mit Actor-/Zeit-Referenzen, Sequenz — gelesen: 115 Zeilen
@@ -2015,7 +2067,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/player-rpg.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 93 Zeilen
 - `src/core/sim/__tests__/player-speed.test.ts` — Speed war einmal nur ein gespeicherter Attributwert. Dieser Test haelt fest, — gelesen: 67 Zeilen
 - `src/core/sim/__tests__/player-wage-attendance.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 84 Zeilen
-- `src/core/sim/__tests__/progression.test.ts` — Unternehmensstufen nennen echte Bedingungen; gesperrte Ware sagt, was fehlt. — gelesen: 171 Zeilen
+- `src/core/sim/__tests__/progression.test.ts` — Unternehmensstufen nennen echte Bedingungen; gesperrte Ware sagt, was fehlt. — gelesen: 240 Zeilen
 - `src/core/sim/__tests__/reputation.test.ts` — Ruf ist Betriebserfahrung: Ein frischer Automat in gutem Zustand ist kein Ruf, — gelesen: 76 Zeilen
 - `src/core/sim/__tests__/rival-ai.test.ts` — Rivalen handeln deterministisch: gleiche Eingaben, gleiche Absicht. Sabotage — gelesen: 155 Zeilen
 - `src/core/sim/__tests__/rivals.test.ts` — Fremde Haeuser nutzen echte Spiele und Regeln, driften deterministisch und — gelesen: 78 Zeilen
@@ -2032,6 +2084,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 53 Zeilen
+- `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 92 Zeilen
+- `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 107 Zeilen
+- `src/core/sim/city-types.ts` — Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik - — gelesen: 72 Zeilen
+- `src/core/sim/city.ts` — Stadt: der erste Vertical Slice ausserhalb des eigenen Floors. — gelesen: 91 Zeilen
 - `src/core/sim/day-phase.ts` — Tageszeit der Buehne: rein aus dem Tick abgeleitet, nie aus der Uhr. — gelesen: 14 Zeilen
 - `src/core/sim/deliveries.ts` — Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. — gelesen: 198 Zeilen
 - `src/core/sim/demand.ts` — Nachfrage: Ankuenfte werden geplant statt pro Tick gewuerfelt. — gelesen: 182 Zeilen
@@ -2083,7 +2139,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 109 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 122 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2163,7 +2219,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 78 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 119 Zeilen
-- `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 98 Zeilen
+- `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 104 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 68 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 75 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 152 Zeilen
@@ -2276,6 +2332,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
+- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 31 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 41 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. — gelesen: 148 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 38 Zeilen
@@ -2296,16 +2353,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
 - `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 143 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
-- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 139 Zeilen
+- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 142 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
-- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 117 Zeilen
+- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 120 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 212 Zeilen
-- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 216 Zeilen
+- `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 218 Zeilen
 - `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 569 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
-- `src/styles/popup.css` — .popup-backdrop { — gelesen: 638 Zeilen
+- `src/styles/popup.css` — .popup-backdrop { — gelesen: 655 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
@@ -2320,7 +2377,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 173 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
-- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 38 Zeilen
+- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 39 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 191 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
@@ -2329,6 +2386,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 124 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
+- `src/ui/city-popup.tsx` — Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. — gelesen: 100 Zeilen
 - `src/ui/diagnostics-popup.tsx` — Diagnose: Buchhaltung, Personal, Lager und Protokoll auf einen Blick. — gelesen: 121 Zeilen
 - `src/ui/dialogue-popup.tsx` — Dialog: Comic-Dialog als reine Darstellung. — gelesen: 69 Zeilen
 - `src/ui/dock.tsx` — Untere Leiste: vier Ecken je Perspektive. Alles andere lebt in der Werkstatt. — gelesen: 96 Zeilen
@@ -2373,7 +2431,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/perspective-switch.tsx` — Der eine Umschalter zwischen Spieler- und Betreiberblick. — gelesen: 33 Zeilen
 - `src/ui/plinko-editor-lazy.tsx` — Chunk-Grenze fuer den Plinko-Editor: Der Editor zieht die 185-KB-Buehne — gelesen: 19 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
-- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 165 Zeilen
+- `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 170 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
 - `src/ui/roulette-tableau.tsx` — Das Setzfeld: jede Zelle ist ein Feld, jeder Klick legt einen Jeton dorthin. — gelesen: 65 Zeilen
 - `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 67 Zeilen

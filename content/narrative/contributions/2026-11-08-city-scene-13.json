@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:12Z-city-scene-13",
+  "contributionId": "city-scene-13",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Deine Runde kommt an, bevor du sie bestellt hast. Das ist kein Zufall, sondern ein Zeichen.",
+  "directives": []
+}

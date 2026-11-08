@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:23Z-city-scene-24",
+  "contributionId": "city-scene-24",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein alter Mann erklaert dir den Weg, den du nicht gehen wolltest. Du hoerst trotzdem zu.",
+  "directives": []
+}

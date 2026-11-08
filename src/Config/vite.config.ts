@@ -29,6 +29,9 @@ export default defineConfig({
     // `vite preview` erbt diesen Wert, weil kein eigener preview.host gesetzt ist.
     host: process.env.RBD_DEV_HOST || 'localhost',
     port: 3000,
+    // Exakt der vom Cloud-Preview vergebene Host, nie eine pauschale Domain;
+    // ohne RBD_PREVIEW_HOST bleibt es bei Vites Loopback-Schutz.
+    allowedHosts: PREVIEW_HOST ? [PREVIEW_HOST] : undefined,
   },
   preview: {
     port: 3000,

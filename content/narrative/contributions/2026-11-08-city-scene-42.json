@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:41Z-city-scene-42",
+  "contributionId": "city-scene-42",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Wirtin wischt den Tresen, obwohl er sauber ist. Es ist eine Art, Zeit zu halten.",
+  "directives": []
+}

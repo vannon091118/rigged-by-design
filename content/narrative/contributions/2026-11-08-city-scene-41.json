@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:40Z-city-scene-41",
+  "contributionId": "city-scene-41",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Stuhl kippt um, alle sehen hin, keiner steht auf.",
+  "directives": []
+}

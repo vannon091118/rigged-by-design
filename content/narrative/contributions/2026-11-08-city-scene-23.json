@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:22Z-city-scene-23",
+  "contributionId": "city-scene-23",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "watch"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Wirtin stellt ein Glas hin, das niemand bestellt hat. Es bleibt stehen, bis es leer ist.",
+  "directives": []
+}

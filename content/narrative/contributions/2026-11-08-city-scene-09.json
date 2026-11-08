@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:08Z-city-scene-09",
+  "contributionId": "city-scene-09",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Haendler mustert deine Schuhe, bevor er dein Geld mustert. Die Reihenfolge sagt alles.",
+  "directives": []
+}

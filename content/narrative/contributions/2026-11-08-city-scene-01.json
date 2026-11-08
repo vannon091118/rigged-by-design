@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:00Z-city-scene-01",
+  "contributionId": "city-scene-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Kiez riecht nach kaltem Rauch und nassem Asphalt; wer hier stehen bleibt, wird gefragt, warum.",
+  "directives": []
+}

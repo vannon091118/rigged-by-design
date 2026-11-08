@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:49Z-city-scene-50",
+  "contributionId": "city-scene-50",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Markt ist heute frueh dicht; der Kiez hat noch offen, als haette er etwas gutzumachen.",
+  "directives": []
+}

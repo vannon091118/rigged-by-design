@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:07Z-city-scene-08",
+  "contributionId": "city-scene-08",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "melancholisch",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Stand mit den Werkzeugen hat heute geschlossen. Der Zettel an der Rolle ist handgeschrieben und alt.",
+  "directives": []
+}
