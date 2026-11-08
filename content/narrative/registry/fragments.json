@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fea07d10f0368c44702c9083ed4b0082c43d25763b41e4820aa8b1c07e335f59",
+  "contentHash": "sha256:7f410614eb6f09bd3c882dac48c10982c8992c574715e1aa0b1bca34f0b14d5b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3227,6 +3227,28 @@
       "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "guest-voice-mid-51",
+      "turnId": "2026-11-08T04:30Z-guest-voice-mid-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast bestellt dasselbe wie gestern und merkt, dass du es diesmal nicht aufschreiben musst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-guest-voice-mid-51.json"
     },
     {
       "contributionId": "journal-und-profilweg-01",

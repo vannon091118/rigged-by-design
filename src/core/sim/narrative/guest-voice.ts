@@ -9,7 +9,7 @@
 import type { Guest, WorldState } from '../types';
 import { NARRATIVE_REGISTRY } from './composer/registry.generated';
 
-export type VoiceBand = 'LOW' | 'MID' | 'HIGH';
+type VoiceBand = 'LOW' | 'MID' | 'HIGH';
 
 /** Ein Band je Slot: unter 40 spricht das Haus schlecht, ab 70 spricht es gut. */
 export const VOICE_SLOT: Readonly<Record<VoiceBand, string>> = Object.freeze({
