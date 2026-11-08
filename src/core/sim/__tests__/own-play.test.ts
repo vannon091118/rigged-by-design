@@ -169,7 +169,9 @@ describe('Eigener Geldweg', () => {
       ...createSlotMemory(3), pressureLevel: 7, chargeReady: true, bank: fromVC(10),
     };
     const before = ledger.entryCount;
-    const result = playOwnRound(world, ledger, item.id, 1, new Prng(1));
+    // Kein fester Seed: Der Entladungspfad wird wie jeder andere Lauf mit
+    // einem frischen, nicht vorab waehlbaren Seed geprueft (ERR-4002).
+    const result = playOwnRound(world, ledger, item.id, 1, new Prng(randomSeed() || 1));
 
     expect(result.discharged).toBe(true);
     expect(ledger.entryCount).toBeGreaterThan(before);

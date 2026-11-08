@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.194 | 2026-11-08 23:30 UTC -->
+<!-- rbd-doc: v0.3.195 | 2026-11-08 23:45 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.195] - 2026-11-08
+
+### Technik
+- **Red-Team-Test fuer die Gate-Lane.** Der neue Governance-Test belegt tiefe Unveraenderlichkeit der Gate-Definitionen, die Bindung jedes Gates an seinen urspruenglichen Pruefer, deterministische Matrix-/CI-Planung und einen unveraenderten Quellbaum; `runGates` wertet den Exitcode statt der Ausgabe aus. `RBD_VERIFY_REPORTS` wird jetzt an die aktuelle Konfiguration gebunden, damit Testlaeufe einander den Berichtsordner nicht wegziehen.
+- **Testquality-Fix.** Der P-11-Entladungstest nutzt wieder einen frischen Seed (`randomSeed`) statt eines festen Werts.
+
+### Textbausteine
+- **691 Bausteine.** Ein neuer Dokumentationsbaustein beschreibt die Beweispflicht der Gate-Lane; kein Pool unter 50.
 
 ## [0.3.189] - 2026-11-08
 

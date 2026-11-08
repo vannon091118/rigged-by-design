@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cb7d097b495f38c192ba938bc3cb734c01f36330e0d230a8f9640eca700e40e2",
+  "contentHash": "sha256:61066742fd542b8e36f21f96f2fad901fcd2f44164ae9dc197174d7ceb5cb1a8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3319,6 +3319,28 @@
       "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "gate-lane-red-team-01",
+      "turnId": "2026-11-08T23:55Z-gate-lane-red-team-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
     },
     {
       "contributionId": "guest-voice-mid-51",

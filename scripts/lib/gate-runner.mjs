@@ -24,6 +24,7 @@ const VERBOSE = process.env.RBD_VERIFY_VERBOSE === '1';
 const QUIET = process.env.RBD_VERIFY_QUIET === '1' && !VERBOSE;
 
 let reportDir;
+let reportDirConfig;
 let lastRows = [];
 
 /** Die Zeilen des letzten Laufs: Name, Status, Dauer. Fuer Berichte, nicht fuer Entscheidungen. */
@@ -35,15 +36,20 @@ export function lastGateRows() {
  * Arbeitsbaum: Verify bleibt lesend, und das Gitignor hält ihn aus jedem Hash.
  */
 function reports() {
-  if (reportDir !== undefined) return reportDir;
+  // Der Ordner haengt an der aktuellen Konfiguration, nicht nur am Prozess.
+  // Tests und eingebettete Laeufe wechseln RBD_VERIFY_REPORTS; ein Cache auf
+  // den alten Pfad wuerde Logs in einen bereits geloeschten Temp-Baum legen.
+  const configured = process.env.RBD_VERIFY_REPORTS ?? '';
+  if (reportDir !== undefined && reportDirConfig === configured) return reportDir;
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const dir = process.env.RBD_VERIFY_REPORTS ?? join(ROOT, '.verify-cache', 'reports', stamp);
+  const dir = configured || join(ROOT, '.verify-cache', 'reports', stamp);
   try {
     mkdirSync(dir, { recursive: true });
     reportDir = dir;
   } catch {
     reportDir = null;
   }
+  reportDirConfig = configured;
   return reportDir;
 }
 

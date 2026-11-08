@@ -92,6 +92,16 @@ export const GATES = Object.freeze({
   build: { name: 'build', command: 'pnpm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
 });
 
+// Die Sammlung allein reicht nicht: Auch jeder einzelne Gate-Eintrag ist ein
+// Vertrag. Waere er mutierbar, koennte ein Test oder Import den Pruefauftrag
+// nachtraeglich auf ein No-op-Skript zeigen lassen, ohne dass `GATES` selbst
+// eingefroren wirkt. Deshalb werden die Eintraege (und kuenftige args-Arrays)
+// direkt nach der Definition tief eingefroren.
+for (const gate of Object.values(GATES)) {
+  if (Array.isArray(gate.args)) Object.freeze(gate.args);
+  Object.freeze(gate);
+}
+
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy'];
