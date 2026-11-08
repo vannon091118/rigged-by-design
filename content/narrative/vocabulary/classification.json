@@ -124,7 +124,8 @@
     "templates": "Event-Templates oder Choice-Verträge.",
     "commands": "Command-DSL, Allowlist oder Ausführung.",
     "documentation": "Dokumentation und Inventur.",
-    "content": "Content-Registry, Schema und Klassifizierung."
+    "content": "Content-Registry, Schema und Klassifizierung.",
+    "echo": "Spaetere Wiederbegegnung nach einer aufgeloesten Kette; das Ereignis liegt sichtbar zurueck."
   },
   "tones": {
     "trocken": "Knapp, beiläufig und ohne Pathos.",

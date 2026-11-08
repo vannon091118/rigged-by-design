@@ -109,6 +109,16 @@ export const INFLUENCE_CONFIG: InfluenceConfig = {
       },
       threshold: 0.5,
     },
+    // Weitergabe von Wissen ist kein Sonderfall neben der Matrix: dieselben
+    // Faktoren und Cross-Kanten entscheiden, ob jemand erzaehlt.
+    share: {
+      label: 'Weitergabe',
+      weights: {
+        mood: 0.2, sociability: 0.3, thirst: 0, rumor: 0.1,
+        trust: 0.1, sympathy: 0.1, conflict: 0,
+      },
+      threshold: 0.38,
+    },
   },
   cross: [
     // Durst drueckt die Laune, bevor die Bar ihn gewichtet.

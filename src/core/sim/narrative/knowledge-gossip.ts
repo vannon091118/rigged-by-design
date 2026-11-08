@@ -19,10 +19,21 @@ function actorHash(actor: ActorRef): number {
   return hash;
 }
 
-/** Wie nahe steht der Empfaenger dieser Quelle? Vertrauen und Sympathie heben, Konflikt senkt. */
-function edgeStanding(world: WorldState, target: ActorRef, source: ActorRef): number {
+/**
+ * Wie nahe steht der Empfaenger dieser Quelle? Die drei Gewichte sind Teil der
+ * Knowledge-Config, damit dieselbe Rangfolge balancebar bleibt.
+ */
+export function gossipStanding(
+  world: WorldState,
+  target: ActorRef,
+  source: ActorRef,
+  config: KnowledgeConfig = KNOWLEDGE_CONFIG,
+): number {
   const edge = relationshipBetween(world, target, source) ?? relationshipBetween(world, source, target);
-  return edge ? edge.trust + edge.sympathy - edge.conflict : 0;
+  if (!edge) return 0;
+  return edge.trust * config.gossip.trust
+    + edge.sympathy * config.gossip.sympathy
+    - edge.conflict * config.gossip.conflict;
 }
 
 /** Zustand des Sprechers, sofern er gerade im Raum steht; sonst neutrale Basis. */
@@ -50,7 +61,7 @@ export function hearRumor(
     if (!current || current.id < entry.id) byActor.set(entry.actor, entry);
   }
   const ranked = [...byActor.values()]
-    .map((entry) => ({ entry, standing: edgeStanding(world, target, entry.actor) }))
+    .map((entry) => ({ entry, standing: gossipStanding(world, target, entry.actor, config) }))
     .sort((first, second) => second.standing - first.standing || second.entry.id - first.entry.id);
 
   for (const { entry } of ranked) {

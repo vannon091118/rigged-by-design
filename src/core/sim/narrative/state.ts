@@ -7,6 +7,7 @@ import { normalizeRelationships } from './relationships';
 import { normalizeKnowledge } from './knowledge';
 import { normalizeObservations } from './knowledge-observation';
 import { normalizeEventState } from './event-schema';
+import { createChainState, normalizeChainState } from './chains/chain-persist';
 import { createNarrativeRng } from './narrative-rng';
 import {
   HOUSE_BANDS, NARRATIVE_LIMITS, VISITOR_VALENCES,
@@ -26,6 +27,7 @@ export function createNarrativeState(): NarrativeState {
     flags: {}, relationships: [], knowledge: [], knowledgeSeq: 1,
     observations: [], observationSeq: 1, ledgerSeq: null, houseBand: 'OK',
     eventSeq: 1, events: [], cooldowns: [], rng: createNarrativeRng(),
+    chains: createChainState(),
   };
 }
 
@@ -92,6 +94,7 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.events = events.events;
   state.cooldowns = events.cooldowns;
   state.rng = events.rng;
+  state.chains = normalizeChainState(raw.chains);
   return state;
 }
 

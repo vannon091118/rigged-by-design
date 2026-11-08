@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/narrative-chain-graph",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/narrative-chain-graph",
+  "baseSha": "cad869cc7dbe27a77ecc87bf5456b768f8a18e16",
+  "task": "Verkettete Narrative mit Verzweigungen, Matrixbedingungen und Quality-First-Content-Audit",
+  "goal": "Ereignisketten als deklarativer Graph mit bedingten Uebergaengen, Merges, Verzoegerung, Abbruch und Save/Load; Bestandsaudit vor neuen Texten.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-narrative-chain-graph.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "cad869cc7dbe27a77ecc87bf5456b768f8a18e16"
+}

@@ -175,7 +175,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **684/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-08: **688/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
 `guest-voice-high`) mit je 50. Die Pool-Mindestgroesse ist damit an allen 13
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 684/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
+| P-13 | 688/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -261,7 +261,8 @@ Code und seinen Test als Beleg.
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
 | P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `influence-config.ts` gewichtet `mood`, `sociability`, `thirst`, `rumor` sowie `trust`, `sympathy` und `conflict` je Kontext, wendet Cross-Kanten an (unter anderem Vertrauen/Konflikt auf Geselligkeit) und validiert fail-closed; Consumer `guest-choice.ts` (Bar-Nachfrage mit Beziehungskante); Test `influence.test.ts` |
 | P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | **verifiziert 2026-11-08** | `main-event-pool.ts` zieht nur bei idle, gewichtet ueber die gerichteten trust/sympathy/conflict-Kanten und Cross-Kanten, daempft Wiederholung per Recency und Lockout und nutzt dieselbe Event-Karte ohne Sonder-UI/-Log; drei feste `AMBIENT_*`-Templates, Config in `influence-event-pool.ts`, Tests `main-event-pool.test.ts` |
-| P-23 | NPC-Wissen und Geruechte mit Distanz- und Quellenverlust | **verifiziert 2026-11-08** | `knowledge.ts` erzwingt Provenance (unmittelbare und urspruengliche Quelle, Art, Distanz, Beobachtungs-Tick), `knowledge-observation.ts` verlangt fuer Sicht/Geraeusch echte Anwesenheit, `knowledge-query.ts` altert und bewahrt Widersprueche, `knowledge-share.ts` macht die Weitergabe vom Matrix-Kontext `share` abhaengig, `knowledge-gossip.ts` waehlt die naechste, weitergabebereite Quelle, und empfangenes Wissen schreibt begrenzt auf die Kante zur Quelle und zum Subjekt zurueck; Tests `knowledge.test.ts`, `knowledge-domain.test.ts` und `knowledge-relationships.test.ts` |
+| P-23 | NPC-Wissen und Geruechte mit Distanz- und Quellenverlust | **verifiziert 2026-11-08** | `knowledge.ts` erzwingt Provenance (unmittelbare und urspruengliche Quelle, Art, Distanz, Beobachtungs-Tick), `knowledge-observation.ts` verlangt fuer Sicht/Geraeusch echte Anwesenheit, `knowledge-query.ts` altert und bewahrt Widersprueche, `knowledge-share.ts` macht die Weitergabe vom zentralen Matrix-Kontext `share` in `influence-config.ts` abhaengig, `knowledge-gossip.ts` rangiert Quellen ueber die balancebaren `gossip`-Gewichte der Knowledge-Config, und empfangenes Wissen schreibt begrenzt auf die Kante zur Quelle und zum Subjekt zurueck; Tests `knowledge.test.ts`, `knowledge-domain.test.ts`, `knowledge-relationships.test.ts` und `knowledge-config.test.ts` |
+| P-24 | Verkettete Narrative mit Verzweigungen, Ruhephasen und Zusammenfuehrung | **verifiziert 2026-11-08** | `src/core/sim/narrative/chains/chain-runtime.ts` startet nur aus aufgeloesten Events, waehlt deterministisch einen bedingten Uebergang und prueft ruhende Uebergaenge bei Faelligkeit erneut; `chain-schema.ts` lehnt tote Enden, unerreichbare Knoten und Zyklen ohne Wiederaufnahme ab; `chain-persist.ts` sichert Laeufe; `NARRATIVE_CHAINS` traegt Warm- und Konfliktkette; Tests `narrative-chain-runtime.test.ts` und `narrative-chain-schema.test.ts` |
 
 #### D. Governance, CI und Abnahme der Lieferung
 

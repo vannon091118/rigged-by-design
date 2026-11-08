@@ -2,6 +2,7 @@
 import type { VaCoinMicro } from '../../economy/vacoin';
 import type { PersonaId, RivalId } from '../types';
 import type { RivalActionId } from '../rival-ai/types';
+import type { ChainState } from './chains/chain-types';
 import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
 import type { KnowledgeEntry, Observation } from './knowledge-types';
 
@@ -186,4 +187,6 @@ export interface NarrativeState {
   cooldowns: NarrativeCooldown[];
   /** Eigener persistenter Narrativ-Zufallsstrom. */
   rng: NarrativeRngState;
+  /** Verkettete Narrative; Laeufe sind begrenzt und deterministisch. */
+  chains: ChainState;
 }

@@ -11,11 +11,13 @@ import { VISITOR_RETURN_TEMPLATE } from './visitor-return';
 import { AMBIENT_BAR_TALK_TEMPLATE } from './ambient-bar-talk';
 import { AMBIENT_SHARED_ROUND_TEMPLATE } from './ambient-shared-round';
 import { AMBIENT_TENSE_TABLE_TEMPLATE } from './ambient-tense-table';
+import { CHAIN_VISITOR_ECHO_TEMPLATE } from './chain-visitor-echo';
 
 const SOURCES: readonly EventTemplate[] = [
   VISITOR_RETURN_TEMPLATE, VISITOR_CONFLICT_TEMPLATE, NEON_NACHT_TEMPLATE, TURNIER_ABEND_TEMPLATE,
   RIVAL_MOVE_TEMPLATE, VISITOR_AFTERMATH_TEMPLATE, VISITOR_RETURN_WARM_TEMPLATE,
   AMBIENT_BAR_TALK_TEMPLATE, AMBIENT_SHARED_ROUND_TEMPLATE, AMBIENT_TENSE_TABLE_TEMPLATE,
+  CHAIN_VISITOR_ECHO_TEMPLATE,
 ];
 
 /** Ungueltige Definitionen werden fail-closed nicht angeboten. */
