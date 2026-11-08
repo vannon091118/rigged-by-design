@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/agents-wartezeiten-regel",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agents-wartezeiten-regel",
+  "baseSha": "6dfe2a124929d5a6f42c9464288e91f6bcc8f007",
+  "task": "Wartezeiten-Regel in AGENTS.md verankern",
+  "goal": "Sleeps und Gate-Wartezeiten sind Arbeitszeit; neue Prozessregeln stehen sofort im Kurzvertrag.",
+  "pathAllowlist": [
+    "AGENTS.md",
+    "docs/",
+    ".lane-claims/",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6dfe2a124929d5a6f42c9464288e91f6bcc8f007"
+}

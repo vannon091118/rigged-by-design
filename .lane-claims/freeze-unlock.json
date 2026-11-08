@@ -1,13 +1,9 @@
 {
   "version": 1,
-  "base": "adbb43aadf1837dfd2fb5384d74e999accf6dc50",
+  "base": "6dfe2a124929d5a6f42c9464288e91f6bcc8f007",
   "paths": [
-    ".githooks/commit-msg",
-    "docs/CI.md",
-    "scripts/lib/narrative-blocks.mjs",
-    "scripts/lib/pipeline-plan.mjs",
-    "scripts/verify-narrative-blocks.mjs"
+    "AGENTS.md"
   ],
-  "token": "4214ac69a47847b984e693f1155187fb67d16be146162afc629ea87eb4a273f3",
+  "token": "6231dc78df529fc7e98906d8c4ed35037655249e899bfac8e948bfa4618efb2f",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
