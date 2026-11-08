@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-07 23:58 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:20 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -47,12 +47,18 @@ PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vol
 | `PR` | Pull Request gegen `main` | 12 Required, volle Suite, Impact für lange Nachweise |
 | `MAIN` | Push auf `main` | 12 Required, volle Suite |
 | `MANUAL` | `workflow_dispatch` von `CI Verify` | 12 Required, volle Suite; Audit nur nach Impact/Env |
-| `LIGHT` | Feature-Push ohne offenen PR | 6 Light-Gates, keine Suite |
+| `LIGHT` | nur noch mit explizitem `--state=LIGHT` | 6 Light-Gates, keine Suite |
 | `NOOP` | Kopf ist die Basis, kein unabhängiger Diff | keine Gates, kein Pflichtstatus |
-| `PR_HANDOFF` | Feature-Push bei offenem PR | keine Gates; der PR-Lauf ist die Wahrheit |
-| `UNKNOWN` | Zustand nicht bestimmbar | 12 Required plus Audit; fail-closed |
+| `PR_HANDOFF` | Altform; `ci-verify` erzeugt sie nicht mehr | keine Gates, kein Pflichtstatus |
+| `UNKNOWN` | Zustand nicht bestimmbar; jeder Push auf einen Lane-Branch | 12 Required plus Audit; fail-closed |
 
-Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler und erzeugt kein Issue. Ein `PR_HANDOFF` verhindert den doppelten vollen Lauf.
+Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler und erzeugt kein Issue.
+
+### Pflichtstatus am Lane-Kopf
+
+Ein Push auf einen Lane-Branch meldet sein Ereignis als `push-lane`, nicht als `push`. Der Planer wählt dafür den konservativen Zustand `UNKNOWN`: volles Required-Set plus Audit. Grund ist der Branch-Schutz, der genau einen Status (`Fail-Closed Gates`) auf dem Kopf sieht: endete der Push wie früher als `PR_HANDOFF`, entstand auf diesem Kopf überhaupt kein Pflichtstatus. GitHub wertete dann die alten Läufe desselben Kopfes aus — auch abgebrochene und übersprungene — und der Status war nur noch per manuellem `workflow_dispatch` erreichbar. Der Handoff ist deshalb entfernt, nicht abgeschwächt: der Lane-Push trägt den Status selbst, und derselbe Kopf ist danach ohne Zusatzschritt squash-mergebar.
+
+Push- und PR-Lauf kollidieren dabei nicht: die Concurrency-Gruppe ist `ci-verify-${{ github.ref }}`, und `refs/heads/<lane>` ist nicht `refs/pull/<n>/merge`. Der Push-Lauf prüft denselben Baum wie der PR-Lauf; `claims` und `commitmsg` bleiben an den PR- beziehungsweise `main`-Zustand gebunden und werden im Aggregat als `skipped` akzeptiert.
 
 ## Workflows
 

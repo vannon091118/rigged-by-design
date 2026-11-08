@@ -5,10 +5,11 @@ name: CI Verify
 # Matrix einen eigenen Status traegt. Ein roter Lauf nennt damit das Gate, das
 # rot ist, statt "irgendetwas in verify:all".
 #
-# Der Zustand entscheidet, was laeuft: PR, MAIN und MANUAL tragen das zentrale
-# Required-Set und die vollstaendige Suite, LIGHT nur die schnellen Gates,
-# NOOP und PR_HANDOFF pruefen nichts. Eine leere Matrix ist ausschliesslich in
-# diesen beiden Zustaenden zulaessig; UNKNOWN faellt auf das volle Profil.
+# Der Zustand entscheidet, was laeuft: PR, MAIN, MANUAL und jeder Push auf einen
+# Lane-Branch tragen das zentrale Required-Set und die vollstaendige Suite,
+# LIGHT nur die schnellen Gates, NOOP und PR_HANDOFF pruefen nichts. Eine leere
+# Matrix ist ausschliesslich in diesen beiden Zustaenden zulaessig; UNKNOWN
+# faellt auf das volle Profil.
 on:
   pull_request:
     branches: [main]
@@ -114,10 +115,13 @@ jobs:
       - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
-      # Kein zweiter voller Lauf fuer denselben Commit: sobald ein PR offen ist,
-      # ist der PR-Lauf die Wahrheit. Der Zustand wird PR_HANDOFF; dieser Lauf
-      # erzeugt bewusst keinen Pflichtstatus.
-      - name: Doppelten Lauf vermeiden
+      # Der Handoff ist beendet: frueher endete ein Lane-Push bei offenem PR als
+      # PR_HANDOFF ohne Pflichtstatus. GitHub sah dann auf demselben Kopf nur
+      # alte Fehlschlaege, und der Pflichtstatus war ausschliesslich per
+      # manuellem Dispatch erreichbar. Jetzt traegt der Push-Lauf den Status
+      # selbst; der PR-Stand wird nur noch gemeldet. `--handoff` bleibt als
+      # Altform im Planer, wird hier aber nie gesetzt.
+      - name: PR-Stand melden
         id: dedupe
         if: github.event_name == 'push' && github.ref != 'refs/heads/main'
         env:
@@ -126,11 +130,9 @@ jobs:
         run: |
           number="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number' 2>/dev/null || true)"
           if [ -n "$number" ]; then
-            echo "handoff=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::PR #$number existiert; der PR-Lauf prueft vollstaendig, dieser Push-Lauf endet hier."
-          else
-            echo "handoff=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::PR #$number existiert; dieser Push-Lauf prueft vollstaendig und traegt den Pflichtstatus."
           fi
+          echo "handoff=false" >> "$GITHUB_OUTPUT"
 
       # Der Diff, den dieser Lauf wirklich prueft: PR Base gegen Head, Push
       # Before gegen Commit. Ohne belastbaren Bereich bleibt es beim Zustand
@@ -146,7 +148,15 @@ jobs:
           elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
             echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
             echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
-            echo "event=push" >> "$GITHUB_OUTPUT"
+            # `push-lane` ist bewusst kein `push`: ein Push auf eine Lane muss den
+            # Pflichtstatus selbst tragen, weil der Branch-Schutz ihn am Kopf
+            # sieht. Der Planer waehlt dafuer den konservativen Zustand UNKNOWN
+            # (volles Required-Set plus Audit).
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              echo "event=push" >> "$GITHUB_OUTPUT"
+            else
+              echo "event=push-lane" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "base=" >> "$GITHUB_OUTPUT"
             echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
