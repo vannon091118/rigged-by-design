@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 02:04 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 02:18 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -98,6 +98,20 @@ Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf au
 Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit: `### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`.
 Die Koepfe werden zeichengenau uebernommen, inklusive Umlaut in `Kausalität`; ein ASCII-Ersatz (`Kausalitaet`) laesst das Gate rot, obwohl alle Gates gruen waren.
 
+### Textbaustein-Pflicht: das Gate selbst
+
+`narrative` ist ein Required-Gate der CI (`scripts/lib/pipeline-plan.mjs`), nicht nur ein
+Hook. Damit kann weder ein Commit mit `--no-verify` noch ein Merge ueber die API die
+Baustein-Pflicht umgehen; der `main`-Lauf prueft denselben Baum wie der Lane-Lauf.
+
+- **Pflicht:** jeder Commit mit Spiel- oder Content-Aenderung braucht mindestens einen neuen,
+  im Turn-Manifest registrierten und in der Registry verdrahteten Baustein.
+- **Luecken:** solange ein Pool unter 50 liegt, wird nur dort gefuellt; sind alle Pools
+  mindestens voll, darf jeder Pool wachsen (sonst waere das Ziel 1500 unerreichbar).
+- **Schrumpf-Schutz:** ein geloeschter Beitrag oder ein kleinerer Pool ist ein Verstoss,
+  auch in einem Pflege-Commit.
+- **Nachricht:** `.githooks/commit-msg` ist fail-closed; eine Nachricht ohne die drei
+  Pflichtsektionen wird abgelehnt, nicht nur gemeldet.
 ### Textbaustein-Pflicht: Grenze der Pflege-Ausnahme
 
 `verify:narrative-blocks --commit` verlangt fuer jeden Commit mindestens einen

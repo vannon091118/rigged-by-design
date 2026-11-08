@@ -70,6 +70,17 @@ export const GATES = Object.freeze({
   },
   assets: { name: 'assets', command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
   capabilities: { name: 'capabilities', command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', cache: true, timeoutMs: MINUTE },
+  // Die Pflicht pro Commit gehoert in CI, nicht nur in den Hook: ein lokaler
+  // Verstoss oder ein Merge ueber die API darf die Baustein-Regel nicht
+  // umgehen. Der Lauf prueft Pools, Doppelte, Ziel, Luecken und Schrumpf-Schutz.
+  narrative: {
+    name: 'narrative',
+    command: 'node',
+    script: 'scripts/verify-narrative-blocks.mjs',
+    code: 'ERR-4022',
+    cache: true,
+    timeoutMs: 2 * MINUTE,
+  },
   audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
   // Ein roter Test ist ein Befund, kein Notfall: ERR-4026 steht auf AGENT und
   // wird als Issue abgeholt. Nur Geld-, Ledger-, RNG- und Save-Invarianten
@@ -98,6 +109,7 @@ export const QUICK_GATES = Object.freeze([
   'redundancy',
   'assets',
   'capabilities',
+  'narrative',
   'tests',
 ]);
 export const REQUIRED_CI_GATES = Object.freeze([...QUICK_GATES, 'build']);

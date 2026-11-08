@@ -5,13 +5,16 @@
  * Ohne `--commit` prueft der Lauf Mindestgroesse je Pool, doppelte Texte und
  * den Fortschritt zum Ziel. Mit `--commit` (Pre-Commit-Hook) muss der Commit
  * zusaetzlich mindestens einen neuen, im Manifest registrierten Beitrag
- * enthalten, und dieser muss eine Luecke schliessen.
+ * enthalten, und dieser muss eine Luecke schliessen, solange es eine gibt.
  *
  * Ausnahme: ein Commit, dessen Dateien ausschliesslich Pflegepfade (Doku,
  * Inventur, Claims, Kontrollebene, Werkzeuge) anfassen, braucht keinen neuen
  * Baustein. Die Grenze steht in `MAINTENANCE_PATHS`; sie ist alles-oder-nichts
  * und schliesst `content/`, `src/`, `public/` und `package.json` aus.
  * Pool-Regeln gelten auch dort.
+ *
+ * Schrumpf-Schutz: ein Commit, der einen Beitrag loescht oder einen Pool
+ * verkleinert, ist immer ein Verstoss - auch in einem Pflege-Commit.
  *
  * Ohne gestagte Dateien - etwa bei einer reinen Message-Korrektur per
  * `git commit --amend` - ist der Commit selbst das Pruefobjekt: die Dateiliste
@@ -29,6 +32,7 @@ import {
   poolIssues,
   poolReport,
   poolSlots,
+  shrinkIssues,
 } from './lib/narrative-blocks.mjs';
 import { loadNarrativeContent } from './lib/narrative-content.mjs';
 import { ROOT } from './lib/report.mjs';
@@ -61,6 +65,12 @@ if (commitMode) {
   const staged = gitPaths(['diff', '--cached', '--name-only']);
   const fromCommit = staged.length === 0;
   const changed = fromCommit ? commitPaths() : staged;
+  const deletedPaths = (fromCommit
+    ? commitPaths(['--diff-filter=D'])
+    : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D']))
+    .filter((path) => path.startsWith('content/narrative/contributions/'));
+  const deletedReport = poolReport(fragments);
+  issues.push(...shrinkIssues({ deleted: deletedPaths, before: deletedReport.counts, after: report.counts }));
   if (isMaintenanceOnly(changed)) {
     const source = fromCommit ? 'Dateiliste aus HEAD, nichts gestagt' : 'nur Doku/Inventur/Tooling';
     console.log(`[narrative-blocks] Pflege-Commit (${source}): Baustein-Pflicht entfaellt, Pool-Regeln gelten weiter`);
