@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/factor-matrix-config",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/factor-matrix-config",
+  "baseSha": "6a1d3d66ad3cb9eeeea86d40f74bbeba3b2379d6",
+  "task": "Faktor-Katalog fuellen und gewichtete Influenz-Matrix als versionierte Config mit Cross-Abhaengigkeiten verdrahten",
+  "goal": "Döner/Treat-Synergie an der Bar positiv, am Slot exakt null; Aenderungen an Gewichten und Cross-Kanten muessen das Ergebnis nachweisbar aendern",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/contracts/",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-factor-matrix-config.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "6a1d3d66ad3cb9eeeea86d40f74bbeba3b2379d6"
+}

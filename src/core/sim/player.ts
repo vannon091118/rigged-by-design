@@ -3,7 +3,9 @@ import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { deployCrate, depositCrate, takeCrate } from './deliveries';
 import { chooseActivity } from './guest-choice';
+import { INFLUENCE_CONFIG, type InfluenceConfig } from './influence';
 import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
+import { applyTreatInfluence } from './treat-influence';
 import { findPath, nearestWalkable } from './pathfinding';
 import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
@@ -33,7 +35,12 @@ export function takeDrink(world: WorldState): void {
   world.lastEvent = 'Drink gezapft. Jetzt zum Gast bringen.';
 }
 
-export function serveDrink(world: WorldState, ledger: Ledger, guestId: number): void {
+export function serveDrink(
+  world: WorldState,
+  ledger: Ledger,
+  guestId: number,
+  config: InfluenceConfig = INFLUENCE_CONFIG,
+): void {
   if (world.player.carrying !== 'DRINK') throw new Error('Du hast keinen Drink dabei.');
   const guest = guestById(world, guestId);
   if (!guest) throw new Error('Gast nicht gefunden.');
@@ -42,7 +49,8 @@ export function serveDrink(world: WorldState, ledger: Ledger, guestId: number): 
   if (ledger.getBalance(guestAccount(guest.id)) >= price) {
     ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, guestReason('DRINK', guest.id), world.tick);
   }
-  guest.mood = Math.min(100, guest.mood + 13);
+  const treat = applyTreatInfluence(world, guest, config);
+  guest.mood = Math.min(100, guest.mood + 13 + Math.round(treat * 30));
   guest.patience = Math.min(100, guest.patience + 12);
   guest.thirst = 0;
   // Nur wer schon gespielt hat, koppelt den Drink an den Kick; sonst wird niemand vom Zuschauen süchtig.

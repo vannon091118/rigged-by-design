@@ -1,6 +1,6 @@
 # Vertragsindex
 
-<!-- rbd-doc: v0.3.191 | 2026-11-08 16:54 UTC -->
+<!-- rbd-doc: v0.3.192 | 2026-11-08 17:25 UTC -->
 
 **Zweck:** Die sieben Kernverträge unter `docs/contracts/` mit Owner, Writer und Vertragstest. Die Vertragsdatei bleibt die Wahrheit; dieser Index macht sie auffindbar.
 
@@ -11,7 +11,7 @@
 | [`actionset`](actionset.md) | ActionSet, ActionProvider, Kategorien und Enabled-Gründe | Integrator | `lane/actionset/06-actionset` | `src/core/contracts/__tests__/actionset.test.ts` |
 | [`actor-id`](actor-id.md) | Stabile Actor-IDs und Referenzintegrität | Integrator | `lane/contracts/actor-id` | `src/core/contracts/__tests__/actor-id.test.ts` |
 | [`domain-event`](domain-event.md) | Unveränderliche Event-Hülle und `eventId`-Ableitung | Interaction-Contract-Owner | `lane/contracts/domain-event-v3` | `src/core/contracts/__tests__/domain-event.test.ts` |
-| [`factor`](factor.md) | Factor-ID, Kontext und Contribution-Trace | Integrator | `lane/contracts/factor` | `src/core/contracts/__tests__/factor.test.ts` |
+| [`factor`](factor.md) | Factor-ID, Kategorie, Grundgewicht, Untereinflüsse, Kontext und Trace | Integrator | `lane/contracts/factor` | `src/core/contracts/__tests__/factor.test.ts` |
 | [`relationship`](relationship.md) | Gerichtete Kanten, Haltung und Retention | Integrator | `lane/contracts/relationship` | `src/core/contracts/__tests__/relationship.test.ts` |
 | [`save`](save.md) | Save-Envelope, Versionierung und Migration | Integrator | `lane/contracts/save` | `src/core/contracts/__tests__/save.test.ts` |
 | [`world-time`](world-time.md) | `world.tick`, `world.day` und Zeitdomänen | Integrator | `lane/contracts/world-time` | `src/core/contracts/__tests__/world-time.test.ts` |

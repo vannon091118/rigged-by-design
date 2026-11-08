@@ -2,15 +2,18 @@
  * @test-target: src/core/contracts/factor.ts
  * @error-code: ERR-1002
  *
- * Contract factor v1.0: Factor-IDs, Kontext und Contribution-Trace.
+ * Contract factor v1.1: IDs, Kategorie, Grundgewicht, Untereinfluesse,
+ * Kontext und Contribution-Trace.
  */
 import { describe, expect, it } from 'vitest';
 import type { ActorId } from '../actor-id';
 import type { RelationshipId, RelationshipType, RelationshipEdge } from '../relationship';
-import type { FactorId, FactorContext, ContributionTrace, Factor } from '../factor';
+import type {
+  FactorId, FactorContext, ContributionTrace, Factor, FactorChild, FactorOptions,
+} from '../factor';
 import { createFactorId, createFactor, validateFactor } from '../factor';
 
-describe('Contract: factor v1.0', () => {
+describe('Contract: factor v1.1', () => {
   const sampleActor: ActorId = 'guest_42';
   const sampleEdge: RelationshipEdge = {
     edgeId: 'guest_42->player_1:VISITED' as RelationshipId,
@@ -23,11 +26,26 @@ describe('Contract: factor v1.0', () => {
     clues: [],
   };
 
-  it('erstellt einen gültigen Factor mit Kontext und Trace', () => {
+  it('erstellt einen gueltigen Factor mit Defaults fuer alte Aufrufer', () => {
     const factor: Factor = createFactor('factor_42', { zone: 'casino' }, ['contrib_1', 'contrib_2']);
     expect(factor.id).toBe('factor_42');
+    expect(factor.category).toBe('ALLGEMEIN');
+    expect(factor.baseWeight).toBe(1);
+    expect(factor.children).toEqual([]);
     expect(factor.context).toEqual({ zone: 'casino' });
     expect(factor.contributions).toEqual(['contrib_1', 'contrib_2']);
+    expect(validateFactor(factor)).toBe(true);
+  });
+
+  it('traegt Kategorie, Grundgewicht und Untereinfluesse', () => {
+    const child: FactorChild = {
+      id: 'factor_42.child', category: 'ERINNERUNG', baseWeight: 0.5, weight: 0.25,
+    };
+    const options: FactorOptions = { category: 'ZUSTAND', baseWeight: 0.75, children: [child] };
+    const factor = createFactor('factor_42', { zone: 'bar' }, ['contrib_1'], options);
+    expect(factor.category).toBe('ZUSTAND');
+    expect(factor.baseWeight).toBe(0.75);
+    expect(factor.children).toEqual([child]);
     expect(validateFactor(factor)).toBe(true);
   });
 
@@ -41,18 +59,28 @@ describe('Contract: factor v1.0', () => {
     expect(validateFactor(factor)).toBe(false);
   });
 
-  it('lehnt Trace mit nicht-String-Einträgen ab', () => {
+  it('lehnt Trace mit nicht-String-Eintraegen ab', () => {
     const factor = createFactor('factor_42', {}, [42 as unknown as string]);
     expect(validateFactor(factor)).toBe(false);
   });
 
-  it('behandelt leeren Trace als gültig', () => {
+  it('lehnt leere Kategorie, ungueltiges Grundgewicht und doppelte Kinder ab', () => {
+    expect(validateFactor(createFactor('factor_42', {}, [], { category: ' ' }))).toBe(false);
+    expect(validateFactor(createFactor('factor_42', {}, [], { baseWeight: 1.1 }))).toBe(false);
+    const child: FactorChild = { id: 'child', category: 'X', baseWeight: 1, weight: 0.5 };
+    expect(validateFactor(createFactor('factor_42', {}, [], { children: [child, child] }))).toBe(false);
+    expect(validateFactor(createFactor('factor_42', {}, [], {
+      children: [{ ...child, weight: 2 }],
+    }))).toBe(false);
+  });
+
+  it('behandelt leeren Trace als gueltig', () => {
     const factor: Factor = createFactor('factor_99', {}, []);
     expect(validateFactor(factor)).toBe(true);
     expect(factor.contributions).toHaveLength(0);
   });
 
-  it('produziert deterministische Factor-IDs für gleiche Eingaben', () => {
+  it('produziert deterministische Factor-IDs fuer gleiche Eingaben', () => {
     const id1 = createFactorId('factor_42');
     const id2 = createFactorId('factor_42');
     expect(id1).toBe(id2);
