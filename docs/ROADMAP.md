@@ -175,7 +175,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **680/1500** Bausteine in 13 Pools. Neun Slots tragen 52 bis 53,
+Stand 2026-11-08: **681/1500** Bausteine in 13 Pools. Neun Slots tragen 52 bis 53,
 darunter die Stadt-Pools `city-scene` und `city-night` aus dem Vertikalschnitt;
 die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`, `guest-voice-high`)
 tragen je 50. Die Pool-Mindestgroesse ist damit an allen 13 Pools erreicht und
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 680/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
+| P-13 | 681/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -259,9 +259,9 @@ Code und seinen Test als Beleg.
 | P-19 | First Frame unter 3 s / Slow 4G | offen | Baseline 22 Requests/12,16 s/2,42 MB |
 | P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | offen | `scripts/sync-dependency-matrix.mjs` zaehlt Testdateien; jede neue Testdatei verschiebt die Zahlen und braucht damit eine PIN-Freigabe. Matrix in eine freie Datei ziehen oder den Generator aus dem Freeze nehmen |
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
-| P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `src/core/sim/influence.ts` gewichtet `mood`, `sociability`, `thirst` und `rumor` je Kontext, wendet Cross-Kanten an und validiert die Matrix fail-closed; Consumer `src/core/sim/guest-choice.ts` (Bar-Nachfrage); Test `src/core/sim/__tests__/influence.test.ts` |
+| P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `influence-config.ts` gewichtet `mood`, `sociability`, `thirst`, `rumor` sowie `trust`, `sympathy` und `conflict` je Kontext, wendet Cross-Kanten an (unter anderem Vertrauen/Konflikt auf Geselligkeit) und validiert fail-closed; Consumer `guest-choice.ts` (Bar-Nachfrage mit Beziehungskante); Test `influence.test.ts` |
 | P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | offen | heutige Nachfrage-Events (`NEON_NACHT`, `TURNIER_ABEND`) sind sichtbar und wiederholen sich; ein gewichteter Pool braucht Ziehung ohne Wiederholung und Trigger, die auch ohne aktives Event feuern duerfen |
-| P-23 | NPC-Wissen und Geruechte mit Distanz- und Quellenverlust | **verifiziert 2026-11-08** | `knowledge.ts` erzwingt Provenance (unmittelbare und urspruengliche Quelle, Art, Distanz, Beobachtungs-Tick), `knowledge-observation.ts` verlangt fuer Sicht/Geraeusch echte Anwesenheit, `knowledge-query.ts` altert und bewahrt Widersprueche, `knowledge-share.ts` macht die Weitergabe vom Matrix-Kontext `share` abhaengig; Tests `knowledge.test.ts` und `knowledge-domain.test.ts` (vier NPCs, ein Fakt, vier Zustaende) |
+| P-23 | NPC-Wissen und Geruechte mit Distanz- und Quellenverlust | **verifiziert 2026-11-08** | `knowledge.ts` erzwingt Provenance (unmittelbare und urspruengliche Quelle, Art, Distanz, Beobachtungs-Tick), `knowledge-observation.ts` verlangt fuer Sicht/Geraeusch echte Anwesenheit, `knowledge-query.ts` altert und bewahrt Widersprueche, `knowledge-share.ts` macht die Weitergabe vom Matrix-Kontext `share` abhaengig, `knowledge-gossip.ts` waehlt die naechste, weitergabebereite Quelle, und empfangenes Wissen schreibt begrenzt auf die Kante zur Quelle und zum Subjekt zurueck; Tests `knowledge.test.ts`, `knowledge-domain.test.ts` und `knowledge-relationships.test.ts` |
 
 #### D. Governance, CI und Abnahme der Lieferung
 

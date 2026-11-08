@@ -10,11 +10,13 @@ import {
   KNOWLEDGE_CONFIG, knowledgeRisk, sourceWeightOf, validateKnowledgeConfig,
   type KnowledgeConfig,
 } from './knowledge-config';
-import { relationshipBetween } from './relationships';
+import { relationshipBetween, shift } from './relationships';
 import type { InfluenceValues } from '../influence';
 import type { ActorRef, KnowledgeEntry } from './knowledge-types';
 import { noteObservation } from './knowledge-observation';
 import { willingToShare } from './knowledge-share';
+
+export type SpeakerValues = Pick<InfluenceValues, 'mood' | 'sociability' | 'thirst' | 'rumor'>;
 
 const KNOWLEDGE_TOPIC = 'haus';
 const KNOWLEDGE_SUBJECT: ActorRef = 'player';
@@ -102,7 +104,18 @@ interface ReportInput {
   readonly tick: number;
   readonly seed: number;
   /** Optional: wer erzaehlt, muss laut Matrix ueberhaupt weitergabebereit sein. */
-  readonly speaker?: InfluenceValues;
+  readonly speaker?: SpeakerValues;
+}
+
+/** Beziehung Sprecher -> Empfaenger fliesst als Faktoren in die Weitergabe-Matrix. */
+function speakerInfluence(world: WorldState, from: ActorRef, to: ActorRef, base: SpeakerValues): InfluenceValues {
+  const edge = relationshipBetween(world, from, to) ?? relationshipBetween(world, to, from);
+  return {
+    ...base,
+    trust: edge?.trust ?? 0,
+    sympathy: edge?.sympathy ?? 0,
+    conflict: edge?.conflict ?? 0,
+  };
 }
 
 /**
@@ -124,7 +137,7 @@ export function reportKnowledge(
   const entry = entryOf(world, input.from, topic, input.entryId);
   if (!entry) throw new Error(`Wissenskette: ${input.from} hat kein Wissen zu ${topic}; Bericht abgelehnt.`);
   if (entry.actor !== input.from) throw new Error('Wissenskette: Quelle und Wissensbesitzer stimmen nicht ueberein.');
-  if (input.speaker && !willingToShare(input.speaker)) return null;
+  if (input.speaker && !willingToShare(speakerInfluence(world, input.from, input.to, input.speaker))) return null;
   return transmit(world, entry, input.to, input.tick, input.seed, config);
 }
 
@@ -148,44 +161,25 @@ function transmit(
   const confidence = entry.confidence * weight * (1 - config.distance.confidenceDecay * distance);
   if (confidence < config.limits.minConfidence) return null;
   const distorted = prng.nextFloat() < risk.distortion;
-  return append(world, {
+  const made = append(world, {
     actor: to, topic: entry.topic, subject: entry.subject,
     sentiment: distorted ? clamp(-entry.sentiment * 0.8, -1, 1) : entry.sentiment,
     confidence, sourceKind: entry.sourceKind === 'ERLEBT' ? 'GEHOERT' : entry.sourceKind,
     sourceActor: entry.actor, originActor: entry.originActor, distance,
     observedTick: entry.observedTick, decayedTick: tick, tick, factId: entry.factId,
   }, config);
+  // Rueckwirkung: Die Quelle gewinnt Vertrauen, das Subjekt gewinnt oder verliert Sympathie.
+  shift(world, to, entry.actor, {
+    trust: config.feedback.sourceTrust * (made.confidence >= 0.3 ? 1 : -0.5),
+  }, tick);
+  if (entry.subject !== to) {
+    const sympathy = clamp(made.sentiment * made.confidence * config.feedback.subjectSympathy, -2, 2);
+    shift(world, to, entry.subject, { sympathy }, tick);
+  }
+  return made;
 }
 
 /** Abfragen und Alterung liegen getrennt; die Fassade bleibt importierbar. */
 export { ageKnowledge, contradictionsAbout, entriesAbout, rumorAbout } from './knowledge-query';
-
-function actorHash(actor: ActorRef): number {
-  let hash = 0x811c9dc5;
-  for (let index = 0; index < actor.length; index += 1) {
-    hash ^= actor.charCodeAt(index);
-    hash = Math.imul(hash, 0x01000193) >>> 0;
-  }
-  return hash;
-}
-
-/**
- * Ein zurueckkehrender Gast hoert das Neueste, was ein anderer weiss. Die
- * Auswahl ist deterministisch aus Eintrag, Ziel und Tick; kein globaler Strom
- * wird verschoben.
- */
-export function hearRumor(
-  world: WorldState,
-  target: ActorRef,
-  tick: number,
-  config: KnowledgeConfig = KNOWLEDGE_CONFIG,
-): KnowledgeEntry | null {
-  const source = [...world.narrative.knowledge]
-    .reverse()
-    .find((entry) => entry.actor !== target && entry.topic === KNOWLEDGE_TOPIC);
-  if (!source) return null;
-  const seed = (Math.imul(source.id + 1, 2654435761) + actorHash(target) + tick) >>> 0;
-  return transmit(world, source, target, tick, seed, config);
-}
 
 export { normalizeKnowledge } from './knowledge-persist';

@@ -1,133 +1,25 @@
 /**
  * Einfluss-Matrix: gewichtete Faktoren, Kontexte und Cross-Kanten. Rein und
  * deterministisch: gleiche Eingaben ergeben gleiche Punktzahl, kein RNG.
+ * Die balancebare Config liegt in `influence-config.ts`.
  */
+import {
+  FACTOR_IDS, INFLUENCE_CONFIG, validateInfluenceConfig,
+  type InfluenceConfig, type InfluenceFactorId, type InfluenceValues,
+} from './influence-config';
 import { createFactor, type Factor } from '../contracts/factor';
 
-type InfluenceFactorId = 'mood' | 'sociability' | 'thirst' | 'rumor';
-
-export interface InfluenceValues {
-  readonly mood: number;
-  readonly sociability: number;
-  readonly thirst: number;
-  readonly rumor: number;
-}
-
-interface FactorRange {
-  readonly min: number;
-  readonly max: number;
-}
-
-interface InfluenceContext {
-  readonly label: string;
-  /** Gewicht je Faktor; 0 schaltet den Faktor in diesem Kontext aus. */
-  readonly weights: Readonly<Record<InfluenceFactorId, number>>;
-  /** Ab dieser Punktzahl gilt der Kontext als ausgeloest (0..1). */
-  readonly threshold: number;
-}
-
-interface CrossEdge {
-  /** Quelle des Einflusses. */
-  readonly from: InfluenceFactorId;
-  /** Ziel, dessen Wert verschoben wird. */
-  readonly to: InfluenceFactorId;
-  /** Staerke in Punkten des normierten Zielwerts, -1..1. */
-  readonly weight: number;
-}
-
-export interface InfluenceConfig {
-  readonly version: 1;
-  readonly factors: Readonly<Record<InfluenceFactorId, FactorRange>>;
-  readonly contexts: Readonly<Record<string, InfluenceContext>>;
-  readonly cross: readonly CrossEdge[];
-}
-
-/**
- * Standardmatrix. Die Synergie ist absichtlich kontextabhaengig:
- * Zuwendung und Durst ziehen an der Bar, am Slot fast gar nicht.
- */
-export const INFLUENCE_CONFIG: InfluenceConfig = {
-  version: 1,
-  factors: {
-    mood: { min: 0, max: 100 },
-    sociability: { min: 0, max: 100 },
-    thirst: { min: 0, max: 100 },
-    rumor: { min: -1, max: 1 },
-  },
-  contexts: {
-    bar: {
-      label: 'Bar',
-      weights: { mood: 0.35, sociability: 0.15, thirst: 0.35, rumor: 0.15 },
-      threshold: 0.62,
-    },
-    slot: {
-      label: 'Spielgeraet',
-      // Am Automaten hilft keine Zuwendung: nur Gerede ueber das Geraet zaehlt.
-      weights: { mood: 0, sociability: 0, thirst: 0, rumor: 0.15 },
-      threshold: 0.8,
-    },
-  },
-  cross: [
-    // Durst drueckt die Laune, bevor die Bar ihn gewichtet.
-    { from: 'thirst', to: 'mood', weight: -0.2 },
-    // Gerede faerbt die Laune.
-    { from: 'rumor', to: 'mood', weight: 0.25 },
-    // Wer gesellig ist, merkt Durst spaeter.
-    { from: 'sociability', to: 'thirst', weight: -0.1 },
-  ],
-};
-
-const FACTOR_IDS: readonly InfluenceFactorId[] = ['mood', 'sociability', 'thirst', 'rumor'];
+export { INFLUENCE_CONFIG } from './influence-config';
+export type { InfluenceConfig, InfluenceFactorId, InfluenceValues } from './influence-config';
 
 const clamp01 = (value: number): number => Math.min(1, Math.max(0, value));
 
-function rangeOf(config: InfluenceConfig, id: InfluenceFactorId): FactorRange {
-  const range = config.factors[id];
-  return range;
-}
-
 /** Normiert einen Rohwert auf 0..1; unbekannte Faktoren sind ein Programmierfehler. */
 function normalize(config: InfluenceConfig, id: InfluenceFactorId, raw: number): number {
-  const range = rangeOf(config, id);
+  const range = config.factors[id];
   const span = range.max - range.min;
   if (!(span > 0)) throw new Error(`Einfluss-Faktor ${id} hat keinen gueltigen Wertebereich.`);
   return clamp01((raw - range.min) / span);
-}
-
-/** Prueft die Matrix fail-closed: eine unlesbare Config darf nie still weiterlaufen. */
-function validateInfluenceConfig(config: InfluenceConfig): void {
-  if (config.version !== 1) throw new Error('Einfluss-Matrix: unbekannte Version.');
-  for (const id of FACTOR_IDS) {
-    const range = config.factors[id];
-    if (!range || !Number.isFinite(range.min) || !Number.isFinite(range.max) || range.max <= range.min) {
-      throw new Error(`Einfluss-Matrix: Faktor ${id} hat keinen gueltigen Wertebereich.`);
-    }
-  }
-  const contexts = Object.keys(config.contexts);
-  if (contexts.length === 0) throw new Error('Einfluss-Matrix: kein Kontext definiert.');
-  for (const name of contexts) {
-    const context = config.contexts[name]!;
-    if (!Number.isFinite(context.threshold) || context.threshold < 0 || context.threshold > 1) {
-      throw new Error(`Einfluss-Matrix: Kontext ${name} hat eine Schwelle ausserhalb 0..1.`);
-    }
-    let sum = 0;
-    for (const id of FACTOR_IDS) {
-      const weight = context.weights[id];
-      if (!Number.isFinite(weight) || weight < 0 || weight > 1) {
-        throw new Error(`Einfluss-Matrix: Kontext ${name} gewichtet ${id} ungueltig.`);
-      }
-      sum += weight;
-    }
-    if (sum <= 0) throw new Error(`Einfluss-Matrix: Kontext ${name} hat kein Gewicht.`);
-  }
-  for (const edge of config.cross) {
-    if (!FACTOR_IDS.includes(edge.from) || !FACTOR_IDS.includes(edge.to)) {
-      throw new Error(`Einfluss-Matrix: Cross-Kante ${edge.from}->${edge.to} zeigt auf einen unbekannten Faktor.`);
-    }
-    if (!Number.isFinite(edge.weight) || edge.weight < -1 || edge.weight > 1) {
-      throw new Error(`Einfluss-Matrix: Cross-Kante ${edge.from}->${edge.to} hat ein ungueltiges Gewicht.`);
-    }
-  }
 }
 
 interface InfluenceResult {

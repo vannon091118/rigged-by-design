@@ -524,10 +524,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2068 |
-| Gelistete Dateien | 2068 |
+| Getrackte Dateien | 2073 |
+| Gelistete Dateien | 2073 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (23), content (684), docs (77), public (554), scripts (91), src (614) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (24), content (685), docs (77), public (554), scripts (91), src (617) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,8 +539,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 21 Datei(en)
-- `content/narrative/contributions/` — 680 Datei(en)
+- `.lane-claims/claims/` — 22 Datei(en)
+- `content/narrative/contributions/` — 681 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -601,9 +601,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 75 Datei(en)
-- `src/core/sim/__tests__/` — 95 Datei(en)
-- `src/core/sim/narrative/` — 35 Datei(en)
+- `src/core/sim/` — 76 Datei(en)
+- `src/core/sim/__tests__/` — 96 Datei(en)
+- `src/core/sim/narrative/` — 36 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
@@ -656,8 +656,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-docs-meta.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-knowledge-chain.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-knowledge-chain.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
@@ -665,6 +665,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-relationships-coupling.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
@@ -1352,9 +1353,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-relationship-standing-01.json` — {"agentId":"buffy","turnId":"2026-11-08T03:55Z-relationship-standing","contributionId":"relationship-standing- — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-relationships-coupling-01.json` — {"agentId":"buffy","turnId":"2026-11-08T05:25Z-relationships-coupling","contributionId":"relationships-couplin — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15093 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2725 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15115 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2729 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 188 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2242,10 +2244,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guest-settlement.test.ts` — Kein Gast und kein Anspruch verschwindet, solange die Buchung nicht vollstaendig ist. — gelesen: 119 Zeilen
 - `src/core/sim/__tests__/guest-voice.test.ts` — Der Ruf hoert man: Das Rufband waehlt den Pool, der Gast waehlt den Satz, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
-- `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus. — gelesen: 86 Zeilen
+- `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus. — gelesen: 101 Zeilen
 - `src/core/sim/__tests__/jackpot-label.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 13 Zeilen
 - `src/core/sim/__tests__/journal.test.ts` — Jede Buchung wird genau einmal kopiert; Welt-Ereignisse tragen Ursache und Folge. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/knowledge-domain.test.ts` — Vier NPCs, ein Fakt, vier Zustaende: direkte Sicht, eigenes Geraeusch, — gelesen: 162 Zeilen
+- `src/core/sim/__tests__/knowledge-relationships.test.ts` — Beziehungen sind Teil der Matrix: Konflikt stoppt die Weitergabe, Vertrauen — gelesen: 103 Zeilen
 - `src/core/sim/__tests__/knowledge.test.ts` — Wissenskette: Nur Erlebtes/Gesehenes/Gehoertes/Gelesenes darf berichtet werden. — gelesen: 146 Zeilen
 - `src/core/sim/__tests__/layout-commands.test.ts` — Typisierte Layout-Commands: nur die genannten Tiles/Kanten aendern sich, — gelesen: 98 Zeilen
 - `src/core/sim/__tests__/layout-contract.test.ts` — Layout-Vertrag: eine Wahrheit fuer Dimension, Boden, Zonen und Wandkanten. — gelesen: 121 Zeilen
@@ -2337,13 +2340,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
 - `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 81 Zeilen
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 121 Zeilen
-- `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 139 Zeilen
+- `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 144 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 21 Zeilen
 - `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 158 Zeilen
 - `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 79 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 122 Zeilen
-- `src/core/sim/influence.ts` — Einfluss-Matrix: gewichtete Faktoren, Kontexte und Cross-Kanten. Rein und — gelesen: 200 Zeilen
+- `src/core/sim/influence-config.ts` — Matrix-Config: Faktoren, Kontexte und Cross-Kanten. Beziehungen sind eigene — gelesen: 130 Zeilen
+- `src/core/sim/influence.ts` — Einfluss-Matrix: gewichtete Faktoren, Kontexte und Cross-Kanten. Rein und — gelesen: 92 Zeilen
 - `src/core/sim/interaction.ts` — Interaktionsradius-System für Charakter-Steuerung. Headless, deterministisch. — gelesen: 19 Zeilen
 - `src/core/sim/journal.ts` — Ereignisprotokoll: jeder wichtige Zustand mit Ursache, Wirkung und Akteur. — gelesen: 145 Zeilen
 - `src/core/sim/layout-commands.ts` — Typisierte Layout-Commands: der Editor beschreibt eine Absicht, das Modul — gelesen: 115 Zeilen
@@ -2374,7 +2378,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 175 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 176 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2405,13 +2409,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/fact-schema.ts` — Validierung und stabile Reihenfolge persistierter Narrative-Facts. — gelesen: 92 Zeilen
 - `src/core/sim/narrative/facts.ts` — Fact-Queue: typisierte, einmalige Ereignisse mit stabiler ID — getrennt vom Journal. — gelesen: 76 Zeilen
 - `src/core/sim/narrative/guest-voice.ts` — Ruf hoert man: Der Gaeste-Ton folgt dem Ruf des Hauses, nicht dem Zufall. — gelesen: 56 Zeilen
-- `src/core/sim/narrative/knowledge-config.ts` — Wissens-Config: Quellengewichte, Beziehungsbonus und Distanzkurve. — gelesen: 114 Zeilen
+- `src/core/sim/narrative/knowledge-config.ts` — Wissens-Config: Quellengewichte, Beziehungsbonus und Distanzkurve. — gelesen: 121 Zeilen
+- `src/core/sim/narrative/knowledge-gossip.ts` — Geruechtquelle: Ein zurueckkehrender Gast hoert nicht einfach den neuesten — gelesen: 68 Zeilen
 - `src/core/sim/narrative/knowledge-observation.ts` — Beobachtungsschicht: Eine Sicht oder ein Geraeusch setzt echte Anwesenheit — gelesen: 79 Zeilen
 - `src/core/sim/narrative/knowledge-persist.ts` — Persistenz der Wissensstaende: sichere Defaults, Grenzen und Herkunfts-Fallbacks. — gelesen: 39 Zeilen
 - `src/core/sim/narrative/knowledge-query.ts` — Abfragen auf der Wissensdomäne: Glaube, Widersprueche und Alterung. — gelesen: 66 Zeilen
-- `src/core/sim/narrative/knowledge-share.ts` — Weitergabe als Matrix-Kontext: ob jemand ueberhaupt erzaehlt, haengt von — gelesen: 26 Zeilen
+- `src/core/sim/narrative/knowledge-share.ts` — Weitergabe als Matrix-Kontext: ob jemand ueberhaupt erzaehlt, haengt von — gelesen: 29 Zeilen
 - `src/core/sim/narrative/knowledge-types.ts` — Typen der Wissensdomäne: Wahrnehmung, Wissen und nachvollziehbare Herkunft. — gelesen: 46 Zeilen
-- `src/core/sim/narrative/knowledge.ts` — Wissenskette: Kein NPC berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 191 Zeilen
+- `src/core/sim/narrative/knowledge.ts` — Wissenskette: Kein NPC berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 185 Zeilen
 - `src/core/sim/narrative/ledger-facts.ts` — Leitet aus Ledger-Buchungen nur Schwellenuebergaenge ab, nicht jede Buchung. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 54 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen

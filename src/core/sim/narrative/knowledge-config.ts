@@ -21,6 +21,7 @@ export interface KnowledgeConfig {
     readonly confidenceDecay: number; readonly maxDistance: number;
   };
   readonly aging: { readonly graceTicks: number; readonly decayPerTick: number; readonly minConfidence: number };
+  readonly feedback: { readonly sourceTrust: number; readonly subjectSympathy: number };
   readonly limits: { readonly maxEntries: number; readonly maxObservations: number; readonly minConfidence: number };
 }
 
@@ -35,6 +36,7 @@ export const KNOWLEDGE_CONFIG: KnowledgeConfig = {
   relationship: { trust: 0.04, sympathy: 0.03, influence: 0.02, conflict: 0.06 },
   distance: { lossPerStep: 0.12, distortionPerStep: 0.18, confidenceDecay: 0.1, maxDistance: 4 },
   aging: { graceTicks: 8, decayPerTick: 0.01, minConfidence: 0.05 },
+  feedback: { sourceTrust: 0.5, subjectSympathy: 1.2 },
   limits: { maxEntries: 160, maxObservations: 160, minConfidence: 0.05 },
 };
 
@@ -68,6 +70,11 @@ export function validateKnowledgeConfig(config: KnowledgeConfig): void {
   for (const [name, value] of Object.entries({ decayPerTick, agingFloor })) {
     if (!Number.isFinite(value) || value < 0 || value > 1) {
       throw new Error(`Wissenskette: Alterungswert ${name} liegt ausserhalb 0..1.`);
+    }
+  }
+  for (const [name, value] of Object.entries(config.feedback)) {
+    if (!Number.isFinite(value) || value < 0 || value > 5) {
+      throw new Error(`Wissenskette: Rueckwirkung ${name} liegt ausserhalb 0..5.`);
     }
   }
   const { maxEntries, maxObservations, minConfidence } = config.limits;

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4c92b147fb11a407a46630ebb932fb03dca4a9859f4165bbfaab4e6dfeba4af0",
+  "contentHash": "sha256:cb9f7ab9545e9373ff93f017b020a8f2f0f3199d352254aa420ef476b768f6fd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -14797,6 +14797,28 @@
       "text": "Man erzaehlt sich, dass ein Gast dem Haus seine Stimme geliehen hat. Ruf entsteht nicht am Automaten, sondern an den Leuten, die ihn weiterempfehlen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationship-standing-01.json"
+    },
+    {
+      "contributionId": "relationships-coupling-01",
+      "turnId": "2026-11-08T05:25Z-relationships-coupling",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
     },
     {
       "contributionId": "returning-memory-01",

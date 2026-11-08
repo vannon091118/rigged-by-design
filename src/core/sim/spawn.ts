@@ -8,7 +8,7 @@ import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
 import { emitFact } from './narrative/facts';
 import { memoryEffect } from './narrative/memory';
-import { hearRumor } from './narrative/knowledge';
+import { hearRumor } from './narrative/knowledge-gossip';
 import { actorRefOfVisitor, relationshipStanding } from './narrative/relationships';
 import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';

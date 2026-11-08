@@ -139,8 +139,8 @@ describe('Wissensdomäne', () => {
   });
 
   it('laesst die Matrix entscheiden, ob jemand ueberhaupt erzaehlt', () => {
-    expect(willingToShare({ mood: 0, sociability: 0, thirst: 0, rumor: 0 })).toBe(false);
-    expect(willingToShare({ mood: 100, sociability: 100, thirst: 0, rumor: 0 })).toBe(true);
+    expect(willingToShare({ mood: 0, sociability: 0, thirst: 0, rumor: 0, trust: 0, sympathy: 0, conflict: 0 })).toBe(false);
+    expect(willingToShare({ mood: 100, sociability: 100, thirst: 0, rumor: 0, trust: 0, sympathy: 0, conflict: 0 })).toBe(true);
 
     const w = world();
     const a = visitor(w, 'Ayla');
