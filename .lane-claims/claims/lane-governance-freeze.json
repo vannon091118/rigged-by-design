@@ -18,5 +18,6 @@
   "gateProfile": "full",
   "status": "merged",
   "mergedEvidence": "branch-tree-on-main",
-  "mergedSha": "9a1a1ff82820a56ee987ff684781e23f468357ea"
+  "mergedSha": "9a1a1ff82820a56ee987ff684781e23f468357ea",
+  "createdAt": "dcf833551f0f7e046cdc3ef0e73d8659562096d1"
 }
