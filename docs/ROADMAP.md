@@ -175,10 +175,10 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **688/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-08: **689/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
-`guest-voice-high`) mit je 50. Die Pool-Mindestgroesse ist damit an allen 13
+`guest-voice-high`) mit mindestens 50. Die Pool-Mindestgroesse ist damit an allen 13
 Pools erreicht und bleibt Untergrenze.
 
 **Der Weg zu 1500 ist eine Pool-Struktur, keine Auffuellung.** 1500 / 50 = 30
@@ -224,7 +224,7 @@ Code und seinen Test als Beleg.
 | --- | --- | --- | --- |
 | P-1 | Luecken-Regel sperrte Pools ab 50 (siehe oben) | **erledigt 2026-11-08 (#267)** | `gapIssues` fuellt offene Pools zuerst, danach ist Wachstum erlaubt; `shrinkIssues` verbietet Schrumpf; Beleg im Abschnitt Textbausteine |
 | P-2 | Stadt-Loop war nicht auf `main`: Kiez (Fremder→Eingeweihter), Markt (Laufbursche→Marktherr), Energie und "Tag beenden" lagen nur in PR #264 | **gemergt 2026-11-08 (#264)** | Merge-Commit `fd6c081`; Stadt-Kopf-CI gruen (`42441210747`, `42441205413`), Stadt-Tests und `city-loop-walkthrough.test.ts` gruen |
-| P-3 | `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer | offen | `self-exclusion-bet.ts:82`; nur `player-cash.test.ts` ruft sie |
+| P-3 | `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer | **erledigt 2026-11-08 (#290)** | Produktionspfad `src/ui/self-exclusion-panel.tsx` → `src/store/game-commands.ts` `CASH_OUT` → `cashOutPlayerCash`; Tests `src/store/__tests__/exclusion-command.test.ts` und `src/ui/__tests__/self-exclusion-panel.test.tsx`; Merge `5e0f2a0`, Claim lane/sim/player-cash-payout |
 | P-4 | Einnahmen je Spieltyp fehlen als Kennzahl | offen | Ledger kennt Konten, nicht Spieltypen; `economyOf` aggregiert global |
 | P-5 | Sucht-Folgen sind eine Designentscheidung | offen | `personaStake`/`addictedStake` skalieren nur Einsatz und Sitzung |
 | P-6 | Archiv wird beim ersten Load aus dem Journal gefuellt | offen (niedrig) | `store/migrate.ts` setzt `saved.archive ?? world.journal` |
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 688/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 689/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
