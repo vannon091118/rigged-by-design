@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:41Z-city-night-42",
+  "contributionId": "city-night-42",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Markt braucht drei Stunden, um wieder Markt zu sein.",
+  "directives": []
+}

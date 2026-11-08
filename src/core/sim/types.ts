@@ -13,6 +13,7 @@ import type { Mop } from './mop';
 import type { Stain } from './stain';
 import type { RivalMindState } from './rival-ai/types';
 import type { LayoutState } from './layout-types';
+import type { CityState } from './city';
 
 export type * from './types-model';
 export type { Mop } from './mop';
@@ -92,6 +93,11 @@ export interface WorldState {
   nextForeignFloorId: number;
   /** ID des fremden Floors auf dem der Spieler gerade ist (null = eigener Floor). */
   activeForeignFloorId: number | null;
+  /**
+   * Stadt-Zustand des ersten Vertical Slice. Optional, weil Saves davor ihn
+   * nicht tragen; `cityOf` legt ihn beim ersten Zugriff an.
+   */
+  city?: CityState;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

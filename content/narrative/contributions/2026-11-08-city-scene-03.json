@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:02Z-city-scene-03",
+  "contributionId": "city-scene-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Stammgast schiebt dir den Aschenbecher zu, ohne zu fragen. Das ist hier die erste Form von Vertrauen.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:47Z-city-night-48",
+  "contributionId": "city-night-48",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Morgen faengt die Kasse wieder bei null an, du nicht.",
+  "directives": []
+}

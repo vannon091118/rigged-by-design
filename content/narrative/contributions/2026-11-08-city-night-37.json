@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:36Z-city-night-37",
+  "contributionId": "city-night-37",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Schluessel dreht sich zweimal; beim zweiten Mal ist es endgueltig.",
+  "directives": []
+}

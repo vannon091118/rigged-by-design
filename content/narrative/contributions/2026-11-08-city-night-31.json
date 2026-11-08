@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:30Z-city-night-31",
+  "contributionId": "city-night-31",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Strasse hat die Farbe gewechselt, ohne dass jemand es merkte.",
+  "directives": []
+}

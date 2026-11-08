@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:50Z-city-scene-51",
+  "contributionId": "city-scene-51",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "demand"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zum ersten Mal fragt dich jemand nach deiner Meinung, nicht nach deinem Geld.",
+  "directives": []
+}

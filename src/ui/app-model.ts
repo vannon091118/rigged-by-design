@@ -22,6 +22,7 @@ export type Popup =
   | { kind: 'foreignMap' }
   | { kind: 'foreignFloor' }
   | { kind: 'jobContext'; stationId: string }
+  | { kind: 'city' }
   | null;
 
 export function fits(view: GameView, id: BuildId, x: number, y: number): boolean {

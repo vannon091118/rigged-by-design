@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:05Z-city-scene-06",
+  "contributionId": "city-scene-06",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "ask"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Markt ruft einer Preise aus, die niemand zahlt. Trotzdem hoert die halbe Gasse zu.",
+  "directives": []
+}

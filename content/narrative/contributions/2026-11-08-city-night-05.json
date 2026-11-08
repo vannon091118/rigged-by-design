@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:04Z-city-night-05",
+  "contributionId": "city-night-05",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf dem Rueckweg zaehlst du die Schritte und verlierst die Zahl.",
+  "directives": []
+}

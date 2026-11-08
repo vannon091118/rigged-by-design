@@ -24,3 +24,5 @@ test-results/
 
 # Lokal entwickelte DSH-Plugins (Bundle-Quellen im Workspace)
 plugins/
+.dev-server.log
+.dev-server.pid

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T03:34Z-city-night-35",
+  "contributionId": "city-night-35",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Du hoerst, wie eine Kasse klingelt, weit weg und ohne dich.",
+  "directives": []
+}

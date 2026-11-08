@@ -10,6 +10,7 @@ import type { NarrativeView } from '../core/sim/narrative/view-types';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { DayPhase } from '../core/sim/day-phase';
 import type { CompanyStatus } from '../core/sim/progression';
+import type { CityView } from '../core/sim/city';
 
 /**
  * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
@@ -105,6 +106,8 @@ export interface GameView {
   readonly ledgerEntries: number;
   readonly ledgerLastSeq: number;
   readonly ledgerCirculating: VaCoinMicro;
+  /** Stadt-Sicht: Orte, Energie, Zweige und blockierte Handlungen. */
+  readonly city: CityView;
   readonly notice: string;
   /** Aktiver Foreign Floor (null = eigener Floor). */
   readonly currentForeignFloorId: number | null;

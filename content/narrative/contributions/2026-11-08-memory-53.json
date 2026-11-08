@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T05:00Z-memory-53",
+  "contributionId": "memory-53",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "memory",
+  "function": "remember",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Quote ist kein Versprechen, sondern eine Summe: was heute nicht faellt, liegt im Polster.",
+  "directives": []
+}

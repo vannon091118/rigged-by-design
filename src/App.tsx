@@ -221,6 +221,9 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         <button type="button" className="narrative-chip dialogue-chip" title="Comic-Dialog oeffnen"
           onClick={() => openPopup({ kind: 'dialogue' })}>DIALOG</button>
 
+        <button type="button" className="narrative-chip city-chip" title="Stadt: Kiez und Markt"
+          onClick={() => openPopup({ kind: 'city' })}>STADT</button>
+
         {view.notice && (
           <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
         )}
