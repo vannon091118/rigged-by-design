@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/push-required-check",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/push-required-check",
+  "baseSha": "9ab446eb3d078d2edd10a0d110445af968035a30",
+  "task": "Pflichtstatus fuer Lane-Pushes",
+  "goal": "Ein frisch gepushter Lane-Branch erzeugt den Pflichtcheck selbst; kein manueller Dispatch, der PR ist auf diesem Kopf mergebar.",
+  "pathAllowlist": [
+    ".github/workflows/ci-verify.yml",
+    ".lane-claims/**",
+    "docs/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "9ab446eb3d078d2edd10a0d110445af968035a30"
+}
