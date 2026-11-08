@@ -17,6 +17,7 @@ import { assertGameplayRng } from '../rng/streams';
 import { DEBT_ACCOUNT, HAUSKONTO, PORTEMONNAIE } from './money';
 import { resolveModEffects } from './offers';
 import { TX_REASON } from './tx-reasons';
+import { emitSlotDischarge } from './narrative/facts';
 import type { Furniture, GameId, WorldState } from './types';
 import { furnitureById } from './world';
 
@@ -113,6 +114,7 @@ export function playOwnRound(
   try {
     ownBet(ledger, stake, world.tick);
     if (result.payout > ZERO_VC) ownWin(ledger, result.payout, world.tick);
+    if (result.discharged) emitSlotDischarge(world, 'player', item.id, stake, result.payout);
   } catch (error) {
     prng.setState(snapshot);
     throw error;

@@ -44,6 +44,11 @@ export function isFact(raw: unknown): raw is NarrativeFact {
   if (kind === 'HOUSE_BALANCE') {
     return Number.isSafeInteger(raw.balance) && HOUSE_BANDS.includes(raw.band as HouseBand);
   }
+  if (kind === 'SLOT_DISCHARGE') {
+    const refs = actorRefs(raw.actorRefs, 1);
+    return refs !== null && (refs[0] === 'player' || visitorIdOf(refs[0]!) !== null)
+      && safeInteger(raw.machineId, 1) && safeInteger(raw.stake, 1) && safeInteger(raw.payout, 0);
+  }
   if (kind === 'VISITOR_CONFLICT') {
     const refs = visitorRefs(raw.actorRefs);
     return refs !== null

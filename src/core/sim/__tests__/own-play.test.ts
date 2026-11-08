@@ -14,6 +14,8 @@ import { testSpin, foreignRound } from '../actions';
 import { DEBT_ACCOUNT, EXTERNAL, HAUSKONTO, PORTEMONNAIE } from '../money';
 import { isOwnCardGame, ownBet, ownCardDeal, ownCardSettle, ownMaxBet, ownRisk, ownWin, playOwnRound } from '../own-play';
 import { createWorld } from '../templates';
+import { processNarrativeBoundary } from '../narrative/boundary';
+import { recentFacts } from '../narrative/facts';
 import { TX_REASON } from '../tx-reasons';
 import type { GameExtras, GameResult } from '../../games/contracts';
 import type { Furniture, GameId } from '../types';
@@ -158,5 +160,25 @@ describe('Eigener Geldweg', () => {
     expect(ledger.getBalance(HAUSKONTO)).toBe(house);
     const foreign = ledger.entries.slice(-(result.payout > 0 ? 2 : 1));
     expect(foreign.every((entry) => entry.from === EXTERNAL || entry.to === EXTERNAL)).toBe(true);
+  });
+
+  it('meldet eine Slot-Entladung erst nach der Ledger-Buchung als Narrative-Fact', () => {
+    const { world, ledger } = setup();
+    const item = machine(world, 'SLOT', 702);
+    item.slotMemory = {
+      ...createSlotMemory(3), pressureLevel: 7, chargeReady: true, bank: fromVC(10),
+    };
+    const before = ledger.entryCount;
+    const result = playOwnRound(world, ledger, item.id, 1, new Prng(1));
+
+    expect(result.discharged).toBe(true);
+    expect(ledger.entryCount).toBeGreaterThan(before);
+    processNarrativeBoundary(world, ledger);
+    const facts = recentFacts(world, 'SLOT_DISCHARGE');
+    expect(facts).toHaveLength(1);
+    expect(facts[0]).toMatchObject({
+      kind: 'SLOT_DISCHARGE', actorRefs: ['player'], machineId: item.id,
+      stake: fromVC(1), payout: result.payout,
+    });
   });
 });

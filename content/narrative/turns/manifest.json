@@ -2756,6 +2756,10 @@
     {
       "turnId": "2026-11-08T23:05Z-player-cash-closeout-01",
       "contributionId": "player-cash-closeout-01"
+    },
+    {
+      "turnId": "2026-11-08T23:40Z-slot-discharge-fact-01",
+      "contributionId": "slot-discharge-fact-01"
     }
   ]
 }
