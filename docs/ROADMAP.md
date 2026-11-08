@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 01:54 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 02:04 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -203,6 +203,9 @@ unten. Sie ersetzt verstreute Offen-Hinweise in Code-Kommentaren.
 - Wand-Occlusion hat Depth-Tests, aber keinen Browserbeleg.
 
 **Governance und CI**
+- Merge-Nachricht ist Gate-Text: ein Squash ueber die API mit blossem Titel laesst `main` am Commit-Notes-Gate rot (`ERR-4006`, Lauf 42436455113 auf `c791e91`). Der naechste Merge muss die drei Pflichtsektionen im Nachrichtentext tragen.
+- Gate-Bypass ist kein Werkzeug: `--no-verify`, `git stash` und leere Trigger-Commits sind in `AGENTS.md` ausgeschlossen. Vorfall 2026-11-08: drei Verstoesse in einem Lauf; Regel bleibt, dass ein Retrigger nur mit echtem Inhalt passiert.
+- `lane/city/vertical-slice` ist nach der CI-Branch-Loeschung nicht mehr ansprechbar; der Vertikalschnitt existiert nur lokal und braucht einen frischen Claim auf dem aktuellen `main`.
 - `agent:pretask` meldet eine Lane-Kollision mit `lane/governance/pr-251-repair`
   (ueberschneidende Allowlist), obwohl `verify:claims --ci` die Lane akzeptiert.
 - Release-Plan und Doku-Reconcile-Runner bleiben PARKED.

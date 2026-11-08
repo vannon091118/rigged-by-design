@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/main-repair",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/main-repair",
+  "baseSha": "c791e91c30121d22177807a298b1fafd822c4a71",
+  "task": "Roten main-Lauf nach Merge reparieren und Merge-Nachricht-Regel absichern",
+  "goal": "main ist nach jedem Merge gruen; die drei Pflichtsektionen im Merge-Text sind als bindende Regel dokumentiert und lokal pruefbar.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/",
+    ".lane-claims/claims/lane-governance-main-repair.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c791e91c30121d22177807a298b1fafd822c4a71"
+}
