@@ -8,7 +8,9 @@
     "reaction": "Reaktion auf einen unmittelbar vorausgegangenen Vorgang.",
     "memory": "Erinnerungssatz aus einer früheren Begebenheit.",
     "rumor": "Gerücht oder Warnung aus dem Haus.",
-    "documentation": "Dokumentation eines technischen Narrativ-Bausteins."
+    "documentation": "Dokumentation eines technischen Narrativ-Bausteins.",
+    "city-scene": "Text aus der Stadt: Kiez, Markt, Wege und die zwei Progression-Zweige.",
+    "city-night": "Nacht- und Tagesabschluss der Stadt: Ruhe, Rueckweg, naechster Morgen."
   },
   "functions": {
     "establish": "Führt Figuren, Ort oder Ausgangslage ein.",
@@ -20,22 +22,70 @@
     "document": "Erklärt einen technischen oder inhaltlichen Vertrag."
   },
   "slotFunctions": {
-    "opening": ["establish", "describe"],
-    "description": ["describe", "warn", "document"],
-    "event-body": ["describe", "warn"],
-    "choice-preview": ["offer"],
-    "reaction": ["react", "warn"],
-    "memory": ["remember"],
-    "rumor": ["warn"],
-    "documentation": ["document"]
+    "opening": [
+      "establish",
+      "describe"
+    ],
+    "description": [
+      "describe",
+      "warn",
+      "document"
+    ],
+    "event-body": [
+      "describe",
+      "warn"
+    ],
+    "choice-preview": [
+      "offer"
+    ],
+    "reaction": [
+      "react",
+      "warn"
+    ],
+    "memory": [
+      "remember"
+    ],
+    "rumor": [
+      "warn"
+    ],
+    "documentation": [
+      "document"
+    ],
+    "city-scene": [
+      "describe",
+      "establish",
+      "react",
+      "warn",
+      "remember"
+    ],
+    "city-night": [
+      "describe",
+      "remember",
+      "warn"
+    ]
   },
   "composerSlots": {
-    "TITLE": ["opening"],
-    "BODY": ["event-body", "description"],
-    "CHOICE_LABEL": ["choice-preview"],
-    "OUTCOME": ["reaction"]
+    "TITLE": [
+      "opening"
+    ],
+    "BODY": [
+      "event-body",
+      "description"
+    ],
+    "CHOICE_LABEL": [
+      "choice-preview"
+    ],
+    "OUTCOME": [
+      "reaction"
+    ]
   },
-  "nonComposableSlots": ["memory", "rumor", "documentation"],
+  "nonComposableSlots": [
+    "memory",
+    "rumor",
+    "documentation",
+    "city-scene",
+    "city-night"
+  ],
   "contexts": {
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",
     "return": "Wiederkehr eines persistenten Besuchers.",
@@ -86,13 +136,37 @@
     "mira-sol": "Eine bekannte Figur des Start-Pools."
   },
   "personaAliases": {
-    "rita-kern": ["Rita Kern", "Rita"],
-    "boris-falk": ["Boris Falk", "Boris"],
-    "mira-sol": ["Mira Sol", "Mira"]
+    "rita-kern": [
+      "Rita Kern",
+      "Rita"
+    ],
+    "boris-falk": [
+      "Boris Falk",
+      "Boris"
+    ],
+    "mira-sol": [
+      "Mira Sol",
+      "Mira"
+    ]
   },
   "conflicts": {
-    "rolePairs": [["ERZAEHLER", "SKEPTIKER"]],
-    "moodPairs": [["neutral", "angespannt"]],
-    "flagPairs": [["startpool", "rueckkehrer"]]
+    "rolePairs": [
+      [
+        "ERZAEHLER",
+        "SKEPTIKER"
+      ]
+    ],
+    "moodPairs": [
+      [
+        "neutral",
+        "angespannt"
+      ]
+    ],
+    "flagPairs": [
+      [
+        "startpool",
+        "rueckkehrer"
+      ]
+    ]
   }
 }

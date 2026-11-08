@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:37Z-city-scene-38",
+  "contributionId": "city-scene-38",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "ask"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Du traegst eine Kiste, die du nicht gebraucht haettest. Der Weg zurueck ist kuerzer als gedacht.",
+  "directives": []
+}

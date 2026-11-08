@@ -636,3 +636,20 @@
 @media (prefers-reduced-motion: reduce) { .dialogue-run { animation: none; } }
 .dialogue-links { display: flex; flex-wrap: wrap; gap: 6px; }
 .dialogue-links .btn { border-radius: 999px; }
+
+/* Stadt-Fenster: Kiez und Markt teilen sich eine Sicht, keine zweite Wahrheit. */
+.city-popup { display: flex; flex-direction: column; gap: 10px; min-width: min(520px, 92vw); }
+.city-note { margin: 0; opacity: .85; }
+.city-energy { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.city-branches { display: grid; gap: 8px; }
+.city-branch { border: 1px solid rgba(255,255,255,.18); padding: 8px; border-radius: 6px; }
+.city-branch.is-done { border-color: rgba(120,220,150,.55); }
+.city-branch-head { display: flex; justify-content: space-between; gap: 8px; }
+.city-bar { height: 6px; background: rgba(255,255,255,.14); border-radius: 3px; overflow: hidden; margin: 6px 0 4px; }
+.city-bar i { display: block; height: 100%; background: currentColor; opacity: .8; }
+.city-locations, .city-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.city-location.is-here { opacity: .55; }
+.city-action { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; }
+.city-action small { opacity: .75; font-size: 11px; }
+.city-result { border-top: 1px solid rgba(255,255,255,.18); padding-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.city-result p { margin: 0; }

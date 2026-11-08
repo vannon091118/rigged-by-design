@@ -8,6 +8,7 @@ import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
 import { companyStatus } from '../core/sim/progression';
+import { cityView } from '../core/sim/city';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
@@ -112,6 +113,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
   }
   return {
     ...worldSnapshot(world),
+    // Die Stadt ist abgeleitet: kein zweiter Zustand, keine Rechnung in React.
+    city: cityView(world),
     // NAR-14: Szenen und Profile werden hier abgeleitet, nie in React nachgerechnet.
     narrative: buildNarrativeView(world, ledger),
     talkChances: Object.fromEntries(world.guests.map((guest) => [guest.id, talkChance(world, guest.id)])),

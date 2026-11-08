@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T02:01Z-city-scene-02",
+  "contributionId": "city-scene-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Hinter der Theke haengt ein Schild, das seit Jahren schief ist. Niemand traut sich, es gerade zu haengen.",
+  "directives": []
+}

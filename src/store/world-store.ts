@@ -32,6 +32,7 @@ import { acceptJobCmd, quitJobCmd, requestJobTaskCmd, buyBarCmd, visitForeignCmd
 import { riskCardCmd, dealCardCmd, settleCardCmd, additionalBetCmd, playRivalCmd, shellRoundCmd, takeHomeCmd } from './rival-play-commands';
 import { buyCmd, orderDrinksCmd, orderPartsCmd, pickupCmd, deployCmd, unloadHereCmd, storeDepositCmd, calmCmd, talkCmd, fightBrawlCmd, spendSkillCmd, serveDeskCmd, setWallCmd, setNeonCmd, upgradeBarCmd, upgradeWcCmd, repairCmd, cleanCmd, hireCmd, fireCmd, setPriceCmd, setCarpetCmd, installModCmd, addReelCmd, setBetCmd, setSlotOddsCmd, pickupMopCmd, dropMopCmd, cleanStainCmd, getMopAtToiletCmd } from './venue-commands';
 import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-commands';
+import { cityCmd, type CityCommand } from './city-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd } from './game-commands';
 import { TICK_MS } from '../core/sim/tick-timing';
 
@@ -163,6 +164,7 @@ class WorldStore {
   }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) { flushNarrativeCmd(this.#world, this.#ledger); this.#emit(false); } return result; }
+  city(cmd: CityCommand): void { this.#guard(() => { this.#notice = cityCmd(this.#world, cmd); }); }
   auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); }
   exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); }
   planImport(raw: string): TransferReport { return planImportData(raw).report; }

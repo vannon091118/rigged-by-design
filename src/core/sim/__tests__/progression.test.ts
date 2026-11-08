@@ -12,6 +12,8 @@ import { economyOf } from '../economics';
 import { companyStatus, companyTier, isUnlocked, requiredTier } from '../progression';
 import { remodel, remodelRequirements } from '../remodel';
 import { createWorld, ensureStarter } from '../templates';
+import { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, cityView, marketUnlocked, restInCity, runCityAction, travel } from '../city';
+import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
 import { HAUSKONTO, payOut, placeBet, SHOP } from '../money';
 import type { WorldState } from '../types';
 
@@ -167,5 +169,72 @@ describe('Unternehmensstufen', () => {
     // Ausbau ist Investition, kein Betriebskostenblock.
     expect(economy.investment).toBe(6);
     expect(economy.operatingProfit).toBe(16);
+  });
+});
+
+/** Stadt als zweiter Progression-Pfad: zwei Zweige, Energie, Pool-Texte. */
+describe('Stadt: Kiez und Markt als Progression', () => {
+  const texte = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === CITY_SLOT).map((fragment) => fragment.text);
+  const imKiez = (): WorldState => {
+    const { world } = start();
+    world.day = 3;
+    travel(world, 'KIEZ');
+    return world;
+  };
+  const spielen = (world: WorldState, actionId: string, ziel: number): void => {
+    const zweig = actionId.startsWith('KIEZ') ? 'KIEZ' : 'MARKT';
+    while (cityOf(world)[zweig] < ziel) {
+      if (cityOf(world).energy < 1) restInCity(world);
+      runCityAction(world, actionId);
+    }
+  };
+  it('kostet Energie, zaehlt Fortschritt und nennt das Ergebnis', () => {
+    const world = imKiez();
+    const state = runCityAction(world, 'KIEZ_ANSPRECHEN');
+    expect(state.energy).toBe(CITY_ENERGY_PER_DAY - 1);
+    expect(state.KIEZ).toBe(1);
+    expect(state.lastResult).toMatch(/KIEZ 1 Punkte/);
+    expect(texte).toContain(state.lastText);
+  });
+  it('beendet den Tag und fuellt die Energie nachweislich auf', () => {
+    const world = imKiez();
+    runCityAction(world, 'KIEZ_RUNDE');
+    expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY - 2);
+    const tag = world.day;
+    restInCity(world);
+    expect(world.day).toBe(tag + 1);
+    expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY);
+    const nacht = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === NIGHT_SLOT).map((fragment) => fragment.text);
+    expect(nacht.length).toBeGreaterThanOrEqual(50);
+    expect(nacht).toContain(cityOf(world).lastText);
+    expect(cityNightText('rest|4|KIEZ')).toBe(cityNightText('rest|4|KIEZ'));
+  });
+
+  it('sperrt den Markt bis zum Kiez-Rang Stammgast und schaltet ihn dann frei', () => {
+    const world = imKiez();
+    expect(marketUnlocked(cityOf(world))).toBe(false);
+    expect(texte.length).toBeGreaterThanOrEqual(50);
+    expect(() => travel(world, 'MARKT')).toThrow(/Stammgast/);
+    const gesperrt = cityView(world).actions.find((action) => action.branch === 'MARKT')!;
+    expect(gesperrt.enabled).toBe(false);
+    expect(gesperrt.blocked).toMatch(/Stammgast/);
+    spielen(world, 'KIEZ_ANSPRECHEN', 9);
+    expect(marketUnlocked(cityOf(world))).toBe(true);
+    expect(travel(world, 'MARKT').location).toBe('MARKT');
+  });
+  it('schliesst beide Zweige ab und behaelt den Abschluss', () => {
+    const world = imKiez();
+    spielen(world, 'KIEZ_ANSPRECHEN', 15);
+    expect(cityOf(world).completed).toContain('KIEZ');
+    travel(world, 'MARKT');
+    spielen(world, 'MARKT_FEILSCHEN', 12);
+    expect(cityOf(world).completed).toEqual(['KIEZ', 'MARKT']);
+    expect(cityView(world).branches.every((branch) => branch.done)).toBe(true);
+  });
+  it('waehlt denselben Text fuer denselben Ort, dieselbe Handlung und denselben Tick', () => {
+    const a = imKiez();
+    const b = imKiez();
+    expect(runCityAction(a, 'KIEZ_RUNDE').lastText).toBe(runCityAction(b, 'KIEZ_RUNDE').lastText);
+    expect(texte).toContain(cityText('KIEZ_RUNDE|1|42'));
   });
 });
