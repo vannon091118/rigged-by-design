@@ -8,13 +8,6 @@ set -e
 # anderen offenen Lanes blockieren den Commit. Das Skript liest nur Git und
 # laeuft deshalb auch ohne node_modules; nur so greift die Sperre wirklich.
 node scripts/verify-lane-claims.mjs || exit 1
-# Governance-Freeze: Steuerungsdateien brauchen eine Freigabe, die nur mit PIN
-# entsteht (`scripts/freeze-unlock.mjs`). Ohne Freigabe blockiert der Commit;
-# mechanische Marker (Doku-Marker, Versionszeile) sind ausgenommen.
-if ! node scripts/verify-governance-freeze.mjs; then
-  echo "pre-commit: Governance-Freeze verletzt (ERR-4030) - Commit blockiert" >&2
-  exit 1
-fi
 # Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
 # Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
 # Commit. Dann blockiert der Hook, statt den Widerspruch zu uebersehen.
@@ -71,4 +64,12 @@ if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
 fi
 inventory_docs_loc
 git add docs/INVENTORY.md >/dev/null 2>&1 || true
-echo "pre-commit: Doku, Matrix und LOC geprueft"
+# Governance-Freeze zuletzt: die Generatoren oben schreiben Doku, Matrix und
+# Inventur neu und koennen dabei Steuerdateien anfassen. Prueft das Gate davor,
+# sieht es einen anderen Staging-Stand als den Commit - lokal gruen, in CI rot.
+# Deshalb laeuft es als letzter Schritt, nach jedem Generator und jedem Stagen.
+if ! node scripts/verify-governance-freeze.mjs; then
+  echo "pre-commit: Governance-Freeze verletzt (ERR-4030) - Commit blockiert" >&2
+  exit 1
+fi
+echo "pre-commit: Doku, Matrix, LOC und Freeze geprueft"

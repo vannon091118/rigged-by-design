@@ -19,7 +19,9 @@
  *
  * Alles, was das Spiel voranbringt (`src/`, `content/`, `public/`), bleibt frei.
  */
+import { execFileSync } from 'node:child_process';
 import { createHash, scryptSync, timingSafeEqual } from 'node:crypto';
+import { ROOT } from './report.mjs';
 
 export const FREEZE = Object.freeze({
   active: true,
@@ -73,7 +75,28 @@ export function isGovernancePath(file) {
   );
 }
 
-/** Die gesperrten Pfade einer Dateiliste, sortiert und ohne Doppelte. */
+/**
+ * Die Basis, gegen die der Freeze prueft: der Punkt, an dem die Lane von `main`
+ * abzweigt. Lokal und in CI muessen dieselbe Basis sehen, sonst pruefen zwei
+ * Gates zwei verschiedene Diffs - genau daran war der erste Freeze-Lauf rot
+ * (lokal nur der letzte Commit, in CI die ganze Lane).
+ *
+ * Ein frisch gepushter Branch hat kein `before`; GitHub liefert dann den
+ * Null-SHA. Deshalb ist die Merge-Basis der Normalfall und HEAD nur der
+ * Rueckfall, wenn `main` lokal fehlt.
+ */
+export function laneBase(head = 'HEAD') {
+  const git = (args) => {
+    try {
+      return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    } catch {
+      return '';
+    }
+  };
+  return (
+    git(['merge-base', 'origin/main', head]) || git(['merge-base', 'main', head]) || git(['rev-parse', '--verify', head]) || ''
+  );
+}
 /**
  * Die gesperrten Pfade einer Dateiliste, sortiert und ohne Doppelte. Die
  * Freigabe-Datei selbst zaehlt nicht: sie kann sich nicht mitfreigeben.
@@ -111,9 +134,13 @@ export function unlockRecord({ base, paths }) {
 }
 
 /**
- * Prueft eine Freigabe gegen Basis und tatsaechliche Aenderung. Alles oder
- * nichts: eine andere Basis, ein fehlender Pfad oder ein fremder Token gilt
- * nicht als Freigabe.
+ * Prueft eine Freigabe gegen Basis und tatsaechliche Aenderung.
+ *
+ * Jede tatsaechlich geaenderte Steuerdatei muss in der Freigabe stehen; eine
+ * andere Basis, ein fehlender Pfad oder ein fremder Token gilt nicht als
+ * Freigabe. Zusaetzlich genannte Pfade sind erlaubt: die Generatoren im Hook
+ * schreiben nach der Freigabe weitere Steuerdateien, und ein Gate, das daran
+ * scheitert, blockiert Arbeit statt Korruption.
  */
 export function verifyUnlockRecord(record, { base, paths }) {
   if (!record || typeof record !== 'object') return { ok: false, why: 'keine Freigabe-Datei' };
@@ -121,8 +148,9 @@ export function verifyUnlockRecord(record, { base, paths }) {
   if (!base || record.base !== base) return { ok: false, why: 'Freigabe gilt fuer eine andere Basis' };
   const expected = governanceChanges(paths);
   const recorded = Array.isArray(record.paths) ? [...record.paths].map(String).sort() : [];
-  if (JSON.stringify(recorded) !== JSON.stringify(expected)) {
-    return { ok: false, why: 'Freigabe deckt die Aenderung nicht exakt' };
+  const missing = expected.filter((file) => !recorded.includes(file));
+  if (missing.length > 0) {
+    return { ok: false, why: `Freigabe deckt die Aenderung nicht (fehlt: ${missing.join(', ')})` };
   }
   const expectedToken = Buffer.from(unlockToken({ base, paths: recorded }), 'hex');
   const actual = Buffer.from(String(record.token ?? ''), 'hex');

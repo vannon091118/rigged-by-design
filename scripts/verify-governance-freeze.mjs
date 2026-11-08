@@ -3,9 +3,12 @@
  * Governance-Freeze-Gate.
  *
  * Aufruf:
- *   node scripts/verify-governance-freeze.mjs                  # gestagte Dateien
+ *   node scripts/verify-governance-freeze.mjs                  # Lane-Diff gegen main
  *   node scripts/verify-governance-freeze.mjs --ci \
  *        --base=<sha> --head=<sha> [--github-output=<datei>]
+ *
+ * Beide Modi pruefen denselben Diff: die Merge-Basis zu `main` gegen Index
+ * (lokal) bzw. gegen den Branch-Kopf (CI).
  *
  * Verhalten:
  * - Keine inhaltliche Governance-Aenderung -> PASS. Mechanische Marker
@@ -17,7 +20,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
-import { FREEZE, FREEZE_UNLOCK_FILE, governanceChanges, isMarkerLine, verifyUnlockRecord } from './lib/governance-freeze.mjs';
+import { FREEZE, FREEZE_UNLOCK_FILE, governanceChanges, isMarkerLine, laneBase, verifyUnlockRecord } from './lib/governance-freeze.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -54,9 +57,11 @@ const stop = (code, message, { violation = 'corruption' } = {}) => {
 };
 
 const head = ci ? arg('head') || 'HEAD' : 'HEAD';
-const base = ci
-  ? arg('base') || process.env.BASE_REF || 'origin/main'
-  : gitOrNull(['rev-parse', '--verify', 'HEAD']) || '';
+const givenBase = ci ? arg('base') || process.env.BASE_REF || '' : '';
+
+// Gemeldete Basis nur uebernehmen, wenn sie echt ist; sonst (und lokal immer)
+// gilt die Merge-Basis zu `main`, damit beide Gates denselben Diff sehen.
+const base = givenBase && !/^0+$/.test(givenBase) ? givenBase : laneBase(head);
 
 if (ci && (!base || /^0+$/.test(base))) {
   stop(2, 'verify-governance-freeze: Basis nicht bestimmbar; ohne Diff keine Freigabe (fail-closed).', {
@@ -69,7 +74,7 @@ try {
   files = ci
     ? (gitOrNull(['diff', '--name-only', '--diff-filter=ACMR', `${base}...${head}`]) ??
       git(['diff', '--name-only', '--diff-filter=ACMR', `${base}..${head}`]))
-    : git(['diff', '--cached', '--name-only', '--diff-filter=ACMR']);
+    : git(['diff', '--cached', '--name-only', '--diff-filter=ACMR', base || 'HEAD']);
 } catch {
   stop(2, 'verify-governance-freeze: Diff nicht lesbar; ohne Diff keine Freigabe (fail-closed).', {
     violation: 'unknown-diff',
@@ -80,7 +85,9 @@ const guarded = governanceChanges(changed);
 
 /** True, wenn eine Datei nur Marker- oder Versionszeilen aendert. */
 function onlyMarkers(file) {
-  const args = ci ? ['diff', '--unified=0', `${base}...${head}`, '--', file] : ['diff', '--cached', '--unified=0', '--', file];
+  const args = ci
+    ? ['diff', '--unified=0', `${base}...${head}`, '--', file]
+    : ['diff', '--cached', '--unified=0', base || 'HEAD', '--', file];
   let diff;
   try {
     diff = git(args);

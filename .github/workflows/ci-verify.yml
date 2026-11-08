@@ -121,12 +121,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if [ ! -f "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" ]; then
-            echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
+          if [ ! -f scripts/verify-governance-freeze.mjs ]; then
+            echo "::notice::Pruefobjekt kennt den Governance-Freeze nicht; Schritt inert."
             echo "violation=none" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if node "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" --ci \
+          # Bewusst das Skript aus dem Pruefobjekt (HEAD), nicht aus der
+          # Kontrollebene der Basis: sonst prueft jede Regelanderung gegen die
+          # alte Fassung und das Gate kann sich selbst nie weiterentwickeln -
+          # genau daran scheiterte der Merge des Freeze selbst. Aenderbar ist
+          # das Skript nur mit PIN-Freigabe, deshalb bleibt das vertretbar.
+          if node scripts/verify-governance-freeze.mjs --ci \
             --base="$FREEZE_BASE" --head="$FREEZE_HEAD" --github-output="$GITHUB_OUTPUT"; then
             exit 0
           fi
