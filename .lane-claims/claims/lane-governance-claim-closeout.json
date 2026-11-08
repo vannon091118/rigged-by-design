@@ -2,18 +2,15 @@
   "id": "lane/governance/claim-closeout",
   "owner": "Governance-Owner",
   "branch": "lane/governance/claim-closeout",
-  "baseSha": "63e624ca97000f75f4ebc3e60a911b02385f419f",
-  "task": "Claim-Register nach dem Merge schliessen",
-  "goal": "Kein offener Claim mit gemergtem Branch im Register; die naechste Lane startet ohne Kollision.",
+  "baseSha": "e4cb69d1cd09e590b68f6894fb5e419fde396535",
+  "task": "Registereintraege der gemergten Lanes schliessen",
+  "goal": "Doku- und Sim-Lane stehen nach ihrem Merge auf merged; das Register hat danach keinen offenen Eintrag.",
   "pathAllowlist": [
-    ".lane-claims/**",
-    "docs/**"
+    ".lane-claims/"
   ],
   "contracts": [],
   "dependencies": [],
-  "gateProfile": "light",
-  "status": "merged",
-  "mergedEvidence": "branch-tree-on-main",
-  "mergedSha": "9ab446eb3d078d2edd10a0d110445af968035a30",
-  "createdAt": "63e624ca97000f75f4ebc3e60a911b02385f419f"
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "e4cb69d1cd09e590b68f6894fb5e419fde396535"
 }
