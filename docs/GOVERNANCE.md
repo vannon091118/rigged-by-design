@@ -1,6 +1,6 @@
 # Governance: Lanes, Claims und Eskalation
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 00:28 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:42 UTC -->
 
 **Zweck:** Die verbindlichen Regeln für parallele Arbeit. Der Kurzvertrag steht in `AGENTS.md`; dieses Dokument beschreibt Rollen, Claim-Prüfung und die eine Eskalationsleiter.
 
@@ -35,6 +35,24 @@ Regeln:
 6. **Fail-closed.** Ohne Claim, ohne Owner oder bei einer unklaren Kollision wird nicht committet.
 
 Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Basis. `pnpm run verify:claims` ist der lokale Lauf.
+
+## Governance-Freeze
+
+Die Steuerungsebene ist gesperrt, bis das Spiel steht: **Stadt und Core-Loop stehen, mindestens § Progression-Zweige sind vollständig**. Der Freeze schützt die Pfade aus `GOVERNANCE_PATHS` in `scripts/lib/governance-freeze.mjs` — `.github/`, `.githooks/`, `.lane-claims/`, `scripts/`, `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/capabilities.json` und `docs/contracts/`.
+
+Frei bleiben `src/`, `content/`, `public/`, Tests und die Spielpfade: der Freeze schützt die Steuerung, nicht die Arbeit.
+
+Mechanik:
+
+- **Lokal:** `.githooks/pre-commit` ruft `scripts/verify-governance-freeze.mjs`; eine inhaltliche Governance-Änderung ohne Freigabe blockiert den Commit (`ERR-4030`).
+- **CI:** der `Plan`-Job prüft denselben Diff gegen die Basis. Rot heißt `Fail-Closed Gates` rot.
+- **Marker sind ausgenommen:** reine Doku-Marker und Versionszeilen zählen nicht, sonst würde jeder `docs:sync`-Lauf den Freeze auslösen.
+- **Freigabe:** `node scripts/freeze-unlock.mjs --pin=<pin>` schreibt `.lane-claims/freeze-unlock.json` mit Basis, Pfadliste und Token; die Datei wird mitcommittet. Sie gilt genau für diese Basis und diese Pfade.
+- **Verstoss:** fehlt die Freigabe ganz, entfernt die CI den Lane-Branch mit `Verdacht auf unautorisierte Korruption`. Ein Branch ohne Freigabe ist kein Merge-Kandidat.
+
+Der PIN steht nicht im Klartext im Repo, sondern nur als scrypt-Commitment (`PIN_COMMITMENT`). Das ist eine Sperre gegen versehentliche und tooling-freie Änderungen, **kein kryptografisches Geheimnis**: ein vierstelliges Commitment ist offline prüfbar. Wer echte Geheimhaltung braucht, legt den PIN zusätzlich als Repository-Secret ab und vergibt die Freigabe nur dort.
+
+Der Freeze wird nur auf ausdrückliche Anweisung des Owners gelöst — einmalig, über die PIN-Freigabe. Danach gilt er unverändert weiter; die Anweisung hebt keinen Meilenstein auf.
 
 ## Eskalation
 

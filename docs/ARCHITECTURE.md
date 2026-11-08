@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 00:28 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:42 UTC -->
 
 ## README als Einstieg
 
@@ -205,7 +205,7 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 7: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+1) |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 87: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+81) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 90: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+84) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 49: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+43) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |

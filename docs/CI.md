@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 00:28 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:42 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -59,6 +59,10 @@ Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler un
 Ein Push auf einen Lane-Branch meldet sein Ereignis als `push-lane`, nicht als `push`. Der Planer wählt dafür den konservativen Zustand `UNKNOWN`: volles Required-Set plus Audit. Grund ist der Branch-Schutz, der genau einen Status (`Fail-Closed Gates`) auf dem Kopf sieht: endete der Push wie früher als `PR_HANDOFF`, entstand auf diesem Kopf überhaupt kein Pflichtstatus. GitHub wertete dann die alten Läufe desselben Kopfes aus — auch abgebrochene und übersprungene — und der Status war nur noch per manuellem `workflow_dispatch` erreichbar. Der Handoff ist deshalb entfernt, nicht abgeschwächt: der Lane-Push trägt den Status selbst, und derselbe Kopf ist danach ohne Zusatzschritt squash-mergebar.
 
 Push- und PR-Lauf kollidieren dabei nicht: die Concurrency-Gruppe ist `ci-verify-${{ github.ref }}`, und `refs/heads/<lane>` ist nicht `refs/pull/<n>/merge`. Der Push-Lauf prüft denselben Baum wie der PR-Lauf; `claims` und `commitmsg` bleiben an den PR- beziehungsweise `main`-Zustand gebunden und werden im Aggregat als `skipped` akzeptiert.
+
+### Governance-Freeze
+
+Der `Plan`-Job prüft vor allem anderen den Governance-Freeze: eine inhaltliche Änderung an `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` oder den Governance-Verträgen braucht eine Freigabe aus `scripts/freeze-unlock.mjs`. Reine Doku-Marker und Versionszeilen zählen nicht. Ohne Freigabe wird der Plan-Job rot, damit `Fail-Closed Gates` rot; fehlt die Freigabe ganz, entfernt der Job den Lane-Branch mit `Verdacht auf unautorisierte Korruption` (`ERR-4030`). Kennt die Basis-Kontrollebene das Gate noch nicht, bleibt der Schritt inert — so kommt der Freeze selbst ohne Henne-Ei-Problem nach `main`. Die Mechanik steht in [`GOVERNANCE.md`](GOVERNANCE.md#governance-freeze).
 
 ## Workflows
 

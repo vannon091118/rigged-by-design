@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 00:28 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:42 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -12,6 +12,14 @@ dazwischen, Figuren mit eigenem Tagesablauf und Erinnerungen, ein Charakter mit
 Laune, Ruf und Ressourcen. Das Casino bleibt darin der erste Ort und die
 Testumgebung, in der jede Regel bewiesen wird, bevor sie in die Welt zieht.
 Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Endstand.
+
+## Governance-Freeze (aktiv)
+
+Die Steuerungsebene ist gesperrt, bis **Stadt und Core-Loop stehen und mindestens § Progression-Zweige vollständig sind**. Gesperrt sind `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` und die Governance-Verträge; frei bleiben `src/`, `content/`, `public/` und Tests.
+
+Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, entfernt die CI den Lane-Branch mit `Verdacht auf unautorisierte Korruption`.
+
+Aufhebung nur auf ausdrückliche Anweisung des Owners; danach gilt der Freeze weiter. Der Fokus bis dahin: Stadt, Core-Loop, Progression, Content und Baustein-Pools — keine Governance-Arbeit.
 
 ## Produktvertrag
 
