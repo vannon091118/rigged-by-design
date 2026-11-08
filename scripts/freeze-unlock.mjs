@@ -7,9 +7,9 @@
  *   RBD_FREEZE_PIN=<pin> node scripts/freeze-unlock.mjs
  *
  * Der PIN wird nur verglichen (scrypt) und nie gespeichert. Die Freigabe-Datei
- * `.freeze-unlock.json` enthaelt Basis, Pfadliste und einen Token; CI kann sie
- * ohne PIN pruefen. Sie gilt genau fuer diese Basis und diese Pfade, also fuer
- * einen Commit - nicht fuer die naechste Governance-Aenderung.
+ * `.lane-claims/freeze-unlock.json` enthaelt Basis, Pfadliste und einen Token;
+ * CI kann sie ohne PIN pruefen. Basis ist die Merge-Basis zu `main`, also der
+ * ganze Lane-Diff - nicht nur der letzte Commit.
  *
  * Ohne Freigabe bleibt der Freeze zu: der Pre-Commit-Hook laesst den Commit
  * nicht durch, und die CI entfernt einen Branch mit Governance-Aenderung ohne
@@ -17,7 +17,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
-import { FREEZE, FREEZE_UNLOCK_FILE, governanceChanges, isMarkerLine, pinMatches, unlockRecord } from './lib/governance-freeze.mjs';
+import { FREEZE, FREEZE_UNLOCK_FILE, governanceChanges, isMarkerLine, laneBase, pinMatches, unlockRecord } from './lib/governance-freeze.mjs';
 import { ROOT } from './lib/report.mjs';
 
 const argv = process.argv.slice(2);
@@ -41,14 +41,16 @@ if (!pinMatches(pin)) {
   process.exit(1);
 }
 
-const base = arg('base') ?? git(['rev-parse', 'HEAD']);
-const staged = git(['diff', '--cached', '--name-only', '--diff-filter=ACMR'])
+// Dieselbe Basis wie das Gate: die Merge-Basis zu `main`. Sonst deckt die
+// Freigabe lokal einen anderen Diff als den, den CI prueft.
+const base = arg('base') ?? laneBase('HEAD');
+const staged = git(['diff', '--cached', '--name-only', '--diff-filter=ACMR', base || 'HEAD'])
   .split(/\r?\n/)
   .filter(Boolean);
 const onlyMarkers = (file) => {
   let diff;
   try {
-    diff = git(['diff', '--cached', '--unified=0', '--', file]);
+    diff = git(['diff', '--cached', '--unified=0', base || 'HEAD', '--', file]);
   } catch {
     return false;
   }

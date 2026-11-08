@@ -19,7 +19,9 @@
  *
  * Alles, was das Spiel voranbringt (`src/`, `content/`, `public/`), bleibt frei.
  */
+import { execFileSync } from 'node:child_process';
 import { createHash, scryptSync, timingSafeEqual } from 'node:crypto';
+import { ROOT } from './report.mjs';
 
 export const FREEZE = Object.freeze({
   active: true,
@@ -73,7 +75,28 @@ export function isGovernancePath(file) {
   );
 }
 
-/** Die gesperrten Pfade einer Dateiliste, sortiert und ohne Doppelte. */
+/**
+ * Die Basis, gegen die der Freeze prueft: der Punkt, an dem die Lane von `main`
+ * abzweigt. Lokal und in CI muessen dieselbe Basis sehen, sonst pruefen zwei
+ * Gates zwei verschiedene Diffs - genau daran war der erste Freeze-Lauf rot
+ * (lokal nur der letzte Commit, in CI die ganze Lane).
+ *
+ * Ein frisch gepushter Branch hat kein `before`; GitHub liefert dann den
+ * Null-SHA. Deshalb ist die Merge-Basis der Normalfall und HEAD nur der
+ * Rueckfall, wenn `main` lokal fehlt.
+ */
+export function laneBase(head = 'HEAD') {
+  const git = (args) => {
+    try {
+      return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    } catch {
+      return '';
+    }
+  };
+  return (
+    git(['merge-base', 'origin/main', head]) || git(['merge-base', 'main', head]) || git(['rev-parse', '--verify', head]) || ''
+  );
+}
 /**
  * Die gesperrten Pfade einer Dateiliste, sortiert und ohne Doppelte. Die
  * Freigabe-Datei selbst zaehlt nicht: sie kann sich nicht mitfreigeben.

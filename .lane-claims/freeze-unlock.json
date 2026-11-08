@@ -4,8 +4,10 @@
   "paths": [
     ".githooks/pre-commit",
     "docs/GOVERNANCE.md",
-    "scripts/lib/governance-freeze.mjs"
+    "scripts/freeze-unlock.mjs",
+    "scripts/lib/governance-freeze.mjs",
+    "scripts/verify-governance-freeze.mjs"
   ],
-  "token": "c76ff1f79963d569d69dac17cadcd0b93f2d502bb2e85c3d969677f361a0171f",
+  "token": "37fb3319d4f238b13263466f0ba92ca0d69f313f80d4f03c7e2961c2998d486b",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
