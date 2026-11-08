@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:12a19344bdcd781df7bd307605be67bdf824ea576ff25b050428de7579a46a35",
+  "contentHash": "sha256:4a95ce425eb8eac05eae9065af69de17f99cdd3ca73712bea4c2d38a703ecc90",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -14735,6 +14735,28 @@
       "text": "Rita blieb vor dem Automaten stehen. Sie erinnerte sich noch an den letzten Abend; heute war immerhin jemand da, der zuhoerte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-trigger-bedingungen.json"
+    },
+    {
+      "contributionId": "roadmap-register-01",
+      "turnId": "2026-11-08T04:20Z-roadmap-register",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein alter Hase sagt, der Ruf eines Hauses haenge an dem, was Gaeste einander erzaehlen, nicht an dem, was auf dem Schild steht. Wer sich um seine Leute kuemmert, wird weitergetragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-roadmap-register-01.json"
     },
     {
       "contributionId": "runtime-composer-01",

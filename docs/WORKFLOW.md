@@ -1,6 +1,6 @@
 # Workflow: von Pretask bis zum manuellen Merge
 
-<!-- rbd-doc: v0.3.189 | 2026-11-08 03:32 UTC -->
+<!-- rbd-doc: v0.3.189 | 2026-11-08 04:20 UTC -->
 
 **Zweck:** Der verbindliche Arbeitsablauf für Agenten und Menschen. `AGENTS.md` ist der Kurzvertrag; dieses Dokument trägt die Details, ohne die Gate-Liste aus [`CI.md`](CI.md) zu wiederholen.
 
