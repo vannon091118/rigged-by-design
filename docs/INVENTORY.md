@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.189 | 2026-11-08 03:32 UTC -->
+<!-- rbd-doc: v0.3.189 | 2026-11-08 04:13 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -520,10 +520,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2047 |
-| Gelistete Dateien | 2047 |
+| Getrackte Dateien | 2050 |
+| Gelistete Dateien | 2050 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (19), content (679), docs (77), public (554), scripts (91), src (602) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (20), content (680), docs (77), public (554), scripts (91), src (603) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -535,8 +535,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 17 Datei(en)
-- `content/narrative/contributions/` — 675 Datei(en)
+- `.lane-claims/claims/` — 18 Datei(en)
+- `content/narrative/contributions/` — 676 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -590,7 +590,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 34 Datei(en)
+- `src/core/governance/__tests__/` — 35 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -658,6 +658,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 13 Zeilen
@@ -1340,8 +1341,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-relationship-standing-01.json` — {"agentId":"buffy","turnId":"2026-11-08T03:55Z-relationship-standing","contributionId":"relationship-standing- — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 14983 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2705 Zeilen
+- `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15005 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2709 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 188 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -1351,7 +1353,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 63 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 313 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 321 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 83 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 114 Zeilen
@@ -2178,6 +2180,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/process-sweep.test.ts` — Der Abbruchpfad muss echte Prozesse beenden und die Registry raeumen; sonst — gelesen: 134 Zeilen
 - `src/core/governance/__tests__/promote-guard.test.ts` — Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus — gelesen: 73 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
+- `src/core/governance/__tests__/roadmap-register.test.ts` — Das Register in `docs/ROADMAP.md` ist die einzige Liste offener Punkte. Damit — gelesen: 146 Zeilen
 - `src/core/governance/__tests__/scripts-libs-ci.d.ts` — Deklarationen fuer die CI-Diagnose- und Claim-Evidenz-Bibliotheken. — gelesen: 162 Zeilen
 - `src/core/governance/__tests__/scripts-libs-phase3.d.ts` — Deklarationen fuer Scope- und Reparaturplan (Phase 3). — gelesen: 114 Zeilen
 - `src/core/governance/__tests__/scripts-libs-task-state.d.ts` — Deklarationen fuer den Task-Zustand (Phase 4). — gelesen: 90 Zeilen

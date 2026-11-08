@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.189 | 2026-11-08 03:32 UTC -->
+<!-- rbd-doc: v0.3.189 | 2026-11-08 04:13 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -175,7 +175,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **674/1500** Bausteine in 13 Pools. Neun Slots tragen 52 bis 53,
+Stand 2026-11-08: **676/1500** Bausteine in 13 Pools. Neun Slots tragen 52 bis 53,
 darunter die Stadt-Pools `city-scene` und `city-night` aus dem Vertikalschnitt;
 die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`, `guest-voice-high`)
 tragen je 50. Die Pool-Mindestgroesse ist damit an allen 13 Pools erreicht und
@@ -210,6 +210,14 @@ Schritt. Erledigtes wandert ins Changelog; bewusst Vertagtes steht unten in
 sind hier aufgegangen; ihre Details sind in `INVENTORY.md` §14/§16 und im
 Changelog belegt.
 
+Das Register ist maschinell geprueft: `src/core/governance/__tests__/roadmap-register.test.ts`
+erzwingt Statusvokabular, eindeutige IDs, aufloesbare Referenzen (Datei, Symbol,
+Commit) und die Fortschrittszahl gegen `content/narrative/registry/fragments.json`.
+Ein Eintrag, der auf geloeschten Code oder eine falsche Zahl zeigt, macht `tests`
+rot. Die inhaltliche Behauptung „offen“ gegen bereits gemergten Code kann ein
+Dokumenten-Gate nicht entscheiden; deshalb traegt jeder geschlossene Punkt seinen
+Code und seinen Test als Beleg.
+
 #### A. Spiel und Simulation
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
@@ -225,13 +233,13 @@ Changelog belegt.
 | P-9 | Layout → Gaeste-Routen | **verifiziert, keine Luecke** | `world.ts` `worldNav` → `navGrid(size, furniture, world.layout)` (Wandkanten), `pathTo` → `findPath(guestNav(world))`; Layout-Aenderung aendert Pfade, `gridCache` erkennt sie an der Layout-Identitaet |
 | P-10 | Ledger → Narrative | **verifiziert, keine Luecke** | `narrative/ledger-facts.ts` verarbeitet Buchungen ab `ledgerSeq` und emittiert nur Bandwechsel `HOUSE_BALANCE` |
 | P-11 | SlotMemory → Ledger → Narrative | **verifiziert (Kette), Text offen** | `slot-session.ts` bucht Auszahlung → `ledger` → `ledger-facts`; ein eigener Fact fuer "Entladung" fehlt, damit die Narrative Engine den Drucklader benennen kann |
-| P-12 | Beziehungen → Ruf | offen (Design) | `RelationshipGraph` speist Beziehungen, `reputation()` liest sie nicht; Kandidat fuer den naechsten Emergenz-Schritt |
+| P-12 | Beziehungen → Ruf | **verifiziert 2026-11-08 (#271)** | `relationshipStanding()` in `src/core/sim/narrative/relationships.ts` addiert in `src/core/sim/spawn.ts` einen deterministischen, auf ±6 Punkte begrenzten Anteil an `reputation()`; Test `src/core/sim/__tests__/reputation.test.ts` |
 
 #### B. Narrative und Content
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 674/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
+| P-13 | 676/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
