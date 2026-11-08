@@ -520,10 +520,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2043 |
-| Gelistete Dateien | 2043 |
+| Getrackte Dateien | 2044 |
+| Gelistete Dateien | 2044 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (16), content (678), docs (77), public (554), scripts (91), src (602) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (17), content (678), docs (77), public (554), scripts (91), src (602) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -535,7 +535,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 14 Datei(en)
+- `.lane-claims/claims/` — 15 Datei(en)
 - `content/narrative/contributions/` — 674 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -643,14 +643,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 71 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
-- `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-blocks-gate-final.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-blocks-gate-final.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
+- `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
