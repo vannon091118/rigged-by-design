@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/docs-meta",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/docs-meta",
+  "baseSha": "3834f286f6f4f519b0e15982ac225e95ea640202",
+  "task": "Doku- und Versionsanteil der Aufraeumaktion auf main bringen",
+  "goal": "Changelog 0.3.184-0.3.188, Devtagebuch, Roadmap-Register und Versionsbump inhaltsgleich nach main; Marken und Inventur bleiben konsistent.",
+  "pathAllowlist": [
+    "docs/",
+    "package.json",
+    "pnpm-lock.yaml",
+    "AGENTS.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "3834f286f6f4f519b0e15982ac225e95ea640202"
+}
