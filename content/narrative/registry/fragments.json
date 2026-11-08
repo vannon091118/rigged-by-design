@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fb1d0205183da561dcc8fc85326768f635d003d3744ddaaa8e0faeb0e54929ae",
+  "contentHash": "sha256:2747baeb0491d95c831abb3de3bd34d2e1d7980983f71ffa5e195121f154e71c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -585,6 +585,98 @@
       "text": "Ein Blick von der Seite bleibt ein Blick: PROBE hinterlaesst ein Indiz, oeffnet aber keine Szene. Erst Handlungen mit Folgen - Informationshandel, Preiskampf, Gaesteabwerbung, Sabotage - werden zu einem RIVAL_MOVE, und die Aktionsliste ist Teil des Trigger-Vertrags statt einer stillen Annahme.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-c2-rival-action-trigger.json"
+    },
+    {
+      "contributionId": "chain-echo-body-01",
+      "turnId": "2026-11-08T09:11Z-chain-echo-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "aftermath",
+        "echo"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf dem Tresen liegt eine zusammengefaltete Serviette mit einer alten Uhrzeit in Bleistift. Der Gast schiebt sie zwei Fingerbreit nach vorn und sagt, das gehoere nicht mehr ihm.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-chain-echo-body.json"
+    },
+    {
+      "contributionId": "chain-echo-choice-01",
+      "turnId": "2026-11-08T09:12Z-chain-echo-choice",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "aftermath",
+        "echo"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach der Serviette fragen und zuhoeren, ohne das Gespraech zu drehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-chain-echo-choice.json"
+    },
+    {
+      "contributionId": "chain-echo-opening-01",
+      "turnId": "2026-11-08T09:10Z-chain-echo-opening",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "aftermath",
+        "echo"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Tage spaeter steht der Gast wieder vor dem Eingang, ohne sich anzustellen. Die Hand liegt auf der Tuer, als warte sie auf eine Bestaetigung, die es hier nicht gibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-chain-echo-opening.json"
+    },
+    {
+      "contributionId": "chain-echo-reaction-01",
+      "turnId": "2026-11-08T09:13Z-chain-echo-reaction",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "aftermath",
+        "echo"
+      ],
+      "tone": "warm",
+      "mood": "neutral",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
     },
     {
       "contributionId": "city-night-01",
@@ -6368,7 +6460,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zwei Gaeste stehen sich gegenueber, ohne die Stimme zu heben. Die Spannung bleibt im Raum stehen.",
+      "text": "Zwei Gaeste stehen sich gegenueber, ohne die Stimme zu heben. Der eine haelt dem anderen die offene Hand hin und wartet laenger, als es hoeflich waere.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-11.json"
     },
@@ -6478,7 +6570,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Rivale laesst seinen Blick durch den Raum wandern und bleibt am Tresen haengen. Die Spannung bleibt im Raum stehen.",
+      "text": "Der Rivale laesst seinen Blick durch den Raum wandern und bleibt am Tresen haengen. Er bestellt nichts und notiert sich trotzdem, wer dort steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-16.json"
     },
@@ -6588,7 +6680,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Stuhl faellt um, und niemand hebt ihn sofort auf. Die Spannung bleibt im Raum stehen.",
+      "text": "Ein Stuhl faellt um, und niemand hebt ihn sofort auf. Der Wachmann stellt einen Fuss darauf und wartet, wer zuerst den Mund aufmacht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-21.json"
     },
@@ -6698,7 +6790,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Kasse klingelt, obwohl niemand etwas gekauft hat. Die Spannung bleibt im Raum stehen.",
+      "text": "Die Kasse klingelt, obwohl niemand etwas gekauft hat. Der Ton haengt zwischen den Automaten, und zwei Gaeste zaehlen ihr Wechselgeld nach.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-26.json"
     },
@@ -6808,7 +6900,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Gast legt die Hand auf den Automaten und zieht sie wieder zurueck. Die Spannung bleibt im Raum stehen.",
+      "text": "Ein Gast legt die Hand auf den Automaten und zieht sie wieder zurueck. Der Rivale sieht es und laechelt, als haette er den Griff vorher geprueft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-31.json"
     },
@@ -6918,7 +7010,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Wachmann tritt einen Schritt zur Seite, ohne den Blick zu senken. Die Spannung bleibt im Raum stehen.",
+      "text": "Der Wachmann tritt einen Schritt zur Seite, ohne den Blick zu senken. Hinter ihm wird die Reihe kuerzer, weil niemand an ihm vorbei will.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-36.json"
     },
@@ -7028,7 +7120,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Glas rutscht ueber den Tresen und bleibt kurz vor der Kante stehen. Die Spannung bleibt im Raum stehen.",
+      "text": "Ein Glas rutscht ueber den Tresen und bleibt kurz vor der Kante stehen. Der Barkeeper legt zwei Finger darauf und schiebt es zurueck, ohne hinzusehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-41.json"
     },
@@ -7138,7 +7230,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Rivale nickt, als haette er genau das erwartet. Die Spannung bleibt im Raum stehen.",
+      "text": "Der Rivale nickt, als haette er genau das erwartet. Dann nennt er einen Preis, der nicht zum Angebot passt, und wartet auf die Reaktion.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-event-body-46.json"
     },

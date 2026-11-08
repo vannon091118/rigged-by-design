@@ -18,6 +18,7 @@ describe('Narrative Event Templates', () => {
         'VISITOR_RETURN@1', 'VISITOR_CONFLICT@1', 'NEON_NACHT@1', 'TURNIER_ABEND@1',
         'RIVAL_MOVE@1', 'VISITOR_AFTERMATH@1', 'VISITOR_RETURN_WARM@1',
         'AMBIENT_BAR_TALK@1', 'AMBIENT_SHARED_ROUND@1', 'AMBIENT_TENSE_TABLE@1',
+        'CHAIN_VISITOR_ECHO@1',
       ]);
     expect(templateFor('VISITOR_RETURN')?.choices.map((choice) => choice.choiceId))
       .toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
@@ -70,7 +71,7 @@ describe('Narrative Event Templates', () => {
     expect(resolveParticipants(['visitor', 'visitor'], ['visitor:1', 'visitor:1'])).toBeNull();
   });
 
-  it('traegt die Slot-Zwecke der neun Templates', () => {
+  it('traegt die Slot-Zwecke der elf Templates', () => {
     const purpose = (eventId: string, slotId: string) =>
       templateFor(eventId)?.contentSlots.find((slot) => slot.id === slotId)?.requiredContexts;
     expect(purpose('VISITOR_RETURN', 'CHOICE_WELCOME')).toEqual(['return', 'welcome']);
@@ -80,6 +81,7 @@ describe('Narrative Event Templates', () => {
     expect(purpose('NEON_NACHT', 'BODY')).toEqual(['demand']);
     expect(purpose('VISITOR_AFTERMATH', 'TITLE')).toEqual(['aftermath']);
     expect(purpose('VISITOR_AFTERMATH', 'CHOICE_LISTEN')).toEqual(['aftermath']);
+    expect(purpose('CHAIN_VISITOR_ECHO', 'BODY')).toEqual(['aftermath', 'echo']);
   });
 
   it('weist falsche Trigger und nicht passende Teilnehmer ab', () => {

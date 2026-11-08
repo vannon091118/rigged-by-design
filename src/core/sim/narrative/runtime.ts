@@ -7,6 +7,7 @@ import { demandDefinition, isDemandEventId } from './events/demand-definitions';
 import { EVENT_TEMPLATES, templateFor } from './events/definitions';
 import { createEventCandidate } from './events/template-candidate';
 import { EVENT_TRIGGER_DEFINITIONS } from './events/trigger-definitions';
+import { advanceChains } from './chains/chain-runtime';
 import { scheduleCandidates } from './event-scheduler';
 import { maybeScheduleMainEvent } from './main-event-pool';
 import { INFLUENCE_CONFIG, type InfluenceConfig } from '../influence-config';
@@ -98,6 +99,12 @@ export function processNarrativeRuntime(
     if (followUp) candidates.push(followUp);
   }
   const scheduled = boundary.facts.length === 0 ? [] : scheduleCandidates(world, candidates, world.tick);
+  const resolvedEventIds = new Set<number>();
+  for (const fact of boundary.facts) {
+    if (fact.kind === 'EVENT_RESOLVED') resolvedEventIds.add(fact.eventId);
+  }
+  // Auch ohne neuen Fact muessen ruhende Ketten ihre Faelligkeit pruefen.
+  scheduled.push(...advanceChains(world, ledger, world.tick, influenceConfig, resolvedEventIds).scheduled);
   const pooled = maybeScheduleMainEvent(world, influenceConfig);
   if (pooled) scheduled.push(pooled);
   return {
