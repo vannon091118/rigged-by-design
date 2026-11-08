@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.189 | 2026-11-08 04:13 UTC -->
+<!-- rbd-doc: v0.3.189 | 2026-11-08 04:20 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -257,6 +257,7 @@ Code und seinen Test als Beleg.
 | M4 | Smartphone als echte Geraeteflaeche | offen | Vergleich der vier Fensterzustaende |
 | P-18 | Wand-Occlusion visuell | offen | Depth-Tests stehen, Browserbeleg fehlt |
 | P-19 | First Frame unter 3 s / Slow 4G | offen | Baseline 22 Requests/12,16 s/2,42 MB |
+| P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | offen | `scripts/sync-dependency-matrix.mjs` zaehlt Testdateien; jede neue Testdatei verschiebt die Zahlen und braucht damit eine PIN-Freigabe. Matrix in eine freie Datei ziehen oder den Generator aus dem Freeze nehmen |
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
 
 #### D. Governance, CI und Abnahme der Lieferung
