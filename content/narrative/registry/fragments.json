@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9b935bac41aa3167adbb7d4256d99a069a89c6af219a3949b80ecdec5fb098d9",
+  "contentHash": "sha256:9df74d930196ad69916568f0850d187813fd8fbdb555ecfcbb78b445825d09fd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3349,6 +3349,28 @@
       "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dokumentation.json"
+    },
+    {
+      "contributionId": "loc-trim-01",
+      "turnId": "2026-11-08T04:50Z-loc-trim",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
     },
     {
       "contributionId": "memory-53",

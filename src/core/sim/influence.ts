@@ -1,10 +1,6 @@
 /**
- * Einfluss-Matrix: gewichtete Faktoren, Kontexte und Cross-Abhaengigkeiten.
- *
- * Die Matrix ist eine Config, keine Doku. Jeder Faktor traegt einen Wertebereich,
- * jeder Kontext gewichtet dieselben Faktoren anders. Cross-Kanten heben oder
- * senken einen Faktor, bevor der Kontext ihn gewichtet. Alles ist rein,
- * deterministisch und ohne Zufall: gleiche Eingaben ergeben gleiche Punktzahl.
+ * Einfluss-Matrix: gewichtete Faktoren, Kontexte und Cross-Kanten. Rein und
+ * deterministisch: gleiche Eingaben ergeben gleiche Punktzahl, kein RNG.
  */
 import { createFactor, type Factor } from '../contracts/factor';
 
