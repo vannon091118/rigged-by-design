@@ -524,10 +524,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2054 |
-| Gelistete Dateien | 2054 |
+| Getrackte Dateien | 2055 |
+| Gelistete Dateien | 2055 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (21), content (681), docs (77), public (554), scripts (91), src (605) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (21), content (682), docs (77), public (554), scripts (91), src (605) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -540,7 +540,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 19 Datei(en)
-- `content/narrative/contributions/` — 677 Datei(en)
+- `content/narrative/contributions/` — 678 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1178,6 +1178,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-city-scene-53.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-guest-voice-mid-51.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-influence-matrix-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:30Z-influence-matrix","contributionId":"influence-matrix-01","role" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-loc-trim-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:50Z-loc-trim","contributionId":"loc-trim-01","role":"BEOBACHTER","l — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-memory-53.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-choice-preview-51","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-choice-preview-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-choice-preview-52","contributionId":"pool-choice-preview-5 — gelesen: 1 Zeilen
@@ -1348,8 +1349,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-relationship-standing-01.json` — {"agentId":"buffy","turnId":"2026-11-08T03:55Z-relationship-standing","contributionId":"relationship-standing- — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15049 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2717 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15071 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2721 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 188 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
