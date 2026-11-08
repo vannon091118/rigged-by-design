@@ -22,7 +22,7 @@ export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
 /** Begrenzungen: Facts, Historie, Erinnerungen und Beziehungen wachsen nicht unkontrolliert. */
 export const NARRATIVE_LIMITS = {
   pending: 48, recent: 120, memories: 6, startPool: 3, relationships: 200,
-  eventInstances: 32, activeEvents: 8, cooldowns: 64,
+  eventInstances: 32, activeEvents: 8, cooldowns: 64, knowledge: 160,
 } as const;
 
 /** Kanonische, persistente Akteursreferenz; Gäste werden über visitor:<id> geführt. */
@@ -145,6 +145,23 @@ export interface VisitorMemory {
   readonly valence: VisitorValence;
 }
 
+/** Wie jemand etwas erfahren hat; die Art bleibt an der Aussage haengen. */
+export type KnowledgeSourceKind = 'ERLEBT' | 'GESEHEN' | 'GEHOERT' | 'GELESEN';
+
+/** Ein Wissenstand mit Provenance: Distanz zaehlt Weitergaben, Konfidenz ist bereits reduziert. */
+export interface KnowledgeEntry {
+  readonly id: number;
+  readonly actor: ActorRef;
+  readonly topic: string;
+  readonly subject: ActorRef;
+  readonly sentiment: number;
+  readonly confidence: number;
+  readonly sourceKind: KnowledgeSourceKind;
+  readonly sourceActor: ActorRef;
+  readonly distance: number;
+  readonly tick: number;
+  readonly factId: number;
+}
 export interface NarrativeState {
   /** Naechste freie Fact-ID. */
   factSeq: number;
@@ -160,6 +177,9 @@ export interface NarrativeState {
   flags: Record<string, number>;
   /** Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. */
   relationships: RelationshipEdge[];
+  knowledge: KnowledgeEntry[];
+  /** Naechste freie Wissens-ID. */
+  knowledgeSeq: number;
   /**
    * Ledger-`seq` der zuletzt verarbeiteten Buchung, nicht der Array-Index.
    * `null` heisst: noch kein Cursor; der erste Lauf setzt ihn ohne historische Facts.

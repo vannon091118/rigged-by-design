@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9df74d930196ad69916568f0850d187813fd8fbdb555ecfcbb78b445825d09fd",
+  "contentHash": "sha256:e9dc7b33cc3d01626554492af5d863b797d788e1c395b96aa6606632c628732c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3298,6 +3298,28 @@
       "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
+    },
+    {
+      "contributionId": "knowledge-chain-01",
+      "turnId": "2026-11-08T04:45Z-knowledge-chain",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast erzaehlt nur, was er selbst erlebt, gelesen, gesehen oder gehoert hat. Je weiter die Kunde wandert, desto wahrscheinlicher verliert sie ihren Kern; wer nah dran war, wiegt schwerer als ein Fremder am Tresen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-knowledge-chain-01.json"
     },
     {
       "contributionId": "lebenssim-vision-01",

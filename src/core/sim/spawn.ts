@@ -8,7 +8,8 @@ import { makeGuest, personaTier, randomFiat, randomPersona } from './traits';
 import { markReturning, pickReturningVisitor, recordVisitor } from './visitors';
 import { emitFact } from './narrative/facts';
 import { memoryEffect } from './narrative/memory';
-import { relationshipStanding } from './narrative/relationships';
+import { hearRumor } from './narrative/knowledge';
+import { actorRefOfVisitor, relationshipStanding } from './narrative/relationships';
 import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
@@ -67,6 +68,9 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   if (!target) return null;
   if (returning) {
     markReturning(returning, world.tick);
+    // Wer wiederkommt, hat in der Zwischenzeit jemanden getroffen: ein Bericht
+    // mit Provenance, kein neuer Wahrheitsanspruch.
+    hearRumor(world, actorRefOfVisitor(returning.id), world.tick);
     emitFact(world, { kind: 'VISITOR_RETURNED', visitorId: returning.id, visits: returning.visits });
   } else {
     guest.visitorId = recordVisitor(world, { name: guest.name, persona, tick: world.tick }).id;

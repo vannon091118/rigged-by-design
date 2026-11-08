@@ -1,6 +1,7 @@
 /** Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. */
 import type { Visitor, WorldState } from '../types';
 import { scoreMemories, type MemoryScore } from './disposition';
+import { recordFirstHand } from './knowledge';
 import { NARRATIVE_LIMITS, type NarrativeFact, type VisitEndedFact, type VisitorValence } from './types';
 
 /** Dieselbe Schwelle wie die Zufriedenheitsnotiz: 65+ ist ein guter Besuch, 35- ein schlechter. */
@@ -27,7 +28,14 @@ function remember(world: WorldState, fact: VisitEndedFact): boolean {
 export function applyMemories(world: WorldState, fresh: readonly NarrativeFact[]): number {
   let applied = 0;
   for (const fact of fresh) {
-    if (fact.kind === 'VISIT_ENDED' && remember(world, fact)) applied += 1;
+    if (fact.kind === 'VISIT_ENDED' && remember(world, fact)) {
+      applied += 1;
+      // Eigene Erfahrung ist die einzige Quelle ohne Weitergabe: Distanz 0.
+      recordFirstHand(world, {
+        actor: `visitor:${fact.visitorId}`, factId: fact.id,
+        sentiment: (fact.score - 50) / 50, tick: fact.tick,
+      });
+    }
     if (fact.kind === 'VISITOR_RETURNED') world.narrative.flags.rueckkehrer = (world.narrative.flags.rueckkehrer ?? 0) + 1;
     if (fact.kind === 'VISITOR_FIRST_SEEN') world.narrative.flags.neue_gaeste = (world.narrative.flags.neue_gaeste ?? 0) + 1;
   }

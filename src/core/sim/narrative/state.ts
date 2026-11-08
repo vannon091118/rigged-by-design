@@ -4,6 +4,7 @@ import type { Visitor, WorldState } from '../types';
 import { emitFact } from './facts';
 import { orderedFacts, safeInteger } from './fact-schema';
 import { normalizeRelationships } from './relationships';
+import { normalizeKnowledge } from './knowledge';
 import { normalizeEventState } from './event-schema';
 import { createNarrativeRng } from './narrative-rng';
 import {
@@ -21,7 +22,7 @@ const START_ROSTER: ReadonlyArray<{ readonly name: string; readonly persona: Vis
 export function createNarrativeState(): NarrativeState {
   return {
     factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0,
-    flags: {}, relationships: [], ledgerSeq: null, houseBand: 'OK',
+    flags: {}, relationships: [], knowledge: [], knowledgeSeq: 1, ledgerSeq: null, houseBand: 'OK',
     eventSeq: 1, events: [], cooldowns: [], rng: createNarrativeRng(),
   };
 }
@@ -73,6 +74,9 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.ledgerSeq = safeInteger(raw.ledgerSeq, -1) ? raw.ledgerSeq : null;
   state.houseBand = HOUSE_BANDS.includes(raw.houseBand as HouseBand) ? raw.houseBand as HouseBand : 'OK';
   state.relationships = normalizeRelationships(raw.relationships);
+  state.knowledge = normalizeKnowledge(raw.knowledge);
+  const maxKnowledge = state.knowledge.reduce((max, entry) => Math.max(max, entry.id), 0);
+  state.knowledgeSeq = Math.max(state.knowledgeSeq, maxKnowledge + 1);
   if (isRecord(raw.flags)) {
     for (const [key, value] of Object.entries(raw.flags)) {
       if (Number.isFinite(value)) state.flags[key] = Number(value);
