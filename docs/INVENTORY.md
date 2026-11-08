@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.192 | 2026-11-08 17:25 UTC -->
+<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -492,7 +492,7 @@ Spielregel-Entscheidung, nicht nur eine Buchung.
 | Befund | Beleg | Status |
 | --- | --- | --- |
 | `Persona.patience` wurde nie gelesen; der Stammgast startete ungeduldiger als der High Roller | `traits.ts` zog Geduld zu gleichen Teilen, `personas.ts` lieferte den Wert umsonst | **gefixt**: `rollProfile` gewichtet mit `persona.patience / 100`, Summe bleibt 180 |
-| `PLAYER_CASH` hat keinen Ausgabepfad | `cashOutPlayerCash` existiert in `self-exclusion-bet.ts:82`, hat aber keinen Produktions-Aufrufer; nur `player-cash.test.ts` ruft ihn | **offen** (T75) |
+| `PLAYER_CASH` hat keinen Ausgabepfad | `cashOutPlayerCash` existiert in `self-exclusion-bet.ts:82`; der Produktionspfad ist jetzt `SelfExclusionPanel` → `worldStore.exclusion('CASH_OUT')` → `cashOutPlayerCash` | **gelöst 2026-11-08**: sichtbarer `BONUS AUSZAHLEN`-Button; Tests `exclusion-command.test.ts` und `self-exclusion-panel.test.tsx` |
 | `VELVET` verspricht „bessere Gäste", ändert aber nur Anziehung und Geduld | `offers.ts`, sonst nur Rivalen-Deko | **gelöst (Phase 2)**: `guestTier` hebt die Persona-Stufe neuer Gäste |
 | `FREE_DRINK` verspricht „ein Drink pro Spin"; kein Drink wird gebucht | `offers.ts`, keine Buchung im Gastpfad | **gelöst (Phase 2)**: `serveFreeDrink` verbraucht Barbestand, Betriebsanteil wird gebucht |
 | `EXTRA_REEL` („Vierte Walze") fügt keine Walze hinzu | `reelPull` liest `item.reels`, der Mod zählt nur 300 Anziehung | **gelöst (Phase 2)**: `installMod` erhöht `reels`, nur für SLOT erlaubt |
@@ -524,10 +524,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2114 |
-| Gelistete Dateien | 2114 |
+| Getrackte Dateien | 2117 |
+| Gelistete Dateien | 2117 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (28), content (692), docs (77), public (554), scripts (91), src (647) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (29), content (692), docs (77), public (554), scripts (91), src (649) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,7 +539,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 26 Datei(en)
+- `.lane-claims/claims/` — 27 Datei(en)
 - `content/narrative/contributions/` — 688 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -621,11 +621,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
 - `src/store/` — 27 Datei(en)
-- `src/store/__tests__/` — 18 Datei(en)
+- `src/store/__tests__/` — 19 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 66 Datei(en)
-- `src/ui/__tests__/` — 10 Datei(en)
+- `src/ui/__tests__/` — 11 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -674,6 +674,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
@@ -2607,6 +2608,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/wall-occlusion.ts` — Vordergrund-Waende als eigene Occlusion-Schicht. Jede Wand ist ein Sprite in — gelesen: 66 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
+- `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
 - `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 51 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 143 Zeilen
@@ -2626,7 +2628,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 31 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 41 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. — gelesen: 148 Zeilen
-- `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 38 Zeilen
+- `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
 - `src/store/layout-editing.ts` — Editor-Verlauf am Store-Rand: typisierte Commands anwenden, Pinselstriche — gelesen: 90 Zeilen
 - `src/store/layout-transfer.ts` — Layout-Export und -Import am Store-Rand. Der Import prueft das Dokument — gelesen: 55 Zeilen
 - `src/store/legacy-demand.ts` — Legacy-Savefeld aus der Zeit vor NAR-13; nur noch fuer die Migration. — gelesen: 7 Zeilen
@@ -2666,6 +2668,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/machine-play.test.tsx` — Der Betrieb behält den kostenlosen Diagnose-Testspin. Der Gast bekommt ohne — gelesen: 93 Zeilen
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
+- `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 173 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 44 Zeilen
 - `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 39 Zeilen
@@ -2689,7 +2692,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/foreign-floor-popup.tsx` — Fenster auf einem fremden Floor: HUD plus Job-Menue an der gewaehlten Station. — gelesen: 54 Zeilen
 - `src/ui/format.ts` — Kompakte Anzeige: VC ohne Zahlenrauschen. — gelesen: 19 Zeilen
 - `src/ui/games-popup-lazy.tsx` — Chunk-Grenze fuer das Spiel-Paket: Engines, Tische und Pixi-Buehnen der — gelesen: 26 Zeilen
-- `src/ui/games-popup.tsx` — Fremdes Haus: echte Rivalen mit Betreiber, Regeln, Maschinen und Hausvorteil. — gelesen: 195 Zeilen
+- `src/ui/games-popup.tsx` — Fremdes Haus: echte Rivalen mit Betreiber, Regeln, Maschinen und Hausvorteil. — gelesen: 196 Zeilen
 - `src/ui/games/blackjack-popup.tsx` — Blackjack-Fenster: der Spieler entscheidet Zug für Zug, inklusive Split, Versicherung und Aufgeben. — gelesen: 170 Zeilen
 - `src/ui/games/blackjack-rules-editor.tsx` — Blackjack-Tischregeln: Decks, Soft-17, Auszahlung, Split, Versicherung, Aufgeben, Paar-Wette. — gelesen: 105 Zeilen
 - `src/ui/games/blackjack-table-actions.tsx` — Blackjack-Tisch-Aktionen: Karten ziehen, halten, verdoppeln, splitten, aufgeben, Versicherung. — gelesen: 68 Zeilen
@@ -2725,7 +2728,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 170 Zeilen
 - `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 80 Zeilen
 - `src/ui/roulette-tableau.tsx` — Das Setzfeld: jede Zelle ist ein Feld, jeder Klick legt einen Jeton dorthin. — gelesen: 65 Zeilen
-- `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 67 Zeilen
+- `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 78 Zeilen
 - `src/ui/slot-rules-editor.tsx` — Regel-Editor am Automaten: Streifen, Gewichte, Modell, Volatilität und Bonus-Paytable. — gelesen: 138 Zeilen
 - `src/ui/slot-telemetry.tsx` — Slot-Telemetrie: Historie, Abweichung, Druck und letzte Symbole ohne Beschönigung. — gelesen: 38 Zeilen
 - `src/ui/smartphone-build.tsx` — Smartphone-App: BUILD - ersetzt BuildPanel — gelesen: 32 Zeilen

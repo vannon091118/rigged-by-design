@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.192 | 2026-11-08 17:25 UTC -->
+<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
