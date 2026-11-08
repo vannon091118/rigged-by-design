@@ -1,14 +1,13 @@
 {
   "version": 1,
-  "base": "b5a0c0dcf27cc37575f70ea0893dd22ed91c83fa",
+  "base": "9a1a1ff82820a56ee987ff684781e23f468357ea",
   "paths": [
-    ".githooks/pre-commit",
-    ".github/workflows/ci-verify.yml",
-    "docs/GOVERNANCE.md",
-    "scripts/freeze-unlock.mjs",
+    ".lane-claims/claims/lane-governance-claim-tooling.json",
+    ".lane-claims/claims/lane-governance-freeze.json",
     "scripts/lib/governance-freeze.mjs",
-    "scripts/verify-governance-freeze.mjs"
+    "scripts/lib/lane-claims.mjs",
+    "scripts/verify-lane-claims.mjs"
   ],
-  "token": "d63ee6ce0767df1b562b6cbf1a00074db54123bd8b8ec01858c541772edc9e90",
+  "token": "0e8355d94b84dbb5a71f7f008d7685a42561fd878f65eefab356035eb5ede562",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

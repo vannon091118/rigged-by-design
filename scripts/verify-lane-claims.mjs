@@ -22,6 +22,7 @@ import {
   selectClaim,
   botClaim,
   auditRegisterAgainstBase,
+  COORDINATION_FILES,
 } from './lib/lane-claims.mjs';
 import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
 
@@ -241,6 +242,9 @@ const inherited = [];
 const handedOver = [];
 
 for (const file of staged) {
+  // Koordinationsdateien sind Werkzeug jeder Lane (Register, PIN-Freigabe);
+  // sie brauchen keinen Allowlist-Eintrag und kollidieren nicht.
+  if (COORDINATION_FILES.includes(file)) continue;
   if (HOOK_FILES.includes(file)) {
     if (!claim.allowsPath(file)) violations.push(`${file} (Hook-Datei nur mit Claim)`);
     continue;

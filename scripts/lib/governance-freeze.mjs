@@ -50,6 +50,21 @@ export const GOVERNANCE_PATHS = Object.freeze([
 /** Die Freigabe liegt als Datei im Commit, damit CI sie ohne PIN pruefen kann. */
 export const FREEZE_UNLOCK_FILE = '.lane-claims/freeze-unlock.json';
 
+/**
+ * Lane-Werkzeug statt Steuerung: Claim-Dateien und die Freigabe beschreiben,
+ * wer was tun darf, und aendern keine Gate-, Hook- oder Vertragslogik. Sie
+ * zaehlen deshalb nicht als Governance-Aenderung - sonst braeuchte jede Lane
+ * eine PIN-Freigabe fuer ihren eigenen Claim, und die Freigabe kollidierte mit
+ * jedem anderen Claim, der `.lane-claims/` fuehrt.
+ */
+export const CLAIM_TOOLING_PATHS = Object.freeze(['.lane-claims/claims/', FREEZE_UNLOCK_FILE]);
+
+/** True, wenn der Pfad Lane-Werkzeug ist (Claim-Datei oder Freigabe). */
+export function isClaimTooling(file) {
+  const path = String(file ?? '').replaceAll('\\', '/');
+  return CLAIM_TOOLING_PATHS.some((entry) => (entry.endsWith('/') ? path.startsWith(entry) : path === entry));
+}
+
 const PIN_SALT = 'rbd-freeze-v1';
 const PIN_KEYLEN = 32;
 const PIN_OPTIONS = Object.freeze({ N: 16384, r: 8, p: 1 });
@@ -103,7 +118,7 @@ export function laneBase(head = 'HEAD') {
  */
 export function governanceChanges(files) {
   return [...new Set((files ?? []).map((file) => String(file ?? '').replaceAll('\\', '/')))]
-    .filter((file) => isGovernancePath(file) && file !== FREEZE_UNLOCK_FILE)
+    .filter((file) => isGovernancePath(file) && !isClaimTooling(file))
     .sort();
 }
 
