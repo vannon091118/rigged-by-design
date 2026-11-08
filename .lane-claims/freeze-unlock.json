@@ -1,14 +1,9 @@
 {
   "version": 1,
-  "base": "b5a0c0dcf27cc37575f70ea0893dd22ed91c83fa",
+  "base": "9a1a1ff82820a56ee987ff684781e23f468357ea",
   "paths": [
-    ".githooks/pre-commit",
-    ".github/workflows/ci-verify.yml",
-    "docs/GOVERNANCE.md",
-    "scripts/freeze-unlock.mjs",
-    "scripts/lib/governance-freeze.mjs",
-    "scripts/verify-governance-freeze.mjs"
+    ".lane-claims/claims/lane-city-vertical-slice.json"
   ],
-  "token": "d63ee6ce0767df1b562b6cbf1a00074db54123bd8b8ec01858c541772edc9e90",
+  "token": "94c681540c58bfc6bb37b56d681f626215fb5a6a2907a286b20a576bff4cb70d",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
