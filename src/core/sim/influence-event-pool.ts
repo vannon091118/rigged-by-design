@@ -16,20 +16,6 @@ export interface EventPoolConfig {
   readonly events: Readonly<Record<string, EventPoolEntry>>;
 }
 
-export const EVENT_POOL_CONFIG: EventPoolConfig = {
-  chance: 0.2,
-  idleCooldownTicks: 120,
-  recencyWindowTicks: 900,
-  recencyPenalty: 0.45,
-  repeatLockout: 1,
-  weightFloor: 0.05,
-  events: {
-    AMBIENT_BAR_TALK: { context: 'event-warm', baseWeight: 1 },
-    AMBIENT_SHARED_ROUND: { context: 'event-neutral', baseWeight: 1 },
-    AMBIENT_TENSE_TABLE: { context: 'event-tense', baseWeight: 1 },
-  },
-};
-
 /** Fail-closed: eine unlesbare Pool-Config darf nie still weiterlaufen. */
 export function validateEventPool(pool: EventPoolConfig, contexts: Readonly<Record<string, unknown>>): void {
   if (!pool) throw new Error('Einfluss-Matrix: Event-Pool fehlt.');
