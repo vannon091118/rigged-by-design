@@ -2720,6 +2720,10 @@
     {
       "turnId": "2026-11-08T05:15Z-knowledge-domain",
       "contributionId": "knowledge-domain-01"
+    },
+    {
+      "turnId": "2026-11-08T05:25Z-relationships-coupling",
+      "contributionId": "relationships-coupling-01"
     }
   ]
 }

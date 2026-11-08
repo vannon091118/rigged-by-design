@@ -14,6 +14,7 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "full",
-  "status": "open",
-  "createdAt": "965e082fdd405f402f8c5b00f2d10239c3c37a98"
+  "status": "merged",
+  "createdAt": "965e082fdd405f402f8c5b00f2d10239c3c37a98",
+  "mergedSha": "d846ee7217c258799e79acdfd9633a71639a1060"
 }

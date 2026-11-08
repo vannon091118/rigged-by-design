@@ -1,7 +1,8 @@
 /**
  * Weitergabe als Matrix-Kontext: ob jemand ueberhaupt erzaehlt, haengt von
- * Laune, Geselligkeit und dem eigenen Geruecht ab - nicht von einem zweiten
- * Schwellenwert neben der Matrix. Die Basis bleibt `INFLUENCE_CONFIG`.
+ * Laune, Geselligkeit, eigenem Geruecht und der Beziehung zum Empfaenger ab.
+ * Vertrauen und Sympathie heben, Konflikt senkt ueber die Cross-Kante die
+ * Geselligkeit - kein zweiter Schwellenwert neben der Matrix.
  */
 import {
   INFLUENCE_CONFIG, evaluateInfluence,
@@ -14,9 +15,11 @@ const SHARE_INFLUENCE_CONFIG: InfluenceConfig = {
     ...INFLUENCE_CONFIG.contexts,
     share: {
       label: 'Weitergabe',
-      // Wer niedergeschlagen und unfreundlich ist, behaelt sein Wissen fuer sich.
-      weights: { mood: 0.3, sociability: 0.5, thirst: 0, rumor: 0.2 },
-      threshold: 0.4,
+      weights: {
+        mood: 0.2, sociability: 0.3, thirst: 0, rumor: 0.1,
+        trust: 0.1, sympathy: 0.1, conflict: 0,
+      },
+      threshold: 0.38,
     },
   },
 };

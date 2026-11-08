@@ -11,6 +11,7 @@ import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
 import { influenceScore } from './influence';
 import { rumorAbout } from './narrative/knowledge';
+import { relationshipBetween } from './narrative/relationships';
 import { offerScore } from './offers';
 import type { Furniture, Guest, WorldState } from './types';
 import { freeSeat, interactionPoint, releaseSeat, reserveSeat, seatPoint, sendGuest, worldNav, zoneById } from './world';
@@ -109,8 +110,12 @@ export function chooseActivity(world: WorldState, guest: Guest, ledger: Ledger, 
   // Kontextabhaengiger Einfluss: Durst und Laune ziehen an der Bar, am Automaten nicht.
   // Begrenzt auf wenige Punkte, damit die bestehenden Schwellen die Oberhand behalten.
   const heard = guest.visitorId === undefined ? 0 : rumorAbout(world, `visitor:${guest.visitorId}`);
+  const visitorRef = guest.visitorId === undefined ? null : `visitor:${guest.visitorId}` as const;
+  const edge = visitorRef ? relationshipBetween(world, visitorRef, 'player')
+    ?? relationshipBetween(world, 'player', visitorRef) : null;
   const barPull = Math.round((influenceScore('bar', {
     mood: guest.mood, sociability: guest.sociability, thirst: guest.thirst, rumor: heard,
+    trust: edge?.trust ?? 0, sympathy: edge?.sympathy ?? 0, conflict: edge?.conflict ?? 0,
   }) - 0.5) * 16);
   const wantsDrink = wallet >= world.prices.drinkPrice
     && (guest.need === 'drink' || guest.mood < 44 + disposition.serviceBias + barPull
