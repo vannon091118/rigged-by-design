@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e89cbc97a02c2ab6e5baedd46c7580bceecc0aeb423c797685bbf63312518e61",
+  "contentHash": "sha256:fea07d10f0368c44702c9083ed4b0082c43d25763b41e4820aa8b1c07e335f59",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2873,6 +2873,28 @@
       "text": "Der Weg zurueck fuehrt an beiden Orten vorbei, und beide sehen dir nach.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-scene-52.json"
+    },
+    {
+      "contributionId": "city-scene-53",
+      "turnId": "2026-11-08T04:10Z-city-scene-53",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jeder Schritt durch den Kiez hinterlaesst eine andere Spur; wer zweimal denselben Satz hoert, ist stehen geblieben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
     },
     {
       "contributionId": "command-dsl-01",

@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.185 | 2026-11-08 02:36 UTC -->
+<!-- rbd-doc: v0.3.186 | 2026-11-08 02:41 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.186] - 2026-11-08
+
+### Spiel
+- **Die Stadt liest ihre 52 Bausteine wirklich.** Der Textschluessel trug nur Handlung, Besuch und Tick; Besuch und Tick bleiben waehrend eines Aufenthalts konstant, deshalb las jede der 15 Kiez-Handlungen denselben Satz. Der Schluessel traegt jetzt den Fortschritt: mindestens acht verschiedene Texte je Kiez-Lauf, weiter deterministisch und ohne RNG.
+
+### Technik
+- **Headless-Abnahme des Stadt-Loops.** `city-loop-walkthrough.test.ts` spielt Kiez bis Eingeweihter, Markt-Freischaltung, Tag beenden und beide Zweige in einem Lauf, schreibt jede Station nach stdout und prueft die Textvielfalt als Regression.
 
 ## [0.3.185] - 2026-11-08
 

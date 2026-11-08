@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.185 | 2026-11-08 02:36 UTC -->
+<!-- rbd-doc: v0.3.186 | 2026-11-08 02:41 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,6 +14,26 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
+
+## 2026-11-08 - Stadt-Loop im Replay: ein Befund, ein Fix
+
+**Ziel.** Den Stadt-Loop ohne Browser belegen, weil AX-Baum, DOM-Auswertung und
+Screenshot im Cloud-Browser jeweils nach 10 bis 15 Sekunden abbrechen - die
+Seite laedt (alle Assets 200), die Aufnahme der GPU-Seite aber nicht.
+
+**Befund.** Das Harness spielte Kiez bis Eingeweihter und zeigte 15-mal
+denselben Stadt-Text. Ursache im Code, nicht im Content: `runCityAction` baute
+den Schluessel aus `action.id`, `visits[location]` und `world.tick`; Besuch und
+Tick bleiben waehrend eines Aufenthalts konstant, also las der FNV-Wurf immer
+denselben der 52 Bausteine. Der Markt-Zweig zeigte dasselbe Bild.
+
+**Fix.** Der Schluessel traegt jetzt den erreichten Fortschritt
+(`action|location|points`). Damit wechselt der Text mit jeder Handlung, bleibt
+aber deterministisch: derselbe Stand liest denselben Satz.
+
+**Pruefungen.** `city-loop-walkthrough.test.ts` (Kiez 15, Markt 12, zwei Tage
+Abschluss, mindestens acht verschiedene Texte) gruen; `narrative:blocks`,
+`narrative:check`, `typecheck` und `verify:light` gruen.
 
 ## 2026-11-08 - Stadt-Vertikalschnitt landet: Integration statt Neubau
 

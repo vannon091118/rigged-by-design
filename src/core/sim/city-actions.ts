@@ -34,7 +34,12 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
   const points = state[action.branch] + action.progress;
   const done = [...state.completed];
   if (points >= finalTier(action.branch) && !done.includes(action.branch)) done.push(action.branch);
-  const key = `${action.id}|${state.visits[state.location]}|${world.tick}`;
+  // Der Textschluessel traegt den erreichten Stand: `visits` bleibt waehrend
+  // eines Aufenthalts konstant und `world.tick` laeuft bei Stadt-Handlungen
+  // nicht weiter. Mit beiden allein las jede Handlung im selben Aufenthalt
+  // denselben Satz - 52 Bausteine, aber ein Text. Der Fortschritt aendert sich
+  // mit jeder Handlung und bleibt deterministisch.
+  const key = `${action.id}|${state.location}|${points}`;
   const next: CityState = {
     ...state,
     energy: clampEnergy(state.energy - action.energy),

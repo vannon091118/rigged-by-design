@@ -1,6 +1,6 @@
 # Testing: eine Linie und 17 Nachweise
 
-<!-- rbd-doc: v0.3.185 | 2026-11-08 02:36 UTC -->
+<!-- rbd-doc: v0.3.186 | 2026-11-08 02:41 UTC -->
 
 **Zweck:** Die eine Testlinie und die Matrix, die Governance-Änderungen belegen. `AGENTS.md` verweist hierher; die Gate-Liste bleibt in [`CI.md`](CI.md).
 
