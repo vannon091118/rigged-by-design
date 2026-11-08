@@ -95,6 +95,26 @@ export function pinnedVisitorIds(world: WorldState): ReadonlySet<number> {
   return pinned;
 }
 
+/**
+ * Ruf, der aus Beziehungen entsteht: wie die Leute ueber das Haus sprechen,
+ * wenn sie an den Spieler denken. Nur Kanten zum Spieler zaehlen; Vertrauen und
+ * Sympathie heben, Konflikt senkt. Der Anteil ist auf +-6 Punkte begrenzt,
+ * damit der Ruf nicht an einer Kante haengt und die uebrigen Quellen sichtbar
+ * bleiben. Kein Zufall, keine zweite Ruf-Wahrheit: `reputation()` bleibt der
+ * einzige Leser.
+ */
+const RELATIONSHIP_REPUTATION_LIMIT = 6;
+
+export function relationshipStanding(world: WorldState): number {
+  let sum = 0;
+  for (const edge of world.narrative.relationships) {
+    if (edge.to !== 'player') continue;
+    sum += edge.trust * 0.6 + edge.sympathy * 0.4 - edge.conflict * 0.8;
+  }
+  const scaled = sum / 6;
+  return Math.max(-RELATIONSHIP_REPUTATION_LIMIT, Math.min(RELATIONSHIP_REPUTATION_LIMIT, scaled));
+}
+
 /** Verwirft kaputte Kanten, begrenzt Dimensionen und haelt die Anzahl im Budget. */
 export function normalizeRelationships(raw: unknown): RelationshipEdge[] {
   if (!Array.isArray(raw)) return [];

@@ -7,6 +7,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { fromVC } from '../../economy/vacoin';
+import { relationshipStanding, shift } from '../narrative/relationships';
 import { getBuildDef } from '../offers';
 import { guestTier, reputation } from '../spawn';
 import { createWorld, ensureStarter } from '../templates';
@@ -66,6 +67,27 @@ describe('Ruf', () => {
     expect(guestTier(world)).toBe(3);
     world.demandTier = 'KONZERN';
     expect(guestTier(world)).toBe(3);
+  });
+
+  it('hebt den Ruf, wenn Gaeste dem Haus vertrauen, und senkt ihn bei Konflikt', () => {
+    const world = fresh();
+    world.guestsServed = 120;
+    const neutral = reputation(world);
+    shift(world, 'visitor:1', 'player', { trust: 6, sympathy: 4 }, 0);
+    const warm = reputation(world);
+    expect(warm).toBeGreaterThan(neutral);
+    shift(world, 'visitor:1', 'player', { conflict: 10 }, 1);
+    expect(reputation(world)).toBeLessThan(warm);
+  });
+
+  it('begrenzt den Beziehungsanteil auf sechs Punkte', () => {
+    const world = fresh();
+    for (let id = 1; id <= 20; id += 1) {
+      shift(world, `visitor:${id}`, 'player', { trust: 10, sympathy: 10 }, id);
+    }
+    expect(relationshipStanding(world)).toBe(6);
+    expect(reputation(world) - reputation({ ...world, narrative: { ...world.narrative, relationships: [] } }))
+      .toBeCloseTo(6, 5);
   });
 
   it('ist ohne Angebot null', () => {

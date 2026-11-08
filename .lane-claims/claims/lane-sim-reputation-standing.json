@@ -1,0 +1,17 @@
+{
+  "id": "lane/sim/reputation-standing",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/reputation-standing",
+  "baseSha": "847d0054da999fda74c2dfbf77fc642f93615279",
+  "task": "RelationshipGraph an das ReputationSystem verdrahten",
+  "goal": "Beziehungen zum Spieler heben oder senken den Ruf als begrenzter, deterministischer Anteil; Beleg als Test und ein verdrahteter Textbaustein.",
+  "pathAllowlist": [
+    "src/",
+    "content/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "847d0054da999fda74c2dfbf77fc642f93615279"
+}
