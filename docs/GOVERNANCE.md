@@ -1,6 +1,6 @@
 # Governance: Lanes, Claims und Eskalation
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 00:42 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 00:50 UTC -->
 
 **Zweck:** Die verbindlichen Regeln für parallele Arbeit. Der Kurzvertrag steht in `AGENTS.md`; dieses Dokument beschreibt Rollen, Claim-Prüfung und die eine Eskalationsleiter.
 
@@ -47,7 +47,7 @@ Mechanik:
 - **Lokal:** `.githooks/pre-commit` ruft `scripts/verify-governance-freeze.mjs`; eine inhaltliche Governance-Änderung ohne Freigabe blockiert den Commit (`ERR-4030`).
 - **CI:** der `Plan`-Job prüft denselben Diff gegen die Basis. Rot heißt `Fail-Closed Gates` rot.
 - **Marker sind ausgenommen:** reine Doku-Marker und Versionszeilen zählen nicht, sonst würde jeder `docs:sync`-Lauf den Freeze auslösen.
-- **Freigabe:** `node scripts/freeze-unlock.mjs --pin=<pin>` schreibt `.lane-claims/freeze-unlock.json` mit Basis, Pfadliste und Token; die Datei wird mitcommittet. Sie gilt genau für diese Basis und diese Pfade.
+- **Freigabe:** `node scripts/freeze-unlock.mjs --pin=<pin>` schreibt `.lane-claims/freeze-unlock.json` mit Basis, Pfadliste und Token; die Datei wird mitcommittet. Sie gilt für genau diese Basis und mindestens diese Pfade — zusätzlich genannte Pfade sind erlaubt, weil die Generatoren im Hook danach weitere Steuerdateien anfassen können; fehlt dagegen eine tatsächlich geänderte Datei, ist die Freigabe ungültig.
 - **Verstoss:** fehlt die Freigabe ganz, entfernt die CI den Lane-Branch mit `Verdacht auf unautorisierte Korruption`. Ein Branch ohne Freigabe ist kein Merge-Kandidat.
 
 Der PIN steht nicht im Klartext im Repo, sondern nur als scrypt-Commitment (`PIN_COMMITMENT`). Das ist eine Sperre gegen versehentliche und tooling-freie Änderungen, **kein kryptografisches Geheimnis**: ein vierstelliges Commitment ist offline prüfbar. Wer echte Geheimhaltung braucht, legt den PIN zusätzlich als Repository-Secret ab und vergibt die Freigabe nur dort.

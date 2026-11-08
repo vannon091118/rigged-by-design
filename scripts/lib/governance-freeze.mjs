@@ -111,9 +111,13 @@ export function unlockRecord({ base, paths }) {
 }
 
 /**
- * Prueft eine Freigabe gegen Basis und tatsaechliche Aenderung. Alles oder
- * nichts: eine andere Basis, ein fehlender Pfad oder ein fremder Token gilt
- * nicht als Freigabe.
+ * Prueft eine Freigabe gegen Basis und tatsaechliche Aenderung.
+ *
+ * Jede tatsaechlich geaenderte Steuerdatei muss in der Freigabe stehen; eine
+ * andere Basis, ein fehlender Pfad oder ein fremder Token gilt nicht als
+ * Freigabe. Zusaetzlich genannte Pfade sind erlaubt: die Generatoren im Hook
+ * schreiben nach der Freigabe weitere Steuerdateien, und ein Gate, das daran
+ * scheitert, blockiert Arbeit statt Korruption.
  */
 export function verifyUnlockRecord(record, { base, paths }) {
   if (!record || typeof record !== 'object') return { ok: false, why: 'keine Freigabe-Datei' };
@@ -121,8 +125,9 @@ export function verifyUnlockRecord(record, { base, paths }) {
   if (!base || record.base !== base) return { ok: false, why: 'Freigabe gilt fuer eine andere Basis' };
   const expected = governanceChanges(paths);
   const recorded = Array.isArray(record.paths) ? [...record.paths].map(String).sort() : [];
-  if (JSON.stringify(recorded) !== JSON.stringify(expected)) {
-    return { ok: false, why: 'Freigabe deckt die Aenderung nicht exakt' };
+  const missing = expected.filter((file) => !recorded.includes(file));
+  if (missing.length > 0) {
+    return { ok: false, why: `Freigabe deckt die Aenderung nicht (fehlt: ${missing.join(', ')})` };
   }
   const expectedToken = Buffer.from(unlockToken({ base, paths: recorded }), 'hex');
   const actual = Buffer.from(String(record.token ?? ''), 'hex');
