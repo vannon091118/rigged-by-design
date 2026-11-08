@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.188 | 2026-11-08 02:56 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 03:04 UTC -->
 
 > **Erster Befehl:** `pnpm run agent:pretask --json`
 

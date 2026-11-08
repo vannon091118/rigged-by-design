@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.188 | 2026-11-08 02:56 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 03:04 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -83,7 +83,7 @@ Der heutige Umfang ist eine Momentaufnahme. Er belegt, dass die Kette Zustand �
 
 ### Optik: vorläufig und plattformfreundlich
 
-Die aktuelle Low-End-Optik ist **noch nicht final** und deutlich von der Vision entfernt. Der Preis dafür wird von Anfang an bezahlt: Das Spiel muss auf vielen Plattformen laufen, auch auf schwachen Geräten. Die jetzige Pixel-Optik ist ein plattformfreundlicher Machbarkeitsbeweis, keine endgültige Bildsprache. Die Regeln, die schon gelten, stehen im Bildsprache-Anhang von [`ARCHITECTURE.md`](ARCHITECTURE.md); eine eigene `ART-DIRECTION.md` gibt es nicht mehr.
+Die aktuelle Low-End-Optik ist **noch nicht final** und deutlich von der Vision entfernt. Der Preis dafür wird von Anfang an bezahlt: Das Spiel muss auf vielen Plattformen laufen, auch auf schwachen Geräten. Die jetzige Pixel-Optik ist ein plattformfreundlicher Machbarkeitsbeweis, keine endgültige Bildsprache. Die Regeln, die schon gelten, stehen in [`ART-DIRECTION.md`](ART-DIRECTION.md).
 
 ### Vor dem Release: eine bespielbare Stadt
 
@@ -171,118 +171,181 @@ nicht nur dokumentiert:
 | Mindestgroesse je Pool (Slot) | 50 Fragmente | `verify:narrative-blocks` und Assets-Gate |
 | Gesamtziel | 1500 Bausteine | Fortschritt im Gate-Bericht; Ueberschreiten ist ein Befund |
 | Pflicht pro Commit | mindestens ein neuer, verdrahteter Baustein; Ausnahme nur fuer reine Doku-/Inventur-/Tooling-Commits | Pre-Commit-Hook (`--commit`) |
-| Luecken-Regel | offene Pools zuerst; bei vollem Minimum darf jeder Pool wachsen | `gapIssues` im Gate |
-| Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
+| Luecken-Regel | neue Bausteine nur in Pools unter 50 | `gapIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **670/1500** Bausteine in 13 Pools. Zehn Slots tragen 52,
-darunter die Stadt-Pools `city-scene` und `city-night` aus dem Vertikalschnitt;
-die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`, `guest-voice-high`)
-tragen je 50. Die Pool-Mindestgroesse ist damit an allen 13 Pools erreicht und
-bleibt Untergrenze.
+Stand 2026-11-07: **416/1500** Bausteine, alle acht Slots auf **52**. Die
+Pool-Mindestgroesse ist erreicht und bleibt Untergrenze; der Weg zu 1500 geht
+ueber Kontexttiefe (Personas, Kontexte, Folgen) statt weiterer Auffuellung.
+Reine Doku-, Inventur- und Tooling-Commits sind von der Baustein-Pflicht
+ausgenommen (Grenze und Begruendung: `docs/CI.md`), Spiel- und Content-Commits
+nicht.
 
-**Der Weg zu 1500 ist eine Pool-Struktur, keine Auffuellung.** 1500 / 50 = 30
-Pools. Jeder neue Pool gehoert zu einem System oder Kontext (Ruf, Ledger, Route,
-Markt, Beziehung, Personal, Inventar) und muss einen Leser im Spiel haben, sonst
-ist der Text tot. Der erste Schritt in diese Richtung ist gemacht: Die drei
-Ruf-Pools werden von `narrative/guest-voice.ts` gelesen, und der Pre-Commit-Hook
-verlangt weiterhin pro Commit einen verdrahteten Baustein.
+### Offene Stellen, kategorisiert (Stand 2026-11-07)
 
-**Erledigt: die Luecken-Regel ist repariert (#267).** `gapIssues` in
-`scripts/lib/narrative-blocks.mjs` fuellt jetzt die offenen Pools, solange es
-welche gibt; sind alle Pools mindestens voll, darf jeder Pool wachsen. Damit
-blockiert die erreichte Mindestgroesse keinen Content-Commit mehr, und das Ziel
-1500 bleibt erreichbar, ohne die Untergrenze zu senken. `shrinkIssues` verbietet
-zusaetzlich, einen Beitrag zu loeschen oder einen Pool zu verkleinern - auch in
-einem Pflege-Commit. Beleg: `scripts/verify-narrative-blocks.mjs` ruft beide
-Pruefungen im Commit-Modus auf.
+Diese Liste ist der Einstieg; Details und Belege stehen in den Abschnitten
+unten. Sie ersetzt verstreute Offen-Hinweise in Code-Kommentaren.
 
-Offen bleibt nur die dritte, hier frueher vorgeschlagene Verschaerfung: das Gate
-prueft nicht, ob ein neuer Pool **einen Leser** im Code hat (P-14). Ein
-Registry-Eintrag allein ist kein Verdrahten.
+**Spiel und Simulation**
+- `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer.
+- Einnahmen je Spieltyp fehlen als Kennzahl; der Ledger kennt Konten, nicht Spieltypen.
+- `TRIGGER_DIALOG` ist nicht ausfuehrbar, weil die Dialog-UI fehlt.
+- Archiv wird beim ersten Load aus dem Journal gefuellt (niedrig).
+- Sucht-Folgen sind eine offene Designentscheidung.
 
-### Offene Stellen — ein Register (Stand 2026-11-08)
+**Narrative und Content**
+- 416/1500 Textbausteine (52 je Slot); Pool-Minimum erreicht, Kontexttiefe offen.
+- Narrative Balance ist begrenzt, nicht gemessen.
+- Geraete-, Lager- und Personal-Facts fehlen bewusst.
 
-Eine Liste statt vier. Jeder Punkt nennt Kategorie, Status, Beleg und naechsten
-Schritt. Erledigtes wandert ins Changelog; bewusst Vertagtes steht unten in
-`PARKED` mit Owner und Ausloeser. Fruehere Einzelabschnitte
-("Offene Stellen, kategorisiert" und "Offene Punkte, konsolidiert 2026-11-06")
-sind hier aufgegangen; ihre Details sind in `INVENTORY.md` §14/§16 und im
-Changelog belegt.
+**Optik, Performance und Abnahme**
+- Desktop A2-A5 und Geraete A6-A8 sind offen; Slow-4G und First Frame unter 3 s fehlen.
+- Wand-Occlusion hat Depth-Tests, aber keinen Browserbeleg.
 
-#### A. Spiel und Simulation
+**Governance und CI**
+- Merge-Nachricht ist Gate-Text: ein Squash ueber die API mit blossem Titel laesst `main` am Commit-Notes-Gate rot (`ERR-4006`, Lauf 42436455113 auf `c791e91`). Der naechste Merge muss die drei Pflichtsektionen im Nachrichtentext tragen.
+- Gate-Bypass ist kein Werkzeug: `--no-verify`, `git stash` und leere Trigger-Commits sind in `AGENTS.md` ausgeschlossen. Vorfall 2026-11-08: drei Verstoesse in einem Lauf; Regel bleibt, dass ein Retrigger nur mit echtem Inhalt passiert.
+- `lane/city/vertical-slice` ist nach der CI-Branch-Loeschung nicht mehr ansprechbar; der Vertikalschnitt existiert nur lokal und braucht einen frischen Claim auf dem aktuellen `main`.
+- `agent:pretask` meldet eine Lane-Kollision mit `lane/governance/pr-251-repair`
+  (ueberschneidende Allowlist), obwohl `verify:claims --ci` die Lane akzeptiert.
+- Release-Plan und Doku-Reconcile-Runner bleiben PARKED.
 
-| ID | Punkt | Status | Beleg / naechster Schritt |
-| --- | --- | --- | --- |
-| P-1 | Luecken-Regel sperrte Pools ab 50 (siehe oben) | **erledigt 2026-11-08 (#267)** | `gapIssues` fuellt offene Pools zuerst, danach ist Wachstum erlaubt; `shrinkIssues` verbietet Schrumpf; Beleg im Abschnitt Textbausteine |
-| P-2 | Stadt-Loop war nicht auf `main`: Kiez (Fremder→Eingeweihter), Markt (Laufbursche→Marktherr), Energie und "Tag beenden" lagen nur in PR #264 | **integriert 2026-11-08, Merge offen** | PR #264 auf `main` 6d14524 gehoben, Konflikte beidseitig geloest, 670 Bausteine kompiliert, vier Stadt-Tests gruen; naechster Schritt: CI auf dem neuen Kopf lesen, dann mergen - kein Force-Merge |
-| P-3 | `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer | offen | `self-exclusion-bet.ts:82`; nur `player-cash.test.ts` ruft sie |
-| P-4 | Einnahmen je Spieltyp fehlen als Kennzahl | offen | Ledger kennt Konten, nicht Spieltypen; `economyOf` aggregiert global |
-| P-5 | Sucht-Folgen sind eine Designentscheidung | offen | `personaStake`/`addictedStake` skalieren nur Einsatz und Sitzung |
-| P-6 | Archiv wird beim ersten Load aus dem Journal gefuellt | offen (niedrig) | `store/migrate.ts` setzt `saved.archive ?? world.journal` |
-| P-7 | Ruf → Slot-Nutzung | **erledigt 2026-11-08** | `guest-play.ts` `stakeConfidence` (0,8..1,2, Deckel und Chipbestand bleiben hart); Test `reputation-slot-use.test.ts` |
-| P-8 | Ruf → Gastsprache | **erledigt 2026-11-08** | `narrative/guest-voice.ts` waehlt deterministisch aus drei Ruf-Pools; Test `guest-voice.test.ts` |
-| P-9 | Layout → Gaeste-Routen | **verifiziert, keine Luecke** | `world.ts` `worldNav` → `navGrid(size, furniture, world.layout)` (Wandkanten), `pathTo` → `findPath(guestNav(world))`; Layout-Aenderung aendert Pfade, `gridCache` erkennt sie an der Layout-Identitaet |
-| P-10 | Ledger → Narrative | **verifiziert, keine Luecke** | `narrative/ledger-facts.ts` verarbeitet Buchungen ab `ledgerSeq` und emittiert nur Bandwechsel `HOUSE_BALANCE` |
-| P-11 | SlotMemory → Ledger → Narrative | **verifiziert (Kette), Text offen** | `slot-session.ts` bucht Auszahlung → `ledger` → `ledger-facts`; ein eigener Fact fuer "Entladung" fehlt, damit die Narrative Engine den Drucklader benennen kann |
-| P-12 | Beziehungen → Ruf | offen (Design) | `RelationshipGraph` speist Beziehungen, `reputation()` liest sie nicht; Kandidat fuer den naechsten Emergenz-Schritt |
+## Testumgebung tragfaehig machen
 
-#### B. Narrative und Content
+### PARKED (bewusst zurückgestellt)
 
-| ID | Punkt | Status | Beleg / naechster Schritt |
-| --- | --- | --- | --- |
-| P-13 | 670/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
-| P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
-| P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
-| P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
-| P-17 | Narrative Balance ist begrenzt, nicht gemessen | offen | ±8 Aktivitaet, ±20 % Angebot, ±10 Punkte Rueckkehr sind Grenzen ohne Messreihe |
+Jeder zurückgestellte Befund gehoert hierher, nicht in ein stilles
+`LOCAL_GATE`. Pflichtfelder: Owner, Auslöser (wann wird es wieder aufgenommen),
+nächster Schritt, Review-Bedingung.
 
-#### C. Optik, Performance und Abnahme
+| Befund | Owner | Auslöser | Nächster Schritt | Review-Bedingung |
+| --- | --- | --- | --- | --- |
+| SemVer-Entscheidungsmaschine | Governance-Owner | Release braucht eine Entscheidung ausserhalb des Patch-Bumps | Diff-Klassifikation als eigener idempotenter Job; `release-impact.mjs` bleibt die einzige Quelle | Review beim naechsten Release-PR |
+| Doku-Reconcile-Runner | Governance-Owner | generierte Doku driftet oder der Pre-Commit-Hook fehlt | begrenzter Reparaturlauf mit Pfad-Allowlist und Abbruch bei fremdem Head | Review, wenn `verify:docs` zweimal denselben Fehler meldet |
+| Weitere Governance-Reports ohne Handlung | Governance-Owner | ein Report liefert keine naechste Aktion | nicht bauen; die bestehende Diagnose nutzen | Review nur mit konkretem Defekt |
+| Automatische Reparatur fachlicher Spielcodefehler | Sim-/Domain-Owner | ein Spielcodefehler ist reproduziert | manuelle Reparatur; CI liefert nur die Diagnose | Review bei nachgewiesenem, wiederkehrendem Fehler |
+
+Diese Punkte sind bewusst PARKED. Sie blockieren keine Spielentwicklung; neue
+Governance-Arbeit ist nur noch bei einem konkreten Defekt, einem realen
+Integritaetsfehler, messbarem Workflow-Zeitverlust oder nachweisbarer
+wiederkehrender Agentenarbeit zulaessig. Die Infrastruktur traegt das Spiel,
+nicht umgekehrt.
+
+- Phase 0.2 (Governance) ist umgesetzt und freigabefaehig: Turn-Gate `verify:light`, CI-Stufen (`light` fuer Feature-Pushes, `all` fuer PR und `main`), enge `BLOCKED`-Definition, Meta-Sperre fuer Feature-Lanes, Pretask, Issue-Automatik und `integration` nur als Notausgang. P0 0.1 und 0.3-0.6 sind mit #196 auf `main` nachgewiesen. Seit 0.3.154 ist auch das Gate selbst granular: eine Matrix mit einem Status je Gate, ein Aggregat als Pflichtstatus, `audit` nur bei echter Dependency-Aenderung. Der fruehere CI-Form-Vergleich ist mit dem gemergten #221 entschieden; die Matrix bleibt die eine Form. Offene PRs aus diesem Vergleich gibt es nicht mehr.
+
+- Eigener Gastmodus steht: Alle acht Geräte lassen sich als Betreiber testen oder als Gast mit `PORTEMONNAIE` spielen. Der Einsatz läuft ins Hauskonto, Gewinne zurück; ungedeckte Beträge stehen als Verbindlichkeit auf `HAUS_SCHULDEN`. Der kostenlose TESTSPIN bleibt ohne Geld- und RNG-Wirkung.
+- Spatial Layout Contract (Task 1/5) steht: `WorldState.layout` trägt Dimension, Bodenmaterial je Tile, semantische Zonen und Wandkanten mit stabilen IDs; `size`/`zones` sind abgeleitet, Save v11 migriert v5–v10 deterministisch. Kein Rendering- und kein Gameplay-Unterschied.
+- Phase 5/6 Werkstatt steht: sechs Rasterziele (Prüfung, Protokoll, Assets, Sound, Steuerung, FPS), versteckter Einstieg über fünf Tipps auf die Marke oder `Strg+Shift+D`, und der Charaktereditor hängt als Spiegel im Lager. Die Pruefmatrix A1-A8 steht unten in „Offene Punkte“; A1 (Desktop-Grundbild) ist bestanden. Offen bleiben die visuelle Werkstattpruefung (A2-A5), die Touch-Geste auf Hardware (A6), der Slow-4G-Test (A7) und die APK-Installation (A8).
+- Phase 2 Betriebssimulation steht: Persona-Budget skaliert den Einsatz, VELVET hebt die Gästegüte, FREE_DRINK verbraucht echten Bestand, EXTRA_REEL erhöht die Walzen, CASHOUT wartet in der Warteschlange auf seinen Platz, die Ankunft folgt der angezeigten Rate und HAUS_SCHULDEN wird aus dem Überschuss über HOUSE_FLOAT getilgt.
+- Firmenstufe und Floor-Fallback sind sichtbar: HUD und Betriebspanel nennen die erreichte Stufe und die offenen Bedingungen der naechsten; ein fehlgeschlagener Pixi-Start zeigt einen bedienbaren Hinweis statt einer schwarzen Flaeche.
+- Der Slot-Drucklader ist auf einen Ausgleich begrenzt; die Session-Quote bleibt im angezeigten Band. Offen aus dem Audit bleiben `PLAYER_CASH` (Funktion vorhanden, aber ohne Produktions-Aufrufer), Einnahmen je Spieltyp als eigene Kennzahl und die sichtbare Browser-Abnahme der Geräteaktionen; Details unten.
+
+- README-Onboarding führt Spielwelt und Entwicklungsstart zusammen; Mechaniken und Roadmap sind ausdrücklich als aktueller Stand beziehungsweise Vorhaben gekennzeichnet. Der Produktvertrag steht oben in diesem Dokument, das Casino darin als Start- und Testumgebung.
+
+- Slice B steht vollstaendig: `gate-diagnostics.mjs` meldet alle roten Gates eines Laufs, `pr-watcher.mjs` wiederholt nur transiente Befunde einmal, und `claim-evidence.mjs` entscheidet Claims ueber den Merge-Nachweis statt ueber `baseSha` - inklusive baumgleichem Commit auf `main`, sodass ein Squash-Merge ohne `gh` belegt ist. Claim 12 ist reconciled (`merged`, `branch-tree-on-main`, `a490d4a`), Claim 13 ebenso (`merged`, `branch-tree-on-main`, `e2869a1`), Claim 14 ebenfalls (`merged`, `branch-tree-on-main`, `893317c`); damit steht auf `main` kein offener Claim mehr, dessen PR gemergt ist. Seit 0.3.164 liegen die drei P0-Vertrauensgrenzen: Die CI faehrt ihre Steuerung aus dem Basis-Commit, `promote` mergt nur den per SHA geprueften Kopf, und das Claim-Register wird gegen Basis und erste Registrierung geprueft. Seit 0.3.171 ist der PR-Beleg zusaetzlich an Ziel `main`, eigenes Repository und den exakten Head-SHA gebunden; mehrdeutige Branch-Namen werden verworfen, und der Issue-Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Agenten-Isolation und Worktree-Pflicht sind mit #224 und der Lane-Pretask-Regel geschlossen; Slice C ist fuer die Langlaeufe umgesetzt: `ci-plan` waehlt betroffene Statistik-/Soak-Dateien, `ci-verify` faehrt sie als eigene Matrix auf dem PR-Kopf mit Kontrollebene aus der Basis, und `long-checks.yml` hat einen woechentlichen Vollauf. Der Doku-Resolver fuer generierte Bereiche bleibt bewusst PARKED; ein Claim ohne lokalen Branch und ohne `gh` bleibt fail-closed und wird mit Connector manuell belegt. Der finale Abschluss friert die Governance ein: neue Governance nur nach den oben genannten Ausloesern, danach Spielentwicklung.
+- Lokales Feedback und Staging-Scope stehen (Slice A): `agent:feedback` nennt aus dem echten Diff die betroffenen Tests und den naechsten sinnvollen Befehl, `turn-push.mjs` committet nur Pfade des eigenen Claims.
+- Ein Prozess statt drei: `agent:context` und `agent:verify` teilen Impact, Gate-Plan und Cache; doppelte Testlaeufe sind entfernt.
+- Auslieferung belastbar: der Merge startet CI und Release auch ohne eigenes Token, `integration` bleibt stehen. Der Merge-Text traegt die Pflichtsektionen: seit 0.3.140 haelt `docs/ARCHITECTURE.md` den `ERR-4006`-Fall des #163-Merges fest, Connector- und REST-Merges setzen `commit_message` mit dem PR-Body.
+- Auslieferung mit einem bewussten Handgriff: gruene Checks erlauben den **manuellen Merge**, `promote` und der `integration`-Dump bleiben deaktiviert.
+
+- Inventur ist abgeschlossen: §18 deckt alle getrackten Dateien und Ordner ab; `verify:docs` haelt die Abdeckung, der Hook baut sie.
+- Hooks sind in diesem Klon aktiv (`core.hooksPath=.githooks`); in neuen Klonen `pnpm run hooks:install`, Doc-Gate und Abdeckung im CI beobachten.
+- Befund 33 (Bar-Kapazitaet) und Befund 34 (`Â·`-Mojibake) sind erledigt; offene Kleinbefunde stehen in `docs/INVENTORY.md` §14/§16.
+- Tree- und Redundanz-Gate bei neuen Befunden ueber die Regeltabelle erweitern, nicht umgehen.
+- Narrative-Grundlagen: Vertrag, Fact-Queue, Erinnerungen, Start-Pool und Save v11 stehen. Ledger-Cursor, ein einziger Fact-Boundary und referenzsichere Retention sind umgesetzt; `narrative/relationships.ts` fuehrt gerichtete Kanten und pinnt Endpunkte. NAR-04 ist erledigt: Besuch, Streit, Kassenbedienung und Rivalenabrechnung speisen die Beziehungen. NAR-05 ist erledigt: Context, alle Trigger-Operatoren und fail-closed Schema stehen. NAR-06 ist erledigt: Scheduler, Lifecycle, Cooldowns, persistente Instanzen und eigener Narrativ-RNG stehen. NAR-07 ist erledigt: stabile Templates, Choice-Vertrag, persistierte Choice-Saetze und Klick-Eligibility stehen. NAR-08 ist erledigt: Command-DSL, Allowlist, Preflight und die einmalige Ausfuehrung von Choice-Effekten stehen. NAR-09 ist erledigt: Beitraege tragen eine kontrollierte Klassifizierung, das Turn-Manifest ordnet jedem abgeschlossenen Turn genau einen Beitrag zu, und die Registry wird deterministisch im Assets-Gate geprueft. NAR-10 ist erledigt: Makros werden als typisierte ASTs validiert, Konflikte vor dem Schreiben erkannt und die Registry byte-identisch mit Inhalts-Hash erzeugt. NAR-11 ist erledigt: der Composer waehlt aus der laufzeitvalidierten Registry deterministisch Texte, filtert Locale/Kontext/Flags/Personas und liefert lokale Fallbacks. NAR-12 ist erledigt: `narrative/runtime.ts` orchestriert Fact→Trigger→Scheduler einmal pro Tick und an jeder erfolgreichen Store-Mutationsgrenze; Choices laufen ueber `store/narrative-commands.ts`, und eine aufgeloeste Choice erzeugt den naechsten Fact (`EVENT_RESOLVED`). NAR-13 ist erledigt: Neon-Nacht und Turnierabend laufen als aktive GLOBAL-Instanzen der gemeinsamen Engine, `demand.ts` leitet Wirkung und Anzeige nur noch daraus ab, und v5–v9-Saves werden beim Laden konvertiert. Profilweg und Szenen-Historie sind angebunden: Gaeste oeffnen ihr Profil direkt, das Journal zeigt abgeschlossene Geschichten mit Ausgang und Teilnehmern. Seit B3 nennt eine Szene ihre Fallback-Slots einzeln statt pauschal von Sicherheitscopy zu sprechen; `degraded` folgt `fallbacks.length > 0`. Seit B4 fuellt ein abgestimmter Content-Batch `TITLE`, `BODY` und jedes angebotene Choice-Label aller sechs Templates; `narrative-coverage.test.ts` haelt die Abdeckung fest, `OUTCOME` bleibt bewusst dem naechsten Batch vorbehalten. Seit C2 traegt `TriggerCondition` die Bedingung `rival-action` mit expliziter Aktionsliste; `EVENT_TRIGGER_DEFINITIONS` laesst nur TRADE_INFO, PRICE_MOVE, POACH_VISITOR und SABOTAGE als `RIVAL_MOVE`-Ausloeser zu, PROBE bleibt ein Indiz ohne Event. Seit C1 gilt die Spec-Regel als getesteter Vertrag: `EVENT_TRIGGER_DEFINITIONS` enthaelt nur Definitionen mit Template, jedes Fact-Template ist an genau eine Definition gebunden; in diesem Slice entstehen keine neuen Fact-Kinds, Geraete-, Lager- und Personal-Facts bleiben dokumentiert offen. Seit D1 fuehrt `VISITOR_RETURN.ASK_ABOUT_LAST_VISIT` ueber `followUpEventId` zu `VISITOR_AFTERMATH` (Scope VISITOR, Trigger `chain`); die Runtime baut die Kette aus dem drainierten `EVENT_RESOLVED`-Fact, der Scheduler haelt Cooldown, Limits, Kettenherkunft und RESOLVED zentral ein. Seit D2 traegt `RIVAL_MOVE.CONFRONT_RIVAL` die typisierte Domaenenwirkung `COUNTER_RIVAL`: Preflight verlangt einen existierenden `rival:`-Ref, `execute.ts` setzt `counteredUntilTick = max(alt, tick + 900)` als einzigen Schreibpfad; ein neuer Fact entsteht in dieser Phase bewusst nicht. Seit D3 bleibt `EXPIRED` ein reiner Statuswechsel mit `DEADLINE` ohne globale Timeout-Strafe: Fristablauf aendert weder Flags noch Beziehungen noch Ledger-Zeilen und emittiert keinen Fact; Timeout-Effekte gibt es nur als expliziten Template-Vertrag, falls sie spaeter noetig werden. Seit E2 wirkt die Disposition aus `narrative/disposition.ts` (Persona, Erinnerung, Kante) an allen drei Entscheidungspunkten: `offerScore()` (Faktor ±20 %), `chooseActivity()` (Drink-/Sofa-Schwellen ±8 Punkte) und `returnChance()` (Beziehungszuschlag ±10 Prozentpunkte zusaetzlich zu `memoryEffect()`); harte Regeln bleiben vorrangig. Seit Phase 5 liefert `narrative/rival-context.ts` Rivalen-Karten (Haltung, Kapazitaet, Wohlwollen, Gegenmassnahmen-Fenster, Historie, Indizien) rein aus den Minds ins Anzeigemodell, ohne NAR-14-17-Duplikate; `view.ts` bleibt unter 200 Zeilen, Testdateien unter 240. Seit F laeuft der Langzeitpfad ohne Campaign-State ueber den Kettenbaustein: `VISITOR_RETURN` fuehrt per ASK nach `VISITOR_AFTERMATH` und hinterlaesst Flag plus Beziehung; ein spaeterer `VISITOR_RETURNED`-Fact mit GOOD-Erinnerung matcht zusaetzlich die zweite Stufe `visitor-returned-warm` (`all` aus Fact und `visitor-memory`) mit eigenem Template - nur vorhandene Trigger-/Cooldown-Infrastruktur, keine Template-Requirements. Seit dem Warm-Batch traegt `VISITOR_RETURN_WARM` eigene Texte (Titel, Text, Choice-Label, Outcome) im neuen `warm`-Kontext, sodass die zweite Stufe nicht mehr aus dem Basistopf spricht.
+- Determinismus haelt eine fail-closed ESLint-Regel: `src/**` und `scripts/**` ohne Zufall/Wanduhr, Umwege und `eslint-disable` inklusive; echter Zufall nur via `entropySeed()`. `performance.now` ist auf drei Pacing-Dateien unter `src/render/` verengt, alle anderen Render-Dateien sind voll gesperrt.
+- Optik und Steuerung sind einen Schritt weiter: Lichtpfuetzen und Wandkanten trennen die Raeume, Zielraster und Laufwegspur zeigen die Folge eines Klicks, die Kamera zieht am Bildrand nach, und das HUD traegt keine leere Zeile mehr. Bildsprache steht im Bildsprache-Anhang von `docs/ARCHITECTURE.md` mit Blatt daneben; die aktuelle Pixel-Optik bleibt ausdruecklich vorlaeufig (Plattform-Machbarkeit, nicht Endzustand).
+
+- CI-Eskalation nach dem ersten echten Lauf pruefen: Fingerprint-Zaehlung im Watcher, Stufen aus `level` im Gate-Log, und ob `promote.yml` bei Rot wie beschrieben arbeitet.
+- Branch-Schutz verifiziert: klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; `promote` ist deaktiviert und der Merge bleibt manuell.
+- Branch-Hygiene steht: `main` ist PR-Ziel, jede Lane arbeitet auf ihrem eigenen Branch mit Claim und Worktree; `integration` liegt unveraendert auf `bac6d8a` und ist zusaetzlich als `archive/integration-2026-11-07` gesichert; PR #142 ist geschlossen.
+
+- Asset-Semantik: Katalog (`src/render/assets/asset-semantics.json`) und Vertrag
+  (`docs/ARCHITECTURE.md`) stehen. Als Nächstes die Deko-Rollen von den
+  Label-Regexen lösen und entscheiden, ob der Katalog ein Gate bekommt.
+
+- Agenten-Isolation und Workflow-Haertung stehen seit 0.3.169: `pretask` blockt geteilte Baeume mit `ERR-4019` und `--json`, `AGENTS.md` hat eine Testlinie, `long-checks.yml` uebergibt `balance_days` ueber `RBD_DAYS`, und alle Workflow-Actions sind auf 40-stellige Commit-SHAs gepinnt. Offen bleiben nur die Punkte, die weiterhin in der Tabelle stehen.
+
+## Offene Punkte (konsolidiert 2026-11-06)
+
+Diese Sektion ersetzt die frueheren Einzelberichte. Jeder Punkt nennt Status,
+Beleg und naechsten Pruefschritt. Geraeteabnahme bleibt zurueckgestellt, bis
+Spiel- und Sim-Inhalte am Desktop vollstaendig abgenommen sind.
+
+### Desktop-Abnahme (Phase 6, A1-A5)
 
 | ID | Pruefung | Stand | Naechster Schritt |
 | --- | --- | --- | --- |
-| A1 | Desktop-Grundbild | bestanden 2026-11-06 | - |
-| A2 | Werkstatt-Einstieg (5x Marke, Strg+Shift+D) | offen | beide Wege im Browser oeffnen |
-| A3 | Sechs Werkstatt-Ziele | offen | Klickrunde durch alle sechs Ziele |
-| A4 | Spiegel im Lager, Save-Roundtrip | offen | Browser + Save-Roundtrip |
-| A5 | FPS aus echten rAF-Frames | offen | Panel + Gegenprobe |
-| M4 | Smartphone als echte Geraeteflaeche | offen | Vergleich der vier Fensterzustaende |
-| P-18 | Wand-Occlusion visuell | offen | Depth-Tests stehen, Browserbeleg fehlt |
-| P-19 | First Frame unter 3 s / Slow 4G | offen | Baseline 22 Requests/12,16 s/2,42 MB |
-| A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
+| A1 | Desktop-Grundbild: Start, HUD, Warnzeile, Toast, vier Tabs, Konsole ohne Fehler ausser Autoplay | bestanden am 2026-11-06, 1024x768 | - |
+| A2 | Werkstatt-Einstieg: genau 5x Marke und `Strg+Shift+D`, kein sichtbarer Knopf, ein Rahmen | offen | beide Wege im Browser oeffnen |
+| A3 | Sechs Ziele: Pruefung, Protokoll, Assets, Sound, Steuerung, FPS; vier Panels, kein Charakter-Tab | offen | Klickrunde durch alle sechs Ziele |
+| A4 | Spiegel: genau ein `SPIEGEL` in der Lagerzone, Aktion oeffnet den Look-Editor, Save/Load erhaelt ihn | offen | Browser + Save-Roundtrip |
+| A5 | FPS: echte `requestAnimationFrame`-Frames ueber 500 ms, keine GPU-Behauptung | offen | Panel + Gegenprobe |
+| M4 | Smartphone als echte Geraeteflaeche: Rahmen, Statusleiste, Fensteruebergaenge und Floor-Feedback angleichen | offen | Browser-Vergleich der vier Fensterzustaende |
 
-#### D. Governance, CI und Abnahme der Lieferung
+### Geraet und Release (A6-A8) - zurueckgestellt
+
+Die Punkte bleiben offen, werden aber erst nach vollstaendiger Desktop-Abnahme
+angegangen; der Nutzer testet privat auf einem echten Geraet.
+
+| ID | Pruefung | Stand |
+| --- | --- | --- |
+| A6 | Touch: Ein-Finger-Pan ab 8 px, Tap-to-Frame, Aktionskarte, 60 fps beim Jackpot mit neun Gaesten | offen, braucht Hardware |
+| A7 | Huelle/Performance: Safe Areas, Hochformat, First-Frame-Handshake, Haptik, Musik nach Geste, Slow 4G, Atlas-Requests | teilweise: 9 Mbit/s 20 Requests/2,51 s; Slow 4G 22 Requests/12,16 s/2,42 MB; HUD-PNGs inline; WebP-Atlas und lazy Plinko-Buehne seit 0.3.141 auf main |
+| A8 | Release: Debug- und Release-APK per `adb install`, `verify:all` 12/12, Tag und Notes, aktuelle Screenshots | offen |
+
+### CI und Governance
 
 | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- |
-| Merge-Nachricht ist Gate-Text | offen | Ein Squash ueber die API mit blossem Titel laesst `main` am Commit-Notes-Gate rot (`ERR-4006`); die drei Pflichtsektionen muessen im Nachrichtentext stehen |
-| Gate-Bypass | Regel bleibt | `--no-verify`, `git stash` und leere Trigger-Commits sind ausgeschlossen |
-| Lane-Kollision in `agent:pretask` | offen (niedrig) | `agent:pretask` meldet Kollision mit `lane/governance/pr-251-repair`, `verify:claims --ci` akzeptiert dieselbe Lane |
-| Governance-Aenderung fuer P-1 | **erledigt 2026-11-08** | #267 hat `gapIssues` und `shrinkIssues` mit Freigabe geaendert; es bleibt keine offene Freeze-Anfrage |
+| Release-Plan im Runner | PARKED | `release-impact.mjs` entscheidet nur ueber den APK-Bau, nicht ueber SemVer; der Patch-Bump liegt in `turn-push.mjs`. Naechster Schritt: Diff-Klassifikation (kein Bump/Patch/Minor/Major) als eigener Job, idempotent und serialisiert. |
+| Doku-Reconcile-Runner | PARKED | `verify:docs` prueft nur; Marker und Inventar schreibt der Pre-Commit-Hook, nicht die CI. Naechster Schritt: begrenzter Reparaturlauf mit Pfad-Allowlist, zweitem Generatorlauf und Abbruch bei fremdem Head. |
+| CI-Self-Repair | PARKED | `pr-watcher.mjs` wiederholt nur transiente Befunde und legt dann Issues an; eine begrenzte Reparaturstufe (Diagnose, sicherer Fix, erneutes Gate) fehlt. |
+| Impact-gesteuerte Langlaeufe | erledigt | `ci-plan.mjs` exportiert `long_matrix`; `ci-verify.yml` startet die betroffenen Statistik-/Soak-Dateien als eigene Matrix auf dem exakten PR-Kopf und fuehrt den Long-Job im Pflichtstatus. `agent:verify --ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; der Wochenlauf bleibt der systemweite Vollauf. |
+| PR-Regression | erledigt | `ci-verify.yml` setzt `full_tests=1` fuer PR und `main`; `ci-plan` laesst das Profil `all` nicht durch `impact=1` verkuerzen und faellt bei leerem oder unbekanntem Diff auf die volle Suite zurueck. |
+| Issue-Resolver nach erneutem Gate | erledigt | `sweepGreenMain()` verlangt den urspruenglichen Fingerprint, eine `<!-- repair: <sha> -->`-Marke und den exakt gruenen Main-Commit; ein Ancestor-Commit allein schliesst nichts. `recordRecurrence()` oeffnet ein geschlossenes Issue bei erneutem Fingerprint wieder. |
 
-#### E. Technik, Doku und Release
+### Spiel und Simulation
 
-- **Asset-Lizenz:** Nutzer hat bestaetigt, der Nachweis im Repo fehlt.
-- **Dependency-Audit:** Android-Gradle-Nachweis nur in CI; CVE-Untergrenzen vor dem naechsten Upgrade pruefen; Vite-Warnung zum extensionlosen Import offen.
-- **Asset-Semantik:** Deko-Rollen von Label-Regexen loesen; entscheiden, ob der Katalog ein Gate bekommt.
-- **Verwaiste Doku-Referenzen:** Verweise auf geloeschte `docs/PRODUCT.md` und `docs/ART-DIRECTION.md` sind entfernt; bei neuen Loeschungen zuerst `docs/INDEX.md` pruefen.
-- **Offene Kleinbefunde (INVENTORY §14):** ERR-4016-Zuordnung, Windows-Pfad in `opencode.json`, Audit-Drift, Slot-Symbol-Fallback-Keys, dynamischer Asset-Zaehler, eine Konstante fuer Tick-Dauer, Shell-Typo.
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| `PLAYER_CASH` ohne Ausgabepfad | offen | `cashOutPlayerCash` steht in `self-exclusion-bet.ts:82`, hat aber keinen Produktions-Aufrufer; nur `player-cash.test.ts` ruft ihn. T33 belegt die Funktion, nicht den Anschluss. |
+| Einnahmen je Spieltyp | offen | Keine Kennzahl in `store`/`core`; der Ledger kennt Konten, nicht Spieltypen. |
+| Sucht-Folgen | Designentscheidung | `personaStake`/`addictedStake` skalieren Einsatz und Sitzung; eine eigene negative Folge ist nicht definiert. |
+| Archiv = Journal beim ersten Load | offen (niedrig) | `migrate.ts:112` setzt `saved.archive ?? world.journal`. |
 
-#### PARKED (bewusst zurueckgestellt)
+### Narrative
 
-Jeder zurueckgestellte Befund gehoert hierher, nicht in ein stilles `LOCAL_GATE`.
-Pflichtfelder: Owner, Ausloeser, naechster Schritt, Review-Bedingung.
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| Registry 64 oder 65 | Entscheidung | 65 Beitraege, 65 Turns, 65 Fragmente, Hash `sha256:a9979c70...c46bd`; 64 ist Untergrenze, kein Inhalt wurde geloescht. |
+| `TRIGGER_DIALOG` | offen | `commands/registry.ts:83` fuehrt den Befehl mit `executable: false`; die Dialog-UI fehlt. |
+| Narrative Balance | offen | ±8 Punkte Aktivitaet, ±20 % Angebot und ±10 Punkte Rueckkehr sind Grenzen, keine gemessenen Werte. |
+| Geraete-, Lager- und Personal-Facts | offen | Diese Bereiche haben bewusst keine Fact-Kinds; neue Fakten brauchen zuerst Definition und Template, keine stille Erweiterung der Runtime. |
 
-| Befund | Owner | Ausloeser | Naechster Schritt | Review-Bedingung |
-| --- | --- | --- | --- | --- |
-| SemVer-Entscheidungsmaschine | Governance-Owner | Release braucht eine Entscheidung ausserhalb des Patch-Bumps | Diff-Klassifikation als eigener idempotenter Job; `release-impact.mjs` bleibt die einzige Quelle | Review beim naechsten Release-PR |
-| Doku-Reconcile-Runner | Governance-Owner | generierte Doku driftet oder der Hook fehlt | begrenzter Reparaturlauf mit Pfad-Allowlist und Abbruch bei fremdem Head | Review, wenn `verify:docs` zweimal denselben Fehler meldet |
-| Weitere Governance-Reports ohne Handlung | Governance-Owner | ein Report liefert keine naechste Aktion | nicht bauen; bestehende Diagnose nutzen | Review nur mit konkretem Defekt |
-| Automatische Reparatur fachlicher Spielcodefehler | Sim-/Domain-Owner | ein Spielcodefehler ist reproduziert | manuelle Reparatur; CI liefert nur die Diagnose | Review bei wiederkehrendem Fehler |
+### Optik, Performance und Editor
 
-Diese Punkte blockieren keine Spielentwicklung. Neue Governance-Arbeit ist nur
-bei konkretem Defekt, realem Integritaetsfehler, messbarem Workflow-Zeitverlust
-oder nachweisbarer wiederkehrender Agentenarbeit zulaessig.
+| Punkt | Status | Beleg / naechster Schritt |
+| --- | --- | --- |
+| Wand-Occlusion visuell | offen | `WallOcclusion` und Depth-Tests stehen; es gibt keinen Browserbeleg mit einer Figur noerdlich und suedlich derselben Wand. |
+| Editor-Chunk im Produktionsbundle | bestanden (Produktionsbuild) | `rg` in `dist/assets` findet weder `layout-editor` noch `VITE_RBD_EDITOR_MODE`; die APK-Paketierung wurde nicht erneut geprueft. |
+| First Frame unter 3 s | offen | WebP-Atlas und lazy Plinko-Buehne sind seit 0.3.141 auf main; Initialgraph 1.174.034 B/18 Chunks, Byte-Modell 8,1 s. Echtes Slow 4G und ein Wert unter 3 s bleiben offen. |
+| Slow-4G-Browserlauf | offen | Baseline 22 Requests/12,16 s/2,42 MB; WebP/Lazy sind in PR #161, ein neuer Browserlauf fehlt. |
+
+### Technik, Doku und Release
+
+- **Dependency-Audit:** Android-Gradle-Nachweis nur in CI; Installationsgroessen-Vergleich und Installationsdauer offen; CVE-Untergrenzen vor dem naechsten Upgrade gegen `pnpm audit` pruefen; Vite-Warnung zum extensionlosen Import offen.
+- **Asset-Lizenz:** Der Nutzer hat die Lizenz bestaetigt; der Nachweis im Repo fehlt weiterhin.
+- **Branch-Hygiene:** `main` ist PR-Ziel; jede Lane arbeitet auf ihrem eigenen Branch mit Claim und Worktree. `integration` liegt unveraendert auf `bac6d8a` und ist zusaetzlich als `archive/integration-2026-11-07` gesichert; PR #142 ist geschlossen. Ein Branch mit nicht integrierter Arbeit wird nicht geloescht.
+- **Branch-Schutz/CI-Eskalation:** klassischer Schutz verifiziert (`strict: false`, keine Rulesets, `promote` deaktiviert); Watcher-Fingerprint nach dem naechsten echten Lauf pruefen.
+- **Asset-Semantik:** Deko-Rollen von den Label-Regexen loesen und entscheiden, ob der Katalog ein Gate bekommt.
+- **Offene Kleinbefunde aus der Inventur (§14):** ERR-4016-Zuordnung klaeren; Windows-Pfad in `opencode.json` entfernen; Audit-Drift nachziehen; Duplikatpruefung in `verify-assets` entscheiden; Slot-Symbol-Fallback-Keys mit dem Manifest decken; Asset-Bibliothek-Zaehler dynamisch halten; Tick-Dauer als eine Konstante fuehren; Shell-Text-Typo korrigieren; Windows-Fallback in `encode-audio` dokumentiert lassen.
+
+### Bewusst nicht in diesem Schritt
+
+- Keine visuelle Browser- oder APK-Abnahme; der Nutzer testet auf seinem privaten Geraet.
+- Keine Spiel-, Simulations-, Ledger-, RNG- oder Save-Aenderung.
+- Keine Doku-Duplikate neben den zwölf Pflichtdokumenten; die Landkarte steht in `docs/INDEX.md`.
 
 ## Als Nächstes — Lebenssysteme aus dem Casino loesen
 

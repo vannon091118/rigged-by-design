@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.188 | 2026-11-08 02:56 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 03:04 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -520,10 +520,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2042 |
-| Gelistete Dateien | 2042 |
+| Getrackte Dateien | 2043 |
+| Gelistete Dateien | 2043 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (16), content (677), docs (77), public (554), scripts (91), src (602) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (16), content (678), docs (77), public (554), scripts (91), src (602) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -536,7 +536,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 14 Datei(en)
-- `content/narrative/contributions/` — 673 Datei(en)
+- `content/narrative/contributions/` — 674 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1277,6 +1277,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-low-48.json` — {"agentId":"buffy","turnId":"2026-11-08T05:47Z-pool-guest-voice-low-48","contributionId":"pool-guest-voice-low — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-low-49.json` — {"agentId":"buffy","turnId":"2026-11-08T05:48Z-pool-guest-voice-low-49","contributionId":"pool-guest-voice-low — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-low-50.json` — {"agentId":"buffy","turnId":"2026-11-08T05:49Z-pool-guest-voice-low-50","contributionId":"pool-guest-voice-low — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-pool-guest-voice-low-51.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-mid-01.json` — {"agentId":"buffy","turnId":"2026-11-08T05:50Z-pool-guest-voice-mid-01","contributionId":"pool-guest-voice-mid — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-mid-02.json` — {"agentId":"buffy","turnId":"2026-11-08T05:51Z-pool-guest-voice-mid-02","contributionId":"pool-guest-voice-mid — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-guest-voice-mid-03.json` — {"agentId":"buffy","turnId":"2026-11-08T05:52Z-pool-guest-voice-mid-03","contributionId":"pool-guest-voice-mid — gelesen: 1 Zeilen
@@ -1335,18 +1336,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-reaction-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-reaction-52","contributionId":"pool-reaction-52","role":"B — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 14939 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2697 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 14961 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2701 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 188 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1033 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 983 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 158 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3462 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3380 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 63 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 312 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 375 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 83 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 114 Zeilen

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T05:30Z-pool-guest-voice-low-51",
+  "contributionId": "pool-guest-voice-low-51",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-low",
+  "function": "react",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Er mustert die Theke, dann dich. Der Blick sagt: heute wird nicht getrunken, heute wird geprueft.",
+  "directives": []
+}

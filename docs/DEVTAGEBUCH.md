@@ -1,6 +1,6 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.188 | 2026-11-08 02:56 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 03:04 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
@@ -14,88 +14,6 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 
 
-
-## 2026-11-08 - Stadt-Loop im Replay: ein Befund, ein Fix
-
-**Ziel.** Den Stadt-Loop ohne Browser belegen, weil AX-Baum, DOM-Auswertung und
-Screenshot im Cloud-Browser jeweils nach 10 bis 15 Sekunden abbrechen - die
-Seite laedt (alle Assets 200), die Aufnahme der GPU-Seite aber nicht.
-
-**Befund.** Das Harness spielte Kiez bis Eingeweihter und zeigte 15-mal
-denselben Stadt-Text. Ursache im Code, nicht im Content: `runCityAction` baute
-den Schluessel aus `action.id`, `visits[location]` und `world.tick`; Besuch und
-Tick bleiben waehrend eines Aufenthalts konstant, also las der FNV-Wurf immer
-denselben der 52 Bausteine. Der Markt-Zweig zeigte dasselbe Bild.
-
-**Fix.** Der Schluessel traegt jetzt den erreichten Fortschritt
-(`action|location|points`). Damit wechselt der Text mit jeder Handlung, bleibt
-aber deterministisch: derselbe Stand liest denselben Satz.
-
-**Pruefungen.** `city-loop-walkthrough.test.ts` (Kiez 15, Markt 12, zwei Tage
-Abschluss, mindestens acht verschiedene Texte) gruen; `narrative:blocks`,
-`narrative:check`, `typecheck` und `verify:light` gruen.
-
-## 2026-11-08 - Stadt-Vertikalschnitt landet: Integration statt Neubau
-
-**Ziel.** PR #264 (Kiez und Markt) so auf `main` bringen, dass der Cleanup-Stand
-(Ruf-Kopplung, Gaststimmen, Register) nicht verloren geht und kein Gate
-abgeschwaecht wird.
-
-**Befund.** `main` war weiter als der PR: #265 (Claims), #266 (roter Lauf) und
-#267 (Luecken-Regel) lagen bereits auf `main`, waehrend der PR auf 9a1a1ff
-basierte. Die Doku-Konflikte waren deshalb fast vollstaendig "PR ist aelter";
-der PR trug in `docs/` nur Marker und Inventur-Zahlen, keine eigene Aussage.
-Die Luecken-Regel, die diese Lane als P-1 (freeze-pflichtig) gefuehrt hatte,
-war mit #267 bereits wie vorgeschlagen repariert: offene Pools zuerst, danach
-Wachstum, Schrumpf verboten.
-
-**Umsetzung.** Merge in dieser Reihenfolge: `main` 6d14524, PR-Kopf b30f0bc,
-Cleanup-Kopf 9b7b104. Doku: der neuere `main`-Stand gewinnt, Marker und Inventur
-danach neu erzeugt. Content: `manifest.json` als Vereinigung nach `turnId`
-(520 + 566 zu 670), `classification.json` als Vereinigung je Schluessel
-(`city-scene`, `city-night`, `guest-voice-*`), Registry und Laufzeit-Spiegel per
-`narrative:compile` neu geschrieben.
-
-**Pruefungen.** `narrative:compile` (670 Fragmente,
-sha256:e89cbc97...), `narrative:blocks` PASS (13 Pools, Minimum 50),
-`narrative:check` PASS, `typecheck` 0, `verify:light` PASS (Lint, LOC,
-Typecheck, Doku, Tree, Redundanz), 32 fokussierte Tests gruen - darunter die
-vier Stadt-Tests (Energie und Tag, Markt-Sperre und -Freischaltung, beide
-Zweige, deterministischer Text).
-
-**Bewusst nicht getan.** Kein Gate abgeschaltet, kein Test abgeschwaecht, kein
-Force-Merge. Die Reihenfolge "Content erst nach dem Merge" wurde verworfen,
-weil sonst der PR-Kopf nie gruen geworden waere.
-
-## 2026-11-08 - Sechs Systeme verdrahtet, Textbausteine als Struktur
-
-**Ziel.** Die sechs genannten Systeme nicht nur auflisten, sondern ihre Datenstroeme
-pruefen und die fehlende Kante schliessen; die Textbausteine von einer Zahl zu einer
-Struktur machen, die 1500 erreichen kann, ohne sich zu wiederholen.
-
-**Befund am Code.** Zwei der drei genannten Verdachtsfaelle tragen bereits:
-Das Floor-Layout steckt ueber `world.layout` in `navGrid` (Wandkanten) und damit in
-`pathTo`; der Ledger steckt ueber `ledgerSeq` und Bandwechsel in `ledger-facts.ts`.
-Die fehlende Kante war der Ruf: `offerScore` und `personaStake` lasen
-`world.reputation` nicht. Ausserdem hatte das Slot-Gedaechtnis (Drucklader) keinen
-Textpfad - es wirkt nur ueber die Auszahlung in den Ledger.
-
-**Umsetzung.** `stakeConfidence` verschiebt den Einsatz um ±20 %, hart begrenzt
-durch Dreifach-Deckel und Chipbestand. Drei neue Text-Pools tragen die Gastsprache
-je Rufband; `guest-voice.ts` waehlt per FNV-Hash aus Gast und Band, ohne RNG, und
-haengt den Satz an den mechanischen Intent. Die Roadmap hat jetzt ein Register
-statt vier Offen-Listen.
-
-**Pruefungen.** `pnpm run narrative:compile` (566 Fragmente, Hash
-`sha256:aaf83d15...`), `pnpm run narrative:blocks` (PASS, Minimum 50 je Pool),
-`pnpm run typecheck` (0), `vitest` fuer `guest-voice`, `reputation-slot-use`,
-`addiction-stake`, `guest-flow`, `progression`. Der bestehende Einsatz-Test wurde
-auf Ruf 50 neutralisiert, damit er weiter Persona-Budget prueft und nicht die neue
-Ruf-Achse.
-
-**Offen.** Die Luecken-Regel des Gates sperrt Pools ab 50 (P-1, freeze-pflichtig).
-Der Stadt-Loop (Kiez, Markt, zwei Tageszweige) existiert nicht und ist P-2; die
-Browser-Abnahme des Casino-Loops ersetzt sie nicht.
 
 ## 2026-11-07 - Textbaustein-Pools als Pflichtregel
 

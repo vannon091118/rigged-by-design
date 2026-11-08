@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b419134223e36808d0a4c73aa3b18612797e605758c156d036eea27400ec36d9",
+  "contentHash": "sha256:700283d54ec4cab27fb76421e921733a59d50160702feb871755c315cd531805",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -9319,6 +9319,28 @@
       "text": "Das Wasser steht, und das ist die einzige Runde heute.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-50.json"
+    },
+    {
+      "contributionId": "pool-guest-voice-low-51",
+      "turnId": "2026-11-08T05:30Z-pool-guest-voice-low-51",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "react",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er mustert die Theke, dann dich. Der Blick sagt: heute wird nicht getrunken, heute wird geprueft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-pool-guest-voice-low-51.json"
     },
     {
       "contributionId": "pool-guest-voice-mid-01",
