@@ -12,7 +12,7 @@
   "dependencies": [],
   "gateProfile": "full",
   "status": "merged",
-  "createdAt": "e4cb69d1cd09e590b68f6894fb5e419fde396535",
   "mergedEvidence": "merged-pr",
-  "mergedSha": "1d78feb0b6db7087269bc4a13803be63515dfac8"
+  "mergedSha": "1d78feb0b6db7087269bc4a13803be63515dfac8",
+  "createdAt": "e4cb69d1cd09e590b68f6894fb5e419fde396535"
 }
