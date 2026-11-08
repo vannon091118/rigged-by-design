@@ -20,7 +20,8 @@ export interface KnowledgeConfig {
     readonly lossPerStep: number; readonly distortionPerStep: number;
     readonly confidenceDecay: number; readonly maxDistance: number;
   };
-  readonly limits: { readonly maxEntries: number; readonly minConfidence: number };
+  readonly aging: { readonly graceTicks: number; readonly decayPerTick: number; readonly minConfidence: number };
+  readonly limits: { readonly maxEntries: number; readonly maxObservations: number; readonly minConfidence: number };
 }
 
 /**
@@ -33,7 +34,8 @@ export const KNOWLEDGE_CONFIG: KnowledgeConfig = {
   sourceWeight: { ERLEBT: 1, GESEHEN: 0.8, GEHOERT: 0.55, GELESEN: 0.5 },
   relationship: { trust: 0.04, sympathy: 0.03, influence: 0.02, conflict: 0.06 },
   distance: { lossPerStep: 0.12, distortionPerStep: 0.18, confidenceDecay: 0.1, maxDistance: 4 },
-  limits: { maxEntries: 160, minConfidence: 0.05 },
+  aging: { graceTicks: 8, decayPerTick: 0.01, minConfidence: 0.05 },
+  limits: { maxEntries: 160, maxObservations: 160, minConfidence: 0.05 },
 };
 
 /** Prueft die Config fail-closed: eine unlesbare Kette darf nie still weiterlaufen. */
@@ -59,8 +61,20 @@ export function validateKnowledgeConfig(config: KnowledgeConfig): void {
   if (!Number.isInteger(maxDistance) || maxDistance < 1 || maxDistance > 8) {
     throw new Error('Wissenskette: maxDistance muss eine ganze Zahl zwischen 1 und 8 sein.');
   }
-  const { maxEntries, minConfidence } = config.limits;
+  const { graceTicks, decayPerTick, minConfidence: agingFloor } = config.aging;
+  if (!Number.isInteger(graceTicks) || graceTicks < 0 || graceTicks > 1000) {
+    throw new Error('Wissenskette: graceTicks ist ungueltig.');
+  }
+  for (const [name, value] of Object.entries({ decayPerTick, agingFloor })) {
+    if (!Number.isFinite(value) || value < 0 || value > 1) {
+      throw new Error(`Wissenskette: Alterungswert ${name} liegt ausserhalb 0..1.`);
+    }
+  }
+  const { maxEntries, maxObservations, minConfidence } = config.limits;
   if (!Number.isInteger(maxEntries) || maxEntries < 1) throw new Error('Wissenskette: maxEntries muss positiv sein.');
+  if (!Number.isInteger(maxObservations) || maxObservations < 1) {
+    throw new Error('Wissenskette: maxObservations muss positiv sein.');
+  }
   if (!Number.isFinite(minConfidence) || minConfidence < 0 || minConfidence > 1) {
     throw new Error('Wissenskette: minConfidence liegt ausserhalb 0..1.');
   }

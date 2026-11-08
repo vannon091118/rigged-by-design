@@ -3,6 +3,9 @@ import type { VaCoinMicro } from '../../economy/vacoin';
 import type { PersonaId, RivalId } from '../types';
 import type { RivalActionId } from '../rival-ai/types';
 import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
+import type { KnowledgeEntry, Observation } from './knowledge-types';
+
+export type { KnowledgeEntry, KnowledgeSourceKind, Observation } from './knowledge-types';
 
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
@@ -145,23 +148,7 @@ export interface VisitorMemory {
   readonly valence: VisitorValence;
 }
 
-/** Wie jemand etwas erfahren hat; die Art bleibt an der Aussage haengen. */
-export type KnowledgeSourceKind = 'ERLEBT' | 'GESEHEN' | 'GEHOERT' | 'GELESEN';
 
-/** Ein Wissenstand mit Provenance: Distanz zaehlt Weitergaben, Konfidenz ist bereits reduziert. */
-export interface KnowledgeEntry {
-  readonly id: number;
-  readonly actor: ActorRef;
-  readonly topic: string;
-  readonly subject: ActorRef;
-  readonly sentiment: number;
-  readonly confidence: number;
-  readonly sourceKind: KnowledgeSourceKind;
-  readonly sourceActor: ActorRef;
-  readonly distance: number;
-  readonly tick: number;
-  readonly factId: number;
-}
 export interface NarrativeState {
   /** Naechste freie Fact-ID. */
   factSeq: number;
@@ -180,6 +167,10 @@ export interface NarrativeState {
   knowledge: KnowledgeEntry[];
   /** Naechste freie Wissens-ID. */
   knowledgeSeq: number;
+  /** Tatsaechliche Wahrnehmungen; Grundlage der Wissens-Provenance. */
+  observations: Observation[];
+  /** Naechste freie Beobachtungs-ID. */
+  observationSeq: number;
   /**
    * Ledger-`seq` der zuletzt verarbeiteten Buchung, nicht der Array-Index.
    * `null` heisst: noch kein Cursor; der erste Lauf setzt ihn ohne historische Facts.

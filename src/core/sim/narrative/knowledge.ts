@@ -7,11 +7,14 @@
 import { Prng } from '../../rng/prng';
 import type { WorldState } from '../types';
 import {
-  KNOWLEDGE_CONFIG, SOURCE_KINDS, knowledgeRisk, sourceWeightOf, validateKnowledgeConfig,
+  KNOWLEDGE_CONFIG, knowledgeRisk, sourceWeightOf, validateKnowledgeConfig,
   type KnowledgeConfig,
 } from './knowledge-config';
-import { isActorRef, relationshipBetween } from './relationships';
-import type { ActorRef, KnowledgeEntry, KnowledgeSourceKind } from './types';
+import { relationshipBetween } from './relationships';
+import type { InfluenceValues } from '../influence';
+import type { ActorRef, KnowledgeEntry } from './knowledge-types';
+import { noteObservation } from './knowledge-observation';
+import { willingToShare } from './knowledge-share';
 
 const KNOWLEDGE_TOPIC = 'haus';
 const KNOWLEDGE_SUBJECT: ActorRef = 'player';
@@ -47,10 +50,47 @@ export function recordFirstHand(
   const sentiment = clamp(input.sentiment, -1, 1);
   if (Math.abs(sentiment) < 0.1) return null;
   if (world.narrative.knowledge.some((entry) => entry.factId === input.factId && entry.actor === input.actor)) return null;
+  noteObservation(world, {
+    actor: input.actor, factId: input.factId, channel: 'SELBST', tick: input.tick, quality: 1,
+  }, config.limits.maxObservations);
   return append(world, {
     actor: input.actor, topic: KNOWLEDGE_TOPIC, subject: KNOWLEDGE_SUBJECT,
     sentiment, confidence: 1, sourceKind: 'ERLEBT', sourceActor: input.actor,
-    distance: 0, tick: input.tick, factId: input.factId,
+    originActor: input.actor, distance: 0, observedTick: input.tick, decayedTick: input.tick,
+    tick: input.tick, factId: input.factId,
+  }, config);
+}
+
+interface SightingInput {
+  readonly actor: ActorRef;
+  readonly factId: number;
+  readonly sentiment: number;
+  readonly channel: 'SICHT' | 'GERAEUSCH';
+  readonly quality: number;
+  readonly tick: number;
+}
+
+/** Eigene Beobachtung: ohne Anwesenheit kein Eintrag; die Qualitaet ist die Konfidenz. */
+export function recordSighting(
+  world: WorldState,
+  input: SightingInput,
+  config: KnowledgeConfig = KNOWLEDGE_CONFIG,
+): KnowledgeEntry | null {
+  validateKnowledgeConfig(config);
+  const sentiment = clamp(input.sentiment, -1, 1);
+  if (Math.abs(sentiment) < 0.1) return null;
+  if (world.narrative.knowledge.some((entry) => entry.factId === input.factId && entry.actor === input.actor)) return null;
+  const observation = noteObservation(world, {
+    actor: input.actor, factId: input.factId, channel: input.channel,
+    tick: input.tick, quality: input.quality,
+  }, config.limits.maxObservations);
+  if (!observation) return null;
+  return append(world, {
+    actor: input.actor, topic: KNOWLEDGE_TOPIC, subject: KNOWLEDGE_SUBJECT,
+    sentiment, confidence: observation.quality,
+    sourceKind: input.channel === 'SICHT' ? 'GESEHEN' : 'GEHOERT',
+    sourceActor: input.actor, originActor: input.actor, distance: 0,
+    observedTick: input.tick, decayedTick: input.tick, tick: input.tick, factId: input.factId,
   }, config);
 }
 
@@ -61,6 +101,8 @@ interface ReportInput {
   readonly entryId?: number;
   readonly tick: number;
   readonly seed: number;
+  /** Optional: wer erzaehlt, muss laut Matrix ueberhaupt weitergabebereit sein. */
+  readonly speaker?: InfluenceValues;
 }
 
 /**
@@ -82,6 +124,7 @@ export function reportKnowledge(
   const entry = entryOf(world, input.from, topic, input.entryId);
   if (!entry) throw new Error(`Wissenskette: ${input.from} hat kein Wissen zu ${topic}; Bericht abgelehnt.`);
   if (entry.actor !== input.from) throw new Error('Wissenskette: Quelle und Wissensbesitzer stimmen nicht ueberein.');
+  if (input.speaker && !willingToShare(input.speaker)) return null;
   return transmit(world, entry, input.to, input.tick, input.seed, config);
 }
 
@@ -109,21 +152,13 @@ function transmit(
     actor: to, topic: entry.topic, subject: entry.subject,
     sentiment: distorted ? clamp(-entry.sentiment * 0.8, -1, 1) : entry.sentiment,
     confidence, sourceKind: entry.sourceKind === 'ERLEBT' ? 'GEHOERT' : entry.sourceKind,
-    sourceActor: entry.actor, distance, tick, factId: entry.factId,
+    sourceActor: entry.actor, originActor: entry.originActor, distance,
+    observedTick: entry.observedTick, decayedTick: tick, tick, factId: entry.factId,
   }, config);
 }
 
-/** Was ein Akteur ueber das Subjekt zu glauben meint: -1..1, konfidenzgewichtet. */
-export function rumorAbout(world: WorldState, actor: ActorRef, subject: ActorRef = KNOWLEDGE_SUBJECT): number {
-  let sum = 0;
-  let weights = 0;
-  for (const entry of world.narrative.knowledge) {
-    if (entry.actor !== actor || entry.subject !== subject) continue;
-    sum += entry.sentiment * entry.confidence;
-    weights += entry.confidence;
-  }
-  return weights > 0 ? clamp(sum / weights, -1, 1) : 0;
-}
+/** Abfragen und Alterung liegen getrennt; die Fassade bleibt importierbar. */
+export { ageKnowledge, contradictionsAbout, entriesAbout, rumorAbout } from './knowledge-query';
 
 function actorHash(actor: ActorRef): number {
   let hash = 0x811c9dc5;
@@ -153,33 +188,4 @@ export function hearRumor(
   return transmit(world, source, target, tick, seed, config);
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
-
-/** Sichert gespeichertes Wissen: unbekannte Quellenarten und kaputte Zahlen fallen raus. */
-export function normalizeKnowledge(raw: unknown, config: KnowledgeConfig = KNOWLEDGE_CONFIG): KnowledgeEntry[] {
-  if (!Array.isArray(raw)) return [];
-  const entries: KnowledgeEntry[] = [];
-  for (const item of raw) {
-    if (!isRecord(item)) continue;
-    if (!isActorRef(item.actor) || !isActorRef(item.subject) || !isActorRef(item.sourceActor)) continue;
-    if (!SOURCE_KINDS.includes(item.sourceKind as KnowledgeSourceKind)) continue;
-    if (typeof item.topic !== 'string' || item.topic.length === 0) continue;
-    const numbers = [item.sentiment, item.confidence, item.distance, item.tick, item.factId, item.id]
-      .map((value) => (Number.isFinite(value) ? Number(value) : NaN));
-    if (numbers.some((value) => Number.isNaN(value))) continue;
-    entries.push({
-      id: Math.max(0, Math.floor(numbers[5]!)),
-      actor: item.actor,
-      topic: item.topic.slice(0, 32),
-      subject: item.subject,
-      sentiment: clamp(numbers[0]!, -1, 1),
-      confidence: clamp(numbers[1]!, 0, 1),
-      sourceKind: item.sourceKind as KnowledgeSourceKind,
-      sourceActor: item.sourceActor,
-      distance: Math.max(0, Math.floor(numbers[2]!)),
-      tick: Math.max(0, Math.floor(numbers[3]!)),
-      factId: Math.max(0, Math.floor(numbers[4]!)),
-    });
-  }
-  return entries.slice(-config.limits.maxEntries);
-}
+export { normalizeKnowledge } from './knowledge-persist';

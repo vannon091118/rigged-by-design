@@ -4,6 +4,7 @@ import type { WorldState } from '../types';
 import { drainFacts, pushRecent } from './facts';
 import { processLedgerFacts } from './ledger-facts';
 import { applyMemories } from './memory';
+import { ageKnowledge } from './knowledge-query';
 import { applyRelationshipFacts } from './relationship-apply';
 import { maintainEvents } from './event-scheduler';
 import type { NarrativeEventInstance } from './event-types';
@@ -24,6 +25,8 @@ export function processNarrativeBoundaryDetailed(world: WorldState, ledger: Ledg
   processLedgerFacts(world, ledger);
   // Fristen und verwaiste Teilnehmer werden auch ohne neue Facts begrenzt aufgeraeumt.
   const { expired } = maintainEvents(world);
+  // Wissen altert mit der Spielzeit, auch wenn gerade kein neuer Fact anliegt.
+  ageKnowledge(world, world.tick);
   const fresh = drainFacts(world);
   if (fresh.length === 0) return { applied: 0, facts: [], expired };
   const applied = applyMemories(world, fresh);
