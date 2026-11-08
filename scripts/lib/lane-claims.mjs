@@ -24,7 +24,11 @@ const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
 // ueberschreiben. `claims.json` bleibt als Legacy-Bestand lesbar.
 const CLAIM_ENTRIES_DIR = join(CLAIMS_DIR, 'claims');
 export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
-export const COORDINATION_FILES = Object.freeze(['.lane-claims/claims.json']);
+// Koordination statt Inhalt: das Legacy-Register und die PIN-Freigabe darf jede
+// Lane mechanisch beruehren, ohne ihre Allowlist zu erweitern oder mit einer
+// anderen Lane zu kollidieren. Sonst blockierte die Freigabe genau den Lane,
+// der sie braucht.
+export const COORDINATION_FILES = Object.freeze(['.lane-claims/claims.json', '.lane-claims/freeze-unlock.json']);
 
 /**
  * Fester Owner-Roster. Eine Lane ohne benannten Owner ist keine Lane: ohne
