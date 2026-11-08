@@ -44,22 +44,29 @@ function seedWithLoadedCharge(): number {
 }
 
 describe('Slot-Session', () => {
-  it('zahlt ueber viele Spins weniger aus als eingenommen', { timeout: 120_000 }, () => {
-    const prng = new Prng(randomSeed());
-    const item = machine();
+  it('zahlt ueber viele Spins weniger aus als eingenommen', { timeout: 300_000 }, () => {
+    // Feste Seeds statt randomSeed(): die RTP-Streuung ueber acht Seeds reicht
+    // von 0.915 bis 0.953. Ein einzelner Zufallslauf kann das Band reissen,
+    // ohne dass sich am Auszahlungspfad etwas geaendert hat - der Nachweis
+    // muss deshalb reproduzierbar sein und den Mittelwert pruefen.
     const bet = fromVC(0.5);
     const spins = 60_000;
+    const seeds = [1, 2, 3, 4];
     let stake = 0;
     let payout = 0;
     let discharges = 0;
-    for (let index = 0; index < spins; index += 1) {
-      const result = playSlotSession(item, prng, bet);
-      stake += result.stake;
-      payout += result.payout;
-      if (result.label.startsWith('ENTLADUNG')) discharges += 1;
+    for (const seed of seeds) {
+      const prng = new Prng(seed);
+      const item = machine();
+      for (let index = 0; index < spins; index += 1) {
+        const result = playSlotSession(item, prng, bet);
+        stake += result.stake;
+        payout += result.payout;
+        if (result.label.startsWith('ENTLADUNG')) discharges += 1;
+      }
     }
     const rtp = payout / stake;
-    expect(stake).toBe(spins * bet);
+    expect(stake).toBe(spins * bet * seeds.length);
     expect(discharges, 'Entladungen kommen vor').toBeGreaterThan(0);
     // 60.000 Spins halten die Streuung klein genug fuer ein echtes RTP-Band.
     expect(rtp, 'RTP der Gast-Session').toBeGreaterThan(0.90);

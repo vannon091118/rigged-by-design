@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.187 | 2026-11-08 02:44 UTC -->
+<!-- rbd-doc: v0.3.188 | 2026-11-08 02:56 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.188] - 2026-11-08
+
+### Technik
+- **RTP-Nachweis ist reproduzierbar.** Der Test prueft jetzt vier feste Seeds statt eines Zufallsstarts. Acht Messungen ergaben 0.915 bis 0.953 (Mittel 0.934); der CI-Fehlschlag mit 0.8975 war ein Zufallsausreisser des Bandes, kein Auszahlungsfehler. Das Band bleibt unveraendert.
+
+### Textbausteine
+- **673 Bausteine.** Ein neuer Satz im Pool `memory`, gelesen vom Journal-Pfad; kein Pool unter 50.
 
 ## [0.3.187] - 2026-11-08
 

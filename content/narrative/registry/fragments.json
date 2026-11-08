@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7f410614eb6f09bd3c882dac48c10982c8992c574715e1aa0b1bca34f0b14d5b",
+  "contentHash": "sha256:b419134223e36808d0a4c73aa3b18612797e605758c156d036eea27400ec36d9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3327,6 +3327,28 @@
       "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dokumentation.json"
+    },
+    {
+      "contributionId": "memory-53",
+      "turnId": "2026-11-08T05:00Z-memory-53",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Quote ist kein Versprechen, sondern eine Summe: was heute nicht faellt, liegt im Polster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-memory-53.json"
     },
     {
       "contributionId": "memory-counts-01",
