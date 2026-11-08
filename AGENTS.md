@@ -51,6 +51,8 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
 - Merge manuell nach grünem `CI Verify`; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
+**Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
+
 ## Pflichtdoku
 
 - Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md).
