@@ -1394,7 +1394,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/contracts/actionset.md` — Contract: actionset v1.0 — gelesen: 52 Zeilen
 - `docs/contracts/actor-id.md` — Contract: actor-id v1.0 — gelesen: 54 Zeilen
 - `docs/contracts/domain-event.md` — Contract: domain-event v1.0 — gelesen: 86 Zeilen
-- `docs/contracts/factor.md` — Contract: factor v1.1 — gelesen: 95 Zeilen
+- `docs/contracts/factor.md` — Contract: factor v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/relationship.md` — Contract: relationship v1.0 — gelesen: 55 Zeilen
 - `docs/contracts/save.md` — Contract: save v1.0 — gelesen: 58 Zeilen
 - `docs/contracts/world-time.md` — Contract: world-time v1.0 — gelesen: 56 Zeilen
