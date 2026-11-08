@@ -16,6 +16,7 @@ export { isEventCandidate, isEventInstance, normalizeEventState } from './event-
 export {
   canScheduleEvent, cancelStaleEvents, chainEvent, maintainEvents, scheduleCandidates, scheduleEvent,
 } from './event-scheduler';
+export { maybeScheduleMainEvent, poolEventWeight } from './main-event-pool';
 export { EVENT_TEMPLATES, templateFor } from './events/definitions';
 export {
   isChoiceId, isEventChoice, isEventTemplate, isOfferedChoiceIds, normalizeOfferedChoiceIds,

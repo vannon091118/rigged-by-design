@@ -17,6 +17,7 @@ describe('Narrative Event Templates', () => {
       .toEqual([
         'VISITOR_RETURN@1', 'VISITOR_CONFLICT@1', 'NEON_NACHT@1', 'TURNIER_ABEND@1',
         'RIVAL_MOVE@1', 'VISITOR_AFTERMATH@1', 'VISITOR_RETURN_WARM@1',
+        'AMBIENT_BAR_TALK@1', 'AMBIENT_SHARED_ROUND@1', 'AMBIENT_TENSE_TABLE@1',
       ]);
     expect(templateFor('VISITOR_RETURN')?.choices.map((choice) => choice.choiceId))
       .toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);
@@ -31,6 +32,11 @@ describe('Narrative Event Templates', () => {
       const template = templateFor(eventId);
       expect(template?.triggerId).toBe('ENGINE_DEMAND');
       expect(template?.choices).toEqual([]);
+      expect(template?.maxOccurrences).toBe(0);
+    }
+    for (const eventId of ['AMBIENT_BAR_TALK', 'AMBIENT_SHARED_ROUND', 'AMBIENT_TENSE_TABLE']) {
+      const template = templateFor(eventId);
+      expect(template?.triggerId).toBe('ENGINE_POOL');
       expect(template?.maxOccurrences).toBe(0);
     }
   });
@@ -64,7 +70,7 @@ describe('Narrative Event Templates', () => {
     expect(resolveParticipants(['visitor', 'visitor'], ['visitor:1', 'visitor:1'])).toBeNull();
   });
 
-  it('traegt die Slot-Zwecke der sechs Templates', () => {
+  it('traegt die Slot-Zwecke der neun Templates', () => {
     const purpose = (eventId: string, slotId: string) =>
       templateFor(eventId)?.contentSlots.find((slot) => slot.id === slotId)?.requiredContexts;
     expect(purpose('VISITOR_RETURN', 'CHOICE_WELCOME')).toEqual(['return', 'welcome']);

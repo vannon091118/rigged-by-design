@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cb9f7ab9545e9373ff93f017b020a8f2f0f3199d352254aa420ef476b768f6fd",
+  "contentHash": "sha256:fb1d0205183da561dcc8fc85326768f635d003d3744ddaaa8e0faeb0e54929ae",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3415,6 +3415,72 @@
       "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
+    },
+    {
+      "contributionId": "main-event-pool-01",
+      "turnId": "2026-11-08T06:40Z-main-event-pool",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Gaeste stehen an der Bar, und fuer einen Moment reicht das Gespraech ueber den Abend. Niemand nennt es eine Szene; es passiert einfach zwischen zwei Glaesern.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-main-event-pool-01.json"
+    },
+    {
+      "contributionId": "main-event-pool-02",
+      "turnId": "2026-11-08T06:41Z-main-event-pool",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jemand stellt zwei Glaeser auf den Tisch; die Runde wird groesser, ohne dass es jemand ausspricht. Der Abend nimmt seinen Gang, als waere nichts weiter passiert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-main-event-pool-02.json"
+    },
+    {
+      "contributionId": "main-event-pool-03",
+      "turnId": "2026-11-08T06:42Z-main-event-pool",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Tisch wird die Stimme leiser, dann schaerfer; die anderen merken es, bevor jemand etwas sagt. Ein Blick genuegt, und die Szene bleibt in der Schwebe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-main-event-pool-03.json"
     },
     {
       "contributionId": "memory-53",

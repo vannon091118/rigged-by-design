@@ -175,11 +175,11 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-08: **681/1500** Bausteine in 13 Pools. Neun Slots tragen 52 bis 53,
-darunter die Stadt-Pools `city-scene` und `city-night` aus dem Vertikalschnitt;
-die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`, `guest-voice-high`)
-tragen je 50. Die Pool-Mindestgroesse ist damit an allen 13 Pools erreicht und
-bleibt Untergrenze.
+Stand 2026-11-08: **684/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
+Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
+`guest-voice-high`) mit je 50. Die Pool-Mindestgroesse ist damit an allen 13
+Pools erreicht und bleibt Untergrenze.
 
 **Der Weg zu 1500 ist eine Pool-Struktur, keine Auffuellung.** 1500 / 50 = 30
 Pools. Jeder neue Pool gehoert zu einem System oder Kontext (Ruf, Ledger, Route,
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 681/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
+| P-13 | 684/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; naechster Pool mit Leser, nicht als Reserve |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -260,7 +260,7 @@ Code und seinen Test als Beleg.
 | P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | offen | `scripts/sync-dependency-matrix.mjs` zaehlt Testdateien; jede neue Testdatei verschiebt die Zahlen und braucht damit eine PIN-Freigabe. Matrix in eine freie Datei ziehen oder den Generator aus dem Freeze nehmen |
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
 | P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `influence-config.ts` gewichtet `mood`, `sociability`, `thirst`, `rumor` sowie `trust`, `sympathy` und `conflict` je Kontext, wendet Cross-Kanten an (unter anderem Vertrauen/Konflikt auf Geselligkeit) und validiert fail-closed; Consumer `guest-choice.ts` (Bar-Nachfrage mit Beziehungskante); Test `influence.test.ts` |
-| P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | offen | heutige Nachfrage-Events (`NEON_NACHT`, `TURNIER_ABEND`) sind sichtbar und wiederholen sich; ein gewichteter Pool braucht Ziehung ohne Wiederholung und Trigger, die auch ohne aktives Event feuern duerfen |
+| P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | **verifiziert 2026-11-08** | `main-event-pool.ts` zieht nur bei idle, gewichtet ueber die gerichteten trust/sympathy/conflict-Kanten und Cross-Kanten, daempft Wiederholung per Recency und Lockout und nutzt dieselbe Event-Karte ohne Sonder-UI/-Log; drei feste `AMBIENT_*`-Templates, Config in `influence-event-pool.ts`, Tests `main-event-pool.test.ts` |
 | P-23 | NPC-Wissen und Geruechte mit Distanz- und Quellenverlust | **verifiziert 2026-11-08** | `knowledge.ts` erzwingt Provenance (unmittelbare und urspruengliche Quelle, Art, Distanz, Beobachtungs-Tick), `knowledge-observation.ts` verlangt fuer Sicht/Geraeusch echte Anwesenheit, `knowledge-query.ts` altert und bewahrt Widersprueche, `knowledge-share.ts` macht die Weitergabe vom Matrix-Kontext `share` abhaengig, `knowledge-gossip.ts` waehlt die naechste, weitergabebereite Quelle, und empfangenes Wissen schreibt begrenzt auf die Kante zur Quelle und zum Subjekt zurueck; Tests `knowledge.test.ts`, `knowledge-domain.test.ts` und `knowledge-relationships.test.ts` |
 
 #### D. Governance, CI und Abnahme der Lieferung
