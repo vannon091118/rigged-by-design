@@ -1,12 +1,13 @@
 /** Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. */
 import { useState } from 'react';
+import type { ExclusionCommand } from '../store/game-commands';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { TICK_S } from '../core/sim/tick-timing';
 
 interface Props {
   readonly view: GameView;
-  readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
+  readonly onExclusion: (command: ExclusionCommand, limitVC?: number) => void;
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -35,6 +36,16 @@ export function SelfExclusionPanel({ view, onExclusion }: Props) {
         <span title="Bonus, der beim Einhalten fällig wird – kein Casino-Gewinn.">BONUS-GUTHABEN <b>{vc(view.playerCash, 2)}</b></span>
         <span>PAKT <b>{pact ? STATUS_LABEL[pact.status] ?? pact.status : 'keiner'}</b></span>
       </div>
+      {view.playerCash > 0 && (
+        <button
+          type="button"
+          className="btn small"
+          onClick={() => onExclusion('CASH_OUT')}
+          title="Zahlt das Disziplin-Bonus-Guthaben ins Portemonnaie aus – kein Casino-Gewinn."
+        >
+          BONUS AUSZAHLEN · {vc(view.playerCash, 2)}
+        </button>
+      )}
       {pact && running ? (
         <div className="exclusion-pact">
           <p>

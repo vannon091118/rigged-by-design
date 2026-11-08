@@ -3,7 +3,7 @@ import type { Ledger } from '../core/economy/ledger';
 import { fromVC } from '../core/economy/vacoin';
 import { deployGate, type GateResult } from '../core/games/plinko-sandbox';
 import { normalizePlinkoConfig, plinkoProgress, type PlinkoConfig, type PlinkoMode } from '../core/games/plinko-config';
-import { honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
+import { cashOutPlayerCash, honorExclusionPact, startExclusionPact } from '../core/sim/self-exclusion-bet';
 import { testSpin } from '../core/sim/actions';
 import type { WorldState } from '../core/sim/types';
 
@@ -30,7 +30,10 @@ export function setPlinkoModeCmd(world: WorldState, mode: PlinkoMode): string {
   return `Plinko-Modus: ${mode}.`;
 }
 
-export function exclusionCmd(world: WorldState, ledger: Ledger, command: 'START' | 'HONOR', limitVC: number): string {
+export type ExclusionCommand = 'START' | 'HONOR' | 'CASH_OUT';
+
+export function exclusionCmd(world: WorldState, ledger: Ledger, command: ExclusionCommand, limitVC: number): string {
+  if (command === 'CASH_OUT') return cashOutPlayerCash(world, ledger, world.tick).notice;
   const result = command === 'START'
     ? startExclusionPact(world, ledger, fromVC(limitVC), world.tick)
     : honorExclusionPact(world, ledger, world.tick);

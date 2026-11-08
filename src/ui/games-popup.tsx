@@ -7,6 +7,7 @@ import type { DiceBetKind } from '../core/games/dice-bets';
 import type { ShellRound } from '../core/games/shell-round';
 import type { RiskColor, RiskOutcome } from '../core/games/risk-card';
 import type { CardDeal } from '../store/foreign-play';
+import type { ExclusionCommand } from '../store/game-commands';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { TICK_MS } from '../core/sim/tick-timing';
@@ -30,7 +31,7 @@ interface Props {
   readonly onSettleCard: (rivalId: RivalId, machineIndex: number, stakeVC: number, engineBps: number, label: string) => GameResult | null;
   /** Bucht einen weiteren Einsatz (Double, Split, Versicherung) und meldet Erfolg. */
   readonly onAdditionalBet: (additionalVC: number) => boolean;
-  readonly onExclusion: (command: 'START' | 'HONOR', limitVC?: number) => void;
+  readonly onExclusion: (command: ExclusionCommand, limitVC?: number) => void;
   readonly initialRivalId?: RivalId;
 }
 
