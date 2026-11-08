@@ -9,7 +9,8 @@
     "memory": "Erinnerungssatz aus einer früheren Begebenheit.",
     "rumor": "Gerücht oder Warnung aus dem Haus.",
     "documentation": "Dokumentation eines technischen Narrativ-Bausteins.",
-    "city-scene": "Text aus der Stadt: Kiez, Markt, Wege und die zwei Progression-Zweige."
+    "city-scene": "Text aus der Stadt: Kiez, Markt, Wege und die zwei Progression-Zweige.",
+    "city-night": "Nacht- und Tagesabschluss der Stadt: Ruhe, Rueckweg, naechster Morgen."
   },
   "functions": {
     "establish": "Führt Figuren, Ort oder Ausgangslage ein.",
@@ -56,6 +57,11 @@
       "react",
       "warn",
       "remember"
+    ],
+    "city-night": [
+      "describe",
+      "remember",
+      "warn"
     ]
   },
   "composerSlots": {
@@ -77,7 +83,8 @@
     "memory",
     "rumor",
     "documentation",
-    "city-scene"
+    "city-scene",
+    "city-night"
   ],
   "contexts": {
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",

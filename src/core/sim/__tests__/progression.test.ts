@@ -12,7 +12,7 @@ import { economyOf } from '../economics';
 import { companyStatus, companyTier, isUnlocked, requiredTier } from '../progression';
 import { remodel, remodelRequirements } from '../remodel';
 import { createWorld, ensureStarter } from '../templates';
-import { CITY_ENERGY_PER_DAY, CITY_SLOT, cityOf, cityText, cityView, marketUnlocked, restInCity, runCityAction, travel } from '../city';
+import { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, cityView, marketUnlocked, restInCity, runCityAction, travel } from '../city';
 import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
 import { HAUSKONTO, payOut, placeBet, SHOP } from '../money';
 import type { WorldState } from '../types';
@@ -181,7 +181,6 @@ describe('Stadt: Kiez und Markt als Progression', () => {
     travel(world, 'KIEZ');
     return world;
   };
-  /** Spielt einen Zweig bis zur Punktzahl; Energie kommt ueber den Tag zurueck. */
   const spielen = (world: WorldState, actionId: string, ziel: number): void => {
     const zweig = actionId.startsWith('KIEZ') ? 'KIEZ' : 'MARKT';
     while (cityOf(world)[zweig] < ziel) {
@@ -205,7 +204,10 @@ describe('Stadt: Kiez und Markt als Progression', () => {
     restInCity(world);
     expect(world.day).toBe(tag + 1);
     expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY);
-    expect(texte).toContain(cityOf(world).lastText);
+    const nacht = NARRATIVE_REGISTRY.filter((fragment) => fragment.slot === NIGHT_SLOT).map((fragment) => fragment.text);
+    expect(nacht.length).toBeGreaterThanOrEqual(50);
+    expect(nacht).toContain(cityOf(world).lastText);
+    expect(cityNightText('rest|4|KIEZ')).toBe(cityNightText('rest|4|KIEZ'));
   });
 
   it('sperrt den Markt bis zum Kiez-Rang Stammgast und schaltet ihn dann frei', () => {
@@ -220,7 +222,6 @@ describe('Stadt: Kiez und Markt als Progression', () => {
     expect(marketUnlocked(cityOf(world))).toBe(true);
     expect(travel(world, 'MARKT').location).toBe('MARKT');
   });
-
   it('schliesst beide Zweige ab und behaelt den Abschluss', () => {
     const world = imKiez();
     spielen(world, 'KIEZ_ANSPRECHEN', 15);
@@ -230,7 +231,6 @@ describe('Stadt: Kiez und Markt als Progression', () => {
     expect(cityOf(world).completed).toEqual(['KIEZ', 'MARKT']);
     expect(cityView(world).branches.every((branch) => branch.done)).toBe(true);
   });
-
   it('waehlt denselben Text fuer denselben Ort, dieselbe Handlung und denselben Tick', () => {
     const a = imKiez();
     const b = imKiez();

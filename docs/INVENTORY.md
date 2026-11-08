@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.183 | 2026-11-08 01:26 UTC -->
+<!-- rbd-doc: v0.3.183 | 2026-11-08 01:33 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -520,10 +520,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 1829 |
-| Gelistete Dateien | 1829 |
+| Getrackte Dateien | 1881 |
+| Gelistete Dateien | 1881 |
 | Getrackte Ordner | 92 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (12), content (472), docs (77), public (554), scripts (91), src (598) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (12), content (524), docs (77), public (554), scripts (91), src (598) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -536,7 +536,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 10 Datei(en)
-- `content/narrative/contributions/` — 468 Datei(en)
+- `content/narrative/contributions/` — 520 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -653,7 +653,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 75 Zeilen
@@ -1058,6 +1058,58 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-07-pool-rumor-48.json` — {"agentId":"buffy","turnId":"2026-11-07T23:48Z-pool-rumor-48","contributionId":"pool-rumor-48","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-rumor-49.json` — {"agentId":"buffy","turnId":"2026-11-07T23:49Z-pool-rumor-49","contributionId":"pool-rumor-49","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-07-pool-rumor-50.json` — {"agentId":"buffy","turnId":"2026-11-07T23:50Z-pool-rumor-50","contributionId":"pool-rumor-50","role":"BEOBACH — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-04.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-05.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-06.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-07.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-08.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-09.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-10.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-11.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-12.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-13.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-14.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-15.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-16.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-17.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-18.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-19.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-20.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-21.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-22.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-23.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-24.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-25.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-26.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-27.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-28.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-29.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-30.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-31.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-32.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-33.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-34.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-35.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-36.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-37.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-38.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-39.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-40.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-41.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-42.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-43.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-44.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-45.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-46.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-47.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-48.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-49.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-50.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-51.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-08-city-night-52.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-city-scene-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-city-scene-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-08-city-scene-03.json` — { — gelesen: 21 Zeilen
@@ -1126,9 +1178,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-pool-reaction-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-reaction-52","contributionId":"pool-reaction-52","role":"B — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-51.json` — {"agentId":"buffy","turnId":"2026-11-08T00:10Z-pool-rumor-51","contributionId":"pool-rumor-51","role":"BEOBACH — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-pool-rumor-52.json` — {"agentId":"buffy","turnId":"2026-11-08T00:20Z-pool-rumor-52","contributionId":"pool-rumor-52","role":"BEOBACH — gelesen: 1 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 10429 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 1877 Zeilen
-- `content/narrative/vocabulary/classification.json` — { — gelesen: 165 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 11573 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2085 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 172 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 983 Zeilen
@@ -2084,8 +2136,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 53 Zeilen
-- `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 92 Zeilen
-- `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 107 Zeilen
+- `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 93 Zeilen
+- `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 121 Zeilen
 - `src/core/sim/city-types.ts` — Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik - — gelesen: 72 Zeilen
 - `src/core/sim/city.ts` — Stadt: der erste Vertical Slice ausserhalb des eigenen Floors. — gelesen: 91 Zeilen
 - `src/core/sim/day-phase.ts` — Tageszeit der Buehne: rein aus dem Tick abgeleitet, nie aus der Uhr. — gelesen: 14 Zeilen
@@ -2139,7 +2191,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 122 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 135 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

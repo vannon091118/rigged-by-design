@@ -8,6 +8,8 @@ import type { ActionDef, CityBranchId, CityLocationId, CityState } from './city-
 
 /** Der Pool, aus dem jede Stadt-Handlung ihren Text zieht. */
 export const CITY_SLOT = 'city-scene';
+/** Eigener Pool fuer den Tagesabschluss: Ruhe klingt anders als Handel. */
+export const NIGHT_SLOT = 'city-night';
 /** Energie je Tag: die einzige Bremse des Loops, nachts vollstaendig zurueck. */
 export const CITY_ENERGY_PER_DAY = 6;
 
@@ -66,6 +68,18 @@ const CITY_TEXTS: readonly string[] = NARRATIVE_REGISTRY
 export function cityText(key: string): string {
   if (CITY_TEXTS.length === 0) throw new Error(`Pool ${CITY_SLOT} ist leer; die Stadt braucht ihre Texte.`);
   return CITY_TEXTS[fnv(key) % CITY_TEXTS.length]!;
+}
+
+/** Texte des Nacht-Pools, ebenfalls stabil sortiert. */
+const NIGHT_TEXTS: readonly string[] = NARRATIVE_REGISTRY
+  .filter((fragment) => fragment.slot === NIGHT_SLOT)
+  .map((fragment) => fragment.text)
+  .sort();
+
+/** Text fuer den Tagesabschluss; eigener Pool, damit der Loop nicht wiederholt. */
+export function cityNightText(key: string): string {
+  if (NIGHT_TEXTS.length === 0) throw new Error(`Pool ${NIGHT_SLOT} ist leer; der Tagesabschluss braucht Text.`);
+  return NIGHT_TEXTS[fnv(key) % NIGHT_TEXTS.length]!;
 }
 
 /**

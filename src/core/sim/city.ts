@@ -28,7 +28,7 @@ import {
 import { actionViews } from './city-actions';
 
 export type { CityActionView, CityBranchId, CityBranchView, CityLocationId, CityState, CityView } from './city-types';
-export { CITY_ENERGY_PER_DAY, CITY_SLOT, cityOf, cityText, marketUnlocked, tierOf } from './city-model';
+export { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, marketUnlocked, tierOf } from './city-model';
 export { restInCity, runCityAction } from './city-actions';
 
 /** Reisen: setzt den Ort, zaehlt den Besuch und meldet den Wechsel im Log. */

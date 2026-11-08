@@ -6,6 +6,7 @@ import {
   CITY_ENERGY_PER_DAY,
   MARKET_UNLOCK_AT,
   cityOf,
+  cityNightText,
   cityText,
   clampEnergy,
   finalTier,
@@ -60,7 +61,7 @@ export function restInCity(world: WorldState): CityState {
     ...state,
     energyDay: world.day,
     energy: CITY_ENERGY_PER_DAY,
-    lastText: cityText(`rest|${world.day}|${state.location}`),
+    lastText: cityNightText(`rest|${world.day}|${state.location}`),
     lastResult: `Tag ${world.day}: neue Energie, die Stadt wartet schon.`,
   };
   world.city = next;
