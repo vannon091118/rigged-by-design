@@ -3,8 +3,11 @@
  *
  * Die Pools sind die Slots des kontrollierten Vokabulars. Jeder Pool muss die
  * Mindestgroesse erreichen; das Gesamtziel 1500 ist Fortschritt, kein Freischein.
- * Neue Bausteine duerfen nur in Pools unter der Mindestgroesse wandern, damit
- * Content Luecken schliesst statt den groessten Pool weiter zu fuellen.
+ * Solange ein Pool unter der Mindestgroesse liegt, fuellen neue Bausteine nur
+ * dort - so schliesst Content Luecken, statt den groessten Pool weiter zu
+ * fuellen. Sind alle Pools mindestens voll, darf jeder Pool wachsen; sonst
+ * blockierte die erreichte Mindestgroesse jeden weiteren Commit und das Ziel
+ * 1500 waere unerreichbar.
  */
 
 /** Mindestgroesse je Pool (Slot). */
@@ -87,8 +90,8 @@ export function poolIssues({ counts, slots, total, duplicates }, minimum = POOL_
 
 /**
  * Luecken-Regel fuer einen Commit: neue Beitraege muessen in Pools liegen, die
- * vor dem Commit unter der Mindestgroesse waren. `before` ist der Stand ohne
- * die neuen Beitraege, `added` sind deren Slots.
+ * vor dem Commit unter der Mindestgroesse waren, solange es solche Pools gibt.
+ * `before` ist der Stand ohne die neuen Beitraege, `added` sind deren Slots.
  */
 export function gapIssues({ before, added, minimum = POOL_MINIMUM }) {
   const issues = [];
@@ -96,11 +99,26 @@ export function gapIssues({ before, added, minimum = POOL_MINIMUM }) {
     issues.push('Kein neuer Textbaustein im Commit; jeder Commit braucht mindestens einen verdrahteten Baustein');
     return issues;
   }
+  const gaps = Object.entries(before).filter(([, count]) => count < minimum).map(([slot]) => slot);
   for (const entry of added) {
-    const prior = before[entry.slot] ?? 0;
-    if (prior >= minimum) {
-      issues.push(`Beitrag ${entry.contributionId} fuellt ${entry.slot} (${prior}/${minimum}) statt einer Luecke`);
+    if (gaps.length > 0 && !gaps.includes(entry.slot)) {
+      issues.push(`Beitrag ${entry.contributionId} geht in ${entry.slot}; offen sind ${gaps.join(', ')}`);
     }
+  }
+  return issues;
+}
+
+/**
+ * Schrumpf-Schutz: kein Commit darf Bausteine entfernen oder einen Pool
+ * verkleinern. `deleted` sind geloeschte Beitragspfade, `before`/`after` die
+ * Zaehlungen je Slot vor und nach dem Commit.
+ */
+export function shrinkIssues({ deleted = [], before, after }) {
+  const issues = [];
+  for (const path of deleted) issues.push(`Beitrag geloescht: ${path}; der Pool darf nicht schrumpfen`);
+  for (const slot of Object.keys(before ?? {})) {
+    const now = after?.[slot] ?? 0;
+    if (now < (before[slot] ?? 0)) issues.push(`Pool ${slot}: ${now} nach ${before[slot]} - Pools duerfen nicht schrumpfen`);
   }
   return issues;
 }

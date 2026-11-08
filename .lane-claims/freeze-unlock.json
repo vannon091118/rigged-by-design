@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "base": "9a1a1ff82820a56ee987ff684781e23f468357ea",
+  "base": "adbb43aadf1837dfd2fb5384d74e999accf6dc50",
   "paths": [
-    ".lane-claims/claims/lane-governance-claim-tooling.json",
-    ".lane-claims/claims/lane-governance-freeze.json",
-    "scripts/lib/governance-freeze.mjs",
-    "scripts/lib/lane-claims.mjs",
-    "scripts/verify-lane-claims.mjs"
+    ".githooks/commit-msg",
+    "docs/CI.md",
+    "scripts/lib/narrative-blocks.mjs",
+    "scripts/lib/pipeline-plan.mjs",
+    "scripts/verify-narrative-blocks.mjs"
   ],
-  "token": "0e8355d94b84dbb5a71f7f008d7685a42561fd878f65eefab356035eb5ede562",
+  "token": "4214ac69a47847b984e693f1155187fb67d16be146162afc629ea87eb4a273f3",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
