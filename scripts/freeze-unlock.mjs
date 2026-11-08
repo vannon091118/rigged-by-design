@@ -1,0 +1,75 @@
+#!/usr/bin/env node
+/**
+ * Freigabe des Governance-Freeze.
+ *
+ * Aufruf:
+ *   node scripts/freeze-unlock.mjs --pin=<pin> [--base=<sha>] [--json]
+ *   RBD_FREEZE_PIN=<pin> node scripts/freeze-unlock.mjs
+ *
+ * Der PIN wird nur verglichen (scrypt) und nie gespeichert. Die Freigabe-Datei
+ * `.freeze-unlock.json` enthaelt Basis, Pfadliste und einen Token; CI kann sie
+ * ohne PIN pruefen. Sie gilt genau fuer diese Basis und diese Pfade, also fuer
+ * einen Commit - nicht fuer die naechste Governance-Aenderung.
+ *
+ * Ohne Freigabe bleibt der Freeze zu: der Pre-Commit-Hook laesst den Commit
+ * nicht durch, und die CI entfernt einen Branch mit Governance-Aenderung ohne
+ * Freigabe (`Verdacht auf unautorisierte Korruption`).
+ */
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+import { FREEZE, FREEZE_UNLOCK_FILE, governanceChanges, isMarkerLine, pinMatches, unlockRecord } from './lib/governance-freeze.mjs';
+import { ROOT } from './lib/report.mjs';
+
+const argv = process.argv.slice(2);
+const arg = (name) => {
+  const hit = argv.find((value) => value.startsWith(`--${name}=`));
+  if (hit) return hit.slice(name.length + 3);
+  const index = argv.indexOf(`--${name}`);
+  const next = index >= 0 ? argv[index + 1] : undefined;
+  return next && !next.startsWith('--') ? next : undefined;
+};
+
+const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
+const pin = arg('pin') ?? process.env.RBD_FREEZE_PIN ?? '';
+if (!pin) {
+  console.error('freeze-unlock: PIN fehlt. Aufruf: node scripts/freeze-unlock.mjs --pin=<pin>');
+  process.exit(1);
+}
+if (!pinMatches(pin)) {
+  console.error(`freeze-unlock: PIN falsch. Der Freeze bleibt aktiv (${FREEZE.errorLevel ?? FREEZE.errorCode}).`);
+  process.exit(1);
+}
+
+const base = arg('base') ?? git(['rev-parse', 'HEAD']);
+const staged = git(['diff', '--cached', '--name-only', '--diff-filter=ACMR'])
+  .split(/\r?\n/)
+  .filter(Boolean);
+const onlyMarkers = (file) => {
+  let diff;
+  try {
+    diff = git(['diff', '--cached', '--unified=0', '--', file]);
+  } catch {
+    return false;
+  }
+  const lines = diff
+    .split(/\r?\n/)
+    .filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line));
+  return lines.length === 0 || lines.every(isMarkerLine);
+};
+const paths = governanceChanges(staged).filter((file) => !onlyMarkers(file));
+
+if (paths.length === 0) {
+  console.error('freeze-unlock: keine inhaltliche Governance-Aenderung gestaged; keine Freigabe noetig.');
+  process.exit(1);
+}
+
+const record = unlockRecord({ base, paths });
+writeFileSync(`${ROOT}/${FREEZE_UNLOCK_FILE}`, `${JSON.stringify(record, null, 2)}\n`);
+if (arg('json') !== undefined) {
+  process.stdout.write(`${JSON.stringify(record)}\n`);
+} else {
+  console.log(`freeze-unlock: Freigabe geschrieben (Basis ${base.slice(0, 7)}, ${paths.length} Pfad(e)).`);
+  console.log('  Datei stagen: git add .freeze-unlock.json');
+  console.log(`  Gilt nur fuer diese Basis. Meilenstein: ${FREEZE.milestone}.`);
+}

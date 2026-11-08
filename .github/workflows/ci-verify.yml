@@ -31,6 +31,11 @@ jobs:
     name: Plan
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    # Der Freeze-Schritt entfernt bei einem Governance-Verstoss den Lane-Branch.
+    # Deshalb braucht genau dieser Job Schreibrecht; alle Gates bleiben lesend.
+    permissions:
+      contents: write
+      pull-requests: read
     outputs:
       # Die Basis-Kontrollebene kann vor diesem Merge noch ohne die neuen
       # Metadaten laufen; `compat` fuellt sie aus Matrix und Ereignis.
@@ -45,6 +50,7 @@ jobs:
       long_count: ${{ steps.gates.outputs.long_count || '0' }}
       long_matrix: ${{ steps.gates.outputs.long_matrix || '{"include":[{"file":""}]}' }}
       long_tests: ${{ steps.gates.outputs.long_tests || '' }}
+      freeze: ${{ steps.freeze.outputs.violation || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -99,6 +105,38 @@ jobs:
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
           echo "noop=$noop" >> "$GITHUB_OUTPUT"
           echo "independent=$independent" >> "$GITHUB_OUTPUT"
+
+      # Governance-Freeze: die Steuerungsebene ist bis zum Spiel-Meilenstein
+      # gesperrt. Der Schritt laeuft vor allem anderen, damit eine Governance-
+      # Aenderung ohne PIN-Freigabe sofort rot wird statt nach 30 Minuten Gates.
+      # Kennt die Basis-Kontrollebene den Freeze noch nicht, bleibt er inert
+      # (Bootstrap dieses Commits). Ein Verstoss entfernt den Lane-Branch:
+      # Governance ohne Freigabe ist Korruption, kein normaler roter Lauf.
+      - name: Governance-Freeze
+        id: freeze
+        env:
+          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
+          FREEZE_BASE: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
+          FREEZE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" ]; then
+            echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
+            echo "violation=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if node "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" --ci \
+            --base="$FREEZE_BASE" --head="$FREEZE_HEAD" --github-output="$GITHUB_OUTPUT"; then
+            exit 0
+          fi
+          echo "violation=corruption" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Verdacht auf unautorisierte Korruption: Governance ohne Freigabe geaendert. Branch $GITHUB_REF_NAME wird entfernt."
+            gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$GITHUB_REF_NAME" || \
+              echo "::warning::Branch konnte nicht entfernt werden; der Verstoss bleibt rot."
+          fi
+          exit 1
 
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
       - name: pnpm installieren
