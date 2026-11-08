@@ -1,0 +1,17 @@
+{
+  "id": "lane/governance/claim-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-closeout",
+  "baseSha": "63e624ca97000f75f4ebc3e60a911b02385f419f",
+  "task": "Claim-Register nach dem Merge schliessen",
+  "goal": "Kein offener Claim mit gemergtem Branch im Register; die naechste Lane startet ohne Kollision.",
+  "pathAllowlist": [
+    ".lane-claims/**",
+    "docs/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "63e624ca97000f75f4ebc3e60a911b02385f419f"
+}
