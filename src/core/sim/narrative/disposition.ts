@@ -16,6 +16,7 @@
  * weiter `memoryEffect()` als duenne Fassade ueber `scoreMemories()`).
  */
 import { getPersona } from '../personas';
+import { rumorAbout } from './knowledge';
 import type { Guest, PersonaId, Visitor, WorldState } from '../types';
 import { NARRATIVE_LIMITS, type RelationshipEdge, type VisitorMemory } from './types';
 
@@ -121,5 +122,13 @@ export function dispositionOfGuest(world: WorldState, guest: Guest): VisitorDisp
   if (guest.visitorId === undefined) return NEUTRAL_DISPOSITION;
   const visitor = world.visitors.find((entry) => entry.id === guest.visitorId);
   if (!visitor) return NEUTRAL_DISPOSITION;
-  return visitorDisposition(visitor, world.narrative.relationships);
+  const base = visitorDisposition(visitor, world.narrative.relationships);
+  // Gehoertes verschiebt die Service-Schwelle begrenzt: guter Ruf oeffnet die Bar,
+  // schlechter Ruf haelt Gaeste davon ab. Ohne Wissen bleibt alles wie bisher.
+  const rumor = rumorAbout(world, `visitor:${visitor.id}`);
+  if (rumor === 0) return base;
+  return {
+    ...base,
+    serviceBias: Math.round(clamp(base.serviceBias + rumor * 4, -THRESHOLD_CAP, THRESHOLD_CAP)),
+  };
 }

@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/knowledge-chain",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/knowledge-chain",
+  "baseSha": "1b243540f6934eaec60f63732cd888e69b48c67a",
+  "task": "NPC-Wissenskette mit Provenance und Distanzverlust",
+  "goal": "NPCs berichten nur Erlebtes/Gelesenes/Gesehenes/Gehoertes, gewichten Quellen ueber Beziehungsdaten, verlieren und verdrehen Information seedfest mit steigender Distanz und speisen das Geruecht in die Einfluss-Matrix; Register, Roadmap P-23 und Fortschrittszahl sind nachgezogen.",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "1b243540f6934eaec60f63732cd888e69b48c67a"
+}
