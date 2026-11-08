@@ -9,7 +9,9 @@
     "src/",
     "content/",
     ".lane-claims/claims/lane-city-vertical-slice.json",
-    ".lane-claims/freeze-unlock.json"
+    "scripts/lib/governance-freeze.mjs",
+    "scripts/lib/lane-claims.mjs",
+    "scripts/verify-lane-claims.mjs"
   ],
   "contracts": [],
   "dependencies": [],

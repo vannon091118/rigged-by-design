@@ -2,8 +2,11 @@
   "version": 1,
   "base": "9a1a1ff82820a56ee987ff684781e23f468357ea",
   "paths": [
-    ".lane-claims/claims/lane-city-vertical-slice.json"
+    ".lane-claims/claims/lane-city-vertical-slice.json",
+    "scripts/lib/governance-freeze.mjs",
+    "scripts/lib/lane-claims.mjs",
+    "scripts/verify-lane-claims.mjs"
   ],
-  "token": "94c681540c58bfc6bb37b56d681f626215fb5a6a2907a286b20a576bff4cb70d",
+  "token": "69838342b291463555f85d2a4031448ceca0c6c68355c3731ecb97ab954000ac",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
