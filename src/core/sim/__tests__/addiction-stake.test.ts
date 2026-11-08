@@ -51,6 +51,8 @@ describe('Sucht steuert Einsatz und Sitzung', () => {
 
   it('skaliert den Einsatz mit Persona-Budget, aber hoechstens bis zum Dreifachen', () => {
     const world = createWorld('SMALL');
+    // Ruf 50 = neutrale Neigung; die Ruf-Wirkung prueft reputation-slot-use.test.ts.
+    world.reputation = 50;
     const item = { ...slotFor(world), baseBet: fromVC(2) };
     expect(personaStake(world, item, guestFor('STREET'), fromVC(100))).toBe(fromVC(2));
     expect(personaStake(world, item, guestFor('BUSINESS'), fromVC(100))).toBe(fromVC(4.4));
@@ -59,6 +61,7 @@ describe('Sucht steuert Einsatz und Sitzung', () => {
 
   it('nimmt nie mehr als der Gast besitzt und laesst ihn unter dem Mindesteinsatz gehen', () => {
     const world = createWorld('SMALL');
+    world.reputation = 50;
     const item = { ...slotFor(world), baseBet: fromVC(2) };
     expect(personaStake(world, item, guestFor('HIGH_ROLLER'), fromVC(3))).toBe(fromVC(2));
     expect(personaStake(world, item, guestFor('HIGH_ROLLER'), fromVC(1))).toBe(0);

@@ -6,6 +6,7 @@ import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
 import { dispositionOfGuest, type VisitorDisposition } from './narrative/disposition';
+import { voiceLine } from './narrative/guest-voice';
 import { refreshNeeds } from './needs';
 import { guestAccount } from './money';
 import { offerScore } from './offers';
@@ -20,10 +21,10 @@ export function startActivity(world: WorldState, guest: Guest, item: Furniture):
   guest.targetFurniture = item.id;
   guest.targetZone = item.zoneId;
   guest.state = item.kind === 'BAR' ? 'DRINK' : item.kind === 'TOILET' ? 'TOILET' : item.kind === 'DECOR' ? 'WAIT' : 'PLAY';
-  guest.intent = item.kind === 'BAR' ? 'Durst und Laune: geht zur Bar.'
+  guest.intent = voiceLine(world, guest, item.kind === 'BAR' ? 'Durst und Laune: geht zur Bar.'
     : item.kind === 'TOILET' ? 'Blase voll oder Laune im Keller: geht zum WC.'
       : item.kind === 'DECOR' ? 'Sucht Gesellschaft und einen ruhigen Platz.'
-        : `Spielt ${item.label}: Angebot passt zu Persona und Budget.`;
+        : `Spielt ${item.label}: Angebot passt zu Persona und Budget.`);
   guest.stateTicks = 0;
   if (item.gameId) {
     guest.mood = clamp(guest.mood + 2);
@@ -43,7 +44,7 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   const lounge = world.zones.find((zone) => zone.kind === 'LOUNGE') ?? world.zones.find((zone) => zone.kind === 'ENTRANCE');
   guest.state = 'WAIT';
   guest.stateTicks = 0;
-  guest.intent = 'Kein freier Platz: wartet und verliert Geduld.';
+  guest.intent = voiceLine(world, guest, 'Kein freier Platz: wartet und verliert Geduld.');
   guest.targetFurniture = 0;
   // Warten ist eine Entscheidung: es kostet Geduld, aber es soll sich lohnen koennen.
   guest.patience = Math.max(0, guest.patience - 1.5);

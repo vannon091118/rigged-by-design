@@ -8,7 +8,10 @@
     "reaction": "Reaktion auf einen unmittelbar vorausgegangenen Vorgang.",
     "memory": "Erinnerungssatz aus einer früheren Begebenheit.",
     "rumor": "Gerücht oder Warnung aus dem Haus.",
-    "documentation": "Dokumentation eines technischen Narrativ-Bausteins."
+    "documentation": "Dokumentation eines technischen Narrativ-Bausteins.",
+    "guest-voice-low": "Gaststimme im Haus mit niedrigem Ruf: Distanz, Verlust, Unmut.",
+    "guest-voice-mid": "Gaststimme im Haus mit mittlerem Ruf: Alltag, Bedienung, kein Drama.",
+    "guest-voice-high": "Gaststimme im Haus mit hohem Ruf: Wiederkehr, Vertrauen, Empfehlung."
   },
   "functions": {
     "establish": "Führt Figuren, Ort oder Ausgangslage ein.",
@@ -27,7 +30,10 @@
     "reaction": ["react", "warn"],
     "memory": ["remember"],
     "rumor": ["warn"],
-    "documentation": ["document"]
+    "documentation": ["document"],
+    "guest-voice-low": ["react", "warn"],
+    "guest-voice-mid": ["react"],
+    "guest-voice-high": ["react"]
   },
   "composerSlots": {
     "TITLE": ["opening"],
@@ -35,7 +41,7 @@
     "CHOICE_LABEL": ["choice-preview"],
     "OUTCOME": ["reaction"]
   },
-  "nonComposableSlots": ["memory", "rumor", "documentation"],
+  "nonComposableSlots": ["memory", "rumor", "documentation", "guest-voice-low", "guest-voice-mid", "guest-voice-high"],
   "contexts": {
     "start": "Neuer Lauf, Start-Pool oder erste Begegnung.",
     "return": "Wiederkehr eines persistenten Besuchers.",
