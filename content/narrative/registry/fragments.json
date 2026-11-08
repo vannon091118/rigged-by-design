@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2747baeb0491d95c831abb3de3bd34d2e1d7980983f71ffa5e195121f154e71c",
+  "contentHash": "sha256:e098b7cc9646a082e72e807a7b538f95540ab9044866bb1d1d747f802a9f5bac",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3911,6 +3911,28 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "player-cash-closeout-01",
+      "turnId": "2026-11-08T23:05Z-player-cash-closeout-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast hat seinen Bonus am Pult abgeholt und gibt ihn jetzt an der Bar aus; an den Walzen hat er heute nichts mehr verloren.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-player-cash-closeout-01.json"
     },
     {
       "contributionId": "pool-choice-preview-09",

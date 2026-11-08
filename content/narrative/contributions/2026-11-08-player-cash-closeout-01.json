@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T23:05Z-player-cash-closeout-01",
+  "contributionId": "player-cash-closeout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Gast hat seinen Bonus am Pult abgeholt und gibt ihn jetzt an der Bar aus; an den Walzen hat er heute nichts mehr verloren.",
+  "directives": []
+}

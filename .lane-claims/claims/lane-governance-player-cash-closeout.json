@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/player-cash-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/player-cash-closeout",
+  "baseSha": "0f5f2a8f0daaf2bfa9ac09d19894a916c5279390",
+  "task": "P-3-Governance-Nachzug: Roadmap-Status und fehlenden Narrative-Baustein nachziehen",
+  "goal": "P-3 als erledigt mit Merge-Beleg fuehren und den Baustein regelkonform verdrahten",
+  "pathAllowlist": [
+    "docs/ROADMAP.md",
+    "content/narrative/contributions/2026-11-08-player-cash-closeout-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-player-cash-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "0f5f2a8f0daaf2bfa9ac09d19894a916c5279390"
+}
