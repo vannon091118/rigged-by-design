@@ -51,7 +51,8 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     app.current = instance;
     void instance.init({
       resizeTo: element,
-      antialias: true,
+      // Pixel-Art bleibt hartkantig; Texturen laden ohnehin mit Nearest-Sampling.
+      antialias: false,
       background: 0x07040f,
       resolution: Math.min(PERF_TIERS.high.dpr, window.devicePixelRatio || 1),
       autoDensity: true,
