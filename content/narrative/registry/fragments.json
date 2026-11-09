@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:aeefcfc6c4e845c2909fa6a7765b373d753dae3c2643e7e01413a8f2bf7133f8",
+  "contentHash": "sha256:c0a4f5c79cdbaf695bf75587ce9daf364a4bf40549779cd162bbe6168495b6ac",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18177,6 +18177,28 @@
       "text": "Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-warm-return-titel.json"
+    },
+    {
+      "contributionId": "welt-treffer-01",
+      "turnId": "2026-11-09T19:55Z-welt-treffer-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Endlich trifft der Finger den Automaten, den man meint, und nicht den daneben. So etwas merkt man erst, wenn es aufhört, schiefzugehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-welt-treffer-01.json"
     }
   ]
 }

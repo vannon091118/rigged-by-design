@@ -2,8 +2,8 @@
  * Raumausstattung ueber dem Bodenbelag: das, was einen Raum wiedererkennbar macht,
  * ohne Laufwege zu blockieren. Alles statisch und an die Zone gebunden.
  */
-import { Sprite, type Container, type Graphics } from 'pixi.js';
-import { LIGHT, ROLE, type FloorMaterial, type LightState } from './art-tokens';
+import { Graphics, Sprite, type Container } from 'pixi.js';
+import { LIGHT, ROLE, SHADOW, WORLD_FLATTEN, type FloorMaterial, type LightState } from './art-tokens';
 import { textureFor } from './assets/textures';
 
 interface Rect { x: number; y: number; w: number; h: number }
@@ -39,13 +39,19 @@ function placeDressing(deco: Container | undefined, rect: Rect, kind: string): v
   for (const [key, fx, fy, w, h] of DRESSING[kind] ?? []) {
     const texture = textureFor(key);
     if (!texture) continue;
+    const x = rect.x + rect.w * fx;
+    const y = rect.y + rect.h * fy;
+    // Fussanker statt Mitte: die Requisite steht auf dem Boden, sie schwebt nicht
+    // ueber der Kachel. Der Schatten liegt als eigene Flaeche darunter.
+    const shadow = new Graphics();
+    shadow.ellipse(x, y, w * 0.4, Math.max(2, h * 0.11)).fill({ color: 0x000000, alpha: SHADOW.base * 0.7 });
     const sprite = new Sprite(texture);
-    sprite.anchor.set(0.5, 0.5);
+    sprite.anchor.set(0.5, 1);
     sprite.width = w;
-    sprite.height = h;
-    sprite.position.set(rect.x + rect.w * fx, rect.y + rect.h * fy);
+    sprite.height = h * WORLD_FLATTEN;
+    sprite.position.set(x, y);
     sprite.alpha = 0.94;
-    deco.addChild(sprite);
+    deco.addChild(shadow, sprite);
   }
 }
 

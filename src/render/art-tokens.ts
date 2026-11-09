@@ -35,6 +35,13 @@ export const LIGHT = {
 
 export const SHADOW = { soft: 0.16, base: 0.3, deep: 0.46 } as const;
 
+/**
+ * Perspektive des Bodens: die Welt ist von oben gezeichnet, gespielt wird in
+ * Dreiviertel. Objekte werden um diesen Faktor flacher, ihr Fussanker bleibt
+ * liegen — deshalb wirken sie gestellt statt aufgeklebt.
+ */
+export const WORLD_FLATTEN = 0.85;
+
 /** Laeufer zwischen den Raeumen: dunkler Wein, damit Wege ruhig bleiben und nicht leuchten. */
 export const RUNNER = { fill: 0x3d1830, edge: 0x8a4368, glow: 0xffd9a0 } as const;
 

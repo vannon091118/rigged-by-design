@@ -12,7 +12,7 @@ import { createGuestArt, type GuestArt } from './guest-art';
 import { primeGuestShadow } from './guest-parts';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { handleTap, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
+import { handleTap, screenAnchorOf, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
@@ -61,7 +61,9 @@ export class FloorView {
     this.#events = new FloorEvents(this.#fx, () => this.#view);
     this.#rig.root.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
       this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
-    this.#rig.root.on('pointerdown', (event) => this.#act(event.button, event.getLocalPosition(this.#rig.root)));
+    // Kein zweiter Eingabepfad: Maus und Finger laufen ueber FloorTouch und
+    // landen genau einmal in #act. Vorher feuerte ein Linksklick zweimal
+    // (pointerdown + Tap), also zwei Aktionskarten und zwei Popups.
     app.stage.addChild(this.#rig.root);
     this.#touch = new FloorTouch(app, this.#rig.root, this.#rig.cam, () => this.#view.size, (clientX, clientY) => {
       const local = screenPoint(clientX, clientY, this.#app, this.#rig.root);
@@ -170,8 +172,17 @@ export class FloorView {
 
   #act(button: number, point: { x: number; y: number }): void {
     if (this.#destroyed) return;
-    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, this.#callbacks, this.#placing, this.#rig.lod,
-      (x, y) => { const area = areaAt(this.#view.template, x, y); if (area) this.#rig.cam.zoomToArea(area, this.#view.size); });
+    // Der Treffer wird hier in Viewport-Pixel uebersetzt: React haengt seine
+    // Karte an das Objekt, nicht in eine Ecke.
+    const anchor = screenAnchorOf(point, this.#app, this.#rig.root);
+    const callbacks: FloorCallbacks = {
+      onGuest: (id, at) => this.#callbacks.onGuest(id, at),
+      onFurniture: (id, at) => this.#callbacks.onFurniture(id, at),
+      onEmpty: (x, y) => this.#callbacks.onEmpty(x, y),
+      onActions: (actions, at) => this.#callbacks.onActions(actions, at),
+    };
+    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, callbacks, this.#placing, this.#rig.lod,
+      (x, y) => { const area = areaAt(this.#view.template, x, y); if (area) this.#rig.cam.zoomToArea(area, this.#view.size); }, anchor);
     if (!hit) return;
     if (hit.kind === 'furniture') {
       this.#flashId = hit.id;
