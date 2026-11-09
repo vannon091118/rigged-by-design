@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/addiction-consequences",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/addiction-consequences",
+  "baseSha": "a152aaba3d0040bb18536c87a0aa4eeadd96003f",
+  "task": "P-5 schliessen: Sucht bekommt eine sichtbare Ruf-Folge fuer das Haus",
+  "goal": "Suechtig spielende Gaeste (ADDICTED-Blase) kosten Ruf, Guard halbiert; Trade-off Umsatz gegen Standing, deterministisch getestet",
+  "pathAllowlist": [
+    "src/core/sim/spawn.ts",
+    "src/core/sim/emotion.ts",
+    "src/core/sim/__tests__/addiction-consequences.test.ts",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-addiction-consequences.json",
+    "content/narrative/contributions/2026-11-09-p5-suchtfolge-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/freeze-unlock.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "a152aaba3d0040bb18536c87a0aa4eeadd96003f"
+}
