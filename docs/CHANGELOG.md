@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
+<!-- rbd-doc: v0.3.194 | 2026-11-09 00:18 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -11,6 +11,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Kein Eintrag ohne Datum; Uhrzeit steht im `rbd-doc`-Marker am Dateikopf.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
+
+## [0.3.194] - 2026-11-09
+
+### Technik
+- **APK-Kette signiert und geprueft.** Debug und Release tragen denselben versionierten Schluessel (`src/Config/android-signing.json`); `scripts/prepare-android.mjs` schreibt die Signierkonfiguration in das generierte Android-Projekt, bricht bei einem unsignierten Release ab und verifiziert danach Signatur, Zertifikats-Digest und Paketnamen mit `apksigner verify` und `aapt2 dump badging`.
+- **Nur installierbare Pakete werden veroeffentlicht.** `build-apk.yml` laedt beide signierten APKs als Artefakt und Release-Asset und prueft am Release, dass kein unsigniertes Paket dabei ist.
 
 ## [0.3.189] - 2026-11-08
 

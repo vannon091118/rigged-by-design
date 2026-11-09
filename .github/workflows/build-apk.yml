@@ -1,5 +1,9 @@
 name: Build Android APK
 
+# Beide Varianten sind signiert und installierbar. `prepare-android.mjs` baut mit
+# dem versionierten Schluessel aus `src/Config/android-debug.p12` und prueft
+# Signatur, Zertifikat und Paketnamen, bevor ein Artefakt entsteht; dieser
+# Workflow veroeffentlicht nur noch diese geprueften Dateien.
 on:
   workflow_dispatch:
     inputs:
@@ -97,10 +101,12 @@ jobs:
         if: ${{ inputs.skip_verify }}
         run: pnpm run build
 
-      - name: Gradle assembleDebug (signierbare Debug-APK)
+      # Beide Schritte pruefen ihre APK selbst (`apksigner verify` gegen den
+      # gepinnten Fingerabdruck, `aapt2 badging` gegen Paketname und minSdk).
+      - name: Gradle assembleDebug (signierte, installierbare Debug-APK)
         run: pnpm run android:apk
 
-      - name: Gradle assembleRelease (Release-APK ohne Signatur)
+      - name: Gradle assembleRelease (signierte, installierbare Release-APK)
         run: pnpm run android:apk:release
 
       - name: Debug-APK als Artefakt
@@ -113,8 +119,8 @@ jobs:
       - name: Release-APK als Artefakt
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: rigged-by-design-release-unsigned-apk
-          path: artifacts/rigged-by-design-release-unsigned.apk
+          name: rigged-by-design-release-apk
+          path: artifacts/rigged-by-design-release.apk
           if-no-files-found: error
 
       - name: Release-Tag bestimmen
@@ -133,8 +139,8 @@ jobs:
           TAG: ${{ steps.release.outputs.tag }}
         run: |
           gh release view "$TAG" > /dev/null 2>&1 \
-            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute APKs: Debug installierbar, Release ohne Signatur."
-          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk artifacts/rigged-by-design-release-unsigned.apk --clobber
+            || gh release create "$TAG" --title "$TAG" --notes "Automatisch gebaute APKs: Debug und Release sind signiert und installierbar."
+          gh release upload "$TAG" artifacts/rigged-by-design-debug.apk artifacts/rigged-by-design-release.apk --clobber
 
       - name: Artefakte am Release pruefen
         if: steps.release.outputs.tag != ''
@@ -145,5 +151,8 @@ jobs:
           assets="$(gh release view "$TAG" --json assets --jq '.assets[].name')"
           echo "$assets" | grep -qx 'rigged-by-design-debug.apk' \
             || { echo "::error::Release $TAG enthaelt kein APK-Artefakt"; exit 1; }
-          echo "$assets" | grep -qx 'rigged-by-design-release-unsigned.apk' \
+          echo "$assets" | grep -qx 'rigged-by-design-release.apk' \
             || { echo "::error::Release $TAG enthaelt keine Release-APK"; exit 1; }
+          if echo "$assets" | grep -q 'unsigned'; then
+            echo "::error::Release $TAG fuehrt ein unsigniertes Paket; das ist nicht installierbar"; exit 1;
+          fi

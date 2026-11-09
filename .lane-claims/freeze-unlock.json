@@ -1,9 +1,11 @@
 {
   "version": 1,
-  "base": "6dfe2a124929d5a6f42c9464288e91f6bcc8f007",
+  "base": "6b8d209fd66769f6b1c01d415fa420f6e33f1b0b",
   "paths": [
-    "AGENTS.md"
+    ".github/workflows/build-apk.yml",
+    "docs/CI.md",
+    "scripts/prepare-android.mjs"
   ],
-  "token": "6231dc78df529fc7e98906d8c4ed35037655249e899bfac8e948bfa4618efb2f",
+  "token": "04175d917565406a8d5d6159388085ebf7b4de520238c5ad97c9c702bc05c40a",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

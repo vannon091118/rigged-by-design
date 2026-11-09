@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
+<!-- rbd-doc: v0.3.194 | 2026-11-09 00:18 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -73,7 +73,7 @@ Stand 2026-11-07 liegen neun Workflow-Dateien in `.github/workflows/`:
 | `ci-verify.yml` | aktiv | Matrix, Required-Gates, Langlauf-Matrix, Pflichtstatus |
 | `auto-version-release.yml` | aktiv | Tag und Release erst nach grünem `CI Verify` auf `main` |
 | `long-checks.yml` | aktiv | Wochen- und manueller Langlauf (Statistik, Soak, Balance, Benchmarks) |
-| `build-apk.yml` | aktiv | APK-Build, manuell oder aus dem Release |
+| `build-apk.yml` | aktiv | APK-Build (Debug und Release signiert, `apksigner`- und `aapt2`-Gate), manuell oder aus dem Release |
 | `pr-cleanup.yml` | aktiv | meldet gemergte Wegwerf-Branches, löscht sie nicht |
 | `auto-resolve.yml` | per Variable | ordnet roten Lauf ein, repariert mechanisch, Issue danach |
 | `promote.yml` | **manuell deaktiviert** | historischer Auto-Merge/Integration-Pfad |
