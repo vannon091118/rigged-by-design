@@ -44,6 +44,42 @@
 }
 .popup-full { width: min(var(--popup-full-width), 98vw); max-height: 96vh; height: 96vh; }
 .popup-backdrop.is-full { padding: 8px; }
+
+/*
+ * Weltanker: der Automat ist sein eigenes Menue. Mit Anker sitzt das Panel am
+ * Objekt und benutzt dieselbe Klemm-Logik wie die Aktionskarte; `full` (der
+ * ausdrueckliche Wunsch des Spielers) gewinnt immer und hebt den Anker auf.
+ */
+.popup-backdrop.is-anchored {
+  place-items: start;
+  padding: 0;
+  /* Der Floor bleibt lesbar: der Scrim dimmt nur, er verdeckt nicht. */
+  background:
+    radial-gradient(120% 88% at 50% 38%, rgba(4, 2, 9, 0.16), rgba(4, 2, 9, 0.42) 74%),
+    rgba(4, 2, 9, 0.26);
+}
+.popup.is-anchored {
+  position: fixed;
+  left: clamp(180px, var(--anchor-x, 50vw), calc(100vw - 180px));
+  top: clamp(210px, var(--anchor-y, 50vh), calc(100vh - 12px));
+  width: min(420px, calc(100vw - 16px));
+  max-height: min(58vh, 520px);
+  margin: 0;
+  transform: translate(-50%, calc(-100% - 12px));
+  animation: none;
+}
+/* Auf schmalen Geraeten bleibt die Daumenzone: dort bringt Anhaengen nichts. */
+@media (max-width: 620px) {
+  .popup.is-anchored {
+    left: 8px;
+    right: 8px;
+    top: auto;
+    bottom: calc(8px + var(--safe-bottom));
+    width: auto;
+    max-height: 70vh;
+    transform: none;
+  }
+}
 @keyframes popup-in { from { transform: translateY(8px) scale(0.985); opacity: 0; } to { transform: none; opacity: 1; } }
 
 .popup-head {

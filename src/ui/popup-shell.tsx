@@ -1,5 +1,6 @@
 /** Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. */
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import type { ScreenAnchor } from '../render/floor-hit';
 import { UI_ICON } from './icons';
 
 interface PopupShellProps {
@@ -12,12 +13,19 @@ interface PopupShellProps {
   readonly className?: string;
   /** Spieltyp fuer die Farbidentitaet; nur CSS-Variablen, kein Layout. */
   readonly game?: string;
+  /**
+   * Weltposition des Objekts, das das Panel geoeffnet hat. Mit Anker haengt das
+   * Panel am Objekt; `full` gewinnt immer, weil Vollbild der ausdrueckliche
+   * Wunsch des Spielers ist.
+   */
+  readonly anchor?: ScreenAnchor | null;
 }
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '', game }: PopupShellProps) {
+export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '', game, anchor = null }: PopupShellProps) {
   const panel = useRef<HTMLElement>(null);
+  const anchored = anchor !== null && !full;
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
@@ -49,7 +57,7 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
 
   return (
     <div
-      className={`popup-backdrop${full ? ' is-full' : ''}`}
+      className={`popup-backdrop${full ? ' is-full' : ''}${anchored ? ' is-anchored' : ''}`}
       role="presentation"
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -58,7 +66,10 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
       <section
         ref={panel}
         tabIndex={-1}
-        className={`popup ${wide ? 'popup-wide' : ''} ${full ? 'popup-full' : ''} ${className}`.trim()}
+        className={`popup ${wide ? 'popup-wide' : ''} ${full ? 'popup-full' : ''}${anchored ? ' is-anchored' : ''} ${className}`.trim()}
+        style={anchored
+          ? ({ '--anchor-x': `${Math.round(anchor.x)}px`, '--anchor-y': `${Math.round(anchor.y)}px` } as CSSProperties)
+          : undefined}
         data-game={game}
         role="dialog"
         aria-modal="true"

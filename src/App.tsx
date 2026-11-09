@@ -40,6 +40,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const [actions, setActions] = useState<MenuAction[]>([]);
   // Weltposition des getroffenen Objekts: die Aktionskarte haengt daran.
   const [anchor, setAnchor] = useState<ScreenAnchor | null>(null);
+  // Derselbe Anker fuer das Geraetepanel: der Automat ist sein eigenes Menue.
+  const [popupAnchor, setPopupAnchor] = useState<ScreenAnchor | null>(null);
   const [placeError, setPlaceError] = useState('');
   const stage = useRef<FloorHandle>(null);
   const [editorOpen, setEditorOpen] = useState(() => editorEnabled(window.location.search));
@@ -129,12 +131,14 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setBuildOpen(false);
     setActions([]);
     setAnchor(null);
+    setPopupAnchor(null);
     setPopup(next);
   };
 
   const changePerspective = (next: Perspective): void => {
     if (next === perspective) return;
     setPopup(null);
+    setPopupAnchor(null);
     setBuildOpen(false);
     setActions([]);
     setPerspective(next);
@@ -185,7 +189,9 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           }}
           onFurniture={(id, at) => {
             setAnchor(at ?? null);
+            // Panel am Geraet, nicht im Vollbild: derselbe Anker wie die Karte.
             openPopup({ kind: 'machine', itemId: id });
+            setPopupAnchor(at ?? null);
           }}
           onEmpty={(x, y) => {
             crates.tapFloor(x, y);
@@ -294,7 +300,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         view={view}
         perspective={perspective}
         popup={popup}
-        onClose={() => setPopup(null)}
+        anchor={popupAnchor}
+        onClose={() => { setPopup(null); setPopupAnchor(null); }}
         onOpen={openPopup}
         onStaff={() => { setPopup(null); setBuildOpen(true); }}
       />

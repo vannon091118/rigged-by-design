@@ -8,6 +8,7 @@ import type { ShellRound } from '../core/games/shell-round';
 import type { SlotProfile } from '../core/games/slot-profile';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { CardDeal } from '../store/foreign-play';
+import type { ScreenAnchor } from '../render/floor-hit';
 import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
 import { MachineOperatorBody, gameLabel } from './machine-operator';
@@ -35,6 +36,8 @@ interface Props {
   readonly onAdditionalBet: (amountVC: number) => boolean;
   readonly onShellRound: () => ShellRound;
   readonly onRisk: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
+  /** Weltposition des Automaten: das Panel haengt daran statt im Vollbild. */
+  readonly anchor?: ScreenAnchor | null;
 }
 
 export function MachinePopup(props: Props) {
@@ -50,6 +53,7 @@ export function MachinePopup(props: Props) {
         onClose={onClose}
         wide
         full={full}
+        anchor={props.anchor ?? null}
         game={item.gameId}
       >
         {!isGame ? (
@@ -89,6 +93,7 @@ export function MachinePopup(props: Props) {
       onClose={onClose}
       wide
       full={full}
+      anchor={props.anchor ?? null}
       game={item.gameId}
     >
       <MachineOperatorBody
