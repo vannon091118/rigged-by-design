@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/claim-reconcile-0911",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-reconcile-0911",
+  "baseSha": "2400f755b2db8c2ec40ecb65ade4eec9cb39abfb",
+  "task": "Merge-belegte Claims status-only schliessen (P-11)",
+  "goal": "pretask blockiert nicht mehr an baumgleichen Fremd-Claims; Register entspricht dem Remote-Zustand",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-claim-reconcile-0911.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2400f755b2db8c2ec40ecb65ade4eec9cb39abfb"
+}

@@ -42,6 +42,8 @@
   "gateProfile": "full",
   "contracts": [],
   "dependencies": [],
-  "status": "open",
-  "createdAt": "2026-11-09T00:38:44.841Z"
+  "status": "merged",
+  "createdAt": "2026-11-09T00:38:44.841Z",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
 }
