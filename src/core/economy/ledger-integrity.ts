@@ -27,6 +27,8 @@ export interface LedgerEntry {
   readonly to: AccountId;
   readonly amount: VaCoinMicro;
   readonly reason: string;
+  /** Spieltyp-Spur einer echten Runde; null fuer Geldwege ohne Spielbezug. */
+  readonly game: string | null;
 }
 
 /** Eine Buchung gegen den Replay-Stand pruefen und anwenden. */
@@ -37,6 +39,7 @@ export function applyEntry(
 ): boolean {
   if (!Number.isSafeInteger(entry.amount) || entry.amount <= 0) return false;
   if (entry.from === entry.to) return false;
+  if (entry.game !== null && (typeof entry.game !== 'string' || !entry.game.trim())) return false;
   for (const account of [entry.from, entry.to]) {
     if (!replay.has(account)) replay.set(account, ZERO_VC);
   }

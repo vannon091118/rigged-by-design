@@ -25,7 +25,7 @@ import { normalizeCityState } from '../core/sim/city-persist';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 
-interface SavedEntry { readonly tick: number; readonly from: string; readonly to: string; readonly amount: VaCoinMicro; readonly reason: string; }
+interface SavedEntry { readonly tick: number; readonly from: string; readonly to: string; readonly amount: VaCoinMicro; readonly reason: string; readonly game?: string | null; }
 
 /** v5-Gäste konnten noch ein Fiat-Feld tragen; ab v6 liegt es im Ledger. */
 type SavedGuest = Guest & { readonly fiat?: VaCoinMicro };

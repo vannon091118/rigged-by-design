@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b8c2efee02324885367a8f45edec6b9262a02d4126213ed65f133efe7ad25506",
+  "contentHash": "sha256:35ccd7364369f6c77f6410715e1219349c886435b75a0f58062e17db09e849a1",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3738,6 +3738,28 @@
       "text": "Rita las die neue Fassung und fand dieselbe Kette wieder, die sie am Tresen erlebt hatte: Laune, Charisma, Erinnerung, Preis. Nur stand sie diesmal nicht als Regel des Hauses da, sondern als Leben, das schon vor dem ersten Gast angefangen hatte. Der Automat blieb stehen, wo er stand - als Testumgebung, nicht als Genre.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
+    },
+    {
+      "contributionId": "ledger-game-type-01",
+      "turnId": "2026-11-09T08:45Z-ledger-game-type",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat nennt sein Spiel, bevor er zahlt; im Kassenbuch steht jetzt, welches Spiel das Geld brachte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-ledger-game-type-01.json"
     },
     {
       "contributionId": "ledger-pages-01",

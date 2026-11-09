@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T08:45Z-ledger-game-type",
+  "contributionId": "ledger-game-type-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "service"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Automat nennt sein Spiel, bevor er zahlt; im Kassenbuch steht jetzt, welches Spiel das Geld brachte.",
+  "directives": []
+}

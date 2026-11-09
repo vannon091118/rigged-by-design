@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/ledger-game-type",
+  "owner": "Ledger-/Core-Owner",
+  "branch": "lane/governance/ledger-game-type",
+  "baseSha": "7153ccfe556a443fd4a4f1799d66e470478e50fc",
+  "task": "P-4: Spieltyp-Spuren im Ledger",
+  "goal": "Jede Spielbuchung traegt ihren Spieltyp, ueberlebt Save/Load und wird je Spieltyp ausgewertet.",
+  "pathAllowlist": [
+    "src/**",
+    "docs/**",
+    "content/narrative/**",
+    "package.json",
+    "AGENTS.md",
+    ".lane-claims/claims/lane-governance-ledger-game-type.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7153ccfe556a443fd4a4f1799d66e470478e50fc"
+}

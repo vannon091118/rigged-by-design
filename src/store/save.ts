@@ -79,7 +79,7 @@ export function toSavedGame(world: WorldState, ledger: Ledger, prngState: number
       activeForeignFloorId: world.activeForeignFloorId,
       narrative: world.narrative,
       rivals: world.rivals,
-      entries: ledger.entries.map(({ tick, from, to, amount, reason }) => ({ tick, from, to, amount, reason })),
+      entries: ledger.entries.map(({ tick, from, to, amount, reason, game }) => ({ tick, from, to, amount, reason, game })),
       prngState,
   };
 }
@@ -109,7 +109,7 @@ export function replaySave(raw: unknown): LoadedSave | null {
     // Schuldbuchungen duerfen beim Replay nicht als Unterdeckung gelten.
     ledger.openLiability(DEBT_ACCOUNT);
     for (const entry of saved.entries ?? []) {
-      ledger.transfer(entry.from, entry.to, entry.amount, entry.reason, entry.tick);
+      ledger.transfer(entry.from, entry.to, entry.amount, entry.reason, entry.tick, entry.game ?? null);
     }
     for (const claim of legacyFiat) admitFiat(ledger, claim.id, claim.amount, world.tick);
     // Alte v8-Staende kennen die Nachfragestufe noch nicht: einmal aus dem Ledger nachziehen.

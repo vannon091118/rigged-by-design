@@ -135,12 +135,14 @@ export class Ledger {
     return total;
   }
 
-  transfer(from: AccountId, to: AccountId, amount: VaCoinMicro, reason: string, tick: number): LedgerEntry {
+  transfer(from: AccountId, to: AccountId, amount: VaCoinMicro, reason: string, tick: number, game: string | null = null): LedgerEntry {
     if (!from.trim() || !to.trim()) throw new LedgerError('transfer: Konto fehlt');
     if (from === to) throw new LedgerError('transfer: Quelle und Ziel muessen verschieden sein');
     if (!reason.trim()) throw new LedgerError('transfer: Grund darf nicht leer sein');
     if (!Number.isSafeInteger(tick) || tick < 0) throw new LedgerError('transfer: tick ungueltig');
     if (!Number.isSafeInteger(amount) || amount <= 0) throw new LedgerError('transfer: Betrag muss positiv sein');
+    const gameTag = game === null ? null : game.trim();
+    if (gameTag !== null && !gameTag) throw new LedgerError('transfer: Spieltyp darf nicht leer sein');
     this.openAccount(from);
     this.openAccount(to);
 
@@ -166,6 +168,7 @@ export class Ledger {
       to,
       amount,
       reason: reason.trim(),
+      game: gameTag,
     });
     this.#seq += 1;
     this.#entries.push(entry);

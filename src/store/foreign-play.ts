@@ -96,7 +96,7 @@ export function dealCardOutcome(
   const stake = fromVC(stakeVC);
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
-  foreignBet(ledger, stake, world.tick);
+  foreignBet(ledger, stake, world.tick, entry.game);
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
     effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
@@ -122,7 +122,7 @@ export function settleCardOutcome(
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
   const stake = fromVC(stakeVC);
   const payout = cardPayout(stake, engineBps, rivalEdge(rival, entry));
-  if (payout > 0) foreignWin(ledger, payout, world.tick);
+  if (payout > 0) foreignWin(ledger, payout, world.tick, entry.game);
   const netToHouse = (payout - stake) as VaCoinMicro;
   if (netToHouse !== 0) {
     emitFact(world, {

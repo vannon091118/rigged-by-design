@@ -2808,6 +2808,10 @@
     {
       "turnId": "2026-11-09T00:35Z-apk-signing",
       "contributionId": "apk-signing-01"
+    },
+    {
+      "turnId": "2026-11-09T08:45Z-ledger-game-type",
+      "contributionId": "ledger-game-type-01"
     }
   ]
 }

@@ -17,6 +17,8 @@ import { buildView } from '../snapshot';
 import { replaySave, toSavedGame } from '../save';
 import { randomSeed } from '../../test/random-seed';
 import { defaultPlinkoConfig, normalizePlinkoConfig } from '../../core/games/plinko-config';
+import { economyOf } from '../../core/sim/economics';
+import { playOwnRound } from '../../core/sim/own-play';
 
 function fixture() {
   const world = createWorld('MEDIUM');
@@ -80,5 +82,36 @@ describe('Save-/Load-Roundtrip v8', () => {
     expect(left.world.journal).toEqual(right.world.journal);
     expect(left.ledger.snapshot()).toEqual(right.ledger.snapshot());
     expect(buildView(left.world, left.ledger, '')).toEqual(buildView(right.world, right.ledger, ''));
+  });
+});
+
+describe('Spieltyp-Spuren im Ledger (P-4)', () => {
+  it('erhält den Spieltyp einer echten Runde über Save/Load', () => {
+    const world = createWorld('SMALL');
+    ensureStarter(world);
+    const ledger = new Ledger();
+    ledger.transfer('EXTERNAL_WORLD', 'HAUSKONTO', fromVC(100), 'testkapital', 0);
+    ledger.transfer('HAUSKONTO', 'PORTEMONNAIE', fromVC(20), 'testgeld', 0);
+    const slot = world.furniture.find((item) => item.gameId === 'SLOT');
+    if (!slot) throw new Error('Der Startautomat fehlt.');
+
+    const result = playOwnRound(world, ledger, slot.id, 1, new Prng(randomSeed()), {});
+    const tagged = ledger.entries.filter((entry) => entry.game === 'SLOT');
+    expect(tagged.length).toBeGreaterThan(0);
+    const stake = tagged.find((entry) => entry.to === 'HAUSKONTO');
+    expect(stake?.from).toBe('PORTEMONNAIE');
+    expect(stake?.amount).toBe(fromVC(1));
+    expect(ledger.entries.some((entry) => entry.game === null)).toBe(true);
+
+    const summary = economyOf(ledger);
+    expect(summary.byGame).toHaveLength(1);
+    expect(summary.byGame[0]).toMatchObject({ game: 'SLOT', stakeVolume: 1 });
+    expect(summary.byGame[0]!.gamePayouts).toBe(Math.floor(result.payout / 10_000));
+
+    const raw = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 7)));
+    const loaded = replaySave(raw);
+    expect(loaded).not.toBeNull();
+    expect(loaded!.ledger.entries.map((entry) => entry.game)).toEqual(ledger.entries.map((entry) => entry.game));
+    expect(economyOf(loaded!.ledger).byGame).toEqual(summary.byGame);
   });
 });
