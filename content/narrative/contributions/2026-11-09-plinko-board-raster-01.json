@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T22:35Z-plinko-board-raster-01",
+  "contributionId": "plinko-board-raster-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": [
+    "watch"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Über dem Brett stehen die Stifte in festen Reihen, Reihe um Reihe um eine halbe Spalte versetzt. Unten liegen die Taschen lückenlos aneinander; jede hat ihre Kante, ihre Farbe und ihren Betrag. Zwischen den Stiften bleibt nur der Weg, den der Ball tatsächlich nimmt.",
+  "directives": []
+}

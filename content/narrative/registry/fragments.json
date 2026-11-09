@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:366e5913c215b5c52ba1e0a8f9a637a0a560bd17ccabf9db8f7265f9c48ad199",
+  "contentHash": "sha256:c3e497e9f99a1efe803003296945a501f9126c90bf4b9657d44f8ef171b8e35f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6820,6 +6820,28 @@
       "text": "Der Gast hat seinen Bonus am Pult abgeholt und gibt ihn jetzt an der Bar aus; an den Walzen hat er heute nichts mehr verloren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-player-cash-closeout-01.json"
+    },
+    {
+      "contributionId": "plinko-board-raster-01",
+      "turnId": "2026-11-09T22:35Z-plinko-board-raster-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "watch"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Über dem Brett stehen die Stifte in festen Reihen, Reihe um Reihe um eine halbe Spalte versetzt. Unten liegen die Taschen lückenlos aneinander; jede hat ihre Kante, ihre Farbe und ihren Betrag. Zwischen den Stiften bleibt nur der Weg, den der Ball tatsächlich nimmt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-plinko-board-raster-01.json"
     },
     {
       "contributionId": "pool-choice-preview-09",

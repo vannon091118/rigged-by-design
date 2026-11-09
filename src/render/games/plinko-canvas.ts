@@ -1,23 +1,13 @@
 /** Das Plinko-Brett als Pixi-Buehne: Stifte, Deflektoren, Taschen und die echte Ballbahn. */
 import { Application, Container, Graphics, Text } from 'pixi.js';
-import type { PegKind, PlinkoConfig, PlinkoDrop } from '../../core/games/plinko-config';
+import type { PlinkoConfig, PlinkoDrop } from '../../core/games/plinko-config';
 import { plinkoPaytable } from '../../core/games/plinko-config';
 import { Emitter } from '../fx/emitter';
 import { PEG_COLOR, payoutArt, pegArt } from './plinko-assets';
-
-const WIDTH = 100;
-const TOP = 8;
-const ROW_GAP = 11;
-const PEG_RADIUS = 1.8;
-const BALL_RADIUS = 2.2;
-const PEG_COLUMNS = 8;
-const FLOOR_BASE = 120;
-
-interface Peg {
-  readonly x: number;
-  readonly y: number;
-  readonly kind: PegKind;
-}
+import {
+  BALL_RADIUS, FLOOR_BASE, PEG_RADIUS, TOP, WIDTH, boardPegs, floorOf, pocketCells,
+  type Peg, type PocketCell,
+} from './plinko-board-geometry';
 
 interface Ball {
   readonly gfx: Graphics;
@@ -33,24 +23,6 @@ interface Wave {
   life: number;
 }
 
-const floorOf = (rows: number): number => FLOOR_BASE + (rows - 8) * ROW_GAP;
-
-/** Baut die Stiftpositionen genau so, wie es die Simulation tut. */
-function boardPegs(config: PlinkoConfig, rows: number): Peg[] {
-  const special = new Map(config.pegs.map((peg) => [`${peg.row}:${peg.column}`, peg.kind]));
-  const pegs: Peg[] = [];
-  for (let row = 0; row < rows; row += 1) {
-    const y = 26 + row * ROW_GAP;
-    const offset = row % 2 === 0 ? 0 : 5.5;
-    for (let column = 0; column < PEG_COLUMNS; column += 1) {
-      const x = 10 + offset + column * 11;
-      if (x > WIDTH - 6) continue;
-      pegs.push({ x, y, kind: special.get(`${row}:${column}`) ?? 'NORMAL_PEG' });
-    }
-  }
-  return pegs;
-}
-
 export class PlinkoCanvas {
   readonly #app: Application;
   readonly #root = new Container();
@@ -61,10 +33,8 @@ export class PlinkoCanvas {
   #pegs: Peg[] = [];
   #tracks: Ball[] = [];
   #floorY = FLOOR_BASE;
-  #pockets: readonly number[] = [];
-  #pocketGfx: Graphics[] = [];
+  #pocketCells: readonly PocketCell[] = [];
   readonly #flashes: Wave[] = [];
-  #pocketEdges: { readonly left: number; readonly right: number }[] = [];
   #onDone: (() => void) | null = null;
   #elapsed = 0;
 
@@ -81,7 +51,6 @@ export class PlinkoCanvas {
     this.#board.removeChildren().forEach((child) => child.destroy({ children: true }));
     this.#pegs = boardPegs(config, rows);
     this.#floorY = floorOf(rows);
-    this.#pockets = plinkoPaytable(config.pocketCount);
     const frame = new Graphics();
     frame.roundRect(-6, -4, WIDTH + 12, this.#floorY + 40, 6).fill({ color: 0x0a0614, alpha: 0.92 });
     frame.roundRect(-6, -4, WIDTH + 12, this.#floorY + 40, 6).stroke({ width: 0.8, color: 0x2c1d4a });
@@ -96,32 +65,25 @@ export class PlinkoCanvas {
       const wall = new Graphics().circle(side, this.#floorY - 12, 3.4).fill({ color: 0x54e0ff, alpha: 0.85 });
       this.#board.addChild(wall);
     }
-    let edge = 0;
-    this.#pocketGfx = [];
-    this.#pocketEdges = [];
-    config.pocketWidths.forEach((width, index) => {
-      const left = edge;
-      edge += width;
-      this.#pocketEdges[index] = { left, right: edge };
-      const payBps = this.#pockets[index] ?? 0;
-      const tint = payBps === 0 ? 0x2a1030 : payBps >= 50_000 ? 0xffd166 : payBps >= 20_000 ? 0xff2e88 : 0x6f5b8c;
+    this.#pocketCells = pocketCells(config.pocketWidths, plinkoPaytable(config.pocketCount));
+    this.#pocketCells.forEach((cell) => {
+      const { left, right, width, tint } = cell;
       const pocket = new Graphics()
         .roundRect(left + 0.6, this.#floorY, width - 1.2, 16, 1.8)
         .fill({ color: tint, alpha: 0.2 })
         .stroke({ width: 0.4, color: tint, alpha: 0.9 });
-      const payout = payoutArt(left, width, this.#floorY, payBps);
+      const payout = payoutArt(left, width, this.#floorY, cell.payBps);
       if (payout) this.#board.addChild(payout);
       // Die Buehne skaliert um Faktor 3: ohne eigene Aufloesung wird die kleine
       // Schrift beim Hochskalieren zu Brei. resolution rastert sie passend groß.
       const label = new Text({
-        text: `${(payBps / 10_000).toFixed(1).replace('.', ',')}x`,
+        text: cell.label,
         style: { fontFamily: 'Inter, system-ui, sans-serif', fontSize: 3.6, fontWeight: '700', fill: 0xffffff },
         resolution: 8,
       });
       label.anchor.set(0.5);
       // Beschriftung unten in der Tasche: oben landet der Ball, nichts ueberdeckt sich.
-      label.position.set((left + edge) / 2, this.#floorY + 11.6);
-      this.#pocketGfx[index] = pocket;
+      label.position.set((left + right) / 2, this.#floorY + 11.6);
       this.#board.addChild(pocket, label);
     });
     this.layout();
@@ -192,21 +154,19 @@ export class PlinkoCanvas {
   #land(ball: Ball): void {
     ball.landed = true;
     if (ball.pocket === null) return;
-    const edges = this.#pocketEdges[ball.pocket];
-    const pocket = this.#pocketGfx[ball.pocket];
-    if (!edges || !pocket) return;
+    const cell = this.#pocketCells[ball.pocket];
+    if (!cell) return;
     const flash = new Graphics()
-      .roundRect(edges.left + 0.6, this.#floorY, edges.right - edges.left - 1.2, 16, 1.8)
+      .roundRect(cell.left + 0.6, this.#floorY, cell.width - 1.2, 16, 1.8)
       .fill({ color: 0xffffff, alpha: 0.5 });
     this.#board.addChild(flash);
     this.#flashes.push({ gfx: flash, life: 1 });
-    const ring = new Graphics().circle((edges.left + edges.right) / 2, this.#floorY + 6, 6);
+    const ring = new Graphics().circle((cell.left + cell.right) / 2, this.#floorY + 6, 6);
     ring.stroke({ width: 1, color: 0xffffff, alpha: 0.8 });
     this.#balls.addChild(ring);
     this.#waves.push({ gfx: ring, life: 1 });
-    const payBps = this.#pockets[ball.pocket] ?? 0;
-    this.#fx.burst('coin-burst', (edges.left + edges.right) / 2, this.#floorY + 6,
-      { count: payBps > 0 ? 12 : 6, size: payBps > 0 ? 12 : 14, tint: payBps > 0 ? 0xffffff : 0x6a5a82 });
+    this.#fx.burst('coin-burst', (cell.left + cell.right) / 2, this.#floorY + 6,
+      { count: cell.payBps > 0 ? 12 : 6, size: cell.payBps > 0 ? 12 : 14, tint: cell.payBps > 0 ? 0xffffff : 0x6a5a82 });
   }
 
   /** Stiftkontakt: einmal pro Stift und Ball eine Schockwelle. */
