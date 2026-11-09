@@ -1,6 +1,6 @@
 # Workflow: von Pretask bis zum manuellen Merge
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 17:54 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 18:00 UTC -->
 
 **Zweck:** Der verbindliche Arbeitsablauf für Agenten und Menschen. `AGENTS.md` ist der Kurzvertrag; dieses Dokument trägt die Details, ohne die Gate-Liste aus [`CI.md`](CI.md) zu wiederholen.
 
@@ -94,7 +94,8 @@ Der Merge nach `main` ist manuell:
 1. PR gegen `main` öffnen oder aktualisieren.
 2. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates`.
 3. Erst bei grünem Lauf manuell mergen.
-4. Kein Auto-Merge, kein `promote`, kein `integration`-Dump als Normalweg.
+4. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
+5. Kein Auto-Merge, kein `promote`, kein `integration`-Dump als Normalweg.
 
 `promote.yml` ist derzeit manuell deaktiviert. Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 

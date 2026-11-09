@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "base": "f05d5686e754d5c9ea45cb5ea0d3b741768d60bc",
+  "base": "7cd939085ea585bed7d6b1e14461fdc5ad714b4a",
   "paths": [
-    "docs/ARCHITECTURE.md"
+    "docs/WORKFLOW.md"
   ],
-  "token": "7251c593d3886d0fc63293feb6e9648228ef711d6350d9edffb7d9995594bf2e",
+  "token": "6cae4c6fe4f8490f7fbedec9dc8ed647a5100fa9903e0078d7bf1654f75f71c0",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/merge-commit-notes",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/merge-commit-notes",
+  "baseSha": "7cd939085ea585bed7d6b1e14461fdc5ad714b4a",
+  "task": "Merge-Nachricht mit den drei Pflichtsektionen als Merge-Schritt dokumentieren",
+  "goal": "Der Commit-Notes-Check auf main ist nach jedem manuellen Merge nachvollziehbar gruen",
+  "pathAllowlist": [
+    "docs/WORKFLOW.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-merge-commit-notes.json",
+    ".lane-claims/freeze-unlock.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7cd939085ea585bed7d6b1e14461fdc5ad714b4a"
+}
