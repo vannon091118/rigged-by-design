@@ -15,6 +15,8 @@ import { TX_REASON } from './tx-reasons';
 import { getPersona } from './personas';
 import type { Furniture, Guest, WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
+import { emitSlotDischarge } from './narrative/facts';
+import { actorRefOfVisitor } from './narrative/relationships';
 
 /** Ein Free-Drink nimmt echten Barbestand; ohne Bestand gibt es keinen Schein-Drink. */
 function serveFreeDrink(world: WorldState, guest: Guest): boolean {
@@ -90,6 +92,10 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   const payout = result.payout;
   // Volle Auszahlung: fehlende Deckung wird als Schuld gebucht, nie still gekappt.
   if (payout > ZERO_VC) payOut(ledger, guest.id, payout, world.tick);
+  // Der Fact entsteht erst nach der Buchung; die Entladung ist kein zweiter Geldweg.
+  if (result.discharged && guest.visitorId !== undefined) {
+    emitSlotDischarge(world, actorRefOfVisitor(guest.visitorId), item.id, result.stake, payout);
+  }
   // Der Drink wird erst nach erfolgreich gebuchtem Einsatz serviert; ein
   // abgelehnter Spin darf keinen Bestand verbrauchen.
   const freeDrink = effects.freeDrink ? serveFreeDrink(world, guest) : false;

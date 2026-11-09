@@ -53,6 +53,8 @@ export interface GameResult {
   readonly dice?: readonly [number, number];
   /** Roulette: gezogene Zahl, Farbe und die gedeckten Jetons. */
   readonly roulette?: RouletteSpin;
+  /** Slot: Die Auszahlung wurde aus dem geladenen Drucklader freigegeben. */
+  readonly discharged?: boolean;
 }
 
 function assertAdjust(value: number | undefined, label: string): void {

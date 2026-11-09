@@ -10,14 +10,14 @@ export type { KnowledgeEntry, KnowledgeSourceKind, Observation } from './knowled
 
 type NarrativeFactKind =
   | 'START_POOL' | 'VISITOR_FIRST_SEEN' | 'VISITOR_RETURNED' | 'VISIT_ENDED'
-  | 'HOUSE_BALANCE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
+  | 'HOUSE_BALANCE' | 'SLOT_DISCHARGE' | 'VISITOR_CONFLICT' | 'VISITOR_SERVICE' | 'RIVAL_ENCOUNTER'
   | 'RIVAL_ACTION' | 'COMMAND_REJECTED' | 'EVENT_RESOLVED';
 export type VisitorValence = 'GOOD' | 'NEUTRAL' | 'BAD';
 export type HouseBand = 'LOW' | 'OK';
 
 export const NARRATIVE_FACT_KINDS: readonly NarrativeFactKind[] = [
   'START_POOL', 'VISITOR_FIRST_SEEN', 'VISITOR_RETURNED', 'VISIT_ENDED',
-  'HOUSE_BALANCE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
+  'HOUSE_BALANCE', 'SLOT_DISCHARGE', 'VISITOR_CONFLICT', 'VISITOR_SERVICE', 'RIVAL_ENCOUNTER',
   'RIVAL_ACTION', 'COMMAND_REJECTED', 'EVENT_RESOLVED',
 ];
 export const VISITOR_VALENCES: readonly VisitorValence[] = ['GOOD', 'NEUTRAL', 'BAD'];
@@ -84,6 +84,12 @@ interface HouseBalanceFact extends NarrativeFactBase {
   readonly band: HouseBand;
 }
 
+/** Eine echte Slot-Entladung: der Drucklader hat die Auszahlung aus dem Polster gedeckt. */
+interface SlotDischargeFact extends NarrativeFactBase {
+  readonly kind: 'SLOT_DISCHARGE'; readonly actorRefs: readonly ActorRef[];
+  readonly machineId: number; readonly stake: VaCoinMicro; readonly payout: VaCoinMicro;
+}
+
 /** Ein realer Streit zwischen zwei Besuchern; beide Kanten entstehen aus demselben Fact. */
 interface VisitorConflictFact extends NarrativeFactBase {
   readonly kind: 'VISITOR_CONFLICT';
@@ -138,7 +144,7 @@ interface EventResolvedFact extends NarrativeFactBase {
 
 export type NarrativeFact =
   | StartPoolFact | VisitorFirstSeenFact | VisitorReturnedFact | VisitEndedFact
-  | HouseBalanceFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
+  | HouseBalanceFact | SlotDischargeFact | VisitorConflictFact | VisitorServiceFact | RivalEncounterFact
   | RivalActionFact | CommandRejectedFact | EventResolvedFact;
 
 /** Strukturierte Erinnerung, keine kopierte Journal-Zeile. */

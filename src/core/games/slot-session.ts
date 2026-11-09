@@ -48,6 +48,7 @@ export function playSlotSession(
     stake: bet,
     payout,
     multiplierBps,
+    discharged: plan.forceWin,
     label: `${prefix}${outcome.label}`,
     detail: outcome.detail,
   };

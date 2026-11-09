@@ -2796,6 +2796,14 @@
     {
       "turnId": "2026-11-09T10:10Z-city-encounter-echo-cold-body",
       "contributionId": "city-encounter-echo-cold-body-01"
+    },
+    {
+      "turnId": "2026-11-08T23:40Z-slot-discharge-fact-01",
+      "contributionId": "slot-discharge-fact-01"
+    },
+    {
+      "turnId": "2026-11-08T23:55Z-gate-lane-red-team-01",
+      "contributionId": "gate-lane-red-team-01"
     }
   ]
 }
