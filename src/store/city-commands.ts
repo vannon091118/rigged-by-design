@@ -1,5 +1,6 @@
 /** Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. */
 import type { Ledger } from '../core/economy/ledger';
+import type { Prng } from '../core/rng/prng';
 import { restInCity, runCityAction, travel, type CityLocationId } from '../core/sim/city';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
 import type { EncounterAction } from '../core/sim/city-types';
@@ -17,8 +18,8 @@ function cityActionCmd(world: WorldState, actionId: string): string {
 }
 
 /** Tag beenden fuellt die Energie ueber den Kalender, nicht als Geschenk. */
-function cityRestCmd(world: WorldState): string {
-  return restInCity(world).lastResult;
+function cityRestCmd(world: WorldState, ledger: Ledger, prng: Prng): string {
+  return restInCity(world, ledger, prng).lastResult;
 }
 
 /** Eine Begegnung oeffnen und ihren Spieltext zurueckgeben. */
@@ -40,10 +41,10 @@ export type CityCommand =
   | { readonly kind: 'meet'; readonly location?: CityLocationId }
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction };
 
-export function cityCmd(world: WorldState, ledger: Ledger, cmd: CityCommand): string {
+export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: CityCommand): string {
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);
   if (cmd.kind === 'act') return cityActionCmd(world, cmd.actionId);
   if (cmd.kind === 'meet') return meetCmd(world, ledger, cmd.location);
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
-  return cityRestCmd(world);
+  return cityRestCmd(world, ledger, prng);
 }

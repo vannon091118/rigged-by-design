@@ -1,4 +1,6 @@
 /** Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. */
+import type { Ledger } from '../economy/ledger';
+import type { Prng } from '../rng/prng';
 import type { WorldState } from './types';
 import type { CityActionView, CityState } from './city-types';
 import {
@@ -13,6 +15,7 @@ import {
   marketUnlocked,
   tierOf,
 } from './city-model';
+import { advanceToNextDay } from './tick';
 
 /**
  * Eine Handlung im Ort: pruefen, dann fortschreiben. Ein Fehler veraendert
@@ -56,12 +59,13 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
 }
 
 /**
- * Tag beenden: die einzige Erholung der Stadt. Sie schreibt den Tag fort, statt
- * Energie zu schenken - damit bleibt der Kalender die eine Zeitwahrheit.
+ * Tag beenden: die einzige Erholung der Stadt. Die Uhr laeuft bis zum naechsten
+ * Tageswechsel durch den kanonischen Tick; dort werden Loehne, Miete, Strafen
+ * und Fremd-Floors verarbeitet. Die Stadt fuehrt keinen zweiten Kalender.
  */
-export function restInCity(world: WorldState): CityState {
+export function restInCity(world: WorldState, ledger: Ledger, prng: Prng): CityState {
   const state = cityOf(world);
-  world.day += 1;
+  advanceToNextDay(world, ledger, prng);
   const next: CityState = {
     ...state,
     energyDay: world.day,

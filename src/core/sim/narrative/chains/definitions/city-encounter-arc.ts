@@ -42,7 +42,10 @@ export const CITY_ENCOUNTER_ARC: NarrativeChain = {
     },
   ],
   maxSteps: 3,
-  maxDurationTicks: 400,
+  // Ein Stadt-Ruhetag sind 600 Ticks; die Kette muss ihn ueberleben, damit die
+  // 24-Tick-Verzoegerung bei der Rueckkehr sichtbar wird statt waehrend des
+  // Tagesabschlusses zu verfallen.
+  maxDurationTicks: 700,
   repeatable: false,
   cooldownTicks: 0,
 };

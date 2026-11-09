@@ -3,7 +3,7 @@ import type { Ledger } from '../economy/ledger';
 import { ZERO_VC } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { assertGameplayRng } from '../rng/streams';
-import { tickDemand } from './demand';
+import { TICKS_PER_DAY, tickDemand } from './demand';
 import { processNarrativeRuntime } from './narrative/runtime';
 import { maybeStartBrawl, tickDisputes } from './disputes';
 import { actAtTarget, chooseActivity, moveGuest, payAndLeave, releaseAndChoose } from './guests';
@@ -149,4 +149,17 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   tickRivalMinds(world);
   // Ein Lauf pro Tick: alle Quellen haben Facts emittiert, jetzt Memory/Trigger/Scheduler.
   processNarrativeRuntime(world, ledger);
+}
+
+/**
+ * Bringt die Uhr bis zum naechsten Tageswechsel und laesst genau den
+ * Grenztick durch `tickWorld` laufen. Der Tagesabschluss verarbeitet Loehne,
+ * Miete, Strafen und Fremd-Floors einmal; die Stadt fuehrt keinen zweiten
+ * Kalender und holt keine 600 Einzeltick-Simulation nach.
+ */
+export function advanceToNextDay(world: WorldState, ledger: Ledger, prng: Prng): number {
+  const ticks = TICKS_PER_DAY - (world.tick % TICKS_PER_DAY);
+  world.tick += ticks - 1;
+  tickWorld(world, ledger, prng);
+  return ticks;
 }

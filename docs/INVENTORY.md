@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
+<!-- rbd-doc: v0.3.195 | 2026-11-09 07:09 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statistics 7 · performance 7.
+Summe: 228 Dateien — contract 139 · integration 43 · governance 32 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -160,6 +160,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/games/engines/__tests__/blackjack.test.ts` | games | contract | ja | `src/core/games/engines/blackjack.ts` |
 | `src/core/games/engines/__tests__/interactive-cards.test.ts` | games | contract | ja | `src/core/games/engines/interactive-cards.ts` |
 | `src/core/governance/__tests__/affected-tests.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
+| `src/core/governance/__tests__/apk-signing.test.ts` | ci | governance | ja | `.github/workflows/build-apk.yml` |
 | `src/core/governance/__tests__/auto-resolve.test.ts` | pipeline | governance | ja | `scripts/auto-resolve.mjs` |
 | `src/core/governance/__tests__/body-sync.test.ts` | pipeline | governance | ja | `scripts/lib/body-sync.mjs` |
 | `src/core/governance/__tests__/branch-prune.test.ts` | pipeline | governance | ja | `scripts/lib/branch-prune.mjs` |
@@ -174,6 +175,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/governance/__tests__/issue-scope.test.ts` | pipeline | governance | ja | `scripts/lib/issue-scope.mjs` |
 | `src/core/governance/__tests__/lane-claims.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
 | `src/core/governance/__tests__/narrative-compiler.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-compiler.mjs` |
+| `src/core/governance/__tests__/narrative-content-quality.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-blocks.mjs` |
 | `src/core/governance/__tests__/narrative-content.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-content.mjs` |
 | `src/core/governance/__tests__/pipeline-modes.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/pr-watcher.test.ts` | pipeline | governance | ja | `scripts/pr-watcher.mjs` |
@@ -182,6 +184,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/governance/__tests__/pretask.test.ts` | pipeline | governance | ja | `scripts/lib/worktree-isolation.mjs` |
 | `src/core/governance/__tests__/process-sweep.test.ts` | pipeline | governance | ja | `scripts/lib/process-sweep.mjs` |
 | `src/core/governance/__tests__/promote-guard.test.ts` | pipeline | governance | ja | `scripts/lib/promote-guard.mjs` |
+| `src/core/governance/__tests__/red-team-gate-lane.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
 | `src/core/governance/__tests__/roadmap-register.test.ts` | docs | contract | ja | `docs/ROADMAP.md` |
 | `src/core/governance/__tests__/staging-scope.test.ts` | pipeline | governance | ja | `scripts/lib/staging-scope.mjs` |
@@ -201,6 +204,8 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
+| `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
+| `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
@@ -215,19 +220,27 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
 | `src/core/sim/__tests__/guest-voice.test.ts` | sim | contract | ja | `src/core/sim/narrative/guest-voice.ts` |
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
+| `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
+| `src/core/sim/__tests__/knowledge-config.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge-config.ts` |
+| `src/core/sim/__tests__/knowledge-domain.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
+| `src/core/sim/__tests__/knowledge-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
+| `src/core/sim/__tests__/knowledge.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
 | `src/core/sim/__tests__/layout-commands.test.ts` | sim | contract | ja | `src/core/sim/layout-commands.ts` |
 | `src/core/sim/__tests__/layout-contract.test.ts` | sim | contract | ja | `src/core/sim/layout-derive.ts` |
 | `src/core/sim/__tests__/layout-history.test.ts` | sim | contract | ja | `src/core/sim/layout-history.ts` |
 | `src/core/sim/__tests__/layout-json.test.ts` | sim | contract | ja | `src/core/sim/layout-json.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
+| `src/core/sim/__tests__/main-event-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/main-event-pool.ts` |
 | `src/core/sim/__tests__/mod-guards.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
 | `src/core/sim/__tests__/mod-resolver.test.ts` | sim | contract | ja | `src/core/sim/offers.ts` |
 | `src/core/sim/__tests__/money-truth.test.ts` | sim | contract | ja | `src/core/sim/money.ts` |
 | `src/core/sim/__tests__/mugging-cover.test.ts` | sim | contract | ja | `src/core/sim/mugging.ts` |
 | `src/core/sim/__tests__/narrative-boundary.test.ts` | sim | contract | ja | `src/core/sim/narrative/boundary.ts` |
+| `src/core/sim/__tests__/narrative-chain-runtime.test.ts` | sim | contract | ja | `src/core/sim/narrative/chains/chain-runtime.ts` |
+| `src/core/sim/__tests__/narrative-chain-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/chains/chain-schema.ts` |
 | `src/core/sim/__tests__/narrative-choice-contract.test.ts` | sim | contract | ja | `src/core/sim/narrative/choices/contract.ts` |
 | `src/core/sim/__tests__/narrative-choice-eligibility.test.ts` | sim | contract | ja | `src/core/sim/narrative/choices/eligibility.ts` |
 | `src/core/sim/__tests__/narrative-choice-execution.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
@@ -278,6 +291,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
+| `src/core/sim/__tests__/treat-influence.test.ts` | sim | contract | ja | `src/core/sim/player.ts` |
 | `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
 | `src/core/sim/__tests__/tycoon-needs.test.ts` | sim | contract | ja | `src/core/sim/needs.ts` |
 | `src/core/sim/__tests__/tycoon-ops.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
@@ -288,6 +302,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/narrative/__tests__/composition-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/composition-context.ts` |
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
+| `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
 | `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
 | `src/render/__tests__/floor-actions.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
@@ -305,6 +320,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
 | `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/determinism.test.ts` | store | integration | ja | `src/store/transfer.ts` |
+| `src/store/__tests__/exclusion-command.test.ts` | store | integration | ja | `src/store/game-commands.ts` |
 | `src/store/__tests__/narrative-commands.test.ts` | store | integration | ja | `src/store/narrative-commands.ts` |
 | `src/store/__tests__/narrative-rival-source.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/narrative-save.test.ts` | store | integration | ja | `src/store/save.ts` |
@@ -333,6 +349,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/ui/__tests__/machine-play.test.tsx` | ui | integration | ja | `src/ui/machine-popup.tsx` |
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/perspective-switch.test.tsx` | ui | integration | ja | `src/ui/perspective-switch.tsx` |
+| `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 <!-- TEST_CATALOG_END -->
 
@@ -524,10 +541,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2151 |
-| Gelistete Dateien | 2151 |
+| Getrackte Dateien | 2154 |
+| Gelistete Dateien | 2154 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (36), content (706), docs (77), public (554), scripts (91), src (662) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (37), content (707), docs (77), public (554), scripts (91), src (663) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,8 +556,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 34 Datei(en)
-- `content/narrative/contributions/` — 702 Datei(en)
+- `.lane-claims/claims/` — 35 Datei(en)
+- `content/narrative/contributions/` — 703 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -602,7 +619,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 86 Datei(en)
-- `src/core/sim/__tests__/` — 102 Datei(en)
+- `src/core/sim/__tests__/` — 103 Datei(en)
 - `src/core/sim/narrative/` — 37 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -680,6 +697,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json` — { — gelesen: 49 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
@@ -1380,6 +1398,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-slot-discharge-fact-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-apk-signing-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-city-day-closeout-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-body.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-decline.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-echo-choice.json` — { — gelesen: 22 Zeilen
@@ -1390,8 +1409,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-city-encounter-give.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15595 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2813 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15617 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2817 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 194 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2269,8 +2288,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/balance-report.ts` — Balance-Spur: macht den 40-Tage-Messlauf nachvollziehbar und pruefbar. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
-- `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 151 Zeilen
-- `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 107 Zeilen
+- `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 66 Zeilen
+- `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 153 Zeilen
+- `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
 - `src/core/sim/__tests__/dirty-index.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 22 Zeilen
@@ -2366,7 +2386,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 53 Zeilen
-- `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 98 Zeilen
+- `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 102 Zeilen
 - `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Deckung pruefen, Command ausfuehren (Beziehung/Flag), — gelesen: 166 Zeilen
 - `src/core/sim/city-encounter-dialog.ts` — Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. — gelesen: 81 Zeilen
 - `src/core/sim/city-encounter.ts` — Die Begegnung im Ort ist der zentrale Loop der Stadt: — gelesen: 70 Zeilen
@@ -2431,7 +2451,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/chains/chain-runtime.ts` — Laufzeit der Ereignisketten: startet nur aus aufgeloesten Events und treibt — gelesen: 86 Zeilen
 - `src/core/sim/narrative/chains/chain-schema.ts` — Fail-closed Schemapruefung fuer Ereignisketten; ungueltige Graphen werden nie angeboten. — gelesen: 157 Zeilen
 - `src/core/sim/narrative/chains/chain-types.ts` — Verkettete Narrative: Ein Graph aus stabilen Knoten und bedingten Uebergaengen. — gelesen: 150 Zeilen
-- `src/core/sim/narrative/chains/definitions/city-encounter-arc.ts` — Die Begegnung wirkt nach: Ein Tag (24 Ticks) nach der aufgeloesten Szene — gelesen: 48 Zeilen
+- `src/core/sim/narrative/chains/definitions/city-encounter-arc.ts` — Die Begegnung wirkt nach: Ein Tag (24 Ticks) nach der aufgeloesten Szene — gelesen: 51 Zeilen
 - `src/core/sim/narrative/chains/definitions/index.ts` — Einzige Registry der verketteten Narrative; ungueltige oder textlose Ketten fallen raus. — gelesen: 20 Zeilen
 - `src/core/sim/narrative/chains/definitions/pair-conflict-arc.ts` — Ein Streit zwischen zwei Gaesten laeuft nach der Eskalation in zwei — gelesen: 55 Zeilen
 - `src/core/sim/narrative/chains/definitions/visitor-warm-arc.ts` — Zwei echte Pfade aus derselben warmen Rueckkehr: Die Influence-Matrix — gelesen: 57 Zeilen
@@ -2540,7 +2560,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 127 Zeilen
 - `src/core/sim/tick-timing.ts` — Eine Quelle fuer die Tick-Dauer: Simulation, Renderer und UI rechnen mit demselben Takt. — gelesen: 4 Zeilen
-- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 152 Zeilen
+- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 165 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/treat-influence.ts` — Döner-/Treat-Wirkung: liest den Kontext aus dem Zielmoebel und die — gelesen: 32 Zeilen
 - `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 78 Zeilen
@@ -2659,7 +2679,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
-- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 49 Zeilen
+- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 50 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 41 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. — gelesen: 148 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen

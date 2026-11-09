@@ -12,6 +12,8 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
+import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_ENERGY_PER_DAY, cityOf, restInCity, travel } from '../city';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../city-encounter';
@@ -22,7 +24,7 @@ import { processNarrativeRuntime } from '../narrative/runtime';
 import { seedStartPool } from '../narrative/state';
 import { createWorld, ensureStarter } from '../templates';
 
-function start(): { world: ReturnType<typeof createWorld>; ledger: Ledger } {
+function start(): { world: ReturnType<typeof createWorld>; ledger: Ledger; prng: Prng } {
   const world = createWorld('SMALL');
   ensureStarter(world);
   seedStartPool(world, fromVC(150));
@@ -30,12 +32,12 @@ function start(): { world: ReturnType<typeof createWorld>; ledger: Ledger } {
   world.tick = 5;
   const ledger = new Ledger({ [PORTEMONNAIE]: fromVC(20) });
   travel(world, 'KIEZ');
-  return { world, ledger };
+  return { world, ledger, prng: new Prng(randomSeed()) };
 }
 
 describe('Begegnungs-Loop (Stadt)', () => {
   it('spielt Gespraech, Handlung, Wissen, Tageswechsel und Folge als eine Kette', () => {
-    const { world, ledger } = start();
+    const { world, ledger, prng } = start();
     const met = meetNpc(world, 'KIEZ');
     expect(met.npc.name).toBe('Rita Kern');
 
@@ -106,7 +108,7 @@ describe('Begegnungs-Loop (Stadt)', () => {
       .toBe(run.dueTick);
 
     // Rueckkehr am naechsten Tag: die verzoegerte Folge ist jetzt sichtbar.
-    restInCity(lw);
+    restInCity(lw, loaded.ledger, prng);
     expect(lw.day).toBe(2);
     lw.tick = run.dueTick;
     processNarrativeRuntime(lw, loaded.ledger);
@@ -130,7 +132,7 @@ describe('Begegnungs-Loop (Stadt)', () => {
   });
 
   it('fuehrt eine Ablehnung in einen anderen sichtbaren Pfad', () => {
-    const { world, ledger } = start();
+    const { world, ledger, prng } = start();
     const met = meetNpc(world, 'KIEZ');
     const walletBefore = ledger.getBalance(PORTEMONNAIE);
     const result = takeEncounterAction(world, ledger, met.event.id, 'ABLEHNEN');
@@ -140,7 +142,7 @@ describe('Begegnungs-Loop (Stadt)', () => {
     processNarrativeRuntime(world, ledger);
     const run = world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')!;
     world.tick = run.dueTick;
-    restInCity(world);
+    restInCity(world, ledger, prng);
     processNarrativeRuntime(world, ledger);
     const echo = world.narrative.events.find((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))!;
     expect(echo.eventId).toBe('CITY_ENCOUNTER_ECHO_COLD');

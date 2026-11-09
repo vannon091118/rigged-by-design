@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T07:10Z-city-day-closeout-01",
+  "contributionId": "city-day-closeout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-night",
+  "function": "describe",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Tag schließt mit Löhnen und Miete. Wer die Stunden zählt, zählt den Morgen nicht zweimal.",
+  "directives": []
+}

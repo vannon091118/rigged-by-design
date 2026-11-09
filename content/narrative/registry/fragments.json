@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b8c2efee02324885367a8f45edec6b9262a02d4126213ed65f133efe7ad25506",
+  "contentHash": "sha256:41915499bc4d1b50097640b3bda475a421ce306b44c6d4ff667ce98a5c6c968a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -699,6 +699,28 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "city-day-closeout-01",
+      "turnId": "2026-11-09T07:10Z-city-day-closeout-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-night",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tag schließt mit Löhnen und Miete. Wer die Stunden zählt, zählt den Morgen nicht zweimal.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-day-closeout-01.json"
     },
     {
       "contributionId": "city-encounter-body-01",

@@ -14,15 +14,18 @@
  * Satz zeigen.
  */
 import { describe, expect, it } from 'vitest';
+import { Ledger } from '../../economy/ledger';
+import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { CITY_ENERGY_PER_DAY, cityOf, cityView, restInCity, runCityAction, travel } from '../city';
 import { createWorld, ensureStarter } from '../templates';
 import type { WorldState } from '../types';
 
-function start(): WorldState {
+function start(): { world: WorldState; ledger: Ledger; prng: Prng } {
   const world = createWorld('SMALL');
   ensureStarter(world);
   world.day = 1;
-  return world;
+  return { world, ledger: new Ledger(), prng: new Prng(randomSeed()) };
 }
 
 const gelesen: string[] = [];
@@ -41,16 +44,16 @@ function step(world: WorldState, actionId: string): void {
   );
 }
 
-function rest(world: WorldState): void {
+function rest(world: WorldState, ledger: Ledger, prng: Prng): void {
   const before = cityOf(world).energy;
-  const after = restInCity(world);
+  const after = restInCity(world, ledger, prng);
   console.log(`[stadt] tag=${world.day} TAGESABSCHLUSS energie=${before}->${after.energy} text="${after.lastText}"`);
 }
 
 /** Spielt einen Zweig bis zum Zielrang; der Tag endet nur, wenn die Energie fehlt. */
-function play(world: WorldState, actionId: string, target: number): void {
+function play(world: WorldState, ledger: Ledger, prng: Prng, actionId: string, target: number): void {
   while ((actionId.startsWith('KIEZ') ? cityOf(world).KIEZ : cityOf(world).MARKT) < target) {
-    if (cityOf(world).energy < 1) rest(world);
+    if (cityOf(world).energy < 1) rest(world, ledger, prng);
     step(world, actionId);
   }
 }
@@ -58,7 +61,7 @@ function play(world: WorldState, actionId: string, target: number): void {
 describe('Stadt-Loop als Replay', () => {
   it('spielt Kiez bis Eingeweihter, schaltet den Markt frei und schliesst beide Zweige ab', () => {
     gelesen.length = 0;
-    const world = start();
+    const { world, ledger, prng } = start();
     console.log(`[stadt] start ort=${cityOf(world).location} energie=${cityOf(world).energy}/${CITY_ENERGY_PER_DAY}`);
 
     travel(world, 'KIEZ');
@@ -68,12 +71,12 @@ describe('Stadt-Loop als Replay', () => {
     expect(cityView(world).locations.find((entry) => entry.id === 'MARKT')!.locked).toBe(true);
     expect(() => travel(world, 'MARKT')).toThrow(/Stammgast/);
 
-    play(world, 'KIEZ_ANSPRECHEN', 9);
+    play(world, ledger, prng, 'KIEZ_ANSPRECHEN', 9);
     expect(cityOf(world).KIEZ).toBeGreaterThanOrEqual(9);
     expect(cityView(world).locations.find((entry) => entry.id === 'MARKT')!.locked).toBe(false);
     console.log('[stadt] markt freigeschaltet ab Kiez-Rang Stammgast');
 
-    play(world, 'KIEZ_ANSPRECHEN', 15);
+    play(world, ledger, prng, 'KIEZ_ANSPRECHEN', 15);
     expect(cityOf(world).completed).toContain('KIEZ');
     console.log('[stadt] KIEZ abgeschlossen: Eingeweihter');
 
@@ -87,12 +90,12 @@ describe('Stadt-Loop als Replay', () => {
     expect(cityOf(world).location).toBe('MARKT');
     console.log('[stadt] reise MARKT');
 
-    play(world, 'MARKT_FEILSCHEN', 12);
+    play(world, ledger, prng, 'MARKT_FEILSCHEN', 12);
     expect(cityOf(world).completed).toContain('MARKT');
     console.log('[stadt] MARKT abgeschlossen: Marktherr');
 
     // Der Tag laesst sich auch nach dem Abschluss beenden und fuellt die Energie.
-    rest(world);
+    rest(world, ledger, prng);
     expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY);
 
     const view = cityView(world);
