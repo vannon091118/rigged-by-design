@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b124cd5acf5df8754eb4981cffe087123b80babab046e8c478954e0a4e97c0ef",
+  "contentHash": "sha256:8e0b37db9a295ced060f993e2178507987f090b04fe3c701987c33185368eaf5",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18221,6 +18221,28 @@
       "text": "Endlich trifft der Finger den Automaten, den man meint, und nicht den daneben. So etwas merkt man erst, wenn es aufhört, schiefzugehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-01.json"
+    },
+    {
+      "contributionId": "welt-treffer-02",
+      "turnId": "2026-11-09T20:05Z-welt-treffer-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
     }
   ]
 }
