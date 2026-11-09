@@ -12,7 +12,7 @@ export type WorkshopTool =
   | 'journal' | 'diagnostics' | 'assets' | 'sound' | 'controls' | 'fps' | 'device' | 'help';
 
 export type Popup =
-  | { kind: 'guests'; guestId: number | null }
+  | { kind: 'guests'; guestId: number | null; overview?: boolean }
   | { kind: 'machine'; itemId: number }
   | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'narrative'; visitorId?: number }

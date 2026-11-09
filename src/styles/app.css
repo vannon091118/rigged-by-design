@@ -99,8 +99,10 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   flex: 1 1 112px; min-width: 104px; scroll-snap-align: start;
   padding: 7px 10px; display: grid; gap: 1px;
   border: 1px solid var(--line); border-radius: 11px; background: rgba(8, 5, 15, 0.75);
-  box-shadow: var(--inset-line);
+  box-shadow: var(--inset-line); font: inherit; color: inherit; text-align: left;
 }
+button.vital { cursor: pointer; }
+button.vital:hover { border-color: var(--line-strong); }
 .vital span { font-size: var(--fs-micro); letter-spacing: 0.16em; color: var(--muted); }
 .vital strong { font-family: var(--mono); font-size: 17px; line-height: var(--lh-tight); }
 .vital strong em { font-size: var(--fs-meta); color: var(--muted); font-style: normal; }
@@ -172,7 +174,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 
 .hud-penalty.warn { border-color: rgba(255, 209, 102, 0.55); background: rgba(255, 209, 102, 0.08); color: var(--gold); }
 
-/* ---------- Dock: vier Ecken statt elf Tabs ---------- */
+/* ---------- Dock: wenige globale Ecken statt elf Tabs ---------- */
 .dock {
   position: relative; z-index: 22;
   display: grid; gap: 5px;

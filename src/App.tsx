@@ -1,5 +1,5 @@
 // @loc-exception: App verdrahtet Popups, Tastaturpfad und Floor in genau einem Zustandsbaum; getrennt waeren Fokus und Popup-Routing doppelt.
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import type { MenuAction } from './render/floor-actions';
@@ -45,6 +45,11 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const [placeError, setPlaceError] = useState('');
   const stage = useRef<FloorHandle>(null);
   const [editorOpen, setEditorOpen] = useState(() => editorEnabled(window.location.search));
+  // Eine stabile Projektion: die Karte fragt pro Frame die Buehne, nicht React.
+  const projectAnchor = useCallback(
+    (worldX: number, worldY: number) => stage.current?.project(worldX, worldY) ?? null,
+    [],
+  );
 
   useEffect(() => {
     if (!view.notice) return;
@@ -103,7 +108,10 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     enabled: popup === null && !buildOpen && !editorOpen,
     zoom: (factor) => stage.current?.zoom(factor),
     fit: () => stage.current?.fit(),
-    onEscape: () => setBuildOpen(false),
+    onEscape: () => {
+      if (actions.length > 0) { setActions([]); setAnchor(null); return; }
+      setBuildOpen(false);
+    },
   });
 
   const carryingCrate = view.player.carrying.startsWith('KRATE:');
@@ -167,7 +175,14 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
   return (
     <div className="app" data-perspective={perspective}>
-      <Hud view={view} perspective={perspective} onPerspective={changePerspective} onSkill={(attribute) => worldStore.spendSkill(attribute)} onBrandTap={onBrandTap} />
+      <Hud
+        view={view}
+        perspective={perspective}
+        onPerspective={changePerspective}
+        onSkill={(attribute) => worldStore.spendSkill(attribute)}
+        onBrandTap={onBrandTap}
+        onGuests={() => openPopup({ kind: 'guests', guestId: null })}
+      />
 
       <main
         className={`stage-wrap${carryingCrate ? ' is-placing' : ''}`}
@@ -184,16 +199,27 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           placing={ghostId}
           paused={popup?.kind === 'games' || popup?.kind === 'machine'}
           onGuest={(id, at) => {
-            setAnchor(at ?? null);
-            if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id });
+            // NPC = Objektpanel am Ziel, nicht das grosse Gastfenster.
+            setActions([]);
+            setAnchor(null);
+            if (perspective === 'operator') {
+              openPopup({ kind: 'guests', guestId: id });
+              setPopupAnchor(at ?? null);
+            }
           }}
           onFurniture={(id, at) => {
-            setAnchor(at ?? null);
-            // Panel am Geraet, nicht im Vollbild: derselbe Anker wie die Karte.
+            const item = view.furniture.find((entry) => entry.id === id);
+            // Nur echte Geraete bekommen ein Panel. Bar, Lager und Deko bleiben
+            // bei der Aktionskarte direkt am Objekt.
+            if (!item?.gameId) return;
+            setActions([]);
+            setAnchor(null);
             openPopup({ kind: 'machine', itemId: id });
             setPopupAnchor(at ?? null);
           }}
           onEmpty={(x, y) => {
+            setActions([]);
+            setAnchor(null);
             crates.tapFloor(x, y);
           }}
           onInteract={handleFloorInteract}
@@ -209,6 +235,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         <ActionCard
           actions={actions}
           anchor={anchor}
+          project={projectAnchor}
           onPick={(action) => {
             if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
             handleFloorInteract(action.id, action.targetId);
@@ -301,6 +328,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         perspective={perspective}
         popup={popup}
         anchor={popupAnchor}
+        project={projectAnchor}
         onClose={() => { setPopup(null); setPopupAnchor(null); }}
         onOpen={openPopup}
         onStaff={() => { setPopup(null); setBuildOpen(true); }}

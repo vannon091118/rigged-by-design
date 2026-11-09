@@ -80,7 +80,7 @@ export function GamesPopup({ view, onClose, onPlay, onRisk, onTakeHome, onExclus
   };
 
   return (
-    <PopupShell eyebrow="DU BIST GAST" title={rival.name} onClose={onClose} wide full={full} game={machine.game}>
+    <PopupShell eyebrow="DU BIST GAST" title={rival.name} onClose={onClose} wide full={full} surface="activity" game={machine.game}>
       <div className="foreign-top">
         <div className="house-tabs">
           {states.map((entry) => (

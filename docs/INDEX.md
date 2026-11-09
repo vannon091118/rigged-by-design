@@ -1,6 +1,6 @@
 # Doku-Index
 
-<!-- rbd-doc: v0.3.199 | 2026-11-09 22:41 UTC -->
+<!-- rbd-doc: v0.3.200 | 2026-11-09 23:35 UTC -->
 
 **Zweck:** Die Landkarte. `AGENTS.md` ist der Kurzvertrag; die folgenden Dokumente tragen das Tiefenwissen. Keine Regel wird hier dupliziert, nur verlinkt.
 

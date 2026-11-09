@@ -68,6 +68,12 @@
   transform: translate(-50%, calc(-100% - 12px));
   animation: none;
 }
+/* Objektpanel: kompakter als eine Aktivitaetsansicht, der Floor bleibt sichtbar. */
+.popup[data-surface="object"] .popup-head h2 { font-size: 17px; }
+.popup[data-surface="object"] .popup-body { padding: 12px 14px 14px; }
+.popup[data-surface="object"] .guest-actions { justify-content: flex-start; }
+.popup[data-surface="object"] .guest-focus { grid-template-columns: 52px minmax(0, 1fr); }
+.popup[data-surface="object"] .guest-budget-big { grid-column: 2; justify-items: start; }
 /* Auf schmalen Geraeten bleibt die Daumenzone: dort bringt Anhaengen nichts. */
 @media (max-width: 620px) {
   .popup.is-anchored {

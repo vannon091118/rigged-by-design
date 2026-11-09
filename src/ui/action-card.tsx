@@ -1,7 +1,7 @@
 /** Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. */
-import type { CSSProperties } from 'react';
 import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
+import { useWorldAnchorStyle, type AnchorProjector } from './use-world-anchor';
 
 interface ActionCardProps {
   readonly actions: readonly MenuAction[];
@@ -9,11 +9,14 @@ interface ActionCardProps {
   readonly onClose: () => void;
   /** Weltposition des getroffenen Objekts; die Karte haengt dann daran. */
   readonly anchor?: ScreenAnchor | null;
+  /** Rechnet den Weltpunkt bei Kamera- und Zoomfahrten neu in den Viewport. */
+  readonly project?: AnchorProjector;
 }
 
-export function ActionCard({ actions, onPick, onClose, anchor = null }: ActionCardProps) {
+export function ActionCard({ actions, onPick, onClose, anchor = null, project }: ActionCardProps) {
   const usable = actions.filter((action) => action.id !== 'CANCEL');
   const main = usable[0];
+  const style = useWorldAnchorStyle(anchor, project);
   if (!main) return null;
   const enabled = usable.filter((action) => action.id !== main.id && action.enabled).slice(0, 2);
   const alternatives = enabled.length > 0 ? enabled : usable.slice(1, 3);
@@ -23,7 +26,7 @@ export function ActionCard({ actions, onPick, onClose, anchor = null }: ActionCa
       className={`action-card${anchor ? ' is-anchored' : ''}`}
       role="group"
       aria-label="Aktionen"
-      style={anchor ? ({ '--anchor-x': `${Math.round(anchor.x)}px`, '--anchor-y': `${Math.round(anchor.y)}px` } as CSSProperties) : undefined}
+      style={anchor ? style : undefined}
     >
       <button
         type="button"
