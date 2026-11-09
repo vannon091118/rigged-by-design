@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.193 | 2026-11-09 01:05 UTC -->
+<!-- rbd-doc: v0.3.193 | 2026-11-09 01:14 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -524,10 +524,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2139 |
-| Gelistete Dateien | 2139 |
+| Getrackte Dateien | 2140 |
+| Gelistete Dateien | 2140 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (31), content (703), docs (77), public (554), scripts (91), src (658) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (32), content (703), docs (77), public (554), scripts (91), src (658) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,7 +539,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 29 Datei(en)
+- `.lane-claims/claims/` — 30 Datei(en)
 - `content/narrative/contributions/` — 699 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -668,6 +668,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-narrative-chain-graph.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-npc-encounter-loop.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-player-cash-closeout.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
@@ -2456,7 +2457,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/ambient-tense-table.ts` — Feste Pool-Szene: angespannte Begegnung an einem Tisch. — gelesen: 59 Zeilen
 - `src/core/sim/narrative/events/definitions/chain-visitor-echo.ts` — Spaetere Wiederbegegnung nach einer aufgeloesten Kette. Der Knoten hat keinen — gelesen: 44 Zeilen
 - `src/core/sim/narrative/events/definitions/city-encounter-echo.ts` — Verzoegerte Folge der Begegnung. Es gibt zwei mechanisch getrennte Pfade: — gelesen: 71 Zeilen
-- `src/core/sim/narrative/events/definitions/city-encounter.ts` — Die Begegnung im Ort: eine echte Szene mit benanntem Gegenueber, nicht ein — gelesen: 71 Zeilen
+- `src/core/sim/narrative/events/definitions/city-encounter.ts` — Die Begegnung im Ort: eine echte Szene mit benanntem Gegenueber, nicht ein — gelesen: 72 Zeilen
 - `src/core/sim/narrative/events/definitions/index.ts` — Einzige Registry der stabilen Event-Templates. — gelesen: 32 Zeilen
 - `src/core/sim/narrative/events/definitions/neon-nacht.ts` — Engine-seitig gestartete Nachfrageveranstaltung ohne Fact-Trigger und ohne Choices. — gelesen: 23 Zeilen
 - `src/core/sim/narrative/events/definitions/rival-move.ts` — Stabile mechanische Definition fuer eine Rivalenhandlung am Spielerhaus. — gelesen: 53 Zeilen
