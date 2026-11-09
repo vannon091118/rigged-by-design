@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T17:52Z-loc-gate",
+  "contributionId": "loc-gate-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "commands"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das LOC-Gate zaehlt jetzt Code-Zeilen: Kommentare und Leerzeilen fallen aus dem Budget, Textbausteine und Event-Templates ebenfalls. Die Grenze gilt der Logik, nicht der Prosa; wer sie reisst, teilt Verantwortung, statt Kommentare zu loeschen.",
+  "directives": []
+}

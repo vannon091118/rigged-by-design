@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:61Z-nar-title-rival-02",
+  "contributionId": "nar-title-rival-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "rival"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Schatten am Fenster, der auch nach dem zweiten Blick bleibt.",
+  "directives": []
+}

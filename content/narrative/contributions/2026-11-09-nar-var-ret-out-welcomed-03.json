@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:19Z-nar-var-ret-out-welcomed-03",
+  "contributionId": "nar-var-ret-out-welcomed-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er trinkt darauf, dass niemand etwas erklären muss.",
+  "directives": []
+}

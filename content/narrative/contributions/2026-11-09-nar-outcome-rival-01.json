@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:08Z-nar-outcome-rival-01",
+  "contributionId": "nar-outcome-rival-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "rival",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "scharf",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Draußen wird der Motor gestartet und wieder abgestellt. Der Rivale lässt sich Zeit; er will, dass du weißt, dass er noch da ist.",
+  "directives": []
+}

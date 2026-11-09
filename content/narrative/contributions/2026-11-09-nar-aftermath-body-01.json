@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:17Z-nar-aftermath-body-01",
+  "contributionId": "nar-aftermath-body-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Der Gast sitzt noch da, als die Musik längst gewechselt hat. Er hat nicht mehr viel zu sagen, aber er geht nicht.",
+  "directives": []
+}

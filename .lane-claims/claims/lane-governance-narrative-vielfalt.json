@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/narrative-vielfalt",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/narrative-vielfalt",
+  "baseSha": "7153ccfe556a443fd4a4f1799d66e470478e50fc",
+  "task": "Narrative-Vielfalt, Titelbindung und Ketten-/Konfliktfixes abschliessen",
+  "goal": "Szenen zeigen eigene Texte, Ketten und Ausgaenge ohne Fallback",
+  "pathAllowlist": [
+    "content/",
+    "src/",
+    "scripts/",
+    "docs/",
+    "AGENTS.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/freeze-unlock.json",
+    ".lane-claims/claims/lane-governance-narrative-vielfalt.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "7153ccfe556a443fd4a4f1799d66e470478e50fc"
+}

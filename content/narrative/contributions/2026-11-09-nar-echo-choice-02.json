@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:26Z-nar-echo-choice-02",
+  "contributionId": "nar-echo-choice-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Ihn ausreden lassen",
+  "directives": []
+}

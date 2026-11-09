@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:39Z-nar-var-amb-out-escalated-01",
+  "contributionId": "nar-var-amb-out-escalated-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "escalate"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Satz bleibt stehen, und der Tisch wird leiser als die Musik.",
+  "directives": []
+}

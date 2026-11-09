@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:16Z-nar-aftermath-title-02",
+  "contributionId": "nar-aftermath-title-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "melancholisch",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Was nach dem Gespräch stehen bleibt",
+  "directives": []
+}

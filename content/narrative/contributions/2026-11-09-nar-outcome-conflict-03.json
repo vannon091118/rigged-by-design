@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:07Z-nar-outcome-conflict-03",
+  "contributionId": "nar-outcome-conflict-03",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "conflict",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "melancholisch",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sie einigen sich auf nichts, aber sie bleiben sitzen. Das ist in diesem Haus oft das Beste, was zu haben ist.",
+  "directives": []
+}

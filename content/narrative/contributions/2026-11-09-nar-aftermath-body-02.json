@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:18Z-nar-aftermath-body-02",
+  "contributionId": "nar-aftermath-body-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Zwischen den Gläsern liegt ein Zettel, den keiner von euch angefasst hat. Der Abend hat noch Fragen offen.",
+  "directives": []
+}

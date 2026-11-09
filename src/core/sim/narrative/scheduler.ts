@@ -10,7 +10,7 @@ export type {
 export { createNarrativeRng, narrativeIndex, nextNarrativeRandom } from './narrative-rng';
 export {
   advanceEventStep, canTransitionEvent, eventOccurrenceKey, expireDueEvents, freezeEvent,
-  isLiveEventStatus, isTerminalEventStatus, transitionEvent,
+  holdLiveDeadlines, isLiveEventStatus, isTerminalEventStatus, transitionEvent,
 } from './event-lifecycle';
 export { isEventCandidate, isEventInstance, normalizeEventState } from './event-schema';
 export {

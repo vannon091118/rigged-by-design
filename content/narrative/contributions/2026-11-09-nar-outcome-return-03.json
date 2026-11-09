@@ -1,0 +1,26 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:02Z-nar-outcome-return-03",
+  "contributionId": "nar-outcome-return-03",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "loss",
+    "welcome",
+    "ask"
+  ],
+  "tone": "scharf",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er lacht kurz und ohne Wärme, nimmt den Platz aber an. Die Schultern bleiben trotzdem hoch, als rechne er mit einer zweiten Frage.",
+  "directives": []
+}

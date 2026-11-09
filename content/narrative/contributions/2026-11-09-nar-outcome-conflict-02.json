@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:06Z-nar-outcome-conflict-02",
+  "contributionId": "nar-outcome-conflict-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "conflict",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Für einen Moment ist der Lärm im Raum wichtiger als die beiden. Dann steht einer auf, legt Geld hin und geht, ohne sich zu verabschieden.",
+  "directives": []
+}

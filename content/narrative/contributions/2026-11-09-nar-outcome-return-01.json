@@ -1,0 +1,26 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:00Z-nar-outcome-return-01",
+  "contributionId": "nar-outcome-return-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "loss",
+    "welcome",
+    "ask"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er bleibt noch einen Moment am Tresen stehen, als hätte er auf genau diese Frage gewartet. Dann sagt er leise, dass es hier früher anders gerochen hat.",
+  "directives": []
+}

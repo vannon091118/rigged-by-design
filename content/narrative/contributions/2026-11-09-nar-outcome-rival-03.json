@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:10Z-nar-outcome-rival-03",
+  "contributionId": "nar-outcome-rival-03",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "rival",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Er hebt zwei Finger, ohne sich umzudrehen. Kein Gruß, eher eine Quittung.",
+  "directives": []
+}

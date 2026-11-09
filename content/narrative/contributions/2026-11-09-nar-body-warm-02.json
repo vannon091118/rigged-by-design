@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:65Z-nar-body-warm-02",
+  "contributionId": "nar-body-warm-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return",
+    "warm"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sie fragt nach dem Platz von damals, nicht nach dem Gewinn. Als du nickst, setzt sie sich, als wäre es abgemacht.",
+  "directives": []
+}

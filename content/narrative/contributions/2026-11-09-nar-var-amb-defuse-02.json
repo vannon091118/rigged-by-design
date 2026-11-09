@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:30Z-nar-var-amb-defuse-02",
+  "contributionId": "nar-var-amb-defuse-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "defuse"
+  ],
+  "tone": "warm",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das Gespräch auf etwas Leichteres lenken.",
+  "directives": []
+}

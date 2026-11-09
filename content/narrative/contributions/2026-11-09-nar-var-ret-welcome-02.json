@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:12Z-nar-var-ret-welcome-02",
+  "contributionId": "nar-var-ret-welcome-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "return",
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Den freien Hocker neben ihm anbieten.",
+  "directives": []
+}

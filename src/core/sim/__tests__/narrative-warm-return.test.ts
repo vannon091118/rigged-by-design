@@ -70,8 +70,12 @@ describe('Warme Rueckkehr als zweite Stufe (F)', () => {
     expect(result.scheduled.some((entry) => entry.eventId === 'VISITOR_RETURN_WARM')).toBe(true);
     const view = buildNarrativeView(world, ledger);
     const warm = view.events.find((entry) => entry.eventId === 'VISITOR_RETURN_WARM')!;
-    expect(warm.title).toBe('Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.');
-    expect(warm.body).toContain('erinnert es sich gern');
+    expect([
+      'Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.',
+      'Er bringt etwas mit, das keiner bestellt hat.',
+      'Diesmal kommt der Gast nicht wegen des Automaten.',
+    ]).toContain(warm.title);
+    expect(warm.body).toMatch(/erinnert es sich gern|Flasche auf den Tresen|Platz von damals/);
     expect(warm.choices.map((choice) => choice.choiceId)).toEqual(['WARM_WELCOME']);
     expect(warm.choices[0]?.label).toBe('Ihn mit Namen begrüßen und den gewohnten Platz anbieten.');
     expect(warm.fallbackSlots).not.toContain('TITLE');

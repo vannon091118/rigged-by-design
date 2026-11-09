@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:11Z-nar-outcome-aftermath-01",
+  "contributionId": "nar-outcome-aftermath-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "melancholisch",
+  "mood": "entschlossen",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Der Gast spricht weiter, auch als längst alles gesagt ist. Du hörst zu, weil Zuhören hier billiger ist als jede Reparatur.",
+  "directives": []
+}

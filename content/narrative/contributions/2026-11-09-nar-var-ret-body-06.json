@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:10Z-nar-var-ret-body-06",
+  "contributionId": "nar-var-ret-body-06",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Die erste Runde geht auf ihn, die zweite auf das Haus, und niemand erklärt, warum das fair ist.",
+  "directives": []
+}

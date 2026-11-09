@@ -16,7 +16,7 @@ import {
   KNOWLEDGE_CONFIG, knowledgeRisk, sourceWeightOf, validateKnowledgeConfig,
   type KnowledgeConfig,
 } from '../narrative/knowledge-config';
-import { recordFirstHand, reportKnowledge, rumorAbout } from '../narrative/knowledge';
+import { ageKnowledge, recordFirstHand, reportKnowledge, rumorAbout } from '../narrative/knowledge';
 import { relationshipBetween, shift } from '../narrative/relationships';
 import { createWorld } from '../templates';
 import { makeGuest } from '../traits';
@@ -142,5 +142,28 @@ describe('Wissenskette', () => {
     chooseActivity(w, withRumor, ledger, new Prng(SEED));
     expect(control.state).toBe('DRINK');
     expect(withRumor.state).not.toBe('DRINK');
+  });
+
+  it('laesst eigene Erfahrung altern, aber nicht unter die Untergrenze fallen', () => {
+    const w = world();
+    recordFirstHand(w, { actor: 'visitor:1', factId: 31, sentiment: -0.8, tick: 0 });
+
+    const dropped = ageKnowledge(w, 600);
+
+    expect(dropped).toBe(0);
+    expect(w.narrative.knowledge).toHaveLength(1);
+    expect(w.narrative.knowledge[0]).toMatchObject({ sourceKind: 'ERLEBT', confidence: 0.5, distance: 0 });
+    expect(rumorAbout(w, 'visitor:1')).toBeLessThan(0);
+  });
+
+  it('laesst gehoertes Wissen weiter altern und unter der Mindestkonfidenz fallen', () => {
+    const w = world();
+    recordFirstHand(w, { actor: 'visitor:1', factId: 32, sentiment: -0.8, tick: 0 });
+    expect(reportKnowledge(w, { from: 'visitor:1', to: 'visitor:2', tick: 1, seed: SEED }, quiet)).not.toBeNull();
+
+    const dropped = ageKnowledge(w, 600);
+
+    expect(dropped).toBeGreaterThan(0);
+    expect(w.narrative.knowledge.some((entry) => entry.actor === 'visitor:2')).toBe(false);
   });
 });

@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:11Z-nar-var-ret-welcome-01",
+  "contributionId": "nar-var-ret-welcome-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "return",
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Ihn mit einem Nicken an den Tresen holen.",
+  "directives": []
+}
