@@ -232,7 +232,7 @@ Code und seinen Test als Beleg.
 | P-8 | Ruf → Gastsprache | **erledigt 2026-11-08** | `narrative/guest-voice.ts` waehlt deterministisch aus drei Ruf-Pools; Test `guest-voice.test.ts` |
 | P-9 | Layout → Gaeste-Routen | **verifiziert, keine Luecke** | `world.ts` `worldNav` → `navGrid(size, furniture, world.layout)` (Wandkanten), `pathTo` → `findPath(guestNav(world))`; Layout-Aenderung aendert Pfade, `gridCache` erkennt sie an der Layout-Identitaet |
 | P-10 | Ledger → Narrative | **verifiziert, keine Luecke** | `narrative/ledger-facts.ts` verarbeitet Buchungen ab `ledgerSeq` und emittiert nur Bandwechsel `HOUSE_BALANCE` |
-| P-11 | SlotMemory → Ledger → Narrative | **verifiziert (Kette), Text offen** | `slot-session.ts` bucht Auszahlung → `ledger` → `ledger-facts`; ein eigener Fact fuer "Entladung" fehlt, damit die Narrative Engine den Drucklader benennen kann |
+| P-11 | SlotMemory → Ledger → Narrative | **erledigt 2026-11-09 (#296)** | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` belegt die Entladung als Fact; Implementierung in `src/core/sim/narrative/facts.ts`; Merge `2cd663a` |
 | P-12 | Beziehungen → Ruf | **verifiziert 2026-11-08 (#271)** | `relationshipStanding()` in `src/core/sim/narrative/relationships.ts` addiert in `src/core/sim/spawn.ts` einen deterministischen, auf ±6 Punkte begrenzten Anteil an `reputation()`; Test `src/core/sim/__tests__/reputation.test.ts` |
 
 #### B. Narrative und Content
