@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.196 | 2026-11-09 17:13 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 17:14 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -225,7 +225,7 @@ Code und seinen Test als Beleg.
 | P-1 | Luecken-Regel sperrte Pools ab 50 (siehe oben) | **erledigt 2026-11-08 (#267)** | `gapIssues` fuellt offene Pools zuerst, danach ist Wachstum erlaubt; `shrinkIssues` verbietet Schrumpf; Beleg im Abschnitt Textbausteine |
 | P-2 | Stadt-Loop war nicht auf `main`: Kiez (Fremder→Eingeweihter), Markt (Laufbursche→Marktherr), Energie und "Tag beenden" lagen nur in PR #264 | **gemergt 2026-11-08 (#264)** | Merge-Commit `fd6c081`; Stadt-Kopf-CI gruen (`42441210747`, `42441205413`), Stadt-Tests und `city-loop-walkthrough.test.ts` gruen |
 | P-3 | `PLAYER_CASH` hat eine Funktion, aber keinen Produktions-Aufrufer | **erledigt 2026-11-08 (#290)** | Produktionspfad `src/ui/self-exclusion-panel.tsx` → `src/store/game-commands.ts` `CASH_OUT` → `cashOutPlayerCash`; Tests `src/store/__tests__/exclusion-command.test.ts` und `src/ui/__tests__/self-exclusion-panel.test.tsx`; Merge `5e0f2a0`, Claim lane/sim/player-cash-payout |
-| P-4 | Einnahmen je Spieltyp fehlen als Kennzahl | offen | Ledger kennt Konten, nicht Spieltypen; `economyOf` aggregiert global |
+| P-4 | Einnahmen je Spieltyp fehlen als Kennzahl | **erledigt 2026-11-09** | `LedgerEntry.game` traegt den Spieltyp echter Runden, `economyOf().byGame` summiert Einsatz und Auszahlung je Typ; Test `ledger-game-type.test.ts` belegt Save/Load-Erhalt |
 | P-5 | Sucht-Folgen sind eine Designentscheidung | offen | `personaStake`/`addictedStake` skalieren nur Einsatz und Sitzung |
 | P-6 | Archiv wird beim ersten Load aus dem Journal gefuellt | offen (niedrig) | `store/migrate.ts` setzt `saved.archive ?? world.journal` |
 | P-7 | Ruf → Slot-Nutzung | **erledigt 2026-11-08** | `guest-play.ts` `stakeConfidence` (0,8..1,2, Deckel und Chipbestand bleiben hart); Test `reputation-slot-use.test.ts` |

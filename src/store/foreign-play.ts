@@ -102,7 +102,7 @@ export function dealCardOutcome(
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
   if (!Number.isSafeInteger(stake) || stake <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
-  foreignBet(ledger, stake, world.tick);
+  foreignBet(ledger, stake, world.tick, entry.game);
   pendingCard.set(key, { stake });
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
@@ -135,7 +135,7 @@ export function settleCardOutcome(
   if (stake !== pending.stake) throw new Error('Einsatz passt nicht zur offenen Kartenrunde.');
   pendingCard.delete(key);
   const payout = cardPayout(stake, engineBps, rivalEdge(rival, entry));
-  if (payout > 0) foreignWin(ledger, payout, world.tick);
+  if (payout > 0) foreignWin(ledger, payout, world.tick, entry.game);
   const netToHouse = (payout - stake) as VaCoinMicro;
   if (netToHouse !== 0) {
     emitFact(world, {

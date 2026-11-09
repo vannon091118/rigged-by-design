@@ -35,7 +35,7 @@ describe('Ledger-Diagnose', () => {
   });
 
   it('erkennt eine nicht gedeckte Buchung und eine falsche Bilanz im Replay', () => {
-    const entry = { seq: 0, tick: 0, from: 'A', to: 'B', amount: fromVC(2), reason: 'test' };
+    const entry = { seq: 0, tick: 0, from: 'A', to: 'B', amount: fromVC(2), reason: 'test', game: null };
     const replay = new Map<string, VaCoinMicro>([['A', fromVC(1)]]);
     expect(applyEntry(replay, entry, new Set())).toBe(false);
     expect(replay.get('A')).toBe(fromVC(1));

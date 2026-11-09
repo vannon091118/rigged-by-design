@@ -65,22 +65,22 @@ export function exchangeFromVc(ledger: Ledger, guestId: number, amount: VaCoinMi
   return amount;
 }
 
-export function placeBet(ledger: Ledger, guestId: number, amount: VaCoinMicro, tick: number): void {
-  ledger.transfer(guestAccount(guestId), HAUSKONTO, amount, guestReason('STAKE', guestId), tick);
+export function placeBet(ledger: Ledger, guestId: number, amount: VaCoinMicro, tick: number, game: string | null = null): void {
+  ledger.transfer(guestAccount(guestId), HAUSKONTO, amount, guestReason('STAKE', guestId), tick, game);
 }
 
 /** Volle Auszahlung: was das Hauskonto nicht deckt, wird als Schuld gebucht statt gekappt. */
-export function payOut(ledger: Ledger, guestId: number, amount: VaCoinMicro, tick: number): void {
+export function payOut(ledger: Ledger, guestId: number, amount: VaCoinMicro, tick: number, game: string | null = null): void {
   if (amount <= ZERO_VC) return;
   const house = ledger.getBalance(HAUSKONTO);
   const covered = (amount < house ? amount : house) as VaCoinMicro;
   if (covered > ZERO_VC) {
-    ledger.transfer(HAUSKONTO, pendingAccount(guestId), covered, `gast ${guestId} gewinn`, tick);
+    ledger.transfer(HAUSKONTO, pendingAccount(guestId), covered, `gast ${guestId} gewinn`, tick, game);
   }
   const debt = (amount - covered) as VaCoinMicro;
   if (debt <= ZERO_VC) return;
   ledger.openLiability(DEBT_ACCOUNT);
-  ledger.transfer(DEBT_ACCOUNT, pendingAccount(guestId), debt, `gast ${guestId} gewinn auf kredit`, tick);
+  ledger.transfer(DEBT_ACCOUNT, pendingAccount(guestId), debt, `gast ${guestId} gewinn auf kredit`, tick, game);
   // Grossgewinn: visuelles Event fuer Partikel/Flash in der UI.
   if (amount >= fromVC(10)) {
     emit('money:bigPayout', { guestId, amount, covered, debt });
@@ -135,11 +135,11 @@ export function playerTakeHome(ledger: Ledger, amount: VaCoinMicro, tick: number
   ledger.transfer(HAUSKONTO, PORTEMONNAIE, amount, TX_REASON.TAKE_HOME, tick);
 }
 
-export function foreignBet(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
-  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, TX_REASON.FOREIGN_STAKE, tick);
+export function foreignBet(ledger: Ledger, amount: VaCoinMicro, tick: number, game: string | null = null): void {
+  ledger.transfer(PORTEMONNAIE, EXTERNAL, amount, TX_REASON.FOREIGN_STAKE, tick, game);
 }
 
-export function foreignWin(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
+export function foreignWin(ledger: Ledger, amount: VaCoinMicro, tick: number, game: string | null = null): void {
   if (amount <= ZERO_VC) return;
-  ledger.transfer(EXTERNAL, PORTEMONNAIE, amount, TX_REASON.FOREIGN_WIN, tick);
+  ledger.transfer(EXTERNAL, PORTEMONNAIE, amount, TX_REASON.FOREIGN_WIN, tick, game);
 }

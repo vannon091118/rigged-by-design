@@ -5,9 +5,17 @@
  */
 import type { Ledger } from '../economy/ledger';
 import type { LedgerEntry } from '../economy/ledger-integrity';
-import { HAUSKONTO, SHOP, STAFF, UTILITIES, DEBT_ACCOUNT } from './money';
+import { HAUSKONTO, PORTEMONNAIE, SHOP, STAFF, UTILITIES, DEBT_ACCOUNT } from './money';
 import { ROBBERY_ACCOUNT } from './penalty-pool';
 import { guestReasonKind, shopBucket } from './tx-reasons';
+
+interface GameEconomy {
+  /** Spieltyp, z. B. SLOT oder PLINKO. */
+  readonly game: string;
+  readonly stakeVolume: number;
+  readonly gamePayouts: number;
+  readonly retainedGamingWin: number;
+}
 
 export interface EconomySummary {
   /** Einsatzvolumen (Bruttospielumsatz): alles, was Gaeste ins Haus spielen. */
@@ -29,9 +37,17 @@ export interface EconomySummary {
   readonly investment: number;
   /** Kumulierter Betriebsgewinn: Spielgewinn plus Service minus laufende Kosten und Verluste. */
   readonly operatingProfit: number;
+  /** Einnahmen und Auszahlungen je Spieltyp, deterministisch sortiert. */
+  readonly byGame: readonly GameEconomy[];
+}
+
+interface GameTotals {
+  stake: number;
+  payout: number;
 }
 
 interface Totals {
+  games: Map<string, GameTotals>;
   stakeVolume: number;
   gamePayouts: number;
   unpaidPayouts: number;
@@ -51,12 +67,26 @@ const cursors = new WeakMap<Ledger, { seq: number; totals: Totals }>();
 function emptyTotals(): Totals {
   return {
     stakeVolume: 0, gamePayouts: 0, unpaidPayouts: 0, serviceRevenue: 0, wages: 0, rent: 0,
-    operatingRepairs: 0, goods: 0, losses: 0, investment: 0,
+    operatingRepairs: 0, goods: 0, losses: 0, investment: 0, games: new Map(),
   };
 }
 
 function classify(entry: LedgerEntry, t: Totals): void {
   const { from, to, amount, reason } = entry;
+  // Die Spieltyp-Spur zaehlt nur Haus-Umsaetze: Einsatz ans Hauskonto oder
+  // Auszahlung aus Hauskonto/Schuld. Fremdes Haus bleibt Spieler-Geld.
+  if (entry.game) {
+    const flow = to === HAUSKONTO
+      ? 'stake'
+      : (from === HAUSKONTO || from === DEBT_ACCOUNT) && (to.startsWith('PENDING_') || to === PORTEMONNAIE)
+        ? 'payout'
+        : null;
+    if (flow) {
+      const game = t.games.get(entry.game) ?? { stake: 0, payout: 0 };
+      game[flow] += amount;
+      t.games.set(entry.game, game);
+    }
+  }
   // Ein Ueberfall trifft die Kasse oder das Portemonnaie; beides ist ein Verlust.
   if (to === ROBBERY_ACCOUNT) { t.losses += amount; return; }
   if (to === HAUSKONTO && from.startsWith('VISITOR_')) {
@@ -117,5 +147,13 @@ export function economyOf(ledger: Ledger): EconomySummary {
     losses: toVC(t.losses),
     investment: toVC(t.investment),
     operatingProfit: toVC(operatingProfit),
+    byGame: [...t.games.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([game, totals]) => ({
+        game,
+        stakeVolume: toVC(totals.stake),
+        gamePayouts: toVC(totals.payout),
+        retainedGamingWin: toVC(totals.stake - totals.payout),
+      })),
   };
 }

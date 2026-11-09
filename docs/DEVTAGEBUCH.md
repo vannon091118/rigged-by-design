@@ -1,9 +1,21 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.196 | 2026-11-09 17:13 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 17:14 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
+
+## 2026-11-09 - P-4: Spieltyp-Spuren im Ledger
+
+**Ziel:** Der Ledger soll den Spieltyp eines Laufs nachvollziehbar mitfuehren, nicht nur Konten und Gruende.
+
+**Befund:** `LedgerEntry` kannte `from/to/amount/reason`, `economyOf` aggregierte global. Der Spieltyp existierte nur am Geraet und im `GameResult`; beim Buchen und beim Save-Replay ging er verloren.
+
+**Umsetzung:** `LedgerEntry.game` als nullable Spieltyp-Spur, gestempelt in `placeBet`/`payOut`, im eigenen Spiel, im fremden Haus und in `foreignRound`; `save.ts` schreibt und replayt das Feld, alte Saves bleiben ohne Spur lesbar. `economyOf().byGame` summiert Einsatz und Auszahlung je Typ, deterministisch sortiert, ohne fremdes Haus als Hausumsatz zu zaehlen.
+
+**Pruefungen:** Typecheck, `verify:light`, `verify:claims`, `narrative:check`, `narrative:blocks`, `verify:test-quality`, `verify:dead-code`, Save-Roundtrip-Test. Mutationsprobe: ohne die Zuweisung `game: gameTag` schlaegt der neue Test fehl.
+
+**Bewusst nicht getan:** Kein Save-Versionssprung (optionales Feld), keine zweite Ledger-Wahrheit und keine UI-Kennzahl in diesem Schnitt.
 
 ## 2026-11-09 - APK-Signatur und apksigner-Gate
 

@@ -2820,6 +2820,10 @@
     {
       "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
       "contributionId": "logic-safety-payout-01"
+    },
+    {
+      "turnId": "2026-11-09T08:45Z-ledger-game-type",
+      "contributionId": "ledger-game-type-01"
     }
   ]
 }
