@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:46Z-nar-title-tense-02",
+  "contributionId": "nar-title-tense-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "ambient-tense"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Tisch wird gelacht, aber niemand nimmt die Hand vom Glas.",
+  "directives": []
+}

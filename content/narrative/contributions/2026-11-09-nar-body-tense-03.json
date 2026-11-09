@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T12:12Z-nar-body-tense-03",
+  "contributionId": "nar-body-tense-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "ambient-tense"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Tisch wird nicht mehr gelacht; die Hände bleiben am Glas.",
+  "directives": []
+}

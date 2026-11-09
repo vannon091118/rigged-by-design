@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:25Z-nar-var-amb-body-03",
+  "contributionId": "nar-var-amb-body-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Jemand lacht zu laut, und der Rest des Raums wartet kurz, ob es ansteckend ist.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:27Z-nar-var-amb-body-05",
+  "contributionId": "nar-var-amb-body-05",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwischen den Stühlen liegt ein Kartenrest vom letzten Abend. Keiner hebt ihn auf.",
+  "directives": []
+}

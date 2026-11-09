@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:40Z-nar-var-amb-out-escalated-02",
+  "contributionId": "nar-var-amb-out-escalated-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "escalate"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Einer von beiden stellt das Glas ab, langsam, damit es gehört wird.",
+  "directives": []
+}

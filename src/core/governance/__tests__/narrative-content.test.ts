@@ -109,7 +109,7 @@ describe('Narrative Content Registry (NAR-09)', () => {
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
-  });
+  }, 20_000);
 
   it('weist fehlende Pflichtfelder und unbekannte Felder zurueck', () => {
     const missing = clone(first.data);

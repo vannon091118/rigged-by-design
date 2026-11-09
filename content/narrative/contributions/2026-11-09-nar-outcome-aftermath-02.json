@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:12Z-nar-outcome-aftermath-02",
+  "contributionId": "nar-outcome-aftermath-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Er nimmt die Serviette zurück und faltet sie kleiner, bis sie in die Tasche passt. Was er erzählt hat, bleibt im Raum stehen.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:58Z-nar-title-conflict-01",
+  "contributionId": "nar-title-conflict-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "conflict"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Stimmen weichen einander nicht mehr aus.",
+  "directives": []
+}

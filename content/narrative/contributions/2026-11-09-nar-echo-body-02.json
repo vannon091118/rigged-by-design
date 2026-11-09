@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:24Z-nar-echo-body-02",
+  "contributionId": "nar-echo-body-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "melancholisch",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Sie legt etwas auf den Tresen, das du zuletzt in ihrer Hand gesehen hast, bevor sie gegangen ist. Es ist noch warm.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:38Z-nar-var-amb-out-defused-02",
+  "contributionId": "nar-var-amb-out-defused-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "defuse"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Runde kommt ins Rollen, und der Streit verliert sich zwischen zwei Liedern.",
+  "directives": []
+}

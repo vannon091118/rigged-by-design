@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:22Z-nar-var-ret-out-asked-03",
+  "contributionId": "nar-var-ret-out-asked-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "ask"
+  ],
+  "tone": "melancholisch",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er erzählt nicht die ganze Geschichte, aber genug, dass die Lücke einen Rand bekommt.",
+  "directives": []
+}

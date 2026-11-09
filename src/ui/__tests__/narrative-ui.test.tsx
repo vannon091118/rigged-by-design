@@ -42,20 +42,17 @@ describe('Narrative UI (NAR-14)', () => {
 
     expect(screen.getByRole('article').className).toContain('narrative-card');
     expect(screen.getByTitle('Verbleibende Zeit bis die Szene verfaellt').textContent).toMatch(/^\d+ (s|min)$/);
-    fireEvent.click(screen.getByRole('button', { name: 'Zurück an den Tresen winken.' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Ihn mit einem Nicken an den Tresen holen.' }));
 
     expect(onChoose).toHaveBeenCalledWith(eventId, 'WELCOME_BACK');
   });
 
-  it('nennt die Slots beim Namen, die auf die Sicherheitscopy zurueckfallen', () => {
+  it('zeigt keinen Sicherheitscopy-Hinweis, wenn alle Slots einen Text haben', () => {
     const { view } = scene();
 
     render(<NarrativePopup view={view} onClose={noop} onChoose={noop} onDismiss={noop} />);
 
-    const hint = screen.getByText(/Ohne passenden Text/).textContent ?? '';
-    expect(hint).toContain('OUTCOME_WELCOMED');
-    expect(hint).toContain('OUTCOME_ASKED');
-    expect(hint).not.toContain('Titel');
+    expect(screen.queryByText(/Ohne passenden Text/)).toBeNull();
   });
 
   it('lässt eine gesperrte Choice nicht klicken und nennt den Grund', () => {
@@ -64,7 +61,7 @@ describe('Narrative UI (NAR-14)', () => {
 
     render(<NarrativePopup view={view} onClose={noop} onChoose={onChoose} onDismiss={noop} />);
 
-    const blocked = screen.getByRole('button', { name: 'Nach dem letzten Abend fragen.' }) as HTMLButtonElement;
+    const blocked = screen.getByRole('button', { name: 'Nach seinem letzten Abend fragen.' }) as HTMLButtonElement;
 
     expect(blocked.disabled).toBe(true);
     expect(screen.getByText(/Voraussetzung fehlt/).textContent).toContain('Voraussetzung fehlt');

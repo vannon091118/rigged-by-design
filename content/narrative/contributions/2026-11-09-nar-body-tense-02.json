@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T12:11Z-nar-body-tense-02",
+  "contributionId": "nar-body-tense-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "ambient-tense"
+  ],
+  "tone": "scharf",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Satz fällt leiser, als er gemeint war, und bleibt trotzdem liegen.",
+  "directives": []
+}

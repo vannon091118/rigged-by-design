@@ -1,9 +1,12 @@
 /** Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. */
 import type { RivalId, WorldState } from '../types';
+import { isTerminalEventStatus } from './event-lifecycle';
 import { NARRATIVE_LIMITS, type ActorRef, type RelationshipEdge } from './types';
 
 const DIMENSION_MIN = -10;
 const DIMENSION_MAX = 10;
+/** Konflikt ist ein Mass, kein Vorzeichen: 0 heisst unbelastet, negativ gibt es nicht. */
+const CONFLICT_MIN = 0;
 const VISITOR_REF = /^visitor:([1-9]\d*)$/;
 const STAFF_REF = /^staff:([1-9]\d*)$/;
 const RIVAL_REF = /^rival:[A-Z_]+$/;
@@ -33,6 +36,7 @@ export function relationshipBetween(world: WorldState, from: ActorRef, to: Actor
 }
 
 const clamp = (value: number): number => Math.max(DIMENSION_MIN, Math.min(DIMENSION_MAX, value));
+const clampConflict = (value: number): number => Math.max(CONFLICT_MIN, Math.min(DIMENSION_MAX, value));
 const finite = (value: unknown): number => (typeof value === 'number' && Number.isFinite(value) ? value : 0);
 /** Der Writer prueft dieselbe Endlichkeit wie die Normalisierung: kein NaN im Zustand. */
 const delta = (value: unknown): number => finite(value);
@@ -62,7 +66,7 @@ export function shift(world: WorldState, from: ActorRef, to: ActorRef, changes: 
       from, to,
       trust: clamp(delta(changes.trust)),
       sympathy: clamp(delta(changes.sympathy)),
-      conflict: clamp(delta(changes.conflict)),
+      conflict: clampConflict(delta(changes.conflict)),
       influence: clamp(delta(changes.influence)),
       updatedTick: safeTick(tick),
     });
@@ -72,7 +76,7 @@ export function shift(world: WorldState, from: ActorRef, to: ActorRef, changes: 
       ...edge,
       trust: clamp(edge.trust + delta(changes.trust)),
       sympathy: clamp(edge.sympathy + delta(changes.sympathy)),
-      conflict: clamp(edge.conflict + delta(changes.conflict)),
+      conflict: clampConflict(edge.conflict + delta(changes.conflict)),
       influence: clamp(edge.influence + delta(changes.influence)),
       updatedTick: safeTick(tick),
     };
@@ -83,7 +87,12 @@ export function shift(world: WorldState, from: ActorRef, to: ActorRef, changes: 
   }
 }
 
-/** Alle Visitor-IDs mit mindestens einer Kante; Retention darf sie nicht loeschen. */
+/**
+ * Alle Visitor-IDs, die Retention nicht loeschen darf: Endpunkte von Beziehungskanten
+ * und Teilnehmer nicht abgeschlossener Szenen. Ohne den zweiten Teil verdraengt die
+ * Profilgrenze den Darsteller einer laufenden Szene und die Szene endet mit
+ * MISSING_PARTICIPANT.
+ */
 export function pinnedVisitorIds(world: WorldState): ReadonlySet<number> {
   const pinned = new Set<number>();
   for (const edge of world.narrative.relationships) {
@@ -91,6 +100,13 @@ export function pinnedVisitorIds(world: WorldState): ReadonlySet<number> {
     const to = visitorIdOf(edge.to);
     if (from !== null) pinned.add(from);
     if (to !== null) pinned.add(to);
+  }
+  for (const event of world.narrative.events) {
+    if (isTerminalEventStatus(event.status)) continue;
+    for (const ref of event.participants) {
+      const visitorId = visitorIdOf(ref);
+      if (visitorId !== null) pinned.add(visitorId);
+    }
   }
   return pinned;
 }
@@ -126,7 +142,7 @@ export function normalizeRelationships(raw: unknown): RelationshipEdge[] {
       to: entry.to,
       trust: clamp(finite(entry.trust)),
       sympathy: clamp(finite(entry.sympathy)),
-      conflict: clamp(finite(entry.conflict)),
+      conflict: clampConflict(finite(entry.conflict)),
       influence: clamp(finite(entry.influence)),
       updatedTick: safeTick(entry.updatedTick),
     };

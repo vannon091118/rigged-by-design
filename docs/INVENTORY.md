@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.193 | 2026-11-08 17:58 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 17:03 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statistics 7 · performance 7.
+Summe: 227 Dateien — contract 138 · integration 43 · governance 32 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -160,6 +160,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/games/engines/__tests__/blackjack.test.ts` | games | contract | ja | `src/core/games/engines/blackjack.ts` |
 | `src/core/games/engines/__tests__/interactive-cards.test.ts` | games | contract | ja | `src/core/games/engines/interactive-cards.ts` |
 | `src/core/governance/__tests__/affected-tests.test.ts` | pipeline | governance | ja | `scripts/lib/affected-tests.mjs` |
+| `src/core/governance/__tests__/apk-signing.test.ts` | ci | governance | ja | `.github/workflows/build-apk.yml` |
 | `src/core/governance/__tests__/auto-resolve.test.ts` | pipeline | governance | ja | `scripts/auto-resolve.mjs` |
 | `src/core/governance/__tests__/body-sync.test.ts` | pipeline | governance | ja | `scripts/lib/body-sync.mjs` |
 | `src/core/governance/__tests__/branch-prune.test.ts` | pipeline | governance | ja | `scripts/lib/branch-prune.mjs` |
@@ -174,6 +175,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/governance/__tests__/issue-scope.test.ts` | pipeline | governance | ja | `scripts/lib/issue-scope.mjs` |
 | `src/core/governance/__tests__/lane-claims.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
 | `src/core/governance/__tests__/narrative-compiler.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-compiler.mjs` |
+| `src/core/governance/__tests__/narrative-content-quality.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-blocks.mjs` |
 | `src/core/governance/__tests__/narrative-content.test.ts` | pipeline | governance | ja | `scripts/lib/narrative-content.mjs` |
 | `src/core/governance/__tests__/pipeline-modes.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/pr-watcher.test.ts` | pipeline | governance | ja | `scripts/pr-watcher.mjs` |
@@ -182,6 +184,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/governance/__tests__/pretask.test.ts` | pipeline | governance | ja | `scripts/lib/worktree-isolation.mjs` |
 | `src/core/governance/__tests__/process-sweep.test.ts` | pipeline | governance | ja | `scripts/lib/process-sweep.mjs` |
 | `src/core/governance/__tests__/promote-guard.test.ts` | pipeline | governance | ja | `scripts/lib/promote-guard.mjs` |
+| `src/core/governance/__tests__/red-team-gate-lane.test.ts` | pipeline | governance | ja | `scripts/lib/pipeline-plan.mjs` |
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
 | `src/core/governance/__tests__/roadmap-register.test.ts` | docs | contract | ja | `docs/ROADMAP.md` |
 | `src/core/governance/__tests__/staging-scope.test.ts` | pipeline | governance | ja | `scripts/lib/staging-scope.mjs` |
@@ -201,6 +204,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
+| `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
@@ -215,19 +219,27 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
 | `src/core/sim/__tests__/guest-voice.test.ts` | sim | contract | ja | `src/core/sim/narrative/guest-voice.ts` |
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
+| `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
+| `src/core/sim/__tests__/knowledge-config.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge-config.ts` |
+| `src/core/sim/__tests__/knowledge-domain.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
+| `src/core/sim/__tests__/knowledge-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
+| `src/core/sim/__tests__/knowledge.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
 | `src/core/sim/__tests__/layout-commands.test.ts` | sim | contract | ja | `src/core/sim/layout-commands.ts` |
 | `src/core/sim/__tests__/layout-contract.test.ts` | sim | contract | ja | `src/core/sim/layout-derive.ts` |
 | `src/core/sim/__tests__/layout-history.test.ts` | sim | contract | ja | `src/core/sim/layout-history.ts` |
 | `src/core/sim/__tests__/layout-json.test.ts` | sim | contract | ja | `src/core/sim/layout-json.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
+| `src/core/sim/__tests__/main-event-pool.test.ts` | sim | contract | ja | `src/core/sim/narrative/main-event-pool.ts` |
 | `src/core/sim/__tests__/mod-guards.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
 | `src/core/sim/__tests__/mod-resolver.test.ts` | sim | contract | ja | `src/core/sim/offers.ts` |
 | `src/core/sim/__tests__/money-truth.test.ts` | sim | contract | ja | `src/core/sim/money.ts` |
 | `src/core/sim/__tests__/mugging-cover.test.ts` | sim | contract | ja | `src/core/sim/mugging.ts` |
 | `src/core/sim/__tests__/narrative-boundary.test.ts` | sim | contract | ja | `src/core/sim/narrative/boundary.ts` |
+| `src/core/sim/__tests__/narrative-chain-runtime.test.ts` | sim | contract | ja | `src/core/sim/narrative/chains/chain-runtime.ts` |
+| `src/core/sim/__tests__/narrative-chain-schema.test.ts` | sim | contract | ja | `src/core/sim/narrative/chains/chain-schema.ts` |
 | `src/core/sim/__tests__/narrative-choice-contract.test.ts` | sim | contract | ja | `src/core/sim/narrative/choices/contract.ts` |
 | `src/core/sim/__tests__/narrative-choice-eligibility.test.ts` | sim | contract | ja | `src/core/sim/narrative/choices/eligibility.ts` |
 | `src/core/sim/__tests__/narrative-choice-execution.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
@@ -278,6 +290,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
+| `src/core/sim/__tests__/treat-influence.test.ts` | sim | contract | ja | `src/core/sim/player.ts` |
 | `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
 | `src/core/sim/__tests__/tycoon-needs.test.ts` | sim | contract | ja | `src/core/sim/needs.ts` |
 | `src/core/sim/__tests__/tycoon-ops.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
@@ -288,6 +301,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/core/sim/narrative/__tests__/composition-context.test.ts` | sim | contract | ja | `src/core/sim/narrative/composition-context.ts` |
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
+| `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
 | `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
 | `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
 | `src/render/__tests__/floor-actions.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
@@ -305,6 +319,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/render/rig.bench.ts` | render | performance | nein, CI | `src/render/rig-pose.ts` |
 | `src/store/__tests__/card-payout.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/determinism.test.ts` | store | integration | ja | `src/store/transfer.ts` |
+| `src/store/__tests__/exclusion-command.test.ts` | store | integration | ja | `src/store/game-commands.ts` |
 | `src/store/__tests__/narrative-commands.test.ts` | store | integration | ja | `src/store/narrative-commands.ts` |
 | `src/store/__tests__/narrative-rival-source.test.ts` | store | integration | ja | `src/store/foreign-play.ts` |
 | `src/store/__tests__/narrative-save.test.ts` | store | integration | ja | `src/store/save.ts` |
@@ -333,6 +348,7 @@ Summe: 211 Dateien — contract 127 · integration 41 · governance 29 · statis
 | `src/ui/__tests__/machine-play.test.tsx` | ui | integration | ja | `src/ui/machine-popup.tsx` |
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/perspective-switch.test.tsx` | ui | integration | ja | `src/ui/perspective-switch.tsx` |
+| `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
 <!-- TEST_CATALOG_END -->
 
@@ -524,10 +540,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2151 |
-| Gelistete Dateien | 2151 |
+| Getrackte Dateien | 2257 |
+| Gelistete Dateien | 2257 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (36), content (706), docs (77), public (554), scripts (91), src (662) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (37), content (810), docs (77), public (554), scripts (91), src (663) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,8 +555,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 34 Datei(en)
-- `content/narrative/contributions/` — 702 Datei(en)
+- `.lane-claims/claims/` — 35 Datei(en)
+- `content/narrative/contributions/` — 806 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -620,7 +636,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 24 Datei(en)
-- `src/store/` — 27 Datei(en)
+- `src/store/` — 28 Datei(en)
 - `src/store/__tests__/` — 19 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
@@ -670,6 +686,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-narrative-chain-graph.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-narrative-vielfalt.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-npc-encounter-loop.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-player-cash-closeout.json` — { — gelesen: 24 Zeilen
@@ -683,7 +700,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 10 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 77 Zeilen
@@ -1390,9 +1407,113 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-city-encounter-give.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15595 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2813 Zeilen
-- `content/narrative/vocabulary/classification.json` — { — gelesen: 194 Zeilen
+- `content/narrative/contributions/2026-11-09-loc-gate-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-loc-gate-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-body-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-body-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-choice-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-choice-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-title-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-aftermath-title-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-bar-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-bar-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-bar-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-round-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-round-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-round-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-tense-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-tense-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-tense-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-warm-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-body-warm-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-body-01.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-body-02.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-choice-01.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-choice-02.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-title-01.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-echo-title-02.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-aftermath-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-aftermath-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-conflict-01.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-conflict-02.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-conflict-03.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-echo-01.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-echo-02.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-return-01.json` — { — gelesen: 26 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-return-02.json` — { — gelesen: 26 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-return-03.json` — { — gelesen: 26 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-rival-01.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-rival-02.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-rival-03.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-warm-01.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-outcome-warm-02.json` — { — gelesen: 25 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-bar-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-bar-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-bar-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-conflict-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-conflict-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-neon-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-neon-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-rival-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-rival-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-round-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-round-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-round-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-tense-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-tense-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-tense-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-turnier-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-turnier-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-warm-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-title-warm-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-03.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-04.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-05.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-body-06.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-defuse-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-defuse-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-escalate-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-escalate-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-join-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-join-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-defused-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-defused-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-escalated-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-escalated-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-joined-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-joined-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-shared-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-out-shared-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-share-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-amb-share-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-ask-01.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-ask-02.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-ask-03.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-03.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-04.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-05.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-body-06.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-asked-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-asked-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-asked-03.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-welcomed-01.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-welcomed-02.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-out-welcomed-03.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-title-01.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-title-02.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-title-03.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-title-04.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-title-05.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-01.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-02.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-03.json` — { — gelesen: 23 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18023 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3229 Zeilen
+- `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1057 Zeilen
@@ -2038,7 +2159,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/branch-cleanup.mjs` — Lokale Wegwerf-Branches nach dem Merge melden. — gelesen: 54 Zeilen
 - `scripts/build-asset-manifest.mjs` — Baut `src/render/assets/manifest.json` aus dem kuratierten Paket unter — gelesen: 151 Zeilen
 - `scripts/build-inventory.mjs` — Erzeugt die vollstaendige Dateiliste fuer docs/INVENTORY.md. — gelesen: 128 Zeilen
-- `scripts/check-loc.mjs` — LOC-Guard fuer VaCoin Casino Roguelite. — gelesen: 102 Zeilen
+- `scripts/check-loc.mjs` — LOC-Guard fuer VaCoin Casino Roguelite. — gelesen: 158 Zeilen
 - `scripts/ci-long-checks.mjs` — Lange Nachweise ueber GitHub Actions statt auf der eigenen Maschine. — gelesen: 212 Zeilen
 - `scripts/ci-plan.mjs` — CI-Plan fuer GitHub Actions: der Zustand des Laufs entscheidet, welche Gates — gelesen: 147 Zeilen
 - `scripts/ci-tag-release.mjs` — Tag und Release fuer die Version, die im gepushten Commit steht. — gelesen: 100 Zeilen
@@ -2119,7 +2240,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/verify-test-quality.mjs` — Fail-Closed-Testvertrag ueber die TypeScript-AST: Header, echte Assertions, — gelesen: 178 Zeilen
 - `scripts/verify-tree.mjs` — Tree-Gate: jede Datei liegt in ihrem Ordner, jede Schicht importiert nur nach innen. — gelesen: 105 Zeilen
 - `scripts/version-bump.mjs` — Versionsnummer des Turns: wird vor `verify` gebumpt, damit der gepushte Baum — gelesen: 56 Zeilen
-- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 286 Zeilen
+- `src/App.tsx` — import { lazy, Suspense, useEffect, useRef, useState } from 'react'; — gelesen: 290 Zeilen
 - `src/Config/android-signing.json` — { — gelesen: 7 Zeilen
 - `src/Config/capacitor.config.json` — { — gelesen: 12 Zeilen
 - `src/Config/escalation-levels.json` — ["AUTO_FIX", "LOCAL_GATE", "REMOTE_CI", "AGENT", "BLOCKED"] — gelesen: 1 Zeilen
@@ -2290,7 +2411,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/knowledge-config.test.ts` — P-23: Weitergabe und Quellenrang sind balancebar. Die Schwellen liegen in — gelesen: 60 Zeilen
 - `src/core/sim/__tests__/knowledge-domain.test.ts` — Vier NPCs, ein Fakt, vier Zustaende: direkte Sicht, eigenes Geraeusch, — gelesen: 162 Zeilen
 - `src/core/sim/__tests__/knowledge-relationships.test.ts` — Beziehungen sind Teil der Matrix: Konflikt stoppt die Weitergabe, Vertrauen — gelesen: 103 Zeilen
-- `src/core/sim/__tests__/knowledge.test.ts` — Wissenskette: Nur Erlebtes/Gesehenes/Gehoertes/Gelesenes darf berichtet werden. — gelesen: 146 Zeilen
+- `src/core/sim/__tests__/knowledge.test.ts` — Wissenskette: Nur Erlebtes/Gesehenes/Gehoertes/Gelesenes darf berichtet werden. — gelesen: 169 Zeilen
 - `src/core/sim/__tests__/layout-commands.test.ts` — Typisierte Layout-Commands: nur die genannten Tiles/Kanten aendern sich, — gelesen: 98 Zeilen
 - `src/core/sim/__tests__/layout-contract.test.ts` — Layout-Vertrag: eine Wahrheit fuer Dimension, Boden, Zonen und Wandkanten. — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/layout-history.test.ts` — Verlauf: 30 Schritte, ein Pinselstrich ist ein Schritt, Redo endet bei neuer Arbeit. — gelesen: 66 Zeilen
@@ -2310,7 +2431,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-choice-execution.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/narrative-command-allowlist.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 52 Zeilen
 - `src/core/sim/__tests__/narrative-command-dsl.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 36 Zeilen
-- `src/core/sim/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 235 Zeilen
+- `src/core/sim/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 239 Zeilen
 - `src/core/sim/__tests__/narrative-conflict-source.test.ts` — Ein echter Streit zwischen zwei Gästen ist die Quelle für gerichtete — gelesen: 83 Zeilen
 - `src/core/sim/__tests__/narrative-counter-rival.test.ts` — D2: `CONFRONT_RIVAL` traegt die typisierte Domaenenwirkung `COUNTER_RIVAL`. — gelesen: 74 Zeilen
 - `src/core/sim/__tests__/narrative-coverage.test.ts` — B4: Jedes stabile Template muss `TITLE`, `BODY` und jedes angebotene — gelesen: 61 Zeilen
@@ -2325,7 +2446,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-longrun.test.ts` — NAR-16: Mehr-Tage-Betrieb mit Geschichten, Rivalen und Save/Replay. Der Lauf — gelesen: 133 Zeilen
 - `src/core/sim/__tests__/narrative-memory.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 78 Zeilen
 - `src/core/sim/__tests__/narrative-multi-beat.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 175 Zeilen
-- `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 155 Zeilen
+- `src/core/sim/__tests__/narrative-relationships.test.ts` — Beziehungen sind gerichtet, haben genau einen Besitzer und pinnen ihre Endpunkte — gelesen: 191 Zeilen
 - `src/core/sim/__tests__/narrative-rival-context.test.ts` — Phase 5: Rivalen-Karten leiten sich rein aus Minds, Indizien und — gelesen: 88 Zeilen
 - `src/core/sim/__tests__/narrative-rival-trigger.test.ts` — C2: Der `rival-action`-Trigger oeffnet nur fuer Handlungen mit Folgen ein — gelesen: 57 Zeilen
 - `src/core/sim/__tests__/narrative-runtime.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 111 Zeilen
@@ -2334,7 +2455,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-trigger-schema.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 82 Zeilen
 - `src/core/sim/__tests__/narrative-trigger-template-contract.test.ts` — C1: Die Spec-Regel „nur triggern, wo ein Template mit Mehrwert existiert“ — gelesen: 45 Zeilen
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
-- `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 117 Zeilen
+- `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/nav-edges.test.ts` — Waende blockieren Kanten statt Tiles. Tueren und Durchgaenge bleiben — gelesen: 172 Zeilen
 - `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 186 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
@@ -2360,7 +2481,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/tycoon-needs.test.ts` — Bedürfnisse steuern Gastentscheidungen; Wut wird zum sichtbaren Streit mit Schaden. — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/tycoon-ops.test.ts` — Käufe kommen als Kiste, Personal arbeitet auf dem Floor, WC verstopft, Umbau braucht Ruf. — gelesen: 223 Zeilen
 - `src/core/sim/__tests__/visitor-disposition.test.ts` — E2: Zwei Besucher gleicher Persona, einer mit GOOD-Erinnerung und Sympathie, — gelesen: 165 Zeilen
-- `src/core/sim/__tests__/visitors.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 97 Zeilen
+- `src/core/sim/__tests__/visitors.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 139 Zeilen
 - `src/core/sim/__tests__/world.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 201 Zeilen
 - `src/core/sim/actions.ts` — Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. — gelesen: 180 Zeilen
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
@@ -2448,7 +2569,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 181 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 207 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2459,7 +2580,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/dialogue/select.ts` — Dialog: Reiner Ablauf der Dialogfuehrung. Kein Zufall, keine Zeit, kein Mutieren — gelesen: 54 Zeilen
 - `src/core/sim/narrative/dialogue/types.ts` — Dialog: Datenvertrag der Dialogfuehrung. — gelesen: 34 Zeilen
 - `src/core/sim/narrative/disposition.ts` — Besucherdisposition (E1): eine einzige reine Ableitung aus Persona-Basis, — gelesen: 134 Zeilen
-- `src/core/sim/narrative/event-lifecycle.ts` — Zentrale Event-State-Machine und Cooldown-Anwendung. — gelesen: 129 Zeilen
+- `src/core/sim/narrative/event-lifecycle.ts` — Zentrale Event-State-Machine und Cooldown-Anwendung. — gelesen: 141 Zeilen
 - `src/core/sim/narrative/event-scheduler.ts` — Scheduler fuer narrative Event-Instanzen; Auswahl ist deterministisch und begrenzt. — gelesen: 178 Zeilen
 - `src/core/sim/narrative/event-schema.ts` — Schema und sichere Normalisierung der persistenten Event-Domaene. — gelesen: 145 Zeilen
 - `src/core/sim/narrative/event-types.ts` — Persistente Event-Vertraege fuer Scheduler, Lifecycle und Ereignisketten. — gelesen: 65 Zeilen
@@ -2489,7 +2610,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/knowledge-gossip.ts` — Geruechtquelle: Ein zurueckkehrender Gast hoert nicht einfach den neuesten — gelesen: 79 Zeilen
 - `src/core/sim/narrative/knowledge-observation.ts` — Beobachtungsschicht: Eine Sicht oder ein Geraeusch setzt echte Anwesenheit — gelesen: 79 Zeilen
 - `src/core/sim/narrative/knowledge-persist.ts` — Persistenz der Wissensstaende: sichere Defaults, Grenzen und Herkunfts-Fallbacks. — gelesen: 39 Zeilen
-- `src/core/sim/narrative/knowledge-query.ts` — Abfragen auf der Wissensdomäne: Glaube, Widersprueche und Alterung. — gelesen: 66 Zeilen
+- `src/core/sim/narrative/knowledge-query.ts` — Abfragen auf der Wissensdomäne: Glaube, Widersprueche und Alterung. — gelesen: 72 Zeilen
 - `src/core/sim/narrative/knowledge-share.ts` — Weitergabe als regulaerer Matrix-Kontext: ob jemand ueberhaupt erzaehlt, — gelesen: 14 Zeilen
 - `src/core/sim/narrative/knowledge-types.ts` — Typen der Wissensdomäne: Wahrnehmung, Wissen und nachvollziehbare Herkunft. — gelesen: 46 Zeilen
 - `src/core/sim/narrative/knowledge.ts` — Wissenskette: Kein NPC berichtet, was er nicht selbst erlebt, gesehen, gehoert — gelesen: 185 Zeilen
@@ -2498,7 +2619,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/memory.ts` — Charaktergedaechtnis: aus Facts werden strukturierte Erinnerungen und messbare Wirkung. — gelesen: 54 Zeilen
 - `src/core/sim/narrative/narrative-rng.ts` — Eigener Mulberry32-Strom fuer narrative Auswahl; nie der Gameplay-PRNG. — gelesen: 28 Zeilen
 - `src/core/sim/narrative/relationship-apply.ts` — Wendet die fachlichen Beziehungsregeln auf bereits gedrainte Facts an. — gelesen: 75 Zeilen
-- `src/core/sim/narrative/relationships.ts` — Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. — gelesen: 137 Zeilen
+- `src/core/sim/narrative/relationships.ts` — Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. — gelesen: 153 Zeilen
 - `src/core/sim/narrative/rival-context.ts` — Phase 5: Rivalen-Karten als reine Ableitung aus den persistenten Minds. — gelesen: 41 Zeilen
 - `src/core/sim/narrative/runtime.ts` — Duenne Ablaufkoordination: Fact drainieren, Trigger auswerten, Kandidaten begrenzt planen. — gelesen: 116 Zeilen
 - `src/core/sim/narrative/scheduler.ts` — Oeffentliche Fassade fuer Event-Scheduler, Templates, Choices und Narrativ-RNG. — gelesen: 30 Zeilen
@@ -2547,7 +2668,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 119 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 104 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 68 Zeilen
-- `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 75 Zeilen
+- `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 76 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 152 Zeilen
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 44 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
@@ -2672,6 +2793,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/migrate-staff.ts` — Personal-Migration alter Speicherstaende. — gelesen: 38 Zeilen
 - `src/store/migrate-stains.ts` — Hydration von Flecken und Wischern für Save-Migration (v9). — gelesen: 10 Zeilen
 - `src/store/migrate.ts` — Hydration und Migration gespeicherter Stände (v5/v6/v7) in eine frische Welt. — gelesen: 134 Zeilen
+- `src/store/narrative-clock.ts` — Popup-Pause fuer Erzaehlfristen: der Welt-Tick laeuft weiter, offene Szenen verlieren keine Zeit. — gelesen: 17 Zeilen
 - `src/store/narrative-commands.ts` — Store-Naht fuer Narrative: Choice ausfuehren, Szene ablehnen und Facts flushen. — gelesen: 41 Zeilen
 - `src/store/narrative.bench.ts` — NAR-16: Narrative Hotpath. Gemessen wird ein realistischer Tick nach einem — gelesen: 53 Zeilen
 - `src/store/own-play.ts` — Store-Fassade fuer eigene Spielrunden: Der Kern rechnet und bucht, die — gelesen: 105 Zeilen
@@ -2700,7 +2822,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/editor-tools.test.ts` — Editor-Werkzeuge: Command-Absicht und Tastaturkuerzel sind rein und testbar; — gelesen: 45 Zeilen
 - `src/ui/__tests__/guest-profile.test.tsx` — Der Gast-Popup reicht nur die Besucher-ID an den Aufrufer; Profile und — gelesen: 59 Zeilen
 - `src/ui/__tests__/machine-play.test.tsx` — Der Betrieb behält den kostenlosen Diagnose-Testspin. Der Gast bekommt ohne — gelesen: 93 Zeilen
-- `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 116 Zeilen
+- `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 113 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 173 Zeilen

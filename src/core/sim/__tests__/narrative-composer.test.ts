@@ -7,7 +7,7 @@
  * nur als AST weiter. Kein Test braucht Zeit, Netzwerk oder Gameplay-PRNG.
  */
 import { describe, expect, it } from 'vitest';
-import { composeNarrative, type ComposeRequest, type ComposedNarrative } from '../narrative/composer';
+import { composeNarrative, type ComposeRequest, type ComposedNarrative, type NarrativeFragment } from '../narrative/composer';
 import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
 import { VISITOR_CONFLICT_TEMPLATE } from '../narrative/events/definitions/visitor-conflict';
 import { VISITOR_RETURN_TEMPLATE } from '../narrative/events/definitions/visitor-return';
@@ -31,15 +31,14 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     const result = composeNarrative(RETURN_REQUEST);
     expect(result.ok).toBe(true);
     expect(result.degraded).toBe(true);
-    expect(result.issues[0]).toContain('TITLE');
     expect(result.issues[0]).toContain('CHOICE_WELCOME');
     expect(result.slots).toHaveLength(VISITOR_RETURN_TEMPLATE.contentSlots.length);
     expect(result.slots.every((entry) => entry.text.length > 0)).toBe(true);
     expect(slot(result, 'BODY').contributionId).toBe('trigger-context-01');
     expect(slot(result, 'BODY').fallback).toBe(false);
-    expect(slot(result, 'TITLE').fallback).toBe(true);
+    expect(slot(result, 'TITLE').fallback).toBe(false);
     expect(result.fallbacks).toEqual([
-      'TITLE', 'CHOICE_WELCOME', 'CHOICE_ASK', 'OUTCOME_WELCOMED', 'OUTCOME_ASKED',
+      'CHOICE_WELCOME', 'CHOICE_ASK', 'OUTCOME_WELCOMED', 'OUTCOME_ASKED',
     ]);
   });
 
@@ -60,14 +59,19 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     });
     expect(result.ok).toBe(true);
     expect(slot(result, 'BODY').contributionId).toBe('nar-04-beziehungsquellen-01');
-    expect(slot(result, 'OUTCOME_DEFUSED').fallback).toBe(true);
-    expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBeNull();
+    expect(slot(result, 'OUTCOME_DEFUSED').fallback).toBe(false);
+    expect(slot(result, 'OUTCOME_DEFUSED').contributionId).toBe('nar-outcome-conflict-01');
     expect(slot(result, 'CHOICE_DEFUSE').fallback).toBe(false);
     expect(slot(result, 'CHOICE_DEFUSE').contributionId).toBe('b4-konflikt-defuse-01');
   });
 
   it('verwirft Locale- und Persona-Inkompatibilitaeten fail-closed', () => {
-    const withoutPersona = composeNarrative({ ...RETURN_REQUEST, availablePersonas: [] });
+    const personaBound = {
+      ...NARRATIVE_REGISTRY[0], contributionId: 'persona-bound-test-01', slot: 'event-body',
+      personaRefs: ['rita-kern'], flags: ['narrativ', 'rueckkehrer'], contexts: ['return'],
+    } satisfies NarrativeFragment;
+    const request = { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }], availablePersonas: [] };
+    const withoutPersona = composeNarrative(request, [personaBound]);
     expect(slot(withoutPersona, 'BODY').fallback).toBe(true);
     expect(slot(withoutPersona, 'BODY').contributionId).toBeNull();
 

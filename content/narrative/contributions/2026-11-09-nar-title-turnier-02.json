@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:57Z-nar-title-turnier-02",
+  "contributionId": "nar-title-turnier-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "demand",
+    "turnier-abend"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Karten liegen offen, und trotzdem setzt sich niemand daneben.",
+  "directives": []
+}

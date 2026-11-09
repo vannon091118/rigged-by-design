@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:20Z-nar-var-ret-out-asked-01",
+  "contributionId": "nar-var-ret-out-asked-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "ask"
+  ],
+  "tone": "melancholisch",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er antwortet erst nach dem zweiten Schluck: damals sei es spät geworden, und der Weg sei weiter gewesen als heute.",
+  "directives": []
+}

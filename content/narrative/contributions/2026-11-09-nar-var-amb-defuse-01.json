@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:29Z-nar-var-amb-defuse-01",
+  "contributionId": "nar-var-amb-defuse-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "defuse"
+  ],
+  "tone": "warm",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Einen Rundenwechsel anbieten, bevor es kippt.",
+  "directives": []
+}

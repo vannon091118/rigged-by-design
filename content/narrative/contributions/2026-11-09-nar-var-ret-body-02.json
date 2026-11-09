@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:06Z-nar-var-ret-body-02",
+  "contributionId": "nar-var-ret-body-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er legt die Hand auf den Tresen und sagt, er sei nur kurz vorbei. Die Uhr über der Bar sagt etwas anderes.",
+  "directives": []
+}

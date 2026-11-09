@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:04Z-nar-outcome-warm-02",
+  "contributionId": "nar-outcome-warm-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "warm",
+    "loss"
+  ],
+  "tone": "warm",
+  "mood": "entschlossen",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Sie bleibt länger als nötig. Als sie geht, liegt ein gefalteter Zettel unter dem Glas, mit einer Zahl, die du nicht bestellt hast.",
+  "directives": []
+}

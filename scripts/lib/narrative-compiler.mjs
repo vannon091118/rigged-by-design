@@ -45,8 +45,8 @@ export function renderRegistry(document) {
 
 /** Core darf kein JSON importieren; diese Datei ist die typisierte Laufzeitdatenbruecke. */
 export function renderRuntimeRegistry(document) {
-  // Mehrere Fragmente je Zeile: die Datei ist Datentraeger, kein Lesetext, und
-  // muss unter dem LOC-Cap ihrer Zustaendigkeit bleiben (engine, cap 200).
+  // Textdaten, kein Lesetext: vier Fragmente je Zeile halten den Diff lesbar.
+  // Die Datei zaehlt nicht ins LOC-Budget (scripts/check-loc.mjs).
   const perLine = 4;
   const rows = [];
   for (let index = 0; index < document.fragments.length; index += perLine) {

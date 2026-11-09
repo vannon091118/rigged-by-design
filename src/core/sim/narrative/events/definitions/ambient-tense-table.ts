@@ -9,12 +9,12 @@ export const AMBIENT_TENSE_TABLE_TEMPLATE: EventTemplate = {
   scope: 'PAIR',
   participantRoles: ['visitor', 'visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY', requiredContexts: ['welcome'] },
-    { id: 'CHOICE_DEFUSE', kind: 'CHOICE_LABEL' },
-    { id: 'CHOICE_ESCALATE', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_DEFUSED', kind: 'OUTCOME' },
-    { id: 'OUTCOME_ESCALATED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['ambient-tense'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['ambient-tense'] },
+    { id: 'CHOICE_DEFUSE', kind: 'CHOICE_LABEL', requiredContexts: ['defuse'] },
+    { id: 'CHOICE_ESCALATE', kind: 'CHOICE_LABEL', requiredContexts: ['escalate'] },
+    { id: 'OUTCOME_DEFUSED', kind: 'OUTCOME', requiredContexts: ['defuse'] },
+    { id: 'OUTCOME_ESCALATED', kind: 'OUTCOME', requiredContexts: ['escalate'] },
   ],
   choices: [
     {

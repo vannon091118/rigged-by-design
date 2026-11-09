@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:22Z-nar-echo-title-02",
+  "contributionId": "nar-echo-title-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Die alte Rechnung steht noch offen",
+  "directives": []
+}

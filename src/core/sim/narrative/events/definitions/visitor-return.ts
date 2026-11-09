@@ -13,8 +13,8 @@ export const VISITOR_RETURN_TEMPLATE: EventTemplate = {
     { id: 'BODY', kind: 'BODY', requiredContexts: ['return'] },
     { id: 'CHOICE_WELCOME', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'welcome'] },
     { id: 'CHOICE_ASK', kind: 'CHOICE_LABEL', requiredContexts: ['return', 'ask'] },
-    { id: 'OUTCOME_WELCOMED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath'] },
-    { id: 'OUTCOME_ASKED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath'] },
+    { id: 'OUTCOME_WELCOMED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath', 'welcome'] },
+    { id: 'OUTCOME_ASKED', kind: 'OUTCOME', requiredContexts: ['return', 'aftermath', 'ask'] },
   ],
   choices: [
     {

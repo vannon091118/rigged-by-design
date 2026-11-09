@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:13Z-nar-outcome-echo-01",
+  "contributionId": "nar-outcome-echo-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Er erinnert sich an mehr, als du ihm zutraust. Die Zahlen stimmen, die Namen auch, und das ist der unangenehme Teil.",
+  "directives": []
+}

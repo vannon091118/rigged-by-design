@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T18:05Z-gate-basis",
+  "contributionId": "loc-gate-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "commands"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Branch, den ein Gate fuer korrupt haelt, ist noch kein Fehler im Inhalt: Erst die Basis entscheidet, welcher Diff geprueft wird. Wer den Kopf neu aufsetzt, muss denselben Baum erneut belegen, statt den alten Lauf zu beschwichtigen.",
+  "directives": []
+}

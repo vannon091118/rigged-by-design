@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:54Z-nar-title-neon-01",
+  "contributionId": "nar-title-neon-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "demand",
+    "neon-nacht"
+  ],
+  "tone": "trocken",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Neon-Nacht: Das Haus zieht Leute an, die nur kurz bleiben wollten.",
+  "directives": []
+}

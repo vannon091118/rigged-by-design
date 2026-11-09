@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:42Z-nar-var-amb-out-joined-02",
+  "contributionId": "nar-var-amb-out-joined-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das Gespräch steht kurz still, dann beginnt es von vorn und wird besser.",
+  "directives": []
+}

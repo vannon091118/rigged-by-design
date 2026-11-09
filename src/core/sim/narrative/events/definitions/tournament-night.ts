@@ -12,7 +12,7 @@ export const TURNIER_ABEND_TEMPLATE: EventTemplate = {
   scope: 'GLOBAL',
   participantRoles: [],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['demand'] },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['demand', 'turnier-abend'] },
     { id: 'BODY', kind: 'BODY', requiredContexts: ['demand'] },
   ],
   choices: [],

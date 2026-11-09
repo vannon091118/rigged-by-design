@@ -2808,6 +2808,422 @@
     {
       "turnId": "2026-11-09T00:35Z-apk-signing",
       "contributionId": "apk-signing-01"
+    },
+    {
+      "turnId": "2026-11-09T10:00Z-nar-outcome-return-01",
+      "contributionId": "nar-outcome-return-01"
+    },
+    {
+      "turnId": "2026-11-09T10:01Z-nar-outcome-return-02",
+      "contributionId": "nar-outcome-return-02"
+    },
+    {
+      "turnId": "2026-11-09T10:02Z-nar-outcome-return-03",
+      "contributionId": "nar-outcome-return-03"
+    },
+    {
+      "turnId": "2026-11-09T10:03Z-nar-outcome-warm-01",
+      "contributionId": "nar-outcome-warm-01"
+    },
+    {
+      "turnId": "2026-11-09T10:04Z-nar-outcome-warm-02",
+      "contributionId": "nar-outcome-warm-02"
+    },
+    {
+      "turnId": "2026-11-09T10:05Z-nar-outcome-conflict-01",
+      "contributionId": "nar-outcome-conflict-01"
+    },
+    {
+      "turnId": "2026-11-09T10:06Z-nar-outcome-conflict-02",
+      "contributionId": "nar-outcome-conflict-02"
+    },
+    {
+      "turnId": "2026-11-09T10:07Z-nar-outcome-conflict-03",
+      "contributionId": "nar-outcome-conflict-03"
+    },
+    {
+      "turnId": "2026-11-09T10:08Z-nar-outcome-rival-01",
+      "contributionId": "nar-outcome-rival-01"
+    },
+    {
+      "turnId": "2026-11-09T10:09Z-nar-outcome-rival-02",
+      "contributionId": "nar-outcome-rival-02"
+    },
+    {
+      "turnId": "2026-11-09T10:10Z-nar-outcome-rival-03",
+      "contributionId": "nar-outcome-rival-03"
+    },
+    {
+      "turnId": "2026-11-09T10:11Z-nar-outcome-aftermath-01",
+      "contributionId": "nar-outcome-aftermath-01"
+    },
+    {
+      "turnId": "2026-11-09T10:12Z-nar-outcome-aftermath-02",
+      "contributionId": "nar-outcome-aftermath-02"
+    },
+    {
+      "turnId": "2026-11-09T10:13Z-nar-outcome-echo-01",
+      "contributionId": "nar-outcome-echo-01"
+    },
+    {
+      "turnId": "2026-11-09T10:14Z-nar-outcome-echo-02",
+      "contributionId": "nar-outcome-echo-02"
+    },
+    {
+      "turnId": "2026-11-09T10:15Z-nar-aftermath-title-01",
+      "contributionId": "nar-aftermath-title-01"
+    },
+    {
+      "turnId": "2026-11-09T10:16Z-nar-aftermath-title-02",
+      "contributionId": "nar-aftermath-title-02"
+    },
+    {
+      "turnId": "2026-11-09T10:17Z-nar-aftermath-body-01",
+      "contributionId": "nar-aftermath-body-01"
+    },
+    {
+      "turnId": "2026-11-09T10:18Z-nar-aftermath-body-02",
+      "contributionId": "nar-aftermath-body-02"
+    },
+    {
+      "turnId": "2026-11-09T10:19Z-nar-aftermath-choice-01",
+      "contributionId": "nar-aftermath-choice-01"
+    },
+    {
+      "turnId": "2026-11-09T10:20Z-nar-aftermath-choice-02",
+      "contributionId": "nar-aftermath-choice-02"
+    },
+    {
+      "turnId": "2026-11-09T10:21Z-nar-echo-title-01",
+      "contributionId": "nar-echo-title-01"
+    },
+    {
+      "turnId": "2026-11-09T10:22Z-nar-echo-title-02",
+      "contributionId": "nar-echo-title-02"
+    },
+    {
+      "turnId": "2026-11-09T10:23Z-nar-echo-body-01",
+      "contributionId": "nar-echo-body-01"
+    },
+    {
+      "turnId": "2026-11-09T10:24Z-nar-echo-body-02",
+      "contributionId": "nar-echo-body-02"
+    },
+    {
+      "turnId": "2026-11-09T10:25Z-nar-echo-choice-01",
+      "contributionId": "nar-echo-choice-01"
+    },
+    {
+      "turnId": "2026-11-09T10:26Z-nar-echo-choice-02",
+      "contributionId": "nar-echo-choice-02"
+    },
+    {
+      "turnId": "2026-11-09T11:00Z-nar-var-ret-title-01",
+      "contributionId": "nar-var-ret-title-01"
+    },
+    {
+      "turnId": "2026-11-09T11:01Z-nar-var-ret-title-02",
+      "contributionId": "nar-var-ret-title-02"
+    },
+    {
+      "turnId": "2026-11-09T11:02Z-nar-var-ret-title-03",
+      "contributionId": "nar-var-ret-title-03"
+    },
+    {
+      "turnId": "2026-11-09T11:03Z-nar-var-ret-title-04",
+      "contributionId": "nar-var-ret-title-04"
+    },
+    {
+      "turnId": "2026-11-09T11:04Z-nar-var-ret-title-05",
+      "contributionId": "nar-var-ret-title-05"
+    },
+    {
+      "turnId": "2026-11-09T11:05Z-nar-var-ret-body-01",
+      "contributionId": "nar-var-ret-body-01"
+    },
+    {
+      "turnId": "2026-11-09T11:06Z-nar-var-ret-body-02",
+      "contributionId": "nar-var-ret-body-02"
+    },
+    {
+      "turnId": "2026-11-09T11:07Z-nar-var-ret-body-03",
+      "contributionId": "nar-var-ret-body-03"
+    },
+    {
+      "turnId": "2026-11-09T11:08Z-nar-var-ret-body-04",
+      "contributionId": "nar-var-ret-body-04"
+    },
+    {
+      "turnId": "2026-11-09T11:09Z-nar-var-ret-body-05",
+      "contributionId": "nar-var-ret-body-05"
+    },
+    {
+      "turnId": "2026-11-09T11:10Z-nar-var-ret-body-06",
+      "contributionId": "nar-var-ret-body-06"
+    },
+    {
+      "turnId": "2026-11-09T11:11Z-nar-var-ret-welcome-01",
+      "contributionId": "nar-var-ret-welcome-01"
+    },
+    {
+      "turnId": "2026-11-09T11:12Z-nar-var-ret-welcome-02",
+      "contributionId": "nar-var-ret-welcome-02"
+    },
+    {
+      "turnId": "2026-11-09T11:13Z-nar-var-ret-welcome-03",
+      "contributionId": "nar-var-ret-welcome-03"
+    },
+    {
+      "turnId": "2026-11-09T11:14Z-nar-var-ret-ask-01",
+      "contributionId": "nar-var-ret-ask-01"
+    },
+    {
+      "turnId": "2026-11-09T11:15Z-nar-var-ret-ask-02",
+      "contributionId": "nar-var-ret-ask-02"
+    },
+    {
+      "turnId": "2026-11-09T11:16Z-nar-var-ret-ask-03",
+      "contributionId": "nar-var-ret-ask-03"
+    },
+    {
+      "turnId": "2026-11-09T11:17Z-nar-var-ret-out-welcomed-01",
+      "contributionId": "nar-var-ret-out-welcomed-01"
+    },
+    {
+      "turnId": "2026-11-09T11:18Z-nar-var-ret-out-welcomed-02",
+      "contributionId": "nar-var-ret-out-welcomed-02"
+    },
+    {
+      "turnId": "2026-11-09T11:19Z-nar-var-ret-out-welcomed-03",
+      "contributionId": "nar-var-ret-out-welcomed-03"
+    },
+    {
+      "turnId": "2026-11-09T11:20Z-nar-var-ret-out-asked-01",
+      "contributionId": "nar-var-ret-out-asked-01"
+    },
+    {
+      "turnId": "2026-11-09T11:21Z-nar-var-ret-out-asked-02",
+      "contributionId": "nar-var-ret-out-asked-02"
+    },
+    {
+      "turnId": "2026-11-09T11:22Z-nar-var-ret-out-asked-03",
+      "contributionId": "nar-var-ret-out-asked-03"
+    },
+    {
+      "turnId": "2026-11-09T11:23Z-nar-var-amb-body-01",
+      "contributionId": "nar-var-amb-body-01"
+    },
+    {
+      "turnId": "2026-11-09T11:24Z-nar-var-amb-body-02",
+      "contributionId": "nar-var-amb-body-02"
+    },
+    {
+      "turnId": "2026-11-09T11:25Z-nar-var-amb-body-03",
+      "contributionId": "nar-var-amb-body-03"
+    },
+    {
+      "turnId": "2026-11-09T11:26Z-nar-var-amb-body-04",
+      "contributionId": "nar-var-amb-body-04"
+    },
+    {
+      "turnId": "2026-11-09T11:27Z-nar-var-amb-body-05",
+      "contributionId": "nar-var-amb-body-05"
+    },
+    {
+      "turnId": "2026-11-09T11:28Z-nar-var-amb-body-06",
+      "contributionId": "nar-var-amb-body-06"
+    },
+    {
+      "turnId": "2026-11-09T11:29Z-nar-var-amb-defuse-01",
+      "contributionId": "nar-var-amb-defuse-01"
+    },
+    {
+      "turnId": "2026-11-09T11:30Z-nar-var-amb-defuse-02",
+      "contributionId": "nar-var-amb-defuse-02"
+    },
+    {
+      "turnId": "2026-11-09T11:31Z-nar-var-amb-escalate-01",
+      "contributionId": "nar-var-amb-escalate-01"
+    },
+    {
+      "turnId": "2026-11-09T11:32Z-nar-var-amb-escalate-02",
+      "contributionId": "nar-var-amb-escalate-02"
+    },
+    {
+      "turnId": "2026-11-09T11:33Z-nar-var-amb-join-01",
+      "contributionId": "nar-var-amb-join-01"
+    },
+    {
+      "turnId": "2026-11-09T11:34Z-nar-var-amb-join-02",
+      "contributionId": "nar-var-amb-join-02"
+    },
+    {
+      "turnId": "2026-11-09T11:35Z-nar-var-amb-share-01",
+      "contributionId": "nar-var-amb-share-01"
+    },
+    {
+      "turnId": "2026-11-09T11:36Z-nar-var-amb-share-02",
+      "contributionId": "nar-var-amb-share-02"
+    },
+    {
+      "turnId": "2026-11-09T11:37Z-nar-var-amb-out-defused-01",
+      "contributionId": "nar-var-amb-out-defused-01"
+    },
+    {
+      "turnId": "2026-11-09T11:38Z-nar-var-amb-out-defused-02",
+      "contributionId": "nar-var-amb-out-defused-02"
+    },
+    {
+      "turnId": "2026-11-09T11:39Z-nar-var-amb-out-escalated-01",
+      "contributionId": "nar-var-amb-out-escalated-01"
+    },
+    {
+      "turnId": "2026-11-09T11:40Z-nar-var-amb-out-escalated-02",
+      "contributionId": "nar-var-amb-out-escalated-02"
+    },
+    {
+      "turnId": "2026-11-09T11:41Z-nar-var-amb-out-joined-01",
+      "contributionId": "nar-var-amb-out-joined-01"
+    },
+    {
+      "turnId": "2026-11-09T11:42Z-nar-var-amb-out-joined-02",
+      "contributionId": "nar-var-amb-out-joined-02"
+    },
+    {
+      "turnId": "2026-11-09T11:43Z-nar-var-amb-out-shared-01",
+      "contributionId": "nar-var-amb-out-shared-01"
+    },
+    {
+      "turnId": "2026-11-09T11:44Z-nar-var-amb-out-shared-02",
+      "contributionId": "nar-var-amb-out-shared-02"
+    },
+    {
+      "turnId": "2026-11-09T11:45Z-nar-title-tense-01",
+      "contributionId": "nar-title-tense-01"
+    },
+    {
+      "turnId": "2026-11-09T11:46Z-nar-title-tense-02",
+      "contributionId": "nar-title-tense-02"
+    },
+    {
+      "turnId": "2026-11-09T11:47Z-nar-title-tense-03",
+      "contributionId": "nar-title-tense-03"
+    },
+    {
+      "turnId": "2026-11-09T11:48Z-nar-title-bar-01",
+      "contributionId": "nar-title-bar-01"
+    },
+    {
+      "turnId": "2026-11-09T11:49Z-nar-title-bar-02",
+      "contributionId": "nar-title-bar-02"
+    },
+    {
+      "turnId": "2026-11-09T11:50Z-nar-title-bar-03",
+      "contributionId": "nar-title-bar-03"
+    },
+    {
+      "turnId": "2026-11-09T11:51Z-nar-title-round-01",
+      "contributionId": "nar-title-round-01"
+    },
+    {
+      "turnId": "2026-11-09T11:52Z-nar-title-round-02",
+      "contributionId": "nar-title-round-02"
+    },
+    {
+      "turnId": "2026-11-09T11:53Z-nar-title-round-03",
+      "contributionId": "nar-title-round-03"
+    },
+    {
+      "turnId": "2026-11-09T11:54Z-nar-title-neon-01",
+      "contributionId": "nar-title-neon-01"
+    },
+    {
+      "turnId": "2026-11-09T11:55Z-nar-title-neon-02",
+      "contributionId": "nar-title-neon-02"
+    },
+    {
+      "turnId": "2026-11-09T11:56Z-nar-title-turnier-01",
+      "contributionId": "nar-title-turnier-01"
+    },
+    {
+      "turnId": "2026-11-09T11:57Z-nar-title-turnier-02",
+      "contributionId": "nar-title-turnier-02"
+    },
+    {
+      "turnId": "2026-11-09T11:58Z-nar-title-conflict-01",
+      "contributionId": "nar-title-conflict-01"
+    },
+    {
+      "turnId": "2026-11-09T11:59Z-nar-title-conflict-02",
+      "contributionId": "nar-title-conflict-02"
+    },
+    {
+      "turnId": "2026-11-09T11:60Z-nar-title-rival-01",
+      "contributionId": "nar-title-rival-01"
+    },
+    {
+      "turnId": "2026-11-09T11:61Z-nar-title-rival-02",
+      "contributionId": "nar-title-rival-02"
+    },
+    {
+      "turnId": "2026-11-09T11:62Z-nar-title-warm-01",
+      "contributionId": "nar-title-warm-01"
+    },
+    {
+      "turnId": "2026-11-09T11:63Z-nar-title-warm-02",
+      "contributionId": "nar-title-warm-02"
+    },
+    {
+      "turnId": "2026-11-09T11:64Z-nar-body-warm-01",
+      "contributionId": "nar-body-warm-01"
+    },
+    {
+      "turnId": "2026-11-09T11:65Z-nar-body-warm-02",
+      "contributionId": "nar-body-warm-02"
+    },
+    {
+      "turnId": "2026-11-09T12:10Z-nar-body-tense-01",
+      "contributionId": "nar-body-tense-01"
+    },
+    {
+      "turnId": "2026-11-09T12:11Z-nar-body-tense-02",
+      "contributionId": "nar-body-tense-02"
+    },
+    {
+      "turnId": "2026-11-09T12:12Z-nar-body-tense-03",
+      "contributionId": "nar-body-tense-03"
+    },
+    {
+      "turnId": "2026-11-09T12:13Z-nar-body-bar-01",
+      "contributionId": "nar-body-bar-01"
+    },
+    {
+      "turnId": "2026-11-09T12:14Z-nar-body-bar-02",
+      "contributionId": "nar-body-bar-02"
+    },
+    {
+      "turnId": "2026-11-09T12:15Z-nar-body-bar-03",
+      "contributionId": "nar-body-bar-03"
+    },
+    {
+      "turnId": "2026-11-09T12:16Z-nar-body-round-01",
+      "contributionId": "nar-body-round-01"
+    },
+    {
+      "turnId": "2026-11-09T12:17Z-nar-body-round-02",
+      "contributionId": "nar-body-round-02"
+    },
+    {
+      "turnId": "2026-11-09T12:18Z-nar-body-round-03",
+      "contributionId": "nar-body-round-03"
+    },
+    {
+      "turnId": "2026-11-09T17:52Z-loc-gate",
+      "contributionId": "loc-gate-01"
+    },
+    {
+      "turnId": "2026-11-09T18:05Z-gate-basis",
+      "contributionId": "loc-gate-02"
     }
   ]
 }

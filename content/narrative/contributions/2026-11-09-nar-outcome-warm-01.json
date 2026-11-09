@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:03Z-nar-outcome-warm-01",
+  "contributionId": "nar-outcome-warm-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "warm",
+    "loss"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Er stellt die Flasche ab, die er mitgebracht hat, und schiebt sie dir hin. Kein Wort über den Preis, nur ein Blick, der sagt: das hier ist keine Anzahlung.",
+  "directives": []
+}

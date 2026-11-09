@@ -11,8 +11,10 @@ import { fromVC, type VaCoinMicro } from '../../economy/vacoin';
 import { processNarrativeBoundary } from '../narrative/boundary';
 import { emitFact } from '../narrative/facts';
 import {
-  actorRefOfVisitor, pinnedVisitorIds, relationshipBetween,
+  actorRefOfVisitor, normalizeRelationships, pinnedVisitorIds, relationshipBetween, shift,
 } from '../narrative/relationships';
+import { holdLiveDeadlines } from '../narrative/event-lifecycle';
+import type { NarrativeEventInstance } from '../narrative/event-types';
 import { normalizeNarrativeState } from '../narrative/state';
 import { createWorld } from '../templates';
 import { recordVisitor, VISITOR_CAP } from '../visitors';
@@ -151,5 +153,39 @@ describe('Narrative Beziehungen', () => {
     processNarrativeBoundary(world, ledger);
     expect(world.narrative.recent.some((fact) => fact.kind === 'HOUSE_BALANCE')).toBe(true);
     expect(world.narrative.relationships).toEqual([]);
+  });
+
+  it('haelt Konflikt bei 0: Zuwendung baut Spannung ab, erzeugt aber kein Konflikt-Guthaben', () => {
+    const world = createWorld('SMALL');
+    const visitor = recordVisitor(world, { name: 'Null Konflikt', persona: 'STAMMGAST', tick: 0 });
+    const ref = actorRefOfVisitor(visitor.id);
+
+    shift(world, ref, 'player', { conflict: -5 }, 1);
+    expect(relationshipBetween(world, ref, 'player')?.conflict).toBe(0);
+    shift(world, ref, 'player', { conflict: 3 }, 2);
+    expect(relationshipBetween(world, ref, 'player')?.conflict).toBe(3);
+    shift(world, ref, 'player', { conflict: -5 }, 3);
+    expect(relationshipBetween(world, ref, 'player')?.conflict).toBe(0);
+
+    const loaded = normalizeRelationships([
+      { from: ref, to: 'player', trust: 0, sympathy: 0, conflict: -4, influence: 0, updatedTick: 1 },
+    ]);
+    expect(loaded[0]?.conflict).toBe(0);
+  });
+
+  it('haelt die Frist offener Szenen an und laesst abgeschlossene unberuehrt', () => {
+    const world = createWorld('SMALL');
+    const event = (id: number, status: NarrativeEventInstance['status'], expiresTick: number): NarrativeEventInstance => ({
+      id, eventId: 'VISITOR_RETURN', templateId: 'VISITOR_RETURN', templateVersion: 1,
+      offeredChoiceIds: [], status, scope: 'VISITOR', participants: ['visitor:1'],
+      sourceFactId: 0, priority: 0, startedTick: 0, updatedTick: 0, expiresTick, step: 'START',
+      maxOccurrences: 1, cooldownTicks: 0, chainFromEventId: null, resolution: null,
+    });
+    world.narrative.events.push(event(1, 'ACTIVE', 50), event(2, 'EXPIRED', 50));
+
+    holdLiveDeadlines(world, 10);
+
+    expect(world.narrative.events[0]?.expiresTick).toBe(60);
+    expect(world.narrative.events[1]?.expiresTick).toBe(50);
   });
 });

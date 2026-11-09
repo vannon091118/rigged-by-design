@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:37Z-nar-var-amb-out-defused-01",
+  "contributionId": "nar-var-amb-out-defused-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "defuse"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Ton fällt, ohne dass jemand nachgibt. Beide trinken weiter, als wäre nichts gewesen.",
+  "directives": []
+}

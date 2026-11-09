@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T12:16Z-nar-body-round-01",
+  "contributionId": "nar-body-round-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "ambient-round"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Runde geht weiter, obwohl längst jemand bezahlt hat.",
+  "directives": []
+}

@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:23Z-nar-echo-body-01",
+  "contributionId": "nar-echo-body-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Er stellt sich an denselben Platz wie beim letzten Mal, als hätte er ihn gemietet. Diesmal bringt er eine Frage mit, keine Ausrede.",
+  "directives": []
+}
