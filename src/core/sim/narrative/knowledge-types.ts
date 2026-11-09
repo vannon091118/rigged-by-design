@@ -25,6 +25,33 @@ export interface Observation {
  * Widersprueche bleiben als getrennte Eintraege erhalten und werden nicht
  * still ueberschrieben.
  */
+/** Ein einzelner, nicht doppelt zaehlender Grund fuer Weitergabe oder Glauben. */
+export interface ExchangeReason {
+  readonly code: string;
+  readonly delta: number;
+  readonly detail: string;
+}
+
+/**
+ * Eine belegte Wissens-Weitergabe: Absicht, Urteil und Gruende. `shared: false`
+ * heisst, der Sprecher hat geschwiegen; `accepted: null` heisst, es kam nicht
+ * zum Urteil. Der Log ist die Erklaerung der Simulation, kein zweiter Zustand.
+ */
+export interface KnowledgeExchange {
+  readonly id: number;
+  readonly tick: number;
+  readonly seed: number;
+  readonly from: ActorRef;
+  readonly to: ActorRef;
+  readonly factId: number;
+  readonly shared: boolean;
+  readonly accepted: boolean | null;
+  readonly score: number;
+  readonly threshold: number;
+  readonly reasons: readonly ExchangeReason[];
+  readonly entryId: number | null;
+}
+
 export interface KnowledgeEntry {
   readonly id: number;
   readonly actor: ActorRef;

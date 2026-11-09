@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T12:40Z-knowledge-belief",
+  "contributionId": "knowledge-belief-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "rumor",
+  "function": "warn",
+  "contexts": [
+    "scheduler"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [
+    "boris-falk",
+    "mira-sol"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Boris glaubt Mira nicht, weil ihre Kunde schon durch zwei Haende ging, ihr Laestermaul ihr Gewicht nimmt und sein Misstrauen jede nahe Quelle verlangt. Der Ruf entscheidet nicht allein: Herkunft, Distanz, Eigenschaft und Beziehung stehen als eigene Gruende im Protokoll.",
+  "directives": []
+}

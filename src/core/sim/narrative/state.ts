@@ -5,6 +5,7 @@ import { emitFact } from './facts';
 import { orderedFacts, safeInteger } from './fact-schema';
 import { normalizeRelationships } from './relationships';
 import { normalizeKnowledge } from './knowledge';
+import { normalizeExchanges } from './knowledge-persist';
 import { normalizeObservations } from './knowledge-observation';
 import { normalizeEventState } from './event-schema';
 import { createChainState, normalizeChainState } from './chains/chain-persist';
@@ -25,6 +26,7 @@ export function createNarrativeState(): NarrativeState {
   return {
     factSeq: 1, pending: [], recent: [], processedId: 0, dropped: 0,
     flags: {}, relationships: [], knowledge: [], knowledgeSeq: 1,
+    exchanges: [], exchangeSeq: 1,
     observations: [], observationSeq: 1, ledgerSeq: null, houseBand: 'OK',
     eventSeq: 1, events: [], cooldowns: [], rng: createNarrativeRng(),
     chains: createChainState(),
@@ -81,6 +83,9 @@ export function normalizeNarrativeState(raw: unknown): NarrativeState {
   state.knowledge = normalizeKnowledge(raw.knowledge);
   const maxKnowledge = state.knowledge.reduce((max, entry) => Math.max(max, entry.id), 0);
   state.knowledgeSeq = Math.max(state.knowledgeSeq, maxKnowledge + 1);
+  state.exchanges = normalizeExchanges(raw.exchanges);
+  const maxExchange = state.exchanges.reduce((max, entry) => Math.max(max, entry.id), 0);
+  state.exchangeSeq = Math.max(state.exchangeSeq, maxExchange + 1);
   state.observations = normalizeObservations(raw.observations);
   const maxObservation = state.observations.reduce((max, entry) => Math.max(max, entry.id), 0);
   state.observationSeq = Math.max(state.observationSeq, maxObservation + 1);

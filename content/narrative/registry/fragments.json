@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:65c54b8a48990cad12a85d4b55eab753c4ec9f8833e8d8a4df9829cf1b11a6ad",
+  "contentHash": "sha256:b17f26e6948d484f34863f62a5a09cedff93cc050f1b2884109d085d067d6aef",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3646,6 +3646,31 @@
       "text": "Rita stand am Tresen und sah, dass die Figur vor ihr einen Namen hatte, auch wenn der Abend noch nichts entschieden hatte. Ein Klick fuehrte vom Gast zu ihrem Profil, ohne dass jemand die Besucherliste von Hand durchsuchen musste. Hinter ihr lagen die abgeschlossenen Geschichten als Rueckblick: was entschieden wurde, was verfiel, wer dabei war. Keine zweite Wahrheit, nur ein Weg zur schon vorhandenen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
+    },
+    {
+      "contributionId": "knowledge-belief-01",
+      "turnId": "2026-11-09T12:40Z-knowledge-belief",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "boris-falk",
+        "mira-sol"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Boris glaubt Mira nicht, weil ihre Kunde schon durch zwei Haende ging, ihr Laestermaul ihr Gewicht nimmt und sein Misstrauen jede nahe Quelle verlangt. Der Ruf entscheidet nicht allein: Herkunft, Distanz, Eigenschaft und Beziehung stehen als eigene Gruende im Protokoll.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-knowledge-belief-01.json"
     },
     {
       "contributionId": "knowledge-chain-01",
