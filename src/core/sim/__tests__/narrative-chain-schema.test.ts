@@ -58,7 +58,7 @@ describe('Ereignisketten-Schema', () => {
       for (const node of chain.nodes) expect(templateFor(node.eventId)).not.toBeNull();
     }
     expect(NARRATIVE_CHAINS.map((chain) => chain.chainId))
-      .toEqual(['VISITOR_WARM_ARC', 'PAIR_CONFLICT_ARC']);
+      .toEqual(['VISITOR_WARM_ARC', 'PAIR_CONFLICT_ARC', 'CITY_ENCOUNTER_ARC']);
     expect(mergeNodeIds(VISITOR_WARM_ARC)).toEqual(['ECHO']);
     expect(reachableNodes(PAIR_CONFLICT_ARC).size).toBe(PAIR_CONFLICT_ARC.nodes.length);
   });

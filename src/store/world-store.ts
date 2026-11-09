@@ -164,7 +164,7 @@ class WorldStore {
   }
   shellRound(cups = 3): ShellRound { return shellRoundCmd(this.#prng, cups); }
   playRival(rivalId: RivalId, machineIndex: number, betVC: number, options?: GameExtras): GameResult | null { const result = playRivalCmd(this.#world, this.#ledger, rivalId, machineIndex, betVC, this.#prng, options); if (result) { flushNarrativeCmd(this.#world, this.#ledger); this.#emit(false); } return result; }
-  city(cmd: CityCommand): void { this.#guard(() => { this.#notice = cityCmd(this.#world, cmd); }); }
+  city(cmd: CityCommand): void { this.#guard(() => { this.#notice = cityCmd(this.#world, this.#ledger, cmd); }); }
   auditLedger(): LedgerDiagnosis { return this.#ledger.diagnose(); }
   exportGame(): string { return exportGameData(this.#world, this.#ledger, this.#prng.getState()); }
   planImport(raw: string): TransferReport { return planImportData(raw).report; }

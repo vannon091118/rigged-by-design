@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:06Z-city-encounter-echo-warm-opening",
+  "contributionId": "city-encounter-echo-warm-opening-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "encounter",
+    "echo",
+    "warm"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sie winkt dich heran, bevor die Tuer ganz aufgeht: die Sache von gestern ist noch nicht vorbei.",
+  "directives": []
+}

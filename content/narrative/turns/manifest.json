@@ -2758,6 +2758,46 @@
       "contributionId": "player-cash-closeout-01"
     },
     {
+      "turnId": "2026-11-09T10:01Z-city-encounter-opening",
+      "contributionId": "city-encounter-opening-01"
+    },
+    {
+      "turnId": "2026-11-09T10:02Z-city-encounter-body",
+      "contributionId": "city-encounter-body-01"
+    },
+    {
+      "turnId": "2026-11-09T10:03Z-city-encounter-give",
+      "contributionId": "city-encounter-give-01"
+    },
+    {
+      "turnId": "2026-11-09T10:04Z-city-encounter-help",
+      "contributionId": "city-encounter-help-01"
+    },
+    {
+      "turnId": "2026-11-09T10:05Z-city-encounter-decline",
+      "contributionId": "city-encounter-decline-01"
+    },
+    {
+      "turnId": "2026-11-09T10:06Z-city-encounter-echo-warm-opening",
+      "contributionId": "city-encounter-echo-warm-opening-01"
+    },
+    {
+      "turnId": "2026-11-09T10:07Z-city-encounter-echo-warm-body",
+      "contributionId": "city-encounter-echo-warm-body-01"
+    },
+    {
+      "turnId": "2026-11-09T10:08Z-city-encounter-echo-choice",
+      "contributionId": "city-encounter-echo-choice-01"
+    },
+    {
+      "turnId": "2026-11-09T10:09Z-city-encounter-echo-cold-opening",
+      "contributionId": "city-encounter-echo-cold-opening-01"
+    },
+    {
+      "turnId": "2026-11-09T10:10Z-city-encounter-echo-cold-body",
+      "contributionId": "city-encounter-echo-cold-body-01"
+    },
+    {
       "turnId": "2026-11-08T23:40Z-slot-discharge-fact-01",
       "contributionId": "slot-discharge-fact-01"
     },

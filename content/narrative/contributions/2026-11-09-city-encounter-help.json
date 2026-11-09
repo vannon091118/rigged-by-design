@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:04Z-city-encounter-help",
+  "contributionId": "city-encounter-help-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "encounter",
+    "help"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Mit anpacken, ohne nach dem Preis zu fragen.",
+  "directives": []
+}
