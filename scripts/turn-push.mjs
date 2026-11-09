@@ -216,6 +216,21 @@ const groups = classifyPaths(entries);
 const notesPath = resolve(ROOT, '.turn-notes.md');
 const notes = existsSync(notesPath) ? readFileSync(notesPath, 'utf8') : '';
 const notesCheck = evaluateNotes(notes);
+// Eine Export-Entfernung ist nur nachvollziehbar, wenn die Notes die
+// Verbraucherkette nennen. Das Gate kann die Kette nicht semantisch beweisen,
+// aber es verhindert den blinden Cut ohne dokumentierte Pruefung.
+const removedExports = git(['diff', '--cached', '-U0'])
+  .split(/\r?\n/)
+  .filter((line) => !line.startsWith('---') && /^-\s*export\b/.test(line));
+if (removedExports.length > 0 && !/(?:kette|chain|import|re-export|aufrufer|verbraucher)/i.test(notes)) {
+  fail(
+    1,
+    'ERR-4003',
+    'turn:finish',
+    `Export-Entfernung ohne Chain-Trace in .turn-notes.md (${removedExports.length} Zeile(n)); Import-/Re-Export-/Aufrufer-Kette dokumentieren und reparieren, nicht blind cutten`,
+  );
+  process.exit(1);
+}
 if (!notesCheck.ok && hasCodeChanges(groups)) {
   const code = [...groups.runtime, ...groups.tests, ...groups.content, ...groups.tooling]
     .slice(0, 8)

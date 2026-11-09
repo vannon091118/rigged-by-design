@@ -1,9 +1,20 @@
 {
   "version": 1,
-  "base": "0ff020ab3aa3669a723593f15e6fb32d47708fba",
+  "base": "f5d7b821dff60c24e265a43469aac922b9a6abf3",
   "paths": [
-    "docs/ARCHITECTURE.md"
+    ".github/workflows/pr-cleanup.yml",
+    "AGENTS.md",
+    "scripts/check-loc.mjs",
+    "scripts/doc-stub.mjs",
+    "scripts/doc-sync.mjs",
+    "scripts/lib/doc-sync.mjs",
+    "scripts/lib/issue-scope.mjs",
+    "scripts/lib/worktree-isolation.mjs",
+    "scripts/pretask.mjs",
+    "scripts/turn-push.mjs",
+    "scripts/verify-dead-code.mjs",
+    "scripts/verify-redundancy.mjs"
   ],
-  "token": "b281be757b7717c03f4be458c4f4d65cca268fcfc25e9d7023d281d20767a597",
+  "token": "f42b18066c3931a658f24decb8106712258862853c87b7b2ad0346a5eb7b1b0d",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

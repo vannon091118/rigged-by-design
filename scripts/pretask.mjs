@@ -27,7 +27,7 @@ import {
 } from './lib/worktree-isolation.mjs';
 import { ROOT } from './lib/report.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
-import { classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
+import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
@@ -173,6 +173,7 @@ function classifyIssue(issue) {
     number: issue.number,
     title: issue.title,
     url: issue.url,
+    body: issue.body ?? '',
     labels: labelNames(issue),
     scope: decision.scope,
     repairSha: decision.repairSha,
@@ -201,13 +202,16 @@ function classifyIssue(issue) {
 
 const issueCheck = readIssues();
 const issueResults = issueCheck.issues.map(classifyIssue);
+const followUp = buildFollowUp(issueResults);
 if (!issueCheck.checked) {
   warnings.push(`Issue-Check nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
 } else if (issueResults.length === 0) {
   notes.push('Issue-Check: keine offenen gate-failure- oder remote-ci-Issues.');
+} else if (followUp.required) {
+  notes.push(`Folgetask-Gate: ${followUp.problems.length} Problem(e) muessen zuerst geloest werden.`);
 }
 
-const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch });
+const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch, ownAllowlist: claim?.pathAllowlist ?? [] });
 const ownWipPaths = claim ? dirtyPaths.filter((path) => claim.allowsPath(path)) : [];
 const outsideClaim = dirtyPaths.filter((path) => !claim || !allowsPath(claim.pathAllowlist, path));
 const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path));
@@ -316,6 +320,7 @@ const contract = {
   },
   gates: contextData?.gates ?? [],
   longTests,
+  followUp,
   blockers,
   warnings,
   requiredEvidence,
@@ -357,6 +362,7 @@ if (asJson) {
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
     issues: { ...issueCheck, issues: issueResults },
+    followUp,
     context: contextData,
     isolation,
     contract,
@@ -374,6 +380,20 @@ if (asJson) {
   else for (const issue of issueResults) console.log(`  #${issue.number} [${issue.scope.kind}${issue.scope.lane ? `:${issue.scope.lane}` : ''}] ${issue.disposition}: ${issue.title}`);
   for (const warning of warnings) console.log(`  ! ${warning}`);
   for (const note of notes) console.log(`  - ${note}`);
+  if (followUp.required) {
+    console.log('');
+    console.log('=== Folgetask-Gate ===');
+    console.log(`  ${followUp.headline}`);
+    for (const problem of followUp.problems) {
+      console.log('');
+      console.log(`  ${problem.title}${problem.number ? ` (${problem.number})` : ''}`);
+      console.log(`  Kurzbeschreibung: ${problem.summary}`);
+      console.log(`  Lösungsansatz: ${problem.approach}`);
+      console.log(`  Schwierigkeitsgrad: ${problem.difficulty}`);
+    }
+    console.log('');
+    console.log('  -> Diese Anfrage erst als Folgetask starten; keine neue Lane-Arbeit vorher.');
+  }
   console.log('');
   console.log('=== Task-Vertrag ===');
   console.log(`  Task: ${contract.task.id ?? '-'} / ${contract.task.description ?? '-'}`);

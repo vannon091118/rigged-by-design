@@ -33,7 +33,7 @@ let problems = 0;
 for (const copies of groups.values()) {
   if (copies.length < 2) continue;
   problems += 1;
-  fail(problems, 'ERR-4020', copies[0], `byte-identisch mit ${copies.slice(1).join(', ')}; eine Kopie entfernen.`);
+  fail(problems, 'ERR-4020', copies[0], `byte-identisch mit ${copies.slice(1).join(', ')}; nicht nur entfernen: Verhalten vergleichen, die bessere Umsetzung ausschlachten und eine gemeinsame Wahrheit behalten.`);
 }
 
 const scripts = JSON.parse(readFileSync(`${ROOT}/package.json`, 'utf8')).scripts ?? {};
@@ -46,7 +46,7 @@ for (const [command, names] of byCommand) {
   if (names.length < 2) continue;
   if (ALIASES.has([...names].sort().join('|'))) continue;
   problems += 1;
-  fail(problems, 'ERR-4020', 'package.json', `doppeltes Kommando fuer ${names.join(', ')}: ${command}`);
+  fail(problems, 'ERR-4020', 'package.json', `doppeltes Kommando fuer ${names.join(', ')}: ${command}; nicht nur loeschen: beide Wege vergleichen und den besseren gemeinsamen Pfad behalten.`);
 }
 
 const catalog = readFileSync(`${ROOT}/docs/ARCHITECTURE.md`, 'utf8');

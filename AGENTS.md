@@ -19,6 +19,13 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 9. **Lieferung nur über Branch und PR.** `turn:finish` committet und pusht den Arbeitsbranch; danach PR gegen `main` mit den drei Pflichtsektionen und **manueller Merge** nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. Keine zweite Klassifikation.
 
+## Skalierbare Reparatur
+
+- **Erst die Kette, dann der Schnitt.** Dead Code und Exporte werden nie blind entfernt. Vor jedem Schnitt werden Import-, Re-Export-, Namespace- und Aufruferketten verfolgt; betroffene Verbraucher werden repariert oder der Export bleibt. `verify:dead-code` und `turn:finish` verlangen die dokumentierte Chain-Trace.
+- **Redundanz wird ausgeschlachtet.** Bei doppelten Quellen wird nicht nur geloescht: beide Verhalten werden verglichen, das bessere wird mit dem gemeinsamen Pfad zusammengefuehrt, und eine Wahrheit bleibt uebrig. `verify:redundancy` nennt diese Pflicht bei jedem Befund.
+- **Hot Zone heisst modularisieren.** Jede Aenderung an einer Datei in der Hot Zone wird als Modularisierung umgesetzt: eigene Datei, klare Ownership, Budget und Test. Eine LOC-Erhoehung ist nur als `ASK_USER` mit Begruendung zulaessig, warum sie fachlich besser ist als die Extraktion; `check:loc` blockiert den direkten Weg.
+- **PreTurn-Folgengate.** `pretask` liest offene Gate-Issues zuerst. Verlangt der Projekt-Scope sie vor der neuen Arbeit, beginnt die Anfrage als nummerierter Folgetask mit **Problem**, **Kurzbeschreibung**, **Loesungsansatz** und **Schwierigkeitsgrad**; vorher startet keine neue Lane-Arbeit.
+
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
@@ -38,7 +45,7 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run verify:all` | Der lokale Vollnachweis: 12 Required-Gates plus Audit. |
 | `pnpm run turn:finish` | Betroffene Tests, Versions-Bump, Light-Gate, Commit und Branch-Push. |
-| `pnpm run docs:sync` | Marker in allen Pflichtdokumenten aktualisieren. |
+| `pnpm run docs:sync` | Fehlende stabile Marker in Pflichtdokumenten ergaenzen; vorhandene Marker bleiben unveraendert. |
 | `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
 
 ## Build & test
@@ -56,7 +63,8 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 ## Pflichtdoku
 
 - Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md).
-- `pnpm run docs:sync` aktualisiert die Marker; generierte Blöcke bleiben unangetastet.
+- `pnpm run docs:sync` ergänzt nur fehlende stabile Marker; vorhandene Marker und generierte Blöcke bleiben unangetastet. Kein Versions-/Zeitstempel-Churn mehr.
+- Fehlende Doku wird automatisch im Hook bzw. bei `turn:finish` ergänzt; Lanes synchronisieren nicht mehr manuell.
 
 ## Referenzen
 

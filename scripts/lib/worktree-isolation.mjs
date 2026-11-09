@@ -45,14 +45,19 @@ export function isolationRequired({ explicit = false, claims = [], branch = '' }
   return claims.some((claim) => claim.status === 'open' && claim.branch !== branch);
 }
 
-/** Pfade im Arbeitsbaum, die eine fremde offene Lane beansprucht. */
-export function foreignClaimPaths({ changed = [], claims = [], branch = '' } = {}) {
+/**
+ * Pfade im Arbeitsbaum, die eine fremde offene Lane beansprucht. Der eigene
+ * Claim hat Vorrang: eine Ueberschneidung in Meta- oder Koordinationspfaden
+ * macht die eigene Aenderung nicht fremd. Nur Pfade, die ausschliesslich eine
+ * fremde Lane fuehrt, blockieren.
+ */
+export function foreignClaimPaths({ changed = [], claims = [], branch = '', ownAllowlist = [] } = {}) {
   const foreign = claims.filter((claim) => claim.status === 'open' && claim.branch !== branch);
   const owned = new Set();
   for (const claim of foreign) {
     const allowlist = claim.pathAllowlist ?? [];
     for (const file of changed) {
-      if (allowsPath(allowlist, file)) owned.add(file);
+      if (allowsPath(allowlist, file) && !allowsPath(ownAllowlist, file)) owned.add(file);
     }
   }
   return [...owned].sort();

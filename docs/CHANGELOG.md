@@ -12,6 +12,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.199] - 2026-11-09
+
+### Technik
+- **Doku-Regression beendet.** `doc-sync` ergaenzt nur noch fehlende stabile Marker; vorhandene Version-/Zeitstempel-Marker bleiben unveraendert. `verify:docs` prueft kein 72-Stunden-Alter mehr. Damit erzeugt kein Commit mehr dieselben zwoelf Doku-Aenderungen in jeder Lane.
+- **PreTurn-Folgengate.** `pretask` liest offene Gate-Issues und gibt bei Scope-Blockern eine kurze Liste aus: Problem, Kurzbeschreibung, Loesungsansatz, Schwierigkeitsgrad. Die Anfrage startet dann als Folgetask; keine neue Lane-Arbeit vorher.
+- **Branch-Cleanup.** `pr-cleanup.yml` loescht gemergte Head-Branches (ausser `main`, `integration`, `keep-branch` und Fork-Branches) und meldet Fehlschlaege nur als Warnung.
+- **Skalierbare Reparatur.** Hot-Zone-Aenderungen ohne Modularisierung sind rot; Export-Entfernungen brauchen eine dokumentierte Chain-Trace; Dead-Code- und Redundanz-Gates verlangen Kettenpruefung bzw. Ausschlachten statt blindem Cutten. LOC-Erhoehungen sind nur als ASK_USER mit Begruendung beantragbar.
+
 ## [0.3.195] - 2026-11-08
 
 ### Technik

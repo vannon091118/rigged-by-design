@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/lane-autopilot",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/lane-autopilot",
+  "baseSha": "f5d7b821dff60c24e265a43469aac922b9a6abf3",
+  "task": "Doku-Autovervollstaendigung, PreTurn-Folgengate, PR-Housekeeping und skalierbare Reparaturregeln",
+  "goal": "Lanes muessen Doku nicht mehr manuell synchronisieren; offene Gate-Probleme werden als nummerierte Folgetasks erklaert; Hot Zones und tote Exporte erzwingen Chain-Tracing und Modularisierung.",
+  "pathAllowlist": [
+    ".github/workflows/**",
+    "scripts/**",
+    "package.json",
+    "pnpm-lock.yaml",
+    "docs/INVENTORY.md",
+    "AGENTS.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/freeze-unlock.json",
+    "src/core/governance/__tests__/ci-gates.test.ts",
+    ".lane-claims/claims/lane-governance-lane-autopilot.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "f5d7b821dff60c24e265a43469aac922b9a6abf3"
+}
