@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/archiv-fuellung",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/archiv-fuellung",
+  "baseSha": "bb1507d24ce66463d82135b70ee26a278904e0ab",
+  "task": "P-6 schliessen: Archiv-Fuellung beim ersten Load verifizieren",
+  "goal": "Regressionsbeweis dass alte Saves ohne Archiv es aus dem Journal bekommen; Register auf verifiziert",
+  "pathAllowlist": [
+    "src/store/__tests__/save-migration.test.ts",
+    "docs/ROADMAP.md",
+    "content/narrative/contributions/2026-11-09-p6-archiv-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-archiv-fuellung.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "bb1507d24ce66463d82135b70ee26a278904e0ab"
+}

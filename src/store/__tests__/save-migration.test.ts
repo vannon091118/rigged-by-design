@@ -81,4 +81,29 @@ describe('Save-Migration v5 auf v6', () => {
   it('verwirft einen Stand ohne Template nicht still', () => {
     expect(replaySave(legacyV5({ template: undefined }))).toBeNull();
   });
+
+  it('fuellt das Archiv beim ersten Load aus dem Journal, wenn der Stand keines kennt (P-6)', () => {
+    const journal = [
+      { id: 1, tick: 5, day: 1, kind: 'GUEST', subject: 'Gast', cause: 'Betritt', effect: 'Spielt' },
+      { id: 2, tick: 9, day: 1, kind: 'SYSTEM', subject: 'Spielstand', cause: 'Save geladen', effect: 'Weiter' },
+    ];
+    const loaded = replaySave(legacyV5({ journal }))!;
+    expect(loaded.world.journal).toHaveLength(2);
+    expect(loaded.world.archive).toHaveLength(2);
+    expect(loaded.world.archive.map((event) => event.id)).toEqual([1, 2]);
+    // Eigene Kopien: Wer das Archiv anfasst, darf das Journal nicht mitschreiben.
+    expect(loaded.world.archive[0]).not.toBe(loaded.world.journal[0]);
+  });
+
+  it('laesst ein gespeichertes Archiv beim Laden unangetastet (P-6)', () => {
+    const journal = [
+      { id: 7, tick: 5, day: 1, kind: 'GUEST', subject: 'Gast', cause: 'Betritt', effect: 'Spielt' },
+    ];
+    const archive = [
+      { id: 3, tick: 2, day: 1, kind: 'SYSTEM', subject: 'Spielstand', cause: 'Save geladen', effect: 'Weiter' },
+    ];
+    const loaded = replaySave(legacyV5({ journal, archive }))!;
+    expect(loaded.world.journal.map((event) => event.id)).toEqual([7]);
+    expect(loaded.world.archive.map((event) => event.id)).toEqual([3]);
+  });
 });
