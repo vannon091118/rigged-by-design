@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T02:45Z-audit-findings-01",
+  "contributionId": "audit-findings-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Kante des Bodens ist hart gezogen; kein weicher Saum legt sich um die Kacheln. Über dem Tisch laufen die Einflüsse in beliebiger Reihenfolge ein, und erst die Summe entscheidet, wie nah der Gast am Rand steht.",
+  "directives": []
+}

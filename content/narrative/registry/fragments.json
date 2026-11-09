@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:41915499bc4d1b50097640b3bda475a421ce306b44c6d4ff667ce98a5c6c968a",
+  "contentHash": "sha256:1d7b26cb3f185fded07d5176eab4ba6bc5ed789f37b35bb11793a8c386cd0377",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -93,6 +93,28 @@
       "text": "Ich habe die Maschinen und die Deko einzeln aufgemacht und nachgesehen, statt ihren\nNamen zu glauben. Ein Roulette-Tisch ist breit, sein Bild aber fast quadratisch:\ndie halbe Leinwand ist Luft. Zwei Saeulen mit demselben Motiv sind zwei Saeulen,\nweil ihre Bilder verschieden gross sind. Ein Wandlicht hat keinen Boden unter\nsich, also bekommt es keinen Bodenanker. Das klingt nach Buchhaltung und ist\ngenau das Gegenteil: zum ersten Mal steht irgendwo, wo diese Dinge wirklich\naufhoeren und anfangen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-06-asset-semantik-messung.json"
+    },
+    {
+      "contributionId": "audit-findings-01",
+      "turnId": "2026-11-09T02:45Z-audit-findings-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kante des Bodens ist hart gezogen; kein weicher Saum legt sich um die Kacheln. Über dem Tisch laufen die Einflüsse in beliebiger Reihenfolge ein, und erst die Summe entscheidet, wie nah der Gast am Rand steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-audit-findings-01.json"
     },
     {
       "contributionId": "b1-kontext-helper-01",

@@ -1,6 +1,10 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.195 | 2026-11-09 17:09 UTC -->
+<<<<<<< HEAD
+<!-- rbd-doc: v0.3.196 | 2026-11-09 17:12 UTC -->
+=======
+<!-- rbd-doc: v0.3.196 | 2026-11-09 02:57 UTC -->
+>>>>>>> lane/integrity/audit-findings
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +123,11 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
+<<<<<<< HEAD
 Summe: 228 Dateien — contract 139 · integration 43 · governance 32 · statistics 7 · performance 7.
+=======
+Summe: 226 Dateien — contract 138 · integration 43 · governance 31 · statistics 7 · performance 7.
+>>>>>>> lane/integrity/audit-findings
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -204,7 +212,10 @@ Summe: 228 Dateien — contract 139 · integration 43 · governance 32 · statis
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
+<<<<<<< HEAD
 | `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
+=======
+>>>>>>> lane/integrity/audit-findings
 | `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
@@ -541,10 +552,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2155 |
-| Gelistete Dateien | 2155 |
+| Getrackte Dateien | 2157 |
+| Gelistete Dateien | 2157 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (38), content (707), docs (77), public (554), scripts (91), src (663) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (39), content (708), docs (77), public (554), scripts (91), src (663) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -556,8 +567,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 36 Datei(en)
-- `content/narrative/contributions/` — 703 Datei(en)
+- `.lane-claims/claims/` — 37 Datei(en)
+- `content/narrative/contributions/` — 704 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -697,6 +708,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-p11-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json` — { — gelesen: 49 Zeilen
+- `.lane-claims/claims/lane-integrity-audit-findings.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
@@ -1399,6 +1411,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-slot-discharge-fact-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-apk-signing-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-audit-findings-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-city-day-closeout-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-body.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-decline.json` — { — gelesen: 22 Zeilen
@@ -1410,8 +1423,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-city-encounter-give.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15617 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2817 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15639 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2821 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 194 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2305,7 +2318,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guest-settlement.test.ts` — Kein Gast und kein Anspruch verschwindet, solange die Buchung nicht vollstaendig ist. — gelesen: 119 Zeilen
 - `src/core/sim/__tests__/guest-voice.test.ts` — Der Ruf hoert man: Das Rufband waehlt den Pool, der Gast waehlt den Satz, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
-- `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 170 Zeilen
+- `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 185 Zeilen
 - `src/core/sim/__tests__/jackpot-label.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 13 Zeilen
 - `src/core/sim/__tests__/journal.test.ts` — Jede Buchung wird genau einmal kopiert; Welt-Ereignisse tragen Ursache und Folge. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/knowledge-config.test.ts` — P-23: Weitergabe und Quellenrang sind balancebar. Die Schwellen liegen in — gelesen: 60 Zeilen
@@ -2422,7 +2435,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/influence-matrix.ts` — Die eine balancebare Matrix: Faktor-Katalog, Kontexte, Cross-Kanten und — gelesen: 137 Zeilen
 - `src/core/sim/influence-schema.ts` — Schema und fail-closed Validierung der Influence-Matrix. Die Gewichte liegen — gelesen: 141 Zeilen
 - `src/core/sim/influence-types.ts` — Typen und stabile IDs der Influence-Matrix. Die Validierung liegt in — gelesen: 70 Zeilen
-- `src/core/sim/influence.ts` — Einfluss-Matrix: gewichtete Faktoren, Untereinfluesse, Kontexte und — gelesen: 138 Zeilen
+- `src/core/sim/influence.ts` — Einfluss-Matrix: gewichtete Faktoren, Untereinfluesse, Kontexte und — gelesen: 144 Zeilen
 - `src/core/sim/interaction.ts` — Interaktionsradius-System für Charakter-Steuerung. Headless, deterministisch. — gelesen: 19 Zeilen
 - `src/core/sim/journal.ts` — Ereignisprotokoll: jeder wichtige Zustand mit Ursache, Wirkung und Akteur. — gelesen: 145 Zeilen
 - `src/core/sim/layout-commands.ts` — Typisierte Layout-Commands: der Editor beschreibt eine Absicht, das Modul — gelesen: 115 Zeilen
@@ -2610,7 +2623,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-perf.bench.ts` — Worst-Case: 90×90-Floor, 9 Regionen, 500 Dreck-Tiles, 200 Entities. — gelesen: 55 Zeilen
 - `src/render/floor-props.ts` — Requisiten: Personal, Lieferkisten, Streitmarker und Platzierungs-Geist. Liest nur Snapshots. — gelesen: 233 Zeilen
 - `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 84 Zeilen
-- `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 134 Zeilen
+- `src/render/floor-stage.tsx` — React-Bruecke zur Pixi-Buehne; haelt keinen Spielzustand. — gelesen: 135 Zeilen
 - `src/render/floor-surface.ts` — Bodenflaeche und Licht: Muster je Material, Fugen, Deckenlampen und — gelesen: 111 Zeilen
 - `src/render/floor-touch.ts` — Zeigergesten auf dem Canvas: Ein-Finger-Ziehen schwenkt, Tippen laeuft, Pinch zoomt. — gelesen: 175 Zeilen
 - `src/render/floor-view.ts` — Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. — gelesen: 195 Zeilen

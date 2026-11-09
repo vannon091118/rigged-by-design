@@ -1,0 +1,33 @@
+{
+  "id": "lane/integrity/audit-findings",
+  "owner": "Integrator",
+  "branch": "lane/integrity/audit-findings",
+  "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "task": "Audit-Findings beheben: Reihenfolgeunabhaengigkeit der Einflussmatrix, Pixel-Antialiasing und Depth-Semantik",
+  "goal": "Cross-Kanten klemmen erst nach Aggregation; der Floor rendert hartkantig; die Semantik-Regel beschreibt die zIndex-Sortierung korrekt",
+  "pathAllowlist": [
+    "src/core/sim/influence.ts",
+    "src/core/sim/__tests__/influence.test.ts",
+    "src/render/**",
+    "content/narrative/contributions/2026-11-09-audit-findings-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/**",
+    "docs/TESTING.md",
+    "docs/CI.md",
+    "docs/GOVERNANCE.md",
+    "docs/INDEX.md",
+    "docs/WORKFLOW.md",
+    "docs/contracts/README.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-integrity-audit-findings.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "merged",
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
+}
