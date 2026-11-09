@@ -1,7 +1,7 @@
 # Repository-Inventur (lebendes Artefakt)
 
 <<<<<<< HEAD
-<!-- rbd-doc: v0.3.196 | 2026-11-09 17:12 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 17:13 UTC -->
 =======
 <!-- rbd-doc: v0.3.196 | 2026-11-09 02:57 UTC -->
 >>>>>>> lane/integrity/audit-findings
@@ -552,10 +552,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2157 |
-| Gelistete Dateien | 2157 |
+| Getrackte Dateien | 2159 |
+| Gelistete Dateien | 2159 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (39), content (708), docs (77), public (554), scripts (91), src (663) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (40), content (709), docs (77), public (554), scripts (91), src (663) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -567,8 +567,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 37 Datei(en)
-- `content/narrative/contributions/` — 704 Datei(en)
+- `.lane-claims/claims/` — 38 Datei(en)
+- `content/narrative/contributions/` — 705 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -712,6 +712,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 10 Zeilen
@@ -1423,8 +1424,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-city-encounter-give.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 15639 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 2821 Zeilen
+- `content/narrative/contributions/2026-11-09-logic-safety-payout-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 15661 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 2825 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 194 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2207,11 +2209,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/__tests__/video-poker-ranks.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 31 Zeilen
 - `src/core/games/contracts.ts` — Die Naht zwischen Spielregel, Geld und Anzeige: Aktion rein, Result raus. — gelesen: 114 Zeilen
 - `src/core/games/dice-bets.ts` — Die fuenf Wettfelder am Wuerfeltisch: Trefferregel, Auszahlung und ein einzelner Wurf. — gelesen: 55 Zeilen
-- `src/core/games/engines/__tests__/blackjack.test.ts` — Die Runde gehoert dem Spieler: Split, Versicherung, Aufgeben und die — gelesen: 110 Zeilen
+- `src/core/games/engines/__tests__/blackjack.test.ts` — Die Runde gehoert dem Spieler: Split, Versicherung, Aufgeben und die — gelesen: 126 Zeilen
 - `src/core/games/engines/__tests__/interactive-cards.test.ts` — Blackjack und Video Poker laufen jetzt Zug fuer Zug. Der Kern muss jeden Zug — gelesen: 126 Zeilen
-- `src/core/games/engines/blackjack-rules.ts` — Tischregeln und Kartenarithmetik des Blackjacks: was erlaubt ist, was eine Hand — gelesen: 134 Zeilen
+- `src/core/games/engines/blackjack-rules.ts` — Blackjack-Regeln und Handwertung (Vertrag, keine Aktionen). — gelesen: 131 Zeilen
 - `src/core/games/engines/blackjack-settle.ts` — Dealerzug und Abrechnung: was jede Hand wert ist und wie die Runde endet. — gelesen: 80 Zeilen
-- `src/core/games/engines/blackjack.ts` — Blackjack mit echten Entscheidungen: Ziehen, Halten, Verdoppeln, Split, — gelesen: 160 Zeilen
+- `src/core/games/engines/blackjack.ts` — Blackjack: Spieleraktionen und Rundenfluss; Dealer und Abrechnung in blackjack-settle. — gelesen: 151 Zeilen
 - `src/core/games/engines/cards.ts` — Karten-Engines: Blackjack mit echten Entscheidungen, Video Poker mit Hold/Draw. — gelesen: 150 Zeilen
 - `src/core/games/engines/interactive-cards.ts` — Kartenrunden mit Spielerentscheidung: Blackjack Zug fuer Zug, Video Poker mit Hold. — gelesen: 96 Zeilen
 - `src/core/games/engines/slot-models.ts` — Die drei Bewertungsmodelle des Slots: Linien, Ways und Cluster. — gelesen: 196 Zeilen
@@ -2377,7 +2379,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/phase-logic-audit-foundation.test.ts` — Phase 0-2 gegen die echten Pfade: Geld, Determinismus, Akteurskanten, Weltzeit, — gelesen: 93 Zeilen
 - `src/core/sim/__tests__/phase-logic-audit-relations.test.ts` — Phase 3, 5 und 6 gegen die echten Pfade: Akteurswahrheit im Preflight, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/player-cash.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
-- `src/core/sim/__tests__/player-jobs.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 176 Zeilen
+- `src/core/sim/__tests__/player-jobs.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 195 Zeilen
 - `src/core/sim/__tests__/player-rpg.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 93 Zeilen
 - `src/core/sim/__tests__/player-speed.test.ts` — Speed war einmal nur ein gespeicherter Attributwert. Dieser Test haelt fest, — gelesen: 67 Zeilen
 - `src/core/sim/__tests__/player-wage-attendance.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 84 Zeilen
@@ -2482,7 +2484,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 181 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 182 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2553,7 +2555,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 189 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
-- `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 143 Zeilen
+- `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 144 Zeilen
 - `src/core/sim/player-look.ts` — Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. — gelesen: 56 Zeilen
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 117 Zeilen
 - `src/core/sim/player.ts` — Spieler-Commands: Laufen, Tragen, Zapfen, Kasse, Deko, Ausbau. Mit Weg und Reichweite. — gelesen: 140 Zeilen
@@ -2678,11 +2680,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/narrative-commands.test.ts` — Die Store-Naht drainiert Facts an der Mutationsgrenze und fuehrt Choices aus. — gelesen: 92 Zeilen
-- `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 51 Zeilen
+- `src/store/__tests__/narrative-rival-source.test.ts` — Eine echte Kartenabrechnung im fremden Haus erzeugt eine Rivale-zu-Haus-Kante. — gelesen: 55 Zeilen
 - `src/store/__tests__/narrative-save.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 143 Zeilen
 - `src/store/__tests__/own-play.test.ts` — Die Fassade haelt offene Kartenrunden genau einmal, blockiert Doppelbuchungen — gelesen: 81 Zeilen
 - `src/store/__tests__/prng-persistence.test.ts` — Der PRNG-Zustand setzt nach dem Laden die Folge exakt fort, ohne Doppelziehung. — gelesen: 70 Zeilen
-- `src/store/__tests__/rival-play-commands.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
+- `src/store/__tests__/rival-play-commands.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 43 Zeilen
 - `src/store/__tests__/save-device.test.ts` — Alte Speicherstaende koennen eine Geräteidentität tragen, die zum Spieltyp — gelesen: 71 Zeilen
 - `src/store/__tests__/save-layout.test.ts` — Save v11: Layout-Vertrag im Spielstand, Migration aus v5–v10 und — gelesen: 125 Zeilen
 - `src/store/__tests__/save-migration.test.ts` — Ein v5-Spielstand behaelt Fiat und offene Ansprueruche beim Laden. — gelesen: 84 Zeilen
@@ -2695,7 +2697,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 50 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 41 Zeilen
-- `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. — gelesen: 148 Zeilen
+- `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
 - `src/store/layout-editing.ts` — Editor-Verlauf am Store-Rand: typisierte Commands anwenden, Pinselstriche — gelesen: 90 Zeilen
 - `src/store/layout-transfer.ts` — Layout-Export und -Import am Store-Rand. Der Import prueft das Dokument — gelesen: 55 Zeilen
@@ -2711,7 +2713,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/own-play.ts` — Store-Fassade fuer eigene Spielrunden: Der Kern rechnet und bucht, die — gelesen: 105 Zeilen
 - `src/store/perf-hot-paths.bench.ts` — Messpfad fuer RBD-16: langer Spielstand, 200 Gaeste, 90x90-Floor. — gelesen: 88 Zeilen
 - `src/store/player-tools.ts` — Spieler-Commands, die der Store nur noch bestaetigt. — gelesen: 47 Zeilen
-- `src/store/rival-play-commands.ts` — Rival Play Commands: Karten- und Risikospiele in fremden Casinos. — gelesen: 89 Zeilen
+- `src/store/rival-play-commands.ts` — Rival Play Commands (fremde Casinos). — gelesen: 89 Zeilen
 - `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 144 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
 - `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 142 Zeilen

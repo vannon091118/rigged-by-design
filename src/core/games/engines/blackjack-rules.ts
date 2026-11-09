@@ -1,7 +1,4 @@
-/**
- * Tischregeln und Kartenarithmetik des Blackjacks: was erlaubt ist, was eine Hand
- * wert ist und wie eine Runde aussieht. Keine Aktion, kein Zug – nur der Vertrag.
- */
+/** Blackjack-Regeln und Handwertung (Vertrag, keine Aktionen). */
 import type { Card } from '../../rng/shoe';
 
 export interface BlackjackRules {
@@ -114,7 +111,7 @@ export interface BlackjackRound {
 
 export const isNatural = (cards: readonly Card[]): boolean => cards.length === 2 && handTotal(cards) === 21;
 
-export const sameRank = (a: Card, b: Card): boolean => rankValue(a.rank) === rankValue(b.rank);
+export const sameRank = (a: Card, b: Card): boolean => a.rank === b.rank;
 
 export function sameCards(a: readonly Card[], b: readonly Card[]): boolean {
   return a.length === b.length && a.every((card, index) => card.rank === b[index]!.rank && card.suit === b[index]!.suit);

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1d7b26cb3f185fded07d5176eab4ba6bc5ed789f37b35bb11793a8c386cd0377",
+  "contentHash": "sha256:800947d31a321305d41f89e48575ef334c06dfe0b146dcf35986004290e23681",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3829,6 +3829,28 @@
       "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
+    },
+    {
+      "contributionId": "logic-safety-payout-01",
+      "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Karten liegen offen, und die Summe stimmt: Was ausgezahlt wird, steht in einer Zeile, die niemand nachträglich verschiebt. Der Gast zählt nicht nach, er sieht nur, dass die Rechnung aufgeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-logic-safety-payout-01.json"
     },
     {
       "contributionId": "main-event-pool-01",

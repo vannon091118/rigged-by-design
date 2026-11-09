@@ -2806,7 +2806,7 @@
       "contributionId": "gate-lane-red-team-01"
     },
     {
-"turnId": "2026-11-09T00:35Z-apk-signing",
+      "turnId": "2026-11-09T00:35Z-apk-signing",
       "contributionId": "apk-signing-01"
     },
     {
@@ -2814,8 +2814,12 @@
       "contributionId": "city-day-closeout-01"
     },
     {
-"turnId": "2026-11-09T02:45Z-audit-findings-01",
+      "turnId": "2026-11-09T02:45Z-audit-findings-01",
       "contributionId": "audit-findings-01"
+    },
+    {
+      "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
+      "contributionId": "logic-safety-payout-01"
     }
   ]
 }
