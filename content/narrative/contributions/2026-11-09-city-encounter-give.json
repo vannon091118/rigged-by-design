@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:03Z-city-encounter-give",
+  "contributionId": "city-encounter-give-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "encounter",
+    "give"
+  ],
+  "tone": "warm",
+  "mood": "entschlossen",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Runde ausgeben und zuhoeren, was dahinter steckt.",
+  "directives": []
+}

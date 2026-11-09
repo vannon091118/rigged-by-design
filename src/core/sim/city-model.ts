@@ -21,7 +21,7 @@ export const LOCATIONS: readonly { readonly id: CityLocationId; readonly name: s
 ];
 
 export const ACTIONS: readonly ActionDef[] = [
-  { id: 'KIEZ_ANSPRECHEN', location: 'KIEZ', label: 'Ein Gespräch anfangen', hint: 'Ein Satz, ein Name, ein naechstes Mal.', energy: 1, branch: 'KIEZ', progress: 1, reputation: 0.4 },
+  { id: 'KIEZ_ANSPRECHEN', location: 'KIEZ', label: 'Ein Gespraech anfangen', hint: 'Ein Satz, ein Name, ein naechstes Mal.', energy: 1, branch: 'KIEZ', progress: 1, reputation: 0.4 },
   { id: 'KIEZ_RUNDE', location: 'KIEZ', label: 'Eine Runde ausgeben', hint: 'Kostet mehr Energie, traegt weiter.', energy: 2, branch: 'KIEZ', progress: 2, reputation: 1.1 },
   { id: 'MARKT_FEILSCHEN', location: 'MARKT', label: 'Um den Preis feilschen', hint: 'Der Handel lernt dich kennen.', energy: 1, branch: 'MARKT', progress: 1, reputation: 0.3 },
   { id: 'MARKT_LIEFERUNG', location: 'MARKT', label: 'Eine Lieferung begleiten', hint: 'Anstrengend, aber die Strasse merkt es sich.', energy: 2, branch: 'MARKT', progress: 2, reputation: 0.9 },
@@ -90,7 +90,7 @@ export function cityOf(world: WorldState): CityState {
   const existing = world.city;
   if (existing) {
     const energy = existing.energyDay === world.day ? clampEnergy(existing.energy) : CITY_ENERGY_PER_DAY;
-    return { ...existing, energyDay: world.day, energy };
+    return { ...existing, energyDay: world.day, energy, encounters: existing.encounters ?? [] };
   }
   const fresh: CityState = {
     location: 'CASINO',
@@ -102,6 +102,7 @@ export function cityOf(world: WorldState): CityState {
     lastResult: 'Die Stadt liegt vor dir: Kiez und Markt sind einen Weg entfernt.',
     lastText: cityText('start|0'),
     completed: [],
+    encounters: [],
   };
   world.city = fresh;
   return fresh;

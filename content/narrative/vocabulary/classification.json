@@ -125,7 +125,12 @@
     "commands": "Command-DSL, Allowlist oder Ausführung.",
     "documentation": "Dokumentation und Inventur.",
     "content": "Content-Registry, Schema und Klassifizierung.",
-    "echo": "Spaetere Wiederbegegnung nach einer aufgeloesten Kette; das Ereignis liegt sichtbar zurueck."
+    "echo": "Spaetere Wiederbegegnung nach einer aufgeloesten Kette; das Ereignis liegt sichtbar zurueck.",
+    "encounter": "Begegnung im Ort mit einer benannten Figur.",
+    "give": "Etwas ausgeben oder abgeben.",
+    "help": "Mit anpacken oder helfen.",
+    "decline": "Eine Bitte ablehnen.",
+    "cold": "Kalte Folge nach einer Ablehnung."
   },
   "tones": {
     "trocken": "Knapp, beiläufig und ohne Pathos.",

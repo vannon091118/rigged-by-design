@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:10Z-city-encounter-echo-cold-body",
+  "contributionId": "city-encounter-echo-cold-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "encounter",
+    "echo",
+    "cold"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Ablehnung ist herumgegangen, schneller als du. Man gruesst dich, aber man rueckt nicht, und die Frage von gestern steht noch im Raum.",
+  "directives": []
+}
