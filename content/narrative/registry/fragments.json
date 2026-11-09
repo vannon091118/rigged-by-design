@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7577665a6d2c8e8902ee8ff1b33863da83fc66f4c9face9bd16dbee8566c97b7",
+  "contentHash": "sha256:8e0b37db9a295ced060f993e2178507987f090b04fe3c701987c33185368eaf5",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18199,6 +18199,50 @@
       "text": "Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-warm-return-titel.json"
+    },
+    {
+      "contributionId": "welt-treffer-01",
+      "turnId": "2026-11-09T19:55Z-welt-treffer-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Endlich trifft der Finger den Automaten, den man meint, und nicht den daneben. So etwas merkt man erst, wenn es aufhört, schiefzugehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-welt-treffer-01.json"
+    },
+    {
+      "contributionId": "welt-treffer-02",
+      "turnId": "2026-11-09T20:05Z-welt-treffer-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
     }
   ]
 }

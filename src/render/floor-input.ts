@@ -1,15 +1,18 @@
-/** Floor-Input: Tap-Logik, baut Aktionen und ruft Callbacks. */
+/** Floor-Input: ein Trefferpfad, baut Aktionen und ruft Callbacks. */
 import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { buildStainActions, buildGuestActions, buildFurnitureActions, type MenuAction } from './floor-actions';
+import { resolveHit, type ScreenAnchor } from './floor-hit';
+
+export type { ScreenAnchor } from './floor-hit';
 
 export interface FloorCallbacks {
-  readonly onGuest: (id: number) => void;
-  readonly onFurniture: (id: number) => void;
+  readonly onGuest: (id: number, anchor: ScreenAnchor | null) => void;
+  readonly onFurniture: (id: number, anchor: ScreenAnchor | null) => void;
   readonly onEmpty: (x: number, y: number) => void;
   /** Aktionen landen in der Aktionskarte, nicht mehr in einem Radialmenue. */
-  readonly onActions: (actions: MenuAction[]) => void;
+  readonly onActions: (actions: MenuAction[], anchor: ScreenAnchor | null) => void;
 }
 
 export type TapHit =
@@ -27,6 +30,7 @@ export function handleTap(
   placing: boolean,
   lod: number,
   zoomToArea: (x: number, y: number) => void,
+  anchor: ScreenAnchor | null = null,
 ): TapHit | null {
   if (button !== 0) return null;
   const x = Math.floor(point.x / TILE);
@@ -34,28 +38,33 @@ export function handleTap(
   if (x < 0 || y < 0 || x >= view.size || y >= view.size) return null;
   cues.ping({ x, y });
 
-  const stain = view.stains.find((s) => Math.abs(s.x - x) <= 1 && Math.abs(s.y - y) <= 1);
-  if (stain) {
-    callbacks.onActions(buildStainActions(view, stain));
-    return { kind: 'stain', id: stain.id };
+  // Tiefe, Rang und Sichtlinie entscheiden hier, nicht die Reihenfolge im Snapshot.
+  const hit = resolveHit(view, { x, y }, view.player.position);
+
+  if (hit?.kind === 'stain') {
+    const stain = view.stains.find((entry) => entry.id === hit.id);
+    if (stain) {
+      callbacks.onActions(buildStainActions(view, stain), anchor);
+      return { kind: 'stain', id: stain.id };
+    }
   }
 
-  const furniture = view.furniture.find((item) =>
-    x >= item.x && y >= item.y && x < item.x + item.w && y < item.y + item.h);
-  if (furniture) {
-    callbacks.onActions(buildFurnitureActions(view, furniture));
-    callbacks.onFurniture(furniture.id);
-    return { kind: 'furniture', id: furniture.id };
+  if (hit?.kind === 'furniture') {
+    const item = view.furniture.find((entry) => entry.id === hit.id);
+    if (item) {
+      callbacks.onActions(buildFurnitureActions(view, item), anchor);
+      callbacks.onFurniture(item.id, anchor);
+      return { kind: 'furniture', id: item.id };
+    }
   }
 
-  const guest = view.guests
-    .map((entry) => ({ entry, distance: Math.abs(entry.position.x - x) + Math.abs(entry.position.y - y) }))
-    .filter((entry) => entry.distance <= 1)
-    .sort((a, b) => a.distance - b.distance)[0];
-  if (guest) {
-    callbacks.onActions(buildGuestActions(view, guest.entry));
-    callbacks.onGuest(guest.entry.id);
-    return { kind: 'gesture', id: guest.entry.id };
+  if (hit?.kind === 'guest') {
+    const guest = view.guests.find((entry) => entry.id === hit.id);
+    if (guest) {
+      callbacks.onActions(buildGuestActions(view, guest), anchor);
+      callbacks.onGuest(guest.id, anchor);
+      return { kind: 'gesture', id: guest.id };
+    }
   }
 
   if (lod === 0 && !placing) { zoomToArea(x, y); return { kind: 'empty', id: 0 }; }
@@ -76,5 +85,19 @@ export function screenPoint(
   return {
     x: ((clientX - rect.left) / factor - camera.x) / camera.scale.x,
     y: ((clientY - rect.top) / factor - camera.y) / camera.scale.y,
+  };
+}
+
+/**
+ * Die Gegenrichtung: Weltpunkt in Viewport-Pixel. Genau das braucht React, um
+ * eine Karte an das getroffene Objekt zu haengen statt in eine Ecke.
+ */
+export function screenAnchorOf(point: { x: number; y: number }, app: Application, camera: Container): ScreenAnchor | null {
+  const rect = app.canvas.getBoundingClientRect();
+  if (rect.width === 0) return null;
+  const factor = rect.width / app.screen.width;
+  return {
+    x: rect.left + (point.x * camera.scale.x + camera.x) * factor,
+    y: rect.top + (point.y * camera.scale.y + camera.y) * factor,
   };
 }

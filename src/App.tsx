@@ -4,6 +4,7 @@ import { getBuildDef, type BuildId } from './core/sim/offers';
 import type { CarpetId, TemplateId } from './core/sim/types';
 import type { MenuAction } from './render/floor-actions';
 import { handleFloorInteract } from './render/floor-interact';
+import type { ScreenAnchor } from './render/floor-hit';
 import { tapHaptic } from './render/haptics';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
 import { armMusic, setMusicState } from './render/music';
@@ -37,6 +38,8 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const [perspective, setPerspective] = useState<Perspective>('operator');
   const [buildOpen, setBuildOpen] = useState(false);
   const [actions, setActions] = useState<MenuAction[]>([]);
+  // Weltposition des getroffenen Objekts: die Aktionskarte haengt daran.
+  const [anchor, setAnchor] = useState<ScreenAnchor | null>(null);
   const [placeError, setPlaceError] = useState('');
   const stage = useRef<FloorHandle>(null);
   const [editorOpen, setEditorOpen] = useState(() => editorEnabled(window.location.search));
@@ -125,6 +128,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const openPopup = (next: Popup): void => {
     setBuildOpen(false);
     setActions([]);
+    setAnchor(null);
     setPopup(next);
   };
 
@@ -175,13 +179,22 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           view={view}
           placing={ghostId}
           paused={popup?.kind === 'games' || popup?.kind === 'machine'}
-          onGuest={(id) => { if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id }); }}
-          onFurniture={(id) => openPopup({ kind: 'machine', itemId: id })}
+          onGuest={(id, at) => {
+            setAnchor(at ?? null);
+            if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id });
+          }}
+          onFurniture={(id, at) => {
+            setAnchor(at ?? null);
+            openPopup({ kind: 'machine', itemId: id });
+          }}
           onEmpty={(x, y) => {
             crates.tapFloor(x, y);
           }}
           onInteract={handleFloorInteract}
-          onActions={(next) => setActions(perspective === 'operator' ? next : [])}
+          onActions={(next, at) => {
+            setActions(perspective === 'operator' ? next : []);
+            setAnchor(perspective === 'operator' ? at ?? null : null);
+          }}
           onFirstFrame={onFirstFrame}
         />
 
@@ -189,12 +202,14 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
         <ActionCard
           actions={actions}
+          anchor={anchor}
           onPick={(action) => {
             if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
             handleFloorInteract(action.id, action.targetId);
             setActions([]);
+            setAnchor(null);
           }}
-          onClose={() => setActions([])}
+          onClose={() => { setActions([]); setAnchor(null); }}
         />
 
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />

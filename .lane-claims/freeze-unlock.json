@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "base": "c2e51e965e4774c1bf91592551174fcc15f56a14",
+  "base": "0ff020ab3aa3669a723593f15e6fb32d47708fba",
   "paths": [
     "docs/ARCHITECTURE.md"
   ],
-  "token": "55e82b3ed6f96981f13bb80d06327793aa628cd063afa39992ac18d64eb3a9ce",
+  "token": "b281be757b7717c03f4be458c4f4d65cca268fcfc25e9d7023d281d20767a597",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T19:55Z-welt-treffer-01",
+  "contributionId": "welt-treffer-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Endlich trifft der Finger den Automaten, den man meint, und nicht den daneben. So etwas merkt man erst, wenn es aufhört, schiefzugehen.",
+  "directives": []
+}

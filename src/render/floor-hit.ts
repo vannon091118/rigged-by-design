@@ -1,0 +1,127 @@
+/**
+ * Ein Trefferpfad fuer Maus und Finger.
+ *
+ * Vorher entschied `floor-input` nach Array-Reihenfolge: das erste Moebel im
+ * Snapshot gewann, auch wenn ein Gast davor stand, und ein Gast hinter der Wand
+ * war trotzdem klickbar. Diese Datei beantwortet nur eine Frage — "was ist an
+ * dieser Kachel gemeint" — und kennt weder Pixi noch React.
+ */
+import { wallOwnerTile } from './floor-math';
+
+type HitKind = 'furniture' | 'guest' | 'stain';
+
+/** Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. */
+export interface ScreenAnchor {
+  readonly x: number;
+  readonly y: number;
+}
+
+interface HitCell {
+  readonly x: number;
+  readonly y: number;
+}
+
+interface FloorHit {
+  readonly kind: HitKind;
+  readonly id: number;
+  /** Fusslinie in Tiles; groesser heisst weiter vorne. */
+  readonly depth: number;
+}
+
+interface WallEdge {
+  readonly axis: 'H' | 'V';
+  readonly x: number;
+  readonly y: number;
+  readonly kind: string;
+}
+
+export interface HitView {
+  readonly size: number;
+  readonly furniture: readonly { readonly id: number; readonly x: number; readonly y: number; readonly w: number; readonly h: number }[];
+  readonly guests: readonly { readonly id: number; readonly position: HitCell }[];
+  readonly stains: readonly { readonly id: number; readonly x: number; readonly y: number }[];
+  readonly layout?: { readonly edges: readonly WallEdge[] };
+}
+
+/** Bei gleicher Fusslinie gewinnt die Figur vor dem Moebel vor dem Fleck. */
+const RANK: Readonly<Record<HitKind, number>> = { stain: 0, furniture: 1, guest: 2 };
+
+type Candidate = FloorHit & { readonly at: HitCell };
+
+const keyOf = (x: number, y: number, size: number): number => y * size + x;
+
+/** Alle Kacheln, die eine Wandkante besitzt; nur Wandkanten zaehlen. */
+function wallCells(view: HitView): Set<number> {
+  const cells = new Set<number>();
+  for (const edge of view.layout?.edges ?? []) {
+    if (edge.kind !== 'WALL') continue;
+    const owner = wallOwnerTile(edge, view.size);
+    cells.add(keyOf(owner.x, owner.y, view.size));
+  }
+  return cells;
+}
+
+/**
+ * Sichtlinie zwischen Spieler und Ziel: liegt eine Wandkachel dazwischen, ist
+ * das Ziel nicht gemeint. Benachbartes bleibt erlaubt, sonst waere der eigene
+ * Tisch unklickbar, sobald er an einer Wand steht.
+ */
+export function sightBlocked(view: HitView, from: HitCell, to: HitCell): boolean {
+  const walls = wallCells(view);
+  if (walls.size === 0) return false;
+  const steps = Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y));
+  if (steps <= 1) return false;
+  for (let step = 1; step < steps; step += 1) {
+    const share = step / steps;
+    const x = Math.round(from.x + (to.x - from.x) * share);
+    const y = Math.round(from.y + (to.y - from.y) * share);
+    if (walls.has(keyOf(x, y, view.size))) return true;
+  }
+  return false;
+}
+
+/** Vorderstes Ziel: Tiefe, dann Rang, dann die kleinere ID. */
+export function pickHit(candidates: readonly Candidate[]): FloorHit | null {
+  let best: Candidate | null = null;
+  for (const candidate of candidates) {
+    if (!best) { best = candidate; continue; }
+    if (candidate.depth !== best.depth) {
+      if (candidate.depth > best.depth) best = candidate;
+      continue;
+    }
+    if (RANK[candidate.kind] !== RANK[best.kind]) {
+      if (RANK[candidate.kind] > RANK[best.kind]) best = candidate;
+      continue;
+    }
+    if (candidate.id < best.id) best = candidate;
+  }
+  return best ? { kind: best.kind, id: best.id, depth: best.depth } : null;
+}
+
+/**
+ * Was ist an dieser Kachel gemeint? Maustaste und Finger landen hier beide;
+ * es gibt keinen zweiten Pfad und damit keinen Doppel-Trigger.
+ */
+export function resolveHit(view: HitView, cell: HitCell, from: HitCell): FloorHit | null {
+  if (cell.x < 0 || cell.y < 0 || cell.x >= view.size || cell.y >= view.size) return null;
+  const candidates: Candidate[] = [];
+  for (const stain of view.stains) {
+    if (Math.abs(stain.x - cell.x) <= 1 && Math.abs(stain.y - cell.y) <= 1) {
+      candidates.push({ kind: 'stain', id: stain.id, depth: stain.y + 1, at: { x: stain.x, y: stain.y } });
+    }
+  }
+  for (const item of view.furniture) {
+    if (cell.x >= item.x && cell.y >= item.y && cell.x < item.x + item.w && cell.y < item.y + item.h) {
+      candidates.push({ kind: 'furniture', id: item.id, depth: item.y + item.h, at: { x: item.x + item.w / 2, y: item.y + item.h } });
+    }
+  }
+  for (const guest of view.guests) {
+    if (Math.abs(guest.position.x - cell.x) + Math.abs(guest.position.y - cell.y) <= 1) {
+      candidates.push({
+        kind: 'guest', id: guest.id, depth: guest.position.y + 0.8,
+        at: { x: guest.position.x, y: guest.position.y + 0.5 },
+      });
+    }
+  }
+  return pickHit(candidates.filter((candidate) => !sightBlocked(view, from, candidate.at)));
+}

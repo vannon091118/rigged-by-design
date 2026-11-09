@@ -2,7 +2,7 @@
 import { Container, Graphics, Sprite, Text, type Renderer } from 'pixi.js';
 import { gameOf, isCabinet } from '../core/sim/device';
 import type { Furniture } from '../core/sim/types';
-import { ROLE, STROKE, floorText } from './art-tokens';
+import { ROLE, SHADOW, STROKE, WORLD_FLATTEN, floorText } from './art-tokens';
 import { atlasTextureFor, glowTextureFor } from './furniture-atlas';
 
 export interface FurnitureArt {
@@ -22,6 +22,16 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
   // Ein Sprite teilt die gebackene Textur mit jeder Instanz derselben Bauart.
   const body = new Sprite(atlasTextureFor(renderer, item, tile));
 
+  // Koerper, Glow und Rahmen haengen an einem Fussanker: der Pivot liegt auf
+  // der unteren Kante, gestaucht wird nach oben. Der Kontakt zum Boden bleibt,
+  // die Kachelkante fuer Treffer und Tiefe auch.
+  const visual = new Container();
+  visual.pivot.set(w / 2, h);
+  visual.position.set(w / 2, h);
+  visual.scale.set(1, WORLD_FLATTEN);
+  const contact = new Graphics();
+  contact.ellipse(w / 2, h - 1, w * 0.42, Math.max(2, h * 0.12)).fill({ color: 0x000000, alpha: SHADOW.base });
+
   const occupied = new Graphics();
   occupied.roundRect(-1, -1, w + 2, h + 2, 6).stroke({ width: STROKE.base, color: ROLE.service, alpha: 0.7 });
   occupied.visible = false;
@@ -36,11 +46,13 @@ export function createFurnitureArt(item: Furniture, tile: number, renderer: Rend
   const status = new Graphics();
   const screen = new Text({ text: isCabinet(item) ? 'BEREIT' : gameOf(item) ?? '', style: floorText.screen() });
   screen.anchor.set(0.5, 0.5);
-  screen.position.set(w / 2, h * 0.68);
+  screen.position.set(w / 2, h * 0.68 * WORLD_FLATTEN);
   const label = new Text({ text: item.label, style: floorText.name() });
   label.anchor.set(0.5, 0);
   label.position.set(w / 2, h + 2);
-  root.addChild(body, glow, occupied, status, screen, label);
+  visual.addChild(contact, body, glow, occupied);
+  // Text bleibt ungestaucht: lesbar geht vor perspektivisch.
+  root.addChild(visual, status, screen, label);
 
   let lastBucket = -2;
   let lastOccupants = -1;

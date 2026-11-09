@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T20:05Z-welt-treffer-02",
+  "contributionId": "welt-treffer-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
+  "directives": []
+}

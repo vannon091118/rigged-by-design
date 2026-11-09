@@ -4,6 +4,7 @@ import type { EditorCursor } from './editor-overlay';
 import { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import type { GameView } from '../store/types';
 import type { MenuAction } from './floor-actions';
+import type { ScreenAnchor } from './floor-hit';
 import { FloorView } from './floor-view';
 import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
@@ -17,11 +18,11 @@ export interface FloorHandle {
 interface Props {
   readonly view: GameView;
   readonly placing: string | null;
-  readonly onGuest: (id: number) => void;
-  readonly onFurniture: (id: number) => void;
+  readonly onGuest: (id: number, anchor: ScreenAnchor | null) => void;
+  readonly onFurniture: (id: number, anchor: ScreenAnchor | null) => void;
   readonly onEmpty: (x: number, y: number) => void;
   readonly onInteract: (actionId: string, targetId?: number) => void;
-  readonly onActions: (actions: MenuAction[]) => void;
+  readonly onActions: (actions: MenuAction[], anchor: ScreenAnchor | null) => void;
   readonly onFirstFrame?: () => void;
   readonly paused?: boolean;
 }
@@ -61,10 +62,10 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       host.current.appendChild(instance.canvas);
       if (import.meta.env.DEV) (window as Window & { __pixiApp?: Application }).__pixiApp = instance;
       floor.current = new FloorView(instance, latest.current.view, {
-        onGuest: (id) => latest.current.onGuest(id),
-        onFurniture: (id) => latest.current.onFurniture(id),
+        onGuest: (id, anchor) => latest.current.onGuest(id, anchor),
+        onFurniture: (id, anchor) => latest.current.onFurniture(id, anchor),
         onEmpty: (x, y) => latest.current.onEmpty(x, y),
-        onActions: (actions) => latest.current.onActions(actions),
+        onActions: (actions, anchor) => latest.current.onActions(actions, anchor),
       });
       const governor = new PerfGovernor();
       let tier: PerfTier = 'high';
