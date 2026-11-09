@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8e0b37db9a295ced060f993e2178507987f090b04fe3c701987c33185368eaf5",
+  "contentHash": "sha256:366e5913c215b5c52ba1e0a8f9a637a0a560bd17ccabf9db8f7265f9c48ad199",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18199,6 +18199,28 @@
       "text": "Er tritt ein, als hätte dieser Abend schon auf ihn gewartet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-warm-return-titel.json"
+    },
+    {
+      "contributionId": "welt-anker-01",
+      "turnId": "2026-11-09T20:45Z-welt-anker-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat ist kein eigenes Fenster mehr, sondern ein Gerät, das man anfasst. Man steht davor und sieht, was man drückt; nichts springt einem dazwischen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-welt-anker-01.json"
     },
     {
       "contributionId": "welt-treffer-01",

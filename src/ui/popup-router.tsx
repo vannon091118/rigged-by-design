@@ -1,4 +1,5 @@
 /** Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. */
+import type { ScreenAnchor } from '../render/floor-hit';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { Perspective, Popup } from './app-model';
@@ -24,9 +25,11 @@ interface RouterProps {
   readonly onOpen: (popup: Popup) => void;
   /** Das Bau-Panel ist keine Popup-Ebene, sondern eine eigene Spalte. */
   readonly onStaff: () => void;
+  /** Weltposition des Objekts, das diesen Popup geoeffnet hat. */
+  readonly anchor?: ScreenAnchor | null;
 }
 
-export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff }: RouterProps) {
+export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff, anchor = null }: RouterProps) {
   if (popup === null) return null;
 
   if (popup.kind === 'guests') {
@@ -53,6 +56,7 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
         item={item}
         view={view}
         perspective={perspective}
+        anchor={anchor}
         onClose={onClose}
         onTest={() => worldStore.spinTest(item.id)}
         onRepair={() => worldStore.repair(item.id)}

@@ -1,15 +1,17 @@
 {
-  "id": "lane/governance/welt-treffer-02",
+  "id": "lane/governance/welt-anker",
   "owner": "Governance-Owner",
-  "branch": "lane/governance/welt-treffer",
-  "baseSha": "0ff020ab3aa3669a723593f15e6fb32d47708fba",
-  "task": "Floor: ein Trefferpfad, Fussanker und Aktionskarte am Objekt",
-  "goal": "Nachtrag zur Registrierung: die Allowlist der Lane fuehrt jetzt auch den zweiten Textbaustein; das Register ist append-only, deshalb ein neuer Claim statt einer Erweiterung.",
+  "branch": "lane/governance/welt-anker",
+  "baseSha": "3b10498796640ed526ff067af52b9bf50dca4847",
+  "task": "Automat als Weltpanel: derselbe Anker wie die Aktionskarte",
+  "goal": "Der Automat oeffnet sein Interface am Objekt statt im Vollbild; kein zweites Popup-System, dieselbe Klemm- und Daumenzonen-Logik.",
   "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-welt-anker.json",
     ".lane-claims/claims/lane-governance-welt-treffer-02.json",
     ".lane-claims/claims/lane-governance-welt-treffer.json",
     ".lane-claims/freeze-unlock.json",
     "AGENTS.md",
+    "content/narrative/contributions/2026-11-09-welt-anker-01.json",
     "content/narrative/contributions/2026-11-09-welt-treffer-01.json",
     "content/narrative/contributions/2026-11-09-welt-treffer-02.json",
     "content/narrative/registry/fragments.json",
@@ -36,11 +38,15 @@
     "src/render/furniture-art.ts",
     "src/render/room-dressing.ts",
     "src/styles/app.css",
-    "src/ui/action-card.tsx"
+    "src/styles/popup.css",
+    "src/ui/action-card.tsx",
+    "src/ui/machine-popup.tsx",
+    "src/ui/popup-router.tsx",
+    "src/ui/popup-shell.tsx"
   ],
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
   "status": "open",
-  "createdAt": "0ff020ab3aa3669a723593f15e6fb32d47708fba"
+  "createdAt": "3b10498796640ed526ff067af52b9bf50dca4847"
 }
