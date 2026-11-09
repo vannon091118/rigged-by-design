@@ -93,7 +93,7 @@ describe('Begegnungs-Loop (Stadt)', () => {
     expect(world.narrative.events.filter((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))).toHaveLength(0);
 
     // (e) Save/Load mitten im Ablauf erhaelt alles, was der Loop traegt.
-    const before = JSON.parse(JSON.stringify(toSavedGame(world, ledger, 1)));
+    const before = JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState())));
     const loaded = replaySave(before)!;
     expect(loaded).not.toBeNull();
     const lw = loaded.world;
@@ -107,11 +107,11 @@ describe('Begegnungs-Loop (Stadt)', () => {
     expect(lw.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')?.dueTick)
       .toBe(run.dueTick);
 
-    // Rueckkehr am naechsten Tag: die verzoegerte Folge ist jetzt sichtbar.
-    restInCity(lw, loaded.ledger, prng);
+    // Rueckkehr am naechsten Tag: der echte Tagesabschluss muss die
+    // verzoegerte Folge selbst faellig machen. Kein Zuruecksetzen der Uhr.
+    restInCity(lw, loaded.ledger, new Prng(loaded.prngState));
     expect(lw.day).toBe(2);
-    lw.tick = run.dueTick;
-    processNarrativeRuntime(lw, loaded.ledger);
+    expect(lw.tick).toBe(600);
     const echo = lw.narrative.events.find((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))!;
     expect(echo.eventId).toBe('CITY_ENCOUNTER_ECHO_WARM');
     const echoDialog = encounterDialog(lw, loaded.ledger, echo.id);
@@ -124,7 +124,7 @@ describe('Begegnungs-Loop (Stadt)', () => {
     expect(again.memory).toContain('eine Runde ausgegeben');
 
     // Auch die Folge selbst ueberlebt einen zweiten Save/Load-Roundtrip.
-    const after = replaySave(JSON.parse(JSON.stringify(toSavedGame(lw, loaded.ledger, 1))))!;
+    const after = replaySave(JSON.parse(JSON.stringify(toSavedGame(lw, loaded.ledger, loaded.prngState))))!;
     expect(after.world.narrative.events.find((entry) => entry.eventId === 'CITY_ENCOUNTER_ECHO_WARM')?.id)
       .toBe(echo.id);
     expect(after.world.city?.encounters).toHaveLength(1);
@@ -141,7 +141,8 @@ describe('Begegnungs-Loop (Stadt)', () => {
     expect(cityOf(world).energy).toBe(CITY_ENERGY_PER_DAY - 1);
     processNarrativeRuntime(world, ledger);
     const run = world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')!;
-    world.tick = run.dueTick;
+    expect(run.dueTick).toBe(world.tick + 24);
+    // Auch die Ablehnung kehrt ueber den echten Tagesabschluss zurueck.
     restInCity(world, ledger, prng);
     processNarrativeRuntime(world, ledger);
     const echo = world.narrative.events.find((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))!;
