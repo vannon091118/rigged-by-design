@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "base": "a152aaba3d0040bb18536c87a0aa4eeadd96003f",
+  "base": "c2e51e965e4774c1bf91592551174fcc15f56a14",
   "paths": [
-    "docs/ARCHITECTURE.md",
-    "scripts/lib/narrative-macros.mjs"
+    "docs/ARCHITECTURE.md"
   ],
-  "token": "ba30f1e5db060a177d9affe6775693ad63179951636ac7eb1f21a40983ad4183",
+  "token": "55e82b3ed6f96981f13bb80d06327793aa628cd063afa39992ac18d64eb3a9ce",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

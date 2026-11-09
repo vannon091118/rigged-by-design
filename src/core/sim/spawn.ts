@@ -10,6 +10,7 @@ import { emitFact } from './narrative/facts';
 import { memoryEffect } from './narrative/memory';
 import { hearRumor } from './narrative/knowledge-gossip';
 import { actorRefOfVisitor, relationshipStanding } from './narrative/relationships';
+import { ADDICTED_THRESHOLD } from './emotion';
 import { hasStaff } from './staff-queries';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
@@ -31,12 +32,17 @@ export function reputation(world: WorldState): number {
   const staff = (world.staff.cleaner ? 3 : 0) + (world.staff.bartender ? 3 : 0)
     + (world.staff.cashier ? 2 : 0) + (hasStaff(world, 'guard') ? 2 : 0) + (world.staff.porter ? 1 : 0);
   const dirt = Math.min(10, world.dirty.size * 0.8);
+  // Sucht hat eine sichtbare Folge fuer das Haus (P-5): Wer erkennbar suechtig
+  // spielt, kostet Ruf — Spielerschutz gehoert zum Standing. Ein Guard halbiert
+  // den Malus (abgerundet); der Deckel 6 entspricht der Beziehungs-Spanne (P-12).
+  const addicted = Math.min(6, world.guests.filter((guest) => guest.addiction >= ADDICTED_THRESHOLD).length);
+  const addictionMalus = hasStaff(world, 'guard') ? Math.floor(addicted / 2) : addicted;
   const attraction = Math.min(8, attractionOf(world) / 150);
   // Beziehungen sind eine eigene Quelle: wer dem Haus vertraut, erzaehlt es
   // weiter; wer im Konflikt steht, warnt davor. Der Anteil ist begrenzt.
   const standing = relationshipStanding(world);
   const value = 5 + served + condition * 15 * scale + (quality - 1) * 16 * scale
-    + experience + staff + attraction - dirt + standing;
+    + experience + staff + attraction - dirt + standing - addictionMalus;
   return Math.max(0, Math.min(100, value));
 }
 

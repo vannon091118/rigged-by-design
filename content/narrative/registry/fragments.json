@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:509f79c0fc5c8fb910491e5da85b5df428e2ddc3c58456b7bcdbe12d7fe0abc7",
+  "contentHash": "sha256:aeefcfc6c4e845c2909fa6a7765b373d753dae3c2643e7e01413a8f2bf7133f8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6684,6 +6684,28 @@
       "text": "Im Ordner des Nachlasses lag ein Kassenbon, der länger war als die Inventarliste. Rita nannte das keinen Schatz. Sie nannte es einen Anfang und fragte, ob der Gratis-Automat wenigstens selbst laufen könne.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-01-readme-opening.json"
+    },
+    {
+      "contributionId": "p5-suchtfolge-01",
+      "turnId": "2026-11-09T18:55Z-p5-suchtfolge-01",
+      "agentId": "buffy",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "reaction",
+      "function": "react",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "angespannt",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Er steht schon wieder am selben Automaten, und niemand muss fragen, seit wann. Die Einsätze sind höher als gestern, das Lächeln schmaler — wer hier arbeitet, erkennt den Unterschied längst, bevor die Kasse ihn sieht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-p5-suchtfolge-01.json"
     },
     {
       "contributionId": "patience-gap-01",

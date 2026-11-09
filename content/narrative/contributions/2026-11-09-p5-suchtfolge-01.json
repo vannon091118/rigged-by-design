@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T18:55Z-p5-suchtfolge-01",
+  "contributionId": "p5-suchtfolge-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Er steht schon wieder am selben Automaten, und niemand muss fragen, seit wann. Die Einsätze sind höher als gestern, das Lächeln schmaler — wer hier arbeitet, erkennt den Unterschied längst, bevor die Kasse ihn sieht.",
+  "directives": []
+}
