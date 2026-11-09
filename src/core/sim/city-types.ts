@@ -5,6 +5,25 @@
 export type CityLocationId = 'CASINO' | 'KIEZ' | 'MARKT';
 export type CityBranchId = 'KIEZ' | 'MARKT';
 
+/** Die 30 Eigenschaften, die Wissen, Redseligkeit und Glaubwuerdigkeit faerben. */
+export type TraitId =
+  | 'KONSUMENT' | 'LASTERMAUL' | 'MITLAEUFER' | 'EINZELGAENGER' | 'GERUECHTEMACHER'
+  | 'VERSCHWIEGEN' | 'HILFSBEREIT' | 'MISSTRAUISCH' | 'LEICHTGLAEUBIG' | 'PRAHLER'
+  | 'BESCHEIDEN' | 'RAUCHER' | 'TRINKER' | 'SPIELER' | 'GEIZHALS'
+  | 'GROSSZUEGIG' | 'NEUGIERIG' | 'DESINTERESSIERT' | 'LOYAL' | 'VERRAETER'
+  | 'EHRLICH' | 'VERSCHLAGEN' | 'RUHEPOL' | 'CHAOT' | 'SPARSAM'
+  | 'MITTEILSAM' | 'SCHUECHTERN' | 'STOLZ' | 'BEOBACHTER' | 'FUERSORGLICH';
+
+/** 1 = angelegt, 2 = gefestigt, 3 = starke Auspraegung. */
+export type TraitIntensity = 1 | 2 | 3;
+
+/** Eine gehaltene Eigenschaft; `progress` sammelt Praegung bis zur naechsten Stufe. */
+export interface TraitState {
+  readonly id: TraitId;
+  readonly intensity: TraitIntensity;
+  readonly progress: number;
+}
+
 /** Die drei sozialen Handlungen einer Begegnung; jede bucht Geld und Beziehung. */
 export type EncounterAction = 'GEBEN' | 'HELFEN' | 'ABLEHNEN';
 export const ENCOUNTER_ACTIONS: readonly EncounterAction[] = ['GEBEN', 'HELFEN', 'ABLEHNEN'];

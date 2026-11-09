@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
+  "contributionId": "logic-safety-payout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Karten liegen offen, und die Summe stimmt: Was ausgezahlt wird, steht in einer Zeile, die niemand nachträglich verschiebt. Der Gast zählt nicht nach, er sieht nur, dass die Rechnung aufgeht.",
+  "directives": []
+}

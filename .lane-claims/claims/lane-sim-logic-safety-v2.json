@@ -1,0 +1,30 @@
+{
+  "id": "lane/sim/logic-safety-v2",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/logic-safety-v2",
+  "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "task": "Blackjack sameRank/split-units/sidebet, Job-Verletzungsrate und Fremd-Kartenbindung reparieren, Kommentare straffen",
+  "goal": "Split nur bei gleichem Rang, Split-Haende behalten Einsatz, SideBet folgt Regeln, volle injuryChance mit kombinierter Meldung, Fremd-Settle an Einsatz/Quote gebunden mit 250x-Cap; Doku/Kommentare netto reduziert",
+  "pathAllowlist": [
+    "src/core/games/engines/blackjack-rules.ts",
+    "src/core/games/engines/blackjack.ts",
+    "src/core/games/engines/blackjack-settle.ts",
+    "src/core/sim/player-jobs.ts",
+    "src/core/games/engines/__tests__/blackjack.test.ts",
+    "src/core/sim/__tests__/player-jobs.test.ts",
+    "src/core/sim/__tests__/player-wage-attendance.test.ts",
+    "src/store/foreign-play.ts",
+    "src/store/rival-play-commands.ts",
+    "src/store/__tests__/rival-play-commands.test.ts",
+    "src/store/__tests__/narrative-rival-source.test.ts",
+    "package.json",
+    "pnpm-lock.yaml",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-logic-safety-v2.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
+}

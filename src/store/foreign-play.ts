@@ -1,4 +1,4 @@
-/** Fremde Haeuser: Spiel und Besuch an einer Stelle, damit der Store schlank bleibt. */
+/** Fremde Haeuser: Spiel und Besuch. */
 import type { Ledger } from '../core/economy/ledger';
 import type { GameExtras, GameResult } from '../core/games/contracts';
 import type { Prng } from '../core/rng/prng';
@@ -80,23 +80,30 @@ export function visitRivalWithJournal(
  * schliesst, hat trotzdem gespielt.
  */
 
-/** Alles, was ein Fenster nach dem Austeilen kennt: Schuh-Seed und Maschine. */
+// Unsettled Kartenrunde je Maschine: Einsatz bindet Deal an Settle.
 export interface CardDeal {
   readonly seed: number;
   readonly label: string;
 }
 
-/** Einsatz beim Austeilen: Valide ist hier die Voraussetzung, nicht beim Auszahlen. */
+/** Offene Kartenrunde je (Rivale, Maschine); Einsatz bindet Deal an Settle. */
+const pendingCard = new Map<string, { stake: VaCoinMicro }>();
+const pendingKey = (rivalId: RivalId, machineIndex: number): string => `${rivalId}:${machineIndex}`;
+const MAX_CARD_ENGINE_BPS = 2_500_000;
 export function dealCardOutcome(
   world: WorldState, ledger: Ledger, prng: Prng, rivalId: RivalId, machineIndex: number, stakeVC: number,
 ): { result: CardDeal; notice: string } {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
+  const key = pendingKey(rivalId, machineIndex);
+  if (pendingCard.has(key)) throw new Error('An diesem Tisch läuft noch eine Kartenrunde.');
   const stake = fromVC(stakeVC);
   if (stake < rival.minBet) throw new Error(`Mindesteinsatz im ${rival.name}: ${rival.minBet} Mikro.`);
+  if (!Number.isSafeInteger(stake) || stake <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld. Hebe am Hauskonto ab.');
-  foreignBet(ledger, stake, world.tick);
+  foreignBet(ledger, stake, world.tick, entry.game);
+  pendingCard.set(key, { stake });
   recordJournal(world, {
     kind: 'RIVAL', subject: rivalId, cause: 'Kartenrunde Einsatz',
     effect: `${rival.name} (${entry.label}): ${stake / 10_000} VC eingesetzt`, refs: { rivalId },
@@ -113,16 +120,22 @@ export function cardPayout(stake: VaCoinMicro, engineBps: number, edgeBps: numbe
   return addVC(stake, mulVC(subVC(gross, stake), Math.max(0, 10_000 - edgeBps)));
 }
 
-/** Auszahlung am Rundenende: hier darf keine Bude mehr pruefen, der Einsatz ist weg. */
+/** Auszahlung nur fuer offene Runde, Einsatz und gecappte Quote. */
 export function settleCardOutcome(
   world: WorldState, ledger: Ledger, rivalId: RivalId, machineIndex: number, stakeVC: number, engineBps: number, label: string,
 ): ForeignOutcome {
   const rival = getRival(rivalId);
   const entry = rival.machines[machineIndex];
   if (!entry) throw new Error('Diese Maschine gibt es dort nicht.');
+  const key = pendingKey(rivalId, machineIndex);
+  const pending = pendingCard.get(key);
+  if (!pending) throw new Error('Keine offene Kartenrunde an dieser Maschine.');
+  if (!Number.isSafeInteger(engineBps) || engineBps < 0 || engineBps > MAX_CARD_ENGINE_BPS) throw new Error(`Ungültige Quote ${String(engineBps)}.`);
   const stake = fromVC(stakeVC);
+  if (stake !== pending.stake) throw new Error('Einsatz passt nicht zur offenen Kartenrunde.');
+  pendingCard.delete(key);
   const payout = cardPayout(stake, engineBps, rivalEdge(rival, entry));
-  if (payout > 0) foreignWin(ledger, payout, world.tick);
+  if (payout > 0) foreignWin(ledger, payout, world.tick, entry.game);
   const netToHouse = (payout - stake) as VaCoinMicro;
   if (netToHouse !== 0) {
     emitFact(world, {

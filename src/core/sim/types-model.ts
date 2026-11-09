@@ -5,6 +5,7 @@ import type { SlotProfile } from '../games/slot-profile';
 import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 import type { VisitorMemory } from './narrative/types';
+import type { TraitState } from './city-types';
 import type { LayoutZone, ZoneKind } from './layout-types';
 
 /** Spielbedeutung einer Zone; der Layout-Vertrag ist ihre einzige Definition. */
@@ -116,4 +117,10 @@ export interface Visitor {
   visits: number; lastSeenTick: number; experience?: number;
   /** Strukturierte Erinnerungen aus abgeschlossenen Besuchen; begrenzt. */
   memories?: VisitorMemory[];
+  /** Charisma und Intelligenz steuern Redseligkeit und Gewinnfilter. */
+  charisma?: number; intellect?: number;
+  /** Laster verstaerken Trait-Entwicklung (0..10). */
+  vice?: number;
+  /** Entwickelbare Eigenschaften; nur benannte Stadt-NPCs tragen sie. */
+  traits?: TraitState[];
 }

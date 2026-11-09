@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 17:03 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 17:29 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -15,10 +15,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.195] - 2026-11-08
 
 ### Technik
+- **P-4: Spieltyp-Spuren im Ledger.** `LedgerEntry.game` traegt den Spieltyp einer echten Runde; Einsatz und Auszahlung werden an den Produktionspfaden gestempelt, der Save-Replay erhaelt die Spur, und `economyOf().byGame` summiert Einnahmen je Spieltyp. Beleg: `save-roundtrip.test.ts` startet einen Slot-Lauf und prueft die Spur nach JSON-Save/Load.
 - **Red-Team-Test fuer die Gate-Lane.** Der neue Governance-Test haelt die freigegebene Unveraenderlichkeit von `GATES`, der Profile und der CI-Zustaende fest; eine literale `PURPOSE`-Tabelle bindet jedes Gate an Befehlsart, Skript und Fehlercode und prueft, dass das aufgerufene Paketskript den erwarteten Pruefer startet und kein Gate einen schreibenden Schalter (`--fix`, `--write`, `-i`, `rm`, `mv`) mitfuehrt. Matrix und CI-Plan sind bei gleichem Zustand byte-gleich und lassen den Quellbaum unveraendert; das Gate-Ergebnis kommt aus dem Exitcode, nicht aus der Ausgabe. Ein tiefes Einfrieren der einzelnen Gate-Objekte braucht eine Aenderung in `scripts/lib/` und damit eine Freeze-Freigabe; das bleibt ein eigener Schnitt und ist nicht Teil dieses Commits.
 - **Testquality-Fix.** Der P-11-Entladungstest nutzt wieder einen frischen Seed (`randomSeed`) statt eines festen Werts.
 
 ### Textbausteine
+- **703 Bausteine.** Ein neuer Baustein beschreibt den Spieltyp im Kassenbuch; kein Pool unter 50.
 - **691 Bausteine.** Ein neuer Dokumentationsbaustein beschreibt die Beweispflicht der Gate-Lane; kein Pool unter 50.
 
 ## [0.3.194] - 2026-11-09

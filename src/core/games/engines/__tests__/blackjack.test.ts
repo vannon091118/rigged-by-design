@@ -34,6 +34,22 @@ describe('Blackjack-Regeln', () => {
     expect(split.split).toBe(true);
   });
 
+  it('splittet nur gleiche Raenge, nicht gleiche Werte (J+10 nicht)', () => {
+    const shoe = shoeOf('J♠', '10♥', '9♣', '7♦', '5♠', '6♥');
+    const round = startBlackjack(shoe, 1);
+    expect(() => splitBlackjack(round, shoe)).toThrow(/gleiche Raenge/);
+    const shoe2 = shoeOf('K♠', 'K♥', '9♣', '7♦', '5♠', '6♥');
+    const round2 = startBlackjack(shoe2, 1);
+    expect(splitBlackjack(round2, shoe2).hands).toHaveLength(2);
+  });
+
+  it('behaelt beim Split mit 2 Einheiten den Einsatz je Hand', () => {
+    const shoe = shoeOf('8♠', '8♥', '9♣', '7♦', '5♠', '6♥');
+    const split = splitBlackjack(startBlackjack(shoe, 2), shoe);
+    expect(split.units).toBe(4);
+    expect(split.hands.map((hand) => hand.units)).toEqual([2, 2]);
+  });
+
   it('gibt beim Aufgeben den halben Einsatz zurueck', () => {
     const shoe = shoeOf('10♠', '6♥', '9♣', '7♦');
     const round = surrenderBlackjack(startBlackjack(shoe, 1));

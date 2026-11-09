@@ -23,6 +23,16 @@ describe('Rival Play Commands: Einsatzumrechnung', () => {
     expect(result?.stake).toBe(fromVC(0.1));
   });
 
+  it('verweigert Abrechnung ohne Austeilen, bei falschem Einsatz und bei Doppelabrechnung', () => {
+    const { world, ledger, prng } = setup();
+    expect(settleCardCmd(world, ledger, 'GOLDENE_HAND', 0, 0.25, 20_000, 'Test')).toBeNull();
+    expect(dealCardCmd(world, ledger, prng, 'GOLDENE_HAND', 0, 0.25)).not.toBeNull();
+    expect(settleCardCmd(world, ledger, 'GOLDENE_HAND', 0, 0.3, 20_000, 'Test')).toBeNull();
+    expect(settleCardCmd(world, ledger, 'GOLDENE_HAND', 0, 0.25, 99_000_000, 'Test')).toBeNull();
+    expect(settleCardCmd(world, ledger, 'GOLDENE_HAND', 0, 0.25, 20_000, 'Test')).not.toBeNull();
+    expect(settleCardCmd(world, ledger, 'GOLDENE_HAND', 0, 0.25, 20_000, 'Test')).toBeNull();
+  });
+
   it('bucht Karten-Einsatz und Abrechnung in derselben Einheit', () => {
     const { world, ledger, prng } = setup();
     const deal = dealCardCmd(world, ledger, prng, 'GOLDENE_HAND', 0, 0.25);

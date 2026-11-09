@@ -97,6 +97,21 @@ describe('Einfluss-Matrix', () => {
     expect(influenceScore('bar', thirsty)).toBeGreaterThan(influenceScore('bar', dry));
   });
 
+  it('wertet Cross-Kanten unabhaengig von ihrer Reihenfolge aus', () => {
+    // Alle Quellen sind gesaettigt; die Kante satisfaction->mood wuerde bei
+    // sequenziellem Klemmen den anschliessenden Durst-Abzug verschlucken.
+    const saturated: InfluenceValues = {
+      mood: 100, sociability: 100, thirst: 100, rumor: 1,
+      trust: 10, sympathy: 10, conflict: 0, satisfaction: 100,
+    };
+    const forward = evaluateInfluence('bar', saturated);
+    const reversed = evaluateInfluence('bar', saturated, variant({
+      cross: [...INFLUENCE_CONFIG.cross].reverse(),
+    }));
+    expect(reversed.score).toBe(forward.score);
+    expect(reversed.contributions).toEqual(forward.contributions);
+  });
+
   it('macht die Treat-Cross-Kante kontextabhaengig und config-sensitiv', () => {
     const values: InfluenceValues = { ...NEUTRAL, satisfaction: 100 };
     const bar = treatInfluence('bar', values);

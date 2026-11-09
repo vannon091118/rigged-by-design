@@ -48,22 +48,22 @@ function assertOwnBetLimit(world: Pick<WorldState, 'prices'>, item: Furniture, s
   if (stake > max) throw new Error(`Einsatz über der Obergrenze an ${item.label}: maximal ${(max / 10_000).toFixed(2)} VC.`);
 }
 
-export function ownBet(ledger: Ledger, amount: VaCoinMicro, tick: number, reason: string = TX_REASON.OWN_STAKE): void {
+export function ownBet(ledger: Ledger, amount: VaCoinMicro, tick: number, reason: string = TX_REASON.OWN_STAKE, game: string | null = null): void {
   if (!Number.isSafeInteger(amount) || amount <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
-  ledger.transfer(PORTEMONNAIE, HAUSKONTO, amount, reason, tick);
+  ledger.transfer(PORTEMONNAIE, HAUSKONTO, amount, reason, tick, game);
 }
 
 /** Volle Auszahlung: erst das Hauskonto, der Rest als gebuchte Verbindlichkeit. */
-export function ownWin(ledger: Ledger, amount: VaCoinMicro, tick: number): void {
+export function ownWin(ledger: Ledger, amount: VaCoinMicro, tick: number, game: string | null = null): void {
   if (!Number.isSafeInteger(amount) || amount < ZERO_VC) throw new Error('Kein gültiger Gewinn.');
   if (amount === ZERO_VC) return;
   const house = ledger.getBalance(HAUSKONTO);
   const covered = Math.min(amount, Math.max(0, house)) as VaCoinMicro;
-  if (covered > ZERO_VC) ledger.transfer(HAUSKONTO, PORTEMONNAIE, covered, TX_REASON.OWN_WIN, tick);
+  if (covered > ZERO_VC) ledger.transfer(HAUSKONTO, PORTEMONNAIE, covered, TX_REASON.OWN_WIN, tick, game);
   const debt = (amount - covered) as VaCoinMicro;
   if (debt <= ZERO_VC) return;
   ledger.openLiability(DEBT_ACCOUNT);
-  ledger.transfer(DEBT_ACCOUNT, PORTEMONNAIE, debt, `${TX_REASON.OWN_WIN} auf kredit`, tick);
+  ledger.transfer(DEBT_ACCOUNT, PORTEMONNAIE, debt, `${TX_REASON.OWN_WIN} auf kredit`, tick, game);
 }
 
 type GameFurniture = Furniture & { readonly gameId: GameId };
@@ -112,8 +112,8 @@ export function playOwnRound(
     throw new Error('Die Engine lieferte keinen gültigen Gewinn.');
   }
   try {
-    ownBet(ledger, stake, world.tick);
-    if (result.payout > ZERO_VC) ownWin(ledger, result.payout, world.tick);
+    ownBet(ledger, stake, world.tick, TX_REASON.OWN_STAKE, item.gameId);
+    if (result.payout > ZERO_VC) ownWin(ledger, result.payout, world.tick, item.gameId);
     if (result.discharged) emitSlotDischarge(world, 'player', item.id, stake, result.payout);
   } catch (error) {
     prng.setState(snapshot);
@@ -134,7 +134,7 @@ export function ownCardDeal(
   if (!isOwnCardGame(item.gameId)) throw new Error('An diesem Gerät gibt es keine Kartenrunde.');
   const stake = stakeFor(world, ledger, item, betVC);
   const seed = prng.nextInt(1, 2_147_483_646);
-  ownBet(ledger, stake, world.tick);
+  ownBet(ledger, stake, world.tick, TX_REASON.OWN_STAKE, item.gameId);
   return { seed, label: item.label };
 }
 
@@ -154,7 +154,7 @@ export function ownCardSettle(
   if (!Number.isSafeInteger(stake) || stake <= ZERO_VC) throw new Error('Kein gültiger Einsatz.');
   const payout = mulVC(stake, engineBps);
   if (!Number.isSafeInteger(payout) || payout < ZERO_VC) throw new Error('Ungültige Karten-Auszahlung.');
-  if (payout > ZERO_VC) ownWin(ledger, payout, world.tick);
+  if (payout > ZERO_VC) ownWin(ledger, payout, world.tick, item.gameId);
   return { game: item.gameId, stake, payout, multiplierBps: engineBps, label, detail: [label] };
 }
 
@@ -165,7 +165,7 @@ export function ownAdditionalBet(world: WorldState, ledger: Ledger, itemId: numb
   const stake = fromVC(betVC);
   if (!Number.isSafeInteger(stake) || stake <= ZERO_VC) throw new Error('Kein gültiger Zusatz-Einsatz.');
   if (ledger.getBalance(PORTEMONNAIE) < stake) throw new Error('Nicht genug Bargeld für den Zusatz-Einsatz.');
-  ownBet(ledger, stake, world.tick);
+  ownBet(ledger, stake, world.tick, TX_REASON.OWN_STAKE, item.gameId);
 }
 
 /** Risiko-Karte nach einem Slot-Gewinn: gewinnt aus dem Haus, verliert in das Haus. */
@@ -187,8 +187,8 @@ export function ownRisk(
   const card = drawRiskCard(prng);
   const won = card === choice;
   try {
-    if (won) ownWin(ledger, stake, world.tick);
-    else ownBet(ledger, stake, world.tick, TX_REASON.OWN_RISK_LOST);
+    if (won) ownWin(ledger, stake, world.tick, 'SLOT');
+    else ownBet(ledger, stake, world.tick, TX_REASON.OWN_RISK_LOST, 'SLOT');
   } catch (error) {
     prng.setState(snapshot);
     throw error;

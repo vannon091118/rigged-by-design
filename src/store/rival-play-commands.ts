@@ -1,4 +1,4 @@
-/** Rival Play Commands: Karten- und Risikospiele in fremden Casinos. */
+/** Rival Play Commands (fremde Casinos). */
 
 import type { Ledger } from '../core/economy/ledger';
 import { fromVC } from '../core/economy/vacoin';

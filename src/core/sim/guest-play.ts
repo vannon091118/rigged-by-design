@@ -82,7 +82,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
       ? playSlotSession(item, prng, bet, effects.bonusBps)
       : playAction({ game: item.gameId ?? 'SLOT', stake: bet, bonusBps: effects.bonusBps }, prng);
   try {
-    if (result.stake > ZERO_VC) placeBet(ledger, guest.id, result.stake, world.tick);
+    if (result.stake > ZERO_VC) placeBet(ledger, guest.id, result.stake, world.tick, result.game);
   } catch {
     releaseAndChoose(world, guest);
     guest.state = 'CASHOUT';
@@ -91,7 +91,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   }
   const payout = result.payout;
   // Volle Auszahlung: fehlende Deckung wird als Schuld gebucht, nie still gekappt.
-  if (payout > ZERO_VC) payOut(ledger, guest.id, payout, world.tick);
+  if (payout > ZERO_VC) payOut(ledger, guest.id, payout, world.tick, result.game);
   // Der Fact entsteht erst nach der Buchung; die Entladung ist kein zweiter Geldweg.
   if (result.discharged && guest.visitorId !== undefined) {
     emitSlotDischarge(world, actorRefOfVisitor(guest.visitorId), item.id, result.stake, payout);

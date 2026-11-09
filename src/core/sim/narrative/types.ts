@@ -4,7 +4,7 @@ import type { PersonaId, RivalId } from '../types';
 import type { RivalActionId } from '../rival-ai/types';
 import type { ChainState } from './chains/chain-types';
 import type { NarrativeCooldown, NarrativeEventInstance, NarrativeRngState } from './event-types';
-import type { KnowledgeEntry, Observation } from './knowledge-types';
+import type { KnowledgeEntry, KnowledgeExchange, Observation } from './knowledge-types';
 
 export type { KnowledgeEntry, KnowledgeSourceKind, Observation } from './knowledge-types';
 
@@ -26,7 +26,7 @@ export const HOUSE_BANDS: readonly HouseBand[] = ['LOW', 'OK'];
 /** Begrenzungen: Facts, Historie, Erinnerungen und Beziehungen wachsen nicht unkontrolliert. */
 export const NARRATIVE_LIMITS = {
   pending: 48, recent: 120, memories: 6, startPool: 3, relationships: 200,
-  eventInstances: 32, activeEvents: 8, cooldowns: 64, knowledge: 160,
+  eventInstances: 32, activeEvents: 8, cooldowns: 64, knowledge: 160, exchanges: 200,
 } as const;
 
 /** Kanonische, persistente Akteursreferenz; Gäste werden über visitor:<id> geführt. */
@@ -172,8 +172,10 @@ export interface NarrativeState {
   /** Kanonische, gerichtete Beziehungen zwischen persistenten Akteuren. */
   relationships: RelationshipEdge[];
   knowledge: KnowledgeEntry[];
-  /** Naechste freie Wissens-ID. */
   knowledgeSeq: number;
+  /** Begruendete Weitergaben; begrenzt, ueberlebt den Save. */
+  exchanges: KnowledgeExchange[];
+  exchangeSeq: number;
   /** Tatsaechliche Wahrnehmungen; Grundlage der Wissens-Provenance. */
   observations: Observation[];
   /** Naechste freie Beobachtungs-ID. */

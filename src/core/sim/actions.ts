@@ -170,8 +170,8 @@ export function foreignRound(
   // Die Auszahlung kommt vom Haus-Konto und kann nicht an Deckung scheitern;
   // Betrag und Tick sind oben geprueft. Ein Fehler hier rollt den Zufall zurueck.
   try {
-    foreignBet(ledger, bet, tick);
-    if (result.payout > 0) foreignWin(ledger, result.payout, tick);
+    foreignBet(ledger, bet, tick, game);
+    if (result.payout > 0) foreignWin(ledger, result.payout, tick, game);
   } catch (error) {
     prng.setState(snapshot);
     throw error;

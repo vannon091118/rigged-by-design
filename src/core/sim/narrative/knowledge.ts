@@ -1,15 +1,13 @@
 /**
- * Wissenskette: Kein NPC berichtet, was er nicht selbst erlebt, gesehen, gehoert
- * oder gelesen hat. Jede Aussage traegt ihre Provenance (Quelle, Art, Distanz,
- * Tick). Mit jeder Weitergabe entscheidet ein seedfester Wurf ueber Verlust und
- * Verdrehung; derselbe Seed ergibt dieselbe Kette. Nichts hier wuerfelt global.
+ * Wissenskette: Niemand berichtet, was er nicht selbst erlebt, gesehen, gehoert
+ * oder gelesen hat. Jede Aussage traegt ihre Provenance; seedfeste Wuerfe
+ * entscheiden ueber Verlust und Verdrehung. Nichts hier wuerfelt global.
  */
 import { Prng } from '../../rng/prng';
 import type { WorldState } from '../types';
-import {
-  KNOWLEDGE_CONFIG, knowledgeRisk, sourceWeightOf, validateKnowledgeConfig,
-  type KnowledgeConfig,
-} from './knowledge-config';
+import { KNOWLEDGE_CONFIG, knowledgeRisk, validateKnowledgeConfig, type KnowledgeConfig } from './knowledge-config';
+import { contradictionFor, evaluateBelief, projectedConfidence, recordExchange, shareIntent } from './belief';
+import { profileOf } from '../city-traits';
 import { relationshipBetween, shift } from './relationships';
 import type { InfluenceValues } from '../influence';
 import type { ActorRef, KnowledgeEntry } from './knowledge-types';
@@ -24,11 +22,9 @@ const clamp = (value: number, min: number, max: number): number => Math.max(min,
 
 function entryOf(world: WorldState, actor: ActorRef, topic: string, entryId?: number): KnowledgeEntry | null {
   const candidates = world.narrative.knowledge.filter((entry) => entry.actor === actor && entry.topic === topic);
-  if (entryId !== undefined) return candidates.find((entry) => entry.id === entryId) ?? null;
-  return candidates[candidates.length - 1] ?? null;
+  return entryId !== undefined ? candidates.find((entry) => entry.id === entryId) ?? null : candidates[candidates.length - 1] ?? null;
 }
 
-/** Kennt dieser Akteur ueberhaupt etwas zu diesem Thema? */
 function knows(world: WorldState, actor: ActorRef, topic: string = KNOWLEDGE_TOPIC): boolean {
   return world.narrative.knowledge.some((entry) => entry.actor === actor && entry.topic === topic);
 }
@@ -42,7 +38,7 @@ function append(world: WorldState, entry: Omit<KnowledgeEntry, 'id'>, config: Kn
   return made;
 }
 
-/** Erste Hand: die eigene Erfahrung, Distanz 0, volle Konfidenz. */
+/** Erste Hand: eigene Erfahrung, Distanz 0, volle Konfidenz. */
 export function recordFirstHand(
   world: WorldState,
   input: { readonly actor: ActorRef; readonly factId: number; readonly sentiment: number; readonly tick: number },
@@ -52,9 +48,8 @@ export function recordFirstHand(
   const sentiment = clamp(input.sentiment, -1, 1);
   if (Math.abs(sentiment) < 0.1) return null;
   if (world.narrative.knowledge.some((entry) => entry.factId === input.factId && entry.actor === input.actor)) return null;
-  noteObservation(world, {
-    actor: input.actor, factId: input.factId, channel: 'SELBST', tick: input.tick, quality: 1,
-  }, config.limits.maxObservations);
+  noteObservation(world, { actor: input.actor, factId: input.factId, channel: 'SELBST', tick: input.tick, quality: 1 },
+    config.limits.maxObservations);
   return append(world, {
     actor: input.actor, topic: KNOWLEDGE_TOPIC, subject: KNOWLEDGE_SUBJECT,
     sentiment, confidence: 1, sourceKind: 'ERLEBT', sourceActor: input.actor,
@@ -64,12 +59,8 @@ export function recordFirstHand(
 }
 
 interface SightingInput {
-  readonly actor: ActorRef;
-  readonly factId: number;
-  readonly sentiment: number;
-  readonly channel: 'SICHT' | 'GERAEUSCH';
-  readonly quality: number;
-  readonly tick: number;
+  readonly actor: ActorRef; readonly factId: number; readonly sentiment: number;
+  readonly channel: 'SICHT' | 'GERAEUSCH'; readonly quality: number; readonly tick: number;
 }
 
 /** Eigene Beobachtung: ohne Anwesenheit kein Eintrag; die Qualitaet ist die Konfidenz. */
@@ -83,8 +74,7 @@ export function recordSighting(
   if (Math.abs(sentiment) < 0.1) return null;
   if (world.narrative.knowledge.some((entry) => entry.factId === input.factId && entry.actor === input.actor)) return null;
   const observation = noteObservation(world, {
-    actor: input.actor, factId: input.factId, channel: input.channel,
-    tick: input.tick, quality: input.quality,
+    actor: input.actor, factId: input.factId, channel: input.channel, tick: input.tick, quality: input.quality,
   }, config.limits.maxObservations);
   if (!observation) return null;
   return append(world, {
@@ -97,31 +87,20 @@ export function recordSighting(
 }
 
 interface ReportInput {
-  readonly from: ActorRef;
-  readonly to: ActorRef;
-  readonly topic?: string;
-  readonly entryId?: number;
-  readonly tick: number;
-  readonly seed: number;
+  readonly from: ActorRef; readonly to: ActorRef; readonly topic?: string; readonly entryId?: number;
+  readonly tick: number; readonly seed: number;
   /** Optional: wer erzaehlt, muss laut Matrix ueberhaupt weitergabebereit sein. */
   readonly speaker?: SpeakerValues;
 }
 
-/** Beziehung Sprecher -> Empfaenger fliesst als Faktoren in die Weitergabe-Matrix. */
 function speakerInfluence(world: WorldState, from: ActorRef, to: ActorRef, base: SpeakerValues): InfluenceValues {
   const edge = relationshipBetween(world, from, to) ?? relationshipBetween(world, to, from);
-  return {
-    ...base,
-    trust: edge?.trust ?? 0,
-    sympathy: edge?.sympathy ?? 0,
-    conflict: edge?.conflict ?? 0,
-  };
+  return { ...base, trust: edge?.trust ?? 0, sympathy: edge?.sympathy ?? 0, conflict: edge?.conflict ?? 0 };
 }
 
 /**
- * Weitergabe: Der Sprecher muss den Eintrag selbst besitzen, sonst wird der
- * Bericht fail-closed abgelehnt - nicht mit geringer Wahrscheinlichkeit erlaubt.
- * null heisst: unterwegs verloren oder unter der Mindestkonfidenz.
+ * Weitergabe: Der Sprecher muss den Eintrag besitzen, sonst fail-closed. null
+ * heisst: verweigert, verloren, nicht geglaubt oder unter der Mindestkonfidenz.
  */
 export function reportKnowledge(
   world: WorldState,
@@ -138,27 +117,56 @@ export function reportKnowledge(
   if (!entry) throw new Error(`Wissenskette: ${input.from} hat kein Wissen zu ${topic}; Bericht abgelehnt.`);
   if (entry.actor !== input.from) throw new Error('Wissenskette: Quelle und Wissensbesitzer stimmen nicht ueberein.');
   if (input.speaker && !willingToShare(speakerInfluence(world, input.from, input.to, input.speaker))) return null;
-  return transmit(world, entry, input.to, input.tick, input.seed, config);
+  return deliver(world, entry, input.to, input.tick, input.seed, config);
+}
+
+const logExchange = (
+  world: WorldState, entry: KnowledgeEntry, to: ActorRef, tick: number, seed: number,
+  shared: boolean, accepted: boolean | null, score: number, threshold: number,
+  reasons: Parameters<typeof recordExchange>[1]['reasons'], entryId: number | null,
+): void => {
+  recordExchange(world, {
+    from: entry.actor, to, factId: entry.factId, tick, seed, shared, accepted, score, threshold, reasons, entryId,
+  });
+};
+
+/** Benannte NPCs entscheiden ueber Weitergabe (CHA/INT/Traits) und dann ueber Glauben. */
+function deliver(
+  world: WorldState, entry: KnowledgeEntry, to: ActorRef, tick: number, seed: number, config: KnowledgeConfig,
+): KnowledgeEntry | null {
+  const speaker = profileOf(world, entry.actor);
+  const receiver = profileOf(world, to);
+  if (!speaker || !receiver) return transmit(world, entry, to, tick, seed, config);
+  const edge = relationshipBetween(world, to, entry.sourceActor)
+    ?? relationshipBetween(world, entry.sourceActor, to);
+  const intent = shareIntent({ speaker, receiver, entry, trust: edge?.trust ?? 0, seed });
+  if (!intent.shared) {
+    logExchange(world, entry, to, tick, seed, false, null, 0, 0, intent.reasons, null);
+    return null;
+  }
+  const verdict = evaluateBelief({
+    entry, speaker, receiver, edge, contradiction: contradictionFor(world, to, entry), seed, config,
+  });
+  if (!verdict.accepted) {
+    logExchange(world, entry, to, tick, seed, true, false, verdict.score, verdict.threshold, verdict.reasons, null);
+    return null;
+  }
+  const made = transmit(world, entry, to, tick, seed, config);
+  if (made) logExchange(world, entry, to, tick, seed, true, true, verdict.score, verdict.threshold, verdict.reasons, made.id);
+  return made;
 }
 
 function transmit(
-  world: WorldState,
-  entry: KnowledgeEntry,
-  to: ActorRef,
-  tick: number,
-  seed: number,
-  config: KnowledgeConfig,
+  world: WorldState, entry: KnowledgeEntry, to: ActorRef, tick: number, seed: number, config: KnowledgeConfig,
 ): KnowledgeEntry | null {
   const distance = entry.distance + 1;
   if (distance > config.distance.maxDistance) return null;
   const risk = knowledgeRisk(config, distance);
-  // Eigener Strom je Kette: derselbe Seed reproduziert Verlust und Verdrehung.
   const prng = new Prng(seed);
   if (prng.nextFloat() < risk.loss) return null;
   const edge = relationshipBetween(world, to, entry.sourceActor)
     ?? relationshipBetween(world, entry.sourceActor, to);
-  const weight = sourceWeightOf(config, entry.sourceKind === 'ERLEBT' ? 'GEHOERT' : entry.sourceKind, edge);
-  const confidence = entry.confidence * weight * (1 - config.distance.confidenceDecay * distance);
+  const confidence = projectedConfidence(config, entry, edge, distance);
   if (confidence < config.limits.minConfidence) return null;
   const distorted = prng.nextFloat() < risk.distortion;
   const made = append(world, {
@@ -168,18 +176,14 @@ function transmit(
     sourceActor: entry.actor, originActor: entry.originActor, distance,
     observedTick: entry.observedTick, decayedTick: tick, tick, factId: entry.factId,
   }, config);
-  // Rueckwirkung: Die Quelle gewinnt Vertrauen, das Subjekt gewinnt oder verliert Sympathie.
-  shift(world, to, entry.actor, {
-    trust: config.feedback.sourceTrust * (made.confidence >= 0.3 ? 1 : -0.5),
-  }, tick);
+  shift(world, to, entry.actor, { trust: config.feedback.sourceTrust * (made.confidence >= 0.3 ? 1 : -0.5) }, tick);
   if (entry.subject !== to) {
-    const sympathy = clamp(made.sentiment * made.confidence * config.feedback.subjectSympathy, -2, 2);
-    shift(world, to, entry.subject, { sympathy }, tick);
+    shift(world, to, entry.subject,
+      { sympathy: clamp(made.sentiment * made.confidence * config.feedback.subjectSympathy, -2, 2) }, tick);
   }
   return made;
 }
 
 /** Abfragen und Alterung liegen getrennt; die Fassade bleibt importierbar. */
 export { ageKnowledge, contradictionsAbout, entriesAbout, rumorAbout } from './knowledge-query';
-
 export { normalizeKnowledge } from './knowledge-persist';

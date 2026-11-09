@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c15c4744fef2208139fa1bf1fe9a5a7a34d2c31e1aa75735de2ab216f4a41225",
+  "contentHash": "sha256:bb46abd24c4c4437f8c2530ada5f8d1f46cbb157b0d772aaf229df5ec0a97410",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -93,6 +93,28 @@
       "text": "Ich habe die Maschinen und die Deko einzeln aufgemacht und nachgesehen, statt ihren\nNamen zu glauben. Ein Roulette-Tisch ist breit, sein Bild aber fast quadratisch:\ndie halbe Leinwand ist Luft. Zwei Saeulen mit demselben Motiv sind zwei Saeulen,\nweil ihre Bilder verschieden gross sind. Ein Wandlicht hat keinen Boden unter\nsich, also bekommt es keinen Bodenanker. Das klingt nach Buchhaltung und ist\ngenau das Gegenteil: zum ersten Mal steht irgendwo, wo diese Dinge wirklich\naufhoeren und anfangen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-06-asset-semantik-messung.json"
+    },
+    {
+      "contributionId": "audit-findings-01",
+      "turnId": "2026-11-09T02:45Z-audit-findings-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Kante des Bodens ist hart gezogen; kein weicher Saum legt sich um die Kacheln. Über dem Tisch laufen die Einflüsse in beliebiger Reihenfolge ein, und erst die Summe entscheidet, wie nah der Gast am Rand steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-audit-findings-01.json"
     },
     {
       "contributionId": "b1-kontext-helper-01",
@@ -699,6 +721,28 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "city-day-closeout-01",
+      "turnId": "2026-11-09T07:10Z-city-day-closeout-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-night",
+      "function": "describe",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Tag schließt mit Löhnen und Miete. Wer die Stunden zählt, zählt den Morgen nicht zweimal.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-day-closeout-01.json"
     },
     {
       "contributionId": "city-encounter-body-01",
@@ -3670,6 +3714,31 @@
       "source": "content/narrative/contributions/2026-11-04-journal-und-profilweg.json"
     },
     {
+      "contributionId": "knowledge-belief-01",
+      "turnId": "2026-11-09T12:40Z-knowledge-belief",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "rumor",
+      "function": "warn",
+      "contexts": [
+        "scheduler"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "boris-falk",
+        "mira-sol"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Boris glaubt Mira nicht, weil ihre Kunde schon durch zwei Haende ging, ihr Laestermaul ihr Gewicht nimmt und sein Misstrauen jede nahe Quelle verlangt. Der Ruf entscheidet nicht allein: Herkunft, Distanz, Eigenschaft und Beziehung stehen als eigene Gruende im Protokoll.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-knowledge-belief-01.json"
+    },
+    {
       "contributionId": "knowledge-chain-01",
       "turnId": "2026-11-08T04:45Z-knowledge-chain",
       "agentId": "buffy",
@@ -3738,6 +3807,28 @@
       "text": "Rita las die neue Fassung und fand dieselbe Kette wieder, die sie am Tresen erlebt hatte: Laune, Charisma, Erinnerung, Preis. Nur stand sie diesmal nicht als Regel des Hauses da, sondern als Leben, das schon vor dem ersten Gast angefangen hatte. Der Automat blieb stehen, wo er stand - als Testumgebung, nicht als Genre.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-lebenssim-vision.json"
+    },
+    {
+      "contributionId": "ledger-game-type-01",
+      "turnId": "2026-11-09T08:45Z-ledger-game-type",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Automat nennt sein Spiel, bevor er zahlt; im Kassenbuch steht jetzt, welches Spiel das Geld brachte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-ledger-game-type-01.json"
     },
     {
       "contributionId": "ledger-pages-01",
@@ -3829,6 +3920,28 @@
       "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
+    },
+    {
+      "contributionId": "logic-safety-payout-01",
+      "turnId": "2026-11-09T17:15Z-logic-safety-payout-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Karten liegen offen, und die Summe stimmt: Was ausgezahlt wird, steht in einer Zeile, die niemand nachträglich verschiebt. Der Gast zählt nicht nach, er sieht nur, dass die Rechnung aufgeht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-logic-safety-payout-01.json"
     },
     {
       "contributionId": "main-event-pool-01",

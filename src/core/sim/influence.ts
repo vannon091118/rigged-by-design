@@ -67,11 +67,17 @@ export function evaluateInfluence(
     }
     effective.set(id, clamp01(value));
   }
+  // Cross-Kanten erst sammeln, dann einmal klemmen: Ein clamp01 je Kante
+  // machte das Ergebnis von der Reihenfolge der Kanten abhaengig.
+  const crossContribution = new Map<InfluenceFactorId, number>();
   for (const edge of config.cross) {
     if (edge.contexts && !edge.contexts.includes(contextName)) continue;
     const source = raw.get(edge.from)!;
-    const target = effective.get(edge.to)!;
-    effective.set(edge.to, clamp01(target + source * edge.weight));
+    const total = (crossContribution.get(edge.to) ?? 0) + source * edge.weight;
+    crossContribution.set(edge.to, total);
+  }
+  for (const [id, contribution] of crossContribution) {
+    effective.set(id, clamp01(effective.get(id)! + contribution));
   }
 
   let total = 0;
