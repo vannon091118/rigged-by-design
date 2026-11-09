@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 18:36 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 18:53 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 231 Dateien — contract 141 · integration 44 · governance 32 · statistics 7 · performance 7.
+Summe: 232 Dateien — contract 142 · integration 44 · governance 32 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -198,6 +198,7 @@ Summe: 231 Dateien — contract 141 · integration 44 · governance 32 · statis
 | `src/core/rng/__tests__/shoe.test.ts` | rng | contract | ja | `src/core/rng/shoe.ts` |
 | `src/core/rng/__tests__/streams.test.ts` | rng | contract | ja | `src/core/rng/streams.ts` |
 | `src/core/rng/__tests__/weighted.test.ts` | rng | contract | ja | `src/core/rng/weighted.ts` |
+| `src/core/sim/__tests__/addiction-consequences.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/addiction-stake.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/anger-decay.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
 | `src/core/sim/__tests__/anger-patience.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
@@ -544,10 +545,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2279 |
-| Gelistete Dateien | 2279 |
+| Getrackte Dateien | 2282 |
+| Gelistete Dateien | 2282 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (46), content (816), docs (77), public (554), scripts (91), src (670) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (47), content (817), docs (77), public (554), scripts (91), src (671) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -559,8 +560,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 44 Datei(en)
-- `content/narrative/contributions/` — 812 Datei(en)
+- `.lane-claims/claims/` — 45 Datei(en)
+- `content/narrative/contributions/` — 813 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -622,7 +623,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 87 Datei(en)
-- `src/core/sim/__tests__/` — 105 Datei(en)
+- `src/core/sim/__tests__/` — 106 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -671,6 +672,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-addiction-consequences.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-agents-wartezeiten-regel.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-apk-signing-v2.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/claims/lane-governance-blocks-gate-final.json` — { — gelesen: 24 Zeilen
@@ -1530,8 +1532,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-01.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-02.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-03.json` — { — gelesen: 23 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18160 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3253 Zeilen
+- `content/narrative/contributions/2026-11-09-p5-suchtfolge-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18182 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3257 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2400,6 +2403,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/shoe.ts` — Kartenschuh ohne Zuruecklegen: eine gezogene Karte verlaesst den Schuh wirklich. — gelesen: 51 Zeilen
 - `src/core/rng/streams.ts` — Zwei Stroeme, zwei Namespaces: Darstellung darf den Spielzustand nie bewegen. — gelesen: 34 Zeilen
 - `src/core/rng/weighted.ts` — Gewichtetes Zahlenziehen: Angezeigte Chance und Ziehung stammen aus derselben Verteilung. — gelesen: 126 Zeilen
+- `src/core/sim/__tests__/addiction-consequences.test.ts` — Sucht-Folgen (P-5): Wer erkennbar suechtig spielt (ADDICTED-Blase ab — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/addiction-stake.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 112 Zeilen
 - `src/core/sim/__tests__/anger-decay.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
 - `src/core/sim/__tests__/anger-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
@@ -2528,7 +2532,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/duel-opponent.ts` — Gegnerprofil eines Streits: abgeleitet, ohne PRNG, damit Vorschau und Kampf gleich sehen. — gelesen: 56 Zeilen
 - `src/core/sim/duel.ts` — Duell: ein echter Kampf mit Lebenspunkten gegen den Rädelsführer des Streits, inklusive Überfall-Folge. — gelesen: 126 Zeilen
 - `src/core/sim/economics.ts` — Wirtschaftliche Kennzahlen als reine Ableitung aus den Ledger-Buchungen. — gelesen: 159 Zeilen
-- `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 54 Zeilen
+- `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 57 Zeilen
 - `src/core/sim/events.ts` — Einfacher Event-Emitter fuer die Visuellen-Effekte-Brücke. — gelesen: 30 Zeilen
 - `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 101 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
@@ -2593,7 +2597,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 208 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 209 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2679,7 +2683,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rivals.ts` — Fremde Casinos: eigene Betreiber, eigene Maschinen, eigene Regeln. — gelesen: 181 Zeilen
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 103 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
-- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 87 Zeilen
+- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 93 Zeilen
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 244 Zeilen
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen

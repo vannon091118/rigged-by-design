@@ -3,6 +3,9 @@ import type { Guest } from './types';
 
 export type GuestEmotion = 'SLOT' | 'JACKPOT' | 'ADDICTED' | 'DRINK' | 'TOILET' | 'DIRTY' | 'ANGRY' | 'CASH' | 'WAIT' | 'NONE';
 
+/** Ab dieser Sucht zeigt die Blase ADDICTED — und ab dort kostet sie Ruf (P-5). */
+export const ADDICTED_THRESHOLD = 60;
+
 interface EmotionMeta {
   readonly label: string;
   readonly glyph: string;
@@ -47,7 +50,7 @@ export function emotionOf(guest: Guest, spottedDirt = false): GuestEmotion {
   if (guest.state === 'LEAVE') return 'NONE';
   const result = guest.lastResult.toUpperCase();
   if (guest.state === 'PLAY' && (result.includes('JACKPOT') || result.includes('DIAMOND'))) return 'JACKPOT';
-  if (guest.addiction >= 60) return 'ADDICTED';
+  if (guest.addiction >= ADDICTED_THRESHOLD) return 'ADDICTED';
   if (guest.state === 'PLAY' || guest.state === 'CHOOSE') return 'SLOT';
   if (guest.state === 'WAIT') return 'WAIT';
   return 'NONE';
