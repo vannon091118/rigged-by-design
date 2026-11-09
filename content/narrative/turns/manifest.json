@@ -2824,6 +2824,10 @@
     {
       "turnId": "2026-11-09T08:45Z-ledger-game-type",
       "contributionId": "ledger-game-type-01"
+    },
+    {
+      "turnId": "2026-11-09T12:40Z-knowledge-belief",
+      "contributionId": "knowledge-belief-01"
     }
   ]
 }

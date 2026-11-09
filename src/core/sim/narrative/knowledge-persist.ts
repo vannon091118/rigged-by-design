@@ -1,6 +1,6 @@
 /** Persistenz der Wissensstaende: sichere Defaults, Grenzen und Herkunfts-Fallbacks. */
 import { KNOWLEDGE_CONFIG, SOURCE_KINDS, type KnowledgeConfig } from './knowledge-config';
-import type { KnowledgeEntry, KnowledgeSourceKind } from './knowledge-types';
+import type { ExchangeReason, KnowledgeEntry, KnowledgeExchange, KnowledgeSourceKind } from './knowledge-types';
 import { isActorRef } from './relationships';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
@@ -36,4 +36,45 @@ export function normalizeKnowledge(raw: unknown, config: KnowledgeConfig = KNOWL
     });
   }
   return entries.slice(-config.limits.maxEntries);
+}
+
+/** Laedt nur schema-konforme Austausch-Begruendungen; kaputte Eintraege entfallen. */
+export function normalizeExchanges(raw: unknown, maxEntries = 200): KnowledgeExchange[] {
+  if (!Array.isArray(raw)) return [];
+  const entries: KnowledgeExchange[] = [];
+  for (const item of raw) {
+    if (!isRecord(item)) continue;
+    if (!isActorRef(item.from) || !isActorRef(item.to)) continue;
+    if (typeof item.shared !== 'boolean') continue;
+    if (item.accepted !== null && typeof item.accepted !== 'boolean') continue;
+    const numbers = [item.id, item.tick, item.seed, item.factId, item.score, item.threshold]
+      .map((value) => (Number.isFinite(value) ? Number(value) : NaN));
+    if (numbers.some((value) => Number.isNaN(value))) continue;
+    const reasons: ExchangeReason[] = [];
+    if (Array.isArray(item.reasons)) {
+      for (const candidate of item.reasons.slice(0, 24)) {
+        if (!isRecord(candidate) || typeof candidate.code !== 'string' || !Number.isFinite(candidate.delta)) continue;
+        reasons.push({
+          code: candidate.code.slice(0, 48),
+          delta: Number(candidate.delta),
+          detail: typeof candidate.detail === 'string' ? candidate.detail.slice(0, 160) : '',
+        });
+      }
+    }
+    entries.push({
+      id: Math.max(0, Math.floor(numbers[0]!)),
+      tick: Math.max(0, Math.floor(numbers[1]!)),
+      seed: Math.max(0, Math.floor(numbers[2]!)),
+      from: item.from,
+      to: item.to,
+      factId: Math.max(0, Math.floor(numbers[3]!)),
+      shared: item.shared,
+      accepted: item.accepted,
+      score: clamp(numbers[4]!, 0, 2),
+      threshold: clamp(numbers[5]!, 0, 2),
+      reasons,
+      entryId: Number.isFinite(item.entryId) ? Math.max(0, Math.floor(Number(item.entryId))) : null,
+    });
+  }
+  return entries.slice(-maxEntries);
 }
