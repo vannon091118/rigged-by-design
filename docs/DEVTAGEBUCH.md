@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-09 - APK-Signatur und apksigner-Gate
+
+**Ziel:** Die APK muss auf einem fremden Geraet installierbar sein, nicht nur im Build gruen.
+
+**Befund:** Das Release kam als `app-release-unsigned.apk` heraus (Android lehnt unsignierte Pakete ab), und der Debug-Build signierte mit dem fluechtigen `~/.android/debug.keystore` des Runners - jedes Update scheiterte an einem anderen Zertifikat.
+
+**Umsetzung:** Ein versionierter PKCS12-Entwicklungsschluessel in `src/Config/` fuer Debug, die Produktionssignatur nur aus dem CI-Secret fuer Release; `prepare-android.mjs` haengt die Signierkonfiguration an das generierte Projekt, verlangt `assembleRelease` ohne unsigned-Rest, misst `apksigner verify --print-certs` gegen den gepinnten SHA-256 und prueft Paketname und minSdk mit `aapt2 dump badging`. Der Workflow laedt nur diese Dateien hoch und verweigert ein Release mit unsigniertem Paket.
+
+**Pruefungen:** `pnpm run verify:light`, `pnpm run verify:docs`, `pnpm run verify:claims`, gezielter Test `apk-signing.test.ts`.
+
+**Bewusst nicht getan:** Kein echter Release-Key im Repo (der Debug-Schluessel ist oeffentlich und nur fuer Artefakte gedacht); kein Gradle-/SDK-Lauf lokal, weil Java und Android-SDK hier fehlen - die Verifikation greift beim ersten CI-Build.
+
 ## Regeln
 
 - Ein Eintrag pro Arbeitstag oder pro abgeschlossenem Auftrag, neuester oben.
