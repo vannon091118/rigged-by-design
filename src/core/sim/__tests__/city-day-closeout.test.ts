@@ -96,7 +96,8 @@ describe('Stadt-Tagesabschluss', () => {
     expect(rentBookings(loaded.ledger)).toBe(rentBefore + 1);
 
     const echo = loaded.world.narrative.events.find((entry) => entry.eventId === 'CITY_ENCOUNTER_ECHO_WARM')!;
-    expect(echo).toBeDefined();
+    // Die Folge traegt nach dem Load noch denselben NPC wie die Begegnung.
+    expect(echo.participants).toContain(npcRef);
     expect(echo.startedTick).toBe(TICKS_PER_DAY);
     expect(loaded.world.narrative.events.filter((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))).toHaveLength(1);
     const runAfter = loaded.world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')!;
