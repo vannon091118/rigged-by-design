@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 17:54 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 18:00 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -542,10 +542,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2273 |
-| Gelistete Dateien | 2273 |
+| Getrackte Dateien | 2274 |
+| Gelistete Dateien | 2274 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (44), content (815), docs (77), public (554), scripts (91), src (667) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (45), content (815), docs (77), public (554), scripts (91), src (667) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -557,7 +557,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 42 Datei(en)
+- `.lane-claims/claims/` — 43 Datei(en)
 - `content/narrative/contributions/` — 811 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -688,6 +688,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-merge-commit-notes.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-chain-graph.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-rescue.json` — { — gelesen: 23 Zeilen
@@ -1539,7 +1540,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/ROADMAP.md` — Roadmap — gelesen: 326 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 84 Zeilen
-- `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 114 Zeilen
+- `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 115 Zeilen
 - `docs/banner.jpg` — Binaerdatei — geprueft: Signatur, 193991 B
 - `docs/banner.svg` — <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" width="1280" height="420" role="img" aria-label — gelesen: 242 Zeilen
 - `docs/banners/art-direction-neon-ledger.png` — PNG-Textur — geprueft: PNG 1600x1380, 223656 B
