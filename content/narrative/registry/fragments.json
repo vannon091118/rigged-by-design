@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b17f26e6948d484f34863f62a5a09cedff93cc050f1b2884109d085d067d6aef",
+  "contentHash": "sha256:25f12e08ca106dcb59ea0180780a36693c05c75115619d100d184a239188b68c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -27,6 +27,28 @@
       "text": "Der Automat zahlte den Trostpreis aus der eigenen Tasche und nannte es Glück. Rita strich die Zeile durch und schrieb daneben: erst zurückholen, dann feiern. Am Abend wurde der erste Gast wütend, weil ihm die Geduld ausging und nicht, weil ihm die Laune vergangen war. Der Süchtige setzte mehr, blieb länger, und das Haus merkte es zum ersten Mal.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-vorschuss-und-geduld.json"
+    },
+    {
+      "contributionId": "apk-signing-01",
+      "turnId": "2026-11-09T00:35Z-apk-signing",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine APK, die niemand installieren kann, ist kein Artefakt, sondern eine Behauptung: Erst derselbe Schluessel fuer beide Varianten und eine Signaturpruefung vor der Veroeffentlichung machen aus dem Build ein Paket, das auf einem fremden Geraet ankommt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-apk-signing-01.json"
     },
     {
       "contributionId": "asset-semantik-01",

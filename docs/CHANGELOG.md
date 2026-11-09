@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- rbd-doc: v0.3.196 | 2026-11-09 04:20 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 04:24 UTC -->
 
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
@@ -20,6 +20,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ### Textbausteine
 - **691 Bausteine.** Ein neuer Dokumentationsbaustein beschreibt die Beweispflicht der Gate-Lane; kein Pool unter 50.
+
+## [0.3.194] - 2026-11-09
+
+### Technik
+- **APK-Kette getrennt signiert und geprueft.** Debug traegt den versionierten Entwicklungsschluessel (`src/Config/android-signing.json`), Release ausschliesslich die Produktionssignatur aus dem CI-Secret; ein Release ohne Produktionsschluessel entsteht gar nicht; `scripts/prepare-android.mjs` schreibt die Signierkonfiguration in das generierte Android-Projekt, bricht bei einem unsignierten Release ab und verifiziert danach Signatur, Zertifikats-Digest und Paketnamen mit `apksigner verify` und `aapt2 dump badging`.
+- **Nur installierbare Pakete werden veroeffentlicht.** `build-apk.yml` laedt beide signierten APKs als Artefakt und Release-Asset und prueft am Release, dass kein unsigniertes Paket dabei ist.
 
 ## [0.3.189] - 2026-11-08
 

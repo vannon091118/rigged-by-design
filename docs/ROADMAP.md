@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.196 | 2026-11-09 04:20 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 04:24 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -175,7 +175,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-09: **702/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-09: **703/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
 `guest-voice-high`) mit mindestens 50. Die Pool-Mindestgroesse ist damit an allen 13
@@ -232,14 +232,14 @@ Code und seinen Test als Beleg.
 | P-8 | Ruf → Gastsprache | **erledigt 2026-11-08** | `narrative/guest-voice.ts` waehlt deterministisch aus drei Ruf-Pools; Test `guest-voice.test.ts` |
 | P-9 | Layout → Gaeste-Routen | **verifiziert, keine Luecke** | `world.ts` `worldNav` → `navGrid(size, furniture, world.layout)` (Wandkanten), `pathTo` → `findPath(guestNav(world))`; Layout-Aenderung aendert Pfade, `gridCache` erkennt sie an der Layout-Identitaet |
 | P-10 | Ledger → Narrative | **verifiziert, keine Luecke** | `narrative/ledger-facts.ts` verarbeitet Buchungen ab `ledgerSeq` und emittiert nur Bandwechsel `HOUSE_BALANCE` |
-| P-11 | SlotMemory → Ledger → Narrative | **verifiziert (Kette), Text offen** | `slot-session.ts` bucht Auszahlung → `ledger` → `ledger-facts`; ein eigener Fact fuer "Entladung" fehlt, damit die Narrative Engine den Drucklader benennen kann |
+| P-11 | SlotMemory → Ledger → Narrative | **erledigt 2026-11-09 (#296)** | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` belegt die Entladung als Fact; Implementierung in `src/core/sim/narrative/facts.ts`; Merge `2cd663a` |
 | P-12 | Beziehungen → Ruf | **verifiziert 2026-11-08 (#271)** | `relationshipStanding()` in `src/core/sim/narrative/relationships.ts` addiert in `src/core/sim/spawn.ts` einen deterministischen, auf ±6 Punkte begrenzten Anteil an `reputation()`; Test `src/core/sim/__tests__/reputation.test.ts` |
 
 #### B. Narrative und Content
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 702/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 703/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |

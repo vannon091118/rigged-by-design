@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/roadmap-p11-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/roadmap-p11-closeout",
+  "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "task": "P-11 im Roadmap-Register schliessen und main-HEAD konform machen",
+  "goal": "Die Slot-Entladung ist als Fact belegt; der naechste main-Commit traegt die drei Pflichtsektionen im Commit-Body",
+  "pathAllowlist": [
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-roadmap-p11-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged", "mergedEvidence": "branch-head-on-main", "mergedSha": "72602aebccf8f3457a3898f63dd12476dcebb8dd",
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
+}

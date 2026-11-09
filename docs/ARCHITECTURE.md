@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.196 | 2026-11-09 04:20 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 04:24 UTC -->
 
 ## README als Einstieg
 
@@ -204,22 +204,22 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/cli | ^8.6.0 | Android | Capacitor-CLI: erzeugt das Android-Projekt und synchronisiert Web-Build und Huelle. | 1: `scripts/prepare-android.mjs` |
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
-| @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 8: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+2) |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 93: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+87) |
+| @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 7: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+1) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 90: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+84) |
 | @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 49: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+43) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |
 | eslint | ^10.14.0 | Lint | Fail-Closed-Lint-Gate mit TypeScript-Parser und ungenutzten Symbolen. | 2: `package.json`<br>`src/Config/eslint.config.mjs` |
 | ffmpeg-static | ^5.3.0 | Assets | Kodiert die WAV-Musikmaster zu Opus fuer die Auslieferung; reines Build-Werkzeug, nicht im Bundle. | 2: `scripts/encode-audio.mjs`<br>`scripts/lib/atlas-webp.mjs` |
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `src/Config/eslint.config.mjs` |
-| jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 11: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>… (+5) |
+| jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 10: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>… (+4) |
 | pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 61: `src/render/__tests__/depth.test.ts`<br>`src/render/assets/atlas.ts`<br>`src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/depth-perf.bench.ts`<br>`src/render/depth.ts`<br>… (+55) |
 | react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 49: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+43) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 230: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+224) |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 210: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+204) |
 | yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 3: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
 <!-- DEP_MATRIX_END -->
 

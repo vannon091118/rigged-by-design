@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T00:35Z-apk-signing",
+  "contributionId": "apk-signing-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "commands"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine APK, die niemand installieren kann, ist kein Artefakt, sondern eine Behauptung: Erst derselbe Schluessel fuer beide Varianten und eine Signaturpruefung vor der Veroeffentlichung machen aus dem Build ein Paket, das auf einem fremden Geraet ankommt.",
+  "directives": []
+}

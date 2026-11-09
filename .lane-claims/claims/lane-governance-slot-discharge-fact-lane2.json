@@ -43,6 +43,7 @@
   "contracts": [],
   "dependencies": [],
   "status": "merged",
-  "mergedSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
-  "createdAt": "2026-11-09T00:38:44.841Z"
+  "createdAt": "2026-11-09T00:38:44.841Z",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
 }
