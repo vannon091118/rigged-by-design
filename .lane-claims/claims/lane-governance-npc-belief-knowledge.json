@@ -1,5 +1,7 @@
 {
+  "id": "lane/governance/npc-belief-knowledge-v2",
   "owner": "Governance-Owner",
+  "branch": "lane/governance/npc-belief-knowledge-v2",
   "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
   "task": "NPC-Glaubwuerdigkeit, 30 Traits und CHA-/INT-gesteuerte Wissensweitergabe",
   "goal": "Ein Empfaenger kann mechanisch, kausal und reproduzierbar erklaeren, warum er eine Aussage nicht glaubt; Traits entwickeln sich durch Umgebung, Beziehung, Laster, Erfahrung und Spielerinteraktion",
@@ -43,7 +45,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
-  "id": "lane/governance/npc-belief-knowledge-v2",
-  "branch": "lane/governance/npc-belief-knowledge-v2"
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
 }

@@ -1,7 +1,10 @@
 /** Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. */
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import type { ScreenAnchor } from '../render/floor-hit';
 import { UI_ICON } from './icons';
+import { useWorldAnchorStyle, type AnchorProjector } from './use-world-anchor';
+
+type UiSurface = 'object' | 'activity' | 'overview';
 
 interface PopupShellProps {
   readonly eyebrow: string;
@@ -19,13 +22,19 @@ interface PopupShellProps {
    * Wunsch des Spielers ist.
    */
   readonly anchor?: ScreenAnchor | null;
+  /** Drei Fensterarten; die vierte ist die Aktionskarte direkt am Objekt. */
+  readonly surface?: UiSurface;
+  /** Rechnet den Weltanker bei Kamera- und Zoomfahrten neu in den Viewport. */
+  readonly project?: AnchorProjector;
 }
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '', game, anchor = null }: PopupShellProps) {
+export function PopupShell({ eyebrow, title, onClose, children, wide = false, full = false, className = '', game, anchor = null, surface, project }: PopupShellProps) {
   const panel = useRef<HTMLElement>(null);
-  const anchored = anchor !== null && !full;
+  const resolvedSurface = surface ?? (full ? 'activity' : wide ? 'overview' : 'object');
+  const anchored = anchor !== null && !full && resolvedSurface === 'object';
+  const anchorStyle = useWorldAnchorStyle(anchored ? anchor : null, project);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
@@ -67,9 +76,8 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
         ref={panel}
         tabIndex={-1}
         className={`popup ${wide ? 'popup-wide' : ''} ${full ? 'popup-full' : ''}${anchored ? ' is-anchored' : ''} ${className}`.trim()}
-        style={anchored
-          ? ({ '--anchor-x': `${Math.round(anchor.x)}px`, '--anchor-y': `${Math.round(anchor.y)}px` } as CSSProperties)
-          : undefined}
+        style={anchorStyle}
+        data-surface={resolvedSurface}
         data-game={game}
         role="dialog"
         aria-modal="true"

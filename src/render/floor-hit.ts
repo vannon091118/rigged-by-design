@@ -10,10 +10,16 @@ import { wallOwnerTile } from './floor-math';
 
 type HitKind = 'furniture' | 'guest' | 'stain';
 
-/** Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. */
+/**
+ * Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. `worldX` und
+ * `worldY` sind der unveraenderliche Weltpunkt in Kamera-Pixeln. Ohne ihn
+ * muesste die Karte beim Schwenken am alten Klick kleben.
+ */
 export interface ScreenAnchor {
   readonly x: number;
   readonly y: number;
+  readonly worldX?: number;
+  readonly worldY?: number;
 }
 
 interface HitCell {

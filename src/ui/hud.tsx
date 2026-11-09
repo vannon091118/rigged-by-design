@@ -16,6 +16,8 @@ interface HudProps {
   readonly onSkill: (attribute: RpgAttribute) => void;
   /** Versteckter Werkstatt-Einstieg: fuenf Tipps auf die Marke. */
   readonly onBrandTap?: (timeStamp: number) => void;
+  /** Die Gästezahl ist der Welt-Einstieg in die Übersicht, kein Dock-Tab. */
+  readonly onGuests: () => void;
 }
 
 const PENALTY_LABEL = (kind: string): string =>
@@ -39,7 +41,7 @@ const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
   ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
 ];
 
-export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: HudProps) {
+export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onGuests }: HudProps) {
   const guest = perspective === 'guest';
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
@@ -89,7 +91,13 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
       </div>
 
       <div className="hud-vitals">
-        <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe.">
+        <button
+          type="button"
+          className="vital guests"
+          onClick={onGuests}
+          aria-label="Gästeübersicht öffnen"
+          title="Wie viele Gäste gerade im Haus sind. Klick öffnet die Gästeliste; der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe."
+        >
           <span><img className="ui-icon" src={UI_ICON.guests} alt="" />GÄSTE</span>
           <strong>{view.guests.length}</strong>
           <small>
@@ -99,7 +107,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
                 ? `${view.demand.event.label} läuft`
                 : view.guests.length ? `~${Math.round(view.demand.perDay)}/Tag · Laune ${MOOD_LABEL(mood)}` : `~${Math.round(view.demand.perDay)}/Tag`}
           </small>
-        </div>
+        </button>
         {guest ? (
           <div className="vital games" title="Alle bespielbaren Geräte auf diesem Floor. Ein Klick öffnet die passende Spielbühne.">
             <span>SPIELE</span>

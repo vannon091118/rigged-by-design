@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c3e497e9f99a1efe803003296945a501f9126c90bf4b9657d44f8ef171b8e35f",
+  "contentHash": "sha256:3a5df2ba246401a4b24dbc02584718a2b360d06b53735a6b4bb21b50ad5d9cd7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18287,6 +18287,28 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "world-first-ui-01",
+      "turnId": "2026-11-09T23:45Z-world-first-ui-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "watch"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast bleibt stehen, als die Hand den Tisch berührt. Statt eines neuen Fensters öffnet sich neben ihm nur das Nötigste: sein Name, sein Budget, seine Laune. Der Floor bleibt im Blick, und der nächste Schritt gehört weiter der Welt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-world-first-ui-01.json"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Architektur und Governance
 
-<!-- rbd-doc: v0.3.199 | 2026-11-09 22:41 UTC -->
+<!-- rbd-doc: v0.3.200 | 2026-11-09 23:35 UTC -->
 
 ## README als Einstieg
 
@@ -442,16 +442,23 @@ Dieses Kapitel überträgt die Haltung auf die Bedienung. Der Floor ist die Büh
 Lichtpult: gleiche Palette, gleiche Tiefe, gleiche Typo, gleiche Kanten. Kein Fenster darf wie ein
 Fremdkörper über dem Spiel liegen.
 
-#### Vier Ebenen, vier Aufgaben
+#### Vier UI-Typen, vier Aufgaben
 
-1. **Welt (Canvas):** Floor, Figuren, Licht. Keine UI-Texte außer Weltfeedback (Zielraster, Spur).
-2. **HUD (Rahmen):** Identität links, Geld und Ruf rechts, eine Zeile mit Aktionen. Ruhig und dunkel.
-3. **Fenster (`PopupShell`):** ein Rahmen für alles, was mehr als eine Entscheidung verlangt —
-   Smartphone-Menüs, Bauen, Gäste, Protokoll, Charakter, Assets, Ton.
-4. **Dialog:** die einzige Ebene, die die Welt abdunkelt und Fokus erzwingt.
+1. **Welt (Canvas):** Floor, Figuren, Licht. Der permanente Hauptbildschirm; keine UI-Texte außer
+   Weltfeedback (Zielraster, Spur).
+2. **Kontextaktion (`ActionCard`):** genau eine Handlung am ausgewählten Objekt. Die Karte hängt am
+   Weltanker und bleibt bei Kamera- und Zoomfahrten am Ziel.
+3. **Objektpanel (`PopupShell surface="object"`):** Eigenschaften und mehrere Handlungen eines
+   Objekts. Es öffnet am Ziel, dimmt die Welt nur leicht und lässt den Floor lesbar.
+4. **Aktivitätsansicht (`PopupShell surface="activity"`):** Blackjack, Poker, Roulette, Dialoge und
+   echte Spiele. Sie darf groß werden und `VOLLBILD` anbieten, behält aber Titel und Rückweg.
+5. **Globale Übersicht (`PopupShell surface="overview"`):** Karte, Charakter, Journal,
+   Einstellungen. Sie ist bewusst kein Weltobjekt und wird über Dock oder Welt-Einstieg geöffnet.
 
-Immersion entsteht nicht durch mehr Effekte, sondern durch **weniger Bruchstellen**: gleicher Kopf,
-gleiche Dichte, gleiche Abstände, gleiche Bedeutung der Farben.
+Die Zählung führt die Welt als eigenen Typ; die vier Bedienarten darüber sind Kontextaktion,
+Objektpanel, Aktivitätsansicht und globale Übersicht. Immersion entsteht nicht durch mehr Effekte,
+sondern durch **weniger Bruchstellen**: gleicher Kopf, gleiche Dichte, gleiche Abstände, gleiche
+Bedeutung der Farben.
 
 #### Menü-Regeln
 
@@ -463,6 +470,13 @@ gleiche Dichte, gleiche Abstände, gleiche Bedeutung der Farben.
 - **Eine Skala:** Abstände nur aus `--space-1..5`, Fensterbreiten nur aus `--popup-width`,
   `--popup-wide-width`, `--popup-full-width`, Radien nur aus `--popup-radius` / `--radius*`.
 - **Keine toten Enden:** jedes Fenster hat genau eine primäre Aktion und einen Weg zurück.
+- **Welt zuerst:** gewöhnliche Interaktionen öffnen kein Vollbild. Objektpanels hängen am Ziel, die
+  Aktionskarte bleibt in der Daumenzone; nur Aktivität und globale Übersicht dürfen den Floor
+  vollständig übernehmen.
+- **Ein Weltanker:** `ScreenAnchor` trägt den Weltpunkt, `FloorView.project()` rechnet ihn pro Frame
+  neu. Die UI führt keine zweite Kamera und keinen zweiten Zustand.
+- **Ein Einstieg:** dieselbe Handlung hat genau einen primären Weg. Das Smartphone ist eine optionale
+  Abkürzung für räumliche Handlungen, kein Pflichtmenü.
 
 Ausnahme: das Fremd-Floor-HUD (`foreign-floor-hud.tsx`) ist Welt, kein Fenster — es zeigt einen
 anderen Ort, statt eine Entscheidung zu verlangen.
@@ -482,6 +496,7 @@ Zustand, jeder Kanal ist einzeln regelbar.
 | M2 | Alle Menüs auf `PopupShell`, ein Kopf, eine Dichte | erledigt |
 | M3 | Screenshot-Satz `v0.3.114` als Referenz, README-Vergleich gegen `v0.3.27` | erledigt |
 | M4 | Smartphone als echte Gerätefläche (Rahmen, Statusleiste), Fensterübergänge und Floor-Feedback angleichen | offen |
+| M5 | World-first UI: vier UI-Typen, Weltanker, reduzierter Dock, Gerätepanel am Ziel | erledigt |
 
 Abnahme pro Fenster: gleicher Kopf, gleiche Abstände, eine primäre Aktion, ein Weg zurück.
 

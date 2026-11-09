@@ -12,7 +12,7 @@ import { createGuestArt, type GuestArt } from './guest-art';
 import { primeGuestShadow } from './guest-parts';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { handleTap, screenAnchorOf, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
+import { handleTap, screenAnchorOf, screenPoint, type FloorCallbacks, type ScreenAnchor, type TapHit } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
@@ -133,6 +133,15 @@ export class FloorView {
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
     return this.#rig.cellAt(clientX, clientY);
+  }
+
+  /**
+   * Weltpunkt erneut in den Viewport rechnen. Die UI ruft das pro Frame auf,
+   * damit Aktionskarte und Objektpanel bei Kamera- und Zoomfahrten am Ziel
+   * bleiben. Es ist dieselbe Projektion wie beim Treffer, keine zweite Kamera.
+   */
+  project(worldX: number, worldY: number): ScreenAnchor | null {
+    return screenAnchorOf({ x: worldX, y: worldY }, this.#app, this.#rig.root);
   }
 
   destroy(): void {
