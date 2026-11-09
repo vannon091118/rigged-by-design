@@ -4,14 +4,15 @@
  * die Stadt selbst aus dem Portemonnaie, Beziehung und Flag schreibt der
  * regulaere Command-Pfad.
  */
-import type { EventTemplate } from '../template-types';
+import { ENGINE_DEMAND_TRIGGER, type EventTemplate } from '../template-types';
 
 export const CITY_ENCOUNTER_EVENT_ID = 'CITY_ENCOUNTER';
 
 export const CITY_ENCOUNTER_TEMPLATE: EventTemplate = {
   eventId: CITY_ENCOUNTER_EVENT_ID,
   version: 1,
-  triggerId: 'city-encounter',
+  // Engine-gestartet: die Stadtaktion oeffnet die Szene, kein Fact-Trigger.
+  triggerId: ENGINE_DEMAND_TRIGGER,
   priority: 55,
   scope: 'VISITOR',
   participantRoles: ['visitor'],

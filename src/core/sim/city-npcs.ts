@@ -15,7 +15,7 @@ export interface CityNpcDef {
   readonly persona: PersonaId;
 }
 
-export const CITY_NPCS: readonly CityNpcDef[] = [
+const CITY_NPCS: readonly CityNpcDef[] = [
   { id: 'rita', name: 'Rita Kern', role: 'Wirtin der Kiez-Kneipe', location: 'KIEZ', persona: 'STAMMGAST' },
   { id: 'boris', name: 'Boris Falk', role: 'Standaufseher der Marktgasse', location: 'MARKT', persona: 'BUSINESS' },
   // Sie traegt, was sie hoert, weiter: Herkunft und Ziel liegen in verschiedenen Orten.

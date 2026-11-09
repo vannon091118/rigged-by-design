@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.193 | 2026-11-09 00:58 UTC -->
+<!-- rbd-doc: v0.3.193 | 2026-11-09 01:05 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -524,10 +524,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2119 |
-| Gelistete Dateien | 2119 |
+| Getrackte Dateien | 2139 |
+| Gelistete Dateien | 2139 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (30), content (693), docs (77), public (554), scripts (91), src (649) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (31), content (703), docs (77), public (554), scripts (91), src (658) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -539,8 +539,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 28 Datei(en)
-- `content/narrative/contributions/` — 689 Datei(en)
+- `.lane-claims/claims/` — 29 Datei(en)
+- `content/narrative/contributions/` — 699 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -601,18 +601,18 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 81 Datei(en)
-- `src/core/sim/__tests__/` — 101 Datei(en)
+- `src/core/sim/` — 86 Datei(en)
+- `src/core/sim/__tests__/` — 102 Datei(en)
 - `src/core/sim/narrative/` — 37 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 4 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
-- `src/core/sim/narrative/chains/definitions/` — 3 Datei(en)
+- `src/core/sim/narrative/chains/definitions/` — 4 Datei(en)
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 6 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
-- `src/core/sim/narrative/events/definitions/` — 12 Datei(en)
+- `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/render/` — 47 Datei(en)
 - `src/render/__tests__/` — 11 Datei(en)
@@ -650,6 +650,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-agents-wartezeiten-regel.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-blocks-gate-final.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
@@ -1371,6 +1372,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-08-relationship-standing-01.json` — {"agentId":"buffy","turnId":"2026-11-08T03:55Z-relationship-standing","contributionId":"relationship-standing- — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-relationships-coupling-01.json` — {"agentId":"buffy","turnId":"2026-11-08T05:25Z-relationships-coupling","contributionId":"relationships-couplin — gelesen: 1 Zeilen
 - `content/narrative/contributions/2026-11-08-roadmap-register-01.json` — {"agentId":"buffy","turnId":"2026-11-08T04:20Z-roadmap-register","contributionId":"roadmap-register-01","role" — gelesen: 1 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-body.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-decline.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-echo-choice.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-echo-cold-body.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-echo-cold-opening.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-echo-warm-body.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-echo-warm-opening.json` — { — gelesen: 23 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-give.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
+- `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
 - `content/narrative/registry/fragments.json` — { — gelesen: 15529 Zeilen
 - `content/narrative/turns/manifest.json` — { — gelesen: 2801 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 194 Zeilen
@@ -2247,6 +2258,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/balance-report.ts` — Balance-Spur: macht den 40-Tage-Messlauf nachvollziehbar und pruefbar. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
+- `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 151 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 107 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
@@ -2344,7 +2356,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 53 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 98 Zeilen
+- `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Deckung pruefen, Command ausfuehren (Beziehung/Flag), — gelesen: 166 Zeilen
+- `src/core/sim/city-encounter-dialog.ts` — Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. — gelesen: 81 Zeilen
+- `src/core/sim/city-encounter.ts` — Die Begegnung im Ort ist der zentrale Loop der Stadt: — gelesen: 70 Zeilen
 - `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 122 Zeilen
+- `src/core/sim/city-npcs.ts` — Benannte Figuren der Stadt. Die Identitaet ist keine Anzeige: Name, Rolle und — gelesen: 49 Zeilen
+- `src/core/sim/city-persist.ts` — Save-Heilung des Stadtzustands: Ort, Energie und Begegnungen aus rohen Daten. — gelesen: 58 Zeilen
 - `src/core/sim/city-types.ts` — Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik - — gelesen: 95 Zeilen
 - `src/core/sim/city.ts` — Stadt: der erste Vertical Slice ausserhalb des eigenen Floors. — gelesen: 91 Zeilen
 - `src/core/sim/day-phase.ts` — Tageszeit der Buehne: rein aus dem Tick abgeleitet, nie aus der Uhr. — gelesen: 14 Zeilen
@@ -2402,6 +2419,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/chains/chain-runtime.ts` — Laufzeit der Ereignisketten: startet nur aus aufgeloesten Events und treibt — gelesen: 86 Zeilen
 - `src/core/sim/narrative/chains/chain-schema.ts` — Fail-closed Schemapruefung fuer Ereignisketten; ungueltige Graphen werden nie angeboten. — gelesen: 157 Zeilen
 - `src/core/sim/narrative/chains/chain-types.ts` — Verkettete Narrative: Ein Graph aus stabilen Knoten und bedingten Uebergaengen. — gelesen: 150 Zeilen
+- `src/core/sim/narrative/chains/definitions/city-encounter-arc.ts` — Die Begegnung wirkt nach: Ein Tag (24 Ticks) nach der aufgeloesten Szene — gelesen: 48 Zeilen
 - `src/core/sim/narrative/chains/definitions/index.ts` — Einzige Registry der verketteten Narrative; ungueltige oder textlose Ketten fallen raus. — gelesen: 20 Zeilen
 - `src/core/sim/narrative/chains/definitions/pair-conflict-arc.ts` — Ein Streit zwischen zwei Gaesten laeuft nach der Eskalation in zwei — gelesen: 55 Zeilen
 - `src/core/sim/narrative/chains/definitions/visitor-warm-arc.ts` — Zwei echte Pfade aus derselben warmen Rueckkehr: Die Influence-Matrix — gelesen: 57 Zeilen
@@ -2437,6 +2455,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/ambient-shared-round.ts` — Feste Pool-Szene: eine gemeinsame Runde zwischen zwei Gaesten. — gelesen: 40 Zeilen
 - `src/core/sim/narrative/events/definitions/ambient-tense-table.ts` — Feste Pool-Szene: angespannte Begegnung an einem Tisch. — gelesen: 59 Zeilen
 - `src/core/sim/narrative/events/definitions/chain-visitor-echo.ts` — Spaetere Wiederbegegnung nach einer aufgeloesten Kette. Der Knoten hat keinen — gelesen: 44 Zeilen
+- `src/core/sim/narrative/events/definitions/city-encounter-echo.ts` — Verzoegerte Folge der Begegnung. Es gibt zwei mechanisch getrennte Pfade: — gelesen: 71 Zeilen
+- `src/core/sim/narrative/events/definitions/city-encounter.ts` — Die Begegnung im Ort: eine echte Szene mit benanntem Gegenueber, nicht ein — gelesen: 71 Zeilen
 - `src/core/sim/narrative/events/definitions/index.ts` — Einzige Registry der stabilen Event-Templates. — gelesen: 32 Zeilen
 - `src/core/sim/narrative/events/definitions/neon-nacht.ts` — Engine-seitig gestartete Nachfrageveranstaltung ohne Fact-Trigger und ohne Choices. — gelesen: 23 Zeilen
 - `src/core/sim/narrative/events/definitions/rival-move.ts` — Stabile mechanische Definition fuer eine Rivalenhandlung am Spielerhaus. — gelesen: 53 Zeilen

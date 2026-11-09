@@ -62,8 +62,9 @@ describe('Begegnungs-Loop (Stadt)', () => {
     expect(cityOf(world).encounters).toHaveLength(1);
 
     // (c) Der NPC erlebt es selbst, der zweite NPC hoert es mit Quelle und Verlust.
-    const own = world.narrative.knowledge.find((entry) => entry.actor === npcRef)!;
-    expect(own).toBeDefined();
+    const ownEntries = world.narrative.knowledge.filter((entry) => entry.actor === npcRef);
+    expect(ownEntries).toHaveLength(1);
+    const own = ownEntries[0]!;
     expect(own.distance).toBe(0);
     expect(own.confidence).toBe(1);
     expect(own.sourceKind).toBe('ERLEBT');
@@ -71,8 +72,9 @@ describe('Begegnungs-Loop (Stadt)', () => {
     const informantDef = informantFor(met.npc)!;
     const informant = world.visitors.find((visitor) => visitor.name === informantDef.name)!;
     const informantRef = `visitor:${informant.id}` as `visitor:${number}`;
-    const heard = world.narrative.knowledge.find((entry) => entry.actor === informantRef)!;
-    expect(heard).toBeDefined();
+    const heardEntries = world.narrative.knowledge.filter((entry) => entry.actor === informantRef);
+    expect(heardEntries).toHaveLength(1);
+    const heard = heardEntries[0]!;
     expect(heard.sourceActor).toBe(npcRef);
     expect(heard.originActor).toBe(npcRef);
     expect(heard.distance).toBe(1);
@@ -81,8 +83,9 @@ describe('Begegnungs-Loop (Stadt)', () => {
 
     // (d) Die Kette wartet auf den Tageswechsel, nicht auf einen Klick.
     processNarrativeRuntime(world, ledger);
-    const run = world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')!;
-    expect(run).toBeDefined();
+    const runs = world.narrative.chains.runs.filter((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC');
+    expect(runs).toHaveLength(1);
+    const run = runs[0]!;
     expect(run.status).toBe('WAITING');
     expect(run.dueTick).toBe(world.tick + 24);
     expect(world.narrative.events.filter((entry) => entry.eventId.startsWith('CITY_ENCOUNTER_ECHO'))).toHaveLength(0);

@@ -22,7 +22,7 @@ export const ENCOUNTER_SMALL = fromVC(1);
 export const ENCOUNTER_ENERGY = 1;
 const MAX_ENCOUNTERS = 24;
 
-export const CHOICE_OF: Readonly<Record<EncounterAction, string>> = {
+const CHOICE_OF: Readonly<Record<EncounterAction, string>> = {
   GEBEN: 'GIVE_ROUND',
   HELFEN: 'HELP_CRATE',
   ABLEHNEN: 'DECLINE_ASK',
