@@ -1,10 +1,10 @@
 {
-  "id": "lane/sim/city-day-closeout",
-  "owner": "Sim-/Domain-Owner",
+  "id": "lane/governance/city-day-closeout",
+  "owner": "Governance-Owner",
   "branch": "lane/sim/city-day-closeout",
   "baseSha": "7153ccfe556a443fd4a4f1799d66e470478e50fc",
-  "task": "Stadt-Tagesabschluss an den kanonischen Simulations-Tick koppeln",
-  "goal": "restInCity bringt die Uhr bis zum naechsten Tageswechsel; Loehne, Miete, Strafen und Fremd-Floors laufen dabei genau einmal, ohne zweiten Kalender",
+  "task": "Stadt-Tagesabschluss an den kanonischen Simulations-Tick koppeln; Roadmap-Fortschritt fuehren",
+  "goal": "restInCity bringt die Uhr bis zum naechsten Tageswechsel; Loehne, Miete, Strafen und Fremd-Floors laufen dabei genau einmal, ohne zweiten Kalender, und P-13 bleibt synchron zur Registry",
   "pathAllowlist": [
     "src/core/sim/tick.ts",
     "src/core/sim/city-actions.ts",
@@ -22,6 +22,7 @@
     "src/core/sim/narrative/composer/registry.generated.ts",
     "src/core/sim/narrative/composer/slot-map.generated.ts",
     "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
     "docs/CI.md",
     "docs/INDEX.md",
     "docs/TESTING.md",
