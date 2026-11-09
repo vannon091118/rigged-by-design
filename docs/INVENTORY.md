@@ -1,7 +1,7 @@
 # Repository-Inventur (lebendes Artefakt)
 
 <<<<<<< HEAD
-<!-- rbd-doc: v0.3.196 | 2026-11-09 17:15 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 17:16 UTC -->
 =======
 <!-- rbd-doc: v0.3.196 | 2026-11-09 02:57 UTC -->
 >>>>>>> lane/integrity/audit-findings
