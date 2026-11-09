@@ -17,7 +17,7 @@ export const MACRO_LIMITS = Object.freeze({
 const NAME = /^[A-Za-z][A-Za-z0-9_]*/;
 const KEY = /^[A-Za-z][A-Za-z0-9_]{0,31}$/;
 const FLAG = /^[A-Za-z][A-Za-z0-9_]{0,31}$/;
-const DIALOG = /^[A-Z][A-Z0-9_]{0,63}$/;
+const DIALOG = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const ACTOR = /^(?:player|visitor:[1-9]\d*|staff:[1-9]\d*|rival:[A-Z_]+)$/;
 const DIMENSIONS = Object.freeze(['trust', 'sympathy', 'conflict', 'influence']);
 const ALIASES = Object.freeze({
@@ -32,7 +32,7 @@ const COMMAND_SPECS = Object.freeze({
   SET_FLAG: Object.freeze({ family: 'STORY', executable: true, singleton: false }),
   ADJUST_RELATIONSHIP: Object.freeze({ family: 'RELATIONSHIP', executable: true, singleton: false }),
   FREEZE_TICK: Object.freeze({ family: 'EVENT', executable: true, singleton: true }),
-  TRIGGER_DIALOG: Object.freeze({ family: 'DIALOG', executable: false, singleton: true }),
+  TRIGGER_DIALOG: Object.freeze({ family: 'DIALOG', executable: true, singleton: true }),
   COUNTER_RIVAL: Object.freeze({ family: 'RIVAL', executable: true, singleton: false }),
 });
 

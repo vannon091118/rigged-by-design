@@ -3,7 +3,10 @@ import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { Perspective, Popup } from './app-model';
 import { CityPopup } from './city-popup';
+import { DIALOGUE_SCRIPTS } from '../core/sim/narrative/dialogue/scripts';
+import { findDialogueScript } from '../core/sim/narrative/dialogue/select';
 import { DialoguePopup } from './dialogue-popup';
+import { dialogIdFromExecution } from './dialog-request';
 import { ForeignFloorMap } from './foreign-floor-map';
 import { ForeignFloorPopup } from './foreign-floor-popup';
 import { GamesPopup } from './games-popup-lazy';
@@ -95,7 +98,10 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
         view={view}
         initialVisitorId={popup.visitorId}
         onClose={onClose}
-        onChoose={(eventId, choiceId) => worldStore.chooseNarrative(eventId, choiceId)}
+        onChoose={(eventId, choiceId) => {
+          const dialogId = dialogIdFromExecution(worldStore.chooseNarrative(eventId, choiceId));
+          if (dialogId) onOpen({ kind: 'dialogue', scriptId: dialogId });
+        }}
         onDismiss={(eventId) => worldStore.dismissNarrative(eventId)}
       />
     );
@@ -135,8 +141,10 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
   }
 
   if (popup.kind === 'dialogue') {
+    const script = (popup.scriptId ? findDialogueScript(popup.scriptId) : null) ?? DIALOGUE_SCRIPTS[0]!;
     return (
       <DialoguePopup
+        script={script}
         onClose={onClose}
         onOpenGames={() => onOpen({ kind: 'games' })}
         onOpenStaff={onStaff}

@@ -4,6 +4,7 @@ import { HAUSKONTO } from '../../money';
 import type { WorldState } from '../../types';
 import { checkChoiceSelection, choiceCostTotal } from '../choices/eligibility';
 import { canTransitionEvent, isLiveEventStatus } from '../event-lifecycle';
+import { findDialogueScript } from '../dialogue/select';
 import { templateFor } from '../events/definitions';
 import { isEventTemplate } from '../events/template-schema';
 import type { ChoiceActor, EventTemplate } from '../events/template-types';
@@ -58,6 +59,12 @@ function targetRejections(world: WorldState, event: ChoicePlan['event'], command
     if (command.id === 'SET_FLAG') {
       if (!Number.isSafeInteger(command.delta) || command.delta === 0) {
         rejections.push(rejection(command.id, 'INVALID_ARGS', 'Flag-Delta ist ungueltig.'));
+      }
+      continue;
+    }
+    if (command.id === 'TRIGGER_DIALOG') {
+      if (!findDialogueScript(command.dialogId)) {
+        rejections.push(rejection(command.id, 'INVALID_TARGET', 'Dialog-ID ist unbekannt.'));
       }
       continue;
     }

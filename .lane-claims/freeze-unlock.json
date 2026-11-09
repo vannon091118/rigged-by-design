@@ -1,9 +1,10 @@
 {
   "version": 1,
-  "base": "7cd939085ea585bed7d6b1e14461fdc5ad714b4a",
+  "base": "a152aaba3d0040bb18536c87a0aa4eeadd96003f",
   "paths": [
-    "docs/WORKFLOW.md"
+    "docs/ARCHITECTURE.md",
+    "scripts/lib/narrative-macros.mjs"
   ],
-  "token": "6cae4c6fe4f8490f7fbedec9dc8ed647a5100fa9903e0078d7bf1654f75f71c0",
+  "token": "ba30f1e5db060a177d9affe6775693ad63179951636ac7eb1f21a40983ad4183",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

@@ -2,6 +2,7 @@
  * Dialog: Reiner Ablauf der Dialogfuehrung. Kein Zufall, keine Zeit, kein Mutieren
  * des Skripts; ein unbekannter Knoten oder Link endet fail-closed in `null`.
  */
+import { DIALOGUE_SCRIPTS } from './scripts';
 import { DIALOGUE_LIMITS, type DialogueLink, type DialogueNode, type DialogueScript } from './types';
 
 type DialogueMenu = 'GAMES' | 'STAFF' | 'JOURNAL';
@@ -12,6 +13,11 @@ type DialogueStep =
   | { readonly kind: 'CLOSE' };
 
 const MENUS: readonly DialogueMenu[] = ['GAMES', 'STAFF', 'JOURNAL'];
+
+/** Skript zur ID oder `null`: TRIGGER_DIALOG referenziert nur existierende Skripte. */
+export function findDialogueScript(dialogId: string): DialogueScript | null {
+  return DIALOGUE_SCRIPTS.find((script) => script.id === dialogId) ?? null;
+}
 
 export function findDialogueNode(script: DialogueScript, nodeId: string): DialogueNode | null {
   return script.nodes.find((node) => node.id === nodeId) ?? null;
