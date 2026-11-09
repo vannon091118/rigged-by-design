@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:23Z-nar-var-amb-body-01",
+  "contributionId": "nar-var-amb-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Gäste stehen sich gegenüber, ohne dass einer den ersten Schritt macht. Der Automat rechnet weiter, als ginge ihn das nichts an.",
+  "directives": []
+}

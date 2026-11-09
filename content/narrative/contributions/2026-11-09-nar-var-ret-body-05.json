@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:09Z-nar-var-ret-body-05",
+  "contributionId": "nar-var-ret-body-05",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er fragt nicht nach dem Getränk. Er wartet, bis es vor ihm steht, als hätte er die Reihenfolge nie vergessen.",
+  "directives": []
+}

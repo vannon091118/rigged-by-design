@@ -116,6 +116,18 @@ export function freezeEvent(world: WorldState, eventId: number, ticks: number, t
   return true;
 }
 
+/**
+ * Haelt offene Deadlines an, ohne die Welt anzuhalten: der Tick laeuft weiter, die
+ * Szene verliert aber keine Frist, waehrend der Spieler sie nicht sehen kann.
+ */
+export function holdLiveDeadlines(world: WorldState, ticks: number): void {
+  if (!Number.isSafeInteger(ticks) || ticks <= 0) return;
+  world.narrative.events = world.narrative.events.map((event) =>
+    isLiveEventStatus(event.status) && Number.isSafeInteger(event.expiresTick + ticks)
+      ? { ...event, expiresTick: event.expiresTick + ticks }
+      : event);
+}
+
 /** Beendet abgelaufene Instanzen und liefert sie; terminale Events bleiben unberuehrt. */
 export function expireDueEvents(world: WorldState, tick: number): NarrativeEventInstance[] {
   const expired: NarrativeEventInstance[] = [];

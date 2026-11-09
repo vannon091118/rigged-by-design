@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:09Z-nar-outcome-rival-02",
+  "contributionId": "nar-outcome-rival-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "rival",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sein Glas bleibt halb voll stehen. Am Rand hat er mit dem Finger eine Zahl in das Kondenswasser geschrieben, die deine Tageseinnahme kennt.",
+  "directives": []
+}

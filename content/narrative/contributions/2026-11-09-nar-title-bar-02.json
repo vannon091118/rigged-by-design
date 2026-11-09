@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:49Z-nar-title-bar-02",
+  "contributionId": "nar-title-bar-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "ambient-bar"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Hocker rücken zusammen, ohne dass es jemand anspricht.",
+  "directives": []
+}

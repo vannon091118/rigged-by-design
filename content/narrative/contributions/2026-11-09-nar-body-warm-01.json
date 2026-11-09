@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:64Z-nar-body-warm-01",
+  "contributionId": "nar-body-warm-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return",
+    "warm"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Er stellt die Flasche auf den Tresen und schiebt sie in deine Richtung, bevor er etwas sagt. Der Abend beginnt nicht mit einer Bestellung.",
+  "directives": []
+}

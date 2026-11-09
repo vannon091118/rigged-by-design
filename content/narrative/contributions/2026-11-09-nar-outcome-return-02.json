@@ -1,0 +1,26 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:01Z-nar-outcome-return-02",
+  "contributionId": "nar-outcome-return-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "loss",
+    "welcome",
+    "ask"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Sie legt den Chip nicht sofort hin. Erst als niemand drängt, schiebt sie ihn über den Tresen und nickt in Richtung der alten Ecke.",
+  "directives": []
+}

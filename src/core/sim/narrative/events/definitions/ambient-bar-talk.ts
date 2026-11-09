@@ -9,10 +9,10 @@ export const AMBIENT_BAR_TALK_TEMPLATE: EventTemplate = {
   scope: 'PAIR',
   participantRoles: ['visitor', 'visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY', requiredContexts: ['welcome'] },
-    { id: 'CHOICE_JOIN', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_JOINED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['ambient-bar'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['ambient-bar'] },
+    { id: 'CHOICE_JOIN', kind: 'CHOICE_LABEL', requiredContexts: ['welcome'] },
+    { id: 'OUTCOME_JOINED', kind: 'OUTCOME', requiredContexts: ['welcome'] },
   ],
   choices: [
     {

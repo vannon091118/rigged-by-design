@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:08Z-nar-var-ret-body-04",
+  "contributionId": "nar-var-ret-body-04",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Zwischen zwei Liedern fällt ihm ein, warum er damals gegangen ist. Er sagt es nicht, aber der Blick bleibt daran hängen.",
+  "directives": []
+}

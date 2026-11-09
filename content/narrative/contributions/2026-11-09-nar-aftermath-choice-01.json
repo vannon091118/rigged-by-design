@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:19Z-nar-aftermath-choice-01",
+  "contributionId": "nar-aftermath-choice-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "aftermath",
+    "return",
+    "loss"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Weiter zuhören",
+  "directives": []
+}

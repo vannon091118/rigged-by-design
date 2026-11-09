@@ -9,10 +9,10 @@ export const AMBIENT_SHARED_ROUND_TEMPLATE: EventTemplate = {
   scope: 'PAIR',
   participantRoles: ['visitor', 'visitor'],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE' },
-    { id: 'BODY', kind: 'BODY', requiredContexts: ['welcome'] },
-    { id: 'CHOICE_SHARE', kind: 'CHOICE_LABEL' },
-    { id: 'OUTCOME_SHARED', kind: 'OUTCOME' },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['ambient-round'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['ambient-round'] },
+    { id: 'CHOICE_SHARE', kind: 'CHOICE_LABEL', requiredContexts: ['give'] },
+    { id: 'OUTCOME_SHARED', kind: 'OUTCOME', requiredContexts: ['give'] },
   ],
   choices: [
     {

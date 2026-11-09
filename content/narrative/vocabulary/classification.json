@@ -130,7 +130,12 @@
     "give": "Etwas ausgeben oder abgeben.",
     "help": "Mit anpacken oder helfen.",
     "decline": "Eine Bitte ablehnen.",
-    "cold": "Kalte Folge nach einer Ablehnung."
+    "cold": "Kalte Folge nach einer Ablehnung.",
+    "ambient-tense": "Angespannter Tisch zwischen zwei Gaesten.",
+    "ambient-bar": "Beilaeufiges Gespraech an der Bar.",
+    "ambient-round": "Gemeinsame Runde, die geteilt wird.",
+    "neon-nacht": "Nacht mit erhoehter Nachfrage durch das Neonlicht.",
+    "turnier-abend": "Turnierabend mit besetzten Tischen."
   },
   "tones": {
     "trocken": "Knapp, beiläufig und ohne Pathos.",

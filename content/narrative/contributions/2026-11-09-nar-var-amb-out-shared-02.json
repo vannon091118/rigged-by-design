@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:44Z-nar-var-amb-out-shared-02",
+  "contributionId": "nar-var-amb-out-shared-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "give"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Gläser stoßen an, ohne dass ein Grund benannt wird.",
+  "directives": []
+}

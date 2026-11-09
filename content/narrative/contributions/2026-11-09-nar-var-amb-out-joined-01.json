@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:41Z-nar-var-amb-out-joined-01",
+  "contributionId": "nar-var-amb-out-joined-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Stuhl wird herangezogen, ohne dass jemand fragen musste.",
+  "directives": []
+}

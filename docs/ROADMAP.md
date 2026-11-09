@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.193 | 2026-11-09 01:14 UTC -->
+<!-- rbd-doc: v0.3.196 | 2026-11-09 16:36 UTC -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 702/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 804/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | offen | `commands/registry.ts` fuehrt `executable: false`; Dialog-UI fehlt |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |

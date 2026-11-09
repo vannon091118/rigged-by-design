@@ -4,6 +4,8 @@ import { KNOWLEDGE_CONFIG, type KnowledgeConfig } from './knowledge-config';
 import type { ActorRef, KnowledgeEntry } from './knowledge-types';
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+/** Untergrenze fuer eigene Erfahrung: sie verblasst, verschwindet aber nie. */
+const EXPERIENCED_FLOOR = 0.5;
 
 /** Alle Staende eines Akteurs zu einem Thema; Widersprueche bleiben einzeln erhalten. */
 export function entriesAbout(world: WorldState, actor: ActorRef, subject: ActorRef = 'player'): KnowledgeEntry[] {
@@ -57,7 +59,11 @@ export function ageKnowledge(world: WorldState, nowTick: number, config: Knowled
       kept.push({ ...entry, decayedTick: nowTick });
     } else {
       const confidence = entry.confidence - config.aging.decayPerTick * (nowTick - last);
-      if (confidence < config.aging.minConfidence) dropped += 1;
+      // Eigene Erfahrung ist die Wurzel jeder Weitergabe: sie faellt bis zur Untergrenze,
+      // aber nie darunter. Gehoertes und Gesehenes verschwindet unter der Mindestkonfidenz.
+      if (entry.sourceKind === 'ERLEBT' && confidence < EXPERIENCED_FLOOR) {
+        kept.push({ ...entry, confidence: EXPERIENCED_FLOOR, decayedTick: nowTick });
+      } else if (confidence < config.aging.minConfidence) dropped += 1;
       else kept.push({ ...entry, confidence, decayedTick: nowTick });
     }
   }

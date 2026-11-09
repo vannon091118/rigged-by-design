@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "base": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "base": "7153ccfe556a443fd4a4f1799d66e470478e50fc",
   "paths": [
-    ".github/workflows/build-apk.yml",
-    "scripts/prepare-android.mjs"
+    "docs/ARCHITECTURE.md",
+    "scripts/lib/narrative-compiler.mjs"
   ],
-  "token": "a1ce06be2ca27c36f91a9830695e101492ac16d39c03153814168be9852a3261",
+  "token": "9e7f9cc775e71252dd704d759c21d3379bde63133f0b2deec947e86633e99e53",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

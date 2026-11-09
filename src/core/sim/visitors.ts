@@ -25,8 +25,9 @@ export function recordVisitor(
   };
   world.visitors.push(visitor);
   if (world.visitors.length > VISITOR_CAP) {
-    // Aktive Beziehungen pinnen ihre Endpunkte; ohne freien Kandidaten bleibt die Liste
-    // bewusst ueber dem Cap, statt eine laufende Geschichte zu verlieren.
+    // Aktive Beziehungen pinnen ihre Endpunkte, offene Szenen ihre Teilnehmer; ohne
+    // freien Kandidaten bleibt die Liste bewusst ueber dem Cap, statt eine laufende
+    // Geschichte zu verlieren.
     const pinned = pinnedVisitorIds(world);
     let oldest = -1;
     for (let i = 0; i < world.visitors.length; i += 1) {

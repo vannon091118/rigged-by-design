@@ -37,9 +37,9 @@ describe('Narrative View (NAR-14)', () => {
     expect(event.eventId).toBe('VISITOR_RETURN');
     expect(event.title.length).toBeGreaterThan(0);
     expect(event.body.length).toBeGreaterThan(0);
-    expect(event.fallbackSlots).toEqual(['OUTCOME_WELCOMED', 'OUTCOME_ASKED']);
+    expect(event.fallbackSlots).toEqual([]);
     expect(event.choices.map((choice) => choice.label)).toEqual([
-      'Zurück an den Tresen winken.', 'Nach dem letzten Abend fragen.',
+      'Ihn mit einem Nicken an den Tresen holen.', 'Nach seinem letzten Abend fragen.',
     ]);
     expect(event.participants[0]).toMatchObject({ label: 'Rita Kern', visitorId: visitor.id });
     expect(event.choices.map((choice) => choice.choiceId)).toEqual(['WELCOME_BACK', 'ASK_ABOUT_LAST_VISIT']);

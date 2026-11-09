@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:05Z-nar-outcome-conflict-01",
+  "contributionId": "nar-outcome-conflict-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "conflict",
+    "aftermath",
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Streit endet nicht, er setzt sich nur. Beide bleiben am Tisch, beide trinken weiter, und keiner sieht den anderen an.",
+  "directives": []
+}

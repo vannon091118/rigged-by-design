@@ -19,7 +19,7 @@ import { buildView } from './snapshot';
 import { clearOldSave, loadWorld, SAVE_FAILED_NOTICE, saveWorld } from './save';
 import { exportGameData, planImportData, type TransferReport } from './transfer';
 import { createWorld, ensureStarter } from '../core/sim/templates';
-import { tickWorld } from '../core/sim/tick';
+import { advanceWorld } from './narrative-clock';
 import { settleMoneyJournal } from '../core/sim/journal';
 import { seedStartPool } from '../core/sim/narrative/state';
 import type { ChoiceExecution } from '../core/sim/narrative/commands/types';
@@ -210,7 +210,7 @@ spinTest(itemId: number): GameResult | null { const { result, notice } = spinTes
     });
   }
   dismiss(): void { this.#notice = ''; this.#emit(false); }
-  #advance = (): void => { tickWorld(this.#world, this.#ledger, this.#prng); this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
+  #advance = (): void => { advanceWorld(this.#world, this.#ledger, this.#prng); this.#savedTick += 1; this.#emit(this.#savedTick % 6 === 0); };
   #event(run: () => void): void { this.#guard(() => { run(); this.#notice = this.#world.lastEvent; }); }
   #guard(action: () => void, flush = true): void { try { action(); if (flush) flushNarrativeCmd(this.#world, this.#ledger); this.#emit(); } catch (error) { this.#notice = error instanceof Error ? error.message : 'Aktion fehlgeschlagen.'; this.#emit(false); } }
   #emit(save = true): void { settleMoneyJournal(this.#world, this.#ledger); if (save && !saveWorld(this.#world, this.#ledger, this.#prng.getState())) this.#notice = SAVE_FAILED_NOTICE; this.#view = buildView(this.#world, this.#ledger, this.#notice); for (const listener of this.#listeners) listener(); }

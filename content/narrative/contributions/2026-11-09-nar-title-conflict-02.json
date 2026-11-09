@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:59Z-nar-title-conflict-02",
+  "contributionId": "nar-title-conflict-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "conflict"
+  ],
+  "tone": "scharf",
+  "mood": "argwoehnisch",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Streit steht zwischen den Stühlen und rückt keinen Millimeter.",
+  "directives": []
+}

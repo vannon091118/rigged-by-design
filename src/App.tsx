@@ -10,6 +10,7 @@ import { armMusic, setMusicState } from './render/music';
 import { ActionCard } from './ui/action-card';
 import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
+import { setNarrativePaused } from './store/narrative-clock';
 import { type Perspective, type Popup } from './ui/app-model';
 import { BuildPanel } from './ui/build-panel';
 import { Dock, useBrandTaps } from './ui/dock';
@@ -79,6 +80,9 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     }
     setMusicState('FLOOR');
   }, [popup, view.furniture]);
+
+  // Szenen sterben nicht im Menue: ein Popup verdeckt den Floor und haelt die Frist an.
+  useEffect(() => { setNarrativePaused(popup !== null || buildOpen || editorOpen); }, [popup, buildOpen, editorOpen]);
 
   // Der Browser laesst Ton erst nach einer Geste zu; bis dahin bleibt es still.
   useEffect(() => armMusic(), []);

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:32Z-nar-var-amb-escalate-02",
+  "contributionId": "nar-var-amb-escalate-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "escalate"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Erst nachfragen, dann nachlegen.",
+  "directives": []
+}

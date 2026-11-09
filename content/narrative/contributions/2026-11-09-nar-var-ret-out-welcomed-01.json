@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:17Z-nar-var-ret-out-welcomed-01",
+  "contributionId": "nar-var-ret-out-welcomed-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Er nimmt den Hocker, als wäre er reserviert gewesen, und hebt das Glas in Richtung Tresen.",
+  "directives": []
+}

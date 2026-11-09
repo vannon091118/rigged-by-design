@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:63Z-nar-title-warm-02",
+  "contributionId": "nar-title-warm-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "return",
+    "warm"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Diesmal kommt der Gast nicht wegen des Automaten.",
+  "directives": []
+}

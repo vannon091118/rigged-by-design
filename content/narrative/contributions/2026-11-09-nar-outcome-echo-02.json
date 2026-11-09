@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:14Z-nar-outcome-echo-02",
+  "contributionId": "nar-outcome-echo-02",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Sie sagt den Satz von damals fast wörtlich. Diesmal klingt er nicht wie eine Drohung, sondern wie eine Rechnung, die jemand begleichen will.",
+  "directives": []
+}

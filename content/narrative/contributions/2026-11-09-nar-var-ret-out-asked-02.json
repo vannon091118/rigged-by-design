@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:21Z-nar-var-ret-out-asked-02",
+  "contributionId": "nar-var-ret-out-asked-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "reaction",
+  "function": "react",
+  "contexts": [
+    "return",
+    "aftermath",
+    "ask"
+  ],
+  "tone": "melancholisch",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Auf die Frage nach dem Gehen sagt er nur, dass Bleiben eben auch eine Entscheidung ist.",
+  "directives": []
+}

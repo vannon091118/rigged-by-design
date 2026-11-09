@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:48Z-nar-title-bar-01",
+  "contributionId": "nar-title-bar-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "ambient-bar"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "An der Bar wird aus einem Satz eine ganze Runde.",
+  "directives": []
+}

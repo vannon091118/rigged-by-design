@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:53Z-nar-title-round-03",
+  "contributionId": "nar-title-round-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "ambient-round"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Gläser stehen dichter als geplant, und keiner steht auf.",
+  "directives": []
+}

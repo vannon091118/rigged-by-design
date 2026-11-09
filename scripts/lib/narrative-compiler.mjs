@@ -47,7 +47,7 @@ export function renderRegistry(document) {
 export function renderRuntimeRegistry(document) {
   // Mehrere Fragmente je Zeile: die Datei ist Datentraeger, kein Lesetext, und
   // muss unter dem LOC-Cap ihrer Zustaendigkeit bleiben (engine, cap 200).
-  const perLine = 4;
+  const perLine = 5;
   const rows = [];
   for (let index = 0; index < document.fragments.length; index += perLine) {
     const group = document.fragments.slice(index, index + perLine).map((fragment) => JSON.stringify(fragment));

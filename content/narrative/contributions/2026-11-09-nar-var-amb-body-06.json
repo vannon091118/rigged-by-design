@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:28Z-nar-var-amb-body-06",
+  "contributionId": "nar-var-amb-body-06",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Tisch ist voll, obwohl noch Platz wäre. Alle sitzen nur ein Stück weiter auseinander als nötig.",
+  "directives": []
+}

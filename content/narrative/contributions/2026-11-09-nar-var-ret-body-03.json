@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:07Z-nar-var-ret-body-03",
+  "contributionId": "nar-var-ret-body-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "startpool"
+  ],
+  "text": "Der Abend beginnt mit einer Frage, die niemand gestellt hat, und das Haus antwortet mit einem freien Platz an der Theke.",
+  "directives": []
+}

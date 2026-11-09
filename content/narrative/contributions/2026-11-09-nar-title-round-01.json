@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T11:51Z-nar-title-round-01",
+  "contributionId": "nar-title-round-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "ambient-round"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Runde geht herum, ohne dass jemand nach dem Preis fragt.",
+  "directives": []
+}

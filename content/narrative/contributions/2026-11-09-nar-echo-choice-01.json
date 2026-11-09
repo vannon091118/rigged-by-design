@@ -1,0 +1,25 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:25Z-nar-echo-choice-01",
+  "contributionId": "nar-echo-choice-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "aftermath",
+    "echo",
+    "return",
+    "loss"
+  ],
+  "tone": "scharf",
+  "mood": "entschlossen",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ",
+    "rueckkehrer"
+  ],
+  "text": "Die Sache zu Ende bringen",
+  "directives": []
+}

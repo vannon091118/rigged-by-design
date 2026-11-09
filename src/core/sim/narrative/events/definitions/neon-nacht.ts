@@ -12,7 +12,7 @@ export const NEON_NACHT_TEMPLATE: EventTemplate = {
   scope: 'GLOBAL',
   participantRoles: [],
   contentSlots: [
-    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['demand'] },
+    { id: 'TITLE', kind: 'TITLE', requiredContexts: ['demand', 'neon-nacht'] },
     { id: 'BODY', kind: 'BODY', requiredContexts: ['demand'] },
   ],
   choices: [],

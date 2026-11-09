@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { pickReturningVisitor, returnChance, VISITOR_CAP, recordVisitor, noteExperience } from '../visitors';
+import { actorRefOfVisitor } from '../narrative/relationships';
+import type { NarrativeEventInstance, NarrativeEventStatus } from '../narrative/event-types';
 import { spawnGuest } from '../spawn';
 import { createWorld } from '../templates';
 import { replaySave } from '../../../store/save';
@@ -55,6 +57,46 @@ describe('Besucherprofile', () => {
     expect(world.visitors.length).toBeLessThanOrEqual(VISITOR_CAP);
     expect(world.visitors.some((visitor) => visitor.name === `G${VISITOR_CAP + 9}`)).toBe(true);
     expect(world.visitors.some((visitor) => visitor.name === 'G0')).toBe(false);
+  });
+
+  /** Minimale Event-Instanz: nur Status und Teilnehmer sind fuer die Retention relevant. */
+  function pushEvent(world: ReturnType<typeof createWorld>, participantId: number, status: NarrativeEventStatus) {
+    const event: NarrativeEventInstance = {
+      id: 1, eventId: 'VISITOR_RETURN', templateId: 'VISITOR_RETURN', templateVersion: 1,
+      offeredChoiceIds: [], status, scope: 'VISITOR', participants: [actorRefOfVisitor(participantId)],
+      sourceFactId: 0, priority: 0, startedTick: 0, updatedTick: 0, expiresTick: 100, step: 'START',
+      maxOccurrences: 1, cooldownTicks: 0, chainFromEventId: null, resolution: null,
+    };
+    world.narrative.events.push(event);
+  }
+
+  it('behaelt den Teilnehmer einer offenen Szene, auch wenn er am laengsten nicht gesehen wurde', () => {
+    const world = createWorld('SMALL');
+    for (let i = 0; i < VISITOR_CAP; i += 1) {
+      recordVisitor(world, { name: `G${i}`, persona: 'STREET', tick: i });
+    }
+    const oldest = world.visitors[0]!;
+    pushEvent(world, oldest.id, 'ACTIVE');
+
+    recordVisitor(world, { name: 'Neu', persona: 'STREET', tick: VISITOR_CAP });
+
+    expect(world.visitors.some((visitor) => visitor.id === oldest.id)).toBe(true);
+    expect(world.visitors.length).toBeLessThanOrEqual(VISITOR_CAP);
+    expect(world.visitors.some((visitor) => visitor.name === 'G1')).toBe(false);
+  });
+
+  it('gibt den Schutz frei, sobald die Szene abgeschlossen ist', () => {
+    const world = createWorld('SMALL');
+    for (let i = 0; i < VISITOR_CAP; i += 1) {
+      recordVisitor(world, { name: `G${i}`, persona: 'STREET', tick: i });
+    }
+    const oldest = world.visitors[0]!;
+    pushEvent(world, oldest.id, 'RESOLVED');
+
+    recordVisitor(world, { name: 'Neu', persona: 'STREET', tick: VISITOR_CAP });
+
+    expect(world.visitors.some((visitor) => visitor.id === oldest.id)).toBe(false);
+    expect(world.visitors.length).toBe(VISITOR_CAP);
   });
 
   it('kehrt nach schlechtem Erlebnis kaum zurueck und nach gutem oefter', () => {

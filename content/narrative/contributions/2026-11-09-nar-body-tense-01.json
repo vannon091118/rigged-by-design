@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T12:10Z-nar-body-tense-01",
+  "contributionId": "nar-body-tense-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "ambient-tense"
+  ],
+  "tone": "scharf",
+  "mood": "angespannt",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Gläser stehen zwischen ihnen, und keiner schiebt seines näher.",
+  "directives": []
+}
