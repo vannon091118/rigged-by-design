@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c0a4f5c79cdbaf695bf75587ce9daf364a4bf40549779cd162bbe6168495b6ac",
+  "contentHash": "sha256:b124cd5acf5df8754eb4981cffe087123b80babab046e8c478954e0a4e97c0ef",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6706,6 +6706,28 @@
       "text": "Er steht schon wieder am selben Automaten, und niemand muss fragen, seit wann. Die Einsätze sind höher als gestern, das Lächeln schmaler — wer hier arbeitet, erkennt den Unterschied längst, bevor die Kasse ihn sieht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-p5-suchtfolge-01.json"
+    },
+    {
+      "contributionId": "p6-archiv-01",
+      "turnId": "2026-11-09T19:35Z-p6-archiv-01",
+      "agentId": "buffy",
+      "role": "ERZAEHLER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "facts"
+      ],
+      "tone": "trocken",
+      "mood": "angespannt",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Man sagt, dieses Haus vergisst nichts — wer hier einmal Hausverbot hatte, steht noch Jahre später im Buch, samt Grund und Datum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-p6-archiv-01.json"
     },
     {
       "contributionId": "patience-gap-01",

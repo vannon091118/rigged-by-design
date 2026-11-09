@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T19:35Z-p6-archiv-01",
+  "contributionId": "p6-archiv-01",
+  "role": "ERZAEHLER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "trocken",
+  "mood": "angespannt",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Man sagt, dieses Haus vergisst nichts — wer hier einmal Hausverbot hatte, steht noch Jahre später im Buch, samt Grund und Datum.",
+  "directives": []
+}
