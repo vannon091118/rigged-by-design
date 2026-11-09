@@ -5,11 +5,13 @@
  *   pnpm run android:apk         -> artifacts/rigged-by-design-debug.apk
  *   pnpm run android:apk:release -> artifacts/rigged-by-design-release.apk
  *
- * Beide Varianten tragen dieselbe, versionierte Signatur aus
- * `src/Config/android-signing.json`. Zwei konkrete Installationsfehler sind damit
- * ausgeschlossen: ein unsigniertes Release (Android lehnt es komplett ab) und
- * ein pro Runner neu erzeugter Debug-Schluessel (Android verlangt fuer ein
- * Update dasselbe Zertifikat und meldet sonst "App nicht installiert").
+ * Zwei getrennte Signaturen: Debug traegt den versionierten Entwicklungsschluessel
+ * aus `src/Config/android-signing.json`, Release ausschliesslich die
+ * Produktionssignatur aus dem CI-Secret. Ohne Produktionsschluessel entsteht kein
+ * Release – statt eines mit dem Debug-Schluessel getarnten Pakets. Damit sind
+ * beide Installationsfehler ausgeschlossen: ein unsigniertes Release (Android
+ * lehnt es komplett ab) und ein pro Runner neu erzeugter Debug-Schluessel
+ * (Android verlangt fuer ein Update dasselbe Zertifikat).
  *
  * Die Signierkonfiguration schreibt dieses Skript in das generierte Projekt
  * unter `android/`; der Quellbaum bleibt unberuehrt. Nach dem Bau prueft
@@ -37,6 +39,12 @@ const CAPACITOR = ['@capacitor/core', '@capacitor/cli', '@capacitor/android'];
  * Textdateien zu; beim Bau entsteht daraus das Paket im generierten Projekt.
  */
 const SIGNING_FILE = resolve(ROOT, 'src', 'Config', 'android-signing.json');
+/** Produktionssignatur: nur aus der Umgebung, nie aus dem Repo. */
+const PRODUCTION_KEY = process.env.RBD_ANDROID_KEYSTORE_BASE64 ?? '';
+const PRODUCTION_PASSWORD = process.env.RBD_ANDROID_KEYSTORE_PASSWORD ?? '';
+const PRODUCTION_ALIAS = process.env.RBD_ANDROID_KEY_ALIAS ?? 'rbd-release';
+const PRODUCTION_KEY_PASSWORD = process.env.RBD_ANDROID_KEY_PASSWORD ?? PRODUCTION_PASSWORD;
+const EXPECTED_RELEASE_SHA256 = (process.env.RBD_ANDROID_RELEASE_SHA256 ?? '').toLowerCase();
 const gradleTask = release ? 'assembleRelease' : 'assembleDebug';
 const gradleApk = release ? 'app-release.apk' : 'app-debug.apk';
 const apkName = release ? 'rigged-by-design-release.apk' : 'rigged-by-design-debug.apk';
@@ -86,6 +94,12 @@ if (!/^[0-9a-f]{64}$/.test(signing.sha256 ?? '')) {
 }
 if (typeof signing.keystoreBase64 !== 'string' || signing.keystoreBase64.length < 1024) {
   abort('android-signing.json: keystoreBase64 fehlt oder ist abgeschnitten');
+}
+// Fail-closed: ein Release ohne Produktionsschluessel gibt es nicht. Die
+// Alternative waere ein Paket, das installierbar aussieht und beim Update
+// scheitert, weil es den Entwicklungsschluessel traegt.
+if (release && (!PRODUCTION_KEY || !PRODUCTION_PASSWORD)) {
+  abort('Produktionssignatur fehlt: RBD_ANDROID_KEYSTORE_BASE64 und RBD_ANDROID_KEYSTORE_PASSWORD setzen; das Release wird nie mit dem Debug-Schluessel signiert');
 }
 const configPath = resolve(ROOT, 'src', 'Config', 'capacitor.config.json');
 if (!existsSync(configPath)) {
@@ -140,26 +154,39 @@ if (!existsSync(gradleFile)) abort('android/app/build.gradle fehlt nach cap add'
 // Das Paket entsteht erst hier: im Quellbaum liegt nur der base64-Inhalt.
 const KEYSTORE = resolve(ROOT, 'android', 'app', 'rbd-debug.p12');
 writeFileSync(KEYSTORE, Buffer.from(signing.keystoreBase64, 'base64'));
+const RELEASE_KEYSTORE = resolve(ROOT, 'android', 'app', 'rbd-release.p12');
+if (release) writeFileSync(RELEASE_KEYSTORE, Buffer.from(PRODUCTION_KEY, 'base64'));
 let gradleConfig = readFileSync(gradleFile, 'utf8');
 if (!gradleConfig.includes(SIGNING_MARKER)) {
-  const storePath = KEYSTORE.replaceAll('\\', '/');
+  const debugStore = KEYSTORE.replaceAll('\\', '/');
+  const releaseStore = RELEASE_KEYSTORE.replaceAll('\\', '/');
   gradleConfig += `
 ${SIGNING_MARKER}
 // Beide Varianten teilen ein Zertifikat: Android akzeptiert ein Update nur
 // unter derselben Signatur. Der Schluessel liegt versioniert in src/Config.
+// Zwei getrennte Zertifikate: Debug signiert Entwicklungspakete, Release nur
+// mit der Produktionssignatur aus dem CI-Secret. Android akzeptiert ein Update
+// nur unter derselben Signatur, deshalb ersetzt keine Variante die andere.
 android {
     signingConfigs {
-        rbd {
-            storeFile file('${storePath}')
+        rbdDebug {
+            storeFile file('${debugStore}')
             storePassword '${signing.password}'
             keyAlias '${signing.alias}'
             keyPassword '${signing.password}'
             storeType 'PKCS12'
         }
+        rbdRelease {
+            storeFile file('${releaseStore}')
+            storePassword '${PRODUCTION_PASSWORD}'
+            keyAlias '${PRODUCTION_ALIAS}'
+            keyPassword '${PRODUCTION_KEY_PASSWORD}'
+            storeType 'PKCS12'
+        }
     }
     buildTypes {
-        debug { signingConfig signingConfigs.rbd }
-        release { signingConfig signingConfigs.rbd }
+        debug { signingConfig signingConfigs.rbdDebug }
+        release { signingConfig signingConfigs.rbdRelease }
     }
 }
 `;
@@ -196,7 +223,14 @@ const certs = `${verified.stdout ?? ''}${verified.stderr ?? ''}`;
 if (verified.status !== 0) abort(`apksigner verify: ${apkName} ist nicht gueltig signiert`);
 const digest = /Signer #1 certificate SHA-256 digest:\s*([0-9a-f]+)/i.exec(certs)?.[1];
 if (!digest) abort(`apksigner verify: kein Zertifikats-Digest in ${apkName}`);
-if (digest.toLowerCase() !== signing.sha256) {
+if (release) {
+  if (digest.toLowerCase() === signing.sha256) {
+    abort('Release traegt den Debug-Schluessel: die Produktionssignatur fehlt oder ist falsch gesetzt');
+  }
+  if (EXPECTED_RELEASE_SHA256 && digest.toLowerCase() !== EXPECTED_RELEASE_SHA256) {
+    abort(`apksigner verify: Release-Zertifikat ${digest} weicht vom erwarteten ${EXPECTED_RELEASE_SHA256} ab`);
+  }
+} else if (digest.toLowerCase() !== signing.sha256) {
   abort(`apksigner verify: ${apkName} ist mit einem fremden Schluessel signiert (${digest})`);
 }
 const badging = capture(aapt2, ['dump', 'badging', apk]);
