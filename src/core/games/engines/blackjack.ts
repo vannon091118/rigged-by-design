@@ -1,9 +1,4 @@
-/**
- * Blackjack mit echten Entscheidungen: Ziehen, Halten, Verdoppeln, Split,
- * Versicherung und Aufgeben. Der Spieler fuehrt die Hand – die Engine zieht
- * nur den Dealer und rechnet ab. Tischregeln (Deckzahl, S17/H17, 3:2 oder 6:5,
- * erlaubte Aktionen, Side Bet) sind Konfiguration, keine festen Konstanten.
- */
+/** Blackjack: Spieleraktionen und Rundenfluss; Dealer und Abrechnung in blackjack-settle. */
 import type { Card, CardShoe } from '../../rng/shoe';
 import {
   DEFAULT_BLACKJACK_RULES, handLabel, handTotal, isNatural, mirror, normalizeBlackjackRules, sameCards, sameRank,
@@ -33,15 +28,12 @@ function build(
   return { ...base, label: base.label || `Deine ${handLabel(hands[0]!)}` };
 }
 
-/**
- * Alte Runden kennen nur `player`; wer ein Blatt von Hand zusammenstellt, bekommt
- * daraus wieder eine Hand. Sonst wuerde die Abrechnung ein fremdes Blatt lesen.
- */
+// Alt-Runden kennen nur `player`; Hand daraus wieder aufspannen.
 function aligned(round: BlackjackRound): BlackjackRound {
   if (round.hands.length !== 1) return round;
   const hand = round.hands[0]!;
   if (sameCards(hand.cards, round.player)) return round;
-  const rebuilt: BlackjackHand = { ...hand, cards: round.player, units: round.units };
+  const rebuilt: BlackjackHand = { ...hand, cards: round.player };
   return { ...round, hands: [rebuilt], player: rebuilt.cards };
 }
 
@@ -123,7 +115,7 @@ export function doubleBlackjack(round: BlackjackRound, shoe: CardShoe): Blackjac
   return advance(mirror({ ...current, units }, hands, current.active), shoe, current.rules);
 }
 
-/** Split: zwei gleiche Raenge werden zu zwei Haenden, jede bekommt eine neue Karte. */
+/** Split: gleiche Ränge werden zu zwei Händen, jede bekommt eine neue Karte. */
 export function splitBlackjack(round: BlackjackRound, shoe: CardShoe): BlackjackRound {
   const current = aligned(round);
   const rules = current.rules;
@@ -134,12 +126,11 @@ export function splitBlackjack(round: BlackjackRound, shoe: CardShoe): Blackjack
   if (current.hands.length >= rules.maxHands) throw new Error('Mehr Haende sind an diesem Tisch nicht erlaubt.');
   const [first, second] = hand.cards as [Card, Card];
   if (!sameRank(first, second)) throw new Error('Split verlangt zwei gleiche Raenge.');
-  const left: BlackjackHand = { ...hand, cards: [first, shoe.draw()], split: true, units: 1 };
-  const right: BlackjackHand = { ...hand, cards: [second, shoe.draw()], split: true, units: 1 };
-  // Ein Ass-Paar bekommt je eine Karte und ist dann fertig, wie an echten Tischen.
+  const left: BlackjackHand = { ...hand, cards: [first, shoe.draw()], split: true, units: hand.units };
+  const right: BlackjackHand = { ...hand, cards: [second, shoe.draw()], split: true, units: hand.units };
   const aces = first.rank === 'A';
-  const finishedLeft: BlackjackHand = { ...left, done: aces || handTotal(left.cards) === 21, label: '' };
-  const finishedRight: BlackjackHand = { ...right, done: aces || handTotal(right.cards) === 21, label: '' };
+  const finishedLeft: BlackjackHand = { ...left, done: aces || handTotal(left.cards) === 21 };
+  const finishedRight: BlackjackHand = { ...right, done: aces || handTotal(right.cards) === 21 };
   const hands = [
     ...current.hands.slice(0, current.active), finishedLeft, finishedRight, ...current.hands.slice(current.active + 1),
   ];

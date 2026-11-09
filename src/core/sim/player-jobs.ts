@@ -77,7 +77,6 @@ export function requestJobTask(world: WorldState): { started: boolean; queuePosi
       : job.jobId === 'CARD_DEALER' ? 'DEAL' : 'REPAIR',
     ticksElapsed: 0, ticksTotal: def.taskDurationTicks,
   };
-  // XP gibt es erst bei Abschluss, wie im Job-Menü angezeigt.
   return { started: true, queuePosition: -1 };
 }
 
@@ -86,16 +85,18 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
   if (job === null || job.currentTask === null) return;
   const def = JOB_DEFS[job.jobId];
   grantGlobalXp(world.player.rpg, def.xpSourceKey, def.baseXpPerTask);
-  if (def.injuryChance > 0 && prng.nextFloat() < def.injuryChance / 10) {
+  const injured = def.injuryChance > 0 && prng.nextFloat() < def.injuryChance;
+  if (injured) {
     const reduction = injuryDurationReduction(world.player.rpg);
     world.player.rpg.injuryTicks = Math.max(1, INJURY_TICKS - reduction);
     world.player.rpg.hp = Math.max(1, world.player.rpg.hp - 5);
-    world.lastEvent = `Leicht verletzt bei der Arbeit: ${def.label}.`;
   }
   job.currentTask = null;
   job.workDays += 1;
   job.lastWorkDay = world.day;
-  world.lastEvent = `Schicht beendet: ${def.label}.`;
+  world.lastEvent = injured
+    ? `Schicht beendet: ${def.label}. Leicht verletzt bei der Arbeit.`
+    : `Schicht beendet: ${def.label}.`;
 }
 
 /** Saves vor der Anwesenheitsregel tragen kein `lastWorkDay`: ohne Schicht kein rueckwirkender Lohn. */

@@ -54,7 +54,7 @@ export function settle(round: BlackjackRound, dealer: readonly Card[], rules: Bl
     return { ...hand, done: true, outcome };
   });
   const insuranceReturn = round.insurance > 0 && dealerNatural ? round.insurance * 3 : 0;
-  const sideReturn = round.sideBet && round.sideBetPair ? 12 : 0;
+  const sideReturn = round.sideBet && round.sideBetPair ? rules.sideBetBps / 10_000 : 0;
   const gross = hands.reduce((sum, hand) => sum + returnFor(hand, rules), 0) + insuranceReturn + sideReturn;
   const staked = hands.reduce((sum, hand) => sum + hand.units, 0) + round.insurance + (round.sideBet ? 1 : 0);
   const multiplierBps = Math.round((gross / Math.max(1e-9, staked)) * 10_000);

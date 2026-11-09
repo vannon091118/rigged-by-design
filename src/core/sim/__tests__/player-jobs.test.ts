@@ -82,6 +82,25 @@ describe('Player-Jobs: Aufgaben', () => {
     expect(world.player.job?.workDays).toBe(1);
   });
 
+  it('verletzt mit der vollen Quote (Mechaniker 10%, nicht 1%) und meldet es nicht weg', () => {
+    const { world } = setup();
+    acceptJob(world, 'NEBELPALAST', 'MECHANIC');
+    requestJobTask(world);
+    completeJobTask(world, { nextFloat: () => 0.04 });
+    expect(world.player.rpg.injuryTicks).toBeGreaterThan(0);
+    expect(world.lastEvent).toContain('verletz');
+    expect(world.lastEvent).toContain('Schicht beendet');
+  });
+
+  it('verletzt nicht ohne Treffer', () => {
+    const { world } = setup();
+    acceptJob(world, 'NEBELPALAST', 'MECHANIC');
+    requestJobTask(world);
+    completeJobTask(world, { nextFloat: () => 0.9 });
+    expect(world.player.rpg.injuryTicks).toBe(0);
+    expect(world.lastEvent).toBe('Schicht beendet: Automaten-Mechaniker.');
+  });
+
   it('verweigert Aufgabe ohne Job', () => {
     const { world } = setup();
     expect(() => requestJobTask(world)).toThrow(/keinen Job/);
