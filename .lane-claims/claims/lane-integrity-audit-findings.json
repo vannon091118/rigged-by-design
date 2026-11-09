@@ -20,7 +20,6 @@
     "docs/WORKFLOW.md",
     "docs/contracts/README.md",
     "docs/INVENTORY.md",
-    "docs/ROADMAP.md",
     "package.json",
     "pnpm-lock.yaml",
     ".lane-claims/claims/lane-integrity-audit-findings.json"
