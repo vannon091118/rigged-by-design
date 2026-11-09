@@ -6,8 +6,10 @@ import type {
   CommandFamily, CommandId, DirectiveScalar, NarrativeCommand, ParsedDirective,
 } from './types';
 
+/** Dialog-IDs folgen den Skript-IDs (`rita-am-tresen`); derselbe Ausdruck steht in
+`template-schema.ts` und `scripts/lib/narrative-macros.mjs` (P-15). */
 const FLAG = /^[A-Za-z][A-Za-z0-9_]{0,31}$/;
-const DIALOG = /^[A-Z][A-Z0-9_]{0,63}$/;
+const DIALOG = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;
 const DIMENSIONS: readonly RelationshipDimension[] = ['trust', 'sympathy', 'conflict', 'influence'];
 const MAX_TEXT = 64;
 
@@ -80,7 +82,7 @@ export const COMMAND_SPECS: readonly CommandSpec[] = [
   { id: 'SET_FLAG', family: 'STORY', executable: true, compile: compileSetFlag },
   { id: 'ADJUST_RELATIONSHIP', family: 'RELATIONSHIP', executable: true, compile: compileRelationship },
   { id: 'FREEZE_TICK', family: 'EVENT', executable: true, compile: compileFreeze },
-  { id: 'TRIGGER_DIALOG', family: 'DIALOG', executable: false, compile: compileDialog },
+  { id: 'TRIGGER_DIALOG', family: 'DIALOG', executable: true, compile: compileDialog },
   { id: 'COUNTER_RIVAL', family: 'RIVAL', executable: true, compile: compileCounter },
 ];
 

@@ -48,6 +48,12 @@ function applyCommand(world: WorldState, eventId: number, command: NarrativeComm
     mind.counteredUntilTick = Math.max(mind.counteredUntilTick, world.tick + RIVAL_AI_LIMITS.counteredTicks);
     return;
   }
+  if (command.id === 'TRIGGER_DIALOG') {
+    // Reine Darstellung, kein Zustand: Der Dialog haelt ueber Speichern/Laden
+    // bewusst nichts; die UI oeffnet das referenzierte Skript aus dem
+    // Choice-Ergebnis (`ui/dialog-request.ts`). Hier faellt nichts an.
+    return;
+  }
   if (command.id !== 'ADJUST_RELATIONSHIP') return;
   const event = world.narrative.events.find((entry) => entry.id === eventId);
   if (!event) return;

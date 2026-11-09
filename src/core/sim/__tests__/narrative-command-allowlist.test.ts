@@ -37,7 +37,7 @@ describe('Narrative Command Allowlist', () => {
     ], allowlistForChoice(welcome), 1);
     expect(outside.commands).toEqual([]);
     expect(outside.rejections[0]?.reason).toBe('INVALID_ARGS');
-    expect(commandSpec('TRIGGER_DIALOG')?.executable).toBe(false);
+    expect(commandSpec('TRIGGER_DIALOG')?.executable).toBe(true);
     expect(commandSpec('FREEZE_TICK')?.executable).toBe(true);
   });
 

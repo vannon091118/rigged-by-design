@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bb46abd24c4c4437f8c2530ada5f8d1f46cbb157b0d772aaf229df5ec0a97410",
+  "contentHash": "sha256:509f79c0fc5c8fb910491e5da85b5df428e2ddc3c58456b7bcdbe12d7fe0abc7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3497,6 +3497,30 @@
       "text": "Verstreichenlassen ist kein Vergehen: EXPIRED schliesst die Szene mit DEADLINE, ohne Flags, Beziehungen oder Ledger zu beruehren und ohne Fact. Wer eine Strafe will, muss sie als expliziten Choice-Vertrag schreiben - die Engine verhaengt von sich aus keine.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-d3-expiry-no-penalty.json"
+    },
+    {
+      "contributionId": "dialog-open-01",
+      "turnId": "2026-11-09T18:20Z-dialog-open-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita lehnt sich über den Tresen, und das Gespräch beginnt nicht mit einer Frage, sondern mit einem Blick, der sagt: Setz dich, das dauert einen Moment. Wer jetzt zuhört, erfährt mehr, als jede Gästeliste je verraten würde.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-dialog-open-01.json"
     },
     {
       "contributionId": "e2-visitor-disposition-01",

@@ -93,7 +93,7 @@ function isEffect(raw: unknown, participantCount: number): raw is ChoiceEffect {
   if (!isRecord(raw)) return false;
   if (raw.kind === 'SET_FLAG') return isFlag(raw.flag) && isSafeInt(raw.delta, -1000, 1000) && raw.delta !== 0;
   if (raw.kind === 'FREEZE_TICK') return isSafeInt(raw.ticks, 1, 200);
-  if (raw.kind === 'TRIGGER_DIALOG') return isText(raw.dialogId, 64) && /^[A-Z][A-Z0-9_]{0,63}$/.test(raw.dialogId);
+  if (raw.kind === 'TRIGGER_DIALOG') return isText(raw.dialogId, 64) && /^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(raw.dialogId);
   if (raw.kind === 'COUNTER_RIVAL') return isChoiceActor(raw.rival, participantCount);
   if (raw.kind !== 'ADJUST_RELATIONSHIP') return false;
   return isChoiceActor(raw.from, participantCount) && isChoiceActor(raw.to, participantCount)

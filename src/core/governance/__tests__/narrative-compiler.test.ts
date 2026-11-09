@@ -60,12 +60,18 @@ describe('Narrative Content Compiler (NAR-10)', () => {
     expect(JSON.stringify(report.registry)).not.toContain('€');
   });
 
-  it('weist ungueltige, unbekannte und nicht ausfuehrbare Makros zurueck', () => {
+  it('weist ungueltige und unbekannte Makros zurueck', () => {
     expect(compileMacro('FreezeTick:1').error?.code).toBe('MALFORMED');
     expect(compileMacro('€FREEZE_TICK:201').error?.code).toBe('INVALID_ARGS');
     expect(compileMacro('€FREEZE_TICK:1,2').error?.code).toBe('INVALID_ARGS');
     expect(compileMacro('€UNKNOWN:1').error?.code).toBe('UNKNOWN_COMMAND');
-    expect(compileMacro('€TRIGGER_DIALOG:NAR_10').error?.code).toBe('COMMAND_NOT_EXECUTABLE');
+    expect(compileMacro('€TRIGGER_DIALOG:0x').error?.code).toBe('INVALID_ARGS');
+  });
+
+  it('kompiliert TRIGGER_DIALOG mit gueltiger Dialog-ID (P-15)', () => {
+    const compiled = compileMacro('€TRIGGER_DIALOG:rita-am-tresen');
+    expect(compiled.ok).toBe(true);
+    if (compiled.ok) expect(compiled.command).toMatchObject({ id: 'TRIGGER_DIALOG', dialogId: 'rita-am-tresen' });
   });
 
   it('verlangt stabile ActorRefs und kontrollierte Flags', () => {

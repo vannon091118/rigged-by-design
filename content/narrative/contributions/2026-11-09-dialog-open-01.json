@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T18:20Z-dialog-open-01",
+  "contributionId": "dialog-open-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "service"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Rita lehnt sich über den Tresen, und das Gespräch beginnt nicht mit einer Frage, sondern mit einem Blick, der sagt: Setz dich, das dauert einen Moment. Wer jetzt zuhört, erfährt mehr, als jede Gästeliste je verraten würde.",
+  "directives": []
+}
