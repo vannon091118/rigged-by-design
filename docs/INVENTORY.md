@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.197 | 2026-11-09 16:57 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 17:03 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -540,10 +540,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2256 |
-| Gelistete Dateien | 2256 |
+| Getrackte Dateien | 2257 |
+| Gelistete Dateien | 2257 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (37), content (809), docs (77), public (554), scripts (91), src (663) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (37), content (810), docs (77), public (554), scripts (91), src (663) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -556,7 +556,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 35 Datei(en)
-- `content/narrative/contributions/` — 805 Datei(en)
+- `content/narrative/contributions/` — 806 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1408,6 +1408,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-city-encounter-help.json` — { — gelesen: 22 Zeilen
 - `content/narrative/contributions/2026-11-09-city-encounter-opening.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-loc-gate-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-09-loc-gate-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-aftermath-body-01.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-aftermath-body-02.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-aftermath-choice-01.json` — { — gelesen: 24 Zeilen
@@ -1510,8 +1511,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-01.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-02.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-09-nar-var-ret-welcome-03.json` — { — gelesen: 23 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18001 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3225 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18023 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3229 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen

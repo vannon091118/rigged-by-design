@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a57793c710bd40f8c479a5a98f88c26940bcd0ab839ebf8279db22e09ac49bd8",
+  "contentHash": "sha256:c15c4744fef2208139fa1bf1fe9a5a7a34d2c31e1aa75735de2ab216f4a41225",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3785,6 +3785,28 @@
       "text": "Das LOC-Gate zaehlt jetzt Code-Zeilen: Kommentare und Leerzeilen fallen aus dem Budget, Textbausteine und Event-Templates ebenfalls. Die Grenze gilt der Logik, nicht der Prosa; wer sie reisst, teilt Verantwortung, statt Kommentare zu loeschen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-loc-gate-01.json"
+    },
+    {
+      "contributionId": "loc-gate-02",
+      "turnId": "2026-11-09T18:05Z-gate-basis",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Branch, den ein Gate fuer korrupt haelt, ist noch kein Fehler im Inhalt: Erst die Basis entscheidet, welcher Diff geprueft wird. Wer den Kopf neu aufsetzt, muss denselben Baum erneut belegen, statt den alten Lauf zu beschwichtigen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-loc-gate-02.json"
     },
     {
       "contributionId": "loc-trim-01",
