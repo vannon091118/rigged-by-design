@@ -89,8 +89,7 @@ export interface CardDeal {
 /** Offene Kartenrunde je (Rivale, Maschine); Einsatz bindet Deal an Settle. */
 const pendingCard = new Map<string, { stake: VaCoinMicro }>();
 const pendingKey = (rivalId: RivalId, machineIndex: number): string => `${rivalId}:${machineIndex}`;
-/** Höchste Engine-Quote (Royal Flush 250x); Schutzwand gegen beliebige bps. */
-export const MAX_CARD_ENGINE_BPS = 2_500_000;
+const MAX_CARD_ENGINE_BPS = 2_500_000;
 export function dealCardOutcome(
   world: WorldState, ledger: Ledger, prng: Prng, rivalId: RivalId, machineIndex: number, stakeVC: number,
 ): { result: CardDeal; notice: string } {
