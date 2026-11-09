@@ -15,7 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.195] - 2026-11-08
 
 ### Technik
-- **Red-Team-Test fuer die Gate-Lane.** Der neue Governance-Test belegt tiefe Unveraenderlichkeit der Gate-Definitionen, die Bindung jedes Gates an seinen urspruenglichen Pruefer, deterministische Matrix-/CI-Planung und einen unveraenderten Quellbaum; `runGates` wertet den Exitcode statt der Ausgabe aus. `RBD_VERIFY_REPORTS` wird jetzt an die aktuelle Konfiguration gebunden, damit Testlaeufe einander den Berichtsordner nicht wegziehen.
+- **Red-Team-Test fuer die Gate-Lane.** Der neue Governance-Test haelt die freigegebene Unveraenderlichkeit von `GATES`, der Profile und der CI-Zustaende fest; eine literale `PURPOSE`-Tabelle bindet jedes Gate an Befehlsart, Skript und Fehlercode und prueft, dass das aufgerufene Paketskript den erwarteten Pruefer startet und kein Gate einen schreibenden Schalter (`--fix`, `--write`, `-i`, `rm`, `mv`) mitfuehrt. Matrix und CI-Plan sind bei gleichem Zustand byte-gleich und lassen den Quellbaum unveraendert; das Gate-Ergebnis kommt aus dem Exitcode, nicht aus der Ausgabe. Ein tiefes Einfrieren der einzelnen Gate-Objekte braucht eine Aenderung in `scripts/lib/` und damit eine Freeze-Freigabe; das bleibt ein eigener Schnitt und ist nicht Teil dieses Commits.
 - **Testquality-Fix.** Der P-11-Entladungstest nutzt wieder einen frischen Seed (`randomSeed`) statt eines festen Werts.
 
 ### Textbausteine

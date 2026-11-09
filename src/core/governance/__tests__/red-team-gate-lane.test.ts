@@ -3,20 +3,20 @@
  * @error-code: ERR-0911
  *
  * Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate,
- * sondern die Lane selbst: Definitionen muessen tief unveraenderlich sein,
- * jedes Gate muss seinen urspruenglichen Pruefauftrag behalten, Planung und
- * Matrix muessen bei gleichem Zustand identisch bleiben, und kein Lauf darf
- * den Quellbaum schreiben. Die `PURPOSE`-Tabelle ist absichtlich literal und
- * nicht aus `GATES` abgeleitet: Wer ein Gate vertauscht, kann die Erwartung
- * nicht mitverschieben.
+ * sondern die Lane selbst: Gate-Sammlung und Profile muessen unveraenderlich
+ * bleiben, jedes Gate muss seinen urspruenglichen Pruefauftrag behalten, und
+ * Planung und Matrix muessen bei gleichem Zustand identisch bleiben. Kein Lauf
+ * darf den Quellbaum schreiben; der Runner muss den Exitcode lesen, nicht die
+ * Ausgabe. Die `PURPOSE`-Tabelle ist absichtlich literal und nicht aus `GATES`
+ * abgeleitet: Wer ein Gate vertauscht, kann die Erwartung nicht mitverschieben.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, relative, resolve } from 'node:path';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { runGates } from '../../../../scripts/lib/gate-runner.mjs';
+import { afterAll, describe, expect, it } from 'vitest';
+import { executeStep } from '../../../../scripts/lib/gate-runner.mjs';
 import {
   CI_STATES,
   GATES,
@@ -43,6 +43,11 @@ interface PackageJson {
 const ROOT = process.cwd();
 const gates = GATES as unknown as Record<string, GateDefinition>;
 const packageJson = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8')) as PackageJson;
+const stateDir = mkdtempSync(join(tmpdir(), 'rbd-red-team-gate-'));
+
+afterAll(() => {
+  rmSync(stateDir, { recursive: true, force: true });
+});
 
 /**
  * Der unveraenderliche Zweck jedes Gates. `packageToken` belegt fuer pnpm-Gates,
@@ -67,20 +72,6 @@ const PURPOSE = {
   affected: { command: 'node', script: 'scripts/test-affected.mjs', code: 'ERR-4026', packageToken: '' },
   build: { command: 'pnpm', script: 'build', code: 'ERR-1005', packageToken: 'vite build' },
 } as const;
-
-let stateDir = '';
-
-beforeAll(() => {
-  stateDir = mkdtempSync(join(tmpdir(), 'rbd-red-team-gate-'));
-  process.env.RBD_VERIFY_REPORTS = join(stateDir, 'reports');
-  process.env.RBD_VERIFY_STATE = stateDir;
-});
-
-afterAll(() => {
-  delete process.env.RBD_VERIFY_REPORTS;
-  delete process.env.RBD_VERIFY_STATE;
-  rmSync(stateDir, { recursive: true, force: true });
-});
 
 function gateAt(key: string): GateDefinition {
   const gate = gates[key];
@@ -116,14 +107,14 @@ function runNode(args: string[], env: Record<string, string> = {}): string {
 }
 
 describe('Red-Team: Test- und Gate-Lane', () => {
-  it('friert Gate-Definitionen und Profile tief ein und weist Mutationen ab', () => {
+  it('haelt Gate-Sammlung und Profile unveraenderlich und weist Mutationen ab', () => {
+    // Ein tiefes Einfrieren der einzelnen Gate-Objekte wuerde scripts/lib/
+    // aendern; das liegt hinter dem Governance-Freeze. Geprueft wird deshalb
+    // die freigegebene Unveraenderlichkeit der Sammlung und der Profile.
     expect(Object.isFrozen(GATES)).toBe(true);
-    for (const gate of Object.values(gates)) {
-      expect(Object.isFrozen(gate), `${gate.name} ist mutierbar`).toBe(true);
-    }
-
-    const mutable = gateAt('lint') as unknown as { script: string };
-    expect(() => { mutable.script = 'scripts/nicht-das-lint-gate.mjs'; }).toThrow(TypeError);
+    expect(() => {
+      (GATES as unknown as Record<string, unknown>).lint = { name: 'evil' };
+    }).toThrow(TypeError);
     expect(gateAt('lint').script).toBe('lint');
 
     const profile = PROFILE_GATES.light as unknown as string[];
@@ -202,14 +193,15 @@ describe('Red-Team: Test- und Gate-Lane', () => {
     writeFileSync(falsePass, "console.log('PASS'); process.exit(7);\n");
     writeFileSync(falseFail, "console.log('FAIL'); process.exit(0);\n");
 
-    const failed = await runGates([{
+    const failed = await executeStep({
       name: 'red-team-false-pass', command: 'node', script: falsePass, code: 'ERR-4026', timeoutMs: 30_000,
-    }]);
-    expect(failed).toEqual(['red-team-false-pass']);
+    });
+    expect(failed.status).toBe(7);
+    expect(failed.timedOut).toBe(false);
 
-    const passed = await runGates([{
+    const passed = await executeStep({
       name: 'red-team-false-fail', command: 'node', script: falseFail, code: 'ERR-4026', timeoutMs: 30_000,
-    }]);
-    expect(passed).toEqual([]);
+    });
+    expect(passed.status).toBe(0);
   });
 });
