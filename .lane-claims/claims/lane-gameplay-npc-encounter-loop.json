@@ -1,0 +1,19 @@
+{
+  "id": "lane/gameplay/npc-encounter-loop",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/gameplay/npc-encounter-loop",
+  "baseSha": "6b8d209fd66769f6b1c01d415fa420f6e33f1b0b",
+  "task": "Zentraler Begegnungs-Loop: NPC-Gespraech, soziale Handlung, Wissensweitergabe, verzoegerte Folge, Persistenz",
+  "goal": "Stadtaktion startet benannte NPC-Begegnung; geben/helfen/ablehnen aendern Geld, Zustand und Beziehung; zweiter NPC erhaelt Wissen mit Quelle/Distanz/Verlust; Kette reagiert verzoegert; Save/Load erhaelt alles",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-gameplay-npc-encounter-loop.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "6b8d209fd66769f6b1c01d415fa420f6e33f1b0b"
+}

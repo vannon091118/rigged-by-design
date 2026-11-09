@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:09Z-city-encounter-echo-cold-opening",
+  "contributionId": "city-encounter-echo-cold-opening-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "encounter",
+    "echo",
+    "cold"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Platz von gestern ist besetzt, und dein Name faellt heute nicht.",
+  "directives": []
+}

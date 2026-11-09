@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:07Z-city-encounter-echo-warm-body",
+  "contributionId": "city-encounter-echo-warm-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "encounter",
+    "echo",
+    "warm"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sie hat es weitererzaehlt, und die Strasse hat es behalten. Heute fragt sie dich nach etwas, das sie gestern nicht gefragt haette: ob du morgen mitkommst.",
+  "directives": []
+}

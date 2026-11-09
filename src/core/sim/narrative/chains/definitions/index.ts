@@ -4,8 +4,9 @@ import { isNarrativeChain } from '../chain-schema';
 import type { NarrativeChain } from '../chain-types';
 import { PAIR_CONFLICT_ARC } from './pair-conflict-arc';
 import { VISITOR_WARM_ARC } from './visitor-warm-arc';
+import { CITY_ENCOUNTER_ARC } from './city-encounter-arc';
 
-const SOURCES: readonly NarrativeChain[] = [VISITOR_WARM_ARC, PAIR_CONFLICT_ARC];
+const SOURCES: readonly NarrativeChain[] = [VISITOR_WARM_ARC, PAIR_CONFLICT_ARC, CITY_ENCOUNTER_ARC];
 
 /** Jeder Knoten braucht ein Template; sonst ist die Kette nicht spielbar. */
 const usable = (chain: NarrativeChain): boolean => isNarrativeChain(chain)

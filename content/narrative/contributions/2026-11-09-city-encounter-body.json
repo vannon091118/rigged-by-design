@@ -1,0 +1,23 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:02Z-city-encounter-body",
+  "contributionId": "city-encounter-body-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "event-body",
+  "function": "describe",
+  "contexts": [
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Person hinter dem Tresen kennt die Namen der Strasse, bevor sie ausgesprochen werden. Der Blick sagt: ich habe dich hier schon gesehen, und ich weiss noch, was du getan hast.",
+  "directives": []
+}

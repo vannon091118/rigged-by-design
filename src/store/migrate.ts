@@ -20,6 +20,8 @@ import { repairDeviceIdentity } from '../core/sim/device';
 import { hydrateStainsAndMops } from './migrate-stains';
 import { hydrateLayout } from './migrate-layout';
 import type { LayoutState } from '../core/sim/layout-types';
+import type { CityState } from '../core/sim/city-types';
+import { normalizeCityState } from '../core/sim/city-persist';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 
@@ -54,6 +56,8 @@ export interface SavedGame {
   readonly activeForeignFloorId?: number | null; readonly stains?: Stain[]; readonly mops?: Mop[];
   readonly nextStainId?: number; readonly nextMopId?: number;
   readonly entries: readonly SavedEntry[]; readonly prngState: number;
+  /** Ab dieser Lane: der Stadtzustand inklusive Begegnungen; alte Saves haben ihn nicht. */
+  readonly city?: CityState;
 }
 
 function footprintOf(item: Furniture): { w: number; h: number; seats: number } | null {
@@ -76,6 +80,9 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.dirty = new Set(saved.dirty ?? []); world.prices = { ...world.prices, ...(saved.prices ?? {}) };
   const legacyGuardHired = restoreStaff(world, saved.staff);
   world.tick = saved.tick ?? 0; world.day = saved.day ?? 1; world.nextGuestId = saved.nextGuestId ?? 1;
+  // Der Stadtzustand ist Spielzustand, kein Anzeigecache: Ort, Energie und
+  // Begegnungen (Erinnerung) muessen den Save ueberstehen.
+  world.city = normalizeCityState(saved.city, world.day);
   const arrival = saved.nextArrivalTick; world.nextArrivalTick = arrival !== undefined && Number.isFinite(arrival) ? Math.max(world.tick + 1, Math.floor(arrival)) : world.tick + 8;
   world.satisfaction = Number.isFinite(saved.satisfaction) ? Math.min(100, Math.max(0, saved.satisfaction!)) : 55;
   world.demandTier = saved.demandTier && DEMAND_TIERS.has(saved.demandTier) ? saved.demandTier : 'BUDE';
