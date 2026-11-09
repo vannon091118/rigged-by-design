@@ -11,13 +11,17 @@ import { fromVC } from '../../core/economy/vacoin';
 import { PORTEMONNAIE } from '../../core/sim/money';
 import { processNarrativeBoundary } from '../../core/sim/narrative/boundary';
 import { actorRefOfRival, relationshipBetween } from '../../core/sim/narrative/relationships';
+import { Prng } from '../../core/rng/prng';
+import { randomSeed } from '../../test/random-seed';
 import { createWorld } from '../../core/sim/templates';
-import { settleCardOutcome } from '../foreign-play';
+import { dealCardOutcome, settleCardOutcome } from '../foreign-play';
 
 function setup() {
   const world = createWorld('SMALL');
   const ledger = new Ledger();
   ledger.transfer('EXTERNAL_WORLD', PORTEMONNAIE, fromVC(5), 'test', 0);
+  const prng = new Prng(randomSeed());
+  dealCardOutcome(world, ledger, prng, 'HAFENKLAUSE', 0, 0.5);
   return { world, ledger };
 }
 
