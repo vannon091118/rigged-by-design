@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-08T23:40Z-slot-discharge-fact-01",
+  "contributionId": "slot-discharge-fact-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": [
+    "service"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Drucklader hat entladen; der Gast zählt das Geld nach, als hätte er nicht damit gerechnet.",
+  "directives": []
+}

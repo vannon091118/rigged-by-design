@@ -13,6 +13,10 @@ type FactDraft =
   | { readonly kind: 'VISITOR_RETURNED'; readonly visitorId: number; readonly visits: number }
   | { readonly kind: 'VISIT_ENDED'; readonly visitorId: number; readonly guestId: number; readonly score: number; readonly valence: VisitorValence }
   | { readonly kind: 'HOUSE_BALANCE'; readonly balance: VaCoinMicro; readonly band: HouseBand }
+  | {
+    readonly kind: 'SLOT_DISCHARGE'; readonly actorRefs: readonly ActorRef[];
+    readonly machineId: number; readonly stake: VaCoinMicro; readonly payout: VaCoinMicro;
+  }
   | { readonly kind: 'VISITOR_CONFLICT'; readonly actorRefs: readonly ActorRef[]; readonly initiator: ActorRef; readonly severity: 1 | 2 }
   | { readonly kind: 'VISITOR_SERVICE'; readonly actorRefs: readonly ActorRef[]; readonly service: 'CASHIER'; readonly valence: VisitorValence }
   | { readonly kind: 'RIVAL_ENCOUNTER'; readonly actorRefs: readonly ActorRef[]; readonly rivalId: RivalId; readonly netToHouse: VaCoinMicro }
@@ -37,6 +41,16 @@ export function emitFact(world: WorldState, draft: FactDraft): NarrativeFact {
     world.narrative.dropped += overflow;
   }
   return fact;
+}
+
+/** Ein echter Slot-Discharge; erst nach der Ledger-Buchung aufrufen. */
+export function emitSlotDischarge(
+  world: WorldState, actor: ActorRef, machineId: number, stake: VaCoinMicro, payout: VaCoinMicro,
+): NarrativeFact {
+  if (!Number.isSafeInteger(machineId) || machineId < 1) throw new Error('Ungueltige Maschinen-ID.');
+  if (!Number.isSafeInteger(stake) || stake <= 0) throw new Error('Ungueltiger Einsatz.');
+  if (!Number.isSafeInteger(payout) || payout < 0) throw new Error('Ungueltige Auszahlung.');
+  return emitFact(world, { kind: 'SLOT_DISCHARGE', actorRefs: [actor], machineId, stake, payout });
 }
 
 /** Macht eine verworfene Direktive sichtbar, ohne den Weltzustand zu veraendern. */

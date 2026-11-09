@@ -26,11 +26,11 @@ const EVENT_CONTEXTS: Readonly<Record<string, string>> = {
 };
 const FACT_CONTEXTS: Partial<Record<NarrativeFact['kind'], string>> = {
   VISITOR_RETURNED: 'return', VISITOR_CONFLICT: 'conflict', VISITOR_SERVICE: 'service',
-  RIVAL_ACTION: 'rival', RIVAL_ENCOUNTER: 'rival',
+  SLOT_DISCHARGE: 'discharge', RIVAL_ACTION: 'rival', RIVAL_ENCOUNTER: 'rival',
 };
 const FACT_MOODS: Partial<Record<NarrativeFact['kind'], string>> = {
   VISITOR_RETURNED: 'neugierig', VISITOR_CONFLICT: 'angespannt', COMMAND_REJECTED: 'argwoehnisch',
-  EVENT_RESOLVED: 'entschlossen', START_POOL: 'entschlossen',
+  EVENT_RESOLVED: 'entschlossen', START_POOL: 'entschlossen', SLOT_DISCHARGE: 'neugierig',
 };
 const MAX_FLAGS = 12;
 const unique = <T>(values: readonly T[]): T[] => [...new Set(values)];
