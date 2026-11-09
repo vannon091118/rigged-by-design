@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:01Z-city-encounter-opening",
+  "contributionId": "city-encounter-opening-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "opening",
+  "function": "establish",
+  "contexts": [
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neugierig",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Ende des Tresens wird ein Platz frei, als haette jemand darauf gewartet, dass du dich setzt. Zwischen zwei Gespraechen bleibt genug Zeit fuer eine Frage, die laenger haelt als der Abend.",
+  "directives": []
+}

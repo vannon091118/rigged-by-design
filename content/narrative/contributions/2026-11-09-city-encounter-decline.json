@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T10:05Z-city-encounter-decline",
+  "contributionId": "city-encounter-decline-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "choice-preview",
+  "function": "offer",
+  "contexts": [
+    "encounter",
+    "decline"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Bitte ablehnen und beim eigenen Glas bleiben.",
+  "directives": []
+}

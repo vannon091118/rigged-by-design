@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:017f2fe92a719117eba2a2050dac11a26615d5d1a0de9f05deefcddbcdd19fda",
+  "contentHash": "sha256:b8c2efee02324885367a8f45edec6b9262a02d4126213ed65f133efe7ad25506",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -699,6 +699,240 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "city-encounter-body-01",
+      "turnId": "2026-11-09T10:02Z-city-encounter-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "encounter"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Person hinter dem Tresen kennt die Namen der Strasse, bevor sie ausgesprochen werden. Der Blick sagt: ich habe dich hier schon gesehen, und ich weiss noch, was du getan hast.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-body.json"
+    },
+    {
+      "contributionId": "city-encounter-decline-01",
+      "turnId": "2026-11-09T10:05Z-city-encounter-decline",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "encounter",
+        "decline"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bitte ablehnen und beim eigenen Glas bleiben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-decline.json"
+    },
+    {
+      "contributionId": "city-encounter-echo-choice-01",
+      "turnId": "2026-11-09T10:08Z-city-encounter-echo-choice",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "encounter",
+        "echo"
+      ],
+      "tone": "sachlich",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachfragen, was aus der Sache geworden ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-echo-choice.json"
+    },
+    {
+      "contributionId": "city-encounter-echo-cold-body-01",
+      "turnId": "2026-11-09T10:10Z-city-encounter-echo-cold-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "encounter",
+        "echo",
+        "cold"
+      ],
+      "tone": "scharf",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Ablehnung ist herumgegangen, schneller als du. Man gruesst dich, aber man rueckt nicht, und die Frage von gestern steht noch im Raum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-echo-cold-body.json"
+    },
+    {
+      "contributionId": "city-encounter-echo-cold-opening-01",
+      "turnId": "2026-11-09T10:09Z-city-encounter-echo-cold-opening",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "encounter",
+        "echo",
+        "cold"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "konflikt",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Platz von gestern ist besetzt, und dein Name faellt heute nicht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-echo-cold-opening.json"
+    },
+    {
+      "contributionId": "city-encounter-echo-warm-body-01",
+      "turnId": "2026-11-09T10:07Z-city-encounter-echo-warm-body",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "event-body",
+      "function": "describe",
+      "contexts": [
+        "encounter",
+        "echo",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sie hat es weitererzaehlt, und die Strasse hat es behalten. Heute fragt sie dich nach etwas, das sie gestern nicht gefragt haette: ob du morgen mitkommst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-echo-warm-body.json"
+    },
+    {
+      "contributionId": "city-encounter-echo-warm-opening-01",
+      "turnId": "2026-11-09T10:06Z-city-encounter-echo-warm-opening",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "encounter",
+        "echo",
+        "warm"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sie winkt dich heran, bevor die Tuer ganz aufgeht: die Sache von gestern ist noch nicht vorbei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-echo-warm-opening.json"
+    },
+    {
+      "contributionId": "city-encounter-give-01",
+      "turnId": "2026-11-09T10:03Z-city-encounter-give",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "encounter",
+        "give"
+      ],
+      "tone": "warm",
+      "mood": "entschlossen",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Eine Runde ausgeben und zuhoeren, was dahinter steckt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-give.json"
+    },
+    {
+      "contributionId": "city-encounter-help-01",
+      "turnId": "2026-11-09T10:04Z-city-encounter-help",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "choice-preview",
+      "function": "offer",
+      "contexts": [
+        "encounter",
+        "help"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Mit anpacken, ohne nach dem Preis zu fragen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-help.json"
+    },
+    {
+      "contributionId": "city-encounter-opening-01",
+      "turnId": "2026-11-09T10:01Z-city-encounter-opening",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "opening",
+      "function": "establish",
+      "contexts": [
+        "encounter"
+      ],
+      "tone": "trocken",
+      "mood": "neugierig",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende des Tresens wird ein Platz frei, als haette jemand darauf gewartet, dass du dich setzt. Zwischen zwei Gespraechen bleibt genug Zeit fuer eine Frage, die laenger haelt als der Abend.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-city-encounter-opening.json"
     },
     {
       "contributionId": "city-night-01",
@@ -3341,6 +3575,28 @@
       "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "gate-lane-red-team-01",
+      "turnId": "2026-11-08T23:55Z-gate-lane-red-team-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "commands"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
     },
     {
       "contributionId": "guest-voice-mid-51",
@@ -15119,6 +15375,28 @@
       "text": "Fünf Tage lang kam das Geld, ohne dass jemand den Besen angefasst hatte. Rita hängte den Lohnzettel an die Wand, auf dem nur ein Name stand und keine Stunde. Am sechsten Tag stand sie selbst an der Theke, wischte einen Fleck, der nicht ihrer war, und sagte: erst die Schicht, dann der Lohn. Der Zettel darunter war leer wie ein ungespielter Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-schicht-und-lohn.json"
+    },
+    {
+      "contributionId": "slot-discharge-fact-01",
+      "turnId": "2026-11-08T23:40Z-slot-discharge-fact-01",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Drucklader hat entladen; der Gast zählt das Geld nach, als hätte er nicht damit gerechnet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-08-slot-discharge-fact-01.json"
     },
     {
       "contributionId": "spatial-layout-contract-01",

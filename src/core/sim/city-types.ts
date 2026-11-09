@@ -5,6 +5,27 @@
 export type CityLocationId = 'CASINO' | 'KIEZ' | 'MARKT';
 export type CityBranchId = 'KIEZ' | 'MARKT';
 
+/** Die drei sozialen Handlungen einer Begegnung; jede bucht Geld und Beziehung. */
+export type EncounterAction = 'GEBEN' | 'HELFEN' | 'ABLEHNEN';
+export const ENCOUNTER_ACTIONS: readonly EncounterAction[] = ['GEBEN', 'HELFEN', 'ABLEHNEN'];
+
+/**
+ * Eine abgeschlossene Begegnung. Der Datensatz ist die Erinnerung des Ortes:
+ * Name, Handlung und Tag bleiben erhalten, damit der naechste Dialog sie nennt.
+ */
+export interface CityEncounterRecord {
+  readonly npcId: number;
+  readonly name: string;
+  readonly location: CityLocationId;
+  readonly day: number;
+  readonly tick: number;
+  readonly action: EncounterAction;
+  /** Aus dem Portemonnaie bezahlter Betrag in Mikro-VaCoins. */
+  readonly amount: number;
+  /** Beziehungswert dieses NPCs zum Spieler nach der Handlung. */
+  readonly trust: number;
+}
+
 export interface CityState {
   /** Wo der Charakter gerade steht. */
   readonly location: CityLocationId;
@@ -21,6 +42,8 @@ export interface CityState {
   lastText: string;
   /** Abgeschlossene Zweige; ein Abschluss bleibt bestehen. */
   completed: readonly CityBranchId[];
+  /** Begegnungen im Ort, aelteste zuerst; die Quelle der Erinnerung im Dialog. */
+  encounters?: readonly CityEncounterRecord[];
 }
 
 export interface CityActionView {

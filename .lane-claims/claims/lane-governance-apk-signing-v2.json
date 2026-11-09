@@ -1,10 +1,10 @@
 {
-  "id": "lane/governance/apk-signing",
+  "id": "lane/governance/apk-signing-v2",
   "owner": "Governance-Owner",
-  "branch": "lane/governance/apk-signing",
-  "baseSha": "6b8d209fd66769f6b1c01d415fa420f6e33f1b0b",
-  "task": "APK-Kette: stabiler Signaturschluessel fuer Debug und Release plus apksigner-Gate",
-  "goal": "Beide APK-Varianten tragen dasselbe versionierte Zertifikat, der Build prueft Signatur, Zertifikats-Digest und Paketnamen selbst, und der Workflow veroeffentlicht nur installierbare Pakete",
+  "branch": "lane/governance/apk-signing-v2",
+  "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "task": "APK-Kette: stabiler Signaturschluessel fuer Debug und Release plus apksigner-Gate (Rebase auf 2cd663a, 702 Bausteine",
+  "goal": "Beide APK-Varianten tragen dasselbe versionierte Zertifikat, der Build prueft Signatur, Zertifikats-Digest und Paketnamen selbst, und der Workflow veroeffentlicht nur installierbare Pakete; 702/1500 auf main-Stand",
   "pathAllowlist": [
     "scripts/prepare-android.mjs",
     ".github/workflows/build-apk.yml",
@@ -21,7 +21,7 @@
     "docs/CI.md",
     "docs/INVENTORY.md",
     "package.json",
-    ".lane-claims/claims/lane-governance-apk-signing.json",
+    ".lane-claims/claims/lane-governance-apk-signing-v2.json",
     ".lane-claims/freeze-unlock.json",
     "docs/GOVERNANCE.md",
     "docs/INDEX.md",
@@ -33,5 +33,5 @@
   "contracts": [],
   "gateProfile": "full",
   "status": "open",
-  "createdAt": "2026-11-09T00:15:44.029Z"
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
 }
