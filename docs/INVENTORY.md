@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 17:29 UTC -->
+<!-- rbd-doc: v0.3.198 | 2026-11-09 17:54 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 227 Dateien — contract 138 · integration 43 · governance 32 · statistics 7 · performance 7.
+Summe: 229 Dateien — contract 140 · integration 43 · governance 32 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -204,6 +204,7 @@ Summe: 227 Dateien — contract 138 · integration 43 · governance 32 · statis
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
+| `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
 | `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
@@ -222,6 +223,7 @@ Summe: 227 Dateien — contract 138 · integration 43 · governance 32 · statis
 | `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
+| `src/core/sim/__tests__/knowledge-belief.test.ts` | sim | contract | ja | `src/core/sim/city-traits.ts` |
 | `src/core/sim/__tests__/knowledge-config.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge-config.ts` |
 | `src/core/sim/__tests__/knowledge-domain.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
 | `src/core/sim/__tests__/knowledge-relationships.test.ts` | sim | contract | ja | `src/core/sim/narrative/knowledge.ts` |
@@ -540,10 +542,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2272 |
-| Gelistete Dateien | 2272 |
+| Getrackte Dateien | 2273 |
+| Gelistete Dateien | 2273 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (43), content (815), docs (77), public (554), scripts (91), src (667) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (44), content (815), docs (77), public (554), scripts (91), src (667) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -555,7 +557,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 41 Datei(en)
+- `.lane-claims/claims/` — 42 Datei(en)
 - `content/narrative/contributions/` — 811 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -676,6 +678,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-reconcile-0911.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-docs-meta.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
@@ -706,7 +709,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 77 Zeilen

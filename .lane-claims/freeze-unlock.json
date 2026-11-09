@@ -1,11 +1,9 @@
 {
   "version": 1,
-  "base": "7153ccfe556a443fd4a4f1799d66e470478e50fc",
+  "base": "f05d5686e754d5c9ea45cb5ea0d3b741768d60bc",
   "paths": [
-    "docs/ARCHITECTURE.md",
-    "scripts/check-loc.mjs",
-    "scripts/lib/narrative-compiler.mjs"
+    "docs/ARCHITECTURE.md"
   ],
-  "token": "84d10a7c5c4c013c96b168175baa55ec2040fe89e51e5c7d33a698c5daf405b4",
+  "token": "7251c593d3886d0fc63293feb6e9648228ef711d6350d9edffb7d9995594bf2e",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
