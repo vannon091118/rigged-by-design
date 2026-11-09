@@ -1,0 +1,26 @@
+{
+  "id": "lane/sim/logic-safety",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/logic-safety",
+  "baseSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "task": "Blackjack sameRank/split-units/sidebet und Job-Verletzunfsrate reparieren, Kommentare straffen",
+  "goal": "Split nur bei gleichem Rang, Split-Haende behalten ihren Einsatz, Sidebet folgt Regeln, Verletzungswahrscheinlichkeit einheitlich 5/10 Prozent pro Schicht und Verletzungsmeldung bleibt erhalten",
+  "pathAllowlist": [
+    "src/core/games/engines/blackjack-rules.ts",
+    "src/core/games/engines/blackjack.ts",
+    "src/core/games/engines/blackjack-settle.ts",
+    "src/core/sim/player-jobs.ts",
+    "src/core/games/engines/__tests__/blackjack.test.ts",
+    "src/core/sim/__tests__/player-jobs.test.ts",
+    "src/core/sim/__tests__/player-wage-attendance.test.ts",
+    "package.json",
+    "pnpm-lock.yaml",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-sim-logic-safety.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
+}
