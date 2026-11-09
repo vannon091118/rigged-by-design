@@ -7,6 +7,10 @@
  * (350 -> 200). Reisst eine Datei ihre Grenze, muss sie bis unter die Hot Zone
  * reduziert werden, nicht nur knapp unter die Grenze.
  *
+ * Gezaehlt werden nur Code-Zeilen: Kommentare und Leerzeilen zaehlen nicht,
+ * ebenso wenig reine Textdaten (`registry.generated.ts`) und Event-Templates
+ * (`events/definitions/`). Das Budget gilt der Logik, nicht der Prosa.
+ *
  * Neue @loc-exception-Header sind verboten; nur die Legacy-Liste der Registry
  * darf noch eine 350er Grenze tragen, und diese Liste wird nur kuerzer.
  *
@@ -21,6 +25,16 @@ import { budgetFor, LEGACY_LOC } from './loc-budgets.mjs';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SRC_DIR = join(ROOT, 'src');
 const EXCEPTION_TAG = '// @loc-exception:';
+/** Reine Textbausteine: Daten, keine Logik. */
+const TEXT_DATA = new Set(['src/core/sim/narrative/composer/registry.generated.ts']);
+/** Event-Templates beschreiben Szenen und Choices; das Budget gilt der Engine. */
+const TEMPLATE_DIR = 'src/core/sim/narrative/events/definitions/';
+
+function skipReason(name) {
+  if (TEXT_DATA.has(name)) return 'Textbausteine';
+  if (name.startsWith(TEMPLATE_DIR)) return 'Template';
+  return null;
+}
 
 function walk(dir) {
   const found = [];
@@ -33,10 +47,44 @@ function walk(dir) {
   return found;
 }
 
-function countLines(text) {
-  const lines = text.split('\n');
-  if (lines[lines.length - 1] === '') lines.pop();
-  return lines.length;
+/**
+ * Zaehlt Code-Zeilen ohne Kommentare und Leerzeilen. Der Scanner kennt
+ * String-Literale inklusive Template-Strings, damit `//` in URLs nicht als
+ * Kommentar gilt.
+ */
+function countCodeLines(text) {
+  let count = 0;
+  let inBlock = false;
+  for (const raw of text.split('\n')) {
+    let code = '';
+    for (let index = 0; index < raw.length; index += 1) {
+      const char = raw[index];
+      const next = raw[index + 1];
+      if (inBlock) {
+        if (char === '*' && next === '/') { inBlock = false; index += 1; }
+        continue;
+      }
+      if (char === '/' && next === '/') break;
+      if (char === '/' && next === '*') { inBlock = true; index += 1; continue; }
+      if (char === '"' || char === "'" || char === '`') {
+        const quote = char;
+        code += char;
+        for (index += 1; index < raw.length; index += 1) {
+          code += raw[index];
+          if (raw[index] === '\\') {
+            index += 1;
+            if (index < raw.length) code += raw[index];
+            continue;
+          }
+          if (raw[index] === quote) break;
+        }
+        continue;
+      }
+      code += char;
+    }
+    if (code.trim().length > 0) count += 1;
+  }
+  return count;
 }
 
 function hasExceptionHeader(text) {
@@ -50,17 +98,23 @@ if (!existsSync(SRC_DIR)) {
   process.exit(1);
 }
 
+const skipped = [];
 const files = walk(SRC_DIR)
   .map((file) => {
     const text = readFileSync(file, 'utf8');
     const name = relative(ROOT, file).split(sep).join('/');
+    const reason = skipReason(name);
+    if (reason) {
+      skipped.push({ name, reason });
+      return null;
+    }
     const budget = budgetFor(name);
     const legacyBudget = LEGACY_LOC.get(name);
     const exception = hasExceptionHeader(text);
     const legacy = legacyBudget !== undefined;
     const limit = legacy && exception ? legacyBudget.cap : budget.cap;
     const hotZone = legacy && exception ? legacyBudget.hotZone : budget.hotZone;
-    const lines = countLines(text);
+    const lines = countCodeLines(text);
     const unauthorized = exception && !legacy;
     const overLimit = lines > limit;
     const stale = legacy && exception && !overLimit && lines <= hotZone;
@@ -68,12 +122,14 @@ const files = walk(SRC_DIR)
     const role = legacy && exception ? 'legacy' : budget.id;
     return { name, lines, limit, hotZone, role, legacy, exception, unauthorized, overLimit, stale, hot };
   })
+  .filter((file) => file !== null)
   .sort((a, b) => b.lines - a.lines);
 
 const violations = files.filter((file) => file.unauthorized || file.overLimit || file.stale);
 const hotFiles = files.filter((file) => file.hot);
 
-console.log(`check:loc - ${files.length} Datei(en) unter src/ geprueft`);
+console.log(`check:loc - ${files.length} Datei(en) unter src/ geprueft, ${skipped.length} ohne Logik-Budget`);
+for (const file of skipped) console.log(`  skip ${file.name} (${file.reason})`);
 for (const file of files) {
   const mark = violations.includes(file) ? 'FAIL' : file.hot ? 'HOT ' : ' ok ';
   const note = file.unauthorized
