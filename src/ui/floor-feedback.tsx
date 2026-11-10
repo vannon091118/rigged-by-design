@@ -2,6 +2,7 @@
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { Popup } from './app-model';
+import { ActionQueuePanel } from './action-queue-panel';
 
 interface Props {
   readonly view: GameView;
@@ -12,6 +13,7 @@ interface Props {
 export function FloorFeedback({ view, onOpen }: Props) {
   return (
     <>
+      <ActionQueuePanel view={view} onCancel={(taskId) => worldStore.queue.cancel(taskId)} />
       <div className="live-region" role="status" aria-live="polite">
         {view.notice || view.lastEvent}
       </div>

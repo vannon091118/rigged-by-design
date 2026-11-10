@@ -15,7 +15,7 @@ export function ActionQueuePanel({ view, onCancel }: Props) {
         <b>{view.queue.length}</b>
       </header>
       <ol>
-        {view.queue.slice(0, 4).map((task) => (
+        {view.queue.map((task) => (
           <li key={task.id} className={task.status.toLowerCase()}>
             <div className="queue-line">
               <strong>{task.label}</strong>

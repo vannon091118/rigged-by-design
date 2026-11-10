@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T23:45Z-ui-queue-panel",
+  "contributionId": "ui-queue-panel-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita zog die Auftragskette aus der Ecke ins Licht: Jeder eingereihte Schritt blieb sichtbar, auch der fuenfte, und der Abbruch sass direkt am Eintrag. Die Karte wich dem HUD, statt es zu verdecken; erst als die Liste wirklich voll war, merkte sie, wie viel Arbeit noch vor ihr lag.",
+  "directives": []
+}

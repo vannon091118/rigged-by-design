@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "ui-world-click-action-queue",
+  "claimId": "lane/ui/world-click-action-queue",
+  "branch": "lane/ui/world-click-action-queue",
+  "baseSha": "3e2079618355d36455c9113a369047b606272aaf",
+  "phase": "CI_PENDING",
+  "title": "Weltklick- und Action-Queue-UI im Browser pruefen und verbleibende Interaktionsluecken schliessen",
+  "goal": "Maus",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}
