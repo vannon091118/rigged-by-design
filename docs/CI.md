@@ -94,7 +94,7 @@ Stand 2026-11-10 liegen zehn Workflow-Dateien in `.github/workflows/`:
 - Force-Push und Branch-Löschung verboten
 - keine Rulesets (`GET /rulesets` ist leer)
 
-Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, manueller Merge. Ein Direktpush endet mit `GH006`; `turn-push.mjs` meldet `ERR-4023`.
+Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, Merge über `Promote` (automatisch bei grünem Lauf und bereitem Vertrag) oder manuell. Ein Direktpush endet mit `GH006`; `turn-push.mjs` meldet `ERR-4023`.
 
 Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit: `### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`.
 Die Koepfe werden zeichengenau uebernommen, inklusive Umlaut in `Kausalität`; ein ASCII-Ersatz (`Kausalitaet`) laesst das Gate rot, obwohl alle Gates gruen waren.

@@ -12,7 +12,7 @@
  *   IMPLEMENTING   Arbeit laeuft, noch nicht gepusht
  *   CI_PENDING     gepusht, der PR-Lauf ist die Autoritaet
  *   MERGE_PENDING  PR-Lauf gruen, Merge steht an
- *   AFTERCARE      gemergt, Nachsorge offen
+ *   AFTERCARE      Nachsorge offen (vor oder nach Merge); haelt den Merge
  *   DONE           abgeschlossen; neue Arbeit = neue Lane
  *
  * `BLOCKED` ist kein Vertragszustand, sondern das Ergebnis von pretask, wenn
@@ -43,7 +43,7 @@ export const PHASE_TRANSITIONS = Object.freeze({
   IMPLEMENTING: ['IMPLEMENTING', 'READY', 'CI_PENDING'],
   CI_PENDING: ['CI_PENDING', 'IMPLEMENTING', 'MERGE_PENDING'],
   MERGE_PENDING: ['MERGE_PENDING', 'CI_PENDING', 'IMPLEMENTING', 'AFTERCARE'],
-  AFTERCARE: ['AFTERCARE', 'IMPLEMENTING', 'DONE'],
+  AFTERCARE: ['AFTERCARE', 'IMPLEMENTING', 'MERGE_PENDING', 'DONE'],
   DONE: ['DONE'],
 });
 

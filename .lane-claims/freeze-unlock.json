@@ -1,9 +1,12 @@
 {
   "version": 1,
-  "base": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
+  "base": "2c90b8ee85773d560263101e01f1cd8f35b05769",
   "paths": [
+    "docs/CI.md",
+    "scripts/lib/gate-runner.mjs",
+    "scripts/lib/narrative-blocks.mjs",
     "scripts/lib/task-contract.mjs"
   ],
-  "token": "d72ac5cdcbe9692ad8a5b5ea4d1363532789088d1203cf52fd3f9581e1b1c25a",
+  "token": "8861162391ff7c1077664cfc8c1493b26cb223a214e0ac4169eee7af49945f01",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

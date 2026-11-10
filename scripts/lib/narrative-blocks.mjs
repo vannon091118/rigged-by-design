@@ -37,6 +37,11 @@ export const MAINTENANCE_PATHS = Object.freeze([
   '.github/',
   '.githooks/',
   'scripts/',
+  '.nvmrc',
+  '.npmrc',
+  '.gitignore',
+  '.gitattributes',
+  '.editorconfig',
 ]);
 
 /** True, wenn die Pfadliste nicht leer ist und jede Datei Pflege ist. */
