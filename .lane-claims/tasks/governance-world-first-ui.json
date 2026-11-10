@@ -4,7 +4,7 @@
   "claimId": "lane/governance/world-first-ui",
   "branch": "lane/governance/world-first-ui",
   "baseSha": "289cff8822fd1ea8351394a959a85ddafd6b136b",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "World-first UI: Welt als Hauptbildschirm, vier UI-Typen, kontextuelle Objektpanels, ruhigeres HUD und reduzierte Dock-Einstiege",
   "goal": "NPC-Klick oeffnet ein verankertes Kontextpanel statt eines Vollbilds; Aktionskarte folgt der Kamera; komplexe Aktivitaeten behalten ihre Ansicht; alle Funktionen bleiben erreichbar",
   "pr": {
@@ -13,6 +13,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "Merge von main (3594ce4) ist gepusht; CI auf dem neuen PR-Kopf abwarten und nur bei gruenem Fail-Closed Gates mergen.",
-  "revision": 1
+  "nextAction": "PR-Lauf ist gruen; Merge auf dem geprueften Kopf 2960f1a steht an.",
+  "revision": 2
 }
