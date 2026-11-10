@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8b9c0b7e76fdaf825679f6c5bfeee8ec22603ee6d7d74b21d27f13ed6368c8a3",
+  "contentHash": "sha256:0191319087edcd10a7cfd783a721f48031607fc4a91ea59d3b200b49d3894b61",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -360,6 +360,28 @@
       "text": "Ein Automat, der klempt, ist kein Pech, sondern eine Aussage des Hauses. Der Gast hoert sie und antwortet mit Abstand - messbar, nicht nur gefuehlt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-amenity-3.json"
+    },
+    {
+      "contributionId": "agent15-amenity-4",
+      "turnId": "2026-11-11T02:55Z-agent15-amenity-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Tor wird nicht behauptet, sondern geprueft: die Phase zieht nach, der Kopf bleibt derselbe, und erst der gruene Lauf macht aus dem Satz einen Beleg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-amenity-4.json"
     },
     {
       "contributionId": "apk-signing-01",
