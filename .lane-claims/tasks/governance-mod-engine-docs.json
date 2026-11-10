@@ -13,7 +13,14 @@
     "state": "merged",
     "mergedSha": "f4209d4707a1ec9dd16e1f997ae58a5036ae1151"
   },
-  "findings": [],
+  "findings": [
+    {
+      "id": "pr-body-pflichtsektion",
+      "status": "resolved",
+      "severity": "warning",
+      "summary": "Plan-Stufe rot (5 Annotationen): der PR-Body schrieb die Pflichtsektion als 'Kausalitaet'/'Naechste Schritte' statt mit Umlauten; Body korrigiert, dieser Commit loest den neuen PR-Lauf aus."
+    }
+  ],
   "nextAction": "Abgeschlossen: PR #386 (f4209d4) auf main, Governance-Claim geschlossen.",
-  "revision": 3
+  "revision": 4
 }
