@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T12:45Z-stale-claims",
+  "contributionId": "stale-claims-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "documentation"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita raeumte zwei Zettel ab, die noch offen an der Wand hingen, obwohl ihre Lanes laengst gemergt waren. Daneben notierte sie, dass die Versionszeile nicht mehr als fremde Arbeit gilt: der naechste Lauf findet den Baum so vor, wie ihn der Abschluss hinterlaesst.",
+  "directives": []
+}

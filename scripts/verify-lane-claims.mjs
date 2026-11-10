@@ -198,7 +198,11 @@ if (CI) {
 const HOOK_FILES = Object.freeze(['.githooks/pre-commit', '.githooks/commit-msg']);
 
 /** Der mechanische Schreibpfad des Systems: Doku-Marker und Versionszeile. */
-const SYSTEM_LINE = /^[+-](<!--\s*rbd-doc:.*-->|"version":\s*".*",?|)\s*$/;
+// Die Versionszeile steht in zwei Formaten: JSON in `package.json` und YAML
+// in `pnpm-lock.yaml`. Ohne den YAML-Fall galt der Versions-Bump der Lockfile
+// als Lane-Inhalt und blockierte jeden Abschluss, der die Datei nicht
+// ausdruecklich im Claim fuehrt.
+const SYSTEM_LINE = /^[+-]\s*(<!--\s*rbd-doc:.*-->|"version":\s*".*",?|version:\s*\S+)\s*$/;
 
 /** Geaenderte Diff-Zeilen einer Datei; `null` heisst: Diff nicht lesbar. */
 function diffLines(file) {

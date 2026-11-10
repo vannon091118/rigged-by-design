@@ -4,7 +4,7 @@
   "claimId": "lane/governance/agent-masterplan-readme",
   "branch": "lane/governance/agent-masterplan-readme",
   "baseSha": "1890f6da55a372e17813c1afa67353f0ad0988e4",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Dokumentation 30-Agenten-Masterplan und Neuausrichtung README Lore-Onboarding",
   "goal": "",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 4
+  "nextAction": "Abgeschlossen; Lane gemergt.",
+  "revision": 5
 }

@@ -4,7 +4,7 @@
   "claimId": "lane/governance/final-closeout",
   "branch": "lane/governance/final-closeout",
   "baseSha": "814d1a62abdbd32b17fb269a130250c09ef24753",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Finaler Closeout: stale Lane-Status auf DONE/merged, Task-Claim-Paritaet als Doctor-Check, Breitphase-Benennung, Issue #337 schliessen",
   "goal": "Alle offenen Lane-Tasks und Claims aus Mission und Review klaeren (review-hygiene, integration-controller, agents-md-contract, phase3-ci-state, phase3-4-v2), Paritaet Task/Claim mechanisch pruefen, Issue #337 begruendet schliessen, Remote auf nur-main verifizieren",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "CI auf PR #349 abwarten (Fail-Closed Gates auf exaktem Kopf); Issue #337 schliessen.",
-  "revision": 3
+  "nextAction": "Abgeschlossen; Lane gemergt.",
+  "revision": 4
 }

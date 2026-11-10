@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/mechanik-fix",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/mechanik-fix",
+  "baseSha": "823b981e8b1816160dda7e4b8897e318e7fde799",
+  "task": "Lockfile-Versionszeile mechanisch, erledigte Claims schliessen",
+  "goal": "turn:finish schliesst bei Rueckstand ohne Handintegration ab",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "scripts/lib/staging-scope.mjs",
+    "scripts/verify-lane-claims.mjs",
+    "src/core/governance/__tests__/staging-scope.test.ts",
+    "content/narrative/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-governance-mechanik-fix.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "823b981e8b1816160dda7e4b8897e318e7fde799"
+}
