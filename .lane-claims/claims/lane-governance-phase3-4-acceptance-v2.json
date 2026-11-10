@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/phase3-4-acceptance-v2",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/phase3-4-acceptance-v2",
+  "baseSha": "2b4b4df5a397f5f4eaeb0921e56da00a50fe4fc6",
+  "task": "Phase 3+4: FPS-HUD und Atlas-Budget als Abnahme absichern",
+  "goal": "Die offenen Phase-3/4-Punkte Emitter-/FPS-HUD und First-Frame-Bandbreite mit einem deterministischen Abnahmetest absichern und die Narrative-/Doku-Artefakte claim-konform nachziehen.",
+  "pathAllowlist": [
+    "src/ui/__tests__/phase34-acceptance.test.tsx",
+    "content/narrative/contributions/2026-11-10-phase34-acceptance-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/ARCHITECTURE.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-phase3-4-acceptance.json",
+    ".lane-claims/claims/lane-governance-phase3-4-acceptance-v2.json",
+    ".lane-claims/tasks/governance-phase3-4-acceptance.json",
+    ".lane-claims/tasks/governance-phase3-4-acceptance-v2.json",
+    ".lane-claims/freeze-unlock.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2b4b4df5a397f5f4eaeb0921e56da00a50fe4fc6"
+}

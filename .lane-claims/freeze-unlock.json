@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "base": "1890f6da55a372e17813c1afa67353f0ad0988e4",
+  "base": "2b4b4df5a397f5f4eaeb0921e56da00a50fe4fc6",
   "paths": [
     "docs/ARCHITECTURE.md",
     "docs/ROADMAP.md"
   ],
-  "token": "ed589ee401839063217a76d99c3dd905911017b865bf241a9dfe739286b0ac7c",
+  "token": "b11e15e4645d12e70d0881c697a4be3134d4dab5de30f1afa907e127a7bddd79",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
