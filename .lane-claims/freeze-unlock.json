@@ -1,23 +1,9 @@
 {
   "version": 1,
-  "base": "1f40395c8eba5e907472e937ea31fb0e09c82123",
+  "base": "62afc0443bc127d085736494863bc9aebdf8426c",
   "paths": [
-    ".githooks/pre-commit",
-    ".githooks/pre-push",
-    ".github/workflows/ci-verify.yml",
-    "AGENTS.md",
-    "docs/CI.md",
-    "scripts/ci-plan.mjs",
-    "scripts/integrate.mjs",
-    "scripts/lib/ci-plan.mjs",
-    "scripts/lib/claim-evidence.mjs",
-    "scripts/lib/doc-sync.mjs",
-    "scripts/lib/generated-files.mjs",
-    "scripts/lib/integration.mjs",
-    "scripts/pretask.mjs",
-    "scripts/sync-generated.mjs",
-    "scripts/verify-lane-claims.mjs"
+    "AGENTS.md"
   ],
-  "token": "2a13f4609d2261613473cc21d326d87c3bcbeabde7805d9b0280208b09d12f32",
+  "token": "3efa81ee7234268c9dc913bad497be19fe92f84321613f9a2f2591824ea18c7b",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

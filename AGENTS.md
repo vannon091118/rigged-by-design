@@ -12,7 +12,7 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 2. **Eigene Lane, fremde WIP bleibt liegen.** Nur der eigene Claim und die eigene Pfad-Allowlist; fremde Änderungen werden weder gestaged noch „aufgeräumt“. Kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
-5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in `src/**` und `scripts/**`; echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
+5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen, nie für Spielzustand, PRNG oder Seeds. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt (`verify:narrative-blocks`).
 7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Die CI prüft den exakten gepushten Kopf; `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
@@ -34,8 +34,8 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 12 Required-Gates, Audit optional; sechs Light-Gates, sieben mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** zehn Dateien; `CI Verify`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE`.
+- **CI:** 13 Required-Gates (davon `narrative` und `build`), Audit optional; sechs Light-Gates, sieben mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
+- **Workflows:** zehn Dateien; `CI Verify`, `Ensure PR`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE` (Default: aus).
 - **Branch-Schutz:** klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
@@ -69,7 +69,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 ## Pflichtdoku
 
-- Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md).
+- Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md). In der Wurzel liegen nur `README.md` und `AGENTS.md`; anderes Markdown gehört unter `docs/`.
 - `pnpm run docs:sync` ergänzt nur fehlende stabile Marker; vorhandene Marker und generierte Blöcke bleiben unangetastet. Kein Versions-/Zeitstempel-Churn mehr.
 - Fehlende Doku wird automatisch im Hook bzw. bei `turn:finish` ergänzt; Lanes synchronisieren nicht mehr manuell.
 
