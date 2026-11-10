@@ -3332,6 +3332,10 @@
     {
       "turnId": "2026-11-10T06:18Z-governance-fail-closed-isolation-budget",
       "contributionId": "governance-fail-closed-isolation-budget-01"
+    },
+    {
+      "turnId": "2026-11-10T07:30Z-phase34-acceptance",
+      "contributionId": "phase34-acceptance-01"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T07:30Z-phase34-acceptance",
+  "contributionId": "phase34-acceptance-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["content"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Bildrate im Werkstatt-HUD und das Budget der beiden Atlasseiten sind jetzt feste Abnahmewerte statt Erinnerung. Der Test hält 60, 30 und 0 FPS samt Frame-Zeit fest und begrenzt den WebP-Atlas auf 400 kB bei 153 Frames; die echte Bildrate und der First Frame auf einem 200-Euro-Geraet bleiben davon unberührt und weiter offen.",
+  "directives": []
+}

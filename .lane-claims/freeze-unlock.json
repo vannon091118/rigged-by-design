@@ -1,12 +1,10 @@
 {
   "version": 1,
-  "base": "2c90b8ee85773d560263101e01f1cd8f35b05769",
+  "base": "1890f6da55a372e17813c1afa67353f0ad0988e4",
   "paths": [
-    "docs/CI.md",
-    "scripts/lib/gate-runner.mjs",
-    "scripts/lib/narrative-blocks.mjs",
-    "scripts/lib/task-contract.mjs"
+    "docs/ARCHITECTURE.md",
+    "docs/ROADMAP.md"
   ],
-  "token": "8861162391ff7c1077664cfc8c1493b26cb223a214e0ac4169eee7af49945f01",
+  "token": "ed589ee401839063217a76d99c3dd905911017b865bf241a9dfe739286b0ac7c",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

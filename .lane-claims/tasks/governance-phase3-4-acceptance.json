@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "taskId": "governance-phase3-4-acceptance",
+  "claimId": "lane/governance/phase3-4-acceptance",
+  "branch": "lane/governance/phase3-4-acceptance",
+  "baseSha": "1890f6da55a372e17813c1afa67353f0ad0988e4",
+  "phase": "IMPLEMENTING",
+  "title": "Phase 3+4: FPS-HUD und Atlas-Budget als Abnahme absichern",
+  "goal": "FPS-Anzeige und WebP-Atlas-Budget deterministisch prüfen, damit die offenen Phase-3/4-Punkte nicht unbemerkt zurückgebaut werden.",
+  "pr": null,
+  "findings": [
+    {
+      "id": "phase3-fps-hud",
+      "status": "open",
+      "severity": "warning",
+      "summary": "Der Emitter-Zähler und die 60-fps-Abnahme hängen bisher an manueller Geräteprüfung; ein Test sichert nur die HUD-Anzeige, nicht die echte Bildrate."
+    },
+    {
+      "id": "phase4-first-frame",
+      "status": "open",
+      "severity": "warning",
+      "summary": "Der Slow-4G-First-Frame liegt bei 12,16 s; das Atlas-Budget ist gesichert, das Initial-JS-Budget und die Geräteabnahme bleiben offen."
+    }
+  ],
+  "nextAction": "Test, Narrative und Doku committen, Gates real ausführen und die Lane pushen; Geräteabnahme bleibt offen.",
+  "revision": 1
+}
