@@ -25,6 +25,23 @@
 }
 .popup-wide { width: min(var(--popup-wide-width), 100%); }
 
+/* Charakterfenster: Werte als Liste, kein zweites Layout. */
+.career { display: grid; gap: 6px; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.career-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.career-head strong { color: var(--accent); }
+.career-hp { margin: 0; font-size: 12px; opacity: 0.85; }
+.career-hp.warn { color: var(--warn); }
+.career-attributes { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.career-attributes li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-size: 12px; }
+.career-attributes small { grid-column: 1 / -1; opacity: 0.7; }
+.career-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
+.career-grid div { display: grid; gap: 2px; font-size: 12px; }
+.career-grid span { opacity: 0.7; }
+.career-achievements { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: 11px; }
+.career-achievements li { border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; }
+.career-achievements li.off { opacity: 0.4; }
+.career-achievements li.on { border-color: var(--accent); }
+
 /* Spiel-Identitaeten: eine Variable je Familie, kein Layout-Umbau. */
 .popup[data-game="SLOT"], .table-stage[data-game="SLOT"] { --game-accent: var(--game-hot); --game-wash: var(--game-hot-soft); }
 .popup[data-game="BLACKJACK"], .table-stage[data-game="BLACKJACK"],

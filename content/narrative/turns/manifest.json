@@ -3380,6 +3380,10 @@
     {
       "turnId": "2026-11-10T14:00Z-collision-scope",
       "contributionId": "collision-scope-01"
+    },
+    {
+      "turnId": "2026-11-10T17:30Z-player-career",
+      "contributionId": "player-career-01"
     }
   ]
 }

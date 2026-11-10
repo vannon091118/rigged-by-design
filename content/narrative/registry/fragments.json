@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0b1fd926def4b07555151312ac63cb89c32104f84ce8cfbb26178ebdcb2c54bc",
+  "contentHash": "sha256:e0fcd2a48599b3ed04f16aa76b08ca80d6c909f0d56d045141ad8ebf282496d8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -7277,6 +7277,31 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "player-career-01",
+      "turnId": "2026-11-10T17:30Z-player-career",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita drehte den Spiegel um und zeigte auf die Rückseite: dort standen die Schichten, die Duelle und jeder Punkt, den jemand ausgegeben hatte. Wer sehen wollte, wer er geworden war, musste nicht raten. Der Spiegel log nicht, weil er nichts dazuerfand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-player-career.json"
     },
     {
       "contributionId": "player-cash-closeout-01",

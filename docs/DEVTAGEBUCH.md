@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-10 - Masterplan Phase 1: Spieler-Dashboard (Agent 06)
+
+**Ziel:** Der Spieler soll seine Progression sehen, ohne dass ein zweiter Spielzustand entsteht. Der Masterplan fordert ein Dashboard mit Level, XP, Attributen, Skillpunkten, LP, Verletzungen, Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolgen.
+
+**Befund:** Fast alles lag schon vor: `player-rpg.ts` fuehrt Level, XP, sieben Attribute und Koerper; `player-jobs.ts` fuehrt Job und Schichten; `duel.ts` schreibt jedes Duell mit Sieg oder Niederlage ins Archiv; Snapshot und HUD lesen Wallet und Ruf. Es fehlte die eine Sicht, die daraus eine Anzeige macht - und `hud-labels.ts` behauptete Wirkungen (Wahrnehmung, Technik, Glueck), die im Code keinen Leser haben. Ein eigener Sieg-Zaehler waere eine zweite Wahrheit neben dem Archiv gewesen.
+
+**Umsetzung:** `core/sim/player-career.ts` leitet die Karriere rein ab: Level, `xpToNext` aus derselben Formel wie der Aufstieg (`xpForNextLevel` ist dafuer exportiert), Attribute mit Klartext-Wirkung, LP und Verletzung, Portemonnaie und Bonus aus dem Ledger, Job mit Schichten und die Kampfbilanz aus den `Duell gegen ...`-Eintraegen im Archiv. `buildView` traegt sie als `career`, das bestehende Charakterfenster (`look-popup`) zeigt sie unter dem Editor. Kein Save-Feld, keine Migration, kein zweiter Zustand.
+
+**Pruefungen:** `player-career.test.ts` (7 Faelle: Startzustand, XP-Formel, Bilanz aus dem Archiv, ehrliche Wirkung, Koerper und Geld, Erfolge, Job) und `player-dashboard.test.tsx` (3 Faelle: Level/XP/LP, sieben Attribute, Bilanz/Job/Erfolge) gruen; `typecheck` Exit 0; danach `verify:light` und `verify:all`.
+
+**Bewusst nicht getan:** Wahrnehmung, Technik und Glueck sind nicht verdrahtet, sondern als wirkungslos ausgewiesen; jede braucht eine Spielregel-Entscheidung (Reparaturdauer, Dreck-Erkennung, RNG-Bias) und damit eine eigene Lane. Keine Balance-Aenderung, kein Direktpush, keine geloeschte Assertion.
+
 ## 2026-11-09 - Doku-Autopilot und PreTurn-Folgengate
 
 **Ziel:** Die Doku-Regression im Laning beenden, offene Gate-Probleme vor einer neuen Anfrage sichtbar machen und Reparaturen skalierbar erzwingen.

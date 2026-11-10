@@ -258,7 +258,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 845/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 846/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -361,10 +361,12 @@ Ziel ist es, den Spieler als echten Protagonisten in der Welt zu verankern – m
   Echte bezahlte Schichten auf dem Casino-Floor (Reinigen, Zapfen, Bedienen, Kasse, Kisten, Reparaturen). Arbeitsaufträge, Zeitfenster, persönliche Vergütung via Ledger (`HAUSKONTO -> PORTEMONNAIE`), Qualitätsbewertung, Fehlerrate und Arbeitsstatistik.
 - **Agent 04 – Charakterprogression erweitern:**
   Sinnvolle Verknüpfung der 7 RPG-Attribute mit realen Spielmechaniken (Geschwindigkeit bei Arbeit/Bewegung, Charisma bei Dialogen/Trinkgeldern, Technik bei Reparaturen/Spielen). Spezialisierungen und Talente.
+  *Stand 2026-11-10:* Speed (Schritte pro Tick), Charisma (Ansprech-Chance), Brawl (LP und Schaden) und Ausdauer (Regeneration, kuerzere Verletzung) wirken und werden im Charakterfenster beziffert. Wahrnehmung, Technik und Glueck steigen mit, haben aber noch keinen Leser im Spiel; die Anzeige weist sie als "noch ohne Wirkung" aus, statt eine Wirkung zu behaupten.
 - **Agent 05 – Persönliche Kampfkarriere:**
   Wiederholbarer Kampfloop außerhalb von Gästestreitigkeiten: Herausforderbare Gegner, Hinterhofduelle, Startgebühren und Preisgelder über das Ledger, Gegnerhistorie, persönliche Kampfbilanz (Siege/Niederlagen/KOs) und Verletzungsfolgen.
 - **Agent 06 – Persönliches Spieler-Dashboard:**
   Übersichtliche Benutzeroberfläche zur persönlichen Progression: Charakterlevel, XP, Attribute, Skillpunkte, Lebenspunkte, Verletzungen, persönliches Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolge. Strikte Trennung von Unternehmensdaten.
+  *Stand 2026-11-10:* umgesetzt in `core/sim/player-career.ts` plus Charakterfenster (`look-popup`): Level, XP-Ziel, offene Punkte, LP und Verletzung, sieben Attribute mit Wirkung, Portemonnaie und Bonus, Kampfbilanz aus dem Archiv, Job mit Schichten und sechs Erfolge - alles abgeleitet, kein zweites Modell. Belege: `player-career.test.ts`, `player-dashboard.test.tsx`.
 
 ### Phase 2: Eigentum & Eigene Spielhalle (Agents 07–13)
 Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Renovierung und Aufbau der ersten eigenen Spielhalle.

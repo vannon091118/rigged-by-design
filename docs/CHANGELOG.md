@@ -14,6 +14,9 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ## [0.3.204] - 2026-11-10
 
+### Spiel
+- **Charakterfenster zeigt die Karriere.** Level, XP bis zur naechsten Stufe, offene Punkte, LP und Verletzung, alle sieben Attribute mit ihrer tatsaechlichen Wirkung, Portemonnaie und Bonus, Kampfbilanz, Job mit Schichten und sechs Erfolge stehen jetzt im Charakterfenster (`look-popup`). Alles ist aus Welt, Ledger und Ereignisarchiv abgeleitet - kein zweites Spielmodell, kein neues Save-Feld. Wahrnehmung, Technik und Glueck weist die Anzeige als "noch ohne Wirkung" aus, statt eine Wirkung zu behaupten.
+
 ### Technik
 - **Agenten-Bootstrap.** `pnpm run agent:new` legt Branch, Worktree, Claim und Task-Vertrag in einem Aufruf an und startet den Pretask im neuen Worktree; Claim und Vertrag committet der erste `turn:finish`.
 - **Abschluss integriert selbst.** Ist `origin/main` voraus, repariert `turn:finish` statt mit `ERR-4008` abzubrechen: unveroeffentlicht per `integrate --apply`, veroeffentlicht per Merge; nur ein Quellkonflikt eskaliert.

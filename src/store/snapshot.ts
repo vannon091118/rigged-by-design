@@ -7,6 +7,7 @@ import { demandBreakdown } from '../core/sim/demand';
 import { guardHandling } from '../core/sim/disputes';
 import { talkChance } from '../core/sim/charisma-talk';
 import { reputation } from '../core/sim/spawn';
+import { playerCareer } from '../core/sim/player-career';
 import { companyStatus } from '../core/sim/progression';
 import { cityView } from '../core/sim/city';
 import { dayPhaseOf } from '../core/sim/day-phase';
@@ -126,6 +127,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     house: ledger.getBalance(HAUSKONTO),
     wallet: ledger.getBalance(PORTEMONNAIE),
     playerCash: ledger.getBalance(PLAYER_CASH),
+    // Agent 06: dieselbe Karriere-Sicht fuer Charakterfenster und Tests, kein zweiter Zaehler.
+    career: playerCareer(world, ledger.getBalance(PORTEMONNAIE), ledger.getBalance(PLAYER_CASH)),
     desk: ledger.getBalance(WECHSELKASSE),
     pending,
     guestMoney,
