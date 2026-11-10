@@ -748,7 +748,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 89 Zeilen
