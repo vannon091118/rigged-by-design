@@ -18,7 +18,7 @@ import {
   roadmapProgress,
 } from '../../../../scripts/lib/generated-files.mjs';
 import { assessIntegration, INTEGRATION } from '../../../../scripts/lib/integration.mjs';
-import { buildPlan, riskFor, selectGates, selectTests } from '../../../../scripts/lib/ci-plan.mjs';
+import { buildPlan, riskFor, selectTests } from '../../../../scripts/lib/ci-plan.mjs';
 import { REQUIRED_CI_GATES } from '../../../../scripts/lib/pipeline-plan.mjs';
 
 const pr = (changed: string[]) => ({ event: 'pull_request', changed });
