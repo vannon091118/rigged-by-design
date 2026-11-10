@@ -3665,3 +3665,52 @@ Reparatur, fuenf Rollen), dazu Karriere-, Wartungs- und Charakterfenster-Tests;
 neues Save-Feld, keine Aenderung an Bedienen, Kasse, Sicherheit oder Reparatur,
 keine Wirkung fuer Glueck (weiterhin ausgewiesen als "noch ohne Wirkung"), keine
 Aenderung an den Hot Zones `store/world-store.ts` und `store/venue-commands.ts`.
+
+## 2026-11-10 - Maschinen-Mods auf der echten Engine (Agent 12)
+
+**Ziel.** Das Maschinen-Modifikationssystem so bauen, dass Mods die tatsaechliche
+Spiel-Engine veraendern - Symbolgewichte, Auszahlungsprofil, Wilds, Freispiele und
+Betriebskosten - und dabei an den vorhandenen Mods, dem einen SlotProfile und dem
+einen Spin-Pfad bleiben.
+
+**Befund (nicht nachgebaut).** Symbollisten, Wild/Scatter (`BOOK`), Freispiele,
+Paytable, Gewinnlinien, Walzen und Betriebskosten existierten bereits
+(`core/games/engines/slot-paytable.ts`, `slot-profile.ts`, `slot-session.ts`,
+`offers.ts` mit `MODS`, `resolveModEffects`, `modAppliesTo`). Die Luecke war
+genau eine: `slotConfigOf` drehte immer `item.slotOdds`; kein Mod erreichte die
+Engine. Mods wirkten nur auf Anziehung, Geduld, Sucht, Betrieb und `bonusBps`.
+
+**Umsetzung.**
+
+- `src/core/games/mod-profile.ts`: `MOD_ENGINE_BIAS` je Mod als Verschiebung auf
+  dem vorhandenen `SlotProfile` (CHERRY `J+3/Q+2` und `+200 bps`, NEAR_MISS
+  `SCARAB+2` und `-300 bps`, VELVET `BOOK+1` und `+2` Freispiele),
+  `modEngineBias` summiert je Mod-Id einmal, `withModProfile` legt den Bias auf
+  das Basisprofil.
+- `slotConfigOf` liest `machine.mods` und wendet `withModProfile` an; damit
+  fliesst die Wirkung in jeden Spin aus `slot-session` - eigenes Haus, Testspin
+  und fremdes Haus ueber denselben Pfad. Kein zweiter Auszahlungspfad.
+- Grenzen bleiben bei `normalizeSlotProfile` (Gewichte 0..99, Quote
+  5000..12000 bps, Freispiele 0..20); ein Mod kann eine Maschine nicht
+  unspielbar machen.
+- NEON, FREE_DRINK und EXTRA_REEL bekommen bewusst keine Profilwirkung: ihre
+  Wirkung ist Gast/Betrieb beziehungsweise Walzenzahl, eine erfundene
+  Engine-Wirkung waere eine zweite Wahrheit.
+- `src/ui/machine-mods.tsx` ist der ausgelagerte Mod-Katalog des
+  Automaten-Dialogs (Hot Zone `machine-operator.tsx` entlastet) und nennt je Mod
+  die Engine-Wirkung aus `MOD_ENGINE_NOTE`.
+
+**Pruefungen.** `mod-profile.test.ts` (8 Tests: unveraendertes Profil ohne Mod,
+Gewichte/Quote/Freispiele je Mod, keine erfundene Wirkung, Dedupe und Summe,
+Grenzen, unterschiedliche Konfiguration mit/ohne Mod, echter Spin bleibt
+reproduzierbar, Klartext je Engine-Mod) plus `slot-config.test.ts` (7). Lokal
+`typecheck` und `verify:all` Exit 0, CI `Fail-Closed Gates` gruen ohne
+Annotationen; squash-gemergt.
+
+**Bewusst nicht getan.** Kein neues Save-Feld und keine Migration (die Mods
+stehen bereits in `Furniture.mods`), kein zweiter Mod- oder Auszahlungszaehler,
+keine zweite Geldbuchung neben `HAUSKONTO`/`PORTEMONNAIE`, keine Aenderung an
+`slot-session`, `offers.ts`, Wartung/Reparatur (Agent 10) oder der
+Betriebskostenrechnung, keine neuen Mods und keine Item-/Synergie-Ebene (Agent
+13), keine Aenderung an den Hot Zones `store/world-store.ts` und
+`store/venue-commands.ts`.

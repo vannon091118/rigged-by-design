@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/mod-engine-docs",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/mod-engine-docs",
+  "baseSha": "5a98de70fb419ef4ef6cd3eead03f482023ddbfc",
+  "task": "Agent 12: Meta-Doku und Claim-Abschluss zum Maschinen-Modifikationssystem",
+  "goal": "Agent 12 im Changelog, im Devtagebuch und in der Roadmap belegen, den Feature-Claim `lane/sim/mod-engine` mit Squash-SHA schliessen und die Governance-Lane aus Agent 11 (`lane/governance/floor-work-docs`) abschliessen, ohne Code oder Gates zu veraendern.",
+  "pathAllowlist": [
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-mod-engine-docs.json",
+    ".lane-claims/tasks/governance-mod-engine-docs.json",
+    ".lane-claims/claims/lane-governance-floor-work-docs.json",
+    ".lane-claims/tasks/governance-floor-work-docs.json",
+    ".lane-claims/claims/lane-sim-mod-engine.json",
+    ".lane-claims/tasks/sim-mod-engine.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "5a98de70fb419ef4ef6cd3eead03f482023ddbfc",
+  "notes": "Governance-only: Doku und Claim-/Task-Status; keine Code-, Save- oder Gate-Aenderung."
+}

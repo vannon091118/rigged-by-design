@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-mod-engine-docs",
+  "claimId": "lane/governance/mod-engine-docs",
+  "branch": "lane/governance/mod-engine-docs",
+  "baseSha": "5a98de70fb419ef4ef6cd3eead03f482023ddbfc",
+  "phase": "MERGE_PENDING",
+  "title": "Agent 12: Meta-Doku und Claim-Abschluss zum Maschinen-Modifikationssystem",
+  "goal": "Agent 12 in Changelog, Devtagebuch und Roadmap belegen, Feature- und Vor-Governance-Claim mit Squash-SHA schliessen, Lane aufraeumen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen, CI abwarten, squash-mergen.",
+  "revision": 1
+}

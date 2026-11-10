@@ -12,6 +12,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.207] - 2026-11-10
+
+### Spiel
+- **Mods mit echter Engine-Wirkung.** Drei Automaten-Mods veraendern jetzt das Spiel selbst: Kirschen-Flut macht kleine Bilder haeufiger und hebt die Auszahlungsquote, Fast-Gewinn-Magnet rueckt das teure Symbol naeher und senkt sie, Samtverkleidung bringt mehr Buch und zwei Freispiele. Der Automaten-Dialog nennt die Wirkung bei jedem Mod, damit die Anzeige dieselbe Zahl zeigt, die der Spin liest.
+
+### Technik
+- **Mods als Profil, nicht als zweiter Auszahlungspfad.** `core/games/mod-profile.ts` uebersetzt die verbauten Mods in das vorhandene `SlotProfile` (Gewichte, Auszahlungsquote, Freispiele); `slotConfigOf` liest es fuer den einen Spin-Pfad aus `slot-session`, begrenzt durch `normalizeSlotProfile`. NEON, FREE_DRINK und EXTRA_REEL bleiben ohne Profilwirkung - keine erfundene Mechanik. `ui/machine-mods.tsx` liegt ausgelagert neben der Hot Zone. Kein neues Save-Feld, kein zweiter Auszahlungs- oder Mod-Zaehler.
+
 ## [0.3.205] - 2026-11-10
 
 ### Spiel
