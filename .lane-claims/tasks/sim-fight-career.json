@@ -4,14 +4,19 @@
   "claimId": "lane/sim/fight-career",
   "branch": "lane/sim/fight-career",
   "baseSha": "053e488b0e83c40e7f5e55bec49d7cbb82d3cdd0",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Hinterhof-Kampfkarriere: Leiter, Startgeld, Preisgeld und Bilanz",
   "goal": "Wiederholbarer Kampfloop ohne neues Save-Feld, sichtbar im bestehenden Charakterfenster",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 360,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/360",
+    "state": "merged",
+    "mergedSha": "4b4ad1c8248a1839fb33965e49c68e341191b1db"
+  },
   "findings": [],
-  "nextAction": "PR oeffnen, CI auf dem Kopf bis gruen pruefen, dann squash-mergen.",
-  "revision": 1
+  "nextAction": "Abgeschlossen: PR #360 (4b4ad1c) auf main, Claim merged mit Beleg.",
+  "revision": 4
 }
