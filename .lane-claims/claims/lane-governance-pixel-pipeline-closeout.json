@@ -1,0 +1,30 @@
+{
+  "id": "lane/governance/pixel-pipeline-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/pixel-pipeline-closeout",
+  "baseSha": "1890f6da55a372e17813c1afa67353f0ad0988e4",
+  "task": "Pixi-Closeout: Gast-Sprites aus dem Charakter-Atlas auf den neuen main-Stand ziehen",
+  "goal": "Figuren als gerichtete Sprite-Bauteile rendern, Test und Narrative mitfuehren und die generierten Doku-Artefakte claim-konform halten.",
+  "pathAllowlist": [
+    "src/render/guest-paint.ts",
+    "src/render/guest-rig.ts",
+    "src/render/guest-parts.ts",
+    "src/render/guest-head.ts",
+    "src/render/__tests__/guest-sprite.test.ts",
+    "content/narrative/contributions/2026-11-10-render-sprite-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/ARCHITECTURE.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-pixel-pipeline-closeout.json",
+    ".lane-claims/freeze-unlock.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "1890f6da55a372e17813c1afa67353f0ad0988e4"
+}
