@@ -24,7 +24,7 @@ import {
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
 import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
 import { buildCiState, isSupersededRun, parseCiState, serializeCiState } from './lib/ci-state.mjs';
-import { classifyIssue, isBlockedIssue } from './lib/issue-scope.mjs';
+import { blockedIssuesFrom } from './lib/issue-scope.mjs';
 import {
   contractHoldReason,
   labelDiff,
@@ -121,12 +121,12 @@ function failedGatesOfRun() {
   }
 }
 
-/** BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen. */
+/** BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen.
+ * Rueckgabe `null` heisst: Liste nicht lesbar, Blockerlage unbekannt. */
 function blockedIssues() {
-  const issues = listAll(`repos/${repo}/issues?state=open&per_page=100`);
-  if (!issues) return [];
-  return issues.filter((issue) => isBlockedIssue(issue)).filter(
-    (issue) => classifyIssue(issue, { branch }).disposition === 'blocker',
+  return blockedIssuesFrom(
+    listAll(`repos/${repo}/issues?state=open&per_page=100`),
+    { branch },
   );
 }
 
@@ -442,6 +442,9 @@ function mergeGreen(number) {
   }
 
   const blocked = blockedIssues();
+  if (blocked === null) {
+    return holdPromotion(number, contract, 'BLOCKED-Status unbekannt: Issue-Liste nicht lesbar (fail-closed)');
+  }
   if (blocked.length > 0) {
     return holdPromotion(
       number,

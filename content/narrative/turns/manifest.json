@@ -3316,6 +3316,10 @@
     {
       "turnId": "2026-11-10T05:20Z-world-first-ui-deadcode",
       "contributionId": "world-first-ui-deadcode-01"
+    },
+    {
+      "turnId": "2026-11-10T06:20Z-governance-fail-closed-issue-check",
+      "contributionId": "governance-fail-closed-issue-check-01"
     }
   ]
 }

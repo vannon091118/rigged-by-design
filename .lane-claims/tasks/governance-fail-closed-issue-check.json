@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-fail-closed-issue-check",
+  "claimId": "lane/governance/fail-closed-issue-check",
+  "branch": "lane/governance/fail-closed-issue-check",
+  "baseSha": "fda06dd709bc12f338a1b31edaf6992275207cc8",
+  "phase": "IMPLEMENTING",
+  "title": "Issue-Check fail-closed: governance/blocked abfragen, UNKNOWN blockieren, promote unterscheidet null von leer",
+  "goal": "Ein nicht abfragbarer Issue-Zustand kann keinen Start und keinen Merge mehr freigeben; governance/blocked blockiert seine Lane",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Gezielte Tests und Light-Gate ausfuehren, dann pushen und CI pruefen.",
+  "revision": 1
+}

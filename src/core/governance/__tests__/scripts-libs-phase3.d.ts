@@ -47,6 +47,21 @@ declare module '*/issue-scope.mjs' {
       isAncestor?: (sha: string) => boolean;
     },
   ): IssueDecision;
+  export interface BlockedIssue {
+    readonly number?: number;
+    readonly title?: string;
+    readonly body?: string;
+    readonly labels?: readonly (string | { readonly name?: string })[];
+  }
+  /** `null` heisst: Liste nicht lesbar; das ist keine leere Blockerliste. */
+  export function blockedIssuesFrom(
+    issues: readonly BlockedIssue[] | null | undefined,
+    options?: {
+      branch?: string;
+      dependencies?: readonly string[];
+      isAncestor?: (sha: string) => boolean;
+    },
+  ): BlockedIssue[] | null;
   export function fingerprintOf(code: string, line: string): string;
   export function issueBody(input: IssueBodyInput): string;
 }
