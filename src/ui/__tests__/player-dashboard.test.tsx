@@ -157,6 +157,8 @@ describe('Charakterfenster: Immobilie', () => {
     expect(view.career.property.owned).toEqual({ id: 'KNEIPE', priceVC: fromVC(120), day: 3 });
     expect(section.textContent).toContain('in deinem Besitz');
     expect(section.textContent).toContain('Tag 3');
+    expect(section.textContent).toContain('Betriebskonto');
+    expect(view.career.property.binding?.area?.id).toBe('area-0');
     expect(screen.queryByRole('button', { name: /VC$/ })).toBeNull();
   });
 });

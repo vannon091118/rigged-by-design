@@ -1,0 +1,28 @@
+{
+  "id": "lane/sim/property-world",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/property-world",
+  "baseSha": "e37abcf64c8cd6fe15ce09dbdaea33d3f09d681b",
+  "task": "Masterplan Agent 08: Eigene Immobilie und WorldState-Integration",
+  "goal": "Die gekaufte Immobilie eindeutig an den vorhandenen WorldState binden: Rasterbereich des Eingangs, Zonen, Furniture und Besucher als reine Ableitung, Betrieb ueber das bestehende Geschaeftskonto (HAUSKONTO) und sichtbar im vorhandenen Charakterfenster - ohne zweite Wahrheit und ohne Versionssprung.",
+  "pathAllowlist": [
+    "src/core/sim/property.ts",
+    "src/core/sim/__tests__/property-world.test.ts",
+    "src/ui/career-property.tsx",
+    "src/ui/look-popup.tsx",
+    "src/ui/__tests__/player-dashboard.test.tsx",
+    "content/narrative/contributions/2026-11-10-property-world.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/claims/lane-sim-property-world.json",
+    ".lane-claims/tasks/sim-property-world.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e37abcf64c8cd6fe15ce09dbdaea33d3f09d681b",
+  "notes": "Reine Ableitung aus layout/zones/furniture/guests; kein neues Save-Feld, kein zweiter Geldweg. Betriebskonto ist das vorhandene HAUSKONTO; Miete/Strom bucht bereits upkeep.ts, daher keine zweite Tagesmiete."
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e0be6378c6db67971ff98e95f7a8a7b4b2340aa67c944ca2d1d502ec537423d3",
+  "contentHash": "sha256:cb562d48a89114e9103f09900dcf9173a1feff5b2f3a4ad30a8a7c02dd84baca",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18490,6 +18490,31 @@
       "text": "Der Gast tippte gegen die Liste und sagte, ein Haekchen zaehle erst, wenn jemand die Zeile darueber nachgeprueft habe. Dann nickte er und trank aus.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-beleg.json"
+    },
+    {
+      "contributionId": "property-world-01",
+      "turnId": "2026-11-10T20:30Z-property-world",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita trug die Adresse nicht in ein zweites Buch ein. Sie legte den Grundriss auf den Tisch, markierte den Bereich um den Eingang und sagte: alles, was hier steht, gehoert zum Laden - die Zonen, die Geraete, die Leute davor. Bezahlt wird aus der Kasse, die es schon gibt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-property-world.json"
     },
     {
       "contributionId": "relationship-standing-01",

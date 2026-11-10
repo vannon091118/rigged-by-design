@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 262 Dateien — contract 149 · integration 57 · governance 42 · statistics 7 · performance 7.
+Summe: 263 Dateien — contract 150 · integration 57 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -300,6 +300,7 @@ Summe: 262 Dateien — contract 149 · integration 57 · governance 42 · statis
 | `src/core/sim/__tests__/player-speed.test.ts` | sim | contract | ja | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/player-wage-attendance.test.ts` | sim | contract | ja | `src/core/sim/player-jobs.ts` |
 | `src/core/sim/__tests__/progression.test.ts` | sim | contract | ja | `src/core/sim/progression.ts` |
+| `src/core/sim/__tests__/property-world.test.ts` | sim | contract | ja | `src/core/sim/property.ts` |
 | `src/core/sim/__tests__/property.test.ts` | sim | contract | ja | `src/core/sim/property.ts` |
 | `src/core/sim/__tests__/reputation-slot-use.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/reputation.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
@@ -575,10 +576,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2456 |
-| Gelistete Dateien | 2456 |
+| Getrackte Dateien | 2460 |
+| Gelistete Dateien | 2460 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (109), content (854), docs (83), public (554), scripts (102), src (726) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (111), content (855), docs (83), public (554), scripts (102), src (727) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -590,9 +591,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 79 Datei(en)
-- `.lane-claims/tasks/` — 28 Datei(en)
-- `content/narrative/contributions/` — 850 Datei(en)
+- `.lane-claims/claims/` — 80 Datei(en)
+- `.lane-claims/tasks/` — 29 Datei(en)
+- `content/narrative/contributions/` — 851 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -654,7 +655,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 93 Datei(en)
-- `src/core/sim/__tests__/` — 111 Datei(en)
+- `src/core/sim/__tests__/` — 112 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -781,6 +782,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-sim-property-world.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
@@ -811,6 +813,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1661,13 +1664,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-phase34-acceptance-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-player-career.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-player-history.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-10-property-world.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-render-sprite-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-review-nachpruefung.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-stale-claims.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19059 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3405 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19084 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3409 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2658,6 +2662,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/player-speed.test.ts` — Speed war einmal nur ein gespeicherter Attributwert. Dieser Test haelt fest, — gelesen: 67 Zeilen
 - `src/core/sim/__tests__/player-wage-attendance.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 84 Zeilen
 - `src/core/sim/__tests__/progression.test.ts` — Unternehmensstufen nennen echte Bedingungen; gesperrte Ware sagt, was fehlt. — gelesen: 240 Zeilen
+- `src/core/sim/__tests__/property-world.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 61 Zeilen
 - `src/core/sim/__tests__/property.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 89 Zeilen
 - `src/core/sim/__tests__/reputation-slot-use.test.ts` — Ruf veraendert die Slot-Nutzung: Ein Haus mit Standing wird mutiger bespielt. — gelesen: 55 Zeilen
 - `src/core/sim/__tests__/reputation.test.ts` — Ruf ist Betriebserfahrung: Ein frischer Automat in gutem Zustand ist kein Ruf, — gelesen: 98 Zeilen
@@ -2843,7 +2848,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/player-rpg.ts` — Spieler-RPG: 7 Attribute, Level, XP und Kampfkoerper. Rein deterministisch, ohne Geldbewegung. — gelesen: 118 Zeilen
 - `src/core/sim/player.ts` — Spieler-Commands: Laufen, Tragen, Zapfen, Kasse, Deko, Ausbau. Mit Weg und Reichweite. — gelesen: 145 Zeilen
 - `src/core/sim/progression.ts` — Unternehmensfortschritt: das Casino waechst, nicht der Charakter. — gelesen: 160 Zeilen
-- `src/core/sim/property.ts` — Erste Immobilie: Katalog, Kauf aus dem Portemonnaie und gespeicherte Eigentumszuweisung. — gelesen: 100 Zeilen
+- `src/core/sim/property.ts` — Erste Immobilie: Katalog, Kauf aus dem Portemonnaie, Eigentumszuweisung und — gelesen: 159 Zeilen
 - `src/core/sim/queue-spots.ts` — Kassenschlange: eindeutige, erreichbare Wartepositionen – auch bei grossem Andrang. — gelesen: 56 Zeilen
 - `src/core/sim/remodel.ts` — Umbau: Voraussetzungen und Deckung pruefen, dann das bestehende Haus erweitern. — gelesen: 30 Zeilen
 - `src/core/sim/rival-ai/actions.ts` — Fuehrt eine geplante Rivalenaktion aus. Jede Wirkung ist benannt und belegt: — gelesen: 101 Zeilen
@@ -3036,7 +3041,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 113 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/phase34-acceptance.test.tsx` — import { readFileSync } from 'node:fs'; — gelesen: 62 Zeilen
-- `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 162 Zeilen
+- `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 164 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen
 - `src/ui/__tests__/small-screen-dock.test.tsx` — Abnahme Phase 2: alle Dock-Einstiege und die Gaesteuebersicht bleiben bei — gelesen: 80 Zeilen
@@ -3059,7 +3064,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
 - `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 40 Zeilen
 - `src/ui/career-history.tsx` — Spielhistorie im Charakterfenster: die letzten Etappen aus dem Archiv, keine zweite Chronik. — gelesen: 30 Zeilen
-- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Preis und Besitz aus derselben Sicht. — gelesen: 50 Zeilen
+- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz und Betrieb aus derselben Sicht. — gelesen: 62 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/city-popup.tsx` — Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. — gelesen: 100 Zeilen
 - `src/ui/connected-hud.tsx` — HUD-Verdrahtung: Perspektivwechsel, Skills und Welt-Einstieg an einer Stelle. — gelesen: 27 Zeilen
