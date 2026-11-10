@@ -103,12 +103,12 @@ for (const file of sources) {
     if (hidden || used.get(file)?.has(name)) continue;
     dead += 1;
     index += 1;
-    fail(index, 'ERR-4003', relative(ROOT, file), `Export ${name} (Zeile ${line}) wird nirgendwo importiert`);
+    fail(index, 'ERR-4003', relative(ROOT, file), `Export ${name} (Zeile ${line}) wird nirgendwo importiert; vor dem Entfernen alle Import-, Re-Export- und Namespace-Ketten verfolgen und betroffene Aufrufer reparieren, nicht blind cutten`);
   }
 }
 
 if (dead > 0) {
-  console.error(`verify-dead-code: ${dead} tote Exporte`);
+  console.error(`verify-dead-code: ${dead} tote Exporte; Kettenpflicht: Verbraucher, Re-Exports und oeffentliche Pfade zuerst nachvollziehen.`);
   process.exit(1);
 }
 console.log(`verify-dead-code: PASS (${total} Exporte, ${sources.length} Dateien)`);
