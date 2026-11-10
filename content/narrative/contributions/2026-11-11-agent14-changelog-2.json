@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:20Z-agent14-changelog-2",
+  "contributionId": "agent14-changelog-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwei Versionen, zwei Absaetze: der Text nennt nur, was die Commits wirklich taten. Wer nachliest, findet keinen Widerspruch mehr zwischen Nummer und Heft.",
+  "directives": []
+}

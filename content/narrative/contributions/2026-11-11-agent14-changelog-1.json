@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:11Z-agent14-changelog-1",
+  "contributionId": "agent14-changelog-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Lane ist angemeldet, bevor sie schreibt: erst der Anspruch auf die Doku-Dateien, dann der Text. Wer die Reihenfolge umdreht, baut sich selbst ein Tor.",
+  "directives": []
+}

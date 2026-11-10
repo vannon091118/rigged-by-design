@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/agent14-changelog",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent14-changelog",
+  "baseSha": "65c11aa576242525756e7c886e12f6cafc521e7f",
+  "task": "Agent 14 Nachtrag: Changelog an die Version 0.3.211 anbinden",
+  "goal": "Die fehlenden Changelog-Eintraege 0.3.210 und 0.3.211 aus den gemergten Commits nachziehen, damit Version und Changelog uebereinstimmen; keine Code-Aenderung.",
+  "pathAllowlist": [
+    "docs/CHANGELOG.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-governance-agent14-changelog.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "65c11aa576242525756e7c886e12f6cafc521e7f"
+}

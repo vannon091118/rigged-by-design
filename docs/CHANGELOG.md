@@ -12,6 +12,16 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.211] - 2026-11-10
+
+### Technik
+- **Abschluss-Pass Agent 14.** Die Buchhaltung des Laufs ist nachgezogen: die Claims der Feature- und der Governance-Lane stehen mit ihren Squash-Belegen (`7b31ba0`, `8dcefe5`) auf `merged`, die zugehoerigen Task-Vertraege auf `DONE`, und der Nachlauf-Claim ist mit demselben Beleg geschlossen. Kein Spielinhalt, keine Code-Aenderung.
+
+## [0.3.210] - 2026-11-10
+
+### Technik
+- **Doku zur Geschaeftsprogression.** Der Roadmap-Stand zu Agent 14, der Devtagebuch-Eintrag und ein Dokumentations-Baustein halten fest, welche Bedingungen die vier Stufen tragen und was bewusst nicht gebaut wurde. Die Version gehoert zum Governance-PR; der Code kam mit `0.3.209`.
+
 ## [0.3.209] - 2026-11-10
 
 ### Spiel
