@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a0201752dd5b0765795e8a7ff313da7aa7489490ad203c606a04a1c00c29cc47",
+  "contentHash": "sha256:e0a9f48efbf01e88ac7baecd55ce11559453b5622e52068282e29b1c103a649c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -721,6 +721,28 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "ci-pr-body-current-01",
+      "turnId": "2026-11-10T08:25Z-ci-pr-body-current",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der CI-Plan liest den PR-Body jetzt bei jedem Lauf über die Pull-Request-API. Ein Rerun nach einer Korrektur prüft damit den aktuellen Text statt des ursprünglichen Event-Payloads; der Unterschied zwischen Erstlauf und Wiederholung verschwindet aus der Fehlersuche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
     },
     {
       "contributionId": "city-day-closeout-01",

@@ -37,6 +37,7 @@ Lokal gilt:
 ### Kontrollebene
 
 Der PR ist Prüfobjekt, nicht Prüfer. `ci-verify.yml` legt `.rbd-control` am Basis-Commit an (bei PRs die PR-Basis, auf `main` der Elternteil des gepushten Commits). Planer, Node-Gates, Langlauf-Kommando und Claim-Prüfung laufen aus dieser Kontrollebene; `RBD_ROOT` zeigt auf den Prüfbaum. Eine Basis ohne `RBD_ROOT` bricht ab; es gibt keinen Bootstrap-Fallback auf PR-Skripte. Diff und Freeze rechnen `base...head`; `event.before` ist nie die Basis.
+Der Plan liest den PR-Body bei jedem Lauf über die Pull-Request-API, nicht aus dem Event-Payload; so prüft auch ein Rerun nach einer Body-Korrektur den aktuellen Text.
 
 PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vollständig. Der Impact verengt nur Gates und lange Nachweise, nie die Regression. Reine Doku bleibt ausgenommen.
 

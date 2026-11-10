@@ -1,13 +1,10 @@
 {
   "version": 1,
-  "base": "3fd17750b1df0a09f11eaea213d2a30df00cb8a2",
+  "base": "75f1b48068f799066f73d3c4fec86563c5a7b40f",
   "paths": [
-    "docs/ARCHITECTURE.md",
-    "docs/INDEX.md",
-    "docs/ROADMAP.md",
-    "scripts/lib/repair-plan.mjs",
-    "scripts/sync-dependency-matrix.mjs"
+    ".github/workflows/ci-verify.yml",
+    "docs/CI.md"
   ],
-  "token": "e51e7c0924e36b53a5652bad0df0bd99245d2e040f6ef6f8708f878cd7d31893",
+  "token": "ae419d6f0bdb5a8ae70c2fd24af514fc76c7a83c1a2af0b2bf89cd975554901d",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

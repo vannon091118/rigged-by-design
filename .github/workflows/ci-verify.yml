@@ -67,8 +67,12 @@ jobs:
       - name: PR-Body
         if: github.event_name == 'pull_request'
         env:
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: node scripts/verify-pr-body.mjs
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          body="$(gh pr view "$PR_NUMBER" --json body --jq .body)"
+          PR_BODY="$body" node scripts/verify-pr-body.mjs
 
       # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
       # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst

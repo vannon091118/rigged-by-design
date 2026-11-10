@@ -1,0 +1,26 @@
+{
+  "id": "lane/ci/pr-body-current",
+  "owner": "Governance-Owner",
+  "branch": "lane/ci/pr-body-current",
+  "baseSha": "75f1b48068f799066f73d3c4fec86563c5a7b40f",
+  "task": "CI-Plan: PR-Body bei jedem Lauf aktuell aus der API lesen",
+  "goal": "Reruns nach einer PR-Body-Korrektur dürfen nicht am veralteten Event-Payload scheitern; der Plan liest den aktuellen Body über die Pull-Request-API.",
+  "pathAllowlist": [
+    ".github/workflows/ci-verify.yml",
+    "src/core/governance/__tests__/promotion-workflows.test.ts",
+    "docs/CI.md",
+    ".lane-claims/freeze-unlock.json",
+    ".lane-claims/claims/lane-ci-pr-body-current.json",
+    ".lane-claims/tasks/ci-pr-body-current.json",
+    "content/narrative/contributions/2026-11-10-ci-pr-body-current.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "75f1b48068f799066f73d3c4fec86563c5a7b40f"
+}
