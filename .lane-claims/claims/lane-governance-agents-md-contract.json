@@ -10,8 +10,7 @@
     ".lane-claims/freeze-unlock.json",
     ".lane-claims/claims/lane-governance-agents-md-contract.json",
     "package.json",
-    "pnpm-lock.yaml",
-    "docs/INVENTORY.md"
+    "pnpm-lock.yaml"
   ],
   "contracts": [],
   "dependencies": [],
