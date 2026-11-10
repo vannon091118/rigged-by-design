@@ -18,6 +18,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "e661d83ce800aca26c95374a616dd84ffecf11e3"
+  "status": "merged",
+  "createdAt": "e661d83ce800aca26c95374a616dd84ffecf11e3",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "e67e5d64c953b90abb7a44da397c0726f4c9b70e",
+  "notes": "Governance-only: Doku und Claim-/Task-Status; keine Code-, Save- oder Gate-Aenderung."
 }

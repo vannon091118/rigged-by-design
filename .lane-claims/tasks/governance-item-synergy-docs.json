@@ -4,11 +4,16 @@
   "claimId": "lane/governance/item-synergy-docs",
   "branch": "lane/governance/item-synergy-docs",
   "baseSha": "e661d83ce800aca26c95374a616dd84ffecf11e3",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 13: Meta-Doku und Claim-Abschluss zu Items und Synergien",
   "goal": "Agent 13 in CHANGELOG, ROADMAP und Devtagebuch belegen und den Feature-Claim lane/sim/item-synergy mit Squash-Beleg schliessen.",
-  "pr": null,
+  "pr": {
+    "number": 390,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/390",
+    "state": "merged",
+    "mergedSha": "e67e5d64c953b90abb7a44da397c0726f4c9b70e"
+  },
   "findings": [],
-  "nextAction": "Claim auf merged (e67e5d6) ziehen und den Vertrag auf DONE setzen.",
-  "revision": 5
+  "nextAction": "Abgeschlossen: PR #390 (e67e5d6) auf main, Governance-Claim geschlossen.",
+  "revision": 6
 }
