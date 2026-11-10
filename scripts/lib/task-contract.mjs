@@ -24,6 +24,7 @@ import { existsSync, readFileSync, readdirSync, renameSync, writeFileSync } from
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
 import { TASK_CONTRACT_PREFIX } from './lane-claims.mjs';
+import { latestCiState, readCiStateResult } from './ci-state.mjs';
 
 export const TASK_DIR = TASK_CONTRACT_PREFIX;
 export const TASK_PHASES = Object.freeze(['READY', 'IMPLEMENTING', 'CI_PENDING', 'MERGE_PENDING', 'AFTERCARE', 'DONE']);
@@ -31,6 +32,8 @@ export const PRETASK_STATUSES = Object.freeze(['READY', 'CONTINUE', 'AFTERCARE',
 export const FINDING_STATUSES = Object.freeze(['open', 'resolved', 'accepted']);
 export const FINDING_SEVERITIES = Object.freeze(['blocker', 'warning', 'info']);
 export const PR_STATES = Object.freeze(['open', 'merged', 'closed']);
+export const CONTRACT_STATUSES = Object.freeze(['READY_FOR_MERGE', 'HOLD', 'BLOCKED']);
+export const TASK_TYPES = Object.freeze(['single', 'multi-phase', 'aftercare']);
 const FULL_SHA = /^[0-9a-f]{40}$/;
 const TASK_ID = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -72,6 +75,9 @@ export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAct
     phase,
     title: String(claim?.task ?? '').trim() || taskId,
     goal: String(claim?.goal ?? '').trim(),
+    taskType: 'single',
+    holdMerge: false,
+    status: 'READY_FOR_MERGE',
     pr: null,
     findings: [],
     nextAction,
@@ -141,6 +147,15 @@ export function validateTaskContract(contract, { claim = null, branch = '', prev
   if (!TASK_PHASES.includes(contract.phase)) violations.push(`Phase '${String(contract.phase)}' ist unbekannt`);
   if (!String(contract.title ?? '').trim()) violations.push('title fehlt');
   if (typeof contract.goal !== 'string') violations.push('goal ist kein Text');
+  if (contract.taskType !== undefined && !TASK_TYPES.includes(contract.taskType)) {
+    violations.push(`taskType '${String(contract.taskType)}' ist unbekannt`);
+  }
+  if (contract.holdMerge !== undefined && typeof contract.holdMerge !== 'boolean') {
+    violations.push('holdMerge ist kein Boolean');
+  }
+  if (contract.status !== undefined && !CONTRACT_STATUSES.includes(contract.status)) {
+    violations.push(`status '${String(contract.status)}' ist unbekannt`);
+  }
   if (!Number.isInteger(contract.revision) || contract.revision < 1) violations.push('revision ist keine positive Ganzzahl');
   if (contract.phase !== 'DONE' && !String(contract.nextAction ?? '').trim()) violations.push('nextAction fehlt');
 
@@ -211,12 +226,25 @@ export function upsertFinding(contract, finding) {
 export function readCiState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', root = ROOT } = {}) {
   if (!branch) return { known: false, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
   try {
+    // Ein Aufruf: der CI-State-Kommentar ist die erste Quelle, der Check-Rollup
+    // bleibt nur der Fallback fuer Legacy-PRs ohne Kommentar. Der Kommentar
+    // zaehlt nur, wenn er zum aktuellen PR-Kopf gehoert.
     const output = execFileSync(
       ghBin,
-      ['pr', 'view', branch, '--json', 'statusCheckRollup'],
+      ['pr', 'view', branch, '--json', 'number,headRefOid,comments,statusCheckRollup'],
       { cwd: root, encoding: 'utf8', timeout: 10000, stdio: ['ignore', 'pipe', 'ignore'] },
     );
-    const rollup = JSON.parse(output)?.statusCheckRollup ?? [];
+    const data = JSON.parse(output);
+    const comment = latestCiState(data?.comments ?? []);
+    if (comment && comment.headSha === data?.headRefOid) {
+      return {
+        ...readCiStateResult(comment),
+        name: comment.state === 'HOLD' ? 'Fail-Closed Gates' : 'rbd:ci-state',
+        url: null,
+        prNumber: data?.number ?? null,
+      };
+    }
+    const rollup = data?.statusCheckRollup ?? [];
     const required = rollup.find((check) => check.name === 'Fail-Closed Gates' || check.context === 'Fail-Closed Gates') ?? null;
     if (!required) return { known: true, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
     const status = String(required.status ?? required.state ?? '').toLowerCase();
@@ -227,6 +255,7 @@ export function readCiState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', ro
       conclusion: conclusion ?? (status === 'success' ? 'success' : status === 'failure' ? 'failure' : null),
       name: 'Fail-Closed Gates',
       url: required.detailsUrl ?? required.targetUrl ?? null,
+      prNumber: data?.number ?? null,
     };
   } catch {
     return { known: false, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
@@ -285,9 +314,18 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
       nextAction: contract.phase === 'DONE' ? 'Abgeschlossen; neue Arbeit als neue Lane starten.' : 'Nachsorge abschliessen und den Vertrag auf DONE setzen.',
     };
   }
+  if (ci?.state === 'HOLD') {
+    return { ...base, status: 'CONTINUE', nextAction: ci.nextAction || 'Hold: Merge ist gesperrt; Vertrag oder Blocker pruefen.' };
+  }
+  if (ci?.state === 'REMOTE_CI') {
+    return { ...base, status: 'CONTINUE', nextAction: ci.nextAction || 'REMOTE_CI: CI erneut starten; kein BLOCKED.' };
+  }
+  if (ci?.state === 'SUPERSEDED') {
+    return { ...base, status: 'CONTINUE', nextAction: ci.nextAction || 'Ein neuerer Lauf ist die Autoritaet; diesen Zustand nicht als Merge-Beleg verwenden.' };
+  }
   if (contract.phase === 'CI_PENDING') {
     if (ci?.known && ci.complete && ci.conclusion === 'success') {
-      return { ...base, status: 'MERGE_PENDING', nextAction: 'PR-Lauf gruen: Pflichtstatus und exakten Kopf pruefen, dann manuell mergen.' };
+      return { ...base, status: 'MERGE_PENDING', nextAction: 'PR-Lauf gruen: Plan-Artefakt, Pflichtstatus und Hold pruefen; Merge nur durch promote auf dem exakten Kopf.' };
     }
     if (ci?.known && ci.complete && ci.conclusion === 'failure') {
       return { ...base, status: 'CONTINUE', nextAction: 'PR-Lauf rot: Befund in den Vertrag aufnehmen, beheben und turn:finish erneut ausfuehren.' };

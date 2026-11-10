@@ -1,30 +1,23 @@
 #!/usr/bin/env node
 /**
- * PR Watcher – erstellt Issues bei rotem Gate, Timeout oder fehlerhaftem PR-Body
- * und schliesst erledigte Issues, wenn `main` gruen ist.
+ * PR Watcher – erstellt Issues bei rotem Gate, Timeout oder Abbruch und
+ * schliesst erledigte Issues, wenn `main` gruen ist.
  *
- * Aufruf durch .github/workflows/pr-watcher.yml.
- * Liefert einem Agenten alle Infos, um das Issue zu loesen und den Merge
- * durchzubekommen.
+ * Der PR-Body wird im Plan-Job geprueft, nicht hier: ein fehlender Body ist
+ * ein Gate-Fehler am PR und keine zweite Issue-Wahrheit. Der Watcher laeuft
+ * ausschliesslich auf `workflow_run`.
  */
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { diagnose } from './lib/gate-diagnostics.mjs';
-import { fingerprintOf, scopeLabel } from './lib/issue-scope.mjs';
+import { fingerprintOf, issueBody, scopeLabel } from './lib/issue-scope.mjs';
+import { isSupersededRun } from './lib/ci-state.mjs';
 
 const REPO = process.env.GITHUB_REPOSITORY ?? 'vannon091118/rigged-by-design';
 const GH_TOKEN = process.env.GH_TOKEN;
 const defaultGit = (args) =>
   execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
 
-const SECTIONS = [
-  '### Changes (Was ist neu)',
-  '### Technische Basis & Kausalität',
-  '### Ausblick (Nächste Schritte)',
-];
-
-// Ein Ancestor-Commit allein ist kein Reparaturbeleg. Der Sweep verlangt den
-// urspruenglichen Fingerprint und eine explizite Repair-SHA im Issue-Body.
 const FINGERPRINT_MARKER = /<!--\s*fp:[^>]+-->/i;
 const REPAIR_MARKER = /<!--\s*repair:\s*([0-9a-f]{40})\s*-->/i;
 
@@ -35,7 +28,7 @@ function api(method, path, body) {
     headers: {
       Authorization: `Bearer ${GH_TOKEN}`,
       Accept: 'application/vnd.github+json',
-      'User-Agent': 'opencode-pr-watcher',
+      'User-Agent': 'rbd-pr-watcher',
     },
   };
   if (body) opts.body = JSON.stringify(body);
@@ -43,28 +36,39 @@ function api(method, path, body) {
 }
 
 /**
- * Einzige Issue-Suche: Fingerprint zuerst (offen oder geschlossen, dann nur Zaehlung),
- * sonst Titel unter den offenen Issues desselben Labels.
+ * Eine paginierte Liste. Ein einzelner 100er-Block ist keine Suche: gerade
+ * alte Issues mit stabilem Fingerprint liegen sonst hinter der Grenze.
  */
+async function listPages(path, request = api) {
+  const all = [];
+  for (let page = 1; page <= 20; page += 1) {
+    const separator = path.includes('?') ? '&' : '?';
+    const res = await request('GET', `${path}${separator}per_page=100&page=${page}`);
+    if (!res.ok) return null;
+    const batch = await res.json();
+    if (!Array.isArray(batch)) return null;
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return all;
+}
+
+/** Einzige Issue-Suche: Fingerprint zuerst, sonst Titel unter offenen Issues. */
 async function findIssue(fingerprint, title, label = 'gate-failure', request = api) {
-  const res = await request('GET', `/issues?state=all&labels=${label}&per_page=100`);
-  if (!res.ok) return undefined;
-  const issues = await res.json();
-  const byFingerprint = issues.find((i) => (i.body ?? '').includes(`<!-- ${fingerprint} -->`));
+  const issues = await listPages(`/issues?state=all&labels=${encodeURIComponent(label)}`, request);
+  if (!issues) return undefined;
+  const byFingerprint = issues.find((issue) => (issue.body ?? '').includes(`<!-- ${fingerprint} -->`));
   if (byFingerprint) return { issue: byFingerprint, recurring: true };
-  const byTitle = issues.find((i) => i.state === 'open' && i.title === title);
+  const byTitle = issues.find((issue) => issue.state === 'open' && issue.title === title);
   return byTitle ? { issue: byTitle, recurring: false } : undefined;
 }
 
-/** Zählt Vorkommen über Kommentare "Vorgekommen: N mal" und hängt den neuen Lauf an. */
+/** Zaehlt Vorkommen ueber den Kommentarvertrag und haengt den neuen Lauf an. */
 async function recordRecurrence(issue, runUrl, { api: request = api } = {}) {
-  const res = await request('GET', `/issues/${issue.number}/comments?per_page=100`);
-  const comments = res.ok ? await res.json() : [];
-  const counts = comments.map((c) => /Vorgekommen: (\d+) mal/.exec(c.body ?? '')).filter(Boolean);
-  const previous = counts.length > 0 ? Math.max(...counts.map((m) => Number(m[1]))) : 1;
+  const comments = (await listPages(`/issues/${issue.number}/comments`, request)) ?? [];
+  const counts = comments.map((comment) => /Vorgekommen: (\d+) mal/.exec(comment.body ?? '')).filter(Boolean);
+  const previous = counts.length > 0 ? Math.max(...counts.map((match) => Number(match[1]))) : 1;
   const count = previous + 1;
-  // Ein erneut aufgetretener Fehler ist wieder offen: ein Kommentar an einem
-  // geschlossenen Issue waere unsichtbar und wuerde den Blocker verschleiern.
   if (issue.state === 'closed') {
     const reopened = await request('PATCH', `/issues/${issue.number}`, {
       state: 'open',
@@ -82,11 +86,7 @@ async function recordRecurrence(issue, runUrl, { api: request = api } = {}) {
   if (issue.state !== 'closed') console.log(`Issue #${issue.number} aktualisiert (${count} mal).`);
 }
 
-/**
- * Dedupliziertes Issue: gleicher Fingerprint wird kommentiert bzw. wieder
- * geoeffnet, ein neuer Befund angelegt. Dieselbe Funktion nutzt `auto-resolve`,
- * damit es nur einen Issue-Vertrag gibt.
- */
+/** Dedupliziertes Issue; derselbe Fingerprint wird kommentiert bzw. wieder geoeffnet. */
 export async function ensureIssue({
   title,
   body,
@@ -124,6 +124,11 @@ async function createIssue(title, body, labels, fingerprint, runUrl, label = 'ga
   return ensureIssue({ title, body, labels, fingerprint, runUrl, label });
 }
 
+async function ensureLabel(name) {
+  if (!name) return;
+  await api('POST', '/labels', { name, color: '0e8a16', description: `Gate-Scope ${name}` });
+}
+
 async function getWorkflowRunJobs(runId) {
   const res = await api('GET', `/actions/runs/${runId}/jobs`);
   if (!res.ok) return [];
@@ -134,47 +139,50 @@ async function getWorkflowRunJobs(runId) {
 async function jobLogs(runId) {
   const jobs = await getWorkflowRunJobs(runId);
   const logs = new Map();
-  for (const job of jobs.filter((j) => j.conclusion === 'failure')) {
-    const res = await api('GET', '/actions/jobs/' + job.id + '/logs');
+  for (const job of jobs.filter((entry) => entry.conclusion === 'failure')) {
+    const res = await api('GET', `/actions/jobs/${job.id}/logs`);
     if (res.ok) logs.set(job.id, await res.text());
   }
   return { jobs, logs };
 }
 
-/** Alle roten Gates eines Laufs - nicht nur der erste Befund. */
 async function collectRunFailure(runId) {
   const { jobs, logs } = await jobLogs(runId);
   return diagnose({ jobs, logs });
 }
 
-/** Wie oft der Lauf schon gelaufen ist; null, wenn nicht lesbar. */
 async function runAttempt(runId) {
-  const res = await api('GET', '/actions/runs/' + runId);
+  const res = await api('GET', `/actions/runs/${runId}`);
   if (!res.ok) return null;
   const data = await res.json();
   return Number(data.run_attempt ?? 1);
 }
 
-function gateFailureSections(body) {
-  const lines = body.split(/\r?\n/);
-  const missing = [];
-  const empty = [];
-  let previous = -1;
-  for (const section of SECTIONS) {
-    const at = lines.indexOf(section);
-    if (at < 0) {
-      missing.push(section);
-      continue;
-    }
-    if (at < previous) empty.push(`${section} (falsche Reihenfolge)`);
-    previous = at;
-    const next = lines.findIndex((line, position) => position > at && line.startsWith('### '));
-    const content = lines.slice(at + 1, next < 0 ? undefined : next).filter((line) => line.startsWith('- '));
-    if (content.length === 0 || content.every((line) => line.length < 8)) {
-      empty.push(`${section} (kein echter Inhalt)`);
-    }
-  }
-  return { missing, empty };
+async function runsForHead(branch, headSha) {
+  const res = await api(
+    'GET',
+    `/actions/runs?branch=${encodeURIComponent(branch)}&head_sha=${encodeURIComponent(headSha)}&per_page=20`,
+  );
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data.workflow_runs ?? []).filter((run) => run.name === 'CI Verify');
+}
+
+async function createRemoteCiIssue({ runId, runUrl, runBranch, runCommit, conclusion }) {
+  const title = `[REMOTE_CI] CI Verify ${conclusion}: ${runBranch}`;
+  const fingerprint = fingerprintOf('REMOTE_CI', `${conclusion}:${runBranch}`);
+  const body = issueBody({
+    branch: runBranch,
+    headSha: runCommit,
+    gate: 'CI Verify',
+    code: 'REMOTE_CI',
+    fingerprint,
+    state: conclusion,
+    runUrl,
+    report: `Der Lauf endete mit ${conclusion}. Das ist REMOTE_CI (ERR-4014/ERR-4016): Lauf erneut starten. Kein BLOCKED, kein Dump auf integration.`,
+  });
+  await createIssue(title, body, ['remote-ci'], fingerprint, runUrl, 'remote-ci');
+  console.log(`REMOTE_CI: ${conclusion} (${runId}) – kein Blocker.`);
 }
 
 /**
@@ -198,26 +206,23 @@ async function sweepGreenMain({ api: request = api, git = defaultGit, mainSha = 
     console.log(`Sweep uebersprungen: origin/main ${originMain.slice(0, 7)} ist nicht der gepruefte ${mainSha.slice(0, 7)}.`);
     return;
   }
-  const res = await request('GET', '/issues?state=open&labels=gate-failure&per_page=100');
-  if (!res.ok) {
-    console.log(`Sweep uebersprungen: Issues nicht lesbar (${res.status}).`);
+  const issues = await listPages('/issues?state=open&labels=gate-failure', request);
+  if (!issues) {
+    console.log('Sweep uebersprungen: Issues nicht lesbar.');
     return;
   }
-  const issues = await res.json();
   let closed = 0;
   for (const issue of issues) {
     const body = issue.body ?? '';
     const match = /\*\*(?:Head-SHA|Commit):\*\*\s*`([0-9a-f]{7,40})`/.exec(body);
     const repair = REPAIR_MARKER.exec(body)?.[1] ?? null;
-    // Ohne Original-Fingerprint und ohne Repair-SHA bleibt das Issue offen,
-    // auch wenn der Befund- oder ein spaeterer Commit auf main liegt.
     if (!match || !FINGERPRINT_MARKER.test(body) || !repair || repair === match[1]) continue;
     try {
       git(['merge-base', '--is-ancestor', match[1], mainSha]);
       git(['merge-base', '--is-ancestor', match[1], repair]);
       git(['merge-base', '--is-ancestor', repair, mainSha]);
     } catch {
-      continue; // Befund oder Reparatur liegt nicht auf main: Issue bleibt offen.
+      continue;
     }
     await request('POST', `/issues/${issue.number}/comments`, {
       body: `Urspruenglicher Befund \`${match[1]}\`, Reparatur \`${repair}\`: beide liegen auf \`${mainSha}\`; \`CI Verify\` ist fuer genau diesen Commit gruen. Issue wird geschlossen.`,
@@ -233,24 +238,6 @@ async function sweepGreenMain({ api: request = api, git = defaultGit, mainSha = 
   console.log(`Sweep: ${closed} Issue(s) geschlossen.`);
 }
 
-async function main() {
-  const args = process.argv.slice(2);
-  if (args.includes('--sweep-green')) {
-    await sweepGreenMain();
-    return;
-  }
-
-  const eventName = process.env.GITHUB_EVENT_NAME;
-
-  if (eventName === 'workflow_run') {
-    await handleWorkflowRun();
-  } else if (eventName === 'pull_request' || args.includes('--pr-check')) {
-    await handlePullRequest();
-  } else {
-    console.log(`Unbekanntes Event: ${eventName}`);
-  }
-}
-
 async function handleWorkflowRun() {
   const runId = process.env.RUN_ID;
   const runUrl = process.env.RUN_URL;
@@ -258,202 +245,81 @@ async function handleWorkflowRun() {
   const runCommit = process.env.RUN_COMMIT;
   const runConclusion = process.env.RUN_CONCLUSION;
 
-  // Timeout, Abbruch und Startfehler sind REMOTE_CI: kein Blocker, kein
-  // Notfall, sondern ein Lauf, der wiederholt wird.
-  if (['timed_out', 'cancelled', 'startup_failure'].includes(runConclusion)) {
-    const title = `[REMOTE_CI] CI Verify ${runConclusion}: ${runBranch}`;
-    const body = `## ⏱️ CI ohne Ergebnis (REMOTE_CI)
-
-**Branch:** \`${runBranch}\`  
-**Commit:** \`${runCommit}\`  
-**CI Run:** <${runUrl}>  
-**Ergebnis:** \`${runConclusion}\`
-
-## Was zu tun ist
-
-1. Lauf erneut starten (\`gh run rerun ${runId}\` oder "Re-run jobs").
-2. Bleibt es beim Timeout, den Befund als \`REMOTE_CI\` (ERR-4014) behandeln und das Gate entlasten.
-3. Kein \`BLOCKED\`, kein Dump auf \`integration\`: die Arbeit laeuft weiter.
-`;
-    await createIssue(title, body, ['remote-ci'], fingerprintOf('REMOTE_CI', `${runConclusion}:${runBranch}`), runUrl, 'remote-ci');
+  if (runConclusion === 'cancelled') {
+    const runs = await runsForHead(runBranch, runCommit);
+    if (isSupersededRun({ id: runId, head_sha: runCommit }, runs)) {
+      console.log('SUPERSEDED: ein neuerer CI-Lauf ist die Autoritaet; kein Issue.');
+      return;
+    }
+    await createRemoteCiIssue({ runId, runUrl, runBranch, runCommit, conclusion: runConclusion });
     return;
   }
-
+  if (['timed_out', 'startup_failure'].includes(runConclusion)) {
+    await createRemoteCiIssue({ runId, runUrl, runBranch, runCommit, conclusion: runConclusion });
+    return;
+  }
   if (runConclusion !== 'failure') {
-    console.log('CI-Run nicht rot, kein Issue nötig.');
+    console.log('CI-Run nicht rot, kein Issue noetig.');
     return;
   }
 
   console.log(`CI-Run rot: ${runBranch} (${runCommit}), Run ${runId}`);
-
-  // Mit aktivem Auto-Resolve ist dieser Pfad still: Reparatur, Wiederholung
-  // und Eskalation laufen dort in einer Hand. Ohne den Schalter bleibt der
-  // Watcher der einzige Issue-Pfad.
   if (process.env.RBD_AUTO_RESOLVE === '1') {
     console.log('Auto-Resolve uebernimmt Reparatur und Eskalation; pr-watcher legt kein Gate-Issue an.');
     return;
   }
 
   const diagnostics = await collectRunFailure(runId);
-  // Begrenzter Retry vor dem Issue: nur wenn jeder Befund transient ist
-  // (Netz, Runner, Rate Limit), und hoechstens einmal. Fachliche Fehler
-  // wiederholen sich mit identischen Eingaben und werden nicht erneut gestartet.
-  const attempt = await runAttempt(runId);
-  const transient = diagnostics.failures.length > 0
-    && diagnostics.failures.every((failure) => failure.level === 'REMOTE_CI');
-  if (transient && attempt !== null && attempt < 2) {
-    const rerun = await api('POST', '/actions/runs/' + runId + '/rerun', { enable_debug_logging: false });
-    console.log('Retry ' + (attempt + 1) + '/2 fuer ausschliesslich transiente Befunde (' + rerun.status + ').');
-    if (rerun.ok) return;
-  }
-  const primary = diagnostics.primary;
-  const code = primary.code;
-  const firstLine = primary.line;
-  const failedTest = primary.failedTest;
-  const fingerprint = fingerprintOf(code, firstLine);
-
-  // Scope: `main` blockiert global, eine Lane nur sich selbst. Das Label ist
-  // die eine Wahrheit, die `pretask` liest.
-  const scope = scopeLabel(runBranch);
-  if (scope) {
-    await api('POST', '/labels', { name: scope, color: '0e8a16', description: `Gate-Scope ${scope}` });
-  }
-  const labels = ['gate-failure', 'agent-action', ...(scope ? [scope] : [])];
-
-  const title = `[${code}] CI Verify: ${firstLine.trim().slice(0, 80)}`;
-  const body = `## 🚨 CI Gate rot
-
-**Branch:** \`${runBranch}\`  
-**Head-SHA:** \`${runCommit}\`  \r\n**Gate:** \`${primary.step ?? primary.job ?? 'unbekannt'}\`  \r\n**Code:** \`${code}\`  \r\n**Fingerprint:** \`${fingerprint}\`  \r\n**Repair-Marker:** keiner  \r\n**CI Run:** <${runUrl}>  
-**Betroffene Datei:** ${failedTest ? `\`${failedTest}\`` : 'nicht eindeutig - Log-Auszug unten'}  
-**Erkannt durch:** pr-watcher.yml  
-**Scope:** ${scope ? `\`${scope}\`` : 'ohne Scope - Warnung'}
-
-## 📋 Was der Agent tun muss
-
-1. **Checkout des betroffenen Branches:**
-   \`\`\`bash
-   git checkout ${runBranch}
-   git pull origin ${runBranch}
-   \`\`\`
-
-2. **Nur den betroffenen Pfad lokal pruefen:**
-   \`\`\`bash
-   pnpm run test:affected
-   pnpm run verify:light
-   \`\`\`
-
-3. **Fehler beheben** bis die betroffenen Gates grün sind.
-
-4. **Commit mit Pflichtsektionen erstellen:**
-   \`\`\`text
-   <type>: <Kurzbeschreibung>
-
-   ### Changes (Was ist neu)
-   ...
-
-   ### Technische Basis & Kausalität
-   ...
-
-   ### Ausblick (Nächste Schritte)
-   ...
-   \`\`\`
-
-5. **Auf den Branch pushen** (der CI-Run startet automatisch neu).
-
-6. **Wenn alle Gates grün:** PR zu \`main\` erstellen und manuell mergen. \`promote\` ist deaktiviert und mergt nichts automatisch.
-
-## 🔍 Gate-Details
-
-<details>
-<summary>Fehlgeschlagene Jobs / Schritte</summary>
-
-\`\`\`
-${diagnostics.report}
-\`\`\`
-
-</details>
-
-## 📎 Regeln (aus AGENTS.md)
-
-- **Pretask zuerst:** \`pnpm run agent:pretask\`; offene \`gate-failure\`-Issues haben Vorrang.
-- **Nur echte Invarianten blockieren:** Balance, schiefe Tests und Randfaelle sind dieses Issue, kein \`BLOCKED\`.
-- **Lokal leicht pruefen** (\`test:affected\`, \`verify:light\`); die volle Suite laeuft in CI.
-- **Commit-Body muss** die drei Pflichtsektionen enthalten (\`### Changes\`, \`### Technische Basis & Kausalität\`, \`### Ausblick\`).
-
-## ✅ Issue schließen
-
-Nach der Reparatur die Fix-SHA in diesen Body eintragen:
-
-\`<!-- repair: <40-stellige-fix-sha> -->\`
-
-\`pr-watcher.yml --sweep-green\` schliesst nur, wenn der urspruengliche Fingerprint, die Reparatur-SHA und der exakt geprüfte gruene \`main\`-Commit zusammenpassen. Ein aelterer Commit allein schliesst nichts.
-`;
-
-  await createIssue(title, body, labels, fingerprint, runUrl);
-}
-
-async function handlePullRequest() {
-  const prNumber = process.env.PR_NUMBER;
-  const prBody = process.env.PR_BODY ?? '';
-
-  if (!prBody.trim()) {
-    const title = `[PR-BODY-FEHLT] PR #${prNumber}`;
-    const body = `## 📋 PR ohne Body
-
-**PR:** #${prNumber}  
-**URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-
-Der PR hat keinen Body. Der PR-Body muss die drei Pflichtsektionen enthalten:
-
-\`\`\`
-### Changes (Was ist neu)
-...
-
-### Technische Basis & Kausalität
-...
-
-### Ausblick (Nächste Schritte)
-...
-\`\`\`
-
-Siehe AGENTS.md für die vollständigen Regeln.
-`;
-    await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprintOf('PR-BODY', `PR #${prNumber}`), `https://github.com/${REPO}/pull/${prNumber}`);
+  // ERR-4030 gehoert dem governance-issue-Job; eine zweite Issue-Wahrheit
+  // wuerde den Freeze-Befund nur verwischen.
+  const findings = (diagnostics.failures ?? []).filter(
+    (failure) => failure?.code && failure.code !== 'ERR-4030',
+  );
+  if (findings.length === 0) {
+    console.log('Kein Issue: nur ERR-4030 oder kein Befund; governance-issue ist zustaendig.');
     return;
   }
 
-  const { missing, empty } = gateFailureSections(prBody);
+  const scope = scopeLabel(runBranch);
+  await ensureLabel(scope);
+  const attempt = await runAttempt(runId);
+  const transient = findings.every((failure) => failure.level === 'REMOTE_CI');
+  if (transient && attempt !== null && attempt < 2) {
+    const rerun = await api('POST', `/actions/runs/${runId}/rerun`, { enable_debug_logging: false });
+    console.log(`Retry ${attempt + 1}/2 fuer ausschliesslich transiente Befunde (${rerun.status}).`);
+    if (rerun.ok) return;
+  }
 
-  if (missing.length > 0 || empty.length > 0) {
-    const title = `[PR-BODY-UNVOLLSTÄNDIG] PR #${prNumber}`;
-    const body = `## 📋 PR-Body unvollständig
+  for (const failure of findings) {
+    const code = failure.code;
+    const firstLine = String(failure.line ?? failure.step ?? 'Befund').trim();
+    const fingerprint = fingerprintOf(code, firstLine);
+    const title = `[${code}] CI Verify: ${firstLine.slice(0, 80)}`;
+    const body = issueBody({
+      branch: runBranch,
+      headSha: runCommit,
+      gate: failure.step ?? failure.gate ?? null,
+      code,
+      fingerprint,
+      state: transient ? 'REMOTE_CI' : null,
+      runUrl,
+      report: failure.line ?? diagnostics.report,
+    });
+    const labels = transient ? ['remote-ci'] : ['gate-failure', 'agent-action', ...(scope ? [scope] : [])];
+    await createIssue(title, body, labels, fingerprint, runUrl, transient ? 'remote-ci' : 'gate-failure');
+  }
+}
 
-**PR:** #${prNumber}  
-**URL:** <https://github.com/${REPO}/pull/${prNumber}>  
-
-Folgende Pflichtsektionen fehlen oder sind ohne echten Inhalt:
-
-${missing.map((s) => `- \`${s}\` (fehlt komplett)`).join('\n')}${empty.length > 0 ? '\n' + empty.map((s) => `- \`${s}\``).join('\n') : ''}
-
-Der PR-Body muss alle drei Pflichtsektionen mit echtem Inhalt enthalten:
-
-\`\`\`
-### Changes (Was ist neu)
-<echter Inhalt>
-
-### Technische Basis & Kausalität
-<echter Inhalt>
-
-### Ausblick (Nächste Schritte)
-<echter Inhalt>
-\`\`\`
-
-Siehe AGENTS.md für die vollständigen Regeln.
-`;
-    await createIssue(title, body, ['gate-failure', 'agent-action'], fingerprintOf('PR-BODY', `PR #${prNumber}`), `https://github.com/${REPO}/pull/${prNumber}`);
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--sweep-green')) {
+    await sweepGreenMain();
+    return;
+  }
+  if (process.env.GITHUB_EVENT_NAME === 'workflow_run') {
+    await handleWorkflowRun();
   } else {
-    console.log(`PR #${prNumber} Body PASS: alle Pflichtsektionen vorhanden.`);
+    console.log(`Unbekanntes Event: ${process.env.GITHUB_EVENT_NAME ?? '(leer)'}`);
   }
 }
 

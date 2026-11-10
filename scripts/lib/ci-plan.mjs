@@ -215,6 +215,9 @@ export function buildPlan(changed, options = {}) {
   return {
     changed: gates.kind.files,
     state: gates.state,
+    base: String(options.base ?? ''),
+    head: String(options.head ?? ''),
+    runId: String(options.runId ?? ''),
     gates: gates.gates.map((key) => ({ gate: GATES[key].name })),
     gateKeys: gates.gates,
     reason: gates.reason,
@@ -239,6 +242,9 @@ export function planReport(changed, plan) {
   return {
     changed,
     state: plan.state,
+    base: plan.base ?? '',
+    head: plan.head ?? '',
+    runId: plan.runId ?? '',
     run: plan.run,
     noop: plan.noop,
     systems: [...new Set(changed.map((file) => file.split('/').slice(0, 2).join('/')))].slice(0, 12),

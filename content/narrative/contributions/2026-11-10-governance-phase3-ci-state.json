@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T04:20Z-governance-phase3-ci-state",
+  "contributionId": "governance-phase3-ci-state-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita las den CI-Zustand nicht aus einem Zeitstempel, sondern aus dem exakten Lauf, dem Kopf und der Basis. Ein Hold war kein Fehler, sondern eine Antwort: Der Merge wartet, bis der Vertrag und die Issues dieselbe Sprache sprechen.",
+  "directives": []
+}

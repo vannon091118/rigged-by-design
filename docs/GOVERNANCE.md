@@ -89,7 +89,7 @@ Issue-Scopes:
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; die vollständige Prüfung und der Pflichtstatus liegen im PR-Lauf. Der Merge bleibt manuell: PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, dann Merge. `promote` ist deaktiviert; `integration` ist kein Normalweg. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
+Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; die vollständige Prüfung und der Pflichtstatus liegen im PR-Lauf. Der Merge liegt ausschließlich bei `promote`: PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, gültiges `ci-plan`-Artefakt und kein Hold. `integration` ist nur ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
 
 ## Referenzen
 

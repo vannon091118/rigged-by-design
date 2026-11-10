@@ -24,6 +24,7 @@ permissions:
   contents: write
   pull-requests: write
   actions: write
+  issues: read
 
 concurrency:
   group: promote
@@ -32,6 +33,11 @@ concurrency:
 jobs:
   promote:
     name: Gruen mergen, rot als Issue
+    # Nur ein PR-Lauf ist ein Merge-Nachweis. Ein Push auf main, ein
+    # Release-Lauf oder ein manueller Lauf ohne PR duerfen nie mergen.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -56,6 +62,17 @@ jobs:
         with:
           node-version: '22'
 
+      - name: CI-Plan laden
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          rm -rf .ci-plan
+          if [ -n "$RUN_ID" ]; then
+            gh run download "$RUN_ID" -n ci-plan -D .ci-plan || true
+          fi
+
       - name: Promote
         env:
           GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
@@ -65,6 +82,8 @@ jobs:
           # Der gruene Pflichtstatus muss zu genau diesem Lauf und dieser Basis
           # gehoeren; ein aelterer Push-Lauf auf demselben Kopf zaehlt nicht.
           CI_RUN_ID: ${{ github.event.workflow_run.id || '' }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
+          CI_PLAN_DIR: .ci-plan
           BASE_SHA: ${{ github.event.workflow_run.pull_requests[0].base.sha || '' }}
           HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name || '' }}
           PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number || inputs.pr || '' }}

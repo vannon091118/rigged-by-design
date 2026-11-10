@@ -72,7 +72,7 @@ const forced = handoff
     : event.toLowerCase() === 'workflow_dispatch'
       ? 'MANUAL'
       : null;
-const options = { base, head, event, ref, noop: noopFlag, handoff, required };
+const options = { base, head, event, ref, noop: noopFlag, handoff, required, runId: process.env.GITHUB_RUN_ID ?? '' };
 const result = planForCI({ ...options, state: forced ?? undefined });
 const plan = result?.plan ?? buildPlan([], { ...options, state: forced ?? 'UNKNOWN' });
 
