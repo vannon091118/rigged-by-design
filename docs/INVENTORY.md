@@ -546,10 +546,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2301 |
-| Gelistete Dateien | 2301 |
+| Getrackte Dateien | 2302 |
+| Gelistete Dateien | 2302 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (51), content (823), docs (77), public (554), scripts (91), src (680) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (52), content (823), docs (77), public (554), scripts (91), src (680) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -561,7 +561,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 49 Datei(en)
+- `.lane-claims/claims/` — 50 Datei(en)
 - `content/narrative/contributions/` — 819 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -691,7 +691,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-interaction-foundation.json` — { — gelesen: 53 Zeilen
 - `.lane-claims/claims/lane-governance-knowledge-chain.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-lane-autopilot.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-lane-autopilot.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-ledger-game-type.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
