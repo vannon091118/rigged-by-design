@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:32Z-agent14-claim-evidence-5",
+  "contributionId": "agent14-claim-evidence-5",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Fuenf Belege, eine Sprache: jeder der vier Agent-14-Claims nennt jetzt den Commit, der seinen Inhalt traegt, und dieser Claim nennt seinen eigenen. Wer nachzaehlt, findet keinen Wert mehr, der nur behauptet war.",
+  "directives": []
+}
