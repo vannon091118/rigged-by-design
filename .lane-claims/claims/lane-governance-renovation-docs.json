@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/renovation-docs",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/renovation-docs",
+  "baseSha": "e76e14fbf8845b3ee5703de302b84806fb16d98a",
+  "task": "Agent 09: Meta-Doku und Claim-Abschluss zur Renovierung",
+  "goal": "Agent 09 im Changelog, im Devtagebuch und in der Roadmap belegen und den Lane-Claim `lane/sim/renovation` mit Squash-SHA schliessen, ohne Code oder Gates zu veraendern.",
+  "pathAllowlist": [
+    "docs/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e76e14fbf8845b3ee5703de302b84806fb16d98a",
+  "notes": "Governance-only: Doku und Claim-/Task-Status; keine Code-, Save- oder Gate-Aenderung."
+}

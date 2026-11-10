@@ -3562,3 +3562,34 @@ ueber GitHub Actions eskaliert und dort geloest werden. Der volle Beweis bleibt
 
 **Bewusst nicht getan.** Kein Save-Format-Wechsel (bleibt v8), keine Migration
 der Narrativ-Engine (NAR-00..16 bleibt Plan), keine Aenderung an Geldpfaden.
+
+## 2026-11-10 - Renovierung und Immobilienzustand
+
+**Ziel.** Die gekaufte Immobilie soll einen Zustand haben, der Arbeit, Material
+und Geld kostet und sich an Ruf und Gaestelaune bemerkbar macht - ohne einen
+zweiten Standortzustand und ohne neues Save-Feld.
+
+**Umsetzung.**
+
+- `src/core/sim/renovation.ts`: drei Schritte (Teilrenoviert, Betriebsbereit,
+  Aufgewertet) mit Materialbedarf 1/2/3 Ersatzteilen und 40/80/140 VC; die Stufe
+  wird aus den Journal-Belegen `RENOVIERUNG` gelesen, auf drei gedeckelt und per
+  `id` dedupliziert.
+- Wirkung ueber bestehende Leser: `renovationReputationBonus` fliesst in
+  `reputation()`, `renovationMoodBonus` in `spawnGuest`; ohne Eigentum bleibt
+  beides null, die bestehenden Tests laufen unveraendert.
+- Arbeit am Bestand: Furniture der eigenen Flaeche wird repariert, verschmutzte
+  Kacheln im Bereich werden gereinigt; Journal-Beleg, `lastEvent` und
+  Buchungsgrund `renovierung <stufe>` halten das Ergebnis fest.
+- Sicht und Aktion im vorhandenen Charakterfenster (`ui/career-property.tsx`),
+  Einstieg ueber `worldStore.city({ kind: 'renovate' })` - der Immobilien-Pfad
+  aus Agent 07/08 bleibt der einzige Weg.
+
+**Pruefungen.** `renovation.test.ts` (10 Tests: Stufenfolge, Buchung, Material,
+Konto, Instandsetzung, Boni, Dedupe), dazu Eigentums-, Stadt- und
+Charakterfenster-Tests; `verify:all` Exit 0 lokal und im CI-Gate.
+
+**Bewusst nicht getan.** Kein neues Save-Feld und kein Versionssprung (die Stufe
+ist aus Belegen reproduzierbar), keine zweite Miete neben `upkeep.ts`, keine
+Kreditbuchung wie beim Verbrauchsmaterial, keine Aenderung an den Hot Zones
+`store/world-store.ts` und `store/venue-commands.ts`.
