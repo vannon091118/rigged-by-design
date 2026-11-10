@@ -4,7 +4,7 @@
   "claimId": "lane/ci/integration-controller",
   "branch": "lane/ci/integration-controller",
   "baseSha": "1f40395c8eba5e907472e937ea31fb0e09c82123",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Integrationscontroller vor der CI",
   "goal": "Marker normalisieren, Inventar und Registry aus dem Commit-Bau heraushalten, Pre-Push schnell halten, Gates nach Risiko waehlen und Rebase/Regeneration automatisieren; der Freeze bleibt die letzte Grenze.",
   "pr": {
@@ -33,11 +33,11 @@
     },
     {
       "id": "force-with-lease-konflikt",
-      "status": "open",
-      "severity": "warning",
-      "summary": "destructive-commands verbietet push --force-with-lease in scripts/integrate.mjs, obwohl AGENTS den Rebase-Push nur damit erlaubt; Testdatei liegt ausserhalb dieser Lane."
+      "status": "resolved",
+      "severity": "info",
+      "summary": "Geloest im Rahmen der Lane: scripts/integrate.mjs pusht nur noch per Fast-Forward, kein --force-Flag mehr in Produktionsskripten; Gate tests (destructive-commands) wieder gruen, manueller Rebase-Push bleibt in AGENTS.md erlaubt."
     }
   ],
-  "nextAction": "CI auf Kopf 8f24662 abwarten (erwartet: alles gruen ausser Gate tests wegen force-with-lease-Konflikt); danach #344 und #338 auf den neuen Stand ziehen.",
-  "revision": 2
+  "nextAction": "CI auf neuem Kopf abwarten (Vertrags-Update); bei Gruen mergt Promote #347 automatisch, danach #344 (Main-Merge + Regeneration) und #338 nachziehen.",
+  "revision": 4
 }
