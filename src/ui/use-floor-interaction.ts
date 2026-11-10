@@ -7,7 +7,7 @@ import type { FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 
-export interface FloorSelection {
+interface FloorSelection {
   readonly target: InteractionTarget;
   readonly actions: readonly MenuAction[];
   readonly anchor: ScreenAnchor | null;

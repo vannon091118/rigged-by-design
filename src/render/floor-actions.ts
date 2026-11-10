@@ -18,7 +18,7 @@ type ActionView = Pick<GameView, 'player'>;
 
 const target = (kind: InteractionTarget['kind'], id: number): InteractionTarget => ({ kind, id });
 
-export function buildStainActions(world: ActionView, stain: { id: number; x: number; y: number }): MenuAction[] {
+function buildStainActions(world: ActionView, stain: { id: number; x: number; y: number }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
   return [{
     id: 'CLEAN_STAIN',
@@ -30,7 +30,7 @@ export function buildStainActions(world: ActionView, stain: { id: number; x: num
   }];
 }
 
-export function buildGuestActions(
+function buildGuestActions(
   world: ActionView,
   guest: { id: number; disputeId: number | null; thirst: number },
 ): MenuAction[] {
@@ -96,7 +96,7 @@ export function buildFurnitureActions(
   return actions;
 }
 
-export function buildCrateActions(world: ActionView, crate: { id: number }): MenuAction[] {
+function buildCrateActions(world: ActionView, crate: { id: number }): MenuAction[] {
   const handsFree = world.player.carrying === '';
   return [{
     id: 'PICKUP_CRATE',

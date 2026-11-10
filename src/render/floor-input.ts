@@ -8,9 +8,9 @@ import { resolveHit, type ScreenAnchor } from './floor-hit';
 
 export type { ScreenAnchor } from './floor-hit';
 
-export type FloorTarget = InteractionTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
+type FloorTarget = InteractionTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
 
-export interface TapResolution {
+interface TapResolution {
   readonly target: FloorTarget;
   readonly actions: readonly MenuAction[];
   /** Fussanker des Ziels in Weltpixeln; nicht die geklickte Pixelposition. */
@@ -59,7 +59,7 @@ export function handleTap(
 }
 
 /** Ab hier ist ein zweiter Klick auf dasselbe Ziel ein Doppelklick, kein zweiter Auftrag. */
-export const TAP_WINDOW_MS = 320;
+const TAP_WINDOW_MS = 320;
 
 export interface TapMark {
   readonly key: string;

@@ -8,7 +8,7 @@
  */
 import { wallOwnerTile } from './floor-math';
 
-export type HitKind = 'furniture' | 'guest' | 'crate' | 'stain';
+type HitKind = 'furniture' | 'guest' | 'crate' | 'stain';
 
 /** Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. */
 export interface ScreenAnchor {
@@ -16,12 +16,12 @@ export interface ScreenAnchor {
   readonly y: number;
 }
 
-export interface HitCell {
+interface HitCell {
   readonly x: number;
   readonly y: number;
 }
 
-export interface FloorHit {
+interface FloorHit {
   readonly kind: HitKind;
   readonly id: number;
   /** Fusslinie in Tiles; groesser heisst weiter vorne. */
