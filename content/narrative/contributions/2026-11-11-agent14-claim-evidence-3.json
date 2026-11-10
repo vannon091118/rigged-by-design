@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:20Z-agent14-claim-evidence-3",
+  "contributionId": "agent14-claim-evidence-3",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Beleg hat jetzt die Form, die das Register liest, und die Nummer, die ihn traegt: 97d7b22 aus dem Korrektur-PR. Damit ist der Nachtrag selbst belegt, nicht nur behauptet.",
+  "directives": []
+}

@@ -4,14 +4,19 @@
   "claimId": "lane/governance/agent14-claim-evidence",
   "branch": "lane/governance/agent14-claim-evidence",
   "baseSha": "06adaada656c31911d832c9ed726bdc8bfecb514",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 14 Register: Merge-Belege der vier Claims nach Schema korrigieren",
   "goal": "mergedEvidence der vier Agent-14-Claims auf die definierte Belegart setzen und mergedSha auf den baumgleichen Commit auf main ziehen; keine Code-Aenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 399,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/399",
+    "state": "merged",
+    "mergedSha": "97d7b228652a0561e8d59238e1467ca2b19dcf4e"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; dann PR-Nummer und Squash-SHA eintragen.",
-  "revision": 2
+  "nextAction": "Nachlauf: AFTERCARE, dann DONE und Claim mit Beleg schliessen.",
+  "revision": 3
 }
