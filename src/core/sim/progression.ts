@@ -9,7 +9,7 @@ import { BUILD_DEFS, type BuildId } from './offers';
 import type { WorldState } from './types';
 
 type CompanyTierId = 'BUDE' | 'KASSE' | 'SAAL' | 'KONZERN';
-type CompanyMetricId = 'day' | 'capital' | 'profit' | 'reputation' | 'served' | 'games';
+type CompanyMetricId = 'day' | 'capital' | 'profit' | 'reputation' | 'served' | 'games' | 'staff';
 
 /** Nur fuer die Anzeige: Betraege in ganzen VC, nie als gespeicherter Geldwert. */
 const MICRO = 10_000;
@@ -57,21 +57,23 @@ const TIERS: readonly TierDef[] = [
     ],
   },
   {
-    id: 'SAAL', name: 'Spielsaal', note: 'Mehrere Tische, eigener Ruf, echte Ausstattung.',
+    id: 'SAAL', name: 'Spielsaal', note: 'Mehrere Tische, eigener Ruf, echte Ausstattung, eigenes Personal.',
     needs: [
       { id: 'reputation', label: 'Ruf', need: 50 },
       { id: 'profit', label: 'Betriebsgewinn (VC)', need: 90 },
       { id: 'games', label: 'Spielgeräte', need: 6 },
       { id: 'capital', label: 'Kapital (VC)', need: 150 },
+      { id: 'staff', label: 'Personal', need: 2 },
     ],
   },
   {
-    id: 'KONZERN', name: 'Konzern', note: 'Mehrere Säle, eigene Regeln, eigener Ruf.',
+    id: 'KONZERN', name: 'Konzern', note: 'Mehrere Säle, eigene Regeln, eigener Ruf, eigene Mannschaft.',
     needs: [
       { id: 'reputation', label: 'Ruf', need: 70 },
       { id: 'profit', label: 'Betriebsgewinn (VC)', need: 450 },
       { id: 'games', label: 'Spielgeräte', need: 12 },
       { id: 'capital', label: 'Kapital (VC)', need: 700 },
+      { id: 'staff', label: 'Personal', need: 4 },
     ],
   },
 ];
@@ -92,6 +94,8 @@ function valueOf(id: CompanyMetricId, world: WorldState, ledger: Ledger): number
     case 'reputation': return Math.round(world.reputation);
     case 'served': return world.guestsServed;
     case 'games': return world.furniture.filter((item) => item.gameId).length;
+    // Personal zaehlt die Agenten selbst: kein zweites Ja/Nein neben `world.agents`.
+    case 'staff': return world.agents.length;
   }
 }
 

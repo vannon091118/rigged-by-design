@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-company-progression",
+  "claimId": "lane/sim/company-progression",
+  "branch": "lane/sim/company-progression",
+  "baseSha": "64ba4226046f7f0429173f257acbcbdd2fdac579",
+  "phase": "CI_PENDING",
+  "title": "Agent 14: Geschaeftsprogression BUDE -> KASSE -> SAAL -> KONZERN",
+  "goal": "Die vier Unternehmensstufen behalten ihre echten Bedingungen; Personal wird die fehlende Voraussetzung fuer Spielsaal und Konzern, ohne neues Save-Feld.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}
