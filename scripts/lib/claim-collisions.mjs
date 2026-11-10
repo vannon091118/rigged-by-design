@@ -36,6 +36,26 @@ const isMechanicalPattern = (pattern, metaFiles, mechanicalFiles) => {
 };
 
 /**
+ * Geteilte, generierte Artefakte: jede Lane mit Narrative-Pflicht regeneriert
+ * sie, keine Lane besitzt sie. Eine Allowlist-Ueberschneidung dort ist keine
+ * Schreibsperre, sonst koennte nie eine zweite Lane committen, solange
+ * irgendeine Lane offen ist.
+ */
+export const SHARED_GENERATED_PATHS = Object.freeze([
+  'content/narrative/',
+  'src/core/sim/narrative/composer/',
+]);
+
+/** Muster liegt in einem geteilten, generierten Pfad (oder ist er selbst). */
+const isSharedPattern = (pattern, sharedPaths) => {
+  const prefix = patternPrefix(pattern);
+  return sharedPaths.some((shared) => {
+    const sharedPrefix = patternPrefix(shared);
+    return prefix === sharedPrefix || prefix.startsWith(`${sharedPrefix}/`);
+  });
+};
+
+/**
  * Echte Content-Ueberschneidungen bleiben Kollisionen. Register, Meta- und
  * mechanische Pfade werden von mehreren Lanes mechanisch beruehrt und sind
  * deshalb keine gegenseitige Schreibsperre.
@@ -46,6 +66,7 @@ export function findClaimCollisions({
   metaFiles = [],
   mechanicalFiles = [],
   coordinationFiles = [],
+  sharedPaths = SHARED_GENERATED_PATHS,
   claimEntryPrefix = '',
 } = {}) {
   const collisions = [];
@@ -61,6 +82,8 @@ export function findClaimCollisions({
         if (isCoordinationPattern(b, coordinationFiles, claimEntryPrefix)) return false;
         if (isMechanicalPattern(a, metaFiles, mechanicalFiles)) return false;
         if (isMechanicalPattern(b, metaFiles, mechanicalFiles)) return false;
+        if (isSharedPattern(a, sharedPaths)) return false;
+        if (isSharedPattern(b, sharedPaths)) return false;
         return patternsOverlap(a, b);
       }),
     );

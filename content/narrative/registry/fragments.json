@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:696f15fed9c9ee5c8a6dce36f4cd20f0299ea5cffe6f0d5fbfc3b890286a71c3",
+  "contentHash": "sha256:0b1fd926def4b07555151312ac63cb89c32104f84ce8cfbb26178ebdcb2c54bc",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3378,6 +3378,31 @@
       "text": "Jeder Schritt durch den Kiez hinterlaesst eine andere Spur; wer zweimal denselben Satz hoert, ist stehen geblieben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-scene-53.json"
+    },
+    {
+      "contributionId": "collision-scope-01",
+      "turnId": "2026-11-10T14:00Z-collision-scope",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Zwei Lanes standen vor derselben Wand, weil beide die regenerierte Wand selbst im Zettel fuehrten. Rita strich die geteilten Blätter aus der Sperre: wer sie ohnehin neu schreibt, sperrt sie nicht fuer den Naechsten. Die eigenen Quellzeilen blieben gesperrt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-collision-scope.json"
     },
     {
       "contributionId": "command-dsl-01",

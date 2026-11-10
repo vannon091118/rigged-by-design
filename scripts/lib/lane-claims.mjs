@@ -28,7 +28,8 @@ export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
 // Lane mechanisch beruehren, ohne ihre Allowlist zu erweitern oder mit einer
 // anderen Lane zu kollidieren. Sonst blockierte die Freigabe genau den Lane,
 // der sie braucht.
-export const COORDINATION_FILES = Object.freeze(['.lane-claims/claims.json', '.lane-claims/freeze-unlock.json']);
+// Register, Vertraege und PIN-Freigabe sind Werkzeug jeder Lane.
+export const COORDINATION_FILES = Object.freeze(['.lane-claims', '.lane-claims/claims.json', '.lane-claims/freeze-unlock.json']);
 
 /**
  * Task-Vertraege sind Lane-Werkzeug wie Claims und Freigabe: sie beschreiben
