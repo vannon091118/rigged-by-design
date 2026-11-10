@@ -5,6 +5,20 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-10 - Masterplan Phase 2: Immobilie im WorldState (Agent 08)
+
+**Ziel:** Die Immobilie eindeutig dem WorldState zuordnen, dabei die vorhandenen Grid-, Zonen-, Furniture- und Besuchersysteme nutzen und den Betrieb ueber das zugehoerige Geschaeftskonto fuehren.
+
+**Befund:** Agent 07 hinterliess `player.property` als Datensatz (`property.ts:44-92`) und eine Sicht, die nur Katalog und Besitz kannte. Es gab keinen Bezug zum Boden: `world.layout`, `world.zones`, `world.furniture` und `world.guests` wussten nichts vom Eigentum, und der Kopf von `property.ts` verwies ausdruecklich auf Agent 08. Nutzbar waren `areaAt` (`grid-zones.ts:31`), `worldNav` (`world.ts:47`), `HAUSKONTO` (`money.ts:9`), die Miete/Strom-Buchung in `upkeep.ts:16-27` und `house` im Snapshot (`snapshot.ts:127`). Es fehlten genau die Standortregel und die Betriebssicht - kein zweiter Kaufweg und kein zweites Konto.
+
+**Umsetzung:** `propertyArea(world)` legt die Immobilie in den 30x30-Bereich ihres Eingangs (ohne Eingang: Spielerposition); `propertyWorld(world)` filtert daraus Zonen, Furniture und anwesende Besucher und nennt mit `PROPERTY_ACCOUNT = HAUSKONTO` das Betriebskonto. `propertyView` traegt das als `binding`, die Sektion `ui/career-property.tsx` zeigt nach dem Kauf Flaeche, Zonen, Geraete, Gaeste und den Kontostand; `look-popup.tsx` reicht dafuer `view.house` durch. Alles ist Ableitung, nichts wird gespeichert.
+
+**Save-Entscheidung:** Bewusst **kein neues Feld und kein Versionssprung**. Die Zuordnung folgt aus `template`, `layout` und `zones`; ein gespeicherter `areaId` waere eine zweite Wahrheit, die nach einem Umbau still falsch stehen bliebe. `SAVE_VERSION` bleibt 11, alte Saves laden unveraendert.
+
+**Pruefungen:** `property-world.test.ts` (5), `property.test.ts` (8), `property-command.test.ts` (2) und `player-dashboard.test.tsx` (12) gruen - 27/27. `verify:all` PASS mit Exit 0 auf dem Feature-Kopf `d8a7a34`, CI `Fail-Closed Gates` success mit 0 Annotations, squash-gemergt als `0d47fae` (PR #376).
+
+**Bewusst nicht getan:** Keine zweite Tagesmiete - `upkeep.ts` bucht Miete und Strom bereits ueber `UTILITIES`, eine Eigentuemer-Abgabe waere derselbe Geldweg doppelt. Kein zweites Geschaeftskonto, keine Umdeutung des Hauskontos. Keine Renovierungsstufen und kein Maschinenbetrieb (Agent 09/10), keine neue Speicherwahrheit und keine Aenderung an `player.property`. Der offene Skillpunkt-Verbrauch (`spendPoint`) bleibt liegen.
+
 ## 2026-11-10 - Masterplan Phase 2: Erste Immobilie und Eigentumssystem (Agent 07)
 
 **Ziel:** Der im Masterplan geforderte erste vollstaendige Immobilienkauf - Gewerberaum, kleine Kneipe oder geschlossener Spielsalon - mit Kaufpreispruefung, persoenlicher Zahlung aus dem Portemonnaie, Eigentumszuweisung und Speicherung, ohne zweite Mechanik neben dem vorhandenen Kaufpfad.
