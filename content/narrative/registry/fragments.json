@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:202d0ec5c8420d0ecb98c51ca32ee8672b61868843dff8fc0713a943963c15ef",
+  "contentHash": "sha256:1bd888649c2557d0fc77640216d30c683bf64c8c5d391706fb849b6a80ae95e5",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3715,6 +3715,31 @@
       "text": "Rita markierte im Heft die Zeile, an der die Lane von main abzweigt. Nicht der wandernde Kopf zählt, sondern die gemeinsame Basis; sonst prüft jeder Lauf eine andere Freigabe. Der nächste Leser sah sofort, welche Regel gilt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
+    },
+    {
+      "contributionId": "governance-freeze-task-path-01",
+      "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
     },
     {
       "contributionId": "governance-task-vertrag-01",

@@ -6,6 +6,7 @@
     ".github/workflows/ci-verify.yml",
     ".github/workflows/ensure-pr.yml",
     ".github/workflows/promote.yml",
+    ".lane-claims/tasks/governance-phase2-task-contract.json",
     "AGENTS.md",
     "docs/ARCHITECTURE.md",
     "docs/CI.md",
@@ -25,6 +26,6 @@
     "scripts/verify-lane-claims.mjs",
     "scripts/verify-task-contract.mjs"
   ],
-  "token": "ff2f03f956e9b80feaa2db4f41cee43ed248f9d0c516236c4b128f71f5411ac5",
+  "token": "f25bcc31ec4ea38e13821968c41b8035bfc193fb224142c2888ddc575f9baaff",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

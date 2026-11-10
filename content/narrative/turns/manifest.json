@@ -3288,6 +3288,10 @@
     {
       "turnId": "2026-11-10T03:38Z-governance-freeze-merge-base",
       "contributionId": "governance-freeze-merge-base-01"
+    },
+    {
+      "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
+      "contributionId": "governance-freeze-task-path-01"
     }
   ]
 }
