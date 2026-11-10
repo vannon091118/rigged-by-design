@@ -15,10 +15,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.205] - 2026-11-10
 
 ### Spiel
+- **Spielhistorie im Charakterfenster.** Die letzten sechs eigenen Etappen - Gastduell, Hinterhof-Kampf und der Buden-Kauf - stehen als Liste im Charakterfenster; eine leere Liste sagt das ausdruecklich, statt eine Wirkung zu behaupten. Die Arbeitszeile nennt jetzt Tageslohn und letzte Schicht.
 - **Hinterhof-Karriere im Charakterfenster.** Sechs herausforderbare Gegner mit Rang und Siegchance, Startgeld und Preisgeld, Gegnerhistorie und Bilanz (Siege, Niederlagen, KOs). Der naechste Gegner ist immer der erste unbezwungene; nach dem Endgegner bleibt er herausforderbar. Startgeld geht vom Portemonnaie an die Aussenwelt, Preisgeld kommt nur bei Sieg zurueck; eine Niederlage kostet Startgeld und Lebenspunkte und sperrt den naechsten Kampf ueber die Verletzung. Alles ist aus Archiv und Ledger abgeleitet - kein neues Save-Feld, kein zweiter Zaehler.
 
 ### Technik
 - **Ein Kampfpfad, ein Archiv.** `core/sim/fight-career.ts` kaempft mit `fighters`/`simulateFight` aus `brawl-combat`; `core/sim/fight-history.ts` liest Gastduell und Hinterhof ueber denselben Parser aus `world.archive`. Neue Buchungsgruende `hinterhof startgeld` und `hinterhof preisgeld`.
+- **Spielhistorie ohne zweite Chronik.** `core/sim/player-history.ts` filtert Archiv-Eintraege ([`isFightEvent`](../src/core/sim/fight-history.ts) plus `BAR`), deckelt auf sechs und laesst Reihenfolge und Beleg unveraendert; die Sektion liegt in `ui/career-history.tsx`, Lohn und Schicht kommen aus `JOB_DEFS` und `PlayerJobState`. Kein neues Save-Feld, keine Migration.
 - **Sicht ohne zweites Popup.** Die Sektion liegt in `ui/career-backyard.tsx` und haengt im vorhandenen Charakterfenster; die Aktion laeuft ueber den bestehenden Stadt-Einstieg `worldStore.city({ kind: 'backyardFight' })`.
 
 ## [0.3.204] - 2026-11-10

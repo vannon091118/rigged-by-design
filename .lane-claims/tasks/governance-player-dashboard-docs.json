@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-player-dashboard-docs",
+  "claimId": "lane/governance/player-dashboard-docs",
+  "branch": "lane/governance/player-dashboard-docs",
+  "baseSha": "af482ef6d18da66c6cb0f5677a13c82f3094b2ff",
+  "phase": "CI_PENDING",
+  "title": "Meta-Dokumente zum Spieler-Dashboard nachziehen (Agent 06)",
+  "goal": "CHANGELOG, DEVTAGEBUCH und ROADMAP beschreiben Spielhistorie und Arbeitsstatistik; Spielcode unberuehrt.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Doku committen, PR eroeffnen, CI auf dem Kopf abwarten.",
+  "revision": 1
+}

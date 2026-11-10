@@ -368,6 +368,7 @@ Ziel ist es, den Spieler als echten Protagonisten in der Welt zu verankern – m
 - **Agent 06 – Persönliches Spieler-Dashboard:**
   Übersichtliche Benutzeroberfläche zur persönlichen Progression: Charakterlevel, XP, Attribute, Skillpunkte, Lebenspunkte, Verletzungen, persönliches Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolge. Strikte Trennung von Unternehmensdaten.
   *Stand 2026-11-10:* umgesetzt in `core/sim/player-career.ts` plus Charakterfenster (`look-popup`): Level, XP-Ziel, offene Punkte, LP und Verletzung, sieben Attribute mit Wirkung, Portemonnaie und Bonus, Kampfbilanz aus dem Archiv, Job mit Schichten und sechs Erfolge - alles abgeleitet, kein zweites Modell. Belege: `player-career.test.ts`, `player-dashboard.test.tsx`.
+  *Nachtrag 2026-11-10:* Spielhistorie (`player-history.ts`, Sektion `ui/career-history.tsx`: Gastduell, Hinterhof, Buden-Kauf) und Arbeitsstatistik (Tageslohn, letzte Schicht) schliessen die letzten zwei Punkte der Auftragsliste. Beleg: `player-history.test.ts`.
 
 ### Phase 2: Eigentum & Eigene Spielhalle (Agents 07–13)
 Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Renovierung und Aufbau der ersten eigenen Spielhalle.
