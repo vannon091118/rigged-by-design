@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T03:20Z-agent15-aftercare-3",
+  "contributionId": "agent15-aftercare-3",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Ende steht kein Versprechen, sondern eine Zeile im Register: Branch-Kopf und Baum auf main, und der Zweig darf gehen. Was bleibt, ist der Nachweis.",
+  "directives": []
+}
