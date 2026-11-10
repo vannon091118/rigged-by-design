@@ -4,7 +4,7 @@
   "claimId": "lane/sim/first-property",
   "branch": "lane/sim/first-property",
   "baseSha": "b0d20e389291ce6c2adef1a15537894d4840f482",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Masterplan Agent 07: Erste Immobilie und Eigentumssystem",
   "goal": "Katalog aus Gewerberaum, Kneipe und Spielsalon, Kauf aus PORTEMONNAIE mit Preispruefung, Eigentums-Datensatz mit Preis und Tag, Speicherung ohne Versionssprung und Sicht im bestehenden Charakterfenster.",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "2091c4f346163ec16c816e007f8185c48b789ac1"
   },
   "findings": [],
-  "nextAction": "PR #368 ist squash-gemergt (2091c4f); Nachsorge und Doku-Lane folgen.",
-  "revision": 2
+  "nextAction": "Doku-Nachsorge offen: CHANGELOG, DEVTAGEBUCH und ROADMAP-Stand in der Governance-Lane.",
+  "revision": 3
 }
