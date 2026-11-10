@@ -5,8 +5,9 @@
     "scripts/lib/claim-collisions.mjs",
     "scripts/lib/lane-claims.mjs",
     "scripts/lib/staging-scope.mjs",
+    "scripts/turn-push.mjs",
     "scripts/verify-lane-claims.mjs"
   ],
-  "token": "ecda81446f8aff154a18bd5e37d0e4ffaef863f9f7a25a8ad6361bf255fc8118",
+  "token": "cb45a8f97e379be79f96e14d29baa2ca77077b600aeb72fcf5c81f07e6716893",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

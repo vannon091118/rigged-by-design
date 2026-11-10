@@ -391,6 +391,9 @@ const publishedBranch = () =>
 const conflictedFiles = () =>
   git(['diff', '--name-only', '--diff-filter=U']).split(/\r?\n/).filter(Boolean);
 
+/** Generierte Artefakte, die jede Integration neu schreiben muss. */
+const GENERATED_PATHS = ['docs/INVENTORY.md', 'docs/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer'];
+
 const regenerateGenerated = () => {
   const regenerated = spawnSync(
     process.execPath,
@@ -398,10 +401,40 @@ const regenerateGenerated = () => {
     { cwd: ROOT, stdio: 'inherit' },
   );
   if (regenerated.status !== 0) return false;
-  const generatedPaths = ['docs/INVENTORY.md', 'docs/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer'];
-  if (!git(['status', '--porcelain', '--', ...generatedPaths])) return true;
-  git(['add', '-A', '--', ...generatedPaths]);
+  if (!git(['status', '--porcelain', '--', ...GENERATED_PATHS])) return true;
+  git(['add', '-A', '--', ...GENERATED_PATHS]);
   return true;
+};
+
+/**
+ * Nach der Integration muss die Regeneration im Commit landen: ein sauberer
+ * Merge enthaelt die neuen Dateien der Basis, aber nicht die daraus folgende
+ * Inventur. Ohne diesen Commit geht ein Baum in die CI, dessen Doku-Gate rot
+ * ist, obwohl der Merge gelungen ist. Der Commit beruehrt nur generierte
+ * Artefakte und ist damit ein Pflege-Commit.
+ */
+const commitRegeneration = () => {
+  if (!regenerateGenerated()) return false;
+  if (!git(['status', '--porcelain', '--', ...GENERATED_PATHS])) return true;
+  const messageFile = resolve(ROOT, git(['rev-parse', '--git-dir']), 'TURN_REGEN_MSG');
+  writeFileSync(
+    messageFile,
+    [
+      'Regeneration nach der Integration (Inventur, Registry)',
+      '',
+      '### Changes (Was ist neu)',
+      '- Inventur, Roadmap-Fortschritt und Runtime-Registry sind nach der integrierten Basis neu erzeugt.',
+      '',
+      '### Technische Basis & Kausalität',
+      '- Der Merge bringt neue Dateien mit; `git ls-files` und die Registry haetten sonst einen anderen Stand als der Baum, und das Doku-Gate waere rot.',
+      '',
+      '### Ausblick (Nächste Schritte)',
+      '- CI prueft diesen Commit; danach PR und Merge.',
+      '',
+    ].join('\n'),
+  );
+  git(['add', '-A', '--', ...GENERATED_PATHS]);
+  return gitRun(['commit', '-F', messageFile]).status === 0;
 };
 
 /** Ein Reparaturpfad statt eines Abbruchs: der Commit existiert bereits, also
@@ -432,6 +465,10 @@ const integrateBeforePush = () => {
         process.exit(1);
       }
     }
+    if (!commitRegeneration()) {
+      fail(1, 'ERR-4008', 'turn:finish', `Regeneration nach dem Merge fehlgeschlagen; Commit bleibt erhalten, Basis integriert`);
+      process.exit(1);
+    }
     return;
   }
   const applied = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'integrate.mjs'), '--apply', '--no-fetch'], {
@@ -442,7 +479,10 @@ const integrateBeforePush = () => {
     fail(1, 'ERR-4008', 'turn:finish', `integrate --apply nicht erfolgreich (Exit ${applied.status}); Commit bleibt erhalten`);
     process.exit(1);
   }
-  regenerateGenerated();
+  if (!commitRegeneration()) {
+    fail(1, 'ERR-4008', 'turn:finish', 'Regeneration nach dem Rebase fehlgeschlagen; Commit bleibt erhalten');
+    process.exit(1);
+  }
 };
 
 if (rueck > 0) {
