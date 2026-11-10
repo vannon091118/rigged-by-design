@@ -584,10 +584,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2564 |
-| Gelistete Dateien | 2564 |
+| Getrackte Dateien | 2565 |
+| Gelistete Dateien | 2565 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (150), content (889), docs (83), public (554), scripts (102), src (758) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (150), content (890), docs (83), public (554), scripts (102), src (758) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -601,7 +601,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 100 Datei(en)
 - `.lane-claims/tasks/` — 48 Datei(en)
-- `content/narrative/contributions/` — 885 Datei(en)
+- `content/narrative/contributions/` — 886 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -859,7 +859,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1748,11 +1748,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent15-aftercare-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-4.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19864 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3545 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19886 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3549 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
