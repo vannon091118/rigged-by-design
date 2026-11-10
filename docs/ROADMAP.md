@@ -258,7 +258,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 862/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 863/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -400,6 +400,7 @@ Wirtschaftliches Wachstum, Diversifikation und Verschmelzung verschiedener Unter
 
 - **Agent 14 – Geschäftsprogression (BUDE → KASSE → SAAL → KONZERN):**
   Sichtbare Unternehmensphasen mit echten Voraussetzungen (Kapital, Betriebsgewinn, Ruf, Geräte, Personal) und neuen spielerischen Möglichkeiten. Unabhängig vom Charakterlevel.
+*Stand 2026-11-10:* Die vier Stufen existierten bereits als `core/sim/progression.ts` mit echten Kennzahlen (Tage, Betriebsgewinn, Ruf, Geräte, Kapital) und stufenweiser Gerätefreischaltung. Ergänzt ist die in der Roadmap genannte Voraussetzung Personal: Spielsaal verlangt zwei, Konzern vier Angestellte, gelesen aus `world.agents`; die Bedingung erscheint wie jede andere in `companyStatus.open` und in der Sperrmeldung von `assertUnlocked`. Kein neues Save-Feld, keine zweite Zählung, keine Änderung an Ruf, Nachfrage oder Freischaltung. Belege: `progression.test.ts` (11), `progression-city.test.ts` (5).
 - **Agent 15 – Besucherbeziehungen erweitern:**
   Wiederkehrende Gäste, Stammgast-Status, persönliche Vorlieben, Besuchshistorie, Reaktionen auf Ausstattung und Events.
 - **Agent 16 – Personalmanagement ausbauen:**
