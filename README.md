@@ -1,343 +1,339 @@
-# Rigged by Design
-
 <p align="center">
-  <img src="./docs/banner.jpg" alt="Rigged by Design – Pixel-Art-Casino im Neonlicht, darüber die Spielhalle und darunter der sichtbare Ledger-Maschinenraum" width="100%">
-</p>
-
-<h1 align="center">Rigged by Design</h1>
-
-<p align="center">
-  <strong>Eine Lebenssimulation über Hausvorteile, Hausaufgaben und die erstaunliche Haltbarkeit eines kaputten Sofas.</strong><br>
-  Du startest mit einem Schlüssel, einem Startguthaben und keiner Ahnung. Der Rest ist Leben.
+  <img src="./docs/banner.svg" alt="Rigged by Design – Neon-Banner mit Spielautomat, Kirsche, Sieben und Diamant" width="100%">
 </p>
 
 <p align="center">
   <a href="https://github.com/vannon091118/rigged-by-design/actions/workflows/ci-verify.yml"><img alt="CI Verify" src="https://github.com/vannon091118/rigged-by-design/actions/workflows/ci-verify.yml/badge.svg?branch=main"></a>
   <a href="https://github.com/vannon091118/rigged-by-design/tags"><img alt="Aktueller Versionstag" src="https://img.shields.io/github/v/tag/vannon091118/rigged-by-design?label=Spielstand"></a>
-  <img alt="Node.js 22" src="https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white">
-  <img alt="pnpm 10.4.1" src="https://img.shields.io/badge/pnpm-10.4.1-F69220?logo=pnpm&logoColor=white">
+  <img alt="Virtuelle Währung" src="https://img.shields.io/badge/VaCoin-100%25%20Virtuell-brightgreen">
+  <img alt="Plattform" src="https://img.shields.io/badge/Status-Bespielbare%20Simulation-blue">
 </p>
 
-> Die Konsolenwerte im Banner sind Teil der Satire, keine Spielregeln oder Balancing-Angaben. Für den heutigen Stand siehe die Abschnitte weiter unten.
+<h3 align="center"><em>„Der Hausvorteil ist kein Softwarefehler. Er ist die Geschäftsidee des Universums."</em></h3>
 
-> „Der Hausvorteil ist kein Bug. Er ist die Geschäftsidee.“
-
-**Rigged by Design** ist eine satirische Lebenssimulation. Du startest mit einem Startguthaben, keinem Plan und einer Welt voller Möglichkeiten; du kümmerst dich um Geld, Laune, Leute und die Frage, wer hier eigentlich die Regeln geschrieben hat. Das Casino ist dabei der erste Raum, nicht das Genre.
-
-Das hier ist zugleich eine Einladung in die Spielwelt und die Werkbank für Entwicklerinnen und Entwickler. Was folgt, beschreibt den **heutigen Projektstand**. Mechaniken und Umfang dürfen sich mit dem Spiel verändern; für konkrete Regeln gelten Code, Tests und die verlinkten Architekturverträge.
-
-## Die Vision
-
-**Rigged by Design ist das Leben.** Der Titel ist ein Wortspiel, und er beschreibt zuerst nicht das Haus: Man sucht sich nicht aus, in welche Verhältnisse man geboren wird. Andere haben mit ihrem Leben vor dir schon angefangen – deine Eltern zum Beispiel – und ihre Entscheidungen sind die Bedingungen, unter denen deine stattfinden. Du erbst kein Vermögen, sondern einen Startpunkt: **150 VC Startkapital**, einen Schlüssel, einen Automaten und keinen Plan.
-
-Das **Casino ist dieser Startpunkt und ausdrücklich eine Testumgebung**. Es ist der erste Ort, an dem die Systeme beweisen, dass sie tragen: Gäste mit Laune, Geld, Erinnerung und Meinung; ein Ledger, das jede Folge bucht; eine Narrative Engine, die aus echten Übergängen Geschichten macht. Es ist nicht das Endziel und nicht die Kategorie des Spiels. „Sims“ kommt der Sache näher als „Casino-Manager“, trifft sie aber auch nicht: Es geht um ein Leben, das man führt, und um eine Welt, die schon vorher Regeln hatte.
-
-Der Pfad lässt sich bildhaft erklären – nicht wörtlich, sondern als Muster:
-
-- **Du siehst eine Serie im TV.** Sie hebt deine Laune und dein Intellekt.
-- **Die Werbung dazwischen** hebt deine Ausgabebereitschaft, nicht dein Konto.
-- **Laune und Intellekt verändern dein Charisma.** Charisma entscheidet, wie NPCs auf dich reagieren, was sie sich merken und was sie dir beim nächsten Mal vorhalten: dass du sie damals nach Geld für einen Döner gefragt hast.
-- **Heute hast du Geld.** Also kaufst du den Döner – und gibst deinen Freunden einen aus, weil guten Freunden gibt man einen Döner aus. Das fühlt sich richtig an, und das Spiel bucht es als Beziehung.
-- **Danach will dein Charakter neue Schuhe.** Die billigen drücken die Laune; die teuren kosten dreimal so viel und geben bei Leuten mit dem Trait „Konsument“ einen Charisma-Bonus. Marken und Preise sind Eigenschaften, keine Textzeilen.
-- **Dein Chef trägt diesen Trait auch.** Und du willst irgendwann dein eigenes Casino eröffnen, statt das von Willy Kleingeld zu putzen.
-
-Jeder Schritt liest Zustand, jeder Zustand hat eine Ursache, jede Ursache ist sichtbar. Dieselbe Kette muss später in einer Kneipe, in einem Tante-Emma-Laden oder auf der Straße funktionieren, ohne dass die Regel neu geschrieben wird.
-
-## Die Engine ist der Punkt
-
-Was heute existiert, ist kein Casino-Code mit Casino-Sonderfällen, sondern ein **wiederverwendbarer, erweiterbarer Systemkern**: ein Zustandsbesitzer für Welt, Ledger, PRNG, Uhr und Save; ein headless Kern ohne Browser; ein Ledger, in dem jede Folge eine Zeile ist; Facts und eine Narrative Engine, die Erinnerungen, Beziehungen, Trigger und Events aus echten Übergängen ableiten; eine Snapshot-Ansicht, die UI und Renderer teilen, ohne den Zustand zu kopieren; Inhalte als Daten statt als Sonderlogik.
-
-Ein neuer Ort bringt deshalb Inhalte, Figuren und höchstens eine dünne Anbindung mit – keine zweite Engine. Das ist die Bedingung dafür, dass aus einem Casino eine Stadt werden kann.
-
-## MVP, Optik und der Release-Horizont
-
-Der MVP ist ein **Systembeweis** und die **Vorgabe für Detailtiefe**: Er zeigt, wie tief ein Aspekt simuliert wird, wenn er fertig ist – nicht, wie viel Content am Ende existiert. Weitere Kontexte wie Kneipe, Tante-Emma-Laden oder Wohnung kommen laufend dazu.
-
-Die aktuelle Low-End-Optik ist **noch nicht final** und deutlich von der Vision entfernt. Der Preis wird von Anfang an bezahlt: Das Spiel muss auf vielen Plattformen laufen, auch auf schwachen Geräten. Die jetzige Pixel-Optik ist ein plattformfreundlicher Machbarkeitsbeweis, keine endgültige Bildsprache.
-
-**Vor einem Release soll eine bespielbare Stadt entstehen** – mehrere Orte, Wege dazwischen, Figuren mit eigenen Tagesabläufen, ein Charakter mit Laune, Ruf und Ressourcen. Kein größeres Casino.
+<p align="center">
+  Eine satirische Lebenssimulation über Hausvorteile, schmutzige Böden<br>
+  und die erstaunliche Haltbarkeit eines vererbten Sofas.
+</p>
 
 ---
 
-## Ein Nachlass mit sehr viel Kleingedrucktem
+<p align="center">
+  <img src="./docs/screenshots/v0.3.114/02-floor-detail.png" alt="Die Spielhalle im Neonlicht – Gäste, Automaten und ein Held mit Wischmopp" width="90%">
+</p>
 
-Dein Vater hat dir keine Villa hinterlassen. Er hat dir einen Schlüssel, einen Spielautomaten und einen Ordner voller Belege vermacht, in dem auffällig oft das Wort „Jackpot“ vorkommt und erstaunlich selten das Wort „Ersparnisse“.
+<p align="center"><em>Du startest mit einem Schlüsselbund, einem wackeligen Spielautomaten und keiner Ahnung. Der Rest ist das Leben.</em></p>
 
-Der Automat war offenbar sein Lieblingsprojekt. Das Guthaben darin ist es weniger. Zwischen dem letzten Kassenbon und einer Bedienungsanleitung, die „Geduld“ für eine Strategie hält, bleibt immerhin ein Ladenlokal. Du bekommst zum Start **150 VC Startkapital** und einen **kostenlosen Automaten**. Die Bank nennt das vermutlich „nicht ausreichend besichert“. Wir nennen es eine Tutorial-Entscheidung.
+---
 
-Jetzt darfst du herausfinden, ob aus Neonlicht, einer Wechselkasse und etwas zu viel Optimismus ein Geschäft wird. Die Gäste kommen mit eigenem Budget, eigener Laune und eigenen Vorstellungen davon, wie lange ein Getränk dauern darf. Du kommst mit einem Schlüsselbund und dem Verdacht, dass dein Vater die Steuerordner absichtlich alphabetisch sortiert hat.
+## Willkommen im Nachlass: Das Erbe deines Vaters
 
-Falls das Startkapital schneller verschwindet als der Nachlassordner: In den Casinos der Konkurrenz kannst du auch Schichten annehmen. Reinigung, Bar, Kartentisch oder Reparatur – der Kapitalismus bietet erstaunlich viele Wege, im selben Gebäude zu arbeiten, in dem man später wieder Geld ausgibt.
+Dein alter Herr hat dir keine Schweizer Konten hinterlassen. Er hat dir einen schweren Messingschlüssel vermacht, eine abgewetzte Lederjacke, einen verstaubten Spielautomaten namens *„Lucky Strike"* und einen Leitz-Ordner voller zerknitterter Quittungen, auf denen auffällig oft das Wort **„Jackpot!"** und erschreckend selten das Wort **„Steuererklärung"** vorkommt.
 
-Das ist der Startpunkt, nicht das Genre. Das Haus ist die Testumgebung, in der die Systeme zeigen, was sie können: Laune, Geld, Erinnerung, Ruf, Beziehung. Sobald sie tragen, tragen sie auch eine Kneipe, einen Laden oder eine Straße.
+Zwischen einem letzten Tankstellenbeleg und einer vergilbten Notiz, die *„Einfach verdoppeln!"* für eine solide Altersvorsorge hält, steht immerhin ein Ladenlokal: ein paar abgewetzte Kacheln, flackerndes Neonlicht und die beruhigende Gewissheit, dass die Miete nächsten Monat fällig wird. 
 
-<p align="center"><em>Die vierte Wand ist vorhanden. Sie steht nur auf der Kostenliste unter „Renovierung“.</em></p>
+Du startest mit **150 VaCoins (VC)** virtuellem Startkapital. Die Bank nennt das *„akut insolvenzgefährdet"*. Wir nennen es das Tutorial deines neuen Lebens.
+
+---
+
+## Die Vision: Das Leben ist gezinkt
+
+**Rigged by Design ist das Leben.** Der Titel ist ein Wortspiel, und er meint zuerst nicht die Spielbank an der Ecke: Man sucht sich nicht aus, in welche Verhältnisse man hineingeboren wird. Andere haben mit ihrem Dasein schon angefangen, bevor du die Bühne betreten hast – deine Eltern, dein Vermieter, der Kioskbesitzer und der Typ, der dir damals auf dem Schulhof das Pausenbrot abgezogen hat. Ihre Entscheidungen sind die Spielregeln, unter denen du antreten musst.
+
+Das **Casino ist dein Startpunkt und deine Testbude**: Hier lernst du am eigenen Leib, wie Wahrscheinlichkeiten funktionieren, warum das Haus am Ende immer gewinnt – und was passiert, wenn du selbst versuchst, das Haus zu sein. 
+
+Aber *Rigged by Design* ist kein steriler Casino-Manager, bei dem man auf Tabellen klickt, bis der Kontostand grün leuchtet. Es ist eine **echte Lebenssimulation**:
+- **Du schaust spätabends eine Krimiserie im Röhrenfernseher:** Dein Intellekt steigt, deine Augenringe auch.
+- **Die Bierwerbung im Werbeblock:** Steigert deinen Durst und deine Konsumbereitschaft, aber nicht deinen Kontostand.
+- **Laune und Intellekt formen dein Charisma:** Charisma entscheidet, ob dir der Stammgast an der Bar ein Geheimnis verrät oder dir vor die Füße spuckt, weil du ihm gestern einen lauwarmen Drink serviert hast.
+- **Hast du heute Geld im Portemonnaie?** Dann gibst du deinem Kumpel einen Döner aus – das Spiel verbucht das nicht als Zahlenspielerei, sondern als echte Beziehung.
+- **Deine Schuhe haben Löcher:** Billige Treter drücken auf die Stimmung; die teuren Designer-Sneaker kosten ein halbes Monatsgehalt, bringen dir aber Respekt bei den Leuten auf der Straße ein.
+
+Das Casino ist nur der erste Raum. Die Reise führt von der kleinen Absteige über eigene Immobilien, Bars, Nachtclubs und Arenen bis zum verwinkelten Unterhaltungsnetzwerk einer ganzen Stadt.
+
+<p align="center"><em>Die vierte Wand ist vorhanden. Sie steht allerdings auf der Inventarliste unter „stark renovierungsbedürftig".</em></p>
+
+---
 
 ![Die Spielwelt](docs/banners/spielwelt.svg)
 
-## Dein erster Abend im Haus
+## Was heute im Laden läuft
 
-Der aktuelle Einstieg lässt sich ungefähr so spielen:
+Keine leeren Ankündigungen – der aktuelle Spielstand ist eine voll funktionsfähige, lebendige Simulation.
 
-1. **Öffne „Bauen“** und prüfe, was du auf deiner Etage platzieren kannst. Der erste Automat ist bereits bezahlt – eine seltene Erfolgsmeldung.
-2. **Hol eine Kiste ab, trag sie zum Platz und stell sie auf.** Der Betrieb beginnt mit Logistik. Das glamouröse Ende ist noch nicht freigeschaltet.
-3. **Lass Gäste herein.** Sie wechseln am Kassenschalter Fiat in Spielchips und suchen sich anschließend selbst ein Angebot aus.
-4. **Behalte offene Gewinne im Blick.** Gewinne, die Gäste noch nicht abgeholt haben, sind eine Verbindlichkeit und kein stilles Trinkgeld.
-5. **Richte Preise, Spiele, Mods und Service ein.** Eine Bar kann die Stimmung heben; ein leerer Kühlschrank beweist vor allem, dass auch Pixel Durst haben.
-6. **Stell Personal ein oder bediene selbst.** Beides funktioniert im aktuellen Stand. Nur eine Variante lässt dich so tun, als wäre alles delegiert.
-7. **Besuche ein fremdes Casino.** Dort kannst du nach den Regeln eines anderen Hauses spielen oder an Jobstationen Schichten übernehmen. Endlich Verantwortung abgeben – manchmal sogar mit Lohnzettel.
+![Feature Showcase](docs/banners/features.svg)
 
-Der Floor ist die zentrale Bühne: Du bewegst dich darin, platzierst Geräte und sprichst Gäste oder Objekte an. Die Simulation läuft weiter, während Fenster geöffnet sind. **Escape** schließt ein Fenster; es hält die Zeit nicht an. Das Haus ist höflich genug, dich zu informieren, aber nicht höflich genug, auf dich zu warten.
+### 1. Echte Handarbeit auf dem Floor
+Du steuerst deinen Charakter direkt über die Etage (per Klick oder mit den Tasten `W`, `A`, `S`, `D`). Hier wird nichts weggeklickt:
+- **Logistik pur:** Neue Automaten oder Deko kommen als schwere Holzkisten an. Du nimmst sie eigenhändig Huckepack, schleppst sie an ihren Bestimmungsort und baust sie auf.
+- **Feucht durchwischen:** Gäste verschütten Drinks und hinterlassen Flecken. Ein schmutziger Boden ruiniert den Ruf – also schnappst du dir den Wischmopp oder heuerst jemanden dafür an.
+- **Bar-Dienst:** Gäste haben Durst. Zapfe kühle Getränke am Tresen und bringe sie persönlich an die Tische, um die Stimmung (und die Spielbereitschaft) der Kundschaft zu heben.
+- **Wechselkasse:** Die Kundschaft bringt bunte Geldscheine mit. An der Kasse tauschen sie ihr Fiat-Geld in Jetons – aber nur, wenn jemand hinter dem Schalter steht.
 
-## Was heute auf dem Spielplan steht
+### 2. Das Casino-Arsenal
+Die Spiele im Haus sind keine Zufallsanimationen, sondern echte, mathematisch kalibrierte Spiel-Engines mit Hausvorteil und Pity-System:
 
-Die folgenden Systeme sind im gegenwärtigen Spielstand sichtbar. Das Casino ist heute die einzige ausgebaute Umgebung – der Startpunkt und die Testumgebung. Das ist eine Momentaufnahme und keine Festschreibung dessen, was das Spiel später sein muss.
+<table>
+<tr>
+<td width="50%">
 
-| Bereich | Heute im Projekt |
-| --- | --- |
-| **Casino-Floor** | Etage mit Geräten, Deko, Gästen und begehbarem Spielercharakter |
-| **Gäste** | Budget, Laune, Geduld, Persona und Sucht beeinflussen Auswahl und Besuchsverlauf |
-| **Betrieb** | Preise, Mods, Reparaturen, Reinigung, Bar und Personal wirken auf das Haus |
-| **Kasse** | Fiat-Wechsel, Hauskonto, privates Portemonnaie und noch offene Auszahlungen werden getrennt geführt |
-| **Spiele** | Slot, Blackjack, Tischpoker, Video Poker, Roulette, Plinko, Würfel und Hütchenspiel |
-| **Fremde Häuser** | Der eigene Charakter kann als Gast an fremden Spielen teilnehmen |
-| **Aushilfsjobs** | Bei Rivalen lassen sich Aufgaben in Reinigung, Bar, Kartenspiel oder Reparatur übernehmen |
-| **Werkstatt** | Sechs Bereiche für Prüfung, Protokoll, Assets, Sound, Steuerung und FPS; Einstieg versteckt über die Marke oder `Strg+Shift+D` |
-| **Charakter** | Der Spiegel im Lager öffnet den Look-Editor; kein eigener Werkstatt-Tab |
-| **Spielstände** | Lokale Saves enthalten Welt, Journal, Look und Narrativzustand |
+**Spielautomaten (Slots)**
+Von der klapprigen Drei-Walzen-Kiste bis zum Fünf-Walzen-Videospieler mit Freispielen, Wild-Büchern und Risikoleiter.
 
-Die Auswahl kann sich ändern. Die Dokumente [Produktvertrag](docs/ROADMAP.md), [Architektur](docs/ARCHITECTURE.md) und [Roadmap](docs/ROADMAP.md) halten den aktuellen Rahmen und die geplanten nächsten Schritte fest.
+![Slot-Bühne](docs/screenshots/current/09-slot-buehne.png)
 
-### Bilder aus dem heutigen Betrieb
+</td>
+<td width="50%">
 
-![Floor mit Gästen, Räumen und HUD](docs/screenshots/v0.3.114/02-floor-detail.png)
+**Kartentische**
+Authentisches Blackjack gegen den Dealer, Video-Poker und klassischer Tischpoker mit echten Kartendecks.
 
-Stand `v0.3.114`, aufgenommen aus dem Preview-Build (`vite preview`, Chromium). Die Etage hat denselben
-Grundriss wie in allen früheren Sätzen; neu ist die einheitliche Bildsprache von HUD, Fenstern und Floor. Jeder Raum trägt eine
-Lichtpfütze, die Deckenlampen werfen einen Schein, die Laufwege dazwischen bleiben dunkel. Unter dem
-Zeiger steht ein Zielraster, am Fuß ein Spielerring, entlang des Wegs eine Punktspur.
+![Blackjack-Bühne](docs/screenshots/current/11-blackjack-buehne.png)
 
-![Vergleich derselben Etage vor und nach dem Asset-Paket](docs/screenshots/comparison/03-floor-v1-v2.png)
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-Links steht die frühere Etage, rechts derselbe Stand mit dem aktuellen Geräte-, Tisch- und Deko-Paket.
+**Roulette & Würfel**
+Französisches Roulette mit vollem Tableau und Würfelspiele (Craps) für Veteranen des grünen Filzes.
 
-Die Aufnahmen zeigen die **heutige, vorläufige** Optik. Sie ist bewusst plattformfreundlich und deutlich von der Bildsprache der Vision entfernt; sie belegt Machbarkeit, nicht den Endzustand.
+![Roulette-Bühne](docs/screenshots/current/14-roulette-buehne.png)
 
-### Vorher und nachher, Bild für Bild
+</td>
+<td width="50%">
 
-Links der älteste Satz aus `docs/screenshots/current/` (Stand `v0.3.27`), rechts der neueste Satz aus
-`docs/screenshots/v0.3.114/`. Gleiche Etage, gleicher Ausschnitt, dazwischen Licht, Steuerung und die
-vereinheitlichte Fenster-Bildsprache.
+**Plinko-Wand**
+Keine Würfel-Simulation, sondern pure Physik! Kugeln prallen an echten Stiften ab, bis sie in den Fächern landen.
 
-| Ältester Satz (`v0.3.27`) | Neuester Satz (`v0.3.114`) |
-| --- | --- |
-| ![Etage in der Übersicht vorher](docs/screenshots/current/01-floor-uebersicht-frisch.png) | ![Etage in der Übersicht jetzt](docs/screenshots/v0.3.114/01-floor-uebersicht.png) |
-| ![Etage im Detail vorher](docs/screenshots/current/02-floor-detail-frisch.png) | ![Etage im Detail jetzt](docs/screenshots/v0.3.114/02-floor-detail.png) |
-| ![Bauen-Fenster vorher](docs/screenshots/current/08-bauen-panel.png) | ![Bauen-Fenster jetzt](docs/screenshots/v0.3.114/03-bauen-panel.png) |
-| ![Gäste-Fenster vorher](docs/screenshots/current/07-gaeste-panel.png) | ![Gäste-Fenster jetzt](docs/screenshots/v0.3.114/04-gaeste-panel.png) |
+![Plinko-Bühne](docs/screenshots/current/15-plinko-buehne.png)
 
-Was der Vergleich zeigt:
+</td>
+</tr>
+</table>
 
-- **Licht statt Fläche.** Vorher lasen die Räume als schwarze Rechtecke mit heller Kante; jetzt liegt
-  in jedem Raum eine Lichtpfütze in 16 leisen Stufen, die Deckenlampen sind sichtbar, und die Bühne
-  bekommt Vignette und Raster, damit sie als beleuchteter Tisch im dunklen Raum steht statt als
-  schwebendes Feld.
-- **Der Boden antwortet vor dem Klick.** Zielraster unter dem Zeiger (violett, wenn der Klick
-  heranzieht; türkis, wenn die Figur läuft), Spielerring am Fuß, Punktspur des Laufwegs und ein kurzer
-  Puls am Ziel. Im alten Satz gab es keine Rückmeldung außer der Bewegung selbst.
-- **Steuerung ist sichtbar.** Statt einer Zeile Fließtext trägt die Leiste jetzt Tastenfelder
-  (`Klick`, `Rechts ziehen`, `Rad`, `WASD`, `Enter`, `Gast`), unten rechts stehen die Kamera-Knöpfe
-  `−` `FIT` `+`, und das HUD zeigt das Barkauf-Ziel als Chip und den XP-Balken statt einer leeren Leiste.
-- **Was der Vergleich nicht zeigt.** Die Gästezahl und der Katalogumfang unterscheiden sich, weil es
-  andere Spielstände sind: links vier bis dreizehn Gäste aus einem älteren Lauf, rechts neun aus einem
-  frischen. Der Gäste-Dialog ist deshalb nahezu unverändert — der Schnitt betrifft HUD, Boden und
-  Steuerung, nicht die Panels. Auch die Freebuff-Plakette oben links in den alten Bildern gehört zur
-  damaligen Aufnahmeumgebung, nicht zum Spiel.
+### 3. Gäste mit Gedächtnis und Marotten
+Die Besucher sind keine gesichtslosen Pixel, sondern gehören fünf ausgeprägten Personas an:
+- **Der Lumpen-Zocker:** Dreht jeden Cent dreimal um, verfällt schnell der Sucht und fängt Streit an, wenn das Bier warm ist.
+- **Der Straßenjunge:** Zockt gerne an Hütchen und Würfeln, ist flink auf den Beinen und bringt Kumpels mit.
+- **Der Stammgast:** Kommt regelmäßig wieder – aber nur, wenn sein Lieblingsplatz frei ist und er sich an einen guten Vorbesuch erinnert.
+- **Der Geschäftsmann:** Setzt höhere Summen, verlangt saubere Toiletten und hat wenig Geduld für Schlangestehen.
+- **Der High Roller:** Bringt dicke Bündel mit, fordert edles Samt-Ambiente und kann das Haus mit einem einzigen Glücksgriff an den Rand des Ruins treiben.
 
-Die Hilfekarte im Spiel nennt dieselben Tasten und liegt als
-[`05-hilfe-steuerung.png`](docs/screenshots/v0.3.114/05-hilfe-steuerung.png) daneben.
+Gäste merken sich, wie sie behandelt wurden. Ein Gast, der pleite geht und verdurstet, kommt mit schlechter Laune wieder – oder hetzt die Nachbarschaft auf.
 
-Das Asset-Paket umfasst derzeit 539 Texturen, drei Frame-Animationen, vier Emitter und sechs Tonspuren. Im Spiel findest du die Bibliothek unter **ASSETS**. Sie zeigt, was tatsächlich geladen ist – ein selten ehrlicher Blick hinter die Kulissen.
+### 4. Streit, Fäuste und Hinterhof-Duelle
+Wo Alkohol fließt und Ersparnisse verdampfen, fliegen gelegentlich die Fäuste. Wütende Gäste zetteln Streitigkeiten an. Jetzt hast du die Wahl:
+- Einen teuren Security-Wachmann vorschicken, der die Lage professionell klärt.
+- Oder selbst die Ärmel hochkrempeln: Tritt dem Rädelsführer im rundenbasierten Nahkampf gegenüber! Deine Kampffertigkeit (`brawl`) und Nehmerqualitäten (`endurance`) entscheiden über Sieg oder Krankenhausaufenthalt. Ein Sieg begeistert die Menge – eine Niederlage kostet dich deine Barschaft und bringt dir blaue Flecken ein, die dich tagelang ausbremsen.
 
-![Asset-Bibliothek mit Symbolen, Maschinen und Deko](docs/screenshots/comparison/04-asset-library-top-v2.png)
+### 5. Das Geld-Drama: Zwei Töpfe, eine Wahrheit
+In *Rigged by Design* gilt ein unumstößliches Gesetz: **Geschäft ist Geschäft, und privat ist privat.**
+- **Das Hauskonto:** Gehört der Spielhalle. Daraus werden Automaten bezahlt, Gehälter überwiesen, Reparaturen finanziert und Gästegewinne beglichen.
+- **Dein Portemonnaie:** Dein persönliches Bargeld. Du kannst es dir als Privatentnahme vom Hauskonto auszahlen – aber nur, wenn der Betrieb eine gesunde Reserve behält.
+- **Wenn das Haus pleitegeht:** Gewinnt ein Gast den Jackpot und das Hauskonto ist leer, wird der Gewinn nicht etwa magisch gelöscht. Er steht als knallharte Verbindlichkeit im Buch. Du schuldest dem Gast sein Geld – und die Zinsen schlafen nicht.
 
-### Ein Rundgang, statt acht Marketingversprechen
+### 6. Die Konkurrenz: Zu Besuch bei den Rivalen
+Wird es dir im eigenen Laden zu eng, nimmst du das Smartphone und fährst zu den Rivalen der Stadt:
+- **Die Hafenklause:** Kalle „Kleingeld" Puhls verrauchte Hafenkneipe mit billigen Automaten und Hütchenspielern.
+- **Die Goldene Hand:** Marlene Vests gepflegter Salon mit Samttischen, feinem Personal und strengen Hausregeln.
+- **Der Nebelpalast:** Ein anonymer Hochhaussaal des Konsortiums mit brachialen Limits, Plinko-Wänden und eiskalter Atmosphäre.
 
-| Momentaufnahme | Screenshot |
-| --- | --- |
-| Geräte, Deko und Preise im Bau-Panel | ![Bauen-Panel](docs/screenshots/v0.3.114/03-bauen-panel.png) |
-| Gäste mit Laune, Geduld und Besuchsstatus | ![Gäste-Fenster](docs/screenshots/v0.3.114/04-gaeste-panel.png) |
-| Smartphone als ein Fenster für alle Aktionen | ![Smartphone](docs/screenshots/v0.3.114/06-smartphone.png) |
-| Dialog mit Besucherin am Tresen | ![Dialog](docs/screenshots/v0.3.114/07-dialog.png) |
-| Ton und Musik in einem Fenster | ![Sound](docs/screenshots/v0.3.114/08-sound.png) |
-| Charakterwerte und Skillpunkte | ![Charakter](docs/screenshots/v0.3.114/09-charakter.png) |
-| Asset-Bibliothek mit geladenen Texturen | ![Assets](docs/screenshots/v0.3.114/10-asset-bibliothek.png) |
-| Protokoll als Chronik des Abends | ![Protokoll](docs/screenshots/v0.3.114/11-protokoll.png) |
-| Blackjack-Tisch mit Dealer und Karten-Shoe | ![Blackjack](docs/screenshots/current/11-blackjack-buehne.png) |
-| Poker mit Board und eigenen Karten | ![Poker](docs/screenshots/current/12-poker-buehne.png) |
-| Roulette-Kessel und gesetzte Jetons | ![Roulette](docs/screenshots/current/14-roulette-buehne.png) |
-| Plinko-Brett mit Bahn und Fachquoten | ![Plinko](docs/screenshots/current/15-plinko-buehne.png) |
+Dort kannst du dein persönliches Taschengeld verspielen oder an den Arbeitsstationen ehrliche Schichten schieben (Putzen, Bierausschank, Croupier, Mechaniker), um dein Portemonnaie wieder aufzupäppeln. Doch Vorsicht: Die Rivalen schlafen nicht – sie spionieren dich aus, werben dir Gäste ab oder schicken nachts Saboteure vorbei, die deine Automaten kurzschließen.
 
-Der komplette neueste Satz liegt in [`docs/screenshots/v0.3.114/`](docs/screenshots/v0.3.114/). Die Bildsprache und ihre Regeln stehen in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). Das Asset-Inventar und die technische Verdrahtung stehen in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+---
 
-## Wie das Haus Geld zählt
+![Visueller Rundgang](docs/banners/galerie.svg)
 
-VaCoins sind fiktive Spielwährung. Sie haben **keinen Echtgeldwert**. Intern ist ein VC in 10.000 ganzzahlige Mikro-Einheiten aufgeteilt; die Anzeige als Dezimalzahl ändert daran nichts. Jede Buchung bleibt eine Ledger-Zeile – selbst die Buchung, die du lieber nicht sehen würdest.
+## Visueller Rundgang: Licht, Dreck und Pixel-Poesie
 
-Im aktuellen Modell begegnen dir vier Konten:
+### Die Evolution der Spielhalle
 
-| Konto | Bedeutung |
-| --- | --- |
-| **Hauskonto** | Betriebsmittel des Casinos |
-| **Portemonnaie** | Privates Geld der spielenden Person |
-| **Wechselkasse** | Umtauschstelle für die fiktive Fiat-Währung der Simulation |
-| **Offene Gewinne** | Bereits gewonnene, noch nicht ausgezahlte Beträge |
+<p align="center">
+  <img src="docs/screenshots/comparison/03-floor-v1-v2.png" alt="Vergleich derselben Etage vor und nach dem Asset-Paket" width="90%">
+</p>
 
-Gäste wählen Spiele und Einsätze anhand ihres aktuellen Zustands und der Angebote im Haus. Gewinne können als offene Auszahlung stehenbleiben. Ausgaben für Betrieb, Personal, Reparaturen und Ausbau konkurrieren mit diesem Geldbedarf. Das ist der Managementteil: Nicht jeder schöne Umsatz ist schon ein schöner Kontostand.
+<p align="center"><em>Links die karge Kachelwüste der frühen Tage, rechts dieselbe Etage nach dem großen Grafik- und Licht-Update.</em></p>
 
-## Wegweiser durch die Spielwelt
+**Was sich verändert hat:**
+- **Licht statt schwarzer Löcher:** Räume wirken nicht mehr wie isolierte Boxen, sondern erzeugen mit gedimmten Vignetten, Deckenstrahlern und Neonreflexen echte Kasino-Atmosphäre.
+- **Direktes Boden-Feedback:** Beim Klick leuchtet das Kachelziel auf, Schrittspuren zeigen den Weg und Hindernisse werden sauber umlaufen.
+- **Interaktive Steuerung:** Ein aufgeräumtes HUD mit Schnellzugriffen, Portemonnaie-Anzeige, XP-Fortschritt und Tagesphasen.
 
-Die README erzählt die Welt mit einem Augenzwinkern. Wenn du nachschlagen willst, was ein System **heute tatsächlich** tut, geh zur Quelle:
+### Die Spielbühnen im Detail
 
-| Thema | Quelle |
-| --- | --- |
-| Umfang und Produktstand | [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| Systeme, Zustandsbesitz und Datenfluss | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
-| Speicherstände und Migration | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), `src/store/save.ts` |
-| Narrativ-Facts, Gäste-Erinnerungen und Content-Vertrag | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
-| Geplante Arbeit | [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| Arbeitsablauf, Resume und Abschluss | [`docs/WORKFLOW.md`](docs/WORKFLOW.md) |
-| Prüfungen, Gates und Branch-Schutz | [`docs/CI.md`](docs/CI.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) |
-| Testlinie und Testmatrix | [`docs/TESTING.md`](docs/TESTING.md) |
-| Doku-Landkarte | [`docs/INDEX.md`](docs/INDEX.md) |
-| Fehlercodes | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
-| Änderungsverlauf und Inventur | [`docs/CHANGELOG.md`](docs/CHANGELOG.md), [`docs/DEVTAGEBUCH.md`](docs/DEVTAGEBUCH.md), [`docs/INVENTORY.md`](docs/INVENTORY.md) |
+<table>
+<tr>
+<td align="center" width="33%">
+<strong>Blackjack am Samt</strong><br>
+<img src="docs/screenshots/current/11-blackjack-buehne.png" alt="Blackjack" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Texas Hold'em Poker</strong><br>
+<img src="docs/screenshots/current/12-poker-buehne.png" alt="Poker" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Roulette-Kessel</strong><br>
+<img src="docs/screenshots/current/14-roulette-buehne.png" alt="Roulette" width="100%">
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+<strong>Plinko-Physik</strong><br>
+<img src="docs/screenshots/current/15-plinko-buehne.png" alt="Plinko" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Smartphone-Zentrale</strong><br>
+<img src="docs/screenshots/v0.3.114/06-smartphone.png" alt="Smartphone" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Charakter-Spiegel</strong><br>
+<img src="docs/screenshots/v0.3.114/09-charakter.png" alt="Charakter" width="100%">
+</td>
+</tr>
+</table>
 
-### Die Erzählung ist ebenfalls im Bau
+### Betreiber vs. Gast: Zwei Perspektiven
 
-Die Narrative Engine ist ein wachsender Teil des Projekts. Der aktuelle Vertrag beschreibt Facts als Ereignisse aus echten Zustandsübergängen; Texte stellen diese Ereignisse dar, sie erzeugen keine Spielregeln. `Guest` bezeichnet einen Besuch, `Visitor` die wiederkehrende Identität. Der persistente Narrativzustand liegt in `WorldState`; der Save-Stand ist v11 und Migrationen unterstützen v5 bis v10.
+<table>
+<tr>
+<td align="center" width="50%">
+<strong>Als Betreiber</strong><br>
+<img src="docs/screenshots/v0.3.132/01-floor-operator.png" alt="Floor aus Betreibersicht" width="100%">
+</td>
+<td align="center" width="50%">
+<strong>Als Gast</strong><br>
+<img src="docs/screenshots/v0.3.132/02-floor-guest.png" alt="Floor aus Gastsicht" width="100%">
+</td>
+</tr>
+</table>
 
-Die Narrative Engine ist die erste soziale Schicht des Projekts. Als Nächstes bekommt sie eine **Social-Komponente als Plugin**, damit dieselben Facts, Erinnerungen und Beziehungen auch außerhalb eines Hauses tragen – zwischen Nachbarn, Kollegen und Freunden. Der Ledger wird parallel um **Ressourcen nach Bedarf** erweitert: Zeit, Ruf, Vorräte, Aufmerksamkeit. Jede bleibt eine gebuchte Zeile mit Ursache, keine zweite Zahlenwahrheit.
+---
 
-Die Roadmap führt die nächsten Narrative-Schnitte einzeln auf. Deshalb versprechen Figuren, Erinnerungen oder künftige Ereignisse hier keine fertige Story-Kampagne. Selbst die vierte Wand braucht erst ein Ticket.
+![Versionen-Chronologie](docs/banners/chronologie.svg)
 
-![Die Werkstatt](docs/banners/werkstatt.svg)
+## Die Versionen-Chronologie: Vom Kachel-Koma zur Metropole
 
-## Entwicklerstart
+Wie jedes gute Casino wurde auch dieses nicht an einem Nachmittag erbaut. Ein Blick in die Bauakten:
 
-Du brauchst **Node.js 22** (mindestens `22.22.2`) und **pnpm 10.4.1**. Das Werkzeug-Setup liegt gesammelt in `src/Config/`; die Skripte binden diese Konfigurationen explizit ein. pnpm-spezifische Sicherheits-Overrides für transitive Pakete stehen im `pnpm.overrides`-Abschnitt der `package.json`.
+### Ära 1: Der Urknall im Kachel-Nirvana (v0.1 – v0.3.27)
+- Die Geburtsstunde: Ein Charakter bewegt sich über ein nacktes 32×32-Raster.
+- Erste Slot-Maschinen spucken Zahlen aus, Wände sind noch schwarze Balken.
+- Das doppelte Buchführungssystem wird eingegossen: Kein Cent darf ohne Gegenbuchung entstehen.
 
-```sh
-pnpm install --frozen-lockfile
-pnpm run dev
-```
+### Ära 2: Es werde Licht & Textur (v0.3.28 – v0.3.114)
+- Das große Grafik-Update: Über 500 handgezeichnete Texturen, animierte Automaten, rauchige Bars und Holzvertäfelungen halten Einzug.
+- Räume bekommen Deckenlampen und abgestufte Lichtpfützen.
+- Gäste entwickeln Persönlichkeiten: Lumpen, Stammgäste und Schnösel bringen unterschiedliche Launen und Budgets mit.
 
-Vite startet unter <http://localhost:3000>. Für die kurze lokale Prüfkette:
+### Ära 3: Rivalen, Fäuste & Pity-Schalter (v0.3.115 – v0.3.180)
+- Die Stadt erwacht: Kalle Puhl, Marlene Vest und das Nebelpalast-Konsortium eröffnen ihre Läden. Der Spieler kann via Smartphone hinreisen.
+- Das Duell-System: Streithähne lassen sich im rundenbasierten Schlagabtausch persönlich zur Räson bringen.
+- Automaten bekommen Pity-Mechaniken und Entladungs-Spins.
 
-```sh
-pnpm run verify:quick
-```
+### Ära 4: Das Zeitalter der Erinnerungen & Facts (v0.3.181 – Heute)
+- Die Narrative Engine erwacht: Gäste erinnern sich an vergangene Besuche und reagieren nachtragend oder spendabel.
+- Das Plinko-Brett wird auf echte physikalische Kollisionen umgestellt.
+- Save-System v11: Spielstände sichern jeden Cent, jeden Fleck und jede Rivalen-Beziehung verlustfrei ab.
 
-Die volle lokale Pipeline und die Testbefehle:
-
-```sh
-pnpm run verify:all
-pnpm run test
-pnpm run typecheck
-pnpm run lint
-pnpm run build
-pnpm run agent:context
-pnpm run agent:verify --profile=quick
-```
-
-`pnpm run typecheck` prueft `src/` vollstaendig; die Konfiguration liegt in `src/Config/tsconfig.json`. `verify:quick` ist Entwicklungsfeedback mit elf schnellen Gates. `verify:all` prüft zwölf Required-Gates plus optionalem Audit (dreizehn Läufe) und ist vor Releases sowie bei Änderungen an Dependencies, Ledger, RNG oder Saves erforderlich. Lange Statistik- und Soak-Nachweise laufen in GitHub Actions; `pnpm run ci:long` stößt sie an und wartet auf das Ergebnis. Berichte liegen unter `.verify-cache/reports/`. Die [CI-Gate-Dokumentation](docs/CI.md) erklärt, welche Prüfung zu welcher Änderung gehört.
-
-Für den optionalen Android-Wrapper baut `pnpm run android:apk` eine Debug-APK; `pnpm run android:apk:release` legt eine nicht signierte Release-APK ab. Beide Varianten brauchen das Android-SDK.
-
-Die Prüfpipeline ist lesend; automatische Reparaturen laufen getrennt über `pnpm run fix`. Vor einem Beitrag gelten die Verträge aus [`AGENTS.md`](AGENTS.md), besonders: Änderungen auf Branches, Pflichtdoku im selben Commit und genau ein Narrative-Content-Beitrag pro abgeschlossenem Turn.
-
-## Entwicklerkarte
-
-```text
-src/
-├── core/       headless Simulation, Regeln, RNG, Ledger und Spiele
-├── store/      Welt-, Ledger-, RNG-, Zeit- und Save-Besitz
-├── ui/         React-Oberfläche und Fensterzustand
-├── render/     PixiJS-Floor, Effekte, Audio und Darstellung
-└── Config/     Vite-, TypeScript-, ESLint- und Capacitor-Konfiguration
-content/
-└── narrative/  Beiträge und Vokabular; Text ist Darstellung, keine Regel
-docs/
-└──             Architektur, Produktstand, Roadmap, Verträge und Screenshots
-scripts/
-└──             Prüfketten, Doku-Generatoren und Entwicklungswerkzeuge
-```
-
-Ein paar Verträge, die das Repo vor dem Casino-Frühstück schützt:
-
-- **Ein Zustandsbesitzer:** `world-store` besitzt Welt, Ledger, PRNG, Uhr und Saves; React hält nur UI-Zustand.
-- **Headless Core:** `src/core/` importiert keine Browser-APIs.
-- **Geld:** ganzzahlige Mikro-Einheiten, keine Floats; Geld entsteht nur über den vorgesehenen externen Weltpfad und wird immer gebucht.
-- **Zufall:** Gameplay- und Darstellungs-RNG teilen keinen Strom. Kein direkter Wanduhr- oder Zufallszugriff in Core und Scripts.
-- **Karten:** ein gezogener Schuh-Kartenstapel verliert die gezogene Karte; neu gemischt wird erst, wenn er leer ist.
-- **Narrativ:** Facts folgen tatsächlichen Übergängen; Journal und Narrativzustand bleiben getrennt. Texte entscheiden nie über Kosten oder Effekte.
-
-Die Details und Ausnahmen stehen im [`docs/INDEX.md`](docs/INDEX.md), in [`AGENTS.md`](AGENTS.md) und den jeweiligen Dokumentverträgen. Wenn eine Pointe und ein Invariant kollidieren, gewinnt das Invariant. Es hat bessere Tests.
+---
 
 ![Die nächste Runde](docs/banners/roadmap.svg)
 
-## Roadmap: die nächste Runde ist noch nicht ausgeteilt
+## Der Masterplan: Vom Startguthaben zum Konzern-Netzwerk
 
-Die Roadmap beschreibt Absichten und Abhängigkeiten, keine Garantie für endgültige Spielmechaniken.
+Die Entwicklung folgt einem klaren, sechsphasigen Masterplan mit 30 fokussierten Etappen:
 
-| Horizont | Richtung laut aktuellem Plan |
-| --- | --- |
-| **Jetzt** | Das Casino als Testumgebung schärfen: Systeme, Bedienung und Lügen des Hauses sichtbar und prüfbar machen |
-| **Als Nächstes** | Lebenssysteme aus dem Casino lösen: Laune, Charisma und Ressourcen verallgemeinern, Social-Plugin der Narrative Engine, erste weitere Orte |
-| **Später** | Eine bespielbare Stadt – der Release-Horizont, nicht ein größeres Casino |
+```mermaid
+flowchart LR
+    P1["Phase 1<br>Persönliche Rolle"] --> P2["Phase 2<br>Eigene Spielhalle"]
+    P2 --> P3["Phase 3<br>Skalierung & Gastro"]
+    P3 --> P4["Phase 4<br>Events & Arena"]
+    P4 --> P5["Phase 5<br>E-Sport Welten"]
+    P5 --> P6["Phase 6<br>Konzern-Netzwerk"]
+```
 
-Der jeweils aktuelle Stand lebt in [`docs/ROADMAP.md`](docs/ROADMAP.md). Abgeschlossene Punkte wandern von dort in den Changelog; sie bleiben nicht als ewige Prophezeiung im README stehen.
+1. **Phase 1: Das eigene Überleben sichern (Agent 01–06)**  
+   Du stehst selbst auf der Matte: Spiele an deinen eigenen Automaten mit deinem privaten Wallet, übernimm bezahlte Arbeitsschichten auf dem Floor, trainiere deine 7 Rollenspiel-Attribute (von Charisma bis Zähigkeit), trage Hinterhof-Duelle aus und behalte alles im persönlichen Dashboard im Blick.
+2. **Phase 2: Eigentum & Echte Spielhalle (Agent 07–13)**  
+   Kaufe deine allererste echte Immobilie (vom heruntergekommenen Kiosk bis zum Tanzschuppen), renoviere sie Kachel für Kachel, installiere neue Automaten, tune Gewinnchancen und schalte Roguelite-Items mit verrückten Synergien frei.
+3. **Phase 3: Der Aufstieg zum Entertainment-Tempel (Agent 14–21)**  
+   Unternehmensprogression von der *Bude* über die *Kasse* und den *Saal* bis zum *Konzern*. Binde Stammgäste an dich, delegiere Aufgaben an Manager, eröffne eine voll ausgestattete Gastronomie-Bar, richte eine Tanzfläche mit DJ ein und lenke hybride Besucherströme zwischen Kasino, Lounge und Club.
+4. **Phase 4: Die Arena & Das große Spektakel (Agent 22–25)**  
+   Baue eine eigene Kampfsport-Arena in deiner Location! Veranstalte Turniere, lasse lokale Kämpfer antreten und eröffne virtuelle Sportwetten-Märkte mit Quotenberechnung und Kassen-Abrechnung.
+5. **Phase 5: Die E-Sport-Revolution (Agent 26–28)**  
+   Simulierte digitale Wettbewerbe: Gründe oder empfange E-Sport-Teams, verfolge deterministische Match-Serien (Best-of-Three / Best-of-Five) und biete Wetten auf Kartensieger und Turnierchampions an.
+6. **Phase 6: Das Firmen-Imperium (Agent 29–30)**  
+   Ein Casino reicht dir nicht mehr? Verwalte ein ganzes Portfolio an unterschiedlichen Standorten (Hauptcasino, Nachtclub, Sportbar, Eventhalle) über ein zentrales Konzern-Netzwerk.
 
-## FAQ – bevor der Kassenschluss wieder verschoben wird
+*(Alle Details und technischen Spezifikationen der 30 Etappen sind in der [Roadmap-Dokumentation](docs/ROADMAP.md) hinterlegt).*
+
+---
+
+![FAQ](docs/banners/faq.svg)
+
+## Häufig gestellte Fragen
 
 <details>
-<summary><strong>Ist das ein Casino-Manager?</strong></summary>
+<summary><strong>Ist das hier ein typischer Tycoon- oder Idle-Manager?</strong></summary>
 
-Nein. Das Casino ist der Startpunkt und die Testumgebung. Das Spiel ist eine Lebenssimulation: Du führst ein Leben in einer Welt, die schon vor dir Regeln hatte. Das Haus ist der erste Ort, an dem diese Regeln sichtbar werden – nicht das Genre.
+Nein. Wenn du darauf wartest, dass Zahlen von alleine steigen, während du Kaffee trinkst, wirst du zusehen, wie dein Laden vermüllt, Gäste durstig abhauen und dein Automat den Geist aufgibt. *Rigged by Design* ist eine aktive Lebenssimulation: Du läufst selbst über den Boden, sprichst mit Leuten, trägst Kisten und löst Probleme mit Köpfchen (oder den Fäusten).
 </details>
 
 <details>
-<summary><strong>Ist das echtes Glücksspiel?</strong></summary>
+<summary><strong>Kann ich echtes Geld einzahlen oder gewinnen?</strong></summary>
 
-Nein. Es gibt keine Echtgeld-Einzahlung, keine Auszahlung und keinen realen Gewinn. VaCoins sind fiktive Simulationseinheiten.
+Um Himmels willen, nein! VaCoins sind zu 100 % fiktive Spielwährung. Es gibt keine Krypto-Anbindung, keine In-App-Käufe und keine Auszahlungen. Das Spiel parodiert die Mechanismen der Branche – es beutet dich nicht aus.
 </details>
 
 <details>
-<summary><strong>Welche Mechaniken sind schon spielbar?</strong></summary>
+<summary><strong>Warum zahlt mir der Automat meinen Gewinn nicht bar aus?</strong></summary>
 
-Der aktuelle Stand zeigt einen begehbaren Casino-Floor mit Gästen, Betriebssystemen und mehreren Spieltypen. Die Tabelle „Was heute auf dem Spielplan steht“ fasst den sichtbaren Umfang zusammen; einzelne Regeln können sich weiterentwickeln.
+Weil dein eigenes Hauskonto vielleicht gerade leer ist, weil du vorher zu viele teure Teppiche gekauft hast! Gewinne werden nicht herbeigezaubert: Kann das Haus nicht zahlen, steht der Betrag als Schuld im Buch. Du musst erst wieder Umsatz machen, um deine eigenen Gäste auszuzahlen. Ehrliche Buchhaltung tut manchmal weh.
 </details>
 
 <details>
-<summary><strong>Gibt es Accounts oder Multiplayer?</strong></summary>
+<summary><strong>Warum schlägt mich ein Gast im Kasino zusammen?</strong></summary>
 
-Der dokumentierte Stand ist ein lokales Einzelspieler-Spiel ohne Account-System. Spielstände werden lokal verwaltet.
+Weil er stundenlang verloren hat, der Automat keinen Cent ausgespuckt hat, die Bar leer war und du ihm im Vorbeigehen eine freche Bemerkung gedrückt hast. Gäste haben Grenzen – und wenn du im Duell verlierst, erleidest du echte Verletzungen, die dich langsamer laufen lassen.
 </details>
 
 <details>
-<summary><strong>Wo finde ich die Regel hinter einer Pointe?</strong></summary>
+<summary><strong>Kann ich das Spiel speichern und morgen weiterspielen?</strong></summary>
 
-In den verlinkten Verträgen und im Code. Die README soll den Einstieg erleichtern, nicht die Implementierung überstimmen.
+Ja. Spielstände werden lokal abgespeichert. Unser Save-System sichert nicht nur dein Geld, sondern jeden Kieselstein, die Laune jedes Besuchers und die offenen Rachepläne deiner Rivalen.
 </details>
 
 <details>
-<summary><strong>Kann ich helfen?</strong></summary>
+<summary><strong>Was unterscheidet das von einem klassischen Casino-Simulator?</strong></summary>
 
-Ja. Lies zuerst `AGENTS.md`, prüfe den passenden Vertrag unter `docs/` und halte Änderungen in einem eigenen Branch. Nach Änderungen werden die zwölf Pflichtdokumente im selben Commit aktualisiert; die Landkarte steht in [`docs/INDEX.md`](docs/INDEX.md). Für Narrative liefert jeder abgeschlossene Turn genau einen Beitrag unter `content/narrative/contributions/`.
+Alles. Du bist kein unsichtbarer Direktor, der auf Tabellenkalkulationen starrt. Du bist ein Typ mit löchrigen Schuhen, der seinen eigenen Boden wischt, seine Gäste verprügelt (oder von ihnen verprügelt wird), sich zwischen Privatinsolvenz und dem ersten Stammgast bewegt und abends auf einem vererbten Sofa fernsieht, bis ihm die Augen zufallen. Es ist das Leben – mit Hausvorteil.
 </details>
 
-## Ein ernster Absatz, ohne Neonrahmen
+---
 
-Das Spiel greift bewusst satirisch Mechaniken auf, die Glücksspiel attraktiv und riskant machen können: Near Misses, variable Einsätze und Gäste mit Suchtwerten. Es ist eine Simulation über solche Systeme, kein Glücksspielangebot. Falls Glücksspiel für dich aufgehört hat, ein Spiel zu sein, ist die [BZgA](https://www.bzga.de/) ein besserer Ansprechpartner als dieses Repository. Das meinen wir ohne Ironie.
+![Die Werkstatt](docs/banners/werkstatt.svg)
 
-<p align="center"><strong>Rigged by Design.</strong><br>Das Spiel ist manipuliert. Das Leben auch. Wer die Regeln schreibt, darfst du herausfinden.</p>
+## Für Maschinisten & Code-Schrauber
+
+Du willst nicht nur spielen, sondern unter die Haube schauen, an den Zahnrädern drehen oder eigene Erweiterungen beisteuern? 
+
+Alle technischen Details, mathematischen Nachweise, Architekturverträge, Entwickler-Befehle und Qualitäts-Gates sind sauber ausgelagert:
+- Die vollständige Doku-Landkarte findest du im [`docs/INDEX.md`](docs/INDEX.md).
+- Die technischen Kernregeln und Verträge stehen im [`AGENTS.md`](AGENTS.md) und in der [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+- Die Testlinie und Nachweise sind in [`docs/TESTING.md`](docs/TESTING.md) dokumentiert.
+
+---
+
+## Ein ernster Absatz, ganz ohne Neonrahmen
+
+Dieses Spiel greift satirisch und schonungslos Mechanismen auf, die Glücksspiel in der Realität so gefährlich machen: Near-Miss-Effekte, Pity-Illusionen, emotionale Verstärker und schleichende Suchtdynamiken. Wir simulieren diese Systeme, um sie transparent, begreifbar und entzaubert darzustellen.
+
+Falls Glücksspiel für dich oder jemanden in deinem Umfeld in der realen Welt zu einem Problem geworden ist: Die [Bundeszentrale für gesundheitliche Aufklärung (BZgA)](https://www.bzga.de/) bietet kostenlose, anonyme und kompetente Hilfe unter **0800 1 37 27 00**. Das meinen wir völlig ohne Ironie.
+
+---
+
+<p align="center">
+  <strong>Rigged by Design.</strong><br>
+  Das Spiel ist gezinkt. Das Leben auch. Jetzt mach was draus.
+</p>
