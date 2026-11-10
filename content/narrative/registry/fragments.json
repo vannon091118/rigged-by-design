@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7aa6a670a2a12e34220f71291165cbae0a311e4a22b927b68e2d756507dd352f",
+  "contentHash": "sha256:8c9eba79c8aab86192d7cb9e8f35f6798b473c8a4ed5d127268a1373bea12e9d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3731,6 +3731,28 @@
       "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "governance-closeout-main-sync-01",
+      "turnId": "2026-11-10T08:36Z-governance-closeout-main-sync",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Closeout-Zweig trug noch den Stand vor der README-Lane; der Merge zog main bis 1f40395 nach. Die Inventur wurde auf dem gemeinsamen Baum neu erzeugt, damit der Diff nur die abgeschlossenen Phasen-Lanes und keine veraltete Dateiliste zeigt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json"
     },
     {
       "contributionId": "governance-eine-stimme-01",

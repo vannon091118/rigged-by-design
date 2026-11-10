@@ -4,15 +4,16 @@
   "claimId": "lane/governance/pretask-failclosed-repair",
   "branch": "lane/governance/pretask-failclosed-repair",
   "baseSha": "3594ce4c3c49fa623d47ed705d37b8cfb002383f",
-  "phase": "MERGE_PENDING",
+  "phase": "DONE",
   "title": "Governance Fail-Closed-Reparatur",
   "goal": "Pretask/promote fail-closed (governance/blocked + UNKNOWN), onTemplate-Stub verdrahten, Aftercare-Phase vor Merge ermoeglichen, Docs-Reconciliation, lokale Testumgebung.",
   "pr": {
     "number": 334,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/334",
-    "state": "open"
+    "state": "merged",
+    "mergedSha": "1890f6da55a372e17813c1afa67353f0ad0988e4"
   },
   "findings": [],
-  "nextAction": "PR #334 auf gruenem Kopf squash-mergen; danach den main-Nachlauf pruefen.",
-  "revision": 8
+  "nextAction": "Abgeschlossen: PR #334 ist als 1890f6d auf main; Fail-Closed-Reparatur und Nachlauf sind verifiziert.",
+  "revision": 10
 }

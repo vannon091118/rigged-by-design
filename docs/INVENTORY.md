@@ -566,10 +566,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2397 |
-| Gelistete Dateien | 2397 |
+| Getrackte Dateien | 2400 |
+| Gelistete Dateien | 2400 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (79), content (843), docs (83), public (554), scripts (101), src (709) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (81), content (844), docs (83), public (554), scripts (101), src (709) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -581,9 +581,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 64 Datei(en)
-- `.lane-claims/tasks/` — 13 Datei(en)
-- `content/narrative/contributions/` — 839 Datei(en)
+- `.lane-claims/claims/` — 65 Datei(en)
+- `.lane-claims/tasks/` — 14 Datei(en)
+- `content/narrative/contributions/` — 840 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -734,15 +734,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-npc-encounter-loop.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-p20-dependency-matrix.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-phase-logic-audit.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-phase0-2-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-phase1-single-voice.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-phase2-task-contract.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-phase3-4-acceptance-v2.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/lane-governance-pixel-pipeline-closeout.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-governance-pixel-pipeline-closeout.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-player-cash-closeout.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-plinko-board.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-pretask-failclosed-repair.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-governance-pretask-failclosed-repair.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-relationships-coupling.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-p11-closeout.json` — { — gelesen: 20 Zeilen
@@ -762,15 +763,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/tasks/governance-phase3-4-acceptance-v2.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1601,6 +1603,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-main-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-eine-stimme.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json` — { — gelesen: 17 Zeilen
@@ -1616,8 +1619,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-render-sprite-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18790 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3361 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18812 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3365 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
