@@ -563,10 +563,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2360 |
-| Gelistete Dateien | 2360 |
+| Getrackte Dateien | 2362 |
+| Gelistete Dateien | 2362 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (63), content (837), docs (77), public (554), scripts (97), src (706) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (65), content (837), docs (77), public (554), scripts (97), src (706) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -578,8 +578,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 56 Datei(en)
-- `.lane-claims/tasks/` — 5 Datei(en)
+- `.lane-claims/claims/` — 57 Datei(en)
+- `.lane-claims/tasks/` — 6 Datei(en)
 - `content/narrative/contributions/` — 833 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -692,6 +692,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-agents-md-contract.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agents-wartezeiten-regel.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-apk-signing-v2.json` — { — gelesen: 39 Zeilen
 - `.lane-claims/claims/lane-governance-archiv-fuellung.json` — { — gelesen: 24 Zeilen
@@ -746,7 +747,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
+- `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 27 Zeilen
