@@ -5,7 +5,8 @@
  * Freigabe: jede inhaltliche Aenderung an `.github/`, `.githooks/`, `scripts/`,
  * `.lane-claims/` oder an den Governance-Vertraegen braucht eine Freigabe, die
  * nur mit PIN entsteht (`scripts/freeze-unlock.mjs`). Ohne Freigabe blockiert
- * der Pre-Commit-Hook lokal und der Plan-Job in CI.
+ * der Pre-Commit-Hook lokal, und der Plan-Job in CI bleibt rot; den Befund
+ * traegt ein BLOCKED-Issue. Der Branch wird nie geloescht.
  *
  * Zwei Grenzen sind bewusst:
  * - Mechanische Marker (`<!-- rbd-doc: ... -->`, Versionszeile) zaehlen nicht
@@ -22,6 +23,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, scryptSync, timingSafeEqual } from 'node:crypto';
 import { ROOT } from './report.mjs';
+import { TASK_CONTRACT_PREFIX } from './lane-claims.mjs';
 
 export const FREEZE = Object.freeze({
   active: true,
@@ -57,7 +59,7 @@ export const FREEZE_UNLOCK_FILE = '.lane-claims/freeze-unlock.json';
  * eine PIN-Freigabe fuer ihren eigenen Claim, und die Freigabe kollidierte mit
  * jedem anderen Claim, der `.lane-claims/` fuehrt.
  */
-export const CLAIM_TOOLING_PATHS = Object.freeze(['.lane-claims/claims/', FREEZE_UNLOCK_FILE]);
+export const CLAIM_TOOLING_PATHS = Object.freeze(['.lane-claims/claims/', TASK_CONTRACT_PREFIX, FREEZE_UNLOCK_FILE]);
 
 /** True, wenn der Pfad Lane-Werkzeug ist (Claim-Datei oder Freigabe). */
 export function isClaimTooling(file) {

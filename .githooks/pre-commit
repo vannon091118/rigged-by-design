@@ -8,6 +8,10 @@ set -e
 # anderen offenen Lanes blockieren den Commit. Das Skript liest nur Git und
 # laeuft deshalb auch ohne node_modules; nur so greift die Sperre wirklich.
 node scripts/verify-lane-claims.mjs || exit 1
+# Der Task-Vertrag ist die Wahrheit des Laufs: Claim-Bindung, Pflichtfelder
+# und Phasenwechsel werden vor dem Commit geprueft. Ohne Vertrag bleibt eine
+# Legacy-Lane gruen; mit Vertrag ist ein ungueltiger Wechsel rot.
+node scripts/verify-task-contract.mjs --staged || exit 1
 # Fail-closed: Der Validator liest den Arbeitsbaum. Weicht eine gestagte
 # Narrative-Datei dort noch ab, wuerde ein anderer Inhalt geprueft als der
 # Commit. Dann blockiert der Hook, statt den Widerspruch zu uebersehen.

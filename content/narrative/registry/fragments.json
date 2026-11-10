@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bcbcabf5b2faebc3a028b760f4b391ec8a3fcf86ecef59cbbcc07e14bf7045f8",
+  "contentHash": "sha256:aecf2a813dd17b6f6dbd7880f688a40a3823c99764b4442e383c94ca61696be1",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3665,6 +3665,131 @@
       "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "governance-eine-stimme-01",
+      "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
+    },
+    {
+      "contributionId": "governance-freeze-merge-base-01",
+      "turnId": "2026-11-10T03:38Z-governance-freeze-merge-base",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita markierte im Heft die Zeile, an der die Lane von main abzweigt. Nicht der wandernde Kopf zählt, sondern die gemeinsame Basis; sonst prüft jeder Lauf eine andere Freigabe. Der nächste Leser sah sofort, welche Regel gilt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
+    },
+    {
+      "contributionId": "governance-freeze-task-path-01",
+      "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
+    },
+    {
+      "contributionId": "governance-roadmap-count-01",
+      "turnId": "2026-11-10T03:52Z-governance-roadmap-count",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita glich die Roadmap mit der kompilierten Registry ab. Der Fortschritt ist keine geschätzte Zahl mehr, sondern der gemessene Stand nach der Nachsignatur.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-roadmap-count.json"
+    },
+    {
+      "contributionId": "governance-task-vertrag-01",
+      "turnId": "2026-11-10T03:20Z-governance-task-vertrag",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte ein schmales Heft neben die Kasse. Auf jeder Seite standen drei Zeilen: was gerade läuft, was offen ist und was als Nächstes kommt. Wer die Schicht übernahm, las zuerst das Heft, nicht den Chatverlauf. Der nächste Schritt war damit nie eine Erinnerung, sondern eine Notiz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-task-vertrag.json"
     },
     {
       "contributionId": "guest-voice-mid-51",

@@ -17,7 +17,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 Die Steuerungsebene ist gesperrt, bis **Stadt und Core-Loop stehen und mindestens § Progression-Zweige vollständig sind**. Gesperrt sind `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` und die Governance-Verträge; frei bleiben `src/`, `content/`, `public/` und Tests.
 
-Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, entfernt die CI den Lane-Branch mit `Verdacht auf unautorisierte Korruption`.
+Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, bleibt der Lauf rot und die CI legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`); der Branch bleibt bestehen.
 
 Aufhebung nur auf ausdrückliche Anweisung des Owners; danach gilt der Freeze weiter. Der Fokus bis dahin: Stadt, Core-Loop, Progression, Content und Baustein-Pools — keine Governance-Arbeit.
 
@@ -175,7 +175,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-09: **819/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-10: **824/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
 `guest-voice-high`) mit mindestens 50. Die Pool-Mindestgroesse ist damit an allen 13
@@ -239,7 +239,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 819/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 824/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |

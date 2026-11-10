@@ -8,16 +8,20 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 
 ## Zehn unverhandelbare Regeln
 
-1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`). Jede Lane außer `main` braucht einen verknüpften Worktree.
+1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`). Jede Lane außer `main` braucht einen verknüpften Worktree. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
 2. **Eigene Lane, fremde WIP bleibt liegen.** Nur der eigene Claim und die eigene Pfad-Allowlist; fremde Änderungen werden weder gestaged noch „aufgeräumt“. Kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in `src/**` und `scripts/**`; echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt (`verify:narrative-blocks`).
-7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` prüft die betroffenen schnellen Tests, die volle Suite läuft in CI. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Die CI prüft den exakten gepushten Kopf; `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` committet und pusht den Arbeitsbranch; danach PR gegen `main` mit den drei Pflichtsektionen und **manueller Merge** nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.
+9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, CI meldet, nächster Schritt ist `pretask`. Merge manuell nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. Keine zweite Klassifikation.
+
+## Task-Vertrag
+
+Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahrheit für Phase, offene Befunde, PR-Zustand und nächste Aktion. Er ist Lane-Werkzeug: keine Allowlist-Erweiterung, kein PIN, aber claim- und branchgebunden; `verify-task-contract` prüft beides. Phasen: `READY → IMPLEMENTING → CI_PENDING → MERGE_PENDING → AFTERCARE → DONE`. `CI_PENDING` schlägt eine parallele Lane vor, statt zu warten. `.verify-cache/task-state.json` bleibt Cache; `pretask` liest Vertrag, PR-Zustand und Issues und gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
 
 ## Skalierbare Reparatur
 
@@ -44,7 +48,7 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run verify:all` | Der lokale Vollnachweis: 12 Required-Gates plus Audit. |
-| `pnpm run turn:finish` | Betroffene Tests, Versions-Bump, Light-Gate, Commit und Branch-Push. |
+| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
 | `pnpm run docs:sync` | Fehlende stabile Marker in Pflichtdokumenten ergaenzen; vorhandene Marker bleiben unveraendert. |
 | `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
 

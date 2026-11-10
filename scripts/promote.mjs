@@ -22,6 +22,7 @@ import {
   splitAutomation,
 } from './lib/body-sync.mjs';
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
+import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -33,6 +34,10 @@ const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
 const headSha = process.env.HEAD_SHA ?? '';
 const mode = process.env.MODE ?? '';
+// Der Pflichtstatus zaehlt nur, wenn er aus diesem workflow_run stammt und
+// gegen dieselbe Basis lief. Beide Angaben kommen aus dem Ereignis.
+const ciRunId = process.env.CI_RUN_ID ?? '';
+const baseSha = process.env.BASE_SHA ?? '';
 const repo = process.env.GITHUB_REPOSITORY ?? '';
 const owner = repo.split('/')[0] ?? '';
 // Nur ein voller SHA ist die Identitaet, die die CI geprueft hat. Ein fehlender
@@ -159,6 +164,18 @@ function openPr(head = branch) {
   return prInfo(raw)?.isCrossRepository === false ? raw : '';
 }
 
+/** Check-Runs des geprueften Kopfes; `null` heisst nicht lesbar. */
+function checkRunsOfHead() {
+  if (!FULL_SHA.test(headSha)) return null;
+  const raw = gh(['api', `repos/${repo}/commits/${headSha}/check-runs?per_page=100`, '--jq', '.check_runs']);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 /** PR-Status gegen den geprueften Commit und die eigene Herkunft pruefen. */
 function verifiedPr(number) {
   const info = prInfo(number);
@@ -168,6 +185,9 @@ function verifiedPr(number) {
     headRepo: process.env.HEAD_REPO ?? '',
     branch,
     headSha,
+    baseSha,
+    ciRunId,
+    checkRuns: checkRunsOfHead(),
     pr: info,
   });
   if (!check.ok) {
@@ -234,6 +254,28 @@ function mergeGreen(number) {
   const info = verifiedPr(number);
   if (!info) return false;
   const ref = headRef();
+  // Der Task-Vertrag des PR-Kopfes ist dieselbe Wahrheit wie in pretask und
+  // turn:finish: Phase und offene Blocker muessen merge-bereit sein. Ein
+  // Legacy-PR ohne Vertrag bleibt mergebar, aber mit Warnung.
+  const contractRef = readTaskContractAtRef(ref, { branch });
+  if (contractRef) {
+    const contractCheck = validateTaskContract(contractRef.contract, { branch });
+    if (!contractCheck.ok) {
+      warn(`PR #${number}: Task-Vertrag ungueltig (${contractCheck.violations.join('; ')}); kein Merge`);
+      return false;
+    }
+    if (!['CI_PENDING', 'MERGE_PENDING'].includes(contractRef.contract.phase)) {
+      warn(`PR #${number}: Phase ${contractRef.contract.phase} ist nicht merge-bereit; kein Merge`);
+      return false;
+    }
+    const blockers = blockerFindings(contractRef.contract);
+    if (blockers.length > 0) {
+      warn(`PR #${number}: ${blockers.length} offene Blocker im Task-Vertrag; kein Merge`);
+      return false;
+    }
+  } else {
+    warn(`PR #${number}: kein Task-Vertrag am Kopf; Legacy-Merge mit Warnung`);
+  }
   const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
   if (current === null) {
     warn(`PR #${number}: Body nicht lesbar; kein Merge mit geratenem Text`);

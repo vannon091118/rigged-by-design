@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T03:45Z-governance-freeze-task-path",
+  "contributionId": "governance-freeze-task-path-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
+  "directives": []
+}

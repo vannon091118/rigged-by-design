@@ -76,6 +76,25 @@ const options = { base, head, event, ref, noop: noopFlag, handoff, required };
 const result = planForCI({ ...options, state: forced ?? undefined });
 const plan = result?.plan ?? buildPlan([], { ...options, state: forced ?? 'UNKNOWN' });
 
+// Task-Vertrag: der Plan prueft denselben Vertrag wie pretask und turn:finish.
+// Der Import ist dynamisch, damit die Kontrollebene aus der Basis ohne diese
+// Datei weiterlaeuft; fehlt sie, bleibt der Schritt inert.
+const taskContractMod = await import('./lib/task-contract.mjs').catch(() => null);
+if (taskContractMod) {
+  const { loadClaimsStrict, selectClaim } = await import('./lib/lane-claims.mjs');
+  const branchName = ref.replace(/^refs\/heads\//, '');
+  const claims = loadClaimsStrict();
+  const claim = selectClaim(claims, branchName);
+  if (claim) {
+    const loaded = taskContractMod.loadTaskContractForClaim(claim);
+    if (loaded.error) stop(`Task-Vertrag: ${loaded.error}`);
+    if (loaded.contract) {
+      const check = taskContractMod.validateTaskContract(loaded.contract, { claim, branch: branchName });
+      if (!check.ok) stop(`Task-Vertrag ungueltig: ${check.violations.join('; ')}`);
+    }
+  }
+}
+
 const gates = plan.gateKeys;
 const state = plan.state;
 const mayBeEmpty = state === 'NOOP' || state === 'PR_HANDOFF';

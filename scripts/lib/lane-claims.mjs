@@ -31,6 +31,20 @@ export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
 export const COORDINATION_FILES = Object.freeze(['.lane-claims/claims.json', '.lane-claims/freeze-unlock.json']);
 
 /**
+ * Task-Vertraege sind Lane-Werkzeug wie Claims und Freigabe: sie beschreiben
+ * den Lauf, nicht die Steuerlogik. Jede Lane darf ihren eigenen Vertrag
+ * schreiben, ohne ihre Allowlist zu erweitern; die Bindung an Claim und Branch
+ * prueft `task-contract.mjs`. Die Eigentumspruefung bleibt beim Gate: eine
+ * Lane staged nur ihren eigenen Vertrag.
+ */
+export const TASK_CONTRACT_PREFIX = '.lane-claims/tasks/';
+
+/** True, wenn der Pfad ein Task-Vertrag ist. */
+export function isTaskContractPath(file) {
+  return String(file ?? '').replaceAll('\\', '/').startsWith(TASK_CONTRACT_PREFIX);
+}
+
+/**
  * Fester Owner-Roster. Eine Lane ohne benannten Owner ist keine Lane: ohne
  * diese Liste konnte jeder Agent einen Claim mit beliebigem Owner anlegen,
  * und "wer darf das" war nirgends beantwortet.
