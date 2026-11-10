@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * ERR-0911: erzeugt die Live-Dependency-Matrix in docs/ARCHITECTURE.md aus
+ * ERR-0911: erzeugt die Live-Dependency-Matrix in docs/DEPENDENCY-MATRIX.md aus
  * package.json und echten Imports. Keine Begruendung = Fail-Closed.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -113,18 +113,20 @@ const table = [
   ...rows,
 ].join('\n');
 
-const docPath = resolve(ROOT, 'docs', 'ARCHITECTURE.md');
-if (!existsSync(docPath)) {
-  fail(1, 'ERR-4013', 'sync-deps', 'docs/ARCHITECTURE.md fehlt');
-  process.exit(1);
-}
-const doc = readFileSync(docPath, 'utf8');
+const docPath = resolve(ROOT, 'docs', 'DEPENDENCY-MATRIX.md');
 const start = '<!-- DEP_MATRIX_START -->';
 const end = '<!-- DEP_MATRIX_END -->';
+const header = [
+  '# Dependency-Matrix',
+  '',
+  'Die Matrix wird von `scripts/sync-dependency-matrix.mjs` aus `package.json` und den echten Imports erzeugt. Sie belegt Nutzung, nicht Notwendigkeit; die Begruendungen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).',
+  '',
+].join('\n');
 const replacement = `${start}\n${table}\n${end}`;
+const doc = existsSync(docPath) ? readFileSync(docPath, 'utf8') : '';
 const next = doc.includes(start) && doc.includes(end)
   ? doc.replace(new RegExp(`${start}[\\s\\S]*?${end}`), replacement)
-  : `${doc.trimEnd()}\n\n## Live-Dependency-Matrix\n\n${replacement}\n`;
+  : `${header}${replacement}\n`;
 const checkOnly = process.argv.includes('--check');
 if (next !== doc) {
   if (checkOnly) {

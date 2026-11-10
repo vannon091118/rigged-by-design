@@ -256,7 +256,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 835/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 836/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -274,7 +274,7 @@ Code und seinen Test als Beleg.
 | M4 | Smartphone als echte Geraeteflaeche | offen | Vergleich der vier Fensterzustaende |
 | P-18 | Wand-Occlusion visuell | offen | Depth-Tests stehen, Browserbeleg fehlt |
 | P-19 | First Frame unter 3 s / Slow 4G | offen | Baseline 22 Requests/12,16 s/2,42 MB |
-| P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | offen | `scripts/sync-dependency-matrix.mjs` zaehlt Testdateien; jede neue Testdatei verschiebt die Zahlen und braucht damit eine PIN-Freigabe. Matrix in eine freie Datei ziehen oder den Generator aus dem Freeze nehmen |
+| P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | **erledigt 2026-11-10** | Matrix liegt in `docs/DEPENDENCY-MATRIX.md`; Generator und Autofix-Plan schreiben nur noch dorthin, die Architektur verlinkt sie. Neue Testdateien verschieben damit keine gesperrte Datei mehr. |
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
 | P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `influence-config.ts` gewichtet `mood`, `sociability`, `thirst`, `rumor` sowie `trust`, `sympathy` und `conflict` je Kontext, wendet Cross-Kanten an (unter anderem Vertrauen/Konflikt auf Geselligkeit) und validiert fail-closed; Consumer `guest-choice.ts` (Bar-Nachfrage mit Beziehungskante); Test `influence.test.ts` |
 | P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | **verifiziert 2026-11-08** | `main-event-pool.ts` zieht nur bei idle, gewichtet ueber die gerichteten trust/sympathy/conflict-Kanten und Cross-Kanten, daempft Wiederholung per Recency und Lockout und nutzt dieselbe Event-Karte ohne Sonder-UI/-Log; drei feste `AMBIENT_*`-Templates, Config in `influence-event-pool.ts`, Tests `main-event-pool.test.ts` |

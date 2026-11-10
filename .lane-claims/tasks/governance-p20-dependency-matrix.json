@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-p20-dependency-matrix",
+  "claimId": "lane/governance/p20-dependency-matrix",
+  "branch": "lane/governance/p20-dependency-matrix",
+  "baseSha": "3fd17750b1df0a09f11eaea213d2a30df00cb8a2",
+  "phase": "IMPLEMENTING",
+  "title": "P-20: Dependency-Matrix aus der gesperrten Architektur ziehen",
+  "goal": "Die generierte Matrix in docs/DEPENDENCY-MATRIX.md fuehren, den Generator und den mechanischen Reparaturplan auf den freien Pfad ziehen und die gesperrte Architektur nur noch verlinken.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Matrix umziehen, Generator und Test auf den neuen Pfad stellen, Doku und Inventur nachziehen und die Gates lokal pruefen.",
+  "revision": 1
+}

@@ -30,7 +30,7 @@ export const AUTOFIX_SCRIPTS = Object.freeze([
 
 /** Nur diese Pfade darf eine automatische Reparatur anfassen. */
 export const MECHANICAL_PATHS = Object.freeze(
-  [...new Set([...DOC_SET.map((doc) => doc.path), 'docs/INVENTORY.md', 'docs/ARCHITECTURE.md'])].sort(),
+  [...new Set([...DOC_SET.map((doc) => doc.path), 'docs/INVENTORY.md', 'docs/ARCHITECTURE.md', 'docs/DEPENDENCY-MATRIX.md'])].sort(),
 );
 
 /** Codes, die als mechanisch gelten (Doku, Matrix, Katalog, Marker). */
@@ -57,7 +57,7 @@ export function requestedPaths(failures) {
   const paths = new Set();
   for (const failure of failures ?? []) {
     if (MECHANICAL_CODES.includes(failure?.code)) {
-      if (failure.code === 'ERR-4013') paths.add('docs/ARCHITECTURE.md');
+      if (failure.code === 'ERR-4013') paths.add('docs/DEPENDENCY-MATRIX.md');
       else if (failure.code === 'ERR-4015') paths.add('docs/INVENTORY.md');
       else for (const path of MECHANICAL_PATHS) paths.add(path);
     }
