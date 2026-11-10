@@ -4,7 +4,7 @@
   "claimId": "lane/governance/agent14-changelog",
   "branch": "lane/governance/agent14-changelog",
   "baseSha": "65c11aa576242525756e7c886e12f6cafc521e7f",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 14 Nachtrag: Changelog an die Version 0.3.211 anbinden",
   "goal": "Die fehlenden Changelog-Eintraege 0.3.210 und 0.3.211 aus den gemergten Commits nachziehen, damit Version und Changelog uebereinstimmen; keine Code-Aenderung.",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "74bc79633f4e3d573babec327389633e7cee2e42"
   },
   "findings": [],
-  "nextAction": "Claim mit Squash-Beleg schliessen; dann DONE.",
-  "revision": 4
+  "nextAction": "Abgeschlossen: PR #397 (74bc796) auf main, Claim geschlossen.",
+  "revision": 5
 }
