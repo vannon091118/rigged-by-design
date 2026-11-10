@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T18:30Z-fight-career",
+  "contributionId": "fight-career-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Hinter dem Haus ist der Boden festgetreten, und niemand fragt nach Papieren. Wer kämpfen will, legt sein Startgeld auf die Kante; wer gewinnt, nimmt das Preisgeld mit und geht. Rita schrieb jeden Namen mit, weil sie wusste, dass der nächste Gegner der ist, den noch keiner bezwungen hat.",
+  "directives": []
+}

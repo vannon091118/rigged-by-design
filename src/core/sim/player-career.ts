@@ -7,6 +7,8 @@
  * eine zweite Wahrheit.
  */
 import type { VaCoinMicro } from '../economy/vacoin';
+import { backyardView, type BackyardView } from './fight-career';
+import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
 import {
@@ -30,11 +32,6 @@ interface CareerJob {
   readonly lastWorkDay: number;
 }
 
-interface CareerRecord {
-  readonly wins: number;
-  readonly losses: number;
-}
-
 interface CareerAchievement {
   readonly id: string;
   readonly label: string;
@@ -54,8 +51,10 @@ export interface PlayerCareer {
   readonly playerCash: VaCoinMicro;
   readonly attributes: readonly CareerAttribute[];
   readonly job: CareerJob | null;
-  readonly record: CareerRecord;
+  readonly record: FightRecord;
   readonly achievements: readonly CareerAchievement[];
+  /** Hinterhof-Leiter, Gegnerhistorie und Startgeld aus derselben Ableitung. */
+  readonly backyard: BackyardView;
 }
 
 const INJURY_HP_PENALTY = 5;
@@ -91,19 +90,15 @@ function levelOf(rpg: PlayerRpgState, attr: RpgAttribute): number {
   return rpg.luckLevel;
 }
 
-/** Ein Duell im Archiv nennt Sieg oder Niederlage im Effekt; mehr braucht die Bilanz nicht. */
-export function fightRecordOf(events: readonly JournalEvent[]): CareerRecord {
-  let wins = 0;
-  let losses = 0;
-  for (const event of events) {
-    if (!event.subject.startsWith('Duell gegen ')) continue;
-    if (event.effect.startsWith('Gewonnen')) wins += 1;
-    else if (event.effect.startsWith('Verloren')) losses += 1;
-  }
-  return { wins, losses };
+/**
+ * Ein Kampf im Archiv nennt Sieg oder Niederlage im Effekt; mehr braucht die
+ * Bilanz nicht. Gastduell und Hinterhof zaehlen ueber denselben Parser.
+ */
+export function fightRecordOf(events: readonly JournalEvent[]): FightRecord {
+  return fightRecordOfAll(events);
 }
 
-function achievementsOf(world: WorldState, record: CareerRecord): readonly CareerAchievement[] {
+function achievementsOf(world: WorldState, record: FightRecord): readonly CareerAchievement[] {
   const rpg = world.player.rpg;
   const job = world.player.job;
   return [
@@ -143,6 +138,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     },
     record,
     achievements: achievementsOf(world, record),
+    backyard: backyardView(world, wallet),
   };
 }
 

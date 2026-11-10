@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e0fcd2a48599b3ed04f16aa76b08ca80d6c909f0d56d045141ad8ebf282496d8",
+  "contentHash": "sha256:bb5e53a29f316913d4ba1a6adc0bc21feeb393643d675bc4086d029a16acba09",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3733,6 +3733,31 @@
       "text": "Manche Gaeste kommen nicht einfach wieder - sie kommen zurueck: Wer gute Abende mitbringt, bekommt neben der gewohnten Begruessung eine zweite, waermere Szene. Kein Zustaendlichkeitsbuch fuehrt darueber Buch, nur Erinnerung, Kante und ein Trigger, der beides liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-f-warm-return.json"
+    },
+    {
+      "contributionId": "fight-career-01",
+      "turnId": "2026-11-10T18:30Z-fight-career",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Hinter dem Haus ist der Boden festgetreten, und niemand fragt nach Papieren. Wer kämpfen will, legt sein Startgeld auf die Kante; wer gewinnt, nimmt das Preisgeld mit und geht. Rita schrieb jeden Namen mit, weil sie wusste, dass der nächste Gegner der ist, den noch keiner bezwungen hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-fight-career.json"
     },
     {
       "contributionId": "floor-fleck-01",

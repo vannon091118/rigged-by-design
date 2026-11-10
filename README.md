@@ -126,6 +126,7 @@ Gäste merken sich, wie sie behandelt wurden. Ein Gast, der pleite geht und verd
 Wo Alkohol fließt und Ersparnisse verdampfen, fliegen gelegentlich die Fäuste. Wütende Gäste zetteln Streitigkeiten an. Jetzt hast du die Wahl:
 - Einen teuren Security-Wachmann vorschicken, der die Lage professionell klärt.
 - Oder selbst die Ärmel hochkrempeln: Tritt dem Rädelsführer im rundenbasierten Nahkampf gegenüber! Deine Kampffertigkeit (`brawl`) und Nehmerqualitäten (`endurance`) entscheiden über Sieg oder Krankenhausaufenthalt. Ein Sieg begeistert die Menge – eine Niederlage kostet dich deine Barschaft und bringt dir blaue Flecken ein, die dich tagelang ausbremsen.
+- Hinter dem Haus wartet die Leiter: sechs herausforderbare Gegner mit eigenem Startgeld und Preisgeld, die du im Charakterfenster antrittst. Jeder Kampf landet mit Ergebnis, Runden und KO im Archiv; deine Bilanz und die Gegnerhistorie liest das Spiel von dort, nicht aus einem zweiten Zähler.
 
 ### 5. Das Geld-Drama: Zwei Töpfe, eine Wahrheit
 In *Rigged by Design* gilt ein unumstößliches Gesetz: **Geschäft ist Geschäft, und privat ist privat.**
