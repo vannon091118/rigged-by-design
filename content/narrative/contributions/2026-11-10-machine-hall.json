@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T22:10Z-machine-hall",
+  "contributionId": "machine-hall-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita wartete nicht, bis ein Automat stehen blieb. Sie hoerte zu, wie das Gehaeuse arbeitete, und trug den Zustand in die Liste ein, die schon da war. Der Unterschied zwischen Wartung und Reparatur war kein Schlagwort: das eine kostete Geld, das andere ein Ersatzteil - und nur eines davon musste man erklaeren, wenn der Gast schon am Geraet sass.",
+  "directives": []
+}

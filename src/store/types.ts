@@ -12,6 +12,7 @@ import type { LayoutState } from '../core/sim/layout-types';
 import type { DayPhase } from '../core/sim/day-phase';
 import type { CompanyStatus } from '../core/sim/progression';
 import type { RenovationView } from '../core/sim/renovation';
+import type { MachineHallView } from '../core/sim/machine-hall';
 import type { CityView } from '../core/sim/city';
 
 /**
@@ -100,6 +101,8 @@ export interface GameView {
   readonly house: VaCoinMicro;
   /** Renovierungsstufe der eigenen Immobilie samt naechstem Schritt. */
   readonly renovation: RenovationView;
+  /** Automaten der eigenen Flaeche samt Wartungsbedarf. */
+  readonly machineHall: MachineHallView;
   readonly wallet: VaCoinMicro;
   readonly desk: VaCoinMicro;
   readonly pending: VaCoinMicro;

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6e46ecf71cf06822571c66bb98dd748e18b8483558c50ea1e8a1bb561966b44e",
+  "contentHash": "sha256:8188e08edc02b5f6311d8c7f56eccd8fc20b2dfb44f61cc23fa8bee6ac853207",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -4454,6 +4454,31 @@
       "text": "Die Karten liegen offen, und die Summe stimmt: Was ausgezahlt wird, steht in einer Zeile, die niemand nachträglich verschiebt. Der Gast zählt nicht nach, er sieht nur, dass die Rechnung aufgeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-logic-safety-payout-01.json"
+    },
+    {
+      "contributionId": "machine-hall-01",
+      "turnId": "2026-11-10T22:10Z-machine-hall",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita wartete nicht, bis ein Automat stehen blieb. Sie hoerte zu, wie das Gehaeuse arbeitete, und trug den Zustand in die Liste ein, die schon da war. Der Unterschied zwischen Wartung und Reparatur war kein Schlagwort: das eine kostete Geld, das andere ein Ersatzteil - und nur eines davon musste man erklaeren, wenn der Gast schon am Geraet sass.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-machine-hall.json"
     },
     {
       "contributionId": "main-event-pool-01",
