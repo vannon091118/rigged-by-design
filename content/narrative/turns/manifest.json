@@ -3476,6 +3476,10 @@
     {
       "turnId": "2026-11-10T23:56Z-closeout-buchhaltung-2",
       "contributionId": "closeout-buchhaltung-2"
+    },
+    {
+      "turnId": "2026-11-10T23:57Z-closeout-buchhaltung-3",
+      "contributionId": "closeout-buchhaltung-3"
     }
   ]
 }
