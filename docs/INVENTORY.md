@@ -563,10 +563,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2362 |
-| Gelistete Dateien | 2362 |
+| Getrackte Dateien | 2364 |
+| Gelistete Dateien | 2364 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (65), content (837), docs (77), public (554), scripts (97), src (706) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (67), content (837), docs (77), public (554), scripts (97), src (706) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -578,8 +578,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 57 Datei(en)
-- `.lane-claims/tasks/` — 6 Datei(en)
+- `.lane-claims/claims/` — 58 Datei(en)
+- `.lane-claims/tasks/` — 7 Datei(en)
 - `content/narrative/contributions/` — 833 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -705,9 +705,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-derivetaskstate-fix.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-dialog-trigger.json` — { — gelesen: 39 Zeilen
 - `.lane-claims/claims/lane-governance-docs-meta.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-fail-closed-issue-check.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-fail-closed-issue-check.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-interaction-foundation.json` — { — gelesen: 53 Zeilen
@@ -748,8 +749,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
-- `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 14 Zeilen
@@ -2290,7 +2292,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/report.mjs` — Einheitliches [IDX] [ERR] Format fuer alle Gate-Skripte. — gelesen: 41 Zeilen
 - `scripts/lib/staging-scope.mjs` — Staging-Umfang: `git add -A` ist nur zulaessig, wenn jede Aenderung im — gelesen: 54 Zeilen
 - `scripts/lib/subsystems.mjs` — Ein Ort fuer Subsysteme und Ordnerregeln. — gelesen: 119 Zeilen
-- `scripts/lib/task-contract.mjs` — Task-Vertrag: die eine Wahrheit eines Laufs. — gelesen: 384 Zeilen
+- `scripts/lib/task-contract.mjs` — Task-Vertrag: die eine Wahrheit eines Laufs. — gelesen: 385 Zeilen
 - `scripts/lib/test-catalog.mjs` — Testkatalog: jede Testdatei gehoert genau einem System und genau einer — gelesen: 105 Zeilen
 - `scripts/lib/tree-changes.mjs` — Arbeitsbaum-Aenderungen als explizite Liste. — gelesen: 54 Zeilen
 - `scripts/lib/ts-ast.mjs` — Gemeinsame TypeScript-AST-Basis der Governance-Gates. — gelesen: 90 Zeilen
