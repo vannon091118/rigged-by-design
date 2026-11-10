@@ -19,6 +19,7 @@ import {
 } from '../../../../scripts/lib/generated-files.mjs';
 import { assessIntegration, INTEGRATION } from '../../../../scripts/lib/integration.mjs';
 import { buildPlan, riskFor, selectTests } from '../../../../scripts/lib/ci-plan.mjs';
+import { filterMergedCollisions } from '../../../../scripts/lib/claim-evidence.mjs';
 import { REQUIRED_CI_GATES } from '../../../../scripts/lib/pipeline-plan.mjs';
 
 const pr = (changed: string[]) => ({ event: 'pull_request', changed });
@@ -141,6 +142,15 @@ describe('CI-Gates nach Risiko', () => {
     expect(light.tests.runAll).toBe(false);
   });
 
+  it('haelt genau einen Marker uebrig und zitierte unangetastet', () => {
+    const dup = '# T\n\n<!-- rbd-doc: managed -->\n\nText\n\n<!-- rbd-doc: managed -->\n';
+    expect(applyMarker(dup).match(/rbd-doc/g)).toHaveLength(1);
+    const alt = '# T\n\n<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->\n\nText\n\n<!-- rbd-doc: managed -->\n';
+    expect(markerOf(applyMarker(alt))).toEqual({ managed: true });
+    const zitat = '# T\n\n<!-- rbd-doc: managed -->\n\nText `<!-- rbd-doc: v0.3.144 | 2026-11-06 21:42 UTC -->` bleibt.\n';
+    expect(applyMarker(zitat)).toBe(zitat);
+  });
+
   it('ordnet Risiko fail-closed zu', () => {
     expect(riskFor({ empty: true })).toBe('none');
     expect(riskFor({ ci: true, docs: true })).toBe('governance');
@@ -150,5 +160,25 @@ describe('CI-Gates nach Risiko', () => {
     expect(riskFor({ docsOnly: true })).toBe('docs');
     expect(riskFor({})).toBe('unknown');
     expect(selectTests(['docs/CI.md'], pr(['docs/CI.md'])).runAll).toBe(false);
+  });
+});
+
+describe('Zusammengefuehrte Lanes', () => {
+  const tip = (c: string) => c.repeat(40);
+  const hit = { lane: 'lane/governance/y', reason: 'Pfad-Überschneidung in Allowlist', contractConflict: [] as string[] };
+  const lanes = [{ id: 'lane/ci/x', branch: 'lane/ci/x' }, { id: 'lane/governance/y', branch: 'lane/governance/y' }];
+  const gitMit = (log: string) => (args: readonly string[]) => {
+    if (args[0] === 'rev-parse') return args[1] === 'origin/main' ? tip('a') : args[1] === '--verify' ? tip('b') : 'tree1';
+    if (args[0] === 'log') return log;
+    throw new Error('unerwarteter Git-Aufruf');
+  };
+  const ohneGh = () => { throw new Error('kein gh'); };
+  it('filtert belegte Merges und haelt laufende Lanes zurueck', () => {
+    const gemeldet: string[] = [];
+    const meldung = { onMerged: (treffer: { lane: string }) => gemeldet.push(treffer.lane) };
+    expect(filterMergedCollisions({ collisions: [hit], claims: lanes, git: gitMit(`${tip('c')} tree1\n${tip('a')} treeX`), gh: ohneGh, ...meldung })).toEqual([]);
+    expect(gemeldet).toEqual(['lane/governance/y']);
+    expect(filterMergedCollisions({ collisions: [hit], claims: lanes, git: gitMit(`${tip('a')} treeX`), gh: ohneGh, ...meldung })).toEqual([hit]);
+    expect(gemeldet).toHaveLength(1);
   });
 });

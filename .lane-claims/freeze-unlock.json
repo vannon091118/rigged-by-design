@@ -10,12 +10,14 @@
     "scripts/ci-plan.mjs",
     "scripts/integrate.mjs",
     "scripts/lib/ci-plan.mjs",
+    "scripts/lib/claim-evidence.mjs",
     "scripts/lib/doc-sync.mjs",
     "scripts/lib/generated-files.mjs",
     "scripts/lib/integration.mjs",
+    "scripts/pretask.mjs",
     "scripts/sync-generated.mjs",
     "scripts/verify-lane-claims.mjs"
   ],
-  "token": "d333991b8357b77964c9d0ff10bf7cd58aa2067a2e0453422a4ac88537e67409",
+  "token": "2a13f4609d2261613473cc21d326d87c3bcbeabde7805d9b0280208b09d12f32",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

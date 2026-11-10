@@ -62,6 +62,8 @@ export const DOC_SET = Object.freeze([
 ]);
 
 const MARKER = /<!--\s*rbd-doc:\s*([^>]*?)\s*-->/;
+const STANDALONE_MARKER = /^[ \t]*<!--[ \t]*rbd-doc:[ \t]*([^>]*?)[ \t]*-->[ \t]*$/m;
+const STANDALONE_MARKER_ALL = /^[ \t]*<!--[ \t]*rbd-doc:[ \t]*([^>]*?)[ \t]*-->[ \t]*$/gm;
 export const MANAGED_MARKER = '<!-- rbd-doc: managed -->';
 const ROOT_DOCS = new Set(['README.md', 'AGENTS.md']);
 
@@ -83,11 +85,26 @@ export function markerOf(text) {
  * `verify:docs` braucht keine zweite Schreibweise.
  */
 export function applyMarker(text) {
-  const match = MARKER.exec(text);
+  const value = String(text ?? '');
+  // Nur eigenstaendige Markerzeilen sind der Doku-Marker; Marker in
+  // Fliesstext oder Code-Spans sind zitierter Inhalt und bleiben unangetastet.
+  // Sonst wuerde die Normalisierung Geschichte umschreiben und jede erwaehnte
+  // Version als Doku-Churn in fremde Lanes tragen.
+  const match = STANDALONE_MARKER.exec(value);
   if (match) {
-    const value = match[1].trim();
-    const versioned = /^v[^ |]+\s*\|\s*.+$/.test(value);
-    return versioned ? text.replace(match[0], MANAGED_MARKER) : text;
+    const versioned = /^v[^ |]+\s*\|\s*.+$/.test(match[1].trim());
+    const next = versioned ? value.replace(match[0], MANAGED_MARKER) : value;
+    // Ein Marker, ein Format: spaetere eigenstaendige Markerzeilen sind keine
+    // zweite Wahrheit und werden entfernt. Sonst erzeugt ein schlechter Merge
+    // zwei kanonische Marker, die jeder Gate-Lauf als Doku-Churn sieht.
+    let first = true;
+    return next.replace(STANDALONE_MARKER_ALL, (entry) => {
+      if (first) {
+        first = false;
+        return entry;
+      }
+      return '';
+    });
   }
   const lines = text.split('\n');
   lines.splice(1, 0, '', MANAGED_MARKER);

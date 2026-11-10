@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c3dc9928f70f4dfe7853309378c4a154afa1139eb33ecd9937f1659dbbab501e",
+  "contentHash": "sha256:7aa6a670a2a12e34220f71291165cbae0a311e4a22b927b68e2d756507dd352f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -721,6 +721,28 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "ci-governance-defuse-01",
+      "turnId": "2026-11-10T09:55Z-ci-governance-defuse",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zusammengefuehrte Lanes blockieren den Start nicht mehr: Pretask und Lane-Gate teilen denselben Merged-Filter, und ein Doku-Marker kommt genau einmal vor. Was auf main steht, ist Notiz statt Sperre; ohne Beleg bleibt es fail-closed.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json"
     },
     {
       "contributionId": "ci-main-sync-01",

@@ -25,7 +25,7 @@ import {
   COORDINATION_FILES,
   isTaskContractPath,
 } from './lib/lane-claims.mjs';
-import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { filterMergedCollisions } from './lib/claim-evidence.mjs';
 import { generatedOnlyDiff } from './lib/generated-files.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
@@ -308,62 +308,22 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
-/** Remote-Kopf: unterscheidet einen geloeschten von einem nur nicht ausgecheckten Branch. */
-function remoteHead(branch) {
-  try {
-    const out = git(['ls-remote', '--heads', 'origin', branch]);
-    return { known: true, sha: out.split(/\s+/)[0] || null };
-  } catch {
-    return { known: false, sha: null };
-  }
-}
-
-/** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
-const mergedIndex = mergedPullRequestIndex();
-const baseTip = (() => {
-  try {
-    return git(['rev-parse', BASE_REF]);
-  } catch {
-    return null;
-  }
-})();
-const collisions = bot ? [] : findCollisions(claim).filter((collision) => {
-  // Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
-  // sondern ein veralteter Eintrag. `decideClaim` kennt beide Belege: den
-  // gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
-  // lokalen Historie (Squash-Merge, kein `gh` noetig). Ohne jeden Nachweis
-  // bleibt es fail-closed bei der Kollision.
-  const other = claims.find((entry) => entry.id === collision.lane);
-  if (!other) return true;
-  const pr = mergedIndex?.get(other.branch) ?? null;
-  const local = localMergeEvidence({ branch: other.branch });
-  const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
-  const branchHead = local.headSha ?? remote.sha;
-  const branchExists = Boolean(branchHead);
-  const branchAtBase = local.atBase || Boolean(remote.sha && baseTip && remote.sha === baseTip);
-  // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
-  // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
-  const absenceKnown = !branchExists && remote.known;
-  const mergedOnMain = Boolean(
-    pr &&
-      (branchExists ? branchAtBase : absenceKnown) &&
-      commitOnMain({ sha: pr.mergeCommit ?? pr.headRefOid, baseRef: BASE_REF }),
-  );
-  const evidence = decideClaim({
-    branchExists,
-    branchAtBase,
-    branchHeadOnMain: local.headOnMain,
-    branchTreeOnMain: local.treeOnMain,
-    headSha: branchHead,
-    mergedPr: pr,
-    mergedOnMain,
-  });
-  if (evidence.status === 'merged') {
-    console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
-    return false;
-  }
-  return true;
-});
+// Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
+// sondern ein veralteter Eintrag. Der geteilte Filter kennt beide Belege: den
+// gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
+// lokalen Historie (Squash-Merge, kein `gh` noetig). Ohne jeden Nachweis
+// bleibt es fail-closed bei der Kollision. Pretask nutzt denselben Filter,
+// damit Start und Gate nicht auseinanderlaufen.
+const collisions = bot
+  ? []
+  : filterMergedCollisions({
+      collisions: findCollisions(claim),
+      claims,
+      baseRef: BASE_REF,
+      onMerged: (collision, evidence) => {
+        console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
+      },
+    });
 if (collisions.length > 0) {
   console.error(`[ERR-4019] verify-lane-claims: Lane-Kollisionen für '${branch}':`);
   for (const coll of collisions) {

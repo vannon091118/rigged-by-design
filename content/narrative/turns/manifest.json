@@ -3352,6 +3352,10 @@
     {
       "turnId": "2026-11-10T08:30Z-ci-main-sync",
       "contributionId": "ci-main-sync-01"
+    },
+    {
+      "turnId": "2026-11-10T09:55Z-ci-governance-defuse",
+      "contributionId": "ci-governance-defuse-01"
     }
   ]
 }
