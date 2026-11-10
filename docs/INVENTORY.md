@@ -572,10 +572,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2437 |
-| Gelistete Dateien | 2437 |
+| Getrackte Dateien | 2439 |
+| Gelistete Dateien | 2439 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (99), content (852), docs (83), public (554), scripts (102), src (719) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (101), content (852), docs (83), public (554), scripts (102), src (719) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -587,8 +587,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 74 Datei(en)
-- `.lane-claims/tasks/` — 23 Datei(en)
+- `.lane-claims/claims/` — 75 Datei(en)
+- `.lane-claims/tasks/` — 24 Datei(en)
 - `content/narrative/contributions/` — 848 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -725,6 +725,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-dialog-trigger.json` — { — gelesen: 39 Zeilen
 - `.lane-claims/claims/lane-governance-docs-meta.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-fail-closed-issue-check.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-fight-career-docs.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-final-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
@@ -785,6 +786,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/governance-fight-career-docs.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
@@ -1656,14 +1658,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1102 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1111 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 208 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3510 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3522 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 446 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 447 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 84 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 134 Zeilen

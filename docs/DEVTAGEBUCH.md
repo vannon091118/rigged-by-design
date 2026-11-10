@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-10 - Masterplan Phase 1: Kampfkarriere (Agent 05)
+
+**Ziel:** Ein wiederholbarer Kampfloop ausserhalb der Gaestestreitigkeiten - herausforderbare Gegner, Startgeld, Preisgeld, Gegnerhistorie, Bilanz und Verletzungsfolgen, ohne zweiten Spielzustand.
+
+**Befund:** `duel.ts` schrieb jedes Duell ins Archiv, `brawl-combat` lieferte Kaempfer und Simulation, und `player-career.ts` aus PR #357 zog die Bilanz bereits aus den `Duell gegen ...`-Eintraegen. Es fehlten der wiederholbare Einstieg, die Gebuehr und der Preis; eine eigene Historie waere eine zweite Wahrheit neben dem Archiv gewesen.
+
+**Umsetzung:** `core/sim/fight-career.ts` fuehrt eine Sechser-Leiter (naechster Gegner ist der erste unbezwungene, der Endgegner bleibt herausforderbar), kaempft ueber `fighters`/`simulateFight` und bucht Startgeld (`PORTEMONNAIE -> EXTERNAL`, Grund `hinterhof startgeld`) sowie Preisgeld nur bei Sieg (`EXTERNAL -> PORTEMONNAIE`, Grund `hinterhof preisgeld`). `core/sim/fight-history.ts` parst Archiv-Eintraege beider Arten und liefert Gegnerhistorie und Siege/Niederlagen/KOs; `player-career.ts` delegiert dorthin und traegt das Feld `backyard`. Eine Niederlage kostet Startgeld und Lebenspunkte und setzt eine Verletzung, die den naechsten Kampf sperrt. Die Sicht liegt in `ui/career-backyard.tsx` im bestehenden Charakterfenster, die Aktion laeuft ueber `worldStore.city({ kind: 'backyardFight' })`.
+
+**Pruefungen:** `fight-career.test.ts` (sechs Faelle: Leiter, Gebuehr, Auszahlung, Niederlage ohne Preisgeld, Sperre, Loop nach dem Endgegner) und `player-dashboard.test.tsx` (Gegnerhistorie) gruen; `verify:all` PASS auf dem PR-Kopf `7d46ff9` (squash-gemergt als `4b4ad1c`), CI `Fail-Closed Gates` success mit 0 Annotations.
+
+**Bewusst nicht getan:** Kein neues Save-Feld, keine Migration, kein zweiter Kampf-Zaehler. Die Meta-Dokumente folgen in dieser Governance-Lane; Phase 2 (Agents 07-30) bleibt unberuehrt.
+
 ## 2026-11-10 - Masterplan Phase 1: Spieler-Dashboard (Agent 06)
 
 **Ziel:** Der Spieler soll seine Progression sehen, ohne dass ein zweiter Spielzustand entsteht. Der Masterplan fordert ein Dashboard mit Level, XP, Attributen, Skillpunkten, LP, Verletzungen, Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolgen.
