@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "base": "18843f7cc187dd128746299dd1df2f22a7d7c941",
+  "base": "1f13f42a03b65b2d86cbd14bd924cb1d20e7ef6d",
   "paths": [
     ".github/workflows/ci-verify.yml",
     ".github/workflows/pr-watcher.yml",
@@ -24,6 +24,6 @@
     "scripts/turn-push.mjs",
     "scripts/verify-pr-body.mjs"
   ],
-  "token": "2fbe40937fba587fedce0a268044ebb94ea38fa1891339db22528ed5813d670b",
+  "token": "3ac7b5459f8255a047bfda9aafae396a6cbd8af81a9b42d2088ad7b4c77eaf10",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
