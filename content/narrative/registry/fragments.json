@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:846c643b059429e18fa651bdfc90b44ce6972de7e91429bc3a11c43f7437b08a",
+  "contentHash": "sha256:dedd5fd4d1eecc5352773d41a0aff7165e8a4e399991fb86392cfab44849147f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3447,6 +3447,28 @@
       "text": "Die Bude trägt jetzt eine Kasse, der Saal sein eigenes Personal, und auf dem Schild steht zum ersten Mal ein Konzern. Jede Stufe hat vorher etwas gekostet: Tage, Gewinn, Ruf, Geräte und Leute, die bleiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-company-progression.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-1",
+      "turnId": "2026-11-10T23:05Z-closeout-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bude zaehlte ihre Bedingungen zweimal: einmal fuer den Spieler, einmal fuer den Beleg. Der Beleg war der Merge, nicht die Absicht - erst danach durfte die Zeile als erledigt gelten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-1.json"
     },
     {
       "contributionId": "company-progression-docs-01",

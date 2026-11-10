@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-company-progression-closeout",
+  "claimId": "lane/governance/company-progression-closeout",
+  "branch": "lane/governance/company-progression-closeout",
+  "baseSha": "8dcefe529474ffb7035366b1bdf0eb2b48e2b4e7",
+  "phase": "CI_PENDING",
+  "title": "Agent 14 Abschluss: Claims und Tasks auf merged/DONE nachziehen",
+  "goal": "Feature- und Governance-Claim von Agent 14 mit echtem Squash-Beleg schliessen; keine Code-Aenderung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

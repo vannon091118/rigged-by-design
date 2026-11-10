@@ -583,10 +583,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2531 |
-| Gelistete Dateien | 2531 |
+| Getrackte Dateien | 2534 |
+| Gelistete Dateien | 2534 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (141), content (867), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (143), content (868), docs (83), public (554), scripts (102), src (756) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -598,9 +598,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 95 Datei(en)
-- `.lane-claims/tasks/` — 44 Datei(en)
-- `content/narrative/contributions/` — 863 Datei(en)
+- `.lane-claims/claims/` — 96 Datei(en)
+- `.lane-claims/tasks/` — 45 Datei(en)
+- `content/narrative/contributions/` — 864 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -731,6 +731,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-collision-closeout.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-company-progression-closeout.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-company-progression-docs.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-derivetaskstate-fix.json` — { — gelesen: 23 Zeilen
@@ -815,7 +816,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-collision-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-company-progression-docs.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-company-progression-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-company-progression-docs.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-fight-career-docs.json` — { — gelesen: 19 Zeilen
@@ -839,7 +841,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
@@ -1681,6 +1683,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-main-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-closeout-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-closeout-beleg.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-collision-scope.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-company-progression-docs.json` — { — gelesen: 24 Zeilen
@@ -1719,8 +1722,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19380 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3457 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19402 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3461 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
