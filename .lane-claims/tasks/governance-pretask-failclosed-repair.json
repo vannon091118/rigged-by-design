@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-pretask-failclosed-repair",
+  "claimId": "lane/governance/pretask-failclosed-repair",
+  "branch": "lane/governance/pretask-failclosed-repair",
+  "baseSha": "3594ce4c3c49fa623d47ed705d37b8cfb002383f",
+  "phase": "CI_PENDING",
+  "title": "Governance Fail-Closed-Reparatur",
+  "goal": "Pretask/promote fail-closed (governance/blocked + UNKNOWN), onTemplate-Stub verdrahten, Aftercare-Phase vor Merge ermoeglichen, Docs-Reconciliation, lokale Testumgebung.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 6
+}

@@ -124,7 +124,7 @@ function failedGatesOfRun() {
 /** BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen. */
 function blockedIssues() {
   const issues = listAll(`repos/${repo}/issues?state=open&per_page=100`);
-  if (!issues) return [];
+  if (issues === null) return null; // API-Fehler: Zustand UNKNOWN, nicht "keine Blocker"
   return issues.filter((issue) => isBlockedIssue(issue)).filter(
     (issue) => classifyIssue(issue, { branch }).disposition === 'blocker',
   );
@@ -442,6 +442,9 @@ function mergeGreen(number) {
   }
 
   const blocked = blockedIssues();
+  if (blocked === null) {
+    return holdPromotion(number, contract, 'BLOCKED-Issue-Abfrage fehlgeschlagen (GitHub nicht erreichbar); Merge aus Sicherheit gehalten (Zustand UNKNOWN)');
+  }
   if (blocked.length > 0) {
     return holdPromotion(
       number,

@@ -161,7 +161,7 @@ if (claim && branch !== 'main' && !botBranch) {
 function readIssues() {
   const issues = new Map();
   const errors = [];
-  for (const label of ['gate-failure', 'remote-ci']) {
+  for (const label of ['gate-failure', 'remote-ci', 'governance/blocked']) {
     try {
       // Tests koennen einen Node-basierten Stub einsetzen; im Betrieb bleibt
       // der normale GitHub-CLI-Aufruf der einzige Pfad.
@@ -225,9 +225,9 @@ const issueCheck = readIssues();
 const issueResults = issueCheck.issues.map(classifyIssue);
 const followUp = buildFollowUp(issueResults);
 if (!issueCheck.checked) {
-  warnings.push(`Issue-Check nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
+  blockers.push(`[ERR-4019] Issue-Check nicht ausgefuehrt: ${issueCheck.errors.join(', ')}; GitHub nicht erreichbar oder Label-Abfrage fehlgeschlagen (Zustand UNKNOWN)`);
 } else if (issueResults.length === 0) {
-  notes.push('Issue-Check: keine offenen gate-failure- oder remote-ci-Issues.');
+  notes.push('Issue-Check: keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues.');
 } else if (followUp.required) {
   notes.push(`Folgetask-Gate: ${followUp.problems.length} Problem(e) muessen zuerst geloest werden.`);
 }

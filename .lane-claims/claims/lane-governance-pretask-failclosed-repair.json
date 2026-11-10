@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/pretask-failclosed-repair",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/pretask-failclosed-repair",
+  "baseSha": "3594ce4c3c49fa623d47ed705d37b8cfb002383f",
+  "task": "Governance Fail-Closed-Reparatur: pretask/promote null-Handling, onTemplate-Stub, Aftercare-Phase, Docs-Reconciliation, lokale Testumgebung",
+  "pathAllowlist": [
+    "docs/CI.md",
+    "scripts/lib/gate-runner.mjs",
+    "scripts/lib/narrative-blocks.mjs",
+    "scripts/lib/task-contract.mjs",
+    "scripts/pretask.mjs",
+    "scripts/promote.mjs",
+    "src/ui/smartphone.tsx",
+    ".nvmrc",
+    ".lane-claims/claims/lane-governance-pretask-failclosed-repair.json",
+    ".lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json",
+    ".lane-claims/tasks/governance-pretask-failclosed-repair.json",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3594ce4c3c49fa623d47ed705d37b8cfb002383f"
+}
