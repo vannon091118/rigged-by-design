@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e2c7407d9809aea50c1f30ec95cdb79b30fa5f0fe71bc34642695330db5f4c1f",
+  "contentHash": "sha256:0c33d496e05c81d3aaf79b1ab8abff97be659273232caed269ef07194fa67a1d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -338,6 +338,28 @@
       "text": "Der Schnitt ist durch: was oben liegt, ist der Stand des Zweigs, nicht ein Nachhall davon. Erst die Baumgleichheit macht aus dem Merge einen Beleg.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-1.json"
+    },
+    {
+      "contributionId": "agent15-aftercare-2",
+      "turnId": "2026-11-11T03:20Z-agent15-aftercare-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, der Zweig bleibt stehen, bis das Papier stimmt - kein Schritt wird uebersprungen, weil der Code schon oben liegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-2.json"
     },
     {
       "contributionId": "agent15-amenity-1",
