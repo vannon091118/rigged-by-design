@@ -3360,6 +3360,10 @@
     {
       "turnId": "2026-11-10T08:36Z-governance-closeout-main-sync",
       "contributionId": "governance-closeout-main-sync-01"
+    },
+    {
+      "turnId": "2026-11-10T11:30Z-review-nachpruefung",
+      "contributionId": "ledger-proof-01"
     }
   ]
 }

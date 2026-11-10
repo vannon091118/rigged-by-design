@@ -39,8 +39,6 @@ const rows: RegisterRow[] = register
 const statusToken = (row: RegisterRow): string =>
   /^[a-z]+/.exec(row.status.replaceAll('*', '').trim())?.[0] ?? '';
 
-const tracked = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
-const basenames = new Set(tracked.map((file) => basename(file)));
 const codeFiles: string[] = [];
 const collect = (dir: string): void => {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -53,11 +51,48 @@ collect(join(ROOT, 'src'));
 collect(join(ROOT, 'scripts'));
 const corpus = codeFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
 
+// Hermetisch: Ohne git-Repo (z. B. Quell-Zip ohne .git) faellt der Test nicht
+// um, sondern prueft gegen den Dateibaum und meldet jede ausgelassene
+// Commit-Pruefung laut. In shallow Klonen gilt dasselbe fuer SHAs ausserhalb
+// der geladenen Historie. In vollen Klonen bleibt ein fehlender Commit ein
+// echter Befund.
+const gitState = ((): { repo: boolean; shallow: boolean } => {
+  try {
+    execFileSync('git', ['rev-parse', '--git-dir'], { cwd: ROOT, stdio: 'ignore' });
+    const shallow =
+      execFileSync('git', ['rev-parse', '--is-shallow-repository'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      }).trim() === 'true';
+    return { repo: true, shallow };
+  } catch {
+    console.warn(
+      'Roadmap-Register-Hinweis: kein git-Repo gefunden - Dateireferenzen werden gegen den Dateibaum ' +
+        'geprueft, Commit-SHAs sind hier nicht nachpruefbar und werden als ungeprueft gemeldet.',
+    );
+    return { repo: false, shallow: false };
+  }
+})();
+
+const tracked = ((): string[] => {
+  try {
+    return execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
+  } catch {
+    return codeFiles;
+  }
+})();
+const basenames = new Set(tracked.map((file) => basename(file)));
+
+const skippedCommits: string[] = [];
 const commitExists = (sha: string): boolean => {
   try {
     execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { cwd: ROOT, stdio: 'ignore' });
     return true;
   } catch {
+    if (!gitState.repo || gitState.shallow) {
+      skippedCommits.push(sha);
+      return true;
+    }
     return false;
   }
 };
@@ -108,6 +143,14 @@ describe('Roadmap-Register', () => {
         .filter((reference) => !resolves(reference))
         .map((reference) => `${row.id}: ${reference}`),
     );
+    if (skippedCommits.length > 0) {
+      console.warn(
+        `Roadmap-Register-Hinweis: ${skippedCommits.length} Commit-SHA(s) konnten in diesem Klon nicht ` +
+          `nachgeprueft werden (kein Repo oder shallow): ${[...new Set(skippedCommits)].slice(0, 5).join(', ')}` +
+          (skippedCommits.length > 5 ? ' ...' : '') +
+          ' - kein Beleg, nur ungeprueft.',
+      );
+    }
     expect(broken).toEqual([]);
   });
 

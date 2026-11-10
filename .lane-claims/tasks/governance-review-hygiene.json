@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-review-hygiene",
+  "claimId": "lane/governance/review-hygiene",
+  "branch": "lane/governance/review-hygiene",
+  "baseSha": "9f090fdc54246a296a59aacebc0e335d5c80c6a3",
+  "phase": "IMPLEMENTING",
+  "title": "Review-Folgebefunde: Soak-Beweis, Versionswahrheit, Regeltexte, Lane-Status, hermetische Registry-Tests",
+  "goal": "Sechs Review-Befunde aus dem externen Audit beheben: pnpm soak beweist (RBD_SOAK=1), CHANGELOG deckt 0.3.200/0.3.201/0.3.203 ab, Regel 5/6 und ROADMAP-Tabelle sprechen eine Sprache, fail-closed-Task auf DONE, Registry-Test ohne .git und ohne volle Historie gruen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Review-Folgebefunde implementiert und lokal verifiziert; committen, pushen, CI abwarten.",
+  "revision": 1
+}

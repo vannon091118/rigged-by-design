@@ -12,6 +12,29 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.203] - 2026-11-10
+
+### Technik
+- **Integrationscontroller vor den Gates.** `scripts/integrate.mjs` entscheidet per Claim-Gate und `merge-tree` zwischen `READY`, `REBASE_REQUIRED` und `MANUAL_CONFLICT`; der Pre-Push-Hook ruft denselben Controller, der nur per Fast-Forward pusht.
+- **Phase 0-2 Closeout.** Sechs gemergte Lanes stehen auf DONE; der Task-Vertrag ist die eine Wahrheit fuer Phase, Befunde und naechste Aktion.
+- **AGENTS.md-Vertrag entschaerft.** Determinismus gilt fuer Spielcode; Wall-Clock bleibt fuer Laufzeit, Timeouts und Logs erlaubt - Regel und Lint-Config sprechen wieder dieselbe Sprache.
+- **README vervollstaendigt.** Fehlende Section-Banner und Social-Preview ergaenzt.
+
+## [0.3.201] - 2026-11-10
+
+### Spiel
+- **Gaeste als Sprite-Modelle.** Pixi-Gaeste kommen aus dem Charakter-Atlas statt aus Primitiven; FPS-HUD und Atlas-Budget sichern die Abnahme ab.
+
+### Technik
+- **Fail-Closed.** Issue-Check und Promotion blockieren bei nicht abfragbarem Zustand; die Reparatur ist auf main nachgezogen, AFTERCARE wird nach dem Merge abgeleitet.
+- **P-20 Closeout.** Die Dependency-Matrix ist aus der gesperrten Architektur gezogen, die Lane steht auf DONE.
+
+## [0.3.200] - 2026-11-10
+
+### Technik
+- **Welt-UI modularisiert.** Die UI-Lane ist gruen und gemergt.
+- **CI-State und Promotion-Hold.** Phase 3+4 halten den CI-Zustand fest; Promotion wartet, bis die Gates den exakten Kopf bestaetigen.
+
 ## [0.3.199] - 2026-11-09
 
 ### Technik
