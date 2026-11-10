@@ -22,7 +22,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
   "createdAt": "6f5ff377aefd63586fbac6bcc41058a002b4adc2",
-  "notes": "Symbollisten, Wild/Scatter, Freispiele, Paytable und Betriebskosten existierten bereits; gebaut wird nur die Bruecke Mod -> SlotProfile (CHERRY Gewichte/Quote, NEAR_MISS Quote, VELVET Buch/Freispiele), gelesen von slotConfigOf."
+  "notes": "Symbollisten, Wild/Scatter, Freispiele, Paytable und Betriebskosten existierten bereits; gebaut wird nur die Bruecke Mod -> SlotProfile (CHERRY Gewichte/Quote, NEAR_MISS Quote, VELVET Buch/Freispiele), gelesen von slotConfigOf.",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "5a98de70fb419ef4ef6cd3eead03f482023ddbfc"
 }
