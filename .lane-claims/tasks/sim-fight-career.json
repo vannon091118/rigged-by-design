@@ -4,7 +4,7 @@
   "claimId": "lane/sim/fight-career",
   "branch": "lane/sim/fight-career",
   "baseSha": "053e488b0e83c40e7f5e55bec49d7cbb82d3cdd0",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Hinterhof-Kampfkarriere: Leiter, Startgeld, Preisgeld und Bilanz",
   "goal": "Wiederholbarer Kampfloop ohne neues Save-Feld, sichtbar im bestehenden Charakterfenster",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "4b4ad1c8248a1839fb33965e49c68e341191b1db"
   },
   "findings": [],
-  "nextAction": "Aftercare abschliessen: doctor und verify:all auf main, dann DONE.",
-  "revision": 3
+  "nextAction": "Abgeschlossen: PR #360 (4b4ad1c) auf main, Claim merged mit Beleg.",
+  "revision": 4
 }
