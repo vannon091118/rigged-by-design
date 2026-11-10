@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4e4c1d512f1fadc5401d79b6eb97d4d55cfbf1ce622e8bea785311a5b9e2c860",
+  "contentHash": "sha256:2df19d982857faf158175f4749258fcbdbca82719eb68a852dc9d555039cd4f9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3715,6 +3715,31 @@
       "text": "Rita reichte dem Pruefer einen leeren, aber gueltigen Zettel. Nicht Schweigen sollte als Freigabe gelten, sondern eine Antwort, die tatsaechlich gelesen werden konnte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-isolation-budget-01",
+      "turnId": "2026-11-10T06:18Z-governance-fail-closed-isolation-budget",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hob das Budget nicht an, sondern trug den Fall dorthin, wo noch Platz war. Die Pruefung blieb dieselbe, nur der Ort war ehrlicher gewaehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json"
     },
     {
       "contributionId": "governance-fail-closed-issue-check-01",

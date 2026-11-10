@@ -17,5 +17,5 @@
   },
   "findings": [],
   "nextAction": "CI auf diesem Kopf abwarten; bei gruen squash-mergen, danach AFTERCARE und DONE.",
-  "revision": 5
+  "revision": 6
 }
