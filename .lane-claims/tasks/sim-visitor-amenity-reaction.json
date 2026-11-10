@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-visitor-amenity-reaction",
+  "claimId": "lane/sim/visitor-amenity-reaction",
+  "branch": "lane/sim/visitor-amenity-reaction",
+  "baseSha": "58cb37e2a58173941ea6374000139fecf7fe67c1",
+  "phase": "CI_PENDING",
+  "title": "Agent 15: Reaktion des Gastes auf die Ausstattung als Beziehungskante",
+  "goal": "Die Bedingung des Geraets, an dem ein Gast gespielt hat, verschiebt die gerichtete Kante Besucher -> Haus deterministisch; kein neuer Fact-Kind, kein zweiter Zustand, keine Aenderung an visitors/disposition/memory.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Auf Fail-Closed Gates warten; dann PR-Nummer und Squash-SHA eintragen.",
+  "revision": 2
+}

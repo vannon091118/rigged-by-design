@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fcffb2d20e854785a8f5b42a579a7b12883289cf58ff301a459e5ff1c9fff3b4",
+  "contentHash": "sha256:9a5e2ca3229041b000251a0b43135b7e19f1bd56879afa1e666002513c60829c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -316,6 +316,28 @@
       "text": "Fuenf Belege, eine Sprache: jeder der vier Agent-14-Claims nennt jetzt den Commit, der seinen Inhalt traegt, und dieser Claim nennt seinen eigenen. Wer nachzaehlt, findet keinen Wert mehr, der nur behauptet war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json"
+    },
+    {
+      "contributionId": "agent15-amenity-1",
+      "turnId": "2026-11-11T02:05Z-agent15-amenity-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast spuert nicht die Absicht, sondern das Geraet: Kratzer, Klemmer, abgegrabbelte Tasten. Was er dort erlebt, traegt er als Haltung zum Haus weiter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-amenity-1.json"
     },
     {
       "contributionId": "apk-signing-01",
