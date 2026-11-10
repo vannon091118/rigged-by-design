@@ -12,6 +12,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.204] - 2026-11-10
+
+### Technik
+- **Agenten-Bootstrap.** `pnpm run agent:new` legt Branch, Worktree, Claim und Task-Vertrag in einem Aufruf an und startet den Pretask im neuen Worktree; Claim und Vertrag committet der erste `turn:finish`.
+- **Abschluss integriert selbst.** Ist `origin/main` voraus, repariert `turn:finish` statt mit `ERR-4008` abzubrechen: unveroeffentlicht per `integrate --apply`, veroeffentlicht per Merge; nur ein Quellkonflikt eskaliert.
+- **Eine Gate-Wahrheit.** `docs/CI.md` fuehrt wieder alle dreizehn Required-Gates inklusive `narrative`; ein Test vergleicht die Tabelle mit `REQUIRED_CI_GATES`.
+- **Keine falschen Anweisungen.** Der erfundene `task:contract --init` ist ersetzt (der Vertrag entsteht in `turn:finish`), und `pretask` nennt die Abschlussplichten (Notes, Pflichtsektionen, Narrativ, generierte Artefakte) bereits beim Start.
+- **Issue-Check UNKNOWN trennt lokal von Merge.** Ohne Issue-Abfrage bleibt lokale Arbeit erlaubt; Merge und Promotion bleiben gesperrt (`mergeBlocked`).
+
 ## [0.3.203] - 2026-11-10
 
 ### Technik

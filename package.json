@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.203",
+  "version": "0.3.204",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -16,6 +16,7 @@
     "test:affected": "node scripts/test-affected.mjs",
     "agent:context": "node scripts/agent-context.mjs",
     "agent:feedback": "node scripts/agent-feedback.mjs",
+    "agent:new": "node scripts/agent-new.mjs",
     "agent:pretask": "node scripts/pretask.mjs",
     "claim:register": "node scripts/claim-register.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",

@@ -14,6 +14,8 @@ import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
 
 interface Payload {
   readonly blockers: readonly string[];
+  readonly warnings: readonly string[];
+  readonly mergeBlocked: string | null;
 }
 
 const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 15_000); };
@@ -152,15 +154,17 @@ describe('pretask fail-closed issue check', () => {
     }
   });
 
-  it('blockt einen nicht abfragbaren Issue-Check als UNKNOWN', () => {
+  it('laesst lokale Arbeit bei UNKNOWN zu und sperrt nur den Merge', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-unknown-'));
     try {
       const worktree = linkedRepo(parent, 'repo', 'lane/test/unknown');
       const result = run(worktree, { RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: brokenGh(parent) });
-      expect(result.status).toBe(1);
-      const blockers = payload(result.stdout).blockers.join('\n');
-      expect(blockers).toContain('Issue-Check UNKNOWN');
-      expect(blockers).toContain(ISOLATION_CODE);
+      expect(result.status).toBe(0);
+      const data = payload(result.stdout);
+      expect(data.blockers.join('\n')).not.toContain('Issue-Check UNKNOWN');
+      expect(data.blockers.join('\n')).not.toContain(ISOLATION_CODE);
+      expect(data.warnings.join('\n')).toContain('Issue-Check UNKNOWN');
+      expect(data.mergeBlocked).toContain('Merge');
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

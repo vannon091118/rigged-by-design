@@ -296,7 +296,7 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
   const base = {
     status: 'CONTINUE',
     phase: contract?.phase ?? 'READY',
-    nextAction: contract?.nextAction ?? 'Task-Vertrag anlegen: pnpm run task:contract --init',
+    nextAction: contract?.nextAction ?? 'Task-Vertrag fehlt; `pnpm run turn:finish` legt ihn beim ersten Turn aus dem Claim an.',
     findings,
     parallelLane: null,
   };
@@ -304,7 +304,7 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
     return { ...base, status: 'BLOCKED', nextAction: `Blockers aufloesen: ${blockers[0]}` };
   }
   if (!contract) {
-    return { ...base, status: 'READY', phase: 'READY', nextAction: `Task-Vertrag anlegen (${claim?.id ?? 'Lane'}): pnpm run task:contract --init` };
+    return { ...base, status: 'READY', phase: 'READY', nextAction: `Task-Vertrag fehlt (${claim?.id ?? 'Lane'}); er entsteht automatisch beim ersten \`pnpm run turn:finish\`.` };
   }
   if (pr?.merged || contract.phase === 'DONE') {
     const isDone = contract.phase === 'DONE' && !pr?.merged;

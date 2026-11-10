@@ -3368,6 +3368,10 @@
     {
       "turnId": "2026-11-10T12:00Z-closeout-beleg",
       "contributionId": "proof-before-trust-01"
+    },
+    {
+      "turnId": "2026-11-10T11:55Z-agent-bootstrap",
+      "contributionId": "agent-bootstrap-01"
     }
   ]
 }
