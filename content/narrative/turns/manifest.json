@@ -3436,6 +3436,14 @@
     {
       "turnId": "2026-11-10T22:30Z-promote-automerge",
       "contributionId": "promote-automerge-01"
+    },
+    {
+      "turnId": "2026-11-10T22:20Z-items-synergien",
+      "contributionId": "items-synergien-01"
+    },
+    {
+      "turnId": "2026-11-10T22:30Z-items-gates",
+      "contributionId": "items-gates-01"
     }
   ]
 }

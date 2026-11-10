@@ -1,0 +1,19 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-10T22:20Z-items-synergien",
+  "contributionId": "items-synergien-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "warn",
+  "contexts": ["loss", "service"],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": ["rita-kern"],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auf der Karte stand Köder-Doppel, und gemeint war, dass zwei Aufkleber zusammen mehr ziehen als jeder allein. Der Betriebsplan darunter rechnete es vor: derselbe Zulauf, zwei Zehntel mehr Kosten je Tick. Rita strich die zweite Zeile nicht durch. Sie schrieb daneben, dass niemand die zweite Zeile liest, solange die erste leuchtet.",
+  "directives": []
+}

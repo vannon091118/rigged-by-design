@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "sim-item-synergy",
+  "claimId": "lane/sim/item-synergy",
+  "branch": "lane/sim/item-synergy",
+  "baseSha": "5a6ae5484f8297f3194385930cd632cf94e677c6",
+  "phase": "IMPLEMENTING",
+  "title": "Agent 13: Items und Roguelite-Synergien",
+  "goal": "Seltenheiten, Paar-Synergien mit Vor- und Nachteil sowie Inventar und Sammlung auf dem bestehenden Mod-Bestand umsetzen, ohne zweites Regelwerk und ohne neues Save-Feld.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Implementierung, Tests und Gates gruen ziehen, dann PR mit den drei Pflichtsektionen.",
+  "revision": 1
+}
