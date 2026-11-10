@@ -10,7 +10,7 @@ import { MODS } from './offers';
 import { ITEM_RARITY, RARITY_ORDER, type ItemRarity } from './item-synergy';
 import type { ModId, WorldState } from './types';
 
-export interface ItemStock {
+interface ItemStock {
   readonly id: ModId;
   readonly rarity: ItemRarity;
   /** Maschinen-Ids, auf denen das Item verbaut ist. */
@@ -28,7 +28,7 @@ export function itemInventory(world: WorldState): readonly ItemStock[] {
   });
 }
 
-export interface ItemCollection {
+interface ItemCollection {
   readonly owned: readonly ModId[];
   readonly missing: readonly ModId[];
   readonly byRarity: Record<ItemRarity, number>;

@@ -34,7 +34,7 @@ export const RARITY_LABEL: Record<ItemRarity, string> = {
 /** Die einzige Reihenfolge fuer Anzeige und Zaehlung. */
 export const RARITY_ORDER: readonly ItemRarity[] = ['COMMON', 'RARE', 'LEGENDARY'];
 
-export interface SynergyDef {
+interface SynergyDef {
   readonly id: string;
   /** Beide Items muessen auf derselben Maschine verbaut sein. */
   readonly mods: readonly [ModId, ModId];
@@ -116,7 +116,7 @@ export function activeSynergies(mods: readonly ModId[]): readonly SynergyDef[] {
   return found;
 }
 
-export interface SynergyEffects {
+interface SynergyEffects {
   readonly attraction: number;
   readonly patience: number;
   readonly addiction: number;

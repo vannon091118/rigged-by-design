@@ -1,4 +1,6 @@
 /**
+ * @test-target: src/core/sim/mod-effects.ts | @error-code: ERR-3001
+ *
  * Items, Seltenheiten und Paar-Synergien.
  *
  * Bezug: Agent 13 (Items und Roguelite-Synergien). Der Test haelt drei Dinge

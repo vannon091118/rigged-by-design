@@ -237,7 +237,7 @@ Summe: 269 Dateien — contract 156 · integration 57 · governance 42 · statis
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
 | `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/interaction.test.ts` | sim | contract | ja | `src/core/sim/interaction.ts` |
-| `src/core/sim/__tests__/item-synergy.test.ts` | unknown | contract | ja | — |
+| `src/core/sim/__tests__/item-synergy.test.ts` | sim | contract | ja | `src/core/sim/mod-effects.ts` |
 | `src/core/sim/__tests__/jackpot-label.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/journal.test.ts` | sim | contract | ja | `src/core/sim/journal.ts` |
 | `src/core/sim/__tests__/knowledge-belief.test.ts` | sim | contract | ja | `src/core/sim/city-traits.ts` |
@@ -582,10 +582,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2518 |
-| Gelistete Dateien | 2518 |
+| Getrackte Dateien | 2519 |
+| Gelistete Dateien | 2519 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (133), content (863), docs (83), public (554), scripts (102), src (755) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (133), content (864), docs (83), public (554), scripts (102), src (755) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -599,7 +599,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 91 Datei(en)
 - `.lane-claims/tasks/` — 40 Datei(en)
-- `content/narrative/contributions/` — 859 Datei(en)
+- `content/narrative/contributions/` — 860 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1689,6 +1689,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-governance-phase3-ci-state.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-roadmap-count.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-task-vertrag.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-10-items-gates.json` — { — gelesen: 23 Zeilen
 - `content/narrative/contributions/2026-11-10-items-und-synergien.json` — { — gelesen: 19 Zeilen
 - `content/narrative/contributions/2026-11-10-machine-hall.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-mod-engine.json` — { — gelesen: 24 Zeilen
@@ -1706,8 +1707,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19284 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3441 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19308 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3445 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2636,7 +2637,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
 - `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 185 Zeilen
 - `src/core/sim/__tests__/interaction.test.ts` — Ein Ziel, ein Weg, eine Reichweite: die Figur laeuft zum Standplatz, statt zu — gelesen: 156 Zeilen
-- `src/core/sim/__tests__/item-synergy.test.ts` — Items, Seltenheiten und Paar-Synergien. — gelesen: 95 Zeilen
+- `src/core/sim/__tests__/item-synergy.test.ts` — Items, Seltenheiten und Paar-Synergien. — gelesen: 97 Zeilen
 - `src/core/sim/__tests__/jackpot-label.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 13 Zeilen
 - `src/core/sim/__tests__/journal.test.ts` — Jede Buchung wird genau einmal kopiert; Welt-Ereignisse tragen Ursache und Folge. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/knowledge-belief.test.ts` — Abnahme der Glaubwuerdigkeits-Mechanik: — gelesen: 167 Zeilen
