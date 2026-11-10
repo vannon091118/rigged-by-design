@@ -23,6 +23,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, scryptSync, timingSafeEqual } from 'node:crypto';
 import { ROOT } from './report.mjs';
+import { TASK_CONTRACT_PREFIX } from './lane-claims.mjs';
 
 export const FREEZE = Object.freeze({
   active: true,
@@ -58,7 +59,7 @@ export const FREEZE_UNLOCK_FILE = '.lane-claims/freeze-unlock.json';
  * eine PIN-Freigabe fuer ihren eigenen Claim, und die Freigabe kollidierte mit
  * jedem anderen Claim, der `.lane-claims/` fuehrt.
  */
-export const CLAIM_TOOLING_PATHS = Object.freeze(['.lane-claims/claims/', FREEZE_UNLOCK_FILE]);
+export const CLAIM_TOOLING_PATHS = Object.freeze(['.lane-claims/claims/', TASK_CONTRACT_PREFIX, FREEZE_UNLOCK_FILE]);
 
 /** True, wenn der Pfad Lane-Werkzeug ist (Claim-Datei oder Freigabe). */
 export function isClaimTooling(file) {

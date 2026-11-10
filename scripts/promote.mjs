@@ -22,6 +22,7 @@ import {
   splitAutomation,
 } from './lib/body-sync.mjs';
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
+import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -253,6 +254,28 @@ function mergeGreen(number) {
   const info = verifiedPr(number);
   if (!info) return false;
   const ref = headRef();
+  // Der Task-Vertrag des PR-Kopfes ist dieselbe Wahrheit wie in pretask und
+  // turn:finish: Phase und offene Blocker muessen merge-bereit sein. Ein
+  // Legacy-PR ohne Vertrag bleibt mergebar, aber mit Warnung.
+  const contractRef = readTaskContractAtRef(ref, { branch });
+  if (contractRef) {
+    const contractCheck = validateTaskContract(contractRef.contract, { branch });
+    if (!contractCheck.ok) {
+      warn(`PR #${number}: Task-Vertrag ungueltig (${contractCheck.violations.join('; ')}); kein Merge`);
+      return false;
+    }
+    if (!['CI_PENDING', 'MERGE_PENDING'].includes(contractRef.contract.phase)) {
+      warn(`PR #${number}: Phase ${contractRef.contract.phase} ist nicht merge-bereit; kein Merge`);
+      return false;
+    }
+    const blockers = blockerFindings(contractRef.contract);
+    if (blockers.length > 0) {
+      warn(`PR #${number}: ${blockers.length} offene Blocker im Task-Vertrag; kein Merge`);
+      return false;
+    }
+  } else {
+    warn(`PR #${number}: kein Task-Vertrag am Kopf; Legacy-Merge mit Warnung`);
+  }
   const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
   if (current === null) {
     warn(`PR #${number}: Body nicht lesbar; kein Merge mit geratenem Text`);

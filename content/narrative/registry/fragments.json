@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d04b99335deee29e4b31c0d493a666b032df7f15cfeaa5c6bb20152b1eed707c",
+  "contentHash": "sha256:3988caeb7c6366f975c991d051d19bfdfa63c5ed72a573c33e054386cfeaa12d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3690,6 +3690,31 @@
       "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
+    },
+    {
+      "contributionId": "governance-task-vertrag-01",
+      "turnId": "2026-11-10T03:20Z-governance-task-vertrag",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte ein schmales Heft neben die Kasse. Auf jeder Seite standen drei Zeilen: was gerade läuft, was offen ist und was als Nächstes kommt. Wer die Schicht übernahm, las zuerst das Heft, nicht den Chatverlauf. Der nächste Schritt war damit nie eine Erinnerung, sondern eine Notiz.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-task-vertrag.json"
     },
     {
       "contributionId": "guest-voice-mid-51",
