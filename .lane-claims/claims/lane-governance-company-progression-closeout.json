@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/company-progression-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/company-progression-closeout",
+  "baseSha": "8dcefe529474ffb7035366b1bdf0eb2b48e2b4e7",
+  "task": "Agent 14 Abschluss: Claims und Tasks auf merged/DONE nachziehen",
+  "goal": "Feature- und Governance-Claim von Agent 14 mit echtem Squash-Beleg schliessen; keine Code-Aenderung.",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-sim-company-progression.json",
+    ".lane-claims/tasks/sim-company-progression.json",
+    ".lane-claims/claims/lane-governance-company-progression-docs.json",
+    ".lane-claims/tasks/governance-company-progression-docs.json",
+    "content/narrative/",
+    "src/core/sim/narrative/",
+    ".lane-claims/claims/lane-governance-company-progression-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "8dcefe529474ffb7035366b1bdf0eb2b48e2b4e7"
+}

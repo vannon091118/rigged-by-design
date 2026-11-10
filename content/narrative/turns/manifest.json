@@ -3452,6 +3452,22 @@
     {
       "turnId": "2026-11-10T22:55Z-company-progression-docs",
       "contributionId": "company-progression-docs-01"
+    },
+    {
+      "turnId": "2026-11-10T23:05Z-closeout-1",
+      "contributionId": "company-progression-closeout-1"
+    },
+    {
+      "turnId": "2026-11-10T23:08Z-closeout-2b",
+      "contributionId": "company-progression-closeout-2b"
+    },
+    {
+      "turnId": "2026-11-10T23:06Z-closeout-2",
+      "contributionId": "company-progression-closeout-2"
+    },
+    {
+      "turnId": "2026-11-10T23:07Z-closeout-3",
+      "contributionId": "company-progression-closeout-3"
     }
   ]
 }

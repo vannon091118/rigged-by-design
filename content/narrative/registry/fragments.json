@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:846c643b059429e18fa651bdfc90b44ce6972de7e91429bc3a11c43f7437b08a",
+  "contentHash": "sha256:fc1f47b8e2b235889cdeebf421da340d70073743bbd9e2dbef61757fed478ea9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3447,6 +3447,94 @@
       "text": "Die Bude trägt jetzt eine Kasse, der Saal sein eigenes Personal, und auf dem Schild steht zum ersten Mal ein Konzern. Jede Stufe hat vorher etwas gekostet: Tage, Gewinn, Ruf, Geräte und Leute, die bleiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-company-progression.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-1",
+      "turnId": "2026-11-10T23:05Z-closeout-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bude zaehlte ihre Bedingungen zweimal: einmal fuer den Spieler, einmal fuer den Beleg. Der Beleg war der Merge, nicht die Absicht - erst danach durfte die Zeile als erledigt gelten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-1.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-2",
+      "turnId": "2026-11-10T23:06Z-closeout-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge blieb Arbeit uebrig, die niemand sieht: Register nachziehen, Branch schliessen, den naechsten Auftrag benennen. Wer das aufschrieb, bevor er ging, hatte am Morgen keinen Rateweg mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-2.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-2b",
+      "turnId": "2026-11-10T23:08Z-closeout-2b",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwei Vertraege standen noch offen, obwohl ihre Arbeit laengst gemergt war. Erst der Nachlauf machte aus dem gruenen Lauf einen Abschluss: Phase nachziehen, Beleg eintragen, den naechsten Auftrag benennen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-2b.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-3",
+      "turnId": "2026-11-10T23:07Z-closeout-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zum Schluss standen zwei Zeilen auf erledigt, und beide trugen einen Merge statt einer Absicht. Die Bude hatte eine Kasse, der Saal Leute, und im Regal lag ein Beleg statt einer Erinnerung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-3.json"
     },
     {
       "contributionId": "company-progression-docs-01",

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T23:06Z-closeout-2",
+  "contributionId": "company-progression-closeout-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Nach dem Merge blieb Arbeit uebrig, die niemand sieht: Register nachziehen, Branch schliessen, den naechsten Auftrag benennen. Wer das aufschrieb, bevor er ging, hatte am Morgen keinen Rateweg mehr.",
+  "directives": []
+}

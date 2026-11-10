@@ -4,14 +4,19 @@
   "claimId": "lane/governance/company-progression-docs",
   "branch": "lane/governance/company-progression-docs",
   "baseSha": "7b31ba088ed40a5be4b9f6075edd8a7bb8812039",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Agent 14 Governance: Doku und Narrative zur Geschaeftsprogression",
   "goal": "Roadmap-Stand, Changelog und Devtagebuch halten den umgesetzten Agent-14-Stand fest; keine Code-Aenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 394,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/394",
+    "state": "merged",
+    "mergedSha": "8dcefe529474ffb7035366b1bdf0eb2b48e2b4e7"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 4
+  "nextAction": "Abgeschlossen: PR #394 (8dcefe5) auf main, Claim geschlossen.",
+  "revision": 7
 }
