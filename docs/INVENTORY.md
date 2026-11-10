@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 270 Dateien — contract 157 · integration 57 · governance 42 · statistics 7 · performance 7.
+Summe: 271 Dateien — contract 158 · integration 57 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -212,6 +212,7 @@ Summe: 270 Dateien — contract 157 · integration 57 · governance 42 · statis
 | `src/core/sim/__tests__/action-queue.test.ts` | sim | contract | ja | `src/core/sim/action-queue.ts` |
 | `src/core/sim/__tests__/addiction-consequences.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/addiction-stake.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
+| `src/core/sim/__tests__/amenity-reaction.test.ts` | sim | contract | ja | `src/core/sim/amenity-reaction.ts` |
 | `src/core/sim/__tests__/anger-decay.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
 | `src/core/sim/__tests__/anger-patience.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
@@ -583,10 +584,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2557 |
-| Gelistete Dateien | 2557 |
+| Getrackte Dateien | 2564 |
+| Gelistete Dateien | 2564 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (148), content (886), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (150), content (889), docs (83), public (554), scripts (102), src (758) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -598,9 +599,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 99 Datei(en)
-- `.lane-claims/tasks/` — 47 Datei(en)
-- `content/narrative/contributions/` — 882 Datei(en)
+- `.lane-claims/claims/` — 100 Datei(en)
+- `.lane-claims/tasks/` — 48 Datei(en)
+- `content/narrative/contributions/` — 885 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -661,8 +662,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 104 Datei(en)
-- `src/core/sim/__tests__/` — 118 Datei(en)
+- `src/core/sim/` — 105 Datei(en)
+- `src/core/sim/__tests__/` — 119 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -809,6 +810,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-property-world.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-renovation.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-sim-visitor-amenity-reaction.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
@@ -857,6 +859,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1745,8 +1748,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19798 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3533 Zeilen
+- `content/narrative/contributions/2026-11-11-agent15-amenity-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent15-amenity-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent15-amenity-4.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19864 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3545 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2647,6 +2653,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/action-queue.test.ts` — Die Auftragskette bleibt simulationsseitig: ein Wischer wird hoechstens — gelesen: 97 Zeilen
 - `src/core/sim/__tests__/addiction-consequences.test.ts` — Sucht-Folgen (P-5): Wer erkennbar suechtig spielt (ADDICTED-Blase ab — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/addiction-stake.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 112 Zeilen
+- `src/core/sim/__tests__/amenity-reaction.test.ts` — Agent 15: Die Bedingung des Geraets, an dem ein Gast gespielt hat, verschiebt — gelesen: 106 Zeilen
 - `src/core/sim/__tests__/anger-decay.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
 - `src/core/sim/__tests__/anger-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/core/sim/__tests__/balance-harness.ts` — Betriebs-Messlauf: ein skriptierter Betreiber (bauen, einstellen, reparieren, ausbauen) — gelesen: 154 Zeilen
@@ -2767,6 +2774,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/action-queue-types.ts` — Datenvertrag der Auftragskette; die Ausfuehrung liegt in action-queue-run. — gelesen: 96 Zeilen
 - `src/core/sim/action-queue.ts` — Action Queue: serialisierbare Auftraege, kein React-State. — gelesen: 53 Zeilen
 - `src/core/sim/actions.ts` — Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. — gelesen: 187 Zeilen
+- `src/core/sim/amenity-reaction.ts` — Ausstattungsreaktion (Agent 15): die Bedingung des Geraets, an dem ein Gast — gelesen: 43 Zeilen
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 58 Zeilen
@@ -2801,7 +2809,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 121 Zeilen
 - `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 144 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 21 Zeilen
-- `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 164 Zeilen
+- `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 166 Zeilen
 - `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 79 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 122 Zeilen
@@ -2863,7 +2871,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 226 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 227 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

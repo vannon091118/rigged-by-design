@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:55Z-agent15-amenity-4",
+  "contributionId": "agent15-amenity-4",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem Tor wird nicht behauptet, sondern geprueft: die Phase zieht nach, der Kopf bleibt derselbe, und erst der gruene Lauf macht aus dem Satz einen Beleg.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:05Z-agent15-amenity-1",
+  "contributionId": "agent15-amenity-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Gast spuert nicht die Absicht, sondern das Geraet: Kratzer, Klemmer, abgegrabbelte Tasten. Was er dort erlebt, traegt er als Haltung zum Haus weiter.",
+  "directives": []
+}
