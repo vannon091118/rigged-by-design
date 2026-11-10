@@ -54,6 +54,8 @@ jobs:
       long_matrix: ${{ steps.gates.outputs.long_matrix || '{"include":[{"file":""}]}' }}
       long_tests: ${{ steps.gates.outputs.long_tests || '' }}
       freeze: ${{ steps.freeze.outputs.violation || '' }}
+      integration: ${{ steps.integrate.outputs.integration || 'READY' }}
+      risk: ${{ steps.gates.outputs.risk || 'unknown' }}
     steps:
       # Der PR-Kopf ist das Pruefobjekt, nicht der Merge-Commit: der Merge
       # entsteht erst mit der Basis und prueft damit Code, den niemand gepusht
@@ -67,8 +69,12 @@ jobs:
       - name: PR-Body
         if: github.event_name == 'pull_request'
         env:
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: node scripts/verify-pr-body.mjs
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          body="$(gh pr view "$PR_NUMBER" --json body --jq .body)"
+          PR_BODY="$body" node scripts/verify-pr-body.mjs
 
       # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
       # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
@@ -167,6 +173,37 @@ jobs:
           echo "::error::Verdacht auf unautorisierte Korruption: Governance ohne Freigabe geaendert. Der Branch bleibt bestehen; ein BLOCKED-Issue wird angelegt."
           exit 1
 
+      # Stufe 2 vor den teuren Gates: der Integrationscontroller prueft den
+      # Branch gegen die vertrauenswuerdige Basis, bevor Matrix und Tests Zeit
+      # kosten. READY/REBASE_REQUIRED/MANUAL_CONFLICT sind Hinweise; die
+      # Entscheidung ueber lange Nachweise trifft der Job `long`.
+      - name: Integration (Vorpruefung)
+        id: integrate
+        env:
+          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
+          BASE: ${{ steps.control.outputs.base }}
+          HEAD: ${{ steps.control.outputs.head }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
+        run: |
+          set -euo pipefail
+          # Anlauf: eine Basis vor diesem Merge kennt den Controller nicht.
+          if [ ! -f "$CONTROL_SCRIPTS/integrate.mjs" ]; then
+            echo "::notice::Kontrollebene kennt den Integrationscontroller nicht; Schritt inert."
+            echo "integration=READY" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          code=0
+          node "$CONTROL_SCRIPTS/integrate.mjs" --check --ci --no-fetch \
+            --base="$BASE" --head="$HEAD" --github-output="$GITHUB_OUTPUT" || code=$?
+          case "$code" in
+            2) echo "::notice::REBASE_REQUIRED: Branch ist hinter der Basis; lange Nachweise starten nicht." ;;
+            3) echo "::warning::MANUAL_CONFLICT: Konflikt in Handdateien; keine automatische Reparatur." ;;
+            *) ;;
+          esac
+          # Der Status blockiert die schnellen Gates nicht: ein veralteter Branch
+          # ist ein Integrationsauftrag, kein Grund, gar nichts zu pruefen.
+          exit 0
+
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
       - name: pnpm installieren
         uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
@@ -230,7 +267,7 @@ jobs:
             --handoff="$HANDOFF" \
             --github-output="$GITHUB_OUTPUT"
 
-      # Bootstrap-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
+      # Anlauf-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
       # diesem Merge kennt sie die neuen `state`/`required`-Outputs noch nicht.
       # Die Gate-Auswahl bleibt der Basis-Script-Stand; nur die Metadaten
       # werden aus Matrix und Ereignis abgeleitet. Nach dem Merge liefert die
@@ -530,7 +567,7 @@ jobs:
   long:
     name: Long ${{ matrix.file }}
     needs: plan
-    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.state != 'LIGHT' && needs.plan.outputs.long_count != '0'
+    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.state != 'LIGHT' && needs.plan.outputs.long_count != '0' && needs.plan.outputs.integration != 'REBASE_REQUIRED'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:
@@ -660,7 +697,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
-      # Bootstrap-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
+      # Anlauf-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
       # liest nur `.lane-claims/claims.json`; die Lane-Dateien kommen erst mit
       # diesem PR. Der Adapter materialisiert sie nur fuer die alte Basis.
       # Sobald die Basis `CLAIM_ENTRIES_DIR` kennt, bleibt der Schritt inert.
@@ -912,6 +949,7 @@ jobs:
           NOOP: ${{ needs.plan.outputs.noop }}
           INDEPENDENT: ${{ needs.plan.outputs.independent }}
           LONG_COUNT: ${{ needs.plan.outputs.long_count }}
+          INTEGRATION: ${{ needs.plan.outputs.integration }}
           PLAN: ${{ needs.plan.result }}
           GATES: ${{ needs.gate.result }}
           LIGHT: ${{ needs.light.result }}
@@ -965,8 +1003,10 @@ jobs:
               ;;
           esac
 
-          # Lange Nachweise laufen genau dann, wenn der Impact welche nennt.
-          if [ "$LONG_COUNT" != "0" ] && [ "$STATE" != "LIGHT" ] && [ "$STATE" != "NOOP" ]; then
+          # Lange Nachweise laufen genau dann, wenn der Impact welche nennt und
+          # der Branch auf der Basis steht. Ein REBASE_REQUIRED-Lauf bezahlt
+          # keine 60-Minuten-Suite fuer einen Baum, den niemand mergen darf.
+          if [ "$LONG_COUNT" != "0" ] && [ "$STATE" != "LIGHT" ] && [ "$STATE" != "NOOP" ] && [ "$INTEGRATION" != "REBASE_REQUIRED" ]; then
             gleich "long" "$LONG" success
           else
             gleich "long" "$LONG" skipped

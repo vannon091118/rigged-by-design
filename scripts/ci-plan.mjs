@@ -126,6 +126,7 @@ const lines = [
   '| Feld | Wert |',
   '| --- | --- |',
   `| Zustand | \`${state}\` |`,
+  `| Risiko | \`${plan.risk ?? 'unknown'}\` |`,
   `| Lauf | ${plan.run ? 'ja' : 'nein'} |`,
   `| Geaenderte Dateien | ${result?.changed.length ?? 0} |`,
   `| Required | ${plan.required.join(', ') || 'keine'} |`,
@@ -152,6 +153,7 @@ if (outputFile) {
   appendFileSync(outputFile, `noop=${plan.noop}\n`);
   appendFileSync(outputFile, `required=${plan.required.join(',')}\n`);
   appendFileSync(outputFile, `profile=${profile}\n`);
+  appendFileSync(outputFile, `risk=${plan.risk ?? 'unknown'}\n`);
   appendFileSync(outputFile, `matrix=${matrix}\n`);
   appendFileSync(outputFile, `test_files=${testFiles}\n`);
   appendFileSync(outputFile, `tests_json=${JSON.stringify(plan.tests)}\n`);

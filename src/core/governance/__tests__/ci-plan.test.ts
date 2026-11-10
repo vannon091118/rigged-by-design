@@ -4,9 +4,9 @@
  *
  * Der Zustand ist die eine Wahrheit: aus ihm folgen Required-Set, Gates und
  * Tests. Diese Datei belegt die Grenzen, die aus dem Workflow-Text nicht
- * ablesbar sind: kein Zustand ohne Gate ausser NOOP und PR_HANDOFF, PR, main
- * und manuell fahren die vollstaendige Suite, und der Impact ergaenzt nur Audit
- * und lange Nachweise - er verkuerzt nie die schnelle Regression.
+ * ablesbar sind: kein Zustand ohne Gate ausser NOOP und PR_HANDOFF, main und
+ * manuell fahren die vollstaendige Suite, und ein PR folgt dem Risiko seiner
+ * Aenderung - Audit kommt nur aus dem Impact, nie aus einer Kuerzung.
  */
 import { describe, expect, it } from 'vitest';
 import { buildPlan, selectTests, stateFor } from '../../../../scripts/lib/ci-plan.mjs';
@@ -32,8 +32,8 @@ describe('CI-Zustand', () => {
 });
 
 describe('CI-Testplan', () => {
-  it('gibt PR, main und manuell das Required-Set und die vollstaendige Suite', () => {
-    for (const options of [aPR(), pushMain, { event: 'workflow_dispatch' }]) {
+  it('gibt main und manuell das Required-Set und die vollstaendige Suite', () => {
+    for (const options of [pushMain, { event: 'workflow_dispatch' }]) {
       const plan = buildPlan(['src/core/sim/tick.ts'], options);
       expect(plan.run).toBe(true);
       expect(plan.noop).toBe(false);
@@ -42,6 +42,14 @@ describe('CI-Testplan', () => {
       expect(plan.tests.runAll).toBe(true);
       expect(plan.tests.files).toEqual([]);
     }
+
+    // Ein Runtime-PR traegt dasselbe Required-Set, faehrt aber nur die vom
+    // Diff betroffenen Tests. Die vollstaendige Suite ist main und manuell.
+    const pr = buildPlan(['src/core/sim/tick.ts'], aPR());
+    expect(pr.run).toBe(true);
+    expect(pr.required).toEqual([...REQUIRED_CI_GATES]);
+    expect(pr.gateKeys).toEqual(expect.arrayContaining([...REQUIRED_CI_GATES]));
+    expect(pr.tests.runAll).toBe(false);
   }, 15_000);
 
   it('faehrt im Light-Zustand nur die schnellen Gates ohne Tests', () => {
@@ -76,7 +84,7 @@ describe('CI-Testplan', () => {
     expect(plan.tests.runAll).toBe(true);
   });
 
-  it('ergaenzt Audit nur aus dem Impact und verkuerzt nie die Suite', () => {
+  it('ergaenzt Audit nur aus dem Impact und kuertzt den PR auf betroffene Tests', () => {
     const deps = buildPlan(['src/Config/vite.config.ts'], { ...aPR(), impact: true });
     expect(deps.gateKeys).toContain('audit');
     expect(deps.required).not.toContain('audit');
@@ -84,7 +92,8 @@ describe('CI-Testplan', () => {
 
     const code = buildPlan(['src/core/sim/tick.ts'], { ...aPR(), impact: true });
     expect(code.gateKeys).not.toContain('audit');
-    expect(code.tests.runAll).toBe(true);
+    expect(code.tests.runAll).toBe(false);
+    expect(Array.isArray(code.tests.files)).toBe(true);
   });
 
   it('delegiert den Narrative-Langlauf als langen Nachweis statt als schnellen Test', () => {

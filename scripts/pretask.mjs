@@ -17,6 +17,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import { filterMergedCollisions } from './lib/claim-evidence.mjs';
 import {
   deriveTaskState,
   loadTaskContractForClaim,
@@ -149,7 +150,16 @@ if (!contextData || typeof contextData !== 'object') {
 }
 
 if (claim && branch !== 'main' && !botBranch) {
-  const collisions = findCollisions(claim, claims);
+  // Dieselbe Reihenfolge wie im Lane-Claims-Gate: erst belegte Merges
+  // herausfiltern, dann blockieren. Sonst wuerde der Start an Lanes
+  // scheitern, die das Gate laengst als gemergt behandelt.
+  const collisions = filterMergedCollisions({
+    collisions: findCollisions(claim, claims),
+    claims,
+    onMerged: (collision, evidence) => {
+      notes.push(`${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
+    },
+  });
   if (collisions.length > 0) {
     blockers.push(
       `[ERR-4019] Lane-Kollisionen: ${collisions.map((entry) => `${entry.lane} (${entry.reason || 'Contract'})`).join('; ')}; erst Claim oder Pfade entzerren`,

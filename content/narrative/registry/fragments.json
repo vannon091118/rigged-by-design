@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e02e698c8be8f0622fda5c7b6f7d398d8e1b8313659c3d8694aceb57028068d4",
+  "contentHash": "sha256:8c9eba79c8aab86192d7cb9e8f35f6798b473c8a4ed5d127268a1373bea12e9d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -721,6 +721,72 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "ci-governance-defuse-01",
+      "turnId": "2026-11-10T09:55Z-ci-governance-defuse",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zusammengefuehrte Lanes blockieren den Start nicht mehr: Pretask und Lane-Gate teilen denselben Merged-Filter, und ein Doku-Marker kommt genau einmal vor. Was auf main steht, ist Notiz statt Sperre; ohne Beleg bleibt es fail-closed.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json"
+    },
+    {
+      "contributionId": "ci-main-sync-01",
+      "turnId": "2026-11-10T08:30Z-ci-main-sync",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Während der CI-Fix lief, zog main mit der README-Lane weiter. Der Branch wurde echt gemergt, die Inventur neu erzeugt und die Freigabe an die neue Basis gebunden; kein alter Kopf blieb als scheinbar grüner Nachweis stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-main-sync.json"
+    },
+    {
+      "contributionId": "ci-pr-body-current-01",
+      "turnId": "2026-11-10T08:25Z-ci-pr-body-current",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der CI-Plan liest den PR-Body jetzt bei jedem Lauf über die Pull-Request-API. Ein Rerun nach einer Korrektur prüft damit den aktuellen Text statt des ursprünglichen Event-Payloads; der Unterschied zwischen Erstlauf und Wiederholung verschwindet aus der Fehlersuche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
     },
     {
       "contributionId": "city-day-closeout-01",
