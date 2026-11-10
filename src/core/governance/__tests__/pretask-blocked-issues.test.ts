@@ -10,6 +10,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it as vitestIt } from 'vitest';
+import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
 
 interface Payload {
   readonly blockers: readonly string[];
@@ -122,7 +123,9 @@ describe('pretask fail-closed issue check', () => {
       });
       const result = run(worktree, { RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: script });
       expect(result.status).toBe(1);
-      expect(payload(result.stdout).blockers.join('\n')).toContain('Governance-BLOCKED #41');
+      const blockers = payload(result.stdout).blockers.join('\n');
+      expect(blockers).toContain('Governance-BLOCKED #41');
+      expect(blockers).toContain(ISOLATION_CODE);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }
@@ -134,7 +137,9 @@ describe('pretask fail-closed issue check', () => {
       const worktree = linkedRepo(parent, 'repo', 'lane/test/unknown');
       const result = run(worktree, { RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: brokenGh(parent) });
       expect(result.status).toBe(1);
-      expect(payload(result.stdout).blockers.join('\n')).toContain('Issue-Check UNKNOWN');
+      const blockers = payload(result.stdout).blockers.join('\n');
+      expect(blockers).toContain('Issue-Check UNKNOWN');
+      expect(blockers).toContain(ISOLATION_CODE);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

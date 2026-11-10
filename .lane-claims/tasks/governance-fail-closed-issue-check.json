@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "CI-Lauf auf 365e724 pruefen; bei gruen auf MERGE_PENDING setzen, sonst Befund im Vertrag festhalten.",
-  "revision": 2
+  "nextAction": "Zweiter Beleg fuer verify-test-quality; CI auf dem neuen Kopf pruefen, dann MERGE_PENDING.",
+  "revision": 3
 }

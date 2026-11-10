@@ -3320,6 +3320,10 @@
     {
       "turnId": "2026-11-10T06:20Z-governance-fail-closed-issue-check",
       "contributionId": "governance-fail-closed-issue-check-01"
+    },
+    {
+      "turnId": "2026-11-10T06:12Z-governance-fail-closed-test-quality",
+      "contributionId": "governance-fail-closed-test-quality-01"
     }
   ]
 }

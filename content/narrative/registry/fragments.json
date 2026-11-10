@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1f111eb0fc719f995344eeed89f04d9fe2512b1f88e72e80c9621f01dd18cc5a",
+  "contentHash": "sha256:cb047b4f5858abf8de9f924e349dac70b39ee39e89ae9afa7ecb574bf7533d84",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3715,6 +3715,31 @@
       "text": "Rita liess die Liste der offenen Befunde zweimal holen, bevor sie den Schluessel umdrehte. Antwortete die Gegenstelle nicht, blieb die Tuer zu: Ein leerer Zettel ist kein Beweis fuer ein leeres Regal, und ein unbekannter Befund ist keine Freigabe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-issue-check.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-test-quality-01",
+      "turnId": "2026-11-10T06:12Z-governance-fail-closed-test-quality",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess den Beleg am selben System haengen, das den Befund erzeugt: Ein Test, der nur den Text prueft, aber nicht den Code seiner Quelle, haette auch bei geschlossenem Regal gegruent.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-test-quality.json"
     },
     {
       "contributionId": "governance-freeze-merge-base-01",
