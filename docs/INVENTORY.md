@@ -583,10 +583,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2541 |
-| Gelistete Dateien | 2541 |
+| Getrackte Dateien | 2544 |
+| Gelistete Dateien | 2544 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (144), content (874), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (146), content (875), docs (83), public (554), scripts (102), src (756) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -598,9 +598,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 97 Datei(en)
-- `.lane-claims/tasks/` — 45 Datei(en)
-- `content/narrative/contributions/` — 870 Datei(en)
+- `.lane-claims/claims/` — 98 Datei(en)
+- `.lane-claims/tasks/` — 46 Datei(en)
+- `content/narrative/contributions/` — 871 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -717,6 +717,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-agent-bootstrap.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-agent-masterplan-readme.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-agent14-changelog.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-agents-md-contract.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agents-wartezeiten-regel.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-apk-signing-v2.json` — { — gelesen: 39 Zeilen
@@ -813,6 +814,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-agent-bootstrap.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-agent14-changelog.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-collision-closeout.json` — { — gelesen: 17 Zeilen
@@ -1729,8 +1731,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19534 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3485 Zeilen
+- `content/narrative/contributions/2026-11-11-agent14-changelog-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19556 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3489 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen

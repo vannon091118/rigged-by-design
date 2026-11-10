@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:950fa200e89506d5deff16ceb74449bf4ad5448567687793b3501c503675b4f6",
+  "contentHash": "sha256:d60d612a226dc50a35cbb60e57fe7470a6e4107f28536e09490782ac1c3c7937",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -52,6 +52,28 @@
       "text": "Rita strich den Satz, der zwei Inventuren verlangte. Daneben notierte sie, dass der neue Einstieg Branch, Arbeitsbaum und Vertrag selbst vorbereitet, und liess den alten Befehlsnamen durchgestrichen stehen. Wer den Zettel liest, muss nichts mehr raten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-agent-bootstrap.json"
+    },
+    {
+      "contributionId": "agent14-changelog-1",
+      "turnId": "2026-11-11T00:11Z-agent14-changelog-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Lane ist angemeldet, bevor sie schreibt: erst der Anspruch auf die Doku-Dateien, dann der Text. Wer die Reihenfolge umdreht, baut sich selbst ein Tor.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-1.json"
     },
     {
       "contributionId": "apk-signing-01",
