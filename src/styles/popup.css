@@ -42,6 +42,7 @@
 .career-achievements li.off { opacity: 0.4; }
 .career-achievements li.on { border-color: var(--accent); }
 .career-backyard { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
+.career-log { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
 .career-next { margin: 0; font-size: 12px; }
 .career-history { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
 .career-history li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; }

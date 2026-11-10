@@ -25,6 +25,7 @@ interface Options {
   readonly onChallenge?: () => void;
   readonly backyard?: boolean;
   readonly injured?: boolean;
+  readonly emptyHistory?: boolean;
 }
 
 function renderPopup(options: Options = {}) {
@@ -32,10 +33,12 @@ function renderPopup(options: Options = {}) {
   grantXp(world.player.rpg, 450);
   world.player.barPurchased = true;
   if (options.injured) world.player.rpg.injuryTicks = 20;
-  recordJournal(world, {
-    kind: 'GUEST', subject: 'Duell gegen Rocco', cause: 'Rädelsführer fordert dich',
-    effect: 'Gewonnen: der Rädelsführer ist raus.', refs: {},
-  });
+  if (!options.emptyHistory) {
+    recordJournal(world, {
+      kind: 'GUEST', subject: 'Duell gegen Rocco', cause: 'Rädelsführer fordert dich',
+      effect: 'Gewonnen: der Rädelsführer ist raus.', refs: {},
+    });
+  }
   if (options.backyard) {
     recordJournal(world, {
       kind: 'SYSTEM', subject: 'Hinterhof gegen Bulle Bernd', cause: 'Hinterhof-Schläger · Rang 1/6',
@@ -59,10 +62,28 @@ describe('Charakterfenster: Werte', () => {
 
   it('listet alle sieben Attribute mit ihrer Wirkung', () => {
     renderPopup();
-    expect(screen.getAllByRole('list')).toHaveLength(2);
+    expect(screen.getAllByRole('list')).toHaveLength(3);
     expect(screen.getByText('Speed').tagName).toBe('SPAN');
     expect(screen.getByText('Glück').tagName).toBe('SPAN');
     expect(screen.getAllByText('noch ohne Wirkung')).toHaveLength(3);
+  });
+
+  it('zeigt die Spielhistorie aus dem Archiv und nennt die leere Lage', () => {
+    const view = renderPopup();
+    const section = screen.getByLabelText('Spielhistorie');
+    expect(section.textContent).toContain('letzte 1');
+    expect(view.career.history[0]!.label).toBe('Duell gegen Rocco');
+    expect(screen.getByLabelText('Letzte Etappen').tagName).toBe('UL');
+    cleanup();
+    renderPopup({ emptyHistory: true });
+    expect(screen.getByLabelText('Spielhistorie').textContent).toContain('noch leer');
+    expect(screen.getByText(/Noch keine Etappen/).tagName).toBe('P');
+  });
+
+  it('nennt Job, Schichten, Tageslohn und letzte Schicht', () => {
+    const view = renderPopup();
+    expect(screen.getByText('keine Schicht').tagName).toBe('B');
+    expect(view.career.job).toBeNull();
   });
 
   it('zeigt Bilanz, Job und freigeschaltete Erfolge', () => {
