@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/fail-closed-issue-check",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/fail-closed-issue-check",
+  "baseSha": "fda06dd709bc12f338a1b31edaf6992275207cc8",
+  "task": "Issue-Check fail-closed: governance/blocked abfragen, UNKNOWN blockieren, promote unterscheidet null von leer",
+  "goal": "Ein nicht abfragbarer Issue-Zustand kann keinen Start und keinen Merge mehr freigeben; governance/blocked blockiert seine Lane",
+  "pathAllowlist": [
+    "scripts/pretask.mjs",
+    "scripts/promote.mjs",
+    "scripts/lib/issue-scope.mjs",
+    "src/core/governance/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-fail-closed-issue-check.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "fda06dd709bc12f338a1b31edaf6992275207cc8",
+  "mergedSha": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
+  "mergedEvidence": "Squash-Merge PR #336 auf main (cbc1a290)"
+}

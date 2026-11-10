@@ -11,6 +11,7 @@ import type { CardDeal } from '../store/foreign-play';
 import type { ScreenAnchor } from '../render/floor-hit';
 import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
+import type { AnchorProjector } from './use-world-anchor';
 import { MachineOperatorBody, gameLabel } from './machine-operator';
 import { MachinePlayLazy } from './machine-play-lazy';
 import { PopupShell } from './popup-shell';
@@ -38,6 +39,8 @@ interface Props {
   readonly onRisk: (color: RiskColor, stakeVC: number) => RiskOutcome | null;
   /** Weltposition des Automaten: das Panel haengt daran statt im Vollbild. */
   readonly anchor?: ScreenAnchor | null;
+  /** Rechnet den Weltanker bei Kamera- und Zoomfahrten neu in den Viewport. */
+  readonly project?: AnchorProjector;
 }
 
 export function MachinePopup(props: Props) {
@@ -53,7 +56,9 @@ export function MachinePopup(props: Props) {
         onClose={onClose}
         wide
         full={full}
+        surface={isGame ? 'activity' : 'object'}
         anchor={props.anchor ?? null}
+        project={props.project}
         game={item.gameId}
       >
         {!isGame ? (
@@ -93,7 +98,9 @@ export function MachinePopup(props: Props) {
       onClose={onClose}
       wide
       full={full}
+      surface="object"
       anchor={props.anchor ?? null}
+      project={props.project}
       game={item.gameId}
     >
       <MachineOperatorBody

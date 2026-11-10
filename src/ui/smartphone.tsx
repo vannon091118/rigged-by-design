@@ -1,7 +1,7 @@
 /**
- * Smartphone: zentraler Zugangspunkt für alle Interaktionen.
- * Apps: BUILD, BUY, TRAVEL, CLEAN, SERVE (jede in eigener Datei).
- * Ersetzt das direkte BuildPanel und dient als einziger Menü-Einstieg.
+ * Gerät: optionale Abkürzungen für räumliche Handlungen.
+ * Welt zuerst: Bauen, Putzen und Servieren bleiben auf dem Floor erreichbar;
+ * das Gerät ist kein Pflichtweg und kein zweiter Einstieg in den Betrieb.
  */
 
 import React from 'react';
@@ -11,11 +11,9 @@ import { SmartphoneBuy } from './smartphone-buy';
 import { SmartphoneTravel } from './smartphone-travel';
 import { SmartphoneClean } from './smartphone-clean';
 import { SmartphoneServe } from './smartphone-serve';
-import { BuildPanel } from './build-panel';
-import { worldStore } from '../store/use-world-store';
 import { vc } from './format';
 
-type SmartphoneAppId = 'BUILD' | 'BUY' | 'TRAVEL' | 'CLEAN' | 'SERVE' | 'ADVANCED';
+type SmartphoneAppId = 'BUILD' | 'BUY' | 'TRAVEL' | 'CLEAN' | 'SERVE';
 
 interface SmartphoneProps {
   readonly view: GameView;
@@ -31,7 +29,6 @@ export function Smartphone({ view, onClose }: SmartphoneProps) {
     { id: 'TRAVEL', label: 'Reisen', icon: '✈️' },
     { id: 'CLEAN', label: 'Putzen', icon: '🧹' },
     { id: 'SERVE', label: 'Servieren', icon: '🍸' },
-    { id: 'ADVANCED', label: 'Erweitert', icon: '⚙️' },
   ];
 
   if (openApp === null) {
@@ -41,6 +38,10 @@ export function Smartphone({ view, onClose }: SmartphoneProps) {
           <h2>Smartphone</h2>
           <button type="button" className="btn close" onClick={onClose}>Schließen</button>
         </div>
+        <p className="hint">
+          Welt zuerst: Bauen, Putzen und Servieren funktionieren direkt auf dem Floor.
+          Diese Apps sind nur Abkürzungen, kein Pflichtweg.
+        </p>
         <div className="smartphone-grid">
           {apps.map((app) => (
             <button key={app.id} type="button" className="btn app-tile" onClick={() => setOpenApp(app.id)}>
@@ -67,34 +68,7 @@ export function Smartphone({ view, onClose }: SmartphoneProps) {
       return <SmartphoneClean view={view} onBack={() => setOpenApp(null)} onClose={onClose} />;
     case 'SERVE':
       return <SmartphoneServe view={view} onBack={() => setOpenApp(null)} onClose={onClose} />;
-    case 'ADVANCED':
-      return <SmartphoneBuildPanel view={view} onClose={onClose} />;
     default:
       return null;
   }
-}
-
-function SmartphoneBuildPanel({ view, onClose }: { view: GameView; onClose: () => void }) {
-  return (
-    <BuildPanel
-      view={view}
-      onClose={onClose}
-      onBuy={(id) => { worldStore.buy(id); }}
-      onTemplate={() => {}}
-      onHire={(role) => worldStore.hire(role)}
-      onFire={(role) => worldStore.fire(role)}
-      onPrice={(key, value) => worldStore.setPrice(key, value)}
-      onCarpet={(id) => worldStore.setCarpet(id)}
-      onRepair={(id) => worldStore.repair(id)}
-      onClean={() => worldStore.clean()}
-      onOrderDrinks={(count) => worldStore.orderDrinks(count)}
-      onOrderParts={(count) => worldStore.orderParts(count)}
-      onUpgradeBar={() => worldStore.upgradeBar()}
-      onUpgradeWc={() => worldStore.upgradeWc()}
-      onWall={(color) => worldStore.setWall(color)}
-      onNeon={(color) => worldStore.setNeon(color)}
-      onServeDesk={() => worldStore.serveDesk()}
-      onCalm={(id) => worldStore.calm(id)}
-    />
-  );
 }

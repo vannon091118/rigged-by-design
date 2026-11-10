@@ -77,6 +77,18 @@ export function isBlockedIssue(issue) {
   );
 }
 
+/**
+ * BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen.
+ * `null` heisst "Liste nicht lesbar" und wird nie zu `[]`: eine unbekannte
+ * Blockerlage ist keine Freigabe. Der Unterschied bleibt beim Aufrufer.
+ */
+export function blockedIssuesFrom(issues, options = {}) {
+  if (!Array.isArray(issues)) return null;
+  return issues
+    .filter((issue) => isBlockedIssue(issue))
+    .filter((issue) => classifyIssue(issue, options).disposition === 'blocker');
+}
+
 /** Liest die Pflichtfelder aus einem Issue-Body; fehlende Felder sind `null`. */
 export function parseIssueBody(body) {
   const text = String(body ?? '');

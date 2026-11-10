@@ -48,6 +48,7 @@ export function WorkshopPopup({ view, tool, onClose, onGuest }: WorkshopProps) {
       onClose={onClose}
       wide={active === null || active === 'journal' || active === 'diagnostics' || active === 'assets'}
       full={active === 'assets'}
+      surface="overview"
     >
       {active !== null && <WorkshopBack onBack={back} />}
 

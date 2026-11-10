@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "taskId": "governance-world-first-ui",
+  "claimId": "lane/governance/world-first-ui",
+  "branch": "lane/governance/world-first-ui",
+  "baseSha": "289cff8822fd1ea8351394a959a85ddafd6b136b",
+  "phase": "DONE",
+  "title": "World-first UI: Welt als Hauptbildschirm, vier UI-Typen, kontextuelle Objektpanels, ruhigeres HUD und reduzierte Dock-Einstiege",
+  "goal": "NPC-Klick oeffnet ein verankertes Kontextpanel statt eines Vollbilds; Aktionskarte folgt der Kamera; komplexe Aktivitaeten behalten ihre Ansicht; alle Funktionen bleiben erreichbar",
+  "pr": {
+    "number": 328,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/328",
+    "state": "merged",
+    "mergedSha": "d169a5af9e51abca5fbd2871c6466fc8188f6dbd"
+  },
+  "findings": [],
+  "nextAction": "Abgeschlossen: PR #328 ist als d169a5a auf main gemergt; neue Arbeit startet als neue Lane.",
+  "revision": 4
+}

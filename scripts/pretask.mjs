@@ -157,27 +157,45 @@ if (claim && branch !== 'main' && !botBranch) {
   }
 }
 
+/** Offene Issue-Labels, die den Start blockieren koennen; `governance/blocked`
+ * schreibt `governance-issue`, nicht der Watcher. */
+const ISSUE_LABELS = Object.freeze(['gate-failure', 'remote-ci', 'governance/blocked']);
+/** Kontrollierte Wiederholung: erst zwei Versuche, dann Zustand UNKNOWN. */
+const ISSUE_QUERY_ATTEMPTS = 2;
+
 /** Issue-Scopes kommen aus `issue-scope`; pretask formuliert nur den Befund. */
 function readIssues() {
   const issues = new Map();
   const errors = [];
-  for (const label of ['gate-failure', 'remote-ci', 'governance/blocked']) {
+  for (const label of ISSUE_LABELS) {
+    let output = null;
+    for (let attempt = 1; attempt <= ISSUE_QUERY_ATTEMPTS && output === null; attempt += 1) {
+      try {
+        // Tests koennen einen Node-basierten Stub einsetzen; im Betrieb bleibt
+        // der normale GitHub-CLI-Aufruf der einzige Pfad.
+        const ghBin = process.env.RBD_GH_BIN || 'gh';
+        const ghArgs = process.env.RBD_GH_SCRIPT
+          ? [process.env.RBD_GH_SCRIPT, 'issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50']
+          : ['issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50'];
+        output = execFileSync(
+          ghBin,
+          ghArgs,
+          { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+        );
+      } catch {
+        output = null;
+      }
+    }
+    if (output === null) {
+      errors.push(label);
+      continue;
+    }
     try {
-      // Tests koennen einen Node-basierten Stub einsetzen; im Betrieb bleibt
-      // der normale GitHub-CLI-Aufruf der einzige Pfad.
-      const ghBin = process.env.RBD_GH_BIN || 'gh';
-      const ghArgs = process.env.RBD_GH_SCRIPT
-        ? [process.env.RBD_GH_SCRIPT, 'issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50']
-        : ['issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50'];
-      const output = execFileSync(
-        ghBin,
-        ghArgs,
-        { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-      );
       for (const issue of JSON.parse(output)) {
         if (!issues.has(issue.number)) issues.set(issue.number, { ...issue, queryLabel: label });
       }
     } catch {
+      // Eine unlesbare Antwort ist keine leere Liste.
       errors.push(label);
     }
   }
@@ -211,7 +229,9 @@ function classifyIssue(issue) {
     }
     return { ...result, disposition: 'warning', reason: decision.reason };
   }
-  if (decision.reason === 'scope-main') {
+  if (decision.reason === 'blocked-issue') {
+    blockers.push(`[ERR-4019] Governance-BLOCKED #${issue.number} blockiert diese Lane`);
+  } else if (decision.reason === 'scope-main') {
     blockers.push(`[ERR-4019] gate-failure #${issue.number} scope:main blockiert global`);
   } else if (decision.reason === 'scope-lane') {
     blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die eigene Lane (${decision.scope.lane})`);
@@ -225,7 +245,9 @@ const issueCheck = readIssues();
 const issueResults = issueCheck.issues.map(classifyIssue);
 const followUp = buildFollowUp(issueResults);
 if (!issueCheck.checked) {
-  blockers.push(`[ERR-4019] Issue-Check nicht ausgefuehrt: ${issueCheck.errors.join(', ')}; GitHub nicht erreichbar oder Label-Abfrage fehlgeschlagen (Zustand UNKNOWN)`);
+  // UNKNOWN ist kein sauberer Zustand: eine nicht abfragbare Issue-Liste ist
+  // keine Freigabe (fail-closed).
+  blockers.push(`[ERR-4019] Issue-Check UNKNOWN: ${issueCheck.errors.join(', ')} nicht abfragbar; ohne Issue-Abfrage kein Start (fail-closed)`);
 } else if (issueResults.length === 0) {
   notes.push('Issue-Check: keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues.');
 } else if (followUp.required) {
@@ -424,7 +446,7 @@ if (asJson) {
   console.log('');
   console.log('=== Issue-Check ===');
   if (!issueCheck.checked) console.log(`  nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
-  else if (issueResults.length === 0) console.log('  keine offenen gate-failure- oder remote-ci-Issues');
+  else if (issueResults.length === 0) console.log('  keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues');
   else for (const issue of issueResults) console.log(`  #${issue.number} [${issue.scope.kind}${issue.scope.lane ? `:${issue.scope.lane}` : ''}] ${issue.disposition}: ${issue.title}`);
   for (const warning of warnings) console.log(`  ! ${warning}`);
   for (const note of notes) console.log(`  - ${note}`);

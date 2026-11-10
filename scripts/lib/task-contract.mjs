@@ -307,11 +307,12 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
     return { ...base, status: 'READY', phase: 'READY', nextAction: `Task-Vertrag anlegen (${claim?.id ?? 'Lane'}): pnpm run task:contract --init` };
   }
   if (pr?.merged || contract.phase === 'DONE') {
+    const isDone = contract.phase === 'DONE' && !pr?.merged;
     return {
       ...base,
       status: 'AFTERCARE',
-      phase: 'DONE',
-      nextAction: contract.phase === 'DONE' ? 'Abgeschlossen; neue Arbeit als neue Lane starten.' : 'Nachsorge abschliessen und den Vertrag auf DONE setzen.',
+      phase: isDone ? 'DONE' : 'AFTERCARE',
+      nextAction: isDone ? 'Abgeschlossen; neue Arbeit als neue Lane starten.' : 'Nachsorge abschliessen und den Vertrag auf DONE setzen.',
     };
   }
   if (ci?.state === 'HOLD') {

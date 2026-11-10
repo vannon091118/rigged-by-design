@@ -3,18 +3,18 @@ import type { ScreenAnchor } from '../render/floor-hit';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import type { Perspective, Popup } from './app-model';
+import type { AnchorProjector } from './use-world-anchor';
 import { CityPopup } from './city-popup';
 import { DIALOGUE_SCRIPTS } from '../core/sim/narrative/dialogue/scripts';
 import { findDialogueScript } from '../core/sim/narrative/dialogue/select';
 import { DialoguePopup } from './dialogue-popup';
 import { dialogIdFromExecution } from './dialog-request';
-import { ForeignFloorMap } from './foreign-floor-map';
-import { ForeignFloorPopup } from './foreign-floor-popup';
-import { GamesPopup } from './games-popup-lazy';
+import { GuestContextPanel } from './guest-context-panel';
 import { GuestPopup } from './guest-popup';
 import { LookPopup } from './look-popup';
-import { MachinePopup } from './machine-popup';
 import { NarrativePopup } from './narrative-popup';
+import { GamesRoute, MachineRoute } from './popup-router-activity';
+import { ForeignFloorRoute, ForeignMapRoute } from './popup-router-travel';
 import { WorkshopPopup } from './workshop';
 
 interface RouterProps {
@@ -27,12 +27,34 @@ interface RouterProps {
   readonly onStaff: () => void;
   /** Weltposition des Objekts, das diesen Popup geoeffnet hat. */
   readonly anchor?: ScreenAnchor | null;
+  /** Projektion des Weltankers; ohne sie bleibt das Panel am Klick stehen. */
+  readonly project?: AnchorProjector;
 }
 
-export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff, anchor = null }: RouterProps) {
+export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff, anchor = null, project }: RouterProps) {
   if (popup === null) return null;
 
   if (popup.kind === 'guests') {
+    // Ein NPC-Klick oeffnet das Objektpanel am Ziel. Die volle Liste bleibt
+    // eine bewusste Uebersicht und behaelt die Auswahl.
+    if (popup.guestId !== null && !popup.overview) {
+      return (
+        <GuestContextPanel
+          view={view}
+          guestId={popup.guestId}
+          anchor={anchor}
+          project={project}
+          onClose={onClose}
+          onOpenOverview={(id) => onOpen({ kind: 'guests', guestId: id, overview: true })}
+          onPay={(id) => worldStore.pay(id)}
+          onServe={(id) => worldStore.serveDrink(id)}
+          onCalm={(id) => worldStore.calm(id)}
+          onTalk={(id) => worldStore.talk(id)}
+          onFight={(id) => worldStore.fightBrawl(id)}
+          onProfile={(visitorId) => onOpen({ kind: 'narrative', visitorId })}
+        />
+      );
+    }
     return (
       <GuestPopup
         view={view}
@@ -49,51 +71,20 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
   }
 
   if (popup.kind === 'machine') {
-    const item = view.furniture.find((entry) => entry.id === popup.itemId);
-    if (!item) return null;
     return (
-      <MachinePopup
-        item={item}
+      <MachineRoute
         view={view}
         perspective={perspective}
+        itemId={popup.itemId}
         anchor={anchor}
+        project={project}
         onClose={onClose}
-        onTest={() => worldStore.spinTest(item.id)}
-        onRepair={() => worldStore.repair(item.id)}
-        onMod={(id) => worldStore.installMod(item.id, id)}
-        onAddReel={() => worldStore.addReel(item.id)}
-        onBet={(value) => worldStore.setBet(item.id, value)}
-        onSlotOdds={(profile) => worldStore.setSlotOdds(item.id, profile)}
-        onTakeDrink={() => worldStore.takeDrink()}
-        onDeployPlinko={(config) => worldStore.deployPlinko(config)}
-        onPlinkoMode={(mode) => worldStore.setPlinkoMode(mode)}
-        onWithdraw={() => worldStore.takeHome(5)}
-        onPlay={(betVC, options) => worldStore.own.spin(item.id, betVC, options)}
-        onDeal={(stakeVC) => worldStore.own.deal(item.id, stakeVC)}
-        onSettle={(stakeVC, engineBps, label) => worldStore.own.settle(item.id, stakeVC, engineBps, label)}
-        onAdditionalBet={(amountVC) => worldStore.own.additional(item.id, amountVC)}
-        onShellRound={() => worldStore.shellRound()}
-        onRisk={(color, stakeVC) => worldStore.own.risk(item.id, color, stakeVC)}
       />
     );
   }
 
   if (popup.kind === 'games') {
-    return (
-      <GamesPopup
-        view={view}
-        initialRivalId={popup.rivalId}
-        onClose={() => onOpen(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
-        onPlay={(rivalId, machineIndex, betVC, options) => worldStore.playRival(rivalId, machineIndex, betVC, options)}
-        onRisk={(rivalId, color, stakeVC) => worldStore.riskCard(rivalId, color, stakeVC)}
-        onShellRound={() => worldStore.shellRound()}
-        onDealCard={(rivalId, machineIndex, stakeVC) => worldStore.dealCard(rivalId, machineIndex, stakeVC)}
-        onSettleCard={(rivalId, machineIndex, stakeVC, engineBps, label) => worldStore.settleCard(rivalId, machineIndex, stakeVC, engineBps, label)}
-        onAdditionalBet={(amountVC) => worldStore.additionalBet(amountVC)}
-        onTakeHome={() => worldStore.takeHome(5)}
-        onExclusion={(command, limitVC) => worldStore.exclusion(command, limitVC)}
-      />
-    );
+    return <GamesRoute view={view} rivalId={popup.rivalId} onOpen={onOpen} />;
   }
 
   if (popup.kind === 'narrative') {
@@ -112,32 +103,11 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
   }
 
   if (popup.kind === 'foreignMap') {
-    return (
-      <ForeignFloorMap
-        view={{
-          currentForeignFloorId: view.currentForeignFloorId,
-          foreignFloors: view.foreignFloors,
-          wallet: view.wallet,
-        }}
-        onVisit={(rivalId) => {
-          worldStore.visitForeign(rivalId);
-          onOpen({ kind: 'foreignFloor' });
-        }}
-        onClose={() => onOpen(view.currentForeignFloorId !== null ? { kind: 'foreignFloor' } : null)}
-      />
-    );
+    return <ForeignMapRoute view={view} onOpen={onOpen} />;
   }
 
   if (popup.kind === 'foreignFloor') {
-    return (
-      <ForeignFloorPopup
-        key={view.currentForeignFloorId ?? 'none'}
-        view={view}
-        onClose={onClose}
-        onOpenMap={() => onOpen({ kind: 'foreignMap' })}
-        onOpenGames={(rivalId) => onOpen({ kind: 'games', rivalId })}
-      />
-    );
+    return <ForeignFloorRoute view={view} onClose={onClose} onOpen={onOpen} />;
   }
 
   if (popup.kind === 'city') {
