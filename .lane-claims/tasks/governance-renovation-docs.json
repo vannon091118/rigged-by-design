@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-renovation-docs",
+  "claimId": "lane/governance/renovation-docs",
+  "branch": "lane/governance/renovation-docs",
+  "baseSha": "e76e14fbf8845b3ee5703de302b84806fb16d98a",
+  "phase": "MERGE_PENDING",
+  "title": "Agent 09: Meta-Doku und Claim-Abschluss zur Renovierung",
+  "goal": "Agent 09 in Changelog, Devtagebuch und Roadmap belegen, den Feature-Claim mit Squash-SHA schliessen und die Lane danach aufraeumen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen, CI abwarten, squash-mergen, dann auf DONE setzen.",
+  "revision": 1
+}
