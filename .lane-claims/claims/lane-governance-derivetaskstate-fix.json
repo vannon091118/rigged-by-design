@@ -11,8 +11,7 @@
     ".lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json",
     ".lane-claims/claims/lane-governance-world-first-ui.json",
     "package.json",
-    "pnpm-lock.yaml",
-    "docs/INVENTORY.md"
+    "pnpm-lock.yaml"
   ],
   "contracts": [],
   "dependencies": [],
