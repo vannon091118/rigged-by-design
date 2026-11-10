@@ -10,6 +10,7 @@ import type { VaCoinMicro } from '../economy/vacoin';
 import { backyardView, type BackyardView } from './fight-career';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
+import { cleaningReach, maintenanceGain } from './floor-work';
 import { propertyView, type PlayerPropertyView } from './property';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
@@ -70,8 +71,12 @@ const ACHIEVEMENT_LEVEL = 5;
 const ACHIEVEMENT_WINS = 5;
 
 /** Wirkung einer Stufe in Klartext; leer heisst "noch keine Wirkung im Spiel". */
-function effectOf(rpg: PlayerRpgState, attr: RpgAttribute): string {
+function effectOf(world: WorldState, attr: RpgAttribute): string {
+  const rpg = world.player.rpg;
   if (attr === 'speed') return `${playerStepsPerTick(rpg)} Schritte pro Tick`;
+  // Agent 11: Wahrnehmung und Technik haben jetzt je einen Leser auf dem Floor.
+  if (attr === 'perception') return `Reinigung im Radius ${cleaningReach(world)}`;
+  if (attr === 'technique') return `Wartung +${maintenanceGain(world)} Zustandspunkte`;
   if (attr === 'charisma') return `${40 + rpg.charismaLevel * 10} % Ansprech-Chance`;
   if (attr === 'brawl') return `${6 + rpg.brawlLevel * 2} Schaden · ${playerMaxHp(rpg)} LP`;
   if (attr === 'endurance') return `Regeneration alle ${Math.max(2, 4 - Math.floor(rpg.enduranceLevel / 5))} Ticks`;
@@ -137,7 +142,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     wallet,
     playerCash,
     attributes: ATTRIBUTE_LABELS.map(([id, label]) => ({
-      id, label, level: levelOf(rpg, id), effect: effectOf(rpg, id),
+      id, label, level: levelOf(rpg, id), effect: effectOf(world, id),
     })),
     job: job === null ? null : {
       label: JOB_DEFS[job.jobId].label,

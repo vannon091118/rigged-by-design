@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8188e08edc02b5f6311d8c7f56eccd8fc20b2dfb44f61cc23fa8bee6ac853207",
+  "contentHash": "sha256:d5d31afee3e368d1081dea09c9fc28f2cede65894c02e8cd15c0f254ded43cff",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3834,6 +3834,31 @@
       "text": "Der Fleck lag nicht dort, wo der Streit gewesen war: eine Kachel schräg, halb unter dem Automaten, halb im Nichts. Später fehlte Geld aus der Brieftasche, und niemand konnte sagen, wann es gegangen war. Rita wischte trotzdem und sagte, ein Fleck am richtigen Ort sei das Erste, was ein Haus wieder ehrlich macht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dreck-und-verluste.json"
+    },
+    {
+      "contributionId": "floor-work-01",
+      "turnId": "2026-11-10T23:00Z-floor-work",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-floor-work.json"
     },
     {
       "contributionId": "gate-lane-red-team-01",

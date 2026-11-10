@@ -7,6 +7,7 @@ import { hpNotice } from '../core/sim/player-career';
 import type { PropertyId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { CareerBackyard } from './career-backyard';
+import { CareerFloor } from './career-floor';
 import { CareerHistory } from './career-history';
 import { CareerProperty } from './career-property';
 import { vc } from './format';
@@ -103,6 +104,7 @@ function CareerSection({ view, onChallenge, onBuyProperty, onRenovate, onMaintai
           <b>{career.job ? `${career.job.wageVC} VC/Tag · letzte Schicht ${career.job.lastWorkDay > 0 ? `Tag ${career.job.lastWorkDay}` : 'offen'}` : 'keine Schicht'}</b>
         </div>
       </div>
+      <CareerFloor work={view.floorWork} />
       <CareerProperty
         property={career.property}
         house={view.house}

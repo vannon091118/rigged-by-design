@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-floor-work",
+  "claimId": "lane/sim/floor-work",
+  "branch": "lane/sim/floor-work",
+  "baseSha": "02e113aa49f6091151770b90c29509379c62840f",
+  "phase": "IMPLEMENTING",
+  "title": "Masterplan Agent 11: Spieler als aktiver Casino-Betreiber",
+  "goal": "Wahrnehmung und Technik an vorhandene Floor-Arbeit koppeln: Reinigungsradius, Wartungsgewinn, Sicht im Charakterfenster.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Tests gruen bekommen, dann Feature-Commit, verify:all, PR und Merge.",
+  "revision": 1
+}
