@@ -9,6 +9,7 @@ import { emitFact } from './narrative/facts';
 import { actorRefOfVisitor } from './narrative/relationships';
 import { spawnStain } from './stain';
 import { emit } from './events';
+import { INTERACTION_RADII, isInRange } from './interaction';
 
 const BRAWL_RANGE = 5;
 /**
@@ -166,7 +167,7 @@ export function calmDispute(world: WorldState, id: number): boolean {
   const dispute = world.disputes.find((entry) => entry.id === id);
   if (!dispute) return false;
   if (guardHandling(world, dispute)) throw new Error('Der Security ist bereits vor Ort und bearbeitet den Streit.');
-  if (dist(world.player.position.x, world.player.position.y, dispute.x, dispute.y) > 4) return false;
+  if (!isInRange(world.player.position, dispute, INTERACTION_RADII.DISPUTE)) return false;
   resolveDispute(world, id, true);
   return true;
 }

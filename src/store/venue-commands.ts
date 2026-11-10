@@ -12,7 +12,7 @@ import { actorRefOfVisitor } from '../core/sim/narrative/relationships';
 import { guestById } from '../core/sim/world';
 import { consumeMopUse, dropMop, pickupMop, spawnMop } from '../core/sim/mop';
 import { removeStain } from '../core/sim/stain';
-import { isInRange, INTERACTION_RADII } from '../core/sim/interaction';
+import { isInRange, planInteraction, INTERACTION_RADII } from '../core/sim/interaction';
 import { spendPoint, type RpgAttribute } from '../core/sim/player-rpg';
 import { duelNotice, resolveDuel } from '../core/sim/duel';
 import { fireAgent, hireAgent } from '../core/sim/staff';
@@ -67,12 +67,21 @@ export function calmCmd(world: WorldState, disputeId: number): string {
 }
 
 export function talkCmd(world: WorldState, prng: Prng, guestId: number): string {
+  const guest = guestById(world, guestId);
+  if (!guest) throw new Error('Gast nicht gefunden.');
+  if (!isInRange(world.player.position, guest.position, INTERACTION_RADII.GUEST)) {
+    throw new Error('Zu weit weg. Geh erst zum Gast.');
+  }
   if (!talkToGuest(world, prng, guestId)) throw new Error('Gast gerade nicht ansprechbar.');
   return world.lastEvent;
 }
 
 export function fightBrawlCmd(world: WorldState, ledger: Ledger, prng: Prng, disputeId: number): string {
   const d = world.disputes.find((d) => d.id === disputeId);
+  if (!d) throw new Error('Der Streit ist vorbei.');
+  if (!isInRange(world.player.position, d, INTERACTION_RADII.DISPUTE)) {
+    throw new Error('Zu weit weg. Geh erst zum Streit.');
+  }
   const g = d?.guestIds?.[0] ? guestById(world, d.guestIds[0]) : undefined;
   if (g?.visitorId) emitFact(world, { kind: 'VISITOR_CONFLICT', actorRefs: [actorRefOfVisitor(g.visitorId)], initiator: actorRefOfVisitor(g.visitorId), severity: 2 });
   return duelNotice(resolveDuel(world, ledger, prng, disputeId), world.lastEvent);
@@ -200,13 +209,15 @@ export function cleanStainCmd(world: WorldState, ledger: Ledger, stainId: number
 }
 
 /** Wischer an der Toilette holen (Radius 2). */
-export function getMopAtToiletCmd(world: WorldState): string {
-  const toilet = world.furniture.find((item) => item.kind === 'TOILET');
+export function getMopAtToiletCmd(world: WorldState, toiletId?: number): string {
+  const toilet = toiletId === undefined
+    ? world.furniture.find((item) => item.kind === 'TOILET')
+    : world.furniture.find((item) => item.id === toiletId && item.kind === 'TOILET');
   if (!toilet) throw new Error('Keine Toilette im Haus.');
-  const pos = { x: toilet.x, y: toilet.y };
-  if (!isInRange(world.player.position, pos, INTERACTION_RADII.TOILET)) {
+  if (!planInteraction(world, { kind: 'furniture', id: toilet.id }).inRange) {
     throw new Error('Zu weit weg. Geh erst zur Toilette.');
   }
+  const pos = { x: toilet.x, y: toilet.y };
   spawnMop(world, pos.x + 1, pos.y);
   return 'Wischer bereitgestellt.';
 }

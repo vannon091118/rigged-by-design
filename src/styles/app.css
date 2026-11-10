@@ -548,6 +548,15 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   touch-action: manipulation;
 }
 .action-card button:disabled { opacity: 0.45; cursor: default; }
+.action-card .action-reason { display: block; margin-top: 2px; font-size: 10px; color: #cbb9e8; }
+.action-card .action-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #d8c9ef;
+}
+.action-card .action-main { display: grid; align-content: center; }
 /* Am Objekt statt in der Ecke: die Karte haengt an der Weltposition des Treffers. */
 .action-card.is-anchored {
   left: clamp(170px, var(--anchor-x, 50vw), calc(100vw - 170px));

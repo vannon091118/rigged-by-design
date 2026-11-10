@@ -75,14 +75,15 @@ export function HelpPopup({ onClose }: { readonly onClose: () => void }) {
         <section className="help-card">
           <h3>Steuerung</h3>
           <ul className="help-controls">
-            <li><kbd>Klick</kbd> auf freie Fläche: hinlaufen</li>
-            <li><kbd>Klick</kbd> auf Gast oder Objekt: Details öffnen</li>
+            <li><kbd>Klick</kbd> / <kbd>Tipp</kbd> auf freie Fläche: hinlaufen</li>
+            <li><kbd>Klick</kbd> / <kbd>Tipp</kbd> auf Gast, Möbel oder Kiste: Aktionen öffnen, die Figur läuft hin</li>
+            <li><kbd>E</kbd>: Ziel in Reichweite wählen oder die Hauptaktion ausführen</li>
             <li><kbd>Pfeile</kbd> / <kbd>WASD</kbd>: laufen</li>
             <li><kbd>Mausrad</kbd>: zoomen</li>
             <li><kbd>Rechte Maus</kbd> ziehen: schwenken</li>
             <li><kbd>+</kbd> / <kbd>-</kbd>: zoomen, <kbd>0</kbd>: Übersicht</li>
             <li><kbd>Enter</kbd>: getragene Kiste nutzen</li>
-            <li><kbd>Esc</kbd>: Fenster schließen</li>
+            <li><kbd>Esc</kbd>: Auswahl abbrechen, Fenster schließen</li>
           </ul>
         </section>
 

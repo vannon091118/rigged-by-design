@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 import { pickHit, resolveHit, sightBlocked, type HitView } from '../floor-hit';
 
 const view = (over: Partial<HitView> = {}): HitView => ({
-  size: 12, furniture: [], guests: [], stains: [], ...over,
+  size: 12, furniture: [], guests: [], crates: [], stains: [], ...over,
 });
 
 describe('Floor-Treffer', () => {
@@ -55,5 +55,19 @@ describe('Floor-Treffer', () => {
   it('meldet ausserhalb des Bodens keinen Treffer', () => {
     expect(resolveHit(view(), { x: -1, y: 0 }, { x: 0, y: 0 })).toBeNull();
     expect(resolveHit(view(), { x: 12, y: 0 }, { x: 0, y: 0 })).toBeNull();
+  });
+
+  it('nimmt die Kiste vor dem Gast und gibt ihren Fussanker zurueck', () => {
+    const crates = [{ id: 8, x: 3, y: 3 }];
+    const guests = [{ id: 9, position: { x: 3, y: 2 } }];
+    const hit = resolveHit(view({ crates, guests }), { x: 3, y: 3 }, { x: 6, y: 6 });
+    expect(hit).toMatchObject({ kind: 'crate', id: 8, at: { x: 3.5, y: 3.5 } });
+  });
+
+  it('haelt eine Kiste hinter einer Wand zurueck, die Kiste davor aber klickbar', () => {
+    const layout = { edges: [{ axis: 'H' as const, x: 1, y: 2, kind: 'WALL' }] };
+    const crates = [{ id: 10, x: 1, y: 0 }];
+    expect(resolveHit(view({ crates, layout }), { x: 1, y: 0 }, { x: 1, y: 4 })).toBeNull();
+    expect(resolveHit(view({ crates, layout }), { x: 1, y: 0 }, { x: 1, y: 1 })?.id).toBe(10);
   });
 });

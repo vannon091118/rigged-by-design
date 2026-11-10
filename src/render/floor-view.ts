@@ -1,7 +1,6 @@
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { TICK_MS } from '../core/sim/tick-timing';
 import { Application, Graphics } from 'pixi.js';
-import { areaAt } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
@@ -12,7 +11,10 @@ import { createGuestArt, type GuestArt } from './guest-art';
 import { primeGuestShadow } from './guest-parts';
 import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
-import { handleTap, screenAnchorOf, screenPoint, type FloorCallbacks, type TapHit } from './floor-input';
+import {
+  acceptTap, handleTap, screenAnchorOf, screenPoint, tapKey,
+  type FloorCallbacks, type TapMark,
+} from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
@@ -36,8 +38,8 @@ export class FloorView {
   readonly #entities: EntitySync;
   readonly #editor = new EditorOverlay();
   #flashId = -1;
+  #lastTap: TapMark | null = null;
   #view: GameView;
-  #placing = false;
   #destroyed = false;
 
   constructor(app: Application, view: GameView, callbacks: FloorCallbacks) {
@@ -123,7 +125,6 @@ export class FloorView {
   }
 
   setPlacing(buildId: string | null): void {
-    this.#placing = buildId !== null;
     this.#props.setGhost(buildId);
   }
 
@@ -172,23 +173,21 @@ export class FloorView {
 
   #act(button: number, point: { x: number; y: number }): void {
     if (this.#destroyed) return;
-    // Der Treffer wird hier in Viewport-Pixel uebersetzt: React haengt seine
-    // Karte an das Objekt, nicht in eine Ecke.
-    const anchor = screenAnchorOf(point, this.#app, this.#rig.root);
-    const callbacks: FloorCallbacks = {
-      onGuest: (id, at) => this.#callbacks.onGuest(id, at),
-      onFurniture: (id, at) => this.#callbacks.onFurniture(id, at),
-      onEmpty: (x, y) => this.#callbacks.onEmpty(x, y),
-      onActions: (actions, at) => this.#callbacks.onActions(actions, at),
-    };
-    const hit: TapHit | null = handleTap(button, point, this.#view, this.#cues, callbacks, this.#placing, this.#rig.lod,
-      (x, y) => { const area = areaAt(this.#view.template, x, y); if (area) this.#rig.cam.zoomToArea(area, this.#view.size); }, anchor);
-    if (!hit) return;
-    if (hit.kind === 'furniture') {
-      this.#flashId = hit.id;
-      this.#entities.furniture(hit.id)?.flash(performance.now());
-    } else if (hit.kind === 'gesture') {
-      const art = this.#actors.get(hit.id);
+    const resolution = handleTap(button, point, this.#view, this.#cues);
+    if (!resolution) return;
+    const now = performance.now();
+    const key = tapKey(resolution.target);
+    // Ein Doppelklick ist derselbe Auftrag, kein zweiter Lauf und keine zweite Karte.
+    if (!acceptTap(this.#lastTap, key, now)) return;
+    this.#lastTap = { key, at: now };
+    // Der Fussanker des Objekts landet als Bildschirmpunkt an der Karte.
+    const anchor = screenAnchorOf(resolution.at, this.#app, this.#rig.root);
+    this.#callbacks.onTap({ ...resolution, anchor });
+    if (resolution.target.kind === 'furniture') {
+      this.#flashId = resolution.target.id;
+      this.#entities.furniture(resolution.target.id)?.flash(now);
+    } else if (resolution.target.kind === 'guest') {
+      const art = this.#actors.get(resolution.target.id);
       art?.bump();
       art?.tapRing();
     }
