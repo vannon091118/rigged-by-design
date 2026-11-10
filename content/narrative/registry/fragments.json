@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:993880f71ce43fdbe736d6582005786f821f83643826e5377a2ec87e410dbb75",
+  "contentHash": "sha256:4f8cf3bbcf1afaa63fef801c661f569fe6679468c5fb8eeafd0c33ed87fb8018",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -7025,6 +7025,28 @@
       "text": "Ein Klick ist jetzt ein Versprechen: Er nennt genau ein Ziel, die Figur geht den Weg dorthin, und erst in Reichweite oeffnet sich die Tat. Was nicht erreichbar ist, sagt warum, statt still zu scheitern.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-phase1-interaction-foundation.json"
+    },
+    {
+      "contributionId": "phase34-acceptance-01",
+      "turnId": "2026-11-10T07:30Z-phase34-acceptance",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bildrate im Werkstatt-HUD und das Budget der beiden Atlasseiten sind jetzt feste Abnahmewerte statt Erinnerung. Der Test hält 60, 30 und 0 FPS samt Frame-Zeit fest und begrenzt den WebP-Atlas auf 400 kB bei 153 Frames; die echte Bildrate und der First Frame auf einem 200-Euro-Geraet bleiben davon unberührt und weiter offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-phase34-acceptance-01.json"
     },
     {
       "contributionId": "phase4-huelle-atlas-01",
