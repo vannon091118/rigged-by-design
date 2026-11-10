@@ -3284,6 +3284,10 @@
     {
       "turnId": "2026-11-10T03:20Z-governance-task-vertrag",
       "contributionId": "governance-task-vertrag-01"
+    },
+    {
+      "turnId": "2026-11-10T03:38Z-governance-freeze-merge-base",
+      "contributionId": "governance-freeze-merge-base-01"
     }
   ]
 }

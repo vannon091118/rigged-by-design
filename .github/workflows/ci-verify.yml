@@ -136,6 +136,14 @@ jobs:
           RBD_ROOT: ${{ steps.control.outputs.root }}
         run: |
           set -euo pipefail
+          # Der Freeze gilt fuer den Branch-Diff, nicht fuer den wandernden
+          # main-Kopf: die Merge-Basis ist die einzige stabile Basis. Der
+          # Checker und die Gates kommen weiter aus der Kontrollebene.
+          freeze_base="$(git merge-base "$FREEZE_BASE" "$FREEZE_HEAD" 2>/dev/null || true)"
+          if [ -n "$freeze_base" ]; then
+            FREEZE_BASE="$freeze_base"
+          fi
+          echo "::notice::Freeze-Basis ${FREEZE_BASE}"
           if [ ! -f "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" ]; then
             echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
             echo "violation=none" >> "$GITHUB_OUTPUT"

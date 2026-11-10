@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3988caeb7c6366f975c991d051d19bfdfa63c5ed72a573c33e054386cfeaa12d",
+  "contentHash": "sha256:202d0ec5c8420d0ecb98c51ca32ee8672b61868843dff8fc0713a943963c15ef",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3690,6 +3690,31 @@
       "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
+    },
+    {
+      "contributionId": "governance-freeze-merge-base-01",
+      "turnId": "2026-11-10T03:38Z-governance-freeze-merge-base",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita markierte im Heft die Zeile, an der die Lane von main abzweigt. Nicht der wandernde Kopf zählt, sondern die gemeinsame Basis; sonst prüft jeder Lauf eine andere Freigabe. Der nächste Leser sah sofort, welche Regel gilt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
     },
     {
       "contributionId": "governance-task-vertrag-01",
