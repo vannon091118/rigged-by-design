@@ -1,0 +1,21 @@
+{
+  "id": "lane/sim/company-progression",
+  "owner": "Integrator",
+  "branch": "lane/sim/company-progression",
+  "baseSha": "64ba4226046f7f0429173f257acbcbdd2fdac579",
+  "task": "Agent 14: Geschaeftsprogression BUDE -> KASSE -> SAAL -> KONZERN",
+  "goal": "Die vier Unternehmensstufen behalten ihre echten Bedingungen; Personal wird die fehlende Voraussetzung fuer Spielsaal und Konzern, ohne neues Save-Feld.",
+  "pathAllowlist": [
+    "src/core/sim/progression.ts",
+    "src/core/sim/__tests__/progression.test.ts",
+    "src/core/sim/__tests__/progression-city.test.ts",
+    "content/narrative/",
+    "src/core/sim/narrative/",
+    ".lane-claims/claims/lane-sim-company-progression.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "64ba4226046f7f0429173f257acbcbdd2fdac579"
+}
