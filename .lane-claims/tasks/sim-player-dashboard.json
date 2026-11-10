@@ -4,7 +4,7 @@
   "claimId": "lane/sim/player-dashboard",
   "branch": "lane/sim/player-dashboard",
   "baseSha": "8c57ad78c688929f962fc3e2f65cf0747a9ec519",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Masterplan Agent 06: Spielhistorie und Arbeitsstatistik im Dashboard",
   "goal": "Die zwei fehlenden Dashboard-Punkte (Spielhistorie, Arbeitsstatistik) aus Archiv und Job-Zustand ableiten und im bestehenden Charakterfenster zeigen.",
   "pr": {
@@ -14,6 +14,6 @@
     "mergedSha": "c2ed2d97d5870aee0fcb4a6be9b923c87fa5f883"
   },
   "findings": [],
-  "nextAction": "Merge belegen, Claim auf merged setzen, dann DONE.",
-  "revision": 2
+  "nextAction": "Aftercare: doctor und verify:all auf main, dann DONE.",
+  "revision": 3
 }

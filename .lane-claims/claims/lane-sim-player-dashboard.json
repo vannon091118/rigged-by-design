@@ -25,6 +25,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "8c57ad78c688929f962fc3e2f65cf0747a9ec519"
+  "status": "merged",
+  "createdAt": "8c57ad78c688929f962fc3e2f65cf0747a9ec519",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "c2ed2d97d5870aee0fcb4a6be9b923c87fa5f883",
+  "notes": "Feature-Commit 3cfa80e als c2ed2d9 auf main; Spielhistorie und Arbeitsstatistik im bestehenden Charakterfenster."
 }

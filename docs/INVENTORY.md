@@ -775,7 +775,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
