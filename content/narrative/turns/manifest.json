@@ -3344,6 +3344,18 @@
     {
       "turnId": "2026-11-10T07:55Z-p20-dependency-matrix",
       "contributionId": "p20-dependency-matrix-01"
+    },
+    {
+      "turnId": "2026-11-10T08:25Z-ci-pr-body-current",
+      "contributionId": "ci-pr-body-current-01"
+    },
+    {
+      "turnId": "2026-11-10T08:30Z-ci-main-sync",
+      "contributionId": "ci-main-sync-01"
+    },
+    {
+      "turnId": "2026-11-10T09:55Z-ci-governance-defuse",
+      "contributionId": "ci-governance-defuse-01"
     }
   ]
 }

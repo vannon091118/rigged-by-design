@@ -75,7 +75,9 @@ describe('Promotion-Workflows', () => {
     const verify = workflow('ci-verify.yml');
     const body = steps(verify, 'plan').find((step) => step.name === 'PR-Body');
     expect(body?.if).toContain("github.event_name == 'pull_request'");
-    expect(body?.run).toBe('node scripts/verify-pr-body.mjs');
+    expect(body?.run).toContain('gh pr view');
+    expect(body?.run).toContain('PR_BODY="$body" node scripts/verify-pr-body.mjs');
+    expect(body?.env?.PR_BODY).toBeUndefined();
   });
 
   it('verbietet Auto-Merge und erlaubt keinen Merge auf veralteter Basis', () => {

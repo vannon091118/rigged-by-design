@@ -165,6 +165,71 @@ export function decideClaim({
 }
 
 /**
+ * Kollisionen gegen belegte Merges filtern: eine Lane, deren Arbeit
+ * nachweislich auf `main` steht, ist keine Sperre mehr, sondern ein
+ * veralteter Eintrag. Dieselbe Entscheidung wie `decideClaim`, als Liste
+ * fuer Pretask und Lane-Claims-Gate. `onMerged` meldet jede
+ * herausgefilterte Kollision; ohne jeden Nachweis bleibt es fail-closed
+ * bei der Kollision.
+ */
+export function filterMergedCollisions({
+  collisions = [],
+  claims = [],
+  baseRef = 'origin/main',
+  git = defaultGit,
+  gh = defaultGh,
+  onMerged = null,
+} = {}) {
+  const mergedIndex = mergedPullRequestIndex({ gh, baseRef: 'main' });
+  let baseTip = null;
+  try {
+    baseTip = git(['rev-parse', baseRef]);
+  } catch {
+    baseTip = null;
+  }
+  const remoteHead = (branch) => {
+    try {
+      const out = git(['ls-remote', '--heads', 'origin', branch]);
+      return { known: true, sha: String(out ?? '').split(/\s+/)[0] || null };
+    } catch {
+      return { known: false, sha: null };
+    }
+  };
+  return collisions.filter((collision) => {
+    const other = claims.find((entry) => entry.id === collision.lane);
+    if (!other) return true;
+    const pr = mergedIndex?.get(other.branch) ?? null;
+    const local = localMergeEvidence({ branch: other.branch, baseRef, git });
+    const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
+    const branchHead = local.headSha ?? remote.sha;
+    const branchExists = Boolean(branchHead);
+    const branchAtBase = local.atBase || Boolean(remote.sha && baseTip && remote.sha === baseTip);
+    // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
+    // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
+    const absenceKnown = !branchExists && remote.known;
+    const mergedOnMain = Boolean(
+      pr &&
+        (branchExists ? branchAtBase : absenceKnown) &&
+        commitOnMain({ sha: pr.mergeCommit ?? pr.headRefOid, baseRef, git }),
+    );
+    const evidence = decideClaim({
+      branchExists,
+      branchAtBase,
+      branchHeadOnMain: local.headOnMain,
+      branchTreeOnMain: local.treeOnMain,
+      headSha: branchHead,
+      mergedPr: pr,
+      mergedOnMain,
+    });
+    if (evidence.status === 'merged') {
+      if (typeof onMerged === 'function') onMerged(collision, evidence);
+      return false;
+    }
+    return true;
+  });
+}
+
+/**
  * Gemergte Pull Requests je Head-Branch. Ohne `gh` oder ohne Token `null`:
  * dann gibt es keinen Nachweis, und niemand behauptet einen.
  */
