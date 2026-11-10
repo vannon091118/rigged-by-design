@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-machine-hall",
+  "claimId": "lane/sim/machine-hall",
+  "branch": "lane/sim/machine-hall",
+  "baseSha": "2766d2b91936ed2ebb1c2034a44433aea1de282b",
+  "phase": "IMPLEMENTING",
+  "title": "Masterplan Agent 10: Erste eigene Spielhalle",
+  "goal": "Spielhalle aus den vorhandenen Automaten der eigenen Flaeche ableiten und die fehlende Wartung neben der Reparatur ergaenzen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Tests gruen bekommen, dann Feature-Commit, verify:all, PR und Merge.",
+  "revision": 1
+}

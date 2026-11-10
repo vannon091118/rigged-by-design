@@ -22,6 +22,8 @@ interface Props {
   readonly onBuyProperty?: (id: PropertyId) => void;
   /** Naechste Renovierungsstufe; ohne Handler bleibt der Knopf wirkungslos. */
   readonly onRenovate?: () => void;
+  /** Wartung eines Automaten der eigenen Flaeche. */
+  readonly onMaintain?: (itemId: number) => void;
 }
 
 function Swatches(props: {
@@ -69,7 +71,7 @@ function LookPreview({ look }: { look: PlayerLook }) {
   );
 }
 
-function CareerSection({ view, onChallenge, onBuyProperty, onRenovate }: { view: GameView; onChallenge?: () => void; onBuyProperty?: (id: PropertyId) => void; onRenovate?: () => void }) {
+function CareerSection({ view, onChallenge, onBuyProperty, onRenovate, onMaintain }: { view: GameView; onChallenge?: () => void; onBuyProperty?: (id: PropertyId) => void; onRenovate?: () => void; onMaintain?: (itemId: number) => void }) {
   const career = view.career;
   return (
     <section className="career" aria-label="Deine Werte">
@@ -107,6 +109,8 @@ function CareerSection({ view, onChallenge, onBuyProperty, onRenovate }: { view:
         renovation={view.renovation}
         onBuy={onBuyProperty}
         onRenovate={onRenovate}
+        machineHall={view.machineHall}
+        onMaintain={onMaintain}
       />
       <ul className="career-achievements">
         {career.achievements.map((entry) => (
@@ -119,7 +123,7 @@ function CareerSection({ view, onChallenge, onBuyProperty, onRenovate }: { view:
   );
 }
 
-export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, onRenovate }: Props) {
+export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, onRenovate, onMaintain }: Props) {
   return (
     <PopupShell eyebrow="DEIN CHARAKTER" title="Werte und Aussehen" onClose={onClose}>
       <div className="look-layout">
@@ -147,7 +151,7 @@ export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, o
           </div>
         </div>
       </div>
-      <CareerSection view={view} onChallenge={onChallenge} onBuyProperty={onBuyProperty} onRenovate={onRenovate} />
+      <CareerSection view={view} onChallenge={onChallenge} onBuyProperty={onBuyProperty} onRenovate={onRenovate} onMaintain={onMaintain} />
     </PopupShell>
   );
 }

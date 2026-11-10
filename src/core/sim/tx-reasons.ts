@@ -39,6 +39,7 @@ export const TX_PREFIX = {
   BUILD_PURCHASE: 'kauf ',
   EXPANSION: 'ausbau ',
   RENOVATION: 'renovierung ',
+  MAINTENANCE: 'wartung ',
 } as const;
 
 /** Gast-Buchungen tragen die Gast-ID im Grund; das Suffix ist die Kategorie. */

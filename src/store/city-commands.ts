@@ -6,6 +6,7 @@ import { backyardFight } from '../core/sim/fight-career';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
 import { buyProperty } from '../core/sim/property';
 import { renovate } from '../core/sim/renovation';
+import { maintainMachine } from '../core/sim/machine-hall';
 import type { EncounterAction } from '../core/sim/city-types';
 import type { WorldState } from '../core/sim/types';
 
@@ -48,6 +49,12 @@ function renovateCmd(world: WorldState, ledger: Ledger): string {
   return world.lastEvent;
 }
 
+/** Wartung: derselbe Immobilien-Einstieg wie Kauf und Renovierung, ohne Ersatzteil. */
+function maintainMachineCmd(world: WorldState, ledger: Ledger, itemId: number): string {
+  maintainMachine(world, ledger, itemId);
+  return world.lastEvent;
+}
+
 /** Alle Stadt-Eingaben der UI laufen durch genau diesen einen Einstieg. */
 export type CityCommand =
   | { readonly kind: 'travel'; readonly location: CityLocationId }
@@ -57,7 +64,8 @@ export type CityCommand =
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
   | { readonly kind: 'buyProperty'; readonly propertyId: string }
-  | { readonly kind: 'renovate' };
+  | { readonly kind: 'renovate' }
+  | { readonly kind: 'maintainMachine'; readonly itemId: number };
 
 export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: CityCommand): string {
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);
@@ -67,5 +75,6 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
   if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);
   if (cmd.kind === 'renovate') return renovateCmd(world, ledger);
+  if (cmd.kind === 'maintainMachine') return maintainMachineCmd(world, ledger, cmd.itemId);
   return cityRestCmd(world, ledger, prng);
 }

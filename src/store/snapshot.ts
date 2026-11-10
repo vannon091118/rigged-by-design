@@ -10,6 +10,7 @@ import { reputation } from '../core/sim/spawn';
 import { playerCareer } from '../core/sim/player-career';
 import { companyStatus } from '../core/sim/progression';
 import { renovationView } from '../core/sim/renovation';
+import { machineHallView } from '../core/sim/machine-hall';
 import { cityView } from '../core/sim/city';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
@@ -153,6 +154,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     house: ledger.getBalance(HAUSKONTO),
     // Agent 09: der Zustand der Immobilie kommt aus Belegen plus Material und Konto.
     renovation: renovationView(world, ledger),
+    // Agent 10: die Halle ist die Summe der Automaten auf der eigenen Flaeche.
+    machineHall: machineHallView(world, ledger),
     wallet: ledger.getBalance(PORTEMONNAIE),
     playerCash: ledger.getBalance(PLAYER_CASH),
     // Agent 06: dieselbe Karriere-Sicht fuer Charakterfenster und Tests, kein zweiter Zaehler.
