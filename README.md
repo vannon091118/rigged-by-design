@@ -1,14 +1,5 @@
-# Rigged by Design
-
 <p align="center">
-  <img src="./docs/banner.jpg" alt="Rigged by Design – Pixel-Art-Casino im Neonlicht, darüber die Spielhalle und darunter der sichtbare Ledger-Maschinenraum" width="100%">
-</p>
-
-<h1 align="center">Rigged by Design</h1>
-
-<p align="center">
-  <strong>Eine satirische Lebenssimulation über Hausvorteile, schmutzige Böden und die erstaunliche Haltbarkeit eines vererbten Sofas.</strong><br>
-  Du startest mit einem Schlüsselbund, einem wackeligen Spielautomaten und keiner Ahnung. Der Rest ist das Leben.
+  <img src="./docs/banner.svg" alt="Rigged by Design – Neon-Banner mit Spielautomat, Kirsche, Sieben und Diamant" width="100%">
 </p>
 
 <p align="center">
@@ -18,17 +9,30 @@
   <img alt="Plattform" src="https://img.shields.io/badge/Status-Bespielbare%20Simulation-blue">
 </p>
 
-> *„Der Hausvorteil ist kein Softwarefehler. Er ist die Geschäftsidee des Universums.“*
+<h3 align="center"><em>„Der Hausvorteil ist kein Softwarefehler. Er ist die Geschäftsidee des Universums."</em></h3>
+
+<p align="center">
+  Eine satirische Lebenssimulation über Hausvorteile, schmutzige Böden<br>
+  und die erstaunliche Haltbarkeit eines vererbten Sofas.
+</p>
+
+---
+
+<p align="center">
+  <img src="./docs/screenshots/v0.3.114/02-floor-detail.png" alt="Die Spielhalle im Neonlicht – Gäste, Automaten und ein Held mit Wischmopp" width="90%">
+</p>
+
+<p align="center"><em>Du startest mit einem Schlüsselbund, einem wackeligen Spielautomaten und keiner Ahnung. Der Rest ist das Leben.</em></p>
 
 ---
 
 ## Willkommen im Nachlass: Das Erbe deines Vaters
 
-Dein alter Herr hat dir keine Schweizer Konten hinterlassen. Er hat dir einen schweren Messingschlüssel vermacht, eine abgewetzte Lederjacke, einen verstaubten Spielautomaten namens *„Lucky Strike“* und einen Leitz-Ordner voller zerknitterter Quittungen, auf denen auffällig oft das Wort **„Jackpot!“** und erschreckend selten das Wort **„Steuererklärung“** vorkommt.
+Dein alter Herr hat dir keine Schweizer Konten hinterlassen. Er hat dir einen schweren Messingschlüssel vermacht, eine abgewetzte Lederjacke, einen verstaubten Spielautomaten namens *„Lucky Strike"* und einen Leitz-Ordner voller zerknitterter Quittungen, auf denen auffällig oft das Wort **„Jackpot!"** und erschreckend selten das Wort **„Steuererklärung"** vorkommt.
 
-Zwischen einem letzten Tankstellenbeleg und einer vergilbten Notiz, die *„Einfach verdoppeln!“* für eine solide Altersvorsorge hält, steht immerhin ein Ladenlokal: ein paar abgewetzte Kacheln, flackerndes Neonlicht und die beruhigende Gewissheit, dass die Miete nächsten Monat fällig wird. 
+Zwischen einem letzten Tankstellenbeleg und einer vergilbten Notiz, die *„Einfach verdoppeln!"* für eine solide Altersvorsorge hält, steht immerhin ein Ladenlokal: ein paar abgewetzte Kacheln, flackerndes Neonlicht und die beruhigende Gewissheit, dass die Miete nächsten Monat fällig wird. 
 
-Du startest mit **150 VaCoins (VC)** virtuellem Startkapital. Die Bank nennt das *„akut insolvenzgefährdet“*. Wir nennen es das Tutorial deines neuen Lebens.
+Du startest mit **150 VaCoins (VC)** virtuellem Startkapital. Die Bank nennt das *„akut insolvenzgefährdet"*. Wir nennen es das Tutorial deines neuen Lebens.
 
 ---
 
@@ -47,15 +51,17 @@ Aber *Rigged by Design* ist kein steriler Casino-Manager, bei dem man auf Tabell
 
 Das Casino ist nur der erste Raum. Die Reise führt von der kleinen Absteige über eigene Immobilien, Bars, Nachtclubs und Arenen bis zum verwinkelten Unterhaltungsnetzwerk einer ganzen Stadt.
 
-<p align="center"><em>Die vierte Wand ist vorhanden. Sie steht allerdings auf der Inventarliste unter „stark renovierungsbedürftig“.</em></p>
-
-![Die Spielwelt](docs/banners/spielwelt.svg)
+<p align="center"><em>Die vierte Wand ist vorhanden. Sie steht allerdings auf der Inventarliste unter „stark renovierungsbedürftig".</em></p>
 
 ---
 
-## Was heute im Laden läuft: Der aktuelle Spielbetrieb
+![Die Spielwelt](docs/banners/spielwelt.svg)
 
-Keine leeren Ankündigungen: Der aktuelle Spielstand ist bereits eine voll funktionsfähige, lebendige Simulation. Wenn du die Tür aufschließt, triffst du auf ein funktionierendes Ökosystem:
+## Was heute im Laden läuft
+
+Keine leeren Ankündigungen – der aktuelle Spielstand ist eine voll funktionsfähige, lebendige Simulation.
+
+![Feature Showcase](docs/banners/features.svg)
 
 ### 1. Echte Handarbeit auf dem Floor
 Du steuerst deinen Charakter direkt über die Etage (per Klick oder mit den Tasten `W`, `A`, `S`, `D`). Hier wird nichts weggeklickt:
@@ -66,10 +72,45 @@ Du steuerst deinen Charakter direkt über die Etage (per Klick oder mit den Tast
 
 ### 2. Das Casino-Arsenal
 Die Spiele im Haus sind keine Zufallsanimationen, sondern echte, mathematisch kalibrierte Spiel-Engines mit Hausvorteil und Pity-System:
-- **Spielautomaten (Slots):** Von der klapprigen Drei-Walzen-Kiste bis zum Fünf-Walzen-Videospieler mit Freispielen, Wild-Büchern und Risikoleiter.
-- **Kartentische:** Authentisches Blackjack gegen den Dealer, Video-Poker und klassischer Tischpoker mit echten Kartendecks.
-- **Klassiker:** Französisches Roulette mit vollem Tableau, Würfelspiele (Craps) und das beliebte Hütchenspiel für Straßenkandidaten.
-- **Die Plinko-Wand:** Keine Würfel-Simulation, sondern pure Physik! Kugeln prallen an echten Stiften und Banden ab, bis sie in den Fächern landen.
+
+<table>
+<tr>
+<td width="50%">
+
+**Spielautomaten (Slots)**
+Von der klapprigen Drei-Walzen-Kiste bis zum Fünf-Walzen-Videospieler mit Freispielen, Wild-Büchern und Risikoleiter.
+
+![Slot-Bühne](docs/screenshots/current/09-slot-buehne.png)
+
+</td>
+<td width="50%">
+
+**Kartentische**
+Authentisches Blackjack gegen den Dealer, Video-Poker und klassischer Tischpoker mit echten Kartendecks.
+
+![Blackjack-Bühne](docs/screenshots/current/11-blackjack-buehne.png)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Roulette & Würfel**
+Französisches Roulette mit vollem Tableau und Würfelspiele (Craps) für Veteranen des grünen Filzes.
+
+![Roulette-Bühne](docs/screenshots/current/14-roulette-buehne.png)
+
+</td>
+<td width="50%">
+
+**Plinko-Wand**
+Keine Würfel-Simulation, sondern pure Physik! Kugeln prallen an echten Stiften ab, bis sie in den Fächern landen.
+
+![Plinko-Bühne](docs/screenshots/current/15-plinko-buehne.png)
+
+</td>
+</tr>
+</table>
 
 ### 3. Gäste mit Gedächtnis und Marotten
 Die Besucher sind keine gesichtslosen Pixel, sondern gehören fünf ausgeprägten Personas an:
@@ -94,7 +135,7 @@ In *Rigged by Design* gilt ein unumstößliches Gesetz: **Geschäft ist Geschäf
 
 ### 6. Die Konkurrenz: Zu Besuch bei den Rivalen
 Wird es dir im eigenen Laden zu eng, nimmst du das Smartphone und fährst zu den Rivalen der Stadt:
-- **Die Hafenklause:** Kalle „Kleingeld“ Puhls verrauchte Hafenkneipe mit billigen Automaten und Hütchenspielern.
+- **Die Hafenklause:** Kalle „Kleingeld" Puhls verrauchte Hafenkneipe mit billigen Automaten und Hütchenspielern.
 - **Die Goldene Hand:** Marlene Vests gepflegter Salon mit Samttischen, feinem Personal und strengen Hausregeln.
 - **Der Nebelpalast:** Ein anonymer Hochhaussaal des Konsortiums mit brachialen Limits, Plinko-Wänden und eiskalter Atmosphäre.
 
@@ -102,24 +143,17 @@ Dort kannst du dein persönliches Taschengeld verspielen oder an den Arbeitsstat
 
 ---
 
+![Visueller Rundgang](docs/banners/galerie.svg)
+
 ## Visueller Rundgang: Licht, Dreck und Pixel-Poesie
 
-Bilder sagen mehr als tausend Steuerbescheide. Hier ist der aktuelle Stand im Live-Betrieb:
+### Die Evolution der Spielhalle
 
-![Floor mit Gästen, Räumen und HUD](docs/screenshots/v0.3.114/02-floor-detail.png)
-*Stand v0.3.114: Die Spielhalle im stimmungsvollen Schein der Deckenlampen. Jeder Raum besitzt eine warme Lichtpfütze, während die Laufwege im Halbdunkel liegen. Unter den Füßen der Figuren pulsiert der Zielindikator.*
+<p align="center">
+  <img src="docs/screenshots/comparison/03-floor-v1-v2.png" alt="Vergleich derselben Etage vor und nach dem Asset-Paket" width="90%">
+</p>
 
-### Vorher und Nachher: Die Evolution der Spielhalle
-
-Links die karge Kachelwüste der frühen Tage, rechts dieselbe Etage nach dem großen Grafik- und Licht-Update:
-
-![Vergleich derselben Etage vor und nach dem Asset-Paket](docs/screenshots/comparison/03-floor-v1-v2.png)
-
-| Älterer Stand (v0.3.27) | Moderner Stand (v0.3.114) |
-| :--- | :--- |
-| ![Etage Übersicht alt](docs/screenshots/current/01-floor-uebersicht-frisch.png) | ![Etage Übersicht jetzt](docs/screenshots/v0.3.114/01-floor-uebersicht.png) |
-| ![Bauen-Fenster alt](docs/screenshots/current/08-bauen-panel.png) | ![Bauen-Fenster jetzt](docs/screenshots/v0.3.114/03-bauen-panel.png) |
-| ![Gäste-Fenster alt](docs/screenshots/current/07-gaeste-panel.png) | ![Gäste-Fenster jetzt](docs/screenshots/v0.3.114/04-gaeste-panel.png) |
+<p align="center"><em>Links die karge Kachelwüste der frühen Tage, rechts dieselbe Etage nach dem großen Grafik- und Licht-Update.</em></p>
 
 **Was sich verändert hat:**
 - **Licht statt schwarzer Löcher:** Räume wirken nicht mehr wie isolierte Boxen, sondern erzeugen mit gedimmten Vignetten, Deckenstrahlern und Neonreflexen echte Kasino-Atmosphäre.
@@ -128,16 +162,55 @@ Links die karge Kachelwüste der frühen Tage, rechts dieselbe Etage nach dem gr
 
 ### Die Spielbühnen im Detail
 
-| Die Aktivität | Impression |
-| :--- | :--- |
-| **Blackjack am Samt** mit echtem Kartenschuh | ![Blackjack](docs/screenshots/current/11-blackjack-buehne.png) |
-| **Texas Hold'em Poker** mit Flop, Turn und River | ![Poker](docs/screenshots/current/12-poker-buehne.png) |
-| **Roulette-Kessel** mit Jetons und vollem Tableau | ![Roulette](docs/screenshots/current/14-roulette-buehne.png) |
-| **Plinko-Wand** mit physikalischer Flugbahn | ![Plinko](docs/screenshots/current/15-plinko-buehne.png) |
-| **Smartphone** als Zentrale für Bauen, Reisen und Notizen | ![Smartphone](docs/screenshots/v0.3.114/06-smartphone.png) |
-| **Der Spiegel im Lager** für Frisur, Haut und Garderobe | ![Charakter](docs/screenshots/v0.3.114/09-charakter.png) |
+<table>
+<tr>
+<td align="center" width="33%">
+<strong>Blackjack am Samt</strong><br>
+<img src="docs/screenshots/current/11-blackjack-buehne.png" alt="Blackjack" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Texas Hold'em Poker</strong><br>
+<img src="docs/screenshots/current/12-poker-buehne.png" alt="Poker" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Roulette-Kessel</strong><br>
+<img src="docs/screenshots/current/14-roulette-buehne.png" alt="Roulette" width="100%">
+</td>
+</tr>
+<tr>
+<td align="center" width="33%">
+<strong>Plinko-Physik</strong><br>
+<img src="docs/screenshots/current/15-plinko-buehne.png" alt="Plinko" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Smartphone-Zentrale</strong><br>
+<img src="docs/screenshots/v0.3.114/06-smartphone.png" alt="Smartphone" width="100%">
+</td>
+<td align="center" width="33%">
+<strong>Charakter-Spiegel</strong><br>
+<img src="docs/screenshots/v0.3.114/09-charakter.png" alt="Charakter" width="100%">
+</td>
+</tr>
+</table>
+
+### Betreiber vs. Gast: Zwei Perspektiven
+
+<table>
+<tr>
+<td align="center" width="50%">
+<strong>Als Betreiber</strong><br>
+<img src="docs/screenshots/v0.3.132/01-floor-operator.png" alt="Floor aus Betreibersicht" width="100%">
+</td>
+<td align="center" width="50%">
+<strong>Als Gast</strong><br>
+<img src="docs/screenshots/v0.3.132/02-floor-guest.png" alt="Floor aus Gastsicht" width="100%">
+</td>
+</tr>
+</table>
 
 ---
+
+![Versionen-Chronologie](docs/banners/chronologie.svg)
 
 ## Die Versionen-Chronologie: Vom Kachel-Koma zur Metropole
 
@@ -158,16 +231,18 @@ Wie jedes gute Casino wurde auch dieses nicht an einem Nachmittag erbaut. Ein Bl
 - Das Duell-System: Streithähne lassen sich im rundenbasierten Schlagabtausch persönlich zur Räson bringen.
 - Automaten bekommen Pity-Mechaniken und Entladungs-Spins.
 
-### Ära 4: Das Zeitalter der Erinnerungen & Facts (v0.3.181 – v0.3.201 / Heute)
+### Ära 4: Das Zeitalter der Erinnerungen & Facts (v0.3.181 – Heute)
 - Die Narrative Engine erwacht: Gäste erinnern sich an vergangene Besuche und reagieren nachtragend oder spendabel.
 - Das Plinko-Brett wird auf echte physikalische Kollisionen umgestellt.
 - Save-System v11: Spielstände sichern jeden Cent, jeden Fleck und jede Rivalen-Beziehung verlustfrei ab.
 
 ---
 
+![Die nächste Runde](docs/banners/roadmap.svg)
+
 ## Der Masterplan: Vom Startguthaben zum Konzern-Netzwerk
 
-Wo soll die Reise hingehen? Das Entwicklungs-Roadmap folgt einem klaren, sechsphasigen Masterplan (den 30 Agenten-Etappen):
+Die Entwicklung folgt einem klaren, sechsphasigen Masterplan mit 30 fokussierten Etappen:
 
 ```mermaid
 flowchart LR
@@ -195,7 +270,9 @@ flowchart LR
 
 ---
 
-## Häufig gestellte Fragen (FAQ)
+![FAQ](docs/banners/faq.svg)
+
+## Häufig gestellte Fragen
 
 <details>
 <summary><strong>Ist das hier ein typischer Tycoon- oder Idle-Manager?</strong></summary>
@@ -227,7 +304,15 @@ Weil er stundenlang verloren hat, der Automat keinen Cent ausgespuckt hat, die B
 Ja. Spielstände werden lokal abgespeichert. Unser Save-System sichert nicht nur dein Geld, sondern jeden Kieselstein, die Laune jedes Besuchers und die offenen Rachepläne deiner Rivalen.
 </details>
 
+<details>
+<summary><strong>Was unterscheidet das von einem klassischen Casino-Simulator?</strong></summary>
+
+Alles. Du bist kein unsichtbarer Direktor, der auf Tabellenkalkulationen starrt. Du bist ein Typ mit löchrigen Schuhen, der seinen eigenen Boden wischt, seine Gäste verprügelt (oder von ihnen verprügelt wird), sich zwischen Privatinsolvenz und dem ersten Stammgast bewegt und abends auf einem vererbten Sofa fernsieht, bis ihm die Augen zufallen. Es ist das Leben – mit Hausvorteil.
+</details>
+
 ---
+
+![Die Werkstatt](docs/banners/werkstatt.svg)
 
 ## Für Maschinisten & Code-Schrauber
 
