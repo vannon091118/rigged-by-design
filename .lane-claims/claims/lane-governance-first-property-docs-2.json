@@ -17,6 +17,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "7d1d07159b42e40cf501501a1e9ac937da67ad4a"
+  "status": "merged",
+  "createdAt": "7d1d07159b42e40cf501501a1e9ac937da67ad4a",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "d48426434f8d1691622a3d4ed70b9f698c4f9d3e",
+  "notes": "Doku-Commit af2db02 als d484264 auf main; Meta-Doku fuer Agent 07 ohne Veraenderung des gemergten Sim-Claims."
 }
