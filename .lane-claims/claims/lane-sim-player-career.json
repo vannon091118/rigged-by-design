@@ -2,7 +2,7 @@
   "id": "lane/sim/player-career",
   "owner": "Sim-/Domain-Owner",
   "branch": "lane/sim/player-career",
-  "baseSha": "e62cdd3e763569c8e3ab4c1685f114fd7c69cb4d",
+  "baseSha": "8c35a5061a13cac27ff2aba2b5d93f09a1a2a92c",
   "task": "Spieler-Dashboard (Agent 06): Karriere-Sicht aus vorhandenem Zustand, Attribute ehrlich ausgewiesen",
   "pathAllowlist": [
     "src/core/sim/player-career.ts",
@@ -16,15 +16,10 @@
     "content/narrative/contributions/**",
     "content/narrative/turns/manifest.json",
     "content/narrative/registry/**",
-    "docs/CHANGELOG.md",
-    "docs/DEVTAGEBUCH.md",
-    "docs/ROADMAP.md",
     "docs/DEPENDENCY-MATRIX.md",
-    "package.json",
     ".lane-claims/claims/lane-sim-player-career.json",
     ".lane-claims/tasks/sim-player-career.json",
-    "src/core/sim/narrative/composer/registry.generated.ts",
-    "docs/INVENTORY.md"
+    "src/core/sim/narrative/composer/registry.generated.ts"
   ],
   "contracts": [],
   "dependencies": [],
@@ -32,5 +27,6 @@
   "status": "merged",
   "createdAt": "e62cdd3e763569c8e3ab4c1685f114fd7c69cb4d",
   "mergedEvidence": "squash-merge",
-  "mergedSha": "013c54442528bf47fc85658fc7d8ab8dadd11754"
+  "mergedSha": "013c54442528bf47fc85658fc7d8ab8dadd11754",
+  "notes": "CHANGELOG und DEVTAGEBUCH wurden im gemergten Commit 013c544 nach der Regel \"Doku gehoert in den Commit\" mitgeschrieben; sie stehen bewusst nicht in der Allowlist, weil Meta-Dokumente den Governance-Lanes gehoeren (Claim-Register-Audit)."
 }
