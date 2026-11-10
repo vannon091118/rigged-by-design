@@ -28,8 +28,6 @@
     "content/narrative/registry/fragments.json",
     "src/core/sim/narrative/composer/registry.generated.ts",
     "src/core/sim/narrative/composer/slot-map.generated.ts",
-    "docs/ROADMAP.md",
-    "docs/INVENTORY.md",
     ".lane-claims/claims/lane-sim-first-property.json",
     ".lane-claims/tasks/sim-first-property.json"
   ],

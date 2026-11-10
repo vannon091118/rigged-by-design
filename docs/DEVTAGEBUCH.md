@@ -5,6 +5,20 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-10 - Masterplan Phase 2: Erste Immobilie und Eigentumssystem (Agent 07)
+
+**Ziel:** Der im Masterplan geforderte erste vollstaendige Immobilienkauf - Gewerberaum, kleine Kneipe oder geschlossener Spielsalon - mit Kaufpreispruefung, persoenlicher Zahlung aus dem Portemonnaie, Eigentumszuweisung und Speicherung, ohne zweite Mechanik neben dem vorhandenen Kaufpfad.
+
+**Befund:** Es gab bereits einen Kauf aus dem Wallet: `core/sim/player-jobs.ts:132` kaufte fuer 50 VC eine **Bude** (`player.barPurchased`), buchte `PORTEMONNAIE -> EXTERNAL`, schrieb einen `BAR`-Eintrag ins Archiv und vergab den Erfolg `EIGENE_BUDE` - aber ohne UI-Aufrufer, ohne Immobilien-Kennung, ohne Preis-/Tagesbeleg und ohne Katalog. `core/sim/city-*`, `expansions.ts` und `house-presets.ts` beschreiben Hausausbau und Layout, keine Eigentumsverhaeltnisse. Es fehlten damit genau die drei Punkte des Auftrags: Gewerbe-Katalog, Eigentums-Datensatz und ein erreichbarer Kaufweg.
+
+**Umsetzung:** `core/sim/property.ts` traegt die drei Angebote (60/120/200 VC), `buyProperty` prueft das Portemonnaie, bucht ueber den Ledger (neuer Grund `TX_REASON.PROPERTY = 'immobilie kaufen'`) und legt `player.property = { id, priceVC, day }` an; der Beleg steht als `IMMOBILIE` im Archiv. `hydrateProperty` normalisiert beim Laden. Die Sicht `propertyView` fliesst in die bestehende Karriere-Ableitung (`player-career.ts`), die Sektion `ui/career-property.tsx` haengt im vorhandenen Charakterfenster, und die Aktion laeuft ueber den vorhandenen Stadt-Einstieg `worldStore.city({ kind: 'buyProperty', propertyId })`. Die Spielhistorie erkennt `IMMOBILIE` ueber denselben Parser wie Kaempfe und Buden-Kauf; der Erfolg `ERSTE_IMMOBILIE` kommt aus dem Besitz.
+
+**Save-Entscheidung:** Bewusst **kein Versionssprung**. Das Feld `player.property` ist nullable und wird beim Laden ueber `hydrateProperty` gesetzt: alte Saves ohne Feld bekommen `null`, unbekannte Kennungen, negative Preise oder Tag 0 werden verworfen. Damit bleibt `SAVE_VERSION` 11 und die vorhandenen Keys gelten unveraendert.
+
+**Pruefungen:** `property.test.ts` (8), `property-command.test.ts` (2), `player-history.test.ts` (6), `save-migration.test.ts` (8), `player-dashboard.test.tsx` (12) und `player-career.test.ts` (8) gruen - 44/44. `verify:all` PASS mit Exit 0 auf dem Feature-Kopf `afe41d4` (squash-gemergt als `2091c4f`, PR #368), CI `Fail-Closed Gates` success mit 0 Annotations. Nachsorge PR #370 endete als `7d1d071`; Claim `merged`, Vertrag `DONE` rev 4.
+
+**Bewusst nicht getan:** Die Bude aus `player-jobs` bleibt unveraendert - eigener Wohnraum, keine Umdeutung zum Gewerbe und kein zweiter Kaufweg fuer denselben Gegenstand. Keine WorldState-/Grid-/Zonen-Integration, keine Renovierungsstufen und kein Geschaeftskonto: das sind Agent 08 und 09. Die Preise sind eine erste Balance und werden mit dem Betrieb justiert. Der offene Skillpunkt-Verbrauch (`spendPoint` ohne Aufrufer) bleibt liegen; die Roadmap weist ihn keinem dieser Agenten zu.
+
 ## 2026-11-10 - Masterplan Phase 1: Spieler-Dashboard vollstaendig (Agent 06)
 
 **Ziel:** Das Dashboard aus PR #357 sollte die im Masterplan geforderten Punkte wirklich alle tragen - inklusive Spielhistorie und Arbeitsstatistik - ohne zweiten Zustand.
