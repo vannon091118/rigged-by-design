@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6a403d92f8d73f28ca4a84183f33310f238ceb3dac0fc1e34cbee1a5f4ef33a8",
+  "contentHash": "sha256:25b5d35f889a5aba7f5dd981b21569bf0c275b8b0581fb0caeb75e3ea37aa4de",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -228,6 +228,28 @@
       "text": "Ein Beleg ist keine Behauptung: er muss die Form haben, die das Register liest. Wer eine eigene Belegart erfindet, hat keinen Nachweis, sondern eine Notiz.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-1.json"
+    },
+    {
+      "contributionId": "agent14-claim-evidence-2",
+      "turnId": "2026-11-11T01:12Z-agent14-claim-evidence-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Vertrag folgt der Arbeit ins Tor: erst die Korrektur, dann die Pruefung, dann der Beleg. Keine Phase wird uebersprungen, auch nicht bei einer Zeile Buchhaltung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-2.json"
     },
     {
       "contributionId": "apk-signing-01",
