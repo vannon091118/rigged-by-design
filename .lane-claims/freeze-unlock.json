@@ -11,6 +11,7 @@
     "docs/ARCHITECTURE.md",
     "docs/CI.md",
     "docs/GOVERNANCE.md",
+    "docs/ROADMAP.md",
     "docs/WORKFLOW.md",
     "scripts/ci-plan.mjs",
     "scripts/freeze-unlock.mjs",
@@ -26,6 +27,6 @@
     "scripts/verify-lane-claims.mjs",
     "scripts/verify-task-contract.mjs"
   ],
-  "token": "f25bcc31ec4ea38e13821968c41b8035bfc193fb224142c2888ddc575f9baaff",
+  "token": "2de2a1f27a9cf35198afb4c76baa2d9b0045676fa1a04c3a8192b9b2c072205b",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

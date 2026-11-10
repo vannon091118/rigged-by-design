@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1bd888649c2557d0fc77640216d30c683bf64c8c5d391706fb849b6a80ae95e5",
+  "contentHash": "sha256:aecf2a813dd17b6f6dbd7880f688a40a3823c99764b4442e383c94ca61696be1",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3740,6 +3740,31 @@
       "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
+    },
+    {
+      "contributionId": "governance-roadmap-count-01",
+      "turnId": "2026-11-10T03:52Z-governance-roadmap-count",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita glich die Roadmap mit der kompilierten Registry ab. Der Fortschritt ist keine geschätzte Zahl mehr, sondern der gemessene Stand nach der Nachsignatur.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-roadmap-count.json"
     },
     {
       "contributionId": "governance-task-vertrag-01",
