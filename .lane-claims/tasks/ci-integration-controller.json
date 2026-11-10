@@ -7,8 +7,37 @@
   "phase": "IMPLEMENTING",
   "title": "Integrationscontroller vor der CI",
   "goal": "Marker normalisieren, Inventar und Registry aus dem Commit-Bau heraushalten, Pre-Push schnell halten, Gates nach Risiko waehlen und Rebase/Regeneration automatisieren; der Freeze bleibt die letzte Grenze.",
-  "pr": null,
-  "findings": [],
-  "nextAction": "Controller implementieren, lokal pruefen, PR erzeugen und CI auf dem exakten Kopf abwarten.",
-  "revision": 1
+  "pr": {
+    "number": 347,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/347",
+    "state": "open"
+  },
+  "findings": [
+    {
+      "id": "merged-filter-paritaet",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "Pretask und Lane-Claims-Gate teilen filterMergedCollisions; drei gemergte Governance-Lanes blockieren den Start nicht mehr."
+    },
+    {
+      "id": "marker-duplikate",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "applyMarker fasst nur eigenstaendige Markerzeilen an und entfernt Duplikate; zitierte Marker bleiben unveraendert."
+    },
+    {
+      "id": "roadmap-fortschritt-mehrzeilig",
+      "status": "resolved",
+      "severity": "info",
+      "summary": "ROADMAP_PROGRESS arbeitet mehrzeilig; sync-generated zieht die Roadmap-Zahl (839) wieder aus der Registry."
+    },
+    {
+      "id": "force-with-lease-konflikt",
+      "status": "open",
+      "severity": "warning",
+      "summary": "destructive-commands verbietet push --force-with-lease in scripts/integrate.mjs, obwohl AGENTS den Rebase-Push nur damit erlaubt; Testdatei liegt ausserhalb dieser Lane."
+    }
+  ],
+  "nextAction": "CI auf Kopf 8f24662 abwarten (erwartet: alles gruen ausser Gate tests wegen force-with-lease-Konflikt); danach #344 und #338 auf den neuen Stand ziehen.",
+  "revision": 2
 }
