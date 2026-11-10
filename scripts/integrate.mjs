@@ -15,7 +15,9 @@
  * `--apply` rebased auf die Basis und regeneriert ausschliesslich generierte
  * Artefakte. Echte Quellcode-Konflikte brechen ab (`MANUAL_CONFLICT`), ohne
  * kreative Loesung. Ein Push passiert nur mit `--push` und dann ausschliesslich
- * mit `--force-with-lease`.
+ * per Fast-Forward: Der Controller schreibt nie umgeschriebene Historie. Nach
+ * einem Rebase meldet er READY, und der Push per Hand bleibt die einzige Stelle
+ * fuer einen Rebase-Push (AGENTS.md).
  */
 import { execFileSync } from 'node:child_process';
 import { appendFileSync } from 'node:fs';
@@ -180,12 +182,15 @@ if (changed) {
 }
 
 if (push) {
-  const pushed = tryRun(['push', '--force-with-lease', 'origin', `HEAD:${branch}`], { stdio: ['ignore', 'inherit', 'inherit'] });
+  // Kein Force-Push aus Produktionsskripten (destructive-commands-Gate):
+  // Nach einem Rebase ist kein Fast-Forward moeglich, dann meldet der
+  // Controller READY und der Push per Hand uebernimmt.
+  const pushed = tryRun(['push', 'origin', `HEAD:${branch}`], { stdio: ['ignore', 'inherit', 'inherit'] });
   if (!pushed.ok) {
-    console.error('integrate: Push mit --force-with-lease abgelehnt; Branch wurde zwischenzeitlich veraendert.');
+    console.error(`integrate: Kein Fast-Forward auf ${branch} moeglich; Branch per Hand aktualisieren, dann READY.`);
     process.exit(1);
   }
 }
 
-console.log(`integrate: READY auf ${branch}${push ? ' (gepusht mit --force-with-lease)' : ''}`);
+console.log(`integrate: READY auf ${branch}${push ? ' (gepusht per Fast-Forward)' : ''}`);
 process.exit(0);
