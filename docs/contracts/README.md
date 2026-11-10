@@ -1,6 +1,6 @@
 # Vertragsindex
 
-<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
+<!-- rbd-doc: v0.3.200 | 2026-11-10 02:39 UTC -->
 
 **Zweck:** Die sieben Kernverträge unter `docs/contracts/` mit Owner, Writer und Vertragstest. Die Vertragsdatei bleibt die Wahrheit; dieser Index macht sie auffindbar.
 

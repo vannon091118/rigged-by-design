@@ -1,0 +1,26 @@
+{
+  "id": "lane/render/pixel-pipeline",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/pixel-pipeline",
+  "baseSha": "ef7e0f3a2661aa9d64ebbd364ebfbae9670bb420",
+  "task": "Render-Pipeline fuer HD-Pixel-Floor: gerichtete Einheits-Modelle, Render-Layers, Must-Render-Grenze",
+  "goal": "Eine skalierbare PixiJS-Render-Pipeline auf React/Vite, die Agents und Units als gerichtete Mehrwinkel-Sprite-Modelle zeichnet statt einwinkeliger Geometrie-Sticker, ISO/Top-Down-Tiefe (Fussanker) und Render-Layers beherrscht, pixel-perfekte HD-Skala liefert und strikt trennt zwischen dem, was gerendert werden MUSS, und dem, was nur in Query/Simulation leben darf (ohne Render-Logik ausserhalb des Spielbereichs).",
+  "pathAllowlist": [
+    "src/render/guest-paint.ts",
+    "src/render/guest-rig.ts",
+    "src/render/guest-parts.ts",
+    "src/render/guest-head.ts",
+    "src/render/__tests__/guest-sprite.test.ts",
+    "content/narrative/contributions/2026-11-10-render-sprite-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-render-pixel-pipeline.json",
+    ".turn-notes.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "ef7e0f3a2661aa9d64ebbd364ebfbae9670bb420"
+}

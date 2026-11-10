@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
+<!-- rbd-doc: v0.3.200 | 2026-11-10 02:39 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -546,10 +546,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2301 |
-| Gelistete Dateien | 2301 |
+| Getrackte Dateien | 2304 |
+| Gelistete Dateien | 2304 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (51), content (823), docs (77), public (554), scripts (91), src (680) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (52), content (824), docs (77), public (554), scripts (91), src (681) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -561,8 +561,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 49 Datei(en)
-- `content/narrative/contributions/` — 819 Datei(en)
+- `.lane-claims/claims/` — 50 Datei(en)
+- `content/narrative/contributions/` — 820 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -637,7 +637,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/render/` — 48 Datei(en)
-- `src/render/__tests__/` — 14 Datei(en)
+- `src/render/__tests__/` — 15 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
@@ -715,6 +715,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-welt-anker.json` — { — gelesen: 54 Zeilen
 - `.lane-claims/claims/lane-integrity-audit-findings.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-render-pixel-pipeline.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
@@ -1544,8 +1545,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-welt-anker-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-welt-treffer-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-welt-treffer-02.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18314 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3281 Zeilen
+- `content/narrative/contributions/2026-11-10-render-sprite-01.json` — { — gelesen: 17 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18336 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3285 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
@@ -2720,6 +2722,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-hit.test.ts` — Ein Trefferpfad: Tiefe vor Array-Reihenfolge, Figur vor Moebel, Wand vor — gelesen: 73 Zeilen
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 93 Zeilen
 - `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 138 Zeilen
+- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 71 Zeilen
 - `src/render/__tests__/perf-governor.test.ts` — Hysterese: Wechsel erst nach zwei Sekunden Abweichung, nicht nach einem Frame. — gelesen: 42 Zeilen
 - `src/render/__tests__/plinko-board-geometry.test.ts` — Die Brettgeometrie ist die einzige Quelle fuer Stiftpositionen und den — gelesen: 64 Zeilen
 - `src/render/__tests__/rig-combat.test.ts` — Kampf und Verletzung muessen sichtbar sein: eigene Posen, eigene Uebergaenge, — gelesen: 35 Zeilen
@@ -2790,7 +2793,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/games/video-poker-stage.tsx` — React-Bruecke zum Video-Poker-Schirm; Klicks auf Karten kommen als Index zurueck. — gelesen: 59 Zeilen
 - `src/render/guest-art.ts` — Pixel-Figur: Rig, Bemalung und Sticker hinter einer Fassade; die Buehne liest nur diese. — gelesen: 105 Zeilen
 - `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
-- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 139 Zeilen
+- `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 134 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
 - `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. — gelesen: 128 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
