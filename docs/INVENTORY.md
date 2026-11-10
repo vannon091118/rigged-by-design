@@ -715,7 +715,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-reconcile-0911.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-collision-closeout.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-collision-closeout.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-derivetaskstate-fix.json` — { — gelesen: 23 Zeilen
@@ -733,7 +733,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-mechanik-fix.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-mechanik-fix.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-merge-commit-notes.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-chain-graph.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-narrative-pools-v2.json` — { — gelesen: 25 Zeilen
@@ -781,7 +781,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 32 Zeilen
