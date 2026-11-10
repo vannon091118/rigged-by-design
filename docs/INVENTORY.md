@@ -1,6 +1,6 @@
 # Repository-Inventur (lebendes Artefakt)
 
-<!-- rbd-doc: v0.3.201 | 2026-11-10 00:05 UTC -->
+<!-- rbd-doc: v0.3.201 | 2026-11-10 00:12 UTC -->
 
 > Zweck: vollständige, reproduzierbare Inventur der Repository. Dieses Dokument
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 233 Dateien — contract 142 · integration 45 · governance 32 · statistics 7 · performance 7.
+Summe: 239 Dateien — contract 144 · integration 49 · governance 32 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -309,11 +309,13 @@ Summe: 233 Dateien — contract 142 · integration 45 · governance 32 · statis
 | `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
 | `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
 | `src/render/__tests__/floor-actions.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
+| `src/render/__tests__/floor-anchor.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
 | `src/render/__tests__/floor-cache.test.ts` | render | integration | ja | `src/render/floor-math.ts` |
 | `src/render/__tests__/floor-camera.test.ts` | render | integration | ja | `src/render/floor-camera.ts` |
 | `src/render/__tests__/floor-hit.test.ts` | render | integration | ja | `src/render/floor-hit.ts` |
 | `src/render/__tests__/floor-layout.test.ts` | render | integration | ja | `src/render/floor-material.ts` |
 | `src/render/__tests__/perf-governor.test.ts` | render | integration | ja | `src/render/perf-governor.ts` |
+| `src/render/__tests__/plinko-board-geometry.test.ts` | render | integration | ja | `src/render/games/plinko-board-geometry.ts` |
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |
@@ -344,6 +346,7 @@ Summe: 233 Dateien — contract 142 · integration 45 · governance 32 · statis
 | `src/store/memory.bench.ts` | store | performance | nein, CI | `src/store/save.ts` |
 | `src/store/narrative.bench.ts` | sim | performance | nein, CI | `src/core/sim/narrative/runtime.ts` |
 | `src/store/perf-hot-paths.bench.ts` | store | performance | nein, CI | `src/store/snapshot.ts` |
+| `src/ui/__tests__/anchor-layout.test.ts` | ui | integration | ja | `src/ui/anchor-layout.ts` |
 | `src/ui/__tests__/card-tables.test.tsx` | ui | integration | ja | `src/ui/games/blackjack-popup.tsx` |
 | `src/ui/__tests__/casino-window-header.test.tsx` | ui | integration | ja | `src/ui/casino-window-header.tsx` |
 | `src/ui/__tests__/dialog-request.test.ts` | ui | integration | ja | `src/ui/dialog-request.ts` |
@@ -355,7 +358,10 @@ Summe: 233 Dateien — contract 142 · integration 45 · governance 32 · statis
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/perspective-switch.test.tsx` | ui | integration | ja | `src/ui/perspective-switch.tsx` |
 | `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
+| `src/ui/__tests__/small-screen-acceptance.test.tsx` | other | contract | ja | `src/App.tsx` |
+| `src/ui/__tests__/small-screen-layout.test.ts` | other | contract | ja | `src/styles/app.css` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
+| `src/ui/__tests__/world-first-ui.test.tsx` | ui | integration | ja | `src/ui/guest-context-panel.tsx` |
 <!-- TEST_CATALOG_END -->
 
 ## 12. Dependencies & Audit
@@ -546,10 +552,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2300 |
-| Gelistete Dateien | 2300 |
+| Getrackte Dateien | 2305 |
+| Gelistete Dateien | 2305 |
 | Getrackte Ordner | 94 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (51), content (823), docs (77), public (554), scripts (91), src (679) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (14), .lane-claims (51), content (824), docs (77), public (554), scripts (91), src (683) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -562,7 +568,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 49 Datei(en)
-- `content/narrative/contributions/` — 819 Datei(en)
+- `content/narrative/contributions/` — 820 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -646,8 +652,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 19 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 69 Datei(en)
-- `src/ui/__tests__/` — 13 Datei(en)
+- `src/ui/` — 70 Datei(en)
+- `src/ui/__tests__/` — 16 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -1544,11 +1550,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-welt-treffer-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-welt-treffer-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-world-first-ui-01.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18314 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3281 Zeilen
+- `content/narrative/contributions/2026-11-09-world-first-ui-02.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18336 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3285 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1843 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1828 Zeilen
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1059 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 158 Zeilen
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3486 Zeilen
@@ -2852,13 +2859,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 212 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 218 Zeilen
-- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 591 Zeilen
+- `src/styles/app.css` — { box-sizing: border-box; } — gelesen: 600 Zeilen
 - `src/styles/index.css` — Quelldatei ohne Kopfkommentar — gelesen: 3 Zeilen
 - `src/styles/layout-editor.css` — Nur der dynamisch geladene Editor importiert diese Regeln; im Produktionsbuild fehlen sie. — gelesen: 21 Zeilen
 - `src/styles/popup.css` — .popup-backdrop { — gelesen: 697 Zeilen
 - `src/styles/tokens.css` — Eine Bildsprache fuer UI und Floor. Die Rollen hier sind dieselben wie in — gelesen: 82 Zeilen
 - `src/test/measure.ts` — Explizite Messung: feste Iterationszahl, ein Warmup, monotone Uhr. — gelesen: 26 Zeilen
 - `src/test/random-seed.ts` — import { randomInt } from 'node:crypto'; — gelesen: 9 Zeilen
+- `src/ui/__tests__/anchor-layout.test.ts` — Reine Klemm-Geometrie: Der Viewport ist eine Zahl, der Kamerawechsel ein — gelesen: 106 Zeilen
 - `src/ui/__tests__/card-tables.test.tsx` — Eine laufende Blackjack-Hand darf nicht durch neues Austeilen ersetzt werden, — gelesen: 134 Zeilen
 - `src/ui/__tests__/casino-window-header.test.tsx` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
 - `src/ui/__tests__/dialog-request.test.ts` — Der Router oeffnet genau dann einen Dialog, wenn eine aufgeloeste Choice — gelesen: 49 Zeilen
@@ -2870,9 +2878,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 113 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
+- `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: NPC waehlen, handeln, Geraet bedienen und mit Escape zurueck — gelesen: 224 Zeilen
+- `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 173 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
-- `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 56 Zeilen
+- `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 59 Zeilen
+- `src/ui/anchor-layout.ts` — Klemm-Geometrie fuer Weltanker. Reine Funktion: Projektion und Viewport sind — gelesen: 109 Zeilen
 - `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 39 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 191 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
@@ -2930,7 +2941,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/plinko-editor-lazy.tsx` — Chunk-Grenze fuer den Plinko-Editor: Der Editor zieht die 185-KB-Buehne — gelesen: 19 Zeilen
 - `src/ui/plinko-editor.tsx` — Operator-Board-Editor: echte Konfiguration, ehrliches Gate, sichtbarer Fortschritt. — gelesen: 181 Zeilen
 - `src/ui/popup-router.tsx` — Popup-Routing: eine Zustaendigkeit, damit App nur noch verdrahtet. — gelesen: 207 Zeilen
-- `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 99 Zeilen
+- `src/ui/popup-shell.tsx` — Ein Rahmen für alle Popups: Backdrop, Titel, Fokusfalle, Escape, Schließen. — gelesen: 103 Zeilen
 - `src/ui/roulette-tableau.tsx` — Das Setzfeld: jede Zelle ist ein Feld, jeder Klick legt einen Jeton dorthin. — gelesen: 65 Zeilen
 - `src/ui/self-exclusion-panel.tsx` — Self-Exclusion als Gameplay: kein verstecktes Menü, sondern ein sichtbarer Pakt. — gelesen: 78 Zeilen
 - `src/ui/slot-rules-editor.tsx` — Regel-Editor am Automaten: Streifen, Gewichte, Modell, Volatilität und Bonus-Paytable. — gelesen: 138 Zeilen
@@ -2948,7 +2959,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen
 - `src/ui/use-crate-actions.ts` — Kisten am Floor: Ein Klick gibt das Ziel, der Charakter laeuft hin und hebt auf oder stellt ab. — gelesen: 101 Zeilen
 - `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 43 Zeilen
-- `src/ui/use-world-anchor.ts` — Weltanker: haelt eine React-Karte am Objekt, auch wenn die Kamera faehrt. — gelesen: 53 Zeilen
+- `src/ui/use-world-anchor.ts` — Weltanker: haelt eine React-Karte am Objekt, auch wenn die Kamera faehrt. — gelesen: 158 Zeilen
 - `src/ui/workshop-parts.tsx` — Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. — gelesen: 107 Zeilen
 - `src/ui/workshop.tsx` — Werkstatt: sechs Bereiche in einem Raster, erreichbar nur ueber Marke oder Tastatur. — gelesen: 115 Zeilen
 - `src/vite-env.d.ts` — / <reference types="vite/client" /> — gelesen: 3 Zeilen
