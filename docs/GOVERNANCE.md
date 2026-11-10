@@ -1,6 +1,6 @@
 # Governance: Lanes, Claims und Eskalation
 
-<!-- rbd-doc: v0.3.198 | 2026-11-09 20:41 UTC -->
+<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
 
 **Zweck:** Die verbindlichen Regeln für parallele Arbeit. Der Kurzvertrag steht in `AGENTS.md`; dieses Dokument beschreibt Rollen, Claim-Prüfung und die eine Eskalationsleiter.
 

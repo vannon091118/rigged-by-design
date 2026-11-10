@@ -6,6 +6,7 @@ import { maybeStartBrawl } from './disputes';
 import { becomeAngry } from './guest-service';
 import type { WorldState } from './types';
 import { guestById } from './world';
+import { INTERACTION_RADII, isInRange } from './interaction';
 
 const TALK_COOLDOWN = 60;
 const BACKFIRE_THRESHOLD = 25;
@@ -28,7 +29,11 @@ export function talkChance(world: WorldState, guestId: number): number {
 /** Zieht den Ausgang aus einer Verteilung; die angezeigte Chance ist genau diese. */
 export function talkToGuest(world: WorldState, prng: Prng, guestId: number): TalkResult | null {
   const guest = guestById(world, guestId);
-  if (!guest || (guest.talkReadyTick ?? 0) > world.tick) return null;
+  if (!guest) return null;
+  if (!isInRange(world.player.position, guest.position, INTERACTION_RADII.GUEST)) {
+    throw new Error('Geh erst zum Gast.');
+  }
+  if ((guest.talkReadyTick ?? 0) > world.tick) return null;
   const chance = talkChance(world, guestId);
   const dist = buildDistribution(1, 100);
   const roll = rollNumber(prng, dist);

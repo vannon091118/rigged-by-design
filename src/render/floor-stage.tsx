@@ -3,8 +3,7 @@ import { Application } from 'pixi.js';
 import type { EditorCursor } from './editor-overlay';
 import { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import type { GameView } from '../store/types';
-import type { MenuAction } from './floor-actions';
-import type { ScreenAnchor } from './floor-hit';
+import type { FloorTap } from './floor-input';
 import { FloorView } from './floor-view';
 import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
@@ -18,11 +17,8 @@ export interface FloorHandle {
 interface Props {
   readonly view: GameView;
   readonly placing: string | null;
-  readonly onGuest: (id: number, anchor: ScreenAnchor | null) => void;
-  readonly onFurniture: (id: number, anchor: ScreenAnchor | null) => void;
-  readonly onEmpty: (x: number, y: number) => void;
-  readonly onInteract: (actionId: string, targetId?: number) => void;
-  readonly onActions: (actions: MenuAction[], anchor: ScreenAnchor | null) => void;
+  /** Ein Trefferpfad fuer Maus und Finger; die Karte haengt am Fussanker. */
+  readonly onTap: (tap: FloorTap) => void;
   readonly onFirstFrame?: () => void;
   readonly paused?: boolean;
 }
@@ -62,10 +58,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
       host.current.appendChild(instance.canvas);
       if (import.meta.env.DEV) (window as Window & { __pixiApp?: Application }).__pixiApp = instance;
       floor.current = new FloorView(instance, latest.current.view, {
-        onGuest: (id, anchor) => latest.current.onGuest(id, anchor),
-        onFurniture: (id, anchor) => latest.current.onFurniture(id, anchor),
-        onEmpty: (x, y) => latest.current.onEmpty(x, y),
-        onActions: (actions, anchor) => latest.current.onActions(actions, anchor),
+        onTap: (tap) => latest.current.onTap(tap),
       });
       const governor = new PerfGovernor();
       let tier: PerfTier = 'high';

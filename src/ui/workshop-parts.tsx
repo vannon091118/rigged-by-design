@@ -80,14 +80,15 @@ export function FpsPanel({ fps }: { readonly fps: number }) {
 }
 
 const CONTROLS: readonly (readonly [string, string])[] = [
-  ['Klick', 'auf freie Fläche: hinlaufen'],
-  ['Klick', 'auf Gast oder Objekt: Aktionen öffnen'],
+  ['Klick / Tipp', 'auf freie Fläche: hinlaufen'],
+  ['Klick / Tipp', 'auf Gast, Möbel oder Kiste: Aktionen öffnen, die Figur läuft hin'],
+  ['E', 'Ziel in Reichweite wählen oder Hauptaktion ausführen'],
   ['Pfeile / WASD', 'laufen'],
   ['Mausrad', 'zoomen'],
   ['Rechte Maus', 'ziehen: schwenken'],
   ['+ / − / 0', 'zoomen, Übersicht'],
   ['Enter', 'getragene Kiste nutzen'],
-  ['Esc', 'Fenster schließen'],
+  ['Esc', 'Auswahl abbrechen, Fenster schließen'],
 ];
 
 export function ControlsPanel() {

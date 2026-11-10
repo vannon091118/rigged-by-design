@@ -71,13 +71,9 @@ export class FloorCues {
     canvas.addEventListener('pointerdown', this.#down);
   }
 
-  /** Uebersicht klickt heran, Detail laeuft: das Zielraster zeigt die Farbe der Folge. */
-  setMode(detail: boolean): void {
-    const mode: CueMode = detail ? 'walk' : 'zoom';
-    if (mode === this.#mode) return;
-    this.#mode = mode;
-    this.#hoverKey = '';
-    this.#drawReticle(this.#hover ?? this.#glowCell);
+  /** Klick ist immer Laufen: die Zoomstufe aendert die Bedeutung des Bodens nicht. */
+  setMode(_detail: boolean): void {
+    void _detail;
   }
 
   /** Laufweg als Punktspur, Ziel als Ring: man sieht vor dem Loslaufen, wohin es geht. */
