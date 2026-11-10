@@ -12,6 +12,14 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.209] - 2026-11-10
+
+### Spiel
+- **Unternehmensstufen verlangen Personal.** Spielsaal und Konzern sind erst erreichbar, wenn Leute eingestellt sind: zwei Angestellte fuer den Saal, vier fuer den Konzern. Die Stufenzeile im Baumenue nennt die offene Bedingung wie jede andere - mit Ist und Soll, ohne neue Anzeige.
+
+### Technik
+- `core/sim/progression.ts` liest Personal aus `world.agents`, derselben Quelle wie Einstellung und Personalwirkung; keine neue Zaehlung, kein Save-Feld. Die Stadt-Suite liegt ausgelagert in `progression-city.test.ts`, weil `check:loc` das Testbudget sonst reisst.
+
 ## [0.3.208] - 2026-11-10
 
 ### Spiel

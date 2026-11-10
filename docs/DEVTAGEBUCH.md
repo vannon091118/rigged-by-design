@@ -3749,3 +3749,41 @@ PR-Kopf `63b5246`; CI `Fail-Closed Gates` success mit 0 Annotationen; Feature-PR
 #389 squash-gemergt als `e661d83`. Repariert statt umgangen: fehlende
 Testkopfzeilen (`ERR-4001`), vier tote Typ-Exporte (`ERR-4003`), Testkatalog und
 die Narrative-Pflicht (Turn im Manifest, `function: document`).
+
+## 2026-11-10 — Agent 14: Geschäftsprogression (BUDE → KASSE → SAAL → KONZERN)
+
+Auftrag: die Unternehmensphasen sichtbar machen, mit echten Voraussetzungen und
+neuen Möglichkeiten, unabhängig vom Charakterlevel. Vor dem Bau war zu prüfen,
+was davon schon existiert.
+
+**Befund (nicht nachgebaut).** Die Progression gab es bereits vollständig:
+`companyTier`/`companyStatus` in `core/sim/progression.ts` mit vier Stufen,
+echten Kennzahlen (Tage offen, Betriebsgewinn aus `economyOf`, Ruf, Spielgeräte,
+Kapital) und stufenweiser Freischaltung der Geräte bis `ROULETTE` (`BUILD_TIER`),
+gelesen von `demand.advanceDemandTier`, `deliveries.assertUnlocked`, Baumenü,
+HUD und dem Balance-Messlauf. Es fehlte genau eine der fünf in der Roadmap
+genannten Voraussetzungen: Personal. Angestellte existierten (fünf Rollen,
+`hireAgent`/`fireAgent`, `world.agents` als einzige Wahrheit), waren aber an
+keiner Stufe eine Bedingung.
+
+**Umsetzung.** Eine Kennzahl `staff` in der bestehenden `Need`-Liste, gelesen aus
+`world.agents.length`. Spielsaal verlangt zwei Angestellte, Konzern vier. Die
+Bedingung erscheint automatisch in `companyStatus.open`, im Baumenü, im HUD-Titel
+und in der Sperrmeldung von `assertUnlocked` — keine neue Anzeige, kein neues
+Save-Feld, keine zweite Zählung. `check:loc` erzwang die Auslagerung der
+Stadt-Suite nach `progression-city.test.ts` (245/240 Zeilen im Test, `ERR-4012`).
+
+**Bewusst nicht getan.** Keine neuen Stufen und keine geänderten Schwellen für
+Geld, Ruf oder Geräte; keine Charakterlevel-Kopplung; kein zweiter Zähler neben
+`world.agents`; keine Änderung an Nachfrage, Ledger, Rente oder Löhnen. Die
+Roadmap-Items der Folgeagents (Stammgäste, Personalmanagement, Module) bleiben
+offen und wurden nicht vorweggenommen.
+
+**Prüfungen.** `pnpm run typecheck` Exit 0; `pnpm run verify:light` Exit 0;
+`pnpm run check:loc` Exit 0; `progression.test.ts` 11/11 und
+`progression-city.test.ts` 5/5; CI `Fail-Closed Gates` success mit 0
+Annotationen auf `6ee430e`; Feature-PR #393 squash-gemergt als `7b31ba0`.
+Repariert statt umgangen: Testbudget (`ERR-4012`), Claim-Allowlist nach
+`claim:register update` (die Pfade werden ersetzt, nicht ergänzt) und die
+Lane-Kollision gegen `lane/world/scene-queue` (nur über den belegten
+Merge-Kopf, keine Allowlist-Aufweichung).
