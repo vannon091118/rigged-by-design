@@ -4,7 +4,7 @@
   "claimId": "lane/sim/player-career",
   "branch": "lane/sim/player-career",
   "baseSha": "e62cdd3e763569c8e3ab4c1685f114fd7c69cb4d",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Spieler-Dashboard: Karriere aus vorhandenem Zustand ableiten",
   "goal": "Masterplan Agent 06 ohne zweiten Zustand: Level, Attribute, Koerper, Arbeit, Kampfbilanz und Erfolge im Charakterfenster",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "013c54442528bf47fc85658fc7d8ab8dadd11754"
   },
   "findings": [],
-  "nextAction": "Claim belegt; Vertrag auf DONE setzen, dann doctor und verify:all auf main.",
-  "revision": 7
+  "nextAction": "Abgeschlossen: PR #357 (013c544) auf main, Claim merged mit Beleg.",
+  "revision": 8
 }
