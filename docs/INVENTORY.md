@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 253 Dateien — contract 145 · integration 55 · governance 39 · statistics 7 · performance 7.
+Summe: 254 Dateien — contract 145 · integration 55 · governance 40 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -195,6 +195,7 @@ Summe: 253 Dateien — contract 145 · integration 55 · governance 39 · statis
 | `src/core/governance/__tests__/release-escalation.test.ts` | pipeline | governance | ja | `scripts/lib/release-escalation.mjs` |
 | `src/core/governance/__tests__/roadmap-register.test.ts` | docs | contract | ja | `docs/ROADMAP.md` |
 | `src/core/governance/__tests__/staging-scope.test.ts` | pipeline | governance | ja | `scripts/lib/staging-scope.mjs` |
+| `src/core/governance/__tests__/task-claim-parity.test.ts` | pipeline | governance | ja | `scripts/lib/lane-claims.mjs` |
 | `src/core/governance/__tests__/test-catalog.test.ts` | pipeline | governance | ja | `scripts/lib/test-catalog.mjs` |
 | `src/core/governance/__tests__/tree-changes.test.ts` | pipeline | governance | ja | `scripts/lib/tree-changes.mjs` |
 | `src/core/governance/__tests__/workflow-hardening.test.ts` | ci | governance | ja | `.github/workflows/long-checks.yml` |
@@ -566,10 +567,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2405 |
-| Gelistete Dateien | 2405 |
+| Getrackte Dateien | 2409 |
+| Gelistete Dateien | 2409 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (85), content (845), docs (83), public (554), scripts (101), src (709) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (87), content (846), docs (83), public (554), scripts (101), src (710) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -581,9 +582,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 67 Datei(en)
-- `.lane-claims/tasks/` — 16 Datei(en)
-- `content/narrative/contributions/` — 841 Datei(en)
+- `.lane-claims/claims/` — 68 Datei(en)
+- `.lane-claims/tasks/` — 17 Datei(en)
+- `content/narrative/contributions/` — 842 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -637,7 +638,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 45 Datei(en)
+- `src/core/governance/__tests__/` — 46 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -716,6 +717,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-dialog-trigger.json` — { — gelesen: 39 Zeilen
 - `.lane-claims/claims/lane-governance-docs-meta.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-fail-closed-issue-check.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-final-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-interaction-foundation.json` — { — gelesen: 53 Zeilen
@@ -761,7 +763,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
@@ -769,6 +771,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 32 Zeilen
@@ -1607,6 +1610,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-main-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-ci-pr-body-current.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-10-closeout-beleg.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-eine-stimme.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json` — { — gelesen: 17 Zeilen
@@ -1624,8 +1628,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-review-nachpruefung.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18837 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3369 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18859 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3373 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2282,7 +2286,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/ci-long-checks.mjs` — Lange Nachweise ueber GitHub Actions statt auf der eigenen Maschine. — gelesen: 212 Zeilen
 - `scripts/ci-plan.mjs` — CI-Plan fuer GitHub Actions: der Zustand des Laufs entscheidet, welche Gates — gelesen: 168 Zeilen
 - `scripts/ci-tag-release.mjs` — Tag und Release fuer die Version, die im gepushten Commit steht. — gelesen: 100 Zeilen
-- `scripts/claim-register.mjs` — Claim-Register: eine Datei pro Lane. — gelesen: 309 Zeilen
+- `scripts/claim-register.mjs` — Claim-Register: eine Datei pro Lane. — gelesen: 342 Zeilen
 - `scripts/compile-narrative-content.mjs` — NAR-10 content compiler. — gelesen: 68 Zeilen
 - `scripts/doc-stub.mjs` — Erzeugt die Pflichteintraege fuer eine Aenderung aus einem Titel. — gelesen: 66 Zeilen
 - `scripts/doc-sync.mjs` — Ergänzt den stabilen Doku-Marker nur, wenn er fehlt; `--check` prueft nur. — gelesen: 23 Zeilen
@@ -2316,7 +2320,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/impact.mjs` — Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht. — gelesen: 125 Zeilen
 - `scripts/lib/integration.mjs` — Integration: entscheidet vor der teuren CI, ob ein Branch ueberhaupt — gelesen: 144 Zeilen
 - `scripts/lib/issue-scope.mjs` — Issue-Scope: ein Label, ein Body-Vertrag, eine Entscheidung. — gelesen: 273 Zeilen
-- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 590 Zeilen
+- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 612 Zeilen
 - `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 129 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 277 Zeilen
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
@@ -2495,6 +2499,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/scripts-libs-task-state.d.ts` — Deklarationen fuer den Task-Zustand (Phase 4). — gelesen: 90 Zeilen
 - `src/core/governance/__tests__/scripts-libs.d.ts` — declare module '*/process-sweep.mjs' { — gelesen: 232 Zeilen
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 74 Zeilen
+- `src/core/governance/__tests__/task-claim-parity.test.ts` — Eine einzige Quelle fuer den Lane-Status: Der Task-Vertrag ist die Wahrheit — gelesen: 47 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 228 Zeilen

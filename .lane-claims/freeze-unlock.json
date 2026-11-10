@@ -2,8 +2,10 @@
   "version": 1,
   "base": "9f090fdc54246a296a59aacebc0e335d5c80c6a3",
   "paths": [
-    "AGENTS.md"
+    "AGENTS.md",
+    "scripts/claim-register.mjs",
+    "scripts/lib/lane-claims.mjs"
   ],
-  "token": "53df72e8aa24ca921ad1aabba0d068775efa0dbd9543327d1ec2fbede004641a",
+  "token": "06fd9febd5366ffd4098fe74e5b5d9dbe51172b2249472289f2f70cb566d22cd",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

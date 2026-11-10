@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-final-closeout",
+  "claimId": "lane/governance/final-closeout",
+  "branch": "lane/governance/final-closeout",
+  "baseSha": "814d1a62abdbd32b17fb269a130250c09ef24753",
+  "phase": "IMPLEMENTING",
+  "title": "Finaler Closeout: stale Lane-Status auf DONE/merged, Task-Claim-Paritaet als Doctor-Check, Breitphase-Benennung, Issue #337 schliessen",
+  "goal": "Alle offenen Lane-Tasks und Claims aus Mission und Review klaeren (review-hygiene, integration-controller, agents-md-contract, phase3-ci-state, phase3-4-v2), Paritaet Task/Claim mechanisch pruefen, Issue #337 begruendet schliessen, Remote auf nur-main verifizieren",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Paritaet-Check, Breitphase, Fragment implementiert und lokal verifiziert; committen, pushen, CI abwarten.",
+  "revision": 1
+}
