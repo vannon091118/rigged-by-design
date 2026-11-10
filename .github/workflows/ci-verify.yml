@@ -186,7 +186,7 @@ jobs:
           RBD_ROOT: ${{ steps.control.outputs.root }}
         run: |
           set -euo pipefail
-          # Bootstrap: eine Basis vor diesem Merge kennt den Controller nicht.
+          # Anlauf: eine Basis vor diesem Merge kennt den Controller nicht.
           if [ ! -f "$CONTROL_SCRIPTS/integrate.mjs" ]; then
             echo "::notice::Kontrollebene kennt den Integrationscontroller nicht; Schritt inert."
             echo "integration=READY" >> "$GITHUB_OUTPUT"
@@ -267,7 +267,7 @@ jobs:
             --handoff="$HANDOFF" \
             --github-output="$GITHUB_OUTPUT"
 
-      # Bootstrap-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
+      # Anlauf-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
       # diesem Merge kennt sie die neuen `state`/`required`-Outputs noch nicht.
       # Die Gate-Auswahl bleibt der Basis-Script-Stand; nur die Metadaten
       # werden aus Matrix und Ereignis abgeleitet. Nach dem Merge liefert die
@@ -697,7 +697,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
-      # Bootstrap-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
+      # Anlauf-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
       # liest nur `.lane-claims/claims.json`; die Lane-Dateien kommen erst mit
       # diesem PR. Der Adapter materialisiert sie nur fuer die alte Basis.
       # Sobald die Basis `CLAIM_ENTRIES_DIR` kennt, bleibt der Schritt inert.
