@@ -1,22 +1,17 @@
-// @loc-exception: App verdrahtet Popups, Tastaturpfad und Floor in genau einem Zustandsbaum; getrennt waeren Fokus und Popup-Routing doppelt.
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { getBuildDef, type BuildId } from './core/sim/offers';
-import type { CarpetId, TemplateId } from './core/sim/types';
-import type { MenuAction } from './render/floor-actions';
-import { handleFloorInteract } from './render/floor-interact';
 import type { ScreenAnchor } from './render/floor-hit';
-import { tapHaptic } from './render/haptics';
 import { FloorStage, type FloorHandle } from './render/floor-stage';
-import { armMusic, setMusicState } from './render/music';
 import { ActionCard } from './ui/action-card';
-import { playSfx } from './render/sound-fx';
 import { useWorldStore, worldStore } from './store/use-world-store';
-import { setNarrativePaused } from './store/narrative-clock';
 import { type Perspective, type Popup } from './ui/app-model';
-import { BuildPanel } from './ui/build-panel';
-import { Dock, useBrandTaps } from './ui/dock';
+import { useArmMusic, useDisputeSfx, useJournalSfx, useNarrativePause, useNoticeDismiss, usePointerHaptics, useSceneMusic, useWorkshopShortcut } from './ui/app-effects';
+import { closeEditorUrl, crateGhostId, isCarryingCrate, makeActionExecutor, openPopupWith, switchPerspective } from './ui/app-wiring';
+import { ConnectedBuildPanel } from './ui/build-panel-connected';
+import { ConnectedHud } from './ui/connected-hud';
+import { Dock } from './ui/dock';
+import { FloorFeedback } from './ui/floor-feedback';
 import { FloorRoleBar } from './ui/floor-role-bar';
-import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
 import { useCrateActions } from './ui/use-crate-actions';
@@ -49,65 +44,17 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     [],
   );
 
-  useEffect(() => {
-    if (!view.notice) return;
-    const id = window.setTimeout(() => worldStore.dismiss(), 6500);
-    return () => window.clearTimeout(id);
-  }, [view.notice]);
+  // Ton, Musik, Frist und Haptik folgen dem Zustand, nicht dem Klick.
+  useNoticeDismiss(view.notice);
+  useJournalSfx(view.journal);
+  useDisputeSfx(view.disputes.length);
+  useSceneMusic(popup, view.furniture);
+  useNarrativePause(popup !== null || buildOpen || editorOpen);
+  useArmMusic();
+  usePointerHaptics();
 
-  // Kasse und Pruegelei sind Welt-Ereignisse: der Ton folgt dem Protokoll, nicht dem Klick.
-  const seenJournal = useRef(-1);
-  useEffect(() => {
-    const latest = view.journal[view.journal.length - 1];
-    if (!latest) return;
-    if (seenJournal.current < 0) { seenJournal.current = latest.id; return; }
-    const fresh = view.journal.filter((entry) => entry.id > seenJournal.current);
-    seenJournal.current = latest.id;
-    if (fresh.some((entry) => entry.kind === 'MONEY' && / (chips|fiat wechseln)$/.test(entry.subject))) playSfx('coin');
-  }, [view.journal]);
-
-  const disputes = useRef(view.disputes.length);
-  useEffect(() => {
-    if (view.disputes.length > disputes.current) playSfx('brawl');
-    disputes.current = view.disputes.length;
-  }, [view.disputes.length]);
-
-  // Musik folgt dem Fenster, nicht dem Klick: Floor, Fremdhaus, eigenes Geraet.
-  useEffect(() => {
-    if (popup?.kind === 'games') { setMusicState('GAMES'); return; }
-    if (popup?.kind === 'foreignMap' || popup?.kind === 'foreignFloor') { setMusicState('NIGHT'); return; }
-    if (popup?.kind === 'workshop') { setMusicState('MENU'); return; }
-    if (popup?.kind === 'guests' || popup?.kind === 'narrative' || popup?.kind === 'dialogue') {
-      setMusicState('BACKGROUND');
-      return;
-    }
-    if (popup?.kind === 'machine') {
-      const item = view.furniture.find((entry) => entry.id === popup.itemId);
-      setMusicState(item?.gameId === 'SLOT' ? 'SLOT' : 'GAMES');
-      return;
-    }
-    setMusicState('FLOOR');
-  }, [popup, view.furniture]);
-
-  // Szenen sterben nicht im Menue: ein Popup verdeckt den Floor und haelt die Frist an.
-  useEffect(() => { setNarrativePaused(popup !== null || buildOpen || editorOpen); }, [popup, buildOpen, editorOpen]);
-
-  // Der Browser laesst Ton erst nach einer Geste zu; bis dahin bleibt es still.
-  useEffect(() => armMusic(), []);
-
-  // Kurze Haptik bei jedem Tipp; reduced motion schaltet sie in haptics.ts ab.
-  useEffect(() => {
-    const onPointerDown = (): void => tapHaptic();
-    window.addEventListener('pointerdown', onPointerDown, { capture: true, passive: true });
-    return () => window.removeEventListener('pointerdown', onPointerDown, true);
-  }, []);
-
-  const carryingCrate = view.player.carrying.startsWith('KRATE:');
-  const ghostId = (() => {
-    const match = /^KRATE:(\d+)$/.exec(view.player.carrying);
-    const crate = match ? view.crates.find((entry) => entry.id === Number(match[1])) : undefined;
-    return crate && crate.payload.kind === 'FURNITURE' ? crate.payload.buildId : null;
-  })();
+  const carryingCrate = isCarryingCrate(view.player.carrying);
+  const ghostId = crateGhostId(view.player.carrying, view.crates);
 
   // Kistenklick und Enter laufen ueber denselben Hook: Ziel setzen, Charakter laufen lassen, zugreifen.
   const crates = useCrateActions(view, {
@@ -123,35 +70,12 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setPlaceError('');
   };
 
-  const openPopup = (next: Popup): void => {
-    setBuildOpen(false);
-    setPopupAnchor(null);
-    setPopup(next);
-  };
-
-  const changePerspective = (next: Perspective): void => {
-    if (next === perspective) return;
-    setPopup(null);
-    setPopupAnchor(null);
-    setBuildOpen(false);
-    setPerspective(next);
-  };
-  const onBrandTap = useBrandTaps(() => openPopup({ kind: 'workshop' }));
+  const setters = { setPopup, setPopupAnchor, setBuildOpen, setPerspective };
+  const openPopup = (next: Popup): void => openPopupWith(setters, next);
+  const changePerspective = (next: Perspective): void => switchPerspective(setters, perspective, next);
 
   // Ein Pfad fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln.
-  const executeAction = (action: MenuAction, at: ScreenAnchor | null): void => {
-    if (action.id === 'OPEN_MACHINE' && action.targetId !== undefined) {
-      openPopup({ kind: 'machine', itemId: action.targetId });
-      setPopupAnchor(at);
-      return;
-    }
-    if (action.id === 'OPEN_GUEST' && action.targetId !== undefined) {
-      openPopup({ kind: 'guests', guestId: action.targetId });
-      return;
-    }
-    if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
-    handleFloorInteract(action.id, action.targetId);
-  };
+  const executeAction = makeActionExecutor(openPopup, setPopupAnchor);
   const interaction = useFloorInteraction({
     view,
     enabled: perspective === 'operator',
@@ -172,35 +96,16 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     onEscape: () => { if (!closeInteraction()) setBuildOpen(false); },
   });
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent): void => {
-      if (!event.ctrlKey || !event.shiftKey || event.repeat || event.key.toLowerCase() !== 'd') return;
-      event.preventDefault();
-      setBuildOpen(false);
-      setPopup({ kind: 'workshop' });
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  useWorkshopShortcut(() => {
+    setBuildOpen(false);
+    setPopup({ kind: 'workshop' });
+  });
 
-  const closeEditor = (): void => {
-    setEditorOpen(false);
-    stage.current?.setEditor(null);
-    const url = new URL(window.location.href);
-    url.searchParams.delete('editor');
-    window.history.replaceState(null, '', url);
-  };
+  const closeEditor = (): void => { setEditorOpen(false); stage.current?.setEditor(null); closeEditorUrl(); };
 
   return (
     <div className="app" data-perspective={perspective}>
-      <Hud
-        view={view}
-        perspective={perspective}
-        onPerspective={changePerspective}
-        onSkill={(attribute) => worldStore.spendSkill(attribute)}
-        onBrandTap={onBrandTap}
-        onGuests={() => openPopup({ kind: 'guests', guestId: null })}
-      />
+      <ConnectedHud view={view} perspective={perspective} onPerspective={changePerspective} onOpen={openPopup} />
 
       <main
         className={`stage-wrap${carryingCrate ? ' is-placing' : ''}`}
@@ -229,6 +134,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         <ActionCard
           actions={interaction.selection?.actions ?? []}
           anchor={interaction.selection?.anchor ?? null}
+          project={projectAnchor}
           status={interaction.selection?.status ?? ''}
           blocked={interaction.selection?.blocked ?? false}
           onPick={interaction.pick}
@@ -246,29 +152,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           </div>
         )}
 
-        <div className="live-region" role="status" aria-live="polite">
-          {view.notice || view.lastEvent}
-        </div>
-
-        {view.lastEvent && !view.notice && <div className="event-line" aria-hidden="true">{view.lastEvent}</div>}
-
-        {view.narrative.events.length > 0 && (
-          <button type="button" className="narrative-chip"
-            onClick={() => openPopup({ kind: 'narrative' })}
-            title="Aktive Szenen und Figuren öffnen">
-            STORY · {view.narrative.events.length}
-          </button>
-        )}
-
-        <button type="button" className="narrative-chip dialogue-chip" title="Comic-Dialog oeffnen"
-          onClick={() => openPopup({ kind: 'dialogue' })}>DIALOG</button>
-
-        <button type="button" className="narrative-chip city-chip" title="Stadt: Kiez und Markt"
-          onClick={() => openPopup({ kind: 'city' })}>STADT</button>
-
-        {view.notice && (
-          <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>
-        )}
+        <FloorFeedback view={view} onOpen={openPopup} />
 
         {LayoutEditor && editorOpen && (
           <Suspense fallback={null}>
@@ -290,28 +174,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         onOpen={openPopup}
       />
 
-      {buildOpen && (
-        <BuildPanel
-          view={view}
-          onClose={() => setBuildOpen(false)}
-          onBuy={buy}
-          onTemplate={(id: TemplateId) => worldStore.setTemplate(id)}
-          onHire={(role) => worldStore.hire(role)}
-          onFire={(role) => worldStore.fire(role)}
-          onPrice={(key, value) => worldStore.setPrice(key, value)}
-          onCarpet={(id: CarpetId) => worldStore.setCarpet(id)}
-          onRepair={(id) => worldStore.repair(id)}
-          onClean={() => worldStore.clean()}
-          onOrderDrinks={(count) => worldStore.orderDrinks(count)}
-          onOrderParts={(count) => worldStore.orderParts(count)}
-          onUpgradeBar={() => worldStore.upgradeBar()}
-          onUpgradeWc={() => worldStore.upgradeWc()}
-          onWall={(color) => worldStore.setWall(color)}
-          onNeon={(color) => worldStore.setNeon(color)}
-          onServeDesk={() => worldStore.serveDesk()}
-          onCalm={(id) => worldStore.calm(id)}
-        />
-      )}
+      {buildOpen && <ConnectedBuildPanel view={view} onClose={() => setBuildOpen(false)} onBuy={buy} />}
 
       <PopupRouter
         view={view}

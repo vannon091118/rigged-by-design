@@ -6,6 +6,7 @@ import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
 import { vc } from './format';
 import { ACCOUNT_LABEL, HELP } from './glossary';
+import { MOOD_LABEL, PENALTY_LABEL, reputationOf, SKILLS } from './hud-labels';
 import { UI_ICON } from './icons';
 import { PerspectiveSwitch } from './perspective-switch';
 
@@ -19,27 +20,6 @@ interface HudProps {
   /** Die Gästezahl ist der Welt-Einstieg in die Übersicht, kein Dock-Tab. */
   readonly onGuests: () => void;
 }
-
-const PENALTY_LABEL = (kind: string): string =>
-  kind === 'UNSAFE_REPUTATION' ? 'Unsicherer Ruf' : kind === 'MOOD_SHOCK' ? 'Stimmungsschock' : 'Ausgeraubt';
-
-const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 'gemischt' : 'gereizt');
-
-/** Ruf als Farbe und Wort: eine Prozentzahl sagt niemandem etwas. */
-const reputationOf = (value: number): { readonly label: string; readonly tone: string } =>
-  value >= 70 ? { label: 'angesehen', tone: 'ok' }
-    : value >= 40 ? { label: 'solide', tone: '' }
-      : { label: 'ramponiert', tone: 'warn' };
-
-const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
-  ['speed', 'SPD', 'Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.'],
-  ['charisma', 'CHA', 'Charisma: bessere Talk-Chance, mehr Trinkgeld.'],
-  ['brawl', 'BRW', 'Brawl: mehr HP, mehr Kampfschaden.'],
-  ['perception', 'PER', 'Wahrnehmung: bessere Queue-Position, Dreck früher sehen.'],
-  ['technique', 'TEC', 'Technik: schnellere Reparatur, bessere Mods.'],
-  ['endurance', 'END', 'Ausdauer: schnellere Regeneration, kürzere Verletzungen.'],
-  ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
-];
 
 export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onGuests }: HudProps) {
   const guest = perspective === 'guest';

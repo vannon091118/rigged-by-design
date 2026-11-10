@@ -14,9 +14,13 @@ interface ActionCardProps {
   readonly status?: string;
   /** Ziel nicht erreichbar: Aktionen bleiben sichtbar, sind aber gesperrt. */
   readonly blocked?: boolean;
+  /** Projektion des Weltankers; ohne sie bleibt die Karte am Klick stehen. */
+  readonly project?: AnchorProjector;
 }
 
-export function ActionCard({ actions, onPick, onClose, anchor = null, status = '', blocked = false }: ActionCardProps) {
+export function ActionCard({ actions, onPick, onClose, anchor = null, status = '', blocked = false, project }: ActionCardProps) {
+  const card = useRef<HTMLDivElement>(null);
+  const style = useAnchoredStyle(anchor, project, card, { width: 340, fallbackHeight: 118 });
   const main = actions[0];
   if (!main) return null;
   const alternatives = actions.filter((action) => action.id !== main.id).slice(0, 2);

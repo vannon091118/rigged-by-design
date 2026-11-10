@@ -13,7 +13,7 @@ import { FloorProps } from './floor-props';
 import { FloorTouch } from './floor-touch';
 import {
   acceptTap, handleTap, screenAnchorOf, screenPoint, tapKey,
-  type FloorCallbacks, type TapMark,
+  type FloorCallbacks, type ScreenAnchor, type TapMark,
 } from './floor-input';
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';

@@ -4,6 +4,7 @@ import type { EditorCursor } from './editor-overlay';
 import { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import type { GameView } from '../store/types';
 import type { FloorTap } from './floor-input';
+import type { ScreenAnchor } from './floor-hit';
 import { FloorView } from './floor-view';
 import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
