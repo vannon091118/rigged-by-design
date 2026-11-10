@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T07:55Z-p20-dependency-matrix",
+  "contributionId": "p20-dependency-matrix-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["content"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Die Live-Dependency-Matrix liegt jetzt in einer freien Datei statt in der gesperrten Architektur. Der Generator schreibt Paketversionen, Begruendungen und echte Importpfade weiterhin aus package.json und Quellbaum; neue Testdateien verschieben damit keine Governance-Datei und keine PIN-Freigabe mehr. Architektur, Index und Autofix-Plan verweisen auf den neuen Ort.",
+  "directives": []
+}
