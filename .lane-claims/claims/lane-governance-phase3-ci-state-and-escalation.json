@@ -25,8 +25,7 @@
     ".lane-claims/freeze-unlock.json",
     ".lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json",
     "package.json",
-    "pnpm-lock.yaml",
-    ".lane-claims/claims/lane-governance-phase2-task-contract.json"
+    "pnpm-lock.yaml"
   ],
   "contracts": [],
   "dependencies": [],

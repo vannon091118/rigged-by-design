@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/claim-closeout-phase2",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-closeout-phase2",
+  "baseSha": "18843f7cc187dd128746299dd1df2f22a7d7c941",
+  "task": "Phase-2-Claim nach dem Merge schliessen",
+  "goal": "Der mit 18843f7 gemergte Phase-2-Claim steht als merged im Register, ohne die Allowlist einer anderen Lane zu erweitern.",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-phase2-task-contract.json",
+    ".lane-claims/claims/lane-governance-claim-closeout-phase2.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "18843f7cc187dd128746299dd1df2f22a7d7c941",
+  "mergedEvidence": "merged-pr",
+  "mergedSha": "1f13f42a03b65b2d86cbd14bd924cb1d20e7ef6d"
+}
