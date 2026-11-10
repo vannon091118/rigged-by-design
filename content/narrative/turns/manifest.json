@@ -3384,6 +3384,14 @@
     {
       "turnId": "2026-11-10T17:30Z-player-career",
       "contributionId": "player-career-01"
+    },
+    {
+      "turnId": "2026-11-10T18:30Z-fight-career",
+      "contributionId": "fight-career-01"
+    },
+    {
+      "turnId": "2026-11-10T18:45Z-fight-career-tests",
+      "contributionId": "fight-career-02"
     }
   ]
 }

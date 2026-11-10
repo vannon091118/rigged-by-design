@@ -5,6 +5,7 @@ import {
 } from '../core/sim/player-look';
 import { hpNotice } from '../core/sim/player-career';
 import type { GameView } from '../store/types';
+import { CareerBackyard } from './career-backyard';
 import { vc } from './format';
 import { PopupShell } from './popup-shell';
 
@@ -12,6 +13,8 @@ interface Props {
   readonly view: GameView;
   readonly onClose: () => void;
   readonly onLook: (patch: Partial<PlayerLook>) => void;
+  /** Herausforderung des naechsten Hinterhof-Gegners; ohne Handler bleibt der Knopf wirkungslos. */
+  readonly onChallenge?: () => void;
 }
 
 function Swatches(props: {
@@ -59,7 +62,7 @@ function LookPreview({ look }: { look: PlayerLook }) {
   );
 }
 
-function CareerSection({ view }: { view: GameView }) {
+function CareerSection({ view, onChallenge }: { view: GameView; onChallenge?: () => void }) {
   const career = view.career;
   return (
     <section className="career" aria-label="Deine Werte">
@@ -81,7 +84,7 @@ function CareerSection({ view }: { view: GameView }) {
       <div className="career-grid">
         <div><span>Portemonnaie</span><b>{vc(career.wallet, 2)}</b></div>
         <div><span>Bonus</span><b>{vc(career.playerCash, 2)}</b></div>
-        <div><span>Bilanz</span><b>{career.record.wins} S · {career.record.losses} N</b></div>
+        <div><span>Bilanz</span><b>{career.record.wins} S · {career.record.losses} N · {career.record.kos} KO</b></div>
         <div>
           <span>Arbeit</span>
           <b>{career.job ? `${career.job.label} · ${career.job.workDays} Schichten` : 'kein Job'}</b>
@@ -92,11 +95,12 @@ function CareerSection({ view }: { view: GameView }) {
           <li key={entry.id} className={entry.unlocked ? 'on' : 'off'}>{entry.label}</li>
         ))}
       </ul>
+      <CareerBackyard backyard={career.backyard} onChallenge={onChallenge} />
     </section>
   );
 }
 
-export function LookPopup({ view, onClose, onLook }: Props) {
+export function LookPopup({ view, onClose, onLook, onChallenge }: Props) {
   return (
     <PopupShell eyebrow="DEIN CHARAKTER" title="Werte und Aussehen" onClose={onClose}>
       <div className="look-layout">
@@ -124,7 +128,7 @@ export function LookPopup({ view, onClose, onLook }: Props) {
           </div>
         </div>
       </div>
-      <CareerSection view={view} />
+      <CareerSection view={view} onChallenge={onChallenge} />
     </PopupShell>
   );
 }

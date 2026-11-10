@@ -17,8 +17,9 @@ describe('Spieler-Karriere', () => {
     expect(view.level).toBe(1);
     expect(view.xpToNext).toBe(100);
     expect(view.attributes).toHaveLength(7);
-    expect(view.record).toEqual({ wins: 0, losses: 0 });
+    expect(view.record).toEqual({ wins: 0, losses: 0, kos: 0 });
     expect(view.job).toBeNull();
+    expect(view.backyard.rung.rank).toBe(1);
   });
 
   it('rechnet XP bis zur naechsten Stufe aus derselben Formel wie der Aufstieg', () => {
@@ -30,13 +31,14 @@ describe('Spieler-Karriere', () => {
     expect(view.unspentPoints).toBe(view.level - 1);
   });
 
-  it('liest die Kampfbilanz aus den Duell-Eintraegen des Archivs', () => {
+  it('liest die Kampfbilanz aus Duell- und Hinterhof-Eintraegen des Archivs', () => {
     const events = [
       { id: 0, tick: 0, day: 1, kind: 'GUEST', subject: 'Duell gegen Rocco', cause: 'a', effect: 'Gewonnen: der Rädelsführer ist raus.' },
       { id: 1, tick: 0, day: 1, kind: 'GUEST', subject: 'Duell gegen Rocco', cause: 'b', effect: 'Verloren: 4,00 VC verloren.' },
-      { id: 2, tick: 0, day: 1, kind: 'MONEY', subject: 'einsatz', cause: 'c', effect: 'Gebucht.' },
+      { id: 2, tick: 0, day: 1, kind: 'SYSTEM', subject: 'Hinterhof gegen Bulle Bernd', cause: 'c', effect: 'Gewonnen: KO in Runde 2 · Preisgeld 1,20 VC.' },
+      { id: 3, tick: 0, day: 1, kind: 'MONEY', subject: 'einsatz', cause: 'd', effect: 'Gebucht.' },
     ] as const;
-    expect(fightRecordOf(events)).toEqual({ wins: 1, losses: 1 });
+    expect(fightRecordOf(events)).toEqual({ wins: 2, losses: 1, kos: 1 });
   });
 
   it('nennt die Wirkung jeder Stufe, auch wenn sie noch keine hat', () => {

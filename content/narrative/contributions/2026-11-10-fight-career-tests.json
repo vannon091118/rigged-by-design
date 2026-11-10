@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T18:45Z-fight-career-tests",
+  "contributionId": "fight-career-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita trug die Kämpfe nicht in festen Reihenfolge nach, sondern so, wie sie fielen: jeder Abend ein anderer Verlauf, der Name des Gegners und das Ergebnis blieben trotzdem stehen. Was sie nicht aufschrieb, war die Zahl des Wurfs – den merkte sich nur der Ring.",
+  "directives": []
+}

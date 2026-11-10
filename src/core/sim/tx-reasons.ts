@@ -22,6 +22,8 @@ export const TX_REASON = {
   TAKE_HOME: 'betreiber entnahme',
   FOREIGN_STAKE: 'fremdes haus einsatz',
   FOREIGN_WIN: 'fremdes haus gewinn',
+  BACKYARD_ENTRY: 'hinterhof startgeld',
+  BACKYARD_PRIZE: 'hinterhof preisgeld',
   OWN_STAKE: 'eigenes haus einsatz',
   OWN_WIN: 'eigenes haus gewinn',
   OWN_RISK_LOST: 'eigene risiko-karte verloren',
