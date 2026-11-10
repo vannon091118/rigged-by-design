@@ -564,10 +564,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2364 |
-| Gelistete Dateien | 2364 |
+| Getrackte Dateien | 2362 |
+| Gelistete Dateien | 2362 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (65), content (838), docs (77), public (554), scripts (97), src (707) |
+| Bereiche | (Wurzel) (9), .githooks (2), .github (15), .lane-claims (65), content (837), docs (77), public (554), scripts (97), src (706) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -581,7 +581,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 57 Datei(en)
 - `.lane-claims/tasks/` — 6 Datei(en)
-- `content/narrative/contributions/` — 834 Datei(en)
+- `content/narrative/contributions/` — 833 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -635,7 +635,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
-- `src/core/governance/__tests__/` — 45 Datei(en)
+- `src/core/governance/__tests__/` — 44 Datei(en)
 - `src/core/io/` — 3 Datei(en)
 - `src/core/io/__tests__/` — 1 Datei(en)
 - `src/core/physics/` — 3 Datei(en)
@@ -748,7 +748,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 12 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
@@ -1580,7 +1580,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-09-welt-treffer-02.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-world-first-ui-01.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-09-world-first-ui-02.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-10-governance-aftercare-merge-proof.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-eine-stimme.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json` — { — gelesen: 17 Zeilen
@@ -1593,8 +1592,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-governance-task-vertrag.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18683 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3341 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18658 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3337 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1830 Zeilen
@@ -2449,11 +2448,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/roadmap-register.test.ts` — Das Register in `docs/ROADMAP.md` ist die einzige Liste offener Punkte. Damit — gelesen: 146 Zeilen
 - `src/core/governance/__tests__/scripts-libs-ci.d.ts` — Deklarationen fuer die CI-Diagnose- und Claim-Evidenz-Bibliotheken. — gelesen: 162 Zeilen
-- `src/core/governance/__tests__/scripts-libs-phase3.d.ts` — Deklarationen fuer Scope- und Reparaturplan (Phase 3). — gelesen: 146 Zeilen
+- `src/core/governance/__tests__/scripts-libs-phase3.d.ts` — Deklarationen fuer Scope- und Reparaturplan (Phase 3). — gelesen: 129 Zeilen
 - `src/core/governance/__tests__/scripts-libs-task-state.d.ts` — Deklarationen fuer den Task-Zustand (Phase 4). — gelesen: 90 Zeilen
 - `src/core/governance/__tests__/scripts-libs.d.ts` — declare module '*/process-sweep.mjs' { — gelesen: 232 Zeilen
 - `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 74 Zeilen
-- `src/core/governance/__tests__/task-contract-derive.test.ts` — Ein gemergter PR ist Nachsorge, nicht Abschluss. Die Phase muss AFTERCARE — gelesen: 31 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
 - `src/core/governance/__tests__/workflow-hardening.test.ts` — Workflows sind ausfuehrbarer Code. Zwei Grenzen werden hier strukturell — gelesen: 228 Zeilen

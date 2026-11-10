@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:268c82a9b5c58056b0e430bbdcc8197930207211e6eed998f72b4f92781ceed6",
+  "contentHash": "sha256:2df19d982857faf158175f4749258fcbdbca82719eb68a852dc9d555039cd4f9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3665,31 +3665,6 @@
       "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
-    },
-    {
-      "contributionId": "governance-aftercare-merge-proof-01",
-      "turnId": "2026-11-10T06:40Z-governance-aftercare-merge-proof",
-      "agentId": "buffy",
-      "role": "BEOBACHTER",
-      "locale": "de",
-      "slot": "documentation",
-      "function": "document",
-      "contexts": [
-        "start"
-      ],
-      "tone": "sachlich",
-      "mood": "entschlossen",
-      "relationship": "neutral",
-      "personaRefs": [
-        "rita-kern"
-      ],
-      "flags": [
-        "narrativ",
-        "rita-kern"
-      ],
-      "text": "Rita liess den Nachweis nicht aus dem Diff ableiten, sondern fuehrte die Funktion selbst aus: Ein Merge, der die Nachsorge ueberspringt, war fuer sie kein Abschluss, sondern eine offene Rechnung.",
-      "directives": [],
-      "source": "content/narrative/contributions/2026-11-10-governance-aftercare-merge-proof.json"
     },
     {
       "contributionId": "governance-eine-stimme-01",

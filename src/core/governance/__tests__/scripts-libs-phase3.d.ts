@@ -66,23 +66,6 @@ declare module '*/issue-scope.mjs' {
   export function issueBody(input: IssueBodyInput): string;
 }
 
-declare module '*/task-contract.mjs' {
-  export interface DerivedTaskState {
-    readonly status: string;
-    readonly phase: string;
-    readonly nextAction: string;
-    readonly findings: readonly unknown[];
-    readonly parallelLane: unknown;
-  }
-  export function deriveTaskState(input?: {
-    contract?: { phase?: string; findings?: readonly { status?: string }[]; nextAction?: string | null } | null;
-    claim?: unknown;
-    blockers?: readonly string[];
-    pr?: { merged?: boolean } | null;
-    ci?: { state?: string; known?: boolean; complete?: boolean; conclusion?: string } | null;
-  }): DerivedTaskState;
-}
-
 declare module '*/repair-plan.mjs' {
   export interface Resolution {
     readonly action: 'none' | 'rerun' | 'repair' | 'issue';
