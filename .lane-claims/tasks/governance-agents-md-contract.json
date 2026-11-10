@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-agents-md-contract",
+  "claimId": "lane/governance/agents-md-contract",
+  "branch": "lane/governance/agents-md-contract",
+  "baseSha": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
+  "phase": "CI_PENDING",
+  "title": "AGENTS.md Vertrag entschaerfen: Version, Gate-Anzahl, Determinismus-Ausnahme, Workflow-Liste, Root-Doku-Grenze",
+  "goal": "AGENTS.md bleibt Repo-Vertrag statt Blocker: aktuelle Version, korrekte Gate-Zahlen, enforcebare Grenzen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

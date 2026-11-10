@@ -1,11 +1,9 @@
 {
   "version": 1,
-  "base": "fda06dd709bc12f338a1b31edaf6992275207cc8",
+  "base": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
   "paths": [
-    "scripts/lib/issue-scope.mjs",
-    "scripts/pretask.mjs",
-    "scripts/promote.mjs"
+    "AGENTS.md"
   ],
-  "token": "41e98f330d4d061b5a9a84955be6965a921dd1c5ef89f096f1fa6afb761cb129",
+  "token": "fdf00f2ffc694d554a25b27f0c604e5eca9fab6f54ffd50c3ac707baaedf7ec1",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

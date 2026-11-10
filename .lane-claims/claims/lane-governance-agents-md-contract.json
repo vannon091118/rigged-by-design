@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/agents-md-contract",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agents-md-contract",
+  "baseSha": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
+  "task": "AGENTS.md Vertrag entschaerfen: Version, Gate-Anzahl, Determinismus-Ausnahme, Workflow-Liste, Root-Doku-Grenze",
+  "goal": "AGENTS.md bleibt Repo-Vertrag statt Blocker: aktuelle Version, korrekte Gate-Zahlen, enforcebare Grenzen",
+  "pathAllowlist": [
+    "AGENTS.md",
+    ".lane-claims/freeze-unlock.json",
+    ".lane-claims/claims/lane-governance-agents-md-contract.json",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "full",
+  "status": "open",
+  "createdAt": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8"
+}
