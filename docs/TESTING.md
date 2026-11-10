@@ -49,6 +49,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |
 | Stadt-Ruhetag und verzögerte Folge überstehen Save/Load ohne Tick dazwischen: Tag, Ledger, Beziehung, Chain-Frist und PRNG bleiben identisch, Miete und Echo laufen genau einmal | `city-day-closeout.test.ts`, `city-encounter-loop.test.ts` |
+| Automatischer Promote-Pfad merged einen grünen PR-Lauf auf exaktem Kopf ohne manuellen Merge | PR-Lauf und anschließender `Promote`-Lauf; `promote.mjs` prüft Pflichtstatus, Plan-Artefakt und Kopf-SHA |
 
 ## Ausführung
 

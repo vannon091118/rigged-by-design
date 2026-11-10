@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:98bf0b402ac4565a100e8fa1341ff78e6cefbf73d5691f9d42de56a9a28315f3",
+  "contentHash": "sha256:1ef248587f2efd8c2ba481f0b94ff38aa95b3fd7b39d4579bbfe656adcf6de95",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18592,6 +18592,31 @@
       "text": "Man sagt, der alte Aufseher kenne die Kreide noch. Wenn das stimmt, wird heute anders gespielt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-rumor-52.json"
+    },
+    {
+      "contributionId": "promote-automerge-01",
+      "turnId": "2026-11-10T22:30Z-promote-automerge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte den gruenen Lauf neben den offenen PR und wartete nicht auf eine Hand, die den Merge ausloeste. Der Workflow tat es selbst, auf dem exakten Kopf; erst danach notierte sie den Lauf, der den Automatikpfad belegte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-promote-automerge.json"
     },
     {
       "contributionId": "proof-before-trust-01",
