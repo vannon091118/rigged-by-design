@@ -4,7 +4,7 @@
   "claimId": "lane/governance/fight-career-docs",
   "branch": "lane/governance/fight-career-docs",
   "baseSha": "2b7bb155eaa93921e30c762e48fc2b31c1e1e63e",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Meta-Dokumente zur Kampfkarriere nachziehen (Agent 05)",
   "goal": "CHANGELOG, DEVTAGEBUCH und ROADMAP beschreiben die gemergte Hinterhof-Karriere; der Spielcode bleibt unberuehrt.",
   "pr": {
@@ -14,6 +14,6 @@
     "mergedSha": "5ec16de9270e0363c1089ef2406d41881c782073"
   },
   "findings": [],
-  "nextAction": "Merge belegen, Claim auf merged setzen, dann DONE.",
-  "revision": 2
+  "nextAction": "Aftercare: doctor und verify:all auf main, dann DONE.",
+  "revision": 3
 }
