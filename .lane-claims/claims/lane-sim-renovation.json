@@ -28,7 +28,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
   "createdAt": "8df56ffdbb245dfce0dfbd02530071240692d8f1",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "e76e14fbf8845b3ee5703de302b84806fb16d98a",
   "notes": "Stufe aus Journal-/Archivbelegen (dauerhaft, monoton, dedupliziert), Material aus world.parts, Geld HAUSKONTO -> SHOP mit Grund 'renovierung <stufe>'; keine neue Miete, kein neues Save-Feld."
 }
