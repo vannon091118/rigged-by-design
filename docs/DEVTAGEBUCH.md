@@ -19,6 +19,8 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Bewusst nicht getan:** Die Bude aus `player-jobs` bleibt unveraendert - eigener Wohnraum, keine Umdeutung zum Gewerbe und kein zweiter Kaufweg fuer denselben Gegenstand. Keine WorldState-/Grid-/Zonen-Integration, keine Renovierungsstufen und kein Geschaeftskonto: das sind Agent 08 und 09. Die Preise sind eine erste Balance und werden mit dem Betrieb justiert. Der offene Skillpunkt-Verbrauch (`spendPoint` ohne Aufrufer) bleibt liegen; die Roadmap weist ihn keinem dieser Agenten zu.
 
+**Governance-Beleg:** Die Doku-Nachsorge lief zuerst als PR #371; dessen Kopf beschnitt den gemergten Sim-Claim (Meta-Pfade aus der Allowlist entfernt), und das `claims`-Gate verlangt, dass Governance fremde Claims nur im Status aendert. Die Nachfolge-Lane `lane/governance/first-property-docs-2` (PR #372) laesst den fremden Claim unberuehrt und traegt denselben Doku-Inhalt; PR #371 ist geschlossen, sein Branch geloescht.
+
 ## 2026-11-10 - Masterplan Phase 1: Spieler-Dashboard vollstaendig (Agent 06)
 
 **Ziel:** Das Dashboard aus PR #357 sollte die im Masterplan geforderten Punkte wirklich alle tragen - inklusive Spielhistorie und Arbeitsstatistik - ohne zweiten Zustand.

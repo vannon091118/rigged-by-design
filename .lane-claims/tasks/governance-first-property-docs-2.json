@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Doku-Commit gepusht; CI Fail-Closed Gates abwarten, dann squash-mergen.",
-  "revision": 1
+  "nextAction": "PR #372 gepusht; CI Fail-Closed Gates abwarten, dann squash-mergen.",
+  "revision": 2
 }
