@@ -36,6 +36,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "b0d20e389291ce6c2adef1a15537894d4840f482"
+  "status": "merged",
+  "createdAt": "b0d20e389291ce6c2adef1a15537894d4840f482",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "2091c4f346163ec16c816e007f8185c48b789ac1",
+  "notes": "Feature-Commit 228a7af (mit PR-Vertrag afe41d4) als 2091c4f auf main; Immobilienkauf im bestehenden Ledger-, Archiv- und Charakterpfad, kein Versionssprung."
 }
