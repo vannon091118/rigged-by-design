@@ -4,7 +4,7 @@
   "claimId": "lane/sim/company-progression",
   "branch": "lane/sim/company-progression",
   "baseSha": "64ba4226046f7f0429173f257acbcbdd2fdac579",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 14: Geschaeftsprogression BUDE -> KASSE -> SAAL -> KONZERN",
   "goal": "Die vier Unternehmensstufen behalten ihre echten Bedingungen; Personal wird die fehlende Voraussetzung fuer Spielsaal und Konzern, ohne neues Save-Feld.",
   "taskType": "single",
@@ -18,5 +18,5 @@
   },
   "findings": [],
   "nextAction": "Abgeschlossen: PR #393 (7b31ba0) auf main, Claim geschlossen.",
-  "revision": 5
+  "revision": 6
 }

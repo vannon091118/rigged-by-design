@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1893ecb8aa8c416d20d42d7fc5d67f5d1277e405c49a20d40223c09534b7758c",
+  "contentHash": "sha256:fc1f47b8e2b235889cdeebf421da340d70073743bbd9e2dbef61757fed478ea9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3513,6 +3513,28 @@
       "text": "Zwei Vertraege standen noch offen, obwohl ihre Arbeit laengst gemergt war. Erst der Nachlauf machte aus dem gruenen Lauf einen Abschluss: Phase nachziehen, Beleg eintragen, den naechsten Auftrag benennen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-2b.json"
+    },
+    {
+      "contributionId": "company-progression-closeout-3",
+      "turnId": "2026-11-10T23:07Z-closeout-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zum Schluss standen zwei Zeilen auf erledigt, und beide trugen einen Merge statt einer Absicht. Die Bude hatte eine Kasse, der Saal Leute, und im Regal lag ein Beleg statt einer Erinnerung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-3.json"
     },
     {
       "contributionId": "company-progression-docs-01",
