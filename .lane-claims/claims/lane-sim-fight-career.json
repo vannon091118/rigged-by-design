@@ -30,6 +30,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "053e488b0e83c40e7f5e55bec49d7cbb82d3cdd0"
+  "status": "merged",
+  "createdAt": "053e488b0e83c40e7f5e55bec49d7cbb82d3cdd0",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "4b4ad1c8248a1839fb33965e49c68e341191b1db",
+  "notes": "Feature-Commit 7d46ff9 auf main squash-gemergt als 4b4ad1c; Meta-Dokumente folgen in einer Governance-Lane."
 }
