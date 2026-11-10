@@ -101,5 +101,7 @@ export function screenAnchorOf(point: { readonly x: number; readonly y: number }
   return {
     x: rect.left + (point.x * camera.scale.x + camera.x) * factor,
     y: rect.top + (point.y * camera.scale.y + camera.y) * factor,
+    worldX: point.x,
+    worldY: point.y,
   };
 }

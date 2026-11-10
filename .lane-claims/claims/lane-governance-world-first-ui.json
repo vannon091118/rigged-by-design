@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/world-first-ui",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/world-first-ui",
+  "baseSha": "289cff8822fd1ea8351394a959a85ddafd6b136b",
+  "task": "World-first UI: Welt als Hauptbildschirm, vier UI-Typen, kontextuelle Objektpanels, ruhigeres HUD und reduzierte Dock-Einstiege",
+  "goal": "NPC-Klick oeffnet ein verankertes Kontextpanel statt eines Vollbilds; Aktionskarte folgt der Kamera; komplexe Aktivitaeten behalten ihre Ansicht; alle Funktionen bleiben erreichbar",
+  "pathAllowlist": [
+    "src/App.tsx",
+    "src/ui/",
+    "src/styles/",
+    "src/render/floor-hit.ts",
+    "src/render/floor-input.ts",
+    "src/render/floor-view.ts",
+    "src/render/floor-stage.tsx",
+    "src/render/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/",
+    "AGENTS.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-world-first-ui.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "289cff8822fd1ea8351394a959a85ddafd6b136b"
+}

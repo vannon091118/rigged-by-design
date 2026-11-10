@@ -39,11 +39,11 @@
     "src/core/sim/narrative/types.ts",
     "src/core/sim/own-play.ts"
   ],
-  "gateProfile": "full",
   "contracts": [],
   "dependencies": [],
+  "gateProfile": "full",
   "status": "merged",
-  "createdAt": "2026-11-09T00:38:44.841Z",
   "mergedEvidence": "branch-tree-on-main",
-  "mergedSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a"
+  "mergedSha": "2cd663a5a5f50d36736f8982be93769aea5dc18a",
+  "createdAt": "6b8d209fd66769f6b1c01d415fa420f6e33f1b0b"
 }

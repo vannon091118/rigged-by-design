@@ -150,6 +150,23 @@ Dieselben Versprechen gelten für jede Figur außerhalb des Casinos: Ein Nachbar
 | Tastatur | Pfeile/WASD laufen, `Enter` stellt eine Kiste am Spieler ab oder lädt sie ab. |
 | Popup | `Escape`, Schließen-Button oder Klick auf den Hintergrund; die Simulation läuft weiter. |
 
+### Phase 2 – World-first UI (P0)
+
+Die Welt ist der permanente Hauptbildschirm. Wir unterscheiden vier UI-Typen:
+
+| Typ | Verwendung | Umsetzung |
+| --- | --- | --- |
+| **Kontextaktion** | Eine Handlung an einem Objekt | `ActionCard` am Weltanker: Reinigen, Drink zapfen, Reden, Schlichten. |
+| **Objektpanel** | Eigenschaften und mehrere Handlungen eines Objekts | `PopupShell surface="object"`: Gast-Kontextpanel und Gerätediagnose hängen am Ziel, der Floor bleibt sichtbar. |
+| **Aktivitätsansicht** | Blackjack, Poker, Roulette, Dialoge und ähnliche Erlebnisse | `PopupShell surface="activity"` mit bewusstem `VOLLBILD`-Ausstieg; die Welt bleibt als Orientierung im Hintergrund. |
+| **Globale Übersicht** | Karte, Charakter, Journal, Einstellungen | `PopupShell surface="overview"`, geöffnet über Dock oder Welt-Einstieg. |
+
+- Der Betriebs-Dock führt nur noch **BETRIEB · KARTE · DU**. Die Gästezahl im HUD öffnet die Gästeliste; der NPC-Klick öffnet das verankerte Objektpanel.
+- `screenAnchorOf()` trägt den Weltpunkt, `FloorView.project()` rechnet ihn pro Frame neu. Aktionskarte und Objektpanel bleiben bei Kamera- und Zoomfahrten am Ziel und werden an den Viewport geklemmt: links/rechts mit Rand, oben/unten mit Edge-Flip; reicht die Höhe nicht, wird gedeckelt und der Inhalt scrollt.
+- `Escape` schließt zuerst die Aktionskarte; `PopupShell` schließt das Panel und gibt den Fokus an das auslösende Element zurück. Die Welt bleibt der Rückweg.
+- Das Smartphone ist kein Pflichteingang: Bauen, Putzen, Servieren und Reisen bleiben über Welt, Dock und Betrieb erreichbar. Die Geräte-Apps sind nur Abkürzungen.
+- Abnahme: NPC auswählen, Handlung ausführen, Gerät bedienen und mit `Escape`/Schließen zum Floor zurück. Belege: `floor-anchor.test.ts` (2), `world-first-ui.test.tsx` (3), `anchor-layout.test.ts` (13), `small-screen-layout.test.ts` (6) und `small-screen-acceptance.test.tsx` (4). Der volle Ablauf läuft bei 360×640 und 320 px; die Aktionskarte bleibt an beiden Rändern im Viewport. Die sichtbare Pixelprüfung im echten Browser bleibt offen.
+
 ### Prüfungen
 
 - `pnpm run verify:all` ist fail-closed und rein lesend: Lint, LOC, Typecheck, Testvertrag, tote Exporte, Doku-Gate, Tree-Gate, Redundanz-Gate, Asset-Manifest, Vitest, Audit und Build. Repariert wird ausschliesslich in `pnpm run fix`.
@@ -175,7 +192,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-10: **825/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-10: **829/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
 `guest-voice-high`) mit mindestens 50. Die Pool-Mindestgroesse ist damit an allen 13
@@ -239,7 +256,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 825/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 829/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |

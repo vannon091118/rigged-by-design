@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T05:05Z-world-first-ui-modular",
+  "contributionId": "world-first-ui-modular-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita zerlegte die Oberflaeche nicht in kleinere Fenster, sondern in kleinere Verantwortungen: Wer einen Anker projiziert, besitzt ihn auch. Danach war die Karte kleiner als ihr Budget und die Welt wieder das, was sie sein sollte - der Hauptbildschirm.",
+  "directives": []
+}

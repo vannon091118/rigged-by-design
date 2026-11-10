@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T23:58Z-world-first-ui-02",
+  "contributionId": "world-first-ui-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": [
+    "watch"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Rand bleibt die Karte, wo das Objekt ist: Sie rutscht zur Seite, klappt ueber den Anker, wenn unten kein Platz mehr ist, und laesst den Floor im Blick. Auch auf dem schmalen Bildschirm fuehrt derselbe Weg zurueck.",
+  "directives": []
+}
