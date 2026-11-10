@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-phase0-2-closeout",
+  "claimId": "lane/governance/phase0-2-closeout",
+  "branch": "lane/governance/phase0-2-closeout",
+  "baseSha": "75f1b48068f799066f73d3c4fec86563c5a7b40f",
+  "phase": "DONE",
+  "title": "Phase 0-2 Closeout: gemergte Governance- und Pixi-Lanes auf DONE ziehen",
+  "goal": "Task-Vertraege und Claims der bereits gemergten Phase-0/1/2-Lanes auf den belegten Endzustand ziehen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Abgeschlossen: Die Closeout-PR registriert sechs gemergte Lanes mit Task DONE und Claim merged.",
+  "revision": 1
+}

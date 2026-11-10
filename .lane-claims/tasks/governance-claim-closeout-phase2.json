@@ -4,11 +4,11 @@
   "claimId": "lane/governance/claim-closeout-phase2",
   "branch": "lane/governance/claim-closeout-phase2",
   "baseSha": "18843f7cc187dd128746299dd1df2f22a7d7c941",
-  "phase": "READY",
+  "phase": "AFTERCARE",
   "title": "Claim-Closeout: Phase-2-Lane als gemergt registrieren",
   "goal": "Der mit 18843f7 gemergte Phase-2-Claim steht als merged im Register, ohne die Allowlist einer anderen Lane zu erweitern.",
   "pr": null,
   "findings": [],
-  "nextAction": "Closeout committen, PR erzeugen; CI prueft den Register-Nachtrag.",
-  "revision": 1
+  "nextAction": "Nachsorge: PR #332 ist als 1f13f42 auf main; Vertrag auf DONE ziehen.",
+  "revision": 2
 }

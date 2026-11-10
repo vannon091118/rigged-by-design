@@ -4,7 +4,7 @@
   "claimId": "lane/governance/pixel-pipeline-closeout",
   "branch": "lane/governance/pixel-pipeline-closeout",
   "baseSha": "1890f6da55a372e17813c1afa67353f0ad0988e4",
-  "phase": "IMPLEMENTING",
+  "phase": "AFTERCARE",
   "title": "Pixi: Gäste als Sprite-Modelle aus dem Charakter-Atlas",
   "goal": "Den Pixi-Renderstand gegen den aktuellen main-Stand führen, die generierten Doku-Artefakte konsistent halten und den PR über die Fail-Closed-Gates mergen.",
   "pr": {
@@ -20,6 +20,6 @@
       "summary": "Gate docs war rot, weil docs/INVENTORY.md vor der Claim-Umbenennung erzeugt wurde und 2368 statt 2369 Dateien nannte."
     }
   ],
-  "nextAction": "Inventur regenerieren, Docs-Gate lokal prüfen, committen, pushen und die Fail-Closed-Gates auf dem neuen Kopf abwarten.",
-  "revision": 1
+  "nextAction": "Nachsorge: PR #339 ist als 2b4b4df auf main; Pixi-Inhalt und Test auf main verifiziert; Vertrag auf DONE ziehen.",
+  "revision": 2
 }

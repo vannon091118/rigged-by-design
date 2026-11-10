@@ -4,7 +4,7 @@
   "claimId": "lane/governance/derivetaskstate-fix",
   "branch": "lane/governance/derivetaskstate-fix",
   "baseSha": "d169a5af9e51abca5fbd2871c6466fc8188f6dbd",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "deriveTaskState: gemergter PR fuehrt zu AFTERCARE statt DONE",
   "goal": "Gemergter PR setzt Phase auf AFTERCARE (nicht DONE), damit Nachsorge als eigenstaendiger Zustand durchlaufen wird.",
   "pr": {
@@ -13,6 +13,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "CI auf diesem Kopf abwarten; bei gruen squash-mergen, danach AFTERCARE und DONE.",
-  "revision": 4
+  "nextAction": "Nachsorge: PR #335 ist als 2c90b8e auf main; Vertrag auf DONE ziehen.",
+  "revision": 5
 }

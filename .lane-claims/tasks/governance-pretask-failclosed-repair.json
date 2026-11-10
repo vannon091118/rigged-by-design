@@ -4,7 +4,7 @@
   "claimId": "lane/governance/pretask-failclosed-repair",
   "branch": "lane/governance/pretask-failclosed-repair",
   "baseSha": "3594ce4c3c49fa623d47ed705d37b8cfb002383f",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Governance Fail-Closed-Reparatur",
   "goal": "Pretask/promote fail-closed (governance/blocked + UNKNOWN), onTemplate-Stub verdrahten, Aftercare-Phase vor Merge ermoeglichen, Docs-Reconciliation, lokale Testumgebung.",
   "pr": {
@@ -13,6 +13,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "PR #334 auf gruenem Kopf squash-mergen; danach den main-Nachlauf pruefen.",
-  "revision": 8
+  "nextAction": "Nachsorge: PR #334 ist als 1890f6d auf main; Vertrag auf DONE ziehen.",
+  "revision": 9
 }

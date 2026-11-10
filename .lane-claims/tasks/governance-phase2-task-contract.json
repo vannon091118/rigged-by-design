@@ -4,7 +4,7 @@
   "claimId": "lane/governance/phase2-task-contract",
   "branch": "lane/governance/phase2-task-contract",
   "baseSha": "ef7e0f3a2661aa9d64ebbd364ebfbae9670bb420",
-  "phase": "CI_PENDING",
+  "phase": "AFTERCARE",
   "title": "Phase 2: Task-Vertrag, PRETASK und lokaler Ablauf",
   "goal": "Der Task-Vertrag ist die Wahrheit fuer Phase, offene Befunde und naechste Aktion; pretask, turn:finish, ci-plan und promote validieren ihn gemeinsam. Der lokale Turn macht Preflight ohne Tests und Typecheck, die CI prueft den exakten Kopf.",
   "pr": null,
@@ -22,6 +22,6 @@
       "summary": "Task-Vertraege sind Lane-Werkzeug: CLAIM_TOOLING_PATHS, Kollisions- und Staging-Logik behandeln sie ohne Allowlist-Erweiterung."
     }
   ],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 2
+  "nextAction": "Nachsorge: PR #330 ist als 18843f7 auf main; Vertrag auf DONE ziehen.",
+  "revision": 3
 }
