@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-machine-hall-docs",
+  "claimId": "lane/governance/machine-hall-docs",
+  "branch": "lane/governance/machine-hall-docs",
+  "baseSha": "8997d5ce933b827786d6c09921e2912c64e2b742",
+  "phase": "MERGE_PENDING",
+  "title": "Agent 10: Meta-Doku und Claim-Abschluss zur Spielhalle",
+  "goal": "Agent 10 in Changelog, Devtagebuch und Roadmap belegen, den Feature-Claim mit Squash-SHA schliessen und die Lane danach aufraeumen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen, CI abwarten, squash-mergen.",
+  "revision": 1
+}

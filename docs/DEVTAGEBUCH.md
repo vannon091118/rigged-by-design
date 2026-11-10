@@ -3593,3 +3593,40 @@ Charakterfenster-Tests; `verify:all` Exit 0 lokal und im CI-Gate.
 ist aus Belegen reproduzierbar), keine zweite Miete neben `upkeep.ts`, keine
 Kreditbuchung wie beim Verbrauchsmaterial, keine Aenderung an den Hot Zones
 `store/world-store.ts` und `store/venue-commands.ts`.
+
+## 2026-11-10 - Spielhalle und Wartung
+
+**Ziel.** Der Automatenbetrieb der eigenen Immobilie sollte vollstaendig sein:
+kaufen, transportieren, platzieren, konfigurieren, warten, reparieren, Gaeste
+empfangen - und die Geldfluesse getrennt halten. Vor dem Bau wurde geprueft,
+was davon schon existiert; es fehlte genau ein Verb.
+
+**Bestand (nicht nachgebaut).** Kauf und Kistenlauf ueber `offers`/`deliveries`,
+Tragen und Abstellen ueber die vorhandenen Venue-Commands, Konfiguration ueber
+`installMod`, `upgradeReels`, `setBaseBet`, `applySlotOdds` und den
+Plinko-Editor, Reparatur ueber `actions.repair` (Ersatzteil + Hauskonto),
+Gaeste ueber `guest-play`, Trennung von `HAUSKONTO` und `PORTEMONNAIE` ueber
+`money.ts`. Das Wort "Wartung" stand bisher nur im HUD, ohne Handlung.
+
+**Umsetzung.**
+
+- `src/core/sim/machine-hall.ts`: Halle = Furniture der eigenen Flaeche mit
+  `gameId` aus `propertyWorld`; Zustandsbander FIT/WORN/BROKEN aus dem
+  vorhandenen `condition`/`damaged`, Wartungsliste nach Zustand sortiert.
+- `maintainMachine`: prueft Eigentum, Flaeche, Defekt, Zustand und Deckung,
+  bucht `HAUSKONTO -> SHOP` mit Grund `wartung <label>`, hebt den Zustand um 20
+  Punkte, verbraucht kein Ersatzteil und schreibt einen `WARTUNG`-Beleg.
+- Sicht und Knopf im bestehenden Charakterfenster (`ui/career-property.tsx`),
+  Einstieg ueber `worldStore.city({ kind: 'maintainMachine' })` - derselbe
+  Immobilien-Pfad wie Kauf und Renovierung, ohne neue Store-Flaeche.
+
+**Pruefungen.** `machine-hall.test.ts` (8 Tests: Eigentum, Flaeche, Buchung ohne
+Ersatzteil, Wallet unberuehrt, Deckel bei 100, Defekt fuehrt zur Reparatur,
+fehlende Deckung, Sortierung/Auslastung), dazu Charakterfenster-, Eigentums- und
+Renovierungstests; `verify:all` Exit 0 lokal und im CI-Gate.
+
+**Bewusst nicht getan.** Kein zweiter Wartungszaehler (der Geraetezustand
+zaehlt), kein neues Save-Feld, keine Aenderung an Kauf, Transport, Platzierung,
+Konfiguration oder Reparatur, keine zweite Geldbuchtung neben Hauskonto und
+Wallet, keine Aenderung an den Hot Zones `store/world-store.ts` und
+`store/venue-commands.ts`.

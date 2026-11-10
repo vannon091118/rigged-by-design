@@ -27,7 +27,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
   "createdAt": "2766d2b91936ed2ebb1c2034a44433aea1de282b",
-  "notes": "Halle = propertyWorld-Furniture mit gameId, Zustand = vorhandenes condition/damaged; Wartung bucht HAUSKONTO -> SHOP mit Grund 'wartung <label>', verbraucht kein Ersatzteil; Kauf, Transport, Platzierung, Konfiguration, Reparatur und Hausgeld/Wallet-Trennung bleiben unveraendert."
+  "notes": "Halle = propertyWorld-Furniture mit gameId, Zustand = vorhandenes condition/damaged; Wartung bucht HAUSKONTO -> SHOP mit Grund 'wartung <label>', verbraucht kein Ersatzteil; Kauf, Transport, Platzierung, Konfiguration, Reparatur und Hausgeld/Wallet-Trennung bleiben unveraendert.",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "8997d5ce933b827786d6c09921e2912c64e2b742"
 }
