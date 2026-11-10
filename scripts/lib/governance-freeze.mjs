@@ -5,7 +5,8 @@
  * Freigabe: jede inhaltliche Aenderung an `.github/`, `.githooks/`, `scripts/`,
  * `.lane-claims/` oder an den Governance-Vertraegen braucht eine Freigabe, die
  * nur mit PIN entsteht (`scripts/freeze-unlock.mjs`). Ohne Freigabe blockiert
- * der Pre-Commit-Hook lokal und der Plan-Job in CI.
+ * der Pre-Commit-Hook lokal, und der Plan-Job in CI bleibt rot; den Befund
+ * traegt ein BLOCKED-Issue. Der Branch wird nie geloescht.
  *
  * Zwei Grenzen sind bewusst:
  * - Mechanische Marker (`<!-- rbd-doc: ... -->`, Versionszeile) zaehlen nicht

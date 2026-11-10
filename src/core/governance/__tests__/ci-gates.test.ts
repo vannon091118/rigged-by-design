@@ -4,7 +4,8 @@
  *
  * Ebene A des Main-Gates: der Zustand entscheidet, welche Gates laufen, und der
  * Pflichtstatus darf nur gruen sein, wenn das Required-Set wirklich gelaufen
- * ist. Die Workflows werden als YAML-Baum geprueft, nicht als Zeichenkette.
+ * ist und jeder Job das Ergebnis hat, das sein Zustand vorsieht. Der Workflow
+ * wird als YAML-Baum geprueft, nicht als Zeichenkette.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -14,6 +15,7 @@ import { parse } from 'yaml';
 interface Step {
   readonly name?: string;
   readonly run?: string;
+  readonly uses?: string;
   readonly if?: string;
   readonly id?: string;
   readonly env?: Readonly<Record<string, string>>;
@@ -24,27 +26,17 @@ interface Job {
   readonly name?: string;
   readonly needs?: string | readonly string[];
   readonly outputs?: Readonly<Record<string, string>>;
-  readonly uses?: string;
   readonly permissions?: Readonly<Record<string, string>>;
-  readonly 'timeout-minutes'?: number;
   readonly if?: string;
   readonly strategy?: { readonly matrix?: string; readonly 'fail-fast'?: boolean };
   readonly steps?: readonly Step[];
-  readonly with?: Readonly<Record<string, unknown>>;
 }
 
 interface Workflow {
   readonly on?: {
-    readonly pull_request?: { readonly branches?: readonly string[]; readonly types?: readonly string[] };
-    readonly push?: { readonly branches?: readonly string[]; readonly tags?: readonly string[] };
-    readonly workflow_run?: {
-      readonly workflows?: readonly string[];
-      readonly types?: readonly string[];
-      readonly branches?: readonly string[];
-    };
-    readonly workflow_dispatch?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
-    readonly workflow_call?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
-    readonly schedule?: readonly { readonly cron: string }[];
+    readonly pull_request?: { readonly branches?: readonly string[] };
+    readonly push?: { readonly branches?: readonly string[] };
+    readonly workflow_dispatch?: unknown;
   };
   readonly permissions?: Readonly<Record<string, string>>;
   readonly jobs?: Readonly<Record<string, Job>>;
@@ -55,14 +47,13 @@ const workflow = (name: string): Workflow =>
 const steps = (flow: Workflow, job: string): readonly Step[] => flow.jobs?.[job]?.steps ?? [];
 const stepWith = (flow: Workflow, job: string, needle: string): Step | undefined =>
   steps(flow, job).find((step) => step.run?.includes(needle));
-const stepIndex = (flow: Workflow, job: string, needle: string): number =>
-  steps(flow, job).findIndex((step) => step.run?.includes(needle) ?? false);
 
 describe('Main-Gate', () => {
   it('prueft granular: ein Status je Gate und ein Aggregat als Pflichtstatus', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
-    expect(ci.on?.push?.branches).toEqual(['**']);
+    // Nur ein Push auf main behaelt den Vollauf; Lanes laufen ueber ensure-pr.
+    expect(ci.on?.push?.branches).toEqual(['main']);
     expect(ci.permissions?.contents).toBe('read');
 
     // Der Pflichtstatus bleibt genau einer: er fuehrt nur Ergebnisse zusammen.
@@ -84,13 +75,30 @@ describe('Main-Gate', () => {
     expect(ci.jobs?.light?.if).toContain("state == 'LIGHT'");
     expect(stepWith(ci, 'light', 'run-pipeline.mjs')?.run).toContain('--profile=light');
 
-    // Ein Push mit offenem PR endet vor den Gates; der PR-Lauf ist die Wahrheit.
-    expect(stepWith(ci, 'plan', 'gh pr list --head')?.id).toBe('dedupe');
+    // Ein Lane-Push startet keinen zweiten Vollauf; der PR-Lauf ist die Wahrheit.
+    expect(stepWith(ci, 'plan', 'gh pr list --head')).toBeUndefined();
     const control = steps(ci, 'plan').find((step) => step.name === 'Kontrollebene aus der Basis');
-    expect(control?.run).toMatch(/MAIN_REF[\s\S]*refs\/heads\/main/);
+    expect(control?.env?.BASE_SHA).toContain('github.event.pull_request.base.sha');
+    expect(control?.run).not.toContain('github.event.before');
+    expect(control?.run).toContain("'HEAD^'");
     // Kontrollebene == Pruefobjekt ist ein echter No-op, kein harter Abbruch.
     expect(control?.run).toContain('noop=true');
     expect(control?.run).toContain('independent=false');
+
+    // Der Freeze-Checker kommt aus der Basis, das Pruefobjekt bleibt der Kandidat.
+    const freeze = steps(ci, 'plan').find((step) => step.name === 'Governance-Freeze');
+    expect(freeze?.env?.CONTROL_SCRIPTS).toContain('steps.control.outputs.scripts');
+    expect(freeze?.env?.RBD_ROOT).toContain('steps.control.outputs.root');
+    expect(freeze?.env?.GH_TOKEN).toBeUndefined();
+    expect(freeze?.run).toContain('$CONTROL_SCRIPTS/verify-governance-freeze.mjs');
+    expect(freeze?.run).not.toContain('gh api -X DELETE');
+
+    // Ein Verstoss wird ein BLOCKED-Issue; der Branch bleibt bestehen.
+    const issue = ci.jobs?.['governance-issue'];
+    expect(issue?.if).toContain("needs.plan.outputs.freeze == 'corruption'");
+    expect(issue?.permissions?.issues).toBe('write');
+    expect(issue?.permissions?.contents).toBe('read');
+    expect(ci.jobs?.plan?.permissions?.contents).toBe('read');
 
     const plan = ci.jobs?.plan;
     // Die Basis-Kontrollebene liefert die Metadaten erst nach dem Merge;
@@ -101,8 +109,11 @@ describe('Main-Gate', () => {
     expect(plan?.outputs?.noop).toBe('${{ steps.compat.outputs.noop }}');
     expect(plan?.outputs?.independent).toBe('${{ steps.control.outputs.independent }}');
 
-    // Der Plan liest den echten Diff: Basis und Kopf aus dem Event.
-    expect(stepWith(ci, 'plan', 'github.event.pull_request.base.sha')?.id).toBe('range');
+    // Der Plan liest den echten Diff: Basis und Kopf aus der Kontrollebene.
+    const range = steps(ci, 'plan').find((step) => step.id === 'range');
+    expect(range?.env?.CONTROL_BASE).toContain('steps.control.outputs.base');
+    expect(range?.env?.CONTROL_HEAD).toContain('steps.control.outputs.head');
+
     const gates = stepWith(ci, 'plan', 'ci-plan.mjs');
     expect(gates?.id).toBe('gates');
     expect(gates?.run).toContain('--event=');
@@ -115,6 +126,7 @@ describe('Main-Gate', () => {
     const validation = stepWith(ci, 'plan', 'process.env.REQUIRED');
     expect(validation?.env?.STATE).toBe('${{ steps.compat.outputs.state }}');
     expect(validation?.env?.REQUIRED).toBe('${{ steps.compat.outputs.required }}');
+    expect(validation?.run).toContain('required.length === 0');
 
     // Impact waehlt lange Nachweise auf dem exakten PR-Kopf, nicht auf main.
     expect(ci.jobs?.long?.strategy?.matrix).toContain('needs.plan.outputs.long_matrix');
@@ -122,7 +134,9 @@ describe('Main-Gate', () => {
     const longStep = stepWith(ci, 'long', 'run-selected-tests.mjs');
     expect(longStep?.env?.RBD_TEST_FILES).toBe('${{ matrix.file }}');
     expect(longStep?.env?.RBD_NARRATIVE_LONGRUN).toBe('1');
-    expect(steps(ci, 'long')[0]?.with?.ref).toContain('github.event.pull_request.head.sha');
+    for (const job of ['plan', 'gate', 'light', 'long', 'claims', 'commitmsg']) {
+      expect(steps(ci, job)[0]?.with?.ref).toContain('github.event.pull_request.head.sha');
+    }
 
     // Claim-Sperre nur mit echtem PR-Diff; Commit-Notes nur auf main.
     expect(stepWith(ci, 'claims', 'verify-lane-claims.mjs --ci')).not.toBeUndefined();
@@ -130,87 +144,17 @@ describe('Main-Gate', () => {
     expect(ci.jobs?.commitmsg?.if).toContain("state == 'MAIN'");
   });
 
-  it('fuehrt die Zustands-Aggregate getrennt zusammen', () => {
-    const run = stepWith(workflow('ci-verify.yml'), 'verify', 'Required-Set muss laufen')?.run ?? '';
-    expect(run).toContain('PR|MAIN|MANUAL|UNKNOWN');
-    expect(run).toMatch(/GATES.*=.*"success"/);
-    expect(run).toContain('NOOP');
-    expect(run).toContain('"$NOOP" = "true"');
-    expect(run).toContain('"$LIGHT" = "success"');
+  it('fuehrt die Zustands-Aggregate strikt zusammen', () => {
+    const run = stepWith(workflow('ci-verify.yml'), 'verify', 'required ist leer')?.run ?? '';
+    // Jeder Job muss genau das Ergebnis haben, das sein Zustand vorsieht.
+    expect(run).toContain('gleich "gate" "$GATES" success');
+    expect(run).toContain('gleich "light" "$LIGHT" skipped');
+    expect(run).toContain('gleich "claims" "$CLAIMS" success');
+    expect(run).toContain('gleich "commitmsg" "$COMMITMSG" success');
+    // Lange Nachweise sind bei Impact-Pflicht success, sonst skipped.
+    expect(run).toContain('"$LONG_COUNT" != "0"');
+    expect(run).toContain('gleich "long" "$LONG" success');
     expect(run).toContain('"$INDEPENDENT" != "true"');
     expect(run).toContain('exit "$fail"');
-  });
-
-  it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
-    const release = workflow('auto-version-release.yml');
-    expect(release.on?.workflow_run?.workflows).toEqual(['CI Verify']);
-    expect(release.on?.workflow_run?.types).toEqual(['completed']);
-    expect(release.on?.workflow_run?.branches).toEqual(['main']);
-    expect(release.on?.push).toBeUndefined();
-
-    const condition = release.jobs?.release?.if ?? '';
-    expect(condition).toContain("workflow_run.conclusion == 'success'");
-    expect(condition).toContain("workflow_run.event == 'push'");
-    expect(condition).toContain("workflow_run.head_branch == 'main'");
-
-    const verified = stepWith(release, 'release', 'npm run verify:release');
-    expect(verified?.if).toContain("github.event_name == 'workflow_dispatch'");
-    expect(stepIndex(release, 'release', 'ci-tag-release.mjs'))
-      .toBeGreaterThan(stepIndex(release, 'release', 'npm run verify:release'));
-
-    // APK-Relevanz kommt aus dem Produkt-Impact, nicht aus `scripts/`.
-    expect(stepWith(release, 'release', 'release-impact.mjs')?.id).toBe('relevance');
-    const tagStep = stepWith(release, 'release', 'ci-tag-release.mjs');
-    expect(tagStep?.run).toContain('--github-output');
-    expect(tagStep?.env?.RELEASE_SHA).toContain('github.event.workflow_run.head_sha');
-  });
-
-  it('delegiert die langen Nachweise an einen eigenen Workflow', () => {
-    const long = workflow('long-checks.yml');
-    expect(long.on?.workflow_dispatch?.inputs?.soak_ticks?.default).toBe('100000');
-    expect(long.permissions?.contents).toBe('read');
-    expect(long.jobs?.verify?.name).toBe('Long Verify');
-    expect(stepWith(long, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
-    const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
-    expect(statistics?.run).toContain('poker-distribution.test.ts');
-    expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe("${{ inputs.soak_ticks || '100000' }}");
-    expect(long.on?.schedule?.[0]?.cron).toBe('0 3 * * 1');
-    expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
-  });
-
-  it('loescht gemergte Wegwerf-Branches und schont geschuetzte Branches', () => {
-    const cleanup = workflow('pr-cleanup.yml');
-    expect(cleanup.on?.pull_request?.types).toEqual(['closed']);
-    expect(cleanup.permissions?.contents).toBe('write');
-
-    const job = cleanup.jobs?.['delete-branch'];
-    expect(job?.name).toBe('Gemergten Head-Branch loeschen');
-    expect(job?.if).toContain('github.event.pull_request.merged == true');
-    expect(job?.if).toContain('keep-branch');
-    expect(job?.if).toContain("github.event.pull_request.head.ref != 'main'");
-    expect(job?.if).toContain("github.event.pull_request.head.ref != 'integration'");
-    expect(job?.if).toContain('github.event.pull_request.head.repo.full_name == github.repository');
-    const step = steps(cleanup, 'delete-branch')[0];
-    expect(step?.run).toContain('gh api -X DELETE');
-    expect(step?.run).toContain('repos/${GITHUB_REPOSITORY}/git/refs/heads/${BRANCH}');
-    expect(step?.run).toContain('keep-branch');
-  });
-
-  it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {
-    const release = workflow('auto-version-release.yml');
-    const apkJob = release.jobs?.apk;
-    expect(apkJob?.uses).toBe('./.github/workflows/build-apk.yml');
-    expect(apkJob?.with?.tag).toBe('${{ needs.release.outputs.tag }}');
-    expect(apkJob?.with?.skip_verify).toBe(true);
-
-    const apk = workflow('build-apk.yml');
-    expect(apk.on?.workflow_call?.inputs?.skip_verify?.type).toBe('boolean');
-    expect(apk.on?.push?.tags).toEqual(['v*.*.*']);
-    expect(apk.jobs?.apk?.['timeout-minutes']).toBe(40);
-    expect(stepWith(apk, 'apk', 'npm run verify:release')?.if).toContain('inputs.skip_verify');
-  });
-
-  it('startet den Verify-Workflow auch von Hand', () => {
-    expect(workflow('ci-verify.yml').on?.workflow_dispatch).not.toBeUndefined();
   });
 });

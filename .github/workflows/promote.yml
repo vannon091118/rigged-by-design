@@ -62,6 +62,10 @@ jobs:
           PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha || '' }}
+          # Der gruene Pflichtstatus muss zu genau diesem Lauf und dieser Basis
+          # gehoeren; ein aelterer Push-Lauf auf demselben Kopf zaehlt nicht.
+          CI_RUN_ID: ${{ github.event.workflow_run.id || '' }}
+          BASE_SHA: ${{ github.event.workflow_run.pull_requests[0].base.sha || '' }}
           HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name || '' }}
           PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number || inputs.pr || '' }}
           CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}

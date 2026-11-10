@@ -33,6 +33,10 @@ const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
 const headSha = process.env.HEAD_SHA ?? '';
 const mode = process.env.MODE ?? '';
+// Der Pflichtstatus zaehlt nur, wenn er aus diesem workflow_run stammt und
+// gegen dieselbe Basis lief. Beide Angaben kommen aus dem Ereignis.
+const ciRunId = process.env.CI_RUN_ID ?? '';
+const baseSha = process.env.BASE_SHA ?? '';
 const repo = process.env.GITHUB_REPOSITORY ?? '';
 const owner = repo.split('/')[0] ?? '';
 // Nur ein voller SHA ist die Identitaet, die die CI geprueft hat. Ein fehlender
@@ -159,6 +163,18 @@ function openPr(head = branch) {
   return prInfo(raw)?.isCrossRepository === false ? raw : '';
 }
 
+/** Check-Runs des geprueften Kopfes; `null` heisst nicht lesbar. */
+function checkRunsOfHead() {
+  if (!FULL_SHA.test(headSha)) return null;
+  const raw = gh(['api', `repos/${repo}/commits/${headSha}/check-runs?per_page=100`, '--jq', '.check_runs']);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 /** PR-Status gegen den geprueften Commit und die eigene Herkunft pruefen. */
 function verifiedPr(number) {
   const info = prInfo(number);
@@ -168,6 +184,9 @@ function verifiedPr(number) {
     headRepo: process.env.HEAD_REPO ?? '',
     branch,
     headSha,
+    baseSha,
+    ciRunId,
+    checkRuns: checkRunsOfHead(),
     pr: info,
   });
   if (!check.ok) {

@@ -17,7 +17,7 @@ Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Ends
 
 Die Steuerungsebene ist gesperrt, bis **Stadt und Core-Loop stehen und mindestens § Progression-Zweige vollständig sind**. Gesperrt sind `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` und die Governance-Verträge; frei bleiben `src/`, `content/`, `public/` und Tests.
 
-Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, entfernt die CI den Lane-Branch mit `Verdacht auf unautorisierte Korruption`.
+Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, bleibt der Lauf rot und die CI legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`); der Branch bleibt bestehen.
 
 Aufhebung nur auf ausdrückliche Anweisung des Owners; danach gilt der Freeze weiter. Der Fokus bis dahin: Stadt, Core-Loop, Progression, Content und Baustein-Pools — keine Governance-Arbeit.
 
