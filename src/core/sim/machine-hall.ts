@@ -13,6 +13,7 @@ import type { Ledger } from '../economy/ledger';
 import { toVCString, type VaCoinMicro } from '../economy/vacoin';
 import { recordJournal } from './journal';
 import { HAUSKONTO, SHOP } from './money';
+import { maintenanceGain } from './floor-work';
 import { propertyWorld } from './property';
 import { TX_PREFIX } from './tx-reasons';
 import type { Furniture, WorldState } from './types';
@@ -99,7 +100,7 @@ function hallMachine(world: WorldState, item: Furniture, house: VaCoinMicro): Ha
         ? 'In Ordnung - keine Wartung noetig.'
         : house < cost
           ? `Betriebskonto zu niedrig: ${toVCString(cost)} noetig.`
-          : `Wartung hebt den Zustand um ${MAINTENANCE_GAIN} Punkte, ohne Ersatzteil.`,
+          : `Wartung hebt den Zustand um ${maintenanceGain(world)} Punkte, ohne Ersatzteil.`,
   };
 }
 
@@ -160,7 +161,8 @@ export function maintainMachine(
   if (balance < cost) throw new Error(`Betriebskonto zu niedrig: ${toVCString(cost)} noetig, ${toVCString(balance)} vorhanden.`);
   const before = Math.round(item.condition);
   ledger.transfer(HAUSKONTO, SHOP, cost, `${TX_PREFIX.MAINTENANCE}${item.label}`, tick);
-  item.condition = Math.min(100, item.condition + MAINTENANCE_GAIN);
+  // Agent 11: Technik hebt die Wartung; der Preis bleibt derselbe.
+  item.condition = Math.min(100, item.condition + maintenanceGain(world));
   recordJournal(world, {
     kind: 'SYSTEM',
     subject: MAINTENANCE_SUBJECT,

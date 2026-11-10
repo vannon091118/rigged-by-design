@@ -3630,3 +3630,38 @@ zaehlt), kein neues Save-Feld, keine Aenderung an Kauf, Transport, Platzierung,
 Konfiguration oder Reparatur, keine zweite Geldbuchtung neben Hauskonto und
 Wallet, keine Aenderung an den Hot Zones `store/world-store.ts` und
 `store/venue-commands.ts`.
+
+## 2026-11-10 - Arbeitsqualitaet auf dem Floor
+
+**Ziel.** Der Spieler bleibt Betreiber am Boden: bedienen, reparieren, reinigen,
+Kasse, Sicherheit - und seine Faehigkeiten sollen die Arbeitsqualitaet tragen,
+ohne dass ein zweiter Faehigkeits- oder Wartungszaehler entsteht.
+
+**Bestand (nicht nachgebaut).** Bedienen und Schlichten laufen ueber
+`charisma-talk`/`desk-service`, die Kasse ueber den Desk, Sicherheit ueber
+`disputes`/`brawl-combat`, Reparieren ueber `actions.repair`, Bewegung ueber
+`playerStepsPerTick`. Charisma, Speed, Brawl und Ausdauer hatten bereits Leser;
+Wahrnehmung und Technik standen im Charakterfenster als "noch ohne Wirkung".
+
+**Umsetzung.**
+
+- `src/core/sim/floor-work.ts`: fuenf Rollen mit Attribut, Stufe, Qualitaet
+  (50 + 5 je Stufe, 0..100) und der konkreten Wirkung; Anzeige und Aktion lesen
+  dieselbe Formel.
+- Wahrnehmung: `cleaningArea` weitet die Reinigung ab Stufe 4 auf Radius 2;
+  `actions.cleanTile` reinigt die Nachbarn und bucht je schmutziger Kachel -
+  Uebung spart Wege, nicht Geld.
+- Technik: `maintenanceGain` hebt die Wartung aus Agent 10 von +20 auf +2 je
+  Stufe, gedeckelt bei +40; Preis und Ersatzteil der Reparatur bleiben gleich.
+- Sicht in `ui/career-floor.tsx` im vorhandenen Charakterfenster; Glueck bleibt
+  ohne Leser und wird nicht mit einer Scheinwirkung belegt.
+
+**Pruefungen.** `floor-work.test.ts` (7 Tests: Qualitaetsformel, Reinigungsradius
+und Deckel, Buchung je Kachel, Wartungsgewinn mit Deckel, unveraenderte
+Reparatur, fuenf Rollen), dazu Karriere-, Wartungs- und Charakterfenster-Tests;
+`verify:all` Exit 0 lokal und im CI-Gate.
+
+**Bewusst nicht getan.** Kein zweiter Faehigkeits- oder Wartungszaehler, kein
+neues Save-Feld, keine Aenderung an Bedienen, Kasse, Sicherheit oder Reparatur,
+keine Wirkung fuer Glueck (weiterhin ausgewiesen als "noch ohne Wirkung"), keine
+Aenderung an den Hot Zones `store/world-store.ts` und `store/venue-commands.ts`.

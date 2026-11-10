@@ -258,7 +258,11 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 855/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+<<<<<<< HEAD
+| P-13 | 857/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+=======
+| P-13 | 854/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+>>>>>>> origin/main
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -387,6 +391,7 @@ Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Ren
   *Stand 2026-11-10:* umgesetzt in `core/sim/machine-hall.ts`: die Halle liest die Automaten der eigenen Flaeche ueber `propertyWorld` (Agent 08) und den vorhandenen Zustand `condition`/`damaged`; Wartung ist der zweite Verb neben der Reparatur (`HAUSKONTO -> SHOP`, Grund `wartung <label>`, kein Ersatzteil, +20 Zustand), Sicht und Knopf im bestehenden Charakterfenster ueber `worldStore.city({ kind: 'maintainMachine' })`. Kauf, Transport, Platzierung, Konfiguration und Reparatur waren bereits vorhanden und bleiben unveraendert; Hausgeld/Wallet-Trennung per Test belegt. Kein neues Save-Feld. Belege: `machine-hall.test.ts` (8), `player-dashboard.test.tsx`.
 - **Agent 11 – Spieler als aktiver Casino-Betreiber:**
   Aktive Floor-Rolle des Spielers bleibt erhalten (Bedienen, Reparieren, Reinigen, Kasse, Sicherheit). Koppelung von Fähigkeiten an Arbeitsqualität, Betriebsablauf und wirtschaftliches Ergebnis. Personal entlastet schrittweise, ersetzt den Spieler aber nicht vollständig.
+  *Stand 2026-11-10:* umgesetzt in `core/sim/floor-work.ts`: fuenf Floor-Rollen mit Attribut, Stufe und Wirkung im bestehenden Charakterfenster (`ui/career-floor.tsx`); Wahrnehmung weitet die Reinigung (`actions.cleanTile` reinigt im Radius, bezahlt je Kachel), Technik hebt den Wartungsgewinn aus Agent 10 (+2 je Stufe, Deckel 40), Anzeige und Wirkung lesen dieselbe Formel aus `player.rpg`. Bedienen/Schlichten, Kasse, Sicherheit und Reparatur existierten bereits und bleiben unveraendert; Glueck hat weiterhin keinen Leser statt eine Wirkung zu behaupten. Kein neues Save-Feld, kein zweiter Faehigkeits- oder Wartungszaehler. Belege: `floor-work.test.ts` (7), `player-dashboard.test.tsx`, `player-career.test.ts`.
 - **Agent 12 – Maschinen-Modifikationssystem:**
   Modulare Ebenen: Maschinenregeln, Modifikationen, Items und Synergien. Beeinflussung von Symbolgewichten, Auszahlungsprofilen, Wilds, Freispielen und Betriebskosten auf der tatsächlichen Spiel-Engine.
 - **Agent 13 – Items und Roguelite-Synergien:**

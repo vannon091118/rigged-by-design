@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "governance-floor-work-docs",
+  "claimId": "lane/governance/floor-work-docs",
+  "branch": "lane/governance/floor-work-docs",
+  "baseSha": "48a792f2798c830914953b0e6e3434c0110e0361",
+  "phase": "MERGE_PENDING",
+  "title": "Agent 11: Meta-Doku und Claim-Abschluss zur Arbeitsqualitaet",
+  "goal": "Agent 11 in Changelog, Devtagebuch und Roadmap belegen, Feature- und Vor-Governance-Claim mit Squash-SHA schliessen, Lane aufraeumen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen, CI abwarten, squash-mergen.",
+  "revision": 1
+}

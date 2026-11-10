@@ -6,6 +6,7 @@ import { playSandboxGame, sandboxSeed, testSandbox } from '../games/sandbox';
 import { isValidReels, MAX_REELS, reelUpgradeCost, slotConfig } from '../games/slot-config';
 import type { Prng } from '../rng/prng';
 import { closeFiat, exchangeFromVc, foreignBet, foreignWin, guestAccount, HAUSKONTO, payOrBorrow, payPending, PORTEMONNAIE, SHOP } from './money';
+import { cleaningArea } from './floor-work';
 import { getMod, modAppliesTo } from './offers';
 import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import type { CarpetId, Furniture, GameId, ModId, WorldState } from './types';
@@ -29,11 +30,17 @@ export function settleGuests(world: WorldState, ledger: Ledger): void {
   }
 }
 
+/**
+ * Eine Reinigung: ohne Wahrnehmung die eigene Kachel, mit Stufen auch die
+ * Nachbarn. Bezahlt wird je tatsaechlich schmutziger Kachel, nicht je Klick -
+ * Uebung spart Wege, nicht Geld.
+ */
 export function cleanTile(world: WorldState, ledger: Ledger, tile: number): void {
   if (!world.dirty.has(tile)) return;
-  ledger.transfer(HAUSKONTO, SHOP, world.prices.cleaningCost, TX_REASON.CLEANING, world.tick);
-  world.dirty.delete(tile);
-  grantXp(world.player.rpg, XP_CLEAN_TILE);
+  const tiles = cleaningArea(world, tile).filter((entry) => world.dirty.has(entry));
+  ledger.transfer(HAUSKONTO, SHOP, (world.prices.cleaningCost * tiles.length) as VaCoinMicro, TX_REASON.CLEANING, world.tick);
+  for (const entry of tiles) world.dirty.delete(entry);
+  grantXp(world.player.rpg, XP_CLEAN_TILE * tiles.length);
 }
 
 export function cleanAll(world: WorldState, ledger: Ledger): number {
