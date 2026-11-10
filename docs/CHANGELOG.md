@@ -12,6 +12,15 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.208] - 2026-11-10
+
+### Spiel
+- **Items und Synergien.** Maschinen-Mods tragen jetzt eine Seltenheit, und fünf Paarungen wirken nur zusammen: Köder-Doppel, Glamour-Fassade, Lounge-Service, Süßer Köder und Nachtbetrieb bringen mehr Zulauf, Geduld oder Sucht – gegen echte Betriebskosten. Der Automaten-Dialog nennt Seltenheit und aktive Synergie, damit die Anzeige zeigt, was der Resolver rechnet.
+
+### Technik
+- `core/sim/item-synergy.ts` hält Seltenheiten und Synergie-Daten, `core/sim/item-inventory.ts` leitet Inventar und Sammlung aus `item.mods` ab; beide Wege laufen über `resolveModEffects` und ändern `bonusBps` nicht. Mod-Katalog und Resolver liegen jetzt in `core/sim/mod-effects.ts`, `offers.ts` re-exportiert sie (Hot Zone).
+- Kein neues Save-Feld, keine Migration, kein zweiter Resolver; Synergien bleiben bewusst auf Paaren ohne bestehende Summen-Tests.
+
 ## [0.3.207] - 2026-11-10
 
 ### Spiel
