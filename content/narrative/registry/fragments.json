@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a4b95d27e839653402dae8b770de49fa8ef9b78a84a9e9c278c643aab05a9380",
+  "contentHash": "sha256:674b513e884b52f8975e689332a8f8152427ab9cd4f7648c98fcdaa1f02f472c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -96,6 +96,28 @@
       "text": "Zwei Versionen, zwei Absaetze: der Text nennt nur, was die Commits wirklich taten. Wer nachliest, findet keinen Widerspruch mehr zwischen Nummer und Heft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-2.json"
+    },
+    {
+      "contributionId": "agent14-changelog-3",
+      "turnId": "2026-11-11T00:30Z-agent14-changelog-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachtrag steht dort, wo er hingehoert: unter der Nummer, die das Projekt traegt. Keine neue Fassung, nur die fehlenden Zeilen zwischen zwei gemergten Staenden.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-3.json"
     },
     {
       "contributionId": "apk-signing-01",
