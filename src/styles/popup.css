@@ -60,12 +60,12 @@
 }
 .popup.is-anchored {
   position: fixed;
-  left: clamp(180px, var(--anchor-x, 50vw), calc(100vw - 180px));
-  top: clamp(210px, var(--anchor-y, 50vh), calc(100vh - 12px));
-  width: min(420px, calc(100vw - 16px));
-  max-height: min(58vh, 520px);
+  left: var(--anchor-left, 8px);
+  top: var(--anchor-top, 8px);
+  width: var(--anchor-width, min(420px, calc(100vw - 16px)));
+  max-height: min(58vh, 520px, var(--anchor-max-height, 520px));
   margin: 0;
-  transform: translate(-50%, calc(-100% - 12px));
+  transform: none;
   animation: none;
 }
 /* Objektpanel: kompakter als eine Aktivitaetsansicht, der Floor bleibt sichtbar. */

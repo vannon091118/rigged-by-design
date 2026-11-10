@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3a5df2ba246401a4b24dbc02584718a2b360d06b53735a6b4bb21b50ad5d9cd7",
+  "contentHash": "sha256:8843c760a0f72792cf17b36fd13e7b33529f3cf000d9cb6737b8fc9556272bdd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18309,6 +18309,28 @@
       "text": "Der Gast bleibt stehen, als die Hand den Tisch berührt. Statt eines neuen Fensters öffnet sich neben ihm nur das Nötigste: sein Name, sein Budget, seine Laune. Der Floor bleibt im Blick, und der nächste Schritt gehört weiter der Welt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-world-first-ui-01.json"
+    },
+    {
+      "contributionId": "world-first-ui-02",
+      "turnId": "2026-11-09T23:58Z-world-first-ui-02",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "watch"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Rand bleibt die Karte, wo das Objekt ist: Sie rutscht zur Seite, klappt ueber den Anker, wenn unten kein Platz mehr ist, und laesst den Floor im Blick. Auch auf dem schmalen Bildschirm fuehrt derselbe Weg zurueck.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-09-world-first-ui-02.json"
     }
   ]
 }

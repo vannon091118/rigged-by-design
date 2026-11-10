@@ -1,7 +1,8 @@
 /** Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. */
+import { useRef } from 'react';
 import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
-import { useWorldAnchorStyle, type AnchorProjector } from './use-world-anchor';
+import { useAnchoredStyle, type AnchorProjector } from './use-world-anchor';
 
 interface ActionCardProps {
   readonly actions: readonly MenuAction[];
@@ -16,13 +17,15 @@ interface ActionCardProps {
 export function ActionCard({ actions, onPick, onClose, anchor = null, project }: ActionCardProps) {
   const usable = actions.filter((action) => action.id !== 'CANCEL');
   const main = usable[0];
-  const style = useWorldAnchorStyle(anchor, project);
+  const card = useRef<HTMLDivElement>(null);
+  const style = useAnchoredStyle(anchor, project, card, { width: 340, fallbackHeight: 118 });
   if (!main) return null;
   const enabled = usable.filter((action) => action.id !== main.id && action.enabled).slice(0, 2);
   const alternatives = enabled.length > 0 ? enabled : usable.slice(1, 3);
 
   return (
     <div
+      ref={card}
       className={`action-card${anchor ? ' is-anchored' : ''}`}
       role="group"
       aria-label="Aktionen"

@@ -2,7 +2,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import type { ScreenAnchor } from '../render/floor-hit';
 import { UI_ICON } from './icons';
-import { useWorldAnchorStyle, type AnchorProjector } from './use-world-anchor';
+import { useAnchoredStyle, type AnchorProjector } from './use-world-anchor';
 
 type UiSurface = 'object' | 'activity' | 'overview';
 
@@ -34,7 +34,11 @@ export function PopupShell({ eyebrow, title, onClose, children, wide = false, fu
   const panel = useRef<HTMLElement>(null);
   const resolvedSurface = surface ?? (full ? 'activity' : wide ? 'overview' : 'object');
   const anchored = anchor !== null && !full && resolvedSurface === 'object';
-  const anchorStyle = useWorldAnchorStyle(anchored ? anchor : null, project);
+  const anchorStyle = useAnchoredStyle(anchored ? anchor : null, project, panel, {
+    width: 420,
+    fallbackHeight: 360,
+    gap: 12,
+  });
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
