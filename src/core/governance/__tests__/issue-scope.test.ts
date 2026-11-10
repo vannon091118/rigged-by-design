@@ -9,6 +9,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import {
+  blockedIssuesFrom,
   classifyIssue,
   fingerprintOf,
   issueBody,
@@ -84,6 +85,24 @@ describe('issue-scope Entscheidung', () => {
     });
     expect(repaired.disposition).toBe('warning');
     expect(repaired.reason).toBe('repair-already-in-head');
+  });
+});
+
+describe('issue-scope BLOCKED-Liste', () => {
+  it('unterscheidet eine nicht lesbare Liste von einer leeren', () => {
+    expect(blockedIssuesFrom(null)).toBeNull();
+    expect(blockedIssuesFrom(undefined)).toBeNull();
+    expect(blockedIssuesFrom([])).toEqual([]);
+  });
+
+  it('behaelt nur BLOCKED-Issues im eigenen Scope', () => {
+    const issues = [
+      { number: 1, labels: ['governance/blocked'], body: '' },
+      { number: 2, labels: ['governance/blocked'], body: '**Branch:** `lane/other/task`' },
+      { number: 3, labels: ['gate-failure'], body: '' },
+    ];
+    const blocked = blockedIssuesFrom(issues, { branch: 'lane/mine/task' });
+    expect(blocked?.map((issue: { number?: number }) => issue.number)).toEqual([1]);
   });
 });
 
