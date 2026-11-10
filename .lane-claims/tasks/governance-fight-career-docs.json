@@ -4,11 +4,16 @@
   "claimId": "lane/governance/fight-career-docs",
   "branch": "lane/governance/fight-career-docs",
   "baseSha": "2b7bb155eaa93921e30c762e48fc2b31c1e1e63e",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Meta-Dokumente zur Kampfkarriere nachziehen (Agent 05)",
   "goal": "CHANGELOG, DEVTAGEBUCH und ROADMAP beschreiben die gemergte Hinterhof-Karriere; der Spielcode bleibt unberuehrt.",
-  "pr": null,
+  "pr": {
+    "number": 362,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/362",
+    "state": "merged",
+    "mergedSha": "5ec16de9270e0363c1089ef2406d41881c782073"
+  },
   "findings": [],
-  "nextAction": "Doku-Aenderungen committen, PR eroeffnen, CI auf dem Kopf abwarten.",
-  "revision": 1
+  "nextAction": "Merge belegen, Claim auf merged setzen, dann DONE.",
+  "revision": 2
 }
