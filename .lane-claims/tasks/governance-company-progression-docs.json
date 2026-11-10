@@ -4,7 +4,7 @@
   "claimId": "lane/governance/company-progression-docs",
   "branch": "lane/governance/company-progression-docs",
   "baseSha": "7b31ba088ed40a5be4b9f6075edd8a7bb8812039",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Agent 14 Governance: Doku und Narrative zur Geschaeftsprogression",
   "goal": "Roadmap-Stand, Changelog und Devtagebuch halten den umgesetzten Agent-14-Stand fest; keine Code-Aenderung.",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "8dcefe529474ffb7035366b1bdf0eb2b48e2b4e7"
   },
   "findings": [],
-  "nextAction": "Merge-Beleg eintragen; danach AFTERCARE.",
-  "revision": 5
+  "nextAction": "Abgeschlossen: PR #394 (8dcefe5) auf main, Claim geschlossen.",
+  "revision": 6
 }
