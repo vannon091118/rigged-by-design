@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 266 Dateien — contract 153 · integration 57 · governance 42 · statistics 7 · performance 7.
+Summe: 268 Dateien — contract 155 · integration 57 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -138,6 +138,7 @@ Summe: 266 Dateien — contract 153 · integration 57 · governance 42 · statis
 | `src/core/games/__tests__/dice-bets.test.ts` | games | contract | ja | `src/core/games/dice-bets.ts` |
 | `src/core/games/__tests__/foreign-round-atomic.test.ts` | sim | contract | ja | `src/core/sim/actions.ts` |
 | `src/core/games/__tests__/game-rounds.test.ts` | games | contract | ja | `src/core/games/contracts.ts` |
+| `src/core/games/__tests__/mod-profile.test.ts` | games | contract | ja | `src/core/games/mod-profile.ts` |
 | `src/core/games/__tests__/pity-settlement.test.ts` | games | contract | ja | `src/core/games/slot-transparency.ts` |
 | `src/core/games/__tests__/plinko-sandbox.test.ts` | games | contract | ja | `src/core/games/plinko-sandbox.ts` |
 | `src/core/games/__tests__/plinko-track.test.ts` | games | contract | ja | `src/core/games/contracts.ts` |
@@ -208,6 +209,7 @@ Summe: 266 Dateien — contract 153 · integration 57 · governance 42 · statis
 | `src/core/rng/__tests__/shoe.test.ts` | rng | contract | ja | `src/core/rng/shoe.ts` |
 | `src/core/rng/__tests__/streams.test.ts` | rng | contract | ja | `src/core/rng/streams.ts` |
 | `src/core/rng/__tests__/weighted.test.ts` | rng | contract | ja | `src/core/rng/weighted.ts` |
+| `src/core/sim/__tests__/action-queue.test.ts` | sim | contract | ja | `src/core/sim/action-queue.ts` |
 | `src/core/sim/__tests__/addiction-consequences.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/addiction-stake.test.ts` | sim | contract | ja | `src/core/sim/guest-play.ts` |
 | `src/core/sim/__tests__/anger-decay.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
@@ -579,10 +581,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2503 |
-| Gelistete Dateien | 2503 |
+| Getrackte Dateien | 2509 |
+| Gelistete Dateien | 2509 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (127), content (861), docs (83), public (554), scripts (102), src (748) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (129), content (862), docs (83), public (554), scripts (102), src (751) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -594,9 +596,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 88 Datei(en)
-- `.lane-claims/tasks/` — 37 Datei(en)
-- `content/narrative/contributions/` — 857 Datei(en)
+- `.lane-claims/claims/` — 89 Datei(en)
+- `.lane-claims/tasks/` — 38 Datei(en)
+- `content/narrative/contributions/` — 858 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -645,8 +647,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/contracts/__tests__/` — 7 Datei(en)
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
-- `src/core/games/` — 20 Datei(en)
-- `src/core/games/__tests__/` — 24 Datei(en)
+- `src/core/games/` — 21 Datei(en)
+- `src/core/games/__tests__/` — 25 Datei(en)
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
@@ -680,7 +682,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 20 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 87 Datei(en)
+- `src/ui/` — 88 Datei(en)
 - `src/ui/__tests__/` — 21 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
@@ -788,6 +790,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-machine-hall.json` — { — gelesen: 35 Zeilen
+- `.lane-claims/claims/lane-sim-mod-engine.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 33 Zeilen
@@ -828,6 +831,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-machine-hall.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-mod-engine.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
@@ -1681,6 +1685,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-governance-roadmap-count.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-task-vertrag.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-machine-hall.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-10-mod-engine.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-p20-dependency-matrix-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-phase34-acceptance-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-player-career.json` — { — gelesen: 24 Zeilen
@@ -1695,8 +1700,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19234 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3433 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19259 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3437 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2474,6 +2479,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/__tests__/dice-bets.test.ts` — Jedes Wettfeld am Wuerfeltisch muss exakt sagen, wann es gewinnt, und seine — gelesen: 63 Zeilen
 - `src/core/games/__tests__/foreign-round-atomic.test.ts` — Eine fremde Runde wird erst vollstaendig geprueft und gerechnet, dann — gelesen: 77 Zeilen
 - `src/core/games/__tests__/game-rounds.test.ts` — Auch die neuen Tischspiele muessen durch denselben Aktionspfad: Einsatz rein, — gelesen: 71 Zeilen
+- `src/core/games/__tests__/mod-profile.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 94 Zeilen
 - `src/core/games/__tests__/pity-settlement.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
 - `src/core/games/__tests__/plinko-sandbox.test.ts` — Rot-Gruen-Beweis fuer die Plinko-Sandbox: Peg-Physik, Reihen-Leiter, — gelesen: 140 Zeilen
 - `src/core/games/__tests__/plinko-track.test.ts` — Die Buehne zeigt eine echte Physikbahn. Deshalb muss das Ergebnis die Bahn — gelesen: 44 Zeilen
@@ -2509,6 +2515,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/engines/slot-strips.ts` — Walzenstreifen: Ziehung und angezeigte Chance muessen aus derselben Verteilung kommen. — gelesen: 36 Zeilen
 - `src/core/games/engines/slot.ts` — Book-of-VaCoin: drei bis fuenf Walzen, Streifen oder Gewichte, drei Bewertungsmodelle. — gelesen: 154 Zeilen
 - `src/core/games/engines/table.ts` — Tischspiele: Roulette mit voller Wettfläche, zwei Wuerfel, Huetchenspiel mit Serie. — gelesen: 121 Zeilen
+- `src/core/games/mod-profile.ts` — Mods und die echte Spiel-Engine: die Bruecke, die bisher fehlte. — gelesen: 81 Zeilen
 - `src/core/games/plinko-board.ts` — Plinko als echte Simulation: Zufall nur in den Startbedingungen, danach entscheidet die Kollision. — gelesen: 130 Zeilen
 - `src/core/games/plinko-config.ts` — Reine Plinko-Konfiguration: Peg-Profile, Taschenbreiten und Reihen-Leiter. — gelesen: 100 Zeilen
 - `src/core/games/plinko-sandbox.ts` — Plinko-Sandbox: RTP-Gate, Fortschritt und der Wurf, der Weltzustand und Anzeige verbindet. — gelesen: 163 Zeilen
@@ -2523,7 +2530,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/round.ts` — Dispatcher: jedes Spiel hat seine eigene Engine, alle liefern dieselbe Ergebnisform. — gelesen: 87 Zeilen
 - `src/core/games/sandbox.ts` — Ein Regelsatz, zwei Ausfuehrungsmodi. — gelesen: 61 Zeilen
 - `src/core/games/shell-round.ts` — Huetchenspiel als interaktive Runde: erst mischen (Kern), dann waehlt der Spieler. — gelesen: 68 Zeilen
-- `src/core/games/slot-config.ts` — Maschinenkonfiguration: die eine Quelle der Spielparameter. — gelesen: 104 Zeilen
+- `src/core/games/slot-config.ts` — Maschinenkonfiguration: die eine Quelle der Spielparameter. — gelesen: 113 Zeilen
 - `src/core/games/slot-profile.ts` — Konfigurierbare Spielmechanik des Slots: Gewichte, Bewertungsmodell, Volatilitaet, — gelesen: 152 Zeilen
 - `src/core/games/slot-session.ts` — Ein Slot-Spin mit Gedächtnis: Drucklader und Entladung werden hier tatsaechlich konsumiert. — gelesen: 73 Zeilen
 - `src/core/games/slot-transparency.ts` — Ehrliches Slot-Gedächtnis und der Drucklader; reine, serialisierbare Zustandslogik. — gelesen: 106 Zeilen
@@ -3150,7 +3157,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/journal-stories.tsx` — Abgeschlossene Szenen als Rueckblick im Journal; nur Anzeige des Snapshots. — gelesen: 47 Zeilen
 - `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 170 Zeilen
 - `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 159 Zeilen
-- `src/ui/machine-operator.tsx` — Betriebskörper am Automaten: Zustand, Diagnose, Reparatur und Mods. — gelesen: 165 Zeilen
+- `src/ui/machine-mods.tsx` — Mod-Katalog am Automaten: Gaestewirkung und Wirkung auf die echte Engine. — gelesen: 45 Zeilen
+- `src/ui/machine-operator.tsx` — Betriebskörper am Automaten: Zustand, Diagnose, Reparatur und Mods. — gelesen: 143 Zeilen
 - `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen
 - `src/ui/machine-play.tsx` — Eigene Spiele am Automaten: dieselben Tische wie im Fremdhaus, eigener Geldweg. — gelesen: 56 Zeilen
 - `src/ui/machine-popup.tsx` — Automaten-Popup: Gast spielt, Betrieb diagnostiziert. Eine globale Perspektive, kein interner Rollentoggle. — gelesen: 123 Zeilen

@@ -6,11 +6,12 @@ import type { PlinkoConfig, PlinkoMode } from '../core/games/plinko-config';
 import { MAX_REELS, reelUpgradeCost } from '../core/games/slot-config';
 import type { SlotProfile } from '../core/games/slot-profile';
 import { barCapacityForLevel } from '../core/sim/deliveries';
-import { MODS, attractionValue, getMod, modAppliesTo } from '../core/sim/offers';
+import { attractionValue } from '../core/sim/offers';
 import type { Furniture, ModId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 import { attractionBand } from './glossary';
+import { MachineMods } from './machine-mods';
 import { PlinkoEditorLazy } from './plinko-editor-lazy';
 import { SlotRulesEditor } from './slot-rules-editor';
 import { SlotTelemetry } from './slot-telemetry';
@@ -132,30 +133,7 @@ export function MachineOperatorBody(props: Props) {
           title="Gilt nur, wenn dieser Wert über dem globalen Mindesteinsatz liegt."
           onBlur={(event) => props.onBet(Number(event.target.value))} />
       </label>
-      <h3>Mods</h3>
-      <p className="hint">
-        Mods ziehen Gäste an und verändern Laune, Geduld oder Sucht – gegen Betriebskosten. Drei passen auf ein Gerät.
-        Werte wie <b>+260 Anziehung</b> sind Rohwerte: mehr ist besser.
-      </p>
-      <div className="mod-grid">
-        {MODS.filter((mod) => modAppliesTo(mod.id, item.gameId)).map((mod) => {
-          const installed = item.mods.includes(mod.id);
-          const blocked = installed || item.mods.length >= 3 || view.house < mod.cost;
-          return (
-            <button key={mod.id} type="button" className={`mod-card${installed ? ' installed' : ''}`}
-              disabled={blocked} onClick={() => props.onMod(mod.id)}>
-              <strong>{mod.name}</strong>
-              <span>{mod.description}</span>
-              <b>{installed ? 'VERBAUT' : vc(mod.cost, 0)}</b>
-              <small>
-                +{mod.attraction} Anziehung · {mod.patience >= 0 ? '+' : ''}{mod.patience} Geduld · +{mod.addiction} Sucht
-                {mod.bonusBps > 0 ? ` · +${(mod.bonusBps / 100).toFixed(1)} % Auszahlung` : ''}
-              </small>
-            </button>
-          );
-        })}
-      </div>
-      <p className="hint">Verbaute Mods: {item.mods.length ? item.mods.map((id) => getMod(id).name).join(' · ') : 'keine'}</p>
+      <MachineMods item={item} house={view.house} onMod={props.onMod} />
     </>
   );
 }
