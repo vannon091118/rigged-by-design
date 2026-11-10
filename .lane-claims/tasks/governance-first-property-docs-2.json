@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-first-property-docs-2",
+  "claimId": "lane/governance/first-property-docs-2",
+  "branch": "lane/governance/first-property-docs-2",
+  "baseSha": "7d1d07159b42e40cf501501a1e9ac937da67ad4a",
+  "phase": "CI_PENDING",
+  "title": "Masterplan Agent 07: Meta-Dokumentation Erste Immobilie",
+  "goal": "CHANGELOG, DEVTAGEBUCH und ROADMAP belegen Agent 07 samt bewusst nicht getanen Punkten; INVENTORY regeneriert.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Doku-Commit gepusht; CI Fail-Closed Gates abwarten, dann squash-mergen.",
+  "revision": 1
+}

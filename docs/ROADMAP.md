@@ -375,6 +375,7 @@ Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Ren
 
 - **Agent 07 – Erste Immobilie und Eigentumssystem:**
   Erster vollständiger Immobilienkauf (Gewerberaum, kleine Kneipe, geschlossener Spielsalon). Kaufpreisprüfung und persönliche Bezahlung aus dem Wallet (`PORTEMONNAIE`). Eigentumszuweisung und Speicherung.
+  *Stand 2026-11-10:* umgesetzt in `core/sim/property.ts`: Katalog aus Gewerberaum, kleiner Kneipe und geschlossenem Spielsalon, Preispruefung gegen `PORTEMONNAIE`, Buchung mit Grund `immobilie kaufen`, Eigentums-Datensatz `player.property` mit Preis und Kauftag, Archiv-Beleg `IMMOBILIE` und Sicht `ui/career-property.tsx` im bestehenden Charakterfenster. Alte Saves laden ohne Versionssprung (`hydrateProperty`). Belege: `property.test.ts`, `property-command.test.ts`, `player-dashboard.test.tsx`.
 - **Agent 08 – Eigene Immobilie und WorldState-Integration:**
   Eindeutige Zuordnung der Immobilie zum WorldState. Nutzung der bestehenden Grid-, Zonen-, Furniture- und Besuchersysteme. Betrieb über das zugehörige Geschäftskonto.
 - **Agent 09 – Renovierung und Immobilienzustand:**
