@@ -9,7 +9,7 @@
  * wird die Aktionskarte bei 320/360 px an beiden Viewport-Raendern geklemmt.
  */
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameView } from '../../store/types';
 import { Ledger } from '../../core/economy/ledger';
 import { Prng } from '../../core/rng/prng';
@@ -81,7 +81,10 @@ vi.mock('../../render/music', () => ({
   armMusic: () => () => {},
   setMusicState: () => {},
 }));
-vi.mock('../../render/sound-fx', () => ({ playSfx: () => {} }));
+vi.mock('../../render/sound-fx', async () => {
+  const actual = await vi.importActual<typeof import('../../render/sound-fx')>('../../render/sound-fx');
+  return { ...actual, playSfx: () => {} };
+});
 vi.mock('../../render/haptics', () => ({ tapHaptic: () => {} }));
 
 const noop = (): void => {};
@@ -109,6 +112,22 @@ function fireFloor(name: string, ...args: unknown[]): void {
 afterEach(() => {
   cleanup();
   document.body.innerHTML = '';
+  harness.view.current = null;
+  harness.floor.current = null;
+});
+
+// `isolate: false` teilt den Modul-Cache zwischen Testdateien. Ohne dieses
+// Aufraeumen sehen spaetere Dateien die gemockte Store-Hook und den
+// unvollstaendigen Sound-Mock; `ui.test.tsx` prueft aber den echten Store.
+afterAll(() => {
+  for (const path of [
+    '../../render/floor-stage',
+    '../../store/use-world-store',
+    '../../render/music',
+    '../../render/sound-fx',
+    '../../render/haptics',
+  ]) vi.doUnmock(path);
+  vi.resetModules();
 });
 
 describe.each([
