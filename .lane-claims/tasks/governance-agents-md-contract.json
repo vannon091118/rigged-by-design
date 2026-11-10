@@ -4,7 +4,7 @@
   "claimId": "lane/governance/agents-md-contract",
   "branch": "lane/governance/agents-md-contract",
   "baseSha": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "AGENTS.md Vertrag entschaerfen: Version, Gate-Anzahl, Determinismus-Ausnahme, Workflow-Liste, Root-Doku-Grenze",
   "goal": "AGENTS.md bleibt Repo-Vertrag statt Blocker: aktuelle Version, korrekte Gate-Zahlen, enforcebare Grenzen",
   "taskType": "single",
@@ -13,10 +13,10 @@
   "pr": {
     "number": 338,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/338",
-    "state": "open",
+    "state": "merged",
     "headSha": "cb42b90e47b19ff8ddd141cb859fd9f27d492725"
   },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 5
+  "nextAction": "PR #338 gemergt; Determinismus-Regel auf Main verifiziert; Aftercare/DONE folgen.",
+  "revision": 6
 }

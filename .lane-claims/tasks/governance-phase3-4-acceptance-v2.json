@@ -22,6 +22,6 @@
       "summary": "Der Slow-4G-First-Frame liegt bei 12,16 s; das Atlas-Budget ist gesichert, das Initial-JS-Budget und die Geräteabnahme bleiben offen."
     }
   ],
-  "nextAction": "Lane pushen, PR anlegen und die CI-Gates auf dem exakten Kopf abwarten; Geräteabnahme bleibt offen.",
-  "revision": 1
+  "nextAction": "Superseded: Inhalt via PR #340 auf Main, kein eigener PR; Claim superseded; keine weiteren Phasen.",
+  "revision": 2
 }
