@@ -1,5 +1,5 @@
 /** Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. */
-import { Container, Graphics, Text } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import { ROLE, floorText } from './art-tokens';
 import { poseFor, type ActorState } from './rig-pose';
 import { shadowSprite } from './guest-parts';
@@ -10,11 +10,13 @@ export interface GuestRigNodes {
   readonly skull: Graphics;
   readonly face: Graphics;
   readonly hair: Graphics;
-  readonly body: Graphics;
-  readonly legs: Graphics;
-  readonly legOther: Graphics;
-  readonly armL: Graphics;
-  readonly armR: Graphics;
+  readonly body: Sprite;
+  readonly legs: Sprite;
+  readonly legOther: Sprite;
+  readonly armL: Sprite;
+  readonly armR: Sprite;
+  readonly footwearL: Sprite;
+  readonly footwearR: Sprite;
   readonly pin: Graphics;
 }
 
@@ -38,10 +40,12 @@ export class GuestRig {
   #tapStart = -1000;
 
   constructor(isPlayer: boolean, name: string) {
-    const legs = new Graphics();
-    const body = new Graphics();
-    const armL = new Graphics();
-    const armR = new Graphics();
+    const legs = new Sprite();
+    const body = new Sprite();
+    const armL = new Sprite();
+    const armR = new Sprite();
+    const footwearL = new Sprite();
+    const footwearR = new Sprite();
     const skull = new Graphics();
     const face = new Graphics();
     const hair = new Graphics();
@@ -51,8 +55,8 @@ export class GuestRig {
     this.#tap.visible = false;
     this.#legL.position.set(-4, 3);
     this.#legR.position.set(4, 3);
-    this.#legL.addChild(legs);
-    this.#legR.addChild(new Graphics());
+    this.#legL.addChild(legs, footwearL);
+    this.#legR.addChild(new Sprite(), footwearR);
     this.#armL.position.set(-8, -10);
     this.#armR.position.set(8, -10);
     this.#armL.addChild(armL);
@@ -67,7 +71,7 @@ export class GuestRig {
     this.root.addChild(pin, this.#figure, this.#nameplate);
     this.nodes = {
       head: this.#head, skull, face, hair, body, legs,
-      legOther: this.#legR.children[0] as Graphics, armL, armR, pin,
+      legOther: this.#legR.children[0] as Sprite, armL, armR, footwearL, footwearR, pin,
     };
   }
 

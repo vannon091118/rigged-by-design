@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "governance-p20-dependency-matrix",
+  "claimId": "lane/governance/p20-dependency-matrix",
+  "branch": "lane/governance/p20-dependency-matrix",
+  "baseSha": "3fd17750b1df0a09f11eaea213d2a30df00cb8a2",
+  "phase": "CI_PENDING",
+  "title": "P-20: Dependency-Matrix aus der gesperrten Architektur ziehen",
+  "goal": "Die generierte Matrix in docs/DEPENDENCY-MATRIX.md fuehren, den Generator und den mechanischen Reparaturplan auf den freien Pfad ziehen und die gesperrte Architektur nur noch verlinken.",
+  "pr": {
+    "number": 342,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/342",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "Fail-Closed Gates auf dem exakten PR-Kopf abwarten; nach gruenem Lauf squash-mergen und die Lane auf DONE ziehen.",
+  "revision": 2
+}
