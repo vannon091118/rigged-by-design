@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:de2914c8074cfba31b77dae57cc049c063cea7e871bc2c4df3ecbc2e2739a7e6",
+  "contentHash": "sha256:846c643b059429e18fa651bdfc90b44ce6972de7e91429bc3a11c43f7437b08a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3447,6 +3447,31 @@
       "text": "Die Bude trägt jetzt eine Kasse, der Saal sein eigenes Personal, und auf dem Schild steht zum ersten Mal ein Konzern. Jede Stufe hat vorher etwas gekostet: Tage, Gewinn, Ruf, Geräte und Leute, die bleiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-company-progression.json"
+    },
+    {
+      "contributionId": "company-progression-docs-01",
+      "turnId": "2026-11-10T22:55Z-company-progression-docs",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita schrieb die Stufen nicht als Leiter auf, sondern als Rechnung: Tage, Gewinn, Ruf, Geräte, Kapital - und ab dem Spielsaal Leute, die morgens wirklich kommen. Wer die Zeile las, sah zuerst die offene Zahl und nicht den Rang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-company-progression-docs.json"
     },
     {
       "contributionId": "content-compiler-01",
