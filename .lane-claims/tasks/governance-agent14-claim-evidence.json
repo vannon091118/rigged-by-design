@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-agent14-claim-evidence",
+  "claimId": "lane/governance/agent14-claim-evidence",
+  "branch": "lane/governance/agent14-claim-evidence",
+  "baseSha": "06adaada656c31911d832c9ed726bdc8bfecb514",
+  "phase": "IMPLEMENTING",
+  "title": "Agent 14 Register: Merge-Belege der vier Claims nach Schema korrigieren",
+  "goal": "mergedEvidence der vier Agent-14-Claims auf die definierte Belegart setzen und mergedSha auf den baumgleichen Commit auf main ziehen; keine Code-Aenderung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Register-Eintraege korrigieren, dann CI_PENDING.",
+  "revision": 1
+}

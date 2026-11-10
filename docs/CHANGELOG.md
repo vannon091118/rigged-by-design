@@ -16,6 +16,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 
 ### Technik
 - **Abschluss-Pass Agent 14.** Die Buchhaltung des Laufs ist nachgezogen: die Claims der Feature- und der Governance-Lane stehen mit ihren Squash-Belegen (`7b31ba0`, `8dcefe5`) auf `merged`, die zugehoerigen Task-Vertraege auf `DONE`, und der Nachlauf-Claim ist mit demselben Beleg geschlossen. Kein Spielinhalt, keine Code-Aenderung.
+- **Merge-Belege nach Schema.** Die vier Agent-14-Claims tragen `mergedEvidence: branch-tree-on-main` statt des im Schema nicht definierten Werts `squash-merge`; `mergedSha` nennt den baumgleichen Merge-Commit (`7b31ba0`, `8dcefe5`, `65c11aa`, `06adaada`). Beim Closeout-Claim stand zuvor `a922b39` - die Basis vor dem Nachlauf, deren Baum nicht dem Lane-Kopf `1572d85` entspricht.
 
 ## [0.3.210] - 2026-11-10
 

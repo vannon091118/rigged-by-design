@@ -18,6 +18,6 @@
   "gateProfile": "light",
   "status": "merged",
   "createdAt": "65c11aa576242525756e7c886e12f6cafc521e7f",
-  "mergedEvidence": "squash-merge",
-  "mergedSha": "74bc79633f4e3d573babec327389633e7cee2e42"
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "06adaada656c31911d832c9ed726bdc8bfecb514"
 }
