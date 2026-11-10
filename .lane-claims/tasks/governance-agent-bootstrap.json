@@ -4,7 +4,7 @@
   "claimId": "lane/governance/agent-bootstrap",
   "branch": "lane/governance/agent-bootstrap",
   "baseSha": "2d7097aa20a0bf2fb487c0c6f08f1a821ceb65e4",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agenten-Bootstrap, Integrationspfad und Gate-Wahrheit",
   "goal": "Weniger Prozesswissen im Agentenkopf, mehr automatisierte Vorbereitung",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "Register auf merged ziehen und Vertrag auf DONE setzen.",
-  "revision": 9
+  "nextAction": "Abgeschlossen; neue Arbeit als neue Lane starten.",
+  "revision": 10
 }
