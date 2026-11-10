@@ -1,64 +1,127 @@
-/** Baut die Radial-Menu-Aktionen für ein geklicktes Objekt. */
-import type { WorldState } from '../core/sim/types';
+/** Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. */
+import type { InteractionTarget } from '../core/sim/interaction';
+import type { GameView } from '../store/types';
 
-type ActionWorld = Pick<WorldState, 'player'>;
+export type MenuAction = {
+  id: string;
+  label: string;
+  enabled: boolean;
+  /** Argument fuer die Welt-Command (Gast, Streit, Objekt). */
+  targetId?: number;
+  /** Ziel, dessen Reichweite vor der Ausfuehrung erfuellt sein muss. */
+  target?: InteractionTarget;
+  /** Warum die Aktion gerade nicht geht; wird an der Karte angezeigt. */
+  reason?: string;
+};
 
-export type MenuAction = { id: string; label: string; enabled: boolean; targetId?: number };
+type ActionView = Pick<GameView, 'player'>;
 
-export function buildStainActions(world: ActionWorld, stain: { id: number; x: number; y: number }): MenuAction[] {
+const target = (kind: InteractionTarget['kind'], id: number): InteractionTarget => ({ kind, id });
+
+export function buildStainActions(world: ActionView, stain: { id: number; x: number; y: number }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
-  return [
-    { id: 'CLEAN_STAIN', label: 'Reinigen', enabled: carryingMop, targetId: stain.id },
-    { id: 'CANCEL', label: 'Abbrechen', enabled: true },
-  ];
+  return [{
+    id: 'CLEAN_STAIN',
+    label: 'Reinigen',
+    enabled: carryingMop,
+    targetId: stain.id,
+    target: target('stain', stain.id),
+    reason: carryingMop ? undefined : 'Du brauchst einen Wischer.',
+  }];
 }
 
-export function buildGuestActions(world: ActionWorld, guest: { id: number; disputeId: number | null; thirst: number }): MenuAction[] {
+export function buildGuestActions(
+  world: ActionView,
+  guest: { id: number; disputeId: number | null; thirst: number },
+): MenuAction[] {
   const carryingDrink = world.player.carrying === 'DRINK';
   const hasDispute = guest.disputeId !== null;
   return [
-    { id: 'TALK', label: 'Reden', enabled: true, targetId: guest.id },
-    { id: 'CALM', label: 'Schlichten', enabled: hasDispute, targetId: guest.disputeId ?? guest.id },
-    { id: 'FIGHT', label: 'Konfrontation', enabled: hasDispute, targetId: guest.disputeId ?? guest.id },
-    { id: 'SERVE', label: 'Drink servieren', enabled: carryingDrink && guest.thirst > 0, targetId: guest.id },
-    { id: 'CANCEL', label: 'Abbrechen', enabled: true },
+    { id: 'TALK', label: 'Reden', enabled: true, targetId: guest.id, target: target('guest', guest.id) },
+    {
+      id: 'CALM', label: 'Schlichten', enabled: hasDispute,
+      targetId: guest.disputeId ?? guest.id, target: target('guest', guest.id),
+      reason: hasDispute ? undefined : 'Kein Streit im Gange.',
+    },
+    {
+      id: 'FIGHT', label: 'Konfrontation', enabled: hasDispute,
+      targetId: guest.disputeId ?? guest.id, target: target('guest', guest.id),
+      reason: hasDispute ? undefined : 'Kein Streit im Gange.',
+    },
+    {
+      id: 'SERVE_DRINK', label: 'Drink servieren', enabled: carryingDrink && guest.thirst > 0,
+      targetId: guest.id, target: target('guest', guest.id),
+      reason: carryingDrink ? 'Der Gast ist nicht durstig.' : 'Du hast keinen Drink dabei.',
+    },
+    { id: 'OPEN_GUEST', label: 'Profil', enabled: true, targetId: guest.id, target: target('guest', guest.id) },
   ];
 }
 
-export function buildFurnitureActions(world: ActionWorld, item: { kind: string; stock: number; dirt: number; label: string }): MenuAction[] {
+export function buildFurnitureActions(
+  world: ActionView,
+  item: {
+    id: number; kind: string; stock: number; dirt: number; label: string;
+    gameId?: string;
+  },
+): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
-  const carryingDrink = world.player.carrying === 'DRINK';
   const actions: MenuAction[] = [];
+  const focus = target('furniture', item.id);
 
+  if (item.gameId) {
+    actions.push({ id: 'OPEN_MACHINE', label: 'Gerät öffnen', enabled: true, targetId: item.id, target: focus });
+  }
   if (item.kind === 'BAR') {
-    if (!carryingDrink) {
-      actions.push({ id: 'TAKE_DRINK', label: 'Drink zapfen', enabled: item.stock > 0 });
-    } else {
-      actions.push({ id: 'SERVE_DRINK', label: 'Drink servieren', enabled: true });
-    }
-    if (item.dirt > 0) {
-      actions.push({ id: 'CLEAN_BAR', label: 'Reinigen', enabled: carryingMop });
-    }
+    const handsFree = world.player.carrying === '';
+    actions.push({
+      id: 'TAKE_DRINK', label: 'Drink zapfen', enabled: item.stock > 0 && handsFree,
+      targetId: item.id, target: focus,
+      reason: handsFree ? (item.stock > 0 ? undefined : 'Die Bar ist leer.') : 'Deine Hände sind voll.',
+    });
   } else if (item.kind === 'TOILET') {
-    if (!carryingMop) {
-      actions.push({ id: 'GET_MOP', label: 'Wischer holen', enabled: true });
-    } else {
-      actions.push({ id: 'DROP_MOP', label: 'Wischer ablegen', enabled: true });
-    }
+    actions.push({
+      id: carryingMop ? 'DROP_MOP' : 'GET_MOP',
+      label: carryingMop ? 'Wischer ablegen' : 'Wischer holen',
+      enabled: true, targetId: item.id, target: focus,
+    });
   } else if (item.kind === 'STORAGE') {
-    actions.push({ id: 'GET_DRINKS', label: 'Getränke holen', enabled: true });
-    actions.push({ id: 'GET_PARTS', label: 'Ersatzteile holen', enabled: true });
+    actions.push({ id: 'GET_DRINKS', label: 'Getränke holen', enabled: true, targetId: item.id, target: focus });
+    actions.push({ id: 'GET_PARTS', label: 'Ersatzteile holen', enabled: true, targetId: item.id, target: focus });
   } else if (item.kind === 'EXCHANGE' || item.kind === 'DESK') {
-    actions.push({ id: 'CALM_DISPUTE', label: 'Schlichten', enabled: true });
-    actions.push({ id: 'FIGHT', label: 'Konfrontation', enabled: true });
+    actions.push({ id: 'SERVE_DESK', label: 'Kasse bedienen', enabled: true, targetId: item.id, target: focus });
   } else if (item.kind === 'DECOR' && /spiegel|mirror/i.test(item.label)) {
-    actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true });
+    actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true, targetId: item.id, target: focus });
   }
 
-  if (actions.length === 0) {
-    actions.push({ id: 'CANCEL', label: 'Abbrechen', enabled: true });
-  } else {
-    actions.push({ id: 'CANCEL', label: 'Abbrechen', enabled: true });
-  }
   return actions;
+}
+
+export function buildCrateActions(world: ActionView, crate: { id: number }): MenuAction[] {
+  const handsFree = world.player.carrying === '';
+  return [{
+    id: 'PICKUP_CRATE',
+    label: 'Kiste aufheben',
+    enabled: handsFree,
+    targetId: crate.id,
+    target: target('crate', crate.id),
+    reason: handsFree ? undefined : 'Deine Hände sind voll.',
+  }];
+}
+
+/** Dieselbe Karte fuer jeden Eingabepfad: Floor-Klick, Tastatur oder Touch. */
+export function buildActions(view: GameView, focus: InteractionTarget): MenuAction[] {
+  if (focus.kind === 'guest') {
+    const guest = view.guests.find((entry) => entry.id === focus.id);
+    return guest ? buildGuestActions(view, guest) : [];
+  }
+  if (focus.kind === 'furniture') {
+    const item = view.furniture.find((entry) => entry.id === focus.id);
+    return item ? buildFurnitureActions(view, item) : [];
+  }
+  if (focus.kind === 'crate') {
+    const crate = view.crates.find((entry) => entry.id === focus.id && entry.carriedBy === null);
+    return crate ? buildCrateActions(view, crate) : [];
+  }
+  const stain = view.stains.find((entry) => entry.id === focus.id);
+  return stain ? buildStainActions(view, stain) : [];
 }

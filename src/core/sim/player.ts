@@ -9,8 +9,9 @@ import { applyTreatInfluence } from './treat-influence';
 import { findPath, nearestWalkable } from './pathfinding';
 import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
-import { exchangePoint, guestById, interactionPoint, worldNav } from './world';
+import { guestById, worldNav } from './world';
 import { grantGlobalXp } from './player-rpg';
+import { INTERACTION_RADII, isInRange, planInteraction } from './interaction';
 
 const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
@@ -23,13 +24,15 @@ export function movePlayer(world: WorldState, target: Point): void {
   world.player.pathIndex = 0;
 }
 
-const near = (a: Point, b: Point, distance = 2): boolean => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) <= distance;
-
-export function takeDrink(world: WorldState): void {
+export function takeDrink(world: WorldState, barId?: number): void {
   if (world.player.carrying !== '') throw new Error('Deine Hände sind voll.');
-  const bar = world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0);
-  const spot = bar ? interactionPoint(world, bar) : null;
-  if (!spot || !near(world.player.position, spot)) throw new Error('Geh erst zu einer bestückten Bar.');
+  // Der Klick nennt seine Bar; nur ohne Ziel greift die erste bestueckte.
+  const bar = barId === undefined
+    ? world.furniture.find((item) => item.kind === 'BAR' && item.stock > 0)
+    : world.furniture.find((item) => item.id === barId && item.kind === 'BAR');
+  if (!bar || bar.stock <= 0 || !planInteraction(world, { kind: 'furniture', id: bar.id }).inRange) {
+    throw new Error('Geh erst zu einer bestückten Bar.');
+  }
   bar!.stock -= 1;
   world.player.carrying = 'DRINK';
   world.lastEvent = 'Drink gezapft. Jetzt zum Gast bringen.';
@@ -44,7 +47,7 @@ export function serveDrink(
   if (world.player.carrying !== 'DRINK') throw new Error('Du hast keinen Drink dabei.');
   const guest = guestById(world, guestId);
   if (!guest) throw new Error('Gast nicht gefunden.');
-  if (!near(world.player.position, guest.position, 3)) throw new Error('Geh erst zum Gast.');
+  if (!isInRange(world.player.position, guest.position, INTERACTION_RADII.GUEST)) throw new Error('Geh erst zum Gast.');
   const price = world.prices.drinkPrice;
   if (ledger.getBalance(guestAccount(guest.id)) >= price) {
     ledger.transfer(guestAccount(guest.id), HAUSKONTO, price, guestReason('DRINK', guest.id), world.tick);
@@ -65,7 +68,7 @@ export function pickupCrate(world: WorldState, crateId: number): void {
   if (world.player.carrying !== '') throw new Error('Deine Hände sind voll.');
   const crate = world.crates.find((entry) => entry.id === crateId);
   if (!crate) throw new Error('Die Kiste ist nicht da.');
-  if (Math.abs(world.player.position.x - crate.x) + Math.abs(world.player.position.y - crate.y) > 2) {
+  if (!isInRange(world.player.position, { x: crate.x, y: crate.y }, INTERACTION_RADII.CRATE)) {
     throw new Error('Geh erst zur Kiste.');
   }
   takeCrate(world, crateId, 'player');
@@ -122,8 +125,10 @@ export function upgradeWc(world: WorldState, ledger: Ledger): void {
 
 /** Der Spieler bedient die Kasse: ein Gast wird sofort gewechselt. */
 export function serveDesk(world: WorldState, ledger: Ledger, prng: Prng): boolean {
-  const point = exchangePoint(world);
-  if (!point || !near(world.player.position, point, 4)) throw new Error('Geh erst zur Wechselkasse.');
+  const desk = world.furniture.find((item) => item.kind === 'EXCHANGE');
+  if (!desk || !planInteraction(world, { kind: 'furniture', id: desk.id }).inRange) {
+    throw new Error('Geh erst zur Wechselkasse.');
+  }
   const guest = world.guests
     .filter((entry) => entry.state === 'EXCHANGE')
     .sort((a, b) => a.id - b.id)[0];

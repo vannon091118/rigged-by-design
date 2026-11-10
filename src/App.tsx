@@ -20,6 +20,7 @@ import { Hud } from './ui/hud';
 import { PopupRouter } from './ui/popup-router';
 import { StageControls } from './ui/stage-controls';
 import { useCrateActions } from './ui/use-crate-actions';
+import { useFloorInteraction } from './ui/use-floor-interaction';
 import { useStageKeys } from './ui/use-stage-keys';
 import { editorEnabled } from './ui/editor-gate';
 
@@ -37,9 +38,6 @@ export default function App({ onFirstFrame }: AppProps = {}) {
   const [popup, setPopup] = useState<Popup>(null);
   const [perspective, setPerspective] = useState<Perspective>('operator');
   const [buildOpen, setBuildOpen] = useState(false);
-  const [actions, setActions] = useState<MenuAction[]>([]);
-  // Weltposition des getroffenen Objekts: die Aktionskarte haengt daran.
-  const [anchor, setAnchor] = useState<ScreenAnchor | null>(null);
   // Derselbe Anker fuer das Geraetepanel: der Automat ist sein eigenes Menue.
   const [popupAnchor, setPopupAnchor] = useState<ScreenAnchor | null>(null);
   const [placeError, setPlaceError] = useState('');
@@ -99,13 +97,6 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     return () => window.removeEventListener('pointerdown', onPointerDown, true);
   }, []);
 
-  useStageKeys({
-    enabled: popup === null && !buildOpen && !editorOpen,
-    zoom: (factor) => stage.current?.zoom(factor),
-    fit: () => stage.current?.fit(),
-    onEscape: () => setBuildOpen(false),
-  });
-
   const carryingCrate = view.player.carrying.startsWith('KRATE:');
   const ghostId = (() => {
     const match = /^KRATE:(\d+)$/.exec(view.player.carrying);
@@ -129,8 +120,6 @@ export default function App({ onFirstFrame }: AppProps = {}) {
 
   const openPopup = (next: Popup): void => {
     setBuildOpen(false);
-    setActions([]);
-    setAnchor(null);
     setPopupAnchor(null);
     setPopup(next);
   };
@@ -140,17 +129,49 @@ export default function App({ onFirstFrame }: AppProps = {}) {
     setPopup(null);
     setPopupAnchor(null);
     setBuildOpen(false);
-    setActions([]);
     setPerspective(next);
   };
   const onBrandTap = useBrandTaps(() => openPopup({ kind: 'workshop' }));
+
+  // Ein Pfad fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln.
+  const executeAction = (action: MenuAction, at: ScreenAnchor | null): void => {
+    if (action.id === 'OPEN_MACHINE' && action.targetId !== undefined) {
+      openPopup({ kind: 'machine', itemId: action.targetId });
+      setPopupAnchor(at);
+      return;
+    }
+    if (action.id === 'OPEN_GUEST' && action.targetId !== undefined) {
+      openPopup({ kind: 'guests', guestId: action.targetId });
+      return;
+    }
+    if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
+    handleFloorInteract(action.id, action.targetId);
+  };
+  const interaction = useFloorInteraction({
+    view,
+    enabled: perspective === 'operator',
+    blocked: popup !== null || buildOpen || editorOpen,
+    onExecute: executeAction,
+  });
+  const closeInteraction = interaction.close;
+
+  // Ein offenes Fenster beendet den Fokus; sonst tippt der naechste Klick ins Leere.
+  useEffect(() => {
+    if (popup !== null || buildOpen || editorOpen) closeInteraction();
+  }, [popup, buildOpen, editorOpen, closeInteraction]);
+
+  useStageKeys({
+    enabled: popup === null && !buildOpen && !editorOpen,
+    zoom: (factor) => stage.current?.zoom(factor),
+    fit: () => stage.current?.fit(),
+    onEscape: () => { if (!closeInteraction()) setBuildOpen(false); },
+  });
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if (!event.ctrlKey || !event.shiftKey || event.repeat || event.key.toLowerCase() !== 'd') return;
       event.preventDefault();
       setBuildOpen(false);
-      setActions([]);
       setPopup({ kind: 'workshop' });
     };
     window.addEventListener('keydown', onKey);
@@ -183,23 +204,10 @@ export default function App({ onFirstFrame }: AppProps = {}) {
           view={view}
           placing={ghostId}
           paused={popup?.kind === 'games' || popup?.kind === 'machine'}
-          onGuest={(id, at) => {
-            setAnchor(at ?? null);
-            if (perspective === 'operator') openPopup({ kind: 'guests', guestId: id });
-          }}
-          onFurniture={(id, at) => {
-            setAnchor(at ?? null);
-            // Panel am Geraet, nicht im Vollbild: derselbe Anker wie die Karte.
-            openPopup({ kind: 'machine', itemId: id });
-            setPopupAnchor(at ?? null);
-          }}
-          onEmpty={(x, y) => {
-            crates.tapFloor(x, y);
-          }}
-          onInteract={handleFloorInteract}
-          onActions={(next, at) => {
-            setActions(perspective === 'operator' ? next : []);
-            setAnchor(perspective === 'operator' ? at ?? null : null);
+          onTap={(tap) => {
+            // Moebelkiste tragen: der Boden ist das Ablageziel. Sonst entscheidet der Trefferpfad.
+            if (ghostId && tap.target.kind === 'floor') crates.tapFloor(tap.target.x, tap.target.y);
+            else interaction.tap(tap);
           }}
           onFirstFrame={onFirstFrame}
         />
@@ -207,15 +215,12 @@ export default function App({ onFirstFrame }: AppProps = {}) {
         <FloorRoleBar perspective={perspective} />
 
         <ActionCard
-          actions={actions}
-          anchor={anchor}
-          onPick={(action) => {
-            if (action.id === 'SPIEGEL') { openPopup({ kind: 'look' }); return; }
-            handleFloorInteract(action.id, action.targetId);
-            setActions([]);
-            setAnchor(null);
-          }}
-          onClose={() => { setActions([]); setAnchor(null); }}
+          actions={interaction.selection?.actions ?? []}
+          anchor={interaction.selection?.anchor ?? null}
+          status={interaction.selection?.status ?? ''}
+          blocked={interaction.selection?.blocked ?? false}
+          onPick={interaction.pick}
+          onClose={interaction.close}
         />
 
         <StageControls zoom={(factor) => stage.current?.zoom(factor)} overview={() => stage.current?.fit()} />
@@ -267,7 +272,7 @@ export default function App({ onFirstFrame }: AppProps = {}) {
       <Dock
         view={view}
         perspective={perspective}
-        onPlay={() => { setPopup(null); setBuildOpen(false); setActions([]); stage.current?.fit(); }}
+        onPlay={() => { setPopup(null); setBuildOpen(false); stage.current?.fit(); }}
         onBuild={() => setBuildOpen((open) => !open)}
         onClean={() => worldStore.clean()}
         onOpen={openPopup}
