@@ -4,7 +4,7 @@
   "claimId": "lane/governance/review-hygiene",
   "branch": "lane/governance/review-hygiene",
   "baseSha": "9f090fdc54246a296a59aacebc0e335d5c80c6a3",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Review-Folgebefunde: Soak-Beweis, Versionswahrheit, Regeltexte, Lane-Status, hermetische Registry-Tests",
   "goal": "Sechs Review-Befunde aus dem externen Audit beheben: pnpm soak beweist (RBD_SOAK=1), CHANGELOG deckt 0.3.200/0.3.201/0.3.203 ab, Regel 5/6 und ROADMAP-Tabelle sprechen eine Sprache, fail-closed-Task auf DONE, Registry-Test ohne .git und ohne volle Historie gruen",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "headSha": "7e26eb458a79034dbd111a35c867c34a512ab319"
   },
   "findings": [],
-  "nextAction": "CI auf PR #348 abwarten (Fail-Closed Gates auf exaktem Kopf 7e26eb4).",
-  "revision": 2
+  "nextAction": "Abgeschlossen: PR #348 gemergt, Inhalt auf Main, Branch geloescht.",
+  "revision": 5
 }

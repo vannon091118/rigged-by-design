@@ -27,6 +27,7 @@ import {
   LEGACY_PREFIXES,
   LaneClaim,
   OWNERS,
+  auditTaskClaimParity,
   loadClaimsStrict,
   validateNewClaim,
 } from './lib/lane-claims.mjs';
@@ -275,6 +276,31 @@ function listClaims() {
   }
 }
 
+function readTaskContracts() {
+  const tasksDir = join(claimsDir, 'tasks');
+  const tasks = [];
+  const violations = [];
+  let names;
+  try {
+    names = readdirSync(tasksDir);
+  } catch {
+    return { tasks, violations };
+  }
+  for (const name of names) {
+    if (!name.endsWith('.json')) continue;
+    try {
+      const data = JSON.parse(readFileSync(join(tasksDir, name), 'utf8'));
+      const entries = Array.isArray(data) ? data : [data];
+      for (const entry of entries) {
+        if (entry && typeof entry === 'object') tasks.push(entry);
+      }
+    } catch {
+      violations.push(`Task-Vertrag nicht lesbar: ${name}`);
+    }
+  }
+  return { tasks, violations };
+}
+
 function doctor() {
   const all = loadForCommand();
   const files = entryFiles();
@@ -287,6 +313,13 @@ function doctor() {
     if (seenBranches.has(claim.branch)) violations.push(`${claim.id}: Branch '${claim.branch}' doppelt`);
     else seenBranches.set(claim.branch, claim.id);
   }
+  const contracts = readTaskContracts();
+  violations.push(...contracts.violations);
+  const parity = auditTaskClaimParity({
+    claims: all.map((claim) => claim.toJSON()),
+    tasks: contracts.tasks,
+  });
+  violations.push(...parity.violations);
   if (options.json) {
     console.log(JSON.stringify({ ok: violations.length === 0, claims: all.length, violations }, null, 2));
   } else if (violations.length === 0) {

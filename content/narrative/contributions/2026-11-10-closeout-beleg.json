@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T12:00Z-closeout-beleg",
+  "contributionId": "proof-before-trust-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-mid",
+  "function": "react",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der Gast tippte gegen die Liste und sagte, ein Haekchen zaehle erst, wenn jemand die Zeile darueber nachgeprueft habe. Dann nickte er und trank aus.",
+  "directives": []
+}

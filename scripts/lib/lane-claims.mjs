@@ -556,6 +556,28 @@ export function auditRegisterAgainstBase({ baseClaims = [], registrationClaims =
   return { ok: violations.length === 0, violations };
 }
 
+/**
+ * Eine einzige Quelle fuer den Lane-Status (AGENTS.md Regel 1: der Task-Vertrag
+ * ist die Wahrheit fuer die Phase, der Claim folgt ihm). Ein offener Claim bei
+ * DONE-Vertrag und ein gemergter Claim bei nicht-DONE-Vertrag sind veraltete
+ * Eintraege, keine zweite Wahrheit. Archivierte, geparkte und supersedierte
+ * Claims sowie Vertraege ohne Claim-Gegenstueck bleiben unangetastet.
+ */
+export function auditTaskClaimParity({ claims = [], tasks = [] } = {}) {
+  const violations = [];
+  const byClaimId = new Map(claims.map((claim) => [claim?.id, claim]));
+  for (const task of tasks) {
+    const claim = byClaimId.get(task?.claimId);
+    if (!claim) continue;
+    if (task.phase === 'DONE' && claim.status === 'open') {
+      violations.push(`${claim.id}: Claim offen, Vertrag DONE - auf merged/superseded/archived nachziehen`);
+    } else if (claim.status === 'merged' && task.phase !== 'DONE') {
+      violations.push(`${claim.id}: Claim merged, Vertrag ${task.phase} - auf DONE nachziehen`);
+    }
+  }
+  return { ok: violations.length === 0, violations };
+}
+
 /** Gibt eine maschinenlesbare Zusammenfassung für agent:context. */
 export function contextSummary() {
   const claims = openClaims();

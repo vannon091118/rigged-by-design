@@ -3364,6 +3364,10 @@
     {
       "turnId": "2026-11-10T11:30Z-review-nachpruefung",
       "contributionId": "ledger-proof-01"
+    },
+    {
+      "turnId": "2026-11-10T12:00Z-closeout-beleg",
+      "contributionId": "proof-before-trust-01"
     }
   ]
 }

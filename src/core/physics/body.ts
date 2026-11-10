@@ -20,7 +20,7 @@ export interface Body {
   readonly friction: number;
   readonly restitution: number;
   readonly isStatic: boolean;
-  /** Radius um den Schwerpunkt, der die Form vollstaendig umschliesst (Breitphase). */
+  /** Huellradius um den Schwerpunkt: Radius-Vorfilter vor der engen Kontaktpruefung (kein Raster). */
   readonly boundingRadius: number;
   /** Federnder Peg: gibt mehr Energie zurueck als ein normales Hindernis. */
   readonly bouncy: boolean;

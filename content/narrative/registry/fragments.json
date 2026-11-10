@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:56777cf476a395b63648b66c903d42be52ef84aa69eeda85535c91305a722465",
+  "contentHash": "sha256:d9d6e5a07b089e212692681144e38fb6d69ba3521134b3e6f41a054b5a021f29",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18293,6 +18293,28 @@
       "text": "Man sagt, der alte Aufseher kenne die Kreide noch. Wenn das stimmt, wird heute anders gespielt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-pool-rumor-52.json"
+    },
+    {
+      "contributionId": "proof-before-trust-01",
+      "turnId": "2026-11-10T12:00Z-closeout-beleg",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-mid",
+      "function": "react",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Gast tippte gegen die Liste und sagte, ein Haekchen zaehle erst, wenn jemand die Zeile darueber nachgeprueft habe. Dann nickte er und trank aus.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-beleg.json"
     },
     {
       "contributionId": "relationship-standing-01",

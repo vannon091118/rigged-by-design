@@ -7,8 +7,12 @@
   "phase": "DONE",
   "title": "Phase 0-2 Closeout: gemergte Governance- und Pixi-Lanes auf DONE ziehen",
   "goal": "Task-Vertraege und Claims der bereits gemergten Phase-0/1/2-Lanes auf den belegten Endzustand ziehen.",
-  "pr": null,
+  "pr": {
+    "number": 344,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/344",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Abgeschlossen: Closeout-Inhalt steht; der korrigierte PR-Body löst einen frischen Prüflauf aus.",
-  "revision": 2
+  "nextAction": "Abgeschlossen: Closeout-Inhalt steht; PR #344 als Nachweis nachgetragen.",
+  "revision": 3
 }
