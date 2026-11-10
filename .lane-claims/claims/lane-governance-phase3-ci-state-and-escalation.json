@@ -30,8 +30,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "full",
-  "status": "closed",
-  "createdAt": "18843f7cc187dd128746299dd1df2f22a7d7c941",
-  "closedAt": "3594ce4",
-  "closedReason": "PR gemergt; Claim stale"
+  "status": "merged",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "3594ce4c3c49fa623d47ed705d37b8cfb002383f",
+  "createdAt": "18843f7cc187dd128746299dd1df2f22a7d7c941"
 }

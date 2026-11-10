@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f30f54713ec0b6315ca2c44f949bc6fa54932d0eced8fd9ac46a21e136ca567c",
+  "contentHash": "sha256:2df19d982857faf158175f4749258fcbdbca82719eb68a852dc9d555039cd4f9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3690,6 +3690,106 @@
       "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-clean-start-01",
+      "turnId": "2026-11-10T06:16Z-governance-fail-closed-clean-start",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita reichte dem Pruefer einen leeren, aber gueltigen Zettel. Nicht Schweigen sollte als Freigabe gelten, sondern eine Antwort, die tatsaechlich gelesen werden konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-isolation-budget-01",
+      "turnId": "2026-11-10T06:18Z-governance-fail-closed-isolation-budget",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita hob das Budget nicht an, sondern trug den Fall dorthin, wo noch Platz war. Die Pruefung blieb dieselbe, nur der Ort war ehrlicher gewaehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-isolation-budget.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-issue-check-01",
+      "turnId": "2026-11-10T06:20Z-governance-fail-closed-issue-check",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess die Liste der offenen Befunde zweimal holen, bevor sie den Schluessel umdrehte. Antwortete die Gegenstelle nicht, blieb die Tuer zu: Ein leerer Zettel ist kein Beweis fuer ein leeres Regal, und ein unbekannter Befund ist keine Freigabe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-issue-check.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-test-quality-01",
+      "turnId": "2026-11-10T06:12Z-governance-fail-closed-test-quality",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita liess den Beleg am selben System haengen, das den Befund erzeugt: Ein Test, der nur den Text prueft, aber nicht den Code seiner Quelle, haette auch bei geschlossenem Regal gegruent.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-test-quality.json"
     },
     {
       "contributionId": "governance-freeze-merge-base-01",
