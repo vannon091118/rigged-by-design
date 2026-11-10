@@ -178,22 +178,22 @@ describe('Main-Gate', () => {
     expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
   });
 
-  it('loescht keine Wegwerf-Branches mehr, sondern meldet sie', () => {
+  it('loescht gemergte Wegwerf-Branches und schont geschuetzte Branches', () => {
     const cleanup = workflow('pr-cleanup.yml');
     expect(cleanup.on?.pull_request?.types).toEqual(['closed']);
-    expect(cleanup.permissions?.contents).toBe('read');
-    expect(cleanup.jobs?.['delete-branch']).toBeUndefined();
+    expect(cleanup.permissions?.contents).toBe('write');
 
-    const job = cleanup.jobs?.['report-branch'];
-    expect(job?.name).toBe('Head-Branch melden');
+    const job = cleanup.jobs?.['delete-branch'];
+    expect(job?.name).toBe('Gemergten Head-Branch loeschen');
     expect(job?.if).toContain('github.event.pull_request.merged == true');
     expect(job?.if).toContain('keep-branch');
-    const step = steps(cleanup, 'report-branch')[0];
-    expect(step?.run).toContain('git push origin --delete');
-    expect(step?.run).toContain('nicht** geloescht');
-    for (const entry of steps(cleanup, 'report-branch')) {
-      expect(entry.run ?? '').not.toContain('gh api -X DELETE');
-    }
+    expect(job?.if).toContain("github.event.pull_request.head.ref != 'main'");
+    expect(job?.if).toContain("github.event.pull_request.head.ref != 'integration'");
+    expect(job?.if).toContain('github.event.pull_request.head.repo.full_name == github.repository');
+    const step = steps(cleanup, 'delete-branch')[0];
+    expect(step?.run).toContain('gh api -X DELETE');
+    expect(step?.run).toContain('repos/${GITHUB_REPOSITORY}/git/refs/heads/${BRANCH}');
+    expect(step?.run).toContain('keep-branch');
   });
 
   it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {

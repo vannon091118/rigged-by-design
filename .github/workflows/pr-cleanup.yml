@@ -1,20 +1,19 @@
 name: PR Cleanup
 
-# Gemergte Wegwerf-Branches werden hier nur gemeldet, nicht geloescht. Das
-# Entfernen eines Remote-Zweigs ist eine sichtbare, nicht umkehrbare Aenderung;
-# sie gehoert zur bewussten Handlung des Eigentuemers. Dieser Workflow nennt den
-# Kandidaten und den Befehl, mehr nicht. `main`, `integration` und Branches mit
-# dem Label `keep-branch` bleiben unerwaehnt.
+# Gemergte Wegwerf-Branches werden geloescht. Das ist die eine sichtbare
+# Aufraeumaktion nach dem Merge; `main`, `integration`, `integration/*` und
+# Branches mit dem Label `keep-branch` bleiben unangetastet. Der Workflow
+# laeuft nur fuer Branches aus diesem Repository, nie fuer Fork-Branches.
 on:
   pull_request:
     types: [closed]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  report-branch:
-    name: Head-Branch melden
+  delete-branch:
+    name: Gemergten Head-Branch loeschen
     if: >-
       github.event.pull_request.merged == true &&
       github.event.pull_request.head.ref != 'main' &&
@@ -25,21 +24,26 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - name: Aufraeum-Kandidat berichten
+      - name: Branch loeschen
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ github.event.pull_request.head.ref }}
           NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          echo "::notice::PR #${NUMBER} ist gemergt; Branch '${BRANCH}' ist ein Loeschkandidat. Der Workflow loescht nichts."
-          {
-            echo "### Aufraeumen: \`${BRANCH}\`"
-            echo ""
-            echo "PR #${NUMBER} ist gemergt. Der Branch wurde **nicht** geloescht."
-            echo ""
-            echo "Manuell entfernen:"
-            echo ""
-            echo '```'
-            echo "git push origin --delete ${BRANCH}"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          if gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${BRANCH}" >/dev/null 2>&1; then
+            echo "::notice::PR #${NUMBER} ist gemergt; Branch '${BRANCH}' wurde geloescht."
+            {
+              echo "### Aufgeraeumt: \\`${BRANCH}\\`"
+              echo ""
+              echo "PR #${NUMBER} ist gemergt. Der Head-Branch wurde geloescht."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Branch '${BRANCH}' konnte nicht geloescht werden; bereits entfernt, geschuetzt oder fehlende Berechtigung."
+            {
+              echo "### Nicht geloescht: \\`${BRANCH}\\`"
+              echo ""
+              echo "PR #${NUMBER} ist gemergt, aber der Branch konnte nicht entfernt werden."
+              echo "Pruefe, ob er bereits geloescht, geschuetzt oder das Label \\`keep-branch\\` gesetzt ist."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi

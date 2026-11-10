@@ -35,6 +35,7 @@ import { takeDrinkCmd, serveDrinkCmd, moveToCmd, payCmd } from './service-comman
 import { cityCmd, type CityCommand } from './city-commands';
 import { spinTestCmd, deployPlinkoCmd, setPlinkoModeCmd, exclusionCmd, type ExclusionCommand } from './game-commands';
 import { TICK_MS } from '../core/sim/tick-timing';
+import { InteractionStore } from './interaction-store';
 
 class WorldStore {
   #ledger = new Ledger();
@@ -54,6 +55,7 @@ class WorldStore {
     notice: (text) => { this.#notice = text; }, emit: (save) => this.#emit(save),
   });
   readonly own = new OwnPlay({ world: () => this.#world, ledger: () => this.#ledger, prng: () => this.#prng, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
+  readonly interaction = new InteractionStore({ world: () => this.#world, emit: (save) => this.#emit(save), notice: (text) => { this.#notice = text; } });
   constructor() {
     const hadOld = clearOldSave();
     const loaded = loadWorld();
@@ -142,14 +144,14 @@ class WorldStore {
   pickupMop(mopId: number): void { this.#guard(() => { this.#notice = pickupMopCmd(this.#world, mopId); }); }
   dropMop(): void { this.#guard(() => { this.#notice = dropMopCmd(this.#world); }); }
   cleanStain(stainId: number): void { this.#guard(() => { this.#notice = cleanStainCmd(this.#world, this.#ledger, stainId); }); }
-  getMopAtToilet(): void { this.#guard(() => { this.#notice = getMopAtToiletCmd(this.#world); }); }
+  getMopAtToilet(toiletId?: number): void { this.#guard(() => { this.#notice = getMopAtToiletCmd(this.#world, toiletId); }); }
   acceptJob(rivalId: RivalId, jobId: PlayerJobId): void { this.#guard(() => { acceptJobCmd(this.#world, rivalId, jobId); this.#notice = this.#world.lastEvent; }); }
   quitJob(): void { this.#guard(() => { quitJobCmd(this.#world); this.#notice = this.#world.lastEvent; }); }
   requestJobTask(): void { this.#guard(() => { const result = requestJobTaskCmd(this.#world); this.#notice = result.started ? 'Arbeit aufgenommen.' : `In Warteschlange (Position ${result.queuePosition + 1}).`; }); }
   visitForeign(rivalId: RivalId): void { this.#guard(() => { visitForeignCmd(this.#world, rivalId); this.#notice = this.#world.lastEvent; }); }
   leaveForeign(): void { this.#guard(() => { leaveForeignCmd(this.#world); this.#notice = this.#world.lastEvent; }); }
   buyBar(): void { this.#guard(() => { buyBarCmd(this.#world, this.#ledger, this.#world.tick); this.#notice = this.#world.lastEvent; }); }
-  takeDrink(): void { this.#event(() => { this.#notice = takeDrinkCmd(this.#world); }); }
+  takeDrink(barId?: number): void { this.#event(() => { this.#notice = takeDrinkCmd(this.#world, barId); }); }
   serveDrink(guestId: number): void { this.#event(() => { this.#notice = serveDrinkCmd(this.#world, this.#ledger, guestId); }); }
   moveTo(point: Point): void { moveToCmd(this.#world, point); this.#emit(false); }
   pay(guestId: number): void { this.#guard(() => { this.#notice = payCmd(this.#world, this.#ledger, guestId); }); }

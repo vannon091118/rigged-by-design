@@ -5,8 +5,8 @@ import { takeDrink, serveDrink, movePlayer } from '../core/sim/player';
 import type { Point } from '../core/sim/types';
 import type { WorldState } from '../core/sim/types';
 
-export function takeDrinkCmd(world: WorldState): string {
-  takeDrink(world);
+export function takeDrinkCmd(world: WorldState, barId?: number): string {
+  takeDrink(world, barId);
   return world.lastEvent;
 }
 

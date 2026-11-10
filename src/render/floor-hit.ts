@@ -8,7 +8,7 @@
  */
 import { wallOwnerTile } from './floor-math';
 
-type HitKind = 'furniture' | 'guest' | 'stain';
+type HitKind = 'furniture' | 'guest' | 'crate' | 'stain';
 
 /**
  * Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. `worldX` und
@@ -32,6 +32,8 @@ interface FloorHit {
   readonly id: number;
   /** Fusslinie in Tiles; groesser heisst weiter vorne. */
   readonly depth: number;
+  /** Fussanker des Objekts in Tiles, nicht der Klickpunkt. */
+  readonly at: HitCell;
 }
 
 interface WallEdge {
@@ -45,14 +47,15 @@ export interface HitView {
   readonly size: number;
   readonly furniture: readonly { readonly id: number; readonly x: number; readonly y: number; readonly w: number; readonly h: number }[];
   readonly guests: readonly { readonly id: number; readonly position: HitCell }[];
+  readonly crates?: readonly { readonly id: number; readonly x: number; readonly y: number }[];
   readonly stains: readonly { readonly id: number; readonly x: number; readonly y: number }[];
   readonly layout?: { readonly edges: readonly WallEdge[] };
 }
 
-/** Bei gleicher Fusslinie gewinnt die Figur vor dem Moebel vor dem Fleck. */
-const RANK: Readonly<Record<HitKind, number>> = { stain: 0, furniture: 1, guest: 2 };
+/** Bei gleicher Fusslinie gewinnt die Figur vor der Kiste vor dem Moebel vor dem Fleck. */
+const RANK: Readonly<Record<HitKind, number>> = { stain: 0, furniture: 1, crate: 2, guest: 3 };
 
-type Candidate = FloorHit & { readonly at: HitCell };
+type Candidate = FloorHit;
 
 const keyOf = (x: number, y: number, size: number): number => y * size + x;
 
@@ -101,31 +104,46 @@ export function pickHit(candidates: readonly Candidate[]): FloorHit | null {
     }
     if (candidate.id < best.id) best = candidate;
   }
-  return best ? { kind: best.kind, id: best.id, depth: best.depth } : null;
+  return best;
 }
 
 /**
  * Was ist an dieser Kachel gemeint? Maustaste und Finger landen hier beide;
- * es gibt keinen zweiten Pfad und damit keinen Doppel-Trigger.
+ * es gibt keinen zweiten Pfad und damit keinen Doppel-Trigger. Der Rueckgabewert
+ * traegt den Fussanker des Objekts, nicht die geklickte Pixelposition.
  */
 export function resolveHit(view: HitView, cell: HitCell, from: HitCell): FloorHit | null {
   if (cell.x < 0 || cell.y < 0 || cell.x >= view.size || cell.y >= view.size) return null;
   const candidates: Candidate[] = [];
   for (const stain of view.stains) {
     if (Math.abs(stain.x - cell.x) <= 1 && Math.abs(stain.y - cell.y) <= 1) {
-      candidates.push({ kind: 'stain', id: stain.id, depth: stain.y + 1, at: { x: stain.x, y: stain.y } });
+      candidates.push({
+        kind: 'stain', id: stain.id, depth: stain.y + 1,
+        at: { x: stain.x + 0.5, y: stain.y + 0.5 },
+      });
+    }
+  }
+  for (const crate of view.crates ?? []) {
+    if (crate.x === cell.x && crate.y === cell.y) {
+      candidates.push({
+        kind: 'crate', id: crate.id, depth: crate.y + 0.8,
+        at: { x: crate.x + 0.5, y: crate.y + 0.5 },
+      });
     }
   }
   for (const item of view.furniture) {
     if (cell.x >= item.x && cell.y >= item.y && cell.x < item.x + item.w && cell.y < item.y + item.h) {
-      candidates.push({ kind: 'furniture', id: item.id, depth: item.y + item.h, at: { x: item.x + item.w / 2, y: item.y + item.h } });
+      candidates.push({
+        kind: 'furniture', id: item.id, depth: item.y + item.h,
+        at: { x: item.x + item.w / 2, y: item.y + item.h },
+      });
     }
   }
   for (const guest of view.guests) {
     if (Math.abs(guest.position.x - cell.x) + Math.abs(guest.position.y - cell.y) <= 1) {
       candidates.push({
         kind: 'guest', id: guest.id, depth: guest.position.y + 0.8,
-        at: { x: guest.position.x, y: guest.position.y + 0.5 },
+        at: { x: guest.position.x + 0.5, y: guest.position.y + 0.5 },
       });
     }
   }

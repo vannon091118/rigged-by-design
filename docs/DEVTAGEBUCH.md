@@ -1,9 +1,21 @@
 # Devtagebuch
 
-<!-- rbd-doc: v0.3.201 | 2026-11-10 00:23 UTC -->
+<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
 
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
+
+## 2026-11-09 - Doku-Autopilot und PreTurn-Folgengate
+
+**Ziel:** Die Doku-Regression im Laning beenden, offene Gate-Probleme vor einer neuen Anfrage sichtbar machen und Reparaturen skalierbar erzwingen.
+
+**Befund:** `doc-sync` schrieb bei jedem Commit Version und Zeitstempel in alle zwoelf Pflichtdokumente. Dadurch erzeugte jede Lane dieselben Doku-Aenderungen, und `verify:docs` machte Marker aelter als 72 Stunden rot. `pretask` las Gate-Issues, erklaerte sie aber nicht als kurze Folgetask-Liste. `pr-cleanup` meldete gemergte Branches nur. Hot-Zone-Aenderungen und Export-Entfernungen hatten keine eigene Durchsetzung.
+
+**Umsetzung:** Stabile Doku-Marker ohne Version und Zeitstempel; vorhandene Marker bleiben unveraendert, fehlende werden automatisch ergaenzt. `pretask` baut aus Scope-Blockern eine nummerierte Liste mit Problem, Kurzbeschreibung, Loesungsansatz und Schwierigkeitsgrad. `pr-cleanup` loescht gemergte Head-Branches. `check:loc` blockiert geaenderte Hot-Zone-Dateien und nennt den ASK_USER-Pfad fuer eine begruendete LOC-Erhoehung. `turn:finish` verlangt bei Export-Entfernungen eine Chain-Trace; Dead-Code- und Redundanz-Gates nennen Kettenpruefung und Ausschlachten als Pflicht. Die Regeln stehen in `AGENTS.md`.
+
+**Pruefungen:** `node --check` fuer alle geaenderten Skripte; YAML-Parse fuer `pr-cleanup.yml`; isolierte Marker- und Folgetask-Tests; simulierter Scope-Blocker in `pretask`; `verify-lane-claims`; `verify:light` mit Lint, LOC, Typecheck, Docs, Tree und Redundanz.
+
+**Bewusst nicht getan:** Die nicht-Meta-Dokumente `docs/WORKFLOW.md`, `docs/CI.md`, `docs/GOVERNANCE.md` und `docs/TESTING.md` bleiben unangetastet, weil die offene Interaction-Lane `docs/**` haelt. Ihre Regeln sind in `AGENTS.md` und den Gates wirksam; die Detailtexte koennen nach dem Merge von PR #324 nachgezogen werden. Keine Test-Assertions gelockert, keine Gate-Umgehung.
 
 ## 2026-11-09 - P-4: Spieltyp-Spuren im Ledger
 

@@ -15,6 +15,11 @@ function setup() {
   return { world, ledger, prng };
 }
 
+/** Reichweite ist jetzt Teil des Vertrags; die Tests stellen die Figur dorthin. */
+function standNextTo(world: ReturnType<typeof createWorld>, guest: { position: { x: number; y: number } }) {
+  world.player.position = { x: guest.position.x + 1, y: guest.position.y };
+}
+
 describe('Spieler-RPG: XP und Attribute', () => {
   it('startet auf Level 1 mit null XP und ohne Punkte', () => {
     expect(newPlayerRpg()).toMatchObject({
@@ -48,6 +53,7 @@ describe('Charisma-Interaktion', () => {
     for (let attempt = 0; attempt < 20 && !success; attempt += 1) {
       const { world, ledger, prng } = setup();
       const guest = spawnGuest(world, prng, ledger)!;
+      standNextTo(world, guest);
       guest.mood = 60;
       world.player.rpg.charismaLevel = 10;
       const result = talkToGuest(world, prng, guest.id);
@@ -64,6 +70,7 @@ describe('Charisma-Interaktion', () => {
     for (let attempt = 0; attempt < 30 && !failed; attempt += 1) {
       const { world, ledger, prng } = setup();
       const guest = spawnGuest(world, prng, ledger)!;
+      standNextTo(world, guest);
       guest.mood = 60;
       const result = talkToGuest(world, prng, guest.id);
       if (result && !result.success) {
@@ -78,6 +85,7 @@ describe('Charisma-Interaktion', () => {
     for (let attempt = 0; attempt < 120 && !brawled; attempt += 1) {
       const { world, ledger, prng } = setup();
       const guest = spawnGuest(world, prng, ledger)!;
+      standNextTo(world, guest);
       const other = spawnGuest(world, prng, ledger)!;
       other.position = { x: guest.position.x, y: guest.position.y };
       other.state = 'ANGRY';

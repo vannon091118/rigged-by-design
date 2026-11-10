@@ -10,18 +10,16 @@ interface ActionCardProps {
   readonly onClose: () => void;
   /** Weltposition des getroffenen Objekts; die Karte haengt dann daran. */
   readonly anchor?: ScreenAnchor | null;
-  /** Rechnet den Weltpunkt bei Kamera- und Zoomfahrten neu in den Viewport. */
-  readonly project?: AnchorProjector;
+  /** "Laeuft hin" oder der Grund, warum das Ziel nicht erreichbar ist. */
+  readonly status?: string;
+  /** Ziel nicht erreichbar: Aktionen bleiben sichtbar, sind aber gesperrt. */
+  readonly blocked?: boolean;
 }
 
-export function ActionCard({ actions, onPick, onClose, anchor = null, project }: ActionCardProps) {
-  const usable = actions.filter((action) => action.id !== 'CANCEL');
-  const main = usable[0];
-  const card = useRef<HTMLDivElement>(null);
-  const style = useAnchoredStyle(anchor, project, card, { width: 340, fallbackHeight: 118 });
+export function ActionCard({ actions, onPick, onClose, anchor = null, status = '', blocked = false }: ActionCardProps) {
+  const main = actions[0];
   if (!main) return null;
-  const enabled = usable.filter((action) => action.id !== main.id && action.enabled).slice(0, 2);
-  const alternatives = enabled.length > 0 ? enabled : usable.slice(1, 3);
+  const alternatives = actions.filter((action) => action.id !== main.id).slice(0, 2);
 
   return (
     <div
@@ -34,17 +32,20 @@ export function ActionCard({ actions, onPick, onClose, anchor = null, project }:
       <button
         type="button"
         className="action-main"
-        disabled={!main.enabled}
+        disabled={blocked || !main.enabled}
+        title={main.reason}
         onClick={() => onPick(main)}
       >
         {main.label}
+        {!main.enabled && main.reason && <span className="action-reason">{main.reason}</span>}
       </button>
       <div className="action-alt">
         {alternatives.map((action) => (
           <button
             key={action.id}
             type="button"
-            disabled={!action.enabled}
+            disabled={blocked || !action.enabled}
+            title={action.reason}
             onClick={() => onPick(action)}
           >
             {action.label}
@@ -54,6 +55,7 @@ export function ActionCard({ actions, onPick, onClose, anchor = null, project }:
       <button type="button" className="action-close" aria-label="Schliessen" onClick={onClose}>
         ×
       </button>
+      {status && <p className="action-status" role="status">{status}</p>}
     </div>
   );
 }

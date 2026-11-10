@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T21:30Z-phase1-interaction-foundation",
+  "contributionId": "phase1-interaction-foundation",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "commands"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Klick ist jetzt ein Versprechen: Er nennt genau ein Ziel, die Figur geht den Weg dorthin, und erst in Reichweite oeffnet sich die Tat. Was nicht erreichbar ist, sagt warum, statt still zu scheitern.",
+  "directives": []
+}

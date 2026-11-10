@@ -16,6 +16,7 @@
  *
  * Exit-Code 1 bei Verstoessen, sonst 0.
  */
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -93,12 +94,44 @@ function hasExceptionHeader(text) {
   return firstLine.slice(EXCEPTION_TAG.length).trim().length > 0;
 }
 
+/** Pfade, die dieser Lauf gegenüber der Basis geaendert hat. */
+function changedPaths() {
+  // Explizite Basis fuer lokale Vorpruefungen; sonst Merge-Basis zu main.
+  let base = process.env.RBD_LOC_BASE || '';
+  if (!base) {
+    for (const ref of ['origin/main', 'HEAD^']) {
+      try {
+        base = execFileSync('git', ['merge-base', 'HEAD', ref], {
+          cwd: ROOT,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'ignore'],
+        }).trim();
+        if (base) break;
+      } catch {
+        // Naechste Basis versuchen.
+      }
+    }
+  }
+  if (!base) return new Set();
+  try {
+    const output = execFileSync('git', ['diff', '--name-only', '--diff-filter=ACMR', base], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return new Set(output.split(/\r?\n/).filter(Boolean));
+  } catch {
+    return new Set();
+  }
+}
+
 if (!existsSync(SRC_DIR)) {
   console.error(`check:loc - Verzeichnis fehlt: ${relative(ROOT, SRC_DIR) || 'src'}`);
   process.exit(1);
 }
 
 const skipped = [];
+const changed = changedPaths();
 const files = walk(SRC_DIR)
   .map((file) => {
     const text = readFileSync(file, 'utf8');
@@ -119,13 +152,14 @@ const files = walk(SRC_DIR)
     const overLimit = lines > limit;
     const stale = legacy && exception && !overLimit && lines <= hotZone;
     const hot = !unauthorized && !overLimit && !stale && lines > hotZone;
+    const hotChange = hot && changed.has(name);
     const role = legacy && exception ? 'legacy' : budget.id;
-    return { name, lines, limit, hotZone, role, legacy, exception, unauthorized, overLimit, stale, hot };
+    return { name, lines, limit, hotZone, role, legacy, exception, unauthorized, overLimit, stale, hot, hotChange };
   })
   .filter((file) => file !== null)
   .sort((a, b) => b.lines - a.lines);
 
-const violations = files.filter((file) => file.unauthorized || file.overLimit || file.stale);
+const violations = files.filter((file) => file.unauthorized || file.overLimit || file.stale || file.hotChange);
 const hotFiles = files.filter((file) => file.hot);
 
 console.log(`check:loc - ${files.length} Datei(en) unter src/ geprueft, ${skipped.length} ohne Logik-Budget`);
@@ -136,7 +170,7 @@ for (const file of files) {
     ? ' (Ausnahme verboten)'
     : file.stale
       ? ' (Ausnahme ueberfluessig)'
-      : ` [${file.role}]${file.hot ? ` Hot Zone ab ${file.hotZone}` : ''}`;
+      : ` [${file.role}]${file.hot ? ` Hot Zone ab ${file.hotZone}` : ''}${file.hotChange ? ' | geaendert: modularisieren oder ASK_USER' : ''}`;
   console.log(`  ${mark} ${String(file.lines).padStart(4)}/${file.limit}${note}  ${file.name}`);
 }
 
@@ -146,13 +180,16 @@ if (violations.length > 0) {
       ? `${file.lines} LOC: Explizite Ausnahmen sind verboten. Header entfernen und auf hoechstens ${file.hotZone} LOC reduzieren.`
       : file.stale
         ? `${file.lines} LOC: Ausnahme ist ueberfluessig. Header entfernen; die Datei liegt schon unter ${file.hotZone}.`
-        : `${file.lines} LOC (Grenze ${file.limit}). Reduziere auf hoechstens ${file.hotZone} LOC, um die Hot Zone zu verlassen.`;
+        : file.hotChange
+          ? `${file.lines} LOC: Hot Zone und in diesem Lauf geaendert. Modularisiere die Datei mit eigener Ownership und Pruefung. Wenn eine LOC-Erhoehung fachlich besser ist als die Extraktion, stelle ASK_USER mit Begruendung, warum die Erhoehung besser ist.`
+          : `${file.lines} LOC (Grenze ${file.limit}). Reduziere auf hoechstens ${file.hotZone} LOC, um die Hot Zone zu verlassen.`;
     fail(index + 1, 'ERR-4012', file.name, reason);
   });
   process.exit(1);
 }
 
 if (hotFiles.length > 0) {
-  console.log(`\ncheck:loc - ${hotFiles.length} Datei(en) in der Hot Zone. Jede Aenderung muss sie unter ihre Hot Zone bringen.`);
+  const changedHot = hotFiles.filter((file) => file.hotChange).length;
+  console.log(`\ncheck:loc - ${hotFiles.length} Datei(en) in der Hot Zone, ${changedHot} in diesem Lauf geaendert. Aenderungen muessen modularisiert oder als ASK_USER begruendet werden.`);
 }
 console.log('\ncheck:loc - OK, alle Dateien innerhalb ihres Budgets');

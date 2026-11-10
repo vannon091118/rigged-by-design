@@ -550,9 +550,16 @@ button.vital:hover { border-color: var(--line-strong); }
   touch-action: manipulation;
 }
 .action-card button:disabled { opacity: 0.45; cursor: default; }
-/* Am Objekt statt in der Ecke: die Karte haengt an der Weltposition des Treffers.
- * Links/oben/Breite kommen aus der gemessenen Klemmung, damit die Karte auch bei
- * 320 px und an den Viewport-Raendern vollstaendig sichtbar bleibt. */
+.action-card .action-reason { display: block; margin-top: 2px; font-size: 10px; color: #cbb9e8; }
+.action-card .action-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #d8c9ef;
+}
+.action-card .action-main { display: grid; align-content: center; }
+/* Am Objekt statt in der Ecke: die Karte haengt an der Weltposition des Treffers. */
 .action-card.is-anchored {
   position: fixed;
   left: var(--anchor-left, 8px);
