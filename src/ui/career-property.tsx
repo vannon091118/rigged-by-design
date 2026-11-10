@@ -2,6 +2,7 @@
 import { fromVC, ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import type { PlayerPropertyView, PropertyWorldBinding } from '../core/sim/property';
 import type { RenovationView } from '../core/sim/renovation';
+import type { MachineHallView } from '../core/sim/machine-hall';
 import type { PropertyId } from '../core/sim/types';
 import { vc } from './format';
 
@@ -15,9 +16,13 @@ interface Props {
   readonly onBuy?: (id: PropertyId) => void;
   /** Naechste Renovierungsstufe; ohne Handler bleibt der Knopf wirkungslos. */
   readonly onRenovate?: () => void;
+  /** Automaten der eigenen Flaeche aus derselben Ableitung wie der Floor. */
+  readonly machineHall?: MachineHallView;
+  /** Wartung eines Automaten; ohne Handler bleibt der Knopf wirkungslos. */
+  readonly onMaintain?: (itemId: number) => void;
 }
 
-export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, onRenovate }: Props) {
+export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, onRenovate, machineHall, onMaintain }: Props) {
   const owned = property.owned;
   const binding: PropertyWorldBinding | null = property.binding;
   return (
@@ -62,6 +67,40 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
               </div>
               <div><span>Hinweis</span><b>{renovation.note}</b></div>
             </div>
+          )}
+          {machineHall !== undefined && machineHall.owned && (
+            <>
+              <div className="career-grid" aria-label="Spielhalle">
+                <div><span>Automaten</span><b>{machineHall.total}</b></div>
+                <div><span>Laufend</span><b>{machineHall.running}</b></div>
+                <div><span>Wartung fällig</span><b>{machineHall.worn}</b></div>
+                <div><span>Defekt</span><b>{machineHall.broken}</b></div>
+                <div><span>Gäste am Automaten</span><b>{machineHall.occupied}/{machineHall.seats}</b></div>
+                <div><span>Wartung</span><b>{vc(machineHall.cost, 2)} je Automat</b></div>
+                <div><span>Hinweis</span><b>{machineHall.note}</b></div>
+              </div>
+              {machineHall.due.length > 0 && (
+                <ul className="career-property-offers" aria-label="Wartung fällig">
+                  {machineHall.due.map((machine) => (
+                    <li key={machine.id}>
+                      <div>
+                        <b>{machine.label}</b>
+                        <small>{machine.game} · Zustand {machine.condition} %</small>
+                      </div>
+                      <button
+                        type="button"
+                        className={`btn small${machine.ready ? ' primary' : ' ghost'}`}
+                        disabled={!machine.ready || onMaintain === undefined}
+                        title={machine.note}
+                        onClick={() => onMaintain?.(machine.id)}
+                      >
+                        Warten ({vc(machine.cost, 2)})
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </>
       ) : (

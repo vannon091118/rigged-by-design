@@ -160,6 +160,9 @@ describe('Charakterfenster: Immobilie', () => {
     expect(section.textContent).toContain('Betriebskonto');
     expect(view.career.property.binding?.area?.id).toBe('area-0');
     expect(section.textContent).toContain('Unrenoviert');
+    const hall = screen.getByLabelText('Spielhalle');
+    expect(hall.textContent).toContain('Automaten');
+    expect(hall.textContent).toContain('Wartung fällig');
     expect(screen.getByRole('button', { name: /Renovieren/ }).hasAttribute('disabled')).toBe(true);
     expect(screen.queryByRole('button', { name: /VC$/ })).toBeNull();
   });
