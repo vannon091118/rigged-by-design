@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:06Z-agent14-changelog-6",
+  "contributionId": "agent14-changelog-6",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Zwischen Merge und Abschluss liegt nur die Sorgfalt: die Phase nachziehen, damit niemand den geschlossenen Zug fuer offene Arbeit haelt.",
+  "directives": []
+}

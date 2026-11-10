@@ -583,10 +583,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2548 |
-| Gelistete Dateien | 2548 |
+| Getrackte Dateien | 2549 |
+| Gelistete Dateien | 2549 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (146), content (879), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (146), content (880), docs (83), public (554), scripts (102), src (756) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -600,7 +600,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 98 Datei(en)
 - `.lane-claims/tasks/` — 46 Datei(en)
-- `content/narrative/contributions/` — 875 Datei(en)
+- `content/narrative/contributions/` — 876 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1736,8 +1736,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent14-changelog-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-changelog-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-changelog-5.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19644 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3505 Zeilen
+- `content/narrative/contributions/2026-11-11-agent14-changelog-6.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19666 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3509 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
