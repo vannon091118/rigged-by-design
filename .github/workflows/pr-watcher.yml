@@ -1,15 +1,13 @@
 name: PR Watcher
 
-# Überwacht PRs und CI-Flows. Ein roter Lauf erzeugt ein Issue mit allen Infos;
-# ein Timeout oder Abbruch ist REMOTE_CI (Issue mit Label `remote-ci`, kein
-# Blocker). Ist `main` gruen, werden erledigte gate-failure-Issues geschlossen.
+# Überwacht CI-Läufe. Ein roter Lauf erzeugt ein Issue mit allen Infos; ein
+# Timeout oder Abbruch ist REMOTE_CI (Issue mit Label `remote-ci`, kein
+# Blocker). Den PR-Body prüft der Plan-Job, nicht der Watcher. Ist `main` gruen,
+# werden erledigte gate-failure-Issues geschlossen.
 on:
   workflow_run:
     workflows: ["CI Verify"]
     types: [completed]
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
@@ -49,6 +47,7 @@ jobs:
           RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
           RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
           RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
           RBD_AUTO_RESOLVE: ${{ vars.RBD_AUTO_RESOLVE || '0' }}
         run: node scripts/pr-watcher.mjs
 
@@ -59,11 +58,3 @@ jobs:
           RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
           MAIN_SHA: ${{ github.event.workflow_run.head_sha }}
         run: node scripts/pr-watcher.mjs --sweep-green
-
-      - name: PR-Body auf Pflichtsektionen prüfen
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: node scripts/pr-watcher.mjs --pr-check

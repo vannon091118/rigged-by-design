@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
+  "contributionId": "governance-eine-stimme-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
+  "directives": []
+}

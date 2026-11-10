@@ -206,7 +206,7 @@ export function completeTask({ runId, root = ROOT, gh = defaultGh, git = default
       state: TASK_COMPLETE,
       completedAt: now(),
       run: { id: Number(runId), url: run.url ?? null, conclusion: run.conclusion, headSha: run.headSha },
-      next: ['PR gegen main anlegen und manuell mergen'],
+      next: ['PR gegen main anlegen; Merge nur durch promote nach gruenem PR-Lauf'],
     },
     { root },
   );

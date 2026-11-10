@@ -1,0 +1,96 @@
+name: Ensure PR
+
+# Ein Push auf eine Lane startet nur noch diesen duennen Lauf. Die volle
+# Pruefung haengt am PR-Lauf; zwei Vollaeufe auf demselben Kopf erzeugten zwei
+# Pflichtstatus, von denen der aeltere den neueren verdecken kann.
+#
+# Hier laeuft bewusst kein Skript aus dem Branch: dieser Job haelt ein
+# Schreibrecht auf Pull Requests und darf keinen fremden Code ausfuehren.
+on:
+  push:
+    branches: ['lane/**']
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ensure-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ensure-pr:
+    name: PR anlegen oder aktualisieren
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # Ein PR, der mit dem Standard-Token angelegt wird, loest keinen
+      # `pull_request`-Lauf aus. Deshalb ein App-Token; fehlt die App, bleibt
+      # der Push sichtbar und der PR muss von Hand angelegt werden.
+      - name: PR-Token vorbereiten
+        id: auth
+        env:
+          APP_ID: ${{ secrets.RBD_APP_ID }}
+          APP_KEY: ${{ secrets.RBD_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$APP_KEY" ]; then
+            echo "app=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "app=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::RBD_APP_ID/RBD_APP_PRIVATE_KEY fehlen; gh laeuft mit GITHUB_TOKEN und loest keinen PR-Lauf aus."
+          fi
+
+      - name: App-Token
+        id: app
+        if: steps.auth.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ secrets.RBD_APP_ID }}
+          private-key: ${{ secrets.RBD_APP_PRIVATE_KEY }}
+
+      - name: PR sicherstellen
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          HEAD_SHA: ${{ github.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import { execFileSync } from 'node:child_process';
+
+          const gh = (args) =>
+            execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+          const repo = process.env.REPO;
+          const branch = process.env.BRANCH;
+          const sha = process.env.HEAD_SHA;
+          const message = (process.env.COMMIT_MESSAGE || '').trim();
+          const sections = [
+            '### Changes (Was ist neu)',
+            '### Technische Basis & Kausalität',
+            '### Ausblick (Nächste Schritte)',
+          ];
+          const subject = message.split(/\r?\n/, 1)[0] || `Lane ${branch}`;
+          const filler = (missing) => missing.map((section) => `${section}\n\n- siehe Commits und Diff`).join('\n\n');
+
+          const open = JSON.parse(
+            gh(['pr', 'list', '--repo', repo, '--base', 'main', '--head', branch, '--state', 'open', '--json', 'number,body']) || '[]',
+          );
+          if (open.length === 0) {
+            const body = message || `${subject}\n\n${filler(sections)}`;
+            const url = gh(['pr', 'create', '--repo', repo, '--base', 'main', '--head', branch, '--title', subject, '--body', body]);
+            console.log(`ensure-pr: PR angelegt ${url} (Kopf ${sha.slice(0, 7)}).`);
+            process.exit(0);
+          }
+
+          const pr = open[0];
+          const missing = sections.filter((section) => !String(pr.body ?? '').includes(section));
+          if (missing.length > 0) {
+            const body = `${String(pr.body ?? '').trim()}\n\n${filler(missing)}`.trim();
+            gh(['pr', 'edit', String(pr.number), '--repo', repo, '--body', body]);
+            console.log(`ensure-pr: PR #${pr.number} um ${missing.length} Pflichtsektion(en) ergaenzt.`);
+          } else {
+            console.log(`ensure-pr: PR #${pr.number} existiert; Kopf ${sha.slice(0, 7)} gepusht, der PR-Lauf prueft ihn.`);
+          }
+          NODE

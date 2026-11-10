@@ -111,7 +111,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
-| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, gruenen Pflichtstatus abwarten und manuell mergen; kein Direktpush auf main. |
+| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, gruenen Pflichtstatus abwarten und durch promote mergen lassen; kein Direktpush auf main. |
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
@@ -205,22 +205,22 @@ Jede Laufzeit- und Entwicklungabhängigkeit braucht eine nicht-leere Begründung
 | @capacitor/core | ^8.6.0 | Android | WebView-Bridge der Android-Huelle; von cap sync an die native Seite uebergeben. | 1: `scripts/prepare-android.mjs` |
 | @eslint/js | ^10.0.1 | Lint | Empfohlene ESLint-Basisregeln. | 1: `src/Config/eslint.config.mjs` |
 | @testing-library/react | ^16.3.3 | Test | Rendert HUD und Popups fuer Integrations- und Fokustests in jsdom. | 8: `src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>`src/ui/__tests__/guest-profile.test.tsx`<br>`src/ui/__tests__/machine-play.test.tsx`<br>`src/ui/__tests__/narrative-ui.test.tsx`<br>`src/ui/__tests__/perspective-switch.test.tsx`<br>… (+2) |
-| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 94: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+88) |
-| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 50: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+44) |
+| @types/node | ^22.20.5 | Typen | Typen fuer Node-Builtins in Gate-Skripten und Vitest-Reporter. | 98: `scripts/agent-context.mjs`<br>`scripts/agent-verify.mjs`<br>`scripts/auto-resolve.mjs`<br>`scripts/autofix-0911.mjs`<br>`scripts/balance-run.mjs`<br>`scripts/bench-lowend.mjs`<br>… (+92) |
+| @types/react | ^19.0.7 | Typen | Typpaket fuer die React-19-API; wird implizit von React-Imports genutzt. | 51: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+45) |
 | @types/react-dom | ^19.0.3 | Typen | Typpaket fuer React-DOM; wird implizit von react-dom-Imports genutzt. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | @vitejs/plugin-react | ^6.1.2 | Build | React-19-JSX-Transform und Fast Refresh fuer Vite. | 1: `src/Config/vite.config.ts` |
 | eslint | ^10.14.0 | Lint | Fail-Closed-Lint-Gate mit TypeScript-Parser und ungenutzten Symbolen. | 2: `package.json`<br>`src/Config/eslint.config.mjs` |
 | ffmpeg-static | ^5.3.0 | Assets | Kodiert die WAV-Musikmaster zu Opus fuer die Auslieferung; reines Build-Werkzeug, nicht im Bundle. | 2: `scripts/encode-audio.mjs`<br>`scripts/lib/atlas-webp.mjs` |
 | globals | ^16.5.0 | Lint | Browser- und Node-Globals fuer die ESLint-Konfiguration. | 1: `src/Config/eslint.config.mjs` |
 | jsdom | ^30.1.3 | Test | DOM-Umgebung fuer UI-, Fokus- und Tastaturtests ohne echten Browser. | 12: `package.json`<br>`scripts/sync-dependency-matrix.mjs`<br>`src/render/games/slot-stage.tsx`<br>`src/ui/__tests__/card-tables.test.tsx`<br>`src/ui/__tests__/dialog-request.test.ts`<br>`src/ui/__tests__/dialogue-ui.test.tsx`<br>… (+6) |
-| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 61: `src/render/__tests__/depth.test.ts`<br>`src/render/assets/atlas.ts`<br>`src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/depth-perf.bench.ts`<br>`src/render/depth.ts`<br>… (+55) |
-| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 50: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+44) |
+| pixi.js | ^8.6.6 | Runtime | WebGL/Canvas-Renderer fuer Floor, Figuren, Sticker und Spiele; kein DOM-Rendering im Spielfeld. | 62: `src/render/__tests__/depth.test.ts`<br>`src/render/__tests__/floor-input.test.ts`<br>`src/render/assets/atlas.ts`<br>`src/render/assets/textures.ts`<br>`src/render/comic-bubbles.ts`<br>`src/render/depth-perf.bench.ts`<br>… (+56) |
+| react | ^19.0.0 | UI | Deklarative HUD-, Popup- und Panel-Oberflaeche mit einem Store-Snapshot. | 51: `src/App.tsx`<br>`src/main.tsx`<br>`src/render/floor-stage.tsx`<br>`src/render/games/blackjack-stage.tsx`<br>`src/render/games/dice-stage.tsx`<br>`src/render/games/plinko-stage.tsx`<br>… (+45) |
 | react-dom | ^19.0.0 | UI | Mountet die React-Oberflaeche in den Browser. | 2: `src/main.tsx`<br>`src/ui/__tests__/casino-window-header.test.tsx` |
 | typescript | ^6.0.3 | Build | Strikte Typpruefung mit noUncheckedIndexedAccess und ungenutzten Symbolen. | 2: `scripts/lib/ts-ast.mjs`<br>`src/Config/tsconfig.json` |
 | typescript-eslint | ^8.72.1 | Lint | TypeScript-Parser und Regeln fuer das Lint-Gate. | 1: `src/Config/eslint.config.mjs` |
 | vite | ^8.3.5 | Build | Dev-Server und Production-Bundler; liefert die Modul- und CSS-Pipeline. | 1: `package.json` |
-| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 236: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+230) |
-| yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 3: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
+| vitest | ^5.0.5 | Test | Deterministische Unit- und Monte-Carlo-Beweise fuer Ledger, Spiele und Simulation. | 244: `package.json`<br>`src/Config/vite.config.ts`<br>`src/core/contracts/__tests__/actionset.test.ts`<br>`src/core/contracts/__tests__/actor-id.test.ts`<br>`src/core/contracts/__tests__/domain-event.test.ts`<br>`src/core/contracts/__tests__/factor.test.ts`<br>… (+238) |
+| yaml | ^2.9.1 | Test | Parst die GitHub-Workflows fuer strukturelle Gate-Tests statt Regex und Stringpositionen. | 5: `scripts/version-bump.mjs`<br>`src/core/governance/__tests__/ci-gates.test.ts`<br>`src/core/governance/__tests__/ci-workflow-contracts.test.ts`<br>`src/core/governance/__tests__/promotion-workflows.test.ts`<br>`src/core/governance/__tests__/workflow-hardening.test.ts` |
 <!-- DEP_MATRIX_END -->
 
 ## Import und Export
@@ -281,9 +281,11 @@ Nachweise werden nicht gedruckt, sondern uebergeben: `--ci` startet
 `ci-long-checks.mjs` fuer den aktuellen Branch und die exakte HEAD-SHA und
 wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
 
-## Stillgelegte Auto-Promotion und Integrationsbranch
+## Promotion und Phasen-Hold
 
-**Status: deaktiviert.** `promote.yml` ist nicht aktiv; der Merge nach `main` ist manuell und erfolgt erst nach einem gruenen `CI Verify`-Lauf auf dem exakten Kopf. Die folgende Beschreibung dokumentiert den historischen Mechanismus, nicht den aktuellen Ablauf.
+**Status: aktiv.** `promote.yml` ist der einzige Merge-Akteur und reagiert nur auf einen `workflow_run` mit `event == 'pull_request'`. Es laedt das `ci-plan`-Artefakt, prueft Kopf, Basis, Pflichtstatus, Task-Vertrag und BLOCKED-Issues und mergt nur bei `READY_FOR_MERGE` auf dem exakten Kopf. `holdMerge`, `status=HOLD`, offene Blocker oder eine veraltete Basis halten den Merge an; bei veralteter Basis wird der Branch aktualisiert und neu geprueft. Kein Auto-Merge, kein Merge auf einem alten Kopf.
+
+Der folgende Abschnitt beschreibt den historischen Integrationspfad; er ist kein Normalweg mehr.
 
 Der Weg von einem Branch nach `main` ist ein Zustandsautomat mit genau einer
 Quelle: `.github/workflows/promote.yml` liest das Ergebnis von `CI Verify`.
@@ -1125,9 +1127,9 @@ die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
 Lange Nachweise werden nicht lokal nachgebaut; der PR-Plan fuehrt sie auf dem
 exakten Commit, der Wochenlauf deckt die systemweiten Abweichungen ab.
 
-### Stillgelegte Auto-Promotion und Integrationsbranch
+### Promotion und historischer Integrationspfad
 
-**Status: deaktiviert.** Der Merge nach `main` bleibt manuell; Auto-Merge ist kein Bestandteil der Definition of Done.
+**Status: aktiv.** Der Merge nach `main` laeuft ueber `promote`; Auto-Merge ist kein Bestandteil der Definition of Done. Die Tabelle und der Integrationspfad unten sind historisch und nur als Notausgang relevant.
 
 `promote.yml` schliesst die Luecke zwischen "Branch gepusht" und "auf main".
 Der Workflow reagiert per `workflow_run` auf jedes abgeschlossene `CI Verify`

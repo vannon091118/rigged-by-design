@@ -3,7 +3,8 @@
  * @error-code: ERR-4019
  *
  * Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus
- * dem eigenen Repository. Der Branch-Name allein ist keine Identitaet.
+ * dem eigenen Repository. Der Branch-Name allein ist keine Identitaet, und der
+ * gruene Pflichtstatus zaehlt nur aus genau diesem Lauf und dieser Basis.
  */
 import { describe, expect, it } from 'vitest';
 import {
@@ -13,6 +14,17 @@ import {
 } from '../../../../scripts/lib/promote-guard.mjs';
 
 const SHA = 'a'.repeat(40);
+const BASE = 'c'.repeat(40);
+const RUN_ID = '42741715408';
+
+const greenGate = {
+  name: 'Fail-Closed Gates',
+  head_sha: SHA,
+  status: 'completed',
+  conclusion: 'success',
+  details_url: `https://github.com/vannon091118/rigged-by-design/actions/runs/${RUN_ID}/job/129584112479`,
+  pull_requests: [{ base: { sha: BASE } }],
+};
 
 const valid = {
   event: 'pull_request',
@@ -20,6 +32,9 @@ const valid = {
   headRepo: 'vannon091118/rigged-by-design',
   branch: 'lane/governance/beispiel',
   headSha: SHA,
+  baseSha: BASE,
+  ciRunId: RUN_ID,
+  checkRuns: [greenGate],
   pr: { state: 'OPEN', isCrossRepository: false, headRefOid: SHA, baseRefName: 'main' },
 };
 
@@ -69,5 +84,26 @@ describe('promote-guard', () => {
 
   it('lehnt einen geschlossenen PR ab', () => {
     expect(verifyPromotion({ ...valid, pr: { ...valid.pr, state: 'MERGED' } }).ok).toBe(false);
+  });
+
+  it('lehnt einen gruenen Check aus einem aelteren Lauf ab', () => {
+    const older = { ...greenGate, details_url: greenGate.details_url.replace(RUN_ID, '42000000000') };
+    expect(verifyPromotion({ ...valid, checkRuns: [older] }).ok).toBe(false);
+  });
+
+  it('lehnt einen gruenen Check gegen eine andere Basis ab', () => {
+    const other = { ...greenGate, pull_requests: [{ base: { sha: 'd'.repeat(40) } }] };
+    expect(verifyPromotion({ ...valid, checkRuns: [other] }).ok).toBe(false);
+  });
+
+  it('verlangt Check-Runs, Basis und Lauf-ID statt einer Behauptung', () => {
+    expect(verifyPromotion({ ...valid, checkRuns: null }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, checkRuns: [] }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, baseSha: '' }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, ciRunId: '' }).ok).toBe(false);
+  });
+
+  it('lehnt einen roten Pflichtstatus auf demselben Kopf ab', () => {
+    expect(verifyPromotion({ ...valid, checkRuns: [{ ...greenGate, conclusion: 'failure' }] }).ok).toBe(false);
   });
 });

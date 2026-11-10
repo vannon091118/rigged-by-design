@@ -2,20 +2,23 @@ name: CI Verify
 
 # Ebene A des Main-Gates. "Fail-Closed Gates" ist der Pflichtstatus aus dem
 # Branch-Schutz von `main`; er bleibt ein Aggregat, waehrend jedes Gate in der
-# Matrix einen eigenen Status traegt. Ein roter Lauf nennt damit das Gate, das
-# rot ist, statt "irgendetwas in verify:all".
+# Matrix einen eigenen Status traegt.
 #
-# Der Zustand entscheidet, was laeuft: PR, MAIN, MANUAL und jeder Push auf einen
-# Lane-Branch tragen das zentrale Required-Set und die vollstaendige Suite,
-# LIGHT nur die schnellen Gates, NOOP und PR_HANDOFF pruefen nichts. Eine leere
-# Matrix ist ausschliesslich in diesen beiden Zustaenden zulaessig; UNKNOWN
-# faellt auf das volle Profil.
+# Eine Stimme pro SHA: die vollstaendige Pruefung haengt am PR-Lauf. Ein Push
+# auf eine Lane startet nur noch `ensure-pr.yml`; ein zweiter Vollauf auf
+# demselben Kopf erzeugte zwei Pflichtstatus, von denen der aeltere den
+# neueren verdecken kann. `main` und manuelle Laeufe behalten ihren Lauf.
+#
+# Der Zustand entscheidet, was laeuft: PR, MAIN, MANUAL und UNKNOWN tragen das
+# zentrale Required-Set und die vollstaendige Suite, LIGHT nur die schnellen
+# Gates, NOOP prueft nichts. Eine leere Matrix ist ausschliesslich in NOOP
+# zulaessig; UNKNOWN faellt auf das volle Profil.
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
   push:
-    branches: ['**']
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -31,10 +34,10 @@ jobs:
     name: Plan
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    # Der Freeze-Schritt entfernt bei einem Governance-Verstoss den Lane-Branch.
-    # Deshalb braucht genau dieser Job Schreibrecht; alle Gates bleiben lesend.
+    # Der Plan schreibt nichts mehr: ein Governance-Verstoss wird ein eigenes
+    # BLOCKED-Issue im Job `governance-issue`. Alle Jobs bleiben lesend.
     permissions:
-      contents: write
+      contents: read
       pull-requests: read
     outputs:
       # Die Basis-Kontrollebene kann vor diesem Merge noch ohne die neuen
@@ -52,39 +55,53 @@ jobs:
       long_tests: ${{ steps.gates.outputs.long_tests || '' }}
       freeze: ${{ steps.freeze.outputs.violation || '' }}
     steps:
+      # Der PR-Kopf ist das Pruefobjekt, nicht der Merge-Commit: der Merge
+      # entsteht erst mit der Basis und prueft damit Code, den niemand gepusht
+      # hat. Alle Jobs lesen deshalb exakt den Kopf aus dem Ereignis.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      - name: PR-Body
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/verify-pr-body.mjs
 
       # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
       # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
       # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
       # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
       #
-      # Ein PR ohne Diff (Kopf ist die Basis) ist ein echter No-op. Statt hart
-      # abzubrechen, wird er als solcher ausgewiesen: `noop=true` und
-      # `independent=false`. Der Aggregat-Job akzeptiert diese Kombination nur
-      # im Zustand NOOP, nie als gewoehnliche Pruefung.
+      # Die Diff-Basis kommt aus dem Graphen, nie aus `event.before`: das ist
+      # die letzte Push-Position, nicht der Punkt, an dem der Diff beginnt.
+      # Auf `main` ist der Elternteil des gepushten Commits die Basis; bei PRs
+      # die PR-Basis; ohne Ereignis die Merge-Basis zu `origin/main`.
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          # Auf main ist der gepushte Commit bereits der vertrauenswuerdige
-          # Stand. Die alte Basis wuerde die neue Steuerung um einen Lauf
-          # verzoegern; PRs behalten die Basis als unabhaengige Kontrollebene.
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          head="$(git rev-parse HEAD)"
           noop=false
           independent=true
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ "$base" = "$head" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             noop=true
             independent=false
             echo "::notice::Kontrollebene und Pruefobjekt sind derselbe Commit; echter No-op ohne unabhaengige Kontrollebene."
@@ -103,44 +120,51 @@ jobs:
           echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
           echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
           echo "noop=$noop" >> "$GITHUB_OUTPUT"
           echo "independent=$independent" >> "$GITHUB_OUTPUT"
 
       # Governance-Freeze: die Steuerungsebene ist bis zum Spiel-Meilenstein
       # gesperrt. Der Schritt laeuft vor allem anderen, damit eine Governance-
       # Aenderung ohne PIN-Freigabe sofort rot wird statt nach 30 Minuten Gates.
-      # Kennt die Basis-Kontrollebene den Freeze noch nicht, bleibt er inert
-      # (Bootstrap dieses Commits). Ein Verstoss entfernt den Lane-Branch:
-      # Governance ohne Freigabe ist Korruption, kein normaler roter Lauf.
+      #
+      # Der Checker kommt aus der Kontrollebene (Basis), das Pruefobjekt bleibt
+      # der Kandidat (`RBD_ROOT`). Damit prueft die alte Fassung die neue: eine
+      # Regelanderung ist nur mit PIN-Freigabe im Diff und autorisiert sich so
+      # nicht selbst. Kein Token: der Schritt schreibt nichts.
       - name: Governance-Freeze
         id: freeze
         env:
           CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
-          FREEZE_BASE: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
-          FREEZE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
-          GH_TOKEN: ${{ github.token }}
+          FREEZE_BASE: ${{ steps.control.outputs.base }}
+          FREEZE_HEAD: ${{ steps.control.outputs.head }}
+          RBD_ROOT: ${{ steps.control.outputs.root }}
         run: |
           set -euo pipefail
-          if [ ! -f scripts/verify-governance-freeze.mjs ]; then
-            echo "::notice::Pruefobjekt kennt den Governance-Freeze nicht; Schritt inert."
+          # Der Freeze gilt fuer den Branch-Diff, nicht fuer den wandernden
+          # main-Kopf: die Merge-Basis ist die einzige stabile Basis. Der
+          # Checker und die Gates kommen weiter aus der Kontrollebene.
+          freeze_base="$(git merge-base "$FREEZE_BASE" "$FREEZE_HEAD" 2>/dev/null || true)"
+          if [ -n "$freeze_base" ]; then
+            FREEZE_BASE="$freeze_base"
+          fi
+          echo "::notice::Freeze-Basis ${FREEZE_BASE}"
+          if [ ! -f "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" ]; then
+            echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
             echo "violation=none" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          # Bewusst das Skript aus dem Pruefobjekt (HEAD), nicht aus der
-          # Kontrollebene der Basis: sonst prueft jede Regelanderung gegen die
-          # alte Fassung und das Gate kann sich selbst nie weiterentwickeln -
-          # genau daran scheiterte der Merge des Freeze selbst. Aenderbar ist
-          # das Skript nur mit PIN-Freigabe, deshalb bleibt das vertretbar.
-          if node scripts/verify-governance-freeze.mjs --ci \
+          if node "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" --ci \
             --base="$FREEZE_BASE" --head="$FREEZE_HEAD" --github-output="$GITHUB_OUTPUT"; then
             exit 0
           fi
-          echo "violation=corruption" >> "$GITHUB_OUTPUT"
-          if [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Verdacht auf unautorisierte Korruption: Governance ohne Freigabe geaendert. Branch $GITHUB_REF_NAME wird entfernt."
-            gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$GITHUB_REF_NAME" || \
-              echo "::warning::Branch konnte nicht entfernt werden; der Verstoss bleibt rot."
+          # Der Checker meldet seine Klassifikation selbst; nur ein fehlender
+          # Wert faellt auf den Korruptionsverdacht zurueck.
+          if ! grep -q '^violation=' "$GITHUB_OUTPUT"; then
+            echo "violation=corruption" >> "$GITHUB_OUTPUT"
           fi
+          echo "::error::Verdacht auf unautorisierte Korruption: Governance ohne Freigabe geaendert. Der Branch bleibt bestehen; ein BLOCKED-Issue wird angelegt."
           exit 1
 
       # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
@@ -158,51 +182,26 @@ jobs:
       - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
-      # Der Handoff ist beendet: frueher endete ein Lane-Push bei offenem PR als
-      # PR_HANDOFF ohne Pflichtstatus. GitHub sah dann auf demselben Kopf nur
-      # alte Fehlschlaege, und der Pflichtstatus war ausschliesslich per
-      # manuellem Dispatch erreichbar. Jetzt traegt der Push-Lauf den Status
-      # selbst; der PR-Stand wird nur noch gemeldet. `--handoff` bleibt als
-      # Altform im Planer, wird hier aber nie gesetzt.
-      - name: PR-Stand melden
-        id: dedupe
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BRANCH: ${{ github.ref_name }}
-        run: |
-          number="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number' 2>/dev/null || true)"
-          if [ -n "$number" ]; then
-            echo "::notice::PR #$number existiert; dieser Push-Lauf prueft vollstaendig und traegt den Pflichtstatus."
-          fi
-          echo "handoff=false" >> "$GITHUB_OUTPUT"
-
-      # Der Diff, den dieser Lauf wirklich prueft: PR Base gegen Head, Push
-      # Before gegen Commit. Ohne belastbaren Bereich bleibt es beim Zustand
-      # UNKNOWN und damit beim vollen Profil (siehe ci-plan.mjs); ein leerer
-      # Plan wird nie still gruen.
+      # Der Diff, den dieser Lauf wirklich prueft. Ein manueller Lauf hat
+      # keinen: leer heisst MANUAL und volles Profil, nie No-op.
       - name: Basis und Kopf bestimmen
         id: range
+        env:
+          CONTROL_BASE: ${{ steps.control.outputs.base }}
+          CONTROL_HEAD: ${{ steps.control.outputs.head }}
         run: |
+          set -euo pipefail
+          base="$CONTROL_BASE"
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then base=""; fi
+          {
+            echo "base=$base"
+            echo "head=$CONTROL_HEAD"
+          } >> "$GITHUB_OUTPUT"
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-            echo "head=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
             echo "event=pull_request" >> "$GITHUB_OUTPUT"
-          elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
-            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
-            echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
-            # `push-lane` ist bewusst kein `push`: ein Push auf eine Lane muss den
-            # Pflichtstatus selbst tragen, weil der Branch-Schutz ihn am Kopf
-            # sieht. Der Planer waehlt dafuer den konservativen Zustand UNKNOWN
-            # (volles Required-Set plus Audit).
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              echo "event=push" >> "$GITHUB_OUTPUT"
-            else
-              echo "event=push-lane" >> "$GITHUB_OUTPUT"
-            fi
+          elif [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "event=push" >> "$GITHUB_OUTPUT"
           else
-            echo "base=" >> "$GITHUB_OUTPUT"
-            echo "head=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
             echo "event=$GITHUB_EVENT_NAME" >> "$GITHUB_OUTPUT"
           fi
 
@@ -217,7 +216,7 @@ jobs:
           BASE: ${{ steps.range.outputs.base }}
           HEAD: ${{ steps.range.outputs.head }}
           NOOP: ${{ steps.control.outputs.noop }}
-          HANDOFF: ${{ steps.dedupe.outputs.handoff || 'false' }}
+          HANDOFF: 'false'
           RBD_VERIFY_AUDIT: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
           RBD_ROOT: ${{ steps.control.outputs.root }}
           RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
@@ -258,8 +257,8 @@ jobs:
                 if [ "$REF" = "refs/heads/main" ]; then
                   state=MAIN
                 else
-                  # Die alte Kontrollebene kennt LIGHT noch nicht und liefert
-                  # das volle Profil; UNKNOWN bleibt konservativ beim Full-Set.
+                  # Ohne Push-Vollauf auf Lanes bleibt das ein Sicherheitsnetz
+                  # fuer eine alte Kontrollebene, nie ein normaler Zustand.
                   state=UNKNOWN
                 fi
                 ;;
@@ -297,9 +296,10 @@ jobs:
             echo "noop=$noop"
           } >> "$GITHUB_OUTPUT"
 
-      # Eine leere Matrix ist nur in NOOP und PR_HANDOFF der Vertrag. In jedem
-      # anderen Zustand muss das Required-Set vollstaendig in der Matrix stehen;
-      # sonst waere ein Status gruen, ohne dass ein Gate gelaufen ist.
+      # Eine leere Matrix ist nur in NOOP der Vertrag. In jedem anderen Zustand
+      # muss das Required-Set vollstaendig in der Matrix stehen und darf selbst
+      # nie leer sein; sonst waere der Pflichtstatus gruen, ohne dass ein Gate
+      # gelaufen ist.
       - name: Matrix validieren
         env:
           MATRIX: ${{ steps.gates.outputs.matrix }}
@@ -307,7 +307,7 @@ jobs:
           STATE: ${{ steps.compat.outputs.state }}
         run: |
           echo "::notice::Zustand ${STATE}, Matrix-Laenge ${#MATRIX}"
-          node -e 'const raw = process.env.MATRIX ?? ""; let m; try { m = JSON.parse(raw); } catch (error) { console.error("::error::Gate-Matrix ist kein JSON: " + error.message + " :: " + raw); process.exit(1); } const include = Array.isArray(m.include) ? m.include : null; if (!include) { console.error("::error::Gate-Matrix ohne include-Liste: " + raw); process.exit(1); } const state = process.env.STATE ?? ""; const required = (process.env.REQUIRED ?? "").split(",").filter(Boolean); const gates = include.map((entry) => entry.gate).filter(Boolean); const noop = state === "NOOP" || state === "PR_HANDOFF"; if (noop) { if (gates.length > 0) { console.error("::error::Zustand " + state + " darf keine Gates tragen: " + gates.join(", ")); process.exit(1); } console.log("Zustand " + state + ": leere Matrix ist der Vertrag."); process.exit(0); } if (gates.length === 0) { console.error("::error::Zustand " + state + " ohne Gate-Matrix"); process.exit(1); } const missing = required.filter((gate) => !gates.includes(gate)); if (missing.length > 0) { console.error("::error::Required-Gates fehlen in der Matrix: " + missing.join(", ")); process.exit(1); } console.log("Zustand " + state + ": " + gates.length + " Gate(s), required " + required.length + " vollstaendig.");'
+          node -e 'const raw = process.env.MATRIX ?? ""; let m; try { m = JSON.parse(raw); } catch (error) { console.error("::error::Gate-Matrix ist kein JSON: " + error.message + " :: " + raw); process.exit(1); } const include = Array.isArray(m.include) ? m.include : null; if (!include) { console.error("::error::Gate-Matrix ohne include-Liste: " + raw); process.exit(1); } const state = process.env.STATE ?? ""; const required = (process.env.REQUIRED ?? "").split(",").filter(Boolean); const gates = include.map((entry) => entry.gate).filter(Boolean); const noop = state === "NOOP" || state === "PR_HANDOFF"; if (noop) { if (gates.length > 0) { console.error("::error::Zustand " + state + " darf keine Gates tragen: " + gates.join(", ")); process.exit(1); } console.log("Zustand " + state + ": leere Matrix ist der Vertrag."); process.exit(0); } if (required.length === 0) { console.error("::error::Required-Set ist leer; der Pflichtstatus waere ohne Gate gruen."); process.exit(1); } if (gates.length === 0) { console.error("::error::Zustand " + state + " ohne Gate-Matrix"); process.exit(1); } const missing = required.filter((gate) => !gates.includes(gate)); if (missing.length > 0) { console.error("::error::Required-Gates fehlen in der Matrix: " + missing.join(", ")); process.exit(1); } console.log("Zustand " + state + ": " + gates.length + " Gate(s), required " + required.length + " vollstaendig.");'
 
       # Klein und maschinenlesbar: welcher Diff, welcher Zustand, welche Gates,
       # welche Tests, was bewusst ausgelassen wurde. Kein Log-Friedhof.
@@ -337,23 +337,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR.
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
             exit 1
           fi
@@ -424,8 +431,8 @@ jobs:
           retention-days: 7
 
   # Der Light-Zustand hat einen eigenen Job und einen eigenen Status. Er traegt
-  # nie das Required-Set; sein Gruen ist schnelles Feedback fuer einen
-  # Feature-Push, nicht die Merge-Freigabe.
+  # nie das Required-Set; sein Gruen ist schnelles Feedback, nicht die
+  # Merge-Freigabe.
   light:
     name: Light Gates
     needs: plan
@@ -439,22 +446,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
             exit 1
           fi
@@ -510,7 +524,7 @@ jobs:
           retention-days: 7
 
   # Der Impact-Plan nennt die langen Testdateien bereits. Sie laufen als eigene
-  # Matrix auf dem exakten PR-Kopf; jede Datei bekommt einen sichtbaren Job.
+  # Matrix auf dem exakten Kopf; jede Datei bekommt einen sichtbaren Job.
   # Die schweren Vollnachweise (Balance, Benchmarks) bleiben im manuellen bzw.
   # woechentlichen `long-checks.yml`, damit ein PR nicht die ganze Nacht laeuft.
   long:
@@ -535,17 +549,23 @@ jobs:
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
             exit 1
           fi
@@ -597,22 +617,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
             exit 1
           fi
@@ -628,6 +655,7 @@ jobs:
           echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
           echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+
       - name: Node einrichten
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
@@ -762,8 +790,8 @@ jobs:
           scripts="${{ steps.control.outputs.scripts }}"
           node "$scripts"/verify-lane-claims.mjs --ci
 
-  # Commit-Notes gehoeren zum Push auf main. Feature-Branches prueft
-  # `pr-escalation.yml`; hier laeuft der Job nur im Zustand MAIN.
+  # Commit-Notes gehoeren zum Push auf main. Feature-Branches prueft der
+  # PR-Lauf; hier laeuft der Job nur im Zustand MAIN.
   commitmsg:
     name: Commit- und PR-Notes
     needs: plan
@@ -774,22 +802,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Kontrollebene aus der Basis
         id: control
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || (github.ref == 'refs/heads/main' && github.sha) || '' }}
-          MAIN_REF: ${{ github.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ "$MAIN_REF" = "refs/heads/main" ]; then base="$GITHUB_SHA"; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+          if [ -z "$base" ]; then
             git fetch --no-tags origin main
-            base="$(git rev-parse FETCH_HEAD)"
+            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              base="$(git rev-parse --verify 'HEAD^')"
+            else
+              base="$(git merge-base origin/main HEAD)"
+            fi
           fi
-          if [ "$base" = "$GITHUB_SHA" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            exit 1
+          fi
+          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
             echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
             exit 1
           fi
@@ -816,10 +851,53 @@ jobs:
         run: |
           node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --head
 
+  # Ein Governance-Verstoss ist Korruption, kein normaler roter Lauf: der
+  # Branch bleibt, der Befund wird als BLOCKED-Issue sichtbar und der Lauf
+  # bleibt rot. Der Job braucht als einziger Schreibrecht, und nur auf Issues.
+  governance-issue:
+    name: BLOCKED-Issue
+    needs: plan
+    if: always() && needs.plan.outputs.freeze == 'corruption'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: BLOCKED-Issue anlegen oder fortschreiben
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          label="governance/blocked"
+          title="BLOCKED: Governance-Freeze verletzt auf ${BRANCH}"
+          gh label create "$label" --color b60205 --description "Governance-Freeze verletzt (ERR-4030)" --force >/dev/null
+          body="$(printf '%s\n' \
+            "Der Freeze-Checker hat eine inhaltliche Governance-Aenderung ohne gueltige PIN-Freigabe gefunden." \
+            "" \
+            "- Branch: \`${BRANCH}\`" \
+            "- Kopf: \`${HEAD_SHA}\`" \
+            "- Lauf: ${RUN_URL}" \
+            "- Befund: \`ERR-4030\` - Verdacht auf unautorisierte Korruption." \
+            "" \
+            "Der Branch bleibt bestehen. Der Fix ist eine basisgenaue Freigabe" \
+            "(\`node scripts/freeze-unlock.mjs --pin=<pin>\`) oder das Zuruecknehmen der" \
+            "Aenderung; der naechste Lauf prueft erneut. Es gibt keine Branch-Loeschung.")"
+          number="$(gh issue list --label "$label" --state open --search "$title in:title" --json number --jq '.[0].number')"
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label "$label"
+          fi
+
   # Der Pflichtstatus bleibt genau einer. Er fuehrt nur Ergebnisse zusammen und
   # prueft selbst nichts. Was gruen heissen darf, haengt am Zustand: das
-  # Required-Set muss wirklich gelaufen sein, ein No-op darf hoechstens
-  # uebersprungen sein. Ein PR_HANDOFF erzeugt bewusst keinen Status.
+  # Required-Set muss wirklich gelaufen sein, und jeder Job muss genau das
+  # Ergebnis haben, das sein Zustand vorsieht. `skipped` ist nur dort erlaubt,
+  # wo der Zustand den Job nicht vorsieht.
   verify:
     name: Fail-Closed Gates
     needs: [plan, gate, light, long, claims, commitmsg]
@@ -830,8 +908,10 @@ jobs:
       - name: Gate-Ergebnisse zusammenfuehren
         env:
           STATE: ${{ needs.plan.outputs.state }}
+          REQUIRED: ${{ needs.plan.outputs.required }}
           NOOP: ${{ needs.plan.outputs.noop }}
           INDEPENDENT: ${{ needs.plan.outputs.independent }}
+          LONG_COUNT: ${{ needs.plan.outputs.long_count }}
           PLAN: ${{ needs.plan.result }}
           GATES: ${{ needs.gate.result }}
           LIGHT: ${{ needs.light.result }}
@@ -843,30 +923,54 @@ jobs:
           fail=0
           rot() { echo "::error::$1"; fail=1; }
           gruen() { echo "::notice::$1"; }
+          gleich() { [ "$2" = "$3" ] || rot "$1: $2 (erwartet $3)"; }
 
           [ "$PLAN" = "success" ] || rot "plan: $PLAN"
+          [ -n "$REQUIRED" ] || rot "required ist leer; der Pflichtstatus waere ohne Gate gruen"
+
           case "$STATE" in
-            PR|MAIN|MANUAL|UNKNOWN)
-              [ "$GATES" = "success" ] || rot "gate: $GATES (Required-Set muss laufen, nicht skipped)"
-              [ "$LIGHT" = "skipped" ] || rot "light: $LIGHT (nur im Zustand LIGHT)"
+            PR)
+              gleich "gate" "$GATES" success
+              gleich "light" "$LIGHT" skipped
+              gleich "claims" "$CLAIMS" success
+              gleich "commitmsg" "$COMMITMSG" skipped
+              ;;
+            MAIN)
+              gleich "gate" "$GATES" success
+              gleich "light" "$LIGHT" skipped
+              gleich "claims" "$CLAIMS" skipped
+              gleich "commitmsg" "$COMMITMSG" success
+              ;;
+            MANUAL|UNKNOWN)
+              gleich "gate" "$GATES" success
+              gleich "light" "$LIGHT" skipped
+              gleich "claims" "$CLAIMS" skipped
+              gleich "commitmsg" "$COMMITMSG" skipped
               ;;
             LIGHT)
-              [ "$LIGHT" = "success" ] || rot "light: $LIGHT"
-              [ "$GATES" = "skipped" ] || rot "gate: $GATES (kein Required-Set im Light-Zustand)"
+              gleich "light" "$LIGHT" success
+              gleich "gate" "$GATES" skipped
+              gleich "claims" "$CLAIMS" skipped
+              gleich "commitmsg" "$COMMITMSG" skipped
               ;;
             NOOP)
-              [ "$GATES" = "skipped" ] || rot "gate: $GATES (NOOP ohne Gates)"
-              [ "$LIGHT" = "skipped" ] || rot "light: $LIGHT (NOOP ohne Gates)"
-              [ "$NOOP" = "true" ] || rot "noop: $NOOP (Zustand NOOP ohne noop=true)"
+              gleich "gate" "$GATES" skipped
+              gleich "light" "$LIGHT" skipped
+              gleich "claims" "$CLAIMS" skipped
+              gleich "commitmsg" "$COMMITMSG" skipped
+              gleich "noop" "$NOOP" true
               ;;
             *)
               rot "unbekannter Zustand '$STATE'"
               ;;
           esac
 
-          case "$LONG" in success|skipped) gruen "long: $LONG" ;; *) rot "long: $LONG" ;; esac
-          case "$CLAIMS" in success|skipped) gruen "claims: $CLAIMS" ;; *) rot "claims: $CLAIMS" ;; esac
-          case "$COMMITMSG" in success|skipped) gruen "commitmsg: $COMMITMSG" ;; *) rot "commitmsg: $COMMITMSG" ;; esac
+          # Lange Nachweise laufen genau dann, wenn der Impact welche nennt.
+          if [ "$LONG_COUNT" != "0" ] && [ "$STATE" != "LIGHT" ] && [ "$STATE" != "NOOP" ]; then
+            gleich "long" "$LONG" success
+          else
+            gleich "long" "$LONG" skipped
+          fi
 
           # Die Kontrollebene darf nur dann identisch mit dem Pruefobjekt sein,
           # wenn der Plan den echten No-op bestaetigt.

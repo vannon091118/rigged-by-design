@@ -16,7 +16,14 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { allowsPath, botClaim, findCollisions, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import {
+  deriveTaskState,
+  loadTaskContractForClaim,
+  readCiState,
+  readPullRequestState,
+  validateTaskContract,
+} from './lib/task-contract.mjs';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -108,6 +115,20 @@ if (branch !== 'main' && !claim) {
   blockers.push(`[ERR-4019] kein Lane-Claim fuer '${branch}'; zuerst mit 'pnpm run claim:register' registrieren`);
 }
 if (branch === 'main' && !claim) notes.push('main ist durch den Branch-Schutz gedeckt; keine Lane noetig.');
+
+// Der Task-Vertrag ist die Wahrheit des Laufs. Ohne Vertrag bleibt eine
+// Legacy-Lane startbar; mit Vertrag ist eine ungueltige Bindung rot.
+const taskContractLoad = claim ? loadTaskContractForClaim(claim) : { contract: null, file: null, error: null };
+if (taskContractLoad.error) {
+  blockers.push(`[ERR-4019] ${taskContractLoad.error}`);
+} else if (claim && taskContractLoad.contract) {
+  const taskContractCheck = validateTaskContract(taskContractLoad.contract, { claim, branch });
+  if (!taskContractCheck.ok) {
+    for (const violation of taskContractCheck.violations) blockers.push(`[ERR-4019] Task-Vertrag: ${violation}`);
+  }
+}
+const prState = claim && branch !== 'main' ? readPullRequestState({ branch }) : { known: false };
+const ciState = claim && branch !== 'main' ? readCiState({ branch }) : { known: false, complete: false, conclusion: null };
 
 let contextData = null;
 let contextError = '';
@@ -212,8 +233,10 @@ if (!issueCheck.checked) {
 }
 
 const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch, ownAllowlist: claim?.pathAllowlist ?? [] });
-const ownWipPaths = claim ? dirtyPaths.filter((path) => claim.allowsPath(path)) : [];
-const outsideClaim = dirtyPaths.filter((path) => !claim || !allowsPath(claim.pathAllowlist, path));
+const ownWipPaths = claim
+  ? dirtyPaths.filter((path) => claim.allowsPath(path) || isTaskContractPath(path))
+  : [];
+const outsideClaim = dirtyPaths.filter((path) => !claim || (!allowsPath(claim.pathAllowlist, path) && !isTaskContractPath(path)));
 const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path));
 
 const isolation = {
@@ -276,6 +299,17 @@ if (wantNew && mode !== 'NEW' && mode !== 'NOOP') blockers.push(`[ERR-4019] --ne
 if (wantResume && mode !== 'RESUME') blockers.push(`[ERR-4019] --resume verlangt eigene WIP im verknuepften Worktree (aktuell ${mode})`);
 if (blockers.length > 0) mode = 'BLOCKED';
 
+// Die eine Statusableitung: READY, CONTINUE, AFTERCARE, MERGE_PENDING oder
+// BLOCKED. CI_PENDING bleibt Phase und schlaegt eine parallele Lane vor,
+// statt den Agenten warten zu lassen.
+const taskState = deriveTaskState({
+  contract: taskContractLoad.contract,
+  claim,
+  blockers,
+  pr: prState,
+  ci: ciState,
+});
+
 const contextTests = contextData?.tests ?? {};
 const longTests = contextTests.long ?? [];
 const selectedTests = contextTests.runAll ? ['vollstaendige Suite'] : (contextTests.selected ?? []);
@@ -288,10 +322,14 @@ const requiredEvidence = [
 const nextActions = [];
 if (blockers.length > 0) nextActions.push('Blockers aufloesen; fremde WIP und Scope-Issues nicht anfassen.');
 else if (mode === 'NOOP') nextActions.push('HEAD == Basis: neue Aufgabe/Commit anlegen oder bewusst beenden.');
+else if (taskState.parallelLane?.suggested) nextActions.push(taskState.parallelLane.advice);
+else if (taskState.nextAction) nextActions.push(taskState.nextAction);
 else if (mode === 'RESUME') nextActions.push('Eigene WIP im verknuepften Worktree fortsetzen; fremde Pfade unangetastet lassen.');
 else if (mode === 'NEW') nextActions.push('Mit der ersten Aenderung innerhalb der Claim-Allowlist beginnen.');
 else nextActions.push('Auf main keine Lane-Arbeit starten.');
-nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
+if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
+  nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
+}
 
 const contract = {
   task: {
@@ -321,6 +359,14 @@ const contract = {
   gates: contextData?.gates ?? [],
   longTests,
   followUp,
+  status: taskState.status,
+  taskState: {
+    ...taskState,
+    file: taskContractLoad.file,
+    contract: taskContractLoad.contract,
+    pr: prState,
+    ci: ciState,
+  },
   blockers,
   warnings,
   requiredEvidence,
@@ -343,7 +389,7 @@ const taskStatePath = join(ROOT, '.verify-cache', 'task-state.json');
 mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
 writeFileSync(
   taskStatePath,
-  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, contract, blockers, warnings }, null, 2)}\n`,
+  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, pr: prState, ci: ciState, contract, blockers, warnings }, null, 2)}\n`,
   'utf8',
 );
 
@@ -358,6 +404,8 @@ if (asJson) {
     head,
     base,
     worktree,
+    taskStatus: taskState.status,
+    taskInfo: contract.taskState,
     git: { dir: gitDir, commonDir, linked },
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
@@ -396,6 +444,7 @@ if (asJson) {
   }
   console.log('');
   console.log('=== Task-Vertrag ===');
+  console.log(`  Status: ${taskState.status} · Phase ${taskState.phase} · offene Befunde: ${taskState.findings.length}`);
   console.log(`  Task: ${contract.task.id ?? '-'} / ${contract.task.description ?? '-'}`);
   console.log(`  Ziel: ${contract.task.goal || '-'}`);
   console.log(`  Worktree: ${worktree || '-'} (linked=${linked})`);
@@ -403,6 +452,7 @@ if (asJson) {
   console.log(`  Systeme: ${contract.systems.join(', ') || 'keine'}`);
   console.log(`  Tests: ${contract.affectedTests.runAll ? 'vollstaendig' : contract.affectedTests.selected.length} · Long: ${contract.longTests.length} · Gates: ${contract.gates.length}`);
   for (const action of contract.nextActions) console.log(`  -> ${action}`);
+  if (taskState.parallelLane?.suggested) console.log(`  Parallel: ${taskState.parallelLane.advice}`);
 }
 
 if (blockers.length > 0) {
