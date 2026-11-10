@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-collision-scope",
+  "claimId": "lane/governance/collision-scope",
+  "branch": "lane/governance/collision-scope",
+  "baseSha": "823b981e8b1816160dda7e4b8897e318e7fde799",
+  "phase": "CI_PENDING",
+  "title": "Geteilte generierte Pfade kollidieren nicht",
+  "goal": "Zwei Lanes koennen parallel committen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 6
+}
