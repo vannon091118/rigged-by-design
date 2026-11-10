@@ -13,6 +13,7 @@ import type { DayPhase } from '../core/sim/day-phase';
 import type { CompanyStatus } from '../core/sim/progression';
 import type { RenovationView } from '../core/sim/renovation';
 import type { MachineHallView } from '../core/sim/machine-hall';
+import type { FloorWorkView } from '../core/sim/floor-work';
 import type { CityView } from '../core/sim/city';
 
 /**
@@ -103,6 +104,8 @@ export interface GameView {
   readonly renovation: RenovationView;
   /** Automaten der eigenen Flaeche samt Wartungsbedarf. */
   readonly machineHall: MachineHallView;
+  /** Arbeitsqualitaet der Floor-Rollen aus denselben Skillstufen. */
+  readonly floorWork: FloorWorkView;
   readonly wallet: VaCoinMicro;
   readonly desk: VaCoinMicro;
   readonly pending: VaCoinMicro;

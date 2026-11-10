@@ -11,6 +11,7 @@ import { playerCareer } from '../core/sim/player-career';
 import { companyStatus } from '../core/sim/progression';
 import { renovationView } from '../core/sim/renovation';
 import { machineHallView } from '../core/sim/machine-hall';
+import { floorWorkView } from '../core/sim/floor-work';
 import { cityView } from '../core/sim/city';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
@@ -131,6 +132,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     renovation: renovationView(world, ledger),
     // Agent 10: die Halle ist die Summe der Automaten auf der eigenen Flaeche.
     machineHall: machineHallView(world, ledger),
+    // Agent 11: Arbeitsqualitaet der Floor-Rollen aus den vorhandenen Skillstufen.
+    floorWork: floorWorkView(world),
     wallet: ledger.getBalance(PORTEMONNAIE),
     playerCash: ledger.getBalance(PLAYER_CASH),
     // Agent 06: dieselbe Karriere-Sicht fuer Charakterfenster und Tests, kein zweiter Zaehler.

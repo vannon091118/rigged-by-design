@@ -70,7 +70,8 @@ describe('Charakterfenster: Werte', () => {
     expect(screen.getAllByRole('list')).toHaveLength(4);
     expect(screen.getByText('Speed').tagName).toBe('SPAN');
     expect(screen.getByText('Glück').tagName).toBe('SPAN');
-    expect(screen.getAllByText('noch ohne Wirkung')).toHaveLength(3);
+    expect(screen.getAllByText('noch ohne Wirkung')).toHaveLength(1);
+    expect(screen.getByLabelText('Arbeitsqualitaet').textContent).toContain('Reinigen');
   });
 
   it('zeigt die Spielhistorie aus dem Archiv und nennt die leere Lage', () => {
