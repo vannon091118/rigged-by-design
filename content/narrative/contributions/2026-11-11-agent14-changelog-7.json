@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:07Z-agent14-changelog-7",
+  "contributionId": "agent14-changelog-7",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Danach ist die Spur sauber: Version und Heft nennen dieselbe Zahl, der Claim traegt seinen Beleg, und niemand muss raten, was zwischen zwei Staenden passiert ist.",
+  "directives": []
+}
