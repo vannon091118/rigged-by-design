@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-collision-closeout",
+  "claimId": "lane/governance/collision-closeout",
+  "branch": "lane/governance/collision-closeout",
+  "baseSha": "da216388e7f023314369151c598e1b3f628df5a0",
+  "phase": "CI_PENDING",
+  "title": "Kollisions-Lane abschliessen",
+  "goal": "Claim merged, Vertrag DONE",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR erzeugen; CI meldet.",
+  "revision": 1
+}

@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/collision-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/collision-closeout",
+  "baseSha": "5bf657c346536a3af047545193322f6052c3354e",
+  "task": "Kollisions-Lane abschliessen",
+  "goal": "Claim merged, Vertrag DONE",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-governance-collision-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "5bf657c346536a3af047545193322f6052c3354e"
+}

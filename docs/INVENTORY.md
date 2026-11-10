@@ -569,10 +569,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2421 |
-| Gelistete Dateien | 2421 |
+| Getrackte Dateien | 2423 |
+| Gelistete Dateien | 2423 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (93), content (849), docs (83), public (554), scripts (102), src (712) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (95), content (849), docs (83), public (554), scripts (102), src (712) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -584,8 +584,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 71 Datei(en)
-- `.lane-claims/tasks/` — 20 Datei(en)
+- `.lane-claims/claims/` — 72 Datei(en)
+- `.lane-claims/tasks/` — 21 Datei(en)
 - `content/narrative/contributions/` — 845 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -715,7 +715,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-reconcile-0911.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-collision-closeout.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-derivetaskstate-fix.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-dialog-trigger.json` — { — gelesen: 39 Zeilen
@@ -775,7 +776,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-collision-closeout.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 21 Zeilen
