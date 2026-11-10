@@ -715,7 +715,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-claim-reconcile-0911.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-claim-reconcile.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/claims/lane-governance-claim-tooling.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-collision-scope.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-dependency-matrix-sync.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-derivetaskstate-fix.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-dialog-trigger.json` — { — gelesen: 39 Zeilen

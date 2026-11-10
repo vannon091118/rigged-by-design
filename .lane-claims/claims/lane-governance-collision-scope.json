@@ -9,7 +9,6 @@
     ".lane-claims/",
     "scripts/lib/claim-collisions.mjs",
     "scripts/lib/lane-claims.mjs",
-    "scripts/turn-push.mjs",
     "src/core/governance/__tests__/claim-collisions.test.ts",
     "content/narrative/",
     "docs/INVENTORY.md",
