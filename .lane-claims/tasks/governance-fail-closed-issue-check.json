@@ -4,7 +4,7 @@
   "claimId": "lane/governance/fail-closed-issue-check",
   "branch": "lane/governance/fail-closed-issue-check",
   "baseSha": "fda06dd709bc12f338a1b31edaf6992275207cc8",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Issue-Check fail-closed: governance/blocked abfragen, UNKNOWN blockieren, promote unterscheidet null von leer",
   "goal": "Ein nicht abfragbarer Issue-Zustand kann keinen Start und keinen Merge mehr freigeben; governance/blocked blockiert seine Lane",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "Zweiter Beleg fuer verify-test-quality; CI auf dem neuen Kopf pruefen, dann MERGE_PENDING.",
-  "revision": 3
+  "nextAction": "CI-Lauf auf diesem Kopf abwarten; bei gruen squash-mergen, danach AFTERCARE und DONE.",
+  "revision": 4
 }
