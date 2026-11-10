@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "world-scene-queue",
+  "claimId": "lane/world/scene-queue",
+  "branch": "lane/world/scene-queue",
+  "baseSha": "7d1d07159b42e40cf501501a1e9ac937da67ad4a",
+  "phase": "CI_PENDING",
+  "title": "World-Szenen und Action-Queue",
+  "goal": "Begehbare Lebenssimulation statt Casino-Menue",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

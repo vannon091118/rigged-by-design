@@ -13,6 +13,13 @@ import type { DayPhase } from '../core/sim/day-phase';
 import type { CompanyStatus } from '../core/sim/progression';
 import type { RenovationView } from '../core/sim/renovation';
 import type { CityView } from '../core/sim/city';
+import type { ActionTaskView } from '../core/sim/action-queue';
+
+export interface SceneView {
+  readonly key: string;
+  readonly kind: 'OWN' | 'FOREIGN' | 'CITY';
+  readonly label: string;
+}
 
 /**
  * Personal-Sicht der UI: Bestand, abgeleitet aus dem Agentenbestand – nicht
@@ -115,6 +122,10 @@ export interface GameView {
   /** Stadt-Sicht: Orte, Energie, Zweige und blockierte Handlungen. */
   readonly city: CityView;
   readonly notice: string;
+  /** Aktive Szene und ihre serialisierte Auftragskette. */
+  readonly scene: SceneView;
+  readonly queue: readonly ActionTaskView[];
+  readonly onboarding: { readonly step: 'CITY' | 'CASINO' | 'DONE' };
   /** Aktiver Foreign Floor (null = eigener Floor). */
   readonly currentForeignFloorId: number | null;
   /** Verfuegbare fremde Floors fuer die UI. */

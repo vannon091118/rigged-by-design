@@ -8,7 +8,7 @@ import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 
 interface FloorSelection {
-  readonly target: InteractionTarget;
+  readonly target: FloorTap['target'];
   readonly actions: readonly MenuAction[];
   readonly anchor: ScreenAnchor | null;
   readonly status: string;
@@ -47,11 +47,13 @@ export function useFloorInteraction(options: Options) {
   }, []);
 
   const tap = useCallback((resolution: FloorTap): void => {
-    if (latest.current.blocked) return;
+    if (latest.current.blocked || latest.current.view.scene.kind !== 'OWN') return;
     pendingRef.current = null;
     if (resolution.target.kind === 'floor') {
-      setSelection(null);
-      worldStore.moveTo({ x: resolution.target.x, y: resolution.target.y });
+      if (!latest.current.enabled) return;
+      const next = { target: resolution.target, actions: resolution.actions, anchor: resolution.anchor, status: '', blocked: false };
+      selectionRef.current = next;
+      setSelection(next);
       return;
     }
     const plan = worldStore.interaction.approach(resolution.target);
@@ -76,6 +78,12 @@ export function useFloorInteraction(options: Options) {
       return;
     }
     const anchor = selectionRef.current?.anchor ?? null;
+    // Queue-Auftraege naehern sich selbst; ein zweiter Approach wuerde den Pfad ueberschreiben.
+    if (action.queued || action.id === 'MOVE_HERE') {
+      latest.current.onExecute(action, anchor);
+      setSelection(null);
+      return;
+    }
     if (action.target) {
       const plan = worldStore.interaction.approach(action.target);
       if (!plan.reachable) {

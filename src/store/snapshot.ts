@@ -18,6 +18,7 @@ import { seatCount } from '../core/sim/world';
 import type { JournalEvent } from '../core/sim/journal';
 import { buildNarrativeView } from '../core/sim/narrative/view';
 import type { GameView, StaffView } from './types';
+import { queueView } from '../core/sim/action-queue';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
 function staffView(world: WorldState): StaffView {
@@ -37,18 +38,35 @@ function archiveSnapshot(archive: JournalEvent[]): JournalEvent[] {
 }
 
 function worldSnapshot(world: WorldState) {
+  // Eine Projektion: die aktive Szene liefert Raum, Figuren und Spieler.
+  const city = world.scene.kind === 'CITY' ? world.cityScene ?? null : null;
+  const foreign = city === null && world.activeForeignFloorId !== null
+    ? world.foreignFloors.find((floor) => floor.id === world.activeForeignFloorId) ?? null
+    : null;
+  const furniture = city?.furniture ?? foreign?.furniture ?? world.furniture;
+  const guests = city ? [] : foreign?.guests ?? world.guests;
   return {
-    template: world.template,
+    template: foreign?.template ?? world.template,
     // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
-    layout: world.layout,
-    size: world.size,
-    zones: world.zones,
-    furniture: world.furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
-    guests: world.guests.map((guest) => ({ ...guest, path: [...guest.path] })),
-    seats: seatCount(world),
+    layout: city?.layout ?? foreign?.layout ?? world.layout,
+    size: city?.layout.size ?? foreign?.size ?? world.size,
+    zones: city?.zones ?? foreign?.zones ?? world.zones,
+    furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
+    guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),
+    seats: city ? 0 : foreign
+      ? foreign.furniture.reduce((sum, item) => sum + (item.gameId ? item.seats : 0), 0)
+      : seatCount(world),
     demand: demandBreakdown(world),
-    player: { ...world.player, position: { ...world.player.position }, path: [...world.player.path] },
-    dirtyTiles: new Set(world.dirty),
+    player: foreign
+      ? {
+        ...world.player,
+        position: { ...(foreign.playerPosition ?? world.player.position) },
+        path: [...foreign.playerPath],
+        pathIndex: foreign.playerPathIndex,
+        carrying: foreign.playerCarrying,
+      }
+      : { ...world.player, position: { ...world.player.position }, path: [...world.player.path] },
+    dirtyTiles: city || foreign ? new Set<number>() : new Set(world.dirty),
     tick: world.tick,
     day: world.day,
     dayPhase: dayPhaseOf(world.tick),
@@ -58,11 +76,18 @@ function worldSnapshot(world: WorldState) {
     prices: { ...world.prices },
     carpet: world.carpet,
     lastEvent: world.lastEvent,
-    crates: world.crates.map((crate) => ({ ...crate })),
-    agents: world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
-    disputes: world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
-    stains: world.stains.map((stain) => ({ ...stain })),
-    mops: world.mops.map((mop) => ({ ...mop })),
+    crates: city || foreign ? [] : world.crates.map((crate) => ({ ...crate })),
+    agents: city || foreign ? [] : world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
+    disputes: city || foreign ? [] : world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
+    stains: city || foreign ? [] : world.stains.map((stain) => ({ ...stain })),
+    mops: city || foreign ? [] : world.mops.map((mop) => ({ ...mop })),
+    scene: city
+      ? { key: 'CITY', kind: 'CITY' as const, label: 'Stadt' }
+      : foreign
+        ? { key: `FOREIGN:${foreign.id}`, kind: 'FOREIGN' as const, label: `Fremdes Casino: ${foreign.rivalId}` }
+        : { key: 'OWN', kind: 'OWN' as const, label: 'Dein Casino' },
+    queue: queueView(world),
+    onboarding: world.onboarding ?? { step: 'DONE' as const },
     parts: world.parts,
     guestsServed: world.guestsServed,
     wallColor: world.wallColor,

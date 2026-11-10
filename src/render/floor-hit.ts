@@ -8,7 +8,7 @@
  */
 import { wallOwnerTile } from './floor-math';
 
-type HitKind = 'furniture' | 'guest' | 'crate' | 'stain';
+type HitKind = 'furniture' | 'guest' | 'crate' | 'stain' | 'mop';
 
 /**
  * Bildschirmanker eines Treffers; die UI haengt ihre Karte daran. `worldX` und
@@ -49,11 +49,12 @@ export interface HitView {
   readonly guests: readonly { readonly id: number; readonly position: HitCell }[];
   readonly crates?: readonly { readonly id: number; readonly x: number; readonly y: number }[];
   readonly stains: readonly { readonly id: number; readonly x: number; readonly y: number }[];
+  readonly mops?: readonly { readonly id: number; readonly x: number; readonly y: number; readonly carriedBy: 'player' | null }[];
   readonly layout?: { readonly edges: readonly WallEdge[] };
 }
 
 /** Bei gleicher Fusslinie gewinnt die Figur vor der Kiste vor dem Moebel vor dem Fleck. */
-const RANK: Readonly<Record<HitKind, number>> = { stain: 0, furniture: 1, crate: 2, guest: 3 };
+const RANK: Readonly<Record<HitKind, number>> = { stain: 0, furniture: 1, mop: 2, crate: 3, guest: 4 };
 
 type Candidate = FloorHit;
 
@@ -120,6 +121,15 @@ export function resolveHit(view: HitView, cell: HitCell, from: HitCell): FloorHi
       candidates.push({
         kind: 'stain', id: stain.id, depth: stain.y + 1,
         at: { x: stain.x + 0.5, y: stain.y + 0.5 },
+      });
+    }
+  }
+  for (const mop of view.mops ?? []) {
+    if (mop.carriedBy !== null) continue;
+    if (mop.x === cell.x && mop.y === cell.y) {
+      candidates.push({
+        kind: 'mop', id: mop.id, depth: mop.y + 0.7,
+        at: { x: mop.x + 0.5, y: mop.y + 0.5 },
       });
     }
   }

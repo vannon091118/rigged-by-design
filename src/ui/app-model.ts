@@ -16,7 +16,7 @@ export type Popup =
   | { kind: 'machine'; itemId: number }
   | { kind: 'games'; rivalId?: RivalId }
   | { kind: 'narrative'; visitorId?: number }
-  | { kind: 'dialogue'; scriptId?: string }
+  | { kind: 'dialogue'; scriptId?: string; guestId?: number }
   | { kind: 'workshop'; tool?: WorkshopTool }
   | { kind: 'look' }
   | { kind: 'foreignMap' }

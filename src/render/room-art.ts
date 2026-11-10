@@ -62,6 +62,15 @@ export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: n
 }
 
 export function drawRegionDirt(g: Graphics, view: GameView, area: Area, tile: number): void {
+  for (const mop of view.mops) {
+    if (mop.carriedBy !== null) continue;
+    if (mop.x < area.x || mop.y < area.y || mop.x >= area.x + area.w || mop.y >= area.y + area.h) continue;
+    const cx = mop.x * tile + tile / 2;
+    const cy = mop.y * tile + tile / 2;
+    g.rect(cx - 1, cy - 12, 2, 12).fill({ color: 0xd8b45a, alpha: 0.9 });
+    g.circle(cx, cy - 13, 3).fill({ color: 0xe8cf85, alpha: 0.95 });
+    g.ellipse(cx, cy + 1, 6, 3).fill({ color: 0x8e7a4a, alpha: 0.8 });
+  }
   for (const index of view.dirtyTiles) {
     const x = index % view.size;
     const y = Math.floor(index / view.size);

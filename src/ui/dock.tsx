@@ -3,6 +3,9 @@ import { useCallback, useRef } from 'react';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
 import { vc } from './format';
+import { worldStore } from '../store/use-world-store';
+import { ActionQueuePanel } from './action-queue-panel';
+import { CitySceneBar, OnboardingPanel } from './onboarding-panel';
 
 interface DockProps {
   readonly view: GameView;
@@ -66,6 +69,10 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
   };
 
   return (
+    <>
+      <ActionQueuePanel view={view} onCancel={(taskId) => worldStore.queue.cancel(taskId)} />
+      <CitySceneBar view={view} onOpen={onOpen} />
+      <OnboardingPanel view={view} onOpen={onOpen} />
     <nav className={`dock ${perspective}`} aria-label={perspective === 'guest' ? 'Gastbereiche' : 'Betriebsbereiche'}>
       {perspective === 'operator' && dirty > 0 && (
         <button
@@ -73,11 +80,11 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
           className={`dock-utility${view.house < cleaningCost ? ' is-poor' : ''}`}
           onClick={onClean}
           disabled={view.house < cleaningCost}
-          title={`Alles putzen für ${vc(cleaningCost, 2)}`}
+          title={`Raum reinigen; der Auftrag läuft über die Queue (${vc(cleaningCost, 2)}).`}
         >
-          <span>PUTZEN</span>
+          <span>REINIGEN</span>
           <b>{dirty}</b>
-          <small>{vc(cleaningCost, 2)}</small>
+          <small>Auftrag</small>
         </button>
       )}
       <div className="dock-tabs" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
@@ -88,5 +95,6 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
         ))}
       </div>
     </nav>
+    </>
   );
 }

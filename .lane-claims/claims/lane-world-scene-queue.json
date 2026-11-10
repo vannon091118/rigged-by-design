@@ -1,0 +1,19 @@
+{
+  "id": "lane/world/scene-queue",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/world/scene-queue",
+  "baseSha": "7d1d07159b42e40cf501501a1e9ac937da67ad4a",
+  "task": "World-Szenen und Action-Queue",
+  "goal": "Begehbare Lebenssimulation statt Casino-Menue",
+  "pathAllowlist": [
+    "src/",
+    "content/",
+    "public/",
+    ".lane-claims/claims/lane-world-scene-queue.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "7d1d07159b42e40cf501501a1e9ac937da67ad4a"
+}

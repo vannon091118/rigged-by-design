@@ -3408,6 +3408,14 @@
     {
       "turnId": "2026-11-10T21:20Z-renovation",
       "contributionId": "renovation-01"
+    },
+    {
+      "turnId": "2026-11-10T20:40Z-world-scene-queue",
+      "contributionId": "world-scene-queue-01"
+    },
+    {
+      "turnId": "2026-11-10T20:50Z-world-scene-queue-hotfix",
+      "contributionId": "world-scene-queue-hotfix-01"
     }
   ]
 }

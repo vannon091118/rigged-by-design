@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6e46ecf71cf06822571c66bb98dd748e18b8483558c50ea1e8a1bb561966b44e",
+  "contentHash": "sha256:34aeca8cdc296910c296d4052e0053df75a5ccf1c6dc4e3f64f69a93f27fe2a5",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -19104,6 +19104,56 @@
       "text": "Rita zerlegte die Oberflaeche nicht in kleinere Fenster, sondern in kleinere Verantwortungen: Wer einen Anker projiziert, besitzt ihn auch. Danach war die Karte kleiner als ihr Budget und die Welt wieder das, was sie sein sollte - der Hauptbildschirm.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-first-ui-modular.json"
+    },
+    {
+      "contributionId": "world-scene-queue-01",
+      "turnId": "2026-11-10T20:40Z-world-scene-queue",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita machte den Boden zum ersten Bedienelement: Ein Klick nannte das Ziel, das Ziel nannte den Auftrag, und der Auftrag lief sichtbar ab, statt sofort zu geschehen. Danach war die Stadt kein Menue mehr, sondern ein Ort, an dem der Wischer wirklich zurueck zur Toilette musste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue.json"
+    },
+    {
+      "contributionId": "world-scene-queue-hotfix-01",
+      "turnId": "2026-11-10T20:50Z-world-scene-queue-hotfix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zog die Werkzeugwahl aus dem Auftragslauf heraus, weil ein Wischer kein Schritt ist, sondern eine Voraussetzung. Die Inventur zaehlte danach wieder die Dateien, die wirklich im Baum lagen, und der laengere Testlauf wartete auf Git statt auf ein zu kurzes Zeitfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json"
     }
   ]
 }

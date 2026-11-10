@@ -15,17 +15,17 @@ export function SmartphoneClean({ view, onBack, onClose }: { view: GameView; onB
       </div>
       <div className="smartphone-list">
         {!carryingMop && (
-          <button type="button" className="btn clean-item" onClick={() => { worldStore.getMopAtToilet(); }} disabled={dirty === 0}>
+          <button type="button" className="btn clean-item" onClick={() => { worldStore.queue.enqueueGetMop(); }} disabled={dirty === 0}>
             <span>Wischer holen</span><span>an der Toilette</span>
           </button>
         )}
         {carryingMop && (
-          <button type="button" className="btn clean-item" onClick={() => { worldStore.dropMop(); }}>
+          <button type="button" className="btn clean-item" onClick={() => { worldStore.queue.enqueueReturnMop(); }}>
             <span>Wischer ablegen</span><span>bei sich selbst</span>
           </button>
         )}
         {dirty > 0 && carryingMop && firstStain && (
-          <button type="button" className="btn clean-item warm" onClick={() => { worldStore.cleanStain(firstStain.id); }}>
+          <button type="button" className="btn clean-item warm" onClick={() => { worldStore.queue.enqueueCleanStain(firstStain.id); }}>
             <span>Fleck reinigen</span><span>{dirty} übrig</span>
           </button>
         )}

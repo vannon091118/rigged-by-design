@@ -25,7 +25,7 @@ export const INTERACTION_RADII = {
   DISPUTE: 4,
 } as const;
 
-export type InteractionKind = 'guest' | 'furniture' | 'crate' | 'stain';
+export type InteractionKind = 'guest' | 'furniture' | 'crate' | 'stain' | 'mop';
 
 export interface InteractionTarget {
   readonly kind: InteractionKind;
@@ -74,6 +74,10 @@ function resolve(world: WorldState, target: InteractionTarget): Resolved | null 
   if (target.kind === 'crate') {
     const crate = world.crates.find((entry) => entry.id === target.id);
     return crate ? { point: { x: crate.x, y: crate.y }, reach: INTERACTION_RADII.CRATE } : null;
+  }
+  if (target.kind === 'mop') {
+    const mop = world.mops.find((entry) => entry.id === target.id);
+    return mop ? { point: { x: mop.x, y: mop.y }, reach: INTERACTION_RADII.MOP } : null;
   }
   const stain = world.stains.find((entry) => entry.id === target.id);
   return stain ? { point: { x: stain.x, y: stain.y }, reach: INTERACTION_RADII.STAIN } : null;

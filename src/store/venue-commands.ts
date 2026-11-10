@@ -10,9 +10,7 @@ import { talkToGuest } from '../core/sim/charisma-talk';
 import { emitFact } from '../core/sim/narrative/facts';
 import { actorRefOfVisitor } from '../core/sim/narrative/relationships';
 import { guestById } from '../core/sim/world';
-import { consumeMopUse, dropMop, pickupMop, spawnMop } from '../core/sim/mop';
-import { removeStain } from '../core/sim/stain';
-import { isInRange, planInteraction, INTERACTION_RADII } from '../core/sim/interaction';
+import { isInRange, INTERACTION_RADII } from '../core/sim/interaction';
 import { spendPoint, type RpgAttribute } from '../core/sim/player-rpg';
 import { duelNotice, resolveDuel } from '../core/sim/duel';
 import { fireAgent, hireAgent } from '../core/sim/staff';
@@ -176,48 +174,4 @@ export function setSlotOddsCmd(world: WorldState, itemId: number, profile: SlotP
   return applySlotOdds(world, itemId, profile);
 }
 
-/** Wischer am Spielerstandort aufheben (Radius 1, nur mit leeren Händen). */
-export function pickupMopCmd(world: WorldState, mopId: number): string {
-  const mop = world.mops.find((m) => m.id === mopId);
-  if (!mop) throw new Error('Wischer nicht gefunden.');
-  if (!isInRange(world.player.position, { x: mop.x, y: mop.y }, INTERACTION_RADII.MOP)) {
-    throw new Error('Zu weit weg. Geh erst zum Wischer.');
-  }
-  pickupMop(world, mopId);
-  return world.lastEvent;
-}
-
-/** Getragenen Wischer am Spielerstandort ablegen. */
-export function dropMopCmd(world: WorldState): string {
-  dropMop(world);
-  return world.lastEvent;
-}
-
-/** Einen Fleck reinigen (Radius 1, benötigt getragenen Wischer). */
-export function cleanStainCmd(world: WorldState, ledger: Ledger, stainId: number): string {
-  const stain = world.stains.find((s) => s.id === stainId);
-  if (!stain) throw new Error('Fleck nicht gefunden.');
-  if (!isInRange(world.player.position, { x: stain.x, y: stain.y }, INTERACTION_RADII.STAIN)) {
-    throw new Error('Zu weit weg. Geh erst zum Fleck.');
-  }
-  if (!/^MOP:(\d+)$/.exec(world.player.carrying ?? '')) {
-    throw new Error('Du brauchst einen Wischer.');
-  }
-  removeStain(world, ledger, stainId);
-  consumeMopUse(world);
-  return world.lastEvent;
-}
-
-/** Wischer an der Toilette holen (Radius 2). */
-export function getMopAtToiletCmd(world: WorldState, toiletId?: number): string {
-  const toilet = toiletId === undefined
-    ? world.furniture.find((item) => item.kind === 'TOILET')
-    : world.furniture.find((item) => item.id === toiletId && item.kind === 'TOILET');
-  if (!toilet) throw new Error('Keine Toilette im Haus.');
-  if (!planInteraction(world, { kind: 'furniture', id: toilet.id }).inRange) {
-    throw new Error('Zu weit weg. Geh erst zur Toilette.');
-  }
-  const pos = { x: toilet.x, y: toilet.y };
-  spawnMop(world, pos.x + 1, pos.y);
-  return 'Wischer bereitgestellt.';
-}
+export { pickupMopCmd, dropMopCmd, cleanStainCmd, getMopAtToiletCmd } from './mop-commands';

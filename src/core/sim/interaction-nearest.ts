@@ -2,7 +2,7 @@
 import type { InteractionKind, InteractionTarget } from './interaction';
 import type { Furniture, Point, WorldState } from './types';
 
-const KIND_RANK: Record<InteractionKind, number> = { guest: 0, furniture: 1, crate: 2, stain: 3 };
+const KIND_RANK: Record<InteractionKind, number> = { guest: 0, furniture: 1, crate: 2, stain: 3, mop: 4 };
 
 function distanceTo(item: Furniture, from: Point): number {
   const dx = Math.max(item.x - from.x, 0, from.x - (item.x + item.w - 1));
@@ -32,6 +32,13 @@ export function nearestTarget(world: WorldState, from: Point, maxDistance = 4): 
     found.push({
       target: { kind: 'stain', id: stain.id },
       distance: Math.abs(stain.x - from.x) + Math.abs(stain.y - from.y),
+    });
+  }
+  for (const mop of world.mops) {
+    if (mop.carriedBy !== null) continue;
+    found.push({
+      target: { kind: 'mop', id: mop.id },
+      distance: Math.abs(mop.x - from.x) + Math.abs(mop.y - from.y),
     });
   }
   found.sort((a, b) => a.distance - b.distance

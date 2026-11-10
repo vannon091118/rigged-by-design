@@ -7,17 +7,26 @@ import type { ExclusionPact } from './self-exclusion-bet';
 import type {
   ActivePenalty, CarpetId, Crate, DemandTier, Dispute, Furniture, Guest, Player,
   PriceBook, StaffAgent, StaffState, TemplateId, Visitor, Zone, FightFx,
-  ForeignFloorState,
+  ForeignFloorState, Point,
 } from './types-model';
 import type { Mop } from './mop';
 import type { Stain } from './stain';
 import type { RivalMindState } from './rival-ai/types';
 import type { LayoutState } from './layout-types';
 import type { CityState } from './city';
+import type { ActionQueueState } from './action-queue';
+import type { CitySceneState } from './city-scene';
 
 export type * from './types-model';
 export type { Mop } from './mop';
 export type { Stain } from './stain';
+export type { CitySceneState } from './city-scene';
+
+/** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
+export type SceneKind = 'OWN' | 'FOREIGN' | 'CITY';
+export interface SceneState { readonly kind: SceneKind; readonly foreignFloorId?: number; }
+export type OnboardingStep = 'CITY' | 'CASINO' | 'DONE';
+export interface OnboardingState { step: OnboardingStep; }
 
 export interface WorldState {
   template: TemplateId;
@@ -93,6 +102,16 @@ export interface WorldState {
   nextForeignFloorId: number;
   /** ID des fremden Floors auf dem der Spieler gerade ist (null = eigener Floor). */
   activeForeignFloorId: number | null;
+  /** Aktive Szene; `activeForeignFloorId` bleibt fuer alte Pfade gespiegelt. */
+  scene: SceneState;
+  /** Serialisierbare Auftragskette der aktiven Szene. */
+  actionQueue: ActionQueueState;
+  /** Stadt als eigener Floor; der Stadtzustand bleibt die Uebersicht. */
+  cityScene?: CitySceneState;
+  /** Position, zu der die Figur aus der Stadt ins eigene Casino zurueckkehrt. */
+  sceneReturnPosition?: Point;
+  /** Erster Start: Stadt, Casino oder abgeschlossen. Alte Saves sind DONE. */
+  onboarding?: OnboardingState;
   /**
    * Stadt-Zustand des ersten Vertical Slice. Optional, weil Saves davor ihn
    * nicht tragen; `cityOf` legt ihn beim ersten Zugriff an.

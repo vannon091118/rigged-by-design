@@ -124,6 +124,11 @@ export function createSceneCache(): SceneCache {
       if (x < area.x || y < area.y || x >= area.x + area.w || y >= area.y + area.h) continue;
       hash = (Math.imul(hash, 31) + index) | 0;
     }
+    for (const mop of view.mops) {
+      if (mop.carriedBy !== null) continue;
+      if (mop.x < area.x || mop.y < area.y || mop.x >= area.x + area.w || mop.y >= area.y + area.h) continue;
+      hash = (Math.imul(hash, 31) + mop.x * 131 + mop.y) | 0;
+    }
     return hash;
   };
 

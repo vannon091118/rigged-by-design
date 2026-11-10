@@ -8,6 +8,7 @@ import { CityPopup } from './city-popup';
 import { DIALOGUE_SCRIPTS } from '../core/sim/narrative/dialogue/scripts';
 import { findDialogueScript } from '../core/sim/narrative/dialogue/select';
 import { DialoguePopup } from './dialogue-popup';
+import { NpcDialogue } from './npc-dialogue';
 import { dialogIdFromExecution } from './dialog-request';
 import { GuestContextPanel } from './guest-context-panel';
 import { GuestPopup } from './guest-popup';
@@ -52,6 +53,7 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
           onTalk={(id) => worldStore.talk(id)}
           onFight={(id) => worldStore.fightBrawl(id)}
           onProfile={(visitorId) => onOpen({ kind: 'narrative', visitorId })}
+          onDialogue={(id) => onOpen({ kind: 'dialogue', guestId: id })}
         />
       );
     }
@@ -112,6 +114,18 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
 
   if (popup.kind === 'city') {
     return <CityPopup city={view.city} onClose={onClose} />;
+  }
+
+  if (popup.kind === 'dialogue' && popup.guestId !== undefined) {
+    return (
+      <NpcDialogue
+        view={view}
+        guestId={popup.guestId}
+        anchor={anchor}
+        project={project}
+        onClose={onClose}
+      />
+    );
   }
 
   if (popup.kind === 'dialogue') {
