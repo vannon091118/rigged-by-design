@@ -341,3 +341,102 @@ oder nachweisbarer wiederkehrender Agentenarbeit zulaessig.
 - Rivalen-Profilkarte mit Historie und Indizien; ortsuebergreifende Aktionen statt nur casino-uebergreifender.
 - Sieben-Tage-Langlauf mit Narrativ-Ereignissen als eigener CI-Nachweis.
 - Uebersetzung der UI-Texte, falls eine zweite Sprache dazukommt.
+
+---
+
+## Der 30-Agenten-Masterplan: Vom Startpunkt zum Unternehmensnetzwerk
+
+Die Gesamtentwicklung von *Rigged by Design* vollzieht sich entlang von sechs aufeinander aufbauenden Phasen (30 fokussierte Agenten-Aufträge) unter kontinuierlicher Begleitung des QA-Agents.
+
+### Phase 1: Fundament & Persönliche Spielerrolle (Agents 01–06)
+Ziel ist es, den Spieler als echten Protagonisten in der Welt zu verankern – mit eigener Brieftasche, echter Arbeit, spürbaren Charakterwerten und persönlicher Kampfkarriere.
+
+- **Agent 01 – Architektur-Audit (Status: Abgeschlossen):**
+  Vollständige Bestandsaufnahme der Codebasis (Kategorien A/B/C), Dokumentation von Geldflüssen, Modulabhängigkeiten, Gameplay-Loops, kritischen Architekturproblemen und erhaltenswerten Systemen als technische Basis.
+- **Agent 02 – Persönliche Casino-Spielsessions:**
+  Reguläre Spielsessions an eigenen Automaten mit persönlichem VaCoin-Guthaben (`PORTEMONNAIE`). Strikte Trennung vom Geschäftskonto (`HAUSKONTO`). Test-Spins bleiben kostenlose Sandbox-Vorschau. Vollständige Journal- und Pakt-Protokollierung sowie Persistenz offener Deals.
+- **Agent 03 – Persönliches Arbeitssystem:**
+  Echte bezahlte Schichten auf dem Casino-Floor (Reinigen, Zapfen, Bedienen, Kasse, Kisten, Reparaturen). Arbeitsaufträge, Zeitfenster, persönliche Vergütung via Ledger (`HAUSKONTO -> PORTEMONNAIE`), Qualitätsbewertung, Fehlerrate und Arbeitsstatistik.
+- **Agent 04 – Charakterprogression erweitern:**
+  Sinnvolle Verknüpfung der 7 RPG-Attribute mit realen Spielmechaniken (Geschwindigkeit bei Arbeit/Bewegung, Charisma bei Dialogen/Trinkgeldern, Technik bei Reparaturen/Spielen). Spezialisierungen und Talente.
+- **Agent 05 – Persönliche Kampfkarriere:**
+  Wiederholbarer Kampfloop außerhalb von Gästestreitigkeiten: Herausforderbare Gegner, Hinterhofduelle, Startgebühren und Preisgelder über das Ledger, Gegnerhistorie, persönliche Kampfbilanz (Siege/Niederlagen/KOs) und Verletzungsfolgen.
+- **Agent 06 – Persönliches Spieler-Dashboard:**
+  Übersichtliche Benutzeroberfläche zur persönlichen Progression: Charakterlevel, XP, Attribute, Skillpunkte, Lebenspunkte, Verletzungen, persönliches Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolge. Strikte Trennung von Unternehmensdaten.
+
+### Phase 2: Eigentum & Eigene Spielhalle (Agents 07–13)
+Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Renovierung und Aufbau der ersten eigenen Spielhalle.
+
+- **Agent 07 – Erste Immobilie und Eigentumssystem:**
+  Erster vollständiger Immobilienkauf (Gewerberaum, kleine Kneipe, geschlossener Spielsalon). Kaufpreisprüfung und persönliche Bezahlung aus dem Wallet (`PORTEMONNAIE`). Eigentumszuweisung und Speicherung.
+- **Agent 08 – Eigene Immobilie und WorldState-Integration:**
+  Eindeutige Zuordnung der Immobilie zum WorldState. Nutzung der bestehenden Grid-, Zonen-, Furniture- und Besuchersysteme. Betrieb über das zugehörige Geschäftskonto.
+- **Agent 09 – Renovierung und Immobilienzustand:**
+  Stufenweises Renovierungssystem (Unrenoviert -> Teilrenoviert -> Betriebsbereit -> Aufgewertet). Renovierungsarbeiten, Materialbedarf aus dem Lager, Kosten, spürbare Auswirkung auf Ruf und Gästezufriedenheit, visuelles Feedback.
+- **Agent 10 – Erste eigene Spielhalle:**
+  Vollständiger Betrieb: Automaten kaufen, transportieren, platzieren, konfigurieren, warten und reparieren. Gäste empfangen. Trennung der Geldflüsse (Gäste spielen gegen das Haus, Spieler spielt mit eigenem Wallet).
+- **Agent 11 – Spieler als aktiver Casino-Betreiber:**
+  Aktive Floor-Rolle des Spielers bleibt erhalten (Bedienen, Reparieren, Reinigen, Kasse, Sicherheit). Koppelung von Fähigkeiten an Arbeitsqualität, Betriebsablauf und wirtschaftliches Ergebnis. Personal entlastet schrittweise, ersetzt den Spieler aber nicht vollständig.
+- **Agent 12 – Maschinen-Modifikationssystem:**
+  Modulare Ebenen: Maschinenregeln, Modifikationen, Items und Synergien. Beeinflussung von Symbolgewichten, Auszahlungsprofilen, Wilds, Freispielen und Betriebskosten auf der tatsächlichen Spiel-Engine.
+- **Agent 13 – Items und Roguelite-Synergien:**
+  Datengetriebenes Item-System für Spielautomaten und Charaktere: Seltenheiten, Synergien, Vor- und Nachteile (z. B. höhere Attraktivität gegen höhere Betriebskosten), Inventar und Sammlung.
+
+### Phase 3: Skalierung & Unternehmensprogression (Agents 14–21)
+Wirtschaftliches Wachstum, Diversifikation und Verschmelzung verschiedener Unterhaltungsbereiche.
+
+- **Agent 14 – Geschäftsprogression (BUDE → KASSE → SAAL → KONZERN):**
+  Sichtbare Unternehmensphasen mit echten Voraussetzungen (Kapital, Betriebsgewinn, Ruf, Geräte, Personal) und neuen spielerischen Möglichkeiten. Unabhängig vom Charakterlevel.
+- **Agent 15 – Besucherbeziehungen erweitern:**
+  Wiederkehrende Gäste, Stammgast-Status, persönliche Vorlieben, Besuchshistorie, Reaktionen auf Ausstattung und Events.
+- **Agent 16 – Personalmanagement ausbauen:**
+  Erweiterte Rollen, Qualifikationen, Gehälter über das Geschäftskonto, Zuweisung von Arbeitsbereichen und Leistungsbewertung.
+- **Agent 17 – Modulare Business-Bereiche:**
+  Gemeinsamer WorldState mit funktionalen Modulen: Casino, Bar, Lounge, Club, Eventbereich, Arena, Gastronomie. Ein Geschäftskonto, eine Besuchersimulation.
+- **Agent 18 – Gastronomie-System:**
+  Umfassendes Bar- und Gastronomiemodul: Getränkekarte, Warenbestand, Einkauf, Verbrauch, Preise, Gästeaufträge und Bewirtung.
+- **Agent 19 – Club- und Nachtleben-Modul:**
+  Tanzfläche, Musik/DJ, Clubmöbel, Lichtstimmung, Öffnungszeiten, Eintrittspreise, Lautstärke und Nachtgäste.
+- **Agent 20 – Hybrid-Besucherströme:**
+  Wechselwirkungen zwischen Bereichen: Casino-Gäste besuchen die Bar, Clubgänger nutzen Automaten, Eventbesucher konsumieren Getränke.
+- **Agent 21 – Erweiterte Gebäudeplanung:**
+  Mehrere Räume, Raumfunktionen, Zugänge, Kapazitätsberechnungen und Vorbereitung für mehrgeschossige Gebäude unter Beibehaltung der Grid-Architektur.
+
+### Phase 4: Event-Infrastruktur & Arena (Agents 22–25)
+Events als Publikumsmagneten: Vom kleinen Showkampf bis zur hauseigenen Arena mit Sportwetten.
+
+- **Agent 22 – Zentrale Event-Infrastruktur:**
+  Allgemeines Event-System: Event-Erstellung, Ablauf (Ankündigung, Einlass, Durchführung, Ergebnis, Archivierung) für Kämpfe, Turniere und Sonderabende.
+- **Agent 23 – Kampfveranstaltungen:**
+  Organisierte Turniere, Kämpfer-Roster, Kampfpläne, Eintrittspreise, Preisgelder und Zuschauereinbindung über die reale Kampf-Engine.
+- **Agent 24 – Wett-System für Kampfveranstaltungen:**
+  Virtuelle VaCoin-Wettmärkte (Sieger, Runden, KOs). Quotenberechnung, Quotenfixierung bei Wettabgabe, Marktschluss und automatische Abrechnung über das Ledger. Strikter Spielerschutz (keine Wetten auf eigene Kämpfe, keine Quotenänderung im Nachhinein).
+- **Agent 25 – Eigene Arena:**
+  Arena als Business-Modul innerhalb der Immobilie: Kampffläche/Ring, Tribünen, Eventtechnik, Einlass und Gastronomie-Anbindung.
+
+### Phase 5: E-Sport & Wettbewerbe (Agents 26–28)
+Virtuelle Wettbewerbswelten und computergestützte Turniere.
+
+- **Agent 26 – E-Sport-Simulationsdaten:**
+  Datenstrukturen für Teams, Spieler, Rollen, Attribute, Teamstärke, Form, Taktiken, Ligen und Turnierhistorien auf Basis kontrollierter PRNG-Entropie.
+- **Agent 27 – E-Sport-Match-Simulation:**
+  Deterministische Match-Engine für Einzelspiele und Best-of-X-Serien mit nachvollziehbaren Rundenergebnissen.
+- **Agent 28 – E-Sport-Events und Wettintegration:**
+  Verknüpfung der E-Sport-Matches mit der zentralen Event- und Wettinfrastruktur. Quoten, Match-Abrechnung und Ledger-Buchung.
+
+### Phase 6: Multi-Property & Unternehmensnetzwerk (Agents 29–30)
+Das Endspiel: Ein diversifiziertes Imperium aus mehreren Immobilien und zentraler Konzernsteuerung.
+
+- **Agent 29 – Immobilienportfolio:**
+  Verwaltung mehrerer Immobilien mit eigenständigen WorldStates, aber einheitlichen Simulations- und Ledger-Regeln. Standortübersicht, Kauf und Verkauf.
+- **Agent 30 – Unternehmensnetzwerk:**
+  Konzernzentrale zur Steuerung unterschiedlicher Konzepte (Hauptcasino, Nachtclub, Eventhalle, Sportbar). Standortvergleiche, zentrale Wirtschafts- und Personalkennzahlen.
+
+---
+
+### Kontinuierliche Qualitätssicherung: QA-Agent
+- **Wirtschaft:** Überprüfung von doppelten Buchungen, Kontenintegrität, Zero-Sum-Bilanzen und strikter Trennung von Wallet (`PORTEMONNAIE`) und Geschäftskonto (`HAUSKONTO`).
+- **Simulation:** Absicherung von PRNG-Determinismus, Replay-Stabilität, Save/Load-Roundtrips und Migrationspfaden.
+- **Gameplay:** Fehlerfreie Wegfindung, Reaktionsfähigkeit von NPCs, Kollisionsfreiheit und fehlerfreie Transaktionen.
+- **Regressionstests:** Automatisierte Nachweise nach jedem Feature-Schritt zur Sicherstellung stabiler Builds.
+

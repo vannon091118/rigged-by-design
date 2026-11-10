@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/agent-masterplan-readme",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent-masterplan-readme",
+  "baseSha": "1890f6da55a372e17813c1afa67353f0ad0988e4",
+  "task": "Dokumentation 30-Agenten-Masterplan und Neuausrichtung README Lore-Onboarding",
+  "pathAllowlist": [
+    "README.md",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-governance-agent-masterplan-readme.json",
+    "docs/banners/**"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "1890f6da55a372e17813c1afa67353f0ad0988e4"
+}
