@@ -3432,6 +3432,14 @@
     {
       "turnId": "2026-11-10T23:40Z-mod-engine",
       "contributionId": "mod-engine-01"
+    },
+    {
+      "turnId": "2026-11-10T22:20Z-items-synergien",
+      "contributionId": "items-synergien-01"
+    },
+    {
+      "turnId": "2026-11-10T22:30Z-items-gates",
+      "contributionId": "items-gates-01"
     }
   ]
 }

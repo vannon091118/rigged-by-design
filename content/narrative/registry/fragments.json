@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5e680a41f5557311b43206158c6fff7212877b9e54a55cbac4aeae8cac0a1b50",
+  "contentHash": "sha256:98bf0b402ac4565a100e8fa1341ff78e6cefbf73d5691f9d42de56a9a28315f3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -4197,6 +4197,55 @@
       "text": "An der Bar zaehlt, wer dir zuhoert; am Automaten zaehlt nur, was ueber ihn geredet wird. Wer beides gleich behandelt, wundert sich, warum ein freundliches Wort keinen Einsatz ersetzt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-influence-matrix-01.json"
+    },
+    {
+      "contributionId": "items-gates-01",
+      "turnId": "2026-11-10T22:30Z-items-gates",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Im Pruefbuch standen drei rote Zeilen, und keine davon betraf das Spiel. Die Kopfzeile fehlte, vier Namen standen ohne Aufrufer da, und der Katalog wusste nicht, wohin der neue Test gehoert. Rita trug die Namen aus, die niemand liest, und liess die Zahlen, die jemand rechnet. Danach war die Zeile gruen, und das Spiel war dasselbe.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-items-gates.json"
+    },
+    {
+      "contributionId": "items-synergien-01",
+      "turnId": "2026-11-10T22:20Z-items-synergien",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "warn",
+      "contexts": [
+        "loss",
+        "service"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Auf der Karte stand Köder-Doppel, und gemeint war, dass zwei Aufkleber zusammen mehr ziehen als jeder allein. Der Betriebsplan darunter rechnete es vor: derselbe Zulauf, zwei Zehntel mehr Kosten je Tick. Rita strich die zweite Zeile nicht durch. Sie schrieb daneben, dass niemand die zweite Zeile liest, solange die erste leuchtet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-items-und-synergien.json"
     },
     {
       "contributionId": "journal-und-profilweg-01",
