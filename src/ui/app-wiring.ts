@@ -6,7 +6,7 @@ import { handleFloorInteract } from '../render/floor-interact';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
 
-export interface AppSetters {
+interface AppSetters {
   readonly setPopup: (popup: Popup) => void;
   readonly setPopupAnchor: (anchor: ScreenAnchor | null) => void;
   readonly setBuildOpen: (open: boolean) => void;

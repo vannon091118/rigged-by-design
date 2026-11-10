@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T05:20Z-world-first-ui-deadcode",
+  "contributionId": "world-first-ui-deadcode-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita exportierte nur, was auch jemand importiert. Ein Name, den keiner aufruft, ist kein Vertrag, sondern ein offenes Fenster: Sie schloss es, ohne die Kette zu kappen, und die Pruefung zaehlte danach 1501 Exporte und keine Waise mehr.",
+  "directives": []
+}
