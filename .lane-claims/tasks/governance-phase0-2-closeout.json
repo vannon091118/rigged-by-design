@@ -9,6 +9,6 @@
   "goal": "Task-Vertraege und Claims der bereits gemergten Phase-0/1/2-Lanes auf den belegten Endzustand ziehen.",
   "pr": null,
   "findings": [],
-  "nextAction": "Abgeschlossen: Die Closeout-PR registriert sechs gemergte Lanes mit Task DONE und Claim merged.",
-  "revision": 1
+  "nextAction": "Abgeschlossen: Closeout-Inhalt steht; der korrigierte PR-Body löst einen frischen Prüflauf aus.",
+  "revision": 2
 }
