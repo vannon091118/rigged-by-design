@@ -2,11 +2,11 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
+**Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die dreizehn Required-Gates und die optionalen Nachweise.
 
 ## Required Gates
 
-Der Required-Plan besteht aus zwölf Gates:
+Der Required-Plan besteht aus dreizehn Gates:
 
 | # | Gate | Skript | Fehlercode |
 | --- | --- | --- | --- |
@@ -20,17 +20,18 @@ Der Required-Plan besteht aus zwölf Gates:
 | 8 | `redundancy` | `scripts/verify-redundancy.mjs` | `ERR-4020` |
 | 9 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
 | 10 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
-| 11 | `tests` | `pnpm run test:ci` | `ERR-4026` |
-| 12 | `build` | `pnpm run build` | `ERR-1005` |
+| 11 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
+| 12 | `tests` | `pnpm run test:ci` | `ERR-4026` |
+| 13 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es dreizehn Läufe, aber weiterhin zwölf Required-Gates.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es vierzehn Läufe, aber weiterhin dreizehn Required-Gates.
 
 Lokal gilt:
 
 - `verify:light` = sechs Gates: `lint`, `check:loc`, `typecheck`, `docs`, `tree`, `redundancy`.
 - `verify:dev` = Light plus `affected` (sieben Läufe).
-- `verify:quick` = elf Gates: Required ohne `build`.
-- `verify:all` = zwölf Required plus Audit (dreizehn Läufe).
+- `verify:quick` = zwölf Gates: Required ohne `build`.
+- `verify:all` = dreizehn Required plus Audit (vierzehn Läufe).
 
 `ci-verify.yml` übersetzt den Plan in eine Matrix: ein Job je Gate, `fail-fast: false`, der Aggregat-Job **`Fail-Closed Gates`** ist der einzige geschützte Status. Eine leere Matrix ist nur in `NOOP` und `PR_HANDOFF` zulässig; ein unbekanntes Gate bricht ab, statt still zu bestehen.
 
@@ -45,13 +46,13 @@ PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vol
 
 | Zustand | Auslöser | Plan |
 | --- | --- | --- |
-| `PR` | Pull Request gegen `main` | 12 Required, volle Suite, Impact für lange Nachweise |
-| `MAIN` | Push auf `main` | 12 Required, volle Suite |
-| `MANUAL` | `workflow_dispatch` von `CI Verify` | 12 Required, volle Suite; Audit nur nach Impact/Env |
+| `PR` | Pull Request gegen `main` | 13 Required, volle Suite, Impact für lange Nachweise |
+| `MAIN` | Push auf `main` | 13 Required, volle Suite |
+| `MANUAL` | `workflow_dispatch` von `CI Verify` | 13 Required, volle Suite; Audit nur nach Impact/Env |
 | `LIGHT` | nur noch mit explizitem `--state=LIGHT` | 6 Light-Gates, keine Suite |
 | `NOOP` | Kopf ist die Basis, kein unabhängiger Diff | keine Gates, kein Pflichtstatus |
 | `PR_HANDOFF` | Altform; `ci-verify` erzeugt sie nicht mehr | keine Gates, kein Pflichtstatus |
-| `UNKNOWN` | Zustand nicht bestimmbar (Sicherheitsnetz) | 12 Required plus Audit; fail-closed |
+| `UNKNOWN` | Zustand nicht bestimmbar (Sicherheitsnetz) | 13 Required plus Audit; fail-closed |
 
 Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler und erzeugt kein Issue.
 
@@ -76,6 +77,12 @@ Sekunden, nicht Minuten.
 | `READY` | Basis enthalten, kein Konflikt | Gates starten |
 | `REBASE_REQUIRED` | Branch hinter `main` oder Konflikt nur in generierten Artefakten | rebasen, `node scripts/sync-generated.mjs --all`, erneut pruefen |
 | `MANUAL_CONFLICT` | Konflikt in Handdateien | manuell loesen; keine Bot-Chirurgie |
+
+`turn:finish` nutzt denselben Pfad statt eines Abbruchs: ist `origin/main` voraus,
+laeuft ein unveroeffentlichter Branch durch `integrate --apply`, ein bereits
+gepushter Branch mergt die Basis (Fast-Forward bleibt moeglich). Regeneriert
+wird danach in beiden Faellen; nur ein Quellkonflikt endet als `ERR-4008`, und
+der bereits erstellte Commit bleibt erhalten.
 
 Der Status blockiert die schnellen Gates nicht. `REBASE_REQUIRED` haelt nur die
 langen Nachweise (`Long ...`) zurueck: eine 60-Minuten-Suite fuer einen Baum,

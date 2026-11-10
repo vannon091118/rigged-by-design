@@ -255,9 +255,12 @@ const issueCheck = readIssues();
 const issueResults = issueCheck.issues.map(classifyIssue);
 const followUp = buildFollowUp(issueResults);
 if (!issueCheck.checked) {
-  // UNKNOWN ist kein sauberer Zustand: eine nicht abfragbare Issue-Liste ist
-  // keine Freigabe (fail-closed).
-  blockers.push(`[ERR-4019] Issue-Check UNKNOWN: ${issueCheck.errors.join(', ')} nicht abfragbar; ohne Issue-Abfrage kein Start (fail-closed)`);
+  // UNKNOWN unterscheidet jetzt lokal von Merge: ohne Issue-Abfrage ist die
+  // Blockerlage unbekannt. Lokale Arbeit im Claim-Scope bleibt erlaubt (sonst
+  // blockiert jede fehlende `gh`-Anmeldung den ganzen Turn), Merge und
+  // Promotion bleiben fail-closed gesperrt.
+  warnings.push(`[ERR-4019] Issue-Check UNKNOWN: ${issueCheck.errors.join(', ')} nicht abfragbar; lokale Arbeit erlaubt, Merge/Promotion gesperrt`);
+  notes.push('Merge-Sperre: unbekannte Issue-Lage (Issue-Check UNKNOWN) haelt nur Merge und Promotion an.');
 } else if (issueResults.length === 0) {
   notes.push('Issue-Check: keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues.');
 } else if (followUp.required) {
@@ -345,6 +348,20 @@ const taskState = deriveTaskState({
 const contextTests = contextData?.tests ?? {};
 const longTests = contextTests.long ?? [];
 const selectedTests = contextTests.runAll ? ['vollstaendige Suite'] : (contextTests.selected ?? []);
+/** Was ein Commit dieses Scopes mitbringen muss; der Impact kennt die Pfade
+ * bereits, also steht es hier statt erst im letzten Turn. */
+const contentScope = (claim?.pathAllowlist ?? []).some((entry) =>
+  /^(\.\/)?(src\/|content\/|public\/|index\.html$|package\.json$)/.test(entry),
+);
+const completionRequirements = [
+  '`.turn-notes.md` inhaltlich fuellen (System, Befund, Test, Risiko), sonst wird der Commit ohne Begruendung erzeugt',
+  'Commit-Nachricht mit den drei Pflichtsektionen; der Commit-Msg-Hook lehnt alles andere ab',
+  ...(contentScope
+    ? ['neuer Narrative-Baustein unter `content/narrative/contributions/`, im Manifest registriert und in der Registry verdrahtet']
+    : []),
+  'generierte Artefakte (Inventur, Roadmap-Zeile, Registry, Composer) nie per Hand editieren: `node scripts/sync-generated.mjs --all` ist der Eigentuemer',
+];
+const mergeBlocked = issueCheck.checked ? null : 'Issue-Check UNKNOWN: Issue-Lage unbekannt, Merge und Promotion gesperrt';
 const requiredEvidence = [
   ...(claim ? [`Claim ${claim.id} (${claim.owner})`] : []),
   ...selectedTests.map((test) => `Test ${test}`),
@@ -390,6 +407,8 @@ const contract = {
   },
   gates: contextData?.gates ?? [],
   longTests,
+  completionRequirements,
+  mergeBlocked,
   followUp,
   status: taskState.status,
   taskState: {
@@ -441,7 +460,8 @@ if (asJson) {
     git: { dir: gitDir, commonDir, linked },
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
-    issues: { ...issueCheck, issues: issueResults },
+    issues: { ...issueCheck, issues: issueResults, mergeBlocked },
+    mergeBlocked,
     followUp,
     context: contextData,
     isolation,

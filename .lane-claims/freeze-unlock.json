@@ -1,10 +1,15 @@
 {
   "version": 1,
-  "base": "814d1a62abdbd32b17fb269a130250c09ef24753",
+  "base": "2d7097aa20a0bf2fb487c0c6f08f1a821ceb65e4",
   "paths": [
-    "scripts/claim-register.mjs",
-    "scripts/lib/lane-claims.mjs"
+    "AGENTS.md",
+    "docs/ARCHITECTURE.md",
+    "docs/CI.md",
+    "scripts/agent-new.mjs",
+    "scripts/lib/task-contract.mjs",
+    "scripts/pretask.mjs",
+    "scripts/turn-push.mjs"
   ],
-  "token": "164849394ea52c4d004b2b2265f06daf2dc6bf236aa1dd2dc0d2ef51a54484fe",
+  "token": "c466000d6f680ba5757d820038a8b0f711e531ed4e0a6190d1cf176a3c955102",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

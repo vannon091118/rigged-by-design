@@ -14,6 +14,7 @@ import {
   writeTaskContract,
 } from './lib/task-contract.mjs';
 import { explicitScope, scopeChanges } from './lib/staging-scope.mjs';
+import { classifyConflicts } from './lib/generated-files.mjs';
 import { afterTaskState, writeAfterTask } from './task-state.mjs';
 import {
   classifyPaths,
@@ -381,9 +382,78 @@ if (rueck === null) {
   fail(1, 'ERR-4008', 'turn:finish', `origin/${TARGET_BRANCH} nicht lesbar; kein Push ohne Vergleich`);
   process.exit(1);
 }
+/** Bereits veroeffentlicht: Rebase wuerde fremde Historie umschreiben. Dann
+ * wird die Basis gemergt; ein unveroeffentlichter Branch geht through
+ * `integrate --apply` (Rebase plus Regeneration). */
+const publishedBranch = () =>
+  spawnSync('git', ['rev-parse', '--verify', `origin/${currentBranch}`], { cwd: ROOT, stdio: 'ignore' }).status === 0;
+
+const conflictedFiles = () =>
+  git(['diff', '--name-only', '--diff-filter=U']).split(/\r?\n/).filter(Boolean);
+
+const regenerateGenerated = () => {
+  const regenerated = spawnSync(
+    process.execPath,
+    [resolve(ROOT, 'scripts', 'sync-generated.mjs'), '--all'],
+    { cwd: ROOT, stdio: 'inherit' },
+  );
+  if (regenerated.status !== 0) return false;
+  const generatedPaths = ['docs/INVENTORY.md', 'docs/ROADMAP.md', 'content/narrative/registry', 'src/core/sim/narrative/composer'];
+  if (!git(['status', '--porcelain', '--', ...generatedPaths])) return true;
+  git(['add', '-A', '--', ...generatedPaths]);
+  return true;
+};
+
+/** Ein Reparaturpfad statt eines Abbruchs: der Commit existiert bereits, also
+ * wird die Basis integriert und nur ein echter Quellkonflikt eskaliert. */
+const integrateBeforePush = () => {
+  if (publishedBranch()) {
+    const merged = gitRun(['merge', '--no-edit', `origin/${TARGET_BRANCH}`]);
+    if (merged.status !== 0) {
+      const { generated, source } = classifyConflicts(conflictedFiles());
+      if (source.length > 0) {
+        gitRun(['merge', '--abort']);
+        fail(1, 'ERR-4008', 'turn:finish', `Quellkonflikt gegen origin/${TARGET_BRANCH}: ${source.slice(0, 8).join(', ')}; Commit bleibt erhalten, Konflikt manuell loesen`);
+        process.exit(1);
+      }
+      for (const file of generated) {
+        gitRun(['checkout', '--ours', '--', file]);
+        gitRun(['add', '--', file]);
+      }
+      if (!regenerateGenerated()) {
+        gitRun(['merge', '--abort']);
+        fail(1, 'ERR-4008', 'turn:finish', 'Regeneration der generierten Artefakte fehlgeschlagen; Merge zurueckgesetzt');
+        process.exit(1);
+      }
+      const continued = gitRun(['merge', '--continue']);
+      if (continued.status !== 0) {
+        gitRun(['merge', '--abort']);
+        fail(1, 'ERR-4008', 'turn:finish', 'Merge nach der Regeneration nicht fortsetzbar; Zustand zurueckgesetzt');
+        process.exit(1);
+      }
+    }
+    return;
+  }
+  const applied = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'integrate.mjs'), '--apply', '--no-fetch'], {
+    cwd: ROOT,
+    stdio: 'inherit',
+  });
+  if (applied.status !== 0) {
+    fail(1, 'ERR-4008', 'turn:finish', `integrate --apply nicht erfolgreich (Exit ${applied.status}); Commit bleibt erhalten`);
+    process.exit(1);
+  }
+  regenerateGenerated();
+};
+
 if (rueck > 0) {
-  fail(1, 'ERR-4008', 'turn:finish', `origin/${TARGET_BRANCH} ist um ${rueck} Commit(s) voraus; manuell mergen (git fetch origin && git merge origin/${TARGET_BRANCH}), kein Auto-Rebase`);
-  process.exit(1);
+  console.log(`turn:finish: origin/${TARGET_BRANCH} ist um ${rueck} Commit(s) voraus; Integration startet (`+
+    `${publishedBranch() ? 'Merge' : 'integrate --apply'}).`);
+  integrateBeforePush();
+  const rest = rueckstand();
+  if (rest === null || rest > 0) {
+    fail(1, 'ERR-4008', 'turn:finish', `nach der Integration noch ${rest ?? 'unbekannter'} Rueckstand auf origin/${TARGET_BRANCH}; kein Push`);
+    process.exit(1);
+  }
 }
 const push = gitRun(['push', '-u', 'origin', 'HEAD']);
 if (push.status !== 0) {

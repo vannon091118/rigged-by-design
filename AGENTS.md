@@ -30,6 +30,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 - **Hot Zone heisst modularisieren.** Jede Aenderung an einer Datei in der Hot Zone wird als Modularisierung umgesetzt: eigene Datei, klare Ownership, Budget und Test. Eine LOC-Erhoehung ist nur als `ASK_USER` mit Begruendung zulaessig, warum sie fachlich besser ist als die Extraktion; `check:loc` blockiert den direkten Weg.
 - **PreTurn-Folgengate.** `pretask` liest offene Gate-Issues zuerst. Verlangt der Projekt-Scope sie vor der neuen Arbeit, beginnt die Anfrage als nummerierter Folgetask mit **Problem**, **Kurzbeschreibung**, **Loesungsansatz** und **Schwierigkeitsgrad**; vorher startet keine neue Lane-Arbeit.
 - **Integration vor der CI.** `scripts/integrate.mjs --check` entscheidet vor den Gates zwischen `READY`, `REBASE_REQUIRED` und `MANUAL_CONFLICT`: `git fetch`, Claim-Gate und `git merge-tree`, keine Suite. Konflikte in generierten Artefakten werden regeneriert (`node scripts/sync-generated.mjs --all`), Konflikte in Handdateien nie. Der Pre-Push-Hook ruft denselben Controller; der Controller pusht nur per Fast-Forward, ein manueller Rebase-Push ist nur mit `--force-with-lease` erlaubt.
+- **Abschluss integriert selbst.** Ist `origin/main` voraus, repariert `turn:finish` statt abzubrechen: ein unveroeffentlichter Branch laeuft durch `integrate --apply` (Rebase plus Regeneration), ein bereits gepushter Branch mergt die Basis (kein Umschreiben veroeffentlichter Historie). Nur ein Quellkonflikt eskaliert als `ERR-4008`; der Commit bleibt dabei immer erhalten.
 
 ## Zustand
 
@@ -43,12 +44,13 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 | Befehl | Zweck |
 | --- | --- |
+| `pnpm run agent:new --json` | Ein Startvorgang: Branch, Claim, Task-Vertrag (Phase `READY`) und Pretask in einem Lauf. |
 | `pnpm run agent:pretask --json` | Startblocker, Issue-Check, Impact, Claim und Worktree prüfen. |
 | `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
 | `pnpm run agent:feedback --json` | Aus dem echten Diff den nächsten sinnvollen Testschritt ableiten. |
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
-| `pnpm run verify:all` | Der lokale Vollnachweis: 12 Required-Gates plus Audit. |
+| `pnpm run verify:all` | Der lokale Vollnachweis: 13 Required-Gates plus Audit (14 Läufe). |
 | `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
@@ -88,5 +90,5 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | [`docs/RUNBOOK-AUTO-RESOLVE.md`](docs/RUNBOOK-AUTO-RESOLVE.md) | Aktivierung und Prüfung von Auto-Resolve. |
 
 <!-- rtk-instructions v2 -->
-Werkzeugausgabe wird verdichtet. Primär: `pnpm run agent:pretask --json`; danach `pnpm run agent:context --json`; Suche über `rg`.
+Werkzeugausgabe wird verdichtet. Primär: `pnpm run agent:pretask --json` — der Impact-Kontext steht dort bereits unter `context`; `pnpm run agent:context --json` nur nachfordern, wenn er fehlt; Suche über `rg`.
 <!-- /rtk-instructions -->

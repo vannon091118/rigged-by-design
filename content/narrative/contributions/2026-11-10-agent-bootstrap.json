@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T11:55Z-agent-bootstrap",
+  "contributionId": "agent-bootstrap-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita strich den Satz, der zwei Inventuren verlangte. Daneben notierte sie, dass der neue Einstieg Branch, Arbeitsbaum und Vertrag selbst vorbereitet, und liess den alten Befehlsnamen durchgestrichen stehen. Wer den Zettel liest, muss nichts mehr raten.",
+  "directives": []
+}

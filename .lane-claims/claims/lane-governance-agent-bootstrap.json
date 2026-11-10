@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/agent-bootstrap",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent-bootstrap",
+  "baseSha": "2d7097aa20a0bf2fb487c0c6f08f1a821ceb65e4",
+  "task": "Agenten-Bootstrap, Integrationspfad und Gate-Wahrheit",
+  "goal": "Weniger Prozesswissen im Agentenkopf, mehr automatisierte Vorbereitung",
+  "pathAllowlist": [
+    "scripts/agent-new.mjs",
+    "scripts/pretask.mjs",
+    "scripts/turn-push.mjs",
+    "scripts/lib/task-contract.mjs",
+    "AGENTS.md",
+    "docs/CI.md",
+    "docs/ARCHITECTURE.md",
+    "docs/CHANGELOG.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "package.json",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/governance/__tests__/ci-docs-parity.test.ts",
+    "src/core/governance/__tests__/pretask-blocked-issues.test.ts",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "2d7097aa20a0bf2fb487c0c6f08f1a821ceb65e4"
+}

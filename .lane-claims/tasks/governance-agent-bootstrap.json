@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-agent-bootstrap",
+  "claimId": "lane/governance/agent-bootstrap",
+  "branch": "lane/governance/agent-bootstrap",
+  "baseSha": "2d7097aa20a0bf2fb487c0c6f08f1a821ceb65e4",
+  "phase": "CI_PENDING",
+  "title": "Agenten-Bootstrap, Integrationspfad und Gate-Wahrheit",
+  "goal": "Weniger Prozesswissen im Agentenkopf, mehr automatisierte Vorbereitung",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}
