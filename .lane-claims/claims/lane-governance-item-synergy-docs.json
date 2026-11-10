@@ -2,7 +2,7 @@
   "id": "lane/governance/item-synergy-docs",
   "owner": "Governance-Owner",
   "branch": "lane/governance/item-synergy-docs",
-  "baseSha": "e661d83ce800aca26c95374a616dd84ffecf11e3",
+  "baseSha": "77d59b541e3156e258406ceb6de6b40a0e00a745",
   "task": "Agent 13: Meta-Doku und Claim-Abschluss zu Items und Synergien",
   "goal": "Agent 13 in CHANGELOG, ROADMAP und Devtagebuch belegen, Feature-Claim lane/sim/item-synergy mit Squash-Beleg schliessen, ohne Code oder Gates zu veraendern.",
   "pathAllowlist": [
@@ -18,6 +18,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "e661d83ce800aca26c95374a616dd84ffecf11e3"
+  "status": "merged",
+  "createdAt": "e661d83ce800aca26c95374a616dd84ffecf11e3",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "e67e5d64c953b90abb7a44da397c0726f4c9b70e",
+  "notes": "Governance-only: Doku und Claim-/Task-Status; keine Code-, Save- oder Gate-Aenderung."
 }
