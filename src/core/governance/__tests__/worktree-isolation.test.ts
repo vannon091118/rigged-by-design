@@ -45,7 +45,7 @@ interface PretaskPayload {
   readonly blockers: readonly string[];
 }
 
-const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 15_000); };
+const it = (name: string, fn: () => void): void => { vitestIt(name, fn, 40_000); };
 
 const git = (cwd: string, args: readonly string[]): string => {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8' });

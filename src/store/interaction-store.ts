@@ -4,7 +4,7 @@ import {
   type InteractionPlan, type InteractionTarget,
 } from '../core/sim/interaction';
 import { nearestTarget } from '../core/sim/interaction-nearest';
-import type { WorldState } from '../core/sim/types';
+import type { Point, WorldState } from '../core/sim/types';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -21,7 +21,8 @@ export class InteractionStore {
 
   /** Klick auf ein Ziel: planen, Grund nennen, sonst laufen lassen. */
   approach(target: InteractionTarget): InteractionPlan {
-    const plan = approachTarget(this.#deps.world(), target);
+    const world = this.#deps.world();
+    const plan = approachTarget(world, target);
     if (!plan.reachable) this.#deps.notice(plan.reason);
     this.#deps.emit(false);
     return plan;
@@ -34,7 +35,16 @@ export class InteractionStore {
 
   nearest(maxDistance = 4): InteractionTarget | null {
     const world = this.#deps.world();
-    return nearestTarget(world, world.player.position, maxDistance);
+    return nearestTarget(world, this.position(), maxDistance);
+  }
+
+  /** Auf einem fremden Floor laeuft dieselbe Interaktion mit dessen Spielerstand. */
+  private position(): Point {
+    const world = this.#deps.world();
+    const floor = world.activeForeignFloorId === null
+      ? null
+      : world.foreignFloors.find((entry) => entry.id === world.activeForeignFloorId) ?? null;
+    return floor?.playerPosition ?? world.player.position;
   }
 
   cancel(): void {

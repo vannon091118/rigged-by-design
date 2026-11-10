@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T21:05Z-world-scene-queue-deadcode",
+  "contributionId": "world-scene-queue-deadcode-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita verfolgte die sechs toten Exporte bis zu ihren Aufrufern: keiner importierte sie, alle lebten nur in ihrer eigenen Datei. Statt Vertraege zu loeschen, nahm sie ihnen nur den oeffentlichen Namen; die Kette blieb lesbar, und das Gate sah wieder eine geschlossene Oberflaeche.",
+  "directives": []
+}

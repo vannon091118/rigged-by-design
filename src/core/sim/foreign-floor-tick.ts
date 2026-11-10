@@ -43,7 +43,7 @@ function createForeignFloor(
   world: WorldState,
   rivalId: RivalId,
   size: number,
-  zones: readonly Zone[],
+  zones: Zone[],
   furniture: Furniture[],
   jobStations: readonly JobStationDef[],
 ): ForeignFloorState {
@@ -69,7 +69,7 @@ export function getOrCreateForeignFloor(
   world: WorldState,
   rivalId: RivalId,
   size: number,
-  zones: readonly Zone[],
+  zones: Zone[],
   furniture: Furniture[],
   jobStations: readonly JobStationDef[],
 ): ForeignFloorState {

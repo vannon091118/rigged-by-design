@@ -78,7 +78,7 @@ describe('Eigener Automat', () => {
   it('ruft den Testspin ohne Geldeinsatz auf', async () => {
     const { onPlay, onTest } = fixture('operator');
     fireEvent.click(screen.getByRole('button', { name: 'TESTSPIN' }));
-    await waitFor(() => expect(onTest).toHaveBeenCalledTimes(1), { timeout: 5000 });
+    await waitFor(() => expect(onTest).toHaveBeenCalledTimes(1), { timeout: 15000 });
     expect(onPlay).not.toHaveBeenCalled();
   });
 

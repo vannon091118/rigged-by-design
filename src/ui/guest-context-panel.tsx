@@ -18,6 +18,7 @@ interface Props {
   readonly onServe: (id: number) => void;
   readonly onCalm: (disputeId: number) => void;
   readonly onTalk: (guestId: number) => void;
+  readonly onDialogue?: (guestId: number) => void;
   readonly onFight: (disputeId: number) => void;
   readonly onProfile: (visitorId: number) => void;
 }
@@ -39,7 +40,7 @@ function Meter({ label, value }: { readonly label: string; readonly value: numbe
 
 export function GuestContextPanel({
   view, guestId, anchor = null, project, onClose, onOpenOverview,
-  onPay, onServe, onCalm, onTalk, onFight, onProfile,
+  onPay, onServe, onCalm, onTalk, onDialogue, onFight, onProfile,
 }: Props) {
   const guest = view.guests.find((entry) => entry.id === guestId);
   if (!guest) return null;
@@ -82,7 +83,7 @@ export function GuestContextPanel({
         <Meter label="SUCHT" value={guest.addiction} />
       </div>
 
-      <div className="guest-actions">
+      <div className="guest-actions">          <button type="button" className="btn small" onClick={() => { if (onDialogue) onDialogue(guest.id); else onTalk(guest.id); }}>GESPRÄCH</button>
         <button type="button" className="btn primary small" onClick={() => onTalk(guest.id)} disabled={talkWait > 0}
           title={talkWait > 0 ? `Noch ${Math.ceil(talkWait * TICK_S)} s gesperrt.` : 'Erfolg hebt Laune und Geduld; ein Fehlschlag kann Streit auslösen.'}>
           {talkWait > 0 ? `REDEN · ${Math.ceil(talkWait * TICK_S)} s` : `REDEN · ${view.talkChances[guest.id] ?? 0} %`}

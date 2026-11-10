@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "taskId": "world-scene-queue",
+  "claimId": "lane/world/scene-queue",
+  "branch": "lane/world/scene-queue",
+  "baseSha": "7d1d07159b42e40cf501501a1e9ac937da67ad4a",
+  "phase": "CI_PENDING",
+  "title": "World-Szenen und Action-Queue",
+  "goal": "Begehbare Lebenssimulation statt Casino-Menue",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 381,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/381",
+    "state": "open",
+    "headSha": "5b0acad16099b3de3ea40591164ea3d2e6258dba"
+  },
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}
