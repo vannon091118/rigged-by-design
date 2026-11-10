@@ -3714,3 +3714,38 @@ keine zweite Geldbuchung neben `HAUSKONTO`/`PORTEMONNAIE`, keine Aenderung an
 Betriebskostenrechnung, keine neuen Mods und keine Item-/Synergie-Ebene (Agent
 13), keine Aenderung an den Hot Zones `store/world-store.ts` und
 `store/venue-commands.ts`.
+
+## 2026-11-10 - Items und Roguelite-Synergien (Agent 13)
+
+**Ziel.** Der Roadmap-Punkt verlangt ein datengetriebenes Item-System für
+Spielautomaten und Charaktere: Seltenheiten, Synergien, Vor- und Nachteile,
+Inventar und Sammlung. Vor dem Bau war zu prüfen, was davon schon existiert.
+
+**Befund (nicht nachgebaut).** Ein Mod-System gab es bereits: `offers.MODS` mit
+Kosten, Anziehung, Geduld, Sucht, Betrieb und `bonusBps`, drei Slots je Gerät,
+`item.mods` im Save v11, ein gemeinsamer Resolver `resolveModEffects` für eigenes
+Haus, fremde Häuser, eigene Runden und Rivalen, dazu seit Agent 12 der Engine-Bias
+in `core/games/mod-profile.ts`. Es fehlten genau die Item-Ebene (Seltenheit,
+Paar-Synergie) und eine Sicht auf Besitz.
+
+**Umsetzung.** `core/sim/item-synergy.ts` trägt `ITEM_RARITY` und fünf Paar-
+Synergien (Köder-Doppel, Glamour-Fassade, Lounge-Service, Süßer Köder,
+Nachtbetrieb): jede Paarung liefert Anziehung, Geduld oder Sucht und kostet
+Betrieb. `resolveModEffects` summiert sie auf demselben Weg wie Mods, deshalb
+gilt eine Synergie überall gleichzeitig; `bonusBps` bleibt unberührt, damit der
+RTP nicht still wandert. `core/sim/item-inventory.ts` leitet Inventar und
+Sammlung aus `item.mods` ab – kein neues Save-Feld, keine Migration. Der
+Automaten-Dialog zeigt Seltenheit und aktive Synergie. `check:loc` erzwang die
+Extraktion des Mod-Katalogs nach `core/sim/mod-effects.ts` (`ERR-4012`).
+
+**Bewusst nicht getan.** Keine Charakter-Ausrüstung mit eigenem Inventar
+(bräuchte ein neues Save-Feld und eine Migration), keine Synergien auf Paaren,
+die bestehende Tests exakt summieren (NEON+NEAR_MISS, NEON+CHERRY+EXTRA_REEL),
+keine Änderung an `bonusBps`, RTP, Betriebskostenrechnung oder `slot-session`,
+kein zweiter Resolver und kein zweiter Zähler.
+
+**Prüfungen.** `pnpm run typecheck` Exit 0; `pnpm run verify:all` Exit 0 auf dem
+PR-Kopf `63b5246`; CI `Fail-Closed Gates` success mit 0 Annotationen; Feature-PR
+#389 squash-gemergt als `e661d83`. Repariert statt umgangen: fehlende
+Testkopfzeilen (`ERR-4001`), vier tote Typ-Exporte (`ERR-4003`), Testkatalog und
+die Narrative-Pflicht (Turn im Manifest, `function: document`).
