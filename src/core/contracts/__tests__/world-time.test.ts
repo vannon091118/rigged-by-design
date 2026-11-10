@@ -6,7 +6,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import type { TimeDomain } from '../world-time';
-import { ACTOR_ID_PREFIXES } from '../actor-id'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { ACTOR_ID_PREFIXES } from '../actor-id';
 import {
   TICK_MS,
   TICKS_PER_DAY,

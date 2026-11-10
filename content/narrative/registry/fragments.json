@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8c9eba79c8aab86192d7cb9e8f35f6798b473c8a4ed5d127268a1373bea12e9d",
+  "contentHash": "sha256:56777cf476a395b63648b66c903d42be52ef84aa69eeda85535c91305a722465",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -4216,6 +4216,31 @@
       "text": "Rita legte die fehlenden Seiten zurück ins Buch. Was noch nicht geschehen war, blieb auf einer eigenen Liste stehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-dokumentation.json"
+    },
+    {
+      "contributionId": "ledger-proof-01",
+      "turnId": "2026-11-10T11:30Z-review-nachpruefung",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
     },
     {
       "contributionId": "loc-gate-01",

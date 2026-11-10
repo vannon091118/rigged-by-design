@@ -37,7 +37,7 @@
     "ci:long": "node scripts/ci-long-checks.mjs",
     "branches:prune": "node scripts/branch-cleanup.mjs",
     "test:perf": "vitest bench --run --config src/Config/vite.config.ts",
-    "soak": "RBD_SOAK_TICKS=100000 vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/soak.test.ts",
+    "soak": "RBD_SOAK=1 RBD_SOAK_TICKS=100000 vitest run --config src/Config/vite.config.ts src/core/sim/__tests__/soak.test.ts",
     "balance": "node scripts/balance-run.mjs",
     "bench:lowend": "node scripts/bench-lowend.mjs",
     "test:watch": "vitest --config src/Config/vite.config.ts",

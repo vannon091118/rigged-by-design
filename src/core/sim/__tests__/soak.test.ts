@@ -28,6 +28,13 @@ if (!Number.isSafeInteger(DAYS) || DAYS < 1 || DAYS > 30) {
   throw new Error(`RBD_SOAK_DAYS muss eine ganze Zahl zwischen 1 und 30 sein, erhielt '${process.env.RBD_SOAK_DAYS}'`);
 }
 
+if (!process.env.RBD_SOAK) {
+  console.warn(
+    'RBD-Soak-Hinweis: RBD_SOAK ist nicht gesetzt - die Langzeitlaeufe werden UEBERSPRUNGEN. ' +
+      'Das ist kein Beleg. Setze RBD_SOAK=1 (z. B. `pnpm soak`), um den Beweis zu fuehren.',
+  );
+}
+
 describe('Langzeitsimulation', () => {
   it.skipIf(!process.env.RBD_SOAK)(`läuft ${TICKS} Ticks ohne Ledger-Leck und ohne unbegrenzten Zustand`, { timeout: 600_000 }, () => {
     const world = createWorld('LARGE');

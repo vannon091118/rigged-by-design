@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/review-hygiene",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/review-hygiene",
+  "baseSha": "9f090fdc54246a296a59aacebc0e335d5c80c6a3",
+  "task": "Review-Folgebefunde: Soak-Beweis, Versionswahrheit, Regeltexte, Lane-Status, hermetische Registry-Tests",
+  "goal": "Sechs Review-Befunde aus dem externen Audit beheben: pnpm soak beweist (RBD_SOAK=1), CHANGELOG deckt 0.3.200/0.3.201/0.3.203 ab, Regel 5/6 und ROADMAP-Tabelle sprechen eine Sprache, fail-closed-Task auf DONE, Registry-Test ohne .git und ohne volle Historie gruen",
+  "pathAllowlist": [
+    "docs/CHANGELOG.md",
+    "AGENTS.md",
+    "docs/ROADMAP.md",
+    "package.json",
+    "src/core/governance/__tests__/roadmap-register.test.ts",
+    "src/core/contracts/__tests__/world-time.test.ts",
+    "src/core/sim/__tests__/soak.test.ts",
+    ".lane-claims/tasks/governance-fail-closed-issue-check.json",
+    "content/narrative/contributions/2026-11-10-review-nachpruefung.json",
+    "content/narrative/registry/fragments.json",
+    "content/narrative/turns/manifest.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    ".lane-claims/claims/lane-governance-review-hygiene.json",
+    ".lane-claims/claims/lane-governance-phase0-2-closeout.json",
+    ".lane-claims/freeze-unlock.json",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9f090fdc54246a296a59aacebc0e335d5c80c6a3"
+}
