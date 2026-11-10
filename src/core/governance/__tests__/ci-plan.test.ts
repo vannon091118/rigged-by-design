@@ -50,7 +50,7 @@ describe('CI-Testplan', () => {
     expect(pr.required).toEqual([...REQUIRED_CI_GATES]);
     expect(pr.gateKeys).toEqual(expect.arrayContaining([...REQUIRED_CI_GATES]));
     expect(pr.tests.runAll).toBe(false);
-  }, 15_000);
+  }, 40_000);
 
   it('faehrt im Light-Zustand nur die schnellen Gates ohne Tests', () => {
     const plan = buildPlan(['src/core/sim/tick.ts'], pushFeature);

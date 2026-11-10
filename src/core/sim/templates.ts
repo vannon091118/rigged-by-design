@@ -10,6 +10,8 @@ import { createRivalMinds } from './rival-ai/minds';
 import { BLUEPRINTS } from './house-presets';
 import { layoutFromTemplate, zonesFromLayout } from './layout-derive';
 import { spawnStain } from './stain';
+import { createActionQueue } from './action-queue';
+import { createCityScene } from './city-scene';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
@@ -72,6 +74,10 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     disputes: [],
     stains: [],
     mops: [],
+    actionQueue: createActionQueue(),
+    scene: { kind: 'OWN' },
+    cityScene: createCityScene(),
+    onboarding: { step: 'DONE' },
     parts: 2,
     guestsServed: 0,
     reputation: 0,

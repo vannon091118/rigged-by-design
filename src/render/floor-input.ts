@@ -3,7 +3,7 @@ import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { InteractionTarget } from '../core/sim/interaction';
 import type { GameView } from '../store/types';
-import { buildActions, type MenuAction } from './floor-actions';
+import { buildActions, buildFloorActions, type MenuAction } from './floor-actions';
 import { resolveHit, type ScreenAnchor } from './floor-hit';
 
 export type { ScreenAnchor } from './floor-hit';
@@ -46,7 +46,7 @@ export function handleTap(
   if (!hit) {
     return {
       target: { kind: 'floor', x, y },
-      actions: [],
+      actions: buildFloorActions({ x, y }),
       at: { x: (x + 0.5) * TILE, y: (y + 1) * TILE },
     };
   }

@@ -23,6 +23,8 @@ import { hydrateLayout } from './migrate-layout';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
 import { normalizeCityState } from '../core/sim/city-persist';
+import { normalizeActionQueue, type ActionQueueState } from '../core/sim/action-queue';
+import type { SceneState, CitySceneState, OnboardingState } from '../core/sim/types';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
 
@@ -54,7 +56,12 @@ export interface SavedGame {
   readonly exclusionPact?: ExclusionPact | null; readonly playerAddictionScore?: number;
   readonly brokenExclusionPacts?: number; readonly clarityBadge?: boolean;
   readonly foreignFloors?: ForeignFloorState[]; readonly nextForeignFloorId?: number;
-  readonly activeForeignFloorId?: number | null; readonly stains?: Stain[]; readonly mops?: Mop[];
+  readonly activeForeignFloorId?: number | null;  readonly scene?: SceneState;
+  readonly actionQueue?: ActionQueueState;
+  readonly cityScene?: CitySceneState;
+  readonly sceneReturnPosition?: import('../core/sim/types').Point;
+  readonly onboarding?: OnboardingState;
+  readonly stains?: Stain[]; readonly mops?: Mop[];
   readonly nextStainId?: number; readonly nextMopId?: number;
   readonly entries: readonly SavedEntry[]; readonly prngState: number;
   /** Ab dieser Lane: der Stadtzustand inklusive Begegnungen; alte Saves haben ihn nicht. */
@@ -90,6 +97,14 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   world.nextFurnitureId = saved.nextFurnitureId ?? 100; world.guardsHired = saved.guardsHired ?? 0;
   world.foreignFloors = saved.foreignFloors ?? []; world.nextForeignFloorId = saved.nextForeignFloorId ?? 1;
   world.activeForeignFloorId = saved.activeForeignFloorId ?? null;
+  world.scene = saved.scene ?? (world.activeForeignFloorId !== null
+    ? { kind: 'FOREIGN', foreignFloorId: world.activeForeignFloorId }
+    : { kind: 'OWN' });
+  world.actionQueue = normalizeActionQueue(saved.actionQueue);
+  world.cityScene = saved.cityScene ?? world.cityScene;
+  world.sceneReturnPosition = saved.sceneReturnPosition ?? undefined;
+  // Alte Saves kennen kein Onboarding; sie starten nicht noch einmal in der Stadt.
+  world.onboarding = saved.onboarding ?? { step: 'DONE' };
   world.crates = (saved.crates ?? []).map((crate) => ({ ...crate, carriedBy: crate.carriedBy ?? null }));
   world.agents = (saved.agents ?? []).map((agent) => ({ ...agent, path: [...(agent.path ?? [])], carryingCrate: agent.carryingCrate ?? null, task: agent.task ?? 'idle', blockedReason: agent.blockedReason ?? '', targetDisputeId: agent.targetDisputeId ?? null }));
   world.disputes = (saved.disputes ?? []).map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] }));

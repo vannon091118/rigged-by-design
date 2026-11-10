@@ -168,7 +168,9 @@ describe('Narrative Content Compiler (NAR-10)', () => {
   });
 
   it('akzeptiert CRLF-Auscheckungen, ohne echte Formatabweichungen zu verdecken', () => {
-    const crlf = (text: string) => text.replace(/\n/g, '\r\n');
+    // Auch ein bereits CRLF ausgecheckter Bestand wird genau einmal konvertiert;
+    // sonst entsteht \r\r\n und der Test meldet falschen Byte-Drift.
+    const crlf = (text: string) => text.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n');
     expect(messages(validateCompiledRegistry(report.registry, report.compiled, crlf(report.registryText)))).toBe('');
     expect(messages(validateRuntimeRegistry(crlf(report.runtimeRegistryText), report.compiled))).toBe('');
     expect(messages(validateSlotMap(crlf(renderSlotMap(report.vocabulary)), report.vocabulary))).toBe('');

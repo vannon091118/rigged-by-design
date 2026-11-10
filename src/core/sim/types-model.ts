@@ -6,7 +6,7 @@ import type { BuildId } from './offers';
 import type { PlayerRpgState } from './player-rpg';
 import type { VisitorMemory } from './narrative/types';
 import type { TraitState } from './city-types';
-import type { LayoutZone, ZoneKind } from './layout-types';
+import type { LayoutState, LayoutZone, ZoneKind } from './layout-types';
 
 /** Spielbedeutung einer Zone; der Layout-Vertrag ist ihre einzige Definition. */
 export type { ZoneKind };
@@ -71,8 +71,10 @@ export interface JobStationDef {
 }
 export interface ForeignFloorState {
   readonly id: number; readonly rivalId: RivalId; readonly size: number;
-  readonly zones: readonly Zone[]; readonly furniture: Furniture[];
+  zones: Zone[]; furniture: Furniture[];
   readonly jobStations: readonly JobStationDef[];
+  /** Der fremde Floor traegt seinen eigenen Plan, nicht nur seine Groesse. */
+  layout?: LayoutState; template?: TemplateId; guests?: Guest[];
   playerPosition: Point | null; playerPath: Point[]; playerPathIndex: number;
   playerCarrying: string; day: number; lastPaidDay: number;
 }

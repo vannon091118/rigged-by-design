@@ -12,6 +12,10 @@ export type MenuAction = {
   target?: InteractionTarget;
   /** Warum die Aktion gerade nicht geht; wird an der Karte angezeigt. */
   reason?: string;
+  /** Bodenpunkt fuer eine Laufaktion. */
+  point?: { readonly x: number; readonly y: number };
+  /** Die Aktion wird als Auftrag eingereiht und naehert sich selbst. */
+  queued?: boolean;
 };
 
 type ActionView = Pick<GameView, 'player'>;
@@ -20,13 +24,39 @@ const target = (kind: InteractionTarget['kind'], id: number): InteractionTarget 
 
 function buildStainActions(world: ActionView, stain: { id: number; x: number; y: number }): MenuAction[] {
   const carryingMop = world.player.carrying.startsWith('MOP:');
+  return [
+    {
+      id: 'CLEAN_STAIN',
+      label: carryingMop ? 'Fleck reinigen' : 'Fleck reinigen (Wischer holen)',
+      enabled: true,
+      queued: true,
+      targetId: stain.id,
+      target: target('stain', stain.id),
+    },
+    {
+      id: 'CLEAN_ROOM',
+      label: 'Raum reinigen',
+      enabled: true,
+      queued: true,
+      point: { x: stain.x, y: stain.y },
+    },
+  ];
+}
+
+/** Ein leerer Boden ist ein Laufziel; die Queue plant den Weg. */
+export function buildFloorActions(point: { readonly x: number; readonly y: number }): MenuAction[] {
+  return [{ id: 'MOVE_HERE', label: 'Hierhin laufen', enabled: true, queued: true, point }];
+}
+
+function buildMopActions(world: ActionView, mop: { id: number }): MenuAction[] {
   return [{
-    id: 'CLEAN_STAIN',
-    label: 'Reinigen',
-    enabled: carryingMop,
-    targetId: stain.id,
-    target: target('stain', stain.id),
-    reason: carryingMop ? undefined : 'Du brauchst einen Wischer.',
+    id: 'PICKUP_MOP',
+    label: 'Wischer aufheben',
+    enabled: world.player.carrying === '',
+    queued: true,
+    targetId: mop.id,
+    target: target('mop', mop.id),
+    reason: world.player.carrying === '' ? undefined : 'Deine Hände sind voll.',
   }];
 }
 
@@ -81,8 +111,8 @@ export function buildFurnitureActions(
   } else if (item.kind === 'TOILET') {
     actions.push({
       id: carryingMop ? 'DROP_MOP' : 'GET_MOP',
-      label: carryingMop ? 'Wischer ablegen' : 'Wischer holen',
-      enabled: true, targetId: item.id, target: focus,
+      label: carryingMop ? 'Wischer zurückbringen' : 'Wischer holen',
+      enabled: true, queued: true, targetId: item.id, target: focus,
     });
   } else if (item.kind === 'STORAGE') {
     actions.push({ id: 'GET_DRINKS', label: 'Getränke holen', enabled: true, targetId: item.id, target: focus });
@@ -121,6 +151,10 @@ export function buildActions(view: GameView, focus: InteractionTarget): MenuActi
   if (focus.kind === 'crate') {
     const crate = view.crates.find((entry) => entry.id === focus.id && entry.carriedBy === null);
     return crate ? buildCrateActions(view, crate) : [];
+  }
+  if (focus.kind === 'mop') {
+    const mop = view.mops.find((entry) => entry.id === focus.id && entry.carriedBy === null);
+    return mop ? buildMopActions(view, mop) : [];
   }
   const stain = view.stains.find((entry) => entry.id === focus.id);
   return stain ? buildStainActions(view, stain) : [];

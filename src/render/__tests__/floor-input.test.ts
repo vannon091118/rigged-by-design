@@ -51,7 +51,9 @@ describe('Ein Trefferpfad', () => {
   it('behandelt leeren Boden immer als Laufziel, unabhaengig von der Zoomstufe', () => {
     const result = handleTap(0, at(4, 4), view(), cues());
     expect(result?.target).toEqual({ kind: 'floor', x: 4, y: 4 });
-    expect(result?.actions).toEqual([]);
+    expect(result?.actions).toEqual([
+      { id: 'MOVE_HERE', label: 'Hierhin laufen', enabled: true, queued: true, point: { x: 4, y: 4 } },
+    ]);
   });
 
   it('klickt nicht durch eine Wand auf einen Gast', () => {

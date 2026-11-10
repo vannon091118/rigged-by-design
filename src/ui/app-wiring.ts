@@ -45,7 +45,7 @@ export function makeActionExecutor(
       return;
     }
     if (action.id === 'SPIEGEL') { open({ kind: 'look' }); return; }
-    handleFloorInteract(action.id, action.targetId);
+    handleFloorInteract(action);
   };
 }
 

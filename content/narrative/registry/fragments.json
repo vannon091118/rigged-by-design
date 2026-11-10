@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d5d31afee3e368d1081dea09c9fc28f2cede65894c02e8cd15c0f254ded43cff",
+  "contentHash": "sha256:dd44bdcdac5f2de2dd9023b881e52910d537b0a1367e9b15ecda027ce3e1581f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -19154,6 +19154,81 @@
       "text": "Rita zerlegte die Oberflaeche nicht in kleinere Fenster, sondern in kleinere Verantwortungen: Wer einen Anker projiziert, besitzt ihn auch. Danach war die Karte kleiner als ihr Budget und die Welt wieder das, was sie sein sollte - der Hauptbildschirm.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-first-ui-modular.json"
+    },
+    {
+      "contributionId": "world-scene-queue-01",
+      "turnId": "2026-11-10T20:40Z-world-scene-queue",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita machte den Boden zum ersten Bedienelement: Ein Klick nannte das Ziel, das Ziel nannte den Auftrag, und der Auftrag lief sichtbar ab, statt sofort zu geschehen. Danach war die Stadt kein Menue mehr, sondern ein Ort, an dem der Wischer wirklich zurueck zur Toilette musste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue.json"
+    },
+    {
+      "contributionId": "world-scene-queue-deadcode-01",
+      "turnId": "2026-11-10T21:05Z-world-scene-queue-deadcode",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita verfolgte die sechs toten Exporte bis zu ihren Aufrufern: keiner importierte sie, alle lebten nur in ihrer eigenen Datei. Statt Vertraege zu loeschen, nahm sie ihnen nur den oeffentlichen Namen; die Kette blieb lesbar, und das Gate sah wieder eine geschlossene Oberflaeche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json"
+    },
+    {
+      "contributionId": "world-scene-queue-hotfix-01",
+      "turnId": "2026-11-10T20:50Z-world-scene-queue-hotfix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zog die Werkzeugwahl aus dem Auftragslauf heraus, weil ein Wischer kein Schritt ist, sondern eine Voraussetzung. Die Inventur zaehlte danach wieder die Dateien, die wirklich im Baum lagen, und der laengere Testlauf wartete auf Git statt auf ein zu kurzes Zeitfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json"
     }
   ]
 }
