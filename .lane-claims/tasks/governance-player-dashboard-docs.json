@@ -4,7 +4,7 @@
   "claimId": "lane/governance/player-dashboard-docs",
   "branch": "lane/governance/player-dashboard-docs",
   "baseSha": "af482ef6d18da66c6cb0f5677a13c82f3094b2ff",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Meta-Dokumente zum Spieler-Dashboard nachziehen (Agent 06)",
   "goal": "CHANGELOG, DEVTAGEBUCH und ROADMAP beschreiben Spielhistorie und Arbeitsstatistik; Spielcode unberuehrt.",
   "pr": {
@@ -14,6 +14,6 @@
     "mergedSha": "4b23cfe7f71b443dab52cf9b4b9177b1500e85fe"
   },
   "findings": [],
-  "nextAction": "Aftercare: doctor und verify:all auf main, dann DONE.",
-  "revision": 3
+  "nextAction": "Abgeschlossen: PR #366 (4b23cfe) auf main, Claim merged mit Beleg.",
+  "revision": 4
 }
