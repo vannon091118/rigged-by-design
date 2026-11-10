@@ -3280,6 +3280,10 @@
     {
       "turnId": "2026-11-10T00:00Z-render-sprite-pipeline",
       "contributionId": "render-sprite-01"
+    },
+    {
+      "turnId": "2026-11-10T01:00Z-render-guest-footwear",
+      "contributionId": "render-guest-footwear-01"
     }
   ]
 }

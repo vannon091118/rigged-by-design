@@ -12,6 +12,7 @@
     "src/render/guest-head.ts",
     "src/render/__tests__/guest-sprite.test.ts",
     "content/narrative/contributions/2026-11-10-render-sprite-01.json",
+    "content/narrative/contributions/2026-11-10-render-guest-footwear-01.json",
     "content/narrative/turns/manifest.json",
     "content/narrative/registry/fragments.json",
     "src/core/sim/narrative/composer/registry.generated.ts",

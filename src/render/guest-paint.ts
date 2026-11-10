@@ -3,7 +3,7 @@ import { Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
 import { INK, ROLE } from './art-tokens';
 import { mountHead, paintFace as drawFace, paintHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
-import { HAIRS, PANTS, PERSONA_COLORS, SKINS } from './guest-parts';
+import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS } from './guest-parts';
 import { textureFor } from './assets/textures';
 import type { GuestRigNodes } from './guest-rig';
 
@@ -14,6 +14,7 @@ const PART_SCALE = 0.34;
 const BODY_FRAME = 'characters/torso-outfit-01.png';
 const ARM_FRAME = 'characters/arm-segment-01.png';
 const LEG_FRAME = 'characters/leg-segment-01.png';
+const FOOTWEAR_FRAME = 'characters/footwear-part-01.png';
 
 interface PaintOptions {
   readonly seed: number;
@@ -50,6 +51,8 @@ export class GuestPaint {
     this.#setupPart(nodes.legOther, LEG_FRAME, 0.5, 0, 4, 9);
     this.#setupPart(nodes.armL, ARM_FRAME, 0.5, 0, 3, 10);
     this.#setupPart(nodes.armR, ARM_FRAME, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.footwearL, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
+    this.#setupPart(nodes.footwearR, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
 
     this.setPersona(persona);
     if (look) this.setLook(look, 'neutral');
@@ -108,6 +111,8 @@ export class GuestPaint {
     this.#nodes.armR.tint = this.#outfit;
     this.#nodes.legs.tint = PANTS;
     this.#nodes.legOther.tint = PANTS;
+    this.#nodes.footwearL.tint = SHOES;
+    this.#nodes.footwearR.tint = SHOES;
   }
 
   /** Baut ein Sprite-Teil aus dem Charakter-Atlas; ohne Textur bleibt ein farbiger Block. */

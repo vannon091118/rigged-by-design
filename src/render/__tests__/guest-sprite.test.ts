@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { Container, Graphics, Sprite } from 'pixi.js';
 import { GuestPaint } from '../guest-paint';
-import { PERSONA_COLORS, PANTS } from '../guest-parts';
+import { PERSONA_COLORS, PANTS, SHOES } from '../guest-parts';
 import type { GuestRigNodes } from '../guest-rig';
 
 function makeNodes(): GuestRigNodes {
@@ -14,12 +14,14 @@ function makeNodes(): GuestRigNodes {
   const legOther = new Sprite();
   const armL = new Sprite();
   const armR = new Sprite();
+  const footwearL = new Sprite();
+  const footwearR = new Sprite();
   const head = new Container();
   const skull = new Graphics();
   const face = new Graphics();
   const hair = new Graphics();
   const pin = new Graphics();
-  return { head, skull, face, hair, body, legs, legOther, armL, armR, pin };
+  return { head, skull, face, hair, body, legs, legOther, armL, armR, footwearL, footwearR, pin };
 }
 
 describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
@@ -30,6 +32,8 @@ describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
     expect(nodes.legs).toBeInstanceOf(Sprite);
     expect(nodes.armL).toBeInstanceOf(Sprite);
     expect(nodes.armR).toBeInstanceOf(Sprite);
+    expect(nodes.footwearL).toBeInstanceOf(Sprite);
+    expect(nodes.footwearR).toBeInstanceOf(Sprite);
   });
 
   it('farbt Bauteile in die Persona-Farbe ein', () => {
@@ -40,6 +44,8 @@ describe('Gast-Bemalung mit Sprite-Bauteilen', () => {
     expect(nodes.armR.tint).toBe(PERSONA_COLORS.BUSINESS);
     expect(nodes.legs.tint).toBe(PANTS);
     expect(nodes.legOther.tint).toBe(PANTS);
+    expect(nodes.footwearL.tint).toBe(SHOES);
+    expect(nodes.footwearR.tint).toBe(SHOES);
   });
 
   describe('setPersona', () => {

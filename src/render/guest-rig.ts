@@ -15,6 +15,8 @@ export interface GuestRigNodes {
   readonly legOther: Sprite;
   readonly armL: Sprite;
   readonly armR: Sprite;
+  readonly footwearL: Sprite;
+  readonly footwearR: Sprite;
   readonly pin: Graphics;
 }
 
@@ -42,6 +44,8 @@ export class GuestRig {
     const body = new Sprite();
     const armL = new Sprite();
     const armR = new Sprite();
+    const footwearL = new Sprite();
+    const footwearR = new Sprite();
     const skull = new Graphics();
     const face = new Graphics();
     const hair = new Graphics();
@@ -51,8 +55,8 @@ export class GuestRig {
     this.#tap.visible = false;
     this.#legL.position.set(-4, 3);
     this.#legR.position.set(4, 3);
-    this.#legL.addChild(legs);
-    this.#legR.addChild(new Sprite());
+    this.#legL.addChild(legs, footwearL);
+    this.#legR.addChild(new Sprite(), footwearR);
     this.#armL.position.set(-8, -10);
     this.#armR.position.set(8, -10);
     this.#armL.addChild(armL);
@@ -67,7 +71,7 @@ export class GuestRig {
     this.root.addChild(pin, this.#figure, this.#nameplate);
     this.nodes = {
       head: this.#head, skull, face, hair, body, legs,
-      legOther: this.#legR.children[0] as Sprite, armL, armR, pin,
+      legOther: this.#legR.children[0] as Sprite, armL, armR, footwearL, footwearR, pin,
     };
   }
 
