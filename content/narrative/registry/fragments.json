@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:aecf2a813dd17b6f6dbd7880f688a40a3823c99764b4442e383c94ca61696be1",
+  "contentHash": "sha256:9457e97423c46cbfb693bcbcf9dd4a4b8301bc6b2a369ecbca03564f50be4701",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3740,6 +3740,31 @@
       "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
+    },
+    {
+      "contributionId": "governance-phase3-ci-state-01",
+      "turnId": "2026-11-10T04:20Z-governance-phase3-ci-state",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita las den CI-Zustand nicht aus einem Zeitstempel, sondern aus dem exakten Lauf, dem Kopf und der Basis. Ein Hold war kein Fehler, sondern eine Antwort: Der Merge wartet, bis der Vertrag und die Issues dieselbe Sprache sprechen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-phase3-ci-state.json"
     },
     {
       "contributionId": "governance-roadmap-count-01",

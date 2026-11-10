@@ -111,7 +111,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
-| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, gruenen Pflichtstatus abwarten und manuell mergen; kein Direktpush auf main. |
+| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, gruenen Pflichtstatus abwarten und durch promote mergen lassen; kein Direktpush auf main. |
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
@@ -281,9 +281,11 @@ Nachweise werden nicht gedruckt, sondern uebergeben: `--ci` startet
 `ci-long-checks.mjs` fuer den aktuellen Branch und die exakte HEAD-SHA und
 wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
 
-## Stillgelegte Auto-Promotion und Integrationsbranch
+## Promotion und Phasen-Hold
 
-**Status: deaktiviert.** `promote.yml` ist nicht aktiv; der Merge nach `main` ist manuell und erfolgt erst nach einem gruenen `CI Verify`-Lauf auf dem exakten Kopf. Die folgende Beschreibung dokumentiert den historischen Mechanismus, nicht den aktuellen Ablauf.
+**Status: aktiv.** `promote.yml` ist der einzige Merge-Akteur und reagiert nur auf einen `workflow_run` mit `event == 'pull_request'`. Es laedt das `ci-plan`-Artefakt, prueft Kopf, Basis, Pflichtstatus, Task-Vertrag und BLOCKED-Issues und mergt nur bei `READY_FOR_MERGE` auf dem exakten Kopf. `holdMerge`, `status=HOLD`, offene Blocker oder eine veraltete Basis halten den Merge an; bei veralteter Basis wird der Branch aktualisiert und neu geprueft. Kein Auto-Merge, kein Merge auf einem alten Kopf.
+
+Der folgende Abschnitt beschreibt den historischen Integrationspfad; er ist kein Normalweg mehr.
 
 Der Weg von einem Branch nach `main` ist ein Zustandsautomat mit genau einer
 Quelle: `.github/workflows/promote.yml` liest das Ergebnis von `CI Verify`.
@@ -1125,9 +1127,9 @@ die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
 Lange Nachweise werden nicht lokal nachgebaut; der PR-Plan fuehrt sie auf dem
 exakten Commit, der Wochenlauf deckt die systemweiten Abweichungen ab.
 
-### Stillgelegte Auto-Promotion und Integrationsbranch
+### Promotion und historischer Integrationspfad
 
-**Status: deaktiviert.** Der Merge nach `main` bleibt manuell; Auto-Merge ist kein Bestandteil der Definition of Done.
+**Status: aktiv.** Der Merge nach `main` laeuft ueber `promote`; Auto-Merge ist kein Bestandteil der Definition of Done. Die Tabelle und der Integrationspfad unten sind historisch und nur als Notausgang relevant.
 
 `promote.yml` schliesst die Luecke zwischen "Branch gepusht" und "auf main".
 Der Workflow reagiert per `workflow_run` auf jedes abgeschlossene `CI Verify`

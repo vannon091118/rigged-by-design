@@ -106,15 +106,16 @@ Der Commit-Body trägt exakt:
 
 ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-Body wird aus demselben Text gebildet; fehlende Sektionen ergänzt nur der markierte Automationsbereich.
 
-`turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` ist manuell:
+`turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` liegt ausschließlich bei `promote`:
 
 1. PR gegen `main` öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
 2. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates`.
-3. Erst bei grünem Lauf manuell mergen.
-4. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
-5. Kein Auto-Merge, kein `promote`, kein `integration`-Dump als Normalweg.
+3. `promote` lädt das `ci-plan`-Artefakt genau dieses PR-Laufs und prüft Kopf, Basis, Pflichtstatus, Task-Vertrag und BLOCKED-Issues im Scope.
+4. `holdMerge=true`, `status≠READY_FOR_MERGE`, offene Blocker oder eine veraltete Basis führen zu Hold; bei veralteter Basis aktualisiert `promote` den Branch per `update-branch` und wartet auf den neuen Lauf.
+5. Nur bei `READY_FOR_MERGE` und exaktem Kopf: `gh pr merge --squash --match-head-commit <sha>`; kein `--auto`, kein `update-branch` vor dem Merge.
+6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
 
-`promote.yml` ist derzeit manuell deaktiviert. Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
+Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 
 ### After-Task
 

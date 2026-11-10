@@ -70,6 +70,13 @@ export function laneMatches(scopeLane, target) {
   return left === right || right.startsWith(`${left}/`) || left.startsWith(`${right}/`);
 }
 
+/** Ein Governance-/BLOCKED-Issue ist ein eigener, nicht wegdiskutierbarer Befund. */
+export function isBlockedIssue(issue) {
+  return labelNames(issue).some((name) =>
+    ['BLOCKED', 'blocked', 'governance/blocked', 'governance-blocked'].includes(name),
+  );
+}
+
 /** Liest die Pflichtfelder aus einem Issue-Body; fehlende Felder sind `null`. */
 export function parseIssueBody(body) {
   const text = String(body ?? '');
@@ -100,6 +107,12 @@ export function classifyIssue(issue, options = {}) {
   const scope = scopeOf(issue);
   const repairSha = REPAIR_MARKER.exec(String(issue?.body ?? ''))?.[1] ?? null;
   const base = { scope, repairSha };
+  if (isBlockedIssue(issue)) {
+    const issueBranch = parseIssueBody(issue?.body).branch;
+    if (!issueBranch || !options.branch || laneMatches(issueBranch, options.branch)) {
+      return { ...base, disposition: 'blocker', reason: 'blocked-issue' };
+    }
+  }
   if (labels.includes('remote-ci')) {
     return { ...base, disposition: 'warning', reason: 'remote-ci' };
   }

@@ -16,8 +16,8 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt (`verify:narrative-blocks`).
 7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Die CI prüft den exakten gepushten Kopf; `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, CI meldet, nächster Schritt ist `pretask`. Merge manuell nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.
-10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. Keine zweite Klassifikation.
+9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, CI meldet, nächster Schritt ist `pretask`. Merge ausschließlich durch `promote` nach grünem PR-Lauf auf dem exakten Kopf, mit `ci-plan`-Artefakt und ohne Hold. Kein Auto-Merge, kein `update-branch` vor dem Merge; eine veraltete Basis wird aktualisiert und neu geprüft.
+10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
 
 ## Task-Vertrag
 
@@ -34,7 +34,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - **CI:** 12 Required-Gates, Audit optional; sechs Light-Gates, sieben mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** neun Dateien; `CI Verify`, `Auto Version & Release`, `Long Checks`, `Build Android APK` und `PR Cleanup` sind aktiv. `Promote`, `PR Watcher` und `PR Escalation` sind derzeit manuell deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE`.
+- **Workflows:** zehn Dateien; `CI Verify`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE`.
 - **Branch-Schutz:** klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
@@ -60,7 +60,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Delivery
 
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
-- Merge manuell nach grünem `CI Verify`; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge nur durch `promote` nach grünem `CI Verify` auf exaktem Kopf; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
 

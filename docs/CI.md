@@ -77,11 +77,11 @@ Stand 2026-11-10 liegen zehn Workflow-Dateien in `.github/workflows/`:
 | `build-apk.yml` | aktiv | APK-Build, manuell oder aus dem Release |
 | `pr-cleanup.yml` | aktiv | meldet gemergte Wegwerf-Branches, löscht sie nicht |
 | `auto-resolve.yml` | per Variable | ordnet roten Lauf ein, repariert mechanisch, Issue danach |
-| `promote.yml` | **manuell deaktiviert** | historischer Auto-Merge/Integration-Pfad |
-| `pr-watcher.yml` | **manuell deaktiviert** | historische Issue-Automatik |
+| `promote.yml` | aktiv | einziger Merge-Akteur: CI-State, Plan-Artefakt, Hold und exakter Kopf |
+| `pr-watcher.yml` | aktiv | CI-State und Issues nur aus `workflow_run`; kein PR-Body-Pfad |
 | `pr-escalation.yml` | **manuell deaktiviert** | historischer PR-Body-Lift |
 
-`auto-resolve.yml` ist im Arbeitsbranch vorhanden, auf `main` aber erst nach dem Merge sichtbar. Die Aktivierung und die Nachweise stehen im [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md). `promote` wird nicht reaktiviert; der Merge bleibt manuell. Die deaktivierten Watcher sind kein Ersatz für den Required-Status.
+`auto-resolve.yml` ist im Arbeitsbranch vorhanden, auf `main` aber erst nach dem Merge sichtbar. Die Aktivierung und die Nachweise stehen im [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md). `promote` mergt nur PR-Läufe mit `ci-plan`-Artefakt auf dem exakten Kopf; `holdMerge`, `status=HOLD`, offene BLOCKED-Issues oder eine veraltete Basis halten den Merge an. `pr-watcher` ist kein Ersatz für den Required-Status.
 
 ### Branch-Schutz
 

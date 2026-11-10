@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein Force-Push; der PR wird manuell gemergt. */
+/** Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein Force-Push; der PR wird durch promote gemergt. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';

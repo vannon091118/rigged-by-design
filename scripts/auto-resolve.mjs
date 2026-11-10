@@ -193,10 +193,16 @@ async function ensureLabel(name, api) {
 }
 
 async function existingIssue(fingerprint, api) {
-  const res = await api('GET', '/issues?state=all&labels=gate-failure&per_page=100');
-  if (!res.ok) return null;
-  const issues = await res.json();
-  return issues.find((issue) => (issue.body ?? '').includes(`<!-- ${fingerprint} -->`)) ?? null;
+  for (let page = 1; page <= 20; page += 1) {
+    const res = await api('GET', `/issues?state=all&labels=gate-failure&per_page=100&page=${page}`);
+    if (!res.ok) return null;
+    const issues = await res.json();
+    if (!Array.isArray(issues)) return null;
+    const hit = issues.find((issue) => (issue.body ?? '').includes(`<!-- ${fingerprint} -->`));
+    if (hit) return hit;
+    if (issues.length < 100) break;
+  }
+  return null;
 }
 
 export async function autoResolve({ env = process.env, api = defaultApi, git = defaultGit, exec = defaultExec, log = console.log } = {}) {
@@ -215,17 +221,23 @@ export async function autoResolve({ env = process.env, api = defaultApi, git = d
     return 0;
   }
   const diagnostics = await readRun(runId, api);
-  const primary = diagnostics.failures[0] ?? null;
-  const fingerprint = primary
-    ? fingerprintOf(primary.code, primary.line)
-    : fingerprintOf('ERR-0000', 'Kein Fehlercode im Gate-Log gefunden');
+  // ERR-4030 gehoert ausschliesslich dem governance-issue-Job.
+  const failures = (diagnostics.failures ?? []).filter(
+    (failure) => failure?.code && failure.code !== 'ERR-4030',
+  );
+  if (failures.length === 0) {
+    log('auto-resolve: kein Befund ausserhalb von ERR-4030; nichts zu tun');
+    return 0;
+  }
+  const primary = failures[0];
+  const fingerprint = fingerprintOf(primary.code, primary.line);
   const known = await existingIssue(fingerprint, api);
   const body = known?.body ?? '';
 
   const decision = planResolution({
     state,
     conclusion,
-    failures: diagnostics.failures,
+    failures,
     branch,
     sameRepo,
     fork,
@@ -271,28 +283,32 @@ export async function autoResolve({ env = process.env, api = defaultApi, git = d
     }
     log(`auto-resolve: Reparatur nicht moeglich - ${result.reason}`);
     await ensureLabel(scopeLabel(branch), api);
-  const issue = issueFor({ ...decision, failure: primary }, { branch, sha, runUrl, report: diagnostics.report });
+    for (const failure of failures) {
+      const issue = issueFor({ ...decision, failure }, { branch, sha, runUrl, report: diagnostics.report });
+      await ensureIssue({
+        title: issue.title,
+        body: `${issue.body}\nReparaturversuch: ${result.reason}\n`,
+        labels: ['gate-failure', 'agent-action', ...(scopeLabel(branch) ? [scopeLabel(branch)] : [])],
+        fingerprint: issue.fingerprint,
+        runUrl,
+        api,
+      });
+    }
+    return 0;
+  }
+
+  await ensureLabel(scopeLabel(branch), api);
+  for (const failure of failures) {
+    const issue = issueFor({ ...decision, failure }, { branch, sha, runUrl, report: diagnostics.report });
     await ensureIssue({
       title: issue.title,
-      body: `${issue.body}\nReparaturversuch: ${result.reason}\n`,
+      body: issue.body,
       labels: ['gate-failure', 'agent-action', ...(scopeLabel(branch) ? [scopeLabel(branch)] : [])],
       fingerprint: issue.fingerprint,
       runUrl,
       api,
     });
-    return 0;
   }
-
-  await ensureLabel(scopeLabel(branch), api);
-  const issue = issueFor({ ...decision, failure: primary }, { branch, sha, runUrl, report: diagnostics.report });
-  await ensureIssue({
-    title: issue.title,
-    body: issue.body,
-    labels: ['gate-failure', 'agent-action', ...(scopeLabel(branch) ? [scopeLabel(branch)] : [])],
-    fingerprint: issue.fingerprint,
-    runUrl,
-    api,
-  });
   return 0;
 }
 

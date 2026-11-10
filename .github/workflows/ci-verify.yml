@@ -64,6 +64,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
+      - name: PR-Body
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/verify-pr-body.mjs
+
       # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
       # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
       # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
