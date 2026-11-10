@@ -28,8 +28,6 @@
     "content/narrative/registry/fragments.json",
     "src/core/sim/narrative/composer/registry.generated.ts",
     "src/core/sim/narrative/composer/slot-map.generated.ts",
-    "docs/ROADMAP.md",
-    "docs/INVENTORY.md",
     ".lane-claims/claims/lane-sim-first-property.json",
     ".lane-claims/tasks/sim-first-property.json"
   ],
@@ -40,5 +38,5 @@
   "createdAt": "b0d20e389291ce6c2adef1a15537894d4840f482",
   "mergedEvidence": "squash-merge",
   "mergedSha": "2091c4f346163ec16c816e007f8185c48b789ac1",
-  "notes": "Feature-Commit 228a7af (mit PR-Vertrag afe41d4) als 2091c4f auf main; Immobilienkauf im bestehenden Ledger-, Archiv- und Charakterpfad, kein Versionssprung."
+  "notes": "Feature-Commit 228a7af (mit PR-Vertrag afe41d4) als 2091c4f auf main; Immobilienkauf im bestehenden Ledger-, Archiv- und Charakterpfad, kein Versionssprung. Meta-Pfade (docs/ROADMAP.md, docs/INVENTORY.md) aus der Allowlist entfernt: sie gehoeren der Governance-Lane, der Claim bleibt gemergt."
 }
