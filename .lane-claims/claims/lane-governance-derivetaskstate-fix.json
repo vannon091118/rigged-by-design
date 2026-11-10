@@ -11,7 +11,11 @@
     ".lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json",
     ".lane-claims/claims/lane-governance-world-first-ui.json",
     "package.json",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "src/core/governance/__tests__/",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/"
   ],
   "contracts": [],
   "dependencies": [],
