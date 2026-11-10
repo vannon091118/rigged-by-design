@@ -3,7 +3,7 @@
   "taskId": "governance-item-synergy-docs",
   "claimId": "lane/governance/item-synergy-docs",
   "branch": "lane/governance/item-synergy-docs",
-  "baseSha": "e661d83ce800aca26c95374a616dd84ffecf11e3",
+  "baseSha": "77d59b541e3156e258406ceb6de6b40a0e00a745",
   "phase": "DONE",
   "title": "Agent 13: Meta-Doku und Claim-Abschluss zu Items und Synergien",
   "goal": "Agent 13 in CHANGELOG, ROADMAP und Devtagebuch belegen und den Feature-Claim lane/sim/item-synergy mit Squash-Beleg schliessen.",
@@ -13,7 +13,14 @@
     "state": "merged",
     "mergedSha": "e67e5d64c953b90abb7a44da397c0726f4c9b70e"
   },
-  "findings": [],
+  "findings": [
+    {
+      "id": "bot-merge-action-required",
+      "status": "resolved",
+      "severity": "warning",
+      "summary": "Der Automatik-Merge von main in diese Lane erzeugte einen Kopf, dessen CI-Lauf auf action_required blieb und damit den Pflichtstatus blockierte; Basis auf 77d59b5 nachgezogen und ein eigener, regulaer gepruefter Kopf gepusht."
+    }
+  ],
   "nextAction": "Abgeschlossen: PR #390 (e67e5d6) auf main, Governance-Claim geschlossen.",
-  "revision": 6
+  "revision": 7
 }
