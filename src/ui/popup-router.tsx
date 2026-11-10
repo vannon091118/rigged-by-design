@@ -134,6 +134,7 @@ export function PopupRouter({ view, perspective, popup, onClose, onOpen, onStaff
         onClose={onClose}
         onLook={(patch) => worldStore.setLook(patch)}
         onChallenge={() => worldStore.city({ kind: 'backyardFight' })}
+        onBuyProperty={(propertyId) => worldStore.city({ kind: 'buyProperty', propertyId })}
       />
     );
   }

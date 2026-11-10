@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6f7244e2f19e023688789f8a5737620666ada26426d8f9ab122d4d4d35a1fdff",
+  "contentHash": "sha256:e0be6378c6db67971ff98e95f7a8a7b4b2340aa67c944ca2d1d502ec537423d3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3783,6 +3783,31 @@
       "text": "Rita trug die Kämpfe nicht in festen Reihenfolge nach, sondern so, wie sie fielen: jeder Abend ein anderer Verlauf, der Name des Gegners und das Ergebnis blieben trotzdem stehen. Was sie nicht aufschrieb, war die Zahl des Wurfs – den merkte sich nur der Ring.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-fight-career-tests.json"
+    },
+    {
+      "contributionId": "first-property-01",
+      "turnId": "2026-11-10T21:10Z-first-property",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zaehlte das Geld nicht zweimal, sondern sah im Beleg nach: erst der Preis, dann die Buchung, dann der Tag, an dem der Raum ihr gehoerte. Dass die Bude im Hinterhof etwas anderes war als ein Ladenlokal, notierte sie ausdruecklich - ein Eigentum ohne Adresse waere nur ein Gefuehl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-first-property.json"
     },
     {
       "contributionId": "floor-fleck-01",

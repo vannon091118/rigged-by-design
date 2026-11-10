@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T21:10Z-first-property",
+  "contributionId": "first-property-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita zaehlte das Geld nicht zweimal, sondern sah im Beleg nach: erst der Preis, dann die Buchung, dann der Tag, an dem der Raum ihr gehoerte. Dass die Bude im Hinterhof etwas anderes war als ein Ladenlokal, notierte sie ausdruecklich - ein Eigentum ohne Adresse waere nur ein Gefuehl.",
+  "directives": []
+}

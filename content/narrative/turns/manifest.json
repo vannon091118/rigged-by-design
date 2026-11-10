@@ -3396,6 +3396,10 @@
     {
       "turnId": "2026-11-10T19:20Z-player-history",
       "contributionId": "player-history-01"
+    },
+    {
+      "turnId": "2026-11-10T21:10Z-first-property",
+      "contributionId": "first-property-01"
     }
   ]
 }
