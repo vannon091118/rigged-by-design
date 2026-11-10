@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:413e090f5463e5565fcc54cd22d45b04d75495fa34f3e2e0738486ff042d62b5",
+  "contentHash": "sha256:3f96979a748566120801a23ea3b67e98ece59c6d8917b6d78b98feeb79358e50",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -140,6 +140,28 @@
       "text": "Der Nachtrag ist angekommen; der Vertrag traegt jetzt die Nummer, die das Tor ausliest, und wartet auf dieselbe Pruefung wie jeder andere Zug.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-4.json"
+    },
+    {
+      "contributionId": "agent14-changelog-5",
+      "turnId": "2026-11-11T00:05Z-agent14-changelog-5",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Nummer des Zuges steht im Vertrag: 74bc796, der Squash des Nachtrags. Damit ist der Nachlauf nicht Behauptung, sondern Beleg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent14-changelog-5.json"
     },
     {
       "contributionId": "apk-signing-01",

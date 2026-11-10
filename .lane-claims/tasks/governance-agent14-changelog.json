@@ -4,14 +4,19 @@
   "claimId": "lane/governance/agent14-changelog",
   "branch": "lane/governance/agent14-changelog",
   "baseSha": "65c11aa576242525756e7c886e12f6cafc521e7f",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 14 Nachtrag: Changelog an die Version 0.3.211 anbinden",
   "goal": "Die fehlenden Changelog-Eintraege 0.3.210 und 0.3.211 aus den gemergten Commits nachziehen, damit Version und Changelog uebereinstimmen; keine Code-Aenderung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 397,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/397",
+    "state": "merged",
+    "mergedSha": "74bc79633f4e3d573babec327389633e7cee2e42"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; dann PR-Nummer und Squash-SHA eintragen.",
-  "revision": 2
+  "nextAction": "Nachlauf: AFTERCARE, dann DONE und Claim schliessen.",
+  "revision": 3
 }
