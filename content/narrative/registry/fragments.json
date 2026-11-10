@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:27b63b814460b44bb7a8482ac2192f742265ef75a040dea805d6df0ade3194e9",
+  "contentHash": "sha256:ffd93391fafd6f0b97c7e8d873b593d6b48f16fefbb68ac4e92205bed4eac2fe",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3400,6 +3400,28 @@
       "text": "Ein Vertrag stand noch offen, obwohl sein Merge laengst auf main lag. Ihn zu schliessen hiess nicht, die Arbeit zu wiederholen, sondern den Beleg dorthin zu schreiben, wo er gelesen wird.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-1.json"
+    },
+    {
+      "contributionId": "closeout-buchhaltung-2",
+      "turnId": "2026-11-10T23:56Z-closeout-buchhaltung-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zwischen Merge und Abschluss lag nur eine Zeile Arbeit: die Phase nachziehen, damit niemand den offenen Vertrag fuer offene Arbeit haelt. Danach war der Lauf gruen und der Ordner still.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-2.json"
     },
     {
       "contributionId": "collision-scope-01",
