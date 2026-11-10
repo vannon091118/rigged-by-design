@@ -10,6 +10,7 @@ import type { VaCoinMicro } from '../economy/vacoin';
 import { backyardView, type BackyardView } from './fight-career';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
+import { propertyView, type PlayerPropertyView } from './property';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
 import {
@@ -60,6 +61,8 @@ export interface PlayerCareer {
   readonly history: readonly PlayerHistoryEntry[];
   /** Hinterhof-Leiter, Gegnerhistorie und Startgeld aus derselben Ableitung. */
   readonly backyard: BackyardView;
+  /** Erste Immobilie mit Katalog, Preis und Bezahlbarkeit aus dem Portemonnaie. */
+  readonly property: PlayerPropertyView;
 }
 
 const INJURY_HP_PENALTY = 5;
@@ -112,6 +115,7 @@ function achievementsOf(world: WorldState, record: FightRecord): readonly Career
     { id: 'DUELL_SERIE', label: `${ACHIEVEMENT_WINS} Duelle gewonnen`, unlocked: record.wins >= ACHIEVEMENT_WINS },
     { id: 'AUFSTEIGER', label: `Level ${ACHIEVEMENT_LEVEL} erreicht`, unlocked: rpg.level >= ACHIEVEMENT_LEVEL },
     { id: 'EIGENE_BUDE', label: 'Eigene Bude gekauft', unlocked: world.player.barPurchased },
+    { id: 'ERSTE_IMMOBILIE', label: 'Erste Immobilie gekauft', unlocked: world.player.property !== null },
     { id: 'ERSTE_VERLETZUNG', label: 'Erste Verletzung überstanden', unlocked: rpg.injuryTicks > 0 || rpg.hp < playerMaxHp(rpg) },
   ];
 }
@@ -146,6 +150,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     achievements: achievementsOf(world, record),
     history: playerHistoryOf(world.archive),
     backyard: backyardView(world, wallet),
+    property: propertyView(world, wallet),
   };
 }
 

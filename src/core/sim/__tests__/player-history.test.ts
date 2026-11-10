@@ -36,6 +36,12 @@ describe('Spielhistorie', () => {
     ]);
   });
 
+  it('nennt den Immobilienkauf beim Namen', () => {
+    expect(playerHistoryOf([event(8, 4, 'IMMOBILIE', 'Kleine Kneipe für 120 VC bezahlt.', 'SYSTEM')])).toEqual([
+      { id: 8, day: 4, label: 'Erste Immobilie gekauft', detail: 'Kleine Kneipe für 120 VC bezahlt.' },
+    ]);
+  });
+
   it('behaelt die Reihenfolge und zeigt nur die letzten Etappen', () => {
     const events = Array.from({ length: 8 }, (_, index) =>
       event(index, index + 1, `Duell gegen Gegner ${index}`,

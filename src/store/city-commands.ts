@@ -4,6 +4,7 @@ import type { Prng } from '../core/rng/prng';
 import { restInCity, runCityAction, travel, type CityLocationId } from '../core/sim/city';
 import { backyardFight } from '../core/sim/fight-career';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
+import { buyProperty } from '../core/sim/property';
 import type { EncounterAction } from '../core/sim/city-types';
 import type { WorldState } from '../core/sim/types';
 
@@ -34,6 +35,12 @@ function encounterCmd(world: WorldState, ledger: Ledger, eventId: number, action
   return takeEncounterAction(world, ledger, eventId, action).text;
 }
 
+/** Erste Immobilie: der Kauf laeuft wie jeder Kauf durch das Portemonnaie. */
+function propertyCmd(world: WorldState, ledger: Ledger, propertyId: string): string {
+  buyProperty(world, ledger, propertyId, world.tick);
+  return world.lastEvent;
+}
+
 /** Alle Stadt-Eingaben der UI laufen durch genau diesen einen Einstieg. */
 export type CityCommand =
   | { readonly kind: 'travel'; readonly location: CityLocationId }
@@ -41,7 +48,8 @@ export type CityCommand =
   | { readonly kind: 'rest' }
   | { readonly kind: 'meet'; readonly location?: CityLocationId }
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
-  | { readonly kind: 'backyardFight' };
+  | { readonly kind: 'backyardFight' }
+  | { readonly kind: 'buyProperty'; readonly propertyId: string };
 
 export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: CityCommand): string {
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);
@@ -49,5 +57,6 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'meet') return meetCmd(world, ledger, cmd.location);
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
+  if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);
   return cityRestCmd(world, ledger, prng);
 }

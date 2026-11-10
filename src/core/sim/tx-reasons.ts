@@ -20,6 +20,7 @@ export const TX_REASON = {
   BAR_UPGRADE: 'bar ausbauen',
   WC_UPGRADE: 'wc ausbauen',
   TAKE_HOME: 'betreiber entnahme',
+  PROPERTY: 'immobilie kaufen',
   FOREIGN_STAKE: 'fremdes haus einsatz',
   FOREIGN_WIN: 'fremdes haus gewinn',
   BACKYARD_ENTRY: 'hinterhof startgeld',

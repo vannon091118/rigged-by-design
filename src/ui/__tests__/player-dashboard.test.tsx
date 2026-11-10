@@ -9,6 +9,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { fromVC } from '../../core/economy/vacoin';
+import type { PropertyId } from '../../core/sim/types';
 import { EXTERNAL, PORTEMONNAIE } from '../../core/sim/money';
 import { recordJournal } from '../../core/sim/journal';
 import { grantXp } from '../../core/sim/player-rpg';
@@ -23,15 +24,19 @@ afterEach(() => {
 
 interface Options {
   readonly onChallenge?: () => void;
+  readonly onBuyProperty?: (id: PropertyId) => void;
   readonly backyard?: boolean;
   readonly injured?: boolean;
   readonly emptyHistory?: boolean;
+  readonly walletVC?: number;
+  readonly ownedProperty?: boolean;
 }
 
 function renderPopup(options: Options = {}) {
   const world = createWorld('SMALL');
   grantXp(world.player.rpg, 450);
   world.player.barPurchased = true;
+  if (options.ownedProperty) world.player.property = { id: 'KNEIPE', priceVC: fromVC(120), day: 3 };
   if (options.injured) world.player.rpg.injuryTicks = 20;
   if (!options.emptyHistory) {
     recordJournal(world, {
@@ -46,9 +51,9 @@ function renderPopup(options: Options = {}) {
     });
   }
   const ledger = new Ledger();
-  ledger.transfer(EXTERNAL, PORTEMONNAIE, fromVC(10), 'test startgeld', 0);
+  ledger.transfer(EXTERNAL, PORTEMONNAIE, fromVC(options.walletVC ?? 10), 'test startgeld', 0);
   const view = buildView(world, ledger, 'Hinweis');
-  render(<LookPopup view={view} onClose={() => {}} onLook={() => {}} onChallenge={options.onChallenge} />);
+  render(<LookPopup view={view} onClose={() => {}} onLook={() => {}} onChallenge={options.onChallenge} onBuyProperty={options.onBuyProperty} />);
   return view;
 }
 
@@ -62,7 +67,7 @@ describe('Charakterfenster: Werte', () => {
 
   it('listet alle sieben Attribute mit ihrer Wirkung', () => {
     renderPopup();
-    expect(screen.getAllByRole('list')).toHaveLength(3);
+    expect(screen.getAllByRole('list')).toHaveLength(4);
     expect(screen.getByText('Speed').tagName).toBe('SPAN');
     expect(screen.getByText('Glück').tagName).toBe('SPAN');
     expect(screen.getAllByText('noch ohne Wirkung')).toHaveLength(3);
@@ -124,5 +129,34 @@ describe('Charakterfenster: Hinterhof-Karriere', () => {
     expect(screen.getByText('1 S · 0 N').tagName).toBe('B');
     expect(screen.getByText(/Tag \d+: Gewonnen · 1 KO/).tagName).toBe('SMALL');
     expect(view.career.record).toEqual({ wins: 2, losses: 0, kos: 1 });
+  });
+});
+
+describe('Charakterfenster: Immobilie', () => {
+  it('zeigt den Katalog mit Preis und sperrt ohne Bargeld', () => {
+    const view = renderPopup();
+    const section = screen.getByLabelText('Immobilie');
+    expect(view.career.property.owned).toBeNull();
+    expect(section.textContent).toContain('Gewerberaum');
+    expect(screen.getByRole('button', { name: '60.00 VC' }).hasAttribute('disabled')).toBe(true);
+    expect(screen.getByRole('button', { name: '200.00 VC' }).hasAttribute('disabled')).toBe(true);
+  });
+
+  it('kauft nur, was das Portemonnaie deckt, und meldet die Kennung', () => {
+    const onBuyProperty = vi.fn();
+    renderPopup({ walletVC: 130, onBuyProperty });
+    expect(screen.getByRole('button', { name: '60.00 VC' }).hasAttribute('disabled')).toBe(false);
+    expect(screen.getByRole('button', { name: '200.00 VC' }).hasAttribute('disabled')).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: '120.00 VC' }));
+    expect(onBuyProperty).toHaveBeenCalledWith('KNEIPE');
+  });
+
+  it('zeigt nach dem Kauf Besitz, Tag und Preis statt des Katalogs', () => {
+    const view = renderPopup({ ownedProperty: true });
+    const section = screen.getByLabelText('Immobilie');
+    expect(view.career.property.owned).toEqual({ id: 'KNEIPE', priceVC: fromVC(120), day: 3 });
+    expect(section.textContent).toContain('in deinem Besitz');
+    expect(section.textContent).toContain('Tag 3');
+    expect(screen.queryByRole('button', { name: /VC$/ })).toBeNull();
   });
 });

@@ -76,9 +76,18 @@ export interface ForeignFloorState {
   playerPosition: Point | null; playerPath: Point[]; playerPathIndex: number;
   playerCarrying: string; day: number; lastPaidDay: number;
 }
+export type PropertyId = 'GEWERBERAUM' | 'KNEIPE' | 'SPIELSALON';
+/** Eigentum als Datensatz: welche Immobilie, zu welchem Preis, an welchem Tag. */
+export interface OwnedProperty {
+  readonly id: PropertyId;
+  readonly priceVC: VaCoinMicro;
+  readonly day: number;
+}
 export interface Player {
   position: Point; path: Point[]; pathIndex: number; carrying: string; rpg: PlayerRpgState;
   job: PlayerJobState | null; barPurchased: boolean;
+  /** Erste Gewerbeimmobilie; null heisst: noch kein Eigentum. */
+  property: OwnedProperty | null;
 }
 export interface ActivePenalty {
   readonly kind: 'UNSAFE_REPUTATION' | 'MOOD_SHOCK'; daysLeft: number;

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "sim-first-property",
+  "claimId": "lane/sim/first-property",
+  "branch": "lane/sim/first-property",
+  "baseSha": "b0d20e389291ce6c2adef1a15537894d4840f482",
+  "phase": "CI_PENDING",
+  "title": "Masterplan Agent 07: Erste Immobilie und Eigentumssystem",
+  "goal": "Katalog aus Gewerberaum, Kneipe und Spielsalon, Kauf aus PORTEMONNAIE mit Preispruefung, Eigentums-Datensatz mit Preis und Tag, Speicherung ohne Versionssprung und Sicht im bestehenden Charakterfenster.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 368,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/368",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "PR #368 offen; CI Fail-Closed Gates prueft den Kopf 228a7af, danach squash-mergen.",
+  "revision": 1
+}

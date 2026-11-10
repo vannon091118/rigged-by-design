@@ -46,6 +46,10 @@
 .career-next { margin: 0; font-size: 12px; }
 .career-history { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; }
 .career-history li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; }
+.career-property { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
+.career-property-offers { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; }
+.career-property-offers li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; }
+.career-property-offers small { display: block; opacity: 0.7; }
 .career-history small { grid-column: 1 / -1; opacity: 0.7; }
 
 /* Spiel-Identitaeten: eine Variable je Familie, kein Layout-Umbau. */

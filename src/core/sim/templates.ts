@@ -54,6 +54,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
       rpg: newPlayerRpg(),
       job: null,
       barPurchased: false,
+      property: null,
     },
     dirty: new Set<number>(),
     prices: { ...PRICES },
