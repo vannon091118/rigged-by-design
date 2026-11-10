@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
+<!-- rbd-doc: managed -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -64,6 +64,47 @@ Das Aggregat ist strikt: `claims` muss im Zustand `PR` `success` sein, `commitms
 ### Governance-Freeze
 
 Der `Plan`-Job prüft vor allem anderen den Governance-Freeze: eine inhaltliche Änderung an `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` oder den Governance-Verträgen braucht eine Freigabe aus `scripts/freeze-unlock.mjs`. Reine Doku-Marker und Versionszeilen zählen nicht. Der Checker kommt aus der Kontrollebene der Basis und prüft den Kandidaten (`RBD_ROOT`): eine Regeländerung ist nur mit PIN-Freigabe im Diff und autorisiert sich so nicht selbst. Ohne Freigabe wird der Plan-Job rot, damit `Fail-Closed Gates` rot; bei `violation=corruption` legt der eigene Job `governance-issue` ein `BLOCKED`-Issue an (`ERR-4030`). Der Branch bleibt bestehen — es gibt keine Branch-Löschung. Kennt die Basis-Kontrollebene das Gate noch nicht, bleibt der Schritt inert — so kommt der Freeze selbst ohne Henne-Ei-Problem nach `main`. Die Mechanik steht in [`GOVERNANCE.md`](GOVERNANCE.md#governance-freeze).
+
+## Integration vor den Gates
+
+Der Integrationscontroller (`scripts/integrate.mjs`) laeuft vor der Gate-Matrix und
+beantwortet eine Frage: ist dieser Branch ueberhaupt integrierbar? Er kostet
+Sekunden, nicht Minuten.
+
+| Status | Bedeutung | Naechster Schritt |
+| --- | --- | --- |
+| `READY` | Basis enthalten, kein Konflikt | Gates starten |
+| `REBASE_REQUIRED` | Branch hinter `main` oder Konflikt nur in generierten Artefakten | rebasen, `node scripts/sync-generated.mjs --all`, erneut pruefen |
+| `MANUAL_CONFLICT` | Konflikt in Handdateien | manuell loesen; keine Bot-Chirurgie |
+
+Der Status blockiert die schnellen Gates nicht. `REBASE_REQUIRED` haelt nur die
+langen Nachweise (`Long ...`) zurueck: eine 60-Minuten-Suite fuer einen Baum,
+den niemand mergen darf, ist keine Pruefung, sondern Wartezeit.
+
+Generierte Artefakte haben genau einen Eigentuemer (`scripts/lib/generated-files.mjs`):
+`docs/INVENTORY.md` (Inventurblock), `docs/ROADMAP.md` (Fortschrittszeile),
+`content/narrative/registry/fragments.json` sowie die beiden Composer-Dateien
+(Registry und Slot-Bruecke). Nur diese Anteile darf die Automatisierung
+regenerieren; ein Konflikt in `src/` bleibt fachlich.
+
+## Gates nach Aenderungsrisiko
+
+Ein PR bekommt nicht mehr pauschal das volle Required-Set. `selectGates()`
+liest die Risikoklasse aus dem Diff; `MAIN` und `MANUAL` behalten den vollen
+Nachweis.
+
+| Risiko | Gates |
+| --- | --- |
+| Doku/Marker | `check:loc`, `docs`, `tree` |
+| Narrative/Content | `check:loc`, `docs`, `tree`, `narrative`, `capabilities`, `tests` |
+| Nur Tests | `test-quality`, `tests` |
+| Runtime/Gameplay | alle Required-Gates, Tests betroffen |
+| Governance/Toolchain | alle Required-Gates, vollstaendige Suite |
+| Unbekannt | alle Required-Gates plus Audit, vollstaendige Suite (fail-closed) |
+
+`selectTests()` liefert fuer Doku-, Test-, Content- und Runtime-PRs die
+betroffenen Testdateien; die vollstaendige Suite laeuft nur fuer `main`, einen
+manuellen Lauf, Governance/Toolchain und unbekanntes Risiko.
 
 ## Workflows
 

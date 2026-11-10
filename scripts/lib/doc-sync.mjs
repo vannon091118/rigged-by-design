@@ -77,11 +77,18 @@ export function markerOf(text) {
 }
 
 /**
- * Ergänzt nur einen fehlenden Marker. Ein vorhandener Marker wird nie neu
- * geschrieben: genau das war die Quelle der Doku-Regression in jeder Lane.
+ * Ein Marker, ein Format. Alte Versionsmarker (`v0.3.x | Zeitstempel`) werden
+ * auf den kanonischen Marker normalisiert; ein bereits kanonischer Marker
+ * bleibt unveraendert. Damit erzeugt kein Commit mehr Versions-Churn, und
+ * `verify:docs` braucht keine zweite Schreibweise.
  */
 export function applyMarker(text) {
-  if (MARKER.test(text)) return text;
+  const match = MARKER.exec(text);
+  if (match) {
+    const value = match[1].trim();
+    const versioned = /^v[^ |]+\s*\|\s*.+$/.test(value);
+    return versioned ? text.replace(match[0], MANAGED_MARKER) : text;
+  }
   const lines = text.split('\n');
   lines.splice(1, 0, '', MANAGED_MARKER);
   return lines.join('\n');

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "ci-integration-controller",
+  "claimId": "lane/ci/integration-controller",
+  "branch": "lane/ci/integration-controller",
+  "baseSha": "1f40395c8eba5e907472e937ea31fb0e09c82123",
+  "phase": "IMPLEMENTING",
+  "title": "Integrationscontroller vor der CI",
+  "goal": "Marker normalisieren, Inventar und Registry aus dem Commit-Bau heraushalten, Pre-Push schnell halten, Gates nach Risiko waehlen und Rebase/Regeneration automatisieren; der Freeze bleibt die letzte Grenze.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Controller implementieren, lokal pruefen, PR erzeugen und CI auf dem exakten Kopf abwarten.",
+  "revision": 1
+}
