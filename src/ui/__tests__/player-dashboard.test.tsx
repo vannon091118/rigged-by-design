@@ -99,9 +99,9 @@ describe('Charakterfenster: Hinterhof-Karriere', () => {
 
   it('zeigt die Gegnerhistorie mit Ergebnis und KO aus dem Archiv', () => {
     const view = renderPopup({ backyard: true });
-    expect(screen.getByLabelText('Gegnerhistorie')).toBeTruthy();
-    expect(screen.getByText('1 S · 0 N')).toBeTruthy();
-    expect(screen.getByText(/Tag \d+: Gewonnen · 1 KO/)).toBeTruthy();
+    expect(screen.getByLabelText('Gegnerhistorie').tagName).toBe('UL');
+    expect(screen.getByText('1 S · 0 N').tagName).toBe('B');
+    expect(screen.getByText(/Tag \d+: Gewonnen · 1 KO/).tagName).toBe('SMALL');
     expect(view.career.record).toEqual({ wins: 2, losses: 0, kos: 1 });
   });
 });

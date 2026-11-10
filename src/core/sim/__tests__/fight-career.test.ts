@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { fromVC } from '../../economy/vacoin';
 import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { backyardFight, backyardView, type BackyardResult } from '../fight-career';
 import { fightRecordOf } from '../fight-history';
 import { recordJournal } from '../journal';
@@ -15,7 +16,7 @@ function setup(wallet = 20) {
   const world = createWorld('SMALL');
   const ledger = new Ledger();
   if (wallet > 0) ledger.transfer(EXTERNAL, PORTEMONNAIE, fromVC(wallet), 'test startgeld', 0);
-  return { world, ledger, prng: new Prng(1) };
+  return { world, ledger, prng: new Prng(randomSeed()) };
 }
 
 const reasonsOf = (ledger: Ledger): string[] => ledger.entries.map((entry) => entry.reason);
@@ -37,10 +38,10 @@ describe('Hinterhof-Karriere', () => {
 
   it('bucht Startgeld und Preisgeld über den Ledger und schreibt den Kampf ins Archiv', () => {
     let won = false;
-    for (let seed = 1; seed <= 40 && !won; seed += 1) {
+    for (let attempt = 0; attempt < 40 && !won; attempt += 1) {
       const { world, ledger } = setup();
       world.player.rpg.brawlLevel = 30;
-      const prng = new Prng(seed);
+      const prng = new Prng(randomSeed());
       const before = ledger.getBalance(PORTEMONNAIE);
       const result: BackyardResult = backyardFight(world, ledger, prng);
       if (!result.won) continue;
@@ -62,10 +63,10 @@ describe('Hinterhof-Karriere', () => {
 
   it('lässt bei einer Niederlage das Startgeld weg und hinterlässt eine Verletzung', () => {
     let lost = false;
-    for (let seed = 1; seed <= 40 && !lost; seed += 1) {
+    for (let attempt = 0; attempt < 60 && !lost; attempt += 1) {
       const { world, ledger } = setup();
       world.player.rpg.hp = 1;
-      const prng = new Prng(seed);
+      const prng = new Prng(randomSeed());
       const before = ledger.getBalance(PORTEMONNAIE);
       const result = backyardFight(world, ledger, prng);
       if (result.won) continue;
@@ -89,7 +90,7 @@ describe('Hinterhof-Karriere', () => {
     const view = backyardView(world, ledger.getBalance(PORTEMONNAIE));
     expect(view.ready).toBe(false);
     expect(view.reason).toContain('Startgeld fehlt');
-    expect(() => backyardFight(world, ledger, new Prng(3))).toThrow(/Startgeld/);
+    expect(() => backyardFight(world, ledger, new Prng(randomSeed()))).toThrow(/Startgeld/);
     expect(ledger.entryCount).toBe(0);
   });
 
@@ -97,7 +98,7 @@ describe('Hinterhof-Karriere', () => {
     const { world, ledger } = setup();
     world.player.rpg.injuryTicks = 10;
     const entries = ledger.entryCount;
-    expect(() => backyardFight(world, ledger, new Prng(3))).toThrow(/Verletzt/);
+    expect(() => backyardFight(world, ledger, new Prng(randomSeed()))).toThrow(/Verletzt/);
     expect(ledger.entryCount).toBe(entries);
   });
 
