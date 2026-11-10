@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:05Z-agent14-claim-evidence-1",
+  "contributionId": "agent14-claim-evidence-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Beleg ist keine Behauptung: er muss die Form haben, die das Register liest. Wer eine eigene Belegart erfindet, hat keinen Nachweis, sondern eine Notiz.",
+  "directives": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/agent14-claim-evidence",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/agent14-claim-evidence",
+  "baseSha": "06adaada656c31911d832c9ed726bdc8bfecb514",
+  "task": "Agent 14 Register: Merge-Belege der vier Claims nach Schema korrigieren",
+  "goal": "mergedEvidence der vier Agent-14-Claims auf die definierte Belegart setzen und mergedSha auf den baumgleichen Commit auf main ziehen; keine Code-Aenderung.",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-sim-company-progression.json",
+    ".lane-claims/claims/lane-governance-company-progression-docs.json",
+    ".lane-claims/claims/lane-governance-company-progression-closeout.json",
+    ".lane-claims/claims/lane-governance-agent14-changelog.json",
+    ".lane-claims/claims/lane-governance-agent14-claim-evidence.json",
+    "docs/CHANGELOG.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "06adaada656c31911d832c9ed726bdc8bfecb514"
+}
