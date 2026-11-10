@@ -4,7 +4,7 @@
   "claimId": "lane/ci/integration-controller",
   "branch": "lane/ci/integration-controller",
   "baseSha": "1f40395c8eba5e907472e937ea31fb0e09c82123",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Integrationscontroller vor der CI",
   "goal": "Marker normalisieren, Inventar und Registry aus dem Commit-Bau heraushalten, Pre-Push schnell halten, Gates nach Risiko waehlen und Rebase/Regeneration automatisieren; der Freeze bleibt die letzte Grenze.",
   "pr": {
@@ -38,6 +38,6 @@
       "summary": "Geloest im Rahmen der Lane: scripts/integrate.mjs pusht nur noch per Fast-Forward, kein --force-Flag mehr in Produktionsskripten; Gate tests (destructive-commands) wieder gruen, manueller Rebase-Push bleibt in AGENTS.md erlaubt."
     }
   ],
-  "nextAction": "PR #347 gemergt; Inhalt auf Main verifiziert; Aftercare/DONE folgen.",
-  "revision": 5
+  "nextAction": "Inhalt auf Main verifiziert; DONE folgt.",
+  "revision": 6
 }

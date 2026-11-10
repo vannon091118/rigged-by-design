@@ -4,7 +4,7 @@
   "claimId": "lane/governance/review-hygiene",
   "branch": "lane/governance/review-hygiene",
   "baseSha": "9f090fdc54246a296a59aacebc0e335d5c80c6a3",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Review-Folgebefunde: Soak-Beweis, Versionswahrheit, Regeltexte, Lane-Status, hermetische Registry-Tests",
   "goal": "Sechs Review-Befunde aus dem externen Audit beheben: pnpm soak beweist (RBD_SOAK=1), CHANGELOG deckt 0.3.200/0.3.201/0.3.203 ab, Regel 5/6 und ROADMAP-Tabelle sprechen eine Sprache, fail-closed-Task auf DONE, Registry-Test ohne .git und ohne volle Historie gruen",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "headSha": "7e26eb458a79034dbd111a35c867c34a512ab319"
   },
   "findings": [],
-  "nextAction": "PR #348 gemergt als 814d1a6; Closeout per final-closeout-Lane.",
-  "revision": 3
+  "nextAction": "Inhalt auf Main (814d1a6) verifiziert; DONE folgt.",
+  "revision": 4
 }

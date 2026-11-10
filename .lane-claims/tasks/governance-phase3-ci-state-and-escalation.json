@@ -4,7 +4,7 @@
   "claimId": "lane/governance/phase3-ci-state-and-escalation",
   "branch": "lane/governance/phase3-ci-state-and-escalation",
   "baseSha": "18843f7cc187dd128746299dd1df2f22a7d7c941",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Phase 3: CI-Zustand, Issues und Eskalation",
   "goal": "Ein CI-State-Kommentar am PR ist die einzige Zustandsquelle; Issues sind fingerprint-idempotent und scope-gebunden; cancelled/timeout bleibt REMOTE_CI; Auto-Resolve nur mechanisch und nie fuer BLOCKED.",
   "pr": {
@@ -13,6 +13,6 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "PR #331 (CI-State/Promotion-Hold) gemergt; Inhalt auf Main; doctor-Paritaet damit heilbar.",
-  "revision": 6
+  "nextAction": "Inhalt auf Main verifiziert; DONE folgt.",
+  "revision": 7
 }
