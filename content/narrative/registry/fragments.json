@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cb047b4f5858abf8de9f924e349dac70b39ee39e89ae9afa7ecb574bf7533d84",
+  "contentHash": "sha256:4e4c1d512f1fadc5401d79b6eb97d4d55cfbf1ce622e8bea785311a5b9e2c860",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3690,6 +3690,31 @@
       "text": "Im Büro hing ein laminierter Zettel: Jede Auszahlung bekommt genau eine Quittung, jede Quittung genau eine Unterschrift. Wer zweimal stempelt, macht aus einer Buchung zwei Wahrheiten. Rita hatte den Zettel aufgehängt, nachdem ein Gast mit zwei identischen Belegen argumentiert hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-eine-stimme.json"
+    },
+    {
+      "contributionId": "governance-fail-closed-clean-start-01",
+      "turnId": "2026-11-10T06:16Z-governance-fail-closed-clean-start",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita reichte dem Pruefer einen leeren, aber gueltigen Zettel. Nicht Schweigen sollte als Freigabe gelten, sondern eine Antwort, die tatsaechlich gelesen werden konnte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-fail-closed-clean-start.json"
     },
     {
       "contributionId": "governance-fail-closed-issue-check-01",

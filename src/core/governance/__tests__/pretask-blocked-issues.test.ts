@@ -102,6 +102,15 @@ const fakeGh = (parent: string, match: string, issue: { number: number; title: s
   return script;
 };
 
+/** Ein lesbarer, leerer Issue-Zustand: keine Blocker, aber nachweislich gelesen. */
+const emptyGh = (parent: string): string => {
+  const bin = join(parent, 'bin');
+  mkdirSync(bin, { recursive: true });
+  const script = join(bin, 'gh-empty.mjs');
+  writeFileSync(script, "console.log('[]');\n");
+  return script;
+};
+
 /** Ein Abruf, der immer scheitert: der Issue-Zustand bleibt unbekannt. */
 const brokenGh = (parent: string): string => {
   const bin = join(parent, 'bin');
@@ -126,6 +135,18 @@ describe('pretask fail-closed issue check', () => {
       const blockers = payload(result.stdout).blockers.join('\n');
       expect(blockers).toContain('Governance-BLOCKED #41');
       expect(blockers).toContain(ISOLATION_CODE);
+    } finally {
+      rmSync(parent, { recursive: true, force: true });
+    }
+  });
+
+  it('laesst einen sauberen Start mit gelesener, leerer Issue-Liste durch', () => {
+    const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-clean-'));
+    try {
+      const worktree = linkedRepo(parent, 'repo', 'lane/test/clean');
+      const result = run(worktree, { RBD_GH_BIN: process.execPath, RBD_GH_SCRIPT: emptyGh(parent) });
+      expect(result.status).toBe(0);
+      expect(payload(result.stdout).blockers).toEqual([]);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

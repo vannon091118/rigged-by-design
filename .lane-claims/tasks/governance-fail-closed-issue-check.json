@@ -16,6 +16,6 @@
     "state": "open"
   },
   "findings": [],
-  "nextAction": "CI-Lauf auf diesem Kopf abwarten; bei gruen squash-mergen, danach AFTERCARE und DONE.",
-  "revision": 4
+  "nextAction": "CI auf diesem Kopf abwarten; bei gruen squash-mergen, danach AFTERCARE und DONE.",
+  "revision": 5
 }
