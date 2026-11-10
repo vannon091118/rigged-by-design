@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1ef248587f2efd8c2ba481f0b94ff38aa95b3fd7b39d4579bbfe656adcf6de95",
+  "contentHash": "sha256:de2914c8074cfba31b77dae57cc049c063cea7e871bc2c4df3ecbc2e2739a7e6",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -3425,6 +3425,28 @@
       "text": "Die Wörter standen vor der Tür, aber der Schlüssel lag nicht in ihnen. Wer einen Befehl aussprach, bekam nur dann eine Wirkung, wenn das Template ihn bereits genannt hatte; alles andere blieb ein Satz und wurde als abgelehnt vermerkt. Die Kasse hörte erst zu, nachdem die ganze Liste geprüft war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-03-nar-08-command-dsl.json"
+    },
+    {
+      "contributionId": "company-progression-01",
+      "turnId": "2026-11-10T23:20Z-company-progression",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "description",
+      "function": "describe",
+      "contexts": [
+        "demand"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bude trägt jetzt eine Kasse, der Saal sein eigenes Personal, und auf dem Schild steht zum ersten Mal ein Konzern. Jede Stufe hat vorher etwas gekostet: Tage, Gewinn, Ruf, Geräte und Leute, die bleiben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-company-progression.json"
     },
     {
       "contributionId": "content-compiler-01",
