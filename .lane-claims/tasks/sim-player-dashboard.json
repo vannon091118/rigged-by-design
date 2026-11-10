@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "taskId": "sim-player-dashboard",
+  "claimId": "lane/sim/player-dashboard",
+  "branch": "lane/sim/player-dashboard",
+  "baseSha": "8c57ad78c688929f962fc3e2f65cf0747a9ec519",
+  "phase": "CI_PENDING",
+  "title": "Masterplan Agent 06: Spielhistorie und Arbeitsstatistik im Dashboard",
+  "goal": "Die zwei fehlenden Dashboard-Punkte (Spielhistorie, Arbeitsstatistik) aus Archiv und Job-Zustand ableiten und im bestehenden Charakterfenster zeigen.",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Feature committen, PR eroeffnen, CI auf dem Kopf abwarten.",
+  "revision": 1
+}

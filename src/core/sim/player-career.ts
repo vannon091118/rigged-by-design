@@ -9,6 +9,7 @@
 import type { VaCoinMicro } from '../economy/vacoin';
 import { backyardView, type BackyardView } from './fight-career';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
+import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
 import {
@@ -30,6 +31,8 @@ interface CareerJob {
   readonly rivalId: string;
   readonly workDays: number;
   readonly lastWorkDay: number;
+  /** Tageslohn aus derselben Job-Definition, die den Lohn bucht. */
+  readonly wageVC: number;
 }
 
 interface CareerAchievement {
@@ -53,6 +56,8 @@ export interface PlayerCareer {
   readonly job: CareerJob | null;
   readonly record: FightRecord;
   readonly achievements: readonly CareerAchievement[];
+  /** Letzte eigene Etappen aus dem Ereignisarchiv (Kaempfe, Buden-Kauf). */
+  readonly history: readonly PlayerHistoryEntry[];
   /** Hinterhof-Leiter, Gegnerhistorie und Startgeld aus derselben Ableitung. */
   readonly backyard: BackyardView;
 }
@@ -135,9 +140,11 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
       rivalId: job.rivalId,
       workDays: job.workDays,
       lastWorkDay: job.lastWorkDay,
+      wageVC: JOB_DEFS[job.jobId].dailyWageVC,
     },
     record,
     achievements: achievementsOf(world, record),
+    history: playerHistoryOf(world.archive),
     backyard: backyardView(world, wallet),
   };
 }

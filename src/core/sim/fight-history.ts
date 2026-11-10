@@ -59,6 +59,11 @@ export function fightRecordOf(events: readonly JournalEvent[]): FightRecord {
   return { wins, losses, kos };
 }
 
+/** Kampf-Eintrag im Archiv? Andere Sichten filtern damit, ohne das Praefix zu wiederholen. */
+export function isFightEvent(event: JournalEvent): boolean {
+  return parseFight(event) !== null;
+}
+
 /** Gegnerhistorie chronologisch; ein Gegner ohne Hinterhof-Eintrag taucht nicht auf. */
 export function backyardHistoryOf(events: readonly JournalEvent[]): readonly BackyardHistoryEntry[] {
   const totals = new Map<string, { wins: number; losses: number; kos: number; lastDay: number; won: boolean }>();

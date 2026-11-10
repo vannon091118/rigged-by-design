@@ -80,5 +80,17 @@ describe('Spieler-Karriere', () => {
       workDays: 4, lastPaidDay: 1, lastWorkDay: 2,
     };
     expect(career().job).toMatchObject({ label: 'Reinigungskraft', workDays: 4 });
+    expect(career().job).toMatchObject({ wageVC: 3, lastWorkDay: 2 });
+  });
+
+  it('zeigt die letzten eigenen Etappen aus dem Archiv', () => {
+    const { world, career } = careerOf();
+    world.archive.push(
+      { id: 1, tick: 0, day: 1, kind: 'GUEST', subject: 'Duell gegen Rocco', cause: 'a', effect: 'Gewonnen: Sieg.' },
+      { id: 2, tick: 0, day: 2, kind: 'MONEY', subject: 'einsatz', cause: 'b', effect: 'Gebucht.' },
+    );
+    const history = career().history;
+    expect(history).toHaveLength(1);
+    expect(history[0]!.label).toBe('Duell gegen Rocco');
   });
 });

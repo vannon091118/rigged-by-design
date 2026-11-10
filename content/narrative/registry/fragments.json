@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0fdc826a0299dfbeb30239a72b02b0705cee5b877ec07b088a83fc517643c943",
+  "contentHash": "sha256:6f7244e2f19e023688789f8a5737620666ada26426d8f9ab122d4d4d35a1fdff",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -7374,6 +7374,31 @@
       "text": "Der Gast hat seinen Bonus am Pult abgeholt und gibt ihn jetzt an der Bar aus; an den Walzen hat er heute nichts mehr verloren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-player-cash-closeout-01.json"
+    },
+    {
+      "contributionId": "player-history-01",
+      "turnId": "2026-11-10T19:20Z-player-history",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita blätterte die letzten Abende nicht nach Gefühl durch, sondern nach Beleg: erst der Kampf, dann der Tag, dann was dabei herauskam. Was sie nicht fand, schrieb sie auch nicht auf – eine leere Zeile ist ehrlicher als eine erfundene.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-player-history.json"
     },
     {
       "contributionId": "plinko-board-raster-01",

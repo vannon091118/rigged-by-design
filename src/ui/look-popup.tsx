@@ -6,6 +6,7 @@ import {
 import { hpNotice } from '../core/sim/player-career';
 import type { GameView } from '../store/types';
 import { CareerBackyard } from './career-backyard';
+import { CareerHistory } from './career-history';
 import { vc } from './format';
 import { PopupShell } from './popup-shell';
 
@@ -89,12 +90,17 @@ function CareerSection({ view, onChallenge }: { view: GameView; onChallenge?: ()
           <span>Arbeit</span>
           <b>{career.job ? `${career.job.label} · ${career.job.workDays} Schichten` : 'kein Job'}</b>
         </div>
+        <div>
+          <span>Lohn</span>
+          <b>{career.job ? `${career.job.wageVC} VC/Tag · letzte Schicht ${career.job.lastWorkDay > 0 ? `Tag ${career.job.lastWorkDay}` : 'offen'}` : 'keine Schicht'}</b>
+        </div>
       </div>
       <ul className="career-achievements">
         {career.achievements.map((entry) => (
           <li key={entry.id} className={entry.unlocked ? 'on' : 'off'}>{entry.label}</li>
         ))}
       </ul>
+      <CareerHistory history={career.history} />
       <CareerBackyard backyard={career.backyard} onChallenge={onChallenge} />
     </section>
   );
