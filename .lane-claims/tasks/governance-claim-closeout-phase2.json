@@ -4,11 +4,16 @@
   "claimId": "lane/governance/claim-closeout-phase2",
   "branch": "lane/governance/claim-closeout-phase2",
   "baseSha": "18843f7cc187dd128746299dd1df2f22a7d7c941",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Claim-Closeout: Phase-2-Lane als gemergt registrieren",
   "goal": "Der mit 18843f7 gemergte Phase-2-Claim steht als merged im Register, ohne die Allowlist einer anderen Lane zu erweitern.",
-  "pr": null,
+  "pr": {
+    "number": 332,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/332",
+    "state": "merged",
+    "mergedSha": "1f13f42a03b65b2d86cbd14bd924cb1d20e7ef6d"
+  },
   "findings": [],
-  "nextAction": "Nachsorge: PR #332 ist als 1f13f42 auf main; Vertrag auf DONE ziehen.",
-  "revision": 2
+  "nextAction": "Abgeschlossen: PR #332 ist als 1f13f42 auf main; der Phase-2-Claim ist geschlossen.",
+  "revision": 3
 }

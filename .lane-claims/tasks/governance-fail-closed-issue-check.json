@@ -4,18 +4,18 @@
   "claimId": "lane/governance/fail-closed-issue-check",
   "branch": "lane/governance/fail-closed-issue-check",
   "baseSha": "fda06dd709bc12f338a1b31edaf6992275207cc8",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Issue-Check fail-closed: governance/blocked abfragen, UNKNOWN blockieren, promote unterscheidet null von leer",
   "goal": "Ein nicht abfragbarer Issue-Zustand kann keinen Start und keinen Merge mehr freigeben; governance/blocked blockiert seine Lane",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
   "pr": {
     "number": 336,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/336",
-    "state": "open"
+    "state": "merged",
+    "mergedSha": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8"
   },
   "findings": [],
-  "nextAction": "Nachsorge: PR #336 ist als cbc1a29 auf main; Vertrag auf DONE ziehen.",
-  "revision": 7
+  "nextAction": "Abgeschlossen: PR #336 ist als cbc1a29 auf main; Issue-Check und Promotion sind fail-closed.",
+  "revision": 8
 }
