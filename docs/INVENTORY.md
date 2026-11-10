@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 250 Dateien — contract 145 · integration 53 · governance 38 · statistics 7 · performance 7.
+Summe: 251 Dateien — contract 145 · integration 54 · governance 38 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -322,6 +322,7 @@ Summe: 250 Dateien — contract 145 · integration 53 · governance 38 · statis
 | `src/render/__tests__/floor-hit.test.ts` | render | integration | ja | `src/render/floor-hit.ts` |
 | `src/render/__tests__/floor-input.test.ts` | render | integration | ja | `src/render/floor-input.ts` |
 | `src/render/__tests__/floor-layout.test.ts` | render | integration | ja | `src/render/floor-material.ts` |
+| `src/render/__tests__/guest-sprite.test.ts` | render | integration | ja | `src/render/guest-paint.ts` |
 | `src/render/__tests__/perf-governor.test.ts` | render | integration | ja | `src/render/perf-governor.ts` |
 | `src/render/__tests__/plinko-board-geometry.test.ts` | render | integration | ja | `src/render/games/plinko-board-geometry.ts` |
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
@@ -563,10 +564,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2365 |
-| Gelistete Dateien | 2365 |
+| Getrackte Dateien | 2369 |
+| Gelistete Dateien | 2369 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (2), .github (15), .lane-claims (67), content (837), docs (77), public (554), scripts (97), src (706) |
+| Bereiche | (Wurzel) (10), .githooks (2), .github (15), .lane-claims (69), content (838), docs (77), public (554), scripts (97), src (707) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -578,9 +579,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 58 Datei(en)
-- `.lane-claims/tasks/` — 7 Datei(en)
-- `content/narrative/contributions/` — 833 Datei(en)
+- `.lane-claims/claims/` — 59 Datei(en)
+- `.lane-claims/tasks/` — 8 Datei(en)
+- `content/narrative/contributions/` — 834 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -655,7 +656,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/render/` — 48 Datei(en)
-- `src/render/__tests__/` — 15 Datei(en)
+- `src/render/__tests__/` — 16 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
@@ -729,6 +730,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-phase1-single-voice.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-governance-phase2-task-contract.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-governance-phase3-ci-state-and-escalation.json` — { — gelesen: 37 Zeilen
+- `.lane-claims/claims/lane-governance-pixel-pipeline-closeout.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-governance-player-cash-closeout.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-plinko-board.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
@@ -748,13 +750,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 10 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 16 Zeilen
+- `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1592,10 +1595,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-governance-phase3-ci-state.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-roadmap-count.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-governance-task-vertrag.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-10-render-sprite-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-first-ui-modular.json` — { — gelesen: 24 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 18658 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3337 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 18680 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3341 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1830 Zeilen
@@ -2783,6 +2787,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/floor-hit.test.ts` — Ein Trefferpfad: Tiefe vor Array-Reihenfolge, Figur vor Moebel, Wand vor — gelesen: 73 Zeilen
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 93 Zeilen
 - `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 138 Zeilen
+- `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 78 Zeilen
 - `src/render/__tests__/perf-governor.test.ts` — Hysterese: Wechsel erst nach zwei Sekunden Abweichung, nicht nach einem Frame. — gelesen: 42 Zeilen
 - `src/render/__tests__/plinko-board-geometry.test.ts` — Die Brettgeometrie ist die einzige Quelle fuer Stiftpositionen und den — gelesen: 64 Zeilen
 - `src/render/__tests__/rig-combat.test.ts` — Kampf und Verletzung muessen sichtbar sein: eigene Posen, eigene Uebergaenge, — gelesen: 35 Zeilen
@@ -2855,7 +2860,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/guest-head.ts` — Kopf und Gesicht der Pixelfigur: Schaedel, Haar, Augen, Mund und Kopf-Textur. — gelesen: 112 Zeilen
 - `src/render/guest-paint.ts` — Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. — gelesen: 139 Zeilen
 - `src/render/guest-parts.ts` — Gaeste-Teile, die einmal gelten: Palette, Kopftexturen und der eine Schatten. — gelesen: 50 Zeilen
-- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. — gelesen: 128 Zeilen
+- `src/render/guest-rig.ts` — Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. — gelesen: 132 Zeilen
 - `src/render/haptics.ts` — Haptik ohne neue Abhaengigkeit: WebView-Vibration, respektiert reduced motion. — gelesen: 16 Zeilen
 - `src/render/music.ts` — Musikschicht in der vorhandenen Audioarchitektur: eigene Lautstaerke, drei — gelesen: 186 Zeilen
 - `src/render/perf-governor.ts` — Drei Leistungsstufen mit Hysterese. Der Governor bekommt nur deltaMS; er — gelesen: 58 Zeilen

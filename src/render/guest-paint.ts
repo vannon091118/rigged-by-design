@@ -1,12 +1,20 @@
 /** Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. */
-import { Graphics, type Sprite } from 'pixi.js';
+import { Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
 import { INK, ROLE } from './art-tokens';
 import { mountHead, paintFace as drawFace, paintHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
 import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS } from './guest-parts';
+import { textureFor } from './assets/textures';
 import type { GuestRigNodes } from './guest-rig';
 
 const hex = (value: string): number => Number.parseInt(value.replace('#', ''), 16);
+
+/** Atlas-Teile sind etwa dreimal so gross wie die alte Graphics-Zeichnung. */
+const PART_SCALE = 0.34;
+const BODY_FRAME = 'characters/torso-outfit-01.png';
+const ARM_FRAME = 'characters/arm-segment-01.png';
+const LEG_FRAME = 'characters/leg-segment-01.png';
+const FOOTWEAR_FRAME = 'characters/footwear-part-01.png';
 
 interface PaintOptions {
   readonly seed: number;
@@ -37,7 +45,15 @@ export class GuestPaint {
     this.#outfit = isPlayer ? 0x00ffcc : PERSONA_COLORS[persona] ?? 0x9a86b8;
     this.#accessory = look?.accessory ?? 'NONE';
     this.#headSprite = mountHead(nodes.head, [nodes.skull, nodes.face, nodes.hair], seed, portrait);
-    this.#paintLimbs();
+
+    this.#setupPart(nodes.body, BODY_FRAME, 0.5, 0.5, 4, 4);
+    this.#setupPart(nodes.legs, LEG_FRAME, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.legOther, LEG_FRAME, 0.5, 0, 4, 9);
+    this.#setupPart(nodes.armL, ARM_FRAME, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.armR, ARM_FRAME, 0.5, 0, 3, 10);
+    this.#setupPart(nodes.footwearL, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
+    this.#setupPart(nodes.footwearR, FOOTWEAR_FRAME, 0.5, 0.5, 3, 2);
+
     this.setPersona(persona);
     if (look) this.setLook(look, 'neutral');
   }
@@ -52,10 +68,9 @@ export class GuestPaint {
       this.#skin = SKINS[this.#seed % SKINS.length]!;
     }
     this.#paintHead();
-    this.#paintBody();
+    this.#applyBodyColors();
     paintHair(this.#nodes.hair, this.#hairState());
     this.#paintPin();
-    this.#paintLimbs();
     return true;
   }
 
@@ -66,11 +81,10 @@ export class GuestPaint {
     this.#outfit = hex(next.outfit);
     this.#accessory = next.accessory;
     this.#paintHead();
-    this.#paintBody();
+    this.#applyBodyColors();
     paintHair(this.#nodes.hair, this.#hairState());
     this.paintFace(face || 'neutral');
     this.#paintPin();
-    this.#paintLimbs();
   }
 
   paintFace(kind: FaceKind): void {
@@ -90,40 +104,26 @@ export class GuestPaint {
     paintSkull(this.#nodes.skull, this.#skin);
   }
 
-  #paintLimbs(): void {
-    const { legs, legOther } = this.#nodes;
-    legs.clear();
-    legs.rect(-2, 0, 4, 9).fill(PANTS);
-    legs.rect(-2, 9, 5, 3).fill(SHOES);
-    legOther.clear();
-    legOther.rect(-2, 0, 4, 9).fill(PANTS);
-    legOther.rect(-2, 9, 5, 3).fill(SHOES);
-    this.#paintArm(this.#nodes.armL);
-    this.#paintArm(this.#nodes.armR);
+  /** Koerper- und Gliedmasse-Farben auf die Sprite-Tinte uebertragen. */
+  #applyBodyColors(): void {
+    this.#nodes.body.tint = this.#outfit;
+    this.#nodes.armL.tint = this.#outfit;
+    this.#nodes.armR.tint = this.#outfit;
+    this.#nodes.legs.tint = PANTS;
+    this.#nodes.legOther.tint = PANTS;
+    this.#nodes.footwearL.tint = SHOES;
+    this.#nodes.footwearR.tint = SHOES;
   }
 
-  #paintArm(graphics: Graphics): void {
-    graphics.clear();
-    graphics.rect(-1.5, 0, 3, 10).fill(this.#outfit);
-    graphics.rect(-1.5, 9, 3, 2).fill(this.#skin);
-  }
-
-  #paintBody(): void {
-    const { body } = this.#nodes;
-    body.clear();
-    // Blockiger Torso: breite Schulter, schmalere Huefte, kein Bogen.
-    body.rect(-8, -12, 16, 4).fill(this.#outfit);
-    body.rect(-7, -8, 14, 8).fill(this.#outfit);
-    body.rect(-6, 0, 12, 4).fill(this.#outfit);
-    body.rect(-4, -12, 8, 2).fill({ color: 0xffffff, alpha: 0.18 });
-    if (this.#accessory === 'CHAIN') {
-      body.rect(-5, -9, 10, 1).fill(0xffd166);
-      body.rect(-2, -8, 4, 1).fill(0xffd166);
-    }
-    if (this.#persona === 'BUSINESS' || this.#persona === 'HIGH_ROLLER') {
-      body.rect(-1, -8, 2, 8).fill(0x1a1020);
-    } else if (this.#persona === 'STREET') {
-      body.rect(-6, -5, 12, 1).fill({ color: 0xffffff, alpha: 0.25 });
+  /** Baut ein Sprite-Teil aus dem Charakter-Atlas; ohne Textur bleibt ein farbiger Block. */
+  #setupPart(node: Sprite, path: string, ax: number, ay: number, fbW: number, fbH: number): void {
+    const texture = textureFor(path);
+    node.texture = texture ?? Texture.WHITE;
+    node.anchor.set(ax, ay);
+    if (texture) {
+      node.scale.set(PART_SCALE);
+    } else {
+      node.scale.set(fbW, fbH);
     }
   }
 
