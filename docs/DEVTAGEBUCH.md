@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-10 - Masterplan Phase 1: Spieler-Dashboard vollstaendig (Agent 06)
+
+**Ziel:** Das Dashboard aus PR #357 sollte die im Masterplan geforderten Punkte wirklich alle tragen - inklusive Spielhistorie und Arbeitsstatistik - ohne zweiten Zustand.
+
+**Befund:** Level, XP, offene Punkte, LP/Verletzung, sieben Attribute mit Wirkung, Portemonnaie/Bonus, Kampfbilanz, Job und sechs Erfolge existierten bereits und blieben unveraendert. Es fehlten zwei Punkte der Auftragsliste: die **Spielhistorie** gab es gar nicht, und die Arbeitsstatistik nannte nur die Schichtzahl, obwohl `JOB_DEFS` den Tageslohn und `PlayerJobState` die letzte Schicht schon fuehren.
+
+**Umsetzung:** `core/sim/player-history.ts` leitet die Historie aus `world.archive` ab (Gastduell, Hinterhof, Buden-Kauf), behaelt die Archiv-Reihenfolge und deckelt auf sechs Etappen; `fight-history.ts` exportiert dafuer `isFightEvent`, sodass Bilanz, Gegnerhistorie und Spielhistorie denselben Parser nutzen. Die Sektion `ui/career-history.tsx` haengt im bestehenden Charakterfenster; die Arbeitszeile nennt zusaetzlich Tageslohn und letzte Schicht.
+
+**Pruefungen:** `player-history.test.ts` (5 Faelle: leere Lage, beide Kampfarten, Buden-Kauf, Deckel/Reihenfolge, Eintrag ohne Ergebnis), `player-career.test.ts` (8) und `player-dashboard.test.tsx` (9) gruen; `verify:all` PASS auf `3cfa80e` (squash-gemergt als `c2ed2d9`), CI `Fail-Closed Gates` success mit 0 Annotations.
+
+**Bewusst nicht getan:** Kein neues Save-Feld, keine Migration, kein zweiter Zaehler und kein zweites Popup. Offen bleiben die Ausgabe verdienter Skillpunkte (`spendPoint` hat noch keinen Aufrufer) und die wirkungslosen Attribute Wahrnehmung, Technik und Glueck - beides braucht eine Spielregel-Entscheidung, keine Anzeige.
+
 ## 2026-11-10 - Masterplan Phase 1: Kampfkarriere (Agent 05)
 
 **Ziel:** Ein wiederholbarer Kampfloop ausserhalb der Gaestestreitigkeiten - herausforderbare Gegner, Startgeld, Preisgeld, Gegnerhistorie, Bilanz und Verletzungsfolgen, ohne zweiten Spielzustand.
