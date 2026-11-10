@@ -583,10 +583,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2531 |
-| Gelistete Dateien | 2531 |
+| Getrackte Dateien | 2532 |
+| Gelistete Dateien | 2532 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (141), content (867), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (142), content (867), docs (83), public (554), scripts (102), src (756) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -598,7 +598,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 95 Datei(en)
+- `.lane-claims/claims/` — 96 Datei(en)
 - `.lane-claims/tasks/` — 44 Datei(en)
 - `content/narrative/contributions/` — 863 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -775,7 +775,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-plinko-board.json` — { — gelesen: 40 Zeilen
 - `.lane-claims/claims/lane-governance-pr-251-repair.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-pretask-failclosed-repair.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-promote-automerge-test.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-promote-aftercare-closeout.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/lane-governance-promote-automerge-test.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-property-world-docs.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-relationships-coupling.json` — { — gelesen: 21 Zeilen
@@ -834,7 +835,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/tasks/governance-player-dashboard-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-promote-automerge-test.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-promote-automerge-test.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-property-world-docs.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
