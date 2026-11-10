@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-promote-automerge-test",
+  "claimId": "lane/governance/promote-automerge-test",
+  "branch": "lane/governance/promote-automerge-test",
+  "baseSha": "5a6ae5484f8297f3194385930cd632cf94e677c6",
+  "phase": "CI_PENDING",
+  "title": "Promote aktivieren und automatischen Merge-Pfad verifizieren",
+  "goal": "Der deaktivierte Promote-Workflow wird wieder aktiviert und ein regulärer PR automatisch gemergt.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
