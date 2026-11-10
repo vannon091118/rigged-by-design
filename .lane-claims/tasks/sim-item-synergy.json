@@ -4,7 +4,7 @@
   "claimId": "lane/sim/item-synergy",
   "branch": "lane/sim/item-synergy",
   "baseSha": "5a6ae5484f8297f3194385930cd632cf94e677c6",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Agent 13: Items und Roguelite-Synergien",
   "goal": "Seltenheiten, Paar-Synergien mit Vor- und Nachteil sowie Inventar und Sammlung auf dem bestehenden Mod-Bestand umsetzen, ohne zweites Regelwerk und ohne neues Save-Feld.",
   "pr": {
@@ -14,6 +14,6 @@
     "mergedSha": "e661d83ce800aca26c95374a616dd84ffecf11e3"
   },
   "findings": [],
-  "nextAction": "Merge ist durch (e661d83); Nachsorge und Claim-Abschluss.",
-  "revision": 6
+  "nextAction": "Claim auf merged (e661d83) ziehen und den Vertrag auf DONE setzen.",
+  "revision": 9
 }
