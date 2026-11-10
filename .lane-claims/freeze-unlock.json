@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "base": "f5d7b821dff60c24e265a43469aac922b9a6abf3",
+  "base": "ef7e0f3a2661aa9d64ebbd364ebfbae9670bb420",
   "paths": [
     ".github/workflows/pr-cleanup.yml",
     "AGENTS.md",
@@ -15,6 +15,6 @@
     "scripts/verify-dead-code.mjs",
     "scripts/verify-redundancy.mjs"
   ],
-  "token": "f42b18066c3931a658f24decb8106712258862853c87b7b2ad0346a5eb7b1b0d",
+  "token": "f355e1a9776cc8aa2224e74687590207cb60ad56a8f621786157f19e3958c259",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
