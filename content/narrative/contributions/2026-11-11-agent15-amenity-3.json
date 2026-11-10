@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:50Z-agent15-amenity-3",
+  "contributionId": "agent15-amenity-3",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Automat, der klempt, ist kein Pech, sondern eine Aussage des Hauses. Der Gast hoert sie und antwortet mit Abstand - messbar, nicht nur gefuehlt.",
+  "directives": []
+}

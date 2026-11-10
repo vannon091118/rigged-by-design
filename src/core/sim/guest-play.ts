@@ -17,6 +17,7 @@ import type { Furniture, Guest, WorldState } from './types';
 import { dirtyTileIndex } from './emotion';
 import { emitSlotDischarge } from './narrative/facts';
 import { actorRefOfVisitor } from './narrative/relationships';
+import { applyAmenityReaction } from './amenity-reaction';
 
 /** Ein Free-Drink nimmt echten Barbestand; ohne Bestand gibt es keinen Schein-Drink. */
 function serveFreeDrink(world: WorldState, guest: Guest): boolean {
@@ -66,7 +67,7 @@ export function personaStake(world: WorldState, item: Furniture, guest: Guest, w
 export const sessionSpins = (addiction: number): number => 4 + Math.floor(addiction / 20);
 
 function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, item: Furniture): void {
-  if (item.damaged) { releaseAndChoose(world, guest); return; }
+  if (item.damaged) { applyAmenityReaction(world, guest, item); releaseAndChoose(world, guest); return; }
   const wallet = ledger.getBalance(guestAccount(guest.id));
   const bet = personaStake(world, item, guest, wallet);
   if (bet <= ZERO_VC || !canAfford(wallet, bet)) {
@@ -120,6 +121,7 @@ function playSpin(world: WorldState, ledger: Ledger, prng: Prng, guest: Guest, i
   item.condition = Math.max(0, item.condition - 0.08);
   if (prng.nextFloat() < 0.012) world.dirty.add(dirtyTileIndex(world.size, guest.position.x, guest.position.y));
   if (guest.stateTicks >= sessionSpins(guest.addiction) || guest.patience <= 0) {
+    applyAmenityReaction(world, guest, item);
     releaseAndChoose(world, guest);
     refreshNeeds(guest);
     if (guest.need === 'play' && guest.mood < 50) guest.need = 'drink';

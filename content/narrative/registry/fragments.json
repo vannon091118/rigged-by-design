@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:47b34aafe0e445b5e9b6bc16daa7c4d93bbe98cc10be3790b16cc09dfd02a700",
+  "contentHash": "sha256:1435d523a714557f419f347b52dd290cce3985457c7ac1143c3c3c2eec46584e",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -316,6 +316,72 @@
       "text": "Fuenf Belege, eine Sprache: jeder der vier Agent-14-Claims nennt jetzt den Commit, der seinen Inhalt traegt, und dieser Claim nennt seinen eigenen. Wer nachzaehlt, findet keinen Wert mehr, der nur behauptet war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json"
+    },
+    {
+      "contributionId": "agent15-amenity-1",
+      "turnId": "2026-11-11T02:05Z-agent15-amenity-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast spuert nicht die Absicht, sondern das Geraet: Kratzer, Klemmer, abgegrabbelte Tasten. Was er dort erlebt, traegt er als Haltung zum Haus weiter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-amenity-1.json"
+    },
+    {
+      "contributionId": "agent15-amenity-3",
+      "turnId": "2026-11-11T02:50Z-agent15-amenity-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Automat, der klempt, ist kein Pech, sondern eine Aussage des Hauses. Der Gast hoert sie und antwortet mit Abstand - messbar, nicht nur gefuehlt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-amenity-3.json"
+    },
+    {
+      "contributionId": "agent15-amenity-4",
+      "turnId": "2026-11-11T02:55Z-agent15-amenity-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Tor wird nicht behauptet, sondern geprueft: die Phase zieht nach, der Kopf bleibt derselbe, und erst der gruene Lauf macht aus dem Satz einen Beleg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-amenity-4.json"
     },
     {
       "contributionId": "apk-signing-01",

@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/visitor-amenity-reaction",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/visitor-amenity-reaction",
+  "baseSha": "58cb37e2a58173941ea6374000139fecf7fe67c1",
+  "task": "Agent 15: Reaktion des Gastes auf die Ausstattung als Beziehungskante",
+  "goal": "Die Bedingung des Geraets, an dem ein Gast gespielt hat, verschiebt die gerichtete Kante Besucher -> Haus deterministisch; kein neuer Fact-Kind, kein zweiter Zustand, keine Aenderung an visitors/disposition/memory.",
+  "pathAllowlist": [
+    "src/core/sim/amenity-reaction.ts",
+    "src/core/sim/guest-play.ts",
+    "src/core/sim/__tests__/amenity-reaction.test.ts",
+    "src/core/sim/__tests__/narrative-relationships.test.ts",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-sim-visitor-amenity-reaction.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "58cb37e2a58173941ea6374000139fecf7fe67c1"
+}
