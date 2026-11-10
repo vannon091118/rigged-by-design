@@ -4,14 +4,19 @@
   "claimId": "lane/sim/player-career",
   "branch": "lane/sim/player-career",
   "baseSha": "e62cdd3e763569c8e3ab4c1685f114fd7c69cb4d",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Spieler-Dashboard: Karriere aus vorhandenem Zustand ableiten",
   "goal": "Masterplan Agent 06 ohne zweiten Zustand: Level, Attribute, Koerper, Arbeit, Kampfbilanz und Erfolge im Charakterfenster",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 357,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/357",
+    "state": "merged",
+    "mergedSha": "013c54442528bf47fc85658fc7d8ab8dadd11754"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 5
+  "nextAction": "PR #357 squash-gemergt (013c544); Claim-Beleg setzen, dann AFTERCARE.",
+  "revision": 6
 }
