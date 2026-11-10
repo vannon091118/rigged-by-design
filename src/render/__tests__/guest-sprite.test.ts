@@ -1,4 +1,5 @@
 /** @test-target: src/render/guest-paint.ts *
+ *  @error-code: ERR-3001
  *  Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt
  *  gezeichneter Graphics. Ohne geladenen Atlas fallt sie auf farbige Blocke
  *  zuruck. Kein Pixi-Rendering noetig. */

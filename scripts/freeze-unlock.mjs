@@ -12,8 +12,9 @@
  * ganze Lane-Diff - nicht nur der letzte Commit.
  *
  * Ohne Freigabe bleibt der Freeze zu: der Pre-Commit-Hook laesst den Commit
- * nicht durch, und die CI entfernt einen Branch mit Governance-Aenderung ohne
- * Freigabe (`Verdacht auf unautorisierte Korruption`).
+ * nicht durch, und die CI meldet eine Governance-Aenderung ohne Freigabe als
+ * BLOCKED-Issue (`Verdacht auf unautorisierte Korruption`). Der Branch bleibt
+ * bestehen; es gibt keine Branch-Loeschung.
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
@@ -43,7 +44,22 @@ if (!pinMatches(pin)) {
 
 // Dieselbe Basis wie das Gate: die Merge-Basis zu `main`. Sonst deckt die
 // Freigabe lokal einen anderen Diff als den, den CI prueft.
-const base = arg('base') ?? laneBase('HEAD');
+// Immer ein voller Commit: ein kurzer `--base`-Wert wuerde eine Freigabe
+// schreiben, die die CI gegen die volle Basis nie erkennt.
+const resolveBase = (value) => {
+  const candidate = value || laneBase('HEAD');
+  if (!candidate) return '';
+  try {
+    return git(['rev-parse', '--verify', `${candidate}^{commit}`]);
+  } catch {
+    return '';
+  }
+};
+const base = resolveBase(arg('base'));
+if (!base) {
+  console.error('freeze-unlock: Basis nicht aufloesbar; eine Freigabe braucht einen vollen Commit.');
+  process.exit(1);
+}
 const staged = git(['diff', '--cached', '--name-only', '--diff-filter=ACMR', base || 'HEAD'])
   .split(/\r?\n/)
   .filter(Boolean);
@@ -72,6 +88,6 @@ if (arg('json') !== undefined) {
   process.stdout.write(`${JSON.stringify(record)}\n`);
 } else {
   console.log(`freeze-unlock: Freigabe geschrieben (Basis ${base.slice(0, 7)}, ${paths.length} Pfad(e)).`);
-  console.log('  Datei stagen: git add .freeze-unlock.json');
+  console.log(`  Datei stagen: git add ${FREEZE_UNLOCK_FILE}`);
   console.log(`  Gilt nur fuer diese Basis. Meilenstein: ${FREEZE.milestone}.`);
 }

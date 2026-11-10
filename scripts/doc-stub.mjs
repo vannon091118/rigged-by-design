@@ -61,6 +61,6 @@ write(
   firstRow >= 0 ? `${inventory.slice(0, firstRow)}${row}\n${inventory.slice(firstRow)}` : `${inventory.trimEnd()}\n${row}\n`,
 );
 
-const changed = syncDocs(version, stamp);
+const changed = syncDocs();
 console.log(`docs:stub: Changelog, Devtagebuch und T${next} angelegt (v${version} | ${stamp})`);
-if (changed.length > 0) console.log(`docs:stub: Marker aktualisiert: ${changed.join(', ')}`);
+if (changed.length > 0) console.log(`docs:stub: fehlende Marker ergaenzt: ${changed.join(', ')}`);

@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.200 | 2026-11-10 03:09 UTC -->
+<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
 
 > **Erster Befehl:** `pnpm run agent:pretask --json`
 
@@ -8,22 +8,33 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 
 ## Zehn unverhandelbare Regeln
 
-1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`). Jede Lane außer `main` braucht einen verknüpften Worktree.
+1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`). Jede Lane außer `main` braucht einen verknüpften Worktree. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
 2. **Eigene Lane, fremde WIP bleibt liegen.** Nur der eigene Claim und die eigene Pfad-Allowlist; fremde Änderungen werden weder gestaged noch „aufgeräumt“. Kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in `src/**` und `scripts/**`; echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt (`verify:narrative-blocks`).
-7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` prüft die betroffenen schnellen Tests, die volle Suite läuft in CI. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Die CI prüft den exakten gepushten Kopf; `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` committet und pusht den Arbeitsbranch; danach PR gegen `main` mit den drei Pflichtsektionen und **manueller Merge** nach grünem `CI Verify` auf dem exakten Kopf. `promote` ist deaktiviert.
-10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. Keine zweite Klassifikation.
+9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, CI meldet, nächster Schritt ist `pretask`. Merge ausschließlich durch `promote` nach grünem PR-Lauf auf dem exakten Kopf, mit `ci-plan`-Artefakt und ohne Hold. Kein Auto-Merge, kein `update-branch` vor dem Merge; eine veraltete Basis wird aktualisiert und neu geprüft.
+10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
+
+## Task-Vertrag
+
+Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahrheit für Phase, offene Befunde, PR-Zustand und nächste Aktion. Er ist Lane-Werkzeug: keine Allowlist-Erweiterung, kein PIN, aber claim- und branchgebunden; `verify-task-contract` prüft beides. Phasen: `READY → IMPLEMENTING → CI_PENDING → MERGE_PENDING → AFTERCARE → DONE`. `CI_PENDING` schlägt eine parallele Lane vor, statt zu warten. `.verify-cache/task-state.json` bleibt Cache; `pretask` liest Vertrag, PR-Zustand und Issues und gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
+
+## Skalierbare Reparatur
+
+- **Erst die Kette, dann der Schnitt.** Dead Code und Exporte werden nie blind entfernt. Vor jedem Schnitt werden Import-, Re-Export-, Namespace- und Aufruferketten verfolgt; betroffene Verbraucher werden repariert oder der Export bleibt. `verify:dead-code` und `turn:finish` verlangen die dokumentierte Chain-Trace.
+- **Redundanz wird ausgeschlachtet.** Bei doppelten Quellen wird nicht nur geloescht: beide Verhalten werden verglichen, das bessere wird mit dem gemeinsamen Pfad zusammengefuehrt, und eine Wahrheit bleibt uebrig. `verify:redundancy` nennt diese Pflicht bei jedem Befund.
+- **Hot Zone heisst modularisieren.** Jede Aenderung an einer Datei in der Hot Zone wird als Modularisierung umgesetzt: eigene Datei, klare Ownership, Budget und Test. Eine LOC-Erhoehung ist nur als `ASK_USER` mit Begruendung zulaessig, warum sie fachlich besser ist als die Extraktion; `check:loc` blockiert den direkten Weg.
+- **PreTurn-Folgengate.** `pretask` liest offene Gate-Issues zuerst. Verlangt der Projekt-Scope sie vor der neuen Arbeit, beginnt die Anfrage als nummerierter Folgetask mit **Problem**, **Kurzbeschreibung**, **Loesungsansatz** und **Schwierigkeitsgrad**; vorher startet keine neue Lane-Arbeit.
 
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - **CI:** 12 Required-Gates, Audit optional; sechs Light-Gates, sieben mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** neun Dateien; `CI Verify`, `Auto Version & Release`, `Long Checks`, `Build Android APK` und `PR Cleanup` sind aktiv. `Promote`, `PR Watcher` und `PR Escalation` sind derzeit manuell deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE`.
+- **Workflows:** zehn Dateien; `CI Verify`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE`.
 - **Branch-Schutz:** klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
@@ -37,8 +48,8 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run verify:all` | Der lokale Vollnachweis: 12 Required-Gates plus Audit. |
-| `pnpm run turn:finish` | Betroffene Tests, Versions-Bump, Light-Gate, Commit und Branch-Push. |
-| `pnpm run docs:sync` | Marker in allen Pflichtdokumenten aktualisieren. |
+| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
+| `pnpm run docs:sync` | Fehlende stabile Marker in Pflichtdokumenten ergaenzen; vorhandene Marker bleiben unveraendert. |
 | `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
 
 ## Build & test
@@ -49,14 +60,15 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 ## Delivery
 
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
-- Merge manuell nach grünem `CI Verify`; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge nur durch `promote` nach grünem `CI Verify` auf exaktem Kopf; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
 
 ## Pflichtdoku
 
 - Die zwölf Pflichtdokumente, Marker und Referenzen stehen in [`docs/INDEX.md`](docs/INDEX.md).
-- `pnpm run docs:sync` aktualisiert die Marker; generierte Blöcke bleiben unangetastet.
+- `pnpm run docs:sync` ergänzt nur fehlende stabile Marker; vorhandene Marker und generierte Blöcke bleiben unangetastet. Kein Versions-/Zeitstempel-Churn mehr.
+- Fehlende Doku wird automatisch im Hook bzw. bei `turn:finish` ergänzt; Lanes synchronisieren nicht mehr manuell.
 
 ## Referenzen
 

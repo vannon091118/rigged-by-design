@@ -99,8 +99,10 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   flex: 1 1 112px; min-width: 104px; scroll-snap-align: start;
   padding: 7px 10px; display: grid; gap: 1px;
   border: 1px solid var(--line); border-radius: 11px; background: rgba(8, 5, 15, 0.75);
-  box-shadow: var(--inset-line);
+  box-shadow: var(--inset-line); font: inherit; color: inherit; text-align: left;
 }
+button.vital { cursor: pointer; }
+button.vital:hover { border-color: var(--line-strong); }
 .vital span { font-size: var(--fs-micro); letter-spacing: 0.16em; color: var(--muted); }
 .vital strong { font-family: var(--mono); font-size: 17px; line-height: var(--lh-tight); }
 .vital strong em { font-size: var(--fs-meta); color: var(--muted); font-style: normal; }
@@ -172,7 +174,7 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 
 .hud-penalty.warn { border-color: rgba(255, 209, 102, 0.55); background: rgba(255, 209, 102, 0.08); color: var(--gold); }
 
-/* ---------- Dock: vier Ecken statt elf Tabs ---------- */
+/* ---------- Dock: wenige globale Ecken statt elf Tabs ---------- */
 .dock {
   position: relative; z-index: 22;
   display: grid; gap: 5px;
@@ -559,23 +561,15 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
 .action-card .action-main { display: grid; align-content: center; }
 /* Am Objekt statt in der Ecke: die Karte haengt an der Weltposition des Treffers. */
 .action-card.is-anchored {
-  left: clamp(170px, var(--anchor-x, 50vw), calc(100vw - 170px));
-  top: clamp(220px, var(--anchor-y, 50vh), calc(100vh - 12px));
+  position: fixed;
+  left: var(--anchor-left, 8px);
+  top: var(--anchor-top, 8px);
   right: auto;
   bottom: auto;
-  width: min(340px, calc(100vw - 16px));
-  transform: translate(-50%, -100%);
-}
-/* Auf schmalen Geraeten bleibt die Daumenzone: dort bringt Anhaengen nichts. */
-@media (max-width: 620px) {
-  .action-card.is-anchored {
-    left: 8px;
-    right: 8px;
-    top: auto;
-    bottom: calc(8px + var(--safe-bottom));
-    width: auto;
-    transform: none;
-  }
+  width: var(--anchor-width, min(340px, calc(100vw - 16px)));
+  max-height: var(--anchor-max-height, calc(100vh - 16px));
+  overflow-y: auto;
+  transform: none;
 }
 .action-main {
   grid-column: 1;
@@ -595,4 +589,19 @@ h3 { margin: 14px 0 7px; font-size: var(--fs-label); letter-spacing: 0.16em; tex
   font-size: 20px;
   line-height: 1;
   color: var(--ink-dim, #b9aed0);
+}
+
+/* 320/360 px: HUD und Dock bleiben ohne horizontales Ueberlaufen bedienbar. */
+@media (max-width: 400px) {
+  .hud { padding: 6px; gap: 4px 6px; }
+  .hud-money strong { font-size: 21px; }
+  .hud-vitals { gap: 5px; }
+  .vital { flex: 0 0 calc(50% - 3px); min-width: 0; padding: 5px 7px; }
+  .vital strong { font-size: 15px; }
+  .vital small { font-size: 8px; letter-spacing: 0.12em; }
+  .perspective-switch button { padding: 3px 6px; font-size: 8px; letter-spacing: 0.06em; }
+  .dock { padding: 4px 4px calc(4px + var(--safe-bottom)); }
+  .dock-tabs { gap: 4px; }
+  .dock-tab { min-height: 46px; padding: 0 3px; font-size: 9px; letter-spacing: 0.08em; }
+  .dock-utility { max-width: 100%; flex-wrap: wrap; margin: 0; }
 }

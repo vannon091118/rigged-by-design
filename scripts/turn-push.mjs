@@ -1,10 +1,18 @@
 #!/usr/bin/env node
-/** Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein Force-Push; der PR wird manuell gemergt. */
+/** Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein Force-Push; der PR wird durch promote gemergt. */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { bumpPatch } from './version-bump.mjs';
 import { IDENTITY } from './lib/identity.mjs';
 import { claimForBranch } from './lib/lane-claims.mjs';
+import {
+  loadTaskContractForClaim,
+  makeTaskContract,
+  readPullRequestState,
+  transitionTaskContract,
+  validateTaskContract,
+  writeTaskContract,
+} from './lib/task-contract.mjs';
 import { explicitScope, scopeChanges } from './lib/staging-scope.mjs';
 import { afterTaskState, writeAfterTask } from './task-state.mjs';
 import {
@@ -36,6 +44,11 @@ if (!['light', 'quick', 'full'].includes(PROFILE)) {
   process.exit(1);
 }
 const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : `verify:${PROFILE}`;
+// Standard ist der lokale Preflight ohne Tests und ohne Typecheck: die CI
+// prueft den gepushten Kopf. `--tests` und `--verify` sind das ausdrueckliche
+// Opt-in; quick/full bleiben die breiteren Opt-ins.
+const RUN_AFFECTED = !args.includes('--no-tests') && (args.includes('--tests') || PROFILE !== 'light');
+const RUN_VERIFY = !args.includes('--no-verify') && (args.includes('--verify') || PROFILE !== 'light');
 
 // main ist PR-Ziel, nie Agent-Arbeitsbranch. Ein Turn auf main bricht hier ab,
 // statt in den Branch-Schutz zu laufen und den Commit lokal liegen zu lassen.
@@ -45,10 +58,31 @@ if (currentBranch === TARGET_BRANCH) {
   process.exit(1);
 }
 const branchClaim = claimForBranch(currentBranch);
+// Der Vertrag ist die Wahrheit; fehlt er, entsteht er beim ersten Turn aus
+// dem Claim. Die Phasenpruefung laeuft gegen den im HEAD committeten Stand.
+const contractLoad = branchClaim ? loadTaskContractForClaim(branchClaim) : { contract: null, file: null, error: null };
+if (contractLoad.error) {
+  fail(1, 'ERR-4019', 'turn:finish', contractLoad.error);
+  process.exit(1);
+}
+let taskContract = contractLoad.contract;
+if (branchClaim && !taskContract) {
+  taskContract = makeTaskContract(branchClaim, {
+    baseSha: git(['merge-base', 'HEAD', `origin/${TARGET_BRANCH}`]) || branchClaim.baseSha,
+    nextAction: 'Erste Aenderung im Claim-Scope; danach turn:finish ohne Flags.',
+  });
+}
+if (branchClaim && taskContract) {
+  const contractCheck = validateTaskContract(taskContract, { claim: branchClaim, branch: currentBranch });
+  if (!contractCheck.ok) {
+    fail(1, 'ERR-4019', 'turn:finish', `Task-Vertrag ungueltig: ${contractCheck.violations.join('; ')}`);
+    process.exit(1);
+  }
+}
 const EXPLICIT_AFFECTED = args.includes('--affected');
-const SKIP_AFFECTED = args.includes('--no-affected') || PROFILE !== 'light';
+const SKIP_AFFECTED = !RUN_AFFECTED;
 const paths = args.filter((value) => !value.startsWith('--'));
-console.log(`turn:finish: Profil ${PROFILE} (${VERIFY_SCRIPT})${SKIP_AFFECTED ? '' : ' + betroffene schnelle Tests'}`);
+console.log(`turn:finish: lokaler Preflight${RUN_AFFECTED ? ' + betroffene Tests' : ''}${RUN_VERIFY ? ` + ${VERIFY_SCRIPT}` : ''} (CI prueft den Push)`);
 
 /** Geaenderte Pfade; bei einem Rename beide Seiten. */
 const changedPaths = () =>
@@ -136,7 +170,7 @@ if (paths.length > 0) {
 // gelten und die Auswahl auf die ganze Suite ausweiten. quick/full führen ihre
 // Tests ohnehin im Verify-Profil aus; dort wäre ein zweiter Lauf Doppelarbeit.
 if (EXPLICIT_AFFECTED) {
-  console.log('turn:finish: --affected ist jetzt das Standardverhalten; --no-affected überspringt es');
+  console.log('turn:finish: --affected ist ein Opt-in; Standard ist der Preflight ohne Tests, die CI prueft.');
 }
 let delegated = [];
 if (!SKIP_AFFECTED) {
@@ -186,10 +220,39 @@ if (paths.length > 0) {
   spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
 }
 
-const verify = npmRun(['run', VERIFY_SCRIPT]);
-if (verify.status !== 0) {
-  fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
-  process.exit(1);
+if (RUN_VERIFY) {
+  const verify = npmRun(['run', VERIFY_SCRIPT]);
+  if (verify.status !== 0) {
+    fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
+    process.exit(1);
+  }
+} else {
+  console.log('turn:finish: kein lokales verify (CI prueft den Push); --verify erzwingt den Light-Lauf');
+}
+// Der Push ist die Uebergabe an die CI. Der Vertrag wechselt deshalb erst
+// hier nach CI_PENDING; der Phasenwechsel wird gegen den HEAD-Stand geprueft.
+if (branchClaim && taskContract) {
+  const prState = readPullRequestState({ branch: currentBranch });
+  const pr = prState.known && prState.number
+    ? { number: prState.number, url: prState.url, state: prState.state, headSha: prState.headSha }
+    : taskContract.pr;
+  const transition = transitionTaskContract(
+    taskContract,
+    'CI_PENDING',
+    {
+      pr,
+      nextAction: 'PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.',
+    },
+    { previous: contractLoad.contract },
+  );
+  if (!transition.ok) {
+    fail(1, 'ERR-4019', 'turn:finish', `Phasenwechsel ungueltig: ${transition.violations.join('; ')}`);
+    process.exit(1);
+  }
+  taskContract = transition.contract;
+  writeTaskContract(contractLoad.file, taskContract);
+  git(['add', '--', contractLoad.file]);
+  console.log(`turn:finish: Task-Vertrag ${taskContract.phase} (Revision ${taskContract.revision})`);
 }
 stage();
 const staged = git(['diff', '--cached', '--name-only']);
@@ -216,6 +279,21 @@ const groups = classifyPaths(entries);
 const notesPath = resolve(ROOT, '.turn-notes.md');
 const notes = existsSync(notesPath) ? readFileSync(notesPath, 'utf8') : '';
 const notesCheck = evaluateNotes(notes);
+// Eine Export-Entfernung ist nur nachvollziehbar, wenn die Notes die
+// Verbraucherkette nennen. Das Gate kann die Kette nicht semantisch beweisen,
+// aber es verhindert den blinden Cut ohne dokumentierte Pruefung.
+const removedExports = git(['diff', '--cached', '-U0'])
+  .split(/\r?\n/)
+  .filter((line) => !line.startsWith('---') && /^-\s*export\b/.test(line));
+if (removedExports.length > 0 && !/(?:kette|chain|import|re-export|aufrufer|verbraucher)/i.test(notes)) {
+  fail(
+    1,
+    'ERR-4003',
+    'turn:finish',
+    `Export-Entfernung ohne Chain-Trace in .turn-notes.md (${removedExports.length} Zeile(n)); Import-/Re-Export-/Aufrufer-Kette dokumentieren und reparieren, nicht blind cutten`,
+  );
+  process.exit(1);
+}
 if (!notesCheck.ok && hasCodeChanges(groups)) {
   const code = [...groups.runtime, ...groups.tests, ...groups.content, ...groups.tooling]
     .slice(0, 8)
@@ -284,9 +362,9 @@ const afterTask = {
   claim: branchClaim ? { id: branchClaim.id, owner: branchClaim.owner, branch: branchClaim.branch } : null,
   own: files,
   foreign: [],
-  tests: { profile: PROFILE, script: VERIFY_SCRIPT, affected: !SKIP_AFFECTED, delegated },
-  gate: { ok: true, profile: PROFILE, script: VERIFY_SCRIPT },
-  next: [`git push -u origin ${currentBranch}`, `PR gegen ${TARGET_BRANCH} anlegen und manuell mergen`],
+  tests: { profile: RUN_VERIFY ? PROFILE : 'none', script: RUN_VERIFY ? VERIFY_SCRIPT : null, affected: RUN_AFFECTED, delegated },
+  gate: { ok: true, profile: RUN_VERIFY ? PROFILE : 'none', script: RUN_VERIFY ? VERIFY_SCRIPT : null },
+  next: [`git push -u origin ${currentBranch}`, 'PR wird erzeugt/aktualisiert; CI meldet; naechster Schritt: PRETASK'],
 };
 writeAfterTask(afterTask);
 
@@ -316,10 +394,36 @@ writeAfterTask({
   ...afterTask,
   state: afterTaskState({ gateOk: true, pushed: true }),
   next: [
-    `CI Verify auf ${commitSha.slice(0, 7)} beobachten`,
-    `PR gegen ${TARGET_BRANCH} anlegen und manuell mergen`,
+    `PR wird erzeugt/aktualisiert; CI meldet fuer ${commitSha.slice(0, 7)}`,
+    'naechster Schritt: pnpm run agent:pretask --json (Phase, Befunde, naechste Aktion)',
     'pnpm run task:complete --run <id> nach gruenem Lauf',
   ],
 });
-console.log(`turn:finish: PASS, ${currentBranch} gepusht. Naechster Schritt: PR gegen ${TARGET_BRANCH} anlegen und manuell mergen; kein Auto-Merge.`);
+// Der PR-Kommentar traegt denselben Stand wie der Vertrag; ohne `gh` bleibt er
+// aus, die Wahrheit im Branch ist davon unabhaengig.
+if (branchClaim && taskContract) {
+  try {
+    const body = [
+      '<!-- rbd:task-contract -->',
+      `### Task-Vertrag ${taskContract.taskId}`,
+      '',
+      `- Phase: \`${taskContract.phase}\``,
+      `- Revision: ${taskContract.revision}`,
+      `- Offene Befunde: ${(taskContract.findings ?? []).filter((finding) => finding.status === 'open').length}`,
+      `- Naechster Schritt: ${taskContract.nextAction}`,
+    ].join('\n');
+    const dir = resolve(ROOT, git(['rev-parse', '--git-dir']));
+    const commentFile = resolve(dir, 'TASK_CONTRACT_COMMENT.md');
+    writeFileSync(commentFile, `${body}\n`, 'utf8');
+    const view = spawnSync('gh', ['pr', 'view', currentBranch, '--json', 'number'], { cwd: ROOT, encoding: 'utf8' });
+    const number = view.status === 0 ? JSON.parse(view.stdout).number : 0;
+    if (number) {
+      const edited = spawnSync('gh', ['pr', 'comment', String(number), '--edit-last', '--body-file', commentFile], { cwd: ROOT, stdio: 'ignore' });
+      if (edited.status !== 0) spawnSync('gh', ['pr', 'comment', String(number), '--body-file', commentFile], { cwd: ROOT, stdio: 'ignore' });
+    }
+  } catch {
+    // Der Kommentar ist Komfort; der Vertrag im Branch bleibt die Wahrheit.
+  }
+}
+console.log(`turn:finish: PASS, ${currentBranch} gepusht. PR wird erzeugt/aktualisiert; CI meldet; naechster Schritt: PRETASK (pnpm run agent:pretask --json).`);
 process.exit(0);

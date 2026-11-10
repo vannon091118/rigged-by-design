@@ -6,6 +6,7 @@ import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
 import { vc } from './format';
 import { ACCOUNT_LABEL, HELP } from './glossary';
+import { MOOD_LABEL, PENALTY_LABEL, reputationOf, SKILLS } from './hud-labels';
 import { UI_ICON } from './icons';
 import { PerspectiveSwitch } from './perspective-switch';
 
@@ -16,30 +17,11 @@ interface HudProps {
   readonly onSkill: (attribute: RpgAttribute) => void;
   /** Versteckter Werkstatt-Einstieg: fuenf Tipps auf die Marke. */
   readonly onBrandTap?: (timeStamp: number) => void;
+  /** Die Gästezahl ist der Welt-Einstieg in die Übersicht, kein Dock-Tab. */
+  readonly onGuests: () => void;
 }
 
-const PENALTY_LABEL = (kind: string): string =>
-  kind === 'UNSAFE_REPUTATION' ? 'Unsicherer Ruf' : kind === 'MOOD_SHOCK' ? 'Stimmungsschock' : 'Ausgeraubt';
-
-const MOOD_LABEL = (mood: number): string => (mood >= 65 ? 'gut' : mood >= 40 ? 'gemischt' : 'gereizt');
-
-/** Ruf als Farbe und Wort: eine Prozentzahl sagt niemandem etwas. */
-const reputationOf = (value: number): { readonly label: string; readonly tone: string } =>
-  value >= 70 ? { label: 'angesehen', tone: 'ok' }
-    : value >= 40 ? { label: 'solide', tone: '' }
-      : { label: 'ramponiert', tone: 'warn' };
-
-const SKILLS: readonly (readonly [RpgAttribute, string, string])[] = [
-  ['speed', 'SPD', 'Speed: mehr Pfadschritte pro Tick, bessere Queue-Position.'],
-  ['charisma', 'CHA', 'Charisma: bessere Talk-Chance, mehr Trinkgeld.'],
-  ['brawl', 'BRW', 'Brawl: mehr HP, mehr Kampfschaden.'],
-  ['perception', 'PER', 'Wahrnehmung: bessere Queue-Position, Dreck früher sehen.'],
-  ['technique', 'TEC', 'Technik: schnellere Reparatur, bessere Mods.'],
-  ['endurance', 'END', 'Ausdauer: schnellere Regeneration, kürzere Verletzungen.'],
-  ['luck', 'LCK', 'Glück: RNG-Bias bei Spielen, höhere Jackpot-Chance.'],
-];
-
-export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: HudProps) {
+export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onGuests }: HudProps) {
   const guest = perspective === 'guest';
   const rpg = view.player.rpg;
   const dirty = view.dirtyTiles.size;
@@ -89,7 +71,13 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
       </div>
 
       <div className="hud-vitals">
-        <div className="vital guests" title="Wie viele Gäste gerade im Haus sind. Der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe.">
+        <button
+          type="button"
+          className="vital guests"
+          onClick={onGuests}
+          aria-label="Gästeübersicht öffnen"
+          title="Wie viele Gäste gerade im Haus sind. Klick öffnet die Gästeliste; der Zulauf folgt Ruf, Zufriedenheit, Stammgästen, Anziehung und Unternehmensstufe."
+        >
           <span><img className="ui-icon" src={UI_ICON.guests} alt="" />GÄSTE</span>
           <strong>{view.guests.length}</strong>
           <small>
@@ -99,7 +87,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap }: H
                 ? `${view.demand.event.label} läuft`
                 : view.guests.length ? `~${Math.round(view.demand.perDay)}/Tag · Laune ${MOOD_LABEL(mood)}` : `~${Math.round(view.demand.perDay)}/Tag`}
           </small>
-        </div>
+        </button>
         {guest ? (
           <div className="vital games" title="Alle bespielbaren Geräte auf diesem Floor. Ein Klick öffnet die passende Spielbühne.">
             <span>SPIELE</span>

@@ -1,4 +1,4 @@
-/** Untere Leiste: vier Ecken je Perspektive. Alles andere lebt in der Werkstatt. */
+/** Untere Leiste: wenige globale Einstiege, alles andere kommt aus der Welt. */
 import { useCallback, useRef } from 'react';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
@@ -36,7 +36,7 @@ export function useBrandTaps(onOpen: () => void): (timeStamp: number) => void {
   }, []);
 }
 
-type TabId = 'play' | 'history' | 'rules' | 'build' | 'guests' | 'map' | 'self';
+type TabId = 'play' | 'history' | 'rules' | 'build' | 'map' | 'self';
 
 const GUEST_TABS: readonly { readonly id: TabId; readonly label: string; readonly hint: string }[] = [
   { id: 'play', label: 'SPIELEN', hint: 'Zurück auf den Floor: Gerät antippen und direkt spielen' },
@@ -47,21 +47,18 @@ const GUEST_TABS: readonly { readonly id: TabId; readonly label: string; readonl
 
 const OPERATOR_TABS: readonly { readonly id: TabId; readonly label: string; readonly hint: string }[] = [
   { id: 'build', label: 'BETRIEB', hint: 'Angebot, Personal, Preise, Lager und Wartung' },
-  { id: 'guests', label: 'GÄSTE', hint: 'Wer da ist, was er zahlt und was er will' },
   { id: 'map', label: 'KARTE', hint: 'Fremde Casinos und Reisen' },
   { id: 'self', label: 'DU', hint: 'Charakter und Werkstatt' },
 ];
 
 export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: DockProps) {
   const dirty = view.dirtyTiles.size;
-  const waiting = view.guests.filter((guest) => (view.guestMoney[guest.id]?.pending ?? 0) > 0).length;
   const cleaningCost = view.prices.cleaningCost * dirty;
   const tabs = perspective === 'guest' ? GUEST_TABS : OPERATOR_TABS;
 
   const open = (id: TabId): void => {
     if (id === 'play') { onPlay(); return; }
     if (id === 'build') { onBuild(); return; }
-    if (id === 'guests') { onOpen({ kind: 'guests', guestId: null }); return; }
     if (id === 'map') { onOpen({ kind: 'foreignMap' }); return; }
     if (id === 'history') { onOpen({ kind: 'workshop', tool: 'journal' }); return; }
     if (id === 'rules') { onOpen({ kind: 'workshop', tool: 'help' }); return; }
@@ -83,11 +80,10 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
           <small>{vc(cleaningCost, 2)}</small>
         </button>
       )}
-      <div className="dock-tabs">
+      <div className="dock-tabs" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
         {tabs.map((tab) => (
           <button key={tab.id} type="button" className="dock-tab" onClick={() => open(tab.id)} title={tab.hint}>
             <span>{tab.label}</span>
-            {tab.id === 'guests' && waiting > 0 && <b className="badge">{waiting}</b>}
           </button>
         ))}
       </div>

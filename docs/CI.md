@@ -1,6 +1,6 @@
 # CI: Required Gates, Zustände und Workflows
 
-<!-- rbd-doc: v0.3.200 | 2026-11-10 03:09 UTC -->
+<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
 
 **Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die zwölf Required-Gates und die optionalen Nachweise.
 
@@ -36,7 +36,7 @@ Lokal gilt:
 
 ### Kontrollebene
 
-Der PR ist Prüfobjekt, nicht Prüfer. `ci-verify.yml` legt `.rbd-control` am Basis-Commit an (bei PRs die PR-Basis, bei Feature-Pushes `main`, auf `main` der gepushte Commit). Planer, Node-Gates, Langlauf-Kommando und Claim-Prüfung laufen aus dieser Kontrollebene; `RBD_ROOT` zeigt auf den Prüfbaum. Eine Basis ohne `RBD_ROOT` bricht ab; es gibt keinen Bootstrap-Fallback auf PR-Skripte.
+Der PR ist Prüfobjekt, nicht Prüfer. `ci-verify.yml` legt `.rbd-control` am Basis-Commit an (bei PRs die PR-Basis, auf `main` der Elternteil des gepushten Commits). Planer, Node-Gates, Langlauf-Kommando und Claim-Prüfung laufen aus dieser Kontrollebene; `RBD_ROOT` zeigt auf den Prüfbaum. Eine Basis ohne `RBD_ROOT` bricht ab; es gibt keinen Bootstrap-Fallback auf PR-Skripte. Diff und Freeze rechnen `base...head`; `event.before` ist nie die Basis.
 
 PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vollständig. Der Impact verengt nur Gates und lange Nachweise, nie die Regression. Reine Doku bleibt ausgenommen.
 
@@ -50,37 +50,38 @@ PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vol
 | `LIGHT` | nur noch mit explizitem `--state=LIGHT` | 6 Light-Gates, keine Suite |
 | `NOOP` | Kopf ist die Basis, kein unabhängiger Diff | keine Gates, kein Pflichtstatus |
 | `PR_HANDOFF` | Altform; `ci-verify` erzeugt sie nicht mehr | keine Gates, kein Pflichtstatus |
-| `UNKNOWN` | Zustand nicht bestimmbar; jeder Push auf einen Lane-Branch | 12 Required plus Audit; fail-closed |
+| `UNKNOWN` | Zustand nicht bestimmbar (Sicherheitsnetz) | 12 Required plus Audit; fail-closed |
 
 Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler und erzeugt kein Issue.
 
-### Pflichtstatus am Lane-Kopf
+### Eine Stimme pro SHA
 
-Ein Push auf einen Lane-Branch meldet sein Ereignis als `push-lane`, nicht als `push`. Der Planer wählt dafür den konservativen Zustand `UNKNOWN`: volles Required-Set plus Audit. Grund ist der Branch-Schutz, der genau einen Status (`Fail-Closed Gates`) auf dem Kopf sieht: endete der Push wie früher als `PR_HANDOFF`, entstand auf diesem Kopf überhaupt kein Pflichtstatus. GitHub wertete dann die alten Läufe desselben Kopfes aus — auch abgebrochene und übersprungene — und der Status war nur noch per manuellem `workflow_dispatch` erreichbar. Der Handoff ist deshalb entfernt, nicht abgeschwächt: der Lane-Push trägt den Status selbst, und derselbe Kopf ist danach ohne Zusatzschritt squash-mergebar.
+Die vollständige Prüfung hängt am PR-Lauf. Ein Push auf `lane/**` startet nur noch `ensure-pr.yml`: der Lauf legt den PR an oder ergänzt fehlende Pflichtsektionen, mehr nicht. `ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main`, für Pushes auf `main` und manuell. Damit gibt es pro SHA genau einen vollständigen Lauf und genau einen `Fail-Closed Gates`; ein zweiter Vollauf auf demselben Kopf könnte den neueren Status mit einem älteren verdecken.
 
-Push- und PR-Lauf kollidieren dabei nicht: die Concurrency-Gruppe ist `ci-verify-${{ github.ref }}`, und `refs/heads/<lane>` ist nicht `refs/pull/<n>/merge`. Der Push-Lauf prüft denselben Baum wie der PR-Lauf; `claims` und `commitmsg` bleiben an den PR- beziehungsweise `main`-Zustand gebunden und werden im Aggregat als `skipped` akzeptiert.
+Das Aggregat ist strikt: `claims` muss im Zustand `PR` `success` sein, `commitmsg` im Zustand `MAIN`, `long` bei `long_count > 0`; `skipped` ist nur dort erlaubt, wo der Zustand den Job wirklich nicht vorsieht. Das Required-Set darf nicht leer sein, und die Matrix-Validierung lehnt den Lauf ab, bevor ein Status grün werden kann.
 
 ### Governance-Freeze
 
-Der `Plan`-Job prüft vor allem anderen den Governance-Freeze: eine inhaltliche Änderung an `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` oder den Governance-Verträgen braucht eine Freigabe aus `scripts/freeze-unlock.mjs`. Reine Doku-Marker und Versionszeilen zählen nicht. Ohne Freigabe wird der Plan-Job rot, damit `Fail-Closed Gates` rot; fehlt die Freigabe ganz, entfernt der Job den Lane-Branch mit `Verdacht auf unautorisierte Korruption` (`ERR-4030`). Kennt die Basis-Kontrollebene das Gate noch nicht, bleibt der Schritt inert — so kommt der Freeze selbst ohne Henne-Ei-Problem nach `main`. Die Mechanik steht in [`GOVERNANCE.md`](GOVERNANCE.md#governance-freeze).
+Der `Plan`-Job prüft vor allem anderen den Governance-Freeze: eine inhaltliche Änderung an `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` oder den Governance-Verträgen braucht eine Freigabe aus `scripts/freeze-unlock.mjs`. Reine Doku-Marker und Versionszeilen zählen nicht. Der Checker kommt aus der Kontrollebene der Basis und prüft den Kandidaten (`RBD_ROOT`): eine Regeländerung ist nur mit PIN-Freigabe im Diff und autorisiert sich so nicht selbst. Ohne Freigabe wird der Plan-Job rot, damit `Fail-Closed Gates` rot; bei `violation=corruption` legt der eigene Job `governance-issue` ein `BLOCKED`-Issue an (`ERR-4030`). Der Branch bleibt bestehen — es gibt keine Branch-Löschung. Kennt die Basis-Kontrollebene das Gate noch nicht, bleibt der Schritt inert — so kommt der Freeze selbst ohne Henne-Ei-Problem nach `main`. Die Mechanik steht in [`GOVERNANCE.md`](GOVERNANCE.md#governance-freeze).
 
 ## Workflows
 
-Stand 2026-11-07 liegen neun Workflow-Dateien in `.github/workflows/`:
+Stand 2026-11-10 liegen zehn Workflow-Dateien in `.github/workflows/`:
 
 | Workflow | Status | Aufgabe |
 | --- | --- | --- |
 | `ci-verify.yml` | aktiv | Matrix, Required-Gates, Langlauf-Matrix, Pflichtstatus |
+| `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
 | `auto-version-release.yml` | aktiv | Tag und Release erst nach grünem `CI Verify` auf `main` |
 | `long-checks.yml` | aktiv | Wochen- und manueller Langlauf (Statistik, Soak, Balance, Benchmarks) |
 | `build-apk.yml` | aktiv | APK-Build, manuell oder aus dem Release |
 | `pr-cleanup.yml` | aktiv | meldet gemergte Wegwerf-Branches, löscht sie nicht |
 | `auto-resolve.yml` | per Variable | ordnet roten Lauf ein, repariert mechanisch, Issue danach |
-| `promote.yml` | **manuell deaktiviert** | historischer Auto-Merge/Integration-Pfad |
-| `pr-watcher.yml` | **manuell deaktiviert** | historische Issue-Automatik |
+| `promote.yml` | aktiv | einziger Merge-Akteur: CI-State, Plan-Artefakt, Hold und exakter Kopf |
+| `pr-watcher.yml` | aktiv | CI-State und Issues nur aus `workflow_run`; kein PR-Body-Pfad |
 | `pr-escalation.yml` | **manuell deaktiviert** | historischer PR-Body-Lift |
 
-`auto-resolve.yml` ist im Arbeitsbranch vorhanden, auf `main` aber erst nach dem Merge sichtbar. Die Aktivierung und die Nachweise stehen im [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md). `promote` wird nicht reaktiviert; der Merge bleibt manuell. Die deaktivierten Watcher sind kein Ersatz für den Required-Status.
+`auto-resolve.yml` ist im Arbeitsbranch vorhanden, auf `main` aber erst nach dem Merge sichtbar. Die Aktivierung und die Nachweise stehen im [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md). `promote` mergt nur PR-Läufe mit `ci-plan`-Artefakt auf dem exakten Kopf; `holdMerge`, `status=HOLD`, offene BLOCKED-Issues oder eine veraltete Basis halten den Merge an. `pr-watcher` ist kein Ersatz für den Required-Status.
 
 ### Branch-Schutz
 
@@ -93,7 +94,7 @@ Stand 2026-11-07 liegen neun Workflow-Dateien in `.github/workflows/`:
 - Force-Push und Branch-Löschung verboten
 - keine Rulesets (`GET /rulesets` ist leer)
 
-Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, manueller Merge. Ein Direktpush endet mit `GH006`; `turn-push.mjs` meldet `ERR-4023`.
+Der Weg ist deshalb: Arbeitsbranch, PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, Merge über `Promote` (automatisch bei grünem Lauf und bereitem Vertrag) oder manuell. Ein Direktpush endet mit `GH006`; `turn-push.mjs` meldet `ERR-4023`.
 
 Der Merge-Commit selbst ist Pruefobjekt des `main`-Laufs: `verify-commit-msg --head` verlangt auch dort die drei Pflichtsektionen. Ein Merge, der nur den PR-Titel traegt, macht `Fail-Closed Gates` rot, obwohl jedes Gate gruen war. Titel und Nachricht des Merge-Commits fuellen deshalb dieselben Sektionen wie ein normaler Commit: `### Changes (Was ist neu)`, `### Technische Basis & Kausalität`, `### Ausblick (Nächste Schritte)`.
 Die Koepfe werden zeichengenau uebernommen, inklusive Umlaut in `Kausalität`; ein ASCII-Ersatz (`Kausalitaet`) laesst das Gate rot, obwohl alle Gates gruen waren.

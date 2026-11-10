@@ -7,7 +7,7 @@
  * welche geaenderten Pfade der Claim fuehrt. Eine zweite Allowlist-Auslegung
  * waere eine zweite Wahrheit.
  */
-import { allowsPath } from './lane-claims.mjs';
+import { allowsPath, isTaskContractPath } from './lane-claims.mjs';
 
 /** Arbeitsdateien des Turns, die nie Inhalt des Commits sind. */
 export const TURN_EXEMPT = Object.freeze(['.turn-notes.md']);
@@ -26,7 +26,8 @@ export function scopeChanges({ changed, allowlist, exempt = TURN_EXEMPT }) {
   for (const raw of changed) {
     const file = normalize(raw);
     if (!file || exempt.includes(file)) continue;
-    if (allowsPath(allowlist, file)) allowed.push(file);
+    // Der Task-Vertrag ist Lane-Werkzeug; er braucht keinen Allowlist-Eintrag.
+    if (isTaskContractPath(file) || allowsPath(allowlist, file)) allowed.push(file);
     else foreign.push(file);
   }
   return { allowed, foreign, ok: foreign.length === 0 };
@@ -46,7 +47,7 @@ export function explicitScope({ paths, allowlist, exempt = TURN_EXEMPT }) {
     const unsafe = file.startsWith('/')
       || /^[a-zA-Z]:\//.test(file)
       || file.split('/').includes('..');
-    if (unsafe || !allowsPath(allowlist, file)) foreign.push(file);
+    if (unsafe || (!isTaskContractPath(file) && !allowsPath(allowlist, file))) foreign.push(file);
     else allowed.push(file);
   }
   return { allowed: [...new Set(allowed)], foreign: [...new Set(foreign)], ok: foreign.length === 0 };

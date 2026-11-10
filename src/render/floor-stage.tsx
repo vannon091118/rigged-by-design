@@ -4,6 +4,7 @@ import type { EditorCursor } from './editor-overlay';
 import { useEffect, useImperativeHandle, useRef, forwardRef, useState } from 'react';
 import type { GameView } from '../store/types';
 import type { FloorTap } from './floor-input';
+import type { ScreenAnchor } from './floor-hit';
 import { FloorView } from './floor-view';
 import { PerfGovernor, PERF_TIERS, type PerfTier } from './perf-governor';
 
@@ -11,6 +12,7 @@ export interface FloorHandle {
   fit: () => void;
   zoom: (factor: number) => void;
   cellAt: (clientX: number, clientY: number) => { x: number; y: number } | null;
+  project: (worldX: number, worldY: number) => ScreenAnchor | null;
   setEditor: (cursor: EditorCursor | null) => void;
 }
 
@@ -36,6 +38,7 @@ export const FloorStage = forwardRef<FloorHandle, Props>(function FloorStage(pro
     fit: () => floor.current?.fit(),
     zoom: (factor: number) => floor.current?.zoom(factor),
     cellAt: (clientX: number, clientY: number) => floor.current?.cellAt(clientX, clientY) ?? null,
+    project: (worldX: number, worldY: number) => floor.current?.project(worldX, worldY) ?? null,
     setEditor: (cursor: EditorCursor | null) => floor.current?.setEditorCursor(cursor),
   }), []);
 

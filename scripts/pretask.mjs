@@ -16,7 +16,14 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { allowsPath, botClaim, findCollisions, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
+import {
+  deriveTaskState,
+  loadTaskContractForClaim,
+  readCiState,
+  readPullRequestState,
+  validateTaskContract,
+} from './lib/task-contract.mjs';
 import {
   ISOLATION_CODE,
   assessIsolation,
@@ -27,7 +34,7 @@ import {
 } from './lib/worktree-isolation.mjs';
 import { ROOT } from './lib/report.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
-import { classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
+import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 
 const argv = process.argv.slice(2);
 const asJson = argv.includes('--json');
@@ -109,6 +116,20 @@ if (branch !== 'main' && !claim) {
 }
 if (branch === 'main' && !claim) notes.push('main ist durch den Branch-Schutz gedeckt; keine Lane noetig.');
 
+// Der Task-Vertrag ist die Wahrheit des Laufs. Ohne Vertrag bleibt eine
+// Legacy-Lane startbar; mit Vertrag ist eine ungueltige Bindung rot.
+const taskContractLoad = claim ? loadTaskContractForClaim(claim) : { contract: null, file: null, error: null };
+if (taskContractLoad.error) {
+  blockers.push(`[ERR-4019] ${taskContractLoad.error}`);
+} else if (claim && taskContractLoad.contract) {
+  const taskContractCheck = validateTaskContract(taskContractLoad.contract, { claim, branch });
+  if (!taskContractCheck.ok) {
+    for (const violation of taskContractCheck.violations) blockers.push(`[ERR-4019] Task-Vertrag: ${violation}`);
+  }
+}
+const prState = claim && branch !== 'main' ? readPullRequestState({ branch }) : { known: false };
+const ciState = claim && branch !== 'main' ? readCiState({ branch }) : { known: false, complete: false, conclusion: null };
+
 let contextData = null;
 let contextError = '';
 try {
@@ -136,27 +157,45 @@ if (claim && branch !== 'main' && !botBranch) {
   }
 }
 
+/** Offene Issue-Labels, die den Start blockieren koennen; `governance/blocked`
+ * schreibt `governance-issue`, nicht der Watcher. */
+const ISSUE_LABELS = Object.freeze(['gate-failure', 'remote-ci', 'governance/blocked']);
+/** Kontrollierte Wiederholung: erst zwei Versuche, dann Zustand UNKNOWN. */
+const ISSUE_QUERY_ATTEMPTS = 2;
+
 /** Issue-Scopes kommen aus `issue-scope`; pretask formuliert nur den Befund. */
 function readIssues() {
   const issues = new Map();
   const errors = [];
-  for (const label of ['gate-failure', 'remote-ci']) {
+  for (const label of ISSUE_LABELS) {
+    let output = null;
+    for (let attempt = 1; attempt <= ISSUE_QUERY_ATTEMPTS && output === null; attempt += 1) {
+      try {
+        // Tests koennen einen Node-basierten Stub einsetzen; im Betrieb bleibt
+        // der normale GitHub-CLI-Aufruf der einzige Pfad.
+        const ghBin = process.env.RBD_GH_BIN || 'gh';
+        const ghArgs = process.env.RBD_GH_SCRIPT
+          ? [process.env.RBD_GH_SCRIPT, 'issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50']
+          : ['issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50'];
+        output = execFileSync(
+          ghBin,
+          ghArgs,
+          { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+        );
+      } catch {
+        output = null;
+      }
+    }
+    if (output === null) {
+      errors.push(label);
+      continue;
+    }
     try {
-      // Tests koennen einen Node-basierten Stub einsetzen; im Betrieb bleibt
-      // der normale GitHub-CLI-Aufruf der einzige Pfad.
-      const ghBin = process.env.RBD_GH_BIN || 'gh';
-      const ghArgs = process.env.RBD_GH_SCRIPT
-        ? [process.env.RBD_GH_SCRIPT, 'issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50']
-        : ['issue', 'list', '--label', label, '--state', 'open', '--json', 'number,title,url,labels,body', '--limit', '50'];
-      const output = execFileSync(
-        ghBin,
-        ghArgs,
-        { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-      );
       for (const issue of JSON.parse(output)) {
         if (!issues.has(issue.number)) issues.set(issue.number, { ...issue, queryLabel: label });
       }
     } catch {
+      // Eine unlesbare Antwort ist keine leere Liste.
       errors.push(label);
     }
   }
@@ -173,6 +212,7 @@ function classifyIssue(issue) {
     number: issue.number,
     title: issue.title,
     url: issue.url,
+    body: issue.body ?? '',
     labels: labelNames(issue),
     scope: decision.scope,
     repairSha: decision.repairSha,
@@ -189,7 +229,9 @@ function classifyIssue(issue) {
     }
     return { ...result, disposition: 'warning', reason: decision.reason };
   }
-  if (decision.reason === 'scope-main') {
+  if (decision.reason === 'blocked-issue') {
+    blockers.push(`[ERR-4019] Governance-BLOCKED #${issue.number} blockiert diese Lane`);
+  } else if (decision.reason === 'scope-main') {
     blockers.push(`[ERR-4019] gate-failure #${issue.number} scope:main blockiert global`);
   } else if (decision.reason === 'scope-lane') {
     blockers.push(`[ERR-4019] gate-failure #${issue.number} betrifft die eigene Lane (${decision.scope.lane})`);
@@ -201,15 +243,22 @@ function classifyIssue(issue) {
 
 const issueCheck = readIssues();
 const issueResults = issueCheck.issues.map(classifyIssue);
+const followUp = buildFollowUp(issueResults);
 if (!issueCheck.checked) {
-  warnings.push(`Issue-Check nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
+  // UNKNOWN ist kein sauberer Zustand: eine nicht abfragbare Issue-Liste ist
+  // keine Freigabe (fail-closed).
+  blockers.push(`[ERR-4019] Issue-Check UNKNOWN: ${issueCheck.errors.join(', ')} nicht abfragbar; ohne Issue-Abfrage kein Start (fail-closed)`);
 } else if (issueResults.length === 0) {
-  notes.push('Issue-Check: keine offenen gate-failure- oder remote-ci-Issues.');
+  notes.push('Issue-Check: keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues.');
+} else if (followUp.required) {
+  notes.push(`Folgetask-Gate: ${followUp.problems.length} Problem(e) muessen zuerst geloest werden.`);
 }
 
-const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch });
-const ownWipPaths = claim ? dirtyPaths.filter((path) => claim.allowsPath(path)) : [];
-const outsideClaim = dirtyPaths.filter((path) => !claim || !allowsPath(claim.pathAllowlist, path));
+const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch, ownAllowlist: claim?.pathAllowlist ?? [] });
+const ownWipPaths = claim
+  ? dirtyPaths.filter((path) => claim.allowsPath(path) || isTaskContractPath(path))
+  : [];
+const outsideClaim = dirtyPaths.filter((path) => !claim || (!allowsPath(claim.pathAllowlist, path) && !isTaskContractPath(path)));
 const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path));
 
 const isolation = {
@@ -272,6 +321,17 @@ if (wantNew && mode !== 'NEW' && mode !== 'NOOP') blockers.push(`[ERR-4019] --ne
 if (wantResume && mode !== 'RESUME') blockers.push(`[ERR-4019] --resume verlangt eigene WIP im verknuepften Worktree (aktuell ${mode})`);
 if (blockers.length > 0) mode = 'BLOCKED';
 
+// Die eine Statusableitung: READY, CONTINUE, AFTERCARE, MERGE_PENDING oder
+// BLOCKED. CI_PENDING bleibt Phase und schlaegt eine parallele Lane vor,
+// statt den Agenten warten zu lassen.
+const taskState = deriveTaskState({
+  contract: taskContractLoad.contract,
+  claim,
+  blockers,
+  pr: prState,
+  ci: ciState,
+});
+
 const contextTests = contextData?.tests ?? {};
 const longTests = contextTests.long ?? [];
 const selectedTests = contextTests.runAll ? ['vollstaendige Suite'] : (contextTests.selected ?? []);
@@ -284,10 +344,14 @@ const requiredEvidence = [
 const nextActions = [];
 if (blockers.length > 0) nextActions.push('Blockers aufloesen; fremde WIP und Scope-Issues nicht anfassen.');
 else if (mode === 'NOOP') nextActions.push('HEAD == Basis: neue Aufgabe/Commit anlegen oder bewusst beenden.');
+else if (taskState.parallelLane?.suggested) nextActions.push(taskState.parallelLane.advice);
+else if (taskState.nextAction) nextActions.push(taskState.nextAction);
 else if (mode === 'RESUME') nextActions.push('Eigene WIP im verknuepften Worktree fortsetzen; fremde Pfade unangetastet lassen.');
 else if (mode === 'NEW') nextActions.push('Mit der ersten Aenderung innerhalb der Claim-Allowlist beginnen.');
 else nextActions.push('Auf main keine Lane-Arbeit starten.');
-nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
+if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
+  nextActions.push('Vor dem Abschluss den betroffenen Verify-Plan ausfuehren.');
+}
 
 const contract = {
   task: {
@@ -316,6 +380,15 @@ const contract = {
   },
   gates: contextData?.gates ?? [],
   longTests,
+  followUp,
+  status: taskState.status,
+  taskState: {
+    ...taskState,
+    file: taskContractLoad.file,
+    contract: taskContractLoad.contract,
+    pr: prState,
+    ci: ciState,
+  },
   blockers,
   warnings,
   requiredEvidence,
@@ -338,7 +411,7 @@ const taskStatePath = join(ROOT, '.verify-cache', 'task-state.json');
 mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
 writeFileSync(
   taskStatePath,
-  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, contract, blockers, warnings }, null, 2)}\n`,
+  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, pr: prState, ci: ciState, contract, blockers, warnings }, null, 2)}\n`,
   'utf8',
 );
 
@@ -353,10 +426,13 @@ if (asJson) {
     head,
     base,
     worktree,
+    taskStatus: taskState.status,
+    taskInfo: contract.taskState,
     git: { dir: gitDir, commonDir, linked },
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
     issues: { ...issueCheck, issues: issueResults },
+    followUp,
     context: contextData,
     isolation,
     contract,
@@ -370,12 +446,27 @@ if (asJson) {
   console.log('');
   console.log('=== Issue-Check ===');
   if (!issueCheck.checked) console.log(`  nicht ausgefuehrt: ${issueCheck.errors.join(', ')}`);
-  else if (issueResults.length === 0) console.log('  keine offenen gate-failure- oder remote-ci-Issues');
+  else if (issueResults.length === 0) console.log('  keine offenen gate-failure-, remote-ci- oder governance/blocked-Issues');
   else for (const issue of issueResults) console.log(`  #${issue.number} [${issue.scope.kind}${issue.scope.lane ? `:${issue.scope.lane}` : ''}] ${issue.disposition}: ${issue.title}`);
   for (const warning of warnings) console.log(`  ! ${warning}`);
   for (const note of notes) console.log(`  - ${note}`);
+  if (followUp.required) {
+    console.log('');
+    console.log('=== Folgetask-Gate ===');
+    console.log(`  ${followUp.headline}`);
+    for (const problem of followUp.problems) {
+      console.log('');
+      console.log(`  ${problem.title}${problem.number ? ` (${problem.number})` : ''}`);
+      console.log(`  Kurzbeschreibung: ${problem.summary}`);
+      console.log(`  Lösungsansatz: ${problem.approach}`);
+      console.log(`  Schwierigkeitsgrad: ${problem.difficulty}`);
+    }
+    console.log('');
+    console.log('  -> Diese Anfrage erst als Folgetask starten; keine neue Lane-Arbeit vorher.');
+  }
   console.log('');
   console.log('=== Task-Vertrag ===');
+  console.log(`  Status: ${taskState.status} · Phase ${taskState.phase} · offene Befunde: ${taskState.findings.length}`);
   console.log(`  Task: ${contract.task.id ?? '-'} / ${contract.task.description ?? '-'}`);
   console.log(`  Ziel: ${contract.task.goal || '-'}`);
   console.log(`  Worktree: ${worktree || '-'} (linked=${linked})`);
@@ -383,6 +474,7 @@ if (asJson) {
   console.log(`  Systeme: ${contract.systems.join(', ') || 'keine'}`);
   console.log(`  Tests: ${contract.affectedTests.runAll ? 'vollstaendig' : contract.affectedTests.selected.length} · Long: ${contract.longTests.length} · Gates: ${contract.gates.length}`);
   for (const action of contract.nextActions) console.log(`  -> ${action}`);
+  if (taskState.parallelLane?.suggested) console.log(`  Parallel: ${taskState.parallelLane.advice}`);
 }
 
 if (blockers.length > 0) {

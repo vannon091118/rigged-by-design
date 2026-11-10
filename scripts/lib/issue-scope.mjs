@@ -70,6 +70,25 @@ export function laneMatches(scopeLane, target) {
   return left === right || right.startsWith(`${left}/`) || left.startsWith(`${right}/`);
 }
 
+/** Ein Governance-/BLOCKED-Issue ist ein eigener, nicht wegdiskutierbarer Befund. */
+export function isBlockedIssue(issue) {
+  return labelNames(issue).some((name) =>
+    ['BLOCKED', 'blocked', 'governance/blocked', 'governance-blocked'].includes(name),
+  );
+}
+
+/**
+ * BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen.
+ * `null` heisst "Liste nicht lesbar" und wird nie zu `[]`: eine unbekannte
+ * Blockerlage ist keine Freigabe. Der Unterschied bleibt beim Aufrufer.
+ */
+export function blockedIssuesFrom(issues, options = {}) {
+  if (!Array.isArray(issues)) return null;
+  return issues
+    .filter((issue) => isBlockedIssue(issue))
+    .filter((issue) => classifyIssue(issue, options).disposition === 'blocker');
+}
+
 /** Liest die Pflichtfelder aus einem Issue-Body; fehlende Felder sind `null`. */
 export function parseIssueBody(body) {
   const text = String(body ?? '');
@@ -100,6 +119,12 @@ export function classifyIssue(issue, options = {}) {
   const scope = scopeOf(issue);
   const repairSha = REPAIR_MARKER.exec(String(issue?.body ?? ''))?.[1] ?? null;
   const base = { scope, repairSha };
+  if (isBlockedIssue(issue)) {
+    const issueBranch = parseIssueBody(issue?.body).branch;
+    if (!issueBranch || !options.branch || laneMatches(issueBranch, options.branch)) {
+      return { ...base, disposition: 'blocker', reason: 'blocked-issue' };
+    }
+  }
   if (labels.includes('remote-ci')) {
     return { ...base, disposition: 'warning', reason: 'remote-ci' };
   }
@@ -122,6 +147,76 @@ export function classifyIssue(issue, options = {}) {
     return { ...base, disposition: 'blocker', reason: 'scope-dependency' };
   }
   return { ...base, disposition: 'warning', reason: 'other-scope' };
+}
+
+const FOLLOW_UP_APPROACH = Object.freeze({
+  'ERR-4017': 'Doku-Marker und Inventur automatisch nachziehen; danach das Doku-Gate erneut ausfuehren.',
+  'ERR-0911': 'Den automatischen Abgleich wiederholen und nur die gemeldete Abweichung nachziehen.',
+  'ERR-4003': 'Import-, Re-Export- und Namespace-Ketten vollstaendig verfolgen; betroffene Aufrufer reparieren statt den Export nur zu entfernen.',
+  'ERR-4020': 'Beide Quellen vergleichen, das bessere Verhalten zusammenfuehren und eine gemeinsame Wahrheit behalten.',
+  'ERR-4012': 'Hot-Zone-Datei modularisieren oder eine LOC-Erhoehung als ASK_USER mit Begruendung beantragen.',
+  'ERR-4026': 'Den roten Testpfad reproduzieren, die Ursache beheben und den betroffenen Lauf wiederholen.',
+  'ERR-4008': 'Den Basisabgleich wiederholen und die Lane ohne Force-Push auf den aktuellen Stand bringen.',
+  'ERR-4019': 'Den Claim- oder Scope-Konflikt aufloesen, bevor neue Arbeit beginnt.',
+  'ERR-4006': 'Die Commit- oder Body-Pflichtangaben ergaenzen und den Abschluss erneut ausfuehren.',
+});
+
+const FOLLOW_UP_DIFFICULTY = Object.freeze({
+  'ERR-4017': 'niedrig',
+  'ERR-0911': 'niedrig',
+  'ERR-4006': 'niedrig',
+  'ERR-4003': 'mittel',
+  'ERR-4020': 'mittel',
+  'ERR-4026': 'mittel',
+  'ERR-4008': 'mittel',
+  'ERR-4019': 'mittel',
+  'ERR-4012': 'hoch',
+  'ERR-4030': 'hoch',
+  'ERR-1001': 'hoch',
+  'ERR-1002': 'hoch',
+  'ERR-1003': 'hoch',
+  'ERR-5001': 'hoch',
+});
+
+/**
+ * Macht aus offenen Scope-Blockern eine kurze, nachvollziehbare Folgetask-Liste.
+ * Die Ausgabe ist absichtlich ohne Gate-Jargon: Problem, Kurzbeschreibung,
+ * Loesungsansatz und Schwierigkeitsgrad. Technische Codes bleiben nur als
+ * Zuordnung im Datensatz erhalten.
+ */
+export function buildFollowUp(issues = []) {
+  const problems = (Array.isArray(issues) ? issues : [])
+    .filter((issue) => issue?.disposition === 'blocker')
+    .sort((a, b) => Number(a.number ?? 0) - Number(b.number ?? 0))
+    .map((issue, index) => {
+      const rawTitle = String(issue.title ?? 'Gate-Befund');
+      const code = /(ERR-\d{4})/.exec(String(issue.body ?? ''))?.[1]
+        ?? /(ERR-\d{4})/.exec(rawTitle)?.[1]
+        ?? 'ERR-0000';
+      const summary = rawTitle
+        .replace(/^\[ERR-\d{4}\]\s*/, '')
+        .replace(/^CI Gate rot:\s*/i, '')
+        .trim() || 'Gate-Befund';
+      return {
+        position: index + 1,
+        issue: issue.number ?? null,
+        number: issue.number ? `#${issue.number}` : null,
+        title: `Problem ${index + 1}. ${summary}`,
+        summary,
+        approach: FOLLOW_UP_APPROACH[code] ?? 'Befund reproduzieren, Ursache beheben und den betroffenen Gate-Lauf wiederholen.',
+        difficulty: FOLLOW_UP_DIFFICULTY[code] ?? 'mittel',
+        code,
+        url: issue.url ?? null,
+      };
+    });
+  const required = problems.length > 0;
+  return {
+    required,
+    headline: required
+      ? 'Deine Anfrage muss als Folgetask beginnen, weil der Projekt-Scope zuerst diese Probleme verlangt.'
+      : null,
+    problems,
+  };
 }
 
 /** Fingerprint = Fehlercode + erste Fehlerzeile. */

@@ -15,7 +15,8 @@
  *   (Doku-Marker, Versionszeile) zaehlen nicht.
  * - Inhaltliche Aenderung ohne gueltige Freigabe -> rot (`ERR-4030`). Fehlt die
  *   Freigabe ganz, meldet das Gate `Verdacht auf unautorisierte Korruption` und
- *   setzt `violation=corruption`; CI entfernt darauf den Lane-Branch.
+ *   setzt `violation=corruption`; die CI legt darauf ein BLOCKED-Issue an. Der
+ *   Branch bleibt bestehen.
  * - Exit 1 nur bei Verstoss; Exit 2 bei unlesbarem Diff (fail-closed).
  */
 import { execFileSync } from 'node:child_process';

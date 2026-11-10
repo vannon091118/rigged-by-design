@@ -1,6 +1,6 @@
 # Workflow: von Pretask bis zum manuellen Merge
 
-<!-- rbd-doc: v0.3.200 | 2026-11-10 03:09 UTC -->
+<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
 
 **Zweck:** Der verbindliche Arbeitsablauf für Agenten und Menschen. `AGENTS.md` ist der Kurzvertrag; dieses Dokument trägt die Details, ohne die Gate-Liste aus [`CI.md`](CI.md) zu wiederholen.
 
@@ -18,7 +18,8 @@ Der Lauf prüft in dieser Reihenfolge:
 2. den Arbeitsbaum und laufende Merges/Rebases,
 3. den Impact-Plan aus `agent:context`,
 4. den Lane-Claim mit Owner, Basis-SHA und Pfad-Allowlist,
-5. die Worktree-Isolation.
+5. den Task-Vertrag unter `.lane-claims/tasks/<taskId>.json` und den PR-Zustand,
+6. die Worktree-Isolation.
 
 Ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem enden mit `ERR-4019`, bevor der erste Edit passiert. Ohne `--json` gilt dieselbe Prüfung; `--json` ist die maschinenlesbare Form für Agenten.
 
@@ -33,6 +34,21 @@ Jede Lane außer `main` arbeitet in einem verknüpften Worktree und braucht eine
 - optionale Contract-Writer.
 
 Ein neuer, unabhängiger Task bekommt einen neuen Branch und einen neuen Claim. Keine Sammelbranches, kein Direktpush auf `main`. Ein bereits gemergter Claim bleibt über `selectClaim()` für den Register-Nachtrag nutzbar; er wird nicht wieder geöffnet.
+
+### Task-Vertrag
+
+Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache. Er liegt unter `.lane-claims/tasks/<taskId>.json` und nennt Phase, offene Befunde, PR-Zustand und die nächste Aktion. Er ist Lane-Werkzeug wie Claim und Freigabe: keine Allowlist-Erweiterung, kein PIN, aber an Claim und Branch gebunden. Phasen:
+
+| Phase | Bedeutung |
+| --- | --- |
+| `READY` | beschrieben, noch kein lokaler Turn |
+| `IMPLEMENTING` | Arbeit läuft, noch nicht gepusht |
+| `CI_PENDING` | gepusht; der PR-Lauf ist die Autorität |
+| `MERGE_PENDING` | PR-Lauf grün, Merge steht an |
+| `AFTERCARE` | gemergt, Nachsorge offen |
+| `DONE` | abgeschlossen; neue Arbeit = neue Lane |
+
+`pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` schlägt es eine unabhängige parallele Lane vor, statt zu warten. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
 
 ### Resume statt Aufräumen
 
@@ -66,16 +82,17 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 
 ## Abschluss
 
-`pnpm run turn:finish` ist der Normalfall:
+`pnpm run turn:finish` ist der Normalfall (Standard ohne Tests/Typecheck):
 
-1. betroffene schnelle Tests aus dem Impact vor dem Versions-Bump,
+1. den Task-Vertrag validieren und den Phasenwechsel nach `CI_PENDING` prüfen,
 2. Patch-Version bumpen,
-3. `verify:light` ausführen,
-4. nur Claim-Pfade plus Versionsdateien stagen,
+3. nur den lokalen Preflight ausführen: standardmäßig keine Tests und kein Typecheck, die CI prüft den gepushten Kopf,
+4. nur Claim-Pfade, Vertrag und Versionsdateien stagen,
 5. Commit mit den drei Pflichtsektionen erstellen,
-6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht.
+6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
+7. den Vertrag im PR-Kommentar spiegeln und mit `pretask` fortsetzen.
 
-`--profile=quick` nimmt die schnelle halbe Suite mit, `--profile=full` ist die lokale Ausnahme für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Die schwere Suite und Audit bleiben in CI.
+`--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf; `--profile=quick` und `--profile=full` bleiben die breiteren Opt-ins für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Die schwere Suite und Audit bleiben in CI.
 
 ### Commit und PR
 
@@ -89,19 +106,21 @@ Der Commit-Body trägt exakt:
 
 ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-Body wird aus demselben Text gebildet; fehlende Sektionen ergänzt nur der markierte Automationsbereich.
 
-Der Merge nach `main` ist manuell:
+`turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` liegt ausschließlich bei `promote`:
 
-1. PR gegen `main` öffnen oder aktualisieren.
+1. PR gegen `main` öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
 2. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates`.
-3. Erst bei grünem Lauf manuell mergen.
-4. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
-5. Kein Auto-Merge, kein `promote`, kein `integration`-Dump als Normalweg.
+3. `promote` lädt das `ci-plan`-Artefakt genau dieses PR-Laufs und prüft Kopf, Basis, Pflichtstatus, Task-Vertrag und BLOCKED-Issues im Scope.
+4. `holdMerge=true`, `status≠READY_FOR_MERGE`, offene Blocker oder eine veraltete Basis führen zu Hold; bei veralteter Basis aktualisiert `promote` den Branch per `update-branch` und wartet auf den neuen Lauf.
+5. Nur bei `READY_FOR_MERGE` und exaktem Kopf: `gh pr merge --squash --match-head-commit <sha>`; kein `--auto`, kein `update-branch` vor dem Merge.
+6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
 
-`promote.yml` ist derzeit manuell deaktiviert. Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
+Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 
 ### After-Task
 
 - Belege dokumentieren: welcher Befehl, welches Ergebnis, was nicht geprüft werden konnte.
+- Task-Vertrag und PR-Kommentar als Übergabe nutzen; der Cache ist keine Wahrheit.
 - PR oder Issue als Übergabe nutzen, nicht einen Statusbericht im Chat.
 - Gemergte Wegwerf-Branches nur über den dafür vorgesehenen Cleanup entfernen; fremde Branches bleiben stehen.
 - Ein geschlossener, nicht gemergter PR wird nur gelöscht, wenn er nachweislich ersetzt und alle einzigartigen Commits gesichert sind.

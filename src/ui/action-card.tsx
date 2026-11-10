@@ -1,7 +1,8 @@
 /** Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. */
-import type { CSSProperties } from 'react';
+import { useRef } from 'react';
 import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
+import { useAnchoredStyle, type AnchorProjector } from './use-world-anchor';
 
 interface ActionCardProps {
   readonly actions: readonly MenuAction[];
@@ -13,19 +14,24 @@ interface ActionCardProps {
   readonly status?: string;
   /** Ziel nicht erreichbar: Aktionen bleiben sichtbar, sind aber gesperrt. */
   readonly blocked?: boolean;
+  /** Projektion des Weltankers; ohne sie bleibt die Karte am Klick stehen. */
+  readonly project?: AnchorProjector;
 }
 
-export function ActionCard({ actions, onPick, onClose, anchor = null, status = '', blocked = false }: ActionCardProps) {
+export function ActionCard({ actions, onPick, onClose, anchor = null, status = '', blocked = false, project }: ActionCardProps) {
+  const card = useRef<HTMLDivElement>(null);
+  const style = useAnchoredStyle(anchor, project, card, { width: 340, fallbackHeight: 118 });
   const main = actions[0];
   if (!main) return null;
   const alternatives = actions.filter((action) => action.id !== main.id).slice(0, 2);
 
   return (
     <div
+      ref={card}
       className={`action-card${anchor ? ' is-anchored' : ''}`}
       role="group"
       aria-label="Aktionen"
-      style={anchor ? ({ '--anchor-x': `${Math.round(anchor.x)}px`, '--anchor-y': `${Math.round(anchor.y)}px` } as CSSProperties) : undefined}
+      style={anchor ? style : undefined}
     >
       <button
         type="button"

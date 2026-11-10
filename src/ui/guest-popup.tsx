@@ -39,7 +39,7 @@ export function GuestPopup({ view, selectedId, onClose, onPay, onServe, onCalm, 
   const guardHolding = disputeId !== null && view.disputeGuard[disputeId] === true;
   const talkWait = guest ? view.talkReady[guest.id] ?? 0 : 0;
   return (
-    <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide>
+    <PopupShell eyebrow="LIVE AM FLOOR" title="Gäste" onClose={onClose} wide surface="overview">
       <div className="cashier-strip">
         <div title={HELP.kasse}><span>WECHSELKASSE</span><strong>{vc(view.desk, 2)}</strong></div>
         <div title={HELP.offen}><span>OFFENE GEWINNE</span><strong>{vc(view.pending, 2)}</strong></div>

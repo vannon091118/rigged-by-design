@@ -5,7 +5,7 @@
  * vollstaendiges Log in den Berichtsordner, ausgegeben wird im Erfolgsfall eine
  * Zeile und im Fehlerfall dessen Ende. `RBD_VERIFY_VERBOSE=1` gibt alles aus.
  */
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { availableParallelism } from 'node:os';
 import { join, relative } from 'node:path';
@@ -64,9 +64,28 @@ function tail(text, lines = FAILURE_TAIL_LINES) {
   return all.length <= lines ? all.join('\n') : [...all.slice(0, 2), `… (${all.length - lines} Zeilen ausgelassen)`, ...all.slice(-lines)].join('\n');
 }
 
+/** Prueft, ob ein ausfuehrbares Programm im PATH liegt. */
+function commandExists(name) {
+  try {
+    const result = spawnSync(name, ['--version'], { stdio: 'ignore', shell: process.platform === 'win32' });
+    return result.status === 0;
+  } catch {
+    return false;
+  }
+}
+
 /** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
 export function executeStep(step) {
   const started = Date.now();
+  if (step.command === 'pnpm' && !commandExists('pnpm')) {
+    return Promise.resolve({
+      status: 1,
+      output: 'pnpm wurde nicht gefunden. Bitte pnpm installieren (npm i -g pnpm@10.4.1) oder corepack aktivieren (corepack enable && corepack use pnpm@10.4.1). Ohne pnpm koennen lint, check:loc, typecheck, tests, build, assets und audit nicht laufen.',
+      ms: Date.now() - started,
+      timedOut: false,
+      timeoutMs: 0,
+    });
+  }
   const command = step.command === 'pnpm' ? 'pnpm' : process.execPath;
   // Node-Gates kommen aus der Kontrollebene, wenn die CI sie getrennt
   // auscheckt; `pnpm`-Gates bleiben Produktcode des Pruefobjekts.

@@ -11,7 +11,7 @@
  * ueber `workflow_dispatch` mit `integrate=true` anfordert.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { IDENTITY } from './lib/identity.mjs';
@@ -22,6 +22,16 @@ import {
   splitAutomation,
 } from './lib/body-sync.mjs';
 import { manualDispatchAction, promotionPrListArgs, verifyPromotion } from './lib/promote-guard.mjs';
+import { blockerFindings, readTaskContractAtRef, validateTaskContract } from './lib/task-contract.mjs';
+import { buildCiState, isSupersededRun, parseCiState, serializeCiState } from './lib/ci-state.mjs';
+import { blockedIssuesFrom } from './lib/issue-scope.mjs';
+import {
+  contractHoldReason,
+  labelDiff,
+  promotionLabels,
+  staleBase,
+  validatePlanArtifact,
+} from './lib/promotion-state.mjs';
 
 const MAIN = 'main';
 const INTEGRATION = 'integration';
@@ -33,6 +43,12 @@ const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
 const headSha = process.env.HEAD_SHA ?? '';
 const mode = process.env.MODE ?? '';
+// Der Pflichtstatus zaehlt nur, wenn er aus diesem workflow_run stammt und
+// gegen dieselbe Basis lief. Beide Angaben kommen aus dem Ereignis.
+const ciRunId = process.env.CI_RUN_ID ?? '';
+const baseSha = process.env.BASE_SHA ?? '';
+const runAttempt = Number(process.env.RUN_ATTEMPT ?? 1) || 1;
+const planDir = process.env.CI_PLAN_DIR ?? '.ci-plan';
 const repo = process.env.GITHUB_REPOSITORY ?? '';
 const owner = repo.split('/')[0] ?? '';
 // Nur ein voller SHA ist die Identitaet, die die CI geprueft hat. Ein fehlender
@@ -57,6 +73,154 @@ const git = (args) => run('git', args);
 const gh = (args) => (hasToken ? run('gh', args) : null);
 const log = (message) => console.log(`promote: ${message}`);
 const warn = (message) => console.log(`::warning::promote: ${message}`);
+const RUN_ID = /^\d+$/;
+
+/** Eine paginierte GitHub-Liste; `null` heisst nicht lesbar. */
+function listAll(path) {
+  const raw = gh(['api', '--paginate', '--slurp', path]);
+  if (!raw) return null;
+  try {
+    const pages = JSON.parse(raw);
+    return Array.isArray(pages) ? pages.flat() : null;
+  } catch {
+    return null;
+  }
+}
+
+function contractAtHead() {
+  return readTaskContractAtRef(headRef(), { branch })?.contract ?? null;
+}
+
+/** Der Vertragsteil im CI-State-Kommentar; keine zweite Vertragsdatei. */
+function contractView(contract) {
+  if (!contract) return null;
+  return {
+    taskId: contract.taskId,
+    phase: contract.phase,
+    revision: contract.revision,
+    taskType: contract.taskType ?? 'single',
+    holdMerge: contract.holdMerge === true,
+    status: contract.status ?? 'READY_FOR_MERGE',
+    nextAction: contract.nextAction ?? '',
+  };
+}
+
+function failedGatesOfRun() {
+  if (!RUN_ID.test(String(ciRunId))) return [];
+  const raw = gh(['api', `repos/${repo}/actions/runs/${ciRunId}/jobs?per_page=100`]);
+  if (!raw) return [];
+  try {
+    const jobs = JSON.parse(raw)?.jobs ?? [];
+    return jobs
+      .filter((job) => ['failure', 'cancelled', 'timed_out'].includes(job.conclusion))
+      .map((job) => job.name)
+      .filter(Boolean)
+      .sort();
+  } catch {
+    return [];
+  }
+}
+
+/** BLOCKED-Issues, die nach der gemeinsamen Scope-Regel diese Lane treffen.
+ * Rueckgabe `null` heisst: Liste nicht lesbar, Blockerlage unbekannt. */
+function blockedIssues() {
+  return blockedIssuesFrom(
+    listAll(`repos/${repo}/issues?state=open&per_page=100`),
+    { branch },
+  );
+}
+
+/** Ein Plan-Artefakt aus dem CI-Lauf; fehlt es, wird nicht gemergt. */
+function readPlanArtifact() {
+  const file = join(planDir, 'ci-plan.json');
+  if (!existsSync(file)) return null;
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Genau ein CI-State-Kommentar: den neuesten marker-tragenden Kommentar
+ * aktualisieren, aeltere marker-tragende entfernen. Fremde Kommentare bleiben.
+ */
+function writeCiState({ number, state, conclusion: result, contract = null, nextAction = '' }) {
+  if (!number || !hasToken || !RUN_ID.test(String(ciRunId)) || !FULL_SHA.test(headSha) || !FULL_SHA.test(baseSha)) return;
+  let body;
+  try {
+    body = serializeCiState(buildCiState({
+      runId: ciRunId,
+      runAttempt,
+      headSha,
+      baseSha,
+      state,
+      conclusion: result,
+      failedGates: failedGatesOfRun(),
+      contract: contractView(contract),
+      nextAction,
+    }));
+  } catch (error) {
+    warn(`CI-State nicht gebaut: ${String(error?.message ?? error)}`);
+    return;
+  }
+  const comments = listAll(`repos/${repo}/issues/${number}/comments?per_page=100`);
+  if (!comments) {
+    warn(`PR #${number}: Kommentare nicht lesbar; CI-State nicht geschrieben`);
+    return;
+  }
+  const marked = comments.filter((comment) => parseCiState(comment.body));
+  const newest = marked.at(-1);
+  const written = newest
+    ? gh(['api', '--method', 'PATCH', `repos/${repo}/issues/comments/${newest.id}`, '-f', `body=${body}`])
+    : gh(['api', '--method', 'POST', `repos/${repo}/issues/${number}/comments`, '-f', `body=${body}`]);
+  if (written === null) warn(`PR #${number}: CI-State nicht geschrieben`);
+  for (const older of marked.slice(0, -1)) {
+    gh(['api', '--method', 'DELETE', `repos/${repo}/issues/comments/${older.id}`]);
+  }
+}
+
+/** Labels spiegeln den Vertrag; ein Hold entfernt `task:ready`. */
+function syncTaskLabels(number, contract, hold = false) {
+  if (!number || !contract) return;
+  const info = prInfo(number);
+  const current = (info?.labels ?? []).map((label) => (typeof label === 'string' ? label : label?.name)).filter(Boolean);
+  const desired = promotionLabels(contract, hold);
+  const diff = labelDiff(current, desired);
+  for (const label of desired) {
+    gh(['label', 'create', label, '--color', '1d76db', '--description', 'Task-Vertrag', '--force']);
+  }
+  for (const label of diff.remove) gh(['pr', 'edit', String(number), '--remove-label', label]);
+  for (const label of diff.add) gh(['pr', 'edit', String(number), '--add-label', label]);
+}
+
+function newerRuns() {
+  if (!RUN_ID.test(String(ciRunId)) || !FULL_SHA.test(headSha)) return [];
+  const raw = gh([
+    'api',
+    `repos/${repo}/actions/runs?branch=${encodeURIComponent(branch)}&head_sha=${headSha}&per_page=20`,
+  ]);
+  if (!raw) return [];
+  try {
+    return (JSON.parse(raw)?.workflow_runs ?? []).filter((entry) => entry.name === 'CI Verify');
+  } catch {
+    return [];
+  }
+}
+
+/** Hold: Kommentar und Labels, kein Merge. */
+function holdPromotion(number, contract, reason) {
+  writeCiState({
+    number,
+    state: 'HOLD',
+    conclusion,
+    contract,
+    nextAction: `Hold: ${reason}`,
+  });
+  syncTaskLabels(number, contract, true);
+  warn(`PR #${number}: Hold - ${reason}; kein Merge`);
+  return false;
+}
 
 /**
  * Der Branch-Kopf ist Daten, kein Code. Der Workflow hat Schreibrechte und
@@ -137,7 +301,7 @@ function writeBodyFile(text, name = 'pr-body.md') {
 
 function prInfo(number) {
   if (!number) return null;
-  const raw = gh(['pr', 'view', String(number), '--json', 'state,isCrossRepository,headRefOid,baseRefName,headRepository']);
+  const raw = gh(['pr', 'view', String(number), '--json', 'state,isCrossRepository,headRefOid,baseRefOid,baseRefName,headRepository,labels,url']);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -159,6 +323,18 @@ function openPr(head = branch) {
   return prInfo(raw)?.isCrossRepository === false ? raw : '';
 }
 
+/** Check-Runs des geprueften Kopfes; `null` heisst nicht lesbar. */
+function checkRunsOfHead() {
+  if (!FULL_SHA.test(headSha)) return null;
+  const raw = gh(['api', `repos/${repo}/commits/${headSha}/check-runs?per_page=100`, '--jq', '.check_runs']);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 /** PR-Status gegen den geprueften Commit und die eigene Herkunft pruefen. */
 function verifiedPr(number) {
   const info = prInfo(number);
@@ -168,6 +344,9 @@ function verifiedPr(number) {
     headRepo: process.env.HEAD_REPO ?? '',
     branch,
     headSha,
+    baseSha,
+    ciRunId,
+    checkRuns: checkRunsOfHead(),
     pr: info,
   });
   if (!check.ok) {
@@ -227,44 +406,79 @@ function ensurePr() {
 }
 
 /**
- * Gruen: mit dem erhaltenen PR-Body mergen, damit `verify-commit-msg --head`
- * gruen bleibt und die Beschreibung nicht auf den letzten Commit schrumpft.
+ * Gruen: erst Plan-Artefakt, Vertrag, Scope und Basis pruefen, dann mit dem
+ * erhaltenen PR-Body mergen. Kein Auto-Merge, kein `update-branch` vor einem
+ * Merge: der gepruefte Kopf bleibt die Identitaet.
  */
 function mergeGreen(number) {
   const info = verifiedPr(number);
-  if (!info) return false;
+  if (!info) return holdPromotion(number, null, 'PR-Status oder Pflichtstatus nicht verifiziert');
   const ref = headRef();
-  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
-  if (current === null) {
-    warn(`PR #${number}: Body nicht lesbar; kein Merge mit geratenem Text`);
-    return false;
-  }
-  const composed = mergeText(current, ref);
-  if (!composed.ok) {
-    warn(`PR #${number}: ${composed.reason}; kein Merge`);
-    return false;
-  }
-  const bodyFile = writeBodyFile(composed.body, 'body.md');
-  if (process.env.RBD_PROMOTE_AUTO_MERGE === '1') {
-    // GitHub mergt selbst: der Commit ist signiert (Verified). Das setzt im
-    // Repo die Squash-Vorgabe "PR-Titel und -Beschreibung" voraus, sonst fehlt
-    // main die Pflichtstruktur - deshalb nur mit ausdruecklichem Opt-in.
-    if (gh(['pr', 'merge', number, '--squash', '--auto', '--match-head-commit', headSha]) !== null) {
-      log(`PR #${number} fuer den Merge vorgemerkt (Auto-Merge, Kopf ${headSha.slice(0, 7)})`);
-      return true;
+  const contractRef = readTaskContractAtRef(ref, { branch });
+  const contract = contractRef?.contract ?? null;
+  if (contractRef) {
+    const contractCheck = validateTaskContract(contract, { branch });
+    if (!contractCheck.ok) {
+      return holdPromotion(number, contract, `Task-Vertrag ungueltig: ${contractCheck.violations.join('; ')}`);
     }
-    warn(`Auto-Merge fuer #${number} nicht verfuegbar; expliziter Merge`);
+    if (blockerFindings(contract).length > 0) {
+      return holdPromotion(number, contract, `${blockerFindings(contract).length} offene Blocker im Task-Vertrag`);
+    }
+  } else {
+    warn(`PR #${number}: kein Task-Vertrag am Kopf; Legacy-Merge mit Warnung`);
   }
-  // Kein `update-branch` vor dem Merge: es wuerde den geprueften Kopf
-  // verschieben. Ist der Branch hinter main, verweigert GitHub den Merge und
-  // der naechste CI-Lauf prueft den neuen Kopf.
+
+  const plan = readPlanArtifact();
+  const planCheck = validatePlanArtifact(plan, { headSha, baseSha });
+  if (!planCheck.ok) return holdPromotion(number, contract, planCheck.reason);
+
+  const mainNow = git(['rev-parse', 'origin/main']) ?? '';
+  const stale = staleBase(baseSha, mainNow);
+  if (stale) {
+    // Der alte Kopf bleibt ungemergt; `update-branch` erzeugt einen neuen Kopf,
+    // den die CI erneut pruefen muss.
+    gh(['pr', 'update-branch', String(number)]);
+    return holdPromotion(number, contract, `${stale}; Branch wird aktualisiert, der neue Lauf entscheidet.`);
+  }
+
+  const blocked = blockedIssues();
+  if (blocked === null) {
+    return holdPromotion(number, contract, 'BLOCKED-Status unbekannt: Issue-Liste nicht lesbar (fail-closed)');
+  }
+  if (blocked.length > 0) {
+    return holdPromotion(
+      number,
+      contract,
+      `BLOCKED-Issue im Scope: ${blocked.map((issue) => `#${issue.number}`).join(', ')}`,
+    );
+  }
+
+  const contractHold = contractHoldReason(contract);
+  if (contractHold) return holdPromotion(number, contract, contractHold);
+
+  const current = gh(['pr', 'view', number, '--json', 'body', '--jq', '.body']);
+  if (current === null) return holdPromotion(number, contract, 'PR-Body nicht lesbar');
+  const composed = mergeText(current, ref);
+  if (!composed.ok) return holdPromotion(number, contract, composed.reason);
+  const bodyFile = writeBodyFile(composed.body, 'body.md');
+
   const merged =
     gh(['pr', 'merge', number, '--squash', '--match-head-commit', headSha, '--subject', subject(ref), '--body-file', bodyFile]) !== null;
-  if (merged && !elevated) {
+  if (!merged) return holdPromotion(number, contract, 'GitHub hat den Merge auf dem exakten Kopf abgelehnt');
+
+  writeCiState({
+    number,
+    state: 'SUCCESS',
+    conclusion: 'success',
+    contract,
+    nextAction: 'Gemergt; Nachsorge starten.',
+  });
+  if (contract) syncTaskLabels(number, { ...contract, phase: 'AFTERCARE', taskType: 'aftercare' }, false);
+  if (!elevated) {
     if (gh(['workflow', 'run', 'Auto Version & Release', '--ref', MAIN]) !== null) log('Release-Lauf ohne eigenes Token angestossen');
     else warn('Merge ohne PROMOTE_TOKEN; Release-Lauf nicht angestossen');
   }
-  return merged;
+  return true;
 }
 
 /** Offene Staende, die als rot markiert sind - plus der aktuelle Lauf. */
@@ -410,13 +624,42 @@ if (!event) {
 } else if (REMOTE_CONCLUSIONS.has(conclusion)) {
   const number = openPr();
   if (number) {
-    label(number, 'ci/remote', 'Timeout oder Abbruch: CI erneut starten (REMOTE_CI)');
-    gh(['pr', 'comment', number, '--body', `Der Lauf endete mit \`${conclusion}\`. Das ist REMOTE_CI (ERR-4014/ERR-4016): CI erneut starten. Kein \`BLOCKED\`, kein Dump auf \`${INTEGRATION}\`.`]);
+    const contract = contractAtHead();
+    const superseded = conclusion === 'cancelled'
+      && isSupersededRun({ id: ciRunId, head_sha: headSha }, newerRuns());
+    const state = superseded ? 'SUPERSEDED' : 'REMOTE_CI';
+    writeCiState({
+      number,
+      state,
+      conclusion,
+      contract,
+      nextAction: superseded
+        ? 'Ein neuerer CI-Lauf ist die Autoritaet; diesen Zustand nicht als Merge-Beleg verwenden.'
+        : 'REMOTE_CI: CI erneut starten; kein BLOCKED, kein Dump auf integration.',
+    });
+    syncTaskLabels(number, contract, true);
+    if (!superseded) {
+      label(number, 'ci/remote', 'Timeout oder Abbruch: CI erneut starten (REMOTE_CI)');
+      gh(['pr', 'comment', number, '--body', `Der Lauf endete mit \`${conclusion}\`. Das ist REMOTE_CI (ERR-4014/ERR-4016): CI erneut starten. Kein \`BLOCKED\`, kein Dump auf \`${INTEGRATION}\`.`]);
+    }
+    log(superseded ? 'SUPERSEDED: neuerer Lauf ist die Autoritaet.' : `REMOTE_CI: ${conclusion} - kein roter Stand, kein Integrations-Dump`);
+  } else {
+    log(`REMOTE_CI: ${conclusion} - kein PR, kein Integrations-Dump`);
   }
-  log(`REMOTE_CI: ${conclusion} - kein roter Stand, kein Integrations-Dump`);
 } else if (conclusion === 'failure') {
   const number = openPr();
-  if (number) label(number, RED_LABEL, 'Roter Stand: Issue und Label, Integration nur auf Anforderung');
+  if (number) {
+    const contract = contractAtHead();
+    writeCiState({
+      number,
+      state: 'FAILURE',
+      conclusion,
+      contract,
+      nextAction: 'Befund beheben, turn:finish erneut ausfuehren; der naechste PR-Lauf entscheidet.',
+    });
+    syncTaskLabels(number, contract, true);
+    label(number, RED_LABEL, 'Roter Stand: Issue und Label, Integration nur auf Anforderung');
+  }
   if (integrateRequested) {
     promoteRed();
   } else {

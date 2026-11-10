@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-09T23:45Z-world-first-ui-01",
+  "contributionId": "world-first-ui-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "description",
+  "function": "describe",
+  "contexts": [
+    "watch"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Gast bleibt stehen, als die Hand den Tisch berührt. Statt eines neuen Fensters öffnet sich neben ihm nur das Nötigste: sein Name, sein Budget, seine Laune. Der Floor bleibt im Blick, und der nächste Schritt gehört weiter der Welt.",
+  "directives": []
+}

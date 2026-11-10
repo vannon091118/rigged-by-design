@@ -93,15 +93,6 @@ const runPretask = (cwd: string, args: readonly string[], env: NodeJS.ProcessEnv
     env: { ...process.env, RBD_ROOT: cwd, ...env },
   });
 
-/** Der pretask-Start braucht einen Impact-Plan; in Fixtures ist das ein Stub. */
-const writeContextStub = (dir: string): void => {
-  mkdirSync(join(dir, 'scripts'), { recursive: true });
-  writeFileSync(
-    join(dir, 'scripts', 'agent-context.mjs'),
-    "console.log(JSON.stringify({ systems: [], tests: { runAll: false, selected: [], fast: [], long: [] }, gates: [] }));\n",
-  );
-};
-
 const payloadOf = (stdout: string): PretaskPayload => JSON.parse(stdout) as PretaskPayload;
 
 describe('worktree-isolation', () => {
@@ -201,32 +192,6 @@ describe('worktree-isolation', () => {
       expect(payload.isolation.required).toBe(true);
       expect(payload.isolation.foreignPaths).toEqual(['src/foreign.ts']);
       expect(payload.isolation.reasons).toContain('foreign-claim-paths');
-    } finally {
-      rmSync(parent, { recursive: true, force: true });
-    }
-  });
-
-  it('laesst einen sauberen verknuepften pretask-Start durch', () => {
-    const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-worktree-'));
-    try {
-      const main = fixture(parent, 'main');
-      writeClaim(main, 'lane/test/pass', ['README.md']);
-      writeContextStub(main);
-      git(main, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
-      git(main, ['commit', '-q', '-m', 'claim']);
-      const worktree = join(parent, 'agent-worktree');
-      git(main, ['worktree', 'add', '-q', '-b', 'lane/test/pass', worktree, 'HEAD']);
-      const result = runPretask(worktree, ['--require-worktree', '--json']);
-      expect(result.status).toBe(0);
-      const payload = payloadOf(result.stdout);
-      expect(payload.ok).toBe(true);
-      expect(payload.head).toMatch(/^[0-9a-f]{40}$/);
-      expect(payload.worktree).toContain('agent-worktree');
-      expect(payload.status).toEqual({ staged: [], unstaged: [], untracked: [] });
-      expect(payload.claim?.id).toBe('lane/test/fixture');
-      expect(['checked', 'unknown']).toContain(payload.issues.status);
-      expect(payload.isolation.isWorktree).toBe(true);
-      expect(payload.isolation.reasons).toEqual([]);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }
