@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-player-career",
+  "claimId": "lane/sim/player-career",
+  "branch": "lane/sim/player-career",
+  "baseSha": "e62cdd3e763569c8e3ab4c1685f114fd7c69cb4d",
+  "phase": "CI_PENDING",
+  "title": "Spieler-Dashboard: Karriere aus vorhandenem Zustand ableiten",
+  "goal": "Masterplan Agent 06 ohne zweiten Zustand: Level, Attribute, Koerper, Arbeit, Kampfbilanz und Erfolge im Charakterfenster",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 5
+}

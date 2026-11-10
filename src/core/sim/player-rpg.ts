@@ -27,7 +27,8 @@ export function newPlayerRpg(): PlayerRpgState {
   };
 }
 
-function xpForNextLevel(level: number): number { return XP_PER_LEVEL * level; }
+/** XP bis zur naechsten Stufe; die Anzeige rechnet mit derselben Formel wie der Aufstieg. */
+export function xpForNextLevel(level: number): number { return XP_PER_LEVEL * level; }
 
 export function grantXp(rpg: PlayerRpgState, amount: number): void {
   grantGlobalXp(rpg, 'generic', amount);

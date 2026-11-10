@@ -3,6 +3,7 @@ import type { VaCoinMicro } from '../core/economy/vacoin';
 import type { ActivePenalty, Crate, DemandSnapshot, Dispute, FightFx, Guest, Player, PriceBook, StaffAgent, TemplateId, Zone, Furniture, CarpetId, PlayerJobState, RivalId, Mop, Stain } from '../core/sim/types';
 import type { JournalEvent } from '../core/sim/journal';
 import type { PlayerLook } from '../core/sim/player-look';
+import type { PlayerCareer } from '../core/sim/player-career';
 import type { PlinkoConfig, PlinkoDrop, PlinkoMode } from '../core/games/plinko-config';
 import type { ExclusionPact } from '../core/sim/self-exclusion-bet';
 import type { DuelPreview } from '../core/sim/duel';
@@ -87,6 +88,8 @@ export interface GameView {
   readonly brokenExclusionPacts: number;
   readonly clarityBadge: boolean;
   readonly playerCash: VaCoinMicro;
+  /** Karriere-Sicht: abgeleitet aus Welt, Ledger und Archiv, kein eigener Zustand. */
+  readonly career: PlayerCareer;
   readonly parts: number;
   readonly guestsServed: number;
   readonly wallColor: string;
