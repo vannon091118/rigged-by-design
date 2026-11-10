@@ -35,6 +35,15 @@ describe('staging-scope', () => {
       .toEqual({ ok: true, allowed: ['docs/CHANGELOG.md'], exempt: true });
   });
 
+  it('nimmt die mechanischen Version-Dateien von der Sperre aus', () => {
+    const scope = scopeChanges({
+      changed: ['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md', 'src/ui/hud.tsx'],
+      allowlist,
+    });
+    expect(scope).toEqual({ allowed: [], foreign: ['src/ui/hud.tsx'], ok: false });
+    expect(TURN_EXEMPT).toContain('pnpm-lock.yaml');
+  });
+
   it('behandelt Verzeichnis- und rekursive Muster wie der Claim', () => {
     const scope = scopeChanges({ changed: ['docs/a/b.md', 'src/core/economy/ledger.ts', 'src/ui/x.ts'], allowlist });
     expect(scope).toEqual({

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-mechanik-fix",
+  "claimId": "lane/governance/mechanik-fix",
+  "branch": "lane/governance/mechanik-fix",
+  "baseSha": "823b981e8b1816160dda7e4b8897e318e7fde799",
+  "phase": "CI_PENDING",
+  "title": "Lockfile-Versionszeile mechanisch, erledigte Claims schliessen",
+  "goal": "turn:finish schliesst bei Rueckstand ohne Handintegration ab",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

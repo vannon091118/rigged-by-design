@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:94ae1c0cdbe976d826f79f81864b52c694e4d8767e54b09a3d31c0568d9a07f4",
+  "contentHash": "sha256:696f15fed9c9ee5c8a6dce36f4cd20f0299ea5cffe6f0d5fbfc3b890286a71c3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18548,6 +18548,31 @@
       "text": "Die Wand ist kein Bild mehr, sondern eine Kante mit genau einem Zustand: Wand, Tuer oder Durchgang. Der Plan liegt als eine Wahrheit im Haus, und der Ausbau behaelt seine Tueroeffnung, statt sie hinter einer neuen Aussenwand zu vergessen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-06-layout-vertrag.json"
+    },
+    {
+      "contributionId": "stale-claims-01",
+      "turnId": "2026-11-10T12:45Z-stale-claims",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita raeumte zwei Zettel ab, die noch offen an der Wand hingen, obwohl ihre Lanes laengst gemergt waren. Daneben notierte sie, dass die Versionszeile nicht mehr als fremde Arbeit gilt: der naechste Lauf findet den Baum so vor, wie ihn der Abschluss hinterlaesst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-stale-claims.json"
     },
     {
       "contributionId": "start-pool-opening-01",

@@ -7,10 +7,19 @@
  * welche geaenderten Pfade der Claim fuehrt. Eine zweite Allowlist-Auslegung
  * waere eine zweite Wahrheit.
  */
-import { allowsPath, isTaskContractPath } from './lane-claims.mjs';
+import { allowsPath, isTaskContractPath, MECHANICAL_FILES } from './lane-claims.mjs';
 
-/** Arbeitsdateien des Turns, die nie Inhalt des Commits sind. */
-export const TURN_EXEMPT = Object.freeze(['.turn-notes.md']);
+/**
+ * Arbeitsdateien des Turns, die nie Inhalt des Commits sind.
+ *
+ * Die mechanischen Dateien stehen hier, weil `turn:finish` sie ohnehin stagt:
+ * der Versions-Bump schreibt `package.json` und die Lockfile-Zeile, die
+ * Inventur folgt den Generatoren. Ohne die Ausnahme meldet der zweite Lauf
+ * `pnpm-lock.yaml` als fremde Arbeit und die Lane kommt nie zum Push, obwohl
+ * nur die Versionszeile offen ist. Inhaltliche Aenderungen an denselben Dateien
+ * bleiben gesperrt, weil `verify-lane-claims` sie als Meta-Dateien prueft.
+ */
+export const TURN_EXEMPT = Object.freeze(['.turn-notes.md', ...MECHANICAL_FILES]);
 
 const normalize = (raw) => String(raw ?? '').replaceAll('\\', '/').trim();
 

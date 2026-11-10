@@ -3372,6 +3372,10 @@
     {
       "turnId": "2026-11-10T11:55Z-agent-bootstrap",
       "contributionId": "agent-bootstrap-01"
+    },
+    {
+      "turnId": "2026-11-10T12:45Z-stale-claims",
+      "contributionId": "stale-claims-01"
     }
   ]
 }
