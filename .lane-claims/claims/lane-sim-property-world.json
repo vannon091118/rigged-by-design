@@ -22,7 +22,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
   "createdAt": "e37abcf64c8cd6fe15ce09dbdaea33d3f09d681b",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "0d47fae1bfa4451b8ab0839f9286386151a9076c",
   "notes": "Reine Ableitung aus layout/zones/furniture/guests; kein neues Save-Feld, kein zweiter Geldweg. Betriebskonto ist das vorhandene HAUSKONTO; Miete/Strom bucht bereits upkeep.ts, daher keine zweite Tagesmiete."
 }
