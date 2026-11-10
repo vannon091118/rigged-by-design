@@ -4,11 +4,11 @@
   "claimId": "lane/governance/item-synergy-docs",
   "branch": "lane/governance/item-synergy-docs",
   "baseSha": "e661d83ce800aca26c95374a616dd84ffecf11e3",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Agent 13: Meta-Doku und Claim-Abschluss zu Items und Synergien",
   "goal": "Agent 13 in CHANGELOG, ROADMAP und Devtagebuch belegen und den Feature-Claim lane/sim/item-synergy mit Squash-Beleg schliessen.",
   "pr": null,
   "findings": [],
   "nextAction": "Doku und Claim-Abschluss committen, PR gegen main, danach eigenen Claim im Folgepass schliessen.",
-  "revision": 1
+  "revision": 2
 }
