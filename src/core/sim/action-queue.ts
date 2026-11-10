@@ -12,7 +12,7 @@ export type {
 export { createActionQueue, normalizeActionQueue, queueView } from './action-queue-types';
 export { cancelTask, tickActionQueue } from './action-queue-run';
 
-export interface EnqueueInput {
+interface EnqueueInput {
   readonly kind: TaskKind;
   readonly target?: InteractionTarget;
   readonly point?: { readonly x: number; readonly y: number };

@@ -8,7 +8,7 @@ import { createWorld } from '../core/sim/templates';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import { flushNarrativeCmd } from './narrative-commands';
 
-export interface NewGameState {
+interface NewGameState {
   readonly world: WorldState;
   readonly ledger: Ledger;
   readonly prng: Prng;

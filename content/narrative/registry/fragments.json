@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:63171eb0ac903d6762a89c516ee9a82cb770a0573882d384af40e80de476bcb4",
+  "contentHash": "sha256:6d435023abdff790a2f79ed4e96738af2273b6e468e76c805cdc463840bdc17c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -19154,6 +19154,31 @@
       "text": "Rita machte den Boden zum ersten Bedienelement: Ein Klick nannte das Ziel, das Ziel nannte den Auftrag, und der Auftrag lief sichtbar ab, statt sofort zu geschehen. Danach war die Stadt kein Menue mehr, sondern ein Ort, an dem der Wischer wirklich zurueck zur Toilette musste.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-scene-queue.json"
+    },
+    {
+      "contributionId": "world-scene-queue-deadcode-01",
+      "turnId": "2026-11-10T21:05Z-world-scene-queue-deadcode",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita verfolgte die sechs toten Exporte bis zu ihren Aufrufern: keiner importierte sie, alle lebten nur in ihrer eigenen Datei. Statt Vertraege zu loeschen, nahm sie ihnen nur den oeffentlichen Namen; die Kette blieb lesbar, und das Gate sah wieder eine geschlossene Oberflaeche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json"
     },
     {
       "contributionId": "world-scene-queue-hotfix-01",

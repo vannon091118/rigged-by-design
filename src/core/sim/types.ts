@@ -23,9 +23,9 @@ export type { Stain } from './stain';
 export type { CitySceneState } from './city-scene';
 
 /** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
-export type SceneKind = 'OWN' | 'FOREIGN' | 'CITY';
+type SceneKind = 'OWN' | 'FOREIGN' | 'CITY';
 export interface SceneState { readonly kind: SceneKind; readonly foreignFloorId?: number; }
-export type OnboardingStep = 'CITY' | 'CASINO' | 'DONE';
+type OnboardingStep = 'CITY' | 'CASINO' | 'DONE';
 export interface OnboardingState { step: OnboardingStep; }
 
 export interface WorldState {

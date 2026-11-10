@@ -8,7 +8,7 @@ import { resolveHit, type ScreenAnchor } from './floor-hit';
 
 export type { ScreenAnchor } from './floor-hit';
 
-export type FloorTarget = InteractionTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
+type FloorTarget = InteractionTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
 
 interface TapResolution {
   readonly target: FloorTarget;

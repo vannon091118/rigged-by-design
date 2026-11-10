@@ -16,7 +16,7 @@ import type { MachineHallView } from '../core/sim/machine-hall';
 import type { CityView } from '../core/sim/city';
 import type { ActionTaskView } from '../core/sim/action-queue';
 
-export interface SceneView {
+interface SceneView {
   readonly key: string;
   readonly kind: 'OWN' | 'FOREIGN' | 'CITY';
   readonly label: string;
