@@ -16,6 +16,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "2b7bb155eaa93921e30c762e48fc2b31c1e1e63e"
+  "status": "merged",
+  "createdAt": "2b7bb155eaa93921e30c762e48fc2b31c1e1e63e",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "5ec16de9270e0363c1089ef2406d41881c782073",
+  "notes": "Doku-Commit 077a131 als 5ec16de auf main; Kampfkarriere damit auch in CHANGELOG, DEVTAGEBUCH und ROADMAP belegt."
 }
