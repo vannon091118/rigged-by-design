@@ -4,11 +4,16 @@
   "claimId": "lane/governance/machine-hall-docs",
   "branch": "lane/governance/machine-hall-docs",
   "baseSha": "8997d5ce933b827786d6c09921e2912c64e2b742",
-  "phase": "MERGE_PENDING",
+  "phase": "DONE",
   "title": "Agent 10: Meta-Doku und Claim-Abschluss zur Spielhalle",
   "goal": "Agent 10 in Changelog, Devtagebuch und Roadmap belegen, den Feature-Claim mit Squash-SHA schliessen und die Lane danach aufraeumen.",
-  "pr": null,
+  "pr": {
+    "number": 382,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/382",
+    "state": "merged",
+    "mergedSha": "02e113aa49f6091151770b90c29509379c62840f"
+  },
   "findings": [],
-  "nextAction": "PR anlegen, CI abwarten, squash-mergen.",
-  "revision": 1
+  "nextAction": "Abgeschlossen: PR #382 (02e113a) auf main, Governance-Claim geschlossen.",
+  "revision": 2
 }

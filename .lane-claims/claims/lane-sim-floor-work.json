@@ -27,7 +27,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
   "createdAt": "02e113aa49f6091151770b90c29509379c62840f",
-  "notes": "Bedienen, Schlichten, Kasse, Sicherheit und Reparatur bleiben unveraendert; Reinigung bekommt Reichweite ueber Wahrnehmung (Bezahlung je Kachel), Wartung ueber Technik (+2 je Stufe, Deckel 40). Glueck bleibt ohne Leser und wird nicht erfunden."
+  "notes": "Bedienen, Schlichten, Kasse, Sicherheit und Reparatur bleiben unveraendert; Reinigung bekommt Reichweite ueber Wahrnehmung (Bezahlung je Kachel), Wartung ueber Technik (+2 je Stufe, Deckel 40). Glueck bleibt ohne Leser und wird nicht erfunden.",
+  "mergedEvidence": "squash-merge",
+  "mergedSha": "48a792f2798c830914953b0e6e3434c0110e0361"
 }

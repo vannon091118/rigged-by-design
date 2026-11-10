@@ -579,10 +579,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2482 |
-| Gelistete Dateien | 2482 |
+| Getrackte Dateien | 2484 |
+| Gelistete Dateien | 2484 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (123), content (858), docs (83), public (554), scripts (102), src (734) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (125), content (858), docs (83), public (554), scripts (102), src (734) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -594,8 +594,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 86 Datei(en)
-- `.lane-claims/tasks/` — 35 Datei(en)
+- `.lane-claims/claims/` — 87 Datei(en)
+- `.lane-claims/tasks/` — 36 Datei(en)
 - `content/narrative/contributions/` — 854 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -735,6 +735,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-fight-career-docs.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-final-closeout.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/claims/lane-governance-first-property-docs-2.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-floor-work-docs.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-influence-matrix-v2.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-interaction-foundation.json` — { — gelesen: 53 Zeilen
@@ -742,7 +743,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-lane-autopilot.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-ledger-game-type.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-machine-hall-docs.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-machine-hall-docs.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-repair.json` — { — gelesen: 20 Zeilen
@@ -784,7 +785,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-fight-career.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-sim-first-property.json` — { — gelesen: 42 Zeilen
-- `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-machine-hall.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
@@ -807,7 +808,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-fight-career-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-first-property-docs-2.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-machine-hall-docs.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/tasks/governance-floor-work-docs.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/tasks/governance-machine-hall-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 18 Zeilen
@@ -823,7 +825,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-machine-hall.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
@@ -1693,14 +1695,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1121 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1123 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 208 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3632 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3667 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 452 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 453 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 84 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 134 Zeilen

@@ -1,0 +1,26 @@
+{
+  "id": "lane/governance/floor-work-docs",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/floor-work-docs",
+  "baseSha": "48a792f2798c830914953b0e6e3434c0110e0361",
+  "task": "Agent 11: Meta-Doku und Claim-Abschluss zur Arbeitsqualitaet",
+  "goal": "Agent 11 im Changelog, im Devtagebuch und in der Roadmap belegen, den Feature-Claim `lane/sim/floor-work` und die Governance-Lane aus Agent 10 mit Squash-SHA schliessen, ohne Code oder Gates zu veraendern.",
+  "pathAllowlist": [
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-floor-work-docs.json",
+    ".lane-claims/tasks/governance-floor-work-docs.json",
+    ".lane-claims/claims/lane-governance-machine-hall-docs.json",
+    ".lane-claims/tasks/governance-machine-hall-docs.json",
+    ".lane-claims/claims/lane-sim-floor-work.json",
+    ".lane-claims/tasks/sim-floor-work.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "48a792f2798c830914953b0e6e3434c0110e0361",
+  "notes": "Governance-only: Doku und Claim-/Task-Status; keine Code-, Save- oder Gate-Aenderung."
+}
