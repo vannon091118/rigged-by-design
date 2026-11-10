@@ -583,10 +583,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2556 |
-| Gelistete Dateien | 2556 |
+| Getrackte Dateien | 2557 |
+| Gelistete Dateien | 2557 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (148), content (885), docs (83), public (554), scripts (102), src (756) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (148), content (886), docs (83), public (554), scripts (102), src (756) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -600,7 +600,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 99 Datei(en)
 - `.lane-claims/tasks/` — 47 Datei(en)
-- `content/narrative/contributions/` — 881 Datei(en)
+- `content/narrative/contributions/` — 882 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -718,7 +718,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-agent-bootstrap.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-agent-masterplan-readme.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-agent14-changelog.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-governance-agent14-claim-evidence.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-agent14-claim-evidence.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-agents-md-contract.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-agents-wartezeiten-regel.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-apk-signing-v2.json` — { — gelesen: 39 Zeilen
@@ -1744,8 +1744,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-claim-evidence-4.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19776 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3529 Zeilen
+- `content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 19798 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3533 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
