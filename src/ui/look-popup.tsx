@@ -99,7 +99,7 @@ function CareerSection({ view, onChallenge, onBuyProperty }: { view: GameView; o
           <b>{career.job ? `${career.job.wageVC} VC/Tag · letzte Schicht ${career.job.lastWorkDay > 0 ? `Tag ${career.job.lastWorkDay}` : 'offen'}` : 'keine Schicht'}</b>
         </div>
       </div>
-      <CareerProperty property={career.property} onBuy={onBuyProperty} />
+      <CareerProperty property={career.property} house={view.house} onBuy={onBuyProperty} />
       <ul className="career-achievements">
         {career.achievements.map((entry) => (
           <li key={entry.id} className={entry.unlocked ? 'on' : 'off'}>{entry.label}</li>

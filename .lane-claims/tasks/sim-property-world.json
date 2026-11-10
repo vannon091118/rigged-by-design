@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-property-world",
+  "claimId": "lane/sim/property-world",
+  "branch": "lane/sim/property-world",
+  "baseSha": "e37abcf64c8cd6fe15ce09dbdaea33d3f09d681b",
+  "phase": "READY",
+  "title": "Masterplan Agent 08: Eigene Immobilie und WorldState-Integration",
+  "goal": "Eindeutige Zuordnung der Immobilie zum WorldState ueber den Rasterbereich des Eingangs, Betriebssicht aus den vorhandenen Grid-, Zonen-, Furniture- und Besuchersystemen sowie Buchung ueber das vorhandene Geschaeftskonto HAUSKONTO, sichtbar im bestehenden Charakterfenster.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Feature-Commit, verify:all, PR und Merge.",
+  "revision": 1
+}
