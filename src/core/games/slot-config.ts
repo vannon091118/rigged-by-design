@@ -7,7 +7,9 @@
  * Maschine mit sechs Walzen ist keine Maschine, die man auf fuenf rundet.
  */
 import { clampedReels, SLOT_SYMBOLS, slotPaylines, weightTotal, type SlotSymbol } from './engines/slot-paytable';
+import { withModProfile } from './mod-profile';
 import { DEFAULT_SLOT_PROFILE, normalizeSlotProfile, type SlotProfile } from './slot-profile';
+import type { ModId } from '../sim/types';
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 
 /** Nur diese Walzenzahlen sind spielbar; alles andere ist ein Konfigurationsfehler. */
@@ -37,6 +39,8 @@ interface SlotConfigInput {
 interface ReelMachine {
   readonly reels: number;
   readonly slotOdds?: unknown;
+  /** Verbaute Mods wirken auf der echten Engine, nicht nur auf Gaeste. */
+  readonly mods?: readonly ModId[];
 }
 
 export function isValidReels(value: unknown): boolean {
@@ -98,7 +102,12 @@ export function slotConfig(input: SlotConfigInput = {}): SlotConfig {
   return config;
 }
 
-/** Die Konfiguration eines Geräts: dieselbe, die die Engine und die Quote lesen. */
+/**
+ * Die Konfiguration eines Geräts: dieselbe, die die Engine und die Quote lesen.
+ * Ab Agent 12 fliessen verbaute Mods ins Profil ein (Gewichte, Auszahlung,
+ * Freispiele) - es gibt keinen zweiten Auszahlungspfad daneben.
+ */
 export function slotConfigOf(machine: ReelMachine): SlotConfig {
-  return slotConfig({ reels: machine.reels, profile: machine.slotOdds });
+  const profile = withModProfile(normalizeSlotProfile(machine.slotOdds), machine.mods ?? []);
+  return slotConfig({ reels: machine.reels, profile });
 }

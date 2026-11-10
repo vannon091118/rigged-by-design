@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d5d31afee3e368d1081dea09c9fc28f2cede65894c02e8cd15c0f254ded43cff",
+  "contentHash": "sha256:f3d655ac0444b10c2061dbe4e818bd012dcff742aeae9a9e854f4168003ba1b9",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -4617,6 +4617,31 @@
       "text": "Rita strich die doppelte Zeile im alten Kassenbuch durch. Drei Namen, sagte sie, bleiben drei Namen, auch wenn man sie zweimal liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-narrative-facts.json"
+    },
+    {
+      "contributionId": "mod-engine-01",
+      "turnId": "2026-11-10T23:40Z-mod-engine",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita schraubte den Kirschen-Aufsatz an und drehte dreimal. Was sie sah, war kein neues Geraet, sondern dasselbe Geraet mit anderen Gewichten: das J kam oefter, das Buch blieb selten, und die Quote stand weiterhin in derselben Tabelle. Der Unterschied zwischen einem Aufkleber und einer Modifikation war genau eine Zahl, die die Engine selbst liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-mod-engine.json"
     },
     {
       "contributionId": "multi-beat-steps-01",
