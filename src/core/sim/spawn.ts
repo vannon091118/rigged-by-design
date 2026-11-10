@@ -12,6 +12,7 @@ import { hearRumor } from './narrative/knowledge-gossip';
 import { actorRefOfVisitor, relationshipStanding } from './narrative/relationships';
 import { ADDICTED_THRESHOLD } from './emotion';
 import { hasStaff } from './staff-queries';
+import { renovationMoodBonus, renovationReputationBonus } from './renovation';
 import type { Guest, WorldState } from './types';
 import { entranceSpot, exchangePoint, pathTo } from './world';
 
@@ -42,7 +43,7 @@ export function reputation(world: WorldState): number {
   // weiter; wer im Konflikt steht, warnt davor. Der Anteil ist begrenzt.
   const standing = relationshipStanding(world);
   const value = 5 + served + condition * 15 * scale + (quality - 1) * 16 * scale
-    + experience + staff + attraction - dirt + standing - addictionMalus;
+    + experience + staff + attraction - dirt + standing - addictionMalus + renovationReputationBonus(world);
   return Math.max(0, Math.min(100, value));
 }
 
@@ -70,6 +71,9 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   if (world.activePenalties.some((penalty) => penalty.kind === 'MOOD_SHOCK')) {
     guest.mood = Math.max(0, guest.mood - MOOD_SHOCK_NEWCOMER_MALUS);
   }
+  // Der Zustand der Immobilie kommt beim Gast an: ein kleiner Bonus je Renovierungsstufe.
+  const renovation = renovationMoodBonus(world);
+  if (renovation > 0) guest.mood = Math.min(100, guest.mood + renovation);
   const target = exchangePoint(world);
   if (!target) return null;
   if (returning) {

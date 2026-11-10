@@ -159,6 +159,8 @@ describe('Charakterfenster: Immobilie', () => {
     expect(section.textContent).toContain('Tag 3');
     expect(section.textContent).toContain('Betriebskonto');
     expect(view.career.property.binding?.area?.id).toBe('area-0');
+    expect(section.textContent).toContain('Unrenoviert');
+    expect(screen.getByRole('button', { name: /Renovieren/ }).hasAttribute('disabled')).toBe(true);
     expect(screen.queryByRole('button', { name: /VC$/ })).toBeNull();
   });
 });
