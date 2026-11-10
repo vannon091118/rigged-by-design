@@ -4,11 +4,16 @@
   "claimId": "lane/governance/mod-engine-docs",
   "branch": "lane/governance/mod-engine-docs",
   "baseSha": "5a98de70fb419ef4ef6cd3eead03f482023ddbfc",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 12: Meta-Doku und Claim-Abschluss zum Maschinen-Modifikationssystem",
   "goal": "Agent 12 in Changelog, Devtagebuch und Roadmap belegen, Feature- und Vor-Governance-Claim mit Squash-SHA schliessen, Lane aufraeumen.",
-  "pr": null,
+  "pr": {
+    "number": 386,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/386",
+    "state": "merged",
+    "mergedSha": "f4209d4707a1ec9dd16e1f997ae58a5036ae1151"
+  },
   "findings": [],
-  "nextAction": "Nachsorge: Claim auf merged (f4209d4) ziehen und den Vertrag auf DONE setzen.",
-  "revision": 2
+  "nextAction": "Abgeschlossen: PR #386 (f4209d4) auf main, Governance-Claim geschlossen.",
+  "revision": 3
 }
