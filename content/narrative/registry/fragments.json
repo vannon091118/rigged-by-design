@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2df19d982857faf158175f4749258fcbdbca82719eb68a852dc9d555039cd4f9",
+  "contentHash": "sha256:8c9eba79c8aab86192d7cb9e8f35f6798b473c8a4ed5d127268a1373bea12e9d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -721,6 +721,72 @@
       "text": "Der Gast nimmt die Serviette zurueck und steckt sie ein. Die Schultern sinken eine Spur, und der Blick bleibt noch einen Atemzug laenger auf dem Tresen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-chain-echo-reaction.json"
+    },
+    {
+      "contributionId": "ci-governance-defuse-01",
+      "turnId": "2026-11-10T09:55Z-ci-governance-defuse",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Zusammengefuehrte Lanes blockieren den Start nicht mehr: Pretask und Lane-Gate teilen denselben Merged-Filter, und ein Doku-Marker kommt genau einmal vor. Was auf main steht, ist Notiz statt Sperre; ohne Beleg bleibt es fail-closed.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json"
+    },
+    {
+      "contributionId": "ci-main-sync-01",
+      "turnId": "2026-11-10T08:30Z-ci-main-sync",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Während der CI-Fix lief, zog main mit der README-Lane weiter. Der Branch wurde echt gemergt, die Inventur neu erzeugt und die Freigabe an die neue Basis gebunden; kein alter Kopf blieb als scheinbar grüner Nachweis stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-main-sync.json"
+    },
+    {
+      "contributionId": "ci-pr-body-current-01",
+      "turnId": "2026-11-10T08:25Z-ci-pr-body-current",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der CI-Plan liest den PR-Body jetzt bei jedem Lauf über die Pull-Request-API. Ein Rerun nach einer Korrektur prüft damit den aktuellen Text statt des ursprünglichen Event-Payloads; der Unterschied zwischen Erstlauf und Wiederholung verschwindet aus der Fehlersuche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
     },
     {
       "contributionId": "city-day-closeout-01",
@@ -3665,6 +3731,28 @@
       "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "governance-closeout-main-sync-01",
+      "turnId": "2026-11-10T08:36Z-governance-closeout-main-sync",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Closeout-Zweig trug noch den Stand vor der README-Lane; der Merge zog main bis 1f40395 nach. Die Inventur wurde auf dem gemeinsamen Baum neu erzeugt, damit der Diff nur die abgeschlossenen Phasen-Lanes und keine veraltete Dateiliste zeigt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json"
     },
     {
       "contributionId": "governance-eine-stimme-01",
@@ -6936,6 +7024,28 @@
       "source": "content/narrative/contributions/2026-11-01-readme-opening.json"
     },
     {
+      "contributionId": "p20-dependency-matrix-01",
+      "turnId": "2026-11-10T07:55Z-p20-dependency-matrix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Live-Dependency-Matrix liegt jetzt in einer freien Datei statt in der gesperrten Architektur. Der Generator schreibt Paketversionen, Begruendungen und echte Importpfade weiterhin aus package.json und Quellbaum; neue Testdateien verschieben damit keine Governance-Datei und keine PIN-Freigabe mehr. Architektur, Index und Autofix-Plan verweisen auf den neuen Ort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-p20-dependency-matrix-01.json"
+    },
+    {
       "contributionId": "p5-suchtfolge-01",
       "turnId": "2026-11-09T18:55Z-p5-suchtfolge-01",
       "agentId": "buffy",
@@ -7025,6 +7135,28 @@
       "text": "Ein Klick ist jetzt ein Versprechen: Er nennt genau ein Ziel, die Figur geht den Weg dorthin, und erst in Reichweite oeffnet sich die Tat. Was nicht erreichbar ist, sagt warum, statt still zu scheitern.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-phase1-interaction-foundation.json"
+    },
+    {
+      "contributionId": "phase34-acceptance-01",
+      "turnId": "2026-11-10T07:30Z-phase34-acceptance",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bildrate im Werkstatt-HUD und das Budget der beiden Atlasseiten sind jetzt feste Abnahmewerte statt Erinnerung. Der Test hält 60, 30 und 0 FPS samt Frame-Zeit fest und begrenzt den WebP-Atlas auf 400 kB bei 153 Frames; die echte Bildrate und der First Frame auf einem 200-Euro-Geraet bleiben davon unberührt und weiter offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-phase34-acceptance-01.json"
     },
     {
       "contributionId": "phase4-huelle-atlas-01",
@@ -18180,6 +18312,28 @@
       "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
+    },
+    {
+      "contributionId": "render-sprite-01",
+      "turnId": "2026-11-10T00:00Z-render-sprite-pipeline",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "content"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
     },
     {
       "contributionId": "returning-memory-01",

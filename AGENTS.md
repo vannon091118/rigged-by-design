@@ -1,6 +1,6 @@
 # Rigged by Design
 
-<!-- rbd-doc: v0.3.201 | 2026-11-10 08:00 UTC -->
+<!-- rbd-doc: managed -->
 
 > **Erster Befehl:** `pnpm run agent:pretask --json`
 
@@ -29,6 +29,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 - **Redundanz wird ausgeschlachtet.** Bei doppelten Quellen wird nicht nur geloescht: beide Verhalten werden verglichen, das bessere wird mit dem gemeinsamen Pfad zusammengefuehrt, und eine Wahrheit bleibt uebrig. `verify:redundancy` nennt diese Pflicht bei jedem Befund.
 - **Hot Zone heisst modularisieren.** Jede Aenderung an einer Datei in der Hot Zone wird als Modularisierung umgesetzt: eigene Datei, klare Ownership, Budget und Test. Eine LOC-Erhoehung ist nur als `ASK_USER` mit Begruendung zulaessig, warum sie fachlich besser ist als die Extraktion; `check:loc` blockiert den direkten Weg.
 - **PreTurn-Folgengate.** `pretask` liest offene Gate-Issues zuerst. Verlangt der Projekt-Scope sie vor der neuen Arbeit, beginnt die Anfrage als nummerierter Folgetask mit **Problem**, **Kurzbeschreibung**, **Loesungsansatz** und **Schwierigkeitsgrad**; vorher startet keine neue Lane-Arbeit.
+- **Integration vor der CI.** `scripts/integrate.mjs --check` entscheidet vor den Gates zwischen `READY`, `REBASE_REQUIRED` und `MANUAL_CONFLICT`: `git fetch`, Claim-Gate und `git merge-tree`, keine Suite. Konflikte in generierten Artefakten werden regeneriert (`node scripts/sync-generated.mjs --all`), Konflikte in Handdateien nie. Der Pre-Push-Hook ruft denselben Controller; der Controller pusht nur per Fast-Forward, ein manueller Rebase-Push ist nur mit `--force-with-lease` erlaubt.
 
 ## Zustand
 
@@ -49,7 +50,9 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run verify:all` | Der lokale Vollnachweis: 12 Required-Gates plus Audit. |
 | `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
-| `pnpm run docs:sync` | Fehlende stabile Marker in Pflichtdokumenten ergaenzen; vorhandene Marker bleiben unveraendert. |
+| `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
+| `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
+| `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
 | `pnpm run claim:register` | Lane-Claim anlegen oder fortschreiben. |
 
 ## Build & test

@@ -1,6 +1,6 @@
 # Roadmap
 
-<!-- rbd-doc: v0.3.199 | 2026-11-10 00:44 UTC -->
+<!-- rbd-doc: managed -->
 
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
@@ -192,7 +192,7 @@ nicht nur dokumentiert:
 | Schrumpf-Verbot | kein Pool darf kleiner werden, kein Beitrag geloescht | `shrinkIssues` im Gate |
 | Einmaligkeit | kein doppelter Text (normalisiert) | `poolReport` im Gate |
 
-Stand 2026-11-10: **829/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
+Stand 2026-11-10: **834/1500** Bausteine in 13 Pools. Die Pools tragen 50 bis 59
 Fragmente, darunter die Stadt-Pools `city-scene` und `city-night` aus dem
 Vertikalschnitt sowie die drei Ruf-Pools (`guest-voice-low`, `guest-voice-mid`,
 `guest-voice-high`) mit mindestens 50. Die Pool-Mindestgroesse ist damit an allen 13
@@ -256,7 +256,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 833/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 840/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -274,7 +274,7 @@ Code und seinen Test als Beleg.
 | M4 | Smartphone als echte Geraeteflaeche | offen | Vergleich der vier Fensterzustaende |
 | P-18 | Wand-Occlusion visuell | offen | Depth-Tests stehen, Browserbeleg fehlt |
 | P-19 | First Frame unter 3 s / Slow 4G | offen | Baseline 22 Requests/12,16 s/2,42 MB |
-| P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | offen | `scripts/sync-dependency-matrix.mjs` zaehlt Testdateien; jede neue Testdatei verschiebt die Zahlen und braucht damit eine PIN-Freigabe. Matrix in eine freie Datei ziehen oder den Generator aus dem Freeze nehmen |
+| P-20 | Generierte Dependency-Matrix liegt in der gesperrten `docs/ARCHITECTURE.md` | **erledigt 2026-11-10** | Matrix liegt in `docs/DEPENDENCY-MATRIX.md`; Generator und Autofix-Plan schreiben nur noch dorthin, die Architektur verlinkt sie. Neue Testdateien verschieben damit keine gesperrte Datei mehr. |
 | A6-A8 | Touch auf Hardware, Huelle, APK-Installation | zurueckgestellt | erst nach vollstaendiger Desktop-Abnahme |
 | P-21 | Einfluss-Matrix als anpassbare Config | **verifiziert 2026-11-08** | `influence-config.ts` gewichtet `mood`, `sociability`, `thirst`, `rumor` sowie `trust`, `sympathy` und `conflict` je Kontext, wendet Cross-Kanten an (unter anderem Vertrauen/Konflikt auf Geselligkeit) und validiert fail-closed; Consumer `guest-choice.ts` (Bar-Nachfrage mit Beziehungskante); Test `influence.test.ts` |
 | P-22 | Main Event Pool mit nicht unterscheidbaren, nicht repetitiven Events | **verifiziert 2026-11-08** | `main-event-pool.ts` zieht nur bei idle, gewichtet ueber die gerichteten trust/sympathy/conflict-Kanten und Cross-Kanten, daempft Wiederholung per Recency und Lockout und nutzt dieselbe Event-Karte ohne Sonder-UI/-Log; drei feste `AMBIENT_*`-Templates, Config in `influence-event-pool.ts`, Tests `main-event-pool.test.ts` |
@@ -327,8 +327,8 @@ oder nachweisbarer wiederkehrender Agentenarbeit zulaessig.
 
 - Lichtpfuetze ueber Regionskanten zusammensetzen, damit grosse Saele keine Chunk-Naht im Licht zeigen; heute zeichnet jeder Chunk seine eigene Pfuetze.
 - Touch ist umgebaut (Ein-Finger-Pan ab 8 px, Tippen laeuft, Aktionskarte statt Radialmenue, Sofort-Feedback), aber nur im Code belegt: 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame brauchen die Abnahme auf einem echten Geraet.
-- Geld fuehlt sich an (Phase 3): acht Ereignisse mit Partikeln, Ton, Licht und Shake, Kassen-Chips, Laune-Sprechblase und Spiel-Identitaeten sind im Code und am 2026-11-06 im Desktop-Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, sichtbare Kassen-Chips mit Coin-Sound, die Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten sind belegt; Lautsprecher-/Gehoer-Pruefung, 60 fps und der Emitter-Zaehler im Werkstatt-HUD bleiben fuer das echte Geraet offen.
-- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne sind seit 0.3.141 auf main, der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
+- Geld fuehlt sich an (Phase 3): acht Ereignisse mit Partikeln, Ton, Licht und Shake, Kassen-Chips, Laune-Sprechblase und Spiel-Identitaeten sind im Code und am 2026-11-06 im Desktop-Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, sichtbare Kassen-Chips mit Coin-Sound, die Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten sind belegt; Lautsprecher-/Gehoer-Pruefung, 60 fps und der Emitter-Zaehler im Werkstatt-HUD bleiben fuer das echte Geraet offen; ein Abnahmetest sichert die FPS-Anzeige (60/30/0 fps) gegen Rueckbau.
+- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne sind seit 0.3.141 auf main, der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen; ein Abnahmetest haelt das Atlas-Budget bei 384.234 B und die 400.000-B-Grenze fest. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
 
 - Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
 - Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
@@ -341,3 +341,102 @@ oder nachweisbarer wiederkehrender Agentenarbeit zulaessig.
 - Rivalen-Profilkarte mit Historie und Indizien; ortsuebergreifende Aktionen statt nur casino-uebergreifender.
 - Sieben-Tage-Langlauf mit Narrativ-Ereignissen als eigener CI-Nachweis.
 - Uebersetzung der UI-Texte, falls eine zweite Sprache dazukommt.
+
+---
+
+## Der 30-Agenten-Masterplan: Vom Startpunkt zum Unternehmensnetzwerk
+
+Die Gesamtentwicklung von *Rigged by Design* vollzieht sich entlang von sechs aufeinander aufbauenden Phasen (30 fokussierte Agenten-Aufträge) unter kontinuierlicher Begleitung des QA-Agents.
+
+### Phase 1: Fundament & Persönliche Spielerrolle (Agents 01–06)
+Ziel ist es, den Spieler als echten Protagonisten in der Welt zu verankern – mit eigener Brieftasche, echter Arbeit, spürbaren Charakterwerten und persönlicher Kampfkarriere.
+
+- **Agent 01 – Architektur-Audit (Status: Abgeschlossen):**
+  Vollständige Bestandsaufnahme der Codebasis (Kategorien A/B/C), Dokumentation von Geldflüssen, Modulabhängigkeiten, Gameplay-Loops, kritischen Architekturproblemen und erhaltenswerten Systemen als technische Basis.
+- **Agent 02 – Persönliche Casino-Spielsessions:**
+  Reguläre Spielsessions an eigenen Automaten mit persönlichem VaCoin-Guthaben (`PORTEMONNAIE`). Strikte Trennung vom Geschäftskonto (`HAUSKONTO`). Test-Spins bleiben kostenlose Sandbox-Vorschau. Vollständige Journal- und Pakt-Protokollierung sowie Persistenz offener Deals.
+- **Agent 03 – Persönliches Arbeitssystem:**
+  Echte bezahlte Schichten auf dem Casino-Floor (Reinigen, Zapfen, Bedienen, Kasse, Kisten, Reparaturen). Arbeitsaufträge, Zeitfenster, persönliche Vergütung via Ledger (`HAUSKONTO -> PORTEMONNAIE`), Qualitätsbewertung, Fehlerrate und Arbeitsstatistik.
+- **Agent 04 – Charakterprogression erweitern:**
+  Sinnvolle Verknüpfung der 7 RPG-Attribute mit realen Spielmechaniken (Geschwindigkeit bei Arbeit/Bewegung, Charisma bei Dialogen/Trinkgeldern, Technik bei Reparaturen/Spielen). Spezialisierungen und Talente.
+- **Agent 05 – Persönliche Kampfkarriere:**
+  Wiederholbarer Kampfloop außerhalb von Gästestreitigkeiten: Herausforderbare Gegner, Hinterhofduelle, Startgebühren und Preisgelder über das Ledger, Gegnerhistorie, persönliche Kampfbilanz (Siege/Niederlagen/KOs) und Verletzungsfolgen.
+- **Agent 06 – Persönliches Spieler-Dashboard:**
+  Übersichtliche Benutzeroberfläche zur persönlichen Progression: Charakterlevel, XP, Attribute, Skillpunkte, Lebenspunkte, Verletzungen, persönliches Wallet, Arbeitsstatistik, Kampfbilanz, Spielhistorie und Erfolge. Strikte Trennung von Unternehmensdaten.
+
+### Phase 2: Eigentum & Eigene Spielhalle (Agents 07–13)
+Vom Aushilfsarbeiter zum echten Eigentümer: Der Erwerb der ersten Location, Renovierung und Aufbau der ersten eigenen Spielhalle.
+
+- **Agent 07 – Erste Immobilie und Eigentumssystem:**
+  Erster vollständiger Immobilienkauf (Gewerberaum, kleine Kneipe, geschlossener Spielsalon). Kaufpreisprüfung und persönliche Bezahlung aus dem Wallet (`PORTEMONNAIE`). Eigentumszuweisung und Speicherung.
+- **Agent 08 – Eigene Immobilie und WorldState-Integration:**
+  Eindeutige Zuordnung der Immobilie zum WorldState. Nutzung der bestehenden Grid-, Zonen-, Furniture- und Besuchersysteme. Betrieb über das zugehörige Geschäftskonto.
+- **Agent 09 – Renovierung und Immobilienzustand:**
+  Stufenweises Renovierungssystem (Unrenoviert -> Teilrenoviert -> Betriebsbereit -> Aufgewertet). Renovierungsarbeiten, Materialbedarf aus dem Lager, Kosten, spürbare Auswirkung auf Ruf und Gästezufriedenheit, visuelles Feedback.
+- **Agent 10 – Erste eigene Spielhalle:**
+  Vollständiger Betrieb: Automaten kaufen, transportieren, platzieren, konfigurieren, warten und reparieren. Gäste empfangen. Trennung der Geldflüsse (Gäste spielen gegen das Haus, Spieler spielt mit eigenem Wallet).
+- **Agent 11 – Spieler als aktiver Casino-Betreiber:**
+  Aktive Floor-Rolle des Spielers bleibt erhalten (Bedienen, Reparieren, Reinigen, Kasse, Sicherheit). Koppelung von Fähigkeiten an Arbeitsqualität, Betriebsablauf und wirtschaftliches Ergebnis. Personal entlastet schrittweise, ersetzt den Spieler aber nicht vollständig.
+- **Agent 12 – Maschinen-Modifikationssystem:**
+  Modulare Ebenen: Maschinenregeln, Modifikationen, Items und Synergien. Beeinflussung von Symbolgewichten, Auszahlungsprofilen, Wilds, Freispielen und Betriebskosten auf der tatsächlichen Spiel-Engine.
+- **Agent 13 – Items und Roguelite-Synergien:**
+  Datengetriebenes Item-System für Spielautomaten und Charaktere: Seltenheiten, Synergien, Vor- und Nachteile (z. B. höhere Attraktivität gegen höhere Betriebskosten), Inventar und Sammlung.
+
+### Phase 3: Skalierung & Unternehmensprogression (Agents 14–21)
+Wirtschaftliches Wachstum, Diversifikation und Verschmelzung verschiedener Unterhaltungsbereiche.
+
+- **Agent 14 – Geschäftsprogression (BUDE → KASSE → SAAL → KONZERN):**
+  Sichtbare Unternehmensphasen mit echten Voraussetzungen (Kapital, Betriebsgewinn, Ruf, Geräte, Personal) und neuen spielerischen Möglichkeiten. Unabhängig vom Charakterlevel.
+- **Agent 15 – Besucherbeziehungen erweitern:**
+  Wiederkehrende Gäste, Stammgast-Status, persönliche Vorlieben, Besuchshistorie, Reaktionen auf Ausstattung und Events.
+- **Agent 16 – Personalmanagement ausbauen:**
+  Erweiterte Rollen, Qualifikationen, Gehälter über das Geschäftskonto, Zuweisung von Arbeitsbereichen und Leistungsbewertung.
+- **Agent 17 – Modulare Business-Bereiche:**
+  Gemeinsamer WorldState mit funktionalen Modulen: Casino, Bar, Lounge, Club, Eventbereich, Arena, Gastronomie. Ein Geschäftskonto, eine Besuchersimulation.
+- **Agent 18 – Gastronomie-System:**
+  Umfassendes Bar- und Gastronomiemodul: Getränkekarte, Warenbestand, Einkauf, Verbrauch, Preise, Gästeaufträge und Bewirtung.
+- **Agent 19 – Club- und Nachtleben-Modul:**
+  Tanzfläche, Musik/DJ, Clubmöbel, Lichtstimmung, Öffnungszeiten, Eintrittspreise, Lautstärke und Nachtgäste.
+- **Agent 20 – Hybrid-Besucherströme:**
+  Wechselwirkungen zwischen Bereichen: Casino-Gäste besuchen die Bar, Clubgänger nutzen Automaten, Eventbesucher konsumieren Getränke.
+- **Agent 21 – Erweiterte Gebäudeplanung:**
+  Mehrere Räume, Raumfunktionen, Zugänge, Kapazitätsberechnungen und Vorbereitung für mehrgeschossige Gebäude unter Beibehaltung der Grid-Architektur.
+
+### Phase 4: Event-Infrastruktur & Arena (Agents 22–25)
+Events als Publikumsmagneten: Vom kleinen Showkampf bis zur hauseigenen Arena mit Sportwetten.
+
+- **Agent 22 – Zentrale Event-Infrastruktur:**
+  Allgemeines Event-System: Event-Erstellung, Ablauf (Ankündigung, Einlass, Durchführung, Ergebnis, Archivierung) für Kämpfe, Turniere und Sonderabende.
+- **Agent 23 – Kampfveranstaltungen:**
+  Organisierte Turniere, Kämpfer-Roster, Kampfpläne, Eintrittspreise, Preisgelder und Zuschauereinbindung über die reale Kampf-Engine.
+- **Agent 24 – Wett-System für Kampfveranstaltungen:**
+  Virtuelle VaCoin-Wettmärkte (Sieger, Runden, KOs). Quotenberechnung, Quotenfixierung bei Wettabgabe, Marktschluss und automatische Abrechnung über das Ledger. Strikter Spielerschutz (keine Wetten auf eigene Kämpfe, keine Quotenänderung im Nachhinein).
+- **Agent 25 – Eigene Arena:**
+  Arena als Business-Modul innerhalb der Immobilie: Kampffläche/Ring, Tribünen, Eventtechnik, Einlass und Gastronomie-Anbindung.
+
+### Phase 5: E-Sport & Wettbewerbe (Agents 26–28)
+Virtuelle Wettbewerbswelten und computergestützte Turniere.
+
+- **Agent 26 – E-Sport-Simulationsdaten:**
+  Datenstrukturen für Teams, Spieler, Rollen, Attribute, Teamstärke, Form, Taktiken, Ligen und Turnierhistorien auf Basis kontrollierter PRNG-Entropie.
+- **Agent 27 – E-Sport-Match-Simulation:**
+  Deterministische Match-Engine für Einzelspiele und Best-of-X-Serien mit nachvollziehbaren Rundenergebnissen.
+- **Agent 28 – E-Sport-Events und Wettintegration:**
+  Verknüpfung der E-Sport-Matches mit der zentralen Event- und Wettinfrastruktur. Quoten, Match-Abrechnung und Ledger-Buchung.
+
+### Phase 6: Multi-Property & Unternehmensnetzwerk (Agents 29–30)
+Das Endspiel: Ein diversifiziertes Imperium aus mehreren Immobilien und zentraler Konzernsteuerung.
+
+- **Agent 29 – Immobilienportfolio:**
+  Verwaltung mehrerer Immobilien mit eigenständigen WorldStates, aber einheitlichen Simulations- und Ledger-Regeln. Standortübersicht, Kauf und Verkauf.
+- **Agent 30 – Unternehmensnetzwerk:**
+  Konzernzentrale zur Steuerung unterschiedlicher Konzepte (Hauptcasino, Nachtclub, Eventhalle, Sportbar). Standortvergleiche, zentrale Wirtschafts- und Personalkennzahlen.
+
+---
+
+### Kontinuierliche Qualitätssicherung: QA-Agent
+- **Wirtschaft:** Überprüfung von doppelten Buchungen, Kontenintegrität, Zero-Sum-Bilanzen und strikter Trennung von Wallet (`PORTEMONNAIE`) und Geschäftskonto (`HAUSKONTO`).
+- **Simulation:** Absicherung von PRNG-Determinismus, Replay-Stabilität, Save/Load-Roundtrips und Migrationspfaden.
+- **Gameplay:** Fehlerfreie Wegfindung, Reaktionsfähigkeit von NPCs, Kollisionsfreiheit und fehlerfreie Transaktionen.
+- **Regressionstests:** Automatisierte Nachweise nach jedem Feature-Schritt zur Sicherstellung stabiler Builds.
+

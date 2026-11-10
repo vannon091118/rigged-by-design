@@ -39,11 +39,13 @@ fi
 # brauchen keine node_modules. Deshalb laufen sie auch im Fruehausstieg, damit
 # ein frischer Klon nicht ungeprueft committet.
 inventory_docs_loc() {
-  node scripts/build-inventory.mjs
-  # Die Inventur ist Pflichtdoku und Gate-Grundlage: ohne dieses Stagen pruefte
-  # der Hook einen anderen Stand als den Commit und der naechste Lauf war rot.
-  git add docs/INVENTORY.md >/dev/null 2>&1 || true
-  node scripts/doc-sync.mjs --staged
+  # Ein Regenerationspfad fuer Inventur, Marker, Registry und Fortschritt:
+  # jede Datei kommt aus ihrem Generator und wird nur dort gestaged. Damit
+  # traegt kein Feature-Commit mehr handgeschriebene Generator-Artefakte.
+  if ! node scripts/sync-generated.mjs --staged; then
+    echo "pre-commit: generierte Artefakte nicht aktuell (ERR-4017) - Commit blockiert, node scripts/sync-generated.mjs ausfuehren" >&2
+    exit 1
+  fi
   node scripts/verify-docs.mjs
   if ! node scripts/check-loc.mjs >/tmp/rbd-loc.log 2>&1; then
     tail -20 /tmp/rbd-loc.log
@@ -67,7 +69,6 @@ if ! node scripts/test-catalog.mjs >/dev/null 2>&1; then
   exit 1
 fi
 inventory_docs_loc
-git add docs/INVENTORY.md >/dev/null 2>&1 || true
 # Governance-Freeze zuletzt: die Generatoren oben schreiben Doku, Matrix und
 # Inventur neu und koennen dabei Steuerdateien anfassen. Prueft das Gate davor,
 # sieht es einen anderen Staging-Stand als den Commit - lokal gruen, in CI rot.

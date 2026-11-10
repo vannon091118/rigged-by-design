@@ -1,0 +1,42 @@
+#!/bin/sh
+# Schnelle Integrationspruefung vor dem Push.
+#
+# Kein Testlauf, kein Build: `git fetch` gegen main, Claim-Gate und ein
+# Konfliktcheck mit `git merge-tree`. Das Ergebnis ist READY,
+# REBASE_REQUIRED oder MANUAL_CONFLICT.
+#
+# - READY und REBASE_REQUIRED lassen den Push zu; ein veralteter Branch ist
+#   ein Hinweis, kein Blockiergrund - die CI wiederholt die Pruefung auf der
+#   vertrauenswuerdigen Basis.
+# - MANUAL_CONFLICT blockiert: echte Quellcode-Konflikte werden nie
+#   automatisch zusammengewuerfelt.
+set -e
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ -x scripts/integrate.mjs ] || [ -f scripts/integrate.mjs ]; then
+  code=0
+  node scripts/integrate.mjs --check --hook --fetch >/dev/null 2>&1 || code=$?
+  case "$code" in
+    0) : ;;
+    3)
+      node scripts/integrate.mjs --check --no-fetch >&2 || true
+      echo "pre-push: MANUAL_CONFLICT - Konflikt in Handdateien; erst manuell loesen (ERR-4019)." >&2
+      exit 1
+      ;;
+    *)
+      echo "pre-push: REBASE_REQUIRED - Branch ist hinter main; vor dem Merge rebasen und regenerieren." >&2
+      ;;
+  esac
+fi
+
+# Claim-Gate: derselbe Pruefer wie der Commit, aber gegen den Branch-Diff.
+# Cloud-Agenten ohne Hooks umgehen den Commit; hier sehen sie ihn trotzdem.
+if [ -f scripts/verify-lane-claims.mjs ]; then
+  if ! BASE_REF=origin/main HEAD_REF=HEAD BRANCH="$branch" node scripts/verify-lane-claims.mjs --ci; then
+    echo "pre-push: Lane-Claim verletzt - Push blockiert (ERR-4019)." >&2
+    exit 1
+  fi
+fi
+
+exit 0

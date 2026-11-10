@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "base": "cbc1a29003418e3ea2dcd2e33a55080aa6996ee8",
+  "base": "62afc0443bc127d085736494863bc9aebdf8426c",
   "paths": [
     "AGENTS.md"
   ],
-  "token": "fdf00f2ffc694d554a25b27f0c604e5eca9fab6f54ffd50c3ac707baaedf7ec1",
+  "token": "3efa81ee7234268c9dc913bad497be19fe92f84321613f9a2f2591824ea18c7b",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

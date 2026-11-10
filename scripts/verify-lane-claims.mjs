@@ -25,7 +25,8 @@ import {
   COORDINATION_FILES,
   isTaskContractPath,
 } from './lib/lane-claims.mjs';
-import { commitOnMain, decideClaim, localMergeEvidence, mergedPullRequestIndex } from './lib/claim-evidence.mjs';
+import { filterMergedCollisions } from './lib/claim-evidence.mjs';
+import { generatedOnlyDiff } from './lib/generated-files.mjs';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -199,18 +200,24 @@ const HOOK_FILES = Object.freeze(['.githooks/pre-commit', '.githooks/commit-msg'
 /** Der mechanische Schreibpfad des Systems: Doku-Marker und Versionszeile. */
 const SYSTEM_LINE = /^[+-](<!--\s*rbd-doc:.*-->|"version":\s*".*",?|)\s*$/;
 
-function onlySystemLines(file) {
+/** Geaenderte Diff-Zeilen einer Datei; `null` heisst: Diff nicht lesbar. */
+function diffLines(file) {
   let diff;
   try {
     diff = DIFF_BASE
       ? git(['diff', '--unified=0', DIFF_BASE, '--', file])
       : git(['diff', '--cached', '--unified=0', '--', file]);
   } catch {
-    return false;
+    return null;
   }
-  const changed = diff
+  return diff
     .split(/\r?\n/)
     .filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line));
+}
+
+function onlySystemLines(file) {
+  const changed = diffLines(file);
+  if (changed === null) return false;
   if (changed.length === 0) return true;
   return changed.every((line) => SYSTEM_LINE.test(line));
 }
@@ -254,10 +261,10 @@ for (const file of staged) {
     continue;
   }
   if (META_FILES.includes(file)) {
-    // Die Inventur ist ein Generator-Artefakt: der Pre-Commit-Hook schreibt sie
-    // deterministisch aus dem Baum, und `verify:docs` prueft sie gegen den Baum.
-    // Sie ist deshalb kein handgeschriebener Inhalt und fuer jede Lane erlaubt.
-    if (file === 'docs/INVENTORY.md') {
+    // Generierte Anteile gehoeren ihrem Generator, nicht der Lane: Inventur,
+    // Roadmap-Fortschritt und Doku-Marker entstehen deterministisch und sind
+    // fuer jede Lane erlaubt. Handinhalt in derselben Datei bleibt gesperrt.
+    if (generatedOnlyDiff(file, diffLines(file))) {
       generatedMeta.push(file);
       continue;
     }
@@ -270,6 +277,14 @@ for (const file of staged) {
     continue;
   }
   if (claim.allowsPath(file)) continue;
+  // Marker sind mechanisch: eine Zeile, die nur den kanonischen Doku-Marker
+  // setzt, gehoert keinem Feature und braucht keine Lane. Dieselbe Auslegung
+  // nutzt der Governance-Freeze; ohne sie erzeugt jede Marker-Normalisierung
+  // einen Claim-Konflikt in jeder Lane.
+  if (onlySystemLines(file)) {
+    allowedBySystem.push(file);
+    continue;
+  }
   const mergedOwner = mergedClaims.find((c) => c.allowsPath(file));
   if (mergedOwner) {
     inherited.push(`${file} <- ${mergedOwner.id}`);
@@ -293,62 +308,22 @@ if (violations.length > 0) {
   process.exit(1);
 }
 
-/** Remote-Kopf: unterscheidet einen geloeschten von einem nur nicht ausgecheckten Branch. */
-function remoteHead(branch) {
-  try {
-    const out = git(['ls-remote', '--heads', 'origin', branch]);
-    return { known: true, sha: out.split(/\s+/)[0] || null };
-  } catch {
-    return { known: false, sha: null };
-  }
-}
-
-/** Evidenz nur einmal je Lauf holen; `null` heisst: kein Nachweis verfuegbar. */
-const mergedIndex = mergedPullRequestIndex();
-const baseTip = (() => {
-  try {
-    return git(['rev-parse', BASE_REF]);
-  } catch {
-    return null;
-  }
-})();
-const collisions = bot ? [] : findCollisions(claim).filter((collision) => {
-  // Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
-  // sondern ein veralteter Eintrag. `decideClaim` kennt beide Belege: den
-  // gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
-  // lokalen Historie (Squash-Merge, kein `gh` noetig). Ohne jeden Nachweis
-  // bleibt es fail-closed bei der Kollision.
-  const other = claims.find((entry) => entry.id === collision.lane);
-  if (!other) return true;
-  const pr = mergedIndex?.get(other.branch) ?? null;
-  const local = localMergeEvidence({ branch: other.branch });
-  const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
-  const branchHead = local.headSha ?? remote.sha;
-  const branchExists = Boolean(branchHead);
-  const branchAtBase = local.atBase || Boolean(remote.sha && baseTip && remote.sha === baseTip);
-  // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
-  // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
-  const absenceKnown = !branchExists && remote.known;
-  const mergedOnMain = Boolean(
-    pr &&
-      (branchExists ? branchAtBase : absenceKnown) &&
-      commitOnMain({ sha: pr.mergeCommit ?? pr.headRefOid, baseRef: BASE_REF }),
-  );
-  const evidence = decideClaim({
-    branchExists,
-    branchAtBase,
-    branchHeadOnMain: local.headOnMain,
-    branchTreeOnMain: local.treeOnMain,
-    headSha: branchHead,
-    mergedPr: pr,
-    mergedOnMain,
-  });
-  if (evidence.status === 'merged') {
-    console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
-    return false;
-  }
-  return true;
-});
+// Eine Lane, deren Arbeit nachweislich gemergt ist, ist keine Kollision mehr,
+// sondern ein veralteter Eintrag. Der geteilte Filter kennt beide Belege: den
+// gemergten PR (braucht `gh`) und den baumgleichen Commit auf `main` aus der
+// lokalen Historie (Squash-Merge, kein `gh` noetig). Ohne jeden Nachweis
+// bleibt es fail-closed bei der Kollision. Pretask nutzt denselben Filter,
+// damit Start und Gate nicht auseinanderlaufen.
+const collisions = bot
+  ? []
+  : filterMergedCollisions({
+      collisions: findCollisions(claim),
+      claims,
+      baseRef: BASE_REF,
+      onMerged: (collision, evidence) => {
+        console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
+      },
+    });
 if (collisions.length > 0) {
   console.error(`[ERR-4019] verify-lane-claims: Lane-Kollisionen für '${branch}':`);
   for (const coll of collisions) {

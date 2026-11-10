@@ -7,11 +7,12 @@
  * erfindet keine Metadaten und keine zweite Impact-Wahrheit.
  *
  * Grundsaetze:
- * - PR, MAIN und MANUAL tragen das zentrale Required-Set und die volle Suite.
+ * - Das Aenderungsrisiko waehlt die Gates: Doku, Narrative, Tests, Runtime und
+ *   Governance haben eigene Profile. MAIN und MANUAL behalten das volle Set.
  * - LIGHT, NOOP und PR_HANDOFF brauchen weder Tests noch Long-Tests.
- * - Impact ergaenzt nur Audit und die betroffenen Long-Tests, nie eine
- *   verkuerzte schnelle Regression.
- * - Unbekannter oder nicht bestimmbarer Diff -> volles Profil (fail-closed).
+ * - Die volle Suite laeuft nur, wo sie der Nachweis wirklich verlangt: MAIN,
+ *   MANUAL, Governance/Toolchain und unbekanntes Risiko (fail-closed).
+ * - Unbekannter oder nicht bestimmbarer Diff -> volles Profil mit Audit.
  */
 import { execFileSync } from 'node:child_process';
 import { ROOT } from './report.mjs';
@@ -28,7 +29,7 @@ import {
 import { dependencyChangedBetween } from './dependency-change.mjs';
 
 const DOC = /^(AGENTS\.md|README\.md|docs\/|\.lane-claims\/|\.mailmap$)/;
-const CI = /^(\\.github\/|scripts\/)/;
+const CI = /^(\.github\/|scripts\/|\.githooks\/)/;
 // Nur echte Toolchain-Aenderungen; `package.json` entscheidet der Inhaltsdiff
 // (`dependencyChangedBetween`), damit der Turn-Versionsbump kein Vollprofil ausloest.
 const DEPS = /^src\/Config\/(tsconfig\.json|vite\.config\.ts|eslint\.config\.mjs|capacitor\.config\.json)$/;
@@ -69,6 +70,11 @@ export function classifyChanged(changed, range = {}) {
   // dann entscheidet die Pfadliste. `planForCI` uebergibt base/head immer dann,
   // wenn es einen echten Git-Diff prueft; dort bleibt ein Lesefehler fail-closed.
   const manifest = range.base && range.head ? dependencyChangedBetween(range.base, range.head) : false;
+  // `runtime` ist Produktcode ohne Content und ohne Test: nur er rechtfertigt
+  // Build, Lint und Typecheck. Content hat sein eigenes, schlankeres Profil.
+  const runtime = files.some(
+    (file) => PRODUCT.test(file) && !TEST_FILE.test(file) && !CONTENT.test(file),
+  );
   return {
     files,
     empty: files.length === 0,
@@ -76,10 +82,36 @@ export function classifyChanged(changed, range = {}) {
     deps: manifest || files.some((file) => DEPS.test(file)),
     ci: files.some((file) => CI.test(file)),
     product: files.some((file) => PRODUCT.test(file) && !TEST_FILE.test(file)),
+    runtime,
     tests: files.some((file) => TEST_FILE.test(file)),
     content: files.some((file) => CONTENT.test(file) && !TEST_FILE.test(file)),
     unknown: files.filter((file) => !DOC.test(file) && !CI.test(file) && !DEPS.test(file) && !PRODUCT.test(file) && !/^(package\.json|pnpm-lock\.yaml)$/.test(file)),
   };
+}
+
+/**
+ * Risikoklasse einer Aenderung. Die Reihenfolge ist fail-closed: Governance
+ * und Runtime schlagen Content, Content schlaegt Tests/Doku. Lieber ein Gate
+ * zu viel als ein Merge ohne Nachweis.
+ */
+export const RISK_PROFILES = Object.freeze({
+  none: Object.freeze([]),
+  docs: Object.freeze(['check:loc', 'docs', 'tree']),
+  narrative: Object.freeze(['check:loc', 'docs', 'tree', 'narrative', 'capabilities', 'tests']),
+  tests: Object.freeze(['test-quality', 'tests']),
+  runtime: Object.freeze([...REQUIRED_CI_GATES]),
+  governance: Object.freeze([...REQUIRED_CI_GATES]),
+  unknown: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
+});
+
+export function riskFor(kind) {
+  if (!kind || kind.empty) return 'none';
+  if (kind.ci || kind.deps) return 'governance';
+  if (kind.runtime) return 'runtime';
+  if (kind.content) return 'narrative';
+  if (kind.tests) return 'tests';
+  if (kind.docsOnly) return 'docs';
+  return 'unknown';
 }
 
 const stateName = (value) => {
@@ -119,7 +151,7 @@ export function stateFor(options = {}) {
 export { CI_STATES, REQUIRED_CI_GATES };
 
 const stateReason = (state) => ({
-  PR: 'PR: Required-Set und vollstaendige Suite',
+  PR: 'PR: Required-Set und Suite nach Aenderungsrisiko',
   MAIN: 'main: Required-Set und vollstaendige Suite',
   MANUAL: 'manuell: Required-Set, Suite und Audit',
   LIGHT: 'Feature-Push: Light-Gates ohne Suite',
@@ -153,7 +185,11 @@ export function selectGates(changed, options = {}) {
     };
   }
 
-  const required = pinnedRequired(options) ?? stateGates;
+  // Nur der PR folgt dem Risiko. MAIN und MANUAL bleiben der volle Nachweis:
+  // ein Merge nach main ist kein Doku-Update, sondern der ausgelieferte Stand.
+  const risk = riskFor(kind);
+  const riskGates = state === 'PR' ? RISK_PROFILES[risk] ?? RISK_PROFILES.unknown : null;
+  const required = pinnedRequired(options) ?? (riskGates ?? stateGates);
   const selected = new Set(required);
   if (state === 'MANUAL') selected.add('audit');
   if ((state === 'PR' || state === 'MAIN') && options.impact === true && kind.deps) selected.add('audit');
@@ -172,22 +208,27 @@ export function selectGates(changed, options = {}) {
   return {
     kind,
     state,
+    risk,
     gates,
     required: [...required],
-    reason: stateReason(state),
+    reason: state === 'PR' ? `${stateReason(state)} (Risiko ${risk})` : stateReason(state),
     skipped,
   };
 }
 
 /**
- * Testauswahl: PR, MAIN und MANUAL fahren die vollstaendige Suite. LIGHT,
- * NOOP und PR_HANDOFF fahren nie Tests; ein Zustand ohne `tests`-Gate darf
- * niemals `runAll: true` melden. Der Impact waehlt nur die langen Nachweise.
+ * Testauswahl. Die volle Suite laeuft nur, wo sie der Nachweis verlangt: MAIN,
+ * MANUAL, Governance/Toolchain und unbekanntes Risiko. Ein PR mit Doku-, Test-
+ * oder Runtime-Aenderung faehrt die betroffenen Tests; ein Zustand ohne
+ * `tests`-Gate meldet nie `runAll: true`.
  */
 export function selectTests(changed, options = {}) {
   const files = [...(changed ?? [])];
   const state = stateFor({ ...options, changed: files });
-  const required = pinnedRequired(options) ?? gatesForState(state) ?? [];
+  const kind = classifyChanged(files, options);
+  const risk = riskFor(kind);
+  const riskGates = state === 'PR' ? RISK_PROFILES[risk] ?? RISK_PROFILES.unknown : null;
+  const required = pinnedRequired(options) ?? riskGates ?? gatesForState(state) ?? [];
   if (!required.includes('tests')) {
     return { files: [], long: [], runAll: false, reason: `${state}: kein tests-Gate`, shards: [] };
   }
@@ -195,15 +236,23 @@ export function selectTests(changed, options = {}) {
   const selection = selectAffectedTests(files);
   const split = partitionByProof(selection.tests ?? []);
   const long = [...new Set((split.long ?? []).map((entry) => (typeof entry === 'string' ? entry : entry.file)))].sort();
-  const fullSuite = ['PR', 'MAIN', 'MANUAL', 'UNKNOWN'].includes(state);
+  const fullSuite =
+    ['MAIN', 'MANUAL', 'UNKNOWN'].includes(state) || risk === 'governance' || risk === 'unknown';
   if (!fullSuite) {
-    return { files: [], long: [], runAll: false, reason: `${state}: keine Tests`, shards: [] };
+    const selected = [...new Set(selection.tests ?? [])].map(String).sort();
+    return {
+      files: selected,
+      long,
+      runAll: false,
+      reason: `${state}/${risk}: ${selected.length} betroffene Testdatei(en)`,
+      shards: [],
+    };
   }
   return {
     files: [],
     long,
     runAll: true,
-    reason: `vollstaendige Suite (${state})`,
+    reason: `vollstaendige Suite (${state}/${risk})`,
     shards: [],
   };
 }
@@ -211,10 +260,13 @@ export function selectTests(changed, options = {}) {
 /** Ein Plan aus bereits bekannten Aenderungen. */
 export function buildPlan(changed, options = {}) {
   const gates = selectGates(changed, options);
-  const tests = selectTests(changed, { ...options, state: gates.state });
+  // Dasselbe Gate-Set fuer die Testauswahl: sonst wuerde ein Doku-PR zwar
+  // keine Test-Gates fahren, aber `selectTests` koennte `runAll` melden.
+  const tests = selectTests(changed, { ...options, state: gates.state, required: gates.required });
   return {
     changed: gates.kind.files,
     state: gates.state,
+    risk: gates.risk,
     base: String(options.base ?? ''),
     head: String(options.head ?? ''),
     runId: String(options.runId ?? ''),
@@ -242,6 +294,7 @@ export function planReport(changed, plan) {
   return {
     changed,
     state: plan.state,
+    risk: plan.risk ?? 'unknown',
     base: plan.base ?? '',
     head: plan.head ?? '',
     runId: plan.runId ?? '',

@@ -11,7 +11,8 @@ const packageJson = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf8
 };
 const declared = new Set([...Object.keys(packageJson.dependencies ?? {}), ...Object.keys(packageJson.devDependencies ?? {})]);
 const architecture = readFileSync(resolve(ROOT, 'docs', 'ARCHITECTURE.md'), 'utf8');
-const section = architecture.split('<!-- DEP_MATRIX_START -->')[1]?.split('<!-- DEP_MATRIX_END -->')[0] ?? '';
+const matrix = readFileSync(resolve(ROOT, 'docs', 'DEPENDENCY-MATRIX.md'), 'utf8');
+const section = matrix.split('<!-- DEP_MATRIX_START -->')[1]?.split('<!-- DEP_MATRIX_END -->')[0] ?? '';
 const rows = section.split(/\r?\n/).filter((line) => line.startsWith('| ')).slice(2);
 
 const pkgRoot = (specifier: string): string => specifier.startsWith('@')
@@ -47,11 +48,16 @@ describe('Dependency-Governance', () => {
     }
     for (const pkg of declared) {
       const cells = table.get(pkg);
-      expect(table.has(pkg), `${pkg} fehlt in ARCHITECTURE.md`).toBe(true);
+      expect(table.has(pkg), `${pkg} fehlt in DEPENDENCY-MATRIX.md`).toBe(true);
       expect((cells?.[4] ?? '').length, `${pkg} ohne Begruendung`).toBeGreaterThan(10);
       expect(Number.parseInt(cells?.[5] ?? '0', 10), `${pkg} ohne Nutzung`).toBeGreaterThan(0);
     }
     expect(table.size).toBe(declared.size);
+  });
+
+  it('haelt die generierte Matrix aus der gesperrten Architektur', () => {
+    expect(architecture).not.toContain('<!-- DEP_MATRIX_START -->');
+    expect(matrix).toContain('<!-- DEP_MATRIX_START -->');
   });
 
   it('importiert keine undokumentierte Dependency aus src', () => {
