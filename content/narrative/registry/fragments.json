@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:cb562d48a89114e9103f09900dcf9173a1feff5b2f3a4ad30a8a7c02dd84baca",
+  "contentHash": "sha256:6e46ecf71cf06822571c66bb98dd748e18b8483558c50ea1e8a1bb561966b44e",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -18581,6 +18581,31 @@
       "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
+    },
+    {
+      "contributionId": "renovation-01",
+      "turnId": "2026-11-10T21:20Z-renovation",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita strich den Boden nicht neu, sie trug ihn ab. Erst die Theke, dann die Kabel, dann das Licht - und nach jeder Schicht stand im Heft, was das Haus jetzt ist. Dass die Stufe nicht im Kopf entstand, sondern im Beleg, merkte sie, als sie den alten Eintrag aufschlug und der Zustand noch dastand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-10-renovation.json"
     },
     {
       "contributionId": "returning-memory-01",

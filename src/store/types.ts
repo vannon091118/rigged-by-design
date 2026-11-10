@@ -11,6 +11,7 @@ import type { NarrativeView } from '../core/sim/narrative/view-types';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { DayPhase } from '../core/sim/day-phase';
 import type { CompanyStatus } from '../core/sim/progression';
+import type { RenovationView } from '../core/sim/renovation';
 import type { CityView } from '../core/sim/city';
 
 /**
@@ -97,6 +98,8 @@ export interface GameView {
   readonly barLevel: number;
   readonly wcLevel: number;
   readonly house: VaCoinMicro;
+  /** Renovierungsstufe der eigenen Immobilie samt naechstem Schritt. */
+  readonly renovation: RenovationView;
   readonly wallet: VaCoinMicro;
   readonly desk: VaCoinMicro;
   readonly pending: VaCoinMicro;

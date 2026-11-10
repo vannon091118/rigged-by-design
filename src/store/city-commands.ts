@@ -5,6 +5,7 @@ import { restInCity, runCityAction, travel, type CityLocationId } from '../core/
 import { backyardFight } from '../core/sim/fight-career';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
 import { buyProperty } from '../core/sim/property';
+import { renovate } from '../core/sim/renovation';
 import type { EncounterAction } from '../core/sim/city-types';
 import type { WorldState } from '../core/sim/types';
 
@@ -41,6 +42,12 @@ function propertyCmd(world: WorldState, ledger: Ledger, propertyId: string): str
   return world.lastEvent;
 }
 
+/** Renovierung: derselbe Immobilien-Einstieg, Material aus dem Lager, Geld vom Betriebskonto. */
+function renovateCmd(world: WorldState, ledger: Ledger): string {
+  renovate(world, ledger);
+  return world.lastEvent;
+}
+
 /** Alle Stadt-Eingaben der UI laufen durch genau diesen einen Einstieg. */
 export type CityCommand =
   | { readonly kind: 'travel'; readonly location: CityLocationId }
@@ -49,7 +56,8 @@ export type CityCommand =
   | { readonly kind: 'meet'; readonly location?: CityLocationId }
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
-  | { readonly kind: 'buyProperty'; readonly propertyId: string };
+  | { readonly kind: 'buyProperty'; readonly propertyId: string }
+  | { readonly kind: 'renovate' };
 
 export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: CityCommand): string {
   if (cmd.kind === 'travel') return travelCmd(world, cmd.location);
@@ -58,5 +66,6 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
   if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);
+  if (cmd.kind === 'renovate') return renovateCmd(world, ledger);
   return cityRestCmd(world, ledger, prng);
 }

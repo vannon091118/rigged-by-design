@@ -1,0 +1,24 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-10T21:20Z-renovation",
+  "contributionId": "renovation-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [
+    "rita-kern"
+  ],
+  "flags": [
+    "narrativ",
+    "rita-kern"
+  ],
+  "text": "Rita strich den Boden nicht neu, sie trug ihn ab. Erst die Theke, dann die Kabel, dann das Licht - und nach jeder Schicht stand im Heft, was das Haus jetzt ist. Dass die Stufe nicht im Kopf entstand, sondern im Beleg, merkte sie, als sie den alten Eintrag aufschlug und der Zustand noch dastand.",
+  "directives": []
+}

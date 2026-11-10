@@ -20,6 +20,8 @@ interface Props {
   readonly onChallenge?: () => void;
   /** Kauf der ersten Immobilie; ohne Handler bleibt der Knopf wirkungslos. */
   readonly onBuyProperty?: (id: PropertyId) => void;
+  /** Naechste Renovierungsstufe; ohne Handler bleibt der Knopf wirkungslos. */
+  readonly onRenovate?: () => void;
 }
 
 function Swatches(props: {
@@ -67,7 +69,7 @@ function LookPreview({ look }: { look: PlayerLook }) {
   );
 }
 
-function CareerSection({ view, onChallenge, onBuyProperty }: { view: GameView; onChallenge?: () => void; onBuyProperty?: (id: PropertyId) => void }) {
+function CareerSection({ view, onChallenge, onBuyProperty, onRenovate }: { view: GameView; onChallenge?: () => void; onBuyProperty?: (id: PropertyId) => void; onRenovate?: () => void }) {
   const career = view.career;
   return (
     <section className="career" aria-label="Deine Werte">
@@ -99,7 +101,13 @@ function CareerSection({ view, onChallenge, onBuyProperty }: { view: GameView; o
           <b>{career.job ? `${career.job.wageVC} VC/Tag · letzte Schicht ${career.job.lastWorkDay > 0 ? `Tag ${career.job.lastWorkDay}` : 'offen'}` : 'keine Schicht'}</b>
         </div>
       </div>
-      <CareerProperty property={career.property} house={view.house} onBuy={onBuyProperty} />
+      <CareerProperty
+        property={career.property}
+        house={view.house}
+        renovation={view.renovation}
+        onBuy={onBuyProperty}
+        onRenovate={onRenovate}
+      />
       <ul className="career-achievements">
         {career.achievements.map((entry) => (
           <li key={entry.id} className={entry.unlocked ? 'on' : 'off'}>{entry.label}</li>
@@ -111,7 +119,7 @@ function CareerSection({ view, onChallenge, onBuyProperty }: { view: GameView; o
   );
 }
 
-export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty }: Props) {
+export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, onRenovate }: Props) {
   return (
     <PopupShell eyebrow="DEIN CHARAKTER" title="Werte und Aussehen" onClose={onClose}>
       <div className="look-layout">
@@ -139,7 +147,7 @@ export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty }:
           </div>
         </div>
       </div>
-      <CareerSection view={view} onChallenge={onChallenge} onBuyProperty={onBuyProperty} />
+      <CareerSection view={view} onChallenge={onChallenge} onBuyProperty={onBuyProperty} onRenovate={onRenovate} />
     </PopupShell>
   );
 }

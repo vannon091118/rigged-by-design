@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-renovation",
+  "claimId": "lane/sim/renovation",
+  "branch": "lane/sim/renovation",
+  "baseSha": "8df56ffdbb245dfce0dfbd02530071240692d8f1",
+  "phase": "READY",
+  "title": "Masterplan Agent 09: Renovierung und Immobilienzustand",
+  "goal": "Vier Renovierungsstufen aus dauerhaften Belegen, Arbeit gegen Ersatzteile aus dem Lager und Deckung auf dem Betriebskonto, Wirkung auf Ruf und Gaestelaune, Sicht und Aktion im bestehenden Charakterfenster.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Feature-Commit, verify:all, PR und Merge.",
+  "revision": 1
+}
