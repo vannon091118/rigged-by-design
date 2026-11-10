@@ -1,13 +1,11 @@
 {
   "version": 1,
-  "base": "823b981e8b1816160dda7e4b8897e318e7fde799",
+  "base": "5bf657c346536a3af047545193322f6052c3354e",
   "paths": [
     "scripts/lib/claim-collisions.mjs",
     "scripts/lib/lane-claims.mjs",
-    "scripts/lib/staging-scope.mjs",
-    "scripts/turn-push.mjs",
-    "scripts/verify-lane-claims.mjs"
+    "scripts/turn-push.mjs"
   ],
-  "token": "cb45a8f97e379be79f96e14d29baa2ca77077b600aeb72fcf5c81f07e6716893",
+  "token": "25fdefda446a9b28344d85892c177a3061be0bf348690143ffe827689d2aac83",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
