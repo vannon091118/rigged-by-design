@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "CI auf dem gepushten Kopf abwarten; danach MERGE_PENDING.",
+  "nextAction": "Test-Quality-Befund behoben; CI auf dem reparierten Kopf abwarten, danach MERGE_PENDING.",
   "revision": 3
 }

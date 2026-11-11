@@ -95,14 +95,12 @@ describe('Wettmarkt auf den Vorkampf', () => {
     const quote = Number(/quote:([\d.]+)/.exec(slip.cause)![1]);
     const result = runUndercard(world, prng)!;
     enterFightEvent(world, ledger, prng);
-    const payout = ledger.entries.find((entry) => entry.reason === TX_REASON.FIGHT_BET_PAYOUT
-      || entry.reason === TX_REASON.FIGHT_BET_STAKE);
-    expect(payout).toBeDefined();
+    const wins = ledger.entries.filter((entry) => entry.reason === TX_REASON.FIGHT_BET_PAYOUT);
     if (result.winner === 'A') {
-      const won = ledger.entries.find((entry) => entry.reason === TX_REASON.FIGHT_BET_PAYOUT);
-      expect(won?.amount).toBe(Math.round(fromVC(1) * quote));
+      expect(wins).toHaveLength(1);
+      expect(wins[0]!.amount).toBe(Math.round(fromVC(1) * quote));
     } else {
-      expect(reasonsOf(ledger)).not.toContain(TX_REASON.FIGHT_BET_PAYOUT);
+      expect(wins).toHaveLength(0);
     }
   });
 

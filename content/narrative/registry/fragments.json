@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:383a7e5e3e8fc5e9a734d38f4df598f5e77c5baf1e5ae6357ba7406df8521372",
+  "contentHash": "sha256:512a923caade3af66daf05b2517ec123739435765445819c2dbe3e6b3dbafe26",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1724,6 +1724,28 @@
       "text": "Der Wettmarkt haengt am vorhandenen Turnierabend: kein zweiter Event, kein zweites Konto. Quoten kommen aus derselben Kampfmechanik, die den Vorkampf entscheidet, und der Schein fixiert sie, bevor der erste Schlag faellt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-task.json"
+    },
+    {
+      "contributionId": "agent24-test-quality",
+      "turnId": "2026-11-11T06:12Z-agent24-test-quality",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Beleg, der nur beweist, dass irgendetwas existiert, beweist nichts. Der Gewinn muss an seiner Quote haengen und die Zahl der Auszahlungen an der Zahl der richtigen Tipps - sonst ist der gruene Haken nur eine Behauptung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-test-quality.json"
     },
     {
       "contributionId": "apk-signing-01",

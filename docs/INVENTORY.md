@@ -600,10 +600,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2711 |
-| Gelistete Dateien | 2711 |
+| Getrackte Dateien | 2712 |
+| Gelistete Dateien | 2712 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (959), docs (83), public (554), scripts (102), src (799) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (960), docs (83), public (554), scripts (102), src (799) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -617,7 +617,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 118 Datei(en)
 - `.lane-claims/tasks/` — 66 Datei(en)
-- `content/narrative/contributions/` — 955 Datei(en)
+- `content/narrative/contributions/` — 956 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1865,6 +1865,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent24-bets.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent24-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent24-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-test-quality.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json` — { — gelesen: 21 Zeilen
@@ -1873,8 +1874,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21407 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3825 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21429 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3829 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2798,7 +2799,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
-- `src/core/sim/__tests__/fight-bets.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 123 Zeilen
+- `src/core/sim/__tests__/fight-bets.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/fight-career.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/fight-event.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 136 Zeilen
 - `src/core/sim/__tests__/floor-work.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 124 Zeilen
