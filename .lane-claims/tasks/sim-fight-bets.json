@@ -4,7 +4,7 @@
   "claimId": "lane/sim/fight-bets",
   "branch": "lane/sim/fight-bets",
   "baseSha": "7a99a145daa8b6d352c41ac0408ebe58dbe587a4",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 24: Wett-System fuer Kampfveranstaltungen",
   "goal": "Virtuelle VaCoin-Wettmaerkte auf den Vorkampf des Turnierabends: Quoten aus der bestehenden Kampfmechanik, Fixierung bei Abgabe, Marktschluss mit dem Kampf, automatische Abrechnung ueber den Ledger. Keine Wette auf den eigenen Kampf, keine Quotenaenderung nach der Abgabe, kein neues Save-Feld.",
   "taskType": "single",
@@ -17,7 +17,8 @@
     "mergedSha": "c54b8485e282e177d65f7302cdc58cc662b47a1f"
   },
   "findings": [],
-  "nextAction": "Nachsorge: DONE-Vertrag, Claim merged und Lanes entfernen.",
-  "revision": 5,
-  "mergedSha": "c54b8485e282e177d65f7302cdc58cc662b47a1f"
+  "nextAction": "Abgeschlossen: PR #431 (c54b8485) auf main, Claim merged mit Beleg.",
+  "revision": 6,
+  "mergedSha": "c54b8485e282e177d65f7302cdc58cc662b47a1f",
+  "mergedEvidence": "branch-tree-on-main"
 }

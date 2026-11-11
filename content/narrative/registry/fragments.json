@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:74bdcac462c09da12f4f74d50c2cea16a0d8821f567d3971c7f78d9d8d56995d",
+  "contentHash": "sha256:65e0e8c1ae3aebc6a2d417e353a138c688cd84a8fc443899fd164bc8bcebe77f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1724,6 +1724,28 @@
       "text": "Der Markt ist gesetzt, aber noch nicht bestaetigt: Erst der Lauf auf dem exakten Kopf entscheidet, ob Schein, Vorkampf und Abrechnung zusammen halten. Bis dahin bleibt jeder Zettel ein Versprechen und keine Buchung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-ci-pending.json"
+    },
+    {
+      "contributionId": "agent24-done",
+      "turnId": "2026-11-11T05:30Z-agent24-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Wettmarkt steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-done.json"
     },
     {
       "contributionId": "agent24-merge-pending",

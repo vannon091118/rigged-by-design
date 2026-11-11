@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:30Z-agent24-done",
+  "contributionId": "agent24-done",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sechs Durchlaeufe, ein Ergebnis: Der Wettmarkt steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+  "directives": []
+}
