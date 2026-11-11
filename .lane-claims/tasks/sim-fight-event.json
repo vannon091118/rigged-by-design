@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-fight-event",
+  "claimId": "lane/sim/fight-event",
+  "branch": "lane/sim/fight-event",
+  "baseSha": "b627d9553c80894d188372efc3523bfc6dc7f451",
+  "phase": "READY",
+  "title": "Agent 23: Kampfveranstaltungen im Turnierabend",
+  "goal": "Der vorhandene TURNIER_ABEND wird zum echten Kampfabend: Roster und Kampfplan kommen aus der bestehenden Hinterhof-Leiter, der Hauptkampf laeuft ueber simulateFight, Nenngeld und Preisgeld ueber den Ledger, Zuschauer aus dem laufenden Haus. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Vorhandene Kampf- und Event-Pfade pruefen; Roster und echten Kampf nur ueber die bestehenden APIs anbinden.",
+  "revision": 1
+}

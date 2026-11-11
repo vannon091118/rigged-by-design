@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 284 Dateien — contract 169 · integration 59 · governance 42 · statistics 7 · performance 7.
+Summe: 285 Dateien — contract 170 · integration 59 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -233,6 +233,7 @@ Summe: 284 Dateien — contract 169 · integration 59 · governance 42 · statis
 | `src/core/sim/__tests__/economy-losses.test.ts` | sim | contract | ja | `src/core/sim/economics.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
 | `src/core/sim/__tests__/fight-career.test.ts` | sim | contract | ja | `src/core/sim/fight-career.ts` |
+| `src/core/sim/__tests__/fight-event.test.ts` | sim | contract | ja | `src/core/sim/fight-event.ts` |
 | `src/core/sim/__tests__/floor-work.test.ts` | sim | contract | ja | `src/core/sim/floor-work.ts` |
 | `src/core/sim/__tests__/foreign-floor-tick.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-tick.ts` |
 | `src/core/sim/__tests__/grid-zones.test.ts` | sim | contract | ja | `src/core/sim/grid-zones.ts` |
@@ -597,10 +598,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2687 |
-| Gelistete Dateien | 2687 |
+| Getrackte Dateien | 2690 |
+| Gelistete Dateien | 2690 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (180), content (949), docs (83), public (554), scripts (102), src (791) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (182), content (950), docs (83), public (554), scripts (102), src (791) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -612,9 +613,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 115 Datei(en)
-- `.lane-claims/tasks/` — 63 Datei(en)
-- `content/narrative/contributions/` — 945 Datei(en)
+- `.lane-claims/claims/` — 116 Datei(en)
+- `.lane-claims/tasks/` — 64 Datei(en)
+- `content/narrative/contributions/` — 946 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -818,6 +819,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-company-progression.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-fight-career.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/claims/lane-sim-fight-event.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-sim-first-property.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-hybrid-visitor-flows.json` — { — gelesen: 25 Zeilen
@@ -887,6 +889,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-item-synergy.json` — { — gelesen: 19 Zeilen
@@ -1847,6 +1850,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent22-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-task.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent22-venue-event.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-task.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
@@ -1854,8 +1858,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21187 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3785 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21209 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3789 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen

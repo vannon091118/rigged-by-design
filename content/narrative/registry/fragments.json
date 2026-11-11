@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3930d67fe3af22c324b708dc14c36bc03e28571c9923f4f93bd8e9a62f2cb55b",
+  "contentHash": "sha256:696cac070132136f638af05d975c095be52da957817a5fe5159a6f913c33446a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1526,6 +1526,28 @@
       "text": "Die Bühne braucht keinen zweiten Kalender. Ankündigung, Einlass, Durchführung und Ergebnis liegen als Phasen auf derselben Instanz, die schon den Andrang trägt; das Archiv ist nur die Erinnerung daran, keine neue Liste.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-venue-event.json"
+    },
+    {
+      "contributionId": "agent23-task",
+      "turnId": "2026-11-11T07:15Z-agent23-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
     },
     {
       "contributionId": "apk-signing-01",
