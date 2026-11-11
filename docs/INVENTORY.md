@@ -621,10 +621,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2670 |
-| Gelistete Dateien | 2670 |
+| Getrackte Dateien | 2673 |
+| Gelistete Dateien | 2673 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (16), content (1008), docs (84), packages (28), public (554), scripts (118), src (834) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (18), content (1009), docs (84), packages (28), public (554), scripts (118), src (834) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -636,9 +636,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 7 Datei(en)
-- `.lane-claims/tasks/` — 7 Datei(en)
-- `content/narrative/contributions/` — 1004 Datei(en)
+- `.lane-claims/claims/` — 8 Datei(en)
+- `.lane-claims/tasks/` — 8 Datei(en)
+- `content/narrative/contributions/` — 1005 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -749,7 +749,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/dependabot.yml` — version: 2 — gelesen: 10 Zeilen
 - `.github/workflows/auto-resolve.yml` — name: Auto-Resolve — gelesen: 100 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
-- `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 190 Zeilen
+- `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 192 Zeilen
 - `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 1040 Zeilen
 - `.github/workflows/ensure-pr.yml` — name: Ensure PR — gelesen: 96 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 213 Zeilen
@@ -759,6 +759,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 94 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
+- `.lane-claims/claims/lane-governance-actions-storage-retention.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-claim-cleanup.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-claim-retention-postmerge.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-closeout-448-450.json` — { — gelesen: 24 Zeilen
@@ -766,7 +767,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-monitor-closeout-452.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-findings-448-449.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 10 Zeilen
+- `.lane-claims/tasks/governance-actions-storage-retention.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-retention-postmerge.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-448-450.json` — { — gelesen: 23 Zeilen
@@ -1650,6 +1652,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue-hotfix.json` — { — gelesen: 24 Zeilen
 - `content/narrative/contributions/2026-11-10-world-scene-queue.json` — { — gelesen: 24 Zeilen
+- `content/narrative/contributions/2026-11-11-actions-storage-retention.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-changelog-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-changelog-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent14-changelog-3.json` — { — gelesen: 21 Zeilen
@@ -1783,8 +1786,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22501 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4021 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22526 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4025 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1808 Zeilen
@@ -3000,7 +3003,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` — NAR-11: Die Fehlerpfade des Runtime-Composers lehnen ungueltige Direktiven, — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 256 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 257 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
