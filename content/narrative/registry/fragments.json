@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0191319087edcd10a7cfd783a721f48031607fc4a91ea59d3b200b49d3894b61",
+  "contentHash": "sha256:af6e79df399f2e233bffc7de85e741e62771634ee7c90931ba905ae60f079a56",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -316,6 +316,72 @@
       "text": "Fuenf Belege, eine Sprache: jeder der vier Agent-14-Claims nennt jetzt den Commit, der seinen Inhalt traegt, und dieser Claim nennt seinen eigenen. Wer nachzaehlt, findet keinen Wert mehr, der nur behauptet war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json"
+    },
+    {
+      "contributionId": "agent15-aftercare-1",
+      "turnId": "2026-11-11T03:20Z-agent15-aftercare-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schnitt ist durch: was oben liegt, ist der Stand des Zweigs, nicht ein Nachhall davon. Erst die Baumgleichheit macht aus dem Merge einen Beleg.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-1.json"
+    },
+    {
+      "contributionId": "agent15-aftercare-2",
+      "turnId": "2026-11-11T03:20Z-agent15-aftercare-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, der Zweig bleibt stehen, bis das Papier stimmt - kein Schritt wird uebersprungen, weil der Code schon oben liegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-2.json"
+    },
+    {
+      "contributionId": "agent15-aftercare-3",
+      "turnId": "2026-11-11T03:20Z-agent15-aftercare-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende steht kein Versprechen, sondern eine Zeile im Register: Branch-Kopf und Baum auf main, und der Zweig darf gehen. Was bleibt, ist der Nachweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-3.json"
     },
     {
       "contributionId": "agent15-amenity-1",
