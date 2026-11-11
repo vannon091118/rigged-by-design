@@ -3764,6 +3764,22 @@
     {
       "turnId": "2026-11-11T06:40Z-agent22-dead-code",
       "contributionId": "agent22-dead-code"
+    },
+    {
+      "turnId": "2026-11-11T06:45Z-agent22-ci-pending",
+      "contributionId": "agent22-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:50Z-agent22-merge-pending",
+      "contributionId": "agent22-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:55Z-agent22-aftercare",
+      "contributionId": "agent22-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T07:00Z-agent22-done",
+      "contributionId": "agent22-done"
     }
   ]
 }

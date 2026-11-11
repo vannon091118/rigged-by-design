@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:50Z-agent22-merge-pending",
+  "contributionId": "agent22-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Squash 50074210 ist baumgleich zum geprueften Lane-Kopf. MERGE_PENDING trennt den nachpruefbaren Merge vom noch offenen Registerabschluss.",
+  "directives": []
+}

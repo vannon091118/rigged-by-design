@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bb5ebe1aaa5168f393aac1510c573115f8ea10a81eecf12c3994c75efc65b560",
+  "contentHash": "sha256:3930d67fe3af22c324b708dc14c36bc03e28571c9923f4f93bd8e9a62f2cb55b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1374,6 +1374,50 @@
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
     },
     {
+      "contributionId": "agent22-aftercare",
+      "turnId": "2026-11-11T06:55Z-agent22-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf zieht nur Task, Claim und generierte Register nach; an Veranstaltungsphasen, Tick und Save-Feldern aendert er nichts.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-aftercare.json"
+    },
+    {
+      "contributionId": "agent22-ci-pending",
+      "turnId": "2026-11-11T06:45Z-agent22-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Event-Phasen sind mit #426 auf main; jetzt beginnt der Nachlauf. Erst Squash-Beleg und Register machen daraus einen belegten Abschluss, bis dahin bleibt der Task offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-ci-pending.json"
+    },
+    {
       "contributionId": "agent22-dead-code",
       "turnId": "2026-11-11T06:40Z-agent22-dead-code",
       "agentId": "buffy",
@@ -1394,6 +1438,50 @@
       "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
+    },
+    {
+      "contributionId": "agent22-done",
+      "turnId": "2026-11-11T07:00Z-agent22-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE heisst hier: Squash-Baum gleich Lane-Kopf, Claim merged und Lane entfernt. Der Event-Pfad bleibt die vorhandene NarrativeEventInstance.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-done.json"
+    },
+    {
+      "contributionId": "agent22-merge-pending",
+      "turnId": "2026-11-11T06:50Z-agent22-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash 50074210 ist baumgleich zum geprueften Lane-Kopf. MERGE_PENDING trennt den nachpruefbaren Merge vom noch offenen Registerabschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-merge-pending.json"
     },
     {
       "contributionId": "agent22-task",
