@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7565ca739898bf0bee1dcf42b5869b3921ee5c2687f36844ccd9c87607f9755a",
+  "contentHash": "sha256:74179b8e6a6c0ac088a6efa68ca32ed62f2da905720dcd87e62ce98e45ba41cd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -778,6 +778,28 @@
       "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
+    },
+    {
+      "contributionId": "agent18-aftercare",
+      "turnId": "2026-11-11T02:55Z-agent18-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst belegen, nicht behaupten: derselbe Baum, derselbe Beleg, ein Status.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-aftercare.json"
     },
     {
       "contributionId": "agent18-ci-pending",
