@@ -4,7 +4,7 @@
   "claimId": "lane/sim/fight-event",
   "branch": "lane/sim/fight-event",
   "baseSha": "b627d9553c80894d188372efc3523bfc6dc7f451",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Agent 23: Kampfveranstaltungen im Turnierabend",
   "goal": "Der vorhandene TURNIER_ABEND wird zum echten Kampfabend: Roster und Kampfplan kommen aus der bestehenden Hinterhof-Leiter, der Hauptkampf laeuft ueber simulateFight, Nenngeld und Preisgeld ueber den Ledger, Zuschauer aus dem laufenden Haus. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine.",
   "taskType": "single",
@@ -13,9 +13,10 @@
   "pr": {
     "number": 429,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/429",
-    "state": "open"
+    "state": "merged",
+    "mergedSha": "549b89142b291cf694ccecc755ff2de224fbe35f"
   },
   "findings": [],
-  "nextAction": "Pflichtstatus Fail-Closed Gates auf d5e5b988 pruefen; danach Squash-Merge auf dem exakten Kopf.",
-  "revision": 4
+  "nextAction": "Nachlauf: Claim und generierte Register auf merged/DONE ziehen; main ist 549b8914.",
+  "revision": 5
 }
