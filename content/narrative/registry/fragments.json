@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bb1b40df9b7d87268bf9223eed649af8e5a3a0ea4e61637ece91fe5f11c5833f",
+  "contentHash": "sha256:8e44d411187ad3ced78554f52c0c6c97daee064c8d0c4c287756f5d8a1932b6c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2032,6 +2032,28 @@
       "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
+    },
+    {
+      "contributionId": "agent26-ci-pending",
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kopf ist gepusht, die Pruefung uebernimmt. Bis sie gruen meldet, wird nicht nachgebessert; der naechste Schritt steht im Vertrag, nicht im Gefuehl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-pending.json"
     },
     {
       "contributionId": "agent26-claim",

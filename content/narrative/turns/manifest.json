@@ -3892,6 +3892,10 @@
     {
       "turnId": "2026-11-11T08:12Z-agent26-esport-code",
       "contributionId": "agent26-esport-code"
+    },
+    {
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "contributionId": "agent26-ci-pending"
     }
   ]
 }
