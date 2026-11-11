@@ -3818,5 +3818,10 @@
       "turnId": "2026-11-11T06:30Z-agent25-arena",
       "contributionId": "agent25-arena"
     }
+,
+    {
+      "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
+      "contributionId": "agent25-ci-pending"
+    }
   ]
 }

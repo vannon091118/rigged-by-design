@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d2597ae2c1bf5c5a1015c1d6027cc4ebba6a0ecb452010d0dd34d5a7a07fb433",
+  "contentHash": "sha256:3492e00f4247a584559c0b11c01864191c6ed89bb9c541f4dbc114e6f04e40db",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1680,6 +1680,28 @@
       "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-arena.json"
+    },
+    {
+      "contributionId": "agent25-ci-pending",
+      "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
     },
     {
       "contributionId": "agent25-task",
