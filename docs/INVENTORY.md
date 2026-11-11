@@ -585,10 +585,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2800 |
-| Gelistete Dateien | 2800 |
+| Getrackte Dateien | 2802 |
+| Gelistete Dateien | 2802 |
 | Getrackte Ordner | 103 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (194), content (998), docs (83), packages (28), public (554), scripts (102), src (813) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (196), content (998), docs (83), packages (28), public (554), scripts (102), src (813) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -600,8 +600,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 122 Datei(en)
-- `.lane-claims/tasks/` — 70 Datei(en)
+- `.lane-claims/claims/` — 123 Datei(en)
+- `.lane-claims/tasks/` — 71 Datei(en)
 - `content/narrative/contributions/` — 994 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -712,7 +712,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/auto-resolve.yml` — name: Auto-Resolve — gelesen: 100 Zeilen
 - `.github/workflows/auto-version-release.yml` — name: Auto Version & Release — gelesen: 110 Zeilen
 - `.github/workflows/build-apk.yml` — name: Build Android APK — gelesen: 190 Zeilen
-- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 1020 Zeilen
+- `.github/workflows/ci-verify.yml` — name: CI Verify — gelesen: 1040 Zeilen
 - `.github/workflows/ensure-pr.yml` — name: Ensure PR — gelesen: 96 Zeilen
 - `.github/workflows/long-checks.yml` — name: Long Checks — gelesen: 213 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 49 Zeilen
@@ -802,6 +802,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-p11-closeout.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json` — { — gelesen: 49 Zeilen
+- `.lane-claims/claims/lane-governance-soak-quick-fallback.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-sucht-folgen.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-welt-anker.json` — { — gelesen: 54 Zeilen
@@ -882,6 +883,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-readme-visual-polish.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen

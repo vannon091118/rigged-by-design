@@ -617,6 +617,26 @@ jobs:
           echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
           echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
           echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+
+      # Der volle Soak ist ein Sim-Nachweis: nur ein Diff unter src/core/sim
+      # rechtfertigt 100000 Ticks. Alles andere faehrt den kurzen Standardlauf;
+      # der manuelle bzw. woechentliche long-checks.yml bleibt voll.
+      - name: Soak-Tiefe nach Impact
+        id: soak
+        env:
+          BASE: ${{ steps.control.outputs.base }}
+        run: |
+          set -euo pipefail
+          if ! files=$(git diff --name-only "${BASE}...HEAD"); then
+            echo "::error::Diff gegen ${BASE} nicht lesbar; Soak-Tiefe nicht bestimmbar."
+            exit 1
+          fi
+          if printf '%s\n' "$files" | grep -Eq '^src/core/sim(/|$)'; then
+            echo "ticks=100000" >> "$GITHUB_OUTPUT"
+          else
+            echo "ticks=3000" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: pnpm installieren
         uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
@@ -636,7 +656,7 @@ jobs:
           RBD_NARRATIVE_LONGRUN: '1'
           RBD_BALANCE: '1'
           RBD_SOAK: '1'
-          RBD_SOAK_TICKS: '100000'
+          RBD_SOAK_TICKS: ${{ steps.soak.outputs.ticks }}
           RBD_REQUIRE_TESTS: '1'
         run: node "${{ steps.control.outputs.scripts }}/run-selected-tests.mjs"
 

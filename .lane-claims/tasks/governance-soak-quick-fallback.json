@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-soak-quick-fallback",
+  "claimId": "lane/governance/soak-quick-fallback",
+  "branch": "lane/governance/soak-quick-fallback",
+  "baseSha": "7241e253042eb68f89eb0aa3e6ec857d66da4e06",
+  "phase": "CI_PENDING",
+  "title": "CI-Soak nur bei Sim-Aenderungen voll",
+  "goal": "Der lange CI-Job faehrt 100000 Soak-Ticks nur bei Aenderungen unter src/core/sim; alle anderen Aenderungen nutzen den kurzen 3000-Tick-Lauf. Der manuelle Wochenlauf bleibt voll.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

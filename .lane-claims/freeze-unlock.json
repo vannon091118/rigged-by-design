@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "base": "e3389ec55cb57462b8bbc62b171178e56d85206d",
+  "base": "7241e253042eb68f89eb0aa3e6ec857d66da4e06",
   "paths": [
-    "docs/ARCHITECTURE.md"
+    ".github/workflows/ci-verify.yml"
   ],
-  "token": "66300723509058dc31db5966532853dd6a7884283562ca44229828bf4b1f79b6",
+  "token": "55175a3b83919c0355ee534cb10cbd37507686dc3edf9b169fe6e6f65d83e55d",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }
