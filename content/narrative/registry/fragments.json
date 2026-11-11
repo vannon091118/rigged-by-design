@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:17628a4ea9c77f255af479de368a0559df966abc036f6d47dc2f3369d45fb011",
+  "contentHash": "sha256:b7b73385e45ac65e902252c8e435f144efc6658e03ab7bc7aecad127eb5108ae",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2032,6 +2032,138 @@
       "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
+    },
+    {
+      "contributionId": "agent26-ci-fix",
+      "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der rote Tests-Lauf war kein Datenfehler, sondern eine gezaehlte Liste zu viel. Die Liga teilt sich jetzt das vorhandene Raster; die sieben Attribute behalten ihre eigene Liste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-fix.json"
+    },
+    {
+      "contributionId": "agent26-ci-pending",
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kopf ist gepusht, die Pruefung uebernimmt. Bis sie gruen meldet, wird nicht nachgebessert; der naechste Schritt steht im Vertrag, nicht im Gefuehl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-pending.json"
+    },
+    {
+      "contributionId": "agent26-claim",
+      "turnId": "2026-11-11T08:05Z-agent26-claim",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Sicht braucht eine eigene Datei, nicht eine wachsende Immobiliensektion. Also zieht die Liga in ihr eigenes UI-Modul, und der Claim nennt den Pfad von Anfang an - vor dem ersten Push, nicht danach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-claim.json"
+    },
+    {
+      "contributionId": "agent26-esport",
+      "turnId": "2026-11-11T08:10Z-agent26-esport",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadtliga ist eine Ableitung: sechs Teams, fuenf Rollen, Form je Tag. Kein Save-Feld traegt sie, weil Seed und Tag sie tragen; die Sicht liest dieselbe Wahrheit wie das Archiv.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-esport.json"
+    },
+    {
+      "contributionId": "agent26-esport-code",
+      "turnId": "2026-11-11T08:12Z-agent26-esport-code",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
+    },
+    {
+      "contributionId": "agent26-task",
+      "turnId": "2026-11-11T08:00Z-agent26-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Bevor ein Team entsteht, steht die Grenze: E-Sport ist kein zweiter Kampfabend. Die Liga nimmt ihre Anker aus den vorhandenen Rivalen und Orten, ihre Historie aus dem vorhandenen Archiv und ihre Sicht aus dem Charakterfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-task.json"
     },
     {
       "contributionId": "apk-signing-01",

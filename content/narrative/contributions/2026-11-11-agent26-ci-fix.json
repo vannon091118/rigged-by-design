@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+  "contributionId": "agent26-ci-fix",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Der rote Tests-Lauf war kein Datenfehler, sondern eine gezaehlte Liste zu viel. Die Liga teilt sich jetzt das vorhandene Raster; die sieben Attribute behalten ihre eigene Liste.",
+  "directives": []
+}

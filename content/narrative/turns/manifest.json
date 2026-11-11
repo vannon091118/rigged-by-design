@@ -3876,6 +3876,30 @@
     {
       "turnId": "2026-11-11T07:40Z-agent25-done",
       "contributionId": "agent25-done"
+    },
+    {
+      "turnId": "2026-11-11T08:00Z-agent26-task",
+      "contributionId": "agent26-task"
+    },
+    {
+      "turnId": "2026-11-11T08:05Z-agent26-claim",
+      "contributionId": "agent26-claim"
+    },
+    {
+      "turnId": "2026-11-11T08:10Z-agent26-esport",
+      "contributionId": "agent26-esport"
+    },
+    {
+      "turnId": "2026-11-11T08:12Z-agent26-esport-code",
+      "contributionId": "agent26-esport-code"
+    },
+    {
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "contributionId": "agent26-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+      "contributionId": "agent26-ci-fix"
     }
   ]
 }

@@ -5,6 +5,7 @@ import type { RenovationView } from '../core/sim/renovation';
 import type { MachineHallView } from '../core/sim/machine-hall';
 import type { PropertyId } from '../core/sim/types';
 import { worldStore, useWorldStore } from '../store/use-world-store';
+import { CareerEsport } from './career-esport';
 import { vc } from './format';
 
 interface Props {
@@ -36,6 +37,7 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
         <span>{owned === null ? 'noch keine' : 'in deinem Besitz'}</span>
         <span>{owned === null ? 'Kauf aus dem Portemonnaie' : `Tag ${owned.day} · ${vc(owned.priceVC)}`}</span>
       </div>
+      <CareerEsport />
       {owned !== null ? (
         <>
           <p className="career-next">
