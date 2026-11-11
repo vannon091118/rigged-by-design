@@ -4,7 +4,7 @@
   "claimId": "lane/sim/fight-bets",
   "branch": "lane/sim/fight-bets",
   "baseSha": "7a99a145daa8b6d352c41ac0408ebe58dbe587a4",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 24: Wett-System fuer Kampfveranstaltungen",
   "goal": "Virtuelle VaCoin-Wettmaerkte auf den Vorkampf des Turnierabends: Quoten aus der bestehenden Kampfmechanik, Fixierung bei Abgabe, Marktschluss mit dem Kampf, automatische Abrechnung ueber den Ledger. Keine Wette auf den eigenen Kampf, keine Quotenaenderung nach der Abgabe, kein neues Save-Feld.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Test-Quality-Befund behoben; CI auf dem reparierten Kopf abwarten, danach MERGE_PENDING.",
-  "revision": 3
+  "nextAction": "CI ist gruen auf b3057a7c; PR #431 auf diesem Kopf squash-mergen, danach main in die Lane mergen.",
+  "revision": 4
 }

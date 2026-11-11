@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:512a923caade3af66daf05b2517ec123739435765445819c2dbe3e6b3dbafe26",
+  "contentHash": "sha256:25e4557d3033032c7fc9965f8e73dd6e6a4e7aaeb6048340b7a95b2b0eeb0bda",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1702,6 +1702,28 @@
       "text": "Der Markt ist gesetzt, aber noch nicht bestaetigt: Erst der Lauf auf dem exakten Kopf entscheidet, ob Schein, Vorkampf und Abrechnung zusammen halten. Bis dahin bleibt jeder Zettel ein Versprechen und keine Buchung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-ci-pending.json"
+    },
+    {
+      "contributionId": "agent24-merge-pending",
+      "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kopf ist gruen, der Vertrag steht auf Merge: Was jetzt kommt, ist kein neuer Entwurf mehr, sondern die Bestaetigung, dass der gepruefte Stand genau der ist, der auf main wandert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-merge-pending.json"
     },
     {
       "contributionId": "agent24-task",
