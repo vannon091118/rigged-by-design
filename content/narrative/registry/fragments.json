@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7511a688e493490c4362d6c26a3921da93f5eef82c0895ce2d9dc0ec1881b323",
+  "contentHash": "sha256:bf588d10a959236ee08555000b4c2bfe4ff5ac131c2923d35ec45d3610486fb4",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1130,6 +1130,28 @@
       "text": "Der Lauf prueft den Kopf: erst wenn er gruen meldet, gilt der Hybridstrom als geliefert.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-ci-pending.json"
+    },
+    {
+      "contributionId": "agent20-done",
+      "turnId": "2026-11-11T04:35Z-agent20-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Stroeme, ein Haus: Casino, Bar und Club teilen sich dieselben Gaeste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-done.json"
     },
     {
       "contributionId": "agent20-hybrid-flow-1",
