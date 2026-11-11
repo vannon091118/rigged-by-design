@@ -5,13 +5,18 @@
 Drei Horizonte, keine Wunschliste. Was hier steht, ist entweder beauftragt oder
 begruendet vertagt; abgeschlossene Punkte wandern ins Changelog.
 
-## Nordstern
+## Nordstern: Living World Engine
 
-Eine **bespielbare Stadt** statt eines groesseren Casinos: mehrere Orte, Wege
-dazwischen, Figuren mit eigenem Tagesablauf und Erinnerungen, ein Charakter mit
-Laune, Ruf und Ressourcen. Das Casino bleibt darin der erste Ort und die
-Testumgebung, in der jede Regel bewiesen wird, bevor sie in die Welt zieht.
-Der MVP ist der Systembeweis und die Vorgabe fuer Detailtiefe, kein Content-Endstand.
+Eine **autonome, begehbare Lebenssimulation**: Der Spieler beginnt in seiner eigenen
+Wohnung (Schlafzimmer, Wohnbereich, Kochnische, Bad, Smartphone, Fenster nach draußen),
+tritt durch die Haustür direkt auf die physisch zusammenhängende Stadtstraße und ist
+ein Bewohner unter vielen. Die Stadt ist kein Auswahlbildschirm, sondern der permanente
+Spielraum. Gebäude stehen an Straßen, Wohnungen besitzen Bewohner, Arbeitsplätze haben
+Mitarbeiter, und Menschen gehen eigenständigen Tagesabläufen und Bedürfnissen nach.
+Das Casino ist eine Umgebung unter vielen – nicht die Engine. Der Spieler kann die
+Welt beobachten, beeinflussen oder einen vollkommen anderen Alltag führen, ohne jemals
+ein Casino zu betreten. Der MVP ist der Systembeweis und die Vorgabe für Detailtiefe,
+kein Content-Endstand.
 
 ## Governance-Freeze (aktiv)
 
@@ -25,7 +30,7 @@ Aufhebung nur auf ausdrückliche Anweisung des Owners; danach gilt der Freeze we
 
 > Bei der Doku-Konsolidierung aus `docs/PRODUCT.md` uebernommen; die Quelldatei wurde geloescht. Die Aussagen gelten zum Stand dieses Commits.
 
-**Ein Satz:** Rigged by Design ist eine Lebenssimulation: Du startest mit einem Startguthaben, keinem Plan und einer Welt voller Möglichkeiten – und das Casino ist nur der erste Raum, in dem du lernst, wie dieses Leben rechnet.
+**Ein Satz:** Rigged by Design ist eine autonome Lebenssimulation: Du erwachst in deiner eigenen Wohnung, trittst auf die Straßen einer lebendigen Stadt und führst dein Leben – das Casino ist nur eine Umgebung unter vielen, in der Wahrscheinlichkeiten und Geschäftsmodelle greifen.
 
 Kein Echtgeld. VaCoins sind fiktive, ganzzahlige Mikro-Einheiten (1 VC = 10.000). Es gibt keine Einzahlung und keinen Gewinn, der irgendwo ankommt.
 
@@ -33,18 +38,18 @@ Kein Echtgeld. VaCoins sind fiktive, ganzzahlige Mikro-Einheiten (1 VC = 10.000)
 
 „Rigged by Design“ ist ein Wortspiel, und es beschreibt zuerst das Leben, nicht das Haus. Man sucht sich nicht aus, in welche Verhältnisse man geboren wird: Eltern, Stadt, Startkapital, Laune, Marken, Vorgesetzte. Andere haben mit ihrem Leben vor dir schon angefangen, und ihre Entscheidungen sind die Bedingungen, unter denen deine stattfinden. Das Spiel ist manipuliert, weil das Leben manipuliert ist – und weil ein Casino das ehrlichste Beispiel dafür ist, wie aus einem gezinkten System ein Geschäftsmodell wird.
 
-Du erbst deshalb kein Vermögen. Du erbst einen Startpunkt: **150 VC Startkapital**, einen Schlüssel, einen Automaten und keinen Plan. Was daraus wird, entscheidet nicht eine Klasse oder ein Genre, sondern was du mit Laune, Geld, Leuten und Zeit machst.
+Du erbst keinen festgelegten Karrierepfad. Du beginnst in deiner eigenen kleinen Wohnung: Schlafzimmer, Wohnbereich, Kochnische, Bad, persönliche Gegenstände, Smartphone und ein Fenster zur Straße. Vor deiner Haustür liegt eine physische Stadt mit funktionierenden Gebäuden, Bewohnern, Arbeitsplätzen und Geschäften. Was daraus wird, entscheidet keine Klasse oder ein starres Genre, sondern wie du deinen Alltag gestaltest – ob als Casino-Betreiber, Handwerker, Nachtschwärmer, Nachbar oder schlichter Beobachter.
 
-### Casino ist der Startpunkt, nicht das Genre
+### Casino ist eine Umgebung, nicht die Engine
 
-Das Casino ist die **erste Umgebung und die Testumgebung**. Es ist der Ort, an dem die Systeme beweisen, dass sie tragen:
+Das Casino ist eine **spezialisierte Umgebung und Testbude für Wahrscheinlichkeiten und Wirtschaftssysteme**. Es ist der Ort, an dem bestimmte Systeme beweisen, dass sie tragen:
 
 - Gäste mit Budget, Laune, Geduld, Persona und Erinnerung,
 - ein Ledger, das jede Folge bucht, statt sie zu behaupten,
 - eine Narrative Engine, die aus echten Zustandsübergängen Geschichten ableitet,
 - eine Oberfläche, die Ursache und Wirkung zeigt, statt Zahlen zu dekorieren.
 
-Es ist **nicht** das Endziel und nicht die Kategorie des Spiels. „Sims“ kommt der Sache näher als „Casino-Manager“, trifft sie aber auch nicht: Es geht nicht um ein Haus, das man verwaltet, sondern um ein Leben, das man führt, und um eine Welt, die schon vorher Regeln hatte.
+Es ist **nicht** das Endziel und nicht die Beschränkung des Spiels. Die Living World Engine trägt alle Orte gleichberechtigt: Wohnungen, Kneipen, Supermärkte, Büros, Werkstätten, Straßen und Plätze. Der Spieler ist ein Bewohner unter vielen und nicht der Mittelpunkt der Welt. Die Simulation läuft auch dann weiter, wenn der Spieler nicht hinsieht.
 
 Der MVP ist ein **Systembeweis** und gleichzeitig die **Vorgabe für Detailtiefe**: Er zeigt, wie tief ein Aspekt simuliert wird, wenn er fertig ist – nicht, wie viel Content am Ende existiert. Weitere Kontexte – Kneipe, Tante-Emma-Laden, Wohnung, Straße, später die ganze Stadt – kommen laufend dazu.
 
@@ -258,7 +263,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 895/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 896/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -317,38 +322,72 @@ Diese Punkte blockieren keine Spielentwicklung. Neue Governance-Arbeit ist nur
 bei konkretem Defekt, realem Integritaetsfehler, messbarem Workflow-Zeitverlust
 oder nachweisbarer wiederkehrender Agentenarbeit zulaessig.
 
-## Als Nächstes — Lebenssysteme aus dem Casino loesen
+## Als Nächstes — Living World Engine: Phasenplan
 
-- Task 4/5 ist erledigt: Möbel, Figuren, Requisiten und Wandvorderseiten teilen eine Tiefenebene mit Fußanker, deterministischem Tie-Breaking und gezielter Sortierung. Task 5/5 ist mit Phase 2 abgeschlossen: Commands, 30-Schritt-Undo/Redo, Editor-UI, Pixi-Auswahl, Ctrl+Z/Ctrl+Y, Export/Import und der Produktionsausschluss stehen; der Editor bleibt hinter `VITE_RBD_EDITOR_MODE=1` plus `?editor=1`.
-- **Charakterwerte verallgemeinern:** Laune, Charisma, Intellekt und Ausgabebereitschaft als Achsen der Spielfigur fuehren, nicht als Casino-Sonderfall. TV, Werbung und Marken wirken auf dieselben Werte wie Gäste-Laune und Persona.
-- **Ledger-Ressourcen:** Zeit, Ruf, Vorräte und Aufmerksamkeit als gebuchte Ressourcen nach Bedarf ergaenzen; eine Ressource, eine Zeile, eine Ursache. Geld bleibt die erste, nicht die einzige Wahrheit.
-- **Social-Plugin der Narrative Engine:** Facts, Erinnerungen und gerichtete Beziehungen ausserhalb von Gast/Haus tragen lassen (Nachbarn, Kollegen, Freunde); neue Facts und Templates, keine zweite Erzaehlmaschine.
-- **Erste weitere Orte:** Kneipe, Tante-Emma-Laden und Wohnung als Vertical Slices auf demselben Kern. Jeder Ort liefert Inhalte und eine duenne Anbindung, keine eigene Engine.
-- **Schaufenster und Preise als Eigenschaften:** Marken, Traits (z. B. „Konsument“) und Preisniveau wirken auf Charisma und Laune, statt nur Dekoration zu sein.
-- **Stadtgrundlage:** Wege zwischen Orten, Tagesablaeufe von NPCs und ein Charakter, der sich zwischen ihnen bewegt; zuerst als Datenmodell und Anzeige, dann als Spielschleife.
+Die Entwicklung fokussiert sich auf die mehrphasige Umsetzung der Living World Engine. Die bestehende Grundlage (`src/core/`, `world-store`, Ledger, PRNG, Narrative Engine) bleibt erhalten und bildet das Fundament:
 
-- Lichtpfuetze ueber Regionskanten zusammensetzen, damit grosse Saele keine Chunk-Naht im Licht zeigen; heute zeichnet jeder Chunk seine eigene Pfuetze.
-- Touch ist umgebaut (Ein-Finger-Pan ab 8 px, Tippen laeuft, Aktionskarte statt Radialmenue, Sofort-Feedback), aber nur im Code belegt: 60 fps beim Jackpot mit neun Gaesten und Tap-zu-Bild in einem Frame brauchen die Abnahme auf einem echten Geraet.
-- Geld fuehlt sich an (Phase 3): acht Ereignisse mit Partikeln, Ton, Licht und Shake, Kassen-Chips, Laune-Sprechblase und Spiel-Identitaeten sind im Code und am 2026-11-06 im Desktop-Browser abgenommen. Jackpot-Burst/Flash/Shake und Win-Sound, sichtbare Kassen-Chips mit Coin-Sound, die Mood-Bubble im Detail-LOD und alle acht Spiel-Identitaeten sind belegt; Lautsprecher-/Gehoer-Pruefung, 60 fps und der Emitter-Zaehler im Werkstatt-HUD bleiben fuer das echte Geraet offen; ein Abnahmetest sichert die FPS-Anzeige (60/30/0 fps) gegen Rueckbau.
-- Huelle (Phase 4): zwei Atlasseiten, `PerfGovernor`, Safe Areas, Hochformat, First-Frame-Handshake, Haptik und Musik-nach-Geste sind gebaut. Der 4G-Pfad misst 20 Requests / 2,51 s (9 Mbit/s, 70 ms); Slow 4G (1,6 Mbit/s, 150 ms) ist mit 22 Requests / 12,16 s bei 2,42 MB gemessen. Die HUD-PNGs sind inline; der WebP-Atlas und die lazy Plinko-Buehne sind seit 0.3.141 auf main, der erste Frame bleibt bandwidth-bound; fuer unter drei Sekunden muss das Initial-JS/Atlas weiter schrumpfen; ein Abnahmetest haelt das Atlas-Budget bei 384.234 B und die 400.000-B-Grenze fest. APK liegt als Debug-Artefakt vor. Naechste Abnahme: echtes 200-Euro-Geraet und `adb install`.
+### Phase 0 – Bestehende Grundlage schützen und konsolidieren
+- **Ziel:** Auf dem aktuellen Repository-Stand weiterarbeiten, nicht von vorne anfangen.
+- Headless WorldState, Store, deterministische Simulation, A*-Navigation, Interaction Planning, Narrative Scheduler und Pixi-Depth-Stage bleiben erhalten.
+- In-flight PRs (#402, #403) und bestehende Feature-Lanes behalten ihren regulären Ablauf.
 
-- Import/Export um benannte Spielstaende erweitern (mehrere Slots statt einer Zwischenablage).
-- Dialogfuehrung bekommt einen Content-Slot fuer Autorentexte; bis dahin bleibt die Sicherheitsfassung, und der Dialog haelt bewusst keinen Zustand ueber Speichern/Laden.
-- Narrativ-Engine: NAR-04 bis NAR-17 sind erledigt (Beziehungen, Trigger, Scheduler, Templates, Choice-Vertrag, Command-DSL, Content-Schema, Compiler, Composer, Orchestrierung, Demand-Migration, Narrative UI, autonome Rivalen, Langzeit, Doku-Sync). Compiler und Composer bleiben lokal ohne LLM; laufende Nachfrageevents aus v5–v9-Saves werden beim Laden zu Event-Instanzen. Seit B1 liefert `narrative/composition-context.ts` den Szenen-Kontext aus Fact, Template, Teilnehmern, Erinnerung und gerichteter Kante; `requiredFlags` bleibt auf Template-Requirements begrenzt. B2 ist erledigt: `ContentSlot.requiredContexts` traegt den Slot-Zweck, `ComposeRequest.requiredContexts` gilt zusaetzlich fuer alle Slots, `contexts` bewertet nur Treffer, und der Gleichstand entscheidet per FNV-1a-Hash aus Szenen-ID und Slot-ID ohne RNG; das Vokabular kennt `welcome`, `ask`, `defuse`, `escalate`, `confront`, `watch` und `aftermath`. Naechster Schritt ist der erste Content-Batch nach D1 und danach das Social-Plugin.
-- Asset-Lizenz als Nachweis im Repo verlinken (Lizenz liegt beim Betreiber).
+### Phase 1 – Home & Neighborhood Foundation (P0)
+- **Spieler-Wohnung:** Start in eigener Wohnung (Schlafzimmer, Wohnbereich, Kochnische, Bad, persönliche Gegenstände, Smartphone, Fenster zur Straße).
+- **Physische Stadtstraße:** Straßennetz, Gehwege, Kreuzungen, Straßenlaternen und belegbare Gebäude-Footprints.
+- **Gebäude-Entitäten:** Jedes Gebäude besitzt eine stabile ID, Position/Footprint, Eingang, Gebäudetyp, Bewohner/Eigentümer, Öffnungszeiten und Innenraum-Referenz.
+- **Nahtlose Raumübergänge:** Der Gang durch die Haustür führt physisch auf die Straße; das Betreten eines Gebäudes wechselt den Raumfokus ohne Spielstands-Reset.
+
+### Phase 2 – Autonomous NPC World (P0)
+- **Tagesabläufe & Routinen:** NPCs stehen morgens auf, frühstücken, laufen zur Arbeit, machen Pausen, kaufen ein, besuchen Freunde, haben Freizeit und schlafen.
+- **Ziele & Bedürfnisse:** Intent-Simulation reagiert auf Hunger, Müdigkeit, Geld, Verpflichtungen, Laune, Interessen, Konflikte und Erinnerungen.
+- **Dynamische Pläne:** NPCs können sich verspäten, Pläne ändern, Termine verpassen oder auf Zwischenfälle reagieren.
+- **Persistente Präsenz & LOD:** NPCs despawnen nicht beim Verlassen des Bildschirms. Sichtbare Akteure laufen voll simuliert (A*); Akteure außerhalb des Sichtbereichs werden deterministisch fortgeschrieben und bei Wiederannäherung nahtlos auf ihren Pfad synchronisiert (keine Teleportation).
+
+### Phase 3 – Physical Buildings & Interior Continuity (P0)
+- **Physische Gebäude:** Wohnungen, Kneipen, Supermärkte, Kioske, Büros, Werkstätten und Spielhallen nutzen dieselbe World Engine mit spezifischen Raum-Layouts.
+- **Akteur-Kontinuität:** Folgt der Spieler einem NPC in ein Gebäude, trifft er im Innenraum auf exakt dieselbe Person mit unverändertem Zustand und Gedächtnis. Keine Duplikate, kein Respawn.
+
+### Phase 4 – Social Interaction & Communication (P0)
+- **Situative Begegnungen:** Gespräche entstehen durch physische Nähe, Blickkontakt, Herantreten oder wenn ein NPC den Spieler anspricht.
+- **Smartphone-Kommunikation:** Anrufe und Nachrichten sind echte Simulationsereignisse mit Sender, Motivation, Kontext und Zeitpunkt.
+- **Kontextsensitive Dialoge:** Gespräche berücksichtigen Persönlichkeit, Charisma, Beziehungskanten, Stimmung, Erinnerungen und bisherige Aussagen.
+
+### Phase 5 – World Events & Interactive Story Chains (P0/P1)
+- **Räumliche Ereignisse:** Vorfälle geschehen physisch in der Stadt (z. B. Disput vor einem Geschäft).
+- **Handlungsfreiheit:** Der Spieler kann zusehen, vorbeigehen, schlichten oder eskalieren.
+- **Verzweigte Folgen:** Ereignisse erzeugen persistente Fakten und Erinnerungen, die sich auf spätere Begegnungen und Gerüchte auswirken.
+
+### Phase 6 – World Presentation & Visual Responsiveness (P1)
+- **Reaktiver Präsentationsvertrag:** Sichtbare Rückmeldung auf alle Aktionen (Blickwendung, Gesten, Türanimation, Smartphone-Klingeln/Vibrieren, Lichtinseln).
+- **Präsentationsqualität:** Depth-Stage-Occlusion, Interaktions-Highlights, Kontaktschatten und sauberes Kamera-Framing.
+
+### Phase 7 – Visual Asset Production (Parallel)
+- **Zentrale Art Direction:** Einheitlicher Pixelmaßstab, Perspektive, Paletten und Proportionen.
+- **Spezialisierte Artists & Asset Integrator:** Strukturierte Asset-Lieferung (Environment, Objects, Characters, Architecture, Animation) in Manifest und Semantik-Register ohne Writer-Kollisionen.
+
+### Phase 8 – Interaktiver Living World Vertical Slice (Zentrale Abnahme)
+- **End-to-End-Abnahmeszenario:** Aufwachen in der Wohnung -> Smartphone-Nachricht -> Hinaustreten auf die Straße -> Nachbarn beobachten -> Nachbarn zur Kneipe folgen -> denselben Nachbarn am Tresen treffen -> Gespräch führen -> Beziehungskonsequenz -> spätere Erinnerung.
+- **Automatisierte Systemabnahme:** Keine NPC-Duplikate, keine Teleportationssprünge, Save/Load-Erhalt über alle Raumgrenzen hinweg.
+
+### Phase 9 – Stadt skalieren und Lebenssysteme ausbauen
+- Skalierung von Stadtvierteln, Wohnungen und Gewerbe.
+- Anbindung der Fachdomänen von Agents 16–30 (Personal, Hospitality, Events, Arena, Esports, Multi-Property) an das lebendige Stadtgefüge.
 
 ## Später — Stadt und Release
 
-- **Bespielbare Stadt vor dem Release:** mehrere Orte, begehbare Wege, Figuren mit Tagesablauf, Erinnerung und eigenem Geld; ein Charakter mit Laune, Ruf und Ressourcen. Das ist der Release-Horizont, nicht ein groesserer Saal.
-- Rivalen-Profilkarte mit Historie und Indizien; ortsuebergreifende Aktionen statt nur casino-uebergreifender.
-- Sieben-Tage-Langlauf mit Narrativ-Ereignissen als eigener CI-Nachweis.
-- Uebersetzung der UI-Texte, falls eine zweite Sprache dazukommt.
+- **Bespielbare Stadt vor dem Release:** Mehrere Bezirke, begehbare Straßen, Figuren mit vollständigem Tagesablauf, Erinnerung und eigenem Geld; ein Charakter mit Laune, Ruf und Ressourcen. Das ist der Release-Horizont, nicht ein größerer Saal.
+- Rivalen-Profilkarten mit Historie und Indizien; ortsübergreifende Aktionen statt nur casino-spezifischer Sabotage.
+- Sieben-Tage-Langlauf mit dynamischen Welt-Ereignissen als eigener CI-Nachweis.
+- Übersetzung der UI-Texte, falls eine zweite Sprache dazukommt.
 
 ---
 
-## Der 30-Agenten-Masterplan: Vom Startpunkt zum Unternehmensnetzwerk
+## Der 30-Agenten-Masterplan: Anbindung an die Living World
 
-Die Gesamtentwicklung von *Rigged by Design* vollzieht sich entlang von sechs aufeinander aufbauenden Phasen (30 fokussierte Agenten-Aufträge) unter kontinuierlicher Begleitung des QA-Agents.
+Die Facharbeiten der Agents 01–30 bleiben integraler Bestandteil des Gesamtprojekts und werden schrittweise in die Living World eingebettet:
+- **Agents 01–06 (Spielerrolle):** Bereits weitgehend geliefert (Geldtrennung, Arbeit, RPG-Attribute, Kampfkarriere, Dashboard).
+- **Agents 07–13 (Eigentum & Halle):** Erste Immobilien, Renovierung, Automaten, Mods und Synergien werden als städtische Gebäude und Standorte verankert.
+- **Agents 16–30 (Skalierung & Erweiterung):** Mitarbeiter (Agent 16) wohnen und pendeln in der Stadt; Bars, Clubs und Gastronomie (Agents 17–21) sind reale Treffpunkte für städtische Bürger; Events und Sport (Agents 22–28) bilden öffentliche Attraktionen; und das Konzernnetzwerk (Agents 29–30) umfasst Gewerbeobjekte im gesamten Stadtgebiet.
 
 ### Phase 1: Fundament & Persönliche Spielerrolle (Agents 01–06)
 Ziel ist es, den Spieler als echten Protagonisten in der Welt zu verankern – mit eigener Brieftasche, echter Arbeit, spürbaren Charakterwerten und persönlicher Kampfkarriere.

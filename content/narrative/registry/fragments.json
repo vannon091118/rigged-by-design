@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7a69affacaa4b52255ee984c3c9461b3557cb3530124d2bc0df77fc59710c519",
+  "contentHash": "sha256:0db64442fb81c6a6d11b2f951fb5ccff4dc7fdb82521b73cb196a2f82aa84b70",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5169,6 +5169,28 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "living-world-vision-1",
+      "turnId": "2026-11-11T02:00Z-living-world-vision-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt wartet nicht auf den Spieler. Wer die Wohnungstuer oeffnet, tritt in ein Leben, das laengst laeuft: Nachbarn gehen zur Arbeit, Geschaefte oeffnen, und das Casino ist nur ein Raum unter vielen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-vision-1.json"
     },
     {
       "contributionId": "loc-gate-01",

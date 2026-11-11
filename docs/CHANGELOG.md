@@ -15,6 +15,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ## [0.3.211] - 2026-11-10
 
 ### Technik
+- **Living World Engine Vision & Governance-Harmonisierung.** Die normativen Referenzdokumente (`docs/ROADMAP.md`, `docs/ARCHITECTURE.md`, `README.md`) wurden auf die autonome Lebenssimulation ausgerichtet: Der Spieler beginnt in seiner Wohnung und betritt die physische Stadt; das Casino ist eine Umgebung, nicht die Engine. Die Meilensteine definieren die Phasen von Spielerwohnung und Stadtstraßen über autonome NPC-Tagesabläufe bis zum Vertical Slice. Die fachlichen Aufgaben der Agents 16–30 sind als funktionale Stadtmodule verankert. Freigabe erfolgte über den autorisierten PIN 0911.
 - **Abschluss-Pass Agent 14.** Die Buchhaltung des Laufs ist nachgezogen: die Claims der Feature- und der Governance-Lane stehen mit ihren Squash-Belegen (`7b31ba0`, `8dcefe5`) auf `merged`, die zugehoerigen Task-Vertraege auf `DONE`, und der Nachlauf-Claim ist mit demselben Beleg geschlossen. Kein Spielinhalt, keine Code-Aenderung.
 - **Merge-Belege nach Schema.** Die vier Agent-14-Claims tragen `mergedEvidence: branch-tree-on-main` statt des im Schema nicht definierten Werts `squash-merge`; `mergedSha` nennt den baumgleichen Merge-Commit (`7b31ba0`, `8dcefe5`, `65c11aa`, `06adaada`). Beim Closeout-Claim stand zuvor `a922b39` - die Basis vor dem Nachlauf, deren Baum nicht dem Lane-Kopf `1572d85` entspricht.
 
