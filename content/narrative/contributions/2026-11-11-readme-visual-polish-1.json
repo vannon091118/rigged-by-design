@@ -1,0 +1,21 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-11T04:50Z-readme-visual-polish-1",
+  "contributionId": "readme-visual-polish-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-low",
+  "function": "react",
+  "contexts": [
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wenn die Fassade glaenzt, weiss man wenigstens, wofuer das verlorene Geld draufgegangen ist.",
+  "directives": []
+}
