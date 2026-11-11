@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e1084bf3425f17c97b67a1ad58d13636aeb1d0180980fd9ddf9fbc47ebab4b79",
+  "contentHash": "sha256:5316f60e48beb46dc50d833f3c1cc526815309eaed7465bf091781db9ce29896",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1240,6 +1240,28 @@
       "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
+    },
+    {
+      "contributionId": "agent21-merge-pending",
+      "turnId": "2026-11-11T05:35Z-agent21-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein grüner Lauf allein ist kein Abschluss. Erst der Squash-Beleg auf main macht den Merge nachprüfbar; MERGE_PENDING hält den nächsten Schritt fest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-merge-pending.json"
     },
     {
       "contributionId": "agent21-room-plan-1",
