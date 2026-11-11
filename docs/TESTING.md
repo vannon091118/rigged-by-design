@@ -21,14 +21,14 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | 1 | Neuer Task auf sauberem, isoliertem Worktree | `worktree-isolation.test.ts`; `pretask.test.ts` |
 | 2 | Unterbrechung nach mehreren lokalen Änderungen, Resume | `pretask-modes.test.ts` (eigener Claim, verknüpfter Worktree, `--resume`) |
 | 3 | Resume ohne Verlust, Stash, Reset oder Clean | `pretask-modes.test.ts` (eigene WIP bleibt); Verhalten: Dateien vor/nach identisch, keine destruktiven Git-Befehle |
-| 4 | Frischer Task auf verschmutztem Worktree wird abgewiesen | `pretask.test.ts`, `worktree-isolation.test.ts`; fremde Datei bleibt erhalten |
-| 5 | Fremde WIP außerhalb des Claims erkannt, bleibt erhalten | `pretask-modes.test.ts` (`foreignPaths` im Vertrag) |
+| 4 | Frischer Task auf verschmutztem Worktree wird adoptiert; `--require-worktree` weist den geteilten Baum ab | `pretask.test.ts`, `worktree-isolation.test.ts`; fremde Datei bleibt erhalten |
+| 5 | Fremde WIP außerhalb des Claims adoptiert, nicht blockiert | `pretask-modes.test.ts` (`takeover.counts.incomplete`, `mode=RESUME`); `wip-takeover.test.ts` |
 | 6 | Eigene WIP innerhalb des Claims im Resume akzeptiert | `pretask-modes.test.ts` (`mode=RESUME`, `SCOPE_VALID`, kein Blocker) |
 | 7 | Branch-HEAD == `main`: NOOP statt rot | `ci-plan.test.ts`; `ci-gates.test.ts` (kein Control-Plane-Fehler, kein Issue) |
 | 8 | Gleicher SHA nicht als unabhängige Kontrollebene und Prüfobjekt | `ci-plan.test.ts` (`state=NOOP`, `independent=false`; Required-Gates nur bei echtem Diff) |
 | 9 | Manual Dispatch ohne Dependency-Diff erzeugt keinen widersprüchlichen Audit-Job | `ci-plan.test.ts` (`MANUAL` mit Required-Set); `ci-gates.test.ts` |
 | 10 | Erzwungenes Audit läuft tatsächlich | `ci-plan.test.ts` (`RBD_VERIFY_AUDIT=1`); `workflow-hardening.test.ts` |
-| 11 | PR-Änderungen durchlaufen die vollständige Regression | `ci-plan.test.ts` (`buildPlan` für Doku- und Runtime-PR: 12 Required, `runAll=true`) |
+| 11 | PR-Änderungen durchlaufen die vollständige Regression | `ci-plan.test.ts` (`buildPlan` für Doku- und Runtime-PR: Required-Set, `runAll=true`) |
 | 12 | Light-Ergebnis wird nie PR-Nachweis | `ci-gates.test.ts`, `pipeline-modes.test.ts` (eigener Light-Job, kein `Fail-Closed Gates`) |
 | 13 | Gemeinsame Claims und Pfade erkennen echte Überschneidungen | `lane-claims.test.ts` (Content-Pfad kollidiert, Meta/Claim nicht) |
 | 14 | Unabhängige Lane wird durch fremden Lane-Fehler nicht blockiert | `issue-scope.test.ts`; `pretask-issues.test.ts` (Dependency blockiert nur abhängige Lane) |
@@ -45,6 +45,8 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | `long-checks` darf nicht `Fail-Closed Gates` heißen; genau ein geschützter Statusname | `workflow-hardening.test.ts` (Pflichtstatus-Owner) |
 | Dependabot-PR mit `dependabot/**` besteht Lane Claims über eine eng begrenzte Bot-Allowlist | `lane-claims.test.ts` (Bot-/Claim-Prüfung) |
 | Statischer Scan: keine `reset --hard`, `clean -fd`, Stash-Mutation, `push --force`, `branch -D` in Produktionsskripten | `destructive-commands.test.ts` |
+| Impact-Pfad ohne TypeScript-Compiler: ein direkter oder transitiver Import macht das Gate rot | `impact-graph.test.ts` |
+| `verify:scope` prueft nur den Diff gegen die Claim-Allowlist, ohne Test- oder Build-Gates | `verify-scope.test.ts` |
 | Gemergte Lane kann über `selectClaim` weiterarbeiten; `agent-verify` und `pretask` blockieren nicht | `lane-claims.test.ts`, `claim-evidence.test.ts` |
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |

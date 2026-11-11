@@ -7,10 +7,9 @@
  */
 import { resolve } from 'node:path';
 import { relative } from 'node:path';
-import { ts } from './ts-ast.mjs';
-import { parse } from './ts-ast.mjs';
-import { ROOT, walk } from './report.mjs';
 import { CATALOG_SYSTEMS } from './subsystems.mjs';
+import { headerCommentOf } from './imports.mjs';
+import { ROOT, walk } from './report.mjs';
 
 /** Beweisklassen von schwach (Vertrag) nach teuer (Statistik, Messung). */
 export const PROOF_CLASSES = Object.freeze(['contract', 'integration', 'governance', 'statistics', 'performance']);
@@ -26,11 +25,10 @@ const STATISTICS = /(^|\/)(round-rtp-[^/]*|slot-session-rtp|poker-distribution|s
 export const CATALOG_START = '<!-- TEST_CATALOG_START -->';
 export const CATALOG_END = '<!-- TEST_CATALOG_END -->';
 
-/** Kopfkommentar einer Testdatei; `@test-target` und `@proof-class` stehen dort. */
+/** Kopfkommentar einer Testdatei; ohne Compiler, damit auch der Impact ihn
+ * in einem nackten Checkout lesen kann. */
 function headerOf(file) {
-  const source = parse(resolve(ROOT, file));
-  const comments = ts.getLeadingCommentRanges(source.getFullText(), 0) ?? [];
-  return comments.map((range) => source.getFullText().slice(range.pos, range.end)).join('\n');
+  return headerCommentOf(resolve(ROOT, file));
 }
 
 /** Testdatei aus dem Kopfkommentar; die Datei selbst entscheidet, was sie prueft. */

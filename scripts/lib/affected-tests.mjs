@@ -11,10 +11,13 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
+import { refreshBase } from './base-refresh.mjs';
 import { ROOT, walk } from './report.mjs';
 import { subsystemPrefixOf } from './subsystems.mjs';
 import { testTargetOf } from './test-catalog.mjs';
-import { moduleSpecifiers, parse, resolveSpecifier } from './ts-ast.mjs';
+// Bewusst ohne TypeScript: der Impact muss auch ohne `node_modules` laufen,
+// sonst blockiert `pretask` mit "Impact-Plan fehlt" statt zu pruefen.
+import { resolveSpecifier, specifiersOf } from './imports.mjs';
 
 const TEST_RE = /\.test\.(ts|tsx)$/;
 const CODE_RE = /\.(ts|tsx|js|mjs|cjs)$/;
@@ -42,7 +45,7 @@ function moduleFiles() {
 function importsOf(file) {
   const full = resolve(ROOT, file);
   const imports = new Set();
-  for (const specifier of moduleSpecifiers(parse(full))) {
+  for (const specifier of specifiersOf(full)) {
     const resolved = resolveSpecifier(specifier, full);
     if (resolved) imports.add(relativeToRoot(resolved));
   }
@@ -163,6 +166,9 @@ export function selectAffectedTests(changedFiles) {
  * solange sie nicht gestaged sind.
  */
 export function changedFiles() {
+  // Der Diff gegen origin/main ist nur so aktuell wie der Remote-Ref; ein
+  // alter Ref erzeugt Phantom-Aenderungen in jedem Verbraucher.
+  refreshBase({ cwd: ROOT });
   const commands = [
     ['diff', '--name-only', '--diff-filter=ACMR', 'origin/main...HEAD'],
     ['diff', '--name-only', '--diff-filter=ACMR'],

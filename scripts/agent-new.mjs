@@ -18,6 +18,7 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
+import { refreshBase } from './lib/base-refresh.mjs';
 import { ROOT } from './lib/report.mjs';
 import { makeTaskContract, contractRelativePath, writeTaskContract } from './lib/task-contract.mjs';
 
@@ -65,6 +66,10 @@ if (status) fail('Arbeitsbaum nicht sauber; Bootstrap startet nur aus einem saub
 if (tryGit(['rev-parse', '--verify', `refs/heads/${ID}`], ROOT).status === 0) fail(`Branch ${ID} existiert bereits`);
 if (existsSync(WORKTREE)) fail(`Worktree-Pfad existiert bereits: ${WORKTREE}`);
 
+// Der neue Worktree startet auf dem aktuellen Remote-Stand, nicht auf einem
+// Ref, der seit dem letzten Fetch stehen geblieben ist.
+const baseRefresh = BASE.startsWith('origin/') ? refreshBase({ cwd: ROOT, ref: BASE }) : null;
+
 /** Die Basis muss existieren; ohne `origin/main` (frisches lokales Repo) ist
  * `HEAD` die einzige belegte Basis. */
 const resolvedBase = (() => {
@@ -84,6 +89,7 @@ const plan = {
   allow: ALLOW,
   base: resolvedBase.ref,
   baseSha: resolvedBase.sha,
+  baseRefresh,
   worktree: WORKTREE,
   branch: ID,
 };
@@ -111,6 +117,7 @@ const claimRun = spawnSync(
     '--id', ID,
     '--owner', OWNER,
     '--branch', ID,
+    '--base', resolvedBase.sha,
     '--task', TASK,
     ...(GOAL ? ['--goal', GOAL] : []),
     ...ALLOW.flatMap((entry) => ['--allow', entry]),
@@ -149,6 +156,7 @@ const summary = {
   ok: pretask.status === 0,
   branch: ID,
   worktree: WORKTREE,
+  base: baseRefresh ? { ref: baseRefresh.ref, sha: baseRefresh.sha, moved: baseRefresh.moved } : null,
   claim: { id: claim.id, owner: claim.owner, paths: claim.pathAllowlist },
   contract: contractRelativePath(contract.taskId),
   phase: contract.phase,
@@ -166,6 +174,7 @@ if (AS_JSON) console.log(JSON.stringify(summary, null, 2));
 else {
   console.log(`agent:new: ${ID} bereit (${contract.phase})`);
   console.log(`  Worktree: ${WORKTREE}`);
+  if (baseRefresh?.moved) console.log(`  Basis: ${baseRefresh.ref} ${baseRefresh.previous.slice(0, 7)} -> ${baseRefresh.sha.slice(0, 7)}`);
   console.log(`  Claim: ${claim.id} (${claim.pathAllowlist.length} Pfad(e))`);
   console.log(`  Pretask: ${summary.pretask.state ?? 'unbekannt'}${summary.pretask.mergeBlocked ? ' · Merge gesperrt' : ''}`);
   if (pretaskState?.blockers?.length) {

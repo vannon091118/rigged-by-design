@@ -25,12 +25,18 @@ import {
   REQUIRED_SECTIONS,
 } from './lib/body-sync.mjs';
 import { resolve } from 'node:path';
+import { causeBlock, causeForGate, localCauses } from './agent-cause.mjs';
 import { fail, ROOT } from './lib/report.mjs';
 
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
 const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' });
 const npmRun = (args) =>
   spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });
+/** Roter Befund mit derselben Gate/Fix/Repro-Zeile wie `agent:cause`. */
+const showCause = (findings) => {
+  const block = causeBlock(findings);
+  if (block) console.error(`\n${block}`);
+};
 const TARGET_BRANCH = 'main';
 
 // Light ist der Normalfall: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate.
@@ -182,6 +188,7 @@ if (!SKIP_AFFECTED) {
   const affected = npmRun(['run', 'test:affected']);
   if (affected.status !== 0) {
     fail(1, 'ERR-4026', 'turn:finish', 'betroffene Tests sind rot; kein Commit und kein Push');
+    showCause([causeForGate('affected')]);
     process.exit(1);
   }
   try {
@@ -225,6 +232,7 @@ if (RUN_VERIFY) {
   const verify = npmRun(['run', VERIFY_SCRIPT]);
   if (verify.status !== 0) {
     fail(1, 'ERR-4024', 'turn:finish', `${VERIFY_SCRIPT} ist rot; kein Commit und kein Push`);
+    showCause(localCauses());
     process.exit(1);
   }
 } else {

@@ -8,6 +8,7 @@
  * waere eine zweite Wahrheit.
  */
 import { allowsPath, isTaskContractPath, MECHANICAL_FILES } from './lane-claims.mjs';
+import { classifyWip, summarizeTakeover } from './takeover.mjs';
 
 /**
  * Arbeitsdateien des Turns, die nie Inhalt des Commits sind.
@@ -24,22 +25,34 @@ export const TURN_EXEMPT = Object.freeze(['.turn-notes.md', ...MECHANICAL_FILES]
 const normalize = (raw) => String(raw ?? '').replaceAll('\\', '/').trim();
 
 /**
- * Teilt die geaenderten Pfade in erlaubt und fremd.
+ * Teilt die geaenderten Pfade in erlaubt und fremd und klassifiziert jeden
+ * Pfad als Takeover (kompatibel, unvollstaendig, korrupt). `ok` bleibt die
+ * Staging-Wahrheit: nur Claim-Pfade werden gestaged. `takeover` sagt, was der
+ * naechste Agent uebernehmen muss - fremd ist dort kein Besitzanspruch mehr.
  *
- * @param {{ changed: readonly string[], allowlist: readonly string[], exempt?: readonly string[] }} input
- * @returns {{ allowed: string[], foreign: string[], ok: boolean }}
+ * @param {{ changed: readonly string[], allowlist: readonly string[], exempt?: readonly string[], claims?: readonly object[], branch?: string, freezeUnlocked?: boolean }} input
+ * @returns {{ allowed: string[], foreign: string[], ok: boolean, takeover: object }}
  */
-export function scopeChanges({ changed, allowlist, exempt = TURN_EXEMPT }) {
+export function scopeChanges({
+  changed,
+  allowlist,
+  exempt = TURN_EXEMPT,
+  claims = [],
+  branch = '',
+  freezeUnlocked = false,
+}) {
   const allowed = [];
   const foreign = [];
+  const entries = [];
   for (const raw of changed) {
     const file = normalize(raw);
     if (!file || exempt.includes(file)) continue;
     // Der Task-Vertrag ist Lane-Werkzeug; er braucht keinen Allowlist-Eintrag.
     if (isTaskContractPath(file) || allowsPath(allowlist, file)) allowed.push(file);
     else foreign.push(file);
+    entries.push(classifyWip({ path: file, allowlist, claims, branch, freezeUnlocked }));
   }
-  return { allowed, foreign, ok: foreign.length === 0 };
+  return { allowed, foreign, ok: foreign.length === 0, takeover: summarizeTakeover(entries) };
 }
 
 /**

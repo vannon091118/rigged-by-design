@@ -63,6 +63,7 @@ const PURPOSE = {
   'dead-code': { command: 'node', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', packageToken: '' },
   docs: { command: 'node', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', packageToken: '' },
   tree: { command: 'node', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', packageToken: '' },
+  'impact-graph': { command: 'node', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', packageToken: '' },
   redundancy: { command: 'node', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', packageToken: '' },
   assets: { command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', packageToken: 'verify-assets.mjs' },
   capabilities: { command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', packageToken: '' },

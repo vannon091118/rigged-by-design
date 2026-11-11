@@ -14,7 +14,8 @@ import { ISOLATION_CODE } from '../../../../scripts/lib/worktree-isolation.mjs';
 
 interface PretaskPayload {
   readonly ok: boolean;
-  readonly isolation: { readonly required: boolean; readonly isWorktree: boolean; readonly reasons: readonly string[] };
+  readonly context: string | null;
+  readonly isolation: { readonly required: boolean; readonly code: string; readonly isWorktree: boolean; readonly reasons: readonly string[] };
   readonly blockers: readonly string[];
 }
 
@@ -116,30 +117,6 @@ const cleanRepo = (
 const payloadOf = (stdout: string): PretaskPayload => JSON.parse(stdout) as PretaskPayload;
 
 describe('pretask start blockers', () => {
-  it('blockt einen schmutzigen eigenen Worktree vor dem ersten Edit', () => {
-    const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-dirty-own-'));
-    try {
-      const main = fixture(parent, 'main');
-      writeClaim(main, 'lane/test/dirty', ['README.md']);
-      writeContextStub(main);
-      git(main, ['add', '.lane-claims/claims.json', 'scripts/agent-context.mjs']);
-      git(main, ['commit', '-q', '-m', 'claim']);
-      const worktree = join(parent, 'dirty-worktree');
-      git(main, ['worktree', 'add', '-q', '-b', 'lane/test/dirty', worktree, 'HEAD']);
-      writeFileSync(join(worktree, 'dirty.ts'), 'export const dirty = 1;\n');
-      const fake = writeFakeGh(parent);
-      const result = runPretask(worktree, ['--json'], {
-        RBD_GH_BIN: process.execPath,
-        RBD_GH_SCRIPT: fake.script,
-      });
-      expect(result.status).toBe(1);
-      expect(payloadOf(result.stdout).blockers.join('\n')).toContain('Arbeitsbaum nicht leer');
-      expect(payloadOf(result.stdout).blockers.join('\n')).toContain(ISOLATION_CODE);
-    } finally {
-      rmSync(parent, { recursive: true, force: true });
-    }
-  });
-
   it('blockt ein offenes gate-failure-Issue', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-issue-'));
     try {
@@ -177,7 +154,7 @@ describe('pretask start blockers', () => {
     }
   });
 
-  it('blockt eine saubere Lane im geteilten Arbeitsbaum', () => {
+  it('laesst eine saubere Lane im geteilten Arbeitsbaum zu', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-shared-lane-'));
     try {
       const repo = cleanRepo(parent, 'repo', 'lane/test/shared');
@@ -186,12 +163,36 @@ describe('pretask start blockers', () => {
         RBD_GH_BIN: process.execPath,
         RBD_GH_SCRIPT: fake.script,
       });
-      expect(result.status).toBe(1);
+      expect(result.status).toBe(0);
       const payload = payloadOf(result.stdout);
-      expect(payload.isolation.required).toBe(true);
+      expect(payload.isolation.required).toBe(false);
+      expect(payload.isolation.code).toBe(ISOLATION_CODE);
       expect(payload.isolation.isWorktree).toBe(false);
-      expect(payload.isolation.reasons).toContain('shared-worktree');
-      expect(payload.blockers.join('\n')).toContain(ISOLATION_CODE);
+      expect(payload.isolation.reasons).toEqual([]);
+      expect(payload.blockers).toEqual([]);
+      expect(payload.context).toBe('.verify-cache/agent-context.json');
+      expect(JSON.parse(readFileSync(join(repo, '.verify-cache', 'agent-context.json'), 'utf8')).systems).toEqual([]);
+    } finally {
+      rmSync(parent, { recursive: true, force: true });
+    }
+  });
+
+  it('liefert im JSON nur den Kontextpfad statt eines eingebetteten Impact-Blocks', () => {
+    const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-context-path-'));
+    try {
+      const repo = cleanRepo(parent, 'repo', 'lane/test/context-path');
+      const fake = writeFakeGh(parent);
+      const result = runPretask(repo, ['--json'], {
+        RBD_GH_BIN: process.execPath,
+        RBD_GH_SCRIPT: fake.script,
+      });
+      expect(result.status).toBe(0);
+      const payload = payloadOf(result.stdout);
+      expect(payload.context).toBe('.verify-cache/agent-context.json');
+      expect(payload).not.toHaveProperty('impact');
+      expect(payload).not.toHaveProperty('impactPlan');
+      const context = JSON.parse(readFileSync(join(repo, '.verify-cache', 'agent-context.json'), 'utf8'));
+      expect(Array.isArray(context.systems)).toBe(true);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

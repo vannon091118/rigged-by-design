@@ -1,11 +1,11 @@
 /**
  * Technische Worktree-Isolation fuer Agenten.
  *
- * Ein geteilter Arbeitsbaum ist kein Startort fuer eine Lane. Jeder Branch
- * ausser `main` braucht einen eigenen verknuepften Worktree; zusaetzlich
- * blockiert ein fremder offener Claim oder ein explizites `--require-worktree`.
- * Die Entscheidung liegt hier und wird von `pretask` nur noch mit
- * Git-Zustand gefuettert, damit sie testbar bleibt.
+ * Ein geteilter Arbeitsbaum (Cloud-Clone) ist der Normalfall. Isolation wird
+ * nur explizit verlangt: `--require-worktree` oder `RBD_REQUIRE_WORKTREE=1`.
+ * Ein fremder offener Claim ist kein Isolationsgrund mehr; die WIP wird
+ * uebernommen (`takeover.mjs`). Die Entscheidung liegt hier und wird von
+ * `pretask` nur noch mit Git-Zustand gefuettert, damit sie testbar bleibt.
  */
 import { resolve } from 'node:path';
 import { allowsPath } from './lane-claims.mjs';
@@ -35,14 +35,12 @@ export function parseStatusPaths(text) {
 }
 
 /**
- * Isolation ist fuer jede Lane gefordert: ein Branch ausser `main` braucht
- * einen eigenen Worktree, auch wenn gerade kein fremder Claim offen ist.
- * `main` bleibt ausgenommen; dort blockiert nur ein fremder offener Claim.
+ * Isolation ist ein Opt-in, kein Standard: nur `--require-worktree` (oder die
+ * gleichnamige Env-Variable) verlangt einen verknuepften Worktree. Branch und
+ * fremde Claims aendern die Antwort nicht mehr.
  */
-export function isolationRequired({ explicit = false, claims = [], branch = '' } = {}) {
-  if (explicit) return true;
-  if (branch !== 'main') return true;
-  return claims.some((claim) => claim.status === 'open' && claim.branch !== branch);
+export function isolationRequired({ explicit = false } = {}) {
+  return explicit === true;
 }
 
 /**
@@ -65,9 +63,9 @@ export function foreignClaimPaths({ changed = [], claims = [], branch = '', ownA
 
 /**
  * Bewertet den Startort. Ein verknuepfter Worktree passiert immer; ein
- * geteilter Arbeitsbaum blockiert, sobald Isolation gefordert ist. Schmutz
- * und fremde Claim-Pfade werden zusaetzlich als Gruende genannt, damit der
- * Fehler nicht nur "irgendwie geteilt" sagt.
+ * geteilter Arbeitsbaum blockiert nur, wenn Isolation ausdruecklich gefordert
+ * ist. Schmutz und fremde Claim-Pfade werden zusaetzlich als Gruende genannt,
+ * damit der Fehler nicht nur "irgendwie geteilt" sagt.
  */
 export function assessIsolation({
   required = false,

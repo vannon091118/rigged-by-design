@@ -137,6 +137,13 @@ export function decideClaim({
       why: `PR #${mergedPr.number} ist gemergt${sha ? ` (${String(sha).slice(0, 7)})` : ''}`,
     };
   }
+  // Ein frischer Branch steht auf der Basis, obwohl sein Kopf damit auf main
+  // liegt. Das ist keine eigene Arbeit und darf den Claim nicht als gemergt
+  // schliessen; der Beleg braucht einen PR-Kopf oder einen Branch ohne
+  // eigenen Kopf. Diese Pruefung steht vor dem breiten Head-on-main-Fall.
+  if (branchExists && branchAtBase) {
+    return { status: null, evidence: 'none', why: 'Branch steht auf der Basis; keine eigene Arbeit' };
+  }
   // Ein geloeschter Branch oder ein auf die Basis zurueckgesetzter Branch hat
   // keinen eigenen Kopf mehr. Der gemergte PR plus Merge-Commit auf `main` ist
   // dann der Beleg; ein aktiver Branch mit eigenem Kopf faellt nicht hierher.
@@ -179,8 +186,9 @@ export function filterMergedCollisions({
   git = defaultGit,
   gh = defaultGh,
   onMerged = null,
+  prIndex,
 } = {}) {
-  const mergedIndex = mergedPullRequestIndex({ gh, baseRef: 'main' });
+  const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
   let baseTip = null;
   try {
     baseTip = git(['rev-parse', baseRef]);
@@ -203,7 +211,10 @@ export function filterMergedCollisions({
     const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
     const branchHead = local.headSha ?? remote.sha;
     const branchExists = Boolean(branchHead);
-    const branchAtBase = local.atBase || Boolean(remote.sha && baseTip && remote.sha === baseTip);
+    const branchAtBase =
+      local.atBase ||
+      Boolean(other.baseSha && branchHead === other.baseSha) ||
+      Boolean(remote.sha && baseTip && remote.sha === baseTip);
     // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
     // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
     const absenceKnown = !branchExists && remote.known;
@@ -272,4 +283,102 @@ export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}
   } catch {
     return null;
   }
+}
+
+/**
+ * Alle Branch-Koepfe am Remote in einem Aufruf. `null` heisst: Remote nicht
+ * erreichbar. Eine leere Map ist ein bekannter Zustand ohne Branch und damit
+ * ein Beleg fuer "Branch ist geloescht".
+ */
+export function remoteHeads({ git = defaultGit } = {}) {
+  try {
+    const output = git(['ls-remote', '--heads', 'origin']);
+    const heads = new Map();
+    for (const line of String(output ?? '').split(/\r?\n/)) {
+      const [sha = '', ref = ''] = line.trim().split(/\s+/);
+      if (!sha || !ref.startsWith('refs/heads/')) continue;
+      heads.set(ref.slice('refs/heads/'.length), sha);
+    }
+    return heads;
+  } catch {
+    return null;
+  }
+}
+
+/** Die Evidenz-Namen der Lifecycle-Sprache; die Entscheidung bleibt in `decideClaim`. */
+const LIFECYCLE_EVIDENCE = Object.freeze({
+  'merged-pr': 'merged-pr',
+  'branch-head-on-main': 'head-on-main',
+  'branch-tree-on-main': 'tree-on-main',
+});
+
+/**
+ * Lesender Reconcile: welche offenen Claims sind belegbar gemergt? Schreibt
+ * nichts; `reconcile-claims --apply` ist der einzige Schreiber. Ein einzelner
+ * `ls-remote` ersetzt die Abfrage pro Branch, damit `pretask` auch bei vielen
+ * Claims schnell bleibt.
+ */
+export function planReconcile({
+  claims = [],
+  baseRef = 'origin/main',
+  git = defaultGit,
+  gh = defaultGh,
+  prIndex,
+} = {}) {
+  const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
+  const heads = remoteHeads({ git });
+  let baseTip = null;
+  try {
+    baseTip = git(['rev-parse', baseRef]);
+  } catch {
+    baseTip = null;
+  }
+  const changes = [];
+  const unresolved = [];
+  for (const claim of claims.filter((item) => item?.status === 'open')) {
+    const local = localMergeEvidence({ branch: claim.branch, baseRef, git });
+    const remoteSha = heads?.get(claim.branch) ?? null;
+    const mergedPr = mergedIndex?.get(claim.branch) ?? null;
+    const branchExists = remoteSha !== null || local.headSha !== null;
+    const branchAtBase =
+      local.atBase ||
+      Boolean(claim.baseSha && (local.headSha ?? remoteSha) === claim.baseSha) ||
+      Boolean(remoteSha && baseTip && remoteSha === baseTip);
+    const absenceKnown = !branchExists && heads !== null;
+    const mergedOnMain = Boolean(
+      mergedPr &&
+        (branchExists ? branchAtBase : absenceKnown) &&
+        commitOnMain({ sha: mergedPr.mergeCommit ?? mergedPr.headRefOid, baseRef, git }),
+    );
+    const evidence = decideClaim({
+      branchExists,
+      branchAtBase,
+      branchHeadOnMain: local.headOnMain,
+      branchTreeOnMain: local.treeOnMain,
+      headSha: local.headSha ?? remoteSha,
+      mergedPr,
+      mergedOnMain,
+    });
+    if (evidence.status) {
+      const sha =
+        evidence.evidence === 'merged-pr'
+          ? (mergedPr?.mergeCommit ?? mergedPr?.headRefOid ?? null)
+          : evidence.evidence === 'branch-tree-on-main'
+            ? local.treeOnMain
+            : (local.headSha ?? remoteSha);
+      changes.push({
+        id: claim.id,
+        branch: claim.branch,
+        status: evidence.status,
+        evidence: LIFECYCLE_EVIDENCE[evidence.evidence] ?? evidence.evidence,
+        sha: sha ?? null,
+        why: evidence.why,
+        claim,
+      });
+      continue;
+    }
+    if (heads === null) unresolved.push({ id: claim.id, why: 'Remote nicht erreichbar, kein lokaler Beleg' });
+    else if (!branchExists) unresolved.push({ id: claim.id, why: evidence.why });
+  }
+  return { changes, unresolved, prIndex: mergedIndex, remoteHeads: heads };
 }

@@ -119,6 +119,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
+| ERR-4030 | Governance / Freeze | Governance-Pfad ohne gueltige PIN-Freigabe oder ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad. | Freigabe ueber `scripts/freeze-unlock.mjs` erzeugen oder die Aenderung verwerfen; keine stille Uebernahme. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 
 ## Pipeline
@@ -129,10 +130,10 @@ Es gibt fünf Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 | Profil | pnpm-Skript | Inhalt |
 | --- | --- | --- |
-| `light` | `verify:light` | Sechs Gates: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit. |
+| `light` | `verify:light` | Acht Gates: Lint, LOC, Typecheck, Doku-, Katalog-, Tree-, Impact-Graph- und Redundanz-Gate. Kein Testlauf, kein Build, kein Audit. |
 | `dev` | `verify:dev` | Light-Gates plus `affected`: die betroffenen schnellen Tests. Lange Nachweise bleiben im CI-Plan. |
-| `quick` | `verify` / `verify:quick` | Elf Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Tree-Gate, Redundanz-Gate, Asset-Manifest, Capability-Manifest, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
-| `full` | `verify:all` | Dieselben zwölf Gates plus `build` (dreizehn Required) und `audit` (vierzehn Läufe). Unverändert das Tor vor jedem Commit. |
+| `quick` | `verify` / `verify:quick` | Vierzehn Gates: Lint, LOC, Typecheck, Testvertrag, Dead-Export, Doku-Gate inklusive Inventar-Abdeckung, Katalog-Gate, Tree-Gate, Impact-Graph-Gate, Redundanz-Gate, Asset-Manifest, Capability-Manifest, Narrative-Gate, schnelle Tests. Kein Build, kein Audit, keine RTP-, Balance- und Soak-Nachweise. |
+| `full` | `verify:all` | Dieselben vierzehn Gates plus `build` (fünfzehn Required) und `audit` (sechzehn Läufe). Unverändert das Tor vor jedem Commit. |
 | `release` | `verify:release` | Wie `full`, erzwingt aber `pnpm audit` unabhängig von der Änderung. |
 
 ### Fehlerdiagnose und Claim-Evidenz
@@ -239,7 +240,7 @@ genau einen Eintrag. Doku-Eintraege erzeugt `pnpm run docs:stub -- "Titel"`
 pnpm run turn:finish
 ```
 
-`turn:finish` führt die betroffenen schnellen Tests vor dem Versions-Bump und danach das lokale Prüfprofil `verify:light` aus; über `pnpm run turn:finish:full` läuft stattdessen das volle `verify:all`. Es erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht den Arbeitsbranch; ein Direktpush auf `main` bleibt gesperrt. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also dreizehn Required-Gates plus Audit; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `turn:finish` nur die Pfade des eigenen Claims plus `package.json` und `pnpm-lock.yaml`; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Fremde WIP bleibt liegen. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` führt die betroffenen schnellen Tests vor dem Versions-Bump und danach das lokale Prüfprofil `verify:light` aus; über `pnpm run turn:finish:full` läuft stattdessen das volle `verify:all`. Es erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht den Arbeitsbranch; ein Direktpush auf `main` bleibt gesperrt. Der vollständige Beweis läuft in CI: jeder Push auf `main` durchläuft dort `verify:all`, also fünfzehn Required-Gates plus Audit; der Release-Workflow taggt erst nach diesem erfolgreichen Lauf und wiederholt die Suite nicht. Ohne Argumente stagt `turn:finish` nur die Pfade des eigenen Claims plus `package.json` und `pnpm-lock.yaml`; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Fremde WIP bleibt liegen. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
 Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 

@@ -21,11 +21,13 @@ Der Lauf prüft in dieser Reihenfolge:
 5. den Task-Vertrag unter `.lane-claims/tasks/<taskId>.json` und den PR-Zustand,
 6. die Worktree-Isolation.
 
-Ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem enden mit `ERR-4019`, bevor der erste Edit passiert. Ohne `--json` gilt dieselbe Prüfung; `--json` ist die maschinenlesbare Form für Agenten.
+Vor dem ersten Diff aktualisiert `pretask` `origin/main`: ein Fetch pro Minute, in CI aus, nie blockierend. Schlägt der Fetch fehl, bleibt der vorhandene Ref stehen und die Warnung nennt den Grund; der Lauf blockiert nicht. `claim:register`, `agent:new` und die Testauswahl (`changedFiles()`) nutzen denselben Helfer, damit keine Stelle gegen einen veralteten Ref rechnet.
+
+Ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan, korrupte WIP oder ein Claim-Problem enden mit `ERR-4019`/`ERR-4030`, bevor der erste Edit passiert; adoptierbare WIP blockiert nicht. Ohne `--json` gilt dieselbe Prüfung; `--json` ist die maschinenlesbare Form für Agenten.
 
 ### Claim und Worktree
 
-Jede Lane außer `main` arbeitet in einem verknüpften Worktree und braucht einen Claim in `.lane-claims/`. Der Claim nennt:
+Jede Lane außer `main` braucht einen Claim in `.lane-claims/`; ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Claim nennt:
 
 - `id` und `branch` nach `lane/<domäne>/<task>` (Legacy: `gov/`, `hygiene/`, `fix/`),
 - Owner aus dem festen Roster,
@@ -52,7 +54,7 @@ Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache.
 
 ### Resume statt Aufräumen
 
-Ein unterbrochener Task wird mit demselben Worktree und demselben Claim fortgesetzt. Eigene Änderungen innerhalb der Allowlist sind erlaubt; der Modus wird `RESUME`, der Scope `SCOPE_VALID`. Fremde WIP außerhalb des Claims bleibt unangetastet und wird als Blockermeldung genannt.
+Ein unterbrochener Task wird mit demselben Worktree und demselben Claim fortgesetzt. Eigene, fremde und unvollständige Änderungen werden adoptiert; der Modus wird `RESUME`, der Scope `SCOPE_VALID`. Nur korrupte WIP (Governance ohne Freigabe, Ledger/Save/RNG/Boot) blockiert.
 
 Verboten sind die Abkürzungen, die fremde Arbeit oder den eigenen Verlauf zerstören:
 
@@ -67,10 +69,10 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 ## Arbeitsablauf
 
 1. **Pretask:** `pnpm run agent:pretask --json`; Blockermeldungen zuerst lösen.
-2. **Kontext:** `pnpm run agent:context --json` für Systeme, Invarianten, betroffene Tests und Gate-Plan. Das ist eine Anzeige, keine Prüfung.
+2. **Kontext:** `pnpm run agent:context --json` für Systeme, Invarianten, betroffene Tests und Gate-Plan. Das ist eine Anzeige, keine Prüfung. Die JSON-Fassung ist die Agentensicht; die vollständige Ausgabe liegt unter `.verify-cache/agent-context.json` (`--full`), und `pretask --json` verweist unter `context` darauf.
 3. **Claim prüfen:** Der eigene Claim deckt jeden geänderten Pfad. Fremde Claims und Pfad-Überschneidungen blockieren.
-4. **Arbeiten:** Nur im eigenen Worktree und innerhalb der Allowlist. Generierte Dateien werden über ihre Generatoren geändert, nie von Hand.
-5. **Gezielt prüfen:** Einzelne Tests, `pnpm run test:affected` oder `pnpm run verify:light`. Die Auswahl ist Entwicklungsfeedback, kein Vollnachweis.
+4. **Arbeiten:** Im Claim-Scope (Worktree optional); adoptierte WIP wird als eigene Arbeit fertiggebaut. Generierte Dateien werden über ihre Generatoren geändert, nie von Hand.
+5. **Gezielt prüfen:** Einzelne Tests, `pnpm run test:affected`, `pnpm run verify:scope` für den reinen Diff-Scope oder `pnpm run verify:light`. Die Auswahl ist Entwicklungsfeedback, kein Vollnachweis.
 6. **Abschluss:** `pnpm run turn:finish`; Details unten.
 
 ### Was während der Arbeit nicht passiert

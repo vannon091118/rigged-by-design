@@ -17,6 +17,7 @@ interface Payload {
   readonly mode: string;
   readonly state: string;
   readonly blockers: readonly string[];
+  readonly isolation: { readonly code: string; readonly required: boolean };
   readonly contract: {
     readonly task: { readonly id: string; readonly description: string | null };
     readonly paths: { readonly allowed: readonly string[] };
@@ -120,6 +121,8 @@ describe('pretask modes', () => {
       expect(result.status).toBe(0);
       const body = payload(result.stdout);
       expect(body.mode).toBe('NEW');
+      expect(body.isolation.code).toBe(ISOLATION_CODE);
+      expect(body.isolation.required).toBe(false);
       expect(body.contract.task.id).toBe('lane/test/fixture');
       expect(body.contract.paths.allowed).toContain('README.md');
       expect(body.contract.requiredEvidence.length).toBeGreaterThan(0);
@@ -141,15 +144,17 @@ describe('pretask modes', () => {
     }
   });
 
-  it('blockt fremde WIP ausserhalb des Claims', () => {
+  it('adoptiert WIP ausserhalb des Claims als eigene Arbeit', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-foreign-wip-'));
     try {
       const worktree = linkedRepo(parent, 'repo', 'lane/test/foreign-wip');
       writeFileSync(join(worktree, 'dirty.ts'), 'export const dirty = 1;\n');
       const result = run(worktree, ['--json'], ghEnv(parent));
-      expect(result.status).toBe(1);
-      expect(payload(result.stdout).blockers.join('\n')).toContain('WIP ausserhalb');
-      expect(payload(result.stdout).blockers.join('\n')).toContain(ISOLATION_CODE);
+      expect(result.status).toBe(0);
+      const body = payload(result.stdout);
+      expect(body.mode).toBe('RESUME');
+      expect(body.state).toBe('SCOPE_VALID');
+      expect(body.blockers).toEqual([]);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

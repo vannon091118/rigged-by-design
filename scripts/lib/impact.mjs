@@ -5,6 +5,10 @@
  * und `selectAffectedTests` (Importgraph, Testziele), der Testkatalog
  * (Beweisklassen), der Gate-Plan (`pipeline-plan`) und der Gate-Cache. Nichts
  * hier erfindet Metadaten; jede Aussage kommt aus einer dieser Quellen.
+ *
+ * Der Modulgraph dieses Pfads importiert bewusst keinen TypeScript-Compiler:
+ * `imports.mjs` liest Specifier und Kopfkommentare, damit `agent:context` und
+ * `pretask` auch in einem nackten Checkout ohne `node_modules` laufen.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';

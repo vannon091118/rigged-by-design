@@ -42,8 +42,8 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: 2 * MINUTE,
   },
-  // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum. Matrix und Katalog
-  // werden nicht mehr gegated; der Pre-Commit-Hook schreibt sie.
+  // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum. Die Dependency-Matrix
+  // schreibt der Pre-Commit-Hook; der Testkatalog ist ein eigenes Gate.
   docs: {
     name: 'docs',
     command: 'node',
@@ -52,10 +52,31 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: MINUTE,
   },
+  // Der Katalog ist abgeleitet, aber im Verify nicht selbstschreibend: eine
+  // neue Testdatei ohne Eintrag ist Drift und damit rot (ERR-4015).
+  catalog: {
+    name: 'catalog',
+    command: 'node',
+    script: 'scripts/test-catalog.mjs',
+    args: ['--check'],
+    code: 'ERR-4015',
+    cache: true,
+    timeoutMs: MINUTE,
+  },
   tree: {
     name: 'tree',
     command: 'node',
     script: 'scripts/verify-tree.mjs',
+    code: 'ERR-4019',
+    cache: true,
+    timeoutMs: MINUTE,
+  },
+  // Der Impact-Pfad muss ohne `node_modules` laufen; ein TypeScript-Import
+  // wuerde `agent:context`, `pretask` und `test:affected` blockieren.
+  'impact-graph': {
+    name: 'impact-graph',
+    command: 'node',
+    script: 'scripts/verify-impact-graph.mjs',
     code: 'ERR-4019',
     cache: true,
     timeoutMs: MINUTE,
@@ -94,7 +115,7 @@ export const GATES = Object.freeze({
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
-const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'tree', 'redundancy'];
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'tree', 'impact-graph', 'redundancy'];
 const DEV = [...LIGHT, 'affected'];
 // Quick ist die gemeinsame Basis fuer den Required-Set; Build kommt fuer CI
 // hinzu, Audit bleibt impact-/release-abhaengig.
@@ -105,7 +126,9 @@ export const QUICK_GATES = Object.freeze([
   'test-quality',
   'dead-code',
   'docs',
+  'catalog',
   'tree',
+  'impact-graph',
   'redundancy',
   'assets',
   'capabilities',

@@ -22,6 +22,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { join } from 'node:path';
+import { refreshBase } from './lib/base-refresh.mjs';
 import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
@@ -158,10 +159,15 @@ function loadForCommand() {
 
 function baseSha() {
   if (options.base) return options.base;
+  // Ein Claim auf einem alten `origin/main` erzeugt spaeter Phantom-Diffs;
+  // der Refresh scheitert leise und faellt auf den vorhandenen Ref zurueck.
+  const refreshed = refreshBase({ cwd });
+  if (refreshed.sha) return refreshed.sha;
   try {
-    return execFileSync('git', ['rev-parse', 'origin/main'], { cwd, encoding: 'utf8' }).trim();
-  } catch {
     return execFileSync('git', ['rev-parse', 'HEAD'], { cwd, encoding: 'utf8' }).trim();
+  } catch {
+    fail('keine Basis: weder origin/main noch HEAD aufloesbar');
+    return '';
   }
 }
 

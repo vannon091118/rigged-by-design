@@ -141,16 +141,10 @@ describe('worktree-isolation', () => {
     expect(isLinkedWorktree('/repo/.git', '/repo/.git')).toBe(false);
   });
 
-  it('fordert Isolation bei einem fremden offenen Claim', () => {
-    const claims = [
-      { branch: 'lane/other/foreign', status: 'open', pathAllowlist: ['src/foreign.ts'] },
-      { branch: 'lane/test/own', status: 'merged', pathAllowlist: ['src/own.ts'] },
-    ];
-    expect(isolationRequired({ claims, branch: 'lane/test/own' })).toBe(true);
-    expect(isolationRequired({ explicit: true, claims: [], branch: 'lane/test/own' })).toBe(true);
-    expect(isolationRequired({ claims: claims.slice(1), branch: 'lane/test/own' })).toBe(true);
-    expect(isolationRequired({ claims: [], branch: 'main' })).toBe(false);
-    expect(isolationRequired({ claims, branch: 'main' })).toBe(true);
+  it('fordert Isolation nur noch explizit', () => {
+    expect(isolationRequired({})).toBe(false);
+    expect(isolationRequired({ explicit: false })).toBe(false);
+    expect(isolationRequired({ explicit: true })).toBe(true);
   });
 
   it('liest auch umbenannte Pfade aus git status', () => {
@@ -179,7 +173,7 @@ describe('worktree-isolation', () => {
     }
   });
 
-  it('blockt eine fremde Claim-Datei ohne Zusatzflag', () => {
+  it('meldet fremde Claim-Pfade ohne Isolationsblocker', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-foreign-'));
     try {
       const repo = fixture(parent, 'foreign');
@@ -187,11 +181,10 @@ describe('worktree-isolation', () => {
       mkdirSync(join(repo, 'src'), { recursive: true });
       writeFileSync(join(repo, 'src', 'foreign.ts'), 'export const foreign = 1;\n');
       const result = runPretask(repo, ['--json']);
-      expect(result.status).toBe(1);
       const payload = payloadOf(result.stdout);
-      expect(payload.isolation.required).toBe(true);
+      expect(payload.isolation.required).toBe(false);
       expect(payload.isolation.foreignPaths).toEqual(['src/foreign.ts']);
-      expect(payload.isolation.reasons).toContain('foreign-claim-paths');
+      expect(payload.isolation.reasons).toEqual([]);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

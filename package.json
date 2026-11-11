@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.219",
+  "version": "0.3.220",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -18,8 +18,10 @@
     "agent:feedback": "node scripts/agent-feedback.mjs",
     "agent:new": "node scripts/agent-new.mjs",
     "agent:pretask": "node scripts/pretask.mjs",
+    "agent:cause": "node scripts/agent-cause.mjs",
     "claim:register": "node scripts/claim-register.mjs",
     "verify:claims": "node scripts/verify-lane-claims.mjs",
+    "verify:scope": "node scripts/verify-scope.mjs",
     "agent:verify": "node scripts/agent-verify.mjs",
     "catalog": "node scripts/test-catalog.mjs",
     "narrative:check": "node scripts/verify-narrative-content.mjs",
@@ -55,6 +57,7 @@
     "lint": "eslint . --config src/Config/eslint.config.mjs",
     "lint:fix": "eslint . --fix --config src/Config/eslint.config.mjs",
     "audit:gate": "pnpm audit",
+    "verify:impact-graph": "node scripts/verify-impact-graph.mjs",
     "verify:test-quality": "node scripts/verify-test-quality.mjs",
     "verify:dead-code": "node scripts/verify-dead-code.mjs",
     "verify:assets": "node scripts/verify-assets.mjs",

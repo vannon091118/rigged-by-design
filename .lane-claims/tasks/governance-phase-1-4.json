@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-phase-1-4",
+  "claimId": "lane/governance/phase-1-4",
+  "branch": "lane/governance/phase-1-4",
+  "baseSha": "2e8b9dc0991d4c69cf1db93013434414eb3467b6",
+  "phase": "CI_PENDING",
+  "title": "Governance Phase 1-4: Lane-Steuerung, Impact-Graph, Scope und Cause",
+  "goal": "Phasen 1-4 als ein Governance-Commit abschliessen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR erzeugen und CI auf dem exakten Kopf pruefen; kein Merge ohne gruenen Fail-Closed Gates.",
+  "revision": 1
+}

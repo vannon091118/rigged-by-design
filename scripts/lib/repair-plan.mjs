@@ -82,6 +82,9 @@ export function affectedGates(failures) {
   for (const failure of failures ?? []) {
     const key = gateOf(failure);
     if (key && GATES[key]) gates.add(key);
+    // Ohne Jobnamen bleibt der Code die Zuordnung: ERR-4015 gehoert dem
+    // Katalog-Gate, nicht dem Doku-Gate.
+    else if (failure?.code === 'ERR-4015') gates.add('catalog');
     else if (MECHANICAL_CODES.includes(failure?.code)) gates.add('docs');
   }
   if (gates.size === 0) gates.add('docs');

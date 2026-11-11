@@ -135,7 +135,9 @@ export function pauseTask({ reason = 'manuell pausiert', root = ROOT, git = defa
 }
 
 /**
- * Resume nur mit eigenem Claim im verknuepften Worktree und ohne fremde WIP.
+ * Resume nur mit eigenem Claim im verknuepften Worktree und ohne korrupte WIP.
+ * Adoption statt Besitz: fremde oder unvollstaendige Pfade sind eigene Arbeit;
+ * nur Korruption (Freeze, Ledger, Save, RNG, Boot) haelt den Resume an.
  * Ohne after-task-Datensatz bleibt der bisherige Pretask-Weg unveraendert.
  */
 export function resumeDecision({
@@ -152,8 +154,10 @@ export function resumeDecision({
   if (!claim) reasons.push('kein Claim fuer den Branch');
   else if (claim.branch !== branch) reasons.push(`Claim gehoert zu ${claim.branch}`);
   if (!isWorktree) reasons.push('kein verknuepfter Worktree');
-  const scope = scopeChanges({ changed: dirtyPaths, allowlist: claim?.pathAllowlist ?? [] });
-  if (scope.foreign.length > 0) reasons.push(`fremde WIP: ${scope.foreign.slice(0, 5).join(', ')}`);
+  const scope = scopeChanges({ changed: dirtyPaths, allowlist: claim?.pathAllowlist ?? [], branch });
+  if (scope.takeover.blocked > 0) {
+    reasons.push(`korrupte WIP: ${scope.takeover.corrupted.map((entry) => entry.path).slice(0, 5).join(', ')}`);
+  }
   return {
     ok: reasons.length === 0,
     state: record.previousState ?? 'TESTS_PASSED',

@@ -48,6 +48,7 @@ export const ERROR_CODES = {
   LOCAL_GATE_RED: { code: 'ERR-4024', level: 'LOCAL_GATE', area: 'governance', cause: 'Das lokale Gate (verify:quick oder verify:all) in turn:finish ist rot; kein Commit und kein Push.', fix: 'Den ersten Befund im Gate-Log beheben und turn:finish erneut ausfuehren.' },
   TRANSFER_INVALID: { code: 'ERR-5001', level: 'BLOCKED', area: 'core', cause: 'Importierter Spielstand ist beschaedigt oder fremd.', fix: 'Export pruefen; reparierbare Felder werden automatisch ergaenzt.' },
   CAPABILITY_GATE: { code: 'ERR-4025', level: 'AGENT', area: 'governance', cause: 'Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise.', fix: 'Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren.' },
+  GOVERNANCE_FREEZE: { code: 'ERR-4030', level: 'BLOCKED', area: 'governance', cause: 'Governance-Pfad ohne gueltige PIN-Freigabe oder ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad.', fix: 'Freigabe ueber scripts/freeze-unlock.mjs erzeugen oder die Aenderung verwerfen; keine stille Uebernahme.' },
   TEST_RED: { code: 'ERR-4026', level: 'AGENT', area: 'governance', cause: 'Die Testsuite ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten.', fix: 'Befund als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt.' },
 } as const satisfies Readonly<Record<string, ErrorDefinition>>;
 

@@ -27,6 +27,17 @@ import {
 } from './lib/lane-claims.mjs';
 import { filterMergedCollisions } from './lib/claim-evidence.mjs';
 import { generatedOnlyDiff } from './lib/generated-files.mjs';
+import { compact } from './lib/compact.mjs';
+
+/** Alle Pfade schreiben denselben Vertrag; Befunde bleiben immer sichtbar. */
+function report({ status, headline, facts = [], findings = [], details = [] }) {
+  const text = compact({ status, headline, facts, findings, details });
+  if (String(status).toUpperCase() === 'ROT') console.error(text);
+  else console.log(text);
+}
+const notes = [];
+const mergedNotes = [];
+let registerAudited = false;
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', errors: 'replace' }).trim();
 
@@ -60,8 +71,15 @@ let allClaims;
 try {
   allClaims = loadClaimsStrict();
 } catch (error) {
-  console.error(`[ERR-4019] verify-lane-claims: Claim-Register nicht lesbar (${error instanceof Error ? error.message : 'unbekannt'}).`);
-  console.error('  Governance ist fail-closed: erst das Register reparieren, dann committen.');
+  report({
+    status: 'ROT',
+    headline: `${branch} · Claim-Register nicht lesbar`,
+    facts: [['Basis', BASE_REF]],
+    findings: [
+      `[ERR-4019] Claim-Register nicht lesbar (${error instanceof Error ? error.message : 'unbekannt'}).`,
+      'Governance ist fail-closed: erst das Register reparieren, dann committen.',
+    ],
+  });
   process.exit(1);
 }
 
@@ -70,7 +88,12 @@ for (const key of ['id', 'branch']) {
   const seen = new Set();
   for (const entry of allClaims) {
     if (seen.has(entry[key])) {
-      console.error(`[ERR-4019] verify-lane-claims: doppelter ${key} '${entry[key]}' im Claim-Register.`);
+      report({
+        status: 'ROT',
+        headline: `${branch} · doppelter ${key} im Claim-Register`,
+        facts: [['Basis', BASE_REF]],
+        findings: [`[ERR-4019] doppelter ${key} '${entry[key]}' im Claim-Register.`],
+      });
       process.exit(1);
     }
     seen.add(entry[key]);
@@ -91,29 +114,50 @@ const bot = laneClaim === null && claim !== null;
  * main wäre eine zweite Wahrheit neben dem Branch-Schutz.
  */
 if (branch === 'main') {
-  console.log('verify-lane-claims: main ist durch den Branch-Schutz gedeckt; Lane-Allowlist gilt nur für Arbeitsbranches.');
+  report({
+    status: 'GRUEN',
+    headline: `${branch} · Branch-Schutz statt Lane-Allowlist`,
+    facts: [['Claim', 'main braucht keinen Lane-Claim'], ['Basis', BASE_REF]],
+  });
   process.exit(0);
 }
 
 if (!claim) {
-  console.error(`[ERR-4019] verify-lane-claims: Kein Lane-Claim für Branch '${branch}' in .lane-claims/`);
-  console.error('  Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).');
+  report({
+    status: 'ROT',
+    headline: `${branch} · kein Lane-Claim`,
+    facts: [['Basis', BASE_REF]],
+    findings: [
+      `[ERR-4019] Kein Lane-Claim für Branch '${branch}' in .lane-claims/`,
+      'Erst einen Claim mit `pnpm run claim:register` registrieren (AGENTS.md § Governance / Lanes).',
+    ],
+  });
   process.exit(1);
 }
 
 /** Feste Owner: eine Lane ohne benannten Owner ist keine Lane. */
 if (!bot && !OWNERS.includes(claim.owner)) {
-  console.error(`[ERR-4019] verify-lane-claims: Owner '${claim.owner}' ist nicht im festen Roster (${OWNERS.join(', ')}).`);
+  report({
+    status: 'ROT',
+    headline: `${branch} · Owner nicht im Roster`,
+    facts: [['Basis', BASE_REF]],
+    findings: [`[ERR-4019] Owner '${claim.owner}' ist nicht im festen Roster (${OWNERS.join(', ')}).`],
+  });
   process.exit(1);
 }
 
 if (!bot && !BRANCH_PATTERN.test(branch) && !LEGACY_PREFIXES.some((prefix) => branch.startsWith(prefix))) {
-  console.error(`[ERR-4019] verify-lane-claims: Branch '${branch}' folgt nicht dem Schema lane/<domäne>/<task>.`);
+  report({
+    status: 'ROT',
+    headline: `${branch} · Branch-Schema verletzt`,
+    facts: [['Basis', BASE_REF]],
+    findings: [`[ERR-4019] Branch '${branch}' folgt nicht dem Schema lane/<domäne>/<task>.`],
+  });
   process.exit(1);
 }
 
 if (claim.status === 'merged') {
-  console.log(`verify-lane-claims: '${claim.id}' ist gemergt; der Branch fuehrt unter derselben Allowlist weiter.`);
+  notes.push(`'${claim.id}' ist gemergt; der Branch fuehrt unter derselben Allowlist weiter.`);
 }
 
 /** Erster Commit im Bereich, der das Register beruehrt; leer heisst: keiner. */
@@ -171,7 +215,12 @@ function registerAt(ref) {
 if (CI) {
   const baseRegister = registerAt(BASE_REF);
   if (!baseRegister) {
-    console.error(`[ERR-4019] verify-lane-claims: Claim-Register der Basis '${BASE_REF}' nicht lesbar; ohne Basis keine Freigabe.`);
+    report({
+      status: 'ROT',
+      headline: `${branch} · Basis-Register nicht lesbar`,
+      facts: [['Basis', BASE_REF]],
+      findings: [`[ERR-4019] Claim-Register der Basis '${BASE_REF}' nicht lesbar; ohne Basis keine Freigabe.`],
+    });
     process.exit(1);
   }
   const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
@@ -183,12 +232,16 @@ if (CI) {
     branch,
   });
   if (!audit.ok) {
-    console.error(`[ERR-4019] verify-lane-claims: Claim-Register gegen die Basis veraendert (${branch}):`);
-    for (const entry of audit.violations) console.error(`  - ${entry}`);
-    console.error('  Eine Lane erweitert weder ihre eigene Allowlist noch fremde Claims; Registerpflege ist Governance.');
+    report({
+      status: 'ROT',
+      headline: `${branch} · Claim-Register gegen die Basis veraendert`,
+      facts: [['Basis', BASE_REF]],
+      findings: audit.violations.map((entry) => `[ERR-4019] ${entry}`),
+      details: ['Eine Lane erweitert weder ihre eigene Allowlist noch fremde Claims; Registerpflege ist Governance.'],
+    });
     process.exit(1);
   }
-  console.log('verify-lane-claims: Register gegen die Basis geprueft (keine Selbsterweiterung).');
+  registerAudited = true;
 }
 
 // Die acht Meta-Dateien kommen aus scripts/lib/lane-claims.mjs: eine Liste fuer
@@ -305,10 +358,16 @@ for (const file of staged) {
 }
 
 if (violations.length > 0) {
-  console.error(`[ERR-4019] verify-lane-claims: Dateien außerhalb der Lane-Allowlist für '${branch}':`);
-  for (const v of violations) console.error(`  - ${v}`);
-  console.error(`  Erlaubte Pfade: ${claim.pathAllowlist.join(', ')}`);
-  console.error(`  Meta-Dateien (gesperrt): ${META_FILES.join(', ')}`);
+  report({
+    status: 'ROT',
+    headline: `${branch} · ${violations.length} Pfad(e) ausserhalb der Allowlist`,
+    facts: [['Claim', `${claim.id} (${claim.owner})`], ['Basis', BASE_REF]],
+    findings: violations.map((entry) => `[ERR-4019] ${entry}`),
+    details: [
+      `Erlaubte Pfade: ${claim.pathAllowlist.join(', ')}`,
+      `Meta-Dateien (gesperrt): ${META_FILES.join(', ')}`,
+    ],
+  });
   process.exit(1);
 }
 
@@ -325,35 +384,47 @@ const collisions = bot
       claims,
       baseRef: BASE_REF,
       onMerged: (collision, evidence) => {
-        console.log(`  ${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
+        mergedNotes.push(`${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
       },
     });
 if (collisions.length > 0) {
-  console.error(`[ERR-4019] verify-lane-claims: Lane-Kollisionen für '${branch}':`);
-  for (const coll of collisions) {
-    console.error(`  vs ${coll.lane}: ${coll.reason}`);
-    if (coll.contractConflict.length > 0) {
-      console.error(`    Contract-Konflikt: ${coll.contractConflict.join(', ')}`);
-    }
-  }
+  report({
+    status: 'ROT',
+    headline: `${branch} · ${collisions.length} Lane-Kollision(en)`,
+    facts: [['Claim', `${claim.id} (${claim.owner})`], ['Basis', BASE_REF]],
+    findings: collisions.flatMap((coll) => [
+      `[ERR-4019] vs ${coll.lane}: ${coll.reason}`,
+      ...(coll.contractConflict.length > 0 ? [`  Contract-Konflikt: ${coll.contractConflict.join(', ')}`] : []),
+    ]),
+  });
   process.exit(1);
-}
-
-if (inherited.length > 0) {
-  console.log(`verify-lane-claims: ${inherited.length} Pfad(e) aus gemergten Lanes uebernommen:`);
-  for (const entry of inherited) console.log(`  ${entry}`);
-}
-
-if (handedOver.length > 0) {
-  console.log(`verify-lane-claims: ${handedOver.length} Pfad(e) an die besitzende Lane zurueckgegeben:`);
-  for (const entry of handedOver) console.log(`  ${entry}`);
 }
 
 const systemNote = [
   allowedBySystem.length > 0 ? `${allowedBySystem.length} Meta-Datei(en) nur mit Marker/Version` : '',
   generatedMeta.length > 0 ? `${generatedMeta.length} generierte Inventur` : '',
-].filter(Boolean).join(', ').replace(/^/, ', davon ').replace(/^, davon $/, '');
+].filter(Boolean).join(', ');
 const scope = CI ? `CI-Diff ${RANGE}` : (MERGING ? `Merge-Diff ${DIFF_BASE}` : 'gestagte Dateien');
-console.log(`  Branch-Ref: ${CI ? HEAD_REF : 'HEAD'}`);
-console.log(`verify-lane-claims: Branch '${branch}' ist claim-konform (${staged.length} ${scope}${systemNote}).`);
+// Ein Block statt einer Absatzfolge; Pfadbelege nur mit RBD_VERBOSE=1.
+report({
+  status: 'GRUEN',
+  headline: `${branch} · ${staged.length} Datei(en) · ${scope}`,
+  facts: [
+    ['Claim', `${claim.id} (${claim.owner}) · ${claim.status} · ${claim.pathAllowlist.length} Pfad(e)`],
+    ['Basis', BASE_REF],
+    ['Ref', CI ? HEAD_REF : 'HEAD'],
+    ['Register', registerAudited ? 'gegen Basis geprueft' : ''],
+    ['Belege', inherited.length > 0 || handedOver.length > 0 || mergedNotes.length > 0
+      ? `${inherited.length} uebernommen · ${handedOver.length} zurueckgegeben · ${mergedNotes.length} gemergt`
+      : ''],
+    ['Meta', systemNote],
+  ],
+  details: [
+    ...notes,
+    ...mergedNotes,
+    ...inherited.map((entry) => `uebernommen: ${entry}`),
+    ...handedOver.map((entry) => `zurueckgegeben: ${entry}`),
+    ...allowedBySystem.map((entry) => `Marker/Version: ${entry}`),
+  ],
+});
 process.exit(0);
