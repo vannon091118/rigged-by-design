@@ -12,6 +12,17 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.225] - 2026-11-11
+
+### Technik
+- **Repo-Cleanup: Inventur und Doku-Dubletten.** 90 exakt doppelte Abschnitte im Devtagebuch entfernt (1.294 Zeilen), ohne eindeutige Inhalte zu verlieren. Inventur-Kopf und Ist-Zahlen auf den gemessenen Stand gebracht; Workflow-, Doku- und Testzahlen stimmen wieder.
+- **Datencheck statt Datenlöschung.** 1.004/1.004 Narrativ-Beiträge stehen in Manifest und Runtime-Registry, 554/554 Asset-Dateien im Manifest, 0 Waisen. Das 2.000-Zeilen-Archiv ist ein aktives Save-Feld und wird von Historie, Karriere, Wetten und Renovierung gelesen.
+
+## [0.3.212–0.3.224] - 2026-11-11
+
+### Technik
+- **Sammelnachtrag.** Die Patchstände nach 0.3.211 brachten die Living-World-Module (NPC-Typen, Bedürfnisse, Tagespläne, Actor Continuity, soziale Ökonomie), die visuelle Präsentation samt README/Assets sowie CI- und Governance-Reparaturen. Einzelbelege stehen im Devtagebuch; dieser Eintrag schließt die Versionslücke, statt die Stände ohne Datum zu führen.
+
 ## [0.3.211] - 2026-11-10
 
 ### Technik

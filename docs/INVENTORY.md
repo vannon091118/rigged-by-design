@@ -6,14 +6,13 @@
 > ist das einzige geschriebene Artefakt der Untersuchung und wird bei jeder
 > Fortsetzung aktualisiert.
 >
-> | Versionierungs-Feld | Wert |
+> | Feld | Wert |
 > | --- | --- |
-> | **Version** | **v0.3.145** |
 > | Erstellt | 2026-11-01 ~07:47 UTC (T1) |
-> | **Aktualisiert** | **2026-11-06 (T81 — Doku-Konsolidierung)** |
-> | Branch | `feat/spatial-layout-editor` (Basis `3b09a0f`) |
-> | HEAD | `3b09a0f` plus T81-Doku-Commit (0.3.145) |
-> | Arbeitsbaum | Doku-Commit; Remote `vannon091118/rigged-by-design`; Abdeckung und Dateizahl stehen in §18 |
+> | **Aktualisiert** | **2026-11-11 (Repo-Cleanup)** |
+> | Pflege | `node scripts/build-inventory.mjs`; §18 entsteht aus `git ls-files` |
+> | Branch/HEAD | bewusst nicht festgeschrieben; maßgeblich ist `git rev-parse HEAD` |
+> | Arbeitsbaum | Abdeckung und Dateizahl stehen in §18 |
 >
 > Fortsetzungs-Log am Ende dieses Dokuments.
 
@@ -23,26 +22,26 @@
 | --- | --- |
 | Projekt | „Rigged by Design" — Lebenssimulation; das Casino ist Start- und Testumgebung, nicht das Genre (Satire, kein Echtgeld) |
 | Stack | Vite 8 + React 19 + TypeScript 6 (strict) + PixiJS 8, Vitest 5, ESLint 10 |
-| Version | 0.3.136 (`package.json` in diesem PR), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
+| Version | `package.json` (einzige Versionsquelle), Engine `node >=22.22.2`, `packageManager pnpm@10.4.1` |
 | Plattform | Web (Vite) + Android-APK über Capacitor 8 (`capacitor.config.json`, App-ID `de.riggedbydesign.casino`) |
 | Geld | VaCoins als ganzzahlige Mikro-Einheiten (1 VC = 10.000), Buchungen nur im Ledger |
 | Sprache | Code-Kommentare/UI-Texte deutsch, Identifikatoren englisch |
 
-## 2. Struktur- und Größen-Matrix (gemessen 01.11.2026)
+## 2. Struktur- und Größen-Matrix (gemessen 2026-11-11)
 
 | Bereich | Dateien (.ts/.tsx) | Zeilen | Zuständigkeit |
 | --- | ---: | ---: | --- |
-| `src/core` | 170 | 16.390 | Headless-Simulation: economy, games, governance, physics, rng, sim |
-| `src/render` | 50 | 5.650 | PixiJS-Floor, Spiele-Bühnen, Audio, Assets |
-| `src/ui` | 40 | 4.289 | React-Panels/Popups inkl. 10 Game-Popups |
-| `src/store` | 25 | 2.045 | WorldStore (Welt/Ledger/PRNG/Save), Commands, Snapshot |
+| `src/core` | 530 | 51.279 | Headless-Simulation: economy, games, governance, physics, rng, sim |
+| `src/render` | 97 | 10.281 | PixiJS-Floor, Spiele-Bühnen, Audio, Assets |
+| `src/ui` | 127 | 10.199 | React-Panels/Popups inkl. 10 Game-Popups |
+| `src/store` | 55 | 3.998 | WorldStore (Welt/Ledger/PRNG/Save), Commands, Snapshot |
 | `src/test` | 2 | 35 | `measure.ts`, `random-seed.ts` (Test-Werkzeuge) |
-| `src/App.tsx` + `main.tsx` | 2 | 349 | App-Verdrahtung |
-| **Summe src** | **294** | **~28.758** | |
-| `scripts` + `scripts/lib` | 22 + 12 (.mjs) | — | Pipeline, Gates, Release, Android, Audio |
-| `.github/workflows` | 6 | — | ci-verify, auto-version-release, build-apk, long-checks, pr-cleanup, promote |
-| `docs` | 16 .md + `screenshots/README.md` + 5 Bannerbilder + 25 Screenshots | — | 16 Doku-Dateien flach unter `docs/` (Grossbuchstaben-Namen), Hauptbanner `banner.jpg`, Trennbilder und Altbanner als SVG; Belege in `screenshots/{current,comparison}` |
-| `public/assets/casino` | 9 Symbole + 3 Musik (Opus/OGG) | 8,7 MB | kuratierter Asset-Ausschnitt |
+| `src/App.tsx` + `main.tsx` + `vite-env.d.ts` | 3 | 246 | App-Verdrahtung |
+| **Summe src** | **814** | **76.038** | |
+| `scripts` | 115 (.mjs) | — | Pipeline, Gates, Release, Android, Audio |
+| `.github/workflows` | 10 | — | auto-resolve, auto-version-release, build-apk, ci-verify, ensure-pr, long-checks, pr-cleanup, pr-escalation, pr-watcher, promote |
+| `docs` | 84 Dateien: 12 Flachdokumente, 8 Verträge, 51 Screenshots, 9 Banner und 4 weitere | — | 12 Doku-Dateien flach unter `docs/`, Hauptbanner `banner.svg`; Belege in `screenshots/{current,v0.3.78,v0.3.114,v0.3.132,comparison}` |
+| `public/assets/casino` | 554 Dateien: 24 Symbole, 6 Tonspuren, 2 Atlas-Seiten, 7 FX-JSON | 17 MB | kuratierter Asset-Ausschnitt |
 
 Größte Dateien: `floor-view.ts` 349 · `App.tsx` 325 · `guest-art.ts` 315 · `plinko-canvas.ts` 259 · `ledger.ts` 249 · `shell-canvas.ts` 242 · `staff.ts` 240 · `migrate.ts` 217 · `floor-props.ts` 217 · `sound-fx.ts` 206.
 Alle unter ihren LOC-Budgets (`scripts/loc-budgets.mjs`: Legacy-Cap 350 für 6 gelistete Dateien, sonst 200–260). **Keine Datei über Cap.**
@@ -96,7 +95,7 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 - Pipeline: `scripts/run-pipeline.mjs` + `lib/pipeline-plan.mjs` (vollständig). Profile: light = 8 Gates (lint, check:loc, typecheck, docs, catalog, tree, impact-graph, redundancy), quick = 14 Gates (plus test-quality, dead-code, assets, capabilities, narrative, tests), full/release = dieselben Gates plus build = 15 Required und audit = 16 Läufe. Jedes Gate: harter Timeout, Inhalts-Hash-Cache, rein lesend; nur `fix` schreibt (ESLint `--fix`, Matrix, Katalog, Doku-Marker).
 - LOC-Guard: `scripts/loc-budgets.mjs` (vollständig) — Rollen-Budgets, 6 Legacy-Einträge (350/200), keine neuen `@loc-exception`.
 
-## 10. CI/CD (alle 9 Workflows vollständig gelesen)
+## 10. CI/CD (alle 10 Workflows vollständig gelesen)
 
 | Workflow | Trigger | Aufgabe |
 | --- | --- | --- |
@@ -109,12 +108,13 @@ Dateien: 20 Module in `core/games` + 11 in `engines/`; 10 UI-Popups; 22 Render-B
 | `promote.yml` | workflow_run/dispatch | historischer PR-Merge; manuell deaktiviert, `promote` bleibt aus |
 | `pr-watcher.yml` | workflow_run nach CI | historische Issue-Automatik; manuell deaktiviert |
 | `pr-escalation.yml` | PR gegen main | hebt den Commit-Body in den PR-Body (`lift-commit-body.mjs`), damit fehlende Pflichtsektionen nicht blockieren |
+| `ensure-pr.yml` | push auf `lane/**` | legt oder aktualisiert den PR; führt bewusst keinen Branch-Code aus |
 
 Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail-Closed Gates`, `strict: false`, 0 Reviews, `enforce_admins: true`, kein Force-Push, keine Löschung. Der Merge nach grünem `CI Verify` bleibt manuell; `promote` ist deaktiviert. Details in `docs/CI.md`.
 
 ## 11. Tests & Katalog
 
-177 Testdateien; System und Beweisklasse je Datei erzeugt `pnpm run catalog` aus `@test-target` in `docs/INVENTORY.md` (Block unter §11). Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
+307 Katalogdateien: 300 Testdateien mit deklariertem Ziel und 7 Benchmark-Dateien; System und Beweisklasse erzeugt `pnpm run catalog` aus `@test-target` in `docs/INVENTORY.md` (Block unter §11). Statistik-/Performance-Klassen laufen nur in CI; `vite.config.ts` schließt im quick-Profil `round-rtp-*`, `soak`, `slot-session-rtp` aus.
 
 ### Testkatalog (generiert)
 
@@ -438,7 +438,7 @@ Summe: 307 Dateien — contract 178 · integration 62 · governance 53 · statis
 
 ## 13. Assets
 
-Der Asset-Anhang in `docs/ARCHITECTURE.md`: vollständiges Paket (539 PNG + 7 JSON, 6 OGG-Tonspuren) unter `public/assets/casino/`, Manifest `src/render/assets/manifest.json`; **Lizenz vom Nutzer bestätigt, Nachweis im Repo offen (`docs/ROADMAP.md`)**. WAV-Master außerhalb des Repos. `pnpm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
+Der Asset-Anhang in `docs/ARCHITECTURE.md`: vollständiges Paket (539 PNG + 2 WebP-Atlasseiten + 7 JSON + 6 OGG-Tonspuren, zusammen 554 Dateien) unter `public/assets/casino/`, Manifest `src/render/assets/manifest.json`; **Lizenz vom Nutzer bestätigt, Nachweis im Repo offen (`docs/ROADMAP.md`)**. WAV-Master außerhalb des Repos. `pnpm run verify:assets` prüft Manifest ↔ Dateien ↔ `SLOT_SYMBOLS`.
 
 ## 14. Befunde & Diskrepanzen (laufend gepflegt)
 
@@ -620,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2663 |
-| Gelistete Dateien | 2663 |
+| Getrackte Dateien | 2665 |
+| Gelistete Dateien | 2665 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (12), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (14), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -635,8 +635,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 5 Datei(en)
-- `.lane-claims/tasks/` — 5 Datei(en)
+- `.lane-claims/claims/` — 6 Datei(en)
+- `.lane-claims/tasks/` — 6 Datei(en)
 - `content/narrative/contributions/` — 1004 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -763,12 +763,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-monitor-closeout-452-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-closeout-452.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-findings-448-449.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-448-450.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-452-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-452.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-monitor-findings-448-449.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1783,10 +1785,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1808 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1160 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1171 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 210 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3831 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 2551 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 101 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
