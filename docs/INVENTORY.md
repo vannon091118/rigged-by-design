@@ -885,7 +885,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-placement-venue-history.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 47 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/club-night-lounge.json` — { — gelesen: 23 Zeilen
@@ -919,7 +919,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/tasks/governance-player-dashboard-docs.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-precommit-pipeline.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-precommit-pipeline.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-promote-automerge-test.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-property-world-docs.json` — { — gelesen: 17 Zeilen
