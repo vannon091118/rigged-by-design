@@ -1,0 +1,21 @@
+{
+  "id": "lane/render/world-visual-presentation",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/render/world-visual-presentation",
+  "baseSha": "b234133496333ecb7149158cd4f26e1eb06e779c",
+  "task": "Bundle 5: Visual Presentation, Asset Pipeline und README-Rewrite",
+  "goal": "Reaktiver Praesentationsvertrag, visuelle Aktions-Rueckmeldungen und einladendes README",
+  "pathAllowlist": [
+    "src/render/reaction-feedback.ts",
+    "src/render/__tests__/reaction-feedback.test.ts",
+    "README.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-render-world-visual-presentation.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b234133496333ecb7149158cd4f26e1eb06e779c"
+}

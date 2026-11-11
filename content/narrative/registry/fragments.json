@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:def9e5cb43e8660c4e3acc5b8e0b068e5a7cfdd1bc1b5a270707f7bd3329245e",
+  "contentHash": "sha256:700362010956d6ed83e2b8e4dc37929c366e302bbcc8d0a966cec5e35f952d1c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -20251,6 +20251,28 @@
       "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
+    },
+    {
+      "contributionId": "render-world-visual-presentation-1",
+      "turnId": "2026-11-11T04:30Z-render-world-visual-presentation-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn die Tuer aufgeht und jemand heruebersieht, weiss man sofort, wer hier zu Hause ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json"
     },
     {
       "contributionId": "renovation-01",
