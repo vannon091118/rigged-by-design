@@ -22,17 +22,15 @@
   <img src="./docs/screenshots/v0.3.114/02-floor-detail.png" alt="Die Spielhalle im Neonlicht – Gäste, Automaten und ein Held mit Wischmopp" width="90%">
 </p>
 
-<p align="center"><em>Du startest mit einem Schlüsselbund, einem wackeligen Spielautomaten und keiner Ahnung. Der Rest ist das Leben.</em></p>
+<p align="center"><em>Du wachst in deiner Wohnung auf, nimmst dein Smartphone, gehst durch die Haustür und stehst mitten im Leben.</em></p>
 
 ---
 
-## Willkommen im Nachlass: Das Erbe deines Vaters
+## Das Leben vor deiner Haustür: Eine lebendige Stadt
 
-Dein alter Herr hat dir keine Schweizer Konten hinterlassen. Er hat dir einen schweren Messingschlüssel vermacht, eine abgewetzte Lederjacke, einen verstaubten Spielautomaten namens *„Lucky Strike"* und einen Leitz-Ordner voller zerknitterter Quittungen, auf denen auffällig oft das Wort **„Jackpot!"** und erschreckend selten das Wort **„Steuererklärung"** vorkommt.
+Du startest in deiner eigenen Wohnung: ein ungemachtes Bett, eine kleine Kochnische, eine dampfende Kaffeemaschine, dein Smartphone auf dem Tisch und der Blick aus dem Fenster auf eine erwachende Straße. Wenn du die Wohnungstür öffnest, betrittst du keine Menüauswahl, sondern eine lebendige, zusammenhängende Stadt.
 
-Zwischen einem letzten Tankstellenbeleg und einer vergilbten Notiz, die *„Einfach verdoppeln!"* für eine solide Altersvorsorge hält, steht immerhin ein Ladenlokal: ein paar abgewetzte Kacheln, flackerndes Neonlicht und die beruhigende Gewissheit, dass die Miete nächsten Monat fällig wird. 
-
-Du startest mit **150 VaCoins (VC)** virtuellem Startkapital. Die Bank nennt das *„akut insolvenzgefährdet"*. Wir nennen es das Tutorial deines neuen Lebens.
+Menschen verlassen ihre Wohnungen, laufen zur Arbeit, kaufen beim Kiosk ein, treffen Bekannte und gehen ihren eigenen Interessen nach. Du kannst sie beobachten, ihnen folgen, Gebäude betreten und mit ihnen sprechen. Du kannst arbeiten, Beziehungen knüpfen, Geschäfte aufbauen – oder einen völlig anderen Alltag leben, ohne jemals ein Casino von innen zu sehen.
 
 ---
 
@@ -40,7 +38,7 @@ Du startest mit **150 VaCoins (VC)** virtuellem Startkapital. Die Bank nennt das
 
 **Rigged by Design ist das Leben.** Der Titel ist ein Wortspiel, und er meint zuerst nicht die Spielbank an der Ecke: Man sucht sich nicht aus, in welche Verhältnisse man hineingeboren wird. Andere haben mit ihrem Dasein schon angefangen, bevor du die Bühne betreten hast – deine Eltern, dein Vermieter, der Kioskbesitzer und der Typ, der dir damals auf dem Schulhof das Pausenbrot abgezogen hat. Ihre Entscheidungen sind die Spielregeln, unter denen du antreten musst.
 
-Das **Casino ist dein Startpunkt und deine Testbude**: Hier lernst du am eigenen Leib, wie Wahrscheinlichkeiten funktionieren, warum das Haus am Ende immer gewinnt – und was passiert, wenn du selbst versuchst, das Haus zu sein. 
+Das **Casino ist eine Umgebung unter vielen**: Hier lernst du am eigenen Leib, wie Wahrscheinlichkeiten funktionieren, warum das Haus am Ende immer gewinnt – und was passiert, wenn du selbst versuchst, das Haus zu sein. Aber das Casino ist nicht die Engine, sondern ein Schauplatz einer viel größeren Lebenssimulation: 
 
 Aber *Rigged by Design* ist kein steriler Casino-Manager, bei dem man auf Tabellen klickt, bis der Kontostand grün leuchtet. Es ist eine **echte Lebenssimulation**:
 - **Du schaust spätabends eine Krimiserie im Röhrenfernseher:** Dein Intellekt steigt, deine Augenringe auch.
