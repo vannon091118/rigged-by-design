@@ -1,19 +1,21 @@
 {
-  "id": "lane/governance/city-event-content",
+  "id": "lane/governance/city-event-content-quality",
   "owner": "Governance-Owner",
   "branch": "lane/governance/city-event-content",
   "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
-  "task": "P-EPSILON: Stadtbegegnung mit 50 city-event-Fragmenten und echtem Reader erweitern",
-  "goal": "Die bestehende CITY_ENCOUNTER-Szene liest einen eigenen city-event-Pool; P-13 steigt um 50, ohne neue Engine oder Governance-Logik.",
+  "task": "P-EPSILON: city-event-Content-Consumer belegen und 50 Stadtbegegnungen absichern",
+  "goal": "Die bestehende CITY_ENCOUNTER-Szene liest den city-event-Pool; der Content-Quality-Consumer ist belegt, P-13 bleibt bei 1054/1500.",
   "pathAllowlist": [
     "content/narrative/",
     "src/core/sim/narrative/",
+    "src/core/governance/__tests__/narrative-content-quality.test.ts",
     "docs/ROADMAP.md",
     "docs/INVENTORY.md",
     "docs/CHANGELOG.md",
     "docs/DEVTAGEBUCH.md",
+    "docs/DEPENDENCY-MATRIX.md",
     ".lane-claims/claims/lane-governance-city-event-content.json",
-    "docs/DEPENDENCY-MATRIX.md"
+    ".lane-claims/claims/lane-governance-city-event-content-quality.json"
   ],
   "contracts": [],
   "dependencies": [],

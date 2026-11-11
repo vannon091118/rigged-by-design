@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-city-event-content-quality",
+  "claimId": "lane/governance/city-event-content-quality",
+  "branch": "lane/governance/city-event-content",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "phase": "CI_PENDING",
+  "title": "P-EPSILON: city-event-Content-Consumer belegen und 50 Stadtbegegnungen absichern",
+  "goal": "Die bestehende CITY_ENCOUNTER-Szene liest den city-event-Pool; der Content-Quality-Consumer ist belegt, P-13 bleibt bei 1054/1500.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

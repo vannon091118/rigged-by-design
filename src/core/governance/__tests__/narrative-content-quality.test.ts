@@ -49,6 +49,7 @@ const CONSUMERS: Readonly<Record<string, string | null>> = {
   reaction: 'src/core/sim/narrative/composer/select.ts',
   'city-scene': 'src/core/sim/city-model.ts',
   'city-night': 'src/core/sim/city-model.ts',
+  'city-event': 'src/core/sim/narrative/events/definitions/city-encounter.ts',
   'guest-voice-low': 'src/core/sim/narrative/guest-voice.ts',
   'guest-voice-mid': 'src/core/sim/narrative/guest-voice.ts',
   'guest-voice-high': 'src/core/sim/narrative/guest-voice.ts',
