@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:212eaea884f1797e5d524db3aeaecd96ce930e7071832c12b8365dc5058d8f19",
+  "contentHash": "sha256:d2597ae2c1bf5c5a1015c1d6027cc4ebba6a0ecb452010d0dd34d5a7a07fb433",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1658,6 +1658,28 @@
       "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
+    },
+    {
+      "contributionId": "agent25-arena",
+      "turnId": "2026-11-11T06:30Z-agent25-arena",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-arena.json"
     },
     {
       "contributionId": "agent25-task",

@@ -10,6 +10,7 @@
 import type { Ledger } from '../economy/ledger';
 import { toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
+import { admitArena } from './arena';
 import { crowdBonus } from './brawl-combat';
 import { fightBout, fightChance, fightNextRung, fightRoster, fightXpFor } from './fight-career';
 import {
@@ -146,6 +147,8 @@ export function enterFightEvent(world: WorldState, ledger: Ledger, prng: Prng): 
   });
   advanceEventStep(world, live.id, 'RESULT', world.tick);
   transitionEvent(world, live.id, 'RESOLVED', world.tick, `Kampfabend: ${outcome} gegen ${rung.name} vor ${view.crowd} Zuschauern.`);
+  // Der Einlass gehoert zum Abend: die vorhandene Arena rechnet ihn einmal ab.
+  admitArena(world, ledger);
   world.lastEvent = notice;
   return { won: bout.won, ko: bout.ko, fee: rung.entryFee, prize, notice };
 }

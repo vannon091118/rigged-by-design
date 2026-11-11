@@ -1,6 +1,7 @@
 /** Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. */
 import type { Ledger } from '../core/economy/ledger';
 import type { Prng } from '../core/rng/prng';
+import { buildArena } from '../core/sim/arena';
 import { restInCity, runCityAction, travel, type CityLocationId } from '../core/sim/city';
 import { backyardFight } from '../core/sim/fight-career';
 import { enterFightEvent } from '../core/sim/fight-event';
@@ -56,6 +57,12 @@ function maintainMachineCmd(world: WorldState, ledger: Ledger, itemId: number): 
   return world.lastEvent;
 }
 
+/** Naechste Arena-Stufe; Geld kommt vom Betriebskonto, nicht aus dem Portemonnaie. */
+function arenaCmd(world: WorldState, ledger: Ledger): string {
+  buildArena(world, ledger);
+  return world.lastEvent;
+}
+
 /** Alle Stadt-Eingaben der UI laufen durch genau diesen einen Einstieg. */
 export type CityCommand =
   | { readonly kind: 'travel'; readonly location: CityLocationId }
@@ -65,6 +72,7 @@ export type CityCommand =
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
   | { readonly kind: 'fightEvent' }
+  | { readonly kind: 'arenaBuild' }
   | { readonly kind: 'buyProperty'; readonly propertyId: string }
   | { readonly kind: 'renovate' }
   | { readonly kind: 'maintainMachine'; readonly itemId: number };
@@ -76,6 +84,7 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
   if (cmd.kind === 'fightEvent') return enterFightEvent(world, ledger, prng).notice;
+  if (cmd.kind === 'arenaBuild') return arenaCmd(world, ledger);
   if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);
   if (cmd.kind === 'renovate') return renovateCmd(world, ledger);
   if (cmd.kind === 'maintainMachine') return maintainMachineCmd(world, ledger, cmd.itemId);

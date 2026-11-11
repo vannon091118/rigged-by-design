@@ -3813,6 +3813,10 @@
     {
       "turnId": "2026-11-11T06:20Z-agent25-task",
       "contributionId": "agent25-task"
+    },
+    {
+      "turnId": "2026-11-11T06:30Z-agent25-arena",
+      "contributionId": "agent25-arena"
     }
   ]
 }
