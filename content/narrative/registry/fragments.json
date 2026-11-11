@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b25b465daf81afd524c7d936bed1f9fd7ce278d432e13b89ed36536a29b2bcb8",
+  "contentHash": "sha256:f87b098237d81e9a086b2cbba65d1edaf2b77f2541977891336ea0fef75be3e2",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1262,6 +1262,28 @@
       "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
+    },
+    {
+      "contributionId": "agent21-done",
+      "turnId": "2026-11-11T05:45Z-agent21-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE ist erst, wenn der Squash-Baum mit dem Lane-Kopf übereinstimmt und der Claim merged sagt. Danach bleibt nur noch die Lane zu entfernen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-done.json"
     },
     {
       "contributionId": "agent21-merge-pending",

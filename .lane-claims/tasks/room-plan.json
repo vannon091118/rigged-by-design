@@ -4,7 +4,7 @@
   "claimId": "lane/sim/room-plan",
   "branch": "lane/sim/room-plan",
   "baseSha": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 21: Raumplan aus dem Layout ableiten",
   "goal": "Raeume, Raumfunktionen, Zugaenge und Kapazitaet kommen aus der vorhandenen Layout-Wahrheit: jede Zone ist ein Raum, ihre Kanten liefern Tueren und Durchgaenge, die Flaeche je Nutzung ergibt die geplante Gaestekapazitaet. Kein neues Save-Feld, keine zweite Raumliste; ein weiteres Geschoss waere ein eigener LayoutState mit derselben Ableitung.",
   "taskType": "single",
@@ -16,6 +16,8 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "mergedSha und mergedEvidence schreiben; danach Endgates auf main.",
-  "revision": 5
+  "nextAction": "Abgeschlossen: PR #423 squash-gemergt, Squash 9c6873eb, Branch entfernt.",
+  "revision": 6,
+  "mergedSha": "9c6873eb71ee8449ec60820b9231de23ad91e1e6",
+  "mergedEvidence": "branch-tree-on-main"
 }
