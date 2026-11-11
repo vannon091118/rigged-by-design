@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7a69affacaa4b52255ee984c3c9461b3557cb3530124d2bc0df77fc59710c519",
+  "contentHash": "sha256:ff8a1758b070d22fb8bde147e431454c46506706f0d0bcbb1cbecf1e5919766c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -580,6 +580,28 @@
       "text": "Vor dem Tor zaehlt der Lauf, nicht die Absicht: die Phase zieht nach, der Kopf bleibt stehen, und erst der gruene Beleg macht aus der Bewertung eine Zusage.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-3.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-1",
+      "turnId": "2026-11-11T01:05Z-agent17-business-areas-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Casino, Bar und Lounge stehen schon im Haus, nur sprach niemand von ihnen als Bereiche. Der Schnitt beginnt deshalb nicht mit einem neuen Speicher, sondern mit einer zweiten Lesart derselben Zonen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-1.json"
     },
     {
       "contributionId": "apk-signing-01",
