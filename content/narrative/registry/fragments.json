@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:49b2624aa610e16382ffda34a09ae7ccedffde089437171a13fbd022a6bfba34",
+  "contentHash": "sha256:2a8e41ad64ef59d89b2c4e903a6f9d10dd37b0302b60be423c9b3be93115b6cc",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1900,6 +1900,28 @@
       "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
+    },
+    {
+      "contributionId": "agent25-main-merge",
+      "turnId": "2026-11-11T07:20Z-agent25-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Main kam als Merge zurueck; die Lane zieht nach, ohne den Arena-Bau erneut zu entscheiden. Ein Baum, zwei Historien, ein Vertrag - und der Ausbau bleibt der eine, der schon geprueft wurde.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-main-merge.json"
     },
     {
       "contributionId": "agent25-merge-base",
