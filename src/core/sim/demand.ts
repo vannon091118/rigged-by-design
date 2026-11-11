@@ -160,9 +160,7 @@ function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (activeDemand(world) || world.demandTier === 'BUDE') return;
   if (prng.nextFloat() >= EVENT_CHANCE[world.demandTier]) return;
   const kind: DemandEventKind = prng.nextFloat() < 0.55 ? 'NEON_NACHT' : 'TURNIER_ABEND';
-  if (!openVenueEvent(world, kind)) return;
-  // Die erste Welle steht sofort vor der Tuer, nicht erst nach dem naechsten Intervall.
-  world.nextArrivalTick = Math.min(world.nextArrivalTick, world.tick + 1);
+  openVenueEvent(world, kind);
 }
 
 /** Plant die naechste Ankunft und laesst faellige Gruppen herein. Kein Blick auf eine Gaestezahl. */

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:65f9b49d26f971437f83a4b9f0ea1cf7a064cd9dc079839999d8383327c34aac",
+  "contentHash": "sha256:9e657fd90ba91edceb7f566ecb8f483261103b34dd7b69eb3fbc9e829bb0cddf",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2034,6 +2034,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
     },
     {
+      "contributionId": "agent26-aftercare",
+      "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-aftercare.json"
+    },
+    {
       "contributionId": "agent26-ci-fix",
       "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
       "agentId": "buffy",
@@ -2100,6 +2122,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent26-claim.json"
     },
     {
+      "contributionId": "agent26-done",
+      "turnId": "2026-11-11T09:03Z-agent26-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Agent 26 ist abgeschlossen: Task DONE, Claim merged, mergedSha 2798053d. Die Stadtliga lebt als Ableitung im bestehenden Charakterfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-done.json"
+    },
+    {
       "contributionId": "agent26-esport",
       "turnId": "2026-11-11T08:10Z-agent26-esport",
       "agentId": "buffy",
@@ -2142,6 +2186,50 @@
       "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
+    },
+    {
+      "contributionId": "agent26-main-merge",
+      "turnId": "2026-11-11T08:47Z-agent26-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
+    },
+    {
+      "contributionId": "agent26-merge-pending",
+      "turnId": "2026-11-11T08:52Z-agent26-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Merge ist belegt, die Lane steht auf MERGE_PENDING: der gruene Kopf 0ce079f6 wurde als 2798053d auf main uebernommen. Jetzt folgt nur noch der Register-Nachlauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-merge-pending.json"
     },
     {
       "contributionId": "agent26-task",
@@ -6174,6 +6262,28 @@
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
     },
     {
+      "contributionId": "game-scout-main-merge",
+      "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die GameScout-Bootstrap-Lane ist mit dem aktuellen main zusammengefuehrt; die beiden Scout-Bausteine bleiben erhalten. Die Konflikte lagen in Manifest, generierten Narrative-Artefakten, Inventur, Roadmap und Dependency-Matrix, nicht in Gameplay-Code.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-main-merge.json"
+    },
+    {
       "contributionId": "gamescout-observation-01",
       "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
       "agentId": "integrator",
@@ -9947,6 +10057,50 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "placement-venue-history-1",
+      "turnId": "2026-11-11T12:10Z-placement-venue-history",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history.json"
+    },
+    {
+      "contributionId": "placement-venue-history-ci-fix",
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json"
     },
     {
       "contributionId": "player-career-01",
@@ -21516,6 +21670,94 @@
       "text": "Rita kam wieder, und das Haus erinnerte sich nicht an ihren Namen, sondern an den Streit an der Kasse und an das Vertrauen, das danach übrig blieb. Der neue Vertrag fragte nicht mehr jede Stimmung einzeln ab: Er las den letzten Fact, das Fenster davor, die gerichtete Kante und den Stand der Hauskasse zusammen. Erst die Erklärung machte aus einem Treffer eine Geschichte, die man prüfen konnte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-nar-05-trigger-context.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-aftercare",
+      "turnId": "2026-11-11T13:10Z-ui-placement-venue-history-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf traegt nur Status, Claim und Doku; die Spielaenderung bleibt der gemergte Feature-Stand. Die Nachsorge schliesst den Registerweg ab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-aftercare.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-done",
+      "turnId": "2026-11-11T13:15Z-ui-placement-venue-history-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Task ui-placement-venue-history ist DONE, der Claim ist merged mit mergedSha 3fe5acb. Der Registerstand auf main ist damit abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-done.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-main-merge",
+      "turnId": "2026-11-11T13:00Z-ui-placement-venue-history-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash-Merge 3fe5acb steht jetzt auch in der Placement-Lane. Der Branch traegt damit die gemeinsame Basis; der Nachlauf enthaelt nur noch Register, Doku und generierte Artefakte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-merge-pending",
+      "turnId": "2026-11-11T13:05Z-ui-placement-venue-history-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json"
     },
     {
       "contributionId": "ui-queue-panel-01",

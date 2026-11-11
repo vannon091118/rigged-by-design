@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T12:10Z-placement-venue-history",
+  "contributionId": "placement-venue-history-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
+  "directives": []
+}

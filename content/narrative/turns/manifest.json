@@ -3902,12 +3902,56 @@
       "contributionId": "agent26-ci-fix"
     },
     {
+      "turnId": "2026-11-11T08:47Z-agent26-main-merge",
+      "contributionId": "agent26-main-merge"
+    },
+    {
+      "turnId": "2026-11-11T08:52Z-agent26-merge-pending",
+      "contributionId": "agent26-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+      "contributionId": "agent26-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T09:03Z-agent26-done",
+      "contributionId": "agent26-done"
+    },
+    {
+      "turnId": "2026-11-11T12:10Z-placement-venue-history",
+      "contributionId": "placement-venue-history-1"
+    },
+    {
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "contributionId": "placement-venue-history-ci-fix"
+    },
+    {
+      "turnId": "2026-11-11T13:00Z-ui-placement-venue-history-main-merge",
+      "contributionId": "ui-placement-venue-history-main-merge"
+    },
+    {
+      "turnId": "2026-11-11T13:05Z-ui-placement-venue-history-merge-pending",
+      "contributionId": "ui-placement-venue-history-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T13:10Z-ui-placement-venue-history-aftercare",
+      "contributionId": "ui-placement-venue-history-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T13:15Z-ui-placement-venue-history-done",
+      "contributionId": "ui-placement-venue-history-done"
+    },
+    {
       "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
       "contributionId": "gamescout-observation-01"
     },
     {
       "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
       "contributionId": "gamescout-player-qa-01"
+    },
+    {
+      "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+      "contributionId": "game-scout-main-merge"
     }
   ]
 }
