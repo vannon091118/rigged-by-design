@@ -7,7 +7,7 @@
  * als roten Befund, statt sie vorher wegzuschreiben.
  */
 
-export const PROFILES = Object.freeze(['light', 'dev', 'quick', 'full', 'release']);
+export const PROFILES = Object.freeze(['light', 'fast', 'dev', 'quick', 'integration', 'full', 'release']);
 
 /**
  * `verify:all` heisst fuer Menschen "alles", als Profil heisst es `full`. Der
@@ -124,6 +124,9 @@ export const GATES = Object.freeze({
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
+// Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
+// betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
+const FAST = [...LIGHT, 'test-quality', 'affected', 'build'];
 const DEV = [...LIGHT, 'affected'];
 // Quick ist die gemeinsame Basis fuer den Required-Set; Build kommt fuer CI
 // hinzu, Audit bleibt impact-/release-abhaengig.
@@ -175,8 +178,10 @@ export function gatesForState(state) {
 
 export const PROFILE_GATES = Object.freeze({
   light: LIGHT_GATES,
+  fast: Object.freeze(FAST),
   dev: Object.freeze(DEV),
   quick: QUICK_GATES,
+  integration: REQUIRED_CI_GATES,
   // Voll und Release pruefen identisch; Release erzwingt Audit zusaetzlich per Env.
   full: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
   release: Object.freeze([...REQUIRED_CI_GATES, 'audit']),

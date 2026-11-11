@@ -1,15 +1,10 @@
 name: Auto Version & Release
 
-# Ebene A: kein Nachrichtenmuster schaltet die Pruefung ab. Der Release startet
-# erst nach einem erfolgreichen Lauf von "CI Verify" fuer denselben main-Commit;
-# die vollstaendige Suite laeuft damit genau einmal. Dieser Workflow taggt nur.
-# APK und Release-Assets entstehen nur, wenn der Commit Code, Inhalte oder
-# Assets beruehrt - bei reiner Doku bleibt der Lauf beim Tag.
+# CLOUD / MANUAL: Ein Release ist ein bewusster Vorgang, kein Nebeneffekt
+# eines Pushes. Der Lauf prueft lokal dieselben Release-Gates und taggt erst
+# danach. Die APK entsteht standardmaessig lokal; der manuelle Cloud-Fallback
+# liegt in `build-apk.yml`.
 on:
-  workflow_run:
-    workflows: ["CI Verify"]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -21,24 +16,14 @@ concurrency:
 
 jobs:
   release:
-    name: Bump, tag, release
-    # Nur der erfolgreiche Push-Lauf von CI Verify auf main darf taggen. Ein
-    # manueller Dispatch prueft weiterhin selbst, weil er keinen CI-Lauf hat.
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.event == 'push' &&
-       github.event.workflow_run.head_branch == 'main')
+    name: Tag und Release
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
-      apk: ${{ steps.relevance.outputs.apk }}
     steps:
       - name: Checkout (volle Historie)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,30 +38,14 @@ jobs:
           node-version: '22'
           cache: pnpm
 
-      # Nur der manuelle Pfad hat keinen vorgelagerten CI-Lauf. Der
-      # automatische Pfad taggt ausschliesslich den bereits geprueften Commit.
-      - name: Install (pnpm install --frozen-lockfile, nur manuell)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
-      - name: Alle Gates vor manuellem Release
-        if: github.event_name == 'workflow_dispatch'
+      # Erst wenn alle Release-Gates lokal/identisch gruen sind, entsteht ein
+      # Tag. Kein APK-Build in diesem Workflow.
+      - name: Release-Gates
         run: pnpm run verify:release
 
-      # APK nur bei echter Produktwirkung. Der Filter fragt den Impact-Pfad
-      # (`release-impact.mjs`), nicht mehr das pauschale `scripts/`: eine
-      # CI-Skriptaenderung loest keinen Android-Bau mehr aus.
-      - name: Relevanz fuer APK bestimmen
-        id: relevance
-        run: |
-          prev="$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')"
-          node scripts/release-impact.mjs --prev="$prev" --head=HEAD --github-output "$GITHUB_OUTPUT"
-
-      # Eskalationsleiter: GITHUB_TOKEN -> RELEASE_TOKEN (falls hinterlegt) ->
-      # sichtbarer Block mit Anleitung. Ein Tag, der schon existiert, erzeugt
-      # kein zweites Release.
-      # Der Merge kam ohne Push-Ereignis (GITHUB_TOKEN): dieses Gate prueft den
-      # Merge-Commit, bevor ein Tag entsteht.
       - name: Commit-Text des geprueften Commits
         run: node scripts/verify-commit-msg.mjs --head
 
@@ -84,27 +53,9 @@ jobs:
         id: tag
         env:
           # gh liest GH_TOKEN; ci-tag-release.mjs waehlt die Eskalationsstufe
-          # ueber GITHUB_TOKEN. Beide muessen gesetzt sein, sonst sieht das
-          # Skript den Workflow-Token nicht und blockiert trotz Schreibrecht.
+          # ueber GITHUB_TOKEN. Beide muessen gesetzt sein.
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          # workflow_run setzt GITHUB_SHA auf den Default-Branch. Der Tag muss
-          # aber genau den geprueften Commit treffen; RELEASE_SHA hat Vorrang.
-          RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          RELEASE_SHA: ${{ github.sha }}
         run: node scripts/ci-tag-release.mjs --github-output "$GITHUB_OUTPUT"
-
-  # Der Tag wird mit GITHUB_TOKEN gepusht; dessen Events starten keine
-  # Workflows. Deshalb ruft der Release den APK-Build explizit auf, statt auf
-  # den Tag-Trigger zu hoffen.
-  apk:
-    name: APK aus dem Release bauen
-    needs: release
-    if: needs.release.outputs.tag != '' && needs.release.outputs.apk == 'true'
-    permissions:
-      contents: write
-    uses: ./.github/workflows/build-apk.yml
-    with:
-      tag: ${{ needs.release.outputs.tag }}
-      skip_verify: true
-    secrets: inherit

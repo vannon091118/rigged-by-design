@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c9cf3d93b7ebaf9d34d5d6c453b65161b9fa3d3f22690f09568ebbeaaec57900",
+  "contentHash": "sha256:f0efcaee169010eef517385eaf37065229bf8ad15e2ccfc4754b6b1d3a5aeaba",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7322,6 +7322,31 @@
       "text": "Jede Datei traegt nur so viel, wie ein Leser am Stueck behalten kann. Was darueber hinauswaechst, wird geteilt statt hineingestopft; die Grenze ist kein Formfehler, sondern eine Lesepause.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-loc-trim-01.json"
+    },
+    {
+      "contributionId": "local-first-ci",
+      "turnId": "2026-11-11T23:10Z-local-first-ci",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita stellte die Werkbank vor die Cloud: Die schnellen Prüfungen lagen griffbereit am Platz, der volle Nachweis wartete auf den bewussten Griff, und der Server behielt nur die Tür, die wirklich von außen geöffnet werden musste. Was schwer war, wurde nicht leichter gerechnet, nur seltener und am richtigen Ort geprüft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-local-first-ci.json"
     },
     {
       "contributionId": "logic-safety-payout-01",

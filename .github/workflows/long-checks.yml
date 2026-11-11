@@ -7,8 +7,6 @@ on:
   # Einmal pro Woche laufen alle langen Nachweise ohne Impact-Filter. Der
   # PR-Pfad startet nur die vom Diff betroffenen Dateien in `ci-verify.yml`;
   # dieser Lauf deckt die systemweiten statistischen Abweichungen ab.
-  schedule:
-    - cron: '0 3 * * 1'
   workflow_dispatch:
     inputs:
       verify:

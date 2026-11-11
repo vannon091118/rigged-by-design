@@ -90,7 +90,7 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 
 1. den Task-Vertrag validieren und den Phasenwechsel nach `CI_PENDING` prüfen,
 2. Patch-Version bumpen,
-3. nur den lokalen Preflight ausführen: standardmäßig keine Tests und kein Typecheck, die CI prüft den gepushten Kopf,
+3. den lokalen Preflight ausführen: standardmäßig Light; vor dem Push ausdrücklich `verify:fast`, vor dem Merge `verify:integration`,
 4. nur Claim-Pfade, Vertrag und Versionsdateien stagen,
 5. Commit mit den drei Pflichtsektionen erstellen,
 6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
@@ -98,9 +98,9 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 
 Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder Push nicht abgeschlossen, setzt ein sauberer erneuter `turn:finish` bei Integration und Push fort. Er bumped weder die Version noch erzeugt er eine neue Task-Vertragsrevision oder einen leeren Notes-Commit. Sobald Änderungen im Arbeitsbaum vorliegen, läuft der normale Claim-, Test-, Versions- und Commit-Pfad wieder.
 
-Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor `verify:light` läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
+Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor der lokale Preflight läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
 
-`--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf; `--profile=quick` und `--profile=full` bleiben die breiteren Opt-ins für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Die schwere Suite und Audit bleiben in CI.
+`--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf. `--profile=fast` ist der lokale Standard vor dem Push, `--profile=integration` der vollständige Nachweis vor dem Merge; `--profile=full` bleibt die lokale Ausnahme für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Cloud-Light ersetzt keinen dieser Nachweise.
 
 ### Commit und PR
 
@@ -114,20 +114,20 @@ Der Commit-Body trägt exakt:
 
 ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-Body wird aus demselben Text gebildet; fehlende Sektionen ergänzt nur der markierte Automationsbereich.
 
-`turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` liegt ausschließlich bei `promote`:
+`turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` ist ein bewusster manueller Schritt:
 
 1. PR gegen `main` öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
-2. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates`.
-3. `promote` lädt das `ci-plan`-Artefakt genau dieses PR-Laufs und prüft Kopf, Basis, Pflichtstatus, Task-Vertrag und BLOCKED-Issues im Scope.
-4. `holdMerge=true`, `status≠READY_FOR_MERGE`, offene Blocker oder eine veraltete Basis führen zu Hold; bei veralteter Basis aktualisiert `promote` den Branch per `update-branch` und wartet auf den neuen Lauf.
-5. Nur bei `READY_FOR_MERGE` und exaktem Kopf: `gh pr merge --squash --match-head-commit <sha>`; kein `--auto`, kein `update-branch` vor dem Merge.
-6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `commitmsg` läuft im Zustand `MAIN` gegen den Kopf des Push und prüft genau diese Nachricht. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist dort rot (`ERR-4006`), weil ihr die Sektionen fehlen.
+2. Lokal `pnpm run verify:integration` ausführen; bei Bedarf zusätzlich `pnpm run verify:long`.
+3. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates` und prüft die schnellen Gates.
+4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.
+5. Merge im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
+6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen.
 
 Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 
 ### Post-Merge und Retention
 
-Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanup` ruft `scripts/post-merge-closeout.mjs` auf: der Claim des Heads wird `merged`, der Task `DONE`, die 10-Task-Retention läuft, und die Änderung geht als eigener Closeout-PR gegen `main`. Der Closeout-Task trägt `closeout: post-merge`; nur dieser Pfad passiert den `DONE`-Hold in `promote`. Der Workflow schreibt nie direkt auf `main`.
+Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanup` ruft `scripts/post-merge-closeout.mjs` auf: der Claim des Heads wird `merged`, der Task `DONE`, die 10-Task-Retention läuft, und die Änderung geht als eigener Closeout-PR gegen `main`. Der Closeout-Task trägt `closeout: post-merge` und bleibt ein eigener, ausdrücklicher DONE-Pfad. Der Workflow schreibt nie direkt auf `main`.
 
 Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- und Retention-Logik aus. `claim:register prune` zeigt die Kandidaten ohne `--apply` nur an; `doctor` meldet mehr als zehn geschlossene Tasks als Befund.
 

@@ -12,21 +12,6 @@ on:
       tag:
         description: 'Release-Tag (leer = aktueller Branch, kein Release-Upload)'
         required: false
-  # Der Release-Workflow ruft diesen Build direkt auf: ein mit GITHUB_TOKEN
-  # gepushter Tag loest keinen eigenen Workflow aus.
-  workflow_call:
-    inputs:
-      tag:
-        description: 'Release-Tag, den der Aufrufer gebaut haben will'
-        required: true
-        type: string
-      skip_verify:
-        description: 'Aufrufer hat den Commit bereits durch CI Verify geprueft'
-        required: false
-        type: boolean
-        default: false
-  push:
-    tags: ['v*.*.*']
 
 permissions:
   contents: write
@@ -89,19 +74,10 @@ jobs:
       - name: Install (pnpm install --frozen-lockfile)
         run: pnpm install --frozen-lockfile
 
-      # Der Release ruft diesen Workflow erst nach erfolgreichem "CI Verify"
-      # auf und setzt skip_verify; eine zweite vollstaendige Suite waere reine
-      # Doppelarbeit. Manuelle Builds und manuell gepushte Tags pruefen weiterhin
-      # selbst, weil dort skip_verify fehlt beziehungsweise false ist.
+      # On-demand-Cloud-Fallback: Jeder manuelle APK-Lauf prueft die vollen
+      # Release-Gates. Der Standardweg ist lokal (`pnpm run android:apk`).
       - name: Fail-Closed-Gates
-        if: ${{ !inputs.skip_verify }}
         run: pnpm run verify:release
-
-      # verify:release liefert den Production-Build mit. Auf dem skip_verify-Pfad
-      # fehlt er, deshalb wird er hier separat erzeugt.
-      - name: Production-Build (nur ohne vorgelagertes Verify)
-        if: ${{ inputs.skip_verify }}
-        run: pnpm run build
 
       # Beide Schritte pruefen ihre APK selbst (`apksigner verify` gegen den
       # gepinnten Fingerabdruck, `aapt2 badging` gegen Paketname und minSdk).

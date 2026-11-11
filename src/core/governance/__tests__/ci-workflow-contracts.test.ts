@@ -2,8 +2,8 @@
  * @test-target: .github/workflows/auto-version-release.yml
  * @error-code: ERR-4008
  *
- * Die Workflows um das Main-Gate: Release, Langlauf, Cleanup, APK und der
- * duenne Lane-Push. Sie werden als YAML-Baum geprueft, nicht als Zeichenkette.
+ * Die Workflows um den Pflichtcheck: Release und APK sind manuell/on-demand,
+ * Langlaeufe haben keinen Zeitplan; Cleanup und Lane-PR bleiben schlank.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -13,11 +13,9 @@ import { parse } from 'yaml';
 interface Step {
   readonly name?: string;
   readonly run?: string;
-  readonly uses?: string;
   readonly if?: string;
   readonly id?: string;
   readonly env?: Readonly<Record<string, string>>;
-  readonly with?: Readonly<Record<string, unknown>>;
 }
 
 interface Job {
@@ -26,7 +24,7 @@ interface Job {
   readonly if?: string;
   readonly permissions?: Readonly<Record<string, string>>;
   readonly 'timeout-minutes'?: number;
-  readonly strategy?: { readonly matrix?: string; readonly 'fail-fast'?: boolean };
+  readonly strategy?: { readonly matrix?: string };
   readonly steps?: readonly Step[];
   readonly with?: Readonly<Record<string, unknown>>;
 }
@@ -40,8 +38,10 @@ interface Workflow {
       readonly types?: readonly string[];
       readonly branches?: readonly string[];
     };
-    readonly workflow_dispatch?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
-    readonly workflow_call?: { readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>> };
+    readonly workflow_dispatch?: {
+      readonly inputs?: Readonly<Record<string, { readonly type?: string; readonly default?: unknown }>>;
+    };
+    readonly workflow_call?: unknown;
     readonly schedule?: readonly { readonly cron: string }[];
   };
   readonly permissions?: Readonly<Record<string, string>>;
@@ -57,40 +57,32 @@ const stepIndex = (flow: Workflow, job: string, needle: string): number =>
   steps(flow, job).findIndex((step) => step.run?.includes(needle) ?? false);
 
 describe('Workflow-Vertraege', () => {
-  it('taggt erst nach erfolgreichem CI-Verify-Lauf ohne zweite Suite', () => {
+  it('taggt nur nach einem manuellen Release-Lauf und baut keine Cloud-APK', () => {
     const release = workflow('auto-version-release.yml');
-    expect(release.on?.workflow_run?.workflows).toEqual(['CI Verify']);
-    expect(release.on?.workflow_run?.types).toEqual(['completed']);
-    expect(release.on?.workflow_run?.branches).toEqual(['main']);
-    expect(release.on?.push).toBeUndefined();
+    expect(release.on?.workflow_run).toBeUndefined();
+    expect(release.on?.workflow_dispatch).not.toBeUndefined();
+    expect(release.jobs?.apk).toBeUndefined();
 
-    const condition = release.jobs?.release?.if ?? '';
-    expect(condition).toContain("workflow_run.conclusion == 'success'");
-    expect(condition).toContain("workflow_run.event == 'push'");
-    expect(condition).toContain("workflow_run.head_branch == 'main'");
-
-    const verified = stepWith(release, 'release', 'npm run verify:release');
-    expect(verified?.if).toContain("github.event_name == 'workflow_dispatch'");
+    const verified = stepWith(release, 'release', 'verify:release');
+    expect(verified).not.toBeUndefined();
     expect(stepIndex(release, 'release', 'ci-tag-release.mjs'))
-      .toBeGreaterThan(stepIndex(release, 'release', 'npm run verify:release'));
+      .toBeGreaterThan(stepIndex(release, 'release', 'verify:release'));
 
-    // APK-Relevanz kommt aus dem Produkt-Impact, nicht aus `scripts/`.
-    expect(stepWith(release, 'release', 'release-impact.mjs')?.id).toBe('relevance');
     const tagStep = stepWith(release, 'release', 'ci-tag-release.mjs');
     expect(tagStep?.run).toContain('--github-output');
-    expect(tagStep?.env?.RELEASE_SHA).toContain('github.event.workflow_run.head_sha');
+    expect(tagStep?.env?.RELEASE_SHA).toContain('github.sha');
   });
 
-  it('delegiert die langen Nachweise an einen eigenen Workflow', () => {
+  it('haelt lange Nachweise ausschliesslich on-demand', () => {
     const long = workflow('long-checks.yml');
+    expect(long.on?.schedule).toBeUndefined();
     expect(long.on?.workflow_dispatch?.inputs?.soak_ticks?.default).toBe('100000');
     expect(long.permissions?.contents).toBe('read');
     expect(long.jobs?.verify?.name).toBe('Long Verify');
-    expect(stepWith(long, 'verify', 'npm run verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
+    expect(stepWith(long, 'verify', 'verify:all')?.env?.RBD_VERIFY_AUDIT).toBe('1');
     const statistics = stepWith(long, 'statistics', 'round-rtp-high.test.ts');
     expect(statistics?.run).toContain('poker-distribution.test.ts');
     expect(stepWith(long, 'soak', 'soak.test.ts')?.env?.RBD_SOAK_TICKS).toBe("${{ inputs.soak_ticks || '100000' }}");
-    expect(long.on?.schedule?.[0]?.cron).toBe('0 3 * * 1');
     expect(stepWith(long, 'bench', 'pnpm run test:perf')?.run).toBe('pnpm run test:perf');
   });
 
@@ -119,22 +111,22 @@ describe('Workflow-Vertraege', () => {
     expect(stepWith(cleanup, 'post-merge-closeout', 'post-merge-closeout.mjs')?.env?.MERGE_SHA).toContain('merge_commit_sha');
   });
 
-  it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {
-    const release = workflow('auto-version-release.yml');
-    const apkJob = release.jobs?.apk;
-    expect(apkJob?.uses).toBe('./.github/workflows/build-apk.yml');
-    expect(apkJob?.with?.tag).toBe('${{ needs.release.outputs.tag }}');
-    expect(apkJob?.with?.skip_verify).toBe(true);
-
+  it('baut APKs nur noch manuell und ohne skip-verify-Abkürzung', () => {
     const apk = workflow('build-apk.yml');
-    expect(apk.on?.workflow_call?.inputs?.skip_verify?.type).toBe('boolean');
-    expect(apk.on?.push?.tags).toEqual(['v*.*.*']);
+    expect(apk.on?.workflow_call).toBeUndefined();
+    expect(apk.on?.push).toBeUndefined();
+    expect(apk.on?.workflow_dispatch).not.toBeUndefined();
     expect(apk.jobs?.apk?.['timeout-minutes']).toBe(40);
-    expect(stepWith(apk, 'apk', 'npm run verify:release')?.if).toContain('inputs.skip_verify');
+    const verify = stepWith(apk, 'apk', 'verify:release');
+    expect(verify).not.toBeUndefined();
+    expect(verify?.if).toBeUndefined();
   });
 
-  it('startet den Verify-Workflow auch von Hand', () => {
-    expect(workflow('ci-verify.yml').on?.workflow_dispatch).not.toBeUndefined();
+  it('startet den Pflichtcheck auch von Hand, aber ohne Matrix', () => {
+    const ci = workflow('ci-verify.yml');
+    expect(ci.on?.workflow_dispatch?.inputs?.profile?.default).toBe('light');
+    expect(ci.on?.push).toBeUndefined();
+    expect(ci.jobs?.verify?.strategy).toBeUndefined();
   });
 
   it('laesst Lane-Pushes nur den PR anlegen oder aktualisieren', () => {
@@ -143,6 +135,6 @@ describe('Workflow-Vertraege', () => {
     expect(ensure.permissions).toEqual({ contents: 'read', 'pull-requests': 'write' });
     const step = steps(ensure, 'ensure-pr').find((entry) => entry.run?.includes("'pr', 'create'"));
     expect(step?.env?.GH_TOKEN).toContain('steps.app.outputs.token');
-    expect(steps(ensure, 'ensure-pr').some((entry) => entry.uses?.startsWith('actions/create-github-app-token@'))).toBe(true);
+    expect(steps(ensure, 'ensure-pr').some((entry) => entry.name === 'App-Token')).toBe(true);
   });
 });

@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.227",
+  "version": "0.3.228",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -54,7 +54,10 @@
     "verify:all": "node scripts/run-pipeline.mjs --profile=full",
     "verify:quick": "node scripts/run-pipeline.mjs --profile=quick",
     "verify:light": "node scripts/run-pipeline.mjs --profile=light",
+    "verify:fast": "node scripts/run-pipeline.mjs --profile=fast",
     "verify:dev": "node scripts/run-pipeline.mjs --profile=dev",
+    "verify:integration": "node scripts/run-pipeline.mjs --profile=integration",
+    "verify:long": "pnpm run ci:long",
     "verify:release": "node scripts/run-pipeline.mjs --profile=release",
     "fix": "node scripts/run-pipeline.mjs --fix --profile=quick",
     "fix:all": "node scripts/run-pipeline.mjs --fix --profile=full",
@@ -73,6 +76,8 @@
     "android:apk": "node scripts/prepare-android.mjs",
     "android:apk:release": "node scripts/prepare-android.mjs --release",
     "turn:finish": "node scripts/turn-push.mjs",
+    "turn:finish:fast": "node scripts/turn-push.mjs --profile=fast",
+    "turn:finish:integration": "node scripts/turn-push.mjs --profile=integration",
     "turn:finish:full": "node scripts/turn-push.mjs --profile=full",
     "task:pause": "node scripts/task-state.mjs pause",
     "task:status": "node scripts/task-state.mjs status",
