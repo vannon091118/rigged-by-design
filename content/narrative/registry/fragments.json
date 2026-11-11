@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c977c98bf433e2da2925e0f40c6ac81d00acdace69bf2140696d16787ae9e08a",
+  "contentHash": "sha256:a51f0bf982e29e659df2ff530baac7c927a931ae3b4339f1c24eadd32a91948c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -778,6 +778,28 @@
       "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
+    },
+    {
+      "contributionId": "agent18-ci-pending",
+      "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt die Karte als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-ci-pending.json"
     },
     {
       "contributionId": "agent18-drink-menu-1",
