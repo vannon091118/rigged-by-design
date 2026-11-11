@@ -5,11 +5,20 @@
  * Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen
  * hier: eigener Pfad, fremder Pfad, Ausnahme fuer die Turn-Arbeitsdatei,
  * Verzeichnis- und rekursive Allowlist sowie explizite Pfade gegen den Claim.
+ * Jeder Pfad traegt zusaetzlich seine Takeover-Klasse; fremd heisst adoptierbar.
  */
 import { describe, expect, it } from 'vitest';
 import { TURN_EXEMPT, explicitScope, scopeChanges } from '../../../../scripts/lib/staging-scope.mjs';
 
 const allowlist = ['scripts/turn-push.mjs', 'docs/', 'src/core/**'];
+
+const takeover = (compatible: number, incomplete: number, corrupted = 0) => ({
+  total: compatible + incomplete + corrupted,
+  adopted: compatible + incomplete + corrupted,
+  blocked: corrupted,
+  counts: { compatible, incomplete, corrupted },
+  corrupted: [],
+});
 
 describe('staging-scope', () => {
   it('laesst einen Pfad im eigenen Claim zu', () => {
@@ -17,6 +26,7 @@ describe('staging-scope', () => {
       allowed: ['scripts/turn-push.mjs'],
       foreign: [],
       ok: true,
+      takeover: takeover(1, 0),
     });
   });
 
@@ -40,7 +50,7 @@ describe('staging-scope', () => {
       changed: ['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md', 'src/ui/hud.tsx'],
       allowlist,
     });
-    expect(scope).toEqual({ allowed: [], foreign: ['src/ui/hud.tsx'], ok: false });
+    expect(scope).toEqual({ allowed: [], foreign: ['src/ui/hud.tsx'], ok: false, takeover: takeover(0, 1) });
     expect(TURN_EXEMPT).toContain('pnpm-lock.yaml');
   });
 
@@ -50,6 +60,7 @@ describe('staging-scope', () => {
       allowed: ['docs/a/b.md', 'src/core/economy/ledger.ts'],
       foreign: ['src/ui/x.ts'],
       ok: false,
+      takeover: takeover(2, 1),
     });
   });
 });

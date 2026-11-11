@@ -21,6 +21,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fail } from './lib/report.mjs';
+import { isVerbose } from './lib/compact.mjs';
 import { budgetFor, LEGACY_LOC } from './loc-budgets.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -162,16 +163,20 @@ const files = walk(SRC_DIR)
 const violations = files.filter((file) => file.unauthorized || file.overLimit || file.stale || file.hotChange);
 const hotFiles = files.filter((file) => file.hot);
 
-console.log(`check:loc - ${files.length} Datei(en) unter src/ geprueft, ${skipped.length} ohne Logik-Budget`);
-for (const file of skipped) console.log(`  skip ${file.name} (${file.reason})`);
-for (const file of files) {
-  const mark = violations.includes(file) ? 'FAIL' : file.hot ? 'HOT ' : ' ok ';
-  const note = file.unauthorized
-    ? ' (Ausnahme verboten)'
-    : file.stale
-      ? ' (Ausnahme ueberfluessig)'
-      : ` [${file.role}]${file.hot ? ` Hot Zone ab ${file.hotZone}` : ''}${file.hotChange ? ' | geaendert: modularisieren oder ASK_USER' : ''}`;
-  console.log(`  ${mark} ${String(file.lines).padStart(4)}/${file.limit}${note}  ${file.name}`);
+// Kompakt: eine Zeile Uebersicht, der Rest nur mit RBD_VERBOSE=1. Ein
+// Dateibestand ist kein Befund; die Verstoesse nennt `fail()` unten ohnehin.
+console.log(`check:loc - ${files.length} Datei(en) unter src/, ${skipped.length} ohne Logik-Budget, ${hotFiles.length} in der Hot Zone`);
+if (isVerbose()) {
+  for (const file of skipped) console.log(`  skip ${file.name} (${file.reason})`);
+  for (const file of files) {
+    const mark = violations.includes(file) ? 'FAIL' : file.hot ? 'HOT ' : ' ok ';
+    const note = file.unauthorized
+      ? ' (Ausnahme verboten)'
+      : file.stale
+        ? ' (Ausnahme ueberfluessig)'
+        : ` [${file.role}]${file.hot ? ` Hot Zone ab ${file.hotZone}` : ''}${file.hotChange ? ' | geaendert: modularisieren oder ASK_USER' : ''}`;
+    console.log(`  ${mark} ${String(file.lines).padStart(4)}/${file.limit}${note}  ${file.name}`);
+  }
 }
 
 if (violations.length > 0) {

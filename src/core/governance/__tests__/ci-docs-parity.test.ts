@@ -23,14 +23,14 @@ const documented = (): readonly string[] =>
 
 describe('docs/CI.md und der Gate-Plan', () => {
   it('dokumentiert jedes Required-Gate genau einmal', () => {
-    expect(REQUIRED_CI_GATES.length).toBe(13);
+    expect(REQUIRED_CI_GATES.length).toBe(15);
     expect(documented()).toEqual([...REQUIRED_CI_GATES]);
   });
 
   it('nennt dieselbe Zahl fuer Quick und Voll', () => {
-    expect(doc).toContain(`Der Required-Plan besteht aus dreizehn Gates`);
-    expect(doc).toContain(`\`verify:quick\` = zwölf Gates`);
-    expect(doc).toContain(`\`verify:all\` = dreizehn Required plus Audit (vierzehn Läufe)`);
-    expect(QUICK_GATES.length).toBe(12);
+    expect(doc).toContain(`Der Required-Plan besteht aus fünfzehn Gates`);
+    expect(doc).toContain(`\`verify:quick\` = vierzehn Gates`);
+    expect(doc).toContain(`\`verify:all\` = fünfzehn Required plus Audit (sechzehn Läufe)`);
+    expect(QUICK_GATES.length).toBe(14);
   });
 });

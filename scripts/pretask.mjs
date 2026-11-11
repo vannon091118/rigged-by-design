@@ -5,19 +5,21 @@
  * Der Lauf liest Git, Claims, Issues und den Impact-Plan. Er veraendert keine
  * Git-Dateien und schreibt nur `.verify-cache/task-state.json`. Die Modi:
  *
- * NEW     sauberer, isolierter Worktree mit eigenem Claim
- * RESUME  eigener Claim und ausschliesslich eigene WIP im verknuepften Worktree
+ * NEW     sauberer Start mit eigenem Claim
+ * RESUME  adoptierbare WIP (eigene, fremde, unvollstaendige) im Claim-Scope
  * NOOP    HEAD == Basis; kein Startblocker
- * BLOCKED fremder Schmutz, geteilter Worktree, Claim-/Issue-/Scope-Blocker
+ * BLOCKED korrupte WIP (Freeze ohne Freigabe, Ledger/Save/RNG/Boot), Claims, Issues
  *
- * `--new` und `--resume` erzwingen den passenden Modus. Ein fremder Pfad wird
- * nie angefasst; er bleibt Blocker, bis sein Owner ihn aufloest.
+ * `--new` und `--resume` erzwingen den passenden Modus. "Fremdes WIP" gibt es
+ * nicht: kompatible, unvollstaendige und korrupte Aenderungen werden alle als
+ * eigene Arbeit angenommen; nur korrupte halten den Start an. Ein geteilter
+ * Arbeitsbaum ist der Normalfall; Isolation fordert nur `--require-worktree`.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
-import { filterMergedCollisions } from './lib/claim-evidence.mjs';
+import { filterMergedCollisions, mergedPullRequestIndex, planReconcile } from './lib/claim-evidence.mjs';
 import {
   deriveTaskState,
   loadTaskContractForClaim,
@@ -33,15 +35,27 @@ import {
   isolationRequired,
   parseStatusPaths,
 } from './lib/worktree-isolation.mjs';
+import { impact as buildImpact } from './lib/impact.mjs';
 import { ROOT } from './lib/report.mjs';
+import { causeBlock, localCauses } from './agent-cause.mjs';
+import { refreshBase } from './lib/base-refresh.mjs';
+import { parseWorktrees, planCleanup } from './lib/branch-lifecycle.mjs';
+import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mjs';
+import { FREEZE_UNLOCK_FILE, governanceChanges, verifyUnlockRecord } from './lib/governance-freeze.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 
 const argv = process.argv.slice(2);
-const asJson = argv.includes('--json');
+// `--brief` ist die token-sparsame Form fuer Agenten: Status, Claim, Blocker
+// und naechster Schritt. Sie impliziert JSON; die vollstaendige Form bleibt
+// `--json` fuer Werkzeuge.
+const brief = argv.includes('--brief');
+const asJson = argv.includes('--json') || brief;
 const wantNew = argv.includes('--new');
 const wantResume = argv.includes('--resume');
 const requireWorktree = argv.includes('--require-worktree') || process.env.RBD_REQUIRE_WORKTREE === '1';
+/** Der Impact-Block wird nicht zweimal in die Ausgabe gelegt. */
+const CONTEXT_FILE = '.verify-cache/agent-context.json';
 
 const blockers = [];
 const warnings = [];
@@ -52,6 +66,16 @@ const run = (args) => {
     return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch {
     return '';
+  }
+};
+const gitStrict = (args) =>
+  execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+const runOk = (args) => {
+  try {
+    execFileSync('git', args, { cwd: ROOT, stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
   }
 };
 const pathList = (text) => (text ? text.split(/\r?\n/).filter(Boolean) : []);
@@ -71,7 +95,15 @@ const worktree = run(['rev-parse', '--show-toplevel']);
 const gitDir = run(['rev-parse', '--absolute-git-dir']);
 const commonDir = run(['rev-parse', '--path-format=absolute', '--git-common-dir']);
 const linked = isLinkedWorktree(gitDir, commonDir);
-const originMain = run(['rev-parse', '--verify', 'origin/main']);
+// Erst die Basis, dann jeder Diff: `agent-context` und die Pfadpruefung lesen
+// denselben Ref; ohne Refresh rechnen sie gegen einen beliebig alten Stand.
+const baseRefresh = refreshBase({ cwd: ROOT });
+if (baseRefresh.moved) {
+  notes.push(`Basis aktualisiert: ${baseRefresh.ref} ${baseRefresh.previous.slice(0, 7)} -> ${baseRefresh.sha.slice(0, 7)}`);
+} else if (baseRefresh.failed) {
+  warnings.push(`Basis nicht aktualisiert (${baseRefresh.reason}); Diff gegen ${baseRefresh.ref} kann veraltete Pfade zeigen`);
+}
+const originMain = baseRefresh.sha || run(['rev-parse', '--verify', 'origin/main']);
 const mergeBase = originMain && head ? run(['merge-base', 'HEAD', originMain]) : '';
 
 const stagedPaths = pathList(run(['diff', '--cached', '--name-only']));
@@ -141,12 +173,44 @@ try {
   }).trim();
   contextData = JSON.parse(output);
 } catch (error) {
-  contextError = error instanceof Error ? error.message : 'unbekannter Fehler';
+  const childError = error instanceof Error ? error.message : 'unbekannter Fehler';
+  // Der Impact ist ohne TypeScript-Compiler gebaut. Scheitert der Kindprozess
+  // (Pipe, fehlende Datei), rechnet pretask denselben Plan direkt weiter,
+  // statt den Start mit "Impact-Plan fehlt" zu blockieren.
+  try {
+    contextData = buildImpact({ profile: 'quick' });
+    notes.push('Impact direkt berechnet; agent-context war nicht ausfuehrbar.');
+  } catch (fallbackError) {
+    contextError = `${childError} / ${fallbackError instanceof Error ? fallbackError.message : 'unbekannt'}`;
+  }
 }
 if (!contextData || typeof contextData !== 'object') {
   blockers.push(`[ERR-4019] Impact-Plan fehlt oder ist nicht JSON: ${contextError || 'leere Ausgabe'}`);
 } else if (!Array.isArray(contextData.systems) || !contextData.tests) {
   blockers.push('[ERR-4019] Impact-Plan ist unvollstaendig: systems/tests fehlen');
+}
+// `agent-context --json` legt die vollstaendige Fassung selbst ab und nennt
+// den Pfad in `full`. Der direkte Fallback schreibt dieselbe Datei, damit der
+// Verweis auch dann gueltig ist, wenn der Kindprozess nicht laufen konnte.
+const contextFile = typeof contextData?.full === 'string' ? contextData.full : CONTEXT_FILE;
+if (contextData && typeof contextData === 'object' && typeof contextData.full !== 'string') {
+  try {
+    mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
+    writeFileSync(join(ROOT, CONTEXT_FILE), `${JSON.stringify(contextData, null, 2)}\n`, 'utf8');
+  } catch {
+    warnings.push(`Kontextdatei ${CONTEXT_FILE} konnte nicht geschrieben werden`);
+  }
+}
+
+// Phase 3: lesender Reconcile vor der Kollisionspruefung. Geloeschte Branches,
+// entfernte Worktrees und alte Doku erzeugen keine Geister-Kollision mehr;
+// geschrieben wird ausschliesslich mit `reconcile-claims --apply`.
+const prIndex = mergedPullRequestIndex();
+const reconcile = planReconcile({ claims, baseRef: originMain || 'origin/main', git: gitStrict, prIndex });
+const reconciledLanes = new Set(reconcile.changes.map((change) => change.id));
+if (reconcile.changes.length > 0) {
+  const sample = reconcile.changes.slice(0, 4).map((change) => `${change.id}:${change.evidence}`).join(', ');
+  notes.push(`Reconcile: ${reconcile.changes.length} Claim(s) belegbar merged (${sample}${reconcile.changes.length > 4 ? ', ...' : ''}); Register mit 'reconcile-claims --apply' nachziehen`);
 }
 
 if (claim && branch !== 'main' && !botBranch) {
@@ -154,8 +218,9 @@ if (claim && branch !== 'main' && !botBranch) {
   // herausfiltern, dann blockieren. Sonst wuerde der Start an Lanes
   // scheitern, die das Gate laengst als gemergt behandelt.
   const collisions = filterMergedCollisions({
-    collisions: findCollisions(claim, claims),
+    collisions: findCollisions(claim, claims).filter((collision) => !reconciledLanes.has(collision.lane)),
     claims,
+    prIndex,
     onMerged: (collision, evidence) => {
       notes.push(`${collision.lane}: ${evidence.why}; als merged behandelt (Register nachziehen)`);
     },
@@ -267,12 +332,62 @@ if (!issueCheck.checked) {
   notes.push(`Folgetask-Gate: ${followUp.problems.length} Problem(e) muessen zuerst geloest werden.`);
 }
 
+// Phase 3: Jede Branch ausser `main` ist temporaer. `pretask` raeumt nur
+// administrative Worktree-Reste auf; Branches loescht ausschliesslich der
+// Lifecycle-Lauf nach belegtem Merge.
+const worktreesBefore = parseWorktrees(run(['worktree', 'list', '--porcelain']));
+const mergedLocal = new Set(
+  originMain ? pathList(run(['branch', '--merged', originMain, '--format=%(refname:short)'])) : [],
+);
+const cleanup = planCleanup({
+  branches: pathList(run(['for-each-ref', '--format=%(refname:short)', 'refs/heads'])).map((name) => ({
+    name,
+    merged: mergedLocal.has(name),
+  })),
+  worktrees: worktreesBefore,
+  current: branch,
+});
+const worktreePrune = { ran: runOk(['worktree', 'prune']), pruned: cleanup.prune.length };
+if (cleanup.prune.length > 0) notes.push(`Worktree-Reconcile: ${cleanup.prune.length} verwaiste Eintrag(e) geprunt.`);
+if (cleanup.delete.length > 0) {
+  notes.push(`Temporaere Branches mit Merge-Beleg: ${cleanup.delete.slice(0, 8).join(', ')}; Entfernen folgt im Lane-Finish/CI.`);
+}
+
 const foreignPaths = foreignClaimPaths({ changed: dirtyPaths, claims, branch, ownAllowlist: claim?.pathAllowlist ?? [] });
 const ownWipPaths = claim
   ? dirtyPaths.filter((path) => claim.allowsPath(path) || isTaskContractPath(path))
   : [];
 const outsideClaim = dirtyPaths.filter((path) => !claim || (!allowsPath(claim.pathAllowlist, path) && !isTaskContractPath(path)));
 const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path));
+
+// Phase 2: "Fremdes WIP" gibt es nicht. Jede Dirty-Datei wird klassifiziert
+// und als eigene Arbeit angenommen; nur Korruption haelt den Start an.
+let freezeRecord;
+try {
+  freezeRecord = JSON.parse(readFileSync(join(ROOT, FREEZE_UNLOCK_FILE), 'utf8'));
+} catch {
+  freezeRecord = null;
+}
+const governanceDirty = governanceChanges(dirtyPaths);
+const freezeCheck = verifyUnlockRecord(freezeRecord, { base: mergeBase, paths: governanceDirty });
+const freeze = {
+  unlocked: governanceDirty.length === 0 || freezeCheck.ok,
+  paths: governanceDirty,
+  ...(governanceDirty.length > 0 && !freezeCheck.ok ? { why: freezeCheck.why } : {}),
+};
+const takeoverEntries = dirtyPaths
+  .map((path) => classifyWip({
+    path,
+    claims,
+    branch,
+    allowlist: claim?.pathAllowlist ?? [],
+    freezeUnlocked: freeze.unlocked,
+  }))
+  .filter(Boolean);
+const takeover = summarizeTakeover(takeoverEntries);
+for (const item of takeoverEntries.filter((entry) => entry.kind === 'corrupted')) {
+  blockers.push(`[${TAKEOVER_CODE}] korrupte WIP: ${item.path} (${item.reason}); nicht automatisch uebernehmen`);
+}
 
 const isolation = {
   ...assessIsolation({
@@ -290,20 +405,7 @@ if (!isolation.ok) {
     `[${ISOLATION_CODE}] isolation: ${isolation.reasons.join(', ')}; dirty=${dirtyPaths.length} foreign=${foreignPaths.join(',') || '(keine)'}`,
   );
 }
-if (dirtyPaths.length > 0) {
-  if (!linked || !claim || branch === 'main') {
-    blockers.push(`[ERR-4019] Arbeitsbaum nicht leer: ${dirtyPaths.slice(0, 8).join(', ')}; erst abschliessen oder bewusst fortsetzen, keine fremde WIP mitnehmen`);
-  } else {
-    if (foreignPaths.length > 0) {
-      blockers.push(`[ERR-4019] fremde WIP in Claim-Pfaden: ${foreignPaths.slice(0, 8).join(', ')}; nicht anfassen`);
-    }
-    if (unownedPaths.length > 0) {
-      blockers.push(`[ERR-4019] Arbeitsbaum nicht leer: WIP ausserhalb der eigenen Claim-Allowlist (${unownedPaths.slice(0, 8).join(', ')}); nicht anfassen`);
-    }
-  }
-}
-
-const dirtyOwnOnly = dirtyPaths.length > 0 && outsideClaim.length === 0 && foreignPaths.length === 0;
+const dirtyAdoptable = dirtyPaths.length > 0 && takeover.blocked === 0;
 let mode;
 let resumed = null;
 if (wantResume && blockers.length === 0) {
@@ -326,7 +428,7 @@ if (wantResume && blockers.length === 0) {
 if (blockers.length > 0) mode = 'BLOCKED';
 else if (branch === 'main') mode = 'GLOBAL';
 else if (head && base && head === base) mode = 'NOOP';
-else if (dirtyOwnOnly) mode = 'RESUME';
+else if (dirtyAdoptable) mode = 'RESUME';
 else mode = 'NEW';
 
 if (wantNew && wantResume) blockers.push('[ERR-4019] --new und --resume schliessen sich aus');
@@ -344,6 +446,9 @@ const taskState = deriveTaskState({
   pr: prState,
   ci: ciState,
 });
+// Ein roter Verify-Bericht bleibt sichtbar, auch wenn pretask selbst nur
+// Startbedingungen prueft. Der Block kommt aus derselben Quelle wie agent:cause.
+const causes = localCauses();
 
 const contextTests = contextData?.tests ?? {};
 const longTests = contextTests.long ?? [];
@@ -369,11 +474,11 @@ const requiredEvidence = [
   ...(contextData?.gates ?? []).map((gate) => `Gate ${gate.name}`),
 ];
 const nextActions = [];
-if (blockers.length > 0) nextActions.push('Blockers aufloesen; fremde WIP und Scope-Issues nicht anfassen.');
+if (blockers.length > 0) nextActions.push('Blockers aufloesen; korrupte WIP (Freeze, Ledger, Save, RNG, Boot) nicht automatisch uebernehmen.');
 else if (mode === 'NOOP') nextActions.push('HEAD == Basis: neue Aufgabe/Commit anlegen oder bewusst beenden.');
 else if (taskState.parallelLane?.suggested) nextActions.push(taskState.parallelLane.advice);
 else if (taskState.nextAction) nextActions.push(taskState.nextAction);
-else if (mode === 'RESUME') nextActions.push('Eigene WIP im verknuepften Worktree fortsetzen; fremde Pfade unangetastet lassen.');
+else if (mode === 'RESUME') nextActions.push('Adoptierte WIP im Claim-Scope als eigene Arbeit fertigbauen; Abschluss ist der Branch-Scope-Finish.');
 else if (mode === 'NEW') nextActions.push('Mit der ersten Aenderung innerhalb der Claim-Allowlist beginnen.');
 else nextActions.push('Auf main keine Lane-Arbeit starten.');
 if (taskState.status !== 'BLOCKED' && !taskState.parallelLane?.suggested) {
@@ -397,6 +502,7 @@ const contract = {
     ownWip: ownWipPaths,
     foreign: foreignPaths,
     unowned: unownedPaths,
+    takeover,
   },
   systems: contextData?.systems ?? [],
   affectedTests: {
@@ -407,6 +513,20 @@ const contract = {
   },
   gates: contextData?.gates ?? [],
   longTests,
+  takeover,
+  cleanup,
+  reconcile: {
+    changes: reconcile.changes.map((change) => ({
+      id: change.id,
+      branch: change.branch,
+      evidence: change.evidence,
+      sha: change.sha,
+      why: change.why,
+    })),
+    unresolved: reconcile.unresolved,
+  },
+  worktreePrune,
+  freeze,
   completionRequirements,
   mergeBlocked,
   followUp,
@@ -434,18 +554,41 @@ const checks = {
   scope: Boolean(claim) && blockers.length === 0,
   scopeState: state,
   isolation: isolation.ok,
+  takeover: takeover.blocked === 0,
   mode,
 };
 const taskStatePath = join(ROOT, '.verify-cache', 'task-state.json');
 mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
 writeFileSync(
   taskStatePath,
-  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, pr: prState, ci: ciState, contract, blockers, warnings }, null, 2)}\n`,
+  `${JSON.stringify({ version: 1, mode, state, claimState, branch, head, base, worktree, taskStatus: taskState.status, taskInfo: contract.taskState, pr: prState, ci: ciState, baseRefresh, contract, blockers, warnings }, null, 2)}\n`,
   'utf8',
 );
 
 if (asJson) {
-  console.log(JSON.stringify({
+  if (brief) {
+    console.log(JSON.stringify({
+      ok: blockers.length === 0,
+      mode,
+      state,
+      claimState,
+      taskStatus: taskState.status,
+      phase: taskState.phase,
+      branch,
+      base,
+      head,
+      claim: claimInfo ? { id: claimInfo.id, owner: claimInfo.owner, status: claimInfo.status, paths: claimInfo.allowlist.length } : null,
+      task: contract.task.id,
+      paths: { own: contract.paths.ownWip.length, foreign: contract.paths.foreign.length, unowned: contract.paths.unowned.length, adopted: takeover.adopted, corrupted: takeover.blocked },
+      blockers,
+      ...(causes.length > 0 ? { causes: causes.map(({ gate, fix, repro }) => ({ gate, fix, repro })) } : {}),
+      warnings,
+      nextActions,
+      details: 'vollstaendig mit --json; Ursachen mit pnpm run agent:cause',
+    }, null, 2));
+    // Die Kurzform ist die ganze Antwort; kein zweiter Vollblock dahinter.
+    process.exit(blockers.length > 0 ? 1 : 0);
+  } else console.log(JSON.stringify({
     ok: blockers.length === 0,
     mode,
     state,
@@ -458,16 +601,23 @@ if (asJson) {
     taskStatus: taskState.status,
     taskInfo: contract.taskState,
     git: { dir: gitDir, commonDir, linked },
+    baseRefresh,
     status: { staged: stagedPaths, unstaged: unstagedPaths, untracked: untrackedPaths },
     claim: claimInfo,
     issues: { ...issueCheck, issues: issueResults, mergeBlocked },
     mergeBlocked,
     followUp,
-    context: contextData,
+    context: contextData ? contextFile : null,
     isolation,
+    takeover,
+    reconcile: contract.reconcile,
+    cleanup,
+    worktreePrune,
+    freeze,
     contract,
     taskState: '.verify-cache/task-state.json',
     blockers,
+    causes,
     warnings,
     notes,
   }, null, 2));
@@ -501,10 +651,15 @@ if (asJson) {
   console.log(`  Ziel: ${contract.task.goal || '-'}`);
   console.log(`  Worktree: ${worktree || '-'} (linked=${linked})`);
   console.log(`  Pfade erlaubt=${contract.paths.allowed.length} eigen=${contract.paths.ownWip.length} fremd=${contract.paths.foreign.length}`);
+  console.log(`  WIP: ${takeover.total} adoptiert (${takeover.counts.compatible} kompatibel, ${takeover.counts.incomplete} unvollstaendig, ${takeover.counts.corrupted} korrupt)`);
   console.log(`  Systeme: ${contract.systems.join(', ') || 'keine'}`);
   console.log(`  Tests: ${contract.affectedTests.runAll ? 'vollstaendig' : contract.affectedTests.selected.length} · Long: ${contract.longTests.length} · Gates: ${contract.gates.length}`);
   for (const action of contract.nextActions) console.log(`  -> ${action}`);
   if (taskState.parallelLane?.suggested) console.log(`  Parallel: ${taskState.parallelLane.advice}`);
+  if (causes.length > 0) {
+    console.log('');
+    console.log(causeBlock(causes));
+  }
 }
 
 if (blockers.length > 0) {

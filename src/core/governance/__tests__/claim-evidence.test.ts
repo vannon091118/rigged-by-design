@@ -82,6 +82,11 @@ describe('claim-evidence', () => {
     expect({ status: result.status, evidence: result.evidence }).toEqual({ status: 'merged', evidence: 'branch-head-on-main' });
   });
 
+  it('schliesst einen frischen Branch auf der Basis nicht als gemergt', () => {
+    const result = decideClaim({ branchExists: true, branchAtBase: true, branchHeadOnMain: true });
+    expect(result.status).toBeNull();
+  });
+
   it('erkennt einen baumgleichen Commit auf main als Beleg', () => {
     const result = decideClaim({ branchExists: true, branchTreeOnMain: 'a490d4ae72599efc7f9bc375cedc37f6d35a62f1' });
     expect({ status: result.status, evidence: result.evidence }).toEqual({ status: 'merged', evidence: 'branch-tree-on-main' });
@@ -158,7 +163,7 @@ describe('claim-evidence', () => {
           },
         ]),
     });
-    expect([...index.keys()]).toEqual(['lane/ok']);
+    expect([...index!.keys()]).toEqual(['lane/ok']);
   });
 
   it('verwirft mehrdeutige PRs mit demselben Branch-Namen', () => {
@@ -174,12 +179,12 @@ describe('claim-evidence', () => {
     const index = mergedPullRequestIndex({
       gh: () => JSON.stringify([entry(1), entry(2, 'c'.repeat(40))]),
     });
-    expect(index.size).toBe(0);
+    expect(index!.size).toBe(0);
     expect(
       decideClaim({
         branchExists: false,
         headSha: 'a'.repeat(40),
-        mergedPr: index.get('lane/wiederverwendet') ?? null,
+        mergedPr: index!.get('lane/wiederverwendet') ?? null,
       }).status,
     ).toBeNull();
   });

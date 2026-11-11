@@ -1,0 +1,17 @@
+{
+  "agentId": "codex",
+  "turnId": "2026-11-11T14:40Z-governance-claim-scope",
+  "contributionId": "governance-claim-scope",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita prüfte den Push, nicht nur den Commit: Die Tests lagen ausserhalb des Claims. Sie verschob die Dateien unter den bereits freigegebenen Pfad, statt die Allowlist zu erweitern. Der Fix blieb derselbe, die Grenze auch.",
+  "directives": []
+}

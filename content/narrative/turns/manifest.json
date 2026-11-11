@@ -3994,12 +3994,24 @@
       "contributionId": "first-run-slot-truth-ci-fix"
     },
     {
+      "turnId": "2026-11-11T13:45Z-governance-stale-claim-closeout",
+      "contributionId": "governance-stale-claim-closeout"
+    },
+    {
       "turnId": "2026-11-11T18:00Z-governance-retry-path",
       "contributionId": "governance-retry-path"
     },
     {
       "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
       "contributionId": "governance-dependency-matrix-retry"
+    },
+    {
+      "turnId": "2026-11-11T14:30Z-governance-ci-gates",
+      "contributionId": "governance-ci-gates"
+    },
+    {
+      "turnId": "2026-11-11T14:40Z-governance-claim-scope",
+      "contributionId": "governance-claim-scope"
     }
   ]
 }

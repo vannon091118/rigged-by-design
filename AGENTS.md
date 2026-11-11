@@ -8,8 +8,8 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 
 ## Zehn unverhandelbare Regeln
 
-1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; ein offenes `gate-failure`-Issue, ein nicht leerer Baum, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`). Jede Lane außer `main` braucht einen verknüpften Worktree. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
-2. **Eigene Lane, fremde WIP bleibt liegen.** Nur der eigene Claim und die eigene Pfad-Allowlist; fremde Änderungen werden weder gestaged noch „aufgeräumt“. Kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung.
+1. **Pretask zuerst.** Vor dem ersten Edit `pnpm run agent:pretask --json`; `pretask` holt davor `origin/main` (ein Fetch pro Minute, in CI aus, nie blockierend), damit kein Diff gegen einen alten Ref rechnet; ein offenes `gate-failure`-Issue, ein fehlender Impact-Plan oder ein Claim-Problem blockieren den Start (`ERR-4019`); ein nicht leerer Baum wird adoptiert (Regel 2). Ein verknüpfter Worktree ist optional und nur mit `--require-worktree` Pflicht. Der Task-Vertrag `.lane-claims/tasks/<taskId>.json` ist die Wahrheit für Phase, Befunde und nächste Aktion; `pretask` gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus.
+2. **Fremdes WIP gibt es nicht.** Jede unfertige Änderung ist kompatibel, unvollständig oder korrupt und wird immer als eigene Arbeit angenommen; nur korrupte Freeze-, Ledger-, Save-, RNG- oder Boot-Pfade halten den Start an (`ERR-4030`). Gestaged wird weiterhin nur, was der Claim deckt; kein Direktpush auf `main`, kein Force-Push, kein Branch-Löschen, kein Stash/Reset/Clean als Abkürzung. Alle Branches außer `main` sind temporär und werden nach dem Merge entfernt.
 3. **Ein Zustandsbesitzer.** `world-store` hält Welt, Ledger, PRNG, Uhr und Save; `src/core/` bleibt headless. UI und Renderer lesen den Snapshot, sie führen keinen zweiten Spielzustand.
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen, nie für Spielzustand, PRNG oder Seeds. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
@@ -35,7 +35,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 13 Required-Gates (davon `narrative` und `build`), Audit optional; sechs Light-Gates, sieben mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
+- **CI:** 15 Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
 - **Workflows:** zehn Dateien; `CI Verify`, `Ensure PR`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE` (Default: aus).
 - **Branch-Schutz:** klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
@@ -46,11 +46,12 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | --- | --- |
 | `pnpm run agent:new --json` | Ein Startvorgang: Branch, Claim, Task-Vertrag (Phase `READY`) und Pretask in einem Lauf. |
 | `pnpm run agent:pretask --json` | Startblocker, Issue-Check, Impact, Claim und Worktree prüfen. |
-| `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen. |
+| `pnpm run agent:context --json` | Systeme, Invarianten, betroffene Tests und Gate-Plan anzeigen; vollständige Fassung unter `.verify-cache/agent-context.json` (`--full`). |
 | `pnpm run agent:feedback --json` | Aus dem echten Diff den nächsten sinnvollen Testschritt ableiten. |
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
+| `pnpm run verify:scope` | Nur der Diff gegen die Claim-Allowlist; keine Tests, kein Build, kein Typecheck. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
-| `pnpm run verify:all` | Der lokale Vollnachweis: 13 Required-Gates plus Audit (14 Läufe). |
+| `pnpm run verify:all` | Der lokale Vollnachweis: 15 Required-Gates plus Audit (16 Läufe). |
 | `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
@@ -90,5 +91,5 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | [`docs/RUNBOOK-AUTO-RESOLVE.md`](docs/RUNBOOK-AUTO-RESOLVE.md) | Aktivierung und Prüfung von Auto-Resolve. |
 
 <!-- rtk-instructions v2 -->
-Werkzeugausgabe wird verdichtet. Primär: `pnpm run agent:pretask --json` — der Impact-Kontext steht dort bereits unter `context`; `pnpm run agent:context --json` nur nachfordern, wenn er fehlt; Suche über `rg`.
+Werkzeugausgabe wird verdichtet. Primär: `pnpm run agent:pretask --json` — `context` verweist auf `.verify-cache/agent-context.json`; `pnpm run agent:context --json` nur nachfordern, wenn die Datei fehlt; Suche über `rg`.
 <!-- /rtk-instructions -->

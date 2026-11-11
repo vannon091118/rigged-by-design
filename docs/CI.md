@@ -2,11 +2,11 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die dreizehn Required-Gates und die optionalen Nachweise.
+**Zweck:** Die eine Wahrheit für den CI-Plan. `AGENTS.md` nennt nur die Kurzfassung; dieses Dokument führt die fünfzehn Required-Gates und die optionalen Nachweise.
 
 ## Required Gates
 
-Der Required-Plan besteht aus dreizehn Gates:
+Der Required-Plan besteht aus fünfzehn Gates:
 
 | # | Gate | Skript | Fehlercode |
 | --- | --- | --- | --- |
@@ -16,22 +16,24 @@ Der Required-Plan besteht aus dreizehn Gates:
 | 4 | `test-quality` | `scripts/verify-test-quality.mjs` | `ERR-4002` |
 | 5 | `dead-code` | `scripts/verify-dead-code.mjs` | `ERR-4003` |
 | 6 | `docs` | `scripts/verify-docs.mjs` | `ERR-4017` |
-| 7 | `tree` | `scripts/verify-tree.mjs` | `ERR-4019` |
-| 8 | `redundancy` | `scripts/verify-redundancy.mjs` | `ERR-4020` |
-| 9 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
-| 10 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
-| 11 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
-| 12 | `tests` | `pnpm run test:ci` | `ERR-4026` |
-| 13 | `build` | `pnpm run build` | `ERR-1005` |
+| 7 | `catalog` | `node scripts/test-catalog.mjs --check` | `ERR-4015` |
+| 8 | `tree` | `scripts/verify-tree.mjs` | `ERR-4019` |
+| 9 | `impact-graph` | `scripts/verify-impact-graph.mjs` | `ERR-4019` |
+| 10 | `redundancy` | `scripts/verify-redundancy.mjs` | `ERR-4020` |
+| 11 | `assets` | `pnpm run verify:assets` | `ERR-4016` |
+| 12 | `capabilities` | `scripts/verify-capabilities.mjs` | `ERR-4025` |
+| 13 | `narrative` | `scripts/verify-narrative-blocks.mjs` | `ERR-4022` |
+| 14 | `tests` | `pnpm run test:ci` | `ERR-4026` |
+| 15 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es vierzehn Läufe, aber weiterhin dreizehn Required-Gates.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates.
 
 Lokal gilt:
 
-- `verify:light` = sechs Gates: `lint`, `check:loc`, `typecheck`, `docs`, `tree`, `redundancy`.
-- `verify:dev` = Light plus `affected` (sieben Läufe).
-- `verify:quick` = zwölf Gates: Required ohne `build`.
-- `verify:all` = dreizehn Required plus Audit (vierzehn Läufe).
+- `verify:light` = acht Gates: `lint`, `check:loc`, `typecheck`, `docs`, `catalog`, `tree`, `impact-graph`, `redundancy`.
+- `verify:dev` = Light plus `affected` (neun Läufe).
+- `verify:quick` = vierzehn Gates: Required ohne `build`.
+- `verify:all` = fünfzehn Required plus Audit (sechzehn Läufe).
 
 `ci-verify.yml` übersetzt den Plan in eine Matrix: ein Job je Gate, `fail-fast: false`, der Aggregat-Job **`Fail-Closed Gates`** ist der einzige geschützte Status. Eine leere Matrix ist nur in `NOOP` und `PR_HANDOFF` zulässig; ein unbekanntes Gate bricht ab, statt still zu bestehen.
 
@@ -46,13 +48,13 @@ PR, `main` und manuelle Läufe setzen `full_tests=1`: die schnelle Suite ist vol
 
 | Zustand | Auslöser | Plan |
 | --- | --- | --- |
-| `PR` | Pull Request gegen `main` | 13 Required, volle Suite, Impact für lange Nachweise |
-| `MAIN` | Push auf `main` | 13 Required, volle Suite |
-| `MANUAL` | `workflow_dispatch` von `CI Verify` | 13 Required, volle Suite; Audit nur nach Impact/Env |
-| `LIGHT` | nur noch mit explizitem `--state=LIGHT` | 6 Light-Gates, keine Suite |
+| `PR` | Pull Request gegen `main` | 15 Required, volle Suite, Impact für lange Nachweise |
+| `MAIN` | Push auf `main` | 15 Required, volle Suite |
+| `MANUAL` | `workflow_dispatch` von `CI Verify` | 15 Required, volle Suite; Audit nur nach Impact/Env |
+| `LIGHT` | nur noch mit explizitem `--state=LIGHT` | 8 Light-Gates, keine Suite |
 | `NOOP` | Kopf ist die Basis, kein unabhängiger Diff | keine Gates, kein Pflichtstatus |
 | `PR_HANDOFF` | Altform; `ci-verify` erzeugt sie nicht mehr | keine Gates, kein Pflichtstatus |
-| `UNKNOWN` | Zustand nicht bestimmbar (Sicherheitsnetz) | 13 Required plus Audit; fail-closed |
+| `UNKNOWN` | Zustand nicht bestimmbar (Sicherheitsnetz) | 15 Required plus Audit; fail-closed |
 
 Ein grüner `LIGHT`-Lauf ist **kein** PR-Nachweis. Ein `NOOP` ist kein Fehler und erzeugt kein Issue.
 

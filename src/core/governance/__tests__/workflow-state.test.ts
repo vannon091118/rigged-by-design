@@ -4,7 +4,7 @@
  *
  * Nach dem Turn zaehlt nur ein belegter Zustand: TESTS_PASSED nach lokaler
  * Pruefung, CI_PENDING nach dem Push. Eine Pause wird nur in einem eigenen
- * Claim und verknuepften Worktree ohne fremde WIP fortgesetzt; TASK_COMPLETE
+ * Claim und verknuepften Worktree ohne korrupte WIP fortgesetzt; TASK_COMPLETE
  * gibt es nur fuer einen gruenen Run auf exakt denselben SHA.
  */
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -126,12 +126,13 @@ describe('pause und resume', () => {
     expect(readAfterTask({ root })?.state).toBe('TESTS_PASSED');
   });
 
-  it('blockiert fremde WIP, falschen Branch, fehlenden Claim und geteilten Worktree', () => {
+  it('adoptiert fremde WIP und blockiert nur Korruption oder falsche Bindung', () => {
     const root = tempRoot();
     seed(root);
     pauseTask({ root });
     const base = { record: readAfterTask({ root }), branch: 'lane/test/task', claim, isWorktree: true };
-    expect(resumeDecision({ ...base, dirtyPaths: ['src/ui/hud.tsx'] }).reasons.join(' ')).toContain('fremde WIP');
+    expect(resumeDecision({ ...base, dirtyPaths: ['src/ui/hud.tsx'] }).ok).toBe(true);
+    expect(resumeDecision({ ...base, dirtyPaths: ['src/core/contracts/save.ts'] }).reasons.join(' ')).toContain('korrupte WIP');
     expect(resumeDecision({ ...base, branch: 'lane/other/task' }).reasons.join(' ')).toContain('Branch');
     expect(resumeDecision({ ...base, claim: null }).reasons.join(' ')).toContain('kein Claim');
     expect(resumeDecision({ ...base, isWorktree: false }).reasons.join(' ')).toContain('Worktree');
