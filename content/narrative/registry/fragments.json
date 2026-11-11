@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3930d67fe3af22c324b708dc14c36bc03e28571c9923f4f93bd8e9a62f2cb55b",
+  "contentHash": "sha256:50f2afdc7527bf63bcd4c0c5a942155a4e2eca4d40269145d6d0ae89f92e1a7a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6159,6 +6159,28 @@
       "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
+    },
+    {
+      "contributionId": "living-world-vertical-slice-1",
+      "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "facts"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sie folgte ihrem Tagesplan. Nicht aus freiem Willen – einfach weil Systeme das so machen. Um 19 Uhr stand Kneipe im Kalender, also war sie da. Der Spieler trat ihr auf denselben Weg. Niemand hatte das geplant. Trotzdem funktionierte es.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json"
     },
     {
       "contributionId": "living-world-vision-1",

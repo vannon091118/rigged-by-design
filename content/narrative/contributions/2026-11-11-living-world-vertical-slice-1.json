@@ -1,0 +1,21 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
+  "contributionId": "living-world-vertical-slice-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-high",
+  "function": "react",
+  "contexts": [
+    "facts"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Sie folgte ihrem Tagesplan. Nicht aus freiem Willen – einfach weil Systeme das so machen. Um 19 Uhr stand Kneipe im Kalender, also war sie da. Der Spieler trat ihr auf denselben Weg. Niemand hatte das geplant. Trotzdem funktionierte es.",
+  "directives": []
+}
