@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+  "contributionId": "gamescout-player-qa-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita legte Karte, Jeton und Screenshot nebeneinander. Erst wenn Bild, Renderbaum und Spielzustand dasselbe erzählten, war der Zug wirklich gespielt; sonst blieb er als Beobachtung im Buch stehen.",
+  "directives": []
+}

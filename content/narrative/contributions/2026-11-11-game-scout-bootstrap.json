@@ -1,0 +1,17 @@
+{
+  "agentId": "integrator",
+  "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+  "contributionId": "gamescout-observation-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["documentation"],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita stellte die Lupe an den Spieltisch. Nicht um zu eingreifen, sondern um zu sehen: was der Croupier tat, wohin die Karte wanderte, wo der Jeton blieb. Jede Bewegung lieferte einen Fact, jeder Fact blieb im Buch stehen – nichts wurde verändert, alles wurde festgehalten.",
+  "directives": []
+}

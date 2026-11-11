@@ -3940,6 +3940,18 @@
     {
       "turnId": "2026-11-11T13:15Z-ui-placement-venue-history-done",
       "contributionId": "ui-placement-venue-history-done"
+    },
+    {
+      "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+      "contributionId": "gamescout-observation-01"
+    },
+    {
+      "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+      "contributionId": "gamescout-player-qa-01"
+    },
+    {
+      "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+      "contributionId": "game-scout-main-merge"
     }
   ]
 }

@@ -602,10 +602,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2756 |
-| Gelistete Dateien | 2756 |
-| Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (192), content (989), docs (83), public (554), scripts (102), src (808) |
+| Getrackte Dateien | 2794 |
+| Gelistete Dateien | 2794 |
+| Getrackte Ordner | 103 |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (194), content (992), docs (83), packages (28), public (554), scripts (102), src (813) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -617,9 +617,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 121 Datei(en)
-- `.lane-claims/tasks/` — 69 Datei(en)
-- `content/narrative/contributions/` — 985 Datei(en)
+- `.lane-claims/claims/` — 122 Datei(en)
+- `.lane-claims/tasks/` — 70 Datei(en)
+- `content/narrative/contributions/` — 988 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -632,6 +632,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.114/` — 11 Datei(en)
 - `docs/screenshots/v0.3.132/` — 8 Datei(en)
 - `docs/screenshots/v0.3.78/` — 5 Datei(en)
+- `packages/gamescout/` — 6 Datei(en)
+- `packages/gamescout/bin/` — 1 Datei(en)
+- `packages/gamescout/src/cli/` — 5 Datei(en)
+- `packages/gamescout/src/core/` — 9 Datei(en)
+- `packages/gamescout/src/dashboard/` — 3 Datei(en)
+- `packages/gamescout/src/mcp/` — 1 Datei(en)
+- `packages/gamescout/src/types/` — 3 Datei(en)
 - `public/assets/casino/atlas/` — 2 Datei(en)
 - `public/assets/casino/characters/` — 69 Datei(en)
 - `public/assets/casino/decor/` — 28 Datei(en)
@@ -693,6 +700,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
+- `src/debug/` — 5 Datei(en)
 - `src/render/` — 49 Datei(en)
 - `src/render/__tests__/` — 17 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
@@ -815,6 +823,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-welt-anker.json` — { — gelesen: 54 Zeilen
 - `.lane-claims/claims/lane-governance-world-first-ui.json` — { — gelesen: 33 Zeilen
+- `.lane-claims/claims/lane-infra-gameplay-scout-bootstrap.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-integrity-audit-findings.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-render-world-visual-presentation.json` — { — gelesen: 21 Zeilen
@@ -893,6 +902,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/infra-gameplay-scout-bootstrap.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/render-world-visual-presentation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/room-plan.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-arena.json` — { — gelesen: 29 Zeilen
@@ -1897,6 +1907,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent26-main-merge.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-task.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-game-scout-bootstrap.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-game-scout-main-merge.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-game-scout-player-qa.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json` — { — gelesen: 21 Zeilen
@@ -1911,8 +1924,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22067 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3945 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22137 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3957 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2000,6 +2013,34 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/screenshots/v0.3.78/05-hilfe-steuerung.png` — PNG-Textur — geprueft: PNG 1280x860, 188372 B
 - `index.html` — <!doctype html> — gelesen: 67 Zeilen
 - `package.json` — { — gelesen: 105 Zeilen
+- `packages/gamescout/AGENTS.md` — GameScout — Agent-Anleitung — gelesen: 160 Zeilen
+- `packages/gamescout/BOOTSTRAP-REPORT.md` — GameScout Bootstrap-Bericht — gelesen: 184 Zeilen
+- `packages/gamescout/README.md` — GameScout — gelesen: 74 Zeilen
+- `packages/gamescout/bin/gamescout` — GameScout CLI bin entry point. — gelesen: 20 Zeilen
+- `packages/gamescout/package.json` — { — gelesen: 55 Zeilen
+- `packages/gamescout/pnpm-lock.yaml` — lockfileVersion: '9.0' — gelesen: 878 Zeilen
+- `packages/gamescout/src/cli/dashboard.ts` — import { DashboardServer } from '../dashboard/server.js'; — gelesen: 51 Zeilen
+- `packages/gamescout/src/cli/doctor.ts` — gamescout doctor — Run diagnostics. — gelesen: 67 Zeilen
+- `packages/gamescout/src/cli/index.ts` — GameScout CLI entry point. — gelesen: 66 Zeilen
+- `packages/gamescout/src/cli/mcp.ts` — gamescout mcp — Start MCP server only (STDIO). — gelesen: 41 Zeilen
+- `packages/gamescout/src/cli/start.ts` — gamescout start — Start Core + MCP server + Dashboard. — gelesen: 65 Zeilen
+- `packages/gamescout/src/core/actions.ts` — Browser actions: click, press_key, inspect, annotate. — gelesen: 98 Zeilen
+- `packages/gamescout/src/core/cdp.ts` — CDP connection and tab management. — gelesen: 146 Zeilen
+- `packages/gamescout/src/core/checkpoint.ts` — Checkpoints and pixel-diff comparison. — gelesen: 100 Zeilen
+- `packages/gamescout/src/core/id.ts` — Deterministische ID-Generierung für GameScout. — gelesen: 12 Zeilen
+- `packages/gamescout/src/core/index.ts` — GameScout Core — main entry point. — gelesen: 210 Zeilen
+- `packages/gamescout/src/core/peer-mcps.ts` — Optional, read-only bridge to the repository owner's configured MCP peers. — gelesen: 218 Zeilen
+- `packages/gamescout/src/core/recording.ts` — Recording and replay of browser action sequences. — gelesen: 207 Zeilen
+- `packages/gamescout/src/core/session.ts` — Session state management for GameScout. — gelesen: 165 Zeilen
+- `packages/gamescout/src/core/types.ts` — Shared types for GameScout Core. Engine-independent. — gelesen: 90 Zeilen
+- `packages/gamescout/src/dashboard/html.ts` — GameScout Dashboard HTML. — gelesen: 237 Zeilen
+- `packages/gamescout/src/dashboard/index.ts` — GameScout Dashboard — index re-export. — gelesen: 4 Zeilen
+- `packages/gamescout/src/dashboard/server.ts` — GameScout Dashboard HTTP server. — gelesen: 203 Zeilen
+- `packages/gamescout/src/mcp/server.ts` — GameScout MCP server. — gelesen: 289 Zeilen
+- `packages/gamescout/src/types/globals.d.ts` — declare class Buffer { — gelesen: 4 Zeilen
+- `packages/gamescout/src/types/pixelmatch.d.ts` — declare module 'pixelmatch' { — gelesen: 10 Zeilen
+- `packages/gamescout/src/types/pngjs.d.ts` — declare module 'pngjs' { — gelesen: 13 Zeilen
+- `packages/gamescout/tsconfig.json` — { — gelesen: 19 Zeilen
 - `pnpm-lock.yaml` — lockfileVersion: "9.0" — gelesen: 2798 Zeilen
 - `public/assets/casino/atlas/atlas-0.webp` — Binaerdatei — geprueft: Signatur, 308258 B
 - `public/assets/casino/atlas/atlas-1.webp` — Binaerdatei — geprueft: Signatur, 75976 B
@@ -3176,7 +3217,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/venue-event.ts` — Zentrale Event-Infrastruktur: Veranstaltungen laufen als Phasen ueber die — gelesen: 176 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 76 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 152 Zeilen
-- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 44 Zeilen
+- `src/debug/gamescout-anleitung.md` — GameScout — Spezialisierter Browser-Subagent für Gameplay-Scouting — gelesen: 192 Zeilen
+- `src/debug/runtime-probe-render.ts` — RBD Runtime Probe — Render-Informationen (DEV-only, READ-ONLY). — gelesen: 63 Zeilen
+- `src/debug/runtime-probe-snapshot.ts` — RBD Runtime Probe — Welt-Snapshot-Funktionen (DEV-only, READ-ONLY). — gelesen: 101 Zeilen
+- `src/debug/runtime-probe-types.ts` — RBD Runtime Probe — Typen (DEV-only). — gelesen: 68 Zeilen
+- `src/debug/runtime-probe.ts` — RBD Runtime Probe — DEV-only, READ-ONLY Gameplay-Diagnose (Haupteinstieg). — gelesen: 47 Zeilen
+- `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 50 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
 - `src/render/__tests__/depth.test.ts` — Ein gemeinsamer Tiefenvertrag: Fussanker statt Oberkante, deterministisches — gelesen: 82 Zeilen
 - `src/render/__tests__/floor-actions.test.ts` — Der Lager-Spiegel ist die einzige Deko mit einer Charaktereditor-Aktion; — gelesen: 28 Zeilen
