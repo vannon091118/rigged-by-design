@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:854b778bbbff06ed8a28c531518cdf4c8ecb7d289253cd1a0d0068419f802562",
+  "contentHash": "sha256:008c4eb0d7cf2437836b05176278dfbfd2a022d312c50a3cdfef5674c159352a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -800,6 +800,28 @@
       "text": "Die Bar fuehrt eine Karte, nicht ein Preisschild. Was darauf steht, sagt der Grundpreis und die Stufe - kein zweites Buch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-2",
+      "turnId": "2026-11-11T02:25Z-agent18-drink-menu-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Glaeser, ein Bestand: die Karte sagt, was die Bar fuehrt, der Gast bestellt nach Durst und Neigung, und die Kasse bucht den Preis, der auf der Karte steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json"
     },
     {
       "contributionId": "apk-signing-01",

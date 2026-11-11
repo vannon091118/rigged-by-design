@@ -4,7 +4,7 @@
   "claimId": "lane/gastro/drink-menu",
   "branch": "lane/gastro/drink-menu",
   "baseSha": "f24c9a3b7cdd67849d1b4991ad9fc3ae1be72f68",
-  "phase": "READY",
+  "phase": "IMPLEMENTING",
   "title": "Agent 18: Getraenkekarte der Bar",
   "goal": "Die Bar fuehrt eine Karte (Spritz, Bier, Cocktail ab Stufe 3) als Sicht auf den vorhandenen Grundpreis und die Barstufe; der Gast bestellt deterministisch nach Durst und Persona, die Lieferung bucht den Kartenpreis ueber den vorhandenen Ledger-Pfad und verbraucht einen Bestand; kein neues Save-Feld, kein zweites Preisbuch, kein zweiter Bestand, keine Aenderung an Einkauf, Kisten oder Beduerfnissen.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Implementierung innerhalb der Allowlist beginnen.",
-  "revision": 1
+  "nextAction": "Lokale Gates gruen halten; danach PR und CI auf dem exakten Kopf.",
+  "revision": 2
 }
