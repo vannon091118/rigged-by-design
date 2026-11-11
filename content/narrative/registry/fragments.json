@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b7b73385e45ac65e902252c8e435f144efc6658e03ab7bc7aecad127eb5108ae",
+  "contentHash": "sha256:4d1b599a88f55dbd180eefecc1589b57d294f9fecad959afe07bc834f218400c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2142,6 +2142,28 @@
       "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
+    },
+    {
+      "contributionId": "agent26-main-merge",
+      "turnId": "2026-11-11T08:47Z-agent26-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
     },
     {
       "contributionId": "agent26-task",
