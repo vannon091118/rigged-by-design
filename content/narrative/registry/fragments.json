@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:521180f95f534e3fd47aef5fd4e50d771bf85a1a695b482526d95305c2640946",
+  "contentHash": "sha256:c6cf75b9c8456d800b215896da5dbf953cc0a8fc537923b7c0e0a2ddb6ba47dd",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -448,6 +448,28 @@
       "text": "Vor dem Tor wird nicht behauptet, sondern geprueft: die Phase zieht nach, der Kopf bleibt derselbe, und erst der gruene Lauf macht aus dem Satz einen Beleg.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-amenity-4.json"
+    },
+    {
+      "contributionId": "agent16-aftercare-1",
+      "turnId": "2026-11-11T00:25Z-agent16-aftercare-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schnitt ist durch: der Squash traegt denselben Baum wie der Zweig. Erst diese Gleichheit macht aus dem Merge einen Beleg statt einer Behauptung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-1.json"
     },
     {
       "contributionId": "agent16-staff-1",

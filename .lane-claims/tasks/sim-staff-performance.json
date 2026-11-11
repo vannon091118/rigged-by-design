@@ -4,14 +4,18 @@
   "claimId": "lane/sim/staff-performance",
   "branch": "lane/sim/staff-performance",
   "baseSha": "54b8efc54d80caaccce20b0bcb200d7d7e4003c2",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 16: Leistungsbewertung des Personals",
   "goal": "Eine deterministische Bewertung (FRISCH/SOLIDE/STARK/EINGESCHRAENKT) leitet sich aus vorhandenen Agentenfeldern ab und wird im Personalbereich angezeigt; kein neues Save-Feld, kein neues Fact-Kind, keine Aenderung an Lohn, Rollen oder Agentenlogik.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 404,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/404",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; dann PR-Nummer und Squash-SHA eintragen.",
-  "revision": 2
+  "nextAction": "Nachlauf AFTERCARE vorbereiten.",
+  "revision": 3
 }
