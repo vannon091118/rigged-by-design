@@ -3788,6 +3788,10 @@
     {
       "turnId": "2026-11-11T09:40Z-agent23-fight-event",
       "contributionId": "agent23-fight-event"
+    },
+    {
+      "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
+      "contributionId": "agent23-ci-pending"
     }
   ]
 }
