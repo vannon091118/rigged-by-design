@@ -1,5 +1,5 @@
 /**
- * @test-target: src/core/sim/spawn.ts, src/core/sim/demand.ts
+ * @test-target: src/core/sim/spawn.ts
  * @error-code: ERR-2001
  *
  * Der erste Gast braucht eine Kasse und den eigenen Floor. Ohne beides darf

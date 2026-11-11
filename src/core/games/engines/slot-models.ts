@@ -115,7 +115,7 @@ function binom(n: number, k: number): number {
   return value;
 }
 
-export interface LineStats { readonly expectation: number; readonly hitBps: number; }
+interface LineStats { readonly expectation: number; readonly hitBps: number; }
 
 /**
  * Exakte Linien-Verteilung: Der erste Nicht-Buch-Treffer ist das führende

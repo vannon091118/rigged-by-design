@@ -604,10 +604,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2810 |
-| Gelistete Dateien | 2810 |
+| Getrackte Dateien | 2813 |
+| Gelistete Dateien | 2813 |
 | Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (196), content (1001), docs (84), packages (28), public (554), scripts (102), src (817) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (198), content (1002), docs (84), packages (28), public (554), scripts (102), src (817) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -619,9 +619,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 123 Datei(en)
-- `.lane-claims/tasks/` — 71 Datei(en)
-- `content/narrative/contributions/` — 997 Datei(en)
+- `.lane-claims/claims/` — 124 Datei(en)
+- `.lane-claims/tasks/` — 72 Datei(en)
+- `content/narrative/contributions/` — 998 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -841,6 +841,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-fight-career.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-sim-fight-event.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-first-property.json` — { — gelesen: 42 Zeilen
+- `.lane-claims/claims/lane-sim-first-run-slot-truth.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-hybrid-visitor-flows.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-item-synergy.json` — { — gelesen: 26 Zeilen
@@ -918,6 +919,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-first-run-slot-truth.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-item-synergy.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-living-world-foundation.json` — { — gelesen: 22 Zeilen
@@ -1912,6 +1914,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent26-main-merge.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-task.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-first-run-slot-truth-ci-fix.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-first-run-slot-truth-demand.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-first-run-slot-truth-lines.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-first-run-slot-truth-payout.json` — { — gelesen: 21 Zeilen
@@ -1939,7 +1942,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/registry/fragments.json` — { — gelesen: 22335 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3993 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3997 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
