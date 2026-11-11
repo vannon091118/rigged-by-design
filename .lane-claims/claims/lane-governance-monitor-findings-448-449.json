@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/monitor-findings-448-449",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/monitor-findings-448-449",
+  "baseSha": "3883b80694a2ba5dd0ae3fb261d364fd17221db6",
+  "task": "Monitor-Befunde #448/#449: Pages-Liquid, Register-Drift und Claim-Staub beheben",
+  "goal": "GitHub Pages wieder gruen, Task-Vertraege und Claims auf den echten Remote-Zustand bringen",
+  "pathAllowlist": [
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/RUNBOOK-AUTO-RESOLVE.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/claims/lane-governance-monitor-findings-448-449.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3883b80694a2ba5dd0ae3fb261d364fd17221db6"
+}
