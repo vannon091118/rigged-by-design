@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bf588d10a959236ee08555000b4c2bfe4ff5ac131c2923d35ec45d3610486fb4",
+  "contentHash": "sha256:1c91b6be52b1956f7771c6b553061fc71f063efd23d39e9c2f9e0a3d7fd6e421",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1218,6 +1218,50 @@
       "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-1",
+      "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Räume stehen längst im Plan: Zonen tragen ihre Funktion, Kanten ihre Türen. Der Raumplan liest beides an derselben Stelle, statt eine zweite Liste zu führen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-1.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-2",
+      "turnId": "2026-11-11T05:10Z-agent21-room-plan-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Raum ohne Zugang ist keine Planung, sondern eine Wand. Der Plan zählt Türen und Durchgänge und rechnet die Plätze aus der Fläche – sichtbar im Editor, ohne neues Save-Feld.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-2.json"
     },
     {
       "contributionId": "apk-signing-01",

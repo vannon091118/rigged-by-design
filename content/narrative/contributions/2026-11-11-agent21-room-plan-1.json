@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
+  "contributionId": "agent21-room-plan-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Räume stehen längst im Plan: Zonen tragen ihre Funktion, Kanten ihre Türen. Der Raumplan liest beides an derselben Stelle, statt eine zweite Liste zu führen.",
+  "directives": []
+}
