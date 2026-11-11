@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-readme-visual-polish",
+  "claimId": "lane/governance/readme-visual-polish",
+  "branch": "lane/governance/readme-visual-polish",
+  "baseSha": "c5d32ad99997e9d3c1b723f938c8be6911630282",
+  "phase": "CI_PENDING",
+  "title": "README: Visuelle Praesentation",
+  "goal": "Einladendes",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
