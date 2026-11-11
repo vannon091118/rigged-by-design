@@ -8,6 +8,7 @@
  */
 import type { VaCoinMicro } from '../economy/vacoin';
 import { backyardView, type BackyardView } from './fight-career';
+import { fightEventView, type FightEventView } from './fight-event';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
 import { playerHistoryOf, type PlayerHistoryEntry } from './player-history';
 import { cleaningReach, maintenanceGain } from './floor-work';
@@ -62,6 +63,8 @@ export interface PlayerCareer {
   readonly history: readonly PlayerHistoryEntry[];
   /** Hinterhof-Leiter, Gegnerhistorie und Startgeld aus derselben Ableitung. */
   readonly backyard: BackyardView;
+  /** Kampfabend im vorhandenen Turnierabend: Roster, Nenngeld und Zuschauer. */
+  readonly event: FightEventView;
   /** Erste Immobilie mit Katalog, Preis und Bezahlbarkeit aus dem Portemonnaie. */
   readonly property: PlayerPropertyView;
 }
@@ -155,6 +158,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     achievements: achievementsOf(world, record),
     history: playerHistoryOf(world.archive),
     backyard: backyardView(world, wallet),
+    event: fightEventView(world, wallet),
     property: propertyView(world, wallet),
   };
 }

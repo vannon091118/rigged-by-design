@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
+  "contributionId": "agent23-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Pflichtstatus ist gruen auf dem exakten Kopf, und erst jetzt darf der Merge geplant werden. Kein Nachbessern am Rand, kein zweiter Kopf: Was geprueft wurde, wird gemergt, und was danach kommt, steht in der Nachsorge.",
+  "directives": []
+}

@@ -1,0 +1,31 @@
+{
+  "id": "lane/sim/fight-event",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/fight-event",
+  "baseSha": "b627d9553c80894d188372efc3523bfc6dc7f451",
+  "task": "Agent 23: Kampfveranstaltungen im Turnierabend",
+  "goal": "Der vorhandene TURNIER_ABEND wird zum echten Kampfabend: Roster und Kampfplan kommen aus der bestehenden Hinterhof-Leiter, der Hauptkampf laeuft ueber simulateFight, Nenngeld und Preisgeld ueber den Ledger, Zuschauer aus dem laufenden Haus. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine.",
+  "pathAllowlist": [
+    "src/core/sim/fight-event.ts",
+    "src/core/sim/__tests__/fight-event.test.ts",
+    "src/core/sim/fight-career.ts",
+    "src/core/sim/fight-history.ts",
+    "src/core/sim/brawl-combat.ts",
+    "src/core/sim/duel.ts",
+    "src/core/sim/tx-reasons.ts",
+    "src/core/sim/player-career.ts",
+    "src/store/city-commands.ts",
+    "src/ui/career-backyard.tsx",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/tasks/sim-fight-event.json",
+    ".lane-claims/claims/lane-sim-fight-event.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b627d9553c80894d188372efc3523bfc6dc7f451"
+}

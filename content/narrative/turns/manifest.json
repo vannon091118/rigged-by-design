@@ -3782,6 +3782,22 @@
       "contributionId": "agent22-done"
     },
     {
+      "turnId": "2026-11-11T07:15Z-agent23-task",
+      "contributionId": "agent23-task"
+    },
+    {
+      "turnId": "2026-11-11T09:40Z-agent23-fight-event",
+      "contributionId": "agent23-fight-event"
+    },
+    {
+      "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
+      "contributionId": "agent23-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
+      "contributionId": "agent23-merge-pending"
+    },
+    {
       "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
       "contributionId": "living-world-vertical-slice-1"
     }
