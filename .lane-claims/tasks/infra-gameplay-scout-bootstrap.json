@@ -4,19 +4,20 @@
   "claimId": "lane/infra/gameplay-scout-bootstrap",
   "branch": "lane/infra/gameplay-scout-bootstrap",
   "baseSha": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8",
-  "phase": "CI_PENDING",
-  "title": "GameScout: lokales Player-QA mit gebündelten Browser-, PixiJS- und Runtime-MCPs",
-  "goal": "Ein lokales MCP-Playtesting-Werkzeug liefern, das Spielerabsichten als interaktive Schritte ausführt, Browser-, Render- und Simulationsbelege aus den vorhandenen MCPs zusammenfasst und reproduzierbare Player-QA-Berichte erstellt.",
-  "taskType": "single",
-  "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": {
-    "number": 434,
-    "url": "https://github.com/vannon091118/rigged-by-design/pull/434",
-    "state": "open",
-    "headSha": "9e47d503ff37884fe38e1b6d1a3d22aabe2fd6a6"
-  },
-  "findings": [],
-  "nextAction": "main integriert; CI prueft den Merge-Kopf; danach promote.",
-  "revision": 9
+  "phase": "DONE",
+    "mergedSha": "7db4be8",
+    "title": "GameScout: lokales Player-QA mit gebündelten Browser-, PixiJS- und Runtime-MCPs",
+    "goal": "Ein lokales MCP-Playtesting-Werkzeug liefern, das Spielerabsichten als interaktive Schritte ausführt, Browser-, Render- und Simulationsbelege aus den vorhandenen MCPs zusammenfasst und reproduzierbare Player-QA-Berichte erstellt.",
+    "taskType": "single",
+    "holdMerge": false,
+    "status": "merged",
+    "pr": {
+      "number": 434,
+      "url": "https://github.com/vannon091118/rigged-by-design/pull/434",
+      "state": "merged",
+      "mergedSha": "7db4be8"
+    },
+    "findings": [],
+    "nextAction": "Abgeschlossen: PR #434 (Squash-Merge) auf main, packages/gamescout/ verifiziert (identisch auf main und Branch), Branch lane/infra/gameplay-scout-bootstrap gelöscht, Claim+Task DONE.",
+    "revision": 10
 }

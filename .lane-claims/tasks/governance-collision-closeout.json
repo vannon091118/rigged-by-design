@@ -5,13 +5,14 @@
   "branch": "lane/governance/collision-closeout",
   "baseSha": "da216388e7f023314369151c598e1b3f628df5a0",
   "phase": "DONE",
-  "title": "Kollisions-Lane abschliessen",
-  "goal": "Claim merged, Vertrag DONE",
-  "taskType": "single",
-  "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": null,
-  "findings": [],
-  "nextAction": "Abgeschlossen: Claim merged, Vertrag DONE.",
-  "revision": 4
+    "mergedSha": "da216388e7f023314369151c598e1b3f628df5a0",
+    "title": "Kollisions-Lane abschliessen",
+    "goal": "Claim merged, Vertrag DONE",
+    "taskType": "single",
+    "holdMerge": false,
+    "status": "merged",
+    "pr": null,
+    "findings": [],
+    "nextAction": "Abgeschlossen: Claim merged (mergedSha=da216388, letzte bekannte Basis), Branch nicht mehr remote, Vertrag DONE, Task DONE.",
+    "revision": 5
 }
