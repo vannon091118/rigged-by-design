@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statistics 7 · performance 7.
+Summe: 291 Dateien — contract 174 · integration 61 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -215,20 +215,28 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/amenity-reaction.test.ts` | sim | contract | ja | `src/core/sim/amenity-reaction.ts` |
 | `src/core/sim/__tests__/anger-decay.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
 | `src/core/sim/__tests__/anger-patience.test.ts` | sim | contract | ja | `src/core/sim/upkeep.ts` |
+| `src/core/sim/__tests__/arena.test.ts` | sim | contract | ja | `src/core/sim/arena.ts` |
 | `src/core/sim/__tests__/balance-operating.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
+| `src/core/sim/__tests__/building.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
+| `src/core/sim/__tests__/business-areas.test.ts` | sim | contract | ja | `src/core/sim/business-areas.ts` |
 | `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
 | `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
+| `src/core/sim/__tests__/club-night.test.ts` | sim | contract | ja | `src/core/sim/club-night.ts` |
 | `src/core/sim/__tests__/demand.test.ts` | sim | contract | ja | `src/core/sim/demand.ts` |
 | `src/core/sim/__tests__/device-identity.test.ts` | sim | contract | ja | `src/core/sim/device.ts` |
 | `src/core/sim/__tests__/dirty-index.test.ts` | sim | contract | ja | `src/core/sim/emotion.ts` |
 | `src/core/sim/__tests__/dispute-escalation.test.ts` | sim | contract | ja | `src/core/sim/disputes.ts` |
+| `src/core/sim/__tests__/drink-menu.test.ts` | sim | contract | ja | `src/core/sim/drink-menu.ts` |
 | `src/core/sim/__tests__/duel.test.ts` | sim | contract | ja | `src/core/sim/duel.ts` |
 | `src/core/sim/__tests__/economy-losses.test.ts` | sim | contract | ja | `src/core/sim/economics.ts` |
+| `src/core/sim/__tests__/esport.test.ts` | sim | contract | ja | `src/core/sim/esport.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
+| `src/core/sim/__tests__/fight-bets.test.ts` | sim | contract | ja | `src/core/sim/fight-bets.ts` |
 | `src/core/sim/__tests__/fight-career.test.ts` | sim | contract | ja | `src/core/sim/fight-career.ts` |
+| `src/core/sim/__tests__/fight-event.test.ts` | sim | contract | ja | `src/core/sim/fight-event.ts` |
 | `src/core/sim/__tests__/floor-work.test.ts` | sim | contract | ja | `src/core/sim/floor-work.ts` |
 | `src/core/sim/__tests__/foreign-floor-tick.test.ts` | sim | contract | ja | `src/core/sim/foreign-floor-tick.ts` |
 | `src/core/sim/__tests__/grid-zones.test.ts` | sim | contract | ja | `src/core/sim/grid-zones.ts` |
@@ -236,6 +244,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
 | `src/core/sim/__tests__/guest-voice.test.ts` | sim | contract | ja | `src/core/sim/narrative/guest-voice.ts` |
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
+| `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` | sim | contract | ja | `src/core/sim/hybrid-flow.ts` |
 | `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/interaction.test.ts` | sim | contract | ja | `src/core/sim/interaction.ts` |
 | `src/core/sim/__tests__/item-synergy.test.ts` | sim | contract | ja | `src/core/sim/mod-effects.ts` |
@@ -250,6 +259,9 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/layout-contract.test.ts` | sim | contract | ja | `src/core/sim/layout-derive.ts` |
 | `src/core/sim/__tests__/layout-history.test.ts` | sim | contract | ja | `src/core/sim/layout-history.ts` |
 | `src/core/sim/__tests__/layout-json.test.ts` | sim | contract | ja | `src/core/sim/layout-json.ts` |
+| `src/core/sim/__tests__/living-world-continuity.test.ts` | sim | contract | ja | `src/core/sim/actor-continuity.ts` |
+| `src/core/sim/__tests__/living-world-social-economy.test.ts` | sim | contract | ja | `src/core/sim/social-encounter.ts` |
+| `src/core/sim/__tests__/living-world-vertical-slice.test.ts` | sim | contract | ja | `src/core/sim/actor-continuity.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
 | `src/core/sim/__tests__/machine-hall.test.ts` | sim | contract | ja | `src/core/sim/machine-hall.ts` |
@@ -292,6 +304,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
 | `src/core/sim/__tests__/narrative-warm-return.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
 | `src/core/sim/__tests__/nav-edges.test.ts` | sim | contract | ja | `src/core/sim/nav-grid.ts` |
+| `src/core/sim/__tests__/npc-schedule.test.ts` | sim | contract | ja | `src/core/sim/npc-schedule.ts` |
 | `src/core/sim/__tests__/own-play.test.ts` | sim | contract | ja | `src/core/sim/own-play.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
@@ -314,6 +327,8 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/reputation.test.ts` | sim | contract | ja | `src/core/sim/spawn.ts` |
 | `src/core/sim/__tests__/rival-ai.test.ts` | sim | contract | ja | `src/core/sim/rival-ai/policy.ts` |
 | `src/core/sim/__tests__/rivals.test.ts` | sim | contract | ja | `src/core/sim/rivals.ts` |
+| `src/core/sim/__tests__/room-plan.test.ts` | sim | contract | ja | `src/core/sim/room-plan.ts` |
+| `src/core/sim/__tests__/room-transition.test.ts` | sim | contract | ja | `src/core/sim/room-transition.ts` |
 | `src/core/sim/__tests__/shot-seed.test.ts` | store | integration | ja | `src/store/save.ts` |
 | `src/core/sim/__tests__/soak.test.ts` | sim | statistics | nein, CI | `src/core/sim/tick.ts` |
 | `src/core/sim/__tests__/staff-status.test.ts` | sim | contract | ja | `src/core/sim/staff-queries.ts` |
@@ -322,6 +337,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/tx-reasons.test.ts` | sim | contract | ja | `src/core/sim/tx-reasons.ts` |
 | `src/core/sim/__tests__/tycoon-needs.test.ts` | sim | contract | ja | `src/core/sim/needs.ts` |
 | `src/core/sim/__tests__/tycoon-ops.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
+| `src/core/sim/__tests__/venue-event.test.ts` | sim | contract | ja | `src/core/sim/venue-event.ts` |
 | `src/core/sim/__tests__/visitor-disposition.test.ts` | sim | contract | ja | `src/core/sim/narrative/disposition.ts` |
 | `src/core/sim/__tests__/visitors.test.ts` | sim | contract | ja | `src/core/sim/visitors.ts` |
 | `src/core/sim/__tests__/world.test.ts` | sim | contract | ja | `src/core/sim/guests.ts` |
@@ -342,6 +358,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/render/__tests__/guest-sprite.test.ts` | render | integration | ja | `src/render/guest-paint.ts` |
 | `src/render/__tests__/perf-governor.test.ts` | render | integration | ja | `src/render/perf-governor.ts` |
 | `src/render/__tests__/plinko-board-geometry.test.ts` | render | integration | ja | `src/render/games/plinko-board-geometry.ts` |
+| `src/render/__tests__/reaction-feedback.test.ts` | render | integration | ja | `src/render/reaction-feedback.ts` |
 | `src/render/__tests__/rig-combat.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/rig.test.ts` | render | integration | ja | `src/render/rig-pose.ts` |
 | `src/render/__tests__/slot-layout.test.ts` | render | integration | ja | `src/render/games/slot-layout.ts` |
@@ -387,6 +404,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/ui/__tests__/narrative-ui.test.tsx` | ui | integration | ja | `src/ui/narrative-popup.tsx` |
 | `src/ui/__tests__/perspective-switch.test.tsx` | ui | integration | ja | `src/ui/perspective-switch.tsx` |
 | `src/ui/__tests__/phase34-acceptance.test.tsx` | ui | integration | ja | `src/ui/workshop-parts.tsx` |
+| `src/ui/__tests__/placement-fit.test.ts` | ui | integration | ja | `src/ui/app-model.ts` |
 | `src/ui/__tests__/player-dashboard.test.tsx` | ui | integration | ja | `src/ui/look-popup.tsx` |
 | `src/ui/__tests__/self-exclusion-panel.test.tsx` | ui | integration | ja | `src/ui/self-exclusion-panel.tsx` |
 | `src/ui/__tests__/small-screen-acceptance.test.tsx` | other | contract | ja | `src/App.tsx` |
@@ -394,6 +412,7 @@ Summe: 272 Dateien — contract 158 · integration 58 · governance 42 · statis
 | `src/ui/__tests__/small-screen-layout.test.ts` | other | contract | ja | `src/styles/app.css` |
 | `src/ui/__tests__/small-screen-panels.test.tsx` | ui | integration | ja | `src/ui/popup-router.tsx` |
 | `src/ui/__tests__/ui.test.tsx` | ui | integration | ja | `src/ui/popup-shell.tsx` |
+| `src/ui/__tests__/venue-history.test.tsx` | ui | integration | ja | `src/ui/venue-history.tsx` |
 | `src/ui/__tests__/world-first-ui.test.tsx` | ui | integration | ja | `src/ui/guest-context-panel.tsx` |
 <!-- TEST_CATALOG_END -->
 
@@ -883,7 +902,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-readme-visual-polish.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen
