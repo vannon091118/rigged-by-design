@@ -3604,6 +3604,22 @@
     {
       "turnId": "2026-11-11T02:00Z-living-world-vision-1",
       "contributionId": "living-world-vision-1"
+    },
+    {
+      "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
+      "contributionId": "agent17-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+      "contributionId": "agent17-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T01:55Z-agent17-aftercare",
+      "contributionId": "agent17-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T02:00Z-agent17-done",
+      "contributionId": "agent17-done"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:adacc9abce220b25b22b6272828752be1391c9470467a2d4517818ca8ff919b7",
+  "contentHash": "sha256:77a52f08c8c8bf7054ab249de3282cc1ad0ebf7c084a1aa567a9da253c768417",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -582,6 +582,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-3.json"
     },
     {
+      "contributionId": "agent17-aftercare",
+      "turnId": "2026-11-11T01:55Z-agent17-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heisst: Register, Task und Beleg zusammenfuehren. Ein gruener Merge ohne gepflegten Status ist nur ein halber Abschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-aftercare.json"
+    },
+    {
       "contributionId": "agent17-business-areas-1",
       "turnId": "2026-11-11T01:05Z-agent17-business-areas-1",
       "agentId": "buffy",
@@ -690,6 +712,72 @@
       "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
+    },
+    {
+      "contributionId": "agent17-ci-pending",
+      "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
+    },
+    {
+      "contributionId": "agent17-done",
+      "turnId": "2026-11-11T02:00Z-agent17-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-done.json"
+    },
+    {
+      "contributionId": "agent17-merge-pending",
+      "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",
