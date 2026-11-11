@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:700362010956d6ed83e2b8e4dc37929c366e302bbcc8d0a966cec5e35f952d1c",
+  "contentHash": "sha256:e1084bf3425f17c97b67a1ad58d13636aeb1d0180980fd9ddf9fbc47ebab4b79",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1218,6 +1218,28 @@
       "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-ci-pending",
+      "turnId": "2026-11-11T05:30Z-agent21-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
     },
     {
       "contributionId": "agent21-room-plan-1",

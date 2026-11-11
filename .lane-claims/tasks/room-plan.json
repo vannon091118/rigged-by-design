@@ -4,14 +4,18 @@
   "claimId": "lane/sim/room-plan",
   "branch": "lane/sim/room-plan",
   "baseSha": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Agent 21: Raumplan aus dem Layout ableiten",
   "goal": "Raeume, Raumfunktionen, Zugaenge und Kapazitaet kommen aus der vorhandenen Layout-Wahrheit: jede Zone ist ein Raum, ihre Kanten liefern Tueren und Durchgaenge, die Flaeche je Nutzung ergibt die geplante Gaestekapazitaet. Kein neues Save-Feld, keine zweite Raumliste; ein weiteres Geschoss waere ein eigener LayoutState mit derselben Ableitung.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 423,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/423",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Lokale Gates stehen; PR anlegen und CI auf dem exakten Kopf abwarten.",
-  "revision": 2
+  "nextAction": "CI-Lauf und Squash-Beleg pruefen; danach MERGE_PENDING.",
+  "revision": 3
 }
