@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b9f7f1aaaf2c36d16ec2e6ac2803a1ed6173cf74245efcae199f5e4a2166fecf",
+  "contentHash": "sha256:548a80e06788bd29b20028de51f7e665d39bbee05b160fdaabaa21941d69a4d2",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -20287,6 +20287,28 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "world-continuity-interaction-1",
+      "turnId": "2026-11-11T03:30Z-world-continuity-interaction-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer hier eintritt, laesst seine Sorgen draussen auf dem Buergersteig nicht einfach liegen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json"
     },
     {
       "contributionId": "world-first-ui-01",

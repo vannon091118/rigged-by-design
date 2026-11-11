@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-world-continuity-interaction",
+  "claimId": "lane/sim/world-continuity-interaction",
+  "branch": "lane/sim/world-continuity-interaction",
+  "baseSha": "cc5de06508193c86ddd711be70a746e9e2bf51ad",
+  "phase": "CI_PENDING",
+  "title": "Living World Phase 3-4: Innenraum-Kontinuitaet",
+  "goal": "Verknuepfung aller Lebenswelt-Systeme (Gebaeude",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
