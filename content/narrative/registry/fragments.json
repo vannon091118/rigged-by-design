@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:18a0059bcc9c9cd197b493b8bff326372ae4811c315cb032f244cfd38ea9ed30",
+  "contentHash": "sha256:01f689d291c097156ae7d55c2596900f6e9c53576b47348b1eea8d981010efa0",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -954,6 +954,28 @@
       "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
+    },
+    {
+      "contributionId": "agent19-club-night-1",
+      "turnId": "2026-11-11T03:10Z-agent19-club-night-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Tagsueber ist die Lounge ein Warteplatz; abends wird aus ihr ein Club, ohne dass ein zweiter Raum entsteht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-club-night-1.json"
     },
     {
       "contributionId": "apk-signing-01",

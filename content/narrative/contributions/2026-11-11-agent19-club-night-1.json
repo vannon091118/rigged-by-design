@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T03:10Z-agent19-club-night-1",
+  "contributionId": "agent19-club-night-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Tagsueber ist die Lounge ein Warteplatz; abends wird aus ihr ein Club, ohne dass ein zweiter Raum entsteht.",
+  "directives": []
+}
