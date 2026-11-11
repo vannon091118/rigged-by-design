@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0226b65b721ded029c011ecbf38369ad806f085efcf270050473256fb1cdbdb8",
+  "contentHash": "sha256:c15e2044417f176adad1e1b37b3071f4d554c2c4a574cff3e6cd4c832fd9528d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -20317,6 +20317,28 @@
       "text": "Rita trug die Adresse nicht in ein zweites Buch ein. Sie legte den Grundriss auf den Tisch, markierte den Bereich um den Eingang und sagte: alles, was hier steht, gehoert zum Laden - die Zonen, die Geraete, die Leute davor. Bezahlt wird aus der Kasse, die es schon gibt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-property-world.json"
+    },
+    {
+      "contributionId": "readme-visual-polish-1",
+      "turnId": "2026-11-11T04:50Z-readme-visual-polish-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "react",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn die Fassade glaenzt, weiss man wenigstens, wofuer das verlorene Geld draufgegangen ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-readme-visual-polish-1.json"
     },
     {
       "contributionId": "relationship-standing-01",
