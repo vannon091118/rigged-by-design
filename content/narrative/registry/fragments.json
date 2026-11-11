@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:77a52f08c8c8bf7054ab249de3282cc1ad0ebf7c084a1aa567a9da253c768417",
+  "contentHash": "sha256:854b778bbbff06ed8a28c531518cdf4c8ecb7d289253cd1a0d0068419f802562",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -778,6 +778,28 @@
       "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-1",
+      "turnId": "2026-11-11T02:20Z-agent18-drink-menu-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bar fuehrt eine Karte, nicht ein Preisschild. Was darauf steht, sagt der Grundpreis und die Stufe - kein zweites Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json"
     },
     {
       "contributionId": "apk-signing-01",
