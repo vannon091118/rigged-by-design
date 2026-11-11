@@ -609,10 +609,13 @@ button.vital:hover { border-color: var(--line-strong); }
 /* Queue und NPC-Dialog sitzen am Floor, nicht in einer zweiten Menueebene. */
 .queue-panel {
   position: absolute;
-  top: calc(var(--safe-top, 0px) + 72px);
-  right: 10px;
+  top: 12px;
+  right: 12px;
   z-index: 24;
   width: min(260px, calc(100vw - 20px));
+  max-height: calc(100% - 24px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   padding: 8px 10px;
   border: 1px solid rgba(130, 108, 180, 0.55);
   border-radius: 10px;
@@ -623,7 +626,10 @@ button.vital:hover { border-color: var(--line-strong); }
 .queue-panel header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .queue-panel header span { font-size: 9px; letter-spacing: 0.16em; color: var(--muted, #a99ac4); }
 .queue-panel header b { font-family: var(--mono); color: var(--gold, #e8cf85); }
-.queue-panel ol { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.queue-panel ol {
+  display: grid; gap: 6px; margin: 0; padding: 0 2px 0 0; list-style: none;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+}
 .queue-panel li { display: grid; gap: 2px; padding: 6px 7px; border-radius: 7px; background: rgba(255, 255, 255, 0.045); }
 .queue-panel li.active { border-left: 2px solid var(--gold, #e8cf85); }
 .queue-panel li.failed { border-left: 2px solid #e46a7a; }
@@ -637,7 +643,7 @@ button.vital:hover { border-color: var(--line-strong); }
 .npc-dialogue-line p { margin: 0; line-height: 1.5; }
 .npc-dialogue-choices { display: flex; flex-wrap: wrap; gap: 6px; }
 @media (max-width: 520px) {
-  .queue-panel { top: auto; bottom: calc(var(--safe-bottom, 0px) + 68px); right: 8px; }
+  .queue-panel { top: auto; bottom: calc(var(--safe-bottom, 0px) + 68px); right: 8px; max-height: calc(100% - 80px); }
 }
 .city-scene-bar {
   position: absolute;

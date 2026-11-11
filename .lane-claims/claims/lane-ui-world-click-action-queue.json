@@ -1,0 +1,20 @@
+{
+  "id": "lane/ui/world-click-action-queue",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/ui/world-click-action-queue",
+  "baseSha": "3e2079618355d36455c9113a369047b606272aaf",
+  "task": "Weltklick- und Action-Queue-UI im Browser pruefen und verbleibende Interaktionsluecken schliessen",
+  "goal": "Maus",
+  "pathAllowlist": [
+    "src/ui/",
+    "src/styles/app.css",
+    "src/core/sim/narrative/composer/",
+    "content/narrative/",
+    ".lane-claims/claims/lane-ui-world-click-action-queue.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "3e2079618355d36455c9113a369047b606272aaf"
+}
