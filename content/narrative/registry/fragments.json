@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:edc9aaeb36fcbcbff8c74d3f27388c71d44c12271106dba04d255d24beeafcf8",
+  "contentHash": "sha256:e5bb09d53a5bc2059f2aa6934990f41ba5bc6a3ff697ce864959079df5d7082b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1528,6 +1528,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent22-venue-event.json"
     },
     {
+      "contributionId": "agent23-aftercare",
+      "turnId": "2026-11-11T05:26Z-agent23-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge bleibt Nachsorge: Register und Nachweis ziehen nach, der Code liegt bereits auf main. Der Kampfabend wird nicht erneut gebaut, nur belegt - Squash, Baumgleichheit und ein sauberer Arbeitsbaum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-aftercare.json"
+    },
+    {
       "contributionId": "agent23-ci-pending",
       "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
       "agentId": "buffy",
@@ -1548,6 +1570,28 @@
       "text": "Der Kampfabend steht, jetzt entscheidet der entfernte Lauf: Der Kopf wird gepusht, und erst ein gruener Pflichtstatus auf genau diesem Kopf erlaubt den Merge. Zwischenstand und Vertrag bleiben dabei eine Wahrheit, kein zweiter Bericht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-ci-pending.json"
+    },
+    {
+      "contributionId": "agent23-done",
+      "turnId": "2026-11-11T05:30Z-agent23-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Kampfabend steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-done.json"
     },
     {
       "contributionId": "agent23-fight-event",
