@@ -5,15 +5,17 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
-## 2026-11-11 - Monitor-Befunde #448/#449: Pages, Register und Claims
+## 2026-11-11 - Monitor-Befunde #448-#450: Pages, Register und Claims
 
-**Ziel:** Die beiden offenen Dev-Monitor-Berichte in belegte Arbeit ueberfuehren und die gemeldeten Pages- und Register-Befunde schliessen.
+**Ziel:** Die drei offenen Dev-Monitor-Berichte in belegte Arbeit ueberfuehren und die gemeldeten Pages- und Register-Befunde schliessen.
 
-**Umsetzung:** Die Jekyll-unsicheren Liquid-Sequenzen in `docs/DEVTAGEBUCH.md`, `docs/CHANGELOG.md` und `docs/RUNBOOK-AUTO-RESOLVE.md` sind entschaerft: Fliesstext nennt das Ausdrucksmuster ohne Sonderzeichen, YAML-Beispiele stehen in Jekyll-Raw-Bloecken. GitHub Pages kann die Doku damit wieder rendern. Im Register sind 11 veraltete Task-Vertraege und 127 abgeschlossene bzw. auf geloeschte Branches zeigende Claim-Dateien entfernt; aktiv bleiben die Claim-Cleanup-Lane und diese Lane. Die Legacy-Sammeldatei `.lane-claims/claims.json` bleibt unangetastet, weil sie unter dem Governance-Freeze steht.
+**Umsetzung:** Die Jekyll-unsicheren Liquid-Sequenzen in `docs/DEVTAGEBUCH.md`, `docs/CHANGELOG.md` und `docs/RUNBOOK-AUTO-RESOLVE.md` sind entschaerft: Fliesstext nennt das Ausdrucksmuster ohne Sonderzeichen, YAML-Beispiele stehen in Jekyll-Raw-Bloecken. GitHub Pages kann die Doku damit wieder rendern. Im Register sind 11 veraltete Task-Vertraege und 127 abgeschlossene bzw. auf geloeschte Branches zeigende Claim-Dateien entfernt; nach dem Closeout bleiben die Claim-Cleanup-Lane und die Nachsorge-Lane aktiv. Die Legacy-Sammeldatei `.lane-claims/claims.json` bleibt unangetastet, weil sie unter dem Governance-Freeze steht.
 
 **Pruefungen:** `pnpm run verify:light` PASS (docs, check:loc, catalog, test-placement, tree, impact-graph, redundancy, lint, typecheck); `git grep` findet ausserhalb der Raw-Bloecke keine Liquid-Sequenzen in der Doku.
 
-**Bewusst nicht getan:** Die Vorschlaege aus #448, die `scripts/` oder `.github/` anfassen (Precommit-Timing, Pages-Gate, Runner-Pin), brauchen eine PIN-Freigabe nach `docs/GOVERNANCE.md`; sie bleiben als Folgetask offen. Der Runner-Pin ist bereits erfuellt: alle Workflows laufen auf `ubuntu-24.04`. Branches werden nicht geloescht; der Closeout der beiden Governance-Lanes bleibt ein separater Nachlauf.
+**Abschluss:** PR #451 wurde auf dem Kopf `547b118` mit gruenem `Fail-Closed Gates` geprueft und als `9e8f914` nach `main` squash-gemergt. Der Pages-Build #107 ist auf dem Merge-Commit mit `build`, `deploy` und `report-build-status` gruen. Die Monitor-Issues #448, #449 und #450 sind geschlossen; der Lane-Claim steht auf `merged`, der Task-Vertrag auf `DONE`.
+
+**Bewusst nicht getan:** Die Vorschlaege aus #448, die `scripts/` oder `.github/` anfassen (Precommit-Timing, Pages-Gate, Runner-Pin), brauchen eine PIN-Freigabe nach `docs/GOVERNANCE.md`; sie bleiben als Folgetask offen. Der Runner-Pin ist bereits erfuellt: alle Workflows laufen auf `ubuntu-24.04`. Branches werden nicht geloescht; der Closeout der verbleibenden Claim-Cleanup-Lane bleibt ein separater Nachlauf.
 
 ## 2026-11-11 - Living World Engine: Doku- und Governance-Harmonisierung (PIN 0911)
 

@@ -16,6 +16,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
+  "mergedSha": "9e8f914900e206b899caf259a629502aa07b1e01",
+  "mergedEvidence": "squash-merge",
+  "notes": "PR #451 auf 547b118 geprueft und als 9e8f914 nach main squash-gemergt; Issues #448, #449 und #450 geschlossen.",
   "createdAt": "3883b80694a2ba5dd0ae3fb261d364fd17221db6"
 }

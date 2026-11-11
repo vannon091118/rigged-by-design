@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-monitor-closeout-448-450",
+  "claimId": "lane/governance/monitor-closeout-448-450",
+  "branch": "lane/governance/monitor-closeout-448-450",
+  "baseSha": "9e8f914900e206b899caf259a629502aa07b1e01",
+  "phase": "CI_PENDING",
+  "title": "Closeout der Dev-Monitor-Issues #448-#450",
+  "goal": "Doku und Register auf den gemergten Stand 9e8f914 ziehen; die Monitor-Issues #448, #449 und #450 sind geschlossen.",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR-Lauf pruefen; Merge nur durch promote auf dem exakten Kopf; danach Doku- und Registerstand belegen.",
+  "revision": 1
+}

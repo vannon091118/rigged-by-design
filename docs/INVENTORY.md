@@ -620,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2657 |
-| Gelistete Dateien | 2657 |
+| Getrackte Dateien | 2659 |
+| Gelistete Dateien | 2659 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (6), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (8), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -635,8 +635,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 2 Datei(en)
-- `.lane-claims/tasks/` — 2 Datei(en)
+- `.lane-claims/claims/` — 3 Datei(en)
+- `.lane-claims/tasks/` — 3 Datei(en)
 - `content/narrative/contributions/` — 1004 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -759,10 +759,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/claims/lane-governance-monitor-findings-448-449.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-monitor-closeout-448-450.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-monitor-findings-448-449.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-monitor-findings-448-449.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-monitor-closeout-448-450.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-monitor-findings-448-449.json` — { — gelesen: 23 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1780,7 +1782,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/CHANGELOG.md` — Changelog — gelesen: 1160 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 210 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3815 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3817 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 101 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18

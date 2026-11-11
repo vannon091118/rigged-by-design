@@ -1,0 +1,21 @@
+{
+  "id": "lane/governance/monitor-closeout-448-450",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/monitor-closeout-448-450",
+  "baseSha": "9e8f914900e206b899caf259a629502aa07b1e01",
+  "task": "Closeout der Dev-Monitor-Issues #448-#450",
+  "goal": "Doku und Lane-Register auf den gemergten Stand 9e8f914 ziehen; #448, #449 und #450 sind geschlossen.",
+  "pathAllowlist": [
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-monitor-closeout-448-450.json",
+    ".lane-claims/tasks/governance-monitor-closeout-448-450.json",
+    ".lane-claims/claims/lane-governance-monitor-findings-448-449.json",
+    ".lane-claims/tasks/governance-monitor-findings-448-449.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9e8f914900e206b899caf259a629502aa07b1e01"
+}
