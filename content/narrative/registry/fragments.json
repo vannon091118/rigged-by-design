@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:18a0059bcc9c9cd197b493b8bff326372ae4811c315cb032f244cfd38ea9ed30",
+  "contentHash": "sha256:7c68507ad0ea279e8779946dd598a635ddfbf4227aafa9eff3c35cb84314030a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -954,6 +954,50 @@
       "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
+    },
+    {
+      "contributionId": "agent19-club-night-1",
+      "turnId": "2026-11-11T03:10Z-agent19-club-night-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Tagsueber ist die Lounge ein Warteplatz; abends wird aus ihr ein Club, ohne dass ein zweiter Raum entsteht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-club-night-1.json"
+    },
+    {
+      "contributionId": "agent19-club-night-2",
+      "turnId": "2026-11-11T03:20Z-agent19-club-night-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-club-night-2.json"
     },
     {
       "contributionId": "apk-signing-01",

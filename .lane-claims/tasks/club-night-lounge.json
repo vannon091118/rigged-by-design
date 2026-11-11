@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "club-night-lounge",
+  "claimId": "lane/club/night-lounge",
+  "branch": "lane/club/night-lounge",
+  "baseSha": "bc2a9ce1362843df54dcc04f7a0e8b3bad17f9e1",
+  "phase": "IMPLEMENTING",
+  "title": "Agent 19: Clubabend in der Lounge",
+  "goal": "Die Lounge wird abends und nachts zum Club: Oeffnungszeit aus der Tageszeit, Belegung aus der bestehenden Bereichsableitung, Lautstaerke 0..10 und Launepuls daraus. Wer in der Lounge wartet, bekommt den Clubabend mit; kein neues Save-Feld, keine zweite Zone, keine zweite Gaestesimulation, keine Aenderung an Nachfrage, Preisen oder Personal.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokale Gates fahren; danach CI_PENDING setzen und PR anlegen.",
+  "revision": 2
+}
