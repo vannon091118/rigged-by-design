@@ -1,0 +1,23 @@
+{
+  "id": "lane/sim/business-areas",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/business-areas",
+  "baseSha": "e3389ec55cb57462b8bbc62b171178e56d85206d",
+  "task": "Agent 17: modulare Business-Bereiche aus dem einen WorldState ableiten",
+  "goal": "Casino, Bar und Lounge werden aus den vorhandenen Zonen des einen WorldState als Bereiche gelesen (Zonen, Objekte, Sitzplaetze, Gaeste) und im Betriebspanel angezeigt; kein neues Save-Feld, kein zweites Konto, keine zweite Besuchersimulation, keine Aenderung an ZoneKind oder Gaestelogik.",
+  "pathAllowlist": [
+    "src/core/sim/business-areas.ts",
+    "src/core/sim/__tests__/business-areas.test.ts",
+    "src/ui/build-ops-summary.tsx",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-sim-business-areas.json",
+    ".lane-claims/tasks/sim-business-areas.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e3389ec55cb57462b8bbc62b171178e56d85206d"
+}

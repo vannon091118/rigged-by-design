@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:20Z-agent17-business-areas-2",
+  "contributionId": "agent17-business-areas-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "service"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Betriebsheader nennt die Bereiche jetzt mit Zahlen: Objekte und Gäste je Zone, und ein Bereich ohne Zone steht als nicht im Haus da. Kein zweites Konto, kein zweiter Gastzähler - nur eine Lesart, die man nachrechnen kann.",
+  "directives": []
+}
