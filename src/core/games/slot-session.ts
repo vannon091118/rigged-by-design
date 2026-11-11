@@ -30,7 +30,14 @@ export function playSlotSession(
   const settlement = settleSlotSpin(bank, bet, raw, plan.forceWin);
   const payout = settlement.payout;
   const prefix = plan.forceWin ? 'ENTLADUNG · ' : '';
-  recordSlotSpin(memory, outcome.symbols, outcome.multiplierBps, outcome.jackpot);
+  const paidBps = bet > ZERO_VC ? Math.round((payout / bet) * 10_000) : 0;
+  // Bei einer Kuerzung durch den Deckungspuffer zeigt das Label den tatsaechlich
+  // gezahlten Multiplikator; der volle Engine-Wunsch waere hier eine Luege.
+  const shown = payout < raw
+    ? (paidBps === 0 ? 'Niete' : `${(paidBps / 10_000).toFixed(2).replace('.', ',')}x`)
+    : outcome.label;
+  // Der Drucklader liest den tatsaechlich gespielten Multiplikator inklusive Mod-Bonus.
+  recordSlotSpin(memory, outcome.symbols, multiplierBps, outcome.jackpot);
   memory.bank = settlement.withheld;
   // Visuelle Ereignisse fuer die Render-Schicht (Partikel, Sound, Flash).
   if (outcome.jackpot) {
@@ -49,7 +56,7 @@ export function playSlotSession(
     payout,
     multiplierBps,
     discharged: plan.forceWin,
-    label: `${prefix}${outcome.label}`,
+    label: `${prefix}${shown}`,
     detail: outcome.detail,
   };
 }

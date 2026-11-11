@@ -604,10 +604,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2806 |
-| Gelistete Dateien | 2806 |
+| Getrackte Dateien | 2810 |
+| Gelistete Dateien | 2810 |
 | Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (196), content (999), docs (84), packages (28), public (554), scripts (102), src (815) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (196), content (1001), docs (84), packages (28), public (554), scripts (102), src (817) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -621,7 +621,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 123 Datei(en)
 - `.lane-claims/tasks/` — 71 Datei(en)
-- `content/narrative/contributions/` — 995 Datei(en)
+- `content/narrative/contributions/` — 997 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -679,7 +679,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/economy/` — 3 Datei(en)
 - `src/core/economy/__tests__/` — 4 Datei(en)
 - `src/core/games/` — 21 Datei(en)
-- `src/core/games/__tests__/` — 25 Datei(en)
+- `src/core/games/__tests__/` — 27 Datei(en)
 - `src/core/games/engines/` — 11 Datei(en)
 - `src/core/games/engines/__tests__/` — 2 Datei(en)
 - `src/core/governance/` — 2 Datei(en)
@@ -1913,6 +1913,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent26-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-task.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-first-run-slot-truth-demand.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-first-run-slot-truth-lines.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-first-run-slot-truth-payout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-bootstrap.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-player-qa.json` — { — gelesen: 17 Zeilen
@@ -1936,8 +1938,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22291 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3989 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22335 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3993 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2759,9 +2761,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/games/__tests__/rtp-bands.ts` — Gemeinsame Parameter der RTP-Monte-Carlo-Laeufe. Kein Testfall: die Messung — gelesen: 55 Zeilen
 - `src/core/games/__tests__/shell-round.test.ts` — Das Huetchenspiel muss vor der Wahl feststehen, ehrlich mischen und jede — gelesen: 63 Zeilen
 - `src/core/games/__tests__/slot-config.test.ts` — Die Maschinenkonfiguration ist die eine Quelle der Spielparameter: die — gelesen: 129 Zeilen
+- `src/core/games/__tests__/slot-expectation.test.ts` — Die Linien-Erwartung zaehlt genau den Lauf, den die Engine zahlt: kein — gelesen: 58 Zeilen
 - `src/core/games/__tests__/slot-paylines.test.ts` — Das Gitter muss die Gewinnlinien exakt tragen: was die Anzeige als Treffer — gelesen: 103 Zeilen
 - `src/core/games/__tests__/slot-profile.test.ts` — Der Betreiber stellt Streifen, Gewichte, Bewertungsmodell, Volatilität und — gelesen: 124 Zeilen
 - `src/core/games/__tests__/slot-session-rtp.test.ts` — Der Pfad, den Gaeste wirklich spielen, muss dem Haus einen Vorteil lassen. — gelesen: 107 Zeilen
+- `src/core/games/__tests__/slot-session.test.ts` — Eine Auszahlung, die der Deckungspuffer kuerzt, darf nicht mit dem — gelesen: 61 Zeilen
 - `src/core/games/__tests__/slot-transparency.test.ts` — Rot-Gruen-Beweis: ehrliche Slot-Historie, physikalische Druckstufen und — gelesen: 106 Zeilen
 - `src/core/games/__tests__/test-spin.test.ts` — Alle sieben Spiele laufen im Testmodus derselben Sandbox: eigener Seed, — gelesen: 69 Zeilen
 - `src/core/games/__tests__/video-poker-ranks.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 31 Zeilen
@@ -3118,7 +3122,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 254 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 255 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

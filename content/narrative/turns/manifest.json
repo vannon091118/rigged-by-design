@@ -3984,6 +3984,10 @@
     {
       "turnId": "2026-11-11T09:34Z-first-run-slot-truth-lines",
       "contributionId": "first-run-slot-truth-lines"
+    },
+    {
+      "turnId": "2026-11-11T09:36Z-first-run-slot-truth-payout",
+      "contributionId": "first-run-slot-truth-payout"
     }
   ]
 }
