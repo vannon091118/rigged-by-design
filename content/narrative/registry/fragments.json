@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1dc94952488b1cc75b17734f275b656429803341b2e9126027742e891099efa1",
+  "contentHash": "sha256:00f558124ebf34685367eb50064483b0f319bb5e164d1ec9f853f880cfa9d06c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1416,6 +1416,28 @@
       "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
+    },
+    {
+      "contributionId": "agent22-merge-pending",
+      "turnId": "2026-11-11T06:50Z-agent22-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash 50074210 ist baumgleich zum geprueften Lane-Kopf. MERGE_PENDING trennt den nachpruefbaren Merge vom noch offenen Registerabschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-merge-pending.json"
     },
     {
       "contributionId": "agent22-task",
