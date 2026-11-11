@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+  "contributionId": "placement-venue-history-ci-fix",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+  "directives": []
+}

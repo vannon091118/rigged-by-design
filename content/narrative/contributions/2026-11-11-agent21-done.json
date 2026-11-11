@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:45Z-agent21-done",
+  "contributionId": "agent21-done",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "DONE ist erst, wenn der Squash-Baum mit dem Lane-Kopf übereinstimmt und der Claim merged sagt. Danach bleibt nur noch die Lane zu entfernen.",
+  "directives": []
+}

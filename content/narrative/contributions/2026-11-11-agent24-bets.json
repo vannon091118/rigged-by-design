@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:05Z-agent24-bets",
+  "contributionId": "agent24-bets",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Schein ist ein Beleg, kein zweiter Spielstand: Er traegt seine Schein-Nummer, seine fixierte Quote und seinen Einsatz im Journal, und die Abrechnung erkennt ihn an derselben Nummer wieder. Wer auf den falschen Mann setzt, sieht den Einsatz als Ledger-Zeile verschwinden; wer richtig liegt, bekommt genau die Quote, die beim Abschluss auf dem Zettel stand.",
+  "directives": []
+}

@@ -6,14 +6,18 @@
 
 `README.md` ist die erzählerische Bühne und der Entwickler-Einstieg, nicht die Regelquelle. Spielmechaniken werden dort als gegenwärtiger Projektstand beschrieben; für verbindliche Details gelten Core-Code, Tests und die passenden Architekturverträge. Screenshots liegen unter `docs/screenshots/` und zeigen jeweils den belegten Stand. Roadmap-Punkte werden als Vorhaben formuliert, nicht als festgelegtes Enddesign.
 
-## Produktgrenze: ort-agnostischer Kern
+## Produktgrenze: ort-agnostischer Kern und Living World Engine
 
-`docs/ROADMAP.md` beschreibt das Produkt als Lebenssimulation. Das Casino ist darin der Startpunkt und die Testumgebung, nicht das Genre. Fuer den Code heisst das:
+`docs/ROADMAP.md` beschreibt das Produkt als autonome Lebenssimulation. Das Casino ist darin eine spezialisierte Umgebung und Testbude für Geld- und Wahrscheinlichkeitsmechaniken – nicht die Engine und nicht das Genre. Fuer die Architektur und den Code heisst das:
 
-- `src/core/` kennt keine Casino-Sonderwahrheit. Welt, Ledger, Facts, Erinnerungen, gerichtete Beziehungen, Trigger und Event-Instanzen sind ortsunabhaengig; sie beschreiben Figuren, Geld und Folgen, nicht einen Saal.
-- Was heute casino-spezifisch ist (Spiele, Geraete, Kasse, Floor, Personal), bleibt ein Vertical Slice auf diesem Kern. Es ist Systembeweis und Detailvorgabe, kein Endziel.
-- Ein neuer Ort (Kneipe, Laden, Wohnung) liefert Inhalte, Figuren und eine duenne Anbindung an `world-store` und `GameView`. Er bringt keine zweite Engine und keinen zweiten Zustand mit.
-- Neue Ressourcen kommen als Ledger-Buchungen dazu: eine Ressource, eine Zeile, eine Ursache. Neue soziale Fakten laufen ueber das geplante Social-Plugin der Narrative Engine, nicht ueber eine zweite Log-Wahrheit.
+- `src/core/` kennt keine Casino-Sonderwahrheit. Welt, Ledger, Facts, Erinnerungen, gerichtete Beziehungen, Trigger und Event-Instanzen sind ortsunabhaengig; sie beschreiben Akteure, Orte, Zeit, Geld und Kausalitaet in einer zusammenhaengenden Stadt.
+- Der Spieler startet in seiner eigenen Wohnung (Schlafzimmer, Wohnbereich, Kochnische, Bad, Smartphone, Fenster) und betritt durch die Haustuer die physische Stadtstraße. Er ist ein Bewohner unter vielen und nicht der Mittelpunkt der Welt.
+- Akteur-Kontinuität ist Pflicht: NPCs besitzen permanente Identitäten (`actor-id`), Wohnorte, Arbeitsplätze, Bedürfnisse und Tagesabläufe (Schlafen, Essen, Pendeln, Arbeiten, Freizeit, Besuche). Sie despawnen nicht beim Verlassen des Bildschirms.
+- Ein Raumwechsel (z. B. Betreten einer Kneipe, eines Supermarkts, einer Wohnung oder eines Casinos) ist kein Spielstands-Reset und keine Neuerzeugung von Figuren. Wer einem NPC auf der Straße folgt und ein Gebäude betritt, findet dieselbe Person mit unverändertem Zustand und Gedächtnis im Innenraum wieder.
+- Zweistufige Simulation (LOD): Sichtbare Akteure im aktuellen Bereich bewegen sich über A*-Wegfindung und Kollisionsvermeidung; Akteure außerhalb des Sichtbereichs werden deterministisch fortgeschrieben und bei Annäherung ohne sichtbare Teleportation in den Raumzustand synchronisiert.
+- Soziale Interaktion entsteht situativ: Keine Menü-Klicks zur künstlichen Gesprächserzeugung; Gespräche entstehen durch physische Annäherung oder über das Smartphone (Anrufe, Nachrichten als echte Simulationsereignisse).
+- Ein neuer Ort (Kneipe, Laden, Wohnung, Büro, Werkstatt) liefert Raum-Layouts, Inhalte und Möbel, bindet sich aber dünn an `world-store` und `GameView` an. Er bringt keine zweite Engine und keinen zweiten Zustand mit.
+- Neue Ressourcen kommen als Ledger-Buchungen dazu: eine Ressource, eine Zeile, eine Ursache. Soziale Ereignisse laufen über die Narrative Engine.
 
 ## CI-Eskalation
 

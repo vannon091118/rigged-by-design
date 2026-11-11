@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-living-world-vision",
+  "claimId": "lane/governance/living-world-vision",
+  "branch": "lane/governance/living-world-vision",
+  "baseSha": "f786bd83cd4fa1a7f0a05ba872c05756298dd54c",
+  "phase": "CI_PENDING",
+  "title": "Living World Engine: Doku- und Governance-Harmonisierung (PIN 0911)",
+  "goal": "Harmonisierung von ROADMAP",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

@@ -585,10 +585,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2580 |
-| Gelistete Dateien | 2580 |
+| Getrackte Dateien | 2761 |
+| Gelistete Dateien | 2761 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (154), content (900), docs (83), public (554), scripts (102), src (759) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (192), content (994), docs (83), public (554), scripts (102), src (808) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -600,9 +600,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 102 Datei(en)
-- `.lane-claims/tasks/` — 50 Datei(en)
-- `content/narrative/contributions/` — 896 Datei(en)
+- `.lane-claims/claims/` — 121 Datei(en)
+- `.lane-claims/tasks/` — 69 Datei(en)
+- `content/narrative/contributions/` — 990 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -663,8 +663,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 105 Datei(en)
-- `src/core/sim/__tests__/` — 119 Datei(en)
+- `src/core/sim/` — 129 Datei(en)
+- `src/core/sim/__tests__/` — 135 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -676,8 +676,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
-- `src/render/` — 48 Datei(en)
-- `src/render/__tests__/` — 16 Datei(en)
+- `src/render/` — 49 Datei(en)
+- `src/render/__tests__/` — 17 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
@@ -686,8 +686,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/` — 20 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
-- `src/ui/` — 88 Datei(en)
-- `src/ui/__tests__/` — 22 Datei(en)
+- `src/ui/` — 93 Datei(en)
+- `src/ui/__tests__/` — 24 Datei(en)
 - `src/ui/games/` — 10 Datei(en)
 
 ### 18.3 Dateien
@@ -716,7 +716,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ci-integration-controller.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-ci-pr-body-current.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-club-night-lounge.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-gastro-drink-menu.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-agent-bootstrap.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-agent-masterplan-readme.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-agent14-changelog.json` — { — gelesen: 23 Zeilen
@@ -754,6 +756,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-lane-autopilot.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-ledger-game-type.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-living-world-vision.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-machine-hall-docs.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
@@ -784,6 +787,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-promote-automerge-test.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-governance-property-world-docs.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-push-required-check.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-readme-visual-polish.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-relationships-coupling.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-renovation-docs.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-review-hygiene.json` — { — gelesen: 31 Zeilen
@@ -791,33 +795,50 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json` — { — gelesen: 49 Zeilen
 - `.lane-claims/claims/lane-governance-sucht-folgen.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-welt-anker.json` — { — gelesen: 54 Zeilen
 - `.lane-claims/claims/lane-governance-world-first-ui.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-integrity-audit-findings.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-render-world-visual-presentation.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-sim-arena.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-sim-business-areas.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-company-progression.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-sim-esport-data.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-fight-bets.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-sim-fight-career.json` — { — gelesen: 38 Zeilen
+- `.lane-claims/claims/lane-sim-fight-event.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-first-property.json` — { — gelesen: 42 Zeilen
 - `.lane-claims/claims/lane-sim-floor-work.json` — { — gelesen: 35 Zeilen
+- `.lane-claims/claims/lane-sim-hybrid-visitor-flows.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-item-synergy.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-sim-living-world-foundation.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-sim-living-world-vertical-slice.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-machine-hall.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-mod-engine.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-sim-npc-world-foundation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-property-world.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-renovation.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-sim-staff-performance.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-room-plan.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-sim-staff-performance.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/claims/lane-sim-venue-event.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-visitor-amenity-reaction.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-sim-world-continuity-interaction.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-ui-placement-venue-history.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
+- `.lane-claims/tasks/club-night-lounge.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/gastro-drink-menu.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-agent-bootstrap.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-agent14-changelog.json` — { — gelesen: 22 Zeilen
@@ -835,6 +856,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-first-property-docs-2.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-floor-work-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-item-synergy-docs.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/tasks/governance-living-world-vision.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-machine-hall-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-mod-engine-docs.json` — { — gelesen: 26 Zeilen
@@ -848,29 +870,45 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-promote-automerge-test.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-property-world-docs.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-readme-visual-polish.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/render-world-visual-presentation.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/room-plan.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/sim-arena.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-esport-data.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/tasks/sim-fight-bets.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-item-synergy.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/sim-living-world-foundation.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-living-world-vertical-slice.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-machine-hall.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-mod-engine.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-npc-world-foundation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/sim-world-continuity-interaction.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/ui-placement-venue-history.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/tasks/ui-world-click-action-queue.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/tasks/venue-event.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 94 Zeilen
-- `README.md` — Markdown-Dokument — gelesen: 340 Zeilen
+- `README.md` — Markdown-Dokument — gelesen: 181 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 17 Zeilen
@@ -1760,26 +1798,120 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent15-amenity-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-4.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-aftercare-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-aftercare-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-aftercare-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-4.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-5.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent18-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-club-night-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-club-night-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-hybrid-flow-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-hybrid-flow-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-room-plan-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-room-plan-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent21-room-plan-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-dead-code.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent22-venue-event.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-fight-event.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent23-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-bets.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-done-repair.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-test-quality.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-aftercare.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-arena.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-base-merge.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-done.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-main-merge.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-merge-base.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent25-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-ci-fix.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-ci-pending.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-claim.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-esport-code.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-esport.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-main-merge.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-task.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-npc-world-foundation-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-placement-venue-history.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-ui-placement-venue-history-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-ui-placement-venue-history-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-aftercare-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-aftercare-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-aftercare-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-aftercare.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20109 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3589 Zeilen
+- `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22177 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3965 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1159 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1160 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 208 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3789 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3805 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 456 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 495 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 85 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 134 Zeilen
@@ -2672,23 +2804,31 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/amenity-reaction.test.ts` — Agent 15: Die Bedingung des Geraets, an dem ein Gast gespielt hat, verschiebt — gelesen: 106 Zeilen
 - `src/core/sim/__tests__/anger-decay.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 29 Zeilen
 - `src/core/sim/__tests__/anger-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
+- `src/core/sim/__tests__/arena.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 84 Zeilen
 - `src/core/sim/__tests__/balance-harness.ts` — Betriebs-Messlauf: ein skriptierter Betreiber (bauen, einstellen, reparieren, ausbauen) — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/balance-metrics.ts` — Kennzahlen des Betriebs-Messlaufs: Was Gaeste erleben, je Spieltag gezaehlt. — gelesen: 174 Zeilen
 - `src/core/sim/__tests__/balance-operating.test.ts` — Betriebs-Messlauf (nur mit RBD_BALANCE=1): Ankuenfte, Warteschlangen, Wartezeiten, — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/balance-report.ts` — Balance-Spur: macht den 40-Tage-Messlauf nachvollziehbar und pruefbar. — gelesen: 94 Zeilen
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
+- `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
+- `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
+- `src/core/sim/__tests__/club-night.test.ts` — Der Clubabend ist keine zweite Lounge: Oeffnungszeit, Belegung und — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 135 Zeilen
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
 - `src/core/sim/__tests__/dirty-index.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/dispute-escalation.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 13 Zeilen
+- `src/core/sim/__tests__/drink-menu.test.ts` — Die Karte ist eine Sicht auf Grundpreis und Barstufe. Geprueft werden die — gelesen: 137 Zeilen
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
+- `src/core/sim/__tests__/esport.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
+- `src/core/sim/__tests__/fight-bets.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/fight-career.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 117 Zeilen
+- `src/core/sim/__tests__/fight-event.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 136 Zeilen
 - `src/core/sim/__tests__/floor-work.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 124 Zeilen
 - `src/core/sim/__tests__/foreign-floor-tick.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 52 Zeilen
 - `src/core/sim/__tests__/grid-zones.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 87 Zeilen
@@ -2696,6 +2836,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guest-settlement.test.ts` — Kein Gast und kein Anspruch verschwindet, solange die Buchung nicht vollstaendig ist. — gelesen: 119 Zeilen
 - `src/core/sim/__tests__/guest-voice.test.ts` — Der Ruf hoert man: Das Rufband waehlt den Pool, der Gast waehlt den Satz, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
+- `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` — Hybrid-Besucherstroeme: der Veranstaltungsgast kommt mit Durst und geht — gelesen: 86 Zeilen
 - `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 185 Zeilen
 - `src/core/sim/__tests__/interaction.test.ts` — Ein Ziel, ein Weg, eine Reichweite: die Figur laeuft zum Standplatz, statt zu — gelesen: 156 Zeilen
 - `src/core/sim/__tests__/item-synergy.test.ts` — Items, Seltenheiten und Paar-Synergien. — gelesen: 97 Zeilen
@@ -2710,6 +2851,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/layout-contract.test.ts` — Layout-Vertrag: eine Wahrheit fuer Dimension, Boden, Zonen und Wandkanten. — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/layout-history.test.ts` — Verlauf: 30 Schritte, ein Pinselstrich ist ein Schritt, Redo endet bei neuer Arbeit. — gelesen: 66 Zeilen
 - `src/core/sim/__tests__/layout-json.test.ts` — Layout-Export/-Import: runde Reise, feste Bytes, fail-closed bei fremden Daten. — gelesen: 51 Zeilen
+- `src/core/sim/__tests__/living-world-continuity.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 148 Zeilen
+- `src/core/sim/__tests__/living-world-social-economy.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 113 Zeilen
+- `src/core/sim/__tests__/living-world-vertical-slice.test.ts` — Bundle 6: End-to-End Vertical Slice der Living World Engine. — gelesen: 171 Zeilen
 - `src/core/sim/__tests__/logistics.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
 - `src/core/sim/__tests__/look.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/core/sim/__tests__/machine-hall.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
@@ -2752,6 +2896,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
 - `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/nav-edges.test.ts` — Waende blockieren Kanten statt Tiles. Tueren und Durchgaenge bleiben — gelesen: 172 Zeilen
+- `src/core/sim/__tests__/npc-schedule.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 132 Zeilen
 - `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 186 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
@@ -2774,6 +2919,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/reputation.test.ts` — Ruf ist Betriebserfahrung: Ein frischer Automat in gutem Zustand ist kein Ruf, — gelesen: 98 Zeilen
 - `src/core/sim/__tests__/rival-ai.test.ts` — Rivalen handeln deterministisch: gleiche Eingaben, gleiche Absicht. Sabotage — gelesen: 155 Zeilen
 - `src/core/sim/__tests__/rivals.test.ts` — Fremde Haeuser nutzen echte Spiele und Regeln, driften deterministisch und — gelesen: 78 Zeilen
+- `src/core/sim/__tests__/room-plan.test.ts` — Der Raumplan liest die vorhandene Layout-Wahrheit: eine Zone je Raum, ihre — gelesen: 92 Zeilen
+- `src/core/sim/__tests__/room-transition.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 199 Zeilen
 - `src/core/sim/__tests__/shot-seed.test.ts` — Screenshot-Saat: eine eingerichtete Etage als Save-JSON ablegen, damit die — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/soak.test.ts` — Langlauf: Ledger bleibt integer und gedeckt, und der Betrieb steht ueber — gelesen: 126 Zeilen
 - `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 123 Zeilen
@@ -2782,6 +2929,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/tx-reasons.test.ts` — Jeder Grund, den ein Aufrufer bucht, muss in der Kennzahl landen, die er — gelesen: 81 Zeilen
 - `src/core/sim/__tests__/tycoon-needs.test.ts` — Bedürfnisse steuern Gastentscheidungen; Wut wird zum sichtbaren Streit mit Schaden. — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/tycoon-ops.test.ts` — Käufe kommen als Kiste, Personal arbeitet auf dem Floor, WC verstopft, Umbau braucht Ruf. — gelesen: 223 Zeilen
+- `src/core/sim/__tests__/venue-event.test.ts` — Die zentrale Event-Infrastruktur ist eine Projektion auf die vorhandene — gelesen: 112 Zeilen
 - `src/core/sim/__tests__/visitor-disposition.test.ts` — E2: Zwei Besucher gleicher Persona, einer mit GOOD-Erinnerung und Sympathie, — gelesen: 165 Zeilen
 - `src/core/sim/__tests__/visitors.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 139 Zeilen
 - `src/core/sim/__tests__/world.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 201 Zeilen
@@ -2790,14 +2938,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/action-queue-types.ts` — Datenvertrag der Auftragskette; die Ausfuehrung liegt in action-queue-run. — gelesen: 96 Zeilen
 - `src/core/sim/action-queue.ts` — Action Queue: serialisierbare Auftraege, kein React-State. — gelesen: 53 Zeilen
 - `src/core/sim/actions.ts` — Commands, die nicht im Tick passieren: Bewegung, Reinigung, Preise, Mods, fremde Spiele. — gelesen: 187 Zeilen
+- `src/core/sim/actor-continuity.ts` — import type { DayPlan, NpcLODLevel, NpcNeeds } from './npc-types'; — gelesen: 104 Zeilen
 - `src/core/sim/amenity-reaction.ts` — Ausstattungsreaktion (Agent 15): die Bedingung des Geraets, an dem ein Gast — gelesen: 43 Zeilen
+- `src/core/sim/arena.ts` — Eigene Arena als Ausbau der vorhandenen Immobilie: Stufen kommen aus — gelesen: 122 Zeilen
+- `src/core/sim/bar-service.ts` — Bedienung an der Bar: der Drink aus der Karte und der Toilettengang. — gelesen: 58 Zeilen
 - `src/core/sim/board-constants.ts` — Feste Brett- und Teppichwerte; aus types.ts ausgelagert, damit die Typdatei unter dem LOC-Limit bleibt. — gelesen: 11 Zeilen
-- `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
+- `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 150 Zeilen
+- `src/core/sim/building-types.ts` — Kanonische Typen für physische Gebäude in der Living World Engine. — gelesen: 74 Zeilen
+- `src/core/sim/building.ts` — Pure Funktionen zur Verwaltung physischer Gebäude in der Living World. — gelesen: 157 Zeilen
+- `src/core/sim/business-areas.ts` — Modulare Business-Bereiche: das Haus fuehrt seine Bereiche im einen — gelesen: 86 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 58 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 102 Zeilen
 - `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Command, Geld, Energie, Erinnerung, Wissen und Urteil. — gelesen: 147 Zeilen
 - `src/core/sim/city-encounter-dialog.ts` — Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. — gelesen: 81 Zeilen
 - `src/core/sim/city-encounter.ts` — Die Begegnung im Ort ist der zentrale Loop der Stadt: — gelesen: 70 Zeilen
+- `src/core/sim/city-exterior.ts` — Physisches Außenwelt-Layout und Straßen-Infrastruktur der Nachbarschaft. — gelesen: 96 Zeilen
 - `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 122 Zeilen
 - `src/core/sim/city-npcs.ts` — Benannte Figuren der Stadt. Die Identitaet ist keine Anzeige: Name, Rolle, — gelesen: 89 Zeilen
 - `src/core/sim/city-persist.ts` — Save-Heilung des Stadtzustands: Ort, Energie und Begegnungen aus rohen Daten. — gelesen: 58 Zeilen
@@ -2805,30 +2960,39 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-traits.ts` — Eigenschaften der Stadt-NPCs: 30 Traits, Vergabe nach Stats und PRNG, — gelesen: 179 Zeilen
 - `src/core/sim/city-types.ts` — Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik - — gelesen: 114 Zeilen
 - `src/core/sim/city.ts` — Stadt: der erste Vertical Slice ausserhalb des eigenen Floors. — gelesen: 91 Zeilen
+- `src/core/sim/club-night.ts` — Clubabend in der Lounge (Agent 19): Oeffnungszeit, Lautstaerke und — gelesen: 44 Zeilen
 - `src/core/sim/day-phase.ts` — Tageszeit der Buehne: rein aus dem Tick abgeleitet, nie aus der Uhr. — gelesen: 14 Zeilen
-- `src/core/sim/deliveries.ts` — Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. — gelesen: 198 Zeilen
-- `src/core/sim/demand.ts` — Nachfrage: Ankuenfte werden geplant statt pro Tick gewuerfelt. — gelesen: 182 Zeilen
+- `src/core/sim/deliveries.ts` — Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. — gelesen: 160 Zeilen
+- `src/core/sim/demand.ts` — Nachfrage: Ankuenfte werden geplant statt pro Tick gewuerfelt. — gelesen: 175 Zeilen
 - `src/core/sim/desk-service.ts` — Kasse: Warteschlange, Bedienzeit und Wechsel von Fiat in Chips. — gelesen: 64 Zeilen
 - `src/core/sim/device.ts` — Geräteidentität und Spieltyp sind zwei verschiedene Fragen. — gelesen: 44 Zeilen
 - `src/core/sim/disputes.ts` — Streit: Wut wird zum sichtbaren Disput mit Position, Beteiligten und Eskalation. — gelesen: 173 Zeilen
+- `src/core/sim/drink-menu.ts` — Getraenkekarte der Bar: eine Sicht auf `prices.drinkPrice` und `barLevel`. — gelesen: 62 Zeilen
 - `src/core/sim/duel-opponent.ts` — Gegnerprofil eines Streits: abgeleitet, ohne PRNG, damit Vorschau und Kampf gleich sehen. — gelesen: 56 Zeilen
-- `src/core/sim/duel.ts` — Duell: ein echter Kampf mit Lebenspunkten gegen den Rädelsführer des Streits, inklusive Überfall-Folge. — gelesen: 126 Zeilen
+- `src/core/sim/duel.ts` — Duell: ein echter Kampf mit Lebenspunkten gegen den Rädelsführer des Streits, inklusive Überfall-Folge. — gelesen: 117 Zeilen
 - `src/core/sim/economics.ts` — Wirtschaftliche Kennzahlen als reine Ableitung aus den Ledger-Buchungen. — gelesen: 159 Zeilen
 - `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 57 Zeilen
+- `src/core/sim/esport.ts` — E-Sport-Simulationsdaten: eine Stadtliga mit Team-Ankern aus den vorhandenen — gelesen: 115 Zeilen
 - `src/core/sim/events.ts` — Einfacher Event-Emitter fuer die Visuellen-Effekte-Brücke. — gelesen: 30 Zeilen
 - `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 101 Zeilen
-- `src/core/sim/fight-career.ts` — Hinterhof-Karriere: herausforderbare Gegner, Startgeld und Preisgeld. — gelesen: 137 Zeilen
+- `src/core/sim/fight-bet-cashier.ts` — Abgabe eines Scheins: der Ledger bucht den Einsatz, das Journal fixiert die — gelesen: 37 Zeilen
+- `src/core/sim/fight-bet-settle.ts` — Vorkampf und Abrechnung: der Vorkampf wird genau einmal simuliert, offene — gelesen: 87 Zeilen
+- `src/core/sim/fight-bet-slips.ts` — Schein- und Abrechnungsbelege sind Journal-Eintraege: kein neues Save-Feld, — gelesen: 79 Zeilen
+- `src/core/sim/fight-bets.ts` — Wettmarkt auf den Vorkampf: Quoten aus der vorhandenen Kampfmechanik. — gelesen: 107 Zeilen
+- `src/core/sim/fight-career.ts` — Hinterhof-Karriere: herausforderbare Gegner, Startgeld und Preisgeld. — gelesen: 171 Zeilen
+- `src/core/sim/fight-event.ts` — Kampfabend im vorhandenen Turnierabend. — gelesen: 159 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
-- `src/core/sim/fight-history.ts` — Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell und — gelesen: 88 Zeilen
+- `src/core/sim/fight-history.ts` — Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell, — gelesen: 98 Zeilen
 - `src/core/sim/floor-work.ts` — Arbeitsqualitaet auf dem Floor: welches Attribut welche Arbeit traegt. — gelesen: 129 Zeilen
 - `src/core/sim/foreign-floor-tick.ts` — Simulationslogik für fremde Casinos (Foreign Floors). — gelesen: 81 Zeilen
 - `src/core/sim/grid-zones.ts` — 30x30-Bereiche, Multi-Tile-Footprints und Zugangs-Tiles. Reine Grid-Politik, kein Rendering. — gelesen: 121 Zeilen
-- `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 144 Zeilen
+- `src/core/sim/guest-choice.ts` — Was ein Gast als Nächstes tut: Bedürfnis, freier Platz, Ausweichen statt Stillstand. — gelesen: 148 Zeilen
 - `src/core/sim/guest-core.ts` — Gemeinsame Gast-Basis ohne Entscheidungs- oder Spielwissen. — gelesen: 21 Zeilen
 - `src/core/sim/guest-play.ts` — Spielen, Trinken, Klo: jeder Aufruf endet in einer konkreten Aktion, nicht in Zahlenrauschen. — gelesen: 166 Zeilen
 - `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 79 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 122 Zeilen
+- `src/core/sim/hybrid-flow.ts` — Hybrid-Besucherstroeme (Agent 20): der erste Weg eines Gastes haengt vom — gelesen: 24 Zeilen
 - `src/core/sim/influence-config.ts` — Matrix-Config: Faktoren, Untereinfluesse, Kontexte, Cross-Kanten und der — gelesen: 15 Zeilen
 - `src/core/sim/influence-event-pool.ts` — Balancebare Auswahlregeln des Main-Event-Pools; Teil der Influence-Config. — gelesen: 44 Zeilen
 - `src/core/sim/influence-matrix.ts` — Die eine balancebare Matrix: Faktor-Katalog, Kontexte, Cross-Kanten und — gelesen: 137 Zeilen
@@ -2887,7 +3051,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 229 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 253 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -2953,12 +3117,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/nav-grid.ts` — Navigationsraster: belegte Tiles, Wandkanten und ein Cache fuer beides. — gelesen: 114 Zeilen
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
+- `src/core/sim/npc-needs.ts` — import type { NpcIntentKind, NpcNeeds, NpcLODLevel } from './npc-types'; — gelesen: 100 Zeilen
+- `src/core/sim/npc-schedule.ts` — import type { DayPlan, NpcIntent, NpcNeeds, NpcScheduleEntry } from './npc-types'; — gelesen: 78 Zeilen
+- `src/core/sim/npc-types.ts` — export type NpcIntentKind = — gelesen: 53 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 105 Zeilen
 - `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 197 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 189 Zeilen
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
-- `src/core/sim/player-career.ts` — Spieler-Karriere: Level, Attribute, Koerper, Arbeit und Kampfbilanz als eine Sicht. — gelesen: 166 Zeilen
+- `src/core/sim/player-apartment.ts` — Kanonisches Layout und Einrichtungs-Modell der Spieler-Wohnung. — gelesen: 91 Zeilen
+- `src/core/sim/player-career.ts` — Spieler-Karriere: Level, Attribute, Koerper, Arbeit und Kampfbilanz als eine Sicht. — gelesen: 182 Zeilen
 - `src/core/sim/player-history.ts` — Spielhistorie: die persoenlichen Etappen aus dem Ereignisarchiv. — gelesen: 43 Zeilen
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 144 Zeilen
 - `src/core/sim/player-look.ts` — Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. — gelesen: 56 Zeilen
@@ -2975,21 +3143,25 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/rival-ai/tick.ts` — Ein Tick Rivalen-Denken: Eingaben aus der Welt, Absicht aus der reinen Politik. — gelesen: 43 Zeilen
 - `src/core/sim/rival-ai/types.ts` — Rivalen-Domaene: persistenter Zustand, Absichts-Typen und harte Grenzen. — gelesen: 61 Zeilen
 - `src/core/sim/rivals.ts` — Fremde Casinos: eigene Betreiber, eigene Maschinen, eigene Regeln. — gelesen: 181 Zeilen
+- `src/core/sim/room-plan.ts` — Raumplan aus dem Layout: Zonen sind Raeume, Kanten sind ihre Zugaenge. — gelesen: 134 Zeilen
+- `src/core/sim/room-transition.ts` — Nahtlose Raum- und Gebäudeübergänge für Akteure (Spieler und NPCs). — gelesen: 192 Zeilen
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 103 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
-- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 97 Zeilen
+- `src/core/sim/social-encounter.ts` — import type { ActorContinuityRecord } from './actor-continuity'; — gelesen: 111 Zeilen
+- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 100 Zeilen
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 94 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 244 Zeilen
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 134 Zeilen
 - `src/core/sim/tick-timing.ts` — Eine Quelle fuer die Tick-Dauer: Simulation, Renderer und UI rechnen mit demselben Takt. — gelesen: 4 Zeilen
-- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 165 Zeilen
+- `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 169 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/treat-influence.ts` — Döner-/Treat-Wirkung: liest den Kontext aus dem Zielmoebel und die — gelesen: 32 Zeilen
-- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 83 Zeilen
+- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 90 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 137 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 123 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 68 Zeilen
+- `src/core/sim/venue-event.ts` — Zentrale Event-Infrastruktur: Veranstaltungen laufen als Phasen ueber die — gelesen: 176 Zeilen
 - `src/core/sim/visitors.ts` — Besucherprofile: Gaeste bleiben ueber Besuche hinweg erkennbar; die Liste ist begrenzt. — gelesen: 76 Zeilen
 - `src/core/sim/world.ts` — Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. — gelesen: 152 Zeilen
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 44 Zeilen
@@ -3005,6 +3177,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 78 Zeilen
 - `src/render/__tests__/perf-governor.test.ts` — Hysterese: Wechsel erst nach zwei Sekunden Abweichung, nicht nach einem Frame. — gelesen: 42 Zeilen
 - `src/render/__tests__/plinko-board-geometry.test.ts` — Die Brettgeometrie ist die einzige Quelle fuer Stiftpositionen und den — gelesen: 64 Zeilen
+- `src/render/__tests__/reaction-feedback.test.ts` — Integration scope: reaction-feedback contracts. — gelesen: 221 Zeilen
 - `src/render/__tests__/rig-combat.test.ts` — Kampf und Verletzung muessen sichtbar sein: eigene Posen, eigene Uebergaenge, — gelesen: 35 Zeilen
 - `src/render/__tests__/rig.test.ts` — Das Rig ist reine Mathematik: gleiche Zeit, gleiche Pose, klarer Zustand. — gelesen: 37 Zeilen
 - `src/render/__tests__/slot-layout.test.ts` — Die Walzenanzeige rechnet nur ueber diese Geometrie. Werte, die hier stimmen, — gelesen: 50 Zeilen
@@ -3081,6 +3254,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/perf-governor.ts` — Drei Leistungsstufen mit Hysterese. Der Governor bekommt nur deltaMS; er — gelesen: 58 Zeilen
 - `src/render/pixel-head.ts` — Figuren aus dem Paket: ein Kopf-Sprite, das die gezeichnete Figur ersetzt, wenn es geladen ist. — gelesen: 29 Zeilen
 - `src/render/player-marker.ts` — Zustandsmarker ueber dem Spieler: Verletzung und Handgemenge auf dem Floor. — gelesen: 26 Zeilen
+- `src/render/reaction-feedback.ts` — Maps game-state transitions to visual reaction cues without introducing — gelesen: 148 Zeilen
 - `src/render/rig-pose.ts` — Reine Pose-Mathematik fuer das Pixel-Rig; ohne Pixi testbar. — gelesen: 131 Zeilen
 - `src/render/rig.bench.ts` — Rendering-nahe Posekosten; bewusst nicht Teil von verify:all. — gelesen: 28 Zeilen
 - `src/render/rng.ts` — Der eine Darstellungs-Strom: Partikel und Sound, nie der Spielzustand. — gelesen: 4 Zeilen
@@ -3110,7 +3284,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
-- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 80 Zeilen
+- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 105 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 52 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
@@ -3138,9 +3312,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/save.ts` — Save v11: Welt + Layout + Ledger-Log + Journal + PRNG + Narrative-Domaene + Rivalen-Zustand. — gelesen: 149 Zeilen
 - `src/store/scene-commands.ts` — Szenenwechsel: Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. — gelesen: 53 Zeilen
 - `src/store/service-commands.ts` — Service Commands: Gäste bedienen, Bezahlen, Bewegen. — gelesen: 25 Zeilen
-- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 179 Zeilen
+- `src/store/snapshot.ts` — Snapshot aus Welt und Ledger; keine eigene Geldwahrheit in der UI. — gelesen: 182 Zeilen
 - `src/store/transfer.ts` — Import und Export von Spielstaenden: Plan zuerst, Anwenden erst nach Pruefung. — gelesen: 48 Zeilen
-- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 143 Zeilen
+- `src/store/types.ts` — Was die UI sieht: Welt plus abgeleitete Ledger-Werte. — gelesen: 146 Zeilen
 - `src/store/use-world-store.ts` — import { useSyncExternalStore } from 'react'; — gelesen: 9 Zeilen
 - `src/store/venue-commands.ts` — Venue Commands: Bau, Einrichtung, Preise – alles was das Haus verändert. — gelesen: 177 Zeilen
 - `src/store/world-store.ts` — Ein Besitzer: Welt, Ledger, PRNG, Uhr und Save. Commands delegiert an Module. — gelesen: 160 Zeilen
@@ -3165,6 +3339,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 113 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/phase34-acceptance.test.tsx` — import { readFileSync } from 'node:fs'; — gelesen: 62 Zeilen
+- `src/ui/__tests__/placement-fit.test.ts` — Das Ablegen per Enter stellt am eigenen Feld ab; die eigene Kachel darf — gelesen: 41 Zeilen
 - `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 170 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen
@@ -3172,25 +3347,28 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/small-screen-layout.test.ts` — CSS-Vertrag fuer schmale Viewports. jsdom hat keine Layout-Engine; deshalb — gelesen: 91 Zeilen
 - `src/ui/__tests__/small-screen-panels.test.tsx` — Abnahme Phase 2 auf kleinen Displays: Die Aktionskarte klemmt an beiden — gelesen: 149 Zeilen
 - `src/ui/__tests__/ui.test.tsx` — UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile. — gelesen: 173 Zeilen
+- `src/ui/__tests__/venue-history.test.tsx` — Die Historie der Veranstaltung ist ein Leser der vorhandenen Event-Instanz: — gelesen: 43 Zeilen
 - `src/ui/__tests__/world-first-ui.test.tsx` — World-first: Der NPC oeffnet ein Objektpanel am Ziel, die Aktionskarte haengt — gelesen: 112 Zeilen
 - `src/ui/action-card.tsx` — Aktionskarte: eine grosse Empfehlung, zwei Alternativen, ein Schliessen. — gelesen: 65 Zeilen
 - `src/ui/action-queue-panel.tsx` — Queue-Anzeige: der aktive Auftrag und seine naechsten Schritte, direkt am Floor. — gelesen: 40 Zeilen
 - `src/ui/anchor-layout.ts` — Klemm-Geometrie fuer Weltanker. Reine Funktion: Projektion und Viewport sind — gelesen: 109 Zeilen
 - `src/ui/app-effects.ts` — App-Effekte: Ton, Musik, Fokus und Haptik als eigene Zustaendigkeit. — gelesen: 92 Zeilen
-- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 39 Zeilen
+- `src/ui/app-model.ts` — App-Modell: Popup-Ziele, Bau-Fit und Bewegungsachsen; aus App ausgelagert (LOC-Budget). — gelesen: 40 Zeilen
 - `src/ui/app-wiring.ts` — App-Verdrahtung: Navigation, Floor-Aktionen und Kisten ohne eigenen Zustand. — gelesen: 68 Zeilen
 - `src/ui/asset-library-popup.tsx` — Asset-Bibliothek: alles, was im Paket liegt, ist im Spiel sichtbar und anhoerbar. — gelesen: 191 Zeilen
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
 - `src/ui/build-crate-list.tsx` — Kisten im Betriebspanel: reine Statusanzeige. Aufheben und Abladen macht der Charakter auf dem Floor. — gelesen: 46 Zeilen
-- `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 33 Zeilen
+- `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 46 Zeilen
 - `src/ui/build-panel-connected.tsx` — Betriebs-Panel: verdrahtet das Panel mit dem Store; App haelt nur den Schalter. — gelesen: 38 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 126 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
-- `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 40 Zeilen
+- `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 80 Zeilen
+- `src/ui/career-esport.tsx` — Stadtliga im bestehenden Charakterfenster: Tabelle und Rollen aus derselben Ableitung. — gelesen: 26 Zeilen
 - `src/ui/career-floor.tsx` — Arbeitsqualitaet im Charakterfenster: welche Rolle welches Attribut traegt. — gelesen: 27 Zeilen
 - `src/ui/career-history.tsx` — Spielhistorie im Charakterfenster: die letzten Etappen aus dem Archiv, keine zweite Chronik. — gelesen: 30 Zeilen
-- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 129 Zeilen
+- `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 160 Zeilen
+- `src/ui/career-section.tsx` — Karriere-Sektion des Charakterfensters: eine Sicht, eigene Ownership. — gelesen: 72 Zeilen
 - `src/ui/casino-window-header.tsx` — Kopfzeile eines Casino-Fensters: Geldtoepfe, verbaute Mods, Pakt und Vollbild. — gelesen: 52 Zeilen
 - `src/ui/city-popup.tsx` — Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. — gelesen: 100 Zeilen
 - `src/ui/connected-hud.tsx` — HUD-Verdrahtung: Perspektivwechsel, Skills und Welt-Einstieg an einer Stelle. — gelesen: 27 Zeilen
@@ -3230,8 +3408,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/job-context-menu.tsx` — Job-Kontext-Menu: Sims-Style Interaktion an einer Job-Station. — gelesen: 115 Zeilen
 - `src/ui/journal-popup.tsx` — Ereignisprotokoll: was passiert ist, warum, und was daraus folgt — live oder aus dem Archiv. — gelesen: 125 Zeilen
 - `src/ui/journal-stories.tsx` — Abgeschlossene Szenen als Rueckblick im Journal; nur Anzeige des Snapshots. — gelesen: 47 Zeilen
-- `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 170 Zeilen
-- `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 159 Zeilen
+- `src/ui/layout-editor-transfer.ts` — Export, Import und Fehleranzeige des Layout-Editors; kennt kein Layoutwissen. — gelesen: 40 Zeilen
+- `src/ui/layout-editor.tsx` — Entwicklungs-Editor fuer das Raumlayout. Nur erreichbar, wenn der Build — gelesen: 154 Zeilen
+- `src/ui/layout-room-summary.tsx` — Raumkopf des Layout-Editors: Zahlen aus dem vorhandenen Raumplan. — gelesen: 17 Zeilen
+- `src/ui/look-popup.tsx` — Charaktereditor: reine Kosmetik, sofort im Save und auf dem Floor sichtbar. — gelesen: 101 Zeilen
 - `src/ui/machine-mods.tsx` — Mod-Katalog am Automaten: Gaestewirkung und Wirkung auf die echte Engine. — gelesen: 53 Zeilen
 - `src/ui/machine-operator.tsx` — Betriebskörper am Automaten: Zustand, Diagnose, Reparatur und Mods. — gelesen: 143 Zeilen
 - `src/ui/machine-play-lazy.tsx` — Lazy-Grenze fuer die eigenen Spieltische: Pixi und Engines erst beim Gastmodus. — gelesen: 13 Zeilen
@@ -3269,6 +3449,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/use-floor-interaction.ts` — Ein Fokus fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln. — gelesen: 169 Zeilen
 - `src/ui/use-stage-keys.ts` — Tastenpfad der Buehne: laufen, tragen, zoomen. App verdrahtet nur noch. — gelesen: 43 Zeilen
 - `src/ui/use-world-anchor.ts` — Weltanker: haelt eine React-Karte am Objekt, auch wenn die Kamera faehrt. — gelesen: 158 Zeilen
+- `src/ui/venue-history.tsx` — Veranstaltungs-Historie: Phasen und Ergebnis der vorhandenen Event-Instanz. — gelesen: 26 Zeilen
 - `src/ui/workshop-parts.tsx` — Bausteine der Werkstatt: Rasterkarte, Steuerung und ein ehrlicher Live-FPS-Wert. — gelesen: 108 Zeilen
 - `src/ui/workshop.tsx` — Werkstatt: sechs Bereiche in einem Raster, erreichbar nur ueber Marke oder Tastatur. — gelesen: 115 Zeilen
 - `src/vite-env.d.ts` — / <reference types="vite/client" /> — gelesen: 3 Zeilen

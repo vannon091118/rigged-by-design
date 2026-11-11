@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T04:10Z-agent20-hybrid-flow-2",
+  "contributionId": "agent20-hybrid-flow-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Waehrend einer Veranstaltung ist der erste Durst kein Zufall, sondern der Grund des Besuchs.",
+  "directives": []
+}

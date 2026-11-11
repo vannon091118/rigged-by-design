@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-ui-queue-claim-closeout-2",
+  "claimId": "lane/governance/ui-queue-claim-closeout-2",
+  "branch": "lane/governance/ui-queue-claim-closeout-2",
+  "baseSha": "f786bd83cd4fa1a7f0a05ba872c05756298dd54c",
+  "phase": "MERGE_PENDING",
+  "title": "Nachlauf: Action-Queue-Claim auf merged ziehen",
+  "goal": "Den offenen Claim der gemergten Lane als merged registrieren, ohne Content- oder Codeaenderung.",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR-Lauf gruen: promote auf dem exakten Kopf; danach Claim-Stand pruefen.",
+  "revision": 1
+}

@@ -1,0 +1,28 @@
+{
+  "id": "lane/sim/esport-data",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/esport-data",
+  "baseSha": "6d44ce8a1d875450420161703440f7dd7718c7f7",
+  "task": "Agent 26: E-Sport-Simulationsdaten",
+  "goal": "Stadtliga aus vorhandenen Rivalen- und Ortsankern: Teams, Spieler, Rollen, Attribute, Staerke, Form, Taktik und Turnierhistorie deterministisch ableiten; Sicht im bestehenden Charakterfenster; kein neues Save-Feld.",
+  "pathAllowlist": [
+    "src/core/sim/esport.ts",
+    "src/core/sim/__tests__/esport.test.ts",
+    "src/core/sim/player-career.ts",
+    "src/ui/career-property.tsx",
+    "src/ui/career-esport.tsx",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    ".lane-claims/tasks/sim-esport-data.json",
+    ".lane-claims/claims/lane-sim-esport-data.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "6d44ce8a1d875450420161703440f7dd7718c7f7",
+  "mergedSha": "2798053d1a7522e071b9c4ca9b67f5fc025630e1",
+  "mergedEvidence": "branch-tree-on-main"
+}

@@ -3,12 +3,15 @@
  *
  * Die Leiter und die Sicht sind Ableitungen; Geld laeuft ausschliesslich ueber
  * den Ledger, gekaempft wird mit der bestehenden Mechanik aus `brawl-combat`.
- * Kein Save-Feld, kein zweiter Zaehler.
+ * Kein Save-Feld, kein zweiter Zaehler. Roster, Chance und Kampf sind zugleich
+ * die Quellen des Kampfabends (`fight-event`), damit es keine zweite Karte gibt.
  */
 import type { Ledger } from '../economy/ledger';
 import { fromVC, toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
-import { applyFightOutcome, fighters, simulateFight, winProbability } from './brawl-combat';
+import {
+  applyFightOutcome, fighters, simulateFight, winProbability, type FightResult,
+} from './brawl-combat';
 import type { DuelOpponent } from './duel-opponent';
 import {
   backyardHistoryOf, backyardSubject, fightRecordOf,
@@ -51,6 +54,13 @@ export interface BackyardResult {
   readonly notice: string;
 }
 
+/** Ein gefuehrter Leiterkampf; Geld und Journal bucht der jeweilige Aufrufer. */
+interface FightBoutResult {
+  readonly won: boolean;
+  readonly ko: boolean;
+  readonly fight: FightResult;
+}
+
 /** Die Leiter steigt in Kraft, Preisgeld und Startgeld; Rang ergibt sich aus der Position. */
 const LADDER: readonly Omit<BackyardRung, 'rank'>[] = [
   { name: 'Bulle Bernd', archetype: 'Hinterhof-Schläger', strength: 2, toughness: 2, entryFee: fromVC(0.5), prize: fromVC(1.2) },
@@ -61,33 +71,59 @@ const LADDER: readonly Omit<BackyardRung, 'rank'>[] = [
   { name: 'Der Schlachter', archetype: 'Endgegner', strength: 9, toughness: 8, entryFee: fromVC(8), prize: fromVC(24) },
 ];
 
+/** Die ganze Leiter mit Rang; der Kampfabend liest daraus seinen Roster. */
+export function fightRoster(): readonly BackyardRung[] {
+  return LADDER.map((base, index) => ({ ...base, rank: index + 1 }));
+}
+
 /**
  * Der naechste Gegner ist der erste unbezwungene der Leiter; ist die Leiter
  * abgeraeumt, bleibt der Endgegner herausforderbar - der Loop endet nie.
  */
-function nextRung(history: readonly BackyardHistoryEntry[]): BackyardRung {
+export function fightNextRung(history: readonly BackyardHistoryEntry[]): BackyardRung {
   const beaten = new Set(history.filter((entry) => entry.wins > 0).map((entry) => entry.name));
   const index = LADDER.findIndex((rung) => !beaten.has(rung.name));
   const base = LADDER[index === -1 ? LADDER.length - 1 : index]!;
   return { ...base, rank: index === -1 ? LADDER.length : index + 1 };
 }
 
-function opponentOf(rung: BackyardRung): DuelOpponent {
+/** Das Gegnerprofil derselben Leiter; Hinterhof und Kampfabend teilen es intern. */
+export function fightOpponentOf(rung: BackyardRung): DuelOpponent {
   return {
     guestId: -1, name: rung.name, archetype: rung.archetype, strength: rung.strength,
     greed: rung.rank, nerve: rung.strength, toughness: rung.toughness,
   };
 }
 
-/** Dieselbe Kampfmechanik wie im Duell; ohne Casino-Menge gibt es keinen Stimmungsbonus. */
-function chanceOf(rpg: PlayerRpgState, rung: BackyardRung): number {
-  const [player, rival] = fighters(rpg, opponentOf(rung), 0);
+/** Dieselbe Kampfmechanik wie im Duell; die Menge liefert den Stimmungsbonus. */
+export function fightChance(rpg: PlayerRpgState, rung: BackyardRung, crowd: number): number {
+  const [player, rival] = fighters(rpg, fightOpponentOf(rung), crowd);
   return Math.round(winProbability(player, rival) * 100);
+}
+
+/** Erfahrung eines gewonnenen Leiterkampfs; Hinterhof und Kampfabend buchen gleich. */
+export function fightXpFor(rung: BackyardRung): number {
+  return XP_WIN + rung.strength * XP_PER_STRENGTH;
+}
+
+/**
+ * Ein Kampf aus der Leiter: derselbe Koerper, dieselbe Engine und dieselbe
+ * Folge wie im Duell. Der Aufrufer bucht nur noch Geld und Journal.
+ */
+export function fightBout(world: WorldState, prng: Prng, rung: BackyardRung, crowd: number): FightBoutResult {
+  const [player, rival] = fighters(world.player.rpg, fightOpponentOf(rung), crowd);
+  const fight = simulateFight(player, rival, prng);
+  applyFightOutcome(world.player.rpg, fight, player.maxHp);
+  return {
+    won: fight.playerWon,
+    ko: fight.playerWon ? fight.opponentHp === 0 : fight.playerHp === 0,
+    fight,
+  };
 }
 
 export function backyardView(world: WorldState, wallet: VaCoinMicro): BackyardView {
   const history = backyardHistoryOf(world.archive);
-  const rung = nextRung(history);
+  const rung = fightNextRung(history);
   const injured = isInjured(world.player.rpg);
   const ready = !injured && wallet >= rung.entryFee;
   const reason = injured
@@ -96,7 +132,7 @@ export function backyardView(world: WorldState, wallet: VaCoinMicro): BackyardVi
       ? `Startgeld fehlt: ${toVCString((rung.entryFee - wallet) as VaCoinMicro)}.`
       : `Startgeld ${toVCString(rung.entryFee)} · Preisgeld ${toVCString(rung.prize)}.`;
   return {
-    rung, totalRungs: LADDER.length, winChance: chanceOf(world.player.rpg, rung), ready, reason,
+    rung, totalRungs: LADDER.length, winChance: fightChance(world.player.rpg, rung, 0), ready, reason,
     record: fightRecordOf(world.archive), history,
   };
 }
@@ -111,18 +147,16 @@ export function backyardFight(world: WorldState, ledger: Ledger, prng: Prng): Ba
   if (!view.ready) throw new Error(view.reason);
   const rung = view.rung;
   ledger.transfer(PORTEMONNAIE, EXTERNAL, rung.entryFee, TX_REASON.BACKYARD_ENTRY, world.tick);
-  const [player, rival] = fighters(world.player.rpg, opponentOf(rung), 0);
-  const fight = simulateFight(player, rival, prng);
-  applyFightOutcome(world.player.rpg, fight, player.maxHp);
-  const won = fight.playerWon;
-  const ko = won ? fight.opponentHp === 0 : fight.playerHp === 0;
+  const bout = fightBout(world, prng, rung, 0);
+  const won = bout.won;
+  const ko = bout.ko;
   let prize: VaCoinMicro = ZERO_VC;
   if (won) {
     prize = rung.prize;
     ledger.transfer(EXTERNAL, PORTEMONNAIE, prize, TX_REASON.BACKYARD_PRIZE, world.tick);
-    grantGlobalXp(world.player.rpg, 'WIN_BRAWL', XP_WIN + rung.strength * XP_PER_STRENGTH);
+    grantGlobalXp(world.player.rpg, 'WIN_BRAWL', fightXpFor(rung));
   }
-  const outcome = `${won ? 'Gewonnen' : 'Verloren'}: ${ko ? 'KO' : 'nach Punkten'} in Runde ${fight.rounds}`;
+  const outcome = `${won ? 'Gewonnen' : 'Verloren'}: ${ko ? 'KO' : 'nach Punkten'} in Runde ${bout.fight.rounds}`;
   const money = won ? `Preisgeld ${toVCString(prize)}` : `Startgeld ${toVCString(rung.entryFee)} verloren`;
   recordJournal(world, {
     kind: 'SYSTEM',

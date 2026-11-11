@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T13:05Z-ui-placement-venue-history-merge-pending",
+  "contributionId": "ui-placement-venue-history-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
+  "directives": []
+}

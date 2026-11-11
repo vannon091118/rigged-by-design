@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:45Z-living-world-foundation-2",
+  "contributionId": "living-world-foundation-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "memory",
+  "function": "remember",
+  "contexts": [
+    "return"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
+  "directives": []
+}

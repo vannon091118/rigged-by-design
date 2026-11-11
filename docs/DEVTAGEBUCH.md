@@ -5,6 +5,22 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-11 - Living World Engine: Doku- und Governance-Harmonisierung (PIN 0911)
+
+**Ziel:** Harmonisierung der Kern- und Governance-Dokumente (`docs/ROADMAP.md`, `docs/ARCHITECTURE.md`, `README.md`) mit der vom Nutzer genehmigten Living World Engine Vision (autonome Lebenssimulation mit Wohnungsstart, physischer Stadt, Gebäude-Kontinuität und autonomen NPCs; das Casino ist eine Umgebung unter vielen).
+
+**Befund:** In früheren Fassungen war das Projekt in den einleitenden Texten primär als Casino-Betriebsspiel gerahmt („Du erbst 150 VC Startkapital, einen Schlüssel, einen Automaten“), während der architektonische Kern (`src/core/`) bereits orts-agnostisch, headless und deterministisch angelegt ist. Die Steuerungsebene war unter dem Governance-Freeze blockiert (`ERR-4030`).
+
+**Umsetzung:**
+1. Freigabe der Governance-Änderung mit autorisiertem `PIN 0911` über `node scripts/freeze-unlock.mjs --pin=0911`.
+2. Überarbeitung von `docs/ROADMAP.md`: Living World Nordstern, neuer Produktvertrag (Wohnungsstart, Straße vor der Tür, Bewohner unter vielen), Phasenstruktur (Phasen 0 bis 9) und harmonische Einbettung der Fachaufgaben von Agents 16–30 als städtische Lebensmodule (Personal als pendelnde Bürger, Hospitality & Clubs als Treffpunkte, Events/Arenen als Stadtattraktionen, Multi-Property als Stadtnetzwerk).
+3. Überarbeitung von `docs/ARCHITECTURE.md`: Festhalten der Living World Architektur im Abschnitt „Produktgrenze: ort-agnostischer Kern und Living World Engine“ (Akteur-Kontinuität, zweistufige Simulation mit A* vs. Offscreen-Fortschreibung, nahtlose Raumübergänge, situative Begegnungen und Smartphone-Kommunikation als echte Simulationsereignisse).
+4. Überarbeitung von `README.md`: Neue erzählerische Bühne für den Spielerstart in der eigenen Wohnung mit Smartphone und Blick auf die Stadtstraße.
+
+**Prüfungen:** `pnpm run verify:docs`, `pnpm run verify:claims`, `pnpm run verify:light`.
+
+**Bewusst nicht getan:** Keine Änderungen an den 10 unverhandelbaren Regeln in `AGENTS.md`. Keine Eingriffe in in-flight PRs (#402, #403) oder bestehende Feature-Lanes. Kein Löschen des bestehenden 30-Agenten-Plans, sondern dessen Anbindung an die Living World.
+
 ## 2026-11-10 - Masterplan Phase 2: Immobilie im WorldState (Agent 08)
 
 **Ziel:** Die Immobilie eindeutig dem WorldState zuordnen, dabei die vorhandenen Grid-, Zonen-, Furniture- und Besuchersysteme nutzen und den Betrieb ueber das zugehoerige Geschaeftskonto fuehren.

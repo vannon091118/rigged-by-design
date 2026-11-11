@@ -14,6 +14,7 @@ import { ADDICTED_THRESHOLD } from './emotion';
 import { hasStaff } from './staff-queries';
 import { renovationMoodBonus, renovationReputationBonus } from './renovation';
 import type { Guest, WorldState } from './types';
+import { applyArrivalFlow } from './hybrid-flow';
 import { entranceSpot, exchangePoint, pathTo } from './world';
 
 /**
@@ -74,6 +75,8 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   // Der Zustand der Immobilie kommt beim Gast an: ein kleiner Bonus je Renovierungsstufe.
   const renovation = renovationMoodBonus(world);
   if (renovation > 0) guest.mood = Math.min(100, guest.mood + renovation);
+  // Agent 20: Veranstaltungsgaeste kommen mit Durst; alle anderen bleiben unveraendert.
+  applyArrivalFlow(world, guest);
   const target = exchangePoint(world);
   if (!target) return null;
   if (returning) {

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:35Z-agent21-merge-pending",
+  "contributionId": "agent21-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein grüner Lauf allein ist kein Abschluss. Erst der Squash-Beleg auf main macht den Merge nachprüfbar; MERGE_PENDING hält den nächsten Schritt fest.",
+  "directives": []
+}

@@ -1,0 +1,26 @@
+{
+  "id": "lane/sim/venue-event",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/venue-event",
+  "baseSha": "2faf66a462d4647191f15460b1bae47211ade557",
+  "task": "Agent 22: Zentrale Event-Infrastruktur",
+  "goal": "Veranstaltungen laufen als Phasen ueber die vorhandenen NarrativeEventInstances: Ankuendigung, Einlass, Durchfuehrung, Ergebnis und Archivierung werden aus startedTick, expiresTick, step, status und resolution abgeleitet. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine; Turnierabend und Sonderabend nutzen den bestehenden Demand- und Lifecycle-Pfad.",
+  "pathAllowlist": [
+    "src/core/sim/venue-event.ts",
+    "src/core/sim/__tests__/venue-event.test.ts",
+    "src/core/sim/demand.ts",
+    "src/core/sim/tick.ts",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/tasks/venue-event.json",
+    ".lane-claims/claims/lane-sim-venue-event.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "createdAt": "2faf66a462d4647191f15460b1bae47211ade557",
+  "mergedSha": "5007421008a83c0d9845f870d53c01d15eab4aaf",
+  "mergedEvidence": "branch-tree-on-main"
+}

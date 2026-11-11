@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e41986c421b83919ba28fb987a4bcd1b952fec903c11e132216fc3fbe02a93eb",
+  "contentHash": "sha256:18ed0e8b12a273f78a346594bdc52077a7fd1d0057ee05f5fbc0b7d86b187360",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -450,6 +450,72 @@
       "source": "content/narrative/contributions/2026-11-11-agent15-amenity-4.json"
     },
     {
+      "contributionId": "agent16-aftercare-1",
+      "turnId": "2026-11-11T00:25Z-agent16-aftercare-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schnitt ist durch: der Squash traegt denselben Baum wie der Zweig. Erst diese Gleichheit macht aus dem Merge einen Beleg statt einer Behauptung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-1.json"
+    },
+    {
+      "contributionId": "agent16-aftercare-2",
+      "turnId": "2026-11-11T00:30Z-agent16-aftercare-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, waehrend der Zweig noch steht. Kein Schritt wird uebersprungen, nur weil der Code schon oben liegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-2.json"
+    },
+    {
+      "contributionId": "agent16-aftercare-3",
+      "turnId": "2026-11-11T00:35Z-agent16-aftercare-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende steht kein Gefuehl, sondern eine Zeile im Register: Baum auf main, Branch-Kopf belegt, Zweig darf gehen. Was bleibt, ist der Nachweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-3.json"
+    },
+    {
       "contributionId": "agent16-staff-1",
       "turnId": "2026-11-11T01:10Z-agent16-staff-1",
       "agentId": "buffy",
@@ -514,6 +580,1678 @@
       "text": "Vor dem Tor zaehlt der Lauf, nicht die Absicht: die Phase zieht nach, der Kopf bleibt stehen, und erst der gruene Beleg macht aus der Bewertung eine Zusage.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-3.json"
+    },
+    {
+      "contributionId": "agent17-aftercare",
+      "turnId": "2026-11-11T01:55Z-agent17-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heisst: Register, Task und Beleg zusammenfuehren. Ein gruener Merge ohne gepflegten Status ist nur ein halber Abschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-aftercare.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-1",
+      "turnId": "2026-11-11T01:05Z-agent17-business-areas-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Casino, Bar und Lounge stehen schon im Haus, nur sprach niemand von ihnen als Bereiche. Der Schnitt beginnt deshalb nicht mit einem neuen Speicher, sondern mit einer zweiten Lesart derselben Zonen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-1.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-2",
+      "turnId": "2026-11-11T01:20Z-agent17-business-areas-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Betriebsheader nennt die Bereiche jetzt mit Zahlen: Objekte und Gäste je Zone, und ein Bereich ohne Zone steht als nicht im Haus da. Kein zweites Konto, kein zweiter Gastzähler - nur eine Lesart, die man nachrechnen kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-2.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-3",
+      "turnId": "2026-11-11T01:30Z-agent17-business-areas-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein ungenutzter Import faellt nicht im Test auf, sondern erst im Typecheck. Genau dafuer steht er im Gate: die Kleinigkeit wird vor dem Push bezahlt, nicht danach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-3.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-4",
+      "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-5",
+      "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
+    },
+    {
+      "contributionId": "agent17-ci-pending",
+      "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
+    },
+    {
+      "contributionId": "agent17-done",
+      "turnId": "2026-11-11T02:00Z-agent17-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-done.json"
+    },
+    {
+      "contributionId": "agent17-merge-pending",
+      "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
+    },
+    {
+      "contributionId": "agent18-aftercare",
+      "turnId": "2026-11-11T02:55Z-agent18-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst belegen, nicht behaupten: derselbe Baum, derselbe Beleg, ein Status.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-aftercare.json"
+    },
+    {
+      "contributionId": "agent18-ci-pending",
+      "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt die Karte als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-ci-pending.json"
+    },
+    {
+      "contributionId": "agent18-done",
+      "turnId": "2026-11-11T03:00Z-agent18-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Karte, Bestand und Preis liegen auf main; die Lane ist fort, der Task steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-done.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-1",
+      "turnId": "2026-11-11T02:20Z-agent18-drink-menu-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bar fuehrt eine Karte, nicht ein Preisschild. Was darauf steht, sagt der Grundpreis und die Stufe - kein zweites Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-2",
+      "turnId": "2026-11-11T02:25Z-agent18-drink-menu-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Glaeser, ein Bestand: die Karte sagt, was die Bar fuehrt, der Gast bestellt nach Durst und Neigung, und die Kasse bucht den Preis, der auf der Karte steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-3",
+      "turnId": "2026-11-11T02:30Z-agent18-drink-menu-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gate meldet nicht, dass etwas fehlt, sondern dass etwas doppelt da ist: der alte Import blieb stehen, nachdem die Bedienung umzog.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-4",
+      "turnId": "2026-11-11T02:35Z-agent18-drink-menu-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
+    },
+    {
+      "contributionId": "agent18-merge-pending",
+      "turnId": "2026-11-11T02:50Z-agent18-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
+    },
+    {
+      "contributionId": "agent19-aftercare",
+      "turnId": "2026-11-11T03:40Z-agent19-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Clubabend steht auf demselben Baum wie sein Beleg; die Nachsorge zieht nur den Status nach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-aftercare.json"
+    },
+    {
+      "contributionId": "agent19-ci-pending",
+      "turnId": "2026-11-11T03:30Z-agent19-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt der Clubabend als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-ci-pending.json"
+    },
+    {
+      "contributionId": "agent19-club-night-1",
+      "turnId": "2026-11-11T03:10Z-agent19-club-night-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Tagsueber ist die Lounge ein Warteplatz; abends wird aus ihr ein Club, ohne dass ein zweiter Raum entsteht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-club-night-1.json"
+    },
+    {
+      "contributionId": "agent19-club-night-2",
+      "turnId": "2026-11-11T03:20Z-agent19-club-night-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-club-night-2.json"
+    },
+    {
+      "contributionId": "agent19-done",
+      "turnId": "2026-11-11T03:45Z-agent19-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Lounge traegt ihren Club jetzt nach Tageszeit; Register und Lane sind geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-done.json"
+    },
+    {
+      "contributionId": "agent19-merge-pending",
+      "turnId": "2026-11-11T03:35Z-agent19-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
+    },
+    {
+      "contributionId": "agent20-aftercare",
+      "turnId": "2026-11-11T04:30Z-agent20-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachweis bleibt der Baum; die Nachsorge schreibt nur den Status fort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-aftercare.json"
+    },
+    {
+      "contributionId": "agent20-ci-pending",
+      "turnId": "2026-11-11T04:20Z-agent20-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf: erst wenn er gruen meldet, gilt der Hybridstrom als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-ci-pending.json"
+    },
+    {
+      "contributionId": "agent20-done",
+      "turnId": "2026-11-11T04:35Z-agent20-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Stroeme, ein Haus: Casino, Bar und Club teilen sich dieselben Gaeste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-done.json"
+    },
+    {
+      "contributionId": "agent20-hybrid-flow-1",
+      "turnId": "2026-11-11T04:00Z-agent20-hybrid-flow-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast kommt nicht als Rolle an, sondern als Weg: erst Kasse, dann Bar, dann Automat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-hybrid-flow-1.json"
+    },
+    {
+      "contributionId": "agent20-hybrid-flow-2",
+      "turnId": "2026-11-11T04:10Z-agent20-hybrid-flow-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Waehrend einer Veranstaltung ist der erste Durst kein Zufall, sondern der Grund des Besuchs.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-hybrid-flow-2.json"
+    },
+    {
+      "contributionId": "agent20-merge-pending",
+      "turnId": "2026-11-11T04:25Z-agent20-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-aftercare",
+      "turnId": "2026-11-11T05:40Z-agent21-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heißt: Register, Task und Beleg zusammenführen. Der Branch trägt keine neue Spiellogik, nur die nachgezogene Wahrheit über den Lauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-aftercare.json"
+    },
+    {
+      "contributionId": "agent21-ci-pending",
+      "turnId": "2026-11-11T05:30Z-agent21-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
+    },
+    {
+      "contributionId": "agent21-done",
+      "turnId": "2026-11-11T05:45Z-agent21-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE ist erst, wenn der Squash-Baum mit dem Lane-Kopf übereinstimmt und der Claim merged sagt. Danach bleibt nur noch die Lane zu entfernen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-done.json"
+    },
+    {
+      "contributionId": "agent21-merge-pending",
+      "turnId": "2026-11-11T05:35Z-agent21-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein grüner Lauf allein ist kein Abschluss. Erst der Squash-Beleg auf main macht den Merge nachprüfbar; MERGE_PENDING hält den nächsten Schritt fest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-1",
+      "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Räume stehen längst im Plan: Zonen tragen ihre Funktion, Kanten ihre Türen. Der Raumplan liest beides an derselben Stelle, statt eine zweite Liste zu führen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-1.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-2",
+      "turnId": "2026-11-11T05:10Z-agent21-room-plan-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Raum ohne Zugang ist keine Planung, sondern eine Wand. Der Plan zählt Türen und Durchgänge und rechnet die Plätze aus der Fläche – sichtbar im Editor, ohne neues Save-Feld.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-2.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-3",
+      "turnId": "2026-11-11T05:20Z-agent21-room-plan-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
+    },
+    {
+      "contributionId": "agent22-aftercare",
+      "turnId": "2026-11-11T06:55Z-agent22-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf zieht nur Task, Claim und generierte Register nach; an Veranstaltungsphasen, Tick und Save-Feldern aendert er nichts.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-aftercare.json"
+    },
+    {
+      "contributionId": "agent22-ci-pending",
+      "turnId": "2026-11-11T06:45Z-agent22-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Event-Phasen sind mit #426 auf main; jetzt beginnt der Nachlauf. Erst Squash-Beleg und Register machen daraus einen belegten Abschluss, bis dahin bleibt der Task offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-ci-pending.json"
+    },
+    {
+      "contributionId": "agent22-dead-code",
+      "turnId": "2026-11-11T06:40Z-agent22-dead-code",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
+    },
+    {
+      "contributionId": "agent22-done",
+      "turnId": "2026-11-11T07:00Z-agent22-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE heisst hier: Squash-Baum gleich Lane-Kopf, Claim merged und Lane entfernt. Der Event-Pfad bleibt die vorhandene NarrativeEventInstance.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-done.json"
+    },
+    {
+      "contributionId": "agent22-merge-pending",
+      "turnId": "2026-11-11T06:50Z-agent22-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash 50074210 ist baumgleich zum geprueften Lane-Kopf. MERGE_PENDING trennt den nachpruefbaren Merge vom noch offenen Registerabschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-merge-pending.json"
+    },
+    {
+      "contributionId": "agent22-task",
+      "turnId": "2026-11-11T06:10Z-agent22-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem ersten Baustein steht die Pruefung: Der Veranstaltungsrahmen darf nicht neben dem vorhandenen Event-Zustand stehen. Deshalb beginnt Agent 22 mit einer Lane, die nur den fehlenden Ablauf ergaenzt und die bestehende Wahrheit unangetastet laesst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-task.json"
+    },
+    {
+      "contributionId": "agent22-venue-event",
+      "turnId": "2026-11-11T06:25Z-agent22-venue-event",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bühne braucht keinen zweiten Kalender. Ankündigung, Einlass, Durchführung und Ergebnis liegen als Phasen auf derselben Instanz, die schon den Andrang trägt; das Archiv ist nur die Erinnerung daran, keine neue Liste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-venue-event.json"
+    },
+    {
+      "contributionId": "agent23-aftercare",
+      "turnId": "2026-11-11T05:26Z-agent23-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge bleibt Nachsorge: Register und Nachweis ziehen nach, der Code liegt bereits auf main. Der Kampfabend wird nicht erneut gebaut, nur belegt - Squash, Baumgleichheit und ein sauberer Arbeitsbaum.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-aftercare.json"
+    },
+    {
+      "contributionId": "agent23-ci-pending",
+      "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kampfabend steht, jetzt entscheidet der entfernte Lauf: Der Kopf wird gepusht, und erst ein gruener Pflichtstatus auf genau diesem Kopf erlaubt den Merge. Zwischenstand und Vertrag bleiben dabei eine Wahrheit, kein zweiter Bericht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-ci-pending.json"
+    },
+    {
+      "contributionId": "agent23-done",
+      "turnId": "2026-11-11T05:30Z-agent23-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Kampfabend steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-done.json"
+    },
+    {
+      "contributionId": "agent23-fight-event",
+      "turnId": "2026-11-11T09:40Z-agent23-fight-event",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kampfabend erfindet nichts: Roster und Kampfplan sind die vorhandene Hinterhof-Leiter, der Kampf ist die vorhandene Engine, und das Nenngeld steht als eigene Ledger-Zeile. Nur der Abend selbst endet jetzt mit einem Ergebnis statt mit einer Platzhalterzeile.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-fight-event.json"
+    },
+    {
+      "contributionId": "agent23-merge-pending",
+      "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Pflichtstatus ist gruen auf dem exakten Kopf, und erst jetzt darf der Merge geplant werden. Kein Nachbessern am Rand, kein zweiter Kopf: Was geprueft wurde, wird gemergt, und was danach kommt, steht in der Nachsorge.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-merge-pending.json"
+    },
+    {
+      "contributionId": "agent23-task",
+      "turnId": "2026-11-11T07:15Z-agent23-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
+    },
+    {
+      "contributionId": "agent24-aftercare",
+      "turnId": "2026-11-11T06:20Z-agent24-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge bleibt Nachsorge: Der Beleg nennt Squash und Baumgleichheit, der Arbeitsbaum bleibt leer, und die Lane zieht ihren Vertrag nach. Der Wettmarkt wird nicht erneut gebaut, nur belegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-aftercare.json"
+    },
+    {
+      "contributionId": "agent24-bets",
+      "turnId": "2026-11-11T06:05Z-agent24-bets",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schein ist ein Beleg, kein zweiter Spielstand: Er traegt seine Schein-Nummer, seine fixierte Quote und seinen Einsatz im Journal, und die Abrechnung erkennt ihn an derselben Nummer wieder. Wer auf den falschen Mann setzt, sieht den Einsatz als Ledger-Zeile verschwinden; wer richtig liegt, bekommt genau die Quote, die beim Abschluss auf dem Zettel stand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-bets.json"
+    },
+    {
+      "contributionId": "agent24-ci-pending",
+      "turnId": "2026-11-11T06:10Z-agent24-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Markt ist gesetzt, aber noch nicht bestaetigt: Erst der Lauf auf dem exakten Kopf entscheidet, ob Schein, Vorkampf und Abrechnung zusammen halten. Bis dahin bleibt jeder Zettel ein Versprechen und keine Buchung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-ci-pending.json"
+    },
+    {
+      "contributionId": "agent24-done",
+      "turnId": "2026-11-11T05:30Z-agent24-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wettmarkt steht: Scheine, Quoten und Abrechnung liegen als Journal-Belege vor, die Lane ist geschlossen. Wer den Markt sucht, findet ihn im Hinterhof; wer den Abschluss sucht, im Vertrag. Kein zweiter Aufbau, keine offene Schleife.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-done.json"
+    },
+    {
+      "contributionId": "agent24-done-repair",
+      "turnId": "2026-11-11T06:10Z-agent24-done-repair",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Qualitaetspruefung meldet einen Near-Duplicate: Der Abschluss lag zu nah am vorigen. Also wird der Text entdoppelt, nicht die Schwelle gesenkt; der Befund und die Korrektur bleiben im Register.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-done-repair.json"
+    },
+    {
+      "contributionId": "agent24-merge-pending",
+      "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kopf ist gruen, der Vertrag steht auf Merge: Was jetzt kommt, ist kein neuer Entwurf mehr, sondern die Bestaetigung, dass der gepruefte Stand genau der ist, der auf main wandert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-merge-pending.json"
+    },
+    {
+      "contributionId": "agent24-task",
+      "turnId": "2026-11-11T05:50Z-agent24-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wettmarkt haengt am vorhandenen Turnierabend: kein zweiter Event, kein zweites Konto. Quoten kommen aus derselben Kampfmechanik, die den Vorkampf entscheidet, und der Schein fixiert sie, bevor der erste Schlag faellt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-task.json"
+    },
+    {
+      "contributionId": "agent24-test-quality",
+      "turnId": "2026-11-11T06:12Z-agent24-test-quality",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Beleg, der nur beweist, dass irgendetwas existiert, beweist nichts. Der Gewinn muss an seiner Quote haengen und die Zahl der Auszahlungen an der Zahl der richtigen Tipps - sonst ist der gruene Haken nur eine Behauptung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-test-quality.json"
+    },
+    {
+      "contributionId": "agent25-aftercare",
+      "turnId": "2026-11-11T07:30Z-agent25-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst hier: den gemergten Stand belegen, den Claim schliessen, die Lane stehen lassen. Die Arena bleibt im Hinterhof, wo sie gebaut wurde, und braucht keinen zweiten Eingang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-aftercare.json"
+    },
+    {
+      "contributionId": "agent25-arena",
+      "turnId": "2026-11-11T06:30Z-agent25-arena",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-arena.json"
+    },
+    {
+      "contributionId": "agent25-base-merge",
+      "turnId": "2026-11-11T06:50Z-agent25-base-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis war schon im Baum, aber nicht in der Historie; ein Merge holt beides nach. Die Arena bleibt ein Ausbau der Immobilie, und der Nachlauf der Wett-Lane bleibt geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-base-merge.json"
+    },
+    {
+      "contributionId": "agent25-ci-pending",
+      "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
+    },
+    {
+      "contributionId": "agent25-done",
+      "turnId": "2026-11-11T07:40Z-agent25-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Schritte, ein Modul: Die Arena steht auf main, der Claim nennt den Merge, der Zweig bleibt erhalten. Der naechste Halt ist Agent 26, nicht ein zweiter Ausbau derselben Flaeche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-done.json"
+    },
+    {
+      "contributionId": "agent25-main-merge",
+      "turnId": "2026-11-11T07:20Z-agent25-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Main kam als Merge zurueck; die Lane zieht nach, ohne den Arena-Bau erneut zu entscheiden. Ein Baum, zwei Historien, ein Vertrag - und der Ausbau bleibt der eine, der schon geprueft wurde.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-main-merge.json"
+    },
+    {
+      "contributionId": "agent25-merge-base",
+      "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
+    },
+    {
+      "contributionId": "agent25-merge-pending",
+      "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena steht auf gruenem Kopf: Einlass, Ausbau und Sicht sind belegt, der Rest ist Vertrag. Jetzt zaehlt nur noch der exakte Stand, den die Pruefung gesehen hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-pending.json"
+    },
+    {
+      "contributionId": "agent25-task",
+      "turnId": "2026-11-11T06:20Z-agent25-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
+    },
+    {
+      "contributionId": "agent26-aftercare",
+      "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-aftercare.json"
+    },
+    {
+      "contributionId": "agent26-ci-fix",
+      "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der rote Tests-Lauf war kein Datenfehler, sondern eine gezaehlte Liste zu viel. Die Liga teilt sich jetzt das vorhandene Raster; die sieben Attribute behalten ihre eigene Liste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-fix.json"
+    },
+    {
+      "contributionId": "agent26-ci-pending",
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Kopf ist gepusht, die Pruefung uebernimmt. Bis sie gruen meldet, wird nicht nachgebessert; der naechste Schritt steht im Vertrag, nicht im Gefuehl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-pending.json"
+    },
+    {
+      "contributionId": "agent26-claim",
+      "turnId": "2026-11-11T08:05Z-agent26-claim",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Sicht braucht eine eigene Datei, nicht eine wachsende Immobiliensektion. Also zieht die Liga in ihr eigenes UI-Modul, und der Claim nennt den Pfad von Anfang an - vor dem ersten Push, nicht danach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-claim.json"
+    },
+    {
+      "contributionId": "agent26-done",
+      "turnId": "2026-11-11T09:03Z-agent26-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Agent 26 ist abgeschlossen: Task DONE, Claim merged, mergedSha 2798053d. Die Stadtliga lebt als Ableitung im bestehenden Charakterfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-done.json"
+    },
+    {
+      "contributionId": "agent26-esport",
+      "turnId": "2026-11-11T08:10Z-agent26-esport",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadtliga ist eine Ableitung: sechs Teams, fuenf Rollen, Form je Tag. Kein Save-Feld traegt sie, weil Seed und Tag sie tragen; die Sicht liest dieselbe Wahrheit wie das Archiv.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-esport.json"
+    },
+    {
+      "contributionId": "agent26-esport-code",
+      "turnId": "2026-11-11T08:12Z-agent26-esport-code",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
+    },
+    {
+      "contributionId": "agent26-main-merge",
+      "turnId": "2026-11-11T08:47Z-agent26-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
+    },
+    {
+      "contributionId": "agent26-merge-pending",
+      "turnId": "2026-11-11T08:52Z-agent26-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Merge ist belegt, die Lane steht auf MERGE_PENDING: der gruene Kopf 0ce079f6 wurde als 2798053d auf main uebernommen. Jetzt folgt nur noch der Register-Nachlauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-merge-pending.json"
+    },
+    {
+      "contributionId": "agent26-task",
+      "turnId": "2026-11-11T08:00Z-agent26-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Bevor ein Team entsteht, steht die Grenze: E-Sport ist kein zweiter Kampfabend. Die Liga nimmt ihre Anker aus den vorhandenen Rivalen und Orten, ihre Historie aus dem vorhandenen Archiv und ihre Sicht aus dem Charakterfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-task.json"
     },
     {
       "contributionId": "apk-signing-01",
@@ -5105,6 +6843,94 @@
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
     },
     {
+      "contributionId": "living-world-foundation-1",
+      "turnId": "2026-11-11T02:15Z-living-world-foundation-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Aus dem Treppenhaus auf den nassen Gehweg getreten: Gegenüber leuchtet das Schild der Kiezkneipe, der Späti hat die Kisten draußen stehen, und ein Nachbar nickt im Vorbeigehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-1.json"
+    },
+    {
+      "contributionId": "living-world-foundation-2",
+      "turnId": "2026-11-11T02:45Z-living-world-foundation-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
+    },
+    {
+      "contributionId": "living-world-vertical-slice-1",
+      "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "facts"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sie folgte ihrem Tagesplan. Nicht aus freiem Willen – einfach weil Systeme das so machen. Um 19 Uhr stand Kneipe im Kalender, also war sie da. Der Spieler trat ihr auf denselben Weg. Niemand hatte das geplant. Trotzdem funktionierte es.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json"
+    },
+    {
+      "contributionId": "living-world-vision-1",
+      "turnId": "2026-11-11T02:00Z-living-world-vision-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt wartet nicht auf den Spieler. Wer die Wohnungstuer oeffnet, tritt in ein Leben, das laengst laeuft: Nachbarn gehen zur Arbeit, Geschaefte oeffnen, und das Casino ist nur ein Raum unter vielen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-vision-1.json"
+    },
+    {
       "contributionId": "loc-gate-01",
       "turnId": "2026-11-09T17:52Z-loc-gate",
       "agentId": "buffy",
@@ -7936,6 +9762,28 @@
       "source": "content/narrative/contributions/2026-11-02-nachfragezustand.json"
     },
     {
+      "contributionId": "npc-world-foundation-1",
+      "turnId": "2026-11-11T03:10Z-npc-world-foundation-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jeden Tag derselbe Rhythmus auf den Strassen, doch heute liegt etwas Neues in der Luft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-npc-world-foundation-1.json"
+    },
+    {
       "contributionId": "opening-inheritance-01",
       "turnId": "2026-11-01T23:10Z-readme-onboarding",
       "agentId": "codex",
@@ -8139,6 +9987,50 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "placement-venue-history-1",
+      "turnId": "2026-11-11T12:10Z-placement-venue-history",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history.json"
+    },
+    {
+      "contributionId": "placement-venue-history-ci-fix",
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json"
     },
     {
       "contributionId": "player-career-01",
@@ -19329,6 +21221,28 @@
       "source": "content/narrative/contributions/2026-11-10-property-world.json"
     },
     {
+      "contributionId": "readme-visual-polish-1",
+      "turnId": "2026-11-11T04:50Z-readme-visual-polish-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "react",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn die Fassade glaenzt, weiss man wenigstens, wofuer das verlorene Geld draufgegangen ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-readme-visual-polish-1.json"
+    },
+    {
       "contributionId": "relationship-standing-01",
       "turnId": "2026-11-08T03:55Z-relationship-standing",
       "agentId": "buffy",
@@ -19393,6 +21307,28 @@
       "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
+    },
+    {
+      "contributionId": "render-world-visual-presentation-1",
+      "turnId": "2026-11-11T04:30Z-render-world-visual-presentation-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wenn die Tuer aufgeht und jemand heruebersieht, weiss man sofort, wer hier zu Hause ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json"
     },
     {
       "contributionId": "renovation-01",
@@ -19666,6 +21602,94 @@
       "source": "content/narrative/contributions/2026-11-02-nar-05-trigger-context.json"
     },
     {
+      "contributionId": "ui-placement-venue-history-aftercare",
+      "turnId": "2026-11-11T13:10Z-ui-placement-venue-history-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf traegt nur Status, Claim und Doku; die Spielaenderung bleibt der gemergte Feature-Stand. Die Nachsorge schliesst den Registerweg ab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-aftercare.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-done",
+      "turnId": "2026-11-11T13:15Z-ui-placement-venue-history-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Task ui-placement-venue-history ist DONE, der Claim ist merged mit mergedSha 3fe5acb. Der Registerstand auf main ist damit abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-done.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-main-merge",
+      "turnId": "2026-11-11T13:00Z-ui-placement-venue-history-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash-Merge 3fe5acb steht jetzt auch in der Placement-Lane. Der Branch traegt damit die gemeinsame Basis; der Nachlauf enthaelt nur noch Register, Doku und generierte Artefakte.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-merge-pending",
+      "turnId": "2026-11-11T13:05Z-ui-placement-venue-history-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json"
+    },
+    {
       "contributionId": "ui-queue-aftercare-01",
       "turnId": "2026-11-11T00:25Z-ui-queue-aftercare",
       "agentId": "buffy",
@@ -19752,6 +21776,28 @@
       "text": "DONE heisst hier nicht Ende der Arbeit, sondern Ende der Spur: der Claim ist zu, der Baum ist belegt, und die naechste Lane beginnt auf gruenem main.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-4.json"
+    },
+    {
+      "contributionId": "ui-queue-main-merge",
+      "turnId": "2026-11-11T13:20Z-ui-queue-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf zur Action-Queue ist mit dem aktuellen main zusammengefuehrt; die vier Aftercare-Bausteine bleiben erhalten. Die Konflikte lagen in Claim, Turn-Manifest und generierten Artefakten, nicht in Spielcode.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge.json"
     },
     {
       "contributionId": "ui-queue-panel-01",
@@ -19935,6 +21981,28 @@
       "text": "Ein Zaun, der nur von innen zu sehen ist, hilft niemandem. Was die Pruefung nicht sieht, ist nicht geprueft; also bleibt der Blick von aussen Pflicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-welt-treffer-02.json"
+    },
+    {
+      "contributionId": "world-continuity-interaction-1",
+      "turnId": "2026-11-11T03:30Z-world-continuity-interaction-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "warn",
+      "contexts": [
+        "loss"
+      ],
+      "tone": "trocken",
+      "mood": "argwoehnisch",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Wer hier eintritt, laesst seine Sorgen draussen auf dem Buergersteig nicht einfach liegen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json"
     },
     {
       "contributionId": "world-first-ui-01",

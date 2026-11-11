@@ -40,6 +40,20 @@ function hits(prng: Prng, chance: number): boolean {
   return rollNumber(prng, HIT_DISTRIBUTION).value <= chance;
 }
 
+const CROWD_MAX = 5;
+const MOOD_READY = 50;
+
+/**
+ * Zuschauerbonus aus der Laune im Haus: -5..+5 Prozentpunkte Trefferquote.
+ * Duell, Hinterhof und Kampfabend lesen dieselbe Formel, keine zweite Menge.
+ */
+export function crowdBonus(guests: readonly { readonly mood: number }[]): number {
+  // Ohne Zuschauer gibt es keine Stimmung: ein leeres Haus ist kein boeser Saal.
+  if (guests.length === 0) return 0;
+  const averageMood = guests.reduce((sum, guest) => sum + guest.mood, 0) / guests.length;
+  return Math.max(-CROWD_MAX, Math.min(CROWD_MAX, (averageMood - MOOD_READY) / 10));
+}
+
 /**
  * Beide Kaempfer aus derselben Lage: Brawl-Stufe traegt Angriff, Treffer und
  * Lebenspunkte, das Gegnerprofil traegt Kraft und Zaehigkeit, die Menge liefert

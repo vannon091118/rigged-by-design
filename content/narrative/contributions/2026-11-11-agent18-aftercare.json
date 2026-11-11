@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:55Z-agent18-aftercare",
+  "contributionId": "agent18-aftercare",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Nachsorge heisst belegen, nicht behaupten: derselbe Baum, derselbe Beleg, ein Status.",
+  "directives": []
+}

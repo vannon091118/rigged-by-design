@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:00Z-agent17-done",
+  "contributionId": "agent17-done",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+  "directives": []
+}

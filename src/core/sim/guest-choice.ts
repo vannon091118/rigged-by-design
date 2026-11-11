@@ -5,6 +5,7 @@ import { nearestWalkable } from './pathfinding';
 import type { Prng } from '../rng/prng';
 import { pickWeighted } from '../rng/weighted';
 import { clamp } from './guest-core';
+import { clubNight } from './club-night';
 import { dispositionOfGuest, type VisitorDisposition } from './narrative/disposition';
 import { voiceLine } from './narrative/guest-voice';
 import { refreshNeeds } from './needs';
@@ -48,6 +49,9 @@ function waitForSpace(world: WorldState, guest: Guest): void {
   guest.state = 'WAIT';
   guest.stateTicks = 0;
   guest.intent = voiceLine(world, guest, 'Kein freier Platz: wartet und verliert Geduld.');
+  // Agent 19: wer in der Lounge wartet, bekommt den Clubabend mit.
+  const club = clubNight(world);
+  if (club.open) guest.mood = clamp(guest.mood + club.moodGain);
   guest.targetFurniture = 0;
   // Warten ist eine Entscheidung: es kostet Geduld, aber es soll sich lohnen koennen.
   guest.patience = Math.max(0, guest.patience - 1.5);

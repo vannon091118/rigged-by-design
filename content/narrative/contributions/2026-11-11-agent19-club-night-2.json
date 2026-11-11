@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T03:20Z-agent19-club-night-2",
+  "contributionId": "agent19-club-night-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T13:00Z-ui-placement-venue-history-main-merge",
+  "contributionId": "ui-placement-venue-history-main-merge",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Squash-Merge 3fe5acb steht jetzt auch in der Placement-Lane. Der Branch traegt damit die gemeinsame Basis; der Nachlauf enthaelt nur noch Register, Doku und generierte Artefakte.",
+  "directives": []
+}

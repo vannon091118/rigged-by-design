@@ -27,7 +27,8 @@ export type Popup =
 
 export function fits(view: GameView, id: BuildId, x: number, y: number): boolean {
   const def = getBuildDef(id);
-  const blockers = [view.player.position, ...view.guests.map((guest) => guest.position)];
+  // Der Spieler steht beim Ablegen selbst auf dem Zielfeld; nur Gaeste blockieren.
+  const blockers = view.guests.map((guest) => guest.position);
   return canPlaceAt(view.size, view.furniture, blockers, x, y, def.w, def.h, def.seats > 0, view.layout);
 }
 

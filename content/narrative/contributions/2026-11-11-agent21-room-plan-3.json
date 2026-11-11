@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:20Z-agent21-room-plan-3",
+  "contributionId": "agent21-room-plan-3",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
+  "directives": []
+}

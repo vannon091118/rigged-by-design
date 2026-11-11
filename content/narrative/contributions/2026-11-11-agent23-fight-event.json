@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T09:40Z-agent23-fight-event",
+  "contributionId": "agent23-fight-event",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Kampfabend erfindet nichts: Roster und Kampfplan sind die vorhandene Hinterhof-Leiter, der Kampf ist die vorhandene Engine, und das Nenngeld steht als eigene Ledger-Zeile. Nur der Abend selbst endet jetzt mit einem Ergebnis statt mit einer Platzhalterzeile.",
+  "directives": []
+}

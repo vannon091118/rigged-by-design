@@ -2,7 +2,7 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import {
-  applyFightOutcome, fighters, simulateFight, winProbability, type FightResult,
+  applyFightOutcome, crowdBonus, fighters, simulateFight, winProbability, type FightResult,
 } from './brawl-combat';
 import { guardHandling } from './disputes';
 import { duelOpponent, inDuelRange, type DuelOpponent } from './duel-opponent';
@@ -34,20 +34,11 @@ const XP_DUEL_WIN = 45;
 /** So lange bleibt die Kampf-Rueckmeldung an der Stelle des Streits sichtbar. */
 const FIGHT_FX_TICKS = 24;
 const MOOD_BONUS = 12;
-const MOOD_READY = 50;
-const CROWD_MAX = 5;
-
-/** Die Menge jubelt oder schimpft: -5..+5 Prozentpunkte Trefferquote. */
-function crowdBonus(world: WorldState): number {
-  const guests = world.guests.length;
-  const averageMood = guests ? world.guests.reduce((sum, guest) => sum + guest.mood, 0) / guests : 0;
-  return Math.max(-CROWD_MAX, Math.min(CROWD_MAX, (averageMood - MOOD_READY) / 10));
-}
 
 export function duelPreview(world: WorldState, dispute: Dispute): DuelPreview | null {
   const opponent = duelOpponent(world, dispute);
   if (!opponent) return null;
-  const [player, rival] = fighters(world.player.rpg, opponent, crowdBonus(world));
+  const [player, rival] = fighters(world.player.rpg, opponent, crowdBonus(world.guests));
   return {
     opponent,
     winChance: Math.round(winProbability(player, rival) * 100),
@@ -89,7 +80,7 @@ export function resolveDuel(world: WorldState, ledger: Ledger, prng: Prng, dispu
   if (guardHandling(world, dispute)) return { outcome: 'GUARD', opponent, mugging: null, fight: null };
   if (!inDuelRange(world, dispute)) return { outcome: 'FAR', opponent, mugging: null, fight: null };
 
-  const [player, rival] = fighters(world.player.rpg, opponent, crowdBonus(world));
+  const [player, rival] = fighters(world.player.rpg, opponent, crowdBonus(world.guests));
   const fight = simulateFight(player, rival, prng);
   applyFightOutcome(world.player.rpg, fight, player.maxHp);
   releaseDispute(world, dispute);

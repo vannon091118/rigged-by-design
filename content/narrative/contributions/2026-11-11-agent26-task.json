@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T08:00Z-agent26-task",
+  "contributionId": "agent26-task",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Bevor ein Team entsteht, steht die Grenze: E-Sport ist kein zweiter Kampfabend. Die Liga nimmt ihre Anker aus den vorhandenen Rivalen und Orten, ihre Historie aus dem vorhandenen Archiv und ihre Sicht aus dem Charakterfenster.",
+  "directives": []
+}

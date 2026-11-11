@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T07:15Z-agent23-task",
+  "contributionId": "agent23-task",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:45Z-agent22-ci-pending",
+  "contributionId": "agent22-ci-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Event-Phasen sind mit #426 auf main; jetzt beginnt der Nachlauf. Erst Squash-Beleg und Register machen daraus einen belegten Abschluss, bis dahin bleibt der Task offen.",
+  "directives": []
+}
