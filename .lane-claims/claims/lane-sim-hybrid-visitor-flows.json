@@ -1,0 +1,23 @@
+{
+  "id": "lane/sim/hybrid-visitor-flows",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/hybrid-visitor-flows",
+  "baseSha": "12add659168260ea128b71dc74ee0cc87f7aa6f8",
+  "task": "Agent 20: Hybrid-Besucherstroeme am vorhandenen Beduerfnis verdrahten",
+  "goal": "Veranstaltungsgaeste kommen mit Durst: die Ankunftsregel liest das laufende Nachfrage-Event und setzt das vorhandene Beduerfnis Trinken plus Durst ueber die Schwelle. Casino->Bar und Club->Automat laufen unveraendert ueber chooseActivity; kein neues Save-Feld, keine zweite Gaesteliste, kein zweiter Event-Zustand, keine neue Bar- oder Automatensimulation.",
+  "pathAllowlist": [
+    "src/core/sim/hybrid-flow.ts",
+    "src/core/sim/spawn.ts",
+    "src/core/sim/__tests__/hybrid-visitor-flows.test.ts",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-sim-hybrid-visitor-flows.json",
+    ".lane-claims/tasks/hybrid-visitor-flows.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "12add659168260ea128b71dc74ee0cc87f7aa6f8"
+}

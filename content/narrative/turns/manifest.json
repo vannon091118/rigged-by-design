@@ -3692,6 +3692,14 @@
     {
       "turnId": "2026-11-11T03:45Z-agent19-done",
       "contributionId": "agent19-done"
+    },
+    {
+      "turnId": "2026-11-11T04:00Z-agent20-hybrid-flow-1",
+      "contributionId": "agent20-hybrid-flow-1"
+    },
+    {
+      "turnId": "2026-11-11T04:10Z-agent20-hybrid-flow-2",
+      "contributionId": "agent20-hybrid-flow-2"
     }
   ]
 }
