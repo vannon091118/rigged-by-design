@@ -81,7 +81,7 @@ gh variable get RBD_AUTO_RESOLVE \
 Die Variable wird an zwei Stellen gelesen:
 
 - `.github/workflows/auto-resolve.yml`: `vars.RBD_AUTO_RESOLVE == '1'`
-- `.github/workflows/pr-watcher.yml`: `${{ vars.RBD_AUTO_RESOLVE || '0' }}`, danach `process.env.RBD_AUTO_RESOLVE === '1'`
+- `.github/workflows/pr-watcher.yml`: GitHub-Ausdruck für `vars.RBD_AUTO_RESOLVE || '0'`, danach `process.env.RBD_AUTO_RESOLVE === '1'`
 
 Damit unterdrückt `pr-watcher` bei aktivem Auto-Resolve seine eigenen Gate-Issues; sonst würden zwei Stellen denselben Befund melden. Die Variable ist eine **Repository-Variable**, kein Secret und keine Environment-Variable.
 
@@ -130,6 +130,8 @@ Die App braucht:
 
 Der aktuelle Workflow liest nur `secrets.AUTOFIX_TOKEN`; er erzeugt **kein** App-Installationstoken. Ein manuell erzeugtes Installationstoken läuft nach einer Stunde ab und ist als Secret nicht praktikabel. Für eine App muss deshalb ein Mint-Schritt ergänzt werden:
 
+{% raw %}
+
 ```yaml
 - name: App-Token erzeugen
   id: app-token
@@ -146,6 +148,8 @@ Danach in der Auto-Resolve-Stufe:
 ```yaml
 AUTOFIX_TOKEN: ${{ steps.app-token.outputs.token }}
 ```
+
+{% endraw %}
 
 App-ID als Repository-Variable `AUTOFIX_APP_ID`, Private Key als Secret `AUTOFIX_APP_PRIVATE_KEY` speichern. Den Private Key **nicht** als `AUTOFIX_TOKEN` hinterlegen. Die Action wie im Repo üblich per SHA pinnen.
 

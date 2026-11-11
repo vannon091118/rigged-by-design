@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-monitor-findings-448-449",
+  "claimId": "lane/governance/monitor-findings-448-449",
+  "branch": "lane/governance/monitor-findings-448-449",
+  "baseSha": "3883b80694a2ba5dd0ae3fb261d364fd17221db6",
+  "phase": "CI_PENDING",
+  "title": "Monitor-Befunde #448/#449: Pages, Register und Claims",
+  "goal": "Liquid-Sequenzen in der Doku entschaerfen, veraltete Task-Vertraege und terminale Claims abbauen",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR-Lauf pruefen; Merge nur durch promote auf dem exakten Kopf; danach Nachsorge und Issue-Closure.",
+  "revision": 2
+}
