@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:4d1b599a88f55dbd180eefecc1589b57d294f9fecad959afe07bc834f218400c",
+  "contentHash": "sha256:9a57997de75e31c7303a17fa4c129f1af34da634b6a499165801d07169b81a8c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2164,6 +2164,28 @@
       "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
+    },
+    {
+      "contributionId": "agent26-merge-pending",
+      "turnId": "2026-11-11T08:52Z-agent26-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Merge ist belegt, die Lane steht auf MERGE_PENDING: der gruene Kopf 0ce079f6 wurde als 2798053d auf main uebernommen. Jetzt folgt nur noch der Register-Nachlauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-merge-pending.json"
     },
     {
       "contributionId": "agent26-task",
