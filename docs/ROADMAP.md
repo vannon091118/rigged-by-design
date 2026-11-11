@@ -22,7 +22,7 @@ kein Content-Endstand.
 
 Die Steuerungsebene ist gesperrt, bis **Stadt und Core-Loop stehen und mindestens § Progression-Zweige vollständig sind**. Gesperrt sind `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` und die Governance-Verträge; frei bleiben `src/`, `content/`, `public/` und Tests.
 
-Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der `Plan`-Job in CI blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, bleibt der Lauf rot und die CI legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`); der Branch bleibt bestehen.
+Durchgesetzt wird die Sperre mechanisch: der lokale Pre-Commit-Hook und der PR-Job blockieren jede inhaltliche Governance-Änderung ohne PIN-Freigabe (`ERR-4030`). Eine Freigabe entsteht nur über `node scripts/freeze-unlock.mjs --pin=<pin>` und gilt genau für eine Basis. Fehlt sie ganz, bleibt der Lauf rot und die CI legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`); der Branch bleibt bestehen.
 
 Aufhebung nur auf ausdrückliche Anweisung des Owners; danach gilt der Freeze weiter. Der Fokus bis dahin: Stadt, Core-Loop, Progression, Content und Baustein-Pools — keine Governance-Arbeit.
 
@@ -263,7 +263,7 @@ Code und seinen Test als Beleg.
 
 | ID | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- | --- |
-| P-13 | 1006/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
+| P-13 | 1007/1500 Textbausteine | offen (Ziel) | 13 Pools, alle mindestens 50; neuer Kontext `echo` fuer spaetere Kettenbegegnungen |
 | P-14 | Neue Pools brauchen einen Leser, das Gate prueft das nicht | offen | `guest-voice-*` hat `guest-voice.ts`; kuenftige Pools ebenso, sonst ist der Text tot |
 | P-15 | `TRIGGER_DIALOG` ist nicht ausfuehrbar | **erledigt 2026-11-09** | `src/core/sim/narrative/commands/registry.ts` fuehrt `executable: true`, `src/core/sim/narrative/commands/preflight.ts` lehnt unbekannte Dialog-IDs ab, `src/ui/popup-router.tsx` oeffnet per `src/ui/dialog-request.ts` das referenzierte Skript; Tests `src/core/sim/__tests__/trigger-dialog.test.ts` und `src/ui/__tests__/dialog-request.test.ts` |
 | P-16 | Geraete-, Lager- und Personal-Facts fehlen bewusst | offen | neue Fact-Kinds brauchen erst Definition und Template |
@@ -293,7 +293,7 @@ Code und seinen Test als Beleg.
 | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- |
 | Monitor-Closeouts #448-#452 | **erledigt 2026-11-11** | #448-#450: PR #451, Merge `9e8f914`; Nachsorge PR #453, Merge `19f58db`; #452: PR #454, Merge `50869ee`. Claims `merged`, Tasks `DONE`; `claim-cleanup` `superseded`. |
-| Direktpush auf `main` | Regel bleibt | Branch-Schutz antwortet mit `GH006` (nur PR plus Pflichtstatus); die Registerpflege lief deshalb als Governance-Lane ueber PR (#268, #269) |
+| Direktpush auf `main` | Regel bleibt | Branch-Schutz antwortet mit `GH006` (nur PR plus lokalem Nachweis; der PR-Check ist optional); die Registerpflege lief deshalb als Governance-Lane ueber PR (#268, #269) |
 | Merge-Nachricht ist Gate-Text | offen | Ein Squash ueber die API mit blossem Titel laesst `main` am Commit-Notes-Gate rot (`ERR-4006`); die drei Pflichtsektionen muessen im Nachrichtentext stehen |
 | Gate-Bypass | Regel bleibt | `--no-verify`, `git stash` und leere Trigger-Commits sind ausgeschlossen |
 | Lane-Kollision in `agent:pretask` | offen (niedrig) | `agent:pretask` meldet Kollision mit `lane/governance/pr-251-repair`, `verify:claims --ci` akzeptiert dieselbe Lane |

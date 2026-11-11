@@ -2,7 +2,7 @@
  * @test-target: .github/workflows/ci-verify.yml
  * @error-code: ERR-4008
  *
- * Local-first: Der PR-Lauf traegt genau einen schnellen Pflichtstatus. Die
+ * Local-first: Der optionale PR-Job traegt genau einen schnellen PR-Check. Die
  * vollstaendigen Release-Gates laufen lokal; die Cloud prueft PR-Body,
  * Commit-Konvention, Governance-Freeze, Light-Gates, Debug-APK und
  * Release-Version-Bump des Artefakts.
@@ -48,7 +48,7 @@ const stepWith = (flow: Workflow, job: string, needle: string): Step | undefined
   steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Local-first Main-Gate', () => {
-  it('hat genau einen schnellen Pflichtjob ohne Matrix und ohne Push-Lauf', () => {
+  it('hat genau einen schnellen optionalen PR-Job ohne Matrix und ohne Push-Lauf', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
     expect(ci.on?.pull_request?.types).toEqual(['opened', 'synchronize', 'reopened']);
@@ -92,7 +92,7 @@ describe('Local-first Main-Gate', () => {
     expect(artifact?.with?.path).toContain('artifacts/rigged-by-design-debug.apk');
   });
 
-  it('laesst keine Matrix, Langlaeufe oder Claim-Jobs im Cloud-Pflichtcheck', () => {
+  it('laesst keine Matrix, Langlaeufe oder Claim-Jobs im optionalen PR-Job', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.jobs?.gate).toBeUndefined();
     expect(ci.jobs?.light).toBeUndefined();

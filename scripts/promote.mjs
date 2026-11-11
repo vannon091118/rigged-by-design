@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Promote: gruene PR-Staende mergen. Rot wird ein Issue, kein Dump auf
+ * Promote: manueller Status-/Notausgang. Der PR-Check ist optional; der Merge
+ * nach main erfolgt durch Mensch oder Agent. Rot wird ein Issue, kein Dump auf
  * `integration`; Timeout und Abbruch sind REMOTE_CI und kein roter Stand.
  *
  * Ein Lauf pro CI-Ergebnis. Die Wahrheit liegt im Branch und in Labels, nie in
@@ -43,8 +44,8 @@ const hasToken = Boolean(process.env.GH_TOKEN);
 const event = process.env.EVENT ?? '';
 const headSha = process.env.HEAD_SHA ?? '';
 const mode = process.env.MODE ?? '';
-// Der Pflichtstatus zaehlt nur, wenn er aus diesem workflow_run stammt und
-// gegen dieselbe Basis lief. Beide Angaben kommen aus dem Ereignis.
+// Der PR-Check ist optional; Lauf-ID und Basis bleiben nur als Kontext fuer
+// die Statusanzeige erhalten und sind keine Merge-Bedingung.
 const ciRunId = process.env.CI_RUN_ID ?? '';
 const baseSha = process.env.BASE_SHA ?? '';
 const runAttempt = Number(process.env.RUN_ATTEMPT ?? 1) || 1;
@@ -412,7 +413,7 @@ function ensurePr() {
  */
 function mergeGreen(number) {
   const info = verifiedPr(number);
-  if (!info) return holdPromotion(number, null, 'PR-Status oder Pflichtstatus nicht verifiziert');
+  if (!info) return holdPromotion(number, null, 'PR-Status nicht verifiziert');
   const ref = headRef();
   const contractRef = readTaskContractAtRef(ref, { branch });
   const contract = contractRef?.contract ?? null;
@@ -619,7 +620,7 @@ if (!event) {
   } else {
     const number = ensurePr();
     if (!number) warn(`kein PR fuer ${branch}; Merge uebersprungen`);
-    else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (Pflichtstatus noch nicht gruen?)`);
+    else if (!mergeGreen(number)) warn(`PR #${number} nicht gemergt (PR-Status nicht verifiziert)`);
   }
 } else if (REMOTE_CONCLUSIONS.has(conclusion)) {
   const number = openPr();

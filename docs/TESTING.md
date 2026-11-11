@@ -8,9 +8,9 @@
 
 Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected`, `pnpm run verify:light` und `pnpm run verify:fast`. Der lokale Abschluss `pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump und nennt die langen Nachweise als offen.
 
-Die vollständige Suite und Audit laufen lokal nur für einen Release über `verify:release`/`verify:all`; `verify:integration` ist der Vor-PR-Nachweis aus Light, Testqualität, betroffenen Tests und Build. Die Cloud wiederholt im Pflichtcheck nur die Light-Gates und baut die Debug-APK. `verify:fast` ist der Standard vor dem Push. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
+Die vollständige Suite und Audit laufen lokal nur für einen Release über `verify:release`/`verify:all`; `verify:integration` ist der Vor-PR-Nachweis aus Light, Testqualität, betroffenen Tests und Build. Der optionale Cloud-PR-Job wiederholt nur die Light-Gates und baut die Debug-APK. `verify:fast` ist der Standard vor dem Push. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
 
-**Der Cloud-Light-Lauf ist kein Release-Nachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen Pflichtcheck und die Debug-APK; die vollständige Suite läuft lokal über `verify:release`/`verify:all` und bleibt Release- oder On-Demand-Arbeit.
+**Der Cloud-Light-Lauf ist kein Release-Nachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen PR-Check und die Debug-APK; die vollständige Suite läuft lokal über `verify:release`/`verify:all` und bleibt Release- oder On-Demand-Arbeit. Der Check ist optional und keine Merge-Bedingung.
 
 ## Testmatrix
 
@@ -29,7 +29,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | 9 | Manual Dispatch ohne Dependency-Diff erzeugt keinen widersprüchlichen Audit-Job | `ci-plan.test.ts` (`MANUAL` mit Required-Set); `ci-gates.test.ts` |
 | 10 | Erzwungenes Audit läuft tatsächlich | `ci-plan.test.ts` (`RBD_VERIFY_AUDIT=1`); `workflow-hardening.test.ts` |
 | 11 | PR-Änderungen durchlaufen lokal die vollständige Regression | `verify:integration`; `ci-plan.test.ts` (Required-Set und Suiteauswahl) |
-| 12 | Cloud-Light bleibt ein schneller Pflichtcheck | `ci-gates.test.ts` (ein Job, `verify:light`), `pipeline-modes.test.ts` (Light ≠ Integration) |
+| 12 | Cloud-Light bleibt ein schneller optionaler PR-Check | `ci-gates.test.ts` (ein Job, `verify:light`), `pipeline-modes.test.ts` (Light ≠ Integration) |
 | 13 | Gemeinsame Claims und Pfade erkennen echte Überschneidungen | `lane-claims.test.ts` (Content-Pfad kollidiert, Meta/Claim nicht) |
 | 14 | Unabhängige Lane wird durch fremden Lane-Fehler nicht blockiert | `issue-scope.test.ts`; `pretask-issues.test.ts` (Dependency blockiert nur abhängige Lane) |
 | 15 | Autofix nur erlaubte Fälle, danach Gates erneut | `auto-resolve.test.ts` (`repair-plan`-Block: erlaubter Doku-Fix, verbotener Quellcode, max. 1 Versuch) |
@@ -42,7 +42,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 
 | Regression | Nachweis |
 | --- | --- |
-| `long-checks` darf nicht `Fail-Closed Gates` heißen; genau ein geschützter Statusname | `workflow-hardening.test.ts` (Pflichtstatus-Owner) |
+| `long-checks` darf nicht `Fail-Closed Gates` heißen; genau ein PR-Check-Name | `workflow-hardening.test.ts` (PR-Check-Owner) |
 | Dependabot-PR mit `dependabot/**` besteht Lane Claims über eine eng begrenzte Bot-Allowlist | `lane-claims.test.ts` (Bot-/Claim-Prüfung) |
 | Statischer Scan: keine `reset --hard`, `clean -fd`, Stash-Mutation, `push --force`, `branch -D` in Produktionsskripten | `destructive-commands.test.ts` |
 | Impact-Pfad ohne TypeScript-Compiler: ein direkter oder transitiver Import macht das Gate rot | `impact-graph.test.ts` |
@@ -51,7 +51,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |
 | Stadt-Ruhetag und verzögerte Folge überstehen Save/Load ohne Tick dazwischen: Tag, Ledger, Beziehung, Chain-Frist und PRNG bleiben identisch, Miete und Echo laufen genau einmal | `city-day-closeout.test.ts`, `city-encounter-loop.test.ts` |
-| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; der Pflichtstatus bleibt der einzige geschützte Check |
+| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; der PR-Check ist optional, keine Merge-Bedingung |
 
 ## Ausführung
 

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T23:20Z-optional-pr-runner",
+  "contributionId": "optional-pr-runner",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der PR-Job ist optional: Der lokale Vor-PR-Nachweis entscheidet, kein Merge wartet auf einen CI-Lauf. Die Lane bleibt eine Wahrheit, auch wenn der externe Runner pausiert.",
+  "directives": []
+}

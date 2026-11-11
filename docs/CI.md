@@ -2,7 +2,7 @@
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die eine Wahrheit für den lokalen Abschluss und den schlanken Cloud-Pflichtcheck. `AGENTS.md` nennt nur die Kurzfassung; die Ausführungskategorien und der APK-Ablauf stehen in [`LOCAL_CI.md`](LOCAL_CI.md).
+**Zweck:** Die eine Wahrheit für den lokalen Abschluss und den optionalen Cloud-PR-Check. `AGENTS.md` nennt nur die Kurzfassung; die Ausführungskategorien und der APK-Ablauf stehen in [`LOCAL_CI.md`](LOCAL_CI.md).
 
 ## Required Gates
 
@@ -26,7 +26,7 @@ Der Required-Plan besteht aus fünfzehn Gates:
 | 14 | `tests` | `pnpm run test:ci` | `ERR-4026` |
 | 15 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates. Der PR-Pflichtjob führt davon nur die Light-Gates aus; die fünfzehn Required-Gates sind der vollständige Release-/Full-Nachweis.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates. Der optionale PR-Job führt davon nur die Light-Gates aus; die fünfzehn Required-Gates sind der vollständige lokale Release-/Full-Nachweis.
 
 Lokal gilt:
 
@@ -45,8 +45,8 @@ Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein G
 
 | Zustand | Auslöser | Plan |
 | --- | --- | --- |
-| `PR` | Pull Request gegen `main` | ein Cloud-Job `Fail-Closed Gates`: PR-Body, Commit-Konvention, Freeze und `verify:light` |
-| `NOOP` | Kopf ist die Basis | keine Pflichtprüfung; der lokale Claim-/Scope-Pfad bleibt zuständig |
+| `PR` | Pull Request gegen `main` | ein optionaler Cloud-Job `Fail-Closed Gates`: PR-Body, Commit-Konvention, Freeze und `verify:light` |
+| `NOOP` | Kopf ist die Basis | keine Cloud-Prüfung; der lokale Claim-/Scope-Pfad bleibt zuständig |
 | `UNKNOWN` | Zustand nicht bestimmbar | fail-closed: lokaler Integrationsnachweis, kein stiller Light-Erfolg |
 
 `main` hat keinen eigenen Cloud-Vollauf mehr. Der Merge ist ein manueller Schritt nach dem lokalen Vor-PR-Nachweis `verify:integration` und, bei Release-Bedarf, `verify:release`; damit entstehen keine zwei konkurrierenden Wahrheiten für denselben Kopf.
@@ -57,7 +57,7 @@ Stand 2026-11-11 liegen neun Workflow-Dateien in `.github/workflows/`:
 
 | Workflow | Status | Aufgabe |
 | --- | --- | --- |
-| `ci-verify.yml` | aktiv | ein schneller Required-Job auf PRs: Light-Gates, Web-Build, Release-Bump für das Artefakt und Debug-APK |
+| `ci-verify.yml` | aktiv | ein schneller optionaler PR-Job: Light-Gates, Web-Build, Release-Bump für das Artefakt und Debug-APK |
 | `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
 | `pr-watcher.yml` | aktiv | Issues bei rotem `CI Verify`-Lauf; kein PR-Body-Pfad |
 | `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
@@ -67,11 +67,11 @@ Stand 2026-11-11 liegen neun Workflow-Dateien in `.github/workflows/`:
 | `long-checks.yml` | **on-demand** | Soak, Balance, Statistik und Benchmarks ohne Zeitplan |
 | `build-apk.yml` | **manuell** | Cloud-Fallback für Debug/Release-APK; Standard ist lokal |
 
-`pr-escalation.yml` wurde entfernt: Der PR-Body wird im Pflichtjob geprüft und von `ensure-pr` bzw. dem lokalen Abschluss gepflegt; ein zusätzlicher Push-Lauf mit Schreibrecht auf Pull Requests war doppelte Arbeit.
+`pr-escalation.yml` wurde entfernt: Der PR-Body wird im PR-Job geprüft und von `ensure-pr` bzw. dem lokalen Abschluss gepflegt; ein zusätzlicher Push-Lauf mit Schreibrecht auf Pull Requests war doppelte Arbeit.
 
 ### Eine Stimme pro SHA
 
-`ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main`. Ein Lane-Push startet keinen zweiten Vollauf; ein PR-Lauf auf demselben Kopf entfällt. Der Pflichtstatus heißt weiterhin `Fail-Closed Gates` und bleibt der einzige geschützte Status.
+`ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main`. Ein Lane-Push startet keinen zweiten Vollauf; ein PR-Lauf auf demselben Kopf entfällt. Der Job heißt weiterhin `Fail-Closed Gates`, ist aber **optional und kein Required-Status**. Der lokale Vor-PR-Nachweis entscheidet über den Merge.
 
 ### Lokal statt Cloud
 
@@ -85,20 +85,20 @@ pnpm run verify:long       # nur bei konkretem Bedarf
 pnpm run verify:release    # vor einem Release inkl. Audit
 ```
 
-Der Cloud-Pflichtcheck wiederholt bewusst nur das schnelle `verify:light`; er ist kein Ersatz für den lokalen Integrationsnachweis und keine zweite Testmaschine.
+Der optionale Cloud-PR-Job wiederholt bewusst nur das schnelle `verify:light`; er ist kein Ersatz für den lokalen Integrationsnachweis und keine zweite Testmaschine.
 
 ## Branch-Schutz
 
 `main` ist über einen klassischen Branch-Schutz gesichert:
 
-- Required Status Check: `Fail-Closed Gates`
+- Required Status Checks: **keine**; der PR-Job `Fail-Closed Gates` ist optional
 - `strict: false`
 - keine Pflicht-Reviews
 - `enforce_admins: true`
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, grüner `Fail-Closed Gates`-Check und anschließend ein bewusster Merge im GitHub-UI. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
+Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, Review und anschließend ein bewusster Merge durch Mensch oder Agent. Der PR-Check ist optional; auf ihn wird nicht gewartet. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
 
 ## Governance-Freeze
 

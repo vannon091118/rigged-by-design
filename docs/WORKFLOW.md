@@ -45,12 +45,12 @@ Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache.
 | --- | --- |
 | `READY` | beschrieben, noch kein lokaler Turn |
 | `IMPLEMENTING` | Arbeit läuft, noch nicht gepusht |
-| `CI_PENDING` | gepusht; der PR-Lauf ist die Autorität |
-| `MERGE_PENDING` | PR-Lauf grün, Merge steht an |
+| `CI_PENDING` | gepusht; der lokale Vor-PR-Nachweis ist die Autorität, der PR-Check ist optional |
+| `MERGE_PENDING` | lokal geprüft, Merge durch Mensch/Agent steht an |
 | `AFTERCARE` | gemergt, Nachsorge offen |
 | `DONE` | Feature abgeschlossen; neue Arbeit im selben Session-Branch mit neuem Task-Vertrag |
 
-`pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` wird die Session nicht gewechselt; Review- und Doku-Arbeit läuft auf demselben Branch, statt eine parallele Lane zu öffnen. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
+`pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` wird die Session nicht gewechselt und nicht auf CI gewartet; Review- und Doku-Arbeit läuft auf demselben Branch, statt eine parallele Lane zu öffnen. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish` und `ci-plan` rufen dieselbe Validierung auf.
 
 ### Resume statt Aufräumen
 
@@ -118,7 +118,7 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 
 1. PR gegen `main` erst am Feature-Ende öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
 2. Lokal `pnpm run verify:integration` ausführen; bei Bedarf zusätzlich `pnpm run verify:long`.
-3. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates` und prüft die schnellen Gates.
+3. Den optionalen PR-Check `Fail-Closed Gates` auf dem exakten Kopf beobachten, aber nicht abwarten; der lokale Vor-PR-Nachweis entscheidet.
 4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.
 5. Merge im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
 6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen.

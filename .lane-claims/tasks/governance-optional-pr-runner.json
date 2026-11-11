@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-optional-pr-runner",
+  "claimId": "lane/governance/optional-pr-runner",
+  "branch": "lane/governance/optional-pr-runner",
+  "baseSha": "6e5ea00bd2c6f6de5185522bcf2f7d46c80c6295",
+  "phase": "CI_PENDING",
+  "title": "Regelstand optionaler PR-Runner: Doku, Workflow-Kommentare, Governance-Tests und lokale Merge-Autoritaet von Pflicht-Check auf optionalen PR-Lauf umstellen",
+  "goal": "Main dokumentiert den PR-only CI-Job als optional; keine Required-Status-Checks; Merge nach lokalem Vor-PR-Nachweis, ohne CI-Lauf als Bedingung.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}
