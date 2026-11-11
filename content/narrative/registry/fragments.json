@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e5bb09d53a5bc2059f2aa6934990f41ba5bc6a3ff697ce864959079df5d7082b",
+  "contentHash": "sha256:212eaea884f1797e5d524db3aeaecd96ce930e7071832c12b8365dc5058d8f19",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1658,6 +1658,28 @@
       "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
+    },
+    {
+      "contributionId": "agent25-task",
+      "turnId": "2026-11-11T06:20Z-agent25-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
     },
     {
       "contributionId": "apk-signing-01",

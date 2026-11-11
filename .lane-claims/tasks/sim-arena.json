@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-arena",
+  "claimId": "lane/sim/arena",
+  "branch": "lane/sim/arena",
+  "baseSha": "7a99a145daa8b6d352c41ac0408ebe58dbe587a4",
+  "phase": "READY",
+  "title": "Agent 25: Eigene Arena als Business-Modul",
+  "goal": "Die eigene Immobilie bekommt eine Arena: Stufen Ring, Tribuene und Technik finanzieren sich aus dem Betriebskonto, der Einlass-Erloes des Kampfabends wird ueber den Ledger gebucht, und die Gastronomie bleibt die vorhandene Bar-Anzeige. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Arena-Stufen aus Journal-Belegen ableiten; Einlass-Erloes am Kampfabend buchen.",
+  "revision": 1
+}
