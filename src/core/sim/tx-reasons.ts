@@ -27,6 +27,8 @@ export const TX_REASON = {
   BACKYARD_PRIZE: 'hinterhof preisgeld',
   FIGHT_EVENT_ENTRY: 'kampfabend nenngeld',
   FIGHT_EVENT_PRIZE: 'kampfabend preisgeld',
+  ARENA_BUILD: 'arena ausbau',
+  ARENA_ADMISSION: 'arena einlass',
   FIGHT_BET_STAKE: 'kampfabend wette',
   FIGHT_BET_PAYOUT: 'kampfabend wettgewinn',
   FIGHT_BET_REFUND: 'kampfabend wetterstattung',

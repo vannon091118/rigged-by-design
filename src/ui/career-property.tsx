@@ -4,6 +4,8 @@ import type { PlayerPropertyView, PropertyWorldBinding } from '../core/sim/prope
 import type { RenovationView } from '../core/sim/renovation';
 import type { MachineHallView } from '../core/sim/machine-hall';
 import type { PropertyId } from '../core/sim/types';
+import { worldStore, useWorldStore } from '../store/use-world-store';
+import { CareerEsport } from './career-esport';
 import { vc } from './format';
 
 interface Props {
@@ -25,6 +27,9 @@ interface Props {
 export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, onRenovate, machineHall, onMaintain }: Props) {
   const owned = property.owned;
   const binding: PropertyWorldBinding | null = property.binding;
+  // Die Arena kommt aus derselben Karriere-Ableitung wie Immobilie und Betrieb.
+  const arena = useWorldStore().career.arena;
+  const arenaReady = arena.next !== null && house >= fromVC(arena.next.costVC);
   return (
     <section className="career-property" aria-label="Immobilie">
       <div className="career-head">
@@ -32,6 +37,7 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
         <span>{owned === null ? 'noch keine' : 'in deinem Besitz'}</span>
         <span>{owned === null ? 'Kauf aus dem Portemonnaie' : `Tag ${owned.day} · ${vc(owned.priceVC)}`}</span>
       </div>
+      <CareerEsport />
       {owned !== null ? (
         <>
           <p className="career-next">
@@ -66,6 +72,31 @@ export function CareerProperty({ property, house = ZERO_VC, renovation, onBuy, o
                 )}
               </div>
               <div><span>Hinweis</span><b>{renovation.note}</b></div>
+            </div>
+          )}
+          {arena.owned && (
+            <div className="career-grid" aria-label="Arena">
+              <div><span>Arena</span><b>{arena.label}</b></div>
+              <div><span>Plätze</span><b>{arena.seats}</b></div>
+              <div><span>Einlass</span><b>{arena.ticketVC} VC je Gast</b></div>
+              <div><span>Bar im Haus</span><b>{arena.barZones} Zonen</b></div>
+              <div>
+                <span>Nächste Stufe</span>
+                {arena.next === null ? (
+                  <b>keine</b>
+                ) : (
+                  <button
+                    type="button"
+                    className={`btn small${arenaReady ? ' primary' : ' ghost'}`}
+                    disabled={!arenaReady}
+                    title={arena.note}
+                    onClick={() => worldStore.city({ kind: 'arenaBuild' })}
+                  >
+                    {arena.next.label} ({vc(fromVC(arena.next.costVC))})
+                  </button>
+                )}
+              </div>
+              <div><span>Hinweis</span><b>{arena.note}</b></div>
             </div>
           )}
           {machineHall !== undefined && machineHall.owned && (

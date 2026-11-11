@@ -16,8 +16,7 @@
     "content/narrative/turns/",
     "content/narrative/registry/",
     "src/core/sim/narrative/composer/",
-    "docs/INVENTORY.md",
-    "docs/ROADMAP.md"
+    "docs/INVENTORY.md"
   ],
   "contracts": [],
   "dependencies": [],

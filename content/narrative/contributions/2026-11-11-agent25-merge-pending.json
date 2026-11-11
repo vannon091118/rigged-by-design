@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+  "contributionId": "agent25-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Arena steht auf gruenem Kopf: Einlass, Ausbau und Sicht sind belegt, der Rest ist Vertrag. Jetzt zaehlt nur noch der exakte Stand, den die Pruefung gesehen hat.",
+  "directives": []
+}
