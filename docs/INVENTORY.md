@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 284 Dateien — contract 169 · integration 59 · governance 42 · statistics 7 · performance 7.
+Summe: 285 Dateien — contract 170 · integration 59 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -257,6 +257,7 @@ Summe: 284 Dateien — contract 169 · integration 59 · governance 42 · statis
 | `src/core/sim/__tests__/layout-json.test.ts` | sim | contract | ja | `src/core/sim/layout-json.ts` |
 | `src/core/sim/__tests__/living-world-continuity.test.ts` | sim | contract | ja | `src/core/sim/actor-continuity.ts` |
 | `src/core/sim/__tests__/living-world-social-economy.test.ts` | sim | contract | ja | `src/core/sim/social-encounter.ts` |
+| `src/core/sim/__tests__/living-world-vertical-slice.test.ts` | sim | contract | ja | `src/core/sim/actor-continuity.ts` |
 | `src/core/sim/__tests__/logistics.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/look.test.ts` | sim | contract | ja | `src/core/sim/player-look.ts` |
 | `src/core/sim/__tests__/machine-hall.test.ts` | sim | contract | ja | `src/core/sim/machine-hall.ts` |
@@ -597,10 +598,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2693 |
-| Gelistete Dateien | 2693 |
+| Getrackte Dateien | 2691 |
+| Gelistete Dateien | 2691 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (182), content (952), docs (83), public (554), scripts (102), src (792) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (182), content (950), docs (83), public (554), scripts (102), src (792) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -616,7 +617,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/` — 64 Datei(en)
 - `content/narrative/contributions/` — 946 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
-- `content/narrative/turns/` — 3 Datei(en)
+- `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
 - `docs/` — 15 Datei(en)
 - `docs/banners/` — 9 Datei(en)
@@ -1858,8 +1859,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/registry/fragments.json` — { — gelesen: 21209 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3789 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3789 Zeilen
 - `content/narrative/turns/manifest.json` — { — gelesen: 3789 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen

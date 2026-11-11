@@ -4,7 +4,7 @@
   "claimId": "lane/sim/living-world-vertical-slice",
   "branch": "lane/sim/living-world-vertical-slice",
   "baseSha": "b50587f4acfd739a9c8cc263a9b413fbf21473ba",
-  "phase": "READY",
+  "phase": "CI_PENDING",
   "title": "Bundle 6: Living World Vertical Slice und Cross-System Integration Tests",
   "goal": "Beweis der Koppelung aller Systeme - Building Spatial Schedule Reaction Feedback Beziehung Dialog Facts Save",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Arbeit im Claim-Scope starten; Abschluss ueber pnpm run turn:finish.",
-  "revision": 1
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
 }
