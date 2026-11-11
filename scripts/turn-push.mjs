@@ -26,6 +26,7 @@ import {
 } from './lib/body-sync.mjs';
 import { resolve } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
+import { shouldResumePendingCommit } from './lib/pending-commit.mjs';
 
 const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
 const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' });
@@ -119,9 +120,13 @@ const stage = () => {
 // Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.
 const schmutz = git(['status', '--porcelain', ...(paths.length > 0 ? ['--', ...paths] : [])]);
 const offenVorab = Number(git(['rev-list', '--count', `origin/${TARGET_BRANCH}..HEAD`]));
+const resumePending = shouldResumePendingCommit({ worktreeClean: !schmutz, pendingCommits: offenVorab });
 if (!schmutz && offenVorab === 0) {
   console.log('turn:finish: keine Aenderungen zu committen');
   process.exit(0);
+}
+if (resumePending) {
+  console.log(`turn:finish: ${offenVorab} verifizierte Commit(s) warten; setze Integration und Push ohne neuen Bump fort`);
 }
 // Fremde Arbeit gehoert nicht in diesen Commit: Vor Bump und Staging wird der
 // Arbeitsbaum gegen den eigenen Claim geprueft. `git add -A` darf keine WIP
@@ -174,7 +179,7 @@ if (EXPLICIT_AFFECTED) {
   console.log('turn:finish: --affected ist ein Opt-in; Standard ist der Preflight ohne Tests, die CI prueft.');
 }
 let delegated = [];
-if (!SKIP_AFFECTED) {
+if (!resumePending && !SKIP_AFFECTED) {
   console.log('turn:finish: betroffene schnelle Tests vor dem Versions-Bump');
   // Eine alte Delegationsliste darf einen Turn ohne lange Nachweise nicht
   // faelschlich als "offen" melden.
@@ -210,15 +215,18 @@ if (schmutz) {
 }
 
 // Marker und Inventar VOR der Pruefung setzen: der Docs-Gate prueft
-// INVENTORY-Abdeckung gegen git ls-files. Neue Dateien muessen dort schon
-// erfasst sein, sonst ist verify:docs rot, obwohl der Pre-Commit-Hook sie
-// erst spaeter schreiben wuerde.
-if (paths.length > 0) {
+// INVENTORY-Abdeckung gegen git ls-files. Eigene Dateien muessen zuerst im
+// Index stehen, sonst fehlen sie der Inventur und verify:docs blockiert den
+// Task vor seinem regulären Staging-Schritt.
+if (!resumePending) stage();
+if (!resumePending && paths.length > 0) {
   spawnSync(process.execPath, ['scripts/doc-sync.mjs', '--staged'], { cwd: ROOT, stdio: 'ignore' });
+} else if (!resumePending) {
+  spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
+}
+if (!resumePending) {
   spawnSync(process.execPath, ['scripts/build-inventory.mjs'], { cwd: ROOT, stdio: 'ignore' });
   git(['add', '--', 'docs/INVENTORY.md']);
-} else {
-  spawnSync(process.execPath, ['scripts/doc-sync.mjs'], { cwd: ROOT, stdio: 'ignore' });
 }
 
 if (RUN_VERIFY) {
@@ -232,7 +240,7 @@ if (RUN_VERIFY) {
 }
 // Der Push ist die Uebergabe an die CI. Der Vertrag wechselt deshalb erst
 // hier nach CI_PENDING; der Phasenwechsel wird gegen den HEAD-Stand geprueft.
-if (branchClaim && taskContract) {
+if (!resumePending && branchClaim && taskContract) {
   const prState = readPullRequestState({ branch: currentBranch });
   const pr = prState.known && prState.number
     ? { number: prState.number, url: prState.url, state: prState.state, headSha: prState.headSha }
@@ -255,7 +263,7 @@ if (branchClaim && taskContract) {
   git(['add', '--', contractLoad.file]);
   console.log(`turn:finish: Task-Vertrag ${taskContract.phase} (Revision ${taskContract.revision})`);
 }
-stage();
+if (!resumePending) stage();
 const staged = git(['diff', '--cached', '--name-only']);
 // Ein früherer Lauf kann einen Commit erzeugt haben, der den Push nicht mehr geschafft hat.
 // Ohne diesen Zweig würde der nächste Lauf "keine Aenderungen" melden und den Commit
@@ -269,7 +277,9 @@ if (!staged) {
   console.log(`turn:finish: ${offen} Commit(s) warten noch auf den Push; kein neuer Commit noetig`);
 }
 
-const files = staged.split(/\r?\n/).filter(Boolean);
+let files = [];
+if (!resumePending) {
+files = staged.split(/\r?\n/).filter(Boolean);
 console.log(`turn:finish: ${files.length} Datei(en) gestaged`);
 // Der Diff entscheidet, ob eine Vorlage ueberhaupt zulaessig ist. Die alte
 // generische Behauptung ("laeuft ueber den Store-Vertrag") war fuer jede
@@ -347,6 +357,7 @@ if (existsSync(notesPath)) {
   console.log('turn:finish: .turn-notes.md verbraucht');
 }
 console.log(`turn:finish: Commit ${git(['rev-parse', '--short', 'HEAD'])} erstellt`);
+}
 const baseSha = (() => {
   try {
     return git(['merge-base', 'HEAD', `origin/${TARGET_BRANCH}`]);
