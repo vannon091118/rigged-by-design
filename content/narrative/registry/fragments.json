@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:00f558124ebf34685367eb50064483b0f319bb5e164d1ec9f853f880cfa9d06c",
+  "contentHash": "sha256:1de19807d25923c119ed5cedcf81ed40cd34b2c7b1efbf3a5e6de09696475c64",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1372,6 +1372,28 @@
       "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
+    },
+    {
+      "contributionId": "agent22-aftercare",
+      "turnId": "2026-11-11T06:55Z-agent22-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf zieht nur Task, Claim und generierte Register nach; an Veranstaltungsphasen, Tick und Save-Feldern aendert er nichts.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-aftercare.json"
     },
     {
       "contributionId": "agent22-ci-pending",

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:55Z-agent22-aftercare",
+  "contributionId": "agent22-aftercare",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Nachlauf zieht nur Task, Claim und generierte Register nach; an Veranstaltungsphasen, Tick und Save-Feldern aendert er nichts.",
+  "directives": []
+}
