@@ -1,0 +1,17 @@
+{
+  "agentId": "codex",
+  "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
+  "contributionId": "governance-dependency-matrix-retry",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ"],
+  "text": "Rita sah, dass die neue Spur noch in der Abhängigkeitskarte fehlte. Sie ließ den Generator über den vollständigen Index laufen und legte die aktualisierte Karte vor dem Gate dazu. Der nächste Prüfer musste den fehlenden Eintrag nicht erst nach dem Commit entdecken.",
+  "directives": []
+}

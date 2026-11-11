@@ -20,24 +20,11 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { refreshBase } from './lib/base-refresh.mjs';
 import { ROOT } from './lib/report.mjs';
+import { parseAgentNewArgs } from './lib/agent-new-args.mjs';
 import { makeTaskContract, contractRelativePath, writeTaskContract } from './lib/task-contract.mjs';
 
 const args = process.argv.slice(2);
-const has = (name) => args.includes(`--${name}`);
-const values = (name) => {
-  const list = [];
-  for (let index = 0; index < args.length; index += 1) {
-    const token = args[index];
-    if (token === `--${name}`) {
-      const next = args[index + 1];
-      if (next && !next.startsWith('--')) list.push(...next.split(',').map((entry) => entry.trim()).filter(Boolean));
-    } else if (token.startsWith(`--${name}=`)) {
-      list.push(...token.slice(name.length + 3).split(',').map((entry) => entry.trim()).filter(Boolean));
-    }
-  }
-  return list;
-};
-const arg = (name) => values(name)[0];
+const { has, values, arg } = parseAgentNewArgs(args);
 
 const AS_JSON = has('json');
 const DRY = has('dry-run');
@@ -139,7 +126,22 @@ const contractPath = contractRelativePath(contract.taskId);
 mkdirSync(join(WORKTREE, contractPath, '..'), { recursive: true });
 writeTaskContract(contractPath, contract, { root: WORKTREE });
 
-// 4. Pretask im neuen Worktree: derselbe Startblocker-Pfad wie ohne Bootstrap.
+// 4. Pakete aus dem Lockfile bereitstellen, bevor der Impact-Kontext laeuft.
+// Ein leerer Worktree hat keine node_modules; den Agenten mit einem undiagnostischen
+// Impact-Plan-Fehler starten zu lassen, macht aus normalem Bootstrap einen Loop.
+if (!existsSync(join(WORKTREE, 'node_modules'))) {
+  const install = spawnSync('pnpm', ['install', '--frozen-lockfile'], {
+    cwd: WORKTREE,
+    encoding: 'utf8',
+    stdio: 'inherit',
+    shell: process.platform === 'win32',
+  });
+  if (install.status !== 0) {
+    fail(`Abhaengigkeiten konnten nicht aus pnpm-lock.yaml installiert werden. Nach Behebung erneut ausfuehren: pnpm install --frozen-lockfile (Worktree ${WORKTREE})`);
+  }
+}
+
+// 5. Pretask im neuen Worktree: derselbe Startblocker-Pfad wie ohne Bootstrap.
 const pretask = spawnSync(process.execPath, [resolve(ROOT, 'scripts', 'pretask.mjs'), '--json'], {
   cwd: WORKTREE,
   encoding: 'utf8',

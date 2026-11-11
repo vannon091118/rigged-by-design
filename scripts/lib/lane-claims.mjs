@@ -291,13 +291,19 @@ export function saveClaims(claims) {
   for (const claim of claims) {
     const json = typeof claim.toJSON === 'function' ? claim.toJSON() : claim;
     const file = entryFiles.get(json.id);
-    if (file) writeClaimFile(file, json);
+    if (file) {
+      const current = JSON.parse(readFileSync(file, 'utf8'));
+      if (JSON.stringify(current, null, 2) !== JSON.stringify(json, null, 2)) writeClaimFile(file, json);
+    }
     else legacy.push(json);
   }
+  const nextLegacy = JSON.stringify(legacy, null, 2);
+  const currentLegacy = existsSync(CLAIMS_FILE) ? JSON.stringify(JSON.parse(readFileSync(CLAIMS_FILE, 'utf8')), null, 2) : null;
+  if (currentLegacy === nextLegacy) return;
   // Atomar: erst daneben schreiben, dann ersetzen. Ein paralleler Agent sieht
   // so entweder das alte oder das neue Register, nie eine halbe Datei.
   const temp = `${CLAIMS_FILE}.new`;
-  writeFileSync(temp, JSON.stringify(legacy, null, 2), 'utf8');
+  writeFileSync(temp, nextLegacy, 'utf8');
   renameSync(temp, CLAIMS_FILE);
 }
 

@@ -36,6 +36,8 @@ Regeln:
 
 Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Basis. `pnpm run verify:claims` ist der lokale Lauf.
 
+`reconcile-claims --apply` schreibt nur Claims, deren Status oder Beleg sich geändert hat. Unbeteiligte Claim-Dateien und ein unverändertes Legacy-Register behalten ihren Dateistand.
+
 ## Governance-Freeze
 
 Die Steuerungsebene ist gesperrt, bis das Spiel steht: **Stadt und Core-Loop stehen, mindestens § Progression-Zweige sind vollständig**. Der Freeze schützt die Pfade aus `GOVERNANCE_PATHS` in `scripts/lib/governance-freeze.mjs` — `.github/`, `.githooks/`, `.lane-claims/`, `scripts/`, `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/capabilities.json` und `docs/contracts/`.

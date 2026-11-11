@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/workflow-loop-0911",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/workflow-loop-0911",
+  "baseSha": "2e8b9dc0991d4c69cf1db93013434414eb3467b6",
+  "task": "Governance workflow loop recovery",
+  "goal": "Make governance bootstrap and retry paths idempotent while preserving gates",
+  "pathAllowlist": [
+    "scripts/",
+    "src/core/governance/",
+    "src/core/sim/narrative/composer/",
+    "docs/",
+    "content/narrative/",
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "tree-on-main",
+  "mergedSha": "fef38af50ae425e31dd5f56f5377bc1c442d2626",
+  "createdAt": "2e8b9dc0991d4c69cf1db93013434414eb3467b6"
+}

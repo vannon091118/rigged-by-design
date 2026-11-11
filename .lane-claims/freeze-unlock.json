@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "base": "2e8b9dc0991d4c69cf1db93013434414eb3467b6",
+  "base": "fef38af50ae425e31dd5f56f5377bc1c442d2626",
   "paths": [
     "AGENTS.md",
     "docs/ARCHITECTURE.md",
@@ -35,6 +35,6 @@
     "scripts/verify-lane-claims.mjs",
     "scripts/verify-scope.mjs"
   ],
-  "token": "ae1bc994fdc1e668e5a43f01d6f53eb86b26736925b3f32c314d1a8389bb1238",
+  "token": "af499b43fbb6b6fd65ad2014eaa21a881a5f3fae7a560e94e82829db060026a5",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

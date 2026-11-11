@@ -3996,6 +3996,14 @@
     {
       "turnId": "2026-11-11T13:45Z-governance-stale-claim-closeout",
       "contributionId": "governance-stale-claim-closeout"
+    },
+    {
+      "turnId": "2026-11-11T18:00Z-governance-retry-path",
+      "contributionId": "governance-retry-path"
+    },
+    {
+      "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
+      "contributionId": "governance-dependency-matrix-retry"
     }
   ]
 }
