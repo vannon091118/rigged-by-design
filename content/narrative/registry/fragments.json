@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7c68507ad0ea279e8779946dd598a635ddfbf4227aafa9eff3c35cb84314030a",
+  "contentHash": "sha256:8aaf8224788acb4e4804aed856f084ac639c87f53d350d333bbb6f02050e0f4d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -956,6 +956,50 @@
       "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
     },
     {
+      "contributionId": "agent19-aftercare",
+      "turnId": "2026-11-11T03:40Z-agent19-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Clubabend steht auf demselben Baum wie sein Beleg; die Nachsorge zieht nur den Status nach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-aftercare.json"
+    },
+    {
+      "contributionId": "agent19-ci-pending",
+      "turnId": "2026-11-11T03:30Z-agent19-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt der Clubabend als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-ci-pending.json"
+    },
+    {
       "contributionId": "agent19-club-night-1",
       "turnId": "2026-11-11T03:10Z-agent19-club-night-1",
       "agentId": "buffy",
@@ -998,6 +1042,50 @@
       "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-club-night-2.json"
+    },
+    {
+      "contributionId": "agent19-done",
+      "turnId": "2026-11-11T03:45Z-agent19-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Lounge traegt ihren Club jetzt nach Tageszeit; Register und Lane sind geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-done.json"
+    },
+    {
+      "contributionId": "agent19-merge-pending",
+      "turnId": "2026-11-11T03:35Z-agent19-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",
