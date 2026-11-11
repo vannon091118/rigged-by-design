@@ -4,7 +4,7 @@
   "claimId": "lane/ui/placement-venue-history",
   "branch": "lane/ui/placement-venue-history",
   "baseSha": "549b89142b291cf694ccecc755ff2de224fbe35f",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Enter-Ablegen und Turnier-Historie",
   "goal": "Playtest-Befunde: Enter setzt nie ab",
   "taskType": "single",
@@ -17,6 +17,6 @@
     "mergedSha": "3fe5acb17a8257ded9df01c81e1f1d79fed16494"
   },
   "findings": [],
-  "nextAction": "Merge belegt: PR #432 ist als 3fe5acb auf main; als Naechstes AFTERCARE.",
-  "revision": 5
+  "nextAction": "Nachsorge abschliessen und den Vertrag auf DONE setzen.",
+  "revision": 6
 }
