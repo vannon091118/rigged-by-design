@@ -5,7 +5,12 @@ import { chmodSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
 
-const HOOKS = ['.githooks/pre-commit', '.githooks/commit-msg'];
+const HOOKS = ['.githooks/pre-commit', '.githooks/commit-msg', '.githooks/pre-push'];
+
+if (!existsSync(join(ROOT, '.git'))) {
+  console.log('hooks:install: kein Git-Repository, Hooks uebersprungen');
+  process.exit(0);
+}
 
 for (const hook of HOOKS) {
   if (!existsSync(join(ROOT, hook))) {

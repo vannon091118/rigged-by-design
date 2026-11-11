@@ -4012,6 +4012,10 @@
     {
       "turnId": "2026-11-11T14:40Z-governance-claim-scope",
       "contributionId": "governance-claim-scope"
+    },
+    {
+      "turnId": "2026-11-11T15:10Z-governance-precommit-pipeline",
+      "contributionId": "governance-precommit-pipeline"
     }
   ]
 }

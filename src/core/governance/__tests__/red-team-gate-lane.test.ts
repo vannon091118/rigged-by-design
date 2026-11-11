@@ -63,6 +63,7 @@ const PURPOSE = {
   'dead-code': { command: 'node', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', packageToken: '' },
   docs: { command: 'node', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', packageToken: '' },
   catalog: { command: 'node', script: 'scripts/test-catalog.mjs', code: 'ERR-4015', packageToken: '' },
+  'test-placement': { command: 'node', script: 'scripts/verify-test-placement.mjs', code: 'ERR-4019', packageToken: '' },
   tree: { command: 'node', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', packageToken: '' },
   'impact-graph': { command: 'node', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', packageToken: '' },
   redundancy: { command: 'node', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', packageToken: '' },
@@ -157,7 +158,11 @@ describe('Red-Team: Test- und Gate-Lane', () => {
       expect(planned.has(key), `${key} ist in keinem Profil geplant`).toBe(true);
     }
 
-    const required = Object.keys(gates).filter((key) => key !== 'affected' && key !== 'audit').sort();
+    // `test-placement` ist bewusst ein Light-/Pre-Commit-Gate und kein
+    // zusaetzlicher Required-Gate-Status im vollen CI-Set.
+    const required = Object.keys(gates)
+      .filter((key) => key !== 'affected' && key !== 'audit' && key !== 'test-placement')
+      .sort();
     expect([...REQUIRED_CI_GATES].sort()).toEqual(required);
     expect(planGates('quick')).toEqual([...QUICK_GATES]);
     expect(planGates('full')).toEqual([...REQUIRED_CI_GATES, 'audit']);

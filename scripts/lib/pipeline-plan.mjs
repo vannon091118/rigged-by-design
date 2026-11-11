@@ -63,6 +63,14 @@ export const GATES = Object.freeze({
     cache: true,
     timeoutMs: MINUTE,
   },
+  'test-placement': {
+    name: 'test-placement',
+    command: 'node',
+    script: 'scripts/verify-test-placement.mjs',
+    code: 'ERR-4019',
+    cache: true,
+    timeoutMs: MINUTE,
+  },
   tree: {
     name: 'tree',
     command: 'node',
@@ -115,7 +123,7 @@ export const GATES = Object.freeze({
 
 // Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
 // gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
-const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'tree', 'impact-graph', 'redundancy'];
+const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
 const DEV = [...LIGHT, 'affected'];
 // Quick ist die gemeinsame Basis fuer den Required-Set; Build kommt fuer CI
 // hinzu, Audit bleibt impact-/release-abhaengig.

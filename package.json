@@ -1,7 +1,7 @@
 {
   "name": "rigged-by-design",
   "private": true,
-  "version": "0.3.223",
+  "version": "0.3.224",
   "type": "module",
   "engines": {
     "node": ">=22.22.2"
@@ -35,6 +35,10 @@
     "docs:stub": "node scripts/doc-stub.mjs",
     "inventory:build": "node scripts/build-inventory.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",
+    "prepare": "pnpm run hooks:install",
+    "gov:precommit": "node scripts/precommit.mjs",
+    "verify:test-placement": "node scripts/verify-test-placement.mjs",
+    "ci:status": "node scripts/ci-status.mjs",
     "escalation:plan": "node scripts/escalation-plan.mjs",
     "pr:lift": "node scripts/lift-commit-body.mjs",
     "ci:long": "node scripts/ci-long-checks.mjs",
