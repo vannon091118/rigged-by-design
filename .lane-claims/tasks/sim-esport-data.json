@@ -4,7 +4,7 @@
   "claimId": "lane/sim/esport-data",
   "branch": "lane/sim/esport-data",
   "baseSha": "6d44ce8a1d875450420161703440f7dd7718c7f7",
-  "phase": "READY",
+  "phase": "IMPLEMENTING",
   "title": "Agent 26: E-Sport-Simulationsdaten",
   "goal": "Eine Stadtliga als reine Ableitung: Teams, Spieler, Rollen, Attribute, Teamstaerke, Form, Taktik und Turnierhistorie entstehen deterministisch aus festem Liga-Seed, world.day und dem vorhandenen Archiv. Kein neues Save-Feld, keine zweite Event- oder Kaempferliste; die Sicht haengt im bestehenden Charakterfenster.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Datenmodul, Tests und Sicht implementieren; danach CI.",
-  "revision": 1
+  "nextAction": "CI-Pending vorbereiten.",
+  "revision": 2
 }

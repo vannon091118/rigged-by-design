@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b7a4586b6926b94b4d0e45f6445af6dd97afdc687c7aac7b1a135dae37771b0e",
+  "contentHash": "sha256:bb1b40df9b7d87268bf9223eed649af8e5a3a0ea4e61637ece91fe5f11c5833f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2076,6 +2076,28 @@
       "text": "Die Stadtliga ist eine Ableitung: sechs Teams, fuenf Rollen, Form je Tag. Kein Save-Feld traegt sie, weil Seed und Tag sie tragen; die Sicht liest dieselbe Wahrheit wie das Archiv.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-esport.json"
+    },
+    {
+      "contributionId": "agent26-esport-code",
+      "turnId": "2026-11-11T08:12Z-agent26-esport-code",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
     },
     {
       "contributionId": "agent26-task",
