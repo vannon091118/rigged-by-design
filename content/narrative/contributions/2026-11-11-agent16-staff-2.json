@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:25Z-agent16-staff-2",
+  "contributionId": "agent16-staff-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Bewertung liest nur, was schon im Zustand steht: geleistete Ticks und Blockade. Sie erfindet kein neues Feld und keine zweite Wahrheit ueber den Menschen am Automaten.",
+  "directives": []
+}

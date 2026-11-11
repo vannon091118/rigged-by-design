@@ -13,9 +13,10 @@ import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { TICKS_PER_DAY } from '../demand';
 import { HAUSKONTO } from '../money';
-import { hireAgent } from '../staff';
+import { hireAgent, tickAgents } from '../staff';
 import {
   agentsInRange, getStaffAvailability, getStaffCoverage, hasActiveGuard, hasStaff,
+  REVIEW_TICKS, staffPerformance,
 } from '../staff-queries';
 import { createWorld } from '../templates';
 import { staffTick } from '../upkeep';
@@ -78,5 +79,45 @@ describe('Personalstatus aus den Agenten', () => {
     guard.task = 'toDispute';
     expect(getStaffAvailability(world, 'guard')).toBe('BESCHAEFTIGT');
     expect(hasActiveGuard(world)).toBe(true);
+  });
+});
+
+describe('Leistungsbewertung aus geleisteter Arbeit', () => {
+  const runTicks = (world: ReturnType<typeof createWorld>, ledger: Ledger, ticks: number): void => {
+    const prng = new Prng(randomSeed());
+    for (let i = 0; i < ticks; i += 1) tickAgents(world, ledger, prng);
+  };
+
+  it('waechst mit echter Arbeit im Agenten-Tick von FRISCH ueber SOLIDE zu STARK', () => {
+    const world = createWorld('SMALL');
+    const guard = hireAgent(world, fundedLedger(), 'guard');
+    expect(staffPerformance([guard])).toBe('FRISCH');
+    runTicks(world, fundedLedger(), REVIEW_TICKS.solid);
+    expect(staffPerformance([guard])).toBe('SOLIDE');
+    runTicks(world, fundedLedger(), REVIEW_TICKS.stark - REVIEW_TICKS.solid);
+    expect(staffPerformance([guard])).toBe('STARK');
+  });
+
+  it('ein steckender Agent kann nicht stark sein, auch mit vielen Arbeits-Ticks', () => {
+    const world = createWorld('SMALL');
+    const guard = hireAgent(world, fundedLedger(), 'guard');
+    guard.workTicks = REVIEW_TICKS.stark * 10;
+    expect(staffPerformance([guard])).toBe('STARK');
+    guard.blockedReason = 'Streit nicht erreichbar';
+    expect(staffPerformance([guard])).toBe('EINGESCHRAENKT');
+  });
+
+  it('bewertet mehrere Agenten gemeinsam und bleibt bei gleichem Zustand gleich', () => {
+    const world = createWorld('SMALL');
+    const ledger = fundedLedger();
+    const first = hireAgent(world, ledger, 'porter');
+    first.workTicks = REVIEW_TICKS.solid - 10;
+    expect(staffPerformance([first])).toBe('FRISCH');
+    const second = hireAgent(world, ledger, 'cleaner');
+    second.workTicks = 10;
+    // Zwei Agenten derselben Rolle zaehlen zusammen: 30 + 10 erreicht die Schwelle.
+    expect(staffPerformance([first, second])).toBe('SOLIDE');
+    expect(staffPerformance([first, second])).toBe('SOLIDE');
+    expect(staffPerformance([])).toBe('FRISCH');
   });
 });

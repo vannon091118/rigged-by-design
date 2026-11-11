@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d2564d0a9a8e6be6b81d9dc14845a3cbc55c93e3688ffeb8ef5184d865f35937",
+  "contentHash": "sha256:3687ae6911f5dd6bce42fc4ee8c511e8cca7762705ea53fde52ec0c700bddd26",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -470,6 +470,28 @@
       "text": "Personal wird nicht nach Anwesenheit bezahlt, sondern nach Arbeit gemessen: was jemand getan hat, steht im Zustand, nicht im Gefuehl des Chefs.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-1.json"
+    },
+    {
+      "contributionId": "agent16-staff-2",
+      "turnId": "2026-11-11T01:25Z-agent16-staff-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bewertung liest nur, was schon im Zustand steht: geleistete Ticks und Blockade. Sie erfindet kein neues Feld und keine zweite Wahrheit ueber den Menschen am Automaten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-staff-2.json"
     },
     {
       "contributionId": "apk-signing-01",
