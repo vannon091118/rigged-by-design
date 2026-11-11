@@ -79,12 +79,20 @@ describe('Business-Bereiche aus dem einen WorldState', () => {
   });
 
   it('nach einem echten Ticklauf sind Gaeste zugeordnet und die Summe bleibt begrenzt', () => {
+    // Der Ticklauf endet, sobald der erste Gast wirklich in einem Bereich steht
+    // oder ihn ansteuert. Die Abbruchbedingung macht den Test seed-unabhaengig:
+    // eine feste Tickzahl traf je nach Seed auch ein Haus ohne Zuteilung.
     const run = (seed: number) => {
       const world = createWorld('SMALL');
       const ledger = new Ledger({ HAUSKONTO: fromVC(500) });
       const prng = new Prng(seed);
-      for (let index = 0; index < 400; index += 1) tickWorld(world, ledger, prng);
-      return { areas: businessAreas(world), guests: world.guests.length };
+      let areas = businessAreas(world);
+      for (let index = 0; index < 4000; index += 1) {
+        tickWorld(world, ledger, prng);
+        areas = businessAreas(world);
+        if (areas.some((entry) => entry.guests > 0)) break;
+      }
+      return { areas, guests: world.guests.length };
     };
     const seed = randomSeed();
     const first = run(seed);

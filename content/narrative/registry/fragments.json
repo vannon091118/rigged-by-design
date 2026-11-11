@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7f3c680d1d662a181195b0003a5fc4be18e6cd9befbb7731da3ceb5b97845e0a",
+  "contentHash": "sha256:917de31fd32c86b2be8177ddb3b2682a2c644a679d39a80b62cb3ba1cf5af515",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -668,6 +668,28 @@
       "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-5",
+      "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
     },
     {
       "contributionId": "apk-signing-01",
