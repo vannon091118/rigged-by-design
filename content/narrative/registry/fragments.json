@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5da6d05c3f83cf42618bd70d602a14ea5f40c4835ba4d07ecfbdb5f788386609",
+  "contentHash": "sha256:c977c98bf433e2da2925e0f40c6ac81d00acdace69bf2140696d16787ae9e08a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -844,6 +844,28 @@
       "text": "Ein Gate meldet nicht, dass etwas fehlt, sondern dass etwas doppelt da ist: der alte Import blieb stehen, nachdem die Bedienung umzog.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-4",
+      "turnId": "2026-11-11T02:35Z-agent18-drink-menu-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
     },
     {
       "contributionId": "apk-signing-01",

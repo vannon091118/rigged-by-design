@@ -64,19 +64,16 @@ describe('Getraenkekarte der Bar', () => {
     world.barLevel = 3;
     const menu = drinkMenu(world);
 
-    const stammgast = thirsty(world, prng, ledger, 10).guest;
-    stammgast.persona = 'STAMMGAST';
+    const stammgast = { ...thirsty(world, prng, ledger, 10).guest, persona: 'STAMMGAST' as const };
     expect(pickDrink(menu, stammgast).id).toBe('COCKTAIL');
     expect(pickDrink(menu, stammgast).id).toBe('COCKTAIL');
 
-    const highRoller = thirsty(world, prng, ledger, 10).guest;
-    highRoller.persona = 'HIGH_ROLLER';
+    const highRoller = { ...thirsty(world, prng, ledger, 10).guest, persona: 'HIGH_ROLLER' as const };
     expect(pickDrink(menu, highRoller).id).toBe('SPRITZ');
 
     // Durst kann nur bestellen, was die Barstufe fuehrt: auf Stufe 1 kein Cocktail.
     world.barLevel = 1;
-    const lumpen = thirsty(world, prng, ledger, 95).guest;
-    lumpen.persona = 'LUMPEN';
+    const lumpen = { ...thirsty(world, prng, ledger, 95).guest, persona: 'LUMPEN' as const };
     expect(pickDrink(drinkMenu(world), lumpen).id).toBe('BIER');
   });
 
@@ -86,7 +83,6 @@ describe('Getraenkekarte der Bar', () => {
     const bar = barOf(world);
     bar.stock = 5;
     const { guest } = thirsty(world, prng, ledger, 95);
-    guest.persona = 'STAMMGAST';
     const drink = pickDrink(drinkMenu(world), guest);
     const house = ledger.getBalance(HAUSKONTO);
     const wallet = ledger.getBalance(guestAccount(guest.id));
@@ -98,7 +94,7 @@ describe('Getraenkekarte der Bar', () => {
     expect(ledger.getBalance(HAUSKONTO)).toBe(house + drink.price);
     expect(ledger.getBalance(guestAccount(guest.id))).toBe(wallet - drink.price);
     expect(guest.thirst).toBe(0);
-    expect(guest.mood).toBeGreaterThanOrEqual(16);
+    expect(guest.mood).toBeGreaterThanOrEqual(20);
   });
 
   it('verkauft an einer leeren Bar nichts und bucht nichts', () => {
