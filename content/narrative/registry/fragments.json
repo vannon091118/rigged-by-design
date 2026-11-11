@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:444ac757393796b1f6c3500114a6a152fa548f41b4e5ec8083837d844bec00b8",
+  "contentHash": "sha256:e5bb09d53a5bc2059f2aa6934990f41ba5bc6a3ff697ce864959079df5d7082b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1570,6 +1570,28 @@
       "text": "Der Kampfabend steht, jetzt entscheidet der entfernte Lauf: Der Kopf wird gepusht, und erst ein gruener Pflichtstatus auf genau diesem Kopf erlaubt den Merge. Zwischenstand und Vertrag bleiben dabei eine Wahrheit, kein zweiter Bericht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-ci-pending.json"
+    },
+    {
+      "contributionId": "agent23-done",
+      "turnId": "2026-11-11T05:30Z-agent23-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Kampfabend steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-done.json"
     },
     {
       "contributionId": "agent23-fight-event",
