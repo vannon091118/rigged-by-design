@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8aaf8224788acb4e4804aed856f084ac639c87f53d350d333bbb6f02050e0f4d",
+  "contentHash": "sha256:be86e8d66635a15f47750567207005ade56416037a5ceed657f7f3626f87bd1d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1086,6 +1086,28 @@
       "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
+    },
+    {
+      "contributionId": "agent20-hybrid-flow-1",
+      "turnId": "2026-11-11T04:00Z-agent20-hybrid-flow-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gast kommt nicht als Rolle an, sondern als Weg: erst Kasse, dann Bar, dann Automat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-hybrid-flow-1.json"
     },
     {
       "contributionId": "apk-signing-01",

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "hybrid-visitor-flows",
+  "claimId": "lane/sim/hybrid-visitor-flows",
+  "branch": "lane/sim/hybrid-visitor-flows",
+  "baseSha": "12add659168260ea128b71dc74ee0cc87f7aa6f8",
+  "phase": "READY",
+  "title": "Agent 20: Hybrid-Besucherstroeme",
+  "goal": "Veranstaltungsgaeste kommen mit Durst:  liest das laufende Nachfrage-Event und setzt das vorhandene Beduerfnis Trinken plus Durst ueber die Schwelle. Casino->Bar und Club->Automat laufen unveraendert ueber chooseActivity; kein neues Save-Feld, keine zweite Gaesteliste, kein zweiter Event-Zustand, keine neue Bar- oder Automatensimulation.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Arrival-Flow bauen und in spawn einhaengen; danach Verhaltenstests und CI.",
+  "revision": 1
+}

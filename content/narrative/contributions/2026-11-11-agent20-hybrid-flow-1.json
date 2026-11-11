@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T04:00Z-agent20-hybrid-flow-1",
+  "contributionId": "agent20-hybrid-flow-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Gast kommt nicht als Rolle an, sondern als Weg: erst Kasse, dann Bar, dann Automat.",
+  "directives": []
+}
