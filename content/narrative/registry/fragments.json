@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:594bbb6f17b8ad646f7994ce1f016706f4fe33be35d5f92eb8702c16e5b6eba0",
+  "contentHash": "sha256:1886be44a57fe14e7832595823eaafba1767fd1610b43b147f4c83480f12605c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1878,6 +1878,28 @@
       "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
+    },
+    {
+      "contributionId": "agent25-merge-base",
+      "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
     },
     {
       "contributionId": "agent25-task",

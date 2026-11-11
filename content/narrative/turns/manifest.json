@@ -3824,13 +3824,11 @@
     {
       "turnId": "2026-11-11T06:12Z-agent24-test-quality",
       "contributionId": "agent24-test-quality"
-    }
-,
+    },
     {
       "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
       "contributionId": "agent24-merge-pending"
-    }
-,
+    },
     {
       "turnId": "2026-11-11T06:20Z-agent24-aftercare",
       "contributionId": "agent24-aftercare"
@@ -3842,8 +3840,7 @@
     {
       "turnId": "2026-11-11T06:10Z-agent24-done-repair",
       "contributionId": "agent24-done-repair"
-    }
-,
+    },
     {
       "turnId": "2026-11-11T06:20Z-agent25-task",
       "contributionId": "agent25-task"
@@ -3851,11 +3848,14 @@
     {
       "turnId": "2026-11-11T06:30Z-agent25-arena",
       "contributionId": "agent25-arena"
-    }
-,
+    },
     {
       "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
       "contributionId": "agent25-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+      "contributionId": "agent25-merge-base"
     }
   ]
 }
