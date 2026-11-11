@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1de19807d25923c119ed5cedcf81ed40cd34b2c7b1efbf3a5e6de09696475c64",
+  "contentHash": "sha256:3930d67fe3af22c324b708dc14c36bc03e28571c9923f4f93bd8e9a62f2cb55b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1438,6 +1438,28 @@
       "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
+    },
+    {
+      "contributionId": "agent22-done",
+      "turnId": "2026-11-11T07:00Z-agent22-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE heisst hier: Squash-Baum gleich Lane-Kopf, Claim merged und Lane entfernt. Der Event-Pfad bleibt die vorhandene NarrativeEventInstance.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-done.json"
     },
     {
       "contributionId": "agent22-merge-pending",

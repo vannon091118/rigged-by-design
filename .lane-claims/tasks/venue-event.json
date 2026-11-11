@@ -4,7 +4,7 @@
   "claimId": "lane/sim/venue-event",
   "branch": "lane/sim/venue-event",
   "baseSha": "2faf66a462d4647191f15460b1bae47211ade557",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 22: Zentrale Event-Infrastruktur",
   "goal": "Veranstaltungen laufen als Phasen ueber die vorhandenen NarrativeEventInstances: Ankuendigung, Einlass, Durchfuehrung, Ergebnis und Archivierung werden aus startedTick, expiresTick, step, status und resolution abgeleitet. Kein neues Save-Feld, keine zweite Event-Liste, keine zweite Kampf-Engine; Turnierabend und Sonderabend nutzen den bestehenden Demand- und Lifecycle-Pfad.",
   "taskType": "single",
@@ -16,6 +16,8 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "mergedSha und mergedEvidence schreiben; danach Endgates auf main.",
-  "revision": 5
+  "nextAction": "Abgeschlossen: PR #426 squash-gemergt, Squash 50074210, Branch entfernt.",
+  "revision": 6,
+  "mergedSha": "5007421008a83c0d9845f870d53c01d15eab4aaf",
+  "mergedEvidence": "branch-tree-on-main"
 }
