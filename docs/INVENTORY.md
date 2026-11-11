@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 274 Dateien — contract 160 · integration 58 · governance 42 · statistics 7 · performance 7.
+Summe: 275 Dateien — contract 161 · integration 58 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -219,6 +219,7 @@ Summe: 274 Dateien — contract 160 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/bar-capacity.test.ts` | sim | contract | ja | `src/core/sim/deliveries.ts` |
 | `src/core/sim/__tests__/brawl-combat.test.ts` | sim | contract | ja | `src/core/sim/brawl-combat.ts` |
 | `src/core/sim/__tests__/building.test.ts` | sim | contract | ja | `src/core/sim/building.ts` |
+| `src/core/sim/__tests__/business-areas.test.ts` | sim | contract | ja | `src/core/sim/business-areas.ts` |
 | `src/core/sim/__tests__/city-day-closeout.test.ts` | sim | contract | ja | `src/core/sim/city-actions.ts` |
 | `src/core/sim/__tests__/city-encounter-loop.test.ts` | sim | contract | ja | `src/core/sim/city-encounter.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
@@ -587,10 +588,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2592 |
-| Gelistete Dateien | 2592 |
+| Getrackte Dateien | 2608 |
+| Gelistete Dateien | 2608 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (158), content (901), docs (83), public (554), scripts (102), src (766) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (162), content (911), docs (83), public (554), scripts (102), src (768) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -602,9 +603,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 104 Datei(en)
-- `.lane-claims/tasks/` — 52 Datei(en)
-- `content/narrative/contributions/` — 897 Datei(en)
+- `.lane-claims/claims/` — 106 Datei(en)
+- `.lane-claims/tasks/` — 54 Datei(en)
+- `content/narrative/contributions/` — 907 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -665,8 +666,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 110 Datei(en)
-- `src/core/sim/__tests__/` — 121 Datei(en)
+- `src/core/sim/` — 111 Datei(en)
+- `src/core/sim/__tests__/` — 122 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -756,6 +757,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-knowledge-domain.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-lane-autopilot.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-ledger-game-type.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-living-world-vision.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-machine-hall-docs.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-main-consolidation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-main-event-pool.json` — { — gelesen: 22 Zeilen
@@ -798,6 +800,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-world-first-ui.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-integrity-audit-findings.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-interaction-opening-rita.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/claims/lane-sim-business-areas.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-company-progression.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
@@ -819,7 +822,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-visitor-amenity-reaction.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/freeze-unlock.json` — { — gelesen: 11 Zeilen
+- `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
 - `.lane-claims/tasks/governance-agent-bootstrap.json` — { — gelesen: 21 Zeilen
@@ -839,6 +842,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-first-property-docs-2.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-floor-work-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-item-synergy-docs.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/tasks/governance-living-world-vision.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-machine-hall-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-mod-engine-docs.json` — { — gelesen: 26 Zeilen
@@ -856,6 +860,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
@@ -876,7 +881,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
 - `AGENTS.md` — Rigged by Design — gelesen: 94 Zeilen
-- `README.md` — Markdown-Dokument — gelesen: 340 Zeilen
+- `README.md` — Markdown-Dokument — gelesen: 338 Zeilen
 - `content/narrative/contributions/2026-11-01-readme-opening.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-01-startpool-01.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-02-boundary-und-beziehungen.json` — { — gelesen: 17 Zeilen
@@ -1772,21 +1777,31 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent16-staff-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-4.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-business-areas-5.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent17-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20131 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3593 Zeilen
+- `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20351 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3633 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
-- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
-- `docs/CHANGELOG.md` — Changelog — gelesen: 1159 Zeilen
+- `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
+- `docs/CHANGELOG.md` — Changelog — gelesen: 1160 Zeilen
 - `docs/CI.md` — CI: Required Gates, Zustände und Workflows — gelesen: 208 Zeilen
 - `docs/DEPENDENCY-MATRIX.md` — Dependency-Matrix — gelesen: 28 Zeilen
-- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3789 Zeilen
+- `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3805 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 99 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
-- `docs/ROADMAP.md` — Roadmap — gelesen: 456 Zeilen
+- `docs/ROADMAP.md` — Roadmap — gelesen: 495 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 85 Zeilen
 - `docs/WORKFLOW.md` — Workflow: von Pretask bis zum manuellen Merge — gelesen: 134 Zeilen
@@ -2686,6 +2701,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/bar-capacity.test.ts` — import { readFileSync } from 'node:fs'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/brawl-combat.test.ts` — Die Siegchance im Tooltip ist keine Schaetzung: dieselbe Konstellation — gelesen: 77 Zeilen
 - `src/core/sim/__tests__/building.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 149 Zeilen
+- `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 154 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
@@ -2804,6 +2820,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/brawl-combat.ts` — Spielerkampf: Lebenspunkte, Trefferchancen und Runden, deren Anzeige exakt aus der Mechanik kommt. — gelesen: 136 Zeilen
 - `src/core/sim/building-types.ts` — Kanonische Typen für physische Gebäude in der Living World Engine. — gelesen: 74 Zeilen
 - `src/core/sim/building.ts` — Pure Funktionen zur Verwaltung physischer Gebäude in der Living World. — gelesen: 157 Zeilen
+- `src/core/sim/business-areas.ts` — Modulare Business-Bereiche: das Haus fuehrt seine Bereiche im einen — gelesen: 86 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 58 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 102 Zeilen
 - `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Command, Geld, Energie, Erinnerung, Wissen und Urteil. — gelesen: 147 Zeilen
@@ -2899,7 +2916,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 230 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 232 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3197,7 +3214,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/bet-console.tsx` — Wettkonsole unter den Walzen: Jetons, Autospin und der eine grosse Knopf. — gelesen: 42 Zeilen
 - `src/ui/build-catalog-cards.tsx` — Katalog-Karten: kaufbare Spiele und Deko als Drag-fähige Bau-Karten. Reine Darstellung. — gelesen: 45 Zeilen
 - `src/ui/build-crate-list.tsx` — Kisten im Betriebspanel: reine Statusanzeige. Aufheben und Abladen macht der Charakter auf dem Floor. — gelesen: 46 Zeilen
-- `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 33 Zeilen
+- `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 39 Zeilen
 - `src/ui/build-panel-connected.tsx` — Betriebs-Panel: verdrahtet das Panel mit dem Store; App haelt nur den Schalter. — gelesen: 38 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 126 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen

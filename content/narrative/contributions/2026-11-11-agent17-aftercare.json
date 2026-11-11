@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:55Z-agent17-aftercare",
+  "contributionId": "agent17-aftercare",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Nachlauf heisst: Register, Task und Beleg zusammenfuehren. Ein gruener Merge ohne gepflegten Status ist nur ein halber Abschluss.",
+  "directives": []
+}

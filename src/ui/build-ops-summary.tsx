@@ -1,4 +1,5 @@
 /** Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. */
+import { businessAreas } from '../core/sim/business-areas';
 import type { GameView } from '../store/types';
 import { vc } from './format';
 
@@ -6,6 +7,8 @@ export function BuildOpsSummary({ view }: { readonly view: GameView }) {
   const machines = view.furniture.filter((item) => item.gameId);
   const occupied = machines.reduce((sum, item) => sum + item.occupants.length, 0);
   const broken = machines.filter((item) => item.damaged || item.condition < 85 || item.clogged).length;
+  // Agent 17: die Bereiche des Hauses, gelesen aus derselben Sicht.
+  const areas = businessAreas(view);
   return (
     <section className="ops-summary" aria-label="Betriebsübersicht">
       <div className="ops-card">
@@ -28,6 +31,9 @@ export function BuildOpsSummary({ view }: { readonly view: GameView }) {
         <strong>{broken}</strong>
         <small>{view.parts} Ersatzteile · {broken === 0 ? 'alles heil' : 'brauchen Pflege'}</small>
       </div>
+      <p className="ops-areas">
+        {areas.map((entry) => `${entry.name} ${entry.open ? `${entry.objects} Objekte, ${entry.guests} Gäste` : 'nicht im Haus'}`).join(' · ')}
+      </p>
     </section>
   );
 }

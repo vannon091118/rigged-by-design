@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:47a177ee2d6b36385ed78fa0aeb392243c3c68872e08b87a053090dc1c8c3387",
+  "contentHash": "sha256:e0470f479206cf9ef3b585be1638c0c9da459b9692a0a643b88aa41b557945d5",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -580,6 +580,204 @@
       "text": "Vor dem Tor zaehlt der Lauf, nicht die Absicht: die Phase zieht nach, der Kopf bleibt stehen, und erst der gruene Beleg macht aus der Bewertung eine Zusage.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-3.json"
+    },
+    {
+      "contributionId": "agent17-aftercare",
+      "turnId": "2026-11-11T01:55Z-agent17-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heisst: Register, Task und Beleg zusammenfuehren. Ein gruener Merge ohne gepflegten Status ist nur ein halber Abschluss.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-aftercare.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-1",
+      "turnId": "2026-11-11T01:05Z-agent17-business-areas-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Casino, Bar und Lounge stehen schon im Haus, nur sprach niemand von ihnen als Bereiche. Der Schnitt beginnt deshalb nicht mit einem neuen Speicher, sondern mit einer zweiten Lesart derselben Zonen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-1.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-2",
+      "turnId": "2026-11-11T01:20Z-agent17-business-areas-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "service"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Betriebsheader nennt die Bereiche jetzt mit Zahlen: Objekte und Gäste je Zone, und ein Bereich ohne Zone steht als nicht im Haus da. Kein zweites Konto, kein zweiter Gastzähler - nur eine Lesart, die man nachrechnen kann.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-2.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-3",
+      "turnId": "2026-11-11T01:30Z-agent17-business-areas-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein ungenutzter Import faellt nicht im Test auf, sondern erst im Typecheck. Genau dafuer steht er im Gate: die Kleinigkeit wird vor dem Push bezahlt, nicht danach.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-3.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-4",
+      "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-5",
+      "turnId": "2026-11-11T01:45Z-agent17-business-areas-5",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
+    },
+    {
+      "contributionId": "agent17-ci-pending",
+      "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
+    },
+    {
+      "contributionId": "agent17-done",
+      "turnId": "2026-11-11T02:00Z-agent17-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-done.json"
+    },
+    {
+      "contributionId": "agent17-merge-pending",
+      "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",
@@ -5213,6 +5411,28 @@
       "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
+    },
+    {
+      "contributionId": "living-world-vision-1",
+      "turnId": "2026-11-11T02:00Z-living-world-vision-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt wartet nicht auf den Spieler. Wer die Wohnungstuer oeffnet, tritt in ein Leben, das laengst laeuft: Nachbarn gehen zur Arbeit, Geschaefte oeffnen, und das Casino ist nur ein Raum unter vielen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-vision-1.json"
     },
     {
       "contributionId": "loc-gate-01",

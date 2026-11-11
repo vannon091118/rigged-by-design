@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:05Z-agent17-business-areas-1",
+  "contributionId": "agent17-business-areas-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Casino, Bar und Lounge stehen schon im Haus, nur sprach niemand von ihnen als Bereiche. Der Schnitt beginnt deshalb nicht mit einem neuen Speicher, sondern mit einer zweiten Lesart derselben Zonen.",
+  "directives": []
+}

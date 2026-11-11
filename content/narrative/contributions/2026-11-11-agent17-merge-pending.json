@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+  "contributionId": "agent17-merge-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+  "directives": []
+}
