@@ -17,7 +17,8 @@ interface NewGameState {
 
 export function createNewGame(template: TemplateId): NewGameState {
   const world = createWorld(template);
-  world.furniture = [];
+  // Die Kasse ist der erste Kontakt: ohne sie gibt es keinen Gast und keinen Weg.
+  world.furniture = world.furniture.filter((item) => item.kind === 'EXCHANGE');
   world.stains = [];
   world.dirty.clear();
   const entrance = world.zones.find((zone) => zone.kind === 'ENTRANCE') ?? world.zones[0]!;

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6b5514e99d1bc027b2ed2a09eb6345f9de97b30f32d20bb899e7c1148fd4892d",
+  "contentHash": "sha256:6bad47ee3c064e4ff0edc3c81dcc8004aad8d21c654ac01b9af4f8fc97cef8d1",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6209,6 +6209,28 @@
       "text": "Rita zaehlte das Geld nicht zweimal, sondern sah im Beleg nach: erst der Preis, dann die Buchung, dann der Tag, an dem der Raum ihr gehoerte. Dass die Bude im Hinterhof etwas anderes war als ein Ladenlokal, notierte sie ausdruecklich - ein Eigentum ohne Adresse waere nur ein Gefuehl.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-first-property.json"
+    },
+    {
+      "contributionId": "first-run-slot-truth-demand",
+      "turnId": "2026-11-11T09:32Z-first-run-slot-truth-demand",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Gast stand nicht mehr vor einer leeren Halle. Die Kasse blieb stehen, als der Raum noch leer war, und wer aus der Stadt hereinkam, fand zuerst den Schalter statt einen Automaten. Draußen wartete niemand mehr auf einen Weg, den es nicht gab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-demand.json"
     },
     {
       "contributionId": "floor-fleck-01",

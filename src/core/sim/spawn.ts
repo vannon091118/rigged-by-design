@@ -60,10 +60,15 @@ export function guestTier(world: WorldState): 1 | 2 | 3 {
 
 /** Keine Gaestezahl sperrt den Eingang; der Betrieb regelt den Andrang ueber Service und Laune. */
 export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest | null {
+  // Erst Ziel und Weg: ohne Kasse oder Route darf kein Gast und kein Zufall entstehen.
+  const target = exchangePoint(world);
+  if (!target) return null;
+  const spawn = entranceSpot(world, world.nextGuestId);
+  const route = pathTo(world, spawn, target);
+  if (route.length === 0) return null;
   const id = world.nextGuestId++;
   const returning = pickReturningVisitor(world, id);
   const persona = returning ? returning.persona : randomPersona(prng, guestTier(world));
-  const spawn = entranceSpot(world, id);
   const fiat = randomFiat(prng, world.template, persona);
   const made = makeGuest({ id, persona, prng, spawn });
   const guest: Guest = returning
@@ -77,8 +82,6 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   if (renovation > 0) guest.mood = Math.min(100, guest.mood + renovation);
   // Agent 20: Veranstaltungsgaeste kommen mit Durst; alle anderen bleiben unveraendert.
   applyArrivalFlow(world, guest);
-  const target = exchangePoint(world);
-  if (!target) return null;
   if (returning) {
     markReturning(returning, world.tick);
     // Wer wiederkommt, hat in der Zwischenzeit jemanden getroffen: ein Bericht
@@ -91,7 +94,7 @@ export function spawnGuest(world: WorldState, prng: Prng, ledger: Ledger): Guest
   }
   admitFiat(ledger, id, fiat, world.tick);
   guest.targetZone = 'exchange';
-  guest.path = pathTo(world, spawn, target);
+  guest.path = route;
   guest.pathIndex = 0;
   // Warteschlange an der Kasse: wer noch hereinkommt, reiht sich hinten ein.
   guest.queueIndex = world.guests.filter((entry) => entry.state === 'EXCHANGE' || entry.state === 'ENTER').length;
