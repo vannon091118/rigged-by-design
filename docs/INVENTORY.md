@@ -585,10 +585,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2571 |
-| Gelistete Dateien | 2571 |
+| Getrackte Dateien | 2576 |
+| Gelistete Dateien | 2576 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (152), content (893), docs (83), public (554), scripts (102), src (759) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (154), content (896), docs (83), public (554), scripts (102), src (759) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -600,9 +600,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 101 Datei(en)
-- `.lane-claims/tasks/` — 49 Datei(en)
-- `content/narrative/contributions/` — 889 Datei(en)
+- `.lane-claims/claims/` — 102 Datei(en)
+- `.lane-claims/tasks/` — 50 Datei(en)
+- `content/narrative/contributions/` — 892 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -811,6 +811,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-property-world.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-renovation.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-sim-staff-performance.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-visitor-amenity-reaction.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 19 Zeilen
@@ -861,6 +862,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/ui-world-click-action-queue.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
@@ -1758,8 +1760,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent15-amenity-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent15-amenity-4.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 19955 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3561 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-staff-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-staff-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-staff-3.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20021 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3573 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen
@@ -2767,7 +2772,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/rivals.test.ts` — Fremde Haeuser nutzen echte Spiele und Regeln, driften deterministisch und — gelesen: 78 Zeilen
 - `src/core/sim/__tests__/shot-seed.test.ts` — Screenshot-Saat: eine eingerichtete Etage als Save-JSON ablegen, damit die — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/soak.test.ts` — Langlauf: Ledger bleibt integer und gedeckt, und der Betrieb steht ueber — gelesen: 126 Zeilen
-- `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 82 Zeilen
+- `src/core/sim/__tests__/staff-status.test.ts` — Der Personalstatus lebt ausschliesslich in den Agenten: ohne Agent keine — gelesen: 123 Zeilen
 - `src/core/sim/__tests__/treat-influence.test.ts` — Döner-/Treat-Synergie am realen Serve-Pfad: an der Bar positiv, am Slot — gelesen: 105 Zeilen
 - `src/core/sim/__tests__/trigger-dialog.test.ts` — P-15: TRIGGER_DIALOG ist ausfuehrbar. Der Command schreibt bewusst keinen — gelesen: 78 Zeilen
 - `src/core/sim/__tests__/tx-reasons.test.ts` — Jeder Grund, den ein Aufrufer bucht, muss in der Kennzahl landen, die er — gelesen: 81 Zeilen
@@ -2969,7 +2974,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 103 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
 - `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 97 Zeilen
-- `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 72 Zeilen
+- `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 94 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 244 Zeilen
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen
 - `src/core/sim/templates.ts` — Drei Floor-Blueprints: klein, mittel, gross. Jeder Bereich ist 30x30 Kacheln. — gelesen: 134 Zeilen
@@ -3176,7 +3181,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/build-crate-list.tsx` — Kisten im Betriebspanel: reine Statusanzeige. Aufheben und Abladen macht der Charakter auf dem Floor. — gelesen: 46 Zeilen
 - `src/ui/build-ops-summary.tsx` — Kompakte Betriebsübersicht: die vier Zahlen, die den Floor erklären. — gelesen: 33 Zeilen
 - `src/ui/build-panel-connected.tsx` — Betriebs-Panel: verdrahtet das Panel mit dem Store; App haelt nur den Schalter. — gelesen: 38 Zeilen
-- `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 124 Zeilen
+- `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 126 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
 - `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 40 Zeilen
 - `src/ui/career-floor.tsx` — Arbeitsqualitaet im Charakterfenster: welche Rolle welches Attribut traegt. — gelesen: 27 Zeilen
@@ -3252,7 +3257,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/smartphone-travel.tsx` — Smartphone-App: TRAVEL - Casino-Wechsel — gelesen: 30 Zeilen
 - `src/ui/smartphone.tsx` — Gerät: optionale Abkürzungen für räumliche Handlungen. — gelesen: 74 Zeilen
 - `src/ui/sound-popup.tsx` — Lautstaerke, Kanaele und Musik: Master plus Spiele, Kampf, Bedienung getrennt. — gelesen: 79 Zeilen
-- `src/ui/staff-labels.ts` — Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. — gelesen: 19 Zeilen
+- `src/ui/staff-labels.ts` — Gemeinsame Klartext-Labels für Personalstatus in Panel und Diagnose. — gelesen: 24 Zeilen
 - `src/ui/stage-controls.tsx` — Buehnenrand: nur die Kamera-Knoepfe. Tastenkuerzel stehen in der Werkstatt. — gelesen: 15 Zeilen
 - `src/ui/table-launcher.tsx` — Waehlt das passende Fenster am Geraet: Walzen, Plinko oder Wuerfel. — gelesen: 145 Zeilen
 - `src/ui/transfer-panel.tsx` — Import und Export: Spielstand als JSON sichern, pruefen und zurueckspielen. — gelesen: 49 Zeilen

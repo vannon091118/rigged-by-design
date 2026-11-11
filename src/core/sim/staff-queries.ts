@@ -70,3 +70,25 @@ export function getStaffCoverage(
 export function hasActiveGuard(world: WorldState): boolean {
   return onDutyStaff(world, 'guard').length > 0;
 }
+
+/** Ab wie vielen geleisteten Arbeits-Ticks eine Rolle solide oder stark ist. */
+export const REVIEW_TICKS = { solid: 40, stark: 120 } as const;
+
+/**
+ * Die Bewertung kennt nur zwei Eingaenge: geleistete Arbeit und Blockade.
+ * Ein Agent, der steckt, ist nie stark – egal wie lange er eingestellt ist.
+ */
+export type StaffPerformance = 'FRISCH' | 'SOLIDE' | 'STARK' | 'EINGESCHRAENKT';
+
+/**
+ * Leistungsbewertung aus dem, was die uebergebenen Agenten wirklich getan haben.
+ * Mehrere Agenten derselben Rolle zaehlen gemeinsam; `FRISCH` heisst: noch keine
+ * belastbare Arbeitsmenge, nicht „schlecht“.
+ */
+export function staffPerformance(agents: readonly StaffAgent[]): StaffPerformance {
+  if (agents.some((agent) => !isOnDuty(agent))) return 'EINGESCHRAENKT';
+  const worked = agents.reduce((sum, agent) => sum + agent.workTicks, 0);
+  if (worked >= REVIEW_TICKS.stark) return 'STARK';
+  if (worked >= REVIEW_TICKS.solid) return 'SOLIDE';
+  return 'FRISCH';
+}
