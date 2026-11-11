@@ -3792,6 +3792,10 @@
     {
       "turnId": "2026-11-11T09:55Z-agent23-ci-pending",
       "contributionId": "agent23-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
+      "contributionId": "agent23-merge-pending"
     }
   ]
 }

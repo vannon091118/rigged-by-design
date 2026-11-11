@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:87f6154fe2ed14a96f4157ae5c3c164251c7feafd66ebf0ec6611383157ff7b2",
+  "contentHash": "sha256:3feed887bcc6d12a031537350efe38befc4387377ca9259c32e820bdfd6f0f9a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1570,6 +1570,28 @@
       "text": "Der Kampfabend erfindet nichts: Roster und Kampfplan sind die vorhandene Hinterhof-Leiter, der Kampf ist die vorhandene Engine, und das Nenngeld steht als eigene Ledger-Zeile. Nur der Abend selbst endet jetzt mit einem Ergebnis statt mit einer Platzhalterzeile.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-fight-event.json"
+    },
+    {
+      "contributionId": "agent23-merge-pending",
+      "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Pflichtstatus ist gruen auf dem exakten Kopf, und erst jetzt darf der Merge geplant werden. Kein Nachbessern am Rand, kein zweiter Kopf: Was geprueft wurde, wird gemergt, und was danach kommt, steht in der Nachsorge.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent23-merge-pending.json"
     },
     {
       "contributionId": "agent23-task",

@@ -55,7 +55,7 @@ export interface BackyardResult {
 }
 
 /** Ein gefuehrter Leiterkampf; Geld und Journal bucht der jeweilige Aufrufer. */
-export interface FightBoutResult {
+interface FightBoutResult {
   readonly won: boolean;
   readonly ko: boolean;
   readonly fight: FightResult;
@@ -87,8 +87,8 @@ export function fightNextRung(history: readonly BackyardHistoryEntry[]): Backyar
   return { ...base, rank: index === -1 ? LADDER.length : index + 1 };
 }
 
-/** Das Gegnerprofil derselben Leiter; Hinterhof, Duell und Kampfabend teilen es. */
-export function fightOpponentOf(rung: BackyardRung): DuelOpponent {
+/** Das Gegnerprofil derselben Leiter; Hinterhof und Kampfabend teilen es intern. */
+function fightOpponentOf(rung: BackyardRung): DuelOpponent {
   return {
     guestId: -1, name: rung.name, archetype: rung.archetype, strength: rung.strength,
     greed: rung.rank, nerve: rung.strength, toughness: rung.toughness,

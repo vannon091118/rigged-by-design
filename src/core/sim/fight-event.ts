@@ -23,7 +23,7 @@ import { TX_REASON } from './tx-reasons';
 import type { WorldState } from './types';
 import { venueView } from './venue-event';
 
-export interface FightEventBout {
+interface FightEventBout {
   readonly rank: number;
   readonly name: string;
   readonly archetype: string;
@@ -50,7 +50,7 @@ export interface FightEventView {
   readonly record: FightRecord;
 }
 
-export interface FightEventResult {
+interface FightEventResult {
   readonly won: boolean;
   readonly ko: boolean;
   readonly fee: VaCoinMicro;
