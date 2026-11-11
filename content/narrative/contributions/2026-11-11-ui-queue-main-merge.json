@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T13:20Z-ui-queue-main-merge",
+  "contributionId": "ui-queue-main-merge",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Nachlauf zur Action-Queue ist mit dem aktuellen main zusammengefuehrt; die vier Aftercare-Bausteine bleiben erhalten. Die Konflikte lagen in Claim, Turn-Manifest und generierten Artefakten, nicht in Spielcode.",
+  "directives": []
+}

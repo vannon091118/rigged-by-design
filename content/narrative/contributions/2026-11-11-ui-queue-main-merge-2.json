@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T13:30Z-ui-queue-main-merge-2",
+  "contributionId": "ui-queue-main-merge-2",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Nach dem GameScout-Merge ist der Action-Queue-Nachlauf erneut mit main zusammengefuehrt; die vier Aftercare-Bausteine und der GameScout-Block bleiben erhalten. Die Konflikte lagen wieder nur in Claim, Manifest und generierten Artefakten.",
+  "directives": []
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9e657fd90ba91edceb7f566ecb8f483261103b34dd7b69eb3fbc9e829bb0cddf",
+  "contentHash": "sha256:6b5514e99d1bc027b2ed2a09eb6345f9de97b30f32d20bb899e7c1148fd4892d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -21758,6 +21758,138 @@
       "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json"
+    },
+    {
+      "contributionId": "ui-queue-aftercare-01",
+      "turnId": "2026-11-11T00:25Z-ui-queue-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Warteschlange ist kein Sammelbecken mehr: jeder Auftrag behaelt seinen Platz, jede Zeile ihren Namen, und ein Abbruch trifft genau den Auftrag, den er meint.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare.json"
+    },
+    {
+      "contributionId": "ui-queue-aftercare-02",
+      "turnId": "2026-11-11T00:32Z-ui-queue-aftercare-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Nachlauf ist kein zweiter Anfang: er schliesst ab, was laengst auf main liegt, und laesst den Code unberuehrt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-2.json"
+    },
+    {
+      "contributionId": "ui-queue-aftercare-03",
+      "turnId": "2026-11-11T00:38Z-ui-queue-aftercare-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Vertrag, der nur den Merge feiert, vergisst die Nachsorge; erst der Nachlauf macht aus dem gruenen Lauf einen abgeschlossenen Zustand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-3.json"
+    },
+    {
+      "contributionId": "ui-queue-aftercare-04",
+      "turnId": "2026-11-11T00:42Z-ui-queue-aftercare-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE heisst hier nicht Ende der Arbeit, sondern Ende der Spur: der Claim ist zu, der Baum ist belegt, und die naechste Lane beginnt auf gruenem main.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-4.json"
+    },
+    {
+      "contributionId": "ui-queue-main-merge",
+      "turnId": "2026-11-11T13:20Z-ui-queue-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf zur Action-Queue ist mit dem aktuellen main zusammengefuehrt; die vier Aftercare-Bausteine bleiben erhalten. Die Konflikte lagen in Claim, Turn-Manifest und generierten Artefakten, nicht in Spielcode.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge.json"
+    },
+    {
+      "contributionId": "ui-queue-main-merge-2",
+      "turnId": "2026-11-11T13:30Z-ui-queue-main-merge-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem GameScout-Merge ist der Action-Queue-Nachlauf erneut mit main zusammengefuehrt; die vier Aftercare-Bausteine und der GameScout-Block bleiben erhalten. Die Konflikte lagen wieder nur in Claim, Manifest und generierten Artefakten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json"
     },
     {
       "contributionId": "ui-queue-panel-01",

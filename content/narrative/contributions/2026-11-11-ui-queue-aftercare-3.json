@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:38Z-ui-queue-aftercare-3",
+  "contributionId": "ui-queue-aftercare-03",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Vertrag, der nur den Merge feiert, vergisst die Nachsorge; erst der Nachlauf macht aus dem gruenen Lauf einen abgeschlossenen Zustand.",
+  "directives": []
+}

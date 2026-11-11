@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:25Z-ui-queue-aftercare",
+  "contributionId": "ui-queue-aftercare-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Warteschlange ist kein Sammelbecken mehr: jeder Auftrag behaelt seinen Platz, jede Zeile ihren Namen, und ein Abbruch trifft genau den Auftrag, den er meint.",
+  "directives": []
+}
