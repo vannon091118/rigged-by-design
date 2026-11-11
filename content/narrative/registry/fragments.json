@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:65e0e8c1ae3aebc6a2d417e353a138c688cd84a8fc443899fd164bc8bcebe77f",
+  "contentHash": "sha256:ad76fb7dfa573b81bc68fc1df4b55ba1bed9e32496369d7d2e7f2ed4e817327d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1743,9 +1743,31 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Wettmarkt steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "text": "Der Wettmarkt steht: Scheine, Quoten und Abrechnung liegen als Journal-Belege vor, die Lane ist geschlossen. Wer den Markt sucht, findet ihn im Hinterhof; wer den Abschluss sucht, im Vertrag. Kein zweiter Aufbau, keine offene Schleife.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-done.json"
+    },
+    {
+      "contributionId": "agent24-done-repair",
+      "turnId": "2026-11-11T06:10Z-agent24-done-repair",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Qualitaetspruefung meldet einen Near-Duplicate: Der Abschluss lag zu nah am vorigen. Also wird der Text entdoppelt, nicht die Schwelle gesenkt; der Befund und die Korrektur bleiben im Register.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-done-repair.json"
     },
     {
       "contributionId": "agent24-merge-pending",
