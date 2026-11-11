@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:a51f0bf982e29e659df2ff530baac7c927a931ae3b4339f1c24eadd32a91948c",
+  "contentHash": "sha256:d6514191704a8616ee7269b9c204ad27d13202dcab7f26b592895801c5bf78ec",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -888,6 +888,28 @@
       "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
+    },
+    {
+      "contributionId": "agent18-merge-pending",
+      "turnId": "2026-11-11T02:50Z-agent18-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",
