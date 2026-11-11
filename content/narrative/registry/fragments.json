@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8eaea01b1abb846a5bde48f42451c080ad04b61a5374cbaecfe23f75b4286913",
+  "contentHash": "sha256:621d1f752bf7a6cf5a17f4331a06ee278e26bd3baaf5d66dff80669870d4cb10",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -21622,6 +21622,28 @@
       "text": "Der Squash-Merge 3fe5acb steht jetzt auch in der Placement-Lane. Der Branch traegt damit die gemeinsame Basis; der Nachlauf enthaelt nur noch Register, Doku und generierte Artefakte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-merge-pending",
+      "turnId": "2026-11-11T13:05Z-ui-placement-venue-history-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json"
     },
     {
       "contributionId": "ui-queue-panel-01",
