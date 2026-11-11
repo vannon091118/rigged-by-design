@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2a8e41ad64ef59d89b2c4e903a6f9d10dd37b0302b60be423c9b3be93115b6cc",
+  "contentHash": "sha256:83191075705d083671336509e58dc9a2181201428c57f8ec5ca36e47441d2cd8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1834,6 +1834,28 @@
       "text": "Ein Beleg, der nur beweist, dass irgendetwas existiert, beweist nichts. Der Gewinn muss an seiner Quote haengen und die Zahl der Auszahlungen an der Zahl der richtigen Tipps - sonst ist der gruene Haken nur eine Behauptung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-test-quality.json"
+    },
+    {
+      "contributionId": "agent25-aftercare",
+      "turnId": "2026-11-11T07:30Z-agent25-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst hier: den gemergten Stand belegen, den Claim schliessen, die Lane stehen lassen. Die Arena bleibt im Hinterhof, wo sie gebaut wurde, und braucht keinen zweiten Eingang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-aftercare.json"
     },
     {
       "contributionId": "agent25-arena",
