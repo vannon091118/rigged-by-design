@@ -7,8 +7,7 @@
  */
 import { LINE_PAY, SLOT_ROWS, SLOT_SYMBOLS, weightTotal, type SlotSymbol, type SlotWeights } from './slot-paytable';
 
-export type PayModel = 'LINES' | 'WAYS' | 'CLUSTER';
-export type Volatility = 'LOW' | 'MID' | 'HIGH';
+export type PayModel = 'LINES' | 'WAYS' | 'CLUSTER'; export type Volatility = 'LOW' | 'MID' | 'HIGH';
 
 const LOW_SYMBOLS: ReadonlySet<SlotSymbol> = new Set(['URN', 'A', 'K', 'Q', 'J']);
 const HIGH_SYMBOLS: ReadonlySet<SlotSymbol> = new Set(['BOOK', 'SCARAB', 'ANKH', 'EYE']);
@@ -26,21 +25,9 @@ const CLUSTER_TIERS: readonly (readonly [number, number])[] = [
   [15, 2_500_000], [12, 500_000], [9, 100_000], [7, 30_000], [5, 10_000],
 ];
 
-export interface ModelContext {
-  readonly reels: number;
-  readonly rows: number;
-  readonly weights: SlotWeights;
-  readonly wild: boolean;
-  readonly scale: number;
-  readonly volatility: Volatility;
-}
+export interface ModelContext { readonly reels: number; readonly rows: number; readonly weights: SlotWeights; readonly wild: boolean; readonly scale: number; readonly volatility: Volatility; }
 
-export interface ModelWin {
-  readonly line: number;
-  readonly symbol: string;
-  readonly count: number;
-  readonly bps: number;
-}
+export interface ModelWin { readonly line: number; readonly symbol: string; readonly count: number; readonly bps: number; }
 
 export function payBps(symbol: SlotSymbol, count: number, scale: number, volatility: Volatility): number {
   const pay = LINE_PAY[symbol][Math.min(2, Math.max(0, count - 3))]!;
@@ -51,16 +38,12 @@ export function payBps(symbol: SlotSymbol, count: number, scale: number, volatil
 export function evaluateLines(
   grid: readonly (readonly SlotSymbol[])[], lines: readonly (readonly number[])[], ctx: ModelContext,
 ): { total: number; wins: ModelWin[] } {
-  let total = 0;
-  const wins: ModelWin[] = [];
+  let total = 0; const wins: ModelWin[] = [];
   lines.forEach((line, index) => {
     const symbols = line.map((row, reel) => grid[reel]![row]!);
     const lead = symbols.find((symbol) => symbol !== 'BOOK') ?? 'BOOK';
     let run = 0;
-    for (const symbol of symbols) {
-      if (symbol === lead || (ctx.wild && symbol === 'BOOK')) run += 1;
-      else break;
-    }
+    while (run < symbols.length && (symbols[run] === lead || (ctx.wild && symbols[run] === 'BOOK'))) run += 1;
     if (run < 3) return;
     const bps = payBps(lead, run, ctx.scale, ctx.volatility);
     total += bps;
@@ -77,21 +60,20 @@ function matches(cell: SlotSymbol, symbol: SlotSymbol, wild: boolean): boolean {
 export function evaluateWays(
   grid: readonly (readonly SlotSymbol[])[], ctx: ModelContext,
 ): { total: number; wins: ModelWin[] } {
-  let total = 0;
-  const wins: ModelWin[] = [];
+  let total = 0; const wins: ModelWin[] = [];
   for (const symbol of SLOT_SYMBOLS) {
-    let run = 0;
-    let ways = 1;
+    let run = 0; let ways = 1;
     for (const reel of grid) {
       const hits = reel.filter((cell) => matches(cell, symbol, ctx.wild)).length;
       if (hits === 0) break;
       ways *= hits;
       run += 1;
     }
-    if (run < 3) continue;
-    const bps = payBps(symbol, run, ctx.scale, ctx.volatility) * ways;
-    total += bps;
-    wins.push({ line: wins.length, symbol, count: run, bps });
+    if (run >= 3) {
+      const bps = payBps(symbol, run, ctx.scale, ctx.volatility) * ways;
+      total += bps;
+      wins.push({ line: wins.length, symbol, count: run, bps });
+    }
   }
   return { total, wins };
 }
@@ -133,6 +115,45 @@ function binom(n: number, k: number): number {
   return value;
 }
 
+export interface LineStats { readonly expectation: number; readonly hitBps: number; }
+
+/**
+ * Exakte Linien-Verteilung: Der erste Nicht-Buch-Treffer ist das führende
+ * Symbol. Ein Lauf aus reinen Büchern zahlt BOOK nur, wenn die ganze Linie
+ * aus Büchern besteht; ein Buch-Präfix vor einem anderen Symbol gehört zu
+ * diesem anderen Symbol, nicht zu jedem möglichen Fremdsymbol.
+ */
+export function lineStats(
+  reels: number, weights: SlotWeights, wild: boolean, volatility: Volatility,
+): LineStats {
+  const total = weightTotal(weights);
+  if (total <= 0 || reels < 3) return { expectation: 0, hitBps: 0 };
+  const book = Math.max(0, weights.BOOK) / total;
+  let expectation = 0; let hit = 0;
+  for (const symbol of SLOT_SYMBOLS) {
+    const p = Math.max(0, weights[symbol]) / total;
+    const match = wild && symbol !== 'BOOK' ? p + book : p;
+    for (let run = 3; run <= reels; run += 1) {
+      const prefix = symbol === 'BOOK'
+        ? (run === reels ? book ** reels : 0)
+        : wild ? match ** run - book ** run : p ** run;
+      const probability = prefix * (run === reels ? 1 : 1 - match);
+      if (probability <= 0) continue;
+      expectation += probability * payBps(symbol, run, 1, volatility);
+      hit += probability;
+    }
+  }
+  return { expectation, hitBps: hit * 10_000 };
+}
+
+function tail(cells: number, p: number, from: number): number {
+  let total = 0;
+  for (let count = from; count <= cells; count += 1) {
+    total += binom(cells, count) * p ** count * (1 - p) ** (cells - count);
+  }
+  return total;
+}
+
 /**
  * Erwartungswert eines Modells, unskaliert: bei Linien je Linie, bei Ways und
  * Cluster fuer den ganzen Spin. Geschlossen gerechnet, nicht gesampelt.
@@ -140,56 +161,28 @@ function binom(n: number, k: number): number {
 export function modelExpectation(
   model: PayModel, reels: number, weights: SlotWeights, wild: boolean, volatility: Volatility,
 ): number {
+  if (model === 'LINES') return lineStats(reels, weights, wild, volatility).expectation;
   const rows = SLOT_ROWS;
-  if (model === 'LINES') {
-    let best = 0;
-    for (const symbol of SLOT_SYMBOLS) {
-      let ev = 0;
-      for (let run = 3; run <= reels; run += 1) {
-        let probability = 1;
-        for (let reel = 0; reel < run; reel += 1) {
-          probability *= symbolChance(weights, symbol)
-            + (wild && symbol !== 'BOOK' ? symbolChance(weights, 'BOOK') : 0);
-        }
-        if (run < reels) {
-          probability *= 1 - (symbolChance(weights, symbol)
-            + (wild && symbol !== 'BOOK' ? symbolChance(weights, 'BOOK') : 0));
-        }
-        ev += probability * payBps(symbol, run, 1, volatility);
-      }
-      best += ev;
-    }
-    return best;
-  }
   if (model === 'WAYS') {
     let total = 0;
     for (const symbol of SLOT_SYMBOLS) {
       const p = symbolChance(weights, symbol) + (wild && symbol !== 'BOOK' ? symbolChance(weights, 'BOOK') : 0);
       const pAny = 1 - (1 - p) ** rows;
-      const meanWays = (rows * p) / Math.max(1e-9, pAny);
+      const mean = (rows * p) / Math.max(1e-9, pAny);
       for (let run = 3; run <= reels; run += 1) {
-        const exact = run === reels ? pAny ** run : pAny ** run * (1 - pAny);
-        total += exact * payBps(symbol, run, 1, volatility) * meanWays ** run;
+        total += (run === reels ? pAny ** run : pAny ** run * (1 - pAny))
+          * payBps(symbol, run, 1, volatility) * mean ** run;
       }
     }
     return total;
   }
-  let total = 0;
-  const cells = reels * rows;
+  let total = 0; const cells = reels * rows;
   for (const symbol of SLOT_SYMBOLS) {
     const p = symbolChance(weights, symbol) + (wild && symbol !== 'BOOK' ? symbolChance(weights, 'BOOK') : 0);
     for (const [need, pay] of CLUSTER_TIERS) {
-      // Genau diese Stufe: mindestens `need` Zellen, aber nicht die naechste Stufe.
-      let atLeast = 0;
-      for (let count = need; count <= cells; count += 1) {
-        atLeast += binom(cells, count) * p ** count * (1 - p) ** (cells - count);
-      }
       const next = CLUSTER_TIERS.find(([higher]) => higher > need);
-      let above = 0;
-      if (next) for (let count = next[0]; count <= cells; count += 1) {
-        above += binom(cells, count) * p ** count * (1 - p) ** (cells - count);
-      }
-      total += (atLeast - above) * Math.round(pay * volatilityFactor(symbol, volatility));
+      const probability = tail(cells, p, need) - (next ? tail(cells, p, next[0]) : 0);
+      total += probability * Math.round(pay * volatilityFactor(symbol, volatility));
     }
   }
   return total;

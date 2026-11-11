@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T09:34Z-first-run-slot-truth-lines",
+  "contributionId": "first-run-slot-truth-lines",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Linie zählte nicht mehr jedes Symbol mit, nur weil ein Buch am Anfang lag. Was die Anzeige als Erwartung nannte, war jetzt derselbe Lauf, den die Walzen zahlten; die Bücher blieben eine eigene Geschichte und wurden nicht auf jede fremde Linie verteilt.",
+  "directives": []
+}
