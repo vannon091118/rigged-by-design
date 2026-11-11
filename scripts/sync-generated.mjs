@@ -3,10 +3,11 @@
  * Der eine Regenerationspfad fuer generierte Artefakte.
  *
  * Aufruf:
- *   node scripts/sync-generated.mjs             # Arbeitsbaum regenerieren
- *   node scripts/sync-generated.mjs --staged    # zusaetzlich nur Generiertes stagen
- *   node scripts/sync-generated.mjs --all       # Narrative immer kompilieren
- *   node scripts/sync-generated.mjs --check     # nur pruefen, nichts schreiben
+ *   node scripts/sync-generated.mjs                  # Arbeitsbaum regenerieren
+ *   node scripts/sync-generated.mjs --staged         # zusaetzlich nur Generiertes stagen
+ *   node scripts/sync-generated.mjs --all            # Narrative immer kompilieren
+ *   node scripts/sync-generated.mjs --catalog        # Testkatalog im selben Lauf
+ *   node scripts/sync-generated.mjs --check          # nur pruefen, nichts schreiben
  *
  * Regeln:
  * - Jede Datei kommt ausschliesslich aus ihrem Generator (`generated-files.mjs`).
@@ -29,6 +30,7 @@ const args = process.argv.slice(2);
 const check = args.includes('--check');
 const staged = args.includes('--staged');
 const all = args.includes('--all');
+const catalog = args.includes('--catalog') || all;
 const quiet = args.includes('--quiet');
 
 const script = (name) => join(ROOT, 'scripts', name);
@@ -60,19 +62,22 @@ function changedPaths() {
 const before = new Set(changedPaths());
 const stale = [];
 
-// 1. Inventur: vollstaendig aus `git ls-files`.
+// 1. Testkatalog: derselbe Lauf, damit die Inventur nicht zweimal entsteht.
+if (catalog) run('test-catalog.mjs', check ? ['--check'] : []);
+
+// 2. Inventur: vollstaendig aus `git ls-files`.
 run('build-inventory.mjs');
 
-// 2. Doku-Marker: alte Versionsmarker werden kanonisch, fehlende ergaenzt.
+// 3. Doku-Marker: alte Versionsmarker werden kanonisch, fehlende ergaenzt.
 run('doc-sync.mjs', check ? ['--check'] : staged ? ['--staged'] : []);
 
-// 3. Narrative Registry: nur aus Beitraegen, nur wenn Quellen betroffen sind.
+// 4. Narrative Registry: nur aus Beitraegen, nur wenn Quellen betroffen sind.
 const narrativeTouched = all || [...before].some((file) => file.startsWith(NARRATIVE_SOURCE_PREFIX));
 if (narrativeTouched) {
   run('compile-narrative-content.mjs', check ? ['--check'] : ['--write']);
 }
 
-// 4. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
+// 5. Roadmap-Fortschritt: die Zahl ist ein Messwert, keine Handarbeit.
 const roadmapFile = join(ROOT, 'docs', 'ROADMAP.md');
 const count = registryFragmentCount(ROOT);
 if (existsSync(roadmapFile) && count !== null) {
@@ -83,7 +88,7 @@ if (existsSync(roadmapFile) && count !== null) {
   }
 }
 
-// 5. Staging: nur generierte Pfade, nie fremde Arbeit.
+// 6. Staging: nur generierte Pfade, nie fremde Arbeit.
 if (staged && !check) {
   const present = GENERATED_PATHS.filter((file) => existsSync(join(ROOT, file)));
   if (present.length > 0) {

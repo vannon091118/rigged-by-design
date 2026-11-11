@@ -212,9 +212,9 @@ function registerAt(ref) {
  * Basis den Branch noch gar nicht kennt. Eine Selbsterweiterung ist damit
  * selbst dann sichtbar, wenn sie ueber mehrere Commits verteilt wird.
  */
-if (CI) {
-  const baseRegister = registerAt(BASE_REF);
-  if (!baseRegister) {
+const baseRegister = registerAt(BASE_REF);
+if (!baseRegister) {
+  if (CI) {
     report({
       status: 'ROT',
       headline: `${branch} · Basis-Register nicht lesbar`,
@@ -223,6 +223,8 @@ if (CI) {
     });
     process.exit(1);
   }
+  notes.push(`[ERR-4019] Basis-Register '${BASE_REF}' nicht lesbar; Basis-Audit lokal uebersprungen.`);
+} else {
   const firstTouch = firstTouchCommit(`${BASE_REF}..${HEAD_REF}`);
   const firstRegister = firstTouch ? registerAt(firstTouch) : null;
   const audit = auditRegisterAgainstBase({
