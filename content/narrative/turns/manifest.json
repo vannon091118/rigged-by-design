@@ -3942,6 +3942,18 @@
       "contributionId": "ui-placement-venue-history-done"
     },
     {
+      "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+      "contributionId": "gamescout-observation-01"
+    },
+    {
+      "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+      "contributionId": "gamescout-player-qa-01"
+    },
+    {
+      "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+      "contributionId": "game-scout-main-merge"
+    },
+    {
       "turnId": "2026-11-11T00:25Z-ui-queue-aftercare",
       "contributionId": "ui-queue-aftercare-01"
     },
@@ -3960,6 +3972,10 @@
     {
       "turnId": "2026-11-11T13:20Z-ui-queue-main-merge",
       "contributionId": "ui-queue-main-merge"
+    },
+    {
+      "turnId": "2026-11-11T13:30Z-ui-queue-main-merge-2",
+      "contributionId": "ui-queue-main-merge-2"
     }
   ]
 }

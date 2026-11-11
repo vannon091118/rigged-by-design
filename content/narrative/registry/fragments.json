@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:18ed0e8b12a273f78a346594bdc52077a7fd1d0057ee05f5fbc0b7d86b187360",
+  "contentHash": "sha256:6b5514e99d1bc027b2ed2a09eb6345f9de97b30f32d20bb899e7c1148fd4892d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6260,6 +6260,76 @@
       "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
+    },
+    {
+      "contributionId": "game-scout-main-merge",
+      "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die GameScout-Bootstrap-Lane ist mit dem aktuellen main zusammengefuehrt; die beiden Scout-Bausteine bleiben erhalten. Die Konflikte lagen in Manifest, generierten Narrative-Artefakten, Inventur, Roadmap und Dependency-Matrix, nicht in Gameplay-Code.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-main-merge.json"
+    },
+    {
+      "contributionId": "gamescout-observation-01",
+      "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita stellte die Lupe an den Spieltisch. Nicht um zu eingreifen, sondern um zu sehen: was der Croupier tat, wohin die Karte wanderte, wo der Jeton blieb. Jede Bewegung lieferte einen Fact, jeder Fact blieb im Buch stehen – nichts wurde verändert, alles wurde festgehalten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-bootstrap.json"
+    },
+    {
+      "contributionId": "gamescout-player-qa-01",
+      "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita legte Karte, Jeton und Screenshot nebeneinander. Erst wenn Bild, Renderbaum und Spielzustand dasselbe erzählten, war der Zug wirklich gespielt; sonst blieb er als Beobachtung im Buch stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-player-qa.json"
     },
     {
       "contributionId": "gate-lane-red-team-01",
@@ -21798,6 +21868,28 @@
       "text": "Der Nachlauf zur Action-Queue ist mit dem aktuellen main zusammengefuehrt; die vier Aftercare-Bausteine bleiben erhalten. Die Konflikte lagen in Claim, Turn-Manifest und generierten Artefakten, nicht in Spielcode.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge.json"
+    },
+    {
+      "contributionId": "ui-queue-main-merge-2",
+      "turnId": "2026-11-11T13:30Z-ui-queue-main-merge-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem GameScout-Merge ist der Action-Queue-Nachlauf erneut mit main zusammengefuehrt; die vier Aftercare-Bausteine und der GameScout-Block bleiben erhalten. Die Konflikte lagen wieder nur in Claim, Manifest und generierten Artefakten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json"
     },
     {
       "contributionId": "ui-queue-panel-01",

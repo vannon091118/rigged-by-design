@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T13:25Z-game-scout-main-merge",
+  "contributionId": "game-scout-main-merge",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die GameScout-Bootstrap-Lane ist mit dem aktuellen main zusammengefuehrt; die beiden Scout-Bausteine bleiben erhalten. Die Konflikte lagen in Manifest, generierten Narrative-Artefakten, Inventur, Roadmap und Dependency-Matrix, nicht in Gameplay-Code.",
+  "directives": []
+}

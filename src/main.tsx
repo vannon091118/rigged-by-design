@@ -42,3 +42,9 @@ async function boot(): Promise<void> {
 }
 
 void boot();
+
+if (import.meta.env.DEV) {
+  void import('./debug/runtime-probe').catch((error) => {
+    console.warn('[rbd-probe] Konnte Runtime Probe nicht laden:', error);
+  });
+}
