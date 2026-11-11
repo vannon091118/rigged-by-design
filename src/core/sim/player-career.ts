@@ -7,6 +7,7 @@
  * eine zweite Wahrheit.
  */
 import type { VaCoinMicro } from '../economy/vacoin';
+import { fightBetView, type FightBetView } from './fight-bets';
 import { backyardView, type BackyardView } from './fight-career';
 import { fightEventView, type FightEventView } from './fight-event';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
@@ -65,6 +66,8 @@ export interface PlayerCareer {
   readonly backyard: BackyardView;
   /** Kampfabend im vorhandenen Turnierabend: Roster, Nenngeld und Zuschauer. */
   readonly event: FightEventView;
+  /** Wettmarkt auf den Vorkampf des Abends, mit fixierten Scheinen. */
+  readonly bets: FightBetView;
   /** Erste Immobilie mit Katalog, Preis und Bezahlbarkeit aus dem Portemonnaie. */
   readonly property: PlayerPropertyView;
 }
@@ -159,6 +162,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     history: playerHistoryOf(world.archive),
     backyard: backyardView(world, wallet),
     event: fightEventView(world, wallet),
+    bets: fightBetView(world, wallet),
     property: propertyView(world, wallet),
   };
 }

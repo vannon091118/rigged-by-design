@@ -13,6 +13,8 @@ export function CareerBackyard({ backyard, onChallenge }: Props) {
   const rung: BackyardRung = backyard.rung;
   // Der Kampfabend liest denselben Snapshot wie die Hinterhof-Leiter; kein zweiter Zustand.
   const event = useWorldStore().career.event;
+  const bets = useWorldStore().career.bets;
+  const market = bets.market;
   const phase = event.phase === 'ADMISSION' ? 'Einlass' : 'Durchführung';
   return (
     <section className="career-backyard" aria-label="Hinterhof-Karriere">
@@ -51,6 +53,28 @@ export function CareerBackyard({ backyard, onChallenge }: Props) {
       <button type="button" className="btn small primary" disabled={!event.ready} onClick={() => worldStore.city({ kind: 'fightEvent' })}>
         Am Kampfabend starten
       </button>
+      <div className="career-head">
+        <strong>WETTMARKT</strong>
+        <span>{market ? market.pair : 'kein Vorkampf'}</span>
+        <span>{bets.pending.length} offene Scheine</span>
+      </div>
+      <p className={`career-hp${bets.open ? '' : ' warn'}`}>{bets.reason}</p>
+      {market && (
+        <div className="career-bets">
+          {(['A', 'B', 'KO', 'PUNKTE'] as const).map((pick) => (
+            <button
+              key={pick}
+              type="button"
+              className="btn small"
+              disabled={!bets.open}
+              onClick={() => worldStore.city({ kind: 'fightBet', pick, stakeVC: 1 })}
+            >
+              {pick === 'A' ? market.a : pick === 'B' ? market.b : pick}
+              {' · '}{market.odds[pick].toFixed(2)}
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

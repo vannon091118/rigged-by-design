@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T05:50Z-agent24-task",
+  "contributionId": "agent24-task",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wettmarkt haengt am vorhandenen Turnierabend: kein zweiter Event, kein zweites Konto. Quoten kommen aus derselben Kampfmechanik, die den Vorkampf entscheidet, und der Schein fixiert sie, bevor der erste Schlag faellt.",
+  "directives": []
+}
