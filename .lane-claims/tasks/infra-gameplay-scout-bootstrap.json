@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "infra-gameplay-scout-bootstrap",
+  "claimId": "lane/infra/gameplay-scout-bootstrap",
+  "branch": "lane/infra/gameplay-scout-bootstrap",
+  "baseSha": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8",
+  "phase": "CI_PENDING",
+  "title": "GameScout als spezialisierter Browser-Subagent vervollständigen: Paketstruktur, CLI, MCP-Server, Dashboard, CDP-Tab-Management, Dokumentation",
+  "goal": "GameScout als installierbares pnpm-Paket @vannon091118/gamescout mit Core, MCP, Dashboard und Framework-Adaptern",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

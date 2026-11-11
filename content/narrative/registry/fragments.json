@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:25e4557d3033032c7fc9965f8e73dd6e6a4e7aaeb6048340b7a95b2b0eeb0bda",
+  "contentHash": "sha256:6c7c53c6d1a562434ea33ccb8effe3d141bae5fdac7e5f3f8a11daf088d10d66",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5776,6 +5776,30 @@
       "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
+    },
+    {
+      "contributionId": "gamescout-observation-01",
+      "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita stellte die Lupe an den Spieltisch. Nicht um zu eingreifen, sondern um zu sehen: was der Croupier tat, wohin die Karte wanderte, wo der Jeton blieb. Jede Bewegung lieferte einen Fact, jeder Fact blieb im Buch stehen – nichts wurde verändert, alles wurde festgehalten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-bootstrap.json"
     },
     {
       "contributionId": "gate-lane-red-team-01",

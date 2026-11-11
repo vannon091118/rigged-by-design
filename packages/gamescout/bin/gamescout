@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+/** GameScout CLI bin entry point. */
+
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const { execFileSync } = require('child_process');
+
+const binDir = fileURLToPath(new URL('.', import.meta.url));
+const cliPath = new URL('../src/cli/index.js', import.meta.url).href;
+
+try {
+  execFileSync(process.execPath, [cliPath, ...process.argv.slice(2)], {
+    stdio: 'inherit',
+  });
+} catch (err) {
+  const code = (err as { code?: number }).code ?? 1;
+  process.exit(code);
+}

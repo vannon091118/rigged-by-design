@@ -1,0 +1,54 @@
+{
+  "name": "@vannon091118/gamescout",
+  "version": "1.0.0",
+  "description": "GameScout - Local gameplay scouting environment for web games. Browser control, visual inspection, recording, replay, and compare via CDP.",
+  "type": "module",
+  "main": "dist/core/index.js",
+  "bin": {
+    "gamescout": "bin/gamescout.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node bin/gamescout.js start",
+    "mcp": "node bin/gamescout.js mcp",
+    "dashboard": "node bin/gamescout.js dashboard",
+    "doctor": "node bin/gamescout.js doctor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vannon091118/gamescout"
+  },
+  "keywords": [
+    "gamescout",
+    "gameplay",
+    "scouting",
+    "cdp",
+    "playwright",
+    "mcp",
+    "browser-automation"
+  ],
+  "author": "vannon091118",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "pixelmatch": "^5.3.0",
+    "playwright-core": "^1.51.0",
+    "pngjs": "^7.0.0",
+    "ws": "^8.22.2",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.18.2",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

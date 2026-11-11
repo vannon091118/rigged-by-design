@@ -1,0 +1,26 @@
+{
+  "id": "lane/infra/gameplay-scout-bootstrap",
+  "owner": "Integrator",
+  "branch": "lane/infra/gameplay-scout-bootstrap",
+  "baseSha": "f5b7e90b6adcbbe785bb6d48bea1add2de5a1e9e",
+  "task": "GameScout als spezialisierter Browser-Subagent vervollständigen: Paketstruktur, CLI, MCP-Server, Dashboard, CDP-Tab-Management, Dokumentation",
+  "goal": "GameScout als installierbares pnpm-Paket @vannon091118/gamescout mit Core, MCP, Dashboard und Framework-Adaptern",
+  "pathAllowlist": [
+    "src/debug/runtime-probe.ts",
+    "src/main.tsx",
+    "src/debug/",
+    ".lane-claims/claims/lane-infra-gameplay-scout-bootstrap.json",
+    ".lane-claims/tasks/infra-gameplay-scout-bootstrap.json",
+    "packages/gamescout/",
+    "content/narrative/contributions/",
+    "content/narrative/turns/",
+    "content/narrative/registry/",
+    "src/core/sim/narrative/composer/",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f5b7e90b6adcbbe785bb6d48bea1add2de5a1e9e"
+}
