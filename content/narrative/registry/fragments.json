@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:700362010956d6ed83e2b8e4dc37929c366e302bbcc8d0a966cec5e35f952d1c",
+  "contentHash": "sha256:f87b098237d81e9a086b2cbba65d1edaf2b77f2541977891336ea0fef75be3e2",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1218,6 +1218,94 @@
       "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-aftercare",
+      "turnId": "2026-11-11T05:40Z-agent21-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heißt: Register, Task und Beleg zusammenführen. Der Branch trägt keine neue Spiellogik, nur die nachgezogene Wahrheit über den Lauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-aftercare.json"
+    },
+    {
+      "contributionId": "agent21-ci-pending",
+      "turnId": "2026-11-11T05:30Z-agent21-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
+    },
+    {
+      "contributionId": "agent21-done",
+      "turnId": "2026-11-11T05:45Z-agent21-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "DONE ist erst, wenn der Squash-Baum mit dem Lane-Kopf übereinstimmt und der Claim merged sagt. Danach bleibt nur noch die Lane zu entfernen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-done.json"
+    },
+    {
+      "contributionId": "agent21-merge-pending",
+      "turnId": "2026-11-11T05:35Z-agent21-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein grüner Lauf allein ist kein Abschluss. Erst der Squash-Beleg auf main macht den Merge nachprüfbar; MERGE_PENDING hält den nächsten Schritt fest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-merge-pending.json"
     },
     {
       "contributionId": "agent21-room-plan-1",
