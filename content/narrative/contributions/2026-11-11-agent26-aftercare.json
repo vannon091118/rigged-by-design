@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+  "contributionId": "agent26-aftercare",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+  "directives": []
+}
