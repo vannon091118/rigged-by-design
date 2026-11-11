@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-first-run-slot-truth",
+  "claimId": "lane/sim/first-run-slot-truth",
+  "branch": "lane/sim/first-run-slot-truth",
+  "baseSha": "29f0573094d8be0c6569457d05dbaf335bcf0965",
+  "phase": "CI_PENDING",
+  "title": "First-Run-Nachfrage und Slot-Wahrheit",
+  "goal": "Erster Gast nur mit Kasse; Linien-RTP und Slot-Auszahlung folgen der Engine.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
