@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-living-world-foundation",
+  "claimId": "lane/sim/living-world-foundation",
+  "branch": "lane/sim/living-world-foundation",
+  "baseSha": "e3389ec55cb57462b8bbc62b171178e56d85206d",
+  "phase": "CI_PENDING",
+  "title": "Living World Phase 1: Home and Neighborhood Foundation",
+  "goal": "Player apartment",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

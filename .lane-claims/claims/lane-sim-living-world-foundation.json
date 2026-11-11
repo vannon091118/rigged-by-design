@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/living-world-foundation",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/living-world-foundation",
+  "baseSha": "e3389ec55cb57462b8bbc62b171178e56d85206d",
+  "task": "Living World Phase 1: Home and Neighborhood Foundation",
+  "goal": "Player apartment",
+  "pathAllowlist": [
+    "src/core/sim/building.ts",
+    "src/core/sim/building-types.ts",
+    "src/core/sim/player-apartment.ts",
+    "src/core/sim/city-exterior.ts",
+    "src/core/sim/room-transition.ts",
+    "src/core/sim/__tests__/building.test.ts",
+    "src/core/sim/__tests__/room-transition.test.ts",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-sim-living-world-foundation.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "e3389ec55cb57462b8bbc62b171178e56d85206d"
+}

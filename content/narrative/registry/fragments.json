@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7a69affacaa4b52255ee984c3c9461b3557cb3530124d2bc0df77fc59710c519",
+  "contentHash": "sha256:5ff20a43204d980791dd5d1797fac8dcc584eb54a67131657b1b328f81180acf",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5169,6 +5169,28 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "living-world-foundation-1",
+      "turnId": "2026-11-11T02:15Z-living-world-foundation-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Aus dem Treppenhaus auf den nassen Gehweg getreten: Gegenüber leuchtet das Schild der Kiezkneipe, der Späti hat die Kisten draußen stehen, und ein Nachbar nickt im Vorbeigehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-1.json"
     },
     {
       "contributionId": "loc-gate-01",
