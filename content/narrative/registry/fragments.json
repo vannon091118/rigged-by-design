@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3627912fd34d011f5b869204bd6d13a8ff3b1a26d9a09d11ed856b698e09a182",
+  "contentHash": "sha256:09191cf6cc0821a84ab34521d5a8f6a8de0d69176e7ee8f6037f74e7a4136c9b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6440,6 +6440,54 @@
       "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
+    },
+    {
+      "contributionId": "governance-ci-gates",
+      "turnId": "2026-11-11T14:30Z-governance-ci-gates",
+      "agentId": "codex",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita legte die vier roten Prüfungen nebeneinander. Sie übersprang keine Stufe, sondern suchte in jeder Meldung den ersten konkreten Befund, korrigierte die Ursache und ließ die vollständige Suite erneut laufen. Erst als alle Signale grün waren, gab sie den Stand weiter.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-governance-ci-gates.json"
+    },
+    {
+      "contributionId": "governance-claim-scope",
+      "turnId": "2026-11-11T14:40Z-governance-claim-scope",
+      "agentId": "codex",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita prüfte den Push, nicht nur den Commit: Die Tests lagen ausserhalb des Claims. Sie verschob die Dateien unter den bereits freigegebenen Pfad, statt die Allowlist zu erweitern. Der Fix blieb derselbe, die Grenze auch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-governance-claim-scope.json"
     },
     {
       "contributionId": "governance-closeout-main-sync-01",

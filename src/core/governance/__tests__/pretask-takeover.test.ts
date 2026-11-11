@@ -1,6 +1,6 @@
 /**
  * @test-target: scripts/lib/takeover.mjs
- * @error-code: ERR-4030
+ * @error-code: ERR-4019
  *
  * Der echte `pretask`-Start mit adoptierbarer und korrupter WIP. Fremde oder
  * unvollstaendige Aenderungen werden als eigene Arbeit angenommen; nur

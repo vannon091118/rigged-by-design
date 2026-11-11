@@ -33,7 +33,7 @@ describe('Impact-Graph-Gate', () => {
     }));
     expect(result.ok).toBe(false);
     expect(result.modules).toContain('helper.mjs');
-    expect(result.violations.map((entry) => entry.specifier)).toContain('./ts-ast.mjs');
+    expect(result.violations.map((entry: { readonly specifier: string }) => entry.specifier)).toContain('./ts-ast.mjs');
   });
 
   it('akzeptiert den echten Impact-Pfad ohne node_modules', () => {

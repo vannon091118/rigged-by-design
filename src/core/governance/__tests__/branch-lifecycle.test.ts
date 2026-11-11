@@ -44,7 +44,7 @@ describe('branch-lifecycle', () => {
     });
     expect(plan.delete).toEqual(['lane/test/merged']);
     expect(plan.prune).toEqual([]);
-    expect(plan.keep.map((entry) => entry.name)).toEqual(['main', 'lane/test/open', 'lane/test/current']);
+    expect(plan.keep.map((entry: { readonly name: string }) => entry.name)).toEqual(['main', 'lane/test/open', 'lane/test/current']);
   });
 
   it('behaelt offene Arbeit und aktive Worktrees', () => {
@@ -57,7 +57,7 @@ describe('branch-lifecycle', () => {
       current: 'lane/test/open',
     });
     expect(plan.delete).toEqual([]);
-    expect(plan.keep.map((entry) => entry.reason)).toEqual(['aktiver Worktree', 'aktueller Branch']);
+    expect(plan.keep.map((entry: { readonly reason: string }) => entry.reason)).toEqual(['aktiver Worktree', 'aktueller Branch']);
     expect(PROTECTED_BRANCHES).toContain('main');
   });
 

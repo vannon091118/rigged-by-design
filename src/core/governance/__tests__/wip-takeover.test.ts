@@ -1,6 +1,6 @@
 /**
  * @test-target: scripts/lib/takeover.mjs
- * @error-code: ERR-4030
+ * @error-code: ERR-4019
  *
  * "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel,
  * unvollstaendig oder korrupt und wird in allen drei Faellen adoptiert. Nur
@@ -70,6 +70,6 @@ describe('WIP-Takeover', () => {
     expect(summary.adopted).toBe(4);
     expect(summary.blocked).toBe(2);
     expect(summary.counts).toEqual({ compatible: 1, incomplete: 1, corrupted: 2 });
-    expect(summary.corrupted.map((entry) => entry.path)).toContain('src/core/economy/ledger.ts');
+    expect(summary.corrupted.map((entry: { readonly path: string }) => entry.path)).toContain('src/core/economy/ledger.ts');
   });
 });

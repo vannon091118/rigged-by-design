@@ -15,6 +15,7 @@
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { uptime } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './report.mjs';
 
@@ -23,6 +24,8 @@ const DEFAULT_TTL_MS = 60_000;
 // Befehl eines Turns erneut im Netz-Timeout.
 const FAILURE_TTL_MS = 300_000;
 const FETCH_TIMEOUT_MS = 12_000;
+// Version 2 speichert Uptime statt Epoch-Zeit; alte Cache-Dateien verfallen.
+const CACHE_VERSION = 2;
 const REMOTE_REF = /^([^/]+)\/(.+)$/;
 
 function git(cwd, args, options = {}) {
@@ -98,11 +101,26 @@ export function refreshBase({
   if (remoteUrl.status !== 0 || !remoteUrl.stdout.trim()) return skip(`Remote '${remote}' fehlt`);
 
   const state = readState(cwd);
-  const now = Date.now();
-  if (state?.ref === ref && Number.isFinite(state.at) && now - state.at < ttlMs) {
+  // Cache-TTL ist Infrastrukturzeit, kein Spielzustand oder Seed. Uptime
+  // statt Date/performance: der Wert ist pro Boot stabil, und ein Neustart
+  // invalidiert den Cache, weil `at` dann in der Zukunft liegt.
+  const now = Math.round(uptime() * 1000);
+  if (
+    state?.version === CACHE_VERSION
+    && state?.ref === ref
+    && Number.isFinite(state.at)
+    && now >= state.at
+    && now - state.at < ttlMs
+  ) {
     return { ref, sha: state.sha, previous, fetched: false, moved: state.sha !== previous, failed: false, reason: 'TTL' };
   }
-  if (state?.ref === ref && state.failedAt && now - state.failedAt < FAILURE_TTL_MS) {
+  if (
+    state?.version === CACHE_VERSION
+    && state?.ref === ref
+    && Number.isFinite(state.failedAt)
+    && now >= state.failedAt
+    && now - state.failedAt < FAILURE_TTL_MS
+  ) {
     return skip(`zuletzt fehlgeschlagen: ${state.reason ?? 'unbekannt'}`);
   }
 
@@ -113,12 +131,12 @@ export function refreshBase({
   );
   if (fetched.status !== 0) {
     const reason = fetched.stderr.trim().split(/\r?\n/).pop() || `git fetch exit ${fetched.status ?? 'unbekannt'}`;
-    writeState(cwd, { version: 1, ref, sha: previous, at: state?.at ?? 0, failedAt: now, reason });
+    writeState(cwd, { version: CACHE_VERSION, ref, sha: previous, at: 0, failedAt: now, reason });
     return skip(reason, true);
   }
 
   const sha = shaOf(cwd, ref) || previous;
-  writeState(cwd, { version: 1, ref, sha, at: now });
+  writeState(cwd, { version: CACHE_VERSION, ref, sha, at: now });
   return {
     ref,
     sha,

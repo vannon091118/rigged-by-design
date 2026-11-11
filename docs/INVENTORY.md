@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 306 Dateien — contract 177 · integration 62 · governance 53 · statistics 7 · performance 7.
+Summe: 307 Dateien — contract 178 · integration 62 · governance 53 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -291,7 +291,6 @@ Summe: 306 Dateien — contract 177 · integration 62 · governance 53 · statis
 | `src/core/sim/__tests__/narrative-choice-execution.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
 | `src/core/sim/__tests__/narrative-command-allowlist.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/validate.ts` |
 | `src/core/sim/__tests__/narrative-command-dsl.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/parse-directives.ts` |
-| `src/core/sim/__tests__/narrative-composer.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/core/sim/__tests__/narrative-conflict-source.test.ts` | sim | contract | ja | `src/core/sim/disputes.ts` |
 | `src/core/sim/__tests__/narrative-counter-rival.test.ts` | sim | contract | ja | `src/core/sim/narrative/commands/execute.ts` |
 | `src/core/sim/__tests__/narrative-coverage.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
@@ -360,6 +359,8 @@ Summe: 306 Dateien — contract 177 · integration 62 · governance 53 · statis
 | `src/core/sim/narrative/__tests__/dialogue.test.ts` | sim | contract | ja | `src/core/sim/narrative/dialogue/select.ts` |
 | `src/core/sim/narrative/__tests__/narrative-view.test.ts` | sim | contract | ja | `src/core/sim/narrative/view.ts` |
 | `src/core/sim/narrative/__tests__/slot-discharge-fact.test.ts` | sim | contract | ja | `src/core/sim/narrative/facts.ts` |
+| `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
+| `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` | sim | contract | ja | `src/core/sim/narrative/composer/index.ts` |
 | `src/render/__tests__/atlas.test.ts` | render | integration | ja | `src/render/assets/atlas.ts` |
 | `src/render/__tests__/depth.test.ts` | render | integration | ja | `src/render/depth.ts` |
 | `src/render/__tests__/floor-actions.test.ts` | render | integration | ja | `src/render/floor-actions.ts` |
@@ -619,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2846 |
-| Gelistete Dateien | 2846 |
-| Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (202), content (1005), docs (84), packages (28), public (554), scripts (113), src (832) |
+| Getrackte Dateien | 2849 |
+| Gelistete Dateien | 2849 |
+| Getrackte Ordner | 105 |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (202), content (1007), docs (84), packages (28), public (554), scripts (113), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -636,7 +637,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 126 Datei(en)
 - `.lane-claims/tasks/` — 74 Datei(en)
-- `content/narrative/contributions/` — 1001 Datei(en)
+- `content/narrative/contributions/` — 1003 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -706,7 +707,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 129 Datei(en)
-- `src/core/sim/__tests__/` — 136 Datei(en)
+- `src/core/sim/__tests__/` — 135 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -714,6 +715,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/choices/` — 4 Datei(en)
 - `src/core/sim/narrative/commands/` — 7 Datei(en)
 - `src/core/sim/narrative/composer/` — 6 Datei(en)
+- `src/core/sim/narrative/composer/__tests__/` — 2 Datei(en)
 - `src/core/sim/narrative/dialogue/` — 3 Datei(en)
 - `src/core/sim/narrative/events/` — 5 Datei(en)
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
@@ -909,7 +911,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-mod-engine-docs.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-phase-1-4.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-phase-1-4.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/tasks/governance-phase3-4-acceptance-v2.json` — { — gelesen: 27 Zeilen
@@ -1940,6 +1942,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-game-scout-bootstrap.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-player-qa.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-governance-ci-gates.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-governance-claim-scope.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-governance-retry-path.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-governance-stale-claim-closeout.json` — { — gelesen: 17 Zeilen
@@ -1963,8 +1967,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22429 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4009 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22477 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4017 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1808 Zeilen
@@ -2667,7 +2671,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/agent-new-args.mjs` — Parse agent:new options while preserving commas in scalar arguments. — gelesen: 20 Zeilen
 - `scripts/lib/atlas-png.mjs` — Deterministischer PNG-Atlas ohne neue Abhaengigkeit. — gelesen: 175 Zeilen
 - `scripts/lib/atlas-webp.mjs` — WebP-Kodierung der Atlasseiten ueber das bereits vorhandene `ffmpeg-static`. — gelesen: 27 Zeilen
-- `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 131 Zeilen
+- `scripts/lib/base-refresh.mjs` — Eine Basis, ein Stand: `origin/main` wird vor jeder Diff- und Basis-Abfrage — gelesen: 149 Zeilen
 - `scripts/lib/body-sync.mjs` — Gemeinsame Wahrheit fuer Commit- und PR-Bodies. — gelesen: 272 Zeilen
 - `scripts/lib/branch-lifecycle.mjs` — Branch-/Worktree-Lifecycle: jede Branch ausser `main` ist temporaer. — gelesen: 90 Zeilen
 - `scripts/lib/branch-prune.mjs` — Wegwerf-Branches: alles, was auf `main` liegt und nicht `main` ist. — gelesen: 37 Zeilen
@@ -2868,11 +2872,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/narrative-compiler.test.ts` — NAR-10: Makros werden zu einem begrenzten AST, Konflikte werden vor dem — gelesen: 180 Zeilen
 - `src/core/governance/__tests__/narrative-content-quality.test.ts` — Quality-First: Der Bestand wird nicht nach Poolgroesse, sondern nach — gelesen: 138 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 224 Zeilen
-- `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 112 Zeilen
+- `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 114 Zeilen
 - `src/core/governance/__tests__/pr-body.test.ts` — Der PR-Body wird im Plan geprueft. Die exakten Ueberschriften und echte — gelesen: 34 Zeilen
 - `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 184 Zeilen
 - `src/core/governance/__tests__/pretask-blocked-issues.test.ts` — Fail-Closed des Issue-Checks: `governance/blocked` ist ein eigener Blocker, — gelesen: 172 Zeilen
-- `src/core/governance/__tests__/pretask-cause.test.ts` — `pretask` und `turn:finish` geben einen roten Gate-Befund automatisch als — gelesen: 112 Zeilen
+- `src/core/governance/__tests__/pretask-cause.test.ts` — `pretask` und `turn:finish` geben einen roten Gate-Befund automatisch als — gelesen: 115 Zeilen
 - `src/core/governance/__tests__/pretask-issues.test.ts` — Issue-Scopes blockieren nur die betroffene Lane. `remote-ci` und Issues ohne — gelesen: 187 Zeilen
 - `src/core/governance/__tests__/pretask-modes.test.ts` — Die Startmodi NEW, RESUME und NOOP sowie die Grenze zwischen eigener und — gelesen: 192 Zeilen
 - `src/core/governance/__tests__/pretask-takeover.test.ts` — Der echte `pretask`-Start mit adoptierbarer und korrupter WIP. Fremde oder — gelesen: 153 Zeilen
@@ -2881,7 +2885,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/promote-guard.test.ts` — Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus — gelesen: 109 Zeilen
 - `src/core/governance/__tests__/promotion-state.test.ts` — Ein Merge ist nur auf dem exakten PR-Lauf, mit passendem Plan-Artefakt und — gelesen: 64 Zeilen
 - `src/core/governance/__tests__/promotion-workflows.test.ts` — Nur ein PR-Lauf ist ein Merge-Nachweis. Der Plan-Job prueft den PR-Body, — gelesen: 90 Zeilen
-- `src/core/governance/__tests__/red-team-gate-lane.test.ts` — Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate, — gelesen: 208 Zeilen
+- `src/core/governance/__tests__/red-team-gate-lane.test.ts` — Red-Team der Test- und Gate-Lane. Der Test prueft nicht ein einzelnes Gate, — gelesen: 209 Zeilen
 - `src/core/governance/__tests__/release-escalation.test.ts` — Umgebungsprobleme muessen automatisch eine Stufe hoeher gehen, statt als — gelesen: 36 Zeilen
 - `src/core/governance/__tests__/roadmap-register.test.ts` — Das Register in `docs/ROADMAP.md` ist die einzige Liste offener Punkte. Damit — gelesen: 189 Zeilen
 - `src/core/governance/__tests__/scripts-libs-ci.d.ts` — Deklarationen fuer die CI-Diagnose- und Claim-Evidenz-Bibliotheken. — gelesen: 140 Zeilen
@@ -2991,7 +2995,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-choice-execution.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/narrative-command-allowlist.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 52 Zeilen
 - `src/core/sim/__tests__/narrative-command-dsl.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 36 Zeilen
-- `src/core/sim/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 239 Zeilen
 - `src/core/sim/__tests__/narrative-conflict-source.test.ts` — Ein echter Streit zwischen zwei Gästen ist die Quelle für gerichtete — gelesen: 83 Zeilen
 - `src/core/sim/__tests__/narrative-counter-rival.test.ts` — D2: `CONFRONT_RIVAL` traegt die typisierte Domaenenwirkung `COUNTER_RIVAL`. — gelesen: 74 Zeilen
 - `src/core/sim/__tests__/narrative-coverage.test.ts` — B4: Jedes stabile Template muss `TITLE`, `BODY` und jedes angebotene — gelesen: 61 Zeilen
@@ -3172,6 +3175,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/registry.ts` — Allowlist der Commands: ID, Familie, Parameter und Handler-Vertrag. — gelesen: 100 Zeilen
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
+- `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` — NAR-11: Die Fehlerpfade des Runtime-Composers lehnen ungueltige Direktiven, — gelesen: 69 Zeilen
+- `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
 - `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 256 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen

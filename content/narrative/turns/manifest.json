@@ -4004,6 +4004,14 @@
     {
       "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
       "contributionId": "governance-dependency-matrix-retry"
+    },
+    {
+      "turnId": "2026-11-11T14:30Z-governance-ci-gates",
+      "contributionId": "governance-ci-gates"
+    },
+    {
+      "turnId": "2026-11-11T14:40Z-governance-claim-scope",
+      "contributionId": "governance-claim-scope"
     }
   ]
 }

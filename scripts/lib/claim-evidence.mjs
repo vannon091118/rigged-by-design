@@ -327,7 +327,7 @@ export function planReconcile({
 } = {}) {
   const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
   const heads = remoteHeads({ git });
-  let baseTip = null;
+  let baseTip;
   try {
     baseTip = git(['rev-parse', baseRef]);
   } catch {

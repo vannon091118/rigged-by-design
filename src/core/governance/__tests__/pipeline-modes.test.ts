@@ -40,9 +40,11 @@ describe('Pipeline-Modi', () => {
       const call = [gate.script, ...(gate.args ?? [])].join(' ');
       expect(call, `${key} repariert statt zu pruefen`).not.toMatch(/--fix|--write|autofix/);
     }
-    // Matrix und Katalog sind keine Gates mehr; das Doku-Gate prueft nur.
+    // Die Matrix ist kein Gate mehr; der Katalog ist ein eigenes, rein lesendes Gate.
     expect(GATES.docs?.script).toBe('scripts/verify-docs.mjs');
     expect(GATES.docs?.args ?? []).toEqual([]);
+    expect(GATES.catalog?.script).toBe('scripts/test-catalog.mjs');
+    expect(GATES.catalog?.args ?? []).toEqual(['--check']);
   });
 
   it('verbindet im dev-Profil die Light-Gates mit den betroffenen Tests', () => {
@@ -63,7 +65,7 @@ describe('Pipeline-Modi', () => {
     expect(full).toContain('audit');
     expect(quick).toContain('docs');
     expect(quick).not.toContain('deps-matrix');
-    expect(quick).not.toContain('catalog');
+    expect(quick).toContain('catalog');
   });
 
   it('gibt jedem Gate ein hartes Zeitlimit', () => {

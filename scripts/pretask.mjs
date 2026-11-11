@@ -362,7 +362,7 @@ const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path))
 
 // Phase 2: "Fremdes WIP" gibt es nicht. Jede Dirty-Datei wird klassifiziert
 // und als eigene Arbeit angenommen; nur Korruption haelt den Start an.
-let freezeRecord = null;
+let freezeRecord;
 try {
   freezeRecord = JSON.parse(readFileSync(join(ROOT, FREEZE_UNLOCK_FILE), 'utf8'));
 } catch {

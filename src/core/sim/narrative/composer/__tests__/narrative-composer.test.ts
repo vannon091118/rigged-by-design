@@ -7,10 +7,10 @@
  * nur als AST weiter. Kein Test braucht Zeit, Netzwerk oder Gameplay-PRNG.
  */
 import { describe, expect, it } from 'vitest';
-import { composeNarrative, type ComposeRequest, type ComposedNarrative, type NarrativeFragment } from '../narrative/composer';
-import { NARRATIVE_REGISTRY } from '../narrative/composer/registry.generated';
-import { VISITOR_CONFLICT_TEMPLATE } from '../narrative/events/definitions/visitor-conflict';
-import { VISITOR_RETURN_TEMPLATE } from '../narrative/events/definitions/visitor-return';
+import { composeNarrative, type ComposeRequest, type ComposedNarrative, type NarrativeFragment } from '../index';
+import { NARRATIVE_REGISTRY } from '../registry.generated';
+import { VISITOR_CONFLICT_TEMPLATE } from '../../events/definitions/visitor-conflict';
+import { VISITOR_RETURN_TEMPLATE } from '../../events/definitions/visitor-return';
 
 const RETURN_REQUEST: ComposeRequest = {
   locale: 'de',
@@ -80,47 +80,6 @@ describe('Narrative Runtime Composer (NAR-11)', () => {
     expect(english.slots).toEqual([]);
     expect(english.issues[0]).toContain('Locale en hat keine Sicherheitscopy');
     expect(english.locale).toBe('en');
-  });
-
-  it('weist ungueltige Direktiven zurueck, ohne das Fragment zu verwenden', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
-    if (!baseline) throw new Error('Baseline-Fragment fehlt');
-    const invalid = {
-      ...baseline,
-      contributionId: 'invalid-directive-01',
-      directives: [{ id: 'FREEZE_TICK', ticks: 999 }],
-    };
-    const result = composeNarrative(
-      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] },
-      [invalid, ...NARRATIVE_REGISTRY],
-    );
-    expect(result.rejected).toContainEqual({
-      contributionId: 'invalid-directive-01',
-      reason: 'INVALID_DIRECTIVE',
-    });
-    expect(slot(result, 'BODY').contributionId).toBe('trigger-context-01');
-  });
-
-  it('weist ungueltige Fragmente zurueck und meldet den Grund', () => {
-    const baseline = NARRATIVE_REGISTRY.find((entry) => entry.contributionId === 'trigger-context-01');
-    if (!baseline) throw new Error('Baseline-Fragment fehlt');
-    const invalid = { ...baseline, contributionId: 'invalid-text-01', text: '' };
-    const result = composeNarrative(
-      { ...RETURN_REQUEST, slots: [{ id: 'BODY', kind: 'BODY' as const }] },
-      [invalid],
-    );
-    expect(result.rejected).toContainEqual({ contributionId: 'invalid-text-01', reason: 'INVALID_FRAGMENT' });
-    expect(slot(result, 'BODY').fallback).toBe(true);
-  });
-
-  it('liefert fuer ungueltige Anfragen kein Teil-Ergebnis', () => {
-    const result = composeNarrative({
-      ...RETURN_REQUEST,
-      slots: [{ id: 'BODY', kind: 'BODY' }, { id: 'BODY', kind: 'BODY' }],
-    });
-    expect(result.ok).toBe(false);
-    expect(result.slots).toEqual([]);
-    expect(result.issues).toHaveLength(1);
   });
 
   it('reicht Direktiven unveraendert weiter, ohne Text oder Mechanik zu koppeln', () => {

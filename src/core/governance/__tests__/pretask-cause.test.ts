@@ -107,6 +107,9 @@ describe('pretask cause output', () => {
     const finding = causeForGate('affected');
     expect(finding.fix).toBe('pnpm run test:affected');
     expect(finding.repro).toBe('pnpm run test:affected');
-    expect(causeBlock([finding])).toContain('Gate      affected · ERR-4026');
+    const block = causeBlock([finding]);
+    expect(block).toContain('Gate      affected · fail-open-with-issue');
+    expect(block).toContain('Code      ERR-4026');
+    expect(block).toContain('Repro     pnpm run test:affected');
   });
 });
