@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5316f60e48beb46dc50d833f3c1cc526815309eaed7465bf091781db9ce29896",
+  "contentHash": "sha256:b25b465daf81afd524c7d936bed1f9fd7ce278d432e13b89ed36536a29b2bcb8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1218,6 +1218,28 @@
       "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-aftercare",
+      "turnId": "2026-11-11T05:40Z-agent21-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachlauf heißt: Register, Task und Beleg zusammenführen. Der Branch trägt keine neue Spiellogik, nur die nachgezogene Wahrheit über den Lauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-aftercare.json"
     },
     {
       "contributionId": "agent21-ci-pending",
