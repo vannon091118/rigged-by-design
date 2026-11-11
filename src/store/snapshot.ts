@@ -13,6 +13,7 @@ import { renovationView } from '../core/sim/renovation';
 import { machineHallView } from '../core/sim/machine-hall';
 import { floorWorkView } from '../core/sim/floor-work';
 import { cityView } from '../core/sim/city';
+import { venueView } from '../core/sim/venue-event';
 import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
@@ -163,6 +164,8 @@ export function buildView(world: WorldState, ledger: Ledger, notice: string): Ga
     playerCash: ledger.getBalance(PLAYER_CASH),
     // Agent 06: dieselbe Karriere-Sicht fuer Charakterfenster und Tests, kein zweiter Zaehler.
     career: playerCareer(world, ledger.getBalance(PORTEMONNAIE), ledger.getBalance(PLAYER_CASH)),
+    // Agent 22: Phasen und Historie der einen Veranstaltungsinstanz, kein zweiter Kalender.
+    venue: venueView(world),
     desk: ledger.getBalance(WECHSELKASSE),
     pending,
     guestMoney,

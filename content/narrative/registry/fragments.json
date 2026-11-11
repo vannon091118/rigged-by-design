@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e5bb09d53a5bc2059f2aa6934990f41ba5bc6a3ff697ce864959079df5d7082b",
+  "contentHash": "sha256:1ee9539c85c3d437e52bbf5cce60434208288b7a0678346fe4016588fd2f91df",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -9393,6 +9393,28 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "placement-venue-history-1",
+      "turnId": "2026-11-11T12:10Z-placement-venue-history",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history.json"
     },
     {
       "contributionId": "player-career-01",

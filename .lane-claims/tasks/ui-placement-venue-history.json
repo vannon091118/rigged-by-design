@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "ui-placement-venue-history",
+  "claimId": "lane/ui/placement-venue-history",
+  "branch": "lane/ui/placement-venue-history",
+  "baseSha": "549b89142b291cf694ccecc755ff2de224fbe35f",
+  "phase": "CI_PENDING",
+  "title": "Enter-Ablegen und Turnier-Historie",
+  "goal": "Playtest-Befunde: Enter setzt nie ab",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

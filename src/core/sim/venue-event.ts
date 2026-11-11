@@ -42,7 +42,7 @@ const RESULT_SHARE = 0.8;
 const RESULT_VISIBLE_TICKS = 30;
 const HISTORY_LIMIT = 6;
 
-interface VenueEventView {
+export interface VenueEventView {
   readonly id: number;
   readonly kind: DemandEventKind;
   readonly label: string;
@@ -57,7 +57,7 @@ interface VenueEventView {
   readonly result: string | null;
 }
 
-interface VenueView {
+export interface VenueView {
   readonly current: VenueEventView | null;
   readonly history: readonly VenueEventView[];
   readonly admitted: number;
@@ -139,6 +139,9 @@ export function openVenueEvent(
     cause: 'Veranstaltung angekündigt',
     effect: definition.startMessage,
   });
+  // Die erste Welle steht sofort vor der Tuer: jeder Startpfad zieht sie nach,
+  // nicht nur der Tages-Tick in `demand`.
+  world.nextArrivalTick = Math.min(world.nextArrivalTick, world.tick + 1);
   return world.narrative.events.find((entry) => entry.id === event.id) ?? null;
 }
 

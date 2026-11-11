@@ -16,6 +16,7 @@ import type { MachineHallView } from '../core/sim/machine-hall';
 import type { FloorWorkView } from '../core/sim/floor-work';
 import type { CityView } from '../core/sim/city';
 import type { ActionTaskView } from '../core/sim/action-queue';
+import type { VenueView } from '../core/sim/venue-event';
 
 interface SceneView {
   readonly key: string;
@@ -100,6 +101,8 @@ export interface GameView {
   readonly playerCash: VaCoinMicro;
   /** Karriere-Sicht: abgeleitet aus Welt, Ledger und Archiv, kein eigener Zustand. */
   readonly career: PlayerCareer;
+  /** Veranstaltungsphasen und ihre Historie aus derselben Event-Instanz. */
+  readonly venue: VenueView;
   readonly parts: number;
   readonly guestsServed: number;
   readonly wallColor: string;
