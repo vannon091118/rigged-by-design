@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:da6efe6330115a6b5bc7ccfad13088a24f2271f351910ca4d27b57ac8ecaed28",
+  "contentHash": "sha256:77a52f08c8c8bf7054ab249de3282cc1ad0ebf7c084a1aa567a9da253c768417",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -734,6 +734,28 @@
       "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
+    },
+    {
+      "contributionId": "agent17-done",
+      "turnId": "2026-11-11T02:00Z-agent17-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-done.json"
     },
     {
       "contributionId": "agent17-merge-pending",
