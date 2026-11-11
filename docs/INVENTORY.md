@@ -821,7 +821,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-roadmap-p11-closeout.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-register.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-slot-discharge-fact-lane2.json` — { — gelesen: 49 Zeilen
-- `.lane-claims/claims/lane-governance-soak-quick-fallback.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-soak-quick-fallback.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-sucht-folgen.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-welt-anker.json` — { — gelesen: 54 Zeilen
@@ -902,7 +902,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-readme-visual-polish.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen

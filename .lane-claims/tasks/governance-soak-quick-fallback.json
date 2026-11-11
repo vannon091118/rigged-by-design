@@ -4,7 +4,7 @@
   "claimId": "lane/governance/soak-quick-fallback",
   "branch": "lane/governance/soak-quick-fallback",
   "baseSha": "7241e253042eb68f89eb0aa3e6ec857d66da4e06",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "CI-Soak nur bei Sim-Aenderungen voll",
   "goal": "Der lange CI-Job faehrt 100000 Soak-Ticks nur bei Aenderungen unter src/core/sim; alle anderen Aenderungen nutzen den kurzen 3000-Tick-Lauf. Der manuelle Wochenlauf bleibt voll.",
   "taskType": "single",
@@ -18,6 +18,8 @@
     "mergedSha": "f316324c611abbf148e1896a2c769c53112ba8d3"
   },
   "findings": [],
-  "nextAction": "Nachsorge abschliessen und den Vertrag auf DONE setzen.",
-  "revision": 4
+  "nextAction": "Abgeschlossen: PR #440 gemergt (f316324c), Claim merged mit Beleg.",
+  "revision": 5,
+  "mergedSha": "f316324c611abbf148e1896a2c769c53112ba8d3",
+  "mergedEvidence": "merged-pr"
 }
