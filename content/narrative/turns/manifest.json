@@ -3812,6 +3812,10 @@
     {
       "turnId": "2026-11-11T12:10Z-placement-venue-history",
       "contributionId": "placement-venue-history-1"
+    },
+    {
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "contributionId": "placement-venue-history-ci-fix"
     }
   ]
 }

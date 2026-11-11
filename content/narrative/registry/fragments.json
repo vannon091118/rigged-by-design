@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1ee9539c85c3d437e52bbf5cce60434208288b7a0678346fe4016588fd2f91df",
+  "contentHash": "sha256:0f45ea1eb8935e781dd01f8bea0535ac406ac42ea0a1c24d742a193def6a1f56",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -9415,6 +9415,28 @@
       "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-placement-venue-history.json"
+    },
+    {
+      "contributionId": "placement-venue-history-ci-fix",
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json"
     },
     {
       "contributionId": "player-career-01",

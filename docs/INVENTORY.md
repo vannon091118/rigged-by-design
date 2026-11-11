@@ -601,10 +601,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2708 |
-| Gelistete Dateien | 2708 |
+| Getrackte Dateien | 2709 |
+| Gelistete Dateien | 2709 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (957), docs (83), public (554), scripts (102), src (798) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (958), docs (83), public (554), scripts (102), src (798) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -618,7 +618,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 118 Datei(en)
 - `.lane-claims/tasks/` — 66 Datei(en)
-- `content/narrative/contributions/` — 953 Datei(en)
+- `content/narrative/contributions/` — 954 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1868,12 +1868,13 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-living-world-vertical-slice-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-npc-world-foundation-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-placement-venue-history.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21363 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3817 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21385 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3821 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -3303,7 +3304,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/__tests__/narrative-ui.test.tsx` — Die UI zeigt nur, was der Snapshot liefert: Szenentext, Frist, gesperrte — gelesen: 113 Zeilen
 - `src/ui/__tests__/perspective-switch.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 23 Zeilen
 - `src/ui/__tests__/phase34-acceptance.test.tsx` — import { readFileSync } from 'node:fs'; — gelesen: 62 Zeilen
-- `src/ui/__tests__/placement-fit.test.ts` — Das Ablegen per Enter stellt am eigenen Feld ab; die eigene Kachel darf — gelesen: 40 Zeilen
+- `src/ui/__tests__/placement-fit.test.ts` — Das Ablegen per Enter stellt am eigenen Feld ab; die eigene Kachel darf — gelesen: 41 Zeilen
 - `src/ui/__tests__/player-dashboard.test.tsx` — Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand. — gelesen: 170 Zeilen
 - `src/ui/__tests__/self-exclusion-panel.test.tsx` — import { cleanup, fireEvent, render, screen } from '@testing-library/react'; — gelesen: 47 Zeilen
 - `src/ui/__tests__/small-screen-acceptance.test.tsx` — Abnahme Phase 2: die App rendert die Welt bei 320/360 px ohne Tab-Wechsel. — gelesen: 135 Zeilen

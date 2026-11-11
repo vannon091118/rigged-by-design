@@ -8,6 +8,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { Prng } from '../../core/rng/prng';
+import { randomSeed } from '../../test/random-seed';
 import { spawnGuest } from '../../core/sim/spawn';
 import { createWorld } from '../../core/sim/templates';
 import { buildView } from '../../store/snapshot';
@@ -17,7 +18,7 @@ function fresh() {
   const world = createWorld('SMALL');
   world.tick = 700;
   world.nextArrivalTick = 10_000;
-  return { world, ledger: new Ledger(), prng: new Prng(1) };
+  return { world, ledger: new Ledger(), prng: new Prng(randomSeed()) };
 }
 
 describe('Platzierung auf dem eigenen Feld', () => {

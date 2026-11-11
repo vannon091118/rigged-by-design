@@ -28,10 +28,10 @@ describe('Veranstaltungs-Historie', () => {
 
     render(<VenueHistory venue={venueView(world)} />);
 
-    expect(screen.getByText('VERANSTALTUNGEN')).toBeTruthy();
-    expect(screen.getByText('Turnierabend')).toBeTruthy();
-    expect(screen.getByText('Ergebnis')).toBeTruthy();
-    expect(screen.getByText(/Gäste im Haus/)).toBeTruthy();
+    expect(screen.getByText('VERANSTALTUNGEN').textContent).toBe('VERANSTALTUNGEN');
+    expect(screen.getByText('Turnierabend').textContent).toBe('Turnierabend');
+    expect(screen.getByText('Ergebnis').textContent).toBe('Ergebnis');
+    expect(screen.getByText(/Gäste im Haus/).textContent).toContain('Gäste im Haus');
   });
 
   it('bleibt ohne Historie unsichtbar', () => {

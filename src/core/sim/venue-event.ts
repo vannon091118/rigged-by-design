@@ -42,7 +42,7 @@ const RESULT_SHARE = 0.8;
 const RESULT_VISIBLE_TICKS = 30;
 const HISTORY_LIMIT = 6;
 
-export interface VenueEventView {
+interface VenueEventView {
   readonly id: number;
   readonly kind: DemandEventKind;
   readonly label: string;
