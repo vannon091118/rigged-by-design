@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:adacc9abce220b25b22b6272828752be1391c9470467a2d4517818ca8ff919b7",
+  "contentHash": "sha256:8a9961cf3c795fb04ac2d97c117a0c2d4b386f993ef499f0894b859c0d31c8bb",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -690,6 +690,28 @@
       "text": "Vierhundert Ticks sind keine Zusage, sondern eine Wette auf den Seed. Der Test laeuft jetzt, bis der erste Gast wirklich in einem Bereich steht - die Bedingung entscheidet, nicht die Zahl.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-5.json"
+    },
+    {
+      "contributionId": "agent17-ci-pending",
+      "turnId": "2026-11-11T01:48Z-agent17-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "argwoehnisch",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
     },
     {
       "contributionId": "apk-signing-01",
