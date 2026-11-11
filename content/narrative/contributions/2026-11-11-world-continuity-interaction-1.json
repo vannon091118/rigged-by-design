@@ -1,0 +1,21 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-11T03:30Z-world-continuity-interaction-1",
+  "contributionId": "world-continuity-interaction-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-low",
+  "function": "warn",
+  "contexts": [
+    "loss"
+  ],
+  "tone": "trocken",
+  "mood": "argwoehnisch",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer hier eintritt, laesst seine Sorgen draussen auf dem Buergersteig nicht einfach liegen.",
+  "directives": []
+}
