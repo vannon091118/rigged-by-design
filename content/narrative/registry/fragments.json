@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:83191075705d083671336509e58dc9a2181201428c57f8ec5ca36e47441d2cd8",
+  "contentHash": "sha256:17628a4ea9c77f255af479de368a0559df966abc036f6d47dc2f3369d45fb011",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1922,6 +1922,28 @@
       "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
+    },
+    {
+      "contributionId": "agent25-done",
+      "turnId": "2026-11-11T07:40Z-agent25-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Schritte, ein Modul: Die Arena steht auf main, der Claim nennt den Merge, der Zweig bleibt erhalten. Der naechste Halt ist Agent 26, nicht ein zweiter Ausbau derselben Flaeche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-done.json"
     },
     {
       "contributionId": "agent25-main-merge",

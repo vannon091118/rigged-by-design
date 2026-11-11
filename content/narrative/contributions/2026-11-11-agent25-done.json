@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T07:40Z-agent25-done",
+  "contributionId": "agent25-done",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Sechs Schritte, ein Modul: Die Arena steht auf main, der Claim nennt den Merge, der Zweig bleibt erhalten. Der naechste Halt ist Agent 26, nicht ein zweiter Ausbau derselben Flaeche.",
+  "directives": []
+}
