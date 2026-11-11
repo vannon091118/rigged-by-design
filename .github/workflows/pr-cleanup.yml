@@ -4,14 +4,72 @@ name: PR Cleanup
 # Aufraeumaktion nach dem Merge; `main`, `integration`, `integration/*` und
 # Branches mit dem Label `keep-branch` bleiben unangetastet. Der Workflow
 # laeuft nur fuer Branches aus diesem Repository, nie fuer Fork-Branches.
+#
+# Der zweite Job zieht den Registerstand nach: Claim auf merged, Task auf DONE
+# und die 10-Task-Retention. Er legt dafuer einen eigenen Closeout-PR an; der
+# Job schreibt nie direkt auf `main`.
 on:
   pull_request:
     types: [closed]
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
+  post-merge-closeout:
+    name: Pending-Status nach Merge schliessen
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref != 'main' &&
+      github.event.pull_request.head.ref != 'integration' &&
+      !startsWith(github.event.pull_request.head.ref, 'integration/') &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: App-Token vorbereiten
+        id: auth
+        env:
+          APP_ID: ${{ secrets.RBD_APP_ID }}
+          APP_KEY: ${{ secrets.RBD_APP_PRIVATE_KEY }}
+        run: |
+          if [ -n "$APP_ID" ] && [ -n "$APP_KEY" ]; then
+            echo "app=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "app=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::RBD_APP_ID/RBD_APP_PRIVATE_KEY fehlen; Closeout-PR wird mit GITHUB_TOKEN angelegt und loest keinen CI-Lauf aus."
+          fi
+
+      - name: App-Token
+        id: app
+        if: steps.auth.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ secrets.RBD_APP_ID }}
+          private-key: ${{ secrets.RBD_APP_PRIVATE_KEY }}
+
+      - name: Checkout main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.PROMOTE_TOKEN || steps.app.outputs.token || secrets.GITHUB_TOKEN }}
+
+      - name: Node 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+
+      - name: Register nachziehen und Closeout-PR anlegen
+        env:
+          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || steps.app.outputs.token || secrets.GITHUB_TOKEN }}
+          MERGED_PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGED_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          MERGED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: node scripts/post-merge-closeout.mjs
+
   delete-branch:
     name: Gemergten Head-Branch loeschen
     if: >-

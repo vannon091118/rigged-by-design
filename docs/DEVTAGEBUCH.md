@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-11 - Claim-Retention und Post-Merge-Closeout
+
+**Ziel:** Lane-Claims und Task-Verträge dauerhaft auf die letzten zehn Tasks begrenzen und Pending-Status nach einem belegten `main`-Merge automatisch lösen.
+
+**Befund:** Das Register wuchs mit jeder Lane; gemergte Claims und `DONE`-Tasks blieben unbegrenzt liegen. `reconcile-claims` konnte Claims auf `merged` ziehen, ließ den Task aber auf `CI_PENDING` stehen. Ein `DONE`-Task wurde von `promote` pauschal gehalten, sodass der Closeout wieder ein manueller Zwischenschritt war.
+
+**Umsetzung:** `scripts/lib/claim-lifecycle.mjs` plant Retention und Closeout rein: aktive Tasks und offene Claims bleiben, geschlossene Tasks werden nach Commit-Zeit sortiert und nur die neuesten zehn behalten; das Legacy-Register bleibt unangetastet. `reconcile-claims --apply` schließt gemergte Tasks ohne offenen Blocker auf `DONE` und führt die Retention aus. `scripts/post-merge-closeout.mjs` wird von `PR Cleanup` nach jedem Merge aufgerufen, legt den Closeout-PR an und schreibt `closeout: post-merge`; nur dieser Pfad darf als `DONE` durch `promote`.
+
+**Prüfungen:** `claim-lifecycle`, `promotion-state` und die Workflow-Verträge sind grün; `claim:register doctor`, `claim:register prune` und der neue Reconcile-Pfad wurden lokal ausgeführt. Die CI prüft den gepushten Kopf.
+
+**Bewusst nicht getan:** Kein Direktpush auf `main`, keine Branch-Löschung, keine Kürzung des Legacy-Registers `claims.json`. Die Retention löscht keine aktiven Lanes und keinen offenen Claim.
+
 ## 2026-11-11 - Repo-Cleanup: Doku-Dubletten, Ist-Zahlen und 2k-Datencheck
 
 **Ziel:** Die Dokumentation auf den echten Stand bringen, exakte Dubletten entfernen und die sogenannten 2k-Daten gegen ihre Nutzung pruefen, ohne belegte Inhalte zu loeschen.

@@ -46,6 +46,12 @@ describe('promotion-state', () => {
     expect(contractHoldReason(null)).toBeNull();
   });
 
+  it('laesst nur den ausdruecklichen Post-Merge-Closeout als DONE passieren', () => {
+    expect(contractHoldReason({ ...contract, phase: 'DONE', closeout: 'post-merge' })).toBeNull();
+    expect(contractHoldReason({ ...contract, phase: 'DONE' })).toBe('phase=DONE');
+    expect(contractHoldReason({ ...contract, phase: 'DONE', closeout: 'post-merge', holdMerge: true })).toBe('holdMerge=true');
+  });
+
   it('spiegelt Task-Typ und Hold in Labels und entfernt alte task-Labels', () => {
     expect(taskTypeOf(contract)).toBe('single');
     expect(taskTypeOf({ ...contract, phase: 'AFTERCARE' })).toBe('aftercare');

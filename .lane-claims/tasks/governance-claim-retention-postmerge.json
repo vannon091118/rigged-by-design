@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-claim-retention-postmerge",
+  "claimId": "lane/governance/claim-retention-postmerge",
+  "branch": "lane/governance/claim-retention-postmerge",
+  "baseSha": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
+  "phase": "CI_PENDING",
+  "title": "Claim-Retention und Post-Merge-Auto-Closeout",
+  "goal": "Lane-Claims und Task-Vertraege auf die letzten 10 Tasks begrenzen; gemergte Pending-Tasks automatisch auf DONE ziehen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen; CI prueft den Kopf; danach raeumt der Post-Merge-Closeout den Registerstand auf.",
+  "revision": 1
+}

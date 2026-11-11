@@ -125,6 +125,12 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 
 Der klassische Branch-Schutz auf `main` bleibt die letzte Instanz; Details in [`CI.md`](CI.md#branch-schutz) und [`GOVERNANCE.md`](GOVERNANCE.md#branch-schutz).
 
+### Post-Merge und Retention
+
+Nach einem Merge kann der Task nicht auf `CI_PENDING` stehen bleiben. `PR Cleanup` ruft `scripts/post-merge-closeout.mjs` auf: der Claim des Heads wird `merged`, der Task `DONE`, die 10-Task-Retention läuft, und die Änderung geht als eigener Closeout-PR gegen `main`. Der Closeout-Task trägt `closeout: post-merge`; nur dieser Pfad passiert den `DONE`-Hold in `promote`. Der Workflow schreibt nie direkt auf `main`.
+
+Lokal führt `node scripts/reconcile-claims.mjs --apply` dieselbe Claim-, Task- und Retention-Logik aus. `claim:register prune` zeigt die Kandidaten ohne `--apply` nur an; `doctor` meldet mehr als zehn geschlossene Tasks als Befund.
+
 ### After-Task
 
 - Belege dokumentieren: welcher Befehl, welches Ergebnis, was nicht geprüft werden konnte.
