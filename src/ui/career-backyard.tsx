@@ -1,5 +1,6 @@
 /** Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. */
 import type { BackyardRung, BackyardView } from '../core/sim/fight-career';
+import { worldStore, useWorldStore } from '../store/use-world-store';
 import { vc } from './format';
 
 interface Props {
@@ -10,6 +11,9 @@ interface Props {
 
 export function CareerBackyard({ backyard, onChallenge }: Props) {
   const rung: BackyardRung = backyard.rung;
+  // Der Kampfabend liest denselben Snapshot wie die Hinterhof-Leiter; kein zweiter Zustand.
+  const event = useWorldStore().career.event;
+  const phase = event.phase === 'ADMISSION' ? 'Einlass' : 'Durchführung';
   return (
     <section className="career-backyard" aria-label="Hinterhof-Karriere">
       <div className="career-head">
@@ -35,6 +39,18 @@ export function CareerBackyard({ backyard, onChallenge }: Props) {
           ))}
         </ul>
       )}
+      <div className="career-head">
+        <strong>KAMPFABEND</strong>
+        <span>{event.open ? `Turnierabend · ${phase} · ${event.ticksLeft} Ticks` : 'kein Turnierabend'}</span>
+        <span>{event.crowd} Zuschauer · {event.crowdBonus > 0 ? '+' : ''}{event.crowdBonus.toFixed(1)} Trefferbonus</span>
+      </div>
+      <p className="career-next">
+        {event.main.name} · Rang {event.main.rank} / {event.roster.length} · Nenngeld {vc(event.main.entryFee, 2)} · Preisgeld {vc(event.main.prize, 2)}
+      </p>
+      <p className={`career-hp${event.ready ? '' : ' warn'}`}>{event.reason}</p>
+      <button type="button" className="btn small primary" disabled={!event.ready} onClick={() => worldStore.city({ kind: 'fightEvent' })}>
+        Am Kampfabend starten
+      </button>
     </section>
   );
 }

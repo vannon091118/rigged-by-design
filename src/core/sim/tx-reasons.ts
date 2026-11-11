@@ -25,6 +25,8 @@ export const TX_REASON = {
   FOREIGN_WIN: 'fremdes haus gewinn',
   BACKYARD_ENTRY: 'hinterhof startgeld',
   BACKYARD_PRIZE: 'hinterhof preisgeld',
+  FIGHT_EVENT_ENTRY: 'kampfabend nenngeld',
+  FIGHT_EVENT_PRIZE: 'kampfabend preisgeld',
   OWN_STAKE: 'eigenes haus einsatz',
   OWN_WIN: 'eigenes haus gewinn',
   OWN_RISK_LOST: 'eigene risiko-karte verloren',

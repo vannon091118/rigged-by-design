@@ -1,12 +1,13 @@
 /**
- * Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell und
- * Hinterhof. Kein eigener Zaehler - der Eintrag ist der Beleg.
+ * Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell,
+ * Hinterhof und Kampfabend. Kein eigener Zaehler - der Eintrag ist der Beleg.
  */
 import type { JournalEvent } from './journal';
 
-/** Beide Kampfarten stehen im selben Archiv; nur das Praefix unterscheidet sie. */
+/** Alle Kampfarten stehen im selben Archiv; nur das Praefix unterscheidet sie. */
 const BACKYARD = 'Hinterhof gegen ';
 const DUEL = 'Duell gegen ';
+const FIGHT_EVENT = 'Kampfabend gegen ';
 
 export interface FightRecord {
   readonly wins: number;
@@ -35,9 +36,18 @@ export function backyardSubject(name: string): string {
   return `${BACKYARD}${name}`;
 }
 
+/** Das Subjekt eines Kampfabends; dieselbe Bilanz zaehlt ihn ueber dieses Praefix. */
+export function fightEventSubject(name: string): string {
+  return `${FIGHT_EVENT}${name}`;
+}
+
 /** Ein Archiv-Eintrag zaehlt nur, wenn Subjekt und Effekt einen Kampf belegen. */
 function parseFight(event: JournalEvent): ParsedFight | null {
-  const prefix = event.subject.startsWith(BACKYARD) ? BACKYARD : event.subject.startsWith(DUEL) ? DUEL : null;
+  const prefix = event.subject.startsWith(BACKYARD)
+    ? BACKYARD
+    : event.subject.startsWith(DUEL)
+      ? DUEL
+      : event.subject.startsWith(FIGHT_EVENT) ? FIGHT_EVENT : null;
   if (prefix === null) return null;
   const won = event.effect.startsWith('Gewonnen');
   if (!won && !event.effect.startsWith('Verloren')) return null;

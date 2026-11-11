@@ -3,6 +3,7 @@ import type { Ledger } from '../core/economy/ledger';
 import type { Prng } from '../core/rng/prng';
 import { restInCity, runCityAction, travel, type CityLocationId } from '../core/sim/city';
 import { backyardFight } from '../core/sim/fight-career';
+import { enterFightEvent } from '../core/sim/fight-event';
 import { encounterDialog, meetNpc, takeEncounterAction } from '../core/sim/city-encounter';
 import { buyProperty } from '../core/sim/property';
 import { renovate } from '../core/sim/renovation';
@@ -63,6 +64,7 @@ export type CityCommand =
   | { readonly kind: 'meet'; readonly location?: CityLocationId }
   | { readonly kind: 'encounter'; readonly eventId: number; readonly action: EncounterAction }
   | { readonly kind: 'backyardFight' }
+  | { readonly kind: 'fightEvent' }
   | { readonly kind: 'buyProperty'; readonly propertyId: string }
   | { readonly kind: 'renovate' }
   | { readonly kind: 'maintainMachine'; readonly itemId: number };
@@ -73,6 +75,7 @@ export function cityCmd(world: WorldState, ledger: Ledger, prng: Prng, cmd: City
   if (cmd.kind === 'meet') return meetCmd(world, ledger, cmd.location);
   if (cmd.kind === 'encounter') return encounterCmd(world, ledger, cmd.eventId, cmd.action);
   if (cmd.kind === 'backyardFight') return backyardFight(world, ledger, prng).notice;
+  if (cmd.kind === 'fightEvent') return enterFightEvent(world, ledger, prng).notice;
   if (cmd.kind === 'buyProperty') return propertyCmd(world, ledger, cmd.propertyId);
   if (cmd.kind === 'renovate') return renovateCmd(world, ledger);
   if (cmd.kind === 'maintainMachine') return maintainMachineCmd(world, ledger, cmd.itemId);

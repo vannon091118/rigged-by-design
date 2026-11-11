@@ -3784,6 +3784,10 @@
     {
       "turnId": "2026-11-11T07:15Z-agent23-task",
       "contributionId": "agent23-task"
+    },
+    {
+      "turnId": "2026-11-11T09:40Z-agent23-fight-event",
+      "contributionId": "agent23-fight-event"
     }
   ]
 }
