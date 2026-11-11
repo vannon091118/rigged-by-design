@@ -18,7 +18,7 @@ interface AreaDef {
 }
 
 /** Ausgabe-Reihenfolge und Bedeutung der Bereiche; neue Bereiche brauchen eine eigene Zone. */
-export const BUSINESS_AREAS: readonly AreaDef[] = [
+const BUSINESS_AREAS: readonly AreaDef[] = [
   { id: 'CASINO', name: 'Casino', kinds: ['GAMING'] },
   { id: 'BAR', name: 'Bar', kinds: ['BAR'] },
   { id: 'LOUNGE', name: 'Lounge', kinds: ['LOUNGE'] },
@@ -40,7 +40,7 @@ export interface BusinessArea {
 }
 
 /** Was die Ableitung liest: der Weltzustand oder eine Sicht mit denselben Feldern. */
-export interface BusinessAreaSource {
+interface BusinessAreaSource {
   readonly zones: readonly Zone[];
   readonly furniture: readonly Furniture[];
   readonly guests: readonly Guest[];

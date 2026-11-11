@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bf4648fe69c564f8b9fa0137acf4d6f6d28dcc3ead052ad2d3c5a853f25082b1",
+  "contentHash": "sha256:7f3c680d1d662a181195b0003a5fc4be18e6cd9befbb7731da3ceb5b97845e0a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -646,6 +646,28 @@
       "text": "Ein ungenutzter Import faellt nicht im Test auf, sondern erst im Typecheck. Genau dafuer steht er im Gate: die Kleinigkeit wird vor dem Push bezahlt, nicht danach.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-3.json"
+    },
+    {
+      "contributionId": "agent17-business-areas-4",
+      "turnId": "2026-11-11T01:35Z-agent17-business-areas-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Export ohne Aufrufer ist eine offene Tuer ohne Raum dahinter. Die Liste und die Eingabesicht bleiben intern - nach aussen geht nur, was jemand wirklich liest.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-4.json"
     },
     {
       "contributionId": "apk-signing-01",
