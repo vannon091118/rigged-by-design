@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:febd42fe37671626f0858dbb505c2a54194bdf715266e4a45e55528fe87910a3",
+  "contentHash": "sha256:73092bd23fadd6c3ea5815a670751f88d87e78187a214c1cb17824bd15bea196",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1152,6 +1152,28 @@
       "text": "Waehrend einer Veranstaltung ist der erste Durst kein Zufall, sondern der Grund des Besuchs.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-hybrid-flow-2.json"
+    },
+    {
+      "contributionId": "agent20-merge-pending",
+      "turnId": "2026-11-11T04:25Z-agent20-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",

@@ -3704,6 +3704,10 @@
     {
       "turnId": "2026-11-11T04:20Z-agent20-ci-pending",
       "contributionId": "agent20-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T04:25Z-agent20-merge-pending",
+      "contributionId": "agent20-merge-pending"
     }
   ]
 }

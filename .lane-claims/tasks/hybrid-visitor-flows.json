@@ -4,14 +4,18 @@
   "claimId": "lane/sim/hybrid-visitor-flows",
   "branch": "lane/sim/hybrid-visitor-flows",
   "baseSha": "12add659168260ea128b71dc74ee0cc87f7aa6f8",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 20: Hybrid-Besucherstroeme",
   "goal": "Veranstaltungsgaeste kommen mit Durst: die Ankunftsregel liest das laufende Nachfrage-Event und setzt das vorhandene Beduerfnis Trinken plus Durst ueber die Schwelle. Casino->Bar und Club->Automat laufen unveraendert ueber chooseActivity; kein neues Save-Feld, keine zweite Gaesteliste, kein zweiter Event-Zustand, keine neue Bar- oder Automatensimulation.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 420,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/420",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; danach Merge-Beleg eintragen.",
-  "revision": 3
+  "nextAction": "Squash ist gemergt; Nachsorge einleiten und Register nachziehen.",
+  "revision": 4
 }
