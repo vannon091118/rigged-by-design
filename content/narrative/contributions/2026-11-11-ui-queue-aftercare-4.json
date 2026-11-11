@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:42Z-ui-queue-aftercare-4",
+  "contributionId": "ui-queue-aftercare-04",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "DONE heisst hier nicht Ende der Arbeit, sondern Ende der Spur: der Claim ist zu, der Baum ist belegt, und die naechste Lane beginnt auf gruenem main.",
+  "directives": []
+}
