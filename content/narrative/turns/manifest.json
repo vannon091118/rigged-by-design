@@ -3796,6 +3796,10 @@
     {
       "turnId": "2026-11-11T10:10Z-agent23-merge-pending",
       "contributionId": "agent23-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T05:15Z-living-world-vertical-slice-1",
+      "contributionId": "living-world-vertical-slice-1"
     }
   ]
 }

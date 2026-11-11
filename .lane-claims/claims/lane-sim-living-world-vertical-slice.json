@@ -1,0 +1,20 @@
+{
+  "id": "lane/sim/living-world-vertical-slice",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/living-world-vertical-slice",
+  "baseSha": "b50587f4acfd739a9c8cc263a9b413fbf21473ba",
+  "task": "Bundle 6: Living World Vertical Slice und Cross-System Integration Tests",
+  "goal": "Beweis der Koppelung aller Systeme - Building Spatial Schedule Reaction Feedback Beziehung Dialog Facts Save",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "src/render/",
+    "docs/contracts/",
+    "content/narrative/",
+    ".lane-claims/claims/lane-sim-living-world-vertical-slice.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b50587f4acfd739a9c8cc263a9b413fbf21473ba"
+}
