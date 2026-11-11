@@ -85,7 +85,7 @@ export const SUBSYSTEMS = Object.freeze([
     prefix: '.github',
     name: 'ci',
     impactDocs: ['ARCHITECTURE', 'AGENTS'],
-    invariants: ['der Pflichtstatus heisst Fail-Closed Gates'],
+    invariants: ['der optionale PR-Check heisst Fail-Closed Gates'],
   },
   { prefix: 'content', name: 'content', impactDocs: ['ARCHITECTURE'], invariants: ['Texte sind Darstellung, nie Spielregel'] },
   {

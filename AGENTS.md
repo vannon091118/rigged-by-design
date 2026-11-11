@@ -14,14 +14,14 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen, nie für Spielzustand, PRNG oder Seeds. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder neue Pool braucht einen Leser im Spiel (ein System, das ihn anzeigt), sonst ist der Text tot - das ist die Qualitätsseite dieser Regel. Die Mengenquoten (50 je Pool, 1500 gesamt, Schrumpf-Verbot) sind nur ihre Planungshilfe und werden von `verify:narrative-blocks` gemessen. Normativ ist dieser Absatz; die Tabelle in `docs/ROADMAP.md` ist die aktuelle Messung, kein zweites Regelwerk. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt.
-7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Die CI prüft den exakten gepushten Kopf; `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Der PR-Check ist optional; der lokale Vor-PR-Nachweis entscheidet über den Merge. `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, CI meldet, nächster Schritt ist `pretask`. Merge ausschließlich durch `promote` nach grünem PR-Lauf auf dem exakten Kopf, mit `ci-plan`-Artefakt und ohne Hold. Kein Auto-Merge, kein `update-branch` vor dem Merge; eine veraltete Basis wird aktualisiert und neu geprüft.
+9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, der optionale PR-Check meldet nur, nächster Schritt ist `pretask`. Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und exaktem Kopf; keine CI-Bedingung, kein Auto-Merge. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
 
 ## Task-Vertrag
 
-Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahrheit für Phase, offene Befunde, PR-Zustand und nächste Aktion. Er ist Lane-Werkzeug: keine Allowlist-Erweiterung, kein PIN, aber claim- und branchgebunden; `verify-task-contract` prüft beides. Phasen: `READY → IMPLEMENTING → CI_PENDING → MERGE_PENDING → AFTERCARE → DONE`. `CI_PENDING` schlägt eine parallele Lane vor, statt zu warten. `.verify-cache/task-state.json` bleibt Cache; `pretask` liest Vertrag, PR-Zustand und Issues und gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
+Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahrheit für Phase, offene Befunde, PR-Zustand und nächste Aktion. Er ist Lane-Werkzeug: keine Allowlist-Erweiterung, kein PIN, aber claim- und branchgebunden; `verify-task-contract` prüft beides. Phasen: `READY → IMPLEMENTING → CI_PENDING → MERGE_PENDING → AFTERCARE → DONE`. `CI_PENDING` ist nur der gepushte Zustand; der lokale Vor-PR-Nachweis ist die Autorität, kein Warten auf CI. `.verify-cache/task-state.json` bleibt Cache; `pretask` liest Vertrag, PR-Zustand und Issues und gibt `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. `turn:finish` und `ci-plan` rufen dieselbe Validierung auf.
 
 ## Skalierbare Reparatur
 
@@ -35,9 +35,9 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 15 Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** zehn Dateien; `CI Verify`, `Ensure PR`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist der einzige Merge-Akteur; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE` (Default: aus).
-- **Branch-Schutz:** klassischer Schutz auf `main`, Pflichtstatus `Fail-Closed Gates`, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
+- **CI:** 15 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Der Cloud-PR-Job ist optional. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
+- **Workflows:** neun Dateien; `CI Verify`, `Ensure PR`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist ein manueller Status-/Notausgang; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE` (Default: aus).
+- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Der PR-Job `Fail-Closed Gates` ist optional. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
 ## Befehle
@@ -52,7 +52,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run verify:scope` | Nur der Diff gegen die Claim-Allowlist; keine Tests, kein Build, kein Typecheck. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
 | `pnpm run verify:all` | Der lokale Vollnachweis: 15 Required-Gates plus Audit (16 Läufe). |
-| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, die CI prüft. |
+| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, der optionale PR-Job prüft, der lokale Nachweis entscheidet. |
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
 | `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
@@ -66,7 +66,7 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Delivery
 
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
-- Merge nur durch `promote` nach grünem `CI Verify` auf exaktem Kopf; kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; der PR-Check ist optional, kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
 

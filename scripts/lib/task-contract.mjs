@@ -10,8 +10,8 @@
  * Phasen:
  *   READY          Task beschrieben, noch kein lokaler Turn
  *   IMPLEMENTING   Arbeit laeuft, noch nicht gepusht
- *   CI_PENDING     gepusht, der PR-Lauf ist die Autoritaet
- *   MERGE_PENDING  PR-Lauf gruen, Merge steht an
+ *   CI_PENDING     gepusht; der lokale Vor-PR-Nachweis ist die Autoritaet
+ *   MERGE_PENDING  lokal geprueft, Merge durch Mensch/Agent steht an
  *   AFTERCARE      Nachsorge offen (vor oder nach Merge); haelt den Merge
  *   DONE           abgeschlossen; neue Arbeit = neue Lane
  *
@@ -65,7 +65,7 @@ export function contractRelativePath(taskId) {
 }
 
 /** Ein Vertrag aus Claim und Startphase; ohne Zeitstempel, damit er deterministisch bleibt. */
-export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAction = 'Arbeit starten und turn:finish ohne Flags ausfuehren; CI prueft.' } = {}) {
+export function makeTaskContract(claim, { phase = 'READY', baseSha = '', nextAction = 'Arbeit starten und turn:finish ohne Flags ausfuehren; der lokale Vor-PR-Nachweis entscheidet.' } = {}) {
   const taskId = taskIdForClaim(claim);
   return {
     version: 1,
@@ -247,7 +247,7 @@ export function upsertFinding(contract, finding) {
   return { ...contract, findings };
 }
 
-/** Gibt es fuer den PR-Kopf einen vollstaendigen gruenen Pflichtstatus? */
+/** Liest den optionalen PR-Check-Status; er ist kein Merge-Gate. */
 export function readCiState({ branch, ghBin = process.env.RBD_GH_BIN || 'gh', root = ROOT } = {}) {
   if (!branch) return { known: false, complete: false, conclusion: null, name: 'Fail-Closed Gates' };
   try {
@@ -313,8 +313,9 @@ export function readPullRequestState({ branch, ghBin = process.env.RBD_GH_BIN ||
 }
 
 /**
- * Leitet den pretask-Status ab. `CI_PENDING` schlaegt eine parallele Lane vor,
- * statt zu warten; ein gemergter PR fuehrt in die Nachsorge.
+ * Leitet den pretask-Status ab. `CI_PENDING` ist nur der gepushte Zustand;
+ * der lokale Nachweis entscheidet, kein Warten auf CI. Ein gemergter PR fuehrt
+ * in die Nachsorge.
  */
 export function deriveTaskState({ contract = null, claim = null, blockers = [], pr = null, ci = null } = {}) {
   const findings = openFindings(contract);
@@ -350,21 +351,10 @@ export function deriveTaskState({ contract = null, claim = null, blockers = [], 
     return { ...base, status: 'CONTINUE', nextAction: ci.nextAction || 'Ein neuerer Lauf ist die Autoritaet; diesen Zustand nicht als Merge-Beleg verwenden.' };
   }
   if (contract.phase === 'CI_PENDING') {
-    if (ci?.known && ci.complete && ci.conclusion === 'success') {
-      return { ...base, status: 'MERGE_PENDING', nextAction: 'PR-Lauf gruen: Plan-Artefakt, Pflichtstatus und Hold pruefen; Merge nur durch promote auf dem exakten Kopf.' };
-    }
-    if (ci?.known && ci.complete && ci.conclusion === 'failure') {
-      return { ...base, status: 'CONTINUE', nextAction: 'PR-Lauf rot: Befund in den Vertrag aufnehmen, beheben und turn:finish erneut ausfuehren.' };
-    }
     return {
       ...base,
-      status: 'CONTINUE',
-      nextAction: 'CI laeuft; nicht warten, sondern eine unabhaengige parallele Lane starten oder Befunde triagieren.',
-      parallelLane: {
-        suggested: true,
-        reason: 'CI_PENDING',
-        advice: 'Parallele Lane mit eigener Allowlist und eigenem Task-Vertrag anlegen; der PR-Lauf meldet sich, kein Polling.',
-      },
+      status: 'MERGE_PENDING',
+      nextAction: 'Lokaler Vor-PR-Nachweis ist die Autoritaet; der PR-Check ist optional. Review und Merge durch Mensch/Agent auf dem exakten Kopf.',
     };
   }
   if (contract.phase === 'MERGE_PENDING') {

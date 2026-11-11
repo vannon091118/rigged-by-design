@@ -2,8 +2,8 @@
  * @test-target: .github/workflows/auto-version-release.yml
  * @error-code: ERR-4008
  *
- * Die Workflows um den Pflichtcheck: Debug-APK und Release-Bump laufen im
- * PR-Pflichtjob; der signierte APK-Fallback und Releases bleiben manuell,
+ * Die Workflows um den optionalen PR-Check: Debug-APK und Release-Bump laufen
+ * im PR-Job; der signierte APK-Fallback und Releases bleiben manuell,
  * Langlaeufe haben keinen Zeitplan; Cleanup und Lane-PR bleiben schlank.
  */
 import { readFileSync } from 'node:fs';
@@ -123,7 +123,7 @@ describe('Workflow-Vertraege', () => {
     expect(verify?.if).toBeUndefined();
   });
 
-  it('startet den Pflichtcheck ausschliesslich bei PR und baut die Debug-APK', () => {
+  it('startet den optionalen PR-Check ausschliesslich bei PR und baut die Debug-APK', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.on?.workflow_dispatch).toBeUndefined();
     expect(ci.on?.push).toBeUndefined();

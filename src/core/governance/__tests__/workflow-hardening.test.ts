@@ -133,14 +133,14 @@ describe('workflow hardening', () => {
     expect(runs).not.toContain('github.event.before');
   });
 
-  it('haelt lange Tests aus dem PR-Pflichtcheck', () => {
+  it('haelt lange Tests aus dem optionalen PR-Check', () => {
     const ci = workflow('ci-verify.yml');
     expect(ci.jobs?.long).toBeUndefined();
     expect(workflow('long-checks.yml').on?.workflow_dispatch).not.toBeUndefined();
   });
 
-  it('haelt den Pflichtstatus in genau einem Workflow', () => {
-    // `Fail-Closed Gates` ist der geschuetzte Statusname aus Ebene B. Trüge ihn
+  it('haelt den PR-Check-Namen in genau einem Workflow', () => {
+    // `Fail-Closed Gates` ist der optionale PR-Check-Name. Trüge ihn
     // ein zweiter Workflow, gaebe es zwei Wahrheiten fuer denselben Status und
     // ein gruener Lauf koennte den anderen verdecken.
     const owners: string[] = [];

@@ -34,7 +34,7 @@ Regeln:
 5. **Gemergte Lane bleibt ansprechbar.** `selectClaim()` führt einen `merged` Claim weiter, damit der Register-Nachtrag nach dem Merge keinen neuen Claim eröffnet. `claim-evidence.mjs` akzeptiert einen gemergten PR, einen Branch-Kopf auf `main` oder einen baumgleichen Commit auf `main`; `baseSha` reicht nicht.
 6. **Fail-closed.** Ohne Claim, ohne Owner oder bei einer unklaren Kollision wird nicht committet.
 7. **Retention.** Lane-Claims und Task-Verträge werden auf die letzten **zehn Tasks** begrenzt. Aktive Tasks, offene oder geparkte Claims und die gerade bearbeitete Lane bleiben immer erhalten; geschlossene Claims ohne zugehörigen Task fallen mit der Retention weg. Das Legacy-Register `.lane-claims/claims.json` wird nicht beschnitten. `reconcile-claims --apply` führt die Retention mit aus, `claim:register prune` ist der manuelle Weg.
-8. **Post-Merge.** Ein belegter Merge zieht den Claim auf `merged` und den Task von `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE` — ohne offenen Blocker. Der Workflow `PR Cleanup` startet dafür nach jedem Merge einen eigenen Closeout-PR; der Closeout-Task trägt `closeout: post-merge` und darf nur über diesen ausdrücklichen Pfad als `DONE` durch `promote` mergen. Ein Direktpush auf `main` bleibt ausgeschlossen.
+8. **Post-Merge.** Ein belegter Merge zieht den Claim auf `merged` und den Task von `CI_PENDING`, `MERGE_PENDING` oder `AFTERCARE` auf `DONE` — ohne offenen Blocker. Der Workflow `PR Cleanup` startet dafür nach jedem Merge einen eigenen Closeout-PR; der Closeout-Task trägt `closeout: post-merge` und darf nur über diesen ausdrücklichen Pfad als `DONE` durch Mensch oder Agent gemergt werden. Ein Direktpush auf `main` bleibt ausgeschlossen.
 
 Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Basis. `pnpm run verify:claims` ist der lokale Lauf.
 
@@ -49,7 +49,7 @@ Frei bleiben `src/`, `content/`, `public/`, Tests und die Spielpfade: der Freeze
 Mechanik:
 
 - **Lokal:** `.githooks/pre-commit` ruft `scripts/verify-governance-freeze.mjs`; eine inhaltliche Governance-Änderung ohne Freigabe blockiert den Commit (`ERR-4030`).
-- **CI:** der `Plan`-Job prüft denselben Diff gegen die Basis, aber mit dem Checker aus der Kontrollebene; der Kandidat ist nur Prüfobjekt (`RBD_ROOT`). Rot heißt `Fail-Closed Gates` rot.
+- **CI:** der PR-Job prüft denselben Diff gegen die Basis, aber mit dem Checker aus der Kontrollebene; der Kandidat ist nur Prüfobjekt (`RBD_ROOT`). Der Job ist optional; ein roter Lauf ist ein Hinweis, kein Required-Gate.
 - **Marker sind ausgenommen:** reine Doku-Marker und Versionszeilen zählen nicht, sonst würde jeder `docs:sync`-Lauf den Freeze auslösen.
 - **Freigabe:** `node scripts/freeze-unlock.mjs --pin=<pin>` schreibt `.lane-claims/freeze-unlock.json` mit Basis (Merge-Basis zu `main`), Pfadliste und Token; die Datei wird mitcommittet. Sie gilt für genau diese Basis und mindestens diese Pfade — zusätzlich genannte Pfade sind erlaubt, weil die Generatoren im Hook danach weitere Steuerdateien anfassen können; fehlt dagegen eine tatsächlich geänderte Datei, ist die Freigabe ungültig.
 - **Verstoss:** fehlt die Freigabe ganz, bleibt der Lauf rot und der Job `governance-issue` legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`, `ERR-4030`). Der Branch bleibt bestehen; es gibt keine Branch-Löschung, und der Befund wird nicht stillschweigend aufgeräumt. Ein Branch ohne Freigabe ist kein Merge-Kandidat.
@@ -86,14 +86,14 @@ Issue-Scopes:
 
 `main` nutzt einen klassischen Branch-Schutz, **kein** Ruleset:
 
-- Required Status Check: `Fail-Closed Gates`
+- Required Status Checks: **keine**; der PR-Job `Fail-Closed Gates` ist optional
 - `strict: false`
 - 0 erforderliche Reviews
 - `enforce_admins: true`
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; die vollständige Prüfung und der Pflichtstatus liegen im PR-Lauf. Der Merge liegt ausschließlich bei `promote`: PR gegen `main`, grüner `CI Verify`-Lauf auf dem exakten Kopf, gültiges `ci-plan`-Artefakt und kein Hold. `integration` ist nur ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
+Eine Stimme pro SHA: ein Lane-Push startet nur `ensure-pr.yml`; der PR-Lauf ist optional. Der lokale Vor-PR-Nachweis entscheidet; der Merge erfolgt durch Mensch oder Agent nach Review und auf dem exakten Kopf. `promote` ist nur ein manueller Status-/Notausgang, kein Merge-Akteur. `integration` ist ein ausdrücklicher Notausgang. Details und API-Nachweise stehen in [`CI.md`](CI.md#branch-schutz).
 
 ## Referenzen
 

@@ -36,8 +36,8 @@ concurrency:
 
 jobs:
   verify:
-    # Kein geschuetzter Statusname ausserhalb von `ci-verify.yml`: der
-    # Pflichtstatus `Fail-Closed Gates` gehoert genau einem Workflow.
+    # Kein PR-Statusname ausserhalb von `ci-verify.yml`: der optionale
+    # PR-Check `Fail-Closed Gates` gehoert genau einem Workflow.
     name: Long Verify
     if: inputs.verify
     runs-on: ubuntu-24.04

@@ -5,7 +5,7 @@
 ## Grundsatz
 
 - **Lokal ist der Standard** für Entwicklung, Tests, Build, Audit und APK.
-- **Cloud ist die Ausnahme** für Repository-Verwaltung, Reviews, PR-Erzeugung und einen schnellen Pflichtcheck.
+- **Cloud ist die Ausnahme** für Repository-Verwaltung, Reviews, PR-Erzeugung und einen optionalen schnellen PR-Check.
 - **Lange Nachweise** laufen nur auf ausdrückliche Anforderung.
 - **Keine Doppelarbeit:** Ein Push auf eine Lane startet keinen zweiten Vollauf; der PR-Lauf prüft den exakten Kopf.
 - **Keine stillen Erfolge:** Fehlende Gates, leere Matrizen und abgebrochene Läufe sind rot bzw. `REMOTE_CI`, nie grün.
@@ -15,7 +15,7 @@
 | Aufgabe | Kategorie | Ausführung |
 | --- | --- | --- |
 | Commit-Nachricht und PR-Body | LOCAL + CLOUD | lokal `turn:finish`/Hook; Cloud `CI Verify` prüft den PR-Kopf |
-| TypeScript, ESLint, LOC, Doku-, Tree-, Redundanz-Gates | LOCAL | `pnpm run verify:light`; Cloud nur als schneller Pflichtcheck |
+| TypeScript, ESLint, LOC, Doku-, Tree-, Redundanz-Gates | LOCAL | `pnpm run verify:light`; Cloud nur als optionaler PR-Check |
 | Testqualität, betroffene Unit-Tests, schneller Build | LOCAL | `pnpm run verify:fast` |
 | Vollständige Required-Suite inkl. Build | LOCAL + ON-DEMAND | `pnpm run verify:release`/`verify:all`; nicht pro PR |
 | Vor-PR-Nachweis (Light, affected, Build) | LOCAL | `pnpm run verify:integration` (Fast) |
@@ -24,11 +24,11 @@
 | APK Debug/Release | LOCAL | `pnpm run android:apk` / `android:apk:release` |
 | APK-Cloud-Fallback | MANUAL | `build-apk.yml` per `workflow_dispatch`, inkl. Release-Gates |
 | Tag und GitHub-Release | MANUAL | `auto-version-release.yml` per `workflow_dispatch` nach `verify:release` |
-| Merge nach `main` | MANUAL | nach lokalem `verify:integration`, grünem Pflichtcheck und Review im GitHub-UI |
+| Merge nach `main` | MANUAL | nach lokalem `verify:integration`, Review und exaktem Kopf; der PR-Check ist optional |
 | Promote-Status/Notausgang `integration` | MANUAL | `promote.yml` per Dispatch (`inspect`/`integrate`) |
 | PR-Erzeugung bei Lane-Push | CLOUD | `ensure-pr.yml`; kein Testlauf |
 | Branch-Cleanup und Post-Merge-Closeout | CLOUD | `pr-cleanup.yml` nach geschlossenem PR |
-| Fehler-Issue bei rotem Pflichtcheck | CLOUD | `pr-watcher.yml`; optional `auto-resolve.yml` per Repository-Variable |
+| Fehler-Issue bei rotem PR-Check | CLOUD | `pr-watcher.yml`; optional `auto-resolve.yml` per Repository-Variable |
 | Release-Impact-Analyse | LOCAL | `release-impact.mjs` im manuellen Release |
 
 **Nicht mehr automatisch:** Push-Vollauf auf `main`, 15er-Gate-Matrix, PR-Longruns, wöchentlicher Langlauf, Tag-getriebener APK-Build, Release als `workflow_run`-Folge, PR-Escalation-Push. Diese Aufgaben sind lokal, manuell oder on-demand erreichbar.
@@ -96,18 +96,18 @@ pnpm run android:apk:release
 
 | Bereich | Vorher | Nachher |
 | --- | --- | --- |
-| PR-Prüfung | 15 Matrix-Jobs + Plan + Claims + Long-Matrix | ein Required-Job: `verify:light`, Debug-APK und Release-Bump |
+| PR-Prüfung | 15 Matrix-Jobs + Plan + Claims + Long-Matrix | ein optionaler PR-Job: `verify:light`, Debug-APK und Release-Bump |
 | Push auf `main` | vollständiger zweiter Lauf | kein Cloud-Lauf; lokaler Integrationsnachweis |
 | Lange Nachweise | wöchentlicher Schedule + PR-Impact | ausschließlich `workflow_dispatch`/`verify:long` |
 | Release | automatisch nach `main`-Push | manuell nach `verify:release` |
 | APK | automatisch aus Tag/Release | lokal; Cloud nur manueller Fallback |
-| PR-Escalation | Push-Workflow mit Schreibrecht | entfernt; PR-Body im Pflichtjob/`ensure-pr` |
-| Merge | automatisch durch `promote` | manuell nach lokalem `verify:integration` und grünem Pflichtstatus |
+| PR-Escalation | Push-Workflow mit Schreibrecht | entfernt; PR-Body im PR-Job/`ensure-pr` |
+| Merge | automatisch durch `promote` | manuell durch Mensch/Agent nach lokalem `verify:integration`; PR-Check optional |
 
 ## Verbleibende Cloud-Aufgaben
 
 - **`ensure-pr.yml`:** Ein Lane-Push muss einen PR erzeugen; das ist Repository-Verwaltung, kein Build.
-- **`ci-verify.yml`:** Der geschützte Status `Fail-Closed Gates` muss auf dem PR-Kopf laufen. Er prüft die schnellen Gates und baut die Debug-APK; die vollständige Suite bleibt lokal.
+- **`ci-verify.yml`:** Der PR-Job `Fail-Closed Gates` ist optional und läuft nur auf dem PR-Kopf. Er prüft die schnellen Gates und baut die Debug-APK; die vollständige Suite bleibt lokal.
 - **`pr-watcher.yml` / `auto-resolve.yml`:** Fehler sichtbar machen und optional mechanisch reparieren; `auto-resolve` ist standardmäßig aus.
 - **`pr-cleanup.yml`:** Branch löschen und Claim/Task nach dem Merge nachziehen.
 - **`promote.yml`, `auto-version-release.yml`, `build-apk.yml`, `long-checks.yml`:** ausschließlich manuell/on-demand; keine automatischen Läufe.

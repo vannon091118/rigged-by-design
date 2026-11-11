@@ -1,8 +1,8 @@
 name: Ensure PR
 
 # Ein Push auf eine Lane startet nur noch diesen duennen Lauf. Die volle
-# Pruefung haengt am PR-Lauf; zwei Vollaeufe auf demselben Kopf erzeugten zwei
-# Pflichtstatus, von denen der aeltere den neueren verdecken kann.
+# Pruefung haengt am optionalen PR-Lauf; zwei Vollaeufe auf demselben Kopf
+# erzeugten zwei Status, von denen der aeltere den neueren verdecken kann.
 #
 # Hier laeuft bewusst kein Skript aus dem Branch: dieser Job haelt ein
 # Schreibrecht auf Pull Requests und darf keinen fremden Code ausfuehren.

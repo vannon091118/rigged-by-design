@@ -1,17 +1,22 @@
 {
   "version": 1,
-  "base": "22486ba22ebaaf816a1f6425232c89241fe74f89",
+  "base": "6e5ea00bd2c6f6de5185522bcf2f7d46c80c6295",
   "paths": [
-    ".github/workflows/auto-version-release.yml",
-    ".github/workflows/build-apk.yml",
     ".github/workflows/ci-verify.yml",
+    ".github/workflows/ensure-pr.yml",
     ".github/workflows/long-checks.yml",
-    ".github/workflows/promote.yml",
+    "AGENTS.md",
+    "docs/ARCHITECTURE.md",
     "docs/CI.md",
+    "docs/GOVERNANCE.md",
+    "docs/INDEX.md",
     "docs/WORKFLOW.md",
-    "scripts/lib/pipeline-plan.mjs",
-    "scripts/turn-push.mjs"
+    "scripts/lib/promote-guard.mjs",
+    "scripts/lib/subsystems.mjs",
+    "scripts/lib/task-contract.mjs",
+    "scripts/promote.mjs",
+    "scripts/verify-lane-claims.mjs"
   ],
-  "token": "8b67473fc6515d0cec396601cd610b4ca1e0dd49e3628fb33b478a0db60535d4",
+  "token": "fc88953526ba88837de4d3f94d3b4c22d7caca8c2af47b087e8cb3b22eb46ad0",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

@@ -2,9 +2,9 @@
  * @test-target: scripts/lib/promote-guard.mjs
  * @error-code: ERR-4019
  *
- * Ein Merge darf nur den Commit treffen, den die CI geprueft hat, und nur aus
- * dem eigenen Repository. Der Branch-Name allein ist keine Identitaet, und der
- * gruene Pflichtstatus zaehlt nur aus genau diesem Lauf und dieser Basis.
+ * Ein Merge darf nur den Commit treffen, den der PR als Kopf traegt, und nur
+ * aus dem eigenen Repository. Der Branch-Name allein ist keine Identitaet; der
+ * PR-Check ist optional und keine Merge-Bedingung.
  */
 import { describe, expect, it } from 'vitest';
 import {
@@ -86,24 +86,22 @@ describe('promote-guard', () => {
     expect(verifyPromotion({ ...valid, pr: { ...valid.pr, state: 'MERGED' } }).ok).toBe(false);
   });
 
-  it('lehnt einen gruenen Check aus einem aelteren Lauf ab', () => {
+  it('ignoriert einen optionalen Check aus einem aelteren Lauf', () => {
     const older = { ...greenGate, details_url: greenGate.details_url.replace(RUN_ID, '42000000000') };
-    expect(verifyPromotion({ ...valid, checkRuns: [older] }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, checkRuns: [older] }).ok).toBe(true);
   });
 
-  it('lehnt einen gruenen Check gegen eine andere Basis ab', () => {
+  it('ignoriert einen optionalen Check gegen eine andere Basis', () => {
     const other = { ...greenGate, pull_requests: [{ base: { sha: 'd'.repeat(40) } }] };
-    expect(verifyPromotion({ ...valid, checkRuns: [other] }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, checkRuns: [other] }).ok).toBe(true);
   });
 
-  it('verlangt Check-Runs, Basis und Lauf-ID statt einer Behauptung', () => {
-    expect(verifyPromotion({ ...valid, checkRuns: null }).ok).toBe(false);
-    expect(verifyPromotion({ ...valid, checkRuns: [] }).ok).toBe(false);
-    expect(verifyPromotion({ ...valid, baseSha: '' }).ok).toBe(false);
-    expect(verifyPromotion({ ...valid, ciRunId: '' }).ok).toBe(false);
+  it('verlangt PR-Kopf und Ziel statt einer Behauptung', () => {
+    expect(verifyPromotion({ ...valid, headSha: '' }).ok).toBe(false);
+    expect(verifyPromotion({ ...valid, pr: { ...valid.pr, baseRefName: 'integration' } }).ok).toBe(false);
   });
 
-  it('lehnt einen roten Pflichtstatus auf demselben Kopf ab', () => {
-    expect(verifyPromotion({ ...valid, checkRuns: [{ ...greenGate, conclusion: 'failure' }] }).ok).toBe(false);
+  it('ignoriert einen roten optionalen Check auf demselben Kopf', () => {
+    expect(verifyPromotion({ ...valid, checkRuns: [{ ...greenGate, conclusion: 'failure' }] }).ok).toBe(true);
   });
 });

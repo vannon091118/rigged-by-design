@@ -109,9 +109,10 @@ const claim = laneClaim ?? botClaim(branch);
 const bot = laneClaim === null && claim !== null;
 
 /**
- * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz mit dem
- * Pflichtstatus "Fail-Closed Gates", nicht die Lane-Allowlist. Ein Claim auf
- * main wäre eine zweite Wahrheit neben dem Branch-Schutz.
+ * `main` ist der geschützte Zweig: dort gilt der Remote-Schutz ohne
+ * Required-Status, nicht die Lane-Allowlist. Der PR-Check "Fail-Closed Gates"
+ * ist optional. Ein Claim auf main wäre eine zweite Wahrheit neben dem
+ * Branch-Schutz.
  */
 if (branch === 'main') {
   report({

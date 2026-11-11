@@ -4,10 +4,14 @@ name: CI Verify
 # Feature-Ende. Dieser Workflow ist der einzige automatische CI-Trigger und
 # laeuft ausschliesslich fuer Pull Requests gegen `main`.
 #
-# Der Job ist absichtlich EIN Job: dadurch gibt es genau einen geschuetzten
-# Status, keine Matrix, keine doppelte Dependency-Installation und keinen
+# Der Job ist absichtlich EIN Job: dadurch gibt es genau einen sichtbaren
+# PR-Check, keine Matrix, keine doppelte Dependency-Installation und keinen
 # zweiten Runner. Er traegt die schnellen Gates, den Web-Build, den
 # Release-Versions-Bump fuer das PR-Artefakt und die Debug-APK.
+#
+# Der Job ist OPTIONAL: `main` hat keinen Required-Status-Check. Der Runner
+# ist extern und das Usage begrenzt; der lokale Vor-PR-Nachweis entscheidet
+# ueber den Merge. Kein Merge wartet auf diesen Lauf.
 on:
   pull_request:
     branches: [main]

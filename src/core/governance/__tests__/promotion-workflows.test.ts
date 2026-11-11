@@ -5,7 +5,7 @@
  * Local-first: Es gibt keinen automatischen Merge aus einem CI-Lauf. Der
  * Merge ist ein bewusster Schritt nach dem lokalen Integrationsnachweis; der
  * Watcher reagiert weiterhin nur auf `workflow_run`, und der PR-Body wird im
- * Pflichtjob geprueft.
+ * optionalen PR-Job geprueft.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -70,7 +70,7 @@ describe('Promotion-Workflows', () => {
     expect(workflowFile('pr-watcher.yml')).not.toContain('--pr-check');
   });
 
-  it('prueft den PR-Body im Pflichtjob, nicht erst im Watcher', () => {
+  it('prueft den PR-Body im optionalen PR-Job, nicht erst im Watcher', () => {
     const verify = workflow('ci-verify.yml');
     const body = steps(verify, 'verify').find((step) => step.name === 'PR-Body');
     expect(body?.if).toContain("github.event_name == 'pull_request'");
