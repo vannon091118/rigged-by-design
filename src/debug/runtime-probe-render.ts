@@ -1,6 +1,7 @@
 /** RBD Runtime Probe — Render-Informationen (DEV-only, READ-ONLY). */
 
 import type { RenderInfo } from './runtime-probe-types.js';
+import { worldStore } from '../store/use-world-store';
 
 export function getRenderInfo(): RenderInfo {
   const app = (window as Window & { __pixiApp?: unknown }).__pixiApp;
@@ -42,8 +43,7 @@ export function compareRenderAndSim(): {
   render: { stageChildCount: number | null; totalNodes: number | null };
   aligned: boolean;
 } | null {
-  // Importiert lazily, um zyklische Abhängigkeiten zu vermeiden.
-  import { worldStore } from '../store/use-world-store';
+
   let view: { tick: number; guests: { length: number }; furniture: { length: number } } | null;
   try {
     view = worldStore.getSnapshot();

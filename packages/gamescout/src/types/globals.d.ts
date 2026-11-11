@@ -1,2 +1,4 @@
-declare var Buffer: any;
-declare var process: any;
+declare class Buffer {
+  static from(data: string | ArrayBuffer | Buffer, encoding?: string): Buffer;
+  toString(encoding?: string): string;
+}

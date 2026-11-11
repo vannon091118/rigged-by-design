@@ -21,13 +21,20 @@ export interface DashboardServerOptions {
   sessionToken: string;
 }
 
+type WsClient = {
+  on(event: string, listener: (...args: unknown[]) => void): void;
+  send(data: string): void;
+  readyState: number;
+  close(): void;
+};
+
 export class DashboardServer {
   private core: GameScoutCore;
   private port: number;
   private sessionToken: string;
   private server: ReturnType<typeof createServer> | null = null;
   private wss: WebSocketServer | null = null;
-  private clients: Set<WebSocket> = new Set();
+  private clients: Set<WsClient> = new Set();
 
   constructor(core: GameScoutCore, options: DashboardServerOptions) {
     this.core = core;
@@ -56,7 +63,7 @@ export class DashboardServer {
   private setupWebSocket(): void {
     if (!this.server) return;
     this.wss = new WebSocketServer({ server: this.server, path: '/__gamescout__/ws' });
-    this.wss.on('connection', (ws: any) => {
+    this.wss.on('connection', (ws: WsClient) => {
       this.clients.add(ws);
       ws.on('close', () => this.clients.delete(ws));
       ws.on('error', () => this.clients.delete(ws));

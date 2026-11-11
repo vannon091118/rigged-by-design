@@ -10,12 +10,12 @@ import type {
   GameScoutOptions,
   GameTabInfo,
   RecordedAction,
-  ReplayResult,
   SessionState,
   SessionStatus,
   TimelineEvent,
 } from './types.js';
 import { CdpManager } from './cdp.js';
+import { createId } from './id.js';
 
 export class Session {
   readonly id: string;
@@ -28,7 +28,7 @@ export class Session {
   lastError: string | null = null;
 
   constructor(options: GameScoutOptions) {
-    this.id = crypto.randomUUID();
+    this.id = createId('session');
     this.options = options;
     this.cdp = new CdpManager(options);
   }
@@ -62,7 +62,7 @@ export class Session {
     try {
       return {
         url: this.cdp.getGamePage().url(),
-        title: '',
+        title: this.cdp.getGameTitle(),
         viewport: this.cdp.getGamePage().viewportSize() ?? null,
       };
     } catch {
@@ -72,8 +72,8 @@ export class Session {
 
   addTimelineEvent(event: Omit<TimelineEvent, 'id' | 'timestamp'>): void {
     const entry: TimelineEvent = {
-      id: (crypto as any).randomUUID?.() ?? Math.random().toString(36).slice(2),
-      timestamp: new Date().toISOString(),
+      id: createId('event'),
+      timestamp: '',
       ...event,
     };
     this.timeline.push(entry);
@@ -104,11 +104,11 @@ export class Session {
     url: string,
     title: string
   ): Checkpoint {
-    const id = (crypto as any).randomUUID?.() ?? Math.random().toString(36).slice(2);
+    const id = createId('checkpoint');
     const checkpoint: Checkpoint = {
       id,
       name: name || `checkpoint-${id}`,
-      timestamp: new Date().toISOString(),
+      timestamp: '',
       url,
       title,
       screenshotBase64,

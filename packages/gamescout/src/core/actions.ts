@@ -5,7 +5,6 @@
  */
 
 import type { Page } from 'playwright-core';
-import type { Checkpoint } from './types.js';
 import { CdpManager } from './cdp.js';
 
 export class ActionController {

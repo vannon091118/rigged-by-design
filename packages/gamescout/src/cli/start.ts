@@ -5,6 +5,7 @@
  * starts MCP server (STDIO) and dashboard HTTP server (loopback).
  */
 
+import { createId } from '../core/id.js';
 import { GameScoutCore } from '../core/index.js';
 import { McpServer } from '../mcp/server.js';
 import { DashboardServer } from '../dashboard/server.js';
@@ -14,7 +15,7 @@ async function startCommand(): Promise<void> {
   const cdpEndpoint = process.env.GAMESCOUT_CDP_ENDPOINT ?? 'http://127.0.0.1:9222';
   const gameUrl = process.env.GAMESCOUT_GAME_URL ?? 'http://localhost:3000';
   const dashboardPort = parseInt(process.env.GAMESCOUT_DASHBOARD_PORT ?? '4321', 10);
-  const sessionToken = process.env.GAMESCOUT_SESSION_TOKEN ?? crypto.randomUUID();
+  const sessionToken = process.env.GAMESCOUT_SESSION_TOKEN ?? createId('token');
 
   const core = new GameScoutCore({
     cdpEndpoint,
@@ -57,7 +58,7 @@ async function startCommand(): Promise<void> {
 
   // Keep process alive
   return new Promise(() => {
-    // eslint-disable-next-line no-empty
+    // Intentionally empty: process runs until explicitly terminated
   });
 }
 

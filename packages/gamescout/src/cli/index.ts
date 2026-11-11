@@ -14,6 +14,13 @@ import { dashboardCommand } from './dashboard.js';
 import { doctorCommand } from './doctor.js';
 
 const command = process.argv[2] ?? 'help';
+const validCommands = ['start', 'mcp', 'dashboard', 'doctor', 'help', '--help', '-h'];
+
+if (!validCommands.includes(command)) {
+  console.error(`Unknown command: ${command}`);
+  console.log('Run "gamescout help" for usage.');
+  process.exit(1);
+}
 
 async function main(): Promise<void> {
   switch (command) {
@@ -50,10 +57,6 @@ Options:
   --dashboard-port Dashboard HTTP port (default: 4321)
 `);
       process.exit(0);
-    default:
-      console.error(`Unknown command: ${command}`);
-      console.log('Run "gamescout help" for usage.');
-      process.exit(1);
   }
 }
 

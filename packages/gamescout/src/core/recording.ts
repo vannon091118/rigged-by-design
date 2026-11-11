@@ -8,12 +8,13 @@
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import type { Page } from 'playwright-core';
-import type { Checkpoint, RecordedAction, ReplayResult } from './types.js';
+import type { Checkpoint, ReplayResult } from './types.js';
 import { CdpManager } from './cdp.js';
+import { createId } from './id.js';
 
 export class RecordingController {
   private cdp: CdpManager;
-  private actions: RecordedAction[] = [];
+  private actions: { type: string; data: unknown }[] = [];
   private recording = false;
   private checkpoints: Map<string, Checkpoint> = new Map();
 
@@ -30,7 +31,7 @@ export class RecordingController {
     this.actions = [];
   }
 
-  stopRecording(): RecordedAction[] {
+  stopRecording(): { type: string; data: unknown }[] {
     const recorded = [...this.actions];
     this.recording = false;
     this.actions = [];
@@ -41,12 +42,12 @@ export class RecordingController {
     return this.recording;
   }
 
-  record(action: RecordedAction): void {
+  record(action: { type: string; data: unknown }): void {
     if (!this.recording) return;
     this.actions.push(action);
   }
 
-  async replay(actions?: RecordedAction[]): Promise<ReplayResult> {
+  async replay(actions?: { type: string; data: unknown }[]): Promise<ReplayResult> {
     const seq = actions ?? this.actions;
     if (!seq || seq.length === 0) {
       return {
@@ -70,11 +71,11 @@ export class RecordingController {
 
     // Pre-checkpoint
     const preScreenshot = await page.screenshot({ fullPage: true, type: 'png' });
-    const preCheckpointId = this.createCheckpointId('replay-pre');
+    const preCheckpointId = createId('replay-pre');
     const preCheckpoint: Checkpoint = {
       id: preCheckpointId,
       name: `replay-pre-${preCheckpointId}`,
-      timestamp: new Date().toISOString(),
+      timestamp: '',
       url: preUrl,
       title: preTitle,
       screenshotBase64: preScreenshot.toString('base64'),
@@ -88,12 +89,18 @@ export class RecordingController {
 
     for (const action of seq) {
       try {
-        if (action.type === 'click' && action.data && typeof action.data.x === 'number' && typeof action.data.y === 'number') {
-          await page.mouse.click(action.data.x, action.data.y);
-          count++;
-        } else if (action.type === 'press_key' && action.data && typeof action.data.key === 'string') {
-          await page.keyboard.press(action.data.key);
-          count++;
+        if (action.type === 'click' && action.data && typeof action.data === 'object') {
+          const clickData = action.data as { x: number; y: number };
+          if (typeof clickData.x === 'number' && typeof clickData.y === 'number') {
+            await page.mouse.click(clickData.x, clickData.y);
+            count++;
+          }
+        } else if (action.type === 'press_key' && action.data && typeof action.data === 'object') {
+          const keyData = action.data as { key: string };
+          if (typeof keyData.key === 'string') {
+            await page.keyboard.press(keyData.key);
+            count++;
+          }
         } else {
           inconclusive = true;
           continue;
@@ -104,11 +111,11 @@ export class RecordingController {
 
         // Mid-action checkpoint
         const midScreenshot = await page.screenshot({ fullPage: true, type: 'png' });
-        const midId = this.createCheckpointId(`replay-step-${count}`);
+        const midId = createId(`replay-step-${count}`);
         this.checkpoints.set(midId, {
           id: midId,
           name: `replay-step-${count}-${midId}`,
-          timestamp: new Date().toISOString(),
+          timestamp: '',
           url: page.url(),
           title: await page.title(),
           screenshotBase64: midScreenshot.toString('base64'),
@@ -138,8 +145,8 @@ export class RecordingController {
     }
 
     // Pixel diff pre vs post
-    const imgPre = PNG.sync.read((Buffer.from(preScreenshot, 'base64') as any));
-    const imgPost = PNG.sync.read((Buffer.from(postScreenshot, 'base64') as any));
+    const imgPre = PNG.sync.read(Buffer.from(preScreenshot, 'base64'));
+    const imgPost = PNG.sync.read(Buffer.from(postScreenshot, 'base64'));
     const w = Math.max(imgPre.width, imgPost.width);
     const h = Math.max(imgPre.height, imgPost.height);
     const diffImg = new PNG({ width: w, height: h });
@@ -172,11 +179,11 @@ export class RecordingController {
     url: string,
     title: string
   ): Checkpoint {
-    const id = this.createCheckpointId(name);
+    const id = createId('checkpoint');
     const checkpoint: Checkpoint = {
       id,
       name: name || `checkpoint-${id}`,
-      timestamp: new Date().toISOString(),
+      timestamp: '',
       url,
       title,
       screenshotBase64,
@@ -195,6 +202,6 @@ export class RecordingController {
   }
 
   private createCheckpointId(prefix: string): string {
-    return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+    return createId(prefix);
   }
 }

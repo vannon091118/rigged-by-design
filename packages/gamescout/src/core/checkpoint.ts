@@ -8,6 +8,7 @@
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import type { Checkpoint, CompareResult } from './types.js';
+import { createId } from './id.js';
 
 export class CheckpointController {
   private checkpoints: Map<string, Checkpoint> = new Map();
@@ -19,11 +20,11 @@ export class CheckpointController {
     url: string,
     title: string
   ): Checkpoint {
-    const id = this.createCheckpointId(name);
+    const id = createId('checkpoint');
     const checkpoint: Checkpoint = {
       id,
       name: name || `checkpoint-${id}`,
-      timestamp: new Date().toISOString(),
+      timestamp: '',
       url,
       title,
       screenshotBase64,
@@ -48,8 +49,8 @@ export class CheckpointController {
       throw new Error('Checkpoint nicht gefunden');
     }
 
-    const img1 = PNG.sync.read(Buffer.from(cp1.screenshotBase64, 'base64') as any);
-    const img2 = PNG.sync.read(Buffer.from(cp2.screenshotBase64, 'base64') as any);
+    const img1 = PNG.sync.read(Buffer.from(cp1.screenshotBase64, 'base64'));
+    const img2 = PNG.sync.read(Buffer.from(cp2.screenshotBase64, 'base64'));
 
     const width = Math.max(img1.width, img2.width);
     const height = Math.max(img1.height, img2.height);
@@ -95,9 +96,5 @@ export class CheckpointController {
       titleChanged: cp1.title !== cp2.title,
       observationChanged: JSON.stringify(cp1.observation) !== JSON.stringify(cp2.observation),
     };
-  }
-
-  private createCheckpointId(prefix: string): string {
-    return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   }
 }

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6c7c53c6d1a562434ea33ccb8effe3d141bae5fdac7e5f3f8a11daf088d10d66",
+  "contentHash": "sha256:6d45cf6f4d35fbc96f8c1d8a8d8cdb344de0be8e58bbafd4886160d18b667117",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5800,6 +5800,30 @@
       "text": "Rita stellte die Lupe an den Spieltisch. Nicht um zu eingreifen, sondern um zu sehen: was der Croupier tat, wohin die Karte wanderte, wo der Jeton blieb. Jede Bewegung lieferte einen Fact, jeder Fact blieb im Buch stehen – nichts wurde verändert, alles wurde festgehalten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-game-scout-bootstrap.json"
+    },
+    {
+      "contributionId": "gamescout-player-qa-01",
+      "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+      "agentId": "integrator",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita legte Karte, Jeton und Screenshot nebeneinander. Erst wenn Bild, Renderbaum und Spielzustand dasselbe erzählten, war der Zug wirklich gespielt; sonst blieb er als Beobachtung im Buch stehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-game-scout-player-qa.json"
     },
     {
       "contributionId": "gate-lane-red-team-01",

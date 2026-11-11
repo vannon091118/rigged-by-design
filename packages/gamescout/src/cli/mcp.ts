@@ -32,8 +32,9 @@ async function mcpCommand(): Promise<void> {
   await mcpServer.connect(mcpTransport);
   process.stderr.write('[gamescout mcp] MCP server ready on STDIO\n');
 
+  // Keep process alive
   return new Promise(() => {
-    // eslint-disable-next-line no-empty
+    // Intentionally empty: process runs until explicitly terminated
   });
 }
 

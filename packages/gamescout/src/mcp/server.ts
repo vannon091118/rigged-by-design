@@ -151,9 +151,9 @@ export class McpServer {
       'replay',
       'Wiedergabe einer aufgezeichneten Aktionliste mit Pre-Conditions und Checkpoints.',
       { actions: z.array(z.object({ type: z.string(), data: z.any() })).optional().describe('Aufgezeichnete Aktionen') },
-      async ({ actions }: { actions?: any[] } = { actions: [] }) => {
+      async ({ actions }: { actions?: unknown[] } = { actions: [] }) => {
         try {
-          const result = await this.core.recording.replay(actions);
+          const result = await this.core.recording.replay(actions as RecordedAction[]);
           return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
         } catch (err) {
           return { content: [{ type: 'text', text: JSON.stringify({ replayed: 0, error: err instanceof Error ? err.message : String(err), inconclusive: true }, null, 2) }], isError: true };
@@ -204,6 +204,83 @@ export class McpServer {
         }
       },
     );
+
+    // peer_tools
+    this.server.tool(
+      'peer_tools',
+      'Listet read-only Tools der gebündelten Peer-MCPs (chrome-devtools, pixijs).',
+      { peer: z.enum(['chrome-devtools', 'pixijs']).optional().describe('Peer-MCP; ohne Angabe beide.') },
+      async ({ peer }) => {
+        try {
+          const tools = await this.core.getPeerTools(peer);
+          return { content: [{ type: 'text', text: JSON.stringify(tools, null, 2) }] };
+        } catch (err) {
+          return { content: [{ type: 'text', text: JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2) }], isError: true };
+        }
+      },
+    );
+
+    // peer_call
+    this.server.tool(
+      'peer_call',
+      'Ruft ein read-only Tool eines Peer-MCPs auf (Chrome DevTools oder PixiJS). Mutierende Tools werden blockiert.',
+      {
+        peer: z.enum(['chrome-devtools', 'pixijs']).describe('Peer-MCP'),
+        tool: z.string().describe('Toolname des Peer-MCPs'),
+        args: z.record(z.any()).optional().describe('Argumente als JSON-Objekt'),
+      },
+      async ({ peer, tool, args }) => {
+        try {
+          const result = await this.core.callPeerTool(peer, tool, args ?? {});
+          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+        } catch (err) {
+          return { content: [{ type: 'text', text: JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2) }], isError: true };
+        }
+      },
+    );
+
+    // runtime_probe
+    this.server.tool(
+      'runtime_probe',
+      'Liest den RBD Runtime Probe (DEV-only, read-only) aus: Simulation, NPC, Möbel und Render-Vergleich.',
+      {
+        method: z.enum(['getOverview', 'getWorldState', 'getPlayerState', 'getNpcStates', 'getFurniture', 'getRecentEvents', 'getRenderInfo', 'compareRenderAndSim']).optional().describe('Probe-Methode. Default: getOverview'),
+        args: z.array(z.any()).optional().describe('Argumente für die Probe-Methode'),
+      },
+      async ({ method, args }) => {
+        try {
+          const result = await this.core.getRuntimeProbe(method ?? 'getOverview', args ?? []);
+          return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+        } catch (err) {
+          return { content: [{ type: 'text', text: JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2) }], isError: true };
+        }
+      },
+    );
+
+    // player_qa_snapshot
+    this.server.tool(
+      'player_qa_snapshot',
+      'Erstellt ein gebündeltes Player-QA-Snapshot: Screenshot, Spiel-Tab, Runtime-Probe, Render-Vergleich, Peer-Tools, Konsole und Netzwerk.',
+      {
+        fullPage: z.boolean().optional().describe('Vollseiten-Screenshot. Default: true'),
+        includeConsole: z.boolean().optional().describe('Chrome-Konsolenmeldungen einbeziehen. Default: true'),
+        includeNetwork: z.boolean().optional().describe('Chrome-Netzwerkanfragen einbeziehen. Default: true'),
+      },
+      async (params?: { fullPage?: boolean; includeConsole?: boolean; includeNetwork?: boolean }) => {
+        const { fullPage, includeConsole, includeNetwork } = params ?? {};
+        try {
+          const snapshot = await this.core.getPlayerQaSnapshot({
+            fullPage: fullPage !== false,
+            includeConsole: includeConsole !== false,
+            includeNetwork: includeNetwork !== false,
+          });
+          return { content: [{ type: 'text', text: JSON.stringify(snapshot, null, 2) }] };
+        } catch (err) {
+          return { content: [{ type: 'text', text: JSON.stringify({ error: err instanceof Error ? err.message : String(err) }, null, 2) }], isError: true };
+        }
+      },
+    );
+
   }
 
   async connect(transport: StdioServerTransport): Promise<void> {

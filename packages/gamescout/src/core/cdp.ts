@@ -15,6 +15,7 @@ export class CdpManager {
   private browser: Browser | null = null;
   private context: BrowserContext | null = null;
   private gamePage: Page | null = null;
+  private gameTitle = '';
   private dashboardPage: Page | null = null;
   private options: GameScoutOptions;
 
@@ -53,6 +54,7 @@ export class CdpManager {
       ) {
         this.gamePage = page;
         await page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {});
+        this.gameTitle = await page.title().catch(() => '');
         return;
       }
     }
@@ -61,6 +63,7 @@ export class CdpManager {
     this.gamePage = await this.context.newPage();
     await this.gamePage.goto(this.options.gameUrl ?? 'http://localhost:3000');
     await this.gamePage.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {});
+    this.gameTitle = await this.gamePage.title().catch(() => '');
   }
 
   async ensureDashboardTab(dashboardUrl: string): Promise<void> {
@@ -88,6 +91,7 @@ export class CdpManager {
     this.context = null;
     this.gamePage = null;
     this.dashboardPage = null;
+    this.gameTitle = '';
   }
 
   getGamePage(): Page {
@@ -122,6 +126,10 @@ export class CdpManager {
   async getViewportSize(): Promise<ViewportSize | null> {
     const page = this.getGamePage();
     return page.viewportSize() ?? null;
+  }
+
+  getGameTitle(): string {
+    return this.gameTitle;
   }
 
   isConnected(): boolean {

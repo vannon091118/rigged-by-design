@@ -3824,15 +3824,18 @@
     {
       "turnId": "2026-11-11T06:12Z-agent24-test-quality",
       "contributionId": "agent24-test-quality"
-    }
-,
+    },
     {
       "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
       "contributionId": "agent24-merge-pending"
     },
     {
-"turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
+      "turnId": "2026-11-11T22:00Z-game-scout-bootstrap",
       "contributionId": "gamescout-observation-01"
+    },
+    {
+      "turnId": "2026-11-11T23:00Z-game-scout-player-qa",
+      "contributionId": "gamescout-player-qa-01"
     }
   ]
 }
