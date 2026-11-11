@@ -1,0 +1,22 @@
+{
+  "id": "lane/sim/npc-world-foundation",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/npc-world-foundation",
+  "baseSha": "132b41446d1b4adde52ca6020a9e78e6c0ee30be",
+  "task": "Living World Phase 2: Autonomous NPC World - schedules",
+  "goal": "NPC daily schedule engine",
+  "pathAllowlist": [
+    "src/core/sim/npc-types.ts",
+    "src/core/sim/npc-schedule.ts",
+    "src/core/sim/npc-needs.ts",
+    "src/core/sim/__tests__/npc-schedule.test.ts",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-sim-npc-world-foundation.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "132b41446d1b4adde52ca6020a9e78e6c0ee30be"
+}

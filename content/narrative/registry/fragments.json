@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d5d6040c714ad05e65753e40ebef723fd408243c0e0ccb1e074962d99b1a95e7",
+  "contentHash": "sha256:b9f7f1aaaf2c36d16ec2e6ac2803a1ed6173cf74245efcae199f5e4a2166fecf",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -8352,6 +8352,28 @@
       "text": "Rita sah zur Neonreklame hinauf. Der Abend stand noch im Kalender, auch wenn das alte Buch ein neues Fach bekommen hatte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-nachfragezustand.json"
+    },
+    {
+      "contributionId": "npc-world-foundation-1",
+      "turnId": "2026-11-11T03:10Z-npc-world-foundation-1",
+      "agentId": "codebuff",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "warm",
+      "mood": "neugierig",
+      "relationship": "vertrauen",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Jeden Tag derselbe Rhythmus auf den Strassen, doch heute liegt etwas Neues in der Luft.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-npc-world-foundation-1.json"
     },
     {
       "contributionId": "opening-inheritance-01",

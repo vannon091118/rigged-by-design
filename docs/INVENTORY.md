@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 276 Dateien — contract 162 · integration 58 · governance 42 · statistics 7 · performance 7.
+Summe: 277 Dateien — contract 163 · integration 58 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -295,6 +295,7 @@ Summe: 276 Dateien — contract 162 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/narrative-triggers.test.ts` | sim | contract | ja | `src/core/sim/narrative/triggers.ts` |
 | `src/core/sim/__tests__/narrative-warm-return.test.ts` | sim | contract | ja | `src/core/sim/narrative/events/trigger-definitions.ts` |
 | `src/core/sim/__tests__/nav-edges.test.ts` | sim | contract | ja | `src/core/sim/nav-grid.ts` |
+| `src/core/sim/__tests__/npc-schedule.test.ts` | sim | contract | ja | `src/core/sim/npc-schedule.ts` |
 | `src/core/sim/__tests__/own-play.test.ts` | sim | contract | ja | `src/core/sim/own-play.ts` |
 | `src/core/sim/__tests__/pathfinding.test.ts` | sim | contract | ja | `src/core/sim/pathfinding.ts` |
 | `src/core/sim/__tests__/persona-patience.test.ts` | sim | contract | ja | `src/core/sim/traits.ts` |
@@ -589,10 +590,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2617 |
-| Gelistete Dateien | 2617 |
+| Getrackte Dateien | 2624 |
+| Gelistete Dateien | 2624 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (164), content (915), docs (83), public (554), scripts (102), src (771) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (166), content (916), docs (83), public (554), scripts (102), src (775) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -604,9 +605,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 107 Datei(en)
-- `.lane-claims/tasks/` — 55 Datei(en)
-- `content/narrative/contributions/` — 911 Datei(en)
+- `.lane-claims/claims/` — 108 Datei(en)
+- `.lane-claims/tasks/` — 56 Datei(en)
+- `content/narrative/contributions/` — 912 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -667,8 +668,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 113 Datei(en)
-- `src/core/sim/__tests__/` — 123 Datei(en)
+- `src/core/sim/` — 116 Datei(en)
+- `src/core/sim/__tests__/` — 124 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -814,6 +815,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-logic-safety-v2.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-machine-hall.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-sim-mod-engine.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-sim-npc-world-foundation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-sim-player-career.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/claims/lane-sim-player-cash-payout.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-sim-player-dashboard.json` — { — gelesen: 33 Zeilen
@@ -872,6 +874,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-living-world-foundation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-machine-hall.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-mod-engine.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-npc-world-foundation.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
@@ -1796,8 +1799,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20439 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3649 Zeilen
+- `content/narrative/contributions/2026-11-11-npc-world-foundation-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20461 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3653 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2784,6 +2788,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/narrative-triggers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 146 Zeilen
 - `src/core/sim/__tests__/narrative-warm-return.test.ts` — F: Langzeitpfad ohne Campaign-State. VISITOR_RETURN fuehrt per ASK in — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/nav-edges.test.ts` — Waende blockieren Kanten statt Tiles. Tueren und Durchgaenge bleiben — gelesen: 172 Zeilen
+- `src/core/sim/__tests__/npc-schedule.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 132 Zeilen
 - `src/core/sim/__tests__/own-play.test.ts` — Der eigene Geldweg laeuft fuer alle acht Spiele ausschliesslich ueber — gelesen: 186 Zeilen
 - `src/core/sim/__tests__/pathfinding.test.ts` — Der Heap-A* liefert weiterhin kuerzeste, zusammenhaengende Wege; der Nav-Cache — gelesen: 111 Zeilen
 - `src/core/sim/__tests__/persona-patience.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 25 Zeilen
@@ -2992,6 +2997,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/nav-grid.ts` — Navigationsraster: belegte Tiles, Wandkanten und ein Cache fuer beides. — gelesen: 114 Zeilen
 - `src/core/sim/nav-reach.ts` — Erreichbarkeit ueber offene Kanten: BFS fuer Zielpruefung und Platzierungsschutz. — gelesen: 61 Zeilen
 - `src/core/sim/needs.ts` — Bedürfnisse: ein 180-Punkte-Profil pro Gast, Durst und Blase steuern die Zielwahl. — gelesen: 51 Zeilen
+- `src/core/sim/npc-needs.ts` — import type { NpcIntentKind, NpcNeeds, NpcLODLevel } from './npc-types'; — gelesen: 100 Zeilen
+- `src/core/sim/npc-schedule.ts` — import type { DayPlan, NpcIntent, NpcNeeds, NpcScheduleEntry } from './npc-types'; — gelesen: 78 Zeilen
+- `src/core/sim/npc-types.ts` — export type NpcIntentKind = — gelesen: 53 Zeilen
 - `src/core/sim/offers.ts` — Angebot: kaufbare Spiele, Deko und Mods. Jeder Mod zieht an und kostet Geduld oder Betrieb. — gelesen: 105 Zeilen
 - `src/core/sim/own-play.ts` — Eigene Spielrunde: Der Betreiber sitzt als Gast an seinem Geraet. — gelesen: 197 Zeilen
 - `src/core/sim/pathfinding.ts` — A* auf dem Tile-Grid. Deterministisch, 4 Richtungen, mit Blockern und Wandkanten. — gelesen: 189 Zeilen
