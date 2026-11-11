@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c813817cbe37b1500c9980787d9b321b856edfe78f8bcd8e7c255926316c11cc",
+  "contentHash": "sha256:dbe5f9c0febbb8ff9bad4c55072e29c240a9e9d287a3b3cd8abefb461fd9c78b",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -19642,6 +19642,28 @@
       "text": "Ein Nachlauf ist kein zweiter Anfang: er schliesst ab, was laengst auf main liegt, und laesst den Code unberuehrt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-2.json"
+    },
+    {
+      "contributionId": "ui-queue-aftercare-03",
+      "turnId": "2026-11-11T00:38Z-ui-queue-aftercare-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Vertrag, der nur den Merge feiert, vergisst die Nachsorge; erst der Nachlauf macht aus dem gruenen Lauf einen abgeschlossenen Zustand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-3.json"
     },
     {
       "contributionId": "ui-queue-panel-01",
