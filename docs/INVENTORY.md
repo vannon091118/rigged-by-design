@@ -602,10 +602,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2743 |
-| Gelistete Dateien | 2743 |
+| Getrackte Dateien | 2744 |
+| Gelistete Dateien | 2744 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (190), content (982), docs (83), public (554), scripts (102), src (804) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (190), content (983), docs (83), public (554), scripts (102), src (804) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -619,7 +619,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 120 Datei(en)
 - `.lane-claims/tasks/` — 68 Datei(en)
-- `content/narrative/contributions/` — 978 Datei(en)
+- `content/narrative/contributions/` — 979 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1889,6 +1889,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent26-ci-fix.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-ci-pending.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-claim.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-esport-code.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-esport.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-main-merge.json` — { — gelesen: 17 Zeilen
@@ -1902,8 +1903,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21913 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3917 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21935 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3921 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
