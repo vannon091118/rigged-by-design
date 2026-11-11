@@ -1,0 +1,21 @@
+{
+  "agentId": "codebuff",
+  "turnId": "2026-11-11T04:30Z-render-world-visual-presentation-1",
+  "contributionId": "render-world-visual-presentation-1",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-high",
+  "function": "react",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "warm",
+  "mood": "neugierig",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wenn die Tuer aufgeht und jemand heruebersieht, weiss man sofort, wer hier zu Hause ist.",
+  "directives": []
+}
