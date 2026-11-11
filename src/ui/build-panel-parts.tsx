@@ -4,7 +4,8 @@ import { remodelRequirements } from '../core/sim/remodel';
 import type { StaffRole, TemplateId } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { vc } from './format';
-import { ROLE_LABEL, TASK_LABEL } from './staff-labels';
+import { PERFORMANCE_LABEL, ROLE_LABEL, TASK_LABEL } from './staff-labels';
+import { staffPerformance } from '../core/sim/staff-queries';
 
 interface StaffOffer {
   readonly label: string;
@@ -104,6 +105,7 @@ export function StaffStatus(props: { view: GameView }) {
           <strong>{ROLE_LABEL[agent.role]}</strong>
           <span>{TASK_LABEL[agent.task] ?? agent.task}</span>
           {agent.blockedReason && <small className="warn-text">{agent.blockedReason}</small>}
+          <small className="staff-review">Leistung: {PERFORMANCE_LABEL[staffPerformance([agent])]}</small>
         </div>
       ))}
     </div>
