@@ -88,7 +88,7 @@ export function fightNextRung(history: readonly BackyardHistoryEntry[]): Backyar
 }
 
 /** Das Gegnerprofil derselben Leiter; Hinterhof und Kampfabend teilen es intern. */
-function fightOpponentOf(rung: BackyardRung): DuelOpponent {
+export function fightOpponentOf(rung: BackyardRung): DuelOpponent {
   return {
     guestId: -1, name: rung.name, archetype: rung.archetype, strength: rung.strength,
     greed: rung.rank, nerve: rung.strength, toughness: rung.toughness,

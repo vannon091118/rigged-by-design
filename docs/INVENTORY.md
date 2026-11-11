@@ -600,10 +600,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2704 |
-| Gelistete Dateien | 2704 |
+| Getrackte Dateien | 2710 |
+| Gelistete Dateien | 2710 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (957), docs (83), public (554), scripts (102), src (794) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (958), docs (83), public (554), scripts (102), src (799) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -617,7 +617,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 118 Datei(en)
 - `.lane-claims/tasks/` — 66 Datei(en)
-- `content/narrative/contributions/` — 953 Datei(en)
+- `content/narrative/contributions/` — 954 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -678,8 +678,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 123 Datei(en)
-- `src/core/sim/__tests__/` — 132 Datei(en)
+- `src/core/sim/` — 127 Datei(en)
+- `src/core/sim/__tests__/` — 133 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -1862,6 +1862,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent23-fight-event.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-bets.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent24-task.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
@@ -2796,6 +2797,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
+- `src/core/sim/__tests__/fight-bets.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 123 Zeilen
 - `src/core/sim/__tests__/fight-career.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/fight-event.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 136 Zeilen
 - `src/core/sim/__tests__/floor-work.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 124 Zeilen
@@ -2942,6 +2944,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 57 Zeilen
 - `src/core/sim/events.ts` — Einfacher Event-Emitter fuer die Visuellen-Effekte-Brücke. — gelesen: 30 Zeilen
 - `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 101 Zeilen
+- `src/core/sim/fight-bet-cashier.ts` — Abgabe eines Scheins: der Ledger bucht den Einsatz, das Journal fixiert die — gelesen: 37 Zeilen
+- `src/core/sim/fight-bet-settle.ts` — Vorkampf und Abrechnung: der Vorkampf wird genau einmal simuliert, offene — gelesen: 87 Zeilen
+- `src/core/sim/fight-bet-slips.ts` — Schein- und Abrechnungsbelege sind Journal-Eintraege: kein neues Save-Feld, — gelesen: 79 Zeilen
+- `src/core/sim/fight-bets.ts` — Wettmarkt auf den Vorkampf: Quoten aus der vorhandenen Kampfmechanik. — gelesen: 107 Zeilen
 - `src/core/sim/fight-career.ts` — Hinterhof-Karriere: herausforderbare Gegner, Startgeld und Preisgeld. — gelesen: 171 Zeilen
 - `src/core/sim/fight-event.ts` — Kampfabend im vorhandenen Turnierabend. — gelesen: 156 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
