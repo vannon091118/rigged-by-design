@@ -1,0 +1,32 @@
+{
+  "id": "lane/ui/placement-venue-history",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/ui/placement-venue-history",
+  "baseSha": "549b89142b291cf694ccecc755ff2de224fbe35f",
+  "task": "Enter-Ablegen und Turnier-Historie",
+  "goal": "Playtest-Befunde: Enter setzt nie ab",
+  "pathAllowlist": [
+    "src/ui/app-model.ts",
+    "src/ui/career-section.tsx",
+    "src/ui/look-popup.tsx",
+    "src/ui/venue-history.tsx",
+    "src/ui/__tests__/placement-fit.test.ts",
+    "src/ui/__tests__/venue-history.test.tsx",
+    "src/store/types.ts",
+    "src/store/snapshot.ts",
+    "src/core/sim/venue-event.ts",
+    "src/core/sim/demand.ts",
+    "src/core/sim/__tests__/venue-event.test.ts",
+    "content/narrative/",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-ui-placement-venue-history.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "549b89142b291cf694ccecc755ff2de224fbe35f"
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:766679c2ed06619d64dfd9bce41eea02958ca01ecf70c7974089bef3ac662a50",
+  "contentHash": "sha256:9b2466571d471d2539a6a8b7b5c9881c2bc92256aa6b1dca71d8c7ed0ffc5d02",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -9987,6 +9987,50 @@
       "text": "Die Rivalen bekommen ein Gesicht im Anzeigemodell: Haltung, Indizien und laufende Gegenmassnahmen lassen sich jetzt als Karten lesen, abgeleitet aus dem, was ohnehin schon da ist. Kein zweites Buch, keine zweite Wahrheit - nur ein Blick auf den bestehenden Stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-04-phase5-rival-integration.json"
+    },
+    {
+      "contributionId": "placement-venue-history-1",
+      "turnId": "2026-11-11T12:10Z-placement-venue-history",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Charakter steht beim Ablegen auf dem Feld, das er bebaut: Seine eigene Kachel ist kein Hindernis, eine fremde bleibt es. Und der Turnierabend endet nicht mehr im Schweigen – die vorhandene Event-Instanz behält ihr Ergebnis, und das Charakterfenster liest es als Historie.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history.json"
+    },
+    {
+      "contributionId": "placement-venue-history-ci-fix",
+      "turnId": "2026-11-11T12:45Z-placement-venue-history-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json"
     },
     {
       "contributionId": "player-career-01",

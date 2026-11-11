@@ -102,4 +102,11 @@ describe('Zentrale Event-Infrastruktur', () => {
     expect(venueView(world).current?.kind).toBe('NEON_NACHT');
     expect(world.narrative.events.filter((entry) => entry.status === 'ACTIVE')).toHaveLength(1);
   });
+
+  it('zieht die erste Gaestewelle in jedem Startpfad nach', () => {
+    const { world } = setup();
+    expect(world.nextArrivalTick).toBe(10_000);
+    expect(openVenueEvent(world, 'TURNIER_ABEND')).not.toBeNull();
+    expect(world.nextArrivalTick).toBeLessThanOrEqual(world.tick + 1);
+  });
 });
