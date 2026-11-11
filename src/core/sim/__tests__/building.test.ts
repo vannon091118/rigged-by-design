@@ -1,3 +1,7 @@
+/**
+ * @test-target: src/core/sim/building.ts
+ * @error-code: ERR-2001
+ */
 import { describe, expect, it } from 'vitest';
 import {
   CITY_PRESET_BUILDINGS,
@@ -7,17 +11,22 @@ import {
   setBuildingLocked,
   updateBuildingOccupancy,
 } from '../building';
+import type { BuildingFootprint, BuildingKind, OperatingHours } from '../building-types';
 
 describe('Living World: Building Foundation', () => {
   it('erzeugt valide Gebäude mit unveraenderlichen Daten', () => {
+    const footprint: BuildingFootprint = { x: 10, y: 10, w: 6, h: 4 };
+    const kind: BuildingKind = 'SHOP';
+    const hours: OperatingHours = { openHour: 8, closeHour: 20 };
+
     const building = createBuilding({
       id: 'bld_test_shop',
       name: 'Testladen',
-      kind: 'SHOP',
-      footprint: { x: 10, y: 10, w: 6, h: 4 },
+      kind,
+      footprint,
       entrance: { x: 12, y: 14 },
       interiorLayoutId: 'layout_test_shop',
-      operatingHours: { openHour: 8, closeHour: 20 },
+      operatingHours: hours,
       locked: false,
     });
 

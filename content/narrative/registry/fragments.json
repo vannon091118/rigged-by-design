@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5ff20a43204d980791dd5d1797fac8dcc584eb54a67131657b1b328f81180acf",
+  "contentHash": "sha256:47a177ee2d6b36385ed78fa0aeb392243c3c68872e08b87a053090dc1c8c3387",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5191,6 +5191,28 @@
       "text": "Aus dem Treppenhaus auf den nassen Gehweg getreten: Gegenüber leuchtet das Schild der Kiezkneipe, der Späti hat die Kisten draußen stehen, und ein Nachbar nickt im Vorbeigehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-living-world-foundation-1.json"
+    },
+    {
+      "contributionId": "living-world-foundation-2",
+      "turnId": "2026-11-11T02:45Z-living-world-foundation-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
     },
     {
       "contributionId": "loc-gate-01",

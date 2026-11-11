@@ -1,35 +1,73 @@
+/**
+ * @test-target: src/core/sim/room-transition.ts
+ * @error-code: ERR-2001
+ */
 import { describe, expect, it } from 'vitest';
 import { CITY_PRESET_BUILDINGS } from '../building';
-import { createCityExteriorModel } from '../city-exterior';
-import { createPlayerApartmentModel } from '../player-apartment';
+import {
+  type CityExteriorModel,
+  createCityExteriorModel,
+  createCityStreetLayout,
+  type PropKind,
+  type StreetProp,
+} from '../city-exterior';
+import {
+  type ApartmentFurnitureItem,
+  type ApartmentFurnitureKind,
+  createPlayerApartmentLayout,
+  createPlayerApartmentModel,
+  type PlayerApartmentModel,
+} from '../player-apartment';
 import {
   createConnectedDoorPair,
+  DOOR_INTERACTION_RADIUS,
   type SpatialActor,
+  type SpatialContextKind,
+  type SpatialLocation,
   transitionActorThroughDoor,
+  type TransitionDoor,
+  type TransitionResult,
 } from '../room-transition';
 
 describe('Living World: Room & Building Transition', () => {
   it('erzeugt Spieler-Wohnung mit allen Funktionsbereichen', () => {
-    const apt = createPlayerApartmentModel();
+    const rawLayout = createPlayerApartmentLayout();
+    expect(rawLayout.size).toBe(30);
+
+    const apt: PlayerApartmentModel = createPlayerApartmentModel();
     expect(apt.name).toBe('Wohnung des Spielers');
     expect(apt.layout.size).toBe(30);
     expect(apt.layout.zones.length).toBeGreaterThanOrEqual(4);
-    expect(apt.furniture.some((f) => f.kind === 'BED')).toBe(true);
+
+    const bedKind: ApartmentFurnitureKind = 'BED';
+    const bedItem: ApartmentFurnitureItem | undefined = apt.furniture.find((f) => f.kind === bedKind);
+    expect(bedItem?.name).toBe('Eigenes Bett');
+
     expect(apt.furniture.some((f) => f.kind === 'SMARTPHONE')).toBe(true);
     expect(apt.furniture.some((f) => f.kind === 'FRIDGE')).toBe(true);
     expect(apt.furniture.some((f) => f.kind === 'TOILET')).toBe(true);
   });
 
   it('erzeugt Kiez-Aussenwelt mit Strassen und Gebaeuden', () => {
-    const exterior = createCityExteriorModel();
+    const streetLayout = createCityStreetLayout();
+    expect(streetLayout.size).toBe(60);
+
+    const exterior: CityExteriorModel = createCityExteriorModel();
     expect(exterior.layout.size).toBe(60);
     expect(exterior.buildings.length).toBe(4);
     expect(exterior.props.length).toBeGreaterThan(0);
+
+    const lightKind: PropKind = 'STREET_LIGHT';
+    const firstProp: StreetProp | undefined = exterior.props.find((p) => p.kind === lightKind);
+    expect(firstProp?.label).toBe('Straßenlaterne vor dem Wohnhaus');
+
     expect(exterior.layout.zones.some((z) => z.id === 'ext_zone_main_street')).toBe(true);
   });
 
   it('fuehrt Akteur nahtlos von der Wohnung auf die Strasse', () => {
-    const { exitDoor } = createConnectedDoorPair({
+    expect(DOOR_INTERACTION_RADIUS).toBe(2);
+
+    const pair: { readonly enterDoor: TransitionDoor; readonly exitDoor: TransitionDoor } = createConnectedDoorPair({
       id: 'apt_main_exit',
       label: 'Haustür',
       interiorBuildingId: 'bld_player_home',
@@ -38,16 +76,20 @@ describe('Living World: Room & Building Transition', () => {
       exteriorLayoutId: 'layout_city_street_quarter',
       exteriorDoorPos: { x: 8, y: 12 },
     });
+    const exitDoor: TransitionDoor = pair.exitDoor;
+
+    const ctx: SpatialContextKind = 'INTERIOR';
+    const loc: SpatialLocation = {
+      context: ctx,
+      buildingId: 'bld_player_home',
+      layoutId: 'layout_player_apartment',
+      position: { x: 22, y: 24 }, // direkt vor der Tür (Distanz 1)
+    };
 
     const player: SpatialActor = {
       id: 'PLAYER',
       name: 'Spieler',
-      location: {
-        context: 'INTERIOR',
-        buildingId: 'bld_player_home',
-        layoutId: 'layout_player_apartment',
-        position: { x: 22, y: 24 }, // direkt vor der Tür (Distanz 1)
-      },
+      location: loc,
     };
 
     // Wohnungsbelegung vorher simulieren: 1
@@ -55,7 +97,7 @@ describe('Living World: Room & Building Transition', () => {
       b.id === 'bld_player_home' ? { ...b, occupancy: 1 } : b,
     );
 
-    const result = transitionActorThroughDoor(player, exitDoor, buildingsWithPlayer);
+    const result: TransitionResult<SpatialActor> = transitionActorThroughDoor(player, exitDoor, buildingsWithPlayer);
 
     expect(result.success).toBe(true);
     expect(result.actor.location.context).toBe('EXTERIOR');
