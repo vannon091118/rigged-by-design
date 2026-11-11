@@ -3752,6 +3752,10 @@
     {
       "turnId": "2026-11-11T06:10Z-agent22-task",
       "contributionId": "agent22-task"
+    },
+    {
+      "turnId": "2026-11-11T06:25Z-agent22-venue-event",
+      "contributionId": "agent22-venue-event"
     }
   ]
 }

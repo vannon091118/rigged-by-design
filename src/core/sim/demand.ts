@@ -6,9 +6,9 @@
 import type { Ledger } from '../economy/ledger';
 import type { Prng } from '../rng/prng';
 import { recordJournal } from './journal';
-import { activeDemand, startDemandEvent } from './narrative/demand-events';
-import { demandDefinition } from './narrative/events/demand-definitions';
+import { activeDemand } from './narrative/demand-events';
 import { attractionOf } from './offers';
+import { openVenueEvent } from './venue-event';
 import { UNSAFE_REPUTATION_SPAWN_FACTOR } from './penalty-pool';
 import { companyTier } from './progression';
 import { reputation, spawnGuest } from './spawn';
@@ -160,14 +160,9 @@ function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
   if (activeDemand(world) || world.demandTier === 'BUDE') return;
   if (prng.nextFloat() >= EVENT_CHANCE[world.demandTier]) return;
   const kind: DemandEventKind = prng.nextFloat() < 0.55 ? 'NEON_NACHT' : 'TURNIER_ABEND';
-  const definition = demandDefinition(kind);
-  if (!startDemandEvent(world, kind)) return;
+  if (!openVenueEvent(world, kind)) return;
   // Die erste Welle steht sofort vor der Tuer, nicht erst nach dem naechsten Intervall.
   world.nextArrivalTick = Math.min(world.nextArrivalTick, world.tick + 1);
-  world.lastEvent = definition.startMessage;
-  recordJournal(world, {
-    kind: 'SYSTEM', subject: definition.label, cause: 'Veranstaltung gestartet', effect: world.lastEvent,
-  });
 }
 
 /** Plant die naechste Ankunft und laesst faellige Gruppen herein. Kein Blick auf eine Gaestezahl. */

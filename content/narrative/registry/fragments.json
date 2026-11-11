@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:08399c527578213b4804801b7eb89cb1d0c0e3ee4471cee948315fd4c79d3839",
+  "contentHash": "sha256:0226b65b721ded029c011ecbf38369ad806f085efcf270050473256fb1cdbdb8",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1394,6 +1394,28 @@
       "text": "Vor dem ersten Baustein steht die Pruefung: Der Veranstaltungsrahmen darf nicht neben dem vorhandenen Event-Zustand stehen. Deshalb beginnt Agent 22 mit einer Lane, die nur den fehlenden Ablauf ergaenzt und die bestehende Wahrheit unangetastet laesst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-task.json"
+    },
+    {
+      "contributionId": "agent22-venue-event",
+      "turnId": "2026-11-11T06:25Z-agent22-venue-event",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bühne braucht keinen zweiten Kalender. Ankündigung, Einlass, Durchführung und Ergebnis liegen als Phasen auf derselben Instanz, die schon den Andrang trägt; das Archiv ist nur die Erinnerung daran, keine neue Liste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-venue-event.json"
     },
     {
       "contributionId": "apk-signing-01",
