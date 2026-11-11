@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b10cf49d109c6ad61a499b105cd236904e34f78f019da9df5b2a8adbcb6e76c7",
+  "contentHash": "sha256:383a7e5e3e8fc5e9a734d38f4df598f5e77c5baf1e5ae6357ba7406df8521372",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1680,6 +1680,28 @@
       "text": "Der Schein ist ein Beleg, kein zweiter Spielstand: Er traegt seine Schein-Nummer, seine fixierte Quote und seinen Einsatz im Journal, und die Abrechnung erkennt ihn an derselben Nummer wieder. Wer auf den falschen Mann setzt, sieht den Einsatz als Ledger-Zeile verschwinden; wer richtig liegt, bekommt genau die Quote, die beim Abschluss auf dem Zettel stand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-bets.json"
+    },
+    {
+      "contributionId": "agent24-ci-pending",
+      "turnId": "2026-11-11T06:10Z-agent24-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Markt ist gesetzt, aber noch nicht bestaetigt: Erst der Lauf auf dem exakten Kopf entscheidet, ob Schein, Vorkampf und Abrechnung zusammen halten. Bis dahin bleibt jeder Zettel ein Versprechen und keine Buchung.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-ci-pending.json"
     },
     {
       "contributionId": "agent24-task",

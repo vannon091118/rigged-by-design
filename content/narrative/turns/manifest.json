@@ -3816,6 +3816,10 @@
     {
       "turnId": "2026-11-11T06:05Z-agent24-bets",
       "contributionId": "agent24-bets"
+    },
+    {
+      "turnId": "2026-11-11T06:10Z-agent24-ci-pending",
+      "contributionId": "agent24-ci-pending"
     }
   ]
 }
