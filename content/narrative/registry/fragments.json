@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:25e4557d3033032c7fc9965f8e73dd6e6a4e7aaeb6048340b7a95b2b0eeb0bda",
+  "contentHash": "sha256:74bdcac462c09da12f4f74d50c2cea16a0d8821f567d3971c7f78d9d8d56995d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1658,6 +1658,28 @@
       "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
+    },
+    {
+      "contributionId": "agent24-aftercare",
+      "turnId": "2026-11-11T06:20Z-agent24-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nach dem Merge bleibt Nachsorge: Der Beleg nennt Squash und Baumgleichheit, der Arbeitsbaum bleibt leer, und die Lane zieht ihren Vertrag nach. Der Wettmarkt wird nicht erneut gebaut, nur belegt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-aftercare.json"
     },
     {
       "contributionId": "agent24-bets",
