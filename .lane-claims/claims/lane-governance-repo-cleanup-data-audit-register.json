@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/repo-cleanup-data-audit-register",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/repo-cleanup-data-audit-register",
+  "baseSha": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
+  "task": "Register-Nachtrag zum gemergten Repo-Cleanup",
+  "goal": "Den gemergten Cleanup-Claim mit Merge-SHA und Task DONE nachziehen; Doku und Register auf den main-Stand bringen.",
+  "pathAllowlist": [
+    "docs/DEVTAGEBUCH.md",
+    "docs/CHANGELOG.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-repo-cleanup-data-audit.json",
+    ".lane-claims/tasks/governance-repo-cleanup-data-audit.json",
+    ".lane-claims/claims/lane-governance-repo-cleanup-data-audit-register.json",
+    ".lane-claims/tasks/governance-repo-cleanup-data-audit-register.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
+  "createdAt": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa"
+}

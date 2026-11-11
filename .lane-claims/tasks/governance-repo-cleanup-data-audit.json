@@ -4,14 +4,20 @@
   "claimId": "lane/governance/repo-cleanup-data-audit",
   "branch": "lane/governance/repo-cleanup-data-audit",
   "baseSha": "13e8f84864598422e540cf63f64a6bb761f02ac4",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Repo-Cleanup: Inventur, Widersprüche und 2k-Datenprüfung",
   "goal": "Doku-Dubletten entfernen, veraltete Ist-Zahlen korrigieren, Datenabdeckung von Narrativ, Assets und Save-Archiv belegen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 458,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/458",
+    "state": "merged",
+    "headSha": "0363553b039c9bce4b1e1ed6a6990bd0da530e13",
+    "mergedSha": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 2
+  "nextAction": "Abgeschlossen: PR #458 wurde als caaf885 auf main gemergt; keine offene Cleanup-Lane.",
+  "revision": 3
 }

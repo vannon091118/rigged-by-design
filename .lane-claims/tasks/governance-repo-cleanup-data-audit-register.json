@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-repo-cleanup-data-audit-register",
+  "claimId": "lane/governance/repo-cleanup-data-audit-register",
+  "branch": "lane/governance/repo-cleanup-data-audit-register",
+  "baseSha": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
+  "phase": "DONE",
+  "title": "Register-Nachtrag zum Repo-Cleanup",
+  "goal": "Den gemergten Cleanup-Claim mit Merge-SHA und DONE-Vertrag nachziehen und Doku sowie Register auf den main-Stand bringen.",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Abgeschlossen: Register und Doku belegen PR #458 mit caaf885; keine offene Cleanup-Lane.",
+  "revision": 1
+}

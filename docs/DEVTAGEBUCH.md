@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-11 - Repo-Cleanup: Merge-Beleg und Register-Nachlauf
+
+**Ziel:** Den automatisch gemergten Cleanup-PR #458 im Register belegen, ohne die Lane wieder zu oeffnen.
+
+**Befund:** PR #458 wurde auf dem geprueften Kopf `0363553` vom Repository-Automaten als `caaf885` squash-gemergt. Lane-Kopf und Merge tragen denselben Baum `46fa9ba`; der Pflichtstatus `Fail-Closed Gates` ist gruen.
+
+**Umsetzung:** `reconcile-claims --apply` schreibt den Claim auf `merged` (`branch-tree-on-main`, `caaf885`). Der Task-Vertrag steht auf `DONE` und nennt PR #458. Der Register-Nachlauf laeuft ueber die neue Closeout-Lane, damit der gemergte Claim nicht wieder geoeffnet wird.
+
+**Pruefungen:** `verify:docs`, `verify:claims`, `verify-task-contract`, `verify:scope`; der PR-Lauf prueft den Nachlauf.
+
+**Bewusst nicht getan:** Keine Aenderung an Runtime, Daten oder Assets; keine Branch-Loeschung; `docs/INDEX.md` bleibt wegen des Governance-Freeze unveraendert.
+
 ## 2026-11-11 - Repo-Cleanup: Doku-Dubletten, Ist-Zahlen und 2k-Datencheck
 
 **Ziel:** Die Dokumentation auf den echten Stand bringen, exakte Dubletten entfernen und die sogenannten 2k-Daten gegen ihre Nutzung pruefen, ohne belegte Inhalte zu loeschen.

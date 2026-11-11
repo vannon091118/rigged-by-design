@@ -17,6 +17,7 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 ### Technik
 - **Repo-Cleanup: Inventur und Doku-Dubletten.** 90 exakt doppelte Abschnitte im Devtagebuch entfernt (1.294 Zeilen), ohne eindeutige Inhalte zu verlieren. Inventur-Kopf und Ist-Zahlen auf den gemessenen Stand gebracht; Workflow-, Doku- und Testzahlen stimmen wieder.
 - **Datencheck statt Datenlöschung.** 1.004/1.004 Narrativ-Beiträge stehen in Manifest und Runtime-Registry, 554/554 Asset-Dateien im Manifest, 0 Waisen. Das 2.000-Zeilen-Archiv ist ein aktives Save-Feld und wird von Historie, Karriere, Wetten und Renovierung gelesen.
+- **Merge-Nachsorge Repo-Cleanup.** PR #458 wurde als `caaf885` nach `main` gemergt; der Cleanup-Claim steht auf `merged`, der Task-Vertrag auf `DONE`. Der Register-Nachlauf belegt den baumgleichen Merge und laesst keine offene Cleanup-Lane zurueck.
 
 ## [0.3.212–0.3.224] - 2026-11-11
 
