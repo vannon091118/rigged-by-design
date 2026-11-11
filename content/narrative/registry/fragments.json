@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8e44d411187ad3ced78554f52c0c6c97daee064c8d0c4c287756f5d8a1932b6c",
+  "contentHash": "sha256:b7b73385e45ac65e902252c8e435f144efc6658e03ab7bc7aecad127eb5108ae",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2032,6 +2032,28 @@
       "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
+    },
+    {
+      "contributionId": "agent26-ci-fix",
+      "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der rote Tests-Lauf war kein Datenfehler, sondern eine gezaehlte Liste zu viel. Die Liga teilt sich jetzt das vorhandene Raster; die sieben Attribute behalten ihre eigene Liste.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-ci-fix.json"
     },
     {
       "contributionId": "agent26-ci-pending",

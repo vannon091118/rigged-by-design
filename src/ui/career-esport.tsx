@@ -12,17 +12,15 @@ export function CareerEsport() {
         <div><span>Führend</span><b>{esport.homeTeam}</b></div>
         <div><span>Turniere</span><b>{esport.history.length}</b></div>
       </div>
-      <ul className="career-property-offers" aria-label="E-Sport-Tabelle">
+      <div className="career-grid" aria-label="E-Sport-Tabelle">
         {esport.teams.map((team, index) => (
-          <li key={team.id}>
-            <div>
-              <b>{index + 1}. {team.name}</b>
-              <small>{team.tactic} · Form {team.form} · {team.players.map((player) => player.role).join(' / ')}</small>
-            </div>
-            <span>{team.strength}</span>
-          </li>
+          <div key={team.id}>
+            <span>{index + 1}. {team.name}</span>
+            <b>{team.strength}</b>
+            <small>{team.tactic} · Form {team.form} · {team.players.map((player) => player.role).join(' / ')}</small>
+          </div>
         ))}
-      </ul>
+      </div>
     </>
   );
 }

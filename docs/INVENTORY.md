@@ -602,10 +602,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2739 |
-| Gelistete Dateien | 2739 |
+| Getrackte Dateien | 2740 |
+| Gelistete Dateien | 2740 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (190), content (978), docs (83), public (554), scripts (102), src (804) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (190), content (979), docs (83), public (554), scripts (102), src (804) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -619,7 +619,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 120 Datei(en)
 - `.lane-claims/tasks/` — 68 Datei(en)
-- `content/narrative/contributions/` — 974 Datei(en)
+- `content/narrative/contributions/` — 975 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -897,7 +897,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-arena.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-esport-data.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-esport-data.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-fight-bets.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 24 Zeilen
@@ -1885,6 +1885,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent25-merge-base.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent25-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent25-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent26-ci-fix.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-ci-pending.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-claim.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-agent26-esport-code.json` — { — gelesen: 17 Zeilen
@@ -1898,8 +1899,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21825 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3901 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21847 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3905 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -3361,7 +3362,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 126 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
 - `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 80 Zeilen
-- `src/ui/career-esport.tsx` — Stadtliga im bestehenden Charakterfenster: Tabelle und Rollen aus derselben Ableitung. — gelesen: 28 Zeilen
+- `src/ui/career-esport.tsx` — Stadtliga im bestehenden Charakterfenster: Tabelle und Rollen aus derselben Ableitung. — gelesen: 26 Zeilen
 - `src/ui/career-floor.tsx` — Arbeitsqualitaet im Charakterfenster: welche Rolle welches Attribut traegt. — gelesen: 27 Zeilen
 - `src/ui/career-history.tsx` — Spielhistorie im Charakterfenster: die letzten Etappen aus dem Archiv, keine zweite Chronik. — gelesen: 30 Zeilen
 - `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 160 Zeilen

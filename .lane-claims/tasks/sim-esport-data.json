@@ -11,7 +11,14 @@
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
   "pr": null,
-  "findings": [],
-  "nextAction": "CI auf dem gepushten Kopf abwarten; danach MERGE_PENDING.",
-  "revision": 3
+  "findings": [
+    {
+      "id": "ci-tests-list-count",
+      "severity": "warning",
+      "status": "resolved",
+      "summary": "Gate tests zaehlte fuenf statt vier Listen; die Liga nutzt jetzt das vorhandene career-grid statt einer zweiten Liste."
+    }
+  ],
+  "nextAction": "CI auf dem Reparaturkopf abwarten; danach MERGE_PENDING.",
+  "revision": 4
 }
