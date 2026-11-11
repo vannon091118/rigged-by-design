@@ -4,14 +4,20 @@
   "claimId": "lane/governance/monitor-closeout-452",
   "branch": "lane/governance/monitor-closeout-452",
   "baseSha": "19f58dbaa38d10089a8f3b0e22ff5dcd18b82fc6",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Closeout des Monitor-Befunds #452",
   "goal": "claim-cleanup superseded, die vorherige Nachsorge-Lane DONE und #452 mit Merge-Beleg schliessen.",
   "taskType": "aftercare",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 454,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/454",
+    "state": "merged",
+    "headSha": "74c0c0593b8bf384c17183d3d8cd73703619f125",
+    "mergedSha": "50869eee3b36a021167ec7b1836d66eb587a2b7d"
+  },
   "findings": [],
-  "nextAction": "PR-Lauf pruefen; Merge nur durch promote auf dem exakten Kopf; danach #452 schliessen.",
-  "revision": 1
+  "nextAction": "Abgeschlossen: PR #454 wurde als 50869ee auf main gemergt; Issue #452 ist geschlossen.",
+  "revision": 2
 }

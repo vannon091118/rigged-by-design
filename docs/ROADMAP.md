@@ -292,6 +292,7 @@ Code und seinen Test als Beleg.
 
 | Punkt | Status | Beleg / naechster Schritt |
 | --- | --- | --- |
+| Monitor-Closeouts #448-#452 | **erledigt 2026-11-11** | #448-#450: PR #451, Merge `9e8f914`; Nachsorge PR #453, Merge `19f58db`; #452: PR #454, Merge `50869ee`. Claims `merged`, Tasks `DONE`; `claim-cleanup` `superseded`. |
 | Direktpush auf `main` | Regel bleibt | Branch-Schutz antwortet mit `GH006` (nur PR plus Pflichtstatus); die Registerpflege lief deshalb als Governance-Lane ueber PR (#268, #269) |
 | Merge-Nachricht ist Gate-Text | offen | Ein Squash ueber die API mit blossem Titel laesst `main` am Commit-Notes-Gate rot (`ERR-4006`); die drei Pflichtsektionen muessen im Nachrichtentext stehen |
 | Gate-Bypass | Regel bleibt | `--no-verify`, `git stash` und leere Trigger-Commits sind ausgeschlossen |

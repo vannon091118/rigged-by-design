@@ -15,6 +15,8 @@ Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
 **Pruefungen:** `verify-lane-claims`, `verify-task-contract`, `verify-narrative-blocks`, `verify:docs` und `verify-governance-freeze` lokal; der PR-Lauf prueft den exakten Kopf.
 
+**Abschluss:** PR #454 wurde auf dem Kopf `74c0c05` mit gruenem `Fail-Closed Gates` geprueft und als `50869ee` nach `main` squash-gemergt. Issue #452 ist geschlossen; der Claim `lane/governance/monitor-closeout-452` steht auf `merged`, der Task-Vertrag auf `DONE`. Der Register-Nachtrag fuehrt den Claim ohne neue Lane-Arbeit nach.
+
 **Bewusst nicht getan:** Keine Branch-Loeschung, kein Force-Push, keine Aenderung an `scripts/` oder `.github/`; die strukturelle Pages- und Precommit-Optimierung bleibt PIN-gated.
 
 ## 2026-11-11 - Monitor-Befunde #448-#450: Pages, Register und Claims

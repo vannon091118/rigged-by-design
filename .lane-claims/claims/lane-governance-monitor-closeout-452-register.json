@@ -1,0 +1,24 @@
+{
+  "id": "lane/governance/monitor-closeout-452-register",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/monitor-closeout-452-register",
+  "baseSha": "50869eee3b36a021167ec7b1836d66eb587a2b7d",
+  "task": "Register-Nachtrag zum gemergten #452-Closeout",
+  "goal": "Den bereits gemergten Claim monitor-closeout-452 mit realem Merge-SHA und Task DONE nachziehen; Roadmap und Devtagebuch auf den main-Stand bringen.",
+  "pathAllowlist": [
+    "docs/ROADMAP.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-governance-monitor-closeout-452.json",
+    ".lane-claims/tasks/governance-monitor-closeout-452.json",
+    ".lane-claims/claims/lane-governance-monitor-closeout-452-register.json",
+    ".lane-claims/tasks/governance-monitor-closeout-452-register.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "branch-tree-on-main",
+  "mergedSha": "50869eee3b36a021167ec7b1836d66eb587a2b7d",
+  "createdAt": "50869eee3b36a021167ec7b1836d66eb587a2b7d"
+}
