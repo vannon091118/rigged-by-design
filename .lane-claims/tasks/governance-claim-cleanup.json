@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-claim-cleanup",
+  "claimId": "lane/governance/claim-cleanup",
+  "branch": "lane/governance/claim-cleanup",
+  "baseSha": "7db4be8e299081ce8d0651e0d8db5517908ad8ee",
+  "phase": "CI_PENDING",
+  "title": "claim-cleanup",
+  "goal": "Closeout-Claims auf merged/DONE ziehen, Remote-Lanes loeschen, Claims konsolidieren",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

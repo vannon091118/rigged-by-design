@@ -620,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2855 |
-| Gelistete Dateien | 2855 |
+| Getrackte Dateien | 2793 |
+| Gelistete Dateien | 2793 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (204), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (142), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -635,8 +635,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 127 Datei(en)
-- `.lane-claims/tasks/` — 75 Datei(en)
+- `.lane-claims/claims/` — 128 Datei(en)
+- `.lane-claims/tasks/` — 12 Datei(en)
 - `content/narrative/contributions/` — 1004 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -775,6 +775,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-blocks-gate-final.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-branch-consolidation.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-ci-stabilization.json` — { — gelesen: 25 Zeilen
+- `.lane-claims/claims/lane-governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-claim-reconcile-0911.json` — { — gelesen: 20 Zeilen
@@ -886,80 +887,17 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
-- `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/club-night-lounge.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/gastro-drink-menu.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-agent-bootstrap.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-agent14-changelog.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-agent14-claim-evidence.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-collision-closeout.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-company-progression-closeout.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-company-progression-docs.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-derivetaskstate-fix.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-fail-closed-issue-check.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-fight-career-docs.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-final-closeout.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-first-property-docs-2.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-floor-work-docs.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-item-synergy-docs.json` — { — gelesen: 26 Zeilen
+- `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-living-world-vision.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-machine-hall-docs.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-mechanik-fix.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-mod-engine-docs.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/tasks/governance-p20-dependency-matrix.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-phase-1-4.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-phase0-2-closeout.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/governance-phase2-task-contract.json` — { — gelesen: 32 Zeilen
 - `.lane-claims/tasks/governance-phase3-4-acceptance-v2.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/tasks/governance-phase3-ci-state-and-escalation.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/governance-pixel-pipeline-closeout.json` — { — gelesen: 26 Zeilen
-- `.lane-claims/tasks/governance-player-dashboard-docs.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/governance-precommit-pipeline.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-pretask-failclosed-repair.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-promote-automerge-test.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-property-world-docs.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-readme-visual-polish.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-renovation-docs.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/governance-review-hygiene.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-soak-quick-fallback.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/tasks/governance-ui-queue-claim-closeout-2.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-workflow-loop-0911.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-world-first-ui.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/hybrid-visitor-flows.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/infra-gameplay-scout-bootstrap.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/render-world-visual-presentation.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/room-plan.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/sim-arena.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-esport-data.json` — { — gelesen: 36 Zeilen
-- `.lane-claims/tasks/sim-fight-bets.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-first-run-slot-truth.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/tasks/sim-floor-work.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-item-synergy.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-living-world-foundation.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-living-world-vertical-slice.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-machine-hall.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-mod-engine.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-npc-world-foundation.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/sim-player-career.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-world-continuity-interaction.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/ui-placement-venue-history.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/tasks/ui-world-click-action-queue.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/tasks/venue-event.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
