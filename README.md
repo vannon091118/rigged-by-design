@@ -30,7 +30,7 @@
 
 ## Das Leben vor deiner Haustür: Eine Stadt, die dich ignoriert
 
-Willkommen in deiner Wohnung. 
+Willkommen in deiner Wohnung.
 
 Sie ist nicht groß. Das Wasser aus dem Hahn braucht drei Minuten, bis es lauwarm wird, die Heizung gluckert nachts wie ein ertrinkender Matrose, und der Nachbar über dir übt seit Monaten Schlagzeug – ohne jedes Rhythmusgefühl, aber mit bewundernswerter Ausdauer. Auf dem Tisch liegt dein Smartphone mit fünf ungelesenen Nachrichten, die du lieber nicht öffnest, und die Kaffeemaschine verteilt mehr Kaffeesatz als Heißgetränk. Aber sie ist dein Zuhause. Das, was übrig bleibt, wenn man keine Ausreden mehr hat.
 

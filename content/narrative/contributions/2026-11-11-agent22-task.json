@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:10Z-agent22-task",
+  "contributionId": "agent22-task",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem ersten Baustein steht die Pruefung: Der Veranstaltungsrahmen darf nicht neben dem vorhandenen Event-Zustand stehen. Deshalb beginnt Agent 22 mit einer Lane, die nur den fehlenden Ablauf ergaenzt und die bestehende Wahrheit unangetastet laesst.",
+  "directives": []
+}

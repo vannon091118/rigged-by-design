@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:40Z-agent22-dead-code",
+  "contributionId": "agent22-dead-code",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
+  "directives": []
+}
