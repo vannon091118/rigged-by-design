@@ -14,6 +14,7 @@ import {
   planRetention,
   planTaskCloseout,
 } from '../../../../scripts/lib/claim-lifecycle.mjs';
+import { mergeClaimRecord } from '../../../../scripts/lib/lane-claims.mjs';
 
 const sha = (char: string) => char.repeat(40);
 
@@ -152,5 +153,24 @@ describe('post-merge closeout', () => {
       }),
     ];
     expect(planTaskCloseout({ tasks, claims: [claim('blocked', 'merged').claim] })).toEqual([]);
+  });
+});
+
+describe('claim persistence', () => {
+  it('erhaelt Notizen und unbekannte Felder beim Statuswechsel', () => {
+    const current = { id: 'x', status: 'open', notes: 'nicht verlieren' };
+    const next = { id: 'x', status: 'merged', mergedEvidence: 'tree-on-main', mergedSha: sha('b') };
+    expect(mergeClaimRecord(current, next)).toEqual({
+      ...current,
+      status: 'merged',
+      mergedEvidence: 'tree-on-main',
+      mergedSha: sha('b'),
+    });
+  });
+
+  it('entfernt veraltete Merge-Belege, wenn der neue Stand keine hat', () => {
+    const current = { id: 'x', status: 'merged', mergedEvidence: 'old', mergedSha: sha('a') };
+    const next = { id: 'x', status: 'open' };
+    expect(mergeClaimRecord(current, next)).toEqual({ id: 'x', status: 'open' });
   });
 });

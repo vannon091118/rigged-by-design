@@ -271,6 +271,19 @@ function claimEntryFiles() {
   return files;
 }
 
+/**
+ * Vereinigt einen bestehenden Claim-Datensatz mit dem neuen Lifecycle-Stand.
+ * Unbekannte Felder (etwa `notes`) bleiben erhalten; veraltete Merge-Belege
+ * werden nur entfernt, wenn der neue Stand sie ausdruecklich nicht mehr hat.
+ */
+export function mergeClaimRecord(current, next) {
+  const merged = { ...current, ...next };
+  for (const key of ['mergedEvidence', 'mergedSha']) {
+    if (!Object.prototype.hasOwnProperty.call(next, key)) delete merged[key];
+  }
+  return merged;
+}
+
 /** Atomar eine einzelne Claim-Datei schreiben. */
 function writeClaimFile(file, claim) {
   mkdirSync(CLAIM_ENTRIES_DIR, { recursive: true });
@@ -287,18 +300,24 @@ function writeClaimFile(file, claim) {
 export function saveClaims(claims) {
   mkdirSync(CLAIMS_DIR, { recursive: true });
   const entryFiles = claimEntryFiles();
+  const legacyCurrent = new Map(
+    (existsSync(CLAIMS_FILE) ? readClaimEntries(CLAIMS_FILE) : []).map((entry) => [entry.id, entry]),
+  );
   const legacy = [];
   for (const claim of claims) {
     const json = typeof claim.toJSON === 'function' ? claim.toJSON() : claim;
     const file = entryFiles.get(json.id);
     if (file) {
       const current = JSON.parse(readFileSync(file, 'utf8'));
-      if (JSON.stringify(current, null, 2) !== JSON.stringify(json, null, 2)) writeClaimFile(file, json);
+      const next = mergeClaimRecord(current, json);
+      if (JSON.stringify(current, null, 2) !== JSON.stringify(next, null, 2)) writeClaimFile(file, next);
+    } else {
+      const current = legacyCurrent.get(json.id);
+      legacy.push(current ? mergeClaimRecord(current, json) : json);
     }
-    else legacy.push(json);
   }
   const nextLegacy = JSON.stringify(legacy, null, 2);
-  const currentLegacy = existsSync(CLAIMS_FILE) ? JSON.stringify(JSON.parse(readFileSync(CLAIMS_FILE, 'utf8')), null, 2) : null;
+  const currentLegacy = existsSync(CLAIMS_FILE) ? JSON.stringify(readClaimEntries(CLAIMS_FILE), null, 2) : null;
   if (currentLegacy === nextLegacy) return;
   // Atomar: erst daneben schreiben, dann ersetzen. Ein paralleler Agent sieht
   // so entweder das alte oder das neue Register, nie eine halbe Datei.

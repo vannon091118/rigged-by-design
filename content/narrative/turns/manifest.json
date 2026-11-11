@@ -4016,6 +4016,10 @@
     {
       "turnId": "2026-11-11T15:10Z-governance-precommit-pipeline",
       "contributionId": "governance-precommit-pipeline"
+    },
+    {
+      "turnId": "2026-11-11T20:30Z-governance-claim-persistence",
+      "contributionId": "governance-claim-persistence"
     }
   ]
 }

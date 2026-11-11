@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-claim-persistence",
+  "claimId": "lane/governance/claim-persistence",
+  "branch": "lane/governance/claim-persistence",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "phase": "CI_PENDING",
+  "title": "Claim-Persistenz: nur geaenderte Claims schreiben",
+  "goal": "Reconcile und Post-Merge-Closeout duerfen fremde Claim-Dateien nicht neu serialisieren; Notes und unbekannte Felder bleiben erhalten.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen; CI prueft den exakten Kopf und den Persistenz-Test.",
+  "revision": 1
+}

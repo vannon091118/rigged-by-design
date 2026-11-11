@@ -1,0 +1,31 @@
+{
+  "id": "lane/governance/claim-persistence",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/claim-persistence",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "task": "Claim-Persistenz: Reconcile schreibt nur geaenderte Claims und erhaelt Notizen",
+  "goal": "Reconcile und Post-Merge-Closeout duerfen fremde Claim-Dateien nicht serialisieren; Notes und unbekannte Felder bleiben erhalten.",
+  "pathAllowlist": [
+    ".lane-claims/claims/lane-governance-claim-persistence.json",
+    ".lane-claims/tasks/governance-claim-persistence.json",
+    ".lane-claims/freeze-unlock.json",
+    "scripts/lib/lane-claims.mjs",
+    "src/core/governance/__tests__/claim-lifecycle.test.ts",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/TEST-CATALOG.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-11-governance-claim-persistence.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "698788d447dd39fc4002c5c711a56cb2bfa9caf2"
+}
