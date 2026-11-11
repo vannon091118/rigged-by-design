@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:12Z-city-event-13",
+  "contributionId": "city-event-13",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein alter Mann verteilt Brotkruemel an die Tauben, die sich um seine Fuesse draengen. Als ein Kind naeher kommt, hebt er warnend die Hand, ohne aufzusehen.",
+  "directives": []
+}

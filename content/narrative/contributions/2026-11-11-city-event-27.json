@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:26Z-city-event-27",
+  "contributionId": "city-event-27",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Obststand hat die Kisten nach Farbe sortiert, als waere die Strasse eine Auslage. Eine Frau drueckt auf eine Melone, hoert kurz hin und legt sie zurueck.",
+  "directives": []
+}

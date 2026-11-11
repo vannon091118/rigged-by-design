@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:45Z-city-event-46",
+  "contributionId": "city-event-46",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Moped knattert an der Ampel los, als haette es etwas zu beweisen. Der Fahrer schaut nicht zurueck, aber alle anderen wissen, dass er es getan hat.",
+  "directives": []
+}

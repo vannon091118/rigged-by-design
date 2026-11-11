@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:16Z-city-event-17",
+  "contributionId": "city-event-17",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Friseurfenster haengt ein Plakat mit einem Schnitt von vor drei Jahren. Drinnen lacht jemand, und die Schere bleibt fuer einen Moment im Haar stehen.",
+  "directives": []
+}

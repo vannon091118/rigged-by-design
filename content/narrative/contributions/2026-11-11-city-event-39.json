@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:38Z-city-event-39",
+  "contributionId": "city-event-39",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vor dem Gemueseladen stapeln sich leere Kisten, und ein Junge balanciert eine volle auf seinem Kopf. Der Ladenbesitzer ruft etwas, das wie ein Kompliment klingt.",
+  "directives": []
+}

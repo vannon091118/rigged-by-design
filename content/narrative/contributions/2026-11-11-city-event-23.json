@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:22Z-city-event-23",
+  "contributionId": "city-event-23",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Eine Katze sitzt auf der Fensterbank ueber dem Eckladen und beobachtet die Strasse. Wer hochschaut, bekommt einen Blick, der jedes Gespraech fuer beendet erklaert.",
+  "directives": []
+}

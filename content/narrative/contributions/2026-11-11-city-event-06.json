@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:05Z-city-event-06",
+  "contributionId": "city-event-06",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "An der Haltestelle stehen drei Menschen unter einem Dach, das nur zwei trocken haelt. Der Bus hat Verspaetung, und niemand will der erste sein, der es laut sagt.",
+  "directives": []
+}

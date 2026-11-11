@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:37Z-city-event-38",
+  "contributionId": "city-event-38",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "warm",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Eimer Wasser steht vor der Tuer, daneben ein Mopp, der noch tropft. Wer vorbeigeht, macht einen Bogen, als koennte der Boden die Schuld tragen.",
+  "directives": []
+}

@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:34Z-city-event-35",
+  "contributionId": "city-event-35",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Im Hausflur haengt ein Zettel, auf dem die Hausverwaltung etwas reparieren laesst. Die Schrift ist so klein, dass zwei Nachbarn gemeinsam davorstehen und laut Buchstaben raten.",
+  "directives": []
+}

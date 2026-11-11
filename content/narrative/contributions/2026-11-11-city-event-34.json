@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:33Z-city-event-34",
+  "contributionId": "city-event-34",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Kehrmaschine faehrt im Schrittempo die Strasse entlang und draengt alle an den Rand. Der Fahrer hebt entschuldigend die Hand, als waere das genug.",
+  "directives": []
+}

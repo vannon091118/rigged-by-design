@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:04Z-city-event-05",
+  "contributionId": "city-event-05",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "scharf",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Hinter dem Bauzaun laeuft ein Radio, waehrend niemand arbeitet. Auf dem Schild steht ein Datum, das schon zweimal vorbeigezogen ist.",
+  "directives": []
+}

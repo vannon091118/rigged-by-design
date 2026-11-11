@@ -13,7 +13,8 @@
     "guest-voice-mid": "Gaststimme im Haus mit mittlerem Ruf: Alltag, Bedienung, kein Drama.",
     "guest-voice-high": "Gaststimme im Haus mit hohem Ruf: Wiederkehr, Vertrauen, Empfehlung.",
     "city-scene": "Text aus der Stadt: Kiez, Markt, Wege und die zwei Progression-Zweige.",
-    "city-night": "Nacht- und Tagesabschluss der Stadt: Ruhe, Rueckweg, naechster Morgen."
+    "city-night": "Nacht- und Tagesabschluss der Stadt: Ruhe, Rueckweg, naechster Morgen.",
+    "city-event": "Stadtbegegnung: ein konkreter Moment auf Strasse, Platz oder vor einem Laden."
   },
   "functions": {
     "establish": "Führt Figuren, Ort oder Ausgangslage ein.",
@@ -75,6 +76,10 @@
       "describe",
       "remember",
       "warn"
+    ],
+    "city-event": [
+      "describe",
+      "warn"
     ]
   },
   "composerSlots": {
@@ -83,7 +88,8 @@
     ],
     "BODY": [
       "event-body",
-      "description"
+      "description",
+      "city-event"
     ],
     "CHOICE_LABEL": [
       "choice-preview"
@@ -127,6 +133,7 @@
     "content": "Content-Registry, Schema und Klassifizierung.",
     "echo": "Spaetere Wiederbegegnung nach einer aufgeloesten Kette; das Ereignis liegt sichtbar zurueck.",
     "encounter": "Begegnung im Ort mit einer benannten Figur.",
+    "city": "Stadtraum: Strasse, Platz, Laden oder Weg mit seiner eigenen Alltagssprache.",
     "give": "Etwas ausgeben oder abgeben.",
     "help": "Mit anpacken oder helfen.",
     "decline": "Eine Bitte ablehnen.",

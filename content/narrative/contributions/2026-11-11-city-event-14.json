@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:13Z-city-event-14",
+  "contributionId": "city-event-14",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Lieferwagen steht in zweiter Reihe, die Warnblinker laufen. Der Fahrer traegt Kisten in den Laden, waehrend hinter ihm ein Taxi ungeduldig hupt.",
+  "directives": []
+}

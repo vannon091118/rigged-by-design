@@ -18,7 +18,7 @@ export const CITY_ENCOUNTER_TEMPLATE: EventTemplate = {
   participantRoles: ['visitor'],
   contentSlots: [
     { id: 'TITLE', kind: 'TITLE', requiredContexts: ['encounter'] },
-    { id: 'BODY', kind: 'BODY', requiredContexts: ['encounter'] },
+    { id: 'BODY', kind: 'BODY', requiredContexts: ['encounter', 'city'] },
     { id: 'CHOICE_GIVE', kind: 'CHOICE_LABEL', requiredContexts: ['encounter', 'give'] },
     { id: 'CHOICE_HELP', kind: 'CHOICE_LABEL', requiredContexts: ['encounter', 'help'] },
     { id: 'CHOICE_DECLINE', kind: 'CHOICE_LABEL', requiredContexts: ['encounter', 'decline'] },

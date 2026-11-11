@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/city-event-content",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/city-event-content",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "task": "P-EPSILON: Stadtbegegnung mit 50 city-event-Fragmenten und echtem Reader erweitern",
+  "goal": "Die bestehende CITY_ENCOUNTER-Szene liest einen eigenen city-event-Pool; P-13 steigt um 50, ohne neue Engine oder Governance-Logik.",
+  "pathAllowlist": [
+    "content/narrative/",
+    "src/core/sim/narrative/",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    "docs/CHANGELOG.md",
+    "docs/DEVTAGEBUCH.md",
+    ".lane-claims/claims/lane-governance-city-event-content.json",
+    "docs/DEPENDENCY-MATRIX.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "698788d447dd39fc4002c5c711a56cb2bfa9caf2"
+}

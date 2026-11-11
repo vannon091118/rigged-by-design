@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:23Z-city-event-24",
+  "contributionId": "city-event-24",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "melancholisch",
+  "mood": "neutral",
+  "relationship": "konflikt",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Strassenlaterne flackert, obwohl es noch hell ist. Ein Elektriker steht mit offenem Kasten daneben und redet mit dem Laternenmast statt mit den Passanten.",
+  "directives": []
+}

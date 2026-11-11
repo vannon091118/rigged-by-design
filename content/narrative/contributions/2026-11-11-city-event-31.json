@@ -1,0 +1,22 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T21:30Z-city-event-31",
+  "contributionId": "city-event-31",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-event",
+  "function": "describe",
+  "contexts": [
+    "city",
+    "encounter"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "vertrauen",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein einzelner Handschuh haengt an der Haltestelle, als haette ihn jemand absichtlich dort vergessen. Zwei Leute sehen ihn, aber keiner nimmt ihn mit.",
+  "directives": []
+}
