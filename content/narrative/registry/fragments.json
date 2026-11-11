@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8a9961cf3c795fb04ac2d97c117a0c2d4b386f993ef499f0894b859c0d31c8bb",
+  "contentHash": "sha256:6cdf5168a3669bdd4ae564b429a060201be22d7b6cfbad9e0915b724acf5c487",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -712,6 +712,28 @@
       "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
+    },
+    {
+      "contributionId": "agent17-merge-pending",
+      "turnId": "2026-11-11T01:50Z-agent17-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",

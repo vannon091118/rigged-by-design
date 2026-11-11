@@ -4,14 +4,18 @@
   "claimId": "lane/sim/business-areas",
   "branch": "lane/sim/business-areas",
   "baseSha": "e3389ec55cb57462b8bbc62b171178e56d85206d",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 17: modulare Business-Bereiche",
   "goal": "Casino, Bar und Lounge werden aus den vorhandenen Zonen des einen WorldState als Bereiche gelesen (Zonen, Objekte, Sitzplaetze, Gaeste) und im Betriebspanel angezeigt; kein neues Save-Feld, kein zweites Konto, keine zweite Besuchersimulation, keine Aenderung an ZoneKind oder Gaestelogik.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 409,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/409",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; danach Merge-Beleg eintragen.",
-  "revision": 3
+  "nextAction": "Squash ist gemergt; Nachsorge einleiten und Register nachziehen.",
+  "revision": 4
 }
