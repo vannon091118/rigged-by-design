@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d0fefd714ca54e982998cbcaa239f631bb00c2bfe36bfc4da3f92f0f6fee9b94",
+  "contentHash": "sha256:49b2624aa610e16382ffda34a09ae7ccedffde089437171a13fbd022a6bfba34",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1922,6 +1922,28 @@
       "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
+    },
+    {
+      "contributionId": "agent25-merge-pending",
+      "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena steht auf gruenem Kopf: Einlass, Ausbau und Sicht sind belegt, der Rest ist Vertrag. Jetzt zaehlt nur noch der exakte Stand, den die Pruefung gesehen hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-pending.json"
     },
     {
       "contributionId": "agent25-task",

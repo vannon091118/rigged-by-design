@@ -3860,6 +3860,10 @@
     {
       "turnId": "2026-11-11T06:50Z-agent25-base-merge",
       "contributionId": "agent25-base-merge"
+    },
+    {
+      "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+      "contributionId": "agent25-merge-pending"
     }
   ]
 }
