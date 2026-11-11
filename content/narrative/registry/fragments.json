@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e5bb09d53a5bc2059f2aa6934990f41ba5bc6a3ff697ce864959079df5d7082b",
+  "contentHash": "sha256:b10cf49d109c6ad61a499b105cd236904e34f78f019da9df5b2a8adbcb6e76c7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1658,6 +1658,50 @@
       "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
+    },
+    {
+      "contributionId": "agent24-bets",
+      "turnId": "2026-11-11T06:05Z-agent24-bets",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Schein ist ein Beleg, kein zweiter Spielstand: Er traegt seine Schein-Nummer, seine fixierte Quote und seinen Einsatz im Journal, und die Abrechnung erkennt ihn an derselben Nummer wieder. Wer auf den falschen Mann setzt, sieht den Einsatz als Ledger-Zeile verschwinden; wer richtig liegt, bekommt genau die Quote, die beim Abschluss auf dem Zettel stand.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-bets.json"
+    },
+    {
+      "contributionId": "agent24-task",
+      "turnId": "2026-11-11T05:50Z-agent24-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wettmarkt haengt am vorhandenen Turnierabend: kein zweiter Event, kein zweites Konto. Quoten kommen aus derselben Kampfmechanik, die den Vorkampf entscheidet, und der Schein fixiert sie, bevor der erste Schlag faellt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent24-task.json"
     },
     {
       "contributionId": "apk-signing-01",
