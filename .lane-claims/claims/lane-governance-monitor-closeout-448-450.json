@@ -16,6 +16,9 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "merged",
+  "mergedSha": "19f58dbaa38d10089a8f3b0e22ff5dcd18b82fc6",
+  "mergedEvidence": "squash-merge",
+  "notes": "PR #453 auf bbe712a geprueft und als 19f58db nach main squash-gemergt.",
   "createdAt": "9e8f914900e206b899caf259a629502aa07b1e01"
 }

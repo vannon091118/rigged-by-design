@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-11 - Monitor-Befund #452: claim-cleanup superseded
+
+**Ziel:** MEDIUM-004 aus dem vierten Monitor-Bericht beheben: Die Lane `lane/governance/claim-cleanup` darf ihr veraltetes Register nicht nach `main` zurueckbringen.
+
+**Befund:** Der Branch trug 128 Claim- und 12 Task-Dateien; `main` hat nach `9e8f914` nur zwei Claims und zwei Tasks. Ein naiver Promote haette 138 geloeschte Dateien wiederbelebt.
+
+**Umsetzung:** Claim `lane/governance/claim-cleanup` auf `superseded`, Task-Vertrag auf `DONE`; der Inhalt liegt bereits ueber Lift-Commits auf `main`. Der Branch selbst bleibt bestehen (keine Branch-Loeschung); ein Promote ist ueber den geschlossenen Claim kein gueltiger Closeout mehr. Die Nachsorge-Lane #448-#450 ist mit PR #453 (`19f58db`) ebenfalls auf `merged`/`DONE` nachgezogen. Der verwaisste Branch `lane/governance/precommit-pipeline` bleibt als LOW-002 dokumentiert und wird nicht einzeln manuell geschlossen.
+
+**Pruefungen:** `verify-lane-claims`, `verify-task-contract`, `verify-narrative-blocks`, `verify:docs` und `verify-governance-freeze` lokal; der PR-Lauf prueft den exakten Kopf.
+
+**Bewusst nicht getan:** Keine Branch-Loeschung, kein Force-Push, keine Aenderung an `scripts/` oder `.github/`; die strukturelle Pages- und Precommit-Optimierung bleibt PIN-gated.
+
 ## 2026-11-11 - Monitor-Befunde #448-#450: Pages, Register und Claims
 
 **Ziel:** Die drei offenen Dev-Monitor-Berichte in belegte Arbeit ueberfuehren und die gemeldeten Pages- und Register-Befunde schliessen.

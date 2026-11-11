@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-monitor-closeout-452",
+  "claimId": "lane/governance/monitor-closeout-452",
+  "branch": "lane/governance/monitor-closeout-452",
+  "baseSha": "19f58dbaa38d10089a8f3b0e22ff5dcd18b82fc6",
+  "phase": "CI_PENDING",
+  "title": "Closeout des Monitor-Befunds #452",
+  "goal": "claim-cleanup superseded, die vorherige Nachsorge-Lane DONE und #452 mit Merge-Beleg schliessen.",
+  "taskType": "aftercare",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR-Lauf pruefen; Merge nur durch promote auf dem exakten Kopf; danach #452 schliessen.",
+  "revision": 1
+}
