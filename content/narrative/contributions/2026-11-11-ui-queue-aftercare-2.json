@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:32Z-ui-queue-aftercare-2",
+  "contributionId": "ui-queue-aftercare-02",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Nachlauf ist kein zweiter Anfang: er schliesst ab, was laengst auf main liegt, und laesst den Code unberuehrt.",
+  "directives": []
+}

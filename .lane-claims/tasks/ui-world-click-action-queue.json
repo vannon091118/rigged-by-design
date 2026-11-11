@@ -4,14 +4,21 @@
   "claimId": "lane/ui/world-click-action-queue",
   "branch": "lane/ui/world-click-action-queue",
   "baseSha": "3e2079618355d36455c9113a369047b606272aaf",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Weltklick- und Action-Queue-UI im Browser pruefen und verbleibende Interaktionsluecken schliessen",
   "goal": "Maus",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 402,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/402",
+    "state": "merged",
+    "headSha": "0576c25c33d76f6a806fd47241b26b5f12bd2a1b"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 3
+  "nextAction": "Merge-Nachweis steht; Nachsorge einleiten (AFTERCARE).",
+  "revision": 4,
+  "mergedSha": "8b8b03ca38203f78de349132b7c52cfc3700909c",
+  "mergedEvidence": "branch-tree-on-main"
 }
