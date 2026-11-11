@@ -1,0 +1,25 @@
+{
+  "id": "lane/gastro/drink-menu",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/gastro/drink-menu",
+  "baseSha": "f24c9a3b7cdd67849d1b4991ad9fc3ae1be72f68",
+  "task": "Agent 18: Getraenkekarte der Bar aus Grundpreis und Barstufe ableiten",
+  "goal": "Die Bar fuehrt eine Karte (Spritz, Bier, Cocktail ab Stufe 3) als Sicht auf den vorhandenen Grundpreis und die Barstufe; der Gast bestellt deterministisch nach Durst und Persona, die Lieferung bucht den Kartenpreis ueber den vorhandenen Ledger-Pfad und verbraucht einen Bestand; kein neues Save-Feld, kein zweites Preisbuch, kein zweiter Bestand, keine Aenderung an Einkauf, Kisten oder Beduerfnissen.",
+  "pathAllowlist": [
+    "src/core/sim/drink-menu.ts",
+    "src/core/sim/bar-service.ts",
+    "src/core/sim/__tests__/drink-menu.test.ts",
+    "src/core/sim/deliveries.ts",
+    "src/ui/build-ops-summary.tsx",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-gastro-drink-menu.json",
+    ".lane-claims/tasks/gastro-drink-menu.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f24c9a3b7cdd67849d1b4991ad9fc3ae1be72f68"
+}

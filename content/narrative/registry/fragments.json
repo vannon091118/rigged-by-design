@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e0470f479206cf9ef3b585be1638c0c9da459b9692a0a643b88aa41b557945d5",
+  "contentHash": "sha256:d5d6040c714ad05e65753e40ebef723fd408243c0e0ccb1e074962d99b1a95e7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -778,6 +778,94 @@
       "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-1",
+      "turnId": "2026-11-11T02:20Z-agent18-drink-menu-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Bar fuehrt eine Karte, nicht ein Preisschild. Was darauf steht, sagt der Grundpreis und die Stufe - kein zweites Buch.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-1.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-2",
+      "turnId": "2026-11-11T02:25Z-agent18-drink-menu-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Glaeser, ein Bestand: die Karte sagt, was die Bar fuehrt, der Gast bestellt nach Durst und Neigung, und die Kasse bucht den Preis, der auf der Karte steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-2.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-3",
+      "turnId": "2026-11-11T02:30Z-agent18-drink-menu-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Gate meldet nicht, dass etwas fehlt, sondern dass etwas doppelt da ist: der alte Import blieb stehen, nachdem die Bedienung umzog.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json"
+    },
+    {
+      "contributionId": "agent18-drink-menu-4",
+      "turnId": "2026-11-11T02:35Z-agent18-drink-menu-4",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
     },
     {
       "contributionId": "apk-signing-01",

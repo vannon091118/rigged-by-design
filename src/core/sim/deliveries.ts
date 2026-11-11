@@ -1,14 +1,13 @@
 /** Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. */
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
-import { clamp } from './guest-core';
 import { recordJournal } from './journal';
 import { HAUSKONTO, payOrBorrow, SHOP } from './money';
 import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
 import { isWalkable } from './pathfinding';
-import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
+import type { Crate, CratePayload, Furniture, WorldState } from './types';
 import { canPlace, furnitureById, worldNav } from './world';
 
 export const barCapacityForLevel = (level: number): number => 12 + 8 * Math.max(1, level);
@@ -157,42 +156,5 @@ export function depositCrate(world: WorldState, id: number, x: number, y: number
   return { stored: crate.payload.count, emptied: true };
 }
 
-/** Ein Drink an der Bar: Bestand runter, Durst weg, Laune rauf. Leerlauf verdirbt die Laune. */
-export function deliverDrink(world: WorldState, ledger: Ledger, guest: Guest, bar: Furniture): boolean {
-  if (bar.stock <= 0) {
-    // Eine leere Bar ist Pech, kein Dauerzustand: kleiner Aerger, kein Nachfassen.
-    guest.mood = Math.max(0, guest.mood - 2);
-    world.lastEvent = 'Die Bar ist leer.';
-    return false;
-  }
-  try {
-    ledger.transfer(`VISITOR_${guest.id}`, HAUSKONTO, world.prices.drinkPrice, TX_REASON.DRINK_SALE, world.tick);
-  } catch { return false; }
-  bar.stock -= 1;
-  guest.thirst = 0;
-  guest.mood = clamp(guest.mood + 10 + 2 * (world.barLevel - 1));
-  guest.patience = clamp(guest.patience + 9);
-  const barkeeper = world.agents.some((agent) =>
-    agent.role === 'bartender' && near(agent.x, agent.y, bar.x, bar.y, 4));
-  if (barkeeper) guest.patience = clamp(guest.patience + 4);
-  return true;
-}
-
-/** Ein Toilettengang: Blase leer, Laune rauf, Abfluss voller. Volle Kabinen verstopfen. */
-export function useToilet(world: WorldState, guest: Guest, wc: Furniture): boolean {
-  if (wc.clogged) {
-    guest.mood = Math.max(0, guest.mood - 6);
-    guest.need = 'toilet';
-    world.lastEvent = 'Das WC ist verstopft.';
-    return false;
-  }
-  guest.bladder = 0;
-  guest.mood = clamp(guest.mood + 7);
-  guest.patience = clamp(guest.patience + 14);
-  wc.clog += 1;
-  if (wc.clog >= 3 + 2 * world.wcLevel) {
-    wc.clogged = true;
-    world.lastEvent = 'Ein WC ist verstopft.';
-  }
-  return true;
-}
+// Bedienung liegt in `bar-service.ts`; die Importeure bekommen sie unveraendert von hier.
+export { deliverDrink, useToilet } from './bar-service';
