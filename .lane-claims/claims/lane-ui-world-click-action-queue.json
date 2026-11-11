@@ -6,10 +6,8 @@
   "task": "Weltklick- und Action-Queue-UI im Browser pruefen und verbleibende Interaktionsluecken schliessen",
   "goal": "Maus",
   "pathAllowlist": [
-    "src/ui/",
-    "src/styles/app.css",
-    "src/core/sim/narrative/composer/",
     "content/narrative/",
+    "src/core/sim/narrative/composer/",
     ".lane-claims/claims/lane-ui-world-click-action-queue.json"
   ],
   "contracts": [],
