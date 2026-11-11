@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Implementierung und Tests sind lokal gruen; Claim-Pfade und Baustein pruefen, dann turn:finish Richtung CI_PENDING.",
+  "nextAction": "Dead-Code-Befund behoben; voller Nachweis vor dem Push.",
   "revision": 2
 }

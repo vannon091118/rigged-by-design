@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c15e2044417f176adad1e1b37b3071f4d554c2c4a574cff3e6cd4c832fd9528d",
+  "contentHash": "sha256:bb5ebe1aaa5168f393aac1510c573115f8ea10a81eecf12c3994c75efc65b560",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1372,6 +1372,28 @@
       "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
+    },
+    {
+      "contributionId": "agent22-dead-code",
+      "turnId": "2026-11-11T06:40Z-agent22-dead-code",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Dead-Code-Befund war kein Grund, den Rahmen zu verstecken: Was nur intern gebraucht wird, bleibt intern. Die Exporte für den echten Aufrufpfad bleiben, die reine Innenschicht wird nicht als öffentliche API ausgegeben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-dead-code.json"
     },
     {
       "contributionId": "agent22-task",

@@ -17,8 +17,8 @@ import { demandDefinition, isDemandEventId } from './narrative/events/demand-def
 import { roomPlanSummary, roomPlans } from './room-plan';
 import type { DemandEventKind, WorldState } from './types';
 
-export type VenueEventFormat = 'TURNIER' | 'SONDERABEND';
-export type VenueEventPhase = 'ANNOUNCED' | 'ADMISSION' | 'RUNNING' | 'RESULT' | 'ARCHIVED';
+type VenueEventFormat = 'TURNIER' | 'SONDERABEND';
+type VenueEventPhase = 'ANNOUNCED' | 'ADMISSION' | 'RUNNING' | 'RESULT' | 'ARCHIVED';
 
 /** Die vorhandenen Nachfrage-Events sind zugleich die ersten Veranstaltungsformate. */
 const FORMAT: Readonly<Record<DemandEventKind, VenueEventFormat>> = {
@@ -26,7 +26,7 @@ const FORMAT: Readonly<Record<DemandEventKind, VenueEventFormat>> = {
   NEON_NACHT: 'SONDERABEND',
 };
 
-export const VENUE_PHASE_LABEL: Readonly<Record<VenueEventPhase, string>> = {
+const VENUE_PHASE_LABEL: Readonly<Record<VenueEventPhase, string>> = {
   ANNOUNCED: 'Ankündigung',
   ADMISSION: 'Einlass',
   RUNNING: 'Durchführung',
@@ -42,7 +42,7 @@ const RESULT_SHARE = 0.8;
 const RESULT_VISIBLE_TICKS = 30;
 const HISTORY_LIMIT = 6;
 
-export interface VenueEventView {
+interface VenueEventView {
   readonly id: number;
   readonly kind: DemandEventKind;
   readonly label: string;
@@ -57,14 +57,14 @@ export interface VenueEventView {
   readonly result: string | null;
 }
 
-export interface VenueView {
+interface VenueView {
   readonly current: VenueEventView | null;
   readonly history: readonly VenueEventView[];
   readonly admitted: number;
   readonly capacity: number;
 }
 
-export function venueEventFormat(kind: DemandEventKind): VenueEventFormat {
+function venueEventFormat(kind: DemandEventKind): VenueEventFormat {
   return FORMAT[kind];
 }
 
@@ -72,7 +72,7 @@ export function venueEventFormat(kind: DemandEventKind): VenueEventFormat {
  * Phasenfenster aus der echten Laufzeit. Terminale Instanzen zeigen ihr
  * Ergebnis kurz und wandern danach ins Archiv; beides bleibt Ableitung.
  */
-export function venuePhaseOf(event: NarrativeEventInstance, tick: number): VenueEventPhase | null {
+function venuePhaseOf(event: NarrativeEventInstance, tick: number): VenueEventPhase | null {
   if (!isDemandEventId(event.eventId)) return null;
   if (!isLiveEventStatus(event.status)) {
     return tick - event.updatedTick < RESULT_VISIBLE_TICKS ? 'RESULT' : 'ARCHIVED';
