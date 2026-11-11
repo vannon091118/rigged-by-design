@@ -3568,6 +3568,10 @@
     {
       "turnId": "2026-11-11T01:30Z-agent16-staff-3",
       "contributionId": "agent16-staff-3"
+    },
+    {
+      "turnId": "2026-11-11T00:50Z-ui-queue-claim-closeout",
+      "contributionId": "ui-queue-claim-closeout-01"
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/ui-queue-claim-closeout",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/ui-queue-claim-closeout",
+  "baseSha": "f786bd83cd4fa1a7f0a05ba872c05756298dd54c",
+  "task": "Nachlauf: Action-Queue-Claim auf merged ziehen",
+  "goal": "Den offenen Claim der gemergten Lane als merged registrieren, damit die Pfade fuer die naechste Lane frei sind.",
+  "pathAllowlist": [
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/claims/lane-ui-world-click-action-queue.json",
+    ".lane-claims/claims/lane-governance-ui-queue-claim-closeout.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f786bd83cd4fa1a7f0a05ba872c05756298dd54c"
+}

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:521180f95f534e3fd47aef5fd4e50d771bf85a1a695b482526d95305c2640946",
+  "contentHash": "sha256:1ee61e321b8e3c7c0031372b0680bbdffec40e987e85155b75bab9b0965aca52",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -19664,6 +19664,28 @@
       "text": "Rita kam wieder, und das Haus erinnerte sich nicht an ihren Namen, sondern an den Streit an der Kasse und an das Vertrauen, das danach übrig blieb. Der neue Vertrag fragte nicht mehr jede Stimmung einzeln ab: Er las den letzten Fact, das Fenster davor, die gerichtete Kante und den Stand der Hauskasse zusammen. Erst die Erklärung machte aus einem Treffer eine Geschichte, die man prüfen konnte.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-02-nar-05-trigger-context.json"
+    },
+    {
+      "contributionId": "ui-queue-claim-closeout-01",
+      "turnId": "2026-11-11T00:50Z-ui-queue-claim-closeout",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein offener Claim auf einer gemergten Lane ist eine Sperre ohne Arbeit; der Nachlauf zieht ihn auf merged und gibt den Pfad fuer die naechste Lane frei.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-queue-claim-closeout.json"
     },
     {
       "contributionId": "ui-queue-panel-01",

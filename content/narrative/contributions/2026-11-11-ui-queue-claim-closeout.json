@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:50Z-ui-queue-claim-closeout",
+  "contributionId": "ui-queue-claim-closeout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein offener Claim auf einer gemergten Lane ist eine Sperre ohne Arbeit; der Nachlauf zieht ihn auf merged und gibt den Pfad fuer die naechste Lane frei.",
+  "directives": []
+}
