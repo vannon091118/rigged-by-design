@@ -585,10 +585,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2578 |
-| Gelistete Dateien | 2578 |
+| Getrackte Dateien | 2579 |
+| Gelistete Dateien | 2579 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (154), content (898), docs (83), public (554), scripts (102), src (759) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (154), content (899), docs (83), public (554), scripts (102), src (759) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -602,7 +602,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 102 Datei(en)
 - `.lane-claims/tasks/` — 50 Datei(en)
-- `content/narrative/contributions/` — 894 Datei(en)
+- `content/narrative/contributions/` — 895 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -811,7 +811,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-property-world.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/claims/lane-sim-renovation.json` — { — gelesen: 36 Zeilen
 - `.lane-claims/claims/lane-sim-reputation-standing.json` — { — gelesen: 19 Zeilen
-- `.lane-claims/claims/lane-sim-staff-performance.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-staff-performance.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-sim-visitor-amenity-reaction.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-ui-world-click-action-queue.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-world-scene-queue.json` — { — gelesen: 19 Zeilen
@@ -862,7 +862,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-player-dashboard.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/sim-property-world.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-renovation.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/sim-staff-performance.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-visitor-amenity-reaction.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/ui-world-click-action-queue.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/world-scene-queue.json` — { — gelesen: 22 Zeilen
@@ -1762,11 +1762,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent15-amenity-4.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-aftercare-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-aftercare-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent16-aftercare-3.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent16-staff-3.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20065 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3581 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20087 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3585 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1803 Zeilen

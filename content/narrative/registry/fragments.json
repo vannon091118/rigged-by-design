@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0605c9f271760cc965219fe782bb7b498852b482aa98b0aac51340eb49a38b47",
+  "contentHash": "sha256:7a69affacaa4b52255ee984c3c9461b3557cb3530124d2bc0df77fc59710c519",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -492,6 +492,28 @@
       "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, waehrend der Zweig noch steht. Kein Schritt wird uebersprungen, nur weil der Code schon oben liegt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-2.json"
+    },
+    {
+      "contributionId": "agent16-aftercare-3",
+      "turnId": "2026-11-11T00:35Z-agent16-aftercare-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Am Ende steht kein Gefuehl, sondern eine Zeile im Register: Baum auf main, Branch-Kopf belegt, Zweig darf gehen. Was bleibt, ist der Nachweis.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-3.json"
     },
     {
       "contributionId": "agent16-staff-1",

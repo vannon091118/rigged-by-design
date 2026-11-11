@@ -4,7 +4,7 @@
   "claimId": "lane/sim/staff-performance",
   "branch": "lane/sim/staff-performance",
   "baseSha": "54b8efc54d80caaccce20b0bcb200d7d7e4003c2",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Agent 16: Leistungsbewertung des Personals",
   "goal": "Eine deterministische Bewertung (FRISCH/SOLIDE/STARK/EINGESCHRAENKT) leitet sich aus vorhandenen Agentenfeldern ab und wird im Personalbereich angezeigt; kein neues Save-Feld, kein neues Fact-Kind, keine Aenderung an Lohn, Rollen oder Agentenlogik.",
   "taskType": "single",
@@ -16,6 +16,8 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "Register auf merged/DONE ziehen, dann Lane entfernen.",
-  "revision": 4
+  "nextAction": "Abgeschlossen: PR #404 gemergt, Squash f786bd83, Branch geloescht.",
+  "revision": 5,
+  "mergedSha": "f786bd83cd4fa1a7f0a05ba872c05756298dd54c",
+  "mergedEvidence": "branch-tree-on-main"
 }
