@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-local-first-ci",
+  "claimId": "lane/governance/local-first-ci",
+  "branch": "lane/governance/local-first-ci",
+  "baseSha": "22486ba22ebaaf816a1f6425232c89241fe74f89",
+  "phase": "CI_PENDING",
+  "title": "Local-first CI/CD: Cloud-Workflows auf einen schnellen Pflichtcheck reduzieren, lokale Fast-/Integration-/Long-Gates und APK-Ablauf dokumentieren",
+  "goal": "GitHub Actions auf Repository-Verwaltung und einen schnellen Required-Check begrenzen; alle Qualitaets-Gates lokal, deterministisch und ressourcenschonend ausfuehrbar halten.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

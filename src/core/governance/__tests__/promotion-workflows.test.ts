@@ -2,9 +2,10 @@
  * @test-target: .github/workflows/promote.yml
  * @error-code: ERR-4019
  *
- * Nur ein PR-Lauf ist ein Merge-Nachweis. Der Plan-Job prueft den PR-Body,
- * der Watcher reagiert nur auf `workflow_run`, und `promote` hat keinen
- * Auto-Merge-Pfad mehr.
+ * Local-first: Es gibt keinen automatischen Merge aus einem CI-Lauf. Der
+ * Merge ist ein bewusster Schritt nach dem lokalen Integrationsnachweis; der
+ * Watcher reagiert weiterhin nur auf `workflow_run`, und der PR-Body wird im
+ * Pflichtjob geprueft.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -45,22 +46,20 @@ const stepWith = (flow: Workflow, job: string, needle: string): Step | undefined
   steps(flow, job).find((step) => step.run?.includes(needle));
 
 describe('Promotion-Workflows', () => {
-  it('laesst promote nur auf PR-Laeufe und laedt das Plan-Artefakt', () => {
+  it('macht promote zu einem manuellen Status-/Notausgang ohne Plan-Artefakt', () => {
     const promote = workflow('promote.yml');
     const job = promote.jobs?.promote;
-    expect(promote.on?.workflow_run?.workflows).toEqual(['CI Verify']);
-    expect(promote.on?.workflow_run?.types).toEqual(['completed']);
-    expect(job?.if).toContain("github.event.workflow_run.event == 'pull_request'");
+    expect(promote.on?.workflow_run).toBeUndefined();
+    expect(promote.on?.workflow_dispatch).not.toBeUndefined();
     expect(job?.if).toContain("github.event_name == 'workflow_dispatch'");
     expect(promote.permissions?.issues).toBe('read');
     expect(promote.concurrency?.group).toBe('promote');
     expect(promote.concurrency?.['cancel-in-progress']).toBe(false);
 
-    const download = stepWith(promote, 'promote', 'gh run download');
-    expect(download?.run).toContain('-n ci-plan');
+    expect(stepWith(promote, 'promote', 'gh run download')).toBeUndefined();
     const run = stepWith(promote, 'promote', 'node scripts/promote.mjs');
-    expect(run?.env?.CI_PLAN_DIR).toBe('.ci-plan');
-    expect(run?.env?.RUN_ATTEMPT).toContain('workflow_run.run_attempt');
+    expect(run?.env?.MODE).toContain('inputs.mode');
+    expect(run?.env?.INTEGRATE).toContain("inputs.mode == 'integrate'");
   });
 
   it('haelt den Watcher frei von pull_request-Triggern und PR-Body-Pruefung', () => {
@@ -71,9 +70,9 @@ describe('Promotion-Workflows', () => {
     expect(workflowFile('pr-watcher.yml')).not.toContain('--pr-check');
   });
 
-  it('prueft den PR-Body im Plan, nicht erst im Watcher', () => {
+  it('prueft den PR-Body im Pflichtjob, nicht erst im Watcher', () => {
     const verify = workflow('ci-verify.yml');
-    const body = steps(verify, 'plan').find((step) => step.name === 'PR-Body');
+    const body = steps(verify, 'verify').find((step) => step.name === 'PR-Body');
     expect(body?.if).toContain("github.event_name == 'pull_request'");
     expect(body?.run).toContain('gh pr view');
     expect(body?.run).toContain('PR_BODY="$body" node scripts/verify-pr-body.mjs');

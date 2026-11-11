@@ -114,35 +114,29 @@ describe('workflow hardening', () => {
     expect(parsed.sha).toMatch(/^[0-9a-f]{40}$/);
   });
 
-  it('gibt der Testsuite keinen Kontroll-Root, den Node-Gates aber schon', () => {
+  it('gibt dem lokalen Gate keinen fremden Kontroll-Root', () => {
     const ci = workflow('ci-verify.yml');
-    const gateStep = stepWithRun(ci, 'run-pipeline.mjs');
-    expect(gateStep?.env?.RBD_CONTROL_ROOT).toContain("matrix.gate != 'tests'");
+    const runs = runsOf(ci).join('\n');
+    expect(runs).not.toContain('RBD_CONTROL_ROOT');
+    expect(runs).toContain('verify:light');
+    expect(runs).toContain('version-bump.mjs');
+    expect(runs).toContain('android:apk');
   });
 
-  it('laesst keine Bootstrap-Ausnahme in der CI', () => {
+  it('laesst die Kontrollebene aus der Basis und keine Bootstrap-Ausnahme zu', () => {
     const ci = workflow('ci-verify.yml');
     const runs = runsOf(ci).join('\n');
     expect(runs).not.toContain('Bootstrap');
     expect(runs).not.toContain('scripts=$GITHUB_WORKSPACE/scripts');
-    expect(runs).toContain('kennt RBD_ROOT nicht');
-    const controls = jobs(ci)
-      .flatMap((job) => job.steps ?? [])
-      .filter((step) => step.name === 'Kontrollebene aus der Basis');
-    expect(controls.length).toBeGreaterThanOrEqual(5);
-    for (const step of controls) expect(step.env?.BASE_SHA).not.toContain('github.event.before');
+    expect(runs).toContain('.rbd-control/scripts/verify-governance-freeze.mjs');
+    expect(runs).toContain('RBD_ROOT="$PWD"');
+    expect(runs).not.toContain('github.event.before');
   });
 
-  it('fuehrt lange Tests mit der Kontrollebene aus', () => {
+  it('haelt lange Tests aus dem PR-Pflichtcheck', () => {
     const ci = workflow('ci-verify.yml');
-    const long = ci.jobs?.long;
-    const control = long?.steps?.find((step) => step.name === 'Kontrollebene aus der Basis');
-    const run = long?.steps?.find((step) => step.name === 'Langen Nachweis ausfuehren');
-    expect(control?.name).toBe('Kontrollebene aus der Basis');
-    expect(run?.run).toContain('steps.control.outputs.scripts');
-    expect(run?.env?.RBD_ROOT).toContain('steps.control.outputs.root');
-    expect(run?.env?.RBD_REQUIRE_TESTS).toBe('1');
-    expect(run?.env?.RBD_BALANCE).toBe('1');
+    expect(ci.jobs?.long).toBeUndefined();
+    expect(workflow('long-checks.yml').on?.workflow_dispatch).not.toBeUndefined();
   });
 
   it('haelt den Pflichtstatus in genau einem Workflow', () => {
@@ -179,38 +173,12 @@ describe('workflow hardening', () => {
     expect(bad.stderr).toContain('soak-ticks');
   });
 
-  it('kompatibilisiert Plan-Metadaten mit der Basis-Kontrollebene', () => {
+  it('ueberlaesst Claims und Plan-Metadaten dem lokalen Abschluss', () => {
     const ci = workflow('ci-verify.yml');
-    const plan = ci.jobs?.plan;
-    const compat = plan?.steps?.find((step) => step.name === 'Plan-Metadaten kompatibilisieren');
-    expect(compat?.run).toContain('state=PR');
-    expect(compat?.run).toContain('required="$gates"');
-    expect(plan?.outputs?.state).toContain('steps.compat.outputs.state');
-    expect(plan?.outputs?.run).toContain('steps.compat.outputs.run');
-    expect(plan?.outputs?.required).toContain('steps.compat.outputs.required');
-    const validate = plan?.steps?.find((step) => step.name === 'Matrix validieren');
-    expect(validate?.env?.STATE).toContain('steps.compat.outputs.state');
-    expect(validate?.env?.REQUIRED).toContain('steps.compat.outputs.required');
-  });
-
-  it('kompatibilisiert Lane-Dateien fuer eine aeltere Claim-Kontrollebene', () => {
-    const ci = workflow('ci-verify.yml');
-    const claims = ci.jobs?.claims;
-    const compat = claims?.steps?.find((step) => step.name === 'Claim-Register fuer die Basis kompatibilisieren');
-    expect(compat?.run).toContain('CLAIM_ENTRIES_DIR');
-    expect(compat?.run).toContain('readdirSync');
-    expect(compat?.run).toContain('.lane-claims/claims.json');
-    expect(compat?.run).toContain('merged-pr');
-    expect(compat?.run).toContain('ls-remote');
-    expect(compat?.env?.GH_TOKEN).toContain('github.token');
-  });
-
-  it('gibt der Claim-Pruefung den GH-Token fuer Merge-Evidenz', () => {
-    const ci = workflow('ci-verify.yml');
-    const claim = ci.jobs?.claims?.steps?.find(
-      (step) => step.name === 'Lane-Claims (Allowlist, Owner, Kollisionen)',
-    );
-    expect(claim?.env?.GH_TOKEN).toContain('github.token');
+    expect(stepWithRun(ci, 'ci-plan.mjs')).toBeUndefined();
+    expect(stepWithRun(ci, 'verify-lane-claims.mjs')).toBeUndefined();
+    expect(ci.jobs?.plan).toBeUndefined();
+    expect(ci.jobs?.claims).toBeUndefined();
   });
 
   it('verweist fuer die Testlinie auf docs/TESTING.md', () => {

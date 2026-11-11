@@ -1,17 +1,13 @@
 name: Promote
 
-# Ein Lauf pro CI-Ergebnis. Gruen heisst: der PR gegen `main` ist bereit und
-# wird gemergt. Rot heisst: Issue und Label, aber kein automatischer Dump auf
-# `integration` - die bleibt der letzte Notausgang und laeuft nur auf
-# ausdrueckliche Anforderung (`integrate=true`).
+# Kein Auto-Merge mehr. Der Merge nach `main` ist ein bewusster manueller
+# Schritt nach `pnpm run verify:integration`; `promote` zeigt den PR-Status
+# oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an.
 on:
-  workflow_run:
-    workflows: ["CI Verify"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       mode:
-        description: 'inspect = Status anzeigen; integrate = rote Staende auf integration (Notausgang)'
+        description: 'inspect = Status anzeigen; integrate = roten Stand auf integration (Notausgang)'
         type: choice
         options: [inspect, integrate]
         default: inspect
@@ -32,19 +28,14 @@ concurrency:
 
 jobs:
   promote:
-    name: Gruen mergen, rot als Issue
-    # Nur ein PR-Lauf ist ein Merge-Nachweis. Ein Push auf main, ein
-    # Release-Lauf oder ein manueller Lauf ohne PR duerfen nie mergen.
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.event == 'pull_request'
+    name: Status anzeigen oder Notausgang
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       # Schreibrechte und fremder Code gehoeren nicht zusammen. Dieser Lauf
-      # prueft nichts, er merged; deshalb wird ausschliesslich `main`
-      # ausgecheckt. Den geprueften Kopf holt `fetchHead()` in promote.mjs als
-      # Ref (nur fuer Titel und Merge-Text) - ausgefuehrt wird er nie.
+      # prueft nichts, er zeigt oder integriert; deshalb wird ausschliesslich
+      # `main` ausgecheckt.
       - name: Checkout (vertrauenswuerdiges main)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -62,33 +53,13 @@ jobs:
         with:
           node-version: '22'
 
-      - name: CI-Plan laden
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
-          RUN_ID: ${{ github.event.workflow_run.id }}
-        run: |
-          rm -rf .ci-plan
-          if [ -n "$RUN_ID" ]; then
-            gh run download "$RUN_ID" -n ci-plan -D .ci-plan || true
-          fi
-
       - name: Promote
         env:
           GH_TOKEN: ${{ secrets.PROMOTE_TOKEN || secrets.GITHUB_TOKEN }}
           PROMOTE_TOKEN: ${{ secrets.PROMOTE_TOKEN }}
           HEAD_BRANCH: ${{ github.event.workflow_run.head_branch || '' }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha || '' }}
-          # Der gruene Pflichtstatus muss zu genau diesem Lauf und dieser Basis
-          # gehoeren; ein aelterer Push-Lauf auf demselben Kopf zaehlt nicht.
-          CI_RUN_ID: ${{ github.event.workflow_run.id || '' }}
-          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt || '1' }}
-          CI_PLAN_DIR: .ci-plan
-          BASE_SHA: ${{ github.event.workflow_run.pull_requests[0].base.sha || '' }}
-          HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name || '' }}
-          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number || inputs.pr || '' }}
-          CONCLUSION: ${{ github.event.workflow_run.conclusion || '' }}
-          EVENT: ${{ github.event.workflow_run.event || '' }}
-          MODE: ${{ inputs.mode || '' }}
+          PR_NUMBER: ${{ inputs.pr || '' }}
+          MODE: ${{ inputs.mode || 'inspect' }}
           INTEGRATE: ${{ inputs.mode == 'integrate' && '1' || '0' }}
         run: node scripts/promote.mjs

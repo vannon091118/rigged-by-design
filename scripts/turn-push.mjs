@@ -40,15 +40,16 @@ const showCause = (findings) => {
 };
 const TARGET_BRANCH = 'main';
 
-// Light ist der Normalfall: Lint, LOC, Typecheck, Doku-, Tree- und Redundanz-Gate.
-// Tests, Build und Audit gehoeren nach GitHub Actions und laufen nicht in jedem
-// Turn. Breiter pruefen: `--profile=quick` (schnelle halbe Suite) oder
+// Light bleibt der schnellste Turn. Fast ist der lokale Standard vor dem
+// Push: Light plus Testqualitaet, betroffene Tests und Build. Integration ist
+// der volle Nachweis vor dem Merge; Audit und Langlaeufe bleiben separat.
+// Breiter pruefen: `--profile=fast`, `--profile=integration` oder
 // `--profile=full` (verify:all, lokal die Ausnahme).
 const args = process.argv.slice(2);
 const profileArg = args.find((value) => value.startsWith('--profile='));
 const PROFILE = profileArg ? profileArg.slice('--profile='.length) : 'light';
-if (!['light', 'quick', 'full'].includes(PROFILE)) {
-  fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind light, quick und full`);
+if (!['light', 'fast', 'dev', 'quick', 'integration', 'full'].includes(PROFILE)) {
+  fail(1, 'ERR-4024', 'turn:finish', `unbekanntes Profil ${PROFILE}; erlaubt sind light, fast, dev, quick, integration und full`);
   process.exit(1);
 }
 const VERIFY_SCRIPT = PROFILE === 'full' ? 'verify:all' : `verify:${PROFILE}`;
@@ -105,8 +106,19 @@ const changedPaths = () =>
 // plus die Versionsdateien. Fremde WIP eines parallelen Agenten bleibt im
 // Arbeitsbaum, auch wenn die Vorabpruefung sie nicht als fremd erkennt.
 const stage = () => {
+  // Geloeschte, aber bereits gestagte Claim-Pfade existieren nicht mehr im
+  // Arbeitsbaum. `git add -A -- <pfad>` bricht dann mit "pathspec did not
+  // match" ab. Vorhandene Pfade werden gestaged, fehlende als Loeschung
+  // uebernommen; `--ignore-unmatch` laesst den bereits gestagten Zustand
+  // unveraendert.
+  const stageList = (list) => {
+    const present = list.filter((path) => existsSync(resolve(ROOT, path)));
+    const removed = list.filter((path) => !existsSync(resolve(ROOT, path)));
+    if (present.length > 0) git(['add', '-A', '--', ...present]);
+    if (removed.length > 0) git(['rm', '--cached', '--ignore-unmatch', '--', ...removed]);
+  };
   if (paths.length > 0) {
-    git(['add', '-A', '--', ...paths]);
+    stageList(paths);
     return;
   }
   const claim = claimForBranch(currentBranch);
@@ -120,7 +132,7 @@ const stage = () => {
     process.exit(1);
   }
   const list = [...new Set([...scope.allowed, 'package.json', 'pnpm-lock.yaml'])];
-  git(['add', '-A', '--', ...list]);
+  stageList(list);
 };
 
 // Erst pruefen, ob ueberhaupt etwas ansteht: ein Bump ohne Aenderung erzeugte leere Versions-Commits.

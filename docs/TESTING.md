@@ -6,11 +6,11 @@
 
 ### Die eine Testlinie
 
-Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected` und `pnpm run verify:light`. Der lokale Abschluss `pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump, führt die betroffenen schnellen Tests aus und nennt die langen Nachweise als offen.
+Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected`, `pnpm run verify:light` und `pnpm run verify:fast`. Der lokale Abschluss `pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump und nennt die langen Nachweise als offen.
 
-Die schwere Suite (`pnpm run test`, `pnpm run test:ci`, `pnpm run verify:all`, Build und Audit) läuft am Turn-Ende in GitHub Actions. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
+Die vollständige Suite und Audit laufen lokal nur für einen Release über `verify:release`/`verify:all`; `verify:integration` ist der Vor-PR-Nachweis aus Light, Testqualität, betroffenen Tests und Build. Die Cloud wiederholt im Pflichtcheck nur die Light-Gates und baut die Debug-APK. `verify:fast` ist der Standard vor dem Push. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
 
-**Keine lokalen Vollläufe als Ersatz für CI.** Ein grüner Light-Lauf ist kein PR-Nachweis; ein grüner PR-Lauf auf dem exakten Kopf ist der Nachweis.
+**Der Cloud-Light-Lauf ist kein Release-Nachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen Pflichtcheck und die Debug-APK; die vollständige Suite läuft lokal über `verify:release`/`verify:all` und bleibt Release- oder On-Demand-Arbeit.
 
 ## Testmatrix
 
@@ -28,8 +28,8 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | 8 | Gleicher SHA nicht als unabhängige Kontrollebene und Prüfobjekt | `ci-plan.test.ts` (`state=NOOP`, `independent=false`; Required-Gates nur bei echtem Diff) |
 | 9 | Manual Dispatch ohne Dependency-Diff erzeugt keinen widersprüchlichen Audit-Job | `ci-plan.test.ts` (`MANUAL` mit Required-Set); `ci-gates.test.ts` |
 | 10 | Erzwungenes Audit läuft tatsächlich | `ci-plan.test.ts` (`RBD_VERIFY_AUDIT=1`); `workflow-hardening.test.ts` |
-| 11 | PR-Änderungen durchlaufen die vollständige Regression | `ci-plan.test.ts` (`buildPlan` für Doku- und Runtime-PR: Required-Set, `runAll=true`) |
-| 12 | Light-Ergebnis wird nie PR-Nachweis | `ci-gates.test.ts`, `pipeline-modes.test.ts` (eigener Light-Job, kein `Fail-Closed Gates`) |
+| 11 | PR-Änderungen durchlaufen lokal die vollständige Regression | `verify:integration`; `ci-plan.test.ts` (Required-Set und Suiteauswahl) |
+| 12 | Cloud-Light bleibt ein schneller Pflichtcheck | `ci-gates.test.ts` (ein Job, `verify:light`), `pipeline-modes.test.ts` (Light ≠ Integration) |
 | 13 | Gemeinsame Claims und Pfade erkennen echte Überschneidungen | `lane-claims.test.ts` (Content-Pfad kollidiert, Meta/Claim nicht) |
 | 14 | Unabhängige Lane wird durch fremden Lane-Fehler nicht blockiert | `issue-scope.test.ts`; `pretask-issues.test.ts` (Dependency blockiert nur abhängige Lane) |
 | 15 | Autofix nur erlaubte Fälle, danach Gates erneut | `auto-resolve.test.ts` (`repair-plan`-Block: erlaubter Doku-Fix, verbotener Quellcode, max. 1 Versuch) |
@@ -51,7 +51,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |
 | Stadt-Ruhetag und verzögerte Folge überstehen Save/Load ohne Tick dazwischen: Tag, Ledger, Beziehung, Chain-Frist und PRNG bleiben identisch, Miete und Echo laufen genau einmal | `city-day-closeout.test.ts`, `city-encounter-loop.test.ts` |
-| Automatischer Promote-Pfad merged einen grünen PR-Lauf auf exaktem Kopf ohne manuellen Merge | PR-Lauf und anschließender `Promote`-Lauf; `promote.mjs` prüft Pflichtstatus, Plan-Artefakt und Kopf-SHA |
+| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; der Pflichtstatus bleibt der einzige geschützte Check |
 
 ## Ausführung
 
@@ -80,6 +80,9 @@ pnpm exec vitest run \
 pnpm run verify:test-quality
 pnpm run verify:docs
 pnpm run verify:light
+pnpm run verify:fast
+pnpm run verify:integration
+pnpm run verify:long          # nur on demand
 ```
 
 ## Referenzen

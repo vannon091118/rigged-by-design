@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T23:10Z-local-first-ci",
+  "contributionId": "local-first-ci",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": ["rita-kern"],
+  "flags": ["narrativ", "rita-kern"],
+  "text": "Rita stellte die Werkbank vor die Cloud: Die schnellen Prüfungen lagen griffbereit am Platz, der volle Nachweis wartete auf den bewussten Griff, und der Server behielt nur die Tür, die wirklich von außen geöffnet werden musste. Was schwer war, wurde nicht leichter gerechnet, nur seltener und am richtigen Ort geprüft.",
+  "directives": []
+}

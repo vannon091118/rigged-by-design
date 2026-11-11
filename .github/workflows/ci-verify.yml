@@ -1,71 +1,54 @@
 name: CI Verify
 
-# Ebene A des Main-Gates. "Fail-Closed Gates" ist der Pflichtstatus aus dem
-# Branch-Schutz von `main`; er bleibt ein Aggregat, waehrend jedes Gate in der
-# Matrix einen eigenen Status traegt.
+# Ein Branch pro Feature-Session, taskweise Commits/Pushes, PR erst am
+# Feature-Ende. Dieser Workflow ist der einzige automatische CI-Trigger und
+# laeuft ausschliesslich fuer Pull Requests gegen `main`.
 #
-# Eine Stimme pro SHA: die vollstaendige Pruefung haengt am PR-Lauf. Ein Push
-# auf eine Lane startet nur noch `ensure-pr.yml`; ein zweiter Vollauf auf
-# demselben Kopf erzeugte zwei Pflichtstatus, von denen der aeltere den
-# neueren verdecken kann. `main` und manuelle Laeufe behalten ihren Lauf.
-#
-# Der Zustand entscheidet, was laeuft: PR, MAIN, MANUAL und UNKNOWN tragen das
-# zentrale Required-Set und die vollstaendige Suite, LIGHT nur die schnellen
-# Gates, NOOP prueft nichts. Eine leere Matrix ist ausschliesslich in NOOP
-# zulaessig; UNKNOWN faellt auf das volle Profil.
+# Der Job ist absichtlich EIN Job: dadurch gibt es genau einen geschuetzten
+# Status, keine Matrix, keine doppelte Dependency-Installation und keinen
+# zweiten Runner. Er traegt die schnellen Gates, den Web-Build, den
+# Release-Versions-Bump fuer das PR-Artefakt und die Debug-APK.
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
-  push:
-    branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: ci-verify-${{ github.ref }}
+  group: ci-verify-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  plan:
-    name: Plan
+  verify:
+    name: Fail-Closed Gates
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    # Der Plan schreibt nichts mehr: ein Governance-Verstoss wird ein eigenes
-    # BLOCKED-Issue im Job `governance-issue`. Alle Jobs bleiben lesend.
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      # Die Basis-Kontrollebene kann vor diesem Merge noch ohne die neuen
-      # Metadaten laufen; `compat` fuellt sie aus Matrix und Ereignis.
-      state: ${{ steps.compat.outputs.state }}
-      profile: ${{ steps.compat.outputs.profile }}
-      matrix: ${{ steps.gates.outputs.matrix }}
-      required: ${{ steps.compat.outputs.required }}
-      run: ${{ steps.compat.outputs.run }}
-      noop: ${{ steps.compat.outputs.noop }}
-      independent: ${{ steps.control.outputs.independent }}
-      tests: ${{ steps.gates.outputs.test_files }}
-      long_count: ${{ steps.gates.outputs.long_count || '0' }}
-      long_matrix: ${{ steps.gates.outputs.long_matrix || '{"include":[{"file":""}]}' }}
-      long_tests: ${{ steps.gates.outputs.long_tests || '' }}
-      freeze: ${{ steps.freeze.outputs.violation || '' }}
-      integration: ${{ steps.integrate.outputs.integration || 'READY' }}
-      risk: ${{ steps.gates.outputs.risk || 'unknown' }}
+    timeout-minutes: 45
     steps:
-      # Der PR-Kopf ist das Pruefobjekt, nicht der Merge-Commit: der Merge
-      # entsteht erst mit der Basis und prueft damit Code, den niemand gepusht
-      # hat. Alle Jobs lesen deshalb exakt den Kopf aus dem Ereignis.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
+      - name: pnpm installieren
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
+        with:
+          version: 10.4.1
+
+      - name: Node 22 mit pnpm-Cache
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install (pnpm install --frozen-lockfile)
+        run: pnpm install --frozen-lockfile
+
+      # Der PR-Body ist der Merge-Text. Er wird bei jedem Lauf frisch aus der
+      # API gelesen, nicht aus dem Event-Payload.
       - name: PR-Body
         if: github.event_name == 'pull_request'
         env:
@@ -76,965 +59,76 @@ jobs:
           body="$(gh pr view "$PR_NUMBER" --json body --jq .body)"
           PR_BODY="$body" node scripts/verify-pr-body.mjs
 
-      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR:
-      # sonst koennte der PR Planer, Gate-Auswahl und Claim-Pruefung selbst
-      # umschreiben und einen gruenen Status ohne Pruefung erzeugen. Der
-      # PR-Baum bleibt das Pruefobjekt (`RBD_ROOT`).
-      #
-      # Die Diff-Basis kommt aus dem Graphen, nie aus `event.before`: das ist
-      # die letzte Push-Position, nicht der Punkt, an dem der Diff beginnt.
-      # Auf `main` ist der Elternteil des gepushten Commits die Basis; bei PRs
-      # die PR-Basis; ohne Ereignis die Merge-Basis zu `origin/main`.
-      - name: Kontrollebene aus der Basis
-        id: control
+      - name: Commit-Notes
+        run: node scripts/verify-commit-msg.mjs --head
+
+      # Der Freeze-Checker kommt aus der Basis, das Pruefobjekt bleibt der
+      # Kandidat. Damit kann ein PR die Regel nicht mit dem eigenen Skript
+      # ausschalten. Der Kontroll-Worktree wird vor den Gates wieder entfernt.
+      - name: Governance-Freeze
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
           if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
+            echo "::error::Basis '${base}' ist kein Commit; ohne unabhaengige Kontrollebene keine Freigabe."
             exit 1
           fi
-          head="$(git rev-parse HEAD)"
-          noop=false
-          independent=true
-          if [ "$base" = "$head" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            noop=true
-            independent=false
-            echo "::notice::Kontrollebene und Pruefobjekt sind derselbe Commit; echter No-op ohne unabhaengige Kontrollebene."
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          # Die Kontrollebene muss RBD_ROOT kennen. Ein stiller Fallback auf
-          # die PR-Skripte wuerde die Vertrauensgrenze umgehen.
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-          echo "base=$base" >> "$GITHUB_OUTPUT"
-          echo "head=$head" >> "$GITHUB_OUTPUT"
-          echo "noop=$noop" >> "$GITHUB_OUTPUT"
-          echo "independent=$independent" >> "$GITHUB_OUTPUT"
-
-      # Governance-Freeze: die Steuerungsebene ist bis zum Spiel-Meilenstein
-      # gesperrt. Der Schritt laeuft vor allem anderen, damit eine Governance-
-      # Aenderung ohne PIN-Freigabe sofort rot wird statt nach 30 Minuten Gates.
-      #
-      # Der Checker kommt aus der Kontrollebene (Basis), das Pruefobjekt bleibt
-      # der Kandidat (`RBD_ROOT`). Damit prueft die alte Fassung die neue: eine
-      # Regelanderung ist nur mit PIN-Freigabe im Diff und autorisiert sich so
-      # nicht selbst. Kein Token: der Schritt schreibt nichts.
-      - name: Governance-Freeze
-        id: freeze
-        env:
-          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
-          FREEZE_BASE: ${{ steps.control.outputs.base }}
-          FREEZE_HEAD: ${{ steps.control.outputs.head }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-        run: |
-          set -euo pipefail
-          # Der Freeze gilt fuer den Branch-Diff, nicht fuer den wandernden
-          # main-Kopf: die Merge-Basis ist die einzige stabile Basis. Der
-          # Checker und die Gates kommen weiter aus der Kontrollebene.
-          freeze_base="$(git merge-base "$FREEZE_BASE" "$FREEZE_HEAD" 2>/dev/null || true)"
-          if [ -n "$freeze_base" ]; then
-            FREEZE_BASE="$freeze_base"
-          fi
-          echo "::notice::Freeze-Basis ${FREEZE_BASE}"
-          if [ ! -f "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" ]; then
+          rm -rf .rbd-control
+          git worktree add --detach .rbd-control "$base"
+          if [ ! -f .rbd-control/scripts/verify-governance-freeze.mjs ]; then
             echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
-            echo "violation=none" >> "$GITHUB_OUTPUT"
+            git worktree remove --force .rbd-control
             exit 0
           fi
-          if node "$CONTROL_SCRIPTS/verify-governance-freeze.mjs" --ci \
-            --base="$FREEZE_BASE" --head="$FREEZE_HEAD" --github-output="$GITHUB_OUTPUT"; then
+          if RBD_ROOT="$PWD" node .rbd-control/scripts/verify-governance-freeze.mjs \
+            --ci --base="$base" --head="$HEAD_SHA"; then
+            git worktree remove --force .rbd-control
             exit 0
           fi
-          # Der Checker meldet seine Klassifikation selbst; nur ein fehlender
-          # Wert faellt auf den Korruptionsverdacht zurueck.
-          if ! grep -q '^violation=' "$GITHUB_OUTPUT"; then
-            echo "violation=corruption" >> "$GITHUB_OUTPUT"
-          fi
-          echo "::error::Verdacht auf unautorisierte Korruption: Governance ohne Freigabe geaendert. Der Branch bleibt bestehen; ein BLOCKED-Issue wird angelegt."
+          git worktree remove --force .rbd-control || true
           exit 1
 
-      # Stufe 2 vor den teuren Gates: der Integrationscontroller prueft den
-      # Branch gegen die vertrauenswuerdige Basis, bevor Matrix und Tests Zeit
-      # kosten. READY/REBASE_REQUIRED/MANUAL_CONFLICT sind Hinweise; die
-      # Entscheidung ueber lange Nachweise trifft der Job `long`.
-      - name: Integration (Vorpruefung)
-        id: integrate
-        env:
-          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
-          BASE: ${{ steps.control.outputs.base }}
-          HEAD: ${{ steps.control.outputs.head }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-        run: |
-          set -euo pipefail
-          # Anlauf: eine Basis vor diesem Merge kennt den Controller nicht.
-          if [ ! -f "$CONTROL_SCRIPTS/integrate.mjs" ]; then
-            echo "::notice::Kontrollebene kennt den Integrationscontroller nicht; Schritt inert."
-            echo "integration=READY" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          code=0
-          node "$CONTROL_SCRIPTS/integrate.mjs" --check --ci --no-fetch \
-            --base="$BASE" --head="$HEAD" --github-output="$GITHUB_OUTPUT" || code=$?
-          case "$code" in
-            2) echo "::notice::REBASE_REQUIRED: Branch ist hinter der Basis; lange Nachweise starten nicht." ;;
-            3) echo "::warning::MANUAL_CONFLICT: Konflikt in Handdateien; keine automatische Reparatur." ;;
-            *) ;;
-          esac
-          # Der Status blockiert die schnellen Gates nicht: ein veralteter Branch
-          # ist ein Integrationsauftrag, kein Grund, gar nichts zu pruefen.
-          exit 0
+      # Der PR ist bereits lokal vorgeprueft. Die Cloud wiederholt nur die
+      # schnellen Gates; die betroffenen Tests bleiben der lokale Nachweis.
+      - name: Verify (Light)
+        run: pnpm run verify:light
 
-      # Der Plan liest Testkatalog und Importgraph; beide brauchen `typescript`.
-      - name: pnpm installieren
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
+      # Artefakt-Version und APK gehoeren zum PR, nicht zu einem zweiten
+      # Workflow. Der Versions-Bump wird nicht zurueckgepusht: der PR-Kopf
+      # bleibt stabil, der Merge bumpet die Quelle weiterhin lokal.
+      - name: Release-Version bump (Artefakt)
+        run: node scripts/version-bump.mjs
+
+      - name: Web-Build
+        run: pnpm run build
+
+      - name: Java 21
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
-          version: 10.4.1
+          distribution: temurin
+          java-version: '21'
 
-      - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+      - name: Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4
         with:
-          node-version: '22'
-          cache: pnpm
+          packages: platform-tools
 
-      - name: Install (pnpm install --frozen-lockfile)
-        run: pnpm install --frozen-lockfile
-
-      # Der Diff, den dieser Lauf wirklich prueft. Ein manueller Lauf hat
-      # keinen: leer heisst MANUAL und volles Profil, nie No-op.
-      - name: Basis und Kopf bestimmen
-        id: range
-        env:
-          CONTROL_BASE: ${{ steps.control.outputs.base }}
-          CONTROL_HEAD: ${{ steps.control.outputs.head }}
+      - name: SDK-Plattform und Build-Tools
         run: |
           set -euo pipefail
-          base="$CONTROL_BASE"
-          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then base=""; fi
-          {
-            echo "base=$base"
-            echo "head=$CONTROL_HEAD"
-          } >> "$GITHUB_OUTPUT"
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            echo "event=pull_request" >> "$GITHUB_OUTPUT"
-          elif [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            echo "event=push" >> "$GITHUB_OUTPUT"
-          else
-            echo "event=$GITHUB_EVENT_NAME" >> "$GITHUB_OUTPUT"
-          fi
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
-      # Eine Quelle fuer Zustand, Gates und Tests: derselbe `ci-plan` wie das
-      # Profil in `verify`. `RBD_VERIFY_AUDIT=1` gilt fuer manuelle Laeufe auch
-      # hier, damit der Plan Audit nicht wegkuerzt, bevor die Gates ihn fahren.
-      - name: Gate-Matrix aus Zustand
-        id: gates
-        env:
-          EVENT: ${{ steps.range.outputs.event }}
-          HEAD_REF: ${{ github.ref }}
-          BASE: ${{ steps.range.outputs.base }}
-          HEAD: ${{ steps.range.outputs.head }}
-          NOOP: ${{ steps.control.outputs.noop }}
-          HANDOFF: 'false'
-          RBD_VERIFY_AUDIT: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
-        run: |
-          node "${{ steps.control.outputs.scripts }}/ci-plan.mjs" \
-            --event="$EVENT" \
-            --ref="$HEAD_REF" \
-            --base="$BASE" \
-            --head="$HEAD" \
-            --noop="$NOOP" \
-            --handoff="$HANDOFF" \
-            --github-output="$GITHUB_OUTPUT"
+      - name: Debug-APK bauen
+        run: pnpm run android:apk
 
-      # Anlauf-Kompatibilitaet: Die Kontrollebene kommt aus der Basis. Vor
-      # diesem Merge kennt sie die neuen `state`/`required`-Outputs noch nicht.
-      # Die Gate-Auswahl bleibt der Basis-Script-Stand; nur die Metadaten
-      # werden aus Matrix und Ereignis abgeleitet. Nach dem Merge liefert die
-      # neue Kontrollebene die Werte selbst, der Fallback bleibt inert.
-      - name: Plan-Metadaten kompatibilisieren
-        id: compat
-        env:
-          EVENT: ${{ steps.range.outputs.event }}
-          REF: ${{ github.ref }}
-          STATE_IN: ${{ steps.gates.outputs.state }}
-          RUN_IN: ${{ steps.gates.outputs.run }}
-          NOOP_IN: ${{ steps.gates.outputs.noop }}
-          REQUIRED_IN: ${{ steps.gates.outputs.required }}
-          PROFILE_IN: ${{ steps.gates.outputs.profile }}
-          MATRIX: ${{ steps.gates.outputs.matrix }}
-        run: |
-          set -euo pipefail
-          state="$STATE_IN"
-          if [ -z "$state" ]; then
-            case "$EVENT" in
-              pull_request|pr) state=PR ;;
-              workflow_dispatch|manual) state=MANUAL ;;
-              push)
-                if [ "$REF" = "refs/heads/main" ]; then
-                  state=MAIN
-                else
-                  # Ohne Push-Vollauf auf Lanes bleibt das ein Sicherheitsnetz
-                  # fuer eine alte Kontrollebene, nie ein normaler Zustand.
-                  state=UNKNOWN
-                fi
-                ;;
-              *) state=UNKNOWN ;;
-            esac
-          fi
-          gates="$(node -e 'const m = JSON.parse(process.env.MATRIX || "{}"); process.stdout.write((m.include || []).map((entry) => entry.gate).filter(Boolean).join(","));')"
-          required="$REQUIRED_IN"
-          if [ -z "$required" ]; then required="$gates"; fi
-          profile="$PROFILE_IN"
-          if [ -z "$profile" ]; then
-            case "$state" in
-              LIGHT) profile=light ;;
-              NOOP|PR_HANDOFF) profile=none ;;
-              *) profile=full ;;
-            esac
-          fi
-          run="$RUN_IN"
-          if [ -z "$run" ]; then
-            if [ -n "$gates" ] && [ "$state" != "NOOP" ] && [ "$state" != "PR_HANDOFF" ]; then
-              run=true
-            else
-              run=false
-            fi
-          fi
-          noop="$NOOP_IN"
-          if [ -z "$noop" ]; then
-            if [ "$state" = "NOOP" ]; then noop=true; else noop=false; fi
-          fi
-          {
-            echo "state=$state"
-            echo "required=$required"
-            echo "profile=$profile"
-            echo "run=$run"
-            echo "noop=$noop"
-          } >> "$GITHUB_OUTPUT"
-
-      # Eine leere Matrix ist nur in NOOP der Vertrag. In jedem anderen Zustand
-      # muss das Required-Set vollstaendig in der Matrix stehen und darf selbst
-      # nie leer sein; sonst waere der Pflichtstatus gruen, ohne dass ein Gate
-      # gelaufen ist.
-      - name: Matrix validieren
-        env:
-          MATRIX: ${{ steps.gates.outputs.matrix }}
-          REQUIRED: ${{ steps.compat.outputs.required }}
-          STATE: ${{ steps.compat.outputs.state }}
-        run: |
-          echo "::notice::Zustand ${STATE}, Matrix-Laenge ${#MATRIX}"
-          node -e 'const raw = process.env.MATRIX ?? ""; let m; try { m = JSON.parse(raw); } catch (error) { console.error("::error::Gate-Matrix ist kein JSON: " + error.message + " :: " + raw); process.exit(1); } const include = Array.isArray(m.include) ? m.include : null; if (!include) { console.error("::error::Gate-Matrix ohne include-Liste: " + raw); process.exit(1); } const state = process.env.STATE ?? ""; const required = (process.env.REQUIRED ?? "").split(",").filter(Boolean); const gates = include.map((entry) => entry.gate).filter(Boolean); const noop = state === "NOOP" || state === "PR_HANDOFF"; if (noop) { if (gates.length > 0) { console.error("::error::Zustand " + state + " darf keine Gates tragen: " + gates.join(", ")); process.exit(1); } console.log("Zustand " + state + ": leere Matrix ist der Vertrag."); process.exit(0); } if (required.length === 0) { console.error("::error::Required-Set ist leer; der Pflichtstatus waere ohne Gate gruen."); process.exit(1); } if (gates.length === 0) { console.error("::error::Zustand " + state + " ohne Gate-Matrix"); process.exit(1); } const missing = required.filter((gate) => !gates.includes(gate)); if (missing.length > 0) { console.error("::error::Required-Gates fehlen in der Matrix: " + missing.join(", ")); process.exit(1); } console.log("Zustand " + state + ": " + gates.length + " Gate(s), required " + required.length + " vollstaendig.");'
-
-      # Klein und maschinenlesbar: welcher Diff, welcher Zustand, welche Gates,
-      # welche Tests, was bewusst ausgelassen wurde. Kein Log-Friedhof.
-      - name: CI-Plan-Artefakt
+      - name: Debug-APK als PR-Artefakt
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: ci-plan
-          path: .verify-cache/ci-plan.json
-          if-no-files-found: ignore
+          name: rigged-by-design-debug-apk-pr-${{ github.event.pull_request.number }}
+          path: artifacts/rigged-by-design-debug.apk
+          if-no-files-found: error
           retention-days: 7
-
-  # Ein Job je Gate. `fail-fast: false` laesst die anderen Gates fertig laufen:
-  # ein roter Lint soll den Testnachweis nicht abschneiden. Dieser Job traegt
-  # das Required-Set und laeuft in PR, MAIN, MANUAL und UNKNOWN.
-  gate:
-    name: Gate ${{ matrix.gate }}
-    needs: plan
-    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.state != 'LIGHT'
-    runs-on: ubuntu-24.04
-    # Grosszuegig: die CI ist die Werkstatt. Ein Abbruch oder Timeout ist
-    # REMOTE_CI (Lauf wiederholen), kein roter Stand und kein BLOCKED.
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      # Die Pruefsteuerung kommt aus der Basis, nicht aus dem geprueften PR.
-      - name: Kontrollebene aus der Basis
-        id: control
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
-            exit 1
-          fi
-          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
-            exit 1
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-
-      # Der Gate-Cache liegt ausserhalb von node_modules, weil pnpm install
-      # --frozen-lockfile node_modules neu aufbaut. Innen entscheidet der
-      # Inhalts-Hash des Arbeitsbaums, ob ein Gate wirklich gruen war.
-      - name: Gate-Cache wiederherstellen
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-${{ matrix.gate }}-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
-          restore-keys: |
-            ${{ runner.os }}-rbd-verify-${{ matrix.gate }}-
-            ${{ runner.os }}-rbd-verify-
-
-      - name: pnpm installieren
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
-        with:
-          version: 10.4.1
-
-      - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          # Vollstaendige 22er-Linie, nicht der harte Minor: jsdom und eslint
-          # verlangen einen aktuellen 22er-Stand, sonst stirbt der Vitest-Worker.
-          node-version: '22'
-          cache: pnpm
-
-      - name: Install (pnpm install --frozen-lockfile)
-        run: pnpm install --frozen-lockfile
-
-      # Genau ein Gate, kein zweiter Lauf der ganzen Pipeline. Ist das Gate
-      # nicht Teil des Profils, bricht der Schritt ab, statt still zu bestehen.
-      # `RBD_TEST_FILES` kommt aus dem Impact-Plan; ohne Auswahl (volles
-      # Profil, unklarer Diff) laeuft die Suite vollstaendig.
-      - name: Gate ${{ matrix.gate }}
-        env:
-          RBD_TEST_FILES: ${{ needs.plan.outputs.tests }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          # Manuelle Laeufe zwingen Audit, auch wenn der Impact ihn nicht sieht.
-          RBD_VERIFY_AUDIT: ${{ needs.plan.outputs.state == 'MANUAL' && '1' || '' }}
-          # Die Testsuite ist Pruefobjekt: ihre Fixtures liegen absolut unter
-          # /tmp und duerfen nicht unter .rbd-control gehaengt werden. Nur die
-          # Node-Gates kommen aus der Kontrollebene.
-          RBD_CONTROL_ROOT: ${{ matrix.gate != 'tests' && steps.control.outputs.control || '' }}
-        run: node "${{ steps.control.outputs.scripts }}/run-pipeline.mjs" --profile=${{ needs.plan.outputs.profile }} --gate=${{ matrix.gate }}
-
-      - name: Gate-Protokoll bei Rot
-        if: failure()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-        with:
-          name: gate-log-${{ matrix.gate }}
-          path: .verify-cache/reports/
-          if-no-files-found: ignore
-          retention-days: 7
-
-  # Der Light-Zustand hat einen eigenen Job und einen eigenen Status. Er traegt
-  # nie das Required-Set; sein Gruen ist schnelles Feedback, nicht die
-  # Merge-Freigabe.
-  light:
-    name: Light Gates
-    needs: plan
-    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.state == 'LIGHT'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      - name: Kontrollebene aus der Basis
-        id: control
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
-            exit 1
-          fi
-          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
-            exit 1
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-
-      - name: Gate-Cache wiederherstellen
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: .verify-cache
-          key: ${{ runner.os }}-rbd-verify-light-${{ matrix.gate }}-${{ hashFiles('pnpm-lock.yaml', 'src/Config/eslint.config.mjs') }}
-          restore-keys: |
-            ${{ runner.os }}-rbd-verify-light-${{ matrix.gate }}-
-            ${{ runner.os }}-rbd-verify-light-
-
-      - name: pnpm installieren
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
-        with:
-          version: 10.4.1
-
-      - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: '22'
-          cache: pnpm
-
-      - name: Install (pnpm install --frozen-lockfile)
-        run: pnpm install --frozen-lockfile
-
-      - name: Gate ${{ matrix.gate }}
-        env:
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
-        run: node "${{ steps.control.outputs.scripts }}/run-pipeline.mjs" --profile=light --gate=${{ matrix.gate }}
-
-      - name: Gate-Protokoll bei Rot
-        if: failure()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-        with:
-          name: light-log-${{ matrix.gate }}
-          path: .verify-cache/reports/
-          if-no-files-found: ignore
-          retention-days: 7
-
-  # Der Impact-Plan nennt die langen Testdateien bereits. Sie laufen als eigene
-  # Matrix auf dem exakten Kopf; jede Datei bekommt einen sichtbaren Job.
-  # Die schweren Vollnachweise (Balance, Benchmarks) bleiben im manuellen bzw.
-  # woechentlichen `long-checks.yml`, damit ein PR nicht die ganze Nacht laeuft.
-  long:
-    name: Long ${{ matrix.file }}
-    needs: plan
-    if: needs.plan.outputs.run == 'true' && needs.plan.outputs.state != 'LIGHT' && needs.plan.outputs.long_count != '0' && needs.plan.outputs.integration != 'REBASE_REQUIRED'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      max-parallel: 4
-      matrix: ${{ fromJSON(needs.plan.outputs.long_matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      # Auch der lange Nachweis darf seinen Runner nicht aus dem PR nehmen.
-      # Die Testdateien bleiben der PR-Baum, das Testkommando kommt aus der Basis.
-      - name: Kontrollebene aus der Basis
-        id: control
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
-            exit 1
-          fi
-          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
-            exit 1
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-          echo "base=$base" >> "$GITHUB_OUTPUT"
-
-      # Der volle Soak ist ein Sim-Nachweis: nur ein Diff unter src/core/sim
-      # rechtfertigt 100000 Ticks. Alles andere faehrt den kurzen Standardlauf;
-      # der manuelle bzw. woechentliche long-checks.yml bleibt voll.
-      - name: Soak-Tiefe nach Impact
-        id: soak
-        env:
-          BASE: ${{ steps.control.outputs.base }}
-        run: |
-          set -euo pipefail
-          if ! files=$(git diff --name-only "${BASE}...HEAD"); then
-            echo "::error::Diff gegen ${BASE} nicht lesbar; Soak-Tiefe nicht bestimmbar."
-            exit 1
-          fi
-          if printf '%s\n' "$files" | grep -Eq '^src/core/sim(/|$)'; then
-            echo "ticks=100000" >> "$GITHUB_OUTPUT"
-          else
-            echo "ticks=3000" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: pnpm installieren
-        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
-        with:
-          version: 10.4.1
-      - name: Node 22 mit pnpm-Cache
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: '22'
-          cache: pnpm
-      - name: Install (pnpm install --frozen-lockfile)
-        run: pnpm install --frozen-lockfile
-      - name: Langen Nachweis ausfuehren
-        env:
-          RBD_TEST_FILES: ${{ matrix.file }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_NARRATIVE_LONGRUN: '1'
-          RBD_BALANCE: '1'
-          RBD_SOAK: '1'
-          RBD_SOAK_TICKS: ${{ steps.soak.outputs.ticks }}
-          RBD_REQUIRE_TESTS: '1'
-        run: node "${{ steps.control.outputs.scripts }}/run-selected-tests.mjs"
-
-  # Die Claim-Sperre greift auch dort, wo kein Hook laeuft: Cloud-Agenten und
-  # GitHub-Codespaces haben `.githooks` nicht aktiv. Geprueft wird der PR-Diff
-  # gegen die Basis, inklusive Meta-Sperre und Kollisionen. Nur ein echter
-  # PR-Zustand hat einen Diff, den Claims pruefen koennten.
-  claims:
-    name: Lane Claims
-    needs: plan
-    if: github.event_name == 'pull_request' && needs.plan.outputs.state == 'PR'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      - name: Kontrollebene aus der Basis
-        id: control
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
-            exit 1
-          fi
-          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
-            exit 1
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-
-      - name: Node einrichten
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: '22'
-      # Anlauf-Kompatibilitaet: Die Basis-Kontrollebene vor diesem Merge
-      # liest nur `.lane-claims/claims.json`; die Lane-Dateien kommen erst mit
-      # diesem PR. Der Adapter materialisiert sie nur fuer die alte Basis.
-      # Sobald die Basis `CLAIM_ENTRIES_DIR` kennt, bleibt der Schritt inert.
-      - name: Claim-Register fuer die Basis kompatibilisieren
-        env:
-          CONTROL_SCRIPTS: ${{ steps.control.outputs.scripts }}
-          GH_TOKEN: ${{ github.token }}
-          BASE_REF: origin/${{ github.base_ref }}
-        run: |
-          set -euo pipefail
-          if grep -q "CLAIM_ENTRIES_DIR" "$CONTROL_SCRIPTS/lib/lane-claims.mjs"; then
-            echo "Basis kennt Lane-Claim-Dateien; keine Kompatibilisierung noetig."
-            exit 0
-          fi
-          node --input-type=module - <<'NODE'
-          import { execFileSync } from 'node:child_process';
-          import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-          const legacy = existsSync('.lane-claims/claims.json')
-            ? JSON.parse(readFileSync('.lane-claims/claims.json', 'utf8'))
-            : [];
-          const dir = '.lane-claims/claims';
-          const extra = existsSync(dir)
-            ? readdirSync(dir)
-                .filter((file) => file.endsWith('.json'))
-                .flatMap((file) => {
-                  const value = JSON.parse(readFileSync(`${dir}/${file}`, 'utf8'));
-                  return Array.isArray(value) ? value : [value];
-                })
-            : [];
-          const byId = new Map([...legacy, ...extra].map((claim) => [claim.id, claim]));
-
-          // Die alte Basis kennt weder Lane-Dateien noch Merge-Evidenz. Ein
-          // geloeschter Branch mit gemergtem PR und Merge-Commit auf main ist
-          // ein belegter Altclaim; ein aktiver Branch mit eigenem Kopf bleibt
-          // unangetastet. Die Allowlist wird nie veraendert.
-          const git = (args) =>
-            execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-          const baseRef = process.env.BASE_REF || 'origin/main';
-          const baseTip = (() => {
-            try {
-              return git(['rev-parse', baseRef]);
-            } catch {
-              return null;
-            }
-          })();
-          const onMain = (sha) => {
-            if (!/^[0-9a-f]{40}$/.test(String(sha ?? ''))) return false;
-            try {
-              git(['merge-base', '--is-ancestor', sha, baseRef]);
-              return true;
-            } catch {
-              return false;
-            }
-          };
-          const localHead = (branch) => {
-            for (const ref of [`refs/heads/${branch}`, `refs/remotes/origin/${branch}`]) {
-              try {
-                const sha = git(['rev-parse', '--verify', '--quiet', ref]);
-                if (sha) return sha;
-              } catch {
-                // Naechste Ref; ohne Kopf bleibt der Branch unbekannt.
-              }
-            }
-            return null;
-          };
-          const remoteHead = (branch) => {
-            try {
-              const out = git(['ls-remote', '--heads', 'origin', branch]);
-              return { known: true, sha: out.split(/\s+/)[0] || null };
-            } catch {
-              return { known: false, sha: null };
-            }
-          };
-          const mergedByBranch = new Map();
-          try {
-            const prs = JSON.parse(
-              execFileSync(
-                'gh',
-                ['pr', 'list', '--state', 'merged', '--base', 'main', '--limit', '200', '--json', 'baseRefName,headRefName,headRefOid,isCrossRepository,mergeCommit,number,url'],
-                { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
-              ),
-            );
-            for (const pr of prs) {
-              if (!pr?.headRefName || !pr?.number) continue;
-              if (pr.baseRefName !== 'main' || pr.isCrossRepository !== false) continue;
-              if (!/^[0-9a-f]{40}$/.test(String(pr.headRefOid ?? ''))) continue;
-              if (!pr.mergeCommit?.oid) continue;
-              if (mergedByBranch.has(pr.headRefName)) {
-                mergedByBranch.set(pr.headRefName, null);
-                continue;
-              }
-              mergedByBranch.set(pr.headRefName, pr);
-            }
-          } catch (error) {
-            console.log(`::warning::Merged-PR-Beleg nicht lesbar: ${error instanceof Error ? error.message : 'unbekannt'}`);
-          }
-          for (const claim of byId.values()) {
-            if (claim.status !== 'open') continue;
-            const pr = mergedByBranch.get(claim.branch);
-            if (!pr) continue;
-            const mergeSha = pr.mergeCommit?.oid ?? null;
-            if (!onMain(mergeSha)) continue;
-            const local = localHead(claim.branch);
-            const remote = local ? { known: true, sha: null } : remoteHead(claim.branch);
-            const branchHead = local ?? remote.sha;
-            const branchAtBase = Boolean(branchHead && baseTip && branchHead === baseTip);
-            const absenceKnown = !branchHead && remote.known;
-            if (branchHead && !branchAtBase && !onMain(branchHead)) continue;
-            if (!branchHead && !absenceKnown) continue;
-            claim.status = 'merged';
-            claim.mergedEvidence = 'merged-pr';
-            claim.mergedSha = mergeSha;
-            console.log(`Claim ${claim.id}: PR #${pr.number} gemergt (${mergeSha.slice(0, 7)}); Status materialisiert.`);
-          }
-          writeFileSync('.lane-claims/claims.json', `${JSON.stringify([...byId.values()], null, 2)}\n`);
-          console.log(`Claim-Register kompatibilisiert: ${byId.size} Eintraege.`);
-          NODE
-      - name: Lane-Claims (Allowlist, Owner, Kollisionen)
-        env:
-          BRANCH: ${{ github.head_ref }}
-          BASE_REF: origin/${{ github.base_ref }}
-          GH_TOKEN: ${{ github.token }}
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
-        run: |
-          set -euo pipefail
-          scripts="${{ steps.control.outputs.scripts }}"
-          node "$scripts"/verify-lane-claims.mjs --ci
-
-  # Commit-Notes gehoeren zum Push auf main. Feature-Branches prueft der
-  # PR-Lauf; hier laeuft der Job nur im Zustand MAIN.
-  commitmsg:
-    name: Commit- und PR-Notes
-    needs: plan
-    if: needs.plan.outputs.state == 'MAIN'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      - name: Kontrollebene aus der Basis
-        id: control
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-              base="$(git rev-parse --verify 'HEAD^')"
-            else
-              base="$(git merge-base origin/main HEAD)"
-            fi
-          fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit im lokalen Baum; ohne Basis keine unabhaengige Kontrollebene."
-            exit 1
-          fi
-          if [ "$base" = "$(git rev-parse HEAD)" ] && [ "$GITHUB_REF" != "refs/heads/main" ]; then
-            echo "::error::Kontrollebene und Pruefobjekt sind derselbe Commit; keine unabhaengige Pruefung."
-            exit 1
-          fi
-          dir=".rbd-control"
-          rm -rf "$dir"
-          git worktree add --detach "$dir" "$base"
-          echo "::notice::Kontrollebene aus ${base}"
-          echo "path=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          if ! grep -q "RBD_ROOT" "$dir/scripts/lib/report.mjs"; then
-            echo "::error::Basis ${base} kennt RBD_ROOT nicht; Branch auf einen aktuellen main-Stand rebasen."
-            exit 1
-          fi
-          echo "scripts=$GITHUB_WORKSPACE/$dir/scripts" >> "$GITHUB_OUTPUT"
-          echo "control=$GITHUB_WORKSPACE/$dir" >> "$GITHUB_OUTPUT"
-          echo "root=$GITHUB_WORKSPACE" >> "$GITHUB_OUTPUT"
-      - name: Node einrichten
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: '22'
-      - name: Commit-Notes-Gate
-        env:
-          RBD_ROOT: ${{ steps.control.outputs.root }}
-          RBD_CONTROL_ROOT: ${{ steps.control.outputs.control }}
-        run: |
-          node "${{ steps.control.outputs.scripts }}/verify-commit-msg.mjs" --head
-
-  # Ein Governance-Verstoss ist Korruption, kein normaler roter Lauf: der
-  # Branch bleibt, der Befund wird als BLOCKED-Issue sichtbar und der Lauf
-  # bleibt rot. Der Job braucht als einziger Schreibrecht, und nur auf Issues.
-  governance-issue:
-    name: BLOCKED-Issue
-    needs: plan
-    if: always() && needs.plan.outputs.freeze == 'corruption'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      issues: write
-    steps:
-      - name: BLOCKED-Issue anlegen oder fortschreiben
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BRANCH: ${{ github.head_ref || github.ref_name }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          set -euo pipefail
-          label="governance/blocked"
-          title="BLOCKED: Governance-Freeze verletzt auf ${BRANCH}"
-          gh label create "$label" --color b60205 --description "Governance-Freeze verletzt (ERR-4030)" --force >/dev/null
-          body="$(printf '%s\n' \
-            "Der Freeze-Checker hat eine inhaltliche Governance-Aenderung ohne gueltige PIN-Freigabe gefunden." \
-            "" \
-            "- Branch: \`${BRANCH}\`" \
-            "- Kopf: \`${HEAD_SHA}\`" \
-            "- Lauf: ${RUN_URL}" \
-            "- Befund: \`ERR-4030\` - Verdacht auf unautorisierte Korruption." \
-            "" \
-            "Der Branch bleibt bestehen. Der Fix ist eine basisgenaue Freigabe" \
-            "(\`node scripts/freeze-unlock.mjs --pin=<pin>\`) oder das Zuruecknehmen der" \
-            "Aenderung; der naechste Lauf prueft erneut. Es gibt keine Branch-Loeschung.")"
-          number="$(gh issue list --label "$label" --state open --search "$title in:title" --json number --jq '.[0].number')"
-          if [ -n "$number" ]; then
-            gh issue comment "$number" --body "$body"
-          else
-            gh issue create --title "$title" --body "$body" --label "$label"
-          fi
-
-  # Der Pflichtstatus bleibt genau einer. Er fuehrt nur Ergebnisse zusammen und
-  # prueft selbst nichts. Was gruen heissen darf, haengt am Zustand: das
-  # Required-Set muss wirklich gelaufen sein, und jeder Job muss genau das
-  # Ergebnis haben, das sein Zustand vorsieht. `skipped` ist nur dort erlaubt,
-  # wo der Zustand den Job nicht vorsieht.
-  verify:
-    name: Fail-Closed Gates
-    needs: [plan, gate, light, long, claims, commitmsg]
-    if: always() && needs.plan.outputs.state != 'PR_HANDOFF'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - name: Gate-Ergebnisse zusammenfuehren
-        env:
-          STATE: ${{ needs.plan.outputs.state }}
-          REQUIRED: ${{ needs.plan.outputs.required }}
-          NOOP: ${{ needs.plan.outputs.noop }}
-          INDEPENDENT: ${{ needs.plan.outputs.independent }}
-          LONG_COUNT: ${{ needs.plan.outputs.long_count }}
-          INTEGRATION: ${{ needs.plan.outputs.integration }}
-          PLAN: ${{ needs.plan.result }}
-          GATES: ${{ needs.gate.result }}
-          LIGHT: ${{ needs.light.result }}
-          LONG: ${{ needs.long.result }}
-          CLAIMS: ${{ needs.claims.result }}
-          COMMITMSG: ${{ needs.commitmsg.result }}
-        run: |
-          set -u
-          fail=0
-          rot() { echo "::error::$1"; fail=1; }
-          gruen() { echo "::notice::$1"; }
-          gleich() { [ "$2" = "$3" ] || rot "$1: $2 (erwartet $3)"; }
-
-          [ "$PLAN" = "success" ] || rot "plan: $PLAN"
-          [ -n "$REQUIRED" ] || rot "required ist leer; der Pflichtstatus waere ohne Gate gruen"
-
-          case "$STATE" in
-            PR)
-              gleich "gate" "$GATES" success
-              gleich "light" "$LIGHT" skipped
-              gleich "claims" "$CLAIMS" success
-              gleich "commitmsg" "$COMMITMSG" skipped
-              ;;
-            MAIN)
-              gleich "gate" "$GATES" success
-              gleich "light" "$LIGHT" skipped
-              gleich "claims" "$CLAIMS" skipped
-              gleich "commitmsg" "$COMMITMSG" success
-              ;;
-            MANUAL|UNKNOWN)
-              gleich "gate" "$GATES" success
-              gleich "light" "$LIGHT" skipped
-              gleich "claims" "$CLAIMS" skipped
-              gleich "commitmsg" "$COMMITMSG" skipped
-              ;;
-            LIGHT)
-              gleich "light" "$LIGHT" success
-              gleich "gate" "$GATES" skipped
-              gleich "claims" "$CLAIMS" skipped
-              gleich "commitmsg" "$COMMITMSG" skipped
-              ;;
-            NOOP)
-              gleich "gate" "$GATES" skipped
-              gleich "light" "$LIGHT" skipped
-              gleich "claims" "$CLAIMS" skipped
-              gleich "commitmsg" "$COMMITMSG" skipped
-              gleich "noop" "$NOOP" true
-              ;;
-            *)
-              rot "unbekannter Zustand '$STATE'"
-              ;;
-          esac
-
-          # Lange Nachweise laufen genau dann, wenn der Impact welche nennt und
-          # der Branch auf der Basis steht. Ein REBASE_REQUIRED-Lauf bezahlt
-          # keine 60-Minuten-Suite fuer einen Baum, den niemand mergen darf.
-          if [ "$LONG_COUNT" != "0" ] && [ "$STATE" != "LIGHT" ] && [ "$STATE" != "NOOP" ] && [ "$INTEGRATION" != "REBASE_REQUIRED" ]; then
-            gleich "long" "$LONG" success
-          else
-            gleich "long" "$LONG" skipped
-          fi
-
-          # Die Kontrollebene darf nur dann identisch mit dem Pruefobjekt sein,
-          # wenn der Plan den echten No-op bestaetigt.
-          if [ "$INDEPENDENT" != "true" ] && [ "$NOOP" != "true" ]; then
-            rot "Kontrollebene nicht unabhaengig (independent=$INDEPENDENT, noop=$NOOP)"
-          fi
-          exit "$fail"

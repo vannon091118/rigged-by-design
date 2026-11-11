@@ -55,6 +55,19 @@ describe('Pipeline-Modi', () => {
     expect(isProfile('dev')).toBe(true);
   });
 
+  it('trennt den schnellen lokalen Lauf vom Integrationsnachweis', () => {
+    expect(PROFILE_GATES.fast).toEqual([
+      ...PROFILE_GATES.light,
+      'test-quality',
+      'affected',
+      'build',
+    ]);
+    expect(PROFILE_GATES.integration).toEqual(PROFILE_GATES.fast);
+    expect(PROFILE_GATES.integration).not.toContain('tests');
+    expect(planGates('fast')).toEqual(PROFILE_GATES.fast);
+    expect(planGates('integration')).toEqual(PROFILE_GATES.integration);
+  });
+
   it('prueft im vollen und im Release-Profil mehr als im kurzen Lauf', () => {
     const quick = PROFILE_GATES.quick ?? [];
     const full = PROFILE_GATES.full ?? [];
