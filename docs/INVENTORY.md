@@ -593,10 +593,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2644 |
-| Gelistete Dateien | 2644 |
+| Getrackte Dateien | 2645 |
+| Gelistete Dateien | 2645 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (170), content (926), docs (83), public (554), scripts (102), src (781) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (170), content (927), docs (83), public (554), scripts (102), src (781) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -610,7 +610,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 110 Datei(en)
 - `.lane-claims/tasks/` — 58 Datei(en)
-- `content/narrative/contributions/` — 922 Datei(en)
+- `content/narrative/contributions/` — 923 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -724,7 +724,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-ci-integration-controller.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-ci-pr-body-current.json` — { — gelesen: 26 Zeilen
 - `.lane-claims/claims/lane-city-vertical-slice.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-club-night-lounge.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-club-night-lounge.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-gameplay-npc-encounter-loop.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-gastro-drink-menu.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-agent-bootstrap.json` — { — gelesen: 31 Zeilen
@@ -834,7 +834,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 9 Zeilen
 - `.lane-claims/tasks/ci-integration-controller.json` — { — gelesen: 43 Zeilen
 - `.lane-claims/tasks/ci-pr-body-current.json` — { — gelesen: 14 Zeilen
-- `.lane-claims/tasks/club-night-lounge.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/tasks/club-night-lounge.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/gastro-drink-menu.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-agent-bootstrap.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-agent-masterplan-readme.json` — { — gelesen: 17 Zeilen
@@ -1811,14 +1811,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent19-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-club-night-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-club-night-2.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent19-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-npc-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20681 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3693 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20703 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3697 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen

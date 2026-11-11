@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1e97f380f2916f91dd8f53137bf89e80f00376e8aaa033cf0a3828fbfe5a1d08",
+  "contentHash": "sha256:8aaf8224788acb4e4804aed856f084ac639c87f53d350d333bbb6f02050e0f4d",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1042,6 +1042,28 @@
       "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-club-night-2.json"
+    },
+    {
+      "contributionId": "agent19-done",
+      "turnId": "2026-11-11T03:45Z-agent19-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Lounge traegt ihren Club jetzt nach Tageszeit; Register und Lane sind geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-done.json"
     },
     {
       "contributionId": "agent19-merge-pending",
