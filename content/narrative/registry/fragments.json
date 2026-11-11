@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:5e082129a8d1a89b06d26a937d84a6605f0c2199722df6f116edc0a02fd0f333",
+  "contentHash": "sha256:33c3f154acf37855d807a4151411914ee29ef2288847ce2f0c12a074fbf7f9f3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6462,6 +6462,30 @@
       "text": "Der Closeout-Zweig trug noch den Stand vor der README-Lane; der Merge zog main bis 1f40395 nach. Die Inventur wurde auf dem gemeinsamen Baum neu erzeugt, damit der Diff nur die abgeschlossenen Phasen-Lanes und keine veraltete Dateiliste zeigt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json"
+    },
+    {
+      "contributionId": "governance-dependency-matrix-retry",
+      "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
+      "agentId": "codex",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita sah, dass die neue Spur noch in der Abhängigkeitskarte fehlte. Sie ließ den Generator über den vollständigen Index laufen und legte die aktualisierte Karte vor dem Gate dazu. Der nächste Prüfer musste den fehlenden Eintrag nicht erst nach dem Commit entdecken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json"
     },
     {
       "contributionId": "governance-eine-stimme-01",

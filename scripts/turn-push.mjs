@@ -227,6 +227,12 @@ if (!resumePending && paths.length > 0) {
 if (!resumePending) {
   spawnSync(process.execPath, ['scripts/build-inventory.mjs'], { cwd: ROOT, stdio: 'ignore' });
   git(['add', '--', 'docs/INVENTORY.md']);
+  const dependencyMatrix = spawnSync(process.execPath, ['scripts/sync-dependency-matrix.mjs'], { cwd: ROOT, stdio: 'inherit' });
+  if (dependencyMatrix.status !== 0) {
+    fail(1, 'ERR-4013', 'turn:finish', 'Dependency-Matrix konnte nicht synchronisiert werden; kein Commit und kein Push');
+    process.exit(1);
+  }
+  git(['add', '--', 'docs/DEPENDENCY-MATRIX.md']);
 }
 
 if (RUN_VERIFY) {

@@ -96,7 +96,7 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 
 Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder Push nicht abgeschlossen, setzt ein sauberer erneuter `turn:finish` bei Integration und Push fort. Er bumped weder die Version noch erzeugt er eine neue Task-Vertragsrevision oder einen leeren Notes-Commit. Sobald Änderungen im Arbeitsbaum vorliegen, läuft der normale Claim-, Test-, Versions- und Commit-Pfad wieder.
 
-Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. So sieht die Dateiinventur neue Dateien über den Index, bevor `verify:docs` läuft; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
+Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor `verify:light` läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
 
 `--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf; `--profile=quick` und `--profile=full` bleiben die breiteren Opt-ins für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Die schwere Suite und Audit bleiben in CI.
 

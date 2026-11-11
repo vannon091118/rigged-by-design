@@ -611,10 +611,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2821 |
-| Gelistete Dateien | 2821 |
+| Getrackte Dateien | 2822 |
+| Gelistete Dateien | 2822 |
 | Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (200), content (1003), docs (84), packages (28), public (554), scripts (104), src (820) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (200), content (1004), docs (84), packages (28), public (554), scripts (104), src (820) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -628,7 +628,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 125 Datei(en)
 - `.lane-claims/tasks/` — 73 Datei(en)
-- `content/narrative/contributions/` — 999 Datei(en)
+- `content/narrative/contributions/` — 1000 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -1930,6 +1930,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-game-scout-bootstrap.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-game-scout-player-qa.json` — { — gelesen: 17 Zeilen
+- `content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-governance-retry-path.json` — { — gelesen: 17 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
@@ -1951,8 +1952,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22381 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4001 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22405 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4005 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2712,7 +2713,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/task-state.mjs` — Task-Zustand: nach dem Turn ist vor dem naechsten. — gelesen: 280 Zeilen
 - `scripts/test-affected.mjs` — Schneller Entwicklungsfeedback-Lauf: nur Tests, die vom aktuellen Diff — gelesen: 52 Zeilen
 - `scripts/test-catalog.mjs` — Testkatalog schreiben (`pnpm run catalog`) oder pruefen (`--check`). — gelesen: 55 Zeilen
-- `scripts/turn-push.mjs` — Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein  — gelesen: 550 Zeilen
+- `scripts/turn-push.mjs` — Turn-Abschluss: betroffene Tests, verify:light, Commit und Push auf den Arbeitsbranch. Kein Auto-Rebase, kein  — gelesen: 556 Zeilen
 - `scripts/verify-assets.mjs` — Asset-Pruefung: jede Manifest-Referenz zeigt auf eine vorhandene Datei, — gelesen: 153 Zeilen
 - `scripts/verify-capabilities.mjs` — verify:capabilities - Validiert das Capability-Manifest. — gelesen: 25 Zeilen
 - `scripts/verify-commit-msg.mjs` — Steam-Developer-Notes-Gate: deutsche Pflichtsektionen, keine Fremd-Trailer. — gelesen: 54 Zeilen
