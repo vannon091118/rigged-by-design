@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6c8e950086e94e6b581bb31b64bd916b507d1d61c8699904e231776f346cf535",
+  "contentHash": "sha256:9790a60bd98e52370cdd88531d14ff96b98c22634ea53f0a7d1557e901d4c46a",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1020,6 +1020,28 @@
       "text": "Lautstaerke ist kein Selbstzweck: wer im Club wartet, gewinnt Laune, bis der Pegel kippt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-club-night-2.json"
+    },
+    {
+      "contributionId": "agent19-merge-pending",
+      "turnId": "2026-11-11T03:35Z-agent19-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",

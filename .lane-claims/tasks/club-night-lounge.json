@@ -4,14 +4,18 @@
   "claimId": "lane/club/night-lounge",
   "branch": "lane/club/night-lounge",
   "baseSha": "bc2a9ce1362843df54dcc04f7a0e8b3bad17f9e1",
-  "phase": "CI_PENDING",
+  "phase": "MERGE_PENDING",
   "title": "Agent 19: Clubabend in der Lounge",
   "goal": "Die Lounge wird abends und nachts zum Club: Oeffnungszeit aus der Tageszeit, Belegung aus der bestehenden Bereichsableitung, Lautstaerke 0..10 und Launepuls daraus. Wer in der Lounge wartet, bekommt den Clubabend mit; kein neues Save-Feld, keine zweite Zone, keine zweite Gaestesimulation, keine Aenderung an Nachfrage, Preisen oder Personal.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 418,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/418",
+    "state": "merged"
+  },
   "findings": [],
-  "nextAction": "Auf Fail-Closed Gates warten; danach Merge-Beleg eintragen.",
-  "revision": 3
+  "nextAction": "Squash ist gemergt; Nachsorge einleiten und Register nachziehen.",
+  "revision": 4
 }
