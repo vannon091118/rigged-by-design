@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:f87b098237d81e9a086b2cbba65d1edaf2b77f2541977891336ea0fef75be3e2",
+  "contentHash": "sha256:08399c527578213b4804801b7eb89cb1d0c0e3ee4471cee948315fd4c79d3839",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1372,6 +1372,28 @@
       "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
+    },
+    {
+      "contributionId": "agent22-task",
+      "turnId": "2026-11-11T06:10Z-agent22-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem ersten Baustein steht die Pruefung: Der Veranstaltungsrahmen darf nicht neben dem vorhandenen Event-Zustand stehen. Deshalb beginnt Agent 22 mit einer Lane, die nur den fehlenden Ablauf ergaenzt und die bestehende Wahrheit unangetastet laesst.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-task.json"
     },
     {
       "contributionId": "apk-signing-01",
