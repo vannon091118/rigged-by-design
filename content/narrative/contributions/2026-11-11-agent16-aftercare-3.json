@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T00:35Z-agent16-aftercare-3",
+  "contributionId": "agent16-aftercare-3",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Am Ende steht kein Gefuehl, sondern eine Zeile im Register: Baum auf main, Branch-Kopf belegt, Zweig darf gehen. Was bleibt, ist der Nachweis.",
+  "directives": []
+}
