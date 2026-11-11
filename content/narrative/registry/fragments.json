@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:bb5ebe1aaa5168f393aac1510c573115f8ea10a81eecf12c3994c75efc65b560",
+  "contentHash": "sha256:1dc94952488b1cc75b17734f275b656429803341b2e9126027742e891099efa1",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1372,6 +1372,28 @@
       "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
+    },
+    {
+      "contributionId": "agent22-ci-pending",
+      "turnId": "2026-11-11T06:45Z-agent22-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Event-Phasen sind mit #426 auf main; jetzt beginnt der Nachlauf. Erst Squash-Beleg und Register machen daraus einen belegten Abschluss, bis dahin bleibt der Task offen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent22-ci-pending.json"
     },
     {
       "contributionId": "agent22-dead-code",
