@@ -20,6 +20,10 @@
  * `git commit --amend` - ist der Commit selbst das Pruefobjekt: die Dateiliste
  * kommt dann aus `HEAD` gegen seine Eltern. Sonst waere die Ausnahme fuer
  * genau den Fall unerreichbar, den das Commit-Gate verlangt.
+ *
+ * Mit `--pr` gilt die Pflicht fuer den gesamten Branch-Diff gegen `BASE_REF`
+ * (Default `origin/main`). Ein Amend verliert dann seinen bereits vorhandenen
+ * Baustein nicht, weil der Branch ihn weiterhin gegen die Basis hinzufuegt.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -63,21 +67,41 @@ if (commitMode) {
     }
   };
   const staged = gitPaths(['diff', '--cached', '--name-only']);
-  const fromCommit = staged.length === 0;
-  const changed = fromCommit ? commitPaths() : staged;
-  const deletedPaths = (fromCommit
-    ? commitPaths(['--diff-filter=D'])
-    : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D']))
-    .filter((path) => path.startsWith('content/narrative/contributions/'));
+  const prMode = process.argv.includes('--pr');
+  const base = process.env.BASE_REF ?? 'origin/main';
+  let changed;
+  let deletedPaths;
+  let addedPaths;
+  let source;
+  if (prMode) {
+    try {
+      changed = gitPaths(['diff', '--cached', '--name-only', base]);
+      deletedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D', base])
+        .filter((path) => path.startsWith('content/narrative/contributions/'));
+      addedPaths = gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', base])
+        .filter((path) => path.startsWith('content/narrative/contributions/'));
+      source = `Branch-Diff ${base}..Index`;
+    } catch {
+      console.error(`[narrative-blocks] Basis '${base}' nicht lesbar; --pr braucht einen Basis-Ref`);
+      process.exit(1);
+    }
+  } else {
+    const fromCommit = staged.length === 0;
+    changed = fromCommit ? commitPaths() : staged;
+    deletedPaths = (fromCommit
+      ? commitPaths(['--diff-filter=D'])
+      : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=D']))
+      .filter((path) => path.startsWith('content/narrative/contributions/'));
+    addedPaths = fromCommit
+      ? commitPaths(['--diff-filter=A']).filter((path) => path.startsWith('content/narrative/contributions/'))
+      : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', '--', 'content/narrative/contributions']);
+    source = fromCommit ? 'Dateiliste aus HEAD, nichts gestagt' : 'nur Doku/Inventur/Tooling';
+  }
   const deletedReport = poolReport(fragments);
   issues.push(...shrinkIssues({ deleted: deletedPaths, before: deletedReport.counts, after: report.counts }));
   if (isMaintenanceOnly(changed)) {
-    const source = fromCommit ? 'Dateiliste aus HEAD, nichts gestagt' : 'nur Doku/Inventur/Tooling';
     console.log(`[narrative-blocks] Pflege-Commit (${source}): Baustein-Pflicht entfaellt, Pool-Regeln gelten weiter`);
   } else {
-    const addedPaths = fromCommit
-      ? commitPaths(['--diff-filter=A']).filter((path) => path.startsWith('content/narrative/contributions/'))
-      : gitPaths(['diff', '--cached', '--name-only', '--diff-filter=A', '--', 'content/narrative/contributions']);
     const added = [];
     for (const path of addedPaths) {
       const data = JSON.parse(readFileSync(join(ROOT, path), 'utf8'));
@@ -87,9 +111,9 @@ if (commitMode) {
       if (!wired) issues.push(`Neuer Beitrag ${data.contributionId} ist nicht in der Registry verdrahtet`);
       added.push({ contributionId: data.contributionId, slot: data.slot });
     }
-    // Ohne gestagte Dateien stammt die Liste aus HEAD; dort zaehlt nur, was der
-    // Commit selbst hinzufuegt. Ein Amend eines Content-Commits findet seinen
-    // Baustein also wieder, ein Maintenance-Amend landet im Pflegezweig.
+    // `--pr` prueft den gesamten Branch-Diff; normale Commits pruefen weiterhin
+    // nur den gestagten Inhalt. Ein Amend mit gestagten Aenderungen findet
+    // seinen bereits vorhandenen Baustein damit wieder.
     const before = { ...report.counts };
     for (const entry of added) before[entry.slot] = Math.max(0, (before[entry.slot] ?? 0) - 1);
     issues.push(...gapIssues({ before, added }));
