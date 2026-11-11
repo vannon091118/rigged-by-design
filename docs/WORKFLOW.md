@@ -64,6 +64,8 @@ Verboten sind die Abkürzungen, die fremde Arbeit oder den eigenen Verlauf zerst
 
 Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben liegen; der nächste Pretask entscheidet über Resume oder einen neuen Task.
 
+`agent:new` installiert in einem frischen Worktree fehlende Pakete einmal mit `pnpm install --frozen-lockfile`, bevor es `pretask` startet. Bei einem Installationsfehler bleiben Claim und Vertrag erhalten; die Ausgabe nennt den Installationsschritt zum Wiederaufnehmen. Der Bootstrap muss nicht erneut angelegt werden.
+
 ## Arbeitsablauf
 
 1. **Pretask:** `pnpm run agent:pretask --json`; Blockermeldungen zuerst lösen.
@@ -91,6 +93,10 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 5. Commit mit den drei Pflichtsektionen erstellen,
 6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
 7. den Vertrag im PR-Kommentar spiegeln und mit `pretask` fortsetzen.
+
+Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder Push nicht abgeschlossen, setzt ein sauberer erneuter `turn:finish` bei Integration und Push fort. Er bumped weder die Version noch erzeugt er eine neue Task-Vertragsrevision oder einen leeren Notes-Commit. Sobald Änderungen im Arbeitsbaum vorliegen, läuft der normale Claim-, Test-, Versions- und Commit-Pfad wieder.
+
+Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor `verify:light` läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
 
 `--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf; `--profile=quick` und `--profile=full` bleiben die breiteren Opt-ins für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Die schwere Suite und Audit bleiben in CI.
 

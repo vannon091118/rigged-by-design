@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d820bfb7189213753143d014e2c520fd88c416004e235e7e2b9738ad575e93c2",
+  "contentHash": "sha256:33c3f154acf37855d807a4151411914ee29ef2288847ce2f0c12a074fbf7f9f3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6464,6 +6464,30 @@
       "source": "content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json"
     },
     {
+      "contributionId": "governance-dependency-matrix-retry",
+      "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
+      "agentId": "codex",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita sah, dass die neue Spur noch in der Abhängigkeitskarte fehlte. Sie ließ den Generator über den vollständigen Index laufen und legte die aktualisierte Karte vor dem Gate dazu. Der nächste Prüfer musste den fehlenden Eintrag nicht erst nach dem Commit entdecken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json"
+    },
+    {
       "contributionId": "governance-eine-stimme-01",
       "turnId": "2026-11-10T02:50Z-governance-eine-stimme",
       "agentId": "buffy",
@@ -6662,6 +6686,30 @@
       "text": "Rita las den CI-Zustand nicht aus einem Zeitstempel, sondern aus dem exakten Lauf, dem Kopf und der Basis. Ein Hold war kein Fehler, sondern eine Antwort: Der Merge wartet, bis der Vertrag und die Issues dieselbe Sprache sprechen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-phase3-ci-state.json"
+    },
+    {
+      "contributionId": "governance-retry-path",
+      "turnId": "2026-11-11T18:00Z-governance-retry-path",
+      "agentId": "codex",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Rita legte den geprüften Stand neben das offene Tor. Als der Weg kurz unterbrochen wurde, begann sie nicht wieder am Anfang und schrieb auch keine neue Versionsnummer ins Heft. Sie nahm denselben Beleg, prüfte die gemeinsame Basis und setzte den Push fort. Die Schranke blieb dabei geschlossen, bis alle Prüfungen wieder passten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-governance-retry-path.json"
     },
     {
       "contributionId": "governance-roadmap-count-01",

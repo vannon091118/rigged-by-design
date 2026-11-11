@@ -1,9 +1,15 @@
 {
   "version": 1,
-  "base": "7241e253042eb68f89eb0aa3e6ec857d66da4e06",
+  "base": "2e8b9dc0991d4c69cf1db93013434414eb3467b6",
   "paths": [
-    ".github/workflows/ci-verify.yml"
+    "docs/GOVERNANCE.md",
+    "docs/WORKFLOW.md",
+    "scripts/agent-new.mjs",
+    "scripts/lib/agent-new-args.mjs",
+    "scripts/lib/lane-claims.mjs",
+    "scripts/lib/pending-commit.mjs",
+    "scripts/turn-push.mjs"
   ],
-  "token": "55175a3b83919c0355ee534cb10cbd37507686dc3edf9b169fe6e6f65d83e55d",
+  "token": "8c8dab1af04747abd6aadd9f7aadf30f20463afc895f3ed38e344074ada1957f",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

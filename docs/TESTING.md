@@ -64,6 +64,9 @@ pnpm exec vitest run \
   src/core/governance/__tests__/ci-gates.test.ts \
   src/core/governance/__tests__/pipeline-modes.test.ts \
   src/core/governance/__tests__/lane-claims.test.ts \
+  src/core/governance/__tests__/agent-new-args.test.ts \
+  src/core/governance/__tests__/claim-save-scope.test.ts \
+  src/core/governance/__tests__/workflow-retry.test.ts \
   src/core/governance/__tests__/issue-scope.test.ts \
   src/core/governance/__tests__/auto-resolve.test.ts \
   src/core/governance/__tests__/pr-watcher.test.ts \

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-workflow-loop-0911",
+  "claimId": "lane/governance/workflow-loop-0911",
+  "branch": "lane/governance/workflow-loop-0911",
+  "baseSha": "2e8b9dc0991d4c69cf1db93013434414eb3467b6",
+  "phase": "CI_PENDING",
+  "title": "Governance workflow loop recovery",
+  "goal": "Make governance bootstrap and retry paths idempotent while preserving gates",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

@@ -3992,6 +3992,14 @@
     {
       "turnId": "2026-11-11T09:55Z-first-run-slot-truth-ci-fix",
       "contributionId": "first-run-slot-truth-ci-fix"
+    },
+    {
+      "turnId": "2026-11-11T18:00Z-governance-retry-path",
+      "contributionId": "governance-retry-path"
+    },
+    {
+      "turnId": "2026-11-11T18:10Z-governance-dependency-matrix-retry",
+      "contributionId": "governance-dependency-matrix-retry"
     }
   ]
 }
