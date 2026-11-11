@@ -13,6 +13,5 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "superseded",
-  "notes": "Der Branch traegt ein veraltetes Register (128 Claims/12 Tasks); Inhalt liegt ueber Lift-Commits auf main. Nicht promoten; Branch-Cleanup bleibt Owner-Entscheidung.",
   "createdAt": "7db4be8e299081ce8d0651e0d8db5517908ad8ee"
 }

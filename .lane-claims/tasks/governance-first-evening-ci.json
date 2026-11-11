@@ -4,14 +4,20 @@
   "claimId": "lane/governance/first-evening-ci",
   "branch": "lane/governance/first-evening-ci",
   "baseSha": "9e0d99a3147c7c5c47145f107ae4a577a25efb3d",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Sprint 1 - Der erste Abend",
   "goal": "Ein Startmodal, gefuellte Buehne, ein HUD-Ziel, erster Gast nach 12 Ticks; CircleCI ersetzt die GitHub-Workflows.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 468,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/468",
+    "state": "merged",
+    "headSha": "af71c2ed22d30005b81cd5961ba04942c37f8384",
+    "mergedSha": "42caafbdbaa1ca706b94063a56d0a56bcc2c2b2d"
+  },
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 3
+  "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout 42caafb).",
+  "revision": 4
 }
