@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ac8983e3b73c78c69142362a816d1448a4727009f4ead895d8e9aaa6c3a1db7a",
+  "contentHash": "sha256:86fad519b372926feb66207c43cb819f9c193a6f4ae0de7cb934bdaecf26fe7f",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -21622,6 +21622,28 @@
       "text": "Der Nachlauf traegt nur Status, Claim und Doku; die Spielaenderung bleibt der gemergte Feature-Stand. Die Nachsorge schliesst den Registerweg ab.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-aftercare.json"
+    },
+    {
+      "contributionId": "ui-placement-venue-history-done",
+      "turnId": "2026-11-11T13:15Z-ui-placement-venue-history-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Task ui-placement-venue-history ist DONE, der Claim ist merged mit mergedSha 3fe5acb. Der Registerstand auf main ist damit abgeschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-done.json"
     },
     {
       "contributionId": "ui-placement-venue-history-main-merge",

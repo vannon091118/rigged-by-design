@@ -4,7 +4,7 @@
   "claimId": "lane/ui/placement-venue-history",
   "branch": "lane/ui/placement-venue-history",
   "baseSha": "549b89142b291cf694ccecc755ff2de224fbe35f",
-  "phase": "AFTERCARE",
+  "phase": "DONE",
   "title": "Enter-Ablegen und Turnier-Historie",
   "goal": "Playtest-Befunde: Enter setzt nie ab",
   "taskType": "single",
@@ -17,6 +17,13 @@
     "mergedSha": "3fe5acb17a8257ded9df01c81e1f1d79fed16494"
   },
   "findings": [],
-  "nextAction": "Nachsorge abschliessen und den Vertrag auf DONE setzen.",
-  "revision": 6
+  "nextAction": "Abgeschlossen: PR #432 (3fe5acb) auf main, Claim merged mit Beleg.",
+  "revision": 7,
+  "ci": {
+    "state": "green",
+    "headSha": "f4c266bac30bca4856e5e43206d7a67c21b695fc",
+    "gates": "Fail-Closed Gates"
+  },
+  "mergedSha": "3fe5acb17a8257ded9df01c81e1f1d79fed16494",
+  "mergedEvidence": "branch-tree-on-main"
 }
