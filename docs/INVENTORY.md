@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 280 Dateien — contract 166 · integration 58 · governance 42 · statistics 7 · performance 7.
+Summe: 281 Dateien — contract 167 · integration 58 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -240,6 +240,7 @@ Summe: 280 Dateien — contract 166 · integration 58 · governance 42 · statis
 | `src/core/sim/__tests__/guest-settlement.test.ts` | sim | contract | ja | `src/core/sim/remodel.ts` |
 | `src/core/sim/__tests__/guest-voice.test.ts` | sim | contract | ja | `src/core/sim/narrative/guest-voice.ts` |
 | `src/core/sim/__tests__/guests-served.test.ts` | sim | contract | ja | `src/core/sim/guest-service.ts` |
+| `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` | sim | contract | ja | `src/core/sim/hybrid-flow.ts` |
 | `src/core/sim/__tests__/influence.test.ts` | sim | contract | ja | `src/core/sim/influence.ts` |
 | `src/core/sim/__tests__/interaction.test.ts` | sim | contract | ja | `src/core/sim/interaction.ts` |
 | `src/core/sim/__tests__/item-synergy.test.ts` | sim | contract | ja | `src/core/sim/mod-effects.ts` |
@@ -593,10 +594,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2648 |
-| Gelistete Dateien | 2648 |
+| Getrackte Dateien | 2651 |
+| Gelistete Dateien | 2651 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (172), content (928), docs (83), public (554), scripts (102), src (781) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (172), content (929), docs (83), public (554), scripts (102), src (783) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -610,7 +611,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 111 Datei(en)
 - `.lane-claims/tasks/` — 59 Datei(en)
-- `content/narrative/contributions/` — 924 Datei(en)
+- `content/narrative/contributions/` — 925 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -671,8 +672,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 119 Datei(en)
-- `src/core/sim/__tests__/` — 127 Datei(en)
+- `src/core/sim/` — 120 Datei(en)
+- `src/core/sim/__tests__/` — 128 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -1816,13 +1817,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent19-done.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent19-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent20-hybrid-flow-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent20-hybrid-flow-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-foundation-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-living-world-vision-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-npc-world-foundation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 20725 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3701 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 20747 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3705 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2754,6 +2756,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/guest-settlement.test.ts` — Kein Gast und kein Anspruch verschwindet, solange die Buchung nicht vollstaendig ist. — gelesen: 119 Zeilen
 - `src/core/sim/__tests__/guest-voice.test.ts` — Der Ruf hoert man: Das Rufband waehlt den Pool, der Gast waehlt den Satz, — gelesen: 70 Zeilen
 - `src/core/sim/__tests__/guests-served.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 32 Zeilen
+- `src/core/sim/__tests__/hybrid-visitor-flows.test.ts` — Hybrid-Besucherstroeme: der Veranstaltungsgast kommt mit Durst und geht — gelesen: 86 Zeilen
 - `src/core/sim/__tests__/influence.test.ts` — Einfluss-Matrix: Config-Validierung, Kontexte, Cross-Kanten, Determinismus, — gelesen: 185 Zeilen
 - `src/core/sim/__tests__/interaction.test.ts` — Ein Ziel, ein Weg, eine Reichweite: die Figur laeuft zum Standplatz, statt zu — gelesen: 156 Zeilen
 - `src/core/sim/__tests__/item-synergy.test.ts` — Items, Seltenheiten und Paar-Synergien. — gelesen: 97 Zeilen
@@ -2899,6 +2902,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/guest-service.ts` — Gast verlässt den Floor, wird wütend und wird ausgezahlt. — gelesen: 79 Zeilen
 - `src/core/sim/guests.ts` — Fassade des Gastverhaltens: die Details liegen in kleinen, getrennten Modulen. — gelesen: 5 Zeilen
 - `src/core/sim/house-presets.ts` — Haus-Vorlagen: Zonen und Moebel-Fabriken für klein, mittel, gross. — gelesen: 122 Zeilen
+- `src/core/sim/hybrid-flow.ts` — Hybrid-Besucherstroeme (Agent 20): der erste Weg eines Gastes haengt vom — gelesen: 24 Zeilen
 - `src/core/sim/influence-config.ts` — Matrix-Config: Faktoren, Untereinfluesse, Kontexte, Cross-Kanten und der — gelesen: 15 Zeilen
 - `src/core/sim/influence-event-pool.ts` — Balancebare Auswahlregeln des Main-Event-Pools; Teil der Influence-Config. — gelesen: 44 Zeilen
 - `src/core/sim/influence-matrix.ts` — Die eine balancebare Matrix: Faktor-Katalog, Kontexte, Cross-Kanten und — gelesen: 137 Zeilen
@@ -2957,7 +2961,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 236 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 237 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3053,7 +3057,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/self-exclusion-bet.ts` — Self-Exclusion als Spiel: Der Pakt belohnt Disziplin und protokolliert Wortbruch ehrlich. — gelesen: 103 Zeilen
 - `src/core/sim/service-actions.ts` — Gast-Aktionen: ausstehende Gelder an Gäste auszahlen. Reine Welt-Logik ohne Tick. — gelesen: 17 Zeilen
 - `src/core/sim/social-encounter.ts` — import type { ActorContinuityRecord } from './actor-continuity'; — gelesen: 111 Zeilen
-- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 97 Zeilen
+- `src/core/sim/spawn.ts` — Ein einzelner Gast: Profil, Fiat und Weg zur Kasse. Wie viele kommen, plant demand.ts. — gelesen: 100 Zeilen
 - `src/core/sim/staff-queries.ts` — Die eine Personalabfrage. — gelesen: 94 Zeilen
 - `src/core/sim/staff.ts` — Personal: eingestellte Rollen bekommen einen Körper, der auf dem Floor arbeitet. — gelesen: 244 Zeilen
 - `src/core/sim/stain.ts` — Fleck-/Verschmutzungssystem. Headless, deterministisch, keine Browser-Abhängigkeiten. — gelesen: 43 Zeilen
