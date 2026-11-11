@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:3687ae6911f5dd6bce42fc4ee8c511e8cca7762705ea53fde52ec0c700bddd26",
+  "contentHash": "sha256:521180f95f534e3fd47aef5fd4e50d771bf85a1a695b482526d95305c2640946",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -492,6 +492,28 @@
       "text": "Die Bewertung liest nur, was schon im Zustand steht: geleistete Ticks und Blockade. Sie erfindet kein neues Feld und keine zweite Wahrheit ueber den Menschen am Automaten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-staff-2.json"
+    },
+    {
+      "contributionId": "agent16-staff-3",
+      "turnId": "2026-11-11T01:30Z-agent16-staff-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vor dem Tor zaehlt der Lauf, nicht die Absicht: die Phase zieht nach, der Kopf bleibt stehen, und erst der gruene Beleg macht aus der Bewertung eine Zusage.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent16-staff-3.json"
     },
     {
       "contributionId": "apk-signing-01",

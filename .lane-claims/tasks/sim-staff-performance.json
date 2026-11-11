@@ -4,7 +4,7 @@
   "claimId": "lane/sim/staff-performance",
   "branch": "lane/sim/staff-performance",
   "baseSha": "54b8efc54d80caaccce20b0bcb200d7d7e4003c2",
-  "phase": "IMPLEMENTING",
+  "phase": "CI_PENDING",
   "title": "Agent 16: Leistungsbewertung des Personals",
   "goal": "Eine deterministische Bewertung (FRISCH/SOLIDE/STARK/EINGESCHRAENKT) leitet sich aus vorhandenen Agentenfeldern ab und wird im Personalbereich angezeigt; kein neues Save-Feld, kein neues Fact-Kind, keine Aenderung an Lohn, Rollen oder Agentenlogik.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Bewertung in staff-queries.ts bauen, im Personalpanel anzeigen, Verhaltenstests.",
-  "revision": 1
+  "nextAction": "Auf Fail-Closed Gates warten; dann PR-Nummer und Squash-SHA eintragen.",
+  "revision": 2
 }
