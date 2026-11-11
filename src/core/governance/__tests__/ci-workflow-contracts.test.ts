@@ -98,6 +98,7 @@ describe('Workflow-Vertraege', () => {
     const cleanup = workflow('pr-cleanup.yml');
     expect(cleanup.on?.pull_request?.types).toEqual(['closed']);
     expect(cleanup.permissions?.contents).toBe('write');
+    expect(cleanup.permissions?.['pull-requests']).toBe('write');
 
     const job = cleanup.jobs?.['delete-branch'];
     expect(job?.name).toBe('Gemergten Head-Branch loeschen');
@@ -110,6 +111,12 @@ describe('Workflow-Vertraege', () => {
     expect(step?.run).toContain('gh api -X DELETE');
     expect(step?.run).toContain('repos/${GITHUB_REPOSITORY}/git/refs/heads/${BRANCH}');
     expect(step?.run).toContain('keep-branch');
+
+    const closeout = cleanup.jobs?.['post-merge-closeout'];
+    expect(closeout?.if).toContain('github.event.pull_request.merged == true');
+    expect(closeout?.if).toContain('github.event.pull_request.head.repo.full_name == github.repository');
+    expect(stepWith(cleanup, 'post-merge-closeout', 'post-merge-closeout.mjs')?.run).toContain('node scripts/post-merge-closeout.mjs');
+    expect(stepWith(cleanup, 'post-merge-closeout', 'post-merge-closeout.mjs')?.env?.MERGE_SHA).toContain('merge_commit_sha');
   });
 
   it('startet den APK-Build aus dem Release und wartet auf das Artefakt', () => {

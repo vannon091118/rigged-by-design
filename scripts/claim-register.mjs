@@ -23,6 +23,8 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { refreshBase } from './lib/base-refresh.mjs';
+import { claimEntryPath, planRetention } from './lib/claim-lifecycle.mjs';
+import { loadTaskContracts } from './lib/task-contract.mjs';
 import {
   BRANCH_PATTERN,
   LEGACY_PREFIXES,
@@ -39,7 +41,7 @@ const command = args[0] && !args[0].startsWith('--') ? args.shift() : 'add';
 
 function parseOptions(argv) {
   const options = { allow: [] };
-  const booleans = new Set(['json', 'help']);
+  const booleans = new Set(['json', 'help', 'apply']);
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === '--') continue;
@@ -282,29 +284,40 @@ function listClaims() {
   }
 }
 
-function readTaskContracts() {
-  const tasksDir = join(claimsDir, 'tasks');
-  const tasks = [];
-  const violations = [];
-  let names;
+function taskEntries() {
+  const loaded = loadTaskContracts({ root: cwd });
+  return { entries: loaded.tasks, tasks: loaded.tasks.map((entry) => entry.contract), violations: loaded.errors };
+}
+
+function currentBranch() {
   try {
-    names = readdirSync(tasksDir);
+    return execFileSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], { cwd, encoding: 'utf8' }).trim();
   } catch {
-    return { tasks, violations };
+    return '';
   }
-  for (const name of names) {
-    if (!name.endsWith('.json')) continue;
-    try {
-      const data = JSON.parse(readFileSync(join(tasksDir, name), 'utf8'));
-      const entries = Array.isArray(data) ? data : [data];
-      for (const entry of entries) {
-        if (entry && typeof entry === 'object') tasks.push(entry);
-      }
-    } catch {
-      violations.push(`Task-Vertrag nicht lesbar: ${name}`);
-    }
-  }
-  return { tasks, violations };
+}
+
+function claimEntryList(all, files) {
+  return all.map((claim) => ({
+    file: files.has(claim.id) ? claimEntryPath(claim.id) : null,
+    claim: claim.toJSON(),
+    committedAt: 0,
+  }));
+}
+
+function retentionFor(all, files, taskList, keep = undefined) {
+  const branch = currentBranch();
+  const protectedClaimIds = all.filter((claim) => claim.branch === branch).map((claim) => claim.id);
+  const protectedTaskFiles = taskList
+    .filter((entry) => entry.contract.branch === branch || protectedClaimIds.includes(entry.contract.claimId))
+    .map((entry) => entry.file);
+  return planRetention({
+    tasks: taskList,
+    claims: claimEntryList(all, files),
+    keep,
+    protectedClaimIds,
+    protectedTaskFiles,
+  });
 }
 
 function doctor() {
@@ -319,15 +332,20 @@ function doctor() {
     if (seenBranches.has(claim.branch)) violations.push(`${claim.id}: Branch '${claim.branch}' doppelt`);
     else seenBranches.set(claim.branch, claim.id);
   }
-  const contracts = readTaskContracts();
+  const contracts = taskEntries();
   violations.push(...contracts.violations);
   const parity = auditTaskClaimParity({
     claims: all.map((claim) => claim.toJSON()),
     tasks: contracts.tasks,
   });
   violations.push(...parity.violations);
+  const retention = retentionFor(all, files, contracts.entries);
+  if (retention.removeTasks.length > 0 || retention.removeClaims.length > 0) {
+    const count = retention.removeTasks.length + retention.removeClaims.length;
+    violations.push(`Retention: ${count} alte Datei(en) ueber dem 10-Task-Limit; 'claim:register prune --apply' ausfuehren`);
+  }
   if (options.json) {
-    console.log(JSON.stringify({ ok: violations.length === 0, claims: all.length, violations }, null, 2));
+    console.log(JSON.stringify({ ok: violations.length === 0, claims: all.length, retention, violations }, null, 2));
   } else if (violations.length === 0) {
     console.log(`claim:register: doctor OK (${all.length} Claims)`);
   } else {
@@ -337,12 +355,37 @@ function doctor() {
   if (violations.length > 0) process.exit(1);
 }
 
+function prune() {
+  const all = loadForCommand();
+  const files = entryFiles();
+  const contracts = taskEntries();
+  if (contracts.violations.length > 0) fail(contracts.violations.join('; '));
+  const retention = retentionFor(all, files, contracts.entries, options.keep ? Number(options.keep) : undefined);
+  const remove = [...retention.removeTasks, ...retention.removeClaims];
+  if (options.json) {
+    console.log(JSON.stringify({ ok: true, applied: Boolean(options.apply), retention }, null, 2));
+  } else {
+    for (const file of remove) console.log(`${options.apply ? 'entfernt' : 'wuerde entfernen'}: ${file}`);
+    if (remove.length === 0) console.log(`claim:register: retention OK (${retention.closedTasks}/${retention.keep} abgeschlossene Tasks)`);
+  }
+  if (!options.apply) return;
+  for (const file of remove) {
+    try {
+      unlinkSync(join(cwd, file));
+    } catch {
+      // Eine bereits entfernte Datei ist kein zweiter Fehler.
+    }
+  }
+  if (!options.json) console.log(`claim:register: ${remove.length} Datei(en) entfernt`);
+}
+
 if (options.help) {
-  console.log('claim:register [add|update|list|doctor] --id <lane/id> --owner <owner> --task <text> [--goal <text>] [--allow <pfad>]... [--json]');
+  console.log('claim:register [add|update|list|doctor|prune] --id <lane/id> --owner <owner> --task <text> [--goal <text>] [--allow <pfad>]... [--keep 10] [--apply] [--json]');
   process.exit(0);
 }
 if (command === 'add') addClaim();
 else if (command === 'update') updateClaim();
 else if (command === 'list') listClaims();
 else if (command === 'doctor') doctor();
-else fail(`unbekannter Befehl '${command}'; erlaubt sind add, update, list und doctor`);
+else if (command === 'prune') prune();
+else fail(`unbekannter Befehl '${command}'; erlaubt sind add, update, list, doctor und prune`);

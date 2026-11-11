@@ -126,13 +126,15 @@ Stand 2026-11-10 liegen zehn Workflow-Dateien in `.github/workflows/`:
 | `auto-version-release.yml` | aktiv | Tag und Release erst nach grünem `CI Verify` auf `main` |
 | `long-checks.yml` | aktiv | Wochen- und manueller Langlauf (Statistik, Soak, Balance, Benchmarks) |
 | `build-apk.yml` | aktiv | APK-Build, manuell oder aus dem Release |
-| `pr-cleanup.yml` | aktiv | meldet gemergte Wegwerf-Branches, löscht sie nicht |
+| `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
 | `auto-resolve.yml` | per Variable | ordnet roten Lauf ein, repariert mechanisch, Issue danach |
 | `promote.yml` | aktiv | einziger Merge-Akteur: CI-State, Plan-Artefakt, Hold und exakter Kopf |
 | `pr-watcher.yml` | aktiv | CI-State und Issues nur aus `workflow_run`; kein PR-Body-Pfad |
 | `pr-escalation.yml` | **manuell deaktiviert** | historischer PR-Body-Lift |
 
 `auto-resolve.yml` ist im Arbeitsbranch vorhanden, auf `main` aber erst nach dem Merge sichtbar. Die Aktivierung und die Nachweise stehen im [`RUNBOOK-AUTO-RESOLVE.md`](RUNBOOK-AUTO-RESOLVE.md). `promote` mergt nur PR-Läufe mit `ci-plan`-Artefakt auf dem exakten Kopf; `holdMerge`, `status=HOLD`, offene BLOCKED-Issues oder eine veraltete Basis halten den Merge an. `pr-watcher` ist kein Ersatz für den Required-Status.
+
+`pr-cleanup.yml` ist nach dem Merge nicht nur Aufräumen: der Job `post-merge-closeout` setzt den Claim auf `merged`, schließt den Task auf `DONE`, wendet die 10-Task-Retention an und öffnet dafür einen eigenen PR mit `closeout: post-merge`. Der Closeout-PR läuft durch dieselbe CI und durch `promote`; die Ausnahme ist ausschließlich der ausdrückliche `DONE`-Closeout, nicht eine allgemeine `DONE`-Lane.
 
 ### Branch-Schutz
 

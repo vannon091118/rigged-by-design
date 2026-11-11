@@ -34,6 +34,7 @@ export const FINDING_SEVERITIES = Object.freeze(['blocker', 'warning', 'info']);
 export const PR_STATES = Object.freeze(['open', 'merged', 'closed']);
 export const CONTRACT_STATUSES = Object.freeze(['READY_FOR_MERGE', 'HOLD', 'BLOCKED']);
 export const TASK_TYPES = Object.freeze(['single', 'multi-phase', 'aftercare']);
+export const CLOSEOUT_KINDS = Object.freeze(['post-merge']);
 const FULL_SHA = /^[0-9a-f]{40}$/;
 const TASK_ID = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -95,6 +96,27 @@ export function readTaskContractFile(file) {
 }
 
 /**
+ * Alle Task-Vertraege des Arbeitsbaums. Der Dateiname bleibt relativ zum
+ * Repository, damit Retention und Closeout ihn direkt stagen koennen.
+ */
+export function loadTaskContracts({ root = ROOT } = {}) {
+  const dir = join(root, TASK_DIR);
+  const tasks = [];
+  const errors = [];
+  if (!existsSync(dir)) return { tasks, errors };
+  for (const name of readdirSync(dir).filter((entry) => entry.endsWith('.json')).sort()) {
+    const file = `${TASK_DIR}${name}`;
+    const { contract, error } = readTaskContractFile(join(root, file));
+    if (error) {
+      errors.push(error);
+      continue;
+    }
+    tasks.push({ file, contract });
+  }
+  return { tasks, errors };
+}
+
+/**
  * Vertrag eines Claims: zuerst der erwartete Dateiname, dann eine Suche nach
  * `claimId`, damit ein umbenannter Task seinen alten Vertrag nicht verliert.
  * Mehrere Treffer sind ein Befund, kein stilles Auswaehlen.
@@ -149,6 +171,9 @@ export function validateTaskContract(contract, { claim = null, branch = '', prev
   if (typeof contract.goal !== 'string') violations.push('goal ist kein Text');
   if (contract.taskType !== undefined && !TASK_TYPES.includes(contract.taskType)) {
     violations.push(`taskType '${String(contract.taskType)}' ist unbekannt`);
+  }
+  if (contract.closeout !== undefined && !CLOSEOUT_KINDS.includes(contract.closeout)) {
+    violations.push(`closeout '${String(contract.closeout)}' ist unbekannt`);
   }
   if (contract.holdMerge !== undefined && typeof contract.holdMerge !== 'boolean') {
     violations.push('holdMerge ist kein Boolean');

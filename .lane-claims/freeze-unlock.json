@@ -1,17 +1,19 @@
 {
   "version": 1,
-  "base": "7db4be8e299081ce8d0651e0d8db5517908ad8ee",
+  "base": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
   "paths": [
-    ".githooks/pre-commit",
-    "scripts/ci-status.mjs",
-    "scripts/install-hooks.mjs",
-    "scripts/lib/pipeline-plan.mjs",
-    "scripts/precommit.mjs",
-    "scripts/sync-generated.mjs",
-    "scripts/verify-lane-claims.mjs",
-    "scripts/verify-narrative-blocks.mjs",
-    "scripts/verify-test-placement.mjs"
+    ".github/workflows/pr-cleanup.yml",
+    "docs/CI.md",
+    "docs/GOVERNANCE.md",
+    "docs/INDEX.md",
+    "docs/WORKFLOW.md",
+    "scripts/claim-register.mjs",
+    "scripts/lib/claim-lifecycle.mjs",
+    "scripts/lib/promotion-state.mjs",
+    "scripts/lib/task-contract.mjs",
+    "scripts/post-merge-closeout.mjs",
+    "scripts/reconcile-claims.mjs"
   ],
-  "token": "c760570273afa778d04210b83f42367397f25213503d2631c464e2ed59bd2a61",
+  "token": "ac9de74312c5f99ab9c5e919067924be8a006b94747c087f513ec65c0f952b0a",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

@@ -12,6 +12,12 @@ Neuester Eintrag oben, jeder Eintrag mit Datum.
 - Sichtbare Aenderungen unter "Spiel", interne Umbauten unter "Technik".
 - Der Eintrag wird im selben Commit geschrieben wie die Aenderung, nie nachtraeglich.
 
+## [0.3.226] - 2026-11-11
+
+### Technik
+- **Claim-Retention und Post-Merge-Closeout.** Lane-Claims und Task-Vertraege bleiben auf die letzten zehn Tasks begrenzt; aktive Lanes, offene Claims und das Legacy-Register bleiben geschuetzt. `reconcile-claims --apply` schliesst belegte Merges automatisch auf `DONE` und fuehrt die Retention aus. `PR Cleanup` legt nach jedem Merge einen eigenen Closeout-PR mit `closeout: post-merge` an; nur dieser Pfad passiert den `DONE`-Hold in `promote`.
+- **Workflow-Doku korrigiert.** `docs/INDEX.md` nennt jetzt zehn statt neun Workflows; die neue Retention- und Closeout-Mechanik steht in `GOVERNANCE.md`, `WORKFLOW.md` und `CI.md`.
+
 ## [0.3.225] - 2026-11-11
 
 ### Technik

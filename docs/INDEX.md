@@ -17,7 +17,7 @@
 
 | Dokument | Wofür |
 | --- | --- |
-| [`CI.md`](CI.md) | 15 Required-Gates, optionale Audit-Stufe, Zustände, neun Workflows und Branch-Schutz. |
+| [`CI.md`](CI.md) | 15 Required-Gates, optionale Audit-Stufe, Zustände, zehn Workflows und Branch-Schutz. |
 | [`GOVERNANCE.md`](GOVERNANCE.md) | Rollen, Lanes, Claims, Register-Audit und Eskalation. |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Zustandsbesitz, Schichten, Pipeline, Save, Narrative und Fehlerregister. |
 | [`DEPENDENCY-MATRIX.md`](DEPENDENCY-MATRIX.md) | Generierte Live-Dependency-Matrix; liegt bewusst ausserhalb der gesperrten Architektur. |

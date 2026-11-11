@@ -26,6 +26,10 @@ export function contractHoldReason(contract) {
   if (contract.status && contract.status !== 'READY_FOR_MERGE') {
     return `status=${contract.status}`;
   }
+  // Ein Post-Merge-Closeout ist bereits DONE und wird als eigener PR
+  // nachgezogen. Nur dieser ausdrueckliche Pfad darf DONE passieren; eine
+  // normale Lane bleibt bei DONE gesperrt.
+  if (contract.phase === 'DONE' && contract.closeout === 'post-merge') return null;
   if (!['CI_PENDING', 'MERGE_PENDING'].includes(contract.phase)) {
     return `phase=${contract.phase}`;
   }
