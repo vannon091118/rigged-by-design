@@ -12,6 +12,7 @@ import { openVenueEvent } from './venue-event';
 import { UNSAFE_REPUTATION_SPAWN_FACTOR } from './penalty-pool';
 import { companyTier } from './progression';
 import { reputation, spawnGuest } from './spawn';
+import { exchangePoint } from './world';
 import type { DemandEventKind, DemandSnapshot, DemandSource, DemandTier, WorldState } from './types';
 
 export const TICKS_PER_DAY = 600;
@@ -165,11 +166,18 @@ function tickEvent(world: WorldState, ledger: Ledger, prng: Prng): void {
 
 /** Plant die naechste Ankunft und laesst faellige Gruppen herein. Kein Blick auf eine Gaestezahl. */
 export function tickDemand(world: WorldState, ledger: Ledger, prng: Prng): void {
+  // Nur der eigene Floor mit Kasse zieht neue Gaeste; bestehende Gaeste ticken in tickWorld weiter.
+  if (world.scene.kind !== 'OWN' || !exchangePoint(world)) return;
   tickEvent(world, ledger, prng);
   if (world.tick < world.nextArrivalTick) return;
   const demand = demandBreakdown(world);
   const size = groupSize(world, prng);
-  for (let index = 0; index < size; index += 1) spawnGuest(world, prng, ledger);
+  let spawned = 0;
+  for (let index = 0; index < size; index += 1) {
+    if (spawnGuest(world, prng, ledger)) spawned += 1;
+  }
+  // Ohne einen einzigen Gast bleibt der Termin stehen; auch der Takt verbraucht keinen Zufall.
+  if (spawned === 0) return;
   // Die Rate gilt fuer Gaeste; eine Gruppe kommt zusammen und verschiebt nur den Takt.
   world.nextArrivalTick = world.tick + arrivalGap(prng, demand.perDay / expectedGroupSize(world));
 }

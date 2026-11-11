@@ -6,10 +6,10 @@
  * steht, ist keine Beschreibung, sondern die Rechnung.
  */
 import {
-  clampedReels, SLOT_SYMBOLS, WEIGHTS, slotPaylines, weightTotal, type SlotSymbol, type SlotWeights,
+  clampedReels, SLOT_SYMBOLS, WEIGHTS, slotPaylines, type SlotSymbol, type SlotWeights,
 } from './engines/slot-paytable';
 import { freeRounds, payScaleFor, triggerChance } from './engines/slot-odds';
-import { modelExpectation, type PayModel, type Volatility } from './engines/slot-models';
+import { lineStats, modelExpectation, type PayModel, type Volatility } from './engines/slot-models';
 import { reelChances } from './engines/slot-strips';
 
 export type { PayModel, Volatility } from './engines/slot-models';
@@ -88,6 +88,13 @@ export function normalizeSlotProfile(raw: unknown): SlotProfile {
   };
 }
 
+/** Eigene Spins duerfen kein Profil mit eingebauter Ueberrendite ausnutzen. */
+export function assertFairOwnSlotProfile(profile: SlotProfile): void {
+  if (profile.payScaleBps > 10_000 || profile.bonusPayScaleBps > 10_000 || profile.multiplier > 1) {
+    throw new Error('Dieses Slot-Profil ist für eigene Spins gesperrt: Auszahlung über 100 % oder Bonus-Multiplikator.');
+  }
+}
+
 export function sameSlotProfile(a: SlotProfile, b: SlotProfile): boolean {
   return a.payScaleBps === b.payScaleBps && a.bonusPayScaleBps === b.bonusPayScaleBps
     && a.model === b.model && a.volatility === b.volatility && a.wildMode === b.wildMode
@@ -112,18 +119,6 @@ function modelHint(model: PayModel, lines: number, hitBps: number): string {
   return lines + ' Linien, ' + (hitBps / 100).toFixed(2).replace('.', ',') + ' % Treffer je Linie';
 }
 
-/** Trefferchance einer Linie in Basispunkten, exakt ueber die Folgen. */
-function perLineHit(reels: number, profile: SlotProfile): number {
-  let hit = 0;
-  const total = weightTotal(profile.weights);
-  for (const symbol of SLOT_SYMBOLS) {
-    const wild = profile.wildMode === 'BOOK' && symbol !== 'BOOK' ? profile.weights.BOOK : 0;
-    const chance = total > 0 ? (profile.weights[symbol] + wild) / total : 0;
-    for (let run = 3; run <= reels; run += 1) hit += chance ** run * (run === reels ? 1 : 1 - chance);
-  }
-  return hit * 10_000;
-}
-
 /** Chancen eines Profils, aus denselben Funktionen, die den Spin auswerten. */
 export function slotChances(reels: number, raw: unknown): SlotChances {
   const profile = normalizeSlotProfile(raw);
@@ -139,7 +134,8 @@ export function slotChances(reels: number, raw: unknown): SlotChances {
   const chances = reelChances(profile, 0);
   const perSymbolBps = {} as Record<SlotSymbol, number>;
   for (const symbol of SLOT_SYMBOLS) perSymbolBps[symbol] = Math.round(chances[symbol] * 10_000);
-  const hitBps = perLineHit(clamped, profile);
+  const line = lineStats(clamped, profile.weights, profile.wildMode === 'BOOK', profile.volatility);
+  const hitBps = line.hitBps;
   return {
     rtpBps: Math.round(base * scale * bonusFactor),
     lineHitBps: profile.model === 'LINES' ? Math.round(hitBps) : 0,

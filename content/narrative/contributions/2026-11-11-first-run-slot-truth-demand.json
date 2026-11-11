@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T09:32Z-first-run-slot-truth-demand",
+  "contributionId": "first-run-slot-truth-demand",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der erste Gast stand nicht mehr vor einer leeren Halle. Die Kasse blieb stehen, als der Raum noch leer war, und wer aus der Stadt hereinkam, fand zuerst den Schalter statt einen Automaten. Draußen wartete niemand mehr auf einen Weg, den es nicht gab.",
+  "directives": []
+}

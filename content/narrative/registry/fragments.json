@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6b5514e99d1bc027b2ed2a09eb6345f9de97b30f32d20bb899e7c1148fd4892d",
+  "contentHash": "sha256:d820bfb7189213753143d014e2c520fd88c416004e235e7e2b9738ad575e93c2",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -6209,6 +6209,94 @@
       "text": "Rita zaehlte das Geld nicht zweimal, sondern sah im Beleg nach: erst der Preis, dann die Buchung, dann der Tag, an dem der Raum ihr gehoerte. Dass die Bude im Hinterhof etwas anderes war als ein Ladenlokal, notierte sie ausdruecklich - ein Eigentum ohne Adresse waere nur ein Gefuehl.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-first-property.json"
+    },
+    {
+      "contributionId": "first-run-slot-truth-ci-fix",
+      "turnId": "2026-11-11T09:55Z-first-run-slot-truth-ci-fix",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Abnahme zählt nicht mehr die Wünsche, sondern die Belege. Ein toter Export, ein falsches Ziel und eine veraltete Inventur fielen auf; die Reparatur machte den Baum wieder lesbar, ohne die Spielregel zu verschieben.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-ci-fix.json"
+    },
+    {
+      "contributionId": "first-run-slot-truth-demand",
+      "turnId": "2026-11-11T09:32Z-first-run-slot-truth-demand",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der erste Gast stand nicht mehr vor einer leeren Halle. Die Kasse blieb stehen, als der Raum noch leer war, und wer aus der Stadt hereinkam, fand zuerst den Schalter statt einen Automaten. Draußen wartete niemand mehr auf einen Weg, den es nicht gab.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-demand.json"
+    },
+    {
+      "contributionId": "first-run-slot-truth-lines",
+      "turnId": "2026-11-11T09:34Z-first-run-slot-truth-lines",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Linie zählte nicht mehr jedes Symbol mit, nur weil ein Buch am Anfang lag. Was die Anzeige als Erwartung nannte, war jetzt derselbe Lauf, den die Walzen zahlten; die Bücher blieben eine eigene Geschichte und wurden nicht auf jede fremde Linie verteilt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-lines.json"
+    },
+    {
+      "contributionId": "first-run-slot-truth-payout",
+      "turnId": "2026-11-11T09:36Z-first-run-slot-truth-payout",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "An der Maschine stand nun der Betrag, der wirklich zurückkam. Wenn der Puffer einen Gewinn kürzte, verschwand der große Wunsch aus dem Schild und machte dem kleinen, ehrlichen Rest Platz. Der Lader behielt den Bonus, aber nicht die Lüge.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-run-slot-truth-payout.json"
     },
     {
       "contributionId": "floor-fleck-01",

@@ -12,6 +12,8 @@ import { addVC, fromVC, mulVC, ZERO_VC, type VaCoinMicro } from '../economy/vaco
 import { playAction, type GameExtras, type GameResult } from '../games/contracts';
 import { drawRiskCard, type RiskColor, type RiskOutcome } from '../games/risk-card';
 import { playSlotSession } from '../games/slot-session';
+import { slotConfigOf } from '../games/slot-config';
+import { assertFairOwnSlotProfile } from '../games/slot-profile';
 import type { Prng } from '../rng/prng';
 import { assertGameplayRng } from '../rng/streams';
 import { DEBT_ACCOUNT, HAUSKONTO, PORTEMONNAIE } from './money';
@@ -95,6 +97,7 @@ export function playOwnRound(
 ): GameResult {
   assertGameplayRng(prng);
   const item = itemForGame(world, itemId);
+  if (item.gameId === 'SLOT') assertFairOwnSlotProfile(slotConfigOf(item).profile);
   const stake = stakeFor(world, ledger, item, betVC);
   const bonusBps = resolveModEffects(item.gameId, item.mods).bonusBps;
   const snapshot = prng.getState();
@@ -124,11 +127,7 @@ export function playOwnRound(
 
 /** Kartenstart: Einsatz buchen, Seed liefern; die Auszahlung folgt am Rundenende. */
 export function ownCardDeal(
-  world: WorldState,
-  ledger: Ledger,
-  itemId: number,
-  betVC: number,
-  prng: Prng,
+  world: WorldState, ledger: Ledger, itemId: number, betVC: number, prng: Prng,
 ): { readonly seed: number; readonly label: string } {
   const item = itemForGame(world, itemId);
   if (!isOwnCardGame(item.gameId)) throw new Error('An diesem Gerät gibt es keine Kartenrunde.');
@@ -140,12 +139,7 @@ export function ownCardDeal(
 
 /** Kartenende: Auszahlung genau einmal; die Runde wird vom Store verwaltet. */
 export function ownCardSettle(
-  world: WorldState,
-  ledger: Ledger,
-  itemId: number,
-  stakeVC: number,
-  engineBps: number,
-  label: string,
+  world: WorldState, ledger: Ledger, itemId: number, stakeVC: number, engineBps: number, label: string,
 ): GameResult {
   const item = itemForGame(world, itemId);
   if (!isOwnCardGame(item.gameId)) throw new Error('An diesem Gerät gibt es keine Kartenrunde.');
@@ -170,12 +164,7 @@ export function ownAdditionalBet(world: WorldState, ledger: Ledger, itemId: numb
 
 /** Risiko-Karte nach einem Slot-Gewinn: gewinnt aus dem Haus, verliert in das Haus. */
 export function ownRisk(
-  world: WorldState,
-  ledger: Ledger,
-  itemId: number,
-  stakeVC: number,
-  choice: RiskColor,
-  prng: Prng,
+  world: WorldState, ledger: Ledger, itemId: number, stakeVC: number, choice: RiskColor, prng: Prng,
 ): RiskOutcome {
   assertGameplayRng(prng);
   const item = itemForGame(world, itemId);

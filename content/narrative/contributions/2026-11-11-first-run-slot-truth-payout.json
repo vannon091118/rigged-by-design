@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T09:36Z-first-run-slot-truth-payout",
+  "contributionId": "first-run-slot-truth-payout",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "An der Maschine stand nun der Betrag, der wirklich zurückkam. Wenn der Puffer einen Gewinn kürzte, verschwand der große Wunsch aus dem Schild und machte dem kleinen, ehrlichen Rest Platz. Der Lader behielt den Bonus, aber nicht die Lüge.",
+  "directives": []
+}

@@ -20,6 +20,7 @@ import { TX_REASON } from '../tx-reasons';
 import type { GameExtras, GameResult } from '../../games/contracts';
 import type { Furniture, GameId } from '../types';
 import { createSlotMemory } from '../../games/slot-transparency';
+import { DEFAULT_SLOT_PROFILE } from '../../games/slot-profile';
 import { randomSeed } from '../../../test/random-seed';
 
 const GAMES: readonly GameId[] = ['SLOT', 'BLACKJACK', 'POKER', 'VIDEO_POKER', 'ROULETTE', 'PLINKO', 'SHELL', 'DICE'];
@@ -138,6 +139,24 @@ describe('Eigener Geldweg', () => {
     expect(() => playOwnRound(world, ledger, item.id, 10.01, prng)).toThrow(/Obergrenze/);
     expect(ledger.entryCount).toBe(entries);
     expect(() => playOwnRound(world, ledger, item.id, 10, prng)).not.toThrow();
+  });
+
+  it('sperrt eigene Slot-Spins mit mehr als 100 % Rendite vor Ledger und Zufall', () => {
+    const profiles = [
+      { ...DEFAULT_SLOT_PROFILE, payScaleBps: 10_001 },
+      { ...DEFAULT_SLOT_PROFILE, bonusPayScaleBps: 10_001 },
+      { ...DEFAULT_SLOT_PROFILE, multiplier: 2 },
+    ];
+    for (const [index, slotOdds] of profiles.entries()) {
+      const { world, ledger, prng } = setup();
+      const item = machine(world, 'SLOT', 750 + index);
+      item.slotOdds = slotOdds;
+      const entries = ledger.entryCount;
+      const state = prng.getState();
+      expect(() => playOwnRound(world, ledger, item.id, BET_VC, prng)).toThrow(/eigene Spins/);
+      expect(ledger.entryCount).toBe(entries);
+      expect(prng.getState()).toBe(state);
+    }
   });
 
   it('laesst den Testspin ohne Ledger- und RNG-Wirkung', () => {
