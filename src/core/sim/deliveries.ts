@@ -1,14 +1,13 @@
 /** Lieferkette: Käufe kommen als Kiste am Eingang an und werden körperlich verteilt. */
 import type { Ledger } from '../economy/ledger';
 import type { VaCoinMicro } from '../economy/vacoin';
-import { drinkMenu, pickDrink } from './drink-menu';
 import { recordJournal } from './journal';
 import { HAUSKONTO, payOrBorrow, SHOP } from './money';
 import { TX_PREFIX, TX_REASON } from './tx-reasons';
 import { getBuildDef, type BuildId } from './offers';
 import { assertUnlocked } from './progression';
 import { isWalkable } from './pathfinding';
-import type { Crate, CratePayload, Furniture, Guest, WorldState } from './types';
+import type { Crate, CratePayload, Furniture, WorldState } from './types';
 import { canPlace, furnitureById, worldNav } from './world';
 
 export const barCapacityForLevel = (level: number): number => 12 + 8 * Math.max(1, level);

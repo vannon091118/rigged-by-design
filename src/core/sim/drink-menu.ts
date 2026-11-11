@@ -7,7 +7,7 @@ import type { VaCoinMicro } from '../economy/vacoin';
 import { getPersona } from './personas';
 import type { Guest } from './types';
 
-export type DrinkId = 'SPRITZ' | 'BIER' | 'COCKTAIL';
+type DrinkId = 'SPRITZ' | 'BIER' | 'COCKTAIL';
 
 interface DrinkDef {
   readonly id: DrinkId;
@@ -25,7 +25,7 @@ const DRINKS: readonly DrinkDef[] = [
   { id: 'COCKTAIL', name: 'Cocktail', markupPct: 150, moodGain: 16, minBarLevel: 3 },
 ];
 
-export interface DrinkEntry {
+interface DrinkEntry {
   readonly id: DrinkId;
   readonly name: string;
   readonly price: VaCoinMicro;
