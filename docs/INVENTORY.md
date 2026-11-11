@@ -620,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2793 |
-| Gelistete Dateien | 2793 |
+| Getrackte Dateien | 2795 |
+| Gelistete Dateien | 2795 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (142), content (1008), docs (84), packages (28), public (554), scripts (116), src (833) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (142), content (1008), docs (86), packages (28), public (554), scripts (116), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -641,7 +641,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
-- `docs/` — 15 Datei(en)
+- `docs/` — 17 Datei(en)
 - `docs/banners/` — 9 Datei(en)
 - `docs/contracts/` — 8 Datei(en)
 - `docs/screenshots/` — 1 Datei(en)
@@ -1919,6 +1919,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/DEVTAGEBUCH.md` — Devtagebuch — gelesen: 3805 Zeilen
 - `docs/GOVERNANCE.md` — Governance: Lanes, Claims und Eskalation — gelesen: 101 Zeilen
 - `docs/INDEX.md` — Doku-Index — gelesen: 64 Zeilen
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
+- `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/ROADMAP.md` — Roadmap — gelesen: 495 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 345 Zeilen
