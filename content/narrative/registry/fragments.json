@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:b7b73385e45ac65e902252c8e435f144efc6658e03ab7bc7aecad127eb5108ae",
+  "contentHash": "sha256:766679c2ed06619d64dfd9bce41eea02958ca01ecf70c7974089bef3ac662a50",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2034,6 +2034,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
     },
     {
+      "contributionId": "agent26-aftercare",
+      "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-aftercare.json"
+    },
+    {
       "contributionId": "agent26-ci-fix",
       "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
       "agentId": "buffy",
@@ -2100,6 +2122,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent26-claim.json"
     },
     {
+      "contributionId": "agent26-done",
+      "turnId": "2026-11-11T09:03Z-agent26-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Agent 26 ist abgeschlossen: Task DONE, Claim merged, mergedSha 2798053d. Die Stadtliga lebt als Ableitung im bestehenden Charakterfenster.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-done.json"
+    },
+    {
       "contributionId": "agent26-esport",
       "turnId": "2026-11-11T08:10Z-agent26-esport",
       "agentId": "buffy",
@@ -2142,6 +2186,50 @@
       "text": "Der Datensatz hat jetzt eine Datei, die Sicht eine eigene Komponente, und der Spielerpfad liest beides aus derselben Ableitung. Die Liga bleibt eine Sicht auf Seed, Tag und Archiv - kein zweiter Zustand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-esport-code.json"
+    },
+    {
+      "contributionId": "agent26-main-merge",
+      "turnId": "2026-11-11T08:47Z-agent26-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
+    },
+    {
+      "contributionId": "agent26-merge-pending",
+      "turnId": "2026-11-11T08:52Z-agent26-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Merge ist belegt, die Lane steht auf MERGE_PENDING: der gruene Kopf 0ce079f6 wurde als 2798053d auf main uebernommen. Jetzt folgt nur noch der Register-Nachlauf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-merge-pending.json"
     },
     {
       "contributionId": "agent26-task",
