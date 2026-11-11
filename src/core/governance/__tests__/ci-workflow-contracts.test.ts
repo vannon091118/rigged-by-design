@@ -2,7 +2,8 @@
  * @test-target: .github/workflows/auto-version-release.yml
  * @error-code: ERR-4008
  *
- * Die Workflows um den Pflichtcheck: Release und APK sind manuell/on-demand,
+ * Die Workflows um den Pflichtcheck: Debug-APK und Release-Bump laufen im
+ * PR-Pflichtjob; der signierte APK-Fallback und Releases bleiben manuell,
  * Langlaeufe haben keinen Zeitplan; Cleanup und Lane-PR bleiben schlank.
  */
 import { readFileSync } from 'node:fs';
@@ -111,7 +112,7 @@ describe('Workflow-Vertraege', () => {
     expect(stepWith(cleanup, 'post-merge-closeout', 'post-merge-closeout.mjs')?.env?.MERGE_SHA).toContain('merge_commit_sha');
   });
 
-  it('baut APKs nur noch manuell und ohne skip-verify-Abkürzung', () => {
+  it('haelt den signierten APK-Fallback manuell und ohne skip-verify-Abkürzung', () => {
     const apk = workflow('build-apk.yml');
     expect(apk.on?.workflow_call).toBeUndefined();
     expect(apk.on?.push).toBeUndefined();
@@ -122,11 +123,13 @@ describe('Workflow-Vertraege', () => {
     expect(verify?.if).toBeUndefined();
   });
 
-  it('startet den Pflichtcheck auch von Hand, aber ohne Matrix', () => {
+  it('startet den Pflichtcheck ausschliesslich bei PR und baut die Debug-APK', () => {
     const ci = workflow('ci-verify.yml');
-    expect(ci.on?.workflow_dispatch?.inputs?.profile?.default).toBe('light');
+    expect(ci.on?.workflow_dispatch).toBeUndefined();
     expect(ci.on?.push).toBeUndefined();
     expect(ci.jobs?.verify?.strategy).toBeUndefined();
+    expect(stepWith(ci, 'verify', 'android:apk')).not.toBeUndefined();
+    expect(stepWith(ci, 'verify', 'version-bump.mjs')).not.toBeUndefined();
   });
 
   it('laesst Lane-Pushes nur den PR anlegen oder aktualisieren', () => {

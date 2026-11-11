@@ -17,7 +17,8 @@
 | Commit-Nachricht und PR-Body | LOCAL + CLOUD | lokal `turn:finish`/Hook; Cloud `CI Verify` prüft den PR-Kopf |
 | TypeScript, ESLint, LOC, Doku-, Tree-, Redundanz-Gates | LOCAL | `pnpm run verify:light`; Cloud nur als schneller Pflichtcheck |
 | Testqualität, betroffene Unit-Tests, schneller Build | LOCAL | `pnpm run verify:fast` |
-| Vollständige Required-Suite inkl. Build | LOCAL + ON-DEMAND | `pnpm run verify:integration`; manuell in der Cloud wiederholbar |
+| Vollständige Required-Suite inkl. Build | LOCAL + ON-DEMAND | `pnpm run verify:release`/`verify:all`; nicht pro PR |
+| Vor-PR-Nachweis (Light, affected, Build) | LOCAL | `pnpm run verify:integration` (Fast) |
 | Audit bei Dependency-Änderung | LOCAL + ON-DEMAND | Teil von `verify:integration`/`verify:release`; `--gate=audit` explizit |
 | Lange Nachweise, Soak, Balance, Statistik, Benchmarks | ON-DEMAND | `pnpm run verify:long`; `long-checks.yml` nur per Dispatch |
 | APK Debug/Release | LOCAL | `pnpm run android:apk` / `android:apk:release` |
@@ -44,17 +45,17 @@ pnpm run verify:light
 # Standard vor dem Push: Light + Testqualität + betroffene Tests + Build
 pnpm run verify:fast
 
-# vollständiger Integrationsnachweis vor dem Merge (15 Required-Gates)
+# Vor-PR-Nachweis: Light + Testqualität + betroffene Tests + Build
 pnpm run verify:integration
+
+# vollständiger Release-Nachweis (15 Required + Audit)
+pnpm run verify:release
 
 # Audit explizit erzwingen (z. B. bei Dependency-Änderung)
 RBD_VERIFY_AUDIT=1 pnpm run verify:integration
 
 # lange Nachweise ausschließlich bei Bedarf
 pnpm run verify:long
-
-# Release-Gates inkl. Audit und Production-Build
-pnpm run verify:release
 ```
 
 `verify:integration` und `verify:release` sind absichtlich nicht Teil jedes Turns. Sie sind der Übergang zur Integration bzw. zum Release; `verify:light` und `verify:fast` bleiben die regelmäßigen lokalen Gates.
@@ -95,7 +96,7 @@ pnpm run android:apk:release
 
 | Bereich | Vorher | Nachher |
 | --- | --- | --- |
-| PR-Prüfung | 15 Matrix-Jobs + Plan + Claims + Long-Matrix | ein Required-Job mit `verify:light` |
+| PR-Prüfung | 15 Matrix-Jobs + Plan + Claims + Long-Matrix | ein Required-Job: `verify:light`, Debug-APK und Release-Bump |
 | Push auf `main` | vollständiger zweiter Lauf | kein Cloud-Lauf; lokaler Integrationsnachweis |
 | Lange Nachweise | wöchentlicher Schedule + PR-Impact | ausschließlich `workflow_dispatch`/`verify:long` |
 | Release | automatisch nach `main`-Push | manuell nach `verify:release` |
@@ -106,7 +107,7 @@ pnpm run android:apk:release
 ## Verbleibende Cloud-Aufgaben
 
 - **`ensure-pr.yml`:** Ein Lane-Push muss einen PR erzeugen; das ist Repository-Verwaltung, kein Build.
-- **`ci-verify.yml`:** Der geschützte Status `Fail-Closed Gates` muss auf dem PR-Kopf laufen. Er prüft die schnellen Gates, nicht die vollständige Suite.
+- **`ci-verify.yml`:** Der geschützte Status `Fail-Closed Gates` muss auf dem PR-Kopf laufen. Er prüft die schnellen Gates und baut die Debug-APK; die vollständige Suite bleibt lokal.
 - **`pr-watcher.yml` / `auto-resolve.yml`:** Fehler sichtbar machen und optional mechanisch reparieren; `auto-resolve` ist standardmäßig aus.
 - **`pr-cleanup.yml`:** Branch löschen und Claim/Task nach dem Merge nachziehen.
 - **`promote.yml`, `auto-version-release.yml`, `build-apk.yml`, `long-checks.yml`:** ausschließlich manuell/on-demand; keine automatischen Läufe.

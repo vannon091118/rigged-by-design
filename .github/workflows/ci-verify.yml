@@ -1,44 +1,36 @@
 name: CI Verify
 
-# Local-first: GitHub Actions ist nicht mehr die primaere Build- und
-# Testumgebung. Dieser Workflow traegt genau einen schnellen Pflichtstatus.
-# Die vollstaendigen Integration-Gates laufen lokal ueber
-# `pnpm run verify:integration`; Langlaeufe nur ueber `pnpm run verify:long`.
+# Ein Branch pro Feature-Session, taskweise Commits/Pushes, PR erst am
+# Feature-Ende. Dieser Workflow ist der einzige automatische CI-Trigger und
+# laeuft ausschliesslich fuer Pull Requests gegen `main`.
 #
-# Bewusst nicht enthalten: Matrix, Push-Lauf auf `main`, lange Nachweise,
-# APK-Build, Release-Trigger und doppelte Dependency-Installationen. Der
-# Pflichtstatus `Fail-Closed Gates` bleibt der einzige geschuetzte Status.
+# Der Job ist absichtlich EIN Job: dadurch gibt es genau einen geschuetzten
+# Status, keine Matrix, keine doppelte Dependency-Installation und keinen
+# zweiten Runner. Er traegt die schnellen Gates, den Web-Build, den
+# Release-Versions-Bump fuer das PR-Artefakt und die Debug-APK.
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
-  workflow_dispatch:
-    inputs:
-      profile:
-        description: 'light = schneller Pflichtcheck; integration = lokaler Vollnachweis in der Cloud'
-        required: true
-        type: choice
-        options: [light, integration]
-        default: light
 
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: ci-verify-${{ github.event.pull_request.number || github.ref }}
+  group: ci-verify-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
   verify:
     name: Fail-Closed Gates
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: pnpm installieren
@@ -75,15 +67,11 @@ jobs:
       # ausschalten. Der Kontroll-Worktree wird vor den Gates wieder entfernt.
       - name: Governance-Freeze
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
           base="$BASE_SHA"
-          if [ -z "$base" ]; then
-            git fetch --no-tags origin main
-            base="$(git merge-base origin/main "$HEAD_SHA")"
-          fi
           if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
             echo "::error::Basis '${base}' ist kein Commit; ohne unabhaengige Kontrollebene keine Freigabe."
             exit 1
@@ -103,10 +91,44 @@ jobs:
           git worktree remove --force .rbd-control || true
           exit 1
 
-      # Lokal-first: PR und Standard-Dispatch fahren nur die schnellen Gates.
-      # Der manuelle Dispatch kann den vollen lokalen Integrationsnachweis
-      # ausdruecklich in der Cloud wiederholen; er ist kein PR-Pflichtstatus.
-      - name: Verify
-        env:
-          PROFILE: ${{ inputs.profile || 'light' }}
-        run: pnpm run "verify:${PROFILE}"
+      # Der PR ist bereits lokal vorgeprueft. Die Cloud wiederholt nur die
+      # schnellen Gates; die betroffenen Tests bleiben der lokale Nachweis.
+      - name: Verify (Light)
+        run: pnpm run verify:light
+
+      # Artefakt-Version und APK gehoeren zum PR, nicht zu einem zweiten
+      # Workflow. Der Versions-Bump wird nicht zurueckgepusht: der PR-Kopf
+      # bleibt stabil, der Merge bumpet die Quelle weiterhin lokal.
+      - name: Release-Version bump (Artefakt)
+        run: node scripts/version-bump.mjs
+
+      - name: Web-Build
+        run: pnpm run build
+
+      - name: Java 21
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4
+        with:
+          packages: platform-tools
+
+      - name: SDK-Plattform und Build-Tools
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Debug-APK bauen
+        run: pnpm run android:apk
+
+      - name: Debug-APK als PR-Artefakt
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: rigged-by-design-debug-apk-pr-${{ github.event.pull_request.number }}
+          path: artifacts/rigged-by-design-debug.apk
+          if-no-files-found: error
+          retention-days: 7

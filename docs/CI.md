@@ -26,7 +26,7 @@ Der Required-Plan besteht aus fünfzehn Gates:
 | 14 | `tests` | `pnpm run test:ci` | `ERR-4026` |
 | 15 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates. Der PR-Pflichtjob führt davon nur die Light-Gates aus; die fünfzehn Required-Gates sind der vollständige Release-/Full-Nachweis.
 
 Lokal gilt:
 
@@ -34,7 +34,7 @@ Lokal gilt:
 - `verify:fast` = Light plus `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
 - `verify:quick` = vierzehn Gates: Required ohne `build`.
-- `verify:integration` = fünfzehn Required-Gates: der vollständige Nachweis vor dem Merge.
+- `verify:integration` = zwölf lokale Gates: Light plus `test-quality`, `affected` und `build`; der Vor-PR-Nachweis ohne volle Suite.
 - `verify:all` = fünfzehn Required plus Audit (sechzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
 - `verify:long` = Soak, Balance, Statistik und Benchmarks; ausschließlich on demand.
@@ -46,11 +46,10 @@ Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein G
 | Zustand | Auslöser | Plan |
 | --- | --- | --- |
 | `PR` | Pull Request gegen `main` | ein Cloud-Job `Fail-Closed Gates`: PR-Body, Commit-Konvention, Freeze und `verify:light` |
-| `MANUAL` | `workflow_dispatch` von `CI Verify` | `light` oder ausdrücklich `integration`; kein automatischer Merge |
 | `NOOP` | Kopf ist die Basis | keine Pflichtprüfung; der lokale Claim-/Scope-Pfad bleibt zuständig |
 | `UNKNOWN` | Zustand nicht bestimmbar | fail-closed: lokaler Integrationsnachweis, kein stiller Light-Erfolg |
 
-`main` hat keinen eigenen Cloud-Vollauf mehr. Der Merge ist ein manueller Schritt nach dem lokalen `verify:integration`; damit entstehen keine zwei konkurrierenden Wahrheiten für denselben Kopf.
+`main` hat keinen eigenen Cloud-Vollauf mehr. Der Merge ist ein manueller Schritt nach dem lokalen Vor-PR-Nachweis `verify:integration` und, bei Release-Bedarf, `verify:release`; damit entstehen keine zwei konkurrierenden Wahrheiten für denselben Kopf.
 
 ## Workflows
 
@@ -58,7 +57,7 @@ Stand 2026-11-11 liegen neun Workflow-Dateien in `.github/workflows/`:
 
 | Workflow | Status | Aufgabe |
 | --- | --- | --- |
-| `ci-verify.yml` | aktiv | ein schneller Required-Job auf PRs; manuell optional `integration` |
+| `ci-verify.yml` | aktiv | ein schneller Required-Job auf PRs: Light-Gates, Web-Build, Release-Bump für das Artefakt und Debug-APK |
 | `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
 | `pr-watcher.yml` | aktiv | Issues bei rotem `CI Verify`-Lauf; kein PR-Body-Pfad |
 | `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
@@ -72,7 +71,7 @@ Stand 2026-11-11 liegen neun Workflow-Dateien in `.github/workflows/`:
 
 ### Eine Stimme pro SHA
 
-`ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main` und manuell. Ein Lane-Push startet nur `ensure-pr.yml`; ein zweiter Vollauf auf demselben Kopf entfällt. Der Pflichtstatus heißt weiterhin `Fail-Closed Gates` und bleibt der einzige geschützte Status.
+`ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main`. Ein Lane-Push startet keinen zweiten Vollauf; ein PR-Lauf auf demselben Kopf entfällt. Der Pflichtstatus heißt weiterhin `Fail-Closed Gates` und bleibt der einzige geschützte Status.
 
 ### Lokal statt Cloud
 
@@ -81,7 +80,7 @@ Die vollständige Suite, der Production-Build, Audit und die langen Nachweise la
 ```bash
 pnpm run verify:light      # Struktur und schnelle Gates
 pnpm run verify:fast       # vor dem Push: Light + Testqualität + betroffene Tests + Build
-pnpm run verify:integration # vor dem Merge: alle fünfzehn Required-Gates
+pnpm run verify:integration # vor dem PR: Light + betroffene Tests + Build
 pnpm run verify:long       # nur bei konkretem Bedarf
 pnpm run verify:release    # vor einem Release inkl. Audit
 ```

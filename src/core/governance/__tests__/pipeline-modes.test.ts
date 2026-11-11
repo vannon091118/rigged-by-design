@@ -62,7 +62,8 @@ describe('Pipeline-Modi', () => {
       'affected',
       'build',
     ]);
-    expect(PROFILE_GATES.integration).toEqual([...REQUIRED_CI_GATES]);
+    expect(PROFILE_GATES.integration).toEqual(PROFILE_GATES.fast);
+    expect(PROFILE_GATES.integration).not.toContain('tests');
     expect(planGates('fast')).toEqual(PROFILE_GATES.fast);
     expect(planGates('integration')).toEqual(PROFILE_GATES.integration);
   });

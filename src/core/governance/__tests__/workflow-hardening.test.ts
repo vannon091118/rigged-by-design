@@ -118,7 +118,9 @@ describe('workflow hardening', () => {
     const ci = workflow('ci-verify.yml');
     const runs = runsOf(ci).join('\n');
     expect(runs).not.toContain('RBD_CONTROL_ROOT');
-    expect(runs).toContain('verify:${PROFILE}');
+    expect(runs).toContain('verify:light');
+    expect(runs).toContain('version-bump.mjs');
+    expect(runs).toContain('android:apk');
   });
 
   it('laesst die Kontrollebene aus der Basis und keine Bootstrap-Ausnahme zu', () => {

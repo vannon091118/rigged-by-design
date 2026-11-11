@@ -8,9 +8,9 @@
 
 Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected`, `pnpm run verify:light` und `pnpm run verify:fast`. Der lokale Abschluss `pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump und nennt die langen Nachweise als offen.
 
-Die vollständige Suite (`pnpm run verify:integration`), Build und Audit laufen lokal vor dem Merge; die Cloud wiederholt im Pflichtcheck nur die Light-Gates. `verify:fast` ist der Standard vor dem Push, `verify:integration` der Übergang zum Merge. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
+Die vollständige Suite und Audit laufen lokal nur für einen Release über `verify:release`/`verify:all`; `verify:integration` ist der Vor-PR-Nachweis aus Light, Testqualität, betroffenen Tests und Build. Die Cloud wiederholt im Pflichtcheck nur die Light-Gates und baut die Debug-APK. `verify:fast` ist der Standard vor dem Push. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
 
-**Der Cloud-Light-Lauf ist kein Integrationsnachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen Pflichtcheck; der lokale `verify:integration`-Lauf und der Merge auf dem exakten Kopf sind der vollständige Nachweis.
+**Der Cloud-Light-Lauf ist kein Release-Nachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen Pflichtcheck und die Debug-APK; die vollständige Suite läuft lokal über `verify:release`/`verify:all` und bleibt Release- oder On-Demand-Arbeit.
 
 ## Testmatrix
 

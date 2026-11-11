@@ -181,7 +181,9 @@ export const PROFILE_GATES = Object.freeze({
   fast: Object.freeze(FAST),
   dev: Object.freeze(DEV),
   quick: QUICK_GATES,
-  integration: REQUIRED_CI_GATES,
+  // Vor dem PR reicht der lokale Fast-Nachweis: Light plus Testqualitaet,
+  // betroffene Tests und Build. Die volle Required-Suite bleibt release/full.
+  integration: FAST,
   // Voll und Release pruefen identisch; Release erzwingt Audit zusaetzlich per Env.
   full: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
   release: Object.freeze([...REQUIRED_CI_GATES, 'audit']),

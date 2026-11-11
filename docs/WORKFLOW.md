@@ -35,7 +35,7 @@ Jede Lane außer `main` braucht einen Claim in `.lane-claims/`; ein verknüpfter
 - die Pfad-Allowlist,
 - optionale Contract-Writer.
 
-Ein neuer, unabhängiger Task bekommt einen neuen Branch und einen neuen Claim. Keine Sammelbranches, kein Direktpush auf `main`. Ein bereits gemergter Claim bleibt über `selectClaim()` für den Register-Nachtrag nutzbar; er wird nicht wieder geöffnet.
+Eine Feature-Session nutzt genau einen Branch und einen Claim. Innerhalb der Session werden Task-Verträge und Commits fortgeschrieben; jeder Task wird committet und gepusht. Der PR gegen `main` wird erst geöffnet, wenn alle Phasen des Features durchlaufen und das adversariale Review bestanden ist. Ein neuer Branch entsteht nur für ein neues Feature, nicht pro Task. Kein Direktpush auf `main`. Ein bereits gemergter Claim bleibt über `selectClaim()` für den Register-Nachtrag nutzbar; er wird nicht wieder geöffnet.
 
 ### Task-Vertrag
 
@@ -48,9 +48,9 @@ Der Task-Vertrag ist die Wahrheit des Laufs, nicht der Chat und nicht der Cache.
 | `CI_PENDING` | gepusht; der PR-Lauf ist die Autorität |
 | `MERGE_PENDING` | PR-Lauf grün, Merge steht an |
 | `AFTERCARE` | gemergt, Nachsorge offen |
-| `DONE` | abgeschlossen; neue Arbeit = neue Lane |
+| `DONE` | Feature abgeschlossen; neue Arbeit im selben Session-Branch mit neuem Task-Vertrag |
 
-`pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` schlägt es eine unabhängige parallele Lane vor, statt zu warten. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
+`pretask` gibt daraus `READY`, `CONTINUE`, `AFTERCARE`, `MERGE_PENDING` oder `BLOCKED` aus. Bei `CI_PENDING` wird die Session nicht gewechselt; Review- und Doku-Arbeit läuft auf demselben Branch, statt eine parallele Lane zu öffnen. Ein fehlender Vertrag bleibt für Legacy-Lanes startbar; `--require` macht ihn für neue Gates verpflichtend. `turn:finish`, `ci-plan` und `promote` rufen dieselbe Validierung auf.
 
 ### Resume statt Aufräumen
 
@@ -74,7 +74,7 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 2. **Kontext:** `pnpm run agent:context --json` für Systeme, Invarianten, betroffene Tests und Gate-Plan. Das ist eine Anzeige, keine Prüfung. Die JSON-Fassung ist die Agentensicht; die vollständige Ausgabe liegt unter `.verify-cache/agent-context.json` (`--full`), und `pretask --json` verweist unter `context` darauf.
 3. **Claim prüfen:** Der eigene Claim deckt jeden geänderten Pfad. Fremde Claims und Pfad-Überschneidungen blockieren.
 4. **Arbeiten:** Im Claim-Scope (Worktree optional); adoptierte WIP wird als eigene Arbeit fertiggebaut. Generierte Dateien werden über ihre Generatoren geändert, nie von Hand.
-5. **Gezielt prüfen:** Einzelne Tests, `pnpm run test:affected`, `pnpm run verify:scope` für den reinen Diff-Scope oder `pnpm run verify:light`. Die Auswahl ist Entwicklungsfeedback, kein Vollnachweis.
+5. **Gezielt prüfen:** Einzelne Tests, `pnpm run test:affected`, `pnpm run verify:scope` für den reinen Diff-Scope oder `pnpm run verify:light`. Bei reinen Doku-Änderungen reicht `pnpm run verify:docs`; bei Sim-/RNG-Änderungen bleiben die Determinismus-Tests Teil von `test:affected`. Die Auswahl ist Entwicklungsfeedback, kein Release-Nachweis.
 6. **Abschluss:** `pnpm run turn:finish`; Details unten.
 
 ### Was während der Arbeit nicht passiert
@@ -90,7 +90,7 @@ Ein Abbruch ist kein Grund für einen Reset: Dateien, Claim und Worktree bleiben
 
 1. den Task-Vertrag validieren und den Phasenwechsel nach `CI_PENDING` prüfen,
 2. Patch-Version bumpen,
-3. den lokalen Preflight ausführen: standardmäßig Light; vor dem Push ausdrücklich `verify:fast`, vor dem Merge `verify:integration`,
+3. den lokalen Preflight ausführen: standardmäßig Light; vor dem PR `verify:integration` (Light + betroffene Tests + Build), vor einem Release `verify:release`,
 4. nur Claim-Pfade, Vertrag und Versionsdateien stagen,
 5. Commit mit den drei Pflichtsektionen erstellen,
 6. den Arbeitsbranch pushen; `main` wird nie direkt gepusht,
@@ -100,7 +100,7 @@ Hat ein vorheriger Lauf einen geprüften Commit erstellt, aber Integration oder 
 
 Vor Doku- und Inventur-Gates staged `turn:finish` ausschließlich die bereits geprüften Claim-Pfade. Es aktualisiert dann Marker, Dateiinventur und Dependency-Matrix, bevor der lokale Preflight läuft. So sehen die Generatoren neue Dateien und Imports über den Index; die Task-Phase wechselt erst nach erfolgreichen Gates zu `CI_PENDING`.
 
-`--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf. `--profile=fast` ist der lokale Standard vor dem Push, `--profile=integration` der vollständige Nachweis vor dem Merge; `--profile=full` bleibt die lokale Ausnahme für Geld-, Ledger-, RNG- und Save-Migrationscode sowie Releases. Cloud-Light ersetzt keinen dieser Nachweise.
+`--tests` nimmt die betroffenen schnellen Tests mit, `--verify` den Light-Lauf. `--profile=fast` und `--profile=integration` sind der lokale Vor-PR-Nachweis aus Light, betroffenen Tests und Build; `--profile=full` bleibt die lokale Ausnahme für Releases und die volle Suite. Cloud-Light ersetzt keinen dieser Nachweise.
 
 ### Commit und PR
 
@@ -116,7 +116,7 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 
 `turn:finish` endet mit „PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK“, nicht mit einem Merge-Auftrag. Der Merge nach `main` ist ein bewusster manueller Schritt:
 
-1. PR gegen `main` öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
+1. PR gegen `main` erst am Feature-Ende öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
 2. Lokal `pnpm run verify:integration` ausführen; bei Bedarf zusätzlich `pnpm run verify:long`.
 3. `CI Verify` auf dem exakten Kopf abwarten; der Pflichtstatus ist `Fail-Closed Gates` und prüft die schnellen Gates.
 4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.

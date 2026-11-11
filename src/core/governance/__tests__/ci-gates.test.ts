@@ -3,8 +3,9 @@
  * @error-code: ERR-4008
  *
  * Local-first: Der PR-Lauf traegt genau einen schnellen Pflichtstatus. Die
- * vollstaendigen Integration-Gates laufen lokal; die Cloud prueft PR-Body,
- * Commit-Konvention, Governance-Freeze und die Light-Gates.
+ * vollstaendigen Release-Gates laufen lokal; die Cloud prueft PR-Body,
+ * Commit-Konvention, Governance-Freeze, Light-Gates, Debug-APK und
+ * Release-Version-Bump des Artefakts.
  */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -14,9 +15,11 @@ import { parse } from 'yaml';
 interface Step {
   readonly name?: string;
   readonly run?: string;
+  readonly uses?: string;
   readonly if?: string;
   readonly id?: string;
   readonly env?: Readonly<Record<string, string>>;
+  readonly with?: Readonly<Record<string, string>>;
 }
 
 interface Job {
@@ -50,7 +53,7 @@ describe('Local-first Main-Gate', () => {
     expect(ci.on?.pull_request?.branches).toEqual(['main']);
     expect(ci.on?.pull_request?.types).toEqual(['opened', 'synchronize', 'reopened']);
     expect(ci.on?.push).toBeUndefined();
-    expect(ci.on?.workflow_dispatch?.inputs?.profile?.default).toBe('light');
+    expect(ci.on?.workflow_dispatch).toBeUndefined();
     expect(ci.permissions?.contents).toBe('read');
     expect(ci.permissions?.['pull-requests']).toBe('read');
 
@@ -75,9 +78,18 @@ describe('Local-first Main-Gate', () => {
     expect(freeze?.run).toContain('RBD_ROOT="$PWD"');
     expect(freeze?.run).not.toContain('github.event.before');
 
-    const gate = stepWith(ci, 'verify', 'verify:${PROFILE}');
-    expect(gate?.env?.PROFILE).toContain("inputs.profile || 'light'");
-    expect(gate?.run).toBe('pnpm run "verify:${PROFILE}"');
+    const gate = stepWith(ci, 'verify', 'pnpm run verify:light');
+    expect(gate).not.toBeUndefined();
+
+    const version = stepWith(ci, 'verify', 'version-bump.mjs');
+    expect(version).not.toBeUndefined();
+
+    const apk = stepWith(ci, 'verify', 'android:apk');
+    expect(apk).not.toBeUndefined();
+
+    const artifact = steps(ci, 'verify').find((step) => step.uses?.includes('upload-artifact'));
+    expect(artifact).not.toBeUndefined();
+    expect(artifact?.with?.path).toContain('artifacts/rigged-by-design-debug.apk');
   });
 
   it('laesst keine Matrix, Langlaeufe oder Claim-Jobs im Cloud-Pflichtcheck', () => {
