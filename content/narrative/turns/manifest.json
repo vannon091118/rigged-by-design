@@ -3700,6 +3700,10 @@
     {
       "turnId": "2026-11-11T04:10Z-agent20-hybrid-flow-2",
       "contributionId": "agent20-hybrid-flow-2"
+    },
+    {
+      "turnId": "2026-11-11T04:20Z-agent20-ci-pending",
+      "contributionId": "agent20-ci-pending"
     }
   ]
 }

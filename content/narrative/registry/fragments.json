@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2cecc52b9ac00db9dd63372d3c8ec1b7202c02b74cc9f26c70adf6418eb14a8b",
+  "contentHash": "sha256:febd42fe37671626f0858dbb505c2a54194bdf715266e4a45e55528fe87910a3",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1086,6 +1086,28 @@
       "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
+    },
+    {
+      "contributionId": "agent20-ci-pending",
+      "turnId": "2026-11-11T04:20Z-agent20-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf: erst wenn er gruen meldet, gilt der Hybridstrom als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-ci-pending.json"
     },
     {
       "contributionId": "agent20-hybrid-flow-1",
