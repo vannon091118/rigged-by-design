@@ -27,6 +27,14 @@ export class SceneCommands {
     this.#say('Du bist in der Stadt.');
   }
 
+  /** Die Eroeffnung schliessen: der einzige Weg von OPENING nach CITY. */
+  finishOpening(): void {
+    const world = this.#deps.world();
+    if (world.onboarding?.step !== 'OPENING') return;
+    world.onboarding = { step: 'CITY' };
+    this.#say('Die Stadt wartet. Geh hinein und stell den ersten Automaten auf.');
+  }
+
   enterCasino(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'OWN') return;
@@ -35,7 +43,7 @@ export class SceneCommands {
     if (world.sceneReturnPosition) world.player.position = { ...world.sceneReturnPosition };
     world.player.path = [];
     world.player.pathIndex = 0;
-    if (world.onboarding?.step === 'CITY') world.onboarding = { step: 'CASINO' };
+    if (world.onboarding?.step === 'OPENING' || world.onboarding?.step === 'CITY') world.onboarding = { step: 'CASINO' };
     this.#say('Dein Casino. Die erste Kiste steht bereit.');
   }
 

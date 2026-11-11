@@ -24,6 +24,8 @@ import { EditorOverlay, type EditorCursor } from './editor-overlay';
 
 export class FloorView {
   readonly #app: Application;
+  /** Flaechenfuellung hinter dem Plan: kein schwarzer Balken, eine geflieste Buehne. */
+  readonly #backdrop = new Graphics();
   readonly #callbacks: FloorCallbacks;
   readonly #rig: FloorCameraRig;
   readonly #scene: SceneCache;
@@ -66,7 +68,10 @@ export class FloorView {
     // Kein zweiter Eingabepfad: Maus und Finger laufen ueber FloorTouch und
     // landen genau einmal in #act. Vorher feuerte ein Linksklick zweimal
     // (pointerdown + Tap), also zwei Aktionskarten und zwei Popups.
-    app.stage.addChild(this.#rig.root);
+    // Der Hintergrund liegt unter der Kamera und waechst mit dem Bildschirm;
+    // damit ist die Flaeche neben einem quadratischen Plan nie leer.
+    this.#drawBackdrop();
+    app.stage.addChild(this.#backdrop, this.#rig.root);
     this.#touch = new FloorTouch(app, this.#rig.root, this.#rig.cam, () => this.#view.size, (clientX, clientY) => {
       const local = screenPoint(clientX, clientY, this.#app, this.#rig.root);
       if (local) this.#act(0, local);
@@ -129,7 +134,23 @@ export class FloorView {
   }
 
   resize(): void {
+    this.#drawBackdrop();
     this.#rig.resize();
+  }
+
+  /** Gefliestes Letterbox statt schwarzer Flaeche: ruhig, dunkel, ohne zweite Buehne. */
+  #drawBackdrop(): void {
+    const { width, height } = this.#app.screen;
+    const w = Math.max(1, width);
+    const h = Math.max(1, height);
+    const g = this.#backdrop;
+    g.clear();
+    g.rect(0, 0, w, h).fill(0x140d24);
+    for (let x = 0; x < w; x += 64) g.rect(x, 0, 1, h).fill({ color: 0x2b1e48, alpha: 0.55 });
+    for (let y = 0; y < h; y += 64) g.rect(0, y, w, 1).fill({ color: 0x2b1e48, alpha: 0.55 });
+    // Zwei ruhige Lichtkanten halten die Flaeche als Buehne lesbar, nicht als Leere.
+    g.rect(0, 0, w, 2).fill({ color: 0x452f6b, alpha: 0.5 });
+    g.rect(0, h - 2, w, 2).fill({ color: 0x452f6b, alpha: 0.5 });
   }
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
@@ -159,6 +180,7 @@ export class FloorView {
     this.#entities.clear();
     this.#scene.destroy();
     this.#rig.destroy();
+    this.#backdrop.destroy();
   }
 
   #attachActor = (art: GuestArt): void => {

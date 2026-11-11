@@ -5,6 +5,18 @@
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 
+## 2026-11-11 - Sprint 1: Der erste Abend
+
+**Ziel:** Ein Startzustand statt zwei Modals, eine gefüllte Bühne statt schwarzer Balken, ein sichtbares Ziel — und die erste-Stunde-Kette als deterministischer Test statt als Behauptung.
+
+**Befund:** Die Messung (T1) hat die Vorlage an einer Stelle widerlegt: Die Kasse steht im Blueprint, `FIRST_ARRIVAL_TICK = 12` bei `TICK_MS = 520`, und weil die Stadt-Ticks weiterlaufen, stand der erste Gast 734 ms nach dem Betreten des Casinos im Raum. Der echte Defekt war die doppelte Startregel: `OpeningGate` öffnete nach Tick/Gäste/Historie, `OnboardingPanel` nach `onboarding.step` — beim Boot lagen beide Modals übereinander. Offen ist die Kette danach: ohne Automat aus der Starter-Kiste zeigt das HUD `GERÄTE 0/0`.
+
+**Umsetzung:** `OnboardingStep` ist `OPENING → CITY → CASINO → DONE`; `new-game` startet mit `OPENING`, `OpeningGate` liest nur diesen Schritt, `scene.finishOpening()` ist der einzige Weg nach `CITY`, alte Saves bleiben `DONE`. `FloorCamera` trennt `fit` (contain, ganzer Plan) von `fill` (cover-Faktor); `FloorView` zeichnet einen gefliesten Bühnenhintergrund statt schwarzer Balken. `src/ui/goal.ts` liefert genau ein Ziel aus dem Snapshot (Barkauf, danach Miete), das HUD zeigt Label und Balken. `first-evening.test.ts` fährt die Kette Eröffnung → Stadt → Casino → Automat aus der Kiste → Gast nach 12 Ticks → Spiel → Buchung → Tagesende mit festem Seed.
+
+**Prüfungen:** `pnpm run typecheck` grün; `pnpm run verify:light` grün (docs, check:loc, catalog, test-placement, tree, impact-graph, redundancy, typecheck, lint); gezielte Tests `goal`, `floor-camera`, `onboarding-save`, `first-evening`, `ui` grün (22 Tests); Build und Preview geladen, Messpunkte im Browser erhoben.
+
+**Bewusst nicht getan:** Keine Governance-Datei angefasst (Freeze), keine Narrative gelöscht (Schrumpf-Schutz), kein Screenshot-Gate (Playwright fehlt, Skripte gesperrt), kein Commit/Push/PR. Für einen Commit mit `src/`-Änderung fehlt noch der Pflicht-Textbaustein aus `verify-narrative-blocks --commit`.
+
 ## 2026-11-11 - Claim-Retention und Post-Merge-Closeout
 
 **Ziel:** Lane-Claims und Task-Verträge dauerhaft auf die letzten zehn Tasks begrenzen und Pending-Status nach einem belegten `main`-Merge automatisch lösen.

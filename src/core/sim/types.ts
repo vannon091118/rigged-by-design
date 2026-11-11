@@ -25,7 +25,12 @@ export type { CitySceneState } from './city-scene';
 /** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
 type SceneKind = 'OWN' | 'FOREIGN' | 'CITY';
 export interface SceneState { readonly kind: SceneKind; readonly foreignFloorId?: number; }
-type OnboardingStep = 'CITY' | 'CASINO' | 'DONE';
+/**
+ * Der eine Startzustand: erst die Eröffnung, dann die Stadt, dann der Raum.
+ * Die Reihenfolge ist die einzige Wahrheit dafuer, welches Startmodal sichtbar
+ * ist - zwei unabhaengige Sichtbarkeitsregeln waren der Grund fuer zwei Modals.
+ */
+type OnboardingStep = 'OPENING' | 'CITY' | 'CASINO' | 'DONE';
 export interface OnboardingState { step: OnboardingStep; }
 
 export interface WorldState {

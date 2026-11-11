@@ -1,10 +1,6 @@
 /** Die erste Szene: derselbe Runtime-Text wie die Narrative, nur als Einstiegskarte. */
-import { useEffect, useRef, useState } from 'react';
 import { composeNarrative } from '../core/sim/narrative/composer';
-import { useWorldStore } from '../store/use-world-store';
-import type { GameView } from '../store/types';
-
-const OPENING_TICKS = 120;
+import { useWorldStore, worldStore } from '../store/use-world-store';
 
 /**
  * Der Composer fuehrt die Eröffnung als TITLE-Quelle. Hier ist der Text bewusst
@@ -35,21 +31,13 @@ export function OpeningCard({ onClose }: { readonly onClose: () => void }) {
   );
 }
 
-/** Nur der frische Start zeigt die Szene; ein Tick-Rücksprung öffnet sie erneut. */
-function isFreshStart(view: GameView): boolean {
-  return view.tick < OPENING_TICKS && view.guests.length === 0 && view.narrative.history.length === 0;
-}
-
+/**
+ * Nur der Startzustand OPENING zeigt die Szene. Die Sichtbarkeit kommt aus dem
+ * einen Onboarding-Schritt, nicht aus Tick, Gaestezahl und Historienlaenge -
+ * zwei unabhaengige Regeln waren der Grund fuer zwei gleichzeitige Modals.
+ */
 export function OpeningGate() {
   const view = useWorldStore();
-  const [open, setOpen] = useState(() => isFreshStart(view));
-  const lastTick = useRef(view.tick);
-
-  useEffect(() => {
-    if (view.tick < lastTick.current) setOpen(true);
-    lastTick.current = view.tick;
-  }, [view.tick]);
-
-  if (!open) return null;
-  return <OpeningCard onClose={() => setOpen(false)} />;
+  if (view.onboarding.step !== 'OPENING') return null;
+  return <OpeningCard onClose={() => worldStore.scene.finishOpening()} />;
 }

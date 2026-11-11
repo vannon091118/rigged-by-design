@@ -5,6 +5,7 @@ import { REGION, TILE } from '../core/sim/types';
 
 export class FloorCamera {
   #fit = 1;
+  #fill = 1;
   #zoom = 1;
   #target = 1;
   #focus = { x: 0.5, y: 0.5 };
@@ -18,6 +19,15 @@ export class FloorCamera {
     return this.#fit;
   }
 
+  /**
+   * Der Faktor, mit dem der Plan den Viewport ohne Rest fuellen wuerde (cover).
+   * Die Uebersicht bleibt bei `fit` (contain), damit kein Raumrand aus dem Bild
+   * faellt; die Flaeche zwischen Plan und Bildrand traegt der Buehnenhintergrund.
+   */
+  get fill(): number {
+    return this.#fill;
+  }
+
   get detail(): boolean {
     return this.#zoom > this.#fit * 1.12;
   }
@@ -26,6 +36,7 @@ export class FloorCamera {
     const next = this.#computeFit(screenWidth, screenHeight, size);
     const overview = reset || this.#zoom <= this.#fit * 1.01;
     this.#fit = next;
+    this.#fill = this.#computeFill(screenWidth, screenHeight, size);
     this.#zoom = this.#clamp(overview ? next : this.#zoom);
     this.#target = this.#clamp(overview ? next : this.#target);
     if (overview) {
@@ -126,9 +137,18 @@ export class FloorCamera {
     );
   }
 
+  /** Übersicht: der ganze Plan bleibt sichtbar (contain auf beiden Achsen). */
   #computeFit(screenWidth: number, screenHeight: number, size: number): number {
     const width = size * TILE;
-    return Math.max(0.04, Math.min(screenWidth / width, screenHeight / width) * 0.96);
+    const height = size * TILE;
+    return Math.max(0.04, Math.min(screenWidth / width, screenHeight / height) * 0.96);
+  }
+
+  /** Vollflaeche: der Faktor, ab dem keine Flaeche mehr frei bleibt (cover). */
+  #computeFill(screenWidth: number, screenHeight: number, size: number): number {
+    const width = size * TILE;
+    const height = size * TILE;
+    return Math.max(0.04, Math.max(screenWidth / width, screenHeight / height));
   }
 
   #clamp(value: number): number {

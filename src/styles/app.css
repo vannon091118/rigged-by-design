@@ -165,6 +165,9 @@ button.vital:hover { border-color: var(--line-strong); }
 .vital.rep strong { font-size: 15px; letter-spacing: 0.01em; }
 
 /* Fortschritt zum ersten Barkauf: eine Linie, kein Panel. */
+.hud-goal-row { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+.hud-goal-row .hud-goal { flex: 1; margin-top: 0; }
+.hud-goal-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--gold); opacity: 0.85; }
 .hud-goal { display: block; height: 3px; margin-top: 3px; border-radius: 999px; background: rgba(255, 209, 102, 0.16); overflow: hidden; }
 .hud-goal i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(255, 209, 102, 0.5), var(--gold)); transition: width 220ms ease; }
 

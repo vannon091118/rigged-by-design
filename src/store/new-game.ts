@@ -30,8 +30,9 @@ export function createNewGame(template: TemplateId): NewGameState {
   world.player.path = [];
   world.player.pathIndex = 0;
   world.scene = { kind: 'CITY' };
-  world.onboarding = { step: 'CITY' };
-  world.lastEvent = 'Du stehst in der Stadt. Dein Casino wartet auf den ersten Auftrag.';
+  // Start ist die Eroeffnung: erst ihr Ende gibt die Stadt und danach den Raum frei.
+  world.onboarding = { step: 'OPENING' };
+  world.lastEvent = 'Der erste Abend beginnt. Schliess die Eroeffnung, dann wartet die Stadt.';
   const ledger = new Ledger();
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);

@@ -10,7 +10,8 @@ interface Props {
 
 export function OnboardingPanel({ view, onOpen }: Props) {
   const step = view.onboarding.step;
-  if (step === 'DONE') return null;
+  // Nur Stadt und Raum haben ein Panel; Eroeffnung und Abschluss keines.
+  if (step !== 'CITY' && step !== 'CASINO') return null;
   return (
     <section className="onboarding-panel" aria-label="Erste Schritte">
       <span className="eyebrow">ERSTE SCHRITTE</span>
