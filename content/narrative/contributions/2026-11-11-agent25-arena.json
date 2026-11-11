@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:30Z-agent25-arena",
+  "contributionId": "agent25-arena",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
+  "directives": []
+}

@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:10Z-agent24-done-repair",
+  "contributionId": "agent24-done-repair",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Qualitaetspruefung meldet einen Near-Duplicate: Der Abschluss lag zu nah am vorigen. Also wird der Text entdoppelt, nicht die Schwelle gesenkt; der Befund und die Korrektur bleiben im Register.",
+  "directives": []
+}

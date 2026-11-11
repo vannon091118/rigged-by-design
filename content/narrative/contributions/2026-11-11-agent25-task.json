@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:20Z-agent25-task",
+  "contributionId": "agent25-task",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
+  "directives": []
+}

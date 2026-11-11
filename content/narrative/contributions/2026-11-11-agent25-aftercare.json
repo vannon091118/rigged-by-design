@@ -1,0 +1,17 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T07:30Z-agent25-aftercare",
+  "contributionId": "agent25-aftercare",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": ["start"],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": ["narrativ"],
+  "text": "Nachsorge heisst hier: den gemergten Stand belegen, den Claim schliessen, die Lane stehen lassen. Die Arena bleibt im Hinterhof, wo sie gebaut wurde, und braucht keinen zweiten Eingang.",
+  "directives": []
+}

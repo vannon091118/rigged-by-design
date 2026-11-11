@@ -3810,6 +3810,98 @@
       "contributionId": "agent23-done"
     },
     {
+      "turnId": "2026-11-11T05:50Z-agent24-task",
+      "contributionId": "agent24-task"
+    },
+    {
+      "turnId": "2026-11-11T06:05Z-agent24-bets",
+      "contributionId": "agent24-bets"
+    },
+    {
+      "turnId": "2026-11-11T06:10Z-agent24-ci-pending",
+      "contributionId": "agent24-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:12Z-agent24-test-quality",
+      "contributionId": "agent24-test-quality"
+    },
+    {
+      "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
+      "contributionId": "agent24-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:20Z-agent24-aftercare",
+      "contributionId": "agent24-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T05:30Z-agent24-done",
+      "contributionId": "agent24-done"
+    },
+    {
+      "turnId": "2026-11-11T06:10Z-agent24-done-repair",
+      "contributionId": "agent24-done-repair"
+    },
+    {
+      "turnId": "2026-11-11T06:20Z-agent25-task",
+      "contributionId": "agent25-task"
+    },
+    {
+      "turnId": "2026-11-11T06:30Z-agent25-arena",
+      "contributionId": "agent25-arena"
+    },
+    {
+      "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
+      "contributionId": "agent25-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+      "contributionId": "agent25-merge-base"
+    },
+    {
+      "turnId": "2026-11-11T06:50Z-agent25-base-merge",
+      "contributionId": "agent25-base-merge"
+    },
+    {
+      "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+      "contributionId": "agent25-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T07:20Z-agent25-main-merge",
+      "contributionId": "agent25-main-merge"
+    },
+    {
+      "turnId": "2026-11-11T07:30Z-agent25-aftercare",
+      "contributionId": "agent25-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T07:40Z-agent25-done",
+      "contributionId": "agent25-done"
+    },
+    {
+      "turnId": "2026-11-11T08:00Z-agent26-task",
+      "contributionId": "agent26-task"
+    },
+    {
+      "turnId": "2026-11-11T08:05Z-agent26-claim",
+      "contributionId": "agent26-claim"
+    },
+    {
+      "turnId": "2026-11-11T08:10Z-agent26-esport",
+      "contributionId": "agent26-esport"
+    },
+    {
+      "turnId": "2026-11-11T08:12Z-agent26-esport-code",
+      "contributionId": "agent26-esport-code"
+    },
+    {
+      "turnId": "2026-11-11T08:20Z-agent26-ci-pending",
+      "contributionId": "agent26-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T08:34Z-agent26-ci-fix",
+      "contributionId": "agent26-ci-fix"
+    },
+    {
       "turnId": "2026-11-11T12:10Z-placement-venue-history",
       "contributionId": "placement-venue-history-1"
     },
