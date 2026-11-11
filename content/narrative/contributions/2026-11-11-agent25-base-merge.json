@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:50Z-agent25-base-merge",
+  "contributionId": "agent25-base-merge",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Basis war schon im Baum, aber nicht in der Historie; ein Merge holt beides nach. Die Arena bleibt ein Ausbau der Immobilie, und der Nachlauf der Wett-Lane bleibt geschlossen.",
+  "directives": []
+}

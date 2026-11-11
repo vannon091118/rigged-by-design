@@ -10,6 +10,7 @@
 import type { Ledger } from '../economy/ledger';
 import { toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
+import { admitArena } from './arena';
 import { crowdBonus } from './brawl-combat';
 import { runUndercard, settleFightBets } from './fight-bet-settle';
 import { fightBout, fightChance, fightNextRung, fightRoster, fightXpFor } from './fight-career';
@@ -140,6 +141,8 @@ export function enterFightEvent(world: WorldState, ledger: Ledger, prng: Prng): 
   const notice = `${outcome} beim Kampfabend gegen ${rung.name} · ${money}.`;
   advanceEventStep(world, live.id, 'RESULT', world.tick);
   transitionEvent(world, live.id, 'RESOLVED', world.tick, `Kampfabend: ${outcome} gegen ${rung.name} vor ${view.crowd} Zuschauern.`);
+  // Der Einlass gehoert zum Abend: die vorhandene Arena rechnet ihn einmal ab.
+  admitArena(world, ledger);
   // Der Vorkampf gehoert zum selben Abend: erst entscheiden, dann die
   // Scheine gegen dieses Ergebnis abrechnen. Ohne Vorkampf wird erstattet.
   runUndercard(world, prng);

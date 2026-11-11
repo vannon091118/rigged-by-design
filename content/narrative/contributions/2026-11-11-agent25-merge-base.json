@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+  "contributionId": "agent25-merge-base",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
+  "directives": []
+}

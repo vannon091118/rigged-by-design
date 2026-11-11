@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:ad76fb7dfa573b81bc68fc1df4b55ba1bed9e32496369d7d2e7f2ed4e817327d",
+  "contentHash": "sha256:d0fefd714ca54e982998cbcaa239f631bb00c2bfe36bfc4da3f92f0f6fee9b94",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1834,6 +1834,116 @@
       "text": "Ein Beleg, der nur beweist, dass irgendetwas existiert, beweist nichts. Der Gewinn muss an seiner Quote haengen und die Zahl der Auszahlungen an der Zahl der richtigen Tipps - sonst ist der gruene Haken nur eine Behauptung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-test-quality.json"
+    },
+    {
+      "contributionId": "agent25-arena",
+      "turnId": "2026-11-11T06:30Z-agent25-arena",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-arena.json"
+    },
+    {
+      "contributionId": "agent25-base-merge",
+      "turnId": "2026-11-11T06:50Z-agent25-base-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis war schon im Baum, aber nicht in der Historie; ein Merge holt beides nach. Die Arena bleibt ein Ausbau der Immobilie, und der Nachlauf der Wett-Lane bleibt geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-base-merge.json"
+    },
+    {
+      "contributionId": "agent25-ci-pending",
+      "turnId": "2026-11-11T06:35Z-agent25-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Ring steht, aber der Abend ist noch nicht gebucht: Erst der Lauf auf dem exakten Kopf zeigt, ob Ausbau, Einlass und Bar-Anzeige zusammen passen. Bis dahin bleibt die Arena ein Versprechen auf dem Papier.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
+    },
+    {
+      "contributionId": "agent25-merge-base",
+      "turnId": "2026-11-11T06:40Z-agent25-merge-base",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
+    },
+    {
+      "contributionId": "agent25-task",
+      "turnId": "2026-11-11T06:20Z-agent25-task",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
     },
     {
       "contributionId": "apk-signing-01",
