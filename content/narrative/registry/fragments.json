@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:548a80e06788bd29b20028de51f7e665d39bbee05b160fdaabaa21941d69a4d2",
+  "contentHash": "sha256:18a0059bcc9c9cd197b493b8bff326372ae4811c315cb032f244cfd38ea9ed30",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -780,6 +780,72 @@
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
     },
     {
+      "contributionId": "agent18-aftercare",
+      "turnId": "2026-11-11T02:55Z-agent18-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst belegen, nicht behaupten: derselbe Baum, derselbe Beleg, ein Status.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-aftercare.json"
+    },
+    {
+      "contributionId": "agent18-ci-pending",
+      "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt die Karte als geliefert.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-ci-pending.json"
+    },
+    {
+      "contributionId": "agent18-done",
+      "turnId": "2026-11-11T03:00Z-agent18-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Karte, Bestand und Preis liegen auf main; die Lane ist fort, der Task steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-done.json"
+    },
+    {
       "contributionId": "agent18-drink-menu-1",
       "turnId": "2026-11-11T02:20Z-agent18-drink-menu-1",
       "agentId": "buffy",
@@ -866,6 +932,28 @@
       "text": "Die Persona ist ein Startwert, kein Schalter: der Test baut den Gast mit seiner Neigung, statt ihn nachtraeglich umzuschreiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-4.json"
+    },
+    {
+      "contributionId": "agent18-merge-pending",
+      "turnId": "2026-11-11T02:50Z-agent18-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
     },
     {
       "contributionId": "apk-signing-01",

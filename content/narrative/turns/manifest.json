@@ -3652,6 +3652,22 @@
     {
       "turnId": "2026-11-11T03:30Z-world-continuity-interaction-1",
       "contributionId": "world-continuity-interaction-1"
+    },
+    {
+      "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
+      "contributionId": "agent18-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T02:50Z-agent18-merge-pending",
+      "contributionId": "agent18-merge-pending"
+    },
+    {
+      "turnId": "2026-11-11T02:55Z-agent18-aftercare",
+      "contributionId": "agent18-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T03:00Z-agent18-done",
+      "contributionId": "agent18-done"
     }
   ]
 }

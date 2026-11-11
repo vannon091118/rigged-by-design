@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-11T02:45Z-agent18-ci-pending",
+  "contributionId": "agent18-ci-pending",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt die Karte als geliefert.",
+  "directives": []
+}
