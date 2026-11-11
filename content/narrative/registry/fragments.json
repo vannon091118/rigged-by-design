@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:74179b8e6a6c0ac088a6efa68ca32ed62f2da905720dcd87e62ce98e45ba41cd",
+  "contentHash": "sha256:18a0059bcc9c9cd197b493b8bff326372ae4811c315cb032f244cfd38ea9ed30",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -822,6 +822,28 @@
       "text": "Der Lauf prueft den Kopf, nicht die Absicht: erst wenn er gruen meldet, gilt die Karte als geliefert.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-ci-pending.json"
+    },
+    {
+      "contributionId": "agent18-done",
+      "turnId": "2026-11-11T03:00Z-agent18-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Karte, Bestand und Preis liegen auf main; die Lane ist fort, der Task steht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent18-done.json"
     },
     {
       "contributionId": "agent18-drink-menu-1",
