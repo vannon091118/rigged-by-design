@@ -136,6 +136,7 @@ jobs:
           name: rigged-by-design-debug-apk
           path: artifacts/rigged-by-design-debug.apk
           if-no-files-found: error
+          retention-days: 14
 
       - name: Release-APK als Artefakt
         if: steps.signing.outputs.release == 'true'
@@ -144,6 +145,7 @@ jobs:
           name: rigged-by-design-release-apk
           path: artifacts/rigged-by-design-release.apk
           if-no-files-found: error
+          retention-days: 30
 
       - name: Release-Tag bestimmen
         id: release

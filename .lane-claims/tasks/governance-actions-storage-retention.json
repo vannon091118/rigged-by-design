@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-actions-storage-retention",
+  "claimId": "lane/governance/actions-storage-retention",
+  "branch": "lane/governance/actions-storage-retention",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "phase": "CI_PENDING",
+  "title": "Actions-Speicher: APK-Artefakt-Retention und Cache-Bestand ohne Nachweisverlust begrenzen",
+  "goal": "Debug-APKs auf 14 Tage und Release-APKs auf 30 Tage begrenzen; Caches getrennt bereinigen; Balance-Berichte bleiben unangetastet.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 5
+}

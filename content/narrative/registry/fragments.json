@@ -1,8 +1,33 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:fcd6fdd5b0cc8dc119fd908c8ed7334d5d9292001ebd5bb4e0c7bb561a45ec18",
+  "contentHash": "sha256:c9cf3d93b7ebaf9d34d5d6c453b65161b9fa3d3f22690f09568ebbeaaec57900",
   "fragments": [
+    {
+      "contributionId": "actions-storage-retention",
+      "turnId": "2026-11-11T22:06Z-actions-storage-retention",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita legte die alten Baupläne nicht in den Müll, sondern in eine Kiste mit Frist: Was sich nachbauen lässt, verfällt nach zwei Wochen, was als Nachweis zählt, bleibt. Sie strich die Pläne aus dem Regal, nicht aus dem Verzeichnis. Wer später nachzählt, findet dieselbe Bilanz, nur weniger Staub.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-actions-storage-retention.json"
+    },
     {
       "contributionId": "advance-anger-01",
       "turnId": "2026-11-02T11:40Z-vorschuss-geduld",

@@ -29,7 +29,7 @@ import { causeBlock, causeForGate, localCauses } from './agent-cause.mjs';
 import { fail, ROOT } from './lib/report.mjs';
 import { shouldResumePendingCommit } from './lib/pending-commit.mjs';
 
-const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
+const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
 const gitRun = (args) => spawnSync('git', args, { cwd: ROOT, stdio: 'inherit' });
 const npmRun = (args) =>
   spawnSync('pnpm', args, { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' });

@@ -1,19 +1,10 @@
 {
   "version": 1,
-  "base": "caaf885b74cc1fb4be7b291eef04cb5d13fef8aa",
+  "base": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
   "paths": [
-    ".github/workflows/pr-cleanup.yml",
-    "docs/CI.md",
-    "docs/GOVERNANCE.md",
-    "docs/INDEX.md",
-    "docs/WORKFLOW.md",
-    "scripts/claim-register.mjs",
-    "scripts/lib/claim-lifecycle.mjs",
-    "scripts/lib/promotion-state.mjs",
-    "scripts/lib/task-contract.mjs",
-    "scripts/post-merge-closeout.mjs",
-    "scripts/reconcile-claims.mjs"
+    ".github/workflows/build-apk.yml",
+    "scripts/turn-push.mjs"
   ],
-  "token": "ac9de74312c5f99ab9c5e919067924be8a006b94747c087f513ec65c0f952b0a",
+  "token": "f5fe38eef8c2215a72c0a763fdf63a1badcb23dd431417b5e2e39b722035ecc3",
   "note": "Freigabe durch PIN-Eingabe; der PIN selbst steht nicht in dieser Datei."
 }

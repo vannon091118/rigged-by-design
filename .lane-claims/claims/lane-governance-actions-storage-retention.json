@@ -1,0 +1,25 @@
+{
+  "id": "lane/governance/actions-storage-retention",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/actions-storage-retention",
+  "baseSha": "698788d447dd39fc4002c5c711a56cb2bfa9caf2",
+  "task": "Actions-Speicher: APK-Artefakt-Retention und Cache-Bestand ohne Nachweisverlust begrenzen",
+  "goal": "Debug-APKs auf 14 Tage und Release-APKs auf 30 Tage begrenzen; Caches getrennt bereinigen; Balance-Berichte bleiben unangetastet.",
+  "pathAllowlist": [
+    ".github/workflows/build-apk.yml",
+    ".lane-claims/claims/lane-governance-actions-storage-retention.json",
+    ".lane-claims/freeze-unlock.json",
+    ".lane-claims/tasks/governance-actions-storage-retention.json",
+    "content/narrative/contributions/2026-11-11-actions-storage-retention.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/ROADMAP.md",
+    "scripts/turn-push.mjs",
+    "src/core/sim/narrative/composer/registry.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "698788d447dd39fc4002c5c711a56cb2bfa9caf2"
+}
