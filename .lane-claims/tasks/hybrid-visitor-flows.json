@@ -4,7 +4,7 @@
   "claimId": "lane/sim/hybrid-visitor-flows",
   "branch": "lane/sim/hybrid-visitor-flows",
   "baseSha": "12add659168260ea128b71dc74ee0cc87f7aa6f8",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Agent 20: Hybrid-Besucherstroeme",
   "goal": "Veranstaltungsgaeste kommen mit Durst: die Ankunftsregel liest das laufende Nachfrage-Event und setzt das vorhandene Beduerfnis Trinken plus Durst ueber die Schwelle. Casino->Bar und Club->Automat laufen unveraendert ueber chooseActivity; kein neues Save-Feld, keine zweite Gaesteliste, kein zweiter Event-Zustand, keine neue Bar- oder Automatensimulation.",
   "taskType": "single",
@@ -16,6 +16,6 @@
     "state": "merged"
   },
   "findings": [],
-  "nextAction": "Squash ist gemergt; Nachsorge einleiten und Register nachziehen.",
-  "revision": 4
+  "nextAction": "mergedSha und mergedEvidence belegen, Claim auf merged ziehen, Task auf DONE.",
+  "revision": 5
 }

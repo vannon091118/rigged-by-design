@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:73092bd23fadd6c3ea5815a670751f88d87e78187a214c1cb17824bd15bea196",
+  "contentHash": "sha256:7511a688e493490c4362d6c26a3921da93f5eef82c0895ce2d9dc0ec1881b323",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1086,6 +1086,28 @@
       "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
+    },
+    {
+      "contributionId": "agent20-aftercare",
+      "turnId": "2026-11-11T04:30Z-agent20-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachweis bleibt der Baum; die Nachsorge schreibt nur den Status fort.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent20-aftercare.json"
     },
     {
       "contributionId": "agent20-ci-pending",
