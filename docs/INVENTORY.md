@@ -623,10 +623,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2694 |
-| Gelistete Dateien | 2694 |
+| Getrackte Dateien | 2692 |
+| Gelistete Dateien | 2692 |
 | Getrackte Ordner | 106 |
-| Bereiche | .circleci (4), (Wurzel) (10), .githooks (3), .github (14), .lane-claims (24), content (1012), docs (88), packages (28), public (554), scripts (118), src (839) |
+| Bereiche | .circleci (4), (Wurzel) (10), .githooks (3), .github (14), .lane-claims (22), content (1012), docs (88), packages (28), public (554), scripts (118), src (839) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -639,8 +639,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 9 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 11 Datei(en)
-- `.lane-claims/tasks/` — 11 Datei(en)
+- `.lane-claims/claims/` — 10 Datei(en)
+- `.lane-claims/tasks/` — 10 Datei(en)
 - `content/narrative/contributions/` — 1008 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -766,27 +766,25 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-governance-actions-storage-retention.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-claim-cleanup.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/lane-governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/claims/lane-governance-claim-retention-postmerge.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/lane-governance-first-evening-ci.json` — { — gelesen: 27 Zeilen
+- `.lane-claims/claims/lane-governance-first-evening-ci.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 46 Zeilen
-- `.lane-claims/claims/lane-governance-monitor-closeout-448-450.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-closeout-452-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-closeout-452.json` — { — gelesen: 25 Zeilen
-- `.lane-claims/claims/lane-governance-monitor-findings-448-449.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-468.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/freeze-unlock.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-actions-storage-retention.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-retention-postmerge.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-first-evening-ci.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-first-evening-ci.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-monitor-closeout-448-450.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-452-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-monitor-closeout-452.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-monitor-findings-448-449.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-468.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
