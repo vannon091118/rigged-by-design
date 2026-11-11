@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d0fefd714ca54e982998cbcaa239f631bb00c2bfe36bfc4da3f92f0f6fee9b94",
+  "contentHash": "sha256:17628a4ea9c77f255af479de368a0559df966abc036f6d47dc2f3369d45fb011",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1836,6 +1836,28 @@
       "source": "content/narrative/contributions/2026-11-11-agent24-test-quality.json"
     },
     {
+      "contributionId": "agent25-aftercare",
+      "turnId": "2026-11-11T07:30Z-agent25-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Nachsorge heisst hier: den gemergten Stand belegen, den Claim schliessen, die Lane stehen lassen. Die Arena bleibt im Hinterhof, wo sie gebaut wurde, und braucht keinen zweiten Eingang.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-aftercare.json"
+    },
+    {
       "contributionId": "agent25-arena",
       "turnId": "2026-11-11T06:30Z-agent25-arena",
       "agentId": "buffy",
@@ -1902,6 +1924,50 @@
       "source": "content/narrative/contributions/2026-11-11-agent25-ci-pending.json"
     },
     {
+      "contributionId": "agent25-done",
+      "turnId": "2026-11-11T07:40Z-agent25-done",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Sechs Schritte, ein Modul: Die Arena steht auf main, der Claim nennt den Merge, der Zweig bleibt erhalten. Der naechste Halt ist Agent 26, nicht ein zweiter Ausbau derselben Flaeche.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-done.json"
+    },
+    {
+      "contributionId": "agent25-main-merge",
+      "turnId": "2026-11-11T07:20Z-agent25-main-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Main kam als Merge zurueck; die Lane zieht nach, ohne den Arena-Bau erneut zu entscheiden. Ein Baum, zwei Historien, ein Vertrag - und der Ausbau bleibt der eine, der schon geprueft wurde.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-main-merge.json"
+    },
+    {
       "contributionId": "agent25-merge-base",
       "turnId": "2026-11-11T06:40Z-agent25-merge-base",
       "agentId": "buffy",
@@ -1922,6 +1988,28 @@
       "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
+    },
+    {
+      "contributionId": "agent25-merge-pending",
+      "turnId": "2026-11-11T07:05Z-agent25-merge-pending",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Arena steht auf gruenem Kopf: Einlass, Ausbau und Sicht sind belegt, der Rest ist Vertrag. Jetzt zaehlt nur noch der exakte Stand, den die Pruefung gesehen hat.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-merge-pending.json"
     },
     {
       "contributionId": "agent25-task",
