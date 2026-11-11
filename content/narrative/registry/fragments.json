@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1886be44a57fe14e7832595823eaafba1767fd1610b43b147f4c83480f12605c",
+  "contentHash": "sha256:d0fefd714ca54e982998cbcaa239f631bb00c2bfe36bfc4da3f92f0f6fee9b94",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1856,6 +1856,28 @@
       "text": "Die erste Stufe ist nur ein Ring, aber sie aendert den Abend: Wer zahlt, steht nicht mehr im Hinterhof, sondern auf einer Tribuene. Jede Stufe liegt als Beleg im Haus, und der Einlass landet auf demselben Konto, aus dem die naechste Stufe bezahlt wird.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-arena.json"
+    },
+    {
+      "contributionId": "agent25-base-merge",
+      "turnId": "2026-11-11T06:50Z-agent25-base-merge",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Basis war schon im Baum, aber nicht in der Historie; ein Merge holt beides nach. Die Arena bleibt ein Ausbau der Immobilie, und der Nachlauf der Wett-Lane bleibt geschlossen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent25-base-merge.json"
     },
     {
       "contributionId": "agent25-ci-pending",
