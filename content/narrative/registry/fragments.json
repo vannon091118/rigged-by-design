@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:8995bb8d371dff3329a1581ff247ec7fa6141eb0b36d1cbdd8c60a9e765e466e",
+  "contentHash": "sha256:700362010956d6ed83e2b8e4dc37929c366e302bbcc8d0a966cec5e35f952d1c",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -1218,6 +1218,72 @@
       "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-1",
+      "turnId": "2026-11-11T05:00Z-agent21-room-plan-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Räume stehen längst im Plan: Zonen tragen ihre Funktion, Kanten ihre Türen. Der Raumplan liest beides an derselben Stelle, statt eine zweite Liste zu führen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-1.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-2",
+      "turnId": "2026-11-11T05:10Z-agent21-room-plan-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Raum ohne Zugang ist keine Planung, sondern eine Wand. Der Plan zählt Türen und Durchgänge und rechnet die Plätze aus der Fläche – sichtbar im Editor, ohne neues Save-Feld.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-2.json"
+    },
+    {
+      "contributionId": "agent21-room-plan-3",
+      "turnId": "2026-11-11T05:20Z-agent21-room-plan-3",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
     },
     {
       "contributionId": "apk-signing-01",

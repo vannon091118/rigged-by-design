@@ -8,6 +8,8 @@ import { FLOOR_MATERIALS, type EdgeAxis, type FloorMaterialId } from '../core/si
 import type { EditorCursor } from '../render/editor-overlay';
 import { useWorldStore, worldStore } from '../store/use-world-store';
 import { EDITOR_TOOLS, editorCommand, editorShortcut, type EditorCell, type EditorTool } from './editor-tools';
+import { useLayoutTransfer } from './layout-editor-transfer';
+import { LayoutRoomSummary } from './layout-room-summary';
 import '../styles/layout-editor.css';
 
 interface Props {
@@ -24,15 +26,14 @@ const labelFor = (tool: EditorTool): string => EDITOR_TOOLS.find((entry) => entr
 
 export default function LayoutEditor({ cellAt, onCursor, onClose }: Props) {
   const view = useWorldStore();
+  const transfer = useLayoutTransfer();
   const [tool, setTool] = useState<EditorTool>('FLOOR');
   const [material, setMaterial] = useState<FloorMaterialId>('WOOD');
   const [axis, setAxis] = useState<EdgeAxis>('H');
-  const [issue, setIssue] = useState('');
   const painting = useRef(false);
   const lastCell = useRef('');
   const cursorSink = useRef(onCursor);
   const closeSink = useRef(onClose);
-  const fileInput = useRef<HTMLInputElement>(null);
   cursorSink.current = onCursor;
   closeSink.current = onClose;
 
@@ -96,25 +97,6 @@ export default function LayoutEditor({ cellAt, onCursor, onClose }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const download = (): void => {
-    const url = URL.createObjectURL(new Blob([worldStore.exportLayout()], { type: 'application/json' }));
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'rbd-layout.json';
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const loadFile = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file) return;
-    void file.text().then((text) => {
-      const result = worldStore.importLayout(text);
-      setIssue(result.ok ? '' : result.issues.join(' '));
-    });
-  };
-
   return (
     <>
       <div
@@ -130,6 +112,8 @@ export default function LayoutEditor({ cellAt, onCursor, onClose }: Props) {
           <div><strong>Layout-Editor</strong><small>Raster {view.layout.size} × {view.layout.size}</small></div>
           <button type="button" className="btn small ghost" onClick={onClose} aria-label="Editor schließen">×</button>
         </header>
+
+        <LayoutRoomSummary layout={view.layout} />
 
         <div className="layout-editor-row" role="group" aria-label="Werkzeug">
           {EDITOR_TOOLS.map((entry) => (
@@ -157,13 +141,13 @@ export default function LayoutEditor({ cellAt, onCursor, onClose }: Props) {
         <div className="layout-editor-row">
           <button type="button" className="btn small" disabled={!worldStore.canUndoLayout()} onClick={() => worldStore.undoLayout()}>↶ Undo</button>
           <button type="button" className="btn small" disabled={!worldStore.canRedoLayout()} onClick={() => worldStore.redoLayout()}>↷ Redo</button>
-          <button type="button" className="btn small ghost" onClick={download}>Export</button>
-          <button type="button" className="btn small ghost" onClick={() => fileInput.current?.click()}>Import</button>
-          <input ref={fileInput} type="file" accept="application/json,.json" hidden onChange={loadFile} />
+          <button type="button" className="btn small ghost" onClick={transfer.download}>Export</button>
+          <button type="button" className="btn small ghost" onClick={transfer.openFile}>Import</button>
+          <input ref={transfer.fileInput} type="file" accept="application/json,.json" hidden onChange={transfer.loadFile} />
         </div>
 
         <p className="panel-note">Ziehen malt einen Strich. Ctrl+Z / Ctrl+Y (⌘ auf dem Mac), Esc schließt. Import ist fail-closed.</p>
-        {issue && <p className="layout-editor-issue" role="alert">{issue}</p>}
+        {transfer.issue && <p className="layout-editor-issue" role="alert">{transfer.issue}</p>}
       </aside>
     </>
   );

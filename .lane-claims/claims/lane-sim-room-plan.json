@@ -1,0 +1,25 @@
+{
+  "id": "lane/sim/room-plan",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/room-plan",
+  "baseSha": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8",
+  "task": "Agent 21: Raumplan aus dem Layout ableiten",
+  "goal": "Raeume, Raumfunktionen, Zugaenge und Kapazitaet kommen aus der vorhandenen Layout-Wahrheit: jede Zone ist ein Raum, ihre Kanten liefern Tueren und Durchgaenge, die Flaeche je Nutzung ergibt die geplante Gaestekapazitaet. Kein neues Save-Feld, keine zweite Raumliste; ein weiteres Geschoss waere ein eigener LayoutState mit derselben Ableitung.",
+  "pathAllowlist": [
+    "src/core/sim/room-plan.ts",
+    "src/ui/layout-editor.tsx",
+    "src/core/sim/__tests__/room-plan.test.ts",
+    "docs/INVENTORY.md",
+    "content/narrative/",
+    "src/core/sim/narrative/composer/",
+    ".lane-claims/tasks/room-plan.json",
+    ".lane-claims/claims/lane-sim-room-plan.json",
+    "src/ui/layout-room-summary.tsx",
+    "src/ui/layout-editor-transfer.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "449f7edf9b91c2db4bf7a4705e2ed5684458dab8"
+}
