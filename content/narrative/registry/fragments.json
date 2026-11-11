@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c977c98bf433e2da2925e0f40c6ac81d00acdace69bf2140696d16787ae9e08a",
+  "contentHash": "sha256:d5d6040c714ad05e65753e40ebef723fd408243c0e0ccb1e074962d99b1a95e7",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -5455,6 +5455,50 @@
       "text": "Rita strich eine Zeile durch, die sie nicht selbst nachgezaehlt hatte. Erst als die Muenzen auf dem Tisch lagen und die Summe stimmte, setzte sie das Haekchen darunter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-review-nachpruefung.json"
+    },
+    {
+      "contributionId": "living-world-foundation-1",
+      "turnId": "2026-11-11T02:15Z-living-world-foundation-1",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Aus dem Treppenhaus auf den nassen Gehweg getreten: Gegenüber leuchtet das Schild der Kiezkneipe, der Späti hat die Kisten draußen stehen, und ein Nachbar nickt im Vorbeigehen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-1.json"
+    },
+    {
+      "contributionId": "living-world-foundation-2",
+      "turnId": "2026-11-11T02:45Z-living-world-foundation-2",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "memory",
+      "function": "remember",
+      "contexts": [
+        "return"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
     },
     {
       "contributionId": "living-world-vision-1",
