@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/repo-cleanup-data-audit",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/repo-cleanup-data-audit",
+  "baseSha": "13e8f84864598422e540cf63f64a6bb761f02ac4",
+  "task": "Repo-Cleanup: Inventur, Widersprüche und 2k-Datenprüfung",
+  "goal": "Doku-Dubletten entfernen, veraltete Ist-Zahlen korrigieren, Datenabdeckung von Narrativ, Assets und Save-Archiv belegen.",
+  "pathAllowlist": [
+    "docs/INVENTORY.md",
+    "docs/INDEX.md",
+    "docs/DEVTAGEBUCH.md",
+    "docs/CHANGELOG.md",
+    ".lane-claims/claims/lane-governance-repo-cleanup-data-audit.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "13e8f84864598422e540cf63f64a6bb761f02ac4"
+}
