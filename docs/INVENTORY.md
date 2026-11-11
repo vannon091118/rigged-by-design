@@ -620,10 +620,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2850 |
-| Gelistete Dateien | 2850 |
+| Getrackte Dateien | 2851 |
+| Gelistete Dateien | 2851 |
 | Getrackte Ordner | 105 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (203), content (1007), docs (84), packages (28), public (554), scripts (113), src (833) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (204), content (1007), docs (84), packages (28), public (554), scripts (113), src (833) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -636,7 +636,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
 - `.lane-claims/claims/` — 127 Datei(en)
-- `.lane-claims/tasks/` — 74 Datei(en)
+- `.lane-claims/tasks/` — 75 Datei(en)
 - `content/narrative/contributions/` — 1003 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -895,6 +895,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-agent14-changelog.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-agent14-claim-evidence.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-agents-md-contract.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/governance-claim-cleanup.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-closeout-phase2.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-collision-closeout.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-collision-scope.json` — { — gelesen: 21 Zeilen
