@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:9a57997de75e31c7303a17fa4c129f1af34da634b6a499165801d07169b81a8c",
+  "contentHash": "sha256:cc55403b6976bfce64a2443504f05c28660eb12b3f70ccf046bcb5dbc75c60f0",
   "fragments": [
     {
       "contributionId": "advance-anger-01",
@@ -2032,6 +2032,28 @@
       "text": "Die Arena ist kein zweiter Ort, sondern ein Ausbau der eigenen Immobilie: Ring, Tribuene und Technik wachsen aus dem Betriebskonto, der Einlass des Kampfabends zahlt auf dasselbe Konto, und die Bar bleibt die Bar, die schon im Haus steht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-task.json"
+    },
+    {
+      "contributionId": "agent26-aftercare",
+      "turnId": "2026-11-11T08:58Z-agent26-aftercare",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-agent26-aftercare.json"
     },
     {
       "contributionId": "agent26-ci-fix",
