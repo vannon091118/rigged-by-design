@@ -8,6 +8,7 @@
  */
 import type { VaCoinMicro } from '../economy/vacoin';
 import { arenaView, type ArenaView } from './arena';
+import { fightBetView, type FightBetView } from './fight-bets';
 import { backyardView, type BackyardView } from './fight-career';
 import { fightEventView, type FightEventView } from './fight-event';
 import { fightRecordOf as fightRecordOfAll, type FightRecord } from './fight-history';
@@ -68,6 +69,8 @@ export interface PlayerCareer {
   readonly event: FightEventView;
   /** Arena-Ausbau der eigenen Immobilie mit Stufe, Plaetzen und Einlasspreis. */
   readonly arena: ArenaView;
+  /** Wettmarkt auf den Vorkampf des Abends, mit fixierten Scheinen. */
+  readonly bets: FightBetView;
   /** Erste Immobilie mit Katalog, Preis und Bezahlbarkeit aus dem Portemonnaie. */
   readonly property: PlayerPropertyView;
 }
@@ -163,6 +166,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
     backyard: backyardView(world, wallet),
     event: fightEventView(world, wallet),
     arena: arenaView(world),
+    bets: fightBetView(world, wallet),
     property: propertyView(world, wallet),
   };
 }

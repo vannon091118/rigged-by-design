@@ -12,6 +12,7 @@ import { toVCString, ZERO_VC, type VaCoinMicro } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
 import { admitArena } from './arena';
 import { crowdBonus } from './brawl-combat';
+import { runUndercard, settleFightBets } from './fight-bet-settle';
 import { fightBout, fightChance, fightNextRung, fightRoster, fightXpFor } from './fight-career';
 import {
   backyardHistoryOf, fightEventSubject, fightRecordOf, type FightRecord,
@@ -138,6 +139,14 @@ export function enterFightEvent(world: WorldState, ledger: Ledger, prng: Prng): 
   const outcome = `${bout.won ? 'Gewonnen' : 'Verloren'}: ${bout.ko ? 'KO' : 'nach Punkten'} in Runde ${bout.fight.rounds}`;
   const money = bout.won ? `Preisgeld ${toVCString(prize)}` : `Nenngeld ${toVCString(rung.entryFee)} verloren`;
   const notice = `${outcome} beim Kampfabend gegen ${rung.name} · ${money}.`;
+  advanceEventStep(world, live.id, 'RESULT', world.tick);
+  transitionEvent(world, live.id, 'RESOLVED', world.tick, `Kampfabend: ${outcome} gegen ${rung.name} vor ${view.crowd} Zuschauern.`);
+  // Der Einlass gehoert zum Abend: die vorhandene Arena rechnet ihn einmal ab.
+  admitArena(world, ledger);
+  // Der Vorkampf gehoert zum selben Abend: erst entscheiden, dann die
+  // Scheine gegen dieses Ergebnis abrechnen. Ohne Vorkampf wird erstattet.
+  runUndercard(world, prng);
+  settleFightBets(world, ledger);
   recordJournal(world, {
     kind: 'SYSTEM',
     subject: fightEventSubject(rung.name),
@@ -145,10 +154,6 @@ export function enterFightEvent(world: WorldState, ledger: Ledger, prng: Prng): 
     effect: `${outcome} · ${money}.`,
     amount: bout.won ? prize : rung.entryFee,
   });
-  advanceEventStep(world, live.id, 'RESULT', world.tick);
-  transitionEvent(world, live.id, 'RESOLVED', world.tick, `Kampfabend: ${outcome} gegen ${rung.name} vor ${view.crowd} Zuschauern.`);
-  // Der Einlass gehoert zum Abend: die vorhandene Arena rechnet ihn einmal ab.
-  admitArena(world, ledger);
   world.lastEvent = notice;
   return { won: bout.won, ko: bout.ko, fee: rung.entryFee, prize, notice };
 }

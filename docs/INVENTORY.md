@@ -119,7 +119,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), Pflichtstatus `Fail
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 287 Dateien — contract 172 · integration 59 · governance 42 · statistics 7 · performance 7.
+Summe: 288 Dateien — contract 173 · integration 59 · governance 42 · statistics 7 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -233,6 +233,7 @@ Summe: 287 Dateien — contract 172 · integration 59 · governance 42 · statis
 | `src/core/sim/__tests__/duel.test.ts` | sim | contract | ja | `src/core/sim/duel.ts` |
 | `src/core/sim/__tests__/economy-losses.test.ts` | sim | contract | ja | `src/core/sim/economics.ts` |
 | `src/core/sim/__tests__/expansion.test.ts` | sim | contract | ja | `src/core/sim/expansions.ts` |
+| `src/core/sim/__tests__/fight-bets.test.ts` | sim | contract | ja | `src/core/sim/fight-bets.ts` |
 | `src/core/sim/__tests__/fight-career.test.ts` | sim | contract | ja | `src/core/sim/fight-career.ts` |
 | `src/core/sim/__tests__/fight-event.test.ts` | sim | contract | ja | `src/core/sim/fight-event.ts` |
 | `src/core/sim/__tests__/floor-work.test.ts` | sim | contract | ja | `src/core/sim/floor-work.ts` |
@@ -600,10 +601,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2708 |
-| Gelistete Dateien | 2708 |
+| Getrackte Dateien | 2723 |
+| Gelistete Dateien | 2723 |
 | Getrackte Ordner | 95 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (186), content (959), docs (83), public (554), scripts (102), src (796) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (15), .lane-claims (188), content (967), docs (83), public (554), scripts (102), src (801) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -615,9 +616,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 10 Datei(en)
 - `.lane-claims/` — 2 Datei(en)
-- `.lane-claims/claims/` — 118 Datei(en)
-- `.lane-claims/tasks/` — 66 Datei(en)
-- `content/narrative/contributions/` — 955 Datei(en)
+- `.lane-claims/claims/` — 119 Datei(en)
+- `.lane-claims/tasks/` — 67 Datei(en)
+- `content/narrative/contributions/` — 963 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -678,8 +679,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 124 Datei(en)
-- `src/core/sim/__tests__/` — 133 Datei(en)
+- `src/core/sim/` — 128 Datei(en)
+- `src/core/sim/__tests__/` — 134 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -821,6 +822,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-city-day-closeout.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/claims/lane-sim-company-progression.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-factor-matrix-config.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-fight-bets.json` — { — gelesen: 34 Zeilen
 - `.lane-claims/claims/lane-sim-fight-career.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-sim-fight-event.json` — { — gelesen: 33 Zeilen
 - `.lane-claims/claims/lane-sim-first-property.json` — { — gelesen: 42 Zeilen
@@ -893,6 +895,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-arena.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-business-areas.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/sim-company-progression.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/tasks/sim-fight-bets.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-fight-career.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/sim-fight-event.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/tasks/sim-first-property.json` — { — gelesen: 22 Zeilen
@@ -1862,6 +1865,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-agent23-fight-event.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-merge-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent23-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-aftercare.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-bets.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-ci-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-done-repair.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-done.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-merge-pending.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-task.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-11-agent24-test-quality.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent25-arena.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent25-ci-pending.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-agent25-task.json` — { — gelesen: 21 Zeilen
@@ -1873,8 +1884,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-readme-visual-polish-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-render-world-visual-presentation-1.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 21407 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 3827 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 21583 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 3861 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1807 Zeilen
@@ -2799,6 +2810,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
 - `src/core/sim/__tests__/expansion.test.ts` — Ein Ausbau erhaelt Einrichtung, IDs, Gaeste, Personal und offene Anspruche; — gelesen: 166 Zeilen
+- `src/core/sim/__tests__/fight-bets.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 121 Zeilen
 - `src/core/sim/__tests__/fight-career.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 117 Zeilen
 - `src/core/sim/__tests__/fight-event.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 136 Zeilen
 - `src/core/sim/__tests__/floor-work.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 124 Zeilen
@@ -2946,8 +2958,12 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/emotion.ts` — Was ein Gast gerade fühlt: eine Grafik statt eines Satzes. — gelesen: 57 Zeilen
 - `src/core/sim/events.ts` — Einfacher Event-Emitter fuer die Visuellen-Effekte-Brücke. — gelesen: 30 Zeilen
 - `src/core/sim/expansions.ts` — Ausbau: das Haus waechst aus dem Bestand heraus. Nichts wird ersetzt, alles bleibt. — gelesen: 101 Zeilen
+- `src/core/sim/fight-bet-cashier.ts` — Abgabe eines Scheins: der Ledger bucht den Einsatz, das Journal fixiert die — gelesen: 37 Zeilen
+- `src/core/sim/fight-bet-settle.ts` — Vorkampf und Abrechnung: der Vorkampf wird genau einmal simuliert, offene — gelesen: 87 Zeilen
+- `src/core/sim/fight-bet-slips.ts` — Schein- und Abrechnungsbelege sind Journal-Eintraege: kein neues Save-Feld, — gelesen: 79 Zeilen
+- `src/core/sim/fight-bets.ts` — Wettmarkt auf den Vorkampf: Quoten aus der vorhandenen Kampfmechanik. — gelesen: 107 Zeilen
 - `src/core/sim/fight-career.ts` — Hinterhof-Karriere: herausforderbare Gegner, Startgeld und Preisgeld. — gelesen: 171 Zeilen
-- `src/core/sim/fight-event.ts` — Kampfabend im vorhandenen Turnierabend. — gelesen: 154 Zeilen
+- `src/core/sim/fight-event.ts` — Kampfabend im vorhandenen Turnierabend. — gelesen: 159 Zeilen
 - `src/core/sim/fight-fx.ts` — Kurzlebige Kampf-Rueckmeldung: der Streit ist schon entschieden, der Floor zeigt — gelesen: 11 Zeilen
 - `src/core/sim/fight-history.ts` — Kampfhistorie aus dem Ereignisarchiv: dieselbe Ableitung fuer Gastduell, — gelesen: 98 Zeilen
 - `src/core/sim/floor-work.ts` — Arbeitsqualitaet auf dem Floor: welches Attribut welche Arbeit traegt. — gelesen: 129 Zeilen
@@ -3018,7 +3034,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/commands/types.ts` — Typisierte Event-Commands: Text wird zu AST, nie zu ausfuehrbarem Code. — gelesen: 99 Zeilen
 - `src/core/sim/narrative/commands/validate.ts` — Kompiliert Direktiven und prueft sie gegen Registry, Argumente und Allowlist. — gelesen: 71 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 244 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 246 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen
@@ -3093,7 +3109,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/penalty-pool.ts` — Folgen eines verlorenen Duells: Ruf und Laune als befristete Strafe, kein Zufallspool. — gelesen: 39 Zeilen
 - `src/core/sim/personas.ts` — Gästetypen: Budget, Geduld, Suchtneigung, Getränkeneigung und Spielgeschmack. — gelesen: 53 Zeilen
 - `src/core/sim/player-apartment.ts` — Kanonisches Layout und Einrichtungs-Modell der Spieler-Wohnung. — gelesen: 91 Zeilen
-- `src/core/sim/player-career.ts` — Spieler-Karriere: Level, Attribute, Koerper, Arbeit und Kampfbilanz als eine Sicht. — gelesen: 174 Zeilen
+- `src/core/sim/player-career.ts` — Spieler-Karriere: Level, Attribute, Koerper, Arbeit und Kampfbilanz als eine Sicht. — gelesen: 178 Zeilen
 - `src/core/sim/player-history.ts` — Spielhistorie: die persoenlichen Etappen aus dem Ereignisarchiv. — gelesen: 43 Zeilen
 - `src/core/sim/player-jobs.ts` — Spieler-Jobs in fremden Casinos. Sims-Style Arbeit an Job-Stationen. — gelesen: 144 Zeilen
 - `src/core/sim/player-look.ts` — Der Look des Spielers: reine Daten, keine Gameplay-Wirkung. — gelesen: 56 Zeilen
@@ -3124,7 +3140,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/tick.ts` — Ein Tick der Welt: Spawn, Wege, Service, Laune, Dreck, Personal. — gelesen: 169 Zeilen
 - `src/core/sim/traits.ts` — Gast-Erzeugung: Persona plus zufaellig verteilter Max-Pool fuer Laune, Geduld und Sucht. — gelesen: 74 Zeilen
 - `src/core/sim/treat-influence.ts` — Döner-/Treat-Wirkung: liest den Kontext aus dem Zielmoebel und die — gelesen: 32 Zeilen
-- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 87 Zeilen
+- `src/core/sim/tx-reasons.ts` — Ein Ort für Buchungsgründe: Wer bucht und wer klassifiziert, liest dieselben — gelesen: 90 Zeilen
 - `src/core/sim/types-model.ts` — Welttypen ohne den Weltzustand selbst. — gelesen: 137 Zeilen
 - `src/core/sim/types.ts` — Ein einziger serialisierbarer Weltzustand. Geld liegt nicht hier, sondern im Ledger. — gelesen: 123 Zeilen
 - `src/core/sim/upkeep.ts` — Laufende Pflege der Welt: Tageslohn, Miete, verwaiste Sitze und Gast-Laune. — gelesen: 68 Zeilen
@@ -3251,7 +3267,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/save-v7.test.ts` — Ein v6-Spielstand bekommt Kisten, Agenten und Bedürfnisse mit Defaults; v7 bleibt rund. — gelesen: 119 Zeilen
 - `src/store/__tests__/save-wage-field.test.ts` — Saves vor der Anwesenheitsregel tragen kein `lastWorkDay` im Job. — gelesen: 63 Zeilen
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
-- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 92 Zeilen
+- `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 105 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 52 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen
@@ -3328,7 +3344,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/ui/build-panel-connected.tsx` — Betriebs-Panel: verdrahtet das Panel mit dem Store; App haelt nur den Schalter. — gelesen: 38 Zeilen
 - `src/ui/build-panel-parts.tsx` — Bau-Sektionen: Personal, Hauswahl, Farben, Streit. Reine Darstellung. — gelesen: 126 Zeilen
 - `src/ui/build-panel.tsx` — Bau-Popup: kaufen, liefern, Personal, Preise, Deko und Freischaltung. — gelesen: 183 Zeilen
-- `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 56 Zeilen
+- `src/ui/career-backyard.tsx` — Hinterhof-Karriere im Charakterfenster: eine Sektion, keine zweite Oberflaeche. — gelesen: 80 Zeilen
 - `src/ui/career-floor.tsx` — Arbeitsqualitaet im Charakterfenster: welche Rolle welches Attribut traegt. — gelesen: 27 Zeilen
 - `src/ui/career-history.tsx` — Spielhistorie im Charakterfenster: die letzten Etappen aus dem Archiv, keine zweite Chronik. — gelesen: 30 Zeilen
 - `src/ui/career-property.tsx` — Erste Immobilie im Charakterfenster: Katalog, Besitz, Betrieb und Renovierung aus derselben Sicht. — gelesen: 158 Zeilen

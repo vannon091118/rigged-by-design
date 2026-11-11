@@ -3808,6 +3808,40 @@
     {
       "turnId": "2026-11-11T05:30Z-agent23-done",
       "contributionId": "agent23-done"
+    },
+    {
+      "turnId": "2026-11-11T05:50Z-agent24-task",
+      "contributionId": "agent24-task"
+    },
+    {
+      "turnId": "2026-11-11T06:05Z-agent24-bets",
+      "contributionId": "agent24-bets"
+    },
+    {
+      "turnId": "2026-11-11T06:10Z-agent24-ci-pending",
+      "contributionId": "agent24-ci-pending"
+    },
+    {
+      "turnId": "2026-11-11T06:12Z-agent24-test-quality",
+      "contributionId": "agent24-test-quality"
+    }
+,
+    {
+      "turnId": "2026-11-11T06:16Z-agent24-merge-pending",
+      "contributionId": "agent24-merge-pending"
+    }
+,
+    {
+      "turnId": "2026-11-11T06:20Z-agent24-aftercare",
+      "contributionId": "agent24-aftercare"
+    },
+    {
+      "turnId": "2026-11-11T05:30Z-agent24-done",
+      "contributionId": "agent24-done"
+    },
+    {
+      "turnId": "2026-11-11T06:10Z-agent24-done-repair",
+      "contributionId": "agent24-done-repair"
     }
 ,
     {
