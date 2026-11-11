@@ -7,15 +7,27 @@
  * echte Pfad bleibt gruen. Die Fixtures ersetzen nur die Kantenleser, nicht
  * die Traversierung.
  */
+import { dirname, relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { auditImpactGraph } from '../../../../scripts/lib/impact-graph.mjs';
 
-const fixture = (files: Readonly<Record<string, readonly string[]>>) => ({
-  root: '/',
-  entries: ['entry.mjs'],
-  specifiersOf: (file: string) => files[file.replace(/^\//, '')] ?? [],
-  resolveSpecifier: (specifier: string) => (specifier.startsWith('.') ? `/${specifier.replace(/^\.\//, '')}` : null),
-});
+/**
+ * Der Produktionsleser bekommt einen absoluten Pfad, keinen POSIX-Specifier:
+ * `resolve('/', 'entry.mjs')` ist auf Windows `D:\entry.mjs`. Die Fixture-Tabelle
+ * ist deshalb relativ zu einer aufgeloesten Wurzel gekeyt und loest relative
+ * Importe gegen das Verzeichnis der lesenden Datei auf - dieselbe Semantik wie
+ * `imports.mjs`, ohne Basisnamen-Kollision zwischen zwei Verzeichnissen.
+ */
+const fixture = (files: Readonly<Record<string, readonly string[]>>) => {
+  const root = resolve('/');
+  return {
+    root,
+    entries: ['entry.mjs'],
+    specifiersOf: (file: string) => files[relative(root, file).replaceAll('\\', '/')] ?? [],
+    resolveSpecifier: (specifier: string, from: string) =>
+      (specifier.startsWith('.') ? resolve(dirname(from), specifier) : null),
+  };
+};
 
 describe('Impact-Graph-Gate', () => {
   it('weist einen direkten Compiler-Import im Impact-Pfad ab', () => {

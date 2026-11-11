@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:be312e113181bce08703495793499aeb78e4778d7eb725aa6fd6e5283e86a26f",
+  "contentHash": "sha256:e04f4f1c60a84b34212065b5f3f1d4c1faaf55314a3f2af7116d25904d7ae72d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6209,6 +6209,31 @@
       "text": "Rita trug die Kämpfe nicht in festen Reihenfolge nach, sondern so, wie sie fielen: jeder Abend ein anderer Verlauf, der Name des Gegners und das Ergebnis blieben trotzdem stehen. Was sie nicht aufschrieb, war die Zahl des Wurfs – den merkte sich nur der Ring.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-fight-career-tests.json"
+    },
+    {
+      "contributionId": "first-evening-ci",
+      "turnId": "2026-11-11T23:45Z-first-evening-ci",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [
+        "rita-kern"
+      ],
+      "flags": [
+        "narrativ",
+        "rita-kern"
+      ],
+      "text": "Rita zog den Vorhang vor der Buehne zurueck: ein Fenster, ein Ziel, ein Gast, der paenktlich an der zwoelften Marke erschien. Die Kamera fuellte den Raum bis an den Rand, und was schwer zu pruefen war, wanderte an den Ort, an dem es niemanden im Spiel aufhielt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-11-first-evening-ci.json"
     },
     {
       "contributionId": "first-property-01",

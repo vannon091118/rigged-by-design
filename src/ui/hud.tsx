@@ -6,6 +6,7 @@ import type { GameView } from '../store/types';
 import type { Perspective } from './app-model';
 import { vc } from './format';
 import { ACCOUNT_LABEL, HELP } from './glossary';
+import { startGoal } from './goal';
 import { MOOD_LABEL, PENALTY_LABEL, reputationOf, SKILLS } from './hud-labels';
 import { UI_ICON } from './icons';
 import { PerspectiveSwitch } from './perspective-switch';
@@ -35,6 +36,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
   const startTip = view.day === 1 && view.guests.length === 0;
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
+  const goal = startGoal(view);
   return (
 <header className={`hud ${perspective}`}>
       <div className="hud-brand" onClick={(event) => onBrandTap?.(event.timeStamp)}>
@@ -63,10 +65,13 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
             </>
           )}
         </small>
-        {!guest && !view.barPurchased && (
-          <span className="hud-goal" title={`Bargeld bis zum Barkauf: ${vc(view.wallet, 2)} von 50,00`}>
-            <i style={{ width: `${Math.min(100, (view.wallet / 10_000) / 50 * 100)}%` }} />
-          </span>
+        {!guest && (
+          <div className="hud-goal-row" title={`${goal.text} · ${goal.percent} %`}>
+            <span className="hud-goal-label">{goal.label}</span>
+            <span className="hud-goal" aria-hidden="true">
+              <i style={{ width: `${goal.percent}%` }} />
+            </span>
+          </div>
         )}
       </div>
 

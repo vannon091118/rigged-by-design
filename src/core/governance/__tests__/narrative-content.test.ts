@@ -7,41 +7,16 @@
  * nicht nur den Happy Path, sondern auch fehlende Felder, unbekannte Werte,
  * doppelte IDs und Registry-Drift.
  */
-import { cpSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import {
-  buildCompiledRegistry,
-  canonical,
-  renderRegistry,
-  renderRuntimeRegistry,
-  renderSlotMap,
-} from '../../../../scripts/lib/narrative-compiler.mjs';
+import { buildCompiledRegistry, canonical } from '../../../../scripts/lib/narrative-compiler.mjs';
 import {
   loadNarrativeContent,
   loadNarrativeSources,
-  validateContribution,
   validateNarrativeData,
 } from '../../../../scripts/lib/narrative-content.mjs';
-
-const ROOT = resolve(process.cwd());
-const report = loadNarrativeContent(ROOT);
-const first = report.contributions[0];
-const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
-const messages = (issues: readonly { message: string }[]) => issues.map((entry) => entry.message).join(' | ');
-const schema = (data: unknown, path: string = first.path) => validateContribution(data, report.vocabulary, path);
-const fixture = () => {
-  const root = mkdtempSync(join(tmpdir(), 'rbd-narrative-fixture-'));
-  cpSync(join(ROOT, 'content/narrative'), join(root, 'content/narrative'), { recursive: true });
-  const document = buildCompiledRegistry(report.contributions, report.vocabulary).document;
-  const generated = join(root, 'src/core/sim/narrative/composer');
-  mkdirSync(generated, { recursive: true });
-  writeFileSync(join(root, 'content/narrative/registry/fragments.json'), renderRegistry(document));
-  writeFileSync(join(generated, 'registry.generated.ts'), renderRuntimeRegistry(document));
-  writeFileSync(join(generated, 'slot-map.generated.ts'), renderSlotMap(report.vocabulary));
-  return root;
-};
+import { clone, fixture, first, messages, report, schema } from './narrative-fixture';
 
 describe('Narrative Content Registry (NAR-09)', () => {
   it('akzeptiert Inbox, Manifest und Registry als konsistenten Bestand', () => {
@@ -109,7 +84,9 @@ describe('Narrative Content Registry (NAR-09)', () => {
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
-  }, 20_000);
+    // Fixture kopiert 1004 Contribution-Dateien und baut die Registry; isoliert 13-15 s,
+    // unter acht parallelen Workern mehr. 20 s riss im Volllauf, 60 s bleibt begrenzt.
+  }, 60_000);
 
   it('weist fehlende Pflichtfelder und unbekannte Felder zurueck', () => {
     const missing = clone(first.data);

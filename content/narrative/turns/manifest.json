@@ -4028,6 +4028,10 @@
     {
       "turnId": "2026-11-11T23:20Z-optional-pr-runner",
       "contributionId": "optional-pr-runner"
+    },
+    {
+      "turnId": "2026-11-11T23:45Z-first-evening-ci",
+      "contributionId": "first-evening-ci"
     }
   ]
 }

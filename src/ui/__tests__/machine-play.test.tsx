@@ -84,7 +84,8 @@ describe('Eigener Automat', () => {
 
   it('reicht einen Gastwurf als eigenen Spielzug weiter', async () => {
     const { onPlay, wallet } = fixture('guest');
-    await waitFor(() => screen.getByRole('button', { name: /WUERFELN/ }), { timeout: 15000 });
+    // Der Spieltisch kommt ueber React.lazy; unter paralleler Last braucht der Chunk laenger.
+    await waitFor(() => screen.getByRole('button', { name: /WUERFELN/ }), { timeout: 30_000 });
     const wager = screen.getByRole('button', { name: /WUERFELN/ });
     fireEvent.click(wager);
     expect(onPlay).toHaveBeenCalledWith(1, { variant: 'UNDER' });
