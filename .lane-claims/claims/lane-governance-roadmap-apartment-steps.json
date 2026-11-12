@@ -1,0 +1,19 @@
+{
+  "id": "lane/governance/roadmap-apartment-steps",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/roadmap-apartment-steps",
+  "baseSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "task": "Roadmap: Waende, Moebel, Dekor, dann Stadt als Netz",
+  "goal": "Die naechsten Wohnungs-Schritte und die Stadt als eigene Netzszen festschreiben.",
+  "pathAllowlist": [
+    "docs/ROADMAP.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-governance-roadmap-apartment-steps.json",
+    ".lane-claims/tasks/governance-roadmap-apartment-steps.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "092ba451e4b8264b90504e57f34fc37ca29a8c98"
+}

@@ -6,7 +6,7 @@
 Jede Zeile nennt den Code, den Test oder das Bild, an dem die Arbeit weitergeht.
 Abgeschlossenes bleibt als Beleg stehen, bis es ins Changelog wandert.
 
-**Stand:** 2026-11-11 · Version `0.3.231`
+**Stand:** 2026-11-12 · Version `0.3.232`
 
 ## Lesart
 
@@ -36,7 +36,7 @@ auch bedienen kann.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| S1-01 | Genau ein Startzustand: Eröffnung, dann Stadt, dann Raum | erledigt | `src/ui/opening-card.tsx`, `src/ui/onboarding-panel.tsx`, `src/store/__tests__/onboarding-save.test.ts` | Zwei Modals überlagern sich nie; alte Saves laden als `DONE` |
+| S1-01 | Genau ein Startzustand: Eröffnung, dann Wohnung, dann Stadt und Raum | erledigt | `src/ui/opening-card.tsx`, `src/ui/onboarding-panel.tsx`, `src/store/__tests__/onboarding-save.test.ts` | Zwei Modals überlagern sich nie; alte Saves laden als `DONE` |
 | S1-02 | Genau ein sichtbares Ziel im HUD | erledigt | `src/ui/goal.ts`, `src/ui/__tests__/goal.test.ts` | Erst Barkauf, dann Miete; Anzeige leitet nur aus dem Snapshot ab |
 | S1-03 | Ein Startzustand ohne schwarze Balken | erledigt | `src/ui/floor-feedback.tsx`, `src/ui/__tests__/world-first-ui.test.tsx` | Der Plan liegt auf einer Bühne, nicht in einem Loch |
 | S1-04 | Erster Gast nur mit Kasse und erreichbarem Weg | erledigt | `src/core/sim/spawn.ts`, `src/core/sim/demand.ts`, `src/core/sim/__tests__/spawn-demand.test.ts` | Ohne Kasse entstehen weder Gast noch PRNG-Verbrauch |
@@ -66,10 +66,13 @@ durch das Spiel, nicht dem Aufnahmezeitpunkt.
 
 ## Als Nächstes — Stadt, Wirtschaft und Inhalte
 
-### Phase 3 — Stadt als permanenter Spielraum (P1)
+### Phase 3 — Wohnung als Raum, dann Stadt als Netz (P1)
 
 Der Systemkern der Living World steht bereits headless; offen ist der begehbare Start
 und der Browserbeleg.
+
+**Reihenfolge:** erst die Wohnung als echter Raum (S2-09 bis S2-11), danach die Stadt
+als Netz zwischen allen Lokationen (S2-12).
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
@@ -79,8 +82,12 @@ und der Browserbeleg.
 | S2-04 | Deterministische Tagespläne und Bedürfnisse | erledigt | `src/core/sim/npc-schedule.ts`, `src/core/sim/npc-needs.ts`, `src/core/sim/__tests__/npc-schedule.test.ts` | Schlafen, Arbeit, Essen und Freizeit folgen dem Plan |
 | S2-05 | Akteur-Kontinuität über Raumgrenzen | erledigt | `src/core/sim/actor-continuity.ts`, `src/core/sim/__tests__/living-world-continuity.test.ts` | Kein Duplikat, kein Respawn beim Raumwechsel |
 | S2-06 | Soziale Begegnung aus physischer Nähe | erledigt | `src/core/sim/social-encounter.ts`, `src/core/sim/__tests__/living-world-social-economy.test.ts` | Nähe erzeugt Gespräch, Fact und Beziehungsdelta |
-| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | offen | `src/store/new-game.ts`, `src/core/sim/player-apartment.ts`, `src/core/sim/room-transition.ts` | Der Start führt durch die Wohnungstür auf die Straße |
+| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | verifiziert | `src/store/new-game.ts`, `src/store/scene-commands.ts`, `src/core/sim/player-apartment.ts`, `src/store/__tests__/new-game.test.ts` | Der Start führt durch die Wohnungstür auf die Straße |
 | S2-08 | Sichtbarer Beweis: kein Teleport, keine Duplikate im Browser | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts` | Der Vertikalschnitt ist im Browser nachvollzogen, nicht nur headless |
+| S2-09 | Wände bauen: Wohnungszonen als Räume | offen | `src/core/sim/player-apartment.ts`, `src/core/sim/nav-grid.ts`, `src/render/wall-art.ts`, `src/render/wall-occlusion.ts` | Jede Wohnzone hat Wände und Türrahmen; Türen bleiben begehbar, Occlusion verdeckt Figuren korrekt |
+| S2-10 | Möbel bauen: eigene Wohnungs-Sprites | offen | `src/core/sim/player-apartment.ts`, `src/render/furniture-art.ts`, `src/render/furniture-atlas.ts` | Bett, Schrank, Kochnische, Bad und Sofa nutzen eigene Wohnungs-Assets statt Casino-Möbel; Interaktionen bleiben erhalten |
+| S2-11 | Dekor bauen: Wohnungsbild ohne Casino-Symbole | offen | `src/render/room-dressing.ts`, `src/render/art-tokens.ts`, `src/core/sim/player-apartment.ts` | Teppich, Lampen, Bilder und Pflanzen folgen der warmen Wohnungspalette; kein Neon und kein Automat |
+| S2-12 | Stadt als Netz: alle Lokationen in einer eigenen Szene | offen | `src/core/sim/city-scene.ts`, `src/core/sim/city.ts`, `src/store/scene-commands.ts`, `src/store/snapshot.ts` | Wohnung, Casino, Kneipe und Markt sind Knoten, ihre Wege sind Kanten der Szene CITY; jeder Ortswechsel läuft über dieses Netz |
 
 ### Phase 4 — Wirtschaft, Bereiche und Ereignisse (P1)
 
