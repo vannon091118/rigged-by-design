@@ -5,7 +5,7 @@
 ## Grundsatz
 
 - **Lokal ist der einzige Testpfad** für Entwicklung, Tests, Build, Audit und APK.
-- **GitHub führt keine Tests, Gates, Builds oder APKs aus.** Drei Workflows bleiben ausschließlich für Repository-Verwaltung: PR anlegen, gemergte Branches aufräumen, Promotion manuell anstoßen.
+- **GitHub führt keine Tests, Gates, Builds oder APKs aus.** Drei Workflows bleiben ausschließlich für Repository-Verwaltung: `ensure-pr.yml` (PR anlegen), `pr-cleanup.yml` (gemergte Branches aufräumen) und `promote.yml` (Promotion manuell anstoßen). Die früheren `render-inventory-sync*.yml` sind entfernt; die Inventur läuft lokal über `pnpm run inventory:build`.
 - **Mechanik ist gezielt.** Statistik, Soak, Langlauf und Benchmarks laufen nur über `pnpm run test:mechanics`, nie in einem Regelprofil.
 - **Keine stillen Erfolge:** Fehlende Gates, leere Auswahlen und abgebrochene Läufe sind rot, nie grün.
 
