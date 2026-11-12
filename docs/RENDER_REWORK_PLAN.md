@@ -5,7 +5,7 @@ Living-World-Roadmap. Er beschreibt Reihenfolge, Abhängigkeiten, Dateien, Tests
 und Abnahmekriterien. Die Produktplanung bleibt in [`ROADMAP.md`](ROADMAP.md);
 die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
-**Stand:** 2026-11-12 · Baum `0.3.233` · Audit-Basis `0.3.231`
+**Stand:** 2026-11-12 · Baum `0.3.242` · Audit-Basis `0.3.231`
 
 **Status:** Umsetzung begonnen (Lane `lane/render/r1-r12-rework`). Die Kästchen
 werden nur mit Beleg abgehakt; ein grüner Teilcheck ist kein grüner
@@ -18,6 +18,19 @@ Belegt sind die deterministischen Verträge und die lokalen Gates; **nicht**
 belegt ist die Pixi-Sichtabnahme. Der Cloud-Browser hängt in dieser VM auch
 mit dem unveränderten Basisstand `fccc787` (kein Screenshot, keine
 Accessibility-Abfrage); das ist eine Umgebungsgrenze, kein grüner Bildbeleg.
+
+Der headless Gegenbeleg ist dagegen reproduzierbar: [`living-world-longturn-424242-4d.json`](evidence/living-world-longturn-424242-4d.json)
+hält Seed `424242`, 4 Sim-Tage, 2400 Ticks und 288 Entscheidungen fest, samt
+Vorher/Nachher-Werten für Hunger, Durst, Routinen, Traits, Attribute und
+Fähigkeiten sowie fünf aufeinanderfolgenden Ereignisketten (GEBEN → Traits →
+`CITY_ENCOUNTER_ARC` → Echo, Dreck → Laune, Hunger → Ruf → Mahlzeit, Mahlzeit →
+Erinnerung → anderes Verhalten, Stadt-Routine über vier Tage). Der Lauf ist kein Sichtbeleg und ersetzt die
+Pixi-Abnahme nicht:
+
+```bash
+RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json \
+  npx pnpm exec vitest run src/core/sim/__tests__/living-world-longturn.test.ts
+```
 
 | Phase | Beleg | Stand |
 | --- | --- | --- |
@@ -210,8 +223,8 @@ werden in R0 neu erhoben, nicht ungeprüft übernommen.
 
 | Befund | Aktueller Beleg | Phase |
 | --- | --- | --- |
-| D1: Grüner Platzhalter statt Ehrlichkeit | `src/render/furniture-atlas.ts` zeichnet weiterhin `0x2dd4a0` | R2 |
-| D2: Deko über Label-Regexe | `furniture-atlas.ts` leitet Deko aus Namen statt aus stabilen Rollen ab | R2 |
+| D1: Grüner Platzhalter statt Ehrlichkeit | **Durch R2 umgesetzt:** `src/render/decor-roles.ts` + `src/render/__tests__/decor-roles.test.ts`; `furniture-atlas.ts` zeichnet unbekannte Flächen als Warnmuster. Verbleibende `0x2dd4a0`-Treffer sind Palette-Rollen (`PALM`/`PLANT` in `src/render/visual/scene-frame.ts`, `success` in `src/render/art-tokens.ts`), kein Platzhalter. | R2 |
+| D2: Deko über Label-Regexe | **Durch R2 umgesetzt:** `src/render/decor-roles.ts` + `src/render/__tests__/decor-roles.test.ts` lösen stabile IDs, `kind` und exakte Labels auf; keine Regex-Heuristik mehr in `furniture-atlas.ts`. | R2 |
 | D3: Fünf Materialien ohne Textur | `src/render/floor-material.ts` enthält fünf `texture: null` | R4 |
 | D4: Figur wird zum Pin | `src/render/guest-rig.ts` ersetzt das Rig durch den Pin; `guest-paint.ts` malt 6×6 | R3 |
 | D5: Stadt existiert nur headless | `createCityExteriorModel()`/`createCityStreetLayout()` haben keinen Produktionsaufrufer außerhalb der Simulation | R7 |
@@ -298,7 +311,7 @@ ohne es zu messen.
 
 **Aufgaben**
 
-- [ ] Render-Inventar am Baum `0.3.233` neu zählen: Dateien, Assets, benutzte
+- [ ] Render-Inventar am Baum `0.3.242` neu zählen: Dateien, Assets, benutzte
       Assets, Atlasrahmen, Materialien, Figuren, Lichtflächen, Boot-Requests.
 - [ ] Rolleninventar anlegen: Terrain, Wand, Boden, Möbel, Gerät, Deko, Akteur,
       Licht, Partikel, UI. Jede Rolle nennt ihren Renderer und ihre Quelle.
@@ -371,27 +384,27 @@ gemeinsame Zeichenhelfer), neu `src/render/decor-roles.ts`, ggf.
 
 **Aufgaben**
 
-- [ ] `decor-roles.ts` führt eine explizite Tabelle `stabile ID → Rolle`.
+- [x] `decor-roles.ts` führt eine explizite Tabelle `stabile ID → Rolle`.
       Reihenfolge: `gameId`, `kind`, Asset-ID, erst danach Anzeigename.
-- [ ] Die Regex-/Label-Heuristik in `furniture-atlas.ts` entfernen. Ein
+- [x] Die Regex-/Label-Heuristik in `furniture-atlas.ts` entfernen. Ein
       unbekannter Name darf keine geratene Rolle mehr erzeugen.
-- [ ] Platzhalter zeichnen: gestrichelte Kontur, neutraler Warnfarbton,
+- [x] Platzhalter zeichnen: gestrichelte Kontur, neutraler Warnfarbton,
       Asset-/Rollenname klein darunter. Kein `0x2dd4a0` als Erfolgssignal.
-- [ ] Unbekanntes Bodenmaterial bekommt denselben ehrlichen Platzhalter; der
+- [x] Unbekanntes Bodenmaterial bekommt denselben ehrlichen Platzhalter; der
       Boden fällt nicht auf Beton zurück.
-- [ ] `Furniture.role` nur ergänzen, wenn ein stabiler Schlüssel fehlt; die
+- [x] `Furniture.role` nur ergänzen, wenn ein stabiler Schlüssel fehlt; die
       Schemaänderung braucht Save-/Migrationsprüfung.
-- [ ] Test: jede Rolle aus dem Inventar wird aufgelöst; unbekannte ID wird
+- [x] Test: jede Rolle aus dem Inventar wird aufgelöst; unbekannte ID wird
       sichtbar als Platzhalter gemeldet; kein Treffer über Label-Text.
 
 **Akzeptanz**
 
-- [ ] `rg "0x2dd4a0" src/render/furniture-atlas.ts` liefert keinen Treffer.
-- [ ] Kein Deko-Mapping liest mehr einen Anzeigenamen als Primärschlüssel.
-- [ ] Ein fehlendes Asset ist im lokalen Bildgate sichtbar und nennt seinen
+- [x] `rg "0x2dd4a0" src/render/furniture-atlas.ts` liefert keinen Treffer.
+- [x] Kein Deko-Mapping liest mehr einen Anzeigenamen als Primärschlüssel.
+- [x] Ein fehlendes Asset ist im lokalen Bildgate sichtbar und nennt seinen
       Schlüssel.
-- [ ] Bestehende Möbel und Geräte behalten ihre Textur.
-- [ ] Sichtabnahme: unbekanntes Möbel als gestrichelter Platzhalter mit
+- [x] Bestehende Möbel und Geräte behalten ihre Textur.
+- [x] Sichtabnahme: unbekanntes Möbel als gestrichelter Platzhalter mit
       Schlüssel; Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Platzhalter sind `Graphics`-Leaves in einem `Container`.

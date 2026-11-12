@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7c2b4c296a3d73770a2869f8e6c944662535815c23f0fd8384426f20d970deb3",
+  "contentHash": "sha256:18afc2e5ac46f4af177ce9a67e39ebd1e4caa57ed9abea06a52239c39e030a9a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -7259,6 +7259,28 @@
       "text": "Das vertraute Geräusch des Schlüssels im Schloss der Wohnungstür verhallt im Treppenhaus. Der Schritt hinaus auf die Kiezstraße bringt alte Gewohnheiten zurück.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-living-world-foundation-2.json"
+    },
+    {
+      "contributionId": "living-world-longturn-01",
+      "turnId": "2026-11-12T11:45Z-longturn-evidence",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Vier Tage im Kiez sind kein Standbild: Hunger und Durst ziehen am Ruf, ein Gruss verschiebt Traits, und eine Mahlzeit bleibt als Erinnerung an der naechsten Entscheidung haengen. Wer das nicht protokolliert, sieht nur Kulisse statt Verhalten.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-longturn-evidence.json"
     },
     {
       "contributionId": "living-world-vertical-slice-1",

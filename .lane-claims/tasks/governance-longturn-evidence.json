@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "taskId": "governance-longturn-evidence",
+  "claimId": "lane/governance/longturn-evidence",
+  "branch": "lane/governance/longturn-evidence",
+  "baseSha": "9a623d2ff3f354f6196e9e81c6dc38b3c0b0faf6",
+  "phase": "CI_PENDING",
+  "title": "Long-Turn-Evidenz und Doku-/Workflow-Abschluss",
+  "goal": "Den vollstaendigen Long-Turn-Lauf mit versioniertem Evidenzartefakt und den offenen Doku-/Workflow-Fixes reviewt veroeffentlichen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 488,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/488",
+    "state": "open"
+  },
+  "findings": [],
+  "nextAction": "PR #488 ist gepusht und mergeable clean; Remote-Checks pruefen, kein Merge in diesem Durchgang.",
+  "revision": 2
+}
