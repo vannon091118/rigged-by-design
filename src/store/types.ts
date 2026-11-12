@@ -20,7 +20,7 @@ import type { VenueView } from '../core/sim/venue-event';
 
 interface SceneView {
   readonly key: string;
-  readonly kind: 'OWN' | 'FOREIGN' | 'CITY';
+  readonly kind: 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT';
   readonly label: string;
 }
 
@@ -134,7 +134,7 @@ export interface GameView {
   /** Aktive Szene und ihre serialisierte Auftragskette. */
   readonly scene: SceneView;
   readonly queue: readonly ActionTaskView[];
-  readonly onboarding: { readonly step: 'OPENING' | 'CITY' | 'CASINO' | 'DONE' };
+  readonly onboarding: { readonly step: 'OPENING' | 'APARTMENT' | 'CITY' | 'CASINO' | 'DONE' };
   /** Aktiver Foreign Floor (null = eigener Floor). */
   readonly currentForeignFloorId: number | null;
   /** Verfuegbare fremde Floors fuer die UI. */

@@ -16,6 +16,6 @@
   "flags": [
     "narrativ"
   ],
-  "text": "Ein ungenutzter Import faellt nicht im Test auf, sondern erst im Typecheck. Genau dafuer steht er im Gate: die Kleinigkeit wird vor dem Push bezahlt, nicht danach.",
+  "text": "Ein Gast legt sein letztes Geld auf den Tresen und bestellt nichts. Der Wirt schenkt ihm trotzdem ein Glas Wasser.",
   "directives": []
 }

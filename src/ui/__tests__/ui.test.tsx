@@ -77,7 +77,7 @@ describe('UI-Integration', () => {
     expect(screen.queryByLabelText('Eröffnung')).toBeNull();
   });
 
-  it('zeigt je Startschritt genau ein Modal: Eröffnung, Stadt, Raum, keins', () => {
+  it('zeigt je Startschritt genau ein Modal: Eröffnung, Wohnung, Stadt, Raum, keins', () => {
     worldStore.newGame('SMALL');
     const both = (): ReturnType<typeof render> => render(
       <>
@@ -94,6 +94,13 @@ describe('UI-Integration', () => {
     expect(screen.getByLabelText('Eröffnung')).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
     opening.unmount();
+
+    // APARTMENT: nur die Wohnung, ohne Eröffnung.
+    const apartment = both();
+    expect(modals()).toBe(1);
+    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Du bist zu Hause');
+    fireEvent.click(screen.getByRole('button', { name: 'HAUSTÜR ÖFFNEN' }));
+    apartment.unmount();
 
     // CITY: nur die Stadt, ohne Eröffnung.
     const city = both();

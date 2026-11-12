@@ -67,12 +67,15 @@ export function createSceneCache(): SceneCache {
   let routesKey = '';
   let routesBaked = false;
   let phase = '';
+  let scene = '';
 
   const redrawRoom = (view: GameView): void => {
     const areas = areasFor(view.template);
     const phaseChanged = phase !== view.dayPhase;
     phase = view.dayPhase;
-    const key = `${view.template}|${view.carpet}|${view.zones.length}`;
+    const sceneChanged = scene !== view.scene.kind;
+    scene = view.scene.kind;
+    const key = `${view.template}|${view.carpet}|${view.zones.length}|${view.scene.kind}`;
     if (key !== routesKey) {
       routesKey = key;
       routes.clear();
@@ -82,8 +85,11 @@ export function createSceneCache(): SceneCache {
     }
     const prev = new Map<string, number>();
     for (const chunk of floorChunks.values()) prev.set(chunk.area.id, chunk.hash);
-    // Ein Phasenwechsel backt jeden Chunk einmal neu, statt pro Frame zu rechnen.
-    const changed = phaseChanged ? new Set(areas.map((area) => area.id)) : new Set(changedRegions(view, areas, prev));
+    // Phasen- oder Szenenwechsel backt jeden Chunk einmal neu; Wohnung und
+    // Casino haben unterschiedliche Bodenpaletten bei gleichem Raster.
+    const changed = phaseChanged || sceneChanged
+      ? new Set(areas.map((area) => area.id))
+      : new Set(changedRegions(view, areas, prev));
     carpet.update(view);
     for (const area of areas) {
       let chunk = floorChunks.get(area.id);

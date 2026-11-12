@@ -11,6 +11,14 @@ import { MOOD_LABEL, PENALTY_LABEL, reputationOf, SKILLS } from './hud-labels';
 import { UI_ICON } from './icons';
 import { PerspectiveSwitch } from './perspective-switch';
 
+/** Erster-Tag-Hinweis: derselbe Platz im HUD, aber der Text folgt dem Ort. */
+const SCENE_TIP: Record<GameView['scene']['kind'], string> = {
+  APARTMENT: 'Du bist zu Hause. Die Haustür führt auf die Straße.',
+  CITY: 'Du stehst auf der Straße. Dein Casino ist gleich um die Ecke.',
+  OWN: 'Der Abend beginnt. Öffne BETRIEB für dein Angebot – Gäste kommen, sobald das Haus sie anzieht.',
+  FOREIGN: 'Fremder Floor. Sieh dich um, aber es ist nicht dein Haus.',
+};
+
 interface HudProps {
   readonly view: GameView;
   readonly perspective: Perspective;
@@ -33,7 +41,7 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
   const broken = machines.filter((item) => item.damaged || item.condition < 85 || item.clogged).length;
   const occupied = machines.reduce((sum, item) => sum + item.occupants.length, 0);
   const waiting = view.guests.filter((entry) => (view.guestMoney[entry.id]?.pending ?? 0) > 0).length;
-  const startTip = view.day === 1 && view.guests.length === 0;
+  const sceneTip = view.day === 1 && view.onboarding.step !== 'DONE' ? SCENE_TIP[view.scene.kind] : null;
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
   const goal = startGoal(view);
@@ -143,10 +151,8 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
         </div>
       )}
 
-      {!guest && startTip && (
-        <p className="hud-tip">
-          Der Abend beginnt. Öffne BETRIEB für dein Angebot – Gäste kommen, sobald das Haus sie anzieht.
-        </p>
+      {!guest && sceneTip && (
+        <p className="hud-tip">{sceneTip}</p>
       )}
     </header>
   );
