@@ -65,6 +65,42 @@ läuft seit dem folgenden Slice im selben Tick mit. Die 2:1-Isometrie und der
 Browser-Screenshot bleiben die bereits dokumentierten offenen Punkte; der
 Long-Turn ist ein deterministischer Headless-Beleg, kein Sichtbeleg.
 
+### Kausalitäts-Slice 2026-11-12 (Living-World-Beleg)
+
+Der Stadtleben-Slice ist jetzt kausal belegt, nicht nur beschrieben. Ein
+headless Langlauf startet `createWorld('SMALL')`, setzt den Stadt-Seed und
+lässt `tickWorld` über fünf Sim-Tage laufen. Pro Entscheidung vergleicht
+`city-life-decision.ts` zwölf Gegenfakt-Proben mit demselben Score: eine Probe
+neutralisiert genau eine Familie; `changed: true` steht nur dann im Trace,
+wenn dadurch ein anderer Intent gewinnt. Der Lauf ist der Vitest-Test
+`living-world-causal-trace.test.ts`; das Artefakt ist
+`artifacts/living-world/trace-424242-5d.json`.
+
+| Beleg | Ergebnis |
+| --- | --- |
+| Lauf | Seed `424242`, 5 Sim-Tage, 363 Entscheidungen, drei NPCs |
+| Familien mit gekippter Entscheidung | Hunger 28, Durst 1, Müdigkeit 54, Routine 237, Traits 43, Attribute 19, Fähigkeiten 63, Emotion 2, Beziehung 44, Erinnerung 34, Sozialbedarf 3, Umgebung 69 |
+| Kette | Rita: `EAT_OUT` 1/12 (Geld −800, Hunger runter, Laune +5) → soziale Erinnerung 13 am 1/22 → `VISIT_FRIEND` 2/16; ohne Erinnerung würde sie `WORK` wählen |
+| Plan vs. Abweichung | `COMMUTE` und `EAT_OUT` liegen im Trace; `scheduledIntent !== intent` belegt Abweichungen vom Tagesplan |
+| Determinismus | derselbe Seed erzeugt dieselbe 2-Tage-Sequenz; Seed `424243` erzeugt eine andere Sequenz |
+| Persistenz | Save/Load nach einem Tag erhält Attribute, Fähigkeiten, Beziehungen und Erinnerungen |
+
+Der Test schreibt den Trace nur mit `RBD_LIVING_WORLD_OUT`:
+
+```bash
+RBD_LIVING_WORLD_OUT=artifacts/living-world/trace-424242-5d.json \
+  npx pnpm exec vitest run src/core/sim/__tests__/living-world-causal-trace.test.ts
+```
+
+Grenzen: Durst, Sozialbedarf und Emotion kippen nur wenige Entscheidungen
+(1/3/2); sie sind belegt, aber dünn. Das Modell hat keine separaten
+Emotionszustände, sondern Laune plus Sozialbedarf. Die Gegenfakt-Proben
+neutralisieren je Familie einen Input; sie beweisen keinen vollständigen
+Mechanismus, sondern den konkreten Einfluss im Lauf. Das Stadtfenster zeigt
+weiterhin nur die vorhandenen Stats; der Trace ist der Nachweis, kein neuer
+UI-Pfad. Die Baseline-Gates auf `main` (Workflow-Dateizahl, unpinned actions)
+bleiben unverändert.
+
 ### Spielerbedürfnisse-Slice 2026-11-12
 
 Hunger und Durst sind jetzt echter Spielzustand, kein Anzeigefeld. Der

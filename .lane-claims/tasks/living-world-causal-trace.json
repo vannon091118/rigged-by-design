@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "taskId": "living-world-causal-trace",
+  "claimId": "lane/living-world/causal-trace",
+  "branch": "lane/living-world/causal-trace",
+  "baseSha": "e1d222946410651765dc44c8123e2b16ba790969",
+  "phase": "CI_PENDING",
+  "title": "Kausalen Living-World-Langlauf mit Decision Trace und Ereignisketten belegen",
+  "goal": "Ein headless Langlauf ueber mehrere Sim-Tage zeigt im Trace, dass Hunger, Durst, Muedigkeit, Routinen, Traits, Attribute, Faehigkeiten, Emotion/Beziehung und Umgebung konkrete NPC-Entscheidungen kippen und verkettete Folgen erzeugen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "thin-families",
+      "severity": "info",
+      "status": "open",
+      "path": "src/core/sim/__tests__/living-world-causal-trace.test.ts",
+      "message": "Durst (1), Sozialbedarf (3) und Emotion (2) kippen nur wenige Entscheidungen; belegt, aber duenn."
+    },
+    {
+      "id": "no-visual-proof",
+      "severity": "info",
+      "status": "accepted",
+      "path": "docs/RENDER_REWORK_PLAN.md",
+      "message": "Der Trace ist ein Headless-Beleg; Stadtfenster und Pixi-Sicht wurden nicht erneut geprueft."
+    },
+    {
+      "id": "baseline-main-gates",
+      "severity": "info",
+      "status": "accepted",
+      "path": ".github/workflows",
+      "message": "Workflow-Dateizahl und unpinned actions bleiben bekannte Baseline-Fehler auf main und wurden nicht repariert."
+    }
+  ],
+  "nextAction": "Branch ist gepusht; PR oeffnen, Evidenzkommentar mit Kommandos/Seed/Zahlen/Trace anhaengen, Mergeability pruefen und den geprueften Kopf mergen.",
+  "revision": 3
+}
