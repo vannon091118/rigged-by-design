@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/vannon091118/rigged-by-design/actions/workflows/ci-verify.yml"><img alt="CI Verify" src="https://github.com/vannon091118/rigged-by-design/actions/workflows/ci-verify.yml/badge.svg?branch=main"></a>
+  <img alt="Testlinie lokal" src="https://img.shields.io/badge/Testlinie-lokal-brightgreen">
   <a href="https://github.com/vannon091118/rigged-by-design/tags"><img alt="Aktueller Versionstag" src="https://img.shields.io/github/v/tag/vannon091118/rigged-by-design?label=Spielstand"></a>
   <img alt="Virtuelle Währung" src="https://img.shields.io/badge/VaCoin-100%25%20Virtuell-brightgreen">
   <img alt="Plattform" src="https://img.shields.io/badge/Status-Bespielbare%20Simulation-blue">

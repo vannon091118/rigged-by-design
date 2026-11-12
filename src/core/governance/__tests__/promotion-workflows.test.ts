@@ -62,21 +62,8 @@ describe('Promotion-Workflows', () => {
     expect(run?.env?.INTEGRATE).toContain("inputs.mode == 'integrate'");
   });
 
-  it('haelt den Watcher frei von pull_request-Triggern und PR-Body-Pruefung', () => {
-    const watcher = workflow('pr-watcher.yml');
-    expect(watcher.on?.pull_request).toBeUndefined();
-    expect(watcher.on?.push).toBeUndefined();
-    expect(watcher.on?.workflow_run?.workflows).toEqual(['CI Verify']);
-    expect(workflowFile('pr-watcher.yml')).not.toContain('--pr-check');
-  });
-
-  it('prueft den PR-Body im optionalen PR-Job, nicht erst im Watcher', () => {
-    const verify = workflow('ci-verify.yml');
-    const body = steps(verify, 'verify').find((step) => step.name === 'PR-Body');
-    expect(body?.if).toContain("github.event_name == 'pull_request'");
-    expect(body?.run).toContain('gh pr view');
-    expect(body?.run).toContain('PR_BODY="$body" node scripts/verify-pr-body.mjs');
-    expect(body?.env?.PR_BODY).toBeUndefined();
+  it('hat keinen Cloud-Watcher mehr; Fehlerbehandlung ist lokal', () => {
+    expect(() => workflowFile('pr-watcher.yml')).toThrow();
   });
 
   it('verbietet Auto-Merge und erlaubt keinen Merge auf veralteter Basis', () => {

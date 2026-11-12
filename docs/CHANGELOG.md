@@ -2,6 +2,12 @@
 
 <!-- rbd-doc: managed -->
 
+## [Unreleased]
+
+- **Testlinie vollstaendig lokal.** `pnpm run ci:local` ersetzt den frueheren CI-Job; GitHub-Workflows fuehren keine Tests, Gates, Builds oder APKs mehr aus. `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt.
+- **Mechanik getrennt.** Statistik, Soak, Langlauf und Benchmarks stehen in `src/Config/test-lanes.json` und laufen nur ueber `pnpm run test:mechanics`; der Katalog prueft die Liste auf Deckungsgleichheit.
+- **Schnellere Gates.** Keine Gate-Timeouts mehr, direkte Binaries statt pnpm-Start, Git-basierter Baumfingerabdruck, ein Git-Aufruf fuer den Kontext, ein Claim-Ladevorgang und kein zweiter Impact-Kindprozess in `pretask`.
+
 Kurz, versionsweise, was sich fuer Spieler und Agenten geaendert hat.
 Neuester Eintrag oben, jeder Eintrag mit Datum.
 

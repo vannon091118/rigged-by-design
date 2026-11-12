@@ -51,7 +51,7 @@ describe('Testkatalog', () => {
     }
   });
 
-  it('trennt lokale Nachweise von den an CI delegierten', () => {
+  it('trennt den Regellauf von den gezielten Mechanik-Nachweisen', () => {
     const split = partitionByProof([
       'src/core/rng/__tests__/shoe.test.ts',
       'src/core/sim/__tests__/soak.test.ts',
@@ -67,6 +67,6 @@ describe('Testkatalog', () => {
     expect(block).toContain('<!-- TEST_CATALOG_END -->');
     expect(block).toContain('| Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |');
     expect(block).toMatch(/Summe: \d+ Dateien/);
-    expect(block).toMatch(/round-rtp-high\.test\.ts` \| games \| statistics \| nein, CI \|/);
+    expect(block).toMatch(/round-rtp-high\.test\.ts` \| games \| statistics \| nein, Mechanik \|/);
   });
 });

@@ -134,21 +134,21 @@ describe('pretask start blockers', () => {
     }
   });
 
-  it('blockt einen fehlenden Impact-Plan', () => {
+  it('berechnet den Impact im eigenen Prozess statt in einem zweiten Node-Start', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-pretask-context-'));
     try {
       const repo = fixture(parent, 'repo');
       git(repo, ['checkout', '-q', '-b', 'lane/test/context']);
       writeClaim(repo, 'lane/test/context', ['README.md']);
       git(repo, ['add', '.lane-claims/claims.json']);
-      git(repo, ['commit', '-q', '-m', 'claim without context']);
+      git(repo, ['commit', '-q', '-m', 'claim without external context']);
       const fake = writeFakeGh(parent);
       const result = runPretask(repo, ['--json'], {
         RBD_GH_BIN: process.execPath,
         RBD_GH_SCRIPT: fake.script,
       });
-      expect(result.status).toBe(1);
-      expect(payloadOf(result.stdout).blockers.join('\n')).toContain('Impact-Plan fehlt');
+      expect(result.status).toBe(0);
+      expect(payloadOf(result.stdout).context).toBe('.verify-cache/agent-context.json');
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

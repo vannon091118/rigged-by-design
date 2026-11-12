@@ -4,7 +4,7 @@
   "claimId": "lane/governance/repo-cleanup-data-audit",
   "branch": "lane/governance/repo-cleanup-data-audit",
   "baseSha": "13e8f84864598422e540cf63f64a6bb761f02ac4",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Repo-Cleanup: Inventur, Widersprüche und 2k-Datenprüfung",
   "goal": "Doku-Dubletten entfernen, veraltete Ist-Zahlen korrigieren, Datenabdeckung von Narrativ, Assets und Save-Archiv belegen.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 2
+  "nextAction": "Automatisch nach Merge geschlossen (Commit caaf885: Repo-Cleanup und Inventur auf main. caaf885).",
+  "revision": 3
 }

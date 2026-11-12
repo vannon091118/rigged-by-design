@@ -118,7 +118,7 @@ ASCII-Varianten wie `Kausalitaet` oder `Naechste` sind rot (`ERR-4006`). Der PR-
 
 1. PR gegen `main` erst am Feature-Ende öffnen oder aktualisieren; `turn:finish` staged den Vertrag und spiegelt ihn im PR-Kommentar.
 2. Lokal `pnpm run verify:integration` ausführen; bei Bedarf zusätzlich `pnpm run verify:long`.
-3. Den optionalen PR-Check `Fail-Closed Gates` auf dem exakten Kopf beobachten, aber nicht abwarten; der lokale Vor-PR-Nachweis entscheidet.
+3. Den lokalen Vor-PR-Nachweis `pnpm run ci:local` auf dem exakten Kopf ausführen; es gibt keinen Cloud-Testlauf, auf den gewartet werden müsste.
 4. `promote` ist manuell (`inspect`/`integrate`) und merged nicht automatisch. Es zeigt den Status oder legt auf ausdrückliche Anforderung den Notausgang `integration` an.
 5. Merge im GitHub-UI mit `--squash` und `--match-head-commit`-Äquivalent auf dem exakten Kopf; kein `--auto`, kein `update-branch` vor dem Merge.
 6. Die Merge-Nachricht trägt dieselben drei Sektionen wörtlich; `verify-commit-msg` prüft den Text weiterhin. Die GitHub-Voreinstellung `Merge pull request #<n> from <branch>` ist rot (`ERR-4006`), weil ihr die Sektionen fehlen.

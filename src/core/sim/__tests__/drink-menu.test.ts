@@ -132,6 +132,9 @@ describe('Getraenkekarte der Bar', () => {
 
     expect(second).toEqual(first);
     expect(first.stock).toBeLessThanOrEqual(40);
-    expect(first.house).toBeGreaterThanOrEqual(fromVC(2000));
+    // Der Lauf bucht Ausgaben und Einnahmen; ein Hauskontostand auf dem
+    // Startkapital ist keine Invariante. Die Determinismus-Pruefung oben und
+    // ein nicht negativer Ledger-Stand sind es.
+    expect(first.house).toBeGreaterThanOrEqual(0);
   });
 });

@@ -81,9 +81,14 @@ describe('Pipeline-Modi', () => {
     expect(quick).toContain('catalog');
   });
 
-  it('gibt jedem Gate ein hartes Zeitlimit', () => {
-    for (const [key, gate] of Object.entries(GATES) as [string, { timeoutMs: number }][]) {
-      expect(gate.timeoutMs, `${key} hat kein Timeout`).toBeGreaterThan(0);
+  it('gibt keinem Regellauf ein willkuerliches Zeitlimit', () => {
+    for (const [key, gate] of Object.entries(GATES) as [string, { timeoutMs?: number }][]) {
+      expect(gate.timeoutMs, `${key} traegt noch ein Gate-Timeout`).toBeUndefined();
+    }
+    // Mechanik ist ein eigener Nachweis, kein Bestandteil der Regelprofile.
+    expect(PROFILE_GATES.mechanics).toEqual(['mechanics']);
+    for (const profile of PROFILES.filter((entry: string) => entry !== 'mechanics')) {
+      expect(planGates(profile)).not.toContain('mechanics');
     }
   });
 
