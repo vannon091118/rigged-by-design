@@ -6,7 +6,7 @@
  */
 import type { DayPhase } from '../core/sim/day-phase';
 
-export type AmbientEnvironment = 'interior' | 'outdoor';
+type AmbientEnvironment = 'interior' | 'outdoor';
 
 export interface AmbientPlan {
   readonly environment: AmbientEnvironment;
