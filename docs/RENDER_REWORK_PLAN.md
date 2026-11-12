@@ -7,10 +7,105 @@ die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 **Stand:** 2026-11-12 · Baum `0.3.233` · Audit-Basis `0.3.231`
 
-**Status:** Plan, noch keine Umsetzung. Die Kästchen werden nur mit Beleg
-abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss. Die
-Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme (Abschnitt 8) sind
-verbindlich.
+**Status:** Umsetzung begonnen (Lane `lane/render/r1-r12-rework`). Die Kästchen
+werden nur mit Beleg abgehakt; ein grüner Teilcheck ist kein grüner
+Phasenabschluss. Die Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme
+(Abschnitt 8) sind verbindlich.
+
+### Umsetzungsstand 2026-11-12
+
+Belegt sind die deterministischen Verträge und die lokalen Gates; **nicht**
+belegt ist die Pixi-Sichtabnahme. Der Cloud-Browser hängt in dieser VM auch
+mit dem unveränderten Basisstand `fccc787` (kein Screenshot, keine
+Accessibility-Abfrage); das ist eine Umgebungsgrenze, kein grüner Bildbeleg.
+
+| Phase | Beleg | Stand |
+| --- | --- | --- |
+| R1 | `src/render/visual/scene-frame.ts` + `scene-frame.test.ts`: vier Szenen, drei byte-identische Läufe, Hashänderung bei echter Bildänderung | Teilbeleg; Browser-Screenshot fehlt |
+| R2 | `decor-roles.ts` + `decor-roles.test.ts`: stabile Rollen, exakte Labels, unaufgelöste Fläche statt Regex/`0x2dd4a0` | Code-/Testbeleg |
+| R3 | `actor-silhouette.ts` + Test: 12×16-Silhouette, fünf Personafamilien; Pin-Skalierung gegen die Kamera entfernt | Code-/Testbeleg |
+| R4 | sechs echte Boden-SVGs im Manifest, `floorTextureKey` testet Vorhandensein; `CarpetOverlay` entfernt, Teppichwahl tintet das Material | Code-/Testbeleg |
+| R5 | `light-pool.ts` + Test: 16 Slots, eine Radialtextur, BlendMode am Lichtkind; `drawLightSpill`-Ellipsenschleife entfernt | Code-/Testbeleg |
+| R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
+| R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest; S2-09–S2-11 bleiben offen |
+| R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad); R8–R9 offen; keine zweite Stadt erfunden |
+| R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene; Wetter fehlt | Teilbeleg; Wetter, reduced-motion und Browser-Sicht offen |
+
+Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
+`verify:assets` PASS, `verify:tree` PASS, `verify:dead-code` PASS,
+`verify:test-quality` PASS, `verify:test-placement` PASS. Die Checkboxen in
+R1–R12 bleiben unverändert offen, bis Screenshot, Konsole und Probe nach
+Abschnitt 8 vorliegen.
+
+### Stadtleben-Slice 2026-11-12 (R9-Teilbeleg)
+
+Die vorhandenen headless Bedürfnisse und Tagespläne haben jetzt einen
+Produktionsleser. `tickWorld` ruft `tickCityLife` auf; Rita, Boris und Mira
+bewegen sich stündlich zwischen Wohnung, Kiez und Markt, und Hunger, Durst,
+Müdigkeit, Sozialbedarf und Laune werden über Tagesgrenzen sowie Save/Load
+getragen. `cityView` liefert die Bewohner mit Standort, Intent, Stats und
+Traits an das Stadtfenster; `normalizeCityLife` migriert alte Saves ohne
+Stadtleben. Die Traits/Beziehungen kommen weiter aus dem bestehenden
+Begegnungsloop, nicht aus einem zweiten Modell.
+
+| Beleg | Datei/Test |
+| --- | --- |
+| Tagesroutine und sichtbare Stats | `city-life.ts`, `city-popup.tsx`, `city-life.test.ts`: 09:00 WORK/KIEZ, 19:00 PUB/KIEZ, 23:00 SLEEP/HOME; alle Werte 0..100 |
+| Durst als echter Bedürfnis-Override | `npc-needs.ts` (`thirst`, `THIRST_THRESHOLD_URGENT`), `npc-schedule.test.ts`, `city-life.test.ts` |
+| Persistenz | `save.ts`/`migrate.ts`, `city-life.test.ts` mit Save/Load-Roundtrip |
+| Ereigniskette | `living-world-longturn.test.ts`: GEBEN -> Traits -> `CITY_ENCOUNTER_ARC` -> Warm-Echo nach 24 Ticks |
+| Umgebung | derselbe Long-Turn: Gast verliert auf Dreck Laune und gewinnt auf sauberem Boden |
+| Alle sieben Spielerstufen | derselbe Long-Turn: Speed, Charisma, Brawl, Wahrnehmung, Technik, Ausdauer, Glück mit ihren vorhandenen Lesern |
+| Fähigkeiten/Erfahrung | derselbe Long-Turn: `JOB_CLEANER`-XP erhöht Speed, Wahrnehmung und Ausdauer |
+| Glück | `player-jobs.test.ts`: Stufe 10 halbiert das Mechaniker-Unfallrisiko |
+
+Grenzen: Spieler-Hunger/-Durst bleiben außerhalb dieses Slice; das neue
+Stadtleben modelliert die drei benannten NPCs. Die 2:1-Isometrie und der
+Browser-Screenshot bleiben die bereits dokumentierten offenen Punkte; der
+Long-Turn ist ein deterministischer Headless-Beleg, kein Sichtbeleg.
+
+### Ambient-Slice 2026-11-12 (R5/R6/R12-Teilbeleg)
+
+Der Slice ergänzt die bestehende Tageszeit um eine reine Darstellungsableitung.
+Der Spielzustand wächst nicht: kein neues Save-Feld, kein zweiter Ticker, kein
+RNG und keine Uhr in den neuen Pfaden.
+
+| Baustein | Beleg | Grenze |
+| --- | --- | --- |
+| Ambient-Plan | `src/render/ambient-plan.ts` + `ambient-plan.test.ts`: Helligkeit, Sichtradius, Sonnenrichtung und Schatten aus `dayPhase` und `SceneKind`; eingefroren, gecacht | Kein Wetter |
+| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur nur nachts; Innenraum und Abend ohne Radius; spät geladene Lichttextur wird nachgezogen (`ambient-late-texture.test.ts`) | Pixi-App im Cloud-Browser blockiert vor dem ersten Frame; echte Pixelprobe statt App-Screenshot |
+| Schattenwurf | `city-exterior-layer.ts`: weiche Fußschatten aus der vorhandenen Radialtextur, richtungsabhängig je Phase, ohne Rebuild; fehlende Textur wird nachgeladen (`city-shadow-late-texture.test.ts`) | Keine harten Schattenkanten |
+| Kamera | `floor-camera.ts`: toter Winkel 0.82, Snap auf das Gerätepixelraster; der Zoom bleibt der einzige Fahrweg | 2:1-Isometrie bleibt offen |
+| Performance | `city-plan.ts`/`snapshot.ts`: Renderplan und Exterieur-Ansicht je Identität genau einmal; `CityExteriorLayer` rebuildet nur bei echter Änderung | — |
+| Simulation | `city-exterior.ts`: Grundrisskanten als Wände, genau eine offene Tür je Gebäude; Requisiten belegen ihren Footprint im Nav (Bank 2×1); `city-exterior-walls.test.ts` und `city-props-solid.test.ts` belegen Kollision, Schwelle und Requisiten | — |
+
+#### Browser-Nachweis 2026-11-12
+
+Die Pixi-App bleibt im Cloud-Browser auf `RIGGED BY DESIGN — STARTET…` stehen:
+Snapshot, Screenshot und `evaluate` laufen in den Timeout, die Konsole zeigt
+keinen JS-Fehler, und auch der Produktionsbuild verhält sich gleich. Der
+Fallback ist deshalb eine deterministische, temporäre Plan-Probe: Sie zeichnete
+dieselbe Stadtgeometrie und dieselben Formeln aus
+`ambient-plan.ts`/`ambient-layer.ts` auf Canvas und protokollierte Luminanz und
+Planwerte. Die neue Pixelprobe rendert dagegen die echten Klassen über einen
+Pixi-CanvasRenderer und liest die Pixel aus dem Canvas: Nacht zeigt den
+Sichtradius (7,5 Tiles, 183,64 vs. 154,15), Morgen und Abend zeigen Strahlen
+und Schatten ohne Radius; die Konsole bleibt fehlerfrei.
+
+Dabei fielen zwei echte Spätlade-Fehler auf, die den Sichtradius und die
+Stadtschatten im normalen Start dauerhaft unsichtbar ließen: `light-pool.svg`
+liegt nicht im Atlas und wird erst nach dem ersten Frame geladen. `AmbientLayer`
+cachte den Plan vor dem Texturladen und kehrte bei jedem weiteren Snapshot
+früh zurück; `CityExteriorLayer` baute Schatten nur beim ersten Plan und
+versuchte sie bei fehlender Radialtextur nie erneut. Beide Pfade ziehen die
+Darstellung jetzt nach; die Regressionstests belegen den zweiten Versuch.
+
+Die isometrische 2:1-Projektion aus Abschnitt 2.3 ist **nicht** umgesetzt: Sie
+verlangt eine eigene Projektion für Boden, Figuren, Treffer und Tiefe und damit
+einen eigenen Slice auf R6/R7. Die Kamera bleibt top-down mit
+`WORLD_FLATTEN`; ein nachträgliches Kippen ohne diese Projektion würde Treffer
+und Simulation auseinanderziehen.
 
 ## 1. Ausgangslage
 
@@ -370,23 +465,55 @@ kein Test-only-Renderer.
 `city-ground.ts`, `city-buildings.ts`, `city-doors.ts`),
 `src/render/__tests__/city-world.test.ts`.
 
+**Belegstand 2026-11-12 (D5):** `createCityScene()` projiziert jetzt das
+kanonische `createCityExteriorModel()` (60x60, vier Fassaden, fuenf
+Strassenrequisiten) in `world.cityScene`; `buildView` reicht `cityExterior` an
+den Renderer, `CityExteriorLayer` zeichnet Fassaden/Requisiten mit benannten
+Rollen und echten SVG-Texturen, `FloorView` aktualisiert sie pro Frame und
+`areasForSize` teilt 60x60 in vier 30er-Chunks. Kamera-Grenzen kommen aus
+`worldBoundsOf` (echte 60x60-Kante), nicht aus der 30er-Vorlage. Die vier
+`DOOR`-Kanten aus `layout.edges` werden als eigene Rolle `DOOR` mit der
+Schwellen-SVG `environment/floor/city/doors/door.svg`, Fußanker-Tiefe und
+Renderplan-Eintrag gezeichnet; V-Kanten teilen dieselbe Textur gedreht.
+Deterministisch belegt durch `src/render/__tests__/city-exterior.test.ts`
+(Produktions-Entry `createWorld` → `SceneCommands.enterCity` → `buildView` →
+Renderplan), inkl. 60x60-Navigation und Türflaechen. Die vier `DOOR`-Kanten
+sind jetzt klickbar: `resolveHit` liefert die Tür-ID, `buildDoorActions` die
+Aktion, `SceneCommands.enterStreetDoor` den bestehenden Übergang. Seit dem Requisiten-Slice
+sind die fünf Straßenrequisiten zusätzlich über ihren Footprint solide (Bank
+2×1, übrige 1×1); `city-props-solid.test.ts` belegt die belegten Kacheln und
+den Weg um die Bank. **Noch offen:** echter
+Browser-Screenshot, Tuerklick ueber `floor-hit`, DOM-/Screenreader-Zugang,
+WorldManager und der vollstaendige S2-12-Uebergang. Diese Punkte bleiben
+bewusst unabgehakt.
+
 **Aufgaben**
 
-- [ ] **S2-12 bleibt der Kern:** Das Stadtnetz und die Ortskanten kommen aus
+- [x] **S2-12 bleibt der Kern:** Das Stadtnetz und die Ortskanten kommen aus
       `city-scene.ts`/`city.ts`; R7 baut keinen zweiten Szenengraphen und keine
-      zweite Wegewahrheit.
-- [ ] `CityExteriorModel` als Adapter aus `createCityExteriorModel()` lesen;
+      zweite Wegewahrheit. *(belegt: `cityScene.layout` ist die direkte
+      Exterieur-Projektion; alte 30x30-Portale entfernt)*
+- [x] `CityExteriorModel` als Adapter aus `createCityExteriorModel()` lesen;
       der Renderer importiert keine Test-Fixtures und keine UI-Popup-Daten.
+      *(belegt: `snapshot.ts` → `GameView.cityExterior`; Test durch
+      `SceneCommands.enterCity`)*
 - [ ] `city-popup.tsx` und die alte `city-scene`-Darstellung auf den Adapter
       umstellen oder als Menüzugang stilllegen; keine parallele Stadtansicht.
-- [ ] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
+- [x] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
       rendern; Tiefe über Fußanker, nicht über Namenssortierung.
+      *(belegt: Straßen/Gehwege/Kreuzungen kommen als Bodenmaterialien aus
+      `layout.floor`; `CityExteriorLayer` + `cityRenderPlan` zeichnen vier
+      Fassaden, fuenf Requisiten mit Footprint und vier `DOOR`-Kanten mit
+      Rollen/Texturen und `depth.set(..., 'prop', ...)`)*
+- [x] Straßenrequisiten belegen ihren Footprint im Navigationsraster; Bild und
+      Weg teilen dieselbe Kachelmenge. *(belegt: `city-props-solid.test.ts`)*
 - [ ] `WorldManager` mit genau einer aktiven Welt einführen. `GameView` bleibt
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.
-- [ ] Türen an bestehende `floor-hit`-/`floor-actions`-Pfade anschließen; kein
+- [x] Türen an bestehende `floor-hit`-/`floor-actions`-Pfade anschließen; kein
       zweiter Input-Listener und keine zweite Kollisionswahrheit. Die
       Wohnungstür ist mit S2-07 bereits verifiziert und wird nicht neu gebaut.
+      *(belegt: `city-door-click.test.ts`: Treffer, Aktion, Szene/Stadtort)*
 - [ ] Tastatur-/Screenreader-Zugang für Türen und Orte: DOM-Overlay mit
       `aria-label` oder Pixi-Accessibility mit `accessibleTitle`/`tabIndex`.
 - [ ] Test: Stadtmodell wird ohne Test-Fixture gerendert; Tür öffnet den
@@ -394,9 +521,11 @@ kein Test-only-Renderer.
 
 **Akzeptanz**
 
-- [ ] `city-exterior`/`city-scene` haben einen Produktionsaufrufer außerhalb
+- [x] `city-exterior`/`city-scene` haben einen Produktionsaufrufer außerhalb
       von `src/core/sim`; die offene S2-12-Aufgabe bleibt die einzige Quelle
       für das Stadtnetz.
+      *(belegt: `SceneCommands.enterCity` → `buildView` → `GameView.cityExterior`
+      → `cityRenderPlan`/`FloorView`)*
 - [ ] Ein Lauf nutzt die bestehende S2-07/S2-12-Übergangskette, ohne Teleport
       und ohne Duplikat; das ist der S2-08-Browserbeleg.
 - [ ] Die Stadt ist im lokalen Bildgate als Straßenraum erkennbar, nicht als

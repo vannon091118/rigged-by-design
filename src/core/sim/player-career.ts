@@ -82,7 +82,7 @@ const INJURY_HP_PENALTY = 5;
 const ACHIEVEMENT_LEVEL = 5;
 const ACHIEVEMENT_WINS = 5;
 
-/** Wirkung einer Stufe in Klartext; leer heisst "noch keine Wirkung im Spiel". */
+/** Wirkung einer Stufe in Klartext; jede der sieben Stufen hat einen Leser im Spiel. */
 function effectOf(world: WorldState, attr: RpgAttribute): string {
   const rpg = world.player.rpg;
   if (attr === 'speed') return `${playerStepsPerTick(rpg)} Schritte pro Tick`;
@@ -92,7 +92,7 @@ function effectOf(world: WorldState, attr: RpgAttribute): string {
   if (attr === 'charisma') return `${40 + rpg.charismaLevel * 10} % Ansprech-Chance`;
   if (attr === 'brawl') return `${6 + rpg.brawlLevel * 2} Schaden · ${playerMaxHp(rpg)} LP`;
   if (attr === 'endurance') return `Regeneration alle ${Math.max(2, 4 - Math.floor(rpg.enduranceLevel / 5))} Ticks`;
-  return 'noch ohne Wirkung';
+  return `Unfallrisiko -${Math.min(75, rpg.luckLevel * 5)} %`;
 }
 
 const ATTRIBUTE_LABELS: readonly (readonly [RpgAttribute, string])[] = [

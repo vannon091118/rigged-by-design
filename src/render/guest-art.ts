@@ -8,6 +8,7 @@ import { GuestPaint } from './guest-paint';
 import { GuestRig } from './guest-rig';
 import { hash } from './guest-parts';
 import type { ActorState } from './rig-pose';
+import type { Facing } from './locomotion';
 
 export interface GuestArt {
   readonly root: Container;
@@ -16,6 +17,8 @@ export interface GuestArt {
   readonly target: { x: number; y: number };
   moveStart: number;
   readonly phase: number;
+  /** Letzte Blickrichtung; Stillstand behaelt sie bei. */
+  readonly facing: Facing;
   readonly setEmotion: (kind: GuestEmotion) => void;
   readonly setMood: (mood: number, angry: boolean, addiction: number) => void;
   readonly setPersona: (persona: string) => void;
@@ -25,6 +28,8 @@ export interface GuestArt {
   readonly setLod: (detail: boolean) => void;
   readonly setState: (state: ActorState) => void;
   readonly setLook: (look: PlayerLook) => void;
+  /** Blickrichtung aus der Bewegung; spiegelt nur die Figur. */
+  readonly setFacing: (facing: Facing) => void;
   /** Kurzer Squash beim Antippen. */
   readonly bump: () => void;
   /** Ring am Fuss, der den Treffer zeigt. */
@@ -48,6 +53,7 @@ export function createGuestArt(
   let currentState: ActorState = 'idle';
   let currentLook = look ? `${look.skin}|${look.hair}|${look.outfit}|${look.accessory}` : '';
   let moodLow = false;
+  let facing: Facing = 'right';
 
   /** Laune unter 40 bekommt eine Sprechblase statt einer Zahl. */
   const applySticker = (): void => sticker.set(currentEmotion, moodLow, rig.detail);
@@ -83,6 +89,7 @@ export function createGuestArt(
   };
   const setNameVisible = (next: boolean): void => { rig.setNameVisible(next); };
   const setState = (next: ActorState): void => { currentState = next; };
+  const setFacing = (next: Facing): void => { facing = next; rig.setFacing(next); };
   const bump = (): void => { rig.bump(); };
   const tapRing = (): void => { rig.tapRing(); };
   const animate = (nowMs: number): void => { rig.animate(nowMs, currentState, phase); };
@@ -94,7 +101,8 @@ export function createGuestArt(
 
   return {
     root: rig.root, sticker: sticker.container, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
-    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, bump, tapRing, animate,
+    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, setFacing, bump, tapRing, animate,
+    get facing() { return facing; },
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;
       if (key === currentLook) return;

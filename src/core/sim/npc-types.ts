@@ -27,6 +27,8 @@ export interface NpcIntent {
 
 export interface NpcNeeds {
   readonly hunger: number;
+  /** 0 = satt, 100 = durstig; wird wie Hunger von der Tagesroutine bewegt. */
+  readonly thirst: number;
   readonly fatigue: number;
   readonly social: number;
   readonly money: number;

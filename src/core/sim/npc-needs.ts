@@ -5,12 +5,14 @@
 import type { NpcIntentKind, NpcNeeds, NpcLODLevel } from './npc-types';
 
 export const HUNGER_THRESHOLD_URGENT = 85;
+export const THIRST_THRESHOLD_URGENT = 85;
 export const FATIGUE_THRESHOLD_URGENT = 90;
 export const SOCIAL_THRESHOLD_URGENT = 80;
 
 export function createDefaultNeeds(custom?: Partial<NpcNeeds>): NpcNeeds {
   return {
     hunger: custom?.hunger ?? 20,
+    thirst: custom?.thirst ?? 20,
     fatigue: custom?.fatigue ?? 10,
     social: custom?.social ?? 30,
     money: custom?.money ?? 5000,
@@ -25,6 +27,7 @@ export function tickNeeds(
 ): NpcNeeds {
   const hours = Math.max(0, elapsedHours);
   let hunger = needs.hunger;
+  let thirst = needs.thirst;
   let fatigue = needs.fatigue;
   let social = needs.social;
   let mood = needs.mood;
@@ -34,16 +37,19 @@ export function tickNeeds(
     case 'SLEEP':
       fatigue = Math.max(0, fatigue - hours * 15);
       hunger = Math.min(100, hunger + hours * 3);
+      thirst = Math.min(100, thirst + hours * 2);
       mood = Math.min(100, mood + hours * 2);
       break;
     case 'EAT_HOME':
     case 'EAT_OUT':
       hunger = Math.max(0, hunger - hours * 40);
+      thirst = Math.max(0, thirst - hours * 45);
       mood = Math.min(100, mood + hours * 5);
       break;
     case 'WORK':
       fatigue = Math.min(100, fatigue + hours * 8);
       hunger = Math.min(100, hunger + hours * 6);
+      thirst = Math.min(100, thirst + hours * 4);
       social = Math.max(0, social - hours * 3);
       break;
     case 'PUB':
@@ -53,9 +59,11 @@ export function tickNeeds(
       mood = Math.min(100, mood + hours * 10);
       fatigue = Math.min(100, fatigue + hours * 4);
       hunger = Math.min(100, hunger + hours * 5);
+      thirst = Math.max(0, thirst - hours * 20);
       break;
     default:
       hunger = Math.min(100, hunger + hours * 4);
+      thirst = Math.min(100, thirst + hours * 3);
       fatigue = Math.min(100, fatigue + hours * 3);
       social = Math.min(100, social + hours * 2);
       break;
@@ -63,6 +71,7 @@ export function tickNeeds(
 
   return {
     hunger: Math.round(hunger),
+    thirst: Math.round(thirst),
     fatigue: Math.round(fatigue),
     social: Math.round(social),
     money,
@@ -76,6 +85,9 @@ export function needsOverrideIntent(needs: NpcNeeds): NpcIntentKind | null {
   }
   if (needs.hunger >= HUNGER_THRESHOLD_URGENT) {
     return needs.money >= 500 ? 'EAT_OUT' : 'EAT_HOME';
+  }
+  if (needs.thirst >= THIRST_THRESHOLD_URGENT) {
+    return needs.money >= 500 ? 'PUB' : 'EAT_HOME';
   }
   if (needs.social >= SOCIAL_THRESHOLD_URGENT) {
     return 'PUB';

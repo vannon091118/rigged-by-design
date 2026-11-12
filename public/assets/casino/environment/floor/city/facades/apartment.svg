@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192">
+  <defs>
+    <pattern id="brick" width="32" height="16" patternUnits="userSpaceOnUse">
+      <rect width="32" height="16" fill="#6c3b36"/>
+      <path d="M0 0h32M0 16h32M16 0v16" stroke="#7f4a42" stroke-width="2" opacity=".55"/>
+    </pattern>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#37221f"/><stop offset="1" stop-color="#241614"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffd9a0"/><stop offset=".55" stop-color="#c78354"/><stop offset="1" stop-color="#5a3326"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="20" width="250" height="169" rx="3" fill="url(#brick)" stroke="#1b0f0e" stroke-width="6"/>
+  <path d="M0 2h256v32l-14 10H14L0 34z" fill="url(#roof)" stroke="#1b0f0e" stroke-width="6"/>
+  <rect x="14" y="44" width="228" height="13" fill="#2c1917"/>
+  <rect x="14" y="44" width="228" height="3" fill="#b57a5e" opacity=".55"/>
+  <g fill="#2b1715" stroke="#8f5a4b" stroke-width="2">
+    <rect x="24" y="72" width="46" height="54" rx="2"/>
+    <rect x="84" y="72" width="46" height="54" rx="2"/>
+    <rect x="144" y="72" width="46" height="54" rx="2"/>
+    <rect x="204" y="72" width="28" height="54" rx="2"/>
+  </g>
+  <g fill="url(#window)">
+    <rect x="30" y="78" width="34" height="30" rx="1"/>
+    <rect x="90" y="78" width="34" height="30" rx="1"/>
+    <rect x="150" y="78" width="34" height="30" rx="1"/>
+    <rect x="210" y="78" width="16" height="30" rx="1"/>
+  </g>
+  <g stroke="#3b231f" stroke-width="3">
+    <path d="M47 78v30M30 93h34M107 78v30M90 93h34M167 78v30M150 93h34M218 78v30M210 93h16"/>
+  </g>
+  <g fill="#44302a" opacity=".8">
+    <rect x="34" y="116" width="26" height="5"/><rect x="94" y="116" width="26" height="5"/><rect x="154" y="116" width="26" height="5"/>
+  </g>
+  <g fill="#2b1715" stroke="#8f5a4b" stroke-width="2">
+    <rect x="24" y="136" width="46" height="44"/>
+    <rect x="84" y="136" width="46" height="44"/>
+    <rect x="144" y="136" width="46" height="44"/>
+  </g>
+  <g fill="#f2bd72" opacity=".7">
+    <rect x="30" y="142" width="15" height="18"/><rect x="51" y="142" width="13" height="18"/>
+    <rect x="90" y="142" width="15" height="18"/><rect x="111" y="142" width="13" height="18"/>
+    <rect x="150" y="142" width="15" height="18"/><rect x="171" y="142" width="13" height="18"/>
+  </g>
+  <rect x="196" y="132" width="48" height="52" rx="2" fill="#241513" stroke="#9a6855" stroke-width="3"/>
+  <rect x="204" y="142" width="32" height="42" fill="#4f3028"/>
+  <rect x="208" y="148" width="24" height="24" fill="#ffd59a" opacity=".8"/>
+  <circle cx="232" cy="172" r="2.4" fill="#ffd166"/>
+  <rect x="72" y="54" width="112" height="16" rx="2" fill="#1d1211" stroke="#b58568" stroke-width="2"/>
+  <text x="128" y="66" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="2" fill="#f0c38d">WOHNHAUS</text>
+  <path d="M198 20v-12h8v12" fill="#241614"/>
+  <rect x="4" y="184" width="248" height="6" fill="#17100f" opacity=".85"/>
+</svg>

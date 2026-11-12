@@ -80,14 +80,14 @@ export function FpsPanel({ fps }: { readonly fps: number }) {
 }
 
 const CONTROLS: readonly (readonly [string, string])[] = [
-  ['Klick / Tipp', 'auf freie Fläche: hinlaufen'],
-  ['Klick / Tipp', 'auf Gast, Möbel oder Kiste: Aktionen öffnen, die Figur läuft hin'],
+  ['Klick / Tipp', 'auf freie Fläche: in Casino, Wohnung und Stadt hinlaufen; im fremden Casino nur Menü'],
+  ['Klick / Tipp', 'auf Gast, Möbel oder Kiste: Aktionen nur im eigenen Casino, dort läuft die Figur hin'],
   ['E', 'Ziel in Reichweite wählen oder Hauptaktion ausführen'],
-  ['Pfeile / WASD', 'laufen'],
-  ['Mausrad', 'zoomen'],
-  ['Rechte Maus', 'ziehen: schwenken'],
-  ['+ / − / 0', 'zoomen, Übersicht'],
-  ['Enter', 'getragene Kiste nutzen'],
+  ['Pfeile / WASD', 'in Casino, Wohnung und Stadt laufen; im fremden Casino gesperrt'],
+  ['Mausrad', 'auf eigenem Floor, in Wohnung und Stadt zoomen; im fremden Casino gesperrt'],
+  ['Rechte Maus', 'ziehen: schwenken; im fremden Casino gesperrt'],
+  ['+ / − / 0', 'zoomen, Übersicht; im fremden Casino gesperrt'],
+  ['Enter', 'getragene Kiste im eigenen Casino nutzen'],
   ['Esc', 'Auswahl abbrechen, Fenster schließen'],
 ];
 

@@ -101,6 +101,16 @@ describe('Player-Jobs: Aufgaben', () => {
     expect(world.lastEvent).toBe('Schicht beendet: Automaten-Mechaniker.');
   });
 
+  it('senkt mit Glueck das Unfallrisiko der Mechaniker-Schicht', () => {
+    const { world } = setup();
+    acceptJob(world, 'NEBELPALAST', 'MECHANIC');
+    world.player.rpg.luckLevel = 10;
+    requestJobTask(world);
+    // 10 % Basisrisiko; Stufe 10 halbiert es auf 5 %, 0.06 liegt dazwischen.
+    completeJobTask(world, { nextFloat: () => 0.06 });
+    expect(world.player.rpg.injuryTicks).toBe(0);
+  });
+
   it('verweigert Aufgabe ohne Job', () => {
     const { world } = setup();
     expect(() => requestJobTask(world)).toThrow(/keinen Job/);

@@ -1,7 +1,6 @@
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { TICK_MS } from '../core/sim/tick-timing';
 import { Application, Graphics } from 'pixi.js';
-import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
 import { EntitySync } from './entity-sync';
@@ -18,17 +17,27 @@ import {
 import { animateFloor } from './floor-animate';
 import { createSceneCache, type SceneCache } from './scene-cache';
 import { WallOcclusion } from './wall-occlusion';
+import { LightPool } from './light-pool';
+import { StageBackdrop } from './stage-backdrop';
 import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
 import { EditorOverlay, type EditorCursor } from './editor-overlay';
+import { CityExteriorLayer } from './city-exterior-layer';
+import { worldBoundsOf } from './world-bounds';
+import { AmbientLayer } from './ambient-layer';
+import { syncViewLayers, type ViewLayers } from './view-layers';
 
 export class FloorView {
   readonly #app: Application;
-  /** Flaechenfuellung hinter dem Plan: kein schwarzer Balken, eine geflieste Buehne. */
-  readonly #backdrop = new Graphics();
+  /** Flaechenfuellung und Parallaxe hinter dem Plan. */
+  readonly #backdrop = new StageBackdrop();
   readonly #callbacks: FloorCallbacks;
   readonly #rig: FloorCameraRig;
   readonly #scene: SceneCache;
+  readonly #city: CityExteriorLayer;
+  readonly #lights = new LightPool();
+  /** Schleier, Sonnenstrahlen und Sichtradius: reine Darstellung, weltverankert. */
+  readonly #ambient = new AmbientLayer();
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
   readonly #walls = new WallOcclusion();
@@ -38,6 +47,8 @@ export class FloorView {
   readonly #cues: FloorCues;
   readonly #fx: FloorFx; readonly #events: FloorEvents;
   readonly #entities: EntitySync;
+  /** Einmal gebaut: der Snapshot-Durchlauf allokiert keine Deps pro Tick. */
+  readonly #layers: ViewLayers;
   readonly #editor = new EditorOverlay();
   #flashId = -1;
   #lastTap: TapMark | null = null;
@@ -51,11 +62,15 @@ export class FloorView {
     // Ein Schatten fuer alle Figuren, bevor der erste Gast gebaut wird.
     primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
+    this.#city = new CityExteriorLayer(this.#scene.depth);
+    this.#scene.world.addChild(this.#city.root);
     // Kamera-Buehne zuerst: Hinweise, Figuren und Effekte haengen an ihr.
     this.#rig = new FloorCameraRig({
       screen: app.screen,
       canvas: () => app.canvas,
       size: () => this.#view.size,
+      bounds: () => worldBoundsOf(this.#view),
+      pixelRatio: () => app.renderer.resolution,
       onDetail: (detail) => this.#detailChanged(detail),
       onApplied: (lod, scale) => this.#cameraApplied(lod, scale),
     });
@@ -63,19 +78,22 @@ export class FloorView {
     // Partikel, Licht und Shake leben in Weltkoordinaten auf der Buehne.
     this.#fx = new FloorFx();
     this.#events = new FloorEvents(this.#fx, () => this.#view);
-    this.#rig.root.addChild(this.#scene.room, this.#scene.carpet, this.#scene.dirt, this.#scene.routes,
-      this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
+    // Ambient liegt ueber der Welt (Figuren und Stadt werden mitgedimmt), aber
+    // unter Labels, Hinweisen und Effekten: die bleiben lesbar.
+    this.#rig.root.addChild(this.#scene.room, this.#lights.root, this.#scene.dirt, this.#scene.routes,
+      this.#scene.world, this.#ambient.root, this.#scene.overhead, this.#cues.root, this.#scene.stickers,
+      this.#fx.root, this.#editor.root);
     // Kein zweiter Eingabepfad: Maus und Finger laufen ueber FloorTouch und
     // landen genau einmal in #act. Vorher feuerte ein Linksklick zweimal
     // (pointerdown + Tap), also zwei Aktionskarten und zwei Popups.
     // Der Hintergrund liegt unter der Kamera und waechst mit dem Bildschirm;
     // damit ist die Flaeche neben einem quadratischen Plan nie leer.
-    this.#drawBackdrop();
-    app.stage.addChild(this.#backdrop, this.#rig.root);
+    this.#backdrop.resize(app.screen);
+    app.stage.addChild(this.#backdrop.root, this.#rig.root);
     this.#touch = new FloorTouch(app, this.#rig.root, this.#rig.cam, () => this.#view.size, (clientX, clientY) => {
       const local = screenPoint(clientX, clientY, this.#app, this.#rig.root);
       if (local) this.#act(0, local);
-    });
+    }, () => this.#view.scene.kind !== 'FOREIGN');
     this.#events.start();
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
@@ -93,6 +111,11 @@ export class FloorView {
       marker: this.#marker, props: this.#props, camera: this.#rig.root, screen: app.screen,
       stepMs: TICK_MS, lod: () => this.#rig.lod, scale: () => this.#rig.root.scale.x,
     });
+    this.#layers = {
+      scene: this.#scene, city: this.#city, ambient: this.#ambient, lights: this.#lights,
+      walls: this.#walls, cues: this.#cues, entities: this.#entities, rig: this.#rig,
+      renderer: app.renderer,
+    };
     app.ticker.add(this.#animate);
     this.update(view, true);
   }
@@ -102,19 +125,7 @@ export class FloorView {
     const previous = this.#view;
     const templateChanged = force || view.size !== previous.size || view.template !== previous.template || view.carpet !== previous.carpet;
     this.#view = view;
-    this.#scene.redrawRoom(view);
-    this.#scene.setLabels(view, this.#rig.lod === 1);
-    if (templateChanged) {
-      if (view.template !== previous.template || view.size !== previous.size) this.#entities.resetFurniture();
-      this.#rig.resetForLayout();
-    }
-    this.#scene.redrawDirt(view);
-    this.#entities.sync(view, performance.now());
-    this.#walls.sync(this.#app.renderer, { size: view.size, layout: view.layout }, TILE, this.#scene.depth);
-    this.#scene.depth.flush();
-    this.#cues.setPath(view.player.path, view.player.pathIndex);
-    this.#rig.updateLod();
-    if (this.#rig.dirty) this.#rig.apply(); else this.#entities.cull(view, this.#rig.lod);
+    syncViewLayers(this.#layers, view, previous, templateChanged, performance.now());
   }
 
   fit(): void { this.#rig.fit(); }
@@ -134,23 +145,8 @@ export class FloorView {
   }
 
   resize(): void {
-    this.#drawBackdrop();
+    this.#backdrop.resize(this.#app.screen);
     this.#rig.resize();
-  }
-
-  /** Gefliestes Letterbox statt schwarzer Flaeche: ruhig, dunkel, ohne zweite Buehne. */
-  #drawBackdrop(): void {
-    const { width, height } = this.#app.screen;
-    const w = Math.max(1, width);
-    const h = Math.max(1, height);
-    const g = this.#backdrop;
-    g.clear();
-    g.rect(0, 0, w, h).fill(0x140d24);
-    for (let x = 0; x < w; x += 64) g.rect(x, 0, 1, h).fill({ color: 0x2b1e48, alpha: 0.55 });
-    for (let y = 0; y < h; y += 64) g.rect(0, y, w, 1).fill({ color: 0x2b1e48, alpha: 0.55 });
-    // Zwei ruhige Lichtkanten halten die Flaeche als Buehne lesbar, nicht als Leere.
-    g.rect(0, 0, w, 2).fill({ color: 0x452f6b, alpha: 0.5 });
-    g.rect(0, h - 2, w, 2).fill({ color: 0x452f6b, alpha: 0.5 });
   }
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
@@ -178,7 +174,10 @@ export class FloorView {
     this.#editor.destroy();
     this.#actors.clear();
     this.#entities.clear();
+    this.#ambient.destroy();
+    this.#city.destroy();
     this.#scene.destroy();
+    this.#lights.destroy();
     this.#rig.destroy();
     this.#backdrop.destroy();
   }
@@ -197,13 +196,14 @@ export class FloorView {
 
   /** Nach dem Anwenden: Raster neu zielen, Pins skalieren, cullen. */
   #cameraApplied(lod: number, scale: number): void {
+    this.#backdrop.follow(this.#rig.root.x, this.#rig.root.y);
     this.#cues.refresh();
     this.#entities.setPinScale(lod, scale);
     this.#entities.cull(this.#view, lod);
   }
 
   #act(button: number, point: { x: number; y: number }): void {
-    if (this.#destroyed) return;
+    if (this.#destroyed || this.#view.scene.kind === 'FOREIGN') return;
     const resolution = handleTap(button, point, this.#view, this.#cues);
     if (!resolution) return;
     const now = performance.now();
@@ -228,6 +228,8 @@ export class FloorView {
     if (this.#destroyed) return;
     const now = performance.now();
     animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props);
+    this.#ambient.animate(this.#player.root.x, this.#player.root.y);
+    this.#city.animate(now, this.#view.dayPhase);
     this.#fx.update(now);
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
     this.#rig.shake(this.#fx.offset(now));

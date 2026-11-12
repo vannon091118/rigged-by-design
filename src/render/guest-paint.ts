@@ -1,7 +1,8 @@
 /** Bemalung der Pixelfigur: Palette, Persona-Farben, Koerper, Beine, Arme und Pin. */
 import { Sprite, Texture } from 'pixi.js';
 import type { LookAccessory, PlayerLook } from '../core/sim/player-look';
-import { INK, ROLE } from './art-tokens';
+import { drawActorSilhouette } from './actor-silhouette';
+import { ROLE } from './art-tokens';
 import { mountHead, paintFace as drawFace, paintHair, paintSkull, type FaceKind, type HeadHair } from './guest-head';
 import { HAIRS, PANTS, PERSONA_COLORS, SHOES, SKINS } from './guest-parts';
 import { textureFor } from './assets/textures';
@@ -130,10 +131,7 @@ export class GuestPaint {
   #paintPin(): void {
     const { pin } = this.#nodes;
     pin.clear();
-    pin.rect(-3, 0, 6, 6).fill(this.#outfit);
-    pin.rect(-2, -4, 4, 4).fill(this.#skin);
-    pin.rect(-2, -3, 1, 1).fill(INK);
-    pin.rect(1, -3, 1, 1).fill(INK);
-    if (this.#isPlayer) pin.rect(-6, -6, 12, 14).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
+    drawActorSilhouette(pin, this.#outfit, this.#skin);
+    if (this.#isPlayer) pin.circle(0, -8, 9).stroke({ width: 1, color: ROLE.service, alpha: 0.95 });
   }
 }

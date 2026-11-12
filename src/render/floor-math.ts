@@ -138,12 +138,12 @@ interface ClientRect {
 /** Bildschirmpixel zu Tile; außerhalb des Floors null. */
 export function screenToTile(
   clientX: number, clientY: number, rect: ClientRect, screenW: number,
-  cameraX: number, cameraY: number, scale: number, size: number, tile = TILE,
+  cameraX: number, cameraY: number, scale: number, size: number, tile = TILE, height = size,
 ): { x: number; y: number } | null {
   if (rect.width === 0) return null;
   const factor = rect.width / screenW;
   const x = Math.floor(((clientX - rect.left) / factor - cameraX) / scale / tile);
   const y = Math.floor(((clientY - rect.top) / factor - cameraY) / scale / tile);
-  if (x < 0 || y < 0 || x >= size || y >= size) return null;
+  if (x < 0 || y < 0 || x >= size || y >= height) return null;
   return { x, y };
 }

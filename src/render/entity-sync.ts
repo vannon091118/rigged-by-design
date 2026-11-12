@@ -61,10 +61,13 @@ export class EntitySync {
     this.#deps.player.setLod(detail);
   }
 
-  setPinScale(lod: number, scale: number): void {
-    const pin = lod === 0 ? 1 / Math.max(0.05, scale) : 1;
-    for (const art of this.#deps.actors.active.values()) art.root.scale.set(pin);
-    this.#deps.player.root.scale.set(pin);
+  setPinScale(lod: number, _scale: number): void {
+    // Die Silhouette gehoert zur Welt und skaliert mit ihr; sie wird nicht
+    // gegen die Kamera vergroessert. `lod` bleibt im Vertrag, damit der
+    // Aufrufer nicht wissen muss, welche Darstellung gerade gilt.
+    void lod;
+    for (const art of this.#deps.actors.active.values()) art.root.scale.set(1);
+    this.#deps.player.root.scale.set(1);
   }
 
   /** Sichtbarkeit folgt der Kamera; ohne Detail-LOD bleibt alles an. */
@@ -138,7 +141,7 @@ export class EntitySync {
   }
 
   #syncGuests(view: GameView, now: number): void {
-    const { actors, scene, lod, stepMs, scale } = this.#deps;
+    const { actors, scene, lod, stepMs } = this.#deps;
     this.#seenGuests.clear();
     // Nur der naechste Gast traegt ein Namensschild; der Rest bleibt Figur.
     const focusId = view.guests.reduce<number | null>((min, guest) => (min === null || guest.id < min ? guest.id : min), null);
@@ -153,7 +156,7 @@ export class EntitySync {
         art.from.y = art.target.y;
         art.moveStart = now - stepMs;
         art.root.position.set(art.target.x, art.target.y);
-        art.root.scale.set(lod() === 0 ? 1 / Math.max(0.05, scale()) : 1);
+        art.root.scale.set(1);
         art.sticker.position.set(art.target.x, art.target.y);
       }
       const queue = guest.state === 'EXCHANGE' || guest.state === 'CASHOUT' ? guest.queueIndex : 0;

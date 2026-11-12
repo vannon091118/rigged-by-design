@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:157ef488a91482ab056c4de8862f765dd51f84a4103f81e1db6295397bcde9ef",
+  "contentHash": "sha256:0384f985f1f1d24dbe80a1f6d944ffef4e52d7f3f734392aceb025e5fe97d48a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21684,6 +21684,28 @@
       "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
+    },
+    {
+      "contributionId": "render-ambient",
+      "turnId": "2026-11-12T04:05Z-render-ambient",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "documentation"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Stadt bekommt eine eigene Helligkeit: Am Morgen liegt wenig Schleier auf dem Boden, am Abend werfen Laternen und Fassaden weiche Schatten, in der Nacht bleibt nur ein Radius um die Figur hell. Drinnen bleibt das Licht ruhig und der Radius aus, weil die Raeume schon beleuchtet sind.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-first-slices.json"
     },
     {
       "contributionId": "render-r7-doors",

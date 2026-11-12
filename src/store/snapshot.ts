@@ -23,6 +23,8 @@ import { archiveSnapshot } from './archive-snapshot';
 import type { GameView, StaffView } from './types';
 import { queueView } from '../core/sim/action-queue';
 import { playerApartmentFurniture, playerApartmentModel } from '../core/sim/player-apartment';
+import type { CityExteriorModel } from '../core/sim/city-exterior';
+import { cityExteriorView } from './city-exterior-view';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
 function staffView(world: WorldState): StaffView {
@@ -36,6 +38,9 @@ function worldSnapshot(world: WorldState) {
   const foreign = city === null && apartment === null && world.activeForeignFloorId !== null
     ? world.foreignFloors.find((floor) => floor.id === world.activeForeignFloorId) ?? null
     : null;
+  // Der Renderer bekommt das kanonische Exterieur, nicht die 30x30-Projektion:
+  // dasselbe Layout wie der Floor, aber mit Gebaeuden und Requisiten.
+  const cityExterior: CityExteriorModel | null = city ? cityExteriorView(city) : null;
   const furniture = apartment
     ? playerApartmentFurniture()
     : city?.furniture ?? foreign?.furniture ?? world.furniture;
@@ -46,6 +51,7 @@ function worldSnapshot(world: WorldState) {
     layout: apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
     size: apartment?.layout.size ?? city?.layout.size ?? foreign?.size ?? world.size,
     zones: apartment?.layout.zones ?? city?.zones ?? foreign?.zones ?? world.zones,
+    cityExterior,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),
     seats: apartment || city ? 0 : foreign

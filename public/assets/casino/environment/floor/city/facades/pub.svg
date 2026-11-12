@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#233b32"/><stop offset="1" stop-color="#14251f"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffe0a8"/><stop offset=".6" stop-color="#d08b46"/><stop offset="1" stop-color="#60381c"/>
+    </linearGradient>
+    <pattern id="boards" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#193029"/>
+      <path d="M0 0v32M0 16h32" stroke="#2b4a3e" stroke-width="2" opacity=".55"/>
+    </pattern>
+  </defs>
+  <rect x="3" y="28" width="250" height="161" rx="4" fill="url(#boards)" stroke="#0c1713" stroke-width="6"/>
+  <path d="M0 8h256v30l-20 12H20L0 38z" fill="#0f1e19" stroke="#0c1713" stroke-width="6"/>
+  <rect x="12" y="50" width="232" height="9" fill="#7d5a2c"/>
+  <rect x="12" y="50" width="232" height="2" fill="#d7b06a" opacity=".6"/>
+  <rect x="22" y="68" width="212" height="76" rx="3" fill="#101d19" stroke="#8c6b37" stroke-width="3"/>
+  <g fill="url(#warm)">
+    <rect x="32" y="78" width="52" height="44" rx="2"/>
+    <rect x="96" y="78" width="64" height="44" rx="2"/>
+    <rect x="172" y="78" width="52" height="44" rx="2"/>
+  </g>
+  <g stroke="#28160d" stroke-width="4" opacity=".85">
+    <path d="M32 98h52M96 98h64M172 98h52M58 78v44M128 78v44M198 78v44"/>
+  </g>
+  <g fill="#1c120a" opacity=".55">
+    <circle cx="48" cy="108" r="7"/><rect x="39" y="114" width="18" height="5" rx="2"/>
+    <circle cx="112" cy="108" r="6"/><rect x="104" y="113" width="16" height="5" rx="2"/>
+    <circle cx="194" cy="108" r="6"/><rect x="186" y="113" width="16" height="5" rx="2"/>
+  </g>
+  <rect x="12" y="148" width="232" height="10" fill="#0d1713"/>
+  <rect x="12" y="148" width="232" height="2" fill="#b08a4c" opacity=".45"/>
+  <rect x="98" y="134" width="60" height="50" rx="2" fill="#1a110b" stroke="#a9844a" stroke-width="3"/>
+  <rect x="105" y="143" width="46" height="41" fill="#3a2514"/>
+  <rect x="111" y="149" width="34" height="24" fill="#e7b96f" opacity=".62"/>
+  <circle cx="145" cy="170" r="2.4" fill="#ffd166"/>
+  <g>
+    <rect x="168" y="48" width="64" height="32" rx="3" fill="#1a120d" stroke="#c39a51" stroke-width="3"/>
+    <rect x="173" y="53" width="54" height="22" rx="1" fill="#2a1a10"/>
+    <text x="200" y="68" text-anchor="middle" font-family="monospace" font-size="10" letter-spacing="1" fill="#ffd38a">ZUM ANKER</text>
+    <path d="M182 48V26M218 48V26" stroke="#8f743f" stroke-width="3"/>
+    <circle cx="182" cy="48" r="2" fill="#ffd38a"/><circle cx="218" cy="48" r="2" fill="#ffd38a"/>
+  </g>
+  <g fill="#0d1713">
+    <rect x="24" y="30" width="14" height="28"/><rect x="218" y="30" width="14" height="28"/>
+  </g>
+  <rect x="4" y="184" width="248" height="6" fill="#090f0c" opacity=".9"/>
+</svg>

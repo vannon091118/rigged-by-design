@@ -1,5 +1,6 @@
 /** Rollenhinweis auf dem Floor: sagt, was der nächste Klick bewirkt. */
 import type { Perspective } from './app-model';
+import { useWorldStore } from '../store/use-world-store';
 import { OpeningGate } from './opening-card';
 
 const COPY: Readonly<Record<Perspective, { readonly label: string; readonly text: string }>> = {
@@ -7,11 +8,17 @@ const COPY: Readonly<Record<Perspective, { readonly label: string; readonly text
   operator: { label: 'BETREIBERMODUS', text: 'Gerät antippen für Zustand, Ursache, Reparatur und Mods.' },
 };
 
+const FOREIGN_COPY = {
+  label: 'FREMDER FLOOR',
+  text: 'Nur Menü: Karte, Spiele und Jobstationen. Boden und Kamera bleiben gesperrt.',
+};
+
 export function FloorRoleBar({ perspective }: { readonly perspective: Perspective }) {
-  const copy = COPY[perspective];
+  const destination = useWorldStore().scene.kind === 'FOREIGN' ? 'foreign' : perspective;
+  const copy = destination === 'foreign' ? FOREIGN_COPY : COPY[perspective];
   return (
     <>
-      <div className={`floor-role-bar ${perspective}`} role="note">
+      <div className={`floor-role-bar ${destination}`} role="note">
         <b>{copy.label}</b>
         <span>{copy.text}</span>
       </div>

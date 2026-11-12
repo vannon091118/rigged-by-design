@@ -43,6 +43,21 @@ interface WallEdge {
   readonly kind: string;
 }
 
+/** Eine Tuerkante, die ueber ihre stabile Layout-ID geklickt werden kann. */
+export interface DoorEdge {
+  readonly id: string;
+  readonly axis: 'H' | 'V';
+  readonly x: number;
+  readonly y: number;
+}
+
+export interface DoorHit {
+  readonly kind: 'door';
+  readonly id: string;
+  readonly depth: number;
+  readonly at: HitCell;
+}
+
 export interface HitView {
   readonly size: number;
   readonly furniture: readonly { readonly id: number; readonly x: number; readonly y: number; readonly w: number; readonly h: number }[];
@@ -113,7 +128,12 @@ export function pickHit(candidates: readonly Candidate[]): FloorHit | null {
  * es gibt keinen zweiten Pfad und damit keinen Doppel-Trigger. Der Rueckgabewert
  * traegt den Fussanker des Objekts, nicht die geklickte Pixelposition.
  */
-export function resolveHit(view: HitView, cell: HitCell, from: HitCell): FloorHit | null {
+export function resolveHit(
+  view: HitView,
+  cell: HitCell,
+  from: HitCell,
+  doors: readonly DoorEdge[] = [],
+): FloorHit | DoorHit | null {
   if (cell.x < 0 || cell.y < 0 || cell.x >= view.size || cell.y >= view.size) return null;
   const candidates: Candidate[] = [];
   for (const stain of view.stains) {
@@ -157,5 +177,13 @@ export function resolveHit(view: HitView, cell: HitCell, from: HitCell): FloorHi
       });
     }
   }
-  return pickHit(candidates.filter((candidate) => !sightBlocked(view, from, candidate.at)));
+  const hit = pickHit(candidates.filter((candidate) => !sightBlocked(view, from, candidate.at)));
+  if (hit) return hit;
+  // Die Schwelle gehoert der Besitzer-Kachel; ein Objekt auf derselben Kachel
+  // behaelt Vorrang, damit ein Gast im Durchgang nicht unsichtbar wird.
+  for (const door of doors) {
+    if (door.x !== cell.x || door.y !== cell.y) continue;
+    return { kind: 'door', id: door.id, depth: door.y + 0.9, at: { x: door.x + 0.5, y: door.y + 0.5 } };
+  }
+  return null;
 }

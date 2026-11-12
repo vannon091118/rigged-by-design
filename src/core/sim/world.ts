@@ -1,4 +1,5 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
+import { cityNav } from './city-scene';
 import { canPlaceAt } from './grid-zones';
 import { navGrid, tileIndex, type NavGrid } from './nav-grid';
 import { accessPoints, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
@@ -33,9 +34,15 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
   if (item) item.occupants = item.occupants.filter((id) => id !== guestId);
 }
 
-/** Das eine Navigationsraster der Welt: Moebel, Wandkanten und Layout im Cache. */
+/**
+ * Das eine Navigationsraster der aktiven Welt. Die Stadt traegt ihr eigenes
+ * 60x60-Layout; wer im Stadt-Floor klickt, darf nicht am alten 30er-Casino
+ * haengen bleiben. Ein Casino/ eine Wohnung nutzt weiterhin `world.layout`.
+ */
 export function worldNav(world: WorldState): NavGrid {
-  return navGrid(world.size, world.furniture, world.layout);
+  const city = world.scene.kind === 'CITY' ? world.cityScene : null;
+  if (city) return cityNav(city);
+  return navGrid(world.layout.size, world.furniture, world.layout);
 }
 
 /** Mehrere Zugaenge je Objekt; jeder liegt frei und teilt eine offene Kante mit ihm. */

@@ -7,7 +7,7 @@ import type { Container, Graphics } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
 import type { GameView } from '../store/types';
 import { INK, LIGHT, lightFor, materialFor } from './art-tokens';
-import { drawCeilingLight, drawLightSpill } from './floor-surface';
+import { drawCeilingLight } from './floor-surface';
 import { drawFloorRegion, type FloorTheme } from './floor-material';
 import { drawDressing } from './room-dressing';
 import { WALL, drawDoors } from './wall-art';
@@ -44,7 +44,6 @@ function drawZoneOverlay(
     w: zone.w * tile - WALL * 2, h: zone.h * tile - WALL * 2,
   };
   if (full.w <= 0 || full.h <= 0) return;
-  drawLightSpill(g, full, light, 0.08);
   const originInChunk = zone.x >= area.x && zone.x < area.x + area.w
     && zone.y >= area.y && zone.y < area.y + area.h;
   if (!originInChunk) return;
@@ -54,7 +53,7 @@ function drawZoneOverlay(
 
 export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: number, deco?: Container): void {
   const theme: FloorTheme = view.scene.kind === 'APARTMENT' ? 'apartment' : 'casino';
-  drawFloorRegion(g, view.layout, area, tile, deco, theme);
+  drawFloorRegion(g, view.layout, area, tile, deco, theme, view.carpet);
   for (const zone of view.zones as readonly ZoneLike[]) {
     drawZoneOverlay(g, zone, area, tile, view.dayPhase, theme, deco);
   }

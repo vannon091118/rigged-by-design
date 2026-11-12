@@ -16,6 +16,7 @@ import type { LayoutState } from './layout-types';
 import type { CityState } from './city';
 import type { ActionQueueState } from './action-queue';
 import type { CitySceneState } from './city-scene';
+import type { CityLifeState } from './city-life-types';
 
 export type * from './types-model';
 export type { Mop } from './mop';
@@ -122,6 +123,8 @@ export interface WorldState {
    * nicht tragen; `cityOf` legt ihn beim ersten Zugriff an.
    */
   city?: CityState;
+  /** Persistente Lebenssimulation der benannten Stadt-NPCs. */
+  cityLife: CityLifeState;
 }
 
 // Board-Konstanten liegen in eigenem Modul; hier nur re-exportiert, damit Imports gleich bleiben.

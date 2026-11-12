@@ -20,11 +20,16 @@ export interface Area {
 }
 
 const AREA_CACHE: Partial<Record<TemplateId, readonly Area[]>> = {};
+const SIZE_CACHE = new Map<number, readonly Area[]>();
 
-export function areasFor(template: TemplateId): readonly Area[] {
-  const cached = AREA_CACHE[template];
+/**
+ * Chunks fuer jede echte Weltkante. Die Vorlage sagt nur, wie viele 30er-
+ * Bereiche ein Casino hat; die Stadt ist 60x60 und braucht dasselbe Raster.
+ */
+export function areasForSize(size: number): readonly Area[] {
+  const cached = SIZE_CACHE.get(size);
   if (cached) return cached;
-  const side = AREA_SIDE[template];
+  const side = Math.max(1, Math.ceil(size / REGION));
   const areas: Area[] = [];
   for (let row = 0; row < side; row += 1) {
     for (let col = 0; col < side; col += 1) {
@@ -32,6 +37,14 @@ export function areasFor(template: TemplateId): readonly Area[] {
       areas.push({ id: `area-${index}`, index, x: col * REGION, y: row * REGION, w: REGION, h: REGION });
     }
   }
+  SIZE_CACHE.set(size, areas);
+  return areas;
+}
+
+export function areasFor(template: TemplateId): readonly Area[] {
+  const cached = AREA_CACHE[template];
+  if (cached) return cached;
+  const areas = areasForSize(AREA_SIDE[template] * REGION);
   AREA_CACHE[template] = areas;
   return areas;
 }

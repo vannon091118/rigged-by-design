@@ -15,6 +15,8 @@ export class FloorTouch {
   readonly #cam: FloorCamera;
   readonly #size: () => number;
   readonly #onTap: (clientX: number, clientY: number) => void;
+  /** Fremd-Floor: keine Kamera-Geste, kein Tipp; nur das Menue bleibt. */
+  readonly #enabled: () => boolean;
   readonly #pointers = new Map<number, { x: number; y: number }>();
   #span = 0;
   #pan: { id: number; x: number; y: number } | null = null;
@@ -24,12 +26,14 @@ export class FloorTouch {
   constructor(
     app: Application, camera: Container, cam: FloorCamera, size: () => number,
     onTap: (clientX: number, clientY: number) => void,
+    enabled: () => boolean = () => true,
   ) {
     this.#app = app;
     this.#camera = camera;
     this.#cam = cam;
     this.#size = size;
     this.#onTap = onTap;
+    this.#enabled = enabled;
     app.canvas.addEventListener('pointerdown', this.#down);
     app.canvas.addEventListener('pointermove', this.#move);
     app.canvas.addEventListener('pointerup', this.#up);
@@ -50,6 +54,7 @@ export class FloorTouch {
   }
 
   #down = (event: PointerEvent): void => {
+    if (!this.#enabled()) return;
     this.#pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (this.#pointers.size === 2) {
       this.#span = this.#distance();
@@ -75,7 +80,7 @@ export class FloorTouch {
   };
 
   #move = (event: PointerEvent): void => {
-    if (!this.#pointers.has(event.pointerId)) return;
+    if (!this.#enabled() || !this.#pointers.has(event.pointerId)) return;
     this.#pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (this.#pan && this.#pan.id === event.pointerId) { this.#drag(event, this.#pan); return; }
     const click = this.#click;
@@ -154,6 +159,7 @@ export class FloorTouch {
   };
 
   #wheel = (event: WheelEvent): void => {
+    if (!this.#enabled()) return;
     event.preventDefault();
     const rect = this.#app.canvas.getBoundingClientRect();
     if (rect.width === 0) return;

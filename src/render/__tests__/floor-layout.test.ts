@@ -6,6 +6,8 @@
  * Texturaufloesung, Wandgeometrie und die chunk-genaue Invalidierung muessen
  * deterministisch bleiben.
  */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { areasFor } from '../../core/sim/grid-zones';
 import { FLOOR_MATERIALS, type FloorMaterialId, type LayoutState } from '../../core/sim/layout-types';
@@ -52,12 +54,14 @@ describe('Materialaufloesung', () => {
     expect(ids.every((id) => /^floor-material-[a-z]+-procedural-v1$/.test(id))).toBe(true);
   });
 
-  it('erfindet keine Texturen fuer Holz, Fliese, Stein, Linoleum und Beton', () => {
-    expect(['WOOD', 'TILE', 'STONE', 'LINOLEUM', 'CONCRETE']
-      .map((material) => floorTextureKey(material as FloorMaterialId))).toEqual([null, null, null, null, null]);
+  it('gibt jedem Bodenmaterial eine echte, vorhandene Manifest-Textur', () => {
+    const keys = FLOOR_MATERIALS.map((material) => floorTextureKey(material));
+    expect(keys.every((key) => key !== null && key.endsWith('.svg') || key === 'environment/tiles/casino-carpet-plum.png')).toBe(true);
+    expect(new Set(keys).size).toBe(FLOOR_MATERIALS.length);
+    for (const key of keys) expect(existsSync(join(process.cwd(), 'public/assets/casino', key!))).toBe(true);
     expect(floorTextureKey('CARPET')).toBe('environment/tiles/casino-carpet-plum.png');
-    // Die Wohnung traegt keine Casino-Teppichtextur.
-    expect(floorTextureKey('CARPET', 'apartment')).toBeNull();
+    // Die Wohnung traegt ihre eigene, matte Teppichtextur.
+    expect(floorTextureKey('CARPET', 'apartment')).toBe('environment/floor/apartment-rug.svg');
     expect(floorArtFor('CARPET', 'apartment').pattern).toBe('rug');
   });
 

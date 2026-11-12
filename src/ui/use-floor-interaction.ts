@@ -1,13 +1,15 @@
 /** Ein Fokus fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln. */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { InteractionTarget } from '../core/sim/interaction';
-import { buildActions, type MenuAction } from '../render/floor-actions';
+import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
 import type { FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
+import { floorMovementAllowed, floorTapAllowed } from './floor-scenes';
+import { useFloorKeyboard } from './use-floor-keyboard';
 
-interface FloorSelection {
+export interface FloorSelection {
   readonly target: FloorTap['target'];
   readonly actions: readonly MenuAction[];
   readonly anchor: ScreenAnchor | null;
@@ -46,11 +48,42 @@ export function useFloorInteraction(options: Options) {
     return true;
   }, []);
 
+  // Szenenwechsel raeumt einen Fokus, den die neue Szene nicht mehr kennt:
+  // sonst koennte E im Fremd-Floor eine alte Casino-Aktion ausloesen.
+  useEffect(() => {
+    if (selectionRef.current && !floorTapAllowed(options.view.scene.kind, selectionRef.current.target.kind)) close();
+  }, [options.view.scene.kind, close]);
+
   const tap = useCallback((resolution: FloorTap): void => {
-    if (latest.current.blocked || latest.current.view.scene.kind !== 'OWN') return;
+    if (latest.current.blocked) return;
+    // Dieselbe Szenenregel wie fuer WASD/E: der Fremd-Floor ist Menue, in
+    // Wohnung und Stadt sind Boden und Tueren klickbar. Nur das eigene Casino
+    // bietet zusaetzlich Gast-, Moebel- und Kistenziele.
+    if (!floorTapAllowed(latest.current.view.scene.kind, resolution.target.kind)) return;
+    const door = resolution.target.kind === 'door';
     pendingRef.current = null;
+    if (door) {
+      const action = resolution.actions.find((entry) => entry.enabled);
+      if (action) {
+        selectionRef.current = null;
+        setSelection(null);
+        latest.current.onExecute(action, resolution.anchor);
+        return;
+      }
+      const blocked: FloorSelection = {
+        target: resolution.target,
+        actions: resolution.actions,
+        anchor: resolution.anchor,
+        status: resolution.actions[0]?.reason ?? 'Kein Zugang.',
+        blocked: true,
+      };
+      selectionRef.current = blocked;
+      setSelection(blocked);
+      return;
+    }
     if (resolution.target.kind === 'floor') {
-      if (!latest.current.enabled) return;
+      // Laufen ist auch im Gastmodus erlaubt: sonst waere WASD ein
+      // Tastatur-exklusiver Weg, den Maus und Touch nicht erreichen.
       const next = { target: resolution.target, actions: resolution.actions, anchor: resolution.anchor, status: '', blocked: false };
       selectionRef.current = next;
       setSelection(next);
@@ -129,41 +162,15 @@ export function useFloorInteraction(options: Options) {
       : current);
   }, [options.view.player.pathIndex, options.view.player.path.length]);
 
-  // Tastatur: E waehlt das naechste Ziel oder fuehrt die Hauptaktion des Fokus aus.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent): void => {
-      if (event.repeat || event.key.toLowerCase() !== 'e') return;
-      if (!latest.current.enabled || latest.current.blocked) return;
-      const element = event.target as HTMLElement | null;
-      if (element?.tagName === 'INPUT' || element?.tagName === 'TEXTAREA'
-        || element?.tagName === 'SELECT' || element?.isContentEditable) return;
-      event.preventDefault();
-      const current = selectionRef.current;
-      if (current) {
-        const main = current.actions.find((action) => action.enabled) ?? current.actions[0];
-        if (!main) return;
-        if (!main.enabled) {
-          worldStore.interaction.notify(main.reason ?? 'Aktion nicht möglich.');
-          return;
-        }
-        pick(main);
-        return;
-      }
-      const focus = worldStore.interaction.nearest(4);
-      if (!focus) {
-        worldStore.interaction.notify('Kein Ziel in Reichweite. Geh näher heran.');
-        return;
-      }
-      tap({
-        target: focus,
-        actions: buildActions(latest.current.view, focus),
-        at: { x: 0, y: 0 },
-        anchor: null,
-      });
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [pick, tap]);
+  // Tastatur: derselbe Fokus wie Maus und Touch, aber ohne eigenen Zustand.
+  useFloorKeyboard({
+    view: options.view,
+    enabled: options.enabled && floorMovementAllowed(options.view.scene.kind),
+    blocked: options.blocked,
+    selection,
+    tap,
+    pick,
+  });
 
   return { selection, tap, pick, close };
 }

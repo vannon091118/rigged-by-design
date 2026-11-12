@@ -23,7 +23,7 @@ export interface CityNpcDef {
   readonly traits: readonly TraitId[];
 }
 
-const CITY_NPCS: readonly CityNpcDef[] = [
+export const CITY_NPCS: readonly CityNpcDef[] = [
   {
     id: 'rita', name: 'Rita Kern', role: 'Wirtin der Kiez-Kneipe', location: 'KIEZ', persona: 'STAMMGAST',
     charisma: 8, intellect: 4, vice: 2, traits: ['HILFSBEREIT', 'MITTEILSAM'],

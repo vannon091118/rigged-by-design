@@ -1,7 +1,10 @@
 /** Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. */
 import type { WorldState } from '../core/sim/types';
+import { travel } from '../core/sim/city';
+import { cityDoorEffect } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
+import { clearActionQueue } from '../core/sim/action-queue';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -20,6 +23,7 @@ export class SceneCommands {
   enterCity(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'CITY') return;
+    clearActionQueue(world);
     // Nur der Weg aus dem Casino merkt sich die Rueckkehrposition; die Wohnung
     // hat ihren festen Platz am Flur, nicht die Koordinaten des Casinos.
     if (world.scene.kind === 'OWN') world.sceneReturnPosition = { ...world.player.position };
@@ -36,6 +40,7 @@ export class SceneCommands {
   enterApartment(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'APARTMENT') return;
+    clearActionQueue(world);
     world.activeForeignFloorId = null;
     world.scene = { kind: 'APARTMENT' };
     // Zurueck zu Hause zeigt wieder den Wohnungsschritt; erst der naechste
@@ -62,6 +67,29 @@ export class SceneCommands {
     return true;
   }
 
+  /**
+   * Die vier Strassentueren. Wohnung und Casino wechseln die Szene, Kiez und
+   * Markt reisen in den bestehenden Stadtort; `null` heisst ohne Wirkung.
+   */
+  enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | null {
+    const effect = cityDoorEffect(doorId);
+    if (!effect) return null;
+    if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
+    if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
+    const world = this.#deps.world();
+    try {
+      travel(world, effect.location);
+      clearActionQueue(world);
+    } catch (error) {
+      this.#deps.notice(error instanceof Error ? error.message : 'Diese Tür ist verschlossen.');
+      this.#deps.emit();
+      return null;
+    }
+    this.#deps.notice(world.lastEvent);
+    this.#deps.emit();
+    return 'CITY';
+  }
+
   /** Die Eroeffnung schliessen: der einzige Weg von OPENING in die Wohnung. */
   finishOpening(): void {
     const world = this.#deps.world();
@@ -73,6 +101,7 @@ export class SceneCommands {
   enterCasino(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'OWN') return;
+    clearActionQueue(world);
     world.activeForeignFloorId = null;
     world.scene = { kind: 'OWN' };
     if (world.sceneReturnPosition) world.player.position = { ...world.sceneReturnPosition };

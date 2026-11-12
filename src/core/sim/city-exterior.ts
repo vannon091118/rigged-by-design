@@ -6,17 +6,36 @@
  */
 import { CITY_PRESET_BUILDINGS } from './building';
 import type { BuildingState } from './building-types';
-import type { FloorMaterialId, LayoutEdge, LayoutState, LayoutZone } from './layout-types';
+import type { EdgeAxis, FloorMaterialId, LayoutEdge, LayoutState, LayoutZone } from './layout-types';
 import type { Point } from './types-model';
 
 export type PropKind = 'STREET_LIGHT' | 'BENCH' | 'TRASH_BIN' | 'BUS_STOP' | 'TREE';
+
+/** Belegte Flaeche in Kacheln, vom Anker `position` nach rechts/unten. */
+export interface PropFootprint {
+  readonly w: number;
+  readonly h: number;
+}
 
 export interface StreetProp {
   readonly id: string;
   readonly kind: PropKind;
   readonly position: Point;
+  readonly footprint: PropFootprint;
   readonly label: string;
 }
+
+/**
+ * Der Fussabdruck folgt der sichtbaren Form: Die Bank ist breiter als die
+ * uebrigen Requisiten, alles andere steht auf einer Kachel.
+ */
+export const STREET_PROP_FOOTPRINTS: Readonly<Record<PropKind, PropFootprint>> = Object.freeze({
+  STREET_LIGHT: Object.freeze({ w: 1, h: 1 }),
+  BENCH: Object.freeze({ w: 2, h: 1 }),
+  TRASH_BIN: Object.freeze({ w: 1, h: 1 }),
+  BUS_STOP: Object.freeze({ w: 1, h: 1 }),
+  TREE: Object.freeze({ w: 1, h: 1 }),
+});
 
 export interface CityExteriorModel {
   readonly layoutId: string;
@@ -25,6 +44,33 @@ export interface CityExteriorModel {
   readonly buildings: readonly BuildingState[];
   readonly props: readonly StreetProp[];
   readonly playerApartmentStreetSpawn: Point;
+}
+
+const wallEdge = (axis: EdgeAxis, x: number, y: number): LayoutEdge => ({ axis, x, y, kind: 'WALL', id: null, zoneId: null });
+
+/**
+ * Grundrisskanten als Waende. Das Navigationsraster kennt nur Kanten und
+ * Moebel; ohne diese Kanten waeren die gezeichneten Fassaden nur Bild und die
+ * Figur liefe mitten durch das Haus. Genau die Eingangskante bleibt offen und
+ * ist die eine Tuer des Gebaeudes.
+ */
+export function cityBuildingWalls(buildings: readonly BuildingState[]): LayoutEdge[] {
+  const edges: LayoutEdge[] = [];
+  for (const building of buildings) {
+    const { x, y, w, h } = building.footprint;
+    const door = building.entrance;
+    const doorOnH = door.y === y || door.y === y + h;
+    for (let tx = x; tx < x + w; tx += 1) {
+      if (!(doorOnH && door.x === tx && door.y === y)) edges.push(wallEdge('H', tx, y));
+      if (!(doorOnH && door.x === tx && door.y === y + h)) edges.push(wallEdge('H', tx, y + h));
+    }
+    for (let ty = y; ty < y + h; ty += 1) {
+      const doorOnV = !doorOnH && door.y === ty;
+      if (!(doorOnV && door.x === x)) edges.push(wallEdge('V', x, ty));
+      if (!(doorOnV && door.x === x + w)) edges.push(wallEdge('V', x + w, ty));
+    }
+  }
+  return edges;
 }
 
 /** Erzeugt das kanonische Straßen-Layout des Stadtviertels (60x60 Raster). */
@@ -60,12 +106,13 @@ export function createCityStreetLayout(): LayoutState {
     { id: 'ext_zone_casino_plaza', name: 'Casino-Vorplatz', kind: 'ENTRANCE', x: 18, y: 20, w: 12, h: 4, color: 0xf59e0b },
   ];
 
-  const edges: LayoutEdge[] = [
+  const doors: LayoutEdge[] = [
     { axis: 'H', x: 8, y: 12, kind: 'DOOR', id: 'door_street_to_player_apt', zoneId: 'ext_zone_north_sidewalk' },
     { axis: 'H', x: 24, y: 14, kind: 'DOOR', id: 'door_street_to_kiez_pub', zoneId: 'ext_zone_north_sidewalk' },
     { axis: 'H', x: 39, y: 12, kind: 'DOOR', id: 'door_street_to_corner_shop', zoneId: 'ext_zone_north_sidewalk' },
     { axis: 'H', x: 22, y: 22, kind: 'DOOR', id: 'door_street_to_casino_grand', zoneId: 'ext_zone_casino_plaza' },
   ];
+  const edges: readonly LayoutEdge[] = [...cityBuildingWalls(CITY_PRESET_BUILDINGS), ...doors];
 
   return Object.freeze({ size, floor: Object.freeze(floor), zones: Object.freeze(zones), edges: Object.freeze(edges) });
 }
@@ -82,7 +129,13 @@ const STREET_PROPS_RAW: readonly [string, PropKind, number, number, string][] = 
 export function createCityExteriorModel(): CityExteriorModel {
   const layout = createCityStreetLayout();
   const props = STREET_PROPS_RAW.map(([id, kind, x, y, label]) =>
-    Object.freeze({ id, kind, position: Object.freeze({ x, y }), label }),
+    Object.freeze({
+      id,
+      kind,
+      position: Object.freeze({ x, y }),
+      footprint: STREET_PROP_FOOTPRINTS[kind],
+      label,
+    }),
   );
 
   return Object.freeze({
@@ -93,4 +146,15 @@ export function createCityExteriorModel(): CityExteriorModel {
     props: Object.freeze(props),
     playerApartmentStreetSpawn: Object.freeze({ x: 8, y: 13 }),
   });
+}
+
+/** Alle Kacheln, die eine Requisite belegt; Navigation und Test lesen dieselbe Liste. */
+export function streetPropFootprintTiles(prop: StreetProp): Point[] {
+  const tiles: Point[] = [];
+  for (let y = prop.position.y; y < prop.position.y + prop.footprint.h; y += 1) {
+    for (let x = prop.position.x; x < prop.position.x + prop.footprint.w; x += 1) {
+      tiles.push({ x, y });
+    }
+  }
+  return tiles;
 }

@@ -1,12 +1,11 @@
 /** Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. */
 import { Container, Graphics, Text } from 'pixi.js';
-import { areasFor, type Area } from '../core/sim/grid-zones';
+import { areasForSize, type Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
 import { DepthStage } from './depth';
 import { changedRegions, regionHash } from './floor-math';
-import { CarpetOverlay } from './floor-carpet';
 import { drawRoutes } from './floor-route';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
@@ -14,7 +13,6 @@ const LABEL_COUNT = 10;
 
 export interface SceneCache {
   readonly room: Container;
-  readonly carpet: Container;
   /** Dreck liegt ueber Boden und Teppich, aber unter Laufwegen und Welt. */
   readonly dirt: Container;
   /** Laufwege ueber dem Boden, unter der Welt. */
@@ -45,7 +43,6 @@ interface FloorChunk {
 
 export function createSceneCache(): SceneCache {
   const room = new Container();
-  const carpet = new CarpetOverlay();
   const depth = new DepthStage();
   const overhead = new Container();
   const dirtLayer = new Container();
@@ -70,7 +67,8 @@ export function createSceneCache(): SceneCache {
   let scene = '';
 
   const redrawRoom = (view: GameView): void => {
-    const areas = areasFor(view.template);
+    // Die Weltkante entscheidet, nicht die Casino-Vorlage: die Stadt ist 60x60.
+    const areas = areasForSize(view.layout?.size ?? view.size);
     const phaseChanged = phase !== view.dayPhase;
     phase = view.dayPhase;
     const sceneChanged = scene !== view.scene.kind;
@@ -90,7 +88,6 @@ export function createSceneCache(): SceneCache {
     const changed = phaseChanged || sceneChanged
       ? new Set(areas.map((area) => area.id))
       : new Set(changedRegions(view, areas, prev));
-    carpet.update(view);
     for (const area of areas) {
       let chunk = floorChunks.get(area.id);
       if (!chunk) {
@@ -139,7 +136,7 @@ export function createSceneCache(): SceneCache {
   };
 
   const redrawDirt = (view: GameView): void => {
-    const areas = areasFor(view.template);
+    const areas = areasForSize(view.layout?.size ?? view.size);
     for (const area of areas) {
       const hash = dirtHashFor(view, area);
       let chunk = dirtChunks.get(area.id);
@@ -181,7 +178,6 @@ export function createSceneCache(): SceneCache {
     for (const chunk of dirtChunks.values()) chunk.g.destroy();
     dirtChunks.clear();
     room.destroy({ children: true });
-    carpet.destroy();
     routes.destroy();
     depth.root.destroy({ children: true });
     overhead.destroy({ children: true });
@@ -189,7 +185,7 @@ export function createSceneCache(): SceneCache {
   };
 
   return {
-    room, carpet: carpet.root, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
+    room, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
     redrawRoom, redrawDirt, setLabels, destroy,
   };
 }

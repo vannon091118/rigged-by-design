@@ -51,8 +51,8 @@ export function useCrateActions(
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if (event.key !== 'Enter' || event.repeat) return;
-      const { view: current, blocked } = latest.current;
-      if (blocked) return;
+      const { view: current, blocked, canOperate } = latest.current;
+      if (blocked || !canOperate || current.scene.kind !== 'OWN') return;
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
