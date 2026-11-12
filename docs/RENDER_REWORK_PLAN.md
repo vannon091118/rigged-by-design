@@ -5,10 +5,12 @@ Living-World-Roadmap. Er beschreibt Reihenfolge, Abhängigkeiten, Dateien, Tests
 und Abnahmekriterien. Die Produktplanung bleibt in [`ROADMAP.md`](ROADMAP.md);
 die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
-**Stand:** 2026-11-12 · Baum `0.3.232` · Audit-Basis `0.3.231`
+**Stand:** 2026-11-12 · Baum `0.3.233` · Audit-Basis `0.3.231`
 
 **Status:** Plan, noch keine Umsetzung. Die Kästchen werden nur mit Beleg
-abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss.
+abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss. Die
+Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme (Abschnitt 8) sind
+verbindlich.
 
 ## 1. Ausgangslage
 
@@ -62,14 +64,17 @@ eingeführt.
 7. **Loops sind Mechanik, keine Gates.** Lange Stadt-, Soak- und
    Wiederholungsläufe bleiben gezielte `test:mechanics`-Nachweise. Der
    Render-Plan fügt keine Endlosschleife und keinen Retry-Zyklus hinzu.
+8. **Sichtbares wird vom Agenten abgenommen.** Jeder sichtbare Slice R2–R12
+   endet mit einer Preview-Sichtabnahme gegen den lokalen Dev-Server. Ein
+   Unit-Test oder Pixel-Diff ohne Browserbeleg ist kein Phasenabschluss.
 
 ## 3. Reihenfolge
 
 R0–R1 sind die Basis. R2–R6 härten den bestehenden Casino-Render, bevor die
 Stadt daraufsetzt. R7 ist der sichtbare Schnitt; R8–R12 bauen in dieser
-Reihenfolge darauf auf. R3, R4 und R5 dürfen nach R1 parallel laufen; R7 wartet
-auf R2, R6 und den Stadtkern S2-12. R10 plant die Wohnung nicht neu: es nimmt
-die offenen S2-09–S2-11 im Renderer ab.
+Reihenfolge darauf auf. R3 und R5 dürfen nach R1 parallel laufen; R4 folgt nach
+R2. R7 wartet auf R2, R6 und den Stadtkern S2-12. R10 plant die Wohnung nicht
+neu: es nimmt die offenen S2-09–S2-11 im Renderer ab.
 
 | Phase | Ergebnis | Abhängig von | Größe |
 | --- | --- | --- | --- |
@@ -87,10 +92,9 @@ die offenen S2-09–S2-11 im Renderer ab.
 | R11 | Lauf- und Richtungsanimation | R3, R8 | M |
 | R12 | Ambient und Wetter | R9 | M |
 
-**Meilensteine:** R1 ist der erste lokale Beweis. R7 ist die erste sichtbare
-Stadtansicht auf dem Stadtkern S2-12. R9 ist der erste „lebendige“ Meilenstein.
-R12 ist die letzte P2-Ausbaustufe und darf zugunsten von R7–R10 zurückgestellt
-werden.
+**Meilenstein-Zuordnung:** M0 = R0–R1, M1 = R2–R6, M2 = R7–R8,
+M3 = R9–R10, M4 = R11–R12. Die Exit-Kriterien stehen in Abschnitt 6; die
+Roadmap führt dieselben IDs als grobe Produkt-Etappen.
 
 ## 4. Task-Phasen
 
@@ -105,7 +109,7 @@ ohne es zu messen.
 
 **Aufgaben**
 
-- [ ] Render-Inventar am Baum `0.3.232` neu zählen: Dateien, Assets, benutzte
+- [ ] Render-Inventar am Baum `0.3.233` neu zählen: Dateien, Assets, benutzte
       Assets, Atlasrahmen, Materialien, Figuren, Lichtflächen, Boot-Requests.
 - [ ] Rolleninventar anlegen: Terrain, Wand, Boden, Möbel, Gerät, Deko, Akteur,
       Licht, Partikel, UI. Jede Rolle nennt ihren Renderer und ihre Quelle.
@@ -141,11 +145,12 @@ Testline nicht.
 
 **Aufgaben**
 
-- [ ] Fixe Szene definieren: Casino-Übersicht, Casino-Detail, Stadt-Platzhalter.
-      Jeweils fester Seed, feste Tickzahl, feste Kamera, fester Ausschnitt.
+- [ ] Vier fixe Szenen definieren: Casino-Übersicht, Casino-Detail,
+      Stadt-Platzhalter und Wohnung. Jeweils fester Seed, feste Tickzahl, feste
+      Kamera, fester Ausschnitt.
 - [ ] Sichtbaren Frame über den vorhandenen Browserpfad aufnehmen; keine
       `Texture.from(url)`-Abkürzung und keine neue Root-Abhängigkeit.
-- [ ] Drei Szenen in einem Lauf aufnehmen, nicht pro Szene einen Browser starten.
+- [ ] Vier Szenen in einem Lauf aufnehmen, nicht pro Szene einen Browser starten.
 - [ ] Vergleich: Pixel-Diff und Konsolenfehler. Ein absichtlicher 5-%-Eingriff
       muss rot werden; ein unveränderter Lauf muss dreimal grün sein.
 - [ ] Boot-Requests und First-Frame-Zeit als Messwerte ausgeben; die
@@ -197,6 +202,8 @@ gemeinsame Zeichenhelfer), neu `src/render/decor-roles.ts`, ggf.
 - [ ] Ein fehlendes Asset ist im lokalen Bildgate sichtbar und nennt seinen
       Schlüssel.
 - [ ] Bestehende Möbel und Geräte behalten ihre Textur.
+- [ ] Sichtabnahme: unbekanntes Möbel als gestrichelter Platzhalter mit
+      Schlüssel; Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Platzhalter sind `Graphics`-Leaves in einem `Container`.
 Keine Kinder an `Graphics` hängen. Text als eigener `Text`/`BitmapText`-Leaf,
@@ -230,6 +237,8 @@ wird.
 - [ ] Ein Gast ist bei beiden LOD-Stufen als dieselbe Person erkennbar.
 - [ ] Die Silhouette skaliert mit der Welt, nicht gegen die Kamera.
 - [ ] Der lokale Bildvergleich zeigt Detail und Silhouette.
+- [ ] Sichtabnahme: Detail und Silhouette im selben Lauf, kein Pin;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** `Sprite` ist ein Leaf. Kein `addChild` auf einem Sprite.
 Silhouette als eigener `Sprite` in einem `ActorContainer`; `visible` statt
@@ -267,6 +276,8 @@ bereits gefüllten Fläche.
 - [ ] Kein `CarpetOverlay` mehr im Szenenaufbau.
 - [ ] Ein Raum mit Teppich hat nicht zwei vollflächige Bodenknoten.
 - [ ] Die sechs Materialien sind im lokalen Bildgate unterscheidbar.
+- [ ] Sichtabnahme: sechs Materialien und genau ein Teppich-Bodenknoten;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** `TilingSprite` ist ein Leaf; seine Textur kommt aus
 `Assets.load`, nicht aus `Texture.from(url)`. `tileScale`/`tilePosition` statt
@@ -302,6 +313,8 @@ verschwinden.
 - [ ] Der Lichtpool erzeugt bei ruhender Szene keine neuen Objekte.
 - [ ] Lokales Bildgate: Licht überlappt glaubwürdig, ohne den Boden zu
       überdecken.
+- [ ] Sichtabnahme: Lichtpool und sichtbare Quelle ohne Ellipsen;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** `blendMode = "add"` gehört auf die Lichtkinder, nicht auf
 einen Container, dessen Kinder unterschiedliche BlendModes brauchen. Kein
@@ -336,6 +349,8 @@ flattert nicht an der Schwelle.
 - [ ] Ein LOD-Wechsel an der Schwelle erzeugt genau einen Wechsel, nicht mehrere.
 - [ ] Der Hintergrund ist bei leerer Szene sichtbar und nicht schwarz.
 - [ ] Die bestehende Casino-Kamera bleibt im Bild unverändert.
+- [ ] Sichtabnahme: Weltgrenzen, Parallaxe und genau ein LOD-Wechsel am
+      Rand; Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** `getBounds()` liefert `Bounds`, nicht `Rectangle`; für
 `contains()` `.rectangle` verwenden. Keine Bounds-Abfrage pro Frame; Weltgrenzen
@@ -383,11 +398,13 @@ kein Test-only-Renderer.
       von `src/core/sim`; die offene S2-12-Aufgabe bleibt die einzige Quelle
       für das Stadtnetz.
 - [ ] Ein Lauf nutzt die bestehende S2-07/S2-12-Übergangskette, ohne Teleport
-      und ohne Duplikat.
+      und ohne Duplikat; das ist der S2-08-Browserbeleg.
 - [ ] Die Stadt ist im lokalen Bildgate als Straßenraum erkennbar, nicht als
       Platzhalterfläche.
 - [ ] Ein nicht begehbarer Ort ist sichtbar als Kulisse markiert, nicht als
       Tür.
+- [ ] Sichtabnahme: Straßenraum und Türen im Stadt-Adapter, kein Teleport;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Die Stadt ist ein `Container` mit sortierbaren Kindern für
 Tiefe; `sortableChildren` nur dort, nicht global. `Sprite`-Leaves bleiben
@@ -424,6 +441,8 @@ mit Welt-, Skalierungs- und Rechteangaben.
 - [ ] Die Rechteangabe ist pro neuem Asset vorhanden oder der Einsatz ist
       blockiert.
 - [ ] Ein Asset mit falscher `displayScale` wird vom Test abgelehnt.
+- [ ] Sichtabnahme: Stadtassets mit Rolle, Welt und Skalierung sichtbar
+      korrekt; Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Assets über `Assets.load`/Manifest laden, nicht über
 `Texture.from(url)`. `Assets`-Cache bewusst halten; kein `Assets.reset()` pro
@@ -459,6 +478,8 @@ ohne eine zweite Simulation zu bauen.
 - [ ] Actor-IDs bleiben über den Raumwechsel stabil.
 - [ ] Kein doppelter NPC nach Re-Entry.
 - [ ] Die Begegnung ist im Bild und im bestehenden Fact-Log belegt.
+- [ ] Sichtabnahme: NPC-Weg, Türwechsel und Begegnung in einem Lauf;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Viele Actors als `Container` mit `Sprite`-Leaves; bei
 hunderten Figuren `ParticleContainer` nur für statische, gleichartige Sprites
@@ -502,6 +523,8 @@ gehört in die jeweilige S2-Aufgabe.
       verifizierte S2-07-Pfad.
 - [ ] Möbelrollen sind eindeutig; kein Möbelstück wird als Deko geraten.
 - [ ] Lokales Bildgate zeigt alle vier Bereiche.
+- [ ] Sichtabnahme: alle vier Wohnbereiche und die Tür zur Straße;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Innenraum top-down, keine isometrische Projektion mischen.
 Wände als Tiefenobjekte mit Fußanker; Occlusion nicht über `zIndex` aus Namen.
@@ -515,7 +538,7 @@ Wände als Tiefenobjekte mit Fußanker; Occlusion nicht über `zIndex` aus Namen
 
 **Aufgaben**
 
-- [ ] Vier Lauframes je Personafamilie und zwei Richtungen; Richtung aus
+- [ ] Vier Laufframes je Personafamilie und zwei Richtungen; Richtung aus
       Geschwindigkeit, nicht aus einem separaten Zustand.
 - [ ] Animation aus Tick/Fortschritt, nicht aus `Date.now()`; deterministisch.
 - [ ] Stillstand fällt auf das Standbild zurück; kein Flackern an der
@@ -530,6 +553,8 @@ Wände als Tiefenobjekte mit Fußanker; Occlusion nicht über `zIndex` aus Namen
 - [ ] Zwei gleiche Ticks erzeugen denselben Frame.
 - [ ] Kein zusätzlicher Actor durch den Animationswechsel.
 - [ ] Das lokale Bildgate zeigt Lauf und Stillstand.
+- [ ] Sichtabnahme: Lauf in beide Richtungen und Stillstand im selben
+      Zustand; Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** `AnimatedSprite` ist ein Leaf und benötigt eine
 Spritesheet-Textur; keine manuelle Textur pro Frame aus URLs. `Ticker` nur der
@@ -561,6 +586,8 @@ eine App-Ticker; keine `setInterval`-Animation.
 - [ ] Die Szene bleibt bei 60 fps im lokalen Messlauf; keine neue
       Dauerallokation.
 - [ ] Lokales Bildgate zeigt mindestens Tag und Nacht.
+- [ ] Sichtabnahme: Tag/Nacht und reduced motion ohne Zustandsänderung;
+      Screenshot, Konsole und Probe nach Abschnitt 8.
 
 **PixiJS-Falle:** Partikel nur mit `ParticleContainer`, wenn es viele
 gleichartige Sprites sind; sonst gepoolte `Sprite`-Leaves. Kein
@@ -604,17 +631,128 @@ stehen könnten.
 - **Performance:** ein `Application`, ein Ticker, keine Allokation pro Frame,
   keine `setInterval`-Schleife, keine unbegrenzten Graphics-Listen.
 
-## 6. Prüfpfad und Abschluss je Phase
+## 6. Meilensteine
+
+Die Meilensteine sind Exit-Punkte, keine Kalenderdaten. Ein Meilenstein ist erst
+erreicht, wenn alle genannten Phasen ihr Akzeptanz- und Sichtabnahme-Ergebnis
+haben; ein grüner Einzeltest reicht nicht. Die Roadmap führt dieselben IDs als
+grobe Produkt-Etappen (R-0 bis R-4), dieser Plan bleibt die Detail-Todo.
+
+| ID | Name | Phasen | Exit-Kriterium | Roadmap |
+| --- | --- | --- | --- | --- |
+| M0 | Wahrheit und Bildgate | R0–R1 | Baseline, Rollen, Rechte und vier reproduzierbare Szenen sind belegt; kein Cloud-Gate | R-0 |
+| M1 | Ehrlicher Casino-Render | R2–R6 | Platzhalter, Figuren, Materialien, Licht und Kamera bestehen Akzeptanz und Sichtabnahme; kein grüner Fallback | R-1 |
+| M2 | Stadt sichtbar | R7–R8 | Der bestehende S2-12-Stadtkern ist als Straßenraum sichtbar, Türen nutzen den bestehenden Wechsel, Assets haben Rollen | R-2 |
+| M3 | Stadt lebt, Wohnung abgenommen | R9–R10 | NPCs, Türen und Begegnungen sind sichtbar; S2-08 ist im Browser belegt; S2-09–S2-11 sind abgehakt oder offen zurückgegeben | R-3 |
+| M4 | Bewegung und Ambient | R11–R12 | Laufframes und Ambient sind deterministisch, reduced-motion-fähig und im lokalen Messlauf stabil; darf zurückgestellt werden | R-4 |
+
+M0 ist die Basis für jede Aussage über den Renderzustand. M1–M3 sind die
+Release-Blocker der Phase 3R. M4 ist die letzte P2-Ausbaustufe und darf
+zugunsten von M1–M3 zurückgestellt werden. R7 kann erst starten, wenn S2-12
+vorliegt; R10 kann erst abschließen, wenn S2-09–S2-11 belegt oder ausdrücklich
+zurückgegeben sind.
+
+## 7. Roadmap-Kopplung
+
+Die Roadmap ist die Produktquelle, dieser Plan die Ausführungsquelle. Es gibt
+keine dritte Statusliste und keine stillen Statuswechsel. Die Kopplung ist
+verbindlich:
+
+| Plan | Roadmap-Zeile | Statusführer |
+| --- | --- | --- |
+| R0–R1 / M0 | R-0 | Plan-Checkbox und Bildgate-Beleg; Roadmap erst bei M0 |
+| R2–R6 / M1 | R-1 | Plan-Checkboxen je Phase; Roadmap erst bei M1 |
+| R7–R8 / M2 | R-2 | Plan-Checkboxen je Phase; Roadmap erst bei M2 |
+| R9–R10 / M3 | R-3 | Plan-Checkboxen je Phase; Roadmap erst bei M3 |
+| R11–R12 / M4 | R-4 | Plan-Checkboxen je Phase; Roadmap erst bei M4 oder Zurückstellung |
+
+**Regeln für die gemeinsame Bearbeitung**
+
+- Eine Änderung an Reihenfolge, Abhängigkeit oder Umfang wird im selben Commit
+  in diesem Plan und in der Roadmap-Zeile nachgezogen. Keine neue,
+  konkurrierende Roadmap-Zeile für dieselbe Arbeit.
+- `S2-*`-Zeilen bleiben die Quelle für Spielumfang. R7 und R10 dürfen sie
+  referenzieren und im Renderer abnehmen, aber nicht durch eigene
+  Feature-Zeilen ersetzen.
+- `PR-07` und `S2-08` bleiben offen, bis der vollständige Browserbeleg
+  vorliegt. Einzelne Slice-Screenshots sind Belege auf dem Weg dorthin, kein
+  automatischer Abschluss.
+- Ein Meilenstein wird in der Roadmap erst `erledigt`, wenn die Sichtabnahme
+  aus Abschnitt 8 vorliegt; `verifiziert` braucht den Browserbeleg ohne neuen
+  Code. Die Detailstatuses R0–R12 bleiben ausschließlich in diesem Plan.
+- Generierte Roadmap-Bestandteile werden über `node scripts/sync-generated.mjs`
+  gepflegt, nie per Hand. Die Statusentscheidung selbst bleibt eine bewusste
+  Doku-Änderung mit Beleg.
+
+## 8. Preview-Sichtabnahme im lokalen Dev-Server
+
+Gilt für jeden sichtbaren Slice R2–R12. R0 und R1 liefern Baseline und
+Bildgate; R1 ist kein Ersatz für die Sichtabnahme.
+
+**Regel:** Der Agent führt die Abnahme nach der Implementierung des Slices und
+vor dem Abhaken der Phase selbst durch. Ein Unit-Test, ein Pixel-Diff oder ein
+grüner Build ohne Browserbeleg ist kein Phasenabschluss.
+
+**Ablauf**
+
+1. `pnpm run dev` starten (Vite, `http://localhost:3000`; kein Cloud-Runner).
+2. Deterministischen Zustand herstellen: frischer Spielstand bzw. benannter
+   Seed, Szene und Tick; Viewport 1024×768, DPR 2. Keine manuell veränderten
+   Spielstände als Beweis.
+3. Vorher/Nachher mit dem vorhandenen GameScout-/Playwright-Pfad
+   (`packages/gamescout`) aufnehmen; kein zweiter Browser-Stack, kein neuer
+   Prozess pro Szene.
+4. Konsole, Page-Errors und fehlgeschlagene Requests prüfen: null Fehler.
+5. Simulationswahrheit über `window.__rbdProbe` prüfen (`getOverview`,
+   `getFurniture`, `compareRenderAndSim`); wenn die Probe für den Slice nicht
+   verfügbar ist, den Grund im Beleg nennen und den zustandsbezogenen Test
+   zusätzlich ausführen.
+6. Screenshot unter `docs/screenshots/current/` mit der nächsten freien Nummer
+   und sprechendem Slice-Namen ablegen; Vorher/Nachher unter
+   `docs/screenshots/comparison/` mit Version und Slice. Bestehende Bilder
+   werden nicht überschrieben.
+7. Im Phasenbeleg `PASS`, `FAIL` oder `INCONCLUSIVE` eintragen, mit
+   Screenshot-Pfad, Szenen-/Tick-Angabe, Konsolenstatus und Probe-Ergebnis.
+8. Bei `FAIL`/`INCONCLUSIVE`: Phase bleibt offen; kein Baseline-Update und kein
+   Weiterhaken. Erst reparieren, dann erneut aufnehmen; kein Retry-Loop.
+
+**Kein Gate:** Die Sichtabnahme läuft nicht in `ci:local`, `verify:all`, einem
+GitHub-Workflow oder als Screenshot-Pflicht in jedem Test. Sie ist der
+Abschlussbeleg des Slices, nicht ein zweiter Testpfad.
+
+**Sichtbare Slice-Matrix**
+
+| Phase | Preview-Zustand | Muss sichtbar sein | Beleg |
+| --- | --- | --- | --- |
+| R2 | Casino, unbekanntes Möbel | Gestrichelte Kontur, Rollen-/Assetname, kein `0x2dd4a0` | `docs/screenshots/current/16-r2-platzhalter.png` |
+| R3 | Casino, Gast nah und fern | Silhouette als Person, kein 6×6-Pin, LOD-Wechsel ohne Duplikat | `docs/screenshots/current/17-r3-silhouette.png` |
+| R4 | Casino, Raum mit Teppich | Sechs unterscheidbare Materialien, genau ein Bodenknoten | `docs/screenshots/current/18-r4-materialien.png` |
+| R5 | Casino, Lichtquellen | Lichtfläche und sichtbare Quelle, keine Ellipsen | `docs/screenshots/current/19-r5-licht.png` |
+| R6 | Casino, Zoom/Pan an der Weltgrenze | Weltgrenzen, Parallaxe, genau ein LOD-Wechsel | `docs/screenshots/current/20-r6-kamera.png` |
+| R7 | Stadt, Straße und Tür | Straßenraum, Türen, kein Teleport, kein zweiter Stadtgraph | `docs/screenshots/current/21-r7-stadt.png` |
+| R8 | Stadt, Assetpaket | Rollen, Welten und Skalierung sichtbar korrekt | `docs/screenshots/current/22-r8-stadtassets.png` |
+| R9 | Stadt, NPC-Weg, Tür, Begegnung | NPC von A nach B, stabile Actor-ID, ein Fact | `docs/screenshots/current/23-r9-stadtleben.png` |
+| R10 | Wohnung, vier Bereiche | S2-09–S2-11 sichtbar; Tür führt auf die Straße | `docs/screenshots/current/24-r10-wohnung.png` |
+| R11 | Casino/Stadt, Lauf und Stillstand | Beide Richtungen, deterministischer Frame, kein Duplikat | `docs/screenshots/current/25-r11-lauf.png` |
+| R12 | Stadt, Tag und Nacht | Ambient und reduced motion, keine Zustandsänderung | `docs/screenshots/current/26-r12-ambient.png` |
+
+Die Aufnahmen sind Belege für `PR-07` und `S2-08`, schließen sie aber erst,
+wenn der vollständige Screenshot-Satz bzw. der vertikale Pfad belegt ist. R10
+darf S2-09–S2-11 nur abhaken, wenn deren eigene Akzeptanz vorliegt.
+
+## 9. Prüfpfad und Abschluss je Phase
 
 Jede Phase endet mit dem kleinsten passenden lokalen Nachweis:
 
 1. **Typ/Logik:** `pnpm run typecheck` und der genannte Vitest-Fokus.
-2. **Render:** lokales Bildgate aus R1, drei Szenen, dreimal stabil.
-3. **Doku:** `pnpm run verify:docs` und die betroffenen Referenzen in
+2. **Render:** lokales Bildgate aus R1, vier Szenen, dreimal stabil.
+3. **Sichtabnahme:** für R2–R12 nach Abschnitt 8; der Beleg gehört zum
+   Phasenabschluss.
+4. **Doku:** `pnpm run verify:docs` und die betroffenen Referenzen in
    `ROADMAP.md`/`ARCHITECTURE.md`.
-4. **Gesamt:** `pnpm run verify:light`; `verify:all` nur, wenn die Phase den
+5. **Gesamt:** `pnpm run verify:light`; `verify:all` nur, wenn die Phase den
    gemeinsamen Baum oder die Testline berührt.
-5. **Kein Cloud-Gate:** kein neuer Workflow, kein `.circleci/`, kein
+6. **Kein Cloud-Gate:** kein neuer Workflow, kein `.circleci/`, kein
    `.github/workflows/`, kein Retry um einen roten lokalen Lauf.
 
 **Phasen-Fertig heißt:**
@@ -623,12 +761,37 @@ Jede Phase endet mit dem kleinsten passenden lokalen Nachweis:
       „zurückgestellt“ mit Grund markiert.
 - [ ] Die Akzeptanzliste ist vollständig belegt.
 - [ ] Das lokale Bildgate ist grün und der Baseline-Stand ist erklärt.
+- [ ] Für R2–R12: Sichtabnahme nach Abschnitt 8 ist `PASS`; Screenshot,
+      Konsole und Probe liegen vor.
 - [ ] Kein neuer Cloud-/CI-Pfad und keine neue Endlosschleife.
 - [ ] Die betroffenen Doku-Stellen sind aktualisiert, nicht nur dieser Plan.
 - [ ] Commit und Push sind erfolgt; ein Merge nach `main` braucht eine
       ausdrückliche Anweisung.
 
-## 7. Nicht in diesem Plan
+## 10. Adversarialer Review
+
+Geprüft gegen den Baum `0.3.233`, die Roadmap-Phase 3R und die lokale
+Testlinie. Die Befunde sind eingearbeitet; offene Abhängigkeiten sind
+Produktblocker, keine stillen Planannahmen.
+
+| Befund | Risiko | Entscheidung |
+| --- | --- | --- |
+| Plan nannte `0.3.232`, `main` steht auf `0.3.233` | Baseline driftet vor dem ersten Lauf | Stand und R0 auf `0.3.233`; R0 misst den echten Baum neu |
+| R3/R4/R5 sollten parallel nach R1 laufen, R4 verlangt aber R2 | falsche Reihenfolge | R3/R5 parallel nach R1; R4 nach R2 |
+| R1 definierte drei Szenen, R10 verlangt vier Wohnbereiche | kein Wohnungsbaseline | R1 nimmt vier Szenen inklusive Wohnung auf |
+| Meilensteine standen nur als Prosa | kein gemeinsamer Exit | M0–M4 mit Exit-Kriterien und Roadmap-Zuordnung |
+| Keine Agent-Sichtabnahme war verlangt | grüner Test bei falschem Bild | Abschnitt 8 ist für R2–R12 verbindlich |
+| `PR-07`/`S2-08` sind offen, aber Screenshots waren geplant | Scheinabschluss | Aufnahmen sind Belege, Status bleibt bis zum Vollbeleg offen |
+| Sichtabnahme könnte zum Gate werden | Testline wird langsamer | ausdrücklich nicht in `ci:local`, `verify:all` oder Cloud |
+| Roadmap und Plan konnten auseinanderlaufen | zwei Statuswahrheiten | Abschnitt 7: eine Statusquelle, Änderung im selben Commit |
+| R7 wartet auf S2-12; R10 auf S2-09–S2-11 | Meilenstein blockiert | explizite Abhängigkeit, keine neue konkurrierende Roadmap-Zeile |
+
+**Nicht als Planfehler gewertet:** R0 bleibt framework-frei und R1 ist kein
+Cloud-Gate. Die Bildgate-Szenen sind bewusst lokal und werden nicht in die
+reguläre Testline gehängt. Die offenen S2-Abhängigkeiten bleiben offen, bis
+ihre eigenen Belege vorliegen.
+
+## 11. Nicht in diesem Plan
 
 - Kein Rewrite der Simulation und kein neues Save-Schema ohne eigenen
   Migrationsnachweis.
@@ -639,7 +802,7 @@ Jede Phase endet mit dem kleinsten passenden lokalen Nachweis:
 - Keine v7-Pixi-Muster (`beginFill`, `cacheAsBitmap`, `Texture.from(url)`,
   `new Application({...})`, `app.view`).
 
-## 8. Referenzen
+## 12. Referenzen
 
 - [`ROADMAP.md`](ROADMAP.md) — Produktreihenfolge, offene Punkte, Phasen 1–7.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Zustandsbesitz, Render-Grenzen,
@@ -647,3 +810,7 @@ Jede Phase endet mit dem kleinsten passenden lokalen Nachweis:
 - [`TESTING.md`](TESTING.md) — lokale Testline und Mechanik-Tests.
 - [`CI.md`](CI.md) — lokale Required-Gates; dieser Plan fügt kein Cloud-Gate
   hinzu.
+- [`packages/gamescout/AGENTS.md`](../packages/gamescout/AGENTS.md) — lokaler
+  Browser-/Screenshot-Pfad und Sichtwahrheit.
+- [`screenshots/current/`](screenshots/current/) — kanonischer Satz für die
+  Sichtabnahmen; Vergleichsbilder liegen unter `screenshots/comparison/`.
