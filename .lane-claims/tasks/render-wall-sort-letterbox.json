@@ -4,14 +4,35 @@
   "claimId": "lane/render/wall-sort-letterbox",
   "branch": "lane/render/wall-sort-letterbox",
   "baseSha": "f6ef9a34e1fc4f8d944f56ad44d05bae5908671a",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Wandtiefe, Letterbox und Türschwellen",
   "goal": "Die fünf Render-Patches für eindeutige Wand-IDs, letterbox-sichere Tile-Treffer, sichtbare Türschwellen, eine gemeinsame Vorderseiten-Geometrie und tile-groessenbewusste Wandtexturen umsetzen und belegen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 490,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/490",
+    "state": "merged",
+    "headSha": "12bc43e9e2cfbc23dc64811cde1a3c978921500f",
+    "mergedSha": "4f2e3120556064507b0622b2c7d99546a68a28fa"
+  },
   "findings": [],
-  "nextAction": "Fünf Render-Patches umgesetzt; fokussierte Tests, verify:light und volle Suite grün. Evidenz-Artefakt-Drift separat beheben.",
-  "revision": 1
+  "nextAction": "PR #490 gemergt (4f2e312); fokussierte Render-Tests, verify:light und vollstaendige Suite auf dem Kopf gruen. Keine offenen Befunde.",
+  "revision": 2,
+  "mergeState": "MERGED",
+  "mergedSha": "4f2e3120556064507b0622b2c7d99546a68a28fa",
+  "testResult": {
+    "headSha": "12bc43e9e2cfbc23dc64811cde1a3c978921500f",
+    "command": "pnpm test && pnpm verify:light",
+    "files": "321 passed | 2 skipped (323)",
+    "tests": "1728 passed | 2 skipped (1730)",
+    "longturn": "PASS",
+    "ciGates": "PASS",
+    "gates": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "verify:light": "PASS"
+    }
+  }
 }
