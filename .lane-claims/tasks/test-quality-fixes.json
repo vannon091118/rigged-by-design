@@ -4,14 +4,37 @@
   "claimId": "lane/governance/test-quality-fixes",
   "branch": "lane/governance/test-quality-fixes",
   "baseSha": "cb7d4002bd4e6cc7121d19b69491449240b056bd",
-  "phase": "IMPLEMENTING",
+  "phase": "DONE",
   "title": "Test-Quality-Baseline in drei Testdateien beheben",
   "goal": "Die drei bestehenden verify:test-quality-Verstoesse ursachengerecht in den Testdateien beheben, ohne Assertions, Abdeckung oder Gate-Regeln abzuschwaeachen.",
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 493,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/493",
+    "state": "merged",
+    "headSha": "940fed4366244a0b566fd518b25e79125614ccab",
+    "mergedSha": "b6913b9d2c0afacfe13af169dbce978db92cfe91"
+  },
   "findings": [],
-  "nextAction": "Drei Verstoesse reproduzieren, Ursachen in den Tests beheben und Gate, Suite sowie Long-Turn belegen.",
-  "revision": 1
+  "nextAction": "PR #493 gemergt (b6913b9d); verify:test-quality, verify:light, volle Suite und Long-Turn-Artefaktvergleich auf dem Kopf belegt. Keine offenen Befunde.",
+  "revision": 2,
+  "mergeState": "MERGED",
+  "mergedSha": "b6913b9d2c0afacfe13af169dbce978db92cfe91",
+  "testResult": {
+    "headSha": "940fed4366244a0b566fd518b25e79125614ccab",
+    "command": "pnpm verify:test-quality && pnpm verify:light && pnpm test && RBD_LIVING_WORLD_EVIDENCE_OUT=... vitest run living-world-longturn.test.ts",
+    "testQuality": "PASS (329 Testdateien, 876 Dateien)",
+    "files": "321 passed | 2 skipped (323)",
+    "tests": "1728 passed | 2 skipped (1730)",
+    "longturn": "PASS",
+    "artifactSha256": "6e634bd94e45c5c2049b7396bbc53640aec1af3764b5286f79ec6a8b55ea656d",
+    "artifactCmp": "PASS",
+    "gates": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "verify:light": "PASS"
+    }
+  }
 }
