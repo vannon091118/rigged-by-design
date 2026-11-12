@@ -41,6 +41,8 @@
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
-  "createdAt": "22486ba22ebaaf816a1f6425232c89241fe74f89"
+  "status": "merged",
+  "createdAt": "22486ba22ebaaf816a1f6425232c89241fe74f89",
+  "mergedSha": "6e5ea00bd2c6f6de5185522bcf2f7d46c80c6295",
+  "mergedEvidence": "Squash-Merge #466: Local-first CI/CD auf main."
 }

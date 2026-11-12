@@ -68,7 +68,7 @@ Issue-Scopes:
 
 `main` nutzt einen klassischen Branch-Schutz, **kein** Ruleset:
 
-- Required Status Checks: **keine**; der PR-Job `Fail-Closed Gates` ist optional
+- Required Status Checks: **keine**; keinen Cloud-Testlauf, der lokale Vor-PR-Nachweis ist die Autorität
 - `strict: false`
 - 0 erforderliche Reviews
 - `enforce_admins: true`

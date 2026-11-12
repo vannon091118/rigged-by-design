@@ -6,11 +6,11 @@
 
 ### Die eine Testlinie
 
-Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected`, `pnpm run verify:light` und `pnpm run verify:fast`. Der lokale Abschluss `pnpm run turn:finish` ermittelt den Impact vor dem Versions-Bump und nennt die langen Nachweise als offen.
+Die Testlinie läuft ausschließlich lokal. Während der Arbeit sind gezielte Nachweise erlaubt: einzelne Testdateien, `pnpm run test:affected`, `pnpm run verify:light` und `pnpm run verify:fast`. Der lokale Abschluss ist `pnpm run ci:local`; der vollständige Nachweis ist `pnpm run verify:all`, der Release-Nachweis `pnpm run verify:release`.
 
-Die vollständige Suite und Audit laufen lokal nur für einen Release über `verify:release`/`verify:all`; `verify:integration` ist der Vor-PR-Nachweis aus Light, Testqualität, betroffenen Tests und Build. Der optionale Cloud-PR-Job wiederholt nur die Light-Gates und baut die Debug-APK. `verify:fast` ist der Standard vor dem Push. `test:affected` bleibt gezieltes Entwicklungsfeedback und kein Vollnachweis.
+**Mechanik ist kein Gate.** Statistik-, RTP-, Verteilungs-, Soak-, Langlauf- und Benchmark-Suiten stehen in `src/Config/test-lanes.json` und laufen ausschließlich über `pnpm run test:mechanics`. Der Regellauf schließt sie aus; kein Regelprofil wartet auf einen Langlauf. Die Liste ist die einzige Wahrheit: der Katalog prüft sie im `--check`-Modus, Vitest liest denselben Eintrag.
 
-**Der Cloud-Light-Lauf ist kein Release-Nachweis.** Ein grüner `Fail-Closed Gates`-Check bestätigt den schnellen PR-Check und die Debug-APK; die vollständige Suite läuft lokal über `verify:release`/`verify:all` und bleibt Release- oder On-Demand-Arbeit. Der Check ist optional und keine Merge-Bedingung.
+**Kein Cloud-Testpfad.** GitHub-Workflows führen keine Tests, Gates, Builds oder APKs mehr aus. Die verbliebenen Workflows sind Repository-Verwaltung; der lokale Runner ist die einzige Testmaschine. `pnpm run ci:local` ersetzt den früheren PR-Job vollständig.
 
 ## Testmatrix
 
@@ -29,7 +29,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | 9 | Manual Dispatch ohne Dependency-Diff erzeugt keinen widersprüchlichen Audit-Job | `ci-plan.test.ts` (`MANUAL` mit Required-Set); `ci-gates.test.ts` |
 | 10 | Erzwungenes Audit läuft tatsächlich | `ci-plan.test.ts` (`RBD_VERIFY_AUDIT=1`); `workflow-hardening.test.ts` |
 | 11 | PR-Änderungen durchlaufen lokal die vollständige Regression | `verify:integration`; `ci-plan.test.ts` (Required-Set und Suiteauswahl) |
-| 12 | Cloud-Light bleibt ein schneller optionaler PR-Check | `ci-gates.test.ts` (ein Job, `verify:light`), `pipeline-modes.test.ts` (Light ≠ Integration) |
+| 12 | Kein Cloud-Check wiederholt nur Light | `ci-gates.test.ts` (kein Test-/Build-Workflow, lokaler Runner), `pipeline-modes.test.ts` (Light ≠ Integration) |
 | 13 | Gemeinsame Claims und Pfade erkennen echte Überschneidungen | `lane-claims.test.ts` (Content-Pfad kollidiert, Meta/Claim nicht) |
 | 14 | Unabhängige Lane wird durch fremden Lane-Fehler nicht blockiert | `issue-scope.test.ts`; `pretask-issues.test.ts` (Dependency blockiert nur abhängige Lane) |
 | 15 | Autofix nur erlaubte Fälle, danach Gates erneut | `auto-resolve.test.ts` (`repair-plan`-Block: erlaubter Doku-Fix, verbotener Quellcode, max. 1 Versuch) |
@@ -42,7 +42,7 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 
 | Regression | Nachweis |
 | --- | --- |
-| `long-checks` darf nicht `Fail-Closed Gates` heißen; genau ein PR-Check-Name | `workflow-hardening.test.ts` (PR-Check-Owner) |
+| Genau ein lokaler Testpfad, kein Cloud-Gate | `ci-gates.test.ts` (drei Repository-Workflows, keine Kommandos), `workflow-hardening.test.ts` |
 | Dependabot-PR mit `dependabot/**` besteht Lane Claims über eine eng begrenzte Bot-Allowlist | `lane-claims.test.ts` (Bot-/Claim-Prüfung) |
 | Statischer Scan: keine `reset --hard`, `clean -fd`, Stash-Mutation, `push --force`, `branch -D` in Produktionsskripten | `destructive-commands.test.ts` |
 | Impact-Pfad ohne TypeScript-Compiler: ein direkter oder transitiver Import macht das Gate rot | `impact-graph.test.ts` |
@@ -51,38 +51,24 @@ Die Fälle 1–17 sind der Governance-Vertrag. Die Spalte „Nachweis“ nennt d
 | Register-Audit: Governance darf fremden Claim-Status fortschreiben; Feature-Lane nicht | `lane-claims.test.ts` |
 | Ein Doku-/AGENTS-Kurzvertrag verweist auf diese Datei statt den Langtext zu duplizieren | `workflow-hardening.test.ts` |
 | Stadt-Ruhetag und verzögerte Folge überstehen Save/Load ohne Tick dazwischen: Tag, Ledger, Beziehung, Chain-Frist und PRNG bleiben identisch, Miete und Echo laufen genau einmal | `city-day-closeout.test.ts`, `city-encounter-loop.test.ts` |
-| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; der PR-Check ist optional, keine Merge-Bedingung |
+| Merge ist manuell und folgt auf den lokalen Integrationsnachweis | `promote.yml` hat keinen `workflow_run`-Trigger; kein Cloud-Check, keine Merge-Bedingung |
+| Mechanik-Liste und Testkatalog sind deckungsgleich; kein Regelprofil enthält Mechanik | `test-catalog.test.ts`, `pipeline-modes.test.ts` |
 
 ## Ausführung
 
 ```bash
-# fokussierte Governance-Matrix
-pnpm exec vitest run \
-  src/core/governance/__tests__/pretask.test.ts \
-  src/core/governance/__tests__/pretask-modes.test.ts \
-  src/core/governance/__tests__/pretask-issues.test.ts \
-  src/core/governance/__tests__/worktree-isolation.test.ts \
-  src/core/governance/__tests__/ci-plan.test.ts \
-  src/core/governance/__tests__/ci-gates.test.ts \
-  src/core/governance/__tests__/pipeline-modes.test.ts \
-  src/core/governance/__tests__/lane-claims.test.ts \
-  src/core/governance/__tests__/agent-new-args.test.ts \
-  src/core/governance/__tests__/claim-save-scope.test.ts \
-  src/core/governance/__tests__/workflow-retry.test.ts \
-  src/core/governance/__tests__/issue-scope.test.ts \
-  src/core/governance/__tests__/auto-resolve.test.ts \
-  src/core/governance/__tests__/pr-watcher.test.ts \
-  src/core/governance/__tests__/claim-evidence.test.ts \
-  src/core/governance/__tests__/workflow-hardening.test.ts \
-  src/core/governance/__tests__/destructive-commands.test.ts
-
-# Struktur und Doku
-pnpm run verify:test-quality
-pnpm run verify:docs
+# Regel-Gates lokal
 pnpm run verify:light
 pnpm run verify:fast
-pnpm run verify:integration
-pnpm run verify:long          # nur on demand
+pnpm run ci:local --profile=full
+
+# Mechanik ausschliesslich gezielt
+pnpm run test:mechanics
+RBD_SOAK_TICKS=100000 pnpm run soak
+pnpm run balance
+
+# APK lokal
+pnpm run ci:local --profile=apk
 ```
 
 ## Referenzen

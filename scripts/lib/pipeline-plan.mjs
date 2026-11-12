@@ -2,133 +2,113 @@
  * Der Plan jedes Laufs: `verify` liest ausschliesslich, `fix` repariert.
  *
  * Ein Gate, das Dateien schreibt, waere kein Gate. Deshalb kennt kein Profil
- * einen Autofix-Schritt; die Reparatur haengt allein an `--fix`. Die Gates
- * pruefen damit genau den Baum, den sie vorfinden, und melden jede Abweichung
- * als roten Befund, statt sie vorher wegzuschreiben.
+ * einen Autofix-Schritt; die Reparatur haengt allein an `--fix`.
+ *
+ * Mechanik-Nachweise (Statistik, Soak, Langlauf, Benchmarks) sind kein Gate:
+ * Sie laufen ausschliesslich im Profil `mechanics`. Der Regellauf bleibt
+ * deterministisch schnell und kann nicht an einem Langlauf haengen.
  */
 
-export const PROFILES = Object.freeze(['light', 'fast', 'dev', 'quick', 'integration', 'full', 'release']);
+export const PROFILES = Object.freeze(['light', 'fast', 'dev', 'quick', 'integration', 'full', 'release', 'mechanics']);
 
 /**
  * `verify:all` heisst fuer Menschen "alles", als Profil heisst es `full`. Der
- * Alias steht genau einmal hier: CI, Matrix und Pipeline lesen denselben Namen,
- * statt je eigene Schreibweisen zu erfinden.
+ * Alias steht genau einmal hier: CI, Matrix und Pipeline lesen denselben Namen.
  */
 export const PROFILE_ALIASES = Object.freeze({ all: 'full' });
 
 export function normalizeProfile(value) {
   return PROFILE_ALIASES[value] ?? value;
 }
-const MINUTE = 60_000;
 
-/** Jede Stufe ist rein lesend: pruefen, nicht reparieren. */
+const NODE = Object.freeze({ command: 'node' });
+
+/** Jede Stufe ist rein lesend: pruefen, nicht reparieren. Kein Gate hat ein Zeitlimit. */
 export const GATES = Object.freeze({
-  lint: { name: 'lint', command: 'pnpm', script: 'lint', code: 'ERR-4011', cache: true, timeoutMs: 2 * MINUTE },
-  'check:loc': { name: 'check:loc', command: 'pnpm', script: 'check:loc', code: 'ERR-4012', cache: true, timeoutMs: MINUTE },
-  typecheck: { name: 'typecheck', command: 'pnpm', script: 'typecheck', code: 'ERR-1005', cache: true, timeoutMs: 3 * MINUTE },
+  lint: {
+    ...NODE,
+    name: 'lint',
+    script: 'node_modules/eslint/bin/eslint.js',
+    args: ['.', '--config', 'src/Config/eslint.config.mjs'],
+    code: 'ERR-4011',
+    cache: true,
+  },
+  'check:loc': { ...NODE, name: 'check:loc', script: 'scripts/check-loc.mjs', code: 'ERR-4012', cache: true },
+  typecheck: {
+    ...NODE,
+    name: 'typecheck',
+    script: 'node_modules/typescript/bin/tsc',
+    args: ['--noEmit', '-p', 'src/Config/tsconfig.json'],
+    code: 'ERR-1005',
+    cache: true,
+  },
   'test-quality': {
+    ...NODE,
     name: 'test-quality',
-    command: 'node',
     script: 'scripts/verify-test-quality.mjs',
     code: 'ERR-4002',
     cache: true,
-    timeoutMs: 2 * MINUTE,
   },
-  'dead-code': {
-    name: 'dead-code',
-    command: 'node',
-    script: 'scripts/verify-dead-code.mjs',
-    code: 'ERR-4003',
-    cache: true,
-    timeoutMs: 2 * MINUTE,
-  },
-  // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum. Die Dependency-Matrix
-  // schreibt der Pre-Commit-Hook; der Testkatalog ist ein eigenes Gate.
-  docs: {
-    name: 'docs',
-    command: 'node',
-    script: 'scripts/verify-docs.mjs',
-    code: 'ERR-4017',
-    cache: true,
-    timeoutMs: MINUTE,
-  },
-  // Der Katalog ist abgeleitet, aber im Verify nicht selbstschreibend: eine
-  // neue Testdatei ohne Eintrag ist Drift und damit rot (ERR-4015).
+  'dead-code': { ...NODE, name: 'dead-code', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', cache: true },
+  // Pflichtdoku: Struktur, Marker, flacher Wurzelbaum.
+  docs: { ...NODE, name: 'docs', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', cache: true },
+  // Der Katalog ist abgeleitet, aber im Verify nicht selbstschreibend.
   catalog: {
+    ...NODE,
     name: 'catalog',
-    command: 'node',
     script: 'scripts/test-catalog.mjs',
     args: ['--check'],
     code: 'ERR-4015',
     cache: true,
-    timeoutMs: MINUTE,
   },
-  'test-placement': {
-    name: 'test-placement',
-    command: 'node',
-    script: 'scripts/verify-test-placement.mjs',
-    code: 'ERR-4019',
-    cache: true,
-    timeoutMs: MINUTE,
-  },
-  tree: {
-    name: 'tree',
-    command: 'node',
-    script: 'scripts/verify-tree.mjs',
-    code: 'ERR-4019',
-    cache: true,
-    timeoutMs: MINUTE,
-  },
-  // Der Impact-Pfad muss ohne `node_modules` laufen; ein TypeScript-Import
-  // wuerde `agent:context`, `pretask` und `test:affected` blockieren.
-  'impact-graph': {
-    name: 'impact-graph',
-    command: 'node',
-    script: 'scripts/verify-impact-graph.mjs',
-    code: 'ERR-4019',
-    cache: true,
-    timeoutMs: MINUTE,
-  },
-  redundancy: {
-    name: 'redundancy',
-    command: 'node',
-    script: 'scripts/verify-redundancy.mjs',
-    code: 'ERR-4020',
-    cache: true,
-    timeoutMs: MINUTE,
-  },
-  assets: { name: 'assets', command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', cache: true, timeoutMs: 2 * MINUTE },
-  capabilities: { name: 'capabilities', command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', cache: true, timeoutMs: MINUTE },
-  // Die Pflicht pro Commit gehoert in CI, nicht nur in den Hook: ein lokaler
-  // Verstoss oder ein Merge ueber die API darf die Baustein-Regel nicht
-  // umgehen. Der Lauf prueft Pools, Doppelte, Ziel, Luecken und Schrumpf-Schutz.
-  narrative: {
-    name: 'narrative',
-    command: 'node',
-    script: 'scripts/verify-narrative-blocks.mjs',
-    code: 'ERR-4022',
-    cache: true,
-    timeoutMs: 2 * MINUTE,
-  },
-  audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004', timeoutMs: 3 * MINUTE },
+  'test-placement': { ...NODE, name: 'test-placement', script: 'scripts/verify-test-placement.mjs', code: 'ERR-4019', cache: true },
+  tree: { ...NODE, name: 'tree', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', cache: true },
+  // Der Impact-Pfad muss ohne `node_modules` laufen.
+  'impact-graph': { ...NODE, name: 'impact-graph', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', cache: true },
+  redundancy: { ...NODE, name: 'redundancy', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', cache: true },
+  assets: { ...NODE, name: 'assets', script: 'scripts/verify-assets.mjs', code: 'ERR-4016', cache: true },
+  capabilities: { ...NODE, name: 'capabilities', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', cache: true },
+  narrative: { ...NODE, name: 'narrative', script: 'scripts/verify-narrative-blocks.mjs', code: 'ERR-4022', cache: true },
+  audit: { name: 'audit', command: 'pnpm', script: 'audit:gate', code: 'ERR-4004' },
   // Ein roter Test ist ein Befund, kein Notfall: ERR-4026 steht auf AGENT und
   // wird als Issue abgeholt. Nur Geld-, Ledger-, RNG- und Save-Invarianten
   // bleiben BLOCKED (ERR-1001/1002/1003/5001).
-  tests: { name: 'tests', command: 'pnpm', script: 'test:ci', code: 'ERR-4026', cache: true, timeoutMs: 15 * MINUTE },
-  // Derselbe Selektor wie `test:affected`, aber als Gate im gemeinsamen Plan.
-  // Der lokale dev-Abschluss soll nicht zwei getrennte Testkommandos brauchen.
-  affected: { name: 'affected', command: 'node', script: 'scripts/test-affected.mjs', code: 'ERR-4026', cache: true, timeoutMs: 15 * MINUTE },
-  build: { name: 'build', command: 'pnpm', script: 'build', code: 'ERR-1005', cache: true, timeoutMs: 10 * MINUTE },
+  tests: {
+    ...NODE,
+    name: 'tests',
+    script: 'scripts/run-selected-tests.mjs',
+    env: { RBD_TEST_PROFILE: 'full' },
+    code: 'ERR-4026',
+    cache: true,
+  },
+  // Dieselbe Datei waehlt die betroffenen Tests, ohne die volle Suite zu starten.
+  affected: { ...NODE, name: 'affected', script: 'scripts/test-affected.mjs', code: 'ERR-4026', cache: true },
+  // Mechanik ist ein ausdruecklicher Nachweis, kein Bestandteil eines Profils.
+  mechanics: {
+    ...NODE,
+    name: 'mechanics',
+    script: 'scripts/run-selected-tests.mjs',
+    env: { RBD_TEST_PROFILE: 'mechanics' },
+    code: 'ERR-4026',
+    cache: false,
+  },
+  build: {
+    ...NODE,
+    name: 'build',
+    script: 'node_modules/vite/bin/vite.js',
+    args: ['build', '--config', 'src/Config/vite.config.ts'],
+    code: 'ERR-1005',
+    cache: true,
+  },
 });
 
-// Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit. Der Beweis
-// gehoert nach GitHub Actions, nicht in jeden Agenten-Turn.
+// Lokal waehrend der Arbeit: keine Suite, kein Build, kein Audit.
 const LIGHT = ['lint', 'check:loc', 'typecheck', 'docs', 'catalog', 'test-placement', 'tree', 'impact-graph', 'redundancy'];
 // Fast ist der lokale Standard vor dem Push: Struktur, Testqualitaet,
 // betroffene Tests und ein schneller Build. Keine volle Suite, kein Audit.
 const FAST = [...LIGHT, 'test-quality', 'affected', 'build'];
 const DEV = [...LIGHT, 'affected'];
-// Quick ist die gemeinsame Basis fuer den Required-Set; Build kommt fuer CI
+// Quick ist die gemeinsame Basis fuer das Required-Set; Build kommt fuer CI
 // hinzu, Audit bleibt impact-/release-abhaengig.
 export const QUICK_GATES = Object.freeze([
   'lint',
@@ -181,12 +161,13 @@ export const PROFILE_GATES = Object.freeze({
   fast: Object.freeze(FAST),
   dev: Object.freeze(DEV),
   quick: QUICK_GATES,
-  // Vor dem PR reicht der lokale Fast-Nachweis: Light plus Testqualitaet,
-  // betroffene Tests und Build. Die volle Required-Suite bleibt release/full.
+  // Vor dem PR reicht der lokale Fast-Nachweis.
   integration: FAST,
   // Voll und Release pruefen identisch; Release erzwingt Audit zusaetzlich per Env.
   full: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
   release: Object.freeze([...REQUIRED_CI_GATES, 'audit']),
+  // Nur die ausdruecklichen Mechanik-Nachweise; nie Teil eines Regellaufs.
+  mechanics: Object.freeze(['mechanics']),
 });
 
 export function isProfile(value) {

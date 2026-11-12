@@ -4,6 +4,11 @@
  * Die Konsole traegt das Ergebnis, nicht die Bleiwueste: jedes Gate schreibt sein
  * vollstaendiges Log in den Berichtsordner, ausgegeben wird im Erfolgsfall eine
  * Zeile und im Fehlerfall dessen Ende. `RBD_VERIFY_VERBOSE=1` gibt alles aus.
+ *
+ * Kein Gate hat ein Standard-Zeitlimit. Ein Mechanik-Nachweis kann Minuten
+ * dauern; ein Regellauf darf nicht an einem willkuerlichen Timer sterben.
+ * `timeoutMs` bleibt nur als optionaler Schutz fuer Aufrufer, die ihn bewusst
+ * setzen. Abgebrochen wird ueber SIGINT/SIGTERM ueber den Prozessbaum.
  */
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -13,9 +18,11 @@ import { line, ROOT } from './report.mjs';
 import { dropCached, isCached, markCached, treeKey } from './gate-cache.mjs';
 import { killTracked, killTree, releaseOwner, trackPid, untrackPid } from './process-sweep.mjs';
 
-const MAX_WORKERS = Math.max(1, Number(process.env.RBD_VERIFY_WORKERS) || Math.max(2, Math.min(4, availableParallelism() - 1)));
+const MAX_WORKERS = Math.max(
+  1,
+  Number(process.env.RBD_VERIFY_WORKERS) || Math.min(8, availableParallelism()),
+);
 const running = new Set();
-const DEFAULT_GATE_TIMEOUT_MS = 15 * 60_000;
 /** Checkout der vertrauenswuerdigen Pruefsteuerung; leer heisst: eigener Baum. */
 const CONTROL_ROOT = process.env.RBD_CONTROL_ROOT ?? '';
 const FAILURE_TAIL_LINES = 40;
@@ -25,14 +32,16 @@ const QUIET = process.env.RBD_VERIFY_QUIET === '1' && !VERBOSE;
 
 let reportDir;
 let lastRows = [];
+const commandCache = new Map();
 
 /** Die Zeilen des letzten Laufs: Name, Status, Dauer. Fuer Berichte, nicht fuer Entscheidungen. */
 export function lastGateRows() {
   return lastRows.map((row) => ({ ...row }));
 }
+
 /**
  * Berichtsordner fuer Logs und Zusammenfassung. Er liegt im Cache, nicht im
- * Arbeitsbaum: Verify bleibt lesend, und das Gitignor hält ihn aus jedem Hash.
+ * Arbeitsbaum: Verify bleibt lesend, und das Gitignor haelt ihn aus jedem Hash.
  */
 function reports() {
   if (reportDir !== undefined) return reportDir;
@@ -64,14 +73,17 @@ function tail(text, lines = FAILURE_TAIL_LINES) {
   return all.length <= lines ? all.join('\n') : [...all.slice(0, 2), `… (${all.length - lines} Zeilen ausgelassen)`, ...all.slice(-lines)].join('\n');
 }
 
-/** Prueft, ob ein ausfuehrbares Programm im PATH liegt. */
+/** Prueft, ob ein ausfuehrbares Programm im PATH liegt; einmal pro Prozess. */
 function commandExists(name) {
+  if (commandCache.has(name)) return commandCache.get(name);
+  let exists;
   try {
-    const result = spawnSync(name, ['--version'], { stdio: 'ignore', shell: process.platform === 'win32' });
-    return result.status === 0;
+    exists = spawnSync(name, ['--version'], { stdio: 'ignore', shell: process.platform === 'win32' }).status === 0;
   } catch {
-    return false;
+    exists = false;
   }
+  commandCache.set(name, exists);
+  return exists;
 }
 
 /** Fuehrt eine Stufe aus und traegt ihre PID ein, damit der Abbruchpfad sie findet. */
@@ -80,7 +92,7 @@ export function executeStep(step) {
   if (step.command === 'pnpm' && !commandExists('pnpm')) {
     return Promise.resolve({
       status: 1,
-      output: 'pnpm wurde nicht gefunden. Bitte pnpm installieren (npm i -g pnpm@10.4.1) oder corepack aktivieren (corepack enable && corepack use pnpm@10.4.1). Ohne pnpm koennen lint, check:loc, typecheck, tests, build, assets und audit nicht laufen.',
+      output: 'pnpm wurde nicht gefunden. Bitte pnpm installieren (npm i -g pnpm@10.4.1) oder corepack aktivieren (corepack enable && corepack use pnpm@10.4.1). Ohne pnpm koennen audit-Gates nicht laufen.',
       ms: Date.now() - started,
       timedOut: false,
       timeoutMs: 0,
@@ -91,7 +103,7 @@ export function executeStep(step) {
   // auscheckt; `pnpm`-Gates bleiben Produktcode des Pruefobjekts.
   const script = step.command === 'node' && CONTROL_ROOT ? join(CONTROL_ROOT, step.script) : step.script;
   const args = step.command === 'pnpm' ? ['run', step.script] : [script, ...(step.args ?? [])];
-  const timeoutMs = Number.isFinite(step.timeoutMs) && step.timeoutMs > 0 ? step.timeoutMs : DEFAULT_GATE_TIMEOUT_MS;
+  const timeoutMs = Number.isFinite(step.timeoutMs) && step.timeoutMs > 0 ? step.timeoutMs : 0;
   return new Promise((done) => {
     let child;
     try {
@@ -104,7 +116,7 @@ export function executeStep(step) {
         env: { ...process.env, ...(step.env ?? {}) },
       });
     } catch (error) {
-      done({ status: null, output: String(error), ms: Date.now() - started, timedOut: false, timeoutMs });
+      done({ status: null, output: String(error), ms: Date.now() - started, timedOut: false, timeoutMs: 0 });
       return;
     }
     let output = '';
@@ -129,22 +141,19 @@ export function executeStep(step) {
         timeoutMs,
       });
     };
-    // Das Limit wird direkt nach dem Spawn gesetzt; die Registry-Pflege folgt
-    // danach und darf den Timer nicht erst verzoegert aufziehen.
-    timer = setTimeout(() => {
-      timedOut = true;
-      if (child.pid) killTree(child.pid);
-      // Falls taskkill oder ein Prozess die Schliessung verzoegert, bleibt die
-      // Pipeline nicht am Gate haengen. Zweiter Kill fuer den Prozessbaum.
-      forceTimer = setTimeout(() => {
+    // Nur ein ausdruecklich gesetztes Limit bewaffnet den Timer.
+    if (timeoutMs > 0) {
+      timer = setTimeout(() => {
+        timedOut = true;
         if (child.pid) killTree(child.pid);
-        finish(null);
-      }, 5_000);
-    }, timeoutMs);
+        forceTimer = setTimeout(() => {
+          if (child.pid) killTree(child.pid);
+          finish(null);
+        }, 5_000);
+      }, timeoutMs);
+    }
     if (child.pid) {
       running.add(child.pid);
-      // Eine nicht schreibbare Registry darf das Gate nicht zum Absturz bringen;
-      // der Abbruchpfad findet den Prozess dann nur ueber die laufende Menge.
       try {
         trackPid(step.name, child.pid);
       } catch {
@@ -201,8 +210,6 @@ export async function runGates(steps) {
   let index = 0;
   const worker = async () => {
     for (let step = queue.shift(); step; step = queue.shift()) {
-      // Der Cache-Key traegt das Profil mit: ein gruener Schnellauslauf der Suite darf
-      // den Vollauslauf mit RTP-, Balance- und Soak-Nachweisen niemals ersetzen.
       const gateKey = `${key}\0${JSON.stringify(step.env ?? {})}`;
       const reused = step.cache && isCached(step.name, gateKey) && (step.ready?.() ?? true);
       if (reused) {

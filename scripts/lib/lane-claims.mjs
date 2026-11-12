@@ -593,13 +593,16 @@ export function auditTaskClaimParity({ claims = [], tasks = [] } = {}) {
 
 /** Gibt eine maschinenlesbare Zusammenfassung für agent:context. */
 export function contextSummary() {
-  const claims = openClaims();
-  const parked = loadClaims().filter((c) => c.status === 'parked');
-  const merged = loadClaims().filter((c) => c.status === 'merged');
+  // Ein Ladevorgang, eine Kollisionsrechnung. Frueher wurde das Register
+  // dreimal gelesen und jede Lane gegen alle offenen Lanes erneut geprueft.
+  const all = loadClaims();
+  const claims = all.filter((c) => c.status === 'open');
+  const parked = all.filter((c) => c.status === 'parked');
+  const merged = all.filter((c) => c.status === 'merged');
 
   const allCollisions = [];
   for (const claim of claims) {
-    const collisions = findCollisions(claim);
+    const collisions = findCollisions(claim, claims);
     if (collisions.length > 0) {
       allCollisions.push({ lane: claim.id, collisions });
     }

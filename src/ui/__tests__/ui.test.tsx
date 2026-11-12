@@ -6,7 +6,7 @@
  * UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile.
  */
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { recordJournal } from '../../core/sim/journal';
 import { transitionEvent } from '../../core/sim/narrative/event-lifecycle';
@@ -27,6 +27,11 @@ import { JournalPopup } from '../journal-popup';
 import { LookPopup } from '../look-popup';
 import { PopupShell } from '../popup-shell';
 import { WorkshopPopup } from '../workshop';
+
+beforeEach(() => {
+  // Der worldStore ist ein Singleton und wird von mehreren UI-Dateien benutzt.
+  worldStore.newGame('SMALL');
+});
 
 afterEach(() => {
   cleanup();

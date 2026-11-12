@@ -1,8 +1,8 @@
-# CI: Local-first Gates, Zustände und Cloud-Rest
+# CI: Lokale Gates und Repository-Verwaltung
 
 <!-- rbd-doc: managed -->
 
-**Zweck:** Die eine Wahrheit für den lokalen Abschluss und den optionalen Cloud-PR-Check. `AGENTS.md` nennt nur die Kurzfassung; die Ausführungskategorien und der APK-Ablauf stehen in [`LOCAL_CI.md`](LOCAL_CI.md).
+**Zweck:** Die eine Wahrheit für den lokalen Abschluss. Es gibt keinen Cloud-Testlauf; alle Gates, Tests, Builds und APKs laufen lokal. `AGENTS.md` nennt nur die Kurzfassung; die Ausführungskategorien stehen in [`LOCAL_CI.md`](LOCAL_CI.md).
 
 ## Required Gates
 
@@ -26,7 +26,7 @@ Der Required-Plan besteht aus fünfzehn Gates:
 | 14 | `tests` | `pnpm run test:ci` | `ERR-4026` |
 | 15 | `build` | `pnpm run build` | `ERR-1005` |
 
-**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1`, im Zustand `UNKNOWN` und im lokalen Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates. Der optionale PR-Job führt davon nur die Light-Gates aus; die fünfzehn Required-Gates sind der vollständige lokale Release-/Full-Nachweis.
+**Audit ist kein Required-Gate.** Er läuft zusätzlich bei einer echten Dependency-Änderung, mit `RBD_VERIFY_AUDIT=1` oder im Profil `full`/`release`. Dann sind es sechzehn Läufe, aber weiterhin fünfzehn Required-Gates.
 
 Lokal gilt:
 
@@ -34,10 +34,10 @@ Lokal gilt:
 - `verify:fast` = Light plus `test-quality`, `affected` und `build`; der Standard vor dem Push.
 - `verify:dev` = Light plus `affected`; gezieltes Entwicklungsfeedback.
 - `verify:quick` = vierzehn Gates: Required ohne `build`.
-- `verify:integration` = zwölf lokale Gates: Light plus `test-quality`, `affected` und `build`; der Vor-PR-Nachweis ohne volle Suite.
+- `verify:integration` = zwölf lokale Gates: Light plus `test-quality`, `affected` und `build`.
 - `verify:all` = fünfzehn Required plus Audit (sechzehn Läufe).
 - `verify:release` = der Integrationsnachweis mit erzwungenem Audit und Production-Build.
-- `verify:long` = Soak, Balance, Statistik und Benchmarks; ausschließlich on demand.
+- `test:mechanics` = ausschließlich Statistik, Soak, Langlauf und Benchmarks; nie Teil eines Regelprofils.
 
 Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein Gate schreibt nie vorher die Akte um.
 
@@ -45,76 +45,62 @@ Die Profile sind rein lesend. Reparaturen laufen nur über `pnpm run fix`; ein G
 
 | Zustand | Auslöser | Plan |
 | --- | --- | --- |
-| `PR` | Pull Request gegen `main` | ein optionaler Cloud-Job `Fail-Closed Gates`: PR-Body, Commit-Konvention, Freeze und `verify:light` |
-| `NOOP` | Kopf ist die Basis | keine Cloud-Prüfung; der lokale Claim-/Scope-Pfad bleibt zuständig |
-| `UNKNOWN` | Zustand nicht bestimmbar | fail-closed: lokaler Integrationsnachweis, kein stiller Light-Erfolg |
+| `READY` | lokaler Start | `verify:light` oder `verify:dev` |
+| `FULL` | lokaler Vor-PR-Nachweis | `verify:all` plus vollständige Suite |
+| `NOOP` | Kopf ist die Basis | keine Prüfung; der lokale Claim-/Scope-Pfad bleibt zuständig |
+| `UNKNOWN` | Diff nicht bestimmbar | `verify:all` plus Audit, nie ein stiller Light-Erfolg |
 
-`main` hat keinen eigenen Cloud-Vollauf mehr. Der Merge ist ein manueller Schritt nach dem lokalen Vor-PR-Nachweis `verify:integration` und, bei Release-Bedarf, `verify:release`; damit entstehen keine zwei konkurrierenden Wahrheiten für denselben Kopf.
+`main` hat keinen Cloud-Vollauf. Der Merge ist ein manueller Schritt nach dem lokalen Vor-PR-Nachweis `verify:integration` und, bei Release-Bedarf, `verify:release`.
 
 ## Workflows
 
-Stand 2026-11-11 liegen neun Workflow-Dateien in `.github/workflows/`:
+Stand 2026-11-11 liegen drei Workflow-Dateien in `.github/workflows/`; keine führt Tests, Gates, Builds oder APKs aus:
 
 | Workflow | Status | Aufgabe |
 | --- | --- | --- |
-| `ci-verify.yml` | aktiv | ein schneller optionaler PR-Job: Light-Gates, Web-Build, Release-Bump für das Artefakt und Debug-APK |
 | `ensure-pr.yml` | aktiv | Lane-Push legt den PR an oder aktualisiert ihn (App-Token) |
-| `pr-watcher.yml` | aktiv | Issues bei rotem `CI Verify`-Lauf; kein PR-Body-Pfad |
 | `pr-cleanup.yml` | aktiv | löscht gemergte Wegwerf-Branches und legt den Post-Merge-Closeout-PR an |
-| `auto-resolve.yml` | per Variable | optionaler Auto-Resolve bei rotem Lauf |
 | `promote.yml` | **manuell** | Status anzeigen oder Notausgang `integration`; kein Auto-Merge |
-| `auto-version-release.yml` | **manuell** | Release-Gates, Tag und GitHub-Release; keine Cloud-APK |
-| `long-checks.yml` | **on-demand** | Soak, Balance, Statistik und Benchmarks ohne Zeitplan |
-| `build-apk.yml` | **manuell** | Cloud-Fallback für Debug/Release-APK; Standard ist lokal |
 
-`pr-escalation.yml` wurde entfernt: Der PR-Body wird im PR-Job geprüft und von `ensure-pr` bzw. dem lokalen Abschluss gepflegt; ein zusätzlicher Push-Lauf mit Schreibrecht auf Pull Requests war doppelte Arbeit.
-
-### Eine Stimme pro SHA
-
-`ci-verify.yml` läuft ausschließlich für Pull Requests gegen `main`. Ein Lane-Push startet keinen zweiten Vollauf; ein PR-Lauf auf demselben Kopf entfällt. Der Job heißt weiterhin `Fail-Closed Gates`, ist aber **optional und kein Required-Status**. Der lokale Vor-PR-Nachweis entscheidet über den Merge.
+Entfernt wurden `ci-verify.yml`, `long-checks.yml`, `auto-version-release.yml`, `build-apk.yml`, `pr-watcher.yml` und `auto-resolve.yml`: Ihre Arbeit ist vollständig lokal (`pnpm run ci:local`, `pnpm run test:mechanics`, `pnpm run android:apk`, `pnpm run turn:finish`). Ein zweiter Testpfad existiert nicht mehr.
 
 ### Lokal statt Cloud
 
-Die vollständige Suite, der Production-Build, Audit und die langen Nachweise laufen lokal:
-
 ```bash
-pnpm run verify:light      # Struktur und schnelle Gates
-pnpm run verify:fast       # vor dem Push: Light + Testqualität + betroffene Tests + Build
-pnpm run verify:integration # vor dem PR: Light + betroffene Tests + Build
-pnpm run verify:long       # nur bei konkretem Bedarf
-pnpm run verify:release    # vor einem Release inkl. Audit
+pnpm run ci:local            # Struktur, Testqualität, betroffene Tests, Build
+pnpm run ci:local --profile=full
+pnpm run ci:local --profile=release
+pnpm run ci:local --profile=mechanics
+pnpm run ci:local --profile=apk
+pnpm run verify:all          # vollständiger Required-Nachweis ohne Mechanik
+pnpm run verify:long         # alias auf test:mechanics
 ```
-
-Der optionale Cloud-PR-Job wiederholt bewusst nur das schnelle `verify:light`; er ist kein Ersatz für den lokalen Integrationsnachweis und keine zweite Testmaschine.
 
 ## Branch-Schutz
 
 `main` ist über einen klassischen Branch-Schutz gesichert:
 
-- Required Status Checks: **keine**; der PR-Job `Fail-Closed Gates` ist optional
+- Required Status Checks: **keine**; es gibt keinen Cloud-Check mehr
 - `strict: false`
 - keine Pflicht-Reviews
 - `enforce_admins: true`
 - Force-Push und Löschen verboten
 - keine Rulesets
 
-Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, Review und anschließend ein bewusster Merge durch Mensch oder Agent. Der PR-Check ist optional; auf ihn wird nicht gewartet. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
+Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, Review und anschließend ein bewusster Merge durch Mensch oder Agent. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
 
 ## Nachweise
 
 ```bash
 # lokaler Abschluss
+pnpm run verify:light
 pnpm run verify:fast
 pnpm run verify:integration
-pnpm run verify:long          # on demand
+pnpm run test:mechanics       # nur on demand
 pnpm run android:apk          # lokaler APK-Build
-
-# Cloud nur beobachten, nicht als primäre Testmaschine
-gh run list --workflow="CI Verify" --branch <branch> --limit 5
-gh pr checks <pr>
 ```
 
-Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Check ist weder rot noch grün; Timeout, Abbruch und Netzfehler bleiben `REMOTE_CI` und werden wiederholt.
+Ein grüner Light-Lauf ist kein Integrationsnachweis. Ein laufender Cloud-Check existiert nicht mehr; es gibt keine Warteschlange und keinen Remote-Status, auf den ein Merge wartet.
 
 ## Referenzen
 

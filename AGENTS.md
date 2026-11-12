@@ -14,9 +14,9 @@ Dieser Kurzvertrag ist der Einstieg. Tiefenwissen steht in den Referenzdokumente
 4. **Geld ist integer und gebucht.** VaCoins sind Mikro-Einheiten; jede Bewegung ist eine Ledger-Zeile, jede Quelle außer `EXTERNAL_WORLD` ist verboten.
 5. **Determinismus ist Pflicht.** Kein `Math.random()`, `Date.now()`, `new Date()` oder Krypto-Zufall in Spielcode (`src/**`); Infrastruktur-Tooling darf Wall-Clock nur für Laufzeit, Timeouts und Logs nutzen, nie für Spielzustand, PRNG oder Seeds. Echte Zufälle nur über die benannten RNG-Streams und `entropySeed()`.
 6. **Narrative folgt echten Übergängen.** Facts entstehen an Zustandsgrenzen, das Journal bleibt Spielerhistorie. Keine zweite Erzählmaschine, kein LLM im Spielpfad. Jeder neue Pool braucht einen Leser im Spiel (ein System, das ihn anzeigt), sonst ist der Text tot - das ist die Qualitätsseite dieser Regel. Die Mengenquoten (50 je Pool, 1500 gesamt, Schrumpf-Verbot) sind nur ihre Planungshilfe und werden von `verify:narrative-blocks` gemessen. Normativ ist dieser Absatz; die Tabelle in `docs/ROADMAP.md` ist die aktuelle Messung, kein zweites Regelwerk. Jeder Commit braucht mindestens einen neuen, im Manifest registrierten und in der Registry verdrahteten Textbaustein; Pools unter 50 werden zuerst gefüllt.
-7. **Eine Testlinie.** Während der Arbeit gezielte Tests und `verify:light`; `turn:finish` macht standardmäßig nur den lokalen Preflight ohne Tests und ohne Typecheck. Der PR-Check ist optional; der lokale Vor-PR-Nachweis entscheidet über den Merge. `--tests`/`--verify` sind das Opt-in. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+7. **Eine Testlinie, lokal.** Während der Arbeit gezielte Tests und `verify:light`; der Standard vor dem Push ist `verify:fast`, der Vor-PR-Nachweis `pnpm run ci:local`. GitHub-Workflows führen keine Tests, Gates, Builds oder APKs aus. Mechanik (Statistik, Soak, Langlauf, Benchmarks) läuft ausschließlich über `pnpm run test:mechanics` und ist nie Teil eines Regelprofils. Die Linie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 8. **Doku gehört in den Commit.** Pflichtdokumente und Marker aktualisiert der Hook bzw. `docs:sync`; generierte Blöcke werden nie von Hand bearbeitet. Referenzen und Verträge stehen im [`docs/INDEX.md`](docs/INDEX.md).
-9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, der optionale PR-Check meldet nur, nächster Schritt ist `pretask`. Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und exaktem Kopf; keine CI-Bedingung, kein Auto-Merge. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur.
+9. **Lieferung nur über Branch und PR.** `turn:finish` validiert den Phasenwechsel, committet den Vertrag und pusht; der PR wird erzeugt/aktualisiert, es gibt keinen Cloud-Testlauf, nächster Schritt ist `pretask`. Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und exaktem Kopf; keine CI-Bedingung, kein Auto-Merge. `promote` bleibt ein manueller Status-/Notausgang, kein Merge-Akteur.
 10. **Eine Eskalationsleiter.** `AUTO_FIX → LOCAL_GATE → REMOTE_CI → AGENT → BLOCKED`; nur echte Invarianten blockieren, alles andere wird ein Issue. `governance-issue` ist der einzige Schreiber für `ERR-4030`; Watcher und Auto-Resolve überspringen diesen Code. Keine zweite Klassifikation.
 
 ## Task-Vertrag
@@ -35,9 +35,9 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 ## Zustand
 
 - **Save:** v11 (`vcoin.casino.v11`), Migration von v5–v10; v3/v4 werden verworfen. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-- **CI:** 15 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Der Cloud-PR-Job ist optional. Die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
-- **Workflows:** neun Dateien; `CI Verify`, `Ensure PR`, `Auto Version & Release`, `Long Checks`, `Build Android APK`, `PR Cleanup`, `Promote` und `PR Watcher` sind aktiv. `Promote` ist ein manueller Status-/Notausgang; `PR Watcher` reagiert nur auf `workflow_run`. `PR Escalation` bleibt deaktiviert; `Auto-Resolve` hängt an `RBD_AUTO_RESOLVE` (Default: aus).
-- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Der PR-Job `Fail-Closed Gates` ist optional. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
+- **CI:** 15 lokale Required-Gates (davon `narrative`, `catalog` und `build`), Audit optional; acht Light-Gates, neun mit `affected`. Alle Tests, Gates, Builds und APKs laufen lokal; die vollständige Liste steht in [`docs/CI.md`](docs/CI.md).
+- **Workflows:** drei Dateien, ausschließlich Repository-Verwaltung: `Ensure PR`, `PR Cleanup` und `Promote` (manueller Status-/Notausgang). Kein Workflow führt Tests, Gates, Builds oder APKs aus. Die Testlinie ist `pnpm run ci:local`.
+- **Branch-Schutz:** klassischer Schutz auf `main`, keine Required-Status-Checks, `strict: false`, keine Rulesets; Force-Push und Löschen sind verboten. Es gibt keinen Cloud-Testlauf; der lokale Vor-PR-Nachweis `pnpm run ci:local` ist die Autorität. Details in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md).
 - **Capabilities:** `docs/capabilities.json` ist ein Pflichtgate (`ERR-4025`); aktive Fähigkeiten brauchen einen registrierten Test.
 
 ## Befehle
@@ -51,8 +51,10 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 | `pnpm run verify:light` | Lint, LOC, Typecheck, Doku, Tree und Redundanz. |
 | `pnpm run verify:scope` | Nur der Diff gegen die Claim-Allowlist; keine Tests, kein Build, kein Typecheck. |
 | `pnpm run verify:dev` | Light plus die betroffenen schnellen Tests. |
-| `pnpm run verify:all` | Der lokale Vollnachweis: 15 Required-Gates plus Audit (16 Läufe). |
-| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, der optionale PR-Job prüft, der lokale Nachweis entscheidet. |
+| `pnpm run ci:local` | Der lokale Vor-PR-Nachweis: Struktur, Testqualität, betroffene Tests, Build; `--profile=full`, `--profile=release`, `--profile=mechanics`, `--profile=apk`. |
+| `pnpm run verify:all` | Der lokale Vollnachweis: 15 Required-Gates plus Audit (16 Läufe), ohne Mechanik. |
+| `pnpm run test:mechanics` | Gezielte Statistik-, Soak-, Langlauf- und Benchmark-Nachweise; nie Teil eines Regelprofils. |
+| `pnpm run turn:finish` | Phasenwechsel, Versions-Bump, Commit, Vertrag und Branch-Push; Standard ohne Tests/Typecheck, der lokale Nachweis entscheidet. |
 | `pnpm run docs:sync` | Doku-Marker kanonisieren: alte Versionsmarker werden ersetzt, fehlende ergaenzt. |
 | `node scripts/sync-generated.mjs` | Inventur, Marker, Registry und Roadmap-Fortschritt aus ihren Generatoren neu erzeugen. |
 | `node scripts/integrate.mjs --check` | Schnelle Integrationspruefung: `READY`, `REBASE_REQUIRED` oder `MANUAL_CONFLICT`. |
@@ -60,13 +62,13 @@ Der Vertrag liegt unter `.lane-claims/tasks/<taskId>.json` und ist die eine Wahr
 
 ## Build & test
 
-- `pnpm run verify:light` für den schnellen Lauf; `pnpm run test:affected` für die vom Diff betroffenen Tests.
-- Die vollständige Testlinie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
+- `pnpm run verify:light` für den schnellen Lauf; `pnpm run test:affected` für die vom Diff betroffenen Tests; `pnpm run ci:local` als lokaler Vor-PR-Nachweis.
+- Mechanik nur gezielt: `pnpm run test:mechanics`. Die vollständige Testlinie und die 17 Fälle stehen in [`docs/TESTING.md`](docs/TESTING.md).
 
 ## Delivery
 
 - Arbeit auf der eigenen Lane; Commit und Push über `pnpm run turn:finish`, PR gegen `main` mit den drei Pflichtsektionen.
-- Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; der PR-Check ist optional, kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
+- Merge durch Mensch oder Agent nach lokalem Vor-PR-Nachweis und Review auf exaktem Kopf; es gibt keinen Cloud-Testlauf, kein Direktpush, kein Force-Push, kein Auto-Merge. Details in [`docs/WORKFLOW.md`](docs/WORKFLOW.md).
 
 **Wartezeiten sind Arbeitszeit.** Sleeps und Gate-Wartezeiten werden nie blind abgesessen: In derselben Zeit werden Check-/PR-Status geprüft, Inventur oder Doku nachgezogen, offene Befunde triagiert oder der nächste belegte Schritt vorbereitet. Neue Prozessregeln werden immer sofort in dieser `AGENTS.md` ergänzt, nicht nur im Chat festgehalten.
 

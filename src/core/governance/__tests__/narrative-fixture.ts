@@ -10,7 +10,7 @@ import {
 } from '../../../../scripts/lib/narrative-compiler.mjs';
 import { loadNarrativeContent, validateContribution } from '../../../../scripts/lib/narrative-content.mjs';
 
-export const ROOT = resolve(process.cwd());
+const ROOT = resolve(process.cwd());
 export const report = loadNarrativeContent(ROOT);
 export const first = report.contributions[0];
 export const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;

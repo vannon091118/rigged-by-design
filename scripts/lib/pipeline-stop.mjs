@@ -9,7 +9,7 @@ export function createStop({ exit = process.exit, log = console.error } = {}) {
   return (signal) => {
     abortGates();
     releaseOwner();
-    log(`verify:all: ${signal} empfangen, laufende Gates beendet`);
+    log(`pipeline: ${signal} empfangen, laufende Gates beendet`);
     exit(EXIT_ABORTED);
   };
 }

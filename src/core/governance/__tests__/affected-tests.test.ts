@@ -20,8 +20,8 @@ describe('Betroffene Tests', () => {
   });
 
   it('waehlt den Workflow-Test bei einer Workflow-Aenderung', () => {
-    const result = selectAffectedTests(['.github/workflows/ci-verify.yml']);
-    expect(result.tests).toContain('src/core/governance/__tests__/ci-gates.test.ts');
+    const result = selectAffectedTests(['.github/workflows/ensure-pr.yml']);
+    expect(result.tests).toContain('src/core/governance/__tests__/ci-workflow-contracts.test.ts');
     expect(result.runAll).toBe(false);
   });
 
