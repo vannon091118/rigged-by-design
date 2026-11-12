@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T00:55Z-render-rework-plan",
+  "contributionId": "render-rework-plan",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Render-Plan ordnet die naechsten Schritte: zuerst ehrliche Platzhalter und ein lokales Bild, dann Figuren, Materialien, Licht und die sichtbare Stadt. Die Simulation bleibt die Wahrheit; die Darstellung folgt ihr.",
+  "directives": []
+}

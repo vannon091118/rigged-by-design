@@ -1,0 +1,27 @@
+{
+  "id": "lane/governance/render-rework-plan",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/render-rework-plan",
+  "baseSha": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9",
+  "task": "Render- und Living-World-Rework als Task-Phasen-Plan in Doku und Roadmap integrieren",
+  "goal": "Die vorhandene Stadtsimulation sichtbar machen, Render-Schulden abbauen und die PixiJS-v8-Architektur lokal pruefbar halten",
+  "pathAllowlist": [
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/ROADMAP.md",
+    "docs/INDEX.md",
+    "docs/ARCHITECTURE.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "content/narrative/contributions/2026-11-12-render-rework-plan.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/claims/lane-governance-render-rework-plan.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9"
+}

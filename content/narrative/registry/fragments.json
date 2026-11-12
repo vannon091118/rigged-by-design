@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e04f4f1c60a84b34212065b5f3f1d4c1faaf55314a3f2af7116d25904d7ae72d",
+  "contentHash": "sha256:c1b06e5d965a95c7315d561017ab05d35ab4db3276beb8dcac97d565e9c629ad",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21684,6 +21684,28 @@
       "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
+    },
+    {
+      "contributionId": "render-rework-plan",
+      "turnId": "2026-11-12T00:55Z-render-rework-plan",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Render-Plan ordnet die naechsten Schritte: zuerst ehrliche Platzhalter und ein lokales Bild, dann Figuren, Materialien, Licht und die sichtbare Stadt. Die Simulation bleibt die Wahrheit; die Darstellung folgt ihr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-rework-plan.json"
     },
     {
       "contributionId": "render-sprite-01",

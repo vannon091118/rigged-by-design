@@ -1697,3 +1697,48 @@ erweitert (Zeit, Ruf, Vorraete, Aufmerksamkeit); jede bleibt eine gebuchte Zeile
 keine zweite Zahlenwahrheit. Das passt zur Produktgrenze in
 `docs/ROADMAP.md`: Das Casino ist Startpunkt und Testumgebung, die Stadt ist das
 Ziel.
+
+## Anhang: Render- und Living-World-Rework
+
+Der ausfuehrbare Task-Phasen-Plan steht in
+[`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md). Er ist die Detail-Todo; die
+Produktreihenfolge bleibt in [`ROADMAP.md`](ROADMAP.md), die Testlinie in
+[`TESTING.md`](TESTING.md) und [`CI.md`](CI.md).
+
+### Grenzen
+
+- `src/core/sim` entscheidet ueber Zustand, Kollision, Tueren, Tagesplan und
+  Begegnungen. `src/render` liest diesen Zustand und malt ihn; der Renderer
+  erzeugt keine zweite Stadtwahrheit, keine eigene Uhr und keinen eigenen
+  Zufallsstrom.
+- `city-exterior.ts` ist der kanonische Stadtkern. Die bestehende
+  Popup-/Portalansicht wird ein Adapter darauf, keine parallele Stadtansicht.
+- `GameView` bleibt der eine Darstellungszustand. Die Stadt bekommt einen
+  `WorldView`-Adapter, keinen zweiten Store und keinen zweiten Ticker.
+- Eine sichtbare Flaeche hat eine benannte Rolle und eine echte Textur. Ein
+  unbekanntes Asset oder Material wird als Platzhalter mit Schluessel
+  dargestellt, nicht als gruene Erfolgsflaeche.
+- Deko und Moebel werden ueber stabile `kind`-/`gameId`-/Asset-IDs einer Rolle
+  zugeordnet. Anzeigenamen sind kein Primaerschluessel.
+- Das Render-Bildgate ist lokal und gezielt. Es nutzt den vorhandenen
+  Browser-/Playwright-Pfad in `packages/gamescout`; es wird kein Cloud-Gate und
+  kein Bestandteil der schnellen Testline.
+
+### Leitentscheidungen
+
+1. **Projektion:** Aussenstadt in 2:1-Isometrie, Innenraeume top-down. Die
+   Kamera kennt echte Weltgrenzen statt einer quadratischen Groesse.
+2. **Tiefe:** Fussanker und explizite Depth-Werte; `sortableChildren` nur auf
+   dem Tiefen-Container, nicht global.
+3. **Akteure:** Detail-Rig oberhalb der LOD-Schwelle, Silhouette darunter,
+   dieselbe Actor-ID und Position. Der 6x6-Pin ist kein LOD.
+4. **Material und Licht:** Materialien tragen ihre Textur; Licht ist eine
+   Flaeche mit sichtbarer Quelle. Der Teppich ist eine Flaeche, kein zweiter
+   vollflaechiger Overlay-Layer.
+5. **Assets:** Laden ueber `Assets.load`/Manifest, nicht `Texture.from(url)`.
+   Pixelkunst mit `scaleMode: "nearest"`; neue Assets brauchen `role`, `world`,
+   `displayScale` und `license`.
+6. **PixiJS v8:** `new Application()` plus `await app.init()`; `Container`
+   gruppiert, `Sprite`/`Graphics`/`Text` bleiben Leaves; `eventMode = "static"`
+   statt `buttonMode`; `cacheAsTexture()` statt `cacheAsBitmap`; Bounds ueber
+   `.rectangle`, wenn eine `Rectangle`-API gebraucht wird.

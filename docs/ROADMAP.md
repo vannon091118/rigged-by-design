@@ -6,7 +6,7 @@
 Jede Zeile nennt den Code, den Test oder das Bild, an dem die Arbeit weitergeht.
 Abgeschlossenes bleibt als Beleg stehen, bis es ins Changelog wandert.
 
-**Stand:** 2026-11-11 · Version `0.3.231`
+**Stand:** 2026-11-12 · Version `0.3.233`
 
 ## Lesart
 
@@ -24,8 +24,9 @@ Dokumente eine Spiel- oder Präsentationsaufgabe. Vermischte Bezeichnungen samme
 **Status:** `erledigt` (Code und Test vorhanden), `verifiziert` (belegt, kein neuer Code
 nötig), `offen`, `blockiert`, `zurueckgestellt`.
 
-**IDs:** `S<phase>-<nr>` für Spiel, `PR-<nr>` für Präsentation, `P-13` als
-fortgeschriebene Bestands-ID für den Textbaustein-Fortschritt.
+**IDs:** `S<phase>-<nr>` für Spiel, `PR-<nr>` für Präsentation, `R-<nr>` für
+den Render-Querschnitt, `P-13` als fortgeschriebene Bestands-ID für den
+Textbaustein-Fortschritt.
 
 ## Jetzt — Das Spiel trägt den ersten Abend
 
@@ -57,7 +58,7 @@ Ziel: Wer die README öffnet, sieht den heutigen Stand und nicht den von `0.3.11
 | PR-04 | Alt-Texte und Banner prüfen | offen | `README.md`, `docs/banner.svg`, `docs/banners` | Jedes Bild beschreibt seinen Zustand, nicht seine Datei |
 | PR-05 | Kleinste Viewports bleiben bedienbar | verifiziert | `src/ui/__tests__/small-screen-acceptance.test.tsx`, `src/ui/__tests__/small-screen-layout.test.ts` | 360×640 und 320 px sind belegt |
 | PR-06 | First-Frame-Budget der Atlasse | verifiziert | `src/ui/__tests__/phase34-acceptance.test.tsx` | Beide Atlasseiten bleiben unter dem gemeinsamen Budget |
-| PR-07 | Sichtprüfung im echten Browser | offen | `docs/screenshots/current`, `README.md` | Die Bilder in der README stammen aus dem Build, den der Tag nennt |
+| PR-07 | Sichtprüfung im echten Browser | offen | `docs/screenshots/current`, `README.md`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Die Bilder in der README stammen aus dem Build, den der Tag nennt |
 
 **Ablageregel Screenshots:** `docs/screenshots/current/` ist der kanonische Satz;
 versionierte Sätze liegen in `docs/screenshots/v<version>/`; Vorher/Nachher-Belege in
@@ -79,8 +80,23 @@ und der Browserbeleg.
 | S2-04 | Deterministische Tagespläne und Bedürfnisse | erledigt | `src/core/sim/npc-schedule.ts`, `src/core/sim/npc-needs.ts`, `src/core/sim/__tests__/npc-schedule.test.ts` | Schlafen, Arbeit, Essen und Freizeit folgen dem Plan |
 | S2-05 | Akteur-Kontinuität über Raumgrenzen | erledigt | `src/core/sim/actor-continuity.ts`, `src/core/sim/__tests__/living-world-continuity.test.ts` | Kein Duplikat, kein Respawn beim Raumwechsel |
 | S2-06 | Soziale Begegnung aus physischer Nähe | erledigt | `src/core/sim/social-encounter.ts`, `src/core/sim/__tests__/living-world-social-economy.test.ts` | Nähe erzeugt Gespräch, Fact und Beziehungsdelta |
-| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | offen | `src/store/new-game.ts`, `src/core/sim/player-apartment.ts`, `src/core/sim/room-transition.ts` | Der Start führt durch die Wohnungstür auf die Straße |
-| S2-08 | Sichtbarer Beweis: kein Teleport, keine Duplikate im Browser | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts` | Der Vertikalschnitt ist im Browser nachvollzogen, nicht nur headless |
+| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | offen | `src/store/new-game.ts`, `src/core/sim/player-apartment.ts`, `src/core/sim/room-transition.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Der Start führt durch die Wohnungstür auf die Straße |
+| S2-08 | Sichtbarer Beweis: kein Teleport, keine Duplikate im Browser | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Der Vertikalschnitt ist im Browser nachvollzogen, nicht nur headless |
+
+### Phase 3R — Render- und Living-World-Rework (Querschnitt, P0/P1)
+
+Der ausfuehrbare Task-Plan steht in [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md).
+Die Reihenfolge ist verbindlich: R0–R1 sichern die Wahrheit, R2–R6 haerten den
+Casino-Render, R7 macht die vorhandene Stadt sichtbar; R8–R12 bauen darauf auf.
+Die Zeilen hier sind die Produkt-Etappen, nicht die Detail-Todo.
+
+| ID | Aufgabe | Status | Referenz | Fertig wenn |
+| --- | --- | --- | --- | --- |
+| R-0 | Baseline und lokales Bildgate (R0–R1) | offen | `packages/gamescout`, `docs/screenshots/current`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Zahlen, Rechte und drei deterministische Szenen sind belegt; kein Cloud-Gate |
+| R-1 | Casino-Render ehrlich und stabil (R2–R6) | offen | `src/render/furniture-atlas.ts`, `src/render/guest-rig.ts`, `src/render/floor-material.ts`, `src/render/floor-camera.ts` | Kein gruener Fallback, keine Pin-Figur, echte Materialien, Lichtflaeche und echte Weltgrenzen |
+| R-2 | Stadt sichtbar und begehbar (R7–R8) | offen | `src/core/sim/city-exterior.ts`, `src/render/city/`, `src/ui/city-popup.tsx` | `city-exterior` hat einen Produktionsaufrufer; Weg Wohnung → Strasse → Casino ohne Teleport |
+| R-3 | Stadtleben und Wohnung (R9–R10) | offen | `src/core/sim/npc-schedule.ts`, `src/core/sim/player-apartment.ts` | NPCs, Türen und Wohnungsstart sind sichtbar; Actor-IDs bleiben stabil |
+| R-4 | Bewegung und Ambient (R11–R12) | zurückgestellt | `src/render/guest-rig.ts`, `src/render/city/ambient.ts` | Lauframes und Ambient sind deterministisch; erst nach R-2/R-3 |
 
 ### Phase 4 — Wirtschaft, Bereiche und Ereignisse (P1)
 
@@ -102,7 +118,7 @@ und der Browserbeleg.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| P-13 | 1008 / 1500 Textbausteine in 13 Pools | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 Bausteine, kein Pool unter 50, jeder Pool mit Leser |
+| P-13 | 1009 / 1500 Textbausteine in 13 Pools | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 Bausteine, kein Pool unter 50, jeder Pool mit Leser |
 | S4-01 | Neue Pools brauchen einen Leser im Spiel | offen | `scripts/verify-narrative-blocks.mjs`, `src/core/sim/narrative` | Die Prüfung lehnt einen Textpool ohne anzeigendes System ab |
 | S4-02 | Geräte-, Lager- und Personal-Facts | offen | `src/core/sim/narrative/facts.ts` | Jeder Fact hat Definition, Template und Leser |
 | S4-03 | Narrative Balance messen statt begrenzen | offen | `src/core/sim/__tests__/balance-operating.test.ts` | Die Grenzen haben eine Messreihe, nicht nur einen Deckel |
@@ -121,10 +137,10 @@ und der Browserbeleg.
 | S5-03 | Spiegel im Lager mit Save-Roundtrip | offen | `src/store/__tests__/save-roundtrip.test.ts` | Der Spiegel überlebt Speichern und Laden |
 | S5-04 | FPS aus echten rAF-Frames | offen | `src/ui/__tests__/phase34-acceptance.test.tsx` | Das Panel zeigt gemessene Frames, keine Schätzung |
 | S5-05 | Smartphone als echte Gerätefläche | offen | `src/ui/smartphone.tsx` | Alle vier Fensterzustände sind verglichen |
-| S5-06 | Wand-Occlusion visuell belegen | offen | `src/ui/__tests__/world-first-ui.test.tsx` | Depth-Tests plus Browserbeleg |
-| S5-07 | First Frame unter 3 s bei Slow 4G | offen | `src/ui/__tests__/phase34-acceptance.test.tsx` | Baseline 22 Requests / 2,42 MB wird unterboten oder begründet |
+| S5-06 | Wand-Occlusion visuell belegen | offen | `src/ui/__tests__/world-first-ui.test.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Depth-Tests plus Browserbeleg |
+| S5-07 | First Frame unter 3 s bei Slow 4G | offen | `src/ui/__tests__/phase34-acceptance.test.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Baseline 22 Requests / 2,42 MB wird unterboten oder begründet |
 | S5-08 | Touch, Hülle und APK-Installation | zurueckgestellt | `scripts/prepare-android.mjs`, `docs/LOCAL_CI.md` | Erst nach vollständiger Desktop-Abnahme |
-| S5-09 | Release-Horizont: bespielbare Stadt | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts` | Mehrere Orte, Wege und Figuren mit Tagesablauf spielbar |
+| S5-09 | Release-Horizont: bespielbare Stadt | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Mehrere Orte, Wege und Figuren mit Tagesablauf spielbar |
 
 ### Phase 7 — Präsentation für den Release (P2)
 
@@ -132,11 +148,12 @@ und der Browserbeleg.
 | --- | --- | --- | --- | --- |
 | PR-08 | Bildsatz je Release versionieren | offen | `docs/screenshots/current`, `README.md` | Jeder Tag hat einen eigenen Satz, kein Bild wird überschrieben |
 | PR-09 | README-FAQ gegen den Spielstand prüfen | offen | `README.md`, `src/core/sim/__tests__/money-truth.test.ts` | Keine Antwort verspricht Mechanik, die nicht läuft |
-| PR-10 | Bildsprache und Asset-Lizenz belegen | offen | `docs/banners`, `README.md` | Stilregeln und Herkunft der Bilder stehen nachvollziehbar im Repo |
+| PR-10 | Bildsprache und Asset-Lizenz belegen | offen | `docs/banners`, `README.md`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Stilregeln und Herkunft der Bilder stehen nachvollziehbar im Repo |
 
 ## Referenzen
 
 - [`README.md`](../README.md) — Präsentation des Spiels.
 - [`FLAG.md`](FLAG.md) — vermischte Bezeichnungen und die getrennte Schreibweise.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Zustandsbesitz, Verträge und technische Grenzen.
+- [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) — ausfuehrbare Render- und Living-World-Todo.
 - `docs/screenshots/current/` — kanonischer Bildsatz der Präsentation.
