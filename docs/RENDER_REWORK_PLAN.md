@@ -421,10 +421,13 @@ S2-12-Uebergang. Diese Punkte bleiben bewusst unabgehakt.
       `SceneCommands.enterCity`)*
 - [ ] `city-popup.tsx` und die alte `city-scene`-Darstellung auf den Adapter
       umstellen oder als Menüzugang stilllegen; keine parallele Stadtansicht.
-- [x] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
+- [ ] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
       rendern; Tiefe über Fußanker, nicht über Namenssortierung.
-      *(belegt: `CityExteriorLayer` + `cityRenderPlan`; vier Fassaden und fuenf
-      Requisiten mit `depth.set(..., 'prop', ...)`)*
+      *(Teilbeleg: Straßen/Gehwege/Kreuzungen kommen als Bodenmaterialien aus
+      `layout.floor`; `CityExteriorLayer` + `cityRenderPlan` zeichnen vier
+      Fassaden und fuenf Requisiten mit `depth.set(..., 'prop', ...)`. Die
+      Türkanten aus `layout.edges` werden noch nicht gezeichnet; der Punkt
+      bleibt deshalb offen.)*
 - [ ] `WorldManager` mit genau einer aktiven Welt einführen. `GameView` bleibt
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.
