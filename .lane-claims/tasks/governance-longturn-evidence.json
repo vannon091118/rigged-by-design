@@ -18,6 +18,22 @@
     "mergedSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd"
   },
   "findings": [],
-  "nextAction": "Automatisch nach Merge geschlossen (post-merge-closeout 8d8ff5e).",
-  "revision": 3
+  "nextAction": "PR #488 gemergt (8d8ff5e); Evidenz-Hash und vollstaendige Suite auf dem Merge-Kopf verifiziert. Keine offenen Befunde.",
+  "revision": 3,
+  "mergeState": "MERGED",
+  "mergedSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd",
+  "evidenceSha256": "236fb020dec5d931cacaa9d1559dc03019242a6599e83ecd94e395797d1e4750",
+  "testResult": {
+    "headSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd",
+    "command": "pnpm test",
+    "files": "321 passed | 2 skipped (323)",
+    "tests": "1723 passed | 2 skipped (1725)",
+    "longturn": "PASS",
+    "ciGates": "PASS",
+    "gates": {
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "verify:light": "PASS"
+    }
+  }
 }
