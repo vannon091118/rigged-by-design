@@ -15,7 +15,8 @@ import { randomSeed } from '../../../test/random-seed';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { talkChance } from '../charisma-talk';
 import { CITY_NPCS, ensureCityVisitor } from '../city-npcs';
-import { cityOf, travel } from '../city';
+import { cityOf, runCityAction, travel } from '../city';
+import { TICKS_PER_DAY } from '../demand';
 import {
   cityLifeView,
   ensureCityLife,
@@ -25,6 +26,7 @@ import { cleaningReach, maintenanceGain } from '../floor-work';
 import { PORTEMONNAIE } from '../money';
 import { processNarrativeRuntime } from '../narrative/runtime';
 import { grantGlobalXp, luckInjuryFactor, newPlayerRpg, playerHp, playerMaxHp, playerStepsPerTick, recoverPlayer } from '../player-rpg';
+import { playerCareer } from '../player-career';
 import { spawnGuest } from '../spawn';
 import { createWorld, ensureStarter } from '../templates';
 import { decay } from '../upkeep';
@@ -55,7 +57,8 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     expect(run.dueTick).toBe(world.tick + 24);
 
     for (let i = 0; i < 30; i += 1) tickWorld(world, ledger, prng);
-    expect(world.narrative.events.some((event) => event.eventId === 'CITY_ENCOUNTER_ECHO_WARM')).toBe(true);
+    const echoSeen = world.narrative.events.some((event) => event.eventId === 'CITY_ENCOUNTER_ECHO_WARM');
+    expect(echoSeen).toBe(true);
 
     // Umgebung wirkt auf den Gast: derselbe Gast verliert auf Dreck Laune,
     // auf sauberem Boden gewinnt er sie zurueck.
@@ -101,15 +104,16 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     expect(trained.perceptionLevel).toBe(1);
     expect(trained.enduranceLevel).toBe(1);
 
-    // Zwei weitere Tage Stadtleben: alle Bewohner tragen veraenderte Beduerfnisse.
+    // Vier weitere Tage Stadtleben: alle Bewohner tragen veraenderte Beduerfnisse,
+    // und auch der Spieler-Hunger läuft im echten Tick mit.
     const beforeLongRun = ensureCityLife(world);
     let nonSleepSeen = false;
-    while (world.tick < 1230) {
+    while (world.tick < TICKS_PER_DAY * 4) {
       tickWorld(world, ledger, prng);
       if (world.cityLife.residents.some((person) => person.intent !== 'SLEEP')) nonSleepSeen = true;
     }
     const afterLongRun = ensureCityLife(world);
-    expect(world.day).toBeGreaterThanOrEqual(3);
+    expect(world.day).toBeGreaterThanOrEqual(5);
     expect(cityLifeView(world)).toHaveLength(3);
     for (const person of afterLongRun.residents) {
       const start = beforeLongRun.residents.find((entry) => entry.npcId === person.npcId)!;
@@ -118,11 +122,38 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     }
     expect(nonSleepSeen).toBe(true);
 
+    // Hunger/Durst sind nach vier Tagen dringend und veraendern dieselbe
+    // Stadtaktion messbar: erst 0.2 Ruf, nach Essen und Trinken 0.4 Ruf.
+    expect(world.player.needs.hunger).toBeGreaterThan(80);
+    expect(world.player.needs.thirst).toBeGreaterThan(80);
+    console.log(`[longturn] vorMahlzeit hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)}`);
+    const hungryReputation = world.reputation;
+    const hungryVisit = runCityAction(world, 'KIEZ_ANSPRECHEN');
+    const hungryGain = world.reputation - hungryReputation;
+    expect(hungryGain).toBeCloseTo(0.2, 1);
+    expect(hungryVisit.lastResult).toContain('Hunger und Durst drücken');
+
+    const meal = runCityAction(world, 'KIEZ_ESSEN');
+    const drink = runCityAction(world, 'KIEZ_TRINKEN');
+    expect(meal.lastResult).toContain('Hunger');
+    expect(drink.lastResult).toContain('Durst');
+    expect(world.player.needs.hunger).toBeLessThan(50);
+    expect(world.player.needs.thirst).toBeLessThan(50);
+    expect(world.player.rpg.attributeXp.endurance).toBeGreaterThan(0);
+    expect(playerCareer(world, fromVC(20), fromVC(0)).needs.condition).toBe('Satt und wach');
+
+    const fedReputation = world.reputation;
+    runCityAction(world, 'KIEZ_ANSPRECHEN');
+    const fedGain = world.reputation - fedReputation;
+    expect(fedGain).toBeCloseTo(0.4, 1);
+    console.log(`[longturn] tag=${world.day} hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)} rufHungrig=+${hungryGain.toFixed(2)} rufSatt=+${fedGain.toFixed(2)} ausdauerXp=${world.player.rpg.attributeXp.endurance ?? 0} traits=${traitsBefore.join('|')} -> ${traitsAfter.join('|')} arc=${run.status} echo=${echoSeen}`);
+
     // Der gesamte lange Turn ueberlebt einen Save/Load-Roundtrip.
     const loaded = replaySave(JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState()))))!;
     expect(loaded.world.cityLife.residents).toHaveLength(3);
     expect(loaded.world.narrative.chains.runs.some((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')).toBe(true);
     expect(loaded.world.city?.location).toBe('KIEZ');
     expect(cityOf(loaded.world).energy).toBeGreaterThan(0);
+    expect(loaded.world.player.needs).toEqual(world.player.needs);
   });
 });

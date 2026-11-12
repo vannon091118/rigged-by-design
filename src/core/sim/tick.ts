@@ -14,6 +14,7 @@ import { reputation } from './spawn';
 import { CASHIER_WAIT, tickAgents } from './staff';
 import { hasActiveGuard } from './staff-queries';
 import { playerStepsPerTick, recoverPlayer } from './player-rpg';
+import { tickPlayerNeedsInWorld } from './player-needs-tick';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { sendGuestToQueue } from './queue-spots';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
@@ -142,6 +143,8 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   // Die zentrale Event-Infrastruktur fuehrt Phasen und loest am Fristtick auf,
   // bevor die Narrative-Runtime ihre eigene Fristpruefung sieht.
   tickVenueEvents(world);
+  // Der Tag zehrt auch am Spieler: Beduerfnisse laufen im selben Tick wie die Welt.
+  tickPlayerNeedsInWorld(world);
   // Verletzung heilt und Lebenspunkte kehren zurueck – im Takt der Welt, nicht der Uhr.
   recoverPlayer(world.player.rpg, world.tick);
   // Die Kampf-Rueckmeldung ist ein kurzer Nachhall, kein Zustand: sie laeuft mit dem Tick ab.

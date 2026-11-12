@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "taskId": "render-player-needs",
+  "claimId": "lane/render/player-needs",
+  "branch": "lane/render/player-needs",
+  "baseSha": "24de3138eed45e1cb8bb36c468c9665732db2a1d",
+  "phase": "CI_PENDING",
+  "title": "Spieler-Hunger und -Durst als aktive, gespeicherte Lebenssimulation mit Ess-/Trinkaktionen und nachweisbarer Ereigniskette",
+  "goal": "Spielerbeduerfnisse sinken im Tick, erholen sich durch Essen und Trinken, ueberleben Save/Load und veraendern Stadtalltag sowie Job-Ergebnisse.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "iso-projection",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Bewusst nicht erledigt: Die 2:1-Isometrie bleibt top-down mit WORLD_FLATTEN. Sie ist keine Voraussetzung fuer diesen Spielerbeduerfnis-Slice und bleibt als offener Render-Punkt in docs/RENDER_REWORK_PLAN.md dokumentiert."
+    },
+    {
+      "id": "city-wall-role",
+      "severity": "info",
+      "status": "accepted",
+      "summary": "Bewusst nicht erledigt: Die Stadt-Wandrolle bleibt die gemeinsame Occlusion-Rolle der Innenraeume; es gibt keinen zweiten Wand- oder Kollisionspfad. Die Entscheidung ist in docs/RENDER_REWORK_PLAN.md als accepted festgehalten."
+    },
+    {
+      "id": "browser-visual",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Kein frischer Browser-/Screenshot-Beleg in dieser VM. Der Long-Turn ist ein deterministischer Headless-Beleg; die fehlende Pixi-Sichtabnahme wird nicht als erledigt behauptet."
+    },
+    {
+      "id": "governance-workflow-baseline",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Zwei lokale Governance-Tests bleiben rot: ci-gates.test.ts erwartet genau drei Workflow-Dateien, workflow-hardening.test.ts findet actions/checkout@v4 und actions/setup-node@v4 unpinned. Ursache sind die bereits auf main vorhandenen, ausserhalb dieses Claims liegenden Dateien .github/workflows/render-inventory-sync.yml und render-inventory-sync-main.yml aus PR #483. Sie werden hier nicht geaendert und nicht per Allowlist versteckt; ein gruener CI-Run fuer exakt diesen SHA ist in diesem Repository strukturell nicht erzeugbar. Alle uebrigen Tests und verify:light sind gruen."
+    }
+  ],
+  "nextAction": "PR anlegen, Review-Kommentare und Evidenz mit exakten Testzahlen hinterlegen; bei mergeablem Kopf auf exakt diesem SHA mergen.",
+  "revision": 2
+}

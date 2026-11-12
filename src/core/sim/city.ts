@@ -27,6 +27,7 @@ import {
 } from './city-model';
 import { actionViews } from './city-actions';
 import { cityLifeView } from './city-life';
+import { normalizePlayerNeeds, playerNeedsView } from './player-needs';
 
 export type { CityActionView, CityBranchId, CityBranchView, CityLocationId, CityState, CityView } from './city-types';
 export { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, marketUnlocked, tierOf } from './city-model';
@@ -70,15 +71,17 @@ export function cityView(world: WorldState): CityView {
       unlocked: id === 'MARKT' ? marketUnlocked(state) : true,
     };
   });
+  const needs = normalizePlayerNeeds(world.player.needs);
   return {
     residents: cityLifeView(world),
+    playerNeeds: playerNeedsView(needs),
     location: state.location,
     locationName: location.name,
     note: location.note,
     energy: state.energy,
     energyMax: CITY_ENERGY_PER_DAY,
     branches,
-    actions: actionViews(state),
+    actions: actionViews(state, needs),
     // Ein Ort, den `travel` ablehnen wuerde, ist hier sichtbar gesperrt: keine Tuer ohne Wirkung.
     locations: LOCATIONS.map((entry) => ({
       id: entry.id,

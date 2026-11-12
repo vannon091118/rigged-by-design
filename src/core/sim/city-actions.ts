@@ -16,6 +16,8 @@ import {
   tierOf,
 } from './city-model';
 import { advanceToNextDay } from './tick';
+import { applyPlayerFood, cityReputationGain, createPlayerNeeds, normalizePlayerNeeds, playerNeedsView, PLAYER_DRINK_XP, PLAYER_MEAL_XP } from './player-needs';
+import { grantGlobalXp } from './player-rpg';
 
 /**
  * Eine Handlung im Ort: pruefen, dann fortschreiben. Ein Fehler veraendert
@@ -31,6 +33,30 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
   if (action.branch === 'MARKT' && !marketUnlocked(state)) {
     throw new Error(`Der Markt oeffnet erst ab Kiez-Rang Stammgast (${state.KIEZ}/${MARKET_UNLOCK_AT}).`);
   }
+  const needs = normalizePlayerNeeds(world.player.needs);
+  if (action.id === 'KIEZ_ESSEN' || action.id === 'KIEZ_TRINKEN') {
+    if (state.energy < action.energy) {
+      throw new Error(`Zu wenig Energie (${state.energy}/${action.energy}). Der naechste Tag fuellt sie auf.`);
+    }
+    if (action.id === 'KIEZ_ESSEN') {
+      if (needs.hunger <= 5) throw new Error('Du bist satt.');
+      world.player.needs = applyPlayerFood(needs, 'MEAL');
+      grantGlobalXp(world.player.rpg, 'KIEZ_MEAL', PLAYER_MEAL_XP);
+    } else {
+      if (needs.thirst <= 5) throw new Error('Du hast keinen Durst.');
+      world.player.needs = applyPlayerFood(needs, 'DRINK');
+      grantGlobalXp(world.player.rpg, 'KIEZ_DRINK', PLAYER_DRINK_XP);
+    }
+    const next: CityState = {
+      ...state,
+      energy: clampEnergy(state.energy - action.energy),
+      lastText: cityText(`${action.id}|${state.location}|${state.KIEZ}`),
+      lastResult: `${action.label}: Hunger ${Math.round(world.player.needs.hunger)}, Durst ${Math.round(world.player.needs.thirst)}.`,
+    };
+    world.city = next;
+    world.lastEvent = next.lastResult;
+    return next;
+  }
   if (state.energy < action.energy) {
     throw new Error(`Zu wenig Energie (${state.energy}/${action.energy}). Der naechste Tag fuellt sie auf.`);
   }
@@ -43,6 +69,8 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
   // denselben Satz - 52 Bausteine, aber ein Text. Der Fortschritt aendert sich
   // mit jeder Handlung und bleibt deterministisch.
   const key = `${action.id}|${state.location}|${points}`;
+  const reputationGain = cityReputationGain(needs, action.reputation);
+  const condition = playerNeedsView(needs);
   const next: CityState = {
     ...state,
     energy: clampEnergy(state.energy - action.energy),
@@ -50,10 +78,10 @@ export function runCityAction(world: WorldState, actionId: string): CityState {
     MARKT: action.branch === 'MARKT' ? points : state.MARKT,
     completed: done,
     lastText: cityText(key),
-    lastResult: `${action.label}: ${action.branch} ${points} Punkte, Rang ${tierOf(action.branch, points).name}.`,
+    lastResult: `${action.label}: ${action.branch} ${points} Punkte, Rang ${tierOf(action.branch, points).name}${condition.condition === 'Satt und wach' ? '' : ` · ${condition.condition}: Ruf +${reputationGain.toFixed(2)}`}.`,
   };
   world.city = next;
-  world.reputation = Math.max(0, world.reputation + action.reputation);
+  world.reputation = Math.max(0, world.reputation + reputationGain);
   world.lastEvent = next.lastResult;
   return next;
 }
@@ -79,15 +107,21 @@ export function restInCity(world: WorldState, ledger: Ledger, prng: Prng): CityS
 }
 
 /** Warum eine Handlung gerade nicht geht - Zweigsperre zuerst, dann Ort, dann Energie. */
-export function actionViews(state: CityState): CityActionView[] {
+export function actionViews(state: CityState, needs = createPlayerNeeds()): CityActionView[] {
+  const sated = needs.hunger <= 5;
+  const quenched = needs.thirst <= 5;
   return ACTIONS.map((action) => {
     const blocked = action.branch === 'MARKT' && !marketUnlocked(state)
       ? `Markt erst ab Kiez-Rang Stammgast (${state.KIEZ}/${MARKET_UNLOCK_AT}).`
       : state.location !== action.location
         ? `Du bist in ${state.location}.`
-        : state.energy < action.energy
-          ? `Energie ${state.energy}/${action.energy}.`
-          : '';
+        : action.id === 'KIEZ_ESSEN' && sated
+          ? 'Du bist satt.'
+          : action.id === 'KIEZ_TRINKEN' && quenched
+            ? 'Du hast keinen Durst.'
+            : state.energy < action.energy
+              ? `Energie ${state.energy}/${action.energy}.`
+              : '';
     return {
       id: action.id,
       label: action.label,

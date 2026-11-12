@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T08:30Z-player-needs",
+  "contributionId": "player-needs-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Magen entscheidet mit, bevor der erste Satz faellt: Wer den Tag ohne Essen und Wasser durchziehen will, hoert im Kiez seine eigene Stimme leiser werden und sieht den Ruf langsamer wachsen.",
+  "directives": []
+}

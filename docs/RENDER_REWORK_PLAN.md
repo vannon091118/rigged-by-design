@@ -60,10 +60,34 @@ Begegnungsloop, nicht aus einem zweiten Modell.
 | Fähigkeiten/Erfahrung | derselbe Long-Turn: `JOB_CLEANER`-XP erhöht Speed, Wahrnehmung und Ausdauer |
 | Glück | `player-jobs.test.ts`: Stufe 10 halbiert das Mechaniker-Unfallrisiko |
 
-Grenzen: Spieler-Hunger/-Durst bleiben außerhalb dieses Slice; das neue
-Stadtleben modelliert die drei benannten NPCs. Die 2:1-Isometrie und der
+Grenzen: Das Stadtleben modelliert die drei benannten NPCs; der Spieler
+läuft seit dem folgenden Slice im selben Tick mit. Die 2:1-Isometrie und der
 Browser-Screenshot bleiben die bereits dokumentierten offenen Punkte; der
 Long-Turn ist ein deterministischer Headless-Beleg, kein Sichtbeleg.
+
+### Spielerbedürfnisse-Slice 2026-11-12
+
+Hunger und Durst sind jetzt echter Spielzustand, kein Anzeigefeld. Der
+kanonische Tick hebt beide Werte langsam; Mahlzeit und Getränk an Kochnische,
+Kühlschrank oder im Kiez senken sie wieder. Derselbe Zustand liest der
+Stadtruf und die Job-Schicht: hungrige Spieler bekommen weniger Ruf, weniger
+Job-XP und ein höheres Unfallrisiko. Alte Saves ohne `player.needs` werden
+normalisiert, neue Saves tragen den Wert über Tagesgrenzen.
+
+| Beleg | Datei/Test |
+| --- | --- |
+| Tick und Schwellen | `player-needs.ts`, `player-needs-tick.ts`, `tick.ts`; `player-needs.test.ts`: 18/22 -> 54/70 nach zwei Tagen, 90/100 nach vier Tagen |
+| Essen/Trinken | `player-needs.ts`, `city-actions.ts`, `floor-actions.ts`; `player-needs.test.ts`: Heim-Mahlzeit 82/78 -> 37/68, Getränk -> 32/13; Kiez-Mahlzeit und -Getränk senken beide Werte |
+| Save/Load | `migrate.ts`, `save.ts`; `player-needs.test.ts` mit Roundtrip nach vier Tagen |
+| Verhaltenswirkung Stadt | `city-actions.ts`; `player-needs.test.ts`: derselbe Kiez-Besuch gibt 0.4 Ruf satt, 0.2 Ruf mit Hunger/Durst |
+| Verhaltenswirkung Job | `player-jobs.ts`; `player-needs.test.ts`: hungrige Mechaniker-Schicht 12 XP und Verletzung, satte Schicht 20 XP ohne Verletzung bei demselben PRNG-Wert 0.12 |
+| Ereigniskette | `living-world-longturn.test.ts`: vier Tage, Rita-Trait-Änderung, `CITY_ENCOUNTER_ARC`, Gast-Laune auf Dreck, Spielerstufen, dann Hunger/Durst -> Stadtruf 0.2 -> Mahlzeit/Getränk -> 0.4 |
+| Attribute/Fähigkeiten | `player-rpg.ts`: `HOME_MEAL`, `HOME_DRINK`, `KIEZ_MEAL`, `KIEZ_DRINK` trainieren Ausdauer, Wahrnehmung und Charisma; derselbe Long-Turn prüft alle sieben Stufen und `JOB_CLEANER`-XP |
+
+**Accepted, nicht erledigt:** Die 2:1-Isometrie bleibt top-down mit
+`WORLD_FLATTEN`; die Stadt-Wandrolle bleibt die gemeinsame
+Occlusion-Rolle der Innenräume, ohne zweiten Wand- oder Kollisionspfad. Beide
+Punkte sind bewusst zurückgestellt und keine Voraussetzung für diesen Slice.
 
 ### Ambient-Slice 2026-11-12 (R5/R6/R12-Teilbeleg)
 

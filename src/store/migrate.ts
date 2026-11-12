@@ -3,6 +3,7 @@ import { ZERO_VC, type VaCoinMicro } from '../core/economy/vacoin';
 import { GAME_FOOTPRINT, SERVICE_FOOTPRINT } from '../core/sim/grid-zones';
 import { reputation } from '../core/sim/spawn';
 import { newPlayerRpg } from '../core/sim/player-rpg';
+import { normalizePlayerNeeds } from '../core/sim/player-needs';
 import { normalizeLook, type PlayerLook } from '../core/sim/player-look';
 import { defaultPlinkoConfig, normalizePlinkoConfig, type PlinkoConfig, type PlinkoDrop, type PlinkoMode } from '../core/games/plinko-config';
 import { migrateReels } from '../core/games/slot-config';
@@ -89,7 +90,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   });
   const legacyFiat: { id: number; amount: VaCoinMicro }[] = [];
   world.guests = saved.guests.map((guest) => { const { fiat, ...rest } = guest; if (fiat && fiat > ZERO_VC) legacyFiat.push({ id: guest.id, amount: fiat }); return { ...rest, thirst: rest.thirst ?? 20, bladder: rest.bladder ?? 10, disputeId: rest.disputeId ?? null, path: [...(guest.path ?? [])] }; });
-  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null, property: hydrateProperty(saved.player?.property) };
+  world.player = { ...world.player, ...saved.player, path: [...(saved.player?.path ?? [])], needs: normalizePlayerNeeds(saved.player?.needs), rpg: { ...newPlayerRpg(), ...(saved.player?.rpg ?? {}) }, job: saved.player?.job ? hydrateJobState(saved.player.job) : null, property: hydrateProperty(saved.player?.property) };
   world.dirty = new Set(saved.dirty ?? []); world.prices = { ...world.prices, ...(saved.prices ?? {}) };
   const legacyGuardHired = restoreStaff(world, saved.staff);
   world.tick = saved.tick ?? 0; world.day = saved.day ?? 1; world.nextGuestId = saved.nextGuestId ?? 1;

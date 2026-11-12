@@ -122,5 +122,9 @@ const XP_SOURCE_WEIGHTS: Readonly<Record<string, Partial<Record<RpgAttribute, nu
   FOREIGN_JACKPOT: { luck: 0.8, technique: 0.2 },
   TALK_SUCCESS: { charisma: 0.7, perception: 0.3 },
   TALK_BACKFIRE: { endurance: 0.5, charisma: 0.3, brawl: 0.2 },
+  HOME_MEAL: { endurance: 0.5, perception: 0.5 },
+  HOME_DRINK: { endurance: 0.5, charisma: 0.5 },
+  KIEZ_MEAL: { endurance: 0.5, perception: 0.5 },
+  KIEZ_DRINK: { endurance: 0.5, charisma: 0.5 },
   generic: {},
 };

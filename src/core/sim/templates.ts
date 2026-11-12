@@ -13,6 +13,7 @@ import { spawnStain } from './stain';
 import { createActionQueue } from './action-queue';
 import { createCityScene } from './city-scene';
 import { createCityLifeState } from './city-life';
+import { createPlayerNeeds } from './player-needs';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
@@ -54,6 +55,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
       path: [],
       pathIndex: 0,
       carrying: '',
+      needs: createPlayerNeeds(),
       rpg: newPlayerRpg(),
       job: null,
       barPurchased: false,

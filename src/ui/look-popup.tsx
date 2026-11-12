@@ -73,7 +73,7 @@ export function LookPopup({ view, onClose, onLook, onChallenge, onBuyProperty, o
       <div className="look-layout">
         <LookPreview look={view.look} />
         <div className="look-controls">
-          <p className="hint">Nur Optik. Kein Einfluss auf Geld, Geduld oder Spielausgang.</p>
+          <p className="hint">Optik bleibt Optik. Deine Werte darunter kommen aus dem Spielzustand.</p>
           <Swatches label="Haut" colors={LOOK_SKINS} active={view.look.skin} onPick={(skin) => onLook({ skin })} />
           <Swatches label="Haare" colors={LOOK_HAIRS} active={view.look.hair} onPick={(hair) => onLook({ hair })} />
           <Swatches label="Outfit" colors={LOOK_OUTFITS} active={view.look.outfit} onPick={(outfit) => onLook({ outfit })} />

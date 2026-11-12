@@ -21,5 +21,6 @@ export function floorTapAllowed(
 ): boolean {
   if (scene === 'FOREIGN') return false;
   if (scene === 'OWN') return true;
+  if (scene === 'APARTMENT') return target === 'floor' || target === 'door' || target === 'furniture';
   return target === 'floor' || target === 'door';
 }
