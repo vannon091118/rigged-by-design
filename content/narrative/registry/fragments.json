@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:901320dec211138cedfa94b2ff975a7c6ae1aba1b0aa2a8f6b2548e4ca2dbb0d",
+  "contentHash": "sha256:157ef488a91482ab056c4de8862f765dd51f84a4103f81e1db6295397bcde9ef",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21684,6 +21684,28 @@
       "text": "Vertrauen ist kein Beiwerk: Wer einem Menschen nahesteht, erzaehlt eher und glaubt eher. Konflikt schliesst den Mund, Zuneigung oeffnet die Bar; und was ein Gast ueber das Haus hoert, faerbt seine Haltung zur Quelle und zum Subjekt, begrenzt und nachvollziehbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-relationships-coupling-01.json"
+    },
+    {
+      "contributionId": "render-r7-doors",
+      "turnId": "2026-11-12T03:30Z-render-r7-doors",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tueren der Stadt sind jetzt Teil des Bildes: Jede Schwelle liegt an ihrem Platz, die Strassen fuehren weiter, und die Figuren koennen den Weg nehmen, der schon in der Welt angelegt ist. Nichts wurde doppelt gebaut; nur das Sichtbare folgt der bestehenden Stadt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-r7-doors.json"
     },
     {
       "contributionId": "render-rework-plan",
