@@ -85,7 +85,9 @@ describe('Spielerbedürfnisse im echten Spielpfad', () => {
     expect(high.reputation).toBe(10.2);
     expect(highResult.lastResult).toContain('Hunger und Durst drücken');
     expect(cityView(high).playerNeeds.condition).toBe('Hunger und Durst drücken');
-    expect(cityView(high).actions.find((action) => action.id === 'KIEZ_ESSEN')).toBeTruthy();
+    const mealAction = cityView(high).actions.find((action) => action.id === 'KIEZ_ESSEN');
+    if (!mealAction) throw new Error('KIEZ_ESSEN fehlt in den Stadtaktionen.');
+    expect(mealAction.id).toBe('KIEZ_ESSEN');
   });
 
   it('verändert ein späteres Job-Ergebnis: hungrige Mechaniker-Schicht verletzt und bringt weniger XP', () => {

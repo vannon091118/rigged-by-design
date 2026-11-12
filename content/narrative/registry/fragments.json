@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:88d8c3b62ee583d6a620732126169c3fb43a00aa46a83f38d7651f0d72ae5abc",
+  "contentHash": "sha256:5c45b2b54adc248f9a80a67e13c4609e3ca76991203d4130b7df7a8a375850df",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -22101,6 +22101,28 @@
       "text": "Rita Kern steht schon vor der Tür, als das Licht angeht. Sie kennt den Geruch von kaltem Neon und weiß, dass der erste Automat heute ihr gehört.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-01-startpool-01.json"
+    },
+    {
+      "contributionId": "test-quality-voice-01",
+      "turnId": "2026-11-12T12:35Z-test-quality",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-low",
+      "function": "react",
+      "contexts": [
+        "aftermath"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Wirt zählt die Gläser zweimal, bevor er sie wegstellt. Beim ersten Mal hat er sich verzählt, und niemand hat es ihm gesagt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-test-quality-voice-01.json"
     },
     {
       "contributionId": "till-watch-01",

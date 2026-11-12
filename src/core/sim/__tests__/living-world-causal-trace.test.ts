@@ -62,8 +62,10 @@ describe('Living-World-Langlauf: kausaler Decision Trace', () => {
     expect(chain.use.tick).toBeGreaterThan(chain.memory.tick);
     expect(chain.use.memoryId).toBe(chain.memory.outcome.memoryCreatedId);
     const memoryProbe = chain.use.counterfactuals.find((probe) => probe.family === 'memory' && probe.changed);
-    expect(memoryProbe).toBeDefined();
-    expect(memoryProbe?.intent).not.toBe(chain.use.intent);
+    if (!memoryProbe) throw new Error('Der Memory-Probe fehlt in der Ereigniskette.');
+    expect(memoryProbe.family).toBe('memory');
+    expect(memoryProbe.changed).toBe(true);
+    expect(memoryProbe.intent).not.toBe(chain.use.intent);
 
     const replay = runCityLifeSimulation(SEED, 2);
     expect(JSON.stringify(replay.decisions)).toBe(JSON.stringify(result.decisions.slice(0, replay.decisions.length)));

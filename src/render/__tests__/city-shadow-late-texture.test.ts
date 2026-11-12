@@ -14,7 +14,7 @@ import { createCityExteriorModel } from '../../core/sim/city-exterior';
 import type { GameView } from '../../store/types';
 import { ASSET } from '../assets/keys';
 import { ambientPlanFor } from '../ambient-plan';
-import { cityRenderPlan } from '../city-plan';
+import { cityRenderPlan } from '../city-exterior-layer';
 
 vi.mock('../assets/textures', () => ({ textureFor: vi.fn() }));
 vi.mock('pixi.js', async (importOriginal) => {
