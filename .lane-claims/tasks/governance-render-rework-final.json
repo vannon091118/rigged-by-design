@@ -4,14 +4,13 @@
   "claimId": "lane/governance/render-rework-final",
   "branch": "lane/governance/render-rework-final",
   "baseSha": "7db4268a7b2732276ce9816490b12b02268a39c9",
-  "phase": "MERGE_PENDING",
+  "phase": "AFTERCARE",
   "title": "Render- und Living-World-Rework auf main abschliessen",
   "goal": "Den geprueften Planstand samt stale Testkorrektur konfliktfrei auf main bringen.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "Merge-Commit pruefen, Gates ausfuehren und nach main pushen.",
-  "revision": 1
+  "nextAction": "Nachsorge: Reconcile-Status DONE im unmittelbar folgenden Governance-Commit ziehen.",
+  "revision": 3
 }

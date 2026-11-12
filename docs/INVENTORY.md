@@ -618,10 +618,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2690 |
-| Gelistete Dateien | 2690 |
+| Getrackte Dateien | 2679 |
+| Gelistete Dateien | 2679 |
 | Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (32), content (1013), docs (86), packages (27), public (554), scripts (116), src (841) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (21), content (1013), docs (86), packages (27), public (554), scripts (116), src (841) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -633,8 +633,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 16 Datei(en)
-- `.lane-claims/tasks/` — 15 Datei(en)
+- `.lane-claims/claims/` — 10 Datei(en)
+- `.lane-claims/tasks/` — 10 Datei(en)
 - `content/narrative/contributions/` — 1009 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -749,33 +749,22 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-actions-storage-retention.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-claim-retention-postmerge.json` — { — gelesen: 37 Zeilen
-- `.lane-claims/claims/lane-governance-first-evening-ci.json` — { — gelesen: 29 Zeilen
 - `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 48 Zeilen
-- `.lane-claims/claims/lane-governance-local-testline-final.json` — { — gelesen: 27 Zeilen
-- `.lane-claims/claims/lane-governance-monitor-closeout-452-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-468.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-remove-freeze.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-governance-render-rework-final.json` — { — gelesen: 29 Zeilen
+- `.lane-claims/claims/lane-governance-render-rework-final.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-render-rework-plan.json` — { — gelesen: 28 Zeilen
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-actions-storage-retention.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-claim-retention-postmerge.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-first-evening-ci.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-monitor-closeout-452-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-post-merge-468.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-remove-freeze.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-render-rework-final.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-render-rework-final.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-render-rework-plan.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
