@@ -635,10 +635,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2737 |
-| Gelistete Dateien | 2737 |
+| Getrackte Dateien | 2738 |
+| Gelistete Dateien | 2738 |
 | Getrackte Ordner | 111 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (27), content (1015), docs (86), packages (27), public (571), scripts (116), src (874) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (9), .lane-claims (27), content (1015), docs (86), packages (27), public (571), scripts (116), src (874) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -648,7 +648,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.githooks/` — 3 Datei(en)
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
-- `.github/workflows/` — 3 Datei(en)
+- `.github/workflows/` — 4 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
 - `.lane-claims/claims/` — 13 Datei(en)
 - `.lane-claims/tasks/` — 13 Datei(en)
@@ -770,6 +770,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/workflows/ensure-pr.yml` — name: Ensure PR — gelesen: 96 Zeilen
 - `.github/workflows/pr-cleanup.yml` — name: PR Cleanup — gelesen: 107 Zeilen
 - `.github/workflows/promote.yml` — name: Promote — gelesen: 65 Zeilen
+- `.github/workflows/render-inventory-sync.yml` — name: render-inventory-sync — gelesen: 26 Zeilen
 - `.gitignore` — node_modules/ — gelesen: 28 Zeilen
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
