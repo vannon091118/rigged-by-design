@@ -45,13 +45,14 @@ describe('staging-scope', () => {
       .toEqual({ ok: true, allowed: ['docs/CHANGELOG.md'], exempt: true });
   });
 
-  it('nimmt die mechanischen Version-Dateien von der Sperre aus', () => {
+  it('nimmt die mechanischen Version- und Fortschrittsdateien von der Sperre aus', () => {
     const scope = scopeChanges({
-      changed: ['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md', 'src/ui/hud.tsx'],
+      changed: ['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md', 'docs/ROADMAP.md', 'src/ui/hud.tsx'],
       allowlist,
     });
     expect(scope).toEqual({ allowed: [], foreign: ['src/ui/hud.tsx'], ok: false, takeover: takeover(0, 1) });
     expect(TURN_EXEMPT).toContain('pnpm-lock.yaml');
+    expect(TURN_EXEMPT).toContain('docs/ROADMAP.md');
   });
 
   it('behandelt Verzeichnis- und rekursive Muster wie der Claim', () => {

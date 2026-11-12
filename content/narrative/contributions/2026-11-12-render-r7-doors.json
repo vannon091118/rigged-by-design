@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T03:30Z-render-r7-doors",
+  "contributionId": "render-r7-doors",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "entschlossen",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Tueren der Stadt sind jetzt Teil des Bildes: Jede Schwelle liegt an ihrem Platz, die Strassen fuehren weiter, und die Figuren koennen den Weg nehmen, der schon in der Welt angelegt ist. Nichts wurde doppelt gebaut; nur das Sichtbare folgt der bestehenden Stadt.",
+  "directives": []
+}

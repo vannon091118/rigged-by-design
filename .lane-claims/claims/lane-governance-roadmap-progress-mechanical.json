@@ -1,0 +1,23 @@
+{
+  "id": "lane/governance/roadmap-progress-mechanical",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/roadmap-progress-mechanical",
+  "baseSha": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5",
+  "task": "Generierten Roadmap-Fortschritt als mechanische Datei behandeln",
+  "goal": "Die von sync-generated.mjs geschriebene P-13-Zeile aus der Lane-Scope-Pruefung nehmen, ohne die Claim-Allowlist einer Feature-Lane zu vergroessern.",
+  "pathAllowlist": [
+    "scripts/lib/lane-claims.mjs",
+    "src/core/governance/__tests__/staging-scope.test.ts",
+    "content/narrative/contributions/2026-11-12-render-r7-doors.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts",
+    ".lane-claims/claims/lane-governance-roadmap-progress-mechanical.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5"
+}
