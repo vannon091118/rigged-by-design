@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-longturn-evidence-repair",
+  "claimId": "lane/governance/longturn-evidence-repair",
+  "branch": "lane/governance/longturn-evidence-repair",
+  "baseSha": "4f2e3120556064507b0622b2c7d99546a68a28fa",
+  "phase": "IMPLEMENTING",
+  "title": "Long-Turn-Evidenzartefakt reproduzierbar nachziehen",
+  "goal": "Das Evidenzartefakt mit dem aktuellen arcSnapshot deterministisch regenerieren, Byte-Gleichheit belegen und den Hash im Task-Vertrag verankern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Zwei byte-gleiche Long-Turn-Laeufe belegen, Artefakt und Hash aktualisieren, PR oeffnen.",
+  "revision": 1
+}
