@@ -16,6 +16,6 @@
   "flags": [
     "narrativ"
   ],
-  "text": "Zusammengefuehrte Lanes blockieren den Start nicht mehr: Pretask und Lane-Gate teilen denselben Merged-Filter, und ein Doku-Marker kommt genau einmal vor. Was auf main steht, ist Notiz statt Sperre; ohne Beleg bleibt es fail-closed.",
+  "text": "Ein Lieferwagen hält vor der Tür; der Fahrer kennt den Weg zur Hintertür besser als zur Klingel.",
   "directives": []
 }

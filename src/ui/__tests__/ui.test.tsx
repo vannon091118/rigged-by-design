@@ -82,7 +82,7 @@ describe('UI-Integration', () => {
     expect(screen.queryByLabelText('Eröffnung')).toBeNull();
   });
 
-  it('zeigt je Startschritt genau ein Modal: Eröffnung, Stadt, Raum, keins', () => {
+  it('zeigt je Startschritt genau ein Modal: Eröffnung, Wohnung, Stadt, Raum, keins', () => {
     worldStore.newGame('SMALL');
     const both = (): ReturnType<typeof render> => render(
       <>
@@ -100,19 +100,17 @@ describe('UI-Integration', () => {
     fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
     opening.unmount();
 
-    // CITY: nur die Stadt, ohne Eröffnung.
-    const city = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Die Stadt wartet');
-    fireEvent.click(screen.getByRole('button', { name: 'CASINO BETRETEN' }));
-    city.unmount();
+    const step = (tip: string, action: string): void => {
+      const { unmount } = both();
+      expect(modals()).toBe(1);
+      expect(screen.getByLabelText('Erste Schritte').textContent).toContain(tip);
+      fireEvent.click(screen.getByRole('button', { name: action }));
+      unmount();
+    };
 
-    // CASINO: nur der Raum.
-    const casino = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Der Raum ist dein');
-    fireEvent.click(screen.getByRole('button', { name: 'AUFTRAG ANNEHMEN' }));
-    casino.unmount();
+    step('Du bist zu Hause', 'HAUSTÜR ÖFFNEN');
+    step('Die Stadt wartet', 'CASINO BETRETEN');
+    step('Der Raum ist dein', 'AUFTRAG ANNEHMEN');
 
     // DONE: kein Startmodal mehr.
     both();

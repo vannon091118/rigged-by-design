@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:c1b06e5d965a95c7315d561017ab05d35ab4db3276beb8dcac97d565e9c629ad",
+  "contentHash": "sha256:901320dec211138cedfa94b2ff975a7c6ae1aba1b0aa2a8f6b2548e4ca2dbb0d",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -74,7 +74,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita strich den Satz, der zwei Inventuren verlangte. Daneben notierte sie, dass der neue Einstieg Branch, Arbeitsbaum und Vertrag selbst vorbereitet, und liess den alten Befehlsnamen durchgestrichen stehen. Wer den Zettel liest, muss nichts mehr raten.",
+      "text": "Hinter dem Haus sammelt sich das Wasser in einer Mulde. Jeder Regen erinnert daran, dass der Boden kein Gefälle kennt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-agent-bootstrap.json"
     },
@@ -96,7 +96,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Lane ist angemeldet, bevor sie schreibt: erst der Anspruch auf die Doku-Dateien, dann der Text. Wer die Reihenfolge umdreht, baut sich selbst ein Tor.",
+      "text": "Die Abrechnung liegt aufgeschlagen auf dem Tisch. Daneben ein Kugelschreiber, der nicht mehr schreibt, und eine Tasse, die noch warm ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-1.json"
     },
@@ -184,7 +184,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Nummer des Zuges steht im Vertrag: 74bc796, der Squash des Nachtrags. Damit ist der Nachlauf nicht Behauptung, sondern Beleg.",
+      "text": "Der Lagerraum ist voller Ersatzteile, die alle zu einem Gerät passen, das nicht mehr gebaut wird.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-5.json"
     },
@@ -206,7 +206,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zwischen Merge und Abschluss liegt nur die Sorgfalt: die Phase nachziehen, damit niemand den geschlossenen Zug fuer offene Arbeit haelt.",
+      "text": "Ein Junge läuft mit einer Chipstüte am Fenster vorbei. Die Tüte knistert lauter als der Fernseher im Wohnzimmer.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-6.json"
     },
@@ -228,7 +228,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Danach ist die Spur sauber: Version und Heft nennen dieselbe Zahl, der Claim traegt seinen Beleg, und niemand muss raten, was zwischen zwei Staenden passiert ist.",
+      "text": "Der Boden im Eingang ist frisch gewischt. Zwei Minuten später trägt ihn jemand als Fußabdruck wieder hinaus.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-changelog-7.json"
     },
@@ -250,7 +250,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Beleg ist keine Behauptung: er muss die Form haben, die das Register liest. Wer eine eigene Belegart erfindet, hat keinen Nachweis, sondern eine Notiz.",
+      "text": "Im Hinterhof steht ein Stuhl ohne Lehne. Wer sich setzt, lehnt sich automatisch an die Wand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-1.json"
     },
@@ -294,7 +294,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Beleg hat jetzt die Form, die das Register liest, und die Nummer, die ihn traegt: 97d7b22 aus dem Korrektur-PR. Damit ist der Nachtrag selbst belegt, nicht nur behauptet.",
+      "text": "Die Kaffeemaschine gibt mehr Satz als Kaffee. Das ist kein Defekt, sondern eine Art, den Morgen zu begrüßen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-3.json"
     },
@@ -316,7 +316,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zwischen Merge und Abschluss liegt nur die Sorgfalt: die Phase nachziehen, damit ein geschlossener Zug nicht wie offene Arbeit aussieht.",
+      "text": "Der Automat im Fenster spiegelt die Straßenlaterne. Für einen Moment sieht es aus, als würde er von draußen leuchten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-4.json"
     },
@@ -338,7 +338,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Fuenf Belege, eine Sprache: jeder der vier Agent-14-Claims nennt jetzt den Commit, der seinen Inhalt traegt, und dieser Claim nennt seinen eigenen. Wer nachzaehlt, findet keinen Wert mehr, der nur behauptet war.",
+      "text": "Zwei Gäste streiten über die Regeln eines Spiels, das beide nicht erfunden haben. Der Streit bleibt höflich, solange die Gläser voll sind.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent14-claim-evidence-5.json"
     },
@@ -360,7 +360,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Schnitt ist durch: was oben liegt, ist der Stand des Zweigs, nicht ein Nachhall davon. Erst die Baumgleichheit macht aus dem Merge einen Beleg.",
+      "text": "Der Hausmeister fegt den Gehweg, obwohl es noch regnet. Er sagt, der Dreck soll nicht glauben, dass er bleiben darf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-1.json"
     },
@@ -382,7 +382,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, der Zweig bleibt stehen, bis das Papier stimmt - kein Schritt wird uebersprungen, weil der Code schon oben liegt.",
+      "text": "Auf dem Sofa liegt eine Decke, die niemand benutzt. Sie riecht nach dem Sofa und nicht nach einem Menschen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-2.json"
     },
@@ -404,7 +404,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Am Ende steht kein Versprechen, sondern eine Zeile im Register: Branch-Kopf und Baum auf main, und der Zweig darf gehen. Was bleibt, ist der Nachweis.",
+      "text": "Eine Flasche rollt über den Flur und bleibt an der Fußmatte liegen. Niemand hebt sie auf, weil niemand sie vermisst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent15-aftercare-3.json"
     },
@@ -492,7 +492,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Schnitt ist durch: der Squash traegt denselben Baum wie der Zweig. Erst diese Gleichheit macht aus dem Merge einen Beleg statt einer Behauptung.",
+      "text": "Am Tresen hängt eine Lampe mit einem Sprung im Glas. Das Licht fällt trotzdem gerade, nur ein wenig schief.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-1.json"
     },
@@ -514,7 +514,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem Merge beginnt die Nachsorge: das Register zieht nach, waehrend der Zweig noch steht. Kein Schritt wird uebersprungen, nur weil der Code schon oben liegt.",
+      "text": "Die Uhr über der Kasse geht zwei Minuten vor. Der Wirt sagt, das sei Absicht, damit niemand zu spät kommt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-2.json"
     },
@@ -536,7 +536,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Am Ende steht kein Gefuehl, sondern eine Zeile im Register: Baum auf main, Branch-Kopf belegt, Zweig darf gehen. Was bleibt, ist der Nachweis.",
+      "text": "Im Kühlschrank steht eine angebrochene Milch, die keiner öffnen will. Daneben eine Flasche Bier, die jeder kennt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent16-aftercare-3.json"
     },
@@ -624,7 +624,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nachlauf heisst: Register, Task und Beleg zusammenfuehren. Ein gruener Merge ohne gepflegten Status ist nur ein halber Abschluss.",
+      "text": "Der Müllcontainer wird erst geleert, wenn die Tauben ihn für einen Futterplatz halten. Dann ist es zu spät.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-aftercare.json"
     },
@@ -690,7 +690,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein ungenutzter Import faellt nicht im Test auf, sondern erst im Typecheck. Genau dafuer steht er im Gate: die Kleinigkeit wird vor dem Push bezahlt, nicht danach.",
+      "text": "Ein Gast legt sein letztes Geld auf den Tresen und bestellt nichts. Der Wirt schenkt ihm trotzdem ein Glas Wasser.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-business-areas-3.json"
     },
@@ -756,7 +756,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Gruen im Log ist noch kein gruener Stand: der Task wartet auf den Lauf, der genau diesen Kopf prueft.",
+      "text": "Die Treppe knarrt an derselben Stufe wie immer. Wer sie kennt, steigt dort leiser auf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-ci-pending.json"
     },
@@ -778,7 +778,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Task steht auf DONE, der Claim auf merged, die Lane ist fort. Was bleibt, ist eine Ableitung aus einem Zustand - und ein Test, der nicht mehr auf den Seed wettet.",
+      "text": "Draußen fährt ein Auto durch eine Pfütze, und drinnen hört man kurz die Straße im Raum.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-done.json"
     },
@@ -800,7 +800,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Code liegt im Squash, die Lane wartet auf ihren Nachlauf. Erst wenn die Zuteilung auf main nachweisbar ist, gilt der Bereich als abgeschlossen.",
+      "text": "Der Aschenbecher wurde geleert, aber der Geruch ist geblieben. Er sitzt in den Vorhängen und wartet auf den nächsten Abend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent17-merge-pending.json"
     },
@@ -866,7 +866,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Karte, Bestand und Preis liegen auf main; die Lane ist fort, der Task steht.",
+      "text": "Ein Stammgast bringt seinem Freund einen Döner mit. Der Freund hat kein Geld, aber Hunger, und beide lachen darüber.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-done.json"
     },
@@ -932,7 +932,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Gate meldet nicht, dass etwas fehlt, sondern dass etwas doppelt da ist: der alte Import blieb stehen, nachdem die Bedienung umzog.",
+      "text": "Der Wirt zählt die Kasse und legt den Überschuss in eine Blechdose. Die Dose ist älter als der Automat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-drink-menu-3.json"
     },
@@ -976,7 +976,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Squash traegt die Karte auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "text": "Am Ende des Tages bleibt ein Stuhl verrückt und ein Glas halb voll. Das ist kein Problem, nur ein Zustand.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent18-merge-pending.json"
     },
@@ -1086,7 +1086,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Lounge traegt ihren Club jetzt nach Tageszeit; Register und Lane sind geschlossen.",
+      "text": "Im Schaufenster hängt ein Plakat, dessen Ecken sich lösen. Der Kleber hat länger gehalten als die Ankündigung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-done.json"
     },
@@ -1108,7 +1108,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Squash traegt den Clubabend auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "text": "Ein Handwerker trägt eine Leiter durch den Flur und entschuldigt sich bei jedem, den er nicht trifft.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent19-merge-pending.json"
     },
@@ -1240,7 +1240,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Squash traegt den Strom auf main; offen bleibt nur, den Registerstand nachzuziehen.",
+      "text": "Der Fernseher im Wohnzimmer läuft ohne Ton. Die Bilder reichen, um zu wissen, dass draußen jemand gewinnt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent20-merge-pending.json"
     },
@@ -1262,7 +1262,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nachlauf heißt: Register, Task und Beleg zusammenführen. Der Branch trägt keine neue Spiellogik, nur die nachgezogene Wahrheit über den Lauf.",
+      "text": "Die Wohnungstür schließt nur, wenn man sie hebt. Wer es eilig hat, merkt es beim zweiten Versuch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-aftercare.json"
     },
@@ -1284,7 +1284,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Code ist auf main, der Nachlauf beginnt. Erst der gemergte PR und der Squash-Beleg machen aus dem Lauf eine Zusage; bis dahin bleibt der Task im offenen Pfad.",
+      "text": "Die Balkonpflanze hat den Sommer überlebt, ohne dass jemand sie gegossen hat. Der Regen war großzügiger als der Nachbar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-ci-pending.json"
     },
@@ -1306,7 +1306,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "DONE ist erst, wenn der Squash-Baum mit dem Lane-Kopf übereinstimmt und der Claim merged sagt. Danach bleibt nur noch die Lane zu entfernen.",
+      "text": "Im Bad tropft der Hahn im Rhythmus der Straßenbahn. Man hört ihn nur, wenn man nichts anderes hört.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-done.json"
     },
@@ -1328,7 +1328,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein grüner Lauf allein ist kein Abschluss. Erst der Squash-Beleg auf main macht den Merge nachprüfbar; MERGE_PENDING hält den nächsten Schritt fest.",
+      "text": "Ein Lieferant stellt die Kiste vor die Tür und geht, bevor jemand öffnen kann. Die Kiste weiß nicht, wohin sie gehört.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-merge-pending.json"
     },
@@ -1394,7 +1394,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Status zieht nach: erst wenn der lokale Nachweis steht, nennt der Vertrag die Umsetzung und den offenen PR. Kein Merge ohne grünen Lauf auf dem exakten Kopf.",
+      "text": "Der Spiegel im Flur ist blind geworden. Wer hineinsieht, erkennt nur die Umrisse und eine Entscheidung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent21-room-plan-3.json"
     },
@@ -1416,7 +1416,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Nachlauf zieht nur Task, Claim und generierte Register nach; an Veranstaltungsphasen, Tick und Save-Feldern aendert er nichts.",
+      "text": "Auf dem Küchentisch liegen zwei Rechnungen und ein Brief, der aussieht wie eine dritte. Der Brief bleibt zu.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-aftercare.json"
     },
@@ -1438,7 +1438,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Event-Phasen sind mit #426 auf main; jetzt beginnt der Nachlauf. Erst Squash-Beleg und Register machen daraus einen belegten Abschluss, bis dahin bleibt der Task offen.",
+      "text": "Der Kiez schläft nicht, er döst. Zwischen zwei Straßenbahnen hört man das Kühlaggregat der Bar.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-ci-pending.json"
     },
@@ -1482,7 +1482,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "DONE heisst hier: Squash-Baum gleich Lane-Kopf, Claim merged und Lane entfernt. Der Event-Pfad bleibt die vorhandene NarrativeEventInstance.",
+      "text": "Eine Frau kehrt den Gehweg vor ihrem Laden, obwohl der Dreck von nebenan kommt. Sie sagt, ihr Stück soll trotzdem sauber sein.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-done.json"
     },
@@ -1504,7 +1504,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Squash 50074210 ist baumgleich zum geprueften Lane-Kopf. MERGE_PENDING trennt den nachpruefbaren Merge vom noch offenen Registerabschluss.",
+      "text": "Der Automat nimmt die Münze und gibt kein Geräusch zurück. Der Gast klopft zweimal, dann glaubt er es.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-merge-pending.json"
     },
@@ -1526,7 +1526,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Vor dem ersten Baustein steht die Pruefung: Der Veranstaltungsrahmen darf nicht neben dem vorhandenen Event-Zustand stehen. Deshalb beginnt Agent 22 mit einer Lane, die nur den fehlenden Ablauf ergaenzt und die bestehende Wahrheit unangetastet laesst.",
+      "text": "Die Fliege an der Lampe kreist seit dem Abend. Sie ist der einzige Gast, der nicht bezahlt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent22-task.json"
     },
@@ -1570,7 +1570,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem Merge bleibt Nachsorge: Register und Nachweis ziehen nach, der Code liegt bereits auf main. Der Kampfabend wird nicht erneut gebaut, nur belegt - Squash, Baumgleichheit und ein sauberer Arbeitsbaum.",
+      "text": "Im Hinterzimmer steht ein Stuhl mit einem Buch darauf. Das Buch ist aufgeschlagen, aber niemand liest.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-aftercare.json"
     },
@@ -1592,7 +1592,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Kampfabend steht, jetzt entscheidet der entfernte Lauf: Der Kopf wird gepusht, und erst ein gruener Pflichtstatus auf genau diesem Kopf erlaubt den Merge. Zwischenstand und Vertrag bleiben dabei eine Wahrheit, kein zweiter Bericht.",
+      "text": "Der Wirt kennt den Namen des Gastes, aber nicht sein Gesicht. Das passiert, wenn Leute nur aus dem Rücken heraus spielen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-ci-pending.json"
     },
@@ -1614,7 +1614,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Sechs Durchlaeufe, ein Ergebnis: Der Kampfabend steht auf main, die Lane ist geschlossen, und der Vertrag nennt Squash und Beleg. Was bleibt, ist die naechste Aufgabe - nicht ein zweiter Bericht ueber diese.",
+      "text": "Draußen wird es früh dunkel, und drinnen wird es spät hell. Die Lampen kennen keinen Unterschied.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-done.json"
     },
@@ -1658,7 +1658,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Pflichtstatus ist gruen auf dem exakten Kopf, und erst jetzt darf der Merge geplant werden. Kein Nachbessern am Rand, kein zweiter Kopf: Was geprueft wurde, wird gemergt, und was danach kommt, steht in der Nachsorge.",
+      "text": "Ein Kind wirft eine Münze in den Automaten und gewinnt nichts. Es freut sich trotzdem, weil der Automat gesungen hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-merge-pending.json"
     },
@@ -1680,7 +1680,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Vor dem ersten Baustein steht die Pruefung: Der Kampfabend darf nicht neben dem vorhandenen Turnierabend stehen. Deshalb beginnt Agent 23 mit einer Lane, die Roster, Kampfengine und Ledger nur dort ergaenzt, wo die bestehende Wahrheit bereits liegt.",
+      "text": "Die Tür zum Personalraum steht offen. Drinnen hängt eine Jacke, die seit dem Winter niemand abgeholt hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent23-task.json"
     },
@@ -1702,7 +1702,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem Merge bleibt Nachsorge: Der Beleg nennt Squash und Baumgleichheit, der Arbeitsbaum bleibt leer, und die Lane zieht ihren Vertrag nach. Der Wettmarkt wird nicht erneut gebaut, nur belegt.",
+      "text": "Der Wirt schreibt den Tagesumsatz auf einen Zettel, der schon dreimal gefaltet wurde. Die Zahlen passen nur mit Kugelschreiber.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-aftercare.json"
     },
@@ -1768,7 +1768,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Wettmarkt steht: Scheine, Quoten und Abrechnung liegen als Journal-Belege vor, die Lane ist geschlossen. Wer den Markt sucht, findet ihn im Hinterhof; wer den Abschluss sucht, im Vertrag. Kein zweiter Aufbau, keine offene Schleife.",
+      "text": "Die beiden Gläser auf dem Tisch sind leer, aber die Untertassen voll. Der Abend war lauter als das Gespräch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-done.json"
     },
@@ -1790,7 +1790,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Qualitaetspruefung meldet einen Near-Duplicate: Der Abschluss lag zu nah am vorigen. Also wird der Text entdoppelt, nicht die Schwelle gesenkt; der Befund und die Korrektur bleiben im Register.",
+      "text": "Am Fenster sitzt ein Gast und sieht auf die Straße, statt auf den Automaten. Er ist der einzige, der wirklich etwas beobachtet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-done-repair.json"
     },
@@ -1812,7 +1812,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Kopf ist gruen, der Vertrag steht auf Merge: Was jetzt kommt, ist kein neuer Entwurf mehr, sondern die Bestaetigung, dass der gepruefte Stand genau der ist, der auf main wandert.",
+      "text": "Auf der Straße liegt ein Handschuh, den der Winter zurückgelassen hat. Im Sommer erinnert er an eine andere Zeit.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent24-merge-pending.json"
     },
@@ -1878,7 +1878,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nachsorge heisst hier: den gemergten Stand belegen, den Claim schliessen, die Lane stehen lassen. Die Arena bleibt im Hinterhof, wo sie gebaut wurde, und braucht keinen zweiten Eingang.",
+      "text": "Der Wirt hebt den Hörer ab und legt ihn wieder auf. Es klingelt nicht, aber er hat trotzdem geantwortet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-aftercare.json"
     },
@@ -1922,7 +1922,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Basis war schon im Baum, aber nicht in der Historie; ein Merge holt beides nach. Die Arena bleibt ein Ausbau der Immobilie, und der Nachlauf der Wett-Lane bleibt geschlossen.",
+      "text": "Im Lager brennt die Lampe über der Tür zum Hof. Sie ist die einzige, die niemand ausschaltet.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-base-merge.json"
     },
@@ -1966,7 +1966,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Sechs Schritte, ein Modul: Die Arena steht auf main, der Claim nennt den Merge, der Zweig bleibt erhalten. Der naechste Halt ist Agent 26, nicht ein zweiter Ausbau derselben Flaeche.",
+      "text": "Ein Gast fragt nach dem Weg zum Bahnhof. Der Wirt zeigt zur Tür und sagt, die Stadt sei überall gleich.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-done.json"
     },
@@ -1988,7 +1988,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Main kam als Merge zurueck; die Lane zieht nach, ohne den Arena-Bau erneut zu entscheiden. Ein Baum, zwei Historien, ein Vertrag - und der Ausbau bleibt der eine, der schon geprueft wurde.",
+      "text": "Am Abend zählt der Wirt die Flaschen und die Gesichter. Die Flaschen sind ehrlicher, aber die Gesichter bleiben länger.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-main-merge.json"
     },
@@ -2010,7 +2010,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Basis kam mit einer anderen Kommasetzung; der Merge prueft Inhalte, nicht Formatierung. Der Baum wird kanonisch geschrieben, damit dieselbe Regel auf beiden Seiten gilt und der naechste Konflikt ein echter ist.",
+      "text": "Die Straße riecht nach Regen und Frittierfett. Der Geruch gehört zu dieser Ecke und zu keiner anderen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent25-merge-base.json"
     },
@@ -2076,7 +2076,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Nachlauf oeffnet den Registerweg: Task auf AFTERCARE, Claim merged. Der Feature-Merge bleibt der Beleg; die Nachsorge traegt nur Status und Doku.",
+      "text": "Ein Nachbar klopft gegen die Wand, dreimal, dann einmal. Alle wissen, was das heißt, niemand sagt es.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-aftercare.json"
     },
@@ -2142,7 +2142,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Sicht braucht eine eigene Datei, nicht eine wachsende Immobiliensektion. Also zieht die Liga in ihr eigenes UI-Modul, und der Claim nennt den Pfad von Anfang an - vor dem ersten Push, nicht danach.",
+      "text": "Der Stuhl an der Theke ist frei, obwohl der Abend voll ist. Der Wirt stellt das Bier trotzdem hin.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-claim.json"
     },
@@ -2164,7 +2164,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Agent 26 ist abgeschlossen: Task DONE, Claim merged, mergedSha 2798053d. Die Stadtliga lebt als Ableitung im bestehenden Charakterfenster.",
+      "text": "Im Hinterhof hängt Wäsche, die seit zwei Tagen trocken ist. Niemand nimmt sie ab, weil der Regen schon wieder angekündigt ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-done.json"
     },
@@ -2230,7 +2230,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "main hat den Feature-Kopf als 2798053d uebernommen. Die Lane zieht die Basis nach, damit der Nachlauf auf demselben Baum wie main beginnt.",
+      "text": "Der Kassenbon rollt auf den Boden und bleibt dort liegen. Er ist länger als die Bestellung und billiger als das Gespräch.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-main-merge.json"
     },
@@ -2252,7 +2252,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Merge ist belegt, die Lane steht auf MERGE_PENDING: der gruene Kopf 0ce079f6 wurde als 2798053d auf main uebernommen. Jetzt folgt nur noch der Register-Nachlauf.",
+      "text": "Ein Gast klopft den Aschenbecher zu spät aus. Die Asche fällt auf den Boden, den der Wirt gerade gewischt hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-agent26-merge-pending.json"
     },
@@ -2990,7 +2990,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zusammengefuehrte Lanes blockieren den Start nicht mehr: Pretask und Lane-Gate teilen denselben Merged-Filter, und ein Doku-Marker kommt genau einmal vor. Was auf main steht, ist Notiz statt Sperre; ohne Beleg bleibt es fail-closed.",
+      "text": "Ein Lieferwagen hält vor der Tür; der Fahrer kennt den Weg zur Hintertür besser als zur Klingel.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-governance-defuse-01.json"
     },
@@ -3012,7 +3012,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Während der CI-Fix lief, zog main mit der README-Lane weiter. Der Branch wurde echt gemergt, die Inventur neu erzeugt und die Freigabe an die neue Basis gebunden; kein alter Kopf blieb als scheinbar grüner Nachweis stehen.",
+      "text": "Die Nachbarin im zweiten Stock geht um sieben Uhr vierzehn zur Arbeit. Sie nickt nicht, sie sieht nur auf ihre Schuhe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-main-sync.json"
     },
@@ -3034,7 +3034,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der CI-Plan liest den PR-Body jetzt bei jedem Lauf über die Pull-Request-API. Ein Rerun nach einer Korrektur prüft damit den aktuellen Text statt des ursprünglichen Event-Payloads; der Unterschied zwischen Erstlauf und Wiederholung verschwindet aus der Fehlersuche.",
+      "text": "Im Lager stapeln sich Kisten mit Etiketten, die niemand mehr liest. Die oberste ist leer und wiegt trotzdem.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-ci-pr-body-current.json"
     },
@@ -5622,7 +5622,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Vertrag stand noch offen, obwohl sein Merge laengst auf main lag. Ihn zu schliessen hiess nicht, die Arbeit zu wiederholen, sondern den Beleg dorthin zu schreiben, wo er gelesen wird.",
+      "text": "Ein Gast bleibt an der Schwelle stehen und mustert den Raum. Er sucht keinen Platz, er sucht einen Grund zu bleiben.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-1.json"
     },
@@ -5644,7 +5644,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zwischen Merge und Abschluss lag nur eine Zeile Arbeit: die Phase nachziehen, damit niemand den offenen Vertrag fuer offene Arbeit haelt. Danach war der Lauf gruen und der Ordner still.",
+      "text": "Die Bar ist leer, aber die Gläser stehen bereit. Das sieht nach Ordnung aus und fühlt sich nach Warten an.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-2.json"
     },
@@ -5666,7 +5666,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zum Schluss trug auch der Nachlauf seinen Beleg: eine Lane geschlossen, ein Vertrag auf erledigt, dieselbe Summe in beiden Dateien. Wer nachzaehlt, findet keinen offenen Rest mehr.",
+      "text": "Auf dem Boden liegt ein Chip, den niemand vermisst. Wer ihn aufhebt, weiß nicht, ob er Glück oder Diebstahl aufhebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-buchhaltung-3.json"
     },
@@ -5757,7 +5757,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die Bude zaehlte ihre Bedingungen zweimal: einmal fuer den Spieler, einmal fuer den Beleg. Der Beleg war der Merge, nicht die Absicht - erst danach durfte die Zeile als erledigt gelten.",
+      "text": "Der Wischmopp lehnt an der Wand wie ein Werkzeug, das auf eine Entscheidung wartet. Der Fleck wartet nicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-1.json"
     },
@@ -5779,7 +5779,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem Merge blieb Arbeit uebrig, die niemand sieht: Register nachziehen, Branch schliessen, den naechsten Auftrag benennen. Wer das aufschrieb, bevor er ging, hatte am Morgen keinen Rateweg mehr.",
+      "text": "Am Kiosk an der Ecke kostet der Kaffee mehr als im Laden nebenan. Die Leute zahlen trotzdem, weil er heißer ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-2.json"
     },
@@ -5823,7 +5823,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Zum Schluss standen zwei Zeilen auf erledigt, und beide trugen einen Merge statt einer Absicht. Die Bude hatte eine Kasse, der Saal Leute, und im Regal lag ein Beleg statt einer Erinnerung.",
+      "text": "Die Tauben auf dem Fenstersims haben den Rhythmus der Straße gelernt. Sie fliegen erst, wenn die Ampel rot wird.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-closeout-3.json"
     },
@@ -6417,7 +6417,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Die GameScout-Bootstrap-Lane ist mit dem aktuellen main zusammengefuehrt; die beiden Scout-Bausteine bleiben erhalten. Die Konflikte lagen in Manifest, generierten Narrative-Artefakten, Inventur, Roadmap und Dependency-Matrix, nicht in Gameplay-Code.",
+      "text": "Die Wohnung ist still, bis der Kühlschrank anspringt. Dann klingt es, als hätte jemand kurz den Atem angehalten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-game-scout-main-merge.json"
     },
@@ -6487,7 +6487,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Gate ist erst dann ein Gate, wenn sein roter Fall bewiesen ist: Die Pruefung muss den Exitcode lesen, den Quellbaum unberuehrt lassen und bei gleichem Plan denselben Matrixlauf erzeugen.",
+      "text": "Der Automat lächelt in Neon, auch wenn niemand davorsteht. Das Lächeln ist billiger als eine Glühbirne und hält länger.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-gate-lane-red-team-01.json"
     },
@@ -6535,7 +6535,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Rita prüfte den Push, nicht nur den Commit: Die Tests lagen ausserhalb des Claims. Sie verschob die Dateien unter den bereits freigegebenen Pfad, statt die Allowlist zu erweitern. Der Fix blieb derselbe, die Grenze auch.",
+      "text": "Der Putzeimer wird zweimal geleert, weil der erste Eimer nur halb voll war. So steht es zumindest auf dem Zettel.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-claim-scope.json"
     },
@@ -6557,7 +6557,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Closeout-Zweig trug noch den Stand vor der README-Lane; der Merge zog main bis 1f40395 nach. Die Inventur wurde auf dem gemeinsamen Baum neu erzeugt, damit der Diff nur die abgeschlossenen Phasen-Lanes und keine veraltete Dateiliste zeigt.",
+      "text": "Der Aufzug im Haus ist seit Wochen kaputt. Die Miete ist trotzdem pünktlich, das Treppenhaus nicht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-closeout-main-sync.json"
     },
@@ -6581,7 +6581,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Rita sah, dass die neue Spur noch in der Abhängigkeitskarte fehlte. Sie ließ den Generator über den vollständigen Index laufen und legte die aktualisierte Karte vor dem Gate dazu. Der nächste Prüfer musste den fehlenden Eintrag nicht erst nach dem Commit entdecken.",
+      "text": "Am Fenster klebt ein Regentropfen und läuft nicht weiter. Er sieht aus wie eine kleine Entscheidung, die feststeckt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-dependency-matrix-retry.json"
     },
@@ -6731,7 +6731,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita markierte im Heft die Zeile, an der die Lane von main abzweigt. Nicht der wandernde Kopf zählt, sondern die gemeinsame Basis; sonst prüft jeder Lauf eine andere Freigabe. Der nächste Leser sah sofort, welche Regel gilt.",
+      "text": "Am Ende der Straße brennt eine Laterne tagsüber. Niemand meldet es, weil niemand dafür zuständig ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-merge-base.json"
     },
@@ -6756,7 +6756,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita trug den Task-Vertrag in die Freigabe nach. Die alte Kontrollebene zählt ihn noch zur Governance, die neue zum Werkzeug; erst beide Sichten zusammen machen die Basis wirklich deckend.",
+      "text": "Der Schlüssel zum Hinterhof hängt am Haken, aber das Schloss wurde längst ausgetauscht. Der Haken ist die einzige Erinnerung.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-freeze-task-path.json"
     },
@@ -6781,7 +6781,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita las den CI-Zustand nicht aus einem Zeitstempel, sondern aus dem exakten Lauf, dem Kopf und der Basis. Ein Hold war kein Fehler, sondern eine Antwort: Der Merge wartet, bis der Vertrag und die Issues dieselbe Sprache sprechen.",
+      "text": "Im Flur riecht es nach nassem Putz und altem Papier. Der Geruch gehört zum Haus wie die Klingel ohne Namen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-governance-phase3-ci-state.json"
     },
@@ -6805,7 +6805,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Rita zog die Reihenfolge aus der Shell in einen einzigen Runner. Claims werden vor dem ersten Generator geprueft, Artefakte entstehen in einem Lauf, und der Hook staged nur, was er selbst erzeugt hat. Ein Pfadfehler wird damit sichtbar, bevor ein Commit entsteht.",
+      "text": "Der Wirt sagt, der Laden trage sich selbst. Die Rechnungen auf dem Tisch sagen dasselbe, nur leiser.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-precommit-pipeline.json"
     },
@@ -6878,7 +6878,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Rita fand drei alte Zettel im Register, deren Arbeit längst auf main lag. Sie strich sie nicht heimlich, sondern schrieb zu jedem den Merge-Beleg und die Nummer daneben. Danach prüfte sie den frischen Branch gegen seinen eigenen Startpunkt, damit nicht ein leerer Anfang als fertige Arbeit durchging.",
+      "text": "Im Spielsaal wurde ein Stuhl repariert, ohne dass jemand einen Stuhl vermisst hatte. Das nennt man vorausschauend.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-stale-claim-closeout.json"
     },
@@ -7300,7 +7300,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Das LOC-Gate zaehlt jetzt Code-Zeilen: Kommentare und Leerzeilen fallen aus dem Budget, Textbausteine und Event-Templates ebenfalls. Die Grenze gilt der Logik, nicht der Prosa; wer sie reisst, teilt Verantwortung, statt Kommentare zu loeschen.",
+      "text": "Auf dem Tresen liegt ein Bierdeckel mit einer Rechnung, die niemand bezahlt hat. Der Wirt dreht ihn um und schreibt die nächste darauf.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-loc-gate-01.json"
     },
@@ -7322,7 +7322,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Branch, den ein Gate fuer korrupt haelt, ist noch kein Fehler im Inhalt: Erst die Basis entscheidet, welcher Diff geprueft wird. Wer den Kopf neu aufsetzt, muss denselben Baum erneut belegen, statt den alten Lauf zu beschwichtigen.",
+      "text": "Die Straßenbahn quietscht an der Ecke, und für einen Moment sieht der Kiez aus wie eine Bühne vor dem Auftritt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-09-loc-gate-02.json"
     },
@@ -10203,7 +10203,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der PR-Job ist optional: Der lokale Vor-PR-Nachweis entscheidet, kein Merge wartet auf einen CI-Lauf. Die Lane bleibt eine Wahrheit, auch wenn der externe Runner pausiert.",
+      "text": "Eine Katze läuft zwischen den Automaten hindurch und bleibt vor dem warmen Gerät stehen. Sie ist die einzige, die den Laden verlässt, ohne zu spielen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-optional-pr-runner.json"
     },
@@ -10427,7 +10427,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein toter Export ist kein Feature: Die Venue-Sicht bleibt die eine oeffentliche Form, der innere Eintrag wird wieder intern. Die Tests pruefen konkrete Texte statt Wahrheitswerte und ziehen ihren Seed aus der Laufzeit, damit der Fix den Vertrag erfuellt, den die CI einklagt.",
+      "text": "Der Gehweg vor dem Haus ist schmaler geworden, weil jemand zwei Blumenkübel abgestellt hat. Die Nachbarn gehen jetzt hintereinander.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-placement-venue-history-ci-fix.json"
     },
@@ -12523,7 +12523,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Baustein beschreibt einen Slot, nicht eine Mechanik. Der Rest ist Aufgabe des Gates.",
+      "text": "Der Putzeimer steht noch im Flur, obwohl die Schicht längst vorbei ist. Wer ihn stehen lässt, weiß, dass der Morgen mit demselben Fleck beginnt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-31.json"
     },
@@ -12633,7 +12633,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Diese Zeile gehoert in die Registry und nicht in den Simulationscode. Der Rest ist Aufgabe des Gates.",
+      "text": "Am Fenster zum Hinterhof hängt ein Zettel mit der Müllabfuhr. Jemand hat die Woche darunter korrigiert, ohne den alten Termin zu streichen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-36.json"
     },
@@ -12743,7 +12743,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Text traegt keinen Zustand und keine Kosten. Der Rest ist Aufgabe des Gates.",
+      "text": "Die Kasse klingelt zweimal, dann schweigt sie. Der Gast zählt sein Kleingeld nach, als könnte es sich unter seinen Fingern vermehren.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-41.json"
     },
@@ -12853,7 +12853,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Fragment ohne Verdrahtung ist kein Baustein, sondern ein Entwurf. Der Rest ist Aufgabe des Gates.",
+      "text": "Im Spielsaal riecht es nach kaltem Rauch und Bohnerwachs. Der Geruch bleibt länger als jeder Gast.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-07-pool-documentation-46.json"
     },
@@ -21568,7 +21568,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita legte den gruenen Lauf neben den offenen PR und wartete nicht auf eine Hand, die den Merge ausloeste. Der Workflow tat es selbst, auf dem exakten Kopf; erst danach notierte sie den Lauf, der den Automatikpfad belegte.",
+      "text": "Ein Stammgast setzt sich an denselben Automaten wie gestern. Er sagt, das Glück brauche eine feste Adresse.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-promote-automerge.json"
     },
@@ -22040,7 +22040,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Nachlauf traegt nur Status, Claim und Doku; die Spielaenderung bleibt der gemergte Feature-Stand. Die Nachsorge schliesst den Registerweg ab.",
+      "text": "Im Kassenbuch steht eine Zahl, die niemand zu erklären wagt. Der Wirt erklärt sie trotzdem, und sie klingt plötzlich richtig.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-aftercare.json"
     },
@@ -22062,7 +22062,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Task ui-placement-venue-history ist DONE, der Claim ist merged mit mergedSha 3fe5acb. Der Registerstand auf main ist damit abgeschlossen.",
+      "text": "Die Deckenlampe über dem Tresen flackert, wenn der Kühlschrank läuft. Für einen Moment sieht der Laden aus wie ein altes Foto.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-done.json"
     },
@@ -22084,7 +22084,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Squash-Merge 3fe5acb steht jetzt auch in der Placement-Lane. Der Branch traegt damit die gemeinsame Basis; der Nachlauf enthaelt nur noch Register, Doku und generierte Artefakte.",
+      "text": "Ein Gast bestellt ein Bier, das es nicht gibt. Der Wirt schlägt eine andere Flasche vor, und beide tun so, als wäre das dasselbe.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-main-merge.json"
     },
@@ -22106,7 +22106,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "PR #432 ist als 3fe5acb auf main gemergt; der Lane-Baum ist baumgleich. Der Task steht auf MERGE_PENDING, der Claim bleibt bis zum Abschluss offen.",
+      "text": "Der Wirt zählt die Stühle, dann die Gäste, dann die Stühle noch einmal. Es passt, aber nicht so, wie er gedacht hat.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-placement-venue-history-merge-pending.json"
     },
@@ -22172,7 +22172,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Ein Vertrag, der nur den Merge feiert, vergisst die Nachsorge; erst der Nachlauf macht aus dem gruenen Lauf einen abgeschlossenen Zustand.",
+      "text": "Draußen sammelt sich das Laub in der Ecke am Kiosk. Der Wind hat dort einen Platz gefunden, der niemals leer ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-3.json"
     },
@@ -22194,7 +22194,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "DONE heisst hier nicht Ende der Arbeit, sondern Ende der Spur: der Claim ist zu, der Baum ist belegt, und die naechste Lane beginnt auf gruenem main.",
+      "text": "Im Flur hängt ein Kalender, der noch beim Vormonat steht. Niemand reißt ihn ab, weil die Zeit auch ohne ihn weitergeht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-aftercare-4.json"
     },
@@ -22216,7 +22216,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Der Nachlauf zur Action-Queue ist mit dem aktuellen main zusammengefuehrt; die vier Aftercare-Bausteine bleiben erhalten. Die Konflikte lagen in Claim, Turn-Manifest und generierten Artefakten, nicht in Spielcode.",
+      "text": "Ein Stammgast geht ohne zu zahlen, weil er gestern zu viel gezahlt hat. Der Wirt nickt, als sei die Rechnung schon beglichen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge.json"
     },
@@ -22238,7 +22238,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Nach dem GameScout-Merge ist der Action-Queue-Nachlauf erneut mit main zusammengefuehrt; die vier Aftercare-Bausteine und der GameScout-Block bleiben erhalten. Die Konflikte lagen wieder nur in Claim, Manifest und generierten Artefakten.",
+      "text": "Der Laden schließt, aber die Neonröhre bleibt an. Sie ist das letzte Gesicht, das der Straße zugewandt ist.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json"
     },
@@ -22587,7 +22587,7 @@
         "narrativ",
         "rita-kern"
       ],
-      "text": "Rita verfolgte die sechs toten Exporte bis zu ihren Aufrufern: keiner importierte sie, alle lebten nur in ihrer eigenen Datei. Statt Vertraege zu loeschen, nahm sie ihnen nur den oeffentlichen Namen; die Kette blieb lesbar, und das Gate sah wieder eine geschlossene Oberflaeche.",
+      "text": "Der Regen läuft am Fenster herunter und teilt die Straße in Streifen. Draußen wartet jemand unter einem Vordach, der nicht raucht.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-world-scene-queue-deadcode.json"
     },

@@ -18,45 +18,37 @@ import { dayPhaseOf } from '../core/sim/day-phase';
 import { hasStaff } from '../core/sim/staff-queries';
 import type { WorldState } from '../core/sim/types';
 import { seatCount } from '../core/sim/world';
-import type { JournalEvent } from '../core/sim/journal';
 import { buildNarrativeView } from '../core/sim/narrative/view';
+import { archiveSnapshot } from './archive-snapshot';
 import type { GameView, StaffView } from './types';
 import { queueView } from '../core/sim/action-queue';
+import { playerApartmentFurniture, playerApartmentModel } from '../core/sim/player-apartment';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
 function staffView(world: WorldState): StaffView {
   return { ...world.staff, guard: hasStaff(world, 'guard') };
 }
 
-/** Archiv nur kopieren, wenn es gewachsen oder verschoben wurde; Ereignisse sind danach unveraendert. */
-let archiveCache: { source: readonly unknown[]; length: number; lastId: number; copy: JournalEvent[] } | null = null;
-function archiveSnapshot(archive: JournalEvent[]): JournalEvent[] {
-  const lastId = archive.length ? archive[archive.length - 1]!.id : -1;
-  if (archiveCache && archiveCache.source === archive && archiveCache.length === archive.length && archiveCache.lastId === lastId) {
-    return archiveCache.copy;
-  }
-  const copy = archive.map((event) => ({ ...event, refs: event.refs ? { ...event.refs } : undefined }));
-  archiveCache = { source: archive, length: archive.length, lastId, copy };
-  return copy;
-}
-
 function worldSnapshot(world: WorldState) {
   // Eine Projektion: die aktive Szene liefert Raum, Figuren und Spieler.
+  const apartment = world.scene.kind === 'APARTMENT' ? playerApartmentModel() : null;
   const city = world.scene.kind === 'CITY' ? world.cityScene ?? null : null;
-  const foreign = city === null && world.activeForeignFloorId !== null
+  const foreign = city === null && apartment === null && world.activeForeignFloorId !== null
     ? world.foreignFloors.find((floor) => floor.id === world.activeForeignFloorId) ?? null
     : null;
-  const furniture = city?.furniture ?? foreign?.furniture ?? world.furniture;
-  const guests = city ? [] : foreign?.guests ?? world.guests;
+  const furniture = apartment
+    ? playerApartmentFurniture()
+    : city?.furniture ?? foreign?.furniture ?? world.furniture;
+  const guests = apartment || city ? [] : foreign?.guests ?? world.guests;
   return {
     template: foreign?.template ?? world.template,
     // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
-    layout: city?.layout ?? foreign?.layout ?? world.layout,
-    size: city?.layout.size ?? foreign?.size ?? world.size,
-    zones: city?.zones ?? foreign?.zones ?? world.zones,
+    layout: apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
+    size: apartment?.layout.size ?? city?.layout.size ?? foreign?.size ?? world.size,
+    zones: apartment?.layout.zones ?? city?.zones ?? foreign?.zones ?? world.zones,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),
-    seats: city ? 0 : foreign
+    seats: apartment || city ? 0 : foreign
       ? foreign.furniture.reduce((sum, item) => sum + (item.gameId ? item.seats : 0), 0)
       : seatCount(world),
     demand: demandBreakdown(world),
@@ -69,7 +61,7 @@ function worldSnapshot(world: WorldState) {
         carrying: foreign.playerCarrying,
       }
       : { ...world.player, position: { ...world.player.position }, path: [...world.player.path] },
-    dirtyTiles: city || foreign ? new Set<number>() : new Set(world.dirty),
+    dirtyTiles: apartment || city || foreign ? new Set<number>() : new Set(world.dirty),
     tick: world.tick,
     day: world.day,
     dayPhase: dayPhaseOf(world.tick),
@@ -79,16 +71,18 @@ function worldSnapshot(world: WorldState) {
     prices: { ...world.prices },
     carpet: world.carpet,
     lastEvent: world.lastEvent,
-    crates: city || foreign ? [] : world.crates.map((crate) => ({ ...crate })),
-    agents: city || foreign ? [] : world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
-    disputes: city || foreign ? [] : world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
-    stains: city || foreign ? [] : world.stains.map((stain) => ({ ...stain })),
-    mops: city || foreign ? [] : world.mops.map((mop) => ({ ...mop })),
-    scene: city
-      ? { key: 'CITY', kind: 'CITY' as const, label: 'Stadt' }
-      : foreign
-        ? { key: `FOREIGN:${foreign.id}`, kind: 'FOREIGN' as const, label: `Fremdes Casino: ${foreign.rivalId}` }
-        : { key: 'OWN', kind: 'OWN' as const, label: 'Dein Casino' },
+    crates: apartment || city || foreign ? [] : world.crates.map((crate) => ({ ...crate })),
+    agents: apartment || city || foreign ? [] : world.agents.map((agent) => ({ ...agent, path: [...agent.path] })),
+    disputes: apartment || city || foreign ? [] : world.disputes.map((dispute) => ({ ...dispute, guestIds: [...dispute.guestIds] })),
+    stains: apartment || city || foreign ? [] : world.stains.map((stain) => ({ ...stain })),
+    mops: apartment || city || foreign ? [] : world.mops.map((mop) => ({ ...mop })),
+    scene: apartment
+      ? { key: 'APARTMENT', kind: 'APARTMENT' as const, label: 'Wohnung' }
+      : city
+        ? { key: 'CITY', kind: 'CITY' as const, label: 'Stadt' }
+        : foreign
+          ? { key: `FOREIGN:${foreign.id}`, kind: 'FOREIGN' as const, label: `Fremdes Casino: ${foreign.rivalId}` }
+          : { key: 'OWN', kind: 'OWN' as const, label: 'Dein Casino' },
     queue: queueView(world),
     onboarding: world.onboarding ?? { step: 'DONE' as const },
     parts: world.parts,

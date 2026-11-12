@@ -37,7 +37,7 @@ auch bedienen kann.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| S1-01 | Genau ein Startzustand: Eröffnung, dann Stadt, dann Raum | erledigt | `src/ui/opening-card.tsx`, `src/ui/onboarding-panel.tsx`, `src/store/__tests__/onboarding-save.test.ts` | Zwei Modals überlagern sich nie; alte Saves laden als `DONE` |
+| S1-01 | Genau ein Startzustand: Eröffnung, dann Wohnung, dann Stadt und Raum | erledigt | `src/ui/opening-card.tsx`, `src/ui/onboarding-panel.tsx`, `src/store/__tests__/onboarding-save.test.ts` | Zwei Modals überlagern sich nie; alte Saves laden als `DONE` |
 | S1-02 | Genau ein sichtbares Ziel im HUD | erledigt | `src/ui/goal.ts`, `src/ui/__tests__/goal.test.ts` | Erst Barkauf, dann Miete; Anzeige leitet nur aus dem Snapshot ab |
 | S1-03 | Ein Startzustand ohne schwarze Balken | erledigt | `src/ui/floor-feedback.tsx`, `src/ui/__tests__/world-first-ui.test.tsx` | Der Plan liegt auf einer Bühne, nicht in einem Loch |
 | S1-04 | Erster Gast nur mit Kasse und erreichbarem Weg | erledigt | `src/core/sim/spawn.ts`, `src/core/sim/demand.ts`, `src/core/sim/__tests__/spawn-demand.test.ts` | Ohne Kasse entstehen weder Gast noch PRNG-Verbrauch |
@@ -67,10 +67,13 @@ durch das Spiel, nicht dem Aufnahmezeitpunkt.
 
 ## Als Nächstes — Stadt, Wirtschaft und Inhalte
 
-### Phase 3 — Stadt als permanenter Spielraum (P1)
+### Phase 3 — Wohnung als Raum, dann Stadt als Netz (P1)
 
 Der Systemkern der Living World steht bereits headless; offen ist der begehbare Start
 und der Browserbeleg.
+
+**Reihenfolge:** erst die Wohnung als echter Raum (S2-09 bis S2-11), danach die Stadt
+als Netz zwischen allen Lokationen (S2-12).
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
@@ -80,22 +83,29 @@ und der Browserbeleg.
 | S2-04 | Deterministische Tagespläne und Bedürfnisse | erledigt | `src/core/sim/npc-schedule.ts`, `src/core/sim/npc-needs.ts`, `src/core/sim/__tests__/npc-schedule.test.ts` | Schlafen, Arbeit, Essen und Freizeit folgen dem Plan |
 | S2-05 | Akteur-Kontinuität über Raumgrenzen | erledigt | `src/core/sim/actor-continuity.ts`, `src/core/sim/__tests__/living-world-continuity.test.ts` | Kein Duplikat, kein Respawn beim Raumwechsel |
 | S2-06 | Soziale Begegnung aus physischer Nähe | erledigt | `src/core/sim/social-encounter.ts`, `src/core/sim/__tests__/living-world-social-economy.test.ts` | Nähe erzeugt Gespräch, Fact und Beziehungsdelta |
-| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | offen | `src/store/new-game.ts`, `src/core/sim/player-apartment.ts`, `src/core/sim/room-transition.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Der Start führt durch die Wohnungstür auf die Straße |
+| S2-07 | Wohnung als erster begehbarer Raum im Startpfad | verifiziert | `src/store/new-game.ts`, `src/store/scene-commands.ts`, `src/core/sim/player-apartment.ts`, `src/store/__tests__/new-game.test.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Der Start führt durch die Wohnungstür auf die Straße |
 | S2-08 | Sichtbarer Beweis: kein Teleport, keine Duplikate im Browser | offen | `src/core/sim/__tests__/living-world-vertical-slice.test.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Der Vertikalschnitt ist im Browser nachvollzogen, nicht nur headless |
+| S2-09 | Wände bauen: Wohnungszonen als Räume | offen | `src/core/sim/player-apartment.ts`, `src/core/sim/nav-grid.ts`, `src/render/wall-art.ts`, `src/render/wall-occlusion.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Jede Wohnzone hat Wände und Türrahmen; Türen bleiben begehbar, Occlusion verdeckt Figuren korrekt |
+| S2-10 | Möbel bauen: eigene Wohnungs-Sprites | offen | `src/core/sim/player-apartment.ts`, `src/render/furniture-art.ts`, `src/render/furniture-atlas.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Bett, Schrank, Kochnische, Bad und Sofa nutzen eigene Wohnungs-Assets statt Casino-Möbel; Interaktionen bleiben erhalten |
+| S2-11 | Dekor bauen: Wohnungsbild ohne Casino-Symbole | offen | `src/render/room-dressing.ts`, `src/render/art-tokens.ts`, `src/core/sim/player-apartment.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Teppich, Lampen, Bilder und Pflanzen folgen der warmen Wohnungspalette; kein Neon und kein Automat |
+| S2-12 | Stadt als Netz: alle Lokationen in einer eigenen Szene | offen | `src/core/sim/city-scene.ts`, `src/core/sim/city.ts`, `src/store/scene-commands.ts`, `src/store/snapshot.ts`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Wohnung, Casino, Kneipe und Markt sind Knoten, ihre Wege sind Kanten der Szene CITY; jeder Ortswechsel läuft über dieses Netz |
 
 ### Phase 3R — Render- und Living-World-Rework (Querschnitt, P0/P1)
 
 Der ausfuehrbare Task-Plan steht in [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md).
 Die Reihenfolge ist verbindlich: R0–R1 sichern die Wahrheit, R2–R6 haerten den
-Casino-Render, R7 macht die vorhandene Stadt sichtbar; R8–R12 bauen darauf auf.
-Die Zeilen hier sind die Produkt-Etappen, nicht die Detail-Todo.
+Casino-Render, R7 macht die Stadtansicht auf dem Stadtkern sichtbar; R8–R12 bauen
+darauf auf. **R7 erfindet S2-12 nicht neu, R10 nimmt S2-09–S2-11 ab.** Die Zeilen
+hier sind die Produkt-Etappen, nicht die Detail-Todo. Die Abnahme verweist auf
+die bestehenden Zeilen S2-07, S2-08, S5-06, S5-07, S5-09 und PR-10; sie werden
+hier referenziert, nicht dupliziert.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
 | R-0 | Baseline und lokales Bildgate (R0–R1) | offen | `packages/gamescout`, `docs/screenshots/current`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Zahlen, Rechte und drei deterministische Szenen sind belegt; kein Cloud-Gate |
 | R-1 | Casino-Render ehrlich und stabil (R2–R6) | offen | `src/render/furniture-atlas.ts`, `src/render/guest-rig.ts`, `src/render/floor-material.ts`, `src/render/floor-camera.ts` | Kein gruener Fallback, keine Pin-Figur, echte Materialien, Lichtflaeche und echte Weltgrenzen |
-| R-2 | Stadt sichtbar und begehbar (R7–R8) | offen | `src/core/sim/city-exterior.ts`, `src/render/city/`, `src/ui/city-popup.tsx` | `city-exterior` hat einen Produktionsaufrufer; Weg Wohnung → Strasse → Casino ohne Teleport |
-| R-3 | Stadtleben und Wohnung (R9–R10) | offen | `src/core/sim/npc-schedule.ts`, `src/core/sim/player-apartment.ts` | NPCs, Türen und Wohnungsstart sind sichtbar; Actor-IDs bleiben stabil |
+| R-2 | Stadtansicht und Assetpaket (R7–R8) an S2-12 | offen | `src/core/sim/city-scene.ts`, `src/core/sim/city-exterior.ts`, `src/render/city/`, `src/ui/city-popup.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | R7 rendert den bestehenden S2-12-Stadtkern; kein zweiter Szenengraph, Weg über S2-07/S2-12 ohne Teleport |
+| R-3 | Stadtleben und Wohnungsabnahme (R9–R10) | offen | `src/core/sim/npc-schedule.ts`, `S2-09`–`S2-11`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | NPCs und Türen sind sichtbar; S2-09–S2-11 sind abgehakt oder offen zurueckgegeben; Actor-IDs bleiben stabil |
 | R-4 | Bewegung und Ambient (R11–R12) | zurückgestellt | `src/render/guest-rig.ts`, `src/render/city/ambient.ts` | Lauframes und Ambient sind deterministisch; erst nach R-2/R-3 |
 
 ### Phase 4 — Wirtschaft, Bereiche und Ereignisse (P1)

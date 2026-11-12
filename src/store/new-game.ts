@@ -1,8 +1,9 @@
-/** Ein neuer Start: Stadt first, leeres eigenes Casino und eine Starter-Kiste. */
+/** Ein neuer Start: Wohnung first, leeres eigenes Casino und eine Starter-Kiste. */
 import { Ledger } from '../core/economy/ledger';
 import { Prng } from '../core/rng/prng';
 import { entropySeed } from '../core/rng/streams';
 import { openHouse } from '../core/sim/money';
+import { playerApartmentModel } from '../core/sim/player-apartment';
 import { seedStartPool } from '../core/sim/narrative/state';
 import { createWorld } from '../core/sim/templates';
 import type { TemplateId, WorldState } from '../core/sim/types';
@@ -26,15 +27,17 @@ export function createNewGame(template: TemplateId): NewGameState {
   world.crates = [{ id: 1, payload: { kind: 'FURNITURE', buildId: 'SLOT' }, x: crateSpot.x, y: crateSpot.y, carriedBy: null }];
   world.nextCrateId = 2;
   world.sceneReturnPosition = { x: crateSpot.x, y: crateSpot.y };
-  world.player.position = { x: 2, y: 2 };
+  // Der Start ist die eigene Wohnung: aufwachen, aufstehen, durch die Haustuer.
+  const apartment = playerApartmentModel();
+  world.player.position = { ...apartment.bedSpawn };
   world.player.path = [];
   world.player.pathIndex = 0;
-  world.scene = { kind: 'CITY' };
-  // Start ist die Eroeffnung: erst ihr Ende gibt die Stadt und danach den Raum frei.
+  world.scene = { kind: 'APARTMENT' };
+  // Start ist die Eroeffnung: erst ihr Ende gibt die Wohnung und danach die Stadt frei.
   world.onboarding = { step: 'OPENING' };
-  world.lastEvent = 'Der erste Abend beginnt. Schliess die Eroeffnung, dann wartet die Stadt.';
+  world.lastEvent = 'Der erste Abend beginnt. Schliess die Eroeffnung, dann stehst du in deiner Wohnung.';
   const ledger = new Ledger();
   seedStartPool(world, openHouse(ledger, 0));
   flushNarrativeCmd(world, ledger);
-  return { world, ledger, prng: new Prng(entropySeed()), notice: 'Stadt first: erst der Weg ins Casino, dann der erste Automat.' };
+  return { world, ledger, prng: new Prng(entropySeed()), notice: 'Wohnung first: erst aufwachen, dann durch die Haustuer in den Kiez.' };
 }

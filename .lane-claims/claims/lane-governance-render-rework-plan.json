@@ -17,11 +17,12 @@
     "content/narrative/registry/fragments.json",
     "src/core/sim/narrative/composer/registry.generated.ts",
     "src/core/sim/narrative/composer/slot-map.generated.ts",
+    "src/core/sim/__tests__/room-transition.test.ts",
     ".lane-claims/claims/lane-governance-render-rework-plan.json"
   ],
   "contracts": [],
   "dependencies": [],
   "gateProfile": "light",
-  "status": "open",
+  "status": "superseded",
   "createdAt": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9"
 }

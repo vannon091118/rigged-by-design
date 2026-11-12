@@ -16,6 +16,6 @@
   "flags": [
     "narrativ"
   ],
-  "text": "Der PR-Job ist optional: Der lokale Vor-PR-Nachweis entscheidet, kein Merge wartet auf einen CI-Lauf. Die Lane bleibt eine Wahrheit, auch wenn der externe Runner pausiert.",
+  "text": "Eine Katze läuft zwischen den Automaten hindurch und bleibt vor dem warmen Gerät stehen. Sie ist die einzige, die den Laden verlässt, ohne zu spielen.",
   "directives": []
 }

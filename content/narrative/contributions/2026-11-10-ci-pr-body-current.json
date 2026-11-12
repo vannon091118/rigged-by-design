@@ -16,6 +16,6 @@
   "flags": [
     "narrativ"
   ],
-  "text": "Der CI-Plan liest den PR-Body jetzt bei jedem Lauf über die Pull-Request-API. Ein Rerun nach einer Korrektur prüft damit den aktuellen Text statt des ursprünglichen Event-Payloads; der Unterschied zwischen Erstlauf und Wiederholung verschwindet aus der Fehlersuche.",
+  "text": "Im Lager stapeln sich Kisten mit Etiketten, die niemand mehr liest. Die oberste ist leer und wiegt trotzdem.",
   "directives": []
 }

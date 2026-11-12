@@ -32,11 +32,11 @@ import {
 describe('Living World: Room & Building Transition', () => {
   it('erzeugt Spieler-Wohnung mit allen Funktionsbereichen', () => {
     const rawLayout = createPlayerApartmentLayout();
-    expect(rawLayout.size).toBe(30);
+    expect(rawLayout.size).toBe(16);
 
     const apt: PlayerApartmentModel = createPlayerApartmentModel();
     expect(apt.name).toBe('Wohnung des Spielers');
-    expect(apt.layout.size).toBe(30);
+    expect(apt.layout.size).toBe(16);
     expect(apt.layout.zones.length).toBeGreaterThanOrEqual(4);
 
     const bedKind: ApartmentFurnitureKind = 'BED';
@@ -66,13 +66,14 @@ describe('Living World: Room & Building Transition', () => {
 
   it('fuehrt Akteur nahtlos von der Wohnung auf die Strasse', () => {
     expect(DOOR_INTERACTION_RADIUS).toBe(2);
+    const apartment = createPlayerApartmentModel();
 
     const pair: { readonly enterDoor: TransitionDoor; readonly exitDoor: TransitionDoor } = createConnectedDoorPair({
       id: 'apt_main_exit',
       label: 'Haustür',
       interiorBuildingId: 'bld_player_home',
       interiorLayoutId: 'layout_player_apartment',
-      interiorDoorPos: { x: 22, y: 25 },
+      interiorDoorPos: apartment.exitDoor,
       exteriorLayoutId: 'layout_city_street_quarter',
       exteriorDoorPos: { x: 8, y: 12 },
     });
@@ -83,7 +84,7 @@ describe('Living World: Room & Building Transition', () => {
       context: ctx,
       buildingId: 'bld_player_home',
       layoutId: 'layout_player_apartment',
-      position: { x: 22, y: 24 }, // direkt vor der Tür (Distanz 1)
+      position: { x: apartment.exitDoor.x, y: apartment.exitDoor.y - 1 }, // direkt vor der Tür (Distanz 1)
     };
 
     const player: SpatialActor = {
