@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "taskId": "render-r1-r12-rework",
+  "claimId": "lane/render/r1-r12-rework",
+  "branch": "lane/render/r1-r12-rework",
+  "baseSha": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5",
+  "phase": "CI_PENDING",
+  "title": "Render- und Living-World-Rework R1-R12 sequenziell umsetzen, mit lokaler Abnahmehaertung und PixiJS-v8-Review",
+  "goal": "Die sichtbaren Render- und Living-World-Slices aus dem Plan als echte, deterministische und lokal abgenommene Implementierung liefern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [
+    {
+      "id": "iso-projection",
+      "severity": "warning",
+      "status": "open",
+      "summary": "Die 2:1-Isometrie aus Plan 2.3 ist nicht umgesetzt; die Kamera bleibt top-down mit WORLD_FLATTEN. Ein Kippen ohne eigene Projektion fuer Boden, Figuren, Treffer und Tiefe wuerde Simulation und Bild auseinanderziehen und braucht einen eigenen R6/R7-Slice."
+    },
+    {
+      "id": "street-prop-collision",
+      "severity": "warning",
+      "status": "open",
+      "summary": "Gebaeude sind jetzt ueber Grundrisskanten solide, Strassenrequisiten (Bank, Baum, Muelleimer, Haltestelle) bleiben begehbar: das Navigationsraster kennt nur Wandkanten und Moebel, keine Requisiten-Tiles."
+    },
+    {
+      "id": "browser-visual",
+      "severity": "warning",
+      "status": "open",
+      "summary": "Weiterhin kein Browserbeleg: Screenshot, Konsole und Probe fehlen; die Cloud-Preview haengt auf dem Basisstand. Ambient, Schatten und Sichtradius sind nur per Vertragstest belegt."
+    },
+    {
+      "id": "city-door-interaction",
+      "severity": "info",
+      "status": "open",
+      "summary": "Die vier Tuerkanten sind sichtbar und Teil der Kollision, aber noch nicht an floor-hit/floor-actions angeschlossen; ein Klick auf die Schwelle loest keinen Raumwechsel aus."
+    },
+    {
+      "id": "city-wall-role",
+      "severity": "info",
+      "status": "open",
+      "summary": "Die neuen Grundrisswaende nutzen die vorhandene Occlusion-Textur der Innenraeume; eine eigene Stadt-Wandrolle gehoert zu R8 (Assetpaket je Rolle)."
+    }
+  ],
+  "nextAction": "Ambient-Slice ist gepusht; naechster Schritt: Browser-Sichtabnahme (Screenshot, Konsole, Probe) und danach R8/R9 bzw. die Isometrie-Projektion als eigener Slice.",
+  "revision": 13
+}

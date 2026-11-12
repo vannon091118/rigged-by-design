@@ -4,19 +4,19 @@
   "claimId": "lane/governance/render-plan-milestones",
   "branch": "lane/governance/render-plan-milestones",
   "baseSha": "4621a0c48c31fb60e4046db3c8e6a2521def57c9",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Render-Plan adversarial prüfen: Meilensteine M0-M4, Roadmap-Kopplung und Preview-Sichtabnahme für alle sichtbaren Slices",
   "goal": "Plan und Roadmap als einen gemeinsamen, prüfbaren Entwicklungsstrang führen; sichtbare Render-Slices werden vom Agenten im lokalen Dev-Server abgenommen.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "HOLD",
+  "status": "READY_FOR_MERGE",
   "pr": {
     "number": 479,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/479",
-    "state": "open",
-    "headSha": "32450334bda928ff18a8ce136adcc9f2209ed49b"
+    "state": "merged",
+    "headSha": "f87c0256de688f488a834c9e35e3607c326159ae"
   },
   "findings": [],
-  "nextAction": "Review und Merge durch Mensch/Agent auf dem exakten PR-Kopf; lokale Gates sind grün.",
-  "revision": 2
+  "nextAction": "PR #479 ist auf main gemergt (fccc787); Claim und Vertrag sind abgeschlossen.",
+  "revision": 3
 }
