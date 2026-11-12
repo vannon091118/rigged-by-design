@@ -1,0 +1,10 @@
+{
+  "mechanics": [
+    "src/core/games/__tests__/poker-distribution.test.ts",
+    "src/core/games/__tests__/round-rtp-high.test.ts",
+    "src/core/games/__tests__/round-rtp-machines.test.ts",
+    "src/core/games/__tests__/slot-session-rtp.test.ts",
+    "src/core/sim/__tests__/narrative-longrun.test.ts",
+    "src/core/sim/__tests__/soak.test.ts"
+  ]
+}

@@ -25,8 +25,8 @@
 - `src/core/governance/error-codes.ts` ist das einzige Fehlerregister; `docs/ARCHITECTURE.md` ist die Doku dazu. Jeder Code traegt `level`: `AUTO_FIX`, `LOCAL_GATE`, `REMOTE_CI`, `AGENT` oder `BLOCKED`.
 - `scripts/lib/escalation.mjs` nimmt die Stufe aus dem Code; ohne bekannten Code greifen Textmuster.
 - `scripts/pr-watcher.mjs` (CI) legt je Befund ein Issue an oder zaehlt bei bekanntem Fingerprint (Code + erste Fehlerzeile) nach. Ein geschlossenes Issue wird bei Rekurrenz wieder geoeffnet; der Sweep schliesst nur am exakt erfolgreich geprueften Main-SHA. Lokal laeuft nichts davon.
-- Direktpush auf `main` ist durch den klassischen Branch-Schutz gesperrt: Weg ist Arbeitsbranch, PR gegen `main`, lokaler Vor-PR-Nachweis und **manueller Merge durch Mensch oder Agent**. Der PR-Check ist optional; `promote` ist nur ein Status-/Notausgang. `turn-push.mjs` meldet den Direktpush als ERR-4023.
-- Lokal laufen `verify` (Quick) und die betroffenen schnellen Tests; `verify:all` und die vom Impact gewaehlten langen Nachweise laufen in CI. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus; `agent:verify --ci` startet `ci-long-checks.mjs` auf dem aktuellen Branch und der exakten HEAD-SHA, ohne `verify:all` mitzuschleppen. Die CI-Kontrollebene fuer PRs kommt aus der PR-Basis, fuer `main` aus dem gepushten Commit und fuer Feature-Pushes aus `main`; der Langlauf-Runner kommt aus diesem Checkout, waehrend `RBD_ROOT` den PR-Baum prueft. Eine Basis ohne `RBD_ROOT` bricht ab; `RBD_REQUIRE_TESTS=1` macht uebersprungene Langtests rot.
+- Direktpush auf `main` ist durch den klassischen Branch-Schutz gesperrt: Weg ist Arbeitsbranch, PR gegen `main`, lokaler Vor-PR-Nachweis und **manueller Merge durch Mensch oder Agent**. Es gibt keinen Cloud-Check; `promote` ist nur ein Status-/Notausgang. `turn-push.mjs` meldet den Direktpush als ERR-4023.
+Lokal laufen `verify` (Quick), die betroffenen schnellen Tests und `verify:all`; Mechanik laeuft ausschliesslich gezielt ueber `test:mechanics`. `turn:finish` fuehrt `test:affected` vor dem Versions-Bump aus. Es gibt keinen Cloud-Testlauf und keinen Remote-Status, auf den ein Merge wartet.
 - `scripts/lib/body-sync.mjs` ist die einzige Wahrheit fuer Body-Synchronisation: Marker `rbd:auto-body:start/end`, Klassifikation des vollstaendigen Diffs und die drei Pflichtsektionen. Geschrieben wird nur der markierte Bereich; doppelte oder unbalancierte Marker brechen ab, statt zu raten.
 
 ## Zustandsbesitz
@@ -115,7 +115,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4020 | Governance / Redundanz | Datei, Kommando oder Fehlercode ist doppelt vorhanden. | Eine Wahrheit behalten und die Kopie entfernen. |
 | ERR-4021 | Docs | Doc-Stub ohne brauchbaren Titel aufgerufen. | `pnpm run docs:stub -- "Titel"` mit mindestens 8 Zeichen. |
 | ERR-4022 | Governance / Content | Beitrag, Vokabular, Turn-Manifest, Makro, Registry oder Composer-Fragment verletzt den NAR-09/NAR-10/NAR-11-Vertrag. | Feld, ID, Klassifizierung, Direktive oder Fragment korrigieren; Registry mit `pnpm run narrative:compile` neu erzeugen. |
-| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, lokal vorpruefen und durch Mensch oder Agent mergen; der PR-Check ist optional, kein Direktpush auf main. |
+| ERR-4023 | Delivery | Direkter Push auf main wird vom Branch-Schutz abgelehnt; der Arbeitsbranch ist gepusht. | Fokussierten PR gegen main oeffnen, lokal vorpruefen und durch Mensch oder Agent mergen; es gibt keinen Cloud-Check, kein Direktpush auf main. |
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
@@ -148,16 +148,16 @@ Es gibt fünf Profile, alle über `scripts/run-pipeline.mjs --profile=…`:
 
 `scripts/lib/staging-scope.mjs` beantwortet die Frage davor: welche geaenderten Pfade fuehrt der eigene Claim? `turn-push.mjs` prueft den Arbeitsbaum **vor** Versions-Bump und Staging und bricht mit `ERR-4019` ab, sobald ein Pfad ausserhalb der Allowlist liegt. Der Commit setzt nur die Pfade des Claims plus `package.json`/`pnpm-lock.yaml` in den Index; fremde Arbeit eines parallelen Agenten bleibt im Arbeitsbaum. Die Pfadauslegung lebt einmal in `allowsPath()` (`scripts/lib/lane-claims.mjs`) und wird von Claim-Klasse, Staging-Scope und Tests gemeinsam benutzt.
 
-### Gate-Matrix in CI
+### Gate-Plan lokal
 
-Der Gate-Plan ist die Wahrheit, nicht der Job: `scripts/run-pipeline.mjs --profile=<profil>` fährt lokal alle Gates. `ci-verify.yml` bündelt die Light-Gates in **einem optionalen PR-Job** `Fail-Closed Gates`; es gibt keine Matrix, keinen Push- und keinen Dispatch-Trigger. Der Job ist kein Required-Status: ein roter Lauf ist ein Hinweis, der lokale Vor-PR-Nachweis entscheidet über den Merge. Ein unbekanntes Gate bricht ab, eine leere Auswahl ist ein Fehler: keinen Status ohne Prüfung.
+Der Gate-Plan ist die Wahrheit, nicht der Job: `scripts/run-pipeline.mjs --profile=<profil>` faehrt lokal alle Gates. `scripts/local-ci.mjs` ist der einzige Testpfad und ersetzt den frueheren PR-Job vollstaendig; kein GitHub-Workflow fuehrt Tests, Builds oder APKs aus. Ein unbekanntes Gate bricht ab, eine leere Auswahl ist ein Fehler: keinen Status ohne Pruefung.
 
 ### Kontrollebene und Pruefobjekt
 
-Der PR ist Pruefobjekt, nicht Pruefer. `ci-verify.yml` checkt den PR-Baum aus und fuehrt dort die Light-Gates aus; `RBD_ROOT` zeigt auf genau diesen Baum. Der lokale Vor-PR-Nachweis (`verify:integration`) und die Review sind die Autoritaet; der Cloud-Job ist optional und kein Required-Check. `promote.mjs` ist ein manueller Status-/Notausgang und kein Merge-Pfad; ein manueller Dispatch kennt nur `inspect` oder `integrate`.
- `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Die Zeitlimits bleiben großzügig (30 Minuten je Job, hartes Gate-Limit in `scripts/lib/pipeline-plan.mjs`); ein Abbruch ist `REMOTE_CI` und wird wiederholt, nicht als roter Stand gewertet.
+Der lokale Arbeitsbaum ist Pruefobjekt und Pruefer. `verify:integration` und die Review sind die Autoritaet; es gibt keinen Cloud-Check und keinen Required-Status. `promote.mjs` ist ein manueller Status-/Notausgang und kein Merge-Pfad; ein manueller Dispatch kennt nur `inspect` oder `integrate`.
+ `audit` steht nur in der Matrix, wenn `scripts/lib/dependency-change.mjs` eine echte Dependency-Änderung findet oder `RBD_VERIFY_AUDIT=1` es erzwingt. Es gibt kein Default-Zeitlimit; nur ein Aufrufer, der `timeoutMs` explizit setzt, beendet ein Gate. Ein Abbruch ist ein echter Gate-Fehler, kein Remote-Retry.
 
-Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist im Profil `dev` das Gate `affected`: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish` fährt die Auswahl jetzt standardmäßig vor dem Versions-Bump; danach läuft `verify:light`. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht. Im PR- und Main-Lauf ist die schnelle Suite dagegen vollstaendig: `ci-verify.yml` setzt `full_tests=1`, und `ci-plan` behandelt das Profil `all` fail-closed; der Impact verengt nur die Gates und die langen Nachweise, nicht die schnelle Regression. Reine Doku bleibt ausgenommen.
+Zusätzlich wählt `pnpm run test:affected` Testdateien nach deklariertem `@test-target`, dem transitiven Importgraphen aus `src/` und `scripts/` und dem betroffenen Spiel-/Simulationssubsystem aus. Der Graph wird rückwärts gelesen: geändert ist, wer das Geänderte importiert, auch über Zwischenmodule. Das ist im Profil `dev` das Gate `affected`: `full` und `release` fahren weiterhin die vollständige Suite, weil eine Auswahl Tests ausserhalb des Graphen übersehen kann. `pnpm run turn:finish` fährt die Auswahl jetzt standardmäßig vor dem Versions-Bump; danach läuft `verify:light`. `--no-affected` ist nur für reine Doku- oder Governance-Turns gedacht. Der volle Nachweis `verify:all` faehrt die schnelle Regression vollstaendig; Mechanik bleibt ein eigener Aufruf. Reine Doku bleibt ausgenommen.
 
 ## Testkatalog und Beweisklassen
 
@@ -240,9 +240,9 @@ genau einen Eintrag. Doku-Eintraege erzeugt `pnpm run docs:stub -- "Titel"`
 pnpm run turn:finish
 ```
 
-`turn:finish` führt die betroffenen schnellen Tests vor dem Versions-Bump und danach das lokale Prüfprofil `verify:light` aus; über `pnpm run turn:finish:full` läuft stattdessen das volle `verify:all`. Es erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht den Arbeitsbranch; ein Direktpush auf `main` bleibt gesperrt. Der vollständige Beweis ist lokal: `verify:integration` vor dem PR und `verify:all` für Releases; der optionale PR-Job wiederholt nur die Light-Gates. Der Release-Workflow taggt nach dem lokalen Release-Nachweis und wiederholt die Suite nicht. Ohne Argumente stagt `turn:finish` nur die Pfade des eigenen Claims plus `package.json` und `pnpm-lock.yaml`; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Fremde WIP bleibt liegen. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die der Release-Workflow taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
+`turn:finish` führt die betroffenen schnellen Tests vor dem Versions-Bump und danach das lokale Prüfprofil `verify:light` aus; über `pnpm run turn:finish:full` läuft stattdessen das volle `verify:all`. Es erzeugt bei Änderungen einen Commit im deutschen Steam-Developer-Notes-Format (ohne Drittanbieter-Trailer) und pusht den Arbeitsbranch; ein Direktpush auf `main` bleibt gesperrt. Der vollständige Beweis ist lokal: `verify:integration` vor dem PR und `verify:all` für Releases; einen Cloud-Job gibt es nicht. `node scripts/ci-tag-release.mjs` taggt nach dem lokalen Release-Nachweis und wiederholt die Suite nicht. Ohne Argumente stagt `turn:finish` nur die Pfade des eigenen Claims plus `package.json` und `pnpm-lock.yaml`; mit Pfaden wird bewusst nur der genannte Ausschnitt committet. Fremde WIP bleibt liegen. Ein fehlgeschlagenes Gate verhindert Commit und Push. Vor `verify` wird die Patch-Version gebumpt, sodass der Commit bereits die Version trägt, die `ci-tag-release.mjs` taggt; `.turn-notes.md` wird nach dem erfolgreichen Commit gelöscht, damit keine zwei Commits denselben Titel tragen. Lehnt der Branch-Schutz den Direktpush ab, wird der Arbeitsbranch gepusht und ein fokussierter PR gegen `main` nötig.
 
-Der Release-Workflow committet nicht mehr: `turn:finish` bumpt die Patch-Version lokal, der Workflow nach dem Push liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
+Der Release bleibt lokal: `turn:finish` bumpt die Patch-Version, `ci-tag-release.mjs` liest sie aus `package.json`, legt Tag `v<Version>` an und erstellt das Release — nur wenn der Tag noch fehlt. Kein Workflow committet oder taggt. `main` bleibt damit nach dem Push stehen. Das Nachziehen von `origin/main` in `turn:finish` (holen, rebasen, zweites `verify:all`, höchstens drei Versuche) bleibt als Netz für den Fall, dass jemand anders auf `main` pusht; erst wenn der Remote aktuell ist und der Push dennoch abgelehnt wird, gilt es als Branch-Schutz.
 
 Der Geschwindigkeits-Benchmark läuft separat über `pnpm run test:perf` und ist absichtlich nicht Teil von `verify:all`: Er misst Durchsatz und ist kein Korrektheitsgate.
 
@@ -261,7 +261,7 @@ wartet auf das Ergebnis; `--verify` ist die ausdrueckliche Ausnahme.
 
 ## Promotion und Phasen-Hold
 
-**Status: manuell.** `promote.yml` ist kein Merge-Akteur und reagiert nur auf `workflow_dispatch`. Es zeigt den PR-Status oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an. Der Merge erfolgt durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; der PR-Check ist optional. Kein Auto-Merge, kein Merge auf einem alten Kopf.
+**Status: manuell.** `promote.yml` ist kein Merge-Akteur und reagiert nur auf `workflow_dispatch`. Es zeigt den PR-Status oder legt auf ausdrueckliche Anforderung den Notausgang `integration` an. Der Merge erfolgt durch Mensch oder Agent nach lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf; es gibt keinen Cloud-Check. Kein Auto-Merge, kein Merge auf einem alten Kopf.
 
 Der folgende Abschnitt beschreibt den historischen Integrationspfad; er ist kein Normalweg mehr.
 
@@ -1001,37 +1001,11 @@ und nach dem Autofix und listet `+ neu`, `~ geaendert` und `- geloescht`.
 Geloescht wird nur, was ein Werkzeug selbst entfernt; `autofix-0911` raeumt
 keine Screenshot-Ordner mehr auf.
 
-### Ebene A: Workflows
+### Ebene A: Lokale Runner und Repository-Verwaltung
 
-- `ci-verify.yml` laeuft ausschliesslich auf Pull Requests gegen `main`. Der
-  Job heisst **`Fail-Closed Gates`** und ist **optional**; es gibt keinen
-  Required-Status und keinen Push- oder Dispatch-Trigger.
-- `auto-version-release.yml` startet ausschliesslich per `workflow_dispatch`.
-  Er prueft `verify:release` und den Commit-Text und taggt genau diesen
-  geprueften Commit; die Suite wird nicht doppelt gestartet.
-- Die automatischen Laeufe rufen nur lesende Profile auf; der Tag ist der
-  einzige externe Schreibvorgang. `build-apk.yml` ueberspringt die Suite nur,
-  wenn der Aufrufer `skip_verify: true` setzt; manuelle Laeufe und Tag-Pushes
-  pruefen weiterhin selbst.
-- `pr-cleanup.yml` loescht nach einem Merge den Head-Branch am Remote. Der
-  Merge setzt keinen gruenen Check voraus; "gemergt" ist hier nur "gemergt".
-  `main`, Fork-Branches und Pull Requests mit dem Label `keep-branch` bleiben unberuehrt. Lokal raeumt
-  `pnpm run branches:prune` jeden nach `main` gemergten Branch ab; `turn:finish`
-  ruft das nach dem Push selbst auf. Offene Arbeit und `main` bleiben stehen.
-- `long-checks.yml` traegt den On-Demand-Lauf fuer Statistik (RTP,
-  Poker-Verteilung), Soak, Balance und Benchmarks. `pnpm run ci:long` startet
-  ihn standardmaessig ohne `verify:all`; `--verify` fordert die volle Suite
-  ausdruecklich an, `--ref` waehlt den Branch. Lange Nachweise laufen nicht im
-  optionalen PR-Job.
-- Alle Linux-Jobs pinnen `ubuntu-24.04` statt `ubuntu-latest`, damit die
-  26.04-Migration nicht ungeplant in den Build rutscht. Die Actions laufen auf
-  Node-24-Runtimes: `checkout@v7`, `setup-node@v7`, `cache@v6`,
-  `upload-artifact@v7`, `setup-java@v6` und `setup-android@v4`.
-
-Grenze von Ebene A: Enthaelt eine Commit-Nachricht `[skip ci]` oder `[ci skip]`,
-startet GitHub **keinen** Workflow. Der optionale PR-Job fehlt dann; der lokale
-Vor-PR-Nachweis bleibt trotzdem die Merge-Grundlage. Es gibt keinen
-Pflichtstatus, der dadurch umgangen werden koennte.
+- Die Testlinie laeuft lokal: `pnpm run ci:local` fuer den Vor-PR-Nachweis, `pnpm run verify:all` fuer den vollen Regellauf, `pnpm run test:mechanics` fuer Statistik, Soak, Langlauf und Benchmarks. Kein Workflow fuehrt Tests, Gates, Builds oder APKs aus.
+- Drei Workflows bleiben ausschliesslich fuer Repository-Verwaltung: `ensure-pr.yml` legt Lane-PRs an, `pr-cleanup.yml` loescht gemergte Wegwerf-Branches, `promote.yml` ist ein manueller Status-/Notausgang.
+- `ci-verify.yml`, `long-checks.yml`, `build-apk.yml`, `auto-version-release.yml`, `pr-watcher.yml` und `auto-resolve.yml` sind entfernt. Ihre Arbeit ist lokal erreichbar; es gibt keinen zweiten Testpfad.
 
 ### Branch-Schutz fuer `main`
 
@@ -1049,8 +1023,8 @@ PR-Body erfuellt diese Form, wenn er unveraendert als Merge-Text verwendet wird.
 
 Der Schutz ist ein klassischer Branch-Schutz, kein Ruleset: Pull Request
 erforderlich, **keine Required-Status-Checks**, Force-Push und Loeschen
-verboten, `enforce_admins: true`. Der PR-Check `Fail-Closed Gates` ist optional;
-kein Merge wartet auf ihn.
+verboten, `enforce_admins: true`. Es gibt keinen Cloud-Check; kein Merge wartet
+auf einen CI-Lauf.
 
 ### Ein Prozess: Impact, Plan, Bericht
 
@@ -1065,36 +1039,24 @@ den Importgraphen (`selectAffectedTests`), den Testkatalog mit Beweisklassen,
 | Agentenkontext | `scripts/agent-context.mjs` | kompakter Text oder JSON, keine Pruefung |
 | Pruefplan + Ausfuehrung | `scripts/agent-verify.mjs` -> `runGates` | gleiche Gates wie `pipeline-plan`, Cache wird genutzt |
 | Teilpruefung | Impact-Auswahl | `RBD_TEST_FILES` an `run-selected-tests.mjs`, Testgate ungecacht, Bericht `partial: true` |
-| Lange Nachweise | CI-Plan -> `long`-Matrix | eigene Jobs auf dem exakten PR-Kopf; `--ci` startet `long-checks.yml` auf Branch + exakter SHA ohne `verify:all`; `--dispatch-long` bleibt Alias |
+| Lange Nachweise | `pnpm run test:mechanics` | direkt lokal, nie Teil eines Regelprofils |
 | Bericht | `.verify-cache/reports/<Zeit>/agent-summary.json` | `cached`, `executed`, `skipped`, `delegated` je Gate |
 
 Eine Auswahl ist nie ein Vollnachweis: `verify:light` und `verify:all` bleiben
 die Tore fuer Commit und CI, `agent:verify` beschleunigt nur die Rueckmeldung.
-Lange Nachweise werden nicht lokal nachgebaut; der PR-Plan fuehrt sie auf dem
-exakten Commit, der Wochenlauf deckt die systemweiten Abweichungen ab.
+Lange Nachweise laufen lokal ueber `pnpm run test:mechanics`; es gibt keinen
+PR-Plan und keinen Wochenlauf.
 
 ### Promotion
 
 **Status: manuell.** Der Merge nach `main` erfolgt durch Mensch oder Agent nach
 lokalem Vor-PR-Nachweis, Review und auf dem exakten Kopf. `promote.yml` ist ein
 manueller Status-/Notausgang (`workflow_dispatch`), kein Auto-Merge und kein
-Merge-Akteur. Der PR-Check `Fail-Closed Gates` ist optional; kein Merge wartet
-auf einen CI-Lauf. `integration` bleibt ein ausdruecklicher Notausgang.
+Merge-Akteur. Es gibt keinen Cloud-Check; kein Merge wartet auf einen CI-Lauf. `integration` bleibt ein ausdruecklicher Notausgang.
 
 ### Release- und APK-Kette
 
-Ein mit `GITHUB_TOKEN` gepushter Tag loest keinen Workflow aus. Deshalb ruft
-`auto-version-release.yml` den APK-Build nach dem Tag **explizit** auf:
-
-```text
-CI Verify (verify:all) -> Auto Version & Release (Tag) -> workflow_call build-apk.yml -> Release-Asset + Pruefung
-```
-
-- `auto-version-release.yml` reagiert nur auf einen erfolgreichen `CI Verify`-Lauf mit `event == push` auf `main`; ein roter oder abgebrochener Verify-Lauf erreicht den Tag nicht.
-- `build-apk.yml` ist ueber `workflow_call` aufrufbar und bekommt den Tag als Eingabe; Checkout, Upload und Artefaktpruefung haengen daran. Mit `skip_verify: true` laeuft keine zweite `verify:release`-Suite, weil der Aufrufer den Commit bereits geprueft hat; der Production-Build fuer `dist/` wird dann separat ausgefuehrt. Ohne den Input gilt weiterhin das volle Gate.
-- Der zweite Trigger (`push: tags`) bleibt als Netz fuer manuell gepushte Tags und prueft weiterhin selbst.
-- Der Job `apk` haengt mit `needs: release` am Release; ein roter APK-Build macht den Gesamtlauf sichtbar rot.
-- Ein bereits existierender Tag oder Release erzeugt kein zweites Release (`ci-tag-release.mjs` prueft zuerst).
+Der Release ist lokal: `pnpm run verify:release` prueft, `node scripts/ci-tag-release.mjs` taggt den exakten Commit, `pnpm run android:apk:release` baut und signiert die APK. Es gibt keine `workflow_run`-Kette und keinen Cloud-APK-Fallback. Fehlt die Produktionssignatur, entsteht keine Release-APK.
 
 ### Eskalation bei Umgebungsproblemen
 
@@ -1116,15 +1078,15 @@ sagt konkret, welche Umgebung fehlt. Ein Secret `RELEASE_TOKEN` mit
 | Kriterium | Nachweis |
 | --- | --- |
 | Direkter Push auf `main` blockiert | Ebene B, `non_fast_forward` + `pull_request` |
-| `[skip ci]` umgeht den optionalen PR-Check | kein Required-Status; der lokale Nachweis bleibt Pflicht |
-| Release ohne lokales Verify verhindert | `auto-version-release.yml` prueft `verify:release`; der optionale PR-Job ist kein Release-Nachweis |
-| Nur ein lokaler Vor-PR-Nachweis pro PR | `verify:integration`; der optionale PR-Job wiederholt nur Light |
-| PR ohne optionalen Check ist mergebar | Branch-Schutz ohne Required-Status; Merge durch Mensch/Agent nach lokalem Nachweis |
+| Kein Cloud-Check, den `[skip ci]` umgehen könnte | kein Required-Status; der lokale Nachweis bleibt Pflicht |
+| Release ohne lokales Verify verhindert | `verify:release` und `ci-tag-release.mjs` laufen vor dem Tag; keinen Cloud-Check |
+| Nur ein lokaler Vor-PR-Nachweis pro PR | `pnpm run ci:local`; kein Cloud-Job |
+| PR ohne Cloud-Check ist mergebar | Branch-Schutz ohne Required-Status; Merge durch Mensch/Agent nach lokalem Nachweis |
 | Verify veraendert keinen Arbeitsbaum | `pnpm run verify:all` fuehrt keinen Autofix aus (`scripts/lib/pipeline-plan.mjs`); Berichte liegen im gitignorierten `.verify-cache/reports/` |
 | Wegwerf-Branches verschwinden nach dem Merge | `pr-cleanup.yml` (nur gemergt, nicht `main`, kein Fork, kein `keep-branch`); lokal `pnpm run branches:prune` |
-| Lange Nachweise laufen nicht lokal | `pnpm run test:affected` ueberspringt `statistics` und `performance` und nennt sie; der CI-Plan startet die betroffenen Dateien als eigene Matrix, der Wochenlauf deckt den Rest ab |
+| Mechanik laeuft nur gezielt | `pnpm run test:mechanics`; `test:affected` ueberspringt die sechs Mechanik-Dateien aus `src/Config/test-lanes.json` und nennt sie |
 | Fix meldet jede Aenderung | `scripts/lib/tree-changes.mjs`, `pnpm run fix` |
-| Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Inhalts-Hash; Fix-Lauf meldet „keine Aenderung“ |
+| Zweiter Verify-Lauf reproduzierbar | Gate-Cache auf Git-Fingerabdruck (`HEAD` + Diff + unversionierte Dateien); Fix-Lauf meldet „keine Aenderung“ |
 
 #### Pflichtsektionen: Punkte statt Fliesstext
 
@@ -1164,7 +1126,7 @@ Alle CI Gate-Fehler seit dem Merge von `fix/narrative-review-findings` (NAR-13) 
 |------|------|-------|---------|-----|
 | verify-commit-msg | ERR-4006 | Merge-Commit `6f7a906` (PR #163) | Der Merge lief nur mit `commit_title`. GitHub schreibt dann den PR-Titel als Merge-Text; die drei Pflichtsektionen aus dem PR-Body fehlen, obwohl der PR selbst gruen war. `main` wurde rot, `Bump, tag, release` und der APK-Bau fielen aus. | Follow-up-PR von `main`, dessen Merge `commit_message` = vollstaendiger PR-Body traegt. |
 
-**Regel:** Beim Merge ueber Connector oder REST-API gehoert der PR-Body immer in `commit_message`. `commit_title` allein genuegt nicht, auch wenn der PR-Check optional ist: `verify-commit-msg --head` prueft auf `main` den Merge-Commit, nicht den PR-Body. Vor dem Merge beide Felder setzen und danach den neuen `main`-HEAD pruefen; der PR-Check ist optional.
+**Regel:** Beim Merge ueber Connector oder REST-API gehoert der PR-Body immer in `commit_message`. `commit_title` allein genuegt nicht, auch wenn es keinen Cloud-Check gibt: `verify-commit-msg --head` prueft auf `main` den Merge-Commit, nicht den PR-Body. Vor dem Merge beide Felder setzen und danach den neuen `main`-HEAD pruefen; es gibt keinen Cloud-Check.
 
 
 ## Anhang: Narrative Engine — Architekturvertrag
@@ -1687,9 +1649,8 @@ damit es keine zweite Wahrheit gibt.
   Messung ohne Kern-Pinning. Der Runden-Benchmark hat ein Zeitbudget je Spiel,
   damit langsame Hardware die Kennzahl ms/Runde liefert statt in den Timeout zu
   laufen; die 60-s-Grenze war dort der einzige rote Punkt.
-- Lange Nachweise bleiben in Actions: der CI-Plan startet die betroffenen
-  Statistik-/Soak-Dateien auf dem PR-Kopf; `long-checks.yml` deckt woechentlich
-  Statistik, Soak 100000 Ticks, Balance 40 Tage und Benchmarks ab.
+- Lange Nachweise laufen lokal ueber `pnpm run test:mechanics`; kein Zeitplan, kein Dispatch und kein Cloud-Job.
+  Statistik, Soak 100000 Ticks, Balance 40 Tage und Benchmarks laufen nur auf ausdrueckliche Anforderung.
 
 ### 17. Agenten-Contributions: Workflow und Fehlerfaelle
 

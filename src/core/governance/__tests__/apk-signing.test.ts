@@ -1,13 +1,13 @@
 /**
- * @test-target: .github/workflows/build-apk.yml
+ * @test-target: src/Config/android-signing.json
  * @error-code: ERR-4014
  *
  * Installierbarkeit ist ein Vertrag, keine Annahme. Der Test haelt drei
  * Eigenschaften fest, die zusammen den Installationsfehler beseitigen: Debug und
  * Produktion tragen getrennte Zertifikate, der Build misst Signatur,
  * Zertifikats-Digest und Paketnamen selbst, und der Workflow veroeffentlicht
- * nichts Unsigniertes. Gelesen werden Workflow, Signierdatei und Skript;
- * Gradle und SDK laufen nicht.
+ * nichts Unsigniertes. Gelesen werden der lokale Runner, die Signierdatei und
+ * das Skript; Gradle und SDK laufen nicht.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest';
 
 const ROOT = process.cwd();
 const script = readFileSync(resolve(ROOT, 'scripts', 'prepare-android.mjs'), 'utf8');
-const workflow = readFileSync(resolve(ROOT, '.github', 'workflows', 'build-apk.yml'), 'utf8');
+const localRunner = readFileSync(resolve(ROOT, 'scripts', 'local-ci.mjs'), 'utf8');
 const signingPath = resolve(ROOT, 'src', 'Config', 'android-signing.json');
 const signing = JSON.parse(readFileSync(signingPath, 'utf8')) as {
   alias: string;
@@ -61,11 +61,11 @@ describe('APK-Signatur und Installierbarkeit', () => {
     expect(script).toContain('if (existsSync(unsigned) && release)');
   });
 
-  it('veroeffentlicht nur geprueft signierte APKs', () => {
-    expect(workflow).toContain('artifacts/rigged-by-design-debug.apk');
-    expect(workflow).toContain('artifacts/rigged-by-design-release.apk');
-    expect(workflow).not.toContain('release-unsigned');
-    expect(workflow).toContain("steps.signing.outputs.release == 'true'");
-    expect(workflow).toContain("if echo \"$assets\" | grep -q 'unsigned'");
+  it('baut die APK lokal statt in einem Cloud-Workflow', () => {
+    expect(localRunner).toContain('prepare-android.mjs');
+    expect(localRunner).toContain('run-pipeline.mjs');
+    expect(script).toContain('artifacts/rigged-by-design-debug.apk');
+    // Kein ungepruefter Release-Pfad: die Produktionssignatur bleibt Pflicht.
+    expect(script).toContain('app-release-unsigned.apk');
   });
 });

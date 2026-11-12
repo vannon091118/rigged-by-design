@@ -2,7 +2,7 @@
 import { fromVC, type VaCoinMicro } from '../core/economy/vacoin';
 import type { GameView } from '../store/types';
 
-export interface StartGoal {
+interface StartGoal {
   readonly id: 'BAR' | 'RENT';
   /** Kurzlabel am Balken; nie mehr als ein Wort. */
   readonly label: string;

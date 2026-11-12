@@ -2,6 +2,14 @@
 
 <!-- rbd-doc: managed -->
 
+## 2026-11-11 – Lokale Testlinie statt Cloud-Runner
+
+**Befund.** Die Suite brauchte 59,5 s Wandzeit fuer 1654 Tests; `verify:light` brauchte 21,6 s, davon 19,7 s Typecheck. Die Mechanik-Suiten waren doppelt gepflegt (Vitest-Ausschluss, Testkatalog-Regex, Workflow-Matrix). `pretask` startete `agent-context` als Kindprozess und rechnete den Impact zweimal; `contextSummary` las das Claim-Register dreimal. Jedes Gate trug ein willkuerliches Zeitlimit.
+
+**Umsetzung.** Eine Manifest-Liste `src/Config/test-lanes.json` steuert Vitest und Katalog; Mechanik laeuft nur ueber `test:mechanics`. Gate-Timeouts sind entfernt, Gates starten direkte Binaries, der Baumfingerabdruck kommt aus Git, `pretask` rechnet den Impact im eigenen Prozess, Claim-Register und Kollisionen werden einmal geladen. Sechs Verifikations-Workflows sind durch `scripts/local-ci.mjs` ersetzt; drei Repository-Workflows bleiben.
+
+**Offen.** Die Mechanik-Suiten bleiben langsam und werden nicht in Regellaifen gemessen; der APK-Pfad braucht weiterhin JDK und Android SDK.
+
 Chronologisch, ehrlich, mit offenen Enden. Jeder Eintrag nennt Datum, Ziel,
 Umsetzung, Pruefungen und was bewusst nicht getan wurde.
 

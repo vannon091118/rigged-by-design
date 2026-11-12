@@ -6,7 +6,7 @@
  * UI-Integration ohne Pixi: Zustand, Fokus, Filter und Rivalenprofile.
  */
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { recordJournal } from '../../core/sim/journal';
 import { transitionEvent } from '../../core/sim/narrative/event-lifecycle';
@@ -27,6 +27,11 @@ import { JournalPopup } from '../journal-popup';
 import { LookPopup } from '../look-popup';
 import { PopupShell } from '../popup-shell';
 import { WorkshopPopup } from '../workshop';
+
+beforeEach(() => {
+  // Der worldStore ist ein Singleton und wird von mehreren UI-Dateien benutzt.
+  worldStore.newGame('SMALL');
+});
 
 afterEach(() => {
   cleanup();
@@ -95,26 +100,17 @@ describe('UI-Integration', () => {
     fireEvent.click(screen.getByRole('button', { name: 'LOS' }));
     opening.unmount();
 
-    // APARTMENT: nur die Wohnung, ohne Eröffnung.
-    const apartment = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Du bist zu Hause');
-    fireEvent.click(screen.getByRole('button', { name: 'HAUSTÜR ÖFFNEN' }));
-    apartment.unmount();
+    const step = (tip: string, action: string): void => {
+      const { unmount } = both();
+      expect(modals()).toBe(1);
+      expect(screen.getByLabelText('Erste Schritte').textContent).toContain(tip);
+      fireEvent.click(screen.getByRole('button', { name: action }));
+      unmount();
+    };
 
-    // CITY: nur die Stadt, ohne Eröffnung.
-    const city = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Die Stadt wartet');
-    fireEvent.click(screen.getByRole('button', { name: 'CASINO BETRETEN' }));
-    city.unmount();
-
-    // CASINO: nur der Raum.
-    const casino = both();
-    expect(modals()).toBe(1);
-    expect(screen.getByLabelText('Erste Schritte').textContent).toContain('Der Raum ist dein');
-    fireEvent.click(screen.getByRole('button', { name: 'AUFTRAG ANNEHMEN' }));
-    casino.unmount();
+    step('Du bist zu Hause', 'HAUSTÜR ÖFFNEN');
+    step('Die Stadt wartet', 'CASINO BETRETEN');
+    step('Der Raum ist dein', 'AUFTRAG ANNEHMEN');
 
     // DONE: kein Startmodal mehr.
     both();

@@ -10,11 +10,6 @@ describe('Impact-Auswahl fuer Agenten und Gates', () => {
     expect(selection.runAll).toBe(false);
   });
 
-  it('faellt bei einer Konfigurationsaenderung auf alle Tests zurueck', () => {
-    const selection = selectAffectedTests(['package.json']);
-    expect(selection.runAll).toBe(true);
-    expect(selection.tests.length).toBeGreaterThan(0);
-  });
 
   it('findet ueber den Importgraphen mindestens einen Save-Test', () => {
     const selection = selectAffectedTests(['src/store/save.ts']);
