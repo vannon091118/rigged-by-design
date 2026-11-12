@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 import type { GameView } from '../store/types';
 import type { Perspective, Popup } from './app-model';
 import { vc } from './format';
-import { CitySceneBar, OnboardingPanel } from './onboarding-panel';
+import { ApartmentSceneBar, CitySceneBar, OnboardingPanel } from './onboarding-panel';
 
 interface DockProps {
   readonly view: GameView;
@@ -68,6 +68,7 @@ export function Dock({ view, perspective, onPlay, onBuild, onOpen, onClean }: Do
 
   return (
     <>
+      <ApartmentSceneBar view={view} />
       <CitySceneBar view={view} onOpen={onOpen} />
       <OnboardingPanel view={view} onOpen={onOpen} />
     <nav className={`dock ${perspective}`} aria-label={perspective === 'guest' ? 'Gastbereiche' : 'Betriebsbereiche'}>

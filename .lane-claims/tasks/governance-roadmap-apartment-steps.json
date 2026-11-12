@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-roadmap-apartment-steps",
+  "claimId": "lane/governance/roadmap-apartment-steps",
+  "branch": "lane/governance/roadmap-apartment-steps",
+  "baseSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "phase": "IMPLEMENTING",
+  "title": "Roadmap: Waende, Moebel, Dekor, dann Stadt als Netz",
+  "goal": "Die naechsten Wohnungs-Schritte und die Stadt als eigene Netzszen festschreiben.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Roadmap-Commit pushen und mit der Spiel-Lane zusammenfuehren.",
+  "revision": 1
+}

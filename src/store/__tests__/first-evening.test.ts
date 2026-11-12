@@ -51,15 +51,20 @@ describe('Der erste Abend als Kette', () => {
   it('führt von der Eröffnung bis zum Tagesende, ohne Eingriff in den Code', () => {
     const { world, ledger, prng, scene } = start();
 
-    // 1. Startzustand: Eröffnung, Stadt, Kasse, Starter-Kiste.
+    // 1. Startzustand: Eröffnung, Wohnung, Kasse, Starter-Kiste.
     expect(world.onboarding?.step).toBe('OPENING');
-    expect(world.scene.kind).toBe('CITY');
+    expect(world.scene.kind).toBe('APARTMENT');
     expect(world.crates).toHaveLength(1);
 
     scene.finishOpening();
+    expect(world.onboarding?.step).toBe('APARTMENT');
+
+    // 2. Haustür: von der Wohnung auf die Straße, dann ins Casino.
+    scene.enterCity();
+    expect(world.scene.kind).toBe('CITY');
     expect(world.onboarding?.step).toBe('CITY');
 
-    // 2. Casino betreten: nur hier zieht die Nachfrage.
+    // 3. Casino betreten: nur hier zieht die Nachfrage.
     scene.enterCasino();
     expect(world.scene.kind).toBe('OWN');
     expect(world.onboarding?.step).toBe('CASINO');

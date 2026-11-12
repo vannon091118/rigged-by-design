@@ -1,0 +1,22 @@
+{
+  "id": "lane/governance/apartment-start-integration",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/apartment-start-integration",
+  "baseSha": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9",
+  "task": "Integration: Wohnung und Roadmap auf main",
+  "goal": "Den lokal zusammengefuehrten Baum mit Wohnungsstart und Roadmap als PR auf main bringen.",
+  "pathAllowlist": [
+    "src/",
+    "content/narrative/",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/",
+    ".lane-claims/claims/lane-governance-apartment-start-integration.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "c4d0c4654b4b7da3fbb78d7830a5d39be89768a9"
+}

@@ -12,6 +12,6 @@
   "relationship": "neutral",
   "personaRefs": ["rita-kern"],
   "flags": ["narrativ"],
-  "text": "Rita prüfte den Push, nicht nur den Commit: Die Tests lagen ausserhalb des Claims. Sie verschob die Dateien unter den bereits freigegebenen Pfad, statt die Allowlist zu erweitern. Der Fix blieb derselbe, die Grenze auch.",
+  "text": "Der Putzeimer wird zweimal geleert, weil der erste Eimer nur halb voll war. So steht es zumindest auf dem Zettel.",
   "directives": []
 }

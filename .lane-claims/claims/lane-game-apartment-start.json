@@ -1,0 +1,20 @@
+{
+  "id": "lane/game/apartment-start",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/game/apartment-start",
+  "baseSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "task": "Wohnung als Start- und Szenenraum samt Welttexten",
+  "goal": "Die Wohnung wird begehbarer Start, sichtbar vom Casino getrennt; die Narrative-Beitraege sprechen Welt statt Governance.",
+  "pathAllowlist": [
+    "src/",
+    "content/narrative/",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/claims/lane-game-apartment-start.json",
+    ".lane-claims/tasks/game-apartment-start.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "superseded",
+  "createdAt": "092ba451e4b8264b90504e57f34fc37ca29a8c98"
+}

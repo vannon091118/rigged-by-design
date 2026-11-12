@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "game-apartment-start",
+  "claimId": "lane/game/apartment-start",
+  "branch": "lane/game/apartment-start",
+  "baseSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "phase": "IMPLEMENTING",
+  "title": "Wohnung als Start- und Szenenraum samt Welttexten",
+  "goal": "Die Wohnung wird begehbarer Start, sichtbar vom Casino getrennt; die Narrative-Beitraege sprechen Welt statt Governance.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokaler Nachweis ist gruen; Commit und Push abschliessen, dann PR gegen main.",
+  "revision": 1
+}
