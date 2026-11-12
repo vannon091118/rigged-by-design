@@ -18,11 +18,11 @@
     "mergedSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd"
   },
   "findings": [],
-  "nextAction": "PR #488 gemergt (8d8ff5e); Evidenz-Hash und vollstaendige Suite auf dem Merge-Kopf verifiziert. Keine offenen Befunde.",
-  "revision": 3,
+  "nextAction": "PR #488 gemergt (8d8ff5e); Evidenz-Drift in PR #491 behoben, aktueller Artefakt-SHA-256 6e634bd9...; Render-Patches in PR #490 gemergt.",
+  "revision": 4,
   "mergeState": "MERGED",
   "mergedSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd",
-  "evidenceSha256": "236fb020dec5d931cacaa9d1559dc03019242a6599e83ecd94e395797d1e4750",
+  "evidenceSha256": "6e634bd94e45c5c2049b7396bbc53640aec1af3764b5286f79ec6a8b55ea656d",
   "testResult": {
     "headSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd",
     "command": "pnpm test",
