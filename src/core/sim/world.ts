@@ -1,4 +1,5 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
+import { activeForeignFloor } from './active-player';
 import { cityNav } from './city-scene';
 import { playerApartmentFurniture, playerApartmentNav } from './player-apartment';
 import { canPlaceAt } from './grid-zones';
@@ -14,6 +15,8 @@ export function furnitureById(world: WorldState, id: number): Furniture | null {
   if (world.scene.kind === 'APARTMENT') {
     return playerApartmentFurniture().find((item) => item.id === id) ?? null;
   }
+  const foreign = activeForeignFloor(world);
+  if (foreign) return foreign.furniture.find((item) => item.id === id) ?? null;
   return world.furniture.find((item) => item.id === id) ?? null;
 }
 
@@ -47,6 +50,8 @@ export function worldNav(world: WorldState): NavGrid {
   if (world.scene.kind === 'APARTMENT') return playerApartmentNav();
   const city = world.scene.kind === 'CITY' ? world.cityScene : null;
   if (city) return cityNav(city);
+  const foreign = activeForeignFloor(world);
+  if (foreign) return navGrid(foreign.layout?.size ?? foreign.size, foreign.furniture, foreign.layout ?? null);
   return navGrid(world.layout.size, world.furniture, world.layout);
 }
 

@@ -93,7 +93,7 @@ export class FloorView {
     this.#touch = new FloorTouch(app, this.#rig.root, this.#rig.cam, () => this.#view.size, (clientX, clientY) => {
       const local = screenPoint(clientX, clientY, this.#app, this.#rig.root);
       if (local) this.#act(0, local);
-    }, () => this.#view.scene.kind !== 'FOREIGN');
+    });
     this.#events.start();
     this.#actors = new ActorPool(this.#attachActor);
     for (const art of this.#actors.all) this.#attachActor(art);
@@ -123,7 +123,8 @@ export class FloorView {
   update(view: GameView, force = false): void {
     if (this.#destroyed) return;
     const previous = this.#view;
-    const templateChanged = force || view.size !== previous.size || view.template !== previous.template || view.carpet !== previous.carpet;
+    const templateChanged = force || view.size !== previous.size || view.template !== previous.template
+      || view.carpet !== previous.carpet || view.scene.key !== previous.scene.key;
     this.#view = view;
     syncViewLayers(this.#layers, view, previous, templateChanged, performance.now());
   }
@@ -203,7 +204,7 @@ export class FloorView {
   }
 
   #act(button: number, point: { x: number; y: number }): void {
-    if (this.#destroyed || this.#view.scene.kind === 'FOREIGN') return;
+    if (this.#destroyed) return;
     const resolution = handleTap(button, point, this.#view, this.#cues);
     if (!resolution) return;
     const now = performance.now();

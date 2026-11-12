@@ -49,7 +49,7 @@ function worldSnapshot(world: WorldState) {
     template: foreign?.template ?? world.template,
     // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
     layout: apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
-    size: apartment?.layout.size ?? city?.layout.size ?? foreign?.size ?? world.size,
+    size: apartment?.layout.size ?? city?.layout.size ?? foreign?.layout?.size ?? foreign?.size ?? world.size,
     zones: apartment?.layout.zones ?? city?.zones ?? foreign?.zones ?? world.zones,
     cityExterior,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),

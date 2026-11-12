@@ -150,7 +150,7 @@ describe('Tastatur/Pointer-Parität', () => {
     expect(worldStore.getSnapshot().player.path).toHaveLength(0);
   });
 
-  it('FOREIGN sperrt WASD, Zoom, Fit, E und die Kamera-Knöpfe', () => {
+  it('FOREIGN teilt WASD, Zoom, Fit, Kamera-Knöpfe und Boden-Tap mit allen Floors', () => {
     worldStore.visitForeign('HAFENKLAUSE');
     const move = vi.spyOn(worldStore, 'moveStep').mockImplementation(noop);
     const zoom = vi.fn();
@@ -159,24 +159,36 @@ describe('Tastatur/Pointer-Parität', () => {
     fireEvent.keyDown(window, { key: 'w' });
     fireEvent.keyDown(window, { key: '+' });
     fireEvent.keyDown(window, { key: '0' });
-    expect(move).not.toHaveBeenCalled();
-    expect(zoom).not.toHaveBeenCalled();
-    expect(fit).not.toHaveBeenCalled();
+    expect(move).toHaveBeenCalledWith(0, -1);
+    expect(zoom).toHaveBeenCalledWith(1.22);
+    expect(fit).toHaveBeenCalledTimes(1);
     expect(result.current).toBeUndefined();
     unmount();
+
+    render(<StageControls zoom={zoom} overview={fit} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Hineinzoomen' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Übersicht' }));
+    expect(zoom).toHaveBeenCalledTimes(2);
+    expect(fit).toHaveBeenCalledTimes(2);
+    render(<FloorRoleBar perspective="operator" />);
+    expect(screen.getByText('FREMDER FLOOR')).not.toBeNull();
+    expect(screen.getByText(/Begehbar:/)).not.toBeNull();
 
     const interaction = renderHook(() => useFloorInteraction({
       view: worldStore.getSnapshot(), enabled: true, blocked: false, onExecute: noop,
     }));
+    act(() => interaction.result.current.tap({
+      target: { kind: 'floor', x: 3, y: 3 }, actions: [mainAction()], at: { x: 0, y: 0 }, anchor: null,
+    }));
+    expect(interaction.result.current.selection?.target).toEqual({ kind: 'floor', x: 3, y: 3 });
+
+    // Fremde Möbel/Gäste haben noch keine eigenen Commands. E bleibt darum
+    // genauso still wie Maus und Touch auf diesen Zielen.
     const nearest = vi.spyOn(worldStore.interaction, 'nearest');
     fireEvent.keyDown(window, { key: 'e' });
     expect(nearest).not.toHaveBeenCalled();
     interaction.unmount();
 
-    render(<StageControls zoom={zoom} overview={fit} />);
-    expect(screen.queryByRole('button', { name: 'Hineinzoomen' })).toBeNull();
-    render(<FloorRoleBar perspective="operator" />);
-    expect(screen.getByText('FREMDER FLOOR')).not.toBeNull();
     render(<OnboardingPanel view={worldStore.getSnapshot()} onOpen={noop} />);
     expect(screen.queryByText('ERSTE SCHRITTE')).toBeNull();
     const staleCity = {

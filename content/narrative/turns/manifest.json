@@ -4048,6 +4048,10 @@
     {
       "turnId": "2026-11-12T08:30Z-player-needs",
       "contributionId": "player-needs-01"
+    },
+    {
+      "turnId": "2026-11-12T08:50Z-foreign-walkable",
+      "contributionId": "foreign-walkable-01"
     }
   ]
 }

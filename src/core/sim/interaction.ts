@@ -2,6 +2,7 @@
  * Interaktion: Radius, Annaeherung und Zielpfad fuer Maus, Tastatur und Touch.
  * Headless und deterministisch; die Figur laeuft ueber den Pfad, sie springt nicht.
  */
+import { activePlayerPosition, setActivePlayerPath, stopActivePlayer } from './active-player';
 import { accessPoints, findPath, isWalkable } from './pathfinding';
 import type { Furniture, Point, WorldState } from './types';
 import { furnitureById, guestById, worldNav } from './world';
@@ -130,7 +131,7 @@ export function planInteraction(world: WorldState, target: InteractionTarget): I
   const resolved = resolve(world, target);
   if (!resolved) return failed(target, INTERACTION_RADII.FURNITURE, 'Das Ziel gibt es nicht mehr.');
   const nav = worldNav(world);
-  const from = world.player.position;
+  const from = activePlayerPosition(world);
   if (!isWalkable(nav, from.x, from.y)) {
     return failed(target, resolved.reach, 'Deine Figur steht ausserhalb des begehbaren Bodens.');
   }
@@ -157,12 +158,10 @@ export function planInteraction(world: WorldState, target: InteractionTarget): I
 /** Der eine Annaeherungsschritt: Plan, Weg setzen – die Figur laeuft, sie springt nicht. */
 export function approachTarget(world: WorldState, target: InteractionTarget): InteractionPlan {
   const plan = planInteraction(world, target);
-  world.player.path = plan.reachable && !plan.inRange ? [...plan.path] : [];
-  world.player.pathIndex = 0;
+  setActivePlayerPath(world, plan.reachable && !plan.inRange ? [...plan.path] : []);
   return plan;
 }
 
 export function stopPlayer(world: WorldState): void {
-  world.player.path = [];
-  world.player.pathIndex = 0;
+  stopActivePlayer(world);
 }

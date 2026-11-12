@@ -89,6 +89,32 @@ normalisiert, neue Saves tragen den Wert über Tagesgrenzen.
 Occlusion-Rolle der Innenräume, ohne zweiten Wand- oder Kollisionspfad. Beide
 Punkte sind bewusst zurückgestellt und keine Voraussetzung für diesen Slice.
 
+### Fremd-Floor-Parität 2026-11-12 (P0-Slice)
+
+Der fremde Floor war ein Menü: Layout, Möbel und Spielerstand lagen bereits
+im `ForeignFloorState`, aber Navigation, Bewegung, Tick, Kamera und Touch
+lasen weiter den eigenen Casino-Stand. Der Slice beendet diese Sonderwelt.
+Eigentumsrechte bleiben Aktionsrechte; sie sind keine Bewegungsrechte.
+
+| Beleg | Datei/Test |
+| --- | --- |
+| Ein Spielerstand je Szene | `active-player.ts`, `world.ts`, `player.ts`, `interaction.ts`, `tick.ts`; `foreign-walkable.test.ts` bewegt den foreign Spieler, während `world.player.position` unverändert bleibt |
+| Kollision und Navigation | `worldNav` liest `foreign.layout` und `foreign.furniture`; `visitForeignCmd` normalisiert den Startpunkt auf eine begehbare Kachel |
+| Maus/Touch | `floor-scenes.ts`: FOREIGN erlaubt Boden-Taps; `MOVE_HERE` läuft über `action-queue-run.ts` und `foreign-walkable.test.ts` bis zum Ziel |
+| Tastatur und Kamera | `use-stage-keys.ts`, `stage-controls.tsx`, `floor-view.ts`: WASD, Zoom, FIT und Kamera-Knöpfe sind auf FOREIGN freigegeben; `input-parity.test.tsx` prüft beide Wege |
+| Snapshot | `snapshot.ts` nimmt die foreign-eigene Layoutgröße und den foreign Spielerpfad; `foreign-walkable.test.ts` prüft Größe, Position und `pathIndex` |
+| Save/Load | `foreign-walkable.test.ts`: Szene, Floor-ID und Position überleben den Roundtrip |
+| Szenenwechsel | `use-floor-selection-lifecycle.ts`: ein Szenenwechsel räumt den alten Fokus, bevor der neue Floor ihn erben kann |
+
+**Accepted, nicht erledigt:** Fremde Möbel und Gäste bleiben vorerst
+nicht-interaktiv; `floorTapAllowed('FOREIGN', …)` öffnet nur den Boden, und E
+bleibt auf diesem Floor still. Das ist Absicht, solange die fremden
+Maschinen-, Gast- und Job-Commands noch auf eigenen Casino-Objekten arbeiten
+würden. Der nächste Slice muss diese Commands auf den foreign Floor zeigen,
+bevor deren Tap-Ziele freigegeben werden. Die foreign Floor-Gäste sind
+derzeit leer; NPC-Kollision und soziale Blockadereaktion bleiben eigene P0-
+Slices.
+
 ### Ambient-Slice 2026-11-12 (R5/R6/R12-Teilbeleg)
 
 Der Slice ergänzt die bestehende Tageszeit um eine reine Darstellungsableitung.

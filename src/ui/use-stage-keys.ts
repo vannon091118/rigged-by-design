@@ -25,7 +25,7 @@ export function useStageKeys(options: StageKeyOptions): void {
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
-      // Der Fremd-Floor ist Menue: kein WASD, kein Zoom, kein Fit.
+      // Bewegung und Kamera folgen derselben Szenenregel wie Maus und Touch.
       if (!floorMovementAllowed(worldStore.getSnapshot().scene.kind)) return;
       const direction = MOVE_KEYS[event.key.toLowerCase()];
       if (direction) {

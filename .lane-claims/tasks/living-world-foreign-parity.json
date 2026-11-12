@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "taskId": "living-world-foreign-parity",
+  "claimId": "lane/living-world/foreign-parity",
+  "branch": "lane/living-world/foreign-parity",
+  "baseSha": "61b0bdd845f4be1402ac39a3c2843a041b22cdd9",
+  "phase": "CI_PENDING",
+  "title": "Fremdes Casino als echten, begehbaren Floor an dieselbe Navigation, Kollision und Eingabe anschliessen",
+  "goal": "Der Spieler bewegt sich im fremden Casino per WASD, Maus/Touch und Kamera auf dem foreign-eigenen Layout; Snapshot, Tick und Pfad bleiben eine Wahrheit.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": {
+    "number": 485,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/485",
+    "state": "open",
+    "headSha": "33509a0347db241d90109255df1e4602981458be"
+  },
+  "findings": [
+    {
+      "id": "foreign-interactions",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Bewusst nicht erledigt: Fremde Möbel- und Gast-Commands sind noch nicht auf den foreign Floor verdrahtet. floorTapAllowed öffnet dort nur den Boden, und E bleibt still; Maus/Touch und Tastatur sind auf denselben Zielen gleich geschlossen."
+    },
+    {
+      "id": "browser-visual",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Kein frischer Browser-/Screenshot-Beleg in dieser VM. foreign-walkable.test.ts ist ein Headless-Beleg; die fehlende Pixi-Sichtabnahme wird nicht als erledigt behauptet."
+    },
+    {
+      "id": "governance-workflow-baseline",
+      "severity": "warning",
+      "status": "accepted",
+      "summary": "Zwei lokale Governance-Tests bleiben rot: ci-gates.test.ts erwartet drei Workflow-Dateien, workflow-hardening.test.ts findet unpinned actions/checkout@v4 und actions/setup-node@v4 in den beiden render-inventory-sync-Workflows. Beide Dateien liegen außerhalb dieses Claims und wurden nicht verändert; alle übrigen 1729 Tests und verify:light sind grün."
+    }
+  ],
+  "nextAction": "Evidenz in PR #485 hinterlegen; bei mergeablem Kopf auf exakt 33509a0347db241d90109255df1e4602981458be reviewen und mergen.",
+  "revision": 4
+}

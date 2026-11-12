@@ -15,7 +15,7 @@ export class FloorTouch {
   readonly #cam: FloorCamera;
   readonly #size: () => number;
   readonly #onTap: (clientX: number, clientY: number) => void;
-  /** Fremd-Floor: keine Kamera-Geste, kein Tipp; nur das Menue bleibt. */
+  /** Notausstieg fuer eine gesperrte Buehne; im Normalfall immer aktiv. */
   readonly #enabled: () => boolean;
   readonly #pointers = new Map<number, { x: number; y: number }>();
   #span = 0;
