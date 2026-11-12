@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { worldStore } from '../store/use-world-store';
 import { MOVE_KEYS } from './app-model';
+import { floorMovementAllowed } from './floor-scenes';
 
 interface StageKeyOptions {
   /** Solange ein Fenster offen ist, gehoeren die Tasten dem Fenster. */
@@ -24,6 +25,8 @@ export function useStageKeys(options: StageKeyOptions): void {
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
+      // Der Fremd-Floor ist Menue: kein WASD, kein Zoom, kein Fit.
+      if (!floorMovementAllowed(worldStore.getSnapshot().scene.kind)) return;
       const direction = MOVE_KEYS[event.key.toLowerCase()];
       if (direction) {
         event.preventDefault();

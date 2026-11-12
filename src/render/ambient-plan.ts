@@ -40,10 +40,10 @@ const SHADE: Readonly<Record<AmbientEnvironment, Readonly<Record<DayPhase, numbe
 const RAYS: Readonly<Record<DayPhase, number>> = { morning: 0.16, evening: 0.1, night: 0 };
 const SHADOW: Readonly<Record<DayPhase, number>> = { morning: 0.2, evening: 0.14, night: 0.06 };
 
-/** Ein Sichtradius entsteht nur draussen, wenn es dunkel wird. */
+/** Ein Sichtradius entsteht nur draussen in der Nacht; Abend behaelt Strahlen und Schatten. */
 const VISION: Readonly<Record<DayPhase, { readonly tiles: number; readonly alpha: number }>> = {
   morning: { tiles: 0, alpha: 0 },
-  evening: { tiles: 10, alpha: 0.1 },
+  evening: { tiles: 0, alpha: 0 },
   night: { tiles: 7.5, alpha: 0.22 },
 };
 

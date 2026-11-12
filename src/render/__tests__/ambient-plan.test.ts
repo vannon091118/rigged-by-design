@@ -22,9 +22,9 @@ describe('Ambient-Vertrag', () => {
     expect(ambientPlanFor('morning', 'OWN').shade).toBe(0);
   });
 
-  it('gibt einen Sichtradius nur draussen und nur wenn es dunkel ist', () => {
+  it('gibt einen Sichtradius nur draussen in der Nacht', () => {
     expect(ambientPlanFor('morning', 'CITY').visionTiles).toBe(0);
-    expect(ambientPlanFor('evening', 'CITY').visionTiles).toBeGreaterThan(0);
+    expect(ambientPlanFor('evening', 'CITY').visionTiles).toBe(0);
     expect(ambientPlanFor('night', 'CITY').visionTiles).toBeGreaterThan(0);
     expect(ambientPlanFor('night', 'APARTMENT').visionTiles).toBe(0);
     expect(ambientPlanFor('night', 'OWN').visionAlpha).toBe(0);

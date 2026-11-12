@@ -47,7 +47,7 @@ RNG und keine Uhr in den neuen Pfaden.
 | Baustein | Beleg | Grenze |
 | --- | --- | --- |
 | Ambient-Plan | `src/render/ambient-plan.ts` + `ambient-plan.test.ts`: Helligkeit, Sichtradius, Sonnenrichtung und Schatten aus `dayPhase` und `SceneKind`; eingefroren, gecacht | Kein Wetter |
-| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur; Innenraum ohne Radius; spät geladene Lichttextur wird nachgezogen (`ambient-late-texture.test.ts`) | Pixi-App im Cloud-Browser blockiert vor dem ersten Frame; temporäre Plan-Probe statt App-Screenshot |
+| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur nur nachts; Innenraum und Abend ohne Radius; spät geladene Lichttextur wird nachgezogen (`ambient-late-texture.test.ts`) | Pixi-App im Cloud-Browser blockiert vor dem ersten Frame; echte Pixelprobe statt App-Screenshot |
 | Schattenwurf | `city-exterior-layer.ts`: weiche Fußschatten aus der vorhandenen Radialtextur, richtungsabhängig je Phase, ohne Rebuild; fehlende Textur wird nachgeladen (`city-shadow-late-texture.test.ts`) | Keine harten Schattenkanten |
 | Kamera | `floor-camera.ts`: toter Winkel 0.82, Snap auf das Gerätepixelraster; der Zoom bleibt der einzige Fahrweg | 2:1-Isometrie bleibt offen |
 | Performance | `city-plan.ts`/`snapshot.ts`: Renderplan und Exterieur-Ansicht je Identität genau einmal; `CityExteriorLayer` rebuildet nur bei echter Änderung | — |
@@ -61,9 +61,10 @@ keinen JS-Fehler, und auch der Produktionsbuild verhält sich gleich. Der
 Fallback ist deshalb eine deterministische, temporäre Plan-Probe: Sie zeichnete
 dieselbe Stadtgeometrie und dieselben Formeln aus
 `ambient-plan.ts`/`ambient-layer.ts` auf Canvas und protokollierte Luminanz und
-Planwerte. Die Screenshots zeigen Nacht (Sichtradius 7,5 Tiles,
-Center 58,7 vs. Rand 19,4), Abend (10 Tiles, 52,9 vs. 22,3) und Morgen
-(Strahlen, Schatten, kein Radius); die Konsole bleibt fehlerfrei.
+Planwerte. Die neue Pixelprobe rendert dagegen die echten Klassen über einen
+Pixi-CanvasRenderer und liest die Pixel aus dem Canvas: Nacht zeigt den
+Sichtradius (7,5 Tiles, 183,64 vs. 154,15), Morgen und Abend zeigen Strahlen
+und Schatten ohne Radius; die Konsole bleibt fehlerfrei.
 
 Dabei fielen zwei echte Spätlade-Fehler auf, die den Sichtradius und die
 Stadtschatten im normalen Start dauerhaft unsichtbar ließen: `light-pool.svg`

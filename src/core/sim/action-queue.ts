@@ -10,7 +10,7 @@ export type {
   ActionQueueState, ActionTask, ActionTaskView, TaskKind, TaskStatus, TaskStep,
 } from './action-queue-types';
 export { createActionQueue, normalizeActionQueue, queueView } from './action-queue-types';
-export { cancelTask, tickActionQueue } from './action-queue-run';
+export { cancelTask, clearActionQueue, tickActionQueue } from './action-queue-run';
 
 interface EnqueueInput {
   readonly kind: TaskKind;

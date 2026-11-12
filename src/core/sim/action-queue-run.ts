@@ -131,6 +131,12 @@ export function tickActionQueue(world: WorldState, ledger: Ledger): void {
   }
 }
 
+export function clearActionQueue(world: WorldState): void {
+  if (world.actionQueue.tasks.length === 0) return;
+  world.actionQueue.tasks = [];
+  stopPlayer(world);
+}
+
 export function cancelTask(world: WorldState, taskId: string): boolean {
   const index = world.actionQueue.tasks.findIndex((task) => task.id === taskId);
   if (index < 0) return false;

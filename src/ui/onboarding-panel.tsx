@@ -10,7 +10,14 @@ interface Props {
 
 export function OnboardingPanel({ view, onOpen }: Props) {
   const step = view.onboarding.step;
-  // Nur Wohnung, Stadt und Raum haben ein Panel; Eroeffnung und Abschluss keines.
+  // Nur Wohnung, Stadt und Raum haben ein Panel; Eroeffnung, Abschluss und
+  // der fremde Floor keines: dort gibt es nur dessen Menue.
+  if (view.scene.kind === 'FOREIGN') return null;
+  // Ein alter Schritt darf nicht in der falschen Szene stehen bleiben: nach
+  // der Rückkehr aus einem fremden Floor ist die Szene OWN, nicht Stadt.
+  if (step === 'APARTMENT' && view.scene.kind !== 'APARTMENT') return null;
+  if (step === 'CITY' && view.scene.kind !== 'CITY') return null;
+  if (step === 'CASINO' && view.scene.kind !== 'OWN') return null;
   if (step !== 'APARTMENT' && step !== 'CITY' && step !== 'CASINO') return null;
   return (
     <section className="onboarding-panel" aria-label="Erste Schritte">

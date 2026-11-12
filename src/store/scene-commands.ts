@@ -4,6 +4,7 @@ import { travel } from '../core/sim/city';
 import { cityDoorEffect } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
+import { clearActionQueue } from '../core/sim/action-queue';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -22,6 +23,7 @@ export class SceneCommands {
   enterCity(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'CITY') return;
+    clearActionQueue(world);
     // Nur der Weg aus dem Casino merkt sich die Rueckkehrposition; die Wohnung
     // hat ihren festen Platz am Flur, nicht die Koordinaten des Casinos.
     if (world.scene.kind === 'OWN') world.sceneReturnPosition = { ...world.player.position };
@@ -38,6 +40,7 @@ export class SceneCommands {
   enterApartment(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'APARTMENT') return;
+    clearActionQueue(world);
     world.activeForeignFloorId = null;
     world.scene = { kind: 'APARTMENT' };
     // Zurueck zu Hause zeigt wieder den Wohnungsschritt; erst der naechste
@@ -76,6 +79,7 @@ export class SceneCommands {
     const world = this.#deps.world();
     try {
       travel(world, effect.location);
+      clearActionQueue(world);
     } catch (error) {
       this.#deps.notice(error instanceof Error ? error.message : 'Diese Tür ist verschlossen.');
       this.#deps.emit();
@@ -97,6 +101,7 @@ export class SceneCommands {
   enterCasino(): void {
     const world = this.#deps.world();
     if (world.scene.kind === 'OWN') return;
+    clearActionQueue(world);
     world.activeForeignFloorId = null;
     world.scene = { kind: 'OWN' };
     if (world.sceneReturnPosition) world.player.position = { ...world.sceneReturnPosition };

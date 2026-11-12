@@ -1,6 +1,7 @@
 /** Floor-Rueckmeldung: Hinweise, Story-/Dialog-/Stadt-Einstiege und Toast. */
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
+import { isCarryingCrate } from './app-wiring';
 import type { Popup } from './app-model';
 import { ActionQueuePanel } from './action-queue-panel';
 
@@ -33,6 +34,11 @@ export function FloorFeedback({ view, onOpen }: Props) {
 
       <button type="button" className="narrative-chip city-chip" title="Stadt: Kiez und Markt"
         onClick={() => onOpen({ kind: 'city' })}>STADT</button>
+
+      {isCarryingCrate(view.player.carrying) && view.scene.kind === 'OWN' && (
+        <button type="button" className="narrative-chip" title="Getragene Kiste am aktuellen Feld abstellen"
+          onClick={() => worldStore.useCarriedHere()}>AM FELD ABLADEN</button>
+      )}
 
       {view.notice && (
         <button type="button" className="toast" onClick={() => worldStore.dismiss()}>{view.notice}</button>

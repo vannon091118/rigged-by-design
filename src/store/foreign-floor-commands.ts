@@ -7,6 +7,7 @@ import { BLUEPRINTS } from '../core/sim/house-presets';
 import { layoutFromTemplate, zonesFromLayout } from '../core/sim/layout-derive';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import type { Ledger } from '../core/economy/ledger';
+import { clearActionQueue } from '../core/sim/action-queue';
 
 export function acceptJobCmd(world: WorldState, rivalId: RivalId, jobId: import('../core/sim/types').PlayerJobId): void {
   acceptJob(world, rivalId, jobId);
@@ -25,6 +26,7 @@ export function buyBarCmd(world: WorldState, ledger: Ledger, tick: number): void
 }
 
 export function visitForeignCmd(world: WorldState, rivalId: RivalId): void {
+  clearActionQueue(world);
   const rival = getRival(rivalId);
   // Ein fremder Floor ist ein echter Raum, kein HUD-Eintrag: eigener Plan,
   // eigene Moebel und ein eigener Spielerstand.
@@ -46,6 +48,7 @@ export function visitForeignCmd(world: WorldState, rivalId: RivalId): void {
 
 export function leaveForeignCmd(world: WorldState): void {
   if (world.activeForeignFloorId === null) throw new Error('Du bist nicht in einem fremden Casino.');
+  clearActionQueue(world);
   world.activeForeignFloorId = null;
   world.scene = { kind: 'OWN' };
   world.lastEvent = 'Du bist zurück in deinem Casino.';
