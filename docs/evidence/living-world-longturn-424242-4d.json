@@ -1,0 +1,3369 @@
+{
+  "version": 1,
+  "kind": "living-world-longturn",
+  "seed": 424242,
+  "days": 4,
+  "ticks": 2400,
+  "decisions": 288,
+  "generatedBy": "src/core/sim/__tests__/living-world-longturn.test.ts",
+  "command": "RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json npx pnpm exec vitest run src/core/sim/__tests__/living-world-longturn.test.ts",
+  "stats": {
+    "hunger": {
+      "before": 90,
+      "after": 40,
+      "delta": -50,
+      "proof": "KIEZ_ESSEN changed the same player need that reduced the reputation gain"
+    },
+    "thirst": {
+      "before": 100,
+      "after": 35,
+      "delta": -65,
+      "proof": "KIEZ_TRINKEN changed the same player need that reduced the reputation gain"
+    },
+    "routines": {
+      "samples": 288,
+      "scheduledDeviations": 83,
+      "before": [
+        {
+          "npcId": "rita",
+          "intent": "PUB",
+          "location": "KIEZ"
+        },
+        {
+          "npcId": "boris",
+          "intent": "EAT_HOME",
+          "location": "HOME"
+        },
+        {
+          "npcId": "mira",
+          "intent": "PUB",
+          "location": "KIEZ"
+        }
+      ],
+      "after": [
+        {
+          "npcId": "rita",
+          "intent": "SLEEP",
+          "location": "HOME"
+        },
+        {
+          "npcId": "boris",
+          "intent": "SLEEP",
+          "location": "HOME"
+        },
+        {
+          "npcId": "mira",
+          "intent": "SLEEP",
+          "location": "HOME"
+        }
+      ]
+    },
+    "traits": {
+      "before": [
+        "HILFSBEREIT:2:2",
+        "MITTEILSAM:2:2"
+      ],
+      "after": [
+        "HILFSBEREIT:2:4",
+        "MITTEILSAM:2:2"
+      ],
+      "changed": true
+    },
+    "attributes": {
+      "before": {
+        "level": 1,
+        "xp": 0,
+        "speed": 0,
+        "charisma": 0,
+        "brawl": 0,
+        "perception": 0,
+        "technique": 0,
+        "endurance": 0,
+        "luck": 0
+      },
+      "after": {
+        "level": 3,
+        "xp": 100,
+        "speed": 1,
+        "charisma": 0,
+        "brawl": 0,
+        "perception": 1,
+        "technique": 0,
+        "endurance": 1,
+        "luck": 0
+      },
+      "source": "JOB_CLEANER XP 400"
+    },
+    "skills": {
+      "before": [
+        {
+          "npcId": "rita",
+          "skills": {
+            "cooking": 20,
+            "work": 10,
+            "social": 21
+          }
+        },
+        {
+          "npcId": "boris",
+          "skills": {
+            "cooking": 22,
+            "work": 10,
+            "social": 20
+          }
+        },
+        {
+          "npcId": "mira",
+          "skills": {
+            "cooking": 20,
+            "work": 10,
+            "social": 21
+          }
+        }
+      ],
+      "after": [
+        {
+          "npcId": "rita",
+          "skills": {
+            "cooking": 46,
+            "work": 60,
+            "social": 49
+          }
+        },
+        {
+          "npcId": "boris",
+          "skills": {
+            "cooking": 47,
+            "work": 70,
+            "social": 31
+          }
+        },
+        {
+          "npcId": "mira",
+          "skills": {
+            "cooking": 43,
+            "work": 60,
+            "social": 54
+          }
+        }
+      ]
+    }
+  },
+  "chains": [
+    {
+      "id": "give-traits-encounter-arc-echo",
+      "steps": [
+        {
+          "action": "GEBEN",
+          "trust": 2,
+          "traitsBefore": [
+            "HILFSBEREIT:2:2",
+            "MITTEILSAM:2:2"
+          ],
+          "traitsAfter": [
+            "HILFSBEREIT:2:4",
+            "MITTEILSAM:2:2"
+          ]
+        },
+        {
+          "chain": "CITY_ENCOUNTER_ARC",
+          "before": {
+            "status": "WAITING",
+            "dueTick": 24
+          },
+          "after": {
+            "status": "WAITING",
+            "dueTick": 24
+          }
+        },
+        {
+          "event": "CITY_ENCOUNTER_ECHO_WARM",
+          "seen": true
+        }
+      ]
+    },
+    {
+      "id": "environment-dirt-mood",
+      "steps": [
+        {
+          "environment": "dirty tile",
+          "moodBefore": 50,
+          "moodAfter": 49.97
+        },
+        {
+          "environment": "clean tile",
+          "moodBefore": 50,
+          "moodAfter": 50.03
+        }
+      ]
+    },
+    {
+      "id": "hunger-reputation-meal",
+      "steps": [
+        {
+          "state": "hungry",
+          "hunger": 90,
+          "thirst": 100,
+          "reputationGain": 0.2
+        },
+        {
+          "action": "KIEZ_ESSEN + KIEZ_TRINKEN",
+          "hunger": 40,
+          "thirst": 35
+        },
+        {
+          "state": "fed",
+          "reputationGain": 0.4000000000000001
+        }
+      ]
+    },
+    {
+      "id": "meal-memory-behavior",
+      "steps": [
+        {
+          "state": "meal",
+          "tick": 300,
+          "npcId": "rita",
+          "intent": "EAT_OUT",
+          "hungerDelta": -22,
+          "moodDelta": 5
+        },
+        {
+          "state": "memory",
+          "tick": 550,
+          "npcId": "rita",
+          "intent": "VISIT_FRIEND",
+          "memoryId": 13
+        },
+        {
+          "state": "behavior",
+          "tick": 1000,
+          "npcId": "rita",
+          "intent": "VISIT_FRIEND",
+          "memoryId": 13
+        }
+      ]
+    },
+    {
+      "id": "city-routine-four-days",
+      "steps": [
+        {
+          "before": [
+            {
+              "npcId": "rita",
+              "intent": "PUB",
+              "location": "KIEZ"
+            },
+            {
+              "npcId": "boris",
+              "intent": "EAT_HOME",
+              "location": "HOME"
+            },
+            {
+              "npcId": "mira",
+              "intent": "PUB",
+              "location": "KIEZ"
+            }
+          ]
+        },
+        {
+          "after": [
+            {
+              "npcId": "rita",
+              "intent": "SLEEP",
+              "location": "HOME"
+            },
+            {
+              "npcId": "boris",
+              "intent": "SLEEP",
+              "location": "HOME"
+            },
+            {
+              "npcId": "mira",
+              "intent": "SLEEP",
+              "location": "HOME"
+            }
+          ]
+        },
+        {
+          "decisions": 288,
+          "scheduledDeviations": 83
+        }
+      ]
+    }
+  ],
+  "city": {
+    "before": [
+      {
+        "npcId": "rita",
+        "needs": {
+          "hunger": 100,
+          "thirst": 58,
+          "fatigue": 4,
+          "social": 23,
+          "mood": 90,
+          "money": 7750
+        },
+        "attributes": {
+          "charisma": 8,
+          "intellect": 4
+        },
+        "skills": {
+          "cooking": 20,
+          "work": 10,
+          "social": 21
+        },
+        "relationships": 0,
+        "memories": 0,
+        "intent": "PUB",
+        "location": "KIEZ"
+      },
+      {
+        "npcId": "boris",
+        "needs": {
+          "hunger": 54,
+          "thirst": 55,
+          "fatigue": 0,
+          "social": 28,
+          "mood": 99,
+          "money": 12280
+        },
+        "attributes": {
+          "charisma": 4,
+          "intellect": 9
+        },
+        "skills": {
+          "cooking": 22,
+          "work": 10,
+          "social": 20
+        },
+        "relationships": 0,
+        "memories": 0,
+        "intent": "EAT_HOME",
+        "location": "HOME"
+      },
+      {
+        "npcId": "mira",
+        "needs": {
+          "hunger": 100,
+          "thirst": 66,
+          "fatigue": 4,
+          "social": 37,
+          "mood": 90,
+          "money": 5650
+        },
+        "attributes": {
+          "charisma": 9,
+          "intellect": 3
+        },
+        "skills": {
+          "cooking": 20,
+          "work": 10,
+          "social": 21
+        },
+        "relationships": 0,
+        "memories": 0,
+        "intent": "PUB",
+        "location": "KIEZ"
+      }
+    ],
+    "after": [
+      {
+        "npcId": "rita",
+        "needs": {
+          "hunger": 80,
+          "thirst": 8,
+          "fatigue": 70,
+          "social": 0,
+          "mood": 76,
+          "money": 9730
+        },
+        "attributes": {
+          "charisma": 8,
+          "intellect": 4
+        },
+        "skills": {
+          "cooking": 46,
+          "work": 60,
+          "social": 49
+        },
+        "relationships": 2,
+        "memories": 8,
+        "intent": "SLEEP",
+        "location": "HOME"
+      },
+      {
+        "npcId": "boris",
+        "needs": {
+          "hunger": 14,
+          "thirst": 6,
+          "fatigue": 41,
+          "social": 0,
+          "mood": 76,
+          "money": 12800
+        },
+        "attributes": {
+          "charisma": 4,
+          "intellect": 9
+        },
+        "skills": {
+          "cooking": 47,
+          "work": 70,
+          "social": 31
+        },
+        "relationships": 2,
+        "memories": 8,
+        "intent": "SLEEP",
+        "location": "HOME"
+      },
+      {
+        "npcId": "mira",
+        "needs": {
+          "hunger": 100,
+          "thirst": 8,
+          "fatigue": 70,
+          "social": 0,
+          "mood": 47,
+          "money": 7780
+        },
+        "attributes": {
+          "charisma": 9,
+          "intellect": 3
+        },
+        "skills": {
+          "cooking": 43,
+          "work": 60,
+          "social": 54
+        },
+        "relationships": 2,
+        "memories": 8,
+        "intent": "SLEEP",
+        "location": "HOME"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "id": 4,
+      "tick": 25,
+      "day": 1,
+      "hour": 1,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 5,
+      "tick": 25,
+      "day": 1,
+      "hour": 1,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 6,
+      "tick": 25,
+      "day": 1,
+      "hour": 1,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 7,
+      "tick": 50,
+      "day": 1,
+      "hour": 2,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 8,
+      "tick": 50,
+      "day": 1,
+      "hour": 2,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 9,
+      "tick": 50,
+      "day": 1,
+      "hour": 2,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 10,
+      "tick": 75,
+      "day": 1,
+      "hour": 3,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 11,
+      "tick": 75,
+      "day": 1,
+      "hour": 3,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 12,
+      "tick": 75,
+      "day": 1,
+      "hour": 3,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 13,
+      "tick": 100,
+      "day": 1,
+      "hour": 4,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 14,
+      "tick": 100,
+      "day": 1,
+      "hour": 4,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 15,
+      "tick": 100,
+      "day": 1,
+      "hour": 4,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 16,
+      "tick": 125,
+      "day": 1,
+      "hour": 5,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 17,
+      "tick": 125,
+      "day": 1,
+      "hour": 5,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 18,
+      "tick": 125,
+      "day": 1,
+      "hour": 5,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 19,
+      "tick": 150,
+      "day": 1,
+      "hour": 6,
+      "npcId": "rita",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 20,
+      "tick": 150,
+      "day": 1,
+      "hour": 6,
+      "npcId": "boris",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 21,
+      "tick": 150,
+      "day": 1,
+      "hour": 6,
+      "npcId": "mira",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 22,
+      "tick": 175,
+      "day": 1,
+      "hour": 7,
+      "npcId": "rita",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 23,
+      "tick": 175,
+      "day": 1,
+      "hour": 7,
+      "npcId": "boris",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 24,
+      "tick": 175,
+      "day": 1,
+      "hour": 7,
+      "npcId": "mira",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 25,
+      "tick": 200,
+      "day": 1,
+      "hour": 8,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "KIEZ"
+    },
+    {
+      "id": 26,
+      "tick": 200,
+      "day": 1,
+      "hour": 8,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 27,
+      "tick": 200,
+      "day": 1,
+      "hour": 8,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 28,
+      "tick": 225,
+      "day": 1,
+      "hour": 9,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 29,
+      "tick": 225,
+      "day": 1,
+      "hour": 9,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 30,
+      "tick": 225,
+      "day": 1,
+      "hour": 9,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 31,
+      "tick": 250,
+      "day": 1,
+      "hour": 10,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 32,
+      "tick": 250,
+      "day": 1,
+      "hour": 10,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 33,
+      "tick": 250,
+      "day": 1,
+      "hour": 10,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 34,
+      "tick": 275,
+      "day": 1,
+      "hour": 11,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 35,
+      "tick": 275,
+      "day": 1,
+      "hour": 11,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 36,
+      "tick": 275,
+      "day": 1,
+      "hour": 11,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 37,
+      "tick": 300,
+      "day": 1,
+      "hour": 12,
+      "npcId": "rita",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "KIEZ"
+    },
+    {
+      "id": 38,
+      "tick": 300,
+      "day": 1,
+      "hour": 12,
+      "npcId": "boris",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "MARKT"
+    },
+    {
+      "id": 39,
+      "tick": 300,
+      "day": 1,
+      "hour": 12,
+      "npcId": "mira",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "MARKT"
+    },
+    {
+      "id": 40,
+      "tick": 325,
+      "day": 1,
+      "hour": 13,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 41,
+      "tick": 325,
+      "day": 1,
+      "hour": 13,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 42,
+      "tick": 325,
+      "day": 1,
+      "hour": 13,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 43,
+      "tick": 350,
+      "day": 1,
+      "hour": 14,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 44,
+      "tick": 350,
+      "day": 1,
+      "hour": 14,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 45,
+      "tick": 350,
+      "day": 1,
+      "hour": 14,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 46,
+      "tick": 375,
+      "day": 1,
+      "hour": 15,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 47,
+      "tick": 375,
+      "day": 1,
+      "hour": 15,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 48,
+      "tick": 375,
+      "day": 1,
+      "hour": 15,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 49,
+      "tick": 400,
+      "day": 1,
+      "hour": 16,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 50,
+      "tick": 400,
+      "day": 1,
+      "hour": 16,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 51,
+      "tick": 400,
+      "day": 1,
+      "hour": 16,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 52,
+      "tick": 425,
+      "day": 1,
+      "hour": 17,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "KIEZ"
+    },
+    {
+      "id": 53,
+      "tick": 425,
+      "day": 1,
+      "hour": 17,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 54,
+      "tick": 425,
+      "day": 1,
+      "hour": 17,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 55,
+      "tick": 450,
+      "day": 1,
+      "hour": 18,
+      "npcId": "rita",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 56,
+      "tick": 450,
+      "day": 1,
+      "hour": 18,
+      "npcId": "boris",
+      "scheduled": "SHOP",
+      "intent": "SHOP",
+      "location": "MARKT"
+    },
+    {
+      "id": 57,
+      "tick": 450,
+      "day": 1,
+      "hour": 18,
+      "npcId": "mira",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 58,
+      "tick": 475,
+      "day": 1,
+      "hour": 19,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 59,
+      "tick": 475,
+      "day": 1,
+      "hour": 19,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 60,
+      "tick": 475,
+      "day": 1,
+      "hour": 19,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 61,
+      "tick": 500,
+      "day": 1,
+      "hour": 20,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 62,
+      "tick": 500,
+      "day": 1,
+      "hour": 20,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 63,
+      "tick": 500,
+      "day": 1,
+      "hour": 20,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 64,
+      "tick": 525,
+      "day": 1,
+      "hour": 21,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 65,
+      "tick": 525,
+      "day": 1,
+      "hour": 21,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 66,
+      "tick": 525,
+      "day": 1,
+      "hour": 21,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 67,
+      "tick": 550,
+      "day": 1,
+      "hour": 22,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 68,
+      "tick": 550,
+      "day": 1,
+      "hour": 22,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 69,
+      "tick": 550,
+      "day": 1,
+      "hour": 22,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 70,
+      "tick": 575,
+      "day": 1,
+      "hour": 23,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 71,
+      "tick": 575,
+      "day": 1,
+      "hour": 23,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 72,
+      "tick": 575,
+      "day": 1,
+      "hour": 23,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 73,
+      "tick": 600,
+      "day": 2,
+      "hour": 0,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 74,
+      "tick": 600,
+      "day": 2,
+      "hour": 0,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 75,
+      "tick": 600,
+      "day": 2,
+      "hour": 0,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 76,
+      "tick": 625,
+      "day": 2,
+      "hour": 1,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 77,
+      "tick": 625,
+      "day": 2,
+      "hour": 1,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 78,
+      "tick": 625,
+      "day": 2,
+      "hour": 1,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 79,
+      "tick": 650,
+      "day": 2,
+      "hour": 2,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 80,
+      "tick": 650,
+      "day": 2,
+      "hour": 2,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 81,
+      "tick": 650,
+      "day": 2,
+      "hour": 2,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 82,
+      "tick": 675,
+      "day": 2,
+      "hour": 3,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 83,
+      "tick": 675,
+      "day": 2,
+      "hour": 3,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 84,
+      "tick": 675,
+      "day": 2,
+      "hour": 3,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 85,
+      "tick": 700,
+      "day": 2,
+      "hour": 4,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 86,
+      "tick": 700,
+      "day": 2,
+      "hour": 4,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 87,
+      "tick": 700,
+      "day": 2,
+      "hour": 4,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 88,
+      "tick": 725,
+      "day": 2,
+      "hour": 5,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 89,
+      "tick": 725,
+      "day": 2,
+      "hour": 5,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 90,
+      "tick": 725,
+      "day": 2,
+      "hour": 5,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 91,
+      "tick": 750,
+      "day": 2,
+      "hour": 6,
+      "npcId": "rita",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 92,
+      "tick": 750,
+      "day": 2,
+      "hour": 6,
+      "npcId": "boris",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 93,
+      "tick": 750,
+      "day": 2,
+      "hour": 6,
+      "npcId": "mira",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 94,
+      "tick": 775,
+      "day": 2,
+      "hour": 7,
+      "npcId": "rita",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 95,
+      "tick": 775,
+      "day": 2,
+      "hour": 7,
+      "npcId": "boris",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 96,
+      "tick": 775,
+      "day": 2,
+      "hour": 7,
+      "npcId": "mira",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 97,
+      "tick": 800,
+      "day": 2,
+      "hour": 8,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "KIEZ"
+    },
+    {
+      "id": 98,
+      "tick": 800,
+      "day": 2,
+      "hour": 8,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 99,
+      "tick": 800,
+      "day": 2,
+      "hour": 8,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 100,
+      "tick": 825,
+      "day": 2,
+      "hour": 9,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 101,
+      "tick": 825,
+      "day": 2,
+      "hour": 9,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 102,
+      "tick": 825,
+      "day": 2,
+      "hour": 9,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 103,
+      "tick": 850,
+      "day": 2,
+      "hour": 10,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 104,
+      "tick": 850,
+      "day": 2,
+      "hour": 10,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 105,
+      "tick": 850,
+      "day": 2,
+      "hour": 10,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 106,
+      "tick": 875,
+      "day": 2,
+      "hour": 11,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 107,
+      "tick": 875,
+      "day": 2,
+      "hour": 11,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 108,
+      "tick": 875,
+      "day": 2,
+      "hour": 11,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 109,
+      "tick": 900,
+      "day": 2,
+      "hour": 12,
+      "npcId": "rita",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "KIEZ"
+    },
+    {
+      "id": 110,
+      "tick": 900,
+      "day": 2,
+      "hour": 12,
+      "npcId": "boris",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "MARKT"
+    },
+    {
+      "id": 111,
+      "tick": 900,
+      "day": 2,
+      "hour": 12,
+      "npcId": "mira",
+      "scheduled": "EAT_OUT",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 112,
+      "tick": 925,
+      "day": 2,
+      "hour": 13,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 113,
+      "tick": 925,
+      "day": 2,
+      "hour": 13,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 114,
+      "tick": 925,
+      "day": 2,
+      "hour": 13,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 115,
+      "tick": 950,
+      "day": 2,
+      "hour": 14,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 116,
+      "tick": 950,
+      "day": 2,
+      "hour": 14,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 117,
+      "tick": 950,
+      "day": 2,
+      "hour": 14,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 118,
+      "tick": 975,
+      "day": 2,
+      "hour": 15,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 119,
+      "tick": 975,
+      "day": 2,
+      "hour": 15,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 120,
+      "tick": 975,
+      "day": 2,
+      "hour": 15,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 121,
+      "tick": 1000,
+      "day": 2,
+      "hour": 16,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 122,
+      "tick": 1000,
+      "day": 2,
+      "hour": 16,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 123,
+      "tick": 1000,
+      "day": 2,
+      "hour": 16,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 124,
+      "tick": 1025,
+      "day": 2,
+      "hour": 17,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 125,
+      "tick": 1025,
+      "day": 2,
+      "hour": 17,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 126,
+      "tick": 1025,
+      "day": 2,
+      "hour": 17,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 127,
+      "tick": 1050,
+      "day": 2,
+      "hour": 18,
+      "npcId": "rita",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 128,
+      "tick": 1050,
+      "day": 2,
+      "hour": 18,
+      "npcId": "boris",
+      "scheduled": "SHOP",
+      "intent": "SHOP",
+      "location": "MARKT"
+    },
+    {
+      "id": 129,
+      "tick": 1050,
+      "day": 2,
+      "hour": 18,
+      "npcId": "mira",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 130,
+      "tick": 1075,
+      "day": 2,
+      "hour": 19,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 131,
+      "tick": 1075,
+      "day": 2,
+      "hour": 19,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 132,
+      "tick": 1075,
+      "day": 2,
+      "hour": 19,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 133,
+      "tick": 1100,
+      "day": 2,
+      "hour": 20,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 134,
+      "tick": 1100,
+      "day": 2,
+      "hour": 20,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 135,
+      "tick": 1100,
+      "day": 2,
+      "hour": 20,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 136,
+      "tick": 1125,
+      "day": 2,
+      "hour": 21,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 137,
+      "tick": 1125,
+      "day": 2,
+      "hour": 21,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 138,
+      "tick": 1125,
+      "day": 2,
+      "hour": 21,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 139,
+      "tick": 1150,
+      "day": 2,
+      "hour": 22,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 140,
+      "tick": 1150,
+      "day": 2,
+      "hour": 22,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 141,
+      "tick": 1150,
+      "day": 2,
+      "hour": 22,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 142,
+      "tick": 1175,
+      "day": 2,
+      "hour": 23,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 143,
+      "tick": 1175,
+      "day": 2,
+      "hour": 23,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 144,
+      "tick": 1175,
+      "day": 2,
+      "hour": 23,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 145,
+      "tick": 1200,
+      "day": 3,
+      "hour": 0,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 146,
+      "tick": 1200,
+      "day": 3,
+      "hour": 0,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 147,
+      "tick": 1200,
+      "day": 3,
+      "hour": 0,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 148,
+      "tick": 1225,
+      "day": 3,
+      "hour": 1,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 149,
+      "tick": 1225,
+      "day": 3,
+      "hour": 1,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 150,
+      "tick": 1225,
+      "day": 3,
+      "hour": 1,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 151,
+      "tick": 1250,
+      "day": 3,
+      "hour": 2,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 152,
+      "tick": 1250,
+      "day": 3,
+      "hour": 2,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 153,
+      "tick": 1250,
+      "day": 3,
+      "hour": 2,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 154,
+      "tick": 1275,
+      "day": 3,
+      "hour": 3,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 155,
+      "tick": 1275,
+      "day": 3,
+      "hour": 3,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 156,
+      "tick": 1275,
+      "day": 3,
+      "hour": 3,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 157,
+      "tick": 1300,
+      "day": 3,
+      "hour": 4,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 158,
+      "tick": 1300,
+      "day": 3,
+      "hour": 4,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 159,
+      "tick": 1300,
+      "day": 3,
+      "hour": 4,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 160,
+      "tick": 1325,
+      "day": 3,
+      "hour": 5,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 161,
+      "tick": 1325,
+      "day": 3,
+      "hour": 5,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 162,
+      "tick": 1325,
+      "day": 3,
+      "hour": 5,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 163,
+      "tick": 1350,
+      "day": 3,
+      "hour": 6,
+      "npcId": "rita",
+      "scheduled": "WAKE_UP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 164,
+      "tick": 1350,
+      "day": 3,
+      "hour": 6,
+      "npcId": "boris",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 165,
+      "tick": 1350,
+      "day": 3,
+      "hour": 6,
+      "npcId": "mira",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 166,
+      "tick": 1375,
+      "day": 3,
+      "hour": 7,
+      "npcId": "rita",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 167,
+      "tick": 1375,
+      "day": 3,
+      "hour": 7,
+      "npcId": "boris",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 168,
+      "tick": 1375,
+      "day": 3,
+      "hour": 7,
+      "npcId": "mira",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 169,
+      "tick": 1400,
+      "day": 3,
+      "hour": 8,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 170,
+      "tick": 1400,
+      "day": 3,
+      "hour": 8,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 171,
+      "tick": 1400,
+      "day": 3,
+      "hour": 8,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 172,
+      "tick": 1425,
+      "day": 3,
+      "hour": 9,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 173,
+      "tick": 1425,
+      "day": 3,
+      "hour": 9,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 174,
+      "tick": 1425,
+      "day": 3,
+      "hour": 9,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 175,
+      "tick": 1450,
+      "day": 3,
+      "hour": 10,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 176,
+      "tick": 1450,
+      "day": 3,
+      "hour": 10,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 177,
+      "tick": 1450,
+      "day": 3,
+      "hour": 10,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 178,
+      "tick": 1475,
+      "day": 3,
+      "hour": 11,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 179,
+      "tick": 1475,
+      "day": 3,
+      "hour": 11,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 180,
+      "tick": 1475,
+      "day": 3,
+      "hour": 11,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 181,
+      "tick": 1500,
+      "day": 3,
+      "hour": 12,
+      "npcId": "rita",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "KIEZ"
+    },
+    {
+      "id": 182,
+      "tick": 1500,
+      "day": 3,
+      "hour": 12,
+      "npcId": "boris",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "MARKT"
+    },
+    {
+      "id": 183,
+      "tick": 1500,
+      "day": 3,
+      "hour": 12,
+      "npcId": "mira",
+      "scheduled": "EAT_OUT",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 184,
+      "tick": 1525,
+      "day": 3,
+      "hour": 13,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 185,
+      "tick": 1525,
+      "day": 3,
+      "hour": 13,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 186,
+      "tick": 1525,
+      "day": 3,
+      "hour": 13,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 187,
+      "tick": 1550,
+      "day": 3,
+      "hour": 14,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 188,
+      "tick": 1550,
+      "day": 3,
+      "hour": 14,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 189,
+      "tick": 1550,
+      "day": 3,
+      "hour": 14,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 190,
+      "tick": 1575,
+      "day": 3,
+      "hour": 15,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 191,
+      "tick": 1575,
+      "day": 3,
+      "hour": 15,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 192,
+      "tick": 1575,
+      "day": 3,
+      "hour": 15,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 193,
+      "tick": 1600,
+      "day": 3,
+      "hour": 16,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 194,
+      "tick": 1600,
+      "day": 3,
+      "hour": 16,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 195,
+      "tick": 1600,
+      "day": 3,
+      "hour": 16,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 196,
+      "tick": 1625,
+      "day": 3,
+      "hour": 17,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 197,
+      "tick": 1625,
+      "day": 3,
+      "hour": 17,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 198,
+      "tick": 1625,
+      "day": 3,
+      "hour": 17,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 199,
+      "tick": 1650,
+      "day": 3,
+      "hour": 18,
+      "npcId": "rita",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 200,
+      "tick": 1650,
+      "day": 3,
+      "hour": 18,
+      "npcId": "boris",
+      "scheduled": "SHOP",
+      "intent": "SHOP",
+      "location": "MARKT"
+    },
+    {
+      "id": 201,
+      "tick": 1650,
+      "day": 3,
+      "hour": 18,
+      "npcId": "mira",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 202,
+      "tick": 1675,
+      "day": 3,
+      "hour": 19,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 203,
+      "tick": 1675,
+      "day": 3,
+      "hour": 19,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 204,
+      "tick": 1675,
+      "day": 3,
+      "hour": 19,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 205,
+      "tick": 1700,
+      "day": 3,
+      "hour": 20,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 206,
+      "tick": 1700,
+      "day": 3,
+      "hour": 20,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 207,
+      "tick": 1700,
+      "day": 3,
+      "hour": 20,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 208,
+      "tick": 1725,
+      "day": 3,
+      "hour": 21,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 209,
+      "tick": 1725,
+      "day": 3,
+      "hour": 21,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 210,
+      "tick": 1725,
+      "day": 3,
+      "hour": 21,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 211,
+      "tick": 1750,
+      "day": 3,
+      "hour": 22,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 212,
+      "tick": 1750,
+      "day": 3,
+      "hour": 22,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 213,
+      "tick": 1750,
+      "day": 3,
+      "hour": 22,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 214,
+      "tick": 1775,
+      "day": 3,
+      "hour": 23,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 215,
+      "tick": 1775,
+      "day": 3,
+      "hour": 23,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 216,
+      "tick": 1775,
+      "day": 3,
+      "hour": 23,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 217,
+      "tick": 1800,
+      "day": 4,
+      "hour": 0,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 218,
+      "tick": 1800,
+      "day": 4,
+      "hour": 0,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 219,
+      "tick": 1800,
+      "day": 4,
+      "hour": 0,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 220,
+      "tick": 1825,
+      "day": 4,
+      "hour": 1,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 221,
+      "tick": 1825,
+      "day": 4,
+      "hour": 1,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 222,
+      "tick": 1825,
+      "day": 4,
+      "hour": 1,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 223,
+      "tick": 1850,
+      "day": 4,
+      "hour": 2,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 224,
+      "tick": 1850,
+      "day": 4,
+      "hour": 2,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 225,
+      "tick": 1850,
+      "day": 4,
+      "hour": 2,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 226,
+      "tick": 1875,
+      "day": 4,
+      "hour": 3,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 227,
+      "tick": 1875,
+      "day": 4,
+      "hour": 3,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 228,
+      "tick": 1875,
+      "day": 4,
+      "hour": 3,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 229,
+      "tick": 1900,
+      "day": 4,
+      "hour": 4,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 230,
+      "tick": 1900,
+      "day": 4,
+      "hour": 4,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 231,
+      "tick": 1900,
+      "day": 4,
+      "hour": 4,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 232,
+      "tick": 1925,
+      "day": 4,
+      "hour": 5,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 233,
+      "tick": 1925,
+      "day": 4,
+      "hour": 5,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 234,
+      "tick": 1925,
+      "day": 4,
+      "hour": 5,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 235,
+      "tick": 1950,
+      "day": 4,
+      "hour": 6,
+      "npcId": "rita",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 236,
+      "tick": 1950,
+      "day": 4,
+      "hour": 6,
+      "npcId": "boris",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 237,
+      "tick": 1950,
+      "day": 4,
+      "hour": 6,
+      "npcId": "mira",
+      "scheduled": "WAKE_UP",
+      "intent": "WAKE_UP",
+      "location": "HOME"
+    },
+    {
+      "id": 238,
+      "tick": 1975,
+      "day": 4,
+      "hour": 7,
+      "npcId": "rita",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 239,
+      "tick": 1975,
+      "day": 4,
+      "hour": 7,
+      "npcId": "boris",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 240,
+      "tick": 1975,
+      "day": 4,
+      "hour": 7,
+      "npcId": "mira",
+      "scheduled": "EAT_HOME",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 241,
+      "tick": 2000,
+      "day": 4,
+      "hour": 8,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 242,
+      "tick": 2000,
+      "day": 4,
+      "hour": 8,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "COMMUTE",
+      "location": "MARKT"
+    },
+    {
+      "id": 243,
+      "tick": 2000,
+      "day": 4,
+      "hour": 8,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 244,
+      "tick": 2025,
+      "day": 4,
+      "hour": 9,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 245,
+      "tick": 2025,
+      "day": 4,
+      "hour": 9,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 246,
+      "tick": 2025,
+      "day": 4,
+      "hour": 9,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 247,
+      "tick": 2050,
+      "day": 4,
+      "hour": 10,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 248,
+      "tick": 2050,
+      "day": 4,
+      "hour": 10,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 249,
+      "tick": 2050,
+      "day": 4,
+      "hour": 10,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 250,
+      "tick": 2075,
+      "day": 4,
+      "hour": 11,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 251,
+      "tick": 2075,
+      "day": 4,
+      "hour": 11,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 252,
+      "tick": 2075,
+      "day": 4,
+      "hour": 11,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 253,
+      "tick": 2100,
+      "day": 4,
+      "hour": 12,
+      "npcId": "rita",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "KIEZ"
+    },
+    {
+      "id": 254,
+      "tick": 2100,
+      "day": 4,
+      "hour": 12,
+      "npcId": "boris",
+      "scheduled": "EAT_OUT",
+      "intent": "EAT_OUT",
+      "location": "MARKT"
+    },
+    {
+      "id": 255,
+      "tick": 2100,
+      "day": 4,
+      "hour": 12,
+      "npcId": "mira",
+      "scheduled": "EAT_OUT",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 256,
+      "tick": 2125,
+      "day": 4,
+      "hour": 13,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 257,
+      "tick": 2125,
+      "day": 4,
+      "hour": 13,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 258,
+      "tick": 2125,
+      "day": 4,
+      "hour": 13,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 259,
+      "tick": 2150,
+      "day": 4,
+      "hour": 14,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 260,
+      "tick": 2150,
+      "day": 4,
+      "hour": 14,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 261,
+      "tick": 2150,
+      "day": 4,
+      "hour": 14,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 262,
+      "tick": 2175,
+      "day": 4,
+      "hour": 15,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "KIEZ"
+    },
+    {
+      "id": 263,
+      "tick": 2175,
+      "day": 4,
+      "hour": 15,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 264,
+      "tick": 2175,
+      "day": 4,
+      "hour": 15,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 265,
+      "tick": 2200,
+      "day": 4,
+      "hour": 16,
+      "npcId": "rita",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 266,
+      "tick": 2200,
+      "day": 4,
+      "hour": 16,
+      "npcId": "boris",
+      "scheduled": "WORK",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 267,
+      "tick": 2200,
+      "day": 4,
+      "hour": 16,
+      "npcId": "mira",
+      "scheduled": "WORK",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 268,
+      "tick": 2225,
+      "day": 4,
+      "hour": 17,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 269,
+      "tick": 2225,
+      "day": 4,
+      "hour": 17,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 270,
+      "tick": 2225,
+      "day": 4,
+      "hour": 17,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 271,
+      "tick": 2250,
+      "day": 4,
+      "hour": 18,
+      "npcId": "rita",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 272,
+      "tick": 2250,
+      "day": 4,
+      "hour": 18,
+      "npcId": "boris",
+      "scheduled": "SHOP",
+      "intent": "WORK",
+      "location": "MARKT"
+    },
+    {
+      "id": 273,
+      "tick": 2250,
+      "day": 4,
+      "hour": 18,
+      "npcId": "mira",
+      "scheduled": "SHOP",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 274,
+      "tick": 2275,
+      "day": 4,
+      "hour": 19,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 275,
+      "tick": 2275,
+      "day": 4,
+      "hour": 19,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 276,
+      "tick": 2275,
+      "day": 4,
+      "hour": 19,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 277,
+      "tick": 2300,
+      "day": 4,
+      "hour": 20,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 278,
+      "tick": 2300,
+      "day": 4,
+      "hour": 20,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "EAT_HOME",
+      "location": "HOME"
+    },
+    {
+      "id": 279,
+      "tick": 2300,
+      "day": 4,
+      "hour": 20,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 280,
+      "tick": 2325,
+      "day": 4,
+      "hour": 21,
+      "npcId": "rita",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 281,
+      "tick": 2325,
+      "day": 4,
+      "hour": 21,
+      "npcId": "boris",
+      "scheduled": "PUB",
+      "intent": "PUB",
+      "location": "KIEZ"
+    },
+    {
+      "id": 282,
+      "tick": 2325,
+      "day": 4,
+      "hour": 21,
+      "npcId": "mira",
+      "scheduled": "PUB",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 283,
+      "tick": 2350,
+      "day": 4,
+      "hour": 22,
+      "npcId": "rita",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "MARKT"
+    },
+    {
+      "id": 284,
+      "tick": 2350,
+      "day": 4,
+      "hour": 22,
+      "npcId": "boris",
+      "scheduled": "COMMUTE",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 285,
+      "tick": 2350,
+      "day": 4,
+      "hour": 22,
+      "npcId": "mira",
+      "scheduled": "COMMUTE",
+      "intent": "VISIT_FRIEND",
+      "location": "KIEZ"
+    },
+    {
+      "id": 286,
+      "tick": 2375,
+      "day": 4,
+      "hour": 23,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 287,
+      "tick": 2375,
+      "day": 4,
+      "hour": 23,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 288,
+      "tick": 2375,
+      "day": 4,
+      "hour": 23,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 289,
+      "tick": 2400,
+      "day": 5,
+      "hour": 0,
+      "npcId": "rita",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 290,
+      "tick": 2400,
+      "day": 5,
+      "hour": 0,
+      "npcId": "boris",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    },
+    {
+      "id": 291,
+      "tick": 2400,
+      "day": 5,
+      "hour": 0,
+      "npcId": "mira",
+      "scheduled": "SLEEP",
+      "intent": "SLEEP",
+      "location": "HOME"
+    }
+  ],
+  "narrative": {
+    "arcBefore": {
+      "status": "WAITING",
+      "dueTick": 24
+    },
+    "arcAfter": {
+      "status": "WAITING",
+      "dueTick": 24
+    },
+    "echoSeen": true
+  },
+  "environment": {
+    "moodOnDirt": 49.97,
+    "moodOnClean": 50.03,
+    "hungryReputationGain": 0.2,
+    "fedReputationGain": 0.4000000000000001
+  },
+  "causalChain": {
+    "meal": {
+      "tick": 300,
+      "npcId": "rita",
+      "intent": "EAT_OUT",
+      "hungerDelta": -22,
+      "moodDelta": 5
+    },
+    "memory": {
+      "tick": 550,
+      "npcId": "rita",
+      "intent": "VISIT_FRIEND",
+      "memoryId": 13
+    },
+    "use": {
+      "tick": 1000,
+      "npcId": "rita",
+      "intent": "VISIT_FRIEND",
+      "memoryId": 13
+    }
+  },
+  "saveLoad": {
+    "restored": true,
+    "playerNeedsEqual": true
+  }
+}

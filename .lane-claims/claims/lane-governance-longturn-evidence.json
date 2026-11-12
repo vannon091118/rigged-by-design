@@ -1,0 +1,29 @@
+{
+  "id": "lane/governance/longturn-evidence",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/longturn-evidence",
+  "baseSha": "9a623d2ff3f354f6196e9e81c6dc38b3c0b0faf6",
+  "task": "Long-Turn-Evidenz und Doku-/Workflow-Abschluss",
+  "goal": "Den vollstaendigen Long-Turn-Lauf mit versioniertem Evidenzartefakt und den offenen Doku-/Workflow-Fixes reviewt veroeffentlichen.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "src/core/sim/__tests__/living-world-longturn.test.ts",
+    "src/core/sim/living-world-longturn-evidence.ts",
+    "src/core/sim/living-world-longturn-snapshots.ts",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "content/narrative/",
+    "docs/evidence/",
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/LOCAL_CI.md",
+    "docs/ROADMAP.md",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".github/workflows/render-inventory-sync.yml",
+    ".github/workflows/render-inventory-sync-main.yml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "9a623d2ff3f354f6196e9e81c6dc38b3c0b0faf6"
+}

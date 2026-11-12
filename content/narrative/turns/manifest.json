@@ -4052,6 +4052,10 @@
     {
       "turnId": "2026-11-12T08:50Z-foreign-walkable",
       "contributionId": "foreign-walkable-01"
+    },
+    {
+      "turnId": "2026-11-12T11:45Z-longturn-evidence",
+      "contributionId": "living-world-longturn-01"
     }
   ]
 }
