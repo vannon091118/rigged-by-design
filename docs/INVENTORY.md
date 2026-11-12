@@ -618,10 +618,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2682 |
-| Gelistete Dateien | 2682 |
+| Getrackte Dateien | 2686 |
+| Gelistete Dateien | 2686 |
 | Getrackte Ordner | 104 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), content (1014), docs (86), packages (27), public (554), scripts (116), src (841) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (27), content (1014), docs (86), packages (27), public (554), scripts (116), src (841) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -633,8 +633,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 11 Datei(en)
-- `.lane-claims/tasks/` — 11 Datei(en)
+- `.lane-claims/claims/` — 13 Datei(en)
+- `.lane-claims/tasks/` — 13 Datei(en)
 - `content/narrative/contributions/` — 1010 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
@@ -754,22 +754,26 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-remove-freeze.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-governance-render-plan-milestones.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-render-claim-main.json` — { — gelesen: 21 Zeilen
+- `.lane-claims/claims/lane-governance-render-plan-milestones.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-render-rework-final.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-remove-freeze.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/tasks/governance-render-claim-main.json` — { — gelesen: 15 Zeilen
 - `.lane-claims/tasks/governance-render-plan-milestones.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-render-rework-final.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
