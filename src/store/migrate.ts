@@ -24,6 +24,7 @@ import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
 import { normalizeCityState } from '../core/sim/city-persist';
 import { normalizeActionQueue, type ActionQueueState } from '../core/sim/action-queue';
+import { normalizeCityScene } from '../core/sim/city-scene';
 import type { SceneState, CitySceneState, OnboardingState } from '../core/sim/types';
 
 const DEMAND_TIERS: ReadonlySet<string> = new Set(['BUDE', 'KASSE', 'SAAL', 'KONZERN']);
@@ -101,7 +102,9 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
     ? { kind: 'FOREIGN', foreignFloorId: world.activeForeignFloorId }
     : { kind: 'OWN' });
   world.actionQueue = normalizeActionQueue(saved.actionQueue);
-  world.cityScene = saved.cityScene ?? world.cityScene;
+  // Alte Saves haben die 30x30-Portalstadt; sie wird auf das kanonische
+  // 60x60-Exterieur gehoben, statt sie als zweite Stadt weiterzufuehren.
+  world.cityScene = normalizeCityScene(saved.cityScene);
   world.sceneReturnPosition = saved.sceneReturnPosition ?? undefined;
   // Alte Saves kennen kein Onboarding; sie starten nicht noch einmal in der Stadt.
   world.onboarding = saved.onboarding ?? { step: 'DONE' };

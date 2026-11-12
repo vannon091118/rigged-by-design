@@ -1,6 +1,6 @@
 /** Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. */
 import { Container, Graphics, Text } from 'pixi.js';
-import { areasFor, type Area } from '../core/sim/grid-zones';
+import { areasForSize, type Area } from '../core/sim/grid-zones';
 import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
@@ -67,7 +67,8 @@ export function createSceneCache(): SceneCache {
   let scene = '';
 
   const redrawRoom = (view: GameView): void => {
-    const areas = areasFor(view.template);
+    // Die Weltkante entscheidet, nicht die Casino-Vorlage: die Stadt ist 60x60.
+    const areas = areasForSize(view.layout?.size ?? view.size);
     const phaseChanged = phase !== view.dayPhase;
     phase = view.dayPhase;
     const sceneChanged = scene !== view.scene.kind;
@@ -135,7 +136,7 @@ export function createSceneCache(): SceneCache {
   };
 
   const redrawDirt = (view: GameView): void => {
-    const areas = areasFor(view.template);
+    const areas = areasForSize(view.layout?.size ?? view.size);
     for (const area of areas) {
       const hash = dirtHashFor(view, area);
       let chunk = dirtChunks.get(area.id);

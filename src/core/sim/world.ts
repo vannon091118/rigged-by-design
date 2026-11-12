@@ -33,9 +33,15 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
   if (item) item.occupants = item.occupants.filter((id) => id !== guestId);
 }
 
-/** Das eine Navigationsraster der Welt: Moebel, Wandkanten und Layout im Cache. */
+/**
+ * Das eine Navigationsraster der aktiven Welt. Die Stadt traegt ihr eigenes
+ * 60x60-Layout; wer im Stadt-Floor klickt, darf nicht am alten 30er-Casino
+ * haengen bleiben. Ein Casino/ eine Wohnung nutzt weiterhin `world.layout`.
+ */
 export function worldNav(world: WorldState): NavGrid {
-  return navGrid(world.size, world.furniture, world.layout);
+  const city = world.scene.kind === 'CITY' ? world.cityScene : null;
+  const layout = city?.layout ?? world.layout;
+  return navGrid(layout.size, city?.furniture ?? world.furniture, layout);
 }
 
 /** Mehrere Zugaenge je Objekt; jeder liegt frei und teilt eine offene Kante mit ihm. */

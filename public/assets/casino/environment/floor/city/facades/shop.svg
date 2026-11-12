@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#d4c7a4"/><stop offset="1" stop-color="#9b8c6b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#c8f2e8"/><stop offset=".55" stop-color="#75b6ad"/><stop offset="1" stop-color="#2c5f5c"/>
+    </linearGradient>
+    <pattern id="awning" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#e9e0c6"/><rect width="12" height="24" fill="#1f7a72"/>
+    </pattern>
+  </defs>
+  <rect x="3" y="22" width="250" height="167" rx="3" fill="url(#wall)" stroke="#29241c" stroke-width="6"/>
+  <path d="M0 4h256v28l-12 8H12L0 32z" fill="#3a3730" stroke="#29241c" stroke-width="6"/>
+  <rect x="14" y="40" width="228" height="14" fill="#23251f"/>
+  <rect x="14" y="41" width="228" height="3" fill="#b8a87e" opacity=".5"/>
+  <rect x="18" y="60" width="220" height="16" fill="url(#awning)" stroke="#1c1914" stroke-width="2"/>
+  <path d="M18 76h220l-8 14H26z" fill="#1f7a72" opacity=".85"/>
+  <rect x="26" y="94" width="126" height="72" rx="2" fill="#1c2b28" stroke="#4d6f64" stroke-width="3"/>
+  <rect x="32" y="100" width="114" height="48" fill="url(#glass)"/>
+  <g fill="#e6f3e4" opacity=".7">
+    <rect x="40" y="118" width="10" height="26"/><rect x="54" y="124" width="8" height="20"/>
+    <rect x="68" y="111" width="12" height="33"/><rect x="85" y="121" width="9" height="23"/>
+    <rect x="100" y="115" width="13" height="29"/><rect x="119" y="126" width="8" height="18"/>
+  </g>
+  <g fill="#6b3f22" opacity=".9">
+    <rect x="38" y="144" width="20" height="6" rx="2"/><rect x="64" y="144" width="20" height="6" rx="2"/><rect x="90" y="144" width="20" height="6" rx="2"/><rect x="116" y="144" width="20" height="6" rx="2"/>
+  </g>
+  <rect x="26" y="152" width="126" height="4" fill="#9b8c6b"/>
+  <rect x="170" y="90" width="68" height="94" rx="2" fill="#222a25" stroke="#5f7567" stroke-width="3"/>
+  <rect x="177" y="101" width="54" height="58" fill="#101a17"/>
+  <rect x="182" y="106" width="44" height="20" fill="#ffdda6" opacity=".78"/>
+  <rect x="182" y="131" width="44" height="23" fill="#8ecfc4" opacity=".48"/>
+  <rect x="184" y="158" width="40" height="26" fill="#57493a"/>
+  <rect x="201" y="165" width="6" height="19" fill="#20251f"/>
+  <rect x="34" y="54" width="92" height="26" rx="2" fill="#142b29" stroke="#2d6b63" stroke-width="2"/>
+  <text x="80" y="72" text-anchor="middle" font-family="monospace" font-size="13" letter-spacing="2" fill="#d9fff5">SPÄTI 24</text>
+  <g fill="#2d2a22">
+    <rect x="148" y="28" width="5" height="18"/><rect x="156" y="28" width="5" height="18"/>
+  </g>
+  <rect x="4" y="184" width="248" height="6" fill="#1b1813" opacity=".8"/>
+</svg>

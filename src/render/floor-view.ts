@@ -23,6 +23,8 @@ import { StageBackdrop } from './stage-backdrop';
 import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
 import { EditorOverlay, type EditorCursor } from './editor-overlay';
+import { CityExteriorLayer, cityRenderPlan } from './city-exterior-layer';
+import { worldBoundsOf } from './world-bounds';
 
 export class FloorView {
   readonly #app: Application;
@@ -31,6 +33,7 @@ export class FloorView {
   readonly #callbacks: FloorCallbacks;
   readonly #rig: FloorCameraRig;
   readonly #scene: SceneCache;
+  readonly #city: CityExteriorLayer;
   readonly #lights = new LightPool();
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
@@ -54,12 +57,14 @@ export class FloorView {
     // Ein Schatten fuer alle Figuren, bevor der erste Gast gebaut wird.
     primeGuestShadow(app.renderer);
     this.#scene = createSceneCache();
+    this.#city = new CityExteriorLayer(this.#scene.depth);
+    this.#scene.world.addChild(this.#city.root);
     // Kamera-Buehne zuerst: Hinweise, Figuren und Effekte haengen an ihr.
     this.#rig = new FloorCameraRig({
       screen: app.screen,
       canvas: () => app.canvas,
       size: () => this.#view.size,
-      bounds: () => ({ width: this.#view.layout?.size ?? this.#view.size, height: this.#view.layout?.size ?? this.#view.size }),
+      bounds: () => worldBoundsOf(this.#view),
       onDetail: (detail) => this.#detailChanged(detail),
       onApplied: (lod, scale) => this.#cameraApplied(lod, scale),
     });
@@ -107,6 +112,7 @@ export class FloorView {
     const templateChanged = force || view.size !== previous.size || view.template !== previous.template || view.carpet !== previous.carpet;
     this.#view = view;
     this.#scene.redrawRoom(view);
+    this.#city.update(cityRenderPlan(view.cityExterior));
     this.#lights.update(view);
     this.#scene.setLabels(view, this.#rig.lod === 1);
     if (templateChanged) {
@@ -168,6 +174,7 @@ export class FloorView {
     this.#editor.destroy();
     this.#actors.clear();
     this.#entities.clear();
+    this.#city.destroy();
     this.#scene.destroy();
     this.#lights.destroy();
     this.#rig.destroy();
@@ -220,6 +227,7 @@ export class FloorView {
     if (this.#destroyed) return;
     const now = performance.now();
     animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props);
+    this.#city.animate(now, this.#view.dayPhase);
     this.#fx.update(now);
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
     this.#rig.shake(this.#fx.offset(now));

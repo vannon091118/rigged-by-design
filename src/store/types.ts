@@ -17,6 +17,7 @@ import type { FloorWorkView } from '../core/sim/floor-work';
 import type { CityView } from '../core/sim/city';
 import type { ActionTaskView } from '../core/sim/action-queue';
 import type { VenueView } from '../core/sim/venue-event';
+import type { CityExteriorModel } from '../core/sim/city-exterior';
 
 interface SceneView {
   readonly key: string;
@@ -130,6 +131,8 @@ export interface GameView {
   readonly ledgerCirculating: VaCoinMicro;
   /** Stadt-Sicht: Orte, Energie, Zweige und blockierte Handlungen. */
   readonly city: CityView;
+  /** Nur in der Stadt: die eine begehbare Aussenwelt fuer den Renderer. */
+  readonly cityExterior: CityExteriorModel | null;
   readonly notice: string;
   /** Aktive Szene und ihre serialisierte Auftragskette. */
   readonly scene: SceneView;

@@ -1,70 +1,56 @@
 /**
  * Stadt als begehbarer Floor. Die Stadtkarte bleibt eine Uebersicht; dieser
- * Plan ist die Projektion, auf der die Figur tatsaechlich steht.
+ * Plan ist die Projektion, auf der die Figur tatsaechlich steht. Die Quelle
+ * ist `createCityExteriorModel()`: 60x60 Strassen, Gebaeude und Requisiten
+ * werden nicht als zweite Stadtkopie gepflegt.
  */
-import { ZERO_VC } from '../economy/vacoin';
-import { BLUEPRINTS } from './house-presets';
-import { layoutFromTemplate, zonesFromLayout } from './layout-derive';
+import { createCityExteriorModel, type CityExteriorModel } from './city-exterior';
 import type { LayoutState } from './layout-types';
 import type { Furniture, Point, Zone } from './types-model';
+
+/** Alles aus dem Aussenwelt-Modell ausser dem Layout; das Layout bleibt oben. */
+type CityExteriorState = Omit<CityExteriorModel, 'layout'>;
 
 export interface CitySceneState {
   readonly layout: LayoutState;
   readonly zones: Zone[];
   readonly furniture: Furniture[];
+  /** Anzeigedaten der einen Stadtwahrheit; kein zweiter Szenengraph. */
+  readonly exterior: CityExteriorState;
 }
 
-const CITY_LABELS: Readonly<Record<string, string>> = {
-  ENTRANCE: 'STADT',
-  GAMING: 'CASINO',
-  BAR: 'MARKT',
-  TOILET: 'HOF',
-  STORAGE: 'LAGER',
-  LOUNGE: 'PARK',
-  EXCHANGE: 'KASSE',
-  EXPANSION: 'BAUPLATZ',
-};
-
-const PORTALS: readonly { readonly x: number; readonly y: number; readonly w: number; readonly h: number; readonly label: string }[] = [
-  { x: 4, y: 4, w: 7, h: 5, label: 'DEIN CASINO' },
-  { x: 18, y: 5, w: 7, h: 4, label: 'MARKT' },
-  { x: 5, y: 19, w: 6, h: 4, label: 'HOF' },
-  { x: 19, y: 19, w: 6, h: 4, label: 'NACHBARSCHAFT' },
-];
-
+/**
+ * Die Stadt hat keine Portal-Furniture mehr: Gebaeude, Tueren und Requisiten
+ * kommen aus dem Exterieur-Modell. Die frueheren Menue-Portale waren eine
+ * zweite, 30x30 grosse Stadtkopie und hatten keinen Renderer.
+ */
 export function createCityScene(): CitySceneState {
-  const layout = layoutFromTemplate('SMALL');
-  const zones = zonesFromLayout(layout).map((zone) => ({
-    ...zone,
-    name: CITY_LABELS[zone.kind] ?? zone.name,
-  })) as Zone[];
-  const base = BLUEPRINTS.SMALL.furniture()[0];
-  if (!base) return { layout, zones, furniture: [] };
-  const furniture = PORTALS.map((portal, index) => ({
-    ...base,
-    id: 20_000 + index,
-    kind: 'DECOR' as const,
-    gameId: undefined,
-    x: portal.x,
-    y: portal.y,
-    w: portal.w,
-    h: portal.h,
-    seats: 0,
-    label: portal.label,
-    price: ZERO_VC,
-    condition: 100,
-    damaged: false,
-    dirt: 0,
-    stock: 0,
-    clog: 0,
-    clogged: false,
-    zoneId: layout.zones[index % layout.zones.length]?.id ?? 'entrance',
-    occupants: [],
-    mods: [],
-    reels: 3,
-    baseBet: ZERO_VC,
-  }));
-  return { layout, zones, furniture };
+  const exterior = createCityExteriorModel();
+  const layout = exterior.layout;
+  return {
+    layout,
+    zones: [...layout.zones],
+    furniture: [],
+    exterior: {
+      layoutId: exterior.layoutId,
+      name: exterior.name,
+      buildings: exterior.buildings,
+      props: exterior.props,
+      playerApartmentStreetSpawn: exterior.playerApartmentStreetSpawn,
+    },
+  };
 }
 
-export const CITY_SPAWN: Point = { x: 2, y: 2 };
+/**
+ * Alte Saves tragen noch die 30x30-Projektion aus der Vorlage. Sie wird beim
+ * Laden einmal auf das echte Exterieur gehoben; neue Saves behalten ihre
+ * statische Stadtkopie, damit IDs und Eingaenge stabil bleiben.
+ */
+export function normalizeCityScene(raw?: CitySceneState | null): CitySceneState {
+  if (!raw || !raw.exterior || raw.layout?.size !== 60) return createCityScene();
+  if (!Array.isArray(raw.exterior.buildings) || !Array.isArray(raw.exterior.props)) return createCityScene();
+  return raw;
+}
+
+/** Der Spieler betritt die Stadt vor seiner Haustuer, nicht auf der alten 2,2-Kachel. */
+export const CITY_SPAWN: Point = { x: 8, y: 13 };

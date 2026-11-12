@@ -29,7 +29,7 @@ Accessibility-Abfrage); das ist eine Umgebungsgrenze, kein grüner Bildbeleg.
 | R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
 | R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
-| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **blockiert**; keine zweite Stadt erfunden |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad); R8–R9 offen; keine zweite Stadt erfunden |
 | R12 | Ambient setzt R9 voraus; ohne sichtbare Stadt kein Wetter-/Tag-Nacht-Layer | **blockiert** |
 
 Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
@@ -396,17 +396,35 @@ kein Test-only-Renderer.
 `city-ground.ts`, `city-buildings.ts`, `city-doors.ts`),
 `src/render/__tests__/city-world.test.ts`.
 
+**Belegstand 2026-11-12 (D5):** `createCityScene()` projiziert jetzt das
+kanonische `createCityExteriorModel()` (60x60, vier Fassaden, fuenf
+Strassenrequisiten) in `world.cityScene`; `buildView` reicht `cityExterior` an
+den Renderer, `CityExteriorLayer` zeichnet Fassaden/Requisiten mit benannten
+Rollen und echten SVG-Texturen, `FloorView` aktualisiert sie pro Frame und
+`areasForSize` teilt 60x60 in vier 30er-Chunks. Kamera-Grenzen kommen aus
+`worldBoundsOf` (echte 60x60-Kante), nicht aus der 30er-Vorlage. Deterministisch
+belegt durch `src/render/__tests__/city-exterior.test.ts` (Produktions-Entry
+`createWorld` → `SceneCommands.enterCity` → `buildView` → Renderplan), inkl.
+60x60-Navigation. **Noch offen:** echter Browser-Screenshot, Tuerklick ueber
+`floor-hit`, DOM-/Screenreader-Zugang, WorldManager und der vollstaendige
+S2-12-Uebergang. Diese Punkte bleiben bewusst unabgehakt.
+
 **Aufgaben**
 
-- [ ] **S2-12 bleibt der Kern:** Das Stadtnetz und die Ortskanten kommen aus
+- [x] **S2-12 bleibt der Kern:** Das Stadtnetz und die Ortskanten kommen aus
       `city-scene.ts`/`city.ts`; R7 baut keinen zweiten Szenengraphen und keine
-      zweite Wegewahrheit.
-- [ ] `CityExteriorModel` als Adapter aus `createCityExteriorModel()` lesen;
+      zweite Wegewahrheit. *(belegt: `cityScene.layout` ist die direkte
+      Exterieur-Projektion; alte 30x30-Portale entfernt)*
+- [x] `CityExteriorModel` als Adapter aus `createCityExteriorModel()` lesen;
       der Renderer importiert keine Test-Fixtures und keine UI-Popup-Daten.
+      *(belegt: `snapshot.ts` → `GameView.cityExterior`; Test durch
+      `SceneCommands.enterCity`)*
 - [ ] `city-popup.tsx` und die alte `city-scene`-Darstellung auf den Adapter
       umstellen oder als Menüzugang stilllegen; keine parallele Stadtansicht.
-- [ ] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
+- [x] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
       rendern; Tiefe über Fußanker, nicht über Namenssortierung.
+      *(belegt: `CityExteriorLayer` + `cityRenderPlan`; vier Fassaden und fuenf
+      Requisiten mit `depth.set(..., 'prop', ...)`)*
 - [ ] `WorldManager` mit genau einer aktiven Welt einführen. `GameView` bleibt
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.

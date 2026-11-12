@@ -16,6 +16,7 @@ import { buildView } from '../../store/snapshot';
 import type { GameView } from '../../store/types';
 import { floorArtFor } from '../floor-material';
 import { resolveFurnitureRole, type FurnitureRole } from '../decor-roles';
+import { cityRenderPlan } from '../city-exterior-layer';
 
 type VisualSceneId = 'casino-overview' | 'casino-detail' | 'city' | 'apartment';
 
@@ -48,7 +49,7 @@ export function createVisualScenes(): readonly VisualScene[] {
   return [
     { id: 'casino-overview', label: 'Casino · Übersicht', view: casino, camera: { x: 15, y: 15, zoom: 1 } },
     { id: 'casino-detail', label: 'Casino · Detail', view: casino, camera: { x: 16, y: 14, zoom: 2.4 } },
-    { id: 'city', label: 'Stadt · Straßenraum', view: viewFor('CITY'), camera: { x: 15, y: 15, zoom: 1 } },
+    { id: 'city', label: 'Stadt · Straßenraum', view: viewFor('CITY'), camera: { x: 30, y: 30, zoom: 1 } },
     { id: 'apartment', label: 'Wohnung · vier Bereiche', view: viewFor('APARTMENT'), camera: { x: 8, y: 8, zoom: 1 } },
   ];
 }
@@ -68,6 +69,8 @@ const ROLE_TINT: Readonly<Record<FurnitureRole, number>> = {
 };
 
 interface SvgRect { readonly x: number; readonly y: number; readonly w: number; readonly h: number; readonly fill: string; }
+
+const cityArtUrl = (asset: string): string => `/assets/casino/${asset}`;
 
 function visibleWorld(view: GameView, camera: VisualCamera): { x: number; y: number; w: number; h: number; scale: number } {
   const worldW = view.size * TILE;
@@ -104,6 +107,13 @@ export function renderSceneSvg(scene: VisualScene): string {
     const role = resolveFurnitureRole(item);
     return `<rect x="${item.x * TILE}" y="${item.y * TILE}" width="${item.w * TILE}" height="${item.h * TILE}" fill="${hex(role ? ROLE_TINT[role.role] : 0xff9a3d)}" data-role="${role?.key ?? 'unresolved'}"/>`;
   }).join('');
+  const city = cityRenderPlan(view.cityExterior);
+  // Der Bildvertrag zeigt dieselben echten Texturen wie der Pixi-Layer; kein
+  // Farbwert steht fuer eine Stadtflaeche ein.
+  const citySurfaces = city
+    ? city.buildings.map((building) => `<image x="${building.footprint.x * TILE}" y="${building.footprint.y * TILE}" width="${building.footprint.w * TILE}" height="${building.footprint.h * TILE}" href="${cityArtUrl(building.asset)}" data-role="${building.role}"/>`).join('')
+      + city.props.map((prop) => `<image x="${prop.x * TILE}" y="${prop.y * TILE}" width="${TILE}" height="${TILE}" href="${cityArtUrl(prop.asset)}" data-role="${prop.role}"/>`).join('')
+    : '';
   const guests = view.guests.map((guest) =>
     `<circle cx="${(guest.position.x + 0.5) * TILE}" cy="${(guest.position.y + 0.8) * TILE}" r="${3 + guest.addiction / 50}" fill="#ff2e88" data-guest="${guest.id}"/>`,
   ).join('');
@@ -112,7 +122,7 @@ export function renderSceneSvg(scene: VisualScene): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${VISUAL_SIZE.width}" height="${VISUAL_SIZE.height}" viewBox="${viewBox}" data-scene="${scene.id}" data-label="${scene.label}">`
     + `<rect x="${frame.x}" y="${frame.y}" width="${frame.w}" height="${frame.h}" fill="#140d24"/>`
     + rects.map((r) => `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="${r.fill}"/>`).join('')
-    + furniture + guests + player
+    + furniture + citySurfaces + guests + player
     + '</svg>';
 }
 
