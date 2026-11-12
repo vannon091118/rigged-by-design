@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T12:20Z-render-threshold",
+  "contributionId": "render-threshold-voice-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-high",
+  "function": "react",
+  "contexts": [
+    "welcome"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Durch die offene Schwelle sieht man den Boden bis in den Raum hinein. Kein Brett, keine Kante, nur der Weg, der schon da war.",
+  "directives": []
+}

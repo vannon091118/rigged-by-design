@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:18afc2e5ac46f4af177ce9a67e39ebd1e4caa57ed9abea06a52239c39e030a9a",
+  "contentHash": "sha256:88d8c3b62ee583d6a620732126169c3fb43a00aa46a83f38d7651f0d72ae5abc",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21838,6 +21838,28 @@
       "text": "Die Figuren auf dem Casino-Floor sind keine einwinkeligen Sticker mehr, sondern gerichtete Sprite-Modelle aus dem Charakter-Atlas. Koerper, Beine und Arme werden aus Atlas-Texturen gebaut und in die Persona-Farbe getintet; der vorhandene Rig, die Pose-Logik und die Fussanker-Tiefe bleiben unverändert. Damit sieht jede Figur aus jeder Richtung anders aus und wirkt gestellt statt aufgeklebt.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-render-sprite-01.json"
+    },
+    {
+      "contributionId": "render-threshold-voice-01",
+      "turnId": "2026-11-12T12:20Z-render-threshold",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "guest-voice-high",
+      "function": "react",
+      "contexts": [
+        "welcome"
+      ],
+      "tone": "trocken",
+      "mood": "neutral",
+      "relationship": "distanz",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Durch die offene Schwelle sieht man den Boden bis in den Raum hinein. Kein Brett, keine Kante, nur der Weg, der schon da war.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-threshold-voice-01.json"
     },
     {
       "contributionId": "render-world-visual-presentation-1",

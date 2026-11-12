@@ -9,8 +9,11 @@ type DepthKind = 'prop' | 'furniture' | 'actor' | 'wall';
 
 /** Rang bei gleichem Anker: Requisite, Moebel, Figur, Wand. */
 const RANK: Readonly<Record<DepthKind, number>> = { prop: 0, furniture: 1, actor: 2, wall: 3 };
-/** IDs bleiben klein; 0..999 reicht fuer Gaeste, Moebel und Kanten. */
-const ID_SPAN = 1000;
+/**
+ * 15 Bit fuer Wand-IDs: 7 Bit je Achse (Layouts bis 90) plus Achsenbit.
+ * Der Wert muss den groessten Rueckgabewert von `wallDepthId` aufnehmen.
+ */
+const ID_SPAN = 32_768;
 
 /** Fussanker eines Footprints in Pixeln; `tileH` ist die Hoehe in Tiles. */
 export function footAnchor(tileY: number, tileH: number, tile: number): number {

@@ -133,17 +133,24 @@ interface ClientRect {
   readonly left: number;
   readonly top: number;
   readonly width: number;
+  readonly height: number;
 }
 
-/** Bildschirmpixel zu Tile; außerhalb des Floors null. */
+/**
+ * Bildschirmpixel zu Tile; ausserhalb des Floors oder bei einer nicht
+ * eindeutigen Letterbox null. Zwei unterschiedliche Achsenfaktoren wuerden
+ * sonst still auf der falschen Achse landen, statt die Inverse zu verweigern.
+ */
 export function screenToTile(
-  clientX: number, clientY: number, rect: ClientRect, screenW: number,
+  clientX: number, clientY: number, rect: ClientRect, screenW: number, screenH: number,
   cameraX: number, cameraY: number, scale: number, size: number, tile = TILE, height = size,
 ): { x: number; y: number } | null {
-  if (rect.width === 0) return null;
-  const factor = rect.width / screenW;
-  const x = Math.floor(((clientX - rect.left) / factor - cameraX) / scale / tile);
-  const y = Math.floor(((clientY - rect.top) / factor - cameraY) / scale / tile);
+  if (rect.width === 0 || rect.height === 0 || screenW <= 0 || screenH <= 0) return null;
+  const factorX = rect.width / screenW;
+  const factorY = rect.height / screenH;
+  if (Math.abs(factorX - factorY) > 1e-6) return null;
+  const x = Math.floor(((clientX - rect.left) / factorX - cameraX) / scale / tile);
+  const y = Math.floor(((clientY - rect.top) / factorX - cameraY) / scale / tile);
   if (x < 0 || y < 0 || x >= size || y >= height) return null;
   return { x, y };
 }

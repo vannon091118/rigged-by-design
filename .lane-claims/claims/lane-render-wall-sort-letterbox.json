@@ -1,0 +1,31 @@
+{
+  "id": "lane/render/wall-sort-letterbox",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/wall-sort-letterbox",
+  "baseSha": "f6ef9a34e1fc4f8d944f56ad44d05bae5908671a",
+  "task": "Wandtiefe, Letterbox und Türschwellen",
+  "goal": "Die fünf Render-Patches für eindeutige Wand-IDs, letterbox-sichere Tile-Treffer, sichtbare Türschwellen, eine gemeinsame Vorderseiten-Geometrie und tile-groessenbewusste Wandtexturen umsetzen und belegen.",
+  "pathAllowlist": [
+    "src/render/wall-art.ts",
+    "src/render/wall-occlusion.ts",
+    "src/render/depth.ts",
+    "src/render/floor-math.ts",
+    "src/render/floor-camera-rig.ts",
+    "src/render/__tests__/depth.test.ts",
+    "src/render/__tests__/floor-cache.test.ts",
+    "src/render/__tests__/floor-layout.test.ts",
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    ".lane-claims/claims/lane-render-wall-sort-letterbox.json",
+    "content/narrative/contributions/2026-11-12-render-threshold-voice-01.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "src/core/sim/narrative/composer/registry.generated.ts",
+    "src/core/sim/narrative/composer/slot-map.generated.ts"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "f6ef9a34e1fc4f8d944f56ad44d05bae5908671a"
+}

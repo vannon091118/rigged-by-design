@@ -73,10 +73,16 @@ describe('Culling', () => {
 describe('Koordinaten', () => {
   it('rechnet Bildschirmpixel in Tiles um und clampet Ränder', () => {
     const tile = TILE;
-    expect(screenToTile(30, 60, { left: 0, top: 0, width: 800 }, 800, 0, 0, 1, 90)).toEqual({
+    const rect = { left: 0, top: 0, width: 800, height: 600 };
+    expect(screenToTile(30, 60, rect, 800, 600, 0, 0, 1, 90)).toEqual({
       x: Math.floor(30 / tile), y: Math.floor(60 / tile),
     });
-    expect(screenToTile(-5, -5, { left: 0, top: 0, width: 800 }, 800, 0, 0, 1, 30)).toBeNull();
-    expect(screenToTile(799, 599, { left: 0, top: 0, width: 800 }, 800, 0, 0, 1, 30)).toBeNull();
+    expect(screenToTile(-5, -5, rect, 800, 600, 0, 0, 1, 30)).toBeNull();
+    expect(screenToTile(799, 599, rect, 800, 600, 0, 0, 1, 30)).toBeNull();
+  });
+
+  it('verweigert eine nicht-uniforme Letterbox statt falsch zu mappen', () => {
+    const rect = { left: 0, top: 0, width: 800, height: 500 };
+    expect(screenToTile(30, 60, rect, 800, 600, 0, 0, 1, 30)).toBeNull();
   });
 });

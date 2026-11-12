@@ -102,7 +102,7 @@ export class FloorCameraRig {
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
     const rect = this.#deps.canvas().getBoundingClientRect();
     const bounds = this.#bounds();
-    return screenToTile(clientX, clientY, rect, this.#deps.screen.width,
+    return screenToTile(clientX, clientY, rect, this.#deps.screen.width, this.#deps.screen.height,
       this.root.x, this.root.y, this.root.scale.x, bounds.width, TILE, bounds.height);
   }
 

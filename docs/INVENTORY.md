@@ -642,10 +642,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2761 |
-| Gelistete Dateien | 2761 |
+| Getrackte Dateien | 2764 |
+| Gelistete Dateien | 2764 |
 | Getrackte Ordner | 113 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (21), artifacts (1), content (1018), docs (87), packages (27), public (571), scripts (116), src (899) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), artifacts (1), content (1019), docs (87), packages (27), public (571), scripts (116), src (899) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -657,10 +657,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 10 Datei(en)
-- `.lane-claims/tasks/` — 10 Datei(en)
+- `.lane-claims/claims/` — 11 Datei(en)
+- `.lane-claims/tasks/` — 11 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1014 Datei(en)
+- `content/narrative/contributions/` — 1015 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -791,6 +791,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-player-needs.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 30 Zeilen
+- `.lane-claims/claims/lane-render-wall-sort-letterbox.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-longturn-evidence.json` — { — gelesen: 39 Zeilen
@@ -801,6 +802,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-player-needs.json` — { — gelesen: 46 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
+- `.lane-claims/tasks/render-wall-sort-letterbox.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1821,8 +1823,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-r7-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-rework-plan.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22730 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4061 Zeilen
+- `content/narrative/contributions/2026-11-12-render-threshold-voice-01.json` — { — gelesen: 21 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22752 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4065 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -3208,15 +3211,15 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/city-exterior.test.ts` — Abnahme ohne Screenshot: der normale Store-Einstieg erzeugt die 60x60-Stadt, — gelesen: 165 Zeilen
 - `src/render/__tests__/city-shadow-late-texture.test.ts` — Schatten und Licht teilen die lazy geladene Radialtextur. Fehlt sie beim — gelesen: 69 Zeilen
 - `src/render/__tests__/decor-roles.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
-- `src/render/__tests__/depth.test.ts` — Ein gemeinsamer Tiefenvertrag: Fussanker statt Oberkante, deterministisches — gelesen: 82 Zeilen
+- `src/render/__tests__/depth.test.ts` — Ein gemeinsamer Tiefenvertrag: Fussanker statt Oberkante, deterministisches — gelesen: 119 Zeilen
 - `src/render/__tests__/floor-actions.test.ts` — Der Lager-Spiegel ist die einzige Deko mit einer Charaktereditor-Aktion; — gelesen: 28 Zeilen
 - `src/render/__tests__/floor-anchor.test.ts` — Der Weltanker ist die Gegenrichtung zum Trefferpfad: derselbe Punkt muss — gelesen: 42 Zeilen
-- `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 82 Zeilen
+- `src/render/__tests__/floor-cache.test.ts` — Regions-Hash, Invalidierung, LOD, Culling und Koordinaten sind reine Mathe. — gelesen: 88 Zeilen
 - `src/render/__tests__/floor-camera-bounds.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 70 Zeilen
 - `src/render/__tests__/floor-camera.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 39 Zeilen
 - `src/render/__tests__/floor-hit.test.ts` — Ein Trefferpfad: Tiefe vor Array-Reihenfolge, Figur vor Moebel, Wand vor — gelesen: 73 Zeilen
 - `src/render/__tests__/floor-input.test.ts` — Ein Klick, ein Ergebnis: Maus und Finger teilen den Trefferpfad, die — gelesen: 95 Zeilen
-- `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 145 Zeilen
+- `src/render/__tests__/floor-layout.test.ts` — Bodenmaterialien kommen aus dem Layout, nicht aus Zonen. Fallback-IDs, — gelesen: 161 Zeilen
 - `src/render/__tests__/guest-sprite.test.ts` — Gast-Bemalung nutzt echte Sprite-Bauteile aus dem Charakter-Atlas statt — gelesen: 78 Zeilen
 - `src/render/__tests__/light-pool.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
 - `src/render/__tests__/locomotion.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 28 Zeilen
@@ -3245,7 +3248,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/comic-bubbles.ts` — Kleine Comic-Sprechblase: eine Grafik statt eines Satzes, pro Figur gepoolt. — gelesen: 152 Zeilen
 - `src/render/decor-roles.ts` — Stabile Renderrollen für Möbel und Deko. — gelesen: 87 Zeilen
 - `src/render/depth-perf.bench.ts` — Tiefensortierung derselben Szene auf SMALL, MEDIUM und LARGE: 200 Figuren, — gelesen: 48 Zeilen
-- `src/render/depth.ts` — Gemeinsamer Tiefenvertrag der Szene: sortiert wird ausschliesslich nach dem — gelesen: 53 Zeilen
+- `src/render/depth.ts` — Gemeinsamer Tiefenvertrag der Szene: sortiert wird ausschliesslich nach dem — gelesen: 56 Zeilen
 - `src/render/editor-overlay.ts` — Editor-Auswahl als reine Pixi-Darstellung: eine Zelle und optional ihre Kante. — gelesen: 50 Zeilen
 - `src/render/entity-sync.ts` — Figuren- und Möbelsync eines Frames: aus dem Snapshot in die Tiefenebene, — gelesen: 221 Zeilen
 - `src/render/floor-actions.ts` — Baut die Aktionskarte fuer ein geklicktes Ziel. Eine Quelle fuer Maus, Tastatur und Touch. — gelesen: 205 Zeilen
@@ -3259,7 +3262,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/floor-input.ts` — Floor-Input: ein Trefferpfad, eine Aktionsliste, ein Ergebnis. Kein zweiter Klickpfad. — gelesen: 121 Zeilen
 - `src/render/floor-interact.ts` — Verarbeitet Radial-Menu-Aktionen vom Floor. — gelesen: 26 Zeilen
 - `src/render/floor-material.ts` — Bodenmaterialien aus dem Layout: pro `FloorMaterialId` genau eine — gelesen: 139 Zeilen
-- `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 149 Zeilen
+- `src/render/floor-math.ts` — Reine Floor-Mathe: Regions-Hash, Invalidierung, LOD, Culling, Koordinaten. Kein Pixi. — gelesen: 156 Zeilen
 - `src/render/floor-perf.bench.ts` — Worst-Case: 90×90-Floor, 9 Regionen, 500 Dreck-Tiles, 200 Entities. — gelesen: 55 Zeilen
 - `src/render/floor-props.ts` — Requisiten: Personal, Lieferkisten, Streitmarker und Platzierungs-Geist. Liest nur Snapshots. — gelesen: 233 Zeilen
 - `src/render/floor-route.ts` — Laufwege: Teppichlaeufer zwischen den Raeumen, gelegt von Zonenrand zu Zonenrand, — gelesen: 84 Zeilen
@@ -3320,8 +3323,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/view-layers.ts` — Snapshot in die vorhandenen Darstellungs-Layer schieben. — gelesen: 66 Zeilen
 - `src/render/visual/__tests__/scene-frame.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 38 Zeilen
 - `src/render/visual/scene-frame.ts` — Deterministischer Bildvertrag für die vier R1-Szenen. — gelesen: 152 Zeilen
-- `src/render/wall-art.ts` — Türschwellen aus den gespeicherten Kanten. Wandkoerper liegen bewusst nicht — gelesen: 95 Zeilen
-- `src/render/wall-occlusion.ts` — Vordergrund-Waende als eigene Occlusion-Schicht. Jede Wand ist ein Sprite in — gelesen: 66 Zeilen
+- `src/render/wall-art.ts` — Türschwellen aus den gespeicherten Kanten. Wandkoerper liegen bewusst nicht — gelesen: 107 Zeilen
+- `src/render/wall-occlusion.ts` — Vordergrund-Waende als eigene Occlusion-Schicht. Jede Wand ist ein Sprite in — gelesen: 74 Zeilen
 - `src/render/world-bounds.ts` — Die Kamera-Grenzen sind die echten Weltkanten, nicht die Casino-Vorlage. — gelesen: 8 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
 - `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen

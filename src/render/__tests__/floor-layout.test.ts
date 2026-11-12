@@ -21,7 +21,7 @@ import {
   floorTextureKey,
   materialAt,
 } from '../floor-material';
-import { doorParts, wallBandRect, wallFaceRect } from '../wall-art';
+import { doorParts, thresholdLines, wallBandRect, wallFaceInBand, wallFaceRect } from '../wall-art';
 
 const SIZE = 30;
 
@@ -103,6 +103,22 @@ describe('Wand- und Tuergeometrie', () => {
     const v = edge('V', 7, 4, 'WALL');
     expect(wallFaceRect(h, SIZE, TILE).y).toBe(7 * TILE + 6 - 3);
     expect(wallFaceRect(v, SIZE, TILE).x).toBe(7 * TILE + 6 - 3);
+  });
+
+  it('liest die Vorderseite aus derselben Bandgeometrie', () => {
+    for (const edgeCase of [edge('H', 4, 7, 'WALL'), edge('V', 7, 4, 'WALL')]) {
+      expect(wallFaceRect(edgeCase, SIZE, TILE)).toEqual(wallFaceInBand(edgeCase.axis, wallBandRect(edgeCase, SIZE, TILE)));
+    }
+  });
+
+  it('legt keine deckende Schwelle ueber den Boden', () => {
+    const horizontal = thresholdLines(edge('H', 5, 5, 'DOOR'), SIZE, TILE);
+    expect(horizontal).toHaveLength(2);
+    expect(horizontal[0]).toMatchObject({ w: TILE, h: 1 });
+    expect(horizontal[1]).toMatchObject({ w: TILE, h: 1 });
+    const vertical = thresholdLines(edge('V', 5, 5, 'DOOR'), SIZE, TILE);
+    expect(vertical[0]).toMatchObject({ w: 1, h: TILE });
+    expect(vertical[1]).toMatchObject({ w: 1, h: TILE });
   });
 
   it('gibt Tueren Pfosten, Durchgaengen nur eine Schwelle', () => {
