@@ -1,0 +1,20 @@
+{
+  "id": "lane/governance/post-merge-486",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/post-merge-486",
+  "baseSha": "e33e5ef65c0657090d2185774d40b895ec7166ca",
+  "task": "Post-Merge-Closeout #486",
+  "goal": "Pending-Claim und Task-Vertrag aus PR #486 nach dem Merge automatisch schliessen und den Beweisstand dokumentieren.",
+  "pathAllowlist": [
+    ".lane-claims/",
+    "docs/RENDER_REWORK_PLAN.md",
+    "docs/INVENTORY.md"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "e33e5ef65c0657090d2185774d40b895ec7166ca",
+  "createdAt": "e33e5ef65c0657090d2185774d40b895ec7166ca"
+}

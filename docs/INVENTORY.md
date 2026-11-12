@@ -642,10 +642,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2771 |
-| Gelistete Dateien | 2771 |
+| Getrackte Dateien | 2773 |
+| Gelistete Dateien | 2773 |
 | Getrackte Ordner | 112 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (10), .lane-claims (33), artifacts (1), content (1017), docs (86), packages (27), public (571), scripts (116), src (897) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (10), .lane-claims (35), artifacts (1), content (1017), docs (86), packages (27), public (571), scripts (116), src (897) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -657,8 +657,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 5 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 16 Datei(en)
-- `.lane-claims/tasks/` — 16 Datei(en)
+- `.lane-claims/claims/` — 17 Datei(en)
+- `.lane-claims/tasks/` — 17 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1013 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -787,6 +787,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 48 Zeilen
 - `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-470.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-486.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-remove-freeze.json` — { — gelesen: 35 Zeilen
 - `.lane-claims/claims/lane-governance-render-claim-main.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-render-plan-milestones.json` — { — gelesen: 21 Zeilen
@@ -794,7 +795,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-living-world-causal-trace.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/claims/lane-living-world-causal-trace.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-player-needs.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 30 Zeilen
@@ -803,6 +804,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-post-merge-470.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-post-merge-486.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-remove-freeze.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-render-claim-main.json` — { — gelesen: 15 Zeilen
 - `.lane-claims/tasks/governance-render-plan-milestones.json` — { — gelesen: 22 Zeilen
@@ -810,7 +812,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/living-world-causal-trace.json` — { — gelesen: 39 Zeilen
+- `.lane-claims/tasks/living-world-causal-trace.json` — { — gelesen: 45 Zeilen
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-player-needs.json` — { — gelesen: 46 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
@@ -1847,7 +1849,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INDEX.md` — Doku-Index — gelesen: 65 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1031 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 1039 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen

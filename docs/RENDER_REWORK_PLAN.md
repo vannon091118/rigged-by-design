@@ -76,9 +76,14 @@ wenn dadurch ein anderer Intent gewinnt. Der Lauf ist der Vitest-Test
 `living-world-causal-trace.test.ts`; das Artefakt ist
 `artifacts/living-world/trace-424242-5d.json`.
 
+**Abschlussstatus:** `DONE` · PR #486 · Kopf `801e39f9d7a99bdae24e8e795c9f9df53cb25e89` · Merge-Commit `e33e5ef65c0657090d2185774d40b895ec7166ca`.
+
+#### Beweisstand
+
 | Beleg | Ergebnis |
 | --- | --- |
 | Lauf | Seed `424242`, 5 Sim-Tage, 363 Entscheidungen, drei NPCs |
+| Artefakt | `artifacts/living-world/trace-424242-5d.json` (363 Entscheidungen, Familien-Zähler, Kette) |
 | Familien mit gekippter Entscheidung | Hunger 28, Durst 1, Müdigkeit 54, Routine 237, Traits 43, Attribute 19, Fähigkeiten 63, Emotion 2, Beziehung 44, Erinnerung 34, Sozialbedarf 3, Umgebung 69 |
 | Kette | Rita: `EAT_OUT` 1/12 (Geld −800, Hunger runter, Laune +5) → soziale Erinnerung 13 am 1/22 → `VISIT_FRIEND` 2/16; ohne Erinnerung würde sie `WORK` wählen |
 | Plan vs. Abweichung | `COMMUTE` und `EAT_OUT` liegen im Trace; `scheduledIntent !== intent` belegt Abweichungen vom Tagesplan |
@@ -92,14 +97,17 @@ RBD_LIVING_WORLD_OUT=artifacts/living-world/trace-424242-5d.json \
   npx pnpm exec vitest run src/core/sim/__tests__/living-world-causal-trace.test.ts
 ```
 
-Grenzen: Durst, Sozialbedarf und Emotion kippen nur wenige Entscheidungen
-(1/3/2); sie sind belegt, aber dünn. Das Modell hat keine separaten
+#### Bewusst offen / dünn belegt
+
+Durst (1), Sozialbedarf (3) und Emotion/Laune (2) kippen nur wenige
+Entscheidungen; sie sind belegt, aber dünn. Das Modell hat keine separaten
 Emotionszustände, sondern Laune plus Sozialbedarf. Die Gegenfakt-Proben
 neutralisieren je Familie einen Input; sie beweisen keinen vollständigen
 Mechanismus, sondern den konkreten Einfluss im Lauf. Das Stadtfenster zeigt
 weiterhin nur die vorhandenen Stats; der Trace ist der Nachweis, kein neuer
-UI-Pfad. Die Baseline-Gates auf `main` (Workflow-Dateizahl, unpinned actions)
-bleiben unverändert.
+UI-Pfad. Die Baseline-Gates auf `main` (`ci-gates.test.ts`: fünf statt drei
+Workflow-Dateien; `workflow-hardening.test.ts`: vier unpinned Actions)
+bleiben unverändert und wurden nicht repariert.
 
 ### Spielerbedürfnisse-Slice 2026-11-12
 
