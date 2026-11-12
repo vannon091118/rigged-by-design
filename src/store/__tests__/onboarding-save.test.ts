@@ -13,12 +13,13 @@ describe('Startzustand im Save', () => {
   it('startet ein neues Spiel mit der Eröffnung und behält sie im Roundtrip', () => {
     const start = createNewGame('SMALL');
     expect(start.world.onboarding?.step).toBe('OPENING');
-    expect(start.world.scene.kind).toBe('CITY');
+    expect(start.world.scene.kind).toBe('APARTMENT');
     expect(start.world.furniture.some((item) => item.kind === 'EXCHANGE')).toBe(true);
 
     const loaded = replaySave(roundTrip());
     expect(loaded).not.toBeNull();
     expect(loaded!.world.onboarding?.step).toBe('OPENING');
+    expect(loaded!.world.scene.kind).toBe('APARTMENT');
     expect(loaded!.ledger.getBalance('HAUSKONTO')).toBe(fromVC(150));
   });
 

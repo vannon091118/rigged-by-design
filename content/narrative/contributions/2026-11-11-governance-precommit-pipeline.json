@@ -12,6 +12,6 @@
   "relationship": "neutral",
   "personaRefs": ["rita-kern"],
   "flags": ["narrativ"],
-  "text": "Rita zog die Reihenfolge aus der Shell in einen einzigen Runner. Claims werden vor dem ersten Generator geprueft, Artefakte entstehen in einem Lauf, und der Hook staged nur, was er selbst erzeugt hat. Ein Pfadfehler wird damit sichtbar, bevor ein Commit entsteht.",
+  "text": "Der Wirt sagt, der Laden trage sich selbst. Die Rechnungen auf dem Tisch sagen dasselbe, nur leiser.",
   "directives": []
 }

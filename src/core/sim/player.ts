@@ -10,6 +10,7 @@ import { findPath, nearestWalkable } from './pathfinding';
 import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
 import { guestById, worldNav } from './world';
+import { playerApartmentNav } from './player-apartment';
 import { grantGlobalXp } from './player-rpg';
 import { INTERACTION_RADII, isInRange, planInteraction } from './interaction';
 
@@ -17,7 +18,8 @@ const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
 
 export function movePlayer(world: WorldState, target: Point): void {
-  const nav = worldNav(world);
+  // Die Wohnung ist ein eigener Plan: ihr Raster gilt, nicht das Casino-Layout.
+  const nav = world.scene.kind === 'APARTMENT' ? playerApartmentNav() : worldNav(world);
   const walkable = nearestWalkable(nav, target);
   if (!walkable) return;
   world.player.path = findPath(nav, world.player.position, walkable);

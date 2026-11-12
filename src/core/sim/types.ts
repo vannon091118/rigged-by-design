@@ -23,14 +23,14 @@ export type { Stain } from './stain';
 export type { CitySceneState } from './city-scene';
 
 /** Die eine aktive Szene; die Projektion in der UI liest nur diesen Zustand. */
-type SceneKind = 'OWN' | 'FOREIGN' | 'CITY';
+type SceneKind = 'OWN' | 'FOREIGN' | 'CITY' | 'APARTMENT';
 export interface SceneState { readonly kind: SceneKind; readonly foreignFloorId?: number; }
 /**
- * Der eine Startzustand: erst die Eröffnung, dann die Stadt, dann der Raum.
+ * Der eine Startzustand: erst die Eröffnung, dann die Wohnung, dann Stadt und Raum.
  * Die Reihenfolge ist die einzige Wahrheit dafuer, welches Startmodal sichtbar
  * ist - zwei unabhaengige Sichtbarkeitsregeln waren der Grund fuer zwei Modals.
  */
-type OnboardingStep = 'OPENING' | 'CITY' | 'CASINO' | 'DONE';
+type OnboardingStep = 'OPENING' | 'APARTMENT' | 'CITY' | 'CASINO' | 'DONE';
 export interface OnboardingState { step: OnboardingStep; }
 
 export interface WorldState {
@@ -115,7 +115,7 @@ export interface WorldState {
   cityScene?: CitySceneState;
   /** Position, zu der die Figur aus der Stadt ins eigene Casino zurueckkehrt. */
   sceneReturnPosition?: Point;
-  /** Erster Start: Stadt, Casino oder abgeschlossen. Alte Saves sind DONE. */
+  /** Erster Start: Wohnung, Stadt, Casino oder abgeschlossen. Alte Saves sind DONE. */
   onboarding?: OnboardingState;
   /**
    * Stadt-Zustand des ersten Vertical Slice. Optional, weil Saves davor ihn

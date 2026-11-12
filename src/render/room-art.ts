@@ -6,9 +6,9 @@
 import type { Container, Graphics } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
 import type { GameView } from '../store/types';
-import { INK, lightFor, materialFor } from './art-tokens';
+import { INK, LIGHT, lightFor, materialFor } from './art-tokens';
 import { drawCeilingLight, drawLightSpill } from './floor-surface';
-import { drawFloorRegion } from './floor-material';
+import { drawFloorRegion, type FloorTheme } from './floor-material';
 import { drawDressing } from './room-dressing';
 import { WALL, drawDoors } from './wall-art';
 
@@ -30,9 +30,13 @@ function clipZone(zone: ZoneLike, area: Area, tile: number): Rect | null {
  * wirkt, nie welches Bodenmaterial er hat. Deshalb liegt diese Schicht ueber
  * den Layout-Tiles und nicht in ihrer Aufloesung.
  */
-function drawZoneOverlay(g: Graphics, zone: ZoneLike, area: Area, tile: number, phase: GameView['dayPhase'], deco?: Container): void {
+function drawZoneOverlay(
+  g: Graphics, zone: ZoneLike, area: Area, tile: number, phase: GameView['dayPhase'], theme: FloorTheme, deco?: Container,
+): void {
   if (!clipZone(zone, area, tile)) return;
-  const light = lightFor(zone.kind, phase);
+  const zoneLight = lightFor(zone.kind, phase);
+  // Die Wohnung ist warm beleuchtet; Neon bleibt dem Casino vorbehalten.
+  const light = theme === 'apartment' ? { tint: LIGHT.warm, intensity: zoneLight.intensity } : zoneLight;
   // Lichtpfuetze einmal je Zone ueber die volle Flaeche; der Chunk-Cache
   // beschneidet sie, statt sie pro Chunk neu zu zentrieren.
   const full: Rect = {
@@ -49,9 +53,10 @@ function drawZoneOverlay(g: Graphics, zone: ZoneLike, area: Area, tile: number, 
 }
 
 export function drawRegionFloor(g: Graphics, view: GameView, area: Area, tile: number, deco?: Container): void {
-  drawFloorRegion(g, view.layout, area, tile, deco);
+  const theme: FloorTheme = view.scene.kind === 'APARTMENT' ? 'apartment' : 'casino';
+  drawFloorRegion(g, view.layout, area, tile, deco, theme);
   for (const zone of view.zones as readonly ZoneLike[]) {
-    drawZoneOverlay(g, zone, area, tile, view.dayPhase, deco);
+    drawZoneOverlay(g, zone, area, tile, view.dayPhase, theme, deco);
   }
   drawDoors(g, { size: view.size, layout: view.layout }, area, tile);
   if (area.x === 0 && area.y === 0) {

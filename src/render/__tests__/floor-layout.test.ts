@@ -56,6 +56,9 @@ describe('Materialaufloesung', () => {
     expect(['WOOD', 'TILE', 'STONE', 'LINOLEUM', 'CONCRETE']
       .map((material) => floorTextureKey(material as FloorMaterialId))).toEqual([null, null, null, null, null]);
     expect(floorTextureKey('CARPET')).toBe('environment/tiles/casino-carpet-plum.png');
+    // Die Wohnung traegt keine Casino-Teppichtextur.
+    expect(floorTextureKey('CARPET', 'apartment')).toBeNull();
+    expect(floorArtFor('CARPET', 'apartment').pattern).toBe('rug');
   });
 
   it('faellt bei unbekannter ID auf Beton mit dessen stabiler ID zurueck', () => {
