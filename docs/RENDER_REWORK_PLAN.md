@@ -68,7 +68,8 @@ eingeführt.
 R0–R1 sind die Basis. R2–R6 härten den bestehenden Casino-Render, bevor die
 Stadt daraufsetzt. R7 ist der sichtbare Schnitt; R8–R12 bauen in dieser
 Reihenfolge darauf auf. R3, R4 und R5 dürfen nach R1 parallel laufen; R7 wartet
-auf R2 und R6.
+auf R2, R6 und den Stadtkern S2-12. R10 plant die Wohnung nicht neu: es nimmt
+die offenen S2-09–S2-11 im Renderer ab.
 
 | Phase | Ergebnis | Abhängig von | Größe |
 | --- | --- | --- | --- |
@@ -79,16 +80,17 @@ auf R2 und R6.
 | R4 | Materialien und Teppich ohne Overdraw | R1, R2 | M |
 | R5 | Licht mit Fläche und sichtbaren Quellen | R1 | M |
 | R6 | Kamera, Hintergrund und LOD-Vertrag | R1, R5 | M |
-| R7 | Stadt im Browser sichtbar | R2, R6, S2-07, S2-08 | L |
+| R7 | Stadtansicht an S2-12 anbinden | R2, R6, S2-12 | L |
 | R8 | Stadt-Assetpaket und Weltmetadaten | R4, R7 | L |
-| R9 | Stadtleben: NPCs, Türen, Begegnungen | R7, R8 | L |
-| R10 | Wohnung als zweiter Innenraum | R4, R7 | M |
+| R9 | Stadtleben: NPCs, Türen, Begegnungen | R7, R8, S2-12 | L |
+| R10 | Wohnung: Render-Abnahme für S2-09–S2-11 | R4, R7, S2-09–S2-11 | M |
 | R11 | Lauf- und Richtungsanimation | R3, R8 | M |
 | R12 | Ambient und Wetter | R9 | M |
 
-**Meilensteine:** R1 ist der erste lokale Beweis. R7 ist der erste begehbare
-Stadt-Meilenstein. R9 ist der erste „lebendige“ Meilenstein. R12 ist die letzte
-P2-Ausbaustufe und darf zugunsten von R7–R10 zurückgestellt werden.
+**Meilensteine:** R1 ist der erste lokale Beweis. R7 ist die erste sichtbare
+Stadtansicht auf dem Stadtkern S2-12. R9 ist der erste „lebendige“ Meilenstein.
+R12 ist die letzte P2-Ausbaustufe und darf zugunsten von R7–R10 zurückgestellt
+werden.
 
 ## 4. Task-Phasen
 
@@ -340,18 +342,24 @@ flattert nicht an der Schwelle.
 sind bekannt und werden einmal gesetzt. `isRenderGroup` nur für stabile
 Hintergrundebenen.
 
-### R7 — Stadt im Browser sichtbar
+### R7 — Stadtansicht an S2-12 anbinden
 
-**Ziel:** Der vorhandene Stadtkern wird gerendert und begehbar. Kein zweiter
-Stadtzustand, kein Test-only-Renderer.
+**Ziel:** Der vorhandene Stadtkern wird sichtbar. **S2-12 ist die offene
+Roadmap-Aufgabe für das Stadtnetz**; R7 dupliziert sie nicht, sondern liefert
+die Renderer-Schicht und den lokalen Bildbeleg dafür. Kein zweiter Stadtzustand,
+kein Test-only-Renderer.
 
-**Dateien:** `src/core/sim/city-exterior.ts`, `src/core/sim/building.ts`,
-`src/core/sim/room-transition.ts`, `src/ui/city-popup.tsx`,
-neu `src/render/city/` (`city-world.ts`, `city-ground.ts`, `city-buildings.ts`,
-`city-doors.ts`), `src/render/__tests__/city-world.test.ts`.
+**Dateien:** `src/core/sim/city-exterior.ts`, `src/core/sim/city-scene.ts`,
+`src/core/sim/building.ts`, `src/core/sim/room-transition.ts`,
+`src/ui/city-popup.tsx`, neu `src/render/city/` (`city-world.ts`,
+`city-ground.ts`, `city-buildings.ts`, `city-doors.ts`),
+`src/render/__tests__/city-world.test.ts`.
 
 **Aufgaben**
 
+- [ ] **S2-12 bleibt der Kern:** Das Stadtnetz und die Ortskanten kommen aus
+      `city-scene.ts`/`city.ts`; R7 baut keinen zweiten Szenengraphen und keine
+      zweite Wegewahrheit.
 - [ ] `CityExteriorModel` als Adapter aus `createCityExteriorModel()` lesen;
       der Renderer importiert keine Test-Fixtures und keine UI-Popup-Daten.
 - [ ] `city-popup.tsx` und die alte `city-scene`-Darstellung auf den Adapter
@@ -362,9 +370,8 @@ neu `src/render/city/` (`city-world.ts`, `city-ground.ts`, `city-buildings.ts`,
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.
 - [ ] Türen an bestehende `floor-hit`-/`floor-actions`-Pfade anschließen; kein
-      zweiter Input-Listener und keine zweite Kollisionswahrheit.
-- [ ] Die Wohnungstür als Startpunkt anbinden; S2-07 bleibt die Kernaufgabe,
-      R7 liefert die sichtbare Fläche.
+      zweiter Input-Listener und keine zweite Kollisionswahrheit. Die
+      Wohnungstür ist mit S2-07 bereits verifiziert und wird nicht neu gebaut.
 - [ ] Tastatur-/Screenreader-Zugang für Türen und Orte: DOM-Overlay mit
       `aria-label` oder Pixi-Accessibility mit `accessibleTitle`/`tabIndex`.
 - [ ] Test: Stadtmodell wird ohne Test-Fixture gerendert; Tür öffnet den
@@ -372,10 +379,11 @@ neu `src/render/city/` (`city-world.ts`, `city-ground.ts`, `city-buildings.ts`,
 
 **Akzeptanz**
 
-- [ ] `createCityExteriorModel()` hat einen Produktionsaufrufer außerhalb von
-      `src/core/sim`.
-- [ ] Ein Lauf führt von der Wohnungstür auf die Straße und in das Casino,
-      ohne Teleport und ohne Duplikat.
+- [ ] `city-exterior`/`city-scene` haben einen Produktionsaufrufer außerhalb
+      von `src/core/sim`; die offene S2-12-Aufgabe bleibt die einzige Quelle
+      für das Stadtnetz.
+- [ ] Ein Lauf nutzt die bestehende S2-07/S2-12-Übergangskette, ohne Teleport
+      und ohne Duplikat.
 - [ ] Die Stadt ist im lokalen Bildgate als Straßenraum erkennbar, nicht als
       Platzhalterfläche.
 - [ ] Ein nicht begehbarer Ort ist sichtbar als Kulisse markiert, nicht als
@@ -456,31 +464,42 @@ ohne eine zweite Simulation zu bauen.
 hunderten Figuren `ParticleContainer` nur für statische, gleichartige Sprites
 prüfen, nicht für individuelle Rigs. Keine EventListener pro Frame neu binden.
 
-### R10 — Wohnung als zweiter Innenraum
+### R10 — Wohnung: Render-Abnahme für S2-09–S2-11
 
-**Ziel:** Die vorhandene Wohnung wird als Raum sichtbar und ist der natürliche
-Startpunkt der Stadt.
+**Ziel:** Die offenen Wohnungs-Tasks S2-09 (Wände), S2-10 (eigene Möbel) und
+S2-11 (warmes Dekor) werden im Renderer abgenommen. R10 plant diese Features
+nicht neu und legt keine konkurrierenden Roadmap-Zeilen an; fehlende Arbeit
+gehört in die jeweilige S2-Aufgabe.
 
 **Dateien:** `src/core/sim/player-apartment.ts`,
-`src/core/sim/room-transition.ts`, neu `src/render/apartment/`,
+`src/core/sim/room-transition.ts`, `src/render/room-art.ts`,
+`src/render/floor-material.ts`, `src/render/scene-cache.ts`,
 `src/render/__tests__/apartment-render.test.ts`.
 
 **Aufgaben**
 
-- [ ] Layout aus `player-apartment.ts` rendern: Schlafen, Küche, Bad, Wohnen,
-      Haustür.
-- [ ] Neun Wohnungsassets über R2-Rollen anbinden; fehlende Assets als
-      Platzhalter.
-- [ ] Boden/Wand/Licht aus R4/R5 wiederverwenden; keine zweite
-      Materialtabelle.
-- [ ] Haustür an den Stadtübergang aus R7 anschließen.
+- [ ] S2-09 abnehmen: Wände, Türrahmen und Occlusion aus `wall-art.ts`/
+      `wall-occlusion.ts` müssen im Wohnungsbild sichtbar sein. Fehlt etwas,
+      wird S2-09 repariert, nicht R10 erweitert.
+- [ ] S2-10 abnehmen: Bett, Schrank, Kochnische, Bad und Sofa nutzen eigene
+      Wohnungs-Sprites statt Casino-Möbel; die Interaktionen bleiben erhalten.
+- [ ] S2-11 abnehmen: Teppich, Lampen, Bilder und Pflanzen folgen der warmen
+      Wohnungspalette; kein Neon und kein Automat.
+- [ ] Die bereits vorhandene Wohnungs-Palette (`FloorTheme = 'apartment'`,
+      Szene im Cache-Schlüssel) als Integrationspfad prüfen; keine zweite
+      Materialtabelle und kein zweiter Szenencache.
+- [ ] Boden/Wand/Licht aus R4/R5 wiederverwenden; die Haustür bleibt an den
+      bestehenden Stadtübergang angebunden.
 - [ ] Test: Layout stimmt mit dem Kern überein; Tür führt auf die Straße; kein
       Teleport; Rückweg erhält den Zustand.
 
 **Akzeptanz**
 
-- [ ] Die Wohnung ist als eigener Raum begehbar.
-- [ ] Der Startpfad führt durch die Wohnungstür auf die Straße.
+- [ ] S2-09, S2-10 und S2-11 sind abgehakt oder ausdrücklich als offen an die
+      jeweilige Roadmap-Zeile zurückgegeben; R10 behauptet keine eigene
+      Feature-Implementierung.
+- [ ] Die Wohnung ist als eigener Raum sichtbar; der Startpfad bleibt der
+      verifizierte S2-07-Pfad.
 - [ ] Möbelrollen sind eindeutig; kein Möbelstück wird als Deko geraten.
 - [ ] Lokales Bildgate zeigt alle vier Bereiche.
 
