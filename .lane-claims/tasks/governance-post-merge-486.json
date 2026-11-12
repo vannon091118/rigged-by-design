@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "governance-post-merge-486",
+  "claimId": "lane/governance/post-merge-486",
+  "branch": "lane/governance/post-merge-486",
+  "baseSha": "e33e5ef65c0657090d2185774d40b895ec7166ca",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout #486",
+  "goal": "Claim und Task aus PR #486 auf DONE nachziehen und den kausalen Beweisstand im Render-Plan dokumentieren.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "DONE: PR #486, Merge-Commit e33e5ef65c0657090d2185774d40b895ec7166ca; Beweisstand und duenne Familien in docs/RENDER_REWORK_PLAN.md.",
+  "revision": 1
+}

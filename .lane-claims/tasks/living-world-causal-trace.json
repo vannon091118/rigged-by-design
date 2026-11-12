@@ -4,7 +4,7 @@
   "claimId": "lane/living-world/causal-trace",
   "branch": "lane/living-world/causal-trace",
   "baseSha": "e1d222946410651765dc44c8123e2b16ba790969",
-  "phase": "MERGE_PENDING",
+  "phase": "DONE",
   "title": "Kausalen Living-World-Langlauf mit Decision Trace und Ereignisketten belegen",
   "goal": "Ein headless Langlauf ueber mehrere Sim-Tage zeigt im Trace, dass Hunger, Durst, Muedigkeit, Routinen, Traits, Attribute, Faehigkeiten, Emotion/Beziehung und Umgebung konkrete NPC-Entscheidungen kippen und verkettete Folgen erzeugen.",
   "taskType": "single",
@@ -13,15 +13,17 @@
   "pr": {
     "number": 486,
     "url": "https://github.com/vannon091118/rigged-by-design/pull/486",
-    "state": "open"
+    "state": "merged",
+    "headSha": "801e39f9d7a99bdae24e8e795c9f9df53cb25e89",
+    "mergedSha": "e33e5ef65c0657090d2185774d40b895ec7166ca"
   },
   "findings": [
     {
       "id": "thin-families",
       "severity": "info",
-      "status": "open",
+      "status": "accepted",
       "path": "src/core/sim/__tests__/living-world-causal-trace.test.ts",
-      "summary": "Durst (1), Sozialbedarf (3) und Emotion (2) kippen nur wenige Entscheidungen; belegt, aber duenn."
+      "summary": "Durst 1, Sozialbedarf 3 und Emotion/Laune 2 Flips; bewusst als duenn belegt im Abschnitt \"Bewusst offen / duenn belegt\" dokumentiert."
     },
     {
       "id": "no-visual-proof",
@@ -38,6 +40,6 @@
       "summary": "Workflow-Dateizahl und unpinned actions bleiben bekannte Baseline-Fehler auf main und wurden nicht repariert."
     }
   ],
-  "nextAction": "Evidenzkommentar auf den neuen Kopf aktualisieren, Mergeability erneut pruefen und PR #486 mit dem geprueften Kopf mergen.",
-  "revision": 4
+  "nextAction": "DONE: PR #486 mit Merge-Commit e33e5ef65c0657090d2185774d40b895ec7166ca. Beweisstand und offene Punkte: docs/RENDER_REWORK_PLAN.md.",
+  "revision": 5
 }
