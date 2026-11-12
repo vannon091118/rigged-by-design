@@ -1,0 +1,18 @@
+{
+  "id": "lane/governance/post-merge-470",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/post-merge-470",
+  "baseSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "task": "Post-Merge-Closeout #470",
+  "goal": "Pending-Claim und Task-Vertrag aus PR #470 nach dem Merge automatisch schliessen.",
+  "pathAllowlist": [
+    ".lane-claims/"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "merged",
+  "mergedEvidence": "post-merge-closeout",
+  "mergedSha": "092ba451e4b8264b90504e57f34fc37ca29a8c98",
+  "createdAt": "092ba451e4b8264b90504e57f34fc37ca29a8c98"
+}
