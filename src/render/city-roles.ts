@@ -15,7 +15,8 @@ export type CitySurfaceRole =
   | 'BENCH'
   | 'TRASH_BIN'
   | 'BUS_STOP'
-  | 'TREE';
+  | 'TREE'
+  | 'DOOR';
 
 interface CitySurfaceArt {
   readonly role: CitySurfaceRole;
@@ -42,6 +43,9 @@ const CITY_PROP_ART: Readonly<Record<PropKind, CitySurfaceArt>> = {
   TREE: { role: 'TREE', asset: ASSET.city.tree },
 };
 
+/** Tuerkanten teilen die Rollenquelle mit Fassaden und Requisiten. */
+const CITY_DOOR_ART: CitySurfaceArt = { role: 'DOOR', asset: ASSET.city.door };
+
 /**
  * Ein unbekannter Gebaeudetyp ist ein Vertragsbruch, kein Grund fuer eine
  * gruene Flaeche. Der Test deckt die preset-Typen ab; neue Typen muessen eine
@@ -55,4 +59,8 @@ export function cityBuildingArt(kind: BuildingKind): CitySurfaceArt {
 
 export function cityPropArt(kind: PropKind): CitySurfaceArt {
   return CITY_PROP_ART[kind];
+}
+
+export function cityDoorArt(): CitySurfaceArt {
+  return CITY_DOOR_ART;
 }

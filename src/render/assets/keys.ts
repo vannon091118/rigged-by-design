@@ -24,6 +24,7 @@ export const ASSET = {
     trashBin: 'environment/floor/city/props/trash-bin.svg',
     busStop: 'environment/floor/city/props/bus-stop.svg',
     tree: 'environment/floor/city/props/tree.svg',
+    door: 'environment/floor/city/doors/door.svg',
   },
   dealer: 'characters/head-02-01.png',
   heads: [

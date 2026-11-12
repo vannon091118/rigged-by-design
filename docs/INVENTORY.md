@@ -628,8 +628,8 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 | --- | --- |
 | Getrackte Dateien | 2714 |
 | Gelistete Dateien | 2714 |
-| Getrackte Ordner | 110 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), content (1014), docs (86), packages (27), public (570), scripts (116), src (857) |
+| Getrackte Ordner | 111 |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), content (1013), docs (86), packages (27), public (571), scripts (116), src (857) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -643,7 +643,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/` — 1 Datei(en)
 - `.lane-claims/claims/` — 11 Datei(en)
 - `.lane-claims/tasks/` — 11 Datei(en)
-- `content/narrative/contributions/` — 1010 Datei(en)
+- `content/narrative/contributions/` — 1009 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -667,6 +667,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/characters/` — 69 Datei(en)
 - `public/assets/casino/decor/` — 28 Datei(en)
 - `public/assets/casino/environment/floor/` — 6 Datei(en)
+- `public/assets/casino/environment/floor/city/doors/` — 1 Datei(en)
 - `public/assets/casino/environment/floor/city/facades/` — 4 Datei(en)
 - `public/assets/casino/environment/floor/city/props/` — 5 Datei(en)
 - `public/assets/casino/environment/fx/` — 1 Datei(en)
@@ -1797,10 +1798,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
-- `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-rework-plan.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22642 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4045 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22620 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4041 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -1813,7 +1813,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `docs/INDEX.md` — Doku-Index — gelesen: 65 Zeilen
 - `docs/INVENTORY.md` — Inventar: Befunde, Lesedeckung und vollstaendige Dateiliste — gepflegt: Marker und Abschnitt 18
 - `docs/LOCAL_CI.md` — Local-first CI/CD: Ausführungskategorien und APK-Ablauf — gelesen: 96 Zeilen
-- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 863 Zeilen
+- `docs/RENDER_REWORK_PLAN.md` — Render- und Living-World-Rework — Task-Phasen — gelesen: 868 Zeilen
 - `docs/ROADMAP.md` — Roadmap — Spiel und Präsentation — gelesen: 176 Zeilen
 - `docs/RUNBOOK-AUTO-RESOLVE.md` — Runbook: Auto-Resolve aktivieren und prüfen — gelesen: 349 Zeilen
 - `docs/TESTING.md` — Testing: eine Linie und 17 Nachweise — gelesen: 79 Zeilen
@@ -2019,6 +2019,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `public/assets/casino/decor/vip-armchair.png` — PNG-Textur — geprueft: PNG 88x68, 6643 B
 - `public/assets/casino/decor/wall-sconce.png` — PNG-Textur — geprueft: PNG 32x64, 2675 B
 - `public/assets/casino/environment/floor/apartment-rug.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" shape-rendering="crispEdges — gelesen: 6 Zeilen
+- `public/assets/casino/environment/floor/city/doors/door.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="96" height="24" viewBox="0 0 96 24"> — gelesen: 16 Zeilen
 - `public/assets/casino/environment/floor/city/facades/apartment.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192"> — gelesen: 54 Zeilen
 - `public/assets/casino/environment/floor/city/facades/casino.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192"> — gelesen: 49 Zeilen
 - `public/assets/casino/environment/floor/city/facades/pub.svg` — <svg xmlns="http://www.w3.org/2000/svg" width="256" height="192" viewBox="0 0 256 192"> — gelesen: 49 Zeilen
@@ -3155,7 +3156,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 50 Zeilen
 - `src/render/__tests__/actor-silhouette.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 17 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
-- `src/render/__tests__/city-exterior.test.ts` — Abnahme ohne Screenshot: der normale Store-Einstieg erzeugt die 60x60-Stadt, — gelesen: 132 Zeilen
+- `src/render/__tests__/city-exterior.test.ts` — Abnahme ohne Screenshot: der normale Store-Einstieg erzeugt die 60x60-Stadt, — gelesen: 151 Zeilen
 - `src/render/__tests__/decor-roles.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
 - `src/render/__tests__/depth.test.ts` — Ein gemeinsamer Tiefenvertrag: Fussanker statt Oberkante, deterministisches — gelesen: 82 Zeilen
 - `src/render/__tests__/floor-actions.test.ts` — Der Lager-Spiegel ist die einzige Deko mit einer Charaktereditor-Aktion; — gelesen: 28 Zeilen
@@ -3182,11 +3183,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 182 Zeilen
 - `src/render/assets/asset-semantics.json` — { — gelesen: 1307 Zeilen
 - `src/render/assets/atlas.ts` — Laufzeit-Atlas: nutzt die im Build gepackten Seiten, wenn das Manifest sie — gelesen: 169 Zeilen
-- `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 55 Zeilen
-- `src/render/assets/manifest.json` — { — generiert, 1999 Zeilen
+- `src/render/assets/keys.ts` — Paketpfade, die echte Renderer brauchen: Figuren, Tischdeko, Boden und Partikel. — gelesen: 56 Zeilen
+- `src/render/assets/manifest.json` — { — generiert, 2000 Zeilen
 - `src/render/assets/textures.ts` — Texturen aus dem Pixel-Paket: erst der Laufzeit-Atlas, dann die Einzeldatei. — gelesen: 109 Zeilen
-- `src/render/city-exterior-layer.ts` — Sichtbare Stadt: Fassaden und Strassenrequisiten aus dem einen — gelesen: 203 Zeilen
-- `src/render/city-roles.ts` — Stabile Rollen fuer die Stadtflaechen. Kein Label-Regex, kein Farbwert als — gelesen: 58 Zeilen
+- `src/render/city-exterior-layer.ts` — Sichtbare Stadt: Fassaden und Strassenrequisiten aus dem einen — gelesen: 250 Zeilen
+- `src/render/city-roles.ts` — Stabile Rollen fuer die Stadtflaechen. Kein Label-Regex, kein Farbwert als — gelesen: 66 Zeilen
 - `src/render/comic-bubbles.ts` — Kleine Comic-Sprechblase: eine Grafik statt eines Satzes, pro Figur gepoolt. — gelesen: 152 Zeilen
 - `src/render/decor-roles.ts` — Stabile Renderrollen für Möbel und Deko. — gelesen: 87 Zeilen
 - `src/render/depth-perf.bench.ts` — Tiefensortierung derselben Szene auf SMALL, MEDIUM und LARGE: 200 Figuren, — gelesen: 48 Zeilen

@@ -1,69 +1,17 @@
 /**
- * Sichtbare Stadt: Fassaden und Strassenrequisiten aus dem einen
- * `CityExteriorModel`. Die Schicht ist ein Container in der gemeinsamen
+ * Sichtbare Stadt: Fassaden, Strassenrequisiten und Tuerkanten aus dem einen
+ * `CityRenderPlan`. Die Schicht ist ein Container in der gemeinsamen
  * Tiefenebene; sie hat keinen eigenen Ticker und keine eigene Stadtwahrheit.
  */
 import { Container, Sprite, Text } from 'pixi.js';
-import type { BuildingFootprint } from '../core/sim/building-types';
-import type { CityExteriorModel } from '../core/sim/city-exterior';
 import { TILE } from '../core/sim/types';
 import { floorText, WORLD_FLATTEN } from './art-tokens';
-import { cityBuildingArt, cityPropArt, type CitySurfaceRole } from './city-roles';
+import type { CityRenderPlan } from './city-plan';
 import type { DepthStage } from './depth';
-import type { WorldBounds } from './floor-camera';
 import { textureFor } from './assets/textures';
+import { wallBandRect } from './wall-art';
 
-interface CityBuildingView {
-  readonly id: string;
-  readonly name: string;
-  readonly role: CitySurfaceRole;
-  readonly asset: string;
-  readonly footprint: BuildingFootprint;
-  readonly entrance: { readonly x: number; readonly y: number };
-}
-
-interface CityPropView {
-  readonly id: string;
-  readonly role: CitySurfaceRole;
-  readonly asset: string;
-  readonly x: number;
-  readonly y: number;
-}
-
-interface CityRenderPlan {
-  readonly layoutId: string;
-  readonly name: string;
-  readonly bounds: WorldBounds;
-  readonly buildings: readonly CityBuildingView[];
-  readonly props: readonly CityPropView[];
-}
-
-/** Nur bekannte preset-Gebaeude werden gezeichnet; unbekannte Typen werfen. */
-export function cityRenderPlan(exterior: CityExteriorModel | null | undefined): CityRenderPlan | null {
-  if (!exterior) return null;
-  const buildings = exterior.buildings.map((building): CityBuildingView => {
-    const art = cityBuildingArt(building.kind);
-    return {
-      id: building.id,
-      name: building.name,
-      role: art.role,
-      asset: art.asset,
-      footprint: building.footprint,
-      entrance: building.entrance,
-    };
-  });
-  const props = exterior.props.map((prop): CityPropView => {
-    const art = cityPropArt(prop.kind);
-    return { id: prop.id, role: art.role, asset: art.asset, x: prop.position.x, y: prop.position.y };
-  });
-  return {
-    layoutId: exterior.layoutId,
-    name: exterior.name,
-    bounds: { width: exterior.layout.size, height: exterior.layout.size },
-    buildings,
-    props,
-  };
-}
+export { cityRenderPlan } from './city-plan';
 
 interface CityEntry {
   readonly node: Container;
@@ -139,12 +87,15 @@ export class CityExteriorLayer {
     return `${plan.layoutId}|${plan.bounds.width}x${plan.bounds.height}|`
       + plan.buildings.map((building) => `${building.id}:${building.role}:${building.asset}:${building.name}:${building.footprint.x},${building.footprint.y},${building.footprint.w},${building.footprint.h}`).join(',')
       + '|'
-      + plan.props.map((prop) => `${prop.id}:${prop.role}:${prop.asset}:${prop.x},${prop.y}`).join(',');
+      + plan.props.map((prop) => `${prop.id}:${prop.role}:${prop.asset}:${prop.x},${prop.y}`).join(',')
+      + '|'
+      + plan.doors.map((door) => `${door.id}:${door.role}:${door.asset}:${door.axis}:${door.x},${door.y}`).join(',');
   }
 
   #rebuild(plan: CityRenderPlan): void {
     this.#clear();
     this.#missingTexture = false;
+    for (const door of plan.doors) this.#addDoor(plan, door);
     for (const building of plan.buildings) {
       const texture = textureFor(building.asset);
       if (!texture) {
@@ -193,6 +144,32 @@ export class CityExteriorLayer {
     this.#depth.markDirty();
   }
 
+  #addDoor(plan: CityRenderPlan, door: CityRenderPlan['doors'][number]): void {
+    const texture = textureFor(door.asset);
+    if (!texture) {
+      this.#missingTexture = true;
+      return;
+    }
+    const band = wallBandRect(
+      { axis: door.axis, x: door.x, y: door.y, kind: 'DOOR', id: door.id, zoneId: null },
+      plan.bounds.width,
+      TILE,
+    );
+    const node = new Container();
+    const sprite = new Sprite(texture);
+    // Die Textur ist eine liegende Schwelle; V-Kanten drehen dieselbe Rolle
+    // um 90 Grad, statt eine zweite Asset-Variante zu erfinden.
+    sprite.anchor.set(0.5);
+    sprite.width = Math.max(band.w, band.h);
+    sprite.height = Math.min(band.w, band.h);
+    if (door.axis === 'V') sprite.rotation = Math.PI / 2;
+    sprite.position.set(band.x + band.w / 2, band.y + band.h / 2);
+    node.addChild(sprite);
+    this.root.addChild(node);
+    this.#depth.set(node, band.y + band.h, 'prop', stableId(door.id));
+    this.#entries.push({ node, sprite, light: false });
+  }
+
   #clear(): void {
     for (const entry of this.#entries) entry.node.destroy({ children: true });
     this.#entries.length = 0;
@@ -200,4 +177,3 @@ export class CityExteriorLayer {
     this.#signature = '';
   }
 }
-

@@ -402,12 +402,16 @@ Strassenrequisiten) in `world.cityScene`; `buildView` reicht `cityExterior` an
 den Renderer, `CityExteriorLayer` zeichnet Fassaden/Requisiten mit benannten
 Rollen und echten SVG-Texturen, `FloorView` aktualisiert sie pro Frame und
 `areasForSize` teilt 60x60 in vier 30er-Chunks. Kamera-Grenzen kommen aus
-`worldBoundsOf` (echte 60x60-Kante), nicht aus der 30er-Vorlage. Deterministisch
-belegt durch `src/render/__tests__/city-exterior.test.ts` (Produktions-Entry
-`createWorld` → `SceneCommands.enterCity` → `buildView` → Renderplan), inkl.
-60x60-Navigation. **Noch offen:** echter Browser-Screenshot, Tuerklick ueber
-`floor-hit`, DOM-/Screenreader-Zugang, WorldManager und der vollstaendige
-S2-12-Uebergang. Diese Punkte bleiben bewusst unabgehakt.
+`worldBoundsOf` (echte 60x60-Kante), nicht aus der 30er-Vorlage. Die vier
+`DOOR`-Kanten aus `layout.edges` werden als eigene Rolle `DOOR` mit der
+Schwellen-SVG `environment/floor/city/doors/door.svg`, Fußanker-Tiefe und
+Renderplan-Eintrag gezeichnet; V-Kanten teilen dieselbe Textur gedreht.
+Deterministisch belegt durch `src/render/__tests__/city-exterior.test.ts`
+(Produktions-Entry `createWorld` → `SceneCommands.enterCity` → `buildView` →
+Renderplan), inkl. 60x60-Navigation und Türflaechen. **Noch offen:** echter
+Browser-Screenshot, Tuerklick ueber `floor-hit`, DOM-/Screenreader-Zugang,
+WorldManager und der vollstaendige S2-12-Uebergang. Diese Punkte bleiben
+bewusst unabgehakt.
 
 **Aufgaben**
 
@@ -421,13 +425,12 @@ S2-12-Uebergang. Diese Punkte bleiben bewusst unabgehakt.
       `SceneCommands.enterCity`)*
 - [ ] `city-popup.tsx` und die alte `city-scene`-Darstellung auf den Adapter
       umstellen oder als Menüzugang stilllegen; keine parallele Stadtansicht.
-- [ ] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
+- [x] Straßen, Gehwege, Kreuzungen, Laternen, Gebäude und Türen aus dem Modell
       rendern; Tiefe über Fußanker, nicht über Namenssortierung.
-      *(Teilbeleg: Straßen/Gehwege/Kreuzungen kommen als Bodenmaterialien aus
+      *(belegt: Straßen/Gehwege/Kreuzungen kommen als Bodenmaterialien aus
       `layout.floor`; `CityExteriorLayer` + `cityRenderPlan` zeichnen vier
-      Fassaden und fuenf Requisiten mit `depth.set(..., 'prop', ...)`. Die
-      Türkanten aus `layout.edges` werden noch nicht gezeichnet; der Punkt
-      bleibt deshalb offen.)*
+      Fassaden, fuenf Requisiten und vier `DOOR`-Kanten mit Rollen/Texturen und
+      `depth.set(..., 'prop', ...)`)*
 - [ ] `WorldManager` mit genau einer aktiven Welt einführen. `GameView` bleibt
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.
@@ -441,9 +444,11 @@ S2-12-Uebergang. Diese Punkte bleiben bewusst unabgehakt.
 
 **Akzeptanz**
 
-- [ ] `city-exterior`/`city-scene` haben einen Produktionsaufrufer außerhalb
+- [x] `city-exterior`/`city-scene` haben einen Produktionsaufrufer außerhalb
       von `src/core/sim`; die offene S2-12-Aufgabe bleibt die einzige Quelle
       für das Stadtnetz.
+      *(belegt: `SceneCommands.enterCity` → `buildView` → `GameView.cityExterior`
+      → `cityRenderPlan`/`FloorView`)*
 - [ ] Ein Lauf nutzt die bestehende S2-07/S2-12-Übergangskette, ohne Teleport
       und ohne Duplikat; das ist der S2-08-Browserbeleg.
 - [ ] Die Stadt ist im lokalen Bildgate als Straßenraum erkennbar, nicht als

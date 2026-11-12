@@ -24,6 +24,7 @@ import { worldBoundsOf } from '../world-bounds';
 
 const ASSET_ROOT = join(process.cwd(), 'public/assets/casino');
 const ENVIRONMENT = manifest.environment as Readonly<Record<string, string>>;
+const ASSET_DOOR = 'environment/floor/city/doors/door.svg';
 
 function enterCityThroughProductionEntry(): ReturnType<typeof buildView> {
   const world = createWorld('SMALL');
@@ -62,12 +63,30 @@ describe('Stadt-Exterieur im Produktionspfad', () => {
     expect(plan?.bounds).toEqual({ width: 60, height: 60 });
     expect(plan?.buildings.map((building) => building.role)).toEqual(['APARTMENT', 'PUB', 'SHOP', 'CASINO']);
     expect(plan?.props.map((prop) => prop.role)).toEqual(['STREET_LIGHT', 'BENCH', 'TRASH_BIN', 'BUS_STOP', 'TREE']);
+    expect(plan?.doors.map((door) => door.role)).toEqual(['DOOR', 'DOOR', 'DOOR', 'DOOR']);
+    expect(plan?.doors.map((door) => door.id)).toEqual(
+      view.layout.edges.filter((edge) => edge.kind === 'DOOR').map((edge) => edge.id),
+    );
+    for (const door of plan?.doors ?? []) {
+      expect(door.axis).toBe('H');
+      expect(door.x).toBeGreaterThanOrEqual(0);
+      expect(door.y).toBeGreaterThanOrEqual(0);
+      expect(door.x).toBeLessThan(plan?.bounds.width ?? 0);
+      expect(door.y).toBeLessThan(plan?.bounds.height ?? 0);
+    }
     const assets = [...(plan?.buildings ?? []), ...(plan?.props ?? [])].map((surface) => surface.asset);
     expect(new Set(assets).size).toBe(assets.length);
     for (const asset of assets) {
       expect(ENVIRONMENT[asset], `Manifest-Rolle fuer ${asset}`).toBe(asset);
       expect(existsSync(join(ASSET_ROOT, asset)), `Textur ${asset}`).toBe(true);
     }
+    // Alle vier Tueren teilen dieselbe Rolle und Textur; die Kante bleibt ueber
+    // die stabile Layout-ID unterscheidbar.
+    expect(new Set((plan?.doors ?? []).map((door) => door.asset))).toEqual(new Set([ASSET_DOOR]));
+    expect(ENVIRONMENT[ASSET_DOOR]).toBe(ASSET_DOOR);
+    expect(existsSync(join(ASSET_ROOT, ASSET_DOOR))).toBe(true);
+    expect(readFileSync(join(process.cwd(), 'src/render/city-exterior-layer.ts'), 'utf8'))
+      .toContain('plan.doors');
   });
 
   it('setzt die Kamera-Clamps auf die echten 60x60-Stadtgrenzen statt auf die 30er-Vorlage', () => {

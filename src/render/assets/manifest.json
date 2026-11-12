@@ -1563,6 +1563,7 @@
   },
   "environment": {
     "environment/floor/apartment-rug.svg": "environment/floor/apartment-rug.svg",
+    "environment/floor/city/doors/door.svg": "environment/floor/city/doors/door.svg",
     "environment/floor/city/facades/apartment.svg": "environment/floor/city/facades/apartment.svg",
     "environment/floor/city/facades/casino.svg": "environment/floor/city/facades/casino.svg",
     "environment/floor/city/facades/pub.svg": "environment/floor/city/facades/pub.svg",
