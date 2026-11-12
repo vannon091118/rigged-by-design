@@ -26,6 +26,7 @@ import {
   tierOf,
 } from './city-model';
 import { actionViews } from './city-actions';
+import { cityLifeView } from './city-life';
 
 export type { CityActionView, CityBranchId, CityBranchView, CityLocationId, CityState, CityView } from './city-types';
 export { CITY_ENERGY_PER_DAY, CITY_SLOT, NIGHT_SLOT, cityNightText, cityOf, cityText, marketUnlocked, tierOf } from './city-model';
@@ -70,6 +71,7 @@ export function cityView(world: WorldState): CityView {
     };
   });
   return {
+    residents: cityLifeView(world),
     location: state.location,
     locationName: location.name,
     note: location.note,

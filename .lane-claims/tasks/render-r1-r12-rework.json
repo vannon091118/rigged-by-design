@@ -15,34 +15,34 @@
     {
       "id": "iso-projection",
       "severity": "warning",
-      "status": "open",
-      "summary": "Die 2:1-Isometrie aus Plan 2.3 ist nicht umgesetzt; die Kamera bleibt top-down mit WORLD_FLATTEN. Ein Kippen ohne eigene Projektion fuer Boden, Figuren, Treffer und Tiefe wuerde Simulation und Bild auseinanderziehen und braucht einen eigenen R6/R7-Slice."
+      "status": "accepted",
+      "summary": "Bewusst zurueckgestellt: Die 2:1-Isometrie aus Plan 2.3 ist nicht umgesetzt; die Kamera bleibt top-down mit WORLD_FLATTEN. Ein Kippen ohne eigene Projektion fuer Boden, Figuren, Treffer und Tiefe wuerde Simulation und Bild auseinanderziehen und braucht einen eigenen R6/R7-Slice. Bewusst zurueckgestellt, dokumentiert in docs/RENDER_REWORK_PLAN.md."
     },
     {
       "id": "street-prop-collision",
       "severity": "warning",
-      "status": "open",
-      "summary": "Gebaeude sind jetzt ueber Grundrisskanten solide, Strassenrequisiten (Bank, Baum, Muelleimer, Haltestelle) bleiben begehbar: das Navigationsraster kennt nur Wandkanten und Moebel, keine Requisiten-Tiles."
+      "status": "resolved",
+      "summary": "Veraltet: Strassenrequisiten belegen ihren Footprint im Navigationsraster. Belegt durch src/core/sim/__tests__/city-props-solid.test.ts (Bank 2x1, uebrige 1x1, Weg um die Bank)."
     },
     {
       "id": "browser-visual",
       "severity": "warning",
-      "status": "open",
-      "summary": "Weiterhin kein Browserbeleg: Screenshot, Konsole und Probe fehlen; die Cloud-Preview haengt auf dem Basisstand. Ambient, Schatten und Sichtradius sind nur per Vertragstest belegt."
+      "status": "accepted",
+      "summary": "Bewusst zurueckgestellt: Weiterhin kein neuer Browserbeleg in dieser VM: Screenshot, Konsole und Probe fehlen; die Cloud-Preview haengt auf dem Basisstand. Die frueheren Artefakte liegen unter artifacts/real/, sind aber kein frischer Beleg. Headless-Evidenz ist im Long-Turn und in docs/RENDER_REWORK_PLAN.md dokumentiert."
     },
     {
       "id": "city-door-interaction",
       "severity": "info",
-      "status": "open",
-      "summary": "Die vier Tuerkanten sind sichtbar und Teil der Kollision, aber noch nicht an floor-hit/floor-actions angeschlossen; ein Klick auf die Schwelle loest keinen Raumwechsel aus."
+      "status": "resolved",
+      "summary": "Veraltet: Die vier Tuerkanten laufen ueber resolveHit/buildDoorActions/enterStreetDoor; belegt durch src/render/__tests__/city-door-click.test.ts (Treffer, Aktion, Szene/Stadtort)."
     },
     {
       "id": "city-wall-role",
       "severity": "info",
-      "status": "open",
-      "summary": "Die neuen Grundrisswaende nutzen die vorhandene Occlusion-Textur der Innenraeume; eine eigene Stadt-Wandrolle gehoert zu R8 (Assetpaket je Rolle)."
+      "status": "accepted",
+      "summary": "Die Stadtwaende nutzen bewusst die gemeinsame Occlusion-Rolle der Innenraeume; kein zweiter Wandpfad und keine zweite Kollision. Eine eigene Assetrolle bleibt R8 und ist keine Voraussetzung fuer diesen Slice."
     }
   ],
   "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 16
+  "revision": 19
 }

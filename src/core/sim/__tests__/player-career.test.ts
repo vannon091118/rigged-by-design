@@ -41,14 +41,14 @@ describe('Spieler-Karriere', () => {
     expect(fightRecordOf(events)).toEqual({ wins: 2, losses: 1, kos: 1 });
   });
 
-  it('nennt die Wirkung jeder Stufe, auch wenn sie noch keine hat', () => {
+  it('nennt die Wirkung jeder Stufe', () => {
     const { world, career } = careerOf();
     world.player.rpg.speedLevel = 3;
     const speed = career().attributes.find((entry) => entry.id === 'speed')!;
     const luck = career().attributes.find((entry) => entry.id === 'luck')!;
     expect(speed.effect).toContain('Schritte');
     expect(speed.level).toBe(3);
-    expect(luck.effect).toBe('noch ohne Wirkung');
+    expect(luck.effect).toBe('Unfallrisiko -0 %');
   });
 
   it('gibt Koerper und Geld unveraendert weiter', () => {

@@ -2,6 +2,8 @@
  * Typen der Stadt. Reine Beschreibung von Zustand und Sicht, keine Logik -
  * damit Core, Store und UI dieselbe Form teilen, ohne Zyklen zu bauen.
  */
+import type { CityResidentView } from './city-life-types';
+
 export type CityLocationId = 'CASINO' | 'KIEZ' | 'MARKT';
 export type CityBranchId = 'KIEZ' | 'MARKT';
 
@@ -88,6 +90,7 @@ export interface CityBranchView {
 }
 
 export interface CityView {
+  readonly residents: readonly CityResidentView[];
   readonly location: CityLocationId;
   readonly locationName: string;
   readonly note: string;

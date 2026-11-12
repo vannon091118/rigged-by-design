@@ -12,6 +12,7 @@ import { layoutFromTemplate, zonesFromLayout } from './layout-derive';
 import { spawnStain } from './stain';
 import { createActionQueue } from './action-queue';
 import { createCityScene } from './city-scene';
+import { createCityLifeState } from './city-life';
 import type { CarpetId, PriceBook, TemplateId, WorldState } from './types';
 
 const PRICES: PriceBook = {
@@ -77,6 +78,7 @@ export function createWorld(template: TemplateId, carpet: CarpetId = 'VIOLET'): 
     actionQueue: createActionQueue(),
     scene: { kind: 'OWN' },
     cityScene: createCityScene(),
+    cityLife: createCityLifeState(),
     onboarding: { step: 'DONE' },
     parts: 2,
     guestsServed: 0,

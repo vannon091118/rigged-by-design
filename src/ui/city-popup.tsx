@@ -23,6 +23,22 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
 
       <p className="city-note">{city.note}</p>
 
+      <div aria-label="Bewohner" style={{ display: 'grid', gap: 6 }}>
+        {city.residents.map((resident) => (
+          <div key={resident.npcId} style={{ padding: '7px 9px', border: '1px solid rgba(255,255,255,.12)', borderRadius: 8, background: 'rgba(0,0,0,.16)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'baseline' }}>
+              <b>{resident.name}</b>
+              <span style={{ opacity: .8, fontSize: 12, textAlign: 'right' }}>{resident.locationLabel} · {resident.intentLabel}</span>
+            </div>
+            <small style={{ display: 'block', marginTop: 3, opacity: .72, fontSize: 11 }}>
+              Hunger {resident.hunger} · Durst {resident.thirst} · Müdigkeit {resident.fatigue}
+              {' '}· Sozial {resident.social} · Laune {resident.mood}
+            </small>
+            {resident.traits.length > 0 && <small style={{ display: 'block', marginTop: 3, opacity: .72, fontSize: 11 }}>{resident.traits.join(' · ')}</small>}
+          </div>
+        ))}
+      </div>
+
       <div className="city-energy" aria-label="Energie">
         <b>Energie {city.energy}/{city.energyMax}</b>
         <span>Jede Handlung kostet Energie; ein neuer Tag fuellt sie auf.</span>

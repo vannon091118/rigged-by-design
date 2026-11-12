@@ -17,6 +17,7 @@ import {
   createDefaultNeeds,
   FATIGUE_THRESHOLD_URGENT,
   HUNGER_THRESHOLD_URGENT,
+  THIRST_THRESHOLD_URGENT,
   needsOverrideIntent,
   SOCIAL_THRESHOLD_URGENT,
   tickNeeds,
@@ -55,6 +56,7 @@ describe('npc-needs and threshold logic', () => {
   it('initializes default needs within valid ranges', () => {
     const needs: NpcNeeds = createDefaultNeeds();
     expect(needs.hunger).toBe(20);
+    expect(needs.thirst).toBe(20);
     expect(needs.fatigue).toBe(10);
     expect(needs.social).toBe(30);
     expect(needs.money).toBe(5000);
@@ -66,14 +68,17 @@ describe('npc-needs and threshold logic', () => {
     const afterSleep = tickNeeds(startNeeds, 'SLEEP', 2);
     expect(afterSleep.fatigue).toBe(20);
     expect(afterSleep.hunger).toBe(26);
+    expect(afterSleep.thirst).toBe(24);
 
     const afterPub = tickNeeds(startNeeds, 'PUB', 1);
     expect(afterPub.social).toBe(10);
     expect(afterPub.mood).toBe(85);
+    expect(afterPub.thirst).toBe(0);
   });
 
   it('triggers overrides based on thresholds', () => {
     expect(HUNGER_THRESHOLD_URGENT).toBe(85);
+    expect(THIRST_THRESHOLD_URGENT).toBe(85);
     expect(FATIGUE_THRESHOLD_URGENT).toBe(90);
     expect(SOCIAL_THRESHOLD_URGENT).toBe(80);
 
@@ -85,6 +90,9 @@ describe('npc-needs and threshold logic', () => {
 
     const brokeStarvingNeeds = createDefaultNeeds({ hunger: 88, money: 100 });
     expect(needsOverrideIntent(brokeStarvingNeeds)).toBe<NpcIntentKind>('EAT_HOME');
+
+    const thirstyNeeds = createDefaultNeeds({ thirst: 88, money: 600 });
+    expect(needsOverrideIntent(thirstyNeeds)).toBe<NpcIntentKind>('PUB');
 
     const lonelyNeeds = createDefaultNeeds({ social: 85 });
     expect(needsOverrideIntent(lonelyNeeds)).toBe<NpcIntentKind>('PUB');

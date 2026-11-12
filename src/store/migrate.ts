@@ -22,6 +22,8 @@ import { hydrateStainsAndMops } from './migrate-stains';
 import { hydrateLayout } from './migrate-layout';
 import type { LayoutState } from '../core/sim/layout-types';
 import type { CityState } from '../core/sim/city-types';
+import type { CityLifeState } from '../core/sim/city-life-types';
+import { normalizeCityLife } from '../core/sim/city-life';
 import { normalizeCityState } from '../core/sim/city-persist';
 import { normalizeActionQueue, type ActionQueueState } from '../core/sim/action-queue';
 import { normalizeCityScene } from '../core/sim/city-scene';
@@ -67,6 +69,8 @@ export interface SavedGame {
   readonly entries: readonly SavedEntry[]; readonly prngState: number;
   /** Ab dieser Lane: der Stadtzustand inklusive Begegnungen; alte Saves haben ihn nicht. */
   readonly city?: CityState;
+  /** Ab dieser Lane: Hunger, Durst und Tagesroutine der Stadt-NPCs. */
+  readonly cityLife?: CityLifeState;
 }
 
 function footprintOf(item: Furniture): { w: number; h: number; seats: number } | null {
@@ -92,6 +96,7 @@ export function hydrateWorld(world: WorldState, saved: SavedGame): Array<{ id: n
   // Der Stadtzustand ist Spielzustand, kein Anzeigecache: Ort, Energie und
   // Begegnungen (Erinnerung) muessen den Save ueberstehen.
   world.city = normalizeCityState(saved.city, world.day);
+  world.cityLife = normalizeCityLife(saved.cityLife);
   const arrival = saved.nextArrivalTick; world.nextArrivalTick = arrival !== undefined && Number.isFinite(arrival) ? Math.max(world.tick + 1, Math.floor(arrival)) : world.tick + 8;
   world.satisfaction = Number.isFinite(saved.satisfaction) ? Math.min(100, Math.max(0, saved.satisfaction!)) : 55;
   world.demandTier = saved.demandTier && DEMAND_TIERS.has(saved.demandTier) ? saved.demandTier : 'BUDE';

@@ -77,7 +77,7 @@ describe('Charakterfenster: Werte', () => {
     expect(screen.getAllByRole('list')).toHaveLength(4);
     expect(screen.getByText('Speed').tagName).toBe('SPAN');
     expect(screen.getByText('Glück').tagName).toBe('SPAN');
-    expect(screen.getAllByText('noch ohne Wirkung')).toHaveLength(1);
+    expect(screen.getByText('Unfallrisiko -0 %')).not.toBeNull();
     expect(screen.getByLabelText('Arbeitsqualitaet').textContent).toContain('Reinigen');
   });
 

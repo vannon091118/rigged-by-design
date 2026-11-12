@@ -3,7 +3,7 @@
 import { fromVC, type VaCoinMicro } from '../economy/vacoin';
 import { PORTEMONNAIE, EXTERNAL } from './money';
 import { getRival, type RivalId } from './rivals';
-import { grantGlobalXp, injuryDurationReduction } from './player-rpg';
+import { grantGlobalXp, injuryDurationReduction, luckInjuryFactor } from './player-rpg';
 import { recordJournal } from './journal';
 import type { PlayerJobState, WorldState, PlayerJobId } from './types';
 
@@ -85,7 +85,8 @@ export function completeJobTask(world: WorldState, prng: { nextFloat: () => numb
   if (job === null || job.currentTask === null) return;
   const def = JOB_DEFS[job.jobId];
   grantGlobalXp(world.player.rpg, def.xpSourceKey, def.baseXpPerTask);
-  const injured = def.injuryChance > 0 && prng.nextFloat() < def.injuryChance;
+  const injuryChance = def.injuryChance * luckInjuryFactor(world.player.rpg);
+  const injured = injuryChance > 0 && prng.nextFloat() < injuryChance;
   if (injured) {
     const reduction = injuryDurationReduction(world.player.rpg);
     world.player.rpg.injuryTicks = Math.max(1, INJURY_TICKS - reduction);
@@ -120,7 +121,8 @@ export function payDailyWage(
   const wage = fromVC(def.dailyWageVC);
   ledger.transfer(EXTERNAL, PORTEMONNAIE, wage, `tageslohn ${def.id}`, tick);
   job.lastPaidDay = world.day;
-  if (def.injuryChance > 0 && prng.nextFloat() < def.injuryChance) {
+  const injuryChance = def.injuryChance * luckInjuryFactor(world.player.rpg);
+  if (injuryChance > 0 && prng.nextFloat() < injuryChance) {
     const reduction = injuryDurationReduction(world.player.rpg);
     world.player.rpg.injuryTicks = Math.max(1, INJURY_TICKS - reduction);
     world.player.rpg.hp = Math.max(1, world.player.rpg.hp - 10);

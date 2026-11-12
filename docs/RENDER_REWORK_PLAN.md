@@ -38,6 +38,33 @@ Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
 R1–R12 bleiben unverändert offen, bis Screenshot, Konsole und Probe nach
 Abschnitt 8 vorliegen.
 
+### Stadtleben-Slice 2026-11-12 (R9-Teilbeleg)
+
+Die vorhandenen headless Bedürfnisse und Tagespläne haben jetzt einen
+Produktionsleser. `tickWorld` ruft `tickCityLife` auf; Rita, Boris und Mira
+bewegen sich stündlich zwischen Wohnung, Kiez und Markt, und Hunger, Durst,
+Müdigkeit, Sozialbedarf und Laune werden über Tagesgrenzen sowie Save/Load
+getragen. `cityView` liefert die Bewohner mit Standort, Intent, Stats und
+Traits an das Stadtfenster; `normalizeCityLife` migriert alte Saves ohne
+Stadtleben. Die Traits/Beziehungen kommen weiter aus dem bestehenden
+Begegnungsloop, nicht aus einem zweiten Modell.
+
+| Beleg | Datei/Test |
+| --- | --- |
+| Tagesroutine und sichtbare Stats | `city-life.ts`, `city-popup.tsx`, `city-life.test.ts`: 09:00 WORK/KIEZ, 19:00 PUB/KIEZ, 23:00 SLEEP/HOME; alle Werte 0..100 |
+| Durst als echter Bedürfnis-Override | `npc-needs.ts` (`thirst`, `THIRST_THRESHOLD_URGENT`), `npc-schedule.test.ts`, `city-life.test.ts` |
+| Persistenz | `save.ts`/`migrate.ts`, `city-life.test.ts` mit Save/Load-Roundtrip |
+| Ereigniskette | `living-world-longturn.test.ts`: GEBEN -> Traits -> `CITY_ENCOUNTER_ARC` -> Warm-Echo nach 24 Ticks |
+| Umgebung | derselbe Long-Turn: Gast verliert auf Dreck Laune und gewinnt auf sauberem Boden |
+| Alle sieben Spielerstufen | derselbe Long-Turn: Speed, Charisma, Brawl, Wahrnehmung, Technik, Ausdauer, Glück mit ihren vorhandenen Lesern |
+| Fähigkeiten/Erfahrung | derselbe Long-Turn: `JOB_CLEANER`-XP erhöht Speed, Wahrnehmung und Ausdauer |
+| Glück | `player-jobs.test.ts`: Stufe 10 halbiert das Mechaniker-Unfallrisiko |
+
+Grenzen: Spieler-Hunger/-Durst bleiben außerhalb dieses Slice; das neue
+Stadtleben modelliert die drei benannten NPCs. Die 2:1-Isometrie und der
+Browser-Screenshot bleiben die bereits dokumentierten offenen Punkte; der
+Long-Turn ist ein deterministischer Headless-Beleg, kein Sichtbeleg.
+
 ### Ambient-Slice 2026-11-12 (R5/R6/R12-Teilbeleg)
 
 Der Slice ergänzt die bestehende Tageszeit um eine reine Darstellungsableitung.

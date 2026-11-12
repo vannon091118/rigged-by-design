@@ -176,7 +176,7 @@ describe('Tastatur/Pointer-Parität', () => {
     render(<StageControls zoom={zoom} overview={fit} />);
     expect(screen.queryByRole('button', { name: 'Hineinzoomen' })).toBeNull();
     render(<FloorRoleBar perspective="operator" />);
-    expect(screen.getByText('FREMDER FLOOR')).toBeTruthy();
+    expect(screen.getByText('FREMDER FLOOR')).not.toBeNull();
     render(<OnboardingPanel view={worldStore.getSnapshot()} onOpen={noop} />);
     expect(screen.queryByText('ERSTE SCHRITTE')).toBeNull();
     const staleCity = {

@@ -99,6 +99,14 @@ export function injuryDurationReduction(rpg: PlayerRpgState): number {
   return Math.floor(Math.max(0, rpg.enduranceLevel) / 3);
 }
 
+/**
+ * Glueck senkt das Unfallrisiko bei Jobs. Die Untergrenze von 25 % verhindert,
+ * dass hohe Stufen Arbeit voellig risikofrei machen; jede Stufe bringt 5 %.
+ */
+export function luckInjuryFactor(rpg: PlayerRpgState): number {
+  return Math.max(0.25, 1 - Math.max(0, rpg.luckLevel) * 0.05);
+}
+
 const XP_SOURCE_WEIGHTS: Readonly<Record<string, Partial<Record<RpgAttribute, number>>>> = {
   JOB_CLEANER: { speed: 0.3, perception: 0.4, endurance: 0.3 },
   JOB_BARTENDER: { charisma: 0.4, brawl: 0.2, perception: 0.2, endurance: 0.2 },
