@@ -1,7 +1,7 @@
 {
-  "id": "lane/governance/local-testline",
+  "id": "lane/governance/local-testline-final",
   "owner": "Governance-Owner",
-  "branch": "lane/governance/local-testline",
+  "branch": "lane/governance/local-testline-final",
   "baseSha": "01ac1d817d3963d329eb9b0d78318124c45c45a9",
   "task": "Lokale Testline vollstaendig refaktorieren und als einzigen Testpfad etablieren",
   "goal": "Statistik und Langlauf isolieren, Timeouts und Retries entfernen, Lane/Claim/Kontext beschleunigen, Workflows lokal ersetzen.",
@@ -13,10 +13,11 @@
     "src/",
     "package.json",
     ".github/workflows/",
-    ".lane-claims/claims/lane-governance-local-testline.json",
     ".lane-claims/claims/lane-governance-local-first-ci.json",
     ".lane-claims/claims/lane-governance-optional-pr-runner.json",
-    ".lane-claims/claims/lane-governance-repo-cleanup-data-audit.json"
+    ".lane-claims/claims/lane-governance-repo-cleanup-data-audit.json",
+    ".circleci/",
+    ".lane-claims/claims/lane-governance-local-testline-final.json"
   ],
   "contracts": [],
   "dependencies": [],

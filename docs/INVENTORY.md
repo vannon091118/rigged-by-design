@@ -618,17 +618,16 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2681 |
-| Gelistete Dateien | 2681 |
-| Getrackte Ordner | 105 |
-| Bereiche | .circleci (4), (Wurzel) (10), .githooks (3), .github (8), .lane-claims (22), content (1012), docs (85), packages (27), public (554), scripts (116), src (840) |
+| Getrackte Dateien | 2677 |
+| Gelistete Dateien | 2677 |
+| Getrackte Ordner | 104 |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (22), content (1012), docs (85), packages (27), public (554), scripts (116), src (840) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
 ### 18.2 Ordner
 
 - `./` — 10 Datei(en)
-- `.circleci/` — 4 Datei(en)
 - `.githooks/` — 3 Datei(en)
 - `.github/` — 2 Datei(en)
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
@@ -735,10 +734,6 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 
 ### 18.3 Dateien
 
-- `.circleci/README.md` — CircleCI: Local-first mit 30.000 Credits/Monat — gelesen: 84 Zeilen
-- `.circleci/config.yml` — version: 2.1 — gelesen: 237 Zeilen
-- `.circleci/ensure-pr.mjs` — Ersatz fuer `ensure-pr.yml`: ein Push auf `lane/**` legt den PR an oder — gelesen: 71 Zeilen
-- `.circleci/publish-apk.mjs` — Ersatz fuer den Release-Upload aus `build-apk.yml`: haengt die gebauten APKs — gelesen: 89 Zeilen
 - `.gitattributes` — Zeilenenden: der Generator schreibt LF. Mit core.autocrlf=true erzeugt Git — gelesen: 9 Zeilen
 - `.githooks/commit-msg` — Fail-closed: eine Commit-Nachricht ohne die drei Pflichtsektionen wird — gelesen: 14 Zeilen
 - `.githooks/pre-commit` — Delegiert an den versionierten Pre-Commit-Runner. — gelesen: 5 Zeilen
@@ -756,14 +751,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-actions-storage-retention.json` — { — gelesen: 25 Zeilen
 - `.lane-claims/claims/lane-governance-claim-retention-postmerge.json` — { — gelesen: 37 Zeilen
 - `.lane-claims/claims/lane-governance-first-evening-ci.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 46 Zeilen
-- `.lane-claims/claims/lane-governance-local-testline.json` — { — gelesen: 23 Zeilen
+- `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 48 Zeilen
+- `.lane-claims/claims/lane-governance-local-testline.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-governance-monitor-closeout-452-register.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 36 Zeilen
+- `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-468.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-remove-freeze.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 20 Zeilen
+- `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/tasks/governance-actions-storage-retention.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-claim-retention-postmerge.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-first-evening-ci.json` — { — gelesen: 23 Zeilen
@@ -2698,7 +2693,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/narrative-content-quality.test.ts` — Quality-First: Der Bestand wird nicht nach Poolgroesse, sondern nach — gelesen: 138 Zeilen
 - `src/core/governance/__tests__/narrative-content.test.ts` — NAR-09: Schema, kontrolliertes Vokabular, Turn-Manifest und die abgeleitete — gelesen: 201 Zeilen
 - `src/core/governance/__tests__/narrative-fixture.ts` — Gemeinsamer Bestand und Temp-Fixture der Narrative-Content-Tests (NAR-09). — gelesen: 32 Zeilen
-- `src/core/governance/__tests__/narrative-world-text.test.ts` — Spieltexte duerfen ohne Kenntnis des Repos verstaendlich sein. Dieser Test — gelesen: 39 Zeilen
+- `src/core/governance/__tests__/narrative-world-text.test.ts` — Spieltexte duerfen ohne Kenntnis des Repos verstaendlich sein. Dieser Test — gelesen: 43 Zeilen
 - `src/core/governance/__tests__/pipeline-modes.test.ts` — Ein Pruefer darf die Akte nicht vorher umschreiben. Kein Verify-Profil — gelesen: 132 Zeilen
 - `src/core/governance/__tests__/pr-body.test.ts` — Der PR-Body wird im Plan geprueft. Die exakten Ueberschriften und echte — gelesen: 34 Zeilen
 - `src/core/governance/__tests__/pr-watcher.test.ts` — Ein erneut aufgetretener Fehler muss ein geschlossenes Issue wieder oeffnen. — gelesen: 184 Zeilen
@@ -2773,7 +2768,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/device-identity.test.ts` — Geräteidentität und Spieltyp sind zwei Fragen. Der Katalog entscheidet, — gelesen: 46 Zeilen
 - `src/core/sim/__tests__/dirty-index.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 22 Zeilen
 - `src/core/sim/__tests__/dispute-escalation.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 13 Zeilen
-- `src/core/sim/__tests__/drink-menu.test.ts` — Die Karte ist eine Sicht auf Grundpreis und Barstufe. Geprueft werden die — gelesen: 137 Zeilen
+- `src/core/sim/__tests__/drink-menu.test.ts` — Die Karte ist eine Sicht auf Grundpreis und Barstufe. Geprueft werden die — gelesen: 140 Zeilen
 - `src/core/sim/__tests__/duel.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 180 Zeilen
 - `src/core/sim/__tests__/economy-losses.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 24 Zeilen
 - `src/core/sim/__tests__/esport.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 64 Zeilen
