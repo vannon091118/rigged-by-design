@@ -2,18 +2,23 @@
  * @module city-life — autonome Lebenssimulation der benannten Stadt-NPCs
  *
  * Rita, Boris und Mira sind keine Kulisse: Jede Stunde entscheidet ihre
- * Tagesroutine zusammen mit Hunger, Durst, Muedigkeit und Sozialbedarf, wo sie
- * sind und was sie tun. Die Beduerfnisse tragen ueber Tagesgrenzen, Save/Load
- * und den Wechsel zwischen Stadt und eigenem Betrieb hinweg.
+ * Tagesroutine zusammen mit Hunger, Durst, Muedigkeit, Sozialbedarf, Laune,
+ * Traits, Attributen, Faehigkeiten, Beziehungen, Erinnerungen und Bargeld.
+ * Die Beduerfnisse tragen ueber Tagesgrenzen, Save/Load und den Wechsel
+ * zwischen Stadt und eigenem Betrieb hinweg; der Trace bleibt nachvollziehbar.
  */
-import { CITY_NPCS, type CityNpcDef } from './city-npcs';
-import type { CityLifePlace, CityResidentState, CityResidentView } from './city-life-types';
+import { CITY_NPCS, ensureCityVisitor, type CityNpcDef } from './city-npcs';
+import type {
+  CityLifeDecision, CityLifePlace, CityLifeState, CityResidentState, CityResidentView,
+} from './city-life-types';
 import { ensureCityLife, hourOf } from './city-life-state';
-import { tickNeeds } from './npc-needs';
-import { createDayPlan, nextIntentForHour, resolveNpcIntent } from './npc-schedule';
-import type { NpcIntentKind } from './npc-types';
-import type { WorldState } from './types';
+import { createDayPlan, nextIntentForHour } from './npc-schedule';
+import { applyCityDecision } from './city-life-apply';
+import { decideCityLife } from './city-life-decision';
 import { explainTraits } from './city-traits';
+import type { NpcIntentKind } from './npc-types';
+import type { TraitState } from './city-types';
+import type { WorldState } from './types';
 
 export {
   createCityLifeState,
@@ -50,26 +55,30 @@ function workBuildingFor(def: CityNpcDef): string {
   return def.location === 'KIEZ' ? 'bld_kiez_pub' : 'bld_corner_shop';
 }
 
-function placeForIntent(intent: NpcIntentKind, def: CityNpcDef): CityLifePlace {
-  switch (intent) {
-    case 'WORK':
-    case 'COMMUTE':
-      return def.location;
-    case 'PUB':
-    case 'LEISURE':
-    case 'VISIT_FRIEND':
-      return 'KIEZ';
-    case 'EAT_OUT':
-    case 'SHOP':
-      return def.location;
-    default:
-      return 'HOME';
-  }
-}
-
 function elapsedHours(record: CityResidentState, day: number, hour: number): number {
   const elapsed = (day - record.lastDay) * 24 + (hour - record.lastHour);
   return Math.max(1, Math.min(24, elapsed));
+}
+
+function traitsFor(world: WorldState, def: CityNpcDef): readonly TraitState[] {
+  return ensureCityVisitor(world, def).traits ?? [];
+}
+
+function applyRelationshipDelta(
+  residents: CityResidentState[], actorId: string, targetId: string, delta: number,
+): void {
+  const index = residents.findIndex((resident) => resident.npcId === targetId);
+  if (index < 0) return;
+  const target = residents[index]!;
+  const value = Math.max(-100, Math.min(100, (target.relationships[actorId] ?? 0) + delta));
+  residents[index] = { ...target, relationships: { ...target.relationships, [actorId]: value } };
+}
+
+interface TickResult {
+  readonly resident: CityResidentState;
+  readonly decision: CityLifeDecision | null;
+  readonly relationshipTarget: string | null;
+  readonly relationshipDelta: number;
 }
 
 /**
@@ -79,25 +88,65 @@ function elapsedHours(record: CityResidentState, day: number, hour: number): num
 export function tickCityLife(world: WorldState): void {
   const life = ensureCityLife(world);
   const hour = hourOf(world.tick);
-  const next = life.residents.map((record) => {
-    if (record.lastDay === world.day && record.lastHour === hour) return record;
+  const seed = life.seed ?? 0;
+  let decisionSeq = life.decisionSeq ?? 0;
+  let memorySeq = life.memorySeq ?? 1;
+  const changed = life.residents.map((record): TickResult => {
+    if (record.lastDay === world.day && record.lastHour === hour) {
+      return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
+    }
     const def = CITY_NPCS.find((entry) => entry.id === record.npcId);
-    if (!def) return record;
+    if (!def) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     const plan = createDayPlan(def.id, HOME_BUILDING, workBuildingFor(def));
     const scheduled = nextIntentForHour(plan, hour);
-    if (!scheduled) return record;
-    const resolved = resolveNpcIntent(record.needs, scheduled, hour);
-    const needs = tickNeeds(record.needs, resolved.kind, elapsedHours(record, world.day, hour));
+    if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
+    const input = {
+      resident: record,
+      scheduled: scheduled.intent,
+      workplace: def.location,
+      hour,
+      day: world.day,
+      tick: world.tick,
+      peers: life.residents,
+      traits: traitsFor(world, def),
+      seed,
+    };
+    const decisionPlan = decideCityLife(input);
+    const applied = applyCityDecision({
+      input,
+      plan: decisionPlan,
+      decisionId: decisionSeq + 1,
+      elapsedHours: elapsedHours(record, world.day, hour),
+      nextMemoryId: memorySeq,
+    });
+    decisionSeq += 1;
+    memorySeq = applied.nextMemoryId;
     return {
-      ...record,
-      intent: resolved.kind,
-      location: placeForIntent(resolved.kind, def),
-      needs,
-      lastHour: hour,
-      lastDay: world.day,
+      resident: { ...applied.resident, lastHour: hour, lastDay: world.day },
+      decision: applied.decision,
+      relationshipTarget: applied.relationshipTarget,
+      relationshipDelta: applied.relationshipDelta,
     };
   });
-  world.cityLife = { residents: next };
+  const residents = changed.map((entry) => entry.resident);
+  for (const entry of changed) {
+    if (entry.relationshipTarget) {
+      applyRelationshipDelta(residents, entry.resident.npcId, entry.relationshipTarget, entry.relationshipDelta);
+    }
+  }
+  const decisions = new Map((life.lastDecisions ?? []).map((decision) => [decision.npcId, decision]));
+  for (const entry of changed) {
+    if (entry.decision) decisions.set(entry.decision.npcId, entry.decision);
+  }
+  const freshDecisions = [...decisions.values()];
+  const next: CityLifeState = {
+    ...life,
+    residents,
+    decisionSeq,
+    memorySeq,
+    lastDecisions: freshDecisions,
+  };
+  world.cityLife = next;
 }
 
 export function cityLifeView(world: WorldState): readonly CityResidentView[] {
