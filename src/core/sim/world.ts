@@ -1,5 +1,6 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
 import { cityNav } from './city-scene';
+import { playerApartmentFurniture, playerApartmentNav } from './player-apartment';
 import { canPlaceAt } from './grid-zones';
 import { navGrid, tileIndex, type NavGrid } from './nav-grid';
 import { accessPoints, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
@@ -10,6 +11,9 @@ export function zoneById(world: WorldState, id: string): Zone | null {
 }
 
 export function furnitureById(world: WorldState, id: number): Furniture | null {
+  if (world.scene.kind === 'APARTMENT') {
+    return playerApartmentFurniture().find((item) => item.id === id) ?? null;
+  }
   return world.furniture.find((item) => item.id === id) ?? null;
 }
 
@@ -40,6 +44,7 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
  * haengen bleiben. Ein Casino/ eine Wohnung nutzt weiterhin `world.layout`.
  */
 export function worldNav(world: WorldState): NavGrid {
+  if (world.scene.kind === 'APARTMENT') return playerApartmentNav();
   const city = world.scene.kind === 'CITY' ? world.cityScene : null;
   if (city) return cityNav(city);
   return navGrid(world.layout.size, world.furniture, world.layout);

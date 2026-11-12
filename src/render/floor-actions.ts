@@ -21,7 +21,7 @@ export type MenuAction = {
   doorId?: string;
 };
 
-type ActionView = Pick<GameView, 'player'>;
+type ActionView = Pick<GameView, 'player'> & { readonly scene: Pick<GameView['scene'], 'kind'> };
 
 const target = (kind: InteractionTarget['kind'], id: number): InteractionTarget => ({ kind, id });
 
@@ -149,6 +149,22 @@ export function buildFurnitureActions(
     actions.push({ id: 'SERVE_DESK', label: 'Kasse bedienen', enabled: true, targetId: item.id, target: focus });
   } else if (item.kind === 'DECOR' && /spiegel|mirror/i.test(item.label)) {
     actions.push({ id: 'SPIEGEL', label: 'Spiegel', enabled: true, targetId: item.id, target: focus });
+  }
+  if (world.scene.kind === 'APARTMENT' && item.kind === 'DECOR' && /kühlschrank/i.test(item.label)) {
+    const thirsty = world.player.needs.thirst > 5;
+    actions.push({
+      id: 'DRINK_AT_HOME', label: 'Etwas trinken', enabled: thirsty,
+      targetId: item.id, target: focus,
+      reason: thirsty ? undefined : 'Du hast keinen Durst.',
+    });
+  }
+  if (world.scene.kind === 'APARTMENT' && item.kind === 'DECOR' && /kochnische/i.test(item.label)) {
+    const hungry = world.player.needs.hunger > 5;
+    actions.push({
+      id: 'EAT_AT_HOME', label: 'Etwas essen', enabled: hungry,
+      targetId: item.id, target: focus,
+      reason: hungry ? undefined : 'Du bist satt.',
+    });
   }
 
   return actions;

@@ -1,0 +1,27 @@
+{
+  "id": "lane/render/player-needs",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/player-needs",
+  "baseSha": "24de3138eed45e1cb8bb36c468c9665732db2a1d",
+  "task": "Spieler-Hunger und -Durst als aktive, gespeicherte Lebenssimulation mit Ess-/Trinkaktionen und nachweisbarer Ereigniskette",
+  "goal": "Spielerbeduerfnisse sinken im Tick, erholen sich durch Essen und Trinken, ueberleben Save/Load und veraendern Stadtalltag sowie Job-Ergebnisse.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/ui/**",
+    "src/render/**",
+    "docs/RENDER_REWORK_PLAN.md",
+    "content/narrative/contributions/2026-11-12-player-needs.json",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/tasks/render-player-needs.json",
+    ".lane-claims/claims/lane-render-player-needs.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "24de3138eed45e1cb8bb36c468c9665732db2a1d"
+}

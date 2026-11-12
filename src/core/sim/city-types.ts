@@ -3,6 +3,7 @@
  * damit Core, Store und UI dieselbe Form teilen, ohne Zyklen zu bauen.
  */
 import type { CityResidentView } from './city-life-types';
+import type { PlayerNeedsView } from './player-needs';
 
 export type CityLocationId = 'CASINO' | 'KIEZ' | 'MARKT';
 export type CityBranchId = 'KIEZ' | 'MARKT';
@@ -91,6 +92,8 @@ export interface CityBranchView {
 
 export interface CityView {
   readonly residents: readonly CityResidentView[];
+  /** Hunger/Durst des Spielers und ihre sichtbare Wirkung auf den Stadtalltag. */
+  readonly playerNeeds: PlayerNeedsView;
   readonly location: CityLocationId;
   readonly locationName: string;
   readonly note: string;

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:0384f985f1f1d24dbe80a1f6d944ffef4e52d7f3f734392aceb025e5fe97d48a",
+  "contentHash": "sha256:6d8f9a6144a9b716bd83113121f1e3b2d5ea2a007268492f8f047de0282d4bee",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -10502,6 +10502,28 @@
       "text": "Rita blätterte die letzten Abende nicht nach Gefühl durch, sondern nach Beleg: erst der Kampf, dann der Tag, dann was dabei herauskam. Was sie nicht fand, schrieb sie auch nicht auf – eine leere Zeile ist ehrlicher als eine erfundene.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-player-history.json"
+    },
+    {
+      "contributionId": "player-needs-01",
+      "turnId": "2026-11-12T08:30Z-player-needs",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Der Magen entscheidet mit, bevor der erste Satz faellt: Wer den Tag ohne Essen und Wasser durchziehen will, hoert im Kiez seine eigene Stimme leiser werden und sieht den Ruf langsamer wachsen.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-player-needs.json"
     },
     {
       "contributionId": "plinko-board-raster-01",

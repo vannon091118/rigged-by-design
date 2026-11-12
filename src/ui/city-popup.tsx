@@ -44,6 +44,11 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
         <span>Jede Handlung kostet Energie; ein neuer Tag fuellt sie auf.</span>
       </div>
 
+      <div className="city-energy" aria-label="Spielerbedürfnisse">
+        <b>Hunger {city.playerNeeds.hunger} · Durst {city.playerNeeds.thirst}</b>
+        <span>{city.playerNeeds.effect}</span>
+      </div>
+
       <div className="city-branches">
         {city.branches.map((branch) => (
           <div key={branch.id} className={`city-branch${branch.done ? ' is-done' : ''}`}>

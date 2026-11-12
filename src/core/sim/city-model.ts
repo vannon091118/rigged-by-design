@@ -23,6 +23,8 @@ export const LOCATIONS: readonly { readonly id: CityLocationId; readonly name: s
 export const ACTIONS: readonly ActionDef[] = [
   { id: 'KIEZ_ANSPRECHEN', location: 'KIEZ', label: 'Ein Gespraech anfangen', hint: 'Ein Satz, ein Name, ein naechstes Mal.', energy: 1, branch: 'KIEZ', progress: 1, reputation: 0.4 },
   { id: 'KIEZ_RUNDE', location: 'KIEZ', label: 'Eine Runde ausgeben', hint: 'Kostet mehr Energie, traegt weiter.', energy: 2, branch: 'KIEZ', progress: 2, reputation: 1.1 },
+  { id: 'KIEZ_ESSEN', location: 'KIEZ', label: 'Etwas essen', hint: 'Hunger sinkt; der Abend wird wieder tragbar.', energy: 1, branch: 'KIEZ', progress: 0, reputation: 0 },
+  { id: 'KIEZ_TRINKEN', location: 'KIEZ', label: 'Etwas trinken', hint: 'Durst sinkt; der Kopf bleibt im Spiel.', energy: 1, branch: 'KIEZ', progress: 0, reputation: 0 },
   { id: 'MARKT_FEILSCHEN', location: 'MARKT', label: 'Um den Preis feilschen', hint: 'Der Handel lernt dich kennen.', energy: 1, branch: 'MARKT', progress: 1, reputation: 0.3 },
   { id: 'MARKT_LIEFERUNG', location: 'MARKT', label: 'Eine Lieferung begleiten', hint: 'Anstrengend, aber die Strasse merkt es sich.', energy: 2, branch: 'MARKT', progress: 2, reputation: 0.9 },
 ];

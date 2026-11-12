@@ -9,6 +9,8 @@ export function handleFloorInteract(action: MenuAction): void {
         case 'CLEAN_STAIN': worldStore.queue.enqueueCleanStain(targetId!); break;
         case 'CLEAN_ROOM': worldStore.queue.enqueueCleanRoom(); break;
         case 'TAKE_DRINK': worldStore.takeDrink(targetId); break;
+        case 'EAT_AT_HOME': worldStore.eatAtHome(); break;
+        case 'DRINK_AT_HOME': worldStore.drinkAtHome(); break;
         case 'SERVE_DRINK': worldStore.serveDrink(targetId!); break;
         case 'GET_MOP': worldStore.queue.enqueueGetMop(); break;
         case 'DROP_MOP': worldStore.queue.enqueueReturnMop(); break;

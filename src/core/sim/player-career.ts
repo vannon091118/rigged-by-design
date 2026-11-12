@@ -18,6 +18,7 @@ import { cleaningReach, maintenanceGain } from './floor-work';
 import { propertyView, type PlayerPropertyView } from './property';
 import type { JournalEvent } from './journal';
 import { JOB_DEFS } from './player-jobs';
+import { normalizePlayerNeeds, playerNeedsView, type PlayerNeedsView } from './player-needs';
 import {
   isInjured, playerHp, playerMaxHp, playerStepsPerTick, xpForNextLevel,
   type PlayerRpgState, type RpgAttribute,
@@ -48,6 +49,7 @@ interface CareerAchievement {
 }
 
 export interface PlayerCareer {
+  readonly needs: PlayerNeedsView;
   readonly level: number;
   readonly xp: number;
   readonly xpToNext: number;
@@ -143,6 +145,7 @@ export function playerCareer(world: WorldState, wallet: VaCoinMicro, playerCash:
   const job = world.player.job;
   const record = fightRecordOf(world.archive);
   return {
+    needs: playerNeedsView(normalizePlayerNeeds(world.player.needs)),
     level: rpg.level,
     xp: rpg.xp,
     xpToNext: Math.max(0, xpForNextLevel(rpg.level) - rpg.xp),

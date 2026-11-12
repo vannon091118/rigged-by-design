@@ -18,14 +18,15 @@ describe('Floor-Szenenregel', () => {
     expect(floorTapAllowed('OWN', 'floor')).toBe(true);
   });
 
-  it('teilt Boden und Türen in Wohnung und Stadt, aber keine Casino-Ziele', () => {
+  it('teilt Boden und Türen in Wohnung und Stadt; Wohnungsmöbel bleiben eigene Ziele', () => {
     for (const scene of ['APARTMENT', 'CITY'] as const) {
       expect(floorMovementAllowed(scene)).toBe(true);
       expect(floorTapAllowed(scene, 'floor')).toBe(true);
       expect(floorTapAllowed(scene, 'door')).toBe(true);
-      expect(floorTapAllowed(scene, 'furniture')).toBe(false);
       expect(floorTapAllowed(scene, 'guest')).toBe(false);
     }
+    expect(floorTapAllowed('APARTMENT', 'furniture')).toBe(true);
+    expect(floorTapAllowed('CITY', 'furniture')).toBe(false);
   });
 
   it('hält den Fremd-Floor für alle Bodenpfade geschlossen', () => {

@@ -27,6 +27,13 @@ export function CareerSection({ view, onChallenge, onBuyProperty, onRenovate, on
         <span>{career.unspentPoints > 0 ? `${career.unspentPoints} Punkte offen` : 'keine Punkte offen'}</span>
       </div>
       <p className={`career-hp${career.injured ? ' warn' : ''}`}>{hpNotice(career)}</p>
+      <section className="career-needs" aria-label="Hunger und Durst">
+        <div className="career-head">
+          <strong>HUNGER {career.needs.hunger} · DURST {career.needs.thirst}</strong>
+          <span>{career.needs.condition}</span>
+        </div>
+        <p className="hint">{career.needs.effect}</p>
+      </section>
       <ul className="career-attributes">
         {career.attributes.map((attribute) => (
           <li key={attribute.id}>

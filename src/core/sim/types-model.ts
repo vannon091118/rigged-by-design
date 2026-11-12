@@ -85,8 +85,16 @@ export interface OwnedProperty {
   readonly priceVC: VaCoinMicro;
   readonly day: number;
 }
+export interface PlayerNeeds {
+  /** 0 = satt, 100 = dringend; der Tick hebt den Wert, Essen senkt ihn. */
+  hunger: number;
+  /** 0 = satt, 100 = dringend; Trinken senkt den Wert. */
+  thirst: number;
+}
 export interface Player {
   position: Point; path: Point[]; pathIndex: number; carrying: string; rpg: PlayerRpgState;
+  /** Persistente Spielerbeduerfnisse; Teil desselben Zustands wie Position und RPG. */
+  needs: PlayerNeeds;
   job: PlayerJobState | null; barPurchased: boolean;
   /** Erste Gewerbeimmobilie; null heisst: noch kein Eigentum. */
   property: OwnedProperty | null;
