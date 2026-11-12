@@ -32,7 +32,7 @@
   "dependencies": [],
   "gateProfile": "light",
   "status": "merged",
-  "createdAt": "6e5ea00bd2c6f6de5185522bcf2f7d46c80c6295",
+  "mergedEvidence": "Commit 9e0d99a: optionaler PR-Runner auf main dokumentiert.",
   "mergedSha": "9e0d99a3147c7c5c47145f107ae4a577a25efb3d",
-  "mergedEvidence": "Commit 9e0d99a: optionaler PR-Runner auf main dokumentiert."
+  "createdAt": "6e5ea00bd2c6f6de5185522bcf2f7d46c80c6295"
 }
