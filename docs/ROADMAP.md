@@ -135,7 +135,7 @@ Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 
 | ID | Aufgabe | Status | Referenz | Fertig wenn |
 | --- | --- | --- | --- | --- |
-| P-13 | 1010 / 1500 Textbausteine in 13 Pools | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 Bausteine, kein Pool unter 50, jeder Pool mit Leser |
+| P-13 | 1011 / 1500 Textbausteine in 13 Pools | offen | `content/narrative/registry/fragments.json`, `scripts/verify-narrative-blocks.mjs` | 1500 Bausteine, kein Pool unter 50, jeder Pool mit Leser |
 | S4-01 | Neue Pools brauchen einen Leser im Spiel | offen | `scripts/verify-narrative-blocks.mjs`, `src/core/sim/narrative` | Die Prüfung lehnt einen Textpool ohne anzeigendes System ab |
 | S4-02 | Geräte-, Lager- und Personal-Facts | offen | `src/core/sim/narrative/facts.ts` | Jeder Fact hat Definition, Template und Leser |
 | S4-03 | Narrative Balance messen statt begrenzen | offen | `src/core/sim/__tests__/balance-operating.test.ts` | Die Grenzen haben eine Messreihe, nicht nur einen Deckel |

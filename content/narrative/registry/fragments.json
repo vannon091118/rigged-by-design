@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:d60490febd4065e32b4ac4e717f51f599490cabba519de2b58b1200008885bb4",
+  "contentHash": "sha256:0384f985f1f1d24dbe80a1f6d944ffef4e52d7f3f734392aceb025e5fe97d48a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -21706,6 +21706,28 @@
       "text": "Die Stadt bekommt eine eigene Helligkeit: Am Morgen liegt wenig Schleier auf dem Boden, am Abend werfen Laternen und Fassaden weiche Schatten, in der Nacht bleibt nur ein Radius um die Figur hell. Drinnen bleibt das Licht ruhig und der Radius aus, weil die Raeume schon beleuchtet sind.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-12-render-first-slices.json"
+    },
+    {
+      "contributionId": "render-r7-doors",
+      "turnId": "2026-11-12T03:30Z-render-r7-doors",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "documentation",
+      "function": "document",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tueren der Stadt sind jetzt Teil des Bildes: Jede Schwelle liegt an ihrem Platz, die Strassen fuehren weiter, und die Figuren koennen den Weg nehmen, der schon in der Welt angelegt ist. Nichts wurde doppelt gebaut; nur das Sichtbare folgt der bestehenden Stadt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-render-r7-doors.json"
     },
     {
       "contributionId": "render-rework-plan",

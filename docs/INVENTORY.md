@@ -630,10 +630,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2715 |
-| Gelistete Dateien | 2715 |
+| Getrackte Dateien | 2727 |
+| Gelistete Dateien | 2727 |
 | Getrackte Ordner | 111 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (23), content (1013), docs (86), packages (27), public (571), scripts (116), src (858) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (25), content (1015), docs (86), packages (27), public (571), scripts (116), src (866) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -645,9 +645,9 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 11 Datei(en)
-- `.lane-claims/tasks/` — 11 Datei(en)
-- `content/narrative/contributions/` — 1009 Datei(en)
+- `.lane-claims/claims/` — 12 Datei(en)
+- `.lane-claims/tasks/` — 12 Datei(en)
+- `content/narrative/contributions/` — 1011 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -721,7 +721,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
 - `src/core/sim/` — 129 Datei(en)
-- `src/core/sim/__tests__/` — 136 Datei(en)
+- `src/core/sim/__tests__/` — 137 Datei(en)
 - `src/core/sim/narrative/` — 38 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -735,16 +735,16 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/events/definitions/` — 14 Datei(en)
 - `src/core/sim/rival-ai/` — 5 Datei(en)
 - `src/debug/` — 4 Datei(en)
-- `src/render/` — 57 Datei(en)
-- `src/render/__tests__/` — 23 Datei(en)
+- `src/render/` — 60 Datei(en)
+- `src/render/__tests__/` — 25 Datei(en)
 - `src/render/assets/` — 5 Datei(en)
 - `src/render/assets/__tests__/` — 1 Datei(en)
 - `src/render/fx/` — 2 Datei(en)
 - `src/render/games/` — 25 Datei(en)
 - `src/render/visual/` — 1 Datei(en)
 - `src/render/visual/__tests__/` — 1 Datei(en)
-- `src/store/` — 35 Datei(en)
-- `src/store/__tests__/` — 23 Datei(en)
+- `src/store/` — 36 Datei(en)
+- `src/store/__tests__/` — 24 Datei(en)
 - `src/styles/` — 5 Datei(en)
 - `src/test/` — 2 Datei(en)
 - `src/ui/` — 94 Datei(en)
@@ -777,6 +777,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-governance-render-rework-final.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
+- `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
@@ -788,7 +789,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/governance-render-rework-final.json` — { — gelesen: 16 Zeilen
 - `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
 - `.nvmrc` — 22 — gelesen: 1 Zeilen
@@ -1802,9 +1804,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge-2.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-ui-queue-main-merge.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-11-world-continuity-interaction-1.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-12-render-first-slices.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-12-render-r7-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-12-render-rework-plan.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 22642 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4045 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 22664 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4049 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -2550,7 +2554,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `scripts/lib/imports.mjs` — Import- und Kopfkommentar-Lesen ohne TypeScript-Abhaengigkeit. — gelesen: 135 Zeilen
 - `scripts/lib/integration.mjs` — Integration: entscheidet vor der teuren CI, ob ein Branch ueberhaupt — gelesen: 144 Zeilen
 - `scripts/lib/issue-scope.mjs` — Issue-Scope: ein Label, ein Body-Vertrag, eine Entscheidung. — gelesen: 273 Zeilen
-- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 628 Zeilen
+- `scripts/lib/lane-claims.mjs` — Lane-Claims: Claim-, Konflikt- und Gate-Validierung für parallele Agenten-Arbeit. — gelesen: 640 Zeilen
 - `scripts/lib/narrative-blocks.mjs` — Textbaustein-Pools: eine Regel, ein Ziel, keine zweite Content-Wahrheit. — gelesen: 129 Zeilen
 - `scripts/lib/narrative-compiler.mjs` — NAR-10 deterministic content compiler. — gelesen: 277 Zeilen
 - `scripts/lib/narrative-content.mjs` — NAR-09 content contract: contributions, controlled vocabulary, turn manifest — gelesen: 486 Zeilen
@@ -2757,7 +2761,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/governance/__tests__/scripts-libs-task-state.d.ts` — Deklarationen fuer den Task-Zustand (Phase 4). — gelesen: 90 Zeilen
 - `src/core/governance/__tests__/scripts-libs-verify-scope.d.ts` — Deklaration fuer `verify:scope`. — gelesen: 16 Zeilen
 - `src/core/governance/__tests__/scripts-libs.d.ts` — declare module '*/process-sweep.mjs' { — gelesen: 172 Zeilen
-- `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 94 Zeilen
+- `src/core/governance/__tests__/staging-scope.test.ts` — Fremde Arbeit darf nie automatisch gestaged werden. Diese Grenzen stehen — gelesen: 95 Zeilen
 - `src/core/governance/__tests__/task-claim-parity.test.ts` — Eine einzige Quelle fuer den Lane-Status: Der Task-Vertrag ist die Wahrheit — gelesen: 47 Zeilen
 - `src/core/governance/__tests__/test-catalog.test.ts` — Jede Testdatei gehoert genau einem System und genau einer Beweisklasse. — gelesen: 72 Zeilen
 - `src/core/governance/__tests__/tree-changes.test.ts` — Der Fix-Modus muss jede Aenderung nennen, auch Loeschungen. Ein stilles — gelesen: 41 Zeilen
@@ -2802,6 +2806,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/business-areas.test.ts` — Die Bereiche sind der eine WorldState: Zonen tragen sie, Objekte stehen — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-day-closeout.test.ts` — Der Tagesabschluss der Stadt darf keinen zweiten Kalender fuehren: — gelesen: 148 Zeilen
 - `src/core/sim/__tests__/city-encounter-loop.test.ts` — Headless-Abnahme des zentralen Begegnungs-Loops: — gelesen: 154 Zeilen
+- `src/core/sim/__tests__/city-exterior-walls.test.ts` — Die Fassaden sind sichtbar, also muessen sie auch begangen werden koennen wie — gelesen: 86 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
 - `src/core/sim/__tests__/club-night.test.ts` — Der Clubabend ist keine zweite Lounge: Oeffnungszeit, Belegung und — gelesen: 109 Zeilen
 - `src/core/sim/__tests__/demand.test.ts` — Nachfrage ist geplant: erster Gast terminiert, Quellen addieren sich, — gelesen: 135 Zeilen
@@ -3159,6 +3164,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/debug/runtime-probe.ts` — RBD Runtime Probe — DEV-only, READ-ONLY Gameplay-Diagnose (Haupteinstieg). — gelesen: 47 Zeilen
 - `src/main.tsx` — import { StrictMode } from 'react'; — gelesen: 50 Zeilen
 - `src/render/__tests__/actor-silhouette.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 17 Zeilen
+- `src/render/__tests__/ambient-plan.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 46 Zeilen
 - `src/render/__tests__/atlas.test.ts` — Shelf-Plan: deterministische Reihenfolge, keine Ueberlappung, harte Seitengrenze. — gelesen: 43 Zeilen
 - `src/render/__tests__/city-exterior.test.ts` — Abnahme ohne Screenshot: der normale Store-Einstieg erzeugt die 60x60-Stadt, — gelesen: 165 Zeilen
 - `src/render/__tests__/decor-roles.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 33 Zeilen
@@ -3181,8 +3187,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/__tests__/rig.test.ts` — Das Rig ist reine Mathematik: gleiche Zeit, gleiche Pose, klarer Zustand. — gelesen: 37 Zeilen
 - `src/render/__tests__/slot-layout.test.ts` — Die Walzenanzeige rechnet nur ueber diese Geometrie. Werte, die hier stimmen, — gelesen: 50 Zeilen
 - `src/render/__tests__/sound-fx.test.ts` — Lautstaerke und Kanaele sind Geraeteeinstellungen: sie muessen klemmbar, getrennt — gelesen: 33 Zeilen
+- `src/render/__tests__/view-layers.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 75 Zeilen
 - `src/render/actor-pool.ts` — Wiederverwendbare Figuren und Sticker: im Frame entstehen keine neuen Text-/Graphics-Objekte. — gelesen: 61 Zeilen
 - `src/render/actor-silhouette.ts` — Akteur-Silhouette für das Übersichts-LOD. — gelesen: 25 Zeilen
+- `src/render/ambient-layer.ts` — Ambient-Schicht: statischer Schleier, statische Sonnenstrahlen und ein — gelesen: 96 Zeilen
+- `src/render/ambient-plan.ts` — Ambient-Vertrag: Helligkeit, Sichtradius und Sonnenrichtung kommen allein aus — gelesen: 81 Zeilen
 - `src/render/art-tokens.ts` — import type { DayPhase } from '../core/sim/day-phase'; — gelesen: 135 Zeilen
 - `src/render/assets/__tests__/asset-semantics.test.ts` — Vertrag des Asset-Semantik-Katalogs. Der Test liest den Katalog als Daten, — gelesen: 182 Zeilen
 - `src/render/assets/asset-semantics.json` — { — gelesen: 1307 Zeilen
@@ -3268,12 +3277,14 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/render/scene-cache.ts` — Vier Render-Layer. Boden und Dreck liegen in 30×30-Regions-Chunks; nur veraenderte backen neu. — gelesen: 191 Zeilen
 - `src/render/sound-fx.ts` — Prozeduraler WebAudio-Synth: alle Effekte ohne Asset, mit getrennten Kanaelen und stillem Fallback. — gelesen: 216 Zeilen
 - `src/render/stage-backdrop.ts` — Bühnenhintergrund: ferne Fliesen plus eine naehere, gegenlaeufige Parallax-Ebene. — gelesen: 45 Zeilen
+- `src/render/view-layers.ts` — Snapshot in die vorhandenen Darstellungs-Layer schieben. — gelesen: 66 Zeilen
 - `src/render/visual/__tests__/scene-frame.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 38 Zeilen
 - `src/render/visual/scene-frame.ts` — Deterministischer Bildvertrag für die vier R1-Szenen. — gelesen: 152 Zeilen
 - `src/render/wall-art.ts` — Türschwellen aus den gespeicherten Kanten. Wandkoerper liegen bewusst nicht — gelesen: 95 Zeilen
 - `src/render/wall-occlusion.ts` — Vordergrund-Waende als eigene Occlusion-Schicht. Jede Wand ist ein Sprite in — gelesen: 66 Zeilen
 - `src/render/world-bounds.ts` — Die Kamera-Grenzen sind die echten Weltkanten, nicht die Casino-Vorlage. — gelesen: 8 Zeilen
 - `src/store/__tests__/card-payout.test.ts` — Der Hausvorteil des fremden Hauses darf nur den Gewinn treffen. Einsatz, — gelesen: 29 Zeilen
+- `src/store/__tests__/city-exterior-view.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 26 Zeilen
 - `src/store/__tests__/determinism.test.ts` — Determinismus: derselbe Seed und dieselben Ticks ergeben denselben Spielzustand, — gelesen: 53 Zeilen
 - `src/store/__tests__/exclusion-command.test.ts` — import { describe, expect, it } from 'vitest'; — gelesen: 35 Zeilen
 - `src/store/__tests__/first-evening.test.ts` — Der erste Abend als eine Kette: Eröffnung → Stadt → Casino → Automat aus der — gelesen: 105 Zeilen
@@ -3298,6 +3309,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/store/__tests__/transfer.test.ts` — Import/Export: Der eigene Export muss sich wieder importieren lassen. Die — gelesen: 55 Zeilen
 - `src/store/archive-snapshot.ts` — Archiv-Projektion: kopiert nur, wenn das Archiv gewachsen oder verschoben wurde. — gelesen: 14 Zeilen
 - `src/store/city-commands.ts` — Store-Bruecke: die Stadt bleibt headless, hier wird nur verdrahtet. — gelesen: 105 Zeilen
+- `src/store/city-exterior-view.ts` — Eine Exterieur-Ansicht je gespeicherter Stadt. — gelesen: 19 Zeilen
 - `src/store/foreign-floor-commands.ts` — Foreign Floor Commands: Besucher- und Job-Aktionen in fremden Casinos. — gelesen: 52 Zeilen
 - `src/store/foreign-play.ts` — Fremde Haeuser: Spiel und Besuch. — gelesen: 161 Zeilen
 - `src/store/game-commands.ts` — Game Commands: Spielautomaten, Plinko, Ausschluss. — gelesen: 41 Zeilen

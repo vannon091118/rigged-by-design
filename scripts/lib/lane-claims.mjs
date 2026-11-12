@@ -85,8 +85,20 @@ export const META_FILES = Object.freeze([
   'pnpm-lock.yaml',
 ]);
 
-/** Pfade, die jede Lane mechanisch aktualisieren darf (Version, Inventur). */
-export const MECHANICAL_FILES = Object.freeze(['package.json', 'pnpm-lock.yaml', 'docs/INVENTORY.md']);
+/**
+ * Pfade, die jede Lane mechanisch aktualisieren darf: Version, Inventur und
+ * der aus der Narrative-Registry abgeleitete Roadmap-Fortschritt.
+ *
+ * `docs/ROADMAP.md` bleibt inhaltlich Governance; nur die von
+ * `sync-generated.mjs` geschriebene P-13-Zeile ist mechanisch und darf keine
+ * Lane an der Scope-Pruefung scheitern lassen.
+ */
+export const MECHANICAL_FILES = Object.freeze([
+  'package.json',
+  'pnpm-lock.yaml',
+  'docs/INVENTORY.md',
+  'docs/ROADMAP.md',
+]);
 
 /** Diese Dateien fuehrt nur die Governance-Lane inhaltlich. */
 export const GOVERNANCE_ONLY_FILES = Object.freeze(['AGENTS.md', 'docs/ARCHITECTURE.md', 'docs/ROADMAP.md']);
