@@ -1,5 +1,7 @@
 /** Szenenwechsel: Wohnung, Stadt, eigenes Casino und zurueck; kein zweiter Spielzustand. */
 import type { WorldState } from '../core/sim/types';
+import { travel } from '../core/sim/city';
+import { cityDoorEffect } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 
@@ -60,6 +62,28 @@ export class SceneCommands {
     if (pos.x !== door.x || pos.y !== door.y) return false;
     this.enterCity();
     return true;
+  }
+
+  /**
+   * Die vier Strassentueren. Wohnung und Casino wechseln die Szene, Kiez und
+   * Markt reisen in den bestehenden Stadtort; `null` heisst ohne Wirkung.
+   */
+  enterStreetDoor(doorId: string): 'APARTMENT' | 'CASINO' | 'CITY' | null {
+    const effect = cityDoorEffect(doorId);
+    if (!effect) return null;
+    if (effect.kind === 'APARTMENT') { this.enterApartment(); return 'APARTMENT'; }
+    if (effect.kind === 'CASINO') { this.enterCasino(); return 'CASINO'; }
+    const world = this.#deps.world();
+    try {
+      travel(world, effect.location);
+    } catch (error) {
+      this.#deps.notice(error instanceof Error ? error.message : 'Diese Tür ist verschlossen.');
+      this.#deps.emit();
+      return null;
+    }
+    this.#deps.notice(world.lastEvent);
+    this.#deps.emit();
+    return 'CITY';
   }
 
   /** Die Eroeffnung schliessen: der einzige Weg von OPENING in die Wohnung. */

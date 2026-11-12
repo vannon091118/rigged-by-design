@@ -1,4 +1,5 @@
 /** Welt-Helfer: Zonen, Objekte, Reservierungen, freie Plaetze. */
+import { cityNav } from './city-scene';
 import { canPlaceAt } from './grid-zones';
 import { navGrid, tileIndex, type NavGrid } from './nav-grid';
 import { accessPoints, approachPoint, findPath, isWalkable, nearestWalkable } from './pathfinding';
@@ -40,8 +41,8 @@ export function releaseSeat(world: WorldState, itemId: number, guestId: number):
  */
 export function worldNav(world: WorldState): NavGrid {
   const city = world.scene.kind === 'CITY' ? world.cityScene : null;
-  const layout = city?.layout ?? world.layout;
-  return navGrid(layout.size, city?.furniture ?? world.furniture, layout);
+  if (city) return cityNav(city);
+  return navGrid(world.layout.size, world.furniture, world.layout);
 }
 
 /** Mehrere Zugaenge je Objekt; jeder liegt frei und teilt eine offene Kante mit ihm. */

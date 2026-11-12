@@ -20,6 +20,8 @@ interface CityPropView {
   readonly asset: string;
   readonly x: number;
   readonly y: number;
+  readonly w: number;
+  readonly h: number;
 }
 
 interface CityDoorView {
@@ -65,7 +67,15 @@ export function cityRenderPlan(exterior: CityExteriorModel | null | undefined): 
   });
   const props = exterior.props.map((prop): CityPropView => {
     const art = cityPropArt(prop.kind);
-    return { id: prop.id, role: art.role, asset: art.asset, x: prop.position.x, y: prop.position.y };
+    return {
+      id: prop.id,
+      role: art.role,
+      asset: art.asset,
+      x: prop.position.x,
+      y: prop.position.y,
+      w: prop.footprint.w,
+      h: prop.footprint.h,
+    };
   });
   const doors = exterior.layout.edges
     .filter((edge) => edge.kind === 'DOOR')

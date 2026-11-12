@@ -4,6 +4,7 @@ import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
 import { handleFloorInteract } from '../render/floor-interact';
 import type { GameView } from '../store/types';
+import { worldStore } from '../store/use-world-store';
 import type { Perspective, Popup } from './app-model';
 
 interface AppSetters {
@@ -35,6 +36,10 @@ export function makeActionExecutor(
   anchorAt: (anchor: ScreenAnchor | null) => void,
 ): (action: MenuAction, at: ScreenAnchor | null) => void {
   return (action, at) => {
+    if (action.id === 'ENTER_DOOR' && action.doorId) {
+      if (worldStore.scene.enterStreetDoor(action.doorId) === 'CITY') open({ kind: 'city' });
+      return;
+    }
     if (action.id === 'OPEN_MACHINE' && action.targetId !== undefined) {
       open({ kind: 'machine', itemId: action.targetId });
       anchorAt(at);

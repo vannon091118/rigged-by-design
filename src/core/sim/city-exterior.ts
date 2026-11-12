@@ -11,12 +11,31 @@ import type { Point } from './types-model';
 
 export type PropKind = 'STREET_LIGHT' | 'BENCH' | 'TRASH_BIN' | 'BUS_STOP' | 'TREE';
 
+/** Belegte Flaeche in Kacheln, vom Anker `position` nach rechts/unten. */
+export interface PropFootprint {
+  readonly w: number;
+  readonly h: number;
+}
+
 export interface StreetProp {
   readonly id: string;
   readonly kind: PropKind;
   readonly position: Point;
+  readonly footprint: PropFootprint;
   readonly label: string;
 }
+
+/**
+ * Der Fussabdruck folgt der sichtbaren Form: Die Bank ist breiter als die
+ * uebrigen Requisiten, alles andere steht auf einer Kachel.
+ */
+export const STREET_PROP_FOOTPRINTS: Readonly<Record<PropKind, PropFootprint>> = Object.freeze({
+  STREET_LIGHT: Object.freeze({ w: 1, h: 1 }),
+  BENCH: Object.freeze({ w: 2, h: 1 }),
+  TRASH_BIN: Object.freeze({ w: 1, h: 1 }),
+  BUS_STOP: Object.freeze({ w: 1, h: 1 }),
+  TREE: Object.freeze({ w: 1, h: 1 }),
+});
 
 export interface CityExteriorModel {
   readonly layoutId: string;
@@ -110,7 +129,13 @@ const STREET_PROPS_RAW: readonly [string, PropKind, number, number, string][] = 
 export function createCityExteriorModel(): CityExteriorModel {
   const layout = createCityStreetLayout();
   const props = STREET_PROPS_RAW.map(([id, kind, x, y, label]) =>
-    Object.freeze({ id, kind, position: Object.freeze({ x, y }), label }),
+    Object.freeze({
+      id,
+      kind,
+      position: Object.freeze({ x, y }),
+      footprint: STREET_PROP_FOOTPRINTS[kind],
+      label,
+    }),
   );
 
   return Object.freeze({
@@ -121,4 +146,15 @@ export function createCityExteriorModel(): CityExteriorModel {
     props: Object.freeze(props),
     playerApartmentStreetSpawn: Object.freeze({ x: 8, y: 13 }),
   });
+}
+
+/** Alle Kacheln, die eine Requisite belegt; Navigation und Test lesen dieselbe Liste. */
+export function streetPropFootprintTiles(prop: StreetProp): Point[] {
+  const tiles: Point[] = [];
+  for (let y = prop.position.y; y < prop.position.y + prop.footprint.h; y += 1) {
+    for (let x = prop.position.x; x < prop.position.x + prop.footprint.w; x += 1) {
+      tiles.push({ x, y });
+    }
+  }
+  return tiles;
 }

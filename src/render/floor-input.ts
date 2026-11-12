@@ -3,12 +3,14 @@ import type { Application, Container } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import type { InteractionTarget } from '../core/sim/interaction';
 import type { GameView } from '../store/types';
-import { buildActions, buildFloorActions, type MenuAction } from './floor-actions';
-import { resolveHit, type ScreenAnchor } from './floor-hit';
+import { buildActions, buildDoorActions, buildFloorActions, type MenuAction } from './floor-actions';
+import { resolveHit, type DoorEdge, type ScreenAnchor } from './floor-hit';
 
 export type { ScreenAnchor } from './floor-hit';
 
-type FloorTarget = InteractionTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
+type DoorTarget = { readonly kind: 'door'; readonly id: string };
+
+type FloorTarget = InteractionTarget | DoorTarget | { readonly kind: 'floor'; readonly x: number; readonly y: number };
 
 interface TapResolution {
   readonly target: FloorTarget;
@@ -42,12 +44,24 @@ export function handleTap(
   if (x < 0 || y < 0 || x >= view.size || y >= view.size) return null;
   cues.ping({ x, y });
 
-  const hit = resolveHit(view, { x, y }, view.player.position);
+  const doors: DoorEdge[] = view.scene?.kind === 'CITY'
+    ? (view.layout?.edges ?? []).flatMap((edge) => edge.kind === 'DOOR' && edge.id !== null
+      ? [{ id: edge.id, axis: edge.axis, x: edge.x, y: edge.y }]
+      : [])
+    : [];
+  const hit = resolveHit(view, { x, y }, view.player.position, doors);
   if (!hit) {
     return {
       target: { kind: 'floor', x, y },
       actions: buildFloorActions({ x, y }),
       at: { x: (x + 0.5) * TILE, y: (y + 1) * TILE },
+    };
+  }
+  if (hit.kind === 'door') {
+    return {
+      target: { kind: 'door', id: hit.id },
+      actions: buildDoorActions(view, hit.id),
+      at: { x: hit.at.x * TILE, y: hit.at.y * TILE },
     };
   }
   const focus: InteractionTarget = { kind: hit.kind, id: hit.id };

@@ -140,7 +140,10 @@ export class CityExteriorLayer {
 
   #rebuild(plan: CityRenderPlan): void {
     this.#clear();
-    this.#missingTexture = false;
+    // Schatten und Licht teilen dieselbe Textur. Fehlt sie beim ersten Aufbau,
+    // muss der gedrosselte Retry auch die Schatten nachziehen, nicht nur
+    // fehlende Fassaden.
+    this.#missingTexture = textureFor(ASSET.lightPool) === null;
     for (const door of plan.doors) this.#addDoor(plan, door);
     for (const building of plan.buildings) {
       const texture = textureFor(building.asset);
@@ -175,12 +178,12 @@ export class CityExteriorLayer {
       }
       const node = new Container();
       const sprite = new Sprite(texture);
-      const width = prop.role === 'STREET_LIGHT' ? TILE * 0.9 : TILE * 1.2;
+      const width = prop.role === 'STREET_LIGHT' ? TILE * 0.9 : Math.max(TILE * 1.2, prop.w * TILE * 0.9);
       const height = prop.role === 'STREET_LIGHT' ? TILE * 2.1 : TILE * 1.25;
       sprite.anchor.set(0.5, 1);
       sprite.width = width;
       sprite.height = height;
-      sprite.position.set((prop.x + 0.5) * TILE, (prop.y + 1) * TILE);
+      sprite.position.set((prop.x + prop.w / 2) * TILE, (prop.y + prop.h) * TILE);
       const shadow = this.#shadowFor(width * 0.8, width * 0.3);
       if (shadow) node.addChild(shadow);
       node.addChild(sprite);

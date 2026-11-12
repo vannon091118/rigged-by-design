@@ -47,11 +47,31 @@ RNG und keine Uhr in den neuen Pfaden.
 | Baustein | Beleg | Grenze |
 | --- | --- | --- |
 | Ambient-Plan | `src/render/ambient-plan.ts` + `ambient-plan.test.ts`: Helligkeit, Sichtradius, Sonnenrichtung und Schatten aus `dayPhase` und `SceneKind`; eingefroren, gecacht | Kein Wetter |
-| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur; Innenraum ohne Radius | Browser-Sicht fehlt |
-| Schattenwurf | `city-exterior-layer.ts`: weiche Fußschatten aus der vorhandenen Radialtextur, richtungsabhängig je Phase, ohne Rebuild | Keine harten Schattenkanten |
+| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur; Innenraum ohne Radius; spät geladene Lichttextur wird nachgezogen (`ambient-late-texture.test.ts`) | Pixi-App im Cloud-Browser blockiert vor dem ersten Frame; temporäre Plan-Probe statt App-Screenshot |
+| Schattenwurf | `city-exterior-layer.ts`: weiche Fußschatten aus der vorhandenen Radialtextur, richtungsabhängig je Phase, ohne Rebuild; fehlende Textur wird nachgeladen (`city-shadow-late-texture.test.ts`) | Keine harten Schattenkanten |
 | Kamera | `floor-camera.ts`: toter Winkel 0.82, Snap auf das Gerätepixelraster; der Zoom bleibt der einzige Fahrweg | 2:1-Isometrie bleibt offen |
 | Performance | `city-plan.ts`/`snapshot.ts`: Renderplan und Exterieur-Ansicht je Identität genau einmal; `CityExteriorLayer` rebuildet nur bei echter Änderung | — |
-| Simulation | `city-exterior.ts`: Grundrisskanten als Wände, genau eine offene Tür je Gebäude; `city-exterior-walls.test.ts` belegt Kollision und Schwelle | Straßenrequisiten bleiben begehbar |
+| Simulation | `city-exterior.ts`: Grundrisskanten als Wände, genau eine offene Tür je Gebäude; Requisiten belegen ihren Footprint im Nav (Bank 2×1); `city-exterior-walls.test.ts` und `city-props-solid.test.ts` belegen Kollision, Schwelle und Requisiten | — |
+
+#### Browser-Nachweis 2026-11-12
+
+Die Pixi-App bleibt im Cloud-Browser auf `RIGGED BY DESIGN — STARTET…` stehen:
+Snapshot, Screenshot und `evaluate` laufen in den Timeout, die Konsole zeigt
+keinen JS-Fehler, und auch der Produktionsbuild verhält sich gleich. Der
+Fallback ist deshalb eine deterministische, temporäre Plan-Probe: Sie zeichnete
+dieselbe Stadtgeometrie und dieselben Formeln aus
+`ambient-plan.ts`/`ambient-layer.ts` auf Canvas und protokollierte Luminanz und
+Planwerte. Die Screenshots zeigen Nacht (Sichtradius 7,5 Tiles,
+Center 58,7 vs. Rand 19,4), Abend (10 Tiles, 52,9 vs. 22,3) und Morgen
+(Strahlen, Schatten, kein Radius); die Konsole bleibt fehlerfrei.
+
+Dabei fielen zwei echte Spätlade-Fehler auf, die den Sichtradius und die
+Stadtschatten im normalen Start dauerhaft unsichtbar ließen: `light-pool.svg`
+liegt nicht im Atlas und wird erst nach dem ersten Frame geladen. `AmbientLayer`
+cachte den Plan vor dem Texturladen und kehrte bei jedem weiteren Snapshot
+früh zurück; `CityExteriorLayer` baute Schatten nur beim ersten Plan und
+versuchte sie bei fehlender Radialtextur nie erneut. Beide Pfade ziehen die
+Darstellung jetzt nach; die Regressionstests belegen den zweiten Versuch.
 
 Die isometrische 2:1-Projektion aus Abschnitt 2.3 ist **nicht** umgesetzt: Sie
 verlangt eine eigene Projektion für Boden, Figuren, Treffer und Tiefe und damit
@@ -429,7 +449,12 @@ Schwellen-SVG `environment/floor/city/doors/door.svg`, Fußanker-Tiefe und
 Renderplan-Eintrag gezeichnet; V-Kanten teilen dieselbe Textur gedreht.
 Deterministisch belegt durch `src/render/__tests__/city-exterior.test.ts`
 (Produktions-Entry `createWorld` → `SceneCommands.enterCity` → `buildView` →
-Renderplan), inkl. 60x60-Navigation und Türflaechen. **Noch offen:** echter
+Renderplan), inkl. 60x60-Navigation und Türflaechen. Die vier `DOOR`-Kanten
+sind jetzt klickbar: `resolveHit` liefert die Tür-ID, `buildDoorActions` die
+Aktion, `SceneCommands.enterStreetDoor` den bestehenden Übergang. Seit dem Requisiten-Slice
+sind die fünf Straßenrequisiten zusätzlich über ihren Footprint solide (Bank
+2×1, übrige 1×1); `city-props-solid.test.ts` belegt die belegten Kacheln und
+den Weg um die Bank. **Noch offen:** echter
 Browser-Screenshot, Tuerklick ueber `floor-hit`, DOM-/Screenreader-Zugang,
 WorldManager und der vollstaendige S2-12-Uebergang. Diese Punkte bleiben
 bewusst unabgehakt.
@@ -450,14 +475,17 @@ bewusst unabgehakt.
       rendern; Tiefe über Fußanker, nicht über Namenssortierung.
       *(belegt: Straßen/Gehwege/Kreuzungen kommen als Bodenmaterialien aus
       `layout.floor`; `CityExteriorLayer` + `cityRenderPlan` zeichnen vier
-      Fassaden, fuenf Requisiten und vier `DOOR`-Kanten mit Rollen/Texturen und
-      `depth.set(..., 'prop', ...)`)*
+      Fassaden, fuenf Requisiten mit Footprint und vier `DOOR`-Kanten mit
+      Rollen/Texturen und `depth.set(..., 'prop', ...)`)*
+- [x] Straßenrequisiten belegen ihren Footprint im Navigationsraster; Bild und
+      Weg teilen dieselbe Kachelmenge. *(belegt: `city-props-solid.test.ts`)*
 - [ ] `WorldManager` mit genau einer aktiven Welt einführen. `GameView` bleibt
       der Zustand; der Stadt-Adapter liest und schreibt nur die vorhandenen
       Übergänge.
-- [ ] Türen an bestehende `floor-hit`-/`floor-actions`-Pfade anschließen; kein
+- [x] Türen an bestehende `floor-hit`-/`floor-actions`-Pfade anschließen; kein
       zweiter Input-Listener und keine zweite Kollisionswahrheit. Die
       Wohnungstür ist mit S2-07 bereits verifiziert und wird nicht neu gebaut.
+      *(belegt: `city-door-click.test.ts`: Treffer, Aktion, Szene/Stadtort)*
 - [ ] Tastatur-/Screenreader-Zugang für Türen und Orte: DOM-Overlay mit
       `aria-label` oder Pixi-Accessibility mit `accessibleTitle`/`tabIndex`.
 - [ ] Test: Stadtmodell wird ohne Test-Fixture gerendert; Tür öffnet den

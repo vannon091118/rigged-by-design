@@ -43,6 +43,6 @@
       "summary": "Die neuen Grundrisswaende nutzen die vorhandene Occlusion-Textur der Innenraeume; eine eigene Stadt-Wandrolle gehoert zu R8 (Assetpaket je Rolle)."
     }
   ],
-  "nextAction": "Ambient-Slice ist gepusht; naechster Schritt: Browser-Sichtabnahme (Screenshot, Konsole, Probe) und danach R8/R9 bzw. die Isometrie-Projektion als eigener Slice.",
-  "revision": 13
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 16
 }

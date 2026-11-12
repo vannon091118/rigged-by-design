@@ -1,13 +1,14 @@
 /** Ein Fokus fuer alle Eingaenge: Ziel waehlen, laufen, in Reichweite handeln. */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { InteractionTarget } from '../core/sim/interaction';
-import { buildActions, type MenuAction } from '../render/floor-actions';
+import type { MenuAction } from '../render/floor-actions';
 import type { ScreenAnchor } from '../render/floor-hit';
 import type { FloorTap } from '../render/floor-input';
 import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
+import { useFloorKeyboard } from './use-floor-keyboard';
 
-interface FloorSelection {
+export interface FloorSelection {
   readonly target: FloorTap['target'];
   readonly actions: readonly MenuAction[];
   readonly anchor: ScreenAnchor | null;
@@ -47,8 +48,31 @@ export function useFloorInteraction(options: Options) {
   }, []);
 
   const tap = useCallback((resolution: FloorTap): void => {
-    if (latest.current.blocked || latest.current.view.scene.kind !== 'OWN') return;
+    if (latest.current.blocked) return;
+    // Die Stadt hat keine Annaeherung: die Schwelle ist der Uebergang. Nur
+    // Tueren duerfen deshalb auch ausserhalb des eigenen Casinos geklickt werden.
+    const door = resolution.target.kind === 'door';
+    if (latest.current.view.scene.kind !== 'OWN' && !door) return;
     pendingRef.current = null;
+    if (door) {
+      const action = resolution.actions.find((entry) => entry.enabled);
+      if (action) {
+        selectionRef.current = null;
+        setSelection(null);
+        latest.current.onExecute(action, resolution.anchor);
+        return;
+      }
+      const blocked: FloorSelection = {
+        target: resolution.target,
+        actions: resolution.actions,
+        anchor: resolution.anchor,
+        status: resolution.actions[0]?.reason ?? 'Kein Zugang.',
+        blocked: true,
+      };
+      selectionRef.current = blocked;
+      setSelection(blocked);
+      return;
+    }
     if (resolution.target.kind === 'floor') {
       if (!latest.current.enabled) return;
       const next = { target: resolution.target, actions: resolution.actions, anchor: resolution.anchor, status: '', blocked: false };
@@ -129,41 +153,15 @@ export function useFloorInteraction(options: Options) {
       : current);
   }, [options.view.player.pathIndex, options.view.player.path.length]);
 
-  // Tastatur: E waehlt das naechste Ziel oder fuehrt die Hauptaktion des Fokus aus.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent): void => {
-      if (event.repeat || event.key.toLowerCase() !== 'e') return;
-      if (!latest.current.enabled || latest.current.blocked) return;
-      const element = event.target as HTMLElement | null;
-      if (element?.tagName === 'INPUT' || element?.tagName === 'TEXTAREA'
-        || element?.tagName === 'SELECT' || element?.isContentEditable) return;
-      event.preventDefault();
-      const current = selectionRef.current;
-      if (current) {
-        const main = current.actions.find((action) => action.enabled) ?? current.actions[0];
-        if (!main) return;
-        if (!main.enabled) {
-          worldStore.interaction.notify(main.reason ?? 'Aktion nicht möglich.');
-          return;
-        }
-        pick(main);
-        return;
-      }
-      const focus = worldStore.interaction.nearest(4);
-      if (!focus) {
-        worldStore.interaction.notify('Kein Ziel in Reichweite. Geh näher heran.');
-        return;
-      }
-      tap({
-        target: focus,
-        actions: buildActions(latest.current.view, focus),
-        at: { x: 0, y: 0 },
-        anchor: null,
-      });
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [pick, tap]);
+  // Tastatur: derselbe Fokus wie Maus und Touch, aber ohne eigenen Zustand.
+  useFloorKeyboard({
+    view: options.view,
+    enabled: options.enabled,
+    blocked: options.blocked,
+    selection,
+    tap,
+    pick,
+  });
 
   return { selection, tap, pick, close };
 }

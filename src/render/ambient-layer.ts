@@ -40,7 +40,10 @@ export class AmbientLayer {
     const plan = ambientPlanFor(view.dayPhase, view.scene.kind);
     const width = bounds.width * TILE;
     const height = bounds.height * TILE;
-    if (plan === this.#plan && width === this.#width && height === this.#height) return;
+    // Die Lichttextur kommt aus dem Lazy-Paket. Fehlt sie beim ersten Frame,
+    // darf der identische Plan den zweiten Versuch nicht fuer immer blockieren.
+    const visionPending = plan.visionTiles > 0 && !this.#vision.visible;
+    if (plan === this.#plan && width === this.#width && height === this.#height && !visionPending) return;
     this.#plan = plan;
     this.#width = width;
     this.#height = height;
