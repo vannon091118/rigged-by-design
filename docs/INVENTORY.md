@@ -802,7 +802,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-longturn-evidence.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-longturn-evidence.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-post-merge-470.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-post-merge-486.json` — { — gelesen: 18 Zeilen
