@@ -4,14 +4,19 @@
   "claimId": "lane/governance/render-plan-milestones",
   "branch": "lane/governance/render-plan-milestones",
   "baseSha": "4621a0c48c31fb60e4046db3c8e6a2521def57c9",
-  "phase": "READY",
+  "phase": "CI_PENDING",
   "title": "Render-Plan adversarial prüfen: Meilensteine M0-M4, Roadmap-Kopplung und Preview-Sichtabnahme für alle sichtbaren Slices",
   "goal": "Plan und Roadmap als einen gemeinsamen, prüfbaren Entwicklungsstrang führen; sichtbare Render-Slices werden vom Agenten im lokalen Dev-Server abgenommen.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
-  "pr": null,
+  "status": "HOLD",
+  "pr": {
+    "number": 479,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/479",
+    "state": "open",
+    "headSha": "32450334bda928ff18a8ce136adcc9f2209ed49b"
+  },
   "findings": [],
-  "nextAction": "Doku-Diff prüfen, Pflicht-Gates ausführen und den Plan-/Roadmap-Abgleich als PR liefern.",
-  "revision": 1
+  "nextAction": "Review und Merge durch Mensch/Agent auf dem exakten PR-Kopf; lokale Gates sind grün.",
+  "revision": 2
 }
