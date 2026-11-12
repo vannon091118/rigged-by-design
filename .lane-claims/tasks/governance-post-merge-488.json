@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "taskId": "governance-post-merge-488",
+  "claimId": "lane/governance/post-merge-488",
+  "branch": "lane/governance/post-merge-488",
+  "baseSha": "8d8ff5e0064767acf52cfe3413b6a2484b2363cd",
+  "phase": "DONE",
+  "title": "Post-Merge-Closeout #488",
+  "goal": "Register und Task-Vertrag nach dem Merge von PR #488 automatisch nachziehen.",
+  "taskType": "aftercare",
+  "closeout": "post-merge",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Automatisch nach Merge geschlossen; Closeout-PR wird von PR Cleanup angelegt.",
+  "revision": 1
+}

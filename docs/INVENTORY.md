@@ -642,10 +642,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2777 |
-| Gelistete Dateien | 2777 |
+| Getrackte Dateien | 2761 |
+| Gelistete Dateien | 2761 |
 | Getrackte Ordner | 113 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (37), artifacts (1), content (1018), docs (87), packages (27), public (571), scripts (116), src (899) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (21), artifacts (1), content (1018), docs (87), packages (27), public (571), scripts (116), src (899) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -657,8 +657,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 18 Datei(en)
-- `.lane-claims/tasks/` — 18 Datei(en)
+- `.lane-claims/claims/` — 10 Datei(en)
+- `.lane-claims/tasks/` — 10 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
 - `content/narrative/contributions/` — 1014 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
@@ -783,37 +783,21 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
-- `.lane-claims/claims/lane-governance-local-first-ci.json` — { — gelesen: 48 Zeilen
-- `.lane-claims/claims/lane-governance-longturn-evidence.json` — { — gelesen: 29 Zeilen
-- `.lane-claims/claims/lane-governance-optional-pr-runner.json` — { — gelesen: 38 Zeilen
-- `.lane-claims/claims/lane-governance-post-merge-470.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/claims/lane-governance-longturn-evidence.json` — { — gelesen: 31 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-486.json` — { — gelesen: 20 Zeilen
-- `.lane-claims/claims/lane-governance-remove-freeze.json` — { — gelesen: 35 Zeilen
-- `.lane-claims/claims/lane-governance-render-claim-main.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-render-plan-milestones.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/claims/lane-governance-render-rework-final.json` — { — gelesen: 31 Zeilen
-- `.lane-claims/claims/lane-governance-repo-cleanup-data-audit.json` — { — gelesen: 22 Zeilen
+- `.lane-claims/claims/lane-governance-post-merge-488.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-apartment-steps.json` — { — gelesen: 19 Zeilen
 - `.lane-claims/claims/lane-governance-roadmap-progress-mechanical.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/claims/lane-living-world-causal-trace.json` — { — gelesen: 38 Zeilen
 - `.lane-claims/claims/lane-living-world-foreign-parity.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-player-needs.json` — { — gelesen: 27 Zeilen
 - `.lane-claims/claims/lane-render-r1-r12-rework.json` — { — gelesen: 30 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-apartment-start-integration.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-local-first-ci.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-longturn-evidence.json` — { — gelesen: 21 Zeilen
-- `.lane-claims/tasks/governance-optional-pr-runner.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/governance-post-merge-470.json` — { — gelesen: 18 Zeilen
+- `.lane-claims/tasks/governance-longturn-evidence.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/tasks/governance-post-merge-486.json` — { — gelesen: 18 Zeilen
-- `.lane-claims/tasks/governance-remove-freeze.json` — { — gelesen: 23 Zeilen
-- `.lane-claims/tasks/governance-render-claim-main.json` — { — gelesen: 15 Zeilen
-- `.lane-claims/tasks/governance-render-plan-milestones.json` — { — gelesen: 22 Zeilen
-- `.lane-claims/tasks/governance-render-rework-final.json` — { — gelesen: 16 Zeilen
-- `.lane-claims/tasks/governance-repo-cleanup-data-audit.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/governance-post-merge-488.json` — { — gelesen: 18 Zeilen
 - `.lane-claims/tasks/governance-roadmap-apartment-steps.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/governance-roadmap-progress-mechanical.json` — { — gelesen: 17 Zeilen
-- `.lane-claims/tasks/living-world-causal-trace.json` — { — gelesen: 45 Zeilen
 - `.lane-claims/tasks/living-world-foreign-parity.json` — { — gelesen: 41 Zeilen
 - `.lane-claims/tasks/render-player-needs.json` — { — gelesen: 46 Zeilen
 - `.lane-claims/tasks/render-r1-r12-rework.json` — { — gelesen: 48 Zeilen
