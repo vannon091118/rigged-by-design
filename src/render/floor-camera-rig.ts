@@ -19,6 +19,8 @@ interface CameraRigDeps {
   readonly onDetail: (detail: boolean) => void;
   /** Nach dem Anwenden: Raster neu zielen, Pins skalieren, cullen. */
   readonly onApplied: (lod: number, scale: number) => void;
+  /** Geraetepixelverhaeltnis fuer die harte Pixelkante; 1 ist der sichere Default. */
+  readonly pixelRatio?: () => number;
 }
 
 export class FloorCameraRig {
@@ -79,7 +81,7 @@ export class FloorCameraRig {
   }
 
   apply(): void {
-    this.cam.apply(this.root, this.#deps.screen.width, this.#deps.screen.height, this.#bounds());
+    this.cam.apply(this.root, this.#deps.screen.width, this.#deps.screen.height, this.#bounds(), this.#deps.pixelRatio?.() ?? 1);
     this.#base.x = this.root.position.x;
     this.#base.y = this.root.position.y;
     this.#dirty = false;

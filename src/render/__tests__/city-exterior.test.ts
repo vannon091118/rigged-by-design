@@ -126,10 +126,14 @@ describe('Stadt-Exterieur im Produktionspfad', () => {
     const first = enterCityThroughProductionEntry();
     const second = enterCityThroughProductionEntry();
     expect(cityRenderPlan(first.cityExterior)).toEqual(cityRenderPlan(second.cityExterior));
-    const source = readFileSync(join(process.cwd(), 'src/render/floor-view.ts'), 'utf8');
-    expect(source).toContain('this.#city.update(cityRenderPlan(view.cityExterior));');
-    expect(source).toContain('this.#city.animate(now, this.#view.dayPhase);');
-    expect(source).toContain('bounds: () => worldBoundsOf(this.#view)');
+    const source = readFileSync(join(process.cwd(), 'src/render/view-layers.ts'), 'utf8');
+    expect(source).toContain('layers.city.update(cityRenderPlan(view.cityExterior));');
+    expect(readFileSync(join(process.cwd(), 'src/render/floor-view.ts'), 'utf8'))
+      .toContain('syncViewLayers(this.#layers, view, previous, templateChanged, performance.now())');
+    expect(readFileSync(join(process.cwd(), 'src/render/floor-view.ts'), 'utf8'))
+      .toContain('this.#city.animate(now, this.#view.dayPhase);');
+    expect(readFileSync(join(process.cwd(), 'src/render/floor-view.ts'), 'utf8'))
+      .toContain('bounds: () => worldBoundsOf(this.#view)');
     expect(readFileSync(join(process.cwd(), 'src/render/scene-cache.ts'), 'utf8'))
       .toContain('areasForSize(view.layout?.size ?? view.size)');
   });
@@ -139,6 +143,16 @@ describe('Stadt-Exterieur im Produktionspfad', () => {
     const roles = readFileSync(join(process.cwd(), 'src/render/city-roles.ts'), 'utf8');
     expect(`${layer}\n${roles}`).not.toMatch(/0x2dd4a0|0x00ffcc/);
     expect(layer).not.toContain('.fill(');
+  });
+
+  it('baut den Renderplan je Exterieur genau einmal und haelt die Snapshot-Referenz stabil', () => {
+    const world = createWorld('SMALL');
+    const scene = new SceneCommands({ world: () => world, emit: () => undefined, notice: () => undefined });
+    scene.enterCity();
+    const first = buildView(world, new Ledger(), '');
+    const second = buildView(world, new Ledger(), '');
+    expect(second.cityExterior).toBe(first.cityExterior);
+    expect(cityRenderPlan(second.cityExterior)).toBe(cityRenderPlan(first.cityExterior));
   });
 
   it('hebt alte 30x30-Stadtsaves auf das echte Exterieur', () => {

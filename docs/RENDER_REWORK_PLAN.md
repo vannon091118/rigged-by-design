@@ -30,13 +30,34 @@ Accessibility-Abfrage); das ist eine Umgebungsgrenze, kein grüner Bildbeleg.
 | R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
 | R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad); R8–R9 offen; keine zweite Stadt erfunden |
-| R12 | Ambient setzt R9 voraus; ohne sichtbare Stadt kein Wetter-/Tag-Nacht-Layer | **blockiert** |
+| R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene; Wetter fehlt | Teilbeleg; Wetter, reduced-motion und Browser-Sicht offen |
 
 Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
 `verify:assets` PASS, `verify:tree` PASS, `verify:dead-code` PASS,
 `verify:test-quality` PASS, `verify:test-placement` PASS. Die Checkboxen in
 R1–R12 bleiben unverändert offen, bis Screenshot, Konsole und Probe nach
 Abschnitt 8 vorliegen.
+
+### Ambient-Slice 2026-11-12 (R5/R6/R12-Teilbeleg)
+
+Der Slice ergänzt die bestehende Tageszeit um eine reine Darstellungsableitung.
+Der Spielzustand wächst nicht: kein neues Save-Feld, kein zweiter Ticker, kein
+RNG und keine Uhr in den neuen Pfaden.
+
+| Baustein | Beleg | Grenze |
+| --- | --- | --- |
+| Ambient-Plan | `src/render/ambient-plan.ts` + `ambient-plan.test.ts`: Helligkeit, Sichtradius, Sonnenrichtung und Schatten aus `dayPhase` und `SceneKind`; eingefroren, gecacht | Kein Wetter |
+| Ambient-Schicht | `src/render/ambient-layer.ts`: ein weltverankerter Schleier, drei gebackene Strahlen, ein Sichtradius an der Figur; Innenraum ohne Radius | Browser-Sicht fehlt |
+| Schattenwurf | `city-exterior-layer.ts`: weiche Fußschatten aus der vorhandenen Radialtextur, richtungsabhängig je Phase, ohne Rebuild | Keine harten Schattenkanten |
+| Kamera | `floor-camera.ts`: toter Winkel 0.82, Snap auf das Gerätepixelraster; der Zoom bleibt der einzige Fahrweg | 2:1-Isometrie bleibt offen |
+| Performance | `city-plan.ts`/`snapshot.ts`: Renderplan und Exterieur-Ansicht je Identität genau einmal; `CityExteriorLayer` rebuildet nur bei echter Änderung | — |
+| Simulation | `city-exterior.ts`: Grundrisskanten als Wände, genau eine offene Tür je Gebäude; `city-exterior-walls.test.ts` belegt Kollision und Schwelle | Straßenrequisiten bleiben begehbar |
+
+Die isometrische 2:1-Projektion aus Abschnitt 2.3 ist **nicht** umgesetzt: Sie
+verlangt eine eigene Projektion für Boden, Figuren, Treffer und Tiefe und damit
+einen eigenen Slice auf R6/R7. Die Kamera bleibt top-down mit
+`WORLD_FLATTEN`; ein nachträgliches Kippen ohne diese Projektion würde Treffer
+und Simulation auseinanderziehen.
 
 ## 1. Ausgangslage
 

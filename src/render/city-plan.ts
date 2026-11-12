@@ -31,6 +31,9 @@ interface CityDoorView {
   readonly y: number;
 }
 
+/** Der Plan ist rein; je Exterieur-Identitaet wird er genau einmal gebaut. */
+const PLAN_CACHE = new WeakMap<CityExteriorModel, CityRenderPlan>();
+
 export interface CityRenderPlan {
   readonly layoutId: string;
   readonly name: string;
@@ -40,9 +43,15 @@ export interface CityRenderPlan {
   readonly doors: readonly CityDoorView[];
 }
 
-/** Nur bekannte preset-Gebaeude werden gezeichnet; unbekannte Typen werfen. */
+/**
+ * Nur bekannte preset-Gebaeude werden gezeichnet; unbekannte Typen werfen.
+ * Der Snapshot reicht dasselbe Exterieur jede Runde weiter, deshalb trifft der
+ * Cache ohne Signaturvergleich und ohne neue Arrays pro Tick.
+ */
 export function cityRenderPlan(exterior: CityExteriorModel | null | undefined): CityRenderPlan | null {
   if (!exterior) return null;
+  const cached = PLAN_CACHE.get(exterior);
+  if (cached) return cached;
   const buildings = exterior.buildings.map((building): CityBuildingView => {
     const art = cityBuildingArt(building.kind);
     return {
@@ -65,7 +74,7 @@ export function cityRenderPlan(exterior: CityExteriorModel | null | undefined): 
       const art = cityDoorArt();
       return { id: edge.id, role: art.role, asset: art.asset, axis: edge.axis, x: edge.x, y: edge.y };
     });
-  return {
+  const plan: CityRenderPlan = {
     layoutId: exterior.layoutId,
     name: exterior.name,
     bounds: { width: exterior.layout.size, height: exterior.layout.size },
@@ -73,4 +82,6 @@ export function cityRenderPlan(exterior: CityExteriorModel | null | undefined): 
     props,
     doors,
   };
+  PLAN_CACHE.set(exterior, plan);
+  return plan;
 }

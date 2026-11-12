@@ -6,8 +6,10 @@
 import { Container, Sprite, Text } from 'pixi.js';
 import { TILE } from '../core/sim/types';
 import { floorText, WORLD_FLATTEN } from './art-tokens';
+import type { AmbientPlan } from './ambient-plan';
 import type { CityRenderPlan } from './city-plan';
 import type { DepthStage } from './depth';
+import { ASSET } from './assets/keys';
 import { textureFor } from './assets/textures';
 import { wallBandRect } from './wall-art';
 
@@ -16,8 +18,14 @@ export { cityRenderPlan } from './city-plan';
 interface CityEntry {
   readonly node: Container;
   readonly sprite: Sprite;
+  /** Weicher Fussschatten; Tueren werfen keinen. */
+  readonly shadow: Sprite | null;
+  readonly shadowRadius: number;
   readonly light: boolean;
 }
+
+/** Ein fehlendes Asset wird hoechstens zweimal je Sekunde erneut versucht. */
+const MISSING_TEXTURE_RETRY_MS = 500;
 
 const HASH_SEED = 2166136261;
 
@@ -35,8 +43,9 @@ export class CityExteriorLayer {
   readonly root = new Container();
   readonly #depth: DepthStage;
   readonly #entries: CityEntry[] = [];
-  #signature = '';
   #plan: CityRenderPlan | null = null;
+  #ambient: AmbientPlan | null = null;
+  #retryAt = 0;
   #missingTexture = false;
 
   constructor(depth: DepthStage) {
@@ -53,23 +62,29 @@ export class CityExteriorLayer {
    * erneut versucht, statt eine Platzhalterflaeche zu zeichnen.
    */
   update(plan: CityRenderPlan | null): void {
-    this.#plan = plan;
     if (!plan) {
+      this.#plan = null;
       this.#clear();
       this.root.visible = false;
       return;
     }
     this.root.visible = true;
-    const nextSignature = this.#signatureOf(plan);
-    if (nextSignature === this.#signature && !this.#missingTexture) return;
-    this.#signature = nextSignature;
+    // Der Plan ist je Exterieur stabil: gleiche Identitaet heisst kein Rebuild.
+    if (plan === this.#plan) return;
+    this.#plan = plan;
     this.#rebuild(plan);
   }
 
-  /** Eine Laterne atmet pro Frame; die Szene bleibt sonst statisch. */
+  /**
+   * Eine Laterne atmet pro Frame; die Szene bleibt sonst statisch. Ein
+   * dauerhaft fehlendes Asset wird gedrosselt neu versucht statt pro Frame.
+   */
   animate(now: number, phase: 'morning' | 'evening' | 'night'): void {
     if (!this.root.visible) return;
-    if (this.#missingTexture && this.#plan) this.#rebuild(this.#plan);
+    if (this.#missingTexture && this.#plan && now >= this.#retryAt) {
+      this.#retryAt = now + MISSING_TEXTURE_RETRY_MS;
+      this.#rebuild(this.#plan);
+    }
     const intensity = phase === 'night' ? 1 : phase === 'evening' ? 0.74 : 0.42;
     for (const entry of this.#entries) {
       if (!entry.light) continue;
@@ -83,13 +98,44 @@ export class CityExteriorLayer {
     this.root.destroy({ children: true });
   }
 
-  #signatureOf(plan: CityRenderPlan): string {
-    return `${plan.layoutId}|${plan.bounds.width}x${plan.bounds.height}|`
-      + plan.buildings.map((building) => `${building.id}:${building.role}:${building.asset}:${building.name}:${building.footprint.x},${building.footprint.y},${building.footprint.w},${building.footprint.h}`).join(',')
-      + '|'
-      + plan.props.map((prop) => `${prop.id}:${prop.role}:${prop.asset}:${prop.x},${prop.y}`).join(',')
-      + '|'
-      + plan.doors.map((door) => `${door.id}:${door.role}:${door.asset}:${door.axis}:${door.x},${door.y}`).join(',');
+  /**
+   * Tageszeit ist reine Darstellung: Schatten fallen richtungsabhaengig, die
+   * Stadt bleibt sonst unveraendert. Kein Rebuild, kein neues Sprite.
+   */
+  setAmbient(plan: AmbientPlan): void {
+    if (plan === this.#ambient) return;
+    this.#ambient = plan;
+    this.#applyAmbient();
+  }
+
+  #applyAmbient(): void {
+    const plan = this.#ambient;
+    const visible = plan !== null && plan.shadow > 0;
+    for (const entry of this.#entries) {
+      const shadow = entry.shadow;
+      if (!shadow) continue;
+      shadow.visible = visible;
+      if (!plan || !visible) continue;
+      shadow.alpha = plan.shadow;
+      shadow.position.set(
+        entry.sprite.x + plan.sunX * entry.shadowRadius,
+        entry.sprite.y - 2 + plan.sunY * entry.shadowRadius,
+      );
+    }
+  }
+
+  /** Weicher Schatten aus derselben Radialtextur wie das Licht; kein neues Asset. */
+  #shadowFor(width: number, height: number): Sprite | null {
+    const texture = textureFor(ASSET.lightPool);
+    if (!texture) return null;
+    const shadow = new Sprite(texture);
+    shadow.anchor.set(0.5, 0.5);
+    shadow.width = width;
+    shadow.height = Math.max(4, height);
+    shadow.tint = 0x000000;
+    shadow.alpha = 0;
+    shadow.visible = false;
+    return shadow;
   }
 
   #rebuild(plan: CityRenderPlan): void {
@@ -110,6 +156,8 @@ export class CityExteriorLayer {
       sprite.width = width * 0.98;
       sprite.height = height * WORLD_FLATTEN;
       sprite.position.set((building.footprint.x + building.footprint.w / 2) * TILE, (building.footprint.y + building.footprint.h) * TILE);
+      const shadow = this.#shadowFor(width * 0.92, height * 0.22);
+      if (shadow) node.addChild(shadow);
       node.addChild(sprite);
       const sign = new Text({ text: building.name.toUpperCase(), style: floorText.name() });
       sign.anchor.set(0.5, 1);
@@ -117,7 +165,7 @@ export class CityExteriorLayer {
       node.addChild(sign);
       this.root.addChild(node);
       this.#depth.set(node, sprite.y, 'prop', stableId(building.id));
-      this.#entries.push({ node, sprite, light: false });
+      this.#entries.push({ node, sprite, shadow, shadowRadius: TILE * 0.7, light: false });
     }
     for (const prop of plan.props) {
       const texture = textureFor(prop.asset);
@@ -133,15 +181,18 @@ export class CityExteriorLayer {
       sprite.width = width;
       sprite.height = height;
       sprite.position.set((prop.x + 0.5) * TILE, (prop.y + 1) * TILE);
+      const shadow = this.#shadowFor(width * 0.8, width * 0.3);
+      if (shadow) node.addChild(shadow);
       node.addChild(sprite);
       this.root.addChild(node);
       this.#depth.set(node, sprite.y, 'prop', stableId(prop.id));
-      this.#entries.push({ node, sprite, light: prop.role === 'STREET_LIGHT' });
+      this.#entries.push({ node, sprite, shadow, shadowRadius: TILE * 0.35, light: prop.role === 'STREET_LIGHT' });
     }
     // Die Stadtgruppe hat eigene Fussanker; einmal sortieren reicht, weil sich
     // Gebaeude und Requisiten nicht bewegen.
     this.root.sortChildren();
     this.#depth.markDirty();
+    this.#applyAmbient();
   }
 
   #addDoor(plan: CityRenderPlan, door: CityRenderPlan['doors'][number]): void {
@@ -167,13 +218,13 @@ export class CityExteriorLayer {
     node.addChild(sprite);
     this.root.addChild(node);
     this.#depth.set(node, band.y + band.h, 'prop', stableId(door.id));
-    this.#entries.push({ node, sprite, light: false });
+    this.#entries.push({ node, sprite, shadow: null, shadowRadius: 0, light: false });
   }
 
   #clear(): void {
     for (const entry of this.#entries) entry.node.destroy({ children: true });
     this.#entries.length = 0;
     this.#missingTexture = false;
-    this.#signature = '';
+    this.#retryAt = 0;
   }
 }

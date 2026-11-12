@@ -24,6 +24,7 @@ import type { GameView, StaffView } from './types';
 import { queueView } from '../core/sim/action-queue';
 import { playerApartmentFurniture, playerApartmentModel } from '../core/sim/player-apartment';
 import type { CityExteriorModel } from '../core/sim/city-exterior';
+import { cityExteriorView } from './city-exterior-view';
 
 /** Personal-Sicht der UI: der Guard besteht, sobald sein Agent existiert. */
 function staffView(world: WorldState): StaffView {
@@ -39,9 +40,7 @@ function worldSnapshot(world: WorldState) {
     : null;
   // Der Renderer bekommt das kanonische Exterieur, nicht die 30x30-Projektion:
   // dasselbe Layout wie der Floor, aber mit Gebaeuden und Requisiten.
-  const cityExterior: CityExteriorModel | null = city
-    ? { ...city.exterior, layout: city.layout }
-    : null;
+  const cityExterior: CityExteriorModel | null = city ? cityExteriorView(city) : null;
   const furniture = apartment
     ? playerApartmentFurniture()
     : city?.furniture ?? foreign?.furniture ?? world.furniture;

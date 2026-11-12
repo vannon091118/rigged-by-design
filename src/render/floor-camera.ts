@@ -11,6 +11,13 @@ export interface WorldBounds {
 const boundsOf = (world: number | WorldBounds): WorldBounds =>
   typeof world === 'number' ? { width: world, height: world } : world;
 
+/**
+ * Toter Winkel fuer das Nachziehen: Die Kamera bleibt stehen, bis die Figur
+ * fast den Bildrand erreicht. Das ist die "relativ statische" Kamera — nur der
+ * Zoom faehrt, Welt und Licht bleiben an derselben Stelle.
+ */
+const FOLLOW_DEAD_ZONE = 0.82;
+
 export class FloorCamera {
   #fit = 1;
   #fill = 1;
@@ -40,6 +47,11 @@ export class FloorCamera {
 
   get bounds(): WorldBounds {
     return this.#bounds;
+  }
+
+  /** Aktueller Bildmittelpunkt in normalisierten Weltanteilen; nur zum Lesen. */
+  get focus(): { readonly x: number; readonly y: number } {
+    return this.#focus;
   }
 
   /**
@@ -129,8 +141,8 @@ export class FloorCamera {
     const { width, height } = boundsOf(world);
     const worldW = width * TILE;
     const worldH = height * TILE;
-    const halfX = Math.min(0.5, screenWidth / (2 * worldW * this.#zoom)) * 0.55;
-    const halfY = Math.min(0.5, screenHeight / (2 * worldH * this.#zoom)) * 0.55;
+    const halfX = Math.min(0.5, screenWidth / (2 * worldW * this.#zoom)) * FOLLOW_DEAD_ZONE;
+    const halfY = Math.min(0.5, screenHeight / (2 * worldH * this.#zoom)) * FOLLOW_DEAD_ZONE;
     const dx = x / worldW - this.#targetFocus.x;
     const dy = y / worldH - this.#targetFocus.y;
     if (dx > halfX) this.#targetFocus.x += dx - halfX;
@@ -158,15 +170,22 @@ export class FloorCamera {
     return moving;
   }
 
-  apply(camera: Container, screenWidth: number, screenHeight: number, world: number | WorldBounds): void {
+  /**
+   * Setzt die Kamera und rundet die Verschiebung auf das Geraetepixelraster.
+   * Ohne diesen Schritt wird Pixel-Art bei DPR 1.5/2 halbtransparent gesampelt
+   * und wirkt beim kleinsten Zoom weich; die Simulation merkt davon nichts.
+   */
+  apply(camera: Container, screenWidth: number, screenHeight: number, world: number | WorldBounds, pixelRatio = 1): void {
     this.#bounds = boundsOf(world);
     const width = this.#bounds.width * TILE;
     const height = this.#bounds.height * TILE;
     const scale = Math.max(0.01, this.#zoom);
+    const ratio = Math.max(1, pixelRatio);
+    const snap = (value: number): number => Math.round(value * ratio) / ratio;
     camera.scale.set(scale);
     camera.position.set(
-      screenWidth / 2 - this.#focus.x * width * scale,
-      screenHeight / 2 - this.#focus.y * height * scale,
+      snap(screenWidth / 2 - this.#focus.x * width * scale),
+      snap(screenHeight / 2 - this.#focus.y * height * scale),
     );
   }
 

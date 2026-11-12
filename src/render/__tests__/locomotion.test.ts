@@ -18,5 +18,11 @@ describe('Laufvertrag', () => {
 
   it('erzeugt im Stillstand keinen Lauframe', () => {
     expect(gaitFor(0, 7, 0.5)).toMatchObject({ moving: false, frame: 0 });
+    expect(gaitFor(0, 7, 0.5, 'left', 0)).toMatchObject({ moving: false, frame: 0 });
+  });
+
+  it('zaehlt reine y-Bewegung als Lauf und behaelt die Blickrichtung', () => {
+    expect(gaitFor(0, 3, 0.25, 'left', -2)).toMatchObject({ moving: true, facing: 'left' });
+    expect(gaitFor(0, 3, 0.25, 'left', -2).frame).toBeGreaterThanOrEqual(0);
   });
 });

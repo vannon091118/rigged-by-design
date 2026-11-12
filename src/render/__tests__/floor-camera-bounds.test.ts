@@ -24,6 +24,33 @@ describe('FloorCamera: Weltgrenzen und LOD-Hysterese', () => {
     expect(cam.fit).toBeCloseTo(cam.fill * 0.96, 6);
   });
 
+  it('haelt die Kamera im toten Winkel ruhig und zieht erst am Rand nach', () => {
+    const cam = new FloorCamera();
+    cam.resize(800, 800, 30, true);
+    cam.zoomStep(2);
+    settle(cam);
+    const before = { ...cam.focus };
+    cam.keepInView(15 * TILE, 15 * TILE, 800, 800, 30);
+    settle(cam);
+    expect(cam.focus).toEqual(before);
+    cam.keepInView(24 * TILE, 15 * TILE, 800, 800, 30);
+    settle(cam);
+    expect(cam.focus.x).toBeGreaterThan(before.x);
+  });
+
+  it('rundet die Kameraverschiebung auf das Geraetepixelraster', () => {
+    const cam = new FloorCamera();
+    cam.resize(801, 601, { width: 60, height: 30 }, true);
+    const position = {
+      x: 0, y: 0,
+      set(x: number, y: number): void { this.x = x; this.y = y; },
+    };
+    const camera = { scale: { set: () => undefined }, position } as never;
+    cam.apply(camera, 801, 601, { width: 60, height: 30 }, 2);
+    expect(position.x * 2).toBeCloseTo(Math.round(position.x * 2), 9);
+    expect(position.y * 2).toBeCloseTo(Math.round(position.y * 2), 9);
+  });
+
   it('schaltet Detail mit Hysterese statt an einer flackernden Kante', () => {
     const cam = new FloorCamera();
     cam.resize(800, 800, 30, true);

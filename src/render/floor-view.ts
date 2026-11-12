@@ -1,7 +1,6 @@
 /** Pixi-Floor: gecachter Raum, zwei LOD-Stufen, weiche Kamera, gepoolte Akteure. Liest nur Snapshots. */
 import { TICK_MS } from '../core/sim/tick-timing';
 import { Application, Graphics } from 'pixi.js';
-import { TILE } from '../core/sim/types';
 import type { GameView } from '../store/types';
 import { ActorPool } from './actor-pool';
 import { EntitySync } from './entity-sync';
@@ -23,8 +22,10 @@ import { StageBackdrop } from './stage-backdrop';
 import { FloorFx } from './fx/floor-fx';
 import { FloorEvents } from './floor-events';
 import { EditorOverlay, type EditorCursor } from './editor-overlay';
-import { CityExteriorLayer, cityRenderPlan } from './city-exterior-layer';
+import { CityExteriorLayer } from './city-exterior-layer';
 import { worldBoundsOf } from './world-bounds';
+import { AmbientLayer } from './ambient-layer';
+import { syncViewLayers, type ViewLayers } from './view-layers';
 
 export class FloorView {
   readonly #app: Application;
@@ -35,6 +36,8 @@ export class FloorView {
   readonly #scene: SceneCache;
   readonly #city: CityExteriorLayer;
   readonly #lights = new LightPool();
+  /** Schleier, Sonnenstrahlen und Sichtradius: reine Darstellung, weltverankert. */
+  readonly #ambient = new AmbientLayer();
   readonly #actors: ActorPool;
   readonly #props: FloorProps;
   readonly #walls = new WallOcclusion();
@@ -44,6 +47,8 @@ export class FloorView {
   readonly #cues: FloorCues;
   readonly #fx: FloorFx; readonly #events: FloorEvents;
   readonly #entities: EntitySync;
+  /** Einmal gebaut: der Snapshot-Durchlauf allokiert keine Deps pro Tick. */
+  readonly #layers: ViewLayers;
   readonly #editor = new EditorOverlay();
   #flashId = -1;
   #lastTap: TapMark | null = null;
@@ -65,6 +70,7 @@ export class FloorView {
       canvas: () => app.canvas,
       size: () => this.#view.size,
       bounds: () => worldBoundsOf(this.#view),
+      pixelRatio: () => app.renderer.resolution,
       onDetail: (detail) => this.#detailChanged(detail),
       onApplied: (lod, scale) => this.#cameraApplied(lod, scale),
     });
@@ -72,8 +78,11 @@ export class FloorView {
     // Partikel, Licht und Shake leben in Weltkoordinaten auf der Buehne.
     this.#fx = new FloorFx();
     this.#events = new FloorEvents(this.#fx, () => this.#view);
+    // Ambient liegt ueber der Welt (Figuren und Stadt werden mitgedimmt), aber
+    // unter Labels, Hinweisen und Effekten: die bleiben lesbar.
     this.#rig.root.addChild(this.#scene.room, this.#lights.root, this.#scene.dirt, this.#scene.routes,
-      this.#scene.world, this.#scene.overhead, this.#cues.root, this.#scene.stickers, this.#fx.root, this.#editor.root);
+      this.#scene.world, this.#ambient.root, this.#scene.overhead, this.#cues.root, this.#scene.stickers,
+      this.#fx.root, this.#editor.root);
     // Kein zweiter Eingabepfad: Maus und Finger laufen ueber FloorTouch und
     // landen genau einmal in #act. Vorher feuerte ein Linksklick zweimal
     // (pointerdown + Tap), also zwei Aktionskarten und zwei Popups.
@@ -102,6 +111,11 @@ export class FloorView {
       marker: this.#marker, props: this.#props, camera: this.#rig.root, screen: app.screen,
       stepMs: TICK_MS, lod: () => this.#rig.lod, scale: () => this.#rig.root.scale.x,
     });
+    this.#layers = {
+      scene: this.#scene, city: this.#city, ambient: this.#ambient, lights: this.#lights,
+      walls: this.#walls, cues: this.#cues, entities: this.#entities, rig: this.#rig,
+      renderer: app.renderer,
+    };
     app.ticker.add(this.#animate);
     this.update(view, true);
   }
@@ -111,21 +125,7 @@ export class FloorView {
     const previous = this.#view;
     const templateChanged = force || view.size !== previous.size || view.template !== previous.template || view.carpet !== previous.carpet;
     this.#view = view;
-    this.#scene.redrawRoom(view);
-    this.#city.update(cityRenderPlan(view.cityExterior));
-    this.#lights.update(view);
-    this.#scene.setLabels(view, this.#rig.lod === 1);
-    if (templateChanged) {
-      if (view.template !== previous.template || view.size !== previous.size) this.#entities.resetFurniture();
-      this.#rig.resetForLayout();
-    }
-    this.#scene.redrawDirt(view);
-    this.#entities.sync(view, performance.now());
-    this.#walls.sync(this.#app.renderer, { size: view.size, layout: view.layout }, TILE, this.#scene.depth);
-    this.#scene.depth.flush();
-    this.#cues.setPath(view.player.path, view.player.pathIndex);
-    this.#rig.updateLod();
-    if (this.#rig.dirty) this.#rig.apply(); else this.#entities.cull(view, this.#rig.lod);
+    syncViewLayers(this.#layers, view, previous, templateChanged, performance.now());
   }
 
   fit(): void { this.#rig.fit(); }
@@ -174,6 +174,7 @@ export class FloorView {
     this.#editor.destroy();
     this.#actors.clear();
     this.#entities.clear();
+    this.#ambient.destroy();
     this.#city.destroy();
     this.#scene.destroy();
     this.#lights.destroy();
@@ -227,6 +228,7 @@ export class FloorView {
     if (this.#destroyed) return;
     const now = performance.now();
     animateFloor(now, this.#rig, this.#actors, this.#player, this.#cues, this.#props);
+    this.#ambient.animate(this.#player.root.x, this.#player.root.y);
     this.#city.animate(now, this.#view.dayPhase);
     this.#fx.update(now);
     // Shake verschiebt die Kamera, nicht ein Vollbild-div: kein Compositing der ganzen App.
