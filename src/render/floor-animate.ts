@@ -19,7 +19,7 @@ export function animateFloor(
   for (const art of actors.active.values()) {
     art.animate(now);
     const t = Math.min(1, (now - art.moveStart) / TICK_MS);
-    const gaitFrame = gaitFor(art.target.x - art.from.x, Math.floor(now / TICK_MS), art.phase);
+    const gaitFrame = gaitFor(art.target.x - art.from.x, Math.floor(now / TICK_MS), art.phase, art.facing);
     const walking = t < 1 && gaitFrame.moving;
     const gait = walking ? Math.sin((now / 1000) * 12 + gaitFrame.frame) * 0.3 : 0;
     art.setFacing(gaitFrame.facing);
@@ -30,7 +30,7 @@ export function animateFloor(
   }
   player.animate(now);
   const pt = Math.min(1, (now - player.moveStart) / TICK_MS);
-  const playerGait = gaitFor(player.target.x - player.from.x, Math.floor(now / TICK_MS), player.phase);
+  const playerGait = gaitFor(player.target.x - player.from.x, Math.floor(now / TICK_MS), player.phase, player.facing);
   const pwalking = pt < 1 && playerGait.moving;
   player.setFacing(playerGait.facing);
   const pgait = pwalking ? Math.sin((now / 1000) * 12 + playerGait.frame) * 0.3 : 0;
