@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "test-quality-fixes",
+  "claimId": "lane/governance/test-quality-fixes",
+  "branch": "lane/governance/test-quality-fixes",
+  "baseSha": "cb7d4002bd4e6cc7121d19b69491449240b056bd",
+  "phase": "IMPLEMENTING",
+  "title": "Test-Quality-Baseline in drei Testdateien beheben",
+  "goal": "Die drei bestehenden verify:test-quality-Verstoesse ursachengerecht in den Testdateien beheben, ohne Assertions, Abdeckung oder Gate-Regeln abzuschwaeachen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Drei Verstoesse reproduzieren, Ursachen in den Tests beheben und Gate, Suite sowie Long-Turn belegen.",
+  "revision": 1
+}

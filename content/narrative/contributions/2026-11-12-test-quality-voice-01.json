@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-12T12:35Z-test-quality",
+  "contributionId": "test-quality-voice-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "guest-voice-low",
+  "function": "react",
+  "contexts": [
+    "aftermath"
+  ],
+  "tone": "trocken",
+  "mood": "neutral",
+  "relationship": "distanz",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Wirt zählt die Gläser zweimal, bevor er sie wegstellt. Beim ersten Mal hat er sich verzählt, und niemand hat es ihm gesagt.",
+  "directives": []
+}
