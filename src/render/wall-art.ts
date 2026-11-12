@@ -30,12 +30,16 @@ export function wallBandRect(edge: LayoutEdge, size: number, tile: number): Rect
   return { x: edge.x >= size ? edge.x * tile - WALL : edge.x * tile, y: edge.y * tile, w: WALL, h: tile };
 }
 
-/** Vorderseite: Suedkante bei H, Ostkante bei V. Immer innerhalb des Bands. */
-export function wallFaceRect(edge: LayoutEdge, size: number, tile: number): Rect {
-  const band = wallBandRect(edge, size, tile);
-  return edge.axis === 'H'
+/** Vorderseite eines Bands: Suedkante bei H, Ostkante bei V. */
+export function wallFaceInBand(axis: 'H' | 'V', band: Rect): Rect {
+  return axis === 'H'
     ? { x: band.x + 1, y: band.y + band.h - WALL_FACE, w: Math.max(0, band.w - 2), h: WALL_FACE }
     : { x: band.x + band.w - WALL_FACE, y: band.y + 1, w: WALL_FACE, h: Math.max(0, band.h - 2) };
+}
+
+/** Vorderseite: Suedkante bei H, Ostkante bei V. Immer innerhalb des Bands. */
+export function wallFaceRect(edge: LayoutEdge, size: number, tile: number): Rect {
+  return wallFaceInBand(edge.axis, wallBandRect(edge, size, tile));
 }
 
 interface DoorParts {
@@ -54,31 +58,39 @@ export function doorParts(edge: LayoutEdge, size: number, tile: number): DoorPar
   return { threshold: band, posts };
 }
 
-/** Stabile Sortier-ID einer Wand: Achse, Anker, keine Zufallszahl. */
+/**
+ * Zwei schmale Kanten statt einer deckenden Flaeche: Der Boden laeuft durch
+ * die Schwelle, die Wand fehlt. Ein Voll-Rect wuerde genau das verdecken.
+ */
+export function thresholdLines(edge: LayoutEdge, size: number, tile: number): readonly [Rect, Rect] {
+  const band = wallBandRect(edge, size, tile);
+  return edge.axis === 'H'
+    ? [{ x: band.x, y: band.y, w: band.w, h: 1 }, { x: band.x, y: band.y + band.h - 1, w: band.w, h: 1 }]
+    : [{ x: band.x, y: band.y, w: 1, h: band.h }, { x: band.x + band.w - 1, y: band.y, w: 1, h: band.h }];
+}
+
+/** Max. Layoutkante (LAYOUT_SIZES endet bei 90): 7 Bit je Achse. */
+const WALL_COORD_BITS = 7;
+/** 7 Bit y, 7 Bit x, 1 Achsenbit. */
+export const WALL_ID_SPAN = 1 << 15;
+
+/** Eindeutige Sortier-ID: Achse, Anker, keine Zufallszahl. */
 export const wallDepthId = (edge: LayoutEdge): number =>
-  (edge.axis === 'V' ? 1_000_000 : 0) + edge.y * 1000 + edge.x;
+  (((edge.y << WALL_COORD_BITS) | edge.x) * 2) + (edge.axis === 'V' ? 1 : 0);
 
 function drawDoor(g: Graphics, edge: LayoutEdge, view: WallView, tile: number): void {
   const parts = doorParts(edge, view.size, tile);
   const owner = wallOwnerTile(edge, view.size);
   const material = materialAt(view.layout, owner.x, owner.y);
   const art = material ? floorArtFor(material) : null;
-  const base = art?.base ?? INK;
   const accent = art?.accent ?? LIGHT.neon;
-  const t = parts.threshold;
-  g.rect(t.x, t.y, t.w, t.h).fill({ color: base, alpha: 0.96 });
-  if (edge.axis === 'H') {
-    g.rect(t.x, t.y, t.w, 1).fill({ color: accent, alpha: 0.22 });
-    g.rect(t.x, t.y + t.h - 1, t.w, 1).fill({ color: 0x000000, alpha: 0.3 });
-  } else {
-    g.rect(t.x, t.y, 1, t.h).fill({ color: accent, alpha: 0.22 });
-    g.rect(t.x + t.w - 1, t.y, 1, t.h).fill({ color: 0x000000, alpha: 0.3 });
-  }
+  const [accentLine, shadowLine] = thresholdLines(edge, view.size, tile);
+  g.rect(accentLine.x, accentLine.y, accentLine.w, accentLine.h).fill({ color: accent, alpha: 0.22 });
+  g.rect(shadowLine.x, shadowLine.y, shadowLine.w, shadowLine.h).fill({ color: 0x000000, alpha: 0.3 });
   for (const post of parts.posts) g.rect(post.x, post.y, post.w, post.h).fill({ color: INK, alpha: 0.9 });
   // Nur die Haustuer leuchtet: der Eingang ist ein Ziel, keine Wand.
   if (edge.kind === 'DOOR' && edgeOnRim(edge, view.size)) {
-    g.rect(t.x, t.y, t.w, t.h).fill({ color: LIGHT.neon, alpha: 0.16 });
-    g.rect(t.x, t.y, t.w, 1).fill({ color: LIGHT.neon, alpha: 0.5 });
+    g.rect(accentLine.x, accentLine.y, accentLine.w, accentLine.h).fill({ color: LIGHT.neon, alpha: 0.5 });
   }
 }
 

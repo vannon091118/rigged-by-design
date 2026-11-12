@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-wall-sort-letterbox",
+  "claimId": "lane/render/wall-sort-letterbox",
+  "branch": "lane/render/wall-sort-letterbox",
+  "baseSha": "f6ef9a34e1fc4f8d944f56ad44d05bae5908671a",
+  "phase": "IMPLEMENTING",
+  "title": "Wandtiefe, Letterbox und Türschwellen",
+  "goal": "Die fünf Render-Patches für eindeutige Wand-IDs, letterbox-sichere Tile-Treffer, sichtbare Türschwellen, eine gemeinsame Vorderseiten-Geometrie und tile-groessenbewusste Wandtexturen umsetzen und belegen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Fünf Render-Patches umgesetzt; fokussierte Tests, verify:light und volle Suite grün. Evidenz-Artefakt-Drift separat beheben.",
+  "revision": 1
+}

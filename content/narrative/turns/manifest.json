@@ -4056,6 +4056,10 @@
     {
       "turnId": "2026-11-12T11:45Z-longturn-evidence",
       "contributionId": "living-world-longturn-01"
+    },
+    {
+      "turnId": "2026-11-12T12:20Z-render-threshold",
+      "contributionId": "render-threshold-voice-01"
     }
   ]
 }

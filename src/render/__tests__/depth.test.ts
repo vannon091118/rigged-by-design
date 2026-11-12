@@ -6,12 +6,14 @@
  * Tie-Breaking und Sortierung nur bei echter Aenderung.
  */
 import { describe, expect, it, vi } from 'vitest';
-import { Container } from 'pixi.js';
-import type { LayoutEdge } from '../../core/sim/layout-types';
+import { Container, Texture } from 'pixi.js';
+import { edgeInBounds } from '../../core/sim/layout-edges';
+import { LAYOUT_SIZES, type LayoutEdge } from '../../core/sim/layout-types';
 import { createWorld } from '../../core/sim/templates';
 import { TILE } from '../../core/sim/types';
 import { DepthStage, depthFor, footAnchor } from '../depth';
-import { wallBandRect, wallDepthId } from '../wall-art';
+import { WALL_ID_SPAN, wallBandRect, wallDepthId } from '../wall-art';
+import { WallOcclusion } from '../wall-occlusion';
 
 const edge = (axis: 'H' | 'V', x: number, y: number): LayoutEdge =>
   ({ axis, x, y, kind: 'WALL', id: null, zoneId: null });
@@ -58,6 +60,41 @@ describe('Wand-Occlusion', () => {
     const ids = [wallDepthId(edge('H', 4, 7)), wallDepthId(edge('V', 4, 7)), wallDepthId(edge('H', 5, 7))];
     expect(new Set(ids).size).toBe(3);
     expect(wallDepthId(edge('H', 4, 7))).toBe(ids[0]);
+  });
+
+  it('bleibt in allen 30/60/90-Layouts eindeutig, auch auf dem Rand', () => {
+    for (const size of LAYOUT_SIZES) {
+      const ids = new Set<number>();
+      let count = 0;
+      for (const axis of ['H', 'V'] as const) {
+        for (let y = 0; y <= size; y += 1) {
+          for (let x = 0; x <= size; x += 1) {
+            if (!edgeInBounds(axis, x, y, size)) continue;
+            count += 1;
+            ids.add(wallDepthId(edge(axis, x, y)));
+          }
+        }
+      }
+      expect(ids.size).toBe(count);
+      expect(count).toBe(2 * size * (size + 1));
+      expect(Math.max(...ids)).toBeLessThan(WALL_ID_SPAN);
+    }
+  });
+
+  it('cached die Wandtexturen je Tile-Groesse statt einer festen Groesse', () => {
+    const world = createWorld('SMALL');
+    const view = { size: world.size, layout: world.layout };
+    const stage = new DepthStage();
+    const generate = vi.fn(() => Texture.WHITE);
+    const walls = new WallOcclusion();
+    walls.sync({ generateTexture: generate } as never, view, 26, stage);
+    expect(generate).toHaveBeenCalledTimes(2);
+    walls.sync({ generateTexture: generate } as never, view, 26, stage);
+    expect(generate).toHaveBeenCalledTimes(2);
+    walls.sync({ generateTexture: generate } as never, view, 32, stage);
+    expect(generate).toHaveBeenCalledTimes(4);
+    walls.sync({ generateTexture: generate } as never, view, 26, stage);
+    expect(generate).toHaveBeenCalledTimes(4);
   });
 });
 
