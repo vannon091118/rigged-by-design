@@ -1562,6 +1562,13 @@
     "characters/torso-outfit-08.png": "characters/torso-outfit-08.png"
   },
   "environment": {
+    "environment/floor/apartment-rug.svg": "environment/floor/apartment-rug.svg",
+    "environment/floor/concrete-slab.svg": "environment/floor/concrete-slab.svg",
+    "environment/floor/linoleum-speckle.svg": "environment/floor/linoleum-speckle.svg",
+    "environment/floor/stone-marble.svg": "environment/floor/stone-marble.svg",
+    "environment/floor/tile-grid.svg": "environment/floor/tile-grid.svg",
+    "environment/floor/wood-planks.svg": "environment/floor/wood-planks.svg",
+    "environment/fx/light-pool.svg": "environment/fx/light-pool.svg",
     "environment/tiles/casino-carpet-plum.png": "environment/tiles/casino-carpet-plum.png",
     "environment/tiles/wallpaper-damask-plum.png": "environment/tiles/wallpaper-damask-plum.png"
   },

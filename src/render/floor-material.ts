@@ -6,6 +6,8 @@
 import { Graphics, type Container } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
 import { FLOOR_MATERIALS, type FloorMaterialId, type LayoutState } from '../core/sim/layout-types';
+import type { CarpetId } from '../core/sim/types';
+import { ASSET } from './assets/keys';
 import { LIGHT, ROLE, type FloorMaterial } from './art-tokens';
 import { addTiling, drawPattern } from './floor-surface';
 
@@ -16,22 +18,18 @@ interface FloorArt extends FloorMaterial {
   readonly fallbackId: string;
 }
 
-/**
- * Nur der Teppich existiert als Environment-Textur. Holz, Fliese, Stein,
- * Linoleum und Beton bleiben prozedural, bis echte Assets im Manifest stehen;
- * hier wird kein Pfad erfunden.
- */
-const CARPET = 'environment/tiles/casino-carpet-plum.png';
+/** Jede Bodenrolle hat eine echte, nahtlose Manifest-Textur. */
+const CARPET = ASSET.carpet;
 
 export type FloorTheme = 'casino' | 'apartment';
 
 const FLOOR_ART: Readonly<Record<FloorMaterialId, FloorArt>> = {
   CARPET: { base: 0x241a3d, grout: 0x342650, accent: ROLE.identity, pattern: 'carpet', light: LIGHT.neon, lightAlpha: 0.06, texture: CARPET, fallbackId: 'floor-material-carpet-procedural-v1' },
-  WOOD: { base: 0x3a2a1b, grout: 0x261a10, accent: 0x8a5a34, pattern: 'planks', light: LIGHT.warm, lightAlpha: 0.1, texture: null, fallbackId: 'floor-material-wood-procedural-v1' },
-  TILE: { base: 0x222a33, grout: 0x3c4a58, accent: LIGHT.cool, pattern: 'tiles', light: LIGHT.cool, lightAlpha: 0.08, texture: null, fallbackId: 'floor-material-tile-procedural-v1' },
-  STONE: { base: 0x2a2733, grout: 0x413c4d, accent: 0x9a8fb0, pattern: 'marble', light: LIGHT.cool, lightAlpha: 0.07, texture: null, fallbackId: 'floor-material-stone-procedural-v1' },
-  LINOLEUM: { base: 0x1f2a2a, grout: 0x2e4444, accent: ROLE.service, pattern: 'polished', light: LIGHT.cool, lightAlpha: 0.08, texture: null, fallbackId: 'floor-material-linoleum-procedural-v1' },
-  CONCRETE: { base: 0x1b1a22, grout: 0x2c2a36, accent: 0x6a6580, pattern: 'concrete', light: LIGHT.cool, lightAlpha: 0.04, texture: null, fallbackId: 'floor-material-concrete-procedural-v1' },
+  WOOD: { base: 0x3a2a1b, grout: 0x261a10, accent: 0x8a5a34, pattern: 'planks', light: LIGHT.warm, lightAlpha: 0.1, texture: ASSET.floors.wood, fallbackId: 'floor-material-wood-procedural-v1' },
+  TILE: { base: 0x222a33, grout: 0x3c4a58, accent: LIGHT.cool, pattern: 'tiles', light: LIGHT.cool, lightAlpha: 0.08, texture: ASSET.floors.tile, fallbackId: 'floor-material-tile-procedural-v1' },
+  STONE: { base: 0x2a2733, grout: 0x413c4d, accent: 0x9a8fb0, pattern: 'marble', light: LIGHT.cool, lightAlpha: 0.07, texture: ASSET.floors.stone, fallbackId: 'floor-material-stone-procedural-v1' },
+  LINOLEUM: { base: 0x1f2a2a, grout: 0x2e4444, accent: ROLE.service, pattern: 'polished', light: LIGHT.cool, lightAlpha: 0.08, texture: ASSET.floors.linoleum, fallbackId: 'floor-material-linoleum-procedural-v1' },
+  CONCRETE: { base: 0x1b1a22, grout: 0x2c2a36, accent: 0x6a6580, pattern: 'concrete', light: LIGHT.cool, lightAlpha: 0.04, texture: ASSET.floors.concrete, fallbackId: 'floor-material-concrete-procedural-v1' },
 };
 
 /**
@@ -39,11 +37,11 @@ const FLOOR_ART: Readonly<Record<FloorMaterialId, FloorArt>> = {
  * aber ohne die violette Casino-Textur und ohne Neonfarben.
  */
 const APARTMENT_FLOOR_ART: Partial<Record<FloorMaterialId, FloorArt>> = {
-  CARPET: { base: 0x3d2b25, grout: 0x4e3830, accent: 0xc08a62, pattern: 'rug', light: LIGHT.warm, lightAlpha: 0.09, texture: null, fallbackId: 'floor-material-apartment-rug-procedural-v1' },
-  WOOD: { base: 0x4a3423, grout: 0x322317, accent: 0xa97a4c, pattern: 'planks', light: LIGHT.warm, lightAlpha: 0.11, texture: null, fallbackId: 'floor-material-wood-procedural-v1' },
-  TILE: { base: 0x2b3438, grout: 0x45535a, accent: 0x9fc4cc, pattern: 'tiles', light: LIGHT.cool, lightAlpha: 0.07, texture: null, fallbackId: 'floor-material-tile-procedural-v1' },
-  LINOLEUM: { base: 0x3c3328, grout: 0x4e4234, accent: 0xc2a070, pattern: 'polished', light: LIGHT.warm, lightAlpha: 0.08, texture: null, fallbackId: 'floor-material-linoleum-procedural-v1' },
-  STONE: { base: 0x35302b, grout: 0x4a443c, accent: 0x9a8f80, pattern: 'marble', light: LIGHT.warm, lightAlpha: 0.06, texture: null, fallbackId: 'floor-material-stone-procedural-v1' },
+  CARPET: { base: 0x3d2b25, grout: 0x4e3830, accent: 0xc08a62, pattern: 'rug', light: LIGHT.warm, lightAlpha: 0.09, texture: ASSET.floors.apartmentRug, fallbackId: 'floor-material-apartment-rug-procedural-v1' },
+  WOOD: { base: 0x4a3423, grout: 0x322317, accent: 0xa97a4c, pattern: 'planks', light: LIGHT.warm, lightAlpha: 0.11, texture: ASSET.floors.wood, fallbackId: 'floor-material-wood-procedural-v1' },
+  TILE: { base: 0x2b3438, grout: 0x45535a, accent: 0x9fc4cc, pattern: 'tiles', light: LIGHT.cool, lightAlpha: 0.07, texture: ASSET.floors.tile, fallbackId: 'floor-material-tile-procedural-v1' },
+  LINOLEUM: { base: 0x3c3328, grout: 0x4e4234, accent: 0xc2a070, pattern: 'polished', light: LIGHT.warm, lightAlpha: 0.08, texture: ASSET.floors.linoleum, fallbackId: 'floor-material-linoleum-procedural-v1' },
+  STONE: { base: 0x35302b, grout: 0x4a443c, accent: 0x9a8f80, pattern: 'marble', light: LIGHT.warm, lightAlpha: 0.06, texture: ASSET.floors.stone, fallbackId: 'floor-material-stone-procedural-v1' },
 };
 
 const UNKNOWN: FloorArt = FLOOR_ART.CONCRETE;
@@ -99,9 +97,16 @@ export function floorRuns(layout: LayoutState, area: Area): FloorRun[] {
  * ein TilingSprite je Material ueber dem Chunk und wird auf dessen Tiles
  * maskiert; so wiederholt sie sich ohne Naht an Laufgrenzen.
  */
+const CARPET_TINT: Readonly<Record<CarpetId, number>> = {
+  VIOLET: 0xffffff,
+  CRIMSON: 0xffb0b0,
+  JADE: 0x9affd0,
+  GOLD: 0xffe08a,
+};
+
 export function drawFloorRegion(
   g: Graphics, layout: LayoutState | null | undefined, area: Area, tile: number, deco?: Container,
-  theme: FloorTheme = 'casino',
+  theme: FloorTheme = 'casino', carpet: CarpetId = 'VIOLET',
 ): void {
   if (!layout) return;
   const runs = floorRuns(layout, area);
@@ -123,6 +128,9 @@ export function drawFloorRegion(
     if (!key) continue;
     const tiling = addTiling(deco, key, area.x * tile, area.y * tile, area.w * tile, area.h * tile, 2, 0.5);
     if (!tiling) continue;
+    // Die Teppichwahl bleibt sichtbar, ohne einen zweiten vollflaechigen Layer:
+    // sie tintet dieselbe Materialtextur, die der Boden ohnehin traegt.
+    if (material === 'CARPET' && theme === 'casino') tiling.tint = CARPET_TINT[carpet];
     const mask = new Graphics();
     for (const run of materialRuns) mask.rect(run.x * tile, run.y * tile, run.w * tile, tile).fill(0xffffff);
     deco.addChild(mask);

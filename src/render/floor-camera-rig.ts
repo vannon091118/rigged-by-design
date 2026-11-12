@@ -4,7 +4,7 @@
  */
 import { Container, Rectangle } from 'pixi.js';
 import { TILE } from '../core/sim/types';
-import { FloorCamera } from './floor-camera';
+import { FloorCamera, type WorldBounds } from './floor-camera';
 import { screenToTile } from './floor-math';
 
 interface CameraRigDeps {
@@ -13,6 +13,8 @@ interface CameraRigDeps {
   readonly canvas: () => HTMLCanvasElement;
   /** Kantenlaenge des aktuellen Bodens in Tiles. */
   readonly size: () => number;
+  /** Explizite Weltgrenzen; fehlen sie, bleibt die Welt quadratisch. */
+  readonly bounds?: () => WorldBounds;
   /** LOD-Wechsel: Hinweise, Beschriftungen und Figurendetail folgen der Stufe. */
   readonly onDetail: (detail: boolean) => void;
   /** Nach dem Anwenden: Raster neu zielen, Pins skalieren, cullen. */
@@ -54,14 +56,15 @@ export class FloorCameraRig {
 
   /** Neue Vorlage oder Groesse: Uebersicht neu setzen, Trefferflaeche mitziehen. */
   resetForLayout(): void {
-    this.cam.resize(this.#deps.screen.width, this.#deps.screen.height, this.#deps.size(), true);
-    this.root.hitArea = new Rectangle(0, 0, this.#deps.size() * TILE, this.#deps.size() * TILE);
+    const bounds = this.#bounds();
+    this.cam.resize(this.#deps.screen.width, this.#deps.screen.height, bounds, true);
+    this.root.hitArea = new Rectangle(0, 0, bounds.width * TILE, bounds.height * TILE);
     this.#dirty = true;
   }
 
   /** Bildschirm geaendert: neu einpassen und LOD samt Transform sofort anwenden. */
   resize(): void {
-    this.cam.resize(this.#deps.screen.width, this.#deps.screen.height, this.#deps.size());
+    this.cam.resize(this.#deps.screen.width, this.#deps.screen.height, this.#bounds());
     this.updateLod();
     this.apply();
   }
@@ -76,7 +79,7 @@ export class FloorCameraRig {
   }
 
   apply(): void {
-    this.cam.apply(this.root, this.#deps.screen.width, this.#deps.screen.height, this.#deps.size());
+    this.cam.apply(this.root, this.#deps.screen.width, this.#deps.screen.height, this.#bounds());
     this.#base.x = this.root.position.x;
     this.#base.y = this.root.position.y;
     this.#dirty = false;
@@ -85,7 +88,7 @@ export class FloorCameraRig {
 
   /** Folgt der Figur, ohne jede Bewegung zur Kamerafahrt zu machen. */
   follow(x: number, y: number): void {
-    this.cam.keepInView(x, y, this.#deps.screen.width, this.#deps.screen.height, this.#deps.size());
+    this.cam.keepInView(x, y, this.#deps.screen.width, this.#deps.screen.height, this.#bounds());
     this.cam.step();
   }
 
@@ -96,8 +99,13 @@ export class FloorCameraRig {
 
   cellAt(clientX: number, clientY: number): { x: number; y: number } | null {
     const rect = this.#deps.canvas().getBoundingClientRect();
+    const bounds = this.#bounds();
     return screenToTile(clientX, clientY, rect, this.#deps.screen.width,
-      this.root.x, this.root.y, this.root.scale.x, this.#deps.size(), TILE);
+      this.root.x, this.root.y, this.root.scale.x, bounds.width, TILE, bounds.height);
+  }
+
+  #bounds(): WorldBounds {
+    return this.#deps.bounds?.() ?? { width: this.#deps.size(), height: this.#deps.size() };
   }
 
   destroy(): void {

@@ -1,7 +1,15 @@
-/** Kamera mit zwei Zoom-Stufen: Übersicht und 30x30-Bereich. Lerpt ohne Frame-Allokationen. */
+/** Kamera mit zwei Zoom-Stufen und expliziten Weltgrenzen; lerpt ohne Frame-Allokationen. */
 import type { Container } from 'pixi.js';
 import type { Area } from '../core/sim/grid-zones';
 import { REGION, TILE } from '../core/sim/types';
+
+export interface WorldBounds {
+  readonly width: number;
+  readonly height: number;
+}
+
+const boundsOf = (world: number | WorldBounds): WorldBounds =>
+  typeof world === 'number' ? { width: world, height: world } : world;
 
 export class FloorCamera {
   #fit = 1;
@@ -10,6 +18,8 @@ export class FloorCamera {
   #target = 1;
   #focus = { x: 0.5, y: 0.5 };
   #targetFocus = { x: 0.5, y: 0.5 };
+  #bounds: WorldBounds = { width: 30, height: 30 };
+  #detail = false;
 
   get zoom(): number {
     return this.#zoom;
@@ -28,15 +38,32 @@ export class FloorCamera {
     return this.#fill;
   }
 
-  get detail(): boolean {
-    return this.#zoom > this.#fit * 1.12;
+  get bounds(): WorldBounds {
+    return this.#bounds;
   }
 
-  resize(screenWidth: number, screenHeight: number, size: number, reset = false): void {
-    const next = this.#computeFit(screenWidth, screenHeight, size);
+  /**
+   * Detail mit Hysterese: rein oberhalb von 1.16×fit, raus erst unter 1.08×fit.
+   * Damit flackert die Figur beim langsamen Zoomen nicht zwischen Rig und
+   * Silhouette.
+   */
+  get detail(): boolean {
+    const enter = this.#fit * 1.16;
+    const exit = this.#fit * 1.08;
+    if (this.#detail) {
+      if (this.#zoom < exit) this.#detail = false;
+    } else if (this.#zoom > enter) {
+      this.#detail = true;
+    }
+    return this.#detail;
+  }
+
+  resize(screenWidth: number, screenHeight: number, world: number | WorldBounds, reset = false): void {
+    this.#bounds = boundsOf(world);
+    const next = this.#computeFit(screenWidth, screenHeight);
     const overview = reset || this.#zoom <= this.#fit * 1.01;
     this.#fit = next;
-    this.#fill = this.#computeFill(screenWidth, screenHeight, size);
+    this.#fill = this.#computeFill(screenWidth, screenHeight);
     this.#zoom = this.#clamp(overview ? next : this.#zoom);
     this.#target = this.#clamp(overview ? next : this.#target);
     if (overview) {
@@ -44,6 +71,7 @@ export class FloorCamera {
       this.#focus.y = 0.5;
       this.#targetFocus.x = 0.5;
       this.#targetFocus.y = 0.5;
+      this.#detail = false;
     }
   }
 
@@ -53,10 +81,12 @@ export class FloorCamera {
     this.#targetFocus.y = 0.5;
   }
 
-  zoomToArea(area: Area, size: number): void {
-    this.#targetFocus.x = (area.x + area.w / 2) / size;
-    this.#targetFocus.y = (area.y + area.h / 2) / size;
-    this.#target = this.#clamp(Math.max(this.#fit * 2.2, this.#fit * (size / REGION)));
+  zoomToArea(area: Area, world: number | WorldBounds): void {
+    this.#bounds = boundsOf(world);
+    const { width, height } = this.#bounds;
+    this.#targetFocus.x = (area.x + area.w / 2) / width;
+    this.#targetFocus.y = (area.y + area.h / 2) / height;
+    this.#target = this.#clamp(Math.max(this.#fit * 2.2, this.#fit * (Math.max(width, height) / REGION)));
   }
 
   pinch(factor: number, worldX: number, worldY: number): void {
@@ -94,14 +124,15 @@ export class FloorCamera {
    * Haelt die Figur im Bild, ohne jede Bewegung zur Kamerafahrt zu machen:
    * erst wenn sie den inneren Rahmen verlaesst, zieht die Kamera nach.
    */
-  keepInView(x: number, y: number, screenWidth: number, screenHeight: number, size: number): void {
-    // Uebersicht und Rueckweg dorthin bleiben mittig: dort ist ohnehin alles zu sehen.
+  keepInView(x: number, y: number, screenWidth: number, screenHeight: number, world: number | WorldBounds): void {
     if (this.#zoom <= this.#fit * 1.01 || this.#target <= this.#fit * 1.01) return;
-    const world = size * TILE;
-    const halfX = Math.min(0.5, screenWidth / (2 * world * this.#zoom)) * 0.55;
-    const halfY = Math.min(0.5, screenHeight / (2 * world * this.#zoom)) * 0.55;
-    const dx = x / world - this.#targetFocus.x;
-    const dy = y / world - this.#targetFocus.y;
+    const { width, height } = boundsOf(world);
+    const worldW = width * TILE;
+    const worldH = height * TILE;
+    const halfX = Math.min(0.5, screenWidth / (2 * worldW * this.#zoom)) * 0.55;
+    const halfY = Math.min(0.5, screenHeight / (2 * worldH * this.#zoom)) * 0.55;
+    const dx = x / worldW - this.#targetFocus.x;
+    const dy = y / worldH - this.#targetFocus.y;
     if (dx > halfX) this.#targetFocus.x += dx - halfX;
     else if (dx < -halfX) this.#targetFocus.x += dx + halfX;
     if (dy > halfY) this.#targetFocus.y += dy - halfY;
@@ -127,27 +158,29 @@ export class FloorCamera {
     return moving;
   }
 
-  apply(camera: Container, screenWidth: number, screenHeight: number, size: number): void {
-    const width = size * TILE;
+  apply(camera: Container, screenWidth: number, screenHeight: number, world: number | WorldBounds): void {
+    this.#bounds = boundsOf(world);
+    const width = this.#bounds.width * TILE;
+    const height = this.#bounds.height * TILE;
     const scale = Math.max(0.01, this.#zoom);
     camera.scale.set(scale);
     camera.position.set(
       screenWidth / 2 - this.#focus.x * width * scale,
-      screenHeight / 2 - this.#focus.y * width * scale,
+      screenHeight / 2 - this.#focus.y * height * scale,
     );
   }
 
-  /** Übersicht: der ganze Plan bleibt sichtbar (contain auf beiden Achsen). */
-  #computeFit(screenWidth: number, screenHeight: number, size: number): number {
-    const width = size * TILE;
-    const height = size * TILE;
+  /** Übersicht: die ganze Welt bleibt sichtbar (contain auf beiden Achsen). */
+  #computeFit(screenWidth: number, screenHeight: number): number {
+    const width = this.#bounds.width * TILE;
+    const height = this.#bounds.height * TILE;
     return Math.max(0.04, Math.min(screenWidth / width, screenHeight / height) * 0.96);
   }
 
   /** Vollflaeche: der Faktor, ab dem keine Flaeche mehr frei bleibt (cover). */
-  #computeFill(screenWidth: number, screenHeight: number, size: number): number {
-    const width = size * TILE;
-    const height = size * TILE;
+  #computeFill(screenWidth: number, screenHeight: number): number {
+    const width = this.#bounds.width * TILE;
+    const height = this.#bounds.height * TILE;
     return Math.max(0.04, Math.max(screenWidth / width, screenHeight / height));
   }
 

@@ -80,17 +80,6 @@ export function drawCeilingLight(g: Graphics, r: Rect, light: LightState): void 
   }
 }
 
-/** Lichtpfuetze: das Deckenlicht faellt in vielen leisen Stufen in den Saal. */
-export function drawLightSpill(g: Graphics, r: Rect, light: LightState, lightAlpha: number): void {
-  const intensity = (lightAlpha / 0.1) * light.intensity;
-  const steps = 16;
-  for (let step = steps; step >= 1; step -= 1) {
-    const t = step / steps;
-    g.ellipse(r.x + r.w / 2, r.y + r.h * 0.3, r.w * 0.48 * t, r.h * 0.28 * t)
-      .fill({ color: light.tint, alpha: 0.009 * intensity });
-  }
-}
-
 /**
  * Textur als Kachel ueber eine Flaeche. Gibt das Sprite zurueck, damit ein
  * Material seine Kacheln maskieren kann; fehlt die Datei, bleibt es `null`.

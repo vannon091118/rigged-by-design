@@ -8,6 +8,7 @@ import { GuestPaint } from './guest-paint';
 import { GuestRig } from './guest-rig';
 import { hash } from './guest-parts';
 import type { ActorState } from './rig-pose';
+import type { Facing } from './locomotion';
 
 export interface GuestArt {
   readonly root: Container;
@@ -25,6 +26,8 @@ export interface GuestArt {
   readonly setLod: (detail: boolean) => void;
   readonly setState: (state: ActorState) => void;
   readonly setLook: (look: PlayerLook) => void;
+  /** Blickrichtung aus der Bewegung; spiegelt nur die Figur. */
+  readonly setFacing: (facing: Facing) => void;
   /** Kurzer Squash beim Antippen. */
   readonly bump: () => void;
   /** Ring am Fuss, der den Treffer zeigt. */
@@ -94,7 +97,7 @@ export function createGuestArt(
 
   return {
     root: rig.root, sticker: sticker.container, from: { x: 0, y: 0 }, target: { x: 0, y: 0 }, moveStart: 0, phase,
-    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, bump, tapRing, animate,
+    setEmotion, setMood, setPersona, setName, setNameVisible, setLod, setState, setFacing: (facing) => rig.setFacing(facing), bump, tapRing, animate,
     setLook: (next) => {
       const key = `${next.skin}|${next.hair}|${next.outfit}|${next.accessory}`;
       if (key === currentLook) return;

@@ -7,10 +7,36 @@ die Architekturgrenzen stehen in [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 **Stand:** 2026-11-12 · Baum `0.3.233` · Audit-Basis `0.3.231`
 
-**Status:** Plan, noch keine Umsetzung. Die Kästchen werden nur mit Beleg
-abgehakt; ein grüner Teilcheck ist kein grüner Phasenabschluss. Die
-Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme (Abschnitt 8) sind
-verbindlich.
+**Status:** Umsetzung begonnen (Lane `lane/render/r1-r12-rework`). Die Kästchen
+werden nur mit Beleg abgehakt; ein grüner Teilcheck ist kein grüner
+Phasenabschluss. Die Meilensteine M0–M4 (Abschnitt 6) und die Sichtabnahme
+(Abschnitt 8) sind verbindlich.
+
+### Umsetzungsstand 2026-11-12
+
+Belegt sind die deterministischen Verträge und die lokalen Gates; **nicht**
+belegt ist die Pixi-Sichtabnahme. Der Cloud-Browser hängt in dieser VM auch
+mit dem unveränderten Basisstand `fccc787` (kein Screenshot, keine
+Accessibility-Abfrage); das ist eine Umgebungsgrenze, kein grüner Bildbeleg.
+
+| Phase | Beleg | Stand |
+| --- | --- | --- |
+| R1 | `src/render/visual/scene-frame.ts` + `scene-frame.test.ts`: vier Szenen, drei byte-identische Läufe, Hashänderung bei echter Bildänderung | Teilbeleg; Browser-Screenshot fehlt |
+| R2 | `decor-roles.ts` + `decor-roles.test.ts`: stabile Rollen, exakte Labels, unaufgelöste Fläche statt Regex/`0x2dd4a0` | Code-/Testbeleg |
+| R3 | `actor-silhouette.ts` + Test: 12×16-Silhouette, fünf Personafamilien; Pin-Skalierung gegen die Kamera entfernt | Code-/Testbeleg |
+| R4 | sechs echte Boden-SVGs im Manifest, `floorTextureKey` testet Vorhandensein; `CarpetOverlay` entfernt, Teppichwahl tintet das Material | Code-/Testbeleg |
+| R5 | `light-pool.ts` + Test: 16 Slots, eine Radialtextur, BlendMode am Lichtkind; `drawLightSpill`-Ellipsenschleife entfernt | Code-/Testbeleg |
+| R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
+| R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest; S2-09–S2-11 bleiben offen |
+| R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **blockiert**; keine zweite Stadt erfunden |
+| R12 | Ambient setzt R9 voraus; ohne sichtbare Stadt kein Wetter-/Tag-Nacht-Layer | **blockiert** |
+
+Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
+`verify:assets` PASS, `verify:tree` PASS, `verify:dead-code` PASS,
+`verify:test-quality` PASS, `verify:test-placement` PASS. Die Checkboxen in
+R1–R12 bleiben unverändert offen, bis Screenshot, Konsole und Probe nach
+Abschnitt 8 vorliegen.
 
 ## 1. Ausgangslage
 

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-r1-r12-rework",
+  "claimId": "lane/render/r1-r12-rework",
+  "branch": "lane/render/r1-r12-rework",
+  "baseSha": "fccc787aa0b7dd44821071bd2f3f0f45b30e16d5",
+  "phase": "CI_PENDING",
+  "title": "Render- und Living-World-Rework R1-R12 sequenziell umsetzen, mit lokaler Abnahmehaertung und PixiJS-v8-Review",
+  "goal": "Die sichtbaren Render- und Living-World-Slices aus dem Plan als echte, deterministische und lokal abgenommene Implementierung liefern.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

@@ -6,7 +6,6 @@ import type { GameView } from '../store/types';
 import { floorText } from './art-tokens';
 import { DepthStage } from './depth';
 import { changedRegions, regionHash } from './floor-math';
-import { CarpetOverlay } from './floor-carpet';
 import { drawRoutes } from './floor-route';
 import { drawRegionDirt, drawRegionFloor } from './room-art';
 
@@ -14,7 +13,6 @@ const LABEL_COUNT = 10;
 
 export interface SceneCache {
   readonly room: Container;
-  readonly carpet: Container;
   /** Dreck liegt ueber Boden und Teppich, aber unter Laufwegen und Welt. */
   readonly dirt: Container;
   /** Laufwege ueber dem Boden, unter der Welt. */
@@ -45,7 +43,6 @@ interface FloorChunk {
 
 export function createSceneCache(): SceneCache {
   const room = new Container();
-  const carpet = new CarpetOverlay();
   const depth = new DepthStage();
   const overhead = new Container();
   const dirtLayer = new Container();
@@ -90,7 +87,6 @@ export function createSceneCache(): SceneCache {
     const changed = phaseChanged || sceneChanged
       ? new Set(areas.map((area) => area.id))
       : new Set(changedRegions(view, areas, prev));
-    carpet.update(view);
     for (const area of areas) {
       let chunk = floorChunks.get(area.id);
       if (!chunk) {
@@ -181,7 +177,6 @@ export function createSceneCache(): SceneCache {
     for (const chunk of dirtChunks.values()) chunk.g.destroy();
     dirtChunks.clear();
     room.destroy({ children: true });
-    carpet.destroy();
     routes.destroy();
     depth.root.destroy({ children: true });
     overhead.destroy({ children: true });
@@ -189,7 +184,7 @@ export function createSceneCache(): SceneCache {
   };
 
   return {
-    room, carpet: carpet.root, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
+    room, dirt: dirtLayer, routes, world: depth.root, depth, overhead, stickers, labels,
     redrawRoom, redrawDirt, setLabels, destroy,
   };
 }

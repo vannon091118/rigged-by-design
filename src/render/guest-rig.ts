@@ -1,8 +1,9 @@
-/** Skelett der Pixelfigur: Container, Gelenke, Pin, Namensschild, Squash und Tap-Ring. */
+/** Skelett der Pixelfigur: Container, Gelenke, Silhouette, Namensschild, Squash und Tap-Ring. */
 import { Container, Graphics, Sprite, Text } from 'pixi.js';
 import { ROLE, floorText } from './art-tokens';
 import { poseFor, type ActorState } from './rig-pose';
 import { shadowSprite } from './guest-parts';
+import type { Facing } from './locomotion';
 
 /** Flaeche, die das Rig bereitstellt und das Paint-Modul bemalt. */
 export interface GuestRigNodes {
@@ -33,6 +34,7 @@ export class GuestRig {
   readonly #armR = new Container();
   readonly #nameplate: Text;
   #detail = true;
+  #facing: Facing = 'right';
   #nameVisible = true;
   #bumpQueued = false;
   #bumpStart = -1000;
@@ -75,7 +77,7 @@ export class GuestRig {
     };
   }
 
-  /** Detail heisst gezeichnete Figur; die Uebersicht zeigt nur den Pin. */
+  /** Detail heisst gezeichnete Figur; die Uebersicht zeigt die Silhouette. */
   get detail(): boolean {
     return this.#detail;
   }
@@ -98,6 +100,13 @@ export class GuestRig {
     this.#nameplate.visible = this.#detail && next;
   }
 
+  /** Blickrichtung spiegelt nur die Figur, nie das Namensschild. */
+  setFacing(next: Facing): void {
+    if (next === this.#facing) return;
+    this.#facing = next;
+    this.nodes.pin.scale.x = next === 'left' ? -1 : 1;
+  }
+
   bump(): void {
     this.#bumpQueued = true;
   }
@@ -110,7 +119,8 @@ export class GuestRig {
     if (this.#bumpQueued) { this.#bumpQueued = false; this.#bumpStart = nowMs; }
     const squash = nowMs - this.#bumpStart;
     const k = squash >= 0 && squash < 90 ? Math.sin((squash / 90) * Math.PI) : 0;
-    this.#figure.scale.set(1 + k * 0.1, 1 - k * 0.14);
+    const facing = this.#facing === 'left' ? -1 : 1;
+    this.#figure.scale.set(facing * (1 + k * 0.1), 1 - k * 0.14);
     if (this.#tapQueued) { this.#tapQueued = false; this.#tapStart = nowMs; }
     const ring = nowMs - this.#tapStart;
     if (ring >= 0 && ring < 240) {
