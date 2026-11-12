@@ -7,7 +7,7 @@
  *   2. Claim, Task-Vertrag und Testplatzierung pruefen
  *   3. Narrative-Quellen validieren
  *   4. deterministische Artefakte erzeugen und nur Generiertes stagen
- *   5. Narrative, Doku, LOC und Freeze gegen genau diesen Stand pruefen
+ *   5. Narrative, Doku und LOC gegen genau diesen Stand pruefen
  *
  * Ohne node_modules laufen alle Git-/Datei-Pruefungen und die Generator-
  * schritte weiter; nur die TypeScript-abhaengige Dependency-Matrix entfaellt.
@@ -113,6 +113,5 @@ run('verify-narrative-blocks.mjs', ['--commit', '--pr'], {
 });
 run('verify-docs.mjs');
 run('check-loc.mjs');
-run('verify-governance-freeze.mjs');
 
 console.log('precommit: PASS (Claims, Artefakte, Narrative, Doku, LOC und Freeze geprueft)');

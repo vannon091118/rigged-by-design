@@ -40,24 +40,6 @@ Der Pre-Commit-Hook prüft gestagte Dateien; CI prüft den PR-Diff gegen die Bas
 
 `reconcile-claims --apply` schreibt nur Claims, deren Status oder Beleg sich geändert hat. Unbeteiligte Claim-Dateien und ein unverändertes Legacy-Register behalten ihren Dateistand.
 
-## Governance-Freeze
-
-Die Steuerungsebene ist gesperrt, bis das Spiel steht: **Stadt und Core-Loop stehen, mindestens § Progression-Zweige sind vollständig**. Der Freeze schützt die Pfade aus `GOVERNANCE_PATHS` in `scripts/lib/governance-freeze.mjs` — `.github/`, `.githooks/`, `.lane-claims/`, `scripts/`, `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/CI.md`, `docs/GOVERNANCE.md`, `docs/INDEX.md`, `docs/WORKFLOW.md`, `docs/capabilities.json` und `docs/contracts/`.
-
-Frei bleiben `src/`, `content/`, `public/`, Tests und die Spielpfade: der Freeze schützt die Steuerung, nicht die Arbeit.
-
-Mechanik:
-
-- **Lokal:** `.githooks/pre-commit` ruft `scripts/verify-governance-freeze.mjs`; eine inhaltliche Governance-Änderung ohne Freigabe blockiert den Commit (`ERR-4030`).
-- **CI:** der PR-Job prüft denselben Diff gegen die Basis, aber mit dem Checker aus der Kontrollebene; der Kandidat ist nur Prüfobjekt (`RBD_ROOT`). Der Job ist optional; ein roter Lauf ist ein Hinweis, kein Required-Gate.
-- **Marker sind ausgenommen:** reine Doku-Marker und Versionszeilen zählen nicht, sonst würde jeder `docs:sync`-Lauf den Freeze auslösen.
-- **Freigabe:** `node scripts/freeze-unlock.mjs --pin=<pin>` schreibt `.lane-claims/freeze-unlock.json` mit Basis (Merge-Basis zu `main`), Pfadliste und Token; die Datei wird mitcommittet. Sie gilt für genau diese Basis und mindestens diese Pfade — zusätzlich genannte Pfade sind erlaubt, weil die Generatoren im Hook danach weitere Steuerdateien anfassen können; fehlt dagegen eine tatsächlich geänderte Datei, ist die Freigabe ungültig.
-- **Verstoss:** fehlt die Freigabe ganz, bleibt der Lauf rot und der Job `governance-issue` legt ein `BLOCKED`-Issue an (`Verdacht auf unautorisierte Korruption`, `ERR-4030`). Der Branch bleibt bestehen; es gibt keine Branch-Löschung, und der Befund wird nicht stillschweigend aufgeräumt. Ein Branch ohne Freigabe ist kein Merge-Kandidat.
-
-Der PIN steht nicht im Klartext im Repo, sondern nur als scrypt-Commitment (`PIN_COMMITMENT`). Das ist eine Sperre gegen versehentliche und tooling-freie Änderungen, **kein kryptografisches Geheimnis**: ein vierstelliges Commitment ist offline prüfbar. Wer echte Geheimhaltung braucht, legt den PIN zusätzlich als Repository-Secret ab und vergibt die Freigabe nur dort.
-
-Der Freeze wird nur auf ausdrückliche Anweisung des Owners gelöst — einmalig, über die PIN-Freigabe. Danach gilt er unverändert weiter; die Anweisung hebt keinen Meilenstein auf.
-
 ## Eskalation
 
 Eine Leiter, eine Klassifikation:

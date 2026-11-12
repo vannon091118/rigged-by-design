@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-remove-freeze",
+  "claimId": "lane/governance/remove-freeze",
+  "branch": "lane/governance/remove-freeze",
+  "baseSha": "877a7cccdf82d7785b018afaa61dc1a05d447c6e",
+  "phase": "CI_PENDING",
+  "title": "Governance-Freeze entfernen",
+  "goal": "Die PIN-gebundene Freeze-Mechanik samt Gate, Freigabe-Skripten und Doku-Verweisen entfernen; Claims und kritische Zustandspfade bleiben geschuetzt.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR anlegen; CI meldet; danach Merge auf dem exakten Kopf.",
+  "revision": 1
+}

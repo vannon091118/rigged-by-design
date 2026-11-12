@@ -24,12 +24,18 @@ const CLAIMS_FILE = join(CLAIMS_DIR, 'claims.json');
 // ueberschreiben. `claims.json` bleibt als Legacy-Bestand lesbar.
 const CLAIM_ENTRIES_DIR = join(CLAIMS_DIR, 'claims');
 export const CLAIM_ENTRY_PREFIX = '.lane-claims/claims/';
+
+/** Lane-Werkzeug: Claim-Dateien und Task-Vertraege sind immer eigene Arbeit. */
+export function isClaimTooling(file) {
+  const path = String(file ?? '').replaceAll('\\', '/');
+  return path.startsWith(CLAIM_ENTRY_PREFIX) || isTaskContractPath(path);
+}
 // Koordination statt Inhalt: das Legacy-Register und die PIN-Freigabe darf jede
 // Lane mechanisch beruehren, ohne ihre Allowlist zu erweitern oder mit einer
 // anderen Lane zu kollidieren. Sonst blockierte die Freigabe genau den Lane,
 // der sie braucht.
 // Register, Vertraege und PIN-Freigabe sind Werkzeug jeder Lane.
-export const COORDINATION_FILES = Object.freeze(['.lane-claims', '.lane-claims/claims.json', '.lane-claims/freeze-unlock.json']);
+export const COORDINATION_FILES = Object.freeze(['.lane-claims', '.lane-claims/claims.json']);
 
 /**
  * Task-Vertraege sind Lane-Werkzeug wie Claims und Freigabe: sie beschreiben

@@ -100,10 +100,6 @@ Der optionale Cloud-PR-Job wiederholt bewusst nur das schnelle `verify:light`; e
 
 Der Weg ist: Arbeitsbranch, PR gegen `main`, lokaler `verify:integration`, Review und anschließend ein bewusster Merge durch Mensch oder Agent. Der PR-Check ist optional; auf ihn wird nicht gewartet. `turn-push.mjs` pusht nie direkt auf `main`. Ein Merge-Commit trägt dieselben drei Pflichtsektionen wie ein normaler Commit; `verify-commit-msg` prüft den Text weiterhin.
 
-## Governance-Freeze
-
-Der Cloud-Job prüft den Freeze vor den Gates. Den Checker lädt er aus dem Basis-Commit (`.rbd-control`), das Prüfobjekt bleibt der PR-Kopf (`RBD_ROOT`). Eine inhaltliche Änderung an `.github/`, `.githooks/`, `.lane-claims/`, `scripts/` oder den Governance-Verträgen braucht eine Freigabe aus `scripts/freeze-unlock.mjs`. Reine Doku-Marker und Versionszeilen zählen nicht. Ohne Freigabe wird der Job rot; eine Korruptionsmeldung bleibt ein `BLOCKED`-Befund.
-
 ## Nachweise
 
 ```bash

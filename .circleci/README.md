@@ -43,8 +43,8 @@ Suite dort zuverlaessig durchlaufen.
 5. **GitHub Actions abschalten:** Settings -> Actions -> General -> *Disable
    actions*. Die Workflow-Dateien unter `.github/` sind eingefroren und koennen
    nicht in diesem Zug geloescht werden; das Abschalten in den Repository-
-   Einstellungen stoppt die Doppel-Ausfuehrung sofort. Ein Loeschen braucht
-   eine Freeze-Freigabe (`scripts/freeze-unlock.mjs`, PIN-gebunden).
+   Einstellungen stoppt die Doppel-Ausfuehrung sofort. Die Workflow-Dateien
+   bleiben als Dokumentation liegen; ein Loeschen ist nicht noetig.
 
 ## Manuelle Laeufe
 

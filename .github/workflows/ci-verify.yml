@@ -69,32 +69,6 @@ jobs:
       # Der Freeze-Checker kommt aus der Basis, das Pruefobjekt bleibt der
       # Kandidat. Damit kann ein PR die Regel nicht mit dem eigenen Skript
       # ausschalten. Der Kontroll-Worktree wird vor den Gates wieder entfernt.
-      - name: Governance-Freeze
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          set -euo pipefail
-          base="$BASE_SHA"
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "::error::Basis '${base}' ist kein Commit; ohne unabhaengige Kontrollebene keine Freigabe."
-            exit 1
-          fi
-          rm -rf .rbd-control
-          git worktree add --detach .rbd-control "$base"
-          if [ ! -f .rbd-control/scripts/verify-governance-freeze.mjs ]; then
-            echo "::notice::Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
-            git worktree remove --force .rbd-control
-            exit 0
-          fi
-          if RBD_ROOT="$PWD" node .rbd-control/scripts/verify-governance-freeze.mjs \
-            --ci --base="$base" --head="$HEAD_SHA"; then
-            git worktree remove --force .rbd-control
-            exit 0
-          fi
-          git worktree remove --force .rbd-control || true
-          exit 1
-
       # Der PR ist bereits lokal vorgeprueft. Die Cloud wiederholt nur die
       # schnellen Gates; die betroffenen Tests bleiben der lokale Nachweis.
       - name: Verify (Light)

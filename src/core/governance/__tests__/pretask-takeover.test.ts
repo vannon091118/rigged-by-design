@@ -138,14 +138,16 @@ describe('pretask takeover', () => {
     }
   });
 
-  it('blockt Governance ohne Freigabe als korrupt', () => {
+  it('nimmt Governance ohne Claim als unvollstaendig an', () => {
     const parent = mkdtempSync(join(tmpdir(), 'rbd-takeover-freeze-'));
     try {
       const worktree = linkedRepo(parent, 'repo', 'lane/test/freeze');
       writeFileSync(join(worktree, 'AGENTS.md'), '# ohne Freigabe\n');
       const result = run(worktree, parent);
-      expect(result.status).toBe(1);
-      expect(payloadOf(result.stdout).blockers.join('\n')).toContain(TAKEOVER_CODE);
+      expect(result.status).toBe(0);
+      const body = payloadOf(result.stdout);
+      expect(body.mode).not.toBe('BLOCKED');
+      expect(body.contract.paths.takeover.counts.incomplete).toBeGreaterThanOrEqual(1);
     } finally {
       rmSync(parent, { recursive: true, force: true });
     }

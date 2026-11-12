@@ -8,7 +8,7 @@
  * NEW     sauberer Start mit eigenem Claim
  * RESUME  adoptierbare WIP (eigene, fremde, unvollstaendige) im Claim-Scope
  * NOOP    HEAD == Basis; kein Startblocker
- * BLOCKED korrupte WIP (Freeze ohne Freigabe, Ledger/Save/RNG/Boot), Claims, Issues
+ * BLOCKED korrupte WIP (Ledger/Save/RNG/Boot), Claims, Issues
  *
  * `--new` und `--resume` erzwingen den passenden Modus. "Fremdes WIP" gibt es
  * nicht: kompatible, unvollstaendige und korrupte Aenderungen werden alle als
@@ -16,7 +16,7 @@
  * Arbeitsbaum ist der Normalfall; Isolation fordert nur `--require-worktree`.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { allowsPath, botClaim, findCollisions, isTaskContractPath, loadClaimsStrict, selectClaim } from './lib/lane-claims.mjs';
 import { filterMergedCollisions, mergedPullRequestIndex, planReconcile } from './lib/claim-evidence.mjs';
@@ -41,7 +41,6 @@ import { causeBlock, localCauses } from './agent-cause.mjs';
 import { refreshBase } from './lib/base-refresh.mjs';
 import { parseWorktrees, planCleanup } from './lib/branch-lifecycle.mjs';
 import { TAKEOVER_CODE, classifyWip, summarizeTakeover } from './lib/takeover.mjs';
-import { FREEZE_UNLOCK_FILE, governanceChanges, verifyUnlockRecord } from './lib/governance-freeze.mjs';
 import { readAfterTask, resumeDecision, resumeTask } from './task-state.mjs';
 import { buildFollowUp, classifyIssue as scopeDecision, labelNames } from './lib/issue-scope.mjs';
 
@@ -362,26 +361,12 @@ const unownedPaths = outsideClaim.filter((path) => !foreignPaths.includes(path))
 
 // Phase 2: "Fremdes WIP" gibt es nicht. Jede Dirty-Datei wird klassifiziert
 // und als eigene Arbeit angenommen; nur Korruption haelt den Start an.
-let freezeRecord;
-try {
-  freezeRecord = JSON.parse(readFileSync(join(ROOT, FREEZE_UNLOCK_FILE), 'utf8'));
-} catch {
-  freezeRecord = null;
-}
-const governanceDirty = governanceChanges(dirtyPaths);
-const freezeCheck = verifyUnlockRecord(freezeRecord, { base: mergeBase, paths: governanceDirty });
-const freeze = {
-  unlocked: governanceDirty.length === 0 || freezeCheck.ok,
-  paths: governanceDirty,
-  ...(governanceDirty.length > 0 && !freezeCheck.ok ? { why: freezeCheck.why } : {}),
-};
 const takeoverEntries = dirtyPaths
   .map((path) => classifyWip({
     path,
     claims,
     branch,
     allowlist: claim?.pathAllowlist ?? [],
-    freezeUnlocked: freeze.unlocked,
   }))
   .filter(Boolean);
 const takeover = summarizeTakeover(takeoverEntries);
@@ -526,7 +511,6 @@ const contract = {
     unresolved: reconcile.unresolved,
   },
   worktreePrune,
-  freeze,
   completionRequirements,
   mergeBlocked,
   followUp,
@@ -613,7 +597,6 @@ if (asJson) {
     reconcile: contract.reconcile,
     cleanup,
     worktreePrune,
-    freeze,
     contract,
     taskState: '.verify-cache/task-state.json',
     blockers,
