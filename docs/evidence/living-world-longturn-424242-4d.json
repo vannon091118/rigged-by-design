@@ -169,11 +169,13 @@
           "chain": "CITY_ENCOUNTER_ARC",
           "before": {
             "status": "WAITING",
-            "dueTick": 24
+            "dueTick": 24,
+            "eventInstanceId": null
           },
           "after": {
             "status": "RUNNING",
-            "dueTick": 24
+            "dueTick": 24,
+            "eventInstanceId": 2
           }
         },
         {
@@ -3327,11 +3329,13 @@
   "narrative": {
     "arcBefore": {
       "status": "WAITING",
-      "dueTick": 24
+      "dueTick": 24,
+      "eventInstanceId": null
     },
     "arcAfter": {
       "status": "RUNNING",
-      "dueTick": 24
+      "dueTick": 24,
+      "eventInstanceId": 2
     },
     "echoSeen": true
   },
