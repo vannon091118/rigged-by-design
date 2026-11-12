@@ -4,7 +4,7 @@
  *
  * "Fremdes WIP" gibt es nicht: jede Dirty-Datei ist kompatibel,
  * unvollstaendig oder korrupt und wird in allen drei Faellen adoptiert. Nur
- * Korruption (Freeze ohne Freigabe, Ledger/Save/RNG/Boot) blockiert.
+ * Korruption (Ledger/Save/RNG/Boot) blockiert.
  */
 import { describe, expect, it } from 'vitest';
 import { classifyWip, isCriticalPath, summarizeTakeover } from '../../../../scripts/lib/takeover.mjs';
@@ -28,13 +28,13 @@ describe('WIP-Takeover', () => {
     expect(entry).toMatchObject({ kind: 'incomplete', adopt: true });
   });
 
-  it('markiert einen Governance-Pfad ohne Freigabe als korrupt', () => {
+  it('adoptiert einen Governance-Pfad ohne Claim als unvollstaendig', () => {
     const entry = classifyWip({ path: 'scripts/pretask.mjs', branch: own.branch, claims: [own] });
-    expect(entry).toMatchObject({ kind: 'corrupted', adopt: true });
+    expect(entry).toMatchObject({ kind: 'incomplete', adopt: true });
   });
 
-  it('akzeptiert einen Governance-Pfad mit Freigabe', () => {
-    const entry = classifyWip({ path: 'scripts/pretask.mjs', freezeUnlocked: true });
+  it('akzeptiert einen Governance-Pfad im eigenen Claim', () => {
+    const entry = classifyWip({ path: 'scripts/pretask.mjs', allowlist: ['scripts/'] });
     expect(entry).toMatchObject({ kind: 'compatible', adopt: true });
   });
 
@@ -68,8 +68,8 @@ describe('WIP-Takeover', () => {
     ]);
     expect(summary.total).toBe(4);
     expect(summary.adopted).toBe(4);
-    expect(summary.blocked).toBe(2);
-    expect(summary.counts).toEqual({ compatible: 1, incomplete: 1, corrupted: 2 });
+    expect(summary.blocked).toBe(1);
+    expect(summary.counts).toEqual({ compatible: 1, incomplete: 2, corrupted: 1 });
     expect(summary.corrupted.map((entry: { readonly path: string }) => entry.path)).toContain('src/core/economy/ledger.ts');
   });
 });

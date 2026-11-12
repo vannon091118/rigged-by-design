@@ -119,7 +119,7 @@ Neue Fehlerarten brauchen zuerst einen Eintrag hier **und** in `src/core/governa
 | ERR-4024 | Delivery / Lokal | Das lokale Gate (`verify:quick` oder `verify:all`) in `turn:finish` ist rot; kein Commit und kein Push. | Den ersten Befund im Gate-Log beheben und `turn:finish` erneut ausfuehren. |
 | ERR-4025 | Governance / Capability | Capability-Manifest verletzt den Vertrag: fehlende Tests, ungültige IDs oder veraltete Pfadverweise. | Manifest korrigieren, Tests ergänzen oder Fähigkeit als unverified/tombstoned markieren. |
 | ERR-4026 | Governance / Tests | Die Testsuite (`pnpm run test:ci`) ist rot: ein Befund ausserhalb von Geld-, Ledger-, RNG- oder Save-Invarianten. | Als Issue abholen und beheben; die Arbeit laeuft weiter, die CI bleibt die Werkstatt. |
-| ERR-4030 | Governance / Freeze | Governance-Pfad ohne gueltige PIN-Freigabe oder ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad. | Freigabe ueber `scripts/freeze-unlock.mjs` erzeugen oder die Aenderung verwerfen; keine stille Uebernahme. |
+| ERR-4030 | Governance / Uebernahme | Ungeclaimter Ledger-/Save-/RNG-/Boot-Pfad oder nicht uebernehmbare WIP. | Als eigene Arbeit in den Claim holen oder die Aenderung verwerfen; keine stille Uebernahme. |
 | ERR-5001 | Core / Import | Importierter Spielstand ist beschaedigt oder fremd. | Export pruefen; reparierbare Felder werden automatisch ergaenzt. |
 
 ## Pipeline

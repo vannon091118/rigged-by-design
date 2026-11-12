@@ -3,18 +3,16 @@
  *
  * Jede unfertige Aenderung ist entweder kompatibel (im eigenen Claim oder im
  * Scope einer offenen Lane), unvollstaendig (ausserhalb des Claims, aber
- * uebernehmbar) oder korrupt (Governance-Pfad ohne Freigabe oder ein
- * Zustandspfad aus Ledger/Save/RNG/Boot). Alle drei werden als eigene Arbeit
+ * uebernehmbar) oder korrupt (ein Zustandspfad aus Ledger/Save/RNG/Boot). Alle drei werden als eigene Arbeit
  * angenommen; nur `corrupted` haelt den Start an. Die Klassifikation ist eine
  * reine Funktion, damit `pretask`, Staging-Scope und Tests dieselbe Auslegung
  * benutzen.
  */
-import { isClaimTooling, isGovernancePath } from './governance-freeze.mjs';
-import { allowsPath } from './lane-claims.mjs';
+import { allowsPath, isClaimTooling } from './lane-claims.mjs';
 
 export const WIP_KINDS = Object.freeze(['compatible', 'incomplete', 'corrupted']);
 
-/** Freeze-Korruption und ungeclaimte Zustandspfade tragen denselben Code. */
+/** Korruption durch ungeclaimte Zustandspfade. */
 export const TAKEOVER_CODE = 'ERR-4030';
 
 const normalize = (raw) => String(raw ?? '').replaceAll('\\', '/').trim();
@@ -41,25 +39,19 @@ const entry = (path, kind, reason, source = null) => ({ path, kind, adopt: true,
 
 /**
  * Klassifiziert einen Dirty-Pfad. Reihenfolge: Lane-Werkzeug und eigener Claim
- * gewinnen (das ist per Definition eigene Arbeit), dann Freeze, dann kritischer
- * Zustand, dann eine fremde offene Lane, sonst unvollstaendig.
+ * gewinnen (das ist per Definition eigene Arbeit), dann kritischer Zustand,
+ * dann eine fremde offene Lane, sonst unvollstaendig.
  */
 export function classifyWip({
   path,
   claims = [],
   branch = '',
   allowlist = [],
-  freezeUnlocked = false,
 } = {}) {
   const file = normalize(path);
   if (!file) return null;
   if (isClaimTooling(file)) return entry(file, 'compatible', 'Lane-Werkzeug (Claim, Vertrag, Freigabe)');
   if (allowsPath(allowlist, file)) return entry(file, 'compatible', 'im eigenen Claim-Scope');
-  if (isGovernancePath(file)) {
-    return freezeUnlocked
-      ? entry(file, 'compatible', 'Governance-Pfad mit gueltiger Freigabe')
-      : entry(file, 'corrupted', 'Governance-Pfad ohne gueltige Freigabe (Freeze)');
-  }
   if (isCriticalPath(file)) return entry(file, 'corrupted', 'kritischer Zustandspfad (Ledger/Save/RNG/Boot)');
   const foreign = claims.find(
     (claim) => claim?.status === 'open' && claim.branch !== branch && allowsPath(claim.pathAllowlist ?? [], file),

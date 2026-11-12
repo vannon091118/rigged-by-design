@@ -30,7 +30,7 @@ const normalize = (raw) => String(raw ?? '').replaceAll('\\', '/').trim();
  * Staging-Wahrheit: nur Claim-Pfade werden gestaged. `takeover` sagt, was der
  * naechste Agent uebernehmen muss - fremd ist dort kein Besitzanspruch mehr.
  *
- * @param {{ changed: readonly string[], allowlist: readonly string[], exempt?: readonly string[], claims?: readonly object[], branch?: string, freezeUnlocked?: boolean }} input
+ * @param {{ changed: readonly string[], allowlist: readonly string[], exempt?: readonly string[], claims?: readonly object[], branch?: string }} input
  * @returns {{ allowed: string[], foreign: string[], ok: boolean, takeover: object }}
  */
 export function scopeChanges({
@@ -39,7 +39,6 @@ export function scopeChanges({
   exempt = TURN_EXEMPT,
   claims = [],
   branch = '',
-  freezeUnlocked = false,
 }) {
   const allowed = [];
   const foreign = [];
@@ -50,7 +49,7 @@ export function scopeChanges({
     // Der Task-Vertrag ist Lane-Werkzeug; er braucht keinen Allowlist-Eintrag.
     if (isTaskContractPath(file) || allowsPath(allowlist, file)) allowed.push(file);
     else foreign.push(file);
-    entries.push(classifyWip({ path: file, allowlist, claims, branch, freezeUnlocked }));
+    entries.push(classifyWip({ path: file, allowlist, claims, branch }));
   }
   return { allowed, foreign, ok: foreign.length === 0, takeover: summarizeTakeover(entries) };
 }

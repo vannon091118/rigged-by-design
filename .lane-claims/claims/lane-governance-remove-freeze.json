@@ -1,0 +1,33 @@
+{
+  "id": "lane/governance/remove-freeze",
+  "owner": "Governance-Owner",
+  "branch": "lane/governance/remove-freeze",
+  "baseSha": "877a7cccdf82d7785b018afaa61dc1a05d447c6e",
+  "task": "Governance-Freeze entfernen",
+  "goal": "Die PIN-gebundene Freeze-Mechanik samt Gate, Freigabe-Skripten und Doku-Verweisen entfernen; Claims und kritische Zustandspfade bleiben geschuetzt.",
+  "pathAllowlist": [
+    "scripts/**",
+    ".circleci/**",
+    ".github/**",
+    "docs/GOVERNANCE.md",
+    "docs/CI.md",
+    "docs/ARCHITECTURE.md",
+    "docs/INVENTORY.md",
+    "docs/ROADMAP.md",
+    "docs/FLAG.md",
+    "docs/screenshots/**",
+    "docs/superpowers/plans/**",
+    "packages/gamescout/**",
+    "src/debug/**",
+    "src/core/governance/__tests__/**",
+    ".lane-claims/**",
+    "AGENTS.md",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "877a7cccdf82d7785b018afaa61dc1a05d447c6e"
+}

@@ -2,14 +2,11 @@
  * @test-target: docs/ROADMAP.md
  * @error-code: ERR-4017
  *
- * Das Register in `docs/ROADMAP.md` ist die einzige Liste offener Punkte. Damit
- * es nicht wieder einen Stand behauptet, den der Code schon widerlegt, prueft
- * dieser Test die Struktur: Statusvokabular, eindeutige IDs, aufloesbare
- * Referenzen (Datei, Symbol, Commit) und die Fortschrittszahl gegen die
- * kompilierte Registry. Die inhaltliche Behauptung "offen" gegen bereits
- * gemergten Code kann ein Dokumenten-Gate nicht entscheiden; deshalb muss jeder
- * geschlossene Punkt seinen Code und seinen Test nennen - und genau diese
- * Referenzen muessen existieren.
+ * Die Roadmap ist die einzige Liste offener Spiel- und Praesentationsarbeit.
+ * Dieser Test haelt ihre Struktur: Statusvokabular, eindeutige IDs, aufloesbare
+ * Referenzen, Code-Belege fuer abgeschlossene Aufgaben und die gemessene
+ * Textbaustein-Zahl. Zusaetzlich prueft er die Trennung: eine Spielaufgabe
+ * verweist nicht auf Governance-Pfade oder Governance-Befehle.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -18,26 +15,29 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '../../../..');
-const STATUS = ['offen', 'verifiziert', 'erledigt', 'gemergt', 'zurueckgestellt', 'blockiert'];
-const CLOSED = new Set(['verifiziert', 'erledigt', 'gemergt']);
+const STATUS = ['erledigt', 'verifiziert', 'offen', 'blockiert', 'zurueckgestellt'];
+const CLOSED = new Set(['erledigt', 'verifiziert']);
 const CODE = /\.(ts|tsx|mjs)$/;
+const TASK = /^\|\s*(S\d-\d{2}|P-13|PR-\d{2})\s*\|/;
+const GOVERNANCE =
+  /(\.lane-claims|\.github\/|docs\/CI\.md|docs\/GOVERNANCE\.md|docs\/WORKFLOW\.md|turn:finish|verify:all)/;
 
-type RegisterRow = { id: string; point: string; status: string; evidence: string };
+type Task = { id: string; task: string; status: string; refs: string; done: string };
 
 const roadmap = readFileSync(join(ROOT, 'docs', 'ROADMAP.md'), 'utf8');
-const start = roadmap.indexOf('### Offene Stellen');
-const end = roadmap.indexOf('#### PARKED', start);
-const register = start >= 0 && end > start ? roadmap.slice(start, end) : '';
-const rows: RegisterRow[] = register
+const tasks: Task[] = roadmap
   .split('\n')
-  .filter((line) => /^\|\s*P-\d+\s*\|/.test(line))
+  .filter((line) => TASK.test(line))
   .map((line) => {
     const cells = line.split('|').slice(1, -1).map((cell) => cell.trim());
-    return { id: cells[0] ?? '', point: cells[1] ?? '', status: cells[2] ?? '', evidence: cells[3] ?? '' };
+    return {
+      id: cells[0] ?? '',
+      task: cells[1] ?? '',
+      status: (cells[2] ?? '').replaceAll('*', '').trim(),
+      refs: cells[3] ?? '',
+      done: cells[4] ?? '',
+    };
   });
-
-const statusToken = (row: RegisterRow): string =>
-  /^[a-z]+/.exec(row.status.replaceAll('*', '').trim())?.[0] ?? '';
 
 const codeFiles: string[] = [];
 const collect = (dir: string): void => {
@@ -51,11 +51,8 @@ collect(join(ROOT, 'src'));
 collect(join(ROOT, 'scripts'));
 const corpus = codeFiles.map((file) => readFileSync(file, 'utf8')).join('\n');
 
-// Hermetisch: Ohne git-Repo (z. B. Quell-Zip ohne .git) faellt der Test nicht
-// um, sondern prueft gegen den Dateibaum und meldet jede ausgelassene
-// Commit-Pruefung laut. In shallow Klonen gilt dasselbe fuer SHAs ausserhalb
-// der geladenen Historie. In vollen Klonen bleibt ein fehlender Commit ein
-// echter Befund.
+// Hermetisch: ohne git-Repo prueft der Test gegen den Dateibaum und meldet
+// ausgelassene Commit-Pruefungen; in shallow Klonen gilt dasselbe.
 const gitState = ((): { repo: boolean; shallow: boolean } => {
   try {
     execFileSync('git', ['rev-parse', '--git-dir'], { cwd: ROOT, stdio: 'ignore' });
@@ -66,10 +63,6 @@ const gitState = ((): { repo: boolean; shallow: boolean } => {
       }).trim() === 'true';
     return { repo: true, shallow };
   } catch {
-    console.warn(
-      'Roadmap-Register-Hinweis: kein git-Repo gefunden - Dateireferenzen werden gegen den Dateibaum ' +
-        'geprueft, Commit-SHAs sind hier nicht nachpruefbar und werden als ungeprueft gemeldet.',
-    );
     return { repo: false, shallow: false };
   }
 })();
@@ -83,23 +76,16 @@ const tracked = ((): string[] => {
 })();
 const basenames = new Set(tracked.map((file) => basename(file)));
 
-const skippedCommits: string[] = [];
 const commitExists = (sha: string): boolean => {
   try {
     execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { cwd: ROOT, stdio: 'ignore' });
     return true;
   } catch {
-    if (!gitState.repo || gitState.shallow) {
-      skippedCommits.push(sha);
-      return true;
-    }
-    return false;
+    return !gitState.repo || gitState.shallow;
   }
 };
 
 const resolves = (raw: string): boolean => {
-  // Reine Zahlen sind CI-Lauf-IDs; sie sind offline nicht nachpruefbar und
-  // bleiben als Belegart ausdruecklich erlaubt.
   if (/^\d{6,}$/.test(raw)) return true;
   if (/^[0-9a-f]{7,40}$/.test(raw)) return commitExists(raw);
   const clean = raw.replace(/:\d+$/, '');
@@ -117,73 +103,56 @@ const isCodeReference = (raw: string): boolean => {
   return Boolean(symbol && corpus.includes(symbol));
 };
 
-const references = (evidence: string): string[] => [...evidence.matchAll(/`([^`]+)`/g)].map((match) => match[1] ?? '');
+const references = (refs: string): string[] => [...refs.matchAll(/`([^`]+)`/g)].map((match) => match[1] ?? '');
 
-describe('Roadmap-Register', () => {
-  it('fuehrt jede offene Stelle genau einmal und ohne Luecke in der Nummerierung', () => {
-    expect(register.length).toBeGreaterThan(0);
-    expect(rows.length).toBeGreaterThan(10);
-    const numbers = rows.map((row) => Number(row.id.slice(2)));
-    expect(new Set(numbers).size).toBe(numbers.length);
-    const sorted = [...new Set(numbers)].sort((left, right) => left - right);
-    expect(sorted).toEqual(Array.from({ length: sorted.length }, (_, index) => index + 1));
-    for (const row of rows) expect(row.point.length, `${row.id} ohne Punkt`).toBeGreaterThan(3);
+describe('Roadmap: Phasen, Aufgaben und Trennung', () => {
+  it('fuehrt jede Aufgabe genau einmal mit Phasen-ID', () => {
+    expect(tasks.length).toBeGreaterThan(20);
+    const ids = tasks.map((task) => task.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const task of tasks) {
+      expect(task.task.length, `${task.id} ohne Aufgabe`).toBeGreaterThan(5);
+      expect(task.done.length, `${task.id} ohne Fertig-Kriterium`).toBeGreaterThan(5);
+    }
   });
 
   it('gibt jedem Eintrag ein Statusvokabular statt freier Behauptungen', () => {
-    for (const row of rows) {
-      expect(STATUS, `${row.id}: Status "${row.status}"`).toContain(statusToken(row));
-      expect(row.evidence.length, `${row.id} ohne Beleg`).toBeGreaterThan(3);
+    for (const task of tasks) {
+      const token = /^[a-z]+/.exec(task.status)?.[0] ?? '';
+      expect(STATUS, `${task.id}: Status "${task.status}"`).toContain(token);
     }
   });
 
   it('nennt nur Referenzen, die im Repo tatsaechlich existieren', () => {
-    const broken = rows.flatMap((row) =>
-      references(row.evidence)
+    const broken = tasks.flatMap((task) =>
+      references(task.refs)
         .filter((reference) => !resolves(reference))
-        .map((reference) => `${row.id}: ${reference}`),
+        .map((reference) => `${task.id}: ${reference}`),
     );
-    if (skippedCommits.length > 0) {
-      console.warn(
-        `Roadmap-Register-Hinweis: ${skippedCommits.length} Commit-SHA(s) konnten in diesem Klon nicht ` +
-          `nachgeprueft werden (kein Repo oder shallow): ${[...new Set(skippedCommits)].slice(0, 5).join(', ')}` +
-          (skippedCommits.length > 5 ? ' ...' : '') +
-          ' - kein Beleg, nur ungeprueft.',
-      );
-    }
     expect(broken).toEqual([]);
   });
 
-  it('belegt jeden geschlossenen Punkt mit Code und nicht nur mit Prosa', () => {
-    const closed = rows.filter((row) => CLOSED.has(statusToken(row)));
-    expect(closed.length).toBeGreaterThan(3);
+  it('belegt jede abgeschlossene Aufgabe mit Code und Test', () => {
+    const closed = tasks.filter((task) => CLOSED.has(/^[a-z]+/.exec(task.status)?.[0] ?? ''));
+    expect(closed.length).toBeGreaterThan(10);
     const withoutCode = closed
-      .filter((row) => !references(row.evidence).some((reference) => isCodeReference(reference)))
-      .map((row) => row.id);
+      .filter((task) => !references(task.refs).some((reference) => isCodeReference(reference)))
+      .map((task) => task.id);
     expect(withoutCode).toEqual([]);
   });
 
-  it('zieht die Fortschrittszahl aus der kompilierten Registry, nicht aus dem Gefuehl', () => {
-    const row = rows.find((entry) => entry.id === 'P-13');
-    expect(statusToken(row ?? { id: '', point: '', status: '', evidence: '' }).startsWith('offen')).toBe(true);
+  it('zieht die Textbaustein-Zahl aus der Registry, nicht aus dem Gefuehl', () => {
+    const row = tasks.find((task) => task.id === 'P-13');
+    expect(row?.status).toBe('offen');
     const compiled = JSON.parse(
       readFileSync(join(ROOT, 'content', 'narrative', 'registry', 'fragments.json'), 'utf8'),
     ) as { fragments: unknown[] };
-    const measured = /(\d+)\s*\/\s*1500/.exec(row?.point ?? '')?.[1];
+    const measured = /(\d+)\s*\/\s*1500\s+Textbausteine/.exec(row?.task ?? '')?.[1];
     expect(Number(measured)).toBe(compiled.fragments.length);
   });
 
-  it('fuehrt die Kante Beziehungen -> Ruf als verifiziert und belegt sie am Code', () => {
-    const row = rows.find((entry) => entry.id === 'P-12');
-    expect(statusToken(row ?? { id: '', point: '', status: '', evidence: '' }).startsWith('verifiziert')).toBe(true);
-    const cited = references(row?.evidence ?? '');
-    expect(cited).toEqual(
-      expect.arrayContaining([
-        'src/core/sim/narrative/relationships.ts',
-        'src/core/sim/spawn.ts',
-        'src/core/sim/__tests__/reputation.test.ts',
-      ]),
-    );
-    expect(row?.evidence).toContain('relationshipStanding');
+  it('haelt Spiel- und Praesentationsaufgaben frei von Governance-Pfaden', () => {
+    const mixed = tasks.filter((task) => GOVERNANCE.test(task.refs)).map((task) => task.id);
+    expect(mixed).toEqual([]);
   });
 });

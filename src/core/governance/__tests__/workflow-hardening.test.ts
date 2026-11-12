@@ -128,8 +128,9 @@ describe('workflow hardening', () => {
     const runs = runsOf(ci).join('\n');
     expect(runs).not.toContain('Bootstrap');
     expect(runs).not.toContain('scripts=$GITHUB_WORKSPACE/scripts');
-    expect(runs).toContain('.rbd-control/scripts/verify-governance-freeze.mjs');
-    expect(runs).toContain('RBD_ROOT="$PWD"');
+    expect(runs).not.toContain('verify-governance-freeze');
+    expect(runs).not.toContain('.rbd-control');
+    expect(runs).not.toContain('RBD_ROOT');
     expect(runs).not.toContain('github.event.before');
   });
 

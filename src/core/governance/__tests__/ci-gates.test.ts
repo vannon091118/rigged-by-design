@@ -63,7 +63,7 @@ describe('Local-first Main-Gate', () => {
     expect(ci.jobs?.verify?.needs).toBeUndefined();
   });
 
-  it('prueft PR-Body, Commit-Konvention und Freeze vor dem lokalen Gate', () => {
+  it('prueft PR-Body und Commit-Konvention vor dem lokalen Gate', () => {
     const ci = workflow('ci-verify.yml');
     const body = steps(ci, 'verify').find((step) => step.name === 'PR-Body');
     expect(body?.if).toContain("github.event_name == 'pull_request'");
@@ -73,10 +73,7 @@ describe('Local-first Main-Gate', () => {
     const commit = stepWith(ci, 'verify', 'verify-commit-msg.mjs --head');
     expect(commit).not.toBeUndefined();
 
-    const freeze = steps(ci, 'verify').find((step) => step.name === 'Governance-Freeze');
-    expect(freeze?.run).toContain('.rbd-control/scripts/verify-governance-freeze.mjs');
-    expect(freeze?.run).toContain('RBD_ROOT="$PWD"');
-    expect(freeze?.run).not.toContain('github.event.before');
+    expect(steps(ci, 'verify').find((step) => step.name === 'Governance-Freeze')).toBeUndefined();
 
     const gate = stepWith(ci, 'verify', 'pnpm run verify:light');
     expect(gate).not.toBeUndefined();

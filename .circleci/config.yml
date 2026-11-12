@@ -76,30 +76,6 @@ commands:
             - ~/.local/share/pnpm/store
             - ~/.cache/pnpm
 
-  freeze_check:
-    description: Freeze-Checker aus der Basis, Pruefobjekt bleibt der Kopf
-    steps:
-      - run:
-          name: Governance-Freeze
-          command: |
-            set -euo pipefail
-            git fetch --no-tags origin main
-            base="$(git merge-base origin/main HEAD)"
-            if ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-              echo "Keine unabhaengige Basis gefunden; ohne Kontrollebene keine Freigabe." >&2
-              exit 1
-            fi
-            rm -rf .rbd-control
-            git worktree add --detach .rbd-control "$base"
-            if [ ! -f .rbd-control/scripts/verify-governance-freeze.mjs ]; then
-              echo "Kontrollebene kennt den Governance-Freeze nicht; Schritt inert."
-              git worktree remove --force .rbd-control
-              exit 0
-            fi
-            RBD_ROOT="$PWD" node .rbd-control/scripts/verify-governance-freeze.mjs \
-              --ci --base="$base" --head="$(git rev-parse HEAD)"
-            git worktree remove --force .rbd-control
-
 jobs:
   guard:
     executor: node
@@ -123,7 +99,6 @@ jobs:
     steps:
       - checkout
       - install
-      - freeze_check
       # Der lokale Standard vor dem Push; die volle Suite bleibt dem Release.
       - run:
           name: verify:fast
@@ -138,7 +113,6 @@ jobs:
     steps:
       - checkout
       - install
-      - freeze_check
       - run:
           name: Tag und package.json muessen uebereinstimmen
           command: |
