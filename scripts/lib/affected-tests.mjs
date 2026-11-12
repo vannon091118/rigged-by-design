@@ -29,7 +29,11 @@ const relativeToRoot = (file) => normalize(relative(ROOT, resolve(file)));
 
 /** Alle Testdateien unter src, relativ zum Repository. */
 export function listTests() {
-  return walk(resolve(ROOT, 'src'), (file) => TEST_RE.test(file))
+  const src = resolve(ROOT, 'src');
+  // Ein Fixture-Repo ohne src ist ein gueltiger, leerer Testbaum; der Impact
+  // liefert dann eine leere Auswahl statt mit ENOENT zu blockieren.
+  if (!existsSync(src)) return [];
+  return walk(src, (file) => TEST_RE.test(file))
     .map((file) => relativeToRoot(file))
     .sort();
 }
@@ -126,9 +130,12 @@ export function selectAffectedTests(changedFiles) {
       selected.add(file);
       continue;
     }
-    if (file.startsWith('.github/')) {
+    if (file.startsWith('.github/') || file.startsWith('scripts/local-ci')) {
       codeChanged = true;
-      for (const test of all) if (targets.get(test)?.startsWith('.github/')) selected.add(test);
+      for (const test of all) {
+        const target = targets.get(test);
+        if (target?.startsWith('.github/') || target === 'scripts/local-ci.mjs') selected.add(test);
+      }
       continue;
     }
     if (NARRATIVE_DATA_RE.test(file)) {
@@ -165,10 +172,11 @@ export function selectAffectedTests(changedFiles) {
  * dem eine Auswahl zu klein ausfaellt - sie stehen in keiner Diff-Quelle,
  * solange sie nicht gestaged sind.
  */
-export function changedFiles() {
-  // Der Diff gegen origin/main ist nur so aktuell wie der Remote-Ref; ein
-  // alter Ref erzeugt Phantom-Aenderungen in jedem Verbraucher.
-  refreshBase({ cwd: ROOT });
+export function changedFiles({ fetch = false } = {}) {
+  // Nur `pretask` aktualisiert die Basis bewusst. Ein Testlauf oder Kontext
+  // darf nicht bei jedem Aufruf auf das Netz warten; der TTL-Cache allein
+  // waere fuer einen einzelnen Prozess kein Gewinn.
+  if (fetch) refreshBase({ cwd: ROOT });
   const commands = [
     ['diff', '--name-only', '--diff-filter=ACMR', 'origin/main...HEAD'],
     ['diff', '--name-only', '--diff-filter=ACMR'],

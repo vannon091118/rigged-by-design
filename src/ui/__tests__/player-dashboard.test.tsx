@@ -6,7 +6,7 @@
  * Das Charakterfenster zeigt Werte aus der Karriere-Sicht, nicht aus einem zweiten Zustand.
  */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Ledger } from '../../core/economy/ledger';
 import { fromVC } from '../../core/economy/vacoin';
 import type { PropertyId } from '../../core/sim/types';
@@ -15,7 +15,14 @@ import { recordJournal } from '../../core/sim/journal';
 import { grantXp } from '../../core/sim/player-rpg';
 import { createWorld } from '../../core/sim/templates';
 import { buildView } from '../../store/snapshot';
+import { worldStore } from '../../store/use-world-store';
 import { LookPopup } from '../look-popup';
+
+beforeEach(() => {
+  // Der Store ist prozessweit; ohne Reset traegt eine vorherige Datei ihren
+  // Teilzustand in den Look-Popup-Test. Ein frisches Spiel ist der Vertrag.
+  worldStore.newGame('SMALL');
+});
 
 afterEach(() => {
   cleanup();

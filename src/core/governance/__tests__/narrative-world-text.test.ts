@@ -5,6 +5,8 @@
  * Spieltexte duerfen ohne Kenntnis des Repos verstaendlich sein. Dieser Test
  * haelt die 2026-11-11 bereinigten Beitraege frei von Governance-Vokabular und
  * verhindert, dass ein Claim, Merge oder Gate als Weltbeobachtung zurueckkehrt.
+ * Der Slot `documentation` ist bewusst ausgenommen: er beschreibt Repo-Mechanik
+ * fuer Entwickler und wird nicht als Welttext gerendert.
  * Die Wortgrenzen sind Unicode-fest, damit "pruefen" nicht als "PR" zaehlt.
  */
 import { readFileSync, readdirSync } from 'node:fs';
@@ -19,14 +21,16 @@ const GOVERNANCE =
 
 const files = readdirSync(DIR).filter((file) => file.endsWith('.json'));
 
-const textOf = (file: string): string => {
-  const parsed = JSON.parse(readFileSync(join(DIR, file), 'utf8')) as { text?: string };
-  return parsed.text ?? '';
-};
+const entryOf = (file: string): { text?: string; slot?: string } =>
+  JSON.parse(readFileSync(join(DIR, file), 'utf8')) as { text?: string; slot?: string };
+
+const textOf = (file: string): string => entryOf(file).text ?? '';
+
+const worldTextFiles = files.filter((file) => entryOf(file).slot !== 'documentation');
 
 describe('Narrative: Welttexte ohne Governance-Sprache', () => {
   it('nennt in keinem Beitrag einen Repo-Vorgang', () => {
-    const guilty = files
+    const guilty = worldTextFiles
       .filter((file) => GOVERNANCE.test(textOf(file)))
       .map((file) => `${file}: ${textOf(file)}`);
     expect(guilty).toEqual([]);

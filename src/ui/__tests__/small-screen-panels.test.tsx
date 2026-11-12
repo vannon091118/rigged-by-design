@@ -9,7 +9,7 @@
  */
 import { useState } from 'react';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { GameView } from '../../store/types';
 import { Ledger } from '../../core/economy/ledger';
 import { Prng } from '../../core/rng/prng';
@@ -18,30 +18,19 @@ import { createWorld } from '../../core/sim/templates';
 import type { MenuAction } from '../../render/floor-actions';
 import { randomSeed } from '../../test/random-seed';
 import { buildView } from '../../store/snapshot';
+import { worldStore } from '../../store/use-world-store';
 import { ActionCard } from '../action-card';
 import type { Popup } from '../app-model';
 import { PopupRouter } from '../popup-router';
 
-const harness = vi.hoisted(() => {
-  const calls = { talk: [] as number[], spinTest: [] as number[] };
-  const noop = (): void => {};
-  const worldStore = {
-    talk: (id: number) => { calls.talk.push(id); },
-    spinTest: (id: number) => { calls.spinTest.push(id); },
-    pay: noop,
-    serveDrink: noop,
-    calm: noop,
-    fightBrawl: noop,
-    takeHome: noop,
-    shellRound: noop,
-  };
-  return { calls, worldStore };
-});
+const harness = vi.hoisted(() => ({ calls: { talk: [] as number[], spinTest: [] as number[] } }));
 
-vi.mock('../../store/use-world-store', () => ({
-  useWorldStore: () => null,
-  worldStore: harness.worldStore,
-}));
+beforeEach(() => {
+  // Echte Methoden mit aufgezeichneten Aufrufen: kein Modul-Mock, der bei
+  // isolate:false in spaetere UI-Dateien leckt.
+  vi.spyOn(worldStore, 'talk').mockImplementation((id: number) => { harness.calls.talk.push(id); });
+  vi.spyOn(worldStore, 'spinTest').mockImplementation((id: number) => { harness.calls.spinTest.push(id); return null; });
+});
 
 function fixture() {
   const world = createWorld('SMALL');

@@ -165,40 +165,26 @@ const ciState = claim && branch !== 'main' ? readCiState({ branch }) : { known: 
 let contextData = null;
 let contextError = '';
 try {
-  const output = execFileSync(process.execPath, ['scripts/agent-context.mjs', '--json'], {
-    cwd: ROOT,
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'ignore'],
-  }).trim();
-  contextData = JSON.parse(output);
+  // Derselbe Prozess statt eines zweiten Node-Starts: der fruehere
+  // `agent-context`-Kindprozess rechnete den Impact ein zweites Mal und
+  // kostete allein durch Start und JSON-Pipe mehrere hundert Millisekunden.
+  contextData = buildImpact({ profile: 'quick' });
 } catch (error) {
-  const childError = error instanceof Error ? error.message : 'unbekannter Fehler';
-  // Der Impact ist ohne TypeScript-Compiler gebaut. Scheitert der Kindprozess
-  // (Pipe, fehlende Datei), rechnet pretask denselben Plan direkt weiter,
-  // statt den Start mit "Impact-Plan fehlt" zu blockieren.
-  try {
-    contextData = buildImpact({ profile: 'quick' });
-    notes.push('Impact direkt berechnet; agent-context war nicht ausfuehrbar.');
-  } catch (fallbackError) {
-    contextError = `${childError} / ${fallbackError instanceof Error ? fallbackError.message : 'unbekannt'}`;
-  }
+  contextError = error instanceof Error ? error.message : 'unbekannter Fehler';
 }
 if (!contextData || typeof contextData !== 'object') {
-  blockers.push(`[ERR-4019] Impact-Plan fehlt oder ist nicht JSON: ${contextError || 'leere Ausgabe'}`);
+  blockers.push(`[ERR-4019] Impact-Plan fehlt oder ist nicht lesbar: ${contextError || 'leere Ausgabe'}`);
 } else if (!Array.isArray(contextData.systems) || !contextData.tests) {
   blockers.push('[ERR-4019] Impact-Plan ist unvollstaendig: systems/tests fehlen');
 }
-// `agent-context --json` legt die vollstaendige Fassung selbst ab und nennt
-// den Pfad in `full`. Der direkte Fallback schreibt dieselbe Datei, damit der
-// Verweis auch dann gueltig ist, wenn der Kindprozess nicht laufen konnte.
-const contextFile = typeof contextData?.full === 'string' ? contextData.full : CONTEXT_FILE;
-if (contextData && typeof contextData === 'object' && typeof contextData.full !== 'string') {
-  try {
-    mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
-    writeFileSync(join(ROOT, CONTEXT_FILE), `${JSON.stringify(contextData, null, 2)}\n`, 'utf8');
-  } catch {
-    warnings.push(`Kontextdatei ${CONTEXT_FILE} konnte nicht geschrieben werden`);
-  }
+// Die vollstaendige Fassung liegt neben dem Cache, damit Werkzeuge und
+// Debugging denselben Stand lesen wie pretask.
+const contextFile = CONTEXT_FILE;
+try {
+  mkdirSync(join(ROOT, '.verify-cache'), { recursive: true });
+  writeFileSync(join(ROOT, CONTEXT_FILE), `${JSON.stringify(contextData, null, 2)}\n`, 'utf8');
+} catch {
+  warnings.push(`Kontextdatei ${CONTEXT_FILE} konnte nicht geschrieben werden`);
 }
 
 // Phase 3: lesender Reconcile vor der Kollisionspruefung. Geloeschte Branches,

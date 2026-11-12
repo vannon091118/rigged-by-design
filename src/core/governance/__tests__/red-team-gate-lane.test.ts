@@ -32,8 +32,8 @@ interface GateDefinition {
   readonly command: 'node' | 'pnpm';
   readonly script: string;
   readonly args?: readonly string[];
-  readonly code: string;
-  readonly timeoutMs: number;
+  readonly  code: string;
+  readonly timeoutMs?: number;
 }
 
 interface PackageJson {
@@ -56,9 +56,9 @@ afterAll(() => {
  * bewusster Vertragsaenderung, kein stiller Zusatz.
  */
 const PURPOSE = {
-  lint: { command: 'pnpm', script: 'lint', code: 'ERR-4011', packageToken: 'eslint' },
-  'check:loc': { command: 'pnpm', script: 'check:loc', code: 'ERR-4012', packageToken: 'check-loc.mjs' },
-  typecheck: { command: 'pnpm', script: 'typecheck', code: 'ERR-1005', packageToken: 'tsc' },
+  lint: { command: 'node', script: 'node_modules/eslint/bin/eslint.js', code: 'ERR-4011', packageToken: '' },
+  'check:loc': { command: 'node', script: 'scripts/check-loc.mjs', code: 'ERR-4012', packageToken: '' },
+  typecheck: { command: 'node', script: 'node_modules/typescript/bin/tsc', code: 'ERR-1005', packageToken: '' },
   'test-quality': { command: 'node', script: 'scripts/verify-test-quality.mjs', code: 'ERR-4002', packageToken: '' },
   'dead-code': { command: 'node', script: 'scripts/verify-dead-code.mjs', code: 'ERR-4003', packageToken: '' },
   docs: { command: 'node', script: 'scripts/verify-docs.mjs', code: 'ERR-4017', packageToken: '' },
@@ -67,13 +67,14 @@ const PURPOSE = {
   tree: { command: 'node', script: 'scripts/verify-tree.mjs', code: 'ERR-4019', packageToken: '' },
   'impact-graph': { command: 'node', script: 'scripts/verify-impact-graph.mjs', code: 'ERR-4019', packageToken: '' },
   redundancy: { command: 'node', script: 'scripts/verify-redundancy.mjs', code: 'ERR-4020', packageToken: '' },
-  assets: { command: 'pnpm', script: 'verify:assets', code: 'ERR-4016', packageToken: 'verify-assets.mjs' },
+  assets: { command: 'node', script: 'scripts/verify-assets.mjs', code: 'ERR-4016', packageToken: '' },
   capabilities: { command: 'node', script: 'scripts/verify-capabilities.mjs', code: 'ERR-4025', packageToken: '' },
   narrative: { command: 'node', script: 'scripts/verify-narrative-blocks.mjs', code: 'ERR-4022', packageToken: '' },
   audit: { command: 'pnpm', script: 'audit:gate', code: 'ERR-4004', packageToken: 'pnpm audit' },
-  tests: { command: 'pnpm', script: 'test:ci', code: 'ERR-4026', packageToken: 'run-selected-tests.mjs' },
+  tests: { command: 'node', script: 'scripts/run-selected-tests.mjs', code: 'ERR-4026', packageToken: '' },
   affected: { command: 'node', script: 'scripts/test-affected.mjs', code: 'ERR-4026', packageToken: '' },
-  build: { command: 'pnpm', script: 'build', code: 'ERR-1005', packageToken: 'vite build' },
+  mechanics: { command: 'node', script: 'scripts/run-selected-tests.mjs', code: 'ERR-4026', packageToken: '' },
+  build: { command: 'node', script: 'node_modules/vite/bin/vite.js', code: 'ERR-1005', packageToken: '' },
 } as const;
 
 function gateAt(key: string): GateDefinition {
@@ -118,7 +119,7 @@ describe('Red-Team: Test- und Gate-Lane', () => {
     expect(() => {
       (GATES as unknown as Record<string, unknown>).lint = { name: 'evil' };
     }).toThrow(TypeError);
-    expect(gateAt('lint').script).toBe('lint');
+    expect(gateAt('lint').script).toBe('node_modules/eslint/bin/eslint.js');
 
     const profile = PROFILE_GATES.light as unknown as string[];
     expect(() => { profile.push('evil'); }).toThrow(TypeError);
@@ -137,7 +138,7 @@ describe('Red-Team: Test- und Gate-Lane', () => {
       expect(gate.command).toBe(expected.command);
       expect(gate.script).toBe(expected.script);
       expect(gate.code).toBe(expected.code);
-      expect(gate.timeoutMs).toBeGreaterThan(0);
+      expect(gate.timeoutMs).toBeUndefined();
 
       const invocation = [gate.script, ...(gate.args ?? [])].join(' ');
       expect(invocation).not.toMatch(/(^|\s)(--fix|--write|--apply|--force|autofix|rm|mv|tee|sed\s+-i)(\s|$)/);
@@ -161,7 +162,7 @@ describe('Red-Team: Test- und Gate-Lane', () => {
     // `test-placement` ist bewusst ein Light-/Pre-Commit-Gate und kein
     // zusaetzlicher Required-Gate-Status im vollen CI-Set.
     const required = Object.keys(gates)
-      .filter((key) => key !== 'affected' && key !== 'audit' && key !== 'test-placement')
+      .filter((key) => key !== 'affected' && key !== 'audit' && key !== 'test-placement' && key !== 'mechanics')
       .sort();
     expect([...REQUIRED_CI_GATES].sort()).toEqual(required);
     expect(planGates('quick')).toEqual([...QUICK_GATES]);

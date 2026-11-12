@@ -9,7 +9,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ROOT } from './lib/report.mjs';
-import { CATALOG_END, CATALOG_START, LONG_PROOF_CLASSES, catalogEntries, renderCatalog, testFiles } from './lib/test-catalog.mjs';
+import { CATALOG_END, CATALOG_START, LONG_PROOF_CLASSES, catalogEntries, renderCatalog, testFiles, validateTestLanes } from './lib/test-catalog.mjs';
 
 const docPath = join(ROOT, 'docs', 'INVENTORY.md');
 const checkOnly = process.argv.includes('--check');
@@ -25,8 +25,8 @@ const header = [
   'im `--check`-Modus geprueft: eine neue Testdatei ohne Eintrag macht den Lauf rot.',
   '',
   `Beweisklassen: ${['contract', 'integration', 'governance', 'statistics', 'performance'].join(', ')}.`,
-  `Lokal laufen nur Vertrags-, Integrations- und Governance-Nachweise; ${LONG_PROOF_CLASSES.join(' und ')}`,
-  'delegiert `pnpm run test:affected` an GitHub Actions (`pnpm run ci:long`).',
+  `Der Regellauf enthaelt nur Vertrags-, Integrations- und Governance-Nachweise; ${LONG_PROOF_CLASSES.join(' und ')}`,
+  'laufen ausschliesslich gezielt ueber `pnpm run test:mechanics` (Liste: `src/Config/test-lanes.json`).',
   '',
 ].join('\n');
 
@@ -40,7 +40,14 @@ const next = hasBlock
   : `${header}${block}\n`;
 
 const long = entries.filter((entry) => entry.long).length;
-console.log(`test-catalog: ${entries.length} Dateien, ${entries.length - long} lokal, ${long} an CI delegiert`);
+console.log(`test-catalog: ${entries.length} Dateien, ${entries.length - long} im Regellauf, ${long} Mechanik`);
+const lanes = validateTestLanes(files);
+if (lanes.missing.length > 0 || lanes.extra.length > 0) {
+  for (const file of lanes.missing) fail(entries.length + 1, 'ERR-4015', file, 'Langlauf fehlt in src/Config/test-lanes.json');
+  for (const file of lanes.extra) fail(entries.length + 1, 'ERR-4015', file, 'test-lanes.json nennt keine Langlaufdatei');
+  console.error('test-catalog: Mechanik-Liste und Katalog sind nicht deckungsgleich');
+  process.exit(1);
+}
 
 if (next === current) {
   console.log('test-catalog: PASS, Katalog aktuell');

@@ -1,14 +1,13 @@
 /**
  * Impact: eine Analyse fuer Agentenkontext, Pruefplan und Bericht.
  *
- * Die Bausteine sind vorhanden und werden nur zusammengefuehrt: `changedFiles`
- * und `selectAffectedTests` (Importgraph, Testziele), der Testkatalog
- * (Beweisklassen), der Gate-Plan (`pipeline-plan`) und der Gate-Cache. Nichts
- * hier erfindet Metadaten; jede Aussage kommt aus einer dieser Quellen.
+ * Die Bausteine werden nur zusammengefuehrt: `changedFiles` und
+ * `selectAffectedTests` (Importgraph, Testziele), der Testkatalog
+ * (Beweisklassen), der Gate-Plan (`pipeline-plan`) und der Gate-Cache.
  *
- * Der Modulgraph dieses Pfads importiert bewusst keinen TypeScript-Compiler:
- * `imports.mjs` liest Specifier und Kopfkommentare, damit `agent:context` und
- * `pretask` auch in einem nackten Checkout ohne `node_modules` laufen.
+ * Der Pfad ist netzfrei: `pretask` aktualisiert die Basis einmal bewusst,
+ * `agent:context` und `test:affected` lesen den vorhandenen Ref. Ein
+ * zusaetzlicher Fetch je Kontextaufruf waere Wartezeit ohne Erkenntnis.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -21,7 +20,6 @@ import { IMPACT_AREAS } from './subsystems.mjs';
 import { partitionByProof, proofClassOf } from './test-catalog.mjs';
 import { contextSummary } from './lane-claims.mjs';
 
-/** Was eine Aenderung an Doku und Invarianten mitzieht; die Liste steht in scripts/lib/subsystems.mjs. */
 const AREAS = IMPACT_AREAS;
 
 const git = (args) => {
@@ -42,34 +40,48 @@ function version() {
   }
 }
 
+/** Branch, Kopf und Dirty-Status in einem Git-Aufruf statt in vier. */
+function treeFacts(key) {
+  const raw = git(['status', '--porcelain=v2', '--branch']);
+  const head = /^# branch\.oid (\S+)$/m.exec(raw)?.[1] ?? '';
+  const branch = /^# branch\.head (\S+)$/m.exec(raw)?.[1] ?? '(unbekannt)';
+  const entries = raw.split(/\r?\n/).filter((entry) => entry && !entry.startsWith('#'));
+  return {
+    key: key.slice(0, 12),
+    head: head ? head.slice(0, 7) : git(['rev-parse', '--short', 'HEAD']),
+    branch,
+    dirty: entries.length > 0,
+    changedFiles: entries.length,
+  };
+}
+
 /**
  * Der Impact eines Arbeitsstands. `profile` bestimmt nur, welche Gates der Plan
  * nennt; die Analyse selbst ist fuer jeden Aufrufer dieselbe.
  */
 export function impact(options = {}) {
   const profile = options.profile ?? 'quick';
-  const changed = changedFiles().sort();
+  const changed = changedFiles({ fetch: options.fetch === true }).sort();
   const selection = selectAffectedTests(changed);
   const split = partitionByProof(selection.tests);
-  const gates = (planGates(profile) ?? []).map((key) => ({
-    name: GATES[key].name,
-    code: GATES[key].code,
-    cached: isCached(GATES[key].name, treeKey()),
-    timeoutMs: GATES[key].timeoutMs,
-  }));
+  const key = treeKey();
+  const gates = (planGates(profile) ?? []).map((name) => {
+    const gate = GATES[name];
+    // Derselbe Schluessel wie der Gate-Runner: Profil-Env gehoert dazu, sonst
+    // wuerde ein schneller Tests-Lauf den Mechanik-Lauf als "cached" verdecken.
+    const gateKey = `${key}\0${JSON.stringify(gate.env ?? {})}`;
+    return {
+      name: gate.name,
+      code: gate.code,
+      cached: Boolean(gate.cache) && isCached(gate.name, gateKey),
+    };
+  });
   const areas = [...new Set(changed.map((file) => subsystemOf(file)).filter(Boolean))];
   const docs = [...new Set(changed.flatMap((file) => areaFor(file)?.docs ?? []))].sort();
   const invariants = [...new Set(changed.flatMap((file) => areaFor(file)?.invariants ?? []))];
-  const status = git(['status', '--porcelain']);
   return {
     version: version(),
-    tree: {
-      key: treeKey().slice(0, 12),
-      head: git(['rev-parse', '--short', 'HEAD']),
-      branch: git(['rev-parse', '--abbrev-ref', 'HEAD']),
-      dirty: status.length > 0,
-      changedFiles: status.split(/\r?\n/).filter(Boolean).length,
-    },
+    tree: treeFacts(key),
     changed,
     systems: areas,
     docs,
@@ -84,15 +96,17 @@ export function impact(options = {}) {
     lanes: contextSummary(),
     gates,
     open: [
-      ...(split.long.length > 0 ? [`${split.long.length} lange Nachweis(e) sind lokal nicht erbracht; der CI-Plan fuehrt sie auf dem PR-Commit aus`] : []),
+      ...(split.long.length > 0
+        ? [`${split.long.length} Mechanik-Nachweis(e) laufen nur gezielt: pnpm run test:mechanics`]
+        : []),
     ],
   };
 }
 
 /**
  * Kompakte Textfassung: feste Beschriftungsspalte, ein Feld je Zeile, nichts
- * doppelt. Kurz genug fuer den Bildschirm, vollstaendig genug, dass keine
- * Rueckfrage noetig ist.
+ * doppelt. Kurz genug fuer den Bildschirm, vollstaendig genug fuer eine
+ * Entscheidung.
  */
 export function summarize(result) {
   const label = (text) => text.padEnd(12);
@@ -117,10 +131,7 @@ export function summarize(result) {
   return lines.join('\n');
 }
 
-/**
- * Die verdichtete Textzeile: Status, Stand, Umfang in einer Zeile. Gedacht fuer
- * Kopfzeilen und Protokolle, in denen jeder weitere Satz nur Tokens kostet.
- */
+/** Die verdichtete Textzeile: Status, Stand, Umfang in einer Zeile. */
 export function oneLineOf(result) {
   const changed = result.changed.length === 0 ? '0 Aenderungen' : `${result.changed.length} Aenderung(en)`;
   const cached = result.gates.filter((gate) => gate.cached).length;

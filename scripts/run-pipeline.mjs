@@ -7,9 +7,10 @@
  * fix     repariert alles Automatische (`--fix`) und protokolliert danach
  *         jede Aenderung und jede Loeschung im Arbeitsbaum.
  *
- * Fuenf Profile: light (Struktur-Turn), dev (Struktur plus betroffene Tests),
- * quick (Entwicklungsfeedback), full (Integration), release (APK/Versionssprung).
- * Schwere Nachweise gehoeren in die CI.
+ * Profile: light (Struktur-Turn), dev (Struktur plus betroffene Tests),
+ * quick (Entwicklungsfeedback), full/release (vollstaendiger Nachweis) und
+ * mechanics (Statistik, Soak, Langlauf). Mechanik laeuft ausschliesslich
+ * gezielt, nie als Bestandteil eines Regelprofils.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -105,7 +106,6 @@ const FORCE_AUDIT = ONLY === 'audit' || PROFILE === 'release' || process.env.RBD
 let skippedAudit = false;
 let selected = PROFILE_GATES_LIST.map((key) => {
   const step = { ...GATES[key] };
-  if (step.name === 'tests' && PROFILE === 'quick') step.env = { RBD_TEST_PROFILE: 'quick' };
   if (step.name === 'build') step.ready = () => existsSync(join(ROOT, 'dist', 'index.html'));
   return step;
 });

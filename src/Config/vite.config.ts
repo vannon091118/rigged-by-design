@@ -1,20 +1,18 @@
 import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { GovernanceReporter } from '../core/governance/test-harness';
+import testLanes from './test-lanes.json';
 
-// Messung 31.10.2026: RTP-, Balance- und Soak-Nachweise kosten 52,2 s von 72,5 s CPU-Zeit
-// der ganzen Suite und damit 15 s der 33,6 s Gate-Wandzeit. Das schnelle Profil laesst sie
-// weg und ist damit Entwicklungsfeedback, kein Freigabenachweis: `verify:all` und
-// `verify:release` fahren sie immer mit.
-const quickProfile = process.env.RBD_TEST_PROFILE === 'quick';
-const quickExclude = [
-  '**/round-rtp-*.test.ts',
-  '**/soak.test.ts',
-  '**/slot-session-rtp.test.ts',
-  '**/poker-distribution.test.ts',
-  '**/balance-operating.test.ts',
-  '**/*.bench.ts',
-];
+// Eine Quelle fuer die Mechanik-Nachweise: `src/Config/test-lanes.json`.
+// Statistik-, Soak- und Langlauf-Suiten laufen nie in einem regulaeren Gate;
+// `pnpm run test:mechanics` startet sie gezielt. Das frueher doppelte
+// Ausschlussmuster (hier und im Testkatalog) ist damit entfallen.
+const MECHANICS = testLanes.mechanics;
+const MECHANICS_ONLY = process.env.RBD_TEST_PROFILE === 'mechanics';
+/** Nur fuer die Vorher/Nachher-Messung: Regellaue enthalten keine Mechanik. */
+const INCLUDE_EVERYTHING = process.env.RBD_TEST_PROFILE === 'all';
+const TEST_TIMEOUT = Number(process.env.RBD_TEST_TIMEOUT) || 15_000;
+const HOOK_TIMEOUT = Number(process.env.RBD_TEST_HOOK_TIMEOUT) || 5_000;
 
 const moduleSep = '[\\/]';
 /** Paketpfad mit posix- oder Windows-Trenner; als String, damit ESLint keine Regex-Escapes prueft. */
@@ -61,19 +59,22 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['src/**/*.test.{ts,tsx}'],
-    ...(quickProfile ? { exclude: [...configDefaults.exclude, ...quickExclude] } : {}),
+    // Mechanik ist ein eigener Aufruf, kein Bestandteil des Regellaufs.
+    include: MECHANICS_ONLY ? MECHANICS : ['src/**/*.test.{ts,tsx}'],
+    ...(MECHANICS_ONLY || INCLUDE_EVERYTHING
+      ? {}
+      : { exclude: [...configDefaults.exclude, ...MECHANICS] }),
     reporters: ['default', new GovernanceReporter()],
-    testTimeout: 40_000,
-    // Threads statt Prozess-Forks: sie sterben mit dem Runner, es bleiben keine
-    // verwaisten Worker-Prozesse zurueck. Der Teardown wird hart begrenzt,
-    // damit ein haengender Test den Lauf nicht blockiert.
+    // Ein haengender Test ist ein Befund, kein 40-Sekunden-Warteplatz. Die
+    // Mechanik-Suiten koennen ihr Budget per Env bewusst erhoehen.
+    testTimeout: TEST_TIMEOUT,
     pool: 'threads',
     // Testdateien teilen keine mutierenden Singletons; Worker-Reuse spart pro Lauf
-    // rund vier Sekunden Startzeit. Bei modulglobalem Zustand wieder anschalten.
+    // rund vier Sekunden Startzeit. Die UI-Suiten setzen den Store vor jedem
+    // Fall selbst zurueck; Isolation pro Datei kostete 60 s ohne Zusatznutzen.
     isolate: false,
-    teardownTimeout: 2_000,
-    hookTimeout: 10_000,
+    teardownTimeout: 1_000,
+    hookTimeout: HOOK_TIMEOUT,
     maxConcurrency: 8,
   },
 });
