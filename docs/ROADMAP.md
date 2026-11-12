@@ -25,8 +25,8 @@ Dokumente eine Spiel- oder Präsentationsaufgabe. Vermischte Bezeichnungen samme
 nötig), `offen`, `blockiert`, `zurueckgestellt`.
 
 **IDs:** `S<phase>-<nr>` für Spiel, `PR-<nr>` für Präsentation, `R-<nr>` für
-den Render-Querschnitt, `P-13` als fortgeschriebene Bestands-ID für den
-Textbaustein-Fortschritt.
+den Render-Querschnitt, `M0–M4` für die Exit-Meilensteine des Render-Plans,
+`P-13` als fortgeschriebene Bestands-ID für den Textbaustein-Fortschritt.
 
 ## Jetzt — Das Spiel trägt den ersten Abend
 
@@ -100,13 +100,20 @@ hier sind die Produkt-Etappen, nicht die Detail-Todo. Die Abnahme verweist auf
 die bestehenden Zeilen S2-07, S2-08, S5-06, S5-07, S5-09 und PR-10; sie werden
 hier referenziert, nicht dupliziert.
 
-| ID | Aufgabe | Status | Referenz | Fertig wenn |
-| --- | --- | --- | --- | --- |
-| R-0 | Baseline und lokales Bildgate (R0–R1) | offen | `packages/gamescout`, `docs/screenshots/current`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Zahlen, Rechte und drei deterministische Szenen sind belegt; kein Cloud-Gate |
-| R-1 | Casino-Render ehrlich und stabil (R2–R6) | offen | `src/render/furniture-atlas.ts`, `src/render/guest-rig.ts`, `src/render/floor-material.ts`, `src/render/floor-camera.ts` | Kein gruener Fallback, keine Pin-Figur, echte Materialien, Lichtflaeche und echte Weltgrenzen |
-| R-2 | Stadtansicht und Assetpaket (R7–R8) an S2-12 | offen | `src/core/sim/city-scene.ts`, `src/core/sim/city-exterior.ts`, `src/render/city/`, `src/ui/city-popup.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | R7 rendert den bestehenden S2-12-Stadtkern; kein zweiter Szenengraph, Weg über S2-07/S2-12 ohne Teleport |
-| R-3 | Stadtleben und Wohnungsabnahme (R9–R10) | offen | `src/core/sim/npc-schedule.ts`, `S2-09`–`S2-11`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | NPCs und Türen sind sichtbar; S2-09–S2-11 sind abgehakt oder offen zurueckgegeben; Actor-IDs bleiben stabil |
-| R-4 | Bewegung und Ambient (R11–R12) | zurückgestellt | `src/render/guest-rig.ts`, `src/render/city/ambient.ts` | Lauframes und Ambient sind deterministisch; erst nach R-2/R-3 |
+| ID | Meilenstein | Aufgabe | Status | Referenz | Fertig wenn |
+| --- | --- | --- | --- | --- | --- |
+| R-0 | M0 | Baseline und lokales Bildgate (R0–R1) | offen | `packages/gamescout`, `docs/screenshots/current`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | Zahlen, Rechte und vier deterministische Szenen sind belegt; kein Cloud-Gate |
+| R-1 | M1 | Casino-Render ehrlich und stabil (R2–R6) | offen | `src/render/furniture-atlas.ts`, `src/render/guest-rig.ts`, `src/render/floor-material.ts`, `src/render/floor-camera.ts` | Kein gruener Fallback, keine Pin-Figur, echte Materialien, Lichtflaeche und echte Weltgrenzen |
+| R-2 | M2 | Stadtansicht und Assetpaket (R7–R8) an S2-12 | offen | `src/core/sim/city-scene.ts`, `src/core/sim/city-exterior.ts`, `src/render/city/`, `src/ui/city-popup.tsx`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | R7 rendert den bestehenden S2-12-Stadtkern; kein zweiter Szenengraph, Weg über S2-07/S2-12 ohne Teleport |
+| R-3 | M3 | Stadtleben und Wohnungsabnahme (R9–R10) | offen | `src/core/sim/npc-schedule.ts`, `S2-09`–`S2-11`, [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md) | NPCs und Türen sind sichtbar; S2-09–S2-11 sind abgehakt oder offen zurueckgegeben; Actor-IDs bleiben stabil |
+| R-4 | M4 | Bewegung und Ambient (R11–R12) | zurückgestellt | `src/render/guest-rig.ts`, `src/render/city/ambient.ts` | Laufframes und Ambient sind deterministisch; erst nach R-2/R-3 |
+
+Die Spalte **Meilenstein** ist die Brücke zur Roadmap: M0–M4 sind die
+Exit-Punkte aus [`RENDER_REWORK_PLAN.md`](RENDER_REWORK_PLAN.md). Jeder
+sichtbare Meilenstein M1–M4 verlangt die Preview-Sichtabnahme des Agents
+(lokaler Vite-Dev-Server, Screenshot, Konsole, `window.__rbdProbe`); sie ist
+kein Cloud- oder CI-Gate. Ein Meilenstein wird erst `erledigt`, wenn diese
+Abnahme vorliegt; die Detailstatuses R0–R12 bleiben im Plan.
 
 ### Phase 4 — Wirtschaft, Bereiche und Ereignisse (P1)
 

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-render-plan-milestones",
+  "claimId": "lane/governance/render-plan-milestones",
+  "branch": "lane/governance/render-plan-milestones",
+  "baseSha": "4621a0c48c31fb60e4046db3c8e6a2521def57c9",
+  "phase": "READY",
+  "title": "Render-Plan adversarial prüfen: Meilensteine M0-M4, Roadmap-Kopplung und Preview-Sichtabnahme für alle sichtbaren Slices",
+  "goal": "Plan und Roadmap als einen gemeinsamen, prüfbaren Entwicklungsstrang führen; sichtbare Render-Slices werden vom Agenten im lokalen Dev-Server abgenommen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Doku-Diff prüfen, Pflicht-Gates ausführen und den Plan-/Roadmap-Abgleich als PR liefern.",
+  "revision": 1
+}
