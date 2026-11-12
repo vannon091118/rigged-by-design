@@ -8,6 +8,7 @@ import type { GameView } from '../store/types';
 import { worldStore } from '../store/use-world-store';
 import { floorMovementAllowed, floorTapAllowed } from './floor-scenes';
 import { useFloorKeyboard } from './use-floor-keyboard';
+import { useFloorSelectionLifecycle } from './use-floor-selection-lifecycle';
 
 export interface FloorSelection {
   readonly target: FloorTap['target'];
@@ -48,11 +49,14 @@ export function useFloorInteraction(options: Options) {
     return true;
   }, []);
 
-  // Szenenwechsel raeumt einen Fokus, den die neue Szene nicht mehr kennt:
-  // sonst koennte E im Fremd-Floor eine alte Casino-Aktion ausloesen.
-  useEffect(() => {
-    if (selectionRef.current && !floorTapAllowed(options.view.scene.kind, selectionRef.current.target.kind)) close();
-  }, [options.view.scene.kind, close]);
+  useFloorSelectionLifecycle({
+    scene: options.view.scene,
+    selection: selectionRef,
+    pathIndex: options.view.player.pathIndex,
+    pathLength: options.view.player.path.length,
+    setSelection,
+    close,
+  });
 
   const tap = useCallback((resolution: FloorTap): void => {
     if (latest.current.blocked) return;
@@ -154,18 +158,13 @@ export function useFloorInteraction(options: Options) {
     setSelection(null);
   }, [options.view.player.position.x, options.view.player.position.y, options.view.player.pathIndex, options.view.player.path.length]);
 
-  // Angekommen: der Hinweis verschwindet, die Aktionen bleiben waehlbar.
-  useEffect(() => {
-    if (options.view.player.pathIndex < options.view.player.path.length) return;
-    setSelection((current) => current?.status === 'Läuft hin …'
-      ? { ...current, status: '' }
-      : current);
-  }, [options.view.player.pathIndex, options.view.player.path.length]);
-
   // Tastatur: derselbe Fokus wie Maus und Touch, aber ohne eigenen Zustand.
+  // Der fremde Floor hat noch keine eigenen Gast-/Moebel-Commands; Maus und
+  // Touch sperren dieselben Ziele, E bleibt deshalb dort ebenfalls still.
   useFloorKeyboard({
     view: options.view,
-    enabled: options.enabled && floorMovementAllowed(options.view.scene.kind),
+    enabled: options.enabled && floorMovementAllowed(options.view.scene.kind)
+      && options.view.scene.kind !== 'FOREIGN',
     blocked: options.blocked,
     selection,
     tap,

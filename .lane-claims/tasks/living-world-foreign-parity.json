@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "living-world-foreign-parity",
+  "claimId": "lane/living-world/foreign-parity",
+  "branch": "lane/living-world/foreign-parity",
+  "baseSha": "61b0bdd845f4be1402ac39a3c2843a041b22cdd9",
+  "phase": "CI_PENDING",
+  "title": "Fremdes Casino als echten, begehbaren Floor an dieselbe Navigation, Kollision und Eingabe anschliessen",
+  "goal": "Der Spieler bewegt sich im fremden Casino per WASD, Maus/Touch und Kamera auf dem foreign-eigenen Layout; Snapshot, Tick und Pfad bleiben eine Wahrheit.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 3
+}

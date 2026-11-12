@@ -1,0 +1,27 @@
+{
+  "id": "lane/living-world/foreign-parity",
+  "owner": "Architektur-Owner",
+  "branch": "lane/living-world/foreign-parity",
+  "baseSha": "61b0bdd845f4be1402ac39a3c2843a041b22cdd9",
+  "task": "Fremdes Casino als echten, begehbaren Floor an dieselbe Navigation, Kollision und Eingabe anschliessen",
+  "goal": "Der Spieler bewegt sich im fremden Casino per WASD, Maus/Touch und Kamera auf dem foreign-eigenen Layout; Snapshot, Tick und Pfad bleiben eine Wahrheit.",
+  "pathAllowlist": [
+    "src/core/sim/**",
+    "src/store/**",
+    "src/ui/**",
+    "src/render/**",
+    "docs/RENDER_REWORK_PLAN.md",
+    "content/narrative/contributions/**",
+    "content/narrative/turns/manifest.json",
+    "content/narrative/registry/fragments.json",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    ".lane-claims/tasks/living-world-foreign-parity.json",
+    ".lane-claims/claims/lane-living-world-foreign-parity.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "61b0bdd845f4be1402ac39a3c2843a041b22cdd9"
+}

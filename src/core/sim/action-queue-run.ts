@@ -1,5 +1,6 @@
 /** Ausfuehrung der Auftragskette: Annaeherung, Werkzeug, Arbeit und Rueckgabe. */
 import type { Ledger } from '../economy/ledger';
+import { activePlayerPosition } from './active-player';
 import { approachTarget, planInteraction, stopPlayer, type InteractionTarget } from './interaction';
 import { consumeMopUse, dropMop, pickupMop } from './mop';
 import { removeStain, type Stain } from './stain';
@@ -117,7 +118,8 @@ export function tickActionQueue(world: WorldState, ledger: Ledger): void {
     if (task.kind === 'MOVE') {
       if (!task.point) { finish(world, task, 'FAILED', 'Kein Laufziel.'); return; }
       if (arrived(world)) {
-        const distance = Math.abs(world.player.position.x - task.point.x) + Math.abs(world.player.position.y - task.point.y);
+        const position = activePlayerPosition(world);
+        const distance = Math.abs(position.x - task.point.x) + Math.abs(position.y - task.point.y);
         if (distance <= 1) finish(world, task, 'COMPLETED');
         else movePlayer(world, task.point);
       }

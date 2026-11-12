@@ -3,6 +3,7 @@ import { fromVC, toVCString, ZERO_VC, type VaCoinMicro } from '../core/economy/v
 import type { Ledger } from '../core/economy/ledger';
 import { HAUSKONTO, HOUSE_FLOAT, playerTakeHome } from '../core/sim/money';
 import { deployHeldCrate, movePlayer, storeHeldCrate } from '../core/sim/player';
+import { activePlayerPosition } from '../core/sim/active-player';
 import { applyLook, type PlayerLook } from '../core/sim/player-look';
 import type { WorldState } from '../core/sim/types';
 
@@ -13,7 +14,7 @@ export function saveLook(world: WorldState, patch: Partial<PlayerLook>): string 
 
 /** Ein Feld in Richtung; nearestWalkable und Pfadfinder erledigen den Rest. */
 export function stepPlayer(world: WorldState, dx: number, dy: number): void {
-  const pos = world.player.position;
+  const pos = activePlayerPosition(world);
   movePlayer(world, { x: pos.x + dx, y: pos.y + dy });
 }
 

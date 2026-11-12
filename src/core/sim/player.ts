@@ -7,6 +7,7 @@ import { INFLUENCE_CONFIG, type InfluenceConfig } from './influence';
 import { exchangeFiat, guestAccount, HAUSKONTO, SHOP } from './money';
 import { applyTreatInfluence } from './treat-influence';
 import { findPath, nearestWalkable } from './pathfinding';
+import { activeForeignFloor, activePlayerPosition, setActivePlayerPath } from './active-player';
 import { guestReason, TX_REASON } from './tx-reasons';
 import type { Furniture, Point, WorldState } from './types';
 import { guestById, worldNav } from './world';
@@ -18,12 +19,13 @@ const XP_SERVE_GUEST = 8;
 const XP_OPEN_CRATE = 15;
 
 export function movePlayer(world: WorldState, target: Point): void {
-  // Die Wohnung ist ein eigener Plan: ihr Raster gilt, nicht das Casino-Layout.
+  // Jeder begehbare Floor traegt sein eigenes Raster; die Figur bleibt dieselbe.
   const nav = world.scene.kind === 'APARTMENT' ? playerApartmentNav() : worldNav(world);
   const walkable = nearestWalkable(nav, target);
   if (!walkable) return;
-  world.player.path = findPath(nav, world.player.position, walkable);
-  world.player.pathIndex = 0;
+  const foreign = activeForeignFloor(world);
+  if (foreign && foreign.playerPosition === null) foreign.playerPosition = { ...activePlayerPosition(world) };
+  setActivePlayerPath(world, findPath(nav, activePlayerPosition(world), walkable));
 }
 
 export function takeDrink(world: WorldState, barId?: number): void {

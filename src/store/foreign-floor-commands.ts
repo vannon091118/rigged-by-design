@@ -5,6 +5,8 @@ import { getOrCreateForeignFloor } from '../core/sim/foreign-floor-tick';
 import { getRival, type RivalId } from '../core/sim/rivals';
 import { BLUEPRINTS } from '../core/sim/house-presets';
 import { layoutFromTemplate, zonesFromLayout } from '../core/sim/layout-derive';
+import { nearestWalkable } from '../core/sim/pathfinding';
+import { worldNav } from '../core/sim/world';
 import type { TemplateId, WorldState } from '../core/sim/types';
 import type { Ledger } from '../core/economy/ledger';
 import { clearActionQueue } from '../core/sim/action-queue';
@@ -40,9 +42,14 @@ export function visitForeignCmd(world: WorldState, rivalId: RivalId): void {
   floor.zones = zonesFromLayout(layout);
   floor.furniture = furniture;
   floor.guests = [];
-  floor.playerPosition = floor.playerPosition ?? { x: 2, y: 2 };
   world.activeForeignFloorId = floor.id;
   world.scene = { kind: 'FOREIGN', foreignFloorId: floor.id };
+  // Der Startpunkt liegt auf dem foreign-eigenen Raster, nicht auf dem des
+  // eigenen Casinos. Ein alter, inzwischen blockierter Stand wird korrigiert.
+  const start = floor.playerPosition ?? { x: 2, y: 2 };
+  floor.playerPosition = nearestWalkable(worldNav(world), start) ?? start;
+  floor.playerPath = [];
+  floor.playerPathIndex = 0;
   world.lastEvent = `Du betrittst ${rival.name}.`;
 }
 

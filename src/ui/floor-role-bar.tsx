@@ -10,7 +10,7 @@ const COPY: Readonly<Record<Perspective, { readonly label: string; readonly text
 
 const FOREIGN_COPY = {
   label: 'FREMDER FLOOR',
-  text: 'Nur Menü: Karte, Spiele und Jobstationen. Boden und Kamera bleiben gesperrt.',
+  text: 'Begehbar: Boden antippen oder WASD nutzen. Kamera und Karte bleiben wie zu Hause.',
 };
 
 export function FloorRoleBar({ perspective }: { readonly perspective: Perspective }) {

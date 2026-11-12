@@ -1,4 +1,5 @@
 /** Datenvertrag der Auftragskette; die Ausfuehrung liegt in action-queue-run. */
+import { activePlayerPath, activePlayerPathIndex } from './active-player';
 import type { InteractionTarget } from './interaction';
 import type { Point, WorldState } from './types';
 
@@ -92,5 +93,6 @@ export function hasMop(world: WorldState): boolean {
 }
 
 export function arrived(world: WorldState): boolean {
-  return world.player.path.length === 0 || world.player.pathIndex >= world.player.path.length;
+  const path = activePlayerPath(world);
+  return path.length === 0 || activePlayerPathIndex(world) >= path.length;
 }

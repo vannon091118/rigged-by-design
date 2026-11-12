@@ -18,6 +18,7 @@ import { tickPlayerNeedsInWorld } from './player-needs-tick';
 import { deskServiceTicks, exchangeQueue, arriveAtDesk } from './desk-service';
 import { sendGuestToQueue } from './queue-spots';
 import { decay, releaseOrphanSeats, staffTick } from './upkeep';
+import { advanceActivePlayer } from './active-player';
 import { tickForeignFloor } from './foreign-floor-tick';
 import { tickRivalMinds } from './rival-ai/tick';
 import type { Guest, WorldState } from './types';
@@ -149,12 +150,9 @@ export function tickWorld(world: WorldState, ledger: Ledger, prng: Prng): void {
   recoverPlayer(world.player.rpg, world.tick);
   // Die Kampf-Rueckmeldung ist ein kurzer Nachhall, kein Zustand: sie laeuft mit dem Tick ab.
   if (world.fightFx && world.tick > world.fightFx.untilTick) world.fightFx = null;
-  // Speed-Stufen laufen mehr als einen Pfadschritt pro Tick.
-  const steps = playerStepsPerTick(world.player.rpg);
-  for (let step = 0; step < steps && world.player.pathIndex < world.player.path.length; step += 1) {
-    world.player.position = { ...world.player.path[world.player.pathIndex]! };
-    world.player.pathIndex += 1;
-  }
+  // Speed-Stufen laufen mehr als einen Pfadschritt pro Tick – auf dem Boden,
+  // auf dem die Figur tatsaechlich steht, nicht immer im eigenen Casino.
+  advanceActivePlayer(world, playerStepsPerTick(world.player.rpg));
   // Rivalen handeln vor der Runtime: ihre RIVAL_ACTION-Facts wirken im selben Tick.
   tickRivalMinds(world);
   // Ein Lauf pro Tick: alle Quellen haben Facts emittiert, jetzt Memory/Trigger/Scheduler.

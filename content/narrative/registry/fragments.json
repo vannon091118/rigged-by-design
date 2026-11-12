@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:6d8f9a6144a9b716bd83113121f1e3b2d5ea2a007268492f8f047de0282d4bee",
+  "contentHash": "sha256:7c2b4c296a3d73770a2869f8e6c944662535815c23f0fd8384426f20d970deb3",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6398,6 +6398,28 @@
       "text": "Rita sah den Fleck nicht, weil sie hinsah, sondern weil sie es gewohnt war. Sie nahm zwei Kacheln mit, nicht eine, und der Lappen war danach genauso nass. Am Automaten zahlte sie weiter denselben Preis, aber das Geraet hielt laenger durch - und niemand im Haus musste ihr erklaeren, welches Attribut dafuer zustaendig war.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-10-floor-work.json"
+    },
+    {
+      "contributionId": "foreign-walkable-01",
+      "turnId": "2026-11-12T08:50Z-foreign-walkable",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "entschlossen",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Tür zum fremden Casino ist keine Sperre, sondern eine Schwelle: Dieselbe Figur trägt ihren Schritt, ihren Blick und ihren leeren Becher über den Boden, während die Automaten nur den Besitzer wechseln. Wer den Raum betritt, darf ihn auch durchqueren – Besitz entscheidet über Rechte, nicht über Beine.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-12-foreign-walkable.json"
     },
     {
       "contributionId": "game-scout-main-merge",

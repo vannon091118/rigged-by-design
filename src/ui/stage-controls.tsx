@@ -1,14 +1,11 @@
 /** Buehnenrand: nur die Kamera-Knoepfe. Tastenkuerzel stehen in der Werkstatt. */
-import { useWorldStore } from '../store/use-world-store';
-
 interface StageControlsProps {
   readonly zoom: (factor: number) => void;
   readonly overview: () => void;
 }
 
 export function StageControls({ zoom, overview }: StageControlsProps) {
-  // Fremd-Floor ist Menue: auch die Kamera-Knoepfe bleiben dort verborgen.
-  if (useWorldStore().scene.kind === 'FOREIGN') return null;
+  // Dieselben Kamera-Knoepfe auf jedem begehbaren Floor, auch im fremden Casino.
   return (
     <div className="stage-zoom" role="group" aria-label="Kamera">
       <button type="button" className="zoom-btn" onClick={() => zoom(0.82)} title="Herauszoomen" aria-label="Herauszoomen">−</button>

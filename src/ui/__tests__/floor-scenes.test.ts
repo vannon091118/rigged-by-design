@@ -2,9 +2,9 @@
  * @test-target: src/ui/floor-scenes.ts
  * @error-code: ERR-3001
  *
- * Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Der
- * Fremd-Floor bleibt Menü; Wohnung und Stadt teilen dagegen Boden und Türen
- * mit dem eigenen Casino.
+ * Die Regel ist die eine Freigabe für Maus, Touch, WASD, E und Enter. Jeder
+ * Floor ist begehbar; der fremde Floor öffnet seinen Boden, aber noch keine
+ * fremden Möbel- oder Gast-Commands.
  */
 import { describe, expect, it } from 'vitest';
 import type { GameView } from '../../store/types';
@@ -29,15 +29,16 @@ describe('Floor-Szenenregel', () => {
     expect(floorTapAllowed('CITY', 'furniture')).toBe(false);
   });
 
-  it('hält den Fremd-Floor für alle Bodenpfade geschlossen', () => {
-    for (const target of ['floor', 'door', 'guest', 'furniture', 'crate', 'stain', 'mop'] as const) {
+  it('macht den fremden Floor begehbar und öffnet dort nur den Boden als Tap-Ziel', () => {
+    expect(floorMovementAllowed('FOREIGN')).toBe(true);
+    expect(floorTapAllowed('FOREIGN', 'floor')).toBe(true);
+    for (const target of ['door', 'guest', 'furniture', 'crate', 'stain', 'mop'] as const) {
       expect(floorTapAllowed('FOREIGN', target)).toBe(false);
     }
-    expect(floorMovementAllowed('FOREIGN')).toBe(false);
   });
 
   it('bewegt den Charakter per WASD in allen begehbaren Szenen', () => {
-    const scenes: GameView['scene']['kind'][] = ['OWN', 'APARTMENT', 'CITY'];
+    const scenes: GameView['scene']['kind'][] = ['OWN', 'APARTMENT', 'CITY', 'FOREIGN'];
     for (const scene of scenes) expect(floorMovementAllowed(scene)).toBe(true);
   });
 });
