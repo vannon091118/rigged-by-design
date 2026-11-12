@@ -1,6 +1,7 @@
 /** Snapshots und kompakte Ketten-Sichten fuer den long-turn Evidenz-Lauf. */
 import type { CityLifeChain } from './city-life-sim';
 import type { CityLifeDecision, CityLifeState, CityResidentState } from './city-life-types';
+import type { ChainRun } from './narrative/chains/chain-types';
 import type { WorldState } from './types';
 
 export type ResidentSnapshot = {
@@ -25,6 +26,12 @@ export type RoutineSample = {
   readonly location: string;
 };
 
+export type ArcSnapshot = {
+  readonly status: string;
+  readonly dueTick: number;
+  readonly eventInstanceId: number | null;
+};
+
 export type CausalChainEvidence = {
   readonly meal: { readonly tick: number; readonly npcId: string; readonly intent: string; readonly hungerDelta: number; readonly moodDelta: number };
   readonly memory: { readonly tick: number; readonly npcId: string; readonly intent: string; readonly memoryId: number | null };
@@ -44,6 +51,12 @@ export const residentSnapshot = (resident: CityResidentState): ResidentSnapshot 
 
 export const citySnapshot = (life: CityLifeState): readonly ResidentSnapshot[] =>
   life.residents.map(residentSnapshot);
+
+export const arcSnapshot = (run: ChainRun | undefined): ArcSnapshot => ({
+  status: run?.status ?? 'MISSING',
+  dueTick: run?.dueTick ?? -1,
+  eventInstanceId: run?.eventInstanceId ?? null,
+});
 
 export const rpgSnapshot = (rpg: WorldState['player']['rpg']): Record<string, number> => ({
   level: rpg.level, xp: rpg.xp, speed: rpg.speedLevel, charisma: rpg.charismaLevel,

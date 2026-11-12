@@ -30,7 +30,7 @@ import { createWorld, ensureStarter } from '../templates';
 import { decay } from '../upkeep';
 import { tickWorld } from '../tick';
 import { buildLongTurnEvidence } from '../living-world-longturn-evidence';
-import { citySnapshot, rpgSnapshot, routineSample, summarizeCausalChain, type RoutineSample } from '../living-world-longturn-snapshots';
+import { arcSnapshot, citySnapshot, rpgSnapshot, routineSample, summarizeCausalChain, type RoutineSample } from '../living-world-longturn-snapshots';
 import { findCausalChain } from '../city-life-sim';
 import type { CityLifeDecision } from '../city-life-types';
 
@@ -58,15 +58,16 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
 
     // Erfahrung startet die naechste Stufe der Ereigniskette, nicht ein UI-Klick.
     processNarrativeRuntime(world, ledger);
-    const run = world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC')!;
-    expect(run.status).toBe('WAITING');
-    expect(run.dueTick).toBe(world.tick + 24);
-    const arcBefore = { status: run.status, dueTick: run.dueTick };
+    const arcBefore = arcSnapshot(world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC'));
+    expect({ status: arcBefore.status, dueTick: arcBefore.dueTick }).toEqual({ status: 'WAITING', dueTick: world.tick + 24 });
 
     for (let i = 0; i < 30; i += 1) tickWorld(world, ledger, prng);
-    const echoSeen = world.narrative.events.some((event) => event.eventId === 'CITY_ENCOUNTER_ECHO_WARM');
+    const echo = world.narrative.events.find((event) => event.eventId === 'CITY_ENCOUNTER_ECHO_WARM');
+    const echoSeen = echo !== undefined;
     expect(echoSeen).toBe(true);
-    const arcAfter = { status: run.status, dueTick: run.dueTick };
+    // Der Lauf wird beim Fortschritt ersetzt; die alte Referenz bleibt WAITING.
+    const arcAfter = arcSnapshot(world.narrative.chains.runs.find((entry) => entry.chainId === 'CITY_ENCOUNTER_ARC'));
+    expect({ status: arcAfter.status, eventInstanceId: arcAfter.eventInstanceId }).toEqual({ status: 'RUNNING', eventInstanceId: echo?.id });
 
     // Umgebung wirkt auf den Gast: derselbe Gast verliert auf Dreck Laune,
     // auf sauberem Boden gewinnt er sie zurueck.
@@ -174,7 +175,7 @@ describe('Living World Long Turn — Ereignisketten und alle Stats', () => {
     runCityAction(world, 'KIEZ_ANSPRECHEN');
     const fedGain = world.reputation - fedReputation;
     expect(fedGain).toBeCloseTo(0.4, 1);
-    console.log(`[longturn] tag=${world.day} hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)} rufHungrig=+${hungryGain.toFixed(2)} rufSatt=+${fedGain.toFixed(2)} ausdauerXp=${world.player.rpg.attributeXp.endurance ?? 0} traits=${traitsBefore.join('|')} -> ${traitsAfter.join('|')} arc=${run.status} echo=${echoSeen}`);
+    console.log(`[longturn] tag=${world.day} hunger=${Math.round(world.player.needs.hunger)} durst=${Math.round(world.player.needs.thirst)} rufHungrig=+${hungryGain.toFixed(2)} rufSatt=+${fedGain.toFixed(2)} ausdauerXp=${world.player.rpg.attributeXp.endurance ?? 0} traits=${traitsBefore.join('|')} -> ${traitsAfter.join('|')} arc=${arcAfter.status} echo=${echoSeen}`);
 
     // Der gesamte lange Turn ueberlebt einen Save/Load-Roundtrip.
     const loaded = replaySave(JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState()))))!;

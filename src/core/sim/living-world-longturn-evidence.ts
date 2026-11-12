@@ -4,7 +4,7 @@
  * Der Test bleibt der ausfuehrende Harness; dieses Modul haelt nur das
  * versionierte JSON-Schema, damit die Testdatei im LOC-Budget bleibt.
  */
-import type { CausalChainEvidence, ResidentSnapshot, RoutineSample } from './living-world-longturn-snapshots';
+import type { ArcSnapshot, CausalChainEvidence, ResidentSnapshot, RoutineSample } from './living-world-longturn-snapshots';
 
 export type LongTurnEvidenceInput = {
   readonly seed: number;
@@ -19,8 +19,8 @@ export type LongTurnEvidenceInput = {
   readonly traitsAfter: readonly string[];
   readonly trainedBefore: Record<string, number>;
   readonly trainedAfter: Record<string, number>;
-  readonly arcBefore: { readonly status: string; readonly dueTick: number };
-  readonly arcAfter: { readonly status: string; readonly dueTick: number };
+  readonly arcBefore: ArcSnapshot;
+  readonly arcAfter: ArcSnapshot;
   readonly echoSeen: boolean;
   readonly actionTrust: number;
   readonly moodOnDirt: number;

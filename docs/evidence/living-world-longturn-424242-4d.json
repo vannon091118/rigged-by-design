@@ -172,7 +172,7 @@
             "dueTick": 24
           },
           "after": {
-            "status": "WAITING",
+            "status": "RUNNING",
             "dueTick": 24
           }
         },
@@ -3330,7 +3330,7 @@
       "dueTick": 24
     },
     "arcAfter": {
-      "status": "WAITING",
+      "status": "RUNNING",
       "dueTick": 24
     },
     "echoSeen": true
