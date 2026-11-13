@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T19:20Z-city-assets",
+  "contributionId": "city-asset-ledger-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "documentation",
+  "function": "document",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Straße führt jetzt Buch über ihr Bild: Jede Fassade, Tür und Laterne trägt eine Rolle, eine Welt und eine Anzeigeskala. Was nur Geometrie ist, bleibt Geometrie und wird nicht als fehlende Textur erfunden.",
+  "directives": []
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "render-r8-city-assets",
+  "claimId": "lane/render/r8-city-assets",
+  "branch": "lane/render/r8-city-assets",
+  "baseSha": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69",
+  "phase": "IMPLEMENTING",
+  "title": "R8: Stadt-Assetpaket und Weltmetadaten als geprüften Vertrag anbinden",
+  "goal": "Stadtassets erhalten Rolle, Welt, ganzzahlige displayScale und Rechteangabe; city-assets.ts wird der eine Metadatenleser mit Test.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "Lokaler Commit steht; Push ist wegen fehlender GitHub-Credentials blockiert. PR/Remote-Beleg vor Merge nachholen.",
+  "revision": 3
+}

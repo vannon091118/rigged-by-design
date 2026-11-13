@@ -36,6 +36,9 @@ interface Entry {
   readonly usedBy: readonly string[];
   readonly evidence: string;
   readonly role: string;
+  readonly world: string;
+  readonly displayScale: number;
+  readonly license: string;
 }
 interface Catalog {
   readonly enums: Readonly<Record<string, readonly string[]>>;
@@ -132,6 +135,11 @@ describe('Asset-Semantik-Katalog: Referenzen und Messfelder', () => {
       check(ref, 'occlusion', entry.occlusion, data.enums.occlusion ?? []);
       check(ref, 'lod', entry.lod, data.enums.lod ?? []);
       check(ref, 'type', entry.type, data.enums.type ?? []);
+      check(ref, 'world', entry.world, data.enums.world ?? []);
+      check(ref, 'license', entry.license, data.enums.license ?? []);
+      if (!Number.isInteger(entry.displayScale) || entry.displayScale < 1) {
+        invalid.push(`${ref}: displayScale=${String(entry.displayScale)}`);
+      }
       if (!isMeasured(entry)) continue;
       check(ref, 'proportion', entry.proportion ?? '', data.enums.proportion ?? []);
       check(ref, 'base', entry.base ?? '', data.enums.base ?? []);

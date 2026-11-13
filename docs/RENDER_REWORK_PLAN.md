@@ -42,7 +42,7 @@ RBD_LIVING_WORLD_EVIDENCE_OUT=docs/evidence/living-world-longturn-424242-4d.json
 | R6 | `floor-camera-bounds.test.ts`: 60×60 vs. 30×10, Fit/Fill getrennt, LOD-Hysterese; zwei Parallax-Ebenen in `stage-backdrop.ts` | Code-/Testbeleg; Q2-Projektion noch nicht sichtbar geprüft |
 | R10 | `src/core/sim/__tests__/apartment-render.test.ts`: fünf Bereiche, neun Rollen, warme Texturen, Haustürvertrag | Vertragstest **und** Browserbild `24-r10-wohnung.png`; S2-09–S2-11 bleiben offen |
 | R11 | `locomotion.ts` + Test und `floor-animate.ts`: vier Frames, zwei Richtungen, Stillstand; Richtung spiegelt nur die Figur | Code-/Testbeleg |
-| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 FAIL** (Welt-/Skalierungs-/Rechtefelder fehlen), **R9 teilweise** (Bewohner haben jetzt Kachel, Weg und Ankunft; der Renderer `city-actors.ts` fehlt noch); keine zweite Stadt erfunden |
+| R7–R9 | `city-exterior`/`city-scene` bleiben die eine Stadtwahrheit; S2-12 ist weiterhin die offene Roadmap-Aufgabe | **R7 teilweise belegt** (Exterieur im Produktionspfad **und** Browserbild `21-r7-stadt.png`); **R8 teilweise belegt** (alle 539 Semantik-Assets und die 10 realen Stadttexturen tragen Rolle, Welt, ganzzahlige `displayScale` und `license`; Sichtabnahme offen), **R9 teilweise** (Bewohner haben jetzt Kachel, Weg und Ankunft; der Renderer `city-actors.ts` fehlt noch); keine zweite Stadt erfunden |
 | R12 | `ambient-plan.ts`/`ambient-layer.ts`: Helligkeit, Sichtradius und Schatten je Tageszeit und Szene, mit 24-Tick-Übergang an den Drittelgrenzen; Wetter fehlt | Teilbeleg; Tageszeit-Ambient, Straßenband, reduced-motion und Übergang im Browser gemessen; Wetter offen |
 
 Lokale Gates auf diesem Stand: `verify:light` PASS, `ci:local` PASS,
@@ -238,7 +238,7 @@ stehen.
 | R5 | PASS (Teil) | `18-r4-materialien.png` | Weiche Lichtfläche über dem Automaten und sichtbare Leuchten, keine Ellipsenschleife im Bild; die 16 Quellen sind nur im Test belegt |
 | R6 | PASS (Teil) | `20-r6-kamera.png` | Weltkante und Parallaxe sichtbar; FIT ist die kleinste Stufe, ein LOD-Wechsel an der Schwelle wurde nicht erzwungen |
 | R7 | PASS (Teil) | `21-r7-stadt.png` | Straßenraum, vier Fassaden und Türen sichtbar; Eintritt über die Wohnungstür, kein Teleport. Der Klick auf die Casino-Tür wurde im Browser nicht durchgeführt (nur Testbeleg) |
-| R8 | FAIL | `asset-semantics.json` (539 Einträge) | Alle Assets tragen `role`, aber keins `world`, `displayScale` oder `license`; `src/render/city/city-assets.ts` fehlt. Der Test prüft einen anderen Pflichtfeldsatz als der Plan |
+| R8 | TEIL | `asset-semantics.json` (539 Einträge), `src/render/city/city-assets.ts`, `city-assets.test.ts` (inkl. Frame-Block) | Alle 539 Einträge tragen jetzt `role`, `world`, `displayScale` und `license`; die 10 realen Stadttexturen sind in `city-assets.ts` typisiert und gegen Manifest/Datei/Laufzeitliste geprüft. Der echte `CityRenderPlan` trägt Welt und Rolle als Pixi-Knotenlabel; ein Test mit Skala 2 belegt, dass `displayScale` Fassade und Gebäudeschatten gemeinsam skaliert. Offen: nur 10 statt der im Audit genannten rund 30 Stadtassets; Boot-Request-Messung im Cloud-Browser nicht möglich (0 Stadt-Requests, Seite hängt vor dem Canvas); keine Pixi-Sichtabnahme |
 | R9 | teilweise | `30-r9-stadtbewohner.png` | Rita, Boris und Mira leben im echten Tick, haben jetzt Kachel, A*-Weg, Ankunftszeit und Zwischenstand (`city-life-movement.ts`); `city-actors.ts` fehlt noch, also zeichnet sie niemand auf der Straße |
 | R10 | PASS (Teil) | `24-r10-wohnung.png` | Vier Bereiche (Schlafen, Kochen, Bad, Wohnen) mit warmer Palette, ohne Neon und Automat; S2-09–S2-11 bleiben als Roadmap-Zeilen offen |
 | R11 | PASS (Teil) | `18-r4-materialien.png` | Figuren bewegen sich sichtbar (Sprechblasen und Positionen ändern sich); ein Richtungswechsel ist im Standbild nicht belegbar, der Frame kommt aus Tick und Phase |
@@ -398,15 +398,17 @@ Textur. Beleg: `28-r2-platzhalter.png` (Übersicht) und
 `29-r2-platzhalter-detail.png` (Zoom). Der Platzhalter ist kein Spielpfad,
 sondern die ehrliche Antwort auf Daten, die keine Rolle haben.
 
-**R8 ist nicht umgesetzt (FAIL).** Von den 539 Einträgen in
-`src/render/assets/asset-semantics.json` tragen alle `role`, aber **kein
-einziger** `world`, `displayScale` oder `license`. Der Test prüft die im JSON
-selbst hinterlegten `commonRequired`-Felder (`category`, `type`, `bounds`,
-`depth`, `occlusion`, `lod`, `interactive`, `usedBy`, `evidence`) — also einen
-anderen Vertrag als den im Plan geforderten. `src/render/city/city-assets.ts`
-fehlt. Damit fehlen die drei Nachweise der Akzeptanz (Welt, Skalierung,
-Rechte) vollständig; ein falscher `displayScale` kann nicht abgelehnt werden,
-weil das Feld nicht existiert.
+**R8 ist teilweise umgesetzt (2026-11-13).** Alle 539 Einträge in
+`src/render/assets/asset-semantics.json` tragen jetzt `role`, `world`,
+`displayScale` und `license`; `commonRequired` und der Test prüfen denselben
+Pflichtfeldsatz. `src/render/city/city-assets.ts` führt die **10 tatsächlich
+vorhandenen** Stadttexturen (4 Fassaden, Tür, Laterne, Bank, Müll, Haltestelle,
+Baum) mit Rolle, Welt `city`, ganzzahliger Anzeigeskala und
+Rechteangabe `operator-confirmed`. Der Test weist falsche Skalen, fremde Welten,
+fehlende Rollen und doppelte IDs/Pfade ab. **Weiter offen:** Straße, Gehweg und
+Kante sind Geometrie und keine Bildassets; die im Audit genannte Zahl von rund
+30 Stadtassets ist am Baum nicht vorhanden. Ein Browser-Screenshot und die
+Boot-Request-Messung fehlen, deshalb bleibt R8 **TEIL**, nicht PASS.
 
 **R9: Fundament jetzt belegt, Darstellung offen.** `CityResidentState` trägt
 seit dem Bewegungs-Schnitt eine Kachel (`position`), einen laufenden Weg
@@ -1066,25 +1068,54 @@ mit Welt-, Skalierungs- und Rechteangaben.
 
 - [ ] Rund 30 Stadtassets aus dem Audit auf Rollen prüfen: Straße, Gehweg,
       Kante, Fassade, Dach, Tür, Fenster, Laterne, Baum, Bank, Müll, Schild.
-- [ ] Jedes neue Asset erhält `role`, `world`, `displayScale` (ganzzahlig) und
+      **Befund 2026-11-13:** real vorhanden sind 10 SVGs (4 Fassaden, Tür,
+      Laterne, Bank, Müll, Haltestelle, Baum); Straße/Gehweg/Kante sind
+      Layoutgeometrie. Die fehlenden 20 werden nicht erfunden.
+- [x] Jedes neue Asset erhält `role`, `world`, `displayScale` (ganzzahlig) und
       `license`; fehlende Felder sind ein Fehler, kein Default.
-- [ ] Nicht genutzte Assets nicht „für später“ laden; Boot-Budget und
-      Bundles nach messbarem Bedarf.
-- [ ] Straßenmaterialien aus R4 wiederverwenden, nicht als zweite
-      Materialtabelle duplizieren.
-- [ ] Test: jede Asset-ID ist eindeutig; jede Rolle hat eine Textur; jedes
+- [x] Nicht genutzte Assets nicht „für später“ laden; Boot-Budget und
+      Bundles nach messbarem Bedarf. `RUNTIME_ART` bleibt bei den zehn
+      vorhandenen Stadttexturen; der Test zählt sie.
+- [x] Straßenmaterialien aus R4 wiederverwenden, nicht als zweite
+      Materialtabelle duplizieren. Der Stadtplan nutzt weiter die bestehenden
+      Bodenmaterialien; dieser Slice legt keine zweite Tabelle an.
+- [x] Test: jede Asset-ID ist eindeutig; jede Rolle hat eine Textur; jedes
       Pflichtfeld ist gesetzt; kein Asset außerhalb der erlaubten Welt.
+      `src/render/city/__tests__/city-assets.test.ts` und
+      `asset-semantics.test.ts` decken den Vertrag ab.
 
 **Akzeptanz**
 
-- [ ] Kein Stadtasset ohne Rolle und Welt.
+- [x] Kein Stadtasset ohne Rolle und Welt. Die zehn vorhandenen Texturen
+      sind vollständig in `city-assets.ts` erfasst und geprüft.
 - [ ] Die Boot-Requests steigen nicht unkontrolliert; die Zahl steht im
-      lokalen Messbericht.
-- [ ] Die Rechteangabe ist pro neuem Asset vorhanden oder der Einsatz ist
-      blockiert.
-- [ ] Ein Asset mit falscher `displayScale` wird vom Test abgelehnt.
+      lokalen Messbericht. Der Test hält den Stadtanteil bei zehn und prüft
+      jeden Pfad gegen `RUNTIME_ART`; eine echte Request-/First-Frame-Messung
+      im Browser steht noch aus. **Messversuch 2026-11-13:**
+      `pnpm run build` (exit 0, 10 Stadt-SVGs in `dist`), danach
+      `python3 -m http.server 3000 --bind 0.0.0.0 --directory dist`.
+      Cloud-Browser: `preview_open` auf die Produktionsseite; die 20
+      Produktions-Chunks kamen mit 200 an, aber **0** Requests unter
+      `/assets/casino/environment/floor/city/`. `preview_wait` auf `canvas`
+      ergab nach 30 s `met: false`; `preview_evaluate` brach nach 10 s und
+      `preview_screenshot` nach 15 s mit Timeout ab. Eine Kontrollseite
+      (`example.com`) antwortete in derselben Sitzung. Damit ist der Sichtpfad
+      als Umgebungsgrenze belegt, die reale Boot-Request-Zahl für die Stadt
+      aber weiterhin offen.
+- [x] Der echte `CityRenderPlan` trägt Welt und Rolle bis in den Pixi-Baum;
+      `displayScale` skaliert Fassade **und** Gebäudeschatten.
+      *(belegt: Frame-Block in `city-assets.test.ts`; Knotenlabel
+      `city:<ROLLE>:<ID>`, Schattenbreite/-höhe mit Skala 2)*
+- [x] Die Rechteangabe ist pro neuem Asset vorhanden oder der Einsatz ist
+      blockiert. Die zehn Stadttexturen tragen `operator-confirmed`.
+- [x] Ein Asset mit falscher `displayScale` wird vom Test abgelehnt.
+      1.5, 0 und -1 sind explizit abgewiesen.
 - [ ] Sichtabnahme: Stadtassets mit Rolle, Welt und Skalierung sichtbar
-      korrekt; Screenshot, Konsole und Probe nach Abschnitt 8.
+      korrekt; Screenshot, Konsole und Probe nach Abschnitt 8. **Offen:**
+      in dieser Umgebung kein lokaler Browserbeleg; `displayScale` ist 1 und
+      ändert das bestehende Bild nicht. Der Cloud-Browser bleibt vor dem
+      ersten Canvas hängen; der deterministische Frame-Test belegt den
+      Pixi-Baum, ersetzt aber keinen Screenshot.
 
 **PixiJS-Falle:** Assets über `Assets.load`/Manifest laden, nicht über
 `Texture.from(url)`. `Assets`-Cache bewusst halten; kein `Assets.reset()` pro
