@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-npc-population",
+  "claimId": "lane/sim/npc-population",
+  "branch": "lane/sim/npc-population",
+  "baseSha": "035d10fc1255a2e1eff925f9c8eb837544d2d1b1",
+  "phase": "CI_PENDING",
+  "title": "NPC-System skalierbar: Besetzung als Funktion des Index, Profil und Schicht fuer jeden Bewohner",
+  "goal": "Jeder gespawnte NPC hat ein Profil, eine Schicht und eigenen Weg; die Stadt waechst beim Betreten der Strasse ueber die kuratierten drei hinaus.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 4
+}

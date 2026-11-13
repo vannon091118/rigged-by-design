@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T04:05Z-npc-population",
+  "contributionId": "city-population-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Drei Gesichter waren der Anfang, nicht die Stadt. Mit dem ersten Schritt vor die Tür füllt sich der Kiez: Aushilfen, Kuriere und Croupiers mit eigenen Namen, Schichten und Eigenschaften, und keiner von ihnen ist Kulisse — jeder hat einen Tag, der irgendwohin führt.",
+  "directives": []
+}

@@ -5,8 +5,12 @@
  * Die Sicht und die Traits lesen diese Kennung; ein Gast mit demselben Namen
  * bleibt ein anderer Mensch. Ein Save ohne Kennung wird beim Laden gebunden,
  * nicht neu erfunden.
+ *
+ * Die Figur zu einer Kennung kommt aus der Besetzung (`city-npc-roster`), damit
+ * dieselbe Regel für Rita, Boris, Mira und jeden weiteren Bewohner gilt.
  */
-import { CITY_NPCS, ensureCityVisitor } from './city-npcs';
+import { ensureCityVisitor } from './city-npcs';
+import { rosterDefById } from './city-npc-roster';
 import type { WorldState } from './types';
 
 /**
@@ -16,9 +20,10 @@ import type { WorldState } from './types';
 export function bindCityIdentities(world: WorldState): void {
   const life = world.cityLife;
   if (!life) return;
+  const seed = life.seed ?? 0;
   let changed = false;
   const residents = life.residents.map((resident) => {
-    const def = CITY_NPCS.find((entry) => entry.id === resident.npcId);
+    const def = rosterDefById(resident.npcId, seed);
     if (!def) return resident;
     const visitorId = ensureCityVisitor(world, def).id;
     if (resident.visitorId === visitorId) return resident;

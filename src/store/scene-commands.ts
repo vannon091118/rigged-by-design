@@ -5,6 +5,8 @@ import { cityDoorEffect } from '../core/sim/city-doors';
 import { CITY_SPAWN } from '../core/sim/city-scene';
 import { playerApartmentModel } from '../core/sim/player-apartment';
 import { clearActionQueue } from '../core/sim/action-queue';
+import { ensureCityPopulation } from '../core/sim/city-life-state';
+import { CITY_POPULATION_STREET } from '../core/sim/city-npc-roster';
 
 interface Deps {
   readonly world: () => WorldState;
@@ -37,6 +39,9 @@ export class SceneCommands {
     if (fromCasino) world.sceneReturnPosition = { ...world.player.position };
     world.activeForeignFloorId = null;
     world.scene = { kind: 'CITY' };
+    // Die Strasse ist keine Dreierbuehne: Beim ersten Schritt vor die Tuer
+    // waechst die Bewohnerschaft, jeder Neue bekommt Profil und Schicht.
+    ensureCityPopulation(world, CITY_POPULATION_STREET);
     // Kein Teleport: Der Casino-Austritt landet an der eigenen Schwelle, der
     // Wohnungsaustritt am Wohnungseingang.
     world.player.position = { ...(fromCasino ? CASINO_STREET_SPAWN : CITY_SPAWN) };

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:e564c21575b803b8e36aeb4539bd37f8f40d89cbb4e7551b598c13fefe333023",
+  "contentHash": "sha256:9b7f55e309445af28fef2d0c23eca2a729983d9ee4811bd6ae8a344a912d478b",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -4437,6 +4437,28 @@
       "text": "Der letzte Gedanke des Tages gehoert dem naechsten.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-08-city-night-52.json"
+    },
+    {
+      "contributionId": "city-population-01",
+      "turnId": "2026-11-13T04:05Z-npc-population",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Drei Gesichter waren der Anfang, nicht die Stadt. Mit dem ersten Schritt vor die Tür füllt sich der Kiez: Aushilfen, Kuriere und Croupiers mit eigenen Namen, Schichten und Eigenschaften, und keiner von ihnen ist Kulisse — jeder hat einen Tag, der irgendwohin führt.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-npc-population.json"
     },
     {
       "contributionId": "city-scene-01",
