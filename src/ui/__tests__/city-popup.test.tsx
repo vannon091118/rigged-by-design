@@ -9,7 +9,11 @@
  */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { Ledger } from '../../core/economy/ledger';
 import { cityOf, cityView } from '../../core/sim/city';
+import { advanceCityGrowth } from '../../core/sim/city-growth';
+import { cityGrowthView } from '../../core/sim/city-growth-view';
+import { createCityScene } from '../../core/sim/city-scene';
 import { ensureCityLife, ensureCityPopulation } from '../../core/sim/city-life-state';
 import { createWorld, ensureStarter } from '../../core/sim/templates';
 import { worldStore } from '../../store/use-world-store';
@@ -37,7 +41,7 @@ describe('Stadtfenster', () => {
     expect(generated?.npcId).toBe('npc_4');
 
     const meet = vi.spyOn(worldStore, 'city').mockImplementation(() => {});
-    render(<CityPopup city={city} onClose={() => {}} />);
+    render(<CityPopup city={city} growth={cityGrowthView(world, new Ledger())} onClose={() => {}} />);
     fireEvent.click(screen.getByRole('button', { name: `${generated!.name} ansprechen` }));
 
     expect(meet).toHaveBeenCalledWith({ kind: 'meet', npcId: 'npc_4' });
@@ -57,8 +61,35 @@ describe('Stadtfenster', () => {
     };
     const city = cityView(world);
     const away = city.residents.find((resident) => resident.location !== city.location)!;
-    render(<CityPopup city={city} onClose={() => {}} />);
+    render(<CityPopup city={city} growth={cityGrowthView(world, new Ledger())} onClose={() => {}} />);
     const button = screen.getByRole('button', { name: `${away.name} ansprechen` });
     expect(button).toHaveProperty('disabled', true);
+  });
+
+  it('zeigt Arbeitsmarkt, Bautraeger-Kapital und den letzten Bau (#526)', () => {
+    const world = createWorld('SMALL');
+    ensureStarter(world);
+    world.cityScene = createCityScene();
+    ensureCityLife(world);
+    ensureCityPopulation(world, 60);
+    const ledger = new Ledger({});
+    world.day = 1;
+    const report = advanceCityGrowth(world, ledger)!;
+
+    render(
+      <CityPopup
+        city={cityView(world)}
+        growth={cityGrowthView(world, ledger)}
+        onClose={() => {}}
+      />,
+    );
+
+    const growth = screen.getByLabelText('Stadtwachstum');
+    expect(growth.textContent).toContain('Bewohner 60');
+    expect(growth.textContent).toContain(`Joblose ${report.joblessBefore - 5}`);
+    expect(growth.textContent).toContain('Bauträger-Kapital');
+    expect(growth.textContent).toContain('Ein Bau ist möglich.');
+    expect(growth.textContent).toContain(report.building.name);
+    expect(growth.textContent).toContain('steht im Protokoll');
   });
 });

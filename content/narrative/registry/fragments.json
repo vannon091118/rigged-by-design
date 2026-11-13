@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:30acc45fedf245fe74be99a376c5c8adb31abac2ba63db4160188d0c449449c7",
+  "contentHash": "sha256:cda4b7434f64f98c39bddd02f16220932e95fe38df4ba9d2f8a8b3f9012fdd25",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -3359,6 +3359,28 @@
       "text": "Der Bauträger baute dreimal und hörte dann auf, als hätte jemand das Geld weggeräumt. Erst war es nur ein Konto, das leer lief: sechstausend für den Anfang, achtzehnhundert je Haus, danach Stille. Jetzt steht die Förderung als eigene Zeile im Buch — sie deckt genau, was fehlt, und nur dann, wenn ein Bau ansteht. Wer weiterbaut, findet den Grund im Ledger; wer nicht baut, sieht den Grund am freien Platz und an den Joblosen.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-growth-finance.json"
+    },
+    {
+      "contributionId": "city-growth-observability-01",
+      "turnId": "2026-11-13T23:55Z-city-growth-observability",
+      "agentId": "agent-jenova-lokal",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Rohbau ohne Zeile im Protokoll ist nur ein Gerücht mit Wänden. Jetzt steht jeder Neubau im Buch: wie viele Joblose ihn ausgelöst haben, welches Grundstück belegt wurde, was er gekostet hat und wie viele Stellen er bringt. Im Stadtfenster steht derselbe Stand, und wenn gerade nichts wächst, nennt es den Grund — fehlende Arbeit, fehlender Platz, kein stilles Schulterzucken.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-growth-observability.json"
     },
     {
       "contributionId": "city-issues-sweep-01",

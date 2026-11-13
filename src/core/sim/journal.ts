@@ -10,6 +10,8 @@ interface JournalRefs {
   readonly crateId?: number;
   readonly agentId?: number;
   readonly rivalId?: string;
+  /** Neubau, auf den sich ein Stadtwachstums-Ereignis bezieht. */
+  readonly buildingId?: string;
 }
 
 export interface JournalEvent {

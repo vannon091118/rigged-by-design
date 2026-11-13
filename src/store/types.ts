@@ -15,6 +15,7 @@ import type { RenovationView } from '../core/sim/renovation';
 import type { MachineHallView } from '../core/sim/machine-hall';
 import type { FloorWorkView } from '../core/sim/floor-work';
 import type { CityView } from '../core/sim/city';
+import type { CityGrowthView } from '../core/sim/city-growth-view';
 import type { ActionTaskView } from '../core/sim/action-queue';
 import type { VenueView } from '../core/sim/venue-event';
 import type { CityExteriorModel } from '../core/sim/city-exterior';
@@ -141,6 +142,8 @@ export interface GameView {
   readonly ledgerCirculating: VaCoinMicro;
   /** Stadt-Sicht: Orte, Energie, Zweige und blockierte Handlungen. */
   readonly city: CityView;
+  /** Stadtwachstum: Arbeitsmarkt, Bauträger-Kapital, freie Plätze, letzter Bau. */
+  readonly cityGrowth: CityGrowthView;
   /** Nur in der Stadt: die eine begehbare Aussenwelt fuer den Renderer. */
   readonly cityExterior: CityExteriorModel | null;
   /** Nur in der Stadt: Bewohner als Strassenfiguren, stabile Kennung je NPC. */

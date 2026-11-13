@@ -1,0 +1,21 @@
+{
+  "agentId": "agent-jenova-lokal",
+  "turnId": "2026-11-13T23:55Z-city-growth-observability",
+  "contributionId": "city-growth-observability-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Rohbau ohne Zeile im Protokoll ist nur ein Gerücht mit Wänden. Jetzt steht jeder Neubau im Buch: wie viele Joblose ihn ausgelöst haben, welches Grundstück belegt wurde, was er gekostet hat und wie viele Stellen er bringt. Im Stadtfenster steht derselbe Stand, und wenn gerade nichts wächst, nennt es den Grund — fehlende Arbeit, fehlender Platz, kein stilles Schulterzucken.",
+  "directives": []
+}

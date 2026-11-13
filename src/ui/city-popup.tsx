@@ -1,18 +1,28 @@
-/** Stadt-Fenster: Orte, Handlungen, Energie und die zwei Progression-Zweige. */
+/** Stadt-Fenster: Orte, Handlungen, Energie, Progression und das Wachstum. */
 import type { CityView } from '../core/sim/city';
+import type { CityGrowthBlock, CityGrowthView } from '../core/sim/city-growth-view';
 import { worldStore } from '../store/use-world-store';
+import { vc } from './format';
 
 interface CityPopupProps {
   readonly city: CityView;
+  readonly growth: CityGrowthView;
   readonly onClose: () => void;
 }
+
+/** Der Stillstandsgrund in Klartext; die UI leitet keinen eigenen Zustand ab. */
+const GROWTH_BLOCK_LABEL: Record<CityGrowthBlock, string> = {
+  READY: 'Ein Bau ist möglich.',
+  NO_JOBLESS: 'Keine Joblosen: die Stadt hat genug Arbeit.',
+  NO_PLOTS: 'Alle Grundstücke sind bebaut.',
+};
 
 /**
  * Die Anzeige rechnet nichts nach: Energie, Raenge und Blockadegruende kommen
  * aus `cityView`. Ein Klick ruft genau eine Handlung; das Ergebnis steht
  * danach als Text und Rang im selben Fenster.
  */
-export function CityPopup({ city, onClose }: CityPopupProps) {
+export function CityPopup({ city, growth, onClose }: CityPopupProps) {
   const done = city.completed.length > 0;
   return (
     <div className="popup city-popup" role="dialog" aria-label="Stadt">
@@ -22,6 +32,24 @@ export function CityPopup({ city, onClose }: CityPopupProps) {
       </header>
 
       <p className="city-note">{city.note}</p>
+
+      {/* Dieselbe cityGrowthView wie im Snapshot: kein nachgerechneter Zustand. */}
+      <div className="city-energy" aria-label="Stadtwachstum">
+        <b>Stadtwachstum · {growth.built} Neubauten</b>
+        <span>
+          Bewohner {growth.residents} · Jobs {growth.jobs} · Joblose {growth.jobless}
+          {' '}· freie Grundstücke {growth.freePlots}
+        </span>
+        <span>Bauträger-Kapital {vc(growth.capital)} · {GROWTH_BLOCK_LABEL[growth.blockedReason]}</span>
+        {growth.lastBuild
+          ? (
+            <span>
+              Letzter Bau (Tag {growth.lastBuild.day}): <b>{growth.lastBuild.name}</b>
+              {' '}auf {growth.lastBuild.plotLabel}, {vc(growth.lastBuild.cost)} — steht im Protokoll.
+            </span>
+          )
+          : <span>Noch kein Neubau; das Protokoll nennt jeden Bau mit Ursache und Folge.</span>}
+      </div>
 
       <div aria-label="Bewohner" style={{ display: 'grid', gap: 6 }}>
         {city.residents.map((resident) => (

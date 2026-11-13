@@ -4,9 +4,9 @@
  *
  * Die Stadt baut auf ein Signal, nicht auf einen Timer: Ohne Joblose passiert
  * nichts, ohne freien Platz auch nicht, und mit beidem entsteht ein Gebäude auf
- * einem festen Platz — samt Wänden, neuem Slot und einer Buchung, die im Ledger
- * steht. Reicht das Kapital nicht, trägt die Stadtfoerderung die Differenz; der
- * deterministische Langlauf belegt mehr als die drei Bauten des Startkapitals.
+ * einem festen Platz — samt Wänden, neuem Slot, Buchung und genau einem
+ * Journal-Ereignis. Reicht das Kapital nicht, trägt die Stadtfoerderung die
+ * Differenz; der deterministische Langlauf belegt mehr als drei Bauten.
  */
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
@@ -16,11 +16,12 @@ import { createWorld, ensureStarter } from '../templates';
 import { createCityScene } from '../city-scene';
 import { ensureCityLife, ensureCityPopulation } from '../city-life-state';
 import {
-  cityBuildings, cityGrowthView, jobMarket, advanceCityGrowth,
+  cityBuildings, jobMarket, advanceCityGrowth,
   BUILD_COST, BUILDER_ACCOUNT, BUILDER_START_CAPITAL,
 } from '../city-growth';
-import { CITY_PLOTS } from '../city-plots';
 import { JOB_CAPACITY } from '../city-employment';
+import type { JournalEvent } from '../journal';
+import { CITY_PLOTS } from '../city-plots';
 import { EXTERNAL, EXTERNAL_WORK } from '../money';
 import { replaySave, toSavedGame } from '../../../store/save';
 
@@ -33,24 +34,18 @@ const start = (residents = 12) => {
   return { world, ledger: new Ledger({}), prng: new Prng(randomSeed()) };
 };
 
-describe('Bauträger und Wachstum', () => {
-  it('zählt Stellen und Joblose aus Gebäuden und Bewohnern', () => {
-    const { world } = start(12);
-    const market = jobMarket(cityBuildings(world), world.cityLife.residents);
-    expect(market.jobs).toBeGreaterThan(12);
-    expect(market.openSlots).toBeGreaterThan(0);
-    expect(market.jobless).toBe(0);
-    expect(cityGrowthView(world, new Ledger({})).canBuild).toBe(false);
-  });
+const buildEvents = (world: { journal: readonly JournalEvent[] }): JournalEvent[] =>
+  world.journal.filter((event) => event.subject.startsWith('Neubau: '));
 
-  it('baut ohne Joblose nicht, nennt den Grund und zieht keine Foerderung auf Vorrat', () => {
+describe('Bauträger und Wachstum', () => {
+  it('baut ohne Joblose nicht und schreibt kein Ereignis', () => {
     const { world, ledger } = start(12);
-    expect(cityGrowthView(world, ledger).blockedReason).toBe('NO_JOBLESS');
     expect(advanceCityGrowth(world, ledger)).toBeNull();
     expect(ledger.getBalance(BUILDER_ACCOUNT)).toBe(0);
+    expect(buildEvents(world)).toHaveLength(0);
   });
 
-  it('baut mit Joblosen und Kapital auf einem festen Platz, bucht den Bau', () => {
+  it('baut mit Joblosen auf einem festen Platz, bucht den Bau und protokolliert ihn', () => {
     const { world, ledger } = start(60);
     const before = cityBuildings(world).length;
     const report = advanceCityGrowth(world, ledger);
@@ -68,6 +63,14 @@ describe('Bauträger und Wachstum', () => {
     // Er steht als Wand in der Szene, nicht nur im Register.
     const walls = world.cityScene!.layout.edges.filter((edge) => edge.kind === 'WALL').length;
     expect(walls).toBeGreaterThan(0);
+    // Genau ein Bau, genau ein Bau-Ereignis mit Ursache und Folge (#526).
+    const events = buildEvents(world);
+    expect(events).toHaveLength(1);
+    expect(events[0]!.kind).toBe('SYSTEM');
+    expect(events[0]!.amount).toBe(BUILD_COST);
+    expect(events[0]!.refs?.buildingId).toBe(report!.building.id);
+    expect(events[0]!.effect).toContain(`${JOB_CAPACITY.SHOP} neue Stellen`);
+    expect(world.lastEvent).toBe(events[0]!.effect);
   });
 
   it('baut höchstens ein Gebäude pro Tag, auch über die dritte Finanzierung hinaus', () => {
@@ -75,6 +78,7 @@ describe('Bauträger und Wachstum', () => {
     const first = advanceCityGrowth(world, ledger);
     expect(first).not.toBeNull();
     expect(advanceCityGrowth(world, ledger)).toBeNull();
+    expect(buildEvents(world)).toHaveLength(1);
     world.day += 1;
     world.tick += 600;
     const second = advanceCityGrowth(world, ledger);
@@ -89,6 +93,7 @@ describe('Bauträger und Wachstum', () => {
     expect(third).not.toBeNull();
     expect(ledger.entries.some((entry) => entry.from === EXTERNAL && entry.to === BUILDER_ACCOUNT
       && entry.reason.includes('Stadtfoerderung'))).toBe(true);
+    expect(buildEvents(world)).toHaveLength(3);
   });
 
   it('belegt im deterministischen Langlauf mehr als drei Bauten bei der vorgesehenen Population', () => {
@@ -113,10 +118,9 @@ describe('Bauträger und Wachstum', () => {
     // nicht drei: danach fehlt der Platz, nicht das Geld (#525).
     expect(first.ids).toHaveLength(5);
     expect(first.ids).toEqual(second.ids);
-    // Erst zwei Gewerbebauten (Arbeit), dann drei Wohnhaeuser (Wohnraum).
     expect(first.kinds).toEqual(['SHOP', 'SHOP', 'RESIDENCE', 'RESIDENCE', 'RESIDENCE']);
     expect(first.world.cityGrowth?.built).toHaveLength(5);
-    expect(cityGrowthView(first.world, first.ledger).blockedReason).toBe('NO_PLOTS');
+    expect(buildEvents(first.world)).toHaveLength(5);
     // Jede Bewegung bleibt im Ledger: Startkapital, Baukosten, Foerderung.
     const entries = first.ledger.entries;
     expect(entries.filter((entry) => entry.reason === 'Bautraeger: Startkapital')).toHaveLength(1);
@@ -138,17 +142,18 @@ describe('Bauträger und Wachstum', () => {
     }
     expect(built).toBe(free);
     expect(cityBuildings(world)).toHaveLength(CITY_PLOTS.length);
-    // Ausdruecklicher Endzustand statt stiller Deckel (#525).
-    expect(cityGrowthView(world, ledger).blockedReason).toBe('NO_PLOTS');
     expect(ledger.entries.filter((entry) => entry.reason.startsWith('Bau: '))).toHaveLength(built);
+    expect(buildEvents(world)).toHaveLength(built);
   });
 
-  it('behält Gebäude und Wachstumsstand über Save/Load', () => {
+  it('behält Gebäude, Wachstumsstand und Bau-Ereignis über Save/Load', () => {
     const { world, ledger, prng } = start(60);
     const report = advanceCityGrowth(world, ledger)!;
     const saved = JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState())));
     const loaded = replaySave(saved)!;
     expect(loaded.world.cityGrowth?.built).toEqual([report.building.id]);
     expect(cityBuildings(loaded.world).some((building) => building.id === report.building.id)).toBe(true);
+    // Das Bau-Ereignis ueberlebt im Archiv und bleibt dem Gebaeude zugeordnet.
+    expect(loaded.world.archive.some((event) => event.refs?.buildingId === report.building.id)).toBe(true);
   });
 });
