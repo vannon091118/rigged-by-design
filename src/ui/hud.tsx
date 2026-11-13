@@ -41,7 +41,13 @@ export function Hud({ view, perspective, onPerspective, onSkill, onBrandTap, onG
   const broken = machines.filter((item) => item.damaged || item.condition < 85 || item.clogged).length;
   const occupied = machines.reduce((sum, item) => sum + item.occupants.length, 0);
   const waiting = view.guests.filter((entry) => (view.guestMoney[entry.id]?.pending ?? 0) > 0).length;
-  const sceneTip = view.day === 1 && view.onboarding.step !== 'DONE' ? SCENE_TIP[view.scene.kind] : null;
+  // Am ersten Abend führt der Tipp zum Gerät: ohne Automaten kommt kein Gast (S1-06).
+  const ownTip = machines.length > 0
+    ? SCENE_TIP.OWN
+    : 'Die Starter-Kiste wartet am Eingang: anklicken, dann eine freie Fläche. Erst mit einem Automaten kommt der erste Gast.';
+  const sceneTip = view.day === 1 && view.onboarding.step !== 'DONE'
+    ? (view.scene.kind === 'OWN' ? ownTip : SCENE_TIP[view.scene.kind])
+    : null;
   const mood = view.guests.length ? view.mood : 0;
   const pact = view.exclusionPact ? `Pakt ${vc(view.exclusionPact.limit, 0)}` : 'kein Pakt';
   const goal = startGoal(view);

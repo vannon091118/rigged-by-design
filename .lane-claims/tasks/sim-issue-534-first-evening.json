@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-534-first-evening",
+  "claimId": "lane/sim/issue-534-first-evening",
+  "branch": "lane/sim/issue-534-first-evening",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "phase": "CI_PENDING",
+  "title": "Ersten Abend bis zum ersten Automaten: Kiste fuehrt sichtbar zum Geraet (#534, S1-06)",
+  "goal": "Ein frischer Start fuehrt ohne Sackgasse von der Eroeffnung ueber die Wohnung zum eigenen Floor; der erste Gast kommt erst, wenn ein Automat steht, und findet ihn auch nach Save/Load.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 7
+}
