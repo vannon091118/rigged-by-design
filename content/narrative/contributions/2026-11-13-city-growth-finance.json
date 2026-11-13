@@ -1,0 +1,21 @@
+{
+  "agentId": "agent-jenova-lokal",
+  "turnId": "2026-11-13T23:30Z-city-growth-finance",
+  "contributionId": "city-growth-finance-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Bauträger baute dreimal und hörte dann auf, als hätte jemand das Geld weggeräumt. Erst war es nur ein Konto, das leer lief: sechstausend für den Anfang, achtzehnhundert je Haus, danach Stille. Jetzt steht die Förderung als eigene Zeile im Buch — sie deckt genau, was fehlt, und nur dann, wenn ein Bau ansteht. Wer weiterbaut, findet den Grund im Ledger; wer nicht baut, sieht den Grund am freien Platz und an den Joblosen.",
+  "directives": []
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-525-builder-finance",
+  "claimId": "lane/sim/issue-525-builder-finance",
+  "branch": "lane/sim/issue-525-builder-finance",
+  "baseSha": "3df726c581b0e44f1e5a4eb53be944fa57d6fb22",
+  "phase": "CI_PENDING",
+  "title": "Bautraeger-Finanzierung: Stadtfoerderung statt stillem Drei-Bauten-Deckel (#525)",
+  "goal": "Das Stadtwachstum hat ein ausdrueckliches Finanzierungsmodell: Startkapital als Anschub, danach deckt die Stadtfoerderung die fehlende Differenz, jede Bewegung als Ledger-Zeile; der Stillstandsgrund ist explizit.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}
