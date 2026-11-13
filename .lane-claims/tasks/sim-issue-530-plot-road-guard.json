@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-530-plot-road-guard",
+  "claimId": "lane/sim/issue-530-plot-road-guard",
+  "branch": "lane/sim/issue-530-plot-road-guard",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "phase": "CI_PENDING",
+  "title": "Plot-Guard prueft die Fahrbahnmaske, Casino verlaesst die Querstrasse",
+  "goal": "#530",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 5
+}

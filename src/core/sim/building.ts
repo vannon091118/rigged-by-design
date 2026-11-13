@@ -149,7 +149,7 @@ export const CITY_PRESET_BUILDINGS: readonly BuildingState[] = Object.freeze([
     id: 'bld_casino_grand',
     name: 'Casino Grand',
     kind: 'CASINO',
-    footprint: { x: 12, y: 22, w: 20, h: 14 },
+    footprint: { x: 12, y: 22, w: 16, h: 14 },
     entrance: { x: 22, y: 22 },
     interiorLayoutId: 'layout_casino_grand',
     operatingHours: { openHour: 14, closeHour: 6 },

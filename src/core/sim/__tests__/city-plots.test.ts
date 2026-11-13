@@ -14,6 +14,9 @@ import { randomSeed } from '../../../test/random-seed';
 import { createWorld, ensureStarter } from '../templates';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_PRESET_BUILDINGS } from '../building';
+import { streetPropFootprintTiles } from '../city-exterior';
+import { createCityScene } from '../city-scene';
+import { isCityRoadTile, roadTilesIn } from '../city-roads';
 import {
   CITY_PLOTS, buildingOnPlot, builtPlots, plotAt, plotAtRect, plotForBuilding,
   plotRegisterIssues,
@@ -65,6 +68,35 @@ describe('Grundstücksregister', () => {
     const strayIssues = plotRegisterIssues([...CITY_PRESET_BUILDINGS, stray]);
     expect(strayIssues.some((issue) => issue.code === 'UNREGISTERED_BUILDING')).toBe(true);
     expect(plotAtRect(stray.footprint)).toBeNull();
+  });
+
+  it('erkennt die Fahrbahn unter einem Platz auch nach der Gebaeudebemalung', () => {
+    // Der alte Casino-Footprint reichte bis x=31 in die Querstrasse, war dort
+    // aber schon zu WOOD gemalt: die Pruefung gegen `layout.floor` sah nichts.
+    const casino = CITY_PRESET_BUILDINGS.find((building) => building.id === 'bld_casino_grand')!;
+    expect(roadTilesIn({ x: 12, y: 22, w: 20, h: 14 }).length).toBe(56);
+    expect(roadTilesIn(casino.footprint)).toEqual([]);
+    for (const plot of CITY_PLOTS) expect(roadTilesIn(plot.rect), plot.id).toEqual([]);
+    expect(plotRegisterIssues()).toEqual([]);
+  });
+
+  it('haelt Gebaeude und Requisiten von der Fahrbahn und aus den Fassaden', () => {
+    const city = createCityScene();
+    const inside = (building: (typeof city.exterior.buildings)[number], x: number, y: number) =>
+      x >= building.footprint.x && x < building.footprint.x + building.footprint.w
+      && y >= building.footprint.y && y < building.footprint.y + building.footprint.h;
+    for (const building of city.exterior.buildings) {
+      expect(roadTilesIn(building.footprint), building.id).toEqual([]);
+    }
+    for (const prop of city.exterior.props) {
+      for (const tile of streetPropFootprintTiles(prop)) {
+        expect(isCityRoadTile(tile.x, tile.y), `${prop.id} @ ${tile.x},${tile.y}`).toBe(false);
+        expect(
+          city.exterior.buildings.some((building) => inside(building, tile.x, tile.y)),
+          `${prop.id} @ ${tile.x},${tile.y}`,
+        ).toBe(false);
+      }
+    }
   });
 
   it('braucht kein Feld im Save: der Register folgt aus der Karte', () => {

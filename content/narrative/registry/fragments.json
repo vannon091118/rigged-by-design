@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:1870647c9b7cf616ff6f8810776bdb0ca9e359a6352c06c5b4ea3f76a8f0b346",
+  "contentHash": "sha256:7b023301575f87617b289bcc4be0aaa7e9814764dc0008cbf05094b7c759be9a",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -4659,6 +4659,28 @@
       "source": "content/narrative/contributions/2026-11-14-residence-role.json"
     },
     {
+      "contributionId": "city-road-guard-01",
+      "turnId": "2026-11-13T22:58Z-city-road-guard",
+      "agentId": "cloud-agent-2",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Die Querstraße bleibt frei: Wer baut, baut auf seinem Grundstück, und der Asphalt dazwischen gehört niemandem.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-city-road-guard.json"
+    },
+    {
       "contributionId": "city-scene-01",
       "turnId": "2026-11-08T02:00Z-city-scene-01",
       "agentId": "buffy",
@@ -5842,7 +5864,7 @@
       "flags": [
         "narrativ"
       ],
-      "text": "Im Kiez wird nichts vergessen: Erledigte Bauplätze stehen im Register weiter, sie versperren nur keinem mehr den Weg.",
+      "text": "Im Kiez wird nichts vergessen: Erledigte Bauplätze bleiben verzeichnet, sie versperren aber keinem mehr den Weg.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-claim-register-archive.json"
     },

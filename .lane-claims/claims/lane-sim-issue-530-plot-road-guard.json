@@ -1,0 +1,23 @@
+{
+  "id": "lane/sim/issue-530-plot-road-guard",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-530-plot-road-guard",
+  "baseSha": "22e28c6af35346766bc3890bbd10aeac193b3c83",
+  "task": "Plot-Guard prueft die Fahrbahnmaske, Casino verlaesst die Querstrasse",
+  "goal": "#530",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "content/",
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-issue-530-plot-road-guard.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "22e28c6af35346766bc3890bbd10aeac193b3c83"
+}

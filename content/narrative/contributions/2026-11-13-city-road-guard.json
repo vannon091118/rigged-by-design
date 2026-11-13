@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T22:58Z-city-road-guard",
+  "contributionId": "city-road-guard-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Die Querstraße bleibt frei: Wer baut, baut auf seinem Grundstück, und der Asphalt dazwischen gehört niemandem.",
+  "directives": []
+}
