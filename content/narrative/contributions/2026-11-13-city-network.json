@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:50Z-city-network",
+  "contributionId": "city-network-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Vier Türen, ein Netz: Jeder Weg in der Stadt führt über dieselbe Kante.",
+  "directives": []
+}

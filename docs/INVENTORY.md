@@ -112,7 +112,7 @@ Branch-Schutz: klassischer Schutz auf `main` (kein Ruleset), **keine Required-St
 ### Testkatalog (generiert)
 
 <!-- TEST_CATALOG_START -->
-Summe: 369 Dateien — contract 204 · integration 98 · governance 54 · statistics 6 · performance 7.
+Summe: 370 Dateien — contract 205 · integration 98 · governance 54 · statistics 6 · performance 7.
 
 | Testdatei | System | Beweisklasse | Lokal | Deklariertes Ziel |
 | --- | --- | --- | --- | --- |
@@ -245,6 +245,7 @@ Summe: 369 Dateien — contract 204 · integration 98 · governance 54 · statis
 | `src/core/sim/__tests__/city-life-schedule-target.test.ts` | sim | contract | ja | `src/core/sim/city-life-targets.ts` |
 | `src/core/sim/__tests__/city-life.test.ts` | sim | contract | ja | `src/core/sim/city-life.ts` |
 | `src/core/sim/__tests__/city-loop-walkthrough.test.ts` | sim | contract | ja | `src/core/sim/city.ts` |
+| `src/core/sim/__tests__/city-network.test.ts` | sim | contract | ja | `src/core/sim/city-network.ts` |
 | `src/core/sim/__tests__/city-plots.test.ts` | sim | contract | ja | `src/core/sim/city-plots.ts` |
 | `src/core/sim/__tests__/city-population.test.ts` | sim | contract | ja | `src/core/sim/city-npc-roster.ts` |
 | `src/core/sim/__tests__/city-props-solid.test.ts` | sim | contract | ja | `src/core/sim/city-exterior.ts` |
@@ -675,10 +676,10 @@ Der Block ist deterministisch: eine Zeile je Pfad aus `git ls-files`, ein Eintra
 
 | Feld | Wert |
 | --- | --- |
-| Getrackte Dateien | 2894 |
-| Gelistete Dateien | 2894 |
+| Getrackte Dateien | 2901 |
+| Gelistete Dateien | 2901 |
 | Getrackte Ordner | 115 |
-| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (39), artifacts (1), content (1047), docs (103), packages (27), public (571), scripts (116), src (969) |
+| Bereiche | (Wurzel) (10), .githooks (3), .github (8), .lane-claims (42), artifacts (1), content (1049), docs (103), packages (27), public (571), scripts (116), src (971) |
 
 Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine Sammelzeile und keine Ausnahme. `verify:docs` vergleicht den Block mit `git ls-files` und wird rot, sobald eine Datei fehlt oder ein Pfad nicht mehr getrackt ist.
 
@@ -690,10 +691,10 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.github/ISSUE_TEMPLATE/` — 3 Datei(en)
 - `.github/workflows/` — 3 Datei(en)
 - `.lane-claims/` — 1 Datei(en)
-- `.lane-claims/claims/` — 21 Datei(en)
-- `.lane-claims/tasks/` — 17 Datei(en)
+- `.lane-claims/claims/` — 23 Datei(en)
+- `.lane-claims/tasks/` — 18 Datei(en)
 - `artifacts/living-world/` — 1 Datei(en)
-- `content/narrative/contributions/` — 1043 Datei(en)
+- `content/narrative/contributions/` — 1045 Datei(en)
 - `content/narrative/registry/` — 1 Datei(en)
 - `content/narrative/turns/` — 1 Datei(en)
 - `content/narrative/vocabulary/` — 2 Datei(en)
@@ -767,8 +768,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/physics/__tests__/` — 1 Datei(en)
 - `src/core/rng/` — 4 Datei(en)
 - `src/core/rng/__tests__/` — 3 Datei(en)
-- `src/core/sim/` — 174 Datei(en)
-- `src/core/sim/__tests__/` — 158 Datei(en)
+- `src/core/sim/` — 175 Datei(en)
+- `src/core/sim/__tests__/` — 159 Datei(en)
 - `src/core/sim/narrative/` — 39 Datei(en)
 - `src/core/sim/narrative/__tests__/` — 5 Datei(en)
 - `src/core/sim/narrative/chains/` — 11 Datei(en)
@@ -818,6 +819,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims.json` — [ — gelesen: 936 Zeilen
 - `.lane-claims/claims/lane-game-apartment-start.json` — { — gelesen: 20 Zeilen
 - `.lane-claims/claims/lane-governance-apartment-start-integration.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-governance-claim-closeout-535.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-549.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-claim-closeout-550.json` — { — gelesen: 21 Zeilen
 - `.lane-claims/claims/lane-governance-post-merge-568.json` — { — gelesen: 18 Zeilen
@@ -835,6 +837,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/claims/lane-sim-issue-530-plot-road-guard.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-sim-issue-549-bet-slip-register.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-sim-issue-550-odds-crowd.json` — { — gelesen: 24 Zeilen
+- `.lane-claims/claims/lane-sim-issue-556-city-network.json` — { — gelesen: 23 Zeilen
 - `.lane-claims/claims/lane-store-issue-506-door-walk.json` — { — gelesen: 24 Zeilen
 - `.lane-claims/claims/lane-ui-polish-chrome.json` — { — gelesen: 58 Zeilen
 - `.lane-claims/tasks/game-apartment-start.json` — { — gelesen: 17 Zeilen
@@ -853,6 +856,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `.lane-claims/tasks/sim-issue-530-plot-road-guard.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-549-bet-slip-register.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/sim-issue-550-odds-crowd.json` — { — gelesen: 17 Zeilen
+- `.lane-claims/tasks/sim-issue-556-city-network.json` — { — gelesen: 17 Zeilen
 - `.lane-claims/tasks/store-issue-506-door-walk.json` — { — gelesen: 17 Zeilen
 - `.mailmap` — Eine Anzeige-Identitaet fuer die History: Werkzeuge und Sandboxen committen — gelesen: 6 Zeilen
 - `.npmrc` — allow-scripts=true — gelesen: 2 Zeilen
@@ -1884,9 +1888,11 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-13-city-encounter-roster.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-growth-finance.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-growth-observability.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-city-network.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-plots-growth.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-population-load.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-city-road-guard.json` — { — gelesen: 21 Zeilen
+- `content/narrative/contributions/2026-11-13-claim-closeout-535.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-closeout-550.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-closeout.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-13-claim-register-archive.json` — { — gelesen: 21 Zeilen
@@ -1903,8 +1909,8 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `content/narrative/contributions/2026-11-14-residence-role.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-scene-frame-doors.json` — { — gelesen: 21 Zeilen
 - `content/narrative/contributions/2026-11-14-staff-actor-state.json` — { — gelesen: 21 Zeilen
-- `content/narrative/registry/fragments.json` — { — gelesen: 23390 Zeilen
-- `content/narrative/turns/manifest.json` — { — gelesen: 4181 Zeilen
+- `content/narrative/registry/fragments.json` — { — gelesen: 23412 Zeilen
+- `content/narrative/turns/manifest.json` — { — gelesen: 4185 Zeilen
 - `content/narrative/vocabulary/classification.json` — { — gelesen: 199 Zeilen
 - `content/narrative/vocabulary/flags.json` — { — gelesen: 13 Zeilen
 - `docs/ARCHITECTURE.md` — Architektur und Governance — gelesen: 1744 Zeilen
@@ -2932,6 +2938,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/__tests__/city-life-schedule-target.test.ts` — Der Tagesplan nennt ein Gebaeude, nicht nur eine Absicht. `COMMUTE` ist ein — gelesen: 32 Zeilen
 - `src/core/sim/__tests__/city-life.test.ts` — Die benannten Stadt-NPCs muessen im echten `tickWorld` leben: Standort und — gelesen: 149 Zeilen
 - `src/core/sim/__tests__/city-loop-walkthrough.test.ts` — Headless-Abnahme des Stadt-Loops: Kiez bis Stammgast, Markt freischalten, — gelesen: 110 Zeilen
+- `src/core/sim/__tests__/city-network.test.ts` — Das Stadtnetz ist die einzige Zielwahrheit: vier Knoten haengen ueber je eine — gelesen: 98 Zeilen
 - `src/core/sim/__tests__/city-plots.test.ts` — Ein Grundstück ist ein fester Platz im Kartenlayout. Jedes Gebäude steht auf — gelesen: 114 Zeilen
 - `src/core/sim/__tests__/city-population.test.ts` — Die Stadt ist keine Dreiergruppe: Jeder Index der Besetzung ergibt eine — gelesen: 118 Zeilen
 - `src/core/sim/__tests__/city-props-solid.test.ts` — Die Stadt ist nur dann dieselbe Umgebung fuer Bild und Navigation, wenn die — gelesen: 76 Zeilen
@@ -3078,7 +3085,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/business-areas.ts` — Modulare Business-Bereiche: das Haus fuehrt seine Bereiche im einen — gelesen: 86 Zeilen
 - `src/core/sim/charisma-talk.ts` — Charisma-Ansprache: Erfolg hebt die Laune, ein Fehlschlag kann zur Prügelei werden. — gelesen: 59 Zeilen
 - `src/core/sim/city-actions.ts` — Stadt-Handlungen: pruefen, fortschreiben, Text und Ergebnis setzen. — gelesen: 137 Zeilen
-- `src/core/sim/city-doors.ts` — Die vier Strassentueren und ihr bestehender Uebergang. — gelesen: 34 Zeilen
+- `src/core/sim/city-doors.ts` — Die vier Strassentueren und ihr bestehender Uebergang. — gelesen: 25 Zeilen
 - `src/core/sim/city-employment.ts` — Jede Stelle gehoert einer konkreten Figur. Die Zuordnung ist eine reine — gelesen: 87 Zeilen
 - `src/core/sim/city-encounter-action.ts` — Die soziale Handlung: Command, Geld, Energie, Erinnerung, Wissen und Urteil. — gelesen: 150 Zeilen
 - `src/core/sim/city-encounter-dialog.ts` — Die Begegnung als Spieltext: Sprecher, Rolle, Ort und gespeicherte Erinnerung. — gelesen: 103 Zeilen
@@ -3106,6 +3113,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/city-life-view.ts` — Die Sicht rechnet nichts nach und schreibt nichts: Ort, Intent, Bedürfnisse — gelesen: 65 Zeilen
 - `src/core/sim/city-life.ts` — Jeder Bewohner der Liste ist keine Kulisse: Jede Stunde entscheidet seine — gelesen: 185 Zeilen
 - `src/core/sim/city-model.ts` — Stadt-Daten und -Zustand: Orte, Handlungen, Raenge, Energie und der Bezug — gelesen: 140 Zeilen
+- `src/core/sim/city-network.ts` — Die Stadt ist kein Menue: Wohnung, Casino, Kneipe und Markt sind Knoten, die — gelesen: 93 Zeilen
 - `src/core/sim/city-npc-roster.ts` — Die drei kuratierten Figuren sind der Anfang der Liste, nicht ihr Umfang: — gelesen: 135 Zeilen
 - `src/core/sim/city-npc-shift.ts` — Eine Schicht braucht keinen Save: Sie liegt in einer Tabelle je Gebaeude und — gelesen: 105 Zeilen
 - `src/core/sim/city-npcs.ts` — Benannte Figuren der Stadt. Die Identitaet ist keine Anzeige: Name, Rolle, — gelesen: 103 Zeilen
@@ -3218,7 +3226,7 @@ Regel: jede Zeile entspricht genau einem Pfad aus `git ls-files`; es gibt keine 
 - `src/core/sim/narrative/composer/__tests__/narrative-composer-errors.test.ts` — NAR-11: Die Fehlerpfade des Runtime-Composers lehnen ungueltige Direktiven, — gelesen: 69 Zeilen
 - `src/core/sim/narrative/composer/__tests__/narrative-composer.test.ts` — NAR-11: Der Composer waehlt aus der validierten Registry deterministisch — gelesen: 198 Zeilen
 - `src/core/sim/narrative/composer/index.ts` — NAR-11: Lokaler, deterministischer Runtime-Composer; keine LLM- oder Netzwerkpfade. — gelesen: 103 Zeilen
-- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 266 Zeilen
+- `src/core/sim/narrative/composer/registry.generated.ts` — Generated by NAR-10; do not edit. — gelesen: 267 Zeilen
 - `src/core/sim/narrative/composer/schema.ts` — NAR-11: Laufzeitpruefung fuer generierte Fragmente und Composer-Anfragen. — gelesen: 73 Zeilen
 - `src/core/sim/narrative/composer/select.ts` — NAR-11: Deterministische Auswahl ohne Gameplay-PRNG und ohne Seiteneffekte. — gelesen: 85 Zeilen
 - `src/core/sim/narrative/composer/slot-map.generated.ts` — Generated by NAR-11; do not edit. — gelesen: 9 Zeilen

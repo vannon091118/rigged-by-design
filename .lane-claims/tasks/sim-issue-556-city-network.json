@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-556-city-network",
+  "claimId": "lane/sim/issue-556-city-network",
+  "branch": "lane/sim/issue-556-city-network",
+  "baseSha": "eb3c8c07414ba6874a5dbd7ff2e8731e8e5a0d88",
+  "phase": "CI_PENDING",
+  "title": "Stadtnetz als explizite Knoten- und Kantenliste",
+  "goal": "#556",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR erzeugen und auf exaktem Kopf mergen; nächster Schritt: PRETASK.",
+  "revision": 1
+}
