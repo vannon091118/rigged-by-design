@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T07:05Z-scene-frame-doors",
+  "contributionId": "scene-frame-doors-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Auch der Bildvertrag geht jetzt den Weg des Spiels: Die Stadt entsteht über den echten Szenenwechsel, und ihre Türen stehen als Flächen im Frame statt nur im Pixi-Bild.",
+  "directives": []
+}

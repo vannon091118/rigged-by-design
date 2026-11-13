@@ -4128,6 +4128,10 @@
     {
       "turnId": "2026-11-14T05:10Z-door-walk",
       "contributionId": "door-walk-01"
+    },
+    {
+      "turnId": "2026-11-14T07:05Z-scene-frame-doors",
+      "contributionId": "scene-frame-doors-01"
     }
   ]
 }
