@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-issues-sweep",
+  "claimId": "lane/governance/issues-sweep",
+  "branch": "lane/governance/issues-sweep",
+  "baseSha": "aa2670ebad3e9f491d4c27196f03f07aa3c03ca0",
+  "phase": "CI_PENDING",
+  "title": "Offene Stadt-Issues 503/509/510/512/513 beheben",
+  "goal": "Fuenf offene Stadt-Issues mit Ursache, Test und Issue-Kommentar abarbeiten; Claims, die durch gemergte PRs offen blieben, dabei schliessen.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

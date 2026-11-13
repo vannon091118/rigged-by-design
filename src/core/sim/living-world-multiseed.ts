@@ -16,6 +16,8 @@ interface SeedRun {
   readonly decisions: number;
   readonly deviations: number;
   readonly metrics: string;
+  /** Erste Entscheidungen als Strom; belegt Vielfalt auch ohne Kettenmuster. */
+  readonly flow: string;
 }
 
 /**
@@ -39,5 +41,7 @@ export function runSeed(seed: number, days = 4, population = 12): SeedRun {
     decisions: run.allDecisions.length,
     deviations: run.scheduledDeviations,
     metrics: `${run.allDecisions.length}/${run.scheduledDeviations}`,
+    flow: run.allDecisions.slice(0, 200)
+      .map((entry) => `${entry.npcId}:${entry.intent}@${entry.location}`).join('|'),
   };
 }

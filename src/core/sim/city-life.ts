@@ -12,7 +12,7 @@
  */
 import { ensureCityVisitor, type CityNpcDef } from './city-npcs';
 import { rosterDefById } from './city-npc-roster';
-import { buildingOfPlace, slotOf } from './city-npc-shift';
+import { buildingOfPlace, placeOfBuilding, slotOf } from './city-npc-shift';
 import type {
   CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
@@ -89,9 +89,13 @@ export function tickCityLife(world: WorldState): void {
     const plan = createDayPlan(record.npcId, HOME_BUILDING, slot?.buildingId ?? workplace, slot ?? undefined);
     const scheduled = nextIntentForHour(plan, hour);
     if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
+    // Das konkrete Ziel des Plans gehoert in die Entscheidung: sonst routet
+    // COMMUTE immer zum Arbeitsplatz, auch auf dem Heimweg nach Schichtende.
+    const scheduledPlace = placeOfBuilding(scheduled.targetBuildingId);
     const input = {
       resident: record,
       scheduled: scheduled.intent,
+      scheduledPlace,
       workplace: def?.location ?? 'MARKT',
       hour,
       day: world.day,
@@ -118,10 +122,17 @@ export function tickCityLife(world: WorldState): void {
     const target = applied.decision.location;
     let resident = { ...moved, lastHour: hour, lastDay: world.day };
     if (target !== record.location) {
+      // Ein neues Ziel ersetzt eine alte Route; ohne Weg bleibt der Ort alt.
       const start = startTravel(moved.position, cityMap(world), target);
       if (start.travel) resident = { ...resident, location: record.location, travel: start.travel };
       else if (start.here) resident = { ...resident, location: target };
       else resident = { ...resident, location: record.location };
+    } else if (record.travel && record.travel.to !== target) {
+      // Ziel ist der aktuelle Ort, die laufende Route fuehrt woandershin: Sie
+      // widerspricht dem Intent und wird abgebrochen, statt den NPC zum
+      // veralteten Ziel zu tragen. Fuehrt sie ohnehin zum selben Ort, laeuft
+      // sie weiter — sonst bliebe jeder Weg nach einer Stunde stehen.
+      resident = { ...resident, travel: null };
     }
     return {
       resident,

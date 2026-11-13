@@ -50,7 +50,8 @@ function worldSnapshot(world: WorldState) {
     // Kanonischer Plan als Referenz: er ist unveraenderlich und wird nur als Ganzes ersetzt.
     layout: apartment?.layout ?? city?.layout ?? foreign?.layout ?? world.layout,
     size: apartment?.layout.size ?? city?.layout.size ?? foreign?.layout?.size ?? foreign?.size ?? world.size,
-    zones: apartment?.layout.zones ?? city?.zones ?? foreign?.zones ?? world.zones,
+    // Eine räumliche Wahrheit: die Stadt liefert ihre Zonen aus dem Layout.
+    zones: apartment?.layout.zones ?? city?.layout.zones ?? foreign?.zones ?? world.zones,
     cityExterior,
     furniture: furniture.map((item) => ({ ...item, occupants: [...item.occupants], mods: [...item.mods] })),
     guests: guests.map((guest) => ({ ...guest, path: [...guest.path] })),

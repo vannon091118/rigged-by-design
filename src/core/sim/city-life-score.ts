@@ -24,6 +24,8 @@ export interface CityDecisionInput {
   readonly resident: CityResidentState;
   readonly scheduled: NpcIntentKind;
   readonly workplace: CityLifePlace;
+  /** Ziel des Tagesplans; nur so weiss COMMUTE, wohin der Weg geht. */
+  readonly scheduledPlace?: CityLifePlace | null;
   readonly hour: number;
   readonly day: number;
   readonly tick: number;
@@ -55,7 +57,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
   const gain = traitEffect(input.traits, 'gain');
   const friend = intent === 'VISIT_FRIEND' ? bestFriend(input) : null;
   const target = friend?.peer ?? null;
-  const location = locationForIntent(intent, input.workplace, target);
+  const location = locationForIntent(intent, input.workplace, target, input.scheduledPlace ?? null);
   const present = presentAt(input.peers, location, resident.npcId);
   const factors: CityDecisionFactor[] = [];
   let score = 0;
@@ -74,7 +76,7 @@ function scoreIntent(input: CityDecisionInput, intent: NpcIntentKind): CityChoic
   }
   if (intent === scheduled) add('routine', `Plan ${scheduled}`, scheduled, 60);
   if (scheduled === 'PUB' && intent === 'VISIT_FRIEND' && friend && target) {
-    const pubPlace = locationForIntent('PUB', input.workplace, null);
+    const pubPlace = locationForIntent('PUB', input.workplace, null, null);
     if (target.location !== pubPlace) {
       add('routine', 'soziale Variante des Abendplans', 'PUB', 18);
     }

@@ -14,7 +14,10 @@ describe('Living World Mehrseed', () => {
     const runs = [424242, 1, 7].map((seed) => runSeed(seed));
     // Emergenz: nicht jede Erwartung an eine bestimmte Kette haelt, aber jede
     // Kette ist aus einer echten Entscheidung ableitbar.
-    expect(new Set(runs.map((run) => run.signature)).size).toBeGreaterThan(1);
+    // Vielfalt belegt der Entscheidungsstrom, nicht ein drei Schritte langes
+    // Muster: Zwei Seeds koennen dieselbe Chain-Signatur treffen und trotzdem
+    // voellig verschiedene Entscheidungen treffen.
+    expect(new Set(runs.map((run) => run.flow)).size).toBe(runs.length);
     expect(new Set(runs.map((run) => run.metrics)).size).toBeGreaterThan(1);
     // Determinismus: derselbe Seed, dieselben Zahlen — auch nach einem Neustart.
     expect(runSeed(424242).metrics).toBe(runs[0]!.metrics);

@@ -4104,6 +4104,10 @@
     {
       "turnId": "2026-11-13T21:20Z-city-plots-growth",
       "contributionId": "city-plots-growth-01"
+    },
+    {
+      "turnId": "2026-11-13T23:10Z-issues-sweep",
+      "contributionId": "city-issues-sweep-01"
     }
   ]
 }

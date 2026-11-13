@@ -42,6 +42,17 @@ export function buildingOfPlace(place: CityLifePlace): string {
   return PLACE_BUILDING[place];
 }
 
+/**
+ * Rueckweg Gebaeude -> Ort. Der Tagesplan nennt ein Gebaeude; die Bewegung
+ * braucht einen Ort. Ohne Treffer bleibt der Ort offen (kein Rateziel).
+ */
+export function placeOfBuilding(buildingId: string | null | undefined): CityLifePlace | null {
+  if (!buildingId) return null;
+  const entry = (Object.entries(PLACE_BUILDING) as [CityLifePlace, string][])
+    .find(([, id]) => id === buildingId);
+  return entry ? entry[0] : null;
+}
+
 /** Schichtfenster je Gebaeude; alle liegen innerhalb der Oeffnungszeiten. */
 const SHIFT_WINDOWS: Readonly<Record<string, readonly (readonly [number, number])[]>> = {
   bld_kiez_pub: [[16, 24], [17, 23], [18, 24], [16, 22]],

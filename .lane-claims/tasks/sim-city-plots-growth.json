@@ -4,7 +4,7 @@
   "claimId": "lane/sim/city-plots-growth",
   "branch": "lane/sim/city-plots-growth",
   "baseSha": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69",
-  "phase": "CI_PENDING",
+  "phase": "DONE",
   "title": "Stadtgrundstuecke und Wachstum: feste Plaetze im Kartenlayout, Bautraeger baut bei Joblosen mit Kapital",
   "goal": "Jedes Gebaeude steht auf genau einem Grundstueck; die Stadt waechst nur auf freien Plaetzen, nur mit Joblosen und nur mit Kapital des Bautraegers.",
   "taskType": "single",
@@ -12,6 +12,6 @@
   "status": "READY_FOR_MERGE",
   "pr": null,
   "findings": [],
-  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 3
+  "nextAction": "Automatisch nach Merge geschlossen (merged-pr aa2670e).",
+  "revision": 4
 }

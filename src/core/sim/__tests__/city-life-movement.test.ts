@@ -13,6 +13,7 @@ import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
 import { randomSeed } from '../../../test/random-seed';
 import { tickWorld } from '../tick';
+import { hourOfTick } from '../clock';
 import {
   advanceTravel, placeEntrance, remainingTiles, routeTo, startTravel, tickCityMovement,
   TILES_PER_TICK,
@@ -90,7 +91,13 @@ describe('Bewegung', () => {
     world.cityLife = {
       ...ensureCityLife(world),
       residents: ensureCityLife(world).residents.map((entry) => entry.npcId === 'rita'
-        ? { ...entry, location: 'HOME' as const, position: HOME, travel: startTravel(HOME, city, 'KIEZ').travel }
+        // Dieselbe Stunde wie der Tick: Der Test misst den Weg, nicht eine neue
+        // Entscheidung, die ihn abbrechen duerfte.
+        ? {
+          ...entry, location: 'HOME' as const, position: HOME,
+          lastDay: world.day, lastHour: hourOfTick(world.tick),
+          travel: startTravel(HOME, city, 'KIEZ').travel,
+        }
         : entry),
     };
     const moving = ensureCityLife(world).residents.find((entry) => entry.npcId === 'rita')!;

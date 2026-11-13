@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T23:10Z-issues-sweep",
+  "contributionId": "city-issues-sweep-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Der Heimweg führte zum Arbeitsplatz, die laufende Route überlebte jeden neuen Entschluss, und zwei Zonenkopien beschrieben dieselbe Straße. Jetzt folgt der Weg dem Plan, ein widersprechender Intent bricht ihn ab, und die Laufwege zeichnen neu, wenn sich die Zonen verschieben.",
+  "directives": []
+}
