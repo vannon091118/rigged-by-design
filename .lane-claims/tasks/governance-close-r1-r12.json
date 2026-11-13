@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "governance-close-r1-r12",
+  "claimId": "lane/governance/close-r1-r12",
+  "branch": "lane/governance/close-r1-r12",
+  "baseSha": "0acdfc068e4953da1ed993aa1fd38ebcd6becf69",
+  "phase": "CI_PENDING",
+  "title": "Veralteten Claim lane/render/r1-r12-rework schliessen und Mehrdeutigkeitsregel haerten",
+  "goal": "Ein gemergter, aber wegen doppeltem Branch-Namen unbelegbarer Claim blockiert sonst jede Sim-Lane; der Closeout schliesst ihn und macht den Merge-Beleg robust.",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 7
+}

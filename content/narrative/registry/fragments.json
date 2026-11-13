@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:7e5b5251e3e7cdcd71a46a3abf1ad04df2d3a5fb1151fa3f0665111949a1b672",
+  "contentHash": "sha256:f079edc6689ffad6c8bcaa96570b8b5bc6a1f88b66e741bd4de906c6b0fc9ba5",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -6624,6 +6624,28 @@
       "text": "Rita legte die vier roten Prüfungen nebeneinander. Sie übersprang keine Stufe, sondern suchte in jeder Meldung den ersten konkreten Befund, korrigierte die Ursache und ließ die vollständige Suite erneut laufen. Erst als alle Signale grün waren, gab sie den Stand weiter.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-11-governance-ci-gates.json"
+    },
+    {
+      "contributionId": "governance-claim-closeout-01",
+      "turnId": "2026-11-13T21:40Z-claim-closeout",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Ein Name, zwei Abschlüsse: Der Branch war längst gemergt, der Eintrag blieb offen und sperrte jede weitere Lane. Jetzt zählt der Nachweis, nicht der Name — wer belegen kann, dass alle Fassungen auf main liegen, blockiert niemanden mehr.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-13-claim-closeout.json"
     },
     {
       "contributionId": "governance-claim-scope",

@@ -9,7 +9,7 @@
   "goal": "Die sichtbaren Render- und Living-World-Slices aus dem Plan als echte, deterministische und lokal abgenommene Implementierung liefern.",
   "taskType": "single",
   "holdMerge": false,
-  "status": "READY_FOR_MERGE",
+  "status": "DONE",
   "pr": null,
   "findings": [
     {

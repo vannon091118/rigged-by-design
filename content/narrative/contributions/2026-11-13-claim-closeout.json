@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-13T21:40Z-claim-closeout",
+  "contributionId": "governance-claim-closeout-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Ein Name, zwei Abschlüsse: Der Branch war längst gemergt, der Eintrag blieb offen und sperrte jede weitere Lane. Jetzt zählt der Nachweis, nicht der Name — wer belegen kann, dass alle Fassungen auf main liegen, blockiert niemanden mehr.",
+  "directives": []
+}

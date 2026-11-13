@@ -187,8 +187,16 @@ export function filterMergedCollisions({
   gh = defaultGh,
   onMerged = null,
   prIndex,
+  prGroups,
 } = {}) {
   const mergedIndex = prIndex === undefined ? mergedPullRequestIndex({ gh, baseRef: 'main' }) : prIndex;
+  // Mehrdeutige Branch-Namen (ein Name, mehrere gemergte PRs) bleiben fuer die
+  // Identitaet unbrauchbar, taugen aber als Merge-Beleg: Wenn jede Fassung des
+  // Branches auf `main` liegt, ist die Arbeit gemergt, egal welche davon der
+  // Claim meinte. Genau dieser Fall blockierte Lane-Pfade dauerhaft.
+  const mergedGroups = prGroups === undefined && prIndex === undefined
+    ? mergedPullRequestGroups({ gh, baseRef: 'main' })
+    : prGroups ?? null;
   let baseTip = null;
   try {
     baseTip = git(['rev-parse', baseRef]);
@@ -207,6 +215,7 @@ export function filterMergedCollisions({
     const other = claims.find((entry) => entry.id === collision.lane);
     if (!other) return true;
     const pr = mergedIndex?.get(other.branch) ?? null;
+    const group = mergedGroups?.get(other.branch) ?? null;
     const local = localMergeEvidence({ branch: other.branch, baseRef, git });
     const remote = local.headSha ? { known: true, sha: null } : remoteHead(other.branch);
     const branchHead = local.headSha ?? remote.sha;
@@ -218,7 +227,11 @@ export function filterMergedCollisions({
     // Ein fehlender Branch ist nur dann belegt, wenn `ls-remote` erfolgreich war.
     // Ein Netzfehler bleibt fail-closed und laesst die Kollision stehen.
     const absenceKnown = !branchExists && remote.known;
-    const mergedOnMain = Boolean(
+    const allGroupMergesOnMain = Boolean(
+      !pr && group && group.length > 1 && !branchExists && absenceKnown &&
+        group.every((entry) => commitOnMain({ sha: entry.mergeCommit ?? entry.headRefOid, baseRef, git })),
+    );
+    const mergedOnMain = allGroupMergesOnMain || Boolean(
       pr &&
         (branchExists ? branchAtBase : absenceKnown) &&
         commitOnMain({ sha: pr.mergeCommit ?? pr.headRefOid, baseRef, git }),
@@ -229,7 +242,7 @@ export function filterMergedCollisions({
       branchHeadOnMain: local.headOnMain,
       branchTreeOnMain: local.treeOnMain,
       headSha: branchHead,
-      mergedPr: pr,
+      mergedPr: pr ?? (allGroupMergesOnMain ? group?.[0] ?? null : null),
       mergedOnMain,
     });
     if (evidence.status === 'merged') {
@@ -244,7 +257,7 @@ export function filterMergedCollisions({
  * Gemergte Pull Requests je Head-Branch. Ohne `gh` oder ohne Token `null`:
  * dann gibt es keinen Nachweis, und niemand behauptet einen.
  */
-export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}) {
+export function mergedPullRequestGroups({ gh = defaultGh, baseRef = 'main' } = {}) {
   try {
     const output = gh([
       'pr',
@@ -256,33 +269,41 @@ export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}
       '--json',
       'baseRefName,headRefName,headRefOid,isCrossRepository,number,mergeCommit,url',
     ]);
-    const index = new Map();
-    const ambiguous = new Set();
+    const groups = new Map();
     for (const entry of JSON.parse(output)) {
       if (!entry?.headRefName || !entry?.number) continue;
       // Nur ein Merge nach `main` aus diesem Repository ist ein Claim-Beleg.
       if (entry.baseRefName !== baseRef) continue;
       if (entry.isCrossRepository !== false) continue;
       if (!FULL_SHA.test(String(entry.headRefOid ?? ''))) continue;
-      // Zwei gemergte PRs mit demselben Branch-Namen sind keine Identitaet.
-      // Beide werden verworfen, statt willkuerlich den ersten zu nehmen.
-      if (ambiguous.has(entry.headRefName)) continue;
-      if (index.has(entry.headRefName)) {
-        index.delete(entry.headRefName);
-        ambiguous.add(entry.headRefName);
-        continue;
-      }
-      index.set(entry.headRefName, {
+      const list = groups.get(entry.headRefName) ?? [];
+      list.push({
         number: entry.number,
         headRefOid: entry.headRefOid,
         mergeCommit: entry.mergeCommit?.oid ?? null,
         url: entry.url ?? null,
       });
+      groups.set(entry.headRefName, list);
     }
-    return index;
+    return groups;
   } catch {
     return null;
   }
+}
+
+/**
+ * Gemergte Pull Requests je Head-Branch. Ein Branch-Name mit mehreren
+ * gemergten PRs ist keine Identitaet und wird hier verworfen; wer nur wissen
+ * will, ob die Arbeit gemergt ist, liest `mergedPullRequestGroups`.
+ */
+export function mergedPullRequestIndex({ gh = defaultGh, baseRef = 'main' } = {}) {
+  const groups = mergedPullRequestGroups({ gh, baseRef });
+  if (groups === null) return null;
+  const index = new Map();
+  for (const [branch, list] of groups) {
+    if (list.length === 1) index.set(branch, list[0]);
+  }
+  return index;
 }
 
 /**
