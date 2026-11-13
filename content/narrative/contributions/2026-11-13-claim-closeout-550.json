@@ -1,0 +1,21 @@
+{
+  "agentId": "cloud-agent-2",
+  "turnId": "2026-11-13T23:35Z-claim-closeout-550",
+  "contributionId": "claim-closeout-550-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Wer den Abend abgerechnet hat, hängt den Schein nicht wieder ins Fenster.",
+  "directives": []
+}
