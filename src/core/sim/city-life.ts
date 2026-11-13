@@ -1,19 +1,23 @@
 /**
  * @module city-life — autonome Lebenssimulation der benannten Stadt-NPCs
  *
- * Rita, Boris und Mira sind keine Kulisse: Jede Stunde entscheidet ihre
+ * Jeder Bewohner der Liste ist keine Kulisse: Jede Stunde entscheidet seine
  * Tagesroutine zusammen mit Hunger, Durst, Muedigkeit, Sozialbedarf, Laune,
  * Traits, Attributen, Faehigkeiten, Beziehungen, Erinnerungen und Bargeld.
  * Die Beduerfnisse tragen ueber Tagesgrenzen, Save/Load und den Wechsel
  * zwischen Stadt und eigenem Betrieb hinweg; der Trace bleibt nachvollziehbar.
+ *
+ * Die Schleife fragt keine feste Tabelle: Figur und Schicht kommen aus der
+ * Kennung (`city-npc-roster`, `city-npc-shift`), damit sie mit der Stadt waechst.
  */
-import { CITY_NPCS, ensureCityVisitor, type CityNpcDef } from './city-npcs';
+import { ensureCityVisitor, type CityNpcDef } from './city-npcs';
+import { rosterDefById } from './city-npc-roster';
+import { buildingOfPlace, slotOf } from './city-npc-shift';
 import type {
   CityLifeDecision, CityLifeState, CityResidentState,
 } from './city-life-types';
 import { ensureCityLife, hourOf } from './city-life-state';
 import { createDayPlan, nextIntentForHour } from './npc-schedule';
-import { slotOf } from './city-life-venues';
 import { cityMap, startTravel } from './city-life-movement';
 import { applyCityDecision } from './city-life-apply';
 import { decideCityLife } from './city-life-decision';
@@ -23,15 +27,19 @@ import type { WorldState } from './types';
 export {
   createCityLifeState,
   ensureCityLife,
+  ensureCityPopulation,
+  growCityPopulation,
   hourOf,
   normalizeCityLife,
   TICKS_PER_HOUR,
 } from './city-life-state';
+export { CITY_POPULATION_DEFAULT, rosterDefAt, rosterDefs } from './city-npc-roster';
 
 const HOME_BUILDING = 'bld_player_home';
 
-function workBuildingFor(def: CityNpcDef): string {
-  return def.location === 'KIEZ' ? 'bld_kiez_pub' : 'bld_corner_shop';
+/** Figur zu einer Kennung; ein Save ohne Besetzung hat keine Figur. */
+function defFor(npcId: string, seed: number): CityNpcDef | null {
+  return rosterDefById(npcId, seed);
 }
 
 function elapsedHours(record: CityResidentState, day: number, hour: number): number {
@@ -39,8 +47,8 @@ function elapsedHours(record: CityResidentState, day: number, hour: number): num
   return Math.max(1, Math.min(24, elapsed));
 }
 
-function traitsFor(world: WorldState, def: CityNpcDef): readonly TraitState[] {
-  return ensureCityVisitor(world, def).traits ?? [];
+function traitsFor(world: WorldState, def: CityNpcDef | null): readonly TraitState[] {
+  return def ? ensureCityVisitor(world, def).traits ?? [] : [];
 }
 
 function applyRelationshipDelta(
@@ -61,8 +69,9 @@ interface TickResult {
 }
 
 /**
- * Ein Stundenwechsel bewegt alle drei Bewohner. Der Aufruf ist idempotent:
- * innerhalb derselben Stunde bleiben Standort und Beduerfnisse unveraendert.
+ * Ein Stundenwechsel bewegt alle Bewohner der Liste, egal wie viele es sind.
+ * Der Aufruf ist idempotent: innerhalb derselben Stunde bleiben Standort und
+ * Beduerfnisse unveraendert.
  */
 export function tickCityLife(world: WorldState): void {
   const life = ensureCityLife(world);
@@ -74,15 +83,16 @@ export function tickCityLife(world: WorldState): void {
     if (record.lastDay === world.day && record.lastHour === hour) {
       return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     }
-    const def = CITY_NPCS.find((entry) => entry.id === record.npcId);
-    if (!def) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
-    const plan = createDayPlan(def.id, HOME_BUILDING, workBuildingFor(def), slotOf(def.id) ?? undefined);
+    const def = defFor(record.npcId, seed);
+    const slot = slotOf(record.npcId);
+    const workplace = def ? buildingOfPlace(def.location) : HOME_BUILDING;
+    const plan = createDayPlan(record.npcId, HOME_BUILDING, slot?.buildingId ?? workplace, slot ?? undefined);
     const scheduled = nextIntentForHour(plan, hour);
     if (!scheduled) return { resident: record, decision: null, relationshipTarget: null, relationshipDelta: 0 };
     const input = {
       resident: record,
       scheduled: scheduled.intent,
-      workplace: def.location,
+      workplace: def?.location ?? 'MARKT',
       hour,
       day: world.day,
       tick: world.tick,
