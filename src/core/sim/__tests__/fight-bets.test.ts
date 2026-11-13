@@ -43,9 +43,11 @@ describe('Wettmarkt auf den Vorkampf', () => {
     expect(view.market!.a).toBe('Zora Zeck');
     expect(view.market!.b).toBe('Taifun Tarek');
     for (const odds of Object.values(view.market!.odds)) {
-      expect(odds).toBeGreaterThanOrEqual(1.2);
+      expect(odds).toBeGreaterThanOrEqual(1);
       expect(odds).toBeLessThanOrEqual(6);
     }
+    // Der Standard-Vorkampf ist ausgeglichen: alle vier Picks haben einen Kurs.
+    expect(Object.keys(view.market!.odds).sort()).toEqual(['A', 'B', 'KO', 'PUNKTE']);
     world.tick = 760;
     const closed = fightBetView(world, ledger.getBalance(PORTEMONNAIE));
     expect(closed.open).toBe(false);
@@ -61,7 +63,7 @@ describe('Wettmarkt auf den Vorkampf', () => {
     expect(ledger.getBalance(PORTEMONNAIE)).toBe(fromVC(19));
     expect(reasonsOf(ledger)).toContain(TX_REASON.FIGHT_BET_STAKE);
     const slip = world.archive.find((entry) => entry.subject === 'WETTSCHEIN')!;
-    expect(slip.cause).toContain(`quote:${market.odds.A}`);
+    expect(slip.cause).toContain(`quote:${market.odds.A!}`);
     expect(slip.cause).toContain('pick:A');
     expect(fightBetView(world, ledger.getBalance(PORTEMONNAIE)).pending).toHaveLength(1);
     expect(() => placeFightBet(world, ledger, 'B', fromVC(0.05))).toThrow(/ausserhalb/);

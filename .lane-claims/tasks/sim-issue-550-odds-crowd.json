@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "taskId": "sim-issue-550-odds-crowd",
+  "claimId": "lane/sim/issue-550-odds-crowd",
+  "branch": "lane/sim/issue-550-odds-crowd",
+  "baseSha": "81b31268a9a1b090c811c5d155f4c4557bd18a77",
+  "phase": "CI_PENDING",
+  "title": "Ein Publikumswert fuer alle Kampfpfade und Quoten ohne Arbitrage-Untergrenze",
+  "goal": "#550",
+  "taskType": "single",
+  "holdMerge": false,
+  "status": "READY_FOR_MERGE",
+  "pr": null,
+  "findings": [],
+  "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
+  "revision": 2
+}

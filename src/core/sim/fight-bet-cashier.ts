@@ -24,6 +24,7 @@ export function placeFightBet(
   }
   if (stake > ledger.getBalance(PORTEMONNAIE)) throw new Error('Nicht genug Bargeld fuer diesen Schein.');
   const odds = view.market.odds[pick];
+  if (odds === undefined) throw new Error(`Kein Kurs fuer ${pick}: Der Ausgang ist zu sicher fuer eine Wette.`);
   ledger.transfer(PORTEMONNAIE, EXTERNAL, stake, TX_REASON.FIGHT_BET_STAKE, world.tick);
   const slip = registerSlip(world, {
     eventId: view.market.eventId,

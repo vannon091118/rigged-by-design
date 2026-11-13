@@ -1,0 +1,24 @@
+{
+  "id": "lane/sim/issue-550-odds-crowd",
+  "owner": "Sim-/Domain-Owner",
+  "branch": "lane/sim/issue-550-odds-crowd",
+  "baseSha": "81b31268a9a1b090c811c5d155f4c4557bd18a77",
+  "task": "Ein Publikumswert fuer alle Kampfpfade und Quoten ohne Arbitrage-Untergrenze",
+  "goal": "#550",
+  "pathAllowlist": [
+    "src/core/sim/",
+    "src/ui/",
+    "content/",
+    ".lane-claims/",
+    "docs/INVENTORY.md",
+    "docs/DEPENDENCY-MATRIX.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    ".lane-claims/claims/lane-sim-issue-550-odds-crowd.json"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "81b31268a9a1b090c811c5d155f4c4557bd18a77"
+}

@@ -8,7 +8,7 @@
 import type { Ledger } from '../economy/ledger';
 import { toVCString } from '../economy/vacoin';
 import type { Prng } from '../rng/prng';
-import { fighters, simulateFight } from './brawl-combat';
+import { crowdBonus, fighters, simulateFight } from './brawl-combat';
 import { liveTournament, rpgOf, undercardPair } from './fight-bets';
 import {
   closeSlip, openSlipsOf, payoutOf, recordUndercard, SETTLE_SUBJECT, UNDERCARD_SUBJECT,
@@ -29,7 +29,8 @@ export function runUndercard(world: WorldState, prng: Prng): UndercardResult | n
   const known = undercardOf(world, live.id);
   if (known) return known;
   const [a, b] = pair;
-  const [left, right] = fighters(rpgOf(a), fightOpponentOf(b), world.guests.length);
+  // Derselbe Publikumswert wie im Markt, sonst kaempft der Vorkampf gegen andere Zahlen.
+  const [left, right] = fighters(rpgOf(a), fightOpponentOf(b), crowdBonus(world.guests));
   const fight = simulateFight(left, right, prng);
   const winner: 'A' | 'B' = fight.playerWon ? 'A' : 'B';
   const loserHp = fight.playerWon ? fight.opponentHp : fight.playerHp;
