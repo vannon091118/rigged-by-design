@@ -10,8 +10,13 @@
   "taskType": "single",
   "holdMerge": false,
   "status": "READY_FOR_MERGE",
-  "pr": null,
+  "pr": {
+    "number": 495,
+    "url": "https://github.com/vannon091118/rigged-by-design/pull/495",
+    "state": "open",
+    "headSha": "06861216521bc4ce69d03ba40a2d483f96b1dfd4"
+  },
   "findings": [],
   "nextAction": "PR wird erzeugt/aktualisiert; CI meldet; nächster Schritt: PRETASK.",
-  "revision": 7
+  "revision": 8
 }

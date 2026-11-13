@@ -433,14 +433,16 @@ Der letzte PR mit Simulationslogik ist #486 (Merge `e33e5ef6`,
 | Fremder Floor | `active-player.ts` (ein Spielerstand je Szene), `worldNav` über `foreign.layout`/`foreign.furniture`, Tastatur/Kamera freigegeben |
 | Evidenz | `living-world-longturn-*.ts` plus Artefakte unter `artifacts/`/`docs/evidence/` |
 
-**Nachgerechnet:** `artifacts/living-world/trace-424242-5d.json` enthält 363
-Entscheidungen und 556 gekippte Gegenfakt-Proben; die Familienzähler stehen im
-Artefakt (Routine 240, Umgebung 66, Fähigkeiten 55, Müdigkeit 44, Traits 41,
-Hunger 29, Attribute 21, Erinnerung 19, Beziehung 19, Emotion 16, Durst 4,
-Sozial 2). 110 Entscheidungen weichen vom Tagesplan ab. Die Zahlen sind nach dem
-Bewegungs-Schnitt neu erzeugt (vorher: 512 Proben, 86 Abweichungen, Routine 254,
-Müdigkeit 51); `docs/evidence/living-world-longturn-424242-4d.json` belegt den
-Weg im echten `tickWorld`.
+**Nachgerechnet:** Der 5-Tage-Lauf mit Seed 424242 erzeugt 363 Entscheidungen und
+556 gekippte Gegenfakt-Proben — Routine 240, Umgebung 66, Fähigkeiten 55,
+Müdigkeit 44, Traits 41, Hunger 29, Attribute 21, Erinnerung 19, Beziehung 19,
+Emotion 16, Durst 4, Sozial 2; 110 Entscheidungen weichen vom Tagesplan ab. Die
+Zahlen sind nach dem Bewegungs-Schnitt neu erzeugt (vorher: 512 Proben, 86
+Abweichungen, Routine 254, Müdigkeit 51). Die Datei unter `artifacts/` wird dafür
+lokal nachgeschrieben (`RBD_LIVING_WORLD_OUT=artifacts/living-world/trace-424242-5d.json`,
+Befehl oben) und ist nicht Teil des Commits, weil `artifacts/` ignoriert wird;
+`docs/evidence/living-world-longturn-424242-4d.json` belegt den Weg im echten
+`tickWorld`.
 
 #### Wo es noch nicht wie geplant funktioniert
 
