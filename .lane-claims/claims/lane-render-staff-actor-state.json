@@ -1,0 +1,23 @@
+{
+  "id": "lane/render/staff-actor-state",
+  "owner": "Architektur-Owner",
+  "branch": "lane/render/staff-actor-state",
+  "baseSha": "b1ee312f1547edffa7db285f70698a522624a065",
+  "task": "Personal im Floor rendert mit Rig-Zustand, Facing und sichtbarer Tragepose",
+  "goal": "#514",
+  "pathAllowlist": [
+    "src/render/",
+    "src/core/sim/narrative/",
+    "content/",
+    ".lane-claims/",
+    "docs/DEPENDENCY-MATRIX.md",
+    "docs/INVENTORY.md",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "contracts": [],
+  "dependencies": [],
+  "gateProfile": "light",
+  "status": "open",
+  "createdAt": "b1ee312f1547edffa7db285f70698a522624a065"
+}
