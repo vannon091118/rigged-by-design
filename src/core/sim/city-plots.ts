@@ -12,7 +12,7 @@ import type { BuildingFootprint, BuildingState } from './building-types';
 import { createCityStreetLayout } from './city-exterior';
 
 /** Widmung eines Grundstücks; sie entscheidet, was darauf gebaut werden darf. */
-export type CityZoning = 'HOME' | 'BUSINESS' | 'PUBLIC';
+type CityZoning = 'HOME' | 'BUSINESS' | 'PUBLIC';
 
 export interface CityPlot {
   readonly id: string;
@@ -77,11 +77,11 @@ export function builtPlots(
   });
 }
 
-export type PlotIssueCode =
+type PlotIssueCode =
   | 'PLOT_OUT_OF_GRID' | 'PLOT_OVERLAP' | 'PLOT_ON_ROAD'
   | 'UNREGISTERED_BUILDING' | 'DOUBLE_OCCUPANCY';
 
-export interface PlotIssue {
+interface PlotIssue {
   readonly code: PlotIssueCode;
   readonly plotId: string;
   readonly detail: string;

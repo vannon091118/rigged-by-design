@@ -10,6 +10,7 @@
 import { describe, expect, it } from 'vitest';
 import { Ledger } from '../../economy/ledger';
 import { Prng } from '../../rng/prng';
+import { randomSeed } from '../../../test/random-seed';
 import { createWorld, ensureStarter } from '../templates';
 import { replaySave, toSavedGame } from '../../../store/save';
 import { CITY_PRESET_BUILDINGS } from '../building';
@@ -70,7 +71,7 @@ describe('Grundstücksregister', () => {
     const world = createWorld('SMALL');
     ensureStarter(world);
     const ledger = new Ledger({});
-    const prng = new Prng(4242);
+    const prng = new Prng(randomSeed());
     const saved = JSON.parse(JSON.stringify(toSavedGame(world, ledger, prng.getState())));
     expect(saved.plots).toBeUndefined();
     const loaded = replaySave(saved);
