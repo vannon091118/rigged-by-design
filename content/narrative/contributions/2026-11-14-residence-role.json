@@ -1,0 +1,21 @@
+{
+  "agentId": "buffy",
+  "turnId": "2026-11-14T00:05Z-residence-role",
+  "contributionId": "city-residence-role-01",
+  "role": "BEOBACHTER",
+  "locale": "de",
+  "slot": "city-scene",
+  "function": "describe",
+  "contexts": [
+    "start"
+  ],
+  "tone": "sachlich",
+  "mood": "neutral",
+  "relationship": "neutral",
+  "personaRefs": [],
+  "flags": [
+    "narrativ"
+  ],
+  "text": "Das dritte Haus der Stadt hatte Wände, aber keine Fassade: Der Renderplan kannte den Typ nicht und brach ab, bevor die Straße entstand. Jetzt trägt das Wohnhaus eine eigene Rolle und dieselbe Fassadenfamilie wie die Wohnung — der Neubau bleibt stehen, auch wenn man ihn ansieht.",
+  "directives": []
+}

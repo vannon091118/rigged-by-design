@@ -1,7 +1,7 @@
 {
   "version": 2,
   "compiler": "nar-10",
-  "contentHash": "sha256:2bc682663bd7bd48e4903908d38ef674acf4315ad37f90474c5cf93f84bc1c99",
+  "contentHash": "sha256:18cc57d8d4c3c4ae10e64f47d230898a19c3f870d64e224b46545ce00bcb39d7",
   "fragments": [
     {
       "contributionId": "actions-storage-retention",
@@ -4569,6 +4569,28 @@
       "text": "Der Kiez ist kein leerer Saal, der nur auf deinen ersten Schritt wartet. Auch wenn du mitten in der Stadt aufwachst, stehen die Türen offen und die Schichten laufen weiter — die Straße füllt sich, bevor du sie betrittst.",
       "directives": [],
       "source": "content/narrative/contributions/2026-11-13-city-population-load.json"
+    },
+    {
+      "contributionId": "city-residence-role-01",
+      "turnId": "2026-11-14T00:05Z-residence-role",
+      "agentId": "buffy",
+      "role": "BEOBACHTER",
+      "locale": "de",
+      "slot": "city-scene",
+      "function": "describe",
+      "contexts": [
+        "start"
+      ],
+      "tone": "sachlich",
+      "mood": "neutral",
+      "relationship": "neutral",
+      "personaRefs": [],
+      "flags": [
+        "narrativ"
+      ],
+      "text": "Das dritte Haus der Stadt hatte Wände, aber keine Fassade: Der Renderplan kannte den Typ nicht und brach ab, bevor die Straße entstand. Jetzt trägt das Wohnhaus eine eigene Rolle und dieselbe Fassadenfamilie wie die Wohnung — der Neubau bleibt stehen, auch wenn man ihn ansieht.",
+      "directives": [],
+      "source": "content/narrative/contributions/2026-11-14-residence-role.json"
     },
     {
       "contributionId": "city-scene-01",
